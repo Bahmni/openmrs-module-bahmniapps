@@ -18,3 +18,11 @@ clinical-ui/node_modules
 clinical-ui/app/components
 clinical-ui/dist
 clinical-ui/app/**/*.css
+**/.DS_Store
+nbproject
+manifest.mf
+build.xml
+.project
+.settings
+.idea/*
+
