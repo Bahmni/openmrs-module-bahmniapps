@@ -1,0 +1,32 @@
+<div class="container-fluid well">
+    <h4>Search Registered Patients</h4>
+    <div>
+        <form name="myForm" ng-submit="search()" class="form-horizontal">
+            <div class="control-group">
+                <label class="control-label" for="query">Patient registration number or name</label>
+                <div class="controls">
+                    <input type="text" id="query" ng-model="query">
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-success">Search</button>
+                    <button class="btn btn-success">Create New</button>
+                </div>
+            </div>
+        </form>
+        <br>
+        <p ng-hide="resultsPresent()">No results yet</p>
+        <table ng-show="resultsPresent()">
+            <thead>
+            <td>Sl.No</td>
+            <td>ID</td>
+            <td>Name</td>
+            </thead>
+            <tr ng-repeat="result in results">
+                <td>{{$index + 1}}</td>
+                <td>{{result.identifiers[0].identifier}}</td>
+                <td>{{result.person.display}}</td>
+            </tr>
+        </table>
+</div>
