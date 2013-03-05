@@ -1,32 +1,48 @@
-<div class="container-fluid well">
+<div class="container-fluid">
     <h4>Search Registered Patients</h4>
+
     <div>
-        <form name="myForm" ng-submit="search()" class="form-horizontal">
+        <form name="myForm" ng-submit="search()" class="form-horizontal well">
             <div class="control-group">
                 <label class="control-label" for="query">Patient registration number or name</label>
+
                 <div class="controls">
-                    <input type="text" id="query" ng-model="query">
+                    <input type="text" id="query" ng-model="query" autofocus>
                 </div>
             </div>
             <div class="control-group">
                 <div class="controls">
-                    <button type="submit" class="btn btn-success">Search</button>
-                    <button class="btn btn-success">Create New</button>
+                    <button type="submit" class="btn">Search</button>
+                    <button class="btn">Create New</button>
                 </div>
             </div>
         </form>
         <br>
+
         <p ng-hide="resultsPresent()">No results yet</p>
-        <table ng-show="resultsPresent()">
+        <table ng-show="resultsPresent()" class="table table-hover">
             <thead>
-            <td>Sl.No</td>
-            <td>ID</td>
-            <td>Name</td>
+            <tr>
+                <th>Sl.No</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Age</th>
+                <th>Village</th>
+            </tr>
             </thead>
+            <tbody>
             <tr ng-repeat="result in results">
                 <td>{{$index + 1}}</td>
                 <td>{{result.identifiers[0].identifier}}</td>
                 <td>{{result.person.display}}</td>
+                <td>{{result.person.gender}}</td>
+                <td>{{result.person.age}}</td>
+                <td>{{result.person.preferredAddress.cityVillage}}</td>
+                <td><button class="btn">Create Visit</button></td>
+                <td><button class="btn">Edit</button></td>
             </tr>
+            </tbody>
         </table>
+    </div>
 </div>

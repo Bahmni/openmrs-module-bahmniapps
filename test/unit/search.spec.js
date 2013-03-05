@@ -7,8 +7,8 @@ describe('SearchPatientController', function () {
             scope = {},
             $controller;
 
-        beforeEach(module('registration.search'));
-        beforeEach(inject(function ($injector) {
+        beforeEach(angular.mock.module('registration.search'));
+        beforeEach(angular.mock.inject(function ($injector) {
             $controller = $injector.get('$controller');
         }));
 
