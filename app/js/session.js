@@ -1,7 +1,6 @@
 'use strict';
 
 angular.module('registration.session', [])
-
     .controller('SessionController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
         $scope.login = function () {
             $scope.errorMessage = null
@@ -9,14 +8,13 @@ angular.module('registration.session', [])
                 headers: {'Authorization': 'Basic ' + window.btoa($scope.username + ':' + $scope.password)},
                 cache: false
             }).success(function (data) {
-                    var authenticationSuccess = data.authenticated;
-                    if (authenticationSuccess) {
-                        $location.path("/search");
-                    } else {
-                        $scope.errorMessage = "Authentication failed. Please try again."
-                        $scope.resetForm();
-                    }
-                });
+                if (data.authenticated) {
+                    $location.path("/search");
+                } else {
+                    $scope.errorMessage = "Authentication failed. Please try again."
+                    $scope.resetForm();
+                }
+            });
         }
 
         $scope.logout = function () {
