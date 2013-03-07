@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registration.session', [])
-    .controller('SessionController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+    .controller('SessionController', ['$rootScope', '$scope', '$http', '$location', function ($rootScope, $scope, $http, $location) {
         $scope.login = function () {
             $scope.errorMessage = null
             return $http.get('/openmrs/ws/rest/v1/session', {
@@ -18,6 +18,7 @@ angular.module('registration.session', [])
         }
 
         $scope.logout = function () {
+            $rootScope.errorMessage = null
             $http.delete('/openmrs/ws/rest/v1/session');
             $location.path("/login");
         }

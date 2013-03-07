@@ -2,26 +2,26 @@
     <h4>Login</h4>
 
     <div>
-        <form ng-submit="login()" class="form-horizontal well">
+        <form ng-submit="login()" class="form-horizontal well" name="loginForm">
             <div ng-show="errorMessage" class="alert alert-danger">{{errorMessage}}</div>
             <div class="control-group">
-                <label class="control-label" for="username">Username</label>
+                <label class="control-label" for="username">Username *</label>
 
                 <div class="controls">
-                    <input type="text" id="username" ng-model="username" autofocus>
+                    <input type="text" name="username" id="username" ng-model="username" autofocus required placeholder="Please enter your username">
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="password">Password</label>
+                <label class="control-label" for="password">Password *</label>
 
                 <div class="controls">
-                    <input type="password" id="password" ng-model="password">
+                    <input type="password" id="password" name="password" ng-model="password" required placeholder="Please enter your password" >
                 </div>
             </div>
 
             <div class="control-group">
                 <div class="controls">
-                    <button type="submit" class="btn btn-primary">Login</button>
+                    <button type="submit" class="btn btn-primary" ng-disabled="loginForm.$invalid">Login</button>
                 </div>
             </div>
         </form>
