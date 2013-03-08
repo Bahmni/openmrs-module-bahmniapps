@@ -1,48 +1,154 @@
 <div class="container-fluid">
-    <h4>Register New Patients</h4>
+    <h4>Register New Patient</h4>
 <div>
-    <form name="myForm" class="form-horizontal well">
+    <form name="myForm" class="form-horizontal well" ng-submit="create()" >
         <div class="control-group">
-            <label class="control-label" for="centerID">CenterID</label>
+            <label class="control-label" for="asd">Center</label>
 
             <div class="controls">
-                <input type="text" id="centerID" ng-model="centerID" autofocus>
+                <select  id="asd" ng-model="patient.centerID" ng-options="c.name for c in centers"> </select>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="oldPatientIdentifier">Old Patient Registration Number</label>
+
+            <div class="controls">
+                <input type="text" id="oldPatientIdentifier" ng-model="patient.oldPatientIdentifier">
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="firstName">Patient Name</label>
+            <label class="control-label" for="patientName">Patient Name (*)</label>
 
-            <div class="controls">
-                <input type="text" id="patientName" ng-model="patientName">
-                <input type="text" id="patientName" ng-model="patientName">
+            <div class="controls" id="patientName">
+                <input type="text" id="givenName" ng-model="patient.names[0].givenName" autofocus>
+                <input type="text" id="familyName" ng-model="patient.names[0].familyName">
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="centerID">CenterID</label>
+            <label class="control-label" for="primaryRelative">Father's/Husband's Name</label>
 
             <div class="controls">
-                <input type="text" id="centerID" ng-model="centerID" autofocus>
+                <input type="text" id="primaryRelative" ng-model="primaryRelative">
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="centerID">CenterID</label>
+            <label class="control-label" for="birthdate">DOB (optional)</label>
 
             <div class="controls">
-                <input type="text" id="centerID" ng-model="centerID" autofocus>
+                <input id="birthdate" ng-model="patient.birthdate" datepicker>
+                Age
+                <input type="text" id="age1" ng-model="patient.age">
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="centerID">CenterID</label>
+            <label class="control-label" for="gender">Gender</label>
 
             <div class="controls">
-                <input type="text" id="centerID" ng-model="centerID" autofocus>
+                <select  id="gender" ng-model="gender">
+                    <option>M</option>
+                    <option>F</option>
+                    <option>Other</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="address1">House No. Street</label>
+
+            <div class="controls">
+                <input type="text" id="address1" ng-model="patient.addresses[0].address1">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="address2">Village</label>
+
+            <div class="controls">
+                <input type="text" id="address2" ng-model="patient.addresses[0].address2">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="address3">Tehsil</label>
+
+            <div class="controls">
+                <input type="text" id="address3" ng-model="patient.addresses[0].address3">
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="centerID">CenterID</label>
+            <label class="control-label" for="countyDistrict">District</label>
 
             <div class="controls">
-                <input type="text" id="centerID" ng-model="centerID" autofocus>
+                <input type="text" id="countyDistrict" ng-model="patient.addresses[0].countyDistrict">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="stateProvince">State</label>
+
+            <div class="controls">
+                <input type="text" id="stateProvince" ng-model="patient.addresses[0].stateProvince">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="contactNumber">Contact Number</label>
+
+            <div class="controls" id="contactNumber">
+                <input type="text" id="primaryContact" ng-model="primaryContact">
+                <input type="text" id="secondaryContact" ng-model="secondaryContact">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="education">Education Details</label>
+
+            <div class="controls">
+                <select  id="education" ng-model="education">
+                    <option>Uneducated</option>
+                    <option>5th Pass and Below</option>
+                    <option>6th to 9th</option>
+                    <option>10th Pass</option>
+                    <option>Graduate and Above</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="caste">Caste</label>
+
+            <div class="controls">
+                <select  id="caste" ng-model="caste">
+                    <option>OBC</option>
+                    <option>General</option>
+                    <option>SC</option>
+                    <option>ST</option>
+                    <option>Other</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="occupation">Occupation</label>
+
+            <div class="controls">
+                <select  id="occupation" ng-model="occupation">
+                    <option>Unemployed</option>
+                    <option>Student</option>
+                    <option>Agriculture Related</option>
+                    <option>Government</option>
+                    <option>Business</option>
+                    <option>Housewife</option>
+                    <option>Bank Related</option>
+                    <option>Medical Related</option>
+                    <option>Engineering Related</option>
+                    <option>Other</option>
+                </select>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn">Next</button>
             </div>
         </div>
     </form>

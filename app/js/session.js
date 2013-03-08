@@ -4,7 +4,7 @@ angular.module('registration.session', [])
     .controller('SessionController', ['$rootScope', '$scope', '$http', '$location', function ($rootScope, $scope, $http, $location) {
         $scope.login = function () {
             $scope.errorMessage = null
-            return $http.get('/openmrs/ws/rest/v1/session', {
+            return $http.get($rootScope.BaseUrl + '/ws/rest/v1/session', {
                 headers: {'Authorization': 'Basic ' + window.btoa($scope.username + ':' + $scope.password)},
                 cache: false
             }).success(function (data) {
@@ -18,7 +18,7 @@ angular.module('registration.session', [])
         }
 
         $scope.logout = function () {
-            $rootScope.errorMessage = null
+            $rootScope.errorMessage = null;
             $http.delete('/openmrs/ws/rest/v1/session');
             $location.path("/login");
         }
