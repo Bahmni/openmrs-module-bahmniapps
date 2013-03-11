@@ -7,15 +7,15 @@ angular.module('resources.patient', [])
             return $http.get($rootScope.BaseUrl + "/ws/rest/v1/patient", {
                 method: "GET",
                 params: {q: query, v: "full"},
-                withCredentials: true,
+                withCredentials: true
             });
         }
 
         var create = function (patient) {
-            return $http.post($rootScope.BaseUrl + "/ws/rest/v1/patient", patient,
+            return $http.post($rootScope.BaseUrl + "/ws/rest/v1/raxacore/patient", patient,
                 {
                     withCredentials: true,
-                    headers: {'accept': 'application/json', 'content-type': 'application/json'},
+                    headers: {"Accept": "application/json", "Content-Type": "application/json"}
                 });
         }
         return {

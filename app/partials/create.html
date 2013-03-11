@@ -14,14 +14,14 @@
             <label class="control-label" for="oldPatientIdentifier">Old Patient Registration Number</label>
 
             <div class="controls">
-                <input type="text" id="oldPatientIdentifier" ng-model="patient.oldPatientIdentifier">
+                <input type="text" id="oldPatientIdentifier" ng-model="oldPatientIdentifier">
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="patientName">Patient Name (*)</label>
+            <label class="control-label" for="patientName">Patient Name *</label>
 
             <div class="controls" id="patientName">
-                <input type="text" id="givenName" ng-model="patient.names[0].givenName" autofocus>
+                <input type="text" id="givenName" ng-model="patient.names[0].givenName" autofocus required>
                 <input type="text" id="familyName" ng-model="patient.names[0].familyName">
             </div>
         </div>
@@ -36,19 +36,19 @@
             <label class="control-label" for="birthdate">DOB (optional)</label>
 
             <div class="controls">
-                <input id="birthdate" ng-model="patient.birthdate" datepicker>
+                <input id="birthdate" type="text" ng-model="patient.birthdate" datepicker ng-change="calculatePatientAge()" placeholder="yyyy-mm-dd">
                 Age
-                <input type="text" id="age1" ng-model="patient.age">
+                <input type="number" id="ageYear" name="ageYear" max="120" ng-model="patient.age" min="0" >
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="gender">Gender</label>
 
             <div class="controls">
-                <select  id="gender" ng-model="gender">
-                    <option>M</option>
-                    <option>F</option>
-                    <option>Other</option>
+                <select  id="gender" ng-model="patient.gender" required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
                 </select>
             </div>
         </div>
@@ -65,7 +65,7 @@
             <label class="control-label" for="address2">Village</label>
 
             <div class="controls">
-                <input type="text" id="address2" ng-model="patient.addresses[0].address2">
+                <input type="text" id="address2" ng-model="patient.addresses[0].city_village">
             </div>
         </div>
 

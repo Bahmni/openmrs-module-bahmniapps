@@ -2,6 +2,7 @@
 
 angular.module('registration.createPatient', ['resources.patient', 'resources.patientAttributeType'])
     .controller('CreateNewPatientController', ['$scope', 'patient', 'patientAttributeType', function ($scope, patientService, patientAttributeType) {
+        var attributes;
 
         (function(){
             var patient = {
@@ -21,13 +22,19 @@ angular.module('registration.createPatient', ['resources.patient', 'resources.pa
             patient.centerID = $scope.centers[0];
 
             patientAttributeType.getAll().success(function(data){
-                patient.attributes = data.results.map(function(result) {return {"attributeType": result.uuid, "name": result.name, value : $scope[result.name]}});
+                attributes = data.results;
             });
         })();
 
         $scope.create = function () {
-            console.log(patient);
+            $scope.patient.attributes = attributes.map(function(result) {return {"attributeType": result.uuid, "name": result.name, "value" : $scope[result.name]}}).filter(function(result){return result.value && result.value !== ''});
             patientService.create($scope.patient);
+        };
+
+        $scope.calculatePatientAge = function(){
+            var curDate = new Date();
+            var birthDate = new Date($scope.patient.birthdate);
+            $scope.patient.age = curDate.getFullYear() - birthDate.getFullYear() - ((curDate.getMonth() < birthDate.getMonth())? 1: 0);
         };
     }])
 
@@ -39,10 +46,14 @@ angular.module('registration.createPatient', ['resources.patient', 'resources.pa
                     changeYear: true,
                     changeMonth: true,
                     dateFormat: 'yy-mm-dd',
+                    maxDate: new Date(),
                     onSelect: function (dateText) {
                         $scope.$apply(function (scope) {
                             ngModel.assign(scope, dateText);
                         });
+                        var curDate = new Date();
+                        var birthDate = new Date($scope.patient.birthdate);
+                        $scope.patient.age = curDate.getFullYear() - birthDate.getFullYear() - ((curDate.getMonth() < birthDate.getMonth())? 1: 0);
                     }
                 });
             });
