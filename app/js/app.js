@@ -7,6 +7,5 @@ angular.module('registration').config(['$routeProvider', function ($routeProvide
         $routeProvider.when('/login', {templateUrl: 'partials/login.html', controller: 'SessionController'});
         $routeProvider.otherwise({redirectTo: '/login'});
     }]).run(function($rootScope){
-        $rootScope.BaseUrl='http://localhost:8080/openmrs';
-//        $rootScope.BaseUrl='/openmrs';
+        $rootScope.BaseUrl='/openmrs';
     });
