@@ -2,7 +2,7 @@
 
 angular.module('registration.search', ['resources.patient'])
 
-    .controller('SearchPatientController', ['$scope', 'patient', function ($scope, patient) {
+    .controller('SearchPatientController', ['$scope', 'patient', '$location', function ($scope, patient, $location) {
         var search = function () {
             patient.search($scope.query).success(function (data) {
                 $scope.results = data.results;
@@ -14,4 +14,8 @@ angular.module('registration.search', ['resources.patient'])
             return angular.isDefined($scope.results) && $scope.results.length > 0;
         }
         $scope.resultsPresent = resultsPresent;
+
+        $scope.createNew = function() {
+            $location.path("/create");
+        }
     }]);
