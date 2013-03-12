@@ -1,0 +1,74 @@
+<div class="container-fluid">
+    <h4>Visit Information</h4>
+<div>
+    <form name="myForm" class="form-horizontal well">
+        <legend class="mylegend">Summary</legend>
+        <div class="control-group">
+            <label class="control-label" for="asd">Patient Identifier</label>
+
+            <div class="controls">
+                <input ng-model="patient.id" readonly>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="patientName">Patient Name</label>
+
+            <div class="controls">
+                <input ng-model="patient.fullname" readonly>
+            </div>
+        </div>
+
+        <legend class="mylegend">Illness Details</legend>
+        <div class="control-group">
+            <label class="control-label" for="chiefComplaint">Complaint</label>
+
+            <div class="controls">
+                <input type="text" id="chiefComplaint" ng-model="visit.chiefComplaint">
+            </div>
+        </div>
+
+        <legend class="mylegend">New Registration</legend>    
+        <div class="control-group">
+            <label class="control-label" for="registrationFee">Registration Fee</label>
+
+            <div class="controls">
+                <input type="text" id="registrationFee" ng-model="visit.registrationFee">
+            </div>
+        </div>
+
+        <legend class="mylegend">Enter Measures for Body Mass Index</legend>
+        <div class="control-group">
+            <label class="control-label" for="bmiComponents">Height (cm)</label>
+
+            <div class="controls">
+                <input id="height" type="number" ng-model="visit.height" min="0" ng-change="calculateBMI()">
+                Weight (kg)
+                <input id="weight" type="text" ng-model="visit.weight" min="0" ng-change="calculateBMI()">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="bmi">BMI</label>
+
+            <div class="controls">
+                <input type="number" id="bmi" ng-model="visit.bmi">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="visit.bmiStatus">BMI Status</label>
+
+            <div class="controls">
+                <input type="text" id="bmiStatus" ng-model="bmiStatus">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <div class="controls">
+                <button class="btn btn-primary">Back</button>
+                <button type="submit" class="btn btn-primary">Print Patient Card</button>
+            </div>
+        </div>
+    </form>
+    <br>
+</div>
+</div>
