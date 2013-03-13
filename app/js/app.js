@@ -6,6 +6,7 @@ angular.module('registration').config(['$routeProvider', function ($routeProvide
         $routeProvider.when('/create', {templateUrl: 'partials/create.html', controller: 'CreateNewPatientController'});
         $routeProvider.when('/login', {templateUrl: 'partials/login.html', controller: 'SessionController'});
         $routeProvider.otherwise({redirectTo: '/login'});
-    }]).run(function($rootScope){
+    }]).run(function($rootScope, $http){
         $rootScope.BaseUrl='/openmrs';
+        $http.defaults.headers.common['Disable-WWW-Authenticate'] = true;
     });

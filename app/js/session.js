@@ -2,14 +2,29 @@
 
 angular.module('registration.session', [])
     .controller('SessionController', ['$rootScope', '$scope', '$http', '$location', function ($rootScope, $scope, $http, $location) {
+        var sessionResourcePath = $rootScope.BaseUrl + '/ws/rest/v1/session';
+        var landingPagePath = "/search";
+
+        var redirectToLandingPageIfAlreadyAuthenticated = function() {
+            $http.get(sessionResourcePath, {
+                headers: {'Authorization': 'Basic ' + window.btoa("invalidUsername:invalidPassword")},
+                cache: false,
+            }).success(function (data) {
+                if (data.authenticated)
+                    $location.path(landingPagePath);
+            });
+        }
+
+        redirectToLandingPageIfAlreadyAuthenticated();
+
         $scope.login = function () {
             $scope.errorMessage = null
-            return $http.get($rootScope.BaseUrl + '/ws/rest/v1/session', {
+            return $http.get(sessionResourcePath, {
                 headers: {'Authorization': 'Basic ' + window.btoa($scope.username + ':' + $scope.password)},
                 cache: false
             }).success(function (data) {
                 if (data.authenticated) {
-                    $location.path("/search");
+                    $location.path(landingPagePath);
                 } else {
                     $scope.errorMessage = "Authentication failed. Please try again."
                     $scope.resetForm();
@@ -19,7 +34,7 @@ angular.module('registration.session', [])
 
         $scope.logout = function () {
             $rootScope.errorMessage = null;
-            $http.delete('/openmrs/ws/rest/v1/session');
+            $http.delete(sessionResourcePath);
             $location.path("/login");
         }
 
