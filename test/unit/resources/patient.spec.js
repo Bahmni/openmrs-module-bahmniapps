@@ -13,14 +13,15 @@ describe('Patient resource', function () {
         $provide.value('$rootScope', rootScope);
     }));
 
-    it('Should call url for get', inject(['patient', function (patient) {
+    it('Should call url for search', inject(['patient', function (patient) {
         var baseUrl = 'http://blah.com';
         rootScope.BaseUrl = baseUrl;
         var query = 'john';
         var results = patient.search(query);
 
         expect(mockHttp.get).toHaveBeenCalled();
-        expect(mockHttp.get.mostRecentCall.args[0]).toBe(baseUrl + '/ws/rest/v1/patient?q=' + query + '&v=full');
+        expect(mockHttp.get.mostRecentCall.args[0]).toBe(baseUrl + '/ws/rest/v1/patient');
+        expect(mockHttp.get.mostRecentCall.args[1].params.q).toBe(query);
         expect(results.name).toBe('john');
     }]));
 
@@ -35,10 +36,10 @@ describe('Patient resource', function () {
         var results = patient.create(patientJson);
 
         expect(mockHttp.post).toHaveBeenCalled();
-        expect(mockHttp.post.mostRecentCall.args[0]).toBe(baseUrl + '/ws/rest/v1/patient');
+        expect(mockHttp.post.mostRecentCall.args[0]).toBe(baseUrl + '/ws/rest/v1/raxacore/patient');
         expect(mockHttp.post.mostRecentCall.args[1]).toBe(patientJson);
-        expect(mockHttp.post.mostRecentCall.args[2].headers['content-type']).toBe('application/json');
-        expect(mockHttp.post.mostRecentCall.args[2].headers['accept']).toBe('application/json');
+        expect(mockHttp.post.mostRecentCall.args[2].headers['Content-Type']).toBe('application/json');
+        expect(mockHttp.post.mostRecentCall.args[2].headers['Accept']).toBe('application/json');
         expect(results).toBe('success');
     }]));
 

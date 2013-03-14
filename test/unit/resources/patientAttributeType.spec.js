@@ -18,7 +18,7 @@ describe('Patient attributes', function () {
         var results = patientAttribute.getAll();
 
         expect(mockHttpGet.get).toHaveBeenCalled();
-        expect(mockHttpGet.get.mostRecentCall.args[0]).toBe(baseUrl + '/openmrs/ws/rest/v1/personattributetype?v=full');
+        expect(mockHttpGet.get.mostRecentCall.args[0]).toBe(baseUrl + '/ws/rest/v1/personattributetype?v=full');
         expect(results.objectReturned).toBe(true);
     }]));
 });
