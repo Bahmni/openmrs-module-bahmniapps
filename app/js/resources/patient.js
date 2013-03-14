@@ -6,7 +6,7 @@ angular.module('resources.patient', [])
         var search = function (query) {
             return $http.get($rootScope.BaseUrl + "/ws/rest/v1/patient", {
                 method: "GET",
-                params: {q: query, v: "custom:(uuid,person)"},
+                params: {q: query, v: "custom:(uuid,identifiers:(uuid,identifier),person:(addresses,gender,age,names:(givenName,familyName)))"},
                 withCredentials: true
             });
         }
