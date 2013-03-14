@@ -1,10 +1,11 @@
 'use strict';
 
-angular.module('registration.createVisit', [])
-    .controller('CreateVisitController', ['$scope', function ($scope) {
-        $scope.visit = {};
-        $scope.patient = {"id":"gan1234567", "names":[{"givenname":"aaa", "familyname":"bbb"}]};
-        $scope.patient.fullname=$scope.patient.names[0].givenname+" "+$scope.patient.names[0].familyname;
+angular.module('registration.createVisit', ['resources.patientData'])
+    .controller('CreateVisitController', ['$scope','$location', 'patientData', function ($scope ,$location, patientData) {
+        (function(){
+            $scope.visit = {};
+            $scope.patient = patientData.response();
+        })();
 
 
         $scope.calculatePatientAge = function(){
@@ -16,4 +17,8 @@ angular.module('registration.createVisit', [])
             var heightMtrs = height/100;
             $scope.visit.bmi = weight/(heightMtrs*heightMtrs);
         };
+
+        $scope.back = function(){
+            $location.path("/create");
+        }
     }]);

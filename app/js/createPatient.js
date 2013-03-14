@@ -1,34 +1,32 @@
 'use strict';
 
-angular.module('registration.createPatient', ['resources.patient', 'resources.patientAttributeType'])
-    .controller('CreateNewPatientController', ['$scope', 'patient', 'patientAttributeType', function ($scope, patientService, patientAttributeType) {
+angular.module('registration.createPatient', ['resources.patient', 'resources.patientAttributeType', 'resources.patientData'])
+    .controller('CreateNewPatientController', ['$scope', 'patient', 'patientAttributeType', 'patientData', '$location',
+        function ($scope, patientService, patientAttributeType, patientData, $location) {
         var attributes;
 
         (function(){
-            var patient = {
-                names: [{}],
-                addresses: [{}],
-                attributes: []
-            };
-            $scope.patient = patient;
-
+            $scope.patient = patientData.patientObject();
             $scope.centers = [
                 {name: 'GAN'},
                 {name: 'SEM'},
                 {name: 'SHI'},
                 {name: 'BHA'}
             ];
-
-            patient.centerID = $scope.centers[0];
-
+            $scope.patient.centerID = $scope.centers[0];
             patientAttributeType.getAll().success(function(data){
                 attributes = data.results;
             });
         })();
 
         $scope.create = function () {
+            $scope.name="";
             $scope.patient.attributes = attributes.map(function(result) {return {"attributeType": result.uuid, "name": result.name, "value" : $scope[result.name]}}).filter(function(result){return result.value && result.value !== ''});
-            patientService.create($scope.patient);
+            patientService.create($scope.patient).success(function (data) {
+                patientData.rememberResponse(data);
+                patientData.rememberPatient($scope.patient);
+                $location.path("/visitinformation");
+            });
         };
 
         $scope.calculatePatientAge = function(){

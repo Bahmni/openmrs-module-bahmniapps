@@ -4,10 +4,10 @@
     <form name="myForm" class="form-horizontal well">
         <legend class="mylegend">Summary</legend>
         <div class="control-group">
-            <label class="control-label" for="asd">Patient Identifier</label>
+            <label class="control-label" for="patientId">Patient Identifier</label>
 
             <div class="controls">
-                <input ng-model="patient.id" readonly>
+                <input id="patientId" ng-model="patient.identifier" readonly>
             </div>
         </div>
 
@@ -15,7 +15,7 @@
             <label class="control-label" for="patientName">Patient Name</label>
 
             <div class="controls">
-                <input ng-model="patient.fullname" readonly>
+                <input id="patientName" ng-model="patient.name" readonly>
             </div>
         </div>
 
@@ -64,7 +64,7 @@
 
         <div class="control-group">
             <div class="controls">
-                <button class="btn btn-primary">Back</button>
+                <button class="btn btn-primary" ng-click="back()">Back</button>
                 <button type="submit" class="btn btn-primary">Print Patient Card</button>
             </div>
         </div>
