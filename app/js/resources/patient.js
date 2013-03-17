@@ -17,6 +17,7 @@ angular.module('resources.patient', [])
                     headers: {"Accept": "application/json", "Content-Type": "application/json"}
                 });
         }
+
         return {
             search: search,
             create: create
