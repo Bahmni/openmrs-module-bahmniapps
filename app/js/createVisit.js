@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('registration.createVisit', ['resources.patientData', 'resources.visit', 'resources.concept'])
-    .controller('CreateVisitController', ['$scope', '$location', 'patientData', 'visit', 'concept', function ($scope, $location, patientData, visitService, conceptService) {
+angular.module('registration.createVisit', ['resources.patientData', 'resources.visit', 'resources.concept', 'resources.bmi'])
+    .controller('CreateVisitController', ['$scope', '$location', 'patientData', 'visit', 'concept', 'bmi', function ($scope, $location, patientData, visitService, conceptService, bmiService) {
     var registrationConcepts = [];
 
     (function () {
@@ -20,13 +20,8 @@ angular.module('registration.createVisit', ['resources.patientData', 'resources.
 
 
     $scope.calculateBMI = function () {
-        var weight = $scope.obs.weight;
-        var height = $scope.obs.height;
-        if (weight === null || height === null) {
-            return;
-        }
-        var heightMtrs = height / 100;
-        $scope.obs.bmi = weight / (heightMtrs * heightMtrs);
+        $scope.obs.bmi = bmiService.calculateBmi($scope.obs.height, $scope.obs.weight);
+        $scope.obs.bmi_status = bmiService.calculateBMIStatus();
     };
 
     $scope.back = function () {
