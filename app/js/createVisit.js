@@ -20,7 +20,6 @@ angular.module('registration.createVisit', ['resources.patientData', 'resources.
 
 
     $scope.calculateBMI = function () {
-        console.log($scope.obs);
         var weight = $scope.obs.weight;
         var height = $scope.obs.height;
         if (weight === null || height === null) {
@@ -46,7 +45,8 @@ angular.module('registration.createVisit', ['resources.patientData', 'resources.
 
         $scope.encounter.obs = [];
         registrationConcepts.forEach(function (concept) {
-            var value = "70";
+            var conceptName = concept.name.replace(" ","_").toLowerCase();
+            var value = $scope.obs[conceptName];
             $scope.encounter.obs.push({concept:concept.uuid,value:value});
         });
         $scope.visit.encounters = [$scope.encounter];
