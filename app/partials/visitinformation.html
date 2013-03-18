@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" xmlns="http://www.w3.org/1999/html">
     <h4>Visit Information</h4>
 <div>
     <form name="myForm" class="form-horizontal well">
@@ -24,7 +24,7 @@
             <label class="control-label" for="chiefComplaint">Complaint</label>
 
             <div class="controls">
-                <input type="text" id="chiefComplaint" ng-model="obs.chief_complaint">
+                <input type="text" id="chiefComplaint" ng-model="obs.chief_complaint" placeholder="Complaint">
             </div>
         </div>
 
@@ -33,7 +33,8 @@
             <label class="control-label" for="registrationFee">Registration Fee</label>
 
             <div class="controls">
-                <input type="text" id="registrationFee" ng-model="obs.registration_fees">
+                <input type="text" id="registrationFee" ng-model="obs.registration_fees" value="10">
+
             </div>
         </div>
 
@@ -42,23 +43,23 @@
             <label class="control-label" for="bmiComponents">Height (cm)</label>
 
             <div class="controls">
-                <input id="height" type="number" ng-model="obs.height" min="0" ng-change="calculateBMI()">
+                <input id="height" type="number" ng-model="obs.height" min="0" max="300" ng-change="calculateBMI()" placeholder="Height">
                 Weight (kg)
-                <input id="weight" type="text" ng-model="obs.weight" min="0" ng-change="calculateBMI()">
+                <input id="weight" type="text" ng-model="obs.weight" min="0" max="200" ng-change="calculateBMI()" placeholder="Weight">
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="bmi">BMI</label>
 
             <div class="controls">
-                <input type="text" id="bmi" ng-model="obs.bmi">
+                <input type="text" id="bmi" ng-model="obs.bmi" readonly>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="visit.bmiStatus">BMI Status</label>
 
             <div class="controls">
-                <input type="text" id="bmiStatus" ng-model="obs.bmi_status">
+                <input type="text" id="bmiStatus" ng-model="obs.bmi_status" readonly>
             </div>
         </div>
 

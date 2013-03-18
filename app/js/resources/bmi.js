@@ -25,7 +25,7 @@ angular.module('resources.bmi', [])
             return;
         }
         var heightMtrs = height / 100;
-        bmi = (weight / (heightMtrs * heightMtrs));
+        bmi = (weight / (heightMtrs * heightMtrs)).toFixed(2);
         return bmi;
     }
 

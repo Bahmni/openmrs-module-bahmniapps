@@ -15,22 +15,22 @@
             <label class="control-label" for="oldPatientIdentifier">Old Patient Registration Number</label>
 
             <div class="controls">
-                <input type="text" id="oldPatientIdentifier" ng-model="oldPatientIdentifier">
+                <input type="text" id="oldPatientIdentifier" ng-model="oldPatientIdentifier" placeholder="Old Registration Number">
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="patientName">Patient Name *</label>
 
             <div class="controls" id="patientName">
-                <input type="text" id="givenName" ng-model="patient.names[0].givenName" autofocus required>
-                <input type="text" id="familyName" ng-model="patient.names[0].familyName">
+                <input type="text" id="givenName" ng-model="patient.names[0].givenName" autofocus required placeholder="First Name">
+                <input type="text" id="familyName" ng-model="patient.names[0].familyName" required placeholder="Last Name">
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="primaryRelative">Father's/Husband's Name</label>
 
             <div class="controls">
-                <input type="text" id="primaryRelative" ng-model="primaryRelative">
+                <input type="text" id="primaryRelative" ng-model="primaryRelative" placeholder="Father's/Husband's Name">
             </div>
         </div>
         <div class="control-group">
@@ -39,7 +39,7 @@
             <div class="controls">
                 <input id="birthdate" type="text" ng-model="patient.birthdate" datepicker ng-change="calculatePatientAge()" placeholder="yyyy-mm-dd">
                 Age
-                <input type="number" id="ageYear" name="ageYear" max="120" ng-model="patient.age" min="0" >
+                <input type="number" id="ageYear" name="ageYear" max="120" ng-model="patient.age" min="0" placeholder="Age" >
             </div>
         </div>
         <div class="control-group">
@@ -59,7 +59,7 @@
             <label class="control-label" for="address1">House No. Street</label>
 
             <div class="controls">
-                <input type="text" id="address1" ng-model="patient.addresses[0].address1">
+                <input type="text" id="address1" ng-model="patient.addresses[0].address1" placeholder="House No. Street">
             </div>
         </div>
 
@@ -67,7 +67,7 @@
             <label class="control-label" for="address2">Village</label>
 
             <div class="controls">
-                <input type="text" id="address2" ng-model="patient.addresses[0].city_village">
+                <input type="text" id="address2" ng-model="patient.addresses[0].cityVillage" placeholder="Village">
             </div>
         </div>
 
@@ -75,21 +75,21 @@
             <label class="control-label" for="address3">Tehsil</label>
 
             <div class="controls">
-                <input type="text" id="address3" ng-model="patient.addresses[0].address3">
+                <input type="text" id="address3" ng-model="patient.addresses[0].address3" placeholder="Tehsil">
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="countyDistrict">District</label>
 
             <div class="controls">
-                <input type="text" id="countyDistrict" ng-model="patient.addresses[0].countyDistrict">
+                <input type="text" id="countyDistrict" ng-model="patient.addresses[0].countyDistrict" placeholder="District">
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="stateProvince">State</label>
 
             <div class="controls">
-                <input type="text" id="stateProvince" ng-model="patient.addresses[0].stateProvince">
+                <input type="text" id="stateProvince" ng-model="patient.addresses[0].stateProvince" placeholder="State">
             </div>
         </div>
 
@@ -97,8 +97,8 @@
             <label class="control-label" for="contactNumber">Contact Number</label>
 
             <div class="controls" id="contactNumber">
-                <input type="text" id="primaryContact" ng-model="primaryContact">
-                <input type="text" id="secondaryContact" ng-model="secondaryContact">
+                <input type="text" id="primaryContact" ng-model="primaryContact" placeholder="Primary Number">
+                <input type="text" id="secondaryContact" ng-model="secondaryContact" placeholder="Secondary Number">
             </div>
         </div>
 
