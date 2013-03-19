@@ -11,9 +11,11 @@ files = [
 ];
 
 autoWatch = true;
+singleRun = true;
 
-browsers = ['Chrome'];
+browsers = ['PhantomJS'];
 
+reporters = ['dots', 'junit'];
 junitReporter = {
   outputFile: 'test_out/unit.xml',
   suite: 'unit'

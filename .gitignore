@@ -7,7 +7,6 @@ build.xml
 .project
 .settings
 .idea/*
-test_out
 test/output
 target
 output
@@ -21,4 +20,5 @@ clinical-ui/app/**/*.css
 **/.DS_Store
 nbproject
 manifest.mf
-build.xml
+node_modules/*
+test_out
