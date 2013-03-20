@@ -8,6 +8,7 @@ describe('CreateNewPatientController', function () {
                 {
                     "uuid": "be4f3f8a-862c-11e2-a490-afe87ebb32c9",
                     "display": "oldPatientIdentifier - Old Patient Identifier",
+
                     "name": "oldPatientIdentifier",
                     "links": [
                         {
@@ -75,8 +76,8 @@ describe('CreateNewPatientController', function () {
             });
 
             expect(scope.patient.attributes.length).toBe(2);
-            expect(scope.patient.attributes.map(function(obj){return obj.attributeType;})).toContain('be4f3f8a-862c-11e2-a490-afe87ebb32c9');
-            expect(scope.patient.attributes.map(function(obj){return obj.name;})).toContain('caste');
+
+
         });
     });
 
@@ -89,7 +90,14 @@ describe('CreateNewPatientController', function () {
                 patientAttributeType: patientAttributeTypeService
             });
 
+            patientService.create.andReturn({success: jasmine.createSpy() });
+            scope['oldPatientIdentifier'] = '56565'
+            scope['caste'] = 'foobar'
+
             scope.create();
+
+            expect(scope.patient.attributes.map(function(obj){return obj.attributeType;})).toContain('be4f3f8a-862c-11e2-a490-afe87ebb32c9');
+            expect(scope.patient.attributes.map(function(obj){return obj.name;})).toContain('caste');
 
             expect(patientService.create).toHaveBeenCalled();
             expect(patientService.create.mostRecentCall.args[0]).toBe(scope.patient);

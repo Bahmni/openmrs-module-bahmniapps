@@ -35,7 +35,7 @@
             <tr ng-repeat="result in results">
                 <td>{{$index + 1}}</td>
                 <td>{{result.identifiers[0].identifier}}</td>
-                <td>{{result.person.display}}</td>
+                <td>{{result.person.names[0].givenName}}{{result.person.names[0].lastName}}</td>
                 <td>{{result.person.gender}}</td>
                 <td>{{result.person.age}}</td>
                 <td>{{result.person.preferredAddress.cityVillage}}</td>

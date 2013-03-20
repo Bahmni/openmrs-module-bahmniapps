@@ -37,16 +37,17 @@
             <label class="control-label" for="birthdate">DOB (optional)</label>
 
             <div class="controls">
-                <input id="birthdate" type="text" ng-model="patient.birthdate" datepicker ng-change="calculatePatientAge()" placeholder="yyyy-mm-dd">
+                <input id="birthdate" type="text" pattern="\d{2}-\d{2}-\d{4}" ng-model="patient.birthdate" datepicker ng-change="calculatePatientAge()" placeholder="dd-mm-yyyy">
                 Age
-                <input type="number" id="ageYear" name="ageYear" max="120" ng-model="patient.age" min="0" placeholder="Age" >
+                <input type="number" id="ageYear" name="ageYear" max="120" ng-model="patient.age" min="0" placeholder="Age" ng-change="calculatePatientDOB()">
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="gender">Gender</label>
 
             <div class="controls">
-                <select  id="gender" ng-model="patient.gender">
+                <select  id="gender" ng-model="patient.gender" required>
+                    <option value=""></option>
                     <option value="M">Male</option>
                     <option value="F">Female</option>
                     <option value="O">Other</option>

@@ -3,10 +3,12 @@
 angular.module('registration.createVisit', ['resources.patientData', 'resources.visit', 'resources.concept', 'resources.bmi'])
     .controller('CreateVisitController', ['$scope', '$location', 'patientData', 'visit', 'concept', 'bmi', function ($scope, $location, patientData, visitService, conceptService, bmiService) {
     var registrationConcepts = [];
+      $scope.registrationFee="10";
 
     (function () {
         $scope.encounter = {};
         $scope.obs = {};
+        $scope.obs.registration_fees=10;
         $scope.visit = {};
         $scope.patient = patientData.response();
 
@@ -20,8 +22,11 @@ angular.module('registration.createVisit', ['resources.patientData', 'resources.
 
 
     $scope.calculateBMI = function () {
-        $scope.obs.bmi = bmiService.calculateBmi($scope.obs.height, $scope.obs.weight);
-        $scope.obs.bmi_status = bmiService.calculateBMIStatus();
+        var bmiResponse = bmiService.calculateBmi($scope.obs.height, $scope.obs.weight);
+        console.log(bmiResponse);
+        $scope.obs.error = bmiResponse.error;
+        $scope.obs.bmi = bmiResponse.bmi;
+        $scope.obs.bmi_status = bmiResponse.bmiStatus;
     };
 
     $scope.back = function () {
@@ -42,7 +47,9 @@ angular.module('registration.createVisit', ['resources.patientData', 'resources.
         registrationConcepts.forEach(function (concept) {
             var conceptName = concept.name.replace(" ","_").toLowerCase();
             var value = $scope.obs[conceptName];
-            $scope.encounter.obs.push({concept:concept.uuid,value:value});
+            if(value != null && value!=""){
+                $scope.encounter.obs.push({concept:concept.uuid,value:value});
+            }
         });
         $scope.visit.encounters = [$scope.encounter];
 

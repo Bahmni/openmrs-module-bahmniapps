@@ -5,8 +5,8 @@ angular.module('resources.bmi', [])
     var bmi;
 
     //BMI WHO Constants
-    var BMI_VERY_SEVERELY_UNDERWEIGHT = 15;
-    var BMI_SEVERELY_UNDERWEIGHT = 16;
+    var BMI_VERY_SEVERELY_UNDERWEIGHT = 16;
+    var BMI_SEVERELY_UNDERWEIGHT = 17;
     var BMI_UNDERWEIGHT = 18.5;
     var BMI_NORMAL = 25;
     var BMI_OVERWEIGHT = 30;
@@ -26,10 +26,15 @@ angular.module('resources.bmi', [])
         }
         var heightMtrs = height / 100;
         bmi = (weight / (heightMtrs * heightMtrs)).toFixed(2);
-        return bmi;
+
+        var status = calculateBMIStatus();
+        if (bmi >= 0 && bmi <= 100)
+            return {error:false,bmi:bmi,bmiStatus:status};
+        else
+            return {error:true,bmi:"", bmiStatus:""};
     }
 
-    var calculateBMIStatus= function(){
+     var calculateBMIStatus= function(){
         var status;
         if (bmi < BMI_VERY_SEVERELY_UNDERWEIGHT) {
             status = 'Very Severely Underweight';
@@ -55,12 +60,10 @@ angular.module('resources.bmi', [])
         if (bmi >= BMI_SEVERELY_OBESE) {
             status = 'Very Severely Obese';
         }
-        console.log(status);
         return status;
     }
 
     return {
-        calculateBmi : calculateBmi,
-        calculateBMIStatus : calculateBMIStatus
+        calculateBmi : calculateBmi
     };
 }]);
