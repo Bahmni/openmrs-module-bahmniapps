@@ -2,7 +2,6 @@
 
 angular.module('resources.bmi', [])
     .factory('bmi', [function () {
-    var bmi;
 
     //BMI WHO Constants
     var BMI_VERY_SEVERELY_UNDERWEIGHT = 16;
@@ -13,57 +12,57 @@ angular.module('resources.bmi', [])
     var BMI_OBESE = 35;
     var BMI_SEVERELY_OBESE = 40;
 
-    // BMI Custom Constants
-    var BMI_MAX = 60;
-    var BMI_HEIGHT_MAX = 300;
-    var BMI_HEIGHT_MIN = 0;
-    var BMI_WEIGHT_MAX = 800;
-    var BMI_WEIGHT_MIN = 0;
+   var calculateBmi = function(height, weight){
+       if (weight === null || height === null) {
+           return;
+       }
+       var heightMtrs = height / 100;
+       var value = weight / (heightMtrs * heightMtrs);
+       return createBmi(parseFloat(value.toFixed(2)));
+   }
 
-    var calculateBmi = function (height, weight) {
-        if (weight === null || height === null) {
-            return;
-        }
-        var heightMtrs = height / 100;
-        bmi = (weight / (heightMtrs * heightMtrs)).toFixed(2);
+   var createBmi = function(value){
+       var valid = function(){
+           return value >= 0 && value <= 100;
+       }
 
-        var status = calculateBMIStatus();
-        if (bmi >= 0 && bmi <= 100)
-            return {error:false,bmi:bmi,bmiStatus:status};
-        else
-            return {error:true,bmi:"", bmiStatus:""};
-    }
+       var status= function(){
+           if (value  < BMI_VERY_SEVERELY_UNDERWEIGHT) {
+               return 'Very Severely Underweight';
+           }
+           if (value  < BMI_SEVERELY_UNDERWEIGHT) {
+               return 'Severely Underweight';
+           }
+           if (value  < BMI_UNDERWEIGHT) {
+               return 'Underweight';
+           }
+           if (value  < BMI_NORMAL) {
+               return 'Normal';
+           }
+           if (value  < BMI_OVERWEIGHT) {
+               return 'Overweight';
+           }
+           if (value  < BMI_OBESE) {
+               return 'Obese';
+           }
+           if (value  < BMI_SEVERELY_OBESE) {
+               return 'Severely Obese';
+           }
+           if (value  >= BMI_SEVERELY_OBESE) {
+               return 'Very Severely Obese';
+           }
+       }
 
-     var calculateBMIStatus= function(){
-        var status;
-        if (bmi < BMI_VERY_SEVERELY_UNDERWEIGHT) {
-            status = 'Very Severely Underweight';
-        }
-        if (bmi >= BMI_VERY_SEVERELY_UNDERWEIGHT && bmi < BMI_SEVERELY_UNDERWEIGHT) {
-            status = 'Severely Underweight';
-        }
-        if (bmi >= BMI_SEVERELY_UNDERWEIGHT && bmi < BMI_UNDERWEIGHT) {
-            status = 'Underweight';
-        }
-        if (bmi >= BMI_UNDERWEIGHT && bmi < BMI_NORMAL) {
-            status = 'Normal';
-        }
-        if (bmi >= BMI_NORMAL && bmi < BMI_OVERWEIGHT) {
-            status = 'Overweight';
-        }
-        if (bmi >= BMI_OVERWEIGHT && bmi < BMI_OBESE) {
-            status = 'Obese';
-        }
-        if (bmi >= BMI_OBESE && bmi < BMI_SEVERELY_OBESE) {
-            status = 'Severely Obese';
-        }
-        if (bmi >= BMI_SEVERELY_OBESE) {
-            status = 'Very Severely Obese';
-        }
-        return status;
-    }
+       return {
+         value: value,
+         valid: valid,
+         status: status
+     }
+   }
+
 
     return {
-        calculateBmi : calculateBmi
+        calculateBmi : calculateBmi,
+        createBmi: createBmi
     };
 }]);

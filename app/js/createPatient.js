@@ -20,7 +20,6 @@ angular.module('registration.createPatient', ['resources.patient', 'resources.pa
         })();
 
         $scope.create = function () {
-            $scope.name="";
             var patient = $scope.patient;
             if(patient.birthdate == ""){
                 delete patient["birthdate"];
