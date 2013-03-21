@@ -3,7 +3,6 @@
 angular.module('registration.createPatient', ['resources.patient', 'resources.patientAttributeType', 'resources.patientData'])
     .controller('CreateNewPatientController', ['$scope', 'patient', 'patientAttributeType', 'patientData', '$location',
         function ($scope, patientService, patientAttributeType, patientData, $location) {
-        var attributes;
 
         (function(){
             $scope.patient = patientData.patientObject();
@@ -21,7 +20,7 @@ angular.module('registration.createPatient', ['resources.patient', 'resources.pa
 
         $scope.create = function () {
             var patient = $scope.patient;
-            if(patient.birthdate == ""){
+            if(patient.birthdate === ""){
                 delete patient["birthdate"];
             }
             patient.attributes = patient.attributes.map(function(result) {return {"attributeType": result.uuid, "name": result.name, "value" : $scope[result.name]}}).filter(function(result){return result.value && result.value !== ''});
