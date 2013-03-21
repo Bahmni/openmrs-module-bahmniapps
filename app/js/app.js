@@ -5,7 +5,7 @@ angular.module('registration').config(['$routeProvider', function ($routeProvide
         $routeProvider.when('/search', {templateUrl: 'partials/search.html', controller: 'SearchPatientController'});
         $routeProvider.when('/create', {templateUrl: 'partials/create.html', controller: 'CreateNewPatientController'});
         $routeProvider.when('/visitinformation', {templateUrl: 'partials/visitinformation.html', controller: 'CreateVisitController'});
-        $routeProvider.when('/login', {templateUrl: 'partials/login.html', controller: 'SessionController'});
+        $routeProvider.when('/login', {templateUrl: 'modules/auth/views/login.html', controller: 'SessionController'});
         $routeProvider.otherwise({redirectTo: '/login'});
     }]).run(function($rootScope, $http){
         $rootScope.BaseUrl='/openmrs';
