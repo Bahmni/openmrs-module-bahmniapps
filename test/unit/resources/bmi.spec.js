@@ -1,3 +1,5 @@
+'use strict';
+
 describe("bmi", function(){
     beforeEach(module('resources.bmi'));
 

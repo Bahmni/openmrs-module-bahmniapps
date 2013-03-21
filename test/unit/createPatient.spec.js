@@ -47,11 +47,10 @@ describe('CreateNewPatientController', function () {
     }));
 
     describe('initialization', function () {
-
         it('should set up centers for Center ID dropdown', function () {
             $controller('CreateNewPatientController', {
                 $scope: scope,
-                patient: patientService,
+                patientService: patientService,
                 patientAttributeType: patientAttributeTypeService
             });
             expect(Array.isArray(scope.centers)).toBeTruthy();
@@ -71,25 +70,21 @@ describe('CreateNewPatientController', function () {
 
             $controller('CreateNewPatientController', {
                 $scope: scope,
-                patient: patientService,
+                patientService: patientService,
                 patientAttributeType: patientAttributeTypeService
             });
 
             expect(scope.patient.attributes.length).toBe(2);
-
-
         });
     });
 
-    describe('at run time', function () {
-
+    describe('create', function () {
         it('should call patient service to create a new patient', function () {
             $controller('CreateNewPatientController', {
                 $scope: scope,
-                patient: patientService,
+                patientService: patientService,
                 patientAttributeType: patientAttributeTypeService
             });
-
             patientService.create.andReturn({success: jasmine.createSpy() });
             scope['oldPatientIdentifier'] = '56565'
             scope['caste'] = 'foobar'
@@ -103,17 +98,23 @@ describe('CreateNewPatientController', function () {
             expect(patientService.create.mostRecentCall.args[0]).toBe(scope.patient);
         });
 
-        xit('should move to the ', function () {
+        it('should remember the patient and server response on success', function () {
+            var response = {"uuid":"1a04eae7-f326-49e8-8e90-eebb9c59f1a4","name":"dsds dss","identifier":"NEW63513"};
+            var patientData = jasmine.createSpyObj('PatientData', ['patientObject', 'rememberResponse', 'rememberPatient']);
+            var patient = {};
+            patientData.patientObject.andReturn(patient);
             $controller('CreateNewPatientController', {
                 $scope: scope,
-                patient: patientService,
-                patientAttributeType: patientAttributeTypeService
+                patientService: patientService,
+                patientAttributeType: patientAttributeTypeService,
+                patientData: patientData
             });
+            patientService.create.andReturn({success: function(callback){ callback(response)} });
 
             scope.create();
 
-            expect(patientService.create).toHaveBeenCalled();
-            expect(patientService.create.mostRecentCall.args[0]).toBe(scope.patient);
+            expect(patientData.rememberPatient).toHaveBeenCalledWith(patient);
+            expect(patientData.rememberResponse).toHaveBeenCalledWith(response);
         });
     });
 });

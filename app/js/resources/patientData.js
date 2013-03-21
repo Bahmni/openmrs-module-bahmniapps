@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('resources.patientData', [])
-	.factory('patientData', function () {
+angular.module('resources.patientData', ['resources.patient'])
+	.factory('patientData',['patient', function (patientModule) {
 		
         var patientObj, patientResponse;
     
@@ -15,11 +15,7 @@ angular.module('resources.patientData', [])
 
         var patientObject = function () {
             if(patientObj == null){
-                return {
-                        names: [{}],
-                        addresses: [{}],
-                        attributes: []
-                    };
+                return patientModule.create();
             }
             return patientObj;
         }
@@ -28,10 +24,12 @@ angular.module('resources.patientData', [])
             patientObj = patient;
         }
 
+
+
         return {
             rememberResponse: rememberResponse,
             response: response,
             patientObject: patientObject,
             rememberPatient: rememberPatient
         };
-    });
+    }]);

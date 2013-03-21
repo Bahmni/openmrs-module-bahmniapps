@@ -19,7 +19,7 @@ describe('SearchPatientController', function () {
 
             $controller('SearchPatientController', {
                 $scope: scope,
-                patient: patientResource
+                patientService: patientResource
             });
 
             scope.search();

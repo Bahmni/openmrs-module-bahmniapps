@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('registration.createPatient', ['resources.patient', 'resources.patientAttributeType', 'resources.patientData'])
-    .controller('CreateNewPatientController', ['$scope', 'patient', 'patientAttributeType', 'patientData', '$location',
+angular.module('registration.createPatient', ['resources.patientService', 'resources.patientAttributeType', 'resources.patientData'])
+    .controller('CreateNewPatientController', ['$scope', 'patientService', 'patientAttributeType', 'patientData', '$location',
         function ($scope, patientService, patientAttributeType, patientData, $location) {
 
         (function(){
@@ -30,15 +30,6 @@ angular.module('registration.createPatient', ['resources.patient', 'resources.pa
                 $location.path("/visitinformation");
             });
         };
-
-        $scope.calculatePatientAge = function(){
-            var curDate = new Date();
-            var birthDate = new Date($scope.patient.birthdate);
-            if(birthDate < curDate.setFullYear(curDate.getFullYear()-120)){
-                $scope.patient.birthdate.$error = true;
-            }
-            $scope.patient.age = curDate.getFullYear() - birthDate.getFullYear() - ((curDate.getMonth() < birthDate.getMonth())? 1: 0);
-        };
     }])
 
     .directive('datepicker', function ($parse) {
@@ -56,7 +47,7 @@ angular.module('registration.createPatient', ['resources.patient', 'resources.pa
                     onSelect: function (dateText) {
                         $scope.$apply(function (scope) {
                             ngModel.assign(scope, dateText);
-                            $scope.calculatePatientAge();
+                            $scope.patient.calculateAge();
                         });
                     }
                 });
