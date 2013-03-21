@@ -16,6 +16,10 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
             patientAttributeType.getAll().success(function(data){
                 $scope.patient.attributes = data.results;
             });
+
+            $scope.$watch('patient.birthdate', function() {
+                $scope.patient.calculateAge();
+            });
         })();
 
         $scope.clearPatientIdentifier = function() {
@@ -35,6 +39,7 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
             patient.attributes = patient.attributes.map(function(result) {return {"attributeType": result.uuid, "name": result.name, "value" : $scope[result.name]}}).filter(function(result){return result.value && result.value !== ''});
             patientService.create(patient).success(function (data) {
                 patientData.rememberResponse(data);
+
                 patientData.rememberPatient($scope.patient);
                 $location.path("/visitinformation");
             });
@@ -56,7 +61,6 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
                     onSelect: function (dateText) {
                         $scope.$apply(function (scope) {
                             ngModel.assign(scope, dateText);
-                            $scope.patient.calculateAge();
                         });
                     }
                 });

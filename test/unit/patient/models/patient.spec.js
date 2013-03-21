@@ -1,21 +1,39 @@
 'use strict';
 
 describe("Patient", function(){
-    var patientModule;
+    var patientModule, dateModule, patient;
     beforeEach(module('resources.patient'));
-    beforeEach(inject(['patient', function(patient){
+    beforeEach(inject(['patient', 'date',function(patient, date){
         patientModule = patient;
+        dateModule = date;
     }]));
 
     describe("calculateAge", function(){
-        it("should update age based on birthdate", function(){
-            //TODO: inject date as module. Will be done in next commit
-            var patient = patientModule.create();
-            patient.birthdate = "25-06-1980";
+        beforeEach(function(){
+            patient = patientModule.create();
+            spyOn(dateModule, 'now').andReturn(new Date(2013, 2, 21)); // 21st March 2013
+        });
 
+        it("should update age when birth month is after current month", function(){
+            patient.birthdate = "25-06-1980";
             patient.calculateAge();
 
             expect(patient.age).toBe(32);
+        });
+
+        it("should update age when birth month is before current month", function(){
+            patient.birthdate = "25-02-1980";
+            patient.calculateAge();
+
+            expect(patient.age).toBe(33);
+        });
+
+        it("should reset age when birthdate is not available", function(){
+            patient.birthdate = null;
+
+            patient.calculateAge();
+
+            expect(patient.age).toBe(null);
         });
     });
 });

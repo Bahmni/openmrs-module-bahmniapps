@@ -1,7 +1,7 @@
 'use strict';
 
 describe('CreateNewPatientController', function () {
-    var scope = {}, patientService, patientAttributeTypeService = {}, success,
+    var scope = { "$watch": jasmine.createSpy() }, patientService, patientAttributeTypeService = {}, success,
         $controller,
         samplePatientAttributeTypes = {
             "results": [
