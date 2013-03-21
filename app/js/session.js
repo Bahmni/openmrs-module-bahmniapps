@@ -4,18 +4,23 @@ angular.module('registration.session', [])
     .controller('SessionController', ['$rootScope', '$scope', '$http', '$location', function ($rootScope, $scope, $http, $location) {
         var sessionResourcePath = $rootScope.BaseUrl + '/ws/rest/v1/session';
         var landingPagePath = "/search";
+        $scope.isAuthenticated = true;
 
         var redirectToLandingPageIfAlreadyAuthenticated = function() {
             $http.get(sessionResourcePath, {
-                headers: {'Authorization': 'Basic ' + window.btoa("invalidUsername:invalidPassword")},
                 cache: false,
             }).success(function (data) {
-                if (data.authenticated)
+                if (data.authenticated) {
                     $location.path(landingPagePath);
+                } else {
+                    $scope.isAuthenticated = false;
+                }
             });
         }
 
-        redirectToLandingPageIfAlreadyAuthenticated();
+        if($location.path() == "/login") {
+            redirectToLandingPageIfAlreadyAuthenticated();
+        }
 
         $scope.login = function () {
             $scope.errorMessage = null

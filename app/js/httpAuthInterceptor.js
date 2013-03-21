@@ -15,7 +15,6 @@ angular.module('http-auth-interceptor', [])
                     $rootScope.$broadcast('event:auth-loginRequired');
                     return deferred.promise;
                 }
-                // otherwise
                 return $q.reject(response);
             }
 
@@ -27,7 +26,6 @@ angular.module('http-auth-interceptor', [])
         $httpProvider.responseInterceptors.push(interceptor);
     }).run(['$rootScope', '$location', function ($rootScope, $location) {
         $rootScope.$on('event:auth-loginRequired', function () {
-            console.log("in run");
             $rootScope.errorMessage = "You are not authenticated right now. Please login."
             $location.path("/login");
         })
