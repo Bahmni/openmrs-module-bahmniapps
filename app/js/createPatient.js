@@ -10,7 +10,7 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
                 {name: 'GAN'},
                 {name: 'SEM'},
                 {name: 'SHI'},
-                {name: 'BHA'}
+                {name: 'BAH'}
             ];
             $scope.patient.centerID = $scope.centers[0];
             patientAttributeType.getAll().success(function(data){
@@ -18,10 +18,19 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
             });
         })();
 
+        $scope.clearPatientIdentifier = function() {
+            $scope.patientIdentifier = "";
+        }
+
         $scope.create = function () {
             var patient = $scope.patient;
             if(patient.birthdate === ""){
                 delete patient["birthdate"];
+            }
+            var patientIdentifier = $scope.patientIdentifier;
+            if (patientIdentifier && patientIdentifier.length > 0) {
+                window.alert('there is stuff present' + patient.centerID.name);
+                patient.patientIdentifier = patient.centerID.name + patientIdentifier;
             }
             patient.attributes = patient.attributes.map(function(result) {return {"attributeType": result.uuid, "name": result.name, "value" : $scope[result.name]}}).filter(function(result){return result.value && result.value !== ''});
             patientService.create(patient).success(function (data) {

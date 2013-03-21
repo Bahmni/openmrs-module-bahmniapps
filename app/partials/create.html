@@ -12,10 +12,20 @@
         </div>
 
         <div class="control-group">
+            <label class="control-label" for="asd">Enter ID</label>
+            <div class="controls">
+                <input type="checkbox"  ng-model="manualId" ng-change="clearPatientIdentifier()">
+            </div>
+        </div>
+
+        <div class="control-group" ng-show="manualId">
             <label class="control-label" for="patientIdentifier">Patient Registration Number</label>
 
             <div class="controls">
-                <input type="text" id="patientIdentifier" ng-model="patient.patientIdentifier" placeholder="Old Registration Number">
+                <div class="input-prepend">
+                    <span class="add-on">{{patient.centerID.name}}</span>
+                    <input type="text" id="patientIdentifier" ng-model="patientIdentifier" placeholder="Old Registration Number">
+                </div>
             </div>
         </div>
         <div class="control-group">
