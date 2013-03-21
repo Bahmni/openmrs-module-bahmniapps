@@ -12,7 +12,7 @@ log_file = File.expand_path(File.dirname(__FILE__) + '/../logs/jstd.log')
 
 puts "String watchr... log file: #{log_file}"
 
-watch( '(app/js|test/unit)' )  do
+watch( '(app/modules|test/unit)' )  do
   `echo "\n\ntest run started @ \`date\`" > #{log_file}`
   `scripts/test.sh &> #{log_file}`
 end
