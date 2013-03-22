@@ -8,7 +8,7 @@ files = [
   '../app/defaults.js',
   '../app/constants.js',
   '../app/modules/**/*.js',
-  '../unit/**/*.js'
+  'unit/**/*.js'
 ];
 
 singleRun = true;
