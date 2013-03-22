@@ -4,9 +4,11 @@ angular.module('resources.concept', [])
     .factory('concept', ['$http', '$rootScope', function ($http, $rootScope) {
 
     var getRegistrationConcepts = function () {
-        return $http.get($rootScope.BaseUrl + "/ws/rest/v1/concept?q=REGISTRATION_CONCEPTS&v=full",
+        var query="REGISTRATION_CONCEPTS";
+        return $http.get($rootScope.BaseUrl + "/ws/rest/v1/concept",
             {
                 method: "GET",
+                params: {q: query, v: "custom:(setMembers:(uuid,name:(name)))"},
                 withCredentials: true
             });
     }

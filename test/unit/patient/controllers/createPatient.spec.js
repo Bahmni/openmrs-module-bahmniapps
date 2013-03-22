@@ -1,7 +1,7 @@
 'use strict';
 
 describe('CreateNewPatientController', function () {
-    var scope = { "$watch": jasmine.createSpy() }, patientService, patientAttributeTypeService = {}, success,
+    var scope = { "$watch": jasmine.createSpy() }, patientService, patientAttributeTypeService = {}, success, patient,
         $controller,
         samplePatientAttributeTypes = {
             "results": [
@@ -33,7 +33,9 @@ describe('CreateNewPatientController', function () {
     beforeEach(angular.mock.module('registration.createPatient'));
     beforeEach(angular.mock.inject(function ($injector) {
         $controller = $injector.get('$controller');
-        patientService = jasmine.createSpyObj('patientService', ['create']);
+        patientService = jasmine.createSpyObj('patientService', ['create', 'getPatient', 'rememberPatient']);
+        patient = {};
+        patientService.getPatient.andReturn(patient);
         success = jasmine.createSpy();
         patientAttributeTypeService = {
             getAll: function () {
@@ -58,15 +60,6 @@ describe('CreateNewPatientController', function () {
         });
 
         it('should set up attributes in patient', function () {
-            patientAttributeTypeService = {
-                getAll: function () {
-                    return {
-                        success: function (callBack) {
-                            callBack(samplePatientAttributeTypes);
-                        }
-                    }
-                }
-            };
 
             $controller('CreateNewPatientController', {
                 $scope: scope,
@@ -100,21 +93,16 @@ describe('CreateNewPatientController', function () {
 
         it('should remember the patient and server response on success', function () {
             var response = {"uuid":"1a04eae7-f326-49e8-8e90-eebb9c59f1a4","name":"dsds dss","identifier":"NEW63513"};
-            var patientData = jasmine.createSpyObj('PatientData', ['patientObject', 'rememberResponse', 'rememberPatient']);
-            var patient = {};
-            patientData.patientObject.andReturn(patient);
             $controller('CreateNewPatientController', {
                 $scope: scope,
                 patientService: patientService,
-                patientAttributeType: patientAttributeTypeService,
-                patientData: patientData
+                patientAttributeType: patientAttributeTypeService
             });
             patientService.create.andReturn({success: function(callback){ callback(response)} });
 
             scope.create();
 
-            expect(patientData.rememberPatient).toHaveBeenCalledWith(patient);
-            expect(patientData.rememberResponse).toHaveBeenCalledWith(response);
+            expect(patientService.rememberPatient).toHaveBeenCalledWith(patient);
         });
     });
 });

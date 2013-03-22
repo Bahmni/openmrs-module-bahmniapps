@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('resources.visit', [])
-    .factory('visit', ['$http', '$rootScope', function ($http, $rootScope) {
+angular.module('resources.visitService', [])
+    .factory('visitService', ['$http', '$rootScope', function ($http, $rootScope) {
 
     var create = function (visit) {
         return $http.post($rootScope.BaseUrl + "/ws/rest/v1/visit", visit,

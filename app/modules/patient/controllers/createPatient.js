@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('registration.createPatient', ['resources.patientService', 'resources.patientAttributeType', 'resources.patientData'])
-    .controller('CreateNewPatientController', ['$scope', 'patientService', 'patientAttributeType', 'patientData', '$location',
-        function ($scope, patientService, patientAttributeType, patientData, $location) {
+angular.module('registration.createPatient', ['resources.patientService', 'resources.patientAttributeType'])
+    .controller('CreateNewPatientController', ['$scope', 'patientService', 'patientAttributeType', '$location',
+        function ($scope, patientService, patientAttributeType, $location) {
 
         (function(){
-            $scope.patient = patientData.patientObject();
+            $scope.patient = patientService.getPatient();
             $scope.centers = [
                 {name: 'GAN'},
                 {name: 'SEM'},
@@ -38,9 +38,10 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
             }
             patient.attributes = patient.attributes.map(function(result) {return {"attributeType": result.uuid, "name": result.name, "value" : $scope[result.name]}}).filter(function(result){return result.value && result.value !== ''});
             patientService.create(patient).success(function (data) {
-                patientData.rememberResponse(data);
-
-                patientData.rememberPatient($scope.patient);
+                $scope.patient.identifier = data.identifier;
+                $scope.patient.uuid = data.uuid;
+                $scope.patient.name = data.name;
+                patientService.rememberPatient($scope.patient);
                 $location.path("/visitinformation");
             });
         };

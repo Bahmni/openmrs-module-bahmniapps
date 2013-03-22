@@ -1,7 +1,20 @@
 'use strict';
 
-angular.module('resources.patientService', [])
-    .factory('patientService', ['$http', '$rootScope', function ($http, $rootScope) {
+angular.module('resources.patientService', ['resources.patient'])
+    .factory('patientService', ['$http', '$rootScope', 'patient', function ($http, $rootScope, patientModule) {
+        var patient;
+
+        var getPatient = function () {
+            if(patient == null){
+                return patientModule.create();
+            }
+            return patient;
+        }
+
+        var rememberPatient = function (patientObj) {
+            patient = patientObj;
+        }
+
         var search = function (query) {
             return $http.get($rootScope.BaseUrl + "/ws/rest/v1/patient", {
                 method: "GET",
@@ -20,6 +33,8 @@ angular.module('resources.patientService', [])
 
         return {
             search: search,
-            create: create
+            create: create,
+            getPatient: getPatient,
+            rememberPatient: rememberPatient
         };
     }]);

@@ -1,16 +1,15 @@
 'use strict';
 
-angular.module('registration.createVisit', ['resources.patientData', 'resources.visit', 'resources.concept', 'resources.bmi'])
-    .controller('CreateVisitController', ['$scope', '$location', 'patientData', 'visit', 'concept', 'bmi', function ($scope, $location, patientData, visitService, conceptService, bmiModule) {
+angular.module('registration.visitController', ['resources.patientService', 'resources.visitService', 'resources.concept', 'resources.bmi','resources.date'])
+    .controller('VisitController', ['$scope', '$location', 'patientService', 'visitService', 'concept', 'bmi','date', function ($scope, $location, patientService, visitService, conceptService, bmiModule, date) {
     var registrationConcepts = [];
-      $scope.registrationFee="10";
 
     (function () {
         $scope.encounter = {};
         $scope.obs = {};
-        $scope.obs.registration_fees=10;
+        $scope.obs.registration_fees = defaults.registration_fees;
         $scope.visit = {};
-        $scope.patient = patientData.response();
+        $scope.patient = patientService.getPatient();
 
         conceptService.getRegistrationConcepts().success(function (data) {
             var concepts = data.results[0].setMembers;
@@ -33,15 +32,15 @@ angular.module('registration.createVisit', ['resources.patientData', 'resources.
         $location.path("/create");
     }
 
-    $scope.createVisit = function () {
-        var datetime = new Date().toISOString();
+    $scope.create = function () {
+        var datetime = date.now().toISOString();
         $scope.visit.patient = $scope.patient.uuid;
         $scope.visit.startDatetime = datetime;
-        $scope.visit.visitType = "REG";
+        $scope.visit.visitType = constants.visitType.registration;
 
         $scope.encounter.patient = $scope.patient.uuid;
-        $scope.encounter.encounterType = "REG";
         $scope.encounter.encounterDatetime = datetime;
+        $scope.encounter.encounterType = constants.visitType.registration;
 
         $scope.encounter.obs = [];
         registrationConcepts.forEach(function (concept) {
