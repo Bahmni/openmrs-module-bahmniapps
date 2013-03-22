@@ -5,12 +5,11 @@ files = [
   JASMINE_ADAPTER,
   '../app/lib/angular/angular.js',
   '../app/lib/angular/angular-*.js',
-  'lib/angular/angular-mocks.js',
+  '../lib/angular/angular-mocks.js',
   '../app/modules/**/*.js',
-  'unit/**/*.js'
+  '../unit/**/*.js'
 ];
 
-autoWatch = true;
 singleRun = true;
 
 browsers = ['PhantomJS'];
