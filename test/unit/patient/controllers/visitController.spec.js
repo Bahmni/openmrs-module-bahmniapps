@@ -27,7 +27,7 @@ describe('VisitController', function () {
     beforeEach(angular.mock.module('registration.visitController'));
     beforeEach(angular.mock.inject(['$injector', 'date', '$location', function ($injector, dateModule, location) {
         $controller = $injector.get('$controller');
-        patientService = jasmine.createSpyObj('patientService', ['getPatient']);
+        patientService = jasmine.createSpyObj('patientService', ['getPatient', 'clearPatient']);
         date = dateModule;
         patient = {};
 		$location = location;
@@ -103,6 +103,14 @@ describe('VisitController', function () {
 				createPromise.success.mostRecentCall.args[0]();
 			
 	      expect($location.path).toHaveBeenCalledWith('/search');
+ 	   });
+
+		 it("should clear the stored patient on success", function(){
+	     	scope.create();
+				
+				createPromise.success.mostRecentCall.args[0]();
+			
+	      expect(patientService.clearPatient).toHaveBeenCalled();
  	   });
 	});
 });

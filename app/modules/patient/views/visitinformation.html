@@ -1,7 +1,7 @@
 <div class="container-fluid" xmlns="http://www.w3.org/1999/html">
     <h4>Visit Information</h4>
 <div>
-    <form name="myForm" class="form-horizontal well">
+    <form name="myForm" class="form-horizontal well" ng-submit="create()">
         <legend class="mylegend">Summary</legend>
         <div class="control-group">
             <label class="control-label" for="patientId">Patient Identifier</label>
@@ -42,8 +42,7 @@
         <div class="control-group">
             <label class="control-label" for="height">Height (cm)</label>
             <div class="controls">
-                <span ng-show="obs.bmi.error">Input field is invalid.</span>
-                <input id="height" type="number" step="0.01" ng-model="obs.height" min="10" max="500" ng-change="calculateBMI()" placeholder="Height">
+                <input id="height" type="number" step="0.01" ng-model="obs.height" min="10" max="250" ng-change="calculateBMI()" placeholder="Height">
                 Weight (kg)
                 <input id="weight" type="number" step="0.01" ng-model="obs.weight" min="0" max="200" ng-change="calculateBMI()" placeholder="Weight">
              </div>
@@ -66,7 +65,7 @@
         <div class="control-group">
             <div class="controls">
                 <button type="button" class="btn btn-primary" ng-click="back()">Back</button>
-                <button type="submit" class="btn btn-primary" ng-click="create()">Print Patient Card</button>
+                <button type="submit" class="btn btn-primary">Print Patient Card</button>
             </div>
         </div>
     </form>

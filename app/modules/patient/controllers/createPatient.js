@@ -16,10 +16,6 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
             patientAttributeType.getAll().success(function(data){
                 $scope.patient.attributes = data.results;
             });
-
-            $scope.$watch('patient.birthdate', function() {
-                $scope.patient.calculateAge();
-            });
         })();
 
         $scope.clearPatientIdentifier = function() {
@@ -33,7 +29,6 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
             }
             var patientIdentifier = $scope.patientIdentifier;
             if (patientIdentifier && patientIdentifier.length > 0) {
-                window.alert('there is stuff present' + patient.centerID.name);
                 patient.patientIdentifier = patient.centerID.name + patientIdentifier;
             }
             patient.attributes = patient.attributes.map(function(result) {return {"attributeType": result.uuid, "name": result.name, "value" : $scope[result.name]}}).filter(function(result){return result.value && result.value !== ''});
@@ -62,6 +57,7 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
                     onSelect: function (dateText) {
                         $scope.$apply(function (scope) {
                             ngModel.assign(scope, dateText);
+														$scope.$eval(attrs.ngChange);
                         });
                     }
                 });

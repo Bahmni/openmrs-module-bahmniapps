@@ -15,6 +15,10 @@ angular.module('resources.patientService', ['resources.patient'])
             patient = patientObj;
         }
 
+				var clearPatient = function (patientObj) {
+            patient = null;
+        }
+
         var search = function (query) {
             return $http.get($rootScope.BaseUrl + "/ws/rest/v1/patient", {
                 method: "GET",
@@ -35,6 +39,7 @@ angular.module('resources.patientService', ['resources.patient'])
             search: search,
             create: create,
             getPatient: getPatient,
-            rememberPatient: rememberPatient
+            rememberPatient: rememberPatient,
+						clearPatient: clearPatient
         };
     }]);
