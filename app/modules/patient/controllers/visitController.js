@@ -52,7 +52,8 @@ angular.module('registration.visitController', ['resources.patientService', 'res
         });
         $scope.visit.encounters = [$scope.encounter];
 
-        visitService.create($scope.visit);
-        $location.path("/search");
+        visitService.create($scope.visit).success(function(){
+	        $location.path("/search");
+				});
     };
 }]);
