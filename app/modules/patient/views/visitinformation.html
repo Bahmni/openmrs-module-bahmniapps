@@ -52,6 +52,7 @@
 
             <div class="controls">
                 <input type="text" id="bmi" ng-model="obs.bmi" readonly>
+                <span class="text-error" ng-show="obs.bmi_error">Invalid BMI. Please check the height and weight</span>
             </div>
         </div>
         <div class="control-group">
@@ -65,7 +66,7 @@
         <div class="control-group">
             <div class="controls">
                 <button type="button" class="btn btn-primary" ng-click="back()">Back</button>
-                <button type="submit" class="btn btn-primary">Print Patient Card</button>
+                <button type="submit" class="btn btn-primary" ng-disabled="obs.bmi_error">Print Patient Card</button>
             </div>
         </div>
     </form>

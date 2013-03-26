@@ -57,7 +57,7 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
                     onSelect: function (dateText) {
                         $scope.$apply(function (scope) {
                             ngModel.assign(scope, dateText);
-														$scope.$eval(attrs.ngChange);
+                            $scope.$eval(attrs.ngChange);
                         });
                     }
                 });

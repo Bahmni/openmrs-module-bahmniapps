@@ -13,6 +13,7 @@
             <div ng-app="registration">
                 <div class="row">
                     <a ng-click="logout()" ng-controller="SessionController" class="pull-right">Logout</a>
+                    <p class="text-error">{{server_error}}</p>
                 </div>
                 <div ng-view></div>
                 <script src="lib/jquery/jquery-1.9.1.min.js"></script>
@@ -20,6 +21,7 @@
                 <script src="lib/angular/angular.js"></script>
                 <script src="lib/angular/angular-cookies.min.js"></script>
 
+                <script src="modules/infrastructure/httpErrorInterceptor.js"></script>
                 <script src="app.js"></script>
                 <script src="defaults.js"></script>
                 <script src="constants.js"></script>

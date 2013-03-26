@@ -113,4 +113,55 @@ describe('VisitController', function () {
 	      expect(patientService.clearPatient).toHaveBeenCalled();
  	   });
 	});
+
+    describe("calculateBMI", function(){
+        beforeEach(function(){
+            $controller('VisitController', {
+                $scope: scope,
+                concept: conceptService
+            });
+        });
+
+        it("should set bmi, bmi_status and bmi_error when height and weight are present", function(){
+            scope.obs.height = 50;
+            scope.obs.weight = 100;
+
+            scope.calculateBMI();
+
+            expect(scope.obs.bmi).toBe(400);
+            expect(scope.obs.bmi_error).toBe(true);
+            expect(scope.obs.bmi_status).toBe("Invalid");
+
+        });
+
+        it("should clear the bmi, bmi_status when height is not present", function(){
+            scope.obs.bmi = 200;
+            scope.obs.bmi_status = "Invalid";
+            scope.obs.bmi_error = true;
+            scope.obs.height = null;
+            scope.obs.weight = 100;
+
+
+            scope.calculateBMI();
+
+            expect(scope.obs.bmi).toBe(null);
+            expect(scope.obs.bmi_error).toBe(false);
+            expect(scope.obs.bmi_status).toBe(null);
+        });
+
+        it("should clear the bmi, bmi_status when weight is not present", function(){
+            scope.obs.bmi = 200;
+            scope.obs.bmi_status = "Invalid";
+            scope.obs.bmi_error = true;
+            scope.obs.height = 100;
+            scope.obs.weight = null;
+
+
+            scope.calculateBMI();
+
+            expect(scope.obs.bmi).toBe(null);
+            expect(scope.obs.bmi_error).toBe(false);
+            expect(scope.obs.bmi_status).toBe(null);
+        });
+    });
 });

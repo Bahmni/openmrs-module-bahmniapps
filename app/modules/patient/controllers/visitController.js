@@ -21,11 +21,17 @@ angular.module('registration.visitController', ['resources.patientService', 'res
 
 
     $scope.calculateBMI = function () {
-        var bmi = bmiModule.calculateBmi($scope.obs.height, $scope.obs.weight);
-        var valid = bmi.valid();
-        $scope.obs.error = !valid;
-        $scope.obs.bmi = valid ? bmi.value : "";
-        $scope.obs.bmi_status = valid ? bmi.status() : "";
+        if($scope.obs.height && $scope.obs.weight){
+            var bmi = bmiModule.calculateBmi($scope.obs.height, $scope.obs.weight);
+            var valid = bmi.valid();
+            $scope.obs.bmi_error = !valid;
+            $scope.obs.bmi = bmi.value;
+            $scope.obs.bmi_status = valid ? bmi.status() : "Invalid";
+        } else {
+            $scope.obs.bmi_error = false;
+            $scope.obs.bmi = null;
+            $scope.obs.bmi_status = null;
+        }
     };
 
     $scope.back = function () {
