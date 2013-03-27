@@ -60,11 +60,11 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
     .directive('nonBlank', function ($parse) {
         return function ($scope, element, attrs) {
             var addNonBlankAttrs = function(){
-                element.attr({'required': 'required', "pattern": '^.*[^\\s]+.*', title: "Non blank value"});
+                element.attr({'required': 'required', "pattern": '^.*[^\\s]+.*'});
             }
 
             var removeNonBlankAttrs = function() {
-                element.removeAttr('required').removeAttr('pattern').removeAttr('title')
+                element.removeAttr('required').removeAttr('pattern');
             };
 
             if(!attrs.nonBlank) return addNonBlankAttrs(element);
