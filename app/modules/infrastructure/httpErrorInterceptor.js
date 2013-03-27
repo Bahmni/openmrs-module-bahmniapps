@@ -27,4 +27,10 @@ angular.module('infrastructure.httpErrorInterceptor', [])
 
         }];
         $httpProvider.responseInterceptors.push(interceptor);
-    });
+    }).run(['$rootScope', '$location', function ($rootScope, $location) {
+        $rootScope.$watch(function(){
+            return $location.path();
+        }, function () {
+            $rootScope.server_error = null;
+        })
+    }]);

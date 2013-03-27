@@ -13,7 +13,9 @@
             <div ng-app="registration">
                 <div class="row">
                     <a ng-click="logout()" ng-controller="SessionController" class="pull-right">Logout</a>
-                    <p class="text-error">{{server_error}}</p>
+                </div>
+                <div class="container-fluid">
+                    <div class="alert alert-error" ng-show="server_error">{{server_error}}</div>
                 </div>
                 <div ng-view></div>
                 <script src="lib/jquery/jquery-1.9.1.min.js"></script>
