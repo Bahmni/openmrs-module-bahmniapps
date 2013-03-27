@@ -15,7 +15,7 @@ angular.module('resources.patientService', ['resources.patient'])
             patient = patientObj;
         }
 
-				var clearPatient = function (patientObj) {
+        var clearPatient = function () {
             patient = null;
         }
 
@@ -40,6 +40,6 @@ angular.module('resources.patientService', ['resources.patient'])
             create: create,
             getPatient: getPatient,
             rememberPatient: rememberPatient,
-						clearPatient: clearPatient
+			clearPatient: clearPatient
         };
     }]);

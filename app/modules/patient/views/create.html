@@ -14,17 +14,17 @@
         <div class="control-group">
             <label class="control-label" for="asd">Enter ID</label>
             <div class="controls">
-                <input type="checkbox"  ng-model="manualId" ng-change="clearPatientIdentifier()">
+                <input type="checkbox"  ng-model="hasOldIdentifier" ng-change="clearPatientIdentifier()">
             </div>
         </div>
 
-        <div class="control-group" ng-show="manualId">
+        <div class="control-group" ng-show="hasOldIdentifier">
             <label class="control-label" for="patientIdentifier">Patient Registration Number</label>
 
             <div class="controls">
                 <div class="input-prepend">
                     <span class="add-on">{{patient.centerID.name}}</span>
-                    <input type="text" id="patientIdentifier" ng-model="patientIdentifier" placeholder="Old Registration Number">
+                    <input type="text" id="patientIdentifier" ng-model="patientIdentifier" placeholder="Old Registration Number" ng-required="hasOldIdentifier">
                 </div>
             </div>
         </div>

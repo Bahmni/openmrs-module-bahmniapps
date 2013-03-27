@@ -69,6 +69,18 @@ describe('CreateNewPatientController', function () {
 
             expect(scope.patient.attributes.length).toBe(2);
         });
+
+        it('should initialize centerID and hasOldIdentifier from preferences', function() {
+            $controller('CreateNewPatientController', {
+                $scope: scope,
+                patientService: patientService,
+                patientAttributeType: patientAttributeTypeService,
+                Preferences: {centerID: "SHI", hasOldIdentifier: true}
+            });
+
+            expect(scope.patient.centerID.name).toBe('SHI');
+            expect(scope.hasOldIdentifier).toBe(true);
+        });
     });
 
     describe('create', function () {
@@ -103,6 +115,24 @@ describe('CreateNewPatientController', function () {
             scope.create();
 
             expect(patientService.rememberPatient).toHaveBeenCalledWith(patient);
+        })
+
+        it('should update preferences with current values of centerID and hasOldIdentifier', function () {
+            var preferences = {};
+            $controller('CreateNewPatientController', {
+                $scope: scope,
+                patientService: patientService,
+                patientAttributeType: patientAttributeTypeService,
+                Preferences: preferences
+            });
+            scope.hasOldIdentifier = true;
+            scope.patient.centerID = {name: "SEM"};
+            patientService.create.andReturn({success: function(){} });
+
+            scope.create();
+
+            expect(preferences.hasOldIdentifier).toBe(true);
+            expect(preferences.centerID).toBe("SEM");
         });
     });
 });

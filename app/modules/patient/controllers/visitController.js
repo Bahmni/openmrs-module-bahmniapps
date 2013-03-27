@@ -60,7 +60,7 @@ angular.module('registration.visitController', ['resources.patientService', 'res
 
         visitService.create($scope.visit).success(function(){
 	        patientService.clearPatient();
-					$location.path("/search");
-				});
+			$location.path("/search");
+	    });
     };
 }]);
