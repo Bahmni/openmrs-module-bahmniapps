@@ -134,5 +134,26 @@ describe('CreateNewPatientController', function () {
             expect(preferences.hasOldIdentifier).toBe(true);
             expect(preferences.centerID).toBe("SEM");
         });
+
+        it('should populate patient identifier with center name concatenated with RegistrationNumber and should clear the patient identifier if RegistrationNumber is cleared', function () {
+            $controller('CreateNewPatientController', {
+                $scope: scope,
+                patientService: patientService,
+                patientAttributeType: patientAttributeTypeService
+            });
+            scope.registrationNumber = "12345";
+            scope.patient.centerID = {name: "SEM"};
+            patientService.create.andReturn({success: function(){} });
+
+            scope.create();
+
+            expect(patientService.create.mostRecentCall.args[0].patientIdentifier).toBe("SEM12345");
+
+            scope.registrationNumber = "";
+
+            scope.create();
+
+            expect(patientService.create.mostRecentCall.args[0].patientIdentifier).toBeFalsy();
+        });
     });
 });

@@ -35,9 +35,11 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
                 if (patient.birthdate === "") {
                     delete patient["birthdate"];
                 }
-                var patientIdentifier = $scope.patientIdentifier;
-                if (patientIdentifier && patientIdentifier.length > 0) {
-                    patient.patientIdentifier = patient.centerID.name + patientIdentifier;
+                var registrationNumber = $scope.registrationNumber;
+                if (registrationNumber && registrationNumber.length > 0) {
+                    patient.patientIdentifier = patient.centerID.name + registrationNumber;
+                } else {
+                    patient.patientIdentifier = "";
                 }
                 patient.attributes = patient.attributes.map(function (result) {
                     return {"attributeType": result.uuid, "name": result.name, "value": $scope[result.name]}
@@ -54,6 +56,24 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
                 });
             };
         }])
+
+    .directive('nonBlank', function ($parse) {
+        return function ($scope, element, attrs) {
+            var addNonBlankAttrs = function(){
+                element.attr({'required': 'required', "pattern": '^.*[^\\s]+.*', title: "Non blank value"});
+            }
+
+            var removeNonBlankAttrs = function() {
+                element.removeAttr('required').removeAttr('pattern').removeAttr('title')
+            };
+
+            if(!attrs.nonBlank) return addNonBlankAttrs(element);
+
+            $scope.$watch(attrs.nonBlank, function(value){
+                return value ? addNonBlankAttrs() : removeNonBlankAttrs();
+            });
+        }
+    })
 
     .directive('datepicker', function ($parse) {
         return function ($scope, element, attrs) {

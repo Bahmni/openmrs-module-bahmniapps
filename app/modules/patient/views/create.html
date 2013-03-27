@@ -19,12 +19,12 @@
         </div>
 
         <div class="control-group" ng-show="hasOldIdentifier">
-            <label class="control-label" for="patientIdentifier">Patient Registration Number</label>
+            <label class="control-label" for="registrationNumber">Patient Identifier</label>
 
             <div class="controls">
                 <div class="input-prepend">
                     <span class="add-on">{{patient.centerID.name}}</span>
-                    <input type="text" id="patientIdentifier" ng-model="patientIdentifier" placeholder="Old Registration Number" ng-required="hasOldIdentifier">
+                    <input type="text" id="registrationNumber" ng-model="registrationNumber" placeholder="Registration Number" non-blank="hasOldIdentifier">
                 </div>
             </div>
         </div>
@@ -32,8 +32,8 @@
             <label class="control-label" for="patientName">Patient Name *</label>
 
             <div class="controls" id="patientName">
-                <input type="text" id="givenName" ng-model="patient.names[0].givenName" autofocus required placeholder="First Name">
-                <input type="text" id="familyName" ng-model="patient.names[0].familyName" required placeholder="Last Name">
+                <input type="text" id="givenName" ng-model="patient.names[0].givenName" autofocus placeholder="First Name" non-blank>
+                <input type="text" id="familyName" ng-model="patient.names[0].familyName" placeholder="Last Name" non-blank>
             </div>
         </div>
         <div class="control-group">
