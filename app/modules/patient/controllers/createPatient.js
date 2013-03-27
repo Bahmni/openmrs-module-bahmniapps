@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('registration.createPatient', ['resources.patientService', 'resources.patientAttributeType', 'resources.preferences'])
-    .controller('CreateNewPatientController', ['$scope', 'patientService', 'patientAttributeType', '$location', 'Preferences',
-        function ($scope, patientService, patientAttributeType, $location, preferences) {
+angular.module('registration.createPatient', ['resources.patientService', 'resources.preferences'])
+    .controller('CreateNewPatientController', ['$scope', 'patientService', '$location', 'Preferences',
+        function ($scope, patientService, $location, preferences) {
 
             (function () {
                 $scope.patient = patientService.getPatient();
@@ -16,9 +16,6 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
                     return center.name === preferences.centerID
                 })[0];
                 $scope.hasOldIdentifier = preferences.hasOldIdentifier;
-                patientAttributeType.getAll().success(function (data) {
-                    $scope.patient.attributes = data.results;
-                });
             })();
 
             $scope.clearPatientIdentifier = function () {
@@ -31,23 +28,8 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
             };
 
             $scope.create = function () {
-                var patient = $scope.patient;
-                if (patient.birthdate === "") {
-                    delete patient["birthdate"];
-                }
-                var registrationNumber = $scope.registrationNumber;
-                if (registrationNumber && registrationNumber.length > 0) {
-                    patient.patientIdentifier = patient.centerID.name + registrationNumber;
-                } else {
-                    patient.patientIdentifier = "";
-                }
-                patient.attributes = patient.attributes.map(function (result) {
-                    return {"attributeType": result.uuid, "name": result.name, "value": $scope[result.name]}
-                }).filter(function (result) {
-                    return result.value && result.value !== ''
-                });
                 setPreferences();
-                patientService.create(patient).success(function (data) {
+                patientService.create($scope.patient).success(function (data) {
                     $scope.patient.identifier = data.identifier;
                     $scope.patient.uuid = data.uuid;
                     $scope.patient.name = data.name;

@@ -5,7 +5,6 @@
         <legend class="mylegend">New Patient Registration (Patient Profile Information)</legend>
         <div class="control-group">
             <label class="control-label" for="asd">Center</label>
-
             <div class="controls">
                 <select  id="asd" ng-model="patient.centerID" ng-options="c.name for c in centers"> </select>
             </div>
@@ -24,37 +23,65 @@
             <div class="controls">
                 <div class="input-prepend">
                     <span class="add-on">{{patient.centerID.name}}</span>
-                    <input type="text" id="registrationNumber" ng-model="registrationNumber" placeholder="Registration Number" title="Registration Number" non-blank="hasOldIdentifier">
+                    <input type="text" id="registrationNumber" ng-model="patient.registrationNumber" 
+                            placeholder="Registration Number" title="Registration Number" non-blank="hasOldIdentifier"
+                            ng-change="patient.generatePatientIdentifier()">
                 </div>
             </div>
         </div>
+
         <div class="control-group">
             <label class="control-label" for="patientName">Patient Name *</label>
-
             <div class="controls" id="patientName">
-                <input type="text" id="givenName" ng-model="patient.names[0].givenName" autofocus placeholder="First Name" title="First Name" non-blank>
-                <input type="text" id="familyName" ng-model="patient.names[0].familyName" placeholder="Last Name" title="Last Name" non-blank>
+                <span class="pull-left">
+                    <input type="text" id="givenName" ng-model="patient.givenName" autofocus non-blank placeholder="First Name">
+                    <input type="text" id="familyName" ng-model="patient.familyName" non-blank placeholder="Last Name">
+                </span>
+                <span class="span3">
+                    <input type="checkbox" id="sameAsLastNameCheck">
+                    <label class="pull-right" for="sameAsLastNameCheck">Caste same as Last Name</label>
+                </span>
             </div>
         </div>
+
+        <div class="control-group">
+            <label class="control-label" for="caste">Caste</label>
+            <div class="controls">
+                <input type="text" id="caste" ng-model="patient.caste">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="class">Class</label>
+            <div class="controls">
+                <select  id="class" ng-model="patient.class">
+                    <option>OBC</option>
+                    <option>General</option>
+                    <option>SC</option>
+                    <option>ST</option>
+                    <option>Other</option>
+                </select>
+            </div>
+        </div>
+
         <div class="control-group">
             <label class="control-label" for="primaryRelative">Father's/Husband's Name</label>
-
             <div class="controls">
-                <input type="text" id="primaryRelative" ng-model="primaryRelative" placeholder="Father's/Husband's Name">
+                <input type="text" id="primaryRelative" ng-model="patient.primaryRelative" placeholder="Father's/Husband's Name">
             </div>
         </div>
+
         <div class="control-group">
             <label class="control-label" for="birthdate">DOB</label>
-
             <div class="controls">
                 <input id="birthdate" type="text" pattern="\d{2}-\d{2}-\d{4}" ng-model="patient.birthdate" datepicker ng-change="patient.calculateAge()" placeholder="dd-mm-yyyy">
                  or Age
                 <input type="number" id="ageYear" name="ageYear" max="120" ng-model="patient.age" min="0" placeholder="Age" required>
             </div>
         </div>
+
         <div class="control-group">
             <label class="control-label" for="gender">Gender *</label>
-
             <div class="controls">
                 <select  id="gender" ng-model="patient.gender" required>
                     <option value=""></option>
@@ -68,57 +95,51 @@
         <legend class="mylegend">Address And Contact Details</legend>
         <div class="control-group">
             <label class="control-label" for="address1">House No. Street</label>
-
             <div class="controls">
-                <input type="text" id="address1" ng-model="patient.addresses[0].address1" placeholder="House No. Street">
+                <input type="text" id="address1" ng-model="patient.address.address1" placeholder="House No. Street">
             </div>
         </div>
 
         <div class="control-group">
             <label class="control-label" for="address2">Village</label>
-
             <div class="controls">
-                <input type="text" id="address2" ng-model="patient.addresses[0].cityVillage" placeholder="Village">
+                <input type="text" id="address2" ng-model="patient.address.cityVillage" placeholder="Village">
             </div>
         </div>
 
         <div class="control-group">
             <label class="control-label" for="address3">Tehsil</label>
-
             <div class="controls">
-                <input type="text" id="address3" ng-model="patient.addresses[0].address3" placeholder="Tehsil">
+                <input type="text" id="address3" ng-model="patient.address.address3" placeholder="Tehsil">
             </div>
         </div>
+
         <div class="control-group">
             <label class="control-label" for="countyDistrict">District</label>
-
             <div class="controls">
-                <input type="text" id="countyDistrict" ng-model="patient.addresses[0].countyDistrict" placeholder="District">
+                <input type="text" id="countyDistrict" ng-model="patient.address.countyDistrict" placeholder="District">
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="stateProvince">State</label>
-
             <div class="controls">
-                <input type="text" id="stateProvince" ng-model="patient.addresses[0].stateProvince" placeholder="State">
+                <input type="text" id="stateProvince" ng-model="patient.address.stateProvince" placeholder="State">
             </div>
         </div>
 
         <div class="control-group">
             <label class="control-label" for="contactNumber">Contact Number</label>
-
             <div class="controls" id="contactNumber">
-                <input type="text" id="primaryContact" ng-model="primaryContact" placeholder="Primary Number">
-                <input type="text" id="secondaryContact" ng-model="secondaryContact" placeholder="Secondary Number">
+                <input type="text" id="primaryContact" ng-model="patient.primaryContact" placeholder="Primary Number">
+                <input type="text" id="secondaryContact" ng-model="patient.secondaryContact" placeholder="Secondary Number">
             </div>
         </div>
 
         <legend class="mylegend">Secondary Information</legend>
         <div class="control-group">
             <label class="control-label" for="education">Education Details</label>
-
             <div class="controls">
-                <select  id="education" ng-model="education">
+                <select  id="education" ng-model="patient.education">
                     <option>Uneducated</option>
                     <option>5th Pass and Below</option>
                     <option>6th to 9th</option>
@@ -129,24 +150,9 @@
         </div>
 
         <div class="control-group">
-            <label class="control-label" for="caste">Caste</label>
-
-            <div class="controls">
-                <select  id="caste" ng-model="caste">
-                    <option>OBC</option>
-                    <option>General</option>
-                    <option>SC</option>
-                    <option>ST</option>
-                    <option>Other</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="control-group">
             <label class="control-label" for="occupation">Occupation</label>
-
             <div class="controls">
-                <select  id="occupation" ng-model="occupation">
+                <select  id="occupation" ng-model="patient.occupation">
                     <option>Unemployed</option>
                     <option>Student</option>
                     <option>Agriculture Related</option>
@@ -160,6 +166,7 @@
                 </select>
             </div>
         </div>
+
         <div class="control-group">
             <div class="controls">
                 <button type="submit" class="btn btn-primary">Next</button>

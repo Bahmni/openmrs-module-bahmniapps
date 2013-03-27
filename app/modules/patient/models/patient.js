@@ -14,11 +14,18 @@ angular.module('resources.patient', ['resources.date'])
                 }
             }
 
+            var generatePatientIdentifier = function() {
+                if (this.registrationNumber && this.registrationNumber.length > 0) {
+                    this.patientIdentifier = this.centerID.name + this.registrationNumber;
+                }
+
+                return this.patientIdentifier
+            }
+
             return {
-                names: [{}],
-                addresses: [{}],
-                attributes: [],
-                calculateAge: calculateAge
+                address: {},
+                calculateAge: calculateAge,
+                generatePatientIdentifier: generatePatientIdentifier
             };
         }
 
