@@ -3,3 +3,11 @@
     line-height: 20px;
     margin-bottom: 0;
 }
+
+#casteSameAsLastNameCheckLabel {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+}

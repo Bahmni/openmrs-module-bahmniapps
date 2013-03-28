@@ -38,8 +38,8 @@
                     <input type="text" id="familyName" ng-model="patient.familyName" non-blank placeholder="Last Name">
                 </span>
                 <span class="span3">
-                    <input type="checkbox" id="sameAsLastNameCheck">
-                    <label class="pull-right" for="sameAsLastNameCheck">Caste same as Last Name</label>
+                    <input type="checkbox" id="casteSameAsLastNameCheck" ng-model="sameAsLastName" ng-change="setCasteAsLastName()">
+                    <label id="casteSameAsLastNameCheckLabel" for="casteSameAsLastNameCheck">Caste same as Last Name</label>
                 </span>
             </div>
         </div>

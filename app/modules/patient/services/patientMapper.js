@@ -4,17 +4,14 @@ angular.module('resources.patientMapper', ['resources.patientAttributeType'])
     .factory('patientMapper', ['patientAttributeType', function (patientAttributeType) {
         var patientAttributes = [];
 
-        var cachePatientAttribute = function() {
-            if(patientAttributes.length > 0)
-                return;
-
+        var init = function() {
             patientAttributeType.getAll().success(function(data){
                 patientAttributes = data.results;
             });
         };
+        init();
 
         var map = function(patient) {
-            cachePatientAttribute()
             return {
                 names: [{familyName: patient.familyName, givenName: patient.givenName}],
                 age: patient.age,

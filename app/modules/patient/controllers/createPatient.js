@@ -37,6 +37,20 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
                     $location.path("/visitinformation");
                 });
             };
+
+
+            $scope.setCasteAsLastName = function() {
+                $scope.patient.caste = "";
+                if($scope.sameAsLastName) {
+                    $scope.patient.caste = $scope.patient.familyName;
+                }
+            }
+
+            $scope.$watch('patient.familyName', function() {
+                if($scope.sameAsLastName) {
+                    $scope.patient.caste = $scope.patient.familyName;
+                }
+            })
         }])
 
     .directive('nonBlank', function ($parse) {
