@@ -11,3 +11,15 @@
     position: relative;
     top: 3px;
 }
+body{
+	background:#f5f5f5;
+}
+.reg-header{
+	height:60px;
+}
+.reg-wrapper .well{
+	background:#ffffff;
+}
+.reg-wrapper .form-horizontal .control-label{
+	width:170px;
+}

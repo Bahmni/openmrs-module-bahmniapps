@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <h4>Register New Patient</h4>
-<div>
+<div></div>
     <form name="myForm" class="form-horizontal well" ng-submit="create()" >
         <legend class="mylegend">New Patient Registration (Patient Profile Information)</legend>
         <div class="control-group">
@@ -74,10 +74,14 @@
         <div class="control-group">
             <label class="control-label" for="birthdate">DOB</label>
             <div class="controls">
-                <input id="birthdate" type="text" pattern="\d{2}-\d{2}-\d{4}" ng-model="patient.birthdate" datepicker ng-change="patient.calculateAge()" placeholder="dd-mm-yyyy">
-                 or Age
-                <input type="number" id="ageYear" name="ageYear" max="120" ng-model="patient.age" min="0" placeholder="Age" required>
+                <input id="birthdate" type="text" pattern="\d{2}-\d{2}-\d{4}" ng-model="patient.birthdate" datepicker ng-change="patient.calculateAge()" placeholder="dd-mm-yyyy" class="datepicker"> 
             </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="ageYear">Age</label>
+            <div class="controls">
+                <input type="number" id="ageYear" name="ageYear" max="120" ng-model="patient.age" min="0" placeholder="Age" required>
+            </div>            
         </div>
 
         <div class="control-group">
