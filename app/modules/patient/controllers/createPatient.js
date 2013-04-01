@@ -18,10 +18,6 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
                 $scope.hasOldIdentifier = preferences.hasOldIdentifier;
             })();
 
-            $scope.clearPatientIdentifier = function () {
-                $scope.patientIdentifier = "";
-            };
-
             var setPreferences = function () {
                 preferences.centerID = $scope.patient.centerID.name;
                 preferences.hasOldIdentifier = $scope.hasOldIdentifier;

@@ -36,4 +36,16 @@ describe("Patient", function(){
             expect(patient.age).toBe(null);
         });
     });
+
+    describe("clearRegistrationNumber", function(){
+        it("should clear registrationNumber and patientIdentifier", function(){
+            patient.registrationNumber = "1234";
+            patient.patientIdentifier = "GAN1234";
+
+            patient.clearRegistrationNumber();
+
+            expect(patient.registrationNumber).toBe(null);
+            expect(patient.patientIdentifier).toBe(null);
+        });
+    });
 });

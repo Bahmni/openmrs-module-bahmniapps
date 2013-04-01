@@ -22,10 +22,16 @@ angular.module('resources.patient', ['resources.date'])
                 return this.patientIdentifier
             }
 
+            var clearRegistrationNumber = function() {
+                this.registrationNumber = null;
+                this.patientIdentifier = null;
+            }
+
             return {
                 address: {},
                 calculateAge: calculateAge,
-                generatePatientIdentifier: generatePatientIdentifier
+                generatePatientIdentifier: generatePatientIdentifier,
+                clearRegistrationNumber: clearRegistrationNumber
             };
         }
 
