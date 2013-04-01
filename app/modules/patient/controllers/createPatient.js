@@ -92,4 +92,19 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
                 });
             });
         }
-    });
+    })
+
+    .directive('myAutocomplete', ['$http', function($http) {
+        return function (scope, element, attrs) {
+            element.autocomplete({
+                minLength:3,
+                autofocus: true,
+                source:function (request, response) {
+                    var url = "http://localhost:8080/openmrs/ws/rest/v1/raxacore/lastname?q=" + request.term;
+                    $http.get(url).success( function(data) {
+                        response(data.names);
+                    });
+                }
+            });
+        }
+    }]);

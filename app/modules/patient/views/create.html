@@ -35,7 +35,7 @@
             <div class="controls" id="patientName">
                 <span class="pull-left">
                     <input type="text" id="givenName" ng-model="patient.givenName" autofocus non-blank placeholder="First Name">
-                    <input type="text" id="familyName" ng-model="patient.familyName" non-blank placeholder="Last Name">
+                    <input type="text" id="familyName" ng-model="patient.familyName" non-blank placeholder="Last Name" my-autocomplete>
                 </span>
                 <span class="span3">
                     <input type="checkbox" id="casteSameAsLastNameCheck" ng-model="sameAsLastName" ng-change="setCasteAsLastName()">
