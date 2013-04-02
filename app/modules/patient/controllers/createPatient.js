@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('registration.createPatient', ['resources.patientService', 'resources.preferences'])
-    .controller('CreateNewPatientController', ['$scope', 'patientService', '$location', 'Preferences',
-        function ($scope, patientService, $location, preferences) {
+angular.module('registration.createPatient', ['resources.patientService', 'resources.preferences', 'resources.autoCompleteService'])
+    .controller('CreateNewPatientController', ['$scope', 'patientService', '$location', 'Preferences', 'autoCompleteService',
+        function ($scope, patientService, $location, preferences, autoCompleteService) {
 
             (function () {
                 $scope.patient = patientService.getPatient();
@@ -40,6 +40,11 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
                 if($scope.sameAsLastName) {
                     $scope.patient.caste = $scope.patient.familyName;
                 }
+            }
+
+            $scope.getAutoCompleteList = function (key, query) {
+                var result = autoCompleteService.getAutoCompleteList(key,query);
+                return result;
             }
 
             $scope.$watch('patient.familyName', function() {
@@ -90,17 +95,28 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
         }
     })
 
-    .directive('myAutocomplete', ['$http', function($http) {
+    .directive('myAutocomplete', function() {
         return function (scope, element, attrs) {
             element.autocomplete({
                 minLength:3,
                 autofocus: true,
-                source:function (request, response) {
-                    var url = "http://localhost:8080/openmrs/ws/rest/v1/raxacore/lastname?q=" + request.term;
-                    $http.get(url).success( function(data) {
-                        response(data.names);
+                source:function(request, response){
+                    scope.getAutoCompleteList(element[0].id, request.term).success(function(data){
+                        response(data.resultList.results)
                     });
+                },
+                select:function (event, ui) {
+                    scope.$apply(function(scope){
+                        scope.patient[element[0].id]= ui.item.value;
+                        scope.$eval(attrs.ngChange);
+                    });
+                    return true;
+                },
+                change:function (event, ui) {
+                    if (ui.item === null) {
+                        scope.patient[element[0].id] = null;
+                    }
                 }
             });
         }
-    }]);
+    });

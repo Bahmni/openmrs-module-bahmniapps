@@ -35,7 +35,6 @@ angular.module('resources.patientService', ['resources.patient', 'resources.pati
             });
         }
 
-
         return {
             search: search,
             create: create,
