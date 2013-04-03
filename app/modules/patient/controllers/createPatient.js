@@ -98,7 +98,6 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
     .directive('myAutocomplete', function() {
         return function (scope, element, attrs) {
             element.autocomplete({
-                minLength:3,
                 autofocus: true,
                 source:function(request, response){
                     scope.getAutoCompleteList(element[0].id, request.term).success(function(data){
@@ -111,6 +110,13 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
                         scope.$eval(attrs.ngChange);
                     });
                     return true;
+                },
+                search: function(event, ui){
+                    var searchTerm = $.trim(element.val());
+                    if(searchTerm.length < 3)
+                    {
+                        event.preventDefault();
+                    }
                 }
             });
         }
