@@ -15,10 +15,11 @@ angular.module('resources.autoCompleteService', [])
 
     var getAutoCompleteList = function(key, query){
         var url = $rootScope.BaseUrl + urlMap[key];
+        var queryWithoutTrailingSpaces = query.trimLeft();
 
         return $http.get(url, {
             method: "GET",
-            params: {q: query, key: key },
+            params: {q: queryWithoutTrailingSpaces, key: key },
             withCredentials: true
         });
     }

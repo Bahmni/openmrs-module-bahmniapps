@@ -43,4 +43,19 @@ describe('AutoCompleteService', function () {
         expect(mockHttp.get.mostRecentCall.args[1].params.key).toBe(key);
         expect(results).toBe(resultList);
     }]))
+
+    it('Should trim leading whitespaces',inject(['autoCompleteService', function (autoCompleteService){
+        var baseUrl = 'http://blah.com';
+        rootScope.BaseUrl = baseUrl;
+        var key = "caste";
+        var query = "       res        ";
+
+        var results = autoCompleteService.getAutoCompleteList(key,query);
+
+        expect(mockHttp.get).toHaveBeenCalled();
+        expect(mockHttp.get.mostRecentCall.args[0]).toBe(baseUrl + "/ws/rest/v1/raxacore/unique/personattribute");
+        expect(mockHttp.get.mostRecentCall.args[1].params.q).toBe(query.trimLeft());
+        expect(mockHttp.get.mostRecentCall.args[1].params.key).toBe(key);
+        expect(results).toBe(resultList);
+    }]))
 });

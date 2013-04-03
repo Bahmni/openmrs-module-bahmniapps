@@ -111,11 +111,6 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
                         scope.$eval(attrs.ngChange);
                     });
                     return true;
-                },
-                change:function (event, ui) {
-                    if (ui.item === null) {
-                        scope.patient[element[0].id] = null;
-                    }
                 }
             });
         }
