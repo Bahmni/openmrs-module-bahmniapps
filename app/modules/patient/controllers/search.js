@@ -3,19 +3,32 @@
 angular.module('registration.search', ['resources.patientService'])
 
     .controller('SearchPatientController', ['$scope', 'patientService', '$location', function ($scope, patientService, $location) {
-        var search = function () {
-            patientService.search($scope.query).success(function (data) {
-                $scope.results = data.results;
-            });
-        }
-        $scope.search = search;
 
-        var resultsPresent = function () {
+        var init = function () {
+            var query = $location.search().q || '';
+            $scope.query = query;
+            if (query && query.trim().length > 0) {
+                patientService.search(query).success(function (data) {
+                    $scope.results = data.results;
+                });
+            }
+        }
+        init();
+
+        $scope.search = function () {
+            $location.search('q', $scope.query);
+        }
+
+        $scope.resultsPresent = function () {
             return angular.isDefined($scope.results) && $scope.results.length > 0;
         }
-        $scope.resultsPresent = resultsPresent;
 
         $scope.createNew = function() {
+            $location.search({});
             $location.path("/create");
+        }
+
+        $scope.editPatient = function(patientUuid) {
+            console.log(patientUuid);
         }
     }]);

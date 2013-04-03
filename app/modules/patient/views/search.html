@@ -13,7 +13,7 @@
             <div class="control-group">
                 <div class="controls">
                     <button type="submit" class="btn">Search</button>
-                    <button class="btn" ng-click="createNew()">Create New</button>
+                    <button type="button" class="btn" ng-click="createNew()">Create New</button>
                 </div>
             </div>
         </form>
@@ -39,8 +39,7 @@
                 <td>{{result.person.gender}}</td>
                 <td>{{result.person.age}}</td>
                 <td>{{result.person.preferredAddress.cityVillage}}</td>
-                <td><button class="btn">Create Visit</button></td>
-                <td><button class="btn">Edit</button></td>
+                <td><button class="btn" ng-click="editPatient(result.identifiers[0].identifier)">Start Visit</button></td>
             </tr>
             </tbody>
         </table>

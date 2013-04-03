@@ -12,21 +12,33 @@ describe('SearchPatientController', function () {
             $controller = $injector.get('$controller');
         }));
 
-        it('should use the patient resource to search for patients', function () {
-            patientResource.search = jasmine.createSpy('Patient Resource GET').andReturn({success: success});
-            var query = 'john';
-            scope.query = query;
+        describe('init', function() {
+            it('should load patients if a query parameter is provided', function() {
+                patientResource.search = jasmine.createSpy('Patient Resource GET').andReturn({success: success});
+                var query = 'john';
 
-            $controller('SearchPatientController', {
-                $scope: scope,
-                patientService: patientResource
+                $controller('SearchPatientController', {
+                    $scope: scope,
+                    patientService: patientResource,
+                    $location: {search: function(){return {"q": query}}}
+                });
+
+                expect(patientResource.search).toHaveBeenCalled();
+                expect(patientResource.search.mostRecentCall.args[0]).toBe(query);
+                expect(success).toHaveBeenCalled();
             });
 
-            scope.search();
+            it('should load patients if a query parameter is provided', function() {
+                patientResource.search = jasmine.createSpy('Patient Resource GET');
 
-            expect(patientResource.search).toHaveBeenCalled();
-            expect(patientResource.search.mostRecentCall.args[0]).toBe(query);
-            expect(success).toHaveBeenCalled();
+                $controller('SearchPatientController', {
+                    $scope: scope,
+                    patientService: patientResource,
+                    $location: {search: function(){return {}}}
+                });
+
+                expect(patientResource.search.calls.length).toEqual(0);
+            });
         });
     });
 });
