@@ -2,7 +2,8 @@
     <h4>Visit Information</h4>
 <div>
     <form name="myForm" class="form-horizontal well" ng-submit="create()">
-        <legend class="mylegend">Summary</legend>
+     <fieldset>
+        <legend class="mylegend"><span>Summary</span></legend>
         <div class="control-group">
             <label class="control-label" for="patientId">Patient Identifier</label>
 
@@ -18,8 +19,9 @@
                 <input id="patientName" ng-model="patient.name" readonly>
             </div>
         </div>
-
-        <legend class="mylegend">Illness Details</legend>
+    </fieldset>
+    <fieldset>
+        <legend class="mylegend"><span>Illness Details</span></legend>
         <div class="control-group">
             <label class="control-label" for="chiefComplaint">Complaint</label>
 
@@ -27,8 +29,9 @@
                 <input type="text" id="chiefComplaint" ng-model="obs.chief_complaint" placeholder="Complaint">
             </div>
         </div>
-
-        <legend class="mylegend">New Registration</legend>    
+    </fieldset>
+    <fieldset>
+        <legend class="mylegend"><span>New Registration</span></legend>    
         <div class="control-group">
             <label class="control-label" for="registrationFee">Registration Fee</label>
 
@@ -37,8 +40,9 @@
 
             </div>
         </div>
-
-        <legend class="mylegend">Enter Measures for Body Mass Index</legend>
+    </fieldset>
+    <fieldset>
+        <legend class="mylegend"><span>Enter Measures for Body Mass Index</span></legend>
         <div class="control-group">
             <label class="control-label" for="height">Height (cm)</label>
             <div class="controls">
@@ -69,6 +73,7 @@
                 <button type="submit" class="btn btn-primary" ng-disabled="obs.bmi_error">Print Patient Card</button>
             </div>
         </div>
+    </fieldset>
     </form>
     <br>
 </div>
