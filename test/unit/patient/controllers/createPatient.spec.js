@@ -1,9 +1,8 @@
 'use strict';
 
-describe('CreateNewPatientController', function () {
+describe('CreatePatientController', function () {
     var scope;
     var patientService;
-    var autoCompleteService;
     var controller;
     var patient = {givenName: "some", familyName: "name"};
     var createPatientResponse = {identifier: "someIdentifier", uuid: "someUUID", name: "some name"};
@@ -12,12 +11,9 @@ describe('CreateNewPatientController', function () {
     var success;
 
     beforeEach(angular.mock.module('registration.createPatient'));
-    beforeEach(angular.mock.inject(function ($injector) {
+    beforeEach(angular.mock.inject(function () {
         location = jasmine.createSpyObj('$location', ['path']);
         success = jasmine.createSpy('Successful');
-
-        autoCompleteService = jasmine.createSpyObj('autoCompleteService', ['getAutoCompleteList']);
-        autoCompleteService.getAutoCompleteList.andReturn({success: success});
 
         patientService = jasmine.createSpyObj('patientService', ['create', 'getPatient', 'rememberPatient']);
         patientService.getPatient.andReturn(patient);
@@ -30,14 +26,13 @@ describe('CreateNewPatientController', function () {
 
     var setupController = function(preferenceObj){
         preferences = preferenceObj != undefined ? preferenceObj : {centerID: "GAN", hasOldIdentifier: false };
-        inject(function($controller, $rootScope, $location){
+        inject(function($controller, $rootScope){
             scope = $rootScope.$new();
-            controller = $controller('CreateNewPatientController',{
+            controller = $controller('CreatePatientController',{
                 $scope: scope,
                 patientService: patientService,
                 $location: location,
-                Preferences: preferences,
-                autoCompleteService: autoCompleteService
+                Preferences: preferences
             });
         });
     }
@@ -87,19 +82,6 @@ describe('CreateNewPatientController', function () {
 
             expect(preferences.hasOldIdentifier).toBe(true);
             expect(preferences.centerID).toBe("SEM");
-        })
-
-        it('should use the autoCompleteService to get auto complete list', function () {
-            setupController();
-
-            var key = "caste";
-            var param = "res";
-
-            scope.getAutoCompleteList(key, param);
-
-            expect(autoCompleteService.getAutoCompleteList).toHaveBeenCalled();
-            expect(autoCompleteService.getAutoCompleteList.mostRecentCall.args[0]).toBe(key);
-            expect(autoCompleteService.getAutoCompleteList.mostRecentCall.args[1]).toBe(param);
         })
     });
 });

@@ -25,7 +25,7 @@ angular.module('registration.search', ['resources.patientService'])
 
         $scope.createNew = function() {
             $location.search({});
-            $location.path("/create");
+            $location.path("/patient/new");
         }
 
         $scope.editPatient = function(patientUuid) {

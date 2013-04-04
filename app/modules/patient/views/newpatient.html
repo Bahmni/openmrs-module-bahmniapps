@@ -1,0 +1,43 @@
+<div class="container-fluid">
+    <h4>Register New Patient</h4>
+    <div></div>
+    <form name="myForm" class="form-horizontal well" ng-submit="create()" >
+        <legend class="mylegend">New Patient Registration (Patient Profile Information)</legend>
+        <div class="control-group">
+            <label class="control-label" for="center">Center</label>
+            <div class="controls">
+                <select  id="center" ng-model="patient.centerID" ng-options="c.name for c in centers"> </select>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="hasOldIdentifier">Enter ID</label>
+            <div class="controls">
+                <input type="checkbox"  id="hasOldIdentifier" ng-model="hasOldIdentifier" ng-change="patient.clearRegistrationNumber()">
+            </div>
+        </div>
+
+        <div class="control-group" ng-show="hasOldIdentifier">
+            <label class="control-label" for="registrationNumber">Patient Identifier</label>
+
+            <div class="controls">
+                <div class="input-prepend">
+                    <span class="add-on">{{patient.centerID.name}}</span>
+                    <input type="text" id="registrationNumber" ng-model="patient.registrationNumber"
+                           placeholder="Registration Number" non-blank="hasOldIdentifier"
+                           ng-change="patient.generatePatientIdentifier()">
+                </div>
+            </div>
+        </div>
+
+        <ng-include src="newPatient()" ng-controller="PatientCommonController"></ng-include>
+
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn btn-primary">Next</button>
+            </div>
+        </div>
+    </form>
+    <br>
+</div>
+</div>
