@@ -11,11 +11,14 @@ body{
 	width:170px;
 }
 .mylegend {
-    background:#DFDFDF;
+    background:#e6e6e6;
     font-size: 14px;
     line-height: 20px;
     margin-bottom: 0;
-    border-radius:5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border:1px solid #d4d4d4;
     span{
         display:inline-block;
         padding:2px 10px;
