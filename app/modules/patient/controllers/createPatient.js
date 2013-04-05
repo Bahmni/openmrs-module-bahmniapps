@@ -34,7 +34,7 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
                 });
             };
 
-            $scope.newPatient = function() {
+            $scope.patientCommon = function() {
                 return $route.routes['/patientcommon'].templateUrl;
-            }
+            };
         }]);
