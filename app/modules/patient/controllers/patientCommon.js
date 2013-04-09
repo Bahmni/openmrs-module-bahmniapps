@@ -5,7 +5,7 @@ angular.module('registration.patientCommon', ['resources.autoCompleteService'])
     function ($scope, autoCompleteService) {
 
         $scope.setCasteAsLastName = function() {
-            $scope.patient.caste = "";
+//            $scope.patient.caste = "";
             if($scope.patient.sameAsLastName) {
                 $scope.patient.caste = $scope.patient.familyName;
             }
@@ -17,8 +17,14 @@ angular.module('registration.patientCommon', ['resources.autoCompleteService'])
         }
 
         $scope.$watch('patient.familyName', function() {
-            if($scope.sameAsLastName) {
+            if($scope.patient.sameAsLastName) {
                 $scope.patient.caste = $scope.patient.familyName;
+            }
+        });
+
+        $scope.$watch('patient.caste', function() {
+            if($scope.patient.sameAsLastName) {
+                $scope.patient.familyName = $scope.patient.caste;
             }
         });
     }])
