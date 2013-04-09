@@ -74,6 +74,7 @@ angular.module('registration.patientCommon', ['resources.autoCompleteService'])
         return function (scope, element, attrs) {
             element.autocomplete({
                 autofocus: true,
+                minLength:3,
                 source:function(request, response){
                     scope.getAutoCompleteList(element[0].id, request.term).success(function(data){
                         response(data.resultList.results)
