@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registration.visitController', ['resources.patientService', 'resources.visitService', 'resources.concept', 'resources.bmi','resources.date'])
-    .controller('VisitController', ['$scope', '$location', 'patientService', 'visitService', 'concept', 'bmi','date', function ($scope, $location, patientService, visitService, conceptService, bmiModule, date) {
+    .controller('VisitController', ['$scope', '$location', 'patientService', 'visitService', 'concept', 'bmi','date', '$window', function ($scope, $location, patientService, visitService, conceptService, bmiModule, date, $window) {
     var registrationConcepts = [];
 
     (function () {
@@ -35,7 +35,7 @@ angular.module('registration.visitController', ['resources.patientService', 'res
     };
 
     $scope.back = function () {
-        $location.path("/create");
+        $window.history.back();
     }
 
     $scope.create = function () {

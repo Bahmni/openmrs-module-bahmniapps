@@ -5,7 +5,6 @@ angular.module('registration.patientCommon', ['resources.autoCompleteService'])
     function ($scope, autoCompleteService) {
 
         $scope.setCasteAsLastName = function() {
-//            $scope.patient.caste = "";
             if($scope.patient.sameAsLastName) {
                 $scope.patient.caste = $scope.patient.familyName;
             }

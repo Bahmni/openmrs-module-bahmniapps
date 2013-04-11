@@ -6,7 +6,8 @@ describe('Patient attributes', function () {
     var rootScope = {};
     var mockHttpGet = {
         defaults: {headers: {common: {'X-Requested-With': 'present'}} },
-        get: jasmine.createSpy('Http get').andReturn({objectReturned: true})
+        get: jasmine.createSpy('Http get').andReturn({success: function(callBack){
+            return callBack({results: []});}})
     };
 
     beforeEach(module('resources.patientAttributeType'));
@@ -17,10 +18,9 @@ describe('Patient attributes', function () {
     }));
 
     it('Should make call to getAll', inject(['patientAttributeType',function (patientAttribute) {
-        var results = patientAttribute.getAll();
+        patientAttribute.getAll();
 
         expect(mockHttpGet.get).toHaveBeenCalled();
         expect(mockHttpGet.get.mostRecentCall.args[0]).toBe(baseUrl + '/ws/rest/v1/personattributetype?v=full');
-        expect(results.objectReturned).toBe(true);
     }]));
 });

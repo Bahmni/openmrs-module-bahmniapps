@@ -30,7 +30,7 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
                     $scope.patient.uuid = data.uuid;
                     $scope.patient.name = data.name;
                     patientService.rememberPatient($scope.patient);
-                    $location.path("/visitinformation");
+                    $location.path("/visit/new");
                 });
             };
 

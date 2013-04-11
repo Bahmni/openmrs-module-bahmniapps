@@ -27,6 +27,14 @@ angular.module('resources.patientService', ['resources.patient', 'resources.pati
             });
         }
 
+        var get =  function (uuid) {
+            return $http.get($rootScope.BaseUrl + "/ws/rest/v1/patient/" + uuid, {
+                method: "GET",
+                params: {v: "full"},
+                withCredentials: true
+            });
+        }
+
         var create = function (patient) {
             var patientJson = patientMapper.map(patient);
             return $http.post($rootScope.BaseUrl + "/ws/rest/v1/raxacore/patient", patientJson, {
@@ -40,6 +48,7 @@ angular.module('resources.patientService', ['resources.patient', 'resources.pati
             create: create,
             getPatient: getPatient,
             rememberPatient: rememberPatient,
-			clearPatient: clearPatient
+			clearPatient: clearPatient,
+            get: get
         };
     }]);

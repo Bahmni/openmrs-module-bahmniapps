@@ -5,8 +5,7 @@ describe('patientMapper', function() {
 
     var patientMapper;
 
-    var samplePatientAttributeTypes = {
-        "results": [
+    var samplePatientAttributeTypes = [
             {
                 "uuid": "be4f3f8a-862c-11e2-a490-afe87ebb32c9",
                 "name": "oldPatientIdentifier",
@@ -15,16 +14,11 @@ describe('patientMapper', function() {
                 "uuid": "c3a345c6-862c-11e2-a490-afe87ebb32c9",
                 "name": "caste",
             }
-        ]
-    };
+        ];
 
     var mockPatientAttributeType = {
         getAll: function () {
-            return {
-                success: function (callBack) {
-                    callBack(samplePatientAttributeTypes);
-                }
-            }
+            return samplePatientAttributeTypes;
         }
     }
 

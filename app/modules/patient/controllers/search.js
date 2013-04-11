@@ -29,6 +29,8 @@ angular.module('registration.search', ['resources.patientService'])
         }
 
         $scope.editPatient = function(patientUuid) {
-            console.log(patientUuid);
+            $location.search({});
+            $location.path("/patient/"+patientUuid)
+
         }
     }]);

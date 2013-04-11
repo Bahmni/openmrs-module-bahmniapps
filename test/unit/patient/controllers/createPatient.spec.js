@@ -65,11 +65,11 @@ describe('CreatePatientController', function () {
             expect(patientService.rememberPatient).toHaveBeenCalledWith(patient);
         });
 
-        it('should redirect to visitinformation page', function() {
+        it('should redirect to new visit page', function() {
             setupController();
      
             scope.create()
-            expect(location.path).toHaveBeenCalledWith("/visitinformation");
+            expect(location.path).toHaveBeenCalledWith("/visit/new");
         })
 
         it('should update preferences with current values of centerID and hasOldIdentifier', function () {
