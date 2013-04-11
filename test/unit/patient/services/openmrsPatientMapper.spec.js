@@ -20,6 +20,7 @@ describe('patientMapper', function() {
                 "middleName": "middle",
                 "familyName": "family"
             },
+
             "preferredAddress": {
                 "display": "house1243",
                 "uuid": "7746b284-82d5-4251-a7ec-6685b0ced206",
@@ -81,6 +82,7 @@ describe('patientMapper', function() {
 
     });
 
+
     it('should map values from the openmrs Patient to our patient object', function () {
 
         var patient = mapper.map(openmrsPatient);
@@ -118,5 +120,10 @@ describe('patientMapper', function() {
         openmrsPatient.person.birthdateEstimated =  false;
         var patient = mapper.map(openmrsPatient);
         expect(patient.birthdate).toBe('01-04-2013');
+    });
+
+    it("should not fail if preferred address is null", function() {
+        openmrsPatient.person.preferredAddress = null;
+        mapper.map(openmrsPatient);
     });
 });

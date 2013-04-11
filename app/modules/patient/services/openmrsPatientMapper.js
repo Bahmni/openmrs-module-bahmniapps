@@ -8,16 +8,29 @@ angular.module('resources.openmrsPatientMapper', ['resources.patientAttributeTyp
                 var x = patientAttributeType.get(attribute.attributeType.uuid);
                 patient[x.name] = attribute.value;
             });
-        }
+        };
+
 
         var pad = function(number) {
             return number > 9 ? number.toString() : "0" + number.toString();
-        }
+        };
+
         var getBirthDate = function(openmrsPatient) {
             var date= new Date(openmrsPatient.person.birthdate.substr(0,10));
             if (openmrsPatient.person.birthdateEstimated) return "";
             return pad(date.getDate())+"-"+ pad(date.getMonth() + 1)+"-"+date.getFullYear();
-        }
+        };
+
+        var mapAddress = function(preferredAddress) {
+            return preferredAddress ? {
+                "address1": preferredAddress.address1,
+                "address2": preferredAddress.address2,
+                "address3": preferredAddress.address3,
+                "cityVillage": preferredAddress.cityVillage,
+                "countyDistrict": preferredAddress.countyDistrict,
+                "stateProvince": preferredAddress.stateProvince
+            } : {};
+        };
 
         var map = function (openmrsPatient) {
             var patient =  {
@@ -27,14 +40,7 @@ angular.module('resources.openmrsPatientMapper', ['resources.patientAttributeTyp
                 "birthdate": getBirthDate(openmrsPatient),
                 "gender": openmrsPatient.person.gender,
                 "patientIdentifier": openmrsPatient.identifiers[0].identifier,
-                "address": {
-                    "address1": openmrsPatient.person.preferredAddress.address1,
-                    "address2": openmrsPatient.person.preferredAddress.address2,
-                    "address3": openmrsPatient.person.preferredAddress.address3,
-                    "cityVillage": openmrsPatient.person.preferredAddress.cityVillage,
-                    "countyDistrict": openmrsPatient.person.preferredAddress.countyDistrict,
-                    "stateProvince": openmrsPatient.person.preferredAddress.stateProvince
-                }
+                "address": mapAddress(openmrsPatient.person.preferredAddress)
             };
 
             patientAttributeType.initialization.success(function() {
