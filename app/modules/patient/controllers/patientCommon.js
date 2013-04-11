@@ -22,8 +22,8 @@ angular.module('registration.patientCommon', ['resources.autoCompleteService'])
         });
 
         $scope.$watch('patient.caste', function() {
-            if($scope.patient.sameAsLastName) {
-                $scope.patient.familyName = $scope.patient.caste;
+            if($scope.patient.sameAsLastName && ($scope.patient.familyName != $scope.patient.caste)) {
+                $scope.patient.sameAsLastName = false;
             }
         });
     }])
