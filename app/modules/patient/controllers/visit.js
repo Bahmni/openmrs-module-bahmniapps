@@ -7,9 +7,9 @@ angular.module('registration.visitController', ['resources.patientService', 'res
     (function () {
         $scope.encounter = {};
         $scope.obs = {};
-        $scope.obs.registration_fees = defaults.registration_fees;
         $scope.visit = {};
         $scope.patient = patientService.getPatient();
+        $scope.obs.registration_fees = defaults.registration_fees($scope.patient.isNew);
 
         conceptService.getRegistrationConcepts().success(function (data) {
             var concepts = data.results[0].setMembers;
@@ -18,7 +18,6 @@ angular.module('registration.visitController', ['resources.patientService', 'res
             });
         });
     })();
-
 
     $scope.calculateBMI = function () {
         if($scope.obs.height && $scope.obs.weight){
@@ -36,7 +35,9 @@ angular.module('registration.visitController', ['resources.patientService', 'res
 
     $scope.back = function () {
         $window.history.back();
-    }
+    };
+
+    $scope.registrationFeeLabel = $scope.patient.isNew ? "Registration Fee" : "Consultation Fee";
 
     $scope.create = function () {
         var datetime = date.now().toISOString();

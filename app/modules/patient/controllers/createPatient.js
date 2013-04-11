@@ -29,6 +29,7 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
                     $scope.patient.identifier = data.identifier;
                     $scope.patient.uuid = data.uuid;
                     $scope.patient.name = data.name;
+                    $scope.patient.isNew = true;
                     patientService.rememberPatient($scope.patient);
                     $location.path("/visit/new");
                 });

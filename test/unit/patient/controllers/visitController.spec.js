@@ -55,13 +55,26 @@ describe('VisitController', function () {
 
     describe('initialization', function () {
         it('should set the patient from patient data and the default registration fee', function () {
+            patient.isNew = true;
             $controller('VisitController', {
                 $scope: scope,
                 concept: conceptService,
                 patientService: patientService
             });
 
-           expect(scope.obs.registration_fees).toBe(defaults.registration_fees);
+           expect(scope.obs.registration_fees).toBe(defaults.registration_fees_newPatient);
+           expect(scope.patient).toBe(patient);
+        });
+
+        it('should set the registration fee for returning patient', function () {
+            patient.isNew = false;
+            $controller('VisitController', {
+                $scope: scope,
+                concept: conceptService,
+                patientService: patientService
+            });
+
+           expect(scope.obs.registration_fees).toBe(defaults.registration_fees_oldPatient);
            expect(scope.patient).toBe(patient);
         });
     });
