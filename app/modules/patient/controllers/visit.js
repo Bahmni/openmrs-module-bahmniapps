@@ -34,7 +34,7 @@ angular.module('registration.visitController', ['resources.patientService', 'res
     };
 
     $scope.back = function () {
-        $window.history.back();
+        $location.path("/patient/" + $scope.patient.uuid);
     };
 
     $scope.registrationFeeLabel = $scope.patient.isNew ? "Registration Fee" : "Consultation Fee";
