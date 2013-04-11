@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('registration.createPatient', ['resources.patientService', 'resources.preferences'])
-    .controller('CreatePatientController', ['$scope', 'patientService', '$location', 'Preferences', '$route',
-        function ($scope, patientService, $location, preferences, $route) {
+angular.module('registration.createPatient', ['resources.patientService', 'resources.preferences', 'resources.patient'])
+    .controller('CreatePatientController', ['$scope', 'patientService', '$location', 'Preferences', '$route', 'patient',
+        function ($scope, patientService, $location, preferences, $route, patientModel) {
 
             (function () {
-                $scope.patient = patientService.getPatient();
+                $scope.patient = patientModel.create();
                 $scope.centers = [
                     {name: 'GAN'},
                     {name: 'SEM'},
@@ -26,11 +26,13 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
             $scope.create = function () {
                 setPreferences();
                 patientService.create($scope.patient).success(function (data) {
-                    $scope.patient.identifier = data.identifier;
-                    $scope.patient.uuid = data.uuid;
-                    $scope.patient.name = data.name;
-                    $scope.patient.isNew = true;
-                    patientService.rememberPatient($scope.patient);
+                    var patient = {
+                        identifier: data.identifier,
+                        uuid: data.uuid,
+                        name: data.name,
+                        isNew: true
+                    }
+                    patientService.rememberPatient(patient);
                     $location.path("/visit/new");
                 });
             };

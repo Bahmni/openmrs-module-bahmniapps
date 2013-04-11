@@ -54,17 +54,6 @@ describe('CreatePatientController', function () {
     });
 
     describe('create', function () {
-        it('should call patient service to create a new patient and remeber it', function () {
-            setupController();
-            scope.create()
-
-            expect(patientService.create).toHaveBeenCalledWith(patient);
-            expect(scope.patient.identifier).toBe("someIdentifier");
-            expect(scope.patient.uuid).toBe("someUUID");
-            expect(scope.patient.name).toBe("some name");
-            expect(patientService.rememberPatient).toHaveBeenCalledWith(patient);
-        });
-
         it('should redirect to new visit page', function() {
             setupController();
      

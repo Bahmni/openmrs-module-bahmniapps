@@ -5,10 +5,7 @@ angular.module('resources.patientService', ['resources.patient', 'resources.pati
         var patient;
 
         var getPatient = function () {
-            if(patient == null){
-                return patientModule.create();
-            }
-            return patient;
+            return patient ? patient : {};
         }
 
         var rememberPatient = function (patientObj) {
@@ -57,7 +54,7 @@ angular.module('resources.patientService', ['resources.patient', 'resources.pati
             getPatient: getPatient,
             rememberPatient: rememberPatient,
 			clearPatient: clearPatient,
-            get: get,
-            update: update
+            update: update,
+            get: get
         };
     }]);
