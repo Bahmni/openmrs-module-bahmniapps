@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('registration.createPatient', ['resources.patientService', 'resources.preferences', 'resources.patient'])
-    .controller('CreatePatientController', ['$scope', 'patientService', '$location', 'Preferences', '$route', 'patient',
-        function ($scope, patientService, $location, preferences, $route, patientModel) {
-
+    .controller('CreatePatientController', ['$scope', 'patientService', '$location', 'Preferences', '$route', 'patient', '$window',
+        function ($scope, patientService, $location, preferences, $route, patientModel, $window) {
             (function () {
                 $scope.patient = patientModel.create();
                 $scope.centers = [
@@ -33,6 +32,8 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
                         isNew: true
                     }
                     patientService.rememberPatient(patient);
+                    $window.history.pushState(null, null, $location.absUrl().replace("new", data.uuid) + "?newpatient=true");
+
                     $location.path("/visit/new");
                 });
             };

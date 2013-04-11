@@ -12,7 +12,9 @@ describe('CreatePatientController', function () {
 
     beforeEach(angular.mock.module('registration.createPatient'));
     beforeEach(angular.mock.inject(function () {
-        location = jasmine.createSpyObj('$location', ['path']);
+        location = jasmine.createSpyObj('$location', ['path','absUrl']);
+        location.absUrl = function(){return "/patient/new"};
+
         success = jasmine.createSpy('Successful');
 
         patientService = jasmine.createSpyObj('patientService', ['create', 'getPatient', 'rememberPatient']);

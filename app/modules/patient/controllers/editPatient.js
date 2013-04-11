@@ -28,6 +28,10 @@ angular.module('registration.editPatient', ['resources.patientService', 'resourc
                 });
             };
 
+            $scope.showBackButton = function() {
+                return !$location.search().newpatient;
+            };
+
             $scope.back = function() {
                 $window.history.back();
             }
