@@ -5,6 +5,7 @@ angular.module('registration.editPatient', ['resources.patientService', 'resourc
         function ($scope, patientService, $location, preferences, $route, patientMapper, $window) {
             $scope.patient = {};
             (function() {
+                $scope.patient.uuid = $route.current.params.patientUuid;
                 patientService.get($route.current.params.patientUuid).success(function(openmrsPatient){
                     $scope.patient = patientMapper.map(openmrsPatient);
                 });
@@ -16,7 +17,7 @@ angular.module('registration.editPatient', ['resources.patientService', 'resourc
             };
 
             $scope.edit = function () {
-                patientService.create($scope.patient).success(function (data) {
+                patientService.update($scope.patient.uuid).success(function (data) {
                     $scope.patient.identifier = data.identifier;
                     $scope.patient.uuid = data.uuid;
                     $scope.patient.name = data.name;
@@ -28,5 +29,4 @@ angular.module('registration.editPatient', ['resources.patientService', 'resourc
             $scope.back = function() {
                 $window.history.back();
             }
-
         }]);

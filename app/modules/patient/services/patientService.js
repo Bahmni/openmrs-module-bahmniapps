@@ -43,12 +43,21 @@ angular.module('resources.patientService', ['resources.patient', 'resources.pati
             });
         }
 
+        var update = function(patient, uuid) {
+            var patientJson = patientMapper.map(patient);
+            return $http.post($rootScope.BaseUrl + "/ws/rest/v1/raxacore/patient/" + uuid, patientJson, {
+                withCredentials: true,
+                headers: {"Accept": "application/json", "Content-Type": "application/json"}
+            });
+        }
+
         return {
             search: search,
             create: create,
             getPatient: getPatient,
             rememberPatient: rememberPatient,
 			clearPatient: clearPatient,
-            get: get
+            get: get,
+            update: update
         };
     }]);
