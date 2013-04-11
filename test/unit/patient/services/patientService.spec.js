@@ -54,7 +54,7 @@ describe('Patient resource', function () {
 
         expect(mockPatientMapper.map).toHaveBeenCalled();
         expect(mockHttp.post).toHaveBeenCalled();
-        expect(mockHttp.post.mostRecentCall.args[0]).toBe(baseUrl + '/ws/rest/v1/raxacore/patient');
+        expect(mockHttp.post.mostRecentCall.args[0]).toBe(baseUrl + '/ws/rest/v1/bahmnicore/patient');
         expect(mockHttp.post.mostRecentCall.args[1]).toEqual(mappedPatient);
         expect(mockHttp.post.mostRecentCall.args[2].headers['Content-Type']).toBe('application/json');
         expect(mockHttp.post.mostRecentCall.args[2].headers['Accept']).toBe('application/json');

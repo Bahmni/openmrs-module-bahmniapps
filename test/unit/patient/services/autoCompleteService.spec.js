@@ -23,7 +23,7 @@ describe('AutoCompleteService', function () {
         var results = autoCompleteService.getAutoCompleteList(key,query);
 
         expect(mockHttp.get).toHaveBeenCalled();
-        expect(mockHttp.get.mostRecentCall.args[0]).toBe(baseUrl + '/ws/rest/v1/raxacore/unique/personname');
+        expect(mockHttp.get.mostRecentCall.args[0]).toBe(baseUrl + '/ws/rest/v1/bahmnicore/unique/personname');
         expect(mockHttp.get.mostRecentCall.args[1].params.q).toBe(query);
         expect(mockHttp.get.mostRecentCall.args[1].params.key).toBe(key);
         expect(results).toBe(resultList);
@@ -38,7 +38,7 @@ describe('AutoCompleteService', function () {
         var results = autoCompleteService.getAutoCompleteList(key,query);
 
         expect(mockHttp.get).toHaveBeenCalled();
-        expect(mockHttp.get.mostRecentCall.args[0]).toBe(baseUrl + "/ws/rest/v1/raxacore/unique/personattribute");
+        expect(mockHttp.get.mostRecentCall.args[0]).toBe(baseUrl + "/ws/rest/v1/bahmnicore/unique/personattribute");
         expect(mockHttp.get.mostRecentCall.args[1].params.q).toBe(query);
         expect(mockHttp.get.mostRecentCall.args[1].params.key).toBe(key);
         expect(results).toBe(resultList);
@@ -53,7 +53,7 @@ describe('AutoCompleteService', function () {
         var results = autoCompleteService.getAutoCompleteList(key,query);
 
         expect(mockHttp.get).toHaveBeenCalled();
-        expect(mockHttp.get.mostRecentCall.args[0]).toBe(baseUrl + "/ws/rest/v1/raxacore/unique/personattribute");
+        expect(mockHttp.get.mostRecentCall.args[0]).toBe(baseUrl + "/ws/rest/v1/bahmnicore/unique/personattribute");
         expect(mockHttp.get.mostRecentCall.args[1].params.q).toBe(query.trimLeft());
         expect(mockHttp.get.mostRecentCall.args[1].params.key).toBe(key);
         expect(results).toBe(resultList);

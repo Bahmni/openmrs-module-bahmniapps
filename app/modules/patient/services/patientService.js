@@ -34,7 +34,7 @@ angular.module('resources.patientService', ['resources.patient', 'resources.pati
 
         var create = function (patient) {
             var patientJson = patientMapper.map(patient);
-            return $http.post($rootScope.BaseUrl + "/ws/rest/v1/raxacore/patient", patientJson, {
+            return $http.post($rootScope.BaseUrl + "/ws/rest/v1/bahmnicore/patient", patientJson, {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
             });

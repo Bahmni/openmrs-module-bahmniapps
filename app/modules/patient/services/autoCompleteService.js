@@ -7,8 +7,8 @@ angular.module('resources.autoCompleteService', [])
 
     var init = function(){
         urlMap = {
-            "familyName" : "/ws/rest/v1/raxacore/unique/personname",
-            "caste" : "/ws/rest/v1/raxacore/unique/personattribute"
+            "familyName" : "/ws/rest/v1/bahmnicore/unique/personname",
+            "caste" : "/ws/rest/v1/bahmnicore/unique/personattribute"
         }
     }
     init();
