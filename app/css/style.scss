@@ -10,11 +10,20 @@ body{
 .reg-wrapper .form-horizontal .control-label{
 	width:170px;
 }
+select{
+        box-shadow:none;
+}
+input:focus:invalid,
+textarea:focus:invalid,
+select:focus:invalid {
+  color: #b94a48;
+  border-color: #ee5f5b;
+}
+
 .mylegend {
     background:#e6e6e6;
     font-size: 14px;
     line-height: 20px;
-    margin-bottom: 0;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -24,6 +33,16 @@ body{
         padding:2px 10px;
         font-weight:bold;
     }
+}
+.asterick{
+    color:red;
+}
+.btn-large {
+  padding: 5px 20px;
+  font-size: 14.5px;
+  -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
 }
 #casteSameAsLastNameCheckLabel {
     -moz-user-select: none;

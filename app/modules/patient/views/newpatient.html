@@ -6,7 +6,7 @@
         <div class="control-group">
             <label class="control-label" for="center">Center</label>
             <div class="controls">
-                <select  id="center" ng-model="patient.centerID" ng-options="c.name for c in centers"> </select>
+                <select  id="center" ng-model="patient.centerID" ng-options="c.name for c in centers" required> </select>
             </div>
         </div>
 
@@ -18,7 +18,7 @@
         </div>
 
         <div class="control-group" ng-show="hasOldIdentifier">
-            <label class="control-label" for="registrationNumber">Patient Identifier</label>
+            <label class="control-label" for="registrationNumber">Patient Identifier </label>
 
             <div class="controls">
                 <div class="input-prepend">
@@ -30,11 +30,11 @@
             </div>
         </div>
 
-        <ng-include src="patientCommon()" ng-controller="PatientCommonController"></ng-include>
+        <div ng-include="patientCommon()" ng-controller="PatientCommonController"></div>
 
         <div class="control-group">
-            <div class="controls">
-                <button type="submit" class="btn btn-primary">Next</button>
+            <div class="pull-right">
+                <button type="submit" class="btn btn-large btn-primary">Next</button>
             </div>
         </div>
     </form>
