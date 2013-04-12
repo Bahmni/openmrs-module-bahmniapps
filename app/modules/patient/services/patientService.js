@@ -42,7 +42,7 @@ angular.module('resources.patientService', ['resources.patient', 'resources.pati
 
         var update = function(patient, uuid) {
             var patientJson = patientMapper.map(patient);
-            return $http.post($rootScope.BaseUrl + "/ws/rest/v1/raxacore/patient/" + uuid, patientJson, {
+            return $http.post($rootScope.BaseUrl + "/ws/rest/v1/bahmnicore/patient/" + uuid, patientJson, {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
             });
