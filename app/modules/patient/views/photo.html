@@ -1,0 +1,8 @@
+<button type="button" ng-click="launchPhotoCapturePopup()">Take Picture</button>
+<div class="photoCaptureDialog">
+    <video id="live" autoplay></video>
+    <button type="button" id="click" ng-click="clickImage()">Press to Click photo</button>
+    <button type="button" class="confirmImage" disabled ng-click="confirmImage()">Confirm Patient Image</button>
+    <br>
+    <canvas width="300" height="300"></canvas>
+</div>

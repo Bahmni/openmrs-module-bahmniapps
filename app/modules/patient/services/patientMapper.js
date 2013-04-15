@@ -12,6 +12,7 @@ angular.module('resources.patientMapper', ['resources.patientAttributeType'])
                 patientIdentifier: patient.patientIdentifier,
                 centerID: patient.centerID,
                 addresses: [patient.address],
+                image: patient.image,
                 attributes: _mapAttributes(patient)
             };
         }
