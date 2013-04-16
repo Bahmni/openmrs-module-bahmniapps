@@ -1,7 +1,5 @@
 <div class="row-fluid">
     <div class="control-group form-inline">
-
-
         <div class="control-group form-inline">
             <label class="control-label" for="patientName">मरीज़ का नाम</label>
             <div class="controls" id="patientNameInHindi">
@@ -10,6 +8,7 @@
                         <input type="text" id="familyNameInHindi" ng-model="patient.familyNameHindi" placeholder="उपनाम">
                     </span>
             </div>
+
         </div>
 
         <div class="control-group form-inline">
@@ -25,12 +24,13 @@
                         </span>
             </div>
         </div>
-
     </div>
-    <!--<div>-->
-        <!--<img ng-src="{{patient.image}}" onError="this.onError=null;this.src='modules/photo-capture/images/blank-user.gif';"/>-->
-        <!--<div capture-photo ng-model="patient.image"></div>-->
-    <!--</div>-->
+
+    <span class="pull-right">
+            <img ng-src="{{patient.image}}"
+                 onError="this.onError=null;this.src='modules/photo-capture/images/blank-user.gif';"/>
+            <div capture-photo ng-model="patient.image"></div>
+     </span>
 </div>
 <div class="row-fluid">
 
