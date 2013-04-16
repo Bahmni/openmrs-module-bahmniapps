@@ -97,7 +97,6 @@ angular.module('registration.patientCommon', ['resources.autoCompleteService'])
     })
 
     .directive('capturePhoto', function factory($parse, $window) {
-
         var directiveDefinitionObject = {
             templateUrl: 'modules/patient/views/photo.html',
             restrict: 'A',
@@ -130,9 +129,10 @@ angular.module('registration.patientCommon', ['resources.autoCompleteService'])
                             }
                             dialogElement.dialog('open');
                         };
+
                         scope.confirmImage = function () {
                             var dataURL = canvas.toDataURL("image/jpeg");
-                            var image = dataURL.replace("data:image/jpeg;base64,", "");
+                            var image = dataURL;
                             var ngModel = $parse(iAttrs.ngModel);
 
                             ngModel.assign(scope, image);

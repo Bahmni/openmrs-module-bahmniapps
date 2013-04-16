@@ -31,7 +31,8 @@ angular.module('resources.patient', ['resources.date'])
                 address: {},
                 calculateAge: calculateAge,
                 generatePatientIdentifier: generatePatientIdentifier,
-                clearRegistrationNumber: clearRegistrationNumber
+                clearRegistrationNumber: clearRegistrationNumber,
+                image : 'modules/photo-capture/images/blank-user.gif'
             };
         }
 

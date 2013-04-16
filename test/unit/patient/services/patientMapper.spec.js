@@ -88,4 +88,24 @@ describe('patientMapper', function() {
         expect(mappedPatientData.gender).toEqual('F');
         expect(mappedPatientData.birthdate).toEqual("06-26-1989");
     });
+
+    it('should strip data prefix when image is a jpeg data url', function () {
+        var mappedPatientData = patientMapper.map({
+            image: 'data:image/jpeg;base64,asdfasdfasdfkalsdfkj'
+        });
+        expect(mappedPatientData.image).toBe('asdfasdfasdfkalsdfkj');
+
+    });
+
+    it('should map image if it is a data image', function () {
+        var mappedPatientData = patientMapper.map({
+            image: 'asdfasdfasdfkalsdfkj'
+        });
+        expect(mappedPatientData.image).toBeFalsy();
+    });
+
+    it('should not fail when image not present', function () {
+        var mappedPatientData = patientMapper.map({image: null});
+        expect(mappedPatientData.image).toBeFalsy();
+    });
 })

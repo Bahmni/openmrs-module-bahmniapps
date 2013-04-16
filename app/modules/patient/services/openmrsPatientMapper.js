@@ -42,11 +42,11 @@ angular.module('resources.openmrsPatientMapper', ['resources.patientAttributeTyp
                 "patientIdentifier": openmrsPatient.identifiers[0].identifier,
                 "address": mapAddress(openmrsPatient.person.preferredAddress)
             };
+            patient.image = "/patient_images/" + patient.patientIdentifier + ".jpeg";
 
             patientAttributeType.initialization.success(function() {
                 mapAttributes(patient, openmrsPatient.person.attributes);
             });
-
             return patient;
         };
 

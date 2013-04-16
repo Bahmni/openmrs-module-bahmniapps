@@ -4,6 +4,8 @@ angular.module('resources.patientMapper', ['resources.patientAttributeType'])
     .factory('patientMapper', ['patientAttributeType', function (patientAttributeType) {
 
         var map = function(patient) {
+            var image = patient.image && patient.image.indexOf('data') === 0 ? patient.image.replace("data:image/jpeg;base64,", "") : null;
+
             return {
                 names: [{familyName: patient.familyName, givenName: patient.givenName}],
                 age: patient.age,
@@ -12,7 +14,7 @@ angular.module('resources.patientMapper', ['resources.patientAttributeType'])
                 patientIdentifier: patient.patientIdentifier,
                 centerID: patient.centerID,
                 addresses: [patient.address],
-                image: patient.image,
+                image: image,
                 attributes: _mapAttributes(patient)
             };
         }
