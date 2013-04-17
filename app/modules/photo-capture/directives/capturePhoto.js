@@ -3,7 +3,7 @@
 angular.module('registration.photoCapture', [])
     .directive('capturePhoto', function factory($parse, $window) {
         var directiveDefinitionObject = {
-            templateUrl: 'modules/patient/views/photo.html',
+            templateUrl: 'modules/photo-capture/views/photo.html',
             restrict: 'A',
             scope: true,
             compile: function compile() {
