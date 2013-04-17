@@ -168,6 +168,10 @@ angular.module('registration.patientCommon', ['resources.autoCompleteService'])
                                  }
                              }
                         });
+
+                        iElement.bind("$destroy", function() {
+                            dialogElement.dialog("destroy");
+                        });
                     }
                 }
             }

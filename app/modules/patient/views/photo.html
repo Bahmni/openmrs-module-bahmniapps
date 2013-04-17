@@ -1,11 +1,11 @@
-<button type="button" ng-click="launchPhotoCapturePopup()">Take Photo</button>
+<button type="button" class="btn btn-large btn-primary" ng-click="launchPhotoCapturePopup()">Take Photo</button>
 <div class="photoCaptureDialog container-fluid" title="Take photo">
     <div class="row-fluid">
         <video id="live" autoplay class="span6"></video>
         <canvas class="span6"></canvas>
     </div>
     <div class="row-fluid">
-        <button type="button" id="click" ng-click="clickImage()" class="span6">Press to Click photo</button>
-        <button type="button" class="confirmImage span6" disabled ng-click="confirmImage()">Confirm Patient Image</button>
+        <button type="button" id="click" ng-click="clickImage()" class="span6 btn btn-large btn-primary">Click to take Photo</button>
+        <button type="button" class="confirmImage span6 btn btn-large btn-primary" disabled ng-click="confirmImage()">Confirm Patient Photo</button>
     </div>
 </div>
