@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('registration', ['registration.search', 'registration.session', 'http-auth-interceptor', 'registration.createPatient', 'registration.visitController', 'infrastructure.httpErrorInterceptor', 'registration.patientCommon', 'registration.editPatient', 'registration.printPatient'])
+angular.module('registration', ['registration.search', 'registration.session', 'http-auth-interceptor', 'registration.createPatient', 'registration.visitController', 'infrastructure.httpErrorInterceptor', 'registration.patientCommon', 'registration.editPatient'])
 angular.module('registration').config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/search', {templateUrl: 'modules/patient/views/search.html', controller: 'SearchPatientController'});
         $routeProvider.when('/search?q=:query', {templateUrl: 'modules/patient/views/search.html', controller: 'SearchPatientController'});
