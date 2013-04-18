@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registration.visitController', ['resources.patientService', 'resources.visitService', 'resources.concept', 'resources.bmi','resources.date'])
-    .controller('VisitController', ['$scope', '$location', 'patientService', 'visitService', 'concept', 'bmi','date', '$window', function ($scope, $location, patientService, visitService, conceptService, bmiModule, date, $window) {
+    .controller('VisitController', ['$scope', '$location', 'patientService', 'visitService', 'concept', 'bmi','date', '$window', '$route', function ($scope, $location, patientService, visitService, conceptService, bmiModule, date, $window, $route) {
     var registrationConcepts = [];
 
     (function () {
@@ -61,7 +61,20 @@ angular.module('registration.visitController', ['resources.patientService', 'res
 
         visitService.create($scope.visit).success(function(){
 	        patientService.clearPatient();
-			$location.path("/search");
+			$window.print();
 	    });
     };
-}]);
+
+    $scope.register = function(){
+        $location.path("/patient/new");
+    };
+
+    $scope.search = function(){
+        $location.path("/search");
+    };
+
+    $scope.printLayout = function() {
+        return $route.routes['/printPatient'].templateUrl;
+    };
+
+ }]);

@@ -48,3 +48,15 @@ select:focus:invalid {
   display: inline-block;
   position: relative;
   top: 3px; }
+
+.print-layout {
+  display: none; }
+
+@media print {
+  .print-layout {
+    display: block; }
+
+  .non-printable, .alert, header {
+    display: none; } }
+.btn-secondary {
+  float: right; }

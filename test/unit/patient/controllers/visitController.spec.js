@@ -10,6 +10,7 @@ describe('VisitController', function () {
     var patient;
     var date;
     var $location;
+    var $window;
 
     var sampleConcepts={
         "results": [
@@ -33,12 +34,13 @@ describe('VisitController', function () {
     }
 
     beforeEach(module('registration.visitController'));
-    beforeEach(inject(['$injector', 'date', '$location', function ($injector, dateModule, location) {
+    beforeEach(inject(['$injector', 'date', '$location', '$window', function ($injector, dateModule, location, window) {
         $controller = $injector.get('$controller');
         patientService = jasmine.createSpyObj('patientService', ['getPatient', 'clearPatient']);
         date = dateModule;
         patient = {};
         $location = location;
+        $window = window;
         patientService.getPatient.andReturn(patient);
         success = jasmine.createSpy();
         conceptService = {
@@ -116,14 +118,14 @@ describe('VisitController', function () {
             expect(visitService.create).toHaveBeenCalledWith(scope.visit);
         });
 
-         it("should go to search on succesful creation of visit", function(){
-            spyOn($location, 'path');
+         it("should go print patient on creation of visit", function(){
+            spyOn($window, 'print');
             scope.create();
             expect(createPromise.success).toHaveBeenCalled();
 
             createPromise.success.mostRecentCall.args[0]();
             
-          expect($location.path).toHaveBeenCalledWith('/search');
+          expect($window.print).toHaveBeenCalled();
        });
 
          it("should clear the stored patient on success", function(){

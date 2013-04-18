@@ -1,80 +1,90 @@
-<div class="container-fluid" xmlns="http://www.w3.org/1999/html">
-    <h4>Visit Information</h4>
-<div>
-    <form name="myForm" class="form-horizontal well" ng-submit="create()">
-     <fieldset>
-        <legend class="mylegend"><span>Summary</span></legend>
-        <div class="control-group">
-            <label class="control-label" for="patientId">Patient Identifier</label>
-
-            <div class="controls">
-                <input id="patientId" ng-model="patient.identifier" readonly>
-            </div>
-        </div>
-
-        <div class="control-group">
-            <label class="control-label" for="patientName">Patient Name</label>
-
-            <div class="controls">
-                <input id="patientName" ng-model="patient.name" readonly>
-            </div>
-        </div>
-    </fieldset>
-    <fieldset>
-        <legend class="mylegend"><span>Illness Details</span></legend>
-        <div class="control-group">
-            <label class="control-label" for="chiefComplaint">Complaint</label>
-
-            <div class="controls">
-                <input type="text" id="chiefComplaint" ng-model="obs.chief_complaint" placeholder="Complaint">
-            </div>
-        </div>
-    </fieldset>
-    <fieldset>
-        <legend class="mylegend"><span>New Registration</span></legend>
-        <div class="control-group">
-            <label class="control-label" for="registrationFee">{{registrationFeeLabel}}</label>
-
-            <div class="controls">
-                <input type="number" id="registrationFee" ng-model="obs.registration_fees">
-
-            </div>
-        </div>
-    </fieldset>
-    <fieldset>
-        <legend class="mylegend"><span>Enter Measures for Body Mass Index</span></legend>
-        <div class="control-group">
-            <label class="control-label" for="height">Height (cm)</label>
-            <div class="controls">
-                <input id="height" type="number" step="0.01" ng-model="obs.height" min="10" max="250" ng-change="calculateBMI()" placeholder="Height">
-                Weight (kg)
-                <input id="weight" type="number" step="0.01" ng-model="obs.weight" min="0" max="200" ng-change="calculateBMI()" placeholder="Weight">
-             </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="bmi">BMI</label>
-
-            <div class="controls">
-                <input type="text" id="bmi" ng-model="obs.bmi" readonly>
-                <span class="text-error" ng-show="obs.bmi_error">Invalid BMI. Please check the height and weight</span>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="bmiStatus">BMI Status</label>
-
-            <div class="controls">
-                <input type="text" id="bmiStatus" ng-model="obs.bmi_status" readonly>
-            </div>
-        </div>
-
-        <div class="control-group">
-            <div class="controls">
-                <button type="button" class="btn btn-primary" ng-click="back()">Back</button>
-                <button type="submit" class="btn btn-primary" ng-disabled="obs.bmi_error">Print Patient Card</button>
-            </div>
-        </div>
-    </fieldset>
-    </form>
-    <br>
+<div class="print-layout">
+    <div ng-include="printLayout()"></div>
 </div>
+
+<div class="container-fluid non-printable" xmlns="http://www.w3.org/1999/html">
+    <h4>Visit Information</h4>
+    <div>
+        <form name="myForm" class="form-horizontal well" ng-submit="create()">
+            <fieldset>
+                <legend class="mylegend"><span>Summary</span></legend>
+                <div class="control-group">
+                    <label class="control-label" for="patientId">Patient Identifier</label>
+
+                    <div class="controls">
+                        <input id="patientId" ng-model="patient.identifier" readonly>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="patientName">Patient Name</label>
+
+                    <div class="controls">
+                        <input id="patientName" ng-model="patient.name" readonly>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend class="mylegend"><span>Illness Details</span></legend>
+                <div class="control-group">
+                    <label class="control-label" for="chiefComplaint">Complaint</label>
+
+                    <div class="controls">
+                        <input type="text" id="chiefComplaint" ng-model="obs.chief_complaint" placeholder="Complaint">
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend class="mylegend"><span>New Registration</span></legend>
+                <div class="control-group">
+                    <label class="control-label" for="registrationFee">{{registrationFeeLabel}}</label>
+
+                    <div class="controls">
+                        <input type="number" id="registrationFee" ng-model="obs.registration_fees">
+
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend class="mylegend"><span>Enter Measures for Body Mass Index</span></legend>
+                <div class="control-group">
+                    <label class="control-label" for="height">Height (cm)</label>
+
+                    <div class="controls">
+                        <input id="height" type="number" step="0.01" ng-model="obs.height" min="10" max="250"
+                               ng-change="calculateBMI()" placeholder="Height">
+                        Weight (kg)
+                        <input id="weight" type="number" step="0.01" ng-model="obs.weight" min="0" max="200"
+                               ng-change="calculateBMI()" placeholder="Weight">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="bmi">BMI</label>
+
+                    <div class="controls">
+                        <input type="text" id="bmi" ng-model="obs.bmi" readonly>
+                        <span class="text-error"
+                              ng-show="obs.bmi_error">Invalid BMI. Please check the height and weight</span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="bmiStatus">BMI Status</label>
+
+                    <div class="controls">
+                        <input type="text" id="bmiStatus" ng-model="obs.bmi_status" readonly>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="button" class="btn btn-primary" ng-click="back()">Back</button>
+                        <button type="submit" class="btn btn-primary" ng-disabled="obs.bmi_error">Print Patient Card</button>
+                        <button type="button" class="btn btn-primary btn-secondary" id="register" ng-click="register()">Register</button>
+                        <button type="button" class="btn btn-primary btn-secondary" id="search" ng-click="search()">Search</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        <br>
+    </div>
 </div>
