@@ -4,7 +4,7 @@
 <div class="container-fluid non-printable" xmlns="http://www.w3.org/1999/html">
     <h4>Visit Information</h4>
     <div>
-        <form name="myForm" class="form-horizontal well" ng-submit="create()">
+        <form name="myForm" class="form-horizontal well" ng-submit="submit()">
             <fieldset>
                 <legend class="mylegend"><span>Summary</span></legend>
                 <div class="control-group">
@@ -74,10 +74,15 @@
                     </div>
                 </div>
 
-                <div class="control-group">
-                    <div class="controls">
+                <div class="control-group" ng-switch on="patient.isNew">
+                    <div class="controls" ng-switch-when="true">
                         <button type="button" class="btn btn-primary" ng-click="back()">Back</button>
                         <button type="submit" class="btn btn-primary" ng-disabled="obs.bmi_error">Print Patient Card</button>
+                    </div>
+                    <div class="controls" ng-switch-default>
+                        <button type="button" class="btn btn-primary" ng-click="back()">Back</button>
+                        <button type="submit" class="btn btn-primary" ng-disabled="obs.bmi_error">Save</button>
+                        <button type="button" class="btn btn-primary" ng-disabled="obs.bmi_error" ng-click="saveAndPrint()">Save and Print Patient Card</button>
                     </div>
                 </div>
             </fieldset>

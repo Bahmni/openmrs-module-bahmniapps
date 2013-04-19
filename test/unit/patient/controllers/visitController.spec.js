@@ -11,6 +11,7 @@ describe('VisitController', function () {
     var date;
     var $location;
     var $window;
+    var createPromise;
 
     var sampleConcepts={
         "results": [
@@ -52,7 +53,9 @@ describe('VisitController', function () {
                 }
             }
         };
-
+        visitService = jasmine.createSpyObj('visit', ['create']);
+        createPromise = jasmine.createSpyObj('createPromise', ['success'])
+        visitService.create.andReturn(createPromise)
     }]));
 
     describe('initialization', function () {
@@ -81,23 +84,19 @@ describe('VisitController', function () {
         });
     });
 
-    describe("create", function(){
-            var createPromise;
-
-            beforeEach(function(){
-            visitService = jasmine.createSpyObj('visit', ['create']);
-                createPromise = jasmine.createSpyObj('createPromise', ['success'])
-                $controller('VisitController', {
-                    $scope: scope,
-                    concept: conceptService,
-                    patientService: patientService,
-                    visitService: visitService,
-                    $location: $location,
-                    date: date
-                });
-                visitService.create.andReturn(createPromise)
-            scope.patient = {uuid: "21308498-2502-4495-b604-7b704a55522d"}
+    describe("saveAndPrint", function(){
+        beforeEach(function(){
+            $controller('VisitController', {
+                $scope: scope,
+                concept: conceptService,
+                patientService: patientService,
+                visitService: visitService,
+                $location: $location,
+                date: date
             });
+            visitService.create.andReturn(createPromise)
+            scope.patient = {uuid: "21308498-2502-4495-b604-7b704a55522d"}
+        });
     
         it("should create visit", function(){
             var now = new Date();
@@ -105,7 +104,7 @@ describe('VisitController', function () {
             scope.obs.chief_complaint = "ache";
             scope.obs.registration_fees = "100";
 
-            scope.create();
+            scope.saveAndPrint();
 
             expect(scope.visit.patient).toBe(scope.patient.uuid);
             expect(scope.visit.startDatetime).toBe(now.toISOString());
@@ -121,7 +120,7 @@ describe('VisitController', function () {
          it("should print patient and got to search on creation of visit", function(){
             spyOn($location, 'path');
             spyOn(scope, 'printPatient');
-            scope.create();
+            scope.saveAndPrint();
             expect(createPromise.success).toHaveBeenCalled();
 
             createPromise.success.mostRecentCall.args[0]();
@@ -132,12 +131,71 @@ describe('VisitController', function () {
 
          it("should clear the stored patient on success", function(){
              spyOn(scope, 'printPatient');
-             scope.create();
+             scope.saveAndPrint();
                 
             createPromise.success.mostRecentCall.args[0]();
             
           expect(patientService.clearPatient).toHaveBeenCalled();
        });
+    });
+
+    describe("submit", function(){
+        beforeEach(function(){
+            $controller('VisitController', {
+                $scope: scope,
+                concept: conceptService,
+                patientService: patientService,
+                visitService: visitService
+            });
+            scope.patient = {uuid: "21308498-2502-4495-b604-7b704a55522d"}
+            spyOn(scope, 'printPatient');
+        });
+
+        describe("on successful creation of new patient visit", function(){
+            beforeEach(function(){
+                scope.patient.isNew = true;
+            });
+
+            it("should print the card for new patient", function(){
+                scope.submit();
+
+                createPromise.success.mostRecentCall.args[0]();
+
+                expect(scope.printPatient).toHaveBeenCalled();
+            });
+
+            it("should go to new patient registration page", function(){
+                spyOn($location, 'path');
+
+                scope.submit();
+                createPromise.success.mostRecentCall.args[0]();
+
+                expect($location.path).toHaveBeenCalledWith("/patient/new");
+            });
+        })
+
+        describe("on successful creation of returning patient visit", function(){
+            beforeEach(function(){
+                scope.patient.isNew = false;
+            });
+
+            it("should not print card for returning patient", function(){
+                scope.submit();
+
+                createPromise.success.mostRecentCall.args[0]();
+
+                expect(scope.printPatient).not.toHaveBeenCalled();
+            });
+
+            it("should go to search page", function(){
+                spyOn($location, 'path');
+
+                scope.submit();
+                createPromise.success.mostRecentCall.args[0]();
+
+                expect($location.path).toHaveBeenCalledWith("/search");
+            });
+        })
     });
 
     describe("calculateBMI", function(){

@@ -39,7 +39,7 @@ angular.module('registration.visitController', ['resources.patientService', 'res
 
     $scope.registrationFeeLabel = $scope.patient.isNew ? "Registration Fee" : "Consultation Fee";
 
-    $scope.create = function () {
+    var save = function(successCallback){
         var datetime = date.now().toISOString();
         $scope.visit.patient = $scope.patient.uuid;
         $scope.visit.startDatetime = datetime;
@@ -60,10 +60,26 @@ angular.module('registration.visitController', ['resources.patientService', 'res
         $scope.visit.encounters = [$scope.encounter];
 
         visitService.create($scope.visit).success(function(){
-	        patientService.clearPatient();
+            patientService.clearPatient();
+            if(successCallback) successCallback();
+            var path = $scope.patient.isNew ? "/patient/new" : "/search";
+            $location.path(path);
+        });
+    }
+
+    $scope.submit = function(){
+        if($scope.patient.isNew) {
+            $scope.saveAndPrint();
+        }
+        else {
+            save();
+        }
+    }
+
+    $scope.saveAndPrint = function () {
+        save(function(){
             $scope.printPatient();
-            $location.path("/search");
-	    });
+        });
     };
 
     $scope.today = function(){
