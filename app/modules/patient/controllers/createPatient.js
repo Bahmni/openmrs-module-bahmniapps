@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('registration.createPatient', ['resources.patientService', 'resources.preferences', 'resources.patient'])
-    .controller('CreatePatientController', ['$scope', 'patientService', '$location', 'Preferences', '$route', 'patient', '$window',
-        function ($scope, patientService, $location, preferences, $route, patientModel, $window) {
+angular.module('registration.createPatient', ['resources.patientService', 'resources.preferences', 'resources.patient', 'resources.errorCode'])
+    .controller('CreatePatientController', ['$scope', 'patientService', '$location', 'Preferences', '$route', 'patient', '$window', 'errorCode',
+        function ($scope, patientService, $location, preferences, $route, patientModel, $window, errorCode) {
             (function () {
                 $scope.patient = patientModel.create();
                 $scope.centers = [
@@ -22,17 +22,22 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
                 preferences.hasOldIdentifier = $scope.hasOldIdentifier;
             };
 
+            var successCallback = function(data){
+                $scope.patient.uuid = data.uuid;
+                $scope.patient.identifier = data.identifier;
+                $scope.patient.name = data.name;
+                $scope.patient.isNew = true;
+                patientService.rememberPatient($scope.patient);
+                $window.history.pushState(null, null, $location.absUrl().replace("new", data.uuid) + "?newpatient=true");
+
+                $location.path("/visit/new");
+            }
+
             $scope.create = function () {
                 setPreferences();
-                patientService.create($scope.patient).success(function (data) {
-                    $scope.patient.uuid = data.uuid;
-                    $scope.patient.identifier = data.identifier;
-                    $scope.patient.name = data.name;
-                    $scope.patient.isNew = true;
-                    patientService.rememberPatient($scope.patient);
-                    $window.history.pushState(null, null, $location.absUrl().replace("new", data.uuid) + "?newpatient=true");
-
-                    $location.path("/visit/new");
+                patientService.create($scope.patient).success(successCallback).error(function(data){
+                    if(errorCode.isOpenERPError(data))
+                        successCallback(data.patient);
                 });
             };
 

@@ -9,21 +9,27 @@ describe('CreatePatientController', function () {
     var location;
     var preferences;
     var success;
+    var errorCallback;
 
     beforeEach(angular.mock.module('registration.createPatient'));
     beforeEach(angular.mock.inject(function () {
         location = jasmine.createSpyObj('$location', ['path','absUrl']);
         location.absUrl = function(){return "/patient/new"};
-
         success = jasmine.createSpy('Successful');
+        errorCallback = jasmine.createSpy('errorCallback');
 
         patientService = jasmine.createSpyObj('patientService', ['create', 'getPatient', 'rememberPatient']);
         patientService.getPatient.andReturn(patient);
-        patientService.create.andReturn({
+        var createPromise =   {
             success: function(callback) {
-                callback(createPatientResponse)
+                callback(createPatientResponse);
+                return this;
+            },
+            error: function(callback) {
+                return this;
             }
-        });
+        }
+        patientService.create.andReturn(createPromise);
     }));
 
     var setupController = function(preferenceObj){
