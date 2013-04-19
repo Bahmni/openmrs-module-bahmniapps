@@ -90,7 +90,7 @@ describe('patientMapper', function() {
         expect(patient.familyName).toBe(openmrsPatient.person.preferredName.familyName);
         expect(patient.gender).toBe(openmrsPatient.person.gender);
         expect(patient.age).toBe(openmrsPatient.person.age);
-        expect(patient.patientIdentifier).toBe(openmrsPatient.identifiers[0].identifier);
+        expect(patient.identifier).toBe(openmrsPatient.identifiers[0].identifier);
         expect(patient.address.address1).toBe(openmrsPatient.person.preferredAddress.address1);
         expect(patient.address.address2).toBe(openmrsPatient.person.preferredAddress.address2);
         expect(patient.address.address3).toBe(openmrsPatient.person.preferredAddress.address3);

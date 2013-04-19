@@ -61,20 +61,32 @@ angular.module('registration.visitController', ['resources.patientService', 'res
 
         visitService.create($scope.visit).success(function(){
 	        patientService.clearPatient();
-			$window.print();
+            $scope.printPatient();
+            $location.path("/search");
 	    });
     };
 
-    $scope.register = function(){
-        $location.path("/patient/new");
-    };
-
-    $scope.search = function(){
-        $location.path("/search");
+    $scope.today = function(){
+        return new Date();
     };
 
     $scope.printLayout = function() {
         return $route.routes['/printPatient'].templateUrl;
     };
 
+    $scope.printPatient = function () {
+        var hiddenFrame = document.getElementById("printPatientFrame");
+        var code = "<!doctype html>"+
+                    "<html>"+
+                        "<head>" +
+                       "</head>"+
+                        "<body>" +
+                             document.getElementById('registrationCard').innerHTML +
+                        "</body>"+
+                    "</html>";
+        var doc = hiddenFrame.contentWindow.document.open("text/html", "replace");
+        doc.write(code);
+        doc.close();
+        hiddenFrame.contentWindow.print();
+    };
  }]);

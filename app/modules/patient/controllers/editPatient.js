@@ -19,11 +19,9 @@ angular.module('registration.editPatient', ['resources.patientService', 'resourc
 
             $scope.edit = function () {
                 patientService.update($scope.patient, uuid).success(function (data) {
-                    var patient = patientService.getPatient();
-                    patient.identifier = data.identifier;
-                    patient.name = data.name;
-                    patient.uuid = data.uuid;
-                    patientService.rememberPatient(patient);
+                    $scope.patient.uuid = data.uuid;
+                    $scope.patient.name = data.name;
+                    patientService.rememberPatient($scope.patient);
                     $location.path("/visit/new");
                 });
             };

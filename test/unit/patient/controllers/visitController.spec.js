@@ -118,18 +118,21 @@ describe('VisitController', function () {
             expect(visitService.create).toHaveBeenCalledWith(scope.visit);
         });
 
-         it("should go print patient on creation of visit", function(){
-            spyOn($window, 'print');
+         it("should print patient and got to search on creation of visit", function(){
+            spyOn($location, 'path');
+            spyOn(scope, 'printPatient');
             scope.create();
             expect(createPromise.success).toHaveBeenCalled();
 
             createPromise.success.mostRecentCall.args[0]();
             
-          expect($window.print).toHaveBeenCalled();
+           expect(scope.printPatient).toHaveBeenCalled();
+           expect($location.path).toHaveBeenCalledWith("/search");
        });
 
          it("should clear the stored patient on success", function(){
-            scope.create();
+             spyOn(scope, 'printPatient');
+             scope.create();
                 
             createPromise.success.mostRecentCall.args[0]();
             

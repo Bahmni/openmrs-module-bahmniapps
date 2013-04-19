@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('resources.openmrsPatientMapper', ['resources.patientAttributeType'])
-    .factory('openmrsPatientMapper',['patientAttributeType', function (patientAttributeType) {
+angular.module('resources.openmrsPatientMapper', ['resources.patientAttributeType', 'resources.patient'])
+    .factory('openmrsPatientMapper',['patientAttributeType', 'patient', function (patientAttributeType, patientModel) {
 
         var mapAttributes = function (patient, attributes) {
             attributes.forEach(function(attribute) {
@@ -33,16 +33,15 @@ angular.module('resources.openmrsPatientMapper', ['resources.patientAttributeTyp
         };
 
         var map = function (openmrsPatient) {
-            var patient =  {
-                "givenName": openmrsPatient.person.preferredName.givenName,
-                "familyName": openmrsPatient.person.preferredName.familyName,
-                "age": openmrsPatient.person.age,
-                "birthdate": getBirthDate(openmrsPatient),
-                "gender": openmrsPatient.person.gender,
-                "patientIdentifier": openmrsPatient.identifiers[0].identifier,
-                "address": mapAddress(openmrsPatient.person.preferredAddress)
-            };
-            patient.image = "/patient_images/" + patient.patientIdentifier + ".jpeg";
+            var patient = patientModel.create();
+            patient.givenName = openmrsPatient.person.preferredName.givenName;
+            patient.familyName = openmrsPatient.person.preferredName.familyName;
+            patient.birthdate = getBirthDate(openmrsPatient);
+            patient.age = openmrsPatient.person.age;
+            patient.gender = openmrsPatient.person.gender;
+            patient.address = mapAddress(openmrsPatient.person.preferredAddress);
+            patient.identifier = openmrsPatient.identifiers[0].identifier;
+            patient.image = "/patient_images/" + patient.identifier + ".jpeg";
 
             patientAttributeType.initialization.success(function() {
                 mapAttributes(patient, openmrsPatient.person.attributes);

@@ -38,14 +38,58 @@ describe("Patient", function(){
     });
 
     describe("clearRegistrationNumber", function(){
-        it("should clear registrationNumber and patientIdentifier", function(){
+        it("should clear registrationNumber and identifier", function(){
             patient.registrationNumber = "1234";
-            patient.patientIdentifier = "GAN1234";
+            patient.identifier = "GAN1234";
 
             patient.clearRegistrationNumber();
 
             expect(patient.registrationNumber).toBe(null);
-            expect(patient.patientIdentifier).toBe(null);
+            expect(patient.identifier).toBe(null);
+        });
+    });
+
+    describe("fullNameHindi", function(){
+        it("should be combination of givenNameHindi and familyNameHindi", function(){
+            patient.givenNameHindi = "राम";
+            patient.familyNameHindi = "कुमार";
+
+            expect(patient.fullNameHindi()).toBe("राम कुमार");
+        });
+
+        it("should not have extra whitespaces when there is whitespace around givenNameHindi", function(){
+            patient.givenNameHindi = " राम   ";
+            patient.familyNameHindi = "कुमार";
+
+            expect(patient.fullNameHindi()).toBe("राम कुमार");
+        });
+
+        it("should not have extra whitespaces when there is whitespace around familyNameHindi", function(){
+            patient.givenNameHindi = "राम";
+            patient.familyNameHindi = "  कुमार ";
+
+            expect(patient.fullNameHindi()).toBe("राम कुमार");
+        });
+
+        it("should be empty when givenNameHindi and familyNameHindi is not available", function(){
+            patient.givenNameHindi = undefined;
+            patient.familyNameHindi = undefined;
+
+            expect(patient.fullNameHindi()).toBe("");
+        });
+
+        it("should be just givenNameHindi when familyNameHindi is not available", function(){
+            patient.givenNameHindi = "राम";
+            patient.familyNameHindi = undefined;
+
+            expect(patient.fullNameHindi()).toBe("राम");
+        });
+
+        it("should be just familyNameHindi when givenNameHindi is not available", function(){
+            patient.givenNameHindi = undefined;
+            patient.familyNameHindi = "कुमार";
+
+            expect(patient.fullNameHindi()).toBe("कुमार");
         });
     });
 });

@@ -1,4 +1,5 @@
-<table border="1" cellpadding="1" cellspacing="1" style="width: 500px; ">
+<div id="registrationCard">
+    <table border="1" cellpadding="1" cellspacing="1" style="width: 500px; ">
     <tbody>
     <tr>
         <td>
@@ -37,16 +38,13 @@
                 </tr>
                 </tbody>
             </table>
-            <p style="text-align: center;">&nbsp;</p>
-
-            <p style="text-align: center;">&nbsp;</p>
         </td>
         <td>&nbsp;&nbsp;</td>
         <td>
             <table align="center" style="width: 500px; align:center;">
                 <td>
                     <p style="text-align: center; ">
-                        <img src="images/jss-icon.png" style="float: center; width: 100px; height: 100px; "/>
+                        <img src="images/jss-icon.png" style="width: 100px; height: 100px; "/>
                     </p>
                 </td>
                 <td style="text-align: center;">
@@ -59,7 +57,8 @@
                 </td>
                 <td>
                     <p style="text-align: center; ">
-                        <img style="float: center; width: 80px; height: 80px; " id="GenderIcon"/>
+                        <img ng-src="{{patient.image}}" style="width: 100px; height: 100px; "
+                             onError="this.onError=null;this.src='modules/photo-capture/images/blank-user.gif';"/>
                     </p>
                 </td>
             </table>
@@ -67,53 +66,35 @@
                 <tbody>
                 <tr>
                     <td width="150px">दिनाँक</td>
-                    <td>
-                        : <input type="text" id="Date" readonly="true" style="border-width: 0px 0px 0px 0px;">
-                    </td>
+                    <td> : {{today() | date:'dd/MM/yyyy'}} </td>
                 </tr>
                 <tr>
                     <td>रजिस्ट्रेशन</td>
-                    <td>
-                       : <input type="text" id="Id" ng-model="patient.identifier" readonly="true"
-                               style="border-width: 0px 0px 0px 0px;">
-                    </td>
+                    <td> : {{patient.identifier}} </td>
                 </tr>
                 <tr>
                     <td>नाम</td>
-                    <td>
-                       : <span id="Name">{{patient.name}}<span/>
-                    </td>
+                    <td> : {{patient.fullNameHindi()}} </td>
                 </tr>
                 <tr>
                     <td>उम्र</td>
-                    <td>
-                       : <input type="text" id="Age" ng-model="patient.age" readonly="true"
-                               style="border-width: 0px 0px 0px 0px;">
-                    </td>
+                    <td> : {{patient.age}} </td>
                 </tr>
                 <tr>
                     <td>लिंग</td>
-                    <td>
-                        : <input type="text" id="Gender" readonly="true" style="border-width: 0px 0px 0px 0px;">
-                    </td>
+                    <td> : {{patient.gender}} </td>
                 </tr>
                 <tr>
                     <td>वजन</td>
-                    <td>
-                        : <input type="text" id="Weight" readonly="true" style="border-width: 0px 0px 0px 0px;">
-                    </td>
+                    <td> : {{obs.weight}} </td>
                 </tr>
                 <tr>
                     <td>गाँव</td>
-                    <td>
-                        : <input type="text" id="Village" readonly="true" style="border-width: 0px 0px 0px 0px;">
-                    </td>
+                    <td> : {{patient.address.cityVillage}} </td>
                 </tr>
                 <tr>
                     <td>तहसील</td>
-                    <td>
-                        : <input type="text" id="Tehsil" readonly="true" style="border-width: 0px 0px 0px 0px;">
-                    </td>
+                    <td> : {{patient.address.address3}} </td>
                 </tr>
                 </tbody>
             </table>
@@ -121,3 +102,4 @@
     </tr>
     </tbody>
 </table>
+</div>

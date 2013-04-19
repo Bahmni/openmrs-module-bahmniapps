@@ -1,6 +1,7 @@
-<div class="print-layout">
+<div class="print-layoutt">
     <div ng-include="printLayout()"></div>
 </div>
+<iframe style="display: none" id="printPatientFrame"></iframe>
 
 <div class="container-fluid non-printable" xmlns="http://www.w3.org/1999/html">
     <h4>Visit Information</h4>
@@ -79,8 +80,6 @@
                     <div class="controls">
                         <button type="button" class="btn btn-primary" ng-click="back()">Back</button>
                         <button type="submit" class="btn btn-primary" ng-disabled="obs.bmi_error">Print Patient Card</button>
-                        <button type="button" class="btn btn-primary btn-secondary" id="register" ng-click="register()">Register</button>
-                        <button type="button" class="btn btn-primary btn-secondary" id="search" ng-click="search()">Search</button>
                     </div>
                 </div>
             </fieldset>

@@ -3,7 +3,7 @@
 angular.module('resources.patient', ['resources.date'])
     .factory('patient', ['date', function (date) {
         var create = function(){
-            var calculateAge = function(){//alert("ac");
+            var calculateAge = function(){
                 if(this.birthdate) {
                     var curDate = date.now();
                     var birthDate = new Date(this.birthdate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3") );
@@ -14,25 +14,31 @@ angular.module('resources.patient', ['resources.date'])
                 }
             }
 
-            var generatePatientIdentifier = function() {
+            var generateIdentifier = function() {
                 if (this.registrationNumber && this.registrationNumber.length > 0) {
-                    this.patientIdentifier = this.centerID.name + this.registrationNumber;
+                    this.identifier = this.centerID.name + this.registrationNumber;
                 }
-
-                return this.patientIdentifier
+                return this.identifier
             }
 
             var clearRegistrationNumber = function() {
                 this.registrationNumber = null;
-                this.patientIdentifier = null;
+                this.identifier = null;
+            }
+
+            var fullNameHindi = function(){
+                var givenNameHindi = this.givenNameHindi || "" ;
+                var familyNameHindi = this.familyNameHindi || "";
+                return (givenNameHindi.trim() + " " + familyNameHindi.trim()).trim();
             }
 
             return {
                 address: {},
                 calculateAge: calculateAge,
-                generatePatientIdentifier: generatePatientIdentifier,
+                generateIdentifier: generateIdentifier,
                 clearRegistrationNumber: clearRegistrationNumber,
-                image : 'modules/photo-capture/images/blank-user.gif'
+                image : 'modules/photo-capture/images/blank-user.gif',
+                fullNameHindi: fullNameHindi
             };
         }
 

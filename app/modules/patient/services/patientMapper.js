@@ -11,7 +11,7 @@ angular.module('resources.patientMapper', ['resources.patientAttributeType'])
                 age: patient.age,
                 birthdate: patient.birthdate,
                 gender: patient.gender,
-                patientIdentifier: patient.patientIdentifier,
+                identifier: patient.identifier,
                 centerID: patient.centerID,
                 addresses: [patient.address],
                 image: image,
