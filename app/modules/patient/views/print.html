@@ -85,7 +85,11 @@
                 </tr>
                 <tr>
                     <td>वजन</td>
-                    <td> : {{obs.weight}} </td>
+                    <td> :
+                        <ng-pluralize count="obs.weight"
+                                      when="{'0': '', 'other': '{} kg'}">
+                        </ng-pluralize>
+                    </td>
                 </tr>
                 <tr>
                     <td>गाँव</td>
