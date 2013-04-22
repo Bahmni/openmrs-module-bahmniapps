@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('resources.openmrsPatientMapper', ['resources.patientAttributeType', 'resources.patient'])
-    .factory('openmrsPatientMapper',['patientAttributeType', 'patient', function (patientAttributeType, patientModel) {
+    .factory('openmrsPatientMapper',['patientAttributeType', 'patient', '$rootScope', function (patientAttributeType, patientModel, $rootScope) {
 
         var mapAttributes = function (patient, attributes) {
             attributes.forEach(function(attribute) {
@@ -15,9 +15,16 @@ angular.module('resources.openmrsPatientMapper', ['resources.patientAttributeTyp
             return number > 9 ? number.toString() : "0" + number.toString();
         };
 
+
+        var parseDate = function(dateStr){
+            if(dateStr)
+                return new Date(dateStr.substr(0,10));
+            return dateStr;
+        };
+
         var getBirthDate = function(openmrsPatient) {
-            var date= new Date(openmrsPatient.person.birthdate.substr(0,10));
             if (openmrsPatient.person.birthdateEstimated) return "";
+            var date = parseDate(openmrsPatient.person.birthdate);
             return pad(date.getDate())+"-"+ pad(date.getMonth() + 1)+"-"+date.getFullYear();
         };
 
@@ -41,8 +48,8 @@ angular.module('resources.openmrsPatientMapper', ['resources.patientAttributeTyp
             patient.gender = openmrsPatient.person.gender;
             patient.address = mapAddress(openmrsPatient.person.preferredAddress);
             patient.identifier = openmrsPatient.identifiers[0].identifier;
-            patient.image = "/patient_images/" + patient.identifier + ".jpeg";
-
+            patient.image = $rootScope.bahmniConfiguration.patientImagesUrl +  "/" + patient.identifier + ".jpeg";
+            patient.registrationDate = parseDate(openmrsPatient.person.personDateCreated);
             patientAttributeType.initialization.success(function() {
                 mapAttributes(patient, openmrsPatient.person.attributes);
             });

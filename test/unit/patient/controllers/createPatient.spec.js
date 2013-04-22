@@ -8,27 +8,16 @@ describe('CreatePatientController', function () {
     var createPatientResponse = {identifier: "someIdentifier", uuid: "someUUID", name: "some name"};
     var location;
     var preferences;
-    var success;
-    var errorCallback;
+    var createPromise;
+    var dateModule;
 
     beforeEach(angular.mock.module('registration.createPatient'));
-    beforeEach(angular.mock.inject(function () {
+    beforeEach(angular.mock.inject(function (date) {
+        dateModule = date;
         location = jasmine.createSpyObj('$location', ['path','absUrl']);
         location.absUrl = function(){return "/patient/new"};
-        success = jasmine.createSpy('Successful');
-        errorCallback = jasmine.createSpy('errorCallback');
-
         patientService = jasmine.createSpyObj('patientService', ['create', 'getPatient', 'rememberPatient']);
-        patientService.getPatient.andReturn(patient);
-        var createPromise =   {
-            success: function(callback) {
-                callback(createPatientResponse);
-                return this;
-            },
-            error: function(callback) {
-                return this;
-            }
-        }
+        createPromise = specUtil.createServicePromise('patientCreate');
         patientService.create.andReturn(createPromise);
     }));
 
@@ -62,23 +51,39 @@ describe('CreatePatientController', function () {
     });
 
     describe('create', function () {
-        it('should redirect to new visit page', function() {
-            setupController();
-     
-            scope.create()
-            expect(location.path).toHaveBeenCalledWith("/visit/new");
-        })
+        describe("on sucess", function(){
+            beforeEach(function(){
+                setupController();
+            });
 
-        it('should update preferences with current values of centerID and hasOldIdentifier', function () {
-            setupController();
+            it('should redirect to new visit page', function() {
+                scope.create()
 
-            scope.hasOldIdentifier = true;
-            scope.patient.centerID = {name: "SEM"};
-        
-            scope.create();
+                createPromise.callSuccesCallBack(createPatientResponse);
 
-            expect(preferences.hasOldIdentifier).toBe(true);
-            expect(preferences.centerID).toBe("SEM");
-        })
+                expect(location.path).toHaveBeenCalledWith("/visit/new");
+            })
+
+            it('should set registration date to today', function() {
+                var today = new Date("01-10-2012");
+                spyOn(dateModule, 'now').andReturn(today);
+                scope.create()
+
+                createPromise.callSuccesCallBack(createPatientResponse);
+
+                expect(scope.patient.registrationDate).toBe(today);
+            })
+
+            it('should update preferences with current values of centerID and hasOldIdentifier', function () {
+                scope.hasOldIdentifier = true;
+                scope.patient.centerID = {name: "SEM"};
+                scope.create();
+
+                createPromise.callSuccesCallBack(createPatientResponse);
+
+                expect(preferences.hasOldIdentifier).toBe(true);
+                expect(preferences.centerID).toBe("SEM");
+            })
+        });
     });
 });

@@ -2,8 +2,11 @@
 
 describe('patientMapper', function() {
 
-    var mapper, openmrsPatient = {
+    var mapper, bahmniConfiguration = {}, openmrsPatient = {
         "uuid": "1a202b45-ffa3-42a1-9177-c718e6119cfd",
+        "auditInfo": {
+            dateCreated: "2013-04-17T09:58:47.000+0530"
+        },
         "identifiers": [
             {
                 "identifier": "GAN200003"
@@ -76,16 +79,19 @@ describe('patientMapper', function() {
             $provide.value('patientAttributeType', mockPatientAttributeType);
         });
 
-        inject(['openmrsPatientMapper', function(openmrsPatientMapper) {
+        inject(['openmrsPatientMapper', '$rootScope', function(openmrsPatientMapper, $rootScope) {
             mapper = openmrsPatientMapper;
+            $rootScope.bahmniConfiguration = bahmniConfiguration;
         }]);
 
     });
 
 
     it('should map values from the openmrs Patient to our patient object', function () {
+        bahmniConfiguration.patientImagesUrl = "http://test.uri/patient_images"
 
         var patient = mapper.map(openmrsPatient);
+
         expect(patient.givenName).toBe(openmrsPatient.person.preferredName.givenName);
         expect(patient.familyName).toBe(openmrsPatient.person.preferredName.familyName);
         expect(patient.gender).toBe(openmrsPatient.person.gender);
@@ -97,7 +103,7 @@ describe('patientMapper', function() {
         expect(patient.address.cityVillage).toBe(openmrsPatient.person.preferredAddress.cityVillage);
         expect(patient.address.countyDistrict).toBe(openmrsPatient.person.preferredAddress.countyDistrict);
         expect(patient.address.stateProvince).toBe(openmrsPatient.person.preferredAddress.stateProvince);
-        expect(patient.image).toBe("/patient_images/" + openmrsPatient.identifiers[0].identifier + ".jpeg");
+        expect(patient.image).toBe("http://test.uri/patient_images/" + openmrsPatient.identifiers[0].identifier + ".jpeg");
     });
 
     it('should map attributes from openmrsPatient to our patient object', function() {
@@ -109,6 +115,12 @@ describe('patientMapper', function() {
         openmrsPatient.person.birthdate =  "2013-04-01T00:00:00.000+0530";
         var patient = mapper.map(openmrsPatient);
         expect(patient.birthdate).toBe('01-04-2013');
+    });
+
+    it('should map registration date', function() {
+        openmrsPatient.person.personDateCreated =  "2013-04-17T09:58:47.000+0530";
+        var patient = mapper.map(openmrsPatient);
+        expect(patient.registrationDate).toEqual(new Date("2013-04-17"));
     });
 
     it("should populate birthdate only if dateEstimated is false", function() {

@@ -8,6 +8,7 @@ files = [
   '../app/defaults.js',
   '../app/constants.js',
   '../app/modules/**/*.js',
+  'support/**/*.js',
   'unit/**/*.js'
 ];
 

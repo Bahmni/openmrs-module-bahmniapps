@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('registration.createPatient', ['resources.patientService', 'resources.preferences', 'resources.patient', 'resources.errorCode'])
-    .controller('CreatePatientController', ['$scope', 'patientService', '$location', 'Preferences', '$route', 'patient', '$window', 'errorCode',
-        function ($scope, patientService, $location, preferences, $route, patientModel, $window, errorCode) {
+angular.module('registration.createPatient', ['resources.patientService', 'resources.preferences', 'resources.patient', 'resources.errorCode', 'resources.date'])
+    .controller('CreatePatientController', ['$scope', 'patientService', '$location', 'Preferences', '$route', 'patient', '$window', 'errorCode', 'date',
+        function ($scope, patientService, $location, preferences, $route, patientModel, $window, errorCode, date) {
             (function () {
                 $scope.patient = patientModel.create();
                 $scope.centers = [
@@ -27,6 +27,7 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
                 $scope.patient.identifier = data.identifier;
                 $scope.patient.name = data.name;
                 $scope.patient.isNew = true;
+                $scope.patient.registrationDate =  date.now();
                 patientService.rememberPatient($scope.patient);
                 $window.history.pushState(null, null, $location.absUrl().replace("new", data.uuid) + "?newpatient=true");
 
