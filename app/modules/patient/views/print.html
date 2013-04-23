@@ -98,10 +98,8 @@
                     <td>
                         <span class="hindi-text">वजन</span>
                     </td>
-                    <td> :
-                        <ng-pluralize count="obs.weight"
-                                      when="{'0': '', 'other': '{} kg'}">
-                        </ng-pluralize>
+                    <td> :  </td>
+                    <td ng-pluralize count="obs.weight" when="{'0': '', 'other': '{} kg'}">
                     </td>
                 </tr>
                 <tr>
@@ -112,7 +110,9 @@
                     <td>{{patient.address.cityVillage}} </td>
                 </tr>
                 <tr>
-                    <td>तहसील</td>
+                    <td>
+                        <span class="hindi-text">तहसील</span>
+                    </td>
                     <td> :  </td>
                     <td>{{patient.address.address3}} </td>
                 </tr>
