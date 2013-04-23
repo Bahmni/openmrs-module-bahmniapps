@@ -1,11 +1,9 @@
-<table border="1" cellpadding="1" cellspacing="1" style="width: 500px; ">
+<table border="1" cellpadding="1" cellspacing="1" style="width: 163mm; height: 83mm; overflow: scroll">
     <tbody>
     <tr>
         <td>
-            <p style="text-align: center; ">
-                <strong>सूचना</strong>
-            </p>
-            <ul>
+            <h3 style="text-align: center; ">सूचना</h3>
+            <ul style=" font-size: 4mm;">
                 <li>
                     स्वास्थ्य केन्द्र में पुनः आने के समय यह कार्ड लाना अति आवश्यक है।
                 </li>
@@ -22,69 +20,84 @@
                     साप्ताहिक अवकाश - रविवार।
                 </li>
             </ul>
-            <p>&nbsp;</p>
-            <table border="0" cellpadding="1" cellspacing="1" style="width: 500px; ">
-                <tbody>
-                <tr>
-                    <td style="text-align: center; ">
-                        <strong>सावधान</strong>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-align: center; ">
-                        बीडी, तम्बाकू, गुटका से केंसर, ह्रदय रोग और दमा हो सकते हैं।
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <div align="center">
+                <h3 style="text-align: center; ">सावधान</h3>
+                <span style="text-align: center; ">
+                    बीडी, तम्बाकू, गुटका से केंसर, ह्रदय रोग और दमा हो सकते हैं।
+                </span>
+            </div>
         </td>
         <td>&nbsp;&nbsp;</td>
-        <td>
-            <table align="center" style="width: 500px; align:center;">
-                <td>
-                    <p style="text-align: center; ">
-                        <img src="images/jss-icon.png" style="width: 100px; height: 100px; "/>
-                    </p>
-                </td>
-                <td style="text-align: center;">
-                    <h2>
-                        जन स्वास्थ्य सहयोग  (पंजीकृत)
-                    </h2>
-                    <span>
-                        गनियारी, जिला - बिलासपुर
-                    </span>
-                </td>
-                <td>
-                    <p style="text-align: center; ">
-                        <img ng-src="{{patient.image}}" style="width: 100px; height: 100px; "
+        <td style="width: 78mm;" valign="top">
+            <table>
+                <tr>
+                    <td>
+                        <p style="text-align: center;">
+                            <img src="images/jss-icon.png" style="width: 12mm; height: 12mm; "/>
+                        </p>
+                    </td>
+                    <td style="text-align: center;">
+                        <h3>
+                            जन स्वास्थ्य सहयोग  (पंजीकृत)
+                        </h3>
+
+                    </td>
+                    <td>
+                        <img ng-src="{{patient.image}}" style="width: 20mm; height: 20mm; "
                              onError="this.onError=null;this.src='modules/photo-capture/images/blank-user.gif';"/>
-                    </p>
-                </td>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="text-align: center; ">
+                        <span>
+                        गनियारी, जिला - बिलासपुर
+                        </span>
+                    </td>
+                </tr>
             </table>
-            <table align="center" style="padding:0px 20px 0px 20px; ">
+            <table style="padding:0mm 5mm 0mm 5mm;">
                 <tbody>
                 <tr>
-                    <td width="150px">दिनाँक</td>
-                    <td> : {{patient.registrationDate | date:'dd/MM/yyyy'}} </td>
+                    <td style="width: 17mm">
+                        <span class="hindi-text">दिनाँक</span>
+                    </td>
+                    <td style="width: 2mm"> :  </td>
+                    <td>{{patient.registrationDate | date:'dd/MM/yyyy'}} </td>
                 </tr>
                 <tr>
-                    <td>रजिस्ट्रेशन</td>
-                    <td> : {{patient.identifier}} </td>
+                    <td>
+                        <span class="hindi-text">रजिस्ट्रेशन</span>
+                    </td>
+                    <td> :  </td>
+                    <td>{{patient.identifier}} </td>
                 </tr>
                 <tr>
-                    <td>नाम</td>
-                    <td> : {{patient.fullNameHindi()}} </td>
+                    <td>
+                        <span class="hindi-text">नाम</span>
+                    </td>
+                    <td> :  </td>
+                    <td>
+                        <span class="hindi-text">{{patient.fullNameHindi()}}</span>
+                    </td>
                 </tr>
                 <tr>
-                    <td>उम्र</td>
-                    <td> : {{patient.age}} </td>
+                    <td>
+                        <span class="hindi-text">उम्र</span>
+                    </td>
+                    <td> :  </td>
+                    <td>{{patient.age}} </td>
                 </tr>
                 <tr>
-                    <td>लिंग</td>
-                    <td> : {{patient.gender}} </td>
+                    <td>
+                        <span class="hindi-text">लिंग</span>
+                    </td>
+                    <td> :  </td>
+                    <td>{{patient.gender}} </td>
                 </tr>
                 <tr>
-                    <td>वजन</td>
+                    <td>
+                        <span class="hindi-text">वजन</span>
+                    </td>
                     <td> :
                         <ng-pluralize count="obs.weight"
                                       when="{'0': '', 'other': '{} kg'}">
@@ -92,12 +105,16 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>गाँव</td>
-                    <td> : {{patient.address.cityVillage}} </td>
+                    <td>
+                        <span class="hindi-text">गाँव</span>
+                    </td>
+                    <td> :  </td>
+                    <td>{{patient.address.cityVillage}} </td>
                 </tr>
                 <tr>
                     <td>तहसील</td>
-                    <td> : {{patient.address.address3}} </td>
+                    <td> :  </td>
+                    <td>{{patient.address.address3}} </td>
                 </tr>
                 </tbody>
             </table>

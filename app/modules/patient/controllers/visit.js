@@ -95,6 +95,10 @@ angular.module('registration.visitController', ['resources.patientService', 'res
         var code = "<!doctype html>"+
                     "<html>"+
                         "<head>" +
+                            '<style type="text/css">' +
+                                '.hindi-text { vertical-align:bottom; }' +
+                                'h1, h2, h3 { padding: 0; margin: 0;}' +
+                            '</style>'+
                        "</head>"+
                         "<body>" +
                              document.getElementById('registrationCard').innerHTML +
