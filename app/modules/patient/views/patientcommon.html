@@ -28,7 +28,7 @@
 
     <span class="pull-right">
             <img ng-src="{{patient.image}}"
-                 onError="this.onError=null;this.src='modules/photo-capture/images/blank-user.gif';"/>
+                 onerror="this.onerror=null;this.src='modules/photo-capture/images/blank-user.gif';"/>
             <div capture-photo ng-model="patient.image"></div>
      </span>
 </div>
