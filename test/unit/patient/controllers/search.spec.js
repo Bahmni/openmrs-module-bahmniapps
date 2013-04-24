@@ -40,5 +40,31 @@ describe('SearchPatientController', function () {
                 expect(patientResource.search.calls.length).toEqual(0);
             });
         });
+
+        describe("noResutFound", function(){
+            beforeEach(function(){
+                $controller('SearchPatientController', {
+                    $scope: scope,
+                    patientService: patientResource,
+                    $location: {search: function(){return {}}}
+                });
+            });
+
+            it("should be false when no search done", function(){
+                expect(scope.noResultsFound()).toBe(false);
+            });
+
+            it("should be true when search returns zero results", function(){
+                scope.results = []
+
+                expect(scope.noResultsFound()).toBe(true);
+            });
+
+            it("should be false when search returns results", function(){
+                scope.results = [{}]
+
+                expect(scope.noResultsFound()).toBe(false);
+            });
+        })
     });
 });

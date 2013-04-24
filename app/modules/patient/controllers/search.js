@@ -23,6 +23,10 @@ angular.module('registration.search', ['resources.patientService'])
             return angular.isDefined($scope.results) && $scope.results.length > 0;
         }
 
+        $scope.noResultsFound = function(){
+          return angular.isDefined($scope.results) && $scope.results.length == 0;
+        }
+
         $scope.createNew = function() {
             $location.search({});
             $location.path("/patient/new");
