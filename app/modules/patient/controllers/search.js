@@ -1,28 +1,31 @@
 'use strict';
 
-angular.module('registration.search', ['resources.patientService'])
-    .controller('SearchPatientController', ['$scope', 'patientService', '$location', '$window', function ($scope, patientService, $location, $window) {
+angular.module('registration.search', ['resources.patientService', 'infrastructure.spinner'])
+    .controller('SearchPatientController', ['$scope', 'patientService', '$location', '$window', 'spinner', function ($scope, patientService, $location, $window, spinner) {
         var query = $location.search().q || '';
         $scope.name = query;
         $scope.centers = constants.centers;
         $scope.centerId = defaults.centerId;
         if (query && query.trim().length > 0) {
-            patientService.search(query).success(function (data) {
+            var searchPromise = patientService.search(query).success(function (data) {
                 $scope.results = data.results;
             });
+            spinner.forPromise(searchPromise);
         }
 
         $scope.searchById = function() {
             var patientidentifier = $scope.centerId + $scope.registrationNumber;
-            patientService.search(patientidentifier).success(function (data) {
+
+            var searchPromise = patientService.search(patientidentifier).success(function (data) {
                 var patient = data.results[0];
-                if(patient){
+                if (patient) {
                     $scope.editPatient(patient.uuid)
                 }
                 else {
                     $window.alert('Could not find patient with identifier ' + patientidentifier);
                 }
             });
+            spinner.forPromise(searchPromise);
         };
 
 

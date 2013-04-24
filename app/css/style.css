@@ -52,6 +52,21 @@ select:focus:invalid {
 .print-layout {
   display: none; }
 
+#overlay {
+    display: none;
+    z-index: 10000;
+    background: #000;
+    position: fixed;
+    width: 100%;
+    opacity: .6;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    background-image:url("../images/spinner.gif");
+    background-repeat:no-repeat;
+    background-position:center;
+}
+
 @media print {
   .print-layout {
     display: block; }

@@ -11,8 +11,8 @@ angular.module('registration').config(['$routeProvider', function ($routeProvide
         $routeProvider.when('/login', {templateUrl: 'modules/auth/views/login.html', controller: 'SessionController'});
         $routeProvider.when('/patientcommon', {templateUrl: 'modules/patient/views/patientcommon.html'});
         $routeProvider.otherwise({redirectTo: '/login'});
-    }]).run(['$rootScope', '$http', 'configurationService', function($rootScope, $http, configurationService){
-        $rootScope.BaseUrl='/openmrs';        
+    }]).run(['$rootScope', '$http', 'configurationService', '$httpBackend', function($rootScope, $http, configurationService, $httpBackend){
+        $rootScope.BaseUrl='/openmrs';
         $http.defaults.headers.common['Disable-WWW-Authenticate'] = true;
         configurationService.getAll().success(function(data){
             $rootScope.bahmniConfiguration = data;

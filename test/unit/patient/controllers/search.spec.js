@@ -6,7 +6,8 @@ describe('SearchPatientController', function () {
         scope = {},
         location,
         $window,
-        $controller;
+        $controller,
+        spinner;
 
     beforeEach(angular.mock.module('registration.search'));
     beforeEach(angular.mock.inject(function ($injector) {
@@ -19,10 +20,12 @@ describe('SearchPatientController', function () {
         patientResource = jasmine.createSpyObj('patientService', ['search']),
         searchPromise = specUtil.createServicePromise('search');
         patientResource.search.andReturn(searchPromise);
+        spinner = jasmine.createSpyObj('spinner', ['forPromise'])
         $controller('SearchPatientController', {
             $scope: scope,
             patientService: patientResource,
-            $location: location
+            $location: location,
+            spinner: spinner
         });
     });
 
@@ -33,7 +36,8 @@ describe('SearchPatientController', function () {
             $controller('SearchPatientController', {
                 $scope: scope,
                 patientService: patientResource,
-                $location: location
+                $location: location,
+                spinner: spinner
             });
 
             expect(scope.centerId).toBe("SEM");
@@ -46,13 +50,28 @@ describe('SearchPatientController', function () {
             $controller('SearchPatientController', {
                 $scope: scope,
                 patientService: patientResource,
-                $location: location
+                $location: location,
+                spinner: spinner
             });
 
             expect(scope.name).toBe(query);
             expect(patientResource.search).toHaveBeenCalled();
             expect(patientResource.search.mostRecentCall.args[0]).toBe(query);
             expect(searchPromise.success).toHaveBeenCalled();
+            expect(spinner.forPromise).toHaveBeenCalledWith(searchPromise);
+        });
+
+        it('should show the spinner while searching', function() {
+            spyOn(location, 'search').andReturn({"q": "foo"});
+
+            $controller('SearchPatientController', {
+                $scope: scope,
+                patientService: patientResource,
+                $location: location,
+                spinner: spinner
+            });
+
+            expect(spinner.forPromise).toHaveBeenCalledWith(searchPromise);
         });
 
         it('should load patients if a query parameter is provided', function() {
@@ -105,6 +124,16 @@ describe('SearchPatientController', function () {
 
             expect(patientResource.search).toHaveBeenCalledWith('GAN20001');
         });
+
+        it('should show the spinner while searching', function() {
+            scope.centerId = "GAN";
+            scope.registrationNumber = "20001";
+
+            scope.searchById();
+
+            expect(spinner.forPromise).toHaveBeenCalledWith(searchPromise);
+        });
+
 
         describe("on success", function(){
             beforeEach(function(){
