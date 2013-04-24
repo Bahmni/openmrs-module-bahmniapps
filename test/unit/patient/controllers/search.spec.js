@@ -1,70 +1,136 @@
 'use strict';
 
 describe('SearchPatientController', function () {
-    describe('search', function () {
-        var success = jasmine.createSpy('Successful call');
-        var patientResource = {},
-            scope = {},
-            $controller;
+    var patientResource,
+        searchPromise,
+        scope = {},
+        location,
+        $window,
+        $controller;
 
-        beforeEach(angular.mock.module('registration.search'));
-        beforeEach(angular.mock.inject(function ($injector) {
-            $controller = $injector.get('$controller');
-        }));
+    beforeEach(angular.mock.module('registration.search'));
+    beforeEach(angular.mock.inject(function ($injector) {
+        $controller = $injector.get('$controller');
+        location = $injector.get('$location');
+        $window = $injector.get('$window');
+    }));
 
-        describe('init', function() {
-            it('should load patients if a query parameter is provided', function() {
-                patientResource.search = jasmine.createSpy('Patient Resource GET').andReturn({success: success});
-                var query = 'john';
+    beforeEach(function(){
+        patientResource = jasmine.createSpyObj('patientService', ['search']),
+        searchPromise = specUtil.createServicePromise('search');
+        patientResource.search.andReturn(searchPromise);
+        $controller('SearchPatientController', {
+            $scope: scope,
+            patientService: patientResource,
+            $location: location
+        });
+    });
 
-                $controller('SearchPatientController', {
-                    $scope: scope,
-                    patientService: patientResource,
-                    $location: {search: function(){return {"q": query}}}
-                });
+    describe('init', function() {
+        it("should default the center id", function(){
+            defaults.centerId = "SEM";
 
-                expect(patientResource.search).toHaveBeenCalled();
-                expect(patientResource.search.mostRecentCall.args[0]).toBe(query);
-                expect(success).toHaveBeenCalled();
+            $controller('SearchPatientController', {
+                $scope: scope,
+                patientService: patientResource,
+                $location: location
             });
 
-            it('should load patients if a query parameter is provided', function() {
-                patientResource.search = jasmine.createSpy('Patient Resource GET');
-
-                $controller('SearchPatientController', {
-                    $scope: scope,
-                    patientService: patientResource,
-                    $location: {search: function(){return {}}}
-                });
-
-                expect(patientResource.search.calls.length).toEqual(0);
-            });
+            expect(scope.centerId).toBe("SEM");
         });
 
-        describe("noResutFound", function(){
+        it('should set the name with query load patients if a query parameter is provided', function() {
+            var query = 'john';
+            spyOn(location, 'search').andReturn({"q": query});
+
+            $controller('SearchPatientController', {
+                $scope: scope,
+                patientService: patientResource,
+                $location: location
+            });
+
+            expect(scope.name).toBe(query);
+            expect(patientResource.search).toHaveBeenCalled();
+            expect(patientResource.search.mostRecentCall.args[0]).toBe(query);
+            expect(searchPromise.success).toHaveBeenCalled();
+        });
+
+        it('should load patients if a query parameter is provided', function() {
+            spyOn(location, 'search').andReturn({});
+
+            $controller('SearchPatientController', {
+                $scope: scope,
+                patientService: patientResource,
+                $location: location
+            });
+
+            expect(patientResource.search).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("noResutFound", function(){
+        it("should be false when no search done", function(){
+            expect(scope.noResultsFound()).toBe(false);
+        });
+
+        it("should be true when search returns zero results", function(){
+            scope.results = []
+
+            expect(scope.noResultsFound()).toBe(true);
+        });
+
+        it("should be false when search returns results", function(){
+            scope.results = [{}]
+
+            expect(scope.noResultsFound()).toBe(false);
+        });
+    });
+
+    describe("searchByName", function(){
+        it("should go to search with query parameter", function(){
+            spyOn(location, 'search');
+            scope.name = "Ram Singh"
+
+            scope.searchByName();
+
+            expect(location.search).toHaveBeenCalledWith('q', "Ram Singh");
+        });
+    });
+    describe("searchById", function(){
+        it("should search patient by given center and registration number", function(){
+            scope.centerId = "GAN";
+            scope.registrationNumber = "20001";
+
+            scope.searchById();
+
+            expect(patientResource.search).toHaveBeenCalledWith('GAN20001');
+        });
+
+        describe("on success", function(){
             beforeEach(function(){
-                $controller('SearchPatientController', {
-                    $scope: scope,
-                    patientService: patientResource,
-                    $location: {search: function(){return {}}}
-                });
+                scope.centerId = "GAN";
+                scope.registrationNumber = "20001";
+                scope.searchById();
             });
 
-            it("should be false when no search done", function(){
-                expect(scope.noResultsFound()).toBe(false);
+            it("should go to edit Patient when a patient is found", function(){
+                spyOn(location, 'search');
+                spyOn(location, 'path');
+
+                searchPromise.callSuccesCallBack({results: [{uuid: "8989-90909"}]})
+
+                expect(location.search).toHaveBeenCalledWith({});
+                expect(location.path).toHaveBeenCalledWith("/patient/8989-90909");
             });
 
-            it("should be true when search returns zero results", function(){
-                scope.results = []
+            it("should display patient message when patient not found", function(){
+                spyOn($window, 'alert');
 
-                expect(scope.noResultsFound()).toBe(true);
+                searchPromise.callSuccesCallBack({results: []})
+
+                expect($window.alert).toHaveBeenCalled();
+                expect($window.alert.mostRecentCall.args[0]).toMatch(".*Could not .* GAN20001");
             });
-
-            it("should be false when search returns results", function(){
-                scope.results = [{}]
-
-                expect(scope.noResultsFound()).toBe(false);
-            });
-        })
+        });
     });
 });

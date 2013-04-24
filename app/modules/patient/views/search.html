@@ -1,13 +1,24 @@
 <div class="container-fluid">
     <h4>Search Registered Patients</h4>
 
-    <div class="well">
-        <form name="myForm" ng-submit="search()" class="form-horizontal">
+    <div>
+        <form name="searchByIdForm" ng-submit="searchById()" class="form-horizontal well form-seach">
             <div class="control-group">
-                <label class="control-label" for="query">Name / Regn No.</label>
+                <label class="control-label" for="registrationNumber">Regn No.</label>
 
                 <div class="controls">
-                    <input type="text" id="query" ng-model="query" autofocus>
+                    <select  id="center" class="span1" ng-model="centerId" ng-options="c.name as c.name for c in centers" required> </select>
+                    <input type="text" id="registrationNumber" ng-model="registrationNumber" autofocus required>
+                    <button type="submit" class="btn">Search</button>
+                </div>
+            </div>
+        </form>
+
+        <form name="searchByNameForm" ng-submit="searchByName()" class="form-horizontal well">
+            <div class="control-group">
+                <label class="control-label" for="name">Name</label>
+                <div class="controls">
+                    <input type="text" id="name" ng-model="name">
                 </div>
             </div>
             <div class="control-group">

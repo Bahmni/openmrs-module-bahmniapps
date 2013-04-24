@@ -5,12 +5,7 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
         function ($scope, patientService, $location, preferences, $route, patientModel, $window, errorCode, date) {
             (function () {
                 $scope.patient = patientModel.create();
-                $scope.centers = [
-                    {name: 'GAN'},
-                    {name: 'SEM'},
-                    {name: 'SHI'},
-                    {name: 'BAH'}
-                ];
+                $scope.centers = constants.centers;
                 $scope.patient.centerID = $scope.centers.filter(function (center) {
                     return center.name === preferences.centerID
                 })[0];

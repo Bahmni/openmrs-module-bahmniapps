@@ -21,7 +21,7 @@ angular.module('resources.patientAttributeType', [])
         };
 
         var get  = function(attributeUuid){
-                return patientAttributes.filter(function(value){return value.uuid === attributeUuid})[0];
+            return patientAttributes.filter(function(value){return value.uuid === attributeUuid})[0];
         }
 
         return {
