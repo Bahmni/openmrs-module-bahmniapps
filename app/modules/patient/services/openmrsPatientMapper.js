@@ -23,7 +23,7 @@ angular.module('resources.openmrsPatientMapper', ['resources.patientAttributeTyp
         };
 
         var getBirthDate = function(openmrsPatient) {
-            if (openmrsPatient.person.birthdateEstimated) return "";
+            if (openmrsPatient.person.birthdateEstimated || !openmrsPatient.person.birthdate) return "";
             var date = parseDate(openmrsPatient.person.birthdate);
             return pad(date.getDate())+"-"+ pad(date.getMonth() + 1)+"-"+date.getFullYear();
         };
