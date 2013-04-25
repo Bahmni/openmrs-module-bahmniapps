@@ -12,11 +12,11 @@
     <body>
         <div class="container-fluid reg-wrapper">
             <div ng-app="registration" class="container">
-                <header class="reg-header">
                 <div id="overlay"></div>
-                <div class="row">
-                    <a ng-click="logout()" ng-controller="SessionController" class="pull-right">Logout</a>
-                </div>
+                <header class="reg-header">
+                    <div class="row">
+                        <a ng-click="logout()" ng-controller="SessionController" class="pull-right">Logout</a>
+                    </div>
                 </header>
                 <div class="container-fluid">
                     <div style="display: none" class="alert alert-error" ng-show="server_error">{{server_error}}</div>
