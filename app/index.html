@@ -15,7 +15,7 @@
                 <div id="overlay"></div>
                 <header class="reg-header">
                     <div class="row">
-                        <a ng-click="logout()" ng-controller="SessionController" class="pull-right">Logout</a>
+                        <a ng-click="logout()" ng-show="canLogout()" ng-controller="SessionController" class="pull-right">Logout</a>
                     </div>
                 </header>
                 <div class="container-fluid">

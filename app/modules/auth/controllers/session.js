@@ -4,11 +4,12 @@ angular.module('registration.session', [])
     .controller('SessionController', ['$rootScope', '$scope', '$http', '$location', function ($rootScope, $scope, $http, $location) {
         var sessionResourcePath = $rootScope.BaseUrl + '/ws/rest/v1/session';
         var landingPagePath = "/search";
+        var loginPagePath = "/login";
         $scope.isAuthenticated = true;
 
         var redirectToLandingPageIfAlreadyAuthenticated = function() {
             $http.get(sessionResourcePath, {
-                cache: false,
+                cache: false
             }).success(function (data) {
                 if (data.authenticated) {
                     $location.path(landingPagePath);
@@ -18,7 +19,7 @@ angular.module('registration.session', [])
             });
         }
 
-        if($location.path() == "/login") {
+        if($location.path() === loginPagePath) {
             redirectToLandingPageIfAlreadyAuthenticated();
         }
 
@@ -40,10 +41,14 @@ angular.module('registration.session', [])
         $scope.logout = function () {
             $rootScope.errorMessage = null;
             $http.delete(sessionResourcePath);
-            $location.path("/login");
+            $location.path(loginPagePath);
         }
 
         $scope.resetForm = function () {
             $scope.password = "";
+        }
+
+        $scope.canLogout = function() {
+            return $location.path() !== loginPagePath;
         }
     }]);
