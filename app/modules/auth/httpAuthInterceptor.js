@@ -11,9 +11,7 @@ angular.module('http-auth-interceptor', [])
 
             function error(response) {
                 if (response.status === 401) {
-                    var deferred = $q.defer();
                     $rootScope.$broadcast('event:auth-loginRequired');
-                    return deferred.promise;
                 }
                 return $q.reject(response);
             }
