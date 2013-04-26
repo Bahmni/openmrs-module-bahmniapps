@@ -9,6 +9,7 @@ angular.module('registration.editPatient', ['resources.patientService', 'resourc
                 uuid = $route.current.params.patientUuid;
                 patientService.get($route.current.params.patientUuid).success(function(openmrsPatient){
                     $scope.patient = patientMapper.map(openmrsPatient);
+                    $scope.patient.isNew = ($location.search()).newpatient;
                 });
             })();
 
