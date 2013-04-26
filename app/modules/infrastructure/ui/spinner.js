@@ -2,15 +2,14 @@
 
 angular.module('infrastructure.spinner', [])
     .factory('spinner', ['$q', function ($q) {
-        var enabled = true;
-
         var show = function () {
-            if (enabled)
-                $('#overlay').show();
+           $('#view-content').hide();
+           $('#overlay').show();
         }
 
         var hide = function () {
             $('#overlay').hide();
+            $('#view-content').show();
         }
 
         var forPromise = function (promise) {
