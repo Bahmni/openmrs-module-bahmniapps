@@ -1,8 +1,7 @@
 'use strict';
 
-angular.module('registration.navigation', [])
-    .controller('NavigationController', ['$scope', '$rootScope', '$location', '$http', function ($scope, $rootScope, $location, $http) {
-        var sessionResourcePath = $rootScope.openmrsUrl + '/ws/rest/v1/session';
+angular.module('registration.navigation', ['registration.sessionService'])
+    .controller('NavigationController', ['$scope', '$rootScope', '$location', 'sessionService', function ($scope, $rootScope, $location, sessionService) {
         var loginPagePath = "/login";
 
         $scope.createNew = function() {
@@ -12,7 +11,7 @@ angular.module('registration.navigation', [])
 
         $scope.logout = function () {
             $rootScope.errorMessage = null;
-            $http.delete(sessionResourcePath);
+            sessionService.destroy();
             $location.path(loginPagePath);
         }
 

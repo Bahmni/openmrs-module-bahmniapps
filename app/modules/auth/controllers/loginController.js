@@ -1,16 +1,13 @@
 'use strict';
 
-angular.module('registration.session', [])
-    .controller('SessionController', ['$rootScope', '$scope', '$http', '$location', function ($rootScope, $scope, $http, $location) {
-        var sessionResourcePath = $rootScope.openmrsUrl + '/ws/rest/v1/session';
+angular.module('registration.loginController', ['registration.sessionService'])
+    .controller('LoginController', ['$rootScope', '$scope', '$http', '$location', 'sessionService', function ($rootScope, $scope, $http, $location, sessionService) {
         var landingPagePath = "/search";
         var loginPagePath = "/login";
         $scope.isAuthenticated = true;
 
         var redirectToLandingPageIfAlreadyAuthenticated = function() {
-            $http.get(sessionResourcePath, {
-                cache: false
-            }).success(function (data) {
+            sessionService.get().success(function (data) {
                 if (data.authenticated) {
                     $location.path(landingPagePath);
                 } else {
@@ -25,10 +22,7 @@ angular.module('registration.session', [])
 
         $scope.login = function () {
             $scope.errorMessage = null
-            return $http.get(sessionResourcePath, {
-                headers: {'Authorization': 'Basic ' + window.btoa($scope.username + ':' + $scope.password)},
-                cache: false
-            }).success(function (data) {
+            return sessionService.create($scope.username, $scope.password).success(function (data) {
                 if (data.authenticated) {
                     $location.path(landingPagePath);
                 } else {
