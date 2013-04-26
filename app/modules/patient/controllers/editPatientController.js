@@ -1,16 +1,18 @@
 'use strict';
 
-angular.module('registration.editPatient', ['resources.patientService', 'resources.preferences', 'resources.openmrsPatientMapper'])
-    .controller('EditPatientController', ['$scope', 'patientService', '$location', 'Preferences', '$route', 'openmrsPatientMapper', '$window',
-        function ($scope, patientService, $location, preferences, $route, patientMapper, $window) {
+angular.module('registration.editPatient', ['resources.patientService', 'resources.preferences', 'resources.openmrsPatientMapper', 'infrastructure.spinner'])
+    .controller('EditPatientController', ['$scope', 'patientService', '$location', 'Preferences', '$route', 'openmrsPatientMapper', '$window',  'spinner',
+        function ($scope, patientService, $location, preferences, $route, patientMapper, $window, spinner) {
             var uuid;
             $scope.patient = {};
             (function() {
                 uuid = $route.current.params.patientUuid;
-                patientService.get($route.current.params.patientUuid).success(function(openmrsPatient){
+                var getPatientPromise = patientService.get($route.current.params.patientUuid).success(function (openmrsPatient) {
                     $scope.patient = patientMapper.map(openmrsPatient);
                     $scope.patient.isNew = ($location.search()).newpatient;
                 });
+                spinner.forPromise(getPatientPromise);
+
             })();
 
             $scope.patientCommon = function() {
