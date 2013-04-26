@@ -3,7 +3,7 @@
 
 angular.module('registration', ['registration.search', 'registration.navigation', 'registration.loginController', 'http-auth-interceptor', 'registration.createPatient',
                                 'registration.visitController', 'infrastructure.httpErrorInterceptor','registration.patientCommon', 'registration.editPatient',
-                                'registration.initialization', 'infrastructure.spinner'])
+                                'registration.initialization'])
 angular.module('registration').config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
         $routeProvider.when('/search', {templateUrl: 'modules/patient/views/search.html', controller: 'SearchPatientController'});
         $routeProvider.when('/search?q=:query', {templateUrl: 'modules/patient/views/search.html', controller: 'SearchPatientController'});
@@ -15,6 +15,4 @@ angular.module('registration').config(['$routeProvider', '$httpProvider', functi
         $routeProvider.when('/patientcommon', {templateUrl: 'modules/patient/views/patientcommon.html'});
         $routeProvider.otherwise({redirectTo: '/login'});
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
-    }]).run(['initialization', 'spinner', function(initialization, spinner){
-        spinner.forPromise(initialization);
     }]);

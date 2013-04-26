@@ -7,7 +7,7 @@ angular.module('resources.patientAttributeType', [])
         var patientAttributes = [];
 
         var init = function() {
-            return $http.get($rootScope.openmrsUrl + "/ws/rest/v1/personattributetype?v=full", {
+            return $http.get(constants.openmrsUrl + "/ws/rest/v1/personattributetype?v=full", {
                 withCredentials: true
             }).success(function(data) {
                 patientAttributes = data.results;

@@ -2,7 +2,7 @@
 
 describe('Concept', function () {
 
-    var rootScope = {},$http,
+    var $http,
         mockHttp = {defaults: {headers: {common: {'X-Requested-With': 'present'}} },
             get: jasmine.createSpy('Http get').andReturn({'display': 'CHIEF COMPLAINT'})
         };
@@ -10,12 +10,11 @@ describe('Concept', function () {
     beforeEach(module('resources.concept'));
     beforeEach(module(function ($provide) {
         $provide.value('$http', mockHttp);
-        $provide.value('$rootScope', rootScope);
     }));
 
     it('Should call url to get concept', inject(['concept', function (concept) {
         var openmrsUrl = 'http://blah.com';
-        rootScope.openmrsUrl = openmrsUrl;
+        constants.openmrsUrl = openmrsUrl;
 
         var results = concept.getRegistrationConcepts();
         expect(mockHttp.get).toHaveBeenCalled();

@@ -4,7 +4,6 @@ describe('Patient resource', function () {
     var patientService;
     var openmrsUrl = "http://blah"
 
-    var rootScope = {};
     var mockHttp = {
         defaults: {headers: {common: {'X-Requested-With': 'present'}}},
         get: jasmine.createSpy('Http get').andReturn({'name': 'john'}),
@@ -21,9 +20,8 @@ describe('Patient resource', function () {
         module('resources.patientService');
 
         module(function ($provide) {
-            rootScope.openmrsUrl = openmrsUrl;
+            constants.openmrsUrl = openmrsUrl;
             $provide.value('$http', mockHttp);
-            $provide.value('$rootScope', rootScope);
             $provide.value('patientMapper', mockPatientMapper);
         });
 

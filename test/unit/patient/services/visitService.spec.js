@@ -2,19 +2,18 @@
 
 describe('Patient visit', function () {
 
-    var rootScope = {},$http,
+    var $http,
         mockHttp = {defaults: {headers: {common: {'X-Requested-With': 'present'}} },
             post: jasmine.createSpy('Http post').andReturn('success')};
 
     beforeEach(module('resources.visitService'));
     beforeEach(module(function ($provide) {
         $provide.value('$http', mockHttp);
-        $provide.value('$rootScope', rootScope);
     }));
 
     it('Should create a visit', inject(['visitService', function (visitService) {
         var openmrsUrl = 'http://blah.com';
-        rootScope.openmrsUrl = openmrsUrl;
+        constants.openmrsUrl = openmrsUrl;
         var visitJson = {
             "patient":"ee73ab73-b96b-4dbe-a6aa-f4bc1ea0340d",
             "startDatetime":"2013-03-22T06:05:19.462Z",

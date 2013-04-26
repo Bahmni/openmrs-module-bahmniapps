@@ -3,7 +3,7 @@
 describe('AutoCompleteService', function () {
 
     var resultList = {"results":["result1","result2","result3","result4"]};
-    var rootScope = {}, $http,
+    var $http,
         mockHttp = {defaults:{headers:{common:{'X-Requested-With':'present'}} },
                     get:jasmine.createSpy('Http get').andReturn(resultList)
                    };
@@ -11,12 +11,11 @@ describe('AutoCompleteService', function () {
     beforeEach(module('resources.autoCompleteService'));
     beforeEach(module(function ($provide) {
         $provide.value('$http', mockHttp);
-        $provide.value('$rootScope', rootScope);
     }));
 
     it('Should get unique list of family names', inject(['autoCompleteService', function (autoCompleteService) {
         var openmrsUrl = 'http://blah.com';
-        rootScope.openmrsUrl = openmrsUrl;
+        constants.openmrsUrl = openmrsUrl;
         var key = "familyName";
         var query = "res";
 
@@ -31,7 +30,7 @@ describe('AutoCompleteService', function () {
 
     it('Should get unique list of caste',inject(['autoCompleteService', function (autoCompleteService){
         var openmrsUrl = 'http://blah.com';
-        rootScope.openmrsUrl = openmrsUrl;
+        constants.openmrsUrl = openmrsUrl;
         var key = "caste";
         var query = "res";
 
@@ -46,7 +45,7 @@ describe('AutoCompleteService', function () {
 
     it('Should trim leading whitespaces',inject(['autoCompleteService', function (autoCompleteService){
         var openmrsUrl = 'http://blah.com';
-        rootScope.openmrsUrl = openmrsUrl;
+        constants.openmrsUrl = openmrsUrl;
         var key = "caste";
         var query = "       res        ";
 

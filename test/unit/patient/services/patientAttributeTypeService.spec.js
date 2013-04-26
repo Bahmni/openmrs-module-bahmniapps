@@ -3,7 +3,6 @@
 describe('Patient attributes', function () {
     var openmrsUrl = 'http://blah.com';
 
-    var rootScope = {};
     var mockHttpGet = {
         defaults: {headers: {common: {'X-Requested-With': 'present'}} },
         get: jasmine.createSpy('Http get').andReturn({success: function(callBack){
@@ -12,9 +11,8 @@ describe('Patient attributes', function () {
 
     beforeEach(module('resources.patientAttributeType'));
     beforeEach(module(function ($provide) {
-        rootScope.openmrsUrl = openmrsUrl;
+        constants.openmrsUrl = openmrsUrl;
         $provide.value('$http', mockHttpGet);
-        $provide.value('$rootScope', rootScope);
     }));
 
 

@@ -4,14 +4,11 @@ angular.module('registration.loginController', ['registration.sessionService'])
     .controller('LoginController', ['$rootScope', '$scope', '$http', '$location', 'sessionService', function ($rootScope, $scope, $http, $location, sessionService) {
         var landingPagePath = "/search";
         var loginPagePath = "/login";
-        $scope.isAuthenticated = true;
 
         var redirectToLandingPageIfAlreadyAuthenticated = function() {
             sessionService.get().success(function (data) {
                 if (data.authenticated) {
                     $location.path(landingPagePath);
-                } else {
-                    $scope.isAuthenticated = false;
                 }
             });
         }
@@ -25,6 +22,7 @@ angular.module('registration.loginController', ['registration.sessionService'])
             return sessionService.create($scope.username, $scope.password).success(function (data) {
                 if (data.authenticated) {
                     $location.path(landingPagePath);
+                    $rootScope.$broadcast('event:auth-loggedin');
                 } else {
                     $scope.errorMessage = "Authentication failed. Please try again."
                     $scope.resetForm();
