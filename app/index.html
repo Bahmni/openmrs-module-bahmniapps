@@ -13,19 +13,18 @@
         <div class="container-fluid reg-wrapper">
             <div ng-app="registration" class="container">
                 <div id="overlay"></div>
-                <header class="reg-header">
+                <header class="reg-header" ng-controller="NavigationController">
                         
-                        <ul class="inline pull-right">
+                        <ul class="inline pull-right" ng-hide="onLoginPage()">
                             <li>
-                                <a ng-click="logout()" ng-controller="SessionController" class="pull-right"><span class="icon-plus-sign"></span>Create New</a>
+                                <a ng-click="createNew()"><span class="icon-plus-sign"></span>Create New</a>
                             </li>
                             <li>
-                                <a ng-click="logout()" ng-show="canLogout()" ng-controller="SessionController" class="pull-right">Logout</a>
+                                <a ng-click="logout()">Logout</a>
                             </li>
                         </ul>
                 </header>
-            <div ng-app="registration" class="container">
-                
+            <div class="container">
                 <div class="container-fluid">
                     <div style="display: none" class="alert alert-error" ng-show="server_error">{{server_error}}</div>
                 </div>
@@ -44,6 +43,7 @@
                 <script src="constants.js"></script>
                 <script src="modules/patient/services/autoCompleteService.js"></script>
                 <script src="modules/photo-capture/directives/capturePhoto.js"></script>
+                <script src="modules/navigation/controllers/navigation.js"></script>
                 <script src="modules/patient/controllers/search.js"></script>
                 <script src="modules/patient/controllers/patientCommon.js"></script>
                 <script src="modules/patient/controllers/createPatient.js"></script>
@@ -62,6 +62,7 @@
                 <script src="modules/medical-concepts/bmi.js"></script>
                 <script src="modules/util/date.js"></script>
             </div>
+        </div>
         </div>
     </body>
 </html>

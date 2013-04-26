@@ -105,41 +105,40 @@ describe('SearchPatientController', function () {
         });
     });
 
-    describe("searchByName", function(){
-        it("should go to search with query parameter", function(){
-            spyOn(location, 'search');
+    describe("search", function(){
+        it("should search by name when registration number is not enetered", function(){
+            scope.registrationNumber = ""
             scope.name = "Ram Singh"
+            spyOn(location, 'search');
 
-            scope.searchByName();
+            scope.search();
 
             expect(location.search).toHaveBeenCalledWith('q', "Ram Singh");
         });
-    });
-    describe("searchById", function(){
-        it("should search patient by given center and registration number", function(){
+
+        it("should search patient by given center and registration number when registration number is present", function(){
             scope.centerId = "GAN";
             scope.registrationNumber = "20001";
 
-            scope.searchById();
+            scope.search();
 
             expect(patientResource.search).toHaveBeenCalledWith('GAN20001');
         });
 
-        it('should show the spinner while searching', function() {
+        it('should show the spinner while searching by Id', function() {
             scope.centerId = "GAN";
             scope.registrationNumber = "20001";
 
-            scope.searchById();
+            scope.search();
 
             expect(spinner.forPromise).toHaveBeenCalledWith(searchPromise);
         });
 
-
-        describe("on success", function(){
+        describe("by Id on success", function(){
             beforeEach(function(){
                 scope.centerId = "GAN";
                 scope.registrationNumber = "20001";
-                scope.searchById();
+                scope.search();
             });
 
             it("should go to edit Patient when a patient is found", function(){

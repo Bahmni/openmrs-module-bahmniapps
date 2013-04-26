@@ -1,7 +1,7 @@
 
 
     <div class="well">
-        <form name="searchByIdForm" ng-submit="searchById()" class="form-horizontal form-seach">
+        <form name="searchByIdForm" ng-submit="search()" class="form-horizontal form-seach">
             <div class="clearfix">
             <div class="span5 search-seperator">
                 <div>
@@ -20,17 +20,13 @@
                     <input type="text" id="name" ng-model="name" placeholder="Enter name">
                     <button type="submit" class="btn search-btn"><i class="icon-search"></i></button>
                 </div>
-               <!--  <div class="controls">
-                    <button type="submit" class="btn">Search</button>
-                    <button type="button" class="btn" ng-click="createNew()">Create New</button>
-                </div> -->
             </div>
             </div>
             <div class="span3">
                 <div class="control-group">
                 <label for="name"><strong>Village</strong></label>
                 <div>
-                    <input type="text" id="name" ng-model="name" placeholder="Enter village name">
+                    <input type="text" id="village" ng-model="village" placeholder="Enter village name">
                     <button type="submit" class="btn search-btn"><i class="icon-search"></i></button>
                 </div>
                 </div>

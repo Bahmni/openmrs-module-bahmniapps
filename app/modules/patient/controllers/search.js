@@ -13,7 +13,8 @@ angular.module('registration.search', ['resources.patientService', 'infrastructu
             spinner.forPromise(searchPromise);
         }
 
-        $scope.searchById = function() {
+
+        var searchById = function() {
             var patientidentifier = $scope.centerId + $scope.registrationNumber;
 
             var searchPromise = patientService.search(patientidentifier).success(function (data) {
@@ -29,8 +30,16 @@ angular.module('registration.search', ['resources.patientService', 'infrastructu
         };
 
 
-        $scope.searchByName = function() {
+        var searchByName = function() {
             $location.search('q', $scope.name);
+        };
+
+        $scope.search = function() {
+            if($scope.registrationNumber){
+                searchById();
+            } else {
+                searchByName();
+            }
         };
 
         $scope.resultsPresent = function() {

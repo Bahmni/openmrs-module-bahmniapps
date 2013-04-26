@@ -38,17 +38,7 @@ angular.module('registration.session', [])
             });
         }
 
-        $scope.logout = function () {
-            $rootScope.errorMessage = null;
-            $http.delete(sessionResourcePath);
-            $location.path(loginPagePath);
-        }
-
         $scope.resetForm = function () {
             $scope.password = "";
-        }
-
-        $scope.canLogout = function() {
-            return $location.path() !== loginPagePath;
         }
     }]);
