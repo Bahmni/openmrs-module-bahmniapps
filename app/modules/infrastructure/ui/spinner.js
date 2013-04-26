@@ -10,7 +10,7 @@ angular.module('infrastructure.spinner', [])
         }
 
         var hide = function () {
-            $('#overlay').fadeOut();
+            $('#overlay').hide();
         }
 
         var forPromise = function (promise) {
