@@ -17,7 +17,7 @@ angular.module('resources.patientService', ['resources.patient', 'resources.pati
         }
 
         var search = function (query) {
-            return $http.get($rootScope.BaseUrl + "/ws/rest/v1/patient", {
+            return $http.get($rootScope.openmrsUrl + "/ws/rest/v1/patient", {
                 method: "GET",
                 params: {q: query, v: "custom:(uuid,identifiers:(uuid,identifier),person:(addresses,gender,age,names:(givenName,familyName)))"},
                 withCredentials: true
@@ -25,7 +25,7 @@ angular.module('resources.patientService', ['resources.patient', 'resources.pati
         }
 
         var get =  function (uuid) {
-            return $http.get($rootScope.BaseUrl + "/ws/rest/v1/patient/" + uuid, {
+            return $http.get($rootScope.openmrsUrl + "/ws/rest/v1/patient/" + uuid, {
                 method: "GET",
                 params: {v: "full"},
                 withCredentials: true
@@ -34,7 +34,7 @@ angular.module('resources.patientService', ['resources.patient', 'resources.pati
 
         var create = function (patient) {
             var patientJson = patientMapper.map(patient);
-            return $http.post($rootScope.BaseUrl + "/ws/rest/v1/bahmnicore/patient", patientJson, {
+            return $http.post($rootScope.openmrsUrl + "/ws/rest/v1/bahmnicore/patient", patientJson, {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
             });
@@ -42,7 +42,7 @@ angular.module('resources.patientService', ['resources.patient', 'resources.pati
 
         var update = function(patient, uuid) {
             var patientJson = patientMapper.map(patient);
-            return $http.post($rootScope.BaseUrl + "/ws/rest/v1/bahmnicore/patient/" + uuid, patientJson, {
+            return $http.post($rootScope.openmrsUrl + "/ws/rest/v1/bahmnicore/patient/" + uuid, patientJson, {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
             });

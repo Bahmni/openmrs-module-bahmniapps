@@ -2,7 +2,7 @@
 
 angular.module('registration.navigation', [])
     .controller('NavigationController', ['$scope', '$rootScope', '$location', '$http', function ($scope, $rootScope, $location, $http) {
-        var sessionResourcePath = $rootScope.BaseUrl + '/ws/rest/v1/session';
+        var sessionResourcePath = $rootScope.openmrsUrl + '/ws/rest/v1/session';
         var loginPagePath = "/login";
 
         $scope.createNew = function() {

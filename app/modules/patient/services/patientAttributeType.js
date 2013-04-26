@@ -7,14 +7,12 @@ angular.module('resources.patientAttributeType', [])
         var patientAttributes = [];
 
         var init = function() {
-            return $http.get($rootScope.BaseUrl + "/ws/rest/v1/personattributetype?v=full", {
+            return $http.get($rootScope.openmrsUrl + "/ws/rest/v1/personattributetype?v=full", {
                 withCredentials: true
             }).success(function(data) {
-                    patientAttributes = data.results;
-                })
+                patientAttributes = data.results;
+            })
         };
-
-        var patientAttributePromise = init();
 
         var getAll = function () {
             return patientAttributes;
@@ -25,8 +23,8 @@ angular.module('resources.patientAttributeType', [])
         }
 
         return {
+            init: init,
             getAll: getAll,
-            get: get,
-            initialization: patientAttributePromise
+            get: get
         };
     }]);

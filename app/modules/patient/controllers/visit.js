@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('registration.visitController', ['resources.patientService', 'resources.visitService', 'resources.concept', 'resources.bmi','resources.date'])
-    .controller('VisitController', ['$scope', '$location', 'patientService', 'visitService', 'concept', 'bmi','date', '$window', '$route', function ($scope, $location, patientService, visitService, conceptService, bmiModule, date, $window, $route) {
+angular.module('registration.visitController', ['resources.patientService', 'resources.visitService', 'resources.concept', 'resources.bmi','resources.date', 'infrastructure.spinner'])
+    .controller('VisitController', ['$scope', '$location', 'patientService', 'visitService', 'concept', 'bmi','date', '$window', '$route', 'spinner', function ($scope, $location, patientService, visitService, conceptService, bmiModule, date, $window, $route, spinner) {
     var registrationConcepts = [];
 
     (function () {
@@ -11,12 +11,13 @@ angular.module('registration.visitController', ['resources.patientService', 'res
         $scope.patient = patientService.getPatient();
         $scope.obs.registration_fees = defaults.registration_fees($scope.patient.isNew);
 
-        conceptService.getRegistrationConcepts().success(function (data) {
+        var registrationConceptsPromise = conceptService.getRegistrationConcepts().success(function (data) {
             var concepts = data.results[0].setMembers;
             concepts.forEach(function (concept) {
-                registrationConcepts.push({name:concept.name.name,uuid:concept.uuid });
+                registrationConcepts.push({name: concept.name.name, uuid: concept.uuid });
             });
         });
+        spinner.forPromise(registrationConceptsPromise);
     })();
 
     $scope.calculateBMI = function () {

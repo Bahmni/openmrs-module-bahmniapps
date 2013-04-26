@@ -19,7 +19,6 @@ describe('patientMapper', function() {
 
     var mockPatientAttributeType = {
         get: function(uuid){ return samplePatientAttributeTypes.filter(function(attribute){return uuid === attribute.uuid})[0];},
-        initialization: {success: function(callBack){return callBack();}}
     };
 
     beforeEach(function() {

@@ -12,6 +12,7 @@ describe('VisitController', function () {
     var $location;
     var $window;
     var createPromise;
+    var spinner;
 
     var sampleConcepts={
         "results": [
@@ -53,6 +54,7 @@ describe('VisitController', function () {
                 }
             }
         };
+        spinner = jasmine.createSpyObj('spinner', ['forPromise'])
         visitService = jasmine.createSpyObj('visit', ['create']);
         createPromise = jasmine.createSpyObj('createPromise', ['success'])
         visitService.create.andReturn(createPromise)
@@ -64,6 +66,7 @@ describe('VisitController', function () {
             $controller('VisitController', {
                 $scope: scope,
                 concept: conceptService,
+                spinner: spinner,
                 patientService: patientService
             });
 
@@ -76,6 +79,7 @@ describe('VisitController', function () {
             $controller('VisitController', {
                 $scope: scope,
                 concept: conceptService,
+                spinner: spinner,
                 patientService: patientService
             });
 
@@ -92,6 +96,7 @@ describe('VisitController', function () {
                 patientService: patientService,
                 visitService: visitService,
                 $location: $location,
+                spinner: spinner,
                 date: date
             });
             visitService.create.andReturn(createPromise)
@@ -145,6 +150,7 @@ describe('VisitController', function () {
                 $scope: scope,
                 concept: conceptService,
                 patientService: patientService,
+                spinner: spinner,
                 visitService: visitService
             });
             scope.patient = {uuid: "21308498-2502-4495-b604-7b704a55522d"}
@@ -203,6 +209,7 @@ describe('VisitController', function () {
             $controller('VisitController', {
                 $scope: scope,
                 concept: conceptService,
+                spinner: spinner,
                 patientService: patientService
             });
         });

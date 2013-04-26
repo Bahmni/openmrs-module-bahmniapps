@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Patient attributes', function () {
-    var baseUrl = 'http://blah.com';
+    var openmrsUrl = 'http://blah.com';
 
     var rootScope = {};
     var mockHttpGet = {
@@ -12,15 +12,18 @@ describe('Patient attributes', function () {
 
     beforeEach(module('resources.patientAttributeType'));
     beforeEach(module(function ($provide) {
-        rootScope.BaseUrl = baseUrl;
+        rootScope.openmrsUrl = openmrsUrl;
         $provide.value('$http', mockHttpGet);
         $provide.value('$rootScope', rootScope);
     }));
 
-    it('Should make call to getAll', inject(['patientAttributeType',function (patientAttribute) {
-        patientAttribute.getAll();
 
-        expect(mockHttpGet.get).toHaveBeenCalled();
-        expect(mockHttpGet.get.mostRecentCall.args[0]).toBe(baseUrl + '/ws/rest/v1/personattributetype?v=full');
-    }]));
+    describe("init", function () {
+       it('Should make call to getAll', inject(['patientAttributeType',function (patientAttribute) {
+            patientAttribute.init();
+
+            expect(mockHttpGet.get).toHaveBeenCalled();
+            expect(mockHttpGet.get.mostRecentCall.args[0]).toBe(openmrsUrl + '/ws/rest/v1/personattributetype?v=full');
+        }]));
+    });
 });

@@ -7,5 +7,6 @@ var constants = {
         {name: 'SEM'},
         {name: 'SHI'},
         {name: 'BAH'}
-    ]
+    ],
+    openmrsUrl: "/openmrs"
 };

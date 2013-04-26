@@ -14,12 +14,12 @@ describe('Concept', function () {
     }));
 
     it('Should call url to get concept', inject(['concept', function (concept) {
-        var baseUrl = 'http://blah.com';
-        rootScope.BaseUrl = baseUrl;
+        var openmrsUrl = 'http://blah.com';
+        rootScope.openmrsUrl = openmrsUrl;
 
         var results = concept.getRegistrationConcepts();
         expect(mockHttp.get).toHaveBeenCalled();
-        expect(mockHttp.get.mostRecentCall.args[0]).toBe(baseUrl + '/ws/rest/v1/concept');
+        expect(mockHttp.get.mostRecentCall.args[0]).toBe(openmrsUrl + '/ws/rest/v1/concept');
         expect(mockHttp.get.mostRecentCall.args[1].params.q).toBe("REGISTRATION_CONCEPTS");
         expect(results.display).toBe('CHIEF COMPLAINT');
     }]));

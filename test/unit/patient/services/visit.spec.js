@@ -13,8 +13,8 @@ describe('Patient visit', function () {
     }));
 
     it('Should create a visit', inject(['visitService', function (visitService) {
-        var baseUrl = 'http://blah.com';
-        rootScope.BaseUrl = baseUrl;
+        var openmrsUrl = 'http://blah.com';
+        rootScope.openmrsUrl = openmrsUrl;
         var visitJson = {
             "patient":"ee73ab73-b96b-4dbe-a6aa-f4bc1ea0340d",
             "startDatetime":"2013-03-22T06:05:19.462Z",
@@ -37,7 +37,7 @@ describe('Patient visit', function () {
         var results = visitService.create(visitJson);
 
         expect(mockHttp.post).toHaveBeenCalled();
-        expect(mockHttp.post.mostRecentCall.args[0]).toBe(baseUrl + '/ws/rest/v1/visit');
+        expect(mockHttp.post.mostRecentCall.args[0]).toBe(openmrsUrl + '/ws/rest/v1/visit');
         expect(mockHttp.post.mostRecentCall.args[1]).toBe(visitJson);
         expect(results).toBe('success');
     }]));

@@ -50,9 +50,7 @@ angular.module('resources.openmrsPatientMapper', ['resources.patientAttributeTyp
             patient.identifier = openmrsPatient.identifiers[0].identifier;
             patient.image = $rootScope.bahmniConfiguration.patientImagesUrl +  "/" + patient.identifier + ".jpeg";
             patient.registrationDate = parseDate(openmrsPatient.person.personDateCreated);
-            patientAttributeType.initialization.success(function() {
-                mapAttributes(patient, openmrsPatient.person.attributes);
-            });
+            mapAttributes(patient, openmrsPatient.person.attributes);
             return patient;
         };
 

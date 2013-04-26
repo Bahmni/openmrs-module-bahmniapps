@@ -2,7 +2,7 @@
 
 angular.module('registration.session', [])
     .controller('SessionController', ['$rootScope', '$scope', '$http', '$location', function ($rootScope, $scope, $http, $location) {
-        var sessionResourcePath = $rootScope.BaseUrl + '/ws/rest/v1/session';
+        var sessionResourcePath = $rootScope.openmrsUrl + '/ws/rest/v1/session';
         var landingPagePath = "/search";
         var loginPagePath = "/login";
         $scope.isAuthenticated = true;

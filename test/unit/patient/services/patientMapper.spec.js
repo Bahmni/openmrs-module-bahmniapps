@@ -8,11 +8,11 @@ describe('patientMapper', function() {
     var samplePatientAttributeTypes = [
             {
                 "uuid": "be4f3f8a-862c-11e2-a490-afe87ebb32c9",
-                "name": "oldPatientIdentifier",
+                "name": "oldPatientIdentifier"
             },
             {
                 "uuid": "c3a345c6-862c-11e2-a490-afe87ebb32c9",
-                "name": "caste",
+                "name": "caste"
             }
         ];
 

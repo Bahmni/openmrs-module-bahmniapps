@@ -10,7 +10,6 @@ angular.module('registration.editPatient', ['resources.patientService', 'resourc
                 patientService.get($route.current.params.patientUuid).success(function(openmrsPatient){
                     $scope.patient = patientMapper.map(openmrsPatient);
                 });
-
             })();
 
             $scope.patientCommon = function() {
