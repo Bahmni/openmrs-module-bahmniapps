@@ -1,17 +1,46 @@
 body{
 	background:#f5f5f5;
+    font-family: "OpenSans",Arial,sans-serif;
 }
 .reg-header{
-	height:60px;
+	height:50px;
 }
-.reg-wrapper .well{
-	background:#ffffff;
-}
-.reg-wrapper .form-horizontal .control-label{
-	width:170px;
-}
-select{
-        box-shadow:none;
+.reg-wrapper{
+  margin-top:10px;
+  .well{
+      background:#ffffff;
+  }
+  header {
+    background-color: #501d3d;
+    position: relative;
+    color: #CCC;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px; 
+    li{
+      margin:14px 10px 10px 0px;
+      a{
+        color:#ffffff;
+        font-weight:bold;
+        cursor:pointer;
+      }
+    }
+  }
+  .form-horizontal .control-label{
+      width:170px;
+  }
+  select{
+          box-shadow:none;
+  }
+  .search-btn{
+    position:relative;
+    left:-45px;
+  }
+  .search-seperator{
+    border-right:2px dotted #cecece;
+  }
 }
 input:focus:invalid,
 textarea:focus:invalid,
@@ -44,12 +73,14 @@ select:focus:invalid {
      -moz-border-radius: 6px;
           border-radius: 6px;
 }
+
 #casteSameAsLastNameCheckLabel {
     -moz-user-select: none;
     -webkit-user-select: none;
     display: inline-block;
     position: relative;
     top: 3px;
+
 }
 
 #overlay {
@@ -82,4 +113,17 @@ select:focus:invalid {
 
 .btn-secondary {
   float: right;
+}   
+table{
+    tr{ 
+        th{
+            border:1px solid #d4d4d4;
+            background:#e6e6e6;
+     
+        }
+    }
+}
+.container-fluid{
+        padding-left:0px;
+        padding-right:0p;
 }

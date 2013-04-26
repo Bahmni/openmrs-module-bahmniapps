@@ -1,32 +1,47 @@
-<div class="container-fluid">
-    <h4>Search Registered Patients</h4>
 
-    <div>
-        <form name="searchByIdForm" ng-submit="searchById()" class="form-horizontal well form-seach">
-            <div class="control-group">
-                <label class="control-label" for="registrationNumber">Regn No.</label>
 
-                <div class="controls">
-                    <select  id="center" class="span1" ng-model="centerId" ng-options="c.name as c.name for c in centers" required> </select>
-                    <input type="text" id="registrationNumber" ng-model="registrationNumber" autofocus required>
-                    <button type="submit" class="btn">Search</button>
+    <div class="well">
+        <form name="searchByIdForm" ng-submit="searchById()" class="form-horizontal form-seach">
+            <div class="clearfix">
+            <div class="span5 search-seperator">
+                <div>
+                    <label for="registrationNumber"><strong>Regn No.</strong></label>
+                </div>
+                <div>
+                    <select  id="center" class="span1" ng-model="centerId" ng-options="c.name as c.name for c in centers" > </select>
+                    <input type="text" id="registrationNumber" ng-model="registrationNumber" autofocus placeholder="Enter ID">
+                    <button type="submit" class="btn search-btn"><i class="icon-search"></i></button>
                 </div>
             </div>
-        </form>
-
-        <form name="searchByNameForm" ng-submit="searchByName()" class="form-horizontal well">
-            <div class="control-group">
-                <label class="control-label" for="name">Name</label>
-                <div class="controls">
-                    <input type="text" id="name" ng-model="name">
+            <div class="span3">
+                <div class="control-group">
+                <label for="name"><strong>Name</strong></label>
+                <div>
+                    <input type="text" id="name" ng-model="name" placeholder="Enter name">
+                    <button type="submit" class="btn search-btn"><i class="icon-search"></i></button>
                 </div>
-            </div>
-            <div class="control-group">
-                <div class="controls">
+               <!--  <div class="controls">
                     <button type="submit" class="btn">Search</button>
                     <button type="button" class="btn" ng-click="createNew()">Create New</button>
+                </div> -->
+            </div>
+            </div>
+            <div class="span3">
+                <div class="control-group">
+                <label for="name"><strong>Village</strong></label>
+                <div>
+                    <input type="text" id="name" ng-model="name" placeholder="Enter village name">
+                    <button type="submit" class="btn search-btn"><i class="icon-search"></i></button>
+                </div>
                 </div>
             </div>
+        </div>
+        </form>
+
+        <form name="searchByNameForm" ng-submit="searchByName()" class="form-horizontal ">
+            
+
+
         </form>
         <br>
 
@@ -40,6 +55,7 @@
                 <th>Gender</th>
                 <th>Age</th>
                 <th>Village</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -55,4 +71,3 @@
             </tbody>
         </table>
     </div>
-</div>

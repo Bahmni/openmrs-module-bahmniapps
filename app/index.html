@@ -4,8 +4,8 @@
         <meta charset="utf-8">
         <title>Patient Registration</title>
 
-        <link rel="stylesheet" href="css/lib/bootstrap.min.css"/>
-        <link rel="stylesheet" href="css/lib/bootstrap-responsive.min.css"/>
+        <link rel="stylesheet" href="css/lib/bootstrap/bootstrap.min.css"/>
+        <link rel="stylesheet" href="css/lib/bootstrap/bootstrap-responsive.min.css"/>
         <link rel="stylesheet" href="css/style.css"/>
        <link rel="stylesheet" href="css/lib/jquery-ui/jquery-ui-1.10.2.custom.min.css"/>
     </head>
@@ -14,10 +14,18 @@
             <div ng-app="registration" class="container">
                 <div id="overlay"></div>
                 <header class="reg-header">
-                    <div class="row">
-                        <a ng-click="logout()" ng-show="canLogout()" ng-controller="SessionController" class="pull-right">Logout</a>
-                    </div>
+                        
+                        <ul class="inline pull-right">
+                            <li>
+                                <a ng-click="logout()" ng-controller="SessionController" class="pull-right"><span class="icon-plus-sign"></span>Create New</a>
+                            </li>
+                            <li>
+                                <a ng-click="logout()" ng-show="canLogout()" ng-controller="SessionController" class="pull-right">Logout</a>
+                            </li>
+                        </ul>
                 </header>
+            <div ng-app="registration" class="container">
+                
                 <div class="container-fluid">
                     <div style="display: none" class="alert alert-error" ng-show="server_error">{{server_error}}</div>
                 </div>
