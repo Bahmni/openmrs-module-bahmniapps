@@ -10,9 +10,16 @@ angular.module('registration.patientCommon', ['resources.autoCompleteService', '
                 }
             }
 
-            $scope.getAutoCompleteList = function (key, query) {
-                var result = autoCompleteService.getAutoCompleteList(key, query);
-                return result;
+            $scope.getLastNameList = function (query) {
+                return autoCompleteService.getAutoCompleteList("familyName", query);
+            }
+
+            $scope.getCasteList = function (query) {
+                return autoCompleteService.getAutoCompleteList("caste", query);
+            }
+
+            $scope.getDataResults = function (data) {
+                return  data.resultList.results;
             }
 
             $scope.$watch('patient.familyName', function () {
@@ -69,19 +76,21 @@ angular.module('registration.patientCommon', ['resources.autoCompleteService', '
         }
     })
 
-    .directive('myAutocomplete', function () {
+    .directive('myAutocomplete', function ($parse) {
         return function (scope, element, attrs) {
+            var ngModel = $parse(attrs.ngModel);
             element.autocomplete({
                 autofocus: true,
                 minLength: 3,
                 source: function (request, response) {
-                    scope.getAutoCompleteList(element[0].id, request.term).success(function (data) {
-                        response(data.resultList.results)
-                    });
+                    var autoCompleteConfig = angular.fromJson(attrs.myAutocomplete);
+                    scope[autoCompleteConfig.src](request.term).success(function (data) {
+                        response(scope[autoCompleteConfig.responseMap](data));
+                    });;
                 },
                 select: function (event, ui) {
                     scope.$apply(function (scope) {
-                        scope.patient[element[0].id] = ui.item.value;
+                        ngModel.assign(scope, ui.item.value);
                         scope.$eval(attrs.ngChange);
                     });
                     return true;

@@ -16,7 +16,7 @@
             <div class="controls" id="patientName">
                         <span class="pull-left">
                             <input type="text" id="givenName" ng-model="patient.givenName" non-blank placeholder="First Name" title="Enter patient's first name.">
-                            <input type="text" id="familyName" ng-model="patient.familyName" non-blank placeholder="Last Name" my-autocomplete title="Enter patient's last name.">
+                            <input type="text" id="familyName" ng-model="patient.familyName" my-autocomplete="{{ {'src': 'getLastNameList', 'responseMap': 'getDataResults'} }}" non-blank placeholder="Last Name"  title="Enter patient's last name.">
                         </span>
                         <span class="span3">
                             <input type="checkbox" id="casteSameAsLastNameCheck" ng-model="patient.sameAsLastName" ng-change="setCasteAsLastName()">
@@ -87,7 +87,7 @@
             <label class="control-label" for="caste">Caste</label>
 
             <div class="controls">
-                <input type="text" id="caste" ng-model="patient.caste" placeholder="Caste" my-autocomplete>
+                <input type="text" id="caste" ng-model="patient.caste" placeholder="Caste" my-autocomplete="{{ {'src': 'getCasteList', 'responseMap': 'getDataResults'} }}">
             </div>
         </div>
     </div>

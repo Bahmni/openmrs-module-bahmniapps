@@ -27,16 +27,29 @@ describe('PatientCommonController', function () {
     }
 
 
-    it('should use the autoCompleteService to get auto complete list', function () {
-        setupController();
+    describe("getLastNameList", function () {
+        it('should use the autoCompleteService to get laste name list', function () {
+            setupController();
+            var param = "ram";
 
-        var key = "caste";
-        var param = "res";
+            scope.getLastNameList(param);
 
-        scope.getAutoCompleteList(key, param);
+            expect(autoCompleteService.getAutoCompleteList).toHaveBeenCalled();
+            expect(autoCompleteService.getAutoCompleteList.mostRecentCall.args[0]).toBe("familyName");
+            expect(autoCompleteService.getAutoCompleteList.mostRecentCall.args[1]).toBe(param);
+        });
+    });
 
-        expect(autoCompleteService.getAutoCompleteList).toHaveBeenCalled();
-        expect(autoCompleteService.getAutoCompleteList.mostRecentCall.args[0]).toBe(key);
-        expect(autoCompleteService.getAutoCompleteList.mostRecentCall.args[1]).toBe(param);
-    })
+    describe("getCasteList", function () {
+        it('should use the autoCompleteService to get caste list', function () {
+            setupController();
+            var param = "hin";
+
+            scope.getCasteList(param);
+
+            expect(autoCompleteService.getAutoCompleteList).toHaveBeenCalled();
+            expect(autoCompleteService.getAutoCompleteList.mostRecentCall.args[0]).toBe("caste");
+            expect(autoCompleteService.getAutoCompleteList.mostRecentCall.args[1]).toBe(param);
+        });
+    });
 });
