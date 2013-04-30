@@ -2,7 +2,7 @@
 
 describe('PatientCommonController', function () {
 
-    var autoCompleteService;
+    var patientAttributeService;
     var success;
     var controller;
     var scope;
@@ -11,8 +11,8 @@ describe('PatientCommonController', function () {
     beforeEach(angular.mock.inject(function ($injector) {
         success = jasmine.createSpy('Successful');
 
-        autoCompleteService = jasmine.createSpyObj('autoCompleteService', ['getAutoCompleteList']);
-        autoCompleteService.getAutoCompleteList.andReturn({success:success});
+        patientAttributeService = jasmine.createSpyObj('patientAttributeService', ['search']);
+        patientAttributeService.search.andReturn({success:success});
 
     }));
 
@@ -21,35 +21,35 @@ describe('PatientCommonController', function () {
             scope = $rootScope.$new();
             controller = $controller('PatientCommonController', {
                 $scope:scope,
-                autoCompleteService:autoCompleteService
+                patientAttributeService:patientAttributeService
             });
         });
     }
 
 
     describe("getLastNameList", function () {
-        it('should use the autoCompleteService to get laste name list', function () {
+        it('should use the patientAttributeService to get laste name list', function () {
             setupController();
             var param = "ram";
 
             scope.getLastNameList(param);
 
-            expect(autoCompleteService.getAutoCompleteList).toHaveBeenCalled();
-            expect(autoCompleteService.getAutoCompleteList.mostRecentCall.args[0]).toBe("familyName");
-            expect(autoCompleteService.getAutoCompleteList.mostRecentCall.args[1]).toBe(param);
+            expect(patientAttributeService.search).toHaveBeenCalled();
+            expect(patientAttributeService.search.mostRecentCall.args[0]).toBe("familyName");
+            expect(patientAttributeService.search.mostRecentCall.args[1]).toBe(param);
         });
     });
 
     describe("getCasteList", function () {
-        it('should use the autoCompleteService to get caste list', function () {
+        it('should use the patientAttributeService to get caste list', function () {
             setupController();
             var param = "hin";
 
             scope.getCasteList(param);
 
-            expect(autoCompleteService.getAutoCompleteList).toHaveBeenCalled();
-            expect(autoCompleteService.getAutoCompleteList.mostRecentCall.args[0]).toBe("caste");
-            expect(autoCompleteService.getAutoCompleteList.mostRecentCall.args[1]).toBe(param);
+            expect(patientAttributeService.search).toHaveBeenCalled();
+            expect(patientAttributeService.search.mostRecentCall.args[0]).toBe("caste");
+            expect(patientAttributeService.search.mostRecentCall.args[1]).toBe(param);
         });
     });
 });

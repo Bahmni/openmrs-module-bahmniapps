@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('registration.patientCommon', ['resources.autoCompleteService', 'registration.photoCapture'])
-    .controller('PatientCommonController', ['$scope', 'autoCompleteService',
-        function ($scope, autoCompleteService) {
+angular.module('registration.patientCommon', ['resources.patientAttributeService', 'registration.photoCapture'])
+    .controller('PatientCommonController', ['$scope', 'patientAttributeService',
+        function ($scope, patientAttributeService) {
 
             $scope.setCasteAsLastName = function () {
                 if ($scope.patient.sameAsLastName) {
@@ -11,11 +11,11 @@ angular.module('registration.patientCommon', ['resources.autoCompleteService', '
             }
 
             $scope.getLastNameList = function (query) {
-                return autoCompleteService.getAutoCompleteList("familyName", query);
+                return patientAttributeService.search("familyName", query);
             }
 
             $scope.getCasteList = function (query) {
-                return autoCompleteService.getAutoCompleteList("caste", query);
+                return patientAttributeService.search("caste", query);
             }
 
             $scope.getDataResults = function (data) {

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('resources.autoCompleteService', [])
-    .factory('autoCompleteService', ['$http', '$rootScope', function ($http, $rootScope) {
+angular.module('resources.patientAttributeService', [])
+    .factory('patientAttributeService', ['$http', function ($http) {
 
     var urlMap;
 
@@ -13,18 +13,18 @@ angular.module('resources.autoCompleteService', [])
     }
     init();
 
-    var getAutoCompleteList = function(key, query){
-        var url = constants.openmrsUrl + urlMap[key];
+    var search = function(fieldName, query){
+        var url = constants.openmrsUrl + urlMap[fieldName];
         var queryWithoutTrailingSpaces = query.trimLeft();
 
         return $http.get(url, {
             method: "GET",
-            params: {q: queryWithoutTrailingSpaces, key: key },
+            params: {q: queryWithoutTrailingSpaces, key: fieldName },
             withCredentials: true
         });
     }
 
     return{
-        getAutoCompleteList : getAutoCompleteList
+        search : search
     };
 }]);
