@@ -105,7 +105,9 @@ describe('patientMapper', function() {
         expect(patient.address.cityVillage).toBe(openmrsPatient.person.preferredAddress.cityVillage);
         expect(patient.address.countyDistrict).toBe(openmrsPatient.person.preferredAddress.countyDistrict);
         expect(patient.address.stateProvince).toBe(openmrsPatient.person.preferredAddress.stateProvince);
-        expect(patient.image).toBe("http://test.uri/patient_images/" + openmrsPatient.identifiers[0].identifier + ".jpeg");
+        var urlParts = patient.image.split('?')
+        expect(urlParts.length).toBe(2);
+        expect(urlParts[0]).toBe("http://test.uri/patient_images/" + openmrsPatient.identifiers[0].identifier + ".jpeg");
     });
 
     it('should map attributes from openmrsPatient to our patient object', function() {

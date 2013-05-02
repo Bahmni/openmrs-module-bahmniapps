@@ -11,6 +11,7 @@ describe('VisitController', function () {
     var date;
     var $location;
     var $window;
+    var $timeout;
     var createPromise;
     var spinner;
 
@@ -36,13 +37,14 @@ describe('VisitController', function () {
     }
 
     beforeEach(module('registration.visitController'));
-    beforeEach(inject(['$injector', 'date', '$location', '$window', function ($injector, dateModule, location, window) {
+    beforeEach(inject(['$injector', 'date', '$location', '$window', '$timeout', function ($injector, dateModule, location, window, timeout) {
         $controller = $injector.get('$controller');
         patientService = jasmine.createSpyObj('patientService', ['getPatient', 'clearPatient']);
         date = dateModule;
         patient = {};
         $location = location;
         $window = window;
+        $timeout = timeout;
         patientService.getPatient.andReturn(patient);
         success = jasmine.createSpy();
         conceptService = {
@@ -122,17 +124,18 @@ describe('VisitController', function () {
             expect(visitService.create).toHaveBeenCalledWith(scope.visit);
         });
 
-         it("should print patient and got to search on creation of visit", function(){
+        it("should print patient and got to search on creation of visit", function () {
             spyOn($location, 'path');
             spyOn(scope, 'printPatient');
             scope.saveAndPrint();
             expect(createPromise.success).toHaveBeenCalled();
 
             createPromise.success.mostRecentCall.args[0]();
-            
-           expect(scope.printPatient).toHaveBeenCalled();
-           expect($location.path).toHaveBeenCalledWith("/search");
-       });
+
+            expect(scope.printPatient).toHaveBeenCalled();
+            $timeout.flush();
+            expect($location.path).toHaveBeenCalledWith("/search");
+        });
 
          it("should clear the stored patient on success", function(){
              spyOn(scope, 'printPatient');
@@ -175,6 +178,7 @@ describe('VisitController', function () {
 
                 scope.submit();
                 createPromise.success.mostRecentCall.args[0]();
+                $timeout.flush();
 
                 expect($location.path).toHaveBeenCalledWith("/patient/new");
             });
@@ -198,6 +202,7 @@ describe('VisitController', function () {
 
                 scope.submit();
                 createPromise.success.mostRecentCall.args[0]();
+                $timeout.flush();
 
                 expect($location.path).toHaveBeenCalledWith("/search");
             });

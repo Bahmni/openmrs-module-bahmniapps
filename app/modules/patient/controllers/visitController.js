@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registration.visitController', ['resources.patientService', 'resources.visitService', 'resources.concept', 'resources.bmi','resources.date', 'infrastructure.spinner'])
-    .controller('VisitController', ['$scope', '$location', 'patientService', 'visitService', 'concept', 'bmi','date', '$window', '$route', 'spinner', function ($scope, $location, patientService, visitService, conceptService, bmiModule, date, $window, $route, spinner) {
+    .controller('VisitController', ['$scope', '$location', 'patientService', 'visitService', 'concept', 'bmi','date', '$window', '$route', 'spinner', '$timeout', function ($scope, $location, patientService, visitService, conceptService, bmiModule, date, $window, $route, spinner, $timeout) {
     var registrationConcepts = [];
 
     (function () {
@@ -64,7 +64,9 @@ angular.module('registration.visitController', ['resources.patientService', 'res
             patientService.clearPatient();
             if(successCallback) successCallback();
             var path = $scope.patient.isNew ? "/patient/new" : "/search";
-            $location.path(path);
+            $timeout(function(){
+                $location.path(path);
+            }, 100)
         });
     }
 
