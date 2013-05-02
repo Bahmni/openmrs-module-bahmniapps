@@ -18,9 +18,19 @@ angular.module('registration.patientCommon', ['resources.patientAttributeService
                 return patientAttributeService.search("caste", query);
             }
 
+            $scope.getTehsilList = function (query) {
+                return autoCompleteService.getAddressAutoCompleteList("tehsil", query, "address3");
+            }
+
             $scope.getDataResults = function (data) {
                 return  data.resultList.results;
             }
+
+            $scope.getAddressDataResults = function (data) {
+                return  data.map(function(element){return element.name});
+            }
+
+
 
             $scope.$watch('patient.familyName', function () {
                 if ($scope.patient.sameAsLastName) {
