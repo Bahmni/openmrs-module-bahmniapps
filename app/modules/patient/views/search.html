@@ -5,31 +5,32 @@
             <div class="clearfix">
             <div class="span5 search-seperator">
                 <div>
-                    <label for="registrationNumber"><strong>Regn No.</strong></label>
+                    <label for="registrationNumber"><strong>Patient ID</strong></label>
                 </div>
-                <div>
+                <div class="control-group">
                     <select  id="center" class="span1" ng-model="centerId" ng-options="c.name as c.name for c in centers" > </select>
                     <input type="text" id="registrationNumber" ng-model="registrationNumber" autofocus placeholder="Enter ID">
-                    <button type="submit" class="btn search-btn"><i class="icon-search"></i></button>
+                    
                 </div>
+                <button class="btn" > Search</button>
+
             </div>
-            <div class="span3">
-                <div class="control-group">
-                <label for="name"><strong>Name</strong></label>
-                <div>
-                    <input type="text" id="name" ng-model="name" placeholder="Enter name">
-                    <button type="submit" class="btn search-btn"><i class="icon-search"></i></button>
+            <div class="span6 form-inline">
+                <div class="clearfix">
+                <div class="control-group pull-left">
+                    <label for="name"><strong>Name</strong></label>
+                    <div class="reg-input">
+                        <input type="text" id="name" ng-model="name" placeholder="Enter name">
+                    </div>
                 </div>
-            </div>
-            </div>
-            <div class="span3">
-                <div class="control-group">
-                <label for="name"><strong>Village</strong></label>
-                <div>
-                    <input type="text" id="village" ng-model="village" placeholder="Enter village name">
-                    <button type="submit" class="btn search-btn"><i class="icon-search"></i></button>
-                </div>
-                </div>
+                <div class="control-group pull-left">
+                    <label for="name"><strong>Filter by Village</strong></label>
+                    <div class="reg-input">
+                        <input type="text" id="village" ng-model="village" placeholder="Enter village name"   disabled="disabled">
+                    </div>
+                </div> 
+                </div> 
+                <button class="btn"> Search</button>
             </div>
         </div>
         </form>
@@ -67,3 +68,15 @@
             </tbody>
         </table>
     </div>
+<script type="text/javascript">
+    $(function(){       
+        $("#name").keyup(function(){
+            var count = $(this).val().length;
+            if(count>0)
+                $("#village").removeAttr("disabled");
+            else 
+                $("#village").attr("disabled","disabled");
+        });
+    });
+
+</script>

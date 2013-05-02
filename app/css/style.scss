@@ -39,8 +39,18 @@ body{
     left:-45px;
   }
   .search-seperator{
-    border-right:2px dotted #cecece;
+    border-right:2px dotted #9E9D9D;
   }
+  .reg-input{
+    width:240px;
+  }
+}
+.create{
+  background:url(./img/create.png) top left no-repeat;
+  width:14px;
+  height:14px;
+  display:inline-block;
+  margin-right:2px;
 }
 input:focus:invalid,
 textarea:focus:invalid,
