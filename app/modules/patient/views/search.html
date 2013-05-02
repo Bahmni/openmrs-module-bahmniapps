@@ -3,16 +3,19 @@
     <div class="well">
         <form name="searchByIdForm" ng-submit="search()" class="form-horizontal form-seach">
             <div class="clearfix">
-            <div class="span5 search-seperator">
-                <div>
+            <div class="span5 search-seperator form-inline">
+                <div class="control-group pull-left">
                     <label for="registrationNumber"><strong>Patient ID</strong></label>
-                </div>
-                <div class="control-group">
-                    <select  id="center" class="span1" ng-model="centerId" ng-options="c.name as c.name for c in centers" > </select>
-                    <input type="text" id="registrationNumber" ng-model="registrationNumber" autofocus placeholder="Enter ID">
+                
+                    <div>
+                        <select  id="center" class="span1" ng-model="centerId" ng-options="c.name as c.name for c in centers" > </select>
+                        <input type="text" id="registrationNumber" ng-model="registrationNumber" autofocus placeholder="Enter ID">
+                    </div>
                     
                 </div>
-                <button class="btn" > Search</button>
+                <div class="reg-srch-btn pull-left">
+                      <button class="btn"> Search</button>
+                    </div>
 
             </div>
             <div class="span6 form-inline">
@@ -26,11 +29,14 @@
                 <div class="control-group pull-left">
                     <label for="name"><strong>Filter by Village</strong></label>
                     <div class="reg-input">
-                        <input type="text" id="village" ng-model="village" placeholder="Enter village name"   disabled="disabled">
+                        <input type="text" id="village" ng-model="village" placeholder="Enter village name">
                     </div>
                 </div> 
+                <div class="reg-srch-btn">
+                    <button class="btn"> Search</button>
+                </div>
                 </div> 
-                <button class="btn"> Search</button>
+                
             </div>
         </div>
         </form>
@@ -46,13 +52,13 @@
         <table ng-show="resultsPresent()" class="table table-hover">
             <thead>
             <tr>
-                <th>Sl.No</th>
+                <th class="slno_col">Sl.No</th>
                 <th>ID</th>
                 <th>Name</th>
                 <th>Gender</th>
                 <th>Age</th>
                 <th>Village</th>
-                <th></th>
+                <th class="edit-col"></th>
             </tr>
             </thead>
             <tbody>
@@ -63,20 +69,8 @@
                 <td>{{result.person.gender}}</td>
                 <td>{{result.person.age}}</td>
                 <td>{{result.person.addresses[0].cityVillage}}</td>
-                <td><button class="btn" ng-click="editPatient(result.uuid)">Start Visit</button></td>
+                <td class="edit-col"><a  ng-click="editPatient(result.uuid)"></a></td>
             </tr>
             </tbody>
         </table>
     </div>
-<script type="text/javascript">
-    $(function(){       
-        $("#name").keyup(function(){
-            var count = $(this).val().length;
-            if(count>0)
-                $("#village").removeAttr("disabled");
-            else 
-                $("#village").attr("disabled","disabled");
-        });
-    });
-
-</script>

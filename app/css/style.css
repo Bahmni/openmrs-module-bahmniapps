@@ -34,7 +34,21 @@ body {
   .reg-wrapper .search-seperator {
     border-right: 2px dotted #9E9D9D; }
   .reg-wrapper .reg-input {
-    width: 240px; }
+    width: 230px; }
+  .reg-wrapper .slno_col {
+    width: 40px; }
+  .reg-wrapper .edit-col {
+    width: 40px; }
+    .reg-wrapper .edit-col a {
+      background: url(./img/edit.png) top left no-repeat;
+      width: 30px;
+      height: 24px;
+      display: inline-block;
+      margin-right: 2px;
+      cursor: pointer; }
+  .reg-wrapper .reg-srch-btn {
+    padding-top: 25px;
+    padding-left: 10px; }
 
 .create {
   background: url(./img/create.png) top left no-repeat;
