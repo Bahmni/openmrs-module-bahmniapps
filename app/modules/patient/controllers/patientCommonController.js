@@ -25,7 +25,7 @@ angular.module('registration.patientCommon', ['resources.patientAttributeService
             var addressLevels = ["cityVillage",  "address3", "countyDistrict", "stateProvince"];
 
             $scope.getAddressDataResults = function (data) {
-                return data.map(function(addressField){return {'value': addressField.name, 'label': addressField.name + "(" + addressField.parent.name + ")", addressField: addressField}});
+                return data.map(function(addressField){return {'value': addressField.name, 'label': addressField.name + ( addressField.parent ?  ", " + addressField.parent.name : "" ), addressField: addressField}});
             }
 
             $scope.getVillageList = function (query) {
@@ -48,7 +48,8 @@ angular.module('registration.patientCommon', ['resources.patientAttributeService
                 var parentFields = addressLevels.slice(addressLevels.indexOf(fieldName) + 1);
                 var parent = addressFiled.parent;
                 parentFields.forEach(function(parentField){
-                    $scope.patient.address[parentField] = parent.name   ;
+                    if(!parent) return;
+                    $scope.patient.address[parentField] = parent.name;
                     parent = parent.parent;
                 });
             }
