@@ -5,6 +5,9 @@ body{
 .reg-header{
 	height:50px;
 }
+.remove-margin{
+  margin:0px !important; 
+}
 .reg-wrapper{
   margin-top:10px;
   .well{
@@ -62,7 +65,25 @@ body{
     padding-top:25px;
     padding-left:10px;
   }
-
+  .photo-container-wrapper{
+    position:relative;
+  }
+  .photo-container{
+    position:absolute;
+    top:-15px;
+    right:0px;
+    border:7px solid #f0f0f0;
+  }
+  .capture-photo-btn{
+    position:absolute;
+    top:0px;
+    left:-56px;
+    .btn{
+      background: url(./img/photo.png) 2px 3px no-repeat;
+      width:40px;
+      height:40px;
+    }
+  }
 }
 .create{
   background:url(./img/create.png) top left no-repeat;

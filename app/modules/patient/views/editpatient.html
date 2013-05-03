@@ -1,14 +1,21 @@
 <div class="container-fluid">
-    <h4>Register New Patient</h4>
-
     <form name="myForm" class="form-horizontal well" ng-submit="edit()">
         <legend class="mylegend"><span>Edit Patient (Patient Profile Information)</span></legend>
 
         <div class="control-group">
-            <label class="control-label" for="patientId">Patient Identifier</label>
-            <div class="controls">
-                <span class="input-xlarge uneditable-input" id="patientId">{{patient.identifier}}</span>
-            </div>
+            <span class="span5 remove-margin">
+                <label class="control-label" for="patientId">Patient Identifier</label>
+                <div class="controls">
+                    <span class="input-xlarge uneditable-input" id="patientId">{{patient.identifier}}</span>
+                </div>
+            </span>
+            <span class="span6 photo-container-wrapper">
+                <span class="pull-right photo-container">
+                        <img ng-src="{{patient.image}}"
+                             onerror="this.onerror=null;this.src='modules/photo-capture/images/blank-user.gif';"/>
+                        <div ng-model="patient.image" capture-photo class="capture-photo-btn"></div>
+                 </span>
+            </span>
         </div>
 
         <ng-include src="patientCommon()" ng-controller="PatientCommonController"></ng-include>
