@@ -7,7 +7,7 @@ angular.module('resources.addressAttributeService', [])
 
             return $http.get(url, {
                 method: "GET",
-                params: {searchString: query, addressField: fieldName },
+                params: {searchString: query, addressField: fieldName ,limit: defaults.maxAutocompleteResults},
                 withCredentials: true
             });
         }
