@@ -3,7 +3,7 @@
 angular.module('registration.search', ['resources.patientService', 'infrastructure.spinner'])
     .controller('SearchPatientController', ['$scope', 'patientService', '$location', '$window', 'spinner', function ($scope, patientService, $location, $window, spinner) {
         var query = $location.search().name || '';
-        $scope.name = $location.search().name;
+        $scope.name = query;
         $scope.village = $location.search().village;
         $scope.centers = constants.centers;
         $scope.centerId = defaults.centerId;
