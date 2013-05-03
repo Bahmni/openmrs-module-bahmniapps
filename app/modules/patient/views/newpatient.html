@@ -1,8 +1,8 @@
 <div class="container-fluid">
-    <h4>Register New Patient</h4>
-    <div></div>
     <form name="myForm" class="form-horizontal well" ng-submit="create()" >
         <legend class="mylegend"><span>New Patient Registration (Patient Profile Information)</span></legend>
+    <div class="clearfix">
+        <div class="span5">
         <div class="control-group">
             <label class="control-label" for="center">Center</label>
             <div class="controls">
@@ -16,6 +16,15 @@
                 <input type="checkbox"  id="hasOldIdentifier" ng-model="hasOldIdentifier" ng-change="patient.clearRegistrationNumber()">
             </div>
         </div>
+        </div>
+        <div class="span6 photo-container-wrapper">
+                <span class="pull-right photo-container">
+                        <img ng-src="{{patient.image}}"
+                             onerror="this.onerror=null;this.src='modules/photo-capture/images/blank-user.gif';"/>
+                        <div ng-model="patient.image" capture-photo class="capture-photo-btn"></div>
+                 </span>
+        </div>
+    </div>
 
         <div class="control-group" ng-show="hasOldIdentifier">
             <label class="control-label" for="registrationNumber">Patient Identifier </label>
