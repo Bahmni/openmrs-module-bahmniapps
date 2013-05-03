@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('registration.patientCommon', ['resources.patientAttributeService', 'registration.photoCapture'])
-    .controller('PatientCommonController', ['$scope', 'patientAttributeService',
-        function ($scope, patientAttributeService) {
+angular.module('registration.patientCommon', ['resources.patientAttributeService', 'registration.photoCapture','resources.addressAttributeService'])
+    .controller('PatientCommonController', ['$scope','$http', 'patientAttributeService','addressAttributeService',
+        function ($scope, $http, patientAttributeService, addressAttributeService) {
 
             $scope.setCasteAsLastName = function () {
                 if ($scope.patient.sameAsLastName) {
@@ -18,19 +18,40 @@ angular.module('registration.patientCommon', ['resources.patientAttributeService
                 return patientAttributeService.search("caste", query);
             }
 
-            $scope.getTehsilList = function (query) {
-                return autoCompleteService.getAddressAutoCompleteList("tehsil", query, "address3");
-            }
-
             $scope.getDataResults = function (data) {
                 return  data.resultList.results;
             }
 
+            var addressLevels = ["cityVillage",  "address3", "countyDistrict", "stateProvince"];
+
             $scope.getAddressDataResults = function (data) {
-                return  data.map(function(element){return element.name});
+                return data.map(function(addressField){return {'value': addressField.name, 'label': addressField.name + "(" + addressField.parent.name + ")", addressField: addressField}});
             }
 
+            $scope.getVillageList = function (query) {
+                return addressAttributeService.search("cityVillage", query);
+            }
 
+            $scope.villageSelected = function (item) {
+                addressFieldSelected("cityVillage", item.addressField);
+            }
+
+            $scope.getTehsilList = function (query) {
+                return addressAttributeService.search("address3", query);
+            }
+
+            $scope.tehsilSelected = function (item) {
+                addressFieldSelected("address3", item.addressField);
+            }
+
+            var addressFieldSelected = function (fieldName, addressFiled) {
+                var parentFields = addressLevels.slice(addressLevels.indexOf(fieldName) + 1);
+                var parent = addressFiled.parent;
+                parentFields.forEach(function(parentField){
+                    $scope.patient.address[parentField] = parent.name   ;
+                    parent = parent.parent;
+                });
+            }
 
             $scope.$watch('patient.familyName', function () {
                 if ($scope.patient.sameAsLastName) {
@@ -95,13 +116,16 @@ angular.module('registration.patientCommon', ['resources.patientAttributeService
                 source: function (request, response) {
                     var autoCompleteConfig = angular.fromJson(attrs.myAutocomplete);
                     scope[autoCompleteConfig.src](request.term).success(function (data) {
-                        response(scope[autoCompleteConfig.responseMap](data));
+                        var results = scope[autoCompleteConfig.responseMap](data);
+                        response(results);
                     });;
                 },
                 select: function (event, ui) {
+                    var autoCompleteConfig = angular.fromJson(attrs.myAutocomplete);
                     scope.$apply(function (scope) {
                         ngModel.assign(scope, ui.item.value);
                         scope.$eval(attrs.ngChange);
+                        scope[autoCompleteConfig.onSelect](ui.item);
                     });
                     return true;
                 },

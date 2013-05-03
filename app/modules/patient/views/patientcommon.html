@@ -125,7 +125,7 @@
             <label class="control-label" for="address2">Village</label>
 
             <div class="controls">
-                <input type="text" id="address2" ng-model="patient.address.cityVillage" placeholder="Village">
+                <input type="text" id="address2" ng-model="patient.address.cityVillage" placeholder="Village" my-autocomplete="{{ {'src': 'getVillageList', 'responseMap': 'getAddressDataResults', 'onSelect': 'villageSelected'} }}">
             </div>
         </div>
     </div>
@@ -136,7 +136,7 @@
             <label class="control-label" for="address3">Tehsil</label>
 
             <div class="controls">
-                <input type="text" id="address3" ng-model="patient.address.address3" placeholder="Tehsil" my-autocomplete="{{ {'src': 'getTehsilList', 'responseMap': 'getAddressDataResults'} }}">
+                <input type="text" id="address3" ng-model="patient.address.address3" placeholder="Tehsil" my-autocomplete="{{ {'src': 'getTehsilList', 'responseMap': 'getAddressDataResults', 'onSelect': 'tehsilSelected'} }}">
             </div>
         </div>
     </div>
