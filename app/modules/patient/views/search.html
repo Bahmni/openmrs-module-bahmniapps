@@ -1,56 +1,46 @@
-
-
-    <div class="well">
-        <form name="searchByIdForm" ng-submit="search()" class="form-horizontal form-seach">
-            <div class="clearfix">
-            <div class="span5 search-seperator form-inline">
-                <div class="control-group pull-left">
-                    <label for="registrationNumber"><strong>Patient ID</strong></label>
-                
-                    <div>
-                        <select  id="center" class="span1" ng-model="centerId" ng-options="c.name as c.name for c in centers" > </select>
-                        <input type="text" id="registrationNumber" ng-model="registrationNumber" autofocus placeholder="Enter ID">
+     <div class="well">
+         <div class="clearfix">
+             <form name="searchByIdForm" ng-submit="searchById()" class="form-horizontal form-seach">
+                <div class="span5 search-seperator form-inline">
+                    <div class="control-group pull-left">
+                        <label for="registrationNumber"><strong>Patient ID</strong></label>
+                        <div>
+                            <select id="center" class="span1" ng-model="centerId" ng-options="c.name as c.name for c in centers" > </select>
+                            <input type="text" id="registrationNumber" ng-model="registrationNumber" autofocus placeholder="Enter ID">
+                        </div>
                     </div>
-                    
-                </div>
-                <div class="reg-srch-btn pull-left">
-                      <button class="btn"> Search</button>
-                    </div>
-
-            </div>
-            <div class="span6 form-inline">
-                <div class="clearfix">
-                <div class="control-group pull-left">
-                    <label for="name"><strong>Name</strong></label>
-                    <div class="reg-input">
-                        <input type="text" id="name" ng-model="name" placeholder="Enter name">
+                    <div class="reg-srch-btn pull-left">
+                          <button type="submit" class="btn">Search</button>
                     </div>
                 </div>
-                <div class="control-group pull-left">
-                    <label for="name"><strong>Filter by Village</strong></label>
-                    <div class="reg-input">
-                        <input type="text" id="village" ng-model="village" placeholder="Enter village name">
+            </form>
+             <form name="searchByNameForm" ng-submit="searchByName()" class="form-horizontal">
+                <div class="span6 form-inline">
+                    <div class="control-group pull-left">
+                        <label for="name"><strong>Name</strong></label>
+                        <div class="reg-input">
+                            <input type="text" id="name" ng-model="name" placeholder="Enter name">
+                        </div>
                     </div>
-                </div> 
-                <div class="reg-srch-btn">
-                    <button class="btn"> Search</button>
+                    <div class="control-group pull-left">
+                        <label for="name"><strong>Filter by Village</strong></label>
+                        <div class="reg-input">
+                            <input type="text" id="village" ng-model="village" placeholder="Enter village name">
+                        </div>
+                    </div>
+                    <div class="reg-srch-btn">
+                        <button type="submit" class="btn">Search</button>
+                    </div>
                 </div>
-                </div> 
-                
-            </div>
-        </div>
-        </form>
+            </form>
+         </div>
+     </div>
 
-        <form name="searchByNameForm" ng-submit="searchByName()" class="form-horizontal ">
-            
+     <br>
 
-
-        </form>
-        <br>
-
-        <p ng-show="noResultsFound()">No results found</p>
-        <table ng-show="resultsPresent()" class="table table-hover">
-            <thead>
+    <p ng-show="noResultsFound()">No results found</p>
+    <table ng-show="resultsPresent()" class="table table-hover">
+        <thead>
             <tr>
                 <th class="slno_col">Sl.No</th>
                 <th>ID</th>
@@ -60,8 +50,8 @@
                 <th>Village</th>
                 <th class="edit-col"></th>
             </tr>
-            </thead>
-            <tbody>
+        </thead>
+        <tbody>
             <tr ng-repeat="result in results">
                 <td>{{$index + 1}}</td>
                 <td>{{result.identifiers[0].identifier}}</td>
@@ -71,6 +61,5 @@
                 <td>{{result.person.addresses[0].cityVillage}}</td>
                 <td class="edit-col"><a  ng-click="editPatient(result.uuid)"></a></td>
             </tr>
-            </tbody>
-        </table>
-    </div>
+        </tbody>
+    </table>

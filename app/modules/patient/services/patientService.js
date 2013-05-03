@@ -16,10 +16,10 @@ angular.module('resources.patientService', ['resources.patient', 'resources.pati
             patient = null;
         }
 
-        var search = function (query) {
+        var search = function (query, village) {
             return $http.get(constants.openmrsUrl + "/ws/rest/v1/patient", {
                 method: "GET",
-                params: {q: query, v: "custom:(uuid,identifiers:(uuid,identifier),person:(addresses,gender,age,names:(givenName,familyName)))"},
+                params: {q: query, cityVillage: village, v: "custom:(uuid,identifiers:(uuid,identifier),person:(addresses,gender,age,names:(givenName,familyName)))"},
                 withCredentials: true
             });
         }

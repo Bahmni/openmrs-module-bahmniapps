@@ -13,7 +13,7 @@ describe('SearchPatientController', function () {
     beforeEach(angular.mock.inject(function ($injector) {
         $controller = $injector.get('$controller');
         location = $injector.get('$location');
-        $window = $injector.get('$window');
+        $window = {history: {pushState: function(){}}};
     }));
 
     beforeEach(function(){
@@ -25,6 +25,7 @@ describe('SearchPatientController', function () {
             $scope: scope,
             patientService: patientResource,
             $location: location,
+            $window: $window,
             spinner: spinner
         });
     });
@@ -45,7 +46,7 @@ describe('SearchPatientController', function () {
 
         it('should set the name with query load patients if a query parameter is provided', function() {
             var query = 'john';
-            spyOn(location, 'search').andReturn({"q": query});
+            spyOn(location, 'search').andReturn({"name": query});
 
             $controller('SearchPatientController', {
                 $scope: scope,
@@ -62,7 +63,7 @@ describe('SearchPatientController', function () {
         });
 
         it('should show the spinner while searching', function() {
-            spyOn(location, 'search').andReturn({"q": "foo"});
+            spyOn(location, 'search').andReturn({"name": "foo"});
 
             $controller('SearchPatientController', {
                 $scope: scope,
@@ -106,30 +107,11 @@ describe('SearchPatientController', function () {
     });
 
     describe("search", function(){
-        it("should search by name when registration number is not enetered", function(){
-            scope.registrationNumber = ""
-            scope.name = "Ram Singh"
-            spyOn(location, 'search');
-
-            scope.search();
-
-            expect(location.search).toHaveBeenCalledWith('q', "Ram Singh");
-        });
-
-        it("should search patient by given center and registration number when registration number is present", function(){
-            scope.centerId = "GAN";
-            scope.registrationNumber = "20001";
-
-            scope.search();
-
-            expect(patientResource.search).toHaveBeenCalledWith('GAN20001');
-        });
-
         it('should show the spinner while searching by Id', function() {
             scope.centerId = "GAN";
             scope.registrationNumber = "20001";
 
-            scope.search();
+            scope.searchById();
 
             expect(spinner.forPromise).toHaveBeenCalledWith(searchPromise);
         });
@@ -138,7 +120,7 @@ describe('SearchPatientController', function () {
             beforeEach(function(){
                 scope.centerId = "GAN";
                 scope.registrationNumber = "20001";
-                scope.search();
+                scope.searchById();
             });
 
             it("should go to edit Patient when a patient is found", function(){
@@ -147,17 +129,7 @@ describe('SearchPatientController', function () {
 
                 searchPromise.callSuccesCallBack({results: [{uuid: "8989-90909"}]})
 
-                expect(location.search).toHaveBeenCalledWith({});
                 expect(location.path).toHaveBeenCalledWith("/patient/8989-90909");
-            });
-
-            it("should display patient message when patient not found", function(){
-                spyOn($window, 'alert');
-
-                searchPromise.callSuccesCallBack({results: []})
-
-                expect($window.alert).toHaveBeenCalled();
-                expect($window.alert.mostRecentCall.args[0]).toMatch(".*Could not .* GAN20001");
             });
         });
     });
