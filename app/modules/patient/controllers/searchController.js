@@ -2,22 +2,25 @@
 
 angular.module('registration.search', ['resources.patientService', 'infrastructure.spinner'])
     .controller('SearchPatientController', ['$scope', 'patientService', '$location', '$window', 'spinner', function ($scope, patientService, $location, $window, spinner) {
-        var query = $location.search().name || '';
-        window.asd = $location;
-        $scope.name = query;
-        $scope.village = $location.search().village;
         $scope.centers = constants.centers;
         $scope.centerId = defaults.centerId;
         $scope.moreResultsPresent = false;
 
-        if (query && query.trim().length > 0) {
-            var searchPromise = patientService.search(query, $scope.village).success(function (data) {
-                $scope.results = data.results;
-                $scope.moreResultsPresent = (data.links ? true : false);
-                $scope.noResultsMessage = $scope.results.length == 0 ?  "No results found" : null;
-            });
-            spinner.forPromise(searchPromise);
-        }
+        var searchBasedOnQueryParameters = function() {
+            $scope.registrationNumber = "";
+            $scope.village = $location.search().village;
+            $scope.name = $location.search().name || '';
+            if ($scope.name.trim().length > 0) {
+                var searchPromise = patientService.search($scope.name, $scope.village).success(function (data) {
+                    $scope.results = data.results;
+                    $scope.moreResultsPresent = (data.links ? true : false);
+                    $scope.noResultsMessage = $scope.results.length == 0 ?  "No results found" : null;
+                });
+                spinner.forPromise(searchPromise);
+            }
+        };
+
+        $scope.$watch(function(){ return $location.search(); }, searchBasedOnQueryParameters);
 
         $scope.searchById = function () {
             $scope.results = [];
@@ -34,12 +37,11 @@ angular.module('registration.search', ['resources.patientService', 'infrastructu
         };
 
         $scope.searchByName = function () {
-            $location.search({});
-            $location.search('name', $scope.name);
+            var queryParams = {name: $scope.name}
             if ($scope.village) {
-                $location.search('village', $scope.village);
+                queryParams.village = $scope.village;
             }
-            $location.search('_time_', new Date().getTime());
+            $location.search(queryParams);
         };
 
         $scope.resultsPresent = function () {

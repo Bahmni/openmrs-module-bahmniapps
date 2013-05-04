@@ -3,7 +3,8 @@
 describe('SearchPatientController', function () {
     var patientResource,
         searchPromise,
-        scope = {},
+        rootScope,
+        scope,
         location,
         $window,
         $controller,
@@ -12,11 +13,13 @@ describe('SearchPatientController', function () {
     beforeEach(angular.mock.module('registration.search'));
     beforeEach(angular.mock.inject(function ($injector) {
         $controller = $injector.get('$controller');
+        rootScope = $injector.get('$rootScope');
         location = $injector.get('$location');
         $window = {history: {pushState: function(){}}};
     }));
 
     beforeEach(function(){
+        scope = rootScope.$new();
         patientResource = jasmine.createSpyObj('patientService', ['search']),
         searchPromise = specUtil.createServicePromise('search');
         patientResource.search.andReturn(searchPromise);
@@ -44,82 +47,77 @@ describe('SearchPatientController', function () {
             expect(scope.centerId).toBe("SEM");
         });
 
-        it('should set the name with query and load the patients if a query parameter is provided', function() {
-            var query = 'john';
-            spyOn(location, 'search').andReturn({"name": query});
+        describe("On changing the search parameter in url", function(){
+            var urlSearchChangeCallback;
 
-            $controller('SearchPatientController', {
-                $scope: scope,
-                patientService: patientResource,
-                $location: location,
-                spinner: spinner
-            });
-
-            expect(scope.name).toBe(query);
-            expect(patientResource.search).toHaveBeenCalled();
-            expect(patientResource.search.mostRecentCall.args[0]).toBe(query);
-            expect(searchPromise.success).toHaveBeenCalled();
-        });
-
-        it('should show the spinner while searching', function() {
-            spyOn(location, 'search').andReturn({"name": "foo"});
-
-            $controller('SearchPatientController', {
-                $scope: scope,
-                patientService: patientResource,
-                $location: location,
-                spinner: spinner
-            });
-
-            expect(spinner.forPromise).toHaveBeenCalledWith(searchPromise);
-        });
-
-        it('should not search for patients if search parameter is not provided', function() {
-            spyOn(location, 'search').andReturn({});
-
-            $controller('SearchPatientController', {
-                $scope: scope,
-                patientService: patientResource,
-                $location: location
-            });
-
-            expect(patientResource.search).not.toHaveBeenCalled();
-        });
-
-        describe("on success", function(){
             beforeEach(function(){
-                spyOn(location, 'search').andReturn({"name": "foo"});
-
+                spyOn(scope, '$watch')
                 $controller('SearchPatientController', {
                     $scope: scope,
                     patientService: patientResource,
                     $location: location,
                     spinner: spinner
                 });
+                urlSearchChangeCallback = scope.$watch.mostRecentCall.args[1];
             });
 
-            it("should set the search results", function(){
-                var results = [{uuid: "8989-90909"}];
+            it('should set the name with query and load the patients if a query parameter is provided', function() {
+                var query = 'john';
+                spyOn(location, 'search').andReturn({"name": query});
 
-                searchPromise.callSuccesCallBack({results: results})
+                urlSearchChangeCallback();
 
-                expect(scope.results).toBe(results);
+                expect(scope.name).toBe(query);
+                expect(patientResource.search).toHaveBeenCalled();
+                expect(patientResource.search.mostRecentCall.args[0]).toBe(query);
+                expect(searchPromise.success).toHaveBeenCalled();
             });
 
-            it("should not show the 'no results found message' when patient is found", function(){
-                var results = [{uuid: "8989-90909"}];
+            it('should show the spinner while searching', function() {
+                spyOn(location, 'search').andReturn({"name": "foo"});
 
-                searchPromise.callSuccesCallBack({results: results})
+                urlSearchChangeCallback();
 
-                expect(scope.noResultsMessage).toBe(null);
+                expect(spinner.forPromise).toHaveBeenCalledWith(searchPromise);
             });
 
-            it("should show 'no results found message' when patient is not found", function(){
-                var results = [];
+            it('should not search for patients if search parameter is not provided', function() {
+                spyOn(location, 'search').andReturn({});
 
-                searchPromise.callSuccesCallBack({results: results})
+                urlSearchChangeCallback();
 
-                expect(scope.noResultsMessage).toMatch("No results");
+                expect(patientResource.search).not.toHaveBeenCalled();
+            });
+
+            describe("on success", function(){
+                beforeEach(function(){
+                    spyOn(location, 'search').andReturn({"name": "foo"});
+                    urlSearchChangeCallback();
+                });
+
+                it("should set the search results", function(){
+                    var results = [{uuid: "8989-90909"}];
+
+                    searchPromise.callSuccesCallBack({results: results})
+
+                    expect(scope.results).toBe(results);
+                });
+
+                it("should not show the 'no results found message' when patient is found", function(){
+                    var results = [{uuid: "8989-90909"}];
+
+                    searchPromise.callSuccesCallBack({results: results})
+
+                    expect(scope.noResultsMessage).toBe(null);
+                });
+
+                it("should show 'no results found message' when patient is not found", function(){
+                    var results = [];
+
+                    searchPromise.callSuccesCallBack({results: results})
+
+                    expect(scope.noResultsMessage).toMatch("No results");
+                });
             });
         });
     });
@@ -131,7 +129,7 @@ describe('SearchPatientController', function () {
 
             scope.searchByName();
 
-            expect(location.search).toHaveBeenCalledWith('name', "Ram Singh");
+            expect(location.search).toHaveBeenCalledWith({'name': "Ram Singh"});
         });
     });
 
