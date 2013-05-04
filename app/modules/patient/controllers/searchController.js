@@ -3,27 +3,28 @@
 angular.module('registration.search', ['resources.patientService', 'infrastructure.spinner'])
     .controller('SearchPatientController', ['$scope', 'patientService', '$location', '$window', 'spinner', function ($scope, patientService, $location, $window, spinner) {
         var query = $location.search().name || '';
+        window.asd = $location;
         $scope.name = query;
         $scope.village = $location.search().village;
         $scope.centers = constants.centers;
         $scope.centerId = defaults.centerId;
-
-        var successfulSearchPromise = function (data) {
-            $scope.results = data.results;
-        };
+        $scope.moreResultsPresent = false;
 
         if (query && query.trim().length > 0) {
-            var searchPromise = patientService.search(query, $scope.village).success(successfulSearchPromise);
+            var searchPromise = patientService.search(query, $scope.village).success(function (data) {
+                $scope.results = data.results;
+                $scope.moreResultsPresent = (data.links ? true : false);
+            });
             spinner.forPromise(searchPromise);
         }
 
         $scope.searchById = function () {
-            $window.history.pushState(null, null, $location.absUrl().split("?")[0]);
             var searchPromise = patientService.search($scope.centerId + $scope.registrationNumber).success(function (data) {
                 if (data.results.length > 0) {
                     var patient = data.results[0];
                     $scope.editPatient(patient.uuid);
                 } else {
+                    $scope.clearParameters();
                     $scope.results = data.results;
                 }
             });
@@ -51,10 +52,12 @@ angular.module('registration.search', ['resources.patientService', 'infrastructu
         };
 
         $scope.createNew = function () {
+            $scope.clearParameters();
             $location.path("/patient/new");
         };
 
         $scope.editPatient = function (patientUuid) {
+            $scope.clearParameters();
             $location.path("/patient/" + patientUuid)
         };
     }]);
