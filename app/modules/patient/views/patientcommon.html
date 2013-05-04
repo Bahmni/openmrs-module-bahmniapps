@@ -68,7 +68,7 @@
             <label class="control-label" for="gender">Gender <span class="asterick">*</span></label>
 
             <div class="controls">
-                <select id="gender" ng-model="patient.gender" required title="Select gender.">
+                <select id="gender" ng-model="patient.gender" required="required" title="Select gender.">
                     <option value="M">Male</option>
                     <option value="F">Female</option>
                     <option value="O">Other</option>
@@ -117,10 +117,10 @@
     </div>
     <div class="span5">
         <div class="control-group">
-            <label class="control-label" for="address2">Village<span class="asterick">*</span></label>
+            <label class="control-label" for="village">Village<span class="asterick">*</span></label>
 
             <div class="controls">
-                <input type="text" id="address2" ng-model="patient.address.cityVillage" placeholder="Village" non-blank my-autocomplete="{{ {'src': 'getVillageList', 'responseMap': 'getAddressDataResults', 'onSelect': 'villageSelected'} }}">
+                <input type="text" id="village" ng-model="patient.address.cityVillage" placeholder="Village" non-blank my-autocomplete="{{ {'src': 'getVillageList', 'responseMap': 'getAddressDataResults', 'onSelect': 'villageSelected'} }}">
             </div>
         </div>
     </div>
@@ -152,7 +152,7 @@
             <label class="control-label" for="address2">Gram Panchayat</label>
 
             <div class="controls">
-                <input type="text" id="address2" ng-model="patient.address.cityVillage" placeholder="Village" non-blank my-autocomplete="{{ {'src': 'getVillageList', 'responseMap': 'getAddressDataResults', 'onSelect': 'villageSelected'} }}">
+                <input type="text" id="address2" ng-model="patient.address.address2" placeholder="Gram Panchayat">
             </div>
         </div>
     </div>
