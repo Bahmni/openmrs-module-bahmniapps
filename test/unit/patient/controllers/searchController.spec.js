@@ -134,6 +134,15 @@ describe('SearchPatientController', function () {
     });
 
     describe("searchById", function(){
+        it('should search by patient identifier when registrationNumber is present', function() {
+            scope.centerId = "GAN";
+            scope.registrationNumber = "20001";
+
+            scope.searchById();
+
+            expect(patientResource.search).toHaveBeenCalledWith("GAN20001");
+        });
+
         it('should show the spinner while searching', function() {
             scope.centerId = "GAN";
             scope.registrationNumber = "20001";
@@ -141,6 +150,15 @@ describe('SearchPatientController', function () {
             scope.searchById();
 
             expect(spinner.forPromise).toHaveBeenCalledWith(searchPromise);
+        });
+
+        it('should not search if registrationNumber is not present', function() {
+            scope.centerId = "GAN";
+            scope.registrationNumber = "";
+
+            scope.searchById();
+
+            expect(patientResource.search).not.toHaveBeenCalled();
         });
 
         describe("on success", function(){

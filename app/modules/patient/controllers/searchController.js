@@ -23,6 +23,7 @@ angular.module('registration.search', ['resources.patientService', 'infrastructu
         $scope.$watch(function(){ return $location.search(); }, searchBasedOnQueryParameters);
 
         $scope.searchById = function () {
+            if(!$scope.registrationNumber) return;
             $scope.results = [];
             var patientIdentifier = $scope.centerId + $scope.registrationNumber;
             var searchPromise = patientService.search(patientIdentifier).success(function (data) {
