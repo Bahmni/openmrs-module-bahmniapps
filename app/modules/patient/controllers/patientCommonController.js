@@ -36,6 +36,14 @@ angular.module('registration.patientCommon', ['resources.patientAttributeService
                 addressFieldSelected("cityVillage", item.addressField);
             }
 
+            $scope.getDistrictList = function (query) {
+                return addressAttributeService.search("countyDistrict", query);
+            }
+
+            $scope.districtSelected = function (item) {
+                addressFieldSelected("countyDistrict", item.addressField);
+            }
+
             $scope.getTehsilList = function (query) {
                 return addressAttributeService.search("address3", query);
             }

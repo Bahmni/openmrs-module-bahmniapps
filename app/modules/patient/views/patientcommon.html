@@ -141,7 +141,7 @@
             <label class="control-label" for="countyDistrict">District</label>
 
             <div class="controls">
-                <input type="text" id="countyDistrict" ng-model="patient.address.countyDistrict" placeholder="District">
+                <input type="text" id="countyDistrict" ng-model="patient.address.countyDistrict" placeholder="District" my-autocomplete="{{ {'src': 'getDistrictList', 'responseMap': 'getAddressDataResults', 'onSelect': 'districtSelected'} }}">
             </div>
         </div>
     </div>
