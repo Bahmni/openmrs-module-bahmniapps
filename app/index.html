@@ -14,10 +14,13 @@
             <div ng-app="registration" class="container">
                 <div id="overlay"></div>
                 <header class="reg-header" ng-controller="NavigationController">
-                        
+                        <a class="header-logo pull-left" href="/registration">JSS</a>
                         <ul class="inline pull-right" ng-hide="onLoginPage()">
                             <li>
-                                <a ng-click="createNew()"><span class="create"></span>Create New</a>
+                                <a href="/registration"><i class="icon-search icon-white"></i><span class="nav-link">Search</span></a>
+                            </li>
+                            <li>
+                                <a ng-click="createNew()"><i class="create"></i><span class="nav-link">Create New</span></a>
                             </li>
                             <li>
                                 <a ng-click="logout()">Logout</a>

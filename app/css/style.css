@@ -10,6 +10,13 @@ body {
 
 .reg-wrapper {
   margin-top: 10px; }
+  .reg-wrapper .header-logo {
+    background: url(./img/jss_logo.png) top left no-repeat;
+    height: 45px;
+    width: 45px;
+    margin-top: 4px;
+    margin-left: 5px;
+    text-indent: -500px; }
   .reg-wrapper .well {
     background: #ffffff; }
   .reg-wrapper header {
@@ -27,6 +34,14 @@ body {
         color: #ffffff;
         font-weight: bold;
         cursor: pointer; }
+        .reg-wrapper header li a .nav-link {
+          padding-left: 2px; }
+        .reg-wrapper header li a .create {
+          background: url(./img/create.png) top left no-repeat;
+          width: 14px;
+          height: 14px;
+          display: inline-block;
+          margin-right: 2px; }
   .reg-wrapper .form-horizontal .control-label {
     width: 170px; }
   .reg-wrapper select {
@@ -40,8 +55,11 @@ body {
     width: 230px; }
   .reg-wrapper .slno_col {
     width: 40px; }
+  .reg-wrapper table td, .reg-wrapper table th {
+    padding: 5px 8px 5px 8px; }
   .reg-wrapper .edit-col {
-    width: 40px; }
+    width: 40px;
+    padding: 1px 2px 0px 2px; }
     .reg-wrapper .edit-col a {
       background: url(./img/edit.png) top left no-repeat;
       width: 30px;
@@ -67,13 +85,6 @@ body {
       background: url(./img/photo.png) 2px 3px no-repeat;
       width: 40px;
       height: 40px; }
-
-.create {
-  background: url(./img/create.png) top left no-repeat;
-  width: 14px;
-  height: 14px;
-  display: inline-block;
-  margin-right: 2px; }
 
 input:focus:invalid,
 textarea:focus:invalid,

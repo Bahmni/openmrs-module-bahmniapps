@@ -10,6 +10,14 @@ body{
 }
 .reg-wrapper{
   margin-top:10px;
+  .header-logo{
+      background:url(./img/jss_logo.png) top left no-repeat;
+      height:45px;
+      width:45px;
+      margin-top:4px;
+      margin-left:5px;
+      text-indent:-500px;
+  }
   .well{
       background:#ffffff;
   }
@@ -28,6 +36,16 @@ body{
         color:#ffffff;
         font-weight:bold;
         cursor:pointer;
+        .nav-link{
+          padding-left:2px;
+        }
+        .create{
+            background:url(./img/create.png) top left no-repeat;
+            width:14px;
+            height:14px;
+            display:inline-block;
+            margin-right:2px;
+          }
       }
     }
   }
@@ -50,8 +68,14 @@ body{
   .slno_col{
         width:40px;
   }
+  table{
+    td,th{
+        padding:5px 8px 5px 8px;
+    }
+  }
   .edit-col{
       width:40px;
+      padding:1px 2px 0px 2px;
       a{
         background:url(./img/edit.png) top left no-repeat;
         width:30px;
@@ -85,13 +109,7 @@ body{
     }
   }
 }
-.create{
-  background:url(./img/create.png) top left no-repeat;
-  width:14px;
-  height:14px;
-  display:inline-block;
-  margin-right:2px;
-}
+
 input:focus:invalid,
 textarea:focus:invalid,
 select:focus:invalid {

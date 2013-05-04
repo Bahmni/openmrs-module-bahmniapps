@@ -1,8 +1,8 @@
 <div class="well">
-    <div class="clearfix">
-        <div class="span5 search-seperator form-inline">
+    <div class="clearfix control-group">
+        <div class="span5 search-seperator form-inline remove-margin">
             <form name="searchByIdForm" ng-submit="searchById()" class="form-horizontal form-seach">
-                <div class="control-group pull-left">
+                <div class="control-group pull-left remove-margin">
                     <label for="registrationNumber"><strong>Patient ID</strong></label>
 
                     <div>
@@ -41,11 +41,7 @@
 
         </div>
     </div>
-</div>
-
-<br>
-
-<p ng-show="noResultsMessage">{{noResultsMessage}}</p>
+    <p ng-show="noResultsMessage">{{noResultsMessage}}</p>
 <p ng-show="moreResultsPresent">More results present. Please refine your search</p>
 <table ng-show="resultsPresent()" class="table table-hover">
     <thead>
@@ -71,3 +67,5 @@
     </tr>
     </tbody>
 </table>
+</div>
+
