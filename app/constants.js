@@ -5,7 +5,7 @@ var constants = {
     centers: [
         {name: 'GAN'},
         {name: 'SEM'},
-        {name: 'SHI'},
+        {name: 'SIV'},
         {name: 'BAM'}
     ],
     openmrsUrl: "/openmrs"
