@@ -5,8 +5,7 @@ angular.module('registration.navigation', ['registration.sessionService'])
         var loginPagePath = "/login";
 
         $scope.createNew = function() {
-            $location.search({});
-            $location.path("/patient/new");
+            $location.url("/patient/new");
         };
 
         $scope.logout = function () {

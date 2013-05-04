@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 <div class="reg-srch-btn pull-left">
-                    <button type="submit" class="btn">Search</button>
+                    <button type="submit" ng-disabled="!registrationNumber" class="btn">Search</button>
                 </div>
             </form>
         </div>
@@ -31,11 +31,11 @@
                     <label for="name"><strong>Filter by Village</strong></label>
 
                     <div class="reg-input">
-                        <input type="text" id="village" ng-model="village" placeholder="Enter village name">
+                        <input type="text" ng-disabled="!name" id="village" ng-model="village" placeholder="Enter village name">
                     </div>
                 </div>
                 <div class="reg-srch-btn">
-                    <button type="submit" class="btn">Search</button>
+                    <button type="submit" ng-disabled="!name" class="btn">Search</button>
                 </div>
             </form>
 
@@ -45,7 +45,7 @@
 
 <br>
 
-<p ng-show="noResultsFound()">No results found</p>
+<p ng-show="noResultsMessage">{{noResultsMessage}}</p>
 <p ng-show="moreResultsPresent">More results present. Please refine your search</p>
 <table ng-show="resultsPresent()" class="table table-hover">
     <thead>
