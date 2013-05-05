@@ -8,6 +8,16 @@ body {
 .remove-margin {
   margin: 0px !important; }
 
+.login {
+  bottom: 0px;
+  height: 260px;
+  left: 0px;
+  margin: auto;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  width: 500px; }
+
 .reg-wrapper {
   margin-top: 10px; }
   .reg-wrapper .header-logo {
@@ -16,7 +26,7 @@ body {
     width: 45px;
     margin-top: 4px;
     margin-left: 5px;
-    text-indent: -500px; }
+    text-indent: -99999px; }
   .reg-wrapper .well {
     background: #ffffff; }
   .reg-wrapper header {

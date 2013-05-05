@@ -1,6 +1,9 @@
-<div class="container-fluid">
-    <h4>Login</h4>
 
+<div class="login">
+<div class="container-fluid reg-wrapper">
+    <header class="reg-header " ng-controller="NavigationController">
+                        <a class="header-logo pull-left" href="/registration">JSS</a>
+</header>
     <div>
         <form ng-submit="login()" class="form-horizontal well" name="loginForm">
             <div ng-show="errorMessage" class="alert alert-danger">{{errorMessage}}</div>
@@ -26,4 +29,5 @@
             </div>
         </form>
     </div>
+</div>
 </div>
