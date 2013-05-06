@@ -28,6 +28,60 @@
 
     
 </div>
+
+
+<div class="row-fluid">
+   <div class="span5">
+        <div class="control-group">
+            <label class="control-label" for="class">Class</label>
+
+            <div class="controls">
+                <select id="class" ng-model="patient.class">
+                    <option>OBC</option>
+                    <option>General</option>
+                    <option>SC</option>
+                    <option>ST</option>
+                    <option>Other</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="span5">
+        <div class="control-group">
+            <label class="control-label" for="caste">Caste</label>
+
+            <div class="controls">
+                <input type="text" id="caste" ng-model="patient.caste" placeholder="Caste" my-autocomplete="{{ {'src': 'getCasteList', 'responseMap': 'getDataResults'} }}">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+       
+     <div class="span5">
+        <div class="control-group">
+            <label class="control-label" for="gender">Gender <span class="asterick">*</span></label>
+
+            <div class="controls">
+                <select id="gender" ng-model="patient.gender" required="required" title="Select gender.">
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                    <option value="O">Other</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="span5">
+        <div class="control-group">
+            <label class="control-label" for="village">Village<span class="asterick">*</span></label>
+
+            <div class="controls">
+                <input type="text" id="village" ng-model="patient.address.cityVillage" placeholder="Village" non-blank my-autocomplete="{{ {'src': 'getVillageList', 'responseMap': 'getAddressDataResults', 'onSelect': 'villageSelected'} }}">
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row-fluid">
 
     <div class="span5">
@@ -52,6 +106,8 @@
     </div>
 </div>
 
+
+
 <div class="row-fluid">
     <div class="span5">
         <div class="control-group">
@@ -65,62 +121,10 @@
     </div>
     <div class="span5">
         <div class="control-group">
-            <label class="control-label" for="gender">Gender <span class="asterick">*</span></label>
-
-            <div class="controls">
-                <select id="gender" ng-model="patient.gender" required="required" title="Select gender.">
-                    <option value="M">Male</option>
-                    <option value="F">Female</option>
-                    <option value="O">Other</option>
-                </select>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row-fluid">
-    <div class="span5">
-        <div class="control-group">
-            <label class="control-label" for="caste">Caste</label>
-
-            <div class="controls">
-                <input type="text" id="caste" ng-model="patient.caste" placeholder="Caste" my-autocomplete="{{ {'src': 'getCasteList', 'responseMap': 'getDataResults'} }}">
-            </div>
-        </div>
-    </div>
-    <div class="span5">
-        <div class="control-group">
-            <label class="control-label" for="class">Class</label>
-
-            <div class="controls">
-                <select id="class" ng-model="patient.class">
-                    <option>OBC</option>
-                    <option>General</option>
-                    <option>SC</option>
-                    <option>ST</option>
-                    <option>Other</option>
-                </select>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="row-fluid">
-    <div class="span5">
-        <div class="control-group">
             <label class="control-label" for="address1">House No., Street</label>
 
             <div class="controls">
                 <input type="text" id="address1" ng-model="patient.address.address1" placeholder="House No., Street">
-            </div>
-        </div>
-    </div>
-    <div class="span5">
-        <div class="control-group">
-            <label class="control-label" for="village">Village<span class="asterick">*</span></label>
-
-            <div class="controls">
-                <input type="text" id="village" ng-model="patient.address.cityVillage" placeholder="Village" non-blank my-autocomplete="{{ {'src': 'getVillageList', 'responseMap': 'getAddressDataResults', 'onSelect': 'villageSelected'} }}">
             </div>
         </div>
     </div>
