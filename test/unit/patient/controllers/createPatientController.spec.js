@@ -43,9 +43,9 @@ describe('CreatePatientController', function () {
         });
 
         it('should initialize centerID and hasOldIdentifier from preferences', function() {
-            setupController({centerID: "SHI", hasOldIdentifier: true});
+            setupController({centerID: "SIV", hasOldIdentifier: true});
 
-            expect(scope.patient.centerID.name).toBe('SHI');
+            expect(scope.patient.centerID.name).toBe('SIV');
             expect(scope.hasOldIdentifier).toBe(true);
         });
     });
