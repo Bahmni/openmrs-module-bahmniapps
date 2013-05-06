@@ -13,9 +13,9 @@
         <div class="container-fluid reg-wrapper">
             <div ng-app="registration" class="container">
                 <div id="overlay"></div>
-                <header class="reg-header" ng-controller="NavigationController">
+                <header class="reg-header" ng-controller="NavigationController" ng-hide="onLoginPage()" style="display: none">
                         <a class="header-logo pull-left" href="/registration/#/search">JSS</a>
-                        <ul class="inline pull-right" ng-hide="onLoginPage()">
+                        <ul class="inline pull-right">
 
                             <li>
                                 <a href="/registration/#/search"><i class="icon-search icon-white"></i><span class="nav-link">Search</span></a>
