@@ -41,8 +41,6 @@
 
         </div>
     </div>
-    <p ng-show="noResultsMessage">{{noResultsMessage}}</p>
-<p ng-show="moreResultsPresent">More results present. Please refine your search</p>
 <table ng-show="resultsPresent()" class="table table-hover">
     <thead>
     <tr>
@@ -67,5 +65,8 @@
     </tr>
     </tbody>
 </table>
+
+    <p  class="alert" ng-show="noResultsMessage">{{noResultsMessage}}</p>
+<p class="alert" ng-show="moreResultsPresent">More results present. Please refine your search</p>
 </div>
 

@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div>
     <form name="myForm" class="form-horizontal well" ng-submit="edit()">
         <legend class="mylegend"><span>Patient Profile Information</span></legend>
 
@@ -21,8 +21,8 @@
         <ng-include src="patientCommon()" ng-controller="PatientCommonController"></ng-include>
 
         <div class="control-group">
-            <div class="controls">
-                <button type="button" class="btn btn-primary" ng-click="back()" ng-show="showBackButton()">Back to Search Results</button>
+            <div class="controls pull-right">
+                <button type="button" class="btn" ng-click="back()" ng-show="showBackButton()">Back to Search Results</button>
                 <button type="submit" class="btn btn-primary">Next</button>
             </div>
         </div>

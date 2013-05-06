@@ -10,7 +10,7 @@ body {
 
 .login {
   bottom: 0px;
-  height: 260px;
+  height: 300px;
   left: 0px;
   margin: auto;
   position: absolute;
@@ -21,12 +21,16 @@ body {
 .reg-wrapper {
   margin-top: 10px; }
   .reg-wrapper .header-logo {
-    background: url(./img/jss_logo.png) top left no-repeat;
-    height: 45px;
-    width: 45px;
-    margin-top: 4px;
+    background: url("./img/jss_logo.png") no-repeat scroll left top transparent;
+    color: #ffffff;
+    display: block;
+    font-size: 2em;
+    height: 39px;
     margin-left: 5px;
-    text-indent: -99999px; }
+    margin-top: 4px;
+    padding-left: 49px;
+    padding-top: 11px;
+    text-decoration: none; }
   .reg-wrapper .well {
     background: #ffffff; }
   .reg-wrapper header {
@@ -41,7 +45,7 @@ body {
     .reg-wrapper header li {
       margin: 14px 10px 10px 0px; }
       .reg-wrapper header li a {
-        color: #ffffff;
+        color: #f2f2f2;
         font-weight: bold;
         cursor: pointer; }
         .reg-wrapper header li a .nav-link {

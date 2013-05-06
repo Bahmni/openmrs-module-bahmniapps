@@ -1,7 +1,7 @@
 <div id="registrationCard" class="print-layout" ng-include="printLayout()"></div>
 <iframe style="display: none" id="printPatientFrame"></iframe>
 
-<div class="container-fluid non-printable" xmlns="http://www.w3.org/1999/html">
+<div class="non-printable" xmlns="http://www.w3.org/1999/html">
     <div>
         <form name="myForm" class="form-horizontal well" ng-submit="submit()">
             <fieldset>
@@ -44,47 +44,61 @@
                 </div>
             </fieldset>
             <fieldset>
-                <legend class="mylegend remove-margin"><span>Enter Measures for Body Mass Index</span></legend>
-                <div class="control-group">
-                    <label class="control-label" for="height">Height (cm)</label>
-
-                    <div class="controls">
-                        <input id="height" type="number" step="0.01" ng-model="obs.height" min="10" max="250"
-                               ng-change="calculateBMI()" placeholder="Height">
-                        Weight (kg)
-                        <input id="weight" type="number" step="0.01" ng-model="obs.weight" min="0" max="200"
-                               ng-change="calculateBMI()" placeholder="Weight">
+                <legend class="mylegend"><span>Enter Measures for Body Mass Index</span></legend>
+                <div class="row-fluid">
+                    <div class="span6">
+                        <div class="control-group">
+                            <label class="control-label" for="height">Height (cm)</label>
+                            <div class="controls">
+                                <input id="height" type="number" step="0.01" ng-model="obs.height" min="10" max="250" ng-change="calculateBMI()" placeholder="Height">
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="span5">
+                        <div class="control-group">
+                            <label class="control-label" for="height">Weight (kg)</label>
+                            <div class="controls">
+                               <input id="weight" type="number" step="0.01" ng-model="obs.weight" min="0" max="200" ng-change="calculateBMI()" placeholder="Weight">
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="control-group">
-                    <label class="control-label" for="bmi">BMI</label>
-
-                    <div class="controls">
-                        <input type="text" id="bmi" ng-model="obs.bmi" readonly>
-                        <span class="text-error"
-                              ng-show="obs.bmi_error">Invalid BMI. Please check the height and weight</span>
+                <div class="row-fluid">
+                    <div class="span6">
+                        <div class="control-group">
+                            <label class="control-label" for="bmi">BMI</label>
+                            <div class="controls">
+                              <input type="text" id="bmi" ng-model="obs.bmi" readonly>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="span5">
+                     <div class="control-group">
+                         <label class="control-label" for="bmiStatus">BMI Status</label>
+                         <div class="controls">
+                             <input type="text" id="bmiStatus" ng-model="obs.bmi_status" readonly>
+                        </div>
+                    </div>
                     </div>
                 </div>
-                <div class="control-group">
-                    <label class="control-label" for="bmiStatus">BMI Status</label>
-
-                    <div class="controls">
-                        <input type="text" id="bmiStatus" ng-model="obs.bmi_status" readonly>
-                    </div>
+                </fieldset>
+                <div class="alert alert-error text-error" ng-show="obs.bmi_error">
+               Invalid BMI. Please check the height and weight
                 </div>
-
+                <fieldset>
                 <div class="control-group" ng-switch on="patient.isNew">
-                    <div class="controls" ng-switch-when="true">
-                        <button type="button" class="btn btn-primary" ng-click="back()">Back</button>
+                    <div class="controls pull-right" ng-switch-when="true">
+                        <button type="button" class="btn" ng-click="back()">Back</button>
                         <button type="submit" class="btn btn-primary" ng-disabled="obs.bmi_error">Print Patient Card</button>
                     </div>
-                    <div class="controls" ng-switch-default>
-                        <button type="button" class="btn btn-primary" ng-click="back()">Back</button>
+                    <div class="controls pull-right" ng-switch-default>
+                        <button type="button" class="btn" ng-click="back()">Back</button>
+                        <button type="button" class="btn" ng-disabled="obs.bmi_error" ng-click="saveAndPrint()">Save and Print</button>
                         <button type="submit" class="btn btn-primary" ng-disabled="obs.bmi_error">Save</button>
-                        <button type="button" class="btn btn-primary" ng-disabled="obs.bmi_error" ng-click="saveAndPrint()">Save and Print Patient Card</button>
                     </div>
                 </div>
-            </fieldset>
+            
         </form>
         <br>
     </div>
