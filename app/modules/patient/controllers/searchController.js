@@ -7,9 +7,10 @@ angular.module('registration.search', ['resources.patientService', 'infrastructu
         $scope.moreResultsPresent = false;
 
         var searchBasedOnQueryParameters = function() {
-            $scope.registrationNumber = "";
             $scope.village = $location.search().village;
             $scope.name = $location.search().name || '';
+            $scope.centerId = $location.search().centerId || defaults.centerId;
+            $scope.registrationNumber = $location.search().registrationNumber || "";
             if ($scope.name.trim().length > 0) {
                 var searchPromise = patientService.search($scope.name, $scope.village).success(function (data) {
                     $scope.results = data.results;
@@ -26,6 +27,7 @@ angular.module('registration.search', ['resources.patientService', 'infrastructu
             if(!$scope.registrationNumber) return;
             $scope.results = [];
             var patientIdentifier = $scope.centerId + $scope.registrationNumber;
+            $location.search({centerId: $scope.centerId, registrationNumber: $scope.registrationNumber});
             var searchPromise = patientService.search(patientIdentifier).success(function (data) {
                 if (data.results.length > 0) {
                     var patient = data.results[0];

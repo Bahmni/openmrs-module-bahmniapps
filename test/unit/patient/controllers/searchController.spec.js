@@ -61,16 +61,29 @@ describe('SearchPatientController', function () {
                 urlSearchChangeCallback = scope.$watch.mostRecentCall.args[1];
             });
 
-            it('should set the name with query and load the patients if a query parameter is provided', function() {
-                var query = 'john';
-                spyOn(location, 'search').andReturn({"name": query});
+            it('should initialize scope with name search params from url and load the patients if a name search parameter is provided', function() {
+                var searchParams = {"name": 'john', village: 'Kanpur'};
+                spyOn(location, 'search').andReturn(searchParams);
 
                 urlSearchChangeCallback();
 
-                expect(scope.name).toBe(query);
+                expect(scope.name).toBe(searchParams.name);
+                expect(scope.village).toBe(searchParams.village);
                 expect(patientResource.search).toHaveBeenCalled();
-                expect(patientResource.search.mostRecentCall.args[0]).toBe(query);
+                expect(patientResource.search.mostRecentCall.args[0]).toBe(searchParams.name);
+                expect(patientResource.search.mostRecentCall.args[1]).toBe(searchParams.village);
                 expect(searchPromise.success).toHaveBeenCalled();
+            });
+
+            it('should initialize scope with id search params from url but do not search for patient', function() {
+                var searchParams = {"centerId": 'GAN', registrationNumber: '200001'};
+                spyOn(location, 'search').andReturn(searchParams);
+
+                urlSearchChangeCallback();
+
+                expect(scope.centerId).toBe(searchParams.centerId);
+                expect(scope.registrationNumber).toBe(searchParams.registrationNumber);
+                expect(patientResource.search).not.toHaveBeenCalled();
             });
 
             it('should show the spinner while searching', function() {
@@ -150,6 +163,16 @@ describe('SearchPatientController', function () {
             scope.searchById();
 
             expect(spinner.forPromise).toHaveBeenCalledWith(searchPromise);
+        });
+
+        it('should change the search parameter to patient identifier', function() {
+            spyOn(location, 'search');
+            scope.centerId = "GAN";
+            scope.registrationNumber = "20001";
+
+            scope.searchById();
+
+            expect(location.search).toHaveBeenCalledWith({centerId: "GAN", registrationNumber: "20001"});
         });
 
         it('should not search if registrationNumber is not present', function() {
