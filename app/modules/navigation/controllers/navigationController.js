@@ -11,7 +11,7 @@ angular.module('registration.navigation', ['registration.sessionService'])
         $scope.logout = function () {
             $rootScope.errorMessage = null;
             sessionService.destroy();
-            $location.path(loginPagePath);
+            $location.url(loginPagePath);
         }
 
         $scope.onLoginPage = function() {
