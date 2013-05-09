@@ -14,4 +14,9 @@ angular.module('registration').config(['$routeProvider', '$httpProvider', functi
         $routeProvider.when('/patientcommon', {templateUrl: 'modules/patient/views/patientcommon.html'});
         $routeProvider.otherwise({redirectTo: '/login'});
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
-    }]);
+    }]).run(function($rootScope, $templateCache) {
+        //Disable caching view template partials
+        $rootScope.$on('$viewContentLoaded', function() {
+            $templateCache.removeAll();
+        }
+    )});
