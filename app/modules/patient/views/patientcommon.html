@@ -31,7 +31,16 @@
 
 
 <div class="row-fluid">
-   <div class="span6">
+    <div class="span6">
+        <div class="control-group">
+            <label class="control-label" for="caste">Caste</label>
+
+            <div class="controls">
+                <input type="text" id="caste" ng-model="patient.caste" placeholder="Caste" my-autocomplete="{{ {'src': 'getCasteList', 'responseMap': 'getDataResults'} }}">
+            </div>
+        </div>
+    </div>
+    <div class="span5">
         <div class="control-group">
             <label class="control-label" for="class">Class</label>
 
@@ -43,16 +52,6 @@
                     <option>ST</option>
                     <option>Other</option>
                 </select>
-            </div>
-        </div>
-    </div>
-
-    <div class="span5">
-        <div class="control-group">
-            <label class="control-label" for="caste">Caste</label>
-
-            <div class="controls">
-                <input type="text" id="caste" ng-model="patient.caste" placeholder="Caste" my-autocomplete="{{ {'src': 'getCasteList', 'responseMap': 'getDataResults'} }}">
             </div>
         </div>
     </div>
@@ -132,16 +131,8 @@
 </div>
 
 <div class="row-fluid">
+    
     <div class="span6">
-        <div class="control-group">
-            <label class="control-label" for="address3">Tehsil</label>
-
-            <div class="controls">
-                <input type="text" id="address3" ng-model="patient.address.address3" placeholder="Tehsil" my-autocomplete="{{ {'src': 'getTehsilList', 'responseMap': 'getAddressDataResults', 'onSelect': 'tehsilSelected'} }}">
-            </div>
-        </div>
-    </div>
-    <div class="span5">
         <div class="control-group">
             <label class="control-label" for="address2">Gram Panchayat</label>
 
@@ -150,7 +141,15 @@
             </div>
         </div>
     </div>
-    
+    <div class="span5">
+        <div class="control-group">
+            <label class="control-label" for="address3">Tehsil</label>
+
+            <div class="controls">
+                <input type="text" id="address3" ng-model="patient.address.address3" placeholder="Tehsil" my-autocomplete="{{ {'src': 'getTehsilList', 'responseMap': 'getAddressDataResults', 'onSelect': 'tehsilSelected'} }}">
+            </div>
+        </div>
+    </div>
 </div>
 <div class="row-fluid">
     <div class="span6">
@@ -173,7 +172,7 @@
     </div>
 </div>
 <div class="row-fluid">
-    <div class="span8">
+    <div class="span9">
         <div class="control-group">
             <label class="control-label" for="contactNumber">Contact Number</label>
 

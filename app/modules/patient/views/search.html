@@ -41,6 +41,8 @@
 
         </div>
     </div>
+    <p  class="alert" ng-show="noResultsMessage">{{noResultsMessage}}</p>
+<p class="alert" ng-show="moreResultsPresent">Displaying first 50 results only. Please refine your search to get more relevant results.</p>
 <table ng-show="resultsPresent()" class="table table-hover">
     <thead>
     <tr>
@@ -66,7 +68,6 @@
     </tbody>
 </table>
 
-    <p  class="alert" ng-show="noResultsMessage">{{noResultsMessage}}</p>
-<p class="alert" ng-show="moreResultsPresent">More results present. Please refine your search</p>
+    
 </div>
 
