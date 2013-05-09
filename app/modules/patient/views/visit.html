@@ -21,9 +21,10 @@
                         <input id="patientName" ng-model="patient.name" readonly>
                     </div>
                 </div>
+                
             </fieldset>
             <fieldset>
-                <legend class="mylegend remove-margin"><span>Illness Details</span></legend>
+                <legend class="mylegend remove-margin"><span>Visit Information</span></legend>
                 <div class="control-group">
                     <label class="control-label" for="chiefComplaint">Complaint</label>
 
@@ -31,9 +32,6 @@
                         <input type="text" id="chiefComplaint" ng-model="obs.chief_complaint" placeholder="Complaint" autofocus>
                     </div>
                 </div>
-            </fieldset>
-            <fieldset>
-                <legend class="mylegend remove-margin"><span>New Registration</span></legend>
                 <div class="control-group">
                     <label class="control-label" for="registrationFee">{{registrationFeeLabel}}</label>
 
@@ -44,7 +42,6 @@
                 </div>
             </fieldset>
             <fieldset>
-                <legend class="mylegend"><span>Enter Measures for Body Mass Index</span></legend>
                 <div class="row-fluid">
                     <div class="span6">
                         <div class="control-group">
