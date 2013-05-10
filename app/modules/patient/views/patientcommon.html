@@ -11,9 +11,9 @@
 
         </div>
 
-        <div class="control-group form-inline remove-margin">
+        <div class="control-group control-res form-inline remove-margin">
             <label class="control-label" for="patientName">Patient Name <span class="asterick">*</span></label>
-            <div class="controls" id="patientName">
+            <div class="controls clearfix" id="patientName">
                         <span class="pull-left">
                             <input type="text" id="givenName" ng-model="patient.givenName" non-blank placeholder="First Name" title="Enter patient's first name.">
                             <input type="text" id="familyName" ng-model="patient.familyName" my-autocomplete="{{ {'src': 'getLastNameList', 'responseMap': 'getDataResults'} }}" non-blank placeholder="Last Name"  title="Enter patient's last name.">
@@ -31,7 +31,7 @@
 
 
 <div class="row-fluid">
-    <div class="span6">
+    <div class="span7">
         <div class="control-group">
             <label class="control-label" for="caste">Caste</label>
 
@@ -58,7 +58,7 @@
 </div>
 <div class="row-fluid">
        
-     <div class="span6">
+     <div class="span7">
         <div class="control-group">
             <label class="control-label" for="gender">Gender <span class="asterick">*</span></label>
 
@@ -71,7 +71,7 @@
             </div>
         </div>
     </div>
-     <div class="span6">
+     <div class="span5">
         <div class="control-group">
             <label class="control-label" for="primaryRelative">Father's/Husband's Name</label>
 
@@ -84,7 +84,7 @@
 </div>
 <div class="row-fluid">
 
-    <div class="span6">
+    <div class="span7">
         <div class="control-group">
             <label class="control-label" for="birthdate">DOB</label>
 
@@ -110,7 +110,7 @@
 
 <div class="row-fluid">
    
-    <div class="span6">
+    <div class="span7">
         <div class="control-group">
             <label class="control-label" for="address1">House No., Street</label>
 
@@ -132,7 +132,7 @@
 
 <div class="row-fluid">
     
-    <div class="span6">
+    <div class="span7">
         <div class="control-group">
             <label class="control-label" for="address2">Gram Panchayat</label>
 
@@ -152,7 +152,7 @@
     </div>
 </div>
 <div class="row-fluid">
-    <div class="span6">
+    <div class="span7">
         <div class="control-group">
             <label class="control-label" for="countyDistrict">District</label>
 
@@ -185,7 +185,7 @@
 </div>
 
 <div class="row-fluid">
-    <div class="span6">
+    <div class="span7">
         <div class="control-group">
             <label class="control-label" for="education">Education Details</label>
 

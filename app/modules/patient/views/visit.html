@@ -25,20 +25,28 @@
             </fieldset>
             <fieldset>
                 <legend class="mylegend remove-margin"><span>Visit Information</span></legend>
-                <div class="control-group">
-                    <label class="control-label" for="chiefComplaint">Complaint</label>
-
-                    <div class="controls">
-                        <input type="text" id="chiefComplaint" ng-model="obs.chief_complaint" placeholder="Complaint" autofocus>
-                    </div>
-                </div>
-                <div class="control-group">
+                <div class="row-fluid control-group">
+                <div class="span6">
+                <div>
                     <label class="control-label" for="registrationFee">{{registrationFeeLabel}}</label>
 
                     <div class="controls">
                         <input type="number" id="registrationFee" ng-model="obs.registration_fees">
 
                     </div>
+                </div>
+                </div>
+                <div class="span5">
+                <div >
+                    <label class="control-label" for="chiefComplaint">Complaint</label>
+
+                    <div class="controls">
+                        <input type="text" id="chiefComplaint" ng-model="obs.chief_complaint" placeholder="Complaint" autofocus>
+                    </div>
+                </div>
+                </div>
+                
+
                 </div>
             </fieldset>
             <fieldset>
@@ -84,7 +92,7 @@
                Invalid BMI. Please check the height and weight
                 </div>
                 <fieldset>
-                <div class="control-group" ng-switch on="patient.isNew">
+                <div class="control-group prev-next-button" ng-switch on="patient.isNew">
                     <div class="controls pull-right" ng-switch-when="true">
                         <button type="button" class="btn" ng-click="back()">Back</button>
                         <button type="submit" class="btn btn-primary" ng-disabled="obs.bmi_error">Save and Print</button>

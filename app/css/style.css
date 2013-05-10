@@ -169,3 +169,37 @@ table tr th {
 .container-fluid {
   padding-left: 0px;
   padding-right: 0p; }
+
+.prev-next-button {
+  padding-right: 50px; }
+
+@media screen and (max-width: 1280px) and (max-height: 800px) {
+  .control-group {
+    margin-bottom: 6px !important; }
+
+  .control-res {
+    margin-top: 46px !important; }
+
+  .edit-patient .control-res {
+    margin-top: 82px !important; }
+
+  .well {
+    margin-bottom: 0px !important; }
+
+  .prev-next-button {
+    margin-bottom: 0px !important;
+    margin-top: 10px;
+    padding-right: 8px !important; }
+
+  .span7 {
+    width: 52.44681% !important; }
+
+  .search input {
+    width: 180px !important; }
+  .search .span1 {
+    width: 64px; }
+  .search .span6 {
+    width: 488px; }
+
+  .reg-input {
+    width: 198px !important; } }
