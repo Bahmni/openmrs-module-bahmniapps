@@ -28,15 +28,16 @@ angular.module('registration.search', ['resources.patientService', 'infrastructu
             $scope.results = [];
             var patientIdentifier = $scope.centerId + $scope.registrationNumber;
             $location.search({centerId: $scope.centerId, registrationNumber: $scope.registrationNumber});
+            spinner.show();
             var searchPromise = patientService.search(patientIdentifier).success(function (data) {
                 if (data.results.length > 0) {
                     var patient = data.results[0];
                     $scope.editPatient(patient.uuid);
                 } else {
+                    spinner.hide();
                     $scope.noResultsMessage = "Could not find patient with identifier " + patientIdentifier + ". Please verify the patient ID entered or create a new patient record with this ID."
                 }
-            });
-            spinner.forPromise(searchPromise);
+            }).error(spinner.hide);
         };
 
         $scope.searchByName = function () {

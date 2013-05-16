@@ -23,7 +23,7 @@ describe('SearchPatientController', function () {
         patientResource = jasmine.createSpyObj('patientService', ['search']),
         searchPromise = specUtil.createServicePromise('search');
         patientResource.search.andReturn(searchPromise);
-        spinner = jasmine.createSpyObj('spinner', ['forPromise'])
+        spinner = jasmine.createSpyObj('spinner', ['show', 'hide', 'forPromise'])
         $controller('SearchPatientController', {
             $scope: scope,
             patientService: patientResource,
@@ -162,7 +162,7 @@ describe('SearchPatientController', function () {
 
             scope.searchById();
 
-            expect(spinner.forPromise).toHaveBeenCalledWith(searchPromise);
+            expect(spinner.show).toHaveBeenCalled();
         });
 
         it('should change the search parameter to patient identifier', function() {
@@ -191,22 +191,35 @@ describe('SearchPatientController', function () {
                 scope.searchById();
             });
 
-            it("should go to edit Patient when a patient is found", function(){
+            it("should go to edit patient without hiding spinner when a patient is found", function(){
                 spyOn(location, 'search');
                 spyOn(location, 'path');
 
                 searchPromise.callSuccesCallBack({results: [{uuid: "8989-90909"}]})
 
                 expect(location.path).toHaveBeenCalledWith("/patient/8989-90909");
+                expect(spinner.hide).not.toHaveBeenCalled();
             });
 
-            it("should show 'no patient found message' when patient is not found", function(){
-                spyOn(location, 'search');
-                spyOn(location, 'path');
-
+            it("should show 'no patient found message' and hide the spinner when patient is not found", function(){
                 searchPromise.callSuccesCallBack({results: []})
 
                 expect(scope.noResultsMessage).toMatch("Could not find patient with identifier GAN20001");
+                expect(spinner.hide).toHaveBeenCalled();
+            });
+        });
+
+        describe("on error", function(){
+            beforeEach(function(){
+                scope.centerId = "GAN";
+                scope.registrationNumber = "20001";
+                scope.searchById();
+            });
+
+            it("should hide the spinner", function(){
+                searchPromise.callErrorCallBack({})
+
+                expect(spinner.hide).toHaveBeenCalled();
             });
         });
     });

@@ -24,6 +24,8 @@ angular.module('infrastructure.spinner', [])
         }
 
         return {
+            show: show,
+            hide: hide,
             forPromise: forPromise
         }
     }]);
