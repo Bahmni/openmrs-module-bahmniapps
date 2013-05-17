@@ -8,6 +8,47 @@ body{
 .remove-margin{
   margin:0px !important; 
 }
+.photoCaptureDialog{
+    .photo-video-container{
+        position:relative;
+        width:229px;
+        float:left;
+        .photoCapture-left-overlay{
+          position:absolute;
+          height:169px;
+          width:25px;
+          left:0px;
+          top:6px;
+          background:#EEEEEE;
+        }
+        .photoCapture-right-overlay{
+          position:absolute;
+          height:169px;
+          width:31px;
+          right:0px;
+          top:6px;
+          background:#EEEEEE;
+        }
+    }      
+    .photo-canvas-container{
+      float:left;
+      width:188px;
+      margin-top:6px;
+      margin-left:30px !important;
+      canvas{
+        border:2px solid #ffffff;
+        height:167px;
+        width:175px;
+      }
+    } 
+    .take-photo-btn{
+      margin-left:57px; 
+    }
+    .confirmImage{
+      margin-left:105px;
+    }
+
+}
 .login{
     bottom: 0px;
     height: 300px;
