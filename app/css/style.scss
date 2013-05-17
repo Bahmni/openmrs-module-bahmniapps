@@ -36,9 +36,10 @@ body{
       margin-top:6px;
       margin-left:30px !important;
       canvas{
-        border:2px solid #ffffff;
+        border:2px solid #fff;
         height:167px;
         width:175px;
+        background:#f2f2f2;
       }
     } 
     .take-photo-btn{
@@ -262,16 +263,16 @@ table{
   width: 125px;
 }
 
-@media screen and (max-width:1280px) and (max-height: 800px){
+@media screen and (max-width:1366px) and (max-height: 800px){
   .control-group {
     margin-bottom: 6px !important;
   }
   .control-res{
-    margin-top:46px !important;
+    margin-top:35px !important;
   }
   .edit-patient{
     .control-res{
-    margin-top:82px !important;
+    margin-top:72px !important;
   }
   }
   .well{
