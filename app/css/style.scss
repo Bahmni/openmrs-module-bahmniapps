@@ -211,6 +211,16 @@ table{
 .prev-next-button{
   padding-right:50px;  
 }
+
+#photo-canvas-container {
+  text-align: center;
+}
+
+#patient-image {
+  height: 125px;
+  width: 125px;
+}
+
 @media screen and (max-width:1280px) and (max-height: 800px){
   .control-group {
     margin-bottom: 6px !important;

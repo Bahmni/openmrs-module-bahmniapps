@@ -2,7 +2,9 @@
 <div class="photoCaptureDialog container-fluid" title="Take photo">
     <div class="row-fluid">
         <video id="live" autoplay class="span6"></video>
-        <canvas class="span6"></canvas>
+        <div id="photo-canvas-container" class="span6">
+            <canvas height="180" width="180"></canvas>
+        </div>
     </div>
     <div class="row-fluid">
         <button type="button" id="click" ng-click="clickImage()" class="span6 btn btn-large btn-primary">Click to take Photo</button>

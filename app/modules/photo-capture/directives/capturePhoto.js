@@ -14,9 +14,10 @@ angular.module('registration.photoCapture', [])
                             video = dialogElement.find("video")[0],
                             canvas = dialogElement.find("canvas")[0],
                             confirmImageButton = dialogElement.find(".confirmImage"),
-                            streaming = false,
-                            width = 200,
-                            height = 0;
+                            streaming = false;
+                         var context = canvas.getContext("2d");
+                         var pixelRatio = window.devicePixelRatio;
+                         context.scale(pixelRatio, pixelRatio);
 
                         scope.launchPhotoCapturePopup = function () {
                             navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
@@ -38,17 +39,6 @@ angular.module('registration.photoCapture', [])
                             }
                         };
 
-                        video.addEventListener('canplay', function(){
-                            if (!streaming) {
-                                height = video.videoHeight / (video.videoWidth/width);
-                                video.setAttribute('width', width);
-                                video.setAttribute('height', height);
-                                canvas.setAttribute('width', width);
-                                canvas.setAttribute('height', height);
-                                streaming = true;
-                            }
-                        }, false);
-
                         scope.confirmImage = function () {
                             var dataURL = canvas.toDataURL("image/jpeg");
                             var image = dataURL;
@@ -57,11 +47,34 @@ angular.module('registration.photoCapture', [])
                             dialogElement.dialog('close');
                         };
 
+                        video.addEventListener('canplay', function(){
+                            if (!streaming) {
+                                canvas.style.height = canvas.style.width = video.clientHeight + "px";
+                                streaming = true;
+                            }
+                        }, false);
+
                         scope.clickImage = function () {
-                            canvas.width = width;
-                            canvas.height = height;
-                            var patientImage = canvas.getContext('2d');
-                            patientImage.drawImage(video, 0, 0, width, height);
+                            var sourceX = 0;
+                            var sourceY = 0;
+                            var destX = 0;
+                            var destY = 0;
+
+                            if (canvas.width > canvas.height) {
+                                var stretchRatio = ( video.videoWidth / canvas.width );
+                                var sourceWidth = video.videoWidth;
+                                var sourceHeight = Math.floor(canvas.height * stretchRatio);
+                                sourceY = Math.floor((video.videoHeight - sourceHeight)/2);
+                            } else {
+                                var stretchRatio = ( video.videoHeight / canvas.height );
+                                var sourceWidth = Math.floor(canvas.width * stretchRatio);
+                                var sourceHeight = video.videoHeight;
+                                sourceX = Math.floor((video.videoWidth - sourceWidth)/2);
+                            }
+                            var destWidth = Math.floor(canvas.width / pixelRatio);
+                            var destHeight = Math.floor(canvas.height / pixelRatio);
+
+                            context.drawImage(video, sourceX, sourceY, sourceWidth, sourceHeight, destX, destY, destWidth, destHeight);
                             confirmImageButton.prop('disabled', false);
                             confirmImageButton.focus();
                         };
