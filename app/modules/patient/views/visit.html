@@ -3,7 +3,7 @@
 
 <div class="non-printable" xmlns="http://www.w3.org/1999/html">
     <div>
-        <form name="myForm" class="form-horizontal well" ng-submit="submit()">
+        <form name="myForm" class="form-horizontal well">
             <fieldset>
                 <legend class="mylegend remove-margin"><span>Summary</span></legend>
                 <div class="control-group">
@@ -73,7 +73,7 @@
                         <div class="control-group">
                             <label class="control-label" for="bmi">BMI</label>
                             <div class="controls">
-                              <input type="text" id="bmi" ng-model="obs.bmi" readonly>
+                              <input type="text" id="bmi" ng-model="obs.bmi" readonly tabindex="1000000">
                             </div>
                             
                         </div>
@@ -82,7 +82,7 @@
                      <div class="control-group">
                          <label class="control-label" for="bmiStatus">BMI Status</label>
                          <div class="controls">
-                             <input type="text" id="bmiStatus" ng-model="obs.bmi_status" readonly>
+                             <input type="text" id="bmiStatus" ng-model="obs.bmi_status" readonly tabindex="1000001">
                         </div>
                     </div>
                     </div>
@@ -95,15 +95,15 @@
                 <div class="control-group prev-next-button" ng-switch on="patient.isNew">
                     <div class="controls pull-right" ng-switch-when="true">
                         <button type="button" class="btn" ng-click="back()">Back</button>
-                        <button type="submit" class="btn btn-primary" ng-disabled="obs.bmi_error">Save and Print</button>
+                        <button type="button" class="btn btn-primary" ng-disabled="obs.bmi_error" ng-click="submit()">Save and Print</button>
                     </div>
                     <div class="controls pull-right" ng-switch-default>
                         <button type="button" class="btn" ng-click="back()">Back</button>
                         <button type="button" class="btn" ng-disabled="obs.bmi_error" ng-click="saveAndPrint()">Save and Print</button>
-                        <button type="submit" class="btn btn-primary" ng-disabled="obs.bmi_error">Save</button>
+                        <button type="button" class="btn btn-primary" ng-disabled="obs.bmi_error" ng-click="submit()">Save</button>
                     </div>
                 </div>
-            
+                </fieldset>
         </form>
         <br>
     </div>
