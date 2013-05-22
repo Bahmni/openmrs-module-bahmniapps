@@ -63,7 +63,8 @@
             <label class="control-label" for="gender">Gender <span class="asterick">*</span></label>
 
             <div class="controls">
-                <select id="gender" ng-model="patient.gender" required="required" title="Select gender.">
+                <select id="gender" ng-model="patient.gender" required="required">
+                    <option value="">Select Gender</option>
                     <option value="M">Male</option>
                     <option value="F">Female</option>
                     <option value="O">Other</option>
