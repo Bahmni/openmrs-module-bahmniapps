@@ -56,6 +56,8 @@ body {
 
 .reg-wrapper {
   margin-top: 10px; }
+  .reg-wrapper .search-patientid select {
+    width: 70px; }
   .reg-wrapper .header-logo {
     background: url("./img/jss_logo.png") no-repeat scroll left top transparent;
     color: #ffffff;
