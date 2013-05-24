@@ -44,7 +44,7 @@ angular.module('registration.visitController', ['resources.patientService', 'res
         var datetime = date.now().toISOString();
         $scope.visit.patient = $scope.patient.uuid;
         $scope.visit.startDatetime = datetime;
-        $scope.visit.visitType = constants.visitType.registration;
+        $scope.visit.visitType = $scope.patient.isNew ? constants.visitType.registration : constants.visitType.returningPatient;
 
         $scope.encounter.patient = $scope.patient.uuid;
         $scope.encounter.encounterDatetime = datetime;
@@ -110,6 +110,7 @@ angular.module('registration.visitController', ['resources.patientService', 'res
         var doc = hiddenFrame.contentWindow.document.open("text/html", "replace");
         doc.write(code);
         doc.close();
-        hiddenFrame.contentWindow.print();
+        var x  = hiddenFrame.contentWindow.print();
+        console.log(x);
     };
  }]);
