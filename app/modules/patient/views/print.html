@@ -1,119 +1,126 @@
-<table border="1" cellpadding="0" cellspacing="1" style="width: 154mm; height: 83mm; overflow: scroll; margin: 0 auto;">
+<link rel="stylesheet" type="text/css" media="print" href="./css/print.css"/>
+
+<table border="1" cellpadding="0" cellspacing="1" class="registrationCard-print-table">
     <tbody>
     <tr>
-        <td style="width: 77mm;" valign="top">
-            <h3 style="text-align: center; margin-top:15px;">सूचना</h3>
-            <ul style=" font-size: 4mm;">
-                <li style="margin:0px;padding:0px 0px 5px 0px;line-height:18px">
-                    स्वास्थ्य केन्द्र में पुनः आने के समय यह कार्ड लाना अति आवश्यक है ।
-                </li>
-                <li style="margin:0px;padding:0px 0px 5px 0px;line-height:18px">
-                    दवा डाक्टर के निर्देशानुसार ही लें ।
-                </li>
-                <li style="margin:0px;padding:0px 0px 5px 0px;line-height:18px">
-                    केन्द्र में पंजीयन का समय - प्रातः 8:30 से  दोपहर 12:00 बजे तक ।
-                </li>
-                <li style="margin:0px;padding:0px 0px 5px 0px;line-height:18px">
-                    ओ.पी.डी. के दिन - सोम, बुध, शुक्र ।
-                </li>
-                <li style="margin:0px;padding:0px 0px 5px 0px;line-height:18px">
-                    साप्ताहिक अवकाश - रविवार ।
-                </li>
-            </ul>
-            <div align="center">
-                <h3 style="text-align: center; line-height:25px;">सावधान</h3>
-                <span style="text-align: center; line-height:22px;">
-                    बीडी, तम्बाकू, गुटका से केंसर, ह्रदय रोग और दमा हो सकते हैं ।
-                </span>
-            </div>
-        </td>
-        <td style="width: 77mm;" valign="top">
+        <td  class="print-table-left">
             <table>
                 <tr>
-                    <td style="width:12mm;padding:0px;margin:0px;">
-                        <p style="text-align: center;">
+
+                    <td>
+                        <h3 class="print-table-header">सूचना</h3>
+                        <ul class="print-table-left-body">
+                            <li>
+                                स्वास्थ्य केन्द्र में पुनः आने के समय यह कार्ड लाना अति आवश्यक है ।
+                            </li>
+                            <li>
+                                दवा डाक्टर के निर्देशानुसार ही लें ।
+                            </li>
+                            <li>
+                                केन्द्र में पंजीयन का समय - प्रातः 8:30 से  दोपहर 12:00 बजे तक ।
+                            </li>
+                            <li>
+                                ओ.पी.डी. के दिन - सोम, बुध, शुक्र ।
+                            </li>
+                            <li>
+                                साप्ताहिक अवकाश - रविवार ।
+                            </li>
+                        </ul>
+                        <div class="caution">
+                            <h3 class="print-table-header">सावधान</h3>
+                            <p>
+                                बीडी, तम्बाकू, गुटका से केंसर, ह्रदय रोग और दमा हो सकते हैं ।
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="print-table-right" valign="top">
+            <table>
+                <tr>
+                    <td class="logo">
+                        <p>
                             <img src="images/jss-icon.png" style="width: 12mm; height: 12mm; "/>
                         </p>
                     </td>
-                    <td style="text-align: center;width:42mm;text-align:left;">
-                            <h3 style="padding:0px;margin:0px;font-family: 'Arial Unicode MS', sans-serif;">
-                                जन  स्वास्थ्य  सहयोग  
+                    <td class="print-table-right-header">
+                            <h3>
+                                जन&nbsp;स्वास्थ्य&nbsp;सहयोग  
                             </h3>
-                            <h3 style="text-align:center;">(पंजीकृत)</h3>
+                            <h3 class="print-center">(पंजीकृत)</h3>
                         
                     </td>
-                    <td>
+                    <td class"registrationCard-photo">
                         <img ng-src="{{patient.image}}" style="width: 20mm; height: 20mm; "
                              onerror="this.onerror=null;this.src='modules/photo-capture/images/blank.jpeg';"/>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="3" style="text-align: center; ">
-                        <span>
+                    <td colspan="3" class="print-center registrationCard-location">
                         गनियारी, जिला - बिलासपुर
-                        </span>
                     </td>
                 </tr>
             </table>
-            <table style="padding:0mm 5mm 0mm 5mm;">
+            <table class="registrationCard-details">
                 <tbody>
                 <tr>
-                    <td style="width: 17mm">
+                    <td class="registrationCard-details-name">
                         <span class="hindi-text">दिनाँक</span>
                     </td>
-                    <td style="width: 2mm"> :  </td>
+                    <td class="registrationCard-details-seperator"> :  </td>
                     <td>{{patient.registrationDate | date:'dd/MM/yyyy'}} </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td class="registrationCard-details-name">
                         <span class="hindi-text">रजिस्ट्रेशन</span>
                     </td>
-                    <td> :  </td>
+                    <td class="registrationCard-details-seperator"> :  </td>
                     <td>{{patient.identifier}} </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td class="registrationCard-details-name">
                         <span class="hindi-text">नाम</span>
                     </td>
-                    <td> :  </td>
+                    <td class="registrationCard-details-seperator"> :  </td>
                     <td>
                         <span class="hindi-text">{{patient.fullNameHindi()}}</span>
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td class="registrationCard-details-name">
                         <span class="hindi-text">उम्र</span>
                     </td>
-                    <td> :  </td>
+                    <td class="registrationCard-details-seperator"> :  </td>
                     <td>{{patient.age}} </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td class="registrationCard-details-name">
                         <span class="hindi-text">लिंग</span>
                     </td>
-                    <td> :  </td>
+                    <td class="registrationCard-details-seperator"> :  </td>
                     <td>{{patient.gender}} </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td class="registrationCard-details-name">
                         <span class="hindi-text">वजन</span>
                     </td>
-                    <td> :  </td>
+                    <td class="registrationCard-details-seperator"> :  </td>
                     <td ng-pluralize count="obs.weight" when="{'0': '', 'other': '{} kg'}">
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td class="registrationCard-details-name">
                         <span class="hindi-text">गाँव</span>
                     </td>
-                    <td> :  </td>
+                    <td class="registrationCard-details-seperator"> :  </td>
                     <td>{{patient.address.cityVillage}} </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td class="registrationCard-details-name">
                         <span class="hindi-text">तहसील</span>
                     </td>
-                    <td> :  </td>
+                    <td class="registrationCard-details-seperator"> :  </td>
                     <td>{{patient.address.address3}} </td>
                 </tr>
                 </tbody>

@@ -1,0 +1,74 @@
+p,h1,h2,h3,table,tr,td,div,span,li{
+  margin:0px;
+  padding:0px;
+}
+h1,h2,h3{
+  text-align: center;
+}
+.print-center{
+  text-align:center;
+}
+.registrationCard-print-table{
+    width: 150mm; height: 83mm; overflow: scroll; margin: 0 auto;
+    table-layout:fixed;
+}
+.registrationCard-print-table td.registrationCard-photo{
+  padding-top: 2px;
+}
+.print-table-left{
+  width: 77mm;
+}
+.print-table-header{
+  text-align: center; 
+  margin-top:10px;
+  text-align:center;
+}
+.print-table-left-body{
+  font-size: 4mm;
+  margin-bottom:0px;
+  padding-bottom:0px;
+  margin-top:15px;
+}
+.print-table-left-body li{
+  margin:0px;
+  padding:0px 0px 5px 0px;
+  line-height:18px
+}
+.caution{
+  text-align:center;
+  line-height: 20px;
+}
+.caution h3{
+  line-height:25px;
+  margin-bottom: 6px;
+  margin-top:12px;
+}
+.print-table-right{
+  width: 77mm;
+}
+.print-table-right .logo{
+  text-align: center;
+  width:12mm;
+  padding:0px;
+  margin:0px;
+  height:12mm;
+}
+.print-table-right-header{
+  text-align: center;
+  width:42mm;
+  text-align:left;
+  height:12mm;
+}
+.registrationCard-location{
+  padding:5px 8px 8px 8px;
+}
+.registrationCard-details{
+  padding:0mm 5mm 0mm 5mm;
+}
+.registrationCard-details-name{
+  width: 70px;
+}
+.registrationCard-details-seperator{
+  width:20px;
+  text-align:center;
+}

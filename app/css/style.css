@@ -8,9 +8,6 @@ body {
 .remove-margin {
   margin: 0px !important; }
 
-.utf-8 {
-  font-family: 'Arial Unicode MS', sans-serif; }
-
 .photoCaptureDialog .photo-video-container {
   position: relative;
   width: 229px;
