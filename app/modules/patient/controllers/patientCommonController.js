@@ -121,7 +121,7 @@ angular.module('registration.patientCommon', ['resources.patientAttributeService
             var ngModel = $parse(attrs.ngModel);
             element.autocomplete({
                 autofocus: true,
-                minLength: 3,
+                minLength: 2,
                 source: function (request, response) {
                     var autoCompleteConfig = angular.fromJson(attrs.myAutocomplete);
                     scope[autoCompleteConfig.src](request.term).success(function (data) {
@@ -140,7 +140,7 @@ angular.module('registration.patientCommon', ['resources.patientAttributeService
                 },
                 search: function (event) {
                     var searchTerm = $.trim(element.val());
-                    if (searchTerm.length < 3) {
+                    if (searchTerm.length < 2) {
                         event.preventDefault();
                     }
                 }
