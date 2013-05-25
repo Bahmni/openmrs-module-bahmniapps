@@ -103,11 +103,10 @@
                 </tr>
                 <tr>
                     <td class="registrationCard-details-name">
-                        <span class="hindi-text">वजन</span>
+                        <span class="hindi-text">पिता/पति</span>
                     </td>
                     <td class="registrationCard-details-seperator"> :  </td>
-                    <td ng-pluralize count="obs.weight" when="{'0': '', 'other': '{} kg'}">
-                    </td>
+                    <td>{{patient.primaryRelative}} </td>
                 </tr>
                 <tr>
                     <td class="registrationCard-details-name">
