@@ -22,7 +22,7 @@ describe('VisitController', function () {
                     {
                         "uuid": "d7c66ef3-1f55-4b83-8f10-009e4acec1e3",
                         "name": {
-                            "name": "CHIEF COMPLAINT"
+                            "name": "COMMENTS"
                         }
                     },
                     {
@@ -102,13 +102,13 @@ describe('VisitController', function () {
                 date: date
             });
             visitService.create.andReturn(createPromise)
-            scope.patient = {uuid: "21308498-2502-4495-b604-7b704a55522d"}
+            scope.patient = {uuid: "21308498-2502-4495-b604-7b704a55522d", isNew: "true"}
         });
     
         it("should create visit", function(){
             var now = new Date();
             spyOn(date, "now").andReturn(now)
-            scope.obs.chief_complaint = "ache";
+            scope.obs.comments = "fine";
             scope.obs.registration_fees = "100";
 
             scope.saveAndPrint();
@@ -119,12 +119,26 @@ describe('VisitController', function () {
             expect(scope.encounter.patient).toBe(scope.patient.uuid);
             expect(scope.encounter.encounterDatetime).toBe(now.toISOString());
             expect(scope.encounter.encounterType).toBe(constants.visitType.registration);
-            expect(scope.encounter.obs).toEqual([{concept: "d7c66ef3-1f55-4b83-8f10-009e4acec1e3",value: "ache"},{concept: "8032ad29-0591-4ec6-9776-22e7a3062df8",value: "100"}])
+            expect(scope.encounter.obs).toEqual([{concept: "d7c66ef3-1f55-4b83-8f10-009e4acec1e3",value: "fine"},{concept: "8032ad29-0591-4ec6-9776-22e7a3062df8",value: "100"}])
             expect(scope.visit.encounters).toEqual([scope.encounter]) ;
             expect(visitService.create).toHaveBeenCalledWith(scope.visit);
         });
 
-        it("should print patient and got to search on creation of visit", function () {
+        it("should print patient and go to create new page on creation of visit for new patient", function () {
+            spyOn($location, 'path');
+            spyOn(scope, 'printPatient');
+            scope.saveAndPrint();
+            expect(createPromise.success).toHaveBeenCalled();
+
+            createPromise.success.mostRecentCall.args[0]();
+
+            expect(scope.printPatient).toHaveBeenCalled();
+            $timeout.flush();
+            expect($location.path).toHaveBeenCalledWith("/patient/new");
+        });
+
+        it("should print patient and go to search on creation of visit for edit of patient", function () {
+            scope.patient.isNew=false;
             spyOn($location, 'path');
             spyOn(scope, 'printPatient');
             scope.saveAndPrint();
