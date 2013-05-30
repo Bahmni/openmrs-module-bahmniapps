@@ -54,6 +54,7 @@
         <th>Gender</th>
         <th>Age</th>
         <th>Village</th>
+        <th>Registration Date</th>
         <th class="edit-col"></th>
     </tr>
     </thead>
@@ -65,6 +66,7 @@
         <td>{{result.person.gender}}</td>
         <td>{{result.person.age}}</td>
         <td>{{result.person.addresses[0].cityVillage}}</td>
+        <td>{{result.person.personDateCreated | date:'dd-MM-yyyy'}}</td>
         <td class="edit-col"><a ng-click="editPatient(result.uuid)"></a></td>
     </tr>
     </tbody>
