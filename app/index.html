@@ -8,18 +8,19 @@
         <div>
             <div ng-app="opd">
                 <header ng-controller="NavigationController">
-                    <button ng-click="blank()">History</button>
-                    <button ng-click="blank()">Examination</button>
-                    <button ng-click="blank()">Instruction</button>
-                    <button ng-click="blank()">Diagnosis</button>
-                    <button ng-click="blank()">Treatment</button>
-                    <button ng-click="blank()">Templates</button>
+                    <button ng-click="consultation()">Done</button>
+                    <button ng-click="instruction()">Instruction</button>
+                    <button ng-click="diagnosis()">Diagnosis</button>
+                    <button ng-click="treatment()">Treatment</button>
+                    <button ng-click="templates()">Templates</button>
                 </header>
                 <div ng-view id="view-content"></div>
                 <script src="lib/angular-1.0.5/angular.js"></script>
                 <script src="lib/angular-1.0.5/angular-cookies.min.js"></script>
                 <script src="app.js"></script>
-                <script src="modules/opd/controllers/consultationController.js"></script>
+                <script src="modules/opd/controllers/diagnosisController.js"></script>
+                <script src="modules/opd/controllers/instructionController.js"></script>
+                <script src="modules/opd/controllers/treatmentController.js"></script>
                 <script src="modules/navigation/controllers/navigationController.js"></script>
             </div>
         </div>
