@@ -1,12 +1,12 @@
 <div class="edit-patient">
     <form name="myForm" class="form-horizontal well" ng-submit="edit()">
-        <legend class="mylegend"><span>Patient Profile Information</span></legend>
+        <legend class="mylegend"><span>Patient : {{patient.identifier}}</span></legend>
 
         <div class="control-group">
             <span class="span5 remove-margin">
-                <label class="control-label" for="patientId">Patient Identifier</label>
+                <label class="control-label">Registration Date</label>
                 <div class="controls">
-                    <span class="input-xlarge uneditable-input" id="patientId">{{patient.identifier}}</span>
+                    <span class="uneditable-input">{{patient.registrationDate | date:'dd-MM-yyyy'}}</span>
                 </div>
             </span>
             <span class="span6 photo-container-wrapper">
