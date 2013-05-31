@@ -11,9 +11,9 @@ angular.module('opd.navigation', [])
             return $location.url("/patient/"+$scope.uuid+"/treatment");
         }
 
-        $scope.instruction = function() {
+        $scope.investigation = function() {
             $scope.uuid = $route.current.params.patientUuid;
-            return $location.url("/patient/"+$scope.uuid+"/instruction");
+            return $location.url("/patient/"+$scope.uuid+"/investigation");
         }
 
         $scope.diagnosis = function() {
