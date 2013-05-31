@@ -2,17 +2,22 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        <link rel="stylesheet" href="css/custom.css"/>
         <title>OPD</title>
     </head>
     <body>
         <div>
             <div ng-app="opd">
-                <header ng-controller="NavigationController">
-                    <button ng-click="consultation()">Done</button>
-                    <button ng-click="instruction()">Instruction</button>
-                    <button ng-click="diagnosis()">Diagnosis</button>
-                    <button ng-click="treatment()">Treatment</button>
-                    <button ng-click="templates()">Templates</button>
+                <header ng-controller="NavigationController" class="box-gradient">
+                    <div style="display:block;float:left;">
+                        <button ng-click="consultation()" class="button" >Done</button>
+                    </div>
+                    <div style="display:block;float:right;">
+                        <button ng-click="instruction()" class="button">Instruction</button>
+                        <button ng-click="diagnosis()" class="button">Diagnosis</button>
+                        <button ng-click="treatment()" class="button">Treatment</button>
+                        <button ng-click="templates()" class="button">Templates</button>
+                    </div>
                 </header>
                 <div ng-view id="view-content"></div>
                 <script src="lib/angular-1.0.5/angular.js"></script>
