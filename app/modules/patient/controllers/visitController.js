@@ -1,7 +1,8 @@
 'use strict';
 
-angular.module('registration.visitController', ['resources.patientService', 'resources.visitService', 'resources.concept', 'resources.bmi','resources.date', 'infrastructure.spinner'])
-    .controller('VisitController', ['$scope', '$location', 'patientService', 'visitService', 'concept', 'bmi','date', '$window', '$route', 'spinner', '$timeout', function ($scope, $location, patientService, visitService, conceptService, bmiModule, date, $window, $route, spinner, $timeout) {
+angular.module('registration.visitController', ['resources.patientService', 'resources.visitService', 'resources.concept', 'resources.bmi','resources.date', 'infrastructure.spinner', 'infrastructure.printer'])
+    .controller('VisitController', ['$scope', '$location', 'patientService', 'visitService', 'concept', 'bmi','date', '$window', '$route', 'spinner', '$timeout', 'printer',
+                function ($scope, $location, patientService, visitService, conceptService, bmiModule, date, $window, $route, spinner, $timeout, printer) {
     var registrationConcepts = [];
 
     (function () {
@@ -94,23 +95,6 @@ angular.module('registration.visitController', ['resources.patientService', 'res
     };
 
     $scope.printPatient = function () {
-        var hiddenFrame = document.getElementById("printPatientFrame");
-        var code = "<!doctype html>"+
-                    "<html>"+
-                        "<head>" +
-                            '<style type="text/css">' +
-                                '.hindi-text { vertical-align:bottom; }' +
-                                'h1, h2, h3 { padding: 0; margin: 0;}' +
-                            '</style>'+
-                       "</head>"+
-                        "<body>" +
-                             document.getElementById('registrationCard').innerHTML +
-                        "</body>"+
-                    "</html>";
-        var doc = hiddenFrame.contentWindow.document.open("text/html", "replace");
-        doc.write(code);
-        doc.close();
-        var x  = hiddenFrame.contentWindow.print();
-        console.log(x);
+        printer.print('registrationCard');
     };
  }]);

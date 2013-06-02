@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('registration.editPatient', ['resources.patientService', 'resources.preferences', 'resources.openmrsPatientMapper', 'infrastructure.spinner'])
-    .controller('EditPatientController', ['$scope', 'patientService', '$location', 'Preferences', '$route', 'openmrsPatientMapper', '$window',  'spinner',
-        function ($scope, patientService, $location, preferences, $route, patientMapper, $window, spinner) {
+angular.module('registration.editPatient', ['resources.patientService', 'resources.preferences', 'resources.openmrsPatientMapper', 'infrastructure.spinner', 'infrastructure.printer'])
+    .controller('EditPatientController', ['$scope', 'patientService', '$location', 'Preferences', '$route', 'openmrsPatientMapper', '$window',  'spinner', 'printer',
+        function ($scope, patientService, $location, preferences, $route, patientMapper, $window, spinner, printer) {
             var uuid;
             $scope.patient = {};
             (function() {
@@ -34,5 +34,13 @@ angular.module('registration.editPatient', ['resources.patientService', 'resourc
 
             $scope.back = function() {
                 $window.history.back();
-            }
+            };
+
+            $scope.printLayout = function() {
+                return $route.routes['/printPatient'].templateUrl;
+            };
+
+            $scope.printPatient = function () {
+                printer.print('registrationCard');
+            };
         }]);
