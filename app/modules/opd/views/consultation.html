@@ -1,12 +1,12 @@
-<div width="100%" height="100%">
-    <div style="display:block;float:left;width:50%;">
-        <div class="box" style="height: 250px;" ng-click="investigation()">Investigation</div>
+<div>
+    <div class="leftBox">
+        <div class="box" style="height: 250px;" ng-click="investigation()">Investigations</div>
         <div class="box" style="height: 250px;" ng-click="diagnosis()">Diagnosis</div>
     </div>
 
-    <div style="display:block;float:right;width:50%">
+    <div class="rightBox">
         <div class="box" style="height: 125px">
-            <div style="display:block;float:left;">
+            <div class="leftBox">
                 Ramu Singh <br/>
                 Age: 38years <br/>
                 Village: Ganiyari <br/>
@@ -17,5 +17,5 @@
         </div>
         <div class="box" style="height: 375px" ng-click="treatment()">Treatment Advice</div>
     </div>
-    <div class="box" style="clear: both; height: 150px">Notes</div>
+    <div class="box" style="clear: both; height: 150px" ng-click="notes()">Notes</div>
 </div>

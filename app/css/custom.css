@@ -44,3 +44,13 @@ body{}
     height: 40px;
     font-size: 25px
 }
+.leftBox{
+    display:block;
+    float:left;
+    width:50%;
+}
+.rightBox{
+    display:block;
+    float:right;
+    width:50%;
+}

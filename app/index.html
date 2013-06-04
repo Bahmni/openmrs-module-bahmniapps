@@ -6,28 +6,26 @@
         <title>OPD</title>
     </head>
     <body>
-        <div>
-            <div ng-app="opd">
-                <header ng-controller="NavigationController" class="box-gradient">
-                    <div style="display:block;float:left;">
-                        <button ng-click="consultation()" class="button">{{mainDisplayText}}</button>
-                    </div>
-                    <div style="display:block;float:right;">
-                        <button ng-click="investigation()" class="button">Investigation</button>
-                        <button ng-click="diagnosis()" class="button">Diagnosis</button>
-                        <button ng-click="treatment()" class="button">Treatment</button>
-                        <button ng-click="templates()" class="button">Templates</button>
-                    </div>
-                </header>
-                <div ng-view id="view-content"></div>
-                <script src="lib/angular-1.0.5/angular.js"></script>
-                <script src="lib/angular-1.0.5/angular-cookies.min.js"></script>
-                <script src="app.js"></script>
-                <script src="modules/opd/controllers/diagnosisController.js"></script>
-                <script src="modules/opd/controllers/investigationController.js"></script>
-                <script src="modules/opd/controllers/treatmentController.js"></script>
-                <script src="modules/navigation/controllers/navigationController.js"></script>
-            </div>
+        <div ng-app="opd" ng-controller="NavigationController">
+            <header  class="box-gradient">
+                <div style="display:block;float:left;">
+                    <button ng-click="consultation()" class="button">{{mainButtonText}}</button>
+                </div>
+                <div style="display:block;float:right;">
+                    <button ng-click="investigation()" class="button">Investigations</button>
+                    <button ng-click="diagnosis()" class="button">Diagnosis</button>
+                    <button ng-click="treatment()" class="button">Treatment</button>
+                    <button ng-click="templates()" class="button">Templates</button>
+                </div>
+            </header>
+            <div ng-view id="view-content"></div>
+            <script src="lib/angular-1.0.5/angular.js"></script>
+            <script src="lib/angular-1.0.5/angular-cookies.min.js"></script>
+            <script src="app.js"></script>
+            <script src="modules/opd/controllers/diagnosisController.js"></script>
+            <script src="modules/opd/controllers/investigationController.js"></script>
+            <script src="modules/opd/controllers/treatmentController.js"></script>
+            <script src="modules/navigation/controllers/navigationController.js"></script>
         </div>
     </body>
 </html>
