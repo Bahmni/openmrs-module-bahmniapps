@@ -4,6 +4,8 @@ angular.module('opd.diagnosisController', ['opd.diagnosisService'])
     .controller('DiagnosisController', ['$scope','DiagnosisService', function ($scope, diagnosisService) {
 
     $scope.placeholder = "Add Diagnosis";
+    $scope.hasAnswers = false;
+    $scope.diagnosisList = [];
 
     $scope.getDiagnosis = function(searchTerm){
         return diagnosisService.getAllFor(searchTerm, "Diagnosis");
@@ -16,9 +18,19 @@ angular.module('opd.diagnosisController', ['opd.diagnosisService'])
 
     $scope.setSelectedItem= function(item){
         $scope.selectedItem = item;
+        console.log($scope.selectedItem);
+        $scope.hasAnswers = false;
+
         if($scope.selectedItem.datatype === "Boolean"){
             $scope.selectedItem.answers = [{'name': 'yes'},{ 'name': 'no'}]
         }
+        if($scope.selectedItem.answers !== undefined){
+            $scope.hasAnswers = true;
+        }
+    }
+
+    $scope.addDiagnosis = function(){
+        $scope.diagnosisList.push($scope.selectedItem.label + "-" + $scope.selectedAnswer)
     }
 }])
 .directive('uiAutocomplete', function () {
@@ -50,4 +62,15 @@ angular.module('opd.diagnosisController', ['opd.diagnosisService'])
             }
         });
     }
+})
+.directive('uiSelectable', function () {
+    return function (scope, el, attrs) {
+        el.selectable({
+            stop:function(evt,ui){
+                var idx=el.find('.ui-selected').index();
+                scope.selectedAnswer = scope.selectedItem.answers[idx].name;
+                scope.$apply()
+            }
+        });
+    };
 });
