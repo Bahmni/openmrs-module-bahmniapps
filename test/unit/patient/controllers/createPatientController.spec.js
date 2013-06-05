@@ -10,11 +10,13 @@ describe('CreatePatientController', function () {
     var preferences;
     var createPromise;
     var dateModule;
+    var spinner;
 
     beforeEach(angular.mock.module('registration.createPatient'));
     beforeEach(angular.mock.inject(function (date) {
         dateModule = date;
         location = jasmine.createSpyObj('$location', ['path','absUrl']);
+        spinner = jasmine.createSpyObj('spinner', ['show', 'hide', 'forPromise'])
         location.absUrl = function(){return "/patient/new"};
         patientService = jasmine.createSpyObj('patientService', ['create', 'getPatient', 'rememberPatient']);
         createPromise = specUtil.createServicePromise('patientCreate');
@@ -29,7 +31,8 @@ describe('CreatePatientController', function () {
                 $scope: scope,
                 patientService: patientService,
                 $location: location,
-                Preferences: preferences
+                Preferences: preferences,
+                spinner: spinner
             });
         });
     }

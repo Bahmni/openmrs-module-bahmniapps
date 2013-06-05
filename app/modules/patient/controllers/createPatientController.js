@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('registration.createPatient', ['resources.patientService', 'resources.preferences', 'resources.patient', 'resources.errorCode', 'resources.date'])
-    .controller('CreatePatientController', ['$scope', 'patientService', '$location', 'Preferences', '$route', 'patient', '$window', 'errorCode', 'date',
-        function ($scope, patientService, $location, preferences, $route, patientModel, $window, errorCode, date) {
+angular.module('registration.createPatient', ['resources.patientService', 'resources.preferences', 'resources.patient', 'resources.errorCode', 'resources.date', 'infrastructure.spinner'])
+    .controller('CreatePatientController', ['$scope', 'patientService', '$location', 'Preferences', '$route', 'patient', '$window', 'errorCode', 'date', 'spinner',
+        function ($scope, patientService, $location, preferences, $route, patientModel, $window, errorCode, date, spinner) {
             (function () {
                 $scope.patient = patientModel.create();
                 $scope.centers = constants.centers;
@@ -31,10 +31,11 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
 
             $scope.create = function () {
                 setPreferences();
-                patientService.create($scope.patient).success(successCallback).error(function(data){
+                var createPatientPromise = patientService.create($scope.patient).success(successCallback).error(function(data){
                     if(errorCode.isOpenERPError(data))
                         successCallback(data.patient);
                 });
+                spinner.forPromise(createPatientPromise);
             };
 
             $scope.patientCommon = function() {

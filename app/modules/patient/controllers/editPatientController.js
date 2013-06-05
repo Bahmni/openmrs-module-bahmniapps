@@ -19,13 +19,14 @@ angular.module('registration.editPatient', ['resources.patientService', 'resourc
                 return $route.routes['/patientcommon'].templateUrl;
             };
 
-            $scope.edit = function () {
-                patientService.update($scope.patient, uuid).success(function (data) {
+            $scope.update = function () {
+                var patientUpdatePromise = patientService.update($scope.patient, uuid).success(function (data) {
                     $scope.patient.uuid = data.uuid;
                     $scope.patient.name = data.name;
                     patientService.rememberPatient($scope.patient);
                     $location.path("/visit/new");
                 });
+                spinner.forPromise(patientUpdatePromise);
             };
 
             $scope.showBackButton = function() {
@@ -40,7 +41,10 @@ angular.module('registration.editPatient', ['resources.patientService', 'resourc
                 return $route.routes['/printPatient'].templateUrl;
             };
 
-            $scope.printPatient = function () {
-                printer.print('registrationCard');
+            $scope.saveAndPrint = function () {
+                var patientUpdatePromise = patientService.update($scope.patient, uuid).success(function (data) {
+                    printer.print('registrationCard');
+                });
+                spinner.forPromise(patientUpdatePromise);
             };
         }]);

@@ -23,7 +23,7 @@ describe('SearchPatientController', function () {
         patientResource = jasmine.createSpyObj('patientService', ['search']),
         searchPromise = specUtil.createServicePromise('search');
         patientResource.search.andReturn(searchPromise);
-        spinner = jasmine.createSpyObj('spinner', ['show', 'hide', 'forPromise'])
+        spinner = jasmine.createSpyObj('spinner', ['show', 'hide', 'forPromise']);
         $controller('SearchPatientController', {
             $scope: scope,
             patientService: patientResource,
