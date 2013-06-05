@@ -2,5 +2,12 @@
     <div style="height:300px;border:2px solid"></div>
     <div class="centeredDiv">
         <input class="roundedInput" placeholder={{placeholder}} ui-autocomplete>
+        <div id="coded">
+            <ul class="ui-selectable">
+                <li ng-repeat="answer in selectedItem.answers" class="ui-widget-content ui-selectee">
+                    {{answer.name}}
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
