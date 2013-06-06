@@ -42,7 +42,7 @@ describe('CreatePatientController', function () {
             setupController();
 
             expect(Array.isArray(scope.centers)).toBeTruthy();
-            expect(scope.centers.length).toBe(100);
+            expect(scope.centers.length).toBe(4);
         });
 
         it('should initialize centerID and hasOldIdentifier from preferences', function() {
