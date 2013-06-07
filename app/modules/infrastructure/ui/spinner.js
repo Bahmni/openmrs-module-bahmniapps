@@ -12,10 +12,13 @@ angular.module('infrastructure.spinner', [])
             $('#view-content').show();
         }
 
-        var forPromise = function (promise) {
+        var forPromise = function (promise, options) {
+            options = options || {}
             show();
             return promise.then(function (response) {
-                hide();
+                if(!options.doNotHideOnSuccess) {
+                    hide();
+                }
                 return response;
             }, function (response) {
                 hide();
