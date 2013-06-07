@@ -1,7 +1,7 @@
 <div id="registrationCard" class="print-layout" ng-include="printLayout()"></div>
 
 <div class="edit-patient">
-    <form name="myForm" class="form-horizontal well" ng-submit="update()">
+    <form name="editPatientForm" class="form-horizontal well" ng-submit="update()">
         <legend class="mylegend">
             <span>Patient : {{patient.identifier}}</span>
         </legend>
@@ -27,8 +27,8 @@
         <div class="control-group prev-next-button">
             <div class="controls pull-right">
                 <button type="button" class="btn" ng-click="back()" ng-show="showBackButton()">Back to Search Results</button>
-                <button type="button" class="btn" ng-click="saveAndPrint()">Print</button>
-                <button type="submit" class="btn btn-primary">Next</button>
+                <button type="submit" class="btn btn-primary pull-right" ng-click="setUpdateSource('next')">Next</button>
+                <button type="submit" class="btn" ng-click="setUpdateSource('print')">Print</button>
             </div>
         </div>
     </form>

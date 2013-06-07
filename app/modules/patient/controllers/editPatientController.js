@@ -19,12 +19,24 @@ angular.module('registration.editPatient', ['resources.patientService', 'resourc
                 return $route.routes['/patientcommon'].templateUrl;
             };
 
+
+            $scope.setUpdateSource = function (source) {
+                $scope.updateSource = source;
+            };
+
+
             $scope.update = function () {
                 var patientUpdatePromise = patientService.update($scope.patient, uuid).success(function (data) {
-                    $scope.patient.uuid = data.uuid;
-                    $scope.patient.name = data.name;
-                    patientService.rememberPatient($scope.patient);
-                    $location.path("/visit/new");
+                    if($scope.updateSource == 'print'){
+                        $scope.updateSource = null;
+                        printer.print('registrationCard');
+                    } else {
+                        $scope.patient.uuid = data.uuid;
+                        $scope.patient.name = data.name;
+                        patientService.rememberPatient($scope.patient);
+                        $location.path("/visit/new");
+                    }
+
                 });
                 spinner.forPromise(patientUpdatePromise);
             };
@@ -39,12 +51,5 @@ angular.module('registration.editPatient', ['resources.patientService', 'resourc
 
             $scope.printLayout = function() {
                 return $route.routes['/printPatient'].templateUrl;
-            };
-
-            $scope.saveAndPrint = function () {
-                var patientUpdatePromise = patientService.update($scope.patient, uuid).success(function (data) {
-                    printer.print('registrationCard');
-                });
-                spinner.forPromise(patientUpdatePromise);
             };
         }]);

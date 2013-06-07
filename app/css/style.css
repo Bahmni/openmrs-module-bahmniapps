@@ -245,3 +245,5 @@ table tr th {
 
   .reg-input {
     width: 198px !important; } }
+.btn.pull-right {
+  margin-left: 4px; }
