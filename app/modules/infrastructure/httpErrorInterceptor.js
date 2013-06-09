@@ -23,9 +23,12 @@ angular.module('infrastructure.httpErrorInterceptor', ['resources.errorCode'])
                     var errorMessage = data.error && data.error.message ? stringAfter(data.error.message, ':') : "There was an unexpected issue on the server. Please try again";
                     showError(errorMessage);
                }
-               if (response.status == 409){
+               if (response.status === 409){
                    var errorMessage = data.error && data.error.message ? stringAfter(data.error.message, ':') : "Duplicate entry error";
                    showError(errorMessage);
+               }
+               else if(response.status === 0){
+                  showError("Could not connect to the server. Please check your connection and try again");
                }
                return $q.reject(response);
            }
