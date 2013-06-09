@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('registration.loginController', ['registration.sessionService'])
-    .controller('LoginController', ['$rootScope', '$scope', '$http', '$location', 'sessionService', function ($rootScope, $scope, $http, $location, sessionService) {
+angular.module('registration.loginController', ['registration.sessionService', 'infrastructure.spinner'])
+    .controller('LoginController', ['$rootScope', '$scope', '$http', '$location', 'sessionService', 'spinner',function ($rootScope, $scope, $http, $location, sessionService, spinner) {
         var landingPagePath = "/search";
         var loginPagePath = "/login";
 
@@ -19,7 +19,7 @@ angular.module('registration.loginController', ['registration.sessionService'])
 
         $scope.login = function () {
             $scope.errorMessage = null
-            return sessionService.create($scope.username, $scope.password).success(function (data) {
+            var createSessionPromise = sessionService.create($scope.username, $scope.password).success(function (data) {
                 if (data.authenticated) {
                     $location.path(landingPagePath);
                     $rootScope.$broadcast('event:auth-loggedin');
@@ -28,6 +28,7 @@ angular.module('registration.loginController', ['registration.sessionService'])
                     $scope.resetForm();
                 }
             });
+            spinner.forPromise(createSessionPromise);
         }
 
         $scope.resetForm = function () {
