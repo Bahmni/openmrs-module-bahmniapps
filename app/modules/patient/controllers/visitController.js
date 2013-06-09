@@ -61,7 +61,7 @@ angular.module('registration.visitController', ['resources.patientService', 'res
         });
         $scope.visit.encounters = [$scope.encounter];
 
-        visitService.create($scope.visit).success(function(){
+        var createVisitPromise = visitService.create($scope.visit).success(function(){
             patientService.clearPatient();
             if(successCallback) successCallback();
             var path = $scope.patient.isNew ? "/patient/new" : "/search";
@@ -69,6 +69,7 @@ angular.module('registration.visitController', ['resources.patientService', 'res
                 $location.path(path);
             }, 100)
         });
+        spinner.forPromise(createVisitPromise);
     }
 
     $scope.submit = function(){
