@@ -19,6 +19,11 @@
                     <button ng-click="templates()" class="button">Templates</button>
                 </div>
             </header>
+            <header ng-hide="!onLists()" class="box-gradient">
+                <div style="display:block;float:left;">
+                    Active Patients
+                </div>
+            </header>
             <div ng-view id="view-content"></div>
             <script src="lib/jquery-1.9.1.min.js"></script>
             <script src="lib/jquery-ui-1.10.3.custom.min.js"></script>

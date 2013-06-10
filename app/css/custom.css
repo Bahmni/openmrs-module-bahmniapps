@@ -53,3 +53,10 @@ body{}
     float:right;
     width:50%;
 }
+.centered{
+    text-align: center;
+}
+.smallImages{
+    max-height: 100px;
+    width: 100px;
+}
