@@ -9,7 +9,6 @@ angular.module('opd.activePatientsListController', ['opd.patientsListService', '
                 datum.image = configurationService.getImageUrl() + "/" + datum.identifier + ".jpeg";
             });
             $scope.activePatientsList = data.activePatientsList;
-            console.log($scope.activePatientsList);
         });
     })();
 }]);

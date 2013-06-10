@@ -28,6 +28,11 @@ angular.module('navigation.navigationController', [])
             return buttonClickAction("consultation", true);
         }
 
+        $scope.startConsultation= function (patient){
+            console.log(patient);
+            return $location.url("/patient/" + patient.uuid + "/" + "consultation");
+        }
+
         $scope.notes = function () {
             return buttonClickAction("notes", false);
         }
