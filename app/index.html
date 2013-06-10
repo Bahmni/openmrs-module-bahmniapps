@@ -8,7 +8,7 @@
     </head>
     <body>
         <div ng-app="opd" ng-controller="NavigationController">
-            <header  class="box-gradient">
+            <header ng-hide="onLists()" class="box-gradient">
                 <div style="display:block;float:left;">
                     <button ng-click="consultation()" class="button">{{mainButtonText}}</button>
                 </div>
@@ -28,7 +28,11 @@
             <script src="modules/opd/controllers/diagnosisController.js"></script>
             <script src="modules/opd/controllers/investigationController.js"></script>
             <script src="modules/opd/controllers/treatmentController.js"></script>
+            <script src="modules/opd/controllers/activePatientsListController.js"></script>
             <script src="modules/opd/service/disgnosisService.js"></script>
+            <script src="modules/opd/service/patientsListService.js"></script>
+            <script src="modules/infrastructure/service/configurationService.js"></script>
+            <script src="constants.js"></script>
             <script src="modules/navigation/controllers/navigationController.js"></script>
         </div>
     </body>

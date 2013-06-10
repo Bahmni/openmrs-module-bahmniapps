@@ -32,6 +32,13 @@ angular.module('navigation.navigationController', [])
             return buttonClickAction("notes", false);
         }
 
+        $scope.onLists = function() {
+            if($location.url().search("patients") > 0){
+                return true;
+            }
+            return false;
+        }
+
         var buttonClickAction = function (url, isMainPage) {
             $scope.mainButtonText = isMainPage == true ? "Consultation" : "Done";
             $scope.uuid = $route.current.params.patientUuid;
