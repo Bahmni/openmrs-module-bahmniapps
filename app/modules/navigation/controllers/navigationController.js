@@ -40,7 +40,8 @@ angular.module('navigation.navigationController', ["infrastructure.configuration
     }
 
     $scope.onLists = function () {
-        if ($location.url() === constants.activePatientsListUrl) {
+        var url = $location.url();
+        if (url.search(constants.activePatientsListUrl) !== -1) {
             return true;
         }
         return false;

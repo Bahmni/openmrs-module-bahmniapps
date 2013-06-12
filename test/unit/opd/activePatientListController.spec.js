@@ -5,6 +5,7 @@ describe("ActivePatientListController", function () {
     var scope;
     var controller;
     var patientListService;
+    var route = {current : {params :{ location : "Ganiyari"}}};
     var patientsList = {'activePatientsList' : [{},{},{}]};
 
     beforeEach(angular.mock.module('opd.activePatientsListController'));
@@ -18,18 +19,17 @@ describe("ActivePatientListController", function () {
         }});
     }));
 
-
     var setUp = function(){
         inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
             controller = $controller('ActivePatientsListController',{
                 $scope : scope,
                 PatientService: patientService,
-                PatientsListService : patientListService
+                PatientsListService : patientListService,
+                $route : route
             });
         });
     }
-
 
     describe("initialization", function () {
         it('should initialize configurations', function () {
