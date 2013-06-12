@@ -1,0 +1,24 @@
+{
+  "name": "bahmni.registration",
+  "version": "0.0.1",
+  "main": [
+    "app/index.html",
+    "app/scripts/app.js"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ],
+  "dependencies": {
+    "angular": "1.0.5",
+    "angular-cookies": "1.0.5",
+    "bootstrap": "2.3.0",
+    "jquery": "1.9.1",
+    "jquery-ui": "1.10.2"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.0.5",
+    "angular-scenario": "1.0.5"
+  }
+}
