@@ -30,7 +30,7 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/{,*/}*.html',
           '{.tmp,<%= yeoman.app %>}/styles/{,*/}*.css',
           '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
-          '{.tmp,<%= yeoman.app %>}/*.js',
+          '{.tmp,<%= yeoman.app %>}/modules/{,*/}*.js',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ],
         tasks: ['livereload']
@@ -93,6 +93,9 @@ module.exports = function (grunt) {
         sassDir: '<%= yeoman.app %>/styles',
         cssDir: '.tmp/styles',
         imagesDir: '<%= yeoman.app %>/images',
+        // This config only takes a string. I'm not even sure why compass needs 
+        // the javascript dir setting. Should be fine to leave it this way for now.
+        // Giving it the full app folder would include components which is not a good idae
         javascriptsDir: '<%= yeoman.app %>/scripts',
         fontsDir: '<%= yeoman.app %>/styles/fonts',
         importPath: '<%= yeoman.app %>/components',
@@ -110,7 +113,9 @@ module.exports = function (grunt) {
         files: {
           '<%= yeoman.dist %>/scripts/scripts.js': [
             '.tmp/scripts/{,*/}*.js',
-            '<%= yeoman.app %>/scripts/{,*/}*.js'
+            '.tmp/modules/{,*/}*.js',
+            '<%= yeoman.app %>/scripts/{,*/}*.js',
+            '<%= yeoman.app %>/modules/{,*/}*.js'
           ]
         }
       }
