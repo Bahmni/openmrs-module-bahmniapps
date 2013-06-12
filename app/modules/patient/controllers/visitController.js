@@ -46,13 +46,13 @@ angular.module('registration.visitController', ['resources.patientService', 'res
             return updateImagePromise;
         }
 
-        $scope.registrationFeeLabel = $scope.patient.isNew ? "Registration Fee" : "Consultation Fee";
-
         $scope.print = function () {
             return $timeout(function () {
                 printer.print('registrationCard');
             }, 0);
         };
+
+        $scope.registrationFeeLabel = $scope.patient.isNew ? "Registration Fee" : "Consultation Fee";
 
         $scope.save = function () {
             var datetime = date.now().toISOString();
