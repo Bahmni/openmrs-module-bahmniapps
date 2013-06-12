@@ -1,7 +1,7 @@
 <div>
     <div ng-repeat="patient in activePatientsList" style="display: inline-block;margin:5px;" ng-click="consultation(patient)">
         <div class="centered">{{patient.identifier}}</div>
-        <img class="smallImages" ng-src="{{patient.image}}">
+        <img class="smallImages" ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='images/blank-user.gif';">
         <div class="centered">{{patient.fullName}}</div>
     </div>
 </div>
