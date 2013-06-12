@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('infrastructure.configurationService', [])
-    .factory('ConfigurationService', ['$http', '$rootScope', function ($http, $rootScope) {
+    .factory('ConfigurationService', ['$http', '$rootScope', function ($http) {
     var bahmniPatientBaseUrl = "";
     (
         function(){
