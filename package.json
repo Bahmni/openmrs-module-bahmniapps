@@ -1,0 +1,36 @@
+{
+  "name": "bahmni-registration",
+  "version": "0.0.1",
+  "description": "Registration app for Bahmni",
+  "main": "app/scripts/app.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "karma": "~0.8.5"
+  },
+  "devDependencies": {
+    "phantomjs" : ""
+  },
+  "scripts": {
+    "test": "karma start test/config/testacular.conf.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Bhamni/registration.git"
+  },
+  "keywords": [
+    "Bahmni",
+    "EMR",
+    "openmrs",
+    "HMS",
+    "healthcare"
+  ],
+  "author": "bahmni@thoughtworks.com",
+  "license": "Apache v2.0",
+  "gitHead": "d292a992ce359f79a807fd7d75505e45cb631b80",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/Bhamni/registration/issues"
+  }
+}
