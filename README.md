@@ -87,4 +87,13 @@ To set up the module,
 
 1. Set up UI components (This installs all the UI dependencies into
 app/components)
+
   bower install
+
+2. Set up local node dependencies. (This installs all the node
+dependencies into node_modules.
+
+  node install
+
+It's also possible to test the application using
+  npm test
