@@ -1,13 +1,14 @@
 'use strict';
 
-angular.module('opd.patientsListService', ['infrastructure.configurationService'])
-    .factory('PatientsListService', ['$http', 'ConfigurationService', function ($http, configurationService) {
+angular.module('opd.patientService', ['infrastructure.configurationService'])
+    .factory('PatientService', ['ConfigurationService', function (configurationService) {
 
     var constructImageUrl = function (identifier) {
-        var imageBaseUrl = "";
-        configurationService.getAll().success(function (data) {
-            imageBaseUrl = data.patientImagesUrl
-        })
-        return imageBaseUrl + "/" + identifier + ".jpeg"
+        var imageUrl = configurationService.getImageUrl();
+        return imageUrl + "/" + identifier + ".jpeg";
+    }
+
+    return{
+        constructImageUrl : constructImageUrl
     }
 }]);

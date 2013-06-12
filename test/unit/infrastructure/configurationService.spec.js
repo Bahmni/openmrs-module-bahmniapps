@@ -16,9 +16,12 @@ describe("configurationService", function () {
     }));
 
     describe("init", function () {
-        it('should set up patient image url', inject(['ConfigurationService', function () {
+        it('should set up patient image url', inject(['ConfigurationService', function (configurationService) {
+            configurationService.init();
+
             expect(mockHttp.get).toHaveBeenCalled();
             expect(mockHttp.get.mostRecentCall.args[0]).toBe(constants.bahmniConfigurationUrl);
+            expect(configurationService.getImageUrl()).toBe("http://myserver/patient_images");
         }])
         );
     });

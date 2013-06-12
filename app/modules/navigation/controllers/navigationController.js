@@ -1,8 +1,12 @@
 'use strict';
 
-angular.module('navigation.navigationController', [])
-    .controller('NavigationController', ['$scope', '$location', '$route', function ($scope, $location, $route) {
-    $scope.mainButtonText = "Consultation"
+angular.module('navigation.navigationController', ["infrastructure.configurationService"])
+    .controller('NavigationController', ['$scope', '$location', '$route', 'ConfigurationService', function ($scope, $location, $route, configurationService) {
+    $scope.mainButtonText = "Consultation";
+
+    (function () {
+        configurationService.init()
+    })();
 
     $scope.blank = function () {
         return $location.url("/blank");
