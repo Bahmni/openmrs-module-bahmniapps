@@ -91,11 +91,10 @@ module.exports = function (grunt) {
     compass: {
       options: {
         sassDir: '<%= yeoman.app %>/styles',
-        cssDir: '.tmp/styles',
+        cssDir: '<%= yeoman.app %>/styles/.css',
         imagesDir: '<%= yeoman.app %>/images',
-        // This config only takes a string. I'm not even sure why compass needs 
-        // the javascript dir setting. Should be fine to leave it this way for now.
-        // Giving it the full app folder would include components which is not a good idae
+        // Should be modified to include modules as well. String config, not an array.
+        // Have to figure out a way to do this via globbing.
         javascriptsDir: '<%= yeoman.app %>/scripts',
         fontsDir: '<%= yeoman.app %>/styles/fonts',
         importPath: '<%= yeoman.app %>/components',

@@ -68,7 +68,7 @@ body{
     }
   }
   .header-logo{
-    background: url("./img/jss_logo.png") no-repeat scroll left top transparent;
+    background: image-url("jss_logo.png") no-repeat scroll left top transparent;
     color: #ffffff;
     display: block;
     font-size: 2em;
@@ -100,7 +100,7 @@ body{
           padding-left:2px;
         }
         .create{
-            background:url(./img/create.png) top left no-repeat;
+            background: image-url("create.png") top left no-repeat;
             width:14px;
             height:14px;
             display:inline-block;
@@ -137,7 +137,7 @@ body{
       width:40px;
       padding:1px 2px 0px 2px;
       a{
-        background:url(./img/edit.png) top left no-repeat;
+        background: image-url("edit.png") top left no-repeat;
         width:30px;
         height:24px;
         display:inline-block;
@@ -163,7 +163,7 @@ body{
     top:0px;
     left:-56px;
     .btn{
-      background: url(./img/photo.png) 2px 3px no-repeat;
+      background: image-url("photo.png") 2px 3px no-repeat;
       width:40px;
       height:40px;
     }
@@ -221,7 +221,7 @@ select:focus:invalid {
   height: 100%;
   top: 0px;
   left: 0px;
-  background-image:url("../images/spinner.gif");
+  background-image: image-url("spinner.gif");
   background-repeat:no-repeat;
   background-position:center;
 }

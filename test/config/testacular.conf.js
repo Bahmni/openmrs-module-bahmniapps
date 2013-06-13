@@ -13,7 +13,8 @@ files = [
 
 singleRun = true;
 
-browsers = ['PhantomJS'];
+//browsers = ['PhantomJS'];
+browsers = ['Chrome'];
 
 reporters = ['dots', 'junit'];
 junitReporter = {
