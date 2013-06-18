@@ -75,12 +75,16 @@ module.exports = function (grunt) {
           dot: true,
           src: [
             '.tmp',
+            '<%= yeoman.app %>/styles/.css/**',
             '<%= yeoman.dist %>/*',
             '!<%= yeoman.dist %>/.git*'
           ]
         }]
       },
-      server: '.tmp'
+      server: [ 
+        '.tmp',
+        '<%= yeoman.app %>/styles/.css/**' 
+      ]
     },
     karma: {
       unit: {
@@ -144,11 +148,21 @@ module.exports = function (grunt) {
     },
     cssmin: {
       dist: {
+        options: {
+          banner: 'Bahmni Registration CSS minified file.'
+        },
         files: {
           '<%= yeoman.dist %>/styles/main.css': [
             '.tmp/styles/{,*/}*.css',
             '<%= yeoman.app %>/styles/{,*/}*.css'
           ]
+        },
+        minify: {
+          expand: true,
+          cwd: '<%= yeoman.dist %>/styles/',
+          src: ['*.css', '!*.min.css'],
+          dest: '<%= yeoman.dist %>/styles/',
+          ext: '.min.css'
         }
       }
     },
