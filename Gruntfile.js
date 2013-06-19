@@ -152,7 +152,7 @@ module.exports = function (grunt) {
           banner: 'Bahmni Registration CSS minified file.'
         },
         files: {
-          '<%= yeoman.dist %>/styles/main.css': [
+          '<%= yeoman.dist %>/styles/css/main.css': [
             '.tmp/styles/{,*/}*.css',
             '<%= yeoman.app %>/styles/{,*/}*.css'
           ]
@@ -218,7 +218,10 @@ module.exports = function (grunt) {
             '.htaccess',
             'components/**/*',
             'images/{,*/}*.{gif,webp}',
-            'styles/fonts/*'
+            'styles/fonts/*',
+            'modules/**/*',
+            '!modules/**/*.js',
+            'lib/**/*'
           ]
         }]
       }
@@ -254,7 +257,7 @@ module.exports = function (grunt) {
     'concat',
     'copy',
     'ngmin',
-    'uglify',
+    //'uglify',
     'usemin'
   ]);
 
