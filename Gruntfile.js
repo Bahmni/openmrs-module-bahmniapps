@@ -48,7 +48,6 @@ module.exports = function (grunt) {
           middleware: function (connect) {
             return [
               lrSnippet,
-              mountFolder(connect, '.tmp'),
               mountFolder(connect, yeomanConfig.app)
             ];
           }
@@ -58,7 +57,6 @@ module.exports = function (grunt) {
         options: {
           middleware: function (connect) {
             return [
-              mountFolder(connect, '.tmp'),
               mountFolder(connect, 'test')
             ];
           }
@@ -75,7 +73,6 @@ module.exports = function (grunt) {
         files: [{
           dot: true,
           src: [
-            '.tmp',
             '<%= yeoman.app %>/styles/.css/**',
             '<%= yeoman.dist %>/*',
             '!<%= yeoman.dist %>/.git*'
@@ -83,8 +80,7 @@ module.exports = function (grunt) {
         }]
       },
       server: [ 
-        '.tmp',
-        '<%= yeoman.app %>/styles/.css/**' 
+        '<%= yeoman.app %>/styles/.css/**'
       ]
     },
     karma: {
@@ -121,8 +117,6 @@ module.exports = function (grunt) {
       dist: {
         files: {
           '<%= yeoman.dist %>/scripts/scripts.js': [
-            '.tmp/scripts/{,*/}*.js',
-            '.tmp/modules/{,*/}*.js',
             '<%= yeoman.app %>/scripts/{,*/}*.js',
             '<%= yeoman.app %>/modules/{,*/}*.js'
           ]
@@ -159,7 +153,6 @@ module.exports = function (grunt) {
         },
         files: {
           '<%= yeoman.dist %>/styles/css/main.css': [
-            '.tmp/styles/{,*/}*.css',
             '<%= yeoman.app %>/styles/{,*/}*.css'
           ]
         },
