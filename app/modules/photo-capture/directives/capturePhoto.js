@@ -43,7 +43,9 @@ angular.module('registration.photoCapture', [])
                             var dataURL = canvas.toDataURL("image/jpeg");
                             var image = dataURL;
                             var ngModel = $parse(iAttrs.ngModel);
+                            
                             ngModel.assign(scope, image);
+                            if(iAttrs.capturePhoto) scope[iAttrs.capturePhoto]();   
                             dialogElement.dialog('close');
                         };
 

@@ -2,8 +2,9 @@
 
 
 describe('patientMapper', function() {
-
     var patientMapper;
+    var patient;
+
 
     var samplePatientAttributeTypes = [
             {
@@ -24,22 +25,24 @@ describe('patientMapper', function() {
 
     beforeEach(function() {
         module('resources.patientMapper');
-
+        module('resources.patient');
+        
         module(function ($provide) {
             $provide.value('patientAttributeType', mockPatientAttributeType);
         });
 
-        inject(['patientMapper', function(patientMapperInjectted) {
+        inject(['patientMapper', 'patient', function(patientMapperInjectted, patientFactory) {
             patientMapper = patientMapperInjectted;
+            patient = patientFactory.create();
         }]);
 
     });
 
     it('should map givenName and familyName to name array', function () {
-        var patient = {
+        angular.extend(patient, {
             "givenName": "given",
             "familyName": "family"
-        };
+        });
 
         var mappedPatientData = patientMapper.map(patient);
 
@@ -48,7 +51,7 @@ describe('patientMapper', function() {
     });
 
     it('should map the address', function () {
-        var patient = {
+        angular.extend(patient, {
             address : {
                 address1: "12th Main",
                 cityVillage: "Koramangala",
@@ -56,7 +59,7 @@ describe('patientMapper', function() {
                 countyDistrict: "Bangalore",
                 stateProvince: "Karnataka",
             }
-        };
+        });
 
         var mappedPatientData = patientMapper.map(patient);
 
@@ -64,10 +67,10 @@ describe('patientMapper', function() {
     });
 
     it('should map the attributes', function () {
-        var patient = {
+        angular.extend(patient, {
             "caste": "someCaste",
             "oldPatientIdentifier": "someOldPatientIdentifier",
-        } ;
+        });
 
         var mappedPatientData = patientMapper.map(patient);
 
@@ -76,11 +79,11 @@ describe('patientMapper', function() {
     });
 
     it('should map age, gender and dateOfBirth', function () {
-        var patient = {
+        angular.extend(patient, {
             age: 23,
             gender: "F",
             birthdate: "06-26-1989"
-        } ;
+        });
 
         var mappedPatientData = patientMapper.map(patient);
 
@@ -90,22 +93,32 @@ describe('patientMapper', function() {
     });
 
     it('should strip data prefix when image is a jpeg data url', function () {
-        var mappedPatientData = patientMapper.map({
+        angular.extend(patient, {
             image: 'data:image/jpeg;base64,asdfasdfasdfkalsdfkj'
         });
+        
+        var mappedPatientData = patientMapper.map(patient);
+        
         expect(mappedPatientData.image).toBe('asdfasdfasdfkalsdfkj');
-
     });
 
     it('should map image if it is a data image', function () {
-        var mappedPatientData = patientMapper.map({
+        angular.extend(patient, {
             image: 'asdfasdfasdfkalsdfkj'
         });
+
+        var mappedPatientData = patientMapper.map(patient);
+        
         expect(mappedPatientData.image).toBeFalsy();
     });
 
     it('should not fail when image not present', function () {
-        var mappedPatientData = patientMapper.map({image: null});
+        angular.extend(patient, {
+            image: null
+        });
+
+        var mappedPatientData = patientMapper.map(patient);
+        
         expect(mappedPatientData.image).toBeFalsy();
     });
 })

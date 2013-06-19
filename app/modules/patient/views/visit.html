@@ -3,15 +3,25 @@
 <div class="non-printable" xmlns="http://www.w3.org/1999/html">
     <div>
         <form name="myForm" class="form-horizontal well">
-            <fieldset>
+            <fieldset  style="height: 156px">
                 <legend class="mylegend remove-margin"><span>Summary</span></legend>
                 <div class="control-group">
-                    <label class="control-label" for="patientId">Patient Identifier</label>
+                    <span class="span5 remove-margin">
+                        <label class="control-label" for="patientId">Patient Identifier</label>
 
-                    <div class="controls">
-                        <input id="patientId" ng-model="patient.identifier" readonly>
-                    </div>
+                        <div class="controls">
+                            <input id="patientId" ng-model="patient.identifier" readonly>
+                        </div>
+                    </span>
+                    <span class="span6 photo-container-wrapper">
+                        <span class="pull-right photo-container">
+                            <img id="patient-image" ng-src="{{patient.image}}"
+                             onerror="this.onerror=null;this.src='modules/photo-capture/images/blank-user.gif';"/>
+                            <div ng-model="patient.image" capture-photo="updatePatientImage" class="capture-photo-btn"></div>
+                        </span>
+                    </span>
                 </div>
+
 
                 <div class="control-group">
                     <label class="control-label" for="patientName">Patient Name</label>

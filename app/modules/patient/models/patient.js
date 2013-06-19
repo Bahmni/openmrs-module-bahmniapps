@@ -32,13 +32,18 @@ angular.module('resources.patient', ['resources.date'])
                 return (givenNameHindi.trim() + " " + familyNameHindi.trim()).trim();
             }
 
+            var getImageData = function() {
+                return this.image && this.image.indexOf('data') === 0 ? this.image.replace("data:image/jpeg;base64,", "") : null;
+            }
+
             return {
                 address: {},
                 calculateAge: calculateAge,
                 generateIdentifier: generateIdentifier,
                 clearRegistrationNumber: clearRegistrationNumber,
                 image : 'modules/photo-capture/images/blank-user.gif',
-                fullNameHindi: fullNameHindi
+                fullNameHindi: fullNameHindi,
+                getImageData: getImageData
             };
         }
 

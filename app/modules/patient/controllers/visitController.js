@@ -40,6 +40,11 @@ angular.module('registration.visitController', ['resources.patientService', 'res
             $window.history.back();
         };
 
+        $scope.updatePatientImage = function(){
+            var updateImagePromise = patientService.updateImage($scope.patient.uuid, $scope.patient.getImageData());
+            spinner.forPromise(updateImagePromise);
+        }
+
         $scope.registrationFeeLabel = $scope.patient.isNew ? "Registration Fee" : "Consultation Fee";
 
         $scope.print = function () {

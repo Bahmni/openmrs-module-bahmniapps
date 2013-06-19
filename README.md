@@ -86,10 +86,9 @@ This application will help users register a new patient in OpenMRS.
 To set up the application, do the following
 
 1. Install the following modules required globally (This is a one time task)
-
-  npm install -g bower
-  npm install -g grunt-cli
-  gem intall compass
+sudo npm install -g bower
+sudo npm install -g grunt-cli
+gem install compass
 
 2. Set up local node dependencies. (This installs all the node
 dependencies into node_modules.

@@ -48,6 +48,15 @@ angular.module('resources.patientService', ['resources.patient', 'resources.pati
             });
         }
 
+        var updateImage = function(uuid, image){
+            var updateImageUrl = constants.openmrsUrl + "/ws/rest/v1/bahmnicore/patient/" + uuid + "/image";
+            return $http.post(updateImageUrl, {"image": image}, {
+                withCredentials: true,
+                headers: {"Accept": "application/json", "Content-Type": "application/json"}
+            });
+
+        }
+
         return {
             search: search,
             create: create,
@@ -55,6 +64,7 @@ angular.module('resources.patientService', ['resources.patient', 'resources.pati
             rememberPatient: rememberPatient,
 			clearPatient: clearPatient,
             update: update,
-            get: get
+            get: get,
+            updateImage: updateImage
         };
     }]);
