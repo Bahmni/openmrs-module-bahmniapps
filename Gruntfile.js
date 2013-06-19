@@ -90,6 +90,10 @@ module.exports = function (grunt) {
       unit: {
         configFile: 'test/config/testacular.conf.js',
         singleRun: true
+      },
+      e2e: {
+        configFile: 'test/config/testacular-e2e.conf.js',
+        singleRun: true
       }
     },
     compass: {
@@ -97,8 +101,9 @@ module.exports = function (grunt) {
         sassDir: '<%= yeoman.app %>/styles',
         cssDir: '<%= yeoman.app %>/styles/.css',
         imagesDir: '<%= yeoman.app %>/images',
-        // Should be modified to include modules as well. String config, not an array.
-        // Have to figure out a way to do this via globbing.
+        // Should be modified to include modules/ as well. String config, not an array.
+        // Have to figure out a way to do this via globbing. The config
+        // is not relevant to us though.
         javascriptsDir: '<%= yeoman.app %>/scripts',
         fontsDir: '<%= yeoman.app %>/styles/fonts',
         importPath: '<%= yeoman.app %>/components',
@@ -243,7 +248,7 @@ module.exports = function (grunt) {
     'clean:server',
     'compass',
     'connect:test',
-    'karma'
+    'karma:unit'
   ]);
 
   grunt.registerTask('build', [

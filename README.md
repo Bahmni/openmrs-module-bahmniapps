@@ -106,7 +106,10 @@ app/components)
 
   grunt 
 
-(Other options are grunt server and grunt test)
+Other options are 
+  grunt server      # Launch server
+  grunt test        # Run unit tests
+  grunt karma:e2e   # End to End tests with karma
 
 Project Structure
 -----------------
