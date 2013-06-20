@@ -2,7 +2,7 @@
 
 angular.module('infrastructure.httpErrorInterceptor', ['resources.errorCode'])
     .config(function($httpProvider) {
-        var interceptor = ['$rootScope', '$q', '$window', 'errorCode',function($rootScope, $q, $window, errorCode) {
+        var interceptor = ['$rootScope', '$q', '$window', 'errorCode', function($rootScope, $q, $window, errorCode) {
             var showError = function(errorMessage){
                 $rootScope.server_error = errorMessage;
                 $window.scrollTo(0, 0)
@@ -19,8 +19,9 @@ angular.module('infrastructure.httpErrorInterceptor', ['resources.errorCode'])
 
            function error(response) {
                var data = response.data;
+               var unexpecetedError = "There was an unexpected issue on the server. Please try again";
                if (response.status === 500 && !errorCode.isOpenERPError(data)) {
-                    var errorMessage = data.error && data.error.message ? stringAfter(data.error.message, ':') : "There was an unexpected issue on the server. Please try again";
+                    var errorMessage = data.error && data.error.message ? stringAfter(data.error.message, ':') : unexpecetedError;
                     showError(errorMessage);
                }
                if (response.status === 409){
@@ -29,6 +30,9 @@ angular.module('infrastructure.httpErrorInterceptor', ['resources.errorCode'])
                }
                else if(response.status === 0){
                   showError("Could not connect to the server. Please check your connection and try again");
+               }
+               else if(response.status === 405){
+                  showError(unexpecetedError);
                }
                return $q.reject(response);
            }

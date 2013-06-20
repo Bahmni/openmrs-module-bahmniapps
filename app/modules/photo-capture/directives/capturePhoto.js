@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registration.photoCapture', [])
-    .directive('capturePhoto', function factory($parse, $window) {
+    .directive('capturePhoto', ['$parse', '$window', '$rootScope',function factory($parse, $window, $rootScope) {
         var directiveDefinitionObject = {
             templateUrl: 'modules/photo-capture/views/photo.html',
             restrict: 'A',
@@ -39,14 +39,31 @@ angular.module('registration.photoCapture', [])
                             }
                         };
 
+                        var closeDialog = function(){
+                            dialogElement.dialog('close');
+                        }
+
+                        var onConfirmationSuccess = function(image){
+                            var ngModel = $parse(iAttrs.ngModel);
+                            ngModel.assign(scope, image);
+                            closeDialog();
+                        }    
+
                         scope.confirmImage = function () {
                             var dataURL = canvas.toDataURL("image/jpeg");
                             var image = dataURL;
-                            var ngModel = $parse(iAttrs.ngModel);
-                            
-                            ngModel.assign(scope, image);
-                            if(iAttrs.capturePhoto) scope[iAttrs.capturePhoto]();   
-                            dialogElement.dialog('close');
+                            if(iAttrs.capturePhoto) {
+                                var onConfirmationPromise = scope[iAttrs.capturePhoto](image);
+                                onConfirmationPromise.then(function(){
+                                    onConfirmationSuccess(image);
+                                }, function(response){
+                                    $rootScope.server_error = null;
+                                    alert("Failed to save image. Plaese try again later");
+                                });
+                            } else {
+                                onConfirmationSuccess(image);
+                            }
+
                         };
 
                         scope.clickImage = function () {
@@ -89,4 +106,4 @@ angular.module('registration.photoCapture', [])
             }
         };
         return directiveDefinitionObject;
-    });
+    }]);
