@@ -11,7 +11,8 @@ module.exports = function (grunt) {
   // configurable paths
   var yeomanConfig = {
     app: 'app',
-    dist: 'dist'
+    dist: 'dist',
+    test: 'test'
   };
 
   try {
@@ -22,20 +23,37 @@ module.exports = function (grunt) {
     yeoman: yeomanConfig,
     watch: {
       compass: {
-        files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+        files: ['<%= yeoman.app %>/styles/**/*.{scss,sass}'],
         tasks: ['compass']
       },
       livereload: {
         files: [
           '<%= yeoman.app %>/**/*.html',
           '<%= yeoman.app %>/**/*.js',
-          '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-          '<%= yeoman.app %>/styles/.css/*.css',
+          '<%= yeoman.app %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
+          '<%= yeoman.app %>/styles/.css/**/*.css',
           '!<%= yeoman.app %>/components',
           '!<%= yeoman.app %>/lib'
         ],
         tasks: ['livereload']
-      }
+      },
+      // Tried to link watch to karma, so that watch can run all
+      // the background tasks which need to run on file change, including
+      // karma. Doesn't seem to be working.
+      //
+      // https://github.com/karma-runner/grunt-karma#karma-server-with-grunt-watchregarde
+      // https://github.com/karma-runner/grunt-karma/issues/30
+      // https://github.com/karma-runner/grunt-karma/issues/33
+      // https://github.com/karma-runner/grunt-karma/issues/22
+      // https://github.com/karma-runner/grunt-karma/issues/36
+      //test: {
+        //files: [
+          //'<%= yeoman.app %>/**/*.js',
+          //'<%= yeoman.test %>/unit/**/*.js',
+          //'<%= yeoman.test %>/support/**/*.js'
+        //],
+        //tasks: ['karma:unitd:run']
+      //}
     },
     connect: {
       options: {
@@ -85,13 +103,19 @@ module.exports = function (grunt) {
     },
     karma: {
       unit: {
-        configFile: 'test/config/testacular.conf.js',
-        singleRun: true
+        configFile: 'test/config/testacular.conf.js'
       },
       e2e: {
-        configFile: 'test/config/testacular-e2e.conf.js',
-        singleRun: true
+        configFile: 'test/config/testacular-e2e.conf.js'
+      },
+      auto: {
+        configFile: 'test/config/testacular.conf.js',
+        autoWatch: true
       }
+      //unitd: {
+        //configFile: 'test/config/testacular.conf.js',
+        //background: true
+      //}
     },
     compass: {
       options: {
@@ -262,6 +286,7 @@ module.exports = function (grunt) {
     'concat',
     'copy',
     'ngmin',
+    // Commented since it is breaking angular. Possibly because of $rootScope
     //'uglify',
     'usemin'
   ]);
