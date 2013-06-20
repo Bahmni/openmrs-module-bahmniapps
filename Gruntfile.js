@@ -112,6 +112,7 @@ module.exports = function (grunt) {
         configFile: 'test/config/testacular.conf.js',
         autoWatch: true
       }
+      // Refer watch:test comment above
       //unitd: {
         //configFile: 'test/config/testacular.conf.js',
         //background: true
@@ -137,18 +138,23 @@ module.exports = function (grunt) {
         }
       }
     },
-    concat: {
-      dist: {
-        files: {
-          '<%= yeoman.dist %>/scripts/scripts.js': [
-            '<%= yeoman.app %>/scripts/**/*.js',
-            '<%= yeoman.app %>/modules/**/*.js'
-          ]
-        }
-      }
-    },
+    // All files are currently concatted based on usemin blocks in html
+    //concat: {
+      //dist: {
+        //files: {
+          //'<%= yeoman.dist %>/scripts/scripts.js': [
+            //'<%= yeoman.app %>/scripts/**/*.js',
+            //'<%= yeoman.app %>/modules/**/*.js'
+          //]
+        //}
+      //}
+    //},
     useminPrepare: {
-      html: '<%= yeoman.app %>/index.html',
+      html: [
+        '<%= yeoman.app %>/*.html',
+        '<%= yeoman.app %>/modules/**/*.html'
+      ],
+      css: '<%= yeoman.app %>/styles/.css/**/*.css',
       options: {
         dest: '<%= yeoman.dist %>'
       }
@@ -158,7 +164,7 @@ module.exports = function (grunt) {
         '<%= yeoman.dist %>/*.html',
         '<%= yeoman.dist %>/modules/**/*.html',
       ],
-      css: ['<%= yeoman.dist %>/styles/**/*.css'],
+      css: '<%= yeoman.dist %>/styles/**/*.css',
       options: {
         dirs: ['<%= yeoman.dist %>']
       }
@@ -174,22 +180,15 @@ module.exports = function (grunt) {
       }
     },
     cssmin: {
-      dist: {
-        options: {
-          banner: 'Bahmni Registration CSS minified file.'
-        },
-        files: {
-          '<%= yeoman.dist %>/styles/css/main.css': [
-            '<%= yeoman.app %>/styles/.css/**/*.css'
-          ]
-        },
-        minify: {
-          expand: true,
-          cwd: '<%= yeoman.dist %>/styles/',
-          src: ['**/*.css', '!*.min.css'],
-          dest: '<%= yeoman.dist %>/styles/',
-          ext: '.min.css'
-        }
+      options: {
+        banner: 'Bahmni Registration minified CSS file.'
+      },
+      minify: {
+        expand: true,
+        cwd: '<%= yeoman.dist %>/styles/css/',
+        src: ['**/*.css', '!**/*.min.css'],
+        dest: '<%= yeoman.dist %>/styles/css/',
+        ext: '.min.css'
       }
     },
     htmlmin: {
@@ -221,7 +220,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.dist %>/scripts',
-          src: '*.js',
+          src: '**/*.js',
           dest: '<%= yeoman.dist %>/scripts'
         }]
       }
@@ -246,10 +245,8 @@ module.exports = function (grunt) {
             '*.{ico,txt}',
             '.htaccess',
             'components/**/*',
-            'images/{,*/}*.{gif,webp}',
+            'images/**/*.{gif,webp}',
             'styles/fonts/*',
-            'modules/**/*',
-            '!modules/**/*.js',
             'lib/**/*'
           ]
         }]
@@ -280,10 +277,10 @@ module.exports = function (grunt) {
     'test',
     'compass:dist',
     'useminPrepare',
-    'imagemin',
-    'cssmin',
-    'htmlmin',
     'concat',
+    'imagemin',
+    'htmlmin',
+    'cssmin',
     'copy',
     'ngmin',
     // Commented since it is breaking angular. Possibly because of $rootScope
