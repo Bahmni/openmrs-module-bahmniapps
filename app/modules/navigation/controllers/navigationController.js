@@ -3,9 +3,15 @@
 angular.module('navigation.navigationController', ["infrastructure.configurationService"])
     .controller('NavigationController', ['$scope', '$location', '$route', 'ConfigurationService', function ($scope, $location, $route, configurationService) {
     $scope.mainButtonText = "Consultation";
+    var mainPageSwitch = true;
 
     (function () {
-        configurationService.init()
+        configurationService.init();
+        $scope.patient = {
+            name : "Ram Singh",
+            age  : "34",
+            village : "Ganiyari"
+        }
     })();
 
     $scope.blank = function () {
@@ -47,7 +53,12 @@ angular.module('navigation.navigationController', ["infrastructure.configuration
         return false;
     }
 
+    $scope.isMainPage = function(){
+        return mainPageSwitch;
+    }
+
     var buttonClickAction = function (url, isMainPage) {
+        mainPageSwitch = isMainPage;
         $scope.mainButtonText = isMainPage == true ? "Consultation" : "Done";
         $scope.uuid = $route.current.params.patientUuid;
         return $location.url("/patient/" + $scope.uuid + "/" + url);
