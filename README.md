@@ -2,12 +2,7 @@
 
 This application will help doctors capture data in OPD. 
 
-
-
-#Bhamni Registration application
-
-This application will help users register a new patient in OpenMRS.
-
+ (copied from registration module)
 To set up the application, do the following
 
 1. Install the following modules required globally (This is a one time task)
