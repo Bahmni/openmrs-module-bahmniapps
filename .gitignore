@@ -3,3 +3,4 @@
 *.iml
 logs
 test/output/*
+app/components

@@ -3,9 +3,10 @@
 angular.module('opd.patientsListService', ['infrastructure.configurationService'])
     .factory('PatientsListService', ['$http', 'ConfigurationService', function ($http, configurationService) {
 
-    var getActivePatients = function (location) {
-        return $http.get("http://localhost:8080/openmrs/ws/rest/v1/bahmnicore/patients/active/" + location, {
-            method:"GET"
+    var getActivePatients = function (queryParameters) {
+        return $http.get("/openmrs/ws/rest/v1/bahmnicore/patients/active" , {
+            method:"GET"  ,
+            params:{location: queryParameters.location}
         })
     }
 

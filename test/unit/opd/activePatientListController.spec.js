@@ -6,7 +6,7 @@ describe("ActivePatientListController", function () {
     var controller;
     var patientListService;
     var route = {current : {params :{ location : "Ganiyari"}}};
-    var patientsList = {'activePatientsList' : [{},{},{}]};
+    var patientsList = [{},{},{}];
 
     beforeEach(angular.mock.module('opd.activePatientsListController'));
     beforeEach(angular.mock.inject(function () {
