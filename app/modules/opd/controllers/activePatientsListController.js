@@ -10,11 +10,12 @@ angular.module('opd.activePatientsListController', ['opd.patientsListService', '
                 datum.image = patientService.constructImageUrl(datum.identifier);
             });
             $scope.activePatientsList = data;
-            $scope.searchPatientList = $scope.activePatientsList;
-
             $scope.storeWindowDimensions();
-            $scope.visiblePatientsList= $scope.searchPatientList.slice(0,$scope.tilesToFit);
 
+            if($scope.activePatientsList !== undefined){
+                $scope.searchPatientList = $scope.activePatientsList;
+                $scope.visiblePatientsList= $scope.searchPatientList.slice(0,$scope.tilesToFit);
+            }
         });
     }
 
@@ -62,7 +63,9 @@ angular.module('opd.activePatientsListController', ['opd.patientsListService', '
             }
         })
         $scope.searchPatientList = searchList;
-        $scope.visiblePatientsList= $scope.searchPatientList.slice(0,$scope.tilesToFit);
+        if($scope.searchPatientList !== undefined){
+            $scope.visiblePatientsList= $scope.searchPatientList.slice(0,$scope.tilesToFit);
+        }
     }
 
 
@@ -77,7 +80,9 @@ angular.module('opd.activePatientsListController', ['opd.patientsListService', '
             angular.element($window).bind('resize', function () {
                 scope.$apply(function () {
                     scope.storeWindowDimensions();
-                    scope.visiblePatientsList= scope.searchPatientList.slice(0,scope.tilesToFit);
+                    if(scope.searchPatientList !== undefined){
+                        scope.visiblePatientsList= scope.searchPatientList.slice(0,scope.tilesToFit);
+                    }
                 });
             });
         };
