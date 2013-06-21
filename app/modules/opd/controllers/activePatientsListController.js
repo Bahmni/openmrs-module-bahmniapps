@@ -11,15 +11,20 @@ angular.module('opd.activePatientsListController', ['opd.patientsListService', '
             });
             $scope.activePatientsList = data;
             $scope.searchPatientList = $scope.activePatientsList;
-            $scope.visiblePatientsList= $scope.searchPatientList.slice(0,30);
+
+            $scope.storeWindowDimensions();
+            $scope.visiblePatientsList= $scope.searchPatientList.slice(0,$scope.tilesToFit);
+
         });
     }
 
     $scope.loadMore = function() {
         if($scope.visiblePatientsList !== undefined){
             var last = $scope.visiblePatientsList.length - 1;
-            for(var i = 1; i <=8; i++) {
-                $scope.visiblePatientsList.push($scope.searchPatientList[i+last]);
+            if(last <= $scope.searchPatientList.length ){
+                for(var i = 1; i <=$scope.tilesToLoad ; i++) {
+                    $scope.visiblePatientsList.push($scope.searchPatientList[i+last]);
+                }
             }
         }
     };
@@ -48,8 +53,31 @@ angular.module('opd.activePatientsListController', ['opd.patientsListService', '
             }
         })
         $scope.searchPatientList = searchList;
-        $scope.visiblePatientsList= $scope.searchPatientList.slice(0,30);
+        $scope.visiblePatientsList= $scope.searchPatientList.slice(0,$scope.tilesToFit);
     }
 
- }]);
+    $scope.storeWindowDimensions = function(){
+        var windowWidth = window.innerWidth;
+        var windowHeight = window.innerHeight;
+
+        var tileWidth = constants.patientTileWidth;
+        var tileHeight = constants.patientTileHeight;
+        $scope.tilesToFit = Math.ceil(windowWidth * windowHeight / (tileWidth * tileHeight));
+        $scope.tilesToLoad =  Math.ceil($scope.tilesToFit*constants.tileLoadRatio);
+    }
+
+ }]).directive('resize', function ($window) {
+        return function (scope,element) {
+
+            scope.storeWindowDimensions();
+
+
+            angular.element($window).bind('resize', function () {
+                scope.$apply(function () {
+                    scope.storeWindowDimensions();
+                    scope.visiblePatientsList= scope.searchPatientList.slice(0,scope.tilesToFit);
+                });
+            });
+        };
+    });;
 
