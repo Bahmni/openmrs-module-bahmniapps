@@ -10,17 +10,16 @@ angular.module('opd.activePatientsListController', ['opd.patientsListService', '
                 datum.image = patientService.constructImageUrl(datum.identifier);
             });
             $scope.activePatientsList = data;
-            $scope.visiblePatientsList= $scope.activePatientsList.slice(0,30);
+            $scope.searchPatientList = $scope.activePatientsList;
+            $scope.visiblePatientsList= $scope.searchPatientList.slice(0,30);
         });
     }
-
-
 
     $scope.loadMore = function() {
         if($scope.visiblePatientsList !== undefined){
             var last = $scope.visiblePatientsList.length - 1;
             for(var i = 1; i <=8; i++) {
-                $scope.visiblePatientsList.push($scope.activePatientsList[i+last]);
+                $scope.visiblePatientsList.push($scope.searchPatientList[i+last]);
             }
         }
     };
@@ -41,33 +40,16 @@ angular.module('opd.activePatientsListController', ['opd.patientsListService', '
         return false;
     };
 
+    $scope.filterPatientList =     function () {
+        var searchList = [];
+        $scope.activePatientsList.forEach(   function(item){
+            if($scope.matchesNameOrId(item))  {
+                searchList.push(item);
+            }
+        })
+        $scope.searchPatientList = searchList;
+        $scope.visiblePatientsList= $scope.searchPatientList.slice(0,30);
+    }
 
-
-    }])/*.directive('resize', function ($window) {
-        return function (scope,element) {
-            scope.width =  element.get(0).offsetWidth;
-            scope.height = $window.innerHeight;
-
-            scope.tileContainer = element.get(0);
-
-            angular.element($window).bind('resize', function () {
-                scope.$apply(function () {
-                    scope.width = $window.innerWidth;
-                    scope.height = $window.innerHeight;
-                });
-            });
-        };
-    })
-
-    /*.directive('recordSize', function ($window) {
-        return function (scope,element,attrs) {
-
-            var recordSizeConfig = attrs.recordSize;
-            if(scope.recordSize == undefined){
-            scope.recordSize = {width : element.get(0).offsetWidth, height : element.get(0).offsetHeight};
-
-            scope.loadMore();
-        }
-        };
-    });*/
+ }]);
 
