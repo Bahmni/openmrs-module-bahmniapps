@@ -9,7 +9,8 @@ files = [
   '../app/constants.js',
   '../app/modules/**/*.js',
   'support/**/*.js',
-  'unit/**/*.js'
+  'unit/**/*.js',
+  '../app/components/**/*.js'
 ];
 
 singleRun = true;
