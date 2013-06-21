@@ -29,7 +29,16 @@ angular.module('opd.activePatientsListController', ['opd.patientsListService', '
         }
     };
 
-    $scope.getActivePatientList();
+    $scope.storeWindowDimensions = function(){
+        var windowWidth = window.innerWidth;
+        var windowHeight = window.innerHeight;
+
+        var tileWidth = constants.patientTileWidth;
+        var tileHeight = constants.patientTileHeight;
+        $scope.tilesToFit = Math.ceil(windowWidth * windowHeight / (tileWidth * tileHeight));
+        $scope.tilesToLoad =  Math.ceil($scope.tilesToFit*constants.tileLoadRatio);
+    }
+
 
     $scope.matchesNameOrId = function(patient){
         if(patient !== undefined && patient.name !== undefined && patient.identifier !== undefined ){
@@ -56,15 +65,8 @@ angular.module('opd.activePatientsListController', ['opd.patientsListService', '
         $scope.visiblePatientsList= $scope.searchPatientList.slice(0,$scope.tilesToFit);
     }
 
-    $scope.storeWindowDimensions = function(){
-        var windowWidth = window.innerWidth;
-        var windowHeight = window.innerHeight;
 
-        var tileWidth = constants.patientTileWidth;
-        var tileHeight = constants.patientTileHeight;
-        $scope.tilesToFit = Math.ceil(windowWidth * windowHeight / (tileWidth * tileHeight));
-        $scope.tilesToLoad =  Math.ceil($scope.tilesToFit*constants.tileLoadRatio);
-    }
+    $scope.getActivePatientList();
 
  }]).directive('resize', function ($window) {
         return function (scope,element) {
