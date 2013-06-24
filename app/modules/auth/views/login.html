@@ -1,33 +1,44 @@
 
-<div class="login">
-<div class="container-fluid reg-wrapper">
+    <div class="login">
+
+    <div class="note-container ng-show="errorMessage"">
+                <div class="note error">
+                    <div  class="text"><i class="icon-remove small"></i> {{errorMessage}}</div>
+                </div>
+    </div>
     <header class="reg-header " ng-controller="NavigationController">
                         <a class="header-logo pull-left" href="/registration">Jan Swasthya Sahyog</a>
-</header>
-    <div>
-        <form ng-submit="login()" class="form-horizontal well" name="loginForm">
-            <div ng-show="errorMessage" class="alert alert-danger">{{errorMessage}}</div>
-            <div class="control-group">
-                <label class="control-label" for="username">Username *</label>
+    </header>
+    
+        <form ng-submit="login()" class="" name="loginForm">
+        <div class="login-body">
+            <div class="form-field">
+                <div class="field-attribute">
+                    <label for="username">Username *</label>
+                </div>
 
-                <div class="controls">
-                    <input type="text" name="username" id="username" ng-model="username" autofocus required placeholder="Please enter your username">
+                <div class="field-value">
+                    <input type="text" name="username" id="username" ng-model="username" autofocus required placeholder="Enter your username">
                 </div>
             </div>
-            <div class="control-group">
-                <label class="control-label" for="password">Password *</label>
-
-                <div class="controls">
-                    <input type="password" id="password" name="password" ng-model="password" required placeholder="Please enter your password" >
+            <div class="form-field">
+                <div class="field-attribute">
+                    <label for="password">Password *</label>
+                </div>
+                <div class="field-value">
+                    <input type="password" id="password" name="password" ng-model="password" required placeholder="Enter your password" >
                 </div>
             </div>
 
-            <div class="control-group">
-                <div class="controls">
-                    <button type="submit" class="btn btn-primary" ng-disabled="loginForm.$invalid">Login</button>
+            <div class="form-field">
+                <div class="field-attribute">
+                    <label></label>
+                </div>
+                <div class="field-value">
+                    <button type="submit" class="confirm" ng-disabled="loginForm.$invalid">Login</button>
                 </div>
             </div>
+        </div>
         </form>
+    
     </div>
-</div>
-</div>

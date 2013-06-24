@@ -1,78 +1,80 @@
-<div class="well search">
-    <div class="clearfix control-group">
-        <div class="span5 search-seperator form-inline remove-margin">
-            <form name="searchByIdForm" ng-submit="searchById()" class="form-horizontal form-seach">
-                <div class="control-group pull-left remove-margin">
+<section class="reg-search-wrapper">
+    <section class="reg-search">
+        <article class="search-seperator-l">
+            <form name="searchByIdForm" ng-submit="searchById()" class="simple-form-ui" >
                     <label for="registrationNumber"><strong>Patient ID</strong></label>
 
-                    <div class="search-patientid">
-                        <select id="center" class="span1" ng-model="centerId"
-                                ng-options="c.name as c.name for c in centers"> </select>
+                    <div class="left">
+                        <select id="center" ng-model="centerId" ng-options="c.name as c.name for c in centers"> </select>
                         <input type="text" id="registrationNumber" ng-model="registrationNumber" autofocus
                                placeholder="Enter ID">
                     </div>
-                </div>
-                <div class="reg-srch-btn pull-left">
-                    <button type="submit" ng-disabled="!registrationNumber" class="btn">Search</button>
+                
+                <div class="reg-srch-btn left">
+                    <button type="submit" ng-disabled="!registrationNumber" >Search</button>
                 </div>
             </form>
-        </div>
-        <div class="span6 form-inline">
-            <form name="searchByNameForm" ng-submit="searchByName()" class="form-horizontal">
+        </article>
+        <article class="search-seperator-r left">
+            <form name="searchByNameForm" ng-submit="searchByName()" class="simple-form-ui" >
 
-                <div class="control-group pull-left">
+                <article class="left">
                     <label for="name"><strong>Name</strong></label>
-
-                    <div class="reg-input">
-                        <input type="text" id="name" ng-model="name" placeholder="Enter name">
-                    </div>
-                </div>
-                <div class="control-group pull-left">
+                    <input type="text" id="name" ng-model="name" placeholder="Enter name">
+                </article>
+                <article class="left">
                     <label for="name"><strong>Filter by Village</strong></label>
-
-                    <div class="reg-input">
-                        <input type="text" ng-disabled="!name" id="village" ng-model="village" placeholder="Enter village name">
+                    <input type="text" ng-disabled="!name" id="village" ng-model="village" placeholder="Enter village name">
+                </article>
+                <article class="left">
+                    <div class="reg-srch-btn">
+                        <button type="submit" ng-disabled="!name">Search</button>
                     </div>
-                </div>
-                <div class="control-group pull-left">
-                <div class="reg-srch-btn">
-                    <button type="submit" ng-disabled="!name" class="btn">Search</button>
-                </div>
-                </div>
+                </article>
             </form>
 
-        </div>
+        </article>
+    </section>
+    <div class="note-container" ng-show="noResultsMessage">
+    <div class="note warning">
+            <div class="text">
+                    <p>{{noResultsMessage}}</p>     
+            </div>
     </div>
-    <p  class="alert" ng-show="noResultsMessage">{{noResultsMessage}}</p>
-<p class="alert" ng-show="moreResultsPresent">Displaying first 50 results only. Please refine your search to get more relevant results.</p>
-<table ng-show="resultsPresent()" class="table table-hover">
-    <thead>
-    <tr>
-        <th class="slno_col">Sl.No</th>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Gender</th>
-        <th>Age</th>
-        <th>Village</th>
-        <th>Registration Date</th>
-        <th class="edit-col"></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="result in results">
-        <td>{{$index + 1}}</td>
-        <td>{{result.identifiers[0].identifier}}</td>
-        <td>{{result.person.names[0].givenName}} {{result.person.names[0].familyName}}</td>
-        <td>{{result.person.gender}}</td>
-        <td>{{result.person.age}}</td>
-        <td>{{result.person.addresses[0].cityVillage}}</td>
-        <td>{{result.person.personDateCreated | date:'dd-MM-yyyy'}}</td>
-        <td class="edit-col"><a ng-click="editPatient(result.uuid)"></a></td>
-    </tr>
-    </tbody>
-</table>
-
-<p class="alert" ng-show="moreResultsPresent">Displaying first 50 results only. Please refine your search to get more relevant results.</p>
-  
-</div>
-
+    </div>
+    
+    <div class="note-container" ng-show="moreResultsPresent">
+    <div class="note warning">
+            <div class="text">
+                    <p>Displaying first 50 results only. Please refine your search to get more relevant results.</p>     
+            </div>
+    </div>
+    </div>
+    <table ng-show="resultsPresent()" class="table table-hover">
+        <thead>
+        <tr>
+            <th class="slno_col"><strong>Sl.No</strong></th>
+            <th><strong>ID</strong></th>
+            <th><strong>Name</strong></th>
+            <th><strong>Gender</strong></th>
+            <th><strong>Age</strong></th>
+            <th><strong>Village</strong></th>
+            <th><strong>Registration Date</strong></th>
+            <th class="edit-col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="result in results">
+            <td>{{$index + 1}}</td>
+            <td>{{result.identifiers[0].identifier}}</td>
+            <td>{{result.person.names[0].givenName}} {{result.person.names[0].familyName}}</td>
+            <td>{{result.person.gender}}</td>
+            <td>{{result.person.age}}</td>
+            <td>{{result.person.addresses[0].cityVillage}}</td>
+            <td>{{result.person.personDateCreated | date:'dd-MM-yyyy'}}</td>
+            <td class="edit-col"><a ng-click="editPatient(result.uuid)"></a></td>
+        </tr>
+        </tbody>
+    </table>
+    <p class="alert" ng-show="moreResultsPresent">Displaying first 50 results only. Please refine your search to get more relevant results.</p>
+</section>

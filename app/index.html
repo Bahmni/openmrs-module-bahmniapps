@@ -3,40 +3,35 @@
     <head>
         <meta charset="utf-8">
         <title>Patient Registration</title>
-
-        <link rel="stylesheet" href="lib/bootstrap-2.3.0/css/bootstrap.min.css"/>
-        <link rel="stylesheet" href="lib/bootstrap-2.3.0/css/bootstrap-responsive.min.css"/>
         <link rel="stylesheet" href="lib/jquery-ui-1.10.2.1/jquery-ui-1.10.2.1.custom.min.css"/>
+        <link rel="stylesheet" href="/openmrs/moduleResources/uicommons/styles/styleguide/index.css"/>
         <!-- build:css styles/css/main.min.css -->
         <link rel="stylesheet" href="styles/.css/style.css"/>
         <link rel="stylesheet" href="styles/.css/print.css"/>
         <!-- endbuild -->
     </head>
     <body>
-        <div class="container-fluid reg-wrapper">
-            <div ng-app="registration" class="container">
+        <div class="reg-wrapper">
+            <div ng-app="registration">
                 <div id="overlay"></div>
                 <header class="reg-header" ng-controller="NavigationController" ng-hide="onLoginPage()" style="display: none">
-                        <a class="header-logo pull-left" href="#/search">Jan Swasthya Sahyog</a>
-                        <ul class="inline pull-right">
-
+                        <a class="header-logo" href="#/search">Jan Swasthya Sahyog</a>
+                        <ul>
                             <li>
-                                <a href="#/search"><i class="icon-search icon-white"></i><span class="nav-link">Search</span></a>
+                                <a href="#/search"><i class="icon-search icon-white small"></i><span class="nav-link">Search</span></a>
                             </li>
                             <li>
-                                <a ng-click="createNew()"><i class="create"></i><span class="nav-link">Create New</span></a>
+                                <a ng-click="createNew()"><i class="icon-plus icon-white small"></i><span class="nav-link">Create New</span></a>
                             </li>
                             <li>
-
-                                <a ng-click="logout()"><i class="icon-off icon-white"></i><span class="nav-link">Logout</span></a>
+                                <a ng-click="logout()"><i class="icon-off icon-white small"></i><span class="nav-link">Logout</span></a>
                             </li>
                         </ul>
                 </header>
-            <div class="container">
-                <div class="container-fluid">
+            <div id="body-wrapper">
+            <div>
                     <div style="display: none" class="alert alert-error" ng-show="server_error">{{server_error}}</div>
-                </div>
-
+            </div>
                 <div ng-view id="view-content"></div>
                 <script src="components/jquery/jquery.js"></script>
                 <script src="lib/jquery/jquery-ui-1.10.2.1.custom.min.js"></script>

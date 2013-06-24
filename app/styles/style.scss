@@ -1,6 +1,65 @@
-body{
-	background:#f5f5f5;
-    font-family: "OpenSans",Arial,sans-serif;
+@import "grid";
+$column-width: 100;
+$gutter-width: 0;
+$columns: 12;
+$total-width: 100%;
+
+
+@import "compass";
+
+/*** grid form elements css start ***/
+.form-field-inline{
+  .form-field{
+      float:left;
+      @include column(6);
+      margin-bottom:10px;  
+      &:last-child{
+        .field-attribute{
+            margin-left:20%;
+        }
+      }  
+  }
+  @include clearfix();
+}
+.form-field{
+  margin-bottom:15px;
+  @include clearfix();
+  .field-attribute{
+    float:left;
+    label{
+        width:13em;
+        float:left;
+        text-align:right;
+        margin:8px 0.8em 10px 0px;
+    }
+  }
+  .field-value{
+    float:left;
+     input[type="text"]{  
+        float:left;
+        width:12.5em;
+    }
+  }
+}
+/********************** overridding the common ui ***********************/
+.simple-form-ui{
+  form{
+    background:#fff;
+    section{
+      display:block;
+      padding:0px;
+      border-left: none;
+      background: #fff;
+    }
+  } 
+}
+/*** grid form elements css end ***/
+body{   
+  width:100%;
+  max-width:100%;
+	background:#f5f5f6;
+  font-size:14px;
+  font-family: "OpenSans",Arial,sans-serif;
 }
 .reg-header{
 	height:50px;
@@ -8,48 +67,8 @@ body{
 .remove-margin{
   margin:0px !important; 
 }
-.photoCaptureDialog{
-    .photo-video-container{
-        position:relative;
-        width:229px;
-        float:left;
-        .photoCapture-left-overlay{
-          position:absolute;
-          height:169px;
-          width:25px;
-          left:0px;
-          top:6px;
-          background:#EEEEEE;
-        }
-        .photoCapture-right-overlay{
-          position:absolute;
-          height:169px;
-          width:31px;
-          right:0px;
-          top:6px;
-          background:#EEEEEE;
-        }
-    }      
-    .photo-canvas-container{
-      float:left;
-      width:188px;
-      margin-top:6px;
-      margin-left:30px !important;
-      canvas{
-        border:2px solid #fff;
-        height:167px;
-        width:175px;
-        background:#f2f2f2;
-      }
-    } 
-    .take-photo-btn{
-      margin-left:57px; 
-    }
-    .confirmImage{
-      margin-left:105px;
-    }
 
-}
+/*** login specific css start ***/
 .login{
     bottom: 0px;
     height: 300px;
@@ -58,86 +77,125 @@ body{
     position: absolute;
     right: 0px;
     top: 0px;
+    font-size:0.865em;
     width: 500px;
 }
+.login-body{
+    @include clearfix();
+    padding-top:20px;
+    background:#ffffff;
+    border:1px solid #eaeaea;
+    padding-bottom:10px;
+
+}
+/*** login specific css end ***/
+/*** search page css start ****/
+body{
+  max-width:1200px;
+}
 .reg-wrapper{
-  margin-top:10px;
-  .search-patientid{
-    select{
-      width:70px;
-    }
+  margin:0px auto;
+  @include clearfix();
+  .inline-element,select,input,button{
+      display:inline-block;
+      margin:2px;
   }
-  .header-logo{
-    background: image-url("jss_logo.png") no-repeat scroll left top transparent;
-    color: #ffffff;
-    display: block;
-    font-size: 2em;
-    height: 39px;
-    margin-left: 5px;
-    margin-top: 4px;
-    padding-left: 49px;
-    padding-top: 11px;
-    text-decoration:none; }
-  .well{
-      background:#ffffff;
+  select{
+        height:32px;
   }
   header {
-    background-color: #501d3d;
     position: relative;
     color: #CCC;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    -ms-border-radius: 5px;
-    -o-border-radius: 5px;
-    border-radius: 5px; 
-    li{
-      margin:14px 10px 10px 0px;
-      a{
-        color:#f2f2f2;
-        font-weight:bold;
-        cursor:pointer;
-        .nav-link{
-          padding-left:2px;
-        }
-        .create{
-            background: image-url("create.png") top left no-repeat;
-            width:14px;
-            height:14px;
-            display:inline-block;
-            margin-right:2px;
+    @include border-radius();  
+    .header-logo{
+      background: image-url("jss_logo.png") no-repeat scroll left top transparent;
+      color: #ffffff;
+      display: block;
+      font-size: 2em;
+      height: 32px;
+      margin:4px 0px 0px 5px;
+      padding:11px 0px 0px 49px;
+      text-decoration:none; 
+      line-height:15px;
+      float:left;
+    }
+    ul{
+      float:right;
+      li{
+        margin:11px 15px 10px 0px;
+        display:inline-block;
+        a{
+          color:#f2f2f2;
+          font-weight:bold;
+          cursor:pointer;
+          text-decoration:none;
+          .nav-link{
+            padding-left:2px;
+            &:hover{
+              text-decoration:underline;
+            }
           }
+       }
       }
     }
   }
-  .form-horizontal .control-label{
-      width:170px;
-  }
-  select{
-          box-shadow:none;
-  }
-  .search-btn{
-    position:relative;
-    left:-45px;
-  }
-  .search-seperator{
-    border-right:2px dotted #9E9D9D;
-  }
-  .reg-input{
-    width:230px;
+.reg-search-wrapper{
+    padding:10px;
+    margin-top:5px;
+    border:1px solid #cecece;
+    background:#fff;
+    @include border-radius();  
+    .reg-search{
+        margin-bottom:10px;
+        @include clearfix;
+        .search-seperator-l{
+          @include column(5);
+          border-right:2px dotted #9E9D9D;
+            select{
+              width:80px;
+          }
+        }
+        .search-seperator-r{
+          padding:0px 0px 10px 20px;
+          input{
+            margin-right:5px;
+          }
+          .reg-srch-btn{
+            margin-top:25px;
+          }
+        }
+    }
+    .note-container{
+        text-align:left;
+       .note {
+           padding:6px 10px 6px 10px; 
+           .text{
+            p{
+              max-width:100%;
+              top:0px;
+              margin-left:0
+            }
+          }
+        }
+    }
+}  
+table{
+    td,th{
+        padding:5px 8px 5px 8px;
+        text-align:left;
+    }
+    tr:hover{
+      background:#f1f1f1;
+    }
   }
   .slno_col{
         width:40px;
-  }
-  table{
-    td,th{
-        padding:5px 8px 5px 8px;
-    }
   }
   .edit-col{
       width:40px;
       padding:1px 2px 0px 2px;
       a{
-        background: image-url("edit.png") top left no-repeat;
+        background:image-url("edit.png") top left no-repeat;
         width:30px;
         height:24px;
         display:inline-block;
@@ -145,17 +203,19 @@ body{
         cursor:pointer;
       }
   }
-  .reg-srch-btn{
-    padding-top:25px;
-    padding-left:10px;
-  }
-  .photo-container-wrapper{
-    position:relative;
-  }
-  .photo-container{
+ /*** search page css end ***/
+
+ /****edit page css start ***/
+ .edit-patient,.new-patient,.visit-patient{
+  position:relative;
+ }
+ .photocontainer-spacing{
+    margin-bottom:50px;
+ }
+.photo-container-wrapper{
     position:absolute;
-    top:-15px;
-    right:0px;
+    top:35px;
+    right:10px;
     border:7px solid #f0f0f0;
   }
   .capture-photo-btn{
@@ -170,20 +230,13 @@ body{
   }
 }
 
-input:focus:invalid,
-textarea:focus:invalid,
-select:focus:invalid {
-  color: #b94a48;
-  border-color: #ee5f5b;
-}
-
 .mylegend {
     background:#e6e6e6;
     font-size: 14px;
-    line-height: 20px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    width:99.8%;
+    line-height: 16px;
+    margin-bottom:20px;
+    @include border-radius();
     border:1px solid #d4d4d4;
     span{
         display:inline-block;
@@ -194,13 +247,7 @@ select:focus:invalid {
 .asterick{
     color:red;
 }
-.btn-large {
-  padding: 5px 20px;
-  font-size: 14.5px;
-  -webkit-border-radius: 6px;
-     -moz-border-radius: 6px;
-          border-radius: 6px;
-}
+
 
 #casteSameAsLastNameCheckLabel {
     -moz-user-select: none;
@@ -221,7 +268,7 @@ select:focus:invalid {
   height: 100%;
   top: 0px;
   left: 0px;
-  background-image: image-url("spinner.gif");
+  background-image:image-url("spinner.gif");
   background-repeat:no-repeat;
   background-position:center;
 }
@@ -238,7 +285,6 @@ select:focus:invalid {
     display: none;
   }
 }
-
 .btn-secondary {
   float: right;
 }   
@@ -251,13 +297,6 @@ table{
         }
     }
 }
-.container-fluid{
-        padding-left:0px;
-        padding-right:0p;
-}
-.prev-next-button{
-  padding-right:50px;  
-}
 
 #photo-canvas-container {
   text-align: center;
@@ -268,56 +307,29 @@ table{
   width: 125px;
 }
 
-@media screen and (max-width:1366px) and (max-height: 800px){
-  .control-group {
-    margin-bottom: 6px !important;
-  }
-  .control-res{
-    margin-top:35px !important;
-  }
-  .edit-patient{
-    .control-res{
-    margin-top:72px !important;
-  }
-  }
-  .well{
-    margin-bottom:0px !important;
-  }
-  .prev-next-button{
-    margin-bottom:0px !important;
-    margin-top:10px;
-    padding-right:8px !important;
-  }
-  .span7{
-    width:52.446809% !important
-  }
-  .search{
-    input{  
-      width:180px !important;
+/** responsive css **/
+
+@media screen and (max-width: 1024px) {
+  .reg-wrapper{
+    width:1024px;
+    .reg-search-wrapper .reg-search {
+      .search-seperator-l{
+        width:500px;
     }
-    .span1{
-      width:64px;
+      .search-seperator-r{
+        padding-left:10px;
     }
-    .span6{
-        width:488px;
+    }
+    .form-field-inline {
+      &:last-child{
+        margin-bottom:10px;
+      }
+      .form-field{
+        margin-bottom:0px;
+      }
+    }
+    .photocontainer-spacing{
+      margin-bottom:42px;
     }
   }
-  .reg-input{
-    width:198px !important;
-  }
 }
-.btn.pull-right {
-  margin-left: 4px;
-}
-
-.age-field {
-  width: 20px;
-
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
-  }
-}
-

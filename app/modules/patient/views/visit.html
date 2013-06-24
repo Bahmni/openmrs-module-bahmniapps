@@ -2,115 +2,111 @@
 
 <div class="non-printable" xmlns="http://www.w3.org/1999/html">
     <div>
-        <form name="myForm" class="form-horizontal well">
-            <fieldset  style="height: 156px">
-                <legend class="mylegend remove-margin"><span>Summary</span></legend>
-                <div class="control-group">
-                    <span class="span5 remove-margin">
-                        <label class="control-label" for="patientId">Patient Identifier</label>
-
-                        <div class="controls">
-                            <input id="patientId" ng-model="patient.identifier" readonly>
-                        </div>
-                    </span>
-                    <span class="span6 photo-container-wrapper">
+        <form name="myForm" class="visit-patient">
+                <legend class="mylegend"><span><strong>Summary</strong></span></legend>
+                    <div class="photo-container-wrapper">
                         <span class="pull-right photo-container">
-                            <img id="patient-image" ng-src="{{patient.image}}"
-                             onerror="this.onerror=null;this.src='modules/photo-capture/images/blank-user.gif';"/>
-                            <div ng-model="patient.image" capture-photo="updatePatientImage" class="capture-photo-btn"></div>
-                        </span>
-                    </span>
-                </div>
-
-
-                <div class="control-group">
-                    <label class="control-label" for="patientName">Patient Name</label>
-
-                    <div class="controls">
-                        <input id="patientName" ng-model="patient.name" readonly>
+                                <img id="patient-image" ng-src="{{patient.image}}"
+                                     onerror="this.onerror=null;this.src='modules/photo-capture/images/blank-user.gif';"/>
+                                <div ng-model="patient.image" capture-photo class="capture-photo-btn"></div>
+                         </span>
                     </div>
-                </div>
-                
-            </fieldset>
-            <fieldset>
-                <legend class="mylegend remove-margin"><span>Visit Information</span></legend>
-                <div class="row-fluid control-group">
-                <div class="span6">
-                <div>
-                    <label class="control-label" for="registrationFee">{{registrationFeeLabel}}</label>
 
-                    <div class="controls">
-                        <input type="number" id="registrationFee" ng-model="obs['REGISTRATION FEES']" autofocus>
-                    </div>
-                </div>
-                </div>
-                <div class="span5">
-                <div >
-                    <label class="control-label" for="comments">Comments</label>
+                <section>
+                <article class="form-field">
+                        <div class="field-attribute">
+                            <label  for="patientId">Patient Identifier</label>
+                        </div>
 
-                    <div class="controls">
-                        <input type="text" id="comments" ng-model="obs.COMMENTS" placeholder="Comments">
-                    </div>
-                </div>
-                </div>
-                
+                        <div class="field-value">
+                                <input id="patientId" ng-model="patient.identifier" readonly>
+                        </div>
+                </article>
+                <article class="form-field">
+                        <div class="field-attribute">
+                            <label class="control-label" for="patientName">Patient Name</label>
+                        </div>
 
-                </div>
-            </fieldset>
-            <fieldset>
-                <div class="row-fluid">
-                    <div class="span6">
-                        <div class="control-group">
+                        <div class="field-value">
+                             <input id="patientName" ng-model="patient.name" readonly>
+                        </div>
+                </article>
+                </section>                
+                <legend class="mylegend "><span><strong>Visit Information</strong></span></legend>
+                <section class="form-field-inline">
+                    <article class="form-field">
+                            <div class="field-attribute">
+                                <label class="control-label" for="registrationFee">{{registrationFeeLabel}}</label>
+                            </div>
+
+                            <div class="field-value">
+                                <input type="number" id="registrationFee" ng-model="obs['REGISTRATION FEES']">
+                            </div>
+                    </article>
+                    <article class="form-field">
+                            <div class="field-attribute">
+                                <label class="control-label" for="comments">Comments</label>
+                            </div>
+
+                            <div class="field-value">
+                                 <input type="text" id="comments" ng-model="obs.COMMENTS" placeholder="Comments" autofocus>
+                            </div>
+                    </article>
+                </section>
+                <section class="form-field-inline">
+                <article class="form-field">
+                        <div class="field-attribute">
                             <label class="control-label" for="height">Height (cm)</label>
-                            <div class="controls">
-                                <input id="height" type="number" step="0.01" ng-model="obs.HEIGHT" min="10" max="250" ng-change="calculateBMI()" placeholder="Height">
-                            </div>
-                        </div> 
-                    </div>
-                    <div class="span5">
-                        <div class="control-group">
+                        </div>
+
+                        <div class="field-value">
+                            <input id="height" type="number" step="0.01" ng-model="obs.HEIGHT" min="10" max="250" ng-change="calculateBMI()" placeholder="Height">
+                        </div>
+                </article>
+                <article class="form-field">
+                        <div class="field-attribute">
                             <label class="control-label" for="height">Weight (kg)</label>
-                            <div class="controls">
+                        </div>
+
+                        <div class="field-value">
                                <input id="weight" type="number" step="0.01" ng-model="obs.WEIGHT" min="0" max="200" ng-change="calculateBMI()" placeholder="Weight">
-                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="row-fluid">
-                    <div class="span6">
-                        <div class="control-group">
+                </article>
+            </section>
+            <section class="form-field-inline">
+                 <article class="form-field">
+                        <div class="field-attribute">
                             <label class="control-label" for="bmi">BMI</label>
-                            <div class="controls">
-                              <input type="text" id="bmi" ng-model="obs.BMI" readonly tabindex="1000000">
-                            </div>
                         </div>
-                    </div>
-                    <div class="span5">
-                     <div class="control-group">
+
+                        <div class="field-value">
+                              <input type="text" id="bmi" ng-model="obs.BMI" readonly tabindex="1000000">
+                        </div>
+                </article>
+                <article class="form-field">
+                        <div class="field-attribute">
                          <label class="control-label" for="bmiStatus">BMI Status</label>
-                         <div class="controls">
+                        </div>
+
+                        <div class="field-value">
                              <input type="text" id="bmiStatus" ng-model="obs.bmi_status" readonly tabindex="1000001">
                         </div>
-                    </div>
-                    </div>
-                </div>
-                </fieldset>
-                <div class="alert alert-error text-error" ng-show="obs.bmi_error">
+                </article>
+            </section>
+            <div class="alert alert-error text-error" ng-show="obs.bmi_error">
                Invalid BMI. Please check the height and weight
+            </div>
+            <div class="submit-btn-container" ng-switch on="patient.isNew">
+                <div class="right" ng-switch-when="true">
+                    <button type="button" ng-click="back()">Back</button>
+                    <button type="submit" class="confirm" ng-disabled="obs.bmi_error">Save and Print</button>
                 </div>
-                <fieldset>
-                <div class="control-group prev-next-button" ng-switch on="patient.isNew">
-                    <div class="controls pull-right" ng-switch-when="true">
-                        <button type="button" class="btn" ng-click="back()">Back</button>
-                        <button type="button" class="btn btn-primary" ng-disabled="obs.bmi_error" ng-click="submit()">Save and Print</button>
-                    </div>
-                    <div class="controls pull-right" ng-switch-default>
-                        <button type="button" class="btn" ng-click="back()">Back</button>
-                        <button type="button" class="btn" ng-disabled="obs.bmi_error" ng-click="saveAndPrint()">Save and Print</button>
-                        <button type="button" class="btn btn-primary" ng-disabled="obs.bmi_error" ng-click="submit()">Save</button>
-                    </div>
+                <div class="right" ng-switch-default>
+                    <button type="button" ng-click="back()">Back</button>
+                    <button type="button" ng-disabled="obs.bmi_error" ng-click="saveAndPrint()">Save and Print</button>
+                    <button type="submit" class="confirm" ng-disabled="obs.bmi_error" ng-click="submit()">Save</button>
                 </div>
-                </fieldset>
+             </div>   
         </form>
         <br>
     </div>

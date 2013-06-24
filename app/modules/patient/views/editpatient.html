@@ -1,34 +1,34 @@
 <div id="registrationCard" class="print-layout" ng-include="printLayout()"></div>
-
-<div class="edit-patient">
-    <form name="editPatientForm" class="form-horizontal well" ng-submit="update()">
-        <legend class="mylegend">
-            <span>Patient : {{patient.identifier}}</span>
+<div class="edit-patient simple-form-ui">
+    <form name="myForm"  ng-submit="update()">
+        <legend class="mylegend photocontainer-spacing">
+            <span><strong>Patient : {{patient.identifier}}</strong></span>
         </legend>
-
-        <div class="control-group">
-            <span class="span5 remove-margin">
-                <label class="control-label">Registration Date</label>
-                <div class="controls">
-                    <span class="uneditable-input">{{patient.registrationDate | date:'dd-MM-yyyy'}}</span>
-                </div>
-            </span>
-            <span class="span6 photo-container-wrapper">
-                <span class="pull-right photo-container">
+        <div>
+            <span class="photo-container-wrapper">
+                <span class="photo-container">
                         <img id="patient-image" ng-src="{{patient.image}}"
                              onerror="this.onerror=null;this.src='modules/photo-capture/images/blank-user.gif';"/>
                         <div ng-model="patient.image" capture-photo class="capture-photo-btn"></div>
                  </span>
             </span>
         </div>
+        <article class="form-field">
+                <div class="field-attribute">
+                <label class="control-label">Registration Date</label>
+                </div>
 
+                <div class="field-value">
+                    <span class="uneditable-input">{{patient.registrationDate | date:'dd-MM-yyyy'}}</span>
+               </div>
+        </article>
         <ng-include src="patientCommon()" ng-controller="PatientCommonController"></ng-include>
 
-        <div class="control-group prev-next-button">
-            <div class="controls pull-right">
-                <button type="button" class="btn" ng-click="back()" ng-show="showBackButton()">Back to Search Results</button>
-                <button type="submit" class="btn btn-primary pull-right" ng-click="setUpdateSource('next')">Next</button>
-                <button type="submit" class="btn" ng-click="setUpdateSource('print')">Print</button>
+        <div class="submit-btn-container">
+            <div class="right">
+                <button type="button" ng-click="back()" ng-show="showBackButton()">Back to Search Results</button>
+                <button type="submit" class="confirm right" ng-click="setUpdateSource('next')">Next</button>
+                <button type="submit" ng-click="setUpdateSource('print')">Print</button>
             </div>
         </div>
     </form>

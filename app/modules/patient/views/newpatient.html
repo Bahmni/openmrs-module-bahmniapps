@@ -1,49 +1,55 @@
-<div>
+<div class="simple-form-ui new-patient">
     <form name="myForm" class="form-horizontal well" ng-submit="create()" >
         <legend class="mylegend"><span>New Patient Registration (Patient Profile Information)</span></legend>
-    <div class="clearfix">
-        <div class="span5 remove-margin">
-        <div class="control-group">
-            <label class="control-label" for="center">Center</label>
-            <div class="controls">
-                <select  id="center" ng-model="patient.centerID" ng-options="c.name for c in centers" required> </select>
-            </div>
-        </div>
-
-        <div class="control-group">
-            <label class="control-label" for="hasOldIdentifier">Enter ID</label>
-            <div class="controls">
-                <input type="checkbox"  id="hasOldIdentifier" ng-model="hasOldIdentifier" ng-change="patient.clearRegistrationNumber()">
-            </div>
-        </div>
-        </div>
-        <div class="span6 photo-container-wrapper">
-                <span class="pull-right photo-container">
-                        <img id="patient-image" ng-src="{{patient.image}}"
-                             onerror="this.onerror=null;this.src='modules/photo-capture/images/blank-user.gif';"/>
-                        <div ng-model="patient.image" capture-photo class="capture-photo-btn"></div>
-                 </span>
-        </div>
-    </div>
-
-        <div class="control-group" ng-show="hasOldIdentifier">
-            <label class="control-label" for="registrationNumber">Patient Identifier </label>
-
-            <div class="controls">
-                <div class="input-prepend">
-                    <span class="add-on">{{patient.centerID.name}}</span>
-                    <input type="text" id="registrationNumber" ng-model="patient.registrationNumber"
-                           placeholder="Registration Number" non-blank="hasOldIdentifier"
-                           ng-change="patient.generateIdentifier()">
+    <section class="clearfix">
+            <article class="form-field">
+                <div class="field-attribute">
+                    <label class="control-label" for="center">Center</label>
                 </div>
+
+                <div class="field-value">
+                     <select  id="center" ng-model="patient.centerID" ng-options="c.name for c in centers" required> </select>
+                </div>
+            </article>
+            <article class="form-field">
+                <div class="field-attribute">
+                    <label class="control-label" for="hasOldIdentifier">Enter ID</label>
+                </div>
+
+                <div class="field-value">
+                    <input type="checkbox"  id="hasOldIdentifier" ng-model="hasOldIdentifier" ng-change="patient.clearRegistrationNumber()">
+                </div>
+            </article>
+            
+            <div class="photo-container-wrapper">
+                    <span class="pull-right photo-container">
+                            <img id="patient-image" ng-src="{{patient.image}}"
+                                 onerror="this.onerror=null;this.src='modules/photo-capture/images/blank-user.gif';"/>
+                            <div ng-model="patient.image" capture-photo class="capture-photo-btn"></div>
+                     </span>
             </div>
-        </div>
+    </section>
+    <section>
+            <article class="form-field" ng-show="hasOldIdentifier">
+                <div class="field-attribute">
+                    <label class="control-label" for="registrationNumber">Patient Identifier </label>
+                </div>
+                <div class="field-value">
+                    <div class="input-prepend">
+                        <span class="add-on">{{patient.centerID.name}}</span>
+                        <input type="text" id="registrationNumber" ng-model="patient.registrationNumber"
+                               placeholder="Registration Number" non-blank="hasOldIdentifier"
+                               ng-change="patient.generateIdentifier()">
+                    </div>
+                    </div>
+            </article>
+    </section>
+       
 
         <div ng-include="patientCommon()" ng-controller="PatientCommonController"></div>
-
-        <div class="control-group prev-next-button">
-            <div class="pull-right">
-                <button type="submit" class="btn btn-large btn-primary">Next</button>
+        <div class="submit-btn-container">
+            <div class="right">                
+                <button type="submit" class="confirm">Next</button>
             </div>
         </div>
     </form>
