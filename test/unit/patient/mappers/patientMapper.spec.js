@@ -80,14 +80,14 @@ describe('patientMapper', function() {
 
     it('should map age, gender and dateOfBirth', function () {
         angular.extend(patient, {
-            age: 23,
+            age: {years: 23, months: 11, days: 22},
             gender: "F",
             birthdate: "06-26-1989"
         });
 
         var mappedPatientData = patientMapper.map(patient);
 
-        expect(mappedPatientData.age).toEqual(23);
+        expect(mappedPatientData.age).toEqual(patient.age);
         expect(mappedPatientData.gender).toEqual('F');
         expect(mappedPatientData.birthdate).toEqual("06-26-1989");
     });

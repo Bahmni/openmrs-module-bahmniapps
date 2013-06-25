@@ -84,8 +84,23 @@
     </div>
 </div>
 <div class="row-fluid">
-
     <div class="span7">
+        <div class="control-group">
+            <label class="control-label" for="ageYears">Age<span class="asterick">*</span></label>
+
+            <div class="controls">
+                <input class="age-field" type="number" id="ageYears" name="ageYear" max="120" ng-model="patient.age.years" min="0"
+                       ng-required="patient.age.isEmpty()" title="Enter a numeric value for Years.">&nbsp;Years,&nbsp;
+
+                <input class="age-field" type="number" id="ageMonths" name="ageMonths" max="12" ng-model="patient.age.months" min="0"
+                       title="Enter a numeric value between 0 to 12">&nbsp;Months,&nbsp;
+
+                <input class="age-field" type="number" id="ageDays" name="ageDays" max="31" ng-model="patient.age.days" min="0"
+                       title="Enter a numeric value between 0 to 31">&nbsp;Days
+            </div>
+        </div>
+    </div>
+    <div class="span5">
         <div class="control-group">
             <label class="control-label" for="birthdate">DOB</label>
 
@@ -95,18 +110,7 @@
             </div>
         </div>
     </div>
-    <div class="span5">
-        <div class="control-group">
-            <label class="control-label" for="ageYear">Age<span class="asterick">*</span></label>
-
-            <div class="controls">
-                <input type="number" id="ageYear" name="ageYear" max="120" ng-model="patient.age" min="0"
-                       placeholder="Age" required title="Enter a numeric value for Age.">
-            </div>
-        </div>
-    </div>
 </div>
-
 
 
 <div class="row-fluid">

@@ -1,16 +1,15 @@
 'use strict';
 
-angular.module('resources.patient', ['resources.date'])
-    .factory('patient', ['date', function (date) {
+angular.module('resources.patient', ['resources.date', 'resources.age'])
+    .factory('patient', ['date', 'age', function (date, age) {
         var create = function(){
             var calculateAge = function(){
                 if(this.birthdate) {
-                    var curDate = date.now();
                     var birthDate = new Date(this.birthdate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3") );
-                    this.age = curDate.getFullYear() - birthDate.getFullYear() - ((curDate.getMonth() < birthDate.getMonth())? 1: 0);
+                    this.age = age.fromBirthDate(birthDate);
                 }
                 else {
-                    this.age = null;
+                    this.age = { years: null };
                 }
             }
 
@@ -38,6 +37,7 @@ angular.module('resources.patient', ['resources.date'])
 
             return {
                 address: {},
+                age: age.create(),
                 calculateAge: calculateAge,
                 generateIdentifier: generateIdentifier,
                 clearRegistrationNumber: clearRegistrationNumber,

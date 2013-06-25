@@ -2,7 +2,7 @@
 
 describe('patientMapper', function() {
 
-    var mapper, bahmniConfiguration, openmrsPatient;
+    var mapper, bahmniConfiguration, openmrsPatient, ageModule;
 
 
     var samplePatientAttributeTypes = [
@@ -30,9 +30,10 @@ describe('patientMapper', function() {
 
         bahmniConfiguration = {};
 
-        inject(['openmrsPatientMapper', '$rootScope', function(openmrsPatientMapper, $rootScope) {
+        inject(['openmrsPatientMapper', '$rootScope', 'age', function(openmrsPatientMapper, $rootScope, age) {
             mapper = openmrsPatientMapper;
             $rootScope.bahmniConfiguration = bahmniConfiguration;
+            ageModule = age;
         }]);
 
         openmrsPatient = {
@@ -91,13 +92,15 @@ describe('patientMapper', function() {
 
     it('should map values from the openmrs Patient to our patient object', function () {
         bahmniConfiguration.patientImagesUrl = "http://test.uri/patient_images"
+        var age = {years: 2, months: 3, days: 25};
+        spyOn(ageModule, 'fromBirthDate').andReturn(age);
 
         var patient = mapper.map(openmrsPatient);
 
         expect(patient.givenName).toBe(openmrsPatient.person.preferredName.givenName);
         expect(patient.familyName).toBe(openmrsPatient.person.preferredName.familyName);
         expect(patient.gender).toBe(openmrsPatient.person.gender);
-        expect(patient.age).toBe(openmrsPatient.person.age);
+        expect(patient.age).toBe(age);
         expect(patient.identifier).toBe(openmrsPatient.identifiers[0].identifier);
         expect(patient.address.address1).toBe(openmrsPatient.person.preferredAddress.address1);
         expect(patient.address.address2).toBe(openmrsPatient.person.preferredAddress.address2);
@@ -133,16 +136,28 @@ describe('patientMapper', function() {
         expect(patient.registrationDate).toEqual(new Date("2013-04-17"));
     });
 
-    it("should populate birthdate only if dateEstimated is false", function() {
-        openmrsPatient.person.birthdate =  "2013-04-01T00:00:00.000+0530";
-        openmrsPatient.person.birthdateEstimated =  true;
-        var patient = mapper.map(openmrsPatient);
-        expect(patient.birthdate).toBeFalsy();
-
+    it("should populate birthdate and age if birthdate is not estimated", function() {
         openmrsPatient.person.birthdate =  "2013-04-01T00:00:00.000+0530";
         openmrsPatient.person.birthdateEstimated =  false;
+        var age = {years: 2, months: 3, days: 25};
+        spyOn(ageModule, 'fromBirthDate').andReturn(age);
+
         var patient = mapper.map(openmrsPatient);
+
         expect(patient.birthdate).toBe('01-04-2013');
+        expect(patient.age).toBe(age);
+    });
+
+    it("should populate age and empty birthdate if birthdate is estimated", function() {
+        openmrsPatient.person.birthdate =  "2013-04-01T00:00:00.000+0530";
+        openmrsPatient.person.birthdateEstimated =  true;
+        var age = {years: 2, months: 3, days: 25};
+        spyOn(ageModule, 'fromBirthDate').andReturn(age);
+
+        var patient = mapper.map(openmrsPatient);
+
+        expect(patient.birthdate).toBeFalsy();
+        expect(patient.age).toBe(age);
     });
 
     it("should not fail if preferred address is null", function() {

@@ -309,3 +309,15 @@ table{
 .btn.pull-right {
   margin-left: 4px;
 }
+
+.age-field {
+  width: 20px;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  }
+}
+

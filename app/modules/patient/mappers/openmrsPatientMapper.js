@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('resources.openmrsPatientMapper', ['resources.patientAttributeType', 'resources.patient'])
-    .factory('openmrsPatientMapper',['patientAttributeType', 'patient', '$rootScope', function (patientAttributeType, patientModel, $rootScope) {
+angular.module('resources.openmrsPatientMapper', ['resources.patientAttributeType', 'resources.patient', 'resources.age'])
+    .factory('openmrsPatientMapper',['patientAttributeType', 'patient', '$rootScope', 'age', function (patientAttributeType, patientModel, $rootScope, age) {
 
         var mapAttributes = function (patient, attributes) {
             attributes.forEach(function(attribute) {
@@ -22,10 +22,8 @@ angular.module('resources.openmrsPatientMapper', ['resources.patientAttributeTyp
             return dateStr;
         };
 
-        var getBirthDate = function(openmrsPatient) {
-            if (openmrsPatient.person.birthdateEstimated || !openmrsPatient.person.birthdate) return "";
-            var date = parseDate(openmrsPatient.person.birthdate);
-            return pad(date.getDate())+"-"+ pad(date.getMonth() + 1)+"-"+date.getFullYear();
+        var getDateStr = function(date) {
+            return date ? pad(date.getDate())+"-"+ pad(date.getMonth() + 1)+"-"+date.getFullYear() : "";
         };
 
         var mapAddress = function(preferredAddress) {
@@ -41,10 +39,11 @@ angular.module('resources.openmrsPatientMapper', ['resources.patientAttributeTyp
 
         var map = function (openmrsPatient) {
             var patient = patientModel.create();
+            var birthdate = parseDate(openmrsPatient.person.birthdate);
             patient.givenName = openmrsPatient.person.preferredName.givenName;
             patient.familyName = openmrsPatient.person.preferredName.familyName;
-            patient.birthdate = getBirthDate(openmrsPatient);
-            patient.age = openmrsPatient.person.age;
+            patient.birthdate = openmrsPatient.person.birthdateEstimated || !birthdate ? "" : getDateStr(birthdate);
+            patient.age = birthdate ? age.fromBirthDate(parseDate(openmrsPatient.person.birthdate)) : null;
             patient.gender = openmrsPatient.person.gender;
             patient.address = mapAddress(openmrsPatient.person.preferredAddress);
             patient.identifier = openmrsPatient.identifiers[0].identifier;
