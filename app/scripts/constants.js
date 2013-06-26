@@ -15,6 +15,6 @@ var constants = {
         {name: 'BAM'}
     ],
     openmrsUrl: "/openmrs",
-    bahmniRESTBaseURL: this.openmrsUrl + "/ws/rest/v1/bahmnicore",
+    bahmniRESTBaseURL: "/openmrs/ws/rest/v1/bahmnicore",
     registrationFeesConcept : "REGISTRATION FEES"
 };
