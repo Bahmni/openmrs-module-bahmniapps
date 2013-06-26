@@ -1,40 +1,38 @@
 'use strict';
 
-angular.module('registration.visitController', ['resources.patientService', 'resources.visitService', 'resources.concept', 'resources.bmi', 'resources.date', 'infrastructure.spinner', 'infrastructure.printer'])
-    .controller('VisitController', ['$scope', '$location', 'patientService', 'visitService', 'concept', 'bmi', 'date', '$window', '$route', 'spinner', '$timeout', '$q', 'printer', function ($scope, $location, patientService, visitService, conceptService, bmiModule, date, $window, $route, spinner, $timeout, $q, printer) {
-        var registrationConcepts = [];
-
+angular.module('registration.visitController', ['resources.patientService', 'resources.visitService', 'resources.bmi', 'resources.date', 'infrastructure.spinner', 'infrastructure.printer'])
+    .controller('VisitController', ['$scope', '$location', 'patientService', 'visitService', 'bmi', 'date', '$window', '$route', 'spinner', '$timeout', '$q', 'printer',
+                    function ($scope, $location, patientService, visitService, bmiModule, date, $window, $route, spinner, $timeout, $q, printer) {
         (function () {
-            $scope.encounter = {};
-            $scope.obs = {};
-            $scope.visit = {};
             $scope.patient = patientService.getPatient();
-            $scope.obs.registration_fees = defaults.registration_fees($scope.patient.isNew);
 
-            var registrationConceptsPromise = conceptService.getRegistrationConcepts().success(function (data) {
-                var concepts = data.results[0].setMembers;
-                concepts.forEach(function (concept) {
-                    registrationConcepts.push({name: concept.name.name, uuid: concept.uuid });
-                });
-            });
-            spinner.forPromise(registrationConceptsPromise);
+            var visitTypeUUID = $scope.encounterConfiguration.visitTypeId($scope.patient.isNew);
+            var encounterTypeUUID = $scope.encounterConfiguration.encounterTypes[constants.encounterType.registration];
+            var encounterObservationsPromise = visitService.get($scope.patient.uuid, visitTypeUUID, encounterTypeUUID)
+                    .success(function (data) {
+                        $scope.registrationObservations = new RegistrationObservations(data, $scope.patient.isNew, $scope.encounterConfiguration);
+                        $scope.obs = {};
+                        $scope.registrationObservations.observations.forEach(function(observation) { $scope.obs[observation.conceptName] = observation.value});
+                        $scope.calculateBMI();
+                    });
+
+            $scope.encounter = {visitTypeUUID: visitTypeUUID, encounterTypeUUID: encounterTypeUUID, patientUUID: $scope.patient.uuid};
+            spinner.forPromise(encounterObservationsPromise);
         })();
 
         $scope.calculateBMI = function () {
-            if ($scope.obs.height && $scope.obs.weight) {
-                var bmi = bmiModule.calculateBmi($scope.obs.height, $scope.obs.weight);
+            if ($scope.obs.HEIGHT && $scope.obs.WEIGHT) {
+                var bmi = bmiModule.calculateBmi($scope.obs.HEIGHT, $scope.obs.WEIGHT);
                 var valid = bmi.valid();
                 $scope.obs.bmi_error = !valid;
-                $scope.obs.bmi = bmi.value;
+                $scope.obs.BMI = bmi.value;
                 $scope.obs.bmi_status = valid ? bmi.status() : "Invalid";
             } else {
                 $scope.obs.bmi_error = false;
-                $scope.obs.bmi = null;
+                $scope.obs.BMI = null;
                 $scope.obs.bmi_status = null;
             }
         };
-
-        $scope.visit.encounters = [$scope.encounter];
 
         $scope.back = function () {
             $window.history.back();
@@ -55,26 +53,8 @@ angular.module('registration.visitController', ['resources.patientService', 'res
         $scope.registrationFeeLabel = $scope.patient.isNew ? "Registration Fee" : "Consultation Fee";
 
         $scope.save = function () {
-            var datetime = date.now().toISOString();
-            $scope.visit.patient = $scope.patient.uuid;
-            $scope.visit.startDatetime = datetime;
-            $scope.visit.visitType = $scope.patient.isNew ? constants.visitType.registration : constants.visitType.returningPatient;
-
-            $scope.encounter.patient = $scope.patient.uuid;
-            $scope.encounter.encounterDatetime = datetime;
-            $scope.encounter.encounterType = constants.visitType.registration;
-
-            $scope.encounter.obs = [];
-            registrationConcepts.forEach(function (concept) {
-                var conceptName = concept.name.replace(" ", "_").toLowerCase();
-                var value = $scope.obs[conceptName];
-                if (value != null && value != "") {
-                    $scope.encounter.obs.push({concept: concept.uuid, value: value});
-                }
-            });
-            $scope.visit.encounters = [$scope.encounter];
-
-            var createPromise = visitService.create($scope.visit);
+            $scope.encounter.observations = $scope.registrationObservations.updateObservations($scope.obs);
+            var createPromise = visitService.create($scope.encounter);
             spinner.forPromise(createPromise);
             return createPromise;
         }
@@ -87,7 +67,7 @@ angular.module('registration.visitController', ['resources.patientService', 'res
         };
 
         $scope.validate = function () {
-            if ($scope.obs.registration_fees === 0 && (!$scope.obs.comments || $scope.obs.comments === '')) {
+            if ($scope.obs['REGISTRATION FEES'] === 0 && (!$scope.obs.COMMENTS || $scope.obs.COMMENTS === '')) {
                 return $scope.confirmDialog.show();
             } else {
                 var deferred = $q.defer();

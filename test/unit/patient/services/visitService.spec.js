@@ -36,7 +36,7 @@ describe('Patient visit', function () {
         var results = visitService.create(visitJson);
 
         expect(mockHttp.post).toHaveBeenCalled();
-        expect(mockHttp.post.mostRecentCall.args[0]).toBe(openmrsUrl + '/ws/rest/v1/bahmnivisit');
+        expect(mockHttp.post.mostRecentCall.args[0]).toBe(constants.bahmniRESTBaseURL +  '/bahmniencounter');
         expect(mockHttp.post.mostRecentCall.args[1]).toBe(visitJson);
         expect(results).toBe('success');
     }]));

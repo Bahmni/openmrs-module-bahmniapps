@@ -1,9 +1,9 @@
 'use strict';
 
 describe('VisitController', function () {
-    var scope = { "$watch": jasmine.createSpy() };
+    var scope;
+    var rootScope;
     var $controller;
-    var conceptService;
     var success;
     var visitService;
     var patientService;
@@ -13,6 +13,7 @@ describe('VisitController', function () {
     var $window;
     var $timeout;
     var spinner;
+    var getPromise;
     var stubAllPromise = function () {
         return {
             then: function () {
@@ -28,49 +29,53 @@ describe('VisitController', function () {
         }
     }
 
-    var sampleConcepts = {
-        "results": [
-            {
-                "setMembers": [
-                    {
-                        "uuid": "d7c66ef3-1f55-4b83-8f10-009e4acec1e3",
-                        "name": {
-                            "name": "COMMENTS"
-                        }
-                    },
-                    {
-                        "uuid": "8032ad29-0591-4ec6-9776-22e7a3062df8",
-                        "name": {
-                            "name": "REGISTRATION FEES"
-                        }
-                    }
-                ]
-            }
-        ]
+    var sampleConfig = {
+       "conceptData": {
+           "WEIGHT": {
+               "uuid": "b4aa3728-c79a-11e2-b0c0-8e397087571c"
+           },
+           "COMMENTS": {
+               "uuid": "b499a980-c79a-11e2-b0c0-8e397087571c"
+           },
+           "BMI": {
+               "uuid": "b4acc09c-c79a-11e2-b0c0-8e397087571c"
+           },
+           "HEIGHT": {
+               "uuid": "b4a7aa80-c79a-11e2-b0c0-8e397087571c"
+           },
+           "REGISTRATION FEES": {
+               "uuid": "b4a52102-c79a-11e2-b0c0-8e397087571c"
+           }
+       },
+       "encounterTypes": {
+           "REG": "b45de99a-c79a-11e2-b0c0-8e397087571c"
+       },
+       "visitTypes": {
+           "REG": "b45ca846-c79a-11e2-b0c0-8e397087571c",
+           "REVISIT": "b5ba5576-c79a-11e2-b0c0-8e397087571c"
+       }
+                       }
+    var sampleEncounter = {
+        "observations": []
     }
 
     beforeEach(module('registration.visitController'));
     beforeEach(inject(['$injector', 'date', '$location', '$window', '$timeout', function ($injector, dateModule, location, window, timeout) {
         $controller = $injector.get('$controller');
+        scope = { "$watch": jasmine.createSpy() }
         patientService = jasmine.createSpyObj('patientService', ['getPatient', 'clearPatient']);
         date = dateModule;
-        patient = {};
+        patient = {uuid: "21308498-2502-4495-b604-7b704a55522d", isNew: "true"};
         $location = location;
         $window = window;
         $timeout = timeout;
         patientService.getPatient.andReturn(patient);
         success = jasmine.createSpy();
-        conceptService = {
-            getRegistrationConcepts: function () {
-                return {
-                    success: function (callBack) {
-                        callBack(sampleConcepts);
-                    }
-                }
-            }
-        };
-        spinner = jasmine.createSpyObj('spinner', ['forPromise'])
-        visitService = jasmine.createSpyObj('visitService', ['create', 'clearPatient']);
+        scope.encounterConfiguration = angular.extend(new EncounterConfig(), sampleConfig);
+        spinner = jasmine.createSpyObj('spinner', ['forPromise']);
+        visitService = jasmine.createSpyObj('visitService', ['create', 'get']);
+        getPromise = specUtil.createServicePromise('get');
+        visitService.get.andReturn(getPromise);
     }]));
 
     describe('initialization', function () {
@@ -78,12 +83,13 @@ describe('VisitController', function () {
             patient.isNew = true;
             $controller('VisitController', {
                 $scope: scope,
-                concept: conceptService,
                 spinner: spinner,
-                patientService: patientService
+                visitService: visitService,
+                patientService: patientService,
             });
+            getPromise.callSuccessCallBack(sampleEncounter);
 
-            expect(scope.obs.registration_fees).toBe(defaults.registration_fees_newPatient);
+            expect(scope.obs["REGISTRATION FEES"]).toBe(defaults.registration_fees_newPatient);
             expect(scope.patient).toBe(patient);
         });
 
@@ -91,28 +97,29 @@ describe('VisitController', function () {
             patient.isNew = false;
             $controller('VisitController', {
                 $scope: scope,
-                concept: conceptService,
                 spinner: spinner,
+                visitService: visitService,
                 patientService: patientService
             });
+            getPromise.callSuccessCallBack(sampleEncounter);
 
-            expect(scope.obs.registration_fees).toBe(defaults.registration_fees_oldPatient);
+            expect(scope.obs["REGISTRATION FEES"]).toBe(defaults.registration_fees_oldPatient);
             expect(scope.patient).toBe(patient);
         });
     });
 
     describe("validate", function () {
         beforeEach(function () {
-            scope = { "$watch": jasmine.createSpy() };
             $controller('VisitController', {
                 $scope: scope,
-                concept: conceptService,
                 patientService: patientService,
                 visitService: visitService,
                 $location: $location,
                 spinner: spinner,
                 date: date
             });
+            getPromise.callSuccessCallBack(sampleEncounter);
+
             spyOn(scope, 'save').andCallFake(stubAllPromise);
         });
 
@@ -143,8 +150,8 @@ describe('VisitController', function () {
         });
 
         it("should open popup when consultation fee = 0 and comments are empty", function () {
-            scope.obs.registration_fees = 0;
-            scope.obs.comments = '';
+            scope.obs["REGISTRATION FEES"] = 0;
+            scope.obs.COMMENTS = '';
             scope.confirmDialog = jasmine.createSpyObj('confirmDialog', ['show']);
             scope.confirmDialog.show.andCallFake(stubOnePromise);
 
@@ -154,8 +161,8 @@ describe('VisitController', function () {
         });
 
         it("should not open popup when consultation fee != 0", function () {
-            scope.obs.registration_fees = 10;
-            scope.obs.comments = '';
+            scope.obs["REGISTRATION FEES"] = 10;
+            scope.obs.COMMENTS = '';
             scope.confirmDialog = jasmine.createSpyObj('confirmDialog', ['show']);
             scope.confirmDialog.show.andCallFake(stubOnePromise);
 
@@ -165,8 +172,8 @@ describe('VisitController', function () {
         });
 
         it("should not open popup when comments are not empty", function () {
-            scope.obs.registration_fees = 0;
-            scope.obs.comments = 'adfadfs';
+            scope.obs["REGISTRATION FEES"] = 0;
+            scope.obs.COMMENTS = 'adfadfs';
             scope.confirmDialog = jasmine.createSpyObj('confirmDialog', ['show']);
             scope.confirmDialog.show.andCallFake(stubOnePromise);
 
@@ -176,8 +183,8 @@ describe('VisitController', function () {
         })
 
         it("should always return a promise", function () {
-            scope.obs.registration_fees = 0;
-            scope.obs.comments = 'adfadfs';
+            scope.obs["REGISTRATION FEES"] = 0;
+            scope.obs.COMMENTS = 'adfadfs';
             scope.confirmDialog = jasmine.createSpyObj('confirmDialog', ['show']);
             scope.confirmDialog.show.andCallFake(stubOnePromise);
 
@@ -191,16 +198,15 @@ describe('VisitController', function () {
         beforeEach(function () {
             $controller('VisitController', {
                 $scope: scope,
-                concept: conceptService,
                 patientService: patientService,
                 visitService: visitService,
                 $location: $location,
                 spinner: spinner,
                 date: date
             });
+            getPromise.callSuccessCallBack(sampleEncounter);
             visitService.create.andCallFake(stubOnePromise);
             patientService.clearPatient.andCallFake(stubOnePromise);
-            scope.patient = {uuid: "21308498-2502-4495-b604-7b704a55522d", isNew: "true"};
             spyOn(scope, 'validate').andCallFake(stubOnePromise);
         });
 
@@ -208,37 +214,33 @@ describe('VisitController', function () {
             var now = new Date();
             spyOn(date, "now").andReturn(now);
             scope.print = jasmine.createSpy().andCallFake(stubOnePromise);
-            scope.obs.comments = "fine";
-            scope.obs.registration_fees = "100";
+            scope.obs.COMMENTS = "fine";
+            scope.obs["REGISTRATION FEES"] = "100";
 
             scope.saveAndPrint();
 
-            expect(scope.visit.patient).toBe(scope.patient.uuid);
-            expect(scope.visit.startDatetime).toBe(now.toISOString());
-            expect(scope.visit.visitType).toBe(constants.visitType.registration);
-            expect(scope.encounter.patient).toBe(scope.patient.uuid);
-            expect(scope.encounter.encounterDatetime).toBe(now.toISOString());
-            expect(scope.encounter.encounterType).toBe(constants.visitType.registration);
-            expect(scope.encounter.obs).toEqual([
-                {concept: "d7c66ef3-1f55-4b83-8f10-009e4acec1e3", value: "fine"},
-                {concept: "8032ad29-0591-4ec6-9776-22e7a3062df8", value: "100"}
-            ])
-            expect(scope.visit.encounters).toEqual([scope.encounter]);
-            expect(visitService.create).toHaveBeenCalledWith(scope.visit);
+            expect(scope.encounter.observations).toEqual([
+                { conceptUUID: 'b4a52102-c79a-11e2-b0c0-8e397087571c', conceptName: 'REGISTRATION FEES', value: '100' },
+                { conceptUUID: 'b4aa3728-c79a-11e2-b0c0-8e397087571c', conceptName: 'WEIGHT', value: null },
+                { conceptUUID: 'b499a980-c79a-11e2-b0c0-8e397087571c', conceptName: 'COMMENTS', value: 'fine' },
+                { conceptUUID: 'b4acc09c-c79a-11e2-b0c0-8e397087571c', conceptName: 'BMI', value: null },
+                { conceptUUID: 'b4a7aa80-c79a-11e2-b0c0-8e397087571c', conceptName: 'HEIGHT', value: null }
+            ]);
+            expect(visitService.create).toHaveBeenCalledWith(scope.encounter);
         });
 
         describe("once saved and printed", function () {
             beforeEach(function () {
-                scope = { "$watch": jasmine.createSpy() };
                 $controller('VisitController', {
                     $scope: scope,
-                    concept: conceptService,
                     patientService: patientService,
                     visitService: visitService,
                     $location: $location,
                     spinner: spinner,
                     date: date
                 });
+                getPromise.callSuccessCallBack(sampleEncounter);
+
                 scope.print = jasmine.createSpy().andCallFake(stubOnePromise);
                 scope.save = jasmine.createSpy().andCallFake(stubOnePromise);
                 spyOn(scope, 'validate').andCallFake(stubOnePromise);
@@ -277,11 +279,12 @@ describe('VisitController', function () {
         beforeEach(function () {
             $controller('VisitController', {
                 $scope: scope,
-                concept: conceptService,
+                visitService: visitService,
                 patientService: patientService,
                 spinner: spinner,
-                visitService: visitService
             });
+            getPromise.callSuccessCallBack(sampleEncounter);
+
             visitService.create.andCallFake(stubOnePromise);
             patientService.clearPatient.andCallFake(stubOnePromise);
             scope.patient = {uuid: "21308498-2502-4495-b604-7b704a55522d"}
@@ -333,48 +336,49 @@ describe('VisitController', function () {
         beforeEach(function () {
             $controller('VisitController', {
                 $scope: scope,
-                concept: conceptService,
                 spinner: spinner,
+                visitService: visitService,
                 patientService: patientService
             });
+            getPromise.callSuccessCallBack(sampleEncounter);
         });
 
         it("should set bmi, bmi_status and bmi_error when height and weight are present", function () {
-            scope.obs.height = 50;
-            scope.obs.weight = 100;
+            scope.obs.HEIGHT = 50;
+            scope.obs.WEIGHT = 100;
 
             scope.calculateBMI();
 
-            expect(scope.obs.bmi).toBe(400);
+            expect(scope.obs.BMI).toBe(400);
             expect(scope.obs.bmi_error).toBe(true);
             expect(scope.obs.bmi_status).toBe("Invalid");
 
         });
 
         it("should clear the bmi, bmi_status when height is not present", function () {
-            scope.obs.bmi = 200;
+            scope.obs.BMI = 200;
             scope.obs.bmi_status = "Invalid";
             scope.obs.bmi_error = true;
-            scope.obs.height = null;
-            scope.obs.weight = 100;
+            scope.obs.HEIGHT = null;
+            scope.obs.WEIGHT = 100;
 
             scope.calculateBMI();
 
-            expect(scope.obs.bmi).toBe(null);
+            expect(scope.obs.BMI).toBe(null);
             expect(scope.obs.bmi_error).toBe(false);
             expect(scope.obs.bmi_status).toBe(null);
         });
 
         it("should clear the bmi, bmi_status when weight is not present", function () {
-            scope.obs.bmi = 200;
+            scope.obs.BMI = 200;
             scope.obs.bmi_status = "Invalid";
             scope.obs.bmi_error = true;
-            scope.obs.height = 100;
-            scope.obs.weight = null;
+            scope.obs.HEIGHT = 100;
+            scope.obs.WEIGHT = null;
 
             scope.calculateBMI();
 
-            expect(scope.obs.bmi).toBe(null);
+            expect(scope.obs.BMI).toBe(null);
             expect(scope.obs.bmi_error).toBe(false);
             expect(scope.obs.bmi_status).toBe(null);
         });

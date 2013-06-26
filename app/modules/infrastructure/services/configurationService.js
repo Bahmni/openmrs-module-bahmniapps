@@ -2,15 +2,24 @@
 
 angular.module('infrastructure', [])
     .factory('configurationService', ['$http', '$rootScope', function ($http, $rootScope) {
+        var bahmniRESTBaseURL = constants.openmrsUrl + "/ws/rest/v1/bahmnicore";
+
         var getAll = function(){
-            var url = constants.openmrsUrl + "/ws/rest/v1/bahmnicore/conf";
+            var url = bahmniRESTBaseURL + "/conf";
             return $http.get(url, {
-                method: "GET",
+                withCredentials: true
+            });
+        }
+
+        var getEncounterConfig = function() {
+            return $http.get(bahmniRESTBaseURL + "/bahmniencounter/config", {
+                params: {"callerContext" : "REGISTRATION_CONCEPTS"},
                 withCredentials: true
             });
         }
 
         return {
-            getAll : getAll
+            getAll : getAll,
+            getEncounterConfig : getEncounterConfig
         };
 }]);

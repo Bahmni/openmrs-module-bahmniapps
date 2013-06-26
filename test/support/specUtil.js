@@ -3,7 +3,7 @@ var specUtil = {
         var servicePromise = {}
         servicePromise.success = jasmine.createSpy(name + ' success').andReturn(servicePromise);
         servicePromise.error = jasmine.createSpy(name + ' error').andReturn(servicePromise);
-        servicePromise.callSuccesCallBack = function() {
+        servicePromise.callSuccessCallBack = function() {
             servicePromise.success.mostRecentCall.args[0].apply(servicePromise, arguments);
         }
         servicePromise.callErrorCallBack = function() {

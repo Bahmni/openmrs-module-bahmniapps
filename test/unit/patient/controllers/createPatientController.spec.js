@@ -62,9 +62,9 @@ describe('CreatePatientController', function () {
             it('should redirect to new visit page', function() {
                 scope.create()
 
-                createPromise.callSuccesCallBack(createPatientResponse);
+                createPromise.callSuccessCallBack(createPatientResponse);
 
-                expect(location.path).toHaveBeenCalledWith("/visit/new");
+                expect(location.path).toHaveBeenCalledWith("/visit");
             })
 
             it('should set registration date to today', function() {
@@ -72,7 +72,7 @@ describe('CreatePatientController', function () {
                 spyOn(dateModule, 'now').andReturn(today);
                 scope.create()
 
-                createPromise.callSuccesCallBack(createPatientResponse);
+                createPromise.callSuccessCallBack(createPatientResponse);
 
                 expect(scope.patient.registrationDate).toBe(today);
             })
@@ -82,7 +82,7 @@ describe('CreatePatientController', function () {
                 scope.patient.centerID = {name: "SEM"};
                 scope.create();
 
-                createPromise.callSuccesCallBack(createPatientResponse);
+                createPromise.callSuccessCallBack(createPatientResponse);
 
                 expect(preferences.hasOldIdentifier).toBe(true);
                 expect(preferences.centerID).toBe("SEM");

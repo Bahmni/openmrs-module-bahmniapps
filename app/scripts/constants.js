@@ -1,4 +1,9 @@
 var constants = {
+    encounterType : {
+        registration: "REG",
+        returningPatient: "REVISIT"
+    },
+
     visitType: {
         registration: "REG",
         returningPatient: "REVISIT"
@@ -9,5 +14,7 @@ var constants = {
         {name: 'SIV'},
         {name: 'BAM'}
     ],
-    openmrsUrl: "/openmrs"
+    openmrsUrl: "/openmrs",
+    bahmniRESTBaseURL: this.openmrsUrl + "/ws/rest/v1/bahmnicore",
+    registrationFeesConcept : "REGISTRATION FEES"
 };

@@ -111,7 +111,7 @@ describe('SearchPatientController', function () {
                 it("should set the search results", function(){
                     var results = [{uuid: "8989-90909"}];
 
-                    searchPromise.callSuccesCallBack({results: results})
+                    searchPromise.callSuccessCallBack({results: results})
 
                     expect(scope.results).toBe(results);
                 });
@@ -119,7 +119,7 @@ describe('SearchPatientController', function () {
                 it("should not show the 'no results found message' when patient is found", function(){
                     var results = [{uuid: "8989-90909"}];
 
-                    searchPromise.callSuccesCallBack({results: results})
+                    searchPromise.callSuccessCallBack({results: results})
 
                     expect(scope.noResultsMessage).toBe(null);
                 });
@@ -127,7 +127,7 @@ describe('SearchPatientController', function () {
                 it("should show 'no results found message' when patient is not found", function(){
                     var results = [];
 
-                    searchPromise.callSuccesCallBack({results: results})
+                    searchPromise.callSuccessCallBack({results: results})
 
                     expect(scope.noResultsMessage).toMatch("No results");
                 });
@@ -195,14 +195,14 @@ describe('SearchPatientController', function () {
                 spyOn(location, 'search');
                 spyOn(location, 'path');
 
-                searchPromise.callSuccesCallBack({results: [{uuid: "8989-90909"}]})
+                searchPromise.callSuccessCallBack({results: [{uuid: "8989-90909"}]})
 
                 expect(location.path).toHaveBeenCalledWith("/patient/8989-90909");
                 expect(spinner.hide).not.toHaveBeenCalled();
             });
 
             it("should show 'no patient found message' and hide the spinner when patient is not found", function(){
-                searchPromise.callSuccesCallBack({results: []})
+                searchPromise.callSuccessCallBack({results: []})
 
                 expect(scope.noResultsMessage).toMatch("Could not find patient with identifier GAN20001");
                 expect(spinner.hide).toHaveBeenCalled();

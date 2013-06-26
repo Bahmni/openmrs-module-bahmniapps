@@ -26,7 +26,7 @@ angular.module('registration.createPatient', ['resources.patientService', 'resou
                 patientService.rememberPatient($scope.patient);
                 $window.history.pushState(null, null, $location.absUrl().replace("new", data.uuid) + "?newpatient=true");
 
-                $location.path("/visit/new");
+                $location.path("/visit");
             }
 
             $scope.create = function () {

@@ -40,7 +40,7 @@
                     <label class="control-label" for="registrationFee">{{registrationFeeLabel}}</label>
 
                     <div class="controls">
-                        <input type="number" id="registrationFee" ng-model="obs.registration_fees" autofocus>
+                        <input type="number" id="registrationFee" ng-model="obs['REGISTRATION FEES']" autofocus>
                     </div>
                 </div>
                 </div>
@@ -49,7 +49,7 @@
                     <label class="control-label" for="comments">Comments</label>
 
                     <div class="controls">
-                        <input type="text" id="comments" ng-model="obs.comments" placeholder="Comments">
+                        <input type="text" id="comments" ng-model="obs.COMMENTS" placeholder="Comments">
                     </div>
                 </div>
                 </div>
@@ -63,7 +63,7 @@
                         <div class="control-group">
                             <label class="control-label" for="height">Height (cm)</label>
                             <div class="controls">
-                                <input id="height" type="number" step="0.01" ng-model="obs.height" min="10" max="250" ng-change="calculateBMI()" placeholder="Height">
+                                <input id="height" type="number" step="0.01" ng-model="obs.HEIGHT" min="10" max="250" ng-change="calculateBMI()" placeholder="Height">
                             </div>
                         </div> 
                     </div>
@@ -71,7 +71,7 @@
                         <div class="control-group">
                             <label class="control-label" for="height">Weight (kg)</label>
                             <div class="controls">
-                               <input id="weight" type="number" step="0.01" ng-model="obs.weight" min="0" max="200" ng-change="calculateBMI()" placeholder="Weight">
+                               <input id="weight" type="number" step="0.01" ng-model="obs.WEIGHT" min="0" max="200" ng-change="calculateBMI()" placeholder="Weight">
                             </div>
                         </div>
                     </div>
@@ -81,9 +81,8 @@
                         <div class="control-group">
                             <label class="control-label" for="bmi">BMI</label>
                             <div class="controls">
-                              <input type="text" id="bmi" ng-model="obs.bmi" readonly tabindex="1000000">
+                              <input type="text" id="bmi" ng-model="obs.BMI" readonly tabindex="1000000">
                             </div>
-                            
                         </div>
                     </div>
                     <div class="span5">

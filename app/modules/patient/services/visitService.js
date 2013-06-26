@@ -3,14 +3,23 @@
 angular.module('resources.visitService', [])
     .factory('visitService', ['$http', '$rootScope', function ($http, $rootScope) {
 
+    
     var create = function (visit) {
-        return $http.post(constants.openmrsUrl + "/ws/rest/v1/bahmnivisit", visit,
-            {
-                withCredentials: true
-            });
+        return $http.post(constants.bahmniRESTBaseURL + '/bahmniencounter', visit, {
+            withCredentials: true
+        });
     };
 
+    var get =  function (patientUUID, visitTypeUUID, encounterTypeUUID) {
+        var url = constants.bahmniRESTBaseURL + "/bahmniencounter";
+        return $http.get(url, {
+            params: {"patientUUID": patientUUID, "visitTypeUUID" : visitTypeUUID, "encounterTypeUUID" : encounterTypeUUID},
+            withCredentials: true
+        });
+    }
+
     return {
-        create: create
+        create: create,
+        get : get
     };
 }]);
