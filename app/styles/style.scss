@@ -101,20 +101,15 @@ p.caution {
 button[disabled], button[disabled]:hover, button.disabled, button.disabled:hover{
     opacity: .65;
     filter: alpha(opacity=65);
+    background:#e6e6e6;
+    border:1px solid #d0d0d0;
+    color:#363463;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
     cursor:default;
 }
-button.confirm[disabled]:hover{
-  background-color: #88af28;
-  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #a1d030), color-stop(100%, #88af28));
-  background: -webkit-linear-gradient(top, #a1d030, #88af28);
-  background: -moz-linear-gradient(top, #a1d030, #88af28);
-  background: -o-linear-gradient(top, #a1d030, #88af28);
-  background: -ms-linear-gradient(top, #a1d030, #88af28);
-  background: linear-gradient(top, #a1d030, #88af28);
-}
+
 
 /*** grid form elements css end ***/
 body{   
@@ -282,7 +277,7 @@ table{
  }
 .photo-container-wrapper{
     position:absolute;
-    top:35px;
+    top:31px;
     right:10px;
     border:7px solid #f0f0f0;
   }
