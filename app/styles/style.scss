@@ -22,7 +22,7 @@ $total-width: 100%;
   @include clearfix();
 }
 .form-field{
-  margin-bottom:15px;
+  margin-bottom:10px;
   @include clearfix();
   .field-attribute{
     float:left;
@@ -35,12 +35,45 @@ $total-width: 100%;
   }
   .field-value{
     float:left;
-     input[type="text"]{  
+     input[type="text"],input[type="password"]{  
         float:left;
         width:12.5em;
     }
+    span.text-only{
+       display:inline-block;
+       margin:8px 0.8em 10px 0px;
+    }
   }
 }
+.input-prepend{
+  float:left;
+  input{
+      display: inline-block;
+      margin-bottom: 0;
+      vertical-align: middle;
+      float:left;
+      margin:0px !important;
+  }
+  .add-on{
+    @extend input;
+    @include border-radius();  
+    height: 21px;
+    min-width: 17px;
+    padding: 4px 5px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+  }
+
+}
+.input-prepend .add-on:first-child, .input-prepend .btn:first-child {
+  -webkit-border-radius: 4px 0 0 4px;
+  -moz-border-radius: 4px 0 0 4px;
+  border-radius: 4px 0 0 4px;
+}
+.input-prepend .add-on, .input-prepend .btn{
+  margin-right:-1px;
+}
+
 /********************** overridding the common ui ***********************/
 .simple-form-ui{
   form{
@@ -59,6 +92,30 @@ p.caution {
   background:#fff;
   text-align:center;
 }
+.button.confirm, button.confirm, input[type="submit"].confirm, input[type="button"].confirm, input[type="submit"].confirm, a.button.confirm{
+  padding: 7px 20px;
+}
+.button, button, input[type="submit"], input[type="button"], input[type="submit"], a.button{
+  padding: 7px 20px;
+}
+button[disabled], button[disabled]:hover, button.disabled, button.disabled:hover{
+    opacity: .65;
+    filter: alpha(opacity=65);
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    cursor:default;
+}
+button.confirm[disabled]:hover{
+  background-color: #88af28;
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #a1d030), color-stop(100%, #88af28));
+  background: -webkit-linear-gradient(top, #a1d030, #88af28);
+  background: -moz-linear-gradient(top, #a1d030, #88af28);
+  background: -o-linear-gradient(top, #a1d030, #88af28);
+  background: -ms-linear-gradient(top, #a1d030, #88af28);
+  background: linear-gradient(top, #a1d030, #88af28);
+}
+
 /*** grid form elements css end ***/
 body{   
   width:100%;
@@ -159,6 +216,7 @@ body{
           border-right:2px dotted #9E9D9D;
             select{
               width:80px;
+              min-width:80px;
           }
         }
         .search-seperator-r{

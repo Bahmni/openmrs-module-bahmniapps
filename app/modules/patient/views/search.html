@@ -4,7 +4,7 @@
             <form name="searchByIdForm" ng-submit="searchById()" class="simple-form-ui" >
                     <label for="registrationNumber"><strong>Patient ID</strong></label>
 
-                    <div class="left">
+                    <div class="search-patient-id left">
                         <select id="center" ng-model="centerId" ng-options="c.name as c.name for c in centers"> </select>
                         <input type="text" id="registrationNumber" ng-model="registrationNumber" autofocus
                                placeholder="Enter ID">
