@@ -14,14 +14,19 @@ angular.module('registration.photoCapture', [])
                             video = dialogElement.find("video")[0],
                             canvas = dialogElement.find("canvas")[0],
                             confirmImageButton = dialogElement.find(".confirmImage"),
-                            streaming = false;
+                            streaming = false,
+                            dialogOpen = false;
                          var context = canvas.getContext("2d");
                          var pixelRatio = window.devicePixelRatio;
                          context.scale(pixelRatio, pixelRatio);
 
                         scope.launchPhotoCapturePopup = function () {
+                            if(dialogOpen) {
+                                alert("Please allow access to web camera and wait for photo capture dialog to be launched");
+                                return;
+                            }
+                            dialogOpen = true;
                             navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-
                             if (navigator.getUserMedia) {
                                 navigator.getUserMedia(
                                     {video: true, audio: false},
@@ -92,6 +97,7 @@ angular.module('registration.photoCapture', [])
 
                         dialogElement.dialog({autoOpen: false, height: 300, width: 500, modal: true,
                             close: function(){
+                                dialogOpen = false;
                                 if (activeStream) {
                                     activeStream.stop();
                                 }
