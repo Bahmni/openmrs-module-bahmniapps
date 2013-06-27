@@ -1,4 +1,4 @@
-EncounterDataMapper = (function() {
+var EncounterDataMapper = (function() {
   function EncounterDataMapper() {
   }
 

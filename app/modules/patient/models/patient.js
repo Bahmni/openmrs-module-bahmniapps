@@ -41,7 +41,7 @@ angular.module('resources.patient', ['resources.date', 'resources.age'])
                 calculateAge: calculateAge,
                 generateIdentifier: generateIdentifier,
                 clearRegistrationNumber: clearRegistrationNumber,
-                image : 'modules/photo-capture/images/blank-user.gif',
+                image : 'images/blank-user.gif',
                 fullNameHindi: fullNameHindi,
                 getImageData: getImageData
             };

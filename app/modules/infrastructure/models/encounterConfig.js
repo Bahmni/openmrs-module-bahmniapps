@@ -1,4 +1,4 @@
-EncounterConfig = (function() {
+var EncounterConfig = (function() {
   function EncounterConfig(conceptData, encounterTypes, visitTypes) {
     this.conceptData = conceptData;
     this.encounterTypes = encounterTypes;

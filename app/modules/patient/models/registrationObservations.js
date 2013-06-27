@@ -1,4 +1,4 @@
-RegistrationObservations = (function() {
+var RegistrationObservations = (function() {
     function RegistrationObservations(encounterObservations, isNewPatient, encounterConfig) {
         this.observations = encounterObservations.observations.map(function(obs) { return new ObservationData(obs.conceptUUID, obs.conceptName, obs.value)});
         defaultRegistrationFees(this.observations, isNewPatient, encounterConfig);
@@ -40,7 +40,7 @@ RegistrationObservations = (function() {
     return RegistrationObservations;
 })();
 
-ObservationData = (function() {
+var ObservationData = (function() {
     function ObservationData(conceptUUID, conceptName, value) {
         this.conceptUUID = conceptUUID;
         this.conceptName = conceptName;
