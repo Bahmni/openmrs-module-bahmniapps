@@ -1,27 +1,27 @@
 'use strict';
 
 describe("Patient", function(){
-    var patientModule, ageModule, patient;
+    var patientFactory, ageFactory, patient;
     beforeEach(module('resources.patient'));
     beforeEach(inject(['patient', 'date', 'age', function(patient, date, age){
-        patientModule = patient;
-        ageModule = age;
+        patientFactory = patient;
+        ageFactory = age;
     }]));
 
     describe("calculateAge", function(){
         beforeEach(function(){
-            patient = patientModule.create();
+            patient = patientFactory.create();
         });
 
         it("should update age as difference between dateofBirth and today in years, months and days", function(){
             patient.birthdate = "25-06-1980";
             var age = {years: 12, months: 5, days: 29};
-            spyOn(ageModule, 'fromBirthDate').andReturn(age);            
+            spyOn(ageFactory, 'fromBirthDate').andReturn(age);            
 
             patient.calculateAge();
 
             expect(patient.age).toBe(age);
-            expect(ageModule.fromBirthDate).toHaveBeenCalledWith(new Date("06/25/1980"));
+            expect(ageFactory.fromBirthDate).toHaveBeenCalledWith(new Date("06/25/1980"));
         });
     });
 

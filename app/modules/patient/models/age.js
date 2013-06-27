@@ -10,11 +10,7 @@ angular.module('resources.age', ['resources.date'])
 
         var create = function(years, months, days) {
             var isEmpty = function() {
-                //It is important for angular dirty tracking to access all properties before we use conditional opertaor.
-                var yrs = this.years;
-                var mons = this.months;
-                var ds = this.days;
-                return !(yrs || mons || ds);
+                return !(this.years || this.months || this.days);
             }
 
 

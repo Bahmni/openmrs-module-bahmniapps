@@ -110,7 +110,8 @@ module.exports = function (grunt) {
       },
       auto: {
         configFile: 'test/config/testacular.conf.js',
-        autoWatch: true
+        autoWatch: true,
+        singleRun: false
       }
       // Refer watch:test comment above
       //unitd: {
