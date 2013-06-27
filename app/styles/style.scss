@@ -53,6 +53,12 @@ $total-width: 100%;
     }
   } 
 }
+p.caution {
+  color: red;
+  padding: 15px 5px 5px 5px;
+  background:#fff;
+  text-align:center;
+}
 /*** grid form elements css end ***/
 body{   
   width:100%;
@@ -206,6 +212,10 @@ table{
  /*** search page css end ***/
 
  /****edit page css start ***/
+ .reg-body-wrapper{
+    padding:10px;
+    background:#ffffff;
+ }
  .edit-patient,.new-patient,.visit-patient{
   position:relative;
  }
@@ -248,16 +258,18 @@ table{
     color:red;
 }
 
-
-#casteSameAsLastNameCheckLabel {
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    display: inline-block;
-    position: relative;
-    top: 3px;
-
+.input-label-inline{
+    margin-top:6px;
+    display:inline-block;
+    label{
+        display: inline-block;
+        margin-top:2px;
+        }
 }
-
+.submit-btn-container{
+  @include clearfix();
+  padding:0px 20px 0px 20px;
+}
 #overlay {
   display: none;
   z-index: 10000;
@@ -306,6 +318,56 @@ table{
   height: 125px;
   width: 125px;
 }
+/***** photo dialog css start *****/
+video{
+  display:block;
+}
+.photoCaptureDialog{
+    .photo-video-container{
+        position:relative;
+        width:229px;
+        float:left;
+        .photoCapture-left-overlay{
+          position:absolute;
+          height:169px;
+          width:25px;
+          left:0px;
+          top:6px;
+          background:#EEEEEE;
+        }
+        .photoCapture-right-overlay{
+          position:absolute;
+          height:169px;
+          width:31px;
+          right:0px;
+          top:6px;
+          background:#EEEEEE;
+        }
+    }      
+    .photo-canvas-container{
+      float:left;
+      width:188px;
+      margin-top:6px;
+      margin-left:30px !important;
+      canvas{
+        border:2px solid #fff;
+        height:167px;
+        width:175px;
+        background:#f2f2f2;
+      }
+    } 
+    .take-photo-btn{
+      margin:10px 54px 5px 54px
+    }
+    .confirmImage{
+      margin:10px 5px 5px 55px;
+    }
+    .row-clear{
+    @include clearfix();
+    }
+
+}
+/***** photo dialog css end *****/
 
 /** responsive css **/
 
@@ -331,5 +393,16 @@ table{
     .photocontainer-spacing{
       margin-bottom:42px;
     }
+  }
+}
+
+.age-field {
+  width: 20px;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
   }
 }

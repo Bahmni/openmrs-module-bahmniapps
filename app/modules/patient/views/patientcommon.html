@@ -14,11 +14,9 @@
                 </div>
 
                 <div class="field-value" id="patientName">
-                        <span>
                             <input type="text" id="givenName" ng-model="patient.givenName" non-blank placeholder="First Name" title="Enter patient's first name.">
                             <input type="text" id="familyName" ng-model="patient.familyName" my-autocomplete="{{ {'src': 'getLastNameList', 'responseMap': 'getDataResults'} }}" non-blank placeholder="Last Name"  title="Enter patient's last name.">
-                        </span>
-                        <span>
+                        <span class="input-label-inline">
                             <input type="checkbox" id="casteSameAsLastNameCheck" ng-model="patient.sameAsLastName" ng-change="setCasteAsLastName()">
                             <label id="casteSameAsLastNameCheckLabel" for="casteSameAsLastNameCheck">Caste same as Last Name</label>
                         </span>
@@ -77,31 +75,30 @@
 </section>
 <section class="form-field-inline">
     <article class="form-field">
+        <div class="control-group">
+            <div class="field-attribute">
+                <label for="ageYears">Age<span class="asterick">*</span></label>
+            </div>
+
+            <div class="field-value">
+                <input class="age-field" type="number" id="ageYears" name="ageYear" max="120" ng-model="patient.age.years" min="0"
+                       ng-required="patient.age.isEmpty()" title="Enter a numeric value for Years.">Years,
+
+                <input class="age-field" type="number" id="ageMonths" name="ageMonths" max="12" ng-model="patient.age.months" min="0"
+                       title="Enter a numeric value between 0 to 12">Months,
+
+                <input class="age-field" type="number" id="ageDays" name="ageDays" max="31" ng-model="patient.age.days" min="0"
+                       title="Enter a numeric value between 0 to 31">Days
+            </div>
+        </div>
+    </article>
+    <article class="form-field">
                 <div class="field-attribute">
                     <label for="birthdate">DOB</label>
                 </div>
                 <div class="field-value">
                     <input id="birthdate" type="text" pattern="\d{2}-\d{2}-\d{4}" ng-model="patient.birthdate" datepicker ng-change="patient.calculateAge()" placeholder="dd-mm-yyyy" class="datepicker">
                </div>
-    </article>
-    <article class="form-field">
-                <div class="field-attribute">
-                    <label for="ageYear">Age<span class="asterick">*</span></label>
-                </div>
-                <div class="field-value">
-                    <input type="number" id="ageYear" name="ageYear" max="120" ng-model="patient.age.years" min="0" placeholder="Year" required title="Enter a numeric value for Years">
-                    <input type="number" id="ageMonths" name="ageMonths" max="12" ng-model="patient.age.months" min="0" placeholder="Month" required title="Enter a numeric between 0 to 12">
-                    <input type="number" id="ageDays" name="ageDays" max="31" ng-model="patient.age.days" min="0" placeholder="Days" required title="Enter a numeric value between 0 to 31">
-
-<!--                     <input class="age-field" type="number" id="ageYears" name="ageYear" max="120" ng-model="patient.age.years" min="0"
-                           ng-required="patient.age.isEmpty()" title="Enter a numeric value for Years.">&nbsp;Years,&nbsp;
-
-                    <input class="age-field" type="number" id="ageMonths" name="ageMonths" max="12" ng-model="patient.age.months" min="0"
-                           title="Enter a numeric value between 0 to 12">&nbsp;Months,&nbsp;
-
-                    <input class="age-field" type="number" id="ageDays" name="ageDays" max="31" ng-model="patient.age.days" min="0"
-                           title="Enter a numeric value between 0 to 31">&nbsp;Days
- -->               </div>
     </article>
 </section>
 <section class="form-field-inline">  
@@ -145,7 +142,7 @@
 <section class="form-field-inline">
     <article class="form-field">
                 <div class="field-attribute">
-            <label class="control-label" for="countyDistrict">District</label>
+                    <label class="control-label" for="countyDistrict">District</label>
                 </div>
                 <div class="field-value">
                 <input type="text" id="countyDistrict" ng-model="patient.address.countyDistrict" placeholder="District" my-autocomplete="{{ {'src': 'getDistrictList', 'responseMap': 'getAddressDataResults', 'onSelect': 'districtSelected'} }}">

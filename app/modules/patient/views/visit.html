@@ -1,3 +1,5 @@
+<div class="reg-body-wrapper">
+
 <div id="registrationCard" class="print-layout" ng-include="printLayout()"></div>
 
 <div class="non-printable" xmlns="http://www.w3.org/1999/html">
@@ -22,7 +24,7 @@
                                 <input id="patientId" ng-model="patient.identifier" readonly>
                         </div>
                 </article>
-                <article class="form-field">
+                <article class="form-field photocontainer-spacing">
                         <div class="field-attribute">
                             <label class="control-label" for="patientName">Patient Name</label>
                         </div>
@@ -99,7 +101,7 @@
             <div class="submit-btn-container" ng-switch on="patient.isNew">
                 <div class="right" ng-switch-when="true">
                     <button type="button" ng-click="back()">Back</button>
-                    <button type="submit" class="confirm" ng-disabled="obs.bmi_error">Save and Print</button>
+                    <button type="submit" class="confirm" ng-disabled="obs.bmi_error" ng-click="saveAndPrint()">Save and Print</button>
                 </div>
                 <div class="right" ng-switch-default>
                     <button type="button" ng-click="back()">Back</button>
@@ -113,4 +115,5 @@
     <div id="dialog-confirm" handle="confirmDialog" title="Warning" confirm-dialog>
         <p>There is no registration fee, and no comments entered. Do you want to continue? </p>
     </div>
+</div>
 </div>
