@@ -273,9 +273,8 @@ module.exports = function (grunt) {
     'karma:unit'
   ]);
 
-  grunt.registerTask('build', [
+  grunt.registerTask('dist', [
     'clean:dist',
-    'test',
     'compass:dist',
     'useminPrepare',
     'concat',
@@ -289,5 +288,10 @@ module.exports = function (grunt) {
     'usemin'
   ]);
 
+  grunt.registerTask('build', [
+    'test',
+    'dist'
+  ]);
+  
   grunt.registerTask('default', ['build']);
 };
