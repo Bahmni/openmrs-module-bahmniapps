@@ -188,11 +188,14 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build', [
-    'clean:dist',
     'test',
-    'compass:dist',
-    'copy',
+    'dist'
   ]);
 
+  grunt.registerTask('dist', [
+    'clean:dist',
+    'compass:dist',
+    'copy'
+  ]);
   grunt.registerTask('default', ['build']);
 };
