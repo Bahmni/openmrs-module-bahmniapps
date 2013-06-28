@@ -22,7 +22,7 @@ describe('patientMapper', function() {
     };
 
     beforeEach(function() {
-        module('resources.openmrsPatientMapper');
+        module('registration.patient.mappers');
 
         module(function ($provide) {
             $provide.value('patientAttributeType', mockPatientAttributeType);

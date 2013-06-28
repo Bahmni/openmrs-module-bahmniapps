@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('resources.age', ['resources.date'])
+angular.module('registration.patient.models')
     .factory('age', ['date', function (date) {
         var fromBirthDate = function(birthDate) {
             var today = date.now();

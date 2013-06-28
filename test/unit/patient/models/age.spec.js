@@ -3,7 +3,7 @@
 describe("Age", function(){
     var ageFactory, scope, age;
     
-    beforeEach(module('resources.age'));
+    beforeEach(module('registration.patient.models'));
     beforeEach(inject(['$rootScope', 'age', function($rootScope, ageFactoryInjected){
         ageFactory = ageFactoryInjected;
         scope = $rootScope.$new();

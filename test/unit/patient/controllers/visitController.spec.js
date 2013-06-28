@@ -59,7 +59,7 @@ describe('VisitController', function () {
         "observations": []
     }
 
-    beforeEach(module('registration.visitController'));
+    beforeEach(module('registration.patient.controllers'));
     beforeEach(inject(['$injector', 'date', '$location', '$window', '$timeout', function ($injector, dateModule, location, window, timeout) {
         $controller = $injector.get('$controller');
         scope = { "$watch": jasmine.createSpy() }

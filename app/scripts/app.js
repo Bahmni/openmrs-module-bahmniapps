@@ -1,8 +1,8 @@
 'use strict';
 
 
-angular.module('registration', ['registration.search', 'registration.navigation', 'registration.loginController', 'http-auth-interceptor', 'registration.createPatient',
-                                'registration.visitController', 'infrastructure.httpErrorInterceptor','registration.patientCommon', 'registration.editPatient',
+angular.module('registration', ['registration.patient.controllers', 'registration.navigation', 'registration.loginController', 'http-auth-interceptor', 'registration.patient.controllers',
+                                'registration.patient.controllers', 'infrastructure.httpErrorInterceptor','registration.patient.controllers', 'registration.patient.controllers',
                                 'registration.initialization'])
 angular.module('registration').config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
         $routeProvider.when('/login', {templateUrl: 'modules/auth/views/login.html', controller: 'LoginController'});

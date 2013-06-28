@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('resources.patientService', ['resources.patient', 'resources.patientMapper'])
+angular.module('registration.patient.services')
     .factory('patientService', ['$http', '$rootScope', 'patient', 'patientMapper', function ($http, $rootScope, patientModule, patientMapper) {
         var patient;
 

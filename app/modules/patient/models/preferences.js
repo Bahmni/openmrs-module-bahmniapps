@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('resources.preferences', [])
+angular.module('registration.patient.models')
     .factory('Preferences', ['$http', '$rootScope', function() {
       return {
           centerID: "GAN",

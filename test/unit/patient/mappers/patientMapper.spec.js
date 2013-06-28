@@ -24,8 +24,8 @@ describe('patientMapper', function() {
     }
 
     beforeEach(function() {
-        module('resources.patientMapper');
-        module('resources.patient');
+        module('registration.patient.mappers');
+        module('registration.patient.models');
         
         module(function ($provide) {
             $provide.value('patientAttributeType', mockPatientAttributeType);

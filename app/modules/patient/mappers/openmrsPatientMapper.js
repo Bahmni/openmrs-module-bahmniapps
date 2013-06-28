@@ -1,8 +1,7 @@
 'use strict';
 
-angular.module('resources.openmrsPatientMapper', ['resources.patientAttributeType', 'resources.patient', 'resources.age'])
-    .factory('openmrsPatientMapper',['patientAttributeType', 'patient', '$rootScope', 'age', function (patientAttributeType, patientModel, $rootScope, age) {
-
+angular.module('registration.patient.mappers').factory('openmrsPatientMapper',['patientAttributeType', 'patient', '$rootScope', 'age',
+     function (patientAttributeType, patientModel, $rootScope, age) {
         var mapAttributes = function (patient, attributes) {
             attributes.forEach(function(attribute) {
                 var x = patientAttributeType.get(attribute.attributeType.uuid);

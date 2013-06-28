@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('resources.errorCode', [])
+angular.module('registration.patient.models')
     .factory('errorCode', [function () {
         var openERPErrorCode = 3;
 

@@ -6,7 +6,7 @@ describe('Patient visit', function () {
         mockHttp = {defaults: {headers: {common: {'X-Requested-With': 'present'}} },
             post: jasmine.createSpy('Http post').andReturn('success')};
 
-    beforeEach(module('resources.visitService'));
+    beforeEach(module('registration.patient.services'));
     beforeEach(module(function ($provide) {
         $provide.value('$http', mockHttp);
     }));

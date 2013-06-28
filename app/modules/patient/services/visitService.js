@@ -1,8 +1,7 @@
 'use strict';
 
-angular.module('resources.visitService', [])
+angular.module('registration.patient.services')
     .factory('visitService', ['$http', '$rootScope', function ($http, $rootScope) {
-
     
     var create = function (visit) {
         return $http.post(constants.bahmniRESTBaseURL + '/bahmniencounter', visit, {

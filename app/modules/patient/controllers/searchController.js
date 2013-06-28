@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('registration.search', ['resources.patientService', 'infrastructure.spinner'])
+angular.module('registration.patient.controllers')
     .controller('SearchPatientController', ['$scope', 'patientService', '$location', '$window', 'spinner', function ($scope, patientService, $location, $window, spinner) {
         $scope.centers = constants.centers;
         $scope.centerId = defaults.centerId;

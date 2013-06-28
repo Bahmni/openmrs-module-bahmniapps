@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('resources.patient', ['resources.date', 'resources.age'])
+angular.module('registration.patient.models')
     .factory('patient', ['date', 'age', function (date, age) {
         var create = function(){
             var calculateAge = function(){

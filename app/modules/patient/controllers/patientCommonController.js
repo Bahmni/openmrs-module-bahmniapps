@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('registration.patientCommon', ['resources.patientAttributeService', 'registration.photoCapture','resources.addressAttributeService'])
+angular.module('registration.patient.controllers')
     .controller('PatientCommonController', ['$scope','$http', 'patientAttributeService','addressAttributeService',
         function ($scope, $http, patientAttributeService, addressAttributeService) {
 

@@ -17,7 +17,7 @@ describe('Patient resource', function () {
     var mockPatientMapper = {map: jasmine.createSpy().andReturn(mappedPatient)};
 
     beforeEach(function() {
-        module('resources.patientService');
+        module('registration.patient.services');
 
         module(function ($provide) {
             constants.openmrsUrl = openmrsUrl;

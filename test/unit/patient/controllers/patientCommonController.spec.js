@@ -7,8 +7,8 @@ describe('PatientCommonController', function () {
     var controller;
     var scope;
 
-    beforeEach(angular.mock.module('registration.patientCommon'));
-    beforeEach(angular.mock.module('resources.patient'));
+    beforeEach(angular.mock.module('registration.patient.controllers'));
+    beforeEach(angular.mock.module('registration.patient.models'));
     beforeEach(angular.mock.inject(function ($injector) {
         success = jasmine.createSpy('Successful');
         patientAttributeService = jasmine.createSpyObj('patientAttributeService', ['search']);

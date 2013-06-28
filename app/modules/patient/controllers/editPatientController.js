@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('registration.editPatient', ['resources.patientService', 'resources.preferences', 'resources.openmrsPatientMapper', 'infrastructure.spinner', 'infrastructure.printer'])
+angular.module('registration.patient.controllers')
     .controller('EditPatientController', ['$scope', '$rootScope','patientService', '$location', 'Preferences', '$route', 'openmrsPatientMapper', '$window',  'spinner', 'printer',
         function ($scope, $rootScope, patientService, $location, preferences, $route, patientMapper, $window, spinner, printer) {
             var uuid;

@@ -1,7 +1,6 @@
 'use strict';
 
-angular.module('resources.patientMapper', ['resources.patientAttributeType'])
-    .factory('patientMapper', ['patientAttributeType', function (patientAttributeType) {
+angular.module('registration.patient.mappers').factory('patientMapper', ['patientAttributeType', function (patientAttributeType) {
 
         var map = function(patient) {
             return {

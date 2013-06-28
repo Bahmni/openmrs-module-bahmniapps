@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('infrastructure.httpErrorInterceptor', ['resources.errorCode'])
+angular.module('infrastructure.httpErrorInterceptor', ['registration.patient.models'])
     .config(function($httpProvider) {
         var interceptor = ['$rootScope', '$q', '$window', 'errorCode', function($rootScope, $q, $window, errorCode) {
             var showError = function(errorMessage){

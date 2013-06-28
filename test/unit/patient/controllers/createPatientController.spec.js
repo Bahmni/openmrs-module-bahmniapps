@@ -12,7 +12,7 @@ describe('CreatePatientController', function () {
     var dateModule;
     var spinner;
 
-    beforeEach(angular.mock.module('registration.createPatient'));
+    beforeEach(angular.mock.module('registration.patient.controllers'));
     beforeEach(angular.mock.inject(function (date) {
         dateModule = date;
         location = jasmine.createSpyObj('$location', ['path','absUrl']);

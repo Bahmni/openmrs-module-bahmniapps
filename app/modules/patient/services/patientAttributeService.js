@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('resources.patientAttributeService', [])
+angular.module('registration.patient.services')
     .factory('patientAttributeService', ['$http', function ($http) {
 
     var urlMap;

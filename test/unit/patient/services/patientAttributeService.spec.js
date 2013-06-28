@@ -8,7 +8,7 @@ describe('patientAttributeService', function () {
                     get:jasmine.createSpy('Http get').andReturn(resultList)
                    };
 
-    beforeEach(module('resources.patientAttributeService'));
+    beforeEach(module('registration.patient.services'));
     beforeEach(module(function ($provide) {
         $provide.value('$http', mockHttp);
     }));

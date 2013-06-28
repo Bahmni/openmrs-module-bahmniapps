@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('registration.visitController', ['resources.patientService', 'resources.visitService', 'resources.bmi', 'resources.date', 'infrastructure.spinner', 'infrastructure.printer'])
+angular.module('registration.patient.controllers')
     .controller('VisitController', ['$scope', '$location', 'patientService', 'visitService', 'bmi', 'date', '$window', '$route', 'spinner', '$timeout', '$q', 'printer',
                     function ($scope, $location, patientService, visitService, bmiModule, date, $window, $route, spinner, $timeout, $q, printer) {
         (function () {

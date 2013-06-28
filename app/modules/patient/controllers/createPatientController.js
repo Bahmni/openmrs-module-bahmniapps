@@ -1,7 +1,6 @@
 'use strict';
 
-angular.module('registration.createPatient', ['resources.patientService', 'resources.preferences', 'resources.patient', 'resources.errorCode', 'resources.date', 'infrastructure.spinner'])
-    .controller('CreatePatientController', ['$scope', 'patientService', '$location', 'Preferences', '$route', 'patient', '$window', 'errorCode', 'date', 'spinner',
+angular.module('registration.patient.controllers').controller('CreatePatientController', ['$scope', 'patientService', '$location', 'Preferences', '$route', 'patient', '$window', 'errorCode', 'date', 'spinner',
         function ($scope, patientService, $location, preferences, $route, patientModel, $window, errorCode, date, spinner) {
             (function () {
                 $scope.patient = patientModel.create();

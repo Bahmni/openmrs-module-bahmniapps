@@ -10,7 +10,7 @@ describe('SearchPatientController', function () {
         $controller,
         spinner;
 
-    beforeEach(angular.mock.module('registration.search'));
+    beforeEach(angular.mock.module('registration.patient.controllers'));
     beforeEach(angular.mock.inject(function ($injector) {
         $controller = $injector.get('$controller');
         rootScope = $injector.get('$rootScope');

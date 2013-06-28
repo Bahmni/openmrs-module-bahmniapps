@@ -6,6 +6,7 @@ files = [
   '../app/components/angular/angular.js',
   '../app/components/angular-mocks/angular-mocks.js',
   '../app/scripts/**/*.js',
+  '../app/modules/**/init.js',
   '../app/modules/**/*.js',
   'support/**/*.js',
   'unit/**/*.js'

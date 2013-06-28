@@ -1,7 +1,6 @@
 'use strict';
 
 angular.module('resources.patientAttributeType', [])
-
     .factory('patientAttributeType', ['$http', '$rootScope', function ($http, $rootScope) {
 
         var patientAttributes = [];
