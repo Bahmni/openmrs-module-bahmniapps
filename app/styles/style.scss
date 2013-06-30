@@ -450,12 +450,24 @@ video{
 }
 
 .age-field {
-  width: 20px;
-
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  .input-prepend {
+    margin-right: 5px;
   }
-}
+
+  #ageYears {
+    width: 30px;
+  }
+
+  #ageMonths, #ageDays {
+    width: 20px;
+  }
+
+  input {
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      /* display: none; <- Crashes Chrome on hover */
+      -webkit-appearance: none;
+      margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  }
+}  
+  }

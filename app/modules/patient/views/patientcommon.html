@@ -80,15 +80,22 @@
                 <label for="ageYears">Age<span class="asterick">*</span></label>
             </div>
 
-            <div class="field-value">
-                <input class="age-field" type="number" id="ageYears" name="ageYear" max="120" ng-model="patient.age.years" min="0"
-                       ng-required="patient.age.isEmpty()" title="Enter a numeric value for Years.">Years,
-
-                <input class="age-field" type="number" id="ageMonths" name="ageMonths" max="12" ng-model="patient.age.months" min="0"
-                       title="Enter a numeric value between 0 to 12">Months,
-
-                <input class="age-field" type="number" id="ageDays" name="ageDays" max="31" ng-model="patient.age.days" min="0"
-                       title="Enter a numeric value between 0 to 31">Days
+            <div class="field-value age-field">
+                <div class="input-prepend">
+                    <span class="add-on">Years</span>
+                    <input type="number" id="ageYears" name="ageYear" max="120" ng-model="patient.age.years" min="0"
+                           ng-required="patient.age.isEmpty()" title="Enter a numeric value for Years.">
+                </div>
+                <div class="input-prepend">
+                    <span class="add-on">Months</span>
+                    <input type="number" id="ageMonths" name="ageMonths" max="12" ng-model="patient.age.months" min="0"
+                           title="Enter a numeric value between 0 to 12">
+                </div>
+                <div class="input-prepend">
+                    <span class="add-on">Days</span>
+                    <input type="number" id="ageDays" name="ageDays" max="31" ng-model="patient.age.days" min="0"
+                       title="Enter a numeric value between 0 to 31">
+                </div>
             </div>
         </div>
     </article>
