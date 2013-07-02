@@ -110,7 +110,8 @@ module.exports = function (grunt) {
       },
       auto: {
         configFile: 'test/config/testacular.conf.js',
-        autoWatch: true
+        autoWatch: true,
+        singleRun: false
       }
       // Refer watch:test comment above
       //unitd: {
@@ -149,6 +150,91 @@ module.exports = function (grunt) {
         //}
       //}
     //},
+    useminPrepare: {
+      html: [
+        '<%= yeoman.app %>/*.html',
+        '<%= yeoman.app %>/modules/**/*.html'
+      ],
+      css: '<%= yeoman.app %>/styles/.css/**/*.css',
+      options: {
+        dest: '<%= yeoman.dist %>'
+      }
+    },
+    usemin: {
+      html: [
+        '<%= yeoman.dist %>/*.html',
+        '<%= yeoman.dist %>/modules/**/*.html',
+      ],
+      css: '<%= yeoman.dist %>/styles/**/*.css',
+      options: {
+        dirs: ['<%= yeoman.dist %>']
+      }
+    },
+    imagemin: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>/images',
+          src: '**/*.{png,jpg,jpeg,gif}',
+          dest: '<%= yeoman.dist %>/images'
+        }]
+      }
+    },
+    cssmin: {
+      options: {
+        banner: 'Bahmni OPD minified CSS file.'
+      },
+      minify: {
+        expand: true,
+        cwd: '<%= yeoman.dist %>/styles/css/',
+        src: ['**/*.css', '!**/*.min.css'],
+        dest: '<%= yeoman.dist %>/styles/css/',
+        ext: '.min.css'
+      }
+    },
+    htmlmin: {
+      dist: {
+        options: {
+          /*removeCommentsFromCDATA: true,
+          // https://github.com/yeoman/grunt-usemin/issues/44
+          //collapseWhitespace: true,
+          collapseBooleanAttributes: true,
+          removeAttributeQuotes: true,
+          removeRedundantAttributes: true,
+          useShortDoctype: true,
+          removeEmptyAttributes: true,
+          removeOptionalTags: true*/
+        },
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>',
+          src: [
+            '*.html',
+            'modules/**/*.html'
+          ],
+          dest: '<%= yeoman.dist %>'
+        }]
+      }
+    },
+    ngmin: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.dist %>/scripts',
+          src: '**/*.js',
+          dest: '<%= yeoman.dist %>/scripts'
+        }]
+      }
+    },
+    uglify: {
+      dist: {
+        files: {
+          '<%= yeoman.dist %>/scripts/scripts.js': [
+            '<%= yeoman.dist %>/scripts/scripts.js'
+          ]
+        }
+      }
+    },
     copy: {
       dist: {
         files: [{
@@ -187,15 +273,25 @@ module.exports = function (grunt) {
     'karma:unit'
   ]);
 
+  grunt.registerTask('dist', [
+    'clean:dist',
+    'compass:dist',
+    'useminPrepare',
+    'concat',
+    'imagemin',
+    'htmlmin',
+    'cssmin',
+    'copy',
+    'ngmin',
+    // Commented since it is breaking angular. Possibly because of $rootScope
+    //'uglify',
+    'usemin'
+  ]);
+
   grunt.registerTask('build', [
     'test',
     'dist'
   ]);
-
-  grunt.registerTask('dist', [
-    'clean:dist',
-    'compass:dist',
-    'copy'
-  ]);
+  
   grunt.registerTask('default', ['build']);
 };
