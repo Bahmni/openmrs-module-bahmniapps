@@ -2,8 +2,10 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <link rel="stylesheet" href="css/custom.css"/>
-        <link rel="stylesheet" href="css/jquery-ui-1.10.3.custom.min.css">
+        <link rel="stylesheet" href="lib/jquery/jquery-ui-1.10.3.custom.min.css">
+        <!-- build:css styles/css/main.min.css -->
+        <link rel="stylesheet" href="styles/.css/style.css"/>
+        <!-- endbuild -->
         <title>OPD</title>
     </head>
     <body>
@@ -29,13 +31,14 @@
             </header>
             <div ng-view id="view-content"></div>
             <script src="components/jquery/jquery.js"></script>
-            <script src="lib/jquery-ui-1.10.3.custom.min.js"></script>
+            <script src="lib/jquery/jquery-ui-1.10.3.custom.min.js"></script>
             <script src="components/angular/angular.js"></script>
             <script src="components/angular-cookies/angular-cookies.js"></script>
 
             <!-- build:js scripts/scripts.min.js -->
             <script src="components/ngInfiniteScroll/ng-infinite-scroll.js"></script>
-            <script src="app.js"></script>
+            <script src="scripts/constants.js"></script>
+            <script src="scripts/app.js"></script>
             <script src="modules/opd/controllers/diagnosisController.js"></script>
             <script src="modules/opd/controllers/investigationController.js"></script>
             <script src="modules/opd/controllers/treatmentController.js"></script>
@@ -44,7 +47,6 @@
             <script src="modules/opd/service/patientsListService.js"></script>
             <script src="modules/opd/service/patientService.js"></script>
             <script src="modules/infrastructure/service/configurationService.js"></script>
-            <script src="constants.js"></script>
             <script src="modules/navigation/controllers/navigationController.js"></script>
             <!-- endbuild -->
         </div>

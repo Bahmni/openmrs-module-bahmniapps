@@ -6,9 +6,8 @@ files = [
     '../app/components/angular/angular.js',
     '../app/components/angular-mocks/angular-mocks.js',
     '../app/components/ngInfiniteScroll/ng-infinite-scroll.js',
-    '../app/constants.js',
+    '../app/scripts/constants.js',
     '../app/modules/**/*.js',
-    'support/**/*.js',
     'unit/**/*.js'
 ];
 
