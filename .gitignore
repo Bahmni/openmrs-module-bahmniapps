@@ -12,6 +12,7 @@ test/output
 target
 output
 .sass-cache
+.css/
 .tmp
 node_modules
 app/components

@@ -182,7 +182,7 @@ module.exports = function (grunt) {
     },
     cssmin: {
       options: {
-        banner: 'Bahmni OPD minified CSS file.'
+        banner: '/* Bahmni OPD minified CSS file */'
       },
       minify: {
         expand: true,
