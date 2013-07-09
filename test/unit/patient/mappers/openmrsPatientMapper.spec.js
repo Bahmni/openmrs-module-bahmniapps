@@ -2,37 +2,21 @@
 
 describe('patientMapper', function() {
 
-    var mapper, bahmniConfiguration, openmrsPatient, ageModule;
-
-
-    var samplePatientAttributeTypes = [
-        {
-            "uuid": "0a71ee67-3446-4f66-8267-82446bda21a7",
-            "name": "caste"
-        },
-        {
-            "uuid": "bda8141e-65d6-452e-9cfe-ce813bd11d52",
-            "name": "education"
-        }
-    ];
-
-
-    var mockPatientAttributeType = {
-        get: function(uuid){ return samplePatientAttributeTypes.filter(function(attribute){return uuid === attribute.uuid})[0];},
-    };
+    var mapper, bahmniConfiguration, openmrsPatient, ageModule, patientConfiguration;
 
     beforeEach(function() {
         module('registration.patient.mappers');
 
-        module(function ($provide) {
-            $provide.value('patientAttributeType', mockPatientAttributeType);
-        });
-
         bahmniConfiguration = {};
+        patientConfiguration = new PatientConfig([
+            {"uuid":"d3d93ab0-e796-11e2-852f-0800271c1b75","sortWeight":2.0,"name":"caste","description":"Caste","format":"java.lang.String","answers":[]},
+            {"uuid":"d3e6dc74-e796-11e2-852f-0800271c1b75","sortWeight":2.0,"name":"class","description":"Class","format":"org.openmrs.Concept",
+                "answers":[{"description":"OBC","conceptId":"10"}]}]);
 
         inject(['openmrsPatientMapper', '$rootScope', 'age', function(openmrsPatientMapper, $rootScope, age) {
             mapper = openmrsPatientMapper;
             $rootScope.bahmniConfiguration = bahmniConfiguration;
+            $rootScope.patientConfiguration = patientConfiguration;
             ageModule = age;
         }]);
 
@@ -72,16 +56,16 @@ describe('patientMapper', function() {
                 "attributes": [
                     {
                         "uuid": "2a71ee67-3446-4f66-8267-82446bda21a7",
-                        "value": "singh",
+                        "value": "some-class",
                         "attributeType": {
-                            "uuid": "0a71ee67-3446-4f66-8267-82446bda21a7"
+                            "uuid": "d3d93ab0-e796-11e2-852f-0800271c1b75"
                         }
                     } ,
                     {
                         "uuid": "3da8141e-65d6-452e-9cfe-ce813bd11d52",
-                        "value": "Uneducated",
+                        "value": "10",
                         "attributeType": {
-                            "uuid": "bda8141e-65d6-452e-9cfe-ce813bd11d52"
+                            "uuid": "d3e6dc74-e796-11e2-852f-0800271c1b75"
                         }
                     }
                 ]
@@ -91,7 +75,7 @@ describe('patientMapper', function() {
 
 
     it('should map values from the openmrs Patient to our patient object', function () {
-        bahmniConfiguration.patientImagesUrl = "http://test.uri/patient_images"
+        bahmniConfiguration.patientImagesUrl = "http://test.uri/patient_images";
         var age = {years: 2, months: 3, days: 25};
         spyOn(ageModule, 'fromBirthDate').andReturn(age);
 
@@ -108,14 +92,14 @@ describe('patientMapper', function() {
         expect(patient.address.cityVillage).toBe(openmrsPatient.person.preferredAddress.cityVillage);
         expect(patient.address.countyDistrict).toBe(openmrsPatient.person.preferredAddress.countyDistrict);
         expect(patient.address.stateProvince).toBe(openmrsPatient.person.preferredAddress.stateProvince);
-        var urlParts = patient.image.split('?')
+        var urlParts = patient.image.split('?');
         expect(urlParts.length).toBe(2);
         expect(urlParts[0]).toBe("http://test.uri/patient_images/" + openmrsPatient.identifiers[0].identifier + ".jpeg");
     });
 
     it('should map attributes from openmrsPatient to our patient object', function() {
         var patient = mapper.map(openmrsPatient);
-        expect(patient.education).toBe("Uneducated");
+        expect(patient.class).toBe("10");
     });
 
     it('should map birth date in dd-mm-yyyy format', function() {

@@ -2,7 +2,9 @@
 
 describe('Patient resource', function () {
     var patientService;
-    var openmrsUrl = "http://blah"
+    var patient;
+    var openmrsUrl = "http://blah";
+    var patientConfiguration;
 
     var mockHttp = {
         defaults: {headers: {common: {'X-Requested-With': 'present'}}},
@@ -14,7 +16,6 @@ describe('Patient resource', function () {
         names: [{givenName:"someGivenName", familyName:"someFamilyName"}],
         age: 21,
         gender: "M"};
-    var mockPatientMapper = {map: jasmine.createSpy().andReturn(mappedPatient)};
 
     beforeEach(function() {
         module('registration.patient.services');
@@ -22,11 +23,17 @@ describe('Patient resource', function () {
         module(function ($provide) {
             constants.openmrsUrl = openmrsUrl;
             $provide.value('$http', mockHttp);
-            $provide.value('patientMapper', mockPatientMapper);
         });
 
-        inject(['patientService', function(patientServiceInjectted) {
+        patientConfiguration = new PatientConfig([
+            {"uuid":"d3d93ab0-e796-11e2-852f-0800271c1b75","sortWeight":2.0,"name":"caste","description":"Caste","format":"java.lang.String","answers":[]},
+            {"uuid":"d3e6dc74-e796-11e2-852f-0800271c1b75","sortWeight":2.0,"name":"class","description":"Class","format":"org.openmrs.Concept",
+                "answers":[{"description":"OBC","conceptId":"10"}]}]);
+
+        inject(['patientService', '$rootScope', 'patient', function(patientServiceInjectted, $rootScope, patientFactory) {
+            patient = patientFactory.create();
             patientService = patientServiceInjectted;
+            $rootScope.patientConfiguration = patientConfiguration;
         }]);
 
     });
@@ -42,18 +49,20 @@ describe('Patient resource', function () {
     });
 
     it('Should create a patient', function () {
-        var patientJson = {
+        angular.extend(patient, {
             "gender": "M",
             "givenName": "someGivenName",
             "familyName": "someFamilyName",
             "age": "21"
-        };
-        var results = patientService.create(patientJson);
+        });
+        var results = patientService.create(patient);
 
-        expect(mockPatientMapper.map).toHaveBeenCalled();
         expect(mockHttp.post).toHaveBeenCalled();
         expect(mockHttp.post.mostRecentCall.args[0]).toBe(openmrsUrl + '/ws/rest/v1/bahmnicore/patient');
-        expect(mockHttp.post.mostRecentCall.args[1]).toEqual(mappedPatient);
+        expect(mockHttp.post.mostRecentCall.args[1].gender).toEqual("M");
+        expect(mockHttp.post.mostRecentCall.args[1].names[0]["givenName"]).toEqual("someGivenName");
+        expect(mockHttp.post.mostRecentCall.args[1].names[0]["familyName"]).toEqual("someFamilyName");
+        expect(mockHttp.post.mostRecentCall.args[1].age).toEqual("21");
         expect(mockHttp.post.mostRecentCall.args[2].headers['Content-Type']).toBe('application/json');
         expect(mockHttp.post.mostRecentCall.args[2].headers['Accept']).toBe('application/json');
         expect(results).toBe('success');

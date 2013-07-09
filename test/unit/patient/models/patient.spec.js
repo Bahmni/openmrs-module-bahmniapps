@@ -37,47 +37,47 @@ describe("Patient", function(){
         });
     });
 
-    describe("fullNameHindi", function(){
-        it("should be combination of givenNameHindi and familyNameHindi", function(){
-            patient.givenNameHindi = "राम";
-            patient.familyNameHindi = "कुमार";
+    describe("fullNameLocal", function(){
+        it("should be combination of givenNameLocal and familyNameLocal", function(){
+            patient.givenNameLocal = "राम";
+            patient.familyNameLocal = "कुमार";
 
-            expect(patient.fullNameHindi()).toBe("राम कुमार");
+            expect(patient.fullNameLocal()).toBe("राम कुमार");
         });
 
-        it("should not have extra whitespaces when there is whitespace around givenNameHindi", function(){
-            patient.givenNameHindi = " राम   ";
-            patient.familyNameHindi = "कुमार";
+        it("should not have extra whitespaces when there is whitespace around givenNameLocal", function(){
+            patient.givenNameLocal = " राम   ";
+            patient.familyNameLocal = "कुमार";
 
-            expect(patient.fullNameHindi()).toBe("राम कुमार");
+            expect(patient.fullNameLocal()).toBe("राम कुमार");
         });
 
-        it("should not have extra whitespaces when there is whitespace around familyNameHindi", function(){
-            patient.givenNameHindi = "राम";
-            patient.familyNameHindi = "  कुमार ";
+        it("should not have extra whitespaces when there is whitespace around familyNameLocal", function(){
+            patient.givenNameLocal = "राम";
+            patient.familyNameLocal = "  कुमार ";
 
-            expect(patient.fullNameHindi()).toBe("राम कुमार");
+            expect(patient.fullNameLocal()).toBe("राम कुमार");
         });
 
-        it("should be empty when givenNameHindi and familyNameHindi is not available", function(){
-            patient.givenNameHindi = undefined;
-            patient.familyNameHindi = undefined;
+        it("should be empty when givenNameLocal and familyNameHindi is not available", function(){
+            patient.givenNameLocal = undefined;
+            patient.familyNameLocal = undefined;
 
-            expect(patient.fullNameHindi()).toBe("");
+            expect(patient.fullNameLocal()).toBe("");
         });
 
-        it("should be just givenNameHindi when familyNameHindi is not available", function(){
-            patient.givenNameHindi = "राम";
-            patient.familyNameHindi = undefined;
+        it("should be just givenNameLocal when familyNameLocal is not available", function(){
+            patient.givenNameLocal = "राम";
+            patient.familyNameLocal = undefined;
 
-            expect(patient.fullNameHindi()).toBe("राम");
+            expect(patient.fullNameLocal()).toBe("राम");
         });
 
-        it("should be just familyNameHindi when givenNameHindi is not available", function(){
-            patient.givenNameHindi = undefined;
-            patient.familyNameHindi = "कुमार";
+        it("should be just familyNameLocal when givenNameLocal is not available", function(){
+            patient.givenNameLocal = undefined;
+            patient.familyNameLocal = "कुमार";
 
-            expect(patient.fullNameHindi()).toBe("कुमार");
+            expect(patient.fullNameLocal()).toBe("कुमार");
         });
     });
 });

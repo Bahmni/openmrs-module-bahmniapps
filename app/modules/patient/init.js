@@ -1,5 +1,5 @@
 angular.module('registration.patient.models', ['resources.date']);
-angular.module('registration.patient.mappers', ['resources.patientAttributeType', 'registration.patient.models']);
+angular.module('registration.patient.mappers', ['registration.patient.models']);
 
 //angular.module('resources.patientAttributeType', [])
 angular.module('registration.patient.services', ['registration.patient.models', 'registration.patient.mappers'])

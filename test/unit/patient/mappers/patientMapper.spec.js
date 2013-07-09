@@ -1,40 +1,23 @@
 'use strict';
 
 
-describe('patientMapper', function() {
-    var patientMapper;
+describe('patientMapper', function () {
     var patient;
+    var patientConfiguration;
 
-
-    var samplePatientAttributeTypes = [
-            {
-                "uuid": "be4f3f8a-862c-11e2-a490-afe87ebb32c9",
-                "name": "oldPatientIdentifier"
-            },
-            {
-                "uuid": "c3a345c6-862c-11e2-a490-afe87ebb32c9",
-                "name": "caste"
-            }
-        ];
-
-    var mockPatientAttributeType = {
-        getAll: function () {
-            return samplePatientAttributeTypes;
-        }
-    }
-
-    beforeEach(function() {
-        module('registration.patient.mappers');
+    beforeEach(function () {
         module('registration.patient.models');
-        
-        module(function ($provide) {
-            $provide.value('patientAttributeType', mockPatientAttributeType);
-        });
-
-        inject(['patientMapper', 'patient', function(patientMapperInjectted, patientFactory) {
-            patientMapper = patientMapperInjectted;
+        inject(['patient', function (patientFactory) {
             patient = patientFactory.create();
         }]);
+
+        patientConfiguration = new PatientConfig([
+            {"uuid": "d3d93ab0-e796-11e2-852f-0800271c1b75", "sortWeight": 2.0, "name": "caste", "description": "Caste", "format": "java.lang.String", "answers": []},
+            {"uuid": "d3e6dc74-e796-11e2-852f-0800271c1b75", "sortWeight": 2.0, "name": "class", "description": "Class", "format": "org.openmrs.Concept",
+                "answers": [
+                    {"description": "OBC", "conceptId": "10"}
+                ]}
+        ]);
 
     });
 
@@ -44,7 +27,7 @@ describe('patientMapper', function() {
             "familyName": "family"
         });
 
-        var mappedPatientData = patientMapper.map(patient);
+        var mappedPatientData = new PatientMapper().map(patientConfiguration, patient);
 
         expect(mappedPatientData.names[0].givenName).toBe("given");
         expect(mappedPatientData.names[0].familyName).toBe("family");
@@ -52,16 +35,16 @@ describe('patientMapper', function() {
 
     it('should map the address', function () {
         angular.extend(patient, {
-            address : {
+            address: {
                 address1: "12th Main",
                 cityVillage: "Koramangala",
                 address3: "Bangalore",
                 countyDistrict: "Bangalore",
-                stateProvince: "Karnataka",
+                stateProvince: "Karnataka"
             }
         });
 
-        var mappedPatientData = patientMapper.map(patient);
+        var mappedPatientData = new PatientMapper().map(patientConfiguration, patient);
 
         expect(mappedPatientData.addresses[0]).toBe(patient.address);
     });
@@ -69,13 +52,13 @@ describe('patientMapper', function() {
     it('should map the attributes', function () {
         angular.extend(patient, {
             "caste": "someCaste",
-            "oldPatientIdentifier": "someOldPatientIdentifier",
+            "class": "10"
         });
 
-        var mappedPatientData = patientMapper.map(patient);
+        var mappedPatientData = new PatientMapper().map(patientConfiguration, patient);
 
-        expect(mappedPatientData.attributes[0]).toEqual({"attributeType": "be4f3f8a-862c-11e2-a490-afe87ebb32c9", "name": "oldPatientIdentifier", "value": "someOldPatientIdentifier"});
-        expect(mappedPatientData.attributes[1]).toEqual({"attributeType": "c3a345c6-862c-11e2-a490-afe87ebb32c9", "name": "caste", "value": "someCaste"});
+        expect(mappedPatientData.attributes[0]).toEqual({"attributeType": "d3d93ab0-e796-11e2-852f-0800271c1b75", "name": "caste", "value": "someCaste"});
+        expect(mappedPatientData.attributes[1]).toEqual({"attributeType": "d3e6dc74-e796-11e2-852f-0800271c1b75", "name": "class", "value": "10"});
     });
 
     it('should map age, gender and dateOfBirth', function () {
@@ -85,7 +68,7 @@ describe('patientMapper', function() {
             birthdate: "06-26-1989"
         });
 
-        var mappedPatientData = patientMapper.map(patient);
+        var mappedPatientData = new PatientMapper().map(patientConfiguration, patient);
 
         expect(mappedPatientData.age).toEqual(patient.age);
         expect(mappedPatientData.gender).toEqual('F');
@@ -96,9 +79,9 @@ describe('patientMapper', function() {
         angular.extend(patient, {
             image: 'data:image/jpeg;base64,asdfasdfasdfkalsdfkj'
         });
-        
-        var mappedPatientData = patientMapper.map(patient);
-        
+
+        var mappedPatientData = new PatientMapper().map(patientConfiguration, patient);
+
         expect(mappedPatientData.image).toBe('asdfasdfasdfkalsdfkj');
     });
 
@@ -107,8 +90,8 @@ describe('patientMapper', function() {
             image: 'asdfasdfasdfkalsdfkj'
         });
 
-        var mappedPatientData = patientMapper.map(patient);
-        
+        var mappedPatientData = new PatientMapper().map(patientConfiguration, patient);
+
         expect(mappedPatientData.image).toBeFalsy();
     });
 
@@ -117,8 +100,8 @@ describe('patientMapper', function() {
             image: null
         });
 
-        var mappedPatientData = patientMapper.map(patient);
-        
+        var mappedPatientData = new PatientMapper().map(patientConfiguration, patient);
+
         expect(mappedPatientData.image).toBeFalsy();
     });
-})
+});
