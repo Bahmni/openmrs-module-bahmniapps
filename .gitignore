@@ -17,3 +17,4 @@ output
 node_modules
 app/components
 dist
+**/**/.css

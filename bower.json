@@ -1,23 +1,24 @@
 {
-  "name": "bahmni.opd",
-  "version": "0.0.1",
-  "main": [
-    "app/index.html",
-    "app/app.js"
-  ],
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "components"
-  ],
-  "dependencies": {
+    "name": "bahmni.opd",
+    "version": "0.0.1",
+    "main": [
+        "app/index.html",
+        "app/app.js"
+    ],
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "components"
+    ],
+    "dependencies": {
       "angular": "1.0.5",
       "angular-cookies": "1.0.5",
       "bootstrap": "2.3.0",
       "jquery": "1.9.1",
       "jquery-ui": "1.10.2",
-    "ngInfiniteScroll":"1.0.0"
-  },
+      "ngInfiniteScroll":"1.0.0",
+      "keyboardjs": "RobertWHurst/KeyboardJS"
+    },
     "devDependencies": {
         "angular-mocks": "1.0.5",
         "angular-scenario": "1.0.5"

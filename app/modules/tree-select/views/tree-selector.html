@@ -1,0 +1,11 @@
+<div class="column-view-container" id="tree-selector" tabindex="0">
+    <div class="column-view-composition">
+        <div ng-repeat="column in columns.getColumns()"
+            class="column"
+            ng-include="'modules/tree-select/views/column.html'"
+            ng-init="column=column">
+        </div>
+    </div>
+</div>
+
+

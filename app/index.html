@@ -5,6 +5,7 @@
         <link rel="stylesheet" href="lib/jquery/jquery-ui-1.10.3.custom.min.css">
         <!-- build:css styles/css/main.min.css -->
         <link rel="stylesheet" href="styles/.css/style.css"/>
+        <link rel="stylesheet" href="styles/.css/hcolumns.css"/>
         <!-- endbuild -->
         <title>OPD</title>
     </head>
@@ -32,6 +33,7 @@
             <div ng-view id="view-content"></div>
             <script src="components/jquery/jquery.js"></script>
             <script src="lib/jquery/jquery-ui-1.10.3.custom.min.js"></script>
+            <script src="components/keyboardjs/keyboard.js"></script>
             <script src="components/angular/angular.js"></script>
             <script src="components/angular-cookies/angular-cookies.js"></script>
 
@@ -48,6 +50,12 @@
             <script src="modules/opd/service/patientService.js"></script>
             <script src="modules/infrastructure/service/configurationService.js"></script>
             <script src="modules/navigation/controllers/navigationController.js"></script>
+            <script src="modules/tree-select/init.js"></script>
+            <script src="modules/tree-select/models/column.js"></script>
+            <script src="modules/tree-select/models/node.js"></script>
+            <script src="modules/tree-select/models/columns.js"></script>
+            <script src="modules/tree-select/services/labInvestigationsService.js"></script>
+            <script src="modules/tree-select/controllers/treeSelectorController.js"></script>
             <!-- endbuild -->
         </div>
     </body>

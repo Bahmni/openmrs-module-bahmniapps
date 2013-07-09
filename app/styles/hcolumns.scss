@@ -1,0 +1,111 @@
+/* column view container */
+.column-view-container {
+    width: 900px;
+    height: 300px;
+    border: 1px solid #ccc;
+    background: #FFF;
+    display: block;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+/* the composition div for colums */
+.column-view-composition { 
+    display: table;
+    white-space: nowrap;
+}
+
+/**/
+.column {
+    display: table-cell;
+    border-right: 1px solid #999;
+}
+
+.column:last-child {
+    border-right: 0;
+}
+
+.column:only-child {
+    border-right: 1px solid #999;
+}
+
+/* for error messages */
+.column > p {
+    margin: 10px;
+
+    font-size: 15px;
+    color: #666;
+}
+
+/* for column listing */
+.column ul {
+    margin: 0;
+
+    height: 300px;
+    width: 250px;
+
+    overflow-y: auto;
+
+    list-style: none;
+}
+
+.column ul li {
+    margin: 0;
+    padding: 10px;
+
+    font-size: 15px;
+}
+
+.column ul li:hover {
+    cursor: pointer;
+}
+
+.column ul li i {
+    float: right;
+}
+
+.column ul li:hover, .column ul li.active {
+    background: #999999;
+    color: #FFFFFF;
+}
+
+.column ul li:hover a, .column ul li.active a {
+    color: #FFFFFF;
+}
+
+/* icon type, could be replace with FontAwesome */
+[class^="icon-"],
+[class*=" icon-"] {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-top: 1px;
+    *margin-right: .3em;
+    line-height: 14px;
+    vertical-align: text-top;
+    background-image: url("../img/glyphicons-halflings.png");
+    background-position: 14px 14px;
+    background-repeat: no-repeat;
+}
+
+.icon-chevron-right {
+    background-position: -456px -72px;
+}
+
+.icon-globe {
+    background-position: -336px -144px;
+}
+
+.focus {
+    background-color: LIGHTBLUE;
+}
+
+/* css hack for firefox */
+@-moz-document url-prefix() { 
+    [class^="icon-"],
+    [class*=" icon-"] {
+        margin-top: -14px;
+    }
+}
+
