@@ -6,27 +6,22 @@ Bahmni.Opd.TreeSelect.KeyboardNavigation = {
         KeyboardJS.on("down", onDown);
 
         function onRight() {
-            var lastColumn = $scope.columns.getLastColumn();
-            lastColumn && $scope.expandSubtree(lastColumn.getFocus(), lastColumn);
+            $scope.columns.activateFocusedItem();
             $scope.$apply();
         }
 
         function onLeft() {
-            if ($scope.columns.getColumns().length <= 1)
-                return;
-            $scope.columns.removeAllColumnsToRight($scope.columns.getLastColumn(), true);
+            $scope.columns.activatePreviousColumn();
             $scope.$apply();
         }
 
         function onUp() {
-            var lastColumn = $scope.columns.getLastColumn();
-            lastColumn && lastColumn.focusOnPreviousItem();
+            $scope.columns.focusOnPreviousItem();
             $scope.$apply();
         }
 
         function onDown() {
-            var lastColumn = $scope.columns.getLastColumn();
-            lastColumn && lastColumn.focusOnNextItem();
+            $scope.columns.focusOnNextItem();
             $scope.$apply();
         }
     },

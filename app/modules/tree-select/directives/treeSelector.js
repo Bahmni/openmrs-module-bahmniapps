@@ -14,8 +14,7 @@ angular.module('opd.treeSelect')
             })();
 
             $scope.expandSubtree = function(item, activeColumn) {
-                activeColumn.setActive(item);
-                $scope.columns.addNewColumn(item, activeColumn);
+                $scope.columns.click(item, activeColumn);
             }
         };
 
