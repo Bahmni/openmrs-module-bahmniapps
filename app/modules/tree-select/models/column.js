@@ -1,5 +1,4 @@
-var OpdTreeSelect = OpdTreeSelect != undefined ? OpdTreeSelect : {}
-OpdTreeSelect.Column = function() {
+Bahmni.Opd.TreeSelect.Column = function() {
     var Column = function(items) {
         this.items = items.slice(0);
         this.setDefaultFocus();

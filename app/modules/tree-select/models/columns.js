@@ -1,5 +1,4 @@
-var OpdTreeSelect = OpdTreeSelect != undefined ? OpdTreeSelect : {}
-OpdTreeSelect.Columns = function() {
+Bahmni.Opd.TreeSelect.Columns = function() {
     var Columns = function(node) {
         this.columns = [];
         if(node != null){
@@ -14,7 +13,7 @@ OpdTreeSelect.Columns = function() {
                 return
             }
             this.removeAllColumnsToRight(currentActiveColumn, false);
-            this.columns.push(new OpdTreeSelect.Column(children));
+            this.columns.push(new Bahmni.Opd.TreeSelect.Column(children));
         },
 
         removeAllColumnsToRight: function(column, includeColumn){

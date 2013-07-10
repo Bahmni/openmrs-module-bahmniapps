@@ -1,6 +1,6 @@
-var OpdTreeSelect = OpdTreeSelect != undefined ? OpdTreeSelect : {}
-OpdTreeSelect.Node = function() {
-    var Node = function(label, children) {
+Bahmni.Opd.TreeSelect.Node = function() {
+    var Node = function(uuid, label, children) {
+        this.uuid = uuid;
         this.label = label;
         this.children = children;
     }
