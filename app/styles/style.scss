@@ -1,6 +1,8 @@
 @charset "UTF-8";
 
-body{}
+body{
+    font-family: "OpenSans",Arial,sans-serif;
+}
 
 .box {
     background-color: #ffffff;
@@ -61,4 +63,17 @@ body{}
 .smallImages{
     max-height: 100px;
     width: 100px;
+}
+
+#tabButtonRow {
+    margin-bottom: 20px;
+    button {
+        height: 40px;
+        width: 100px; 
+        margin-right: 20px;
+    };
+    .active {
+        background-color: BLUE;
+        color: WHITE;
+    }
 }

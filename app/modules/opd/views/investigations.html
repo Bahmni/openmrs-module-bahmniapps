@@ -1,1 +1,28 @@
-<div tree-selector  root-concept-name="'TreeTestL1'">Test</div>
+<form>
+  <fieldset>
+    <legend>Add Order</legend>
+    <div>
+        <div id="tabButtonRow">
+            <button ng-repeat="tab in tabs" class="{{tab.klass}}" ng-click="activateTab(tab)">{{tab.name}} </button>
+        </div>
+        <div ng-include="activeTab.template"></div>
+    </div>
+
+  </fieldset>
+</form>
+
+<script type="text/ng-template" id="LabTreeSelect">
+    <div tree-selector  root-concept-name="'TreeTestL1'"></div>
+</script>
+
+<script type="text/ng-template" id="RadiologyTreeSelect">
+    <div tree-selector  root-concept-name="'TreeTestL2'"></div>
+</script>
+
+<script type="text/ng-template" id="EndoscopyTreeSelect">
+    <div tree-selector  root-concept-name="'TreeTestL2'"></div>
+</script>
+
+<script type="text/ng-template" id="OthersTreeSelect">
+    <div tree-selector  root-concept-name="'TreeTestL2'"></div>
+</script>
