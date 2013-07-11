@@ -11,7 +11,7 @@ angular.module('registration.patient.controllers')
             $scope.name = $location.search().name || '';
             $scope.centerId = $location.search().centerId || defaults.centerId;
             $scope.registrationNumber = $location.search().registrationNumber || "";
-            if ($scope.name.trim().length > 0) {
+            if ($scope.name.trim().length > 0 || $scope.village.trim().length > 0) {
                 var searchPromise = patientService.search($scope.name, $scope.village).success(function (data) {
                     $scope.results = data.results;
                     $scope.moreResultsPresent = (data.links ? true : false);
@@ -40,8 +40,11 @@ angular.module('registration.patient.controllers')
             }).error(spinner.hide);
         };
 
-        $scope.searchByName = function () {
-            var queryParams = {name: $scope.name}
+        $scope.searchByVillageAndName = function () {
+            var queryParams = {};
+            if($scope.name){
+                queryParams.name = $scope.name;
+            }
             if ($scope.village) {
                 queryParams.village = $scope.village;
             }

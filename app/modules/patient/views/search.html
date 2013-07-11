@@ -16,7 +16,7 @@
             </form>
         </article>
         <article class="search-seperator-r left">
-            <form name="searchByNameForm" ng-submit="searchByName()" class="simple-form-ui" >
+            <form name="searchByNameForm" ng-submit="searchByVillageAndName()" class="simple-form-ui" >
 
                 <article class="left">
                     <label for="name"><strong>Name</strong></label>
@@ -24,11 +24,11 @@
                 </article>
                 <article class="left">
                     <label for="name"><strong>Filter by Village</strong></label>
-                    <input type="text" ng-disabled="!name" id="village" ng-model="village" placeholder="Enter village name">
+                    <input type="text" id="village" ng-model="village" placeholder="Enter village name">
                 </article>
                 <article class="left">
                     <div class="reg-srch-btn">
-                        <button type="submit" ng-disabled="!name">Search</button>
+                        <button type="submit" ng-disabled="!name && !village">Search</button>
                     </div>
                 </article>
             </form>
