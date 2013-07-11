@@ -135,12 +135,12 @@ describe('SearchPatientController', function () {
         });
     });
 
-    describe("searchByName", function(){
+    describe("searchByVillageAndName", function(){
         it("should go to search page with name", function(){
             scope.name = "Ram Singh"
             spyOn(location, 'search');
 
-            scope.searchByName();
+            scope.searchByVillageAndName();
 
             expect(location.search).toHaveBeenCalledWith({'name': "Ram Singh"});
         });

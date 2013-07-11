@@ -7,7 +7,7 @@ angular.module('registration.patient.controllers')
         $scope.moreResultsPresent = false;
 
         var searchBasedOnQueryParameters = function() {
-            $scope.village = $location.search().village;
+            $scope.village = $location.search().village || '';
             $scope.name = $location.search().name || '';
             $scope.centerId = $location.search().centerId || defaults.centerId;
             $scope.registrationNumber = $location.search().registrationNumber || "";
