@@ -144,6 +144,15 @@ describe('SearchPatientController', function () {
 
             expect(location.search).toHaveBeenCalledWith({'name': "Ram Singh"});
         });
+
+        it("should go to search page with village", function(){
+            scope.village = "Bilaspur"
+            spyOn(location, 'search');
+
+            scope.searchByVillageAndName();
+
+            expect(location.search).toHaveBeenCalledWith({'village': "Bilaspur"});
+        });
     });
 
     describe("searchById", function(){
