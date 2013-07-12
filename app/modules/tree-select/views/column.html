@@ -1,7 +1,7 @@
 <div class="column">
     <ul>
-        <li ng-repeat="item in column.getItems()"
-            ng-click="expandSubtree(item, column)"
-            class="{{getClass(item)}}">{{item.label}} <span class="{{getSelectionClass(item)}}"></span></li>
+        <li ng-repeat="node in column.getNodes()"
+            ng-click="expandNode(node, column)"
+            class="{{getClass(node)}}">{{node.display}} <span class="{{getSelectionClass(node)}}"></span></li>
     </ul>
 </div>

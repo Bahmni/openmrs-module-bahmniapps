@@ -13,25 +13,25 @@ angular.module('opd.treeSelect')
                 $('.opd-tree-selector').focus();
             })();
 
-            $scope.expandSubtree = function(node, column) {
+            $scope.expandNode = function(node, column) {
                 $scope.conceptExplorer.focus(node, column);
                 $scope.selectNode(node, column);
             }
 
             $scope.selectNode = function(node, column) {
-                $scope.conceptExplorer.selectFocusedNode();
+                $scope.conceptExplorer.toggleSelectionForFocusedNode();
                 selectedNodeService.addNode(node);
             }
 
             $scope.getClass = function(node) {
-                return node.focus == true ? "focus" : "";
+                return node.isFocused() ? "focus" : "";
             }
 
             $scope.getSelectionClass = function(node) {
-                if(node.selected != true) {
-                    return "";
+                if(node.isSelected()) {
+                    return node.isFocused() ? "icon-white icon-ok" : "icon-ok";
                 }
-                return node.focus == true ? "icon-white icon-ok" : "icon-ok";
+                return "";
             }
 
         };

@@ -19,7 +19,7 @@ angular.module('opd.treeSelect.services')
         var childrenNodes = (concept.setMembers || []).map(function(child) { 
             return createTreeStructure(child);
         });
-        return new Bahmni.Opd.TreeSelect.Node(concept.uuid, concept.display, childrenNodes);
+        return new Bahmni.Opd.TreeSelect.Node(concept, childrenNodes);
     }
 
     return {

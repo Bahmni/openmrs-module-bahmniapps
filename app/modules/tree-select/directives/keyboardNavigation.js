@@ -32,7 +32,7 @@ Bahmni.Opd.TreeSelect.KeyboardNavigation = {
         }
 
         function selectNode() {
-            var selectedNode = $scope.conceptExplorer.selectFocusedNode();
+            var selectedNode = $scope.conceptExplorer.toggleSelectionForFocusedNode();
             if(selectedNode != null) {
                 selectedNodeService.addNode(selectedNode);
             }

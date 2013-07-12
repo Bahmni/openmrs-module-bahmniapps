@@ -14,22 +14,24 @@ Bahmni.Opd.TreeSelect.Explorer = function() {
         focus: function(node, column) {
             this.activeColumn = column;
             column.setFocus(node);
+            return this.previewChildColumn(node, column);
+        },
+
+        previewChildColumn: function(node, column) {
             if(node != null && node.getChildren().length == 0) {
                 return null;
             }
             this.removeAllColumnsToRight(column, false);
-            var newColumn = new Bahmni.Opd.TreeSelect.Column(node.getChildren());
-            this.columns.push(newColumn);
-            return newColumn;
+            var childColumn = new Bahmni.Opd.TreeSelect.Column(node.getChildren());
+            this.columns.push(childColumn);
+            return childColumn;
         },
 
         expandNode: function(node, column) {
-            var newColumn = this.focus(node, column);
-            if(newColumn == null){
-                return;
+            var childColumn = this.previewChildColumn(node, column);
+            if(childColumn && childColumn.hasNodes()) {
+                this.focus(childColumn.getDefaultFocus(), childColumn);
             }
-            newColumn.setDefaultFocus();
-            this.focus(newColumn.getFocus(), newColumn);
         },
 
         expandFocusedNode: function() {
@@ -50,7 +52,7 @@ Bahmni.Opd.TreeSelect.Explorer = function() {
             if(this.activeColumn == null){
                 return;
             }
-            this.activeColumn.focusOnPreviousItem();
+            this.activeColumn.focusOnPreviousNode();
             this.focus(this.activeColumn.getFocus(), this.activeColumn);
         },
 
@@ -58,15 +60,15 @@ Bahmni.Opd.TreeSelect.Explorer = function() {
             if(this.activeColumn == null){
                 return;
             }
-            this.activeColumn.focusOnNextItem();
+            this.activeColumn.focusOnNextNode();
             this.focus(this.activeColumn.getFocus(), this.activeColumn);
         },
 
-        selectFocusedNode: function() {
+        toggleSelectionForFocusedNode: function() {
             if(this.activeColumn == null){
                 return null;
             }
-            this.activeColumn.selectFocusedNode();
+            this.activeColumn.toggleSelectionForFocusedNode();
             return this.activeColumn.getFocus();
         },
 
@@ -82,6 +84,10 @@ Bahmni.Opd.TreeSelect.Explorer = function() {
         getPreviousColumn: function(column) {
             var index = this.columns.indexOf(column);
             return (index > 0) ? this.columns[index - 1] : null;
+        },
+
+        getActiveColumn: function() {
+            return this.activeColumn;
         },
 
         getColumns: function(){
