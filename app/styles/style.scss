@@ -77,3 +77,15 @@ body{
         color: WHITE;
     }
 }
+
+#selectedNodesArea {
+    min-height: 200px;
+}
+
+.selectedNode {
+    height: 30px;
+    background-color: #4573FF;
+    color: WHITE;
+    padding: 5px;
+    margin-right: 10px;
+}

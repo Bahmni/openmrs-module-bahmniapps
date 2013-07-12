@@ -65,48 +65,21 @@
     float: right;
 }
 
-.column ul li:hover, .column ul li.active {
-    background: #999999;
-    color: #FFFFFF;
-}
-
-.column ul li:hover a, .column ul li.active a {
-    color: #FFFFFF;
-}
-
-/* icon type, could be replace with FontAwesome */
-[class^="icon-"],
-[class*=" icon-"] {
-    display: inline-block;
-    width: 14px;
-    height: 14px;
-    margin-top: 1px;
-    *margin-right: .3em;
-    line-height: 14px;
-    vertical-align: text-top;
-    background-image: url("../img/glyphicons-halflings.png");
-    background-position: 14px 14px;
-    background-repeat: no-repeat;
-}
-
-.icon-chevron-right {
-    background-position: -456px -72px;
-}
-
-.icon-globe {
-    background-position: -336px -144px;
-}
-
 .focus {
+    background-color: #999999;
+    color: WHITE;
+}
+
+.activeColumn .focus {
     background-color: #4573FF;
     color: WHITE;
 }
 
-/* css hack for firefox */
-@-moz-document url-prefix() { 
-    [class^="icon-"],
-    [class*=" icon-"] {
-        margin-top: -14px;
-    }
+.opd-tree-selector {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: moz-none;
+    -ms-user-select: none;
+    user-select: none;
 }
-

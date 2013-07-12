@@ -2,6 +2,6 @@
     <ul>
         <li ng-repeat="item in column.getItems()"
             ng-click="expandSubtree(item, column)"
-            class="{{item.klass}}">{{item.label}}</li>
+            class="{{getClass(item)}}">{{item.label}} <span class="{{getSelectionClass(item)}}"></span></li>
     </ul>
 </div>

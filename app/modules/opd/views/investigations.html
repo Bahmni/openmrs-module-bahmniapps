@@ -1,15 +1,26 @@
 <form>
-  <fieldset>
-    <legend>Add Order</legend>
-    <div>
-        <div id="tabButtonRow">
-            <button ng-repeat="tab in tabs" class="{{tab.klass}}" ng-click="activateTab(tab)">{{tab.name}} </button>
+    <fieldset>
+        <legend>Add Order</legend>
+        <div>
+            <div id="tabButtonRow">
+                <button ng-repeat="tab in tabs" class="{{tab.klass}}" ng-click="activateTab(tab)">{{tab.name}} </button>
+            </div>
+            <div ng-include="activeTab.template"></div>
         </div>
-        <div ng-include="activeTab.template"></div>
-    </div>
-
-  </fieldset>
+    </fieldset>
 </form>
+
+<form>
+    <fieldset>
+        <legend>Review Investigations Ordered</legend>
+        <div id="selectedNodesArea" tabindex="0">
+            <span ng-repeat="node in selectedNodes" class="selectedNode">
+                {{node.label}}
+            </span>
+        </div>
+    </fieldset>
+</form>
+
 
 <script type="text/ng-template" id="LabTreeSelect">
     <div tree-selector  root-concept-name="'TreeTestL1'"></div>

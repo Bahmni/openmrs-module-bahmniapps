@@ -1,6 +1,6 @@
 Bahmni.Opd.TreeSelect.Column = function() {
     var Column = function(items) {
-        this.items = items.slice(0);
+        this.items = items;
         this.resetItems();
     }
 
@@ -8,23 +8,13 @@ Bahmni.Opd.TreeSelect.Column = function() {
         setFocus: function(item) {
             this.resetItems();
             this.currentFocus = item;
-            item.klass = "focus";
-        },
-
-        setActive: function(item) {
-            this.resetItems();
-            this.currentActive = item;
-            item.klass = "active";
+            item.focus = true;
         },
 
         resetItems: function() {
             this.items.forEach(function(item) {
-                item.klass = null;
+                item.focus = false;
             })
-        },
-
-        getActive: function() {
-            return this.currentActive;
         },
 
         getFocus: function() {
@@ -46,6 +36,12 @@ Bahmni.Opd.TreeSelect.Column = function() {
             var currentFocusIndex = this.items.indexOf(this.currentFocus);
             if(currentFocusIndex > 0) {
                 this.setFocus(this.items[currentFocusIndex - 1])
+            }
+        },
+
+        selectFocusedNode: function() {
+            if(this.currentFocus != null) {
+                this.currentFocus.selected = true;
             }
         },
 

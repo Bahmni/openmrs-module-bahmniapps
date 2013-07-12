@@ -3,6 +3,8 @@ Bahmni.Opd.TreeSelect.Node = function() {
         this.uuid = uuid;
         this.label = label;
         this.children = children;
+        this.focus = false;
+        this.selected = false;
     }
 
     Node.prototype = {
