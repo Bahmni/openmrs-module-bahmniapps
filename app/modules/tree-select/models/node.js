@@ -36,13 +36,13 @@ Bahmni.Opd.TreeSelect.Node = function() {
         },
 
         isSelectable: function() {
-            if(this.conceptClass == "LabSet" || this.conceptClass == "ConvSet"){
+            if(this.conceptClass == "LabSet"){
                 return true;
             }else if(!this.isSet){
                 return true;
             }
             return false;
-        }
+        },
     }
 
     return Node;

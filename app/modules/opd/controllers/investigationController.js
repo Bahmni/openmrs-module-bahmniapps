@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('opd.investigationController', [])
-    .controller('InvestigationController', ['$scope', 'selectedNodeService', function ($scope, selectedNodeService) {
+    .controller('InvestigationController', ['$scope', 'nodeSelectionService', function ($scope, nodeSelectionService) {
 
         $scope.tabs = [
             {name: 'Lab', template: 'LabTreeSelect'},
@@ -16,7 +16,7 @@ angular.module('opd.investigationController', [])
             $scope.activeTab.klass="active";
         }
 
-        $scope.selectedNodes = selectedNodeService.getAllNodes();
+        $scope.selectedNodes = nodeSelectionService.getSelectedNodes();
 
         $scope.activateTab($scope.tabs[0]);
     }]);

@@ -1,5 +1,5 @@
 Bahmni.Opd.TreeSelect.KeyboardNavigation = {
-    addKeyboardHandlers: function($scope, selectedNodeService) {
+    addKeyboardHandlers: function($scope, nodeSelectionService) {
         KeyboardJS.on("right", onRight);
         KeyboardJS.on("left", onLeft);
         KeyboardJS.on("up", onUp);
@@ -33,9 +33,7 @@ Bahmni.Opd.TreeSelect.KeyboardNavigation = {
 
         function selectNode() {
             var selectedNode = $scope.conceptExplorer.toggleSelectionForFocusedNode();
-            if(selectedNode != null) {
-                selectedNodeService.addNode(selectedNode);
-            }
+            nodeSelectionService.toggleSelection(selectedNode);
             $scope.$apply();
             return false;
         }

@@ -1,6 +1,5 @@
 'use strict';
 
-
 describe("Bahmni.Opd.TreeSelect.Node", function () {
 
     var Node = Bahmni.Opd.TreeSelect.Node;
@@ -11,11 +10,6 @@ describe("Bahmni.Opd.TreeSelect.Node", function () {
         
         expect(node_null_set.isSelectable()).toBe(true);
         expect(node_true_set.isSelectable()).toBe(true);
-    });
-
-    it('should be selectable when conceptClass is ConvSet', function() {
-        var node = new Node({display: "default concept", conceptClass: {name: "ConvSet"}});
-        expect(node.isSelectable()).toBe(true);
     });
 
     it('should be selectable when conceptClass is not a set', function() {

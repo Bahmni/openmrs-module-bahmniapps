@@ -1,18 +1,30 @@
 'use strict';
 
 angular.module('opd.treeSelect.services')
-    .factory('conceptTreeService', ['$http', function ($http) {
+    .factory('conceptTreeService', ['$http', '$q', function ($http, $q) {
+
+    var conceptTreeCache = {};
 
     var getConceptTree = function(rootConceptName) {
+        if(conceptTreeCache[rootConceptName] != null ) {
+            return conceptTreeFromCache(rootConceptName);
+        }
         return $http.get(constants.conceptUrl, {
-            params: {name: rootConceptName, v: "full"}
+            params: {q: rootConceptName, v: "full"}
         }).then(function(response) {
             if(response.data.results.length == 0) {
                 return null;
             }
-            var rootConcept = response.data.results[0];
-            return createTreeStructure(rootConcept);
+            var conceptTree = createTreeStructure(response.data.results[0]);
+            conceptTreeCache[rootConceptName] = conceptTree;
+            return conceptTree;
         });
+    }
+
+    function conceptTreeFromCache(rootConceptName) {
+        var deferred = $q.defer();
+        deferred.resolve(conceptTreeCache[rootConceptName]);
+        return deferred.promise;
     }
 
     function createTreeStructure(concept) {
