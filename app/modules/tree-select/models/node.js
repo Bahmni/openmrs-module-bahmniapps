@@ -31,7 +31,10 @@ Bahmni.Opd.TreeSelect.Node = function() {
 
         toggleSelection: function() {
             if(this.isSelectable()){
-                this.selected = !this.selected; 
+                this.selected = !this.selected;
+            }
+            if(this.isSelected()) {
+                this.selectChildren();
             }
         },
 
@@ -43,6 +46,20 @@ Bahmni.Opd.TreeSelect.Node = function() {
             }
             return false;
         },
+
+        select: function() {
+            this.selected = true;
+        },
+
+        deselect: function() {
+            this.selected = false;
+        },
+
+        selectChildren: function() {
+            this.children.forEach(function(child) {
+                child.select();
+            })
+        }
     }
 
     return Node;
