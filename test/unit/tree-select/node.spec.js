@@ -28,7 +28,7 @@ describe("Bahmni.Opd.TreeSelect.Node", function () {
         });
     });
 
-    xdescribe("toggleSelection", function () {
+    describe("toggleSelection", function () {
         it('should select a node', function() {
             var node = new Node({display: "default concept", conceptClass: {name: "Misc"}});
             
@@ -47,10 +47,25 @@ describe("Bahmni.Opd.TreeSelect.Node", function () {
             expect(node.isSelected()).toBeFalsy();
         });
 
-        it('should select its children', function() {
+        it('should select its children and disable them', function() {
             var child1 = new Node({display: "child concept 1", conceptClass: {name: "Misc"}});
             var child2 = new Node({display: "child concept 2", conceptClass: {name: "Misc"}});  
-            var node = new Node({display: "default concept", set: true, conceptClass: {name: "LabSet"}, children: [child1, child2]});
+            var node = new Node({display: "default concept", set: true, conceptClass: {name: "LabSet"}}, [child1, child2]);
+
+            node.toggleSelection();
+
+            expect(node.isSelected()).toBeTruthy();
+            expect(child1.isSelected()).toBeTruthy();
+            expect(child1.isDisabled()).toBeTruthy();
+            expect(child2.isSelected()).toBeTruthy();
+            expect(child2.isDisabled()).toBeTruthy();
+
+        });
+
+        it('should deselect its children and enable them', function() {
+            var child1 = new Node({display: "child concept 1", conceptClass: {name: "Misc"}});
+            var child2 = new Node({display: "child concept 2", conceptClass: {name: "Misc"}});
+            var node = new Node({display: "default concept", set: true, conceptClass: {name: "LabSet"}}, [child1, child2]);
 
             node.toggleSelection();
 
@@ -58,6 +73,13 @@ describe("Bahmni.Opd.TreeSelect.Node", function () {
             expect(child1.isSelected()).toBeTruthy();
             expect(child2.isSelected()).toBeTruthy();
 
+            node.toggleSelection();
+
+            expect(node.isSelected()).toBeFalsy();
+            expect(child1.isSelected()).toBeFalsy();
+            expect(child1.isDisabled()).toBeFalsy();
+            expect(child2.isSelected()).toBeFalsy();
+            expect(child2.isDisabled()).toBeFalsy();
         });
     });
 

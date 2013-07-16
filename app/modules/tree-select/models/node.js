@@ -5,12 +5,25 @@ Bahmni.Opd.TreeSelect.Node = function() {
         this.setConceptClass(concept.conceptClass);
         this.isSet = concept.set;
 
-        this.children = children;
+        this.children = (children) ? children : [];
         this.focus = false;
         this.selected = false;
+        this.enabled = true;
     }
 
     Node.prototype = {
+        toggleSelection: function() {
+            if(this.isSelectable() && this.isEnabled()){
+                this.selected = !this.selected;
+            }
+            if(this.isSelected()) {
+                this.selectChildren();
+            }else {
+                this.deselectChildren();
+            }
+
+        },
+
         getChildren: function(){
             return this.children;
         },
@@ -25,17 +38,16 @@ Bahmni.Opd.TreeSelect.Node = function() {
             return this.selected;
         },
 
-        isFocused: function() {
-            return this.focus;
+        isDisabled: function() {
+            return !this.enabled;
         },
 
-        toggleSelection: function() {
-            if(this.isSelectable()){
-                this.selected = !this.selected;
-            }
-            if(this.isSelected()) {
-                this.selectChildren();
-            }
+        isEnabled: function(){
+            return this.enabled;
+        },
+
+        isFocused: function() {
+            return this.focus;
         },
 
         isSelectable: function() {
@@ -55,9 +67,25 @@ Bahmni.Opd.TreeSelect.Node = function() {
             this.selected = false;
         },
 
+        _disable: function() {
+            this.enabled = false;
+        },
+
+        _enable: function() {
+            this.enabled = true;
+        },
+
         selectChildren: function() {
             this.children.forEach(function(child) {
                 child.select();
+                child._disable();
+            })
+        },
+
+        deselectChildren: function() {
+            this.children.forEach(function(child) {
+                child.deselect();
+                child._enable();
             })
         }
     }

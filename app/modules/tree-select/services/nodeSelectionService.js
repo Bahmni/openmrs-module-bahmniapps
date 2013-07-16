@@ -10,7 +10,7 @@ angular.module('opd.treeSelect.services')
     };
 
     var toggleSelection = function(node) {
-        if(node == null) {
+        if(node == null || node.isDisabled()) {
             return;
         }
         if(_isSelected(node)){

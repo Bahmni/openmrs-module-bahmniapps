@@ -18,7 +18,6 @@ angular.module('opd.diagnosisController', ['opd.diagnosisService'])
 
     $scope.setSelectedItem= function(item){
         $scope.selectedItem = item;
-        console.log($scope.selectedItem);
         $scope.hasAnswers = false;
 
         if($scope.selectedItem.datatype === "Boolean"){

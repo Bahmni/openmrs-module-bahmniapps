@@ -59,6 +59,20 @@ Bahmni.Opd.TreeSelect.Column = function() {
 
         hasNodes: function() {
             return this.nodes.length > 0;
+        },
+
+        hasSelectableItem: function() {
+            var hasSelectableNode = false;
+            this.nodes.forEach(function(node){
+                if(node.isSelectable() && node.isEnabled()){
+                    hasSelectableNode = true;
+                }
+            });
+            return hasSelectableNode && this.hasFocus();
+        },
+
+        hasFocus: function() {
+            return this.getFocus() != null;
         }
     }
 

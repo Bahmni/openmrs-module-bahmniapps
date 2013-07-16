@@ -15,16 +15,21 @@ angular.module('opd.treeSelect')
 
             $scope.expandNode = function(node, column) {
                 $scope.conceptExplorer.focus(node, column);
-                $scope.toggleNodeSelection(node, column);
             }
 
-            $scope.toggleNodeSelection = function(node, column) {
+            $scope.toggleNodeSelection = function() {
                 var selectedNode = $scope.conceptExplorer.toggleSelectionForFocusedNode();
                 nodeSelectionService.toggleSelection(selectedNode);
             }
 
             $scope.getClass = function(node) {
-                return node.isFocused() ? "focus" : "";
+                var clazz = "";
+                if(node.isFocused()){
+                    clazz = "focus";
+                } else if(node.isDisabled()){
+                    clazz = "disabled"
+                }
+                return clazz;
             }
 
             $scope.getSelectionClass = function(node) {
