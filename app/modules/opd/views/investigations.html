@@ -16,6 +16,7 @@
         <div id="selectedNodesArea" tabindex="0">
             <span ng-repeat="node in selectedNodes" class="selectedNode">
                 {{node.display}}
+            <span class="icon-remove icon-white " ng-click="removeNode(node)"></span>
             </span>
         </div>
     </fieldset>

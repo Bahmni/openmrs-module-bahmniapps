@@ -18,27 +18,32 @@ angular.module('opd.treeSelect')
             }
 
             $scope.clickNode = function (node, column){
-
                 $scope.expandNode(node, column);
-                $scope.selectNode(node);
+                $scope.toggleSelection(node);
             }
 
-            $scope.selectNode = function(node) {
-                if(node.isSet){
+            $scope.toggleSelection = function(node) {
+                if(node.isSet || nodeSelectionService.isSelected(node)){
                     return;
                 }else{
-                    node.selected = true;
+                    node.toggleSelection();
                 }
             }
 
             $scope.toggleNodeSelection = function(column) {
-                $scope.conceptExplorer.selectFocusedNode()
+                if(column.getFocus().isSet)
+                    $scope.conceptExplorer.selectFocusedNode()
+
                 nodeSelectionService.addSelectedNodes(column);
+            }
+
+            $scope.isActive = function(column) {
+                return $scope.conceptExplorer.isActive(column);
             }
 
             $scope.getClass = function(node) {
                 var clazz = "";
-                if(node.isFocused()){
+                if(node.isFocused() && node.isEnabled()){
                     clazz = "focus";
                 } else if(node.isDisabled()){
                     clazz = "disabled"
@@ -48,7 +53,7 @@ angular.module('opd.treeSelect')
 
             $scope.getSelectionClass = function(node) {
                 if(node.isSelected()) {
-                    return node.isFocused() ? "icon-white icon-ok" : "icon-ok";
+                    return node.isFocused() && node.isEnabled() ? "icon-white icon-ok" : "icon-ok";
                 }
                 return "";
             }

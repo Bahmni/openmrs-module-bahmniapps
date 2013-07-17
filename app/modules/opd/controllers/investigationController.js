@@ -16,6 +16,10 @@ angular.module('opd.investigationController', [])
             $scope.activeTab.klass="active";
         }
 
+        $scope.removeNode = function(node){
+            nodeSelectionService.remove(node);
+        }
+
         $scope.selectedNodes = nodeSelectionService.getSelectedNodes();
 
         $scope.activateTab($scope.tabs[0]);

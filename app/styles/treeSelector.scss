@@ -43,18 +43,19 @@
     margin: 0;
 
     height: 300px;
-    width: 250px;
+    width: 300px;
 
     overflow-y: auto;
 
     list-style: none;
+    padding: 0px
 }
 
 .column ul li {
     margin: 0;
     padding: 10px;
 
-    font-size: 15px;
+    font-size: 20px;
 }
 
 .column ul li:hover {
@@ -73,6 +74,11 @@
 .activeColumn .focus {
     background-color: #4573FF;
     color: WHITE;
+}
+
+.addButton{
+  font-size: 25px;
+  margin-left: 110px;
 }
 
 .disabled {

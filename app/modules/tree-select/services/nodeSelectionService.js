@@ -10,7 +10,7 @@ angular.module('opd.treeSelect.services')
     };
 
     var toggleSelection = function (node) {
-        if (_isSelected(node)) {
+        if (isSelected(node)) {
             _removeNode(node);
         } else if (node.canAdd()) {
             _addNode(node);
@@ -24,7 +24,12 @@ angular.module('opd.treeSelect.services')
         })
     }
 
-    var _isSelected = function (node) {
+    var remove = function (node) {
+        _removeNode(node);
+        node.deselect();
+    }
+
+    var isSelected = function (node) {
         return nodes.indexOf(node) > -1;
     }
 
@@ -36,7 +41,7 @@ angular.module('opd.treeSelect.services')
     }
 
     var _addNode = function (node) {
-        if (node.canAdd() && !_isSelected(node)) {
+        if (node.canAdd() && !isSelected(node)) {
             nodes.push(node);
         }
     };
@@ -44,6 +49,8 @@ angular.module('opd.treeSelect.services')
     return {
         getSelectedNodes:getSelectedNodes,
         toggleSelection:toggleSelection,
-        addSelectedNodes:addSelectedNodes
+        addSelectedNodes:addSelectedNodes,
+        remove:remove,
+        isSelected: isSelected
     };
 }]);

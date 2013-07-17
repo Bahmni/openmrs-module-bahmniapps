@@ -80,7 +80,7 @@ Bahmni.Opd.TreeSelect.Column = function() {
                     hasSelectableNode = true;
                 }
             });
-            return hasSelectableNode && this.hasFocus();
+            return hasSelectableNode;
         },
 
         hasFocus: function() {
