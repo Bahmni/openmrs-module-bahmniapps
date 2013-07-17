@@ -1,10 +1,10 @@
 <div class="column">
     <ul>
         <li ng-repeat="node in column.getNodes()"
-            ng-click="expandNode(node, column)"
+            ng-click="clickNode(node, column)"
             class="{{getClass(node)}}">{{node.display}} <span class="{{getSelectionClass(node)}}"></span></li>
         <li ng-show="column.hasSelectableItem()"
-            ng-click="toggleNodeSelection(column) "><button>Add</button></li>
+            ng-click="toggleNodeSelection(column)"><button>Add</button></li>
     </ul>
     <ul></ul>
 </div>

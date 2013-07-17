@@ -24,6 +24,14 @@ Bahmni.Opd.TreeSelect.Node = function() {
 
         },
 
+        canAdd: function(){
+          return this.isSelectable() && this.isEnabled();
+        },
+
+        setFocus: function() {
+            this.focus = true;
+        },
+
         getChildren: function(){
             return this.children;
         },
@@ -61,10 +69,12 @@ Bahmni.Opd.TreeSelect.Node = function() {
 
         select: function() {
             this.selected = true;
+            this.selectChildren();
         },
 
         deselect: function() {
             this.selected = false;
+            this.deselectChildren();
         },
 
         _disable: function() {

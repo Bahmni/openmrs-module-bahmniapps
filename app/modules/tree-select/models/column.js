@@ -8,7 +8,13 @@ Bahmni.Opd.TreeSelect.Column = function() {
         setFocus: function(node) {
             this.resetNodes();
             this.currentFocus = node;
-            node.focus = true;
+            node.setFocus()
+        },
+
+        getAllSelectedNodes: function(){
+            return this.nodes.filter(function(node){
+               return node.isSelected();
+            });
         },
 
         resetNodes: function() {
@@ -42,6 +48,12 @@ Bahmni.Opd.TreeSelect.Column = function() {
         toggleSelectionForFocusedNode: function() {
             if(this.currentFocus != null) {
                 this.currentFocus.toggleSelection();
+            }
+        },
+
+        selectFocusedNode: function() {
+            if(this.currentFocus != null) {
+                this.currentFocus.select();
             }
         },
 

@@ -5,38 +5,45 @@ angular.module('opd.treeSelect.services')
 
     var nodes = [];
 
-    var getSelectedNodes = function() {
+    var getSelectedNodes = function () {
         return nodes;
     };
 
-    var toggleSelection = function(node) {
-        if(node == null || node.isDisabled()) {
-            return;
-        }
-        if(_isSelected(node)){
+    var toggleSelection = function (node) {
+        if (_isSelected(node)) {
             _removeNode(node);
-        } else if (node.isSelectable()){
+        } else if (node.canAdd()) {
             _addNode(node);
         }
     }
 
-    var _isSelected = function(node) {
+    var addSelectedNodes = function (column) {
+        var nodes = column.getAllSelectedNodes()
+        nodes.forEach(function (node) {
+            _addNode(node);
+        })
+    }
+
+    var _isSelected = function (node) {
         return nodes.indexOf(node) > -1;
     }
 
-    var _removeNode = function(node){
+    var _removeNode = function (node) {
         var index = nodes.indexOf(node);
-        if(index >= 0){
-            nodes.splice(index,1)
+        if (index >= 0) {
+            nodes.splice(index, 1)
         }
     }
 
-    var _addNode = function(node) {
-        nodes.push(node);
+    var _addNode = function (node) {
+        if (node.canAdd() && !_isSelected(node)) {
+            nodes.push(node);
+        }
     };
 
     return {
-        getSelectedNodes: getSelectedNodes,
-        toggleSelection: toggleSelection
+        getSelectedNodes:getSelectedNodes,
+        toggleSelection:toggleSelection,
+        addSelectedNodes:addSelectedNodes
     };
 }]);

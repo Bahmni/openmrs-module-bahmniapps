@@ -17,9 +17,23 @@ angular.module('opd.treeSelect')
                 $scope.conceptExplorer.focus(node, column);
             }
 
-            $scope.toggleNodeSelection = function() {
-                var selectedNode = $scope.conceptExplorer.toggleSelectionForFocusedNode();
-                nodeSelectionService.toggleSelection(selectedNode);
+            $scope.clickNode = function (node, column){
+
+                $scope.expandNode(node, column);
+                $scope.selectNode(node);
+            }
+
+            $scope.selectNode = function(node) {
+                if(node.isSet){
+                    return;
+                }else{
+                    node.selected = true;
+                }
+            }
+
+            $scope.toggleNodeSelection = function(column) {
+                $scope.conceptExplorer.selectFocusedNode()
+                nodeSelectionService.addSelectedNodes(column);
             }
 
             $scope.getClass = function(node) {

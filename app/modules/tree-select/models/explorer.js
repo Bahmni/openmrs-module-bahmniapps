@@ -64,11 +64,20 @@ Bahmni.Opd.TreeSelect.Explorer = function() {
             this.focus(this.activeColumn.getFocus(), this.activeColumn);
         },
 
+
         toggleSelectionForFocusedNode: function() {
             if(this.activeColumn == null){
                 return null;
             }
             this.activeColumn.toggleSelectionForFocusedNode();
+            return this.activeColumn.getFocus();
+        },
+
+        selectFocusedNode: function() {
+            if(this.activeColumn == null){
+                return null;
+            }
+            this.activeColumn.selectFocusedNode();
             return this.activeColumn.getFocus();
         },
 
@@ -92,6 +101,10 @@ Bahmni.Opd.TreeSelect.Explorer = function() {
 
         getColumns: function(){
             return this.columns;
+        },
+
+        getFocusedNode: function(){
+            return this.activeColumn.getFocus();
         },
 
         isActive: function(column){
