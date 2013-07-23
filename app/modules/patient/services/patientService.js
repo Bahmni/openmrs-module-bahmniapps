@@ -19,7 +19,7 @@ angular.module('registration.patient.services')
         var search = function (query, village) {
             return $http.get(constants.openmrsUrl + "/ws/rest/v1/patient", {
                 method: "GET",
-                params: {q: query, 'city_village': village, v: "custom:(uuid,identifiers:(uuid,identifier),person:(addresses,gender,age,personDateCreated,names:(givenName,familyName)))"},
+                params: {q: query, s: "byIdOrNameOrVillage", 'city_village': village},
                 withCredentials: true
             });
         };
