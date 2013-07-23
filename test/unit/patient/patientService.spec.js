@@ -1,7 +1,7 @@
 'use strict';
 
 describe("patientService", function () {
-    beforeEach(module('opd.patientService'));
+    beforeEach(module('opd.patient'));
 
     var imageUrl = "imgUrl";
     var configurationService = jasmine.createSpyObj('ConfigurationService', ['getImageUrl']);

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('opd.activePatientsListController', ['opd.patientsListService', 'opd.patientService','infinite-scroll'])
+angular.module('opd.patient.controllers')
     .controller('ActivePatientsListController', ['$route', '$scope', '$location', 'PatientsListService', 'PatientService', function ($route, $scope, $location, patientsListService, patientService) {
         $scope.getActivePatientList = function () {
         var queryParameters = $location.search();
@@ -68,6 +68,9 @@ angular.module('opd.activePatientsListController', ['opd.patientsListService', '
         }
     }
 
+    $scope.consultation = function (patient) {
+        return $location.url("/patient/" + patient.uuid + "/" + "consultation");
+    }
 
     $scope.getActivePatientList();
 

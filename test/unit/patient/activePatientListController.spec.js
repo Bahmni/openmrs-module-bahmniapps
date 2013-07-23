@@ -8,8 +8,8 @@ describe("ActivePatientListController", function () {
     var route = {current : {params :{ location : "Ganiyari"}}};
     var patientsList = [{},{},{}];
 
-    beforeEach(angular.mock.module('opd.activePatientsListController'));
-    beforeEach(angular.mock.inject(function () {
+    beforeEach(module('opd.patient'));
+    beforeEach(inject(function () {
         patientService = jasmine.createSpyObj('PatientService', ['constructImageUrl']);
         patientService.constructImageUrl.andReturn("dumb");
 

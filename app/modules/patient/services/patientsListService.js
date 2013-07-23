@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('opd.patientsListService', ['infrastructure.configurationService'])
+angular.module('opd.patient.services')
     .factory('PatientsListService', ['$http', 'ConfigurationService', function ($http, configurationService) {
 
     var getActivePatients = function (queryParameters) {

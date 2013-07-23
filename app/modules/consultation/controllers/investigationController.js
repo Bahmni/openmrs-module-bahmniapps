@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('opd.investigationController', [])
+angular.module('opd.consultation.controllers')
     .controller('InvestigationController', ['$scope', 'nodeSelectionService', function ($scope, nodeSelectionService) {
 
         $scope.tabs = [
@@ -23,4 +23,8 @@ angular.module('opd.investigationController', [])
         $scope.selectedNodes = nodeSelectionService.getSelectedNodes();
 
         $scope.activateTab($scope.tabs[0]);
+
+        $scope.$on('$destroy', function() {
+            console.log("Nodes:" + $scope.selectedNodes.length);
+        });
     }]);

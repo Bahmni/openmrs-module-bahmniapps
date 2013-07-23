@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('infrastructure.configurationService', [])
+angular.module('opd.infrastructure.services')
     .factory('ConfigurationService', ['$http', '$rootScope', function ($http) {
 
     var bahmniPatientBaseUrl = "";

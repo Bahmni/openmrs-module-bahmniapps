@@ -1,12 +1,12 @@
 'use strict';
 
-describe("navigationController", function () {
+describe("ConsultationNavigationController", function () {
     var configurationService;
     var scope;
     var controller;
 
-    beforeEach(angular.mock.module('navigation.navigationController'));
-    beforeEach(angular.mock.inject(function () {
+    beforeEach(module('opd.consultation'));
+    beforeEach(inject(function () {
         configurationService = jasmine.createSpyObj('ConfigurationService', ['init']);
         var dumb = function(){
             "dumb";
@@ -18,7 +18,7 @@ describe("navigationController", function () {
     var setUp = function(){
         inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
-            controller = $controller('NavigationController',{
+            controller = $controller('ConsultationNavigationController',{
                 $scope : scope,
                 ConfigurationService: configurationService
             });

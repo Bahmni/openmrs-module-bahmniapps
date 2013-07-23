@@ -1,7 +1,7 @@
 'use strict';
 
 describe("configurationService", function () {
-    beforeEach(module('infrastructure.configurationService'));
+    beforeEach(module('opd.infrastructure'));
 
     var configurationList = {"patientImagesUrl":"http://myserver/patient_images"};
     var $http,
