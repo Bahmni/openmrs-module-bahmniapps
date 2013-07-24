@@ -6,7 +6,7 @@ angular.module('opd.infrastructure.services')
     var bahmniPatientBaseUrl = "";
 
     var getAll = function () {
-        return $http.get(constants.bahmniConfigurationUrl, {
+        return $http.get(Bahmni.Opd.Constants.bahmniConfigurationUrl, {
             method:"GET",
             withCredentials:true
         });

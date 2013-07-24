@@ -2,8 +2,9 @@
 
 angular.module('opd.consultation.controllers')
     .controller('InvestigationController', ['$scope', 'nodeSelectionService', function ($scope, nodeSelectionService) {
+       $scope.patient = Bahmni.Opd.currentPatient;
 
-        $scope.tabs = [
+       $scope.tabs = [
             {name: 'Lab', template: 'LabTreeSelect'},
             {name: 'Radiology', template: 'RadiologyTreeSelect'},
             {name: 'Endoscopy', template: 'EndoscopyTreeSelect'},
@@ -25,6 +26,6 @@ angular.module('opd.consultation.controllers')
         $scope.activateTab($scope.tabs[0]);
 
         $scope.$on('$destroy', function() {
-            console.log("Nodes:" + $scope.selectedNodes.length);
+            $scope.patient.drugOrders = $scope.selectedNodes.map(function(node){ return node.data; })
         });
     }]);

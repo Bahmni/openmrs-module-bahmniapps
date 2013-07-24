@@ -1,11 +1,13 @@
 Bahmni.Opd.TreeSelect.Node = function() {
     var Node = function(concept, children) {
+        this.data = concept;
+
         this.uuid = concept.uuid;
         this.display = concept.display;
         this.setConceptClass(concept.conceptClass);
         this.isSet = concept.set;
 
-        this.children = (children) ? children : [];
+        this.children = children || [];
         this.focus = false;
         this.selected = false;
         this.enabled = true;

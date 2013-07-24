@@ -34,10 +34,10 @@ angular.module('opd.patient.controllers')
         var windowWidth = window.innerWidth;
         var windowHeight = window.innerHeight;
 
-        var tileWidth = constants.patientTileWidth;
-        var tileHeight = constants.patientTileHeight;
+        var tileWidth = Bahmni.Opd.Constants.patientTileWidth;
+        var tileHeight = Bahmni.Opd.Constants.patientTileHeight;
         $scope.tilesToFit = Math.ceil(windowWidth * windowHeight / (tileWidth * tileHeight));
-        $scope.tilesToLoad =  Math.ceil($scope.tilesToFit*constants.tileLoadRatio);
+        $scope.tilesToLoad =  Math.ceil($scope.tilesToFit*Bahmni.Opd.Constants.tileLoadRatio);
     }
 
 

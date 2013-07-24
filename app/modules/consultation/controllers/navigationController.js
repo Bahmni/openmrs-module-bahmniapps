@@ -6,7 +6,7 @@ angular.module('opd.consultation.controllers')
 
     (function () {
         configurationService.init();
-        $scope.patient = constants.dummyPatient;
+        $scope.patient = Bahmni.Opd.currentPatient;
     })();
 
     $scope.blank = function () {
@@ -39,7 +39,7 @@ angular.module('opd.consultation.controllers')
 
     $scope.onLists = function () {
         var url = $location.url();
-        if (url.search(constants.activePatientsListUrl) !== -1) {
+        if (url.search(Bahmni.Opd.Constants.activePatientsListUrl) !== -1) {
             return true;
         }
         return false;

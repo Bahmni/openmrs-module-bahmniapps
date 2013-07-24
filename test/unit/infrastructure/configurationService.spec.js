@@ -20,7 +20,7 @@ describe("configurationService", function () {
             configurationService.init();
 
             expect(mockHttp.get).toHaveBeenCalled();
-            expect(mockHttp.get.mostRecentCall.args[0]).toBe(constants.bahmniConfigurationUrl);
+            expect(mockHttp.get.mostRecentCall.args[0]).toBe(Bahmni.Opd.Constants.bahmniConfigurationUrl);
             expect(configurationService.getImageUrl()).toBe("http://myserver/patient_images");
         }])
         );
