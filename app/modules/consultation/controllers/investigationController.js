@@ -4,8 +4,8 @@ angular.module('opd.consultation.controllers')
     .controller('InvestigationController', ['$scope', 'nodeSelectionService', function ($scope, nodeSelectionService) {
        $scope.patient = Bahmni.Opd.currentPatient;
 
-       $scope.tabs = [
-            {name: 'Lab', template: 'LabTreeSelect'},
+        $scope.tabs = [
+            {name: 'Laboratory', template: 'LabTreeSelect'},
             {name: 'Radiology', template: 'RadiologyTreeSelect'},
             {name: 'Endoscopy', template: 'EndoscopyTreeSelect'},
             {name: 'Others', template: 'OthersTreeSelect'},
