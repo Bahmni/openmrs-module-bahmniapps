@@ -1,7 +1,14 @@
 <ng-include src="'consultationNavigationTemplate'"></ng-include>
 <div>
     <div class="leftBox">
-        <div class="box" style="height: 250px;" ng-click="investigation()">Investigations</div>
+        <div class="box" style="height: 250px;" ng-click="investigation()">
+            <h1>Investigations</h1>
+            <ul>
+                <li ng-repeat="test in currentConsultation.tests">
+                    {{test.name.display}}
+                </li>
+            </ul>
+        </div>
         <div class="box" style="height: 250px;" ng-click="diagnosis()">Diagnosis</div>
     </div>
 
