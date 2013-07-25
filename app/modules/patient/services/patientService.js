@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('opd.patient.services')
-  .factory('PatientService', ['ConfigurationService', function (configurationService) {
+  .factory('PatientService', ['$rootScope', function ($rootScope) {
     var constructImageUrl = function (identifier) {
-        var imageUrl = configurationService.getImageUrl();
-        return imageUrl + "/" + identifier + ".jpeg";
+        return $rootScope.bahmniConfiguration.patientImagesUrl + "/" + identifier + ".jpeg";
     }
 
     return{

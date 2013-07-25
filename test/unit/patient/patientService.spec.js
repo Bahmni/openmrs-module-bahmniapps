@@ -4,11 +4,10 @@ describe("patientService", function () {
     beforeEach(module('opd.patient'));
 
     var imageUrl = "imgUrl";
-    var configurationService = jasmine.createSpyObj('ConfigurationService', ['getImageUrl']);
-    configurationService.getImageUrl.andReturn(imageUrl);
-
-    beforeEach(module(function ($provide) {
-        $provide.value('ConfigurationService', configurationService);
+    var rootScope;
+    beforeEach(inject(function($injector) {
+        rootScope = $injector.get('$rootScope');
+        rootScope.bahmniConfiguration = { patientImagesUrl: imageUrl }
     }));
 
     describe("constructImgUrl", function () {

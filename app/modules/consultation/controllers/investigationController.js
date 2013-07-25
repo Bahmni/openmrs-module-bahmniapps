@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('opd.consultation.controllers')
-    .controller('InvestigationController', ['$scope', 'nodeSelectionService', function ($scope, nodeSelectionService) {
-       $scope.patient = Bahmni.Opd.currentPatient;
+    .controller('InvestigationController', ['$scope', '$rootScope', 'nodeSelectionService', function ($scope, $rootScope, nodeSelectionService) {
+       $scope.patient = $rootScope.currentPatient;
 
         $scope.tabs = [
             {name: 'Laboratory', template: 'LabTreeSelect'},
@@ -26,6 +26,6 @@ angular.module('opd.consultation.controllers')
         $scope.activateTab($scope.tabs[0]);
 
         $scope.$on('$destroy', function() {
-            $scope.patient.drugOrders = $scope.selectedNodes.map(function(node){ return node.data; })
+            $rootScope.currentConsultation.tests = $scope.selectedNodes.map(function(node){ return node.data; })
         });
     }]);
