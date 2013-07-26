@@ -2,7 +2,7 @@
 
 angular.module('consultation', ['opd.consultation'])
 angular.module('consultation').config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/patient/:patientUuid/consultation', {templateUrl: 'modules/consultation/views/consultation.html', controller: 'ConsultationController', resolve: {initialization: 'initialization'}});
+        $routeProvider.when('/patient/:patientUuid/', {templateUrl: 'modules/consultation/views/consultation.html', controller: 'ConsultationController', resolve: {initialization: 'initialization'}});
         $routeProvider.when('/patient/:patientUuid/diagnosis', {templateUrl: 'modules/consultation/views/addObservation.html', controller: 'DiagnosisController', resolve: {initialization: 'initialization'}});
         $routeProvider.when('/patient/:patientUuid/treatment', {templateUrl: 'modules/consultation/views/addObservation.html', controller: 'TreatmentController', resolve: {initialization: 'initialization'}});
         $routeProvider.when('/patient/:patientUuid/investigation', {templateUrl: 'modules/consultation/views/investigations.html', controller: 'InvestigationController', resolve: {initialization: 'initialization'}});
