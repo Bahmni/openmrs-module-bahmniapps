@@ -13,8 +13,7 @@ angular.module('opd.consultation.controllers')
         	return { conceptUUID: test.uuid }
         });
         consultationService.create(encocounterData).success(function(){
-        	$rootScope.currentConsultation = {};
-        	$location.url(Bahmni.Opd.Constants.activePatientsListUrl);
+        	window.location = Bahmni.Opd.Constants.activePatientsListUrl;
         });
       };      
 }]);

@@ -1,0 +1,14 @@
+'use strict';
+
+angular.module('opd.infrastructure.services')
+    .factory('configurationService', ['$http', '$rootScope', function ($http) {
+      var getAll = function () {
+          return $http.get(Bahmni.Opd.Constants.bahmniConfigurationUrl, {
+              withCredentials: true
+          });
+      };
+
+      return {
+          getAll: getAll,
+      };
+}]);

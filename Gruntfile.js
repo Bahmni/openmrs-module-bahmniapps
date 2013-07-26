@@ -152,7 +152,8 @@ module.exports = function (grunt) {
     //},
     useminPrepare: {
       html: [
-        '<%= yeoman.app %>/*.html',
+        '<%= yeoman.app %>/patients/*.html',
+        '<%= yeoman.app %>/consultation/*.html',
         '<%= yeoman.app %>/modules/**/*.html'
       ],
       css: '<%= yeoman.app %>/styles/.css/**/*.css',
@@ -162,12 +163,12 @@ module.exports = function (grunt) {
     },
     usemin: {
       html: [
-        '<%= yeoman.dist %>/*.html',
-        '<%= yeoman.dist %>/modules/**/*.html',
+        '<%= yeoman.dist %>/patients/**/*.html',
+        '<%= yeoman.dist %>/consultation/**/*.html',
       ],
       css: '<%= yeoman.dist %>/styles/**/*.css',
       options: {
-        dirs: ['<%= yeoman.dist %>']
+        dirs: ['<%= yeoman.dist %>'],
       }
     },
     imagemin: {
@@ -209,8 +210,8 @@ module.exports = function (grunt) {
           expand: true,
           cwd: '<%= yeoman.app %>',
           src: [
-            '*.html',
-            'modules/**/*.html'
+            'patients/**/*.html',
+            'consultation/**/*.html',
           ],
           dest: '<%= yeoman.dist %>'
         }]
@@ -220,9 +221,15 @@ module.exports = function (grunt) {
       dist: {
         files: [{
           expand: true,
-          cwd: '<%= yeoman.dist %>/scripts',
+          cwd: '<%= yeoman.dist %>/patients',
           src: '**/*.js',
-          dest: '<%= yeoman.dist %>/scripts'
+          dest: '<%= yeoman.dist %>/patients'
+        },
+        {
+          expand: true,
+          cwd: '<%= yeoman.dist %>/consultation',
+          src: '**/*.js',
+          dest: '<%= yeoman.dist %>/consultation'
         }]
       }
     },
@@ -251,6 +258,16 @@ module.exports = function (grunt) {
             'lib/**/*'
           ]
         }]
+      },
+    },
+    rename: {
+      minified: {
+        files: [
+          {expand: true, cwd: '<%= yeoman.dist %>', src: ['patients.min.js'], dest: '<%= yeoman.dist %>/patients/'},
+          {expand: true, cwd: '<%= yeoman.dist %>', src: ['consultation.min.js'], dest: '<%= yeoman.dist %>/consultation/'},
+          {expand: true, cwd: '<%= yeoman.dist %>', src: ['patients.min.css'], dest: '<%= yeoman.dist %>/patients/'},
+          {expand: true, cwd: '<%= yeoman.dist %>', src: ['consultation.min.css'], dest: '<%= yeoman.dist %>/consultation/'}
+        ]
       }
     }
   });
@@ -281,11 +298,12 @@ module.exports = function (grunt) {
     'imagemin',
     'htmlmin',
     'cssmin',
-    'copy',
+    'copy:dist',
     'ngmin',
     // Commented since it is breaking angular. Possibly because of $rootScope
     //'uglify',
-    'usemin'
+    'usemin',
+    'rename:minified'
   ]);
 
   grunt.registerTask('build', [

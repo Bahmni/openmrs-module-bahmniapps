@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('opd.patient.controllers')
-    .controller('ActivePatientsListController', ['$route', '$scope', '$location', 'PatientsListService', 'PatientService', function ($route, $scope, $location, patientsListService, patientService) {
+    .controller('ActivePatientsListController', ['$route', '$scope', '$location', '$window','PatientsListService', 'PatientService', function ($route, $scope, $location, $window, patientsListService, patientService) {
         $scope.getActivePatientList = function () {
         var queryParameters = $location.search();
 
@@ -69,7 +69,7 @@ angular.module('opd.patient.controllers')
     }
 
     $scope.consultation = function (patient) {
-        return $location.url("/patient/" + patient.uuid + "/" + "consultation");
+        $window.location = "../consultation/#/patient/" + patient.uuid + "/" + "consultation";
     }
 
     $scope.getActivePatientList();

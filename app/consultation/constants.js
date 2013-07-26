@@ -10,13 +10,9 @@ Bahmni.Opd.dummyPatient = function(patientUUID) { // TODO: Remove this once mapp
 };
 
 Bahmni.Opd.Constants = {
-    bahmniBaseRestUrl: "/openmrs/ws/rest/v1",
     bahmniConfigurationUrl: "/openmrs/ws/rest/v1/bahmnicore/conf",
     encounterConfigurationUrl: "/openmrs/ws/rest/v1/bahmnicore/bahmniencounter/config",
     encounterUrl: "/openmrs/ws/rest/v1/bahmnicore/bahmniencounter",
-    activePatientsListUrl: "/patients/active",
+    activePatientsListUrl: "../patients",
     conceptUrl: "/openmrs/ws/rest/v1/concept",
-    patientTileHeight:100,
-    patientTileWidth:100,
-    tileLoadRatio:1/2,
 };
