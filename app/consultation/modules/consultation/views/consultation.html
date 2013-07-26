@@ -1,29 +1,26 @@
-<div>
-    <div class="leftBox">
-        <div class="box" style="height: 250px;" ng-click="investigation()">
-            <h1>Investigations</h1>
-            <ul>
+<ng-include src="'consultationNavigationTemplate'"></ng-include>
+<article class="consultation">
+    <div class="header-action">
+            <button ng-click="save()" class="confirm">Save</button>
+    </div>
+    <section class="block investigation" ng-click="investigation()"> 
+        <h3>Investigation</h3> 
+        <ul>
                 <li ng-repeat="test in currentConsultation.tests">
                     {{test.name.display}}
                 </li>
-            </ul>
-        </div>
-        <div class="box" style="height: 250px;" ng-click="diagnosis()">Diagnosis</div>
-    </div>
+        </ul> 
+    </section>
+    <section class="block diagnosis"> 
+        <h3>Diagnosis</h3>  
 
-    <div class="rightBox">
-        <div class="box" style="height: 125px">
-            <div class="leftBox">
-                Name : {{patient.name}} <br/>
-                Age: {{patient.age}}years <br/>
-                Village: {{patient.village}} <br/>
-            </div>
-            <div style="display:block;float:right;">
-                    <img src="../images/blank-user.gif">
-            </div>
-        </div>
-        <div class="box" style="height: 375px" ng-click="treatment()">Treatment Advice</div>
-    </div>
-    <div class="box" style="clear: both; height: 150px" ng-click="notes()">Notes</div>
-    <button ng-click="save()" class="button">Save</button>
-</div>
+    </section>
+    <section class="block treatement" ng-click="treatment()">
+        <h3>Treatment</h3>  
+
+    </section>
+    <section class="notes" ng-click="notes()">
+        <textarea placeholder="Notes: " rows="8 " cols="73"></textarea>
+    </section>
+</article>    
+

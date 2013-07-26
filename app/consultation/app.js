@@ -8,7 +8,6 @@ angular.module('consultation').config(['$routeProvider', function ($routeProvide
         $routeProvider.when('/patient/:patientUuid/investigation', {templateUrl: 'modules/consultation/views/investigations.html', controller: 'InvestigationController', resolve: {initialization: 'initialization'}});
         $routeProvider.when('/patient/:patientUuid/notes', {templateUrl: 'modules/consultation/views/notes.html'});
         $routeProvider.when('/patient/:patientUuid/templates', {templateUrl: 'modules/consultation/views/comingSoon.html'});
-        $routeProvider.when('/column' , { templateUrl: 'modules/tree-select/views/tree-selector.html', controller: 'TreeSelectController', resolve: {initialization: 'initialization'}});
         $routeProvider.otherwise({redirectTo: Bahmni.Opd.Constants.activePatientsListUrl});
 }]).run(['$rootScope', function($rootScope){
   $rootScope.currentConsultation = {tests: []};

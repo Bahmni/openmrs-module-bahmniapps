@@ -21,10 +21,13 @@ body{
     }
     .opd-right-panel{
        @include column(9);
+       background:#ffffff;
+        height:950px;
     }
     .sliding-panel{
         @include column(2);
         padding:0px 10px;
+        height:950px;
         background:#00463f;
         li{
             width:160px;
@@ -34,10 +37,10 @@ body{
             .patient-info{
                 width:130px;
                 margin:0px auto;
-            img{
-                display:block;
-                margin-bottom:10px;
-            }
+                img{
+                    display:block;
+                    margin-bottom:10px;
+                }
             } 
             color:#ffffff;
 
