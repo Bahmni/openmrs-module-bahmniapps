@@ -1,11 +1,57 @@
 @charset "UTF-8";
 
+@import "_grid.scss";
+$column-width: 100;
+$gutter-width: 0;
+$columns: 12;
+
+@import "compass";
+@import "compass/reset";
+
+
 body{
     font-family: "OpenSans",Arial,sans-serif;
+    max-width:none;
+}
+.opd-wrapper{
+    margin:0px auto;
+    width:960px;
+    .opd-inner-wrapper{
+        @include pie-clearfix;
+    }
+    .opd-right-panel{
+       @include column(9);
+    }
+    .sliding-panel{
+        @include column(2);
+        padding:0px 10px;
+        background:#00463f;
+        li{
+            width:160px;
+            margin:0px auto;
+            padding:10px 0px;
+            font-size:14px;
+            .patient-info{
+                width:130px;
+                margin:0px auto;
+            img{
+                display:block;
+                margin-bottom:10px;
+            }
+            } 
+            color:#ffffff;
+
+            button{
+                width:160px;
+                font-size:14px;
+                display:block;
+            }
+        }
+}
 }
 
 .box {
-    background-color: #ffffff;
+    background-color: #fff;
     border: 4px solid #000000;
     border-radius: 19px;
     padding: 10px;
@@ -18,14 +64,6 @@ body{
     background-image: -webkit-linear-gradient(top, #848a7d, #fff9f7);
     background-image: linear-gradient(top, #848a7d, #fff9f7);
     background-clip: padding-box;
-}
-.button{
-    height: 40px;
-    width: 150px;
-    margin: 0px;
-    padding: 0px;
-    border-radius: 10px;
-
 }
 .centeredDiv{
     width: 140px;
@@ -68,13 +106,11 @@ body{
 #tabButtonRow {
     margin-bottom: 20px;
     button {
-        height: 40px;
-        width: 100px; 
         margin-right: 20px;
     };
-    .active {
-        background-color: BLUE;
-        color: WHITE;
+    button.active {
+        background: #00463F !important;
+        color: WHITE !important;
     }
 }
 
