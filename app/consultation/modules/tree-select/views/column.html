@@ -2,6 +2,7 @@
     <ul>
         <li ng-repeat="node in column.getNodes()"
             ng-click="clickNode(node, column)"
+            ng-show="node.shouldBeShown()"
             class="{{getClass(node)}}">{{node.display}} <span class="{{getSelectionClass(node)}}"></span></li>
         <li ng-show="column.hasSelectableItem()"
                 ng-click="toggleNodeSelection(column)"><button ng-disabled="!isActive(column)" class="addButton">Add</button></li>

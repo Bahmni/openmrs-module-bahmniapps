@@ -27,7 +27,11 @@ Bahmni.Opd.TreeSelect.Node = function() {
         },
 
         canAdd: function(){
-          return this.isSelectable() && this.isEnabled();
+            return this.isSelectable() && this.isEnabled();
+        },
+
+        shouldBeShown: function(){
+            return !this.isSet || (this.children.length > 0);
         },
 
         setFocus: function() {

@@ -28,6 +28,26 @@ describe("Bahmni.Opd.TreeSelect.Node", function () {
         });
     });
 
+    describe("shouldBeShown", function () {
+        it('should be true when node is not a set', function() {
+            var node = new Node({display: "default concept", set: false, conceptClass: {name: "Misc"}});
+
+            expect(node.shouldBeShown()).toBeTruthy();
+        });
+
+        it('should be true when node is a set and has children', function() {
+            var node = new Node({display: "default concept", set: true, conceptClass: {name: "Misc"}}, [new Node({})]);
+
+            expect(node.shouldBeShown()).toBeTruthy();
+        });
+
+        it('should be false when node is a set and doesnot have children', function() {
+            var node = new Node({display: "default concept", set: true, conceptClass: {name: "Misc"}});
+
+            expect(node.shouldBeShown()).toBeFalsy();
+        });
+    });
+
     describe("toggleSelection", function () {
         it('should select a node', function() {
             var node = new Node({display: "default concept", conceptClass: {name: "Misc"}});
