@@ -15,11 +15,10 @@ $total-width: 100%;
       float:left;
       @include column(6);
       margin-bottom:10px;  
-      &:last-child{
-        .field-attribute{
-            margin-left:20%;
-        }
-      }  
+      //&:last-child{
+      //  .field-attribute{
+      //  }
+      //}
   }
   @include clearfix();
 }

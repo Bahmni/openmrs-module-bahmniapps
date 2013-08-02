@@ -34,6 +34,10 @@ var PatientConfig = (function () {
                     row = [];
                 }
             }
+            if(row.length > 0) {
+                attributeRows.push(row);
+            }
+
             return attributeRows;
         },
 
