@@ -134,7 +134,9 @@ angular.module('registration.patient.controllers')
                     scope.$apply(function (scope) {
                         ngModel.assign(scope, ui.item.value);
                         scope.$eval(attrs.ngChange);
-                        scope[autoCompleteConfig.onSelect](ui.item);
+                        if(autoCompleteConfig.onSelect != null && scope[autoCompleteConfig.onSelect] != null) {
+                            scope[autoCompleteConfig.onSelect](ui.item);
+                        }
                     });
                     return true;
                 },

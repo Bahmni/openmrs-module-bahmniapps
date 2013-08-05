@@ -1,4 +1,21 @@
 var PatientConfig = (function () {
+    var autocompleteConfig = {
+        map: {
+            'caste': {
+                'src': 'getCasteList',
+                'responseMap': 'getDataResults'
+            }
+        },
+
+        configure: function(attributes) {
+            var self = this;
+            attributes.forEach(function(attr) {
+                if(self.map[attr.name] != null) {
+                    attr.autocompleteConfig = self.map[attr.name];
+                }
+            });
+        }
+    }
 
     function PatientConfig(personAttributeTypes) {
         this.personAttributeTypes = personAttributeTypes;
@@ -18,6 +35,7 @@ var PatientConfig = (function () {
                     return item.name != "healthCenter" && item.name != "givenNameLocal" && item.name != "familyNameLocal";
                 });
 
+                autocompleteConfig.configure(attributes);
                 this.attributeRows = this.splitAsRows(attributes);
             }
             return this.attributeRows;
