@@ -140,22 +140,25 @@ module.exports = function (grunt) {
       }
     },
     // All files are currently concatted based on usemin blocks in html
-    //concat: {
-      //dist: {
-        //files: {
-          //'<%= yeoman.dist %>/scripts/scripts.js': [
-            //'<%= yeoman.app %>/scripts/**/*.js',
-            //'<%= yeoman.app %>/modules/**/*.js'
-          //]
-        //}
-      //}
-    //},
+    // concat: {
+    //   dist: {
+    //     files: {
+    //       '<%= yeoman.dist %>/scripts/scripts.js': [
+    //         '<%= yeoman.app %>/scripts/**/*.js',
+    //         '<%= yeoman.app %>/modules/**/*.js'
+    //       ],
+    //       '<%= yeoman.app %>/styles/.css/main.css': [
+    //         '<%= yeoman.app %>/styles/.css/**/*.css',
+    //       ]
+    //     }
+    //   }
+    // },
     useminPrepare: {
       html: [
         '<%= yeoman.app %>/*.html',
         '<%= yeoman.app %>/modules/**/*.html'
       ],
-      css: '<%= yeoman.app %>/styles/.css/**/*.css',
+      // css: '<%= yeoman.app %>/styles/.css/**/*.css',
       options: {
         dest: '<%= yeoman.dist %>'
       }
@@ -165,7 +168,6 @@ module.exports = function (grunt) {
         '<%= yeoman.dist %>/*.html',
         '<%= yeoman.dist %>/modules/**/*.html',
       ],
-      css: '<%= yeoman.dist %>/styles/**/*.css',
       options: {
         dirs: ['<%= yeoman.dist %>']
       }
@@ -181,15 +183,9 @@ module.exports = function (grunt) {
       }
     },
     cssmin: {
-      options: {
-        banner: '/* Bahmni Registration minified CSS file */'
-      },
-      minify: {
-        expand: true,
-        cwd: '<%= yeoman.dist %>/styles/css/',
-        src: ['**/*.css', '!**/*.min.css'],
-        dest: '<%= yeoman.dist %>/styles/css/',
-        ext: '.min.css'
+      print: {
+        src: '<%= yeoman.app %>/styles/.css/print.css',
+        dest: '<%= yeoman.dist %>/styles/css/print.min.css',
       }
     },
     htmlmin: {
