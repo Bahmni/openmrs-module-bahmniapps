@@ -11,7 +11,7 @@ angular.module('infrastructure.printer', [])
                         var code = "<!doctype html>"+
                                     "<html>"+
                                         "<head>" +
-                                            "<link rel=\"stylesheet\" href=\"styles/css/print.min.css\"/>" +
+                                            "<link rel=\"stylesheet\" href=\"styles/css/print.css\"/>" +
                                        "</head>"+
                                         '<body onload="printAndRemove();">' +
                                              document.getElementById(printElementId).innerHTML +
