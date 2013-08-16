@@ -5,6 +5,7 @@ describe('Patient resource', function () {
     var patient;
     var openmrsUrl = "http://blah";
     var patientConfiguration;
+    var bahmniConfiguration;
 
     var mockHttp = {
         defaults: {headers: {common: {'X-Requested-With': 'present'}}},
@@ -30,10 +31,13 @@ describe('Patient resource', function () {
             {"uuid":"d3e6dc74-e796-11e2-852f-0800271c1b75","sortWeight":2.0,"name":"class","description":"Class","format":"org.openmrs.Concept",
                 "answers":[{"description":"OBC","conceptId":"10"}]}]);
 
+        bahmniConfiguration = {"patientImagesUrl" : "http://localhost:8080/patient_images"};
+
         inject(['patientService', '$rootScope', 'patient', function(patientServiceInjectted, $rootScope, patientFactory) {
             patient = patientFactory.create();
             patientService = patientServiceInjectted;
             $rootScope.patientConfiguration = patientConfiguration;
+            $rootScope.bahmniConfiguration = bahmniConfiguration
         }]);
 
     });
@@ -67,4 +71,12 @@ describe('Patient resource', function () {
         expect(mockHttp.post.mostRecentCall.args[2].headers['Accept']).toBe('application/json');
         expect(results).toBe('success');
     });
+
+    it('Should always set the patient image url if patient is remembered', function(){
+        patientService.rememberPatient(patient);
+
+        var rememberedPatient = patientService.getPatient();
+
+        expect(rememberedPatient.image).toContain("http://localhost:8080/patient_images/" + patient.identifier + ".jpeg")
+    })
 });

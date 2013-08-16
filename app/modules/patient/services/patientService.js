@@ -5,7 +5,11 @@ angular.module('registration.patient.services')
         var patient;
 
         var getPatient = function () {
-            return patient ? patient : {};
+            if(patient != undefined){
+                patient.image = $rootScope.bahmniConfiguration.patientImagesUrl + "/" + patient.identifier + ".jpeg" + "?q=" + new Date().getTime();
+                return patient;
+            }
+            return {};
         };
 
         var rememberPatient = function (patientObj) {
