@@ -29,9 +29,10 @@ $total-width: 100%;
     float:left;
     label{
         width:13em;
+        line-height:20px;
         float:left;
         text-align:right;
-        margin:8px 0.8em 10px 0px;
+        margin:8px 0.8em 8px 0px;
     }
   }
   .field-value{
@@ -42,7 +43,7 @@ $total-width: 100%;
     }
     span.text-only{
        display:inline-block;
-       margin:8px 0.8em 10px 0px;
+       margin:8px 5px 8px 5px;
     }
   }
 }
@@ -160,7 +161,7 @@ body{
       margin:2px;
   }
   select{
-        height:32px;
+        height:30px;
   }
   header {
     position: relative;
@@ -425,7 +426,7 @@ video{
 
 /** responsive css **/
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-height: 800px) {
   .reg-wrapper{
     width:1024px;
     .reg-search-wrapper .reg-search {
@@ -444,8 +445,14 @@ video{
         margin-bottom:0px;
       }
     }
+    .form-field .field-attribute label{
+        margin:5px 0.8em 7px 0px;
+    }
+    .form-field .field-value span.text-only{
+        margin:5px 0.8em 7px 8px;
+    }
     .photocontainer-spacing{
-      margin-bottom:42px;
+      margin-bottom:10px;
     }
   }
 }
