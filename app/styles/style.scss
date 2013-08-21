@@ -112,7 +112,6 @@ button[disabled], button[disabled]:hover, button.disabled, button.disabled:hover
     cursor:default;
 }
 
-
 /*** grid form elements css end ***/
 body{   
   width:100%;
@@ -443,6 +442,9 @@ video{
       }
       .form-field{
         margin-bottom:0px;
+      }
+      &.form-field-gender{
+        margin-bottom:4px;
       }
     }
     .form-field .field-attribute label{
