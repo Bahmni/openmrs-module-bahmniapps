@@ -146,15 +146,15 @@
         <div class="field-attribute">
             <label for="{{attribute.name}}">{{attribute.description}}</label>
         </div>
-        <div data-ng-switch on="attribute.format">
-            <div class="field-value" data-ng-switch-when="java.lang.String">
+        <div class="field-value" data-ng-switch on="attribute.format">
+            <div class="left" data-ng-switch-when="java.lang.String">
                 <input ng-show="attribute.autocompleteConfig == null" type="text" id="{{attribute.name}}" placeholder="{{attribute.description}}"
                        ng-model="patient[attribute.name]">
                 <input ng-show="attribute.autocompleteConfig != null" type="text" id="{{attribute.name}}" placeholder="{{attribute.description}}"
                        ng-model="patient[attribute.name]"
                        my-autocomplete="{{attribute.autocompleteConfig}}">
             </div>
-            <div class="field-value" data-ng-switch-when="org.openmrs.Concept">
+            <div class="left" data-ng-switch-when="org.openmrs.Concept">
                 <select id="{{attribute.name}}" ng-model="patient[attribute.name]"
                         ng-options="a.conceptId as a.description for a in attribute.answers">
                 </select>
