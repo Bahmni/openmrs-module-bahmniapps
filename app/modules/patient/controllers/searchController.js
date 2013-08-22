@@ -1,27 +1,34 @@
 'use strict';
 
 angular.module('registration.patient.controllers')
-    .controller('SearchPatientController', ['$scope', 'patientService', '$location', '$window', 'spinner', function ($scope, patientService, $location, $window, spinner) {
+    .controller('SearchPatientController', ['$scope', 'patientService', '$location', '$window', 'spinner', 'loader', function ($scope, patientService, $location, $window, spinner, loader) {
         $scope.centers = constants.centers;
         $scope.centerId = defaults.centerId;
-        $scope.moreResultsPresent = false;
+        $scope.results = [];
 
-        var searchBasedOnQueryParameters = function() {
+        var searchBasedOnQueryParameters = function(offset) {
             $scope.village = $location.search().village || '';
             $scope.name = $location.search().name || '';
             $scope.centerId = $location.search().centerId || defaults.centerId;
             $scope.registrationNumber = $location.search().registrationNumber || "";
             if ($scope.name.trim().length > 0 || $scope.village.trim().length > 0) {
-                var searchPromise = patientService.search($scope.name, $scope.village).success(function (data) {
-                    $scope.results = data.results;
-                    $scope.moreResultsPresent = (data.links ? true : false);
-                    $scope.noResultsMessage = $scope.results.length == 0 ?  "No results found" : null;
-                });
-                spinner.forPromise(searchPromise);
+                var searchPromise = patientService.search($scope.name, $scope.village, offset);
+                loader.forPromise(searchPromise);
+                return searchPromise;
             }
         };
 
-        $scope.$watch(function(){ return $location.search(); }, searchBasedOnQueryParameters);
+        var showSearchResults = function(searchPromise) {
+            $scope.noMoreResultsPresent = false;
+            if(searchPromise) {
+                searchPromise.success(function(data) {
+                    $scope.results = data.results;
+                    $scope.noResultsMessage = $scope.results.length == 0 ?  "No results found" : null;
+                });
+            }
+        };
+
+        $scope.$watch(function(){ return $location.search(); }, function() { showSearchResults(searchBasedOnQueryParameters(0))} );
 
         $scope.searchById = function () {
             if(!$scope.registrationNumber) return;
@@ -58,4 +65,16 @@ angular.module('registration.patient.controllers')
         $scope.editPatient = function (patientUuid) {
             $location.url("/patient/" + patientUuid)
         };
+
+        $scope.nextPage =  function() {
+            setTimeout(function() { // timeout is required on scroll events to work properly
+                var promise = searchBasedOnQueryParameters($scope.results.length);
+                if(promise) {
+                    promise.success(function(data) {
+                        data.results.forEach(function(result) {$scope.results.push(result)});
+                        $scope.noMoreResultsPresent = (data.results.length == 0 ? true : false);
+                    });
+                }
+            }, 100);
+        }
     }]);

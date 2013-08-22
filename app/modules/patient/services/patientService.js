@@ -20,10 +20,11 @@ angular.module('registration.patient.services')
             patient = null;
         };
 
-        var search = function (query, village) {
+        var search = function (query, village, offset) {
+            offset = offset || 0;
             return $http.get(constants.openmrsUrl + "/ws/rest/v1/patient", {
                 method: "GET",
-                params: {q: query, s: "byIdOrNameOrVillage", 'city_village': village},
+                params: {q: query, s: "byIdOrNameOrVillage", 'city_village': village, startIndex: offset},
                 withCredentials: true
             });
         };

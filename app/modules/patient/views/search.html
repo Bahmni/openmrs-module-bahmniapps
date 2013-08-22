@@ -35,46 +35,50 @@
 
         </article>
     </section>
+
     <div class="note-container" ng-show="noResultsMessage">
-    <div class="note warning">
+        <div class="note warning">
             <div class="text">
                     <p>{{noResultsMessage}}</p>     
             </div>
-    </div>
+        </div>
     </div>
     
-    <div class="note-container" ng-show="moreResultsPresent">
-    <div class="note warning">
+    <div infinite-scroll="nextPage()" infinite-scroll-immediate-check="false" infinite-scroll-disabled="noMoreResultsPresent">
+        <table ng-show="resultsPresent()" class="table table-hover">
+            <thead>
+            <tr>
+                <th class="slno_col"><strong>Sl.No</strong></th>
+                <th><strong>ID</strong></th>
+                <th><strong>Name</strong></th>
+                <th><strong>Gender</strong></th>
+                <th><strong>Age</strong></th>
+                <th><strong>Village</strong></th>
+                <th><strong>Registration Date</strong></th>
+                <th class="edit-col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="result in results">
+                <td>{{$index + 1}}</td>
+                <td>{{result.identifier}}</td>
+                <td>{{result.givenName}} {{result.familyName}}</td>
+                <td>{{result.gender}}</td>
+                <td>{{result.age}}</td>
+                <td>{{result.cityVillage}}</td>
+                <td>{{result.dateCreated | date:'dd-MM-yyyy'}}</td>
+                <td class="edit-col"><a ng-click="editPatient(result.uuid)"></a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="loader"></div>
+    <div class="note-container" ng-show="noMoreResultsPresent">
+        <div class="note warning">
             <div class="text">
-                    <p>Displaying first 50 results only. Please refine your search to get more relevant results.</p>     
+                    <p>No more results</p>
             </div>
+        </div>
     </div>
-    </div>
-    <table ng-show="resultsPresent()" class="table table-hover">
-        <thead>
-        <tr>
-            <th class="slno_col"><strong>Sl.No</strong></th>
-            <th><strong>ID</strong></th>
-            <th><strong>Name</strong></th>
-            <th><strong>Gender</strong></th>
-            <th><strong>Age</strong></th>
-            <th><strong>Village</strong></th>
-            <th><strong>Registration Date</strong></th>
-            <th class="edit-col"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="result in results">
-            <td>{{$index + 1}}</td>
-            <td>{{result.identifier}}</td>
-            <td>{{result.givenName}} {{result.familyName}}</td>
-            <td>{{result.gender}}</td>
-            <td>{{result.age}}</td>
-            <td>{{result.cityVillage}}</td>
-            <td>{{result.dateCreated | date:'dd-MM-yyyy'}}</td>
-            <td class="edit-col"><a ng-click="editPatient(result.uuid)"></a></td>
-        </tr>
-        </tbody>
-    </table>
-    <p class="alert" ng-show="moreResultsPresent">Displaying first 50 results only. Please refine your search to get more relevant results.</p>
 </section>

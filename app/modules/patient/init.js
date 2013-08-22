@@ -7,5 +7,5 @@ angular.module('registration.patient.services', ['registration.patient.models', 
 
 angular.module('registration.patient.controllers', ['registration.patient.services', 'registration.patient.models',
 													 'registration.patient.mappers','resources.date','registration.patient.services', 
-													 'infrastructure.spinner', 'registration.photoCapture', 'infrastructure.printer',
-													 'resources.bmi']);
+													 'infrastructure.spinner', 'infrastructure.loader','registration.photoCapture', 
+                                                     'infrastructure.printer', 'resources.bmi', 'infinite-scroll']);

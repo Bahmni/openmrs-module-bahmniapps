@@ -361,6 +361,17 @@ table{
   background-position:center;
 }
 
+#loader {
+  display: none;
+  z-index: 10000;
+  width: 100%;
+  height: 50px;
+  margin-bottom: 20px;
+  background-image:image-url("loader.gif");
+  background-repeat:no-repeat;
+  background-position:center;
+}
+
 .print-layout {
   display: none;
 }

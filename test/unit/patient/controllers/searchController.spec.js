@@ -8,7 +8,8 @@ describe('SearchPatientController', function () {
         location,
         $window,
         $controller,
-        spinner;
+        spinner,
+        loader;
 
     beforeEach(angular.mock.module('registration.patient.controllers'));
     beforeEach(angular.mock.inject(function ($injector) {
@@ -24,12 +25,14 @@ describe('SearchPatientController', function () {
         searchPromise = specUtil.createServicePromise('search');
         patientResource.search.andReturn(searchPromise);
         spinner = jasmine.createSpyObj('spinner', ['show', 'hide', 'forPromise']);
+        loader = jasmine.createSpyObj('loader', ['show', 'hide', 'forPromise']);
         $controller('SearchPatientController', {
             $scope: scope,
             patientService: patientResource,
             $location: location,
             $window: $window,
-            spinner: spinner
+            spinner: spinner,
+            loader: loader
         });
     });
 
@@ -56,7 +59,8 @@ describe('SearchPatientController', function () {
                     $scope: scope,
                     patientService: patientResource,
                     $location: location,
-                    spinner: spinner
+                    spinner: spinner,
+                    loader: loader
                 });
                 urlSearchChangeCallback = scope.$watch.mostRecentCall.args[1];
             });
@@ -91,7 +95,7 @@ describe('SearchPatientController', function () {
 
                 urlSearchChangeCallback();
 
-                expect(spinner.forPromise).toHaveBeenCalledWith(searchPromise);
+                expect(loader.forPromise).toHaveBeenCalledWith(searchPromise);
             });
 
             it('should not search for patients if search parameter is not provided', function() {
