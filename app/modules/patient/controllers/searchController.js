@@ -39,7 +39,7 @@ angular.module('registration.patient.controllers')
             var searchPromise = patientService.search(patientIdentifier).success(function (data) {
                 if (data.results.length > 0) {
                     var patient = data.results[0];
-                    $scope.editPatient(patient.uuid);
+                    $location.url($scope.editPatientUrl(patient.uuid));
                 } else {
                     spinner.hide();
                     $scope.noResultsMessage = "Could not find patient with identifier " + patientIdentifier + ". Please verify the patient ID entered or create a new patient record with this ID."
@@ -62,8 +62,8 @@ angular.module('registration.patient.controllers')
             return angular.isDefined($scope.results) && $scope.results.length > 0;
         };
 
-        $scope.editPatient = function (patientUuid) {
-            $location.url("/patient/" + patientUuid)
+        $scope.editPatientUrl = function (patientUuid) {
+            return "/patient/" + patientUuid;
         };
 
         $scope.nextPage =  function() {
