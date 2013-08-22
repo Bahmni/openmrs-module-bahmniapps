@@ -159,6 +159,14 @@ body{
     p.caution{
       padding:0px;
     }
+    .note-container .note{
+      margin:0px auto 18px auto;
+    }
+    .form-field .field-value{
+      input[type="text"],input[type="password"]{
+        width:15em;
+      }
+    }
 
 }
 /*** login specific css end ***/

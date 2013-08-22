@@ -8,9 +8,13 @@
     
         <form ng-submit="login()" class="" name="loginForm">
         <div class="login-body">
-                <p class="caution" ng-show="errorMessage">
+            <div class="note-container">
+                <div class="note error" ng-show="errorMessage">
+                    <div class="text">
                     {{errorMessage}}
-                </p>
+                </div>
+                </div>
+            </div>
             <div class="form-field">
                 <div class="field-attribute">
                     <label for="username"><strong>Username *</strong></label>
