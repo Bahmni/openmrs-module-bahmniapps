@@ -67,14 +67,20 @@ angular.module('registration.patient.controllers')
         };
 
         $scope.nextPage =  function() {
-            setTimeout(function() { // timeout is required on scroll events to work properly
-                var promise = searchBasedOnQueryParameters($scope.results.length);
-                if(promise) {
-                    promise.success(function(data) {
-                        data.results.forEach(function(result) {$scope.results.push(result)});
-                        $scope.noMoreResultsPresent = (data.results.length == 0 ? true : false);
-                    });
-                }
-            }, 100);
-        }
+            if ($scope.nextPageLoading) {
+                return;
+            }
+            $scope.nextPageLoading = true;
+            var promise = searchBasedOnQueryParameters($scope.results.length);
+            if(promise) {
+                promise.success(function(data) {
+                    data.results.forEach(function(result) {$scope.results.push(result)});
+                    $scope.noMoreResultsPresent = (data.results.length == 0 ? true : false);
+                    $scope.nextPageLoading = false;
+                });
+                promise.error(function(data) {
+                    $scope.nextPageLoading = false;
+                });
+            }
+        };
     }]);
