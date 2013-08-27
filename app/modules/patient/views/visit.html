@@ -4,7 +4,7 @@
 
 <div class="non-printable" xmlns="http://www.w3.org/1999/html">
     <div>
-        <form name="myForm" class="visit-patient">
+        <form name="myForm" class="visit-patient" ng-submit="submit()">
                 <legend class="mylegend"><span><strong>Summary</strong></span></legend>
                     <div class="photo-container-wrapper">
                         <span class="pull-right photo-container">
@@ -105,8 +105,8 @@
                 </div>
                 <div class="right" ng-switch-default>
                     <button type="button" ng-click="back()">Back</button>
-                    <button type="button" ng-disabled="obs.bmi_error" ng-click="saveAndPrint()">Save and Print</button>
-                    <button type="submit" class="confirm" ng-disabled="obs.bmi_error" ng-click="submit()">Save</button>
+                    <button type="submit" ng-disabled="obs.bmi_error" ng-click="submitBtnClicked('savePrint')">Save and Print</button>
+                    <button type="submit" class="confirm" ng-disabled="obs.bmi_error" ng-click="submitBtnClicked('save')" >Save</button>
                 </div>
              </div>   
         </form>

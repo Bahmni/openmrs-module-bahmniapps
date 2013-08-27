@@ -77,12 +77,18 @@ angular.module('registration.patient.controllers')
         }
 
         $scope.submit = function () {
-            if ($scope.patient.isNew) {
+            if($scope.submittedFrom === 'savePrint'){
                 return $scope.saveAndPrint();
             }
-            else {
-                return $scope.validate().then($scope.save).then(patientService.clearPatient).then($scope.moveToNextPage);
+            else{
+                if ($scope.patient.isNew) {
+                    return $scope.saveAndPrint();
+                }
+                else {
+                    return $scope.validate().then($scope.save).then(patientService.clearPatient).then($scope.moveToNextPage);
+                }
             }
+
         };
 
         $scope.saveAndPrint = function () {
@@ -95,6 +101,10 @@ angular.module('registration.patient.controllers')
 
         $scope.printLayout = function () {
             return $route.routes['/printPatient'].templateUrl;
+        };
+
+        $scope.submitBtnClicked = function(name){
+             $scope.submittedFrom = name;
         };
     }])
 
