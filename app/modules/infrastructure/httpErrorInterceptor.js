@@ -14,6 +14,7 @@ angular.module('infrastructure.httpErrorInterceptor', ['registration.patient.mod
             }
 
            function success(response) {
+                $rootScope.server_error = null;
                 return response;
            }
 
@@ -33,6 +34,11 @@ angular.module('infrastructure.httpErrorInterceptor', ['registration.patient.mod
                }
                else if(response.status === 405){
                   showError(unexpecetedError);
+               }
+               else if(response.status === 400){
+                   if($rootScope.server_error === null){
+                   showError("Could not connect to the server. Please check your connection and try again");
+                   }
                }
                return $q.reject(response);
            }
