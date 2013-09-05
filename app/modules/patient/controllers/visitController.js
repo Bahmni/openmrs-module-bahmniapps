@@ -106,6 +106,16 @@ angular.module('registration.patient.controllers')
         $scope.submitBtnClicked = function(name){
              $scope.submittedFrom = name;
         };
+
+        $scope.disableFormSubmitOnEnter = function(){
+            $('.visit-patient').find('input').keypress(function(e){
+                if ( e.which == 13 ) // Enter key = keycode 13
+                {
+                    return false;
+                }
+
+            });
+        };
     }])
 
     .directive('confirmDialog', function ($q) {
