@@ -154,7 +154,8 @@ module.exports = function (grunt) {
       html: [
         '<%= yeoman.app %>/patients/*.html',
         '<%= yeoman.app %>/consultation/*.html',
-        '<%= yeoman.app %>/modules/**/*.html'
+        '<%= yeoman.app %>/modules/**/*.html',
+		'<%= yeoman.app %>/admission/**/*.html'
       ],
       css: '<%= yeoman.app %>/styles/.css/**/*.css',
       options: {
@@ -165,6 +166,7 @@ module.exports = function (grunt) {
       html: [
         '<%= yeoman.dist %>/patients/**/*.html',
         '<%= yeoman.dist %>/consultation/**/*.html',
+		'<%= yeoman.dist %>/admission/**/*.html'
       ],
       css: '<%= yeoman.dist %>/styles/**/*.css',
       options: {
@@ -212,6 +214,7 @@ module.exports = function (grunt) {
           src: [
             'patients/**/*.html',
             'consultation/**/*.html',
+			'admission/**/*.html'
           ],
           dest: '<%= yeoman.dist %>'
         }]
@@ -230,6 +233,12 @@ module.exports = function (grunt) {
           cwd: '<%= yeoman.dist %>/consultation',
           src: '**/*.js',
           dest: '<%= yeoman.dist %>/consultation'
+        },
+		{
+          expand: true,
+          cwd: '<%= yeoman.dist %>/admission',
+          src: '**/*.js',
+          dest: '<%= yeoman.dist %>/admission'
         }]
       }
     },
@@ -265,8 +274,11 @@ module.exports = function (grunt) {
         files: [
           {expand: true, cwd: '<%= yeoman.dist %>', src: ['patients.min.js'], dest: '<%= yeoman.dist %>/patients/'},
           {expand: true, cwd: '<%= yeoman.dist %>', src: ['consultation.min.js'], dest: '<%= yeoman.dist %>/consultation/'},
+		  {expand: true, cwd: '<%= yeoman.dist %>', src: ['admission.min.js'], dest: '<%= yeoman.dist %>/admission/'},
           {expand: true, cwd: '<%= yeoman.dist %>', src: ['patients.min.css'], dest: '<%= yeoman.dist %>/patients/'},
-          {expand: true, cwd: '<%= yeoman.dist %>', src: ['consultation.min.css'], dest: '<%= yeoman.dist %>/consultation/'}
+          {expand: true, cwd: '<%= yeoman.dist %>', src: ['consultation.min.css'], dest: '<%= yeoman.dist %>/consultation/'},
+		  {expand: true, cwd: '<%= yeoman.dist %>', src: ['admission.min.css'], dest: '<%= yeoman.dist %>/admission/'}
+		  
         ]
       }
     }
