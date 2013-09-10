@@ -20,5 +20,4 @@ angular.module('opd.infrastructure.services')
 
             return initializationPromiseDefer.promise;
         }]);
-
-    foo(x,y,z, ['bahmniConfiguration'])
+    
