@@ -4,16 +4,16 @@
 		<fieldset>
 			<p class="input-position-class">
 				<label name="input-id">Patient Id</label>
-				<span>PatientId</span>	
+				<span>{{patient.identifiers[0].identifier}}</span>	
 			</p>
 			<p class="input-position-class">
 				<label name="input-id">Name</label>
-				<span>PatientName</span>&nbsp;<span>PatientLastName</span>
+				<span>{{patient.person.preferredName.display}}</span>
 				<span>Photo</span>
 			</p>
 			<p class="input-position-class">
 				<label name="input-id">Age</label>
-				<span>age</span>
+				<span>{{patient.person.age}}</span>
 			</p>
 			<p class="input-position-class">
 				<label name="input-id">Village</label>
@@ -25,7 +25,7 @@
 			</p>
 			<p class="input-position-class">
 				<label name="input-id">Gender</label>
-				<span>gender</span>
+				<span>{{patient.person.gender}}</span>
 			</p>
 			<p class="input-position-class">
 				<label name="input-id">Select Ward</label>
@@ -40,11 +40,11 @@
 			</p>
 			<p class="input-position-class">
 				<label name="input-id">Notes</label>
-				<textarea placeholder="Text Area"></textarea>
+				<textarea></textarea>
 			</p>
 			<p class="input-position-class">
 				<label name="input-id">Tentative number of days</label>
-				<input placeholder="Number Input" type="number">
+				<input type="number">
 			</p>
 		</fieldset>
 	</form>
