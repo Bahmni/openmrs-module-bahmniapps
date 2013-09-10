@@ -20,15 +20,18 @@
 
             <!-- build:js admission.min.js -->
             <script src="../components/ngInfiniteScroll/ng-infinite-scroll.js"></script>
+
+            <script src="../common/constants.js"></script>
+            <script src="../common/modules/infrastructure/init.js"></script>
+            <script src="../common/modules/infrastructure/services/configurationService.js"></script>
+
             <script src="constants.js"></script>
             <script src="app.js"></script>
+            
+
+
             <script src="modules/admission/init.js"></script>
-            
-            <script src="modules/infrastructure/init.js"></script>
-            <script src="modules/infrastructure/models/encounterConfig.js"></script>
-            <script src="modules/infrastructure/services/initialization.js"></script>
-            <script src="modules/infrastructure/services/configurationService.js"></script>
-            
+            <script src="modules/admission/initialization.js"></script>
             <script src="modules/admission/services/admissionService.js"></script>
             <script src="modules/admission/controllers/admissionController.js"></script>
             <!-- endbuild -->

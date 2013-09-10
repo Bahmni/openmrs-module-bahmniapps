@@ -4,7 +4,7 @@ angular.module('opd.admission.services')
     .factory('admissionService', ['$http', '$rootScope', function ($http, $rootScope) {
         
         var getPatient = function (uuid) {
-            var aPatient = $http.get(Bahmni.Opd.Admission.Constants.openmrsUrl + "/ws/rest/v1/patient/" + uuid, {
+            var aPatient = $http.get(Bahmni.Common.Constants.openmrsUrl + "/ws/rest/v1/patient/" + uuid, {
                 method: "GET",
                 params: {v: "full"},
                 withCredentials: true
