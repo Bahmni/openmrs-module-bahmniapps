@@ -4,28 +4,28 @@
 		<fieldset>
 			<p class="input-position-class">
 				<label name="input-id">Patient Id</label>
-				<span>{{patient.identifiers[0].identifier}}</span>	
+				<span>{{patient.identifier}}</span>
 			</p>
 			<p class="input-position-class">
 				<label name="input-id">Name</label>
-				<span>{{patient.person.preferredName.display}}</span>
-				<span>Photo</span>
+				<span>{{patient.preferedName}}</span>
+				<span><img ng-src="{{patient.image}}" /></span>
 			</p>
 			<p class="input-position-class">
 				<label name="input-id">Age</label>
-				<span>{{patient.person.age}}</span>
+				<span>{{patient.age}}</span>
 			</p>
 			<p class="input-position-class">
 				<label name="input-id">Village</label>
-				<span>village</span>
+				<span>{{patient.address.cityVillage}}</span>
 			</p>
 			<p class="input-position-class">
 				<label name="input-id">Father/husband name</label>
-				<span>father/husband name</span>
+				<span>{{patient.primaryRelative}}</span>
 			</p>
 			<p class="input-position-class">
 				<label name="input-id">Gender</label>
-				<span>{{patient.person.gender}}</span>
+				<span>{{patient.gender}}</span>
 			</p>
 			<p class="input-position-class">
 				<label name="input-id">Select Ward</label>
