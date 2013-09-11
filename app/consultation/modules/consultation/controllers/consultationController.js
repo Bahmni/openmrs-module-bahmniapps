@@ -2,8 +2,6 @@
 
 angular.module('opd.consultation.controllers')
     .controller('ConsultationController', ['$scope', '$rootScope', 'consultationService', '$route', '$location', function ($scope, $rootScope, consultationService, $route, $location) {
-      $scope.patient = $rootScope.currentPatient;
-	  $scope.patient.uuid = $route.current.params.patientUuid; //TODO: Remove this once load patient story is played
 
       $scope.save = function() {
         var encocounterData = {};
@@ -13,7 +11,7 @@ angular.module('opd.consultation.controllers')
         	return { conceptUUID: test.uuid }
         });
         consultationService.create(encocounterData).success(function(){
-        	window.location = Bahmni.Common.Constants.activePatientsListUrl;
+        	window.location = Bahmni.Opd.Constants.activePatientsListUrl;
         });
       };      
 }]);

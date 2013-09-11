@@ -3,7 +3,6 @@
 angular.module('opd.consultation.controllers')
     .controller('ConsultationNavigationController', ['$scope', '$rootScope', '$location', '$route', function ($scope, $rootScope, $location, $route) {
     $scope.mainButtonText = "Consultation";
-    $scope.patient = $rootScope.currentPatient;
 
     $scope.blank = function () {
         return $location.url("/blank");
@@ -34,6 +33,6 @@ angular.module('opd.consultation.controllers')
     }
 
     var buttonClickAction = function (url) {
-        return $location.url("/patient/" + $route.current.params.patientUuid + "/" + url);
+        return $location.url("/visit/" + $rootScope.visit.uuid + "/" + url);
     }
 }]);

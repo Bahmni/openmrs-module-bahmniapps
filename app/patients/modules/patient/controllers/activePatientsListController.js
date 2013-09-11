@@ -66,7 +66,7 @@ angular.module('opd.patient.controllers')
     }
 
     $scope.consultation = function (visit) {
-        $window.location = "../consultation/#/patient/" + visit.patient.uuid;
+        $window.location = "../consultation/#/visit/" + visit.uuid;
     }
 
     $scope.getactivePatients();

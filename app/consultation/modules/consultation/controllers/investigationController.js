@@ -2,8 +2,6 @@
 
 angular.module('opd.consultation.controllers')
     .controller('InvestigationController', ['$scope', '$rootScope', 'nodeSelectionService', function ($scope, $rootScope, nodeSelectionService) {
-       $scope.patient = $rootScope.currentPatient;
-
         $scope.tabs = [
             {name: 'Laboratory', template: 'LabTreeSelect'},
             {name: 'Radiology', template: 'RadiologyTreeSelect'},
