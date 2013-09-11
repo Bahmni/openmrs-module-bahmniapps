@@ -1,30 +1,37 @@
 'use strict';
 
 angular.module('opd.patient.controllers')
-    .controller('ActivePatientsListController', ['$route', '$scope', '$location', '$window','PatientsListService', 'PatientService', function ($route, $scope, $location, $window, patientsListService, patientService) {
-        $scope.getActivePatientList = function () {
+    .controller('ActivePatientsListController', ['$route', '$scope', '$location', '$window','VisitService', 'PatientService', function ($route, $scope, $location, $window, visitService, patientService) {
+        $scope.getactivePatients = function () {
         var queryParameters = $location.search();
 
-        patientsListService.getActivePatients(queryParameters).success(function (data) {
-            data.forEach(function (datum) {
-                datum.image = patientService.constructImageUrl(datum.identifier);
+        visitService.getActiveVisits(queryParameters).success(function (data) {
+            $scope.activeVisits = data.results;
+            $scope.activeVisits.forEach(function (visit){
+                var display = visit.patient.display.split(' - ');
+                var identifier = display[0];
+                var name = display[1];
+
+                visit.patient.identifier = identifier;
+                visit.patient.name = name;
+                visit.patient.image = patientService.constructImageUrl(identifier);
             });
-            $scope.activePatientsList = data;
+
             $scope.storeWindowDimensions();
 
-            if($scope.activePatientsList !== undefined){
-                $scope.searchPatientList = $scope.activePatientsList;
-                $scope.visiblePatientsList= $scope.searchPatientList.slice(0,$scope.tilesToFit);
+            if($scope.activeVisits !== undefined){
+                $scope.searchVisits = $scope.activeVisits;
+                $scope.visibleVisits= $scope.searchVisits.slice(0,$scope.tilesToFit);
             }
         });
     }
 
     $scope.loadMore = function() {
-        if($scope.visiblePatientsList !== undefined){
-            var last = $scope.visiblePatientsList.length - 1;
-            if(last <= $scope.searchPatientList.length ){
+        if($scope.visibleVisits !== undefined){
+            var last = $scope.visibleVisits.length - 1;
+            if(last <= $scope.searchVisits.length ){
                 for(var i = 1; i <=$scope.tilesToLoad ; i++) {
-                    $scope.visiblePatientsList.push($scope.searchPatientList[i+last]);
+                    $scope.visibleVisits.push($scope.searchVisits[i+last]);
                 }
             }
         }
@@ -41,38 +48,28 @@ angular.module('opd.patient.controllers')
     }
 
 
-    $scope.matchesNameOrId = function(patient){
-        if(patient !== undefined && patient.name !== undefined && patient.identifier !== undefined ){
-            if($scope.searchParameter === undefined){
-                return true;
-            }
-            if(patient.name.toLowerCase().search($scope.searchParameter.toLowerCase()) >=0
-                || patient.identifier.toLowerCase().search($scope.searchParameter.toLowerCase()) >= 0){
-                return true;
-            }
-
-        }
-        return false;
+    var matchesNameOrId = function(patient){
+        return patient.display.toLowerCase().search($scope.searchParameter.toLowerCase()) !== -1;
     };
 
-    $scope.filterPatientList =     function () {
+    $scope.filterPatientList = function () {
         var searchList = [];
-        $scope.activePatientsList.forEach(   function(item){
-            if($scope.matchesNameOrId(item))  {
-                searchList.push(item);
+        $scope.activeVisits.forEach(function(visit){
+            if(matchesNameOrId(visit.patient))  {
+                searchList.push(visit);
             }
         })
-        $scope.searchPatientList = searchList;
-        if($scope.searchPatientList !== undefined){
-            $scope.visiblePatientsList= $scope.searchPatientList.slice(0,$scope.tilesToFit);
+        $scope.searchVisits = searchList;
+        if($scope.searchVisits !== undefined){
+            $scope.visibleVisits= $scope.searchVisits.slice(0, $scope.tilesToFit);
         }
     }
 
-    $scope.consultation = function (patient) {
-        $window.location = "../consultation/#/patient/" + patient.uuid;
+    $scope.consultation = function (visit) {
+        $window.location = "../consultation/#/patient/" + visit.patient.uuid;
     }
 
-    $scope.getActivePatientList();
+    $scope.getactivePatients();
 
  }]).directive('resize', function ($window) {
         return function (scope,element) {
@@ -83,8 +80,8 @@ angular.module('opd.patient.controllers')
             angular.element($window).bind('resize', function () {
                 scope.$apply(function () {
                     scope.storeWindowDimensions();
-                    if(scope.searchPatientList !== undefined){
-                        scope.visiblePatientsList= scope.searchPatientList.slice(0,scope.tilesToFit);
+                    if(scope.searchVisits !== undefined){
+                        scope.visibleVisits= scope.searchVisits.slice(0,scope.tilesToFit);
                     }
                 });
             });

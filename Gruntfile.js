@@ -113,20 +113,12 @@ module.exports = function (grunt) {
         autoWatch: true,
         singleRun: false
       }
-      // Refer watch:test comment above
-      //unitd: {
-        //configFile: 'test/config/testacular.conf.js',
-        //background: true
-      //}
     },
     compass: {
       options: {
         sassDir: '<%= yeoman.app %>/styles',
         cssDir: '<%= yeoman.app %>/styles/.css',
         imagesDir: '<%= yeoman.app %>/images',
-        // Should be modified to include modules/ as well. String config, not an array.
-        // Have to figure out a way to do this via globbing. The config
-        // is not relevant to us though.
         javascriptsDir: '<%= yeoman.app %>/scripts',
         fontsDir: '<%= yeoman.app %>/styles/fonts',
         importPath: '<%= yeoman.app %>/components',
@@ -139,17 +131,6 @@ module.exports = function (grunt) {
         }
       }
     },
-    // All files are currently concatted based on usemin blocks in html
-    //concat: {
-      //dist: {
-        //files: {
-          //'<%= yeoman.dist %>/scripts/scripts.js': [
-            //'<%= yeoman.app %>/scripts/**/*.js',
-            //'<%= yeoman.app %>/modules/**/*.js'
-          //]
-        //}
-      //}
-    //},
     useminPrepare: {
       html: [
         '<%= yeoman.app %>/patients/*.html',
@@ -198,15 +179,6 @@ module.exports = function (grunt) {
     htmlmin: {
       dist: {
         options: {
-          /*removeCommentsFromCDATA: true,
-          // https://github.com/yeoman/grunt-usemin/issues/44
-          //collapseWhitespace: true,
-          collapseBooleanAttributes: true,
-          removeAttributeQuotes: true,
-          removeRedundantAttributes: true,
-          useShortDoctype: true,
-          removeEmptyAttributes: true,
-          removeOptionalTags: true*/
         },
         files: [{
           expand: true,
