@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('consultation', ['opd.consultation'])
+angular.module('consultation', ['opd.consultation', 'bahmni.common.infrastructure'])
 angular.module('consultation').config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/patient/:patientUuid/', {templateUrl: 'modules/consultation/views/consultation.html', controller: 'ConsultationController', resolve: {initialization: 'initialization'}});
         $routeProvider.when('/patient/:patientUuid/diagnosis', {templateUrl: 'modules/consultation/views/addObservation.html', controller: 'DiagnosisController', resolve: {initialization: 'initialization'}});
