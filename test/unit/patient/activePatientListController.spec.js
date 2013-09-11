@@ -1,7 +1,7 @@
 'use strict';
 
 describe("ActivePatientListController", function () {
-    var patientService;
+    var patientMapper;
     var scope;
     var controller;
     var visitService;
@@ -14,8 +14,8 @@ describe("ActivePatientListController", function () {
 
     beforeEach(module('opd.patient'));
     beforeEach(inject(function () {
-        patientService = jasmine.createSpyObj('PatientService', ['constructImageUrl']);
-        patientService.constructImageUrl.andReturn("dumb");
+        patientMapper = jasmine.createSpyObj('patientMapper', ['constructImageUrl']);
+        patientMapper.constructImageUrl.andReturn("dumb");
 
         visitService = jasmine.createSpyObj('VisitService', ['getActiveVisits'])
         visitService.getActiveVisits.andReturn({success:function (callBack) {
@@ -28,7 +28,7 @@ describe("ActivePatientListController", function () {
             scope = $rootScope.$new();
             controller = $controller('ActivePatientsListController',{
                 $scope : scope,
-                PatientService: patientService,
+                patientMapper: patientMapper,
                 VisitService : visitService,
                 $route : route
             });
@@ -39,7 +39,7 @@ describe("ActivePatientListController", function () {
         it('should initialize configurations', function () {
             setUp();
             expect(visitService.getActiveVisits).toHaveBeenCalled();
-            expect(patientService.constructImageUrl.callCount).toBe(3);
+            expect(patientMapper.constructImageUrl.callCount).toBe(3);
         });
     });
 

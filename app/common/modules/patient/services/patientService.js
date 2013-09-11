@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.infrastructure.services')
+angular.module('bahmni.common.patient.services')
     .factory('patientService', ['$http', '$rootScope', function ($http, $rootScope) {
         
         var getPatient = function (uuid) {

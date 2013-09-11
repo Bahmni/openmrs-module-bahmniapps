@@ -9,7 +9,7 @@
 			<p class="input-position-class">
 				<label name="input-id">Name</label>
 				<span>{{patient.preferedName}}</span>
-				<span><img ng-src="{{patient.image}}" /></span>
+				<span><img ng-src="{{patient.image}}" id="patient-image" /></span>
 			</p>
 			<p class="input-position-class">
 				<label name="input-id">Age</label>
@@ -25,8 +25,14 @@
 			</p>
 			<p class="input-position-class">
 				<label name="input-id">Gender</label>
-				<span>{{patient.gender}}</span>
+				<span ng-switch on="patient.gender">
+				   <span ng-switch-when="M">Male</span>
+				   <span ng-switch-when="F">Female</span>
+				   <span ng-switch-default>Others</span>
+				</span>
 			</p>
+		</fieldset>
+		<fieldset>
 			<p class="input-position-class">
 				<label name="input-id">Select Ward</label>
 				<span class="select-arrow">

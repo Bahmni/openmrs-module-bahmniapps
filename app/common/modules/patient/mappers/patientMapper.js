@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.infrastructure.mappers')
+angular.module('bahmni.common.patient.mappers')
     .factory('patientMapper', ['$rootScope',
         function ( $rootScope) {
             var getPatientConfigByUuid = function (patientConfig,attributeUuid) {
@@ -11,7 +11,7 @@ angular.module('bahmni.common.infrastructure.mappers')
 
             var mapAttributes = function (patient, attributes) {
                 attributes.forEach(function (attribute) {
-                    var x = getPatientConfigByUuid($rootScope.patientConfig, attribute.attributeType.uuid);
+                    var x = getPatientConfigByUuid($rootScope.patientConfig,attribute.attributeType.uuid);
                     patient[x.name] = attribute.value;
                 });
             };
@@ -52,7 +52,12 @@ angular.module('bahmni.common.infrastructure.mappers')
                 return patient;
             };
 
+            var constructImageUrl = function (identifier) {
+                return $rootScope.bahmniConfiguration.patientImagesUrl + "/" + identifier + ".jpeg";
+            }
+
             return {
-                map: map
+                map: map,
+                constructImageUrl: constructImageUrl
             }
     }]);

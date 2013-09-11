@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('opd.patient.controllers')
-    .controller('ActivePatientsListController', ['$route', '$scope', '$location', '$window','VisitService', 'PatientService', function ($route, $scope, $location, $window, visitService, patientService) {
+    .controller('ActivePatientsListController', ['$route', '$scope', '$location', '$window','VisitService', 'patientMapper', function ($route, $scope, $location, $window, visitService, patientMapper) {
         $scope.getactivePatients = function () {
         var queryParameters = $location.search();
 
@@ -14,7 +14,7 @@ angular.module('opd.patient.controllers')
 
                 visit.patient.identifier = identifier;
                 visit.patient.name = name;
-                visit.patient.image = patientService.constructImageUrl(identifier);
+                visit.patient.image = patientMapper.constructImageUrl(identifier);
             });
 
             $scope.storeWindowDimensions();
