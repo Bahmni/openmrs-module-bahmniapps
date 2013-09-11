@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('opd.admission.controllers')
-    .controller('AdmissionController', ['$scope', 'admissionService','$route','patientMapper',function ($scope,admissionService,$route,patientMapper) {
+    .controller('AdmissionController', ['$scope', 'patientService','$route','patientMapper',function ($scope,patientService,$route,patientMapper) {
             var uuid;
             $scope.patient = {};
             (function () {
                 uuid = $route.current.params.patientUuid;
-                var getPatientPromise = admissionService.getPatient(uuid).success(function (openmrsPatient) {
+                var getPatientPromise = patientService.getPatient(uuid).success(function (openmrsPatient) {
                     $scope.patient = patientMapper.map(openmrsPatient);
                 });
             })();

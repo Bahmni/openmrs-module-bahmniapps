@@ -18,11 +18,11 @@
                         <ul>
                             <li>
                             <div class="patient-info">
-                                <img src="../images/blank-user.gif">
+                                <img class="smallImages" ng-src="{{patient.image}}"  onerror="this.onerror=null;this.src='../images/blank-user.gif';" >
                                 <ul>
                                     <li>Name : {{patient.name}}</li>
-                                    <li>Age: {{patient.age}}years</li>
-                                    <li>Village: {{patient.village}} </li>
+                                    <li>Age: {{patient.age}} years</li>
+                                    <li>Village: {{patient.address.cityVillage}} </li>
                                  </ul>
                             </div>
 
@@ -45,6 +45,8 @@
             <script src="../common/constants.js"></script>
             <script src="../common/modules/infrastructure/init.js"></script>
             <script src="../common/modules/infrastructure/services/configurationService.js"></script>
+            <script src="../common/modules/infrastructure/services/patientService.js"></script>
+            <script src="../common/modules/infrastructure/mappers/patientMapper.js"></script>
 
             <script src="constants.js"></script>
             <script src="app.js"></script>
