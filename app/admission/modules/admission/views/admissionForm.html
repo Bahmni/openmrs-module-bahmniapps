@@ -1,30 +1,30 @@
 <div>
 
-	<form>
+	<form ng-submit="submit()" >
 		<fieldset>
 			<p class="input-position-class">
-				<label name="input-id">Patient Id</label>
+				<label>Patient Id</label>
 				<span>{{patient.identifier}}</span>
 			</p>
 			<p class="input-position-class">
-				<label name="input-id">Name</label>
+				<label>Name</label>
 				<span>{{patient.preferedName}}</span>
 				<span><img ng-src="{{patient.image}}" id="patient-image" /></span>
 			</p>
 			<p class="input-position-class">
-				<label name="input-id">Age</label>
+				<label>Age</label>
 				<span>{{patient.age}}</span>
 			</p>
 			<p class="input-position-class">
-				<label name="input-id">Village</label>
+				<label>Village</label>
 				<span>{{patient.address.cityVillage}}</span>
 			</p>
 			<p class="input-position-class">
-				<label name="input-id">Father/husband name</label>
+				<label >Father/husband name</label>
 				<span>{{patient.primaryRelative}}</span>
 			</p>
 			<p class="input-position-class">
-				<label name="input-id">Gender</label>
+				<label>Gender</label>
 				<span ng-switch on="patient.gender">
 				   <span ng-switch-when="M">Male</span>
 				   <span ng-switch-when="F">Female</span>
@@ -34,25 +34,19 @@
 		</fieldset>
 		<fieldset>
 			<p class="input-position-class">
-				<label name="input-id">Select Ward</label>
-				<span class="select-arrow">
-					<select>
-						<option selected="selected">Select one</option>
-						<option>Cardiology</option>
-						<option>ICU</option>
-						<option>General</option>
-					</select>
-				</span>
+				<label for="advisedWard">Ward</label>
+				<input id="advisedWard" name="advisedWard" type="text" ng-model="advisedWard">
 			</p>
 			<p class="input-position-class">
-				<label name="input-id">Notes</label>
-				<textarea></textarea>
+				<label for="notes">Notes</label>
+				<textarea id="notes" name="notes" ng-model="notes" ></textarea>
 			</p>
 			<p class="input-position-class">
-				<label name="input-id">Tentative number of days</label>
-				<input type="number">
+				<label for="tentativeDays">Tentative number of days</label>
+				<input id="tentativeDays" name="tentativeDays" type="number" ng-model="tentativeDays">
 			</p>
 		</fieldset>
+		<p> <input type="submit" value="Submit" /> </p>
 	</form>
 	
 </div>

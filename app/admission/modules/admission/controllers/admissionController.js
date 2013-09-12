@@ -10,4 +10,17 @@ angular.module('opd.admission.controllers')
                     $scope.patient = patientMapper.map(openmrsPatient);
                 });
             })();
+
+            $scope.submit = function(){
+                var admissionNote = {
+                    tentativeDays: $scope.tentativeDays,
+                    notes: $scope.notes,
+                    advisedWard: $scope.advisedWard
+                };
+
+                console.log(admissionNote);
+
+
+            };
+
     }]);
