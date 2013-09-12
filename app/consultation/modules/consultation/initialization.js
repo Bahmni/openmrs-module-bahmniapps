@@ -10,8 +10,10 @@ angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q'
                                                 $rootScope.patientConfig = configurations.patientConfig;
                                             });;
             
+
             var getVisitAndPatientPromise = visitService.getVisit($route.current.params.visitUuid).success(function(visit){
                 $rootScope.visit = visit;
+                $rootScope.consultation = new Bahmni.Opd.ConsultationMapper($rootScope.encounterConfig).map(visit);
                 return patientService.getPatient(visit.patient.uuid).success(function(openMRSPatient){
                     $rootScope.patient = patientMapper.map(openMRSPatient);
                 });                

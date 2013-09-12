@@ -5,8 +5,8 @@
     <section class="block investigation" ng-click="investigation()"> 
         <h3>Investigation</h3> 
         <ul>
-                <li ng-repeat="test in currentConsultation.tests">
-                    {{test.name.display}}
+                <li ng-repeat="investigation in consultation.investigations">
+                    {{investigation.name}}
                 </li>
         </ul> 
     </section>

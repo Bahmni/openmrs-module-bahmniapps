@@ -24,6 +24,8 @@ angular.module('opd.consultation.controllers')
         $scope.activateTab($scope.tabs[0]);
 
         $scope.$on('$destroy', function() {
-            $rootScope.currentConsultation.tests = $scope.selectedNodes.map(function(node){ return node.data; })
+            $rootScope.consultation.investigations = $scope.selectedNodes.map(function(node){
+                return {uuid: node.data.uuid, name: node.data.name.display }; 
+            });
         });
     }]);
