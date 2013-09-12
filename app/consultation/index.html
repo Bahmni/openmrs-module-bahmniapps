@@ -20,13 +20,15 @@
                             <div class="patient-info">
                                 <img class="smallImages" ng-src="{{patient.image}}"  onerror="this.onerror=null;this.src='../images/blank-user.gif';" >
                                 <ul>
-                                    <li>Name : {{patient.name}}</li>
-                                    <li>Age: {{patient.age}} years</li>
+                                    <li>{{patient.name}}</li>
+                                    <li>{{patient.identifier}}</li>
+                                    <li>{{patient.gender | gender }}, {{patient.age}} years</li>
                                     <li>Village: {{patient.address.cityVillage}} </li>
                                  </ul>
                             </div>
 
                             </li>
+                            <li><button ng-click="dashboard()" class="button">Consultation dashboard</button></li>
                             <li><button ng-click="investigation()" class="button">Investigations</button></li>
                             <li><button ng-click="diagnosis()" class="button">Diagnosis</button></li>
                             <li><button ng-click="treatment()" class="button">Treatment</button></li>
@@ -49,6 +51,7 @@
             <script src="../common/modules/patient/init.js"></script>
             <script src="../common/modules/patient/mappers/patientMapper.js"></script>
             <script src="../common/modules/patient/services/patientService.js"></script>
+            <script src="../common/modules/patient/filters/gender.js"></script>
 
             <script src="constants.js"></script>
             <script src="app.js"></script>

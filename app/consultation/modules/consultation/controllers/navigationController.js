@@ -8,6 +8,10 @@ angular.module('opd.consultation.controllers')
         return $location.url("/blank");
     }
 
+    $scope.dashboard = function () {
+        return buttonClickAction("");
+    }
+
     $scope.treatment = function () {
         return buttonClickAction("treatment");
     }
