@@ -8,7 +8,7 @@ angular.module('opd.consultation.controllers')
     $scope.diagnosisList = [];
 
     $scope.getDiagnosis = function(searchTerm){
-        return diagnosisService.getAllFor(searchTerm, "Diagnosis");
+        return diagnosisService.getAllFor(searchTerm);
     }
 
     $scope.selectItem = function(item){
@@ -40,11 +40,11 @@ angular.module('opd.consultation.controllers')
             source: function (request, response) {
                 scope.getDiagnosis(request.term).success(function(data){
                     response(data.map(
-                        function(addressField){
-                            return {'value': addressField.name,
-                                'datatype': addressField.properties.datatype.name,
-                                'answers': addressField.properties.datatype.properties.answers
+                        function(concept){
+                            if(concept.fullName === undefined){
+                                return { 'value': concept.matchedName }
                             }
+                            return { 'value': concept.matchedName + "=>" + concept.fullName }
                         }
                     ));
                 });
