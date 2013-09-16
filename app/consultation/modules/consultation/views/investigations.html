@@ -4,8 +4,13 @@
         <div>
             <div id="tabButtonRow">
                 <button ng-repeat="tab in tabs" class="{{tab.klass}}" ng-click="activateTab(tab)">{{tab.name}} </button>
+                <!-- TODO: Replace this with ng-if after updating to angular >= 1.1.5 -->
+                <div ng-switch="activeTab">
+                    <div ng-switch-default>
+                        <div tree-selector root-concept-name="activeTab.name"></div>
+                    </div>
+                </div>
             </div>
-            <div ng-include="activeTab.template"></div>
         </div>
     </fieldset>
 </form>
@@ -23,18 +28,3 @@
 </form>
 
 
-<script type="text/ng-template" id="LabTreeSelect">
-    <div tree-selector  root-concept-name="'Laboratory'"></div>
-</script>
-
-<script type="text/ng-template" id="RadiologyTreeSelect">
-    <div tree-selector  root-concept-name="'Radiology'"></div>
-</script>
-
-<script type="text/ng-template" id="EndoscopyTreeSelect">
-    <div tree-selector  root-concept-name="'Endoscopy'"></div>
-</script>
-
-<script type="text/ng-template" id="OthersTreeSelect">
-    <div tree-selector  root-concept-name="'Other'"></div>
-</script>
