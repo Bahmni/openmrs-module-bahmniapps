@@ -1,15 +1,29 @@
 <div>
-    <div style="height:300px;border:2px solid">{{diagnosisList}}</div>
+    <div style="height:300px;border:2px solid">
+        <div id="selectedNodesArea" tabindex="0">
+            <div ng-repeat="diagnosis in diagnosisList" class="selectedNode">
+                {{diagnosis.concept.conceptName}}
+                <span class="icon-remove icon-white " ng-click="removeObservation(diagnosis)"></span>
+                <div>
+                    <label class="checkbox">
+                        <input type="checkbox" value="diagnosis.isPrimary">
+                        Primary
+                    </label>
+                    <label class="checkbox">
+                        <input type="checkbox" value="diagnosis.isConfirmed">
+                        Confirmed
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="centeredDiv">
         <input class="roundedInput" placeholder={{placeholder}} ui-autocomplete id="autoCompleteInput">
+
         <div id="coded">
             <ol ui-selectable>
                 <li ng-repeat="answer in selectedItem.answers">{{answer.name}}</li>
             </ol>
-            <div ng-show="hasAnswers">
-                <button ng-click="addDiagnosis()">ADD</button>
-                <button>DELETE</button>
-            </div>
         </div>
     </div>
 </div>
