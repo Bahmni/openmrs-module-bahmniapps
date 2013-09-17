@@ -20,7 +20,30 @@ body{
     position: relative;
     .opd-inner-wrapper{
         @include pie-clearfix;
+        header{
+            border-radius:0px;
+            padding:2px;
+            .header-logo{
+                background:url("../../images/jss_logo.png") no-repeat left top;
+                padding:10px 0px 7px 40px;
+                float:left;
+            }
+            ul{
+                float:right;
+                li{
+                    margin: 5px 15px 5px 0px;
+                    display: inline-block;
+
+                a{
+                    padding-top:10px;
+                    cursor:pointer;
+                    
+                }
+            }
+            }
+        }
     }
+    
     .opd-content-wrapper{
        background:#ffffff;
        padding:20px 10px 20px 10px;
@@ -98,7 +121,9 @@ body{
     }
 
 }
-
+textarea{
+    width:100%;
+}
 .box {
     background-color: #fff;
     border: 4px solid #000000;
@@ -175,6 +200,7 @@ body{
     margin-right: 10px;
     font: 25px
 }
+
 @media only screen and (max-width: 768px) {
   .opd-wrapper{width:768px;}
  }

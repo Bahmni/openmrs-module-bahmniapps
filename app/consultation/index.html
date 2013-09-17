@@ -13,6 +13,15 @@
     <body>
         <div ng-app="consultation" class="opd-wrapper">
                 <div class="opd-inner-wrapper">
+                <header class="reg-header">
+                        <a class="header-logo" href="#/search">Jan Swasthya Sahyog</a>
+                        <ul>
+                            <li>
+                                <a ng-click="logout()"><i class="icon-off icon-white small"></i><span class="nav-link">Logout</span></a>
+                            </li>
+                        </ul>
+                </header>
+
                 <div class="sliding-panel" ng-controller="ConsultationNavigationController">
                     <div class="sliding-panel-info">
                         <ul class="nav">
