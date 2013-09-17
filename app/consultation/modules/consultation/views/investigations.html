@@ -8,9 +8,9 @@
                 <div ng-switch="activeTab">
                     <div ng-switch-default>
                         <div tree-selector root-concept-name="activeTab.name"
-                                           on-add-nodes="onAddNodes" 
-                                           on-remove-nodes="onRemoveNodes"
-                                           ng-model="consultation.investigations">
+                                           ng-model="consultation.investigations"
+                                           item-mapper="conceptToInvestigationMapper" 
+                                           item-comparer="investigationComparer">
                         </div>
                     </div>
                 </div>

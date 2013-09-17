@@ -26,36 +26,11 @@ angular.module('opd.consultation.controllers')
             }
         }
 
-        var hasInvestigationByUuid = function(uuid) {
-            for(var i=0; i < investigations.length; i++) {
-                if(investigations[i].uuid === uuid) {
-                    return true;
-                }
-            }
-            return false;
+        $scope.investigationComparer = function(investigation1, investigation2) {
+            return investigation1.uuid === investigation2.uuid;
         }
-
-        var removeInvestigationForNode = function(node) {
-            for(var i=0; i < investigations.length; i++) {
-                if(investigations[i].uuid === node.data.uuid) {
-                    investigations.splice(i, 1);
-                    return;
-                }
-            }
+        
+        $scope.conceptToInvestigationMapper = function(concept) {
+            return {uuid: concept.uuid, name: concept.name.display, isSet: concept.set };
         }
-
-        var addInvestigationFromNode = function(node) {
-            var investigation = {uuid: node.data.uuid, name: node.data.name.display, isSet: node.data.isSet }
-            if(!hasInvestigationByUuid(investigation.uuid)){
-                investigations.push(investigation);
-            };
-        } 
-
-        $scope.onAddNodes = function(nodes){
-            nodes.forEach(addInvestigationFromNode);
-        };
-
-        $scope.onRemoveNodes = function(nodes){
-            nodes.forEach(removeInvestigationForNode);
-        };
     }]);

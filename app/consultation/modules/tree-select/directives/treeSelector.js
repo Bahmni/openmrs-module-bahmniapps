@@ -2,13 +2,49 @@
 
 angular.module('opd.treeSelect')
     .directive('treeSelector', ['conceptTreeService', function (conceptTreeService) {
-        var link = function($scope, elem) {
+        var link = function($scope, elem) {            
+            var itemComparer = $scope.itemComparer();
+            var itemMapper = $scope.itemMapper(); 
+
+            var selectedItemshasItem = function(item) {
+                for(var i=0; i < $scope.selectedItems.length; i++) {
+                    if(itemComparer($scope.selectedItems[i], item)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            var removeItemForNode = function(node) {
+                for(var i=0; i < $scope.selectedItems.length; i++) {
+                    if(itemComparer($scope.selectedItems[i], itemMapper(node.data))) {
+                        $scope.selectedItems.splice(i, 1);
+                        return;
+                    }
+                }
+            }
+
+            var addItemFromNode = function(node) {
+                var item = itemMapper(node.data);
+                if(!selectedItemshasItem(item)){
+                    $scope.selectedItems.push(item);
+                };
+            } 
+
+            var onAddNodes = function(nodes){
+                nodes.forEach(addItemFromNode);
+            };
+
+            var onRemoveNodes = function(nodes){
+                nodes.forEach(removeItemForNode);
+            };
+
             (function() {
-                var observer = {onAddNodes: $scope.onAddNodes(), onRemoveNodes: $scope.onRemoveNodes() };
+                var observer = {onAddNodes: onAddNodes, onRemoveNodes: onRemoveNodes};
                 conceptTreeService.getConceptTree($scope.rootConceptName).then(function(conceptTree) {
                     $scope.conceptExplorer = new Bahmni.Opd.TreeSelect.Explorer(conceptTree, observer);
-                    $scope.$watch('ngModel.length', function(){
-                        $scope.conceptExplorer.setSelectedNodesByUuids($scope.ngModel.map(function(item){ return item.uuid; }));
+                    $scope.$watch('selectedItems.length', function(){
+                        $scope.conceptExplorer.setSelectedNodesByUuids($scope.selectedItems.map(function(item){ return item.uuid; }));
                     });
                 });
                 var kbNavigation = Bahmni.Opd.TreeSelect.KeyboardNavigation;
@@ -54,10 +90,10 @@ angular.module('opd.treeSelect')
             link: link,
             require: '^ngModel',
             scope: {
-                ngModel: '=',
+                selectedItems: '=ngModel',
                 rootConceptName: "=",
-                onAddNodes: "&",
-                onRemoveNodes: "&"
+                itemMapper: "&",
+                itemComparer: "&"
             }
         };
     }]);
