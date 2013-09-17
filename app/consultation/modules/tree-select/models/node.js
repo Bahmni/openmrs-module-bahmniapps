@@ -23,6 +23,10 @@ Bahmni.Opd.TreeSelect.Node = function() {
             }
         },
 
+        isSelectableTypeSet: function() {
+            return this.isSelectableType && this.isSet;
+        },
+        
         isSelectable: function(){
             return this.isSelectableType && this.isEnabled();
         },

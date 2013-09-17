@@ -22,9 +22,9 @@
     <fieldset>
         <legend>Review Investigations Ordered</legend>
         <div id="selectedNodesArea" tabindex="0">
-            <span ng-repeat="investigation in consultation.investigations" class="selectedNode">
+            <span ng-repeat="investigation in consultation.investigations" class="selectedNode" ng-class="{panel: investigation.isSet}">
                 {{investigation.name}}
-            <span class="icon-remove icon-white " ng-click="removeInvestigation(investigation)"></span>
+                <span class="icon-remove icon-white" ng-click="removeInvestigation(investigation)"></span>
             </span>
         </div>
     </fieldset>

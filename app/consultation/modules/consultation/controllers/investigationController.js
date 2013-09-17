@@ -45,7 +45,7 @@ angular.module('opd.consultation.controllers')
         }
 
         var addInvestigationFromNode = function(node) {
-            var investigation = {uuid: node.data.uuid, name: node.data.name.display }
+            var investigation = {uuid: node.data.uuid, name: node.data.name.display, isSet: node.data.isSet }
             if(!hasInvestigationByUuid(investigation.uuid)){
                 investigations.push(investigation);
             };

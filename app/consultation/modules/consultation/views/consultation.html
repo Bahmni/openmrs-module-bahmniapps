@@ -5,18 +5,16 @@
     <section class="block investigation" ng-click="investigation()"> 
         <h3>Investigation</h3> 
         <ul>
-                <li ng-repeat="investigation in consultation.investigations">
+                <li ng-repeat="investigation in consultation.investigations" ng-class="{panel: investigation.isSet}">
                     {{investigation.name}}
                 </li>
         </ul> 
     </section>
     <section class="block diagnosis"> 
         <h3>Diagnosis</h3>  
-
     </section>
     <section class="block treatement" ng-click="treatment()">
         <h3>Treatment</h3>  
-
     </section>
     <section class="notes" ng-click="notes()">
         <textarea placeholder="Notes: " rows="6"></textarea>

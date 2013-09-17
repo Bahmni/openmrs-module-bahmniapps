@@ -10,7 +10,7 @@ Bahmni.Opd.ConsultationMapper = function(encounterConfig) {
                 return order.orderType == null;
             });
             investigations = labOrders.map(function(labOrder){
-                return {uuid: labOrder.concept.uuid, name: labOrder.concept.display };
+                return {uuid: labOrder.concept.uuid, name: labOrder.concept.display, isSet: labOrder.concept.set };
             });    
         };                
         
