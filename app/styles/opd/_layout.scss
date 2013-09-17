@@ -12,45 +12,91 @@ $columns: 12;
 body{
     font-family: "OpenSans",Arial,sans-serif;
     max-width:none;
+    height:100%;
 }
 .opd-wrapper{
     margin:0px auto;
     width:960px;
+    position: relative;
     .opd-inner-wrapper{
         @include pie-clearfix;
     }
-    .opd-right-panel{
-       @include column(9);
+    .opd-content-wrapper{
        background:#ffffff;
-        height:950px;
+       padding:20px 10px 20px 10px;
+       height:99%;
     }
     .sliding-panel{
-        @include column(2);
-        padding:0px 10px;
-        height:950px;
-        background:#00463f;
-        li{
-            width:160px;
-            margin:0px auto;
-            padding:10px 0px;
-            font-size:14px;
-            .patient-info{
-                width:130px;
-                margin:0px auto;
-                img{
-                    display:block;
-                    margin-bottom:10px;
-                }
-            } 
-            color:#ffffff;
+        background:#192C04;
+        position:relative;
+        border-bottom:1px solid #cecece;
+        z-index:9999;
+        width:100%;
+        @include background-image(linear-gradient(#ffffff,#fff)); 
+        box-shadow: 0px 2px 5px #888;
+     
 
-            button{
-                width:160px;
+        .menu-drag{
+              width:68px;
+              height:30px;
+              background: #00463f;
+              text-indent:-9999px;
+              display:block;
+              position:absolute;
+              bottom:-31px;
+              right:30px;
+              @include border-bottom-radius(30px);
+              @include background-image(linear-gradient(#fff,#cecece));
+              border:1px solid #cecece;
+              border-top :none; 
+                      box-shadow: 0px 2px 5px #888;
+
+        }
+        .menu-drag-close{
+            @include background-image(linear-gradient(#cecece,#f1f1f1));      
+        }
+        .sliding-panel-info{
+            @include clearfix();
+            padding:0px 10px;
+            .patient-info{
+                padding:10px;
+                float: right;
+                .smallImages{
+                  margin-left:20px;
+                  float: left;
+                 }
+                 ul{
+                    float: left;
+                    li{
+                        padding:6px 0px;
+                        color:#000;
+                        font-size: 14px; 
+                    }
+                 }
+            } 
+        }
+        
+        ul.nav{
+            overflow:hidden;
+            float: left;
+            width: 65%;
+            margin-top:66px;
+            li{
                 font-size:14px;
-                display:block;
+                margin-right:10px;
+                float:left;
+                margin-bottom:10px;
+                button{
+                    color:#000;
+                    padding:10px 10px;
+                    font-size:14px;
+                    display:block;
+                    cursor:pointer;
+                }
             }
         }
-}
+    }
+
 }
 
 .box {
@@ -129,3 +175,6 @@ body{
     margin-right: 10px;
     font: 25px
 }
+@media only screen and (max-width: 768px) {
+  .opd-wrapper{width:768px;}
+ }

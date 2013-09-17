@@ -13,29 +13,28 @@
     <body>
         <div ng-app="consultation" class="opd-wrapper">
                 <div class="opd-inner-wrapper">
-                <aside class="sliding-panel" ng-controller="ConsultationNavigationController">
-                        <div class="login">Signout</div>
-                        <ul>
-                            <li>
-                            <div class="patient-info">
-                                <img class="smallImages" ng-src="{{patient.image}}"  onerror="this.onerror=null;this.src='../images/blank-user.gif';" >
-                                <ul>
-                                    <li>{{patient.name}}</li>
-                                    <li>{{patient.identifier}}</li>
-                                    <li>{{patient.gender | gender }}, {{patient.age}} years</li>
-                                    <li>Village: {{patient.address.cityVillage}} </li>
-                                 </ul>
-                            </div>
-
-                            </li>
-                            <li><button ng-click="dashboard()" class="button">Consultation dashboard</button></li>
-                            <li><button ng-click="investigation()" class="button">Investigations</button></li>
-                            <li><button ng-click="diagnosis()" class="button">Diagnosis</button></li>
-                            <li><button ng-click="treatment()" class="button">Treatment</button></li>
-                            <li><button ng-click="templates()" class="button">Templates</button></li>
+                <div class="sliding-panel" ng-controller="ConsultationNavigationController">
+                    <div class="sliding-panel-info">
+                        <ul class="nav">
+                             <li><button ng-click="dashboard()" class="button">Consultation</button></li>
+                             <li><button ng-click="investigation()" class="button">Investigations</button></li>
+                             <li><button ng-click="diagnosis()" class="button">Diagnosis</button></li>
+                             <li><button ng-click="treatment()" class="button">Treatment</button></li>
                         </ul>
-                </aside>
-                <div ng-view id="view-content" class="opd-right-panel"></div>
+                        <div class="patient-info">                                   
+                                        <ul>
+                                            <li><span>{{patient.name}}</span>q</li>
+                                            <li>{{patient.identifier}},</li>
+                                            <li>{{patient.gender | gender }}, {{patient.age}}</li>
+                                        <li>Village: {{patient.address.cityVillage}} </li>
+                                        </ul>
+                                        <img class="smallImages" ng-src="{{patient.image}}"  onerror="this.onerror=null;this.src='../images/blank-user.gif';" > 
+                        </div>
+                    </div>
+                    <a class="menu-drag">>></a>
+                </div>
+
+                <div ng-view id="view-content" class="opd-content-wrapper"></div>
             </div>
             <script src="../components/jquery/jquery.js"></script>
             <script src="../lib/jquery/jquery-ui-1.10.3.custom.min.js"></script>
@@ -81,5 +80,18 @@
             <script src="modules/consultation/controllers/navigationController.js"></script>
             <!-- endbuild -->
         </div>
+        <script>
+
+$(function(){
+  $(".menu-drag").click(function(){
+    $(".sliding-panel-info").slideToggle('slow',function(){
+      $(".menu-drag").toggleClass("menu-drag-close");
+    });   
+  });
+  $(".nav li").click(function(){
+    $(".sliding-panel-info").slideUp("slow");
+  })
+});
+</script>
     </body>
 </html>
