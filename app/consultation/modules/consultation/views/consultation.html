@@ -30,8 +30,20 @@
     <section class="block treatement" ng-click="treatment()">
         <h3>Treatment</h3>
     </section>
+
+    <section class="block disposition" ng-click="disposition()">
+        <h3>Disposition</h3>
+        <div>
+            {{disposition.dispositionType.name}}
+        </div>
+        <p>
+            {{disposition.dispositionNotes.value}}
+        </p>
+
+    </section>
+
     <section class="notes" ng-click="notes()">
         <textarea placeholder="Notes: " rows="6"></textarea>
     </section>
-</article>    
+</article>
 

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q', '$route', 'configurationService', 'visitService', 'patientService', 'patientMapper',
-        function ($rootScope, $q, $route, configurationService, visitService, patientService, patientMapper) {
+angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q', '$route', 'configurationService', 'visitService', 'patientService', 'patientMapper','dispositionService',
+        function ($rootScope, $q, $route, configurationService, visitService, patientService, patientMapper,dispositionService) {
             var deferrable = $q.defer();
             var configurationsPromise = configurationService.getConfigurations(['bahmniConfiguration', 'encounterConfig', 'patientConfig'])
                                             .then(function(configurations) {
@@ -17,9 +17,16 @@ angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q'
                 return patientService.getPatient(visit.patient.uuid).success(function(openMRSPatient){
                     $rootScope.patient = patientMapper.map(openMRSPatient);
                 });                
-            });                
+            });
 
-            $q.all([configurationsPromise, getVisitAndPatientPromise]).then(function(){
+
+            var getDispositionNoteConceptPromise =  dispositionService.getDispositionNoteConcept().success(function(data){
+                $rootScope.disposition = {
+                    dispositionNoteConcept : data.results[0]
+                };
+            });
+
+            $q.all([configurationsPromise, getVisitAndPatientPromise,getDispositionNoteConceptPromise]).then(function(){
                 deferrable.resolve();
             });
             

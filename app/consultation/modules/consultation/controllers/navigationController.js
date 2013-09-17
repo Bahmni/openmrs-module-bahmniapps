@@ -36,6 +36,11 @@ angular.module('opd.consultation.controllers')
         return buttonClickAction("notes");
     }
 
+    $scope.disposition = function () {
+        return buttonClickAction("disposition");
+    }
+
+
     var buttonClickAction = function (url) {
         return $location.url("/visit/" + $rootScope.visit.uuid + "/" + url);
     }

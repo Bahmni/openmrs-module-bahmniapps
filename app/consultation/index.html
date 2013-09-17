@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.3.custom.min.css">
-        <link rel="stylesheet" href="/openmrs/moduleResources/uicommons/styles/styleguide/styleGuide.css"/>
+        <link rel="stylesheet" href="/openmrs/moduleResources/uicommons/styles/styleguide/index.css"/>
         <!-- build:css consultation.min.css -->
         <link rel="stylesheet" href="../styles/.css/styles.css"/>
         <link rel="stylesheet" href="../styles/.css/treeSelector.css"/>
@@ -19,6 +19,12 @@
                             <li>
                                 <a ng-click="logout()"><i class="icon-off icon-white small"></i><span class="nav-link">Logout</span></a>
                             </li>
+                            <li><button ng-click="dashboard()" class="button">Consultation dashboard</button></li>
+                            <li><button ng-click="investigation()" class="button">Investigations</button></li>
+                            <li><button ng-click="diagnosis()" class="button">Diagnosis</button></li>
+                            <li><button ng-click="treatment()" class="button">Treatment</button></li>
+                            <li><button ng-click="templates()" class="button">Templates</button></li>
+                            <li><button ng-click="disposition()" class="button">Disposition</button></li>
                         </ul>
                 </header>
 
@@ -87,6 +93,8 @@
             <script src="modules/consultation/services/diagnosisService.js"></script>
             <script src="modules/consultation/services/consultationService.js"></script>
             <script src="modules/consultation/services/visitService.js"></script>
+            <script src="modules/consultation/controllers/dispositionController.js"></script>
+            <script src="modules/consultation/services/dispositionService.js"></script>
             <script src="modules/consultation/services/ObservationSelectionService.js"></script>
             <script src="modules/consultation/controllers/navigationController.js"></script>
             <script src="modules/consultation/models/diagnosis.js"></script>

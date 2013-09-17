@@ -21,8 +21,11 @@ angular.module('opd.consultation.controllers')
         encounterData.testOrders = $rootScope.consultation.investigations.map(function (test) {
             return { conceptUUID:test.uuid }
         });
-        consultationService.create(encounterData).success(function () {
-            window.location = Bahmni.Opd.Constants.activePatientsListUrl;
+//          encounterData.testOrders.push($rootScope.disposition.dispositionType.order);
+//          encounterData.observations.push($rootScope.disposition.dispositionNotes);
+
+          consultationService.create(encounterData).success(function(){
+        	window.location = Bahmni.Opd.Constants.activePatientsListUrl;
         });
-    };
+      };      
 }]);
