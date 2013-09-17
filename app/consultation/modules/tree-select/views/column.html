@@ -4,8 +4,10 @@
             ng-click="clickNode(node, column)"
             ng-show="node.shouldBeShown()"
             class="{{getClass(node)}}">
-            {{node.display}} <span class="{{getSelectionClass(node)}}"></span>
             <button ng-show="canAddNode(node)" ng-click="addNode(node)">+</button>
+            <span class="{{getSelectionClass(node)}}"></span>
+            <span class="column-row-label">{{node.display}}</span> 
+            
         </li>
         <li ng-show="column.hasSelectableItem()">
         </li>
