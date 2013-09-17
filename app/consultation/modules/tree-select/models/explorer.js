@@ -66,21 +66,31 @@ Bahmni.Opd.TreeSelect.Explorer = function() {
             this.focus(this.activeColumn.getFocus(), this.activeColumn);
         },
 
-        notifyObserverForNode: function(node) {
-            var observerNotification = node.isSelected() ? this.observer.onAddNodes : this.observer.onRemoveNodes;
-            observerNotification([node]);            
+        notifyNodeAdded: function(node, previouslySelectedChildren) {
+            this.observer.onRemoveNodes(previouslySelectedChildren);            
+            this.observer.onAddNodes([node]);
+        },
+
+        notifyNodeRemoved: function(node) {
+            this.observer.onRemoveNodes([node]);            
         },
         
         selectNode: function(node){
+            var previouslySelectedChildren = node.getSelectedChildren();
             node.select();
-            this.notifyObserverForNode(node);
+            this.notifyNodeAdded(node, previouslySelectedChildren);
         },
         
         toggleSelectionForFocusedNode: function() {            
             var focusedNode = this.getFocusedNode();
             if(focusedNode == null) return;
+            var previouslySelectedChildren = focusedNode.getSelectedChildren();
             focusedNode.toggleSelection();
-            this.notifyObserverForNode(focusedNode);
+            if(focusedNode.isSelected()) {
+                this.notifyNodeAdded(focusedNode, previouslySelectedChildren);
+            } else {
+                this.notifyNodeRemoved(focusedNode);
+            }
         },
 
         canAddNode: function (node){

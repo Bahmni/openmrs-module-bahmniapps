@@ -88,6 +88,11 @@ Bahmni.Opd.TreeSelect.Node = function() {
             this.enabled = true;
         },
 
+        getSelectedChildren: function() {
+            return this.children.filter(function(child) {
+                return child.isSelected();
+            })
+        },
         selectChildren: function() {
             this.children.forEach(function(child) {
                 child.select();
