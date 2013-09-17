@@ -177,6 +177,10 @@ textarea{
     width: 100px;
 }
 
+button[disabled] {
+    background: #F7F7F7;
+}
+
 #tabButtonRow {
     margin-bottom: 20px;
     button {

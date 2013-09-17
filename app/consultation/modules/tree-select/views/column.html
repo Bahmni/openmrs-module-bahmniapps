@@ -3,9 +3,12 @@
         <li ng-repeat="node in column.getNodes()"
             ng-click="clickNode(node, column)"
             ng-show="node.shouldBeShown()"
-            class="{{getClass(node)}}">{{node.display}} <span class="{{getSelectionClass(node)}}"></span></li>
-        <li ng-show="column.hasSelectableItem()"
-                ng-click="toggleNodeSelection(column)"><button ng-disabled="!isActive(column)" class="addButton">Add</button></li>
+            class="{{getClass(node)}}">
+            {{node.display}} <span class="{{getSelectionClass(node)}}"></span>
+            <button ng-show="canAddNode(node)" ng-click="addNode(node)">+</button>
+        </li>
+        <li ng-show="column.hasSelectableItem()">
+        </li>
     </ul>
     <ul></ul>
 </div>

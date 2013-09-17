@@ -1,8 +1,10 @@
 Bahmni.Opd.TreeSelect.Explorer = function() {
-    var Explorer = function(node) {
+    var Explorer = function(node, observer) {
         this.columns = [];
+        this.rootNode = node;
+        this.observer = observer || {onAddNodes: function(){}, onRemoveNodes: function(){} };;
         this.activeColumn = null;
-        if(node != null && node.getChildren() != null && node.getChildren().length > 0){
+        if(node.getChildren() && node.getChildren().length > 0){
             var newColumn = new Bahmni.Opd.TreeSelect.Column(node.getChildren());
             newColumn.setDefaultFocus();
             this.columns.push(newColumn);
@@ -64,21 +66,29 @@ Bahmni.Opd.TreeSelect.Explorer = function() {
             this.focus(this.activeColumn.getFocus(), this.activeColumn);
         },
 
-
-        toggleSelectionForFocusedNode: function() {
-            if(this.activeColumn == null){
-                return null;
-            }
-            this.activeColumn.toggleSelectionForFocusedNode();
-            return this.activeColumn.getFocus();
+        notifyObserverForNode: function(node) {
+            var observerNotification = node.isSelected() ? this.observer.onAddNodes : this.observer.onRemoveNodes;
+            observerNotification([node]);            
+        },
+        
+        selectNode: function(node){
+            node.select();
+            this.notifyObserverForNode(node);
+        },
+        
+        toggleSelectionForFocusedNode: function() {            
+            var focusedNode = this.getFocusedNode();
+            if(focusedNode == null) return;
+            focusedNode.toggleSelection();
+            this.notifyObserverForNode(focusedNode);
         },
 
-        selectFocusedNode: function() {
-            if(this.activeColumn == null){
-                return null;
-            }
-            this.activeColumn.selectFocusedNode();
-            return this.activeColumn.getFocus();
+        canAddNode: function (node){
+            return node.isSelectable() && !node.isSelected();
+        },
+
+        setSelectedNodesByUuids: function(uuids) {
+            this.rootNode.setSelectedNodesByUuids(uuids);
         },
 
         removeAllColumnsToRight: function(column, includeColumn){
@@ -104,7 +114,7 @@ Bahmni.Opd.TreeSelect.Explorer = function() {
         },
 
         getFocusedNode: function(){
-            return this.activeColumn.getFocus();
+            return this.activeColumn ? this.activeColumn.getFocus() : null;
         },
 
         isActive: function(column){

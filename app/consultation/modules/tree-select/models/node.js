@@ -4,8 +4,9 @@ Bahmni.Opd.TreeSelect.Node = function() {
 
         this.uuid = concept.uuid;
         this.display = concept.display;
-        this.setConceptClass(concept.conceptClass);
+        this.conceptClass = concept.conceptClass != null ? concept.conceptClass.name : "";
         this.isSet = concept.set;
+        this.isSelectableType = this.conceptClass === "LabSet" || !this.isSet;
 
         this.children = children || [];
         this.focus = false;
@@ -15,19 +16,15 @@ Bahmni.Opd.TreeSelect.Node = function() {
 
     Node.prototype = {
         toggleSelection: function() {
-            if(this.isSelectable() && this.isEnabled()){
-                this.selected = !this.selected;
-            }
             if(this.isSelected()) {
-                this.selectChildren();
+                this.deselect();
             }else {
-                this.deselectChildren();
+                this.select();
             }
-
         },
 
-        canAdd: function(){
-            return this.isSelectable() && this.isEnabled();
+        isSelectable: function(){
+            return this.isSelectableType && this.isEnabled();
         },
 
         shouldBeShown: function(){
@@ -40,12 +37,6 @@ Bahmni.Opd.TreeSelect.Node = function() {
 
         getChildren: function(){
             return this.children;
-        },
-
-        setConceptClass: function(conceptClass) {
-            if(conceptClass != null) {
-                this.conceptClass = conceptClass.name;
-            }
         },
 
         isSelected: function() {
@@ -64,18 +55,24 @@ Bahmni.Opd.TreeSelect.Node = function() {
             return this.focus;
         },
 
-        isSelectable: function() {
-            if(this.conceptClass == "LabSet"){
-                return true;
-            }else if(!this.isSet){
-                return true;
+        setSelectedNodesByUuids: function(uuids) {
+            if(uuids.indexOf(this.uuid) >= 0) {
+                this.select();
+                return;
             }
-            return false;
+            else {
+                this.deselect();
+                this.children.forEach(function(child){
+                    child.setSelectedNodesByUuids(uuids);
+                });
+            }
         },
 
         select: function() {
-            this.selected = true;
-            this.selectChildren();
+            if(this.isSelectable()) {
+                this.selected = true;
+                this.selectChildren();                
+            }
         },
 
         deselect: function() {

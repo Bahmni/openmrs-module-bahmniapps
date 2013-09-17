@@ -7,21 +7,24 @@
                 <!-- TODO: Replace this with ng-if after updating to angular >= 1.1.5 -->
                 <div ng-switch="activeTab">
                     <div ng-switch-default>
-                        <div tree-selector root-concept-name="activeTab.name"></div>
+                        <div tree-selector root-concept-name="activeTab.name"
+                                           on-add-nodes="onAddNodes" 
+                                           on-remove-nodes="onRemoveNodes"
+                                           ng-model="consultation.investigations">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </fieldset>
 </form>
-
 <form>
     <fieldset>
         <legend>Review Investigations Ordered</legend>
         <div id="selectedNodesArea" tabindex="0">
-            <span ng-repeat="node in selectedNodes" class="selectedNode">
-                {{node.display}}
-            <span class="icon-remove icon-white " ng-click="removeNode(node)"></span>
+            <span ng-repeat="investigation in consultation.investigations" class="selectedNode">
+                {{investigation.name}}
+            <span class="icon-remove icon-white " ng-click="removeInvestigation(investigation)"></span>
             </span>
         </div>
     </fieldset>

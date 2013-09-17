@@ -1,42 +1,19 @@
 Bahmni.Opd.TreeSelect.KeyboardNavigation = {
-    addKeyboardHandlers: function($scope, nodeSelectionService) {
-        KeyboardJS.on("right", onRight);
-        KeyboardJS.on("left", onLeft);
-        KeyboardJS.on("up", onUp);
-        KeyboardJS.on("down", onDown);
-        KeyboardJS.on("enter", selectNode);
-        KeyboardJS.on("space", selectNode);
+    addKeyboardHandlers: function($scope) {
+        function explorerAction(action) {
+            return function() {
+                $scope.conceptExplorer[action]();
+                $scope.$apply();
+                return false;
+            };
+        }       
 
-        function onRight() {
-            $scope.conceptExplorer.expandFocusedNode();
-            $scope.$apply();
-            return false;
-        }
-
-        function onLeft() {
-            $scope.conceptExplorer.backToPreviousColumn();
-            $scope.$apply();
-            return false;
-        }
-
-        function onUp() {
-            $scope.conceptExplorer.focusOnPreviousNode();
-            $scope.$apply();
-            return false;
-        }
-
-        function onDown() {
-            $scope.conceptExplorer.focusOnNextNode();
-            $scope.$apply();
-            return false;
-        }
-
-        function selectNode() {
-            var selectedNode = $scope.conceptExplorer.toggleSelectionForFocusedNode();
-            nodeSelectionService.toggleSelection(selectedNode);
-            $scope.$apply();
-            return false;
-        }
+        KeyboardJS.on("right", explorerAction('expandFocusedNode'));
+        KeyboardJS.on("left", explorerAction('backToPreviousColumn'));
+        KeyboardJS.on("up", explorerAction('focusOnPreviousNode'));
+        KeyboardJS.on("down", explorerAction('focusOnNextNode'));
+        KeyboardJS.on("enter", explorerAction('toggleSelectionForFocusedNode'));
+        KeyboardJS.on("space", explorerAction('toggleSelectionForFocusedNode'));
     },
 
     removeKeyboardHandlers: function() {

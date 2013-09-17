@@ -1,44 +1,33 @@
 'use strict';
 
 angular.module('opd.treeSelect')
-    .directive('treeSelector', ['conceptTreeService', 'nodeSelectionService', function (conceptTreeService, nodeSelectionService) {
+    .directive('treeSelector', ['conceptTreeService', function (conceptTreeService) {
         var link = function($scope, elem) {
             (function() {
+                var observer = {onAddNodes: $scope.onAddNodes(), onRemoveNodes: $scope.onRemoveNodes() };
                 conceptTreeService.getConceptTree($scope.rootConceptName).then(function(conceptTree) {
-                    $scope.conceptExplorer = new Bahmni.Opd.TreeSelect.Explorer(conceptTree);
+                    $scope.conceptExplorer = new Bahmni.Opd.TreeSelect.Explorer(conceptTree, observer);
+                    $scope.$watch('ngModel.length', function(){
+                        $scope.conceptExplorer.setSelectedNodesByUuids($scope.ngModel.map(function(item){ return item.uuid; }));
+                    });
                 });
                 var kbNavigation = Bahmni.Opd.TreeSelect.KeyboardNavigation;
-                $('.opd-tree-selector').focus(function() {kbNavigation.addKeyboardHandlers($scope, nodeSelectionService)});
+                $('.opd-tree-selector').focus(function() {kbNavigation.addKeyboardHandlers($scope)});
                 $('.opd-tree-selector').focusout(function() {kbNavigation.removeKeyboardHandlers()});
                 $('.opd-tree-selector').focus();
+
             })();
 
-            $scope.expandNode = function(node, column) {
+            $scope.clickNode = function (node, column){
                 $scope.conceptExplorer.focus(node, column);
             }
 
-            $scope.clickNode = function (node, column){
-                $scope.expandNode(node, column);
-                $scope.toggleSelection(node);
+            $scope.addNode = function (node){
+                $scope.conceptExplorer.selectNode(node);
             }
 
-            $scope.toggleSelection = function(node) {
-                if(node.isSet || nodeSelectionService.isSelected(node)){
-                    return;
-                }else{
-                    node.toggleSelection();
-                }
-            }
-
-            $scope.toggleNodeSelection = function(column) {
-                if(column.getFocus().isSet)
-                    $scope.conceptExplorer.selectFocusedNode()
-
-                nodeSelectionService.addSelectedNodes(column);
-            }
-
-            $scope.isActive = function(column) {
-                return $scope.conceptExplorer.isActive(column);
+            $scope.canAddNode = function (node){
+                return $scope.conceptExplorer.canAddNode(node);
             }
 
             $scope.getClass = function(node) {
@@ -57,15 +46,18 @@ angular.module('opd.treeSelect')
                 }
                 return "";
             }
-
         };
 
         return {
             restrict: 'A',
             templateUrl: 'modules/tree-select/views/treeSelector.html',
             link: link,
+            require: '^ngModel',
             scope: {
-                rootConceptName: "="
+                ngModel: '=',
+                rootConceptName: "=",
+                onAddNodes: "&",
+                onRemoveNodes: "&"
             }
         };
     }]);

@@ -45,42 +45,20 @@ Bahmni.Opd.TreeSelect.Column = function() {
             }
         },
 
-        toggleSelectionForFocusedNode: function() {
-            if(this.currentFocus != null) {
-                this.currentFocus.toggleSelection();
-            }
-        },
-
-        selectFocusedNode: function() {
-            if(this.currentFocus != null) {
-                this.currentFocus.select();
-            }
-        },
-
         setDefaultFocus: function() {
-            if (this.nodes.length > 0) {
+            if (this.hasNodes()) {
                 this.setFocus(this.nodes[0]);
             }
         },
 
         getDefaultFocus: function() {
-            if (this.nodes.length > 0) {
+            if (this.hasNodes()) {
                 return this.nodes[0];
             }
         },
 
         hasNodes: function() {
             return this.nodes.length > 0;
-        },
-
-        hasSelectableItem: function() {
-            var hasSelectableNode = false;
-            this.nodes.forEach(function(node){
-                if(node.isSelectable() && node.isEnabled()){
-                    hasSelectableNode = true;
-                }
-            });
-            return hasSelectableNode;
         },
 
         hasFocus: function() {
