@@ -11,7 +11,12 @@
         </ul> 
     </section>
     <section class="block diagnosis"> 
-        <h3>Diagnosis</h3>  
+        <h3>Diagnosis</h3>
+        <ul>
+            <li ng-repeat="diagnosis in consultation.diagnoses">
+                {{diagnosis.concept.conceptName}}
+            </li>
+        </ul>
     </section>
     <section class="block treatement" ng-click="treatment()">
         <h3>Treatment</h3>  

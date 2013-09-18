@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('opd.consultation.controllers')
-    .controller('DiagnosisController', ['$scope', 'DiagnosisService', 'observationSelectionService', function ($scope, diagnosisService, observationSelectionService) {
+    .controller('DiagnosisController', ['$scope', '$rootScope', 'DiagnosisService', 'observationSelectionService', function ($scope, $rootScope, diagnosisService, observationSelectionService) {
 
     $scope.placeholder = "Add Diagnosis";
     $scope.hasAnswers = false;
@@ -19,6 +19,12 @@ angular.module('opd.consultation.controllers')
     $scope.removeObservation = function(item){
         observationSelectionService.remove(item);
     }
+
+    $scope.$on('$destroy', function() {
+        $rootScope.consultation.diagnoses = $scope.diagnosisList
+    });
+
+
 }])
 .directive('uiAutocomplete', function () {
     return function (scope, element) {
