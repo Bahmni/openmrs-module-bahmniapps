@@ -101,7 +101,7 @@
             <div class="submit-btn-container" ng-switch on="patient.isNew">
                 <div class="right" ng-switch-when="true">
                     <button type="button" ng-click="back()">Back</button>
-                    <button type="submit" class="confirm" ng-disabled="obs.bmi_error" ng-click="saveAndPrint()">Save and Print</button>
+                    <button type="submit" class="confirm" ng-disabled="obs.bmi_error" ng-click="submitBtnClicked('savePrint')">Save and Print</button>
                 </div>
                 <div class="right" ng-switch-default>
                     <button type="button" ng-click="back()">Back</button>
