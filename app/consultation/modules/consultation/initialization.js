@@ -19,6 +19,9 @@ angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q'
                                                             $rootScope.visit = visit;
                                                             $rootScope.consultation = new Bahmni.Opd.ConsultationMapper($rootScope.encounterConfig).map(visit);
                                                             $rootScope.disposition = new Bahmni.Opd.DispositionMapper($rootScope.encounterConfig, dispositionNoteConcept).map(visit);
+                                                            if (!$rootScope.disposition){
+                                                               $rootScope.disposition ={};
+                                                            }
                                                             $rootScope.disposition.dispositionActions = orders;
                                                             return patientService.getPatient(visit.patient.uuid).success(function(openMRSPatient){
                                                                 $rootScope.patient = patientMapper.map(openMRSPatient);

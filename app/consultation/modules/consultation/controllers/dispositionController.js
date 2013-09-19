@@ -15,9 +15,15 @@ angular.module('opd.consultation.controllers')
                 if($rootScope.disposition.dispositionOrder){
                     $scope.dispositionOrder =  $rootScope.disposition.dispositionOrder.name;
                 }
+                else  {
+                    $rootScope.disposition.dispositionOrder = {}
+                }
 
                 if($rootScope.disposition.dispositionNotes){
                     $scope.dispositionNotes = $rootScope.disposition.dispositionNotes.value;
+                }
+                else  {
+                    $rootScope.disposition.dispositionNotes = {}
                 }
             }
         }
@@ -40,6 +46,7 @@ angular.module('opd.consultation.controllers')
 
             };
         }
+
 
         var syncDispositionNotes = function(){
              $rootScope.disposition.dispositionNotes.value = $scope.dispositionNotes;

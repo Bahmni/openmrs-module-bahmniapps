@@ -28,5 +28,5 @@ angular.module('opd.consultation.controllers')
           consultationService.create(encounterData).success(function(){
         	window.location = Bahmni.Opd.Constants.activePatientsListUrl;
         });
-      };      
+      };
 }]);

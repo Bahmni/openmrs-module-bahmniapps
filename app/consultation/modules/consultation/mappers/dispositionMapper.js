@@ -14,6 +14,9 @@ Bahmni.Opd.DispositionMapper = function(encounterConfig,dispositionNoteConcept) 
             disposition.dispositionNotes = opdEncounter.obs.filter(function(observation){
                 return observation.concept.uuid === dispositionNoteConcept.uuid;
             })
+        }
+        else {
+            return;
         };
 
         var order = {
