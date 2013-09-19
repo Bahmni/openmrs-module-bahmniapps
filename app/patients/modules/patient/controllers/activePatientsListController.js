@@ -2,24 +2,31 @@
 
 angular.module('opd.patient.controllers')
     .controller('ActivePatientsListController', ['$route', '$scope', '$location', '$window','VisitService', 'patientMapper', function ($route, $scope, $location, $window, visitService, patientMapper) {
-        $scope.getactivePatients = function () {
+    
+    $scope.getactivePatients = function () {
         var queryParameters = $location.search();
 
         visitService.getActiveVisits(queryParameters).success(function (data) {
             $scope.activeVisits = data.results;
             $scope.activeVisits.forEach(function (visit){
-                var display = visit.patient.display.split(' - ');
-                var identifier = display[0];
-                var name = display[1];
+                visit.patient.identifier = visit.patient.identifiers[0].identifier;
+                visit.patient.name = visit.patient.names[0].display;
+                visit.patient.display = visit.patient.identifier + " - " + visit.patient.name;
+                visit.patient.image = patientMapper.constructImageUrl(visit.patient.identifier);
+                visit.patient.status = '';
 
-                visit.patient.identifier = identifier;
-                visit.patient.name = name;
-                visit.patient.image = patientMapper.constructImageUrl(identifier);
+                visit.encounters.forEach(function(en) {
+                    en.orders.forEach(function(order) {
+                        if (order.concept.display === 'Anaemia Panel') {
+                            visit.patient.status = 'TO_ADMIT';
+                        }
+                    });
+                });
             });
 
             $scope.storeWindowDimensions();
 
-            if($scope.activeVisits !== undefined){
+            if($scope.activeVisits !== undefined) {
                 $scope.searchVisits = $scope.activeVisits;
                 $scope.searchableVisits = $scope.searchVisits;
                 $scope.visibleVisits= $scope.searchableVisits.slice(0,$scope.tilesToFit);
@@ -75,7 +82,13 @@ angular.module('opd.patient.controllers')
         if ($scope.searchCriteria.type === 'ALL') {
             $scope.searchableVisits = $scope.activeVisits;
         } else {
-            $scope.searchableVisits = $scope.activeVisits.slice(0, 10); //todo
+            var searchList = [];
+            $scope.activeVisits.forEach(function(visit){
+                if( visit.patient.status === 'TO_ADMIT')  {
+                    searchList.push(visit);
+                }
+            });
+            $scope.searchableVisits = searchList;
         }
     }
 

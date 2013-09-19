@@ -7,9 +7,10 @@ describe("ActivePatientListController", function () {
     var visitService;
     var route = {current : {params :{ location : "Ganiyari"}}};
     var visits =  [
-                { patient: {display: "Ram Singh - GAN1234"} },
-                { patient: {display: "Shyam Singh - BAM1234"} },
-                { patient: {display: "Ganesh Singh - SEM1234"}}
+                { patient: {identifiers:[{identifier:'GAN1234'}], names:[{display:   'Ram Singh'}]}, encounters:[] },
+                { patient: {identifiers:[{identifier:'BAM1234'}], names:[{display: 'Shyam Singh'}]}, encounters:[] }, 
+                { patient: {identifiers:[{identifier:'SEM1234'}], names:[{display:'Ganesh Singh'}]}, encounters:[] },
+                { patient: {identifiers:[{identifier:'GAN1235'}], names:[{display:'  Gani Singh'}]}, encounters:[{orders:[{concept:{display:'Anaemia Panel'}}]}] }
             ];
 
     beforeEach(module('opd.patient'));
@@ -39,24 +40,25 @@ describe("ActivePatientListController", function () {
         it('should initialize configurations', function () {
             setUp();
             expect(visitService.getActiveVisits).toHaveBeenCalled();
-            expect(patientMapper.constructImageUrl.callCount).toBe(3);
+            expect(patientMapper.constructImageUrl.callCount).toBe(4);
         });
     });
 
     describe("filterPatientListTest", function () {
         it('should filter the activePatients based on the search text (case insensitive)', function () {
             setUp();
-            scope.searchCriteria.searchParameter = "Gan"
-            scope.activeVisits =
-            [
-                { patient: {display: "Ram Singh - GAN1234"} },
-                { patient: {display: "Shyam Singh - BAM1234"} },
-                { patient: {display: "Ganesh Singh - SEM1234"}}
-            ]
-
+            scope.searchCriteria.searchParameter = "Gan";
+            scope.showPatientsForType('ALL');
             scope.filterPatientList();
-            
-            expect(scope.searchVisits.length).toBe(2);
+            expect(scope.searchVisits.length).toBe(3);
+        });
+
+        it('should filter the activePatients to be admitted based on the search text', function () {
+            setUp();
+            scope.searchCriteria.searchParameter = "Gan";
+            scope.showPatientsForType('TO_ADMIT');
+            scope.filterPatientList();
+            expect(scope.searchVisits.length).toBe(1);
         });
     });
 });
