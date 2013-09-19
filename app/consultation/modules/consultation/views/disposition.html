@@ -4,7 +4,7 @@
     <br/>
     <form ng-submit="submit()">
         <p ng-repeat="dispositionAction in dispositionActions">
-            <input type="radio" ng-model="$parent.dispositionType."  name="dispositionType"  value="{{dispositionAction.name.name}}"  >
+            <input type="radio" ng-model="$parent.dispositionOrder"  name="dispositionOrder"  value="{{dispositionAction.name.name}}"  >
             {{dispositionAction.name.name}}
         </p>
 

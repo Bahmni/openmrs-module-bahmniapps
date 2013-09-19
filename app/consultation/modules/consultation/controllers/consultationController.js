@@ -13,7 +13,8 @@ angular.module('opd.consultation.controllers')
 //        });
 //    };
 
-    $scope.save = function () {
+
+      $scope.save = function() {
         var encounterData = {};
         encounterData.patientUuid = $scope.patient.uuid;
         encounterData.encounterTypeUuid = $rootScope.encounterConfig.getOpdConsultationEncounterUUID();

@@ -8,7 +8,7 @@ angular.module('opd.consultation.services')
          	{ 
          		method:"GET",
          		params: {
-         			v: "custom:(uuid,patient,encounters:(uuid,encounterType,orders:(concept)))"
+                    v: "custom:(uuid,patient,encounters:(uuid,encounterType,orders,obs:(uuid,concept:(uuid,name),value,order:(uuid))))"
          		}
          	}
         );
