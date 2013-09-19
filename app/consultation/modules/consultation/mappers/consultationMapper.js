@@ -7,7 +7,7 @@ Bahmni.Opd.ConsultationMapper = function(encounterConfig) {
         
         if (opdEncounter) {
             var labOrders = opdEncounter.orders.filter(function(order){
-                return order.dispositionOrderType == null;
+                return order.orderType == null;
             });
             investigations = labOrders.map(function(labOrder){
                 return {uuid: labOrder.concept.uuid, name: labOrder.concept.display, isSet: labOrder.concept.set };
