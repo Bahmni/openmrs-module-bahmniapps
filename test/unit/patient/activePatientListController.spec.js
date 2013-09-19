@@ -46,7 +46,7 @@ describe("ActivePatientListController", function () {
     describe("filterPatientListTest", function () {
         it('should filter the activePatients based on the search text (case insensitive)', function () {
             setUp();
-            scope.searchParameter = "Gan"
+            scope.searchCriteria.searchParameter = "Gan"
             scope.activeVisits =
             [
                 { patient: {display: "Ram Singh - GAN1234"} },

@@ -3,9 +3,21 @@
         Active Patients
     </div>
 </header>
+<div class="ui-tabs">
+    <ul>
+        <li ng-class="{'ui-tab-item':true, 'ui-tab-selected':searchCriteria.type=='ALL'}"> 
+            <a href="" ng-click="showPatientsForType('ALL')"> <span>All active patients</span></a> 
+        </li>
+        <li ng-class="{'ui-tab-item':true, 'ui-tab-selected':searchCriteria.type=='TO_ADMIT'}"> 
+            <a href="" ng-click="showPatientsForType('TO_ADMIT')"> <span>Patients to be admitted</span></a> 
+        </li>
+    </ul> 
+</div>
+<div>
+    <input type="text" ng-model="searchCriteria.searchParameter"  ng-change="filterPatientList()"  />
+</div>
 <div resize>
     <div infinite-scroll='loadMore()' >
-        <input type="text" ng-model="searchParameter"  ng-change="filterPatientList()"  />
         <li  ng-repeat="visit in visibleVisits"style="display: inline-block;margin:5px;" ng-click="consultation(visit)">
             <img class="smallImages" ng-src="{{visit.patient.image}}"  onerror="this.onerror=null;this.src='../images/blank-user.gif';" >
             <div class="centered">{{visit.patient.name}}</div>

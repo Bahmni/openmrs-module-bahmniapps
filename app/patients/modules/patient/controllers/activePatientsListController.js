@@ -21,7 +21,9 @@ angular.module('opd.patient.controllers')
 
             if($scope.activeVisits !== undefined){
                 $scope.searchVisits = $scope.activeVisits;
-                $scope.visibleVisits= $scope.searchVisits.slice(0,$scope.tilesToFit);
+                $scope.searchableVisits = $scope.searchVisits;
+                $scope.visibleVisits= $scope.searchableVisits.slice(0,$scope.tilesToFit);
+                $scope.searchCriteria = { searchParameter: '', type: 'ALL'} ;
             }
         });
     }
@@ -49,24 +51,39 @@ angular.module('opd.patient.controllers')
 
 
     var matchesNameOrId = function(patient){
-        return patient.display.toLowerCase().search($scope.searchParameter.toLowerCase()) !== -1;
+        return patient.display.toLowerCase().search($scope.searchCriteria.searchParameter.toLowerCase()) !== -1;
     };
 
     $scope.filterPatientList = function () {
         var searchList = [];
-        $scope.activeVisits.forEach(function(visit){
+        $scope.searchableVisits.forEach(function(visit){
             if(matchesNameOrId(visit.patient))  {
                 searchList.push(visit);
             }
         })
         $scope.searchVisits = searchList;
         if($scope.searchVisits !== undefined){
-            $scope.visibleVisits= $scope.searchVisits.slice(0, $scope.tilesToFit);
+            $scope.visibleVisits = $scope.searchVisits.slice(0, $scope.tilesToFit);
         }
     }
 
     $scope.consultation = function (visit) {
         $window.location = "../consultation/#/visit/" + visit.uuid;
+    }
+
+    var filterPatientListByType = function() {
+        if ($scope.searchCriteria.type === 'ALL') {
+            $scope.searchableVisits = $scope.activeVisits;
+        } else {
+            $scope.searchableVisits = $scope.activeVisits.slice(0, 10); //todo
+        }
+    }
+
+
+    $scope.showPatientsForType = function(type) {
+        $scope.searchCriteria.type = type;
+        filterPatientListByType();
+        $scope.filterPatientList();
     }
 
     $scope.getactivePatients();
