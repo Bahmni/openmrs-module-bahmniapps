@@ -23,22 +23,59 @@ body{
         header{
             border-radius:0px;
             padding:2px;
+            position:relative;
             .header-logo{
                 background:url("../../images/jss_logo.png") no-repeat left top;
                 padding:10px 0px 7px 40px;
                 float:left;
             }
+            button{
+                        background:#447772;
+                        color:#fff;
+                        border:none;
+                        padding-left:10px;
+                        padding-right:10px;
+                        &:hover{
+                            background:#4D9B92;
+                        }
+            }
             ul{
-                float:right;
+                &.header-tabs{
+                    float:left;
+                    margin-top:10px;
+                    
+                    .tabs-selected{
+                        position:relative;
+                        top:3px;
+                        border-bottom-left-radius:0px;
+                        border-bottom-right-radius:0px;
+                        border:none;
+                        background:#fff;
+                        color:#00463f;
+                    }    
+                }
+                &.patient-info{
+                    float:right;    
+                }
                 li{
-                    margin: 5px 15px 5px 0px;
-                    display: inline-block;
+                    padding: 5px 5px 0px 5px;
+                    float:left;
+                    font-size: 14px; 
+                    &.logoff{
+                        margin-top:4px;
+                    }   
                 a{
                     padding-top:10px;
                     cursor:pointer;
                     
+                 }
                 }
-                }
+            }
+            .patient-detail{
+                position:absolute;
+                top:60px;
+                right:10px;
+                color:#F26522;
             }
         }
     }
@@ -140,8 +177,9 @@ textarea{
     width:100%;
 }
 .smallImages{
-    max-height: 100px;
-    width: 100px;
+    height: 40px;
+    width: 40px;
+    border-radius:50%;
 }
 
 button[disabled] {  
