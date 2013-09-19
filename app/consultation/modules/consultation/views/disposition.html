@@ -4,11 +4,9 @@
     <br/>
     <form ng-submit="submit()">
         <p >
-            <select ng-model="dispositionOrder" ng-options="dispositionAction.name.name as dispositionAction.name.name for dispositionAction in dispositionActions" >
+            <select ng-model="dispositionOrder" ng-options="d.name.name as d.name.name for d in dispositionActions" >
 
             </select>
-           <!-- <input type="radio" ng-model="$parent.dispositionOrder"  name="dispositionOrder"  value="{{dispositionAction.name.name}}"  >
-            {{dispositionAction.name.name}}-->
         </p>
 
         <br/>

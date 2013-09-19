@@ -31,6 +31,15 @@ angular.module('opd.consultation.controllers')
 
         var getSelectedDispositionOrder = function(){
             var selectedAction ='';
+            if(!$scope.dispositionActions){
+                return{
+                    order :{
+                        conceptUUID : '',
+                        orderType : ''
+                    },
+                    name : ''
+                };
+            }
             for(var i=0;i< $scope.dispositionActions.length;i++){
                 if($scope.dispositionActions[i].name.name.toLowerCase() === $scope.dispositionOrder.toLowerCase()){
                     selectedAction =   $scope.dispositionActions[i];
