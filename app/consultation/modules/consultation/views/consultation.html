@@ -1,25 +1,34 @@
 <article class="consultation">
     <div class="header-action">
-            <button ng-click="save()" class="confirm">Save</button>
+        <button ng-click="save()" class="confirm">Save</button>
     </div>
-    <section class="block investigation" ng-click="investigation()"> 
-        <h3>Investigation</h3> 
+    <section class="block investigation" ng-click="investigation()">
+        <h3>Investigation</h3>
         <ul>
-                <li ng-repeat="investigation in consultation.investigations" ng-class="{panel: investigation.isSet}">
-                    {{investigation.name}}
-                </li>
-        </ul> 
-    </section>
-    <section class="block diagnosis"> 
-        <h3>Diagnosis</h3>
-        <ul>
-            <li ng-repeat="diagnosis in consultation.diagnoses">
-                {{diagnosis.concept.conceptName}}
+            <li ng-repeat="investigation in consultation.investigations" ng-class="{panel: investigation.isSet}">
+                {{investigation.name}}
             </li>
         </ul>
     </section>
+    <section class="block diagnosis">
+        <h3>Diagnosis</h3>
+        <div style="overflow:hidden">
+            <div style="float:left; width:400px">
+                <h2>Primary Diagnoses</h2>
+                <div ng-repeat="diagnosis in consultation.diagnoses" ng-show="diagnosis.isPrimary">
+                    {{diagnosis.conceptName()}}({{diagnosis.certaintyDisplayValue()}})
+                </div>
+            </div>
+            <div style="float:left; width:400px">
+                <h2>Secondary Diagnoses</h2>
+                <div ng-repeat="diagnosis in consultation.diagnoses" ng-hide="diagnosis.isPrimary">
+                    {{diagnosis.conceptName()}}({{diagnosis.certaintyDisplayValue()}})
+                </div>
+            </div>
+        </div>
+    </section>
     <section class="block treatement" ng-click="treatment()">
-        <h3>Treatment</h3>  
+        <h3>Treatment</h3>
     </section>
     <section class="notes" ng-click="notes()">
         <textarea placeholder="Notes: " rows="6"></textarea>

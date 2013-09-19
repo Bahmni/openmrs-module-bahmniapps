@@ -2,34 +2,36 @@
 
 describe("observationSelectionService", function () {
     beforeEach(module('opd.consultation.services'));
+    var Diagnosis = Bahmni.Opd.Consultation.Diagnosis;
 
     it('should add observation if not already added', inject(['observationSelectionService', function (observationSelectionService) {
-        var observation1 = {concept:{conceptName: "name1"}};
-        var observation2 = {concept:{conceptName: "name2"}};
+        var concept1 = {conceptName: "name1"};
+        var concept2 = {conceptName: "name2"};
 
-        observationSelectionService.addObservation(observation1);
-        expect(observationSelectionService.getSelectedObservations()).toContain(observation1);
+        observationSelectionService.addDiagnosis(concept1);
+        expect(observationSelectionService.getSelectedObservations().length).toBe(1);
+        expect(observationSelectionService.getSelectedObservations()[0].concept).toBe(concept1);
+
+        observationSelectionService.addDiagnosis(concept1);
         expect(observationSelectionService.getSelectedObservations().length).toBe(1);
 
-        observationSelectionService.addObservation(observation1);
-        expect(observationSelectionService.getSelectedObservations().length).toBe(1);
-
-        observationSelectionService.addObservation(observation2);
+        observationSelectionService.addDiagnosis(concept2);
         expect(observationSelectionService.getSelectedObservations().length).toBe(2);
-        expect(observationSelectionService.getSelectedObservations()).toContain(observation2);
+        expect(observationSelectionService.getSelectedObservations()[1].concept).toBe(concept2);
     }]));
 
     it('should remove observation if added', inject(['observationSelectionService', function (observationSelectionService) {
-        var observation1 = {concept:{conceptName: "name1"}};
-        var observation2 = {concept:{conceptName: "name2"}};
+        var concept1 = {conceptName: "name1"};
+        var concept2 = {conceptName: "name2"};
 
-        observationSelectionService.addObservation(observation1);
-        observationSelectionService.addObservation(observation2);
+        observationSelectionService.addDiagnosis(concept1);
+        observationSelectionService.addDiagnosis(concept2);
         expect(observationSelectionService.getSelectedObservations().length).toBe(2);
 
-        observationSelectionService.remove(observation2);
+        var addedDiagnosis = observationSelectionService.getSelectedObservations()[1]
+
+        observationSelectionService.remove(addedDiagnosis);
         expect(observationSelectionService.getSelectedObservations().length).toBe(1);
-        expect(observationSelectionService.getSelectedObservations()).toContain(observation1);
-        expect(observationSelectionService.getSelectedObservations()).not.toContain(observation2);
+        expect(observationSelectionService.getSelectedObservations()[0].concept).toBe(concept1);
     }]));
 });

@@ -12,7 +12,7 @@ angular.module('opd.consultation.controllers')
     }
 
     $scope.selectItem = function (item) {
-        observationSelectionService.addObservation(item);
+        observationSelectionService.addDiagnosis(item.concept);
         $scope.$apply();
     }
 

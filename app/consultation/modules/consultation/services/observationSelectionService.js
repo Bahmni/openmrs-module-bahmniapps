@@ -3,16 +3,16 @@
 angular.module('opd.consultation.services')
     .factory('observationSelectionService', [function () {
 
-    var observations = [];
+    var diagnosisList = [];
 
     var getSelectedObservations = function () {
-        return observations;
+        return diagnosisList;
     };
 
-    var _canAdd = function (node) {
+    var _canAdd = function (diagnosis) {
         var canAdd = true;
-        observations.forEach(function(observation){
-            if(observation.concept.conceptName === node.concept.conceptName){
+        diagnosisList.forEach(function(observation){
+            if(observation.concept.conceptName === diagnosis.concept.conceptName){
                 canAdd = false;
             }
         });
@@ -20,21 +20,22 @@ angular.module('opd.consultation.services')
     }
 
     var removeObservation = function (node) {
-        var index = observations.indexOf(node);
+        var index = diagnosisList.indexOf(node);
         if (index >= 0) {
-            observations.splice(index, 1)
+            diagnosisList.splice(index, 1)
         }
     }
 
-    var addObservation = function (observation) {
-        if (_canAdd(observation)) {
-            observations.push(observation);
+    var addDiagnosis = function (concept) {
+        var diagnosis = new Bahmni.Opd.Consultation.Diagnosis(concept);
+        if (_canAdd(diagnosis)) {
+            diagnosisList.push(diagnosis);
         }
     };
 
     return {
         getSelectedObservations:getSelectedObservations,
-        addObservation:addObservation,
+        addDiagnosis:addDiagnosis,
         remove:removeObservation
     };
 }]);
