@@ -1,0 +1,35 @@
+.treatement{
+	overflow:hidden;
+	.form-field{
+	  .field-attribute{
+	    label{
+	        width:8em;
+	    }
+	   }
+	 }
+	 .button-spacing-left{
+	 	margin-left:8.8em;
+	 }
+	 .treatement-l{
+	 	float:left;
+	 	width:410px;
+	 }
+	 .treatement-r{
+	 	float:left;
+	 	width:500px;
+	 	min-height: 200px;
+	 	.treatment-row{
+	 		padding:10px;
+	 		background:#114B72;
+	 		margin:10px;
+	 		color:#fff;
+	 		border:1px solid #cecece;
+	 		font-size: 14px;
+	 		line-height: 18px;
+	 		span{
+	 			display: inlne-block;
+	 			margin-right:20px;
+	 		}
+	 	}
+	 }
+}

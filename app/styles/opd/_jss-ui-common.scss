@@ -1,0 +1,146 @@
+
+@import "grid";
+@import "compass";
+
+$total-width: 100%;
+@mixin font-size($sizeValue: 1) {
+  font-size: ($sizeValue * 16) + px;
+  font-size: $sizeValue + rem;
+}
+
+body{
+  max-width:1280px;
+  font-size: 100%;
+  line-height: 1.1em;
+}
+/******** form element styling start********/
+form{
+ fieldset{
+  border:none;
+  padding:0px;
+  width:100%;
+}
+.form-field{
+  @include clearfix();
+  .field-attribute{
+    float:left;
+    label{
+        width:13em;
+        float:left;
+        text-align:right;
+        margin:0.5em 0.8em 0em 0em;
+    }
+  }
+  .field-value{
+    float:left;
+     input[type="text"],input[type="password"]{  
+        float:left;
+        width:12.5em;
+    }
+    input[type="number"]{
+        width:8em;
+    }
+    span.value-text-only{
+       display:inline-block;
+       margin:0.5em 0.8em 0em 0em;
+    }
+  }
+}
+.form-field-inline{
+  p{
+    float:left;
+    margin-left:20px;
+    margin-top:10px;
+  }
+}
+.input-prepend{
+  float:left;
+  input{
+      display: inline-block;
+      margin-bottom: 0;
+      vertical-align: middle;
+      float:left;
+      margin:0px !important;
+  }
+  .add-on{
+    @extend input;
+    @include border-radius();  
+    height: 21px;
+    min-width: 17px;
+    padding: 4px 5px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+  }
+
+}
+.input-prepend .add-on:first-child, .input-prepend .btn:first-child {
+  -webkit-border-radius: 4px 0 0 4px;
+  -moz-border-radius: 4px 0 0 4px;
+  border-radius: 4px 0 0 4px;
+}
+.input-prepend .add-on, .input-prepend .btn{
+  margin-right:-1px;
+}
+input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly]{
+  cursor: not-allowed;
+  background-color: #eee;
+  &:focus{
+    cursor: not-allowed;
+    background-color: #eee;
+    outline:none;
+  }
+}
+.form-button-wrapper{
+  margin-top:10px;
+  padding-left:14em;
+}
+}
+.input-mini{@include column(1);}
+.input-small{@include column(2);}
+.input-medium{@include column(4);}
+.input-large{@include column(6);}
+.input-xlarge{@include column(8);}
+.input-xxlarge{@include column(10);}
+textarea{
+  width:426.6px;
+  height: 84px;
+}
+.span1{
+  @include column(1);
+}
+.span2{
+  @include column(2);
+}
+.span3{
+  @include column(3);
+}
+.span4{
+  @include column(4);
+}
+.span5{
+  @include column(5);
+}
+.span6{
+  @include column(6);
+}
+.span7{
+  @include column(7);
+}
+.span8{
+  @include column(8);
+}
+.span9{
+  @include column(9);
+}
+.span10{
+  @include column(10);
+}
+.span11{
+  @include column(11);
+}
+.span12{
+  @include column(12);
+}
+form .select-arrow:after, .form .select-arrow:after{height:auto;}
+/********* form element styling end***********/
+
