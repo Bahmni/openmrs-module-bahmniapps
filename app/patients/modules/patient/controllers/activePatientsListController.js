@@ -44,10 +44,12 @@ angular.module('opd.patient.controllers')
 
     $scope.loadMore = function() {
         if($scope.visibleVisits !== undefined){
-            var last = $scope.visibleVisits.length - 1;
-            if(last <= $scope.searchVisits.length ){
-                for(var i = 1; i <=$scope.tilesToLoad ; i++) {
-                    $scope.visibleVisits.push($scope.searchVisits[i+last]);
+            var last = $scope.visibleVisits.length;
+            var more = ($scope.searchVisits.length - last);
+            var toShow = (more > $scope.tilesToLoad) ? $scope.tilesToLoad : more;
+            if (toShow > 0) {
+                for(var i = 1; i <= toShow; i++) {
+                    $scope.visibleVisits.push($scope.searchVisits[last + i-1]);
                 }
             }
         }
