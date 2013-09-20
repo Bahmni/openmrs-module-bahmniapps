@@ -15,14 +15,14 @@
         <div style="overflow:hidden">
             <div style="float:left; width:400px">
                 <h2>Primary Diagnoses</h2>
-                <div ng-repeat="diagnosis in consultation.diagnoses" ng-show="diagnosis.isPrimary">
-                    {{diagnosis.conceptName()}}({{diagnosis.certaintyDisplayValue()}})
+                <div ng-repeat="diagnosis in consultation.diagnoses" ng-show="diagnosis.isPrimary()">
+                    {{diagnosis.conceptName()}}({{diagnosis.certainty}})
                 </div>
             </div>
             <div style="float:left; width:400px">
                 <h2>Secondary Diagnoses</h2>
-                <div ng-repeat="diagnosis in consultation.diagnoses" ng-hide="diagnosis.isPrimary">
-                    {{diagnosis.conceptName()}}({{diagnosis.certaintyDisplayValue()}})
+                <div ng-repeat="diagnosis in consultation.diagnoses" ng-hide="diagnosis.isPrimary()">
+                    {{diagnosis.conceptName()}}({{diagnosis.certainty}})
                 </div>
             </div>
         </div>

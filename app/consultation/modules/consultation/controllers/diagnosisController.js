@@ -6,6 +6,8 @@ angular.module('opd.consultation.controllers')
     $scope.placeholder = "Add Diagnosis";
     $scope.hasAnswers = false;
     $scope.diagnosisList = observationSelectionService.getSelectedObservations();
+    $scope.orderOptions=['PRIMARY', 'SECONDARY'];
+    $scope.certaintyOptions=['CONFIRMED', 'PRESUMED'];
 
     $scope.getDiagnosis = function (searchTerm) {
         return diagnosisService.getAllFor(searchTerm);
@@ -23,8 +25,6 @@ angular.module('opd.consultation.controllers')
     $scope.$on('$destroy', function() {
         $rootScope.consultation.diagnoses = $scope.diagnosisList
     });
-
-
 }])
 .directive('uiAutocomplete', function () {
     return function (scope, element) {
@@ -56,20 +56,26 @@ angular.module('opd.consultation.controllers')
                 }
             },
             select:function (event, ui) {
-                scope.selectItem(ui.item)
-
+                scope.selectItem(ui.item);
+                event.preventDefault();
+                element.val('');
             }
         });
     }
 })
-.directive('uiSelectable', function () {
-    return function (scope, el, attrs) {
-        el.selectable({
-            stop:function (evt, ui) {
-                var idx = el.find('.ui-selected').index();
-                scope.selectedAnswer = scope.selectedItem.answers[idx].name;
-                scope.$apply()
-            }
-        });
+.directive('buttonsRadio', function() {
+    return {
+        restrict: 'E',
+        scope: { model: '=', options:'='},
+        controller: function($scope){
+            $scope.activate = function(option){
+                $scope.model = option;
+            };
+        },
+        template: "<button type='button' class='btn' "+
+            "ng-class='{active: option == model}'"+
+            "ng-repeat='option in options' "+
+            "ng-click='activate(option)'>{{option}} "+
+            "</button>"
     };
 });

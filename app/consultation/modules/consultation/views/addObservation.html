@@ -1,38 +1,16 @@
 <form>
     <fieldset>
-        <legend>Add Diagnosis</legend>
-        <div align="center">
-            <input class="roundedInput" placeholder={{placeholder}} ui-autocomplete id="autoCompleteInput">
-
-            <div id="coded">
-                <ol ui-selectable>
-                    <li ng-repeat="answer in selectedItem.answers">{{answer.name}}</li>
-                </ol>
-            </div>
-        </div>
-    </fieldset>
-</form>
-
-<form>
-    <fieldset>
-        <legend>Review Diagnoses</legend>
-        <div style="height:300px;border:2px solid">
+        <legend>Add Diagnoses</legend>
+        <div style="height:300px;border:2px solid; text-align: center">
             <div id="selectedNodesArea">
-                <div ng-repeat="diagnosis in diagnosisList" class="selectedNode">
+                <div ng-repeat="diagnosis in diagnosisList" class="selectedDiagnosis">
                     {{diagnosis.conceptName()}}
-                    <span class="icon-remove icon-white " ng-click="removeObservation(diagnosis)"></span>
-
-                    <div>
-                        <label class="checkbox">
-                            <input type="checkbox" ng-model="diagnosis.isPrimary">
-                            Primary
-                        </label>
-                        <label class="checkbox">
-                            <input type="checkbox" ng-model="diagnosis.isConfirmed">
-                            Confirmed
-                        </label>
-                    </div>
+                    <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.order' options='orderOptions'></buttons-radio>
+                    <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.certainty' options='certaintyOptions'></buttons-radio>
+                    <span class="icon-remove icon-white" ng-click="removeObservation(diagnosis)"></span>
                 </div>
+
+                <input class="roundedInput" placeholder={{placeholder}} ui-autocomplete id="autoCompleteInput" style="display: inline-block;">
             </div>
         </div>
     </fieldset>

@@ -28,6 +28,17 @@ angular.module('opd.consultation.services')
 
     var addDiagnosis = function (concept) {
         var diagnosis = new Bahmni.Opd.Consultation.Diagnosis(concept);
+//        var diagnosis = {
+//            concept: concept,
+//            order: 'PRIMARY',
+//            certainty: 'PRESUMED',
+//            conceptName: function() {
+//                return this.concept.conceptName;
+//            },
+//            isPrimary: function() {
+//                return this.order == 'PRIMARY';
+//            }
+//        };
         if (_canAdd(diagnosis)) {
             diagnosisList.push(diagnosis);
         }
