@@ -10,7 +10,7 @@ describe("ActivePatientListController", function () {
                 { patient: {identifiers:[{identifier:'GAN1234'}], names:[{display:   'Ram Singh'}]}, encounters:[] },
                 { patient: {identifiers:[{identifier:'BAM1234'}], names:[{display: 'Shyam Singh'}]}, encounters:[] }, 
                 { patient: {identifiers:[{identifier:'SEM1234'}], names:[{display:'Ganesh Singh'}]}, encounters:[] },
-                { patient: {identifiers:[{identifier:'GAN1235'}], names:[{display:'  Gani Singh'}]}, encounters:[{orders:[{concept:{display:'Anaemia Panel'}}]}] }
+                { patient: {identifiers:[{identifier:'GAN1235'}], names:[{display:'  Gani Singh'}]}, encounters:[{orders:[{concept:{display:'Admit Patient'}}]}] }
             ];
 
     beforeEach(module('opd.patient'));
