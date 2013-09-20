@@ -1,93 +1,32 @@
-<div class="treatement">
-<div class="treatement-l">
-<form>
-<fieldset>
-        <div class="form-field">
-          <p class="field-attribute"><label> Drug:</label></p> 
-          <p class="field-value">
-            <input type="text" placeholder="Search drug... " value="Crocin">
-           </p>
-        </div>
-        <div class="form-field">
-          <p class="field-attribute"><label> Strength:</label></p> 
-          <p class="field-value">
-            <span class="select-arrow">
-                <select>
-                    <option value="Select Ward">500 mg</option>
-                    <option value="Antepartum Ward">100 mg</option>
-                    <option value="Community Health">10 mg</option>
-                </select>
-            </span>
-           </p>
-        </div>
-        <div class="form-field">
-          <p class="field-attribute"><label> Quantity:</label></p> 
-          <p class="field-value">
-            <input type="numeric" value="2"/>
-           </p>
-        </div>
-        <div class="form-field">
-          <p class="field-attribute"><label> Frequency:</label></p> 
-          <p class="field-value">
-            <span class="select-arrow">
-                <select>
-                    <option value="Select Ward">TID</option>
-                    <option value="Antepartum Ward">OID</option>
-                    <option value="Community Health">3ID</option>
-                </select>
-            </span>
-           </p>
-        </div>
-
-        <div class="form-field">
-          <p class="field-attribute"><label> Start date:</label></p> 
-          <p class="field-value">
-                <input type="text" value="today" />
-           </p>
-        </div>
-
-        <div class="form-field">
-          <p class="field-attribute"><label> Timing:</label></p> 
-          <p class="field-value">
-            <span class="select-arrow">
-                <select>
-                    <option value="Select Ward">AC</option>
-                    <option value="Antepartum Ward">DC</option>
-                </select>
-            </span>
-           </p>
-        </div>
-
-        <div class="form-field">
-          <p class="field-attribute"><label> Other:</label></p> 
-          <p class="field-value">
-            <textarea> </textarea>
-           </p>
-        </div>
-        <div class="button-spacing-left">
-             <input type="button" value="Add" class="button confirm" />
-        </div>
-     </fieldset>
-</form>
-</div>
-<div class="treatement-r">
-  <div class="treatment-row">
-    <div class="treatment-row-info">
-        <span>Crocin - 500mg - 2 - TID - today - AC </span>
-        <div> continue for 5 days, take morning and evening</div>
-    </div>
-    <div class="treatment-row-remove">
-        <button><i class="icon-remove"></i></button>
-    </div>
-  </div>
-  <div class="treatment-row"> 
-      <div class="treatment-row-info">
-        <span>Crocin - 500mg - 2 - TID - today - AC - continue for 5 days</span>
-      </div>
-   
-      <div class="treatment-row-remove">
-          <button><i class="icon-remove"></i></buton>
-      </div>
-  </div>
-</div>
+<div class="treatment">
+    <form>
+        <table>
+            <tr>
+                <th>Drug Name</th>
+                <th>Strength</th>
+                <th># per Dosage</th>
+                <th>Dosage Frequency</th>
+                <th>Dosage Instructions</th>
+                <th># of Days</th>
+                <th>Notes</th>
+            </tr>
+            <tr ng-repeat="drug in drugs">
+                <td><input ng-model="drug.name" type="text" name="name" value="{{drug.name}}"
+                           ng-change="addNewRowIfNotExists()"></td>
+                <!--my-autocomplete="{{ {'src': 'getDrugList', 'responseHandler': 'getDataResults'} }}"-->
+                <td><select ng-model="drug.strength" ng-options="s as s for s in drug.strength"></select></td>
+                <td><input ng-model="drug.numberPerDosage" type="text" name="numberPerDosage" size="4"
+                           value="{{drug.numberPerDosage}}"></td>
+                <td><select ng-model="drug.dosageFrequency" ng-options="d as d for d in drug.dosageFrequency"></select>
+                </td>
+                <td><select ng-model="drug.dosageInstructions"
+                            ng-options="d as d for d in drug.dosageInstructions"></select></td>
+                <td><input ng-model="drug.numberOfDosageDays" name="numberOfDosageDays" size="4"
+                           value="{{drug.numberOfDosageDays}}"></td>
+                <td>
+                    <button>+</button>
+                </td>
+            </tr>
+        </table>
+    </form>
 </div>
