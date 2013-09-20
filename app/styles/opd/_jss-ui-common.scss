@@ -144,3 +144,45 @@ textarea{
 form .select-arrow:after, .form .select-arrow:after{height:auto;}
 /********* form element styling end***********/
 
+/**** tab styling start****/
+.tabs{
+  margin-top:20px;
+  overflow:hidden;
+  ul{
+    li{
+        float:left;
+        margin-right:10px;
+        a{
+          padding:10px 20px;
+          background:#447772;
+          display:inline-block;
+          color:#fff;
+          border:1px solid #00463f;
+          @include border-radius();
+          border-bottom-right-radius:0px;
+          border-bottom-left-radius:0px;
+          text-decoration:none;
+          &:hover{
+              background:#4D9B92;
+          }
+        }
+        &.tab-selected{
+           a{
+              position:relative;
+              top:2px;
+              background:#fff;
+              color:#00463f;
+              border:1px solid #cecece;
+              border-bottom:none;
+           }
+        }
+    }
+  }
+
+}
+.tab-content{
+  overflow:hidden;
+  padding:20px;
+  border:1px solid #cecece; 
+}
+  

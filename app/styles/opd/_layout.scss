@@ -28,6 +28,7 @@ body{
                 background:url("../../images/jss_logo.png") no-repeat left top;
                 padding:10px 0px 7px 40px;
                 float:left;
+                margin-top:7px;
             }
             button{
                         background:#447772;
@@ -176,16 +177,24 @@ table{
 textarea{
     width:100%;
 }
-.smallImages{
+.roundImages{
     height: 40px;
     width: 40px;
     border-radius:50%;
 }
-
+.smallImages{
+    height:100px;
+    width:100px;
+}
 button[disabled] {  
     background: #F7F7F7;
 }
+.active-visits{
+    li{
+        width:143px;
+    }
 
+}
 #tabButtonRow {
     margin-bottom: 20px;
     button {
