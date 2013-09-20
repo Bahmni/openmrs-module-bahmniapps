@@ -5,11 +5,8 @@
 </header>
 <div class="ui-tabs">
     <ul>
-        <li ng-class="{'ui-tab-item':true, 'ui-tab-selected':searchCriteria.type=='ALL'}"> 
-            <a href="" ng-click="showPatientsForType('ALL')"> <span>All active patients</span></a> 
-        </li>
-        <li ng-class="{'ui-tab-item':true, 'ui-tab-selected':searchCriteria.type=='TO_ADMIT'}"> 
-            <a href="" ng-click="showPatientsForType('TO_ADMIT')"> <span>Patients to be admitted</span></a> 
+        <li class="ui-tab-item" ng-repeat="pType in patientTypes | filter: { visible: true } " ng-class="{'ui-tab-selected':searchCriteria.type==pType.type}"> 
+            <a href="" ng-click="showPatientsForType(pType.type)"> <span>{{pType.display}}</span></a> 
         </li>
     </ul> 
 </div>

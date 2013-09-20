@@ -2,7 +2,12 @@
 
 angular.module('opd.patient.controllers')
     .controller('ActivePatientsListController', ['$route', '$scope', '$location', '$window','VisitService', 'patientMapper', function ($route, $scope, $location, $window, visitService, patientMapper) {
-    
+
+    $scope.patientTypes = [
+        {type:'ALL', display:'All active patients', visible: true, appliedConcept: null},
+        {type:'TO_ADMIT', display:'Patients to be admitted', visible: true, appliedConcept: 'Admit Patient'}
+    ]; 
+
     $scope.getactivePatients = function () {
         var queryParameters = $location.search();
 
@@ -16,9 +21,11 @@ angular.module('opd.patient.controllers')
                 visit.patient.status = '';
 
                 visit.encounters.forEach(function(en) {
+                    //optimize to match to be admitted patients and determining state
+                    var matchAdmitType = $scope.patientTypes[1];
                     en.orders.forEach(function(order) {
-                        if (order.concept.display === 'Anaemia Panel') {
-                            visit.patient.status = 'TO_ADMIT';
+                        if (order.concept.display === matchAdmitType.appliedConcept) {
+                            visit.patient.status = matchAdmitType.type;
                         }
                     });
                 });
@@ -30,8 +37,8 @@ angular.module('opd.patient.controllers')
                 $scope.searchVisits = $scope.activeVisits;
                 $scope.searchableVisits = $scope.searchVisits;
                 $scope.visibleVisits= $scope.searchableVisits.slice(0,$scope.tilesToFit);
-                $scope.searchCriteria = { searchParameter: '', type: 'ALL'} ;
             }
+            $scope.searchCriteria = { searchParameter: '', type: $scope.patientTypes[0].type} ;
         });
     }
 
@@ -79,12 +86,13 @@ angular.module('opd.patient.controllers')
     }
 
     var filterPatientListByType = function() {
-        if ($scope.searchCriteria.type === 'ALL') {
+        var allType = $scope.patientTypes[0].type;
+        if ($scope.searchCriteria.type === allType) {
             $scope.searchableVisits = $scope.activeVisits;
         } else {
             var searchList = [];
             $scope.activeVisits.forEach(function(visit){
-                if( visit.patient.status === 'TO_ADMIT')  {
+                if( visit.patient.status === $scope.searchCriteria.type)  {
                     searchList.push(visit);
                 }
             });
