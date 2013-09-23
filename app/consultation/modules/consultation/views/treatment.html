@@ -12,16 +12,16 @@
             </tr>
 
             <tr ng-repeat="drug in selectedDrugs">
-                <td><input ng-model="drug.name" type="text" name="name" value="{{drug.uuid}}"
-                    my-autocomplete="{{ {'src': 'getDrugList', 'responseHandler': 'getDataResults'} }}"
+                <td><input ng-model="drug.name" type="text" name="name" value="{{drug.name}}"
+                           my-autocomplete="{{ {'src': 'getDrugList', 'responseHandler': 'getDataResults'} }}"
                            ng-change="addNewRowIfNotExists()"></td>
-
                 <td><input ng-model="drug.strength" type="text" value={{drug.strength}} readonly=true></td>
                 <td><input ng-model="drug.numberPerDosage" type="text" name="numberPerDosage" size="4"
                            value="{{drug.numberPerDosage}}"></td>
-                <td><select ng-model="drug.dosageFrequency" ng-options="df.name.name for df in dosageFrequencyAnswers"></select>
+                <td><select ng-model="drug.dosageFrequency"
+                            ng-options="df.name.name for df in dosageFrequencyAnswers"></select>
                 </td>
-                <td><select ng-model="drug.dosageInstructions"
+                <td><select ng-model="drug.dosageInstruction"
                             ng-options="di.name.name for di in dosageInstructionAnswers"></select></td>
                 <td><input ng-model="drug.numberOfDosageDays" name="numberOfDosageDays" size="4"
                            value="{{drug.numberOfDosageDays}}"></td>

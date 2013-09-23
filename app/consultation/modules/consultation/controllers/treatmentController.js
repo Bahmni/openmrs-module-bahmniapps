@@ -5,26 +5,21 @@ angular.module('opd.consultation.controllers')
         $scope.placeholder = "Add Treatment Advice";
         var drug = function () {
             return {
+                uuid: "",
                 name: "",
-                strength: [],
+                strength: '',
                 numberPerDosage: "",
-                dosageFrequency: [],
-                dosageInstructions: [],
+                dosageFrequency: "",
+                dosageInstruction: "",
                 numberOfDosageDays: "",
                 notes: ""
             }
         };
 
+        $scope.searchResults = [];
+
         $scope.selectedDrugs = [
-            {   name: "",
-                uuid:'',
-                strength: "",
-                numberPerDosage: "1",
-                dosageFrequency: ["OD", "BD"],
-                dosageInstructions: ["AC", "PC", "HS", "SL"],
-                numberOfDosageDays: "",
-                notes: ""
-            }
+            new drug()
         ];
 
         $scope.addNewRowIfNotExists = function () {
@@ -42,12 +37,13 @@ angular.module('opd.consultation.controllers')
 
         $scope.getDataResults = function (data) {
             var labels = [];
+            $scope.searchResults = data.results;
             data.results.forEach(
                 function(record) {
                     labels.push(
                         {
                             label: record.name,
-                            value: record.name
+                            value: record.uuid
                         }
                     );
                 }

@@ -7,7 +7,7 @@ angular.module('opd.consultation.services')
         return $http.get("/openmrs/ws/rest/v1/drug",
          	{ 
          		method:"GET",
-         		params: { v: 'full', q: query },
+         		params: { v: 'custom:(uuid,name,doseStrength,units,dosageForm,concept:(uuid,name))', q: query },
                 withCredentials: true
          	}
         );
