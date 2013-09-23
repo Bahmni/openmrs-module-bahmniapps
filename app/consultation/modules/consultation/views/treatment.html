@@ -10,17 +10,19 @@
                 <th># of Days</th>
                 <th>Notes</th>
             </tr>
-            <tr ng-repeat="drug in drugs">
-                <td><input ng-model="drug.name" type="text" name="name" value="{{drug.name}}"
+
+            <tr ng-repeat="drug in selectedDrugs">
+                <td><input ng-model="drug.name" type="text" name="name" value="{{drug.uuid}}"
+                    my-autocomplete="{{ {'src': 'getDrugList', 'responseHandler': 'getDataResults'} }}"
                            ng-change="addNewRowIfNotExists()"></td>
-                <!--my-autocomplete="{{ {'src': 'getDrugList', 'responseHandler': 'getDataResults'} }}"-->
-                <td><select ng-model="drug.strength" ng-options="s as s for s in drug.strength"></select></td>
+
+                <td><input ng-model="drug.strength" type="text" value={{drug.strength}} readonly=true></td>
                 <td><input ng-model="drug.numberPerDosage" type="text" name="numberPerDosage" size="4"
                            value="{{drug.numberPerDosage}}"></td>
-                <td><select ng-model="drug.dosageFrequency" ng-options="d as d for d in drug.dosageFrequency"></select>
+                <td><select ng-model="drug.dosageFrequency" ng-options="df.name.name for df in dosageFrequencyAnswers"></select>
                 </td>
                 <td><select ng-model="drug.dosageInstructions"
-                            ng-options="d as d for d in drug.dosageInstructions"></select></td>
+                            ng-options="di.name.name for di in dosageInstructionAnswers"></select></td>
                 <td><input ng-model="drug.numberOfDosageDays" name="numberOfDosageDays" size="4"
                            value="{{drug.numberOfDosageDays}}"></td>
                 <td>

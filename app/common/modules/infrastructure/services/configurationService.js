@@ -26,6 +26,30 @@ angular.module('bahmni.common.infrastructure.services')
             return patientConfig;
         };
 
+        configurationFunctions.dosageFrequencyConfig = function () {
+            var dosageFrequencyConfig =  $http.get(Bahmni.Common.Constants.conceptUrl, {
+                method:"GET",
+                params: { v: 'custom:(uuid,name,answers)', q: Bahmni.Common.Constants.dosageFrequencyConceptName },
+                withCredentials: true
+            });
+
+
+            return dosageFrequencyConfig;
+        };
+
+        configurationFunctions.dosageInstructionConfig = function () {
+            var dosageInstructionConfig =  $http.get(Bahmni.Common.Constants.conceptUrl, {
+                method:"GET",
+                params: { v: 'custom:(uuid,name,answers)', q: Bahmni.Common.Constants.dosageInstructionConceptName },
+                withCredentials: true
+            });
+
+
+            return dosageInstructionConfig;
+        };
+
+
+
 
         var getConfigurations = function(configurationNames) {
             var configurations = {};

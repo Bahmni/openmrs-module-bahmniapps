@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('opd.consultation.controllers')
-    .controller('TreatmentController', ['$scope', function ($scope) {
+    .controller('TreatmentController', ['$scope', 'treatmentService', function ($scope, treatmentService) {
         $scope.placeholder = "Add Treatment Advice";
         var drug = function () {
             return {
@@ -15,29 +15,52 @@ angular.module('opd.consultation.controllers')
             }
         };
 
-        $scope.drugs = [
-            {name: "Calpol",
-                strength: ["500mg", "250mg"],
+        $scope.selectedDrugs = [
+            {   name: "",
+                uuid:'',
+                strength: "",
                 numberPerDosage: "1",
                 dosageFrequency: ["OD", "BD"],
                 dosageInstructions: ["AC", "PC", "HS", "SL"],
-                numberOfDosageDays: "3",
-                notes: "blah"
+                numberOfDosageDays: "",
+                notes: ""
             }
         ];
 
         $scope.addNewRowIfNotExists = function () {
-            var length = $scope.drugs.length;
-            if ($scope.drugs[length - 1]) {
-                var lastItem = $scope.drugs[length - 1];
+            var length = $scope.selectedDrugs.length;
+            if ($scope.selectedDrugs[length - 1]) {
+                var lastItem = $scope.selectedDrugs[length - 1];
                 if (lastItem.name) {
-                    $scope.drugs.push(new drug());
+                    $scope.selectedDrugs.push(new drug());
                 }
-                else if ($scope.drugs[length - 2] && !$scope.drugs[length - 2].name) {
-                    $scope.drugs.pop();
+                else if ($scope.selectedDrugs[length - 2] && !$scope.selectedDrugs[length - 2].name) {
+                    $scope.selectedDrugs.pop();
                 }
             }
-        }
+        };
+
+        $scope.getDataResults = function (data) {
+            var labels = [];
+            data.results.forEach(
+                function(record) {
+                    labels.push(
+                        {
+                            label: record.name,
+                            value: record.name
+                        }
+                    );
+                }
+            );
+            return labels;
+        };
+
+        $scope.getDrugList = function (query) {
+            return treatmentService.search(query);
+        };
+
+        $scope.dosageFrequencyAnswers = $scope.dosageFrequencyConfig.results[0].answers;
+        $scope.dosageInstructionAnswers = $scope.dosageInstructionConfig.results[0].answers;
 
 
     }])
