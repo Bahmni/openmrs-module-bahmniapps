@@ -1,0 +1,39 @@
+<div class="reg-body-wrapper">
+
+<div id="registrationCard" class="print-layout" ng-include="printLayout()"></div>
+<div class="edit-patient simple-form-ui">
+    <form name="myForm"  ng-submit="update()">
+        <legend class="mylegend">
+            <span><strong>Patient : {{patient.identifier}}</strong></span>
+        </legend>
+        <div>
+            <span class="photo-container-wrapper">
+                <span class="photo-container">
+                        <img id="patient-image" ng-src="{{patient.image}}"
+                             onerror="this.onerror=null;this.src='images/blank-user.gif';"/>
+                        <div ng-model="patient.image" capture-photo class="capture-photo-btn"></div>
+                 </span>
+            </span>
+        </div>
+        <article class="form-field">
+                <div class="field-attribute">
+                <label class="control-label">Registration Date</label>
+                </div>
+
+                <div class="field-value">
+                    <span class="uneditable-input text-only">{{patient.registrationDate | date:'dd-MM-yyyy'}}</span>
+               </div>
+        </article>
+        <ng-include src="patientCommon()" ng-controller="PatientCommonController"></ng-include>
+
+        <div class="submit-btn-container">
+            <div class="right">
+                <button type="button" ng-click="back()" ng-show="showBackButton()">Back to Search Results</button>
+                <button type="submit" class="confirm right" ng-click="setUpdateSource('next')">Next</button>
+                <button type="submit" ng-click="setUpdateSource('print')">Print</button>
+            </div>
+        </div>
+    </form>
+    <br>
+</div>
+</div>

@@ -1,0 +1,166 @@
+<section>
+    <article class="form-field" ng-show="patientConfiguration.local()['showNameField']">
+        <div class="field-attribute">
+            <label for="patientName">{{patientConfiguration.local()['labelForNameField']}}</label>
+        </div>
+        <div class="field-value" id="patientNameLocal">
+            <input type="text" id="givenNameLocal" ng-model="patient.givenNameLocal"
+                   placeholder="{{patientConfiguration.local()['placeholderForGivenName']}}" autofocus>
+            <input type="text" id="familyNameLocal" ng-model="patient.familyNameLocal"
+                   placeholder="{{patientConfiguration.local()['placeholderForFamilyName']}}">
+        </div>
+    </article>
+    <article class="form-field">
+        <div class="field-attribute">
+            <label for="patientName">Patient Name <span class="asterick">*</span></label>
+        </div>
+
+        <div class="field-value" id="patientName">
+            <input type="text" id="givenName" ng-model="patient.givenName" non-blank placeholder="First Name"
+                   title="Enter patient's first name.">
+            <input type="text" id="familyName" ng-model="patient.familyName"
+                   my-autocomplete="{{ {'src': 'getLastNameList', 'responseMap': 'getDataResults'} }}" non-blank
+                   placeholder="Last Name" title="Enter patient's last name.">
+                        <span class="input-label-inline">
+                            <input type="checkbox" id="casteSameAsLastNameCheck" ng-model="patient.sameAsLastName"
+                                   ng-change="setCasteAsLastName()">
+                            <label id="casteSameAsLastNameCheckLabel" for="casteSameAsLastNameCheck">Caste same as Last
+                                Name</label>
+                        </span>
+        </div>
+    </article>
+</section>
+<section class="form-field-inline form-field-gender">
+    <article class="form-field">
+        <div class="field-attribute">
+            <label for="gender">Gender <span class="asterick">*</span></label>
+        </div>
+
+        <div class="field-value">
+            <select id="gender" ng-model="patient.gender" required="required" title="Select Gender" required="required">
+                <option value="">Select Gender</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+                <option value="O">Other</option>
+            </select>
+        </div>
+    </article>
+</section>
+<section class="form-field-inline">
+    <article class="form-field">
+            <div class="field-attribute">
+                <label for="ageYears">Age<span class="asterick">*</span></label>
+            </div>
+
+            <div class="field-value age-field">
+                <div class="input-prepend">
+                    <span class="add-on">Years</span>
+                    <input type="number" id="ageYears" name="ageYear" max="120" ng-model="patient.age.years" min="0"
+                           ng-required="patient.age.isEmpty()" title="Enter a numeric value for Years.">
+                </div>
+                <div class="input-prepend">
+                    <span class="add-on">Months</span>
+                    <input type="number" id="ageMonths" name="ageMonths" max="12" ng-model="patient.age.months" min="0"
+                           title="Enter a numeric value between 0 to 12">
+                </div>
+                <div class="input-prepend">
+                    <span class="add-on">Days</span>
+                    <input type="number" id="ageDays" name="ageDays" max="31" ng-model="patient.age.days" min="0"
+                           title="Enter a numeric value between 0 to 31">
+                </div>
+
+            </div>
+    </article>
+    <article class="form-field">
+        <div class="field-attribute">
+            <label for="birthdate">DOB</label>
+        </div>
+        <div class="field-value">
+            <input id="birthdate" type="text" pattern="\d{2}-\d{2}-\d{4}" ng-model="patient.birthdate" datepicker
+                   ng-change="patient.calculateAge()" placeholder="dd-mm-yyyy" class="datepicker">
+        </div>
+    </article>
+</section>
+<section class="form-field-inline">
+    <article class="form-field">
+        <div class="field-attribute">
+            <label for="address1">House No., Street</label>
+        </div>
+        <div class="field-value">
+            <input type="text" id="address1" ng-model="patient.address.address1" placeholder="House No., Street">
+        </div>
+    </article>
+    <article class="form-field">
+        <div class="field-attribute">
+            <label class="control-label" for="village">Village<span class="asterick">*</span></label>
+        </div>
+        <div class="field-value">
+            <input type="text" id="village" ng-model="patient.address.cityVillage" placeholder="Village" non-blank
+                   my-autocomplete="{{ {'src': 'getVillageList', 'responseMap': 'getAddressDataResults', 'onSelect': 'villageSelected'} }}">
+        </div>
+    </article>
+</section>
+
+<section class="form-field-inline">
+    <article class="form-field">
+        <div class="field-attribute">
+            <label class="control-label" for="address2">Gram Panchayat</label>
+        </div>
+        <div class="field-value">
+            <input type="text" id="address2" ng-model="patient.address.address2" placeholder="Gram Panchayat">
+        </div>
+    </article>
+    <article class="form-field">
+        <div class="field-attribute">
+            <label class="control-label" for="address3">Tehsil</label>
+        </div>
+        <div class="field-value">
+            <input type="text" id="address3" ng-model="patient.address.address3" placeholder="Tehsil"
+                   my-autocomplete="{{ {'src': 'getTehsilList', 'responseMap': 'getAddressDataResults', 'onSelect': 'tehsilSelected'} }}">
+        </div>
+    </article>
+</section>
+
+<section class="form-field-inline">
+    <article class="form-field">
+        <div class="field-attribute">
+            <label class="control-label" for="countyDistrict">District</label>
+        </div>
+        <div class="field-value">
+            <input type="text" id="countyDistrict" ng-model="patient.address.countyDistrict" placeholder="District"
+                   my-autocomplete="{{ {'src': 'getDistrictList', 'responseMap': 'getAddressDataResults', 'onSelect': 'districtSelected'} }}">
+        </div>
+    </article>
+    <article class="form-field">
+        <div class="field-attribute">
+            <label class="control-label" for="stateProvince">State</label>
+        </div>
+        <div class="field-value">
+            <input type="text" id="stateProvince" ng-model="patient.address.stateProvince" placeholder="State">
+        </div>
+    </article>
+</section>
+
+<section class="form-field-inline" ng-repeat="attributeRow in patientConfiguration.customAttributeRows()">
+    <article class="form-field" ng-repeat="attribute in attributeRow">
+        <div class="field-attribute">
+            <label for="{{attribute.name}}">{{attribute.description}}</label>
+        </div>
+        <div class="field-value" data-ng-switch on="attribute.format">
+            <div  data-ng-switch-when="java.lang.String">
+                <div data-ng-switch on="attribute.autocompleteConfig">
+                    <input data-ng-switch-when="null" type="text" id="{{attribute.name}}" placeholder="{{attribute.description}}"
+                           ng-model="patient[attribute.name]">
+                    <input data-ng-switch-default type="text" id="{{attribute.name}}" placeholder="{{attribute.description}}"
+                           ng-model="patient[attribute.name]"
+                           my-autocomplete="{{attribute.autocompleteConfig}}">
+                </div>
+            </div>
+            <div class="left" data-ng-switch-when="org.openmrs.Concept">
+                <select id="{{attribute.name}}" ng-model="patient[attribute.name]"
+                        ng-options="a.conceptId as a.description for a in attribute.answers">
+                </select>
+            </div>
+        </div>
+    </article>
+</section>

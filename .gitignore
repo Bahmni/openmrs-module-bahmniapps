@@ -7,6 +7,7 @@ build.xml
 .project
 .settings
 .idea/*
+<<<<<<< HEAD
 test/output
 target
 output
@@ -22,3 +23,15 @@ nbproject
 manifest.mf
 node_modules/*
 test_out
+=======
+registration-ui/node_modules/*
+registration-ui/test_out
+registration-ui/test/output
+registration-ui/target
+registration-ui/output
+registration-ui/.sass-cache
+registration-ui/.tmp
+registration-ui/node_modules
+registration-ui/app/components
+registration-ui/dist
+>>>>>>> moving registration code to another folder

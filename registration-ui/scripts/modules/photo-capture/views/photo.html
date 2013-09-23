@@ -1,0 +1,17 @@
+<button type="button" class="btn" ng-click="launchPhotoCapturePopup()"></button>
+<div class="photoCaptureDialog container-fluid" title="Take Patient's Photo">
+    <div class="row-clear">
+        <div class="photo-video-container">
+             <span class="photoCapture-left-overlay"></span>
+             <video id="live" width=225" height="180" autoplay></video>
+             <span class="photoCapture-right-overlay"></span>
+        </div>
+        <div id="photo-canvas-container" class="photo-canvas-container">
+            <canvas height="180" width="180" ></canvas>
+        </div>
+    </div>
+    <div class="row-clear">
+        <button type="button" id="click" ng-click="clickImage()" class="take-photo-btn">Click Photo </button>
+        <button type="button" class="confirmImage confirm" disabled ng-click="confirmImage()">Confirm Photo</button>
+    </div>
+</div>
