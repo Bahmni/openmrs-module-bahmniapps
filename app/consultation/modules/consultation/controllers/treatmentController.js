@@ -7,13 +7,16 @@ angular.module('opd.consultation.controllers')
             return {
                 uuid: "",
                 name: "",
+                originalName:"",
                 strength: '',
                 numberPerDosage: "",
                 dosageFrequency: "",
                 dosageInstruction: "",
                 numberOfDosageDays: "",
                 notes: "",
-                notesVisible:false
+                notesVisible:false,
+                validated:false,
+                empty:true
             }
         };
 
@@ -23,7 +26,29 @@ angular.module('opd.consultation.controllers')
             new drug()
         ];
 
-        $scope.addNewRowIfNotExists = function () {
+        var areStringsEqual = function(str1, str2) {
+            if ((str1) && (!str2)) {
+                return false;
+            }
+
+            if ((!str1) && (str2)) {
+                return false;
+            }
+
+            return str1 === str2;
+        }
+
+        $scope.addNewRowIfNotExists = function (index) {
+            var drugBeingEdited = $scope.selectedDrugs[index];
+            if (!drugBeingEdited.empty) {
+                if (!areStringsEqual(drugBeingEdited.name.trim(), drugBeingEdited.originalName.trim())) {
+                    drugBeingEdited.validated = false;
+                    drugBeingEdited.uuid = "";
+                }
+            } else if (!areStringsEqual(drugBeingEdited.name.trim(), "")) {
+                drugBeingEdited.empty = false;
+            }
+
             var length = $scope.selectedDrugs.length;
             if ($scope.selectedDrugs[length - 1]) {
                 var lastItem = $scope.selectedDrugs[length - 1];
@@ -78,11 +103,23 @@ angular.module('opd.consultation.controllers')
                    var selectedDrug = $scope.selectedDrugs[index];
                    var chosenDrug = drugs[0];
                    selectedDrug.name = chosenDrug.name;
+                   selectedDrug.originalName = chosenDrug.name;
                    selectedDrug.uuid = chosenDrug.uuid;
                    selectedDrug.strength = chosenDrug.doseStrength + " " + chosenDrug.units;
+                   selectedDrug.validated = true;
+                   selectedDrug.numberPerDosage = 1;
+                   selectedDrug.empty = false;
                }
             }
 
+        }
+
+        $scope.saveTreatment = function() {
+            var noOfDrugs = $scope.selectedDrugs.length;
+            var lastDrug = $scope.selectedDrugs[noOfDrugs-1];
+            if (lastDrug.uuid === '') {
+                $scope.selectedDrugs = $scope.selectedDrugs.slice(0, noOfDrugs-1);
+            }
         }
 
         $scope.dosageFrequencyAnswers = $scope.dosageFrequencyConfig.results[0].answers;
@@ -108,10 +145,10 @@ angular.module('opd.consultation.controllers')
                     var args = angular.fromJson(attrs.myAutocomplete);
                     scope.$apply(function () {
                         ngModel.assign(scope, ui.item.value);
-                        scope.$eval(attrs.ngChange);
                         if (args.onSelect != null && scope[args.onSelect] != null) {
                             scope[args.onSelect](args.index, ui.item.lookup);
                         }
+                        scope.$eval(attrs.ngChange);
                     });
                     return true;
                 },

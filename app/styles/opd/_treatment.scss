@@ -8,6 +8,9 @@
     border-bottom:none;
   }
   }
+  input[type=number]{
+    width:50px;
+  }
   .col1{
     @include column(3);
     padding-top:8px;
