@@ -1,34 +1,51 @@
 <div class="treatment">
     <form>
-        <table>
-            <tr>
-                <th>Drug Name</th>
-                <th>Strength</th>
-                <th># per Dosage</th>
-                <th>Dosage Frequency</th>
-                <th>Dosage Instructions</th>
-                <th># of Days</th>
-                <th>Notes</th>
-            </tr>
+        <div class="table">
+            <div class="row table-header">
+                <div class="col col1">Drug Name</div>
+                <div class="col col2">Strength</div>
+                <div class="col col3"># per Dosage</div>
+                <div class="col col4">Dosage Frequency</div>
+                <div class="col col5">Dosage Instructions</div>
+                <div class="col col6"># of Days</div>
+                <div class="col col7">Notes</div>
+            </div>
 
-            <tr ng-repeat="drug in selectedDrugs">
-                <td><input ng-model="drug.name" type="text" name="name" value="{{drug.name}}"
-                           my-autocomplete="{{ {'src': 'getDrugList', 'responseHandler': 'getDataResults'} }}"
-                           ng-change="addNewRowIfNotExists()"></td>
-                <td><input ng-model="drug.strength" type="text" value={{drug.strength}} readonly=true></td>
-                <td><input ng-model="drug.numberPerDosage" type="text" name="numberPerDosage" size="4"
-                           value="{{drug.numberPerDosage}}"></td>
-                <td><select ng-model="drug.dosageFrequency"
-                            ng-options="df.name.name for df in dosageFrequencyAnswers"></select>
-                </td>
-                <td><select ng-model="drug.dosageInstruction"
-                            ng-options="di.name.name for di in dosageInstructionAnswers"></select></td>
-                <td><input ng-model="drug.numberOfDosageDays" name="numberOfDosageDays" size="4"
-                           value="{{drug.numberOfDosageDays}}"></td>
-                <td>
-                    <button>+</button>
-                </td>
-            </tr>
-        </table>
+            <div ng-repeat="drug in selectedDrugs" class="table-body">
+                <div class="row">
+                    <div class="col col1" ><input ng-model="drug.name" type="text" name="name" value="{{drug.name}}"
+                                my-autocomplete="{{ {'src': 'getDrugList', 'responseHandler': 'getDataResults', 'onSelect':'onDrugSelected', 'index' : $index} }}"
+                                ng-change="addNewRowIfNotExists()"></div>
+                    <div class="col col2"><input ng-model="drug.strength" type="text" value={{drug.strength}} readonly=true size="6"></div>
+                    <div class="col col3"><input ng-model="drug.numberPerDosage" type="text" name="numberPerDosage" size="4"
+                                value="{{drug.numberPerDosage}}"></div>
+                    <div class="col col4"><span class="select-arrow"><select ng-model="drug.dosageFrequency"
+                                 ng-options="df.name.name for df in dosageFrequencyAnswers"></select></span>
+                    </div>
+                    <div class="col col5"><span class="select-arrow"><select ng-model="drug.dosageInstruction"
+                                 ng-options="di.name.name for di in dosageInstructionAnswers"></select></span></div>
+                    <div class="col col6"><input ng-model="drug.numberOfDosageDays" name="numberOfDosageDays" size="4"
+                                value="{{drug.numberOfDosageDays}}"></div>
+                    <div class="col col7">
+                         <button ng-click="drug.notesVisible=!drug.notesVisible">
+                             <span ng-class="{'icon-arrow-down':!drug.notesVisible,'icon-arrow-up':drug.notesVisible}"></span>
+                         </button>
+                    </div>
+                </div>
+                <div class="row" ng-show="drug.notesVisible">
+                    <div class="col">
+                        <textarea placeholder="enter notes" ng-model="drug.notes" name="notes"></textarea>
+                    </div>
+                </div>
+            </div>
+            <!--
+            <div>
+                <div colspan="7">
+                    <textarea ng-model="drug.notes" name="notes" ng-show="drug.notesVisible"></textarea>
+                </div>
+            </div>
+            -->
+
+        </div>
     </form>
 </div>

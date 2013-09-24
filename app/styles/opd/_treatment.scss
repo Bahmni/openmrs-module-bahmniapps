@@ -1,43 +1,37 @@
-.treatement{
+@import "grid";
+
+.treatment{
 	overflow:hidden;
-	.form-field{
-	  .field-attribute{
-	    label{
-	        width:8em;
-	    }
-	   }
-	 }
-	 .button-spacing-left{
-	 	margin-left:8.8em;
-	 	margin-bottom: 10px;
-	 }
-	 .treatement-l{
-	 	float:left;
-	 	width:410px;
-	 }
-	 .treatement-r{
-	 	float:right;
-	 	padding-top:30px;
-	 	padding-left:20px;
-	 	min-height: 200px;
-	 	.treatment-row{
-	 		overflow:hidden;
-	 		padding:5px 10px;
-	 		background:#114B72;
-	 		margin:6px;
-	 		color:#fff;
-	 		border:1px solid #cecece;
-	 		font-size: 14px;
-	 		line-height: 18px;
-	 		.treatment-row-info{
-	 			float:left;
-	 		}
-	 		.treatment-row-remove{
-	 			float:right;
-	 			margin-left:20px;
-	 		}
-
-
-	 	}
-	 }
+    margin-top:20px;
+  .table-body{
+  .row{
+    border-bottom:none;
+  }
+  }
+  .col1{
+    @include column(3);
+    padding-top:8px;
+    padding-bottom:5px;
+  }
+  .col2{
+    @include column(1);
+    width:100px;
+  }
+  .col3{
+    @include column(1);
+  }
+  .col4{
+    @include column(2);
+  }
+  .col5{
+    @include column(2);
+  }
+  .col6{
+    @include column(1);
+  }
+  .col7{
+    @include column(1);
+    width:50px;
+    text-align: center;
+  }
 }

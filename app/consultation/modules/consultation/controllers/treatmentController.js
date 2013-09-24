@@ -12,7 +12,8 @@ angular.module('opd.consultation.controllers')
                 dosageFrequency: "",
                 dosageInstruction: "",
                 numberOfDosageDays: "",
-                notes: ""
+                notes: "",
+                notesVisible:false
             }
         };
 
@@ -35,15 +36,26 @@ angular.module('opd.consultation.controllers')
             }
         };
 
+        var formattedString = function(formatStr, args) {
+            return formatStr.replace(/\{\{|\}\}|\{(\d+)\}/g, function (m, n) {
+                if (m == "{{") { return "{"; }
+                if (m == "}}") { return "}"; }
+                return args[n];
+            });
+        }
+
+
         $scope.getDataResults = function (data) {
             var labels = [];
             $scope.searchResults = data.results;
+
             data.results.forEach(
-                function(record) {
+                function (record) {
                     labels.push(
                         {
-                            label: record.name,
-                            value: record.uuid
+                            label: formattedString("{0} {1} {2} {3} ({4})", [record.name, record.doseStrength, record.units, record.dosageForm.name.name, record.concept.name.name]),
+                            value: record.name,
+                            lookup: record.uuid
                         }
                     );
                 }
@@ -54,6 +66,24 @@ angular.module('opd.consultation.controllers')
         $scope.getDrugList = function (query) {
             return treatmentService.search(query);
         };
+
+        $scope.onDrugSelected = function(index, uuid) {
+            if ($scope.searchResults) {
+               var drugs = $scope.searchResults.filter(
+                   function (record) {
+                       return record.uuid === uuid;
+                   }
+               );
+               if (drugs.length > 0) {
+                   var selectedDrug = $scope.selectedDrugs[index];
+                   var chosenDrug = drugs[0];
+                   selectedDrug.name = chosenDrug.name;
+                   selectedDrug.uuid = chosenDrug.uuid;
+                   selectedDrug.strength = chosenDrug.doseStrength + " " + chosenDrug.units;
+               }
+            }
+
+        }
 
         $scope.dosageFrequencyAnswers = $scope.dosageFrequencyConfig.results[0].answers;
         $scope.dosageInstructionAnswers = $scope.dosageInstructionConfig.results[0].answers;
@@ -68,19 +98,19 @@ angular.module('opd.consultation.controllers')
                 autofocus: true,
                 minLength: 2,
                 source: function (request, response) {
-                    var autoCompleteConfig = angular.fromJson(attrs.myAutocomplete);
-                    scope[autoCompleteConfig.src](request.term).success(function (data) {
-                        var results = scope[autoCompleteConfig.responseHandler](data);
+                    var args = angular.fromJson(attrs.myAutocomplete);
+                    scope[args.src](request.term).success(function (data) {
+                        var results = scope[args.responseHandler](data);
                         response(results);
                     });
                 },
                 select: function (event, ui) {
-                    var autoCompleteConfig = angular.fromJson(attrs.myAutocomplete);
-                    scope.$apply(function (scope) {
+                    var args = angular.fromJson(attrs.myAutocomplete);
+                    scope.$apply(function () {
                         ngModel.assign(scope, ui.item.value);
                         scope.$eval(attrs.ngChange);
-                        if (autoCompleteConfig.onSelect != null && scope[autoCompleteConfig.onSelect] != null) {
-                            scope[autoCompleteConfig.onSelect](ui.item);
+                        if (args.onSelect != null && scope[args.onSelect] != null) {
+                            scope[args.onSelect](args.index, ui.item.lookup);
                         }
                     });
                     return true;
