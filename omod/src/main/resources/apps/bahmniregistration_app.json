@@ -1,0 +1,18 @@
+[
+    {
+        "id": "bahmni.registrationApp",
+        "label": "Register Patient",
+        "description": "Register Patient",
+        "extensions": [
+            {
+                "id": "bahmni.extension.registrationApp",
+                "extensionPointId": "org.openmrs.referenceapplication.homepageLink",
+                "type": "link",
+                "label": "Register Patient",
+                "url": "../../moduleResources/bahmniregistration/index.html#/search",
+                "icon": "icon-user",
+                "order": 1
+            }
+        ]
+    }
+]
