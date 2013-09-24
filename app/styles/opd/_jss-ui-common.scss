@@ -151,7 +151,7 @@ form .select-arrow:after, .form .select-arrow:after{height:auto;}
   ul{
     li{
         float:left;
-        margin-right:10px;
+        margin-right:5px 10px 5px 0px;
         a{
           padding:10px 20px;
           background:#447772;
@@ -183,6 +183,14 @@ form .select-arrow:after, .form .select-arrow:after{height:auto;}
 .tab-content{
   overflow:hidden;
   padding:20px;
-  border:1px solid #cecece; 
+  border:1px solid #cecece;
+  background:#fff;
+  li{
+    text-align: center;
+    cursor:pointer;
+    &:hover{
+       outline:2px solid #cecece;
+    }
+  }
 }
   
