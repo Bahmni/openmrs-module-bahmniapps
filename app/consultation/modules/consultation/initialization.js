@@ -6,13 +6,11 @@ angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q'
         var dispositionNoteConcept;
         var orders;
 
-        var configurationsPromise = configurationService.getConfigurations(['bahmniConfiguration', 'encounterConfig', 'patientConfig','dosageFrequencyConfig','dosageInstructionConfig'])
+        var configurationsPromise = configurationService.getConfigurations(['bahmniConfiguration', 'encounterConfig', 'patientConfig'])
             .then(function (configurations) {
                 $rootScope.bahmniConfiguration = configurations.bahmniConfiguration;
                 $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig);
                 $rootScope.patientConfig = configurations.patientConfig;
-                $rootScope.dosageFrequencyConfig = configurations.dosageFrequencyConfig;
-                $rootScope.dosageInstructionConfig = configurations.dosageInstructionConfig;
 
 
                 return visitService.getVisit($route.current.params.visitUuid).success(function (visit) {
@@ -32,8 +30,10 @@ angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q'
                                         $rootScope.disposition = {};
                                     }
                                     if(response.data.results && response.data.results.length){
-                                        $rootScope.disposition.dispositionActions = response.data.results[0].setMembers;
+                                        $rootScope.disposition.dispositionActionUuid = response.data.results[0].uuid;
+                                        $rootScope.disposition.dispositionActions = response.data.results[0].answers;
                                     }
+                                    
                                 }
 
                             });

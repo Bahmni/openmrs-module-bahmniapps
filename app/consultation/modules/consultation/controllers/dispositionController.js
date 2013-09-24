@@ -10,28 +10,20 @@ angular.module('opd.consultation.controllers')
         var loadDispositionActions = function(){
             $scope.dispositionActions = $rootScope.disposition.dispositionActions;
 
-            if($rootScope.disposition !== undefined){
+            if(!$rootScope.disposition){
 
-                if($rootScope.disposition.dispositionOrder){
-                    $scope.dispositionOrder =  $rootScope.disposition.dispositionOrder.name;
-                }
-                else  {
-                    $rootScope.disposition.dispositionOrder = {}
-                }
-
-                if($rootScope.disposition.dispositionNotes){
-                    $scope.dispositionNotes = $rootScope.disposition.dispositionNotes.value;
-                }
-                else  {
-                    $rootScope.disposition.dispositionNotes = {}
+                if($rootScope.disposition.currentActionIndex){
+                    var disposition = $rootScope.disposition.dispositions[$rootScope.disposition.currentActionIndex];
+                    $scope.dispositionAction =  disposition.adtName;
+                    $scope.dispositionNotes = disposition.adtNoteValue;
                 }
             }
         }
 
 
-        var getSelectedDispositionOrder = function(){
+        var getSelectedDispositionAction = function(){
             var selectedAction ='';
-            if(!$scope.dispositionActions){
+            /*if(!$scope.dispositionActions){
                 return{
                     order :{
                         conceptUUID : '',
@@ -39,32 +31,55 @@ angular.module('opd.consultation.controllers')
                     },
                     name : ''
                 };
-            }
+            }*/
             for(var i=0;i< $scope.dispositionActions.length;i++){
-                if($scope.dispositionActions[i].name.name.toLowerCase() === $scope.dispositionOrder.toLowerCase()){
+                if($scope.dispositionActions[i].name.name.toLowerCase() === $scope.dispositionAction.toLowerCase()){
                     selectedAction =   $scope.dispositionActions[i];
                     break;
                 }
             }
             return {
-                order :{
-                    conceptUUID : selectedAction.uuid,
-                    orderType : getOrderType()
-                },
-                name : selectedAction.name.name
-
+                adtValueUuid : selectedAction.uuid,
+                adtDateTime : 'latest',
+                adtNoteValue : $scope.dispositionNotes,
+                adtName : selectedAction.name.name
             };
         }
 
 
-        var syncDispositionNotes = function(){
-             $rootScope.disposition.dispositionNotes.value = $scope.dispositionNotes;
+        var updateDispositionsList = function(){
+            if(!$rootScope.disposition.dispositions){
+                $rootScope.disposition.dispositions =  [];
+            }
+
+            var currentAction = getSelectedDispositionAction();
+            if(currentAction){
+                if($rootScope.disposition.currentActionIndex){
+                    $rootScope.disposition.dispositions[$rootScope.disposition.currentActionIndex] = currentAction;
+                }
+                else{
+                    $rootScope.disposition.currentActionIndex =  $rootScope.disposition.dispositions.length-1;
+                    $rootScope.disposition.dispositions.push(disposition);
+                }
+            }
+        }
+
+        var getDispositionInSaveFormat = function(){
+            var selectedAction = getSelectedDispositionAction();
+            return {
+                conceptUuid : $rootScope.disposition.dispositionActionUuid,
+                value : selectedAction.adtValueUuid,
+                dispositionNote :{
+                    conceptUuid:selectedAction.adtNoteConcept,
+                    value : selectedAction.adtNoteValue
+                }
+            }
         }
 
         loadDispositionActions();
 
         $scope.$on('$destroy', function() {
-            syncDispositionNotes(),
-            $rootScope.disposition.dispositionOrder = getSelectedDispositionOrder()
+            updateDispositionsList();
+            $rootScope.disposition.adtToStore  =   getDispositionInSaveFormat();
         });
     }]);

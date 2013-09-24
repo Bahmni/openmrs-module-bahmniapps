@@ -3,7 +3,7 @@ Bahmni.Opd = Bahmni.Opd || {};
 
 Bahmni.Opd.Constants = {
     activePatientsListUrl: "../patients",
-    dispositionSetConcept : "disposition set",
+    dispositionConcept : "DispositionOptions",
     dispositionNoteConcept : "disposition note",
     dispositionOrderType : "Disposition Order"
 

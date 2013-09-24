@@ -33,12 +33,18 @@
 
     <section class="block disposition" ng-click="disposition()">
         <h3>Disposition</h3>
-        <div>
-            {{disposition.dispositionOrder.name}}
+
+        <div ng-repeat="disposition in dispositions" >
+            <div>
+                {{disposition.adtName}}
+            </div>
+            <div>
+                {{disposition.adtDateTime}}
+            </div>
+            <p>
+                {{disposition.adtNoteValue}}
+            </p>
         </div>
-        <p>
-            {{disposition.dispositionNotes.value}}
-        </p>
 
     </section>
 

@@ -5,8 +5,8 @@ angular.module('opd.consultation.services')
 
         var getDispositionActions = function () {
             return $http.get(Bahmni.Common.Constants.conceptUrl
-                +"?q="+Bahmni.Opd.Constants.dispositionSetConcept
-                +"&v=custom:(uuid,setMembers:(uuid,name))");
+                +"?q="+Bahmni.Opd.Constants.dispositionConcept
+                +"&v=custom:(uuid,answers:(uuid,name))");
         };
 
         var getDispositionNoteConcept = function(){
