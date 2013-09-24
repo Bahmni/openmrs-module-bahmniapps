@@ -27,11 +27,15 @@ test_out
 registration-ui/node_modules/*
 registration-ui/test_out
 registration-ui/test/output
-registration-ui/target
+*target
 registration-ui/output
 registration-ui/.sass-cache
 registration-ui/.tmp
 registration-ui/node_modules
 registration-ui/app/components
 registration-ui/dist
+<<<<<<< HEAD
 >>>>>>> moving registration code to another folder
+=======
+omod/src/main/webapp/*
+>>>>>>> creating maven task to pack angular app as a omod
