@@ -224,6 +224,9 @@ form .select-arrow:after, .form .select-arrow:after{height:auto;}
       &:hover{
         background:#FAF6F0;
       }
+      &:nth-child(even) {
+          background: #f1f1f1;
+        }
     }
   }
 }

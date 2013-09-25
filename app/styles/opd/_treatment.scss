@@ -2,10 +2,28 @@
 .treatment{
 	overflow:hidden;
     margin-top:20px;
-  .table-body{
-  .row{
-    border-bottom:none;
+    input[type=text],input[type=number],select{
+    width:80%;
   }
+  .simple-form-ui select{
+    min-width:90px;
+    width:100%;
+  }
+  .table-header{
+    .col{
+        @include font-size(0.9);
+        padding-left:5px;
+      padding-right:5px;
+    }
+  }
+  .table-body{
+    .row{
+      border-bottom:none;
+    }
+    .col{
+      padding-left:5px;
+      padding-right:5px;
+    }
 
   }
   .col{
@@ -16,38 +34,40 @@
   }
   .col1{
     @include column(2);
+    width:20%;
     padding-top:8px;
     padding-bottom:5px;
   }
   .col2{
     @include column(1);
-    width:100px;
+    width:13%;
   }
   .col3{
     @include column(1);
+    width:8%;
   }
   .col4{
     @include column(2);
+    width:10%;
   }
   .col5{
     @include column(2);
+    width:10%;
   }
   .col6{
     @include column(1);
-    width:80px;
+    width:4%;
+    padding-left:10px !important;
   }
   .col7{
     @include column(1);
-    width:50px;
-    text-align: center;
+    width:10%;
+     text-align: center;
   }
   .col8{
     @include column(2);
+    float: right;
+    width:115px;
   }
-  input[type=text],input[type=number],select{
-    width:70%;
-  }
-  .simple-form-ui select{
-    min-width:100px;
-  }
+  
 }
