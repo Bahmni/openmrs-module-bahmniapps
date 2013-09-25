@@ -9,6 +9,7 @@ angular.module('opd.consultation.controllers')
                 name: "",
                 originalName:"",
                 strength: '',
+                dosageForm: '',
                 numberPerDosage: "",
                 dosageFrequency: "",
                 dosageInstruction: "",
@@ -40,13 +41,15 @@ angular.module('opd.consultation.controllers')
 
         $scope.addNewRowIfNotExists = function (index) {
             var drugBeingEdited = $scope.selectedDrugs[index];
+            var drugName = drugBeingEdited.name || '';
+
+            drugBeingEdited.empty = areStringsEqual(drugName.trim(), "");
+
             if (!drugBeingEdited.empty) {
-                if (!areStringsEqual(drugBeingEdited.name.trim(), drugBeingEdited.originalName.trim())) {
+                if (!areStringsEqual(drugName.trim(), drugBeingEdited.originalName.trim())) {
                     drugBeingEdited.validated = false;
                     drugBeingEdited.uuid = "";
                 }
-            } else if (!areStringsEqual(drugBeingEdited.name.trim(), "")) {
-                drugBeingEdited.empty = false;
             }
 
             var length = $scope.selectedDrugs.length;
@@ -106,6 +109,7 @@ angular.module('opd.consultation.controllers')
                    selectedDrug.originalName = chosenDrug.name;
                    selectedDrug.uuid = chosenDrug.uuid;
                    selectedDrug.strength = chosenDrug.doseStrength + " " + chosenDrug.units;
+                   selectedDrug.dosageForm = chosenDrug.dosageForm.name.name;
                    selectedDrug.validated = true;
                    selectedDrug.numberPerDosage = 1;
                    selectedDrug.empty = false;
@@ -120,6 +124,10 @@ angular.module('opd.consultation.controllers')
             if (lastDrug.uuid === '') {
                 $scope.selectedDrugs = $scope.selectedDrugs.slice(0, noOfDrugs-1);
             }
+        }
+
+        $scope.removeDrug = function(index) {
+            $scope.selectedDrugs.splice(index,1);
         }
 
         $scope.$on('$destroy', function() {

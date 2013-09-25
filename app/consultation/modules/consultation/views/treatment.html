@@ -3,7 +3,7 @@
         <div class="table">
             <div class="row table-header">
                 <div class="col col1">Drug Name*</div>
-                <div class="col col2">Strength*</div>
+                <div class="col col2">Strength &amp; Form*</div>
                 <div class="col col3"># per Dosage*</div>
                 <div class="col col4">Dosage Frequency*</div>
                 <div class="col col5">Dosage Instructions*</div>
@@ -19,7 +19,7 @@
                                 ng-change="addNewRowIfNotExists($index)">
                     </div>
                     <div class="col col2">
-                        <input ng-model="drug.strength" type="text" value={{drug.strength}} readonly=true size="6">
+                        <input type="text" value="{{drug.strength + ' ' + drug.dosageForm}}" readonly=true size="6">
                     </div>
                     <div class="col col3">
                         <input ng-model="drug.numberPerDosage" type="number" name="numberPerDosage"
@@ -47,6 +47,11 @@
                          <button ng-click="drug.notesVisible=!drug.notesVisible">
                              <span ng-class="{'icon-arrow-down':!drug.notesVisible,'icon-arrow-up':drug.notesVisible}"></span>
                          </button>
+                    </div>
+                    <div class="col col7" ng-show="!drug.empty">
+                        <button type="button" ng-click="removeDrug($index)">
+                            <span>X</span>
+                        </button>
                     </div>
                 </div>
                 <div class="row" ng-show="drug.notesVisible">
