@@ -1,15 +1,14 @@
 <div class="table">
     <div class="row table-header">
-        <div class="col col1">Drug Name*</div>
-        <div class="col col2">Strength*</div>
-        <div class="col col3"># per Dosage*</div>
-        <div class="col col4">Dosage Frequency*</div>
-        <div class="col col5">Dosage Instructions*</div>
-        <div class="col col6"># of Days*</div>
-        <div class="col col7">Notes</div>
+        <div class="col col1">Drug Name</div>
+        <div class="col col2">Strength</div>
+        <div class="col col3"># per Dosage</div>
+        <div class="col col4">Dosage Frequency</div>
+        <div class="col col5">Dosage Instructions</div>
+        <div class="col col6"># of Days</div>
     </div>
 
-    <div ng-repeat="drug in treatmentDrugs" class="table-body">
+    <div ng-repeat="drug in treatmentDrugs | filter: { empty: false }" class="table-body">
         <div class="row">
             <div class="col col1" >
                 {{drug.name}}
@@ -21,17 +20,20 @@
                 {{drug.numberPerDosage}}
             </div>
             <div class="col col4">
-                {{drug.dosageFrequency}}
+                {{drug.dosageFrequency.name.name}}
             </div>
             <div class="col col5">
-                {{drug.dosageInstruction}}
+                {{drug.dosageInstruction.name.name}}
             </div>
             <div class="col col6">
                 {{drug.numberOfDosageDays}}
             </div>
-            <div class="col col7">
-                {{drug.notes}}
-           </div>
-       </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                NOTES: {{drug.notes}}
+            </div>
+        </div>
+
     </div>
 </div>
