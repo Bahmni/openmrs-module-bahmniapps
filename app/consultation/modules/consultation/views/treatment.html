@@ -1,5 +1,5 @@
 <div class="treatment">
-    <form name="treatmentForm">
+    <form name="treatmentForm" class="simple-form-ui">
         <div class="table">
             <div class="row table-header">
                 <div class="col col1">Drug Name*</div>
@@ -16,32 +16,37 @@
                     <div class="col col1" >
                         <input ng-model="drug.name" type="text" name="name" value="{{drug.name}}"
                                 my-autocomplete="{{ {'src': 'getDrugList', 'responseHandler': 'getDataResults', 'onSelect':'onDrugSelected', 'index' : $index} }}"
-                                ng-change="addNewRowIfNotExists($index)">
+                                ng-change="addNewRowIfNotExists($index)" ng-class="{'illegalValue':drug.uuid=='' && !drug.empty}">
                     </div>
                     <div class="col col2">
                         <input type="text" value="{{drug.strength + ' ' + drug.dosageForm}}" readonly=true size="6">
                     </div>
                     <div class="col col3">
-                        <input ng-model="drug.numberPerDosage" type="number" name="numberPerDosage"
-                                value="{{drug.numberPerDosage}}" ng-required="!drug.empty">
+                        <input ng-model="drug.numberPerDosage" type="number" name="numberPerDosage" min="0"
+                                value="{{drug.numberPerDosage}}" ng-required="!drug.empty"
+                                ng-class="{'illegalValue':drug.numberPerDosage=='' && !drug.empty}">
                     </div>
                     <div class="col col4">
                         <span class="select-arrow">
-                            <select ng-model="drug.dosageFrequency" ng-options="df.name.name for df in dosageFrequencyAnswers" ng-required="!drug.empty">
+                            <select ng-model="drug.dosageFrequency" ng-options="df.name.name for df in dosageFrequencyAnswers"
+                                    ng-class="{'illegalValue':drug.dosageFrequency=='' && !drug.empty}" ng-required="!drug.empty">
                                 <option value=""></option>
                             </select>
                         </span>
                     </div>
                     <div class="col col5">
                         <span class="select-arrow">
-                            <select ng-model="drug.dosageInstruction" ng-options="di.name.name for di in dosageInstructionAnswers" ng-required="!drug.empty">
+                            <select ng-model="drug.dosageInstruction" ng-options="di.name.name for di in dosageInstructionAnswers"
+                                    ng-class="{'illegalValue':drug.dosageInstruction=='' && !drug.empty}" ng-required="!drug.empty">
                                 <option value=""></option>
                             </select>
                         </span>
                     </div>
                     <div class="col col6">
                         <input ng-model="drug.numberOfDosageDays" name="numberOfDosageDays"
-                               type="number" value="{{drug.numberOfDosageDays}}" ng-required="!drug.empty">
+                               type="number" value="{{drug.numberOfDosageDays}}" min="0"
+                               ng-required="!drug.empty"
+                               ng-class="{'illegalValue':drug.numberOfDosageDays=='' && !drug.empty}">
                     </div>
                     <div class="col col7">
                          <button ng-click="drug.notesVisible=!drug.notesVisible">
@@ -61,6 +66,5 @@
                 </div>
             </div>
         </div>
-        <div><button type="submit">Submit</button></div>
     </form>
 </div>

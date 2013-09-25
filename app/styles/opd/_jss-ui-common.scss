@@ -104,6 +104,11 @@ textarea{
   width:426.6px;
   height: 84px;
 }
+.simple-form-ui select.illegalValue{
+  border: 2px solid;
+  border-color: #ff6666;
+  background: white;
+}
 .span1{
   @include column(1);
 }
