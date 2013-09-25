@@ -7,13 +7,14 @@
                 <div class="col col3"># per Dosage*</div>
                 <div class="col col4">Dosage Frequency*</div>
                 <div class="col col5">Dosage Instructions*</div>
-                <div class="col col6"># of Days*</div>
-                <div class="col col7">Notes</div>
+                <div class="col col6">PRN</div>
+                <div class="col col7"># of Days*</div>
+                <div class="col col8">Notes</div>
             </div>
 
             <div ng-repeat="drug in selectedDrugs" class="table-body">
                 <div class="row">
-                    <div class="col col1" >
+                    <div class="col col1">
                         <input ng-model="drug.name" type="text" name="name" value="{{drug.name}}"
                                 my-autocomplete="{{ {'src': 'getDrugList', 'responseHandler': 'getDataResults', 'onSelect':'onDrugSelected', 'index' : $index} }}"
                                 ng-change="addNewRowIfNotExists($index)" ng-class="{'illegalValue':drug.uuid=='' && !drug.empty}">
@@ -43,18 +44,22 @@
                         </span>
                     </div>
                     <div class="col col6">
+                        <input ng-model="drug.prn" name="prn" type="checkbox" value="{{drug.prn}}" >
+                    </div>
+                    <div class="col col7">
                         <input ng-model="drug.numberOfDosageDays" name="numberOfDosageDays"
                                type="number" value="{{drug.numberOfDosageDays}}" min="0"
                                ng-required="!drug.empty"
                                ng-class="{'illegalValue':drug.numberOfDosageDays=='' && !drug.empty}">
+
                     </div>
-                    <div class="col col7">
-                         <button ng-click="drug.notesVisible=!drug.notesVisible">
-                             <span ng-class="{'icon-arrow-down':!drug.notesVisible,'icon-arrow-up':drug.notesVisible}"></span>
-                         </button>
-                    </div>
-                    <div class="col col7" ng-show="!drug.empty">
-                        <button type="button" ng-click="removeDrug($index)">
+
+                    <div class="col col8" >
+
+                        <button ng-click="drug.notesVisible=!drug.notesVisible">
+                            <span ng-class="{'icon-arrow-down':!drug.notesVisible,'icon-arrow-up':drug.notesVisible}"></span>
+                        </button>
+                        <button type="button" ng-click="removeDrug($index)" ng-show="!drug.empty">
                             <span>X</span>
                         </button>
                     </div>

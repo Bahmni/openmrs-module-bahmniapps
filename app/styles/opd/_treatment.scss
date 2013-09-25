@@ -6,12 +6,16 @@
   .row{
     border-bottom:none;
   }
+
+  }
+  .col{
+    margin:0px 5px;
   }
   input[type=number]{
     width:50px;
   }
   .col1{
-    @include column(3);
+    @include column(2);
     padding-top:8px;
     padding-bottom:5px;
   }
@@ -30,10 +34,20 @@
   }
   .col6{
     @include column(1);
+    width:80px;
   }
   .col7{
     @include column(1);
     width:50px;
     text-align: center;
+  }
+  .col8{
+    @include column(2);
+  }
+  input[type=text],input[type=number],select{
+    width:70%;
+  }
+  .simple-form-ui select{
+    min-width:100px;
   }
 }

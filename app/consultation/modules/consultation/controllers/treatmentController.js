@@ -10,6 +10,7 @@ angular.module('opd.consultation.controllers')
                 originalName:"",
                 strength: '',
                 dosageForm: '',
+                prn: '',
                 numberPerDosage: "",
                 dosageFrequency: "",
                 dosageInstruction: "",
