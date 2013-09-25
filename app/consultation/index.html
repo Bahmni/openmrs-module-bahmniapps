@@ -14,30 +14,14 @@
                 <div class="opd-inner-wrapper">
                 <header class="reg-header" ng-controller="ConsultationNavigationController">
                         <ul class="header-tabs">
-                            <li>
-                                <button ng-click="dashboard()" class="button" ng-class="{'tabs-selected':selectedContext==''}">Consultation</button>
-                            </li>
-                             <li>
-                                <button ng-click="investigation()" class="button" ng-class="{'tabs-selected':selectedContext=='investigation'}">
-                                    Investigations
+                            <li ng-repeat="board in availableBoards"> 
+                                <button ng-click="showBoard(board.name)" class="button" ng-class="{'tabs-selected':currentBoard.name==board.name}">
+                                    {{board.name}}
                                 </button>
                             </li>
-                            <li>
-                                <button ng-click="diagnosis()" class="button" ng-class="{'tabs-selected':selectedContext=='diagnosis'}">Diagnosis</button>
-                            </li>
-                            <li>
-                                <button ng-click="treatment()" class="button" ng-class="{'tabs-selected':selectedContext=='treatment'}">Treatment</button>
-                            </li>
-                             <li>
-                                <button ng-click="disposition()" class="button" ng-class="{'tabs-selected':selectedContext=='disposition'}">
-                                    Disposition
-                                </button>
-                            </li>
-                         </ul>
+                        </ul>
                          <ul class="patient-info">
-                        
-                            <li><img class="roundImages" ng-src="{{patient.image}}"  onerror="this.onerror=null;this.src='../images/blank-user.gif';" > </li>
-
+                            <li><img class="roundImages" ng-src="{{patient.image}}"  onerror="this.onerror=null;this.src='../images/blank-user.gif';"></li>
                              <li class="logoff">
                                 <button ng-click="logout()"><i class="icon-off icon-white small"></i></button>
                             </li>
@@ -45,11 +29,11 @@
 
                         <div class="patient-detail">
                             <ul>
-                            <li>{{patient.identifier}}</li>
-                             <li><span>{{patient.name}},</span></li>
-                             <li>{{patient.gender | gender }}, {{patient.age}}</li>
-                            
-                    </div>
+                                <li>{{patient.identifier}}</li>
+                                <li><span>{{patient.name}},</span></li>
+                                <li>{{patient.gender | gender }}, {{patient.age}}</li>
+                            </ul>
+                        </div>
                 </header>
 
                 <div ng-view id="view-content" class="opd-content-wrapper"></div>
