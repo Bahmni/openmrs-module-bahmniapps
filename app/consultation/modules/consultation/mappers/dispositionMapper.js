@@ -2,7 +2,7 @@ Bahmni.Opd.DispositionMapper = function(encounterConfig,dispositionNoteConcept) 
     this.map = function(visit) {
         var opdEncounters = visit.encounters.filter(function(encounter){
             return encounter.encounterType.uuid === encounterConfig.getOpdConsultationEncounterUUID();
-        })[0];
+        });
 
 
         var dispositions= [];
