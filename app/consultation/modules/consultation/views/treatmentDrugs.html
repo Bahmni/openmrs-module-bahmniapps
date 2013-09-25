@@ -9,9 +9,10 @@
                 {{$index+1}}) {{drug.name}}
                 - {{drug.numberPerDosage}} x
                 -  {{drug.strength + ' ' + drug.dosageForm}}
-                - {{drug.dosageFrequency.name.name}}
-                - {{drug.dosageInstruction.name.name}}
-                - for {{drug.numberOfDosageDays}} days
+                <span ng-show="drug.dosageFrequency && drug.dosageFrequency!=''"> - {{drug.dosageFrequency.name.name}}</span>
+                <span ng-show="drug.dosageInstruction && drug.dosageInstruction!=''"> - {{drug.dosageInstruction.name.name}}</span>
+                - for {{drug.numberOfDosageDays}} day(s)
+                <span ng-show="drug.prn"> - (take as required) </span>
             </div>
             <div class="row">
                 <div class="col">

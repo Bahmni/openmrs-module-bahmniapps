@@ -10,7 +10,7 @@ angular.module('opd.consultation.controllers')
                 originalName:"",
                 strength: '',
                 dosageForm: '',
-                prn: '',
+                prn: false,
                 numberPerDosage: "",
                 dosageFrequency: "",
                 dosageInstruction: "",
@@ -48,6 +48,9 @@ angular.module('opd.consultation.controllers')
             if (!drugBeingEdited.empty) {
                 if (!areStringsEqual(drugName.trim(), drugBeingEdited.originalName.trim())) {
                     drugBeingEdited.uuid = "";
+                    drugBeingEdited.strength = "";
+                    drugBeingEdited.dosageForm = "";
+                    drugBeingEdited.numberPerDosage = "";
                 }
             }
 
@@ -130,9 +133,29 @@ angular.module('opd.consultation.controllers')
 
         var allowContextChange = function() {
             var invalidDrugs = $scope.selectedDrugs.filter(function(drug){
-                return (!drug.empty && (drug.uuid === ""));
+                return !isValidDrug(drug);
             });
             return invalidDrugs.length === 0;
+        }
+
+        var isValidDrug = function(drug) {
+            if (!drug.empty) {
+                if (drug.uuid === "") {
+                    return false;
+                }
+                if (!drug.numberPerDosage || drug.numberPerDosage === "") {
+                    return false;
+                }
+
+                if (!drug.numberOfDosageDays || drug.numberOfDosageDays==="") {
+                    return false;
+                }
+
+                if (!drug.prn) {
+                   return (drug.dosageFrequency && drug.dosageInstruction) && (drug.dosageFrequency !== "" && drug.dosageInstruction !== "");
+                }
+            }
+            return true;
         }
 
         $scope.$on('$destroy', function() {
