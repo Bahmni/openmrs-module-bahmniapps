@@ -1,9 +1,23 @@
-@import "opd/_jss-ui-common.scss";
-@import "opd/_layout.scss";
-@import "opd/_treatment.scss";
 
-@import "opd/_patientSearch.scss";
-@import "opd/_consultation.scss";
-@import "opd/_investigation.scss";
-@import "opd/_diagnosis.scss";
+@import "compass";
+// dependencies from openmrs ui commons
+@import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/vendor/normalize";
+@import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/variables";
+$fontPath: "../../components/openmrs-uicommons/omod/src/main/webapp/resources/fonts"; //overwritting the path of the fonts file to point to correct file location.
+@import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fragments/base";
+@import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fragments/grid";
+@import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fragments/header";
+@import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fragments/buttons";
+@import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fonts/fonts";
+@import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fonts/font-awesome";
+@import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fonts/icomoon";
+
+// JSS css files
+@import "opd/jss-ui-common";
+@import "opd/layout.scss";
+@import "opd/patientSearch";
+@import "opd/consultation";
+@import "opd/investigation";
+@import "opd/diagnosis";
+@import "opd/treatment";
 
