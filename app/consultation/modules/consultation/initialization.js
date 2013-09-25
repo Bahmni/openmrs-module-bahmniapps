@@ -6,11 +6,13 @@ angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q'
         var dispositionNoteConcept;
         var orders;
 
-        var configurationsPromise = configurationService.getConfigurations(['bahmniConfiguration', 'encounterConfig', 'patientConfig'])
+        var configurationsPromise = configurationService.getConfigurations(['bahmniConfiguration', 'encounterConfig', 'patientConfig', ,'dosageFrequencyConfig','dosageInstructionConfig'])
             .then(function (configurations) {
                 $rootScope.bahmniConfiguration = configurations.bahmniConfiguration;
                 $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig);
                 $rootScope.patientConfig = configurations.patientConfig;
+                $rootScope.dosageFrequencyConfig = configurations.dosageFrequencyConfig;
+                $rootScope.dosageInstructionConfig = configurations.dosageInstructionConfig;
 
 
                 return visitService.getVisit($route.current.params.visitUuid).success(function (visit) {
