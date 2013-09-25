@@ -42,6 +42,14 @@ angular.module('opd.consultation.controllers')
 
 
     var buttonClickAction = function (url) {
+        if ($rootScope.beforeContextChange) {
+            var changeCtx = $rootScope.beforeContextChange();
+            if (!changeCtx) {
+                return;
+            }
+        }
+        $rootScope.beforeContextChange = null;
+
         return $location.url("/visit/" + $rootScope.visit.uuid + "/" + url);
     }
 }]);
