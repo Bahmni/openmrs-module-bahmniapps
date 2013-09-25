@@ -41,8 +41,19 @@ angular.module('opd.consultation.controllers')
         return buttonClickAction("disposition");
     }
 
+    var initialize = function() {
+        var currentPath = $location.path();
+        var pathInfo = currentPath.substr(currentPath.lastIndexOf('/') + 1);
+        $scope.selectedContext = pathInfo;
+    }
 
     var buttonClickAction = function (ctx) {
+        if ($scope.selectedContext) {
+            if ($scope.selectedContext === ctx) {
+                return;
+            }
+        }
+
         if ($rootScope.beforeContextChange) {
             var changeCtx = $rootScope.beforeContextChange();
             if (!changeCtx) {
@@ -53,4 +64,7 @@ angular.module('opd.consultation.controllers')
         $scope.selectedContext = ctx;
         return $location.url("/visit/" + $rootScope.visit.uuid + "/" + ctx);
     }
+
+    initialize();
+
 }]);
