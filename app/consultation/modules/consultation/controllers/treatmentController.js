@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('opd.consultation.controllers')
-    .controller('TreatmentController', ['$scope', 'treatmentService', function ($scope, treatmentService) {
+    .controller('TreatmentController', ['$scope', '$rootScope', 'treatmentService', function ($scope, $rootScope, treatmentService) {
         $scope.placeholder = "Add Treatment Advice";
         var drug = function () {
             return {
@@ -122,9 +122,16 @@ angular.module('opd.consultation.controllers')
             }
         }
 
+        $scope.$on('$destroy', function() {
+            $rootScope.treatmentDrugs = $scope.selectedDrugs;
+        });
+
         $scope.dosageFrequencyAnswers = $scope.dosageFrequencyConfig.results[0].answers;
         $scope.dosageInstructionAnswers = $scope.dosageInstructionConfig.results[0].answers;
 
+        if ($rootScope.treatmentDrugs) {
+           $scope.selectedDrugs = $rootScope.treatmentDrugs;
+        } 
 
     }])
 

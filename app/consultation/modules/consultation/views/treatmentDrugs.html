@@ -1,0 +1,37 @@
+<div class="table">
+    <div class="row table-header">
+        <div class="col col1">Drug Name*</div>
+        <div class="col col2">Strength*</div>
+        <div class="col col3"># per Dosage*</div>
+        <div class="col col4">Dosage Frequency*</div>
+        <div class="col col5">Dosage Instructions*</div>
+        <div class="col col6"># of Days*</div>
+        <div class="col col7">Notes</div>
+    </div>
+
+    <div ng-repeat="drug in treatmentDrugs" class="table-body">
+        <div class="row">
+            <div class="col col1" >
+                {{drug.name}}
+            </div>
+            <div class="col col2">
+                {{drug.strength}}
+            </div>
+            <div class="col col3">
+                {{drug.numberPerDosage}}
+            </div>
+            <div class="col col4">
+                {{drug.dosageFrequency}}
+            </div>
+            <div class="col col5">
+                {{drug.dosageInstruction}}
+            </div>
+            <div class="col col6">
+                {{drug.numberOfDosageDays}}
+            </div>
+            <div class="col col7">
+                {{drug.notes}}
+           </div>
+       </div>
+    </div>
+</div>

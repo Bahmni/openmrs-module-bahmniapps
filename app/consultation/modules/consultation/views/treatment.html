@@ -27,12 +27,16 @@
                     </div>
                     <div class="col col4">
                         <span class="select-arrow">
-                            <select ng-model="drug.dosageFrequency" ng-options="df.name.name for df in dosageFrequencyAnswers" ng-required="!drug.empty"></select>
+                            <select ng-model="drug.dosageFrequency" ng-options="df.name.name for df in dosageFrequencyAnswers" ng-required="!drug.empty">
+                                <option value=""></option>
+                            </select>
                         </span>
                     </div>
                     <div class="col col5">
                         <span class="select-arrow">
-                            <select ng-model="drug.dosageInstruction" ng-options="di.name.name for di in dosageInstructionAnswers" ng-required="!drug.empty"></select>
+                            <select ng-model="drug.dosageInstruction" ng-options="di.name.name for di in dosageInstructionAnswers" ng-required="!drug.empty">
+                                <option value=""></option>
+                            </select>
                         </span>
                     </div>
                     <div class="col col6">
