@@ -14,11 +14,25 @@
                 <div class="opd-inner-wrapper">
                 <header class="reg-header" ng-controller="ConsultationNavigationController">
                         <ul class="header-tabs">
-                            <li><button ng-click="dashboard()" class="button tabs-selected">Consultation</button></li>
-                             <li><button ng-click="investigation()" class="button">Investigations</button></li>
-                             <li><button ng-click="diagnosis()" class="button">Diagnosis</button></li>
-                             <li><button ng-click="treatment()" class="button">Treatment</button></li>
-                             <li><button ng-click="disposition()" class="button">Disposition</button></li>
+                            <li>
+                                <button ng-click="dashboard()" class="button" ng-class="{'tabs-selected':selectedContext==''}">Consultation</button>
+                            </li>
+                             <li>
+                                <button ng-click="investigation()" class="button" ng-class="{'tabs-selected':selectedContext=='investigation'}">
+                                    Investigations
+                                </button>
+                            </li>
+                            <li>
+                                <button ng-click="diagnosis()" class="button" ng-class="{'tabs-selected':selectedContext=='diagnosis'}">Diagnosis</button>
+                            </li>
+                            <li>
+                                <button ng-click="treatment()" class="button" ng-class="{'tabs-selected':selectedContext=='treatment'}">Treatment</button>
+                            </li>
+                             <li>
+                                <button ng-click="disposition()" class="button" ng-class="{'tabs-selected':selectedContext=='disposition'}">
+                                    Disposition
+                                </button>
+                            </li>
                          </ul>
                          <ul class="patient-info">
                         
@@ -88,13 +102,5 @@
             <script src="modules/consultation/models/diagnosis.js"></script>
             <!-- endbuild -->
         </div>
-        <script>
-$(function(){
-    $(".header-tabs button").click(function(){
-        $(this).closest("ul").find("button").removeClass("tabs-selected");
-        $(this).closest("li").find("button").addClass("tabs-selected");
-    })
-})
-</script>
     </body>
 </html>

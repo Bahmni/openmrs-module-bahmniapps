@@ -3,6 +3,7 @@
 angular.module('opd.consultation.controllers')
     .controller('ConsultationNavigationController', ['$scope', '$rootScope', '$location', '$route', function ($scope, $rootScope, $location, $route) {
     $scope.mainButtonText = "Consultation";
+    $scope.selectedContext = '';
 
     $scope.blank = function () {
         return $location.url("/blank");
@@ -41,7 +42,7 @@ angular.module('opd.consultation.controllers')
     }
 
 
-    var buttonClickAction = function (url) {
+    var buttonClickAction = function (ctx) {
         if ($rootScope.beforeContextChange) {
             var changeCtx = $rootScope.beforeContextChange();
             if (!changeCtx) {
@@ -49,7 +50,7 @@ angular.module('opd.consultation.controllers')
             }
         }
         $rootScope.beforeContextChange = null;
-
-        return $location.url("/visit/" + $rootScope.visit.uuid + "/" + url);
+        $scope.selectedContext = ctx;
+        return $location.url("/visit/" + $rootScope.visit.uuid + "/" + ctx);
     }
 }]);
