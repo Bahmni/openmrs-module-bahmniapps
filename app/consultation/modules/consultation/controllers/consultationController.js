@@ -12,7 +12,7 @@ angular.module('opd.consultation.controllers')
             return { conceptUUID:test.uuid }
         });
 
-        encounterData.disposition = $rootScope.disposition.adtToStore;
+      //  encounterData.disposition = $rootScope.disposition.adtToStore;
 
         consultationService.create(encounterData).success(function(){
             window.location = Bahmni.Opd.Constants.activePatientsListUrl;
