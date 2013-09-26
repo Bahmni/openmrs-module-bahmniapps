@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('opd.consultation.controllers')
-    .controller('DispositionController', ['$scope', '$rootScope','dispositionService', function ($scope, $rootScope,dispositionService) {
+    .controller('DispositionController', ['$scope', '$rootScope','dispositionService','$location', function ($scope, $rootScope,dispositionService,$location) {
 
         var getOrderType = function(){
             return Bahmni.Opd.Constants.dispositionOrderType;
@@ -9,6 +9,7 @@ angular.module('opd.consultation.controllers')
 
         var loadDispositionActions = function(){
             $scope.dispositionActions = $rootScope.disposition.dispositionActions;
+//            $scope.dispositionActions = [];
 
             if(!$rootScope.disposition){
 
@@ -44,6 +45,10 @@ angular.module('opd.consultation.controllers')
                 adtNoteValue : $scope.dispositionNotes,
                 adtName : selectedAction.name.name
             };
+        }
+
+        $scope.assignBed = function(){
+            return $location.url("/bed-management");
         }
 
 
