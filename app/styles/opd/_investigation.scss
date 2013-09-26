@@ -1,18 +1,31 @@
-form fieldset{
-	width:95%;
+.investigation{
+    padding:10px;
+    fieldset{
+
+    }
+     div:focus{
+        outline:none;
+    }
+    #selectedNodesArea {
+        min-height: 100px;
+        padding:20px;
+    }
+
+    .selectedNode {
+        background-color: #f1f1f1;
+        color: #474747;
+        padding: 0px 0px 0px 5px;
+        border-radius: 5px;
+        border:1px solid #cecece;
+        margin-right: 10px;
+        font: 25px;
+        display: inline-block;
+        margin-bottom: 10px;
+        .test-name{
+            min-width:70px;
+            display: inline-block;
+        }
+    }
+
 }
 
-#selectedNodesArea {
-    min-height: 200px;
-    padding:20px;
-}
-
-.selectedNode {
-    background-color: #4573FF;
-    color: WHITE;
-    padding: 5px;
-    margin-right: 10px;
-    font: 25px;
-    display: inline-block;
-    margin-bottom: 10px;
-}

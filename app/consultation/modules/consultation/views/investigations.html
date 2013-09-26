@@ -1,11 +1,12 @@
+<div class="investigation">
+<div>
 <form>
     <fieldset>
-        <legend>Add Order</legend>
         <div>
             <div id="tabButtonRow">
                 <button ng-repeat="tab in tabs" class="{{tab.klass}}" ng-click="activateTab(tab)">{{tab.name}} </button>
                 <!-- TODO: Replace this with ng-if after updating to angular >= 1.1.5 -->
-                <div ng-switch="activeTab">
+                <div ng-switch="activeTab" class="investigation-selection">
                     <div ng-switch-default>
                         <div tree-selector root-concept-name="activeTab.name",
                                            additional-data="activeTab"
@@ -19,16 +20,19 @@
         </div>
     </fieldset>
 </form>
+</div>
+<div class="investigation-results">
 <form>
     <fieldset>
         <legend>Review Investigations Ordered</legend>
         <div id="selectedNodesArea" tabindex="0">
             <span ng-repeat="investigation in consultation.investigations" class="selectedNode" ng-class="{panel: investigation.isSet}">
-                {{investigation.name}}
-                <span class="icon-remove icon-white" ng-click="removeInvestigation(investigation)"></span>
+                <span class="test-name">{{investigation.name}}</span>
+                <button class="icon-remove icon-white" ng-click="removeInvestigation(investigation)"></button>
             </span>
         </div>
     </fieldset>
 </form>
-
+</div>
+</div>
 

@@ -29,6 +29,7 @@
 
 .column:only-child {
     border-right: 1px solid #999;
+    padding-top:10px;
 }
 
 /* for error messages */
@@ -44,7 +45,7 @@
     margin: 0;
 
     height: 350px;
-    width: 296px;
+    width: 305px;
 
     overflow-y: auto;
 
@@ -85,7 +86,7 @@
 }
 
 .activeColumn .focus {
-    background-color: #4573FF;
+    background-color: #999;
     color: WHITE;
 }
 
