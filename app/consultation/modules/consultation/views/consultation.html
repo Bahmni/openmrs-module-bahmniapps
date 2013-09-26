@@ -12,7 +12,7 @@
     </section>
     <section class="block diagnosis">
         <h3>Diagnosis</h3>
-        <div style="overflow:hidden">
+        <div style="overflow:hidden" ng-show="consultation.diagnoses.length > 0">
             <div style="float:left; width:400px">
                 <h2>Primary Diagnoses</h2>
                 <div ng-repeat="diagnosis in consultation.diagnoses" ng-show="diagnosis.isPrimary()">

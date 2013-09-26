@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('opd.consultation.services')
-    .factory('consultationService', ['$http', '$rootScope', function ($http, $rootScope) {
-    
+    .factory('consultationService', ['$http', function ($http) {
     var create = function (encounter) {
         return $http.post(Bahmni.Common.Constants.encounterUrl, encounter, {
             withCredentials: true
