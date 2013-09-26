@@ -14,8 +14,8 @@ angular.module('opd.consultation.controllers')
 //                certainty: diagnosis.certainty
 //            }
 //        });
-        encounterData.testOrders = $rootScope.consultation.investigations.map(function (test) {
-            return { conceptUUID:test.uuid }
+        encounterData.testOrders = $rootScope.consultation.investigations.map(function (investigation) {
+            return { conceptUuid: investigation.uuid, orderTypeUuid: investigation.orderTypeUuid };
         });
 
       //  encounterData.disposition = $rootScope.disposition.adtToStore;

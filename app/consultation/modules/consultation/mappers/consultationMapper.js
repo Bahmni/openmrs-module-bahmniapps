@@ -6,11 +6,12 @@ Bahmni.Opd.ConsultationMapper = function(encounterConfig) {
         })[0];
         
         if (opdEncounter) {
-            var labOrders = opdEncounter.orders.filter(function(order){
-                return order.orderType == null;
+            var testOrders = opdEncounter.orders.filter(function(order){
+                return order.orderType && Bahmni.Opd.Constants.testOrderTypes.indexOf(order.orderType.display) >= 0;
             });
-            investigations = labOrders.map(function(labOrder){
-                return {uuid: labOrder.concept.uuid, name: labOrder.concept.display, isSet: labOrder.concept.set };
+            investigations = testOrders.map(function(testOrder){
+                return { uuid: testOrder.concept.uuid, name: testOrder.concept.display,
+                         isSet: testOrder.concept.set, orderTypeUuid: testOrder.orderType.uuid };
             });    
         };                
         

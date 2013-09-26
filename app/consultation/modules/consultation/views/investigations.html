@@ -7,7 +7,8 @@
                 <!-- TODO: Replace this with ng-if after updating to angular >= 1.1.5 -->
                 <div ng-switch="activeTab">
                     <div ng-switch-default>
-                        <div tree-selector root-concept-name="activeTab.name"
+                        <div tree-selector root-concept-name="activeTab.name",
+                                           additional-data="activeTab"
                                            ng-model="consultation.investigations"
                                            item-mapper="conceptToInvestigationMapper" 
                                            item-comparer="investigationComparer">

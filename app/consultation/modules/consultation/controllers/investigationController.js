@@ -5,8 +5,8 @@ angular.module('opd.consultation.controllers')
         var investigations = $rootScope.consultation.investigations;
         
         $scope.tabs = [
-            {name: 'Laboratory'},
-            {name: 'Radiology'},
+            {name: 'Laboratory', orderType: 'Lab Order'},
+            {name: 'Radiology', orderType: 'Radiology Order'},
             {name: 'Endoscopy'},
             {name: 'Others'},
         ]
@@ -30,7 +30,8 @@ angular.module('opd.consultation.controllers')
             return investigation1.uuid === investigation2.uuid;
         }
         
-        $scope.conceptToInvestigationMapper = function(concept) {
-            return {uuid: concept.uuid, name: concept.name.display, isSet: concept.set };
+        $scope.conceptToInvestigationMapper = function(concept, treeAdditionalData) {
+            return{ uuid: concept.uuid, name: concept.name.display,
+                    isSet: concept.set, orderTypeUuid: $rootScope.encounterConfig.orderTypes[treeAdditionalData.orderType] };
         }
     }]);

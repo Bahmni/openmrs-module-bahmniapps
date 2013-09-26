@@ -6,6 +6,10 @@ angular.module('opd.treeSelect')
             var itemComparer = $scope.itemComparer();
             var itemMapper = $scope.itemMapper(); 
 
+            var convertDataToItem = function(data){
+                return itemMapper(data, $scope.additionalData);
+            }
+
             var selectedItemshasItem = function(item) {
                 for(var i=0; i < $scope.selectedItems.length; i++) {
                     if(itemComparer($scope.selectedItems[i], item)) {
@@ -17,7 +21,7 @@ angular.module('opd.treeSelect')
 
             var removeItemForNode = function(node) {
                 for(var i=0; i < $scope.selectedItems.length; i++) {
-                    if(itemComparer($scope.selectedItems[i], itemMapper(node.data))) {
+                    if(itemComparer($scope.selectedItems[i], convertDataToItem(node.data))) {
                         $scope.selectedItems.splice(i, 1);
                         return;
                     }
@@ -25,7 +29,7 @@ angular.module('opd.treeSelect')
             }
 
             var addItemFromNode = function(node) {
-                var item = itemMapper(node.data);
+                var item = convertDataToItem(node.data);
                 if(!selectedItemshasItem(item)){
                     $scope.selectedItems.push(item);
                 };
@@ -92,6 +96,7 @@ angular.module('opd.treeSelect')
             scope: {
                 selectedItems: '=ngModel',
                 rootConceptName: "=",
+                additionalData: "=",
                 itemMapper: "&",
                 itemComparer: "&"
             }
