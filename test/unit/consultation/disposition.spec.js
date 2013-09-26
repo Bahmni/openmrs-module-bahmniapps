@@ -332,8 +332,8 @@ describe("ConsultationModule", function () {
 
     beforeEach(inject(function () {
 
-        encounterConfig = jasmine.createSpyObj('EncounterConfig', ['getOpdConsultationEncounterUUID'])
-        encounterConfig.getOpdConsultationEncounterUUID.andReturn("c9614b8a-00e7-11e3-8c55-0800271c1b75");
+        encounterConfig = jasmine.createSpyObj('EncounterConfig', ['getOpdConsultationEncounterUuid'])
+        encounterConfig.getOpdConsultationEncounterUuid.andReturn("c9614b8a-00e7-11e3-8c55-0800271c1b75");
 
 
     }));
@@ -348,7 +348,7 @@ describe("ConsultationModule", function () {
        //     var expectedDispositionNoteUuid = dispositionNoteConcept.uuid;
      //       expect(foundResult.dispositions[0].adtNoteConcept).toBe(expectedDispositionNoteUuid);
           //  var expectedDispositionOrder = visit.encounters[0].orders[0];
-           // expect(foundResult.dispositionOrder.order.conceptUUID).toBe(expectedDispositionOrder.concept.uuid);
+           // expect(foundResult.dispositionOrder.order.conceptUuid).toBe(expectedDispositionOrder.concept.uuid);
 
         });
     });

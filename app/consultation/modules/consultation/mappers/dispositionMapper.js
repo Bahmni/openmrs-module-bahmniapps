@@ -1,7 +1,7 @@
 Bahmni.Opd.DispositionMapper = function(encounterConfig,dispositionNoteConcept) {
     this.map = function(visit) {
         var opdEncounters = visit.encounters.filter(function(encounter){
-            return encounter.encounterType.uuid === encounterConfig.getOpdConsultationEncounterUUID();
+            return encounter.encounterType.uuid === encounterConfig.getOpdConsultationEncounterUuid();
         });
 
 
@@ -37,7 +37,7 @@ Bahmni.Opd.DispositionMapper = function(encounterConfig,dispositionNoteConcept) 
 
        /* var order = {
            order :{
-               conceptUUID : dispositionOrder[0].concept.uuid,
+               conceptUuid : dispositionOrder[0].concept.uuid,
                orderType :  dispositionOrder[0].orderType.display
            },
            name : dispositionOrder[0].display

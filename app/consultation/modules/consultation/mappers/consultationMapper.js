@@ -2,7 +2,7 @@ Bahmni.Opd.ConsultationMapper = function(encounterConfig) {
     this.map = function(visit) {
         var investigations = [];
         var opdEncounter = visit.encounters.filter(function(encounter){
-            return encounter.encounterType.uuid === encounterConfig.getOpdConsultationEncounterUUID();
+            return encounter.encounterType.uuid === encounterConfig.getOpdConsultationEncounterUuid();
         })[0];
         
         if (opdEncounter) {

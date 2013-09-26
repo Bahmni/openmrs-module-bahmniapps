@@ -6,7 +6,7 @@ angular.module('opd.consultation.controllers')
     $scope.save = function () {
         var encounterData = {};
         encounterData.patientUuid = $scope.patient.uuid;
-        encounterData.encounterTypeUuid = $rootScope.encounterConfig.getOpdConsultationEncounterUUID();
+        encounterData.encounterTypeUuid = $rootScope.encounterConfig.getOpdConsultationEncounterUuid();
 //        encounterData.diagnoses = $rootScope.consultation.diagnoses.map(function(diagnosis) {
 //            return {
 //                diagnosis: "Concept:" + diagnosis.concept.conceptId,

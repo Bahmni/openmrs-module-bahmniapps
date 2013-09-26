@@ -4,7 +4,7 @@ var EncounterConfig = (function() {
   }
 
   EncounterConfig.prototype = {
-    getOpdConsultationEncounterUUID: function() {
+    getOpdConsultationEncounterUuid: function() {
       return this.encounterTypes["OPD"];
     }
   }

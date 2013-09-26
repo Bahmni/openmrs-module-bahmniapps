@@ -27,7 +27,7 @@ angular.module('opd.consultation.controllers')
             /*if(!$scope.dispositionActions){
                 return{
                     order :{
-                        conceptUUID : '',
+                        conceptUuid : '',
                         orderType : ''
                     },
                     name : ''
