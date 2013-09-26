@@ -2,13 +2,13 @@
     <form name="treatmentForm" class="simple-form-ui">
         <div class="table">
             <div class="row table-header">
-                <div class="col col1">Drug Name*</div>
-                <div class="col col2">Strength &amp; Form*</div>
-                <div class="col col3"># per Dosage*</div>
-                <div class="col col4">Dosage Frequency*</div>
-                <div class="col col5">Dosage Instructions*</div>
+                <div class="col col1">Drug Name<span class="required">*</span></div>
+                <div class="col col2">Strength &amp; Form<span class="required">*</span></div>
+                <div class="col col3"># per Dosage<span class="required">*</span></div>
+                <div class="col col4">Dosage Frequency<span class="required">*</span></div>
+                <div class="col col5">Dosage Instructions</div>
                 <div class="col col6">PRN</div>
-                <div class="col col7"># of Days*</div>
+                <div class="col col7"># of Days<span class="required">*</span></div>
                 <div class="col col8">Notes</div>
             </div>
 
@@ -20,7 +20,7 @@
                                 ng-change="addNewRowIfNotExists($index)" ng-class="{'illegalValue': !isValidDrugName(drug)}">
                     </div>
                     <div class="col col2">
-                        <input type="text" value="{{drug.strength + ' ' + drug.dosageForm}}" readonly=true size="6">
+                        <span class="drug-strength"> {{drug.strength + ' ' + drug.dosageForm}} </span>
                     </div>
                     <div class="col col3">
                         <input ng-model="drug.numberPerDosage" type="number" name="numberPerDosage" min="0"
@@ -37,8 +37,7 @@
                     </div>
                     <div class="col col5">
                         <span class="select-arrow">
-                            <select ng-model="drug.dosageInstruction" ng-options="di.name.name for di in dosageInstructionAnswers"
-                                    ng-class="{'illegalValue': !isValidDosageInstruction(drug)}" ng-required="!drug.empty">
+                            <select ng-model="drug.dosageInstruction" ng-options="di.name.name for di in dosageInstructionAnswers">
                                 <option value=""></option>
                             </select>
                         </span>

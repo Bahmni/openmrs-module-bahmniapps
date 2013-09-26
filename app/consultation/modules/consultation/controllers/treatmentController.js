@@ -83,7 +83,8 @@ angular.module('opd.consultation.controllers')
                 function (record) {
                     labels.push(
                         {
-                            label: formattedString("{0} {1} {2} {3} ({4})", [record.name, record.doseStrength, record.units, record.dosageForm.name.name, record.concept.name.name]),
+                            label: formattedString("{0} {1} {2} {3} ({4})",
+                                [record.name, record.doseStrength || '', record.units || '', record.dosageForm.name.name, record.concept.name.name]),
                             value: record.name,
                             lookup: record.uuid
                         }
@@ -110,7 +111,7 @@ angular.module('opd.consultation.controllers')
                    selectedDrug.name = chosenDrug.name;
                    selectedDrug.originalName = chosenDrug.name;
                    selectedDrug.uuid = chosenDrug.uuid;
-                   selectedDrug.strength = chosenDrug.doseStrength + " " + chosenDrug.units;
+                   selectedDrug.strength = (chosenDrug.doseStrength || '') + ' ' + (chosenDrug.units || '');
                    selectedDrug.dosageForm = chosenDrug.dosageForm.name.name;
                    selectedDrug.numberPerDosage = 1;
                    selectedDrug.empty = false;
@@ -151,7 +152,7 @@ angular.module('opd.consultation.controllers')
                     return false;
                 }
 
-                if (!($scope.isValidDosageInstruction(drug) && $scope.isValidDosageFrequency(drug))) {
+                if (!$scope.isValidDosageFrequency(drug)) {
                     return false;
                 }
             }
@@ -168,10 +169,6 @@ angular.module('opd.consultation.controllers')
 
         $scope.isValidDosageFrequency = function (drug) {
             return  drug.empty || (drug.prn || (drug.dosageFrequency && drug.dosageFrequency!=''));
-        }
-
-        $scope.isValidDosageInstruction = function (drug){
-            return  drug.empty || (drug.prn || (drug.dosageInstruction && drug.dosageInstruction!=''));
         }
 
         $scope.isValidNumberOfDosageDays = function (drug) {
