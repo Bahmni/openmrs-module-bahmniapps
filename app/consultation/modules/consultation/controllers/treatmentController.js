@@ -140,22 +140,42 @@ angular.module('opd.consultation.controllers')
 
         var isValidDrug = function(drug) {
             if (!drug.empty) {
-                if (drug.uuid === "") {
+                if (!$scope.isValidDrugName(drug)) {
                     return false;
                 }
-                if (!drug.numberPerDosage || drug.numberPerDosage === "") {
-                    return false;
-                }
-
-                if (!drug.numberOfDosageDays || drug.numberOfDosageDays==="") {
+                if (!$scope.isValidNumberPerDosage(drug)) {
                     return false;
                 }
 
-                if (!drug.prn) {
-                   return (drug.dosageFrequency && drug.dosageInstruction) && (drug.dosageFrequency !== "" && drug.dosageInstruction !== "");
+                if (!$scope.isValidNumberOfDosageDays(drug)) {
+                    return false;
+                }
+
+                if (!($scope.isValidDosageInstruction(drug) && $scope.isValidDosageFrequency(drug))) {
+                    return false;
                 }
             }
             return true;
+        }
+
+        $scope.isValidDrugName = function (drug) {
+            return drug.empty || drug.uuid !='';
+        }
+
+        $scope.isValidNumberPerDosage = function (drug) {
+            return  drug.empty || (drug.numberPerDosage && drug.numberPerDosage!='');
+        }
+
+        $scope.isValidDosageFrequency = function (drug) {
+            return  drug.empty || (drug.prn || (drug.dosageFrequency && drug.dosageFrequency!=''));
+        }
+
+        $scope.isValidDosageInstruction = function (drug){
+            return  drug.empty || (drug.prn || (drug.dosageInstruction && drug.dosageInstruction!=''));
+        }
+
+        $scope.isValidNumberOfDosageDays = function (drug) {
+            return  drug.empty || (drug.numberOfDosageDays && drug.numberOfDosageDays!='');
         }
 
         $scope.$on('$destroy', function() {

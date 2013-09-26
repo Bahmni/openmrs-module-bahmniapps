@@ -15,7 +15,7 @@
                 <span ng-show="drug.prn"> - (take as required) </span>
             </div>
             <div class="row">
-                <div class="col">
+                <div class="col" ng-show="drug.notes!=''">
                     NOTES: {{drug.notes}}
                 </div>
             </div>
