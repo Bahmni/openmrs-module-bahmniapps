@@ -31,7 +31,7 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/**/*.html',
           '<%= yeoman.app %>/**/*.js',
           '<%= yeoman.app %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
-          '<%= yeoman.app %>/styles/.css/**/*.css',
+          '<%= yeoman.app %>/styles/*.css',
           '!<%= yeoman.app %>/components',
           '!<%= yeoman.app %>/lib'
         ],
@@ -91,7 +91,7 @@ module.exports = function (grunt) {
         files: [{
           dot: true,
           src: [
-            '<%= yeoman.app %>/styles/.css/**',
+            '<%= yeoman.app %>/styles/*.css',
             '<%= yeoman.dist %>/*',
             '!<%= yeoman.dist %>/.git*'
           ]
@@ -117,7 +117,7 @@ module.exports = function (grunt) {
     compass: {
       options: {
         sassDir: '<%= yeoman.app %>/styles',
-        cssDir: '<%= yeoman.app %>/styles/.css',
+        cssDir: '<%= yeoman.app %>/styles/',
         imagesDir: '<%= yeoman.app %>/images',
         javascriptsDir: '<%= yeoman.app %>/scripts',
         fontsDir: '<%= yeoman.app %>/styles/fonts',
