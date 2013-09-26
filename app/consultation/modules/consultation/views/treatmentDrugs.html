@@ -13,7 +13,7 @@
                 <span ng-show="drug.dosageInstruction && drug.dosageInstruction!=''"> - {{drug.dosageInstruction.name.name}}</span>
                 - for {{drug.numberOfDosageDays}} day(s)
                 <span ng-show="drug.prn"> - Take as required.</span>
-                <span ng-show="drug.prn">(Notes: {{drug.notes}})</span>
+                <span ng-show="drug.notes!=''">(Notes: {{drug.notes}})</span>
             </div>
         </div>
     </div>
