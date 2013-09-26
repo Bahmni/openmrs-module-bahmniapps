@@ -17,14 +17,17 @@ Bahmni.Opd.DispositionMapper = function(encounterConfig,dispositionNoteConcept) 
                     return observation.concept.uuid === dispositionNoteConcept.uuid;
                 })
 
-                var disposition ={
-                    adtName: dispositionAction.value.display,
-                    adtValueUuid : dispositionAction.value.uuid,
-                    adtDateTime : dispositionAction.obsDateTime,
-                    adtNoteValue : dispositionNotes.value,
-                    adtNoteConcept : dispositionNoteConcept
+
+                if(dispositionAction && dispositionAction.value){
+                    var disposition ={
+                        adtName: dispositionAction.value.display,
+                        adtValueUuid : dispositionAction.value.uuid,
+                        adtDateTime : dispositionAction.obsDateTime,
+                        adtNoteValue : dispositionNotes.value,
+                        adtNoteConcept : dispositionNoteConcept
+                    }
+                    dispositions.push(disposition);
                 }
-                dispositions.push(disposition);
             })
 
         }
