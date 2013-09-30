@@ -6,7 +6,8 @@
         <h3>Investigation</h3>
         <ul>
             <li ng-repeat="investigation in consultation.investigations" ng-class="{panel: investigation.isSet}">
-                {{investigation.name}}
+                <span>{{investigation.name}}</span>
+                <span ng-show="investigation.isSet" class="panel">P</span>
             </li>
         </ul>
     </section>

@@ -30,6 +30,8 @@
 .column:only-child {
     border-right: 1px solid #999;
     padding-top:10px;
+    padding-bottom:10px;
+
 }
 
 /* for error messages */
@@ -55,7 +57,7 @@
 
 .column ul li {
     margin: 0;
-    padding: 0px 10px;
+    padding: 1px 10px;
     margin-bottom: 8px;
     font-size: 16px;
     button{
@@ -86,8 +88,8 @@
 }
 
 .activeColumn .focus {
-    background-color: #999;
-    color: WHITE;
+    background-color: #f1f1f1;
+    color: #000;
 }
 
 .addButton{
@@ -96,8 +98,8 @@
 }
 
 .disabled {
-    background-color: GREY;
-    color: WHITE;
+    background-color: #f1f1f1;
+    color: #000;
 }
 
 .opd-tree-selector {
@@ -107,4 +109,5 @@
     -moz-user-select: moz-none;
     -ms-user-select: none;
     user-select: none;
+    padding-bottom:10px;
 }
