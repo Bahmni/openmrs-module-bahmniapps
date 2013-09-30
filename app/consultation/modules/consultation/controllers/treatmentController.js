@@ -16,6 +16,7 @@ angular.module('opd.consultation.controllers')
                 dosageInstruction: "",
                 numberOfDosageDays: "",
                 notes: "",
+                conceptUuid:"",
                 notesVisible:false,
                 empty:true
             }
@@ -23,9 +24,7 @@ angular.module('opd.consultation.controllers')
 
         $scope.searchResults = [];
 
-        $scope.selectedDrugs = [
-            new TreatmentDrug()
-        ];
+        $scope.selectedDrugs = [];
 
         var areStringsEqual = function(str1, str2) {
             if ((str1) && (!str2)) {
@@ -113,6 +112,7 @@ angular.module('opd.consultation.controllers')
                    selectedDrug.uuid = chosenDrug.uuid;
                    selectedDrug.strength = (chosenDrug.doseStrength || '') + ' ' + (chosenDrug.units || '');
                    selectedDrug.dosageForm = chosenDrug.dosageForm.name.name;
+                   selectedDrug.conceptUuid = chosenDrug.concept.uuid;
                    selectedDrug.numberPerDosage = 1;
                    selectedDrug.empty = false;
                }
@@ -194,6 +194,8 @@ angular.module('opd.consultation.controllers')
 
             if ($rootScope.consultation.treatmentDrugs) {
                $scope.selectedDrugs = $rootScope.consultation.treatmentDrugs;
+            } else {
+               $scope.selectedDrugs = [ new TreatmentDrug() ];
             }
         }
 

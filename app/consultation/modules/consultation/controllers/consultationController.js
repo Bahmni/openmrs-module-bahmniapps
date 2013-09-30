@@ -18,6 +18,27 @@ angular.module('opd.consultation.controllers')
             return { conceptUuid: investigation.uuid, orderTypeUuid: investigation.orderTypeUuid };
         });
 
+
+        var treatmentDrugs = $rootScope.consultation.treatmentDrugs || [];
+        treatmentDrugs = treatmentDrugs.filter(function(drug){return !drug.empty;});
+        encounterData.drugOrders = treatmentDrugs.map(function (drug) {
+            var startDate = new Date();
+            var endDate = new Date(startDate);
+            endDate.setDate(endDate.getDate() + drug.numberOfDosageDays);
+
+            return {
+                uuid: drug.uuid,
+                conceptUuid: drug.conceptUuid,
+                notes:drug.notes,
+                startDate:startDate,
+                endDate:endDate,
+                numberPerDosage: drug.numberPerDosage,
+                dosageInstructionUuid:drug.dosageInstruction? drug.dosageInstruction.uuid : '',
+                dosageFrequencyUuid:drug.dosageFrequency? drug.dosageFrequency.uuid : '',
+                prn:drug.prn
+            };
+        });
+
       //  encounterData.disposition = $rootScope.disposition.adtToStore;
 
         consultationService.create(encounterData).success(function(){
