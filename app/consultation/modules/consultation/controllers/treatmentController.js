@@ -176,7 +176,7 @@ angular.module('opd.consultation.controllers')
         }
 
         $scope.$on('$destroy', function() {
-            $rootScope.treatmentDrugs = $scope.selectedDrugs;
+            $rootScope.consultation.treatmentDrugs = $scope.selectedDrugs;
         });
 
         var initialize = function() {
@@ -192,8 +192,8 @@ angular.module('opd.consultation.controllers')
 
             $rootScope.beforeContextChange = allowContextChange;
 
-            if ($rootScope.treatmentDrugs) {
-               $scope.selectedDrugs = $rootScope.treatmentDrugs;
+            if ($rootScope.consultation.treatmentDrugs) {
+               $scope.selectedDrugs = $rootScope.consultation.treatmentDrugs;
             }
         }
 
