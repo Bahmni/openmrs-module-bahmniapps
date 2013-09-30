@@ -25,7 +25,16 @@
             min-width:70px;
             display: inline-block;
         }
+        &.panel{
+            border-left:4px solid #15CFC8;
+        }
     }
+    .selectableTypeSet{
+        .icon-ok{
+            color:#15CFC8;
+        }
+    }
+
 
 }
 

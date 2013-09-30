@@ -12,6 +12,11 @@ body{
   font-size: 100%;
   line-height: 1.1em;
 }
+/*overriding openmrs ui common styling start***/
+form .select-arrow:after, .form .select-arrow:after{
+  background:#fff;
+}
+/*overriding openmrs ui common styling end***/
 /******** form element styling start********/
 form{
  fieldset{
