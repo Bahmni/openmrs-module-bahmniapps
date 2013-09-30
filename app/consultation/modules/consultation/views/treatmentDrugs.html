@@ -1,7 +1,4 @@
-<div class="table">
-    <div class="row table-header">
-        <div class="col col1">Selected Drugs</div>
-    </div>
+<div class="table" ng-show="treatmentDrugs == true">
 
     <div ng-repeat="drug in treatmentDrugs | filter: { empty: false }" class="table-body">
         <div class="row">

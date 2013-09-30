@@ -13,9 +13,6 @@ body{
   line-height: 1.1em;
 }
 /*overriding openmrs ui common styling start***/
-form .select-arrow:after, .form .select-arrow:after{
-  background:#fff;
-}
 /*overriding openmrs ui common styling end***/
 /******** form element styling start********/
 form{
@@ -150,7 +147,7 @@ textarea{
 .span12{
   @include column(12);
 }
-form .select-arrow:after, .form .select-arrow:after{height:auto;}
+form .select-arrow:after, .form .select-arrow:after{height:29px;}
 /********* form element styling end***********/
 
 /**** tab styling start****/

@@ -71,3 +71,22 @@
   }
   
 }
+
+@media only screen and (max-width: 768px) {
+  .treatment {
+        button{
+           padding:8px 15px;
+        }
+        .col8{
+            width:100px;
+        }
+        input[type=number]{
+          width:42px;
+        }
+        .simple-form-ui select{
+          min-width:78px;
+        }
+    }
+
+
+ }
