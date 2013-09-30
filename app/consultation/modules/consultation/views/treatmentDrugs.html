@@ -1,6 +1,6 @@
-<ul ng-show="consultation.treatmentDrugs.length > 1">
+<ul ng-show="consultation.treatmentDrugs.length > 0">
 
-    <li ng-repeat="drug in consultation.treatmentDrugs | filter: { empty: false }">
+    <li ng-repeat="drug in consultation.treatmentDrugs">
                 {{$index+1}}) {{drug.name}}
                 -  {{drug.strength + ' ' + drug.dosageForm}}
                 - {{drug.numberPerDosage}}

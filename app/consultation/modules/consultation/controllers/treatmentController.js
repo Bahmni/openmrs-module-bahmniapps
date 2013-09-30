@@ -176,7 +176,11 @@ angular.module('opd.consultation.controllers')
         }
 
         $scope.$on('$destroy', function() {
-            $rootScope.consultation.treatmentDrugs = $scope.selectedDrugs;
+
+            $rootScope.consultation.treatmentDrugs = $scope.selectedDrugs.filter(function(drug){
+                return !drug.empty;
+            });
+
         });
 
         var initialize = function() {
@@ -194,6 +198,7 @@ angular.module('opd.consultation.controllers')
 
             if ($rootScope.consultation.treatmentDrugs) {
                $scope.selectedDrugs = $rootScope.consultation.treatmentDrugs;
+                $scope.selectedDrugs.push(new TreatmentDrug());
             } else {
                $scope.selectedDrugs = [ new TreatmentDrug() ];
             }

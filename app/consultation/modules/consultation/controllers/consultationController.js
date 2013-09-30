@@ -20,7 +20,6 @@ angular.module('opd.consultation.controllers')
 
 
         var treatmentDrugs = $rootScope.consultation.treatmentDrugs || [];
-        treatmentDrugs = treatmentDrugs.filter(function(drug){return !drug.empty;});
         encounterData.drugOrders = treatmentDrugs.map(function (drug) {
             var startDate = new Date();
             var endDate = new Date(startDate);
