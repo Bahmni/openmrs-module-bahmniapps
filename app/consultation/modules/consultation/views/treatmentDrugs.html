@@ -1,8 +1,6 @@
-<div class="table" ng-show="treatmentDrugs == true">
+<ul ng-show="treatmentDrugs.length > 1">
 
-    <div ng-repeat="drug in treatmentDrugs | filter: { empty: false }" class="table-body">
-        <div class="row">
-            <div class="col">
+    <li ng-repeat="drug in treatmentDrugs | filter: { empty: false }">
                 {{$index+1}}) {{drug.name}}
                 -  {{drug.strength + ' ' + drug.dosageForm}}
                 - {{drug.numberPerDosage}}
@@ -10,8 +8,6 @@
                 <span ng-show="drug.dosageInstruction && drug.dosageInstruction!=''"> - {{drug.dosageInstruction.name.name}}</span>
                 - for {{drug.numberOfDosageDays}} day(s)
                 <span ng-show="drug.prn"> - Take as required.</span>
-                <span ng-show="drug.notes!=''">(Notes: {{drug.notes}})</span>
-            </div>
-        </div>
-    </div>
-</div>
+                <span ng-show="drug.notes!=''" class="notes">( {{drug.notes}})</span>
+    </li>
+</ul>

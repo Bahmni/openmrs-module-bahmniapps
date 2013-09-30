@@ -2,7 +2,7 @@
     <div class="header-action">
         <button ng-click="save()" class="confirm">Save</button>
     </div>
-    <section class="block investigation" ng-click="investigation()">
+    <section class="block investigation">
         <h3>Investigation</h3>
         <ul>
             <li ng-repeat="investigation in consultation.investigations" ng-class="{panel: investigation.isSet}">
@@ -28,12 +28,12 @@
             </div>
         </div>
     </section>
-    <section class="block treatement" ng-click="treatment()">
+    <section class="block treatment">
         <h3>Treatment</h3>
-         <div class="treatment" ng-include src="'modules/consultation/views/treatmentDrugs.html'"></div>
+         <div  ng-include src="'modules/consultation/views/treatmentDrugs.html'"></div>
     </section>
 
-    <section class="block disposition" ng-click="disposition()">
+    <section class="block disposition">
         <h3>Disposition</h3>
 
         <div ng-repeat="disposition in dispositions" >

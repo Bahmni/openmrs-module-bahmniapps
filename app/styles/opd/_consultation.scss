@@ -12,6 +12,7 @@
 		border-bottom:1px solid #00463f;
 		color:#000;
 		padding-bottom:3px;
+		margin-bottom:10px;
 	}
 	.block{
 		min-height:170px;
@@ -37,6 +38,18 @@
 					font-size: 12px;
 					border-radius: 10px;
 					line-height: 15px;
+				}
+			}
+		}
+		&.treatment{
+			ul{
+				li{
+					padding:6px 10px;
+					.notes{
+						color:#FF001F;
+						margin-left:20px;
+					}
+
 				}
 			}
 		}
