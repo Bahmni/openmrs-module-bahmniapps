@@ -6,7 +6,7 @@ angular.module('opd.consultation.services')
         var url = "/openmrs/ws/rest/emrapi/concept";
           return $http.get(url, {
               method:"GET",
-              params:{term:searchTerm}
+              params:{term:searchTerm, limit:20}
           });
       };
 

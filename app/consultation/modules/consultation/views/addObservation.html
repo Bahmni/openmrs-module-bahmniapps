@@ -1,16 +1,34 @@
 <form>
     <fieldset>
-        <legend>Add Diagnoses</legend>
-        <div style="height:300px;border:2px solid; text-align: center">
+        <legend>&nbsp;</legend>
+        <div style="min-height:300px;border:2px solid; text-align: center" class="diagnosis">
             <div id="selectedNodesArea">
-                <div ng-repeat="diagnosis in diagnosisList" class="selectedDiagnosis">
-                    {{diagnosis.conceptName()}}
-                    <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.order' options='orderOptions'></buttons-radio>
-                    <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.certainty' options='certaintyOptions'></buttons-radio>
-                    <span class="icon-remove icon-white" ng-click="removeObservation(diagnosis)"></span>
-                </div>
+                <div class="table">
+                    <div class="row table-header">
+                        <div class="col col1">Diagnosis</div>
+                        <div class="col col2">Order</div>
+                        <div class="col col3">Certainty</div>
+                    </div>
 
-                <input class="roundedInput" placeholder={{placeholder}} ui-autocomplete id="autoCompleteInput" style="display: inline-block;">
+                    <div ng-repeat="diagnosis in diagnosisList" class="table-body">
+                        <div class="row">
+                            <div class="col col1">
+                                <input ng-model="diagnosis.concept.conceptName" type="text" name="name" value="{{diagnosis.conceptName()}}" ui-autocomplete ng-change="clearEmptyRows()" tabindex="1">
+                            </div>
+                            <div class="col col2">
+                                <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.order' options='orderOptions' tabindex="2"/>
+                            </div>
+                            <div class="col col3">
+                                <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.certainty' options='certaintyOptions'></buttons-radio>
+                            </div>
+                            <div class="col col4">
+                                <button type="button" ng-click="removeObservation($index)" ng-show="diagnosis.concept.conceptName">
+                                    <span class="icon-remove"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </fieldset>

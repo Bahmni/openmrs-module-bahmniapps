@@ -11,3 +11,24 @@ button.active{
   display: inline-block;
   margin-bottom: 10px;
 }
+
+.diagnosis{
+  .col{
+    margin:0px 5px;
+  }
+  input[type=number]{
+    width:50px;
+  }
+  .col1{
+    @include column(3);
+  }
+  .col2{
+    @include column(4);
+  }
+  .col3{
+    @include column(4);
+  }
+  .col4{
+    @include column(1);
+  }
+}
