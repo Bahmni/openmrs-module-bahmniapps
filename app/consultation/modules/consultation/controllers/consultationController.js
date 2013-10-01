@@ -20,22 +20,9 @@ angular.module('opd.consultation.controllers')
 
 
         var treatmentDrugs = $rootScope.consultation.treatmentDrugs || [];
+        var startDate = new Date();
         encounterData.drugOrders = treatmentDrugs.map(function (drug) {
-            var startDate = new Date();
-            var endDate = new Date(startDate);
-            endDate.setDate(endDate.getDate() + drug.numberOfDosageDays);
-
-            return {
-                uuid: drug.uuid,
-                conceptUuid: drug.conceptUuid,
-                notes:drug.notes,
-                startDate:startDate,
-                endDate:endDate,
-                numberPerDosage: drug.numberPerDosage,
-                dosageInstructionUuid:drug.dosageInstruction? drug.dosageInstruction.uuid : '',
-                dosageFrequencyUuid:drug.dosageFrequency? drug.dosageFrequency.uuid : '',
-                prn:drug.prn
-            };
+            return drug.requestFormat(startDate);
         });
 
       //  encounterData.disposition = $rootScope.disposition.adtToStore;
