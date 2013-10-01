@@ -1,0 +1,2 @@
+INSERT INTO person_attribute_type (name, description, format, searchable, creator, date_created, retired, sort_weight, uuid) VALUES ('givenNameHindi', 'givenNameHindi', 'java.lang.String', '0', 1, curdate(), 0, 3, uuid());
+INSERT INTO person_attribute_type (name, description, format, searchable, creator, date_created, retired, sort_weight, uuid) VALUES ('familyNameHindi', 'familyNameHindi', 'java.lang.String', '0', 1, curdate(), 0, 3, uuid());

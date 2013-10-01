@@ -9,7 +9,7 @@
                 "extensionPointId": "org.openmrs.referenceapplication.homepageLink",
                 "type": "link",
                 "label": "Register Patient",
-                "url": "../../moduleResources/bahmniregistration/index.html#/search",
+                "url": "moduleResources/bahmniregistration/index.html#/search",
                 "icon": "icon-user",
                 "order": 1
             }
