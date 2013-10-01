@@ -10,7 +10,7 @@ Bahmni.Opd.ConsultationMapper = function(encounterConfig) {
                 return order.orderType && Bahmni.Opd.Constants.testOrderTypes.indexOf(order.orderType.display) >= 0;
             });
             investigations = testOrders.map(function(testOrder){
-                return { uuid: testOrder.concept.uuid, name: testOrder.concept.display,
+                return { uuid: testOrder.uuid, conceptUuid: testOrder.concept.uuid, name: testOrder.concept.display,
                          isSet: testOrder.concept.set, orderTypeUuid: testOrder.orderType.uuid };
             });    
         };                

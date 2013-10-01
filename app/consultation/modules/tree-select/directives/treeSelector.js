@@ -48,7 +48,10 @@ angular.module('opd.treeSelect')
                 conceptTreeService.getConceptTree($scope.rootConceptName).then(function(conceptTree) {
                     $scope.conceptExplorer = new Bahmni.Opd.TreeSelect.Explorer(conceptTree, observer);
                     $scope.$watch('selectedItems.length', function(){
-                        $scope.conceptExplorer.setSelectedNodesByUuids($scope.selectedItems.map(function(item){ return item.uuid; }));
+                        $scope.conceptExplorer.selectNodes(function(node){
+                            var item = convertDataToItem(node.data);
+                            return selectedItemshasItem(item);
+                        });
                     });
                 });
                 var kbNavigation = Bahmni.Opd.TreeSelect.KeyboardNavigation;

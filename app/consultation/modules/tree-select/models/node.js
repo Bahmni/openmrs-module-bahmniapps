@@ -59,15 +59,15 @@ Bahmni.Opd.TreeSelect.Node = function() {
             return this.focus;
         },
 
-        setSelectedNodesByUuids: function(uuids) {
-            if(uuids.indexOf(this.uuid) >= 0) {
+        selectNodes: function(criteria) {
+            if(criteria(this)) {
                 this.select();
                 return;
             }
             else {
                 this.deselect();
                 this.children.forEach(function(child){
-                    child.setSelectedNodesByUuids(uuids);
+                    child.selectNodes(criteria);
                 });
             }
         },

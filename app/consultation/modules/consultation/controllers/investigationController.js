@@ -27,11 +27,11 @@ angular.module('opd.consultation.controllers')
         }
 
         $scope.investigationComparer = function(investigation1, investigation2) {
-            return investigation1.uuid === investigation2.uuid;
+            return investigation1.conceptUuid === investigation2.conceptUuid;
         }
         
         $scope.conceptToInvestigationMapper = function(concept, treeAdditionalData) {
-            return{ uuid: concept.uuid, name: concept.name.display,
+            return{ conceptUuid: concept.uuid, name: concept.name.display,
                     isSet: concept.set, orderTypeUuid: $rootScope.encounterConfig.orderTypes[treeAdditionalData.orderType] };
         }
     }]);

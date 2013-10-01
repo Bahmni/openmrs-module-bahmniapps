@@ -15,15 +15,17 @@ angular.module('opd.consultation.controllers')
 //            }
 //        });
         encounterData.testOrders = $rootScope.consultation.investigations.map(function (investigation) {
-            return { conceptUuid: investigation.uuid, orderTypeUuid: investigation.orderTypeUuid };
+            return { uuid: investigation.uuid, conceptUuid: investigation.conceptUuid, orderTypeUuid: investigation.orderTypeUuid };
         });
 
 
         var treatmentDrugs = $rootScope.consultation.treatmentDrugs || [];
         var startDate = new Date();
-        encounterData.drugOrders = treatmentDrugs.map(function (drug) {
-            return drug.requestFormat(startDate);
-        });
+
+        // Don't uncomment this till you make sure saving investigations works fine with master branch of emr-api
+        // encounterData.drugOrders = treatmentDrugs.map(function (drug) {
+        //     return drug.requestFormat(startDate);
+        // });
 
       //  encounterData.disposition = $rootScope.disposition.adtToStore;
 

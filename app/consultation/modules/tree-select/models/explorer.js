@@ -97,8 +97,8 @@ Bahmni.Opd.TreeSelect.Explorer = function() {
             return node.isSelectable() && !node.isSelected();
         },
 
-        setSelectedNodesByUuids: function(uuids) {
-            this.rootNode.setSelectedNodesByUuids(uuids);
+        selectNodes: function(criteria) {
+            this.rootNode.selectNodes(criteria);
         },
 
         removeAllColumnsToRight: function(column, includeColumn){
