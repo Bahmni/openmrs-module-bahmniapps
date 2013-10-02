@@ -3,39 +3,7 @@
 angular.module('opd.consultation.controllers')
     .controller('TreatmentController', ['$scope', '$rootScope', 'treatmentService', function ($scope, $rootScope, treatmentService) {
         $scope.placeholder = "Add Treatment Advice";
-        var TreatmentDrug = function () {
-            this.uuid = "";
-            this.name = "";
-            this.originalName = "";
-            this.strength = '';
-            this.dosageForm = '';
-            this.prn = false;
-            this.numberPerDosage = "";
-            this.dosageFrequency = "";
-            this.dosageInstruction = "";
-            this.numberOfDosageDays = "";
-            this.notes = "";
-            this.conceptUuid = "";
-            this.notesVisible = false;
-            this.empty = true;
-
-            this.requestFormat = function(startDate) {
-                var endDate = new Date(startDate);
-                endDate.setDate(endDate.getDate() + this.numberOfDosageDays);
-                return {
-                    uuid: this.uuid,
-                    conceptUuid: this.conceptUuid,
-                    notes: this.notes,
-                    startDate: startDate,
-                    endDate: endDate,
-                    numberPerDosage: this.numberPerDosage,
-                    dosageInstructionUuid: this.dosageInstruction? this.dosageInstruction.uuid : '',
-                    dosageFrequencyUuid: this.dosageFrequency? this.dosageFrequency.uuid : '',
-                    prn: this.prn
-                };
-            }
-        };
-
+        
         $scope.searchResults = [];
 
         $scope.selectedDrugs = [];
@@ -71,7 +39,7 @@ angular.module('opd.consultation.controllers')
             if ($scope.selectedDrugs[length - 1]) {
                 var lastItem = $scope.selectedDrugs[length - 1];
                 if (lastItem.name) {
-                    $scope.selectedDrugs.push(new TreatmentDrug());
+                    $scope.selectedDrugs.push(new Bahmni.Opd.Consultation.TreatmentDrug());
                 }
                 else if ($scope.selectedDrugs[length - 2] && !$scope.selectedDrugs[length - 2].name) {
                     $scope.selectedDrugs.pop();
@@ -212,9 +180,9 @@ angular.module('opd.consultation.controllers')
 
             if ($rootScope.consultation.treatmentDrugs) {
                $scope.selectedDrugs = $rootScope.consultation.treatmentDrugs;
-                $scope.selectedDrugs.push(new TreatmentDrug());
+                $scope.selectedDrugs.push(new Bahmni.Opd.Consultation.TreatmentDrug());
             } else {
-               $scope.selectedDrugs = [ new TreatmentDrug() ];
+               $scope.selectedDrugs = [ new Bahmni.Opd.Consultation.TreatmentDrug() ];
             }
         }
 

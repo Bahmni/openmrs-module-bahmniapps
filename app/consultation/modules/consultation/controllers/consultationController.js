@@ -22,10 +22,9 @@ angular.module('opd.consultation.controllers')
         var treatmentDrugs = $rootScope.consultation.treatmentDrugs || [];
         var startDate = new Date();
 
-        // Don't uncomment this till you make sure saving investigations works fine with master branch of emr-api
-        // encounterData.drugOrders = treatmentDrugs.map(function (drug) {
-        //     return drug.requestFormat(startDate);
-        // });
+        encounterData.drugOrders = treatmentDrugs.map(function (drug) {
+            return drug.requestFormat(startDate);
+        });
 
       //  encounterData.disposition = $rootScope.disposition.adtToStore;
 
