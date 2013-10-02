@@ -7,13 +7,16 @@ angular.module('opd.consultation.controllers')
         var encounterData = {};
         encounterData.patientUuid = $scope.patient.uuid;
         encounterData.encounterTypeUuid = $rootScope.encounterConfig.getOpdConsultationEncounterUuid();
-        encounterData.diagnoses = $rootScope.consultation.diagnoses.map(function(diagnosis) {
-            return {
-                diagnosis: "Concept:" + diagnosis.concept.conceptUuid,
-                order: diagnosis.order,
-                certainty: diagnosis.certainty
-            }
-        });
+
+        // this is breaking the save functionality
+//        encounterData.diagnoses = $rootScope.consultation.diagnoses.map(function(diagnosis) {
+//            return {
+//                diagnosis: "Concept:" + diagnosis.concept.conceptUuid,
+//                order: diagnosis.order,
+//                certainty: diagnosis.certainty
+//            }
+//        });
+
         encounterData.testOrders = $rootScope.consultation.investigations.map(function (investigation) {
             return { uuid: investigation.uuid, conceptUuid: investigation.conceptUuid, orderTypeUuid: investigation.orderTypeUuid };
         });
