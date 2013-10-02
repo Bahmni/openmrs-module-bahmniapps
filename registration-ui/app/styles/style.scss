@@ -518,3 +518,31 @@ video{
 .field-attribute label {
   text-transform: capitalize;
 }
+/*** overriding jquery styling start****/
+.ui-widget-header{
+  border:1px solid #104D05;
+  backgrond:#00463F;
+}
+
+.ui-state-hover .ui-icon, .ui-state-focus .ui-icon{
+  background-image:url(images/ui-icons_222222_256x240.png);
+}
+
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight{
+  border: 1px solid #36CC4E;
+  background: #D6FACF;
+}
+
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus{
+  border: 1px solid #36CC4E;
+  background: #D6FACF;
+  font-weight: bold;
+  color: #048B24;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active{
+  border: 1px solid #107C22;
+  background: #FFF9D8;
+  color: #1EB642;
+}
+/**** overriding jquery styling end *****/
