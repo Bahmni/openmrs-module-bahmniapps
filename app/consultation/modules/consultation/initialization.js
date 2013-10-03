@@ -17,7 +17,7 @@ angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q'
 
                 return visitService.getVisit($route.current.params.visitUuid).success(function (visit) {
                     $rootScope.visit = visit;
-                    $rootScope.consultation = new Bahmni.Opd.ConsultationMapper($rootScope.encounterConfig).map(visit);
+                    $rootScope.consultation = new Bahmni.Opd.ConsultationMapper($rootScope.encounterConfig, $rootScope.dosageFrequencyConfig, $rootScope.dosageInstructionConfig).map(visit);
 
                     return patientService.getPatient(visit.patient.uuid).success(function (openMRSPatient) {
                         $rootScope.patient = patientMapper.map(openMRSPatient);
