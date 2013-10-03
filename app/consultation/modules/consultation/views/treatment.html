@@ -52,10 +52,10 @@
                                ng-class="{'illegalValue': !isValidNumberOfDosageDays(drug)}" ng-disabled="drug.savedDrug">
                     </div>
                     <div class="col col8" >
-                        <button type="button" ng-click="drug.notesVisible=!drug.notesVisible" ng-show="!drug.empty">
+                        <button class="small-btn" type="button" ng-click="drug.notesVisible=!drug.notesVisible" ng-show="!drug.empty">
                             <span ng-class="{'icon-pencil':!drug.notesVisible,'icon-arrow-up':drug.notesVisible}"></span>
                         </button>
-                        <button type="button" ng-click="removeDrug($index)" ng-show="!drug.empty && !drug.savedDrug" class="cancel">
+                        <button type="button" ng-click="removeDrug($index)" ng-show="!drug.empty && !drug.savedDrug" class="cancel small-btn">
                             <span class="icon-remove"></span>
                         </button>
                     </div>

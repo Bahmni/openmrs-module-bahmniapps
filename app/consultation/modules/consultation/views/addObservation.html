@@ -5,9 +5,9 @@
             <div id="selectedNodesArea">
                 <div class="table">
                     <div class="row table-header">
-                        <div class="col col1">Diagnosis</div>
-                        <div class="col col2">Order</div>
-                        <div class="col col3">Certainty</div>
+                        <div class="col col1"><span>Diagnosis</span></div>
+                        <div class="col col2"><span>Order</span></div>
+                        <div class="col col3"><span>Certainty</span></div>
                     </div>
 
                     <div ng-repeat="diagnosis in diagnosisList" class="table-body">
@@ -19,10 +19,10 @@
                                 <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.order' options='orderOptions' tabindex="2"/>
                             </div>
                             <div class="col col3">
-                                <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.certainty' options='certaintyOptions'></buttons-radio>
+                                <buttons-radio class="small-btn" data-toggle="buttons-radio" model='diagnosis.certainty' options='certaintyOptions'></buttons-radio>
                             </div>
                             <div class="col col4">
-                                <button type="button" ng-click="removeObservation($index)" ng-show="diagnosis.concept.conceptName">
+                                <button type="button" class="cancel small-btn" ng-click="removeObservation($index)" ng-show="diagnosis.concept.conceptName">
                                     <span class="icon-remove"></span>
                                 </button>
                             </div>

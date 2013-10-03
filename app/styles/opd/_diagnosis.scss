@@ -13,22 +13,32 @@ button.active{
 }
 
 .diagnosis{
-  .col{
+  .table-header{
+    span{
+      display:inline-block;
+      padding-left:10px;
+    }
   }
   input[type=number]{
     width:50px;
   }
   .col1{
     @include column(3);
+    input{
+      margin-left:10px;
+    }
   }
   .col2{
     @include column(4);
+    button:first-child{
+      margin-left:10px;
+    }
   }
   .col3{
     @include column(4);
   }
   .col4{
     @include column(1);
-    width:100px;
+    width:60px;
   }
 }

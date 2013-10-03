@@ -97,6 +97,15 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
   padding-left:14em;
 }
 }
+button.small-btn{
+           padding:8px 12px;
+           &.cancel{
+            opacity:.5;
+            &:hover{
+              opacity:1;
+            }
+           }
+  }
 .input-mini{@include column(1);}
 .input-small{@include column(2);}
 .input-medium{@include column(4);}
