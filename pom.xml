@@ -22,9 +22,9 @@
 	</organization>
 
 	<scm>
-		<connection>scm:svn:https://svn.openmrs.org/openmrs-modules/bahmniregistration/trunk/</connection>
-		<developerConnection>scm:svn:https://svn.openmrs.org/openmrs-modules/bahmniregistration/trunk/</developerConnection>
-		<url>https://svn.openmrs.org/openmrs-modules/bahmniregistration/trunk/</url>
+		<connection>scm:git@github.com:openmrs/openmrs-module-bahmniregistration.git</connection>
+		<developerConnection>scm:git@github.com:openmrs/openmrs-module-bahmniregistration.git</developerConnection>
+		<url>https://github.com/openmrs/openmrs-module-bahmniregistration</url>
 	</scm>
 
 	<modules>
