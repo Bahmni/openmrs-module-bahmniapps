@@ -1,19 +1,15 @@
 'use strict';
 
 angular.module('opd.consultation.controllers')
-    .controller('DispositionController', ['$scope', '$rootScope','dispositionService','$location', function ($scope, $rootScope,dispositionService,$location) {
+    .controller('DispositionController', ['$scope', '$rootScope','dispositionService', function ($scope, $rootScope,dispositionService) {
 
-        var getOrderType = function(){
-            return Bahmni.Opd.Constants.dispositionOrderType;
-        }
 
         var loadDispositionActions = function(){
             $scope.dispositionActions = $rootScope.disposition.dispositionActions;
-//            $scope.dispositionActions = [];
 
-            if(!$rootScope.disposition){
+            if($rootScope.disposition){
 
-                if($rootScope.disposition.currentActionIndex){
+                if($rootScope.disposition.currentActionIndex !== undefined){
                     var disposition = $rootScope.disposition.dispositions[$rootScope.disposition.currentActionIndex];
                     $scope.dispositionAction =  disposition.adtName;
                     $scope.dispositionNotes = disposition.adtNoteValue;
@@ -22,33 +18,38 @@ angular.module('opd.consultation.controllers')
         }
 
 
-        var getSelectedDispositionAction = function(){
-            var selectedAction ='';
-            /*if(!$scope.dispositionActions){
-                return{
-                    order :{
-                        conceptUuid : '',
-                        orderType : ''
-                    },
-                    name : ''
-                };
-            }*/
-            for(var i=0;i< $scope.dispositionActions.length;i++){
-                if($scope.dispositionActions[i].name.name.toLowerCase() === $scope.dispositionAction.toLowerCase()){
-                    selectedAction =   $scope.dispositionActions[i];
-                    break;
-                }
+        var getMappingCode = function(concept){
+            var mappingCode="";
+            if(concept.mappings){
+                concept.mappings.forEach(function(mapping){
+                    var mappingSource = mapping.display.split(":")[0];
+                    if(mappingSource === Bahmni.Opd.Constants.emrapiConceptMappingSource){
+                        mappingCode = mapping.display.split(":")[1].trim();;
+                    }
+                });
             }
-            return {
-                adtValueUuid : selectedAction.uuid,
-                adtDateTime : 'latest',
-                adtNoteValue : $scope.dispositionNotes,
-                adtName : selectedAction.name.name
-            };
+            return mappingCode;
         }
 
-        $scope.assignBed = function(){
-            return $location.url("/bed-management");
+        var getSelectedDispositionAction = function(){
+            var selectedAction ='';
+
+            if($scope.dispositionAction){
+                for(var i=0;i< $scope.dispositionActions.length;i++){
+                    if($scope.dispositionActions[i].name.name.toLowerCase() === $scope.dispositionAction.toLowerCase()){
+                        selectedAction =   $scope.dispositionActions[i];
+                        break;
+                    }
+                }
+                return {
+                    adtValueUuid : selectedAction.uuid,
+                    adtDateTime : new Date(),
+                    adtNoteValue : $scope.dispositionNotes,
+                    adtName : selectedAction.name.name,
+                    adtCode: getMappingCode(selectedAction)
+                };
+            }
+
         }
 
 
@@ -59,7 +60,7 @@ angular.module('opd.consultation.controllers')
 
             var currentAction = getSelectedDispositionAction();
             if(currentAction){
-                if($rootScope.disposition.currentActionIndex){
+                if($rootScope.disposition.currentActionIndex !== undefined){
                     $rootScope.disposition.dispositions[$rootScope.disposition.currentActionIndex] = currentAction;
                 }
                 else{
@@ -71,15 +72,18 @@ angular.module('opd.consultation.controllers')
 
         var getDispositionInSaveFormat = function(){
             var selectedAction = getSelectedDispositionAction();
-            return {
-                conceptUuid : $rootScope.disposition.dispositionActionUuid,
-                value : selectedAction.adtValueUuid,
-                dispositionNote :{
-                    conceptUuid:selectedAction.adtNoteConcept,
-                    value : selectedAction.adtNoteValue
+            if(selectedAction){
+                return {
+                    code : selectedAction.adtCode,
+                    additionalObs :[{
+                        conceptUuid:$rootScope.dispositionNoteConceptUuid,
+                        value : selectedAction.adtNoteValue
+                    }]
                 }
             }
         }
+
+
 
         loadDispositionActions();
 

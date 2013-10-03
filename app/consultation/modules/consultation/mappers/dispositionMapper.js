@@ -1,7 +1,7 @@
-Bahmni.Opd.DispositionMapper = function(encounterConfig,dispositionNoteConcept) {
+Bahmni.Opd.DispositionMapper = function(encounterConfig) {
     this.map = function(visit) {
         var opdEncounters = visit.encounters.filter(function(encounter){
-            return encounter.encounterType.uuid === encounterConfig.getOpdConsultationEncounterUuid();
+            return encounter.encounterType.uuid === encounterConfig.getOpdConsultationEncounterUUID();
         });
 
 
@@ -9,25 +9,46 @@ Bahmni.Opd.DispositionMapper = function(encounterConfig,dispositionNoteConcept) 
 
         if (opdEncounters) {
             opdEncounters.forEach(function(opdEncounter){
-                var dispositionAction = opdEncounter.obs.filter(function(observation){
-                    return  observation.concept ? observation.concept.uuid == Bahmni.Opd.Constants.dispositionConcept :false;
-                });
-
-                var dispositionNotes = opdEncounter.obs.filter(function(observation){
-                    return observation.concept.uuid === dispositionNoteConcept.uuid;
-                })
+                var dispositionObsGroup = opdEncounter.obs.filter(function(observation){
+                    return  observation.concept ? observation.concept.name.name == Bahmni.Opd.Constants.dispositionGroupConcept :false;
+                })[0];
 
 
-                if(dispositionAction && dispositionAction.value){
-                    var disposition ={
-                        adtName: dispositionAction.value.display,
-                        adtValueUuid : dispositionAction.value.uuid,
-                        adtDateTime : dispositionAction.obsDateTime,
-                        adtNoteValue : dispositionNotes.value,
-                        adtNoteConcept : dispositionNoteConcept
+                var getMappingCode = function(concept){
+                    var mappingCode="";
+                    if(concept.mappings){
+                        concept.mappings.forEach(function(mapping){
+                            var mappingSource = mapping.display.split(":")[0];
+                            if(mappingSource === Bahmni.Opd.Constants.emrapiConceptMappingSource){
+                                mappingCode = mapping.display.split(":")[1].trim();;
+                            }
+                        });
                     }
-                    dispositions.push(disposition);
+                    return mappingCode;
                 }
+
+                if(dispositionObsGroup){
+                    var disposition = {};
+
+                    dispositionObsGroup.groupMembers.forEach(function(dispositionGroupMember){
+                        var conceptName =  dispositionGroupMember.concept ? dispositionGroupMember.concept.display :null;
+                        if(conceptName && conceptName === Bahmni.Opd.Constants.dispositionConcept){
+                            disposition.adtName= dispositionGroupMember.value.display;
+                            disposition.adtCode= getMappingCode(dispositionGroupMember.value)
+                            disposition.adtValueUuid = dispositionGroupMember.value.uuid;
+                            disposition.adtDateTime = dispositionGroupMember.obsDatetime;
+                        }
+                        else if(conceptName && conceptName === Bahmni.Opd.Constants.dispositionNoteConcept){
+                            disposition.adtNoteValue = dispositionGroupMember.value;
+                            disposition.adtNoteConcept = dispositionGroupMember.concept.uuid;
+                        }
+                    });
+
+                    if(disposition.adtName){
+                        dispositions.push(disposition);
+                    }
+                }
+
             })
 
         }
@@ -35,17 +56,7 @@ Bahmni.Opd.DispositionMapper = function(encounterConfig,dispositionNoteConcept) 
             return;
         };
 
-       /* var order = {
-           order :{
-               conceptUuid : dispositionOrder[0].concept.uuid,
-               orderType :  dispositionOrder[0].orderType.display
-           },
-           name : dispositionOrder[0].display
-        }*/
-
         return {
-            /*dispositionNotes : disposition.dispositionNotes[0],
-            dispositionOrder : order*/
             dispositions : dispositions
         };
     }

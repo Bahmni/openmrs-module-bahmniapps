@@ -1,16 +1,18 @@
 var Bahmni = Bahmni || {};
 Bahmni.Opd = Bahmni.Opd || {};
 
+
 Bahmni.Opd.Constants = (function() {
 	var orderTypes = {
 	    	lab: "Lab Order",
 	    	radiology: "Radiology Order"
 	};
 	return {
-	    activePatientsListUrl: "../patients",
-	    dispositionConcept : "DispositionOptions",
-	    dispositionNoteConcept : "disposition note",
-	    dispositionOrderType : "Disposition Order",
+        activePatientsListUrl: "../patients",
+        dispositionConcept : "Disposition",
+        dispositionGroupConcept : "Disposition Set",
+        dispositionNoteConcept : "Disposition Note",
+        emrapiConceptMappingSource :"org.openmrs.module.emrapi",
         diagnosisObservationConceptName : "Visit Diagnoses",
         orderConceptName : "Diagnosis order",                   //TODO : should be fetched from a config
         certaintyConceptName : "Diagnosis Certainty",           //TODO : should be fetched from a config
@@ -21,6 +23,5 @@ Bahmni.Opd.Constants = (function() {
         drugOrderType : "Drug Order"
 	};
 })();
-
 
 
