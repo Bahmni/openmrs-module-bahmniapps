@@ -15,7 +15,7 @@
 		margin-bottom:10px;
 	}
 	.block{
-		min-height:170px;
+		min-height:150px;
 		padding:10px;
 		&.investigation{
 			li{
@@ -23,10 +23,11 @@
 				padding: 5px 7px;
 				margin-right: 10px;
 				margin-top: 10px;
-				border-radius: 10px;
-				width:190px;
+				border-radius: 5px;
+				width:193px;
 				color:#585858;
 				font: 14px/18px verdana,arial;
+				background:#efefef;
 				.panel{
 					background: #555454;
 					color: #FFF;
