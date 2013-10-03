@@ -2,6 +2,8 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
     this.map = function (visit) {
         var investigations = [];
         var treatmentDrugs = [];
+        var diagnoses = [];
+
         var opdEncounter = visit.encounters.filter(function (encounter) {
             return encounter.encounterType.uuid === encounterConfig.getOpdConsultationEncounterUuid();
         })[0];
@@ -38,9 +40,16 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
                 drug.empty=false;
                 return drug;
             });
+            var diagnosisObs = opdEncounter.obs.filter(function (observation) {
+                return observation.concept.name.name === Bahmni.Opd.Constants.diagnosisObservationConceptName;
+            });
+            diagnoses = mapDiagnoses(diagnosisObs);
         }
-        return {investigations: investigations,
-                treatmentDrugs: treatmentDrugs};
+        return {
+            investigations: investigations,
+            treatmentDrugs: treatmentDrugs,
+            diagnoses:diagnoses
+        };
     };
 
     var calculateDosagedays = function (endDate, startDate) {
@@ -59,4 +68,40 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
         }
         return "";
     }
-};                                
+
+    var getDiagnosisConcept = function (codedDiagnosisObs, nonCodedDiagnosisObs) {
+        if (codedDiagnosisObs) {
+            return {
+                conceptUuid:codedDiagnosisObs.value.uuid,
+                conceptName:codedDiagnosisObs.value.name.name
+            }
+        }
+        else if (nonCodedDiagnosisObs) {
+            return {
+                conceptUuid:nonCodedDiagnosisObs.value.uuid,
+                conceptName:nonCodedDiagnosisObs.value.name.name
+            }
+        }
+    }
+
+    var mapDiagnoses = function (diagnosisObs) {
+        var diagnoses = diagnosisObs.map(function (diagnosisOb) {
+            var orderObs = diagnosisOb.groupMembers.filter(function (member) {
+                return member.concept.name.name === Bahmni.Opd.Constants.orderConceptName;
+            })[0];
+            var certaintyObs = diagnosisOb.groupMembers.filter(function (member) {
+                return member.concept.name.name === Bahmni.Opd.Constants.certaintyConceptName;
+            })[0];
+            var codedDiagnosisObs = diagnosisOb.groupMembers.filter(function (member) {
+                return member.concept.name.name === Bahmni.Opd.Constants.codedDiagnosisConceptName;
+            })[0];
+            var nonCodedDiagnosisObs = diagnosisOb.groupMembers.filter(function (member) {
+                return member.concept.name.name === Bahmni.Opd.Constants.nonCodedDiagnosisConceptName;
+            })[0];
+            return new Bahmni.Opd.Consultation.Diagnosis(getDiagnosisConcept(codedDiagnosisObs, nonCodedDiagnosisObs),
+                orderObs.value.name.name, certaintyObs.value.name.name)
+        })
+        return diagnoses;
+    }
+
+};
