@@ -35,3 +35,15 @@
 
 }
 
+@media only screen and (max-width: 768px) {
+   .investigation{ 
+        .column ul{
+            width:241px;
+            li{
+                @include font-size(0.8); 
+                overflow-wrap: repeat-y;               
+            }
+        }
+    }
+ }
+
