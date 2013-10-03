@@ -13,6 +13,7 @@ Bahmni.Opd.Consultation.TreatmentDrug = function () {
     this.conceptUuid = "";
     this.notesVisible = false;
     this.empty = true;
+    this.readonly = false;
 
     this.requestFormat = function(startDate) {
         var endDate = new Date(startDate);

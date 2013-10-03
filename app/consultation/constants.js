@@ -12,8 +12,9 @@ Bahmni.Opd.Constants = (function() {
 	    dispositionNoteConcept : "disposition note",
 	    dispositionOrderType : "Disposition Order",
 	    orderTypes : orderTypes,
-	    testOrderTypes: [orderTypes.lab, orderTypes.radiology]
-	};	
+	    testOrderTypes: [orderTypes.lab, orderTypes.radiology],
+        drugOrderType : "Drug Order"
+	};
 })();
 
 

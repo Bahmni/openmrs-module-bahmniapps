@@ -22,12 +22,19 @@ angular.module('opd.consultation.controllers')
         });
 
 
-        var treatmentDrugs = $rootScope.consultation.treatmentDrugs || [];
         var startDate = new Date();
 
-        encounterData.drugOrders = treatmentDrugs.map(function (drug) {
+
+        var allTreatmentDrugs = $rootScope.consultation.treatmentDrugs || [];
+        var newlyAddedTreatmentDrugs = allTreatmentDrugs.filter(function(drug){
+            return !drug.readonly;
+        });
+
+        if (newlyAddedTreatmentDrugs){
+        encounterData.drugOrders = newlyAddedTreatmentDrugs.map(function (drug) {
             return drug.requestFormat(startDate);
         });
+        }
 
       //  encounterData.disposition = $rootScope.disposition.adtToStore;
 
