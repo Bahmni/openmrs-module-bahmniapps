@@ -67,7 +67,7 @@
 
     <changeSet id="20130930-10" author="mario-areias">
         <customChange class="org.openmrs.util.databasechange.SourceMySqldiffFile">
-            <param name="sqlFile">V1_22__AddConceptsWordsForRegistration.sql</param>
+            <param name="sqlFile">V1_22__AddConceptWordsForRegistration.sql</param>
         </customChange>
     </changeSet>
 
