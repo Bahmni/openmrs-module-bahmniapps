@@ -1,0 +1,14 @@
+<div>
+    <h3>Ward Layout</h3>
+
+    <div class="bed-assignment">
+
+        <ul>
+            <li class="row" ng-repeat="layoutRow in layout">
+                <ul>
+                    <li class="col" ng-class="{occupied: !cell.empty && !cell.available, available: !cell.empty && cell.available, empty: cell.empty}" ng-repeat="cell in layoutRow"></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>

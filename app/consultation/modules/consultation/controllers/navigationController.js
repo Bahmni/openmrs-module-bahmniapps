@@ -9,7 +9,8 @@ angular.module('opd.consultation.controllers')
         { name:'Investigations', url:'investigation'},
         { name:'Diagnosis', url:'diagnosis'}, 
         { name:'Treatment', url:'treatment'}, 
-        { name:'Disposition', url:'disposition'}];
+        { name:'Disposition', url:'disposition'},
+        { name:'Assign Bed', url:'bed-management'}];
 
     $scope.showBoard = function(name) {
         var board = findBoardByname(name);

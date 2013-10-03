@@ -1,0 +1,49 @@
+.bed-assignment {
+  position: relative;
+  width: 960px;
+  border: 1px solid #cecece;
+  margin: 0px auto;
+  min-height: 200px;
+  padding-bottom: 20px;
+}
+
+.bed-assignment .row {
+  overflow: hidden;
+}
+
+.bed-assignment .row ul {
+  overflow: hidden;
+}
+
+.bed-assignment .row ul .col {
+  float: left;
+  width: 50px;
+  height: 50px;
+  margin: 18px;
+}
+
+.bed-assignment .row ul .col.occupied {
+  background: url("../images/bed-occupied.png") no-repeat center center #cecece;
+}
+
+.bed-assignment .row ul .col.occupied:hover {
+  outline: 5px solid #B4B2B2;
+  background-color: #B4B2B2;
+  cursor: pointer;
+}
+
+.bed-assignment .row ul .col.available {
+  background: url("../images/bed-available.png") no-repeat center center #94e594;
+}
+
+.bed-assignment .row ul .col.available:hover {
+  background-color: #76E676;
+  outline: 5px solid #76E676;
+  cursor: pointer;
+}
+
+.bed-assignment .row ul .col.empty {
+  background: beige;
+  margin: 0px;
+  padding: 18px;
+}
