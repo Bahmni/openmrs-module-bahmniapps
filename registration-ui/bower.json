@@ -16,7 +16,8 @@
     "bootstrap": "2.3.0",
     "ngInfiniteScroll":"1.0.0",
     "jquery": "1.9.1",
-    "jquery-ui": "1.10.2"
+    "jquery-ui": "1.10.2",
+    "openmrs-uicommons": "master"
   },
   "devDependencies": {
     "angular-mocks": "1.0.5",

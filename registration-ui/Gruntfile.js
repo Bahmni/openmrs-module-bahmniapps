@@ -31,7 +31,7 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/**/*.html',
           '<%= yeoman.app %>/**/*.js',
           '<%= yeoman.app %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
-          '<%= yeoman.app %>/styles/css/**/*.css',
+          '<%= yeoman.app %>/styles/*.css',
           '!<%= yeoman.app %>/components',
           '!<%= yeoman.app %>/lib'
         ],
@@ -91,14 +91,14 @@ module.exports = function (grunt) {
         files: [{
           dot: true,
           src: [
-            '<%= yeoman.app %>/styles/css/**',
+            '<%= yeoman.app %>/styles/*.css',
             '<%= yeoman.dist %>/*',
             '!<%= yeoman.dist %>/.git*'
           ]
         }]
       },
       server: [ 
-        '<%= yeoman.app %>/styles/css/**'
+        '<%= yeoman.app %>/styles/**'
       ]
     },
     karma: {
@@ -122,7 +122,7 @@ module.exports = function (grunt) {
     compass: {
       options: {
         sassDir: '<%= yeoman.app %>/styles',
-        cssDir: '<%= yeoman.app %>/styles/css',
+        cssDir: '<%= yeoman.app %>/styles',
         imagesDir: '<%= yeoman.app %>/images',
         // Should be modified to include modules/ as well. String config, not an array.
         // Have to figure out a way to do this via globbing. The config
@@ -158,7 +158,7 @@ module.exports = function (grunt) {
         '<%= yeoman.app %>/*.html',
         '<%= yeoman.app %>/modules/**/*.html'
       ],
-      // css: '<%= yeoman.app %>/styles/.css/**/*.css',
+      // css: '<%= yeoman.app %>/styles/*.css',
       options: {
         dest: '<%= yeoman.dist %>'
       }
@@ -241,7 +241,7 @@ module.exports = function (grunt) {
             'images/**/*.{gif,webp}',
             'styles/fonts/*',
             'lib/**/*',
-            'styles/css/print.css'
+            'styles/print.css'
           ]
         }]
       }

@@ -35,7 +35,11 @@ registration-ui/node_modules
 registration-ui/app/components
 registration-ui/dist
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> moving registration code to another folder
 =======
+=======
+registration-ui/app/styles/*.css
+>>>>>>> fixing module dependencies and using uicommons for registration
 omod/src/main/webapp/*
 >>>>>>> creating maven task to pack angular app as a omod

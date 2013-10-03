@@ -16,7 +16,7 @@
 	<!-- / Module Properties -->
 
 	<require_modules>
-        <require_module version="2.5-SNAPSHOT">org.openmrs.module.bahmnicore</require_module>
+        <require_module version="2.5-SNAPSHOT">org.bahmni.module.bahmnicore</require_module>
         <require_module version="2.2.9">org.openmrs.module.addresshierarchy</require_module>
     </require_modules>
 

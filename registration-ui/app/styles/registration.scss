@@ -1,0 +1,548 @@
+@charset "UTF-8";
+
+@import "grid";
+$column-width: 100;
+$gutter-width: 0;
+$columns: 12;
+$total-width: 100%;
+
+
+@import "compass";
+
+/*** grid form elements css start ***/
+.form-field-inline{
+  .form-field{
+      float:left;
+      @include column(6);
+      margin-bottom:10px;  
+      //&:last-child{
+      //  .field-attribute{
+      //  }
+      //}
+  }
+  @include clearfix();
+}
+.form-field{
+  margin-bottom:10px;
+  @include clearfix();
+  .field-attribute{
+    float:left;
+    label{
+        width:13em;
+        line-height:20px;
+        float:left;
+        text-align:right;
+        margin:8px 0.8em 8px 0px;
+    }
+  }
+  .field-value{
+    float:left;
+     input[type="text"],input[type="password"]{  
+        float:left;
+        width:12.5em;
+    }
+    input[type="number"]{
+        width:8em;
+    }
+    span.text-only{
+       display:inline-block;
+       margin:8px 5px 8px 5px;
+    }
+  }
+}
+.input-prepend{
+  float:left;
+  input{
+      display: inline-block;
+      margin-bottom: 0;
+      vertical-align: middle;
+      float:left;
+      margin:0px !important;
+  }
+  .add-on{
+    @extend input;
+    @include border-radius();  
+    height: 21px;
+    min-width: 17px;
+    padding: 4px 5px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+  }
+
+}
+.input-prepend .add-on:first-child, .input-prepend .btn:first-child {
+  -webkit-border-radius: 4px 0 0 4px;
+  -moz-border-radius: 4px 0 0 4px;
+  border-radius: 4px 0 0 4px;
+}
+.input-prepend .add-on, .input-prepend .btn{
+  margin-right:-1px;
+}
+input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly]{
+  cursor: not-allowed;
+  background-color: #eee;
+  &:focus{
+    cursor: not-allowed;
+    background-color: #eee;
+    outline:none;
+  }
+}
+
+/********************** overridding the common ui ***********************/
+.simple-form-ui{
+  form{
+    background:#fff;
+    section{
+      display:block;
+      padding:0px;
+      border-left: none;
+      background: #fff;
+    }
+  } 
+}
+p.caution {
+  color: red;
+  padding: 15px 5px 5px 5px;
+  background:#fff;
+  text-align:center;
+}
+.button.confirm, button.confirm, input[type="submit"].confirm, input[type="button"].confirm, input[type="submit"].confirm, a.button.confirm{
+  padding: 7px 20px;
+}
+.button, button, input[type="submit"], input[type="button"], input[type="submit"], a.button{
+  padding: 7px 20px;
+}
+button[disabled], button[disabled]:hover, button.disabled, button.disabled:hover{
+    opacity: .65;
+    filter: alpha(opacity=65);
+    background:#e6e6e6;
+    border:1px solid #d0d0d0;
+    color:#363463;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    cursor:default;
+}
+/*** grid form elements css end ***/
+body{   
+  width:100%;
+  max-width:100%;
+	background:#f5f5f6;
+  font-size:14px;
+  font-family: "OpenSans",Arial,sans-serif;
+}
+.reg-header{
+	height:50px;
+}
+.remove-margin{
+  margin:0px !important; 
+}
+
+/*** login specific css start ***/
+.login{
+    bottom: 0px;
+    height: 300px;
+    left: 0px;
+    margin: auto;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    font-size:0.865em;
+    width: 500px;
+}
+.login-body{
+    @include clearfix();
+    padding-top:20px;
+    background:#ffffff;
+    border:1px solid #eaeaea;
+    padding-bottom:10px;
+    p.caution{
+      padding:0px;
+    }
+    .note-container .note{
+      margin:0px auto 18px auto;
+    }
+    .form-field .field-value{
+      input[type="text"],input[type="password"]{
+        width:15em;
+      }
+    }
+
+}
+/*** login specific css end ***/
+/*** search page css start ****/
+body{
+  max-width:1200px;
+}
+.reg-wrapper{
+  margin:0px auto;
+  @include clearfix();
+  .inline-element,select,input,button{
+      display:inline-block;
+      margin:2px;
+  }
+  select{
+        height:30px;
+  }
+  header {
+    position: relative;
+    color: #CCC;
+    @include border-radius();  
+    .header-logo{
+      background: image-url("jss_logo.png") no-repeat scroll left top transparent;
+      color: #ffffff;
+      display: block;
+      font-size: 2em;
+      height: 32px;
+      margin:4px 0px 0px 5px;
+      padding:11px 0px 0px 49px;
+      text-decoration:none; 
+      line-height:15px;
+      float:left;
+    }
+    ul{
+      float:right;
+      li{
+        margin:11px 15px 10px 0px;
+        display:inline-block;
+        a{
+          color:#f2f2f2;
+          font-weight:bold;
+          cursor:pointer;
+          text-decoration:none;
+          .nav-link{
+            padding-left:2px;
+            &:hover{
+              text-decoration:underline;
+            }
+          }
+       }
+      }
+    }
+  }
+.reg-search-wrapper{
+    padding:10px;
+    margin-top:5px;
+    border:1px solid #cecece;
+    background:#fff;
+    @include border-radius();  
+    .reg-search{
+        margin-bottom:10px;
+        @include clearfix;
+        .search-seperator-l{
+          @include column(5);
+          border-right:2px dotted #9E9D9D;
+            select{
+              width:80px;
+              min-width:80px;
+          }
+        }
+        .search-seperator-r{
+          padding:0px 0px 10px 20px;
+          input{
+            margin-right:5px;
+          }
+          .reg-srch-btn{
+            margin-top:25px;
+          }
+        }
+    }
+    .note-container{
+        text-align:left;
+       .note {
+           padding:6px 10px 6px 10px; 
+           .text{
+            p{
+              max-width:100%;
+              top:0px;
+              margin-left:0
+            }
+          }
+        }
+    }
+}  
+table{
+    td,th{
+        padding:5px 8px 5px 8px;
+        text-align:left;
+    }
+    tr:hover{
+      background:#f1f1f1;
+    }
+  }
+  .slno_col{
+        width:40px;
+  }
+  .edit-col{
+      width:40px;
+      padding:1px 2px 0px 2px;
+      a{
+        background:image-url("edit.png") top left no-repeat;
+        width:30px;
+        height:24px;
+        display:inline-block;
+        margin-right:2px;
+        cursor:pointer;
+      }
+  }
+ /*** search page css end ***/
+
+ /****edit page css start ***/
+ .reg-body-wrapper{
+    padding:10px;
+    background:#ffffff;
+ }
+ .edit-patient,.new-patient,.visit-patient{
+  position:relative;
+ }
+ .photocontainer-spacing{
+    margin-bottom:57px;
+ }
+.photo-container-wrapper{
+    position:absolute;
+    top:31px;
+    right:10px;
+    border:7px solid #f0f0f0;
+  }
+  .capture-photo-btn{
+    position:absolute;
+    top:0px;
+    left:-56px;
+    .btn{
+      background: image-url("photo.png") 2px 3px no-repeat;
+      width:40px;
+      height:40px;
+    }
+  }
+}
+
+.mylegend {
+    background:#e6e6e6;
+    font-size: 14px;
+    width:99.8%;
+    line-height: 16px;
+    margin-bottom:20px;
+    @include border-radius();
+    border:1px solid #d4d4d4;
+    span{
+        display:inline-block;
+        padding:2px 10px;
+        font-weight:bold;
+    }
+}
+.asterick{
+    color:red;
+}
+
+.input-label-inline{
+    margin-top:6px;
+    display:inline-block;
+    label{
+        display: inline-block;
+        margin-top:2px;
+        }
+}
+.submit-btn-container{
+  @include clearfix();
+  padding:10px 20px 0px 20px;
+}
+#overlay {
+  display: none;
+  z-index: 10000;
+  background: #000;
+  position: fixed;
+  width: 100%;
+  opacity: .6;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  background-image:image-url("spinner.gif");
+  background-repeat:no-repeat;
+  background-position:center;
+}
+
+#loader {
+  display: none;
+  z-index: 10000;
+  width: 100%;
+  height: 50px;
+  margin-bottom: 20px;
+  background-image:image-url("loader.gif");
+  background-repeat:no-repeat;
+  background-position:center;
+}
+
+.print-layout {
+  display: none;
+}
+
+@media print {
+  .print-layout {
+    display: block;
+  }
+  .non-printable, .alert, header {
+    display: none;
+  }
+}
+.btn-secondary {
+  float: right;
+}   
+table{
+    tr{ 
+        th{
+            border:1px solid #d4d4d4;
+            background:#e6e6e6;
+     
+        }
+    }
+}
+
+#photo-canvas-container {
+  text-align: center;
+}
+
+#patient-image {
+  height: 125px;
+  width: 125px;
+}
+/***** photo dialog css start *****/
+video{
+  display:block;
+}
+.photoCaptureDialog{
+    .photo-video-container{
+        position:relative;
+        width:229px;
+        float:left;
+        .photoCapture-left-overlay{
+          position:absolute;
+          height:169px;
+          width:25px;
+          left:0px;
+          top:6px;
+          background:#EEEEEE;
+        }
+        .photoCapture-right-overlay{
+          position:absolute;
+          height:169px;
+          width:31px;
+          right:0px;
+          top:6px;
+          background:#EEEEEE;
+        }
+    }      
+    .photo-canvas-container{
+      float:left;
+      width:188px;
+      margin-top:6px;
+      margin-left:30px !important;
+      canvas{
+        border:2px solid #fff;
+        height:167px;
+        width:175px;
+        background:#f2f2f2;
+      }
+    } 
+    .take-photo-btn{
+      margin:10px 54px 5px 54px
+    }
+    .confirmImage{
+      margin:10px 5px 5px 55px;
+    }
+    .row-clear{
+    @include clearfix();
+    }
+
+}
+/***** photo dialog css end *****/
+
+/** responsive css **/
+@media screen and (max-width: 1024px){
+  .reg-wrapper{
+      width:1024px;
+      }
+}
+@media screen and (max-height: 800px) {
+  .reg-wrapper{
+    .reg-search-wrapper .reg-search {
+      .search-seperator-l{
+        width:500px;
+    }
+      .search-seperator-r{
+        padding-left:10px;
+    }
+    }
+    .form-field-inline {
+      &:last-child{
+        margin-bottom:10px;
+      }
+      .form-field{
+        margin-bottom:0px;
+      }
+      &.form-field-gender{
+        margin-bottom:4px;
+      }
+    }
+    .form-field .field-attribute label{
+        margin:5px 0.8em 7px 0px;
+    }
+    .form-field .field-value span.text-only{
+        margin:5px 0.8em 7px 8px;
+    }
+  }
+}
+
+.age-field {
+  .input-prepend {
+    margin-right: 5px;
+  }
+
+  #ageYears {
+    width: 30px;
+  }
+
+  #ageMonths, #ageDays {
+    width: 20px;
+  }
+
+  input {
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      /* display: none; <- Crashes Chrome on hover */
+      -webkit-appearance: none;
+      margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  }
+}  
+  }
+
+.field-attribute label {
+  text-transform: capitalize;
+}
+/*** overriding jquery styling start****/
+.ui-widget-header{
+  border:1px solid #104D05;
+  backgrond:#00463F;
+}
+
+.ui-state-hover .ui-icon, .ui-state-focus .ui-icon{
+  background-image:url(images/ui-icons_222222_256x240.png);
+}
+
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight{
+  border: 1px solid #36CC4E;
+  background: #D6FACF;
+}
+
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus{
+  border: 1px solid #36CC4E;
+  background: #D6FACF;
+  font-weight: bold;
+  color: #048B24;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active{
+  border: 1px solid #107C22;
+  background: #FFF9D8;
+  color: #1EB642;
+}
+/**** overriding jquery styling end *****/
