@@ -26,9 +26,10 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
                 var drug = new Bahmni.Opd.Consultation.TreatmentDrug();
                 drug.uuid = drugOrder.drug.uuid;
                 drug.name= drugOrder.drug.display;
-                //https=//10.4.33.188/openmrs/ws/rest/v1/drug/fef3eaf8-2da5-432e-a19d-6db86f2a2fff?
-                drug.strength= "test mg";
-                drug.dosageForm= "test tablet";
+
+                //uncomment this when the drug-details-display fix has been checked into ws-rest
+//                drug.strength= formatStrength(drugOrder.drug.doseStrength, drugOrder.drug.units);
+//                drug.dosageForm= drugOrder.drug.dosageForm.display;
                 drug.prn= drugOrder.prn;
                 drug.numberPerDosage= drugOrder.dose;
                 drug.dosageFrequency= mapDosageUuid(drugOrder.frequency, dosageFrequencies);
@@ -57,6 +58,12 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
         var one_day = 1000 * 60 * 60 * 24;
         return Math.round(differenceInTime / one_day);
     };
+
+    var formatStrength = function(strength, units){
+        var correctStrength = (strength && strength != 0)? strength : "";
+        var correctUnits = (units)? units : "";
+        return correctStrength + " " + correctUnits;
+    }
 
     var mapDosageUuid = function (dosageUuid, dosageConfigs) {
         if (dosageUuid && (dosageConfigs.results.length > 0)) {
