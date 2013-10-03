@@ -27,7 +27,7 @@ angular.module('opd.consultation.controllers')
 
         var allTreatmentDrugs = $rootScope.consultation.treatmentDrugs || [];
         var newlyAddedTreatmentDrugs = allTreatmentDrugs.filter(function(drug){
-            return !drug.readonly;
+            return !drug.savedDrug;
         });
 
         if (newlyAddedTreatmentDrugs){

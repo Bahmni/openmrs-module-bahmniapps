@@ -17,7 +17,7 @@
                     <div class="col col1">
                         <input ng-model="drug.name" type="text" name="name" value="{{drug.name}}"
                                 my-autocomplete="{{ {'src': 'getDrugList', 'responseHandler': 'getDataResults', 'onSelect':'onDrugSelected', 'index' : $index} }}"
-                                ng-change="addNewRowIfNotExists($index)" ng-class="{'illegalValue': !isValidDrugName(drug)}">
+                                ng-change="addNewRowIfNotExists($index)" ng-class="{'illegalValue': !isValidDrugName(drug)}" ng-readonly="drug.savedDrug">
                     </div>
                     <div class="col col2">
                         <span class="drug-strength"> {{drug.strength + ' ' + drug.dosageForm}} </span>
@@ -25,44 +25,44 @@
                     <div class="col col3">
                         <input ng-model="drug.numberPerDosage" type="number" name="numberPerDosage" min="0"
                                 value="{{drug.numberPerDosage}}" ng-required="!drug.empty"
-                                ng-class="{'illegalValue': !isValidNumberPerDosage(drug)}">
+                                ng-class="{'illegalValue': !isValidNumberPerDosage(drug)}" ng-readonly="drug.savedDrug">
                     </div>
                     <div class="col col4">
                         <span class="select-arrow">
                             <select ng-model="drug.dosageFrequency" ng-options="df.name.name for df in dosageFrequencyAnswers"
-                                    ng-class="{'illegalValue': !isValidDosageFrequency(drug)}" ng-required="!drug.empty">
+                                    ng-class="{'illegalValue': !isValidDosageFrequency(drug)}" ng-required="!drug.empty" ng-disabled="drug.savedDrug">
                                 <option value=""></option>
                             </select>
                         </span>
                     </div>
                     <div class="col col5">
                         <span class="select-arrow">
-                            <select ng-model="drug.dosageInstruction" ng-options="di.name.name for di in dosageInstructionAnswers">
+                            <select ng-model="drug.dosageInstruction" ng-options="di.name.name for di in dosageInstructionAnswers" ng-disabled="drug.savedDrug">
                                 <option value=""></option>
                             </select>
                         </span>
                     </div>
                     <div class="col col6">
-                        <input ng-model="drug.prn" name="prn" type="checkbox" value="{{drug.prn}}" >
+                        <input ng-model="drug.prn" name="prn" type="checkbox" value="{{drug.prn}}" ng-disabled="drug.savedDrug">
                     </div>
                     <div class="col col7">
                         <input ng-model="drug.numberOfDosageDays" name="numberOfDosageDays"
                                type="number" value="{{drug.numberOfDosageDays}}" min="0"
                                ng-required="!drug.empty"
-                               ng-class="{'illegalValue': !isValidNumberOfDosageDays(drug)}">
+                               ng-class="{'illegalValue': !isValidNumberOfDosageDays(drug)}" ng-readonly="drug.savedDrug">
                     </div>
                     <div class="col col8" >
                         <button type="button" ng-click="drug.notesVisible=!drug.notesVisible" ng-show="!drug.empty">
                             <span ng-class="{'icon-arrow-down':!drug.notesVisible,'icon-arrow-up':drug.notesVisible}"></span>
                         </button>
-                        <button type="button" ng-click="removeDrug($index)" ng-show="!drug.empty && !drug.readonly">
+                        <button type="button" ng-click="removeDrug($index)" ng-show="!drug.empty && !drug.savedDrug">
                             <span class="icon-remove"></span>
                         </button>
                     </div>
                 </div>
                 <div class="row" ng-show="drug.notesVisible">
                     <div class="col">
-                        <textarea placeholder="enter notes" ng-model="drug.notes" name="notes"></textarea>
+                        <textarea placeholder="enter notes" ng-model="drug.notes" name="notes" ng-readonly="drug.savedDrug"></textarea>
                     </div>
                 </div>
             </div>

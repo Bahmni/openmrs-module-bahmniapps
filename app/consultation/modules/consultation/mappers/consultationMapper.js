@@ -34,7 +34,7 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
                 drug.numberOfDosageDays= calculateDosagedays(drugOrder.autoExpireDate, drugOrder.startDate);
                 drug.notes= drugOrder.instructions;
                 drug.conceptUuid= drugOrder.concept.uuid;
-                drug.readonly= true;
+                drug.savedDrug= true;
                 drug.empty=false;
                 return drug;
             });
