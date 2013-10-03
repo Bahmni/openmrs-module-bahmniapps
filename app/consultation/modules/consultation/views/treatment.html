@@ -17,7 +17,7 @@
                     <div class="col col1">
                         <input ng-model="drug.name" type="text" name="name" value="{{drug.name}}"
                                 my-autocomplete="{{ {'src': 'getDrugList', 'responseHandler': 'getDataResults', 'onSelect':'onDrugSelected', 'index' : $index} }}"
-                                ng-change="addNewRowIfNotExists($index)" ng-class="{'illegalValue': !isValidDrugName(drug)}" ng-readonly="drug.savedDrug">
+                                ng-change="addNewRowIfNotExists($index)" ng-class="{'illegalValue': !isValidDrugName(drug)}" ng-disabled="drug.savedDrug">
                     </div>
                     <div class="col col2">
                         <span class="drug-strength"> {{drug.strength + ' ' + drug.dosageForm}} </span>
@@ -25,7 +25,7 @@
                     <div class="col col3">
                         <input ng-model="drug.numberPerDosage" type="number" name="numberPerDosage" min="0"
                                 value="{{drug.numberPerDosage}}" ng-required="!drug.empty"
-                                ng-class="{'illegalValue': !isValidNumberPerDosage(drug)}" ng-readonly="drug.savedDrug">
+                                ng-class="{'illegalValue': !isValidNumberPerDosage(drug)}" ng-disabled="drug.savedDrug">
                     </div>
                     <div class="col col4">
                         <span class="select-arrow">
@@ -49,7 +49,7 @@
                         <input ng-model="drug.numberOfDosageDays" name="numberOfDosageDays"
                                type="number" value="{{drug.numberOfDosageDays}}" min="0"
                                ng-required="!drug.empty"
-                               ng-class="{'illegalValue': !isValidNumberOfDosageDays(drug)}" ng-readonly="drug.savedDrug">
+                               ng-class="{'illegalValue': !isValidNumberOfDosageDays(drug)}" ng-disabled="drug.savedDrug">
                     </div>
                     <div class="col col8" >
                         <button type="button" ng-click="drug.notesVisible=!drug.notesVisible" ng-show="!drug.empty">
@@ -62,7 +62,7 @@
                 </div>
                 <div class="row" ng-show="drug.notesVisible">
                     <div class="col">
-                        <textarea placeholder="enter notes" ng-model="drug.notes" name="notes" ng-readonly="drug.savedDrug"></textarea>
+                        <textarea placeholder="enter notes" ng-model="drug.notes" name="notes" ng-disabled="drug.savedDrug"></textarea>
                     </div>
                 </div>
             </div>
