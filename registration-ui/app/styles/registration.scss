@@ -1,6 +1,6 @@
 @charset "UTF-8";
+@import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fragments/grid";
 
-@import "grid";
 $column-width: 100;
 $gutter-width: 0;
 $columns: 12;
@@ -521,11 +521,11 @@ video{
 /*** overriding jquery styling start****/
 .ui-widget-header{
   border:1px solid #104D05;
-  backgrond:#00463F;
+  background:#00463F;
 }
 
 .ui-state-hover .ui-icon, .ui-state-focus .ui-icon{
-  background-image:url(images/ui-icons_222222_256x240.png);
+  background-image:url("../lib/ui-icons_222222_256x240.png");
 }
 
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight{

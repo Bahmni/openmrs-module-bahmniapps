@@ -13,7 +13,6 @@
   "dependencies": {
     "angular": "1.0.5",
     "angular-cookies": "1.0.5",
-    "bootstrap": "2.3.0",
     "ngInfiniteScroll":"1.0.0",
     "jquery": "1.9.1",
     "jquery-ui": "1.10.2",
