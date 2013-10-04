@@ -105,7 +105,7 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
                 return member.concept.name.name === Bahmni.Opd.Constants.nonCodedDiagnosisConceptName;
             })[0];
             return new Bahmni.Opd.Consultation.Diagnosis(getDiagnosisConcept(codedDiagnosisObs, nonCodedDiagnosisObs),
-                orderObs.value.name.name, certaintyObs.value.name.name)
+                orderObs.value.name.name.toUpperCase(), certaintyObs.value.name.name.toUpperCase(), diagnosisOb.uuid);
         })
         return diagnoses;
     }

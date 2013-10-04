@@ -17,13 +17,13 @@
             <div style="float:left; width:400px">
                 <h2>Primary Diagnoses</h2>
                 <div ng-repeat="diagnosis in consultation.diagnoses" ng-show="diagnosis.isPrimary()">
-                    {{diagnosis.conceptName()}}({{diagnosis.certainty}})
+                    {{diagnosis.conceptName()}}&nbsp;({{diagnosis.certainty}})
                 </div>
             </div>
             <div style="float:left; width:400px">
                 <h2>Secondary Diagnoses</h2>
                 <div ng-repeat="diagnosis in consultation.diagnoses" ng-hide="diagnosis.isPrimary()">
-                    {{diagnosis.conceptName()}}({{diagnosis.certainty}})
+                    {{diagnosis.conceptName()}}&nbsp;({{diagnosis.certainty}})
                 </div>
             </div>
         </div>

@@ -13,10 +13,10 @@
                     <div ng-repeat="diagnosis in diagnosisList" class="table-body">
                         <div class="row">
                             <div class="col col1">
-                                <input ng-model="diagnosis.concept.conceptName" type="text" name="name" value="{{diagnosis.conceptName()}}" ui-autocomplete ng-change="clearEmptyRows()" tabindex="1">
+                                <input ng-model="diagnosis.concept.conceptName" type="text" name="name" value="{{diagnosis.conceptName()}}" ui-autocomplete ng-change="clearEmptyRows()">
                             </div>
                             <div class="col col2">
-                                <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.order' options='orderOptions' tabindex="2"/>
+                                <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.order' options='orderOptions'/>
                             </div>
                             <div class="col col3">
                                 <buttons-radio class="small-btn" data-toggle="buttons-radio" model='diagnosis.certainty' options='certaintyOptions'></buttons-radio>

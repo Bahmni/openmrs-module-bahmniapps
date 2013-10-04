@@ -23,7 +23,14 @@ angular.module('opd.consultation.controllers')
     }
 
     var addDiagnosis = function (concept, index) {
-        var diagnosis = new Bahmni.Opd.Consultation.Diagnosis(concept);
+        var diagnosisBeingEdited = $scope.diagnosisList[index]
+        if(diagnosisBeingEdited){
+            var diagnosis = new Bahmni.Opd.Consultation.Diagnosis(concept, diagnosisBeingEdited.order,
+                diagnosisBeingEdited.certainty, diagnosisBeingEdited.existingObsUuid)
+        }
+        else {
+            var diagnosis = new Bahmni.Opd.Consultation.Diagnosis(concept);
+        }
         if (_canAdd(diagnosis)) {
             $scope.diagnosisList.splice(index, 1, diagnosis);
         }
