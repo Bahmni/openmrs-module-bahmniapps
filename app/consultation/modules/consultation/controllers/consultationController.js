@@ -11,7 +11,7 @@ angular.module('opd.consultation.controllers')
         if ($rootScope.consultation.diagnoses && $rootScope.consultation.diagnoses.length > 0){
             encounterData.diagnoses = $rootScope.consultation.diagnoses.map(function (diagnosis) {
                 return {
-                    diagnosis:"Concept:" + diagnosis.concept.conceptUuid,
+                    diagnosis:"ConceptUuid:" + diagnosis.concept.conceptUuid,
                     order:diagnosis.order,
                     certainty:diagnosis.certainty,
                     existingObs:diagnosis.existingObsUuid

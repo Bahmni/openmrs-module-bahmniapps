@@ -15,7 +15,7 @@ Bahmni.Opd.Consultation.Diagnosis = function (concept, order, certainty, existin
     }
 
     self.isValid = function(){
-        return (self.concept.conceptName !== undefined && self.concept.conceptUuid !== undefined)
-            || (self.concept.conceptName === undefined && self.concept.conceptUuid === undefined);
+        return (self.displayName !== undefined && self.concept.conceptUuid !== undefined)
+            || (self.displayName === undefined && self.concept.conceptUuid === undefined);
     }
 };
