@@ -56,18 +56,18 @@ describe("Bahmni.Opd.TreeSelect.Explorer", function () {
     var testData = {
         data: {
             results: [
-                {display: "L1", conceptClass: {name: "Misc"}, set: true, setMembers: [
-                    {display: "L1_1", conceptClass: {name: "Misc"}, set: true, setMembers: [
-                        {display: "L1_1_1", conceptClass: {name: "LabSet"}, set: true, setMembers: [{display: "L1_1_1_1"}, {display: "L1_1_1_2"}]},
-                        {display: "L1_1_2", conceptClass: {name: "LabSet"}, set: true, setMembers: [{display: "L1_1_2_1"}]},
+                {display: "L1", conceptClass: {display: "Misc"}, set: true, setMembers: [
+                    {display: "L1_1", conceptClass: {display: "Misc"}, set: true, setMembers: [
+                        {display: "L1_1_1", conceptClass: {display: "LabSet"}, set: true, setMembers: [{display: "L1_1_1_1"}, {display: "L1_1_1_2"}]},
+                        {display: "L1_1_2", conceptClass: {display: "LabSet"}, set: true, setMembers: [{display: "L1_1_2_1"}]},
                     ]},
-                    {display: "L1_2", conceptClass: {name: "Misc"}, set: true, setMembers: [
-                        {display: "L1_2_1", conceptClass: {name: "ConvSet"}, set: true, setMembers: [{display: "L1_2_1_1"}, {display: "L1_2_1_2"}]},
-                        {display: "L1_2_2", conceptClass: {name: "ConvSet"}, set: true, setMembers: [{display: "L1_2_2_1"}]},
+                    {display: "L1_2", conceptClass: {display: "Misc"}, set: true, setMembers: [
+                        {display: "L1_2_1", conceptClass: {display: "ConvSet"}, set: true, setMembers: [{display: "L1_2_1_1"}, {display: "L1_2_1_2"}]},
+                        {display: "L1_2_2", conceptClass: {display: "ConvSet"}, set: true, setMembers: [{display: "L1_2_2_1"}]},
                     ]},
-                    {display: "L1_3", conceptClass: {name: "Misc"}, set: true, setMembers: [
-                        {display: "L1_3_1", conceptClass: {name: "Misc"}, set: true, setMembers: [{display: "L1_2_1_1"}, {display: "L1_2_1_2"}]},
-                        {display: "L1_3_2", conceptClass: {name: "Misc"}, set: true, setMembers: [{display: "L1_2_2_1"}]},
+                    {display: "L1_3", conceptClass: {display: "Misc"}, set: true, setMembers: [
+                        {display: "L1_3_1", conceptClass: {display: "Misc"}, set: true, setMembers: [{display: "L1_2_1_1"}, {display: "L1_2_1_2"}]},
+                        {display: "L1_3_2", conceptClass: {display: "Misc"}, set: true, setMembers: [{display: "L1_2_2_1"}]},
                     ]}
                 ]}
             ]

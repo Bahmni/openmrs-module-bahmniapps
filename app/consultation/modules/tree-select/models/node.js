@@ -4,7 +4,7 @@ Bahmni.Opd.TreeSelect.Node = function() {
 
         this.uuid = concept.uuid;
         this.display = concept.display;
-        this.conceptClass = concept.conceptClass != null ? concept.conceptClass.name : "";
+        this.conceptClass = concept.conceptClass != null ? concept.conceptClass.display : "";
         this.isSet = concept.set;
         this.isSelectableType = this.conceptClass === "LabSet" || !this.isSet;
 
