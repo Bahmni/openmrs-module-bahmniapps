@@ -8,8 +8,9 @@
 }
 .bed-assigned-msg{
   text-align:center;
-  color:red;
+  color:#EB8313;
   height:30px;
+  font-weight:bold;
 }
 .bed-assignment {
   position: relative;
@@ -17,7 +18,7 @@
   border: 1px solid #cecece;
   margin: 0px auto;
   min-height: 200px;
-  padding-bottom: 20px;
+  padding: 20px;
 }
 
 .bed-assignment .row {
@@ -89,7 +90,6 @@
        font-family:arial;
   }
   a{
-    margin-left:10px;
     background-color:#00463F;
     padding:8px 10px;
     margin-top:5px;
@@ -99,6 +99,7 @@
     border:#012C28;
     border-radius:5px;
     &:hover{
+        cursor:pointer;
       background-color:#076158;
       text-decoration: none;
      }

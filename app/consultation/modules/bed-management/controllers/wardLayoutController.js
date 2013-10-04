@@ -29,6 +29,7 @@ angular.module('opd.bedManagement.controllers')
                 $scope.layout = [];
                 $scope.getBedsForWard();
                 $scope.confirmationMessage = "Bed " + bed.bed.bedNumber + " is assigned successfully";
+                 $('.bed-info').hide();
                 $scope.$apply();
             });
         }
