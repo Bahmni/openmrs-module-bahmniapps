@@ -101,7 +101,7 @@ angular.module('opd.bedManagement.controllers')
                 elem.bind('click', function(e) {
                     scope.bedDetails(scope.cell);
                     var leftpos=$(elem).position().left+28;
-                    var toppos=$(elem).offset().top+55;
+                    var toppos=$(elem).offset().top;
                     $(".bed-info").css('left',leftpos);
                     $(".bed-info").css('top',toppos);
                 });

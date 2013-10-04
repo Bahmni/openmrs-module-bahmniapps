@@ -1,3 +1,16 @@
+.back-btn-wrapper{
+    button{
+      padding-left:10px;
+      span{
+        margin-right:10px;
+      }
+    } 
+}
+.bed-assigned-msg{
+  text-align:center;
+  color:red;
+  height:30px;
+}
 .bed-assignment {
   position: relative;
   width: 960px;
