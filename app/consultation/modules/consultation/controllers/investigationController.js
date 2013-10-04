@@ -31,7 +31,7 @@ angular.module('opd.consultation.controllers')
         }
         
         $scope.conceptToInvestigationMapper = function(concept, treeAdditionalData) {
-            return{ conceptUuid: concept.uuid, name: concept.name.display,
+            return{ conceptUuid: concept.uuid, name: concept.display,
                     isSet: concept.set, orderTypeUuid: $rootScope.encounterConfig.orderTypes[treeAdditionalData.orderType] };
         }
     }]);
