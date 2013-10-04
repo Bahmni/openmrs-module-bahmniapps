@@ -6,12 +6,16 @@ describe("ActivePatientListController", function () {
     var controller;
     var visitService;
     var route = {current : {params :{ location : "Ganiyari"}}};
+
+    var admitObs = {concept:{display:'Disposition Set'}, groupMembers:[{value:{display:'Admit Patient'}}]};
     var visits =  [
-                { patient: {identifiers:[{identifier:'GAN1234'}], names:[{display:   'Ram Singh'}]}, encounters:[] },
-                { patient: {identifiers:[{identifier:'BAM1234'}], names:[{display: 'Shyam Singh'}]}, encounters:[] }, 
-                { patient: {identifiers:[{identifier:'SEM1234'}], names:[{display:'Ganesh Singh'}]}, encounters:[] },
-                { patient: {identifiers:[{identifier:'GAN1235'}], names:[{display:'  Gani Singh'}]}, encounters:[{orders:[{concept:{display:'Admit Patient'}}]}] }
+                { patient: {identifiers:[{identifier:'GAN1234'}], names:[{display:   'Ram Singh'}]}, encounters:[{uuid:'uuid-1',orders:[], obs:[]}] },
+                { patient: {identifiers:[{identifier:'BAM1234'}], names:[{display: 'Shyam Singh'}]}, encounters:[{uuid:'uuid-2',orders:[], obs:[]}] },
+                { patient: {identifiers:[{identifier:'SEM1234'}], names:[{display:'Ganesh Singh'}]}, encounters:[{uuid:'uuid-3',orders:[], obs:[]}] },
+                { patient: {identifiers:[{identifier:'GAN1235'}], names:[{display:'  Gani Singh'}]}, encounters:[{uuid:'uuid-4',orders:[], obs:[admitObs]}]}
             ];
+
+
 
     beforeEach(module('opd.patient'));
     beforeEach(inject(function () {

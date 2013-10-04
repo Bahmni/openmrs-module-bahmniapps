@@ -5,7 +5,7 @@ angular.module('opd.patient.controllers')
 
     $scope.patientTypes = [
         {type:'ALL', display:'All active patients', visible: true, appliedConcept: null},
-        {type:'TO_ADMIT', display:'Patients to be admitted', visible: true, appliedConcept: 'Admit Patient'}
+        {type:'TO_ADMIT', display:'Patients to be admitted', visible: true, appliedConcept: ['Disposition Set','Admit Patient']}
     ]; 
 
     $scope.getactivePatients = function () {
@@ -23,9 +23,17 @@ angular.module('opd.patient.controllers')
                 visit.encounters.forEach(function(en) {
                     //optimize to match to be admitted patients and determining state
                     var matchAdmitType = $scope.patientTypes[1];
-                    en.orders.forEach(function(order) {
-                        if (order.concept.display === matchAdmitType.appliedConcept) {
-                            visit.patient.status = matchAdmitType.type;
+                    en.obs.forEach(function(obs) {
+                        if (obs.concept.display === matchAdmitType.appliedConcept[0]) {
+                            if (obs.groupMembers) {
+                                obs.groupMembers.forEach(function(member) {
+                                      if (member.value.hasOwnProperty('display')) {
+                                          if (member.value.display == matchAdmitType.appliedConcept[1]) {
+                                              visit.patient.status = matchAdmitType.type;
+                                          }
+                                      }
+                                });
+                            }
                         }
                     });
                 });
