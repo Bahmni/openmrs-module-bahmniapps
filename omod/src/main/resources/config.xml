@@ -18,6 +18,8 @@
 	<require_modules>
         <require_module version="2.5-SNAPSHOT">org.bahmni.module.bahmnicore</require_module>
         <require_module version="2.2.9">org.openmrs.module.addresshierarchy</require_module>
+        <require_module version="2.3-SNAPSHOT">org.openmrs.module.webservices.rest</require_module>
+        <require_module version="2.6">org.openmrs.module.idgen</require_module>
     </require_modules>
 
 	
