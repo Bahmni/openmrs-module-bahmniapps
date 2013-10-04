@@ -1,14 +1,12 @@
 <div>
-    <h3>Ward Layout</h3>
-
-    <div class="bed-assignment">
-
-        <ul>
-            <li class="row" ng-repeat="layoutRow in layout">
-                <ul>
-                    <li class="col" ng-class="{occupied: !cell.empty && !cell.available, available: !cell.empty && cell.available, empty: cell.empty}" ng-repeat="cell in layoutRow"></li>
-                </ul>
-            </li>
-        </ul>
+    <div><button ng-click="back()">Back</button></div>
+    <div class="bed-info">
+         <ul>
+             <li>Bed Number : {{bed.bed.bedNumber}}</li>
+             <li><a class="assign" ng-show=bed.available ng-click="assignBed(bed)">Assign</a></li>
+         </ul>
     </div>
+    <div class="bed-assignment"><ul><li class="row" ng-repeat="layoutRow in layout"><ul><li class="col" ng-class="{occupied: !cell.empty && !cell.available, available: !cell.empty && cell.available, empty: cell.empty}" ng-repeat="cell in layoutRow" dialog></li></ul></li></ul></div>
+
+    <div class="confirmationMessage">{{ confirmationMessage}}</div>
 </div>
