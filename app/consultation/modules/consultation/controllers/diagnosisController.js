@@ -66,7 +66,6 @@ angular.module('opd.consultation.controllers')
 
     $scope.selectItem = function (item, index) {
         addDiagnosis(item.concept, index);
-        $scope.$apply();
     }
 
     $scope.removeObservation = function (index) {
@@ -98,12 +97,20 @@ angular.module('opd.consultation.controllers')
         );
     }
 
-    $scope.clearEmptyRows = function () {
-        $scope.diagnosisList = $scope.diagnosisList.filter(function (diagnosis) {
-                return isNotEmptyDiagnosis(diagnosis);
+    $scope.clearEmptyRows = function (index) {
+        var iter;
+        for(iter=0; iter<$scope.diagnosisList.length; iter++){
+            if(!isNotEmptyDiagnosis($scope.diagnosisList[iter]) && iter !== index){
+                $scope.diagnosisList.splice(iter, 1)
+            }
+        }
+        var emptyRows = $scope.diagnosisList.filter(function (diagnosis) {
+                return !isNotEmptyDiagnosis(diagnosis);
             }
         )
-        addPlaceHolderDiagnosis();
+        if(emptyRows.length == 0){
+            addPlaceHolderDiagnosis();
+        }
     }
 
     $scope.isValid = function(diagnosis){
@@ -145,10 +152,8 @@ angular.module('opd.consultation.controllers')
                 },
                 select:function (event, ui) {
                     scope.selectItem(ui.item, scope.$index);
-                    event.preventDefault();
-                    element.val('');
-                },
-                autoFocus:true
+                    return true;
+                }
             });
         }
     })
