@@ -21,7 +21,7 @@
 			li{
 				display: inline-block;
 				padding: 5px 7px;
-				margin-right: 10px;
+				margin-right: 25px;
 				margin-top: 10px;
 				border-radius: 5px;
 				color:#585858;
@@ -39,6 +39,21 @@
 					border-radius: 10px;
 					line-height: 15px;
 				}
+			}
+		}
+		&.diagnosis{
+			h2{
+				margin-bottom: 10px;
+				color: #FFF;
+				padding: 5px 5px;
+				width: 300px;
+				background: #2B97D5;
+			}
+			div{
+				margin-bottom: 8px;
+            	@include font-size(0.9);
+				color: #5C5B5C;
+				padding-left: 10px;
 			}
 		}
 		&.treatment{
