@@ -98,7 +98,7 @@ module.exports = function (grunt) {
         }]
       },
       server: [ 
-        '<%= yeoman.app %>/styles/**'
+        '<%= yeoman.app %>/styles/*.css'
       ]
     },
     karma: {
