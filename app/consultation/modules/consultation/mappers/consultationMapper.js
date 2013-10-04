@@ -27,9 +27,8 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
                 drug.uuid = drugOrder.drug.uuid;
                 drug.name= drugOrder.drug.display;
 
-                //uncomment this when the drug-details-display fix has been checked into ws-rest
-//                drug.strength= formatStrength(drugOrder.drug.doseStrength, drugOrder.drug.units);
-//                drug.dosageForm= drugOrder.drug.dosageForm.display;
+                drug.strength= formatStrength(drugOrder.drug.doseStrength, drugOrder.drug.units);
+                drug.dosageForm= (drugOrder.drug.dosageForm)? drugOrder.drug.dosageForm.display : "" ;
                 drug.prn= drugOrder.prn;
                 drug.numberPerDosage= drugOrder.dose;
                 drug.dosageFrequency= mapDosageUuid(drugOrder.frequency, dosageFrequencies);
