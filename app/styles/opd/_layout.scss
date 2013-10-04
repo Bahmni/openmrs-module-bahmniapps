@@ -13,18 +13,17 @@ body{
     max-width:none;
     height:100%;
 }
-.opd-wrapper{
-    margin:0px auto;
-    width:960px;
-    position: relative;
-    .opd-inner-wrapper{
+.opd-header-wrapper{
         @include pie-clearfix;
+        background:#00463F;
         header{
+            width:960px;
+            margin:0px auto;
             border-radius:0px;
             padding:2px;
             position:relative;
             .header-logo{
-                background:url("../../images/jss_logo.png") no-repeat left top;
+                background:url("../images/jss_logo.png") no-repeat left top;
                 padding:10px 0px 7px 40px;
                 float:left;
                 margin-top:7px;
@@ -79,6 +78,11 @@ body{
             }
         }
     }
+.opd-wrapper{
+    margin:0px auto;
+    width:960px;
+    position: relative;
+    
     
     .opd-content-wrapper{
        background:#ffffff;
@@ -191,6 +195,11 @@ button[disabled] {
 .active-visits{
     li{
         width:143px;
+        div{
+            margin:5px 0px;
+            @include font-size(0.9);
+            color:#4d4d4d; 
+        }
     }
 
 }

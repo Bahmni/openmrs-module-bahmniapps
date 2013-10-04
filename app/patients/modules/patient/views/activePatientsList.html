@@ -1,3 +1,5 @@
+<div class="opd-header-wrapper">
+
 <header class="reg-header">
           <a class="header-logo" href="#/search">Jan Swasthya Sahyog</a>
           <ul class="patient-info">
@@ -6,10 +8,8 @@
               </li>
           </ul> 
 </header>
- <header class="reg-header" >
-                        
-                           
-</header>
+</div>
+<div class="opd-wrapper">
 <div class="tabs">
     <ul>
         <li class="tab-item" ng-repeat="pType in patientTypes | filter: { visible: true } " ng-class="{'tab-selected':searchCriteria.type==pType.type}"> 
@@ -19,7 +19,7 @@
 </div>
 <div class="tab-content">
     <div class="search-wrapper">
-        <input type="text" ng-model="searchCriteria.searchParameter"  ng-change="filterPatientList()"  placeholder="Search name/id"/>
+        <input type="text" ng-model="searchCriteria.searchParameter"  ng-change="filterPatientList()"  placeholder="Search Name/ID  ..."/>
     </div>
     <div resize class="active-visits">
         <div infinite-scroll='loadMore()' >
@@ -30,4 +30,5 @@
             </li>
         </div>
     </div>
+</div>
 </div>
