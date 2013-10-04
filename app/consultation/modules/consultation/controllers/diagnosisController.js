@@ -49,11 +49,19 @@ angular.module('opd.consultation.controllers')
         else {
             $scope.diagnosisList = $rootScope.consultation.diagnoses;
         }
+        $rootScope.beforeContextChange = allowContextChange;
         addPlaceHolderDiagnosis();
     }
 
+    var allowContextChange = function() {
+        var invalidDrugs = $scope.diagnosisList.filter(function(diagnosis){
+            return !diagnosis.isValid();
+        });
+        return invalidDrugs.length === 0;
+    }
+
     var isNotEmptyDiagnosis = function (diagnosis) {
-        return diagnosis.concept && diagnosis.concept.conceptName
+        return diagnosis.concept !== undefined && diagnosis.displayName !== undefined && diagnosis.displayName.length !== 0;
     }
 
     $scope.selectItem = function (item, index) {
@@ -98,6 +106,11 @@ angular.module('opd.consultation.controllers')
         addPlaceHolderDiagnosis();
     }
 
+    $scope.isValid = function(diagnosis){
+        var isValid = diagnosis.isValid();
+        return isValid;
+    }
+
     init();
 
 }])
@@ -134,7 +147,8 @@ angular.module('opd.consultation.controllers')
                     scope.selectItem(ui.item, scope.$index);
                     event.preventDefault();
                     element.val('');
-                }
+                },
+                autoFocus:true
             });
         }
     })
