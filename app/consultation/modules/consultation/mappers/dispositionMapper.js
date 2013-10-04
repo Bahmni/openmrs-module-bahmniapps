@@ -1,7 +1,7 @@
 Bahmni.Opd.DispositionMapper = function(encounterConfig) {
     this.map = function(visit) {
         var opdEncounters = visit.encounters.filter(function(encounter){
-            return encounter.encounterType.uuid === encounterConfig.getOpdConsultationEncounterUUID();
+            return encounter.encounterType.uuid === encounterConfig.encounterTypes.OPD;
         });
 
 
@@ -31,7 +31,7 @@ Bahmni.Opd.DispositionMapper = function(encounterConfig) {
                     var disposition = {};
 
                     dispositionObsGroup.groupMembers.forEach(function(dispositionGroupMember){
-                        var conceptName =  dispositionGroupMember.concept ? dispositionGroupMember.concept.display :null;
+                        var conceptName =  dispositionGroupMember.concept ? dispositionGroupMember.concept.name.name :null;
                         if(conceptName && conceptName === Bahmni.Opd.Constants.dispositionConcept){
                             disposition.adtName= dispositionGroupMember.value.display;
                             disposition.adtCode= getMappingCode(dispositionGroupMember.value)

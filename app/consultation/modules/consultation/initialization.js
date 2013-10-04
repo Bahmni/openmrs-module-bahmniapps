@@ -26,9 +26,9 @@ angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q'
 
                     dispositionService.getDispositionNoteConcept().then(function (response) {
                         if (response.data) {
-                            if (!$rootScope.disposition) {
+                           /* if (!$rootScope.disposition) {
                                 $rootScope.disposition = {};
-                            }
+                            }*/
                             $rootScope.dispositionNoteConceptUuid = response.data.results[0].uuid;
                         }
                     });
@@ -42,7 +42,9 @@ angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q'
                             }
                             if(response.data.results && response.data.results.length){
                                 $rootScope.disposition.dispositionActionUuid = response.data.results[0].uuid;
-                                $rootScope.disposition.dispositionActions = response.data.results[0].answers;
+                                $rootScope.disposition.dispositionActions = response.data.results.filter(function(concept){
+                                    return concept.name.name === Bahmni.Opd.Constants.dispositionConcept
+                                })[0].answers;
                             }
 
                         }

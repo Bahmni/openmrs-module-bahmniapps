@@ -11,8 +11,10 @@ angular.module('opd.consultation.controllers')
 
                 if($rootScope.disposition.currentActionIndex !== undefined){
                     var disposition = $rootScope.disposition.dispositions[$rootScope.disposition.currentActionIndex];
-                    $scope.dispositionAction =  disposition.adtName;
-                    $scope.dispositionNotes = disposition.adtNoteValue;
+                    if(disposition){
+                        $scope.dispositionAction =  disposition.adtName;
+                        $scope.dispositionNotes = disposition.adtNoteValue;
+                    }
                 }
             }
         }
@@ -43,7 +45,7 @@ angular.module('opd.consultation.controllers')
                 }
                 return {
                     adtValueUuid : selectedAction.uuid,
-                    adtDateTime : new Date(),
+                    adtDateTime : new Date().toString('hh-mm dd-MM-yyyy'),
                     adtNoteValue : $scope.dispositionNotes,
                     adtName : selectedAction.name.name,
                     adtCode: getMappingCode(selectedAction)
