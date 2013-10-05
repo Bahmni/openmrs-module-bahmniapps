@@ -4,60 +4,46 @@ angular.module('opd.patient.controllers')
     .controller('ActivePatientsListController', ['$route', '$scope', '$location', '$window','VisitService', 'patientMapper', function ($route, $scope, $location, $window, visitService, patientMapper) {
 
     $scope.patientTypes = [
-        {type:'ALL', display:'All active patients', visible: true, appliedConcept: null},
-        {type:'TO_ADMIT', display:'Patients to be admitted', visible: true, appliedConcept: ['Disposition Set','Admit Patient']}
+        {name:'ALL', display:'All active patients', visible: true, retriever:'allActivePatients'},
+        {name:'TO_ADMIT', display:'Patients to be admitted', visible: true, retriever:'activePatientsForAdmission'}
     ]; 
 
-    $scope.getactivePatients = function () {
-        var queryParameters = $location.search();
-
-        visitService.getActiveVisits(queryParameters).success(function (data) {
-            $scope.activeVisits = data.results;
-            $scope.activeVisits.forEach(function (visit){
-                visit.patient.identifier = visit.patient.identifiers[0].identifier;
-                visit.patient.name = visit.patient.names[0].display;
-                visit.patient.display = visit.patient.identifier + " - " + visit.patient.name;
-                visit.patient.image = patientMapper.constructImageUrl(visit.patient.identifier);
-                visit.patient.status = '';
-
-                visit.encounters.forEach(function(en) {
-                    //optimize to match to be admitted patients and determining state
-                    var matchAdmitType = $scope.patientTypes[1];
-                    en.obs.forEach(function(obs) {
-                        if (obs.concept.display === matchAdmitType.appliedConcept[0]) {
-                            if (obs.groupMembers) {
-                                obs.groupMembers.forEach(function(member) {
-                                      if (member.value.hasOwnProperty('display')) {
-                                          if (member.value.display == matchAdmitType.appliedConcept[1]) {
-                                              visit.patient.status = matchAdmitType.type;
-                                          }
-                                      }
-                                });
-                            }
-                        }
-                    });
-                });
-            });
-
+    var retriever = {};
+    var handlePatientList = function(patientList, callback) {
+        resetPatientLists();
+        if (patientList) {
             $scope.storeWindowDimensions();
-
-            if($scope.activeVisits !== undefined) {
-                $scope.searchVisits = $scope.activeVisits;
-                $scope.searchableVisits = $scope.searchVisits;
-                $scope.visibleVisits= $scope.searchableVisits.slice(0,$scope.tilesToFit);
-            }
-            $scope.searchCriteria = { searchParameter: '', type: $scope.patientTypes[0].type} ;
+            patientList.forEach(function (patient){
+                patient.display = patient.identifier + " - " + patient.name;
+                patient.image = patientMapper.constructImageUrl(patient.identifier);
+            });
+            $scope.activePatients = patientList;
+            $scope.searchResults = $scope.activePatients;
+            $scope.visiblePatients= $scope.searchResults.slice(0,$scope.tilesToFit);
+        }
+        if (callback) {
+            callback();
+        }
+    };
+    retriever.allActivePatients = function (afterRetrieveCallback) {
+        visitService.getAllActivePatients().success(function (data) {
+            handlePatientList(data, afterRetrieveCallback);
         });
-    }
+    };
+    retriever.activePatientsForAdmission = function (afterRetrieveCallback) {
+        visitService.getAllActivePatientsForAdmission().success(function (data) {
+            handlePatientList(data, afterRetrieveCallback);
+        });
+    };
 
     $scope.loadMore = function() {
-        if($scope.visibleVisits !== undefined){
-            var last = $scope.visibleVisits.length;
-            var more = ($scope.searchVisits.length - last);
+        if($scope.visiblePatients !== undefined){
+            var last = $scope.visiblePatients.length;
+            var more = ($scope.searchResults.length - last);
             var toShow = (more > $scope.tilesToLoad) ? $scope.tilesToLoad : more;
             if (toShow > 0) {
                 for(var i = 1; i <= toShow; i++) {
-                    $scope.visibleVisits.push($scope.searchVisits[last + i-1]);
+                    $scope.visiblePatients.push($scope.searchResults[last + i-1]);
                 }
             }
         }
@@ -71,65 +57,64 @@ angular.module('opd.patient.controllers')
         var tileHeight = Bahmni.Opd.Constants.patientTileHeight;
         $scope.tilesToFit = Math.ceil(windowWidth * windowHeight / (tileWidth * tileHeight));
         $scope.tilesToLoad =  Math.ceil($scope.tilesToFit*Bahmni.Opd.Constants.tileLoadRatio);
-    }
+    };
 
 
     var matchesNameOrId = function(patient){
         return patient.display.toLowerCase().search($scope.searchCriteria.searchParameter.toLowerCase()) !== -1;
     };
 
-    $scope.filterPatientList = function () {
-        var searchList = [];
-        $scope.searchableVisits.forEach(function(visit){
-            if(matchesNameOrId(visit.patient))  {
-                searchList.push(visit);
-            }
-        })
-        $scope.searchVisits = searchList;
-        if($scope.searchVisits !== undefined){
-            $scope.visibleVisits = $scope.searchVisits.slice(0, $scope.tilesToFit);
+    $scope.searchPatients = function () {
+        var searchList = $scope.activePatients.filter(function(patient){
+            return matchesNameOrId(patient);
+        });
+        $scope.searchResults = searchList;
+        if($scope.searchResults){
+            $scope.visiblePatients = $scope.searchResults.slice(0, $scope.tilesToFit);
         }
+    };
+
+    $scope.consultation = function (patient) {
+        $window.location = "../consultation/#/visit/" + patient.activeVisitUuid;
+    };
+
+    var findPatientListType = function(typeName) {
+        var matchingTypes = $scope.patientTypes.filter(function(type) {
+            return type.name === typeName;
+        });
+        return matchingTypes ? matchingTypes[0] : null;
+    }
+    
+    $scope.showPatientsForType = function(typeName) {
+        var pType = findPatientListType(typeName);
+        $scope.searchCriteria.type = pType;
+        retriever[pType.retriever](function() {
+            $scope.searchPatients();
+        });
+    };
+
+    var resetPatientLists = function() {
+        $scope.activePatients = [];
+        $scope.searchResults = [];
+        $scope.visiblePatients = [];
     }
 
-    $scope.consultation = function (visit) {
-        $window.location = "../consultation/#/visit/" + visit.uuid;
-    }
+    var initialize = function() {
+        resetPatientLists();
+        $scope.searchCriteria = { searchParameter: '', type: $scope.patientTypes[0]};
+        retriever.allActivePatients();
+    };
 
-    var filterPatientListByType = function() {
-        var allType = $scope.patientTypes[0].type;
-        if ($scope.searchCriteria.type === allType) {
-            $scope.searchableVisits = $scope.activeVisits;
-        } else {
-            var searchList = [];
-            $scope.activeVisits.forEach(function(visit){
-                if( visit.patient.status === $scope.searchCriteria.type)  {
-                    searchList.push(visit);
-                }
-            });
-            $scope.searchableVisits = searchList;
-        }
-    }
-
-
-    $scope.showPatientsForType = function(type) {
-        $scope.searchCriteria.type = type;
-        filterPatientListByType();
-        $scope.filterPatientList();
-    }
-
-    $scope.getactivePatients();
+    initialize();
 
  }]).directive('resize', function ($window) {
         return function (scope,element) {
-
             scope.storeWindowDimensions();
-
-
             angular.element($window).bind('resize', function () {
                 scope.$apply(function () {
                     scope.storeWindowDimensions();
-                    if(scope.searchVisits !== undefined){
-                        scope.visibleVisits= scope.searchVisits.slice(0,scope.tilesToFit);
+                    if(scope.searchResults !== undefined){
+                        scope.visiblePatients= scope.searchResults.slice(0,scope.tilesToFit);
                     }
                 });
             });

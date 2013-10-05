@@ -7,14 +7,15 @@ describe("ActivePatientListController", function () {
     var visitService;
     var route = {current : {params :{ location : "Ganiyari"}}};
 
-    var admitObs = {concept:{display:'Disposition Set'}, groupMembers:[{value:{display:'Admit Patient'}}]};
-    var visits =  [
-                { patient: {identifiers:[{identifier:'GAN1234'}], names:[{display:   'Ram Singh'}]}, encounters:[{uuid:'uuid-1',orders:[], obs:[]}] },
-                { patient: {identifiers:[{identifier:'BAM1234'}], names:[{display: 'Shyam Singh'}]}, encounters:[{uuid:'uuid-2',orders:[], obs:[]}] },
-                { patient: {identifiers:[{identifier:'SEM1234'}], names:[{display:'Ganesh Singh'}]}, encounters:[{uuid:'uuid-3',orders:[], obs:[]}] },
-                { patient: {identifiers:[{identifier:'GAN1235'}], names:[{display:'  Gani Singh'}]}, encounters:[{uuid:'uuid-4',orders:[], obs:[admitObs]}]}
+    var allActivePatients =  [
+                {identifier:'GAN1234', name:'Ram Singh',   uuid:'p-uuid-1', activeVisitUuid:'v-uuid-1'},
+                {identifier:'BAM1234', name:'Shyam Singh', uuid:'p-uuid-2', activeVisitUuid:'v-uuid-2'},
+                {identifier:'SEM1234', name:'Ganesh Singh',uuid:'p-uuid-3', activeVisitUuid:'v-uuid-3'},
+                {identifier:'GAN1235', name:'Gani Singh',  uuid:'p-uuid-4', activeVisitUuid:'v-uuid-4'}
             ];
-
+    var allActivePatientsForAdmission =  [
+                {identifier:'GAN1235', name:'Gani Singh',  uuid:'p-uuid-4', activeVisitUuid:'v-uuid-4'}
+            ];
 
 
     beforeEach(module('opd.patient'));
@@ -22,10 +23,15 @@ describe("ActivePatientListController", function () {
         patientMapper = jasmine.createSpyObj('patientMapper', ['constructImageUrl']);
         patientMapper.constructImageUrl.andReturn("dumb");
 
-        visitService = jasmine.createSpyObj('VisitService', ['getActiveVisits'])
-        visitService.getActiveVisits.andReturn({success:function (callBack) {
-            return callBack({results: visits});
+        visitService = jasmine.createSpyObj('VisitService', ['getAllActivePatients', 'getAllActivePatientsForAdmission']);
+        visitService.getAllActivePatients.andReturn({success:function (callBack) {
+            return callBack(allActivePatients);
         }});
+
+        visitService.getAllActivePatientsForAdmission.andReturn({success:function (callBack) {
+            return callBack(allActivePatientsForAdmission);
+        }});
+
     }));
 
     var setUp = function(){
@@ -43,26 +49,24 @@ describe("ActivePatientListController", function () {
     describe("initialization", function () {
         it('should initialize configurations', function () {
             setUp();
-            expect(visitService.getActiveVisits).toHaveBeenCalled();
+            expect(visitService.getAllActivePatients).toHaveBeenCalled();
             expect(patientMapper.constructImageUrl.callCount).toBe(4);
         });
     });
 
-    describe("filterPatientListTest", function () {
-        it('should filter the activePatients based on the search text (case insensitive)', function () {
+    describe("searchPatientsTest", function () {
+        it('should search the activePatients based on the search text (case insensitive)', function () {
             setUp();
             scope.searchCriteria.searchParameter = "Gan";
             scope.showPatientsForType('ALL');
-            scope.filterPatientList();
-            expect(scope.searchVisits.length).toBe(3);
+            expect(scope.searchResults.length).toBe(3);
         });
 
         it('should filter the activePatients to be admitted based on the search text', function () {
             setUp();
             scope.searchCriteria.searchParameter = "Gan";
             scope.showPatientsForType('TO_ADMIT');
-            scope.filterPatientList();
-            expect(scope.searchVisits.length).toBe(1);
+            expect(scope.searchResults.length).toBe(1);
         });
     });
 });

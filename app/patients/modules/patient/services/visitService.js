@@ -3,14 +3,20 @@
 angular.module('opd.patient.services')
     .factory('VisitService', ['$http', function ($http) {
 
-    var getActiveVisits = function (queryParameters) {
-        return $http.get("/openmrs/ws/rest/v1/visit?v=custom:(uuid,patient:(uuid,names,identifiers),encounters:(uuid,orders,obs))&includeInactive=false" , {
-            method:"GET",
-            params:{location: queryParameters.location}
+    var getAllActivePatients = function () {
+        return $http.get("/openmrs/ws/rest/v1/bahmnicore/patient/active" , {
+            method:"GET"
         })
-    }
+    };
+
+    var getAllActivePatientsForAdmission = function () {
+        return $http.get("/openmrs/ws/rest/v1/bahmnicore/patient/toadmit" , {
+            method:"GET"
+        })
+    };
 
     return {
-        getActiveVisits: getActiveVisits
+        getAllActivePatients : getAllActivePatients,
+        getAllActivePatientsForAdmission : getAllActivePatientsForAdmission
     };
 }]);
