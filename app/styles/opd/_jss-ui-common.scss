@@ -83,7 +83,7 @@ form{
 .input-prepend .add-on, .input-prepend .btn{
   margin-right:-1px;
 }
-input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly],form .select-arrow select[disabled]{
+input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly], .select-arrow select[disabled]{
   cursor: not-allowed;
   background-color: #eee;
   color:#868686;
