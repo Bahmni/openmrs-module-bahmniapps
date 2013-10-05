@@ -90,78 +90,7 @@ body{
        padding:20px 10px 20px 10px;
        height:99%;
     }
-    .sliding-panel{
-        background:#192C04;
-        position:relative;
-        border-bottom:1px solid #cecece;
-        z-index:9999;
-        width:100%;
-        @include background-image(linear-gradient(#192C04,#192C04)); 
-        box-shadow: 0px 2px 5px #888;
-     
 
-        .menu-drag{
-              width:68px;
-              height:30px;
-              background: #00463f;
-              text-indent:-9999px;
-              display:block;
-              position:absolute;
-              bottom:-31px;
-              right:30px;
-              @include border-bottom-radius(30px);
-              @include background-image(linear-gradient(#fff,#cecece));
-              border:1px solid #cecece;
-              border-top :none; 
-                      box-shadow: 0px 2px 5px #888;
-
-        }
-        .menu-drag-close{
-            @include background-image(linear-gradient(#cecece,#f1f1f1));      
-        }
-        .sliding-panel-info{
-            @include clearfix();
-            padding:0px 10px;
-            .patient-info{
-                padding:10px;
-                float: right;
-                .smallImages{
-                  margin-left:20px;
-                  float: left;
-                 }
-                 ul{
-                    float: left;
-                    li{
-                        padding:6px 0px;
-                        color:#fff;
-                        font-size: 14px; 
-                        font-family: arial;
-                        font-weight: bold;
-                    }
-                 }
-            } 
-        }
-        
-        ul.nav{
-            overflow:hidden;
-            float: left;
-            width: 64%;
-            margin-top:66px;
-            li{
-                font-size:14px;
-                margin-right:10px;
-                float:left;
-                margin-bottom:10px;
-                button{
-                    color:#000;
-                    padding:10px 10px;
-                    font-size:14px;
-                    display:block;
-                    cursor:pointer;
-                }
-            }
-        }
-    }
 
 }
 table{
@@ -179,7 +108,7 @@ table{
     }
 }
 textarea{
-    width:100%;
+    width:96%;
 }
 .roundImages{
     height: 40px;

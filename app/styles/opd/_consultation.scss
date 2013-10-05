@@ -1,6 +1,7 @@
 .consultation{
     @include pie-clearfix;
-	margin:0px 20px 10px;
+	margin:0px 0px 10px;
+	color:#585858;
 	.header-action{
 		background:#ffffff;
 		width:100px;
@@ -8,9 +9,9 @@
 		position:relative;
 	}
 	h3{
-		font-size:1em;
+        @include font-size(1.1);
 		border-bottom:1px solid #00463f;
-		color:#000;
+		color:#777575;
 		padding-bottom:3px;
 		margin-bottom:10px;
 	}
@@ -24,7 +25,6 @@
 				margin-right: 25px;
 				margin-top: 10px;
 				border-radius: 5px;
-				color:#585858;
 				font: 14px/18px verdana,arial;
 				background:#efefef;
 				.panel{
@@ -60,8 +60,9 @@
 			ul{
 				li{
 					padding:6px 10px;
+					@include font-size(0.9);
 					.notes{
-						color:#FF001F;
+						color:#9C510B;
 						margin-left:20px;
 					}
 
