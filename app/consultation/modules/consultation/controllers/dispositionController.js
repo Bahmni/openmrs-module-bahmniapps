@@ -43,9 +43,11 @@ angular.module('opd.consultation.controllers')
                         break;
                     }
                 }
+
+                var d = new Date();
                 return {
                     adtValueUuid : selectedAction.uuid,
-                    adtDateTime : new Date().toString('hh-mm dd-MM-yyyy'),
+                    adtDateTime : d.toDateString() +" "+d.getHours()+":"+d.getMinutes(),
                     adtNoteValue : $scope.dispositionNotes,
                     adtName : selectedAction.name.name,
                     adtCode: getMappingCode(selectedAction)
