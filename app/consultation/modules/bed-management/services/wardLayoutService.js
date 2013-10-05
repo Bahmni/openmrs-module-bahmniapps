@@ -12,7 +12,7 @@ angular.module('opd.bedManagement.services')
         }
 
         var assignBed = function (bedId, patientUuid) {
-            var patientJson = {"patientId":patientUuid};
+            var patientJson = {"patientUuid":patientUuid};
             return $http.post("/openmrs/ws/rest/v1/beds/"+ bedId, patientJson, {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
