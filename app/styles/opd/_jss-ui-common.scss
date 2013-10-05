@@ -164,11 +164,11 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
 /**** tab styling start****/
 .tabs{
   margin-top:20px;
-  overflow:hidden;
+  @include pie-clearfix();
   ul{
     li{
         float:left;
-        margin-right:5px 10px 5px 0px;
+        margin-right:10px;
         a{
           padding:10px 20px;
           background:#447772;
