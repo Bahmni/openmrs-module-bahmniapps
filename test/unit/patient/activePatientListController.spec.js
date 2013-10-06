@@ -4,7 +4,7 @@ describe("ActivePatientListController", function () {
     var patientMapper;
     var scope;
     var controller;
-    var visitService;
+    var patientService;
     var route = {current : {params :{ location : "Ganiyari"}}};
 
     var allActivePatients =  [
@@ -23,12 +23,12 @@ describe("ActivePatientListController", function () {
         patientMapper = jasmine.createSpyObj('patientMapper', ['constructImageUrl']);
         patientMapper.constructImageUrl.andReturn("dumb");
 
-        visitService = jasmine.createSpyObj('VisitService', ['getAllActivePatients', 'getAllActivePatientsForAdmission']);
-        visitService.getAllActivePatients.andReturn({success:function (callBack) {
+        patientService = jasmine.createSpyObj('patientService', ['getAllActivePatients', 'getAllActivePatientsForAdmission']);
+        patientService.getAllActivePatients.andReturn({success:function (callBack) {
             return callBack(allActivePatients);
         }});
 
-        visitService.getAllActivePatientsForAdmission.andReturn({success:function (callBack) {
+        patientService.getAllActivePatientsForAdmission.andReturn({success:function (callBack) {
             return callBack(allActivePatientsForAdmission);
         }});
 
@@ -40,7 +40,7 @@ describe("ActivePatientListController", function () {
             controller = $controller('ActivePatientsListController',{
                 $scope : scope,
                 patientMapper: patientMapper,
-                VisitService : visitService,
+                patientService : patientService,
                 $route : route
             });
         });
@@ -49,7 +49,7 @@ describe("ActivePatientListController", function () {
     describe("initialization", function () {
         it('should initialize configurations', function () {
             setUp();
-            expect(visitService.getAllActivePatients).toHaveBeenCalled();
+            expect(patientService.getAllActivePatients).toHaveBeenCalled();
             expect(patientMapper.constructImageUrl.callCount).toBe(4);
         });
     });

@@ -11,8 +11,23 @@ angular.module('bahmni.common.patient.services')
             });
             return patient;
         };
-       
-        return {
-            getPatient: getPatient
+
+        var getAllActivePatients = function () {
+            return $http.get("/openmrs/ws/rest/v1/bahmnicore/patient/active" , {
+                method:"GET"
+            })
         };
+
+        var getAllActivePatientsForAdmission = function () {
+            return $http.get("/openmrs/ws/rest/v1/bahmnicore/patient/toadmit" , {
+                method:"GET"
+            })
+        };
+
+        return {
+            getPatient: getPatient,
+            getAllActivePatients : getAllActivePatients,
+            getAllActivePatientsForAdmission : getAllActivePatientsForAdmission
+        };
+        
     }]);

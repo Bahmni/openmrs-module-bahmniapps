@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('opd.patient.controllers')
-    .controller('ActivePatientsListController', ['$route', '$scope', '$location', '$window','VisitService', 'patientMapper', function ($route, $scope, $location, $window, visitService, patientMapper) {
+    .controller('ActivePatientsListController', ['$route', '$scope', '$location', '$window','patientService', 'patientMapper', function ($route, $scope, $location, $window, patientService, patientMapper) {
 
     $scope.patientTypes = [
         {name:'ALL', display:'All active patients', visible: true, retriever:'allActivePatients'},
@@ -26,12 +26,12 @@ angular.module('opd.patient.controllers')
         }
     };
     retriever.allActivePatients = function (afterRetrieveCallback) {
-        visitService.getAllActivePatients().success(function (data) {
+        patientService.getAllActivePatients().success(function (data) {
             handlePatientList(data, afterRetrieveCallback);
         });
     };
     retriever.activePatientsForAdmission = function (afterRetrieveCallback) {
-        visitService.getAllActivePatientsForAdmission().success(function (data) {
+        patientService.getAllActivePatientsForAdmission().success(function (data) {
             handlePatientList(data, afterRetrieveCallback);
         });
     };

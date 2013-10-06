@@ -1,4 +1,3 @@
-angular.module('opd.patient.services', []);
-angular.module('opd.patient.controllers', ['opd.patient.services', 'infinite-scroll']);
-angular.module('opd.patient', ['opd.patient.services', 'opd.patient.controllers']);
+angular.module('opd.patient.controllers', ['bahmni.common.patient.services', 'infinite-scroll']);
+angular.module('opd.patient', ['bahmni.common.patient.services', 'opd.patient.controllers']);
 
