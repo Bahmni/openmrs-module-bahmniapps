@@ -7,7 +7,9 @@
     border: 1px solid #ccc;
     background: #FFF;
     display: block;
-
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;    
     overflow-x: auto;
     overflow-y: hidden;
 }

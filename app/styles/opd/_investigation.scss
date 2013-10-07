@@ -7,7 +7,13 @@
         min-height: 100px;
         padding:20px;
     }
-
+    .investigation-results{
+        legend{
+            font-weight: bold;
+            color:#868686;
+            font-family:arial;
+        }
+    }
     .selectedNode {
         background-color: #f1f1f1;
         color: #474747;
