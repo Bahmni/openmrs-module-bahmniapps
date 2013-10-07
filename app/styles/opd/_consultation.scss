@@ -8,7 +8,7 @@
 		margin:0px auto;
 		position:relative;
 	}
-	h3{
+	h2{
         @include font-size(1.1);
 		border-bottom:1px solid #00463f;
 		color:#777575;
@@ -18,6 +18,11 @@
 	.block{
 		min-height:150px;
 		padding:10px;
+		.block-content{
+			padding-left:20px;
+			color:#5C5B5C;
+			@include font-size(0.9);
+		}
 		&.investigation{
 			li{
 				display: inline-block;
@@ -42,31 +47,43 @@
 			}
 		}
 		&.diagnosis{
-			h2{
+			h3{
 				margin-bottom: 10px;
 				color: #FFF;
 				padding: 5px 5px;
 				width: 300px;
 				background: #2B97D5;
+				@include font-size(0.9);
 			}
-			div{
-				margin-bottom: 8px;
-            	@include font-size(0.9);
-				color: #5C5B5C;
-				padding-left: 10px;
+			.block-content{
+				@include clearfix();
+				.diagnosis-type{
+					float:left;
+					width:400px;
+					div{
+						margin-bottom: 8px;
+					}
+				}
 			}
+			
 		}
 		&.treatment{
 			ul{
 				li{
 					padding:6px 10px;
-					@include font-size(0.9);
 					.notes{
 						color:#9C510B;
 						margin-left:20px;
 					}
 
 				}
+			}
+		}
+		&.disposition{
+			ul{
+				li{
+				  	margin-bottom:10px;
+				  }
 			}
 		}
 	}

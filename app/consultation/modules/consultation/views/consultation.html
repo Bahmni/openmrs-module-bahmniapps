@@ -3,8 +3,8 @@
         <button ng-click="save()" class="confirm">Save</button>
     </div>
     <section class="block investigation">
-        <h3>Investigation</h3>
-        <ul>
+        <h2>Investigation</h2>
+        <ul class="block-content">
             <li ng-repeat="investigation in consultation.investigations" ng-class="{panel: investigation.isSet}">
                 <span>{{investigation.name}}</span>
                 <span ng-show="investigation.isSet" class="panel">P</span>
@@ -12,16 +12,16 @@
         </ul>
     </section>
     <section class="block diagnosis">
-        <h3>Diagnosis</h3>
-        <div style="overflow:hidden" ng-show="consultation.diagnoses.length > 0">
-            <div style="float:left; width:400px">
-                <h2>Primary Diagnoses</h2>
+        <h2>Diagnosis</h2>
+        <div class="block-content" ng-show="consultation.diagnoses.length > 0">
+            <div class="diagnosis-type">
+                <h3>Primary Diagnoses</h3>
                 <div ng-repeat="diagnosis in consultation.diagnoses" ng-show="diagnosis.isPrimary()">
                     {{diagnosis.conceptName()}}&nbsp;({{diagnosis.certainty}})
                 </div>
             </div>
-            <div style="float:left; width:400px">
-                <h2>Secondary Diagnoses</h2>
+            <div class="diagnosis-type">
+                <h3>Secondary Diagnoses</h3>
                 <div ng-repeat="diagnosis in consultation.diagnoses" ng-hide="diagnosis.isPrimary()">
                     {{diagnosis.conceptName()}}&nbsp;({{diagnosis.certainty}})
                 </div>
@@ -29,23 +29,25 @@
         </div>
     </section>
     <section class="block treatment">
-        <h3>Treatment</h3>
-         <div  ng-include src="'modules/consultation/views/treatmentDrugs.html'"></div>
+        <h2>Treatment</h2>
+         <div  class="block-content" ng-include src="'modules/consultation/views/treatmentDrugs.html'"></div>
     </section>
 
     <section class="block disposition">
-        <h3>Disposition</h3>
+        <h2>Disposition</h2>
 
-        <div ng-repeat="disposition in disposition.dispositions" >
-            <div>
-                {{disposition.adtName}}
-            </div>
-            <div>
-                {{disposition.adtDateTime}}
-            </div>
-            <p>
-                {{disposition.adtNoteValue}}
-            </p>
+        <div ng-repeat="disposition in disposition.dispositions"  class="block-content">
+            <ul>
+                <li>
+                    {{disposition.adtName}}
+                </li>
+                <li>
+                    {{disposition.adtDateTime}}
+                </li>
+                <li>
+                    {{disposition.adtNoteValue}}
+                </li>
+            </ul>
         </div>
 
     </section>
