@@ -131,7 +131,6 @@ button[disabled] {
             color:#4d4d4d; 
         }
     }
-
 }
 #tabButtonRow {
     margin-bottom: 20px;
@@ -147,6 +146,6 @@ form select, .form select{
     min-width: 100px;
 }
 @media only screen and (max-width: 768px) {
+  .opd-header-wrapper header{ width:764px; }
   .opd-wrapper{width:768px; font-size:0.9em;}
-
  }

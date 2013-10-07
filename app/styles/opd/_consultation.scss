@@ -21,7 +21,7 @@
 		.block-content{
 			padding-left:20px;
 			color:#5C5B5C;
-			@include font-size(0.9);
+			@include font-size(0.95);
 		}
 		&.investigation{
 			li{
@@ -53,17 +53,17 @@
 				padding: 5px 5px;
 				width: 300px;
 				background: #2B97D5;
-				@include font-size(0.9);
+				@include font-size(0.95);
 			}
 			.block-content{
 				@include clearfix();
-				.diagnosis-type{
+			}
+			.diagnosis-type{
 					float:left;
 					width:400px;
 					div{
 						margin-bottom: 8px;
 					}
-				}
 			}
 			
 		}
@@ -94,3 +94,9 @@
 		}
 	}
 }
+
+@media only screen and (max-width: 768px) {
+	.consultation .block.diagnosis  .diagnosis-type{
+		width:352px;
+	}
+ }
