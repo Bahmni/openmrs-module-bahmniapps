@@ -79,49 +79,49 @@ angular.module('opd.consultation.controllers')
             return treatmentService.search(query);
         };
 
-        $scope.onDrugSelected = function(index, uuid) {
+        $scope.onDrugSelected = function (index, uuid) {
             if ($scope.searchResults) {
-               var drugs = $scope.searchResults.filter(
-                   function (record) {
-                       return record.uuid === uuid;
-                   }
-               );
-               if (drugs.length > 0) {
-                   var selectedDrug = $scope.selectedDrugs[index];
-                   var chosenDrug = drugs[0];
-                   selectedDrug.name = chosenDrug.name;
-                   selectedDrug.originalName = chosenDrug.name;
-                   selectedDrug.uuid = chosenDrug.uuid;
-                   selectedDrug.strength = (chosenDrug.doseStrength || '') + ' ' + (chosenDrug.units || '');
-                   selectedDrug.dosageForm = chosenDrug.dosageForm.name.name;
-                   selectedDrug.conceptUuid = chosenDrug.concept.uuid;
-                   selectedDrug.numberPerDosage = 1;
-                   selectedDrug.empty = false;
-               }
+                var drugs = $scope.searchResults.filter(
+                    function (record) {
+                        return record.uuid === uuid;
+                    }
+                );
+                if (drugs.length > 0) {
+                    var selectedDrug = $scope.selectedDrugs[index];
+                    var chosenDrug = drugs[0];
+                    selectedDrug.name = chosenDrug.name;
+                    selectedDrug.originalName = chosenDrug.name;
+                    selectedDrug.uuid = chosenDrug.uuid;
+                    selectedDrug.strength = (chosenDrug.doseStrength || '') + ' ' + (chosenDrug.units || '');
+                    selectedDrug.dosageForm = chosenDrug.dosageForm.name.name;
+                    selectedDrug.conceptUuid = chosenDrug.concept.uuid;
+                    selectedDrug.numberPerDosage = 1;
+                    selectedDrug.empty = false;
+                }
             }
 
-        }
+        };
 
-        $scope.saveTreatment = function() {
+        $scope.saveTreatment = function () {
             var noOfDrugs = $scope.selectedDrugs.length;
-            var lastDrug = $scope.selectedDrugs[noOfDrugs-1];
+            var lastDrug = $scope.selectedDrugs[noOfDrugs - 1];
             if (lastDrug.uuid === '') {
-                $scope.selectedDrugs = $scope.selectedDrugs.slice(0, noOfDrugs-1);
+                $scope.selectedDrugs = $scope.selectedDrugs.slice(0, noOfDrugs - 1);
             }
-        }
+        };
 
-        $scope.removeDrug = function(index) {
-            $scope.selectedDrugs.splice(index,1);
-        }
+        $scope.removeDrug = function (index) {
+            $scope.selectedDrugs.splice(index, 1);
+        };
 
-        var allowContextChange = function() {
-            var invalidDrugs = $scope.selectedDrugs.filter(function(drug){
+        var allowContextChange = function () {
+            var invalidDrugs = $scope.selectedDrugs.filter(function (drug) {
                 return !isValidDrug(drug);
             });
             return invalidDrugs.length === 0;
-        }
+        };
 
-        var isValidDrug = function(drug) {
+        var isValidDrug = function (drug) {
             if (!drug.empty) {
                 if (!$scope.isValidDrugName(drug)) {
                     return false;
@@ -139,23 +139,26 @@ angular.module('opd.consultation.controllers')
                 }
             }
             return true;
-        }
+        };
 
         $scope.isValidDrugName = function (drug) {
-            return drug.empty || drug.uuid !='';
-        }
+            return drug.empty || drug.uuid != '';
+        };
 
         $scope.isValidNumberPerDosage = function (drug) {
-            return  drug.empty || (drug.numberPerDosage && drug.numberPerDosage!='');
-        }
+            var doses = drug.numberPerDosage || null;
+            return  drug.empty || (doses != null && doses != '');
+        };
 
         $scope.isValidDosageFrequency = function (drug) {
-            return  drug.empty || (drug.prn || (drug.dosageFrequency && drug.dosageFrequency!=''));
-        }
+            var frequency = drug.dosageFrequency || null;
+            return  drug.empty || (drug.prn || (frequency != null && frequency != ''));
+        };
 
         $scope.isValidNumberOfDosageDays = function (drug) {
-            return  drug.empty || (drug.numberOfDosageDays && drug.numberOfDosageDays!='');
-        }
+            var dosageDays = drug.numberOfDosageDays || null;
+            return  drug.empty || (dosageDays != null && dosageDays != '');
+        };
 
         $scope.$on('$destroy', function() {
 
@@ -165,26 +168,26 @@ angular.module('opd.consultation.controllers')
 
         });
 
-        var initialize = function() {
+        var initialize = function () {
             $scope.dosageFrequencyAnswers = [];
             if ($scope.dosageFrequencyConfig.results.length > 0) {
-                $scope.dosageFrequencyAnswers = $scope.dosageFrequencyConfig.results[0].answers;    
-            } 
+                $scope.dosageFrequencyAnswers = $scope.dosageFrequencyConfig.results[0].answers;
+            }
 
             $scope.dosageInstructionAnswers = [];
             if ($scope.dosageInstructionConfig.results.length > 0) {
                 $scope.dosageInstructionAnswers = $scope.dosageInstructionConfig.results[0].answers;
-            } 
+            }
 
             $rootScope.beforeContextChange = allowContextChange;
 
             if ($rootScope.consultation.treatmentDrugs) {
-               $scope.selectedDrugs = $rootScope.consultation.treatmentDrugs;
+                $scope.selectedDrugs = $rootScope.consultation.treatmentDrugs;
                 $scope.selectedDrugs.push(new Bahmni.Opd.Consultation.TreatmentDrug());
             } else {
-               $scope.selectedDrugs = [ new Bahmni.Opd.Consultation.TreatmentDrug() ];
+                $scope.selectedDrugs = [ new Bahmni.Opd.Consultation.TreatmentDrug() ];
             }
-        }
+        };
 
         initialize();
 
