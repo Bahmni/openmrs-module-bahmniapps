@@ -14,6 +14,8 @@
 		color:#777575;
 		padding-bottom:3px;
 		margin-bottom:10px;
+        font-weight: bold;
+        font-family:arial;
 	}
 	.block{
 		min-height:150px;
@@ -21,7 +23,7 @@
 		.block-content{
 			padding-left:20px;
 			color:#5C5B5C;
-			@include font-size(0.95);
+			@include font-size(1);
 		}
 		&.investigation{
 			li{
@@ -53,7 +55,7 @@
 				padding: 5px 5px;
 				width: 300px;
 				background: #2B97D5;
-				@include font-size(0.95);
+				@include font-size(1);
 			}
 			.block-content{
 				@include clearfix();
