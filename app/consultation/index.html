@@ -13,10 +13,10 @@
 
         <div ng-app="consultation" >
             <div class="opd-header-wrapper">
-            <header class="reg-header" ng-controller="ConsultationNavigationController">
+            <header class="tabs" ng-controller="ConsultationNavigationController">
                         <ul class="header-tabs">
-                            <li ng-repeat="board in availableBoards"> 
-                                <button ng-click="showBoard(board.name)" class="button" ng-class="{'tabs-selected':currentBoard.name==board.name}">
+                            <li ng-repeat="board in availableBoards" ng-class="{'tab-selected':currentBoard.name==board.name}"> 
+                                <button ng-click="showBoard(board.name)" class="button">
                                     {{board.name}}
                                 </button>
                             </li>

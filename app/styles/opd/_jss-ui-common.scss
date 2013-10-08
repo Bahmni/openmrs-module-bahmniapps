@@ -177,7 +177,7 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
     li{
         float:left;
         margin-right:10px;
-        a{
+        a,button{
           padding:10px 20px;
           background:#447772;
           display:inline-block;
@@ -189,17 +189,26 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
           text-decoration:none;
           &:hover{
               background:#4D9B92;
+              border:1px solid #00463F;
           }
         }
-        &.tab-selected{
-           a{
+        button{
+          @include border-radius();
+          padding:8px 10px;
+        }
+        &.tab-selected a, &.tab-selected button{
               position:relative;
               top:2px;
               background:#fff;
               color:#00463f;
               border:1px solid #cecece;
               border-bottom:none;
-           }
+              outline:none;
+        }
+        &.tab-selected button{
+              top:4px;
+              border-bottom-right-radius:0px;
+              border-bottom-left-radius:0px;
         }
     }
   }
@@ -214,8 +223,11 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
     text-align: center;
     cursor:pointer;
     padding-top:10px;
+    border:2px solid #fff;
     &:hover{
-       outline:2px solid #cecece;
+       border:2px solid #cecece;
+       background:#f1f1f1;
+      @include border-radius(6px, 6px);
     }
   }
 }

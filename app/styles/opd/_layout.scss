@@ -28,40 +28,27 @@ body{
                 float:left;
                 margin-top:7px;
             }
-            button{
-                        background:#447772;
-                        color:#fff;
-                        border:none;
-                        padding-left:10px;
-                        padding-right:10px;
-                        &:hover{
-                            background:#4D9B92;
-                        }
-            }
             ul{
                 &.header-tabs{
                     float:left;
                     margin-top:10px;
-                    
-                    .tabs-selected{
-                        position:relative;
-                        top:3px;
-                        border-bottom-left-radius:0px;
-                        border-bottom-right-radius:0px;
-                        border:none;
-                        background:#fff;
-                        color:#00463f;
-                    }    
                 }
                 &.patient-info{
                     float:right;    
                 }
                 li{
-                    padding: 5px 5px 0px 5px;
-                    float:left;
-                    font-size: 14px; 
+                    @include font-size(0.9);
                     &.logoff{
-                        margin:4px 0px;
+                        margin:4px 0px 0px 0px;
+                        button{
+                            padding:10px;
+                            margin-top: 1px;
+                            background:#447772;
+                            border:1px solid #00463F;
+                            &:hover{
+                              background:#4D9B92;
+                           }
+                        }
                     }   
                 a{
                     padding-top:10px;
@@ -72,7 +59,7 @@ body{
             }
             .patient-detail{
                 position:absolute;
-                top:60px;
+                top:62px;
                 right:10px;
                 color:#F26522;
                 z-index:999;
@@ -114,6 +101,7 @@ textarea{
     height: 40px;
     width: 40px;
     border-radius:50%;
+    margin-top:4px;
 }
 .smallImages{
     height:100px;
