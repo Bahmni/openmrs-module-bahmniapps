@@ -20,10 +20,10 @@ Bahmni.Opd.TreeSelect.Explorer = function() {
         },
 
         previewChildColumn: function(node, column) {
-            if(node != null && node.getChildren().length == 0) {
+            this.removeAllColumnsToRight(column, false);
+            if (node.getChildren().length === 0) {
                 return null;
             }
-            this.removeAllColumnsToRight(column, false);
             var childColumn = new Bahmni.Opd.TreeSelect.Column(node.getChildren());
             this.columns.push(childColumn);
             return childColumn;
