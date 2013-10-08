@@ -1,10 +1,10 @@
 .back-btn-wrapper{
-    button{
-      padding-left:10px;
-      span{
-        margin-right:10px;
-      }
-    } 
+  button{
+    padding-left:10px;
+    span{
+      margin-right:10px;
+    }
+  }
 }
 .bed-assigned-msg{
   text-align:center;
@@ -19,47 +19,43 @@
   margin: 0px auto;
   min-height: 200px;
   padding: 20px;
-}
-
-.bed-assignment .row {
-  overflow: hidden;
-}
-
-.bed-assignment .row ul {
-  overflow: hidden;
-}
-
-.bed-assignment .row ul .col {
-  float: left;
-  width: 50px;
-  height: 50px;
-  margin: 19px;
-}
-
-.bed-assignment .row ul .col.occupied {
-  background: url("../images/bed-occupied.png") no-repeat center center #cecece;
-}
-
-.bed-assignment .row ul .col.occupied:hover {
-  outline: 5px solid #B4B2B2;
-  background-color: #B4B2B2;
-  cursor: pointer;
-}
-
-.bed-assignment .row ul .col.available {
-  background: url("../images/bed-available.png") no-repeat center center #94e594;
-}
-
-.bed-assignment .row ul .col.available:hover {
-  background-color: #76E676;
-  outline: 5px solid #76E676;
-  cursor: pointer;
-}
-
-.bed-assignment .row ul .col.empty {
-  background: beige;
-  margin: 0px;
-  padding: 19px;
+  text-align:center;
+  .bed-assignment-inner-wrapper{
+    display: inline-block;
+  }
+  .row {
+    overflow: hidden;
+    ul {
+      overflow: hidden;
+      .col {
+        float: left;
+        width: 50px;
+        height: 50px;
+        margin: 19px;
+        &.occupied {
+          background: url("../images/bed-occupied.png") no-repeat center center #cecece;
+          &:hover{
+            outline: 5px solid #B4B2B2;
+            background-color: #B4B2B2;
+            cursor: pointer;
+          }
+        }
+        &.available{
+          background: url("../images/bed-available.png") no-repeat center center #94e594;
+          &:hover{
+            background-color: #76E676;
+            outline: 5px solid #76E676;
+            cursor: pointer;
+          }
+        }
+        &.empty {
+          background: beige;
+          margin: 0px;
+          padding: 19px;
+        }
+      }
+    }
+  }
 }
 
 .bedDetails {
@@ -85,24 +81,24 @@
     font-size: 14px;
     &:first-child{
       border-bottom:1px solid #000;
-       margin-bottom: 2px;
-       font-weight: bold;
-       font-family:arial;
-  }
-  a{
-    background-color:#00463F;
-    padding:8px 10px;
-    margin-top:5px;
-    color:#fff;
-    text-transform: capitalize ;
-    display: inline-block;
-    border:#012C28;
-    border-radius:5px;
-    &:hover{
+      margin-bottom: 2px;
+      font-weight: bold;
+      font-family:arial;
+    }
+    a{
+      background-color:#00463F;
+      padding:8px 10px;
+      margin-top:5px;
+      color:#fff;
+      text-transform: capitalize ;
+      display: inline-block;
+      border:#012C28;
+      border-radius:5px;
+      &:hover{
         cursor:pointer;
-      background-color:#076158;
-      text-decoration: none;
-     }
+        background-color:#076158;
+        text-decoration: none;
+      }
     }
   }
-  }
+}
