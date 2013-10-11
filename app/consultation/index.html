@@ -32,8 +32,12 @@
                             <ul>
                                 <li>{{patient.identifier}}</li>
                                 <li><span>{{patient.name}},</span></li>
-                                <li>{{patient.gender | gender }}, {{patient.age}},</li>
-                                <li ng-show="bed">Bed : {{bed.bedNumber}}</li>
+                                <li>{{patient.gender | gender }}, {{patient.age}}</li>
+                            </ul>
+                            <ul>
+                            <li ng-show="bedDetails">{{bedDetails.wardName}}</li>
+                            <li ng-show="bedDetails">{{bedDetails.physicalLocationName}}</li>
+                            <li ng-show="bedDetails">{{bedDetails.bedNumber}}</li>
                             </ul>
                         </div>
                 </header>
@@ -93,6 +97,7 @@
             <script src="modules/bed-management/controllers/wardLayoutController.js"></script>
             <script src="modules/bed-management/services/wardsListService.js"></script>
             <script src="modules/bed-management/services/wardLayoutService.js"></script>
+            <script src="modules/bed-management/services/bedService.js"></script>
             <!-- endbuild -->
         </div>
     </body>

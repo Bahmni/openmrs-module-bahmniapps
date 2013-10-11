@@ -6,6 +6,8 @@ angular.module('opd.bedManagement.controllers')
         $scope.layout = [];
         $scope.result = [];
 
+
+
         var uuid = $route.current.params.wardId;
         $scope.bed;
 
@@ -67,7 +69,7 @@ angular.module('opd.bedManagement.controllers')
             if (bedLayout == null) {
                 return false;
             }
-            return bedLayout.available;
+            return bedLayout.status === "AVAILABLE";
         }
 
         var getBedLayoutWithCordinates = function (rowNumber, columnNumber) {
@@ -91,6 +93,8 @@ angular.module('opd.bedManagement.controllers')
                 }
             }
         }
+
+        $scope.currentPatientBed = $rootScope.bedDetails;
 
         $scope.getBedsForWard();
 

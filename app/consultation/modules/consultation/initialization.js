@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q', '$route', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'dispositionService',
-    function ($rootScope, $q, $route, configurationService, visitService, patientService, patientMapper, dispositionService) {
+angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q', '$route', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'dispositionService','BedService',
+    function ($rootScope, $q, $route, configurationService, visitService, patientService, patientMapper, dispositionService, bedService) {
         var deferrable = $q.defer();
         var dispositionNoteConcept;
 
@@ -25,10 +25,7 @@ angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q'
                     $rootScope.consultation = new Bahmni.Opd.ConsultationMapper($rootScope.encounterConfig, $rootScope.dosageFrequencyConfig, $rootScope.dosageInstructionConfig).map(visit);
 
                     dispositionService.getDispositionNoteConcept().then(function (response) {
-                        if (response.data) {
-                           /* if (!$rootScope.disposition) {
-                                $rootScope.disposition = {};
-                            }*/
+                        if (response.data && response.data.results.length > 0) {
                             $rootScope.dispositionNoteConceptUuid = response.data.results[0].uuid;
                         }
                     });
@@ -51,6 +48,13 @@ angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q'
 
                     });
 
+                    bedService.bedDetailsForPatient(visit.patient.uuid).success(function(response){
+                        $rootScope.bedDetails= {};
+                        $rootScope.bedDetails.wardName = response.results[0].physicalLocation.parentLocation.display;
+                        $rootScope.bedDetails.physicalLocationName = response.results[0].physicalLocation.name;
+                        $rootScope.bedDetails.bedNumber = response.results[0].bedNumber;
+                        $rootScope.bedDetails.bedId = response.results[0].bedId;
+                    })
 
                     return patientService.getPatient(visit.patient.uuid).success(function (openMRSPatient) {
                         $rootScope.patient = patientMapper.map(openMRSPatient);
