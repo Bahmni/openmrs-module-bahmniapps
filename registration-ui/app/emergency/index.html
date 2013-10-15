@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Emergency Patient Registration</title>
+        <link rel="stylesheet" href="../lib/jquery-ui-1.10.2.1/jquery-ui-1.10.2.1.custom.min.css"/>
+        <!-- build:css styles/main.min.css -->
+        <link rel="stylesheet" href="../styles/style.css"/>
+        <link rel="stylesheet" href="../styles/registration.css"/>
+        <!-- endbuild -->
+        <!--[if lt IE 9]>
+            <script src="../scripts/html5shiv.js"></script>
+        <![endif]-->
+
+    </head>
+    <body>
+        <div class="reg-wrapper">
+            <div ng-app="emergency">
+                <div id="overlay"></div>
+                <header class="reg-header">
+                        <a class="header-logo">Jan Swasthya Sahyog</a>
+                </header>
+                <p style="display: none" class="caution" ng-show="server_error"><i class="icon-exclamation-sign small"></i>{{server_error}}</p>
+                <div ng-view id="view-content"></div>
+                <script src="../components/jquery/jquery.js"></script>
+                <script src="../lib/jquery/jquery-ui-1.10.2.1.custom.min.js"></script>
+                <script src="../components/angular/angular.js"></script>
+                <script src="../components/angular-cookies/angular-cookies.js"></script>
+                <script src="../components/ngInfiniteScroll/ng-infinite-scroll.js"></script>
+
+                <!-- build:js scripts/scripts.min.js -->
+
+                <script src="../modules/patient/init.js"></script>
+                <script src="../modules/patient/models/errorCode.js"></script>
+                <script src="../modules/infrastructure/httpErrorInterceptor.js"></script>
+                <script src="../modules/infrastructure/services/configurationService.js"></script>
+                <script src="../modules/infrastructure/ui/spinner.js"></script>
+                <script src="../modules/infrastructure/ui/loader.js"></script>
+                <script src="../modules/infrastructure/ui/printer.js"></script>
+                <script src="../modules/infrastructure/models/encounterConfig.js"></script>
+                <script src="../modules/infrastructure/models/patientConfig.js"></script>
+                <script src="../scripts/initialization.js"></script>
+                <script src="../modules/patient/services/patientAttributeService.js"></script>
+                <script src="../modules/patient/services/addressAttributeService.js"></script>
+                <script src="../modules/photo-capture/directives/capturePhoto.js"></script>
+                <script src="../modules/navigation/controllers/navigationController.js"></script>
+                <script src="../modules/patient/controllers/searchController.js"></script>
+                <script src="../modules/patient/controllers/patientCommonController.js"></script>
+                <script src="../modules/patient/controllers/createPatientController.js"></script>
+                <script src="../modules/patient/controllers/editPatientController.js"></script>
+                <script src="../modules/patient/controllers/visitController.js"></script>
+                <script src="../modules/patient/services/patientService.js"></script>
+                <script src="../modules/patient/mappers/patientMapper.js"></script>
+                <script src="../modules/patient/mappers/encounterDataMapper.js"></script>
+                <script src="../modules/patient/services/visitService.js"></script>
+                <script src="../modules/patient/mappers/openmrsPatientMapper.js"></script>
+                <script src="../modules/patient/models/age.js"></script>
+                <script src="../modules/patient/models/patient.js"></script>
+                <script src="../modules/patient/models/preferences.js"></script>
+                <script src="../modules/patient/models/registrationObservations.js"></script>
+                <script src="../modules/auth/httpAuthInterceptor.js"></script>
+                <script src="../modules/auth/models/login.js"></script>
+                <script src="../modules/auth/services/sessionService.js"></script>
+                <script src="../modules/auth/controllers/loginController.js"></script>
+                <script src="../modules/medical-concepts/bmi.js"></script>
+
+                <script src="../scripts/defaults.js"></script>
+                <script src="../scripts/constants.js"></script>
+                <script src="../modules/util/date.js"></script>
+                <script src="app.js"></script>
+                <script src="init.js"></script>
+
+                <script src="controllers/createEmergencyPatientController.js"></script>
+                <!-- endbuild -->
+            </div>
+        </div>
+    </body>
+</html>
