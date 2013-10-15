@@ -5,18 +5,32 @@ angular.module('opd.consultation.controllers')
 
 
         var loadDispositionActions = function(){
-            $scope.dispositionActions = $rootScope.disposition.dispositionActions;
+            dispositionService.getDispositionActions().then(function (response) {
+                if (response.data && response.data.results) {
 
-            if($rootScope.disposition){
+                    if(response.data.results && response.data.results.length){
+                        $rootScope.disposition.dispositionActionUuid = response.data.results[0].uuid;
+                        $scope.dispositionActions = response.data.results.filter(function(concept){
+                            return concept.name.name === Bahmni.Opd.Constants.dispositionConcept
+                        })[0].answers;
+                    }
 
-                if($rootScope.disposition.currentActionIndex !== undefined){
                     var disposition = $rootScope.disposition.dispositions[$rootScope.disposition.currentActionIndex];
                     if(disposition){
                         $scope.dispositionAction =  disposition.adtName;
                         $scope.dispositionNotes = disposition.adtNoteValue;
                     }
                 }
-            }
+
+            });
+
+            dispositionService.getDispositionNoteConcept().then(function (response) {
+                if (response.data) {
+                    $scope.dispositionNoteConceptUuid = response.data.results[0].uuid;
+                }
+            });
+
+
         }
 
 
@@ -69,7 +83,7 @@ angular.module('opd.consultation.controllers')
                 }
                 else{
                     $rootScope.disposition.currentActionIndex =  $rootScope.disposition.dispositions.length-1;
-                    $rootScope.disposition.dispositions.push(disposition);
+                    $rootScope.disposition.dispositions.push(currentAction);
                 }
             }
         }
@@ -80,7 +94,7 @@ angular.module('opd.consultation.controllers')
                 return {
                     code : selectedAction.adtCode,
                     additionalObs :[{
-                        conceptUuid:$rootScope.dispositionNoteConceptUuid,
+                        conceptUuid:$scope.dispositionNoteConceptUuid,
                         value : selectedAction.adtNoteValue
                     }]
                 }

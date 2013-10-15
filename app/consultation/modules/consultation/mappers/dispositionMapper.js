@@ -1,4 +1,4 @@
-Bahmni.Opd.DispositionMapper = function(encounterConfig) {
+Bahmni.Opd.DispositionMapper = function(encounterConfig,dispositionNoteConceptUuid) {
     this.map = function(visit) {
         var opdEncounters = visit.encounters.filter(function(encounter){
             return encounter.encounterType.uuid === encounterConfig.encounterTypes.OPD;
@@ -27,7 +27,7 @@ Bahmni.Opd.DispositionMapper = function(encounterConfig) {
                     return mappingCode;
                 }
 
-                if(dispositionObsGroup){
+                if(dispositionObsGroup && dispositionObsGroup.groupMembers){
                     var disposition = {};
 
                     dispositionObsGroup.groupMembers.forEach(function(dispositionGroupMember){
