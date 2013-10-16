@@ -1,0 +1,36 @@
+<div class="reg-body-wrapper">
+
+    <div class="simple-form-ui new-patient">
+        <form name="myForm" class="form-horizontal well">
+            <legend class="mylegend"><span><strong>Summary</strong></span></legend>
+            <section class="clearfix">
+                <article class="form-field">
+                    <div class="field-attribute">
+                        <label  for="patientId">Patient Identifier</label>
+                    </div>
+
+                    <div class="field-value">
+                        <input id="patientId" ng-model="patient.identifier" readonly type="text">
+                    </div>
+                </article>
+
+                <article class="form-field photocontainer-spacing">
+                    <div class="field-attribute">
+                        <label class="control-label" for="patientName">Patient Name</label>
+                    </div>
+
+                    <div class="field-value">
+                         <input id="patientName" ng-model="patient.name" readonly type="text">
+                    </div>
+                </article>
+            </section>
+
+            <div class="submit-btn-container">
+                <div class="right">
+                    <button type="submit" ng-click="back()">Create New</button>
+                </div>
+            </div>
+        </form>
+        <br>
+    </div>
+</div>

@@ -37,8 +37,9 @@ angular.module('registration.patient.services')
             });
         };
 
-        var create = function (patient) {
-            var patientJson = new PatientMapper().map($rootScope.patientConfiguration, patient);
+        var create = function (patient, mapper) {
+            mapper = mapper || new PatientMapper();
+            var patientJson = mapper.map($rootScope.patientConfiguration, patient);
             return $http.post(constants.openmrsUrl + "/ws/rest/v1/bahmnicore/patient", patientJson, {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}

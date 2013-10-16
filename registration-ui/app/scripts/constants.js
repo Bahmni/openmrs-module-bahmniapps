@@ -1,12 +1,12 @@
 var constants = {
     encounterType : {
         registration: "REG",
-        returningPatient: "REVISIT"
     },
 
     visitType: {
         registration: "REG",
-        returningPatient: "REVISIT"
+        returningPatient: "REVISIT",
+        emergency: "EMERGENCY",
     },
     centers: [
         {name: 'GAN'},

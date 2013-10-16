@@ -14,8 +14,6 @@
                                 required> </select>
                     </div>
                 </article>
-            </section>
-            <section>
                 <article class="form-field">
                     <div class="field-attribute">
                         <label for="patientName">Patient Name</label>
@@ -28,8 +26,6 @@
                                placeholder="Last Name" title="Enter patient's last name.">
                     </div>
                 </article>
-            </section>
-            <section class="form-field-inline form-field-gender">
                 <article class="form-field">
                     <div class="field-attribute">
                         <label for="gender">Gender <span class="asterick">*</span></label>
@@ -44,8 +40,6 @@
                         </select>
                     </div>
                 </article>
-            </section>
-            <section class="form-field-inline">
                 <article class="form-field">
                     <div class="field-attribute">
                         <label for="ageYears">Age</label>
@@ -55,8 +49,17 @@
                         <div class="input-prepend">
                             <span class="add-on">Years</span>
                             <input type="number" id="ageYears" name="ageYear" max="120" ng-model="patient.age.years" min="0"
-                                   ng-required="patient.age.isEmpty()" title="Enter a numeric value for Years.">
+                                   title="Enter a numeric value for Years.">
                         </div>
+                    </div>
+                </article>
+                <article class="form-field">
+                    <div class="field-attribute">
+                        <label class="control-label" for="village">Village</label>
+                    </div>
+                    <div class="field-value">
+                        <input type="text" id="village" ng-model="patient.address.cityVillage" placeholder="Village"
+                               my-autocomplete="{{ {'src': 'getVillageList', 'responseMap': 'getAddressDataResults', 'onSelect': 'villageSelected'} }}">
                     </div>
                 </article>
             </section>
