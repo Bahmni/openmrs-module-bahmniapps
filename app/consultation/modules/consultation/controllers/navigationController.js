@@ -39,6 +39,13 @@ angular.module('opd.consultation.controllers')
         return boards.length > 0 ? boards[0] : null;
     }
 
+    var getUrl = function(board){
+        if(board.url === 'bed-management' && $rootScope.bedDetails){
+            return $location.url("wardLayout/" + $rootScope.bedDetails.wardUuid);
+        }
+        return $location.url("/visit/" + $rootScope.visit.uuid + "/" + board.url);
+    }
+
     var buttonClickAction = function (board) {
         if ($scope.currentBoard) {
             if ($scope.currentBoard === board) {
@@ -54,8 +61,11 @@ angular.module('opd.consultation.controllers')
         }
         $rootScope.beforeContextChange = null;
         $scope.currentBoard = board;
-        return $location.url("/visit/" + $rootScope.visit.uuid + "/" + board.url);
+        return getUrl(board);
     }
+
+
+
 
     initialize();
 

@@ -16,6 +16,7 @@ angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q'
                 if(response.results.length > 0){
                     $rootScope.bedDetails= {};
                     $rootScope.bedDetails.wardName = response.results[0].physicalLocation.parentLocation.display;
+                    $rootScope.bedDetails.wardUuid = response.results[0].physicalLocation.parentLocation.uuid;
                     $rootScope.bedDetails.physicalLocationName = response.results[0].physicalLocation.name;
                     $rootScope.bedDetails.bedNumber = response.results[0].bedNumber;
                     $rootScope.bedDetails.bedId = response.results[0].bedId;

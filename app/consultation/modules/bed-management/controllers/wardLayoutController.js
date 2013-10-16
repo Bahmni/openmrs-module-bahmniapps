@@ -29,10 +29,11 @@ angular.module('opd.bedManagement.controllers')
             wardLayoutService.assignBed(bed.bed.bedId,$scope.patient.uuid).success(function(result){
                 $rootScope.bed = bed.bed;
                 $scope.layout = [];
+                $rootScope.getBedDetailsForPatient($scope.patient.uuid);
                 $scope.getBedsForWard();
                 $scope.confirmationMessage = "Bed " + bed.bed.bedNumber + " is assigned successfully";
                  $('.bed-info').hide();
-                $rootScope.getBedDetailsForPatient($scope.patient.uuid);
+
                 $scope.$apply();
             });
         }
@@ -50,6 +51,7 @@ angular.module('opd.bedManagement.controllers')
             findMaxYMaxX();
             var bedLayout;
             var rowLayout = [];
+            $scope.currentPatientBed = $rootScope.bedDetails;
             for (var i = $scope.minX; i <= $scope.maxX; i++) {
                 rowLayout = [];
                 for (var j = $scope.minY; j <= $scope.maxY; j++) {
@@ -95,7 +97,7 @@ angular.module('opd.bedManagement.controllers')
             }
         }
 
-        $scope.currentPatientBed = $rootScope.bedDetails;
+
 
         $scope.getBedsForWard();
 
