@@ -156,7 +156,8 @@ module.exports = function (grunt) {
     useminPrepare: {
       html: [
         '<%= yeoman.app %>/*.html',
-        '<%= yeoman.app %>/modules/**/*.html'
+        '<%= yeoman.app %>/modules/**/*.html',
+        '<%= yeoman.app %>/emergency/**/*.html',
       ],
       // css: '<%= yeoman.app %>/styles/*.css',
       options: {
@@ -167,6 +168,7 @@ module.exports = function (grunt) {
       html: [
         '<%= yeoman.dist %>/*.html',
         '<%= yeoman.dist %>/modules/**/*.html',
+        '<%= yeoman.dist %>/emergency/**/*.html',
       ],
       options: {
         dirs: ['<%= yeoman.dist %>']
@@ -202,7 +204,8 @@ module.exports = function (grunt) {
           cwd: '<%= yeoman.app %>',
           src: [
             '*.html',
-            'modules/**/*.html'
+            'modules/**/*.html',
+            'emergency/**/*.html'
           ],
           dest: '<%= yeoman.dist %>'
         }]
@@ -241,9 +244,17 @@ module.exports = function (grunt) {
             'images/**/*.{gif,webp}',
             'styles/fonts/*',
             'lib/**/*',
-            'styles/print.css'
+            'styles/print.css',
           ]
         }]
+      }
+    },
+    rename: {
+      minified: {
+        files: [
+          {expand: true, cwd: '<%= yeoman.dist %>', src: ['emergency.min.js'], dest: '<%= yeoman.dist %>/emergency/'},
+          {expand: true, cwd: '<%= yeoman.dist %>', src: ['emergency.min.css'], dest: '<%= yeoman.dist %>/emergency/'},
+        ]
       }
     }
   });
@@ -278,7 +289,8 @@ module.exports = function (grunt) {
     'ngmin',
     // Commented since it is breaking angular. Possibly because of $rootScope
     //'uglify',
-    'usemin'
+    'usemin',
+    'rename:minified'
   ]);
 
   grunt.registerTask('build', [
