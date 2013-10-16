@@ -32,6 +32,7 @@ angular.module('opd.bedManagement.controllers')
                 $scope.getBedsForWard();
                 $scope.confirmationMessage = "Bed " + bed.bed.bedNumber + " is assigned successfully";
                  $('.bed-info').hide();
+                $rootScope.getBedDetailsForPatient($scope.patient.uuid);
                 $scope.$apply();
             });
         }
@@ -84,7 +85,7 @@ angular.module('opd.bedManagement.controllers')
 
         var findMaxYMaxX = function () {
             for (var i = 0; i < $scope.result.length; i++) {
-                result = $scope.result[i];
+                var result = $scope.result[i];
                 if (result.rowNumber > $scope.maxX) {
                     $scope.maxX = result.rowNumber;
                 }

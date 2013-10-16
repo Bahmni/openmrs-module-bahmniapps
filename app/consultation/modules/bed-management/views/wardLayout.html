@@ -4,7 +4,7 @@
     <div class="bed-info">
 		<ul>
 			<li>Bed: {{bed.bed.bedNumber}}</li>
-			<li><a class="assign" ng-show="bed.available && !bedDetails" ng-click="assignBed(bed)">Assign</a></li>
+			<li><a class="assign" ng-show="bed.available && !$parent.bedDetails" ng-click="assignBed(bed)">Assign</a></li>
 		</ul>
     </div>
     <div class="bed-assignment">

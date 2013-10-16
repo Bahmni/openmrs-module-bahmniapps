@@ -11,6 +11,18 @@ angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q'
             };
         }
 
+        $rootScope.getBedDetailsForPatient = function(patientUuid){
+            bedService.bedDetailsForPatient(patientUuid).success(function(response){
+                if(response.results.length > 0){
+                    $rootScope.bedDetails= {};
+                    $rootScope.bedDetails.wardName = response.results[0].physicalLocation.parentLocation.display;
+                    $rootScope.bedDetails.physicalLocationName = response.results[0].physicalLocation.name;
+                    $rootScope.bedDetails.bedNumber = response.results[0].bedNumber;
+                    $rootScope.bedDetails.bedId = response.results[0].bedId;
+                }
+            })
+        }
+
         var configurationsPromise = configurationService.getConfigurations(['bahmniConfiguration', 'encounterConfig', 'patientConfig', ,'dosageFrequencyConfig','dosageInstructionConfig'])
             .then(function (configurations) {
                 $rootScope.bahmniConfiguration = configurations.bahmniConfiguration;
@@ -24,14 +36,7 @@ angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q'
                     $rootScope.visit = visit;
                     $rootScope.consultation = new Bahmni.Opd.ConsultationMapper($rootScope.encounterConfig, $rootScope.dosageFrequencyConfig, $rootScope.dosageInstructionConfig).map(visit);
 
-
-                    bedService.bedDetailsForPatient(visit.patient.uuid).success(function(response){
-                        $rootScope.bedDetails= {};
-                        $rootScope.bedDetails.wardName = response.results[0].physicalLocation.parentLocation.display;
-                        $rootScope.bedDetails.physicalLocationName = response.results[0].physicalLocation.name;
-                        $rootScope.bedDetails.bedNumber = response.results[0].bedNumber;
-                        $rootScope.bedDetails.bedId = response.results[0].bedId;
-                    })
+                    $rootScope.getBedDetailsForPatient(visit.patient.uuid);
 
                     $rootScope.disposition = new Bahmni.Opd.DispositionMapper($rootScope.encounterConfig).map(visit);
                     $rootScope.disposition.currentActionIndex = 0; // this will be used in case we have multiple encounters with dispositions
