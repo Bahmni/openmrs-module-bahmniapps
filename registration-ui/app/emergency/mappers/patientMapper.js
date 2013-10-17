@@ -2,6 +2,9 @@
 
 Bahmni.Registration.Emergency.PatientMapper = function() {
     this.map = function (patientConfig, patient) {
+        if(patient.address.cityVillage == null) {
+            patient.address.cityVillage = "Unknown";
+        }
         return {
             names: [
                 {
