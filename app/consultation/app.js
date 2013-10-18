@@ -10,6 +10,6 @@ angular.module('consultation').config(['$routeProvider', function ($routeProvide
         $routeProvider.when('/visit/:visitUuid/templates', {templateUrl: 'modules/consultation/views/comingSoon.html'});
         $routeProvider.when('/visit/:visitUuid/disposition', {templateUrl: 'modules/consultation/views/disposition.html',controller: 'DispositionController',resolve: {initialization: 'initialization'}});
         $routeProvider.when('/visit/:visitUuid/bed-management', {templateUrl: 'modules/bed-management/views/wardsList.html',controller: 'WardsListController',resolve: {initialization: 'initialization'}});
-        $routeProvider.when('/wardLayout/:wardId', {templateUrl: 'modules/bed-management/views/wardLayout.html',controller: 'WardLayoutController',resolve: {initialization: 'initialization'}});
+        $routeProvider.when('/visit/:visitUuid/bed-management/wardLayout/:wardId', {templateUrl: 'modules/bed-management/views/wardLayout.html',controller: 'WardLayoutController',resolve: {initialization: 'initialization'}});
     $routeProvider.otherwise({redirectTo: Bahmni.Opd.Constants.activePatientsListUrl});
 }]);

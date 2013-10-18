@@ -32,10 +32,9 @@ angular.module('opd.bedManagement.controllers')
                 $rootScope.getBedDetailsForPatient($scope.patient.uuid);
                 $scope.getBedsForWard();
                 $scope.confirmationMessage = "Bed " + bed.bed.bedNumber + " is assigned successfully";
-                 $('.bed-info').hide();
-
-                $scope.$apply();
+                $('.bed-info').hide();
             });
+//            $scope.$apply();
         }
 
         $scope.getBedsForWard = function () {
@@ -48,10 +47,10 @@ angular.module('opd.bedManagement.controllers')
         $scope.maxX = $scope.maxY = $scope.minX = $scope.minY = 1;
 
         $scope.createLayoutGrid = function () {
+            console.log("creating layout");
             findMaxYMaxX();
             var bedLayout;
             var rowLayout = [];
-            $scope.currentPatientBed = $rootScope.bedDetails;
             for (var i = $scope.minX; i <= $scope.maxX; i++) {
                 rowLayout = [];
                 for (var j = $scope.minY; j <= $scope.maxY; j++) {
@@ -98,6 +97,9 @@ angular.module('opd.bedManagement.controllers')
         }
 
 
+        $scope.getCurrentBed = function(){
+            return $rootScope.bedDetails;
+        }
 
         $scope.getBedsForWard();
 
