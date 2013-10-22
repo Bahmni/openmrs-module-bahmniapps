@@ -14,7 +14,6 @@ angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q'
         $rootScope.getBedDetailsForPatient = function(patientUuid){
             bedService.bedDetailsForPatient(patientUuid).success(function(response){
                 if(response.results.length > 0){
-                    console.log("assiging bed details");
                     $rootScope.bedDetails= {};
                     $rootScope.bedDetails.wardName = response.results[0].physicalLocation.parentLocation.display;
                     $rootScope.bedDetails.wardUuid = response.results[0].physicalLocation.parentLocation.uuid;
@@ -35,7 +34,6 @@ angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q'
 
 
                 return visitService.getVisit($route.current.params.visitUuid).success(function (visit) {
-                    console.log("initializing visit");
                     $rootScope.visit = visit;
                     $rootScope.consultation = new Bahmni.Opd.ConsultationMapper($rootScope.encounterConfig, $rootScope.dosageFrequencyConfig, $rootScope.dosageInstructionConfig).map(visit);
 
@@ -46,9 +44,7 @@ angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q'
 
                     return patientService.getPatient(visit.patient.uuid).success(function (openMRSPatient) {
                         $rootScope.patient = patientMapper.map(openMRSPatient);
-
                     });
-
                 })
             });
 

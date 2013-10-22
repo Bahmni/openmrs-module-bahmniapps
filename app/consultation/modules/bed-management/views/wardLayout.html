@@ -4,6 +4,12 @@
     <div class="bed-info">
 		<ul>
 			<li>Bed: {{bed.bed.bedNumber}}</li>
+			<div ng-show="!bed.available">
+                <div></div>
+                <li>{{bed.patientInfo.identifier}}</li>
+                <li>{{bed.patientInfo.name}}</li>
+                <li>{{bed.patientInfo.gender}}</li>
+            </div>
 			<li><a class="assign" ng-show="bed.available && !$parent.bedDetails" ng-click="assignBed(bed)">Assign</a></li>
 			<li><a class="transfer" ng-show="bed.available && $parent.bedDetails" ng-click="assignBed(bed)">Transfer</a></li>
 		</ul>

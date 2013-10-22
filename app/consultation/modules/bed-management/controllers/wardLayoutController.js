@@ -5,11 +5,9 @@ angular.module('opd.bedManagement.controllers')
 
         $scope.layout = [];
         $scope.result = [];
-
-
+        $scope.bed;
 
         var uuid = $route.current.params.wardId;
-        $scope.bed;
 
         $('.bed-info').hide();
         $scope.bedDetails = function(cell){
@@ -37,6 +35,11 @@ angular.module('opd.bedManagement.controllers')
 //            $scope.$apply();
         }
 
+        $scope.getCurrentBed = function(){
+            return $rootScope.bedDetails;
+        }
+
+
         $scope.getBedsForWard = function () {
             wardLayoutService.bedsForWard(uuid).success(function (result) {
                 $scope.result = result.bedLayouts;
@@ -47,7 +50,6 @@ angular.module('opd.bedManagement.controllers')
         $scope.maxX = $scope.maxY = $scope.minX = $scope.minY = 1;
 
         $scope.createLayoutGrid = function () {
-            console.log("creating layout");
             findMaxYMaxX();
             var bedLayout;
             var rowLayout = [];
@@ -55,11 +57,24 @@ angular.module('opd.bedManagement.controllers')
                 rowLayout = [];
                 for (var j = $scope.minY; j <= $scope.maxY; j++) {
                     bedLayout = getBedLayoutWithCordinates(i, j);
-                    rowLayout.push({empty: isEmpty(bedLayout), available: isAvailable(bedLayout), bed: { bedId:bedLayout!= null && bedLayout.bedId , bedNumber: bedLayout!= null && bedLayout.bedNumber }})
+                    rowLayout.push({
+                        empty: isEmpty(bedLayout),
+                        available: isAvailable(bedLayout),
+                        bed: {
+                            bedId:bedLayout!= null && bedLayout.bedId ,
+                            bedNumber: bedLayout!= null && bedLayout.bedNumber
+                        },
+                        patientInfo: {
+                            name:bedLayout!= null && bedLayout.patientName,
+                            identifier:bedLayout!= null && bedLayout.patientIdentifier,
+                            gender:bedLayout!= null && bedLayout.patientGender
+                        }
+                    })
                 }
                 $scope.layout.push(rowLayout);
             }
         }
+
         var isEmpty = function (bedLayout) {
             if (bedLayout == null || bedLayout.bedId == null) {
                 return true;
@@ -96,13 +111,11 @@ angular.module('opd.bedManagement.controllers')
             }
         }
 
-
-        $scope.getCurrentBed = function(){
-            return $rootScope.bedDetails;
+        var init = function(){
+            $scope.getBedsForWard();
         }
 
-        $scope.getBedsForWard();
-
+        init();
     }])
     .directive('dialog', function () {
         return {
