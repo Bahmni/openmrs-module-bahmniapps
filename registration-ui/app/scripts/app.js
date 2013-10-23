@@ -2,8 +2,8 @@
 
 
 angular
-    .module('registration', ['registration.patient.controllers', 'registration.navigation', 'registration.loginController', 'http-auth-interceptor', 'registration.patient.controllers',
-        'registration.patient.controllers', 'infrastructure.httpErrorInterceptor', 'registration.patient.controllers', 'registration.patient.controllers', 'registration.initialization', 'registration.util'])
+    .module('registration', ['registration.patient.controllers', 'registration.navigation', 'registration.loginController', 'http-auth-interceptor', 
+        'infrastructure.httpErrorInterceptor', 'registration.initialization', 'registration.util'])
     .config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
         $routeProvider.when('/login', {templateUrl: 'modules/auth/views/login.html', controller: 'LoginController'});
         $routeProvider.when('/search', {reloadOnSearch: false, templateUrl: 'modules/patient/views/search.html', controller: 'SearchPatientController', resolve: {initialization: 'initialization'}});
