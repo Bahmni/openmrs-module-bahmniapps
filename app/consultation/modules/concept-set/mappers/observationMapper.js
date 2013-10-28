@@ -1,5 +1,6 @@
-Bahmni.Opd.ObservationMapper = function (encounterConfig) {
-    this.map = function (visit, conceptSet) {
+
+Bahmni.Opd.ObservationMapper = function(encounterConfig) {
+    this.map = function(visit,conceptSet){
         var opdEncounter = visit.encounters.filter(function (encounter) {
             return encounter.encounterType.uuid === encounterConfig.getOpdConsultationEncounterUuid();
         })[0];

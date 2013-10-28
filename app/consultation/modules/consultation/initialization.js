@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('opd.consultation').factory('initialization', 
+angular.module('opd.consultation').factory('initialization',
     ['$rootScope', '$q', '$route', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'dispositionService','BedService', 'ConceptSetService', 'authenticator',
     function ($rootScope, $q, $route, configurationService, visitService, patientService, patientMapper, dispositionService, bedService, conceptSetService, authenticator) {
         var initializationPromise = $q.defer();
@@ -59,7 +59,6 @@ angular.module('opd.consultation').factory('initialization',
 
                                 $rootScope.vitals.conceptSet = vitalsConceptSet;
 
-                          //      return;
                             }
                         });
 

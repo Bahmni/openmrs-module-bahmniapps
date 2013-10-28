@@ -15,8 +15,6 @@ angular.module('opd.conceptSet.controllers')
 
         }
 
-        //$scope.conceptSet = $rootScope.vitals.conceptSet;
-
         var conceptSetMap = {
             "vitals":"VITALS_CONCEPT"
         }
@@ -54,6 +52,4 @@ angular.module('opd.conceptSet.controllers')
         '</div>'
     }
 }])
-
-
 
