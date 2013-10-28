@@ -16,5 +16,6 @@ var constants = {
     ],
     openmrsUrl: "/openmrs",
     bahmniRESTBaseURL: "/openmrs/ws/rest/v1/bahmnicore",
+    emrApiRESTBaseURL: "/openmrs/ws/rest/emrapi",
     registrationFeesConcept : "REGISTRATION FEES"
 };

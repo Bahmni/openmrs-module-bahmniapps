@@ -10,9 +10,9 @@ angular.module('registration.patient.services')
     };
 
     var get =  function (patientUUID, visitTypeUUID, encounterTypeUUID) {
-        var url = constants.bahmniRESTBaseURL + "/bahmniencounter";
+        var url = constants.emrApiRESTBaseURL + "/encounter";
         return $http.get(url, {
-            params: {"patientUUID": patientUUID, "visitTypeUUID" : visitTypeUUID, "encounterTypeUUID" : encounterTypeUUID},
+            params: {"patientUuid": patientUUID, "visitTypeUuid" : visitTypeUUID, "encounterTypeUuid" : encounterTypeUUID},
             withCredentials: true
         });
     }
