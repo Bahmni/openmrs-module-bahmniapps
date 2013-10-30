@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q', '$route', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'dispositionService','BedService','ConceptSetService',
-    function ($rootScope, $q, $route, configurationService, visitService, patientService, patientMapper, dispositionService, bedService,conceptSetService) {
-        var deferrable = $q.defer();
+angular.module('opd.consultation').factory('initialization', 
+    ['$rootScope', '$q', '$route', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'dispositionService','BedService', 'ConceptSetService', 'authenticator',
+    function ($rootScope, $q, $route, configurationService, visitService, patientService, patientMapper, dispositionService, bedService, conceptSetService, authenticator) {
+        var initializationPromise = $q.defer();
         var dispositionNoteConcept;
 
         if (!String.prototype.trim) {
@@ -25,22 +26,20 @@ angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q'
             })
         }
 
-        var configurationsPromise = configurationService.getConfigurations(['bahmniConfiguration', 'encounterConfig', 'patientConfig', ,'dosageFrequencyConfig','dosageInstructionConfig'])
-            .then(function (configurations) {
+        var getConsultationConfigs = function() {
+            var configurationsPromises = $q.defer();
+            var configNames = ['bahmniConfiguration', 'encounterConfig', 'patientConfig', ,'dosageFrequencyConfig','dosageInstructionConfig'];
+            configurationService.getConfigurations(configNames).then(function (configurations) {
                 $rootScope.bahmniConfiguration = configurations.bahmniConfiguration;
                 $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig);
                 $rootScope.patientConfig = configurations.patientConfig;
                 $rootScope.dosageFrequencyConfig = configurations.dosageFrequencyConfig;
                 $rootScope.dosageInstructionConfig = configurations.dosageInstructionConfig;
 
-
                 return visitService.getVisit($route.current.params.visitUuid).success(function (visit) {
-                    console.log("initializing visit");
                     $rootScope.visit = visit;
                     $rootScope.consultation = new Bahmni.Opd.ConsultationMapper($rootScope.encounterConfig, $rootScope.dosageFrequencyConfig, $rootScope.dosageInstructionConfig).map(visit);
-
                     $rootScope.getBedDetailsForPatient(visit.patient.uuid);
-
                     $rootScope.disposition = new Bahmni.Opd.DispositionMapper($rootScope.encounterConfig).map(visit);
                     $rootScope.disposition.currentActionIndex = 0; // this will be used in case we have multiple encounters with dispositions
 
@@ -48,6 +47,7 @@ angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q'
 
                     return patientService.getPatient(visit.patient.uuid).success(function (openMRSPatient) {
                         $rootScope.patient = patientMapper.map(openMRSPatient);
+                        configurationsPromises.resolve();
 
 
                         return conceptSetService.getConceptSetMembers("VITALS_CONCEPT").success(function(response){
@@ -68,12 +68,16 @@ angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q'
 
                 })
             });
+            return configurationsPromises.promise;
+        }        
 
-
-        $q.all([configurationsPromise]).then(function () {
-            deferrable.resolve();
+        authenticator.authenticateUser().then(function () {
+            var configPromise = getConsultationConfigs();
+            configPromise.then(function() {
+                initializationPromise.resolve();
+            });
         });
 
-        return deferrable.promise;
+        return initializationPromise.promise;
     }]
 );

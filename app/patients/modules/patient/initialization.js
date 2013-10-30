@@ -1,13 +1,24 @@
 'use strict';
 
-angular.module('opd.patient').factory('initialization', ['$rootScope', '$q', 'configurationService',
-        function ($rootScope, $q, configurationService) {
-            var deferrable = $q.defer();
-            var cfgs = configurationService.getConfigurations(['bahmniConfiguration']);
-            cfgs.then(function(configurations) {
-                $rootScope.bahmniConfiguration = configurations.bahmniConfiguration;
-                deferrable.resolve();
+angular.module('opd.patient').factory('initialization', ['$rootScope', '$q', 'configurationService', 'authenticator',
+        function ($rootScope, $q, configurationService, authenticator) {
+            var initializationPromise = $q.defer();
+
+            var getConfigs = function() {
+            	var configurationsPromises = $q.defer();
+            	configurationService.getConfigurations(['bahmniConfiguration']).then(function(configurations) {
+	                $rootScope.bahmniConfiguration = configurations.bahmniConfiguration;
+	                configurationsPromises.resolve();
+	            });
+            	return configurationsPromises.promise;
+            };
+
+            authenticator.authenticateUser().then(function () {
+            	getConfigs().then(function() {
+            		initializationPromise.resolve();
+            	});
             });
-            return deferrable.promise;
+
+            return initializationPromise.promise;
      }]
 );    

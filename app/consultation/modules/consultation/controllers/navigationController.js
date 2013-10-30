@@ -1,7 +1,8 @@
 'use strict';
 
-angular.module('opd.consultation.controllers')
-    .controller('ConsultationNavigationController', ['$scope', '$rootScope', '$location', '$route', function ($scope, $rootScope, $location, $route) {
+angular.module('opd.consultation.controllers').controller('ConsultationNavigationController', 
+    ['$scope', '$rootScope', '$location', '$route', '$window', 'sessionService', 
+    function ($scope, $rootScope, $location, $route, $window, sessionService) {
     //$scope.mainButtonText = "Consultation";
     $scope.currentBoard = null;
     $scope.availableBoards = [
@@ -17,6 +18,15 @@ angular.module('opd.consultation.controllers')
     $scope.showBoard = function (name) {
         var board = findBoardByname(name);
         return buttonClickAction(board);
+    }
+
+    $scope.logout = function () {
+        $rootScope.errorMessage = null;
+        sessionService.destroy().then(
+            function() {
+                $window.location = "/home";
+            }
+        );
     }
 
     var initialize = function () {

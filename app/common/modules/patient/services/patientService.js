@@ -14,13 +14,15 @@ angular.module('bahmni.common.patient.services')
 
         var getAllActivePatients = function () {
             return $http.get("/openmrs/ws/rest/v1/bahmnicore/patient/active" , {
-                method:"GET"
+                method:"GET",
+                withCredentials: true
             })
         };
 
         var getAllActivePatientsForAdmission = function () {
             return $http.get("/openmrs/ws/rest/v1/bahmnicore/patient/toadmit" , {
-                method:"GET"
+                method:"GET",
+                withCredentials: true
             })
         };
 
