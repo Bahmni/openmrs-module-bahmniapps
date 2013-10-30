@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('registration.navigation', ['registration.sessionService'])
-    .controller('NavigationController', ['$scope', '$rootScope', '$location', 'sessionService', function ($scope, $rootScope, $location, sessionService) {
+angular.module('registration.navigation', ['authentication'])
+    .controller('NavigationController', ['$scope', '$rootScope', '$location', 'sessionService', '$window', function ($scope, $rootScope, $location, sessionService, $window) {
         var loginPagePath = "/login";
 
         $scope.createNew = function() {
@@ -10,11 +10,11 @@ angular.module('registration.navigation', ['registration.sessionService'])
 
         $scope.logout = function () {
             $rootScope.errorMessage = null;
-            sessionService.destroy();
-            $location.url(loginPagePath);
+            sessionService.destroy().then(
+                function() {
+                    $window.location = "/home";
+                }
+            );
         }
-
-        $scope.onLoginPage = function() {
-            return $location.path() === loginPagePath;
-        }
+        
     }]);

@@ -17,7 +17,7 @@
         <div class="reg-wrapper">
             <div ng-app="registration">
                 <div id="overlay"></div>
-                <header class="reg-header" ng-controller="NavigationController" ng-hide="onLoginPage()" style="display: none">
+                <header class="reg-header" ng-controller="NavigationController">
                         <a class="header-logo" href="#/search">Jan Swasthya Sahyog</a>
                         <ul>
                             <li>
@@ -71,10 +71,7 @@
                 <script src="modules/patient/models/patient.js"></script>
                 <script src="modules/patient/models/preferences.js"></script>
                 <script src="modules/patient/models/registrationObservations.js"></script>
-                <script src="modules/auth/httpAuthInterceptor.js"></script>
-                <script src="modules/auth/models/login.js"></script>
-                <script src="modules/auth/services/sessionService.js"></script>
-                <script src="modules/auth/controllers/loginController.js"></script>
+                <script src="modules/auth/authentication.js"></script>
                 <script src="modules/medical-concepts/bmi.js"></script>
                 <script src="modules/util/date.js"></script>
                 <script src="modules/util/directives.js"></script>

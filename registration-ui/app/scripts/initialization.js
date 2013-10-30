@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('registration.initialization', ['infrastructure', 'registration.login', 'infrastructure.spinner'])
-    .factory('initialization', ['$rootScope', '$q', 'configurationService', 'login', 'spinner',
-        function ($rootScope, $q, configurationService, login, spinner) {
+angular.module('registration.initialization', ['infrastructure', 'authentication', 'infrastructure.spinner'])
+    .factory('initialization', ['$rootScope', '$q', 'configurationService', 'authenticator', 'spinner',
+        function ($rootScope, $q, configurationService, authenticator, spinner) {
             var initializationPromiseDefer = $q.defer();
 
             var loadData = function () {
@@ -21,7 +21,7 @@ angular.module('registration.initialization', ['infrastructure', 'registration.l
                 return $q.all([configurationPromise, encounterConfigPromise, patientConfigPromise]);
             };
 
-            login.then(function () {
+            authenticator.authenticateUser().then(function () {
                 var loadDataPromise = loadData();
                 spinner.forPromise(loadDataPromise);
                 loadDataPromise.then(function () {
