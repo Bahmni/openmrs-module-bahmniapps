@@ -41,6 +41,13 @@ angular.module('opd.consultation.controllers')
 
         encounterData.disposition = $rootScope.disposition.adtToStore;
 
+        var addObservationsToEncounter = function(){
+            encounterData.observations = [];
+            encounterData.observations = encounterData.observations.concat($rootScope.vitals.recordedVitals);
+        }
+
+        addObservationsToEncounter();
+
         consultationService.create(encounterData).success(function () {
             window.location = Bahmni.Opd.Constants.activePatientsListUrl;
         });

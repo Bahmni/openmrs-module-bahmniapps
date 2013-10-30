@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q', '$route', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'dispositionService','BedService',
-    function ($rootScope, $q, $route, configurationService, visitService, patientService, patientMapper, dispositionService, bedService) {
+angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q', '$route', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'dispositionService','BedService','ConceptSetService',
+    function ($rootScope, $q, $route, configurationService, visitService, patientService, patientMapper, dispositionService, bedService,conceptSetService) {
         var deferrable = $q.defer();
         var dispositionNoteConcept;
 
@@ -14,6 +14,7 @@ angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q'
         $rootScope.getBedDetailsForPatient = function(patientUuid){
             bedService.bedDetailsForPatient(patientUuid).success(function(response){
                 if(response.results.length > 0){
+                    console.log("assiging bed details");
                     $rootScope.bedDetails= {};
                     $rootScope.bedDetails.wardName = response.results[0].physicalLocation.parentLocation.display;
                     $rootScope.bedDetails.wardUuid = response.results[0].physicalLocation.parentLocation.uuid;
@@ -34,6 +35,7 @@ angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q'
 
 
                 return visitService.getVisit($route.current.params.visitUuid).success(function (visit) {
+                    console.log("initializing visit");
                     $rootScope.visit = visit;
                     $rootScope.consultation = new Bahmni.Opd.ConsultationMapper($rootScope.encounterConfig, $rootScope.dosageFrequencyConfig, $rootScope.dosageInstructionConfig).map(visit);
 
@@ -42,9 +44,28 @@ angular.module('opd.consultation').factory('initialization', ['$rootScope', '$q'
                     $rootScope.disposition = new Bahmni.Opd.DispositionMapper($rootScope.encounterConfig).map(visit);
                     $rootScope.disposition.currentActionIndex = 0; // this will be used in case we have multiple encounters with dispositions
 
+
+
                     return patientService.getPatient(visit.patient.uuid).success(function (openMRSPatient) {
                         $rootScope.patient = patientMapper.map(openMRSPatient);
+
+
+                        return conceptSetService.getConceptSetMembers("VITALS_CONCEPT").success(function(response){
+                            if(response.results && response.results.length > 0){
+                                var vitalsConceptSet = response.results[0].setMembers;
+
+                                $rootScope.vitals = new Bahmni.Opd.ObservationMapper($rootScope.encounterConfig)
+                                    .map(visit, vitalsConceptSet);
+
+                                $rootScope.vitals.conceptSet = vitalsConceptSet;
+
+                          //      return;
+                            }
+                        });
+
+
                     });
+
                 })
             });
 

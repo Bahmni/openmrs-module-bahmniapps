@@ -10,7 +10,8 @@ angular.module('opd.consultation.controllers')
         { name:'Diagnosis', url:'diagnosis'},
         { name:'Treatment', url:'treatment'},
         { name:'Disposition', url:'disposition'},
-        { name:'Assign Bed', url:'bed-management'}
+        { name:'Assign Bed', url:'bed-management'},
+        { name:'Vitals', url:'concept-set/vitals'}
     ];
 
     $scope.showBoard = function (name) {
