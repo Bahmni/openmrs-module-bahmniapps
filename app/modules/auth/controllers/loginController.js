@@ -33,8 +33,11 @@ angular.module('bahmnihome')
 
         $scope.logout = function() {
             $rootScope.errorMessage = null;
-            sessionService.destroy();
-            $location.url(loginPagePath);
+            sessionService.destroy().then(
+                function() {
+                    $location.url(loginPagePath);
+                }
+            );
         }
 
         $scope.onLoginPage = function() {
