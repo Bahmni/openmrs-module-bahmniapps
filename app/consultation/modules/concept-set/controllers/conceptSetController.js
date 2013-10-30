@@ -36,4 +36,24 @@ angular.module('opd.conceptSet.controllers')
             $rootScope.vitals.recordedVitals = constructObsList();
         });
 
-    }]);
+    }]).directive('showSimpleConcept',['$rootScope',function(rootScope){
+        return {
+            restrict: 'A',
+            template : '<div ng-show="concept.set == false"><label>{{concept.display}}</label><input type="text" placeholder="{{concept.display}}"'+
+                'ng-model="$parent.$parent.vitals.conceptToObservationMap[concept.uuid].value"></input></div>'
+        }
+    }]).directive('showComplexConcept',['$rootScope',function(rootScope){
+    return {
+        restrict: 'A',
+        template : '<div ng-show="concept.set == true">' +
+            '<div>{{concept.display}}<div ng-repeat="concept in concept.setMembers">'+
+                '<div><label>{{concept.display}}</label><input type="text" placeholder="{{concept.display}}"'+
+                'ng-model="$parent.$parent.$parent.vitals.conceptToObservationMap[concept.uuid].value"></input>'+
+                '</div>'+
+            '</div></div>'+
+        '</div>'
+    }
+}])
+
+
+

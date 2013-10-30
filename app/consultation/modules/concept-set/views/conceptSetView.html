@@ -1,8 +1,7 @@
 <div>
-    <p ng-repeat="concept in $parent.vitals.conceptSet">
-        <label>{{concept.name.name}}</label>
-        <input type="text" placeholder="{{concept.name.name}}"
-               ng-model="$parent.$parent.vitals.conceptToObservationMap[concept.uuid].value">
-    </p>
+    <div concept-set-field ng-repeat="concept in $parent.vitals.conceptSet">
+        <div show-simple-concept></div>
+        <div show-complex-concept></div>
+    </div>
 
 </div>

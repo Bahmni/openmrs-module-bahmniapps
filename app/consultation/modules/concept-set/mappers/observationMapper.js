@@ -6,23 +6,30 @@ Bahmni.Opd.ObservationMapper = function (encounterConfig) {
 
         var observations = null;
 
-        var constructConceptToObsMap = function(observations){
-            var conceptToObservationMap= {};
+        var conceptToObservationMap= {};
+
+        var constructConceptToObsMap = function(conceptSet,observations,conceptToObservationMap){
+
             conceptSet.forEach(function (concept) {
-                var obs = {
-                    conceptUuid:concept.uuid,
-                    observationUuid : "",
-                    value:""
+                if(concept.set) {
+                    constructConceptToObsMap(concept.setMembers,observations,conceptToObservationMap);
                 }
-                if(observations && observations.length > 0){
-                    observations.forEach(function (observation) {
-                        if (observation.concept.uuid === concept.uuid) {
-                            obs.value = observation.value,
-                                obs.observationUuid = observation.uuid
-                        }
-                    })
+                else {
+                    var obs = {
+                        conceptUuid:concept.uuid,
+                        observationUuid : "",
+                        value:""
+                    }
+                    if(observations && observations.length > 0){
+                        observations.forEach(function (observation) {
+                            if (observation.concept.uuid === concept.uuid) {
+                                obs.value = observation.value,
+                                    obs.observationUuid = observation.uuid
+                            }
+                        })
+                    }
+                    conceptToObservationMap[concept.uuid] = obs;
                 }
-                conceptToObservationMap[concept.uuid] = obs;
             })
             return conceptToObservationMap;
         }
@@ -32,7 +39,7 @@ Bahmni.Opd.ObservationMapper = function (encounterConfig) {
         }
 
         return {
-            conceptToObservationMap:constructConceptToObsMap(observations)
+            conceptToObservationMap:constructConceptToObsMap(conceptSet,observations,conceptToObservationMap)
         };
 
     }
