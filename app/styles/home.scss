@@ -274,7 +274,11 @@ body{
         line-height: 1.3em;
         margin: 10px;
         text-align: center;
-        font-size:1.3em;
+        font-size:1.3em; 
+        &:hover{
+          background:#e2e2e2;
+          border:1px solid #d0d0d0;
+        }
         i{
           display:block;
           font-size:50px;
