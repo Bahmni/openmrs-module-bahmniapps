@@ -10,9 +10,9 @@ angular.module('registration.emergency.controllers')
                 return center.name === preferences.centerID
             })[0];
 
-            var visitTypeUUID = $scope.encounterConfiguration.visitTypes[constants.visitType.emergency];
-            var encounterTypeUUID = $scope.encounterConfiguration.encounterTypes[constants.encounterType.registration];
-            $scope.encounter = {visitTypeUUID: visitTypeUUID, encounterTypeUUID: encounterTypeUUID, observations: []};
+            var visitTypeUuid = $scope.encounterConfiguration.visitTypes[constants.visitType.emergency];
+            var encounterTypeUuid = $scope.encounterConfiguration.encounterTypes[constants.encounterType.registration];
+            $scope.encounter = {visitTypeUuid: visitTypeUuid, encounterTypeUuid: encounterTypeUuid, observations: []};
 
         };
         init();
@@ -28,7 +28,7 @@ angular.module('registration.emergency.controllers')
         };
 
         var createVisit = function() {
-            $scope.encounter.patientUUID = $scope.patient.uuid;
+            $scope.encounter.patientUuid = $scope.patient.uuid;
             return visitService.create($scope.encounter).success(function(data) {
                 $location.path("/summary");
             });

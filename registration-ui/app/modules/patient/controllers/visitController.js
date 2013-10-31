@@ -6,9 +6,9 @@ angular.module('registration.patient.controllers')
         (function () {
             $scope.patient = patientService.getPatient();
 
-            var visitTypeUUID = $scope.encounterConfiguration.visitTypeId($scope.patient.isNew);
-            var encounterTypeUUID = $scope.encounterConfiguration.encounterTypes[constants.encounterType.registration];
-            var encounterObservationsPromise = visitService.get($scope.patient.uuid, visitTypeUUID, encounterTypeUUID)
+            var visitTypeUuid = $scope.encounterConfiguration.visitTypeId($scope.patient.isNew);
+            var encounterTypeUuid = $scope.encounterConfiguration.encounterTypes[constants.encounterType.registration];
+            var encounterObservationsPromise = visitService.get($scope.patient.uuid, visitTypeUuid, encounterTypeUuid)
                     .success(function (data) {
                         $scope.registrationObservations = new RegistrationObservations(data, $scope.patient.isNew, $scope.encounterConfiguration);
                         $scope.obs = {};
@@ -16,7 +16,7 @@ angular.module('registration.patient.controllers')
                         $scope.calculateBMI();
                     });
 
-            $scope.encounter = {visitTypeUUID: visitTypeUUID, encounterTypeUUID: encounterTypeUUID, patientUUID: $scope.patient.uuid};
+            $scope.encounter = {visitTypeUuid: visitTypeUuid, encounterTypeUuid: encounterTypeUuid, patientUuid: $scope.patient.uuid};
             spinner.forPromise(encounterObservationsPromise);
         })();
 

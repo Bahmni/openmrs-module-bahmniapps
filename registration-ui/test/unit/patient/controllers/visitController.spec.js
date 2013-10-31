@@ -220,11 +220,11 @@ describe('VisitController', function () {
             scope.saveAndPrint();
 
             expect(scope.encounter.observations.length).toBe(5);
-            expect(scope.encounter.observations).toContain({ conceptUUID: 'b4a52102-c79a-11e2-b0c0-8e397087571c', conceptName: 'REGISTRATION FEES', value: '100' });
-            expect(scope.encounter.observations).toContain({ conceptUUID: 'b4aa3728-c79a-11e2-b0c0-8e397087571c', conceptName: 'WEIGHT', value: null });
-            expect(scope.encounter.observations).toContain({ conceptUUID: 'b499a980-c79a-11e2-b0c0-8e397087571c', conceptName: 'COMMENTS', value: 'fine' })
-            expect(scope.encounter.observations).toContain({ conceptUUID: 'b4acc09c-c79a-11e2-b0c0-8e397087571c', conceptName: 'BMI', value: null });
-            expect(scope.encounter.observations).toContain({ conceptUUID: 'b4a7aa80-c79a-11e2-b0c0-8e397087571c', conceptName: 'HEIGHT', value: null });
+            expect(scope.encounter.observations).toContain({ conceptUuid: 'b4a52102-c79a-11e2-b0c0-8e397087571c', conceptName: 'REGISTRATION FEES', value: '100' });
+            expect(scope.encounter.observations).toContain({ conceptUuid: 'b4aa3728-c79a-11e2-b0c0-8e397087571c', conceptName: 'WEIGHT', value: null });
+            expect(scope.encounter.observations).toContain({ conceptUuid: 'b499a980-c79a-11e2-b0c0-8e397087571c', conceptName: 'COMMENTS', value: 'fine' })
+            expect(scope.encounter.observations).toContain({ conceptUuid: 'b4acc09c-c79a-11e2-b0c0-8e397087571c', conceptName: 'BMI', value: null });
+            expect(scope.encounter.observations).toContain({ conceptUuid: 'b4a7aa80-c79a-11e2-b0c0-8e397087571c', conceptName: 'HEIGHT', value: null });
             expect(visitService.create).toHaveBeenCalledWith(scope.encounter);
         });
 
