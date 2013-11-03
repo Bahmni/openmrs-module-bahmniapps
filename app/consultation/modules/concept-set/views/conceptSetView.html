@@ -1,6 +1,5 @@
 <div>
     <div  ng-repeat="concept in $parent.vitals.conceptSet">
-        <div show-simple-concept></div>
-        <div show-complex-concept></div>
+         <show-concept concept-obs-map="$parent.$parent.vitals.conceptToObservationMap" concept="concept" ></show-concept>
     </div>
 </div>

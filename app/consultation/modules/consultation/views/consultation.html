@@ -52,6 +52,13 @@
 
     </section>
     
+    <section class="block vitals">
+        <h2>Vitals</h2>
+        <div  ng-repeat="concept in $parent.vitals.conceptSet">
+            <show-concept concept-obs-map="$parent.$parent.vitals.conceptToObservationMap" concept="concept" display-type="readonly" ></show-concept>
+        </div>
+    </section>
+    
     <section class="notes">
         <textarea placeholder="Notes: " rows="6"></textarea>
     </section>

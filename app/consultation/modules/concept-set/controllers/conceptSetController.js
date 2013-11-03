@@ -28,31 +28,49 @@ angular.module('opd.conceptSet.controllers')
         }
        // var conceptSetName = $route.current.params.conceptSet;
 
+        $scope.getObsForConceptUuid = function(conceptUuid){
+            if($rootScope.vitals && $rootScope.vitals.conceptToObservationMap) {
+                return  $rootScope.vitals.conceptToObservationMap[conceptUuid];
+            }
+            return {};
+        }
 
         $scope.$on('$destroy', function() {
             console.log($rootScope.vitals);
             $rootScope.vitals.recordedVitals = constructObsList();
         });
 
-    }]).directive('showSimpleConcept',['$rootScope',function(rootScope){
-
-
+    }]).directive('showConcept',['$rootScope',function(rootScope){
+        var obsValueReference = "conceptObsMap[concept.uuid].value";
         return {
-            restrict: 'A',
-            template : '<div ng-show="concept.set == false"><label>{{concept.display}}</label><input type="text" placeholder="{{concept.display}}"'+
-                'ng-model="$parent.$parent.vitals.conceptToObservationMap[concept.uuid].value"></input><span>{{concept.units}}</span></div>'
+            restrict: 'E',
+            scope :{
+                conceptObsMap : "=",
+                displayType:"@",
+                concept:"="
+            },
+            template :
+                '<div ng-switch on="concept.set" >' +
+                    '<div ng-switch-when="false">' +
+                        '<label>{{concept.display}}</label>' +
+                        '<div ng-switch on="displayType">' +
+                            '<span ng-switch-when="readonly">{{'+obsValueReference+'}}</span>'+
+                            '<input ng-switch-default type="text" placeholder="{{concept.display}}" ng-model="'+obsValueReference+'"></input>' +
+                        '</div>'+
+                        '<span>{{concept.units}}</span>'+
+                    '</div>'+
+                    '<div ng-switch-when="true">' +
+                        '<span>{{concept.display}}<span>' +
+                        '<div ng-repeat="concept in concept.setMembers">'+
+                            '<label>{{concept.display}}</label>' +
+                            '<div ng-switch on="displayType">' +
+                                '<span ng-switch-when="readonly">{{'+obsValueReference+'}}</span>'+
+                                '<input ng-switch-default type="text" placeholder="{{concept.display}}" ng-model="'+obsValueReference+'"></input>' +
+                            '</div>'+
+                            '<span>{{concept.units}}</span>'+
+                        '</div>'+
+                    '</div>' +
+                '</div>'
         }
-    }]).directive('showComplexConcept',['$rootScope',function(rootScope){
-    return {
-        restrict: 'A',
-        template : '<div ng-show="concept.set == true">' +
-            '<div>{{concept.display}}<div ng-repeat="concept in concept.setMembers">'+
-                '<div><label>{{concept.display}}</label><input type="text" placeholder="{{concept.display}}"'+
-                'ng-model="$parent.$parent.$parent.vitals.conceptToObservationMap[concept.uuid].value"></input>'+
-                '<span>{{concept.units}}</span>'+
-                '</div>'+
-            '</div></div>'+
-        '</div>'
-    }
-}])
+    }])
 
