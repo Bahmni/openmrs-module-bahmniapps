@@ -4,7 +4,11 @@ angular.module('registration.patient.services')
     .factory('visitService', ['$http', '$rootScope', function ($http, $rootScope) {
     
     var create = function (visit) {
-        return $http.post(constants.emrApiRESTBaseURL + '/encounter', visit, {
+        var visitClone = jQuery.extend({}, visit);
+        visitClone.observations.forEach(function(obs) {
+            delete obs['conceptName'];
+        });
+        return $http.post(constants.emrApiRESTBaseURL + '/encounter', visitClone, {
             withCredentials: true
         });
     };
