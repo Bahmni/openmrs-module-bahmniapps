@@ -57,18 +57,18 @@ angular.module('opd.conceptSet.controllers')
             template :
                 '<div ng-switch on="concept.set" >' +
                     '<div class="form-field" ng-switch-when="false" ng-hide="emptyObsCheck && !'+getObsValueReference("concept")+'">' +
-                        '<div class="field-attribute"><label>{{concept.display}}</label><div><label ng-show="concept.units">({{concept.units}})</label></div></div>' +
+                        '<div class="field-attribute"><label>{{concept.display}}</label><span class="label-add-on" ng-show="concept.units">({{concept.units}})</span></div>' +
                         '<div class="field-value" ng-switch on="displayType">' +
-                            '<span ng-switch-when="readonly">{{'+getObsValueReference("concept")+'}}</span>'+
+                            '<span ng-switch-when="readonly" class="value-text-only">{{'+getObsValueReference("concept")+'}}</span>'+
                             '<input ng-switch-default type="text" placeholder="{{concept.display}}" ng-model="'+getObsValueReference("concept")+'"></input>' +
                         '</div>'+
                     '</div>'+
-                    '<fieldset ng-switch-when="true"><legend ng-switch on="$index"><span>{{concept.display}}</span></legend><div class="form-field-inline">' +
+                    '<fieldset ng-switch-when="true"><div class="form-field">' +
                         '<div class="form-field" ng-repeat="childConcept in concept.setMembers" ng-hide="emptyObsCheck && !'+getObsValueReference("childConcept")+'">' +
-
-                            '<div class="field-attribute"><label>{{childConcept.display}}</label><div><label ng-show="concept.units">({{concept.units}})</label></div>'+'</div>' +
+                            '<div ng-switch on="$index" ><legend ng-switch-when="0" class="mylegend" ><strong>{{concept.display}}</strong></legend></div>'+
+                            '<div class="field-attribute"><label>{{childConcept.display}}</label><span ng-show="concept.units">({{concept.units}})</span>'+'</div>' +
                             '<div  class="field-value" ng-switch on="displayType">' +
-                                '<span ng-switch-when="readonly">{{'+getObsValueReference("childConcept")+'}}</span>'+
+                                '<span ng-switch-when="readonly" class="value-text-only">{{'+getObsValueReference("childConcept")+'}}</span>'+
                                 '<input ng-switch-default type="text" placeholder="{{childConcept.display}}" ng-model="'+getObsValueReference("childConcept")+'"></input>' +
                             '</div>'+
                         '</div>'+

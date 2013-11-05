@@ -54,7 +54,7 @@
     
     <section class="block vitals">
         <h2>Vitals</h2>
-        <div  ng-repeat="concept in $parent.vitals.conceptSet">
+        <div  class="form" ng-repeat="concept in $parent.vitals.conceptSet">
             <show-concept empty-obs-check="true" concept-obs-map="$parent.$parent.vitals.conceptToObservationMap" concept="concept" display-type="readonly" ></show-concept>
         </div>
     </section>

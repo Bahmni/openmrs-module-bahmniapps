@@ -15,12 +15,13 @@ $fontPath: "../components/openmrs-uicommons/omod/src/main/webapp/resources/fonts
 
 // JSS css files
 @import "opd/jss-ui-common";
-@import "opd/layout.scss";
+@import "opd/layout";
 @import "opd/patientSearch";
 @import "opd/consultation";
 @import "opd/investigation";
 @import "opd/diagnosis";
 @import "opd/treatment";
 @import "bed-management/wardLayout";
+@import "opd/vitals";
 
 
