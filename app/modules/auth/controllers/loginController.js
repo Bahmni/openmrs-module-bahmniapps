@@ -6,7 +6,7 @@ angular.module('bahmnihome')
         var loginPagePath = "/login";
 
         var redirectToLandingPageIfAlreadyAuthenticated = function() {
-            sessionService.get().success(function (data) {
+            sessionService.getSession().success(function (data) {
                 if (data.authenticated) {
                     $location.path(landingPagePath);
                 }
@@ -19,23 +19,25 @@ angular.module('bahmnihome')
 
         $scope.login = function () {
             $scope.errorMessage = null;
-            var createSessionPromise = sessionService.create($scope.username, $scope.password).success(function (data) {
-                if (data.authenticated) {
+            var loginPromise = sessionService.loginUser($scope.username, $scope.password).then(
+                function() {
                     $location.path(landingPagePath);
                     $rootScope.$broadcast('event:auth-loggedin');
-                } else {
-                    $scope.errorMessage = "Authentication failed. Please try again."
-                    $scope.resetForm();
+                }, 
+                function(error) {
+                    $scope.errorMessage = error;
                 }
-            });
-            spinner.forPromise(createSessionPromise);
+            );
+            spinner.forPromise(loginPromise);
         }
 
         $scope.logout = function() {
             $rootScope.errorMessage = null;
             sessionService.destroy().then(
                 function() {
-                    $location.url(loginPagePath);
+                    $rootScope.currentUser = null;
+                    //$location.url(loginPagePath);
+                    $window.location = "/home";
                 }
             );
         }

@@ -2,7 +2,7 @@
 
 
 angular
-    .module('bahmnihome', ['http-auth-interceptor', 'httpErrorInterceptor', 'infrastructure'])
+    .module('bahmnihome', ['http-auth-interceptor', 'httpErrorInterceptor', 'infrastructure', 'ngCookies'])
     .config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
         $routeProvider.when('/login', 
             { 
@@ -12,7 +12,8 @@ angular
         $routeProvider.when('/dashboard', 
             {
                 templateUrl: 'modules/dashboard/views/dashboard.html', 
-                controller: 'DashboardController'
+                controller: 'DashboardController',
+                resolve: {initialization: 'initialization'}
             });
         $routeProvider.otherwise({redirectTo: '/login'});
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;

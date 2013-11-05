@@ -3,12 +3,18 @@
 
         <div class="apps">
             <ul>
-                <li>
+
+                <li ng-repeat="extn in appExtensions"> 
+                     <a ng-click="openApp(extn.url)" class="button app big"><i class="{{extn.icon}}"></i>{{extn.label}}</a>
+                </li>
+
+               <!--  <li>
                     <a ng-click="openApp('registration/#/search')" class="button app big"><i class="icon-user"></i>Registration</a>
                 </li>
                 <li>
                     <a ng-click="openApp('opd/patients')" class="button app big"><i class="icon-user-md"></i>OPD</a>
-                </li>
+                </li> -->
+
             </ul>
         </div>
     

@@ -1,24 +1,14 @@
 'use strict';
 
 angular.module('bahmnihome')
-    .factory('initialization', ['$rootScope', '$q', 'configurationService', 'login', 'spinner',
-        function ($rootScope, $q, configurationService, login, spinner) {
-            var initializationPromiseDefer = $q.defer();
-
-            var loadData = function () {
-                var configurationPromise = configurationService.getAll().success(function (data) {
-                    $rootScope.bahmniConfiguration = data;
-                });
-
-                return $q.all([configurationPromise]);
-            };
-
-            login.then(function () {
-                var loadDataPromise = loadData();
-                spinner.forPromise(loadDataPromise);
-                loadDataPromise.then(function () {
-                    initializationPromiseDefer.resolve();
-                });
+    .factory('initialization', ['$rootScope', '$q', 'appService', 'spinner', 'sessionService', 
+        function ($rootScope, $q, appService, spinner, sessionService) {
+            var deferrable = $q.defer();
+            var promises = [];
+            promises.push(sessionService.loadCredentials());
+            promises.push(appService.loadAppExtensions('home'));
+            $q.all(promises).then(function() {
+                deferrable.resolve();
             });
-            return initializationPromiseDefer.promise;
+            return deferrable.promise;
         }]);
