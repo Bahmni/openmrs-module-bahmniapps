@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('opd.consultation.controllers').controller('ConsultationNavigationController', 
-    ['$scope', '$rootScope', '$location', '$route', '$window', 'sessionService', 
+angular.module('opd.consultation.controllers').controller('ConsultationNavigationController',
+    ['$scope', '$rootScope', '$location', '$route', '$window', 'sessionService',
     function ($scope, $rootScope, $location, $route, $window, sessionService) {
     //$scope.mainButtonText = "Consultation";
     $scope.currentBoard = null;
@@ -29,6 +29,10 @@ angular.module('opd.consultation.controllers').controller('ConsultationNavigatio
         );
     }
 
+    var stringContains = function(sourceString,pattern){
+        return (sourceString.search(pattern) >= 0);
+    }
+
     var initialize = function () {
         var currentPath = $location.path();
         // var pathInfo = currentPath.substr(currentPath.lastIndexOf('/') + 1);
@@ -48,17 +52,23 @@ angular.module('opd.consultation.controllers').controller('ConsultationNavigatio
         var urlParts = url.split('/');
         var index = urlParts.indexOf('visit');
         var boards = $scope.availableBoards.filter(function (board) {
-            return board.url === urlParts[index + 2];
+       //     return board.url === urlParts[index + 2];
+            return stringContains(url,board.url);
         });
-        return boards.length > 0 ? boards[0] : null;
+        return boards.length > 0 ? boards[1] : null;
     }
 
     var getUrl = function (board) {
         if (board.url === 'bed-management' && $rootScope.bedDetails) {
             return $location.url("/visit/" + $rootScope.visit.uuid + "/bed-management/wardLayout/" + $rootScope.bedDetails.wardUuid);
         }
+
+
+
         return $location.url("/visit/" + $rootScope.visit.uuid + "/" + board.url);
     }
+
+
 
     var buttonClickAction = function (board) {
         if ($scope.currentBoard) {
