@@ -1,7 +1,7 @@
 .vitals{
 	padding:20px 0px 10px 10px;
 	.form-field{
-		margin-bottom: 10px;
+		padding-bottom: 10px;
 	}
 	.field-attribute{
 		width:18em;
@@ -16,19 +16,32 @@
     }
     fieldset{
     	margin-top:10px;
-    	border:1px solid #cecece;
+        margin-bottom:10px;
     	position:relative;
-    	padding-top:15px;
     	width:96%;
     	legend{
     		position:absolute;
     		top:-14px;
     		left:20px;
     		background:#fff;
-    		padding:5px 2px;
+    		padding:5px 10px;
     		font-family: OpenSansBold;
     		color:#A8A5A5;
     	}
     }
+    .form-field-group{
+            &:first-child{
+                padding-top:15px;
+                border-top:1px solid #cecece;
+                border-right:1px solid #cecece;
+                border-left:1px solid #cecece;
+            }
+            &:last-child{
+                border-bottom:1px solid #cecece;
+                border-right:1px solid #cecece;
+                border-left:1px solid #cecece;
+                padding-bottom:15px;
+            }
+        }
 
 }

@@ -64,7 +64,7 @@ angular.module('opd.conceptSet.controllers')
                         '</div>'+
                     '</div>'+
                     '<fieldset ng-switch-when="true"><div class="form-field">' +
-                        '<div class="form-field" ng-repeat="childConcept in concept.setMembers" ng-hide="emptyObsCheck && !'+getObsValueReference("childConcept")+'">' +
+                        '<div class="form-field form-field-group" ng-repeat="childConcept in concept.setMembers" ng-hide="emptyObsCheck && !'+getObsValueReference("childConcept")+'">' +
                             '<div ng-switch on="$index" ><legend ng-switch-when="0" class="mylegend" ><strong>{{concept.display}}</strong></legend></div>'+
                             '<div class="field-attribute"><label>{{childConcept.display}}</label><span ng-show="concept.units">({{concept.units}})</span>'+'</div>' +
                             '<div  class="field-value" ng-switch on="displayType">' +
