@@ -49,6 +49,14 @@ form{
   }
 }
 .form-field-inline{
+  .form-field {
+    float: left;
+    display: inline;
+    float: left;
+    width: 50%;
+    margin: 0;
+    margin-bottom: 10px;
+  }
   p{
     float:left;
     margin-left:20px;
