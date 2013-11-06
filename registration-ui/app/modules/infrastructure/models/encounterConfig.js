@@ -14,6 +14,14 @@ var EncounterConfig = (function() {
       }
     },
 
+    getVistTypesAsArray: function() {
+      var visitTypesArray = [];
+      for(var name in this.visitTypes) {
+          visitTypesArray.push({name: name, uuid: this.visitTypes[name]});
+      }
+      return visitTypesArray;
+    },
+
     getConceptUUID: function(conceptName) {
       var concept = this.conceptData[conceptName];
       return  concept !== undefined ?  concept.uuid : null;

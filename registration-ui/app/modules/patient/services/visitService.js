@@ -9,7 +9,15 @@ angular.module('registration.patient.services')
         });
     };
 
+    var search = function(parameters) {
+        return $http.get(constants.webServiceRestBaseURL + '/visit', {
+            params: parameters,
+            withCredentials: true
+        });
+    };
+
     return {
-        create: create
+        create: create,
+        search: search
     };
 }]);

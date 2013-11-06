@@ -53,7 +53,8 @@
             <div ng-include="patientCommon()" ng-controller="PatientCommonController"></div>
             <div class="submit-btn-container">
                 <div class="right">
-                    <button type="submit" class="confirm">Next</button>
+                    <button type="submit" class="confirm" ng-click="setSubmitSource('save')">Save</button>
+                    <div split-button options="visitTypes" option-text="startVisitButtonText" option-click="startVisit"></div>
                 </div>
             </div>
         </form>

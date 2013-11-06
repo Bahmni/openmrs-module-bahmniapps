@@ -29,11 +29,12 @@
         <div class="submit-btn-container">
             <div class="right">
                 <button type="button" ng-click="back()" ng-show="showBackButton()">Back to Search Results</button>
-                <button type="submit" class="right" ng-click="setUpdateSource('save')">Save</button>
-                <button type="submit" ng-click="setUpdateSource('print')">Print</button>
-                <div split-button options="visitTypes",
-                                  option-text="startVisitButtonText"
-                                  option-click="startVisit">                    
+                <button type="submit" class="confirm right" ng-click="setSubmitSource('save')">Save</button>
+                <button type="submit" ng-click="setSubmitSource('print')">Print</button>
+                <div ng-switch="hasActiveVisit">
+                <button ng-switch-when="true" ng-click="setSubmitSource('enterVisitDetails')">Enter visit details</button>
+                    <div split-button options="visitTypes" option-text="startVisitButtonText" option-click="startVisit"
+                         ng-switch-default></div>
                 </div>
             </div>
         </div>

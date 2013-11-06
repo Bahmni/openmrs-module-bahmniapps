@@ -32,7 +32,8 @@ describe('CreatePatientController', function () {
                 patientService: patientService,
                 $location: location,
                 Preferences: preferences,
-                spinner: spinner
+                spinner: spinner,
+                $rootScope: {encounterConfiguration: new EncounterConfig({visitTypes: {}})}
             });
         });
     }
@@ -59,23 +60,29 @@ describe('CreatePatientController', function () {
                 setupController();
             });
 
-            it('should redirect to new visit page', function() {
-                scope.create()
+            describe('when submit source is startVisit', function(){
+                beforeEach(function(){
+                    scope.submitSource = 'startVisit';
+                });
 
-                createPromise.callSuccessCallBack(createPatientResponse);
+                it('should redirect to new visit page', function() {
+                    scope.create()
 
-                expect(location.path).toHaveBeenCalledWith("/visit");
-            })
+                    createPromise.callSuccessCallBack(createPatientResponse);
 
-            it('should set registration date to today', function() {
-                var today = new Date("01-10-2012");
-                spyOn(dateModule, 'now').andReturn(today);
-                scope.create()
+                    expect(location.path).toHaveBeenCalledWith("/visit");
+                });
 
-                createPromise.callSuccessCallBack(createPatientResponse);
+                it('should set registration date to today', function() {
+                    var today = new Date("01-10-2012");
+                    spyOn(dateModule, 'now').andReturn(today);
+                    scope.create()
 
-                expect(scope.patient.registrationDate).toBe(today);
-            })
+                    createPromise.callSuccessCallBack(createPatientResponse);
+
+                    expect(scope.patient.registrationDate).toBe(today);
+                });
+            });
 
             it('should update preferences with current values of centerID and hasOldIdentifier', function () {
                 scope.hasOldIdentifier = true;
