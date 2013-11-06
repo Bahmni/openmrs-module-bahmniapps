@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('registration.patient.controllers')
-    .controller('EditPatientController', ['$scope', '$rootScope', 'patientService', '$location', 'Preferences', '$route', 'openmrsPatientMapper', '$window', 'spinner', 'printer',
-        function ($scope, $rootScope, patientService, $location, preferences, $route, patientMapper, $window, spinner, printer) {
+    .controller('EditPatientController', ['$scope', '$rootScope', 'patientService', 'visitService','$location', 'Preferences', '$route', 'openmrsPatientMapper', '$window', 'spinner', 'printer',
+        function ($scope, $rootScope, patientService, visitService,$location, preferences, $route, patientMapper, $window, spinner, printer) {
             var uuid;
             $scope.patient = {};
             (function () {
@@ -13,6 +13,23 @@ angular.module('registration.patient.controllers')
                 });
                 spinner.forPromise(getPatientPromise);
             })();
+
+            $scope.visitTypes = (function(){
+                var visitTypes = [];
+                for(var name in $rootScope.encounterConfiguration.visitTypes) {
+                    visitTypes.push({name: name, uuid: $rootScope.encounterConfiguration.visitTypes[name]});
+                }
+                return visitTypes;
+            })();
+            
+            $scope.startVisit = function(visitType) {
+                $scope.setUpdateSource('startVisit');
+                $scope.selectedVisitType = visitType;
+            };
+
+            $scope.startVisitButtonText = function(visitType) {
+                return "Start " + visitType.name + " visit";
+            };
 
             $scope.patientCommon = function () {
                 return $route.routes['/patientcommon'].templateUrl;
@@ -27,12 +44,17 @@ angular.module('registration.patient.controllers')
                     if ($scope.updateSource == 'print') {
                         printer.print('registrationCard');
                         spinner.hide();
+                    } else if ($scope.updateSource == 'startVisit') {                        
+                        var visit = {patient: {uuid: data.uuid}, visitType: $scope.selectedVisitType, startDatetime: new Date(), encounters: []}
+                        visitService.create(visit).success(function(){
+                            $scope.patient.uuid = data.uuid;
+                            $scope.patient.name = data.name;
+                            patientService.rememberPatient($scope.patient);
+                            $location.path("/visit");
+                        });
                     } else {
-                        $scope.patient.uuid = data.uuid;
-                        $scope.patient.name = data.name;
-                        patientService.rememberPatient($scope.patient);
-                        $location.path("/visit");
-                    }
+                        spinner.hide();
+                    } 
                     $scope.updateSource = null;
                     $rootScope.server_error = null;
                 });

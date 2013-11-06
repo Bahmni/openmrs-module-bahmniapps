@@ -38,6 +38,41 @@ angular.module('registration.util', [])
             });
         }
     })
+    .directive('splitButton', function ($parse) {
+        var link = function($scope, element) {            
+            var toggleButton = element.find('.toggle-button');
+
+            toggleButton.on('click', function(){
+                element.find('.secondaryOption').toggle();
+            });
+
+            $(document).on('click', function(e){
+                var $clicked = $(e.target);
+                if (!$clicked.closest(element).length) {
+                   element.find('.secondaryOption').hide(); 
+                }
+            });
+        };
+
+        return {
+            restrict: 'A',
+            template: '<ul>' +
+                            '<li ng-repeat="option in options"' +
+                                'ng-class="{primaryOption: $index == 0, secondaryOption: $index > 0}"' +
+                                'ng-show="$index == 0"' +
+                             '>' +
+                                '<button ng-click="optionClick()(option)">{{optionText()(option)}}</a>' +
+                            '</li>' +
+                        '</ul>' +
+                        '<button class="toggle-button" type="button">+</button>',
+            link: link,
+            scope: {
+                options: '=',
+                optionText: '&',
+                optionClick: '&'
+            }
+        };
+    })
     .directive('myAutocomplete', function ($parse) {
         return function (scope, element, attrs) {
             var ngModel = $parse(attrs.ngModel);

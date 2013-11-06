@@ -29,8 +29,12 @@
         <div class="submit-btn-container">
             <div class="right">
                 <button type="button" ng-click="back()" ng-show="showBackButton()">Back to Search Results</button>
-                <button type="submit" class="confirm right" ng-click="setUpdateSource('next')">Next</button>
+                <button type="submit" class="right" ng-click="setUpdateSource('save')">Save</button>
                 <button type="submit" ng-click="setUpdateSource('print')">Print</button>
+                <div split-button options="visitTypes",
+                                  option-text="startVisitButtonText"
+                                  option-click="startVisit">                    
+                </div>
             </div>
         </div>
     </form>

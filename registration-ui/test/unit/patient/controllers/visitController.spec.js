@@ -5,7 +5,7 @@ describe('VisitController', function () {
     var rootScope;
     var $controller;
     var success;
-    var visitService;
+    var encounterService;
     var patientService;
     var patient;
     var date;
@@ -73,9 +73,9 @@ describe('VisitController', function () {
         success = jasmine.createSpy();
         scope.encounterConfiguration = angular.extend(new EncounterConfig(), sampleConfig);
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
-        visitService = jasmine.createSpyObj('visitService', ['create', 'get']);
+        encounterService = jasmine.createSpyObj('encounterService', ['create', 'get']);
         getPromise = specUtil.createServicePromise('get');
-        visitService.get.andReturn(getPromise);
+        encounterService.get.andReturn(getPromise);
     }]));
 
     describe('initialization', function () {
@@ -84,7 +84,7 @@ describe('VisitController', function () {
             $controller('VisitController', {
                 $scope: scope,
                 spinner: spinner,
-                visitService: visitService,
+                encounterService: encounterService,
                 patientService: patientService,
             });
             getPromise.callSuccessCallBack(sampleEncounter);
@@ -98,7 +98,7 @@ describe('VisitController', function () {
             $controller('VisitController', {
                 $scope: scope,
                 spinner: spinner,
-                visitService: visitService,
+                encounterService: encounterService,
                 patientService: patientService
             });
             getPromise.callSuccessCallBack(sampleEncounter);
@@ -113,7 +113,7 @@ describe('VisitController', function () {
             $controller('VisitController', {
                 $scope: scope,
                 patientService: patientService,
-                visitService: visitService,
+                encounterService: encounterService,
                 $location: $location,
                 spinner: spinner,
                 date: date
@@ -199,13 +199,13 @@ describe('VisitController', function () {
             $controller('VisitController', {
                 $scope: scope,
                 patientService: patientService,
-                visitService: visitService,
+                encounterService: encounterService,
                 $location: $location,
                 spinner: spinner,
                 date: date
             });
             getPromise.callSuccessCallBack(sampleEncounter);
-            visitService.create.andCallFake(stubOnePromise);
+            encounterService.create.andCallFake(stubOnePromise);
             patientService.clearPatient.andCallFake(stubOnePromise);
             spyOn(scope, 'validate').andCallFake(stubOnePromise);
         });
@@ -225,7 +225,7 @@ describe('VisitController', function () {
             expect(scope.encounter.observations).toContain({ conceptUuid: 'b499a980-c79a-11e2-b0c0-8e397087571c', conceptName: 'COMMENTS', value: 'fine' })
             expect(scope.encounter.observations).toContain({ conceptUuid: 'b4acc09c-c79a-11e2-b0c0-8e397087571c', conceptName: 'BMI', value: null });
             expect(scope.encounter.observations).toContain({ conceptUuid: 'b4a7aa80-c79a-11e2-b0c0-8e397087571c', conceptName: 'HEIGHT', value: null });
-            expect(visitService.create).toHaveBeenCalledWith(scope.encounter);
+            expect(encounterService.create).toHaveBeenCalledWith(scope.encounter);
         });
 
         describe("once saved and printed", function () {
@@ -233,7 +233,7 @@ describe('VisitController', function () {
                 $controller('VisitController', {
                     $scope: scope,
                     patientService: patientService,
-                    visitService: visitService,
+                    encounterService: encounterService,
                     $location: $location,
                     spinner: spinner,
                     date: date
@@ -278,13 +278,13 @@ describe('VisitController', function () {
         beforeEach(function () {
             $controller('VisitController', {
                 $scope: scope,
-                visitService: visitService,
+                encounterService: encounterService,
                 patientService: patientService,
                 spinner: spinner,
             });
             getPromise.callSuccessCallBack(sampleEncounter);
 
-            visitService.create.andCallFake(stubOnePromise);
+            encounterService.create.andCallFake(stubOnePromise);
             patientService.clearPatient.andCallFake(stubOnePromise);
             scope.patient = {uuid: "21308498-2502-4495-b604-7b704a55522d"}
             spyOn(scope, 'print').andCallFake(stubOnePromise);
@@ -336,7 +336,7 @@ describe('VisitController', function () {
             $controller('VisitController', {
                 $scope: scope,
                 spinner: spinner,
-                visitService: visitService,
+                encounterService: encounterService,
                 patientService: patientService
             });
             getPromise.callSuccessCallBack(sampleEncounter);

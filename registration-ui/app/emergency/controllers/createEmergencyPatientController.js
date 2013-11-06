@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('registration.emergency.controllers')
-    .controller('CreateEmergencyPatientController', ['$scope', '$location', 'patient', 'patientService', 'visitService', 'Preferences', 'addressAttributeService', 'spinner',
-    function ($scope, $location, patientModel, patientService, visitService, preferences, addressAttributeService, spinner) {
+    .controller('CreateEmergencyPatientController', ['$scope', '$location', 'patient', 'patientService', 'encounterService', 'Preferences', 'addressAttributeService', 'spinner',
+    function ($scope, $location, patientModel, patientService, encounterService, preferences, addressAttributeService, spinner) {
         var init = function(){
             $scope.patient = patientModel.create();
             $scope.centers = constants.centers;
@@ -29,7 +29,7 @@ angular.module('registration.emergency.controllers')
 
         var createVisit = function() {
             $scope.encounter.patientUuid = $scope.patient.uuid;
-            return visitService.create($scope.encounter).success(function(data) {
+            return encounterService.create($scope.encounter).success(function(data) {
                 $location.path("/summary");
             });
         };

@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('registration.patient.controllers')
-    .controller('VisitController', ['$scope', '$location', 'patientService', 'visitService', 'bmi', 'date', '$window', '$route', 'spinner', '$timeout', '$q', 'printer',
-                    function ($scope, $location, patientService, visitService, bmiModule, date, $window, $route, spinner, $timeout, $q, printer) {
+    .controller('VisitController', ['$scope', '$location', 'patientService', 'encounterService', 'bmi', 'date', '$window', '$route', 'spinner', '$timeout', '$q', 'printer',
+                    function ($scope, $location, patientService, encounterService, bmiModule, date, $window, $route, spinner, $timeout, $q, printer) {
         (function () {
             $scope.patient = patientService.getPatient();
 
             var visitTypeUuid = $scope.encounterConfiguration.visitTypeId($scope.patient.isNew);
             var encounterTypeUuid = $scope.encounterConfiguration.encounterTypes[constants.encounterType.registration];
-            var encounterObservationsPromise = visitService.get($scope.patient.uuid, visitTypeUuid, encounterTypeUuid)
+            var encounterObservationsPromise = encounterService.get($scope.patient.uuid, visitTypeUuid, encounterTypeUuid)
                     .success(function (data) {
                         $scope.registrationObservations = new RegistrationObservations(data, $scope.patient.isNew, $scope.encounterConfiguration);
                         $scope.obs = {};
@@ -54,7 +54,7 @@ angular.module('registration.patient.controllers')
 
         $scope.save = function () {
             $scope.encounter.observations = $scope.registrationObservations.updateObservations($scope.obs);
-            var createPromise = visitService.create($scope.encounter);
+            var createPromise = encounterService.create($scope.encounter);
             spinner.forPromise(createPromise);
             return createPromise;
         }

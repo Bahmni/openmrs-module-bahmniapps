@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Patient visit', function () {
+describe('EncounterService', function () {
 
     var $http,
         mockHttp = {defaults: {headers: {common: {'X-Requested-With': 'present'}} },
@@ -11,7 +11,7 @@ describe('Patient visit', function () {
         $provide.value('$http', mockHttp);
     }));
 
-    it('Should create a visit', inject(['visitService', function (visitService) {
+    it('should create a encounter', inject(['encounterService', function (encounterService) {
         var openmrsUrl = 'http://blah.com';
         constants.openmrsUrl = openmrsUrl;
         var visitJson = {
@@ -34,7 +34,7 @@ describe('Patient visit', function () {
             ]
         }
 
-        var results = visitService.create(visitJson);
+        var results = encounterService.create(visitJson);
 
         expect(mockHttp.post).toHaveBeenCalled();
         expect(mockHttp.post.mostRecentCall.args[0]).toBe(constants.emrApiRESTBaseURL +  '/encounter');

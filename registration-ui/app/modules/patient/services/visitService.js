@@ -1,28 +1,15 @@
 'use strict';
 
 angular.module('registration.patient.services')
-    .factory('visitService', ['$http', '$rootScope', function ($http, $rootScope) {
+    .factory('visitService', ['$http', function ($http) {
     
     var create = function (visit) {
-        var visitClone = jQuery.extend({}, visit);
-        visitClone.observations.forEach(function(obs) {
-            delete obs['conceptName'];
-        });
-        return $http.post(constants.emrApiRESTBaseURL + '/encounter', visitClone, {
+        return $http.post(constants.webServiceRestBaseURL + '/visit', visit, {
             withCredentials: true
         });
     };
 
-    var get =  function (patientUuid, visitTypeUuid, encounterTypeUuid) {
-        var url = constants.emrApiRESTBaseURL + "/encounter";
-        return $http.get(url, {
-            params: {"patientUuid": patientUuid, "visitTypeUuid" : visitTypeUuid, "encounterTypeUuid" : encounterTypeUuid},
-            withCredentials: true
-        });
-    }
-
     return {
-        create: create,
-        get : get
+        create: create
     };
 }]);
