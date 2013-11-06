@@ -3,6 +3,7 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
         var investigations = [];
         var treatmentDrugs = [];
         var diagnoses = [];
+        var labResults = [];
 
         var opdEncounter = visit.encounters.filter(function (encounter) {
             return encounter.encounterType.uuid === encounterConfig.getOpdConsultationEncounterUuid();
@@ -17,6 +18,7 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
                     isSet: testOrder.concept.set || false, orderTypeUuid: testOrder.orderType.uuid };
             });
 
+            labResults = new Bahmni.Opd.LabResultsMapper().map(opdEncounter);
 
             var drugOrders = opdEncounter.orders.filter(function (order) {
                 return  order.orderType.display == Bahmni.Opd.Constants.drugOrderType;
@@ -48,9 +50,11 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
         return {
             investigations: investigations,
             treatmentDrugs: treatmentDrugs,
-            diagnoses:diagnoses
+            diagnoses:diagnoses,
+            labResults: labResults,
         };
     };
+
 
     var calculateDosagedays = function (endDate, startDate) {
         var differenceInTime = Math.abs(new Date(endDate) - new Date(startDate));
@@ -109,5 +113,6 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
         })
         return diagnoses;
     }
+
 
 };
