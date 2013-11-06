@@ -13,14 +13,28 @@ angular.module('bahmni.common.patient.services')
         };
 
         var getAllActivePatients = function () {
-            return $http.get("/openmrs/ws/rest/v1/bahmnicore/patient/active" , {
+            return $http.get("/openmrs/ws/rest/v1/bahmnicore/sql?q=emrapi.sqlSearch.activePatients" , {
                 method:"GET",
                 withCredentials: true
             })
         };
 
         var getAllActivePatientsForAdmission = function () {
-            return $http.get("/openmrs/ws/rest/v1/bahmnicore/patient/toadmit" , {
+            return $http.get("/openmrs/ws/rest/v1/bahmnicore/sql?q=emrapi.sqlSearch.patientsToAdmit" , {
+                method:"GET",
+                withCredentials: true
+            })
+        };
+
+        var getAdmittedPatients = function () {
+            return $http.get("/openmrs/ws/rest/v1/bahmnicore/sql?q=emrapi.sqlSearch.admittedPatients" , {
+                method:"GET",
+                withCredentials: true
+            })
+        };
+
+        var getAllPatientsToBeDischarged = function () {
+            return $http.get("/openmrs/ws/rest/v1/bahmnicore/sql?q=emrapi.sqlSearch.patientsToDischarge" , {
                 method:"GET",
                 withCredentials: true
             })
@@ -29,7 +43,9 @@ angular.module('bahmni.common.patient.services')
         return {
             getPatient: getPatient,
             getAllActivePatients : getAllActivePatients,
-            getAllActivePatientsForAdmission : getAllActivePatientsForAdmission
+            getAllActivePatientsForAdmission : getAllActivePatientsForAdmission,
+            getAdmittedPatients : getAdmittedPatients,
+            getAllPatientsToBeDischarged : getAllPatientsToBeDischarged
         };
         
     }]);

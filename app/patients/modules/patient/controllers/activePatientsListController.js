@@ -5,8 +5,10 @@ angular.module('opd.patient.controllers')
 
     $scope.patientTypes = [
         {name:'ALL', display:'All active patients', visible: true, retriever:'allActivePatients'},
-        {name:'TO_ADMIT', display:'Patients to be admitted', visible: true, retriever:'activePatientsForAdmission'}
-    ]; 
+        {name:'TO_ADMIT', display:'Patients to be admitted', visible: true, retriever:'activePatientsForAdmission'},
+        {name:'ADMITTED', display:'All admitted patients', visible: true, retriever:'admittedPatients'},
+        {name:'TO_DISCHARGE', display:'Patients to be discharged', visible: true, retriever:'patientsToBeDischarged'}
+    ];
 
     var retriever = {};
     var handlePatientList = function(patientList, callback) {
@@ -32,6 +34,16 @@ angular.module('opd.patient.controllers')
     };
     retriever.activePatientsForAdmission = function (afterRetrieveCallback) {
         patientService.getAllActivePatientsForAdmission().success(function (data) {
+            handlePatientList(data, afterRetrieveCallback);
+        });
+    };
+    retriever.admittedPatients = function (afterRetrieveCallback) {
+        patientService.getAdmittedPatients().success(function (data) {
+            handlePatientList(data, afterRetrieveCallback);
+        });
+    };
+    retriever.patientsToBeDischarged = function (afterRetrieveCallback) {
+        patientService.getAllPatientsToBeDischarged().success(function (data) {
             handlePatientList(data, afterRetrieveCallback);
         });
     };
