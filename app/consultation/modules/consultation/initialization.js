@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('opd.consultation').factory('initialization',
-    ['$rootScope', '$q', '$route', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'dispositionService','BedService', 'ConceptSetService', 'authenticator',
-    function ($rootScope, $q, $route, configurationService, visitService, patientService, patientMapper, dispositionService, bedService, conceptSetService, authenticator) {
+    ['$rootScope', '$q', '$route', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'dispositionService','BedService', 'ConceptSetService', 'authenticator', 'appService',
+    function ($rootScope, $q, $route, configurationService, visitService, patientService, patientMapper, dispositionService, bedService, conceptSetService, authenticator, appService) {
         var initializationPromise = $q.defer();
         var dispositionNoteConcept;
 
@@ -71,11 +71,13 @@ angular.module('opd.consultation').factory('initialization',
         }        
 
         authenticator.authenticateUser().then(function () {
-            var configPromise = getConsultationConfigs();
-            configPromise.then(function() {
-                initializationPromise.resolve();
+            appService.initialize('clinical').then(function() {
+                var configPromise = getConsultationConfigs();
+                configPromise.then(function() {
+                    initializationPromise.resolve();
+                });
             });
-        });
+         });
 
         return initializationPromise.promise;
     }]
