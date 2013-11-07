@@ -4,23 +4,17 @@ angular.module('opd.bedManagement.controllers')
     .controller('BedManagementController', ['$scope', '$rootScope', '$location', 'WardService', 'BedService', function ($scope, $rootScope, $location, wardService, bedService) {
         $scope.wards = null;
         $scope.currentView = "wards";
+        $scope.layout = [];
+        $scope.bedLayouts = [];
+        $scope.bed = null;
+        var maxX = 1;
+        var maxY = 1;
+        var minX = 1;
+        var minY = 1;
         var currentWardUuid = null;
 
-        var loadAllWards = function () {
-            currentWardUuid = null;
-            wardService.getWardsList().success(function (wardsList) {
-                $scope.wards = wardsList.results;
-            });
-        };
-
-        $scope.showWardLayout = function (wardUuid) {
-            //$location.url("/visit/" + $rootScope.visit.uuid + "/bed-management/wardLayout/" + wardUuid.uuid);
-            currentWardUuid = wardUuid;
-            $scope.currentView = "wardLayout";
-            $scope.getBedsForWard(wardUuid);
-        };
-
         var init = function () {
+            $('.bed-info').hide();
             if ($rootScope.bedDetails && $rootScope.bedDetails.wardUuid) {
                 $scope.showWardLayout($rootScope.bedDetails.wardUuid);
             } else {
@@ -28,14 +22,16 @@ angular.module('opd.bedManagement.controllers')
             }
         };
 
+        $scope.showWardLayout = function (wardUuid) {
+            currentWardUuid = wardUuid;
+            $scope.layout = [];
+            $scope.bedLayouts = [];
+            $scope.bed = null;
+            maxX = maxY = minX = minY = 1;
+            $scope.currentView = "wardLayout";
+            getBedsForWard(wardUuid);
+        };
 
-        $scope.layout = [];
-        $scope.result = [];
-        $scope.bed = null;
-
-//        var uuid = $route.current.params.wardId;
-
-        $('.bed-info').hide();
         $scope.getBedDetails = function (cell) {
             $('.bed-info').hide();
             $scope.bed = cell;
@@ -57,7 +53,7 @@ angular.module('opd.bedManagement.controllers')
                 $rootScope.bed = bed.bed;
                 $scope.layout = [];
                 $rootScope.getBedDetailsForPatient($scope.patient.uuid);
-                $scope.getBedsForWard(currentWardUuid);
+                getBedsForWard(currentWardUuid);
                 $scope.confirmationMessage = "Bed " + bed.bed.bedNumber + " is assigned successfully";
                 $('.bed-info').hide();
             });
@@ -67,23 +63,41 @@ angular.module('opd.bedManagement.controllers')
             return $rootScope.bedDetails;
         };
 
-        $scope.getBedsForWard = function (wardUuid) {
-            wardService.bedsForWard(wardUuid).success(function (result) {
-                $scope.result = result.bedLayouts;
-                $scope.createLayoutGrid();
+        $scope.fetchBedInfo = function (cell, rowIndex, columnIndex) {
+            if (!cell.available && !cell.empty) {
+                return bedService.getBedInfo(cell.bed.bedId).success(function (data) {
+                    $scope.layout[rowIndex][columnIndex].patientInfo = {
+                        "name": data.patient.person.personName.givenName + " " + data.patient.person.personName.familyName,
+                        "identifier": data.patient.identifiers[0].identifier,
+                        "gender": data.patient.person.gender
+                    }
+                })
+            }
+            return null;
+        };
+
+        var loadAllWards = function () {
+            currentWardUuid = null;
+            wardService.getWardsList().success(function (wardsList) {
+                $scope.wards = wardsList.results;
             });
         };
 
-        $scope.maxX = $scope.maxY = $scope.minX = $scope.minY = 1;
+        var getBedsForWard = function (wardUuid) {
+            wardService.bedsForWard(wardUuid).success(function (result) {
+                $scope.bedLayouts = result.bedLayouts;
+                createLayoutGrid();
+            });
+        };
 
-        $scope.createLayoutGrid = function () {
+        var createLayoutGrid = function () {
             findMaxYMaxX();
             var bedLayout;
             var rowLayout = [];
-            for (var i = $scope.minX; i <= $scope.maxX; i++) {
+            for (var i = minX; i <= maxX; i++) {
                 rowLayout = [];
-                for (var j = $scope.minY; j <= $scope.maxY; j++) {
-                    bedLayout = getBedLayoutWithCordinates(i, j);
+                for (var j = minY; j <= maxY; j++) {
+                    bedLayout = getBedLayoutWithCoordinates(i, j);
                     rowLayout.push({
                         empty: isEmpty(bedLayout),
                         available: isAvailable(bedLayout),
@@ -97,23 +111,8 @@ angular.module('opd.bedManagement.controllers')
             }
         };
 
-        $scope.fetchBedInfo = function (cell, rowIndex, columnIndex) {
-            if (!cell.available && !cell.empty) {
-                return bedService.getBedInfo(cell.bed.bedId).success(function (data) {
-                    $scope.layout[rowIndex][columnIndex].patientInfo = {
-                        "name": data.patient.person.personName.givenName + " " + data.patient.person.personName.familyName,
-                        "identifier": data.patient.identifiers[0].identifier,
-                        "gender": data.patient.person.gender
-                    }
-                })
-            }
-        };
-
         var isEmpty = function (bedLayout) {
-            if (bedLayout == null || bedLayout.bedId == null) {
-                return true;
-            }
-            return false;
+            return bedLayout == null || bedLayout.bedId == null;
         };
 
         var isAvailable = function (bedLayout) {
@@ -123,31 +122,30 @@ angular.module('opd.bedManagement.controllers')
             return bedLayout.status === "AVAILABLE";
         };
 
-        var getBedLayoutWithCordinates = function (rowNumber, columnNumber) {
-            var array = $scope.result;
-            for (var i = 0, len = array.length; i < len; i++) {
-                if (array[i].rowNumber === rowNumber && array[i].columnNumber === columnNumber) {
-                    return array[i];
+        var getBedLayoutWithCoordinates = function (rowNumber, columnNumber) {
+            for (var i = 0, len = $scope.bedLayouts.length; i < len; i++) {
+                if ($scope.bedLayouts[i].rowNumber === rowNumber && $scope.bedLayouts[i].columnNumber === columnNumber) {
+                    return $scope.bedLayouts[i];
                 }
             }
             return null;
         };
 
         var findMaxYMaxX = function () {
-            for (var i = 0; i < $scope.result.length; i++) {
-                var result = $scope.result[i];
-                if (result.rowNumber > $scope.maxX) {
-                    $scope.maxX = result.rowNumber;
+            for (var i = 0; i < $scope.bedLayouts.length; i++) {
+                var bedLayout = $scope.bedLayouts[i];
+                if (bedLayout.rowNumber > maxX) {
+                    maxX = bedLayout.rowNumber;
                 }
-                if (result.columnNumber > $scope.maxY) {
-                    $scope.maxY = result.columnNumber;
+                if (bedLayout.columnNumber > maxY) {
+                    maxY = bedLayout.columnNumber;
                 }
             }
         };
 
         init();
-    }]).
-    directive('bedAssignmentDialog', function () {
+
+    }]).directive('bedAssignmentDialog', function () {
         return {
             restrict: 'A',
             link: function (scope, elem, attr) {
