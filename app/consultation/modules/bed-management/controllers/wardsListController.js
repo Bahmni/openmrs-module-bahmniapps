@@ -11,5 +11,11 @@ angular.module('opd.bedManagement.controllers')
         $location.url("/visit/" + $rootScope.visit.uuid + "/bed-management/wardLayout/" + ward.uuid);
     };
 
+    if ($rootScope.bedDetails) {
+        if ($rootScope.bedDetails.wardUuid) {
+            var wardLayoutUrl = "/visit/" + $rootScope.visit.uuid + "/bed-management/wardLayout/" + $rootScope.bedDetails.wardUuid;
+            return $location.url(wardLayoutUrl);
+        }
+    }
 
 }]);

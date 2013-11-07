@@ -15,7 +15,7 @@
             <div class="opd-header-wrapper">
             <header class="tabs" ng-controller="ConsultationNavigationController">
                         <ul class="header-tabs">
-                            <li ng-repeat="board in availableBoards" ng-class="{'tab-selected':currentBoard.name==board.name}"> 
+                            <li ng-repeat="board in availableBoards" ng-class="{'tab-selected':currentBoard.name==board.name}">
                                 <button ng-click="showBoard(board.name)" class="button">
                                     {{board.name}}
                                 </button>

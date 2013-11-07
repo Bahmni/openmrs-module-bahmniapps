@@ -23,8 +23,10 @@ angular.module('authentication', ['ngCookies'])
     }).run(['$rootScope', '$window', function ($rootScope, $window) {
         $rootScope.$on('event:auth-loginRequired', function () {
             $rootScope.errorMessage = "You are not authenticated right now. Please login.";
+            debugger;
+            console.log("You are not authenticated right now. Please login.");
             $window.location = "/home";
-        })
+        });
     }]).service('sessionService', ['$rootScope', '$http', '$q', '$cookieStore', function ($rootScope, $http, $q, $cookieStore) {
         var sessionResourcePath = Bahmni.Common.Constants.openmrsUrl + '/ws/rest/v1/session';
         this.destroy = function () {

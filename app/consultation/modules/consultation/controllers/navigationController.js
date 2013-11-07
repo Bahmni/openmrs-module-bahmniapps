@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('opd.consultation.controllers').controller('ConsultationNavigationController',
-    ['$scope', '$rootScope', '$location', '$route', '$window', 'sessionService',
-    function ($scope, $rootScope, $location, $route, $window, sessionService) {
+    ['$scope', '$rootScope', '$location', '$route', '$window', 'sessionService', 'appService',
+    function ($scope, $rootScope, $location, $route, $window, sessionService, appService) {
     //$scope.mainButtonText = "Consultation";
-    $scope.currentBoard = null;
-    $scope.availableBoards = [
-        { name:'Consultation', url:''},
+    $scope.availableBoards = [{ name:'Consultation', url:''}];
+    $scope.currentBoard = $scope.availableBoards[0];
+
+    var otherBoards = [
         { name:'Investigations', url:'investigation'},
         { name:'Diagnosis', url:'diagnosis'},
         { name:'Treatment', url:'treatment'},
@@ -36,8 +37,16 @@ angular.module('opd.consultation.controllers').controller('ConsultationNavigatio
     var initialize = function () {
         var currentPath = $location.path();
         // var pathInfo = currentPath.substr(currentPath.lastIndexOf('/') + 1);
-        var board = findBoardByUrl(currentPath);
-        $scope.currentBoard = board || $scope.availableBoards[0];
+        $rootScope.$on('event:appExtensions-loaded', function () {
+            var appExtensions = appService.allowedAppExtensions("org.bahmni.clinical.consultation.board");
+            var addlBoards = [];
+            appExtensions.forEach(function(appExtn) {
+                addlBoards.push({ name: appExtn.label, url: appExtn.url });
+            });
+            $scope.availableBoards = $scope.availableBoards.concat(addlBoards);
+            var board = findBoardByUrl(currentPath);
+            $scope.currentBoard = board || $scope.availableBoards[0];
+        });
         return;
     }
 
@@ -59,12 +68,9 @@ angular.module('opd.consultation.controllers').controller('ConsultationNavigatio
     }
 
     var getUrl = function (board) {
-        if (board.url === 'bed-management' && $rootScope.bedDetails) {
-            return $location.url("/visit/" + $rootScope.visit.uuid + "/bed-management/wardLayout/" + $rootScope.bedDetails.wardUuid);
-        }
-
-
-
+//        if (board.url === 'bed-management' && $rootScope.bedDetails) {
+//            return $location.url("/visit/" + $rootScope.visit.uuid + "/bed-management/wardLayout/" + $rootScope.bedDetails.wardUuid);
+//        }
         return $location.url("/visit/" + $rootScope.visit.uuid + "/" + board.url);
     }
 
