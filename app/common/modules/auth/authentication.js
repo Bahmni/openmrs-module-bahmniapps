@@ -24,7 +24,7 @@ angular.module('authentication', [])
         $httpProvider.responseInterceptors.push(interceptor);
     }).run(['$rootScope', '$window', function ($rootScope, $window) {
         $rootScope.$on('event:auth-loginRequired', function () {
-            $rootScope.errorMessage = "You are not authenticated right now. Please login."
+            $rootScope.errorMessage = "You are not authenticated right now. Please login.";
             $window.location = "/home";
         })
     }]).service('sessionService', ['$rootScope', '$http', function ($rootScope, $http) {

@@ -6,13 +6,8 @@ Bahmni.Opd.LabResultsMapper = function() {
     var getLabResults = function(observations) {
         return observations.map(function(obs){
             var notes = getNotes(obs);
-            return {
-                name: obs.concept.name.name,
-                value: obs.value,
-                alert: obs.comments,
-                notes: notes,
-                members: notes.length > 0 ? [] : getLabResults(obs.groupMembers),
-            }
+            var members = notes.length > 0 ? [] : getLabResults(obs.groupMembers);
+            return new Bahmni.Opd.Consultation.LabResult(obs.concept.name.name, obs.value, obs.comments, null, null, null, notes, members);
         });
     };
 

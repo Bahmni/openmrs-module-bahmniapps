@@ -38,6 +38,33 @@
         }
     }
 
+    #lab-results {
+        .row {
+            padding: 5px;
+            clear: both;
+        }
+        .name {
+            width: 20%;
+            display:inline-block;
+            float: left;
+        }
+        .value {
+            width: 80%;
+            display:inline-block;
+            float: left;
+        }
+        .panel-name {
+            background-color: Gray;
+            color: white;
+            padding: 5px;
+        }
+        .comments {
+            font-style: italic;
+            font-size: 80%;
+        }
+        .row.abnormal {
+        }
+    }
 
 }
 

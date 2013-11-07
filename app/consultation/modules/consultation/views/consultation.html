@@ -10,6 +10,7 @@
                 <span ng-show="investigation.isSet" class="panel">P</span>
             </li>
         </ul>
+        <ng-include src="'modules/consultation/views/labResults.html'" ng-init="labResults=consultation.labResults"/>
     </section>
     <section class="block diagnosis">
         <h2>Diagnosis</h2>
