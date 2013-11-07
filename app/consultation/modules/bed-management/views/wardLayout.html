@@ -1,5 +1,5 @@
 <div>
-    <div class="back-btn-wrapper"><button ng-click="back()"><span class="icon-arrow-left"></span>Ward List</button></div>
+    <div class="back-btn-wrapper"><button ng-click="showWardList()"><span class="icon-arrow-left"></span>Ward List</button></div>
     <div class="bed-assigned-msg"><div class="confirmationMessage">{{ confirmationMessage}}</div></div>
     <div class="bed-info">
 		<ul>
@@ -21,7 +21,7 @@
                 <li class="col" ng-click="fetchBedInfo(cell,$parent.$index,$index)"
                     ng-class="{occupied: !cell.empty && !cell.available, available: !cell.empty && cell.available,
                     empty: cell.empty, currentPatient : getCurrentBed().bedId == cell.bed.bedId }"
-                    ng-repeat="cell in layoutRow" dialog></li>
+                    ng-repeat="cell in layoutRow" bed-assignment-dialog></li>
             </ul>
         </li>
     </ul>

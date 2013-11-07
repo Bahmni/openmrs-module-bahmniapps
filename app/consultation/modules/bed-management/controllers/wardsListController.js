@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('opd.bedManagement.controllers')
-    .controller('WardsListController', ['$scope', '$rootScope', 'WardsListService', '$route', '$location', function ($scope, $rootScope, wardsListService, $route, $location) {
+    .controller('WardsListController', ['$scope', '$rootScope', 'WardService', '$route', '$location', function ($scope, $rootScope, wardService, $route, $location) {
     $scope.wards = [];
-    wardsListService.getWardsList().success(function (wardsList) {
+
+    wardService.getWardsList().success(function (wardsList) {
         $scope.wards = wardsList.results;
     });
 

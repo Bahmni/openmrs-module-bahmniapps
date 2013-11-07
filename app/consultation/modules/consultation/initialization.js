@@ -23,8 +23,8 @@ angular.module('opd.consultation').factory('initialization',
                     $rootScope.bedDetails.bedNumber = response.results[0].bedNumber;
                     $rootScope.bedDetails.bedId = response.results[0].bedId;
                 }
-            })
-        }
+            });
+        };
 
         var getConsultationConfigs = function() {
             var configurationsPromises = $q.defer();
