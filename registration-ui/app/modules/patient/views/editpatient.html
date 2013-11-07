@@ -32,8 +32,8 @@
                 <button type="submit" class="confirm right" ng-click="setSubmitSource('save')">Save</button>
                 <button type="submit" ng-click="setSubmitSource('print')">Print</button>
                 <div ng-switch="hasActiveVisit">
-                <button ng-switch-when="true" ng-click="setSubmitSource('enterVisitDetails')">Enter visit details</button>
-                    <div split-button options="visitTypes" option-text="startVisitButtonText" option-click="startVisit"
+                    <button ng-switch-when="true" ng-click="setSubmitSource('enterVisitDetails')">Enter visit details</button>
+                    <div split-button options="visitControl.visitTypes" primary-option="visitControl.defaultVisitType" option-text="visitControl.startButtonText" option-click="visitControl.startVisit"
                          ng-switch-default></div>
                 </div>
             </div>

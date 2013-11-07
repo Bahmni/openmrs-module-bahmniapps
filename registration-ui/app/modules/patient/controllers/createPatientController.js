@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('registration.patient.controllers')
-    .controller('CreatePatientController', ['$scope', '$rootScope','patientService', '$location', 'Preferences', '$route', 'patient', '$window', 'errorCode', 'date', 'spinner',
-    function ($scope, $rootScope, patientService, $location, preferences, $route, patientModel, $window, errorCode, date, spinner) {
+    .controller('CreatePatientController', ['$scope', '$rootScope','patientService', 'visitService','$location', 'Preferences', '$route', 'patient', '$window', 'errorCode', 'date', 'spinner',
+    function ($scope, $rootScope, patientService, visitService, $location, preferences, $route, patientModel, $window, errorCode, date, spinner) {
         (function () {
             $scope.patient = patientModel.create();
             $scope.centers = constants.centers;
@@ -12,15 +12,9 @@ angular.module('registration.patient.controllers')
             $scope.hasOldIdentifier = preferences.hasOldIdentifier;
         })();
 
-        $scope.visitTypes = $rootScope.encounterConfiguration.getVistTypesAsArray();
-        
-        $scope.startVisit = function(visitType) {
+        $scope.visitControl = new Bahmni.Registration.VisitControl($rootScope.encounterConfiguration.getVistTypesAsArray(), constants.defaultVisitTypeName, visitService);
+        $scope.visitControl.onStartVisit = function(visitType) {
             $scope.setSubmitSource('startVisit');
-            $scope.selectedVisitType = visitType;
-        };
-
-        $scope.startVisitButtonText = function(visitType) {
-            return "Start " + visitType.name + " visit";
         };
 
         $scope.patientCommon = function () {
@@ -36,17 +30,19 @@ angular.module('registration.patient.controllers')
             preferences.hasOldIdentifier = $scope.hasOldIdentifier;
         };
 
-        var successCallback = function (data) {
-            var patientUrl = $location.absUrl().replace("new", data.uuid) + "?newpatient=true";
+        var successCallback = function (patientData) {
+            var patientUrl = $location.absUrl().replace("new", patientData.uuid) + "?newpatient=true";
             if($scope.submitSource == 'startVisit') {
-                $scope.patient.uuid = data.uuid;
-                $scope.patient.identifier = data.identifier;
-                $scope.patient.name = data.name;
-                $scope.patient.isNew = true;
-                $scope.patient.registrationDate = date.now();
-                patientService.rememberPatient($scope.patient);
-                $window.history.pushState(null, null, patientUrl);
-                $location.path("/visit");
+                $scope.visitControl.createVisit(patientData.uuid).success(function(){
+                    $scope.patient.uuid = patientData.uuid;
+                    $scope.patient.identifier = patientData.identifier;
+                    $scope.patient.name = patientData.name;
+                    $scope.patient.isNew = true;
+                    $scope.patient.registrationDate = date.now();
+                    patientService.rememberPatient($scope.patient);
+                    $window.history.pushState(null, null, patientUrl);
+                    $location.path("/visit");                
+                }).error(function(){ spinner.hide(); });
             } else {
                 $window.location.replace(patientUrl);
             }

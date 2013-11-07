@@ -11,21 +11,15 @@ angular.module('registration.patient.controllers')
                     $scope.patient = patientMapper.map(openmrsPatient);
                     $scope.patient.isNew = ($location.search()).newpatient;
                 });
-                var searchVisitPromise = visitService.search({patient: uuid, v: "custom:(uuid)"}).success(function(data){
+                var searchActiveVisitsPromise = visitService.search({patient: uuid, includeInactive: false, v: "custom:(uuid)"}).success(function(data){
                     $scope.hasActiveVisit = data.results.length > 0;
                 });
-                spinner.forPromise($q.all([getPatientPromise, searchVisitPromise]));
+                spinner.forPromise($q.all([getPatientPromise, searchActiveVisitsPromise]));
             })();
 
-            $scope.visitTypes = $rootScope.encounterConfiguration.getVistTypesAsArray();
-            
-            $scope.startVisit = function(visitType) {
+            $scope.visitControl = new Bahmni.Registration.VisitControl($rootScope.encounterConfiguration.getVistTypesAsArray(), constants.defaultVisitTypeName, visitService);
+            $scope.visitControl.onStartVisit = function(visitType) {
                 $scope.setSubmitSource('startVisit');
-                $scope.selectedVisitType = visitType;
-            };
-
-            $scope.startVisitButtonText = function(visitType) {
-                return "Start " + visitType.name + " visit";
             };
 
             $scope.patientCommon = function () {
@@ -36,28 +30,36 @@ angular.module('registration.patient.controllers')
                 $scope.submitSource = source;
             };
 
-            var goToVisitPage = function(data) {
-                $scope.patient.uuid = data.uuid;
-                $scope.patient.name = data.name;
+            var goToVisitPage = function(patientData) {
+                $scope.patient.uuid = patientData.uuid;
+                $scope.patient.name = patientData.name;
                 patientService.rememberPatient($scope.patient);
                 $location.path("/visit");
             };
+
+            var createVisit = function(patientData){
+                $scope.visitControl.createVisit(patientData.uuid).success(function(){
+                    goToVisitPage(patientData);
+                }).error(function() { spinner.hide(); });                
+            }
             
             $scope.update = function () {
-                var patientUpdatePromise = patientService.update($scope.patient, uuid).success(function (data) {
-                    if ($scope.submitSource == 'print') {
-                        printer.print('registrationCard');
-                        spinner.hide();
-                    } else if ($scope.submitSource == 'startVisit') {                        
-                        var visit = {patient: {uuid: data.uuid}, visitType: $scope.selectedVisitType, startDatetime: new Date(), encounters: []}
-                        visitService.create(visit).success(function(){
-                            goToVisitPage(data);
-                        });
-                    } else if($scope.submitSource == 'enterVisitDetails') {
-                        goToVisitPage(data);
-                    } else {
-                        spinner.hide();
-                    } 
+                var patientUpdatePromise = patientService.update($scope.patient, uuid).success(function (patientData) {
+                    switch($scope.submitSource) {
+                        case 'print':
+                            printer.print('registrationCard');
+                            spinner.hide();
+                            break;
+                        case 'startVisit':
+                            createVisit(patientData);                        
+                            break;
+                        case 'enterVisitDetails':
+                            goToVisitPage(patientData);                        
+                            break;
+                        case 'save':
+                        default:
+                            spinner.hide();
+                    }
                     $scope.submitSource = null;
                     $rootScope.server_error = null;
                 });

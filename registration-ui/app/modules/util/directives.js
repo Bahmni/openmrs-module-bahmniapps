@@ -54,10 +54,24 @@ angular.module('registration.util', [])
             });
         };
 
+        var controller = function($scope) {
+            $scope.sortedOptions = (function() {
+                var indexOfPrimaryOption = $scope.options.indexOf($scope.primaryOption)
+                if(indexOfPrimaryOption > 0){                    
+                    var clonedOptions = $scope.options.slice(0);
+                    clonedOptions.splice(indexOfPrimaryOption, 1);
+                    clonedOptions.splice(0, 0, $scope.primaryOption)
+                    return clonedOptions;
+                } else {
+                    return $scope.options;
+                }
+            })();
+        }
+
         return {
             restrict: 'A',
             template: '<ul>' +
-                            '<li ng-repeat="option in options"' +
+                            '<li ng-repeat="option in sortedOptions"' +
                                 'ng-class="{primaryOption: $index == 0, secondaryOption: $index > 0}"' +
                                 'ng-show="$index == 0"' +
                              '>' +
@@ -66,8 +80,10 @@ angular.module('registration.util', [])
                         '</ul>' +
                         '<button class="toggle-button" type="button">+</button>',
             link: link,
+            controller: controller,
             scope: {
                 options: '=',
+                primaryOption: '=',
                 optionText: '&',
                 optionClick: '&'
             }

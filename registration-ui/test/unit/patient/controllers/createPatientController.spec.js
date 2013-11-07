@@ -55,32 +55,46 @@ describe('CreatePatientController', function () {
     });
 
     describe('create', function () {
-        describe("on sucess", function(){
+        describe("on sucessful patient create", function(){
             beforeEach(function(){
                 setupController();
             });
 
             describe('when submit source is startVisit', function(){
-                beforeEach(function(){
+                var createVisitPromise = specUtil.createServicePromise('createVisit');
+                beforeEach(function() {
                     scope.submitSource = 'startVisit';
+                    spyOn(scope.visitControl, 'createVisit').andReturn(createVisitPromise);
                 });
 
-                it('should redirect to new visit page', function() {
+                it('should create visit', function(){
                     scope.create()
-
+                    
                     createPromise.callSuccessCallBack(createPatientResponse);
 
-                    expect(location.path).toHaveBeenCalledWith("/visit");
+                    expect(scope.visitControl.createVisit).toHaveBeenCalled();
                 });
 
-                it('should set registration date to today', function() {
-                    var today = new Date("01-10-2012");
-                    spyOn(dateModule, 'now').andReturn(today);
-                    scope.create()
+                describe('on sucessful visit create', function(){
+                    beforeEach(function(){
+                        scope.create()
+                        createPromise.callSuccessCallBack(createPatientResponse);
+                    });
 
-                    createPromise.callSuccessCallBack(createPatientResponse);
+                    it('should redirect to new visit page', function() {
+                        createVisitPromise.callSuccessCallBack();
 
-                    expect(scope.patient.registrationDate).toBe(today);
+                        expect(location.path).toHaveBeenCalledWith("/visit");
+                    });
+
+                    it('should set registration date to today', function() {
+                        var today = new Date("01-10-2012");
+                        spyOn(dateModule, 'now').andReturn(today);
+
+                        createVisitPromise.callSuccessCallBack();
+
+                        expect(scope.patient.registrationDate).toBe(today);
+                    });
                 });
             });
 
