@@ -44,11 +44,12 @@ angular.module('registration.util', [])
 
             toggleButton.on('click', function(){
                 element.find('.secondaryOption').toggle();
+                element.find('.secondaryOption button')[0].focus();
             });
 
             $(document).on('click', function(e){
                 var $clicked = $(e.target);
-                if (!$clicked.closest(element).length) {
+                if ($clicked.closest(toggleButton).length === 0 || $clicked.closest(element.find('.options')).length !== 0) {
                    element.find('.secondaryOption').hide(); 
                 }
             });
@@ -70,7 +71,8 @@ angular.module('registration.util', [])
 
         return {
             restrict: 'A',
-            template: '<ul>' +
+            template: '<div class="split-button">'+
+                            '<ul class="options">' +
                             '<li ng-repeat="option in sortedOptions"' +
                                 'ng-class="{primaryOption: $index == 0, secondaryOption: $index > 0}"' +
                                 'ng-show="$index == 0"' +
@@ -78,7 +80,7 @@ angular.module('registration.util', [])
                                 '<button ng-click="optionClick()(option)">{{optionText()(option)}}</a>' +
                             '</li>' +
                         '</ul>' +
-                        '<button class="toggle-button" type="button">+</button>',
+                        '<button class="toggle-button icon-caret-down" type="button"></button></div>',
             link: link,
             controller: controller,
             scope: {
