@@ -16,12 +16,13 @@ angular.module('infrastructure')
             return deferrable.promise;
         };
 
-        this.allowedApps = function() {
+        this.allowedApps = function(extnId) {
             if ($rootScope.currentUser && $rootScope.appExtensions) {
                 var activePriviledges = $rootScope.currentUser.privileges.map(function(priv) {
                     return priv.retired ? "" : priv.name;
                 });
                 var appsExtns = $rootScope.appExtensions.filter(function(extn) {
+                    //TODO: match against the extnId
                     return (activePriviledges.indexOf(extn.requiredPrivilege) >= 0);
                 });
                 return appsExtns;

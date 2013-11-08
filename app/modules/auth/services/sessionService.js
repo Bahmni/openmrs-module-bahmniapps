@@ -43,7 +43,7 @@ angular.module('bahmnihome')
             var deferrable = $q.defer();
             createSession(username,password).success(function(data) {
                 if (data.authenticated) {
-                    $cookieStore.put('bahmni.user', username);
+                    $cookieStore.put('bahmni.user', username, {path: '/', expires: 7});
                     deferrable.resolve();
                 } else {
                    deferrable.reject('Authentication failed. Please try again.');   
