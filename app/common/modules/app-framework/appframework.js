@@ -30,13 +30,14 @@ angular.module('appFramework', ['authentication'])
             return deferrable.promise;
         };
 
-        this.allowedAppExtensions = function (extnId) {
+        this.allowedAppExtensions = function (extnId, type) {
             if (currentUser && appExtensions) {
+                var extnType = type || "link";
                 var userPrivileges = currentUser.privileges.map(function (priv) {
                     return priv.retired ? "" : priv.name;
                 });
                 var appsExtns = appExtensions.filter(function (extn) {
-                    return (extn.extensionPointId === extnId) && ((extn.requiredPrivilege === null) || (userPrivileges.indexOf(extn.requiredPrivilege) >= 0));
+                    return (extn.type===extnType) && (extn.extensionPointId === extnId) && ((extn.requiredPrivilege === null) || (userPrivileges.indexOf(extn.requiredPrivilege) >= 0));
                 });
                 appsExtns.sort(function(extn1, extn2) {
                     return extn1.order - extn2.order;

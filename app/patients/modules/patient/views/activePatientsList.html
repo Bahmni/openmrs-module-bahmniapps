@@ -12,8 +12,8 @@
 <div class="opd-wrapper">
 <div class="tabs">
     <ul>
-        <li class="tab-item" ng-repeat="pType in patientTypes | filter: { visible: true } " ng-class="{'tab-selected':searchCriteria.type==pType}"> 
-            <a href="" ng-click="showPatientsForType(pType.name)"> <span>{{pType.display}}</span></a> 
+        <li class="tab-item" ng-repeat="sType in searchTypes" ng-class="{'tab-selected':searchCriteria.type==sType}">
+            <a href="" ng-click="showPatientsForType(sType)"> <span>{{sType.display}}</span></a>
         </li>
     </ul> 
 </div>

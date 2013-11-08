@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('opd.patient').factory('initialization', ['$rootScope', '$q', 'configurationService', 'authenticator',
-        function ($rootScope, $q, configurationService, authenticator) {
+angular.module('opd.patient').factory('initialization', ['$rootScope', '$q', 'configurationService', 'authenticator','appService',
+        function ($rootScope, $q, configurationService, authenticator, appService) {
             var initializationPromise = $q.defer();
 
             var getConfigs = function() {
@@ -14,9 +14,11 @@ angular.module('opd.patient').factory('initialization', ['$rootScope', '$q', 'co
             };
 
             authenticator.authenticateUser().then(function () {
-            	getConfigs().then(function() {
-            		initializationPromise.resolve();
-            	});
+                appService.initialize('patientsearch').then(function() {
+                    getConfigs().then(function() {
+                        initializationPromise.resolve();
+                    });
+                });
             });
 
             return initializationPromise.promise;
