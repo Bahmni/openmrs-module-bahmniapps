@@ -42,10 +42,10 @@ angular.module('opd.consultation.controllers')
         encounterData.disposition = $rootScope.disposition.adtToStore;
 
         var addObservationsToEncounter = function(){
-            if($rootScope.vitals && $rootScope.vitals.recordedVitals) {
-                encounterData.observations = [];
-                encounterData.observations = encounterData.observations.concat($rootScope.vitals.recordedVitals);
-            }
+//            if($rootScope.vitals && $rootScope.vitals.recordedVitals) {
+//                encounterData.observations = [];
+//                encounterData.observations = encounterData.observations.concat($rootScope.vitals.recordedVitals);
+//            }
         }
 
         addObservationsToEncounter();

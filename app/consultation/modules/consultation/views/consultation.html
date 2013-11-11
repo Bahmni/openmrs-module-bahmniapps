@@ -54,10 +54,12 @@
     </section>
     
     <section class="block vitals">
-        <h2>Vitals</h2>
-        <div  class="form" ng-repeat="concept in $parent.vitals.conceptSet">
-            <show-concept empty-obs-check="true" concept-obs-map="$parent.$parent.vitals.conceptToObservationMap" concept="concept" display-type="readonly" ></show-concept>
-        </div>
+        <h2>Observations</h2>
+        <section class="block vitals" ng-repeat="(key,value) in observations">
+            <h3 ng-show="value.observations.length > 0">{{key}}</h3>
+            <show-concept-set concept-set-name="key" empty-obs-check="true" display-type="readonly"></show-concept-set>
+        </section>
+
     </section>
     
     <section class="notes">

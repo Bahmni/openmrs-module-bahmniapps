@@ -50,7 +50,7 @@ angular.module('opd.consultation').factory('initialization',
                         configurationsPromises.resolve();
 
 
-                        return conceptSetService.getConceptSetMembers("VITALS_CONCEPT").success(function(response){
+                        /*return conceptSetService.getConceptSetMembers("VITALS_CONCEPT").success(function(response){
                             if(response.results && response.results.length > 0){
                                 var vitalsConceptSet = response.results[0].setMembers;
 
@@ -60,7 +60,7 @@ angular.module('opd.consultation').factory('initialization',
                                 $rootScope.vitals.conceptSet = vitalsConceptSet;
 
                             }
-                        });
+                        });*/
 
 
                     });
