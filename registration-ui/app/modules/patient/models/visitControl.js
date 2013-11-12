@@ -14,7 +14,7 @@ Bahmni.Registration.VisitControl = function(visitTypes, defaultVisitTypeName, vi
     };
 
     self.createVisit = function(patientUuid) {
-        var visit = {patient: {uuid: patientUuid}, visitType: self.selectedVisitType, startDatetime: new Date(), encounters: []}
+        var visit = {patient: patientUuid, visitType: self.selectedVisitType.uuid, startDatetime: new Date(), encounters: []}
         return visitService.create(visit);
     };
 };
