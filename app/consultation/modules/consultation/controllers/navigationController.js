@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('opd.consultation.controllers').controller('ConsultationNavigationController',
-    ['$scope', '$rootScope', '$location', '$route', '$window', 'sessionService', 'appService',
-        function ($scope, $rootScope, $location, $route, $window, sessionService, appService) {
+    ['$scope', '$rootScope', '$location', '$route', '$window', 'appService',
+        function ($scope, $rootScope, $location, $route, $window, appService) {
             //$scope.mainButtonText = "Consultation";
             $scope.availableBoards = [
                 { name: 'Consultation', url: ''}
@@ -11,15 +11,6 @@ angular.module('opd.consultation.controllers').controller('ConsultationNavigatio
             $scope.showBoard = function (name) {
                 var board = findBoardByname(name);
                 return buttonClickAction(board);
-            };
-
-            $scope.logout = function () {
-                $rootScope.errorMessage = null;
-                sessionService.destroy().then(
-                    function () {
-                        $window.location = "/home";
-                    }
-                );
             };
 
             var stringContains = function (sourceString, pattern) {

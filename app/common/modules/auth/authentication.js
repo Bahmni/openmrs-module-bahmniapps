@@ -23,12 +23,10 @@ angular.module('authentication', ['ngCookies'])
     }).run(['$rootScope', '$window', function ($rootScope, $window) {
         $rootScope.$on('event:auth-loginRequired', function () {
             $rootScope.errorMessage = "You are not authenticated right now. Please login.";
-            debugger;
-            console.log("You are not authenticated right now. Please login.");
             $window.location = "/home";
         });
     }]).service('sessionService', ['$rootScope', '$http', '$q', '$cookieStore', function ($rootScope, $http, $q, $cookieStore) {
-        var sessionResourcePath = Bahmni.Common.Constants.openmrsUrl + '/ws/rest/v1/session';
+        var sessionResourcePath = '/openmrs/ws/rest/v1/session';
         this.destroy = function () {
             return $http.delete(sessionResourcePath);
         };
@@ -74,4 +72,18 @@ angular.module('authentication', ['ngCookies'])
             authenticateUser: authenticateUser
         }
 
+    }]).directive('logOut',['sessionService', '$window', function(sessionService, $window) {
+        return {
+            link: function(scope, element, attrs) {
+                element.bind('click', function() {
+                    scope.$apply(function() {
+                        sessionService.destroy().then(
+                            function () {
+                                $window.location = "/home";
+                            }
+                        );
+                    });
+                });
+            }
+        };
     }]);
