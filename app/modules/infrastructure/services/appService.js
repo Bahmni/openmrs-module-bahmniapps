@@ -3,7 +3,7 @@
 angular.module('infrastructure')
     .service('appService', ['$http', '$rootScope', '$q', function ($http, $rootScope, $q) {
 
-     	this.loadAppExtensions = function(appName) {
+        this.loadAppExtensions = function(appName) {
             //introduce constant
             var deferrable = $q.defer();
             var appExtnUrl = "/bahmni_config/openmrs/apps/" + appName + "/extension.json";
@@ -16,14 +16,17 @@ angular.module('infrastructure')
             return deferrable.promise;
         };
 
-        this.allowedApps = function(extnId) {
+        this.allowedApps = function(extnId, type) {
             if ($rootScope.currentUser && $rootScope.appExtensions) {
-                var activePriviledges = $rootScope.currentUser.privileges.map(function(priv) {
+                var extnType = type || "link";
+                var userPrivileges = $rootScope.currentUser.privileges.map(function(priv) {
                     return priv.retired ? "" : priv.name;
                 });
                 var appsExtns = $rootScope.appExtensions.filter(function(extn) {
-                    //TODO: match against the extnId
-                    return (activePriviledges.indexOf(extn.requiredPrivilege) >= 0);
+                    return (extn.type===extnType) && (extn.extensionPointId === extnId) && (!extn.requiredPrivilege || (userPrivileges.indexOf(extn.requiredPrivilege) >= 0));
+                });
+                appsExtns.sort(function(extn1, extn2) {
+                    return extn1.order - extn2.order;
                 });
                 return appsExtns;
             }

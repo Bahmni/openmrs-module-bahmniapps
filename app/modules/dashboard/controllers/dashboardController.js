@@ -9,7 +9,7 @@ angular.module('bahmnihome')
         $scope.appExtensions = [];
 
         var loadAppExtensions = function() {
-            $scope.appExtensions = appService.allowedApps();
+            $scope.appExtensions = appService.allowedApps("org.bahmni.home.dashboard");
         }
 
         loadAppExtensions();
