@@ -61,9 +61,18 @@
         </section>
 
     </section>
+
+    <section class="block consultationNote">
+        <h2>Consultation Notes</h2>
+        <ul class="block-content">
+            <li ng-repeat="note in consultation.consultationNotes">
+                <span>{{note.value}}</span>
+            </li>
+        </ul>
+    </section>
     
     <section class="notes">
-        <textarea placeholder="Notes: " rows="6"></textarea>
+        <textarea ng-model="consultationNote.value" placeholder="Notes: " rows="6"></textarea>
     </section>
 </article>
 

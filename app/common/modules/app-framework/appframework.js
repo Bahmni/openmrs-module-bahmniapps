@@ -37,7 +37,7 @@ angular.module('appFramework', ['authentication'])
                     return priv.retired ? "" : priv.name;
                 });
                 var appsExtns = appExtensions.filter(function (extn) {
-                    return (extn.type===extnType) && (extn.extensionPointId === extnId) && ((extn.requiredPrivilege === null) || (userPrivileges.indexOf(extn.requiredPrivilege) >= 0));
+                    return (extn.type===extnType) && (extn.extensionPointId === extnId) && (!extn.requiredPrivilege || (userPrivileges.indexOf(extn.requiredPrivilege) >= 0));
                 });
                 appsExtns.sort(function(extn1, extn2) {
                     return extn1.order - extn2.order;

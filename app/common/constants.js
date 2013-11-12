@@ -10,5 +10,6 @@ Bahmni.Common.Constants = {
     openmrsUrl: "/openmrs",
     bahmniRESTBaseURL: "/openmrs/ws/rest/v1/bahmnicore",
     dosageFrequencyConceptName : 'Dosage Frequency',
-    dosageInstructionConceptName : 'Dosage Instructions'
+    dosageInstructionConceptName : 'Dosage Instructions',
+    consultationNoteConceptName : 'Consultation Note'
 };

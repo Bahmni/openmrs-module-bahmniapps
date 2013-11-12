@@ -21,8 +21,6 @@ angular.module('bahmni.common.infrastructure.services')
             var patientConfig =  $http.get(Bahmni.Common.Constants.patientConfigurationUrl, {
                 withCredentials: true
             });
-
-
             return patientConfig;
         };
 
@@ -32,8 +30,6 @@ angular.module('bahmni.common.infrastructure.services')
                 params: { v: 'custom:(uuid,name,answers)', q: Bahmni.Common.Constants.dosageFrequencyConceptName },
                 withCredentials: true
             });
-
-
             return dosageFrequencyConfig;
         };
 
@@ -43,13 +39,17 @@ angular.module('bahmni.common.infrastructure.services')
                 params: { v: 'custom:(uuid,name,answers)', q: Bahmni.Common.Constants.dosageInstructionConceptName },
                 withCredentials: true
             });
-
-
             return dosageInstructionConfig;
         };
 
-
-
+        configurationFunctions.consultationNoteConfig = function () {
+            var consultationNoteConfig =  $http.get(Bahmni.Common.Constants.conceptUrl, {
+                method:"GET",
+                params: { v: 'custom:(uuid,name,answers)', q: Bahmni.Common.Constants.consultationNoteConceptName },
+                withCredentials: true
+            });
+            return consultationNoteConfig;
+        };
 
         var getConfigurations = function(configurationNames) {
             var configurations = {};
@@ -71,6 +71,6 @@ angular.module('bahmni.common.infrastructure.services')
         };
 
         return {
-        getConfigurations: getConfigurations
+            getConfigurations: getConfigurations
         };
 }]);

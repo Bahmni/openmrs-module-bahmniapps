@@ -1,4 +1,4 @@
-Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, dosageInstructions) {
+Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, dosageInstructions, consultationNoteConfig) {
     this.map = function (visit) {
         var investigations = [];
         var treatmentDrugs = [];
@@ -46,12 +46,15 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
                 return observation.concept.name.name === Bahmni.Opd.Constants.diagnosisObservationConceptName;
             });
             diagnoses = mapDiagnoses(diagnosisObs);
+            consultationNotes = mapConsultationNote(opdEncounter.obs);
         }
+
         return {
             investigations: investigations,
             treatmentDrugs: treatmentDrugs,
             diagnoses:diagnoses,
             labResults: labResults,
+            consultationNotes: consultationNotes
         };
     };
 
@@ -66,7 +69,7 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
         var correctStrength = (strength && strength != 0)? strength : "";
         var correctUnits = (units)? units : "";
         return correctStrength + " " + correctUnits;
-    }
+    };
 
     var mapDosageUuid = function (dosageUuid, dosageConfigs) {
         if (dosageUuid && (dosageConfigs.results.length > 0)) {
@@ -77,7 +80,7 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
             return matchedAnswers.length>0? matchedAnswers[0] : "";
         }
         return "";
-    }
+    };
 
     var getDiagnosisConcept = function (codedDiagnosisObs, nonCodedDiagnosisObs) {
         if (codedDiagnosisObs) {
@@ -92,7 +95,7 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
                 conceptName:nonCodedDiagnosisObs.value.name.name
             }
         }
-    }
+    };
 
     var mapDiagnoses = function (diagnosisObs) {
         var diagnoses = diagnosisObs.map(function (diagnosisOb) {
@@ -112,7 +115,20 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
                 orderObs.value.name.name.toUpperCase(), certaintyObs.value.name.name.toUpperCase(), diagnosisOb.uuid);
         })
         return diagnoses;
-    }
+    };
 
-
+    var mapConsultationNote = function(encounterObservations) {
+        var consultationNotes = [];
+        if (consultationNoteConfig && (consultationNoteConfig.results.length > 0)) {
+            var consultationNoteUuid = consultationNoteConfig.results[0].uuid;
+            consultationNotes = encounterObservations.filter(function(obs) {
+                if (obs.concept) {
+                    return (obs.concept.uuid === consultationNoteUuid);
+                } else {
+                    return false;
+                }
+            });
+        }
+        return consultationNotes;
+    };
 };

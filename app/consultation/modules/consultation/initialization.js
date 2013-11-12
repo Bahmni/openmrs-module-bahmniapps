@@ -28,17 +28,18 @@ angular.module('opd.consultation').factory('initialization',
 
         var getConsultationConfigs = function() {
             var configurationsPromises = $q.defer();
-            var configNames = ['bahmniConfiguration', 'encounterConfig', 'patientConfig', ,'dosageFrequencyConfig','dosageInstructionConfig'];
+            var configNames = ['bahmniConfiguration', 'encounterConfig', 'patientConfig', ,'dosageFrequencyConfig','dosageInstructionConfig', 'consultationNoteConfig'];
             configurationService.getConfigurations(configNames).then(function (configurations) {
                 $rootScope.bahmniConfiguration = configurations.bahmniConfiguration;
                 $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig);
                 $rootScope.patientConfig = configurations.patientConfig;
                 $rootScope.dosageFrequencyConfig = configurations.dosageFrequencyConfig;
                 $rootScope.dosageInstructionConfig = configurations.dosageInstructionConfig;
+                $rootScope.consultationNoteConfig = configurations.consultationNoteConfig;
 
                 return visitService.getVisit($route.current.params.visitUuid).success(function (visit) {
                     $rootScope.visit = visit;
-                    $rootScope.consultation = new Bahmni.Opd.ConsultationMapper($rootScope.encounterConfig, $rootScope.dosageFrequencyConfig, $rootScope.dosageInstructionConfig).map(visit);
+                    $rootScope.consultation = new Bahmni.Opd.ConsultationMapper($rootScope.encounterConfig, $rootScope.dosageFrequencyConfig, $rootScope.dosageInstructionConfig, $rootScope.consultationNoteConfig).map(visit);
                     $rootScope.getBedDetailsForPatient(visit.patient.uuid);
                     $rootScope.disposition = new Bahmni.Opd.DispositionMapper($rootScope.encounterConfig).map(visit);
                     $rootScope.disposition.currentActionIndex = 0; // this will be used in case we have multiple encounters with dispositions

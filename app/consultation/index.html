@@ -43,7 +43,8 @@
                 </header>
                 </div>
                 <div class="opd-wrapper">
-                <div ng-view id="view-content" class="opd-content-wrapper"></div>
+                    <p style="display: none" class="caution" ng-show="server_error">{{server_error}}</p>
+                    <div ng-view id="view-content" class="opd-content-wrapper"></div>
                 </div>
             <script src="../components/jquery/jquery.js"></script>
             <script src="../lib/jquery/jquery-ui-1.10.3.custom.min.js"></script>
@@ -52,6 +53,7 @@
             <script src="../components/angular-cookies/angular-cookies.js"></script>
 
             <!-- build:js consultation.min.js -->
+            <script src="../common/modules/infrastructure/httpErrorInterceptor.js"></script>
             <script src="../common/modules/auth/authentication.js"></script>
             <script src="../common/modules/app-framework/appframework.js"></script>
             <script src="../common/constants.js"></script>
