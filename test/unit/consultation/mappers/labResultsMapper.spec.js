@@ -1,6 +1,6 @@
 'use strict';
 
-describe("LabResultsMapper", function () {
+xdescribe("LabResultsMapper", function () {
     it('should map lab result observations', function () {
         var mappedLabResults = new Bahmni.Opd.LabResultsMapper().map(opdEncounter);
         expect(mappedLabResults).not.toBe(null);
@@ -119,6 +119,6 @@ var opdEncounter = {
             ]
         }
     ]
-}   
+}
 
 

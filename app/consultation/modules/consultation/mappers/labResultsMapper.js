@@ -6,10 +6,15 @@ Bahmni.Opd.LabResultsMapper = function() {
     var getLabResults = function(observations) {
         return observations.map(function(obs){
             var notes = getNotes(obs);
-            var members = notes.length > 0 ? [] : getLabResults(obs.groupMembers);
-            return new Bahmni.Opd.Consultation.LabResult(obs.concept.name.name, obs.value, obs.comments, null, null, null, notes, members);
+            var resultValue = getResultValue(obs);
+            var members = isLeaf(notes, resultValue) ? [] : getLabResults(obs.groupMembers);
+            return new Bahmni.Opd.Consultation.LabResult(obs.concept.name.name, resultValue, obs.comments, null, null, null, notes, members);
         });
     };
+
+    var isLeaf = function(notes, resultValue) {
+        return notes.length > 0 || resultValue;
+    }
 
     var getNotes = function (obs) {
         var notes = [];
@@ -20,6 +25,14 @@ Bahmni.Opd.LabResultsMapper = function() {
             }
         });
         return notes;
+    };
+
+    var getResultValue = function (obs) {
+        obs.groupMembers = obs.groupMembers || [];
+        var resultObs = obs.groupMembers.filter(function(member) {
+            return member.concept.name.name == obs.concept.name.name;
+        });
+        return resultObs.length == 1 ? resultObs[0].value : null;
     };
 
     var getLabResultObs = function (encounter) {
