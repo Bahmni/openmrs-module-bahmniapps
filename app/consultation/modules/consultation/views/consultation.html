@@ -67,6 +67,8 @@
         <ul class="block-content">
             <li ng-repeat="note in consultation.consultationNotes">
                 <span>{{note.value}}</span>
+                &nbsp;&nbsp;
+                <span>{{note.obsDatetime | date:'d MMM, yyyy @ h:mma'}} </span>
             </li>
         </ul>
     </section>
