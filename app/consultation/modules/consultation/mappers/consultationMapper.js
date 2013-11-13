@@ -4,6 +4,7 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
         var treatmentDrugs = [];
         var diagnoses = [];
         var labResults = [];
+        var consultationNotes = [];
 
         var opdEncounter = visit.encounters.filter(function (encounter) {
             return encounter.encounterType.uuid === encounterConfig.getOpdConsultationEncounterUuid();
