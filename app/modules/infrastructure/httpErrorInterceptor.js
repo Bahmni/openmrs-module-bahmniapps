@@ -8,10 +8,10 @@ angular.module('httpErrorInterceptor',[])
                 $window.scrollTo(0, 0)
             };
 
-            function stringAfter(value, searchString) {
+            var stringAfter = function(value, searchString) {
                 var indexOfFirstColon = value.indexOf(searchString);
                 return value.substr(indexOfFirstColon + 1).trim()
-            }
+            };
 
            function success(response) {
                 $rootScope.server_error = null;
@@ -21,7 +21,7 @@ angular.module('httpErrorInterceptor',[])
            function error(response) {
                var data = response.data;
                var unexpecetedError = "There was an unexpected issue on the server. Please try again";
-               if (response.status === 500 && !errorCode.isOpenERPError(data)) {
+               if (response.status === 500) {
                     var errorMessage = data.error && data.error.message ? stringAfter(data.error.message, ':') : unexpecetedError;
                     showError(errorMessage);
                }
