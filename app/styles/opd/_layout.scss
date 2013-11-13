@@ -59,10 +59,13 @@ body{
             }
             .patient-detail{
                 position:absolute;
-                top:62px;
+                top:58px;
                 right:10px;
                 color:#F26522;
                 z-index:999;
+                li{
+                    line-height: 18px;
+                }
             }
         }
     }
