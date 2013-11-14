@@ -49,21 +49,6 @@ angular.module('opd.consultation').factory('initialization',
                     return patientService.getPatient(visit.patient.uuid).success(function (openMRSPatient) {
                         $rootScope.patient = patientMapper.map(openMRSPatient);
                         configurationsPromises.resolve();
-
-
-                        /*return conceptSetService.getConceptSetMembers("VITALS_CONCEPT").success(function(response){
-                            if(response.results && response.results.length > 0){
-                                var vitalsConceptSet = response.results[0].setMembers;
-
-                                $rootScope.vitals = new Bahmni.Opd.ObservationMapper($rootScope.encounterConfig)
-                                    .map(visit, vitalsConceptSet);
-
-                                $rootScope.vitals.conceptSet = vitalsConceptSet;
-
-                            }
-                        });*/
-
-
                     });
 
                 })
