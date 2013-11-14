@@ -89,32 +89,41 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
 }
 .split-button{
   overflow:hidden;
+  margin-right:10px;
   ul{
     border:1px solid #cecece;
-    border-bottom:none;
     border-right:none;
     overflow:hidden;
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
     float:left;
     li{
-        width:12.5em;
-        background:#f1f1f1;
+        width:15.5em;
         font-size:.9em;
         border-right:1px solid #cecece;
-        border-bottom:1px solid #cecece;
         &.secondaryOption{
-          background:#cecece;
+          border-top: 1px solid #cecece;
           button{
-              background:#cecece;
+              background:#fff;
           }
         }
         button {
           width: 100%;
-          margin-left:0px;
-          margin-right:0px;
-          background:#f1f1f1;
+          background:#fff;
           border:none;
+          margin:0px;
+          padding-top:9px;
+          padding-bottom:8px;
+          font-size: 14px;
           &:focus{
             outline:none;
+          }
+          &:hover{
+            background: #f5f5f5;
           }
         }
     }
@@ -126,6 +135,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
     border-radius:0px;
     border:1px solid #cecece;
     border-left:none;
+    padding:7px 15px;
     &:focus{
         outline:none;   
     }
