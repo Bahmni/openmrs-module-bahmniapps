@@ -1,6 +1,6 @@
 'use strict';
 
-xdescribe("LabResultsMapper", function () {
+describe("LabResultsMapper", function () {
     it('should map lab result observations', function () {
         var mappedLabResults = new Bahmni.Opd.LabResultsMapper().map(opdEncounter);
         expect(mappedLabResults).not.toBe(null);
@@ -32,7 +32,7 @@ var opdEncounter = {
     "encounterType": {
         "uuid": "c9614b8a-00e7-11e3-8c55-0800271c1b75",
         "display": "OPD",
-        "name": "OPD",
+        "name": "OPD"
     },
     "obs" : [
         {
@@ -44,8 +44,8 @@ var opdEncounter = {
                 "name": {
                     "display": "Laboratory",
                     "uuid": "805262e2-2c27-11e3-86f8-0800271c1b75",
-                    "name": "Laboratory",
-                },
+                    "name": "Laboratory"
+                }
             },
             "groupMembers" : [
                 {
@@ -55,10 +55,10 @@ var opdEncounter = {
                         "name": {
                             "display": "CD4 Test",
                             "uuid": "3a6bee48-2d02-11e3-86f8-0800271c1b75",
-                            "name": "CD4 Test",
+                            "name": "CD4 Test"
                         }
                     },
-                    "value": "some cd4 count result",
+                    "value": null,
                     "comments": "A",
                     "groupMembers": [
                         {
@@ -68,11 +68,24 @@ var opdEncounter = {
                                 "name": {
                                     "display": "COMMENTS",
                                     "uuid": "50082fa3-e41f-4030-8d6f-4b3159cdb94e",
-                                    "name": "COMMENTS",
+                                    "name": "COMMENTS"
                                 }
                             },
                             "value": "I am a note",
-                            "groupMembers": null,
+                            "groupMembers": null
+                        },
+                        {
+                            "uuid": "ab19e071-46c4-11e3-8306-0800271c1b75",
+                            "concept": {
+                                "uuid": "85660297-3bcb-4ea0-a1b0-ad5eb8459590",
+                                "name": {
+                                    "display": "CD4 Test",
+                                    "uuid": "3a6bee48-2d02-11e3-86f8-0800271c1b75",
+                                    "name": "CD4 Test"
+                                }
+                            },
+                            "value": "some cd4 count result",
+                            "groupMembers": null
                         }
                     ]
                 },
@@ -83,7 +96,7 @@ var opdEncounter = {
                         "name": {
                             "display": "Haematology",
                             "uuid": "3a82c8de-2d02-11e3-86f8-0800271c1b75",
-                            "name": "Haematology",
+                            "name": "Haematology"
                         }
                     },
                     "value": null,
@@ -95,11 +108,25 @@ var opdEncounter = {
                                 "name": {
                                     "display": "G6PD",
                                     "uuid": "3b06c044-2d02-11e3-86f8-0800271c1b75",
-                                    "name": "G6PD",
+                                    "name": "G6PD"
                                 }
                             },
-                            "value": "Positive",
-                            "groupMembers": null,
+                            "value": null,
+                            "groupMembers": [
+                                {
+                                    "uuid": "867b0744-b31b-43a3-b237-d7aaf7bb9ae7",
+                                    "concept": {
+                                        "uuid": "f8db2046-f019-4872-bf75-46f5b6dc5099",
+                                        "name": {
+                                            "display": "G6PD",
+                                            "uuid": "3b06c044-2d02-11e3-86f8-0800271c1b75",
+                                            "name": "G6PD"
+                                        }
+                                    },
+                                    "value": "Positive",
+                                    "groupMembers": null
+                                }
+                            ]
                         },
                         {
                             "uuid": "106c9d79-c783-42b4-be0d-32af8009fe7a",
@@ -108,12 +135,26 @@ var opdEncounter = {
                                 "name": {
                                     "display": "HPLC",
                                     "uuid": "3b91426e-2d02-11e3-86f8-0800271c1b75",
-                                    "name": "HPLC",
+                                    "name": "HPLC"
                                 }
                             },
-                            "value": "HDFC",
-                            "groupMembers": null
-                        },
+                            "value": null,
+                            "groupMembers": [
+                                {
+                                    "uuid": "106c9d79-c783-42b4-be0d-32af8009fe7a",
+                                    "concept": {
+                                        "uuid": "72426db7-c5d7-4aeb-97ef-23e3a1e62ed5",
+                                        "name": {
+                                            "display": "HPLC",
+                                            "uuid": "3b91426e-2d02-11e3-86f8-0800271c1b75",
+                                            "name": "HPLC"
+                                        }
+                                    },
+                                    "value": "HDFC",
+                                    "groupMembers":null
+                                }
+                            ]
+                        }
                     ]
                 }
             ]
