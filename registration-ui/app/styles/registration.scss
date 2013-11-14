@@ -116,8 +116,8 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
           background:#fff;
           border:none;
           margin:0px;
-          padding-top:9px;
-          padding-bottom:8px;
+          padding-top:8px;
+          padding-bottom:7px;
           font-size: 14px;
           &:focus{
             outline:none;
@@ -135,7 +135,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
     border-radius:0px;
     border:1px solid #cecece;
     border-left:none;
-    padding:7px 15px;
+    padding:6px 15px;
     &:focus{
         outline:none;   
     }
