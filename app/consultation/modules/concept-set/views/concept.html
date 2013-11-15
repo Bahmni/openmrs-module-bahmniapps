@@ -1,0 +1,47 @@
+<div ng-switch on="concept.set">
+    <div class="form-field" ng-switch-when="false" ng-hide="emptyObsCheck && ! conceptObsMap[concept.uuid].value ">
+        <div class="field-attribute">
+            <label>{{concept.display}}</label><span class="label-add-on"
+                                                    ng-show="concept.units">({{concept.units}})</span>
+        </div>
+        <div ng-switch on="displayType" class="field-value">
+            <span class="value-text-only" ng-switch-when="readonly">{{conceptObsMap[concept.uuid].displayName()}}</span>
+
+            <div ng-switch-default>
+                <div ng-switch on="concept.answers.length">
+                    <input type="text" ng-switch-when="0" ng-model="conceptObsMap[concept.uuid].value"></input>
+                    <select class="" ng-switch-default ng-model="conceptObsMap[concept.uuid].value"
+                            ng-options="answer.uuid as answer.display for answer in concept.answers">
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <fieldset ng-switch-when="true">
+        <div class="form-field">
+            <div class="form-field form-field-group" ng-repeat="concept in concept.setMembers"
+                 ng-hide="emptyObsCheck && ! conceptObsMap[concept.uuid].value">
+
+                <div ng-switch on="$index">
+                    <legend ng-switch-when="0" class="mylegend"><strong>{{concept.display}}</strong></legend>
+                </div>
+
+                <div class="field-attribute">
+                    <label>{{concept.display}}</label><span class="label-add-on" ng-show="concept.units">({{concept.units}})</span>
+                </div>
+                <div ng-switch on="displayType" class="field-value">
+                    <span class="value-text-only" ng-switch-when="readonly">{{conceptObsMap[concept.uuid].value}}</span>
+
+                    <div ng-switch-default>
+                        <div ng-switch on="concept.answers.length">
+                            <input type="text" ng-switch-when="0" ng-model="conceptObsMap[concept.uuid].value"></input>
+                            <select class="" ng-switch-default ng-model="conceptObsMap[concept.uuid].value"
+                                    ng-options="answer.uuid as answer.uuid for answer in concept.answers">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>

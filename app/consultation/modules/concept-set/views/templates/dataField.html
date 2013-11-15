@@ -1,0 +1,18 @@
+<div>
+    <div class="field-attribute">
+        <label>{{label}}</label><span class="label-add-on" ng-show="unitsForData">({{unitsForData}})</span>
+    </div>
+    <div  ng-switch on="displayType" class="field-value">
+        <span class="value-text-only" ng-switch-when="readonly">{{value}}</span>
+        <input  type="text" ng-switch-default ng-model="value"></input>
+       <!-- <div ng-switch-default>
+            <div  ng-switch on="selectOptions.length">
+                <input  type="text" ng-switch-when="0" ng-model="fieldValue"></input>
+                <select class="" ng-switch-default  ng-model="fieldValue"
+                        ng-options="option.uuid as option.display for option in selectOptions">
+                </select>
+            </div>
+        </div>-->
+
+    </div>
+</div>

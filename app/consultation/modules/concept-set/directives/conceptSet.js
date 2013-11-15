@@ -1,59 +1,31 @@
 'use strict';
 
 angular.module('opd.conceptSet')
-//   .controller('ConceptSetController', ['$scope', '$rootScope','$route', 'ConceptSetService', function ($scope, $rootScope,$route, conceptSetService) {
-////
-////
-//    }])
-    .directive('showConcept',['$rootScope',function(rootScope){
-        var getObsValueReference = function(conceptReference){
-            return "conceptObsMap["+conceptReference+".uuid].value";
-        }
-
-
-        return {
+    .directive('showConcept', ['$rootScope', function (rootScope) {
+            return {
             restrict: 'E',
-            scope :{
-                conceptObsMap : "=",
-                displayType:"@",
-                concept:"=",
-                emptyObsCheck:"@"
+            scope: {
+                conceptObsMap: "=",
+                displayType: "@",
+                concept: "=",
+                emptyObsCheck: "@"
             },
-            template :
-                '<div ng-switch on="concept.set" >' +
-                    '<div class="form-field" ng-switch-when="false" ng-hide="emptyObsCheck && !'+getObsValueReference("concept")+'">' +
-                        '<div class="field-attribute"><label>{{concept.display}}</label><span class="label-add-on" ng-show="concept.units">({{concept.units}})</span></div>' +
-                        '<div class="field-value" ng-switch on="displayType">' +
-                            '<span ng-switch-when="readonly" class="value-text-only">{{'+getObsValueReference("concept")+'}}</span>'+
-                            '<input ng-switch-default type="text" placeholder="{{concept.display}}" ng-model="'+getObsValueReference("concept")+'"></input>' +
-                        '</div>'+
-                    '</div>'+
-                    '<fieldset ng-switch-when="true"><div class="form-field">' +
-                        '<div class="form-field form-field-group" ng-repeat="childConcept in concept.setMembers" ng-hide="emptyObsCheck && !'+getObsValueReference("childConcept")+'">' +
-                            '<div ng-switch on="$index" ><legend ng-switch-when="0" class="mylegend" ><strong>{{concept.display}}</strong></legend></div>'+
-                            '<div class="field-attribute"><label>{{childConcept.display}}</label><span ng-show="concept.units">({{concept.units}})</span>'+'</div>' +
-                            '<div  class="field-value" ng-switch on="displayType">' +
-                                '<span ng-switch-when="readonly" class="value-text-only">{{'+getObsValueReference("childConcept")+'}}</span>'+
-                                '<input ng-switch-default type="text" placeholder="{{childConcept.display}}" ng-model="'+getObsValueReference("childConcept")+'"></input>' +
-                            '</div>'+
-                        '</div>'+
-                    '</div></fieldset>' +
-                '</div>'
+            template: '<ng-include src="\'modules/concept-set/views/concept.html\'" />'
         }
-    }]).directive('showConceptSet',['$rootScope',function($rootScope){
+    }]).directive('showConceptSet', ['$rootScope', function ($rootScope) {
         var template =
-        '<form ng-init="getConceptSet()">'+
-            '<div  ng-repeat="concept in conceptSet" >'+
-                '<show-concept display-type="{{displayType}}" empty-obs-check="{{emptyObsCheck}}" concept-obs-map="$parent.conceptToObservationMap" concept="concept" ></show-concept>'+
-            '</div>' +
-        '</form>' ;
+            '<form ng-init="getConceptSet()">' +
+                '<div ng-repeat="concept in conceptSet" >' +
+                '<show-concept display-type="{{displayType}}" empty-obs-check="{{emptyObsCheck}}" concept-obs-map="$parent.conceptToObservationMap" concept="concept" ></show-concept>' +
+                '</div>' +
+                '</form>';
 
         var controller = function ($scope, $routeParams, ConceptSetService) {
             var conceptSetName = $scope.conceptSetName || $routeParams.conceptSetName;
             console.log($scope);
-            var observations = $rootScope.observations || {};
+            var observationList = $rootScope.observationList || {};
 
-            var cachedConceptSet = observations[conceptSetName] || {};
+            var cachedConceptSet = observationList[conceptSetName] || {};
 
             $scope.getConceptSet = function () {
                 if (cachedConceptSet.observations) {
@@ -70,37 +42,45 @@ angular.module('opd.conceptSet')
                 }
             };
 
-            var constructObsList = function () {
+            var constructObservationList = function () {
                 var obsList = [];
                 for (var conceptUuid in $scope.conceptToObservationMap) {
                     if ($scope.conceptToObservationMap[conceptUuid].value) {
+
                         obsList.push($scope.conceptToObservationMap[conceptUuid]);
                     }
                 }
                 return obsList;
             };
 
-            $scope.$on('$destroy', function() {
-                $rootScope.observations = $rootScope.observations || {};
-                $rootScope.observations[conceptSetName] = {
-                    conceptSet : $scope.conceptSet,
-                    conceptName : conceptSetName,
-                    observations : constructObsList(),
-                    conceptToObservationMap : $scope.conceptToObservationMap
+          /*  // this is needed so that we can display the label of the coded concept and not the concept Uuid
+            var conceptToObservationMapWithValueDesc = function(){
+                for(var conceptUuid in $scope.conceptToObservationMap) {
+                    if($scope.conceptToObservationMap[conceptUuid].value)
+                }
+            }*/
+
+            $scope.$on('$destroy', function () {
+                $rootScope.observationList = $rootScope.observationList || {};
+                $rootScope.observationList[conceptSetName] = {
+                    conceptSet: $scope.conceptSet,
+                    conceptName: conceptSetName,
+                    observations: constructObservationList(),
+                    conceptToObservationMap: $scope.conceptToObservationMap
                 };
             });
-        }
+        };
 
         return {
             restrict: 'E',
-            scope :{
-                displayType:"@",
-                emptyObsCheck:"@",
-                conceptSetName:"="
+            scope: {
+                displayType: "@",
+                emptyObsCheck: "@",
+                conceptSetName: "="
             },
-            template :template,
-            controller : controller
+            template: template,
+            controller: controller
 
         }
-    }])
+    }]);
 
