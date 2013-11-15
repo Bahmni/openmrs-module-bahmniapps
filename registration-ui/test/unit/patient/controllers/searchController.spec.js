@@ -9,7 +9,8 @@ describe('SearchPatientController', function () {
         $window,
         $controller,
         spinner,
-        loader;
+        loader,
+        appService;
 
     beforeEach(angular.mock.module('registration.patient.controllers'));
     beforeEach(angular.mock.inject(function ($injector) {
@@ -21,18 +22,20 @@ describe('SearchPatientController', function () {
 
     beforeEach(function(){
         scope = rootScope.$new();
-        patientResource = jasmine.createSpyObj('patientService', ['search']),
+        patientResource = jasmine.createSpyObj('patientService', ['search']);
         searchPromise = specUtil.createServicePromise('search');
         patientResource.search.andReturn(searchPromise);
         spinner = jasmine.createSpyObj('spinner', ['show', 'hide', 'forPromise']);
         loader = jasmine.createSpyObj('loader', ['show', 'hide', 'forPromise']);
+        appService = jasmine.createSpyObj('appService', ['allowedAppExtensions']);
         $controller('SearchPatientController', {
             $scope: scope,
             patientService: patientResource,
             $location: location,
             $window: $window,
             spinner: spinner,
-            loader: loader
+            loader: loader,
+            appService: appService
         });
     });
 
@@ -44,7 +47,8 @@ describe('SearchPatientController', function () {
                 $scope: scope,
                 patientService: patientResource,
                 $location: location,
-                spinner: spinner
+                spinner: spinner,
+                appService: appService
             });
 
             expect(scope.centerId).toBe("SEM");
@@ -60,7 +64,8 @@ describe('SearchPatientController', function () {
                     patientService: patientResource,
                     $location: location,
                     spinner: spinner,
-                    loader: loader
+                    loader: loader,
+                    appService: appService
                 });
                 urlSearchChangeCallback = scope.$watch.mostRecentCall.args[1];
             });

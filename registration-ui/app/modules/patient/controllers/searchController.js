@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registration.patient.controllers')
-    .controller('SearchPatientController', ['$scope', 'patientService', '$location', '$window', 'spinner', 'loader', function ($scope, patientService, $location, $window, spinner, loader) {
+    .controller('SearchPatientController', ['$scope', 'patientService', '$location', '$window', 'spinner', 'loader', 'appService', function ($scope, patientService, $location, $window, spinner, loader, appService) {
         $scope.centers = constants.centers;
         $scope.centerId = defaults.centerId;
         $scope.results = [];
@@ -28,6 +28,12 @@ angular.module('registration.patient.controllers')
             }
         };
 
+        var initialize = function() {
+            $scope.searchActions = appService.allowedAppExtensions("org.bahmni.registration.search.action");
+        };
+
+        initialize();
+
         $scope.$watch(function(){ return $location.search(); }, function() { showSearchResults(searchBasedOnQueryParameters(0))} );
 
         $scope.searchById = function () {
@@ -39,7 +45,7 @@ angular.module('registration.patient.controllers')
             var searchPromise = patientService.search(patientIdentifier).success(function (data) {
                 if (data.results.length > 0) {
                     var patient = data.results[0];
-                    $location.url($scope.editPatientUrl(patient.uuid));
+                    $location.url($scope.editPatientUrl("/patient/{{uuid}}", {'uuid':patient.uuid} ));
                 } else {
                     spinner.hide();
                     $scope.noResultsMessage = "Could not find patient with identifier " + patientIdentifier + ". Please verify the patient ID entered or create a new patient record with this ID."
@@ -62,8 +68,12 @@ angular.module('registration.patient.controllers')
             return angular.isDefined($scope.results) && $scope.results.length > 0;
         };
 
-        $scope.editPatientUrl = function (patientUuid) {
-            return "/patient/" + patientUuid;
+        $scope.editPatientUrl = function (url, options) {
+            var temp = url;
+            for (var key in options) {
+                temp = temp.replace("{{"+key+"}}", options[key]);
+            }
+            return temp;
         };
 
         $scope.nextPage =  function() {

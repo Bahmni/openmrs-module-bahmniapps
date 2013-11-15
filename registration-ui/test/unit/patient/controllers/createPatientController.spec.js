@@ -84,7 +84,7 @@ describe('CreatePatientController', function () {
                     it('should redirect to new visit page', function() {
                         createVisitPromise.callSuccessCallBack();
 
-                        expect(location.path).toHaveBeenCalledWith("/visit");
+                        expect(location.path).toHaveBeenCalledWith("/patient/someUUID/visit");
                     });
 
                     it('should set registration date to today', function() {

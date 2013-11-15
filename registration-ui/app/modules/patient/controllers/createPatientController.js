@@ -41,7 +41,7 @@ angular.module('registration.patient.controllers')
                     $scope.patient.registrationDate = date.now();
                     patientService.rememberPatient($scope.patient);
                     $window.history.pushState(null, null, patientUrl);
-                    $location.path("/visit");                
+                    $location.path("/patient/" + patientData.uuid + "/visit");
                 }).error(function(){ spinner.hide(); });
             } else {
                 $window.location.replace(patientUrl);

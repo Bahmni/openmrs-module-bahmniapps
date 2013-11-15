@@ -67,7 +67,9 @@
                 <td>{{result.age}}</td>
                 <td>{{result.cityVillage}}</td>
                 <td>{{result.dateCreated | date:'dd-MM-yyyy'}}</td>
-                <td class="edit-col"><a href="#{{editPatientUrl(result.uuid)}}"></a></td>
+                <td class="edit-col">
+                    <a ng-repeat="extension in searchActions" href="{{editPatientUrl(extension.url, {'patientUuid': result.uuid} )}}" title="{{extension.label}}"></a>
+                </td>
             </tr>
             </tbody>
         </table>

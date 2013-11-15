@@ -34,7 +34,7 @@ angular.module('registration.patient.controllers')
                 $scope.patient.uuid = patientData.uuid;
                 $scope.patient.name = patientData.name;
                 patientService.rememberPatient($scope.patient);
-                $location.path("/visit");
+                $location.path("/patient/" + patientData.uuid + "/visit");
             };
 
             var createVisit = function(patientData){
