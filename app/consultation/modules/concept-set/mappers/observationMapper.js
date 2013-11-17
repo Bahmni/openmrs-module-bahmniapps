@@ -11,7 +11,7 @@ Bahmni.Opd.ObservationMapper = function (encounterConfig) {
                         if (observation.concept.uuid === concept.uuid) {
                             if (observation.value instanceof Object) {
                                 obs.value = observation.value.uuid;
-                                obs.valueObject = observation.value;
+                                obs.possibleAnswers = concept.answers;
                             } else {
                                 obs.value = observation.value;
                             }

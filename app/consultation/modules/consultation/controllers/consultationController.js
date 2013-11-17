@@ -76,7 +76,7 @@ angular.module('opd.consultation.controllers')
                     var obs = $rootScope.observationList[i].observations;
                     // shruthi : ugly yes : needs to be fixed
                     for (var j in  obs) {
-                        delete obs[j]["valueObject"];
+                        delete obs[j]["possibleAnswers"];
                     }
                     encounterData.observations = encounterData.observations.concat($rootScope.observationList[i].observations);
                 }
