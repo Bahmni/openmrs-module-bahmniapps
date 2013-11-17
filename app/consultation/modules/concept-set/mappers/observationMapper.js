@@ -1,4 +1,17 @@
 Bahmni.Opd.ObservationMapper = function (encounterConfig) {
+    var findObservation = function (observations, concept) {
+        for (var i = 0; i < observations.length; i++) {
+            if (observations[i].concept.uuid === concept.uuid) {
+                return observations[i];
+            }
+            if (observations[i].groupMembers) {
+                var observation = findObservation(observations[i].groupMembers, concept);
+                if (observation) return observation;
+            }
+        }
+        return null;
+    };
+
     var constructConceptToObsMap = function (conceptSet, observations, conceptToObservationMap) {
         conceptSet.forEach(function (concept) {
             if (concept.set) {
@@ -6,18 +19,18 @@ Bahmni.Opd.ObservationMapper = function (encounterConfig) {
             }
             else {
                 var obs = { conceptUuid: concept.uuid, observationUuid: "", value: "" };
+                if (concept.answers.length > 0) obs.possibleAnswers = concept.answers;
+
                 if (observations && observations.length > 0) {
-                    observations.forEach(function (observation) {
-                        if (observation.concept.uuid === concept.uuid) {
-                            if (observation.value instanceof Object) {
-                                obs.value = observation.value.uuid;
-                                obs.possibleAnswers = concept.answers;
-                            } else {
-                                obs.value = observation.value;
-                            }
-                            obs.observationUuid = observation.uuid
+                    var observation = findObservation(observations, concept);
+                    if (observation && observation.concept.uuid === concept.uuid) {
+                        if (observation.value instanceof Object) {
+                            obs.value = observation.value.uuid;
+                        } else {
+                            obs.value = observation.value;
                         }
-                    });
+                        obs.observationUuid = observation.uuid
+                    }
                 }
                 conceptToObservationMap[concept.uuid] = angular.extend(new Bahmni.Opd.Consultation.Observation(), obs);
             }

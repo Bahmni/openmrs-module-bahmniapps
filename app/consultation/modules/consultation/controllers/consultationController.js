@@ -73,12 +73,7 @@ angular.module('opd.consultation.controllers')
             encounterData.observations = [];
             for (var i in $rootScope.observationList) {
                 if ($rootScope.observationList[i]) {
-                    var obs = $rootScope.observationList[i].observations;
-                    // shruthi : ugly yes : needs to be fixed
-                    for (var j in  obs) {
-                        delete obs[j]["possibleAnswers"];
-                    }
-                    encounterData.observations = encounterData.observations.concat($rootScope.observationList[i].observations);
+                    encounterData.observations = encounterData.observations.concat($rootScope.observationList[i].groupedObservations);
                 }
             }
         };

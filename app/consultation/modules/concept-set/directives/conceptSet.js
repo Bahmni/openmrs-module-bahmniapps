@@ -15,14 +15,13 @@ angular.module('opd.conceptSet')
     }]).directive('showConceptSet', ['$rootScope', function ($rootScope) {
         var template =
             '<form ng-init="getConceptSet()">' +
-                '<div ng-repeat="concept in conceptSet" >' +
+                '<div ng-repeat="concept in conceptSet.setMembers" >' +
                 '<show-concept display-type="{{displayType}}" empty-obs-check="{{emptyObsCheck}}" concept-obs-map="$parent.conceptToObservationMap" concept="concept" ></show-concept>' +
                 '</div>' +
                 '</form>';
 
         var controller = function ($scope, $routeParams, ConceptSetService) {
             var conceptSetName = $scope.conceptSetName || $routeParams.conceptSetName;
-            console.log($scope);
             var observationList = $rootScope.observationList || {};
 
             var cachedConceptSet = observationList[conceptSetName] || {};
@@ -34,9 +33,9 @@ angular.module('opd.conceptSet')
                 } else {
                     ConceptSetService.getConceptSetMembers(conceptSetName).success(function (response) {
                         if (response.results && response.results.length > 0) {
-                            $scope.conceptSet = response.results[0].setMembers;
+                            $scope.conceptSet = response.results[0];
                             $scope.conceptToObservationMap =
-                                new Bahmni.Opd.ObservationMapper($rootScope.encounterConfig).map($rootScope.visit, $scope.conceptSet);
+                                new Bahmni.Opd.ObservationMapper($rootScope.encounterConfig).map($rootScope.visit, response.results[0].setMembers);
                         }
                     });
                 }
@@ -46,11 +45,15 @@ angular.module('opd.conceptSet')
                 var obsList = [];
                 for (var conceptUuid in $scope.conceptToObservationMap) {
                     if ($scope.conceptToObservationMap[conceptUuid].value) {
-
                         obsList.push($scope.conceptToObservationMap[conceptUuid]);
                     }
                 }
                 return obsList;
+            };
+
+            var constructGroupedObservations = function (observations) {
+                return new Bahmni.Opd.GroupedObservationMapper($rootScope.encounterConfig)
+                    .map($rootScope.visit, $scope.conceptSet, observations);
             };
 
           /*  // this is needed so that we can display the label of the coded concept and not the concept Uuid
@@ -62,11 +65,14 @@ angular.module('opd.conceptSet')
 
             $scope.$on('$destroy', function () {
                 $rootScope.observationList = $rootScope.observationList || {};
+                var observations = constructObservationList();
+                var groupedObservations = constructGroupedObservations(observations);
                 $rootScope.observationList[conceptSetName] = {
                     conceptSet: $scope.conceptSet,
                     conceptName: conceptSetName,
-                    observations: constructObservationList(),
-                    conceptToObservationMap: $scope.conceptToObservationMap
+                    observations: observations,
+                    conceptToObservationMap: $scope.conceptToObservationMap,
+                    groupedObservations: groupedObservations
                 };
             });
         };
