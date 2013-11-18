@@ -7,7 +7,7 @@ angular.module('infrastructure.printer', [])
                         hiddenFrame.contentWindow.printAndRemove = function() {
                             hiddenFrame.contentWindow.print();
                             $(hiddenFrame).remove();
-                        }
+                        };
                         var code = "<!doctype html>"+
                                     "<html>"+
                                         "<head>" +

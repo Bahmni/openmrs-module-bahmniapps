@@ -27,15 +27,19 @@
         <ng-include src="patientCommon()" ng-controller="PatientCommonController"></ng-include>
 
         <div class="submit-btn-container">
-            <div class="right">
-                <button type="submit" class="confirm right" ng-click="setSubmitSource('save')">Save</button>
-                <button type="submit" class="right" ng-click="setSubmitSource('print')">Print</button>
+            <div>
+
+                <span ng-repeat="extn in editActions">
+                    <span ng-switch="extn.extensionParams.action">
+                        <div ng-switch-when="startVisit" split-button options="visitControl.visitTypes"
+                             primary-option="visitControl.defaultVisitType"
+                             option-text="visitControl.startButtonText" option-click="visitControl.startVisit" class="right"></div>
+                        <button ng-switch-default type="submit" class="right" ng-click="setSubmitSource(extn.extensionParams.action)" ng-class="{'confirm':extn.extensionParams.action == 'save'}">
+                            {{extn.extensionParams.display}}
+                        </button>
+                    </span>
+                </span>
                 <button type="button" class="right" ng-click="back()" ng-show="showBackButton()">Back to Search Results</button>
-                <div ng-switch="hasActiveVisit" class="right">
-                    <button ng-switch-when="true" ng-click="setSubmitSource('enterVisitDetails')">Enter visit details</button>
-                    <div split-button options="visitControl.visitTypes" primary-option="visitControl.defaultVisitType" option-text="visitControl.startButtonText" option-click="visitControl.startVisit"
-                         ng-switch-default></div>
-                </div>
             </div>
         </div>
     </form>
