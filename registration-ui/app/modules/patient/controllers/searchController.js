@@ -93,4 +93,8 @@ angular.module('registration.patient.controllers')
                 });
             }
         };
+
+        $scope.printLayout = function () {
+            return $route.routes['/printPatient'].templateUrl;
+        };
     }]);

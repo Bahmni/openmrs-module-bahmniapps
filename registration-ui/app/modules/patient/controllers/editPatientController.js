@@ -38,7 +38,16 @@ angular.module('registration.patient.controllers')
                 spinner.forPromise($q.all([getPatientPromise, searchActiveVisitsPromise]));
             })();
 
-            $scope.visitControl = new Bahmni.Registration.VisitControl($rootScope.encounterConfiguration.getVistTypesAsArray(), constants.defaultVisitTypeName, visitService);
+            var getDefaultVisitType = function() {
+                var defaultVisitType = $route.current.params.visitType || constants.defaultVisitTypeName;
+                var visitTypesAsArray = $rootScope.encounterConfiguration.getVistTypesAsArray();
+                var visitArray = visitTypesAsArray.filter(function(visitType) {
+                    return visitType.name == defaultVisitType;
+                });
+                return visitArray.length > 0 ? visitArray[0].name : constants.defaultVisitTypeName;
+            };
+
+            $scope.visitControl = new Bahmni.Registration.VisitControl($rootScope.encounterConfiguration.getVistTypesAsArray(), getDefaultVisitType(), visitService);
             $scope.visitControl.onStartVisit = function(visitType) {
                 $scope.setSubmitSource('startVisit');
             };
@@ -97,6 +106,7 @@ angular.module('registration.patient.controllers')
                         case 'print':
                             printer.print('registrationCard');
                             spinner.hide();
+                            goToActionUrl($scope.submitSource, patientData);
                             break;
                         case 'startVisit':
                             createVisit(patientData);                        
