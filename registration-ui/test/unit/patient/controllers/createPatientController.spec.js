@@ -11,6 +11,8 @@ describe('CreatePatientController', function () {
     var createPromise;
     var dateModule;
     var spinner;
+    var appService;
+    var route;
 
     beforeEach(angular.mock.module('registration.patient.controllers'));
     beforeEach(angular.mock.inject(function (date) {
@@ -21,6 +23,10 @@ describe('CreatePatientController', function () {
         patientService = jasmine.createSpyObj('patientService', ['create', 'getPatient', 'rememberPatient']);
         createPromise = specUtil.createServicePromise('patientCreate');
         patientService.create.andReturn(createPromise);
+        appService = jasmine.createSpyObj('appService', ['allowedAppExtensions'])
+        appService.allowedAppExtensions.andReturn([]);
+        //$route.current.params.visitType
+        route = { "current" : { "params" : { "visitType" : "REG" } }};
     }));
 
     var setupController = function(preferenceObj){
@@ -33,7 +39,9 @@ describe('CreatePatientController', function () {
                 $location: location,
                 Preferences: preferences,
                 spinner: spinner,
-                $rootScope: {encounterConfiguration: new EncounterConfig({visitTypes: {}})}
+                $rootScope: {encounterConfiguration: new EncounterConfig({visitTypes: {}})},
+                appService: appService,
+                $route: route
             });
         });
     }

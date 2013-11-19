@@ -68,6 +68,7 @@ angular.module('registration.patient.controllers')
             if($scope.submitSource == 'startVisit') {
                 $scope.visitControl.createVisit(patientData.uuid).success(function(){
                     var patientUrl = $location.absUrl().replace("new", patientData.uuid) + "?newpatient=true";
+                    $scope.patient.registrationDate = date.now();
                     patientService.rememberPatient($scope.patient);
                     $window.history.pushState(null, null, patientUrl);
                     $location.path("/patient/" + patientData.uuid + "/visit");
