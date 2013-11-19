@@ -23,6 +23,12 @@
   .bed-assignment-inner-wrapper{
     display: inline-block;
   }
+  .bed-type {
+    position: relative;
+    top: 50px;
+    font-size: 80%;
+    text-transform: capitalize;
+  }
   .row {
     overflow: hidden;
     ul {

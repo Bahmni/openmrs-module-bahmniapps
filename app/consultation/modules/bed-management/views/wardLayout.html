@@ -21,7 +21,9 @@
                 <li class="col" ng-click="fetchBedInfo(cell,$parent.$index,$index)"
                     ng-class="{occupied: !cell.empty && !cell.available, available: !cell.empty && cell.available,
                     empty: cell.empty, currentPatient : getCurrentBed().bedId == cell.bed.bedId }"
-                    ng-repeat="cell in layoutRow" bed-assignment-dialog></li>
+                    ng-repeat="cell in layoutRow" bed-assignment-dialog>
+                    <span class="bed-type" ng-show="!cell.empty && cell.bed.bedType">{{cell.bed.bedType}}</span>
+                </li>
             </ul>
         </li>
     </ul>

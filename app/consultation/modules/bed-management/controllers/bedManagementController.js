@@ -103,7 +103,8 @@ angular.module('opd.bedManagement.controllers')
                         available: isAvailable(bedLayout),
                         bed: {
                             bedId: bedLayout != null && bedLayout.bedId,
-                            bedNumber: bedLayout != null && bedLayout.bedNumber
+                            bedNumber: bedLayout != null && bedLayout.bedNumber,
+                            bedType: bedLayout != null && bedLayout.bedType != null && bedLayout.bedType.displayName,
                         }
                     })
                 }
