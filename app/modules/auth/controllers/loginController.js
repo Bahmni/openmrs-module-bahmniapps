@@ -19,32 +19,19 @@ angular.module('bahmnihome')
 
         $scope.login = function () {
             $scope.errorMessage = null;
+            spinner.show();
             var loginPromise = sessionService.loginUser($scope.username, $scope.password).then(
                 function() {
+                    spinner.hide();
                     $location.path(landingPagePath);
                     $rootScope.$broadcast('event:auth-loggedin');
                 }, 
                 function(error) {
                     $scope.errorMessage = error;
+                    spinner.hide();
                 }
             );
             spinner.forPromise(loginPromise);
         }
-
-        $scope.logout = function() {
-            $rootScope.errorMessage = null;
-            sessionService.destroy().then(
-                function() {
-                    $rootScope.currentUser = null;
-                    //$location.url(loginPagePath);
-                    $window.location = "/home";
-                }
-            );
-        }
-
-        $scope.onLoginPage = function() {
-            return $location.path() === loginPagePath;
-        }
-
         
     }]);

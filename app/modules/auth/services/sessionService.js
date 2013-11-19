@@ -4,7 +4,7 @@ angular.module('bahmnihome')
     .service('sessionService', ['$rootScope', '$http', '$q', '$cookieStore', function ($rootScope, $http, $q, $cookieStore) {
         var sessionResourcePath = constants.openmrsUrl + '/ws/rest/v1/session';
 
-        var getSession = function(){
+        this.getSession = function(){
             return $http.get(sessionResourcePath, { cache: false });
         };
 
@@ -15,7 +15,7 @@ angular.module('bahmnihome')
             });
         };
 
-        var loadCredentials = function() {
+        this.loadCredentials = function() {
             var deferrable = $q.defer();
             var currentUser = $cookieStore.get('bahmni.user');
             $http.get("/openmrs/ws/rest/v1/user", { 
@@ -35,11 +35,13 @@ angular.module('bahmnihome')
         };
         
 
-        var destroy = function(){
-            return $http.delete(sessionResourcePath);
+        this.destroy = function(){
+            return $http.delete(sessionResourcePath).success(function(data){
+                $rootScope.currentUser = null;
+            });
         };
 
-        var loginUser = function(username, password) {
+        this.loginUser = function(username, password) {
             var deferrable = $q.defer();
             createSession(username,password).success(function(data) {
                 if (data.authenticated) {
@@ -53,11 +55,18 @@ angular.module('bahmnihome')
             });
             return deferrable.promise;
         };
-
+    }]).directive('logOut',['sessionService', '$window', function(sessionService, $window) {
         return {
-            getSession: getSession,
-            destroy: destroy,
-            loginUser:loginUser,
-            loadCredentials:loadCredentials
+            link: function(scope, element, attrs) {
+                element.bind('click', function() {
+                    scope.$apply(function() {
+                        sessionService.destroy().then(
+                            function () {
+                                $window.location = "/home";
+                            }
+                        );
+                    });
+                });
+            }
         };
     }]);

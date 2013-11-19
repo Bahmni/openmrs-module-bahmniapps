@@ -16,14 +16,6 @@
         <div class="reg-wrapper">
             <div ng-app="bahmnihome">
                 <div id="overlay"></div>
-                <header class="reg-header" ng-controller="LoginController" ng-show="!onLoginPage()">
-                    <a class="header-logo">Jan Swasthya Sahyog</a>
-                    <ul>
-                        <li>
-                            <a ng-click="logout()"><i class="icon-off icon-white small"></i><span class="nav-link">Logout</span></a>
-                        </li>
-                    </ul>
-                </header>
                 <p style="display: none" class="caution" ng-show="server_error"><i class="icon-exclamation-sign small"></i>{{server_error}}</p>
                 <div ng-view id="view-content"></div>
                 <script src="components/jquery/jquery.js"></script>
