@@ -8,11 +8,11 @@ angular.module('registration.patient.controllers')
 
             var visitTypeUuid = $scope.encounterConfiguration.visitTypeId($scope.patient.isNew);
             var encounterTypeUuid = $scope.encounterConfiguration.encounterTypes[constants.encounterType.registration];
-            var encounterObservationsPromise = encounterService.get($scope.patient.uuid, visitTypeUuid, encounterTypeUuid)
+            var encounterObservationsPromise = encounterService.getActiveEncounter($scope.patient.uuid, visitTypeUuid, encounterTypeUuid)
                     .success(function (data) {
                         $scope.registrationObservations = new RegistrationObservations(data, $scope.patient.isNew, $scope.encounterConfiguration);
                         $scope.obs = {};
-                        $scope.registrationObservations.observations.forEach(function(observation) { $scope.obs[observation.conceptName] = observation.value});
+                        $scope.registrationObservations.observations.forEach(function(observation) { $scope.obs[observation.concept.name] = observation.value});
                         $scope.calculateBMI();
                     });
 

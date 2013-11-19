@@ -73,9 +73,9 @@ describe('VisitController', function () {
         success = jasmine.createSpy();
         scope.encounterConfiguration = angular.extend(new EncounterConfig(), sampleConfig);
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
-        encounterService = jasmine.createSpyObj('encounterService', ['create', 'get']);
-        getPromise = specUtil.createServicePromise('get');
-        encounterService.get.andReturn(getPromise);
+        encounterService = jasmine.createSpyObj('encounterService', ['create', 'getActiveEncounter']);
+        getPromise = specUtil.createServicePromise('getActiveEncounter');
+        encounterService.getActiveEncounter.andReturn(getPromise);
     }]));
 
     describe('initialization', function () {
@@ -220,11 +220,11 @@ describe('VisitController', function () {
             scope.saveAndPrint();
 
             expect(scope.encounter.observations.length).toBe(5);
-            expect(scope.encounter.observations).toContain({ conceptUuid: 'b4a52102-c79a-11e2-b0c0-8e397087571c', conceptName: 'REGISTRATION FEES', value: '100' });
-            expect(scope.encounter.observations).toContain({ conceptUuid: 'b4aa3728-c79a-11e2-b0c0-8e397087571c', conceptName: 'WEIGHT', value: null });
-            expect(scope.encounter.observations).toContain({ conceptUuid: 'b499a980-c79a-11e2-b0c0-8e397087571c', conceptName: 'COMMENTS', value: 'fine' })
-            expect(scope.encounter.observations).toContain({ conceptUuid: 'b4acc09c-c79a-11e2-b0c0-8e397087571c', conceptName: 'BMI', value: null });
-            expect(scope.encounter.observations).toContain({ conceptUuid: 'b4a7aa80-c79a-11e2-b0c0-8e397087571c', conceptName: 'HEIGHT', value: null });
+            expect(scope.encounter.observations).toContain({ concept: {uuid: 'b4a52102-c79a-11e2-b0c0-8e397087571c', name: 'REGISTRATION FEES'}, value: '100' });
+            expect(scope.encounter.observations).toContain({ concept: {uuid: 'b4aa3728-c79a-11e2-b0c0-8e397087571c', name: 'WEIGHT'}, value: null });
+            expect(scope.encounter.observations).toContain({ concept: {uuid: 'b499a980-c79a-11e2-b0c0-8e397087571c', name: 'COMMENTS'}, value: 'fine' })
+            expect(scope.encounter.observations).toContain({ concept: {uuid: 'b4acc09c-c79a-11e2-b0c0-8e397087571c', name: 'BMI'}, value: null });
+            expect(scope.encounter.observations).toContain({ concept: {uuid: 'b4a7aa80-c79a-11e2-b0c0-8e397087571c', name: 'HEIGHT'}, value: null });
             expect(encounterService.create).toHaveBeenCalledWith(scope.encounter);
         });
 
