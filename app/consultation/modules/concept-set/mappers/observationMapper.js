@@ -18,7 +18,7 @@ Bahmni.Opd.ObservationMapper = function (encounterConfig) {
                 constructConceptToObsMap(concept.setMembers, observations, conceptToObservationMap);
             }
             else {
-                var obs = { conceptUuid: concept.uuid, observationUuid: "", value: "" };
+                var obs = { concept: { uuid: concept.uuid}, observationUuid: "", value: "" };
                 if (concept.answers.length > 0) obs.possibleAnswers = concept.answers;
 
                 if (observations && observations.length > 0) {

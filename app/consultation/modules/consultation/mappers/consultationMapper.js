@@ -15,7 +15,7 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
                 return order.orderType && Bahmni.Opd.Constants.testOrderTypes.indexOf(order.orderType.display) >= 0;
             });
             investigations = testOrders.map(function (testOrder) {
-                return { uuid: testOrder.uuid, conceptUuid: testOrder.concept.uuid, name: testOrder.concept.display,
+                return { uuid: testOrder.uuid, concept: {uuid: testOrder.concept.uuid}, name: testOrder.concept.display,
                     isSet: testOrder.concept.set || false, orderTypeUuid: testOrder.orderType.uuid };
             });
 
@@ -37,8 +37,8 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
                 drug.dosageFrequency= mapDosageUuid(drugOrder.frequency, dosageFrequencies);
                 drug.dosageInstruction= mapDosageUuid(drugOrder.units, dosageInstructions);
                 drug.numberOfDosageDays= calculateDosagedays(drugOrder.autoExpireDate, drugOrder.startDate);
-                drug.notes= drugOrder.instructions;
-                drug.conceptUuid= drugOrder.concept.uuid;
+                drug.notes = drugOrder.instructions;
+                drug.concept = { uuid: drugOrder.concept.uuid};
                 drug.savedDrug= true;
                 drug.empty=false;
                 return drug;

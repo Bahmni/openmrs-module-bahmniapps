@@ -94,7 +94,7 @@ angular.module('opd.consultation.controllers')
                 return {
                     code : selectedAction.adtCode,
                     additionalObs :[{
-                        conceptUuid:$scope.dispositionNoteConceptUuid,
+                        concept: { uuid: $scope.dispositionNoteConceptUuid },
                         value : selectedAction.adtNoteValue
                     }]
                 }

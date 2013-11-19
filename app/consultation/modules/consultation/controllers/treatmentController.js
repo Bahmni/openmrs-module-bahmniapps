@@ -94,7 +94,7 @@ angular.module('opd.consultation.controllers')
                     selectedDrug.uuid = chosenDrug.uuid;
                     selectedDrug.strength = (chosenDrug.doseStrength || '') + ' ' + (chosenDrug.units || '');
                     selectedDrug.dosageForm = chosenDrug.dosageForm.name.name;
-                    selectedDrug.conceptUuid = chosenDrug.concept.uuid;
+                    selectedDrug.concept = { uuid: chosenDrug.concept.uuid};
                     selectedDrug.numberPerDosage = 1;
                     selectedDrug.empty = false;
                 }
