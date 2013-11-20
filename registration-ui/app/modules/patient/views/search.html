@@ -68,7 +68,7 @@
                 <td>{{result.cityVillage}}</td>
                 <td>{{result.dateCreated | date:'dd-MM-yyyy'}}</td>
                 <td class="edit-col">
-                    <a ng-repeat="extension in searchActions" href="{{editPatientUrl(extension.url, {'patientUuid': result.uuid} )}}" title="{{extension.label}}"></a>
+                    <a ng-repeat="extension in searchActions" ng-click="doExtensionAction(extension, result)" title="{{extension.label}}"></a>
                 </td>
             </tr>
             </tbody>
@@ -84,4 +84,4 @@
         </div>
     </div>
 </section>
-<!--<div id="registrationCard" class="print-layout" ng-include="printLayout()"></div>-->
+<iframe style="display: none" id="printPatientFrame" src="#/patient/someUUID/print"></iframe>

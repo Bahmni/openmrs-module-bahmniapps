@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registration.patient.controllers')
-    .controller('SearchPatientController', ['$scope', 'patientService', '$location', '$window', 'spinner', 'loader', 'appService', function ($scope, patientService, $location, $window, spinner, loader, appService) {
+    .controller('SearchPatientController', ['$scope', '$route', '$location', '$window', 'spinner', 'loader', 'patientService', 'appService', function ($scope, $route, $location, $window, spinner, loader, patientService, appService) {
         $scope.centers = constants.centers;
         $scope.centerId = defaults.centerId;
         $scope.results = [];
@@ -30,6 +30,32 @@ angular.module('registration.patient.controllers')
 
         var initialize = function() {
             $scope.searchActions = appService.allowedAppExtensions("org.bahmni.registration.patient.search.action");
+        };
+
+        var formatUrl = function (url, options) {
+            var pattern = /{{([^}]*)}}/g;
+            var matches = url.match(pattern);
+            var replacedString = url;
+            if (matches) {
+                matches.forEach(function(el) {
+                    var key = el.replace("{{",'').replace("}}",'');
+                    var value = options[key];
+                    if (value) {
+                        replacedString = replacedString.replace(el, options[key]);
+                    }
+                });
+            }
+            return replacedString.trim();
+        };
+
+        var identifyParams = function (querystring) {
+            querystring = querystring.substring(querystring.indexOf('?')+1).split('&');
+            var params = {}, pair, d = decodeURIComponent;
+            for (var i = querystring.length - 1; i >= 0; i--) {
+                pair = querystring[i].split('=');
+                params[d(pair[0])] = d(pair[1]);
+            }
+            return params;
         };
 
         initialize();
@@ -93,6 +119,25 @@ angular.module('registration.patient.controllers')
                 });
             }
         };
+
+        $scope.doExtensionAction = function(extension, patient) {
+            var forwardTo = formatUrl(extension.url, { 'patientUuid': patient.uuid });
+            if (extension.label === 'Print') {
+                var params = identifyParams(forwardTo);
+                if (params.launch === 'dialog') {
+                    var firstChar = forwardTo.charAt(0);
+                    var prefix = firstChar === "/" ? "#" : "#/";
+                    var hiddenFrame = $("#printPatientFrame")[0];
+                    hiddenFrame.src = prefix + forwardTo;
+                    hiddenFrame.contentWindow.print();
+                } else {
+                    $location.url(forwardTo);
+                }
+            } else{
+                $location.url(forwardTo);
+            }
+        };
+
 
         $scope.printLayout = function () {
             return $route.routes['/printPatient'].templateUrl;

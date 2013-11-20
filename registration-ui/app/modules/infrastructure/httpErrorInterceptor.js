@@ -24,21 +24,20 @@ angular.module('infrastructure.httpErrorInterceptor', ['registration.patient.mod
                if (response.status === 500 && !errorCode.isOpenERPError(data)) {
                     var errorMessage = data.error && data.error.message ? stringAfter(data.error.message, ':') : unexpecetedError;
                     showError(errorMessage);
-               }
-               if (response.status === 409){
+               } else if (response.status === 409){
                    var errorMessage = data.error && data.error.message ? stringAfter(data.error.message, ':') : "Duplicate entry error";
                    showError(errorMessage);
-               }
-               else if(response.status === 0){
+               } else if(response.status === 0){
                   showError("Could not connect to the server. Please check your connection and try again");
-               }
-               else if(response.status === 405){
+               } else if(response.status === 405){
                   showError(unexpecetedError);
-               }
-               else if(response.status === 400){
+               } else if(response.status === 400){
                    if($rootScope.server_error === null){
                    showError("Could not connect to the server. Please check your connection and try again");
                    }
+               } else if (response.status === 403) {
+                   var errorMessage = data.error && data.error.message ? stringAfter(data.error.message, ':') : unexpecetedError;
+                   showError(errorMessage);
                }
                return $q.reject(response);
            }

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('registration.patient.controllers')
-    .controller('CreatePatientController', ['$scope', '$rootScope','patientService', 'visitService','$location', 'Preferences', '$route', 'patient', '$window', 'errorCode', 'date', 'spinner', 'printer', 'appService',
-    function ($scope, $rootScope, patientService, visitService, $location, preferences, $route, patientModel, $window, errorCode, date, spinner, printer, appService) {
+    .controller('CreatePatientController', ['$scope', '$rootScope','patientService', 'visitService','$location', 'Preferences', '$route', 'patient', '$window', 'errorCode', 'date', 'spinner', 'printer', 'appService', '$timeout',
+    function ($scope, $rootScope, patientService, visitService, $location, preferences, $route, patientModel, $window, errorCode, date, spinner, printer, appService, $timeout) {
         var createActionsConfig = [];
         var defaultActions = ["save", "print", "startVisit"];
 
@@ -74,8 +74,10 @@ angular.module('registration.patient.controllers')
                     $location.path("/patient/" + patientData.uuid + "/visit");
                 }).error(function(){ spinner.hide(); });
             } else if ($scope.submitSource == 'print') {
-                printer.print('registrationCard');
-                goToActionUrl('print', {'patientUuid' : $scope.patient.uuid});
+                $timeout(function(){
+                    printer.print('registrationCard');
+                    goToActionUrl('print', {'patientUuid' : patientData.uuid});
+                });
             } else {
                 goToActionUrl($scope.submitSource, patientData);
             }

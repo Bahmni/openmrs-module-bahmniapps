@@ -11,6 +11,7 @@ angular
         $routeProvider.when('/patient/:patientUuid/visit', {templateUrl: 'modules/patient/views/visit.html', controller: 'VisitController', resolve: {initialization: 'initialization'}});
         $routeProvider.when('/printPatient', {templateUrl: 'modules/patient/views/print.html'});
         $routeProvider.when('/patientcommon', {templateUrl: 'modules/patient/views/patientcommon.html'});
+        $routeProvider.when('/patient/:patientUuid/print', {templateUrl: 'modules/patient/views/print.html', controller: 'PrintController', resolve: {initialization: 'initialization'}});
         $routeProvider.when('/patient/:uuid/printSticker', {templateUrl: 'modules/patient/views/notimplemented.html'});
         $routeProvider.otherwise({redirectTo: '/search'});
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
