@@ -55,9 +55,8 @@
     
     <section class="block">
         <h2>Observations</h2>
-        <section class="block" ng-repeat="(key,value) in observationList">
-            <h3 ng-show="value.observations.length > 0">{{key}}</h3>
-            <show-concept-set concept-set-name="key" empty-obs-check="true" display-type="readonly"></show-concept-set>
+        <section class="block" ng-repeat="obs in observationList">
+            <show-obs observation="obs"></show-obs>
         </section>
     </section>
 

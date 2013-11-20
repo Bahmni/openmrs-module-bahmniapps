@@ -1,0 +1,27 @@
+<div>
+    <div class="form-field" ng-hide="observation.isGroup()">
+        <div class="field-attribute">
+            <label>{{observation.label}}</label>
+            <span class="label-add-on" ng-show="observation.units">({{observation.units}})</span>
+        </div>
+        <div class="field-value">
+            <div ng-switch on="observation.possibleAnswers.length">
+                <input type="text" ng-switch-when="0" ng-model="observation.value"></input>
+                <select class="" ng-switch-default ng-model="observation.value"
+                        ng-options="answer.uuid as answer.display for answer in observation.possibleAnswers">
+                </select>
+            </div>
+        </div>
+    </div>
+    <fieldset ng-show="observation.isGroup()">
+        <div class="form-field">
+            <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers">
+                <div ng-switch on="$index">
+                    <legend ng-switch-when="0" class="mylegend"><strong>{{observation.label}}</strong></legend>
+                </div>
+
+                <show-concept observation="member"></show-concept>
+            </div>
+        </div>
+    </fieldset>
+</div>

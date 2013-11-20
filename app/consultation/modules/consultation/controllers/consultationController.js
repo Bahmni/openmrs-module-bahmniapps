@@ -73,7 +73,7 @@ angular.module('opd.consultation.controllers')
             encounterData.observations = [];
             for (var i in $rootScope.observationList) {
                 if ($rootScope.observationList[i]) {
-                    encounterData.observations = encounterData.observations.concat($rootScope.observationList[i].groupedObservations);
+                    encounterData.observations = encounterData.observations.concat($rootScope.observationList[i]);
                 }
             }
         };
@@ -84,4 +84,12 @@ angular.module('opd.consultation.controllers')
             window.location = Bahmni.Opd.Constants.activePatientsListUrl;
         });
     };
+}]).directive('showObs', ['$rootScope', function () {
+    return {
+        restrict:'E',
+        scope:{
+            observation:"="
+        },
+        template:'<ng-include src="\'modules/consultation/views/showObservation.html\'" />'
+    }
 }]);

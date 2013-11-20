@@ -1,92 +1,51 @@
 'use strict';
 
 angular.module('opd.conceptSet')
-    .directive('showConcept', ['$rootScope', function (rootScope) {
-            return {
-            restrict: 'E',
-            scope: {
-                conceptObsMap: "=",
-                displayType: "@",
-                concept: "=",
-                emptyObsCheck: "@"
-            },
-            template: '<ng-include src="\'modules/concept-set/views/concept.html\'" />'
-        }
-    }]).directive('showConceptSet', ['$rootScope', function ($rootScope) {
-        var template =
-            '<form ng-init="getConceptSet()">' +
-                '<div ng-repeat="concept in conceptSet.setMembers" >' +
-                '<show-concept display-type="{{displayType}}" empty-obs-check="{{emptyObsCheck}}" concept-obs-map="$parent.conceptToObservationMap" concept="concept" ></show-concept>' +
-                '</div>' +
-                '</form>';
+    .directive('showConcept', ['$rootScope', function () {
+    return {
+        restrict:'E',
+        scope:{
+            observation:"="
+        },
+        template:'<ng-include src="\'modules/concept-set/views/observation.html\'" />'
+    }
+}]).directive('showConceptSet', ['$rootScope', function ($rootScope) {
+    var template =
+        '<form ng-init="init()">' +
+        '<show-concept observation="rootObservation"></show-concept>' +
+        '</form>';
 
-        var controller = function ($scope, $routeParams, ConceptSetService) {
-            var conceptSetName = $scope.conceptSetName || $routeParams.conceptSetName;
-            var observationList = $rootScope.observationList || {};
+    var controller = function ($scope, $routeParams, ConceptSetService) {
 
-            var cachedConceptSet = observationList[conceptSetName] || {};
+        var conceptSetName = $scope.conceptSetName || $routeParams.conceptSetName;
 
-            $scope.getConceptSet = function () {
-                if (cachedConceptSet.observations) {
-                    $scope.conceptSet = cachedConceptSet.conceptSet;
-                    $scope.conceptToObservationMap = cachedConceptSet.conceptToObservationMap;
-                } else {
-                    ConceptSetService.getConceptSetMembers(conceptSetName).success(function (response) {
-                        if (response.results && response.results.length > 0) {
-                            $scope.conceptSet = response.results[0];
-                            $scope.conceptToObservationMap =
-                                new Bahmni.Opd.ObservationMapper($rootScope.encounterConfig).map($rootScope.visit, response.results[0].setMembers);
-                        }
-                    });
-                }
-            };
+        if(!$rootScope.observationList)
+            $rootScope.observationList = {};
 
-            var constructObservationList = function () {
-                var obsList = [];
-                for (var conceptUuid in $scope.conceptToObservationMap) {
-                    if ($scope.conceptToObservationMap[conceptUuid].value) {
-                        obsList.push($scope.conceptToObservationMap[conceptUuid]);
+
+        $scope.init = function () {
+            if (!$rootScope.observationList[conceptSetName]) {
+                ConceptSetService.getConceptSetMembers(conceptSetName).success(function (response) {
+                    if (response.results && response.results.length > 0) {
+                        var conceptSet = response.results[0];
+                        $rootScope.observationList[conceptSetName] =
+                            new Bahmni.Opd.ObservationMapper($rootScope.encounterConfig)
+                            .map($rootScope.visit, conceptSet);
+                        $scope.rootObservation = $rootScope.observationList[conceptSetName];
                     }
-                }
-                return obsList;
-            };
-
-            var constructGroupedObservations = function (observations) {
-                return new Bahmni.Opd.GroupedObservationMapper($rootScope.encounterConfig)
-                    .map($rootScope.visit, $scope.conceptSet, observations);
-            };
-
-          /*  // this is needed so that we can display the label of the coded concept and not the concept Uuid
-            var conceptToObservationMapWithValueDesc = function(){
-                for(var conceptUuid in $scope.conceptToObservationMap) {
-                    if($scope.conceptToObservationMap[conceptUuid].value)
-                }
-            }*/
-
-            $scope.$on('$destroy', function () {
-                $rootScope.observationList = $rootScope.observationList || {};
-                var observations = constructObservationList();
-                var groupedObservations = constructGroupedObservations(observations);
-                $rootScope.observationList[conceptSetName] = {
-                    conceptSet: $scope.conceptSet,
-                    conceptName: conceptSetName,
-                    observations: observations,
-                    conceptToObservationMap: $scope.conceptToObservationMap,
-                    groupedObservations: groupedObservations
-                };
-            });
+                });
+            } else {
+                $scope.rootObservation = $rootScope.observationList[conceptSetName];
+            }
         };
+    };
 
-        return {
-            restrict: 'E',
-            scope: {
-                displayType: "@",
-                emptyObsCheck: "@",
-                conceptSetName: "="
-            },
-            template: template,
-            controller: controller
-
-        }
-    }]);
-
+    return {
+        restrict:'E',
+        scope:{
+            conceptSetName:"="
+        },
+        template:template,
+        controller:controller
+    }
+}]);

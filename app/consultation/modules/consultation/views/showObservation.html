@@ -1,0 +1,19 @@
+<div>
+    <div class="form-field" ng-hide="observation.isGroup()">
+        <div class="field-attribute">
+            <label>{{observation.label}}</label>
+            <span class="label-add-on" ng-show="observation.units">({{observation.units}})</span>
+        </div>
+        <span class="value-text-only" >{{observation.displayValue()}}</span>
+    </div>
+    <fieldset ng-show="observation.isGroup()">
+        <div class="form-field">
+            <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers">
+                <div ng-switch on="$index">
+                    <legend ng-switch-when="0" class="mylegend"><strong>{{observation.label}}</strong></legend>
+                </div>
+                <show-obs observation="member"></show-obs>
+            </div>
+        </div>
+    </fieldset>
+</div>

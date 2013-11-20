@@ -1,53 +1,69 @@
 Bahmni.Opd.ObservationMapper = function (encounterConfig) {
-    var findObservation = function (observations, concept) {
-        for (var i = 0; i < observations.length; i++) {
-            if (observations[i].concept.uuid === concept.uuid) {
-                return observations[i];
-            }
-            if (observations[i].groupMembers) {
-                var observation = findObservation(observations[i].groupMembers, concept);
-                if (observation) return observation;
-            }
+
+    var newObservation = function (concept) {
+        var observation = { conceptUuid:concept.uuid, units:concept.units, label:concept.display, possibleAnswers:[]};
+        if (concept.answers.length > 0) observation.possibleAnswers = concept.answers;
+
+        observation = angular.extend(new Bahmni.Opd.Consultation.Observation(), observation);
+        return observation;
+    };
+
+    var newFromSavedObservation = function (concept, savedObservation) {
+        var observation = newObservation(concept);
+        if (savedObservation && savedObservation.concept.uuid === concept.uuid) {
+            observation.observationUuid = savedObservation.uuid;
         }
-        return null;
+        if (savedObservation.value instanceof Object) {
+            observation.value = savedObservation.value.uuid;
+        } else {
+            observation.value = savedObservation.value;
+        }
+        return observation;
     };
 
-    var constructConceptToObsMap = function (conceptSet, observations, conceptToObservationMap) {
-        conceptSet.forEach(function (concept) {
-            if (concept.set) {
-                constructConceptToObsMap(concept.setMembers, observations, conceptToObservationMap);
-            }
-            else {
-                var obs = { conceptUuid: concept.uuid, observationUuid: "", value: "" };
-                if (concept.answers.length > 0) obs.possibleAnswers = concept.answers;
+    var findInSavedObservation = function (concept, observations) {
+        if (!observations) return null;
+        return observations.filter(function (obs) {
+            return concept.uuid === obs.concept.uuid;
+        })[0];
+    };
 
-                if (observations && observations.length > 0) {
-                    var observation = findObservation(observations, concept);
-                    if (observation && observation.concept.uuid === concept.uuid) {
-                        if (observation.value instanceof Object) {
-                            obs.value = observation.value.uuid;
-                        } else {
-                            obs.value = observation.value;
-                        }
-                        obs.observationUuid = observation.uuid
-                    }
-                }
-                conceptToObservationMap[concept.uuid] = angular.extend(new Bahmni.Opd.Consultation.Observation(), obs);
-            }
+    var mapObservationGroupMembers = function (observation, savedObservations, conceptSetMembers) {
+        var groupMembers = [];
+        conceptSetMembers.forEach(function (memberConcept) {
+            var setMember = mapObservation(memberConcept, savedObservations);
+            if (setMember)
+                groupMembers.push(setMember);
         });
-        return conceptToObservationMap;
+        observation.groupMembers = groupMembers;
+        return observation;
     };
 
-    this.map = function (visit, conceptSet) {
-        var opdEncounter = visit.encounters.filter(function (encounter) {
+    var mapObservation = function (concept, savedObservations) {
+        var savedObs = findInSavedObservation(concept, savedObservations);
+        var observation = null;
+        if (savedObs) {
+            observation = newFromSavedObservation(concept, savedObs);
+        } else {
+            observation = newObservation(concept);
+        }
+        if (concept.set) {
+            var savedGroupMembers = [];
+            if (savedObs) savedGroupMembers = savedObs.groupMembers;
+            mapObservationGroupMembers(observation, savedGroupMembers, concept.setMembers);
+        }
+        return observation;
+    };
+
+    this.map = function (visit, rootConcept) {
+        var encounter = visit.encounters.filter(function (encounter) {
             return encounter.encounterType.uuid === encounterConfig.getOpdConsultationEncounterUuid();
         })[0];
 
-        var observations = null;
-        var conceptToObservationMap = {};
-        if (opdEncounter) {
-            observations = opdEncounter.obs;
+        var allSavedObs = [];
+        if (encounter) {
+            allSavedObs = encounter.obs;
         }
-        return constructConceptToObsMap(conceptSet, observations, conceptToObservationMap)
+        return mapObservation(rootConcept, allSavedObs);
     };
 };
