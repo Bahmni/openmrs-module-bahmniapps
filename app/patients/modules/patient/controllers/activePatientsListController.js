@@ -101,8 +101,11 @@ angular.module('opd.patient.controllers')
                     });
                 });
                 $scope.searchTypes = allowedSearches;
-                $scope.searchCriteria = { searchParameter: '', type: $scope.searchTypes[0]};
-                findPatientsByHandler($scope.searchCriteria.type.handler);
+                var defaultType = $scope.searchTypes.length > 0 ? $scope.searchTypes[0] : null;
+                $scope.searchCriteria = { searchParameter: '', type: defaultType};
+                if (defaultType) {
+                    findPatientsByHandler($scope.searchCriteria.type.handler);
+                }
             };
         }]).directive('resize', function ($window) {
         return function (scope, element) {
