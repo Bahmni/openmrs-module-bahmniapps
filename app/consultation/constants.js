@@ -8,7 +8,7 @@ Bahmni.Opd.Constants = (function() {
 	    	radiology: "Radiology Order"
 	};
 	return {
-        activePatientsListUrl: "../patients",
+        activePatientsListUrl: "../patients/#/clinical",
         dispositionConcept : "Disposition",
         dispositionGroupConcept : "Disposition Set",
         dispositionNoteConcept : "Disposition Note",

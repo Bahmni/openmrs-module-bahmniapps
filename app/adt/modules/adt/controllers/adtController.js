@@ -1,17 +1,15 @@
 "use strict";
 
 angular.module('opd.adt.controllers')
-    .controller('AdtController', ['$scope', '$rootScope',function ($scope, $rootScope) {
+    .controller('AdtController', ['$scope', '$rootScope', 'encounterService', function ($scope, $rootScope, encounterService) {
 
     $scope.admit = function () {
         var encounterData = {};
         encounterData.patientUuid = $scope.patient.uuid;
         encounterData.encounterTypeUuid = $scope.encounterConfig.getAdmissionEncounterUuid();
-        addObservation(encounterData);
+        encounterData.observations = [$rootScope.observationList[Bahmni.ADT.Constants["adtConceptSet"]]];
+        encounterService.create(encounterData).success(function () {
+            window.location = Bahmni.ADT.Constants.activePatientsListUrl;
+        });
     };
-
-    var addObservation = function (encounterData) {
-        $rootScope.observationList
-    }
-
 }]);

@@ -11,7 +11,6 @@ angular.module('consultation').config(['$routeProvider', '$httpProvider', functi
         $routeProvider.when('/visit/:visitUuid/disposition', {templateUrl: 'modules/consultation/views/disposition.html',controller: 'DispositionController',resolve: {initialization: 'initialization'}});
         $routeProvider.when('/visit/:visitUuid/bed-management', {templateUrl: 'modules/bed-management/views/bedManagement.html',controller: 'BedManagementController',resolve: {initialization: 'initialization'}});
         $routeProvider.when('/visit/:visitUuid/concept-set/:conceptSetName', {template: '<show-concept-set/>',resolve: {initialization: 'initialization'}});
-        $routeProvider.when('/visit/:visitUuid/adt', {templateUrl: 'modules/adt/views/adt.html', controller: 'AdtController',resolve: {initialization: 'initialization'}});
         $routeProvider.otherwise({redirectTo: Bahmni.Opd.Constants.activePatientsListUrl});
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
 }]);

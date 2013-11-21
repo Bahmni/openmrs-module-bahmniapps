@@ -1,5 +1,5 @@
 'use strict';
-
+// TODO : remove this. use encounterService
 angular.module('opd.consultation.services')
     .factory('consultationService', ['$http', function ($http) {
     var create = function (encounter) {

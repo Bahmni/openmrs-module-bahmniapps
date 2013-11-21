@@ -2,7 +2,6 @@ var Bahmni = Bahmni || {};
 Bahmni.Common = Bahmni.Common || {};
 
 Bahmni.Common.Constants = {
-    homeUrl: "/home",
     bahmniConfigurationUrl: "/openmrs/ws/rest/v1/bahmnicore/conf",
     encounterConfigurationUrl: "/openmrs/ws/rest/v1/bahmnicore/bahmniencounter/config",
     patientConfigurationUrl:"/openmrs/ws/rest/v1/bahmnicore/patient/config",
