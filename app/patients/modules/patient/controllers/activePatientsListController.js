@@ -4,6 +4,12 @@ angular.module('opd.patient.controllers')
     .controller('ActivePatientsListController', ['$route', '$scope', '$location', '$window', 'patientService', 'patientMapper', '$rootScope', 'appService',
         function ($route, $scope, $location, $window, patientService, patientMapper, $rootScope, appService) {
 
+            $scope.appContext = $route.current.params["appContext"];
+
+            appService.initialize('patientsearch', $scope.appContext).then(function() {
+                initialize();
+            });
+
             $scope.searchTypes = [];
             var handlePatientList = function (patientList, callback) {
                 resetPatientLists();
@@ -69,7 +75,7 @@ angular.module('opd.patient.controllers')
             };
 
             $scope.consultation = function (patient) {
-                $window.location = "../consultation/#/visit/" + patient.activeVisitUuid;
+                $window.location = Bahmni.Opd.Constants["appUrls"][$scope.appContext] + patient.activeVisitUuid;
             };
 
             $scope.showPatientsForType = function (sType) {
@@ -98,9 +104,6 @@ angular.module('opd.patient.controllers')
                 $scope.searchCriteria = { searchParameter: '', type: $scope.searchTypes[0]};
                 findPatientsByHandler($scope.searchCriteria.type.handler);
             };
-
-            initialize();
-
         }]).directive('resize', function ($window) {
         return function (scope, element) {
             scope.storeWindowDimensions();

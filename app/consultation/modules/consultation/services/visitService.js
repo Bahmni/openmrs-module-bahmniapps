@@ -12,7 +12,7 @@ angular.module('opd.consultation.services')
          		}
          	}
         );
-    }
+    };
 
     return {
         getVisit: getVisit

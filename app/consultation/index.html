@@ -11,41 +11,13 @@
     </head>
     <body>
 
-        <div ng-app="consultation" >
-            <div class="opd-header-wrapper">
-            <header class="tabs" ng-controller="ConsultationNavigationController">
-                        <ul class="header-tabs">
-                            <li ng-repeat="board in availableBoards" ng-class="{'tab-selected':currentBoard.name==board.name}">
-                                <button ng-click="showBoard(board.name)" class="button">
-                                    {{board.name}}
-                                </button>
-                            </li>
-                        </ul>
-                         <ul class="patient-info">
-                            <li><img class="roundImages" ng-src="{{patient.image}}"  onerror="this.onerror=null;this.src='../images/blank-user.gif';"></li>
-                             <li class="logoff">
-                                <button log-out><i class="icon-off icon-white small"></i></button>
-                            </li>
-                        </ul>
+        <div ng-app="consultation" ng-controller="ConsultationNavigationController">
 
-                        <div class="patient-detail">
-                            <ul>
-                                <li>{{patient.identifier}}</li>
-                                <li><span>{{patient.name}},</span></li>
-                                <li>{{patient.gender | gender }}, {{patient.age}}</li>
-                            </ul>
-                            <ul>
-                            <li ng-show="bedDetails">{{bedDetails.wardName}}</li>
-                           <!-- <li ng-show="bedDetails">{{bedDetails.physicalLocationName}}</li>-->
-                            <li ng-show="bedDetails">{{bedDetails.bedNumber}}</li>
-                            </ul>
-                        </div>
-                </header>
-                </div>
-                <div class="opd-wrapper">
-                    <p style="display: none" class="caution" ng-show="server_error">{{server_error}}</p>
-                    <div ng-view id="view-content" class="opd-content-wrapper"></div>
-                </div>
+            <div ng-include src="'../common/modules/patient/header/views/header.html'"></div>
+            <div class="opd-wrapper">
+                <div ng-view id="view-content" class="opd-content-wrapper"></div>
+            </div>
+
             <script src="../components/jquery/jquery.js"></script>
             <script src="../lib/jquery/jquery-ui-1.10.3.custom.min.js"></script>
             <script src="../components/keyboardjs/keyboard.js"></script>
@@ -59,7 +31,7 @@
             <script src="../common/constants.js"></script>
             <script src="../common/modules/infrastructure/init.js"></script>
             <script src="../common/modules/infrastructure/services/configurationService.js"></script>
-            
+
             <script src="../common/modules/patient/init.js"></script>
             <script src="../common/modules/patient/mappers/patientMapper.js"></script>
             <script src="../common/modules/patient/services/patientService.js"></script>
@@ -67,7 +39,7 @@
 
             <script src="constants.js"></script>
             <script src="app.js"></script>
-            
+
             <script src="modules/tree-select/init.js"></script>
             <script src="modules/tree-select/models/column.js"></script>
             <script src="modules/tree-select/models/node.js"></script>
@@ -97,8 +69,6 @@
             <script src="modules/consultation/services/dispositionService.js"></script>
             <script src="modules/consultation/controllers/navigationController.js"></script>
             <script src="modules/consultation/models/diagnosis.js"></script>
-            <script src="modules/adt/init.js"></script>
-            <script src="modules/adt/controllers/adtController.js"></script>
 
             <script src="modules/bed-management/init.js"></script>
             <script src="modules/bed-management/controllers/bedManagementController.js"></script>
@@ -112,6 +82,5 @@
             <script src="modules/concept-set/mappers/observationMapper.js"></script>
 
             <!-- endbuild -->
-        </div>
     </body>
 </html>

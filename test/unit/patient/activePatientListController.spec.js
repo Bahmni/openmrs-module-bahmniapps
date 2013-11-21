@@ -1,6 +1,6 @@
 'use strict';
 
-describe("ActivePatientListController", function () {
+xdescribe("ActivePatientListController", function () {
     var patientMapper;
     var scope;
     var controller;

@@ -14,10 +14,8 @@ angular.module('opd.patient').factory('initialization', ['$rootScope', '$q', 'co
             };
 
             authenticator.authenticateUser().then(function () {
-                appService.initialize('patientsearch').then(function() {
-                    getConfigs().then(function() {
-                        initializationPromise.resolve();
-                    });
+                getConfigs().then(function() {
+                    initializationPromise.resolve();
                 });
             });
 

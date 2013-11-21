@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('opd.adt.controllers')
-    .controller('AdtController', ['$scope', function ($scope) {
+    .controller('AdtController', ['$scope', '$rootScope',function ($scope, $rootScope) {
 
     $scope.admit = function () {
         var encounterData = {};
@@ -11,6 +11,7 @@ angular.module('opd.adt.controllers')
     };
 
     var addObservation = function (encounterData) {
+        $rootScope.observationList
     }
 
 }]);

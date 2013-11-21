@@ -7,7 +7,8 @@ angular.module('opd.conceptSet')
         scope:{
             observation:"="
         },
-        template:'<ng-include src="\'modules/concept-set/views/observation.html\'" />'
+        template:'<ng-include src="\'../consultation/modules/concept-set/views/observation.html\'" />'
+        // TODO : sush/shruthi move to common
     }
 }]).directive('showConceptSet', ['$rootScope', function ($rootScope) {
     var template =
@@ -29,7 +30,7 @@ angular.module('opd.conceptSet')
                     if (response.results && response.results.length > 0) {
                         var conceptSet = response.results[0];
                         $rootScope.observationList[conceptSetName] =
-                            new Bahmni.Opd.ObservationMapper($rootScope.encounterConfig)
+                            new Bahmni.ConceptSet.ObservationMapper($rootScope.encounterConfig)
                             .map($rootScope.visit, conceptSet);
                         $scope.rootObservation = $rootScope.observationList[conceptSetName];
                     }

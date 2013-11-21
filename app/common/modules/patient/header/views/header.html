@@ -1,0 +1,34 @@
+<div class="opd-header-wrapper">
+    <header class="tabs">
+        <ul class="header-tabs">
+            <li ng-repeat="board in availableBoards" ng-class="{'tab-selected':currentBoard.name==board.name}">
+                <button ng-click="showBoard(board.name)" class="button">
+                    {{board.name}}
+                </button>
+            </li>
+        </ul>
+        <ul class="patient-info">
+            <li><img class="roundImages" ng-src="{{patient.image}}"
+                     onerror="this.onerror=null;this.src='../images/blank-user.gif';"></li>
+            <li class="logoff">
+                <button log-out><i class="icon-off icon-white small"></i></button>
+            </li>
+        </ul>
+
+        <div class="patient-detail">
+            <ul>
+                <li>{{patient.identifier}}</li>
+                <li><span>{{patient.name}},</span></li>
+                <li>{{patient.gender | gender }}, {{patient.age}}</li>
+            </ul>
+            <ul>
+                <li ng-show="bedDetails">{{bedDetails.wardName}}</li>
+                <li ng-show="bedDetails">{{bedDetails.bedNumber}}</li>
+            </ul>
+        </div>
+    </header>
+</div>
+<div>
+    <p style="display: none" class="caution" ng-show="server_error">{{server_error}}</p>
+</div>
+

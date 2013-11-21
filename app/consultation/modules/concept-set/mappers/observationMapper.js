@@ -1,4 +1,4 @@
-Bahmni.Opd.ObservationMapper = function (encounterConfig) {
+Bahmni.ConceptSet.ObservationMapper = function (encounterConfig) {
 
     var newObservation = function (concept) {
         var observation = { conceptUuid:concept.uuid, units:concept.units, label:concept.display, possibleAnswers:[]};
