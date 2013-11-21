@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('bahmnihome')
-    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'spinner', function ($rootScope, $scope, $window, $location, sessionService, spinner) {
+    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'spinner', '$q',
+     function ($rootScope, $scope, $window, $location, sessionService, spinner, $q) {
         var landingPagePath = "/dashboard";
         var loginPagePath = "/login";
 
@@ -19,19 +20,29 @@ angular.module('bahmnihome')
 
         $scope.login = function () {
             $scope.errorMessage = null;
-            spinner.show();
-            var loginPromise = sessionService.loginUser($scope.username, $scope.password).then(
+            var deferrable = $q.defer();
+            sessionService.loginUser($scope.username, $scope.password).then(
                 function() {
-                    spinner.hide();
-                    $location.path(landingPagePath);
-                    $rootScope.$broadcast('event:auth-loggedin');
+                    sessionService.loadCredentials().then(
+                        function() {
+                            $rootScope.$broadcast('event:auth-loggedin');
+                            deferrable.resolve();
+                        },
+                        function(error) {
+                            deferrable.reject(error);
+                        }
+                    )
                 }, 
                 function(error) {
                     $scope.errorMessage = error;
-                    spinner.hide();
+                    deferrable.reject(error);
                 }
             );
-            spinner.forPromise(loginPromise);
+            spinner.forPromise(deferrable.promise).then(
+                function() {
+                    $location.path(landingPagePath);
+                }
+            )
         }
         
     }]);

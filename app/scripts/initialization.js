@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmnihome')
-    .factory('initialization', ['$rootScope', '$q', 'appService', 'spinner', 'sessionService', 
-        function ($rootScope, $q, appService, spinner, sessionService) {
+    .factory('initialization', ['$rootScope', '$q', 'appService', 'sessionService',
+        function ($rootScope, $q, appService, sessionService) {
             var deferrable = $q.defer();
             var promises = [];
             promises.push(sessionService.loadCredentials());

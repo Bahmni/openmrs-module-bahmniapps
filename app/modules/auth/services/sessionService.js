@@ -17,20 +17,24 @@ angular.module('bahmnihome')
 
         this.loadCredentials = function() {
             var deferrable = $q.defer();
-            var currentUser = $cookieStore.get('bahmni.user');
-            $http.get("/openmrs/ws/rest/v1/user", { 
-                method:"GET",
-                params: {
-                    q: currentUser,
-                    v: "custom:(username,privileges:(name,retired))"
-                },
-                cache: false
-            }).success(function(data) {
-                $rootScope.currentUser = data.results[0];
-                deferrable.resolve(data.results[0]);
-            }).error(function(){
-                deferrable.reject('Could not get roles for the current user.');
-            });
+            if ($rootScope.currentUser) {
+                deferrable.resolve($rootScope.currentUser);
+            } else {
+                var currentUser = $cookieStore.get('bahmni.user');
+                $http.get("/openmrs/ws/rest/v1/user", {
+                    method:"GET",
+                    params: {
+                        q: currentUser,
+                        v: "custom:(username,privileges:(name,retired))"
+                    },
+                    cache: false
+                }).success(function(data) {
+                    $rootScope.currentUser = data.results[0];
+                    deferrable.resolve(data.results[0]);
+                }).error(function(){
+                    deferrable.reject('Could not get credentials for the user.');
+                });
+            }
             return deferrable.promise;
         };
         
