@@ -10,7 +10,7 @@ Bahmni.Opd.Consultation.TreatmentDrug = function () {
     this.dosageInstruction = "";
     this.numberOfDosageDays = "";
     this.notes = "";
-    this.conceptUuid = "";
+    this.concept = {uuid: ""};
     this.notesVisible = false;
     this.empty = true;
     this.savedDrug = false;
@@ -20,7 +20,7 @@ Bahmni.Opd.Consultation.TreatmentDrug = function () {
         endDate.setDate(endDate.getDate() + this.numberOfDosageDays);
         return {
             uuid: this.uuid,
-            conceptUuid: this.conceptUuid,
+            concept: {uuid: this.concept.uuid },
             notes: this.notes,
             startDate: startDate,
             endDate: endDate,

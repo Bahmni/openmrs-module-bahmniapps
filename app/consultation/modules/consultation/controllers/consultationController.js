@@ -38,7 +38,7 @@ angular.module('opd.consultation.controllers')
         if ($rootScope.consultation.diagnoses && $rootScope.consultation.diagnoses.length > 0){
             encounterData.diagnoses = $rootScope.consultation.diagnoses.map(function (diagnosis) {
                 return {
-                    diagnosis:"ConceptUuid:" + diagnosis.concept.conceptUuid,
+                    codedAnswer: { uuid: diagnosis.concept.conceptUuid },
                     order:diagnosis.order,
                     certainty:diagnosis.certainty,
                     existingObs:diagnosis.existingObsUuid
@@ -47,7 +47,7 @@ angular.module('opd.consultation.controllers')
         }
 
         encounterData.testOrders = $rootScope.consultation.investigations.map(function (investigation) {
-            return { uuid:investigation.uuid, conceptUuid:investigation.conceptUuid, orderTypeUuid:investigation.orderTypeUuid };
+            return { uuid:investigation.uuid, concept: {uuid: investigation.concept.uuid }, orderTypeUuid:investigation.orderTypeUuid };
         });
 
         var startDate = new Date();

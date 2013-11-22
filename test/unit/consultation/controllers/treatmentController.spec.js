@@ -142,7 +142,7 @@ describe("TreatmentControllerTest", function () {
             expect(drugAfterSelection.originalName).toBe("my drug");
             expect(drugAfterSelection.strength).toBe("100 mg");
             expect(drugAfterSelection.dosageForm).toBe("Tablet");
-            expect(drugAfterSelection.conceptUuid).toBe("concept uuid");
+            expect(drugAfterSelection.concept.uuid).toBe("concept uuid");
             expect(drugAfterSelection.numberPerDosage).toBe(1);
             expect(drugAfterSelection.empty).toBe(false);
 
