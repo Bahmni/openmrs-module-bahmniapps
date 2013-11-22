@@ -7,7 +7,7 @@ angular.module('opd.conceptSet')
         scope:{
             observation:"="
         },
-        template:'<ng-include src="\'../consultation/modules/concept-set/views/observation.html\'" />'
+        template:'<ng-include src="\'../common/modules/concept-set/views/observation.html\'" />'
         // TODO : sush/shruthi move to common
     }
 }]).directive('showConceptSet', ['$rootScope', function ($rootScope) {
