@@ -74,8 +74,25 @@ angular.module('opd.patient.controllers')
                 }
             };
 
+            var formatUrl = function (url, options) {
+                var temp = url;
+                for (var key in options) {
+                    temp = temp.replace("{{"+key+"}}", options[key]);
+                }
+                return temp;
+            };
+
             $scope.consultation = function (patient) {
-                $window.location = Bahmni.Opd.Constants["appUrls"][$scope.appContext] + patient.activeVisitUuid;
+                var currentAppExtension = $scope.searchTypes.filter(function (searchType) {
+                    return $scope.searchCriteria.type.id == searchType.id;
+                })[0];
+
+                var options = {
+                    patientUuid: patient.uuid,
+                    visitUuid: patient.activeVisitUuid
+                };
+
+                $window.location = formatUrl(currentAppExtension.forwardUrl, options);
             };
 
             $scope.showPatientsForType = function (sType) {
@@ -97,7 +114,9 @@ angular.module('opd.patient.controllers')
                     allowedSearches.push({
                         name: appExtn.label,
                         display: appExtn.extensionParams.display,
-                        handler: appExtn.extensionParams.searchHandler
+                        handler: appExtn.extensionParams.searchHandler,
+                        forwardUrl: appExtn.extensionParams.forwardUrl,
+                        id: appExtn.id
                     });
                 });
                 $scope.searchTypes = allowedSearches;
