@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.3.custom.min.css">
+        <!-- build:css bed-management.min.css -->
+        <link rel="stylesheet" href="../styles/styles.css"/>
+        <!-- endbuild -->
+        <title>Bed-Management</title>
+    </head>
+    <body>
+        <div ng-app="bedManagement" ng-controller="NavigationController">
+            <div ng-include src="'../common/modules/patient/header/views/header.html'"></div>
+            <div class="opd-wrapper">
+                <div ng-view id="view-content" class="opd-content-wrapper"></div>
+            </div>
+
+            <script src="../components/jquery/jquery.js"></script>
+            <script src="../lib/jquery/jquery-ui-1.10.3.custom.min.js"></script>
+            
+            <script src="../components/angular/angular.js"></script>
+            <script src="../components/angular-cookies/angular-cookies.js"></script>
+
+            <!-- build:js bed-management.min.js -->
+            <script src="../common/constants.js"></script>
+            <script src="../common/modules/infrastructure/httpErrorInterceptor.js"></script>
+            <script src="../common/modules/auth/authentication.js"></script>
+            <script src="../common/modules/app-framework/appframework.js"></script>
+            <script src="../common/modules/infrastructure/init.js"></script>
+            <script src="../common/modules/infrastructure/services/configurationService.js"></script>
+
+            <script src="../common/modules/patient/init.js"></script>
+            <script src="../common/modules/patient/mappers/patientMapper.js"></script>
+            <script src="../common/modules/patient/filters/gender.js"></script>
+            <script src="../common/modules/patient/services/patientService.js"></script>
+
+            <script src="modules/bed-management/init.js"></script>
+            <script src="modules/bed-management/initialization.js"></script>
+            <script src="modules/bed-management/controllers/navigationController.js"></script>
+            <script src="modules/bed-management/controllers/bedManagementController.js"></script>
+            <script src="modules/bed-management/services/wardService.js"></script>
+            <script src="modules/bed-management/services/bedService.js"></script>
+            <script src="app.js"></script>
+            <!-- endbuild -->
+        </div>
+    </body>
+</html>
