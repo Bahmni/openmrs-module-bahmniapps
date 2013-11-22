@@ -8,7 +8,6 @@ angular.module('opd.conceptSet')
             observation:"="
         },
         template:'<ng-include src="\'../common/modules/concept-set/views/observation.html\'" />'
-        // TODO : sush/shruthi move to common
     }
 }]).directive('showConceptSet', ['$rootScope', function ($rootScope) {
     var template =

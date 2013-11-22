@@ -1,7 +1,3 @@
-var Bahmni = Bahmni || {};
-Bahmni.Opd = Bahmni.Opd || {};
-
-
 Bahmni.Opd.Constants = (function() {
 	var orderTypes = {
 	    	lab: "Lab Order",

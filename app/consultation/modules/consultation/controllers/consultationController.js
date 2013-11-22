@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('opd.consultation.controllers')
-    .controller('ConsultationController', ['$scope', '$rootScope', 'consultationService', '$route', '$location', function ($scope, $rootScope, consultationService, $route, $location) {
+    .controller('ConsultationController', ['$scope', '$rootScope', 'encounterService', '$route', '$location', function ($scope, $rootScope, encounterService, $route, $location) {
 
     $scope.consultationNote = {conceptUuid : null, value: null};
 
@@ -80,7 +80,7 @@ angular.module('opd.consultation.controllers')
 
         addObservationsToEncounter();
 
-        consultationService.create(encounterData).success(function () {
+        encounterService.create(encounterData).success(function () {
             window.location = Bahmni.Opd.Constants.activePatientsListUrl;
         });
     };

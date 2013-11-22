@@ -9,6 +9,7 @@ files = [
     '../app/**/modules/**/init.js',
     '../app/**/constants.js',
     '../app/**/modules/**/*.js',
+    '../app/**/modules/**/constants.js',
     'unit/**/*.js'
 ];
 

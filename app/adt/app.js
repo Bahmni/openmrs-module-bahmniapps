@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('adt', ['opd.consultation.services', 'bahmni.common.infrastructure', 'bahmni.common.patient',
-    'opd.conceptSet', 'authentication', 'appFramework', 'httpErrorInterceptor', 'opd.adt', 'bahmni.common.encounter']);
+    'opd.conceptSet', 'authentication', 'appFramework', 'httpErrorInterceptor', 'opd.adt',
+    'bahmni.common.encounter', 'bahmni.common.visit']);
 angular.module('adt').config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
     $routeProvider.when('/visit/:visitUuid', {templateUrl:'modules/adt/views/adt.html', controller:'AdmissionController', resolve:{initialization:'initialization'}});
     $routeProvider.otherwise({templateUrl:'../common/modules/common/error.html'});

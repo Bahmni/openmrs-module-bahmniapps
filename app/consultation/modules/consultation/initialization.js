@@ -25,7 +25,7 @@ angular.module('opd.consultation').factory('initialization',
                 deferrable.resolve();
             });
             return deferrable.promise;
-        }
+        };
 
         var getVisit = function() {
             var visitDeferrable = $q.defer();
