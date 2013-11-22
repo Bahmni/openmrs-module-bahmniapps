@@ -9,7 +9,8 @@
         <title>ADT</title>
     </head>
     <body>
-        <div ng-app="adt">
+        <div ng-app="adt" ng-controller="AdtController">
+            <div ng-include src="'../common/modules/patient/header/views/header.html'"></div>
             <div class="opd-wrapper">
                 <div ng-view id="view-content" class="opd-content-wrapper"></div>
             </div>
@@ -48,11 +49,17 @@
             <script src="../consultation/modules/concept-set/services/conceptSetServices.js"></script>
             <script src="../consultation/modules/concept-set/mappers/observationMapper.js"></script>
 
+            <script src="modules/bed-management/init.js"></script>
+            <script src="modules/bed-management/controllers/bedManagementController.js"></script>
+            <script src="modules/bed-management/services/wardService.js"></script>
+            <script src="modules/bed-management/services/bedService.js"></script>
+
             <script src="app.js"></script>
             <script src="modules/adt/init.js"></script>
             <script src="modules/adt/constants.js"></script>
             <script src="modules/adt/initialization.js"></script>
             <script src="modules/adt/controllers/adtController.js"></script>
+            <script src="modules/adt/controllers/admissionController.js"></script>
             <!-- endbuild -->
         </div>
     </body>
