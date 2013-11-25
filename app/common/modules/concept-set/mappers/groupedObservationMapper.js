@@ -11,7 +11,7 @@ Bahmni.Opd.GroupedObservationMapper = function (encounterConfig) {
     var newFromSavedObservation = function (concept, observation) {
         var obs = { concept: { uuid: concept.uuid } };
         if (observation && observation.concept.uuid === concept.uuid) {
-            obs.observationUuid = observation.uuid;
+            obs.uuid = observation.uuid;
         }
         return obs;
     };
@@ -19,7 +19,7 @@ Bahmni.Opd.GroupedObservationMapper = function (encounterConfig) {
     var newFromUIObservation = function (concept, observation) {
         var obs = { concept: { uuid: concept.uuid } };
         if (observation && observation.conceptUuid === concept.uuid) {
-            obs.observationUuid = observation.observationUuid;
+            obs.uuid = observation.observationUuid;
         }
         return obs;
     };

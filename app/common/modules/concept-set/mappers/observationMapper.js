@@ -10,7 +10,7 @@ Bahmni.ConceptSet.ObservationMapper = function (encounterConfig) {
     var newFromSavedObservation = function (concept, savedObservation) {
         var observation = newObservation(concept);
         if (savedObservation && savedObservation.concept.uuid === concept.uuid) {
-            observation.observationUuid = savedObservation.uuid;
+            observation.uuid = savedObservation.uuid;
         }
         if (savedObservation.value instanceof Object) {
             observation.value = savedObservation.value.uuid;

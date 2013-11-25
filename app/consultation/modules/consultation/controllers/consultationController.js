@@ -16,7 +16,7 @@ angular.module('opd.consultation.controllers')
             $scope.consultationNote = {
                 conceptUuid : lastNote.concept.uuid,
                 value : lastNote.value,
-                observationUuid  : lastNote.uuid
+                uuid  : lastNote.uuid
             };
         } else if ($rootScope.consultationNoteConfig) {
             $scope.consultationNote.conceptUuid = ($rootScope.consultationNoteConfig.results.length > 0) ? $rootScope.consultationNoteConfig.results[0].uuid : null;
