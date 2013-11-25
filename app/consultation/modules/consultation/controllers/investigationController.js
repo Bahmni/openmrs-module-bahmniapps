@@ -19,10 +19,19 @@ angular.module('opd.consultation.controllers')
 
         $scope.activateTab($scope.tabs[0]);
 
+        var toggleVoiding = function(investigation) {
+            investigation.voided = !investigation.voided;
+        }
+
+        var isAlreadySavedInDb = function(investigation) {
+            return investigation.uuid != null
+        }
+
         $scope.removeInvestigation = function(investigation){
-            var index = investigations.indexOf(investigation);
-            if(index >= 0) {
-                investigations.splice(index, 1);
+            if(isAlreadySavedInDb(investigation)) {
+                toggleVoiding(investigation);
+            } else {
+                $rootScope.$broadcast('treeSelectRemoveItem', investigation);
             }
         }
 

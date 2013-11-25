@@ -46,6 +46,9 @@
 					border-radius: 10px;
 					line-height: 15px;
 				}
+				&.voided {
+		            text-decoration: line-through;
+				}
 			}
 		}
 		&.diagnosis{

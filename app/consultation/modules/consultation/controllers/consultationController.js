@@ -47,7 +47,7 @@ angular.module('opd.consultation.controllers')
         }
 
         encounterData.testOrders = $rootScope.consultation.investigations.map(function (investigation) {
-            return { uuid:investigation.uuid, concept: {uuid: investigation.concept.uuid }, orderTypeUuid:investigation.orderTypeUuid };
+            return { uuid:investigation.uuid, concept: {uuid: investigation.concept.uuid }, orderTypeUuid:investigation.orderTypeUuid, voided: investigation.voided || false};
         });
 
         var startDate = new Date();

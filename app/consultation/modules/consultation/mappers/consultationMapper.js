@@ -16,7 +16,7 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
             });
             investigations = testOrders.map(function (testOrder) {
                 return { uuid: testOrder.uuid, concept: {uuid: testOrder.concept.uuid}, name: testOrder.concept.display,
-                    isSet: testOrder.concept.set || false, orderTypeUuid: testOrder.orderType.uuid };
+                    isSet: testOrder.concept.set || false, orderTypeUuid: testOrder.orderType.uuid, voided: testOrder.voided || false};
             });
 
             labResults = new Bahmni.Opd.LabResultsMapper().map(opdEncounter);

@@ -31,6 +31,9 @@
         &.panel{
             border-left:5px solid #85CF15;
         }
+        &.voided .test-name {
+            text-decoration: line-through;
+        }
     }
     .selectableTypeSet{
         .icon-ok{

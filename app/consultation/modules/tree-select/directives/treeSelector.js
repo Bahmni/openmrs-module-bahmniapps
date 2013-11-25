@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('opd.treeSelect')
-    .directive('treeSelector', ['conceptTreeService', function (conceptTreeService) {
+    .directive('treeSelector', ['$rootScope', 'conceptTreeService', function ($rootScope, conceptTreeService) {
         var link = function($scope, elem) {            
             var itemComparer = $scope.itemComparer();
             var itemMapper = $scope.itemMapper(); 
@@ -19,9 +19,9 @@ angular.module('opd.treeSelect')
                 return false;
             }
 
-            var removeItemForNode = function(node) {
+            var removeFromSelectedItem = function(item) {
                 for(var i=0; i < $scope.selectedItems.length; i++) {
-                    if(itemComparer($scope.selectedItems[i], convertDataToItem(node.data))) {
+                    if(itemComparer($scope.selectedItems[i], item)) {
                         $scope.selectedItems.splice(i, 1);
                         return;
                     }
@@ -32,6 +32,7 @@ angular.module('opd.treeSelect')
                 var item = convertDataToItem(node.data);
                 if(!selectedItemshasItem(item)){
                     $scope.selectedItems.push(item);
+                    console.log($scope.selectedItems);
                 };
             } 
 
@@ -40,11 +41,18 @@ angular.module('opd.treeSelect')
             };
 
             var onRemoveNodes = function(nodes){
-                nodes.forEach(removeItemForNode);
+                nodes.forEach(function(node) {
+                    var item = convertDataToItem(node.data);
+                    removeFromSelectedItem(item);
+                });
             };
 
             (function() {
                 var observer = {onAddNodes: onAddNodes, onRemoveNodes: onRemoveNodes};
+                $rootScope.$on('treeSelectRemoveItem', function(event, item) {
+                    removeFromSelectedItem(item);
+                })
+
                 conceptTreeService.getConceptTree($scope.rootConceptName).then(function(conceptTree) {
                     $scope.conceptExplorer = new Bahmni.Opd.TreeSelect.Explorer(conceptTree, observer);
                     $scope.$watch('selectedItems.length', function(){
