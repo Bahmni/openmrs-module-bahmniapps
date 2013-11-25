@@ -26,33 +26,6 @@ describe('PatientCommonController', function () {
         });
     }
 
-
-    describe("getLastNameList", function () {
-        it('should use the patientAttributeService to get laste name list', function () {
-            setupController();
-            var param = "ram";
-
-            scope.getLastNameList(param);
-
-            expect(patientAttributeService.search).toHaveBeenCalled();
-            expect(patientAttributeService.search.mostRecentCall.args[0]).toBe("familyName");
-            expect(patientAttributeService.search.mostRecentCall.args[1]).toBe(param);
-        });
-    });
-
-    describe("getCasteList", function () {
-        it('should use the patientAttributeService to get caste list', function () {
-            setupController();
-            var param = "hin";
-
-            scope.getCasteList(param);
-
-            expect(patientAttributeService.search).toHaveBeenCalled();
-            expect(patientAttributeService.search.mostRecentCall.args[0]).toBe("caste");
-            expect(patientAttributeService.search.mostRecentCall.args[1]).toBe(param);
-        });
-    });
-
     describe("tehsil selection", function(){
        it("should update district and state", function(){
            setupController();

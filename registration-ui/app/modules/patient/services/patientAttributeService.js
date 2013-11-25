@@ -7,14 +7,14 @@ angular.module('registration.patient.services')
 
     var init = function(){
         urlMap = {
-            "familyName" : "/ws/rest/v1/bahmnicore/unique/personname",
-            "caste" : "/ws/rest/v1/bahmnicore/unique/personattribute"
+            "personName" : "/ws/rest/v1/bahmnicore/unique/personname",
+            "personAttribute" : "/ws/rest/v1/bahmnicore/unique/personattribute"
         }
     }
     init();
 
-    var search = function(fieldName, query){
-        var url = constants.openmrsUrl + urlMap[fieldName];
+    var search = function(fieldName, query, type){
+        var url = constants.openmrsUrl + urlMap[type];
         var queryWithoutTrailingSpaces = query.trimLeft();
 
         return $http.get(url, {

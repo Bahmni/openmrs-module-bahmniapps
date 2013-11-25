@@ -10,12 +10,8 @@ angular.module('registration.patient.controllers')
                 }
             };
 
-            $scope.getLastNameList = function (query) {
-                return patientAttributeService.search("familyName", query);
-            };
-
-            $scope.getCasteList = function (query) {
-                return patientAttributeService.search("caste", query);
+            $scope.getAutoCompleteList = function (attributeName, query, type) {
+                return patientAttributeService.search(attributeName, query, type);
             };
 
             $scope.getDataResults = function (data) {

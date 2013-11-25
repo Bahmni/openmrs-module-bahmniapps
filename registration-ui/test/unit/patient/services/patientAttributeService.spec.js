@@ -20,7 +20,7 @@ describe('patientAttributeService', function () {
             var key = "familyName";
             var query = "res";
 
-            var results = patientAttributeService.search(key,query);
+            var results = patientAttributeService.search(key,query, 'personName');
 
             expect(mockHttp.get).toHaveBeenCalled();
             expect(mockHttp.get.mostRecentCall.args[0]).toBe(openmrsUrl + '/ws/rest/v1/bahmnicore/unique/personname');
@@ -35,7 +35,7 @@ describe('patientAttributeService', function () {
             var key = "caste";
             var query = "res";
 
-            var results = patientAttributeService.search(key,query);
+            var results = patientAttributeService.search(key,query,'personAttribute');
 
             expect(mockHttp.get).toHaveBeenCalled();
             expect(mockHttp.get.mostRecentCall.args[0]).toBe(openmrsUrl + "/ws/rest/v1/bahmnicore/unique/personattribute");
@@ -50,7 +50,7 @@ describe('patientAttributeService', function () {
             var key = "caste";
             var query = "       res        ";
 
-            var results = patientAttributeService.search(key,query);
+            var results = patientAttributeService.search(key,query, 'personAttribute');
 
             expect(mockHttp.get).toHaveBeenCalled();
             expect(mockHttp.get.mostRecentCall.args[0]).toBe(openmrsUrl + "/ws/rest/v1/bahmnicore/unique/personattribute");

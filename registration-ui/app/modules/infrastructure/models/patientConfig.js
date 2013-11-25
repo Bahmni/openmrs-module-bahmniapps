@@ -2,7 +2,7 @@ var PatientConfig = (function () {
     var autocompleteConfig = {
         map: {
             'caste': {
-                'src': 'getCasteList',
+                'src': 'getAutoCompleteList',
                 'responseMap': 'getDataResults'
             }
         },

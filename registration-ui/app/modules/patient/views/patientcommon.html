@@ -18,8 +18,8 @@
         <div class="field-value" id="patientName">
             <input type="text" id="givenName" ng-model="patient.givenName" non-blank placeholder="First Name"
                    title="Enter patient's first name.">
-            <input type="text" id="familyName" ng-model="patient.familyName"
-                   my-autocomplete="{{ {'src': 'getLastNameList', 'responseMap': 'getDataResults'} }}" non-blank
+            <input type="text" id="familyName" ng-model="patient.familyName" data-type="personName"
+                   my-autocomplete="{{ {'src': 'getAutoCompleteList', 'responseMap': 'getDataResults'} }}" non-blank
                    placeholder="Last Name" title="Enter patient's last name.">
                         <span class="input-label-inline">
                             <input type="checkbox" id="casteSameAsLastNameCheck" ng-model="patient.sameAsLastName"
@@ -152,7 +152,7 @@
                     <input data-ng-switch-when="null" type="text" id="{{attribute.name}}" placeholder="{{attribute.description}}"
                            ng-model="patient[attribute.name]">
                     <input data-ng-switch-default type="text" id="{{attribute.name}}" placeholder="{{attribute.description}}"
-                           ng-model="patient[attribute.name]"
+                           ng-model="patient[attribute.name]" data-type="personAttribute"
                            my-autocomplete="{{attribute.autocompleteConfig}}">
                 </div>
             </div>

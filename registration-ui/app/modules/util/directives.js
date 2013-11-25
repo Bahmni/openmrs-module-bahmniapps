@@ -99,7 +99,7 @@ angular.module('registration.util', [])
                 minLength: 2,
                 source: function (request, response) {
                     var autoCompleteConfig = angular.fromJson(attrs.myAutocomplete);
-                    scope[autoCompleteConfig.src](request.term).success(function (data) {
+                    scope[autoCompleteConfig.src](attrs.id, request.term, attrs.type).success(function (data) {
                         var results = scope[autoCompleteConfig.responseMap](data);
                         response(results);
                     });
