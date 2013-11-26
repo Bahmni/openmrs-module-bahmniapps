@@ -8,6 +8,9 @@ var EncounterConfig = (function () {
         },
         getAdmissionEncounterUuid:function () {
             return this.encounterTypes["ADMISSION"];
+        },
+        getInvestigationEncounterUuid:function () {
+            return this.encounterTypes["INVESTIGATION"];
         }
     };
     return EncounterConfig;

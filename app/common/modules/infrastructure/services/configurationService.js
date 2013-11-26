@@ -51,6 +51,15 @@ angular.module('bahmni.common.infrastructure.services')
             return consultationNoteConfig;
         };
 
+        configurationFunctions.radiologyObservationConfig = function(){
+            var radiologyObservationConfig =  $http.get(Bahmni.Common.Constants.conceptUrl, {
+                method:"GET",
+                params: { v: 'custom:(uuid,name)', q: Bahmni.Common.Constants.radiologyResultConceptName },
+                withCredentials: true
+            });
+            return radiologyObservationConfig;
+        }
+
         var getConfigurations = function(configurationNames) {
             var configurations = {};
             var configurationsPromiseDefer = $q.defer();

@@ -12,5 +12,8 @@ Bahmni.Common.Constants = {
     dosageFrequencyConceptName : 'Dosage Frequency',
     dosageInstructionConceptName : 'Dosage Instructions',
     consultationNoteConceptName : 'Consultation Note',
-    radiologyOrderType : 'Radiology Order'
+    radiologyOrderType : 'Radiology Order',
+    radiologyResultConceptName :"Radiology Result",
+    investigationEncounterType:"INVESTIGATION"
+
 };
