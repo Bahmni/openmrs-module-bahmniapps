@@ -2,7 +2,7 @@ var RegistrationObservations = (function () {
 
     function RegistrationObservations(encounterObservations, isNewPatient, encounterConfig) {
         this.observations = encounterObservations.observations.map(function (obs) {
-            return new ObservationData(obs.concept, obs.value)
+            return new ObservationData(obs.uuid, obs.concept, obs.value)
         });
         defaultRegistrationFees(this.observations, isNewPatient, encounterConfig);
         addRequiredConceptObservations(this.observations, encounterConfig.conceptData);
@@ -20,7 +20,7 @@ var RegistrationObservations = (function () {
         registrationFeesUUID = encounterConfig.getConceptUUID(constants.registrationFeesConcept);
         registrationFee = getConceptObservation(observations, registrationFeesUUID);
         if (registrationFee === null) {
-            observations.push(new ObservationData({uuid: registrationFeesUUID, name: constants.registrationFeesConcept}, defaults.registration_fees(isNewPatient)));
+            observations.push(new ObservationData(null, {uuid: registrationFeesUUID, name: constants.registrationFeesConcept}, defaults.registration_fees(isNewPatient)));
         }
     };
 
@@ -38,7 +38,7 @@ var RegistrationObservations = (function () {
                 return observation.concept.uuid === configuredConcept.uuid
             });
             if (filteredObservation.length == 0) {
-                observations.push(new ObservationData({uuid: configuredConcept.uuid, name: configuredConceptName}, null));
+                observations.push(new ObservationData(null, {uuid: configuredConcept.uuid, name: configuredConceptName}, null));
             }
         });
     };
@@ -47,7 +47,8 @@ var RegistrationObservations = (function () {
 })();
 
 var ObservationData = (function () {
-    function ObservationData(concept, value) {
+    function ObservationData(uuid, concept, value) {
+        this.uuid = uuid;
         this.concept = concept;
         this.value = value;
     }
