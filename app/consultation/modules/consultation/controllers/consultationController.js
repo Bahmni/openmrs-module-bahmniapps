@@ -70,7 +70,7 @@ angular.module('opd.consultation.controllers')
                 encounterData.observations.push($scope.consultationNote);
             }
 
-            encounterData.observations = [];
+            encounterData.observations = encounterData.observations || [];
             for (var i in $rootScope.observationList) {
                 if ($rootScope.observationList[i]) {
                     encounterData.observations = encounterData.observations.concat($rootScope.observationList[i]);
