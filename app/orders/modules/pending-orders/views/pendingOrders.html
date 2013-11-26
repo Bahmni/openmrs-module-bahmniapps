@@ -1,0 +1,29 @@
+<h1>Pending orders</h1>
+
+<div class="treatment">
+    <div class="table">
+	    <div class="row table-header">
+	        <div class="col col1">Order ID</div>
+	        <div class="col col2">Order Type</div>
+	        <div class="col col3">Date of Order</div>
+	        <div class="col col4">Provider</div>
+	    </div>
+
+		<div ng-repeat="order in orders" class="table-body">
+	        <div class="row">
+	            <div class="col col1">
+	            	<label>{{order.uuid}}</label>
+	            </div>
+	            <div class="col col2">
+	                <label>{{order.concept.display}}</label>
+	            </div>
+	            <div class="col col3">
+	                <label>{{order.auditInfo.dateCreated | date:'d MMM, yyyy @ h:mma'}}</label>
+	            </div>
+	            <div class="col col4">
+	                <label>{{order.encounter.provider}}</label>
+	            </div>
+	        </div>
+		</div>                
+	</div>
+</div>

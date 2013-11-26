@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.3.custom.min.css">
+        <!-- build:css orders.min.css -->
+        <link rel="stylesheet" href="../styles/styles.css"/>
+        <!-- endbuild -->
+        <title>Orders</title>
+    </head>
+    <body>
+        <div ng-app="orders">
+                <div class="pending-orders-wrapper">
+                    <p style="display: none" class="caution" ng-show="server_error">{{server_error}}</p>
+                    <div ng-view="" id="view-content" class="pending-orders-content-wrapper"></div>
+                </div>
+           
+            <script src="../components/jquery/jquery.js"></script>
+            <script src="../lib/jquery/jquery-ui-1.10.3.custom.min.js"></script>
+            <script src="../components/keyboardjs/keyboard.js"></script>
+            <script src="../components/angular/angular.js"></script>
+            <script src="../components/angular-cookies/angular-cookies.js"></script>
+
+            <!-- build:js orders.min.js -->
+            <script src="../common/modules/infrastructure/httpErrorInterceptor.js"></script>
+            <script src="../common/modules/auth/authentication.js"></script>
+            <script src="../common/modules/app-framework/appframework.js"></script>
+            <script src="../common/constants.js"></script>
+            <script src="../common/modules/infrastructure/init.js"></script>
+            <script src="../common/modules/infrastructure/services/configurationService.js"></script>
+
+            <script src="app.js"></script>
+            <script src="modules/pending-orders/init.js"></script>
+            <script src="modules/pending-orders/services/pendingOrdersService.js"></script>            
+            <script src="modules/pending-orders/controllers/pendingOrdersController.js"></script>            
+
+            <!-- endbuild -->
+        </div>
+    </body>

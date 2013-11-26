@@ -83,7 +83,8 @@ angular.module('opd.patient.controllers')
 
             var options = {
                 patientUuid:patient.uuid,
-                visitUuid:patient.activeVisitUuid
+                visitUuid:patient.activeVisitUuid,
+                orderTypeUuid:$scope.encounterConfig.orderTypes[Bahmni.Common.Constants.radiologyOrderType]
             };
 
             $window.location = formatUrl(currentAppExtension.forwardUrl, options);

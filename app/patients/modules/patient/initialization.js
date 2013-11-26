@@ -7,8 +7,9 @@ angular.module('opd.patient').factory('initialization', ['$rootScope', '$q', 'co
 
         var getConfigs = function () {
             var configurationsPromises = $q.defer();
-            configurationService.getConfigurations(['bahmniConfiguration']).then(function (configurations) {
+            configurationService.getConfigurations(['bahmniConfiguration','encounterConfig']).then(function (configurations) {
                 $rootScope.bahmniConfiguration = configurations.bahmniConfiguration;
+                $rootScope.encounterConfig = configurations.encounterConfig;
                 configurationsPromises.resolve();
             });
             return configurationsPromises.promise;

@@ -137,7 +137,8 @@ module.exports = function (grunt) {
         '<%= yeoman.app %>/consultation/*.html',
         '<%= yeoman.app %>/modules/**/*.html',
 		'<%= yeoman.app %>/admission/**/*.html',
-		'<%= yeoman.app %>/common/**/*.html'
+		'<%= yeoman.app %>/common/**/*.html',
+        '<%= yeoman.app %>/orders/**/*.html',
       ],
       css: '<%= yeoman.app %>/styles/.css/**/*.css',
       options: {
@@ -149,7 +150,8 @@ module.exports = function (grunt) {
         '<%= yeoman.dist %>/patients/**/*.html',
         '<%= yeoman.dist %>/consultation/**/*.html',
 		'<%= yeoman.dist %>/admission/**/*.html',
-		'<%= yeoman.dist %>/common/**/*.html'
+		'<%= yeoman.dist %>/common/**/*.html',
+        '<%= yeoman.dist %>/orders/**/*.html',
       ],
       css: '<%= yeoman.dist %>/styles/**/*.css',
       options: {
@@ -189,7 +191,8 @@ module.exports = function (grunt) {
             'patients/**/*.html',
             'consultation/**/*.html',
 			'admission/**/*.html',
-			'common/**/*.html'
+			'common/**/*.html',
+            'orders/**/*.html'
           ],
           dest: '<%= yeoman.dist %>'
         }]
@@ -209,12 +212,19 @@ module.exports = function (grunt) {
           src: '**/*.js',
           dest: '<%= yeoman.dist %>/consultation'
         },
-		{
+		    {
           expand: true,
           cwd: '<%= yeoman.dist %>/admission',
           src: '**/*.js',
           dest: '<%= yeoman.dist %>/admission'
-        }]
+        },
+        {
+          expand: true,
+          cwd: '<%= yeoman.dist %>/orders',
+          src: '**/*.js',
+          dest: '<%= yeoman.dist %>/orders'
+        }
+        ]
       }
     },
     uglify: {
@@ -249,11 +259,12 @@ module.exports = function (grunt) {
         files: [
           {expand: true, cwd: '<%= yeoman.dist %>', src: ['patients.min.js'], dest: '<%= yeoman.dist %>/patients/'},
           {expand: true, cwd: '<%= yeoman.dist %>', src: ['consultation.min.js'], dest: '<%= yeoman.dist %>/consultation/'},
-		  {expand: true, cwd: '<%= yeoman.dist %>', src: ['admission.min.js'], dest: '<%= yeoman.dist %>/admission/'},
+		      {expand: true, cwd: '<%= yeoman.dist %>', src: ['admission.min.js'], dest: '<%= yeoman.dist %>/admission/'},
+          {expand: true, cwd: '<%= yeoman.dist %>', src: ['orders.min.js'], dest: '<%= yeoman.dist %>/orders/'},
           {expand: true, cwd: '<%= yeoman.dist %>', src: ['patients.min.css'], dest: '<%= yeoman.dist %>/patients/'},
           {expand: true, cwd: '<%= yeoman.dist %>', src: ['consultation.min.css'], dest: '<%= yeoman.dist %>/consultation/'},
-		  {expand: true, cwd: '<%= yeoman.dist %>', src: ['admission.min.css'], dest: '<%= yeoman.dist %>/admission/'}
-		  
+		      {expand: true, cwd: '<%= yeoman.dist %>', src: ['admission.min.css'], dest: '<%= yeoman.dist %>/admission/'},
+          {expand: true, cwd: '<%= yeoman.dist %>', src: ['orders.min.css'], dest: '<%= yeoman.dist %>/orders/'}		  
         ]
       }
     }
@@ -287,7 +298,7 @@ module.exports = function (grunt) {
     'cssmin',
     'copy:dist',
     'ngmin',
-    // Commented since it is breaking angular. Possibly because of $rootScope
+    //  ented since it is breaking angular. Possibly because of $rootScope
     //'uglify',
     'usemin',
     'rename:minified'
