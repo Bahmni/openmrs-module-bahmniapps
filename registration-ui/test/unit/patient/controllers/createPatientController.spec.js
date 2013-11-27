@@ -11,6 +11,7 @@ describe('CreatePatientController', function () {
     var createPromise;
     var dateModule;
     var spinner;
+    var appDescriptor;
     var appService;
     var route;
 
@@ -23,8 +24,13 @@ describe('CreatePatientController', function () {
         patientService = jasmine.createSpyObj('patientService', ['create', 'getPatient', 'rememberPatient']);
         createPromise = specUtil.createServicePromise('patientCreate');
         patientService.create.andReturn(createPromise);
-        appService = jasmine.createSpyObj('appService', ['allowedAppExtensions'])
-        appService.allowedAppExtensions.andReturn([]);
+        appDescriptor = {
+            getExtensions : function(id) {
+                return [];
+            }
+        };
+        appService = jasmine.createSpyObj('appService', ['getAppDescriptor'])
+        appService.getAppDescriptor.andReturn(appDescriptor);
         //$route.current.params.visitType
         route = { "current" : { "params" : { "visitType" : "REG" } }};
     }));

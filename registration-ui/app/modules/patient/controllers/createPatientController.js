@@ -7,7 +7,7 @@ angular.module('registration.patient.controllers')
         var defaultActions = ["save", "print", "startVisit"];
 
         var identifyEditActions = function() {
-            createActionsConfig = appService.allowedAppExtensions("org.bahmni.registration.patient.create.action", "config");
+            createActionsConfig = appService.getAppDescriptor().getExtensions("org.bahmni.registration.patient.create.action", "config");
             var createActions = createActionsConfig.filter(function(config) {
                 if (config.extensionParams) {
                     return config.extensionParams.action ? defaultActions.indexOf(config.extensionParams.action) > -1 : false;

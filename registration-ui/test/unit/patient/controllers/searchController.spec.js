@@ -10,6 +10,7 @@ describe('SearchPatientController', function () {
         $controller,
         spinner,
         loader,
+        appDescriptor,
         appService;
 
     beforeEach(angular.mock.module('registration.patient.controllers'));
@@ -27,7 +28,13 @@ describe('SearchPatientController', function () {
         patientResource.search.andReturn(searchPromise);
         spinner = jasmine.createSpyObj('spinner', ['show', 'hide', 'forPromise']);
         loader = jasmine.createSpyObj('loader', ['show', 'hide', 'forPromise']);
-        appService = jasmine.createSpyObj('appService', ['allowedAppExtensions']);
+        appDescriptor = {
+            getExtensions : function(id) {
+                return [];
+            }
+        };
+        appService = jasmine.createSpyObj('appService', ['getAppDescriptor'])
+        appService.getAppDescriptor.andReturn(appDescriptor);
         $controller('SearchPatientController', {
             $scope: scope,
             patientService: patientResource,

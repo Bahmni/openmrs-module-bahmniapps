@@ -8,7 +8,7 @@ angular.module('registration.patient.controllers')
             var defaultActions = ["save", "print"];
 
             var identifyEditActions = function() {
-                editActionsConfig = appService.allowedAppExtensions("org.bahmni.registration.patient.edit.action", "config");
+                editActionsConfig = appService.getAppDescriptor().getExtensions("org.bahmni.registration.patient.edit.action", "config");
                 var editActions = editActionsConfig.filter(function(config) {
                     if (config.extensionParams) {
                         return config.extensionParams.action ? defaultActions.indexOf(config.extensionParams.action) > -1 : false;

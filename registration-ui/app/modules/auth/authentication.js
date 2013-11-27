@@ -46,11 +46,11 @@ angular.module('authentication', ['ngCookies'])
                 },
                 cache: false
             }).success(function (data) {
-                    $rootScope.currentUser = data.results[0];
-                    deferrable.resolve(data.results[0]);
-                }).error(function () {
-                    deferrable.reject('Could not get roles for the current user.');
-                });
+                 $rootScope.currentUser = data.results[0];
+                 deferrable.resolve(data.results[0]);
+            }).error(function () {
+                 deferrable.reject('Could not get roles for the current user.');
+            });
             return deferrable.promise;
         };
 

@@ -21,12 +21,10 @@
             <input type="text" id="familyName" ng-model="$parent.patient.familyName" data-type="personName"
                    my-autocomplete source="getAutoCompleteList" response-map="getDataResults" non-blank
                    placeholder="Last Name" title="Enter patient's last name.">
-                        <span class="input-label-inline">
-                            <input type="checkbox" id="casteSameAsLastNameCheck" ng-model="patient.sameAsLastName"
-                                   ng-change="setCasteAsLastName()">
-                            <label id="casteSameAsLastNameCheckLabel" for="casteSameAsLastNameCheck">Caste same as Last
-                                Name</label>
-                        </span>
+            <span class="input-label-inline">
+                <input type="checkbox" id="casteSameAsLastNameCheck" ng-model="patient.sameAsLastName" ng-change="setCasteAsLastName()">
+                <label id="casteSameAsLastNameCheckLabel" for="casteSameAsLastNameCheck">Caste same as Last Name</label>
+            </span>
         </div>
     </article>
 </section>
@@ -92,9 +90,9 @@
                 <div data-ng-switch on="attribute.autocompleteConfig">
                     <input data-ng-switch-when="null" type="text" id="{{attribute.name}}" placeholder="{{attribute.description}}"
                            ng-model="patient[attribute.name]">
-                    <input data-ng-switch-default type="text" id="{{attribute.name}}" placeholder="{{attribute.description}}"
-                           ng-model="patient[attribute.name]" data-type="personAttribute"
-                           my-autocomplete="{{attribute.autocompleteConfig}}">
+                    <input data-ng-switch-default type="text" id="{{$parent.attribute.name}}" placeholder="{{$parent.attribute.description}}"
+                           ng-model="$parent.patient[$parent.attribute.name]" data-type="personAttribute"
+                           my-autocomplete source="getAutoCompleteList" response-map="getDataResults">
                 </div>
             </div>
             <div class="left" data-ng-switch-when="org.openmrs.Concept">

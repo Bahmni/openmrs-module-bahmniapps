@@ -29,7 +29,7 @@ angular.module('registration.patient.controllers')
         };
 
         var initialize = function() {
-            $scope.searchActions = appService.allowedAppExtensions("org.bahmni.registration.patient.search.action");
+            $scope.searchActions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.patient.search.action");
         };
 
         var formatUrl = function (url, options) {
