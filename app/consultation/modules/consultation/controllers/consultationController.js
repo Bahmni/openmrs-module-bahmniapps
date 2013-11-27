@@ -83,7 +83,42 @@ angular.module('opd.consultation.controllers')
         encounterService.create(encounterData).success(function () {
             window.location = Bahmni.Opd.Constants.activePatientsListUrl;
         });
+
+
     };
+        $scope.formatDate = function(transactionDate) {
+            var monthNames = [ "Jan", "Feb", "March", "April", "May", "June",
+    "July", "Aug", "Sept", "Oct", "Nov", "Dec" ];
+            var date = new Date(transactionDate);
+            var formmattedDate = date.getDate() + '-' + monthNames[date.getMonth()] + '-' + date.getFullYear() 
+            + ' ' + date.getHours() + ':' + date.getMinutes();
+            return formmattedDate;
+        }
+        $scope.isConfirmedDiagnosis = function(certainity){
+            return certainity === 'CONFIRMED';
+        }
+        $scope.isPrimary = function(order){
+            return order === 'PRIMARY';
+        }
+        $scope.hasDiagnosis = function(encounterTransactions){
+            var i=0;
+            for(i=0;i<encounterTransactions.length;i++){
+                if(encounterTransactions[i].diagnoses && encounterTransactions[i].diagnoses.length > 0){
+                    return true;
+                }
+            }
+            return false;
+        }
+        $scope.hasDisposition = function(encounterTransactions){
+            var i=0;
+            for(i=0;i<encounterTransactions.length;i++){
+                if(encounterTransactions[i].disposition){
+                    return true;
+                }
+            }
+            return false;
+        }
+        
 }]).directive('showObs', ['$rootScope', function () {
     return {
         restrict:'E',
@@ -92,4 +127,22 @@ angular.module('opd.consultation.controllers')
         },
         template:'<ng-include src="\'modules/consultation/views/showObservation.html\'" />'
     }
-}]);
+}])
+.directive('expander',function(){
+    return {
+        restrict: 'EA',
+        replace: true,
+        transclude: true,
+        template : '<div>' +
+        '<div class="title" ng-click="toggle()">+</div>' +
+        '<div class="body" ng-show="showMe" ng-transclude></div>' +
+        '</div>',
+        link: function(scope,element,attrs) {
+            scope.showMe = false;
+            scope.toggle = function toggle(){
+                scope.showMe = !scope.showMe;
+            }
+        }
+    }
+});
+
