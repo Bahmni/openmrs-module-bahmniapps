@@ -10,7 +10,7 @@ angular.module('opd.treeSelect.services')
             return conceptTreeFromCache(rootConceptName);
         }
         return $http.get(Bahmni.Common.Constants.conceptUrl, {
-            params: {q: rootConceptName, v: "fullchildren"}
+            params: {name : rootConceptName, v: "fullchildren"}
         }).then(function(response) {
             if(response.data.results.length == 0) {
                 return null;
