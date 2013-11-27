@@ -26,14 +26,7 @@ angular.module('registration.patient.mappers').factory('openmrsPatientMapper', [
         };
 
         var mapAddress = function (preferredAddress) {
-            return preferredAddress ? {
-                "address1": preferredAddress.address1,
-                "address2": preferredAddress.address2,
-                "address3": preferredAddress.address3,
-                "cityVillage": preferredAddress.cityVillage,
-                "countyDistrict": preferredAddress.countyDistrict,
-                "stateProvince": preferredAddress.stateProvince
-            } : {};
+            return preferredAddress ? preferredAddress : {};
         };
 
         var map = function (openmrsPatient) {
