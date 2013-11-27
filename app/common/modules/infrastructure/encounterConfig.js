@@ -11,6 +11,9 @@ var EncounterConfig = (function () {
         },
         getInvestigationEncounterUuid:function () {
             return this.encounterTypes["INVESTIGATION"];
+        },
+        getDischargeEncounterUuid:function () {
+            return this.encounterTypes["DISCHARGE"];
         }
     };
     return EncounterConfig;

@@ -11,14 +11,6 @@ angular.module('opd.bedManagement.services')
             });
         };
 
-        this.assignBed = function (bedId, patientUuid) {
-            var patientJson = {"patientUuid": patientUuid};
-            return $http.post("/openmrs/ws/rest/v1/beds/" + bedId, patientJson, {
-                withCredentials: true,
-                headers: {"Accept": "application/json", "Content-Type": "application/json"}
-            });
-        };
-
         this.getWardsList = function () {
             return $http.get("/openmrs/ws/rest/v1/admissionLocation");
         };

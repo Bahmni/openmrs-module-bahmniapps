@@ -49,7 +49,7 @@ angular.module('opd.bedManagement.controllers')
         };
 
         $scope.assignBed = function (bed) {
-            wardService.assignBed(bed.bed.bedId, $scope.patient.uuid).success(function (result) {
+            bedService.assignBed(bed.bed.bedId, $scope.patient.uuid).success(function (result) {
                 $rootScope.bed = bed.bed;
                 $scope.layout = [];
                 bedService.getBedDetailsForPatient($scope.patient.uuid);
