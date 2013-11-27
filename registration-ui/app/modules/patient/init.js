@@ -9,3 +9,4 @@ angular.module('registration.patient.controllers', ['registration.patient.servic
 													 'registration.patient.mappers','resources.date','registration.patient.services', 
 													 'infrastructure.spinner', 'infrastructure.loader','registration.photoCapture', 
                                                      'infrastructure.printer', 'resources.bmi', 'infinite-scroll']);
+angular.module('registration.patient.directives', []);

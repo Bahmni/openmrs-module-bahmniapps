@@ -18,7 +18,11 @@ angular.module('registration.initialization', ['infrastructure', 'authentication
                     $rootScope.patientConfiguration = angular.extend(new PatientConfig(), data);
                 });
 
-                return $q.all([configurationPromise, encounterConfigPromise, patientConfigPromise]);
+                var addressLevelsPromise = configurationService.getAddressLevels().success(function (data) {
+                    $rootScope.addressLevels = data;
+                });
+
+                return $q.all([configurationPromise, encounterConfigPromise, patientConfigPromise, addressLevelsPromise]);
             };
 
             authenticator.authenticateUser().then(function () {

@@ -1,7 +1,7 @@
 'use strict';
 
-describe('PatientCommonController', function () {
-
+//TODO: Move this to addressFields directive test
+xdescribe('PatientCommonController', function () {
     var patientAttributeService;
     var success;
     var controller;
@@ -87,5 +87,4 @@ describe('PatientCommonController', function () {
            expect(addressDataResults[0].addressField).toBe(addresses[0]);
        });
     });
-
 });

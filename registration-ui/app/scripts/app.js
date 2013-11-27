@@ -3,7 +3,7 @@
 
 angular
     .module('registration', ['registration.patient.controllers', 'registration.navigation', 'authentication', 'appFramework',
-        'infrastructure.httpErrorInterceptor', 'registration.initialization', 'registration.util'])
+        'infrastructure.httpErrorInterceptor', 'registration.initialization', 'registration.util', 'registration.patient.directives'])
     .config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
         $routeProvider.when('/search', {reloadOnSearch: false, templateUrl: 'modules/patient/views/search.html', controller: 'SearchPatientController', resolve: {initialization: 'initialization'}});
         $routeProvider.when('/patient/new', {templateUrl: 'modules/patient/views/newpatient.html', controller: 'CreatePatientController', resolve: {initialization: 'initialization'}});

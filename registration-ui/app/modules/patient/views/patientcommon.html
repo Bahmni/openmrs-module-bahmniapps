@@ -19,7 +19,7 @@
             <input type="text" id="givenName" ng-model="patient.givenName" non-blank placeholder="First Name"
                    title="Enter patient's first name.">
             <input type="text" id="familyName" ng-model="patient.familyName" data-type="personName"
-                   my-autocomplete="{{ {'src': 'getAutoCompleteList', 'responseMap': 'getDataResults'} }}" non-blank
+                   my-autocomplete source="getAutoCompleteList" response-map="getDataResults" non-blank
                    placeholder="Last Name" title="Enter patient's last name.">
                         <span class="input-label-inline">
                             <input type="checkbox" id="casteSameAsLastNameCheck" ng-model="patient.sameAsLastName"
@@ -81,66 +81,7 @@
         </div>
     </article>
 </section>
-<section class="form-field-inline">
-    <article class="form-field">
-        <div class="field-attribute">
-            <label for="address1">House No., Street</label>
-        </div>
-        <div class="field-value">
-            <input type="text" id="address1" ng-model="patient.address.address1" placeholder="House No., Street">
-        </div>
-    </article>
-    <article class="form-field">
-        <div class="field-attribute">
-            <label class="control-label" for="village">Village<span class="asterick">*</span></label>
-        </div>
-        <div class="field-value">
-            <input type="text" id="village" ng-model="patient.address.cityVillage" placeholder="Village" non-blank
-                   my-autocomplete="{{ {'src': 'getVillageList', 'responseMap': 'getAddressDataResults', 'onSelect': 'villageSelected'} }}">
-        </div>
-    </article>
-</section>
-
-<section class="form-field-inline">
-    <article class="form-field">
-        <div class="field-attribute">
-            <label class="control-label" for="address2">Gram Panchayat</label>
-        </div>
-        <div class="field-value">
-            <input type="text" id="address2" ng-model="patient.address.address2" placeholder="Gram Panchayat">
-        </div>
-    </article>
-    <article class="form-field">
-        <div class="field-attribute">
-            <label class="control-label" for="address3">Tehsil</label>
-        </div>
-        <div class="field-value">
-            <input type="text" id="address3" ng-model="patient.address.address3" placeholder="Tehsil"
-                   my-autocomplete="{{ {'src': 'getTehsilList', 'responseMap': 'getAddressDataResults', 'onSelect': 'tehsilSelected'} }}">
-        </div>
-    </article>
-</section>
-
-<section class="form-field-inline">
-    <article class="form-field">
-        <div class="field-attribute">
-            <label class="control-label" for="countyDistrict">District</label>
-        </div>
-        <div class="field-value">
-            <input type="text" id="countyDistrict" ng-model="patient.address.countyDistrict" placeholder="District"
-                   my-autocomplete="{{ {'src': 'getDistrictList', 'responseMap': 'getAddressDataResults', 'onSelect': 'districtSelected'} }}">
-        </div>
-    </article>
-    <article class="form-field">
-        <div class="field-attribute">
-            <label class="control-label" for="stateProvince">State</label>
-        </div>
-        <div class="field-value">
-            <input type="text" id="stateProvince" ng-model="patient.address.stateProvince" placeholder="State">
-        </div>
-    </article>
-</section>
-
+<section address-fields data-address="patient.address"></section>
 <section class="form-field-inline" ng-repeat="attributeRow in patientConfiguration.customAttributeRows()">
     <article class="form-field" ng-repeat="attribute in attributeRow">
         <div class="field-attribute">

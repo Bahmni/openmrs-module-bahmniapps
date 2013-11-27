@@ -24,9 +24,16 @@ angular.module('infrastructure', [])
             });
         };
 
+        var getAddressLevels = function () {
+            return $http.get(constants.openmrsUrl + "/module/addresshierarchy/ajax/getOrderedAddressHierarchyLevels.form", {
+                withCredentials: true
+            });
+        };
+
         return {
             getAll: getAll,
             getEncounterConfig: getEncounterConfig,
-            getPatientConfig: getPatientConfig
+            getPatientConfig: getPatientConfig,
+            getAddressLevels: getAddressLevels
         };
     }]);

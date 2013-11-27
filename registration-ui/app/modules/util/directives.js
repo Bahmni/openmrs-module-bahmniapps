@@ -92,25 +92,27 @@ angular.module('registration.util', [])
         };
     })
     .directive('myAutocomplete', function ($parse) {
-        return function (scope, element, attrs) {
+        var link = function (scope, element, attrs) {
             var ngModel = $parse(attrs.ngModel);
+            var source = scope.source();
+            var responseMap = scope.responseMap();
+            var onSelect = scope.onSelect();
+
             element.autocomplete({
                 autofocus: true,
                 minLength: 2,
                 source: function (request, response) {
-                    var autoCompleteConfig = angular.fromJson(attrs.myAutocomplete);
-                    scope[autoCompleteConfig.src](attrs.id, request.term, attrs.type).success(function (data) {
-                        var results = scope[autoCompleteConfig.responseMap](data);
+                    source(attrs.id, request.term, attrs.type).success(function (data) {
+                        var results = responseMap ? responseMap(data) : data ;
                         response(results);
                     });
                 },
                 select: function (event, ui) {
-                    var autoCompleteConfig = angular.fromJson(attrs.myAutocomplete);
                     scope.$apply(function (scope) {
                         ngModel.assign(scope, ui.item.value);
                         scope.$eval(attrs.ngChange);
-                        if(autoCompleteConfig.onSelect != null && scope[autoCompleteConfig.onSelect] != null) {
-                            scope[autoCompleteConfig.onSelect](ui.item);
+                        if(onSelect != null) {
+                            onSelect(ui.item);
                         }
                     });
                     return true;
@@ -122,5 +124,13 @@ angular.module('registration.util', [])
                     }
                 }
             });
+        }
+        return {
+            link: link,
+            scope: {
+                source: '&',
+                responseMap: '&',
+                onSelect: '&'
+            }
         }
     });
