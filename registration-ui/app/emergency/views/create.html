@@ -59,7 +59,7 @@
                     </div>
                     <div class="field-value">
                         <input type="text" id="village" ng-model="patient.address.cityVillage" placeholder="Village"
-                               my-autocomplete="{{ {'src': 'getVillageList', 'responseMap': 'getAddressDataResults', 'onSelect': 'villageSelected'} }}">
+                               my-autocomplete source="getVillageList" response-map="getAddressDataResults" on-select="villageSelected">
                     </div>
                 </article>
             </section>

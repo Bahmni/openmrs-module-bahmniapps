@@ -48,7 +48,7 @@ angular.module('registration.emergency.controllers')
             });
         };
 
-        $scope.getVillageList = function (query) {
+        $scope.getVillageList = function (id, query, type) {
             return addressAttributeService.search("cityVillage", query);
         };
 

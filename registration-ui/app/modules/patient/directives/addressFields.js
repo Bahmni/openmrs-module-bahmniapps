@@ -13,7 +13,7 @@ angular.module('registration.patient.directives')
         }
     
         var controller = function($scope, $rootScope, addressAttributeService) {
-            var addressLevelsCloneInDescendingOrder = $rootScope.addressLevels.slice(0).reverse()
+            var addressLevelsCloneInDescendingOrder = $scope.addressLevels.slice(0).reverse()
             $scope.addressLevelsChunks = chunk(addressLevelsCloneInDescendingOrder, 2)
             var addressLevelsNamesInDescendingOrder = addressLevelsCloneInDescendingOrder.map(function(addressLevel){
                 return addressLevel.addressField;
@@ -71,7 +71,8 @@ angular.module('registration.patient.directives')
             link: link,
             controller: controller,
             scope: {
-                address: "="
+                address: '=',
+                addressLevels: '='
             }
         };
     }
