@@ -16,11 +16,30 @@
         </div>
 
         <div class="field-value" id="patientName">
-            <input type="text" id="givenName" ng-model="patient.givenName" non-blank placeholder="First Name"
-                   title="Enter patient's first name.">
-            <input type="text" id="familyName" ng-model="$parent.patient.familyName" data-type="personName"
-                   my-autocomplete source="getAutoCompleteList" response-map="getDataResults" non-blank
-                   placeholder="Last Name" title="Enter patient's last name.">
+
+            <span data-ng-switch="isAutoComplete('givenName')">
+                <input data-ng-switch-when="true"
+                       type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank
+                       my-autocomplete source="getAutoCompleteList" response-map="getDataResults" data-type="personName"
+                       placeholder="First Name" title="Enter patient's first name.">
+
+                <input data-ng-switch-default
+                       type="text" id="givenName" ng-model="patient.givenName" non-blank
+                       placeholder="First Name" title="Enter patient's first name.">
+            </span>
+
+
+            <span data-ng-switch="isAutoComplete('familyName')">
+                <input data-ng-switch-when="true"
+                       type="text" id="familyName" ng-model="$parent.patient.familyName" non-blank
+                       my-autocomplete source="getAutoCompleteList" response-map="getDataResults" data-type="personName"
+                       placeholder="Last Name" title="Enter patient's last name.">
+
+                <input data-ng-switch-default
+                       type="text" id="familyName" ng-model="patient.familyName" non-blank
+                       placeholder="Last Name" title="Enter patient's last name.">
+            </span>
+
             <span class="input-label-inline">
                 <input type="checkbox" id="casteSameAsLastNameCheck" ng-model="patient.sameAsLastName" ng-change="setCasteAsLastName()">
                 <label id="casteSameAsLastNameCheckLabel" for="casteSameAsLastNameCheck">Caste same as Last Name</label>
@@ -90,9 +109,19 @@
                 <div data-ng-switch on="attribute.autocompleteConfig">
                     <input data-ng-switch-when="null" type="text" id="{{attribute.name}}" placeholder="{{attribute.description}}"
                            ng-model="patient[attribute.name]">
-                    <input data-ng-switch-default type="text" id="{{$parent.attribute.name}}" placeholder="{{$parent.attribute.description}}"
-                           ng-model="$parent.patient[$parent.attribute.name]" data-type="personAttribute"
-                           my-autocomplete source="getAutoCompleteList" response-map="getDataResults">
+
+                    <span data-ng-switch-default>
+                        <span data-ng-switch="isAutoComplete(attribute.name)">
+                            <input data-ng-switch-when="true"
+                                   type="text" id="{{$parent.attribute.name}}" placeholder="{{$parent.attribute.description}}"
+                                   ng-model="$parent.patient[$parent.attribute.name]" data-type="personAttribute"
+                                   my-autocomplete source="getAutoCompleteList" response-map="getDataResults">
+
+                            <input data-ng-switch-default
+                                   type="text" id="{{attribute.name}}" placeholder="{{attribute.description}}"
+                                   ng-model="patient[attribute.name]" data-type="personAttribute">
+                        </span>
+                    </span>
                 </div>
             </div>
             <div class="left" data-ng-switch-when="org.openmrs.Concept">

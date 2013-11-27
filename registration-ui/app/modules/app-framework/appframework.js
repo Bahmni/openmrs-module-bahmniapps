@@ -204,10 +204,7 @@ function AppDescriptor(name, retrieveUserCallback) {
 
         if (instance.config) {
             for (var configName in instance.config) {
-                var cfgList = that.configs.filter(function(cfg) {
-                    return cfg.name == configName;
-                });
-                var existingConfig = (cfgList.length > 0) ? cfgList[0] : null;
+                var existingConfig = that.getConfig(configName);
                 if (existingConfig) {
                     existingConfig.value = instance.config[configName];
                 }
@@ -230,5 +227,12 @@ function AppDescriptor(name, retrieveUserCallback) {
             });
             return appsExtns;
         }
+    };
+
+    this.getConfig = function(configName) {
+        var cfgList = that.configs.filter(function(cfg) {
+            return cfg.name == configName;
+        });
+        return (cfgList.length > 0) ? cfgList[0] : null;
     };
 };

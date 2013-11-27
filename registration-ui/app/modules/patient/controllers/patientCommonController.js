@@ -1,8 +1,15 @@
 'use strict';
 
 angular.module('registration.patient.controllers')
-    .controller('PatientCommonController', ['$scope', '$http', 'patientAttributeService', 'addressAttributeService',
-        function ($scope, $http, patientAttributeService, addressAttributeService) {
+    .controller('PatientCommonController', ['$scope', '$http', 'patientAttributeService', 'addressAttributeService', 'appService',
+        function ($scope, $http, patientAttributeService, addressAttributeService, appService) {
+
+            var autoCompleteConfig = appService.getAppDescriptor().getConfig("autoCompleteFields");
+            var autoCompleteFields = autoCompleteConfig ? (autoCompleteConfig.value || []) : [];
+
+            $scope.isAutoComplete = function(fieldName) {
+                return autoCompleteFields.indexOf(fieldName) > -1;
+            };
 
             $scope.setCasteAsLastName = function () {
                 if ($scope.patient.sameAsLastName) {
