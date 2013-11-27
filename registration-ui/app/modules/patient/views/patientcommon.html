@@ -18,7 +18,7 @@
         <div class="field-value" id="patientName">
             <input type="text" id="givenName" ng-model="patient.givenName" non-blank placeholder="First Name"
                    title="Enter patient's first name.">
-            <input type="text" id="familyName" ng-model="patient.familyName" data-type="personName"
+            <input type="text" id="familyName" ng-model="$parent.patient.familyName" data-type="personName"
                    my-autocomplete source="getAutoCompleteList" response-map="getDataResults" non-blank
                    placeholder="Last Name" title="Enter patient's last name.">
                         <span class="input-label-inline">
