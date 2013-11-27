@@ -26,7 +26,8 @@ angular.module('registration.initialization', ['infrastructure', 'authentication
             };
 
             authenticator.authenticateUser().then(function () {
-                appService.initApp('registration', ['template', 'app']).then(function(result) {
+                var appLoadOptions = {'app': true, 'extension' : true};
+                appService.initApp('registration', appLoadOptions).then(function(result) {
                     var loadDataPromise = loadData();
                     spinner.forPromise(loadDataPromise);
                     loadDataPromise.then(function () {

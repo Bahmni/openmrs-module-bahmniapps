@@ -14,50 +14,59 @@ angular.module('appFramework', ['authentication'])
 
         var loadTemplate = function(appDescriptor) {
             var deferrable = $q.defer();
-            loadConfig(baseUrl + appDescriptor.name + "/appTemplate.json").success(function(results) {
-                if (results.length > 0) {
-                    appDescriptor.setTemplate(results[0]);
+            loadConfig(baseUrl + appDescriptor.contextPath + "/appTemplate.json").then(
+                function(result) {
+                    if (result.data.length > 0) {
+                        appDescriptor.setTemplate(result.data[0]);
+                    }
+                    deferrable.resolve(appDescriptor);
+                },
+                function(error) {
+                    if (error.status != 404) {
+                        deferrable.reject(error);
+                    } else {
+                        deferrable.resolve(appDescriptor);
+                    }
                 }
-                deferrable.resolve(appDescriptor);
-            })
-            .error(function(error) {
-                deferrable.reject();
-            });
+            );
             return deferrable.promise;
         };
 
         var loadDefinition = function(appDescriptor) {
             var deferrable = $q.defer();
-            loadConfig(baseUrl + appDescriptor.name + "/app.json").success(function(results) {
-                if (results.length > 0) {
-                    appDescriptor.setDefinition(results[0]);
+            loadConfig(baseUrl + appDescriptor.contextPath + "/app.json").then(
+                function(result) {
+                    if (result.data.length > 0) {
+                        appDescriptor.setDefinition(result.data[0]);
+                    }
+                    deferrable.resolve(appDescriptor);
+                },
+                function(error) {
+                    if (error.status != 404) {
+                        deferrable.reject(error);
+                    } else {
+                        deferrable.resolve(appDescriptor);
+                    }
                 }
-                deferrable.resolve(appDescriptor);
-            }).error(function(error) {
-                deferrable.reject();
-            });
+            );
             return deferrable.promise;
         };
 
         var loadExtensions = function(appDescriptor) {
             var deferrable = $q.defer();
-            loadConfig(baseUrl + appDescriptor.name + "/extension.json").success(function(result) {
-                    appDescriptor.setExtensions(result);
+            loadConfig(baseUrl + appDescriptor.extensionPath + "/extension.json").then(
+                function(result) {
+                    appDescriptor.setExtensions(result.data);
                     deferrable.resolve(appDescriptor);
-            }).error(function(error) {
-                    deferrable.reject(error);
-            });
-            return deferrable.promise;
-        };
-
-        var loadAppExtensions = function (appName) {
-            var deferrable = $q.defer();
-            var appExtnUrl = baseUrl + appName + "/extension.json";
-            loadConfig(appExtnUrl).success(function (data) {
-                deferrable.resolve(data);
-            }).error(function () {
-                    deferrable.reject('Could not get app extensions for ' + appName);
-                });
+                },
+                function(error) {
+                    if (error.status != 404) {
+                        deferrable.reject(error);
+                    } else {
+                        deferrable.resolve(appDescriptor);
+                    }
+                }
+            );
             return deferrable.promise;
         };
 
@@ -68,21 +77,20 @@ angular.module('appFramework', ['authentication'])
         this.initApp = function(appName, options) {
             var appLoader = $q.defer();
             var promises = [];
-
-            var opts = options || [];
-            var tmpl = opts.indexOf("template") > -1;
-            var defn = opts.indexOf("app") > -1;
+            var opts = options || {'app': true, 'extension' : true};
 
             appDescriptor = new AppDescriptor(appName, function() {
                 return currentUser;
             });
 
             promises.push(sessionService.loadCredentials());
-            promises.push(loadExtensions(appDescriptor));
-            if (tmpl) {
+            if (opts.extension) {
+                promises.push(loadExtensions(appDescriptor));
+            }
+            if (opts.template) {
                 promises.push(loadTemplate(appDescriptor));
             }
-            if (defn) {
+            if (opts.app) {
                 promises.push(loadDefinition(appDescriptor));
             }
             $q.all(promises).then(function (results) {

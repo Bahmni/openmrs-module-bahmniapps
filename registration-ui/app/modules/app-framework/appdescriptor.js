@@ -1,5 +1,4 @@
-function AppDescriptor(name, retrieveUserCallback) {
-    this.name = name;
+function AppDescriptor(context, retrieveUserCallback) {
     this.id = null;
     this.instanceOf = null;
     this.description = null;
@@ -8,6 +7,9 @@ function AppDescriptor(name, retrieveUserCallback) {
     this.extensionPoints = [];
     this.extensions = [];
     this.configs = [];
+
+    this.extensionPath = context;
+    this.contextPath = context.split("/")[0];
 
     var that = this;
 
@@ -69,6 +71,8 @@ function AppDescriptor(name, retrieveUserCallback) {
                 var existingConfig = that.getConfig(configName);
                 if (existingConfig) {
                     existingConfig.value = instance.config[configName];
+                } else {
+                    that.configs.push({ name: configName, value: instance.config[configName] });
                 }
             }
         }
