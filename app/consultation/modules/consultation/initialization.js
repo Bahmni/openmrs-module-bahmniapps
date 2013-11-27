@@ -53,10 +53,21 @@ angular.module('opd.consultation').factory('initialization',
             return patientDeferrable.promise;
         };
 
+        var getVisitSummary = function() {
+            var visitSummaryDeferrable = $q.defer();
+            visitService.getVisitSummary($route.current.params.visitUuid).success(function (encounterTransactions) {
+                $rootScope.encounterTransactions = encounterTransactions;
+                console.log($rootScope.encounterTransactions);
+                visitSummaryDeferrable.resolve(encounterTransactions);
+            });
+            return visitSummaryDeferrable.promise;
+        };
+
         authenticator.authenticateUser().then(function () {
             appService.initialize('clinical').then(function() {
                 var configPromise = getConsultationConfigs();
-                configPromise.then(getVisit).then(getPatient).then(function(patient) {
+                configPromise.then(getVisit).then(getPatient).then(getVisitSummary).then(function(encounterTransactions) {
+                    var name = encounterTransactions.diagnoses
                     initializationPromise.resolve();
                 });
             });

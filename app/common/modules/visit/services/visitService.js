@@ -13,5 +13,12 @@ angular.module('bahmni.common.visit.services')
          	}
         );
     };
+    this.getVisitSummary = function (uuid) {
+        return $http.get("/openmrs/ws/rest/v1/bahmnicore/visitsummary/" + uuid,
+         	{
+         		method:"GET"
+         	}
+        );
+    };
 
 }]);
