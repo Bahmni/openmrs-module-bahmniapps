@@ -36,7 +36,7 @@ angular.module('opd.adt').factory('initialization',
             authenticator.authenticateUser().then(function () {
                 var configPromise = getConsultationConfigs();
                 configPromise.then(function () {
-                    appService.initialize('adt').then(function () {
+                    appService.initApp('adt', {'extension' : true}).then(function () {
                         initializationPromise.resolve();
                     });
                 });

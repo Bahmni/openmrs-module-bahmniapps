@@ -20,7 +20,7 @@ angular.module('opd.consultation.controllers').controller('ConsultationNavigatio
             var initialize = function () {
                 var currentPath = $location.path();
                 $rootScope.$on('event:appExtensions-loaded', function () {
-                    var appExtensions = appService.allowedAppExtensions("org.bahmni.clinical.consultation.board", "link");
+                    var appExtensions = appService.getAppDescriptor().getExtensions("org.bahmni.clinical.consultation.board", "link");
                     var addlBoards = [];
                     appExtensions.forEach(function (appExtn) {
                         addlBoards.push({ name: appExtn.label, url: appExtn.url });

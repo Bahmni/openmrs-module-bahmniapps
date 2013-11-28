@@ -4,7 +4,7 @@ angular.module('opd.adt.controllers')
     .controller('AdmissionController', ['$scope', '$rootScope', 'encounterService', '$route', 'appService',
     function ($scope, $rootScope, encounterService, $route, appService) {
 
-        var forwardLink = appService.allowedAppExtensions("bahmni.adt.admission.next", "link")[0].url;
+        var forwardLink = appService.getAppDescriptor().getExtensions("bahmni.adt.admission.next", "link")[0].url;
 
         $scope.admit = function () {
             var encounterData = {};

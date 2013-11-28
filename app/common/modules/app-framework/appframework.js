@@ -1,50 +1,105 @@
 'use strict';
 
 angular.module('appFramework', ['authentication'])
-    .service('appService', ['$http', '$q', 'sessionService', '$rootScope', function ($http, $q, sessionService, $rootScope) {
-    var appExtensions = null;
-    var currentUser = null;
-    var loadAppExtensions = function (appName, extensionName) {
-        //TODO: introduce constant
-        var deferrable = $q.defer();
-        var appConfigUrl = "/bahmni_config/openmrs/apps/";
-        var appExtnUrl = extensionName ? appConfigUrl + appName + "/extension-" + extensionName + ".json"
-            : appConfigUrl + appName + "/extension.json";
-        $http.get(appExtnUrl, {withCredentials:true}).success(function (data) {
-            deferrable.resolve(data);
-        }).error(function () {
-                deferrable.reject('Could not get app extensions for ' + appName);
-            });
-        return deferrable.promise;
-    };
+    .service('appService', ['$http', '$q', 'sessionService','$rootScope', function ($http, $q, sessionService, $rootScope) {
+        var appExtensions = null;
+        var currentUser = null;
+        var baseUrl = "/bahmni_config/openmrs/apps/";
+        var appDescriptor = null;
 
-    this.initialize = function (appName, extensionName) {
-        var deferrable = $q.defer();
-        var promises = [];
-        promises.push(sessionService.loadCredentials());
-        promises.push(loadAppExtensions(appName, extensionName));
-        $q.all(promises).then(function (results) {
-            currentUser = results[0];
-            appExtensions = results[1];
-            deferrable.resolve();
-            $rootScope.$broadcast('event:appExtensions-loaded');
-        });
-        return deferrable.promise;
-    };
 
-    this.allowedAppExtensions = function (extnId, type) {
-        if (currentUser && appExtensions) {
-            var extnType = type || 'all';
-            var userPrivileges = currentUser.privileges.map(function (priv) {
-                return priv.retired ? "" : priv.name;
+        var loadConfig = function(url) {
+            return $http.get(url, {withCredentials: true});
+        };
+
+        var loadTemplate = function(appDescriptor) {
+            var deferrable = $q.defer();
+            loadConfig(baseUrl + appDescriptor.contextPath + "/appTemplate.json").then(
+                function(result) {
+                    if (result.data.length > 0) {
+                        appDescriptor.setTemplate(result.data[0]);
+                    }
+                    deferrable.resolve(appDescriptor);
+                },
+                function(error) {
+                    if (error.status != 404) {
+                        deferrable.reject(error);
+                    } else {
+                        deferrable.resolve(appDescriptor);
+                    }
+                }
+            );
+            return deferrable.promise;
+        };
+
+        var loadDefinition = function(appDescriptor) {
+            var deferrable = $q.defer();
+            loadConfig(baseUrl + appDescriptor.contextPath + "/app.json").then(
+                function(result) {
+                    if (result.data.length > 0) {
+                        appDescriptor.setDefinition(result.data[0]);
+                    }
+                    deferrable.resolve(appDescriptor);
+                },
+                function(error) {
+                    if (error.status != 404) {
+                        deferrable.reject(error);
+                    } else {
+                        deferrable.resolve(appDescriptor);
+                    }
+                }
+            );
+            return deferrable.promise;
+        };
+
+        var loadExtensions = function(appDescriptor) {
+            var deferrable = $q.defer();
+            loadConfig(baseUrl + appDescriptor.extensionPath + "/extension.json").then(
+                function(result) {
+                    appDescriptor.setExtensions(result.data);
+                    deferrable.resolve(appDescriptor);
+                },
+                function(error) {
+                    if (error.status != 404) {
+                        deferrable.reject(error);
+                    } else {
+                        deferrable.resolve(appDescriptor);
+                    }
+                }
+            );
+            return deferrable.promise;
+        };
+
+        this.getAppDescriptor = function() {
+            return appDescriptor;
+        };
+
+        this.initApp = function(appName, options) {
+            var appLoader = $q.defer();
+            var promises = [];
+            var opts = options || {'app': true, 'extension' : true};
+
+            appDescriptor = new AppDescriptor(appName, function() {
+                return currentUser;
             });
-            var appsExtns = appExtensions.filter(function (extn) {
-                return ((extnType === 'all') || (extn.type === extnType)) && (extn.extensionPointId === extnId) && (!extn.requiredPrivilege || (userPrivileges.indexOf(extn.requiredPrivilege) >= 0));
+
+            promises.push(sessionService.loadCredentials());
+            if (opts.extension) {
+                promises.push(loadExtensions(appDescriptor));
+            }
+            if (opts.template) {
+                promises.push(loadTemplate(appDescriptor));
+            }
+            if (opts.app) {
+                promises.push(loadDefinition(appDescriptor));
+            }
+            $q.all(promises).then(function (results) {
+                currentUser = results[0];
+                appLoader.resolve(appDescriptor);
+                $rootScope.$broadcast('event:appExtensions-loaded');
+            }, function(errors){
+                appLoader.reject(errors);
             });
-            appsExtns.sort(function (extn1, extn2) {
-                return extn1.order - extn2.order;
-            });
-            return appsExtns;
-        }
-    };
-}]);
+            return appLoader.promise;
+        };
+    }])

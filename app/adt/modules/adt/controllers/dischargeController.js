@@ -4,7 +4,7 @@ angular.module('opd.adt.controllers')
     .controller('DischargeController', ['$scope', '$rootScope', 'encounterService', '$route', 'appService', 'BedService',
         function ($scope, $rootScope, encounterService, $route, appService, bedService) {
 
-            var forwardLink = appService.allowedAppExtensions("bahmni.adt.discharge.next", "link")[0].url;
+            var forwardLink = appService.getAppDescriptor().getExtensions("bahmni.adt.discharge.next", "link")[0].url;
 
             $scope.discharge = function () {
                 var encounterData = {};

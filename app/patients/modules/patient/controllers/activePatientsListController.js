@@ -103,7 +103,7 @@ angular.module('opd.patient.controllers')
 
         var initialize = function () {
             resetPatientLists();
-            var appExtensions = appService.allowedAppExtensions("org.bahmni.patient.search", "config");
+            var appExtensions = appService.getAppDescriptor().getExtensions("org.bahmni.patient.search", "config");
             var allowedSearches = [];
             appExtensions.forEach(function (appExtn) {
                 allowedSearches.push({

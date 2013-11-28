@@ -51,9 +51,9 @@ describe("ActivePatientListController", function () {
         patientMapper = jasmine.createSpyObj('patientMapper', ['constructImageUrl']);
         patientMapper.constructImageUrl.andReturn("dumb");
 
-        appService = jasmine.createSpyObj('appService', ['allowedAppExtensions']);
-
-        appService.allowedAppExtensions.andReturn(appExtensions);
+        var appDescriptor = {'getExtensions' : function() {return appExtensions;} };
+        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        appService.getAppDescriptor.andReturn(appDescriptor);
 
         patientService = jasmine.createSpyObj('patientService',['findPatients']);
         patientService.findPatients.andCallFake(function (param) {

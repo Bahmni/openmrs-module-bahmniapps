@@ -2,7 +2,14 @@
 
 angular.module('opd.patient').factory('initialization', ['$rootScope', '$q', 'configurationService', 'authenticator', 'appService', '$route',
     function ($rootScope, $q, configurationService, authenticator, appService, $route) {
-        var appContext = $route.current.params["appContext"];
+
+        var getAppContext = function(prefix) {
+            var appContext = $route.current.params["appContext"];
+            appContext = appContext || '';
+            appContext = appContext.trim();
+            return (appContext != '') ? (prefix + '/' + appContext) : prefix;
+        }
+
         var initializationPromise = $q.defer();
 
         var getConfigs = function () {
@@ -17,7 +24,8 @@ angular.module('opd.patient').factory('initialization', ['$rootScope', '$q', 'co
 
         authenticator.authenticateUser().then(function () {
             getConfigs().then(function () {
-                appService.initialize('patientsearch', appContext).then(function () {
+                var appLoadOptions = {'app': false, 'extension' : true};
+                appService.initApp(getAppContext('patientsearch'), appLoadOptions).then(function (result) {
                     initializationPromise.resolve();
                 });
             });

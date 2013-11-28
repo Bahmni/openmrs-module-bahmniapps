@@ -64,7 +64,7 @@ angular.module('opd.consultation').factory('initialization',
         };
 
         authenticator.authenticateUser().then(function () {
-            appService.initialize('clinical').then(function() {
+            appService.initApp('clinical', {'extension' : true}).then(function() {
                 var configPromise = getConsultationConfigs();
                 configPromise.then(getVisit).then(getPatient).then(getVisitSummary).then(function(encounterTransactions) {
                     var name = encounterTransactions.diagnoses
