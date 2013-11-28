@@ -2,7 +2,6 @@
 
 angular.module('appFramework', ['authentication'])
     .service('appService', ['$http', '$q', 'sessionService','$rootScope', function ($http, $q, sessionService, $rootScope) {
-        var appExtensions = null;
         var currentUser = null;
         var baseUrl = "/bahmni_config/openmrs/apps/";
         var appDescriptor = null;
@@ -128,13 +127,14 @@ angular.module('appFramework', ['authentication'])
             restrict:'EA',
             template: '<li ng-repeat="appExtn in appExtensions"> <a href="{{formatUrl(appExtn.url, extnParams)}}" title="{{appExtn.label}}"></a></li>',
             scope: {
-                extnId : '@',
+                extnPointId : '@',
                 extnType: '@',
                 onClick: '&',
-                extnData: '='
+                contextModel: '&'
             },
             compile: function(cElement, cAttrs) {
-                var extnList = appService.allowedAppExtensions(cAttrs.extnId, cAttrs.extnType);
+                var appDescriptor = appService.getAppDescriptor();
+                var extnList = appDescriptor.getExtensions(cAttrs.extnId, cAttrs.extnType);
                 return function(scope, lElement, attrs) {
                     scope.appExtensions = extnList;
                 };
