@@ -4,16 +4,21 @@ angular.module('bahmni.common.patient.mappers')
     .factory('patientMapper', ['$rootScope',
         function ( $rootScope) {
             var getPatientConfigByUuid = function (patientConfig,attributeUuid) {
-                return patientConfig.personAttributeTypes.filter(function (item) {
-                    return item.uuid === attributeUuid
-                })[0];
+                if(patientConfig){
+                    return patientConfig.personAttributeTypes.filter(function (item) {
+                        return item.uuid === attributeUuid
+                    })[0];
+                }
+
             }
 
             var mapAttributes = function (patient, attributes) {
-                attributes.forEach(function (attribute) {
-                    var x = getPatientConfigByUuid($rootScope.patientConfig,attribute.attributeType.uuid);
-                    patient[x.name] = attribute.value;
-                });
+                if($rootScope.patientConfig){
+                    attributes.forEach(function (attribute) {
+                        var x = getPatientConfigByUuid($rootScope.patientConfig,attribute.attributeType.uuid);
+                        patient[x.name] = attribute.value;
+                    });
+                }
             };
 
 
