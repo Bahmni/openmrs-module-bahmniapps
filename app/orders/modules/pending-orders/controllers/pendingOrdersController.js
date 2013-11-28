@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('orders.pending.controllers')
-    .controller('PendingOrdersController', ['$scope','$route', '$routeParams', 'PendingOrderService', function ($scope,$route,$routeParams, pendingOrderService) {
+    .controller('PendingOrdersController', ['$scope','$rootScope','$route', '$routeParams', 'PendingOrderService', function ($scope,$rootScope,$route,$routeParams, pendingOrderService) {
 
     	$scope.getOrders = function (patientUuid, orderTypeUuid) {
     		pendingOrderService.getOrders(patientUuid, orderTypeUuid).success(function(response){
@@ -52,5 +52,11 @@ angular.module('orders.pending.controllers')
     	var patientUuid = $routeParams.patientUuid;
     	var orderTypeUuid = $routeParams.orderTypeUuid;
         $scope.resultsEntry = [];
+        $rootScope.availableBoards = [
+            { name: 'Pending Orders', url: ''}
+        ];
+        $rootScope.currentBoard = $scope.availableBoards[0];
+
+
     	$scope.getOrders(patientUuid,orderTypeUuid);
 }]);

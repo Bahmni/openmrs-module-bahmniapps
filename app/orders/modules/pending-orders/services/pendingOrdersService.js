@@ -5,7 +5,11 @@ angular.module('orders.pending.services')
 
     var getOrders = function (patientUuid, orderTypeUuid) {
         return $http.get("/openmrs/ws/rest/v1/order", {
-            params:{patientUuid:patientUuid, orderTypeUuid:orderTypeUuid,s:'pendingOrders',v:'full'},
+            params:{
+                patientUuid:patientUuid,
+                orderTypeUuid:orderTypeUuid,
+                s:'pendingOrders',
+                v:'custom:(uuid,creator:(person,uuid),dateCreated,concept:(name,uuid),encounter:(uuid,provider,encounterType,visit:(uuid)))'},
             withCredentials:true
         });
     } ;
