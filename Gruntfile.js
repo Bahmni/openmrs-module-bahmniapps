@@ -279,12 +279,12 @@ module.exports = function (grunt) {
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['patients.min.js'], dest: '<%= yeoman.dist %>/patients/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['consultation.min.js'], dest: '<%= yeoman.dist %>/consultation/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['adt.min.js'], dest: '<%= yeoman.dist %>/adt/'},
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['bed-management.min.js'], dest: '<%= yeoman.dist %>/orders/'},
+                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['bed-management.min.js'], dest: '<%= yeoman.dist %>/bed-management/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['orders.min.js'], dest: '<%= yeoman.dist %>/orders/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['patients.min.css'], dest: '<%= yeoman.dist %>/patients/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['consultation.min.css'], dest: '<%= yeoman.dist %>/consultation/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['adt.min.css'], dest: '<%= yeoman.dist %>/adt/'},
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['bed-management.min.css'], dest: '<%= yeoman.dist %>/orders/'},
+                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['bed-management.min.css'], dest: '<%= yeoman.dist %>/bed-management/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['orders.min.css'], dest: '<%= yeoman.dist %>/orders/'}
                 ]
             }
