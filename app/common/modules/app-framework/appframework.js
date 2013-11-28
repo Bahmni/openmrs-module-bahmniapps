@@ -2,7 +2,6 @@
 
 angular.module('appFramework', ['authentication'])
     .service('appService', ['$http', '$q', 'sessionService','$rootScope', function ($http, $q, sessionService, $rootScope) {
-        var appExtensions = null;
         var currentUser = null;
         var baseUrl = "/bahmni_config/openmrs/apps/";
         var appDescriptor = null;
