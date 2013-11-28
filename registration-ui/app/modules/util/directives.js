@@ -17,25 +17,26 @@ angular.module('registration.util', [])
         }
     })
     .directive('datepicker', function ($parse) {
-        return function ($scope, element, attrs) {
-            var ngModel = $parse(attrs.ngModel);
-            $(function () {
-                var today = new Date();
-                element.datepicker({
-                    changeYear: true,
-                    changeMonth: true,
-                    maxDate: today,
-                    minDate: "-120y",
-                    yearRange: 'c-120:c',
-                    dateFormat: 'dd-mm-yy',
-                    onSelect: function (dateText) {
-                        $scope.$apply(function (scope) {
-                            ngModel.assign(scope, dateText);
-                            $scope.$eval(attrs.ngChange);
-                        });
-                    }
-                });
+        var link = function ($scope, element, attrs, ngModel) {
+            var today = new Date();
+            element.datepicker({
+                changeYear: true,
+                changeMonth: true,
+                maxDate: today,
+                minDate: "-120y",
+                yearRange: 'c-120:c',
+                dateFormat: 'dd-mm-yy',
+                onSelect: function (dateText) {
+                    $scope.$apply(function (scope) {
+                        ngModel.$setViewValue(dateText);
+                    });
+                }
             });
+        }
+
+        return {
+            require: 'ngModel',
+            link: link
         }
     })
     .directive('splitButton', function ($parse) {
