@@ -3,7 +3,7 @@
 angular.module('opd.consultation.controllers')
     .controller('ConsultationController', ['$scope', '$rootScope', 'encounterService', '$route', '$location', function ($scope, $rootScope, encounterService, $route, $location) {
 
-    $scope.consultationNote = {conceptUuid : null, value: null};
+    $scope.consultationNote = {concept:{uuid:null}, value:null};
 
     var initialize = function() {
         if ($rootScope.consultationNote) {
@@ -14,12 +14,15 @@ angular.module('opd.consultation.controllers')
             //TODO: should take the first visit with date_created sorted desc
             var lastNote = $rootScope.consultation.consultationNotes[0];
             $scope.consultationNote = {
-                conceptUuid : lastNote.concept.uuid,
+                concept : {
+                    uuid: lastNote.concept.uuid
+                },
                 value : lastNote.value,
                 uuid  : lastNote.uuid
             };
         } else if ($rootScope.consultationNoteConfig) {
-            $scope.consultationNote.conceptUuid = ($rootScope.consultationNoteConfig.results.length > 0) ? $rootScope.consultationNoteConfig.results[0].uuid : null;
+            $scope.consultationNote.concept = {};
+            $scope.consultationNote.concept.uuid = ($rootScope.consultationNoteConfig.results.length > 0) ? $rootScope.consultationNoteConfig.results[0].uuid : null;
         }
     };
 
