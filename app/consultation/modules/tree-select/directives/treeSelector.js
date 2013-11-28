@@ -103,7 +103,7 @@ angular.module('opd.treeSelect')
             restrict: 'A',
             templateUrl: 'modules/tree-select/views/treeSelector.html',
             link: link,
-            require: '^ngModel',
+            require: 'ngModel',
             scope: {
                 selectedItems: '=ngModel',
                 rootConceptName: "=",
