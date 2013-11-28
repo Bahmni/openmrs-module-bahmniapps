@@ -79,7 +79,9 @@ angular.module('appFramework', ['authentication'])
             var promises = [];
             var opts = options || {'app': true, 'extension' : true};
 
-            appDescriptor = new AppDescriptor(appName, function() {
+            var inheritAppContext = (opts.inherit == undefined) ? true : opts.inherit;
+
+            appDescriptor = new AppDescriptor(appName, inheritAppContext, function() {
                 return currentUser;
             });
 
