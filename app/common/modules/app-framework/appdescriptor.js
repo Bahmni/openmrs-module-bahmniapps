@@ -1,4 +1,4 @@
-function AppDescriptor(context, retrieveUserCallback) {
+function AppDescriptor(context, inheritContext, retrieveUserCallback) {
     this.id = null;
     this.instanceOf = null;
     this.description = null;
@@ -9,7 +9,7 @@ function AppDescriptor(context, retrieveUserCallback) {
     this.configs = [];
 
     this.extensionPath = context;
-    this.contextPath = context.split("/")[0];
+    this.contextPath = inheritContext ? context.split("/")[0] : context;
 
     var that = this;
 
