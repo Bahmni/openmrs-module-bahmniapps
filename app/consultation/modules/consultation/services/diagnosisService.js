@@ -9,8 +9,4 @@ angular.module('opd.consultation.services')
               params:{term:searchTerm, limit:20}
           });
       };
-
-      return {
-          getAllFor:getAllFor
-      };
 }]);
