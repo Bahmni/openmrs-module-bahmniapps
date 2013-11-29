@@ -104,10 +104,8 @@ angular.module('appFramework', ['authentication'])
             return appLoader.promise;
         };
     }])
-    .directive('extensionList', ['appService', function(appService) {
+    .directive('appExtensionList', ['appService', function(appService) {
         var urlFormatter =  function (url, options) {
-            console.log("inside formatUrl");
-
             var pattern = /{{([^}]*)}}/g;
             var matches = url.match(pattern);
             var replacedString = url;
@@ -122,25 +120,48 @@ angular.module('appFramework', ['authentication'])
             }
             return replacedString.trim();
         };
-
         return {
             restrict:'EA',
-            template: '<li ng-repeat="appExtn in appExtensions"> <a href="{{formatUrl(appExtn.url, extnParams)}}" title="{{appExtn.label}}"></a></li>',
+            template: '<ul><li ng-repeat="appExtn in appExtensions">'
+                + '<a href="{{formatUrl(appExtn.url, extnParams)}}" onclick="return false;" title="{{appExtn.label}}" ng-click="extnLinkClick(appExtn, extnParams)">'
+                + '<span ng-show="showLabel">{{appExtn.label}}</span>'
+                +'</a></li></ul>',
             scope: {
                 extnPointId : '@',
-                extnType: '@',
-                onClick: '&',
-                contextModel: '&'
+                showLabel:'@',
+                onExtensionClick:'&',
+                contextModel:'&'
             },
             compile: function(cElement, cAttrs) {
                 var appDescriptor = appService.getAppDescriptor();
-                var extnList = appDescriptor.getExtensions(cAttrs.extnId, cAttrs.extnType);
+                var extnList = appDescriptor.getExtensions(cAttrs.extnPointId);
                 return function(scope, lElement, attrs) {
                     scope.appExtensions = extnList;
+                    var model = scope.contextModel();
+                    scope.extnParams = model || {};
                 };
             },
-            controller: function($scope) {
+            controller: function($scope, $location) {
                 $scope.formatUrl = urlFormatter;
+                $scope.extnLinkClick = function(extn, params) {
+                    var proceedWithDefault = true;
+                    var clickHandler = $scope.onExtensionClick();
+                    var target = urlFormatter(extn.url, params);
+                    if (clickHandler) {
+                        var event = {
+                            'src': extn,
+                            'target': target,
+                            'params' : params,
+                            'preventDefault' : function() {
+                               proceedWithDefault = false;
+                            }
+                        };
+                        clickHandler(event);
+                    }
+                    if (proceedWithDefault) {
+                        $location.url(target);
+                    }
+                };
             }
         };
     }]);
