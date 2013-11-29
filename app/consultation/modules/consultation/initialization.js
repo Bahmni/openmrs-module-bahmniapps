@@ -57,7 +57,6 @@ angular.module('opd.consultation').factory('initialization',
             var visitSummaryDeferrable = $q.defer();
             visitService.getVisitSummary($route.current.params.visitUuid).success(function (encounterTransactions) {
                 $rootScope.encounterTransactions = encounterTransactions;
-                console.log($rootScope.encounterTransactions);
                 visitSummaryDeferrable.resolve(encounterTransactions);
             });
             return visitSummaryDeferrable.promise;

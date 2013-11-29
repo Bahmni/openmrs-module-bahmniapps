@@ -48,4 +48,26 @@ angular.module('opd.conceptSet')
         template:template,
         controller:controller
     }
-}]);
+}]).directive('addObsConstraints', function() {
+    var link = function($scope, element, attrs) {
+        var attributes = {};
+        if($scope.obs.isNumeric()) {
+            attributes['type'] = 'number'
+        }
+        if($scope.obs.getHighAbsolute()) {
+            attributes['max'] = $scope.obs.getHighAbsolute();
+        }
+        if($scope.obs.getLowAbsolute()) {
+            attributes['min'] = $scope.obs.getLowAbsolute();
+        }
+
+        element.attr(attributes);
+    }
+
+    return {
+        link: link,
+        scope: {
+            obs: '='
+        },
+    }
+});

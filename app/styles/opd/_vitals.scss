@@ -43,5 +43,10 @@
                 padding-bottom:15px;
             }
         }
+}
 
+show-concept{
+    input:invalid {
+        background-color: #FF9494;
+    }
 }

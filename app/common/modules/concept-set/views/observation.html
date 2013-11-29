@@ -6,7 +6,7 @@
         </div>
         <div class="field-value">
             <div ng-switch on="observation.possibleAnswers.length">
-                <input type="text" ng-switch-when="0" ng-model="observation.value"></input>
+                <input type="text" ng-switch-when="0" ng-model="observation.value" add-obs-constraints obs="observation"></input>
                 <select class="" ng-switch-default ng-model="observation.value"
                         ng-options="answer.uuid as answer.display for answer in observation.possibleAnswers">
                 </select>
