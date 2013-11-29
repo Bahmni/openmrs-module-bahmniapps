@@ -36,7 +36,9 @@ describe('CreatePatientController', function () {
     }]));
 
     var setupController = function(preferenceObj){
-        preferences = preferenceObj != undefined ? preferenceObj : {centerID: "GAN", hasOldIdentifier: false };
+        preferences = preferenceObj != undefined ? preferenceObj : {identifierPrefix: "GAN", hasOldIdentifier: false };
+        var patientConfiguration = new PatientConfig();
+        patientConfiguration.identifierSources = [{name: "SEM", prefix: "SEM"}, {name: "SIV", prefix: "SIV"}, {name: "GAN", prefix: "GAN"}];
         inject(function($controller, $rootScope){
             scope = $rootScope.$new();
             controller = $controller('CreatePatientController',{
@@ -45,7 +47,7 @@ describe('CreatePatientController', function () {
                 $location: location,
                 Preferences: preferences,
                 spinner: spinner,
-                $rootScope: {encounterConfiguration: new EncounterConfig({visitTypes: {}})},
+                $rootScope: {encounterConfiguration: new EncounterConfig({visitTypes: {}}), patientConfiguration: patientConfiguration},
                 appService: appService,
                 $route: route
             });
@@ -56,14 +58,14 @@ describe('CreatePatientController', function () {
         it('should set up centers for Center ID dropdown', function () {
             setupController();
 
-            expect(Array.isArray(scope.centers)).toBeTruthy();
-            expect(scope.centers.length).toBe(4);
+            expect(Array.isArray(scope.identifierSources)).toBeTruthy();
+            expect(scope.identifierSources.length).toBe(3);
         });
 
         it('should initialize centerID and hasOldIdentifier from preferences', function() {
-            setupController({centerID: "SIV", hasOldIdentifier: true});
+            setupController({identifierPrefix: 'SIV', hasOldIdentifier: true});
 
-            expect(scope.patient.centerID.name).toBe('SIV');
+            expect(scope.patient.identifierPrefix.prefix).toBe('SIV');
             expect(scope.hasOldIdentifier).toBe(true);
         });
     });
@@ -114,13 +116,13 @@ describe('CreatePatientController', function () {
 
             it('should update preferences with current values of centerID and hasOldIdentifier', function () {
                 scope.hasOldIdentifier = true;
-                scope.patient.centerID = {name: "SEM"};
+                scope.patient.identifierPrefix = {name: "SEM", prefix: "SEM"};
                 scope.create();
 
                 createPromise.callSuccessCallBack(createPatientResponse);
 
                 expect(preferences.hasOldIdentifier).toBe(true);
-                expect(preferences.centerID).toBe("SEM");
+                expect(preferences.identifierPrefix).toBe("SEM");
             })
         });
     });

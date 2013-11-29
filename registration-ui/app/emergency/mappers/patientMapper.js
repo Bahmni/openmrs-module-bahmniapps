@@ -17,7 +17,7 @@ Bahmni.Registration.Emergency.PatientMapper = function() {
             identifier: patient.identifier,
             centerID: patient.centerID,
             addresses: [patient.address],
-            attributes: [],
+            attributes: []
         };
     };
-}
+};

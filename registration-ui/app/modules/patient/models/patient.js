@@ -39,6 +39,7 @@ angular.module('registration.patient.models')
                 address: {},
                 age: age.create(),
                 calculateAge: calculateAge,
+                identifierPrefix: {},
                 generateIdentifier: generateIdentifier,
                 clearRegistrationNumber: clearRegistrationNumber,
                 image: 'images/blank-user.gif',
