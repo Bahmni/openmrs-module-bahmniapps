@@ -56,10 +56,10 @@ angular.module('registration.patient.directives')
         var template =  '<section class="form-field-inline" ng-repeat="addressLevels in addressLevelsChunks">'+
                             '<article class="form-field" ng-repeat="addressLevel in addressLevels">'+
                                     '<div class="field-attribute">'+
-                                        '<label for="{{addressLevel.addressField}}">{{addressLevel.name}}</label>'+
+                                        '<label for="{{addressLevel.addressField}}">{{addressLevel.name}}<span class="asterick" ng-show="addressLevel.required">*</span></label>'+
                                     '</div>'+
                                     '<div class="field-value">'+
-                                        '<input type="text" id="{{addressLevel.addressField}}" ng-model="$parent.address[$parent.addressLevel.addressField]" placeholder="{{$parent.addressLevel.name}}"' +
+                                        '<input type="text" id="{{addressLevel.addressField}}" non-blank="$parent.addressLevel.required" ng-model="$parent.address[$parent.addressLevel.addressField]" placeholder="{{$parent.addressLevel.name}}"' +
                                         'my-autocomplete source="getAddressEntryList(addressLevel.addressField)" response-map="getAddressDataResults" on-select="addressFieldSelected(addressLevel.addressField)"' +
                                          '>'+
                                     '</div>'+
