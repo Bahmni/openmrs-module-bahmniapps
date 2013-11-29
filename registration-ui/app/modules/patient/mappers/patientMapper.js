@@ -12,7 +12,7 @@ var PatientMapper = (function () {
             birthdate: patient.birthdate,
             gender: patient.gender,
             identifier: patient.identifier,
-            centerID: patient.centerID,
+            centerID: patient.identifierPrefix.name,
             addresses: [patient.address],
             image: patient.getImageData(),
             attributes: this._mapAttributes(patient, patientConfig)

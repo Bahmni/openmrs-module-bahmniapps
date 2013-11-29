@@ -20,10 +20,11 @@ angular.module('registration.patient.controllers')
 
         (function () {
             $scope.patient = patientModel.create();
-            $scope.centers = constants.centers;
-            $scope.patient.centerID = $scope.centers.filter(function (center) {
-                return center.name === preferences.centerID
-            })[0];
+            $scope.identifierSources = $rootScope.patientConfiguration.identifierSources;
+            var identifierPrefix = $scope.identifierSources.filter(function (identifierSource) {
+                return identifierSource.prefix === preferences.identifierPrefix;
+            });
+            $scope.patient.identifierPrefix = identifierPrefix[0] || $scope.identifierSources[0].prefix;
             $scope.hasOldIdentifier = preferences.hasOldIdentifier;
             identifyEditActions();
         })();
@@ -51,7 +52,7 @@ angular.module('registration.patient.controllers')
         };
 
         var setPreferences = function () {
-            preferences.centerID = $scope.patient.centerID.name;
+            preferences.identifierPrefix = $scope.patient.identifierPrefix.prefix;
             preferences.hasOldIdentifier = $scope.hasOldIdentifier;
         };
 
