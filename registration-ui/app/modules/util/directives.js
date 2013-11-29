@@ -1,4 +1,4 @@
-angular.module('registration.util', [])
+angular.module('registration.util')
     .directive('nonBlank', function () {
         return function ($scope, element, attrs) {
             var addNonBlankAttrs = function () {

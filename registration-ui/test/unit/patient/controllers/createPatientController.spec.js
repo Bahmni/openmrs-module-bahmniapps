@@ -9,15 +9,15 @@ describe('CreatePatientController', function () {
     var location;
     var preferences;
     var createPromise;
-    var dateModule;
+    var dateUtil;
     var spinner;
     var appDescriptor;
     var appService;
     var route;
 
     beforeEach(angular.mock.module('registration.patient.controllers'));
-    beforeEach(angular.mock.inject(function (date) {
-        dateModule = date;
+    beforeEach(angular.mock.inject(['dateUtil', function (dateUtilInjected) {
+        dateUtil = dateUtilInjected;
         location = jasmine.createSpyObj('$location', ['path','absUrl']);
         spinner = jasmine.createSpyObj('spinner', ['show', 'hide', 'forPromise'])
         location.absUrl = function(){return "/patient/new"};
@@ -33,7 +33,7 @@ describe('CreatePatientController', function () {
         appService.getAppDescriptor.andReturn(appDescriptor);
         //$route.current.params.visitType
         route = { "current" : { "params" : { "visitType" : "REG" } }};
-    }));
+    }]));
 
     var setupController = function(preferenceObj){
         preferences = preferenceObj != undefined ? preferenceObj : {centerID: "GAN", hasOldIdentifier: false };
@@ -103,7 +103,7 @@ describe('CreatePatientController', function () {
 
                     it('should set registration date to today', function() {
                         var today = new Date("01-10-2012");
-                        spyOn(dateModule, 'now').andReturn(today);
+                        spyOn(dateUtil, 'now').andReturn(today);
 
                         createVisitPromise.callSuccessCallBack();
 

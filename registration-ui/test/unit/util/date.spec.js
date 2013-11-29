@@ -1,10 +1,10 @@
 'use strict';
 
-describe("date", function(){
-    var dateModule;
-    beforeEach(module('resources.date'));
-    beforeEach(inject(['date', function(date){
-        dateModule = date;
+describe("dateUtil", function(){
+    var dateUtil;
+    beforeEach(module('registration.util'));
+    beforeEach(inject(['dateUtil', function(dateUtilInjected){
+        dateUtil = dateUtilInjected;
     }]));
 
     describe('diffInYearsMonthsDays', function(){
@@ -12,7 +12,7 @@ describe("date", function(){
             var fromDate = new Date("2011-06-21");
             var toDate = new Date("2013-06-21");
 
-            var period = dateModule.diffInYearsMonthsDays(fromDate, toDate);
+            var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
 
             expect(period.years).toBe(2);
             expect(period.months).toBe(0);
@@ -23,7 +23,7 @@ describe("date", function(){
             var fromDate = new Date("2011-08-21");
             var toDate = new Date("2013-06-21");
 
-            var period = dateModule.diffInYearsMonthsDays(fromDate, toDate);
+            var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
 
             expect(period.years).toBe(1);
             expect(period.months).toBe(10);
@@ -35,7 +35,7 @@ describe("date", function(){
                 var fromDate = new Date("2011-02-26");
                 var toDate = new Date("2011-03-15");
 
-                var period = dateModule.diffInYearsMonthsDays(fromDate, toDate);
+                var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
 
                 expect(period.years).toBe(0);
                 expect(period.months).toBe(0);
@@ -46,7 +46,7 @@ describe("date", function(){
                 var fromDate = new Date("2012-02-26");
                 var toDate = new Date("2012-03-15");
 
-                var period = dateModule.diffInYearsMonthsDays(fromDate, toDate);
+                var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
 
                 expect(period.years).toBe(0);
                 expect(period.months).toBe(0);
@@ -60,7 +60,7 @@ describe("date", function(){
                 var fromDate = new Date("2013-07-21");
                 var toDate = new Date("2013-08-15");
 
-                var period = dateModule.diffInYearsMonthsDays(fromDate, toDate);
+                var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
 
                 expect(period.years).toBe(0);
                 expect(period.months).toBe(0);
@@ -72,7 +72,7 @@ describe("date", function(){
                 var fromDate = new Date("2013-09-21");
                 var toDate = new Date("2013-10-15");
 
-                var period = dateModule.diffInYearsMonthsDays(fromDate, toDate);
+                var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
 
                 expect(period.years).toBe(0);
                 expect(period.months).toBe(0);

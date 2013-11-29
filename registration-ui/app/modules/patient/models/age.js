@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('registration.patient.models')
-    .factory('age', ['date', function (date) {
+    .factory('age', ['dateUtil', function (dateUtil) {
         var fromBirthDate = function(birthDate) {
-            var today = date.now();
-            var period = date.diffInYearsMonthsDays(birthDate, today)
+            var today = dateUtil.now();
+            var period = dateUtil.diffInYearsMonthsDays(birthDate, today)
             return create(period.years, period.months, period.days);
         }
 

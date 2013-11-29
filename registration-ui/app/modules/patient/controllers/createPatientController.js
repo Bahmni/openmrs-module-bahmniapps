@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('registration.patient.controllers')
-    .controller('CreatePatientController', ['$scope', '$rootScope','patientService', 'visitService','$location', 'Preferences', '$route', 'patient', '$window', 'errorCode', 'date', 'spinner', 'printer', 'appService', '$timeout',
-    function ($scope, $rootScope, patientService, visitService, $location, preferences, $route, patientModel, $window, errorCode, date, spinner, printer, appService, $timeout) {
+    .controller('CreatePatientController', ['$scope', '$rootScope','patientService', 'visitService','$location', 'Preferences', '$route', 'patient', '$window', 'errorCode', 'dateUtil', 'spinner', 'printer', 'appService', '$timeout',
+    function ($scope, $rootScope, patientService, visitService, $location, preferences, $route, patientModel, $window, errorCode, dateUtil, spinner, printer, appService, $timeout) {
         var createActionsConfig = [];
         var defaultActions = ["save", "print", "startVisit"];
 
@@ -61,14 +61,14 @@ angular.module('registration.patient.controllers')
             $scope.patient.identifier = patientData.identifier;
             $scope.patient.name = patientData.name;
             $scope.patient.isNew = true;
-            $scope.patient.registrationDate = date.now();
+            $scope.patient.registrationDate = dateUtil.now();
         };
 
         var followUpAction = function(patientData) {
             if($scope.submitSource == 'startVisit') {
                 $scope.visitControl.createVisit(patientData.uuid).success(function(){
                     var patientUrl = $location.absUrl().replace("new", patientData.uuid) + "?newpatient=true";
-                    $scope.patient.registrationDate = date.now();
+                    $scope.patient.registrationDate = dateUtil.now();
                     patientService.rememberPatient($scope.patient);
                     $window.history.pushState(null, null, patientUrl);
                     $location.path("/patient/" + patientData.uuid + "/visit");

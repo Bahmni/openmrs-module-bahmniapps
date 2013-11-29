@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('registration.patient.controllers')
-    .controller('VisitController', ['$scope', '$location', 'patientService', 'encounterService', 'bmi', 'date', '$window', '$route', 'spinner', '$timeout', '$q', 'printer',
-                    function ($scope, $location, patientService, encounterService, bmiModule, date, $window, $route, spinner, $timeout, $q, printer) {
+    .controller('VisitController', ['$scope', '$location', 'patientService', 'encounterService', 'bmi', '$window', '$route', 'spinner', '$timeout', '$q', 'printer',
+                    function ($scope, $location, patientService, encounterService, bmiModule, $window, $route, spinner, $timeout, $q, printer) {
         (function () {
             $scope.patient = patientService.getPatient();
 

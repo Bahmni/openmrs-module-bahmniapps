@@ -8,7 +8,7 @@ describe('VisitController', function () {
     var encounterService;
     var patientService;
     var patient;
-    var date;
+    var dateUtil;
     var $location;
     var $window;
     var $timeout;
@@ -60,11 +60,11 @@ describe('VisitController', function () {
     }
 
     beforeEach(module('registration.patient.controllers'));
-    beforeEach(inject(['$injector', 'date', '$location', '$window', '$timeout', function ($injector, dateModule, location, window, timeout) {
+    beforeEach(inject(['$injector', 'dateUtil', '$location', '$window', '$timeout', function ($injector, dateUtilInjected, location, window, timeout) {
         $controller = $injector.get('$controller');
         scope = { "$watch": jasmine.createSpy() }
         patientService = jasmine.createSpyObj('patientService', ['getPatient', 'clearPatient']);
-        date = dateModule;
+        dateUtil = dateUtilInjected;
         patient = {uuid: "21308498-2502-4495-b604-7b704a55522d", isNew: "true"};
         $location = location;
         $window = window;
@@ -116,7 +116,7 @@ describe('VisitController', function () {
                 encounterService: encounterService,
                 $location: $location,
                 spinner: spinner,
-                date: date
+                dateUtil: dateUtil
             });
             getPromise.callSuccessCallBack(sampleEncounter);
 
@@ -202,7 +202,7 @@ describe('VisitController', function () {
                 encounterService: encounterService,
                 $location: $location,
                 spinner: spinner,
-                date: date
+                dateUtil: dateUtil
             });
             getPromise.callSuccessCallBack(sampleEncounter);
             encounterService.create.andCallFake(stubOnePromise);
@@ -212,7 +212,7 @@ describe('VisitController', function () {
 
         it("should create visit", function () {
             var now = new Date();
-            spyOn(date, "now").andReturn(now);
+            spyOn(dateUtil, "now").andReturn(now);
             scope.print = jasmine.createSpy().andCallFake(stubOnePromise);
             scope.obs.COMMENTS = "fine";
             scope.obs["REGISTRATION FEES"] = "100";
@@ -236,7 +236,7 @@ describe('VisitController', function () {
                     encounterService: encounterService,
                     $location: $location,
                     spinner: spinner,
-                    date: date
+                    dateUtil: dateUtil
                 });
                 getPromise.callSuccessCallBack(sampleEncounter);
 

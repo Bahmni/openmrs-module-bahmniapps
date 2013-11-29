@@ -3,7 +3,7 @@
 describe("Patient", function(){
     var patientFactory, ageFactory, patient;
     beforeEach(module('registration.patient.models'));
-    beforeEach(inject(['patient', 'date', 'age', function(patient, date, age){
+    beforeEach(inject(['patient', 'age', function(patient, age){
         patientFactory = patient;
         ageFactory = age;
     }]));

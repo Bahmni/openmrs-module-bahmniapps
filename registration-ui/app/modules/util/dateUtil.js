@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('resources.date', [])
-    .factory('date', [function () {
+angular.module('registration.util')
+    .factory('dateUtil', [function () {
         var now = function(){
             return new Date();
         }

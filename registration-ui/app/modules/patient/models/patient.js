@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registration.patient.models')
-    .factory('patient', ['date', 'age', function (date, age) {
+    .factory('patient', ['age', function (age) {
         var create = function () {
             var calculateAge = function () {
                 if (this.birthdate) {
