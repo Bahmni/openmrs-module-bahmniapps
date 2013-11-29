@@ -6,13 +6,13 @@
         <h2>Diagnoses</h2>
         <ul class="block-content">
             <div ng-repeat="encounterTransaction in encounterTransactions" >
-                <li ng-repeat="diagnosis in encounterTransaction.diagnoses" 
-                ng-hide = "isConfirmedDiagnosis(diagnosis.certainty)">
+                <li ng-repeat="diagnosis in encounterTransaction.diagnoses" >
                         <span ng-show="isPrimary(diagnosis.order)">P</span>
                         <span ng-show="!isPrimary(diagnosis.order)">S</span>
-                        <span>{{diagnosis.codedAnswer.name}}({{diagnosis.certainty}})</span>
-                        <span>{{formatDate(encounterTransaction.encounterDateTime)}} </span>
-                        <span>Yogesh Jain</span>
+                        <span>{{diagnosis.codedAnswer.name}}</span>
+                        <span ng-hide = "isConfirmedDiagnosis(diagnosis.certainty)">({{diagnosis.certainty}})</span>
+                        <span>{{formatDate(diagnosis.diagnosisDate)}} </span>
+                        <span>{{encounterTransaction.providers[0].name}}</span>
                 </li>
             </div>
             <div ng-show="!hasDiagnosis(encounterTransactions)">A diagnosis has not been made for this patient yet.</div>
@@ -24,22 +24,14 @@
             <div ng-repeat="encounterTransaction in encounterTransactions" >
                 <li ng-show=encounterTransaction.disposition>
                     <span>{{encounterTransaction.disposition.code}}</span>
-                    <span>{{formatDate(encounterTransaction.encounterDateTime)}}</span>
-                    <span>Yogesh Jain</span>
-
+                    <span>{{formatDate(encounterTransaction.disposition.dispositionDate)}}</span>
+                    <span>{{encounterTransaction.providers[0].name}}</span>
                     <span ng-repeat="note in encounterTransaction.disposition.additionalObs">
                         <expander class='expander'>
                         {{note.value}}
                     </expander>
                     </span>
                 </li>
-                <!--span>
-                    <li ng-repeat="note in encounterTransaction.disposition.additionalObs">
-                        <expander class='expander'>
-                        {{note.value}}
-                    </expander>
-                    </li>              
-                </span-->
             </div>
         </ul>
     </section>
@@ -53,7 +45,7 @@
         </ul>
         <ng-include src="'modules/consultation/views/labResults.html'" ng-init="labResults=consultation.labResults"/>
     </section>
-    <section class="block diagnosis">
+<!--     <section class="block diagnosis">
         <h2>Diagnosis</h2>
         <div class="block-content" ng-show="consultation.diagnoses.length > 0">
             <div class="diagnosis-type">
@@ -69,29 +61,10 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
     <section class="block treatment">
         <h2>Treatment</h2>
          <div  class="block-content" ng-include src="'modules/consultation/views/treatmentDrugs.html'"></div>
-    </section>
-
-    <section class="block disposition">
-        <h2>Disposition</h2>
-
-        <div ng-repeat="disposition in disposition.dispositions"  class="block-content">
-            <ul>
-                <li>
-                    -&nbsp; {{disposition.adtName}}
-                </li>
-                <li>
-                    -&nbsp; {{disposition.adtDateTime}}
-                </li>
-                <li>
-                    - &nbsp;{{disposition.adtNoteValue}}
-                </li>
-            </ul>
-        </div>
-
     </section>
     
     <section class="block">
