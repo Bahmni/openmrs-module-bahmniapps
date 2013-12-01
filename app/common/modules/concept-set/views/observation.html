@@ -4,15 +4,25 @@
             <label>{{observation.label}}</label>
             <span class="label-add-on" ng-show="observation.units">({{observation.units}})</span>
         </div>
-        <div class="field-value">
-            <div ng-switch on="observation.possibleAnswers.length">
-                <input type="text" ng-switch-when="0" ng-model="observation.value" add-obs-constraints obs="observation"></input>
-                <select class="" ng-switch-default ng-model="observation.value"
-                        ng-options="answer.uuid as answer.display for answer in observation.possibleAnswers">
-                </select>
+
+        <div ng-switch on="observation.possibleAnswers.length">
+            <div ng-switch-when="0" add-obs-constraints obs="observation">
+                <div class="field-value">
+                    <input type="text" ng-model="observation.value"></input>
+                </div>
+            </div>
+
+            <div ng-switch-default ng-show="observation.possibleAnswers.length > 0">
+                <div class="field-value">
+                    <select class=""  ng-model="observation.value"
+                            ng-options="answer.uuid as answer.display for answer in observation.possibleAnswers">
+                    </select>
+                </div>
             </div>
         </div>
+
     </div>
+
     <fieldset ng-show="observation.isGroup()">
         <div class="form-field">
             <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers">

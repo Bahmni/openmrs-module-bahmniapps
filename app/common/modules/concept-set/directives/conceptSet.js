@@ -50,6 +50,7 @@ angular.module('opd.conceptSet')
     }
 }]).directive('addObsConstraints', function() {
     var link = function($scope, element, attrs) {
+        var input = element.find("input");
         var attributes = {};
         if($scope.obs.isNumeric()) {
             attributes['type'] = 'number'
@@ -60,8 +61,7 @@ angular.module('opd.conceptSet')
         if($scope.obs.getLowAbsolute()) {
             attributes['min'] = $scope.obs.getLowAbsolute();
         }
-
-        element.attr(attributes);
+        input.attr(attributes);
     }
 
     return {

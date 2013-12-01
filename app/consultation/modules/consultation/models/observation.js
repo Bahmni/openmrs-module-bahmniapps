@@ -22,7 +22,6 @@ Bahmni.Opd.Consultation.Observation.prototype = {
     },
 
     isNumeric: function() {
-        console.log(this.concept);
         return this.concept.datatype && this.concept.datatype.name == "Numeric";
     },
 
