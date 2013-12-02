@@ -3,7 +3,8 @@
 angular.module('consultation', ['opd.consultation', 'bahmni.common.infrastructure', 'bahmni.common.patient',
     'bahmni.common.visit', 'bahmni.common.encounter', 'opd.conceptSet', 'authentication', 'appFramework', 'httpErrorInterceptor']);
 angular.module('consultation').config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
-        $routeProvider.when('/visit/:visitUuid/', {templateUrl: 'modules/consultation/views/consultation.html', controller: 'ConsultationController', resolve: {initialization: 'initialization'}});
+        $routeProvider.when('/visit/:visitUuid/', {templateUrl: 'modules/consultation/views/visit.html', controller: 'VisitController', resolve: {initialization: 'initialization'}});
+        $routeProvider.when('/visit/:visitUuid/current', {templateUrl: 'modules/consultation/views/consultation.html', controller: 'ConsultationController', resolve: {initialization: 'initialization'}});
         $routeProvider.when('/visit/:visitUuid/diagnosis', {templateUrl: 'modules/consultation/views/addObservation.html', controller: 'DiagnosisController', resolve: {initialization: 'initialization'}});
         $routeProvider.when('/visit/:visitUuid/treatment', {templateUrl: 'modules/consultation/views/treatment.html', controller: 'TreatmentController', resolve: {initialization: 'initialization'}});
         $routeProvider.when('/visit/:visitUuid/investigation', {templateUrl: 'modules/consultation/views/investigations.html', controller: 'InvestigationController', resolve: {initialization: 'initialization'}});

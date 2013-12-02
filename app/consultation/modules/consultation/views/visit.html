@@ -1,0 +1,33 @@
+<article class="consultation">
+	<section class="block investigation">
+        <h2>Diagnoses</h2>
+        <ul class="block-content">
+            <li ng-repeat="diagnosis in visitSummary.diagnoses" >
+                    <span ng-show="visitSummary.isPrimaryOrder(diagnosis.order)">P</span>
+                    <span ng-show="!visitSummary.isPrimaryOrder(diagnosis.order)">S</span>
+                    <span>{{diagnosis.codedAnswer.name}}</span>
+                    <span ng-hide = "visitSummary.isConfirmedDiagnosis(diagnosis.certainty)">({{diagnosis.certainty}})</span>
+                    <span>{{diagnosis.diagnosisDate | date:'d-MMM-yy h:mm a'}}</span>
+                    <span>{{diagnosis.provider.name}}</span>
+            </li>
+            <div ng-show="!visitSummary.hasDiagnosis()">A diagnosis has not been made for this patient yet.</div>
+        </ul>
+    </section>
+    <section class="block investigation" ng-show="visitSummary.hasDisposition()">
+        <h2>Disposition</h2>
+        <ul class="block-content">
+            <div  >
+                <li ng-repeat="disposition in visitSummary.dispositions">
+                    <span>{{disposition.code}}</span>
+                    <span>{{disposition.dispositionDate | date:'d-MMM-yy h:mm a'}}</span>
+                    <span>{{disposition.provider.name}}</span>
+                    <span ng-repeat="note in disposition.additionalObs">
+                        <expander class='expander'>
+                        {{note.value}}
+                    </expander>
+                    </span>
+                </li>
+            </div>
+        </ul>
+    </section>
+</article>

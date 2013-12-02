@@ -5,28 +5,26 @@
     <section class="block investigation">
         <h2>Diagnoses</h2>
         <ul class="block-content">
-            <div ng-repeat="encounterTransaction in encounterTransactions" >
-                <li ng-repeat="diagnosis in encounterTransaction.diagnoses" >
-                        <span ng-show="isPrimary(diagnosis.order)">P</span>
-                        <span ng-show="!isPrimary(diagnosis.order)">S</span>
-                        <span>{{diagnosis.codedAnswer.name}}</span>
-                        <span ng-hide = "isConfirmedDiagnosis(diagnosis.certainty)">({{diagnosis.certainty}})</span>
-                        <span>{{formatDate(diagnosis.diagnosisDate)}} </span>
-                        <span>{{encounterTransaction.providers[0].name}}</span>
-                </li>
-            </div>
-            <div ng-show="!hasDiagnosis(encounterTransactions)">A diagnosis has not been made for this patient yet.</div>
+            <li ng-repeat="diagnosis in visitSummary.diagnoses" >
+                    <span ng-show="visitSummary.isPrimaryOrder(diagnosis.order)">P</span>
+                    <span ng-show="!visitSummary.isPrimaryOrder(diagnosis.order)">S</span>
+                    <span>{{diagnosis.codedAnswer.name}}</span>
+                    <span ng-hide = "visitSummary.isConfirmedDiagnosis(diagnosis.certainty)">({{diagnosis.certainty}})</span>
+                    <span>{{diagnosis.diagnosisDate | date:'d-MMM-yy h:mm a'}}</span>
+                    <span>{{diagnosis.provider.name}}</span>
+            </li>
+            <div ng-show="!visitSummary.hasDiagnosis()">A diagnosis has not been made for this patient yet.</div>
         </ul>
     </section>
-        <section class="block investigation" ng-show="hasDisposition(encounterTransactions)">
+        <section class="block investigation" ng-show="visitSummary.hasDisposition()">
         <h2>Disposition</h2>
         <ul class="block-content">
-            <div ng-repeat="encounterTransaction in encounterTransactions" >
-                <li ng-show=encounterTransaction.disposition>
-                    <span>{{encounterTransaction.disposition.code}}</span>
-                    <span>{{formatDate(encounterTransaction.disposition.dispositionDate)}}</span>
-                    <span>{{encounterTransaction.providers[0].name}}</span>
-                    <span ng-repeat="note in encounterTransaction.disposition.additionalObs">
+            <div  >
+                <li ng-repeat="disposition in visitSummary.dispositions">
+                    <span>{{disposition.code}}</span>
+                    <span>{{disposition.dispositionDate | date:'d-MMM-yy h:mm a'}}</span>
+                    <span>{{disposition.provider.name}}</span>
+                    <span ng-repeat="note in disposition.additionalObs">
                         <expander class='expander'>
                         {{note.value}}
                     </expander>

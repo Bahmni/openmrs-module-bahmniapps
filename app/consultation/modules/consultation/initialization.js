@@ -56,7 +56,7 @@ angular.module('opd.consultation').factory('initialization',
         var getVisitSummary = function() {
             var visitSummaryDeferrable = $q.defer();
             visitService.getVisitSummary($route.current.params.visitUuid).success(function (encounterTransactions) {
-                $rootScope.encounterTransactions = encounterTransactions;
+                $rootScope.visitSummary = new Bahmni.Opd.Consultation.Visit(encounterTransactions);
                 visitSummaryDeferrable.resolve(encounterTransactions);
             });
             return visitSummaryDeferrable.promise;
@@ -66,7 +66,6 @@ angular.module('opd.consultation').factory('initialization',
             appService.initApp('clinical', {'extension' : true}).then(function() {
                 var configPromise = getConsultationConfigs();
                 configPromise.then(getVisit).then(getPatient).then(getVisitSummary).then(function(encounterTransactions) {
-                    var name = encounterTransactions.diagnoses
                     initializationPromise.resolve();
                 });
             });

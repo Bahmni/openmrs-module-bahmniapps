@@ -5,7 +5,8 @@ angular.module('opd.consultation.controllers').controller('ConsultationNavigatio
         function ($scope, $rootScope, $location, $route, $window, appService) {
             //$scope.mainButtonText = "Consultation";
             $scope.availableBoards = [
-                { name: 'Consultation', url: ''}
+                { name: 'Visit', url: ''},
+                { name: 'Consultation', url: 'current'}
             ];
             $scope.currentBoard = $scope.availableBoards[0];
             $scope.showBoard = function (name) {

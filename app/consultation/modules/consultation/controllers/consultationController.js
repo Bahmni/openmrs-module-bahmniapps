@@ -86,47 +86,7 @@ angular.module('opd.consultation.controllers')
         encounterService.create(encounterData).success(function () {
             window.location = Bahmni.Opd.Constants.activePatientsListUrl;
         });
-
-
-    };
-        $scope.formatDate = function(transactionDate) {
-            var monthNames = [ "Jan", "Feb", "March", "April", "May", "June",
-    "July", "Aug", "Sept", "Oct", "Nov", "Dec" ];
-            var transactionDate = new Date(transactionDate);
-            var date = transactionDate.getDate();
-            var month = monthNames[transactionDate.getMonth()];
-            var year = transactionDate.getFullYear().toString().slice(-2);
-            var hours = transactionDate.getHours() > 12 ? transactionDate.getHours() - 12 : transactionDate.getHours();
-            var minutes = transactionDate.getMinutes() < 10 ? '0' + transactionDate.getMinutes() : transactionDate.getMinutes();
-            var period = transactionDate.getHours() < 12 ? 'AM' : 'PM';
-            var formmattedDate = date + '-' + month + '-' + year + ' ' + hours + ':' + minutes + ' ' + period;
-            return formmattedDate;
-        }
-        $scope.isConfirmedDiagnosis = function(certainity){
-            return certainity === 'CONFIRMED';
-        }
-        $scope.isPrimary = function(order){
-            return order === 'PRIMARY';
-        }
-        $scope.hasDiagnosis = function(encounterTransactions){
-            var i=0;
-            for(i=0;i<encounterTransactions.length;i++){
-                if(encounterTransactions[i].diagnoses && encounterTransactions[i].diagnoses.length > 0){
-                    return true;
-                }
-            }
-            return false;
-        }
-        $scope.hasDisposition = function(encounterTransactions){
-            var i=0;
-            for(i=0;i<encounterTransactions.length;i++){
-                if(encounterTransactions[i].disposition){
-                    return true;
-                }
-            }
-            return false;
-        }
-        
+    };        
 }]).directive('showObs', ['$rootScope', function () {
     return {
         restrict:'E',
