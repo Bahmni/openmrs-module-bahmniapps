@@ -10,10 +10,19 @@ var RegistrationObservations = (function () {
 
     RegistrationObservations.prototype.updateObservations = function (updatedObservations) {
         this.observations.forEach(function (observationData) {
-            observationData.value = updatedObservations[observationData.concept.name];
+            var newObservationValue = updatedObservations[observationData.concept.name];
+            if(!newObservationValue && observationData.value){
+                observationData.voided = true;
+            }else if(newObservationValue){
+                observationData.value = newObservationValue;
+            }
         });
 
-        return this.observations;
+        var obsToSave = this.observations.filter(function(obs){
+            return obs.value || obs.voided;
+        })
+
+        return obsToSave;
     };
 
     var defaultRegistrationFees = function (observations, isNewPatient, encounterConfig) {

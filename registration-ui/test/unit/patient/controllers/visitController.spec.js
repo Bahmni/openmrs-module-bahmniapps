@@ -2,7 +2,6 @@
 
 describe('VisitController', function () {
     var scope;
-    var rootScope;
     var $controller;
     var success;
     var encounterService;
@@ -85,7 +84,7 @@ describe('VisitController', function () {
                 $scope: scope,
                 spinner: spinner,
                 encounterService: encounterService,
-                patientService: patientService,
+                patientService: patientService
             });
             getPromise.callSuccessCallBack(sampleEncounter);
 
@@ -219,12 +218,9 @@ describe('VisitController', function () {
 
             scope.saveAndPrint();
 
-            expect(scope.encounter.observations.length).toBe(5);
+            expect(scope.encounter.observations.length).toBe(2);
             expect(scope.encounter.observations).toContain({uuid: null, concept: {uuid: 'b4a52102-c79a-11e2-b0c0-8e397087571c', name: 'REGISTRATION FEES'}, value: '100' });
-            expect(scope.encounter.observations).toContain({uuid: null, concept: {uuid: 'b4aa3728-c79a-11e2-b0c0-8e397087571c', name: 'WEIGHT'}, value: null });
             expect(scope.encounter.observations).toContain({uuid: null, concept: {uuid: 'b499a980-c79a-11e2-b0c0-8e397087571c', name: 'COMMENTS'}, value: 'fine' })
-            expect(scope.encounter.observations).toContain({uuid: null, concept: {uuid: 'b4acc09c-c79a-11e2-b0c0-8e397087571c', name: 'BMI'}, value: null });
-            expect(scope.encounter.observations).toContain({uuid: null, concept: {uuid: 'b4a7aa80-c79a-11e2-b0c0-8e397087571c', name: 'HEIGHT'}, value: null });
             expect(encounterService.create).toHaveBeenCalledWith(scope.encounter);
         });
 
@@ -280,13 +276,13 @@ describe('VisitController', function () {
                 $scope: scope,
                 encounterService: encounterService,
                 patientService: patientService,
-                spinner: spinner,
+                spinner: spinner
             });
             getPromise.callSuccessCallBack(sampleEncounter);
 
             encounterService.create.andCallFake(stubOnePromise);
             patientService.clearPatient.andCallFake(stubOnePromise);
-            scope.patient = {uuid: "21308498-2502-4495-b604-7b704a55522d"}
+            scope.patient = {uuid: "21308498-2502-4495-b604-7b704a55522d"};
             spyOn(scope, 'print').andCallFake(stubOnePromise);
             spyOn($location, 'path');
             spyOn(scope, 'validate').andCallFake(stubOnePromise);

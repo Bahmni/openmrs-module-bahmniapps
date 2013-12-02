@@ -12,7 +12,7 @@ angular.module('registration.patient.services')
     var getActiveEncounter =  function (patientUuid, visitTypeUuid, encounterTypeUuid) {
         var url = constants.emrApiRESTBaseURL + "/encounter/active";
         return $http.get(url, {
-            params: {"patientUuid": patientUuid, "visitTypeUuid" : visitTypeUuid, "encounterTypeUuid" : encounterTypeUuid},
+            params: {"patientUuid": patientUuid, "visitTypeUuid" : visitTypeUuid, "encounterTypeUuid" : encounterTypeUuid, "includeAll" : false},
             withCredentials: true
         });
     }
