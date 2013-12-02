@@ -41,7 +41,7 @@ angular
         controller: 'DashboardController',
         resolve: {initialization: 'initialization'}
     });
-    $routeProvider.otherwise({redirectTo: '/login'});
+    $routeProvider.otherwise({redirectTo: '/dashboard'});
     $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
 }]).run(function ($rootScope, $templateCache) {
         //Disable caching view template partials
