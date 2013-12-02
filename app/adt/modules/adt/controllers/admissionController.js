@@ -7,12 +7,13 @@ angular.module('opd.adt.controllers')
         var forwardLink = appService.getAppDescriptor().getExtensions("bahmni.adt.admission.next", "link")[0].url;
 
         $scope.admit = function () {
-            var encounterData = {};
-            encounterData.patientUuid = $scope.patient.uuid;
-            encounterData.encounterTypeUuid = $scope.encounterConfig.getAdmissionEncounterUuid();
-            encounterData.observations = [$rootScope.observationList[Bahmni.ADT.Constants["adtConceptSet"]]];
-            encounterService.create(encounterData).success(function () {
+            var encounterRequest = {};
+            encounterRequest.patientUuid = $scope.patient.uuid;
+            encounterRequest.encounterTypeUuid = $scope.encounterConfig.getAdmissionEncounterUuid();
+            encounterRequest.observations = [$rootScope.observationList[Bahmni.ADT.Constants["adtConceptSet"]]];
+            encounterService.create(encounterRequest).success(function (response) {
                 forwardLink = forwardLink.replace("{{patientUuid}}", $scope.patient.uuid);
+                forwardLink = forwardLink.replace("{{encounterUuid}}", response.encounterUuid);
                 window.location = forwardLink;
             });
         };

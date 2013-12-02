@@ -27,8 +27,8 @@ angular.module('opd.bedManagement.services')
             });
         };
 
-        this.assignBed = function (bedId, patientUuid) {
-            var patientJson = {"patientUuid": patientUuid};
+        this.assignBed = function (bedId, patientUuid, encounterUuid) {
+            var patientJson = {"patientUuid": patientUuid, "encounterUuid" : encounterUuid};
             return $http.post("/openmrs/ws/rest/v1/beds/" + bedId, patientJson, {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}

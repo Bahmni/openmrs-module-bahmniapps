@@ -15,6 +15,7 @@ angular.module('opd.bedManagement').factory('initialization',
                 configurationService.getConfigurations(['bahmniConfiguration', 'patientConfig']).then(function (configurations) {
                     $rootScope.bahmniConfiguration = configurations.bahmniConfiguration;
                     $rootScope.patientConfig = configurations.patientConfig;
+                    $rootScope.encounterUuid = $route.current.params.encounterUuid;
 
                     return patientService.getPatient($route.current.params.patientUuid).success(function (openMRSPatient) {
                         $rootScope.patient = patientMapper.map(openMRSPatient);
