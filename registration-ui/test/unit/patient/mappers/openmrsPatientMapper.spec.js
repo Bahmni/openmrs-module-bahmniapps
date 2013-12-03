@@ -68,7 +68,10 @@ describe('patientMapper', function() {
                             "uuid": "d3e6dc74-e796-11e2-852f-0800271c1b75"
                         }
                     }
-                ]
+                ],
+                "auditInfo": {
+                    dateCreated: "2013-04-17T09:58:47.000+0530"
+                }
             }
         }
     });

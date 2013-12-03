@@ -40,7 +40,7 @@ angular.module('registration.patient.mappers').factory('openmrsPatientMapper', [
             patient.address = mapAddress(openmrsPatient.person.preferredAddress);
             patient.identifier = openmrsPatient.identifiers[0].identifier;
             patient.image = $rootScope.bahmniConfiguration.patientImagesUrl + "/" + patient.identifier + ".jpeg" + "?q=" + new Date().getTime();
-            patient.registrationDate = parseDate(openmrsPatient.person.personDateCreated);
+            patient.registrationDate = parseDate(openmrsPatient.person.auditInfo.dateCreated);
             mapAttributes(patient, openmrsPatient.person.attributes);
             return patient;
         };
