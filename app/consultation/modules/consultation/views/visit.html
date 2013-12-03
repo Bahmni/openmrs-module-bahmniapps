@@ -30,4 +30,21 @@
             </div>
         </ul>
     </section>
+
+    <div bindonce="encounterTransaction" ng-repeat="encounterTransaction in encounterTransactions">
+        <section class="block treatment" ng-show="encounterTransaction.drugOrders.length > 0">
+            <h2>Treatment</h2>
+    	        <ul>
+    			    <li ng-repeat="drug in encounterTransaction.drugOrders">
+    			                <span bo-text="drug.drugName + ' - ' + drug.doseStrength + ' ' + drug.drugUnits + ' ' + drug.dosageForm  + ' - ' + drug.numberPerDosage"></span>
+    			                <span ng-show="drug.dosageFrequency" bo-text="' - ' + drug.dosageFrequency.name"> </span>
+    			                <span ng-show="drug.dosageInstruction" bo-text="' - ' + drug.dosageInstruction.name" > </span>
+                                <span bo-text="' - ' + (drug.startDate  | date:'d MMM yy')"> </span>
+    			                <span bo-text="' - for ' + visitSummary.numberOfDosageDaysForDrugOrder(drug) + ' day(s)'"> - </span>
+    			                <span ng-show="drug.prn"> - Take as required.</span>
+    			                <span ng-show="drug.notes" class="notes" bo-text="'(' + drug.notes + ' )'"></span>
+    			    </li>
+    			</ul>        
+        </section>
+    </div>
 </article>

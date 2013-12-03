@@ -25,8 +25,8 @@ Bahmni.Opd.Consultation.TreatmentDrug = function () {
             startDate: startDate,
             endDate: endDate,
             numberPerDosage: this.numberPerDosage,
-            dosageInstructionUuid: this.dosageInstruction? this.dosageInstruction.uuid : '',
-            dosageFrequencyUuid: this.dosageFrequency? this.dosageFrequency.uuid : '',
+            dosageInstruction: this.dosageInstruction ? { uuid: this.dosageInstruction.uuid }    : null,
+            dosageFrequency: this.dosageFrequency ? {uuid: this.dosageFrequency.uuid } : null,
             prn: this.prn
         };
     }

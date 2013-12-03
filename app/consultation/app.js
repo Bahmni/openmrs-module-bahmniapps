@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('consultation', ['opd.consultation', 'bahmni.common.infrastructure', 'bahmni.common.patient',
-    'bahmni.common.visit', 'bahmni.common.encounter', 'opd.conceptSet', 'authentication', 'appFramework', 'httpErrorInterceptor']);
+    'bahmni.common.visit', 'bahmni.common.encounter', 'opd.conceptSet', 'authentication', 'appFramework', 'httpErrorInterceptor', 'pasvaz.bindonce']);
 angular.module('consultation').config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
         $routeProvider.when('/visit/:visitUuid/', {templateUrl: 'modules/consultation/views/visit.html', controller: 'VisitController', resolve: {initialization: 'initialization'}});
         $routeProvider.when('/visit/:visitUuid/current', {templateUrl: 'modules/consultation/views/consultation.html', controller: 'ConsultationController', resolve: {initialization: 'initialization'}});

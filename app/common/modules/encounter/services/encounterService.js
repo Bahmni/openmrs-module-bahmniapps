@@ -20,4 +20,14 @@ angular.module('bahmni.common.encounter.services')
             stripExtraConceptInfo(groupMember);
         });
     }
+
+    this.search = function (visitUuid,encounterDate) {
+        return $http.get(Bahmni.Common.Constants.encounterUrl, {
+        	params:{
+        		visitUuid : visitUuid,
+        		encounterDate : encounterDate,	
+        	},        	
+          withCredentials : true
+        });
+    };
 }]);

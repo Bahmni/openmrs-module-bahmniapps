@@ -39,4 +39,8 @@ Bahmni.Opd.Consultation.Visit = function (encounterTransactions) {
     self.hasDisposition = function(){
         return self.dispositions.length > 0;
     }
+
+    self.numberOfDosageDaysForDrugOrder = function(drugOrder) {
+        return Math.floor((new Date(drugOrder.endDate) - new Date(drugOrder.startDate)) / (60 * 1000 * 60 * 24))
+    }
 };
