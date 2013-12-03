@@ -1,14 +1,16 @@
 'use strict';
 
 angular.module('registration.emergency.controllers')
-    .controller('CreateEmergencyPatientController', ['$scope', '$location', 'patient', 'patientService', 'encounterService', 'Preferences', 'addressAttributeService', 'spinner',
-    function ($scope, $location, patientModel, patientService, encounterService, preferences, addressAttributeService, spinner) {
+    .controller('CreateEmergencyPatientController', ['$rootScope', '$scope', '$location', 'patient', 'patientService', 'encounterService', 'Preferences', 'addressAttributeService', 'spinner',
+    function ($rootScope, $scope, $location, patientModel, patientService, encounterService, preferences, addressAttributeService, spinner) {
         var init = function(){
             $scope.patient = patientModel.create();
-            $scope.centers = constants.centers;
-            $scope.patient.centerID = $scope.centers.filter(function (center) {
-                return center.name === preferences.centerID
-            })[0];
+            $scope.identifierSources = $rootScope.patientConfiguration.identifierSources;
+            var identifierPrefix = $scope.identifierSources.filter(function (identifierSource) {
+                return identifierSource.prefix === preferences.identifierPrefix;
+            });
+
+            $scope.patient.identifierPrefix = identifierPrefix[0] || $scope.identifierSources[0];
 
             var visitTypeUuid = $scope.encounterConfiguration.visitTypes[constants.visitType.emergency];
             var encounterTypeUuid = $scope.encounterConfiguration.encounterTypes[constants.encounterType.registration];
@@ -55,5 +57,4 @@ angular.module('registration.emergency.controllers')
         $scope.villageSelected = function (item) {
             $scope.patient.address.cityVillage = item.addressField;
         };
-
     }]);

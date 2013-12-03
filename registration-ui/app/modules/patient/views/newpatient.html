@@ -1,69 +1,52 @@
 <div class="reg-body-wrapper">
-
     <div class="simple-form-ui new-patient">
         <form name="myForm" class="form-horizontal well" ng-submit="create()">
-            <legend class="mylegend"><span><strong>New Patient Registration (Patient Profile Information)</strong></span></legend>
+            <legend class="mylegend"><span><strong>New Patient Registration (Patient Profile
+                Information)</strong></span></legend>
             <section class="clearfix">
-                <article class="form-field">
-                    <div class="field-attribute">
-                        <label class="control-label" for="identifierPrefix">Center</label>
-                    </div>
-
-                    <div class="field-value">
-                        <select id="identifierPrefix" ng-model="patient.identifierPrefix" ng-options="identifierSource.prefix for identifierSource in identifierSources"
-                                required> </select>
-                    </div>
-                </article>
-                <article class="form-field">
-                    <div class="field-attribute">
-                        <label class="control-label" for="hasOldIdentifier">Enter ID</label>
-                    </div>
-
-                    <div class="field-value input-label-inline">
-                        <input type="checkbox" id="hasOldIdentifier" ng-model="hasOldIdentifier"
-                               ng-change="patient.clearRegistrationNumber()">
-                    </div>
-                </article>
-
                 <div class="photo-container-wrapper">
                     <span class="pull-right photo-container">
-                            <img id="patient-image" ng-src="{{patient.image}}"
-                                 onerror="this.onerror=null;this.src='images/blank-user.gif';"/>
-                            <div ng-model="patient.image" capture-photo class="capture-photo-btn"></div>
-                     </span>
+                        <img id="patient-image" ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='images/blank-user.gif'">
+                        <div ng-model="patient.image" capture-photo="" class="capture-photo-btn"></div>
+                    </span>
                 </div>
             </section>
             <section>
-                <article class="form-field" ng-show="hasOldIdentifier">
+                <article class="form-field">
                     <div class="field-attribute">
-                        <label class="control-label" for="registrationNumber">Patient Identifier </label>
+                        <label class="control-label" for="patientID">Patient Identifier </label>
                     </div>
-                    <div class="field-value">
-                        <div class="input-prepend">
-                            <span class="add-on">{{patient.identifierPrefix.prefix}}</span>
-                            <input type="text" id="registrationNumber" ng-model="patient.registrationNumber"
-                                   placeholder="Registration Number" non-blank="hasOldIdentifier"
-                                   ng-change="patient.generateIdentifier()">
-                        </div>
+                    <div class="field-value" id="patientID">
+                        <span>
+                        <select id="identifierPrefix" ng-model="patient.identifierPrefix"
+                                ng-options="identifierSource.prefix for identifierSource in identifierSources"
+                                required> </select>
+                        </span>
+                        <span>
+                        <input type="text" id="registrationNumber" ng-model="patient.registrationNumber"
+                               placeholder="Registration Number" non-blank="hasOldIdentifier"
+                               ng-change="patient.generateIdentifier()"  ng-show="hasOldIdentifier">
+                        </span>
+                        <span>
+                        <input type="checkbox" id="hasOldIdentifier" ng-model="hasOldIdentifier"
+                               ng-change="patient.clearRegistrationNumber()">
+                        </span>
                     </div>
                 </article>
             </section>
-
-
             <div ng-include="patientCommon()" ng-controller="PatientCommonController"></div>
             <div class="submit-btn-container">
                 <div class="right">
                     <span ng-repeat="extn in createActions">
                         <span ng-switch="extn.extensionParams.action">
-                            <div ng-switch-when="startVisit" split-button options="visitControl.visitTypes"
-                                 primary-option="visitControl.defaultVisitType"
-                                 option-text="visitControl.startButtonText" option-click="visitControl.startVisit"
-                                 class="right"></div>
-                            <button ng-switch-default type="submit" class="right"
-                                    ng-click="setSubmitSource(extn.extensionParams.action)"
-                                    ng-class="{'confirm':extn.extensionParams.action == 'save'}">
-                                {{extn.extensionParams.display}}
-                            </button>
+                        <div ng-switch-when="startVisit" split-button="" options="visitControl.visitTypes"
+                            primary-option="visitControl.defaultVisitType" option-text="visitControl.startButtonText"
+                            option-click="visitControl.startVisit" class="right">
+                        </div>
+                        <button ng-switch-default="" type="submit" class="right" ng-click="setSubmitSource(extn.extensionParams.action)"
+                            ng-class="{'confirm':extn.extensionParams.action == 'save'}">
+                            {{extn.extensionParams.display}}
+                        </button>
                         </span>
                     </span>
                 </div>

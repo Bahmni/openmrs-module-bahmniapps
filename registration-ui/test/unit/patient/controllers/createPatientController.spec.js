@@ -55,14 +55,14 @@ describe('CreatePatientController', function () {
     }
 
     describe('initialization', function () {
-        it('should set up centers for Center ID dropdown', function () {
+        it('should set up centers for ID prefix dropdown', function () {
             setupController();
 
             expect(Array.isArray(scope.identifierSources)).toBeTruthy();
             expect(scope.identifierSources.length).toBe(3);
         });
 
-        it('should initialize centerID and hasOldIdentifier from preferences', function() {
+        it('should initialize identifierPrefix and hasOldIdentifier from preferences', function() {
             setupController({identifierPrefix: 'SIV', hasOldIdentifier: true});
 
             expect(scope.patient.identifierPrefix.prefix).toBe('SIV');

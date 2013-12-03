@@ -15,7 +15,7 @@ angular.module('registration.patient.models')
 
             var generateIdentifier = function () {
                 if (this.registrationNumber && this.registrationNumber.length > 0) {
-                    this.identifier = this.centerID.name + this.registrationNumber;
+                    this.identifier = this.identifierPrefix.name + this.registrationNumber;
                 }
                 return this.identifier
             };

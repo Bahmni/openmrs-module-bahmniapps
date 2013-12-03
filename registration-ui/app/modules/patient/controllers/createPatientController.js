@@ -24,7 +24,7 @@ angular.module('registration.patient.controllers')
             var identifierPrefix = $scope.identifierSources.filter(function (identifierSource) {
                 return identifierSource.prefix === preferences.identifierPrefix;
             });
-            $scope.patient.identifierPrefix = identifierPrefix[0] || $scope.identifierSources[0].prefix;
+            $scope.patient.identifierPrefix = identifierPrefix[0] || $scope.identifierSources[0];
             $scope.hasOldIdentifier = preferences.hasOldIdentifier;
             identifyEditActions();
         })();

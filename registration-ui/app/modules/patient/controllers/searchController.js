@@ -1,15 +1,24 @@
 'use strict';
 
 angular.module('registration.patient.controllers')
-    .controller('SearchPatientController', ['$scope', '$route', '$location', '$window', 'spinner', 'loader', 'patientService', 'appService', function ($scope, $route, $location, $window, spinner, loader, patientService, appService) {
-        $scope.centers = constants.centers;
-        $scope.centerId = defaults.centerId;
+    .controller('SearchPatientController', ['$rootScope', '$scope', '$route', '$location', '$window', 'spinner', 'loader', 'patientService', 'appService', 'Preferences', function ($rootScope, $scope, $route, $location, $window, spinner, loader, patientService, appService, preferences) {
+        $scope.identifierSources = $rootScope.patientConfiguration.identifierSources;
         $scope.results = [];
 
         var searchBasedOnQueryParameters = function(offset) {
             $scope.village = $location.search().village || '';
             $scope.name = $location.search().name || '';
-            $scope.centerId = $location.search().centerId || defaults.centerId;
+            var identifierPrefix = $location.search().identifierPrefix;
+            if (!identifierPrefix || identifierPrefix.length === 0) {
+                identifierPrefix = preferences.identifierPrefix;
+            }
+            $scope.identifierSources.forEach(function(identifierSource) {
+                if (identifierPrefix === identifierSource.prefix) {
+                    $scope.identifierPrefix = identifierSource;
+                }
+            });
+            $scope.identifierPrefix = $scope.identifierPrefix ||  $scope.identifierSources[0];
+
             $scope.registrationNumber = $location.search().registrationNumber || "";
             if ($scope.name.trim().length > 0 || $scope.village.trim().length > 0) {
                 var searchPromise = patientService.search($scope.name, $scope.village, offset);
@@ -65,8 +74,9 @@ angular.module('registration.patient.controllers')
         $scope.searchById = function () {
             if(!$scope.registrationNumber) return;
             $scope.results = [];
-            var patientIdentifier = $scope.centerId + $scope.registrationNumber;
-            $location.search({centerId: $scope.centerId, registrationNumber: $scope.registrationNumber});
+            var patientIdentifier = $scope.identifierPrefix.prefix + $scope.registrationNumber;
+            preferences.identifierPrefix = $scope.identifierPrefix.prefix;
+            $location.search({identifierPrefix: $scope.identifierPrefix.prefix, registrationNumber: $scope.registrationNumber});
             spinner.show();
             var searchPromise = patientService.search(patientIdentifier).success(function (data) {
                 if (data.results.length > 0) {

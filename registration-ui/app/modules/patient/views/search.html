@@ -5,7 +5,7 @@
                     <label for="registrationNumber"><strong>Patient ID</strong></label>
 
                     <div class="search-patient-id left">
-                        <select id="center" ng-model="centerId" ng-options="c.name as c.name for c in centers"> </select>
+                        <select id="identifierPrefix" ng-model="identifierPrefix" ng-options="identifierSource.prefix for identifierSource in identifierSources"> </select>
                         <input type="text" id="registrationNumber" ng-model="registrationNumber" autofocus
                                placeholder="Enter ID">
                     </div>

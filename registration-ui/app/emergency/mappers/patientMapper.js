@@ -15,7 +15,7 @@ Bahmni.Registration.Emergency.PatientMapper = function() {
             age: patient.age,
             gender: patient.gender,
             identifier: patient.identifier,
-            centerID: patient.centerID,
+            centerID: patient.identifierPrefix.name,
             addresses: [patient.address],
             attributes: []
         };
