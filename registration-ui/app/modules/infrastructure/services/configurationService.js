@@ -20,7 +20,7 @@ angular.module('infrastructure', [])
         };
 
         var getPatientConfig = function () {
-            return $http.get(bahmniCoreRESTBaseURL + "/patient/config", {
+            return $http.get(constants.baseOpenMRSRESTURL + "/personattributetype?v=full", {
                 withCredentials: true
             });
         };

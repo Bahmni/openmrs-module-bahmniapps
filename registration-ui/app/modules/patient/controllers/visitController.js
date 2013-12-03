@@ -42,7 +42,7 @@ angular.module('registration.patient.controllers')
             var updateImagePromise = patientService.updateImage($scope.patient.uuid, image.replace("data:image/jpeg;base64,", ""));
             spinner.forPromise(updateImagePromise);
             return updateImagePromise;
-        }
+        };
 
         $scope.print = function () {
             return $timeout(function () {

@@ -10,15 +10,27 @@ describe('Patient resource', function () {
     var mockHttp = {
         defaults: {headers: {common: {'X-Requested-With': 'present'}}},
         get: jasmine.createSpy('Http get').andReturn({'name': 'john'}),
-        post: jasmine.createSpy('Http post').andReturn('success')
+        post: jasmine.createSpy('Http post').andReturn({
+            'success': function (onSuccess) {
+                return {
+                    'then': function (thenMethod) {
+                        thenMethod()
+                    },
+                    'error': function (onError) {
+                        onError()
+                    }
+                }
+            }})
     };
 
     var mappedPatient = {
-        names: [{givenName:"someGivenName", familyName:"someFamilyName"}],
+        names: [
+            {givenName: "someGivenName", familyName: "someFamilyName"}
+        ],
         age: 21,
         gender: "M"};
 
-    beforeEach(function() {
+    beforeEach(function () {
         module('registration.patient.services');
 
         module(function ($provide) {
@@ -27,13 +39,16 @@ describe('Patient resource', function () {
         });
 
         patientConfiguration = new PatientConfig([
-            {"uuid":"d3d93ab0-e796-11e2-852f-0800271c1b75","sortWeight":2.0,"name":"caste","description":"Caste","format":"java.lang.String","answers":[]},
-            {"uuid":"d3e6dc74-e796-11e2-852f-0800271c1b75","sortWeight":2.0,"name":"class","description":"Class","format":"org.openmrs.Concept",
-                "answers":[{"description":"OBC","conceptId":"10"}]}]);
+            {"uuid": "d3d93ab0-e796-11e2-852f-0800271c1b75", "sortWeight": 2.0, "name": "caste", "description": "Caste", "format": "java.lang.String", "answers": []},
+            {"uuid": "d3e6dc74-e796-11e2-852f-0800271c1b75", "sortWeight": 2.0, "name": "class", "description": "Class", "format": "org.openmrs.Concept",
+                "answers": [
+                    {"description": "OBC", "conceptId": "10"}
+                ]}
+        ]);
 
-        bahmniConfiguration = {"patientImagesUrl" : "http://localhost:8080/patient_images"};
+        bahmniConfiguration = {"patientImagesUrl": "http://localhost:8080/patient_images"};
 
-        inject(['patientService', '$rootScope', 'patient', function(patientServiceInjectted, $rootScope, patientFactory) {
+        inject(['patientService', '$rootScope', 'patient', function (patientServiceInjectted, $rootScope, patientFactory) {
             patient = patientFactory.create();
             patientService = patientServiceInjectted;
             $rootScope.patientConfiguration = patientConfiguration;
@@ -57,26 +72,35 @@ describe('Patient resource', function () {
             "gender": "M",
             "givenName": "someGivenName",
             "familyName": "someFamilyName",
-            "age": "21"
+            "age": {
+                days: 23,
+                months: 2,
+                years: 1
+            },
+            "centerID": {
+                name: "GAN"
+            }
         });
-        var results = patientService.create(patient);
+        var results = patientService.create(patient, function () {
+        }, function () {
+        });
 
         expect(mockHttp.post).toHaveBeenCalled();
-        expect(mockHttp.post.mostRecentCall.args[0]).toBe(openmrsUrl + '/ws/rest/v1/bahmnicore/patient');
-        expect(mockHttp.post.mostRecentCall.args[1].gender).toEqual("M");
-        expect(mockHttp.post.mostRecentCall.args[1].names[0]["givenName"]).toEqual("someGivenName");
-        expect(mockHttp.post.mostRecentCall.args[1].names[0]["familyName"]).toEqual("someFamilyName");
-        expect(mockHttp.post.mostRecentCall.args[1].age).toEqual("21");
+        expect(mockHttp.post.mostRecentCall.args[0]).toBe('/openmrs/ws/rest/v1/patientprofile');
+        expect(mockHttp.post.mostRecentCall.args[1].patient.person.gender).toEqual("M");
+        expect(mockHttp.post.mostRecentCall.args[1].patient.person.names[0].givenName).toEqual("someGivenName");
+        expect(mockHttp.post.mostRecentCall.args[1].patient.person.names[0].familyName).toEqual("someFamilyName");
+        expect(mockHttp.post.mostRecentCall.args[1].patient.person.birthdate).toEqual(moment().subtract('years', 1).subtract('months', 2).subtract('days', 23).format('YYYY-MM-DD'));
         expect(mockHttp.post.mostRecentCall.args[2].headers['Content-Type']).toBe('application/json');
         expect(mockHttp.post.mostRecentCall.args[2].headers['Accept']).toBe('application/json');
-        expect(results).toBe('success');
     });
 
-    it('Should always set the patient image url if patient is remembered', function(){
+    it('Should always set the patient image url if patient is remembered', function () {
+        patient.uuid = "uuid";
         patientService.rememberPatient(patient);
 
         var rememberedPatient = patientService.getPatient();
 
-        expect(rememberedPatient.image).toContain("http://localhost:8080/patient_images/" + patient.identifier + ".jpeg")
+        expect(rememberedPatient.image).toContain("/openmrs/ws/rest/v1/personimage/" + patient.uuid + ".jpeg")
     })
 });

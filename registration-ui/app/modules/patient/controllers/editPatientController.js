@@ -23,6 +23,7 @@ angular.module('registration.patient.controllers')
             (function () {
                 uuid = $route.current.params.patientUuid;
                 var getPatientPromise = patientService.get(uuid).success(function (openmrsPatient) {
+                    $scope.openMRSPatient = openmrsPatient;
                     $scope.patient = patientMapper.map(openmrsPatient);
                     $scope.patient.isNew = ($location.search()).newpatient;
                 });
@@ -61,18 +62,18 @@ angular.module('registration.patient.controllers')
             };
 
             var goToVisitPage = function(patientData) {
-                $scope.patient.uuid = patientData.uuid;
-                $scope.patient.name = patientData.name;
+                $scope.patient.uuid = patientData.patient.uuid;
+                $scope.patient.name = patientData.patient.person.names[0].name;
                 patientService.rememberPatient($scope.patient);
                 $location.path("/patient/" + patientData.uuid + "/visit");
             };
 
-            var createVisit = function(patientData){
-                $scope.visitControl.createVisit(patientData.uuid).success(function() {
-                    $scope.patient.uuid = patientData.uuid;
-                    $scope.patient.name = patientData.name;
+            var createVisit = function(patientProfileData){
+                $scope.visitControl.createVisit(patientProfileData.patient.uuid).success(function() {
+                    $scope.patient.uuid = patientProfileData.patient.uuid;
+                    $scope.patient.name = patientProfileData.patient.person.names[0].name;
                     patientService.rememberPatient($scope.patient);
-                    goToActionUrl("startVisit", patientData);
+                    goToActionUrl("startVisit", patientProfileData);
                 }).error(function() { spinner.hide(); });
             };
 
@@ -84,7 +85,7 @@ angular.module('registration.patient.controllers')
                 return temp;
             };
 
-            var goToActionUrl = function(actionName, patientData) {
+            var goToActionUrl = function(actionName, patientProfileData) {
                 if ($scope.editActions) {
                     var matchedExtensions = $scope.editActions.filter(function(extension) {
                         return extension.extensionParams && extension.extensionParams.action === actionName;
@@ -92,7 +93,7 @@ angular.module('registration.patient.controllers')
                     if (matchedExtensions.length > 0) {
                         var extensionParams = matchedExtensions[0].extensionParams;
                         if (extensionParams && extensionParams.forwardUrl) {
-                            var fwdUrl = formatUrl(extensionParams.forwardUrl, {'patientUuid' : patientData.uuid} );
+                            var fwdUrl = formatUrl(extensionParams.forwardUrl, {'patientUuid' : patientProfileData.patient.uuid} );
                             spinner.hide();
                             $location.url(fwdUrl);
                         }
@@ -101,23 +102,23 @@ angular.module('registration.patient.controllers')
             };
             
             $scope.update = function () {
-                var patientUpdatePromise = patientService.update($scope.patient, uuid).success(function (patientData) {
+                var patientUpdatePromise = patientService.update($scope.patient, $scope.openMRSPatient).success(function (patientProfileData) {
                     switch($scope.submitSource) {
                         case 'print':
                             printer.print('registrationCard');
                             spinner.hide();
-                            goToActionUrl($scope.submitSource, patientData);
+                            goToActionUrl($scope.submitSource, patientProfileData);
                             break;
                         case 'startVisit':
-                            createVisit(patientData);                        
+                            createVisit(patientProfileData);                        
                             break;
                         case 'enterVisitDetails':
-                            goToVisitPage(patientData);
+                            goToVisitPage(patientProfileData);
                             break;
                         case 'save':
                         default:
                             spinner.hide();
-                            goToActionUrl($scope.submitSource, patientData);
+                            goToActionUrl($scope.submitSource, patientProfileData);
                     }
                     $scope.submitSource = null;
                     $rootScope.server_error = null;

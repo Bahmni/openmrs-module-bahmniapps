@@ -10,7 +10,7 @@ angular.module('registration.patient.services')
             "personName" : "/ws/rest/v1/bahmnicore/unique/personname",
             "personAttribute" : "/ws/rest/v1/bahmnicore/unique/personattribute"
         }
-    }
+    };
     init();
 
     var search = function(fieldName, query, type){
@@ -22,8 +22,7 @@ angular.module('registration.patient.services')
             params: {q: queryWithoutTrailingSpaces, key: fieldName },
             withCredentials: true
         });
-    }
-
+    };
 
     return{
         search : search

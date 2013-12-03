@@ -20,7 +20,7 @@ var RegistrationObservations = (function () {
 
         var obsToSave = this.observations.filter(function(obs){
             return obs.value || obs.voided;
-        })
+        });
 
         return obsToSave;
     };

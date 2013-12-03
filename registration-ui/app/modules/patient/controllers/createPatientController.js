@@ -56,31 +56,30 @@ angular.module('registration.patient.controllers')
             preferences.hasOldIdentifier = $scope.hasOldIdentifier;
         };
 
-        var successCallback = function (patientData) {
-            var patientUrl = $location.absUrl().replace("new", patientData.uuid) + "?newpatient=true";
-            $scope.patient.uuid = patientData.uuid;
-            $scope.patient.identifier = patientData.identifier;
-            $scope.patient.name = patientData.name;
+        var successCallback = function (patientProfileData) {
+            $scope.patient.uuid = patientProfileData.patient.uuid;
+            $scope.patient.identifier = patientProfileData.patient.identifiers[0].identifier;
+            $scope.patient.name = patientProfileData.patient.name;
             $scope.patient.isNew = true;
             $scope.patient.registrationDate = dateUtil.now();
         };
 
-        var followUpAction = function(patientData) {
+        var followUpAction = function(patientProfileData) {
             if($scope.submitSource == 'startVisit') {
-                $scope.visitControl.createVisit(patientData.uuid).success(function(){
-                    var patientUrl = $location.absUrl().replace("new", patientData.uuid) + "?newpatient=true";
+                $scope.visitControl.createVisit(patientProfileData.patient.uuid).success(function(){
+                    var patientUrl = $location.absUrl().replace("new", patientProfileData.patient.uuid) + "?newpatient=true";
                     $scope.patient.registrationDate = dateUtil.now();
                     patientService.rememberPatient($scope.patient);
                     $window.history.pushState(null, null, patientUrl);
-                    $location.path("/patient/" + patientData.uuid + "/visit");
+                    $location.path("/patient/" + patientProfileData.patient.uuid + "/visit");
                 }).error(function(){ spinner.hide(); });
             } else if ($scope.submitSource == 'print') {
                 $timeout(function(){
                     printer.print('registrationCard');
-                    goToActionUrl('print', {'patientUuid' : patientData.uuid});
+                    goToActionUrl('print', {'patientUuid' : patientProfileData.patient.uuid});
                 });
             } else {
-                goToActionUrl($scope.submitSource, patientData);
+                goToActionUrl($scope.submitSource, patientProfileData);
             }
         };
 
@@ -92,7 +91,7 @@ angular.module('registration.patient.controllers')
             return temp;
         };
 
-        var goToActionUrl = function(actionName, patientData) {
+        var goToActionUrl = function(actionName, patientProfileData) {
             if ($scope.createActions) {
                 var matchedExtensions = $scope.createActions.filter(function(extension) {
                     return extension.extensionParams && extension.extensionParams.action === actionName;
@@ -100,7 +99,7 @@ angular.module('registration.patient.controllers')
                 if (matchedExtensions.length > 0) {
                     var extensionParams = matchedExtensions[0].extensionParams;
                     if (extensionParams && extensionParams.forwardUrl) {
-                        var fwdUrl = formatUrl(extensionParams.forwardUrl, {'patientUuid' : patientData.uuid} );
+                        var fwdUrl = formatUrl(extensionParams.forwardUrl, {'patientUuid' : patientProfileData.patient.uuid} );
                         spinner.hide();
                         $location.url(fwdUrl);
                     }
@@ -114,12 +113,22 @@ angular.module('registration.patient.controllers')
 
         $scope.create = function () {
             setPreferences();
-            var createPatientPromise = patientService.create($scope.patient).success(successCallback).success(followUpAction).error(function (data) {
+
+            var errorCallBack = function (data) {
                 spinner.hide();
                 if (errorCode.isOpenERPError(data)) {
                     successCallback(data.patient);
                 }
-            });
+            };
+
+            if (!$scope.patient.identifier) {
+                patientService.generateIdentifier($scope.patient).then(function (response) {
+                    $scope.patient.identifier = response.data;
+                    patientService.create($scope.patient).success(successCallback).success(followUpAction).error(errorCallBack);
+                })
+            } else {
+                patientService.create($scope.patient).success(successCallback).success(followUpAction).error(errorCallBack);
+            }
             spinner.show();
         };
     }]);

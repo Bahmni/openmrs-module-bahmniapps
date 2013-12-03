@@ -5,7 +5,7 @@ describe('CreatePatientController', function () {
     var patientService;
     var controller;
     var patient = {givenName: "some", familyName: "name"};
-    var createPatientResponse = {identifier: "someIdentifier", uuid: "someUUID", name: "some name"};
+    var createPatientResponse = {patient: {identifier: "someIdentifier", uuid: "someUUID", name: "some name"}};
     var location;
     var preferences;
     var createPromise;
@@ -41,7 +41,7 @@ describe('CreatePatientController', function () {
         patientConfiguration.identifierSources = [{name: "SEM", prefix: "SEM"}, {name: "SIV", prefix: "SIV"}, {name: "GAN", prefix: "GAN"}];
         inject(function($controller, $rootScope){
             scope = $rootScope.$new();
-            controller = $controller('CreatePatientController',{
+            controller = $controller('CreatePatientController', {
                 $scope: scope,
                 patientService: patientService,
                 $location: location,
@@ -52,7 +52,7 @@ describe('CreatePatientController', function () {
                 $route: route
             });
         });
-    }
+    };
 
     describe('initialization', function () {
         it('should set up centers for ID prefix dropdown', function () {
@@ -64,51 +64,47 @@ describe('CreatePatientController', function () {
 
         it('should initialize identifierPrefix and hasOldIdentifier from preferences', function() {
             setupController({identifierPrefix: 'SIV', hasOldIdentifier: true});
-
             expect(scope.patient.identifierPrefix.prefix).toBe('SIV');
             expect(scope.hasOldIdentifier).toBe(true);
         });
     });
 
     describe('create', function () {
-        describe("on sucessful patient create", function(){
-            beforeEach(function(){
+        describe("on sucessful patient create", function () {
+            beforeEach(function () {
                 setupController();
             });
 
-            describe('when submit source is startVisit', function(){
+            describe('when submit source is startVisit', function () {
                 var createVisitPromise = specUtil.createServicePromise('createVisit');
-                beforeEach(function() {
+                beforeEach(function () {
                     scope.submitSource = 'startVisit';
                     spyOn(scope.visitControl, 'createVisit').andReturn(createVisitPromise);
                 });
 
-                it('should create visit', function(){
-                    scope.create()
-                    
+                it('should create visit', function () {
+                    scope.patient.identifier = "someid";
+                    scope.create();
                     createPromise.callSuccessCallBack(createPatientResponse);
-
                     expect(scope.visitControl.createVisit).toHaveBeenCalled();
                 });
 
-                describe('on sucessful visit create', function(){
-                    beforeEach(function(){
-                        scope.create()
+                describe('on sucessful visit create', function () {
+                    beforeEach(function () {
+                        scope.patient.identifier = "someid";
+                        scope.create();
                         createPromise.callSuccessCallBack(createPatientResponse);
                     });
 
-                    it('should redirect to new visit page', function() {
+                    it('should redirect to new visit page', function () {
                         createVisitPromise.callSuccessCallBack();
-
                         expect(location.path).toHaveBeenCalledWith("/patient/someUUID/visit");
                     });
 
-                    it('should set registration date to today', function() {
+                    it('should set registration date to today', function () {
                         var today = new Date("01-10-2012");
                         spyOn(dateUtil, 'now').andReturn(today);
-
                         createVisitPromise.callSuccessCallBack();
-
                         expect(scope.patient.registrationDate).toBe(today);
                     });
                 });
@@ -117,9 +113,8 @@ describe('CreatePatientController', function () {
             it('should update preferences with current values of centerID and hasOldIdentifier', function () {
                 scope.hasOldIdentifier = true;
                 scope.patient.identifierPrefix = {name: "SEM", prefix: "SEM"};
+                scope.patient.identifier = "someid";
                 scope.create();
-
-                createPromise.callSuccessCallBack(createPatientResponse);
 
                 expect(preferences.hasOldIdentifier).toBe(true);
                 expect(preferences.identifierPrefix).toBe("SEM");

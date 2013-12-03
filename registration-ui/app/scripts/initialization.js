@@ -17,7 +17,8 @@ angular.module('registration.initialization', ['infrastructure', 'authentication
                 var patientConfig = new PatientConfig();
 
                 var patientConfigPromise = configurationService.getPatientConfig().success(function (data) {
-                    $rootScope.patientConfiguration = angular.extend(patientConfig, data);
+                    var patientAttributeTypes = new PatientAttributeTypeMapper().mapFromOpenmrsPatientAttributeTypes(data.results);
+                    $rootScope.patientConfiguration = angular.extend(new PatientConfig(), patientAttributeTypes);
                 });
 
                 var identifierSourceConfigPromise = configurationService.getIdentifierSourceConfig().then(function (data) {

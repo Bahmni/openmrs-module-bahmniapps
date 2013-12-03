@@ -22,7 +22,7 @@ angular.module('infrastructure.loader', [])
                 hide();
                 return $q.reject(response);
             });
-        }
+        };
 
         return {
             show: show,

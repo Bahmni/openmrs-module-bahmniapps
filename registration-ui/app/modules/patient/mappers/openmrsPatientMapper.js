@@ -4,8 +4,12 @@ angular.module('registration.patient.mappers').factory('openmrsPatientMapper', [
     function (patientModel, $rootScope, age) {
         var mapAttributes = function (patient, attributes) {
             attributes.forEach(function (attribute) {
-                var x = $rootScope.patientConfiguration.get(attribute.attributeType.uuid);
-                patient[x.name] = attribute.value;
+                var attributeType = $rootScope.patientConfiguration.get(attribute.attributeType.uuid);
+                if (attributeType.format === "org.openmrs.Concept" && attribute.value) {
+                    patient[attributeType.name] = attribute.value.uuid;
+                } else {
+                    patient[attributeType.name] = attribute.value;
+                }
             });
         };
 
@@ -39,7 +43,7 @@ angular.module('registration.patient.mappers').factory('openmrsPatientMapper', [
             patient.gender = openmrsPatient.person.gender;
             patient.address = mapAddress(openmrsPatient.person.preferredAddress);
             patient.identifier = openmrsPatient.identifiers[0].identifier;
-            patient.image = $rootScope.bahmniConfiguration.patientImagesUrl + "/" + patient.identifier + ".jpeg" + "?q=" + new Date().getTime();
+            patient.image = constants.baseOpenMRSRESTURL + "/personimage/" + openmrsPatient.uuid + ".jpeg" + "?q=" + new Date().getTime();
             patient.registrationDate = parseDate(openmrsPatient.person.auditInfo.dateCreated);
             mapAttributes(patient, openmrsPatient.person.attributes);
             return patient;

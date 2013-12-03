@@ -1,19 +1,22 @@
 'use strict';
 
-describe('patientMapper', function() {
+describe('patientMapper', function () {
 
     var mapper, bahmniConfiguration, openmrsPatient, ageModule, patientConfiguration;
 
-    beforeEach(function() {
+    beforeEach(function () {
         module('registration.patient.mappers');
 
         bahmniConfiguration = {};
         patientConfiguration = new PatientConfig([
-            {"uuid":"d3d93ab0-e796-11e2-852f-0800271c1b75","sortWeight":2.0,"name":"caste","description":"Caste","format":"java.lang.String","answers":[]},
-            {"uuid":"d3e6dc74-e796-11e2-852f-0800271c1b75","sortWeight":2.0,"name":"class","description":"Class","format":"org.openmrs.Concept",
-                "answers":[{"description":"OBC","conceptId":"10"}]}]);
+            {"uuid": "d3d93ab0-e796-11e2-852f-0800271c1b75", "sortWeight": 2.0, "name": "caste", "description": "Caste", "format": "java.lang.String", "answers": []},
+            {"uuid": "d3e6dc74-e796-11e2-852f-0800271c1b75", "sortWeight": 2.0, "name": "class", "description": "Class", "format": "org.openmrs.Concept",
+                "answers": [
+                    {"description": "OBC", "uuid": "4da8141e-65d6-452e-9cfe-ce813bd11d52"}
+                ]}
+        ]);
 
-        inject(['openmrsPatientMapper', '$rootScope', 'age', function(openmrsPatientMapper, $rootScope, age) {
+        inject(['openmrsPatientMapper', '$rootScope', 'age', function (openmrsPatientMapper, $rootScope, age) {
             mapper = openmrsPatientMapper;
             $rootScope.bahmniConfiguration = bahmniConfiguration;
             $rootScope.patientConfiguration = patientConfiguration;
@@ -63,7 +66,9 @@ describe('patientMapper', function() {
                     } ,
                     {
                         "uuid": "3da8141e-65d6-452e-9cfe-ce813bd11d52",
-                        "value": "10",
+                        "value":  {
+                            uuid : "4da8141e-65d6-452e-9cfe-ce813bd11d52"
+                        },
                         "attributeType": {
                             "uuid": "d3e6dc74-e796-11e2-852f-0800271c1b75"
                         }
@@ -97,35 +102,35 @@ describe('patientMapper', function() {
         expect(patient.address.stateProvince).toBe(openmrsPatient.person.preferredAddress.stateProvince);
         var urlParts = patient.image.split('?');
         expect(urlParts.length).toBe(2);
-        expect(urlParts[0]).toBe("http://test.uri/patient_images/" + openmrsPatient.identifiers[0].identifier + ".jpeg");
+        expect(urlParts[0]).toBe("/openmrs/ws/rest/v1/personimage/" + openmrsPatient.uuid + ".jpeg");
     });
 
-    it('should map attributes from openmrsPatient to our patient object', function() {
+    it('should map attributes from openmrsPatient to our patient object', function () {
         var patient = mapper.map(openmrsPatient);
-        expect(patient.class).toBe("10");
+        expect(patient.class).toBe("4da8141e-65d6-452e-9cfe-ce813bd11d52");
     });
 
-    it('should map birth date in dd-mm-yyyy format', function() {
-        openmrsPatient.person.birthdate =  "2013-04-01T00:00:00.000+0530";
+    it('should map birth date in dd-mm-yyyy format', function () {
+        openmrsPatient.person.birthdate = "2013-04-01T00:00:00.000+0530";
         var patient = mapper.map(openmrsPatient);
         expect(patient.birthdate).toBe('01-04-2013');
     });
 
-    it("should not fail when birthdate is null", function(){
+    it("should not fail when birthdate is null", function () {
         openmrsPatient.person.birthdate = null;
         var patient = mapper.map(openmrsPatient);
         expect(patient.birthdate).toBe("");
     });
 
-    it('should map registration date', function() {
-        openmrsPatient.person.personDateCreated =  "2013-04-17T09:58:47.000+0530";
+    it('should map registration date', function () {
+        openmrsPatient.person.personDateCreated = "2013-04-17T09:58:47.000+0530";
         var patient = mapper.map(openmrsPatient);
         expect(patient.registrationDate).toEqual(new Date("2013-04-17"));
     });
 
-    it("should populate birthdate and age if birthdate is not estimated", function() {
-        openmrsPatient.person.birthdate =  "2013-04-01T00:00:00.000+0530";
-        openmrsPatient.person.birthdateEstimated =  false;
+    it("should populate birthdate and age if birthdate is not estimated", function () {
+        openmrsPatient.person.birthdate = "2013-04-01T00:00:00.000+0530";
+        openmrsPatient.person.birthdateEstimated = false;
         var age = {years: 2, months: 3, days: 25};
         spyOn(ageModule, 'fromBirthDate').andReturn(age);
 
@@ -135,9 +140,9 @@ describe('patientMapper', function() {
         expect(patient.age).toBe(age);
     });
 
-    it("should populate age and empty birthdate if birthdate is estimated", function() {
-        openmrsPatient.person.birthdate =  "2013-04-01T00:00:00.000+0530";
-        openmrsPatient.person.birthdateEstimated =  true;
+    it("should populate age and empty birthdate if birthdate is estimated", function () {
+        openmrsPatient.person.birthdate = "2013-04-01T00:00:00.000+0530";
+        openmrsPatient.person.birthdateEstimated = true;
         var age = {years: 2, months: 3, days: 25};
         spyOn(ageModule, 'fromBirthDate').andReturn(age);
 
@@ -147,7 +152,7 @@ describe('patientMapper', function() {
         expect(patient.age).toBe(age);
     });
 
-    it("should not fail if preferred address is null", function() {
+    it("should not fail if preferred address is null", function () {
         openmrsPatient.person.preferredAddress = null;
         mapper.map(openmrsPatient);
     });
