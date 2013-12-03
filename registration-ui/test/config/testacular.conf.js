@@ -17,7 +17,7 @@ files = [
 
 singleRun = true;
 
-browsers = ['Chrome'];
+browsers = ['PhantomJS'];
 
 reporters = ['dots', 'junit'];
 junitReporter = {
