@@ -38,6 +38,7 @@ body{
                 }
                 li{
                     @include font-size(0.9);
+                    display: inline-block;
                     &.logoff{
                         margin:4px 0px 0px 0px;
                         button{
@@ -49,7 +50,7 @@ body{
                               background:#4D9B92;
                            }
                         }
-                    }   
+                    }  
                 a{
                     padding-top:10px;
                     cursor:pointer;

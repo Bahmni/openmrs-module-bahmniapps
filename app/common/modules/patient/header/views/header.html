@@ -1,4 +1,6 @@
 <div class="opd-header-wrapper">
+    <div ng-include src="'../common/modules/common/header.html'"></div>
+
     <header class="tabs">
         <ul class="header-tabs">
             <li ng-repeat="board in availableBoards" ng-class="{'tab-selected':currentBoard.name==board.name}">
@@ -9,9 +11,7 @@
         </ul>
         <ul class="patient-info">
             <li><img class="roundImages" ng-src="{{patient.image}}"
-                     onerror="this.onerror=null;this.src='../images/blank-user.gif';"></li>
-            <li class="logoff">
-                <button log-out><i class="icon-off icon-white small"></i></button>
+                     onerror="this.onerror=null;this.src='../images/blank-user.gif';">
             </li>
         </ul>
 
