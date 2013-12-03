@@ -79,7 +79,7 @@ angular.module('authentication', ['ngCookies'])
                     scope.$apply(function() {
                         sessionService.destroy().then(
                             function () {
-                                $window.location = "/home";
+                                $window.location = "/home/#/login";
                             }
                         );
                     });
