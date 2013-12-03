@@ -66,7 +66,7 @@ angular.module('bahmnihome')
                     scope.$apply(function() {
                         sessionService.destroy().then(
                             function () {
-                                $window.location = "/home";
+                                $window.location = "/home/#/login";
                             }
                         );
                     });
