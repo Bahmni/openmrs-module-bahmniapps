@@ -37,6 +37,7 @@ angular.module('opd.consultation.controllers')
         var encounterData = {};
         encounterData.patientUuid = $scope.patient.uuid;
         encounterData.encounterTypeUuid = $rootScope.encounterConfig.getOpdConsultationEncounterUuid();
+        encounterData.encounterDateTime = new Date();
 
         if ($rootScope.consultation.diagnoses && $rootScope.consultation.diagnoses.length > 0){
             encounterData.diagnoses = $rootScope.consultation.diagnoses.map(function (diagnosis) {
