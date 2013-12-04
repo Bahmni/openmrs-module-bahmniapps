@@ -38,8 +38,8 @@ angular.module('registration.patient.services')
         };
 
         var generateIdentifier = function (patient) {
-            var idgenJson = {"identifierSourceName": patient.centerID.name};
-            return $http.post(constants.openmrsUrl + "/ws/rest/idgen", idgenJson);
+            var idgenJson = {"identifierSourceName": patient.identifierPrefix.prefix};
+            return $http.post(constants.openmrsUrl + "/ws/rest/v1/idgen", idgenJson);
         };
 
         var create = function (patient) {
