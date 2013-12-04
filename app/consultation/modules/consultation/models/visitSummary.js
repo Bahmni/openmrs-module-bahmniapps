@@ -1,4 +1,4 @@
-Bahmni.Opd.Consultation.Visit = function (encounterTransactions) {
+Bahmni.Opd.Consultation.VisitSummary = function (encounterTransactions) {
     var self = this;
     self.encounterTransactions = encounterTransactions;
 
@@ -23,6 +23,13 @@ Bahmni.Opd.Consultation.Visit = function (encounterTransactions) {
         })
         return dispositions;
     })();
+
+    var encountersInAscendingOrder = encounterTransactions.slice(0).sort(function(e1, e2){ return e1.encounterDateTime > e2.encounterDateTime; })
+    var mostRecentEncounter = encountersInAscendingOrder[encountersInAscendingOrder.length - 1];
+    var firstEncounter = encountersInAscendingOrder[0];
+
+    self.visitStartDateTime = new Date(firstEncounter.encounterDateTime);
+    self.mostRecentEncounterDateTime = new Date(mostRecentEncounter.encounterDateTime);
 
     self.isConfirmedDiagnosis = function(certainity){
         return certainity === 'CONFIRMED';

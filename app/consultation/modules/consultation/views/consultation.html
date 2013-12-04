@@ -74,17 +74,7 @@
 
     <section class="block consultationNote">
         <h2>Consultation Notes</h2>
-        <ul class="block-content">
-            <li ng-repeat="note in consultation.consultationNotes">
-                <span>{{note.value}}</span>
-                &nbsp;&nbsp;
-                <span>{{note.obsDatetime | date:'d MMM, yyyy @ h:mma'}} </span>
-            </li>
-        </ul>
-    </section>
-    
-    <section class="notes">
-        <textarea ng-model="consultationNote.value" placeholder="Notes: " rows="6"></textarea>
+        <textarea ng-model="consultation.consultationNote.value" placeholder="Notes: " rows="6"></textarea>
     </section>
 </article>
 

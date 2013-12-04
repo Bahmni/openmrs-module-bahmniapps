@@ -21,7 +21,7 @@ angular.module('opd.consultation').factory('initialization',
                 $rootScope.patientConfig = configurations.patientConfig;
                 $rootScope.dosageFrequencyConfig = configurations.dosageFrequencyConfig;
                 $rootScope.dosageInstructionConfig = configurations.dosageInstructionConfig;
-                $rootScope.consultationNoteConfig = configurations.consultationNoteConfig;
+                $rootScope.consultationNoteConcept = configurations.consultationNoteConfig.results[0];
                 deferrable.resolve();
             });
             return deferrable.promise;
@@ -32,7 +32,7 @@ angular.module('opd.consultation').factory('initialization',
                 visitService.getVisit($route.current.params.visitUuid).success(function (visit) {
                     $rootScope.visit = visit;
                     $rootScope.consultation = new Bahmni.Opd.ConsultationMapper($rootScope.encounterConfig,
-                        $rootScope.dosageFrequencyConfig, $rootScope.dosageInstructionConfig, $rootScope.consultationNoteConfig).map(visit);
+                        $rootScope.dosageFrequencyConfig, $rootScope.dosageInstructionConfig, $rootScope.consultationNoteConcept).map(visit);
                     $rootScope.disposition = new Bahmni.Opd.DispositionMapper($rootScope.encounterConfig).map(visit);
                     $rootScope.disposition.currentActionIndex = 0; // this will be used in case we have multiple encounters with dispositions
 
@@ -56,7 +56,7 @@ angular.module('opd.consultation').factory('initialization',
         var getVisitSummary = function() {
             var visitSummaryDeferrable = $q.defer();
             visitService.getVisitSummary($route.current.params.visitUuid).success(function (encounterTransactions) {
-                $rootScope.visitSummary = new Bahmni.Opd.Consultation.Visit(encounterTransactions);
+                $rootScope.visitSummary = new Bahmni.Opd.Consultation.VisitSummary(encounterTransactions);
                 visitSummaryDeferrable.resolve(encounterTransactions);
             });
             return visitSummaryDeferrable.promise;

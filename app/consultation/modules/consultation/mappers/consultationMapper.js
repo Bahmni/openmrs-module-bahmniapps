@@ -1,10 +1,10 @@
-Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, dosageInstructions, consultationNoteConfig) {
+Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, dosageInstructions, consultationNoteConcept) {
     this.map = function (visit) {
         var investigations = [];
         var treatmentDrugs = [];
         var diagnoses = [];
         var labResults = [];
-        var consultationNotes = [];
+        var consultationNote;
 
         var opdEncounter = visit.encounters.filter(function (encounter) {
             return encounter.encounterType.uuid === encounterConfig.getOpdConsultationEncounterUuid();
@@ -47,7 +47,7 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
                 return observation.concept.name.name === Bahmni.Opd.Constants.diagnosisObservationConceptName;
             });
             diagnoses = mapDiagnoses(diagnosisObs);
-            consultationNotes = mapConsultationNote(opdEncounter.obs);
+            consultationNote = mapConsultationNote(opdEncounter.obs)
         }
 
         return {
@@ -55,7 +55,7 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
             treatmentDrugs: treatmentDrugs,
             diagnoses:diagnoses,
             labResults: labResults,
-            consultationNotes: consultationNotes
+            consultationNote: consultationNote
         };
     };
 
@@ -119,17 +119,14 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
     };
 
     var mapConsultationNote = function(encounterObservations) {
-        var consultationNotes = [];
-        if (consultationNoteConfig && (consultationNoteConfig.results.length > 0)) {
-            var consultationNoteUuid = consultationNoteConfig.results[0].uuid;
-            consultationNotes = encounterObservations.filter(function(obs) {
-                if (obs.concept) {
-                    return (obs.concept.uuid === consultationNoteUuid);
-                } else {
-                    return false;
-                }
-            });
+        var consultationNote = {concept: {uuid: consultationNoteConcept.uuid}};
+        var consultationNoteObservation = encounterObservations.filter(function(obs) {        
+            return (obs.concept && obs.concept.uuid === consultationNoteConcept.uuid);
+        })[0];
+        if(consultationNoteObservation) {
+            consultationNote.value = consultationNoteObservation.value;
+            consultationNote.uuid = consultationNoteObservation.uuid;
         }
-        return consultationNotes;
+        return consultationNote;
     };
 };

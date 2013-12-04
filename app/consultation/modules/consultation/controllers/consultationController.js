@@ -3,35 +3,6 @@
 angular.module('opd.consultation.controllers')
     .controller('ConsultationController', ['$scope', '$rootScope', 'encounterService', '$route', '$location', function ($scope, $rootScope, encounterService, $route, $location) {
 
-    $scope.consultationNote = {concept:{uuid:null}, value:null};
-
-    var initialize = function() {
-        if ($rootScope.consultationNote) {
-            $scope.consultationNote = $rootScope.consultationNote;
-        } else if ($rootScope.consultation.consultationNotes.length > 0) {
-            //NOTE: This will need to change when we do the encounter session based data view
-            //This should take in consideration data across all encounters for a visit.
-            //TODO: should take the first visit with date_created sorted desc
-            var lastNote = $rootScope.consultation.consultationNotes[0];
-            $scope.consultationNote = {
-                concept : {
-                    uuid: lastNote.concept.uuid
-                },
-                value : lastNote.value,
-                uuid  : lastNote.uuid
-            };
-        } else if ($rootScope.consultationNoteConfig) {
-            $scope.consultationNote.concept = {};
-            $scope.consultationNote.concept.uuid = ($rootScope.consultationNoteConfig.results.length > 0) ? $rootScope.consultationNoteConfig.results[0].uuid : null;
-        }
-    };
-
-    $scope.$on('$destroy', function() {
-        $rootScope.consultationNote = $scope.consultationNote;
-    });
-
-    initialize();
-
     $scope.save = function () {
         
         var encounterData = {};
@@ -69,9 +40,9 @@ angular.module('opd.consultation.controllers')
         encounterData.disposition = $rootScope.disposition.adtToStore;
 
         var addObservationsToEncounter = function(){
-            if ($scope.consultationNote.value) {
+            if ($scope.consultation.consultationNote.value) {
                 encounterData.observations = encounterData.observations || [];
-                encounterData.observations.push($scope.consultationNote);
+                encounterData.observations.push($scope.consultation.consultationNote);
             }
 
             encounterData.observations = encounterData.observations || [];
