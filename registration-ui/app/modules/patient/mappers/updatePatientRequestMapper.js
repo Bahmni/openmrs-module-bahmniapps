@@ -35,7 +35,6 @@ var UpdatePatientRequestMapper = (function () {
                     birthdate: this.getBirthdate(patient.birthdate, patient.age),
                     birthdateEstimated: patient.birthdate === undefined,
                     gender: patient.gender,
-                    personDateCreated: patient.registrationDate,
                     attributes: this.getMrsAttributes(openMRSPatient, patient, patientAttributeTypes)
                 }
             }

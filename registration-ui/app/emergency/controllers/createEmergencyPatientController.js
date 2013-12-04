@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registration.emergency.controllers')
-    .controller('CreateEmergencyPatientController', ['$rootScope', '$scope', '$location', 'patient', 'patientService', 'encounterService', 'Preferences', 'addressAttributeService', 'spinner',
+    .controller('CreateEmergencyPatientController', [ '$rootScope', '$scope', '$location', 'patient', 'patientService', 'encounterService', 'Preferences', 'addressAttributeService', 'spinner',
     function ($rootScope, $scope, $location, patientModel, patientService, encounterService, preferences, addressAttributeService, spinner) {
         var init = function(){
             $scope.patient = patientModel.create();
@@ -20,13 +20,24 @@ angular.module('registration.emergency.controllers')
         init();
 
         var createPatient = function() {
-            var mapper = new Bahmni.Registration.Emergency.PatientMapper();
-            return patientService.create($scope.patient, mapper).success(function(data) {
-                $scope.patient.uuid = data.uuid;
-                $scope.patient.identifier = data.identifier;
-                $scope.patient.name = data.name;
-                patientService.rememberPatient($scope.patient);
-            });
+            return patientService.generateIdentifier($scope.patient)
+                .then(function (data) {
+                    $scope.patient.identifier = data.data;
+                    return patientService.create($scope.patient);
+                }).then(successCallback);
+        };
+
+        var setPreferences = function() {
+            preferences.identifierPrefix = $scope.patient.identifierPrefix.prefix;
+        };
+
+        var successCallback = function(response) {
+            var patient = response.data.patient;
+            $scope.patient.uuid = patient.uuid;
+            $scope.patient.identifier = patient.identifiers[0].identifier;
+            $scope.patient.name = patient.person.names[0].display;
+            setPreferences();
+            patientService.rememberPatient($scope.patient);
         };
 
         var createVisit = function() {
@@ -37,7 +48,7 @@ angular.module('registration.emergency.controllers')
         };
 
         $scope.create = function(){
-            var patientPromise = createPatient().success(function(data) {
+            var patientPromise = createPatient().then(function(data) {
                 var visitPromise = createVisit();
                 spinner.forPromise(visitPromise);
             });

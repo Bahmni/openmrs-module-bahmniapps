@@ -125,7 +125,7 @@ angular.module('registration.patient.controllers')
                 patientService.generateIdentifier($scope.patient).then(function (response) {
                     $scope.patient.identifier = response.data;
                     patientService.create($scope.patient).success(successCallback).success(followUpAction).error(errorCallBack);
-                })
+                });
             } else {
                 patientService.create($scope.patient).success(successCallback).success(followUpAction).error(errorCallBack);
             }

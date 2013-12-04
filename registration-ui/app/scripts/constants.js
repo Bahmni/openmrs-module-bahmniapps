@@ -6,18 +6,11 @@ var constants = {
     encounterType: {
         registration: "REG"
     },
-
     visitType: {
         registration: "REG",
         returningPatient: "REVISIT",
         emergency: "EMERGENCY"
     },
-    centers: [
-        {name: 'GAN'},
-        {name: 'SEM'},
-        {name: 'SIV'},
-        {name: 'BAM'}
-    ],
     openmrsUrl: "/openmrs",
     baseOpenMRSRESTURL: "/openmrs/ws/rest/v1",
     bahmniRESTBaseURL: "/openmrs/ws/rest/v1/bahmnicore",
