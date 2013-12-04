@@ -3,37 +3,6 @@
         <button ng-click="save()" class="confirm">Save</button>
     </div>
     <section class="block investigation">
-        <h2>Diagnoses</h2>
-        <ul class="block-content">
-            <li ng-repeat="diagnosis in visitSummary.diagnoses" >
-                    <span ng-show="visitSummary.isPrimaryOrder(diagnosis.order)">P</span>
-                    <span ng-show="!visitSummary.isPrimaryOrder(diagnosis.order)">S</span>
-                    <span>{{diagnosis.codedAnswer.name}}</span>
-                    <span ng-hide = "visitSummary.isConfirmedDiagnosis(diagnosis.certainty)">({{diagnosis.certainty}})</span>
-                    <span>{{diagnosis.diagnosisDate | date:'d-MMM-yy h:mm a'}}</span>
-                    <span>{{diagnosis.provider.name}}</span>
-            </li>
-            <div ng-show="!visitSummary.hasDiagnosis()">A diagnosis has not been made for this patient yet.</div>
-        </ul>
-    </section>
-        <section class="block investigation" ng-show="visitSummary.hasDisposition()">
-        <h2>Disposition</h2>
-        <ul class="block-content">
-            <div  >
-                <li ng-repeat="disposition in visitSummary.dispositions">
-                    <span>{{disposition.code}}</span>
-                    <span>{{disposition.dispositionDate | date:'d-MMM-yy h:mm a'}}</span>
-                    <span>{{disposition.provider.name}}</span>
-                    <span ng-repeat="note in disposition.additionalObs">
-                        <expander class='expander'>
-                        {{note.value}}
-                    </expander>
-                    </span>
-                </li>
-            </div>
-        </ul>
-    </section>
-    <section class="block investigation">
         <h2>Investigation</h2>
         <ul class="block-content">
             <li ng-repeat="investigation in consultation.investigations" ng-class="{panel: investigation.isSet, voided: investigation.voided}">
@@ -43,7 +12,7 @@
         </ul>
         <ng-include src="'modules/consultation/views/labResults.html'" ng-init="labResults=consultation.labResults"/>
     </section>
-<!--     <section class="block diagnosis">
+    <section class="block diagnosis">
         <h2>Diagnosis</h2>
         <div class="block-content" ng-show="consultation.diagnoses.length > 0">
             <div class="diagnosis-type">
@@ -59,7 +28,23 @@
                 </div>
             </div>
         </div>
-    </section> -->
+    </section>
+    <section class="block disposition">
+        <h2>Disposition</h2>
+        <div ng-repeat="disposition in disposition.dispositions"  class="block-content">
+            <ul>
+                <li>
+                    -&nbsp; {{disposition.adtName}}
+                </li>
+                <li>
+                    -&nbsp; {{disposition.adtDateTime}}
+                </li>
+                <li>
+                    - &nbsp;{{disposition.adtNoteValue}}
+                </li>
+            </ul>
+        </div>
+    </section>
     <section class="block treatment">
         <h2>Treatment</h2>
          <div  class="block-content" ng-include src="'modules/consultation/views/treatmentDrugs.html'"></div>

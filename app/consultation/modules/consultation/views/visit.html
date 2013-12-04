@@ -33,20 +33,22 @@
 
     <div bindonce infinite-scroll="loadEncountersForPreviousDay()" ng-show="visitDay.hasData()" ng-repeat="visitDay in visitDays">
         <header>
-            Date: <span bo-text="(visitDay.visitDate | date:'d-MMM-yyyy')"></span>
+            <h1 bo-text="'Day ' + visitDay.dayNumber"></h1>
+            <span bo-text="(visitDay.visitDate | date:'d-MMM-yyyy')"></span>
         </header>   
         <section class="block treatment" ng-show="visitDay.hasDrugOrders()">
             <h2>Treatment</h2>
 	        <ul>
-			    <li ng-repeat="drug in visitDay.drugOrders">
-	                <span bo-text="drug.drugName + ' - ' + drug.doseStrength + ' ' + drug.drugUnits + ' ' + drug.dosageForm  + ' - ' + drug.numberPerDosage"></span>
-	                <span bo-show="drug.dosageFrequency" bo-text="' - ' + drug.dosageFrequency.name"> </span>
-	                <span bo-show="drug.dosageInstruction" bo-text="' - ' + drug.dosageInstruction.name" > </span>
-                    <span bo-text="' - ' + (drug.startDate  | date:'d MMM yy')"> </span>
-	                <span bo-text="' - for ' + visitSummary.numberOfDosageDaysForDrugOrder(drug) + ' day(s)'"> - </span>
-	                <span bo-show="drug.prn"> - Take as required.</span>
-	                <span bo-show="drug.notes" class="notes" bo-text="'(' + drug.notes + ' )'"></span>
-                    <span bo-text="drug.provider.name"></span>
+			    <li ng-repeat="drugOrder in visitDay.drugOrders">
+                    <span bo-text="drugOrder.drugName + ' - ' + drugOrder.doseStrength + ' ' + drugOrder.drugUnits + ' ' + drugOrder.dosageForm  + ' - ' + drugOrder.numberPerDosage"></span>
+                    <span bo-show="drugOrder.dosageFrequency" bo-text="' - ' + drugOrder.dosageFrequency.name"> </span>
+                    <span bo-show="drugOrder.dosageInstruction" bo-text="' - ' + drugOrder.dosageInstruction.name" > </span>
+                    <span bo-text="' - ' + (drugOrder.startDate  | date:'d MMM yy')"> </span>
+                    <span bo-text="' - for ' + visitSummary.numberOfDosageDaysForDrugOrder(drugOrder) + ' day(s)'"> - </span>
+                    <span bo-show="drugOrder.prn"> - Take as required.</span>
+                    <span bo-show="drugOrder.notes" class="notes" bo-text="'(' + drugOrder.notes + ' )'"></span>
+                    <span bo-text="drugOrder.dateCreated | date: 'h:mm a'"></span>
+                    <span bo-text="drugOrder.provider.name"></span>
 	           </li>
 			</ul>        
         </section>
@@ -59,11 +61,30 @@
                 </li>
             </ul>        
         </section>
+        <section class="block labTestOrders" ng-show="visitDay.hasLabTestOrders()">
+            <h2>Investigations</h2>
+            <ul>
+                <li ng-repeat="testOrder in visitDay.labTestOrders">
+                    <span bo-text="testOrder.concept.name"></span>
+                    <span bo-text="testOrder.provider.name"></span>
+                </li>
+            </ul>        
+        </section>
+        <section class="block otherTestOrders" ng-show="visitDay.hasOtherTestOrders()">
+            <h2>Other Investigations</h2>
+            <ul>
+                <li ng-repeat="testOrder in visitDay.otherTestOrders">
+                    <span bo-text="testOrder.concept.name"></span>
+                    <span bo-text="testOrder.provider.name"></span>
+                </li>
+            </ul>        
+        </section>
         <section class="block observation" ng-show="visitDay.hasObservations()">
             <h2>Observations</h2>
             <ul>
                 <li ng-repeat="observation in visitDay.observations">
                     <span bo-text="observation.concept.name + ' - ' + observation.value"></span>
+                    <span bo-text="observation.observationDateTime | date: 'h:mm a'"></span>
                     <span bo-text="observation.provider.name"></span>
                 </li>
             </ul>        

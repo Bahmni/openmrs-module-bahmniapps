@@ -48,6 +48,6 @@ Bahmni.Opd.Consultation.VisitSummary = function (encounterTransactions) {
     }
 
     self.numberOfDosageDaysForDrugOrder = function(drugOrder) {
-        return Math.floor((new Date(drugOrder.endDate) - new Date(drugOrder.startDate)) / (60 * 1000 * 60 * 24))
+        return Bahmni.Common.Util.DateUtil.diffInDays(new Date(drugOrder.endDate), new Date(drugOrder.startDate));
     }
 };

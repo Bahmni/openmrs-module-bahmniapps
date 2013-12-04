@@ -55,7 +55,7 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
             treatmentDrugs: treatmentDrugs,
             diagnoses:diagnoses,
             labResults: labResults,
-            consultationNote: consultationNote
+            consultationNote: consultationNote || emptyConsultationNote()
         };
     };
 
@@ -118,8 +118,12 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
         return diagnoses;
     };
 
+    var emptyConsultationNote = function() {
+        return { concept: { uuid: consultationNoteConcept.uuid }};
+    }
+    
     var mapConsultationNote = function(encounterObservations) {
-        var consultationNote = {concept: {uuid: consultationNoteConcept.uuid}};
+        var consultationNote = emptyConsultationNote();
         var consultationNoteObservation = encounterObservations.filter(function(obs) {        
             return (obs.concept && obs.concept.uuid === consultationNoteConcept.uuid);
         })[0];

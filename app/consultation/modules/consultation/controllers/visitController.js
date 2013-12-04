@@ -8,7 +8,9 @@ angular.module('opd.consultation.controllers')
 
     var loadEncounters = function(encounterDate) {
     	encounterService.search(visitUuid, encounterDate.toISOString().substring(0, 10)).success(function(encounterTransactions){
-            $scope.visitDays.push(Bahmni.Opd.Consultation.VisitDay.create(encounterDate, encounterTransactions, $rootScope.consultationNoteConcept));
+            var dayNumber = Bahmni.Common.Util.DateUtil.diffInDays($rootScope.visitSummary.visitStartDateTime, encounterDate) + 1;
+            var visitDay = Bahmni.Opd.Consultation.VisitDay.create(dayNumber, encounterDate, encounterTransactions, $rootScope.consultationNoteConcept, $rootScope.encounterConfig.orderTypes);
+            $scope.visitDays.push(visitDay);
 	    });
     	currentEncounterDate = encounterDate;
     }

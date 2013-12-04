@@ -1,4 +1,5 @@
-Bahmni.Opd.Consultation.VisitDay = function(visitDate, drugOrders, consultationNotes, labTestOrders, otherTestOrders, observations) {
+Bahmni.Opd.Consultation.VisitDay = function(dayNumber, visitDate, drugOrders, consultationNotes, labTestOrders, otherTestOrders, observations) {
+    this.dayNumber = dayNumber;
 	this.visitDate = visitDate;
     this.drugOrders = drugOrders;
     this.consultationNotes = consultationNotes;
@@ -33,13 +34,16 @@ Bahmni.Opd.Consultation.VisitDay.prototype = {
     }
 };
 
-Bahmni.Opd.Consultation.VisitDay.create = function(visitDate, encounterTransactions, consultationNoteConcept) {
+Bahmni.Opd.Consultation.VisitDay.create = function(dayNumber, visitDate, encounterTransactions, consultationNoteConcept, orderTypes) {
 	var drugOrders = [];
 	var observations = [];
 	var consultationNotes = [];
 	var labTestOrders = [];
 	var otherTestOrders = [];
-	angular.forEach(encounterTransactions, function(encounterTransaction) {
+
+	var labTestOrderTypeUuid = orderTypes[Bahmni.Opd.Constants.orderTypes.lab];
+
+    angular.forEach(encounterTransactions, function(encounterTransaction) {
         angular.forEach(encounterTransaction.drugOrders, function(drugOrder){
             if(!drugOrder.voided) {
                 drugOrder.provider = encounterTransaction.providers[0];
@@ -47,8 +51,16 @@ Bahmni.Opd.Consultation.VisitDay.create = function(visitDate, encounterTransacti
             }
         });
 	
-		// angular.forEach(encounterTransaction.testOrders, function(testOrder){
-		// });
+		angular.forEach(encounterTransaction.testOrders, function(testOrder){
+            if(!testOrder.voided) {
+                testOrder.provider = encounterTransaction.providers[0];
+                if(testOrder.orderTypeUuid === labTestOrderTypeUuid) {
+                    labTestOrders.push(testOrder);
+                } else {
+                    otherTestOrders.push(testOrder);
+                }
+            }
+		});
 
         angular.forEach(encounterTransaction.observations, function(observation){
             if(!observation.voided && observation.value) {                    
@@ -62,5 +74,7 @@ Bahmni.Opd.Consultation.VisitDay.create = function(visitDate, encounterTransacti
         });
 	});
 
-   return new this(visitDate, drugOrders, consultationNotes, labTestOrders, otherTestOrders, observations);     
+    
+
+   return new this(dayNumber, visitDate, drugOrders, consultationNotes, labTestOrders, otherTestOrders, observations);     
 }
