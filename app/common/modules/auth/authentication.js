@@ -41,7 +41,7 @@ angular.module('authentication', ['ngCookies'])
             $http.get("/openmrs/ws/rest/v1/user", {
                 method: "GET",
                 params: {
-                    q: currentUser,
+                    username: currentUser,
                     v: "custom:(username,privileges:(name,retired))"
                 },
                 cache: false
