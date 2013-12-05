@@ -51,7 +51,7 @@ angular.module('bahmni.common.patient.mappers')
                 patient.gender = openmrsPatient.person.gender;
                 patient.address = mapAddress(openmrsPatient.person.preferredAddress);
                 patient.identifier = openmrsPatient.identifiers[0].identifier;
-                patient.image = $rootScope.bahmniConfiguration.patientImagesUrl + "/" + patient.identifier + ".jpeg" + "?q=" + new Date().getTime();
+                patient.image = "/openmrs/ws/rest/v1/personimage/" + openmrsPatient.uuid + ".jpeg" + "?q=" + new Date().getTime();
                 patient.registrationDate = parseDate(openmrsPatient.person.personDateCreated);
                 mapAttributes(patient, openmrsPatient.person.attributes);
                 return patient;
