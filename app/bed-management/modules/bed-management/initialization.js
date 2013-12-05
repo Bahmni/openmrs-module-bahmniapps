@@ -12,8 +12,7 @@ angular.module('opd.bedManagement').factory('initialization',
             }
 
             authenticator.authenticateUser().then(function () {
-                configurationService.getConfigurations(['bahmniConfiguration', 'patientConfig']).then(function (configurations) {
-                    $rootScope.bahmniConfiguration = configurations.bahmniConfiguration;
+                configurationService.getConfigurations(['patientConfig']).then(function (configurations) {
                     $rootScope.patientConfig = configurations.patientConfig;
                     $rootScope.encounterUuid = $route.current.params.encounterUuid;
 

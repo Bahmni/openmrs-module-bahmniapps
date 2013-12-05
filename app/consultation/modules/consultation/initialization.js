@@ -14,9 +14,8 @@ angular.module('opd.consultation').factory('initialization',
 
         var getConsultationConfigs = function() {
             var deferrable = $q.defer();
-            var configNames = ['bahmniConfiguration', 'encounterConfig', 'patientConfig', ,'dosageFrequencyConfig','dosageInstructionConfig', 'consultationNoteConfig'];
+            var configNames = ['encounterConfig', 'patientConfig', ,'dosageFrequencyConfig','dosageInstructionConfig', 'consultationNoteConfig'];
             configurationService.getConfigurations(configNames).then(function (configurations) {
-                $rootScope.bahmniConfiguration = configurations.bahmniConfiguration;
                 $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig);
                 $rootScope.patientConfig = configurations.patientConfig;
                 $rootScope.dosageFrequencyConfig = configurations.dosageFrequencyConfig;

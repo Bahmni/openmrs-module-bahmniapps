@@ -9,8 +9,7 @@ angular.module('orders.pending').factory('initialization', ['$rootScope', '$q', 
 
         var getConfigs = function () {
             var configurationsPromises = $q.defer();
-            configurationService.getConfigurations(['bahmniConfiguration','radiologyObservationConfig','encounterConfig']).then(function (configurations) {
-                $rootScope.bahmniConfiguration = configurations.bahmniConfiguration;
+            configurationService.getConfigurations(['radiologyObservationConfig','encounterConfig']).then(function (configurations) {
                 $rootScope.encounterTypes = configurations.encounterConfig.encounterTypes;
                 $rootScope.radiologyObservationConcept = configurations.radiologyObservationConfig.results[0];
                 configurationsPromises.resolve();

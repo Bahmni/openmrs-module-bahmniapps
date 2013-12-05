@@ -15,9 +15,8 @@ angular.module('opd.adt').factory('initialization',
 
             var getConsultationConfigs = function () {
                 var configurationsPromises = $q.defer();
-                var configNames = ['bahmniConfiguration', 'encounterConfig', 'patientConfig'];
+                var configNames = ['encounterConfig', 'patientConfig'];
                 configurationService.getConfigurations(configNames).then(function (configurations) {
-                    $rootScope.bahmniConfiguration = configurations.bahmniConfiguration;
                     $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig);
                     $rootScope.patientConfig = configurations.patientConfig;
 
