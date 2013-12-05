@@ -1,4 +1,4 @@
-<article class="consultation">
+<article class="visit">
 	<section class="block investigation">
         <h2>Diagnoses</h2>
         <ul class="block-content">
@@ -31,7 +31,7 @@
         </ul>
     </section>
 
-    <div bindonce infinite-scroll="loadEncountersForPreviousDay()" ng-show="visitDay.hasData()" ng-repeat="visitDay in visitDays">
+    <div bindonce infinite-scroll="loadEncountersForPreviousDay()" infinite-scroll-disabled="!hasMoreVisitDays" ng-show="visitDay.hasData()" ng-repeat="visitDay in visitDays">
         <header>
             <h1 bo-text="'Day ' + visitDay.dayNumber"></h1>
             <span bo-text="(visitDay.visitDate | date:'d-MMM-yyyy')"></span>
@@ -90,4 +90,5 @@
             </ul>        
         </section>
     </div>
+    <div id="loader" ng-show="hasMoreVisitDays">Loading more results</div>
 </article>
