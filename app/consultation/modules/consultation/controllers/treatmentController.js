@@ -24,10 +24,10 @@ angular.module('opd.consultation.controllers')
             var drugBeingEdited = $scope.selectedDrugs[index];
             var drugName = drugBeingEdited.name || '';
 
-            drugBeingEdited.empty = areStringsEqual(drugName.trim(), "");
+            drugBeingEdited.empty = areStringsEqual($.trim(drugName), "");
 
             if (!drugBeingEdited.empty) {
-                if (!areStringsEqual(drugName.trim(), drugBeingEdited.originalName.trim())) {
+                if (!areStringsEqual($.trim(drugName), $.trim(drugBeingEdited.originalName))) {
                     drugBeingEdited.uuid = "";
                     drugBeingEdited.strength = "";
                     drugBeingEdited.dosageForm = "";

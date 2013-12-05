@@ -1,75 +1,51 @@
 'use strict';
 
 angular.module('opd.consultation').factory('initialization',
-    ['$rootScope', '$q', '$route', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'dispositionService', 'ConceptSetService', 'authenticator', 'appService',
-    function ($rootScope, $q, $route, configurationService, visitService, patientService, patientMapper, dispositionService, conceptSetService, authenticator, appService) {
-        var initializationPromise = $q.defer();
-        var dispositionNoteConcept;
-
-        if (!String.prototype.trim) {
-            String.prototype.trim = function () {
-                return this.replace(/^\s+|\s+$/g, '');
-            };
-        }
-
+    ['$rootScope', '$route', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'authenticator', 'appService',
+    function ($rootScope, $route, configurationService, visitService, patientService, patientMapper, authenticator, appService) {
         var getConsultationConfigs = function() {
-            var deferrable = $q.defer();
-            var configNames = ['encounterConfig', 'patientConfig', ,'dosageFrequencyConfig','dosageInstructionConfig', 'consultationNoteConfig'];
-            configurationService.getConfigurations(configNames).then(function (configurations) {
+            var configNames = ['encounterConfig', 'patientConfig', 'dosageFrequencyConfig','dosageInstructionConfig', 'consultationNoteConfig'];
+            return configurationService.getConfigurations(configNames).then(function (configurations) {
                 $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig);
                 $rootScope.patientConfig = configurations.patientConfig;
                 $rootScope.dosageFrequencyConfig = configurations.dosageFrequencyConfig;
                 $rootScope.dosageInstructionConfig = configurations.dosageInstructionConfig;
                 $rootScope.consultationNoteConcept = configurations.consultationNoteConfig.results[0];
-                deferrable.resolve();
             });
-            return deferrable.promise;
         };
 
         var getVisit = function() {
-            var visitDeferrable = $q.defer();
-                visitService.getVisit($route.current.params.visitUuid).success(function (visit) {
-                    $rootScope.visit = visit;
-                    $rootScope.consultation = new Bahmni.Opd.ConsultationMapper($rootScope.encounterConfig,
-                        $rootScope.dosageFrequencyConfig, $rootScope.dosageInstructionConfig, $rootScope.consultationNoteConcept).map(visit);
-                    $rootScope.disposition = new Bahmni.Opd.DispositionMapper($rootScope.encounterConfig).map(visit);
-                    $rootScope.disposition.currentActionIndex = 0; // this will be used in case we have multiple encounters with dispositions
-
-                    return patientService.getPatient(visit.patient.uuid).success(function (openMRSPatient) {
-                        $rootScope.patient = patientMapper.map(openMRSPatient);
-                        visitDeferrable.resolve(visit);
-                    });
-                });
-            return visitDeferrable.promise;
+            return visitService.getVisit($route.current.params.visitUuid).success(function (visit) {
+                $rootScope.visit = visit;
+                $rootScope.consultation = new Bahmni.Opd.ConsultationMapper($rootScope.encounterConfig,
+                    $rootScope.dosageFrequencyConfig, $rootScope.dosageInstructionConfig, $rootScope.consultationNoteConcept).map(visit);
+                $rootScope.disposition = new Bahmni.Opd.DispositionMapper($rootScope.encounterConfig).map(visit);
+                $rootScope.disposition.currentActionIndex = 0; // this will be used in case we have multiple encounters with dispositions
+            });
         };
 
-        var getPatient = function(visit) {
-            var patientDeferrable = $q.defer();
-            patientService.getPatient(visit.patient.uuid).success(function (openMRSPatient) {
+        var getPatient = function(visitResponse) {
+            var visit = visitResponse.data;
+            return patientService.getPatient(visit.patient.uuid).success(function (openMRSPatient) {
                 $rootScope.patient = patientMapper.map(openMRSPatient);
-                patientDeferrable.resolve($rootScope.patient);
             });
-            return patientDeferrable.promise;
         };
 
         var getVisitSummary = function() {
-            var visitSummaryDeferrable = $q.defer();
-            visitService.getVisitSummary($route.current.params.visitUuid).success(function (encounterTransactions) {
+            return visitService.getVisitSummary($route.current.params.visitUuid).success(function (encounterTransactions) {
                 $rootScope.visitSummary = Bahmni.Opd.Consultation.VisitSummary.create(encounterTransactions);
-                visitSummaryDeferrable.resolve(encounterTransactions);
             });
-            return visitSummaryDeferrable.promise;
         };
 
-        authenticator.authenticateUser().then(function () {
-            appService.initApp('clinical', {'extension' : true}).then(function() {
-                var configPromise = getConsultationConfigs();
-                configPromise.then(getVisit).then(getPatient).then(getVisitSummary).then(function(encounterTransactions) {
-                    initializationPromise.resolve();
-                });
-            });
-        });
+        var initApp = function() {
+            return appService.initApp('clinical', {'extension' : true});
+        };
 
-        return initializationPromise.promise;
+        return authenticator.authenticateUser().then(initApp).then(getConsultationConfigs)
+                            .then(getVisit).then(getPatient).then(getVisitSummary);
     }]
 );
+
+
+
+

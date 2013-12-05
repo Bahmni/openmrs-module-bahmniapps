@@ -20,7 +20,7 @@ Bahmni.Opd.DispositionMapper = function(encounterConfig) {
                         concept.mappings.forEach(function(mapping){
                             var mappingSource = mapping.display.split(":")[0];
                             if(mappingSource === Bahmni.Opd.Consultation.Constants.emrapiConceptMappingSource){
-                                mappingCode = mapping.display.split(":")[1].trim();;
+                                mappingCode = $.trim(mapping.display.split(":")[1]);;
                             }
                         });
                     }
