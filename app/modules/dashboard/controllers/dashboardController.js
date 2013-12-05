@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmnihome')
-    .controller('DashboardController', ['$scope', '$location', 'appService', '$q', 'sessionService', 'spinner', function ($scope, $location, appService, $q, sessionService, spinner) {
+    .controller('DashboardController', ['$scope', '$location', 'appService', '$q', 'sessionService', 'spinner', '$window', function ($scope, $location, appService, $q, sessionService, spinner, $window) {
         $scope.openApp = function (appName) {
             $window.location = "/" + appName;
         }
