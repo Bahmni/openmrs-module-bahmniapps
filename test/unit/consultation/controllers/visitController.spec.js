@@ -16,7 +16,7 @@ describe("VisitControllerTest", function () {
         encounterService.search.andReturn(encounterSearchPromise);
         scope = $rootScope.$new();
         scope.encounterConfig = {};
-        scope.visitSummary = {}
+        scope.visitSummary = { hasEncounters: function() { return true; }}
     }));
 
     var setUpController = function () {

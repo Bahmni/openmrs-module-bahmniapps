@@ -1,5 +1,6 @@
 <article class="visit">
-	<section class="block investigation">
+    <div ng-hide="visitSummary.hasEncounters()">There are no encounter for this patient yet.</div>
+	<section  ng-show="visitSummary.hasEncounters()" class="block investigation">
         <h2>Diagnoses</h2>
         <ul class="block-content">
             <li ng-repeat="diagnosis in visitSummary.diagnoses" >

@@ -56,7 +56,7 @@ angular.module('opd.consultation').factory('initialization',
         var getVisitSummary = function() {
             var visitSummaryDeferrable = $q.defer();
             visitService.getVisitSummary($route.current.params.visitUuid).success(function (encounterTransactions) {
-                $rootScope.visitSummary = new Bahmni.Opd.Consultation.VisitSummary(encounterTransactions);
+                $rootScope.visitSummary = Bahmni.Opd.Consultation.VisitSummary.create(encounterTransactions);
                 visitSummaryDeferrable.resolve(encounterTransactions);
             });
             return visitSummaryDeferrable.promise;

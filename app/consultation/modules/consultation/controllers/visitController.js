@@ -4,7 +4,7 @@ angular.module('opd.consultation.controllers')
     .controller('VisitController', ['$scope', 'encounterService', '$route', function ($scope, encounterService, $route) {
     var visitUuid = $route.current.params["visitUuid"];    
 	$scope.visitDays = [];
-    $scope.hasMoreVisitDays = true;
+    $scope.hasMoreVisitDays;
     var currentEncounterDate;
     var loading;
 
@@ -24,7 +24,9 @@ angular.module('opd.consultation.controllers')
         $scope.hasMoreVisitDays = currentEncounterDate > $scope.visitSummary.visitStartDateTime;
     }
 
-    loadEncounters($scope.visitSummary.mostRecentEncounterDateTime);
+    if($scope.visitSummary.hasEncounters()) {
+        loadEncounters($scope.visitSummary.mostRecentEncounterDateTime);
+    }
 
     $scope.loadEncountersForPreviousDay = function() {    	
         if($scope.hasMoreVisitDays) {
