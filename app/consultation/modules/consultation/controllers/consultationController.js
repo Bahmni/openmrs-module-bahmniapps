@@ -56,7 +56,7 @@ angular.module('opd.consultation.controllers')
         addObservationsToEncounter();
 
         encounterService.create(encounterData).success(function () {
-            window.location = Bahmni.Opd.Constants.activePatientsListUrl;
+            window.location = Bahmni.Opd.Consultation.Constants.activePatientsListUrl;
         });
     };        
 }]).directive('showObs', ['$rootScope', function () {

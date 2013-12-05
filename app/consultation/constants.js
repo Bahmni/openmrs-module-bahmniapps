@@ -1,4 +1,4 @@
-Bahmni.Opd.Constants = (function() {
+Bahmni.Opd.Consultation.Constants = (function() {
 	var orderTypes = {
 	    	lab: "Lab Order",
 	    	radiology: "Radiology Order"

@@ -12,6 +12,6 @@ angular.module('consultation').config(['$routeProvider', '$httpProvider', functi
         $routeProvider.when('/visit/:visitUuid/templates', {templateUrl: 'modules/consultation/views/comingSoon.html'});
         $routeProvider.when('/visit/:visitUuid/disposition', {templateUrl: 'modules/consultation/views/disposition.html',controller: 'DispositionController',resolve: {initialization: 'initialization'}});
         $routeProvider.when('/visit/:visitUuid/concept-set/:conceptSetName', {template: '<show-concept-set/>',resolve: {initialization: 'initialization'}});
-        $routeProvider.otherwise({redirectTo: Bahmni.Opd.Constants.activePatientsListUrl});
+        $routeProvider.otherwise({redirectTo: Bahmni.Opd.Consultation.Constants.activePatientsListUrl});
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
 }]);

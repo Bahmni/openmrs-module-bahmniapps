@@ -11,7 +11,7 @@ angular.module('opd.consultation.controllers')
                     if(response.data.results && response.data.results.length){
                         $rootScope.disposition.dispositionActionUuid = response.data.results[0].uuid;
                         $scope.dispositionActions = response.data.results.filter(function(concept){
-                            return concept.name.name === Bahmni.Opd.Constants.dispositionConcept
+                            return concept.name.name === Bahmni.Opd.Consultation.Constants.dispositionConcept
                         })[0].answers;
                     }
 
@@ -39,7 +39,7 @@ angular.module('opd.consultation.controllers')
             if(concept.mappings){
                 concept.mappings.forEach(function(mapping){
                     var mappingSource = mapping.display.split(":")[0];
-                    if(mappingSource === Bahmni.Opd.Constants.emrapiConceptMappingSource){
+                    if(mappingSource === Bahmni.Opd.Consultation.Constants.emrapiConceptMappingSource){
                         mappingCode = mapping.display.split(":")[1].trim();;
                     }
                 });

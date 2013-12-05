@@ -29,7 +29,7 @@ var testVisitData = {
                     "uuid": "0c657a01-9e55-4802-b8fa-8ca7f72dbea8",
                     "display": "Admit Patient",
                     "orderType":{
-                      display:Bahmni.Opd.Constants.dispositionOrderType
+                      display:Bahmni.Opd.Patient.Constants.dispositionOrderType
                     },
                     "patient": {
                         "uuid": "ad45fc7d-708a-4704-8bee-a84b43c7ba96",

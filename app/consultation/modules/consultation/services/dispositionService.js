@@ -5,13 +5,13 @@ angular.module('opd.consultation.services')
 
         var getDispositionActions = function () {
             return $http.get(Bahmni.Common.Constants.conceptUrl
-                +"?q="+Bahmni.Opd.Constants.dispositionConcept
+                +"?q="+Bahmni.Opd.Consultation.Constants.dispositionConcept
                 +"&v=custom:(uuid,name,answers:(uuid,name,mappings))");
         };
 
         var getDispositionNoteConcept = function(){
             return $http.get(Bahmni.Common.Constants.conceptUrl
-                +"?q="+Bahmni.Opd.Constants.dispositionNoteConcept
+                +"?q="+Bahmni.Opd.Consultation.Constants.dispositionNoteConcept
                 +"&v=custom:(uuid,name:(name))");
         };
 

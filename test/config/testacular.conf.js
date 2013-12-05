@@ -11,6 +11,7 @@ files = [
     '../app/**/constants.js',
     '../app/**/modules/**/*.js',
     '../app/**/modules/**/constants.js',
+    'support/**/*.js',
     'unit/**/*.js'
 ];
 

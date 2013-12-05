@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('opd.consultation.controllers')
-    .controller('VisitController', ['$scope', '$rootScope', 'encounterService', '$route', '$location', function ($scope, $rootScope, encounterService, $route, $location) {
+    .controller('VisitController', ['$scope', 'encounterService', '$route', function ($scope, encounterService, $route) {
     var visitUuid = $route.current.params["visitUuid"];    
 	$scope.visitDays = [];
     $scope.hasMoreVisitDays = true;
@@ -16,15 +16,15 @@ angular.module('opd.consultation.controllers')
     	if(loading) return;
         loading = true;
         encounterService.search(visitUuid, encounterDate.toISOString().substring(0, 10)).success(function(encounterTransactions){
-            var dayNumber = Bahmni.Common.Util.DateUtil.diffInDays($rootScope.visitSummary.visitStartDateTime, encounterDate) + 1;
-            var visitDay = Bahmni.Opd.Consultation.VisitDay.create(dayNumber, encounterDate, encounterTransactions, $rootScope.consultationNoteConcept, $rootScope.encounterConfig.orderTypes);
+            var dayNumber = Bahmni.Common.Util.DateUtil.diffInDays($scope.visitSummary.visitStartDateTime, encounterDate) + 1;
+            var visitDay = Bahmni.Opd.Consultation.VisitDay.create(dayNumber, encounterDate, encounterTransactions, $scope.consultationNoteConcept, $scope.encounterConfig.orderTypes);
             $scope.visitDays.push(visitDay);
 	    }).then(markLoadingDone, markLoadingDone);
     	currentEncounterDate = encounterDate;
-        $scope.hasMoreVisitDays = currentEncounterDate >= $rootScope.visitSummary.visitStartDateTime;
+        $scope.hasMoreVisitDays = currentEncounterDate > $scope.visitSummary.visitStartDateTime;
     }
 
-    loadEncounters($rootScope.visitSummary.mostRecentEncounterDateTime);
+    loadEncounters($scope.visitSummary.mostRecentEncounterDateTime);
 
     $scope.loadEncountersForPreviousDay = function() {    	
         if($scope.hasMoreVisitDays) {

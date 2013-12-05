@@ -10,7 +10,7 @@ Bahmni.Opd.DispositionMapper = function(encounterConfig) {
         if (opdEncounters) {
             opdEncounters.forEach(function(opdEncounter){
                 var dispositionObsGroup = opdEncounter.obs.filter(function(observation){
-                    return  observation.concept ? observation.concept.name.name == Bahmni.Opd.Constants.dispositionGroupConcept :false;
+                    return  observation.concept ? observation.concept.name.name == Bahmni.Opd.Consultation.Constants.dispositionGroupConcept :false;
                 })[0];
 
 
@@ -19,7 +19,7 @@ Bahmni.Opd.DispositionMapper = function(encounterConfig) {
                     if(concept.mappings){
                         concept.mappings.forEach(function(mapping){
                             var mappingSource = mapping.display.split(":")[0];
-                            if(mappingSource === Bahmni.Opd.Constants.emrapiConceptMappingSource){
+                            if(mappingSource === Bahmni.Opd.Consultation.Constants.emrapiConceptMappingSource){
                                 mappingCode = mapping.display.split(":")[1].trim();;
                             }
                         });
@@ -32,14 +32,14 @@ Bahmni.Opd.DispositionMapper = function(encounterConfig) {
 
                     dispositionObsGroup.groupMembers.forEach(function(dispositionGroupMember){
                         var conceptName =  dispositionGroupMember.concept ? dispositionGroupMember.concept.name.name :null;
-                        if(conceptName && conceptName === Bahmni.Opd.Constants.dispositionConcept){
+                        if(conceptName && conceptName === Bahmni.Opd.Consultation.Constants.dispositionConcept){
                             disposition.adtName= dispositionGroupMember.value.name.display;
                             disposition.adtCode= getMappingCode(dispositionGroupMember.value)
                             disposition.adtValueUuid = dispositionGroupMember.value.uuid;
                             var d=new Date(dispositionGroupMember.obsDatetime);
                             disposition.adtDateTime = d.toDateString() +" "+d.getHours()+":"+d.getMinutes();
                         }
-                        else if(conceptName && conceptName === Bahmni.Opd.Constants.dispositionNoteConcept){
+                        else if(conceptName && conceptName === Bahmni.Opd.Consultation.Constants.dispositionNoteConcept){
                             disposition.adtNoteValue = dispositionGroupMember.value;
                             disposition.adtNoteConcept = dispositionGroupMember.concept.uuid;
                         }
