@@ -38,8 +38,7 @@ angular
     $routeProvider.when('/dashboard', 
     {
         templateUrl: 'modules/dashboard/views/dashboard.html', 
-        controller: 'DashboardController',
-        resolve: {initialization: 'initialization'}
+        controller: 'DashboardController'
     });
     $routeProvider.otherwise({redirectTo: '/dashboard'});
     $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
