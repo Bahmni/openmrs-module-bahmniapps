@@ -11,7 +11,7 @@ angular.module('opd.patient.controllers')
                 $scope.storeWindowDimensions();
                 patientList.forEach(function (patient) {
                     patient.display = patient.identifier + " - " + patient.name;
-                    patient.image = patientMapper.constructImageUrl(patient.identifier);
+                    patient.image = patientMapper.constructImageUrl(patient.uuid);
                 });
                 $scope.activePatients = patientList;
                 $scope.searchResults = $scope.activePatients;

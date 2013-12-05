@@ -57,9 +57,9 @@ angular.module('bahmni.common.patient.mappers')
                 return patient;
             };
 
-            var constructImageUrl = function (identifier) {
-                return $rootScope.bahmniConfiguration.patientImagesUrl + "/" + identifier + ".jpeg";
-            }
+            var constructImageUrl = function (patientUuid) {
+                return  "/openmrs/ws/rest/v1/personimage/" + patientUuid + ".jpeg" + "?q=" + new Date().getTime();
+            };
 
             return {
                 map: map,
