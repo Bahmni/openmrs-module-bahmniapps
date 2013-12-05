@@ -25,11 +25,12 @@
                         <span>
                         <input type="text" id="registrationNumber" ng-model="patient.registrationNumber"
                                placeholder="Registration Number" non-blank="hasOldIdentifier"
-                               ng-change="patient.generateIdentifier()"  ng-show="hasOldIdentifier">
+                               ng-change="patient.generateIdentifier()"  ng-show="hasOldIdentifier" focus-on="hasOldIdentifier">
                         </span>
                         <span>
-                        <input type="checkbox" id="hasOldIdentifier" ng-model="hasOldIdentifier"
+                            <input type="checkbox" id="hasOldIdentifier" ng-model="hasOldIdentifier"
                                ng-change="patient.clearRegistrationNumber()">
+                            <label for="hasOldIdentifier" class="control-label">Enter ID</label>
                         </span>
                     </div>
                 </article>

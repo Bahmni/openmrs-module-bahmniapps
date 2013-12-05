@@ -92,6 +92,18 @@ angular.module('registration.util')
             }
         };
     })
+
+
+    .directive('focusOn', function () {
+        return function (scope, elem, attrs) {
+            scope.$watch(attrs.focusOn, function (value) {
+                if (value) {
+                    elem[0].focus();
+                }
+            });
+        };
+    })
+
     .directive('myAutocomplete', function ($parse) {
         var link = function (scope, element, attrs) {
             var ngModel = $parse(attrs.ngModel);
