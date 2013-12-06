@@ -53,7 +53,7 @@ Bahmni.Opd.Consultation.VisitSummary.create = function(encounterTransactions) {
             });
         });
 
-        angular.forEach(self.encounterTransactions, function(encounterTransaction){
+        angular.forEach(encounterTransactions, function(encounterTransaction){
             if(encounterTransaction.disposition) {
                 encounterTransaction.disposition.provider = encounterTransaction.providers[0];
                 dispositions.push(encounterTransaction.disposition);

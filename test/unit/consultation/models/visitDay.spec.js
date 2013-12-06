@@ -32,7 +32,7 @@ describe('visit Day',function(){
 			expect(visitDay.consultationNotes.length).toBe(1);
 		});
 
-		it('should ignore obs without value', function(){
+		it('should ignore obs without value or group members', function(){
 			var observation11 = {concept: { uuid: '11'},  voided: false, value: ""}
 			var observation12 = {concept: { uuid: '12'},  voided: false, value: "67"}
 			var encounterTransaction1 = createEncounter({observations: [observation11, observation12]}) 
@@ -41,6 +41,45 @@ describe('visit Day',function(){
 			var visitDay = createVisitDay();
 
 			expect(visitDay.observations.length).toBe(1);
+		});	
+
+		it('should ignore obsgroup without valid group members', function(){
+			var observation111 = {concept: { uuid: '111'},  voided: false, value: ""}
+			var observation11 = {concept: { uuid: '11'},  voided: false, value: "", groupMembers: [observation111]}
+			var encounterTransaction1 = createEncounter({observations: [observation11]}) 
+			encounterTransactions = [encounterTransaction1];
+
+			var visitDay = createVisitDay();
+
+			expect(visitDay.observations.length).toBe(0);
+		});	
+
+		it('should map obsgroup with at least one valid group member', function(){
+			var observation111 = {concept: { uuid: '111'},  voided: false, value: ""}
+			var observation112 = {concept: { uuid: '112'},  voided: false, value: "100"}
+			var observation11 = {concept: { uuid: '11'},  voided: false, value: "", groupMembers: [observation111, observation112]}
+			var encounterTransaction1 = createEncounter({observations: [observation11]}) 
+			encounterTransactions = [encounterTransaction1];
+
+			var visitDay = createVisitDay();
+
+			expect(visitDay.observations.length).toBe(1);
+		});	
+
+		it('should map obsgroup with two levels with at least one valid group member at the level two', function(){
+			var observation1111 = {concept: { uuid: '1111'},  voided: false, value: ""}
+			var observation1112 = {concept: { uuid: '1112'},  voided: false, value: "100"}
+			var observation111 = {concept: { uuid: '111'},  voided: false, value: "", groupMembers: [observation1111, observation1112]}
+			var observation11 = {concept: { uuid: '11'},  voided: false, value: "", groupMembers: [observation111]}
+			var encounterTransaction1 = createEncounter({observations: [observation11]}) 
+			encounterTransactions = [encounterTransaction1];
+
+			var visitDay = createVisitDay();
+
+			expect(visitDay.observations.length).toBe(1);
+			expect(visitDay.observations[0].provider).toEqual(provider);
+			expect(visitDay.observations[0].groupMembers[0].provider).toEqual(provider);
+			expect(visitDay.observations[0].groupMembers[0].groupMembers[0].provider).toEqual(provider);
 		});	
 
 		it('should map observations ignoring voided ones', function(){

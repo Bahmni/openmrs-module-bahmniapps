@@ -1,3 +1,18 @@
+<script type="text/ng-template" id="observationSummaryTemplate">
+    <div ng-switch="observation.groupMembers.length">
+        <div ng-switch-when="0">
+            <span bo-text="observation.concept.name + ' - ' + observation.value"></span>
+            <span bo-text="observation.observationDateTime | date: 'h:mm a'"></span>
+            <span bo-text="observation.provider.name"></span>
+        </div>    
+        <ul ng-switch-default>
+            <span bo-text="observation.concept.name"></span>
+            <li ng-repeat="groupMember in observation.groupMembers">
+                <observation-summary observation="groupMember"/>
+            </li>
+        </ul>
+    </div>    
+</script>
 <article class="visit">
     <div ng-hide="visitSummary.hasEncounters()">There are no encounter for this patient yet.</div>
 	<section  ng-show="visitSummary.hasEncounters()" class="block investigation">
@@ -24,8 +39,8 @@
                     <span>{{disposition.provider.name}}</span>
                     <span ng-repeat="note in disposition.additionalObs">
                         <expander class='expander'>
-                        {{note.value}}
-                    </expander>
+                            {{note.value}}
+                        </expander>
                     </span>
                 </li>
             </div>
@@ -41,13 +56,22 @@
             <h2>Treatment</h2>
 	        <ul>
 			    <li ng-repeat="drugOrder in visitDay.drugOrders">
-                    <span bo-text="drugOrder.drugName + ' - ' + drugOrder.doseStrength + ' ' + drugOrder.drugUnits + ' ' + drugOrder.dosageForm  + ' - ' + drugOrder.numberPerDosage"></span>
+                    <span bo-text="drugOrder.drugName"></span>
+                    <span bo-show="drugOrder.doseStrength" bo-text="' - ' + drugOrder.doseStrength"></span>
+                    <span bo-show="drugOrder.drugUnits" bo-text="' ' + drugOrder.drugUnits"></span>
+                    <span bo-show="drugOrder.dosageForm" bo-text="' ' + drugOrder.dosageForm"></span>
+                    <span bo-show="drugOrder.numberPerDosage" bo-text="' - ' + drugOrder.numberPerDosage"></span>
                     <span bo-show="drugOrder.dosageFrequency" bo-text="' - ' + drugOrder.dosageFrequency.name"> </span>
                     <span bo-show="drugOrder.dosageInstruction" bo-text="' - ' + drugOrder.dosageInstruction.name" > </span>
                     <span bo-text="' - ' + (drugOrder.startDate  | date:'d MMM yy')"> </span>
                     <span bo-text="' - for ' + visitSummary.numberOfDosageDaysForDrugOrder(drugOrder) + ' day(s)'"> - </span>
                     <span bo-show="drugOrder.prn"> - Take as required.</span>
-                    <span bo-show="drugOrder.notes" class="notes" bo-text="'(' + drugOrder.notes + ' )'"></span>
+                    <span bo-show="drugOrder.notes" class="notes">
+                    <expander class='expander'>
+                        <span bo-text='drugOrder.notes'></span>
+                    </expander>
+                    </span>
+                    
                     <span bo-text="drugOrder.dateCreated | date: 'h:mm a'"></span>
                     <span bo-text="drugOrder.provider.name"></span>
 	           </li>
@@ -58,6 +82,7 @@
             <ul>
                 <li ng-repeat="note in visitDay.consultationNotes">
                     <span bo-text="note.value"></span>
+                    <span bo-text="note.observationDateTime | date: 'h:mm a'"></span>
                     <span bo-text="note.provider.name"></span>
                 </li>
             </ul>        
@@ -84,9 +109,7 @@
             <h2>Observations</h2>
             <ul>
                 <li ng-repeat="observation in visitDay.observations">
-                    <span bo-text="observation.concept.name + ' - ' + observation.value"></span>
-                    <span bo-text="observation.observationDateTime | date: 'h:mm a'"></span>
-                    <span bo-text="observation.provider.name"></span>
+                    <observation-summary observation="observation"/>
                 </li>
             </ul>        
         </section>

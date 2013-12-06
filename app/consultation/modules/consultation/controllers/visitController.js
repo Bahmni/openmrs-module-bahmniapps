@@ -7,6 +7,7 @@ angular.module('opd.consultation.controllers')
     $scope.hasMoreVisitDays;
     var currentEncounterDate;
     var loading;
+    var DateUtil = Bahmni.Common.Util.DateUtil;
 
     var markLoadingDone = function() {
         loading = false;
@@ -16,7 +17,7 @@ angular.module('opd.consultation.controllers')
     	if(loading) return;
         loading = true;
         encounterService.search(visitUuid, encounterDate.toISOString().substring(0, 10)).success(function(encounterTransactions){
-            var dayNumber = Bahmni.Common.Util.DateUtil.diffInDays($scope.visitSummary.visitStartDateTime, encounterDate) + 1;
+            var dayNumber = DateUtil.getDayNumber($scope.visitSummary.visitStartDateTime, encounterDate);
             var visitDay = Bahmni.Opd.Consultation.VisitDay.create(dayNumber, encounterDate, encounterTransactions, $scope.consultationNoteConcept, $scope.encounterConfig.orderTypes);
             $scope.visitDays.push(visitDay);
 	    }).then(markLoadingDone, markLoadingDone);
@@ -35,3 +36,12 @@ angular.module('opd.consultation.controllers')
         } 
     };        
 }])
+.directive('observationSummary',function () {
+    return {
+        restrict:'E',
+        scope:{
+            observation:"="
+        },
+        template: "<ng-include src=\"'observationSummaryTemplate'\"/>"
+    }
+});
