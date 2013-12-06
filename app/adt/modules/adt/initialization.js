@@ -45,7 +45,7 @@ angular.module('opd.adt').factory('initialization',
             };
 
             var initApp = function() {
-                return appService.initApp('adt', {'extension' : true});
+                return appService.initApp('adt');
             };
 
 

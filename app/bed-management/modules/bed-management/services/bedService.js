@@ -9,15 +9,17 @@ angular.module('opd.bedManagement.services')
                 params: {patientUuid: uuid, v: "full"},
                 withCredentials: true
             }).success(function (response) {
-                    if (response.results.length > 0) {
-                        $rootScope.bedDetails = {};
-                        $rootScope.bedDetails.wardName = response.results[0].physicalLocation.parentLocation.display;
-                        $rootScope.bedDetails.wardUuid = response.results[0].physicalLocation.parentLocation.uuid;
-                        $rootScope.bedDetails.physicalLocationName = response.results[0].physicalLocation.name;
-                        $rootScope.bedDetails.bedNumber = response.results[0].bedNumber;
-                        $rootScope.bedDetails.bedId = response.results[0].bedId;
-                    }
-                });
+                if (response.results.length > 0) {
+                    var bed = response.results[0];
+                    $rootScope.bedDetails = {
+                       'wardName': bed.physicalLocation.parentLocation.display,
+                       'wardUuid': bed.physicalLocation.parentLocation.uuid,
+                       'physicalLocationName' : bed.physicalLocation.name,
+                       'bedNumber' : bed.bedNumber,
+                       'bedId' : bed.bedId
+                    };
+                }
+            });
         };
 
         this.freeBed = function (bedId) {

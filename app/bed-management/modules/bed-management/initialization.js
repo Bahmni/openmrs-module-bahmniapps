@@ -24,4 +24,6 @@ angular.module('opd.bedManagement').factory('initialization',
                     });
                 });
             });
+
+            return initializationPromise.promise;
         }]);

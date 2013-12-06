@@ -68,14 +68,6 @@ angular.module('opd.patient.controllers')
             }
         };
 
-        var formatUrl = function (url, options) {
-            var temp = url;
-            for (var key in options) {
-                temp = temp.replace("{{" + key + "}}", options[key]);
-            }
-            return temp;
-        };
-
         $scope.consultation = function (patient) {
             var currentAppExtension = $scope.searchTypes.filter(function (searchType) {
                 return $scope.searchCriteria.type.id == searchType.id;
@@ -87,7 +79,7 @@ angular.module('opd.patient.controllers')
                 orderTypeUuid:$scope.encounterConfig.orderTypes[Bahmni.Common.Constants.radiologyOrderType]
             };
 
-            $window.location = formatUrl(currentAppExtension.forwardUrl, options);
+            $window.location = appService.getAppDescriptor().formatUrl(currentAppExtension.forwardUrl, options);
         };
 
         $scope.showPatientsForType = function (sType) {
