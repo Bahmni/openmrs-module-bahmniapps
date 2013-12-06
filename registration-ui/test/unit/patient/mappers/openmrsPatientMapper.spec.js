@@ -2,12 +2,11 @@
 
 describe('patientMapper', function () {
 
-    var mapper, bahmniConfiguration, openmrsPatient, ageModule, patientConfiguration;
+    var mapper, openmrsPatient, ageModule, patientConfiguration;
 
     beforeEach(function () {
         module('registration.patient.mappers');
-
-        bahmniConfiguration = {};
+        
         patientConfiguration = new PatientConfig([
             {"uuid": "d3d93ab0-e796-11e2-852f-0800271c1b75", "sortWeight": 2.0, "name": "caste", "description": "Caste", "format": "java.lang.String", "answers": []},
             {"uuid": "d3e6dc74-e796-11e2-852f-0800271c1b75", "sortWeight": 2.0, "name": "class", "description": "Class", "format": "org.openmrs.Concept",
@@ -18,7 +17,6 @@ describe('patientMapper', function () {
 
         inject(['openmrsPatientMapper', '$rootScope', 'age', function (openmrsPatientMapper, $rootScope, age) {
             mapper = openmrsPatientMapper;
-            $rootScope.bahmniConfiguration = bahmniConfiguration;
             $rootScope.patientConfiguration = patientConfiguration;
             ageModule = age;
         }]);
@@ -83,7 +81,6 @@ describe('patientMapper', function () {
 
 
     it('should map values from the openmrs Patient to our patient object', function () {
-        bahmniConfiguration.patientImagesUrl = "http://test.uri/patient_images";
         var age = {years: 2, months: 3, days: 25};
         spyOn(ageModule, 'fromBirthDate').andReturn(age);
 

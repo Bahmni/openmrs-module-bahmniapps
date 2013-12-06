@@ -6,6 +6,7 @@ var constants = {
     encounterType: {
         registration: "REG"
     },
+    // should be picking this up from global properties.
     visitType: {
         registration: "REG",
         returningPatient: "REVISIT",

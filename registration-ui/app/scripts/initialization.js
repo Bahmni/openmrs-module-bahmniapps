@@ -6,10 +6,7 @@ angular.module('registration.initialization', ['infrastructure', 'authentication
             var initializationPromiseDefer = $q.defer();
 
             var loadData = function () {
-                var configurationPromise = configurationService.getAll().success(function (data) {
-                    $rootScope.bahmniConfiguration = data;
-                });
-
+                
                 var encounterConfigPromise = configurationService.getEncounterConfig().success(function (data) {
                     $rootScope.encounterConfiguration = angular.extend(new EncounterConfig(), data);
                 });
@@ -29,7 +26,7 @@ angular.module('registration.initialization', ['infrastructure', 'authentication
                     $rootScope.addressLevels = data;
                 });
 
-                return $q.all([configurationPromise, encounterConfigPromise, patientConfigPromise, addressLevelsPromise, identifierSourceConfigPromise]);
+                return $q.all([encounterConfigPromise, patientConfigPromise, addressLevelsPromise, identifierSourceConfigPromise]);
             };
 
             authenticator.authenticateUser().then(function () {

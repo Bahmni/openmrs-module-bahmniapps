@@ -5,7 +5,6 @@ describe('Patient resource', function () {
     var patient;
     var openmrsUrl = "http://blah";
     var patientConfiguration;
-    var bahmniConfiguration;
 
     var mockHttp = {
         defaults: {headers: {common: {'X-Requested-With': 'present'}}},
@@ -46,13 +45,10 @@ describe('Patient resource', function () {
                 ]}
         ]);
 
-        bahmniConfiguration = {"patientImagesUrl": "http://localhost:8080/patient_images"};
-
         inject(['patientService', '$rootScope', 'patient', function (patientServiceInjectted, $rootScope, patientFactory) {
             patient = patientFactory.create();
             patientService = patientServiceInjectted;
             $rootScope.patientConfiguration = patientConfiguration;
-            $rootScope.bahmniConfiguration = bahmniConfiguration
         }]);
 
     });
