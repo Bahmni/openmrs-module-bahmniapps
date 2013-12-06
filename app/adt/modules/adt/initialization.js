@@ -7,38 +7,50 @@ angular.module('opd.adt').factory('initialization',
                   conceptSetService, authenticator) {
             var initializationPromise = $q.defer();
 
-            if (!String.prototype.trim) {
-                String.prototype.trim = function () {
-                    return this.replace(/^\s+|\s+$/g, '');
-                };
-            }
-
-            var getConsultationConfigs = function () {
-                var configurationsPromises = $q.defer();
-                var configNames = ['encounterConfig', 'patientConfig'];
-                configurationService.getConfigurations(configNames).then(function (configurations) {
-                    $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig);
-                    $rootScope.patientConfig = configurations.patientConfig;
-
-                    return visitService.getVisit($route.current.params.visitUuid).success(function (visit) {
-                        $rootScope.visit = visit;
-                        return patientService.getPatient(visit.patient.uuid).success(function (openMRSPatient) {
-                            $rootScope.patient = patientMapper.map(openMRSPatient);
-                            configurationsPromises.resolve();
-                        });
-
-                    })
+            var getVisit = function() {
+                return visitService.getVisit($route.current.params.visitUuid).success(function (visit) {
+                    $rootScope.visit = visit;
                 });
-                return configurationsPromises.promise;
             };
 
-            authenticator.authenticateUser().then(function () {
-                var configPromise = getConsultationConfigs();
-                configPromise.then(function () {
-                    appService.initApp('adt', {'extension' : true}).then(function () {
-                        initializationPromise.resolve();
-                    });
+            var getPatient = function(visitResponse) {
+                var visit = visitResponse.data;
+                return patientService.getPatient(visit.patient.uuid).success(function (openMRSPatient) {
+                    $rootScope.patient = patientMapper.map(openMRSPatient);
                 });
+            };
+
+            var getPatientVisitInfo = function() {
+                return getVisit().then(getPatient);
+            };
+
+
+            var getConsultationConfigs = function () {
+                var configNames = ['encounterConfig', 'patientConfig'];
+                return configurationService.getConfigurations(configNames).then(function (configurations) {
+                    $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig);
+                    $rootScope.patientConfig = configurations.patientConfig;
+                });
+            };
+
+            var getConfigAndVisitInfo = function() {
+                var deferrables = $q.defer();
+                var promises = [];
+                promises.push(getConsultationConfigs());
+                promises.push(getPatientVisitInfo());
+                $q.all(promises).then(function() {
+                    deferrables.resolve();
+                });
+                return deferrables.promise;
+            };
+
+            var initApp = function() {
+                return appService.initApp('adt', {'extension' : true});
+            };
+
+
+            authenticator.authenticateUser().then(initApp).then(getConfigAndVisitInfo).then(function() {
+                initializationPromise.resolve();
             });
 
             return initializationPromise.promise;
