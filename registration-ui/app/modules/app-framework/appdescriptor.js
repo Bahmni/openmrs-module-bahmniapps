@@ -101,4 +101,20 @@ function AppDescriptor(context, inheritContext, retrieveUserCallback) {
         });
         return (cfgList.length > 0) ? cfgList[0] : null;
     };
+
+    this.formatUrl =  function (url, options) {
+        var pattern = /{{([^}]*)}}/g;
+        var matches = url.match(pattern);
+        var replacedString = url;
+        if (matches) {
+            matches.forEach(function(el) {
+                var key = el.replace("{{",'').replace("}}",'');
+                var value = options[key];
+                if (value) {
+                    replacedString = replacedString.replace(el, options[key]);
+                }
+            });
+        }
+        return replacedString.trim();
+    };
 }

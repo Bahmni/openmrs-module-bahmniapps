@@ -68,7 +68,7 @@
                 <td>{{result.cityVillage}}</td>
                 <td>{{result.dateCreated | date:'dd-MM-yyyy'}}</td>
                 <td class="edit-col">
-                    <a ng-repeat="extension in searchActions" ng-click="doExtensionAction(extension, result)" title="{{extension.label}}"></a>
+                    <a ng-repeat="extension in searchActions" ng-click="doExtensionAction(extension, result)" title="{{extension.label}}" class="{{extension.icon}}"></a>
                 </td>
             </tr>
             </tbody>
