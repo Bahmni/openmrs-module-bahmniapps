@@ -22,7 +22,7 @@ angular.module('bahmni.common.infrastructure.services')
         configurationFunctions.dosageFrequencyConfig = function () {
             var dosageFrequencyConfig =  $http.get(Bahmni.Common.Constants.conceptUrl, {
                 method:"GET",
-                params: { v: 'custom:(uuid,name,answers)', q: Bahmni.Common.Constants.dosageFrequencyConceptName },
+                params: { v: 'custom:(uuid,name,answers)', name: Bahmni.Common.Constants.dosageFrequencyConceptName },
                 withCredentials: true
             });
             return dosageFrequencyConfig;
@@ -31,7 +31,7 @@ angular.module('bahmni.common.infrastructure.services')
         configurationFunctions.dosageInstructionConfig = function () {
             var dosageInstructionConfig =  $http.get(Bahmni.Common.Constants.conceptUrl, {
                 method:"GET",
-                params: { v: 'custom:(uuid,name,answers)', q: Bahmni.Common.Constants.dosageInstructionConceptName },
+                params: { v: 'custom:(uuid,name,answers)', name: Bahmni.Common.Constants.dosageInstructionConceptName },
                 withCredentials: true
             });
             return dosageInstructionConfig;
@@ -40,7 +40,7 @@ angular.module('bahmni.common.infrastructure.services')
         configurationFunctions.consultationNoteConfig = function () {
             var consultationNoteConfig =  $http.get(Bahmni.Common.Constants.conceptUrl, {
                 method:"GET",
-                params: { v: 'custom:(uuid,name,answers)', q: Bahmni.Common.Constants.consultationNoteConceptName },
+                params: { v: 'custom:(uuid,name,answers)', name: Bahmni.Common.Constants.consultationNoteConceptName },
                 withCredentials: true
             });
             return consultationNoteConfig;
@@ -49,7 +49,7 @@ angular.module('bahmni.common.infrastructure.services')
         configurationFunctions.radiologyObservationConfig = function(){
             var radiologyObservationConfig =  $http.get(Bahmni.Common.Constants.conceptUrl, {
                 method:"GET",
-                params: { v: 'custom:(uuid,name)', q: Bahmni.Common.Constants.radiologyResultConceptName },
+                params: { v: 'custom:(uuid,name)', name: Bahmni.Common.Constants.radiologyResultConceptName },
                 withCredentials: true
             });
             return radiologyObservationConfig;
