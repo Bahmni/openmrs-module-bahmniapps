@@ -14,6 +14,9 @@ var EncounterConfig = (function () {
         },
         getDischargeEncounterUuid:function () {
             return this.encounterTypes["DISCHARGE"];
+        },
+        getTransferEncounterUuid:function () {
+            return this.encounterTypes["TRANSFER"];
         }
     };
     return EncounterConfig;

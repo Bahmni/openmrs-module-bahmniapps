@@ -12,10 +12,9 @@ angular.module('opd.bedManagement').factory('initialization',
             }
 
             authenticator.authenticateUser().then(function () {
-                configurationService.getConfigurations(['patientConfig']).then(function (configurations) {
+                configurationService.getConfigurations(['patientConfig', 'encounterConfig']).then(function (configurations) {
                     $rootScope.patientConfig = configurations.patientConfig;
-                    $rootScope.encounterUuid = $route.current.params.encounterUuid;
-
+                    $rootScope.encounterConfig = configurations.encounterConfig;
                     return patientService.getPatient($route.current.params.patientUuid).success(function (openMRSPatient) {
                         $rootScope.patient = patientMapper.map(openMRSPatient);
                         bedService.getBedDetailsForPatient($route.current.params.patientUuid).then(function () {

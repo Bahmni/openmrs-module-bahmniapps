@@ -3,15 +3,15 @@
     <div class="bed-assigned-msg"><div class="confirmationMessage">{{ confirmationMessage}}</div></div>
     <div class="bed-info">
 		<ul>
-			<li>Bed: {{bed.bed.bedNumber}}</li>
-			<div ng-show="!bed.available">
+			<li>Bed: {{selectedBed.bed.bedNumber}}</li>
+			<div ng-show="!selectedBed.available">
                 <div></div>
-                <li>{{bed.patientInfo.identifier}}</li>
-                <li>{{bed.patientInfo.name}}</li>
-                <li>{{bed.patientInfo.gender}}</li>
+                <li>{{selectedBed.patientInfo.identifier}}</li>
+                <li>{{selectedBed.patientInfo.name}}</li>
+                <li>{{selectedBed.patientInfo.gender}}</li>
             </div>
-			<li><a class="assign" ng-show="bed.available && !$parent.bedDetails" ng-click="assignBed(bed)">Assign</a></li>
-			<li><a class="transfer" ng-show="bed.available && $parent.bedDetails" ng-click="assignBed(bed)">Transfer</a></li>
+			<li><a class="assign" ng-show="selectedBed.available && !$parent.bedDetails" ng-click="assignBed(selectedBed)">Assign</a></li>
+			<li><a class="transfer" ng-show="selectedBed.available && $parent.bedDetails" ng-click="assignBed(selectedBed)">Transfer</a></li>
 		</ul>
     </div>
     <div class="bed-assignment">
