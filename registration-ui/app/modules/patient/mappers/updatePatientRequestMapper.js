@@ -33,7 +33,7 @@ var UpdatePatientRequestMapper = (function () {
                         }
                     ],
                     birthdate: this.getBirthdate(patient.birthdate, patient.age),
-                    birthdateEstimated: patient.birthdate === undefined,
+                    birthdateEstimated: patient.birthdate === undefined || patient.birthdate === "",
                     gender: patient.gender,
                     attributes: this.getMrsAttributes(openMRSPatient, patient, patientAttributeTypes)
                 }

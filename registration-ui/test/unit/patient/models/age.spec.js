@@ -20,5 +20,9 @@ describe("Age", function(){
             expect(ageFactory.create(null, 12, null).isEmpty()).toBeFalsy();
             expect(ageFactory.create(null, null, 31).isEmpty()).toBeFalsy();
         });
+
+        it("should be true when all values are 0", function(){
+            expect(ageFactory.create(0, 0, 0).isEmpty()).toBeTruthy();
+        });
     });
 });
