@@ -76,7 +76,7 @@ angular.module('registration.patient.controllers')
             } else if ($scope.submitSource == 'print') {
                 $timeout(function(){
                     printer.print('registrationCard');
-                    goToActionUrl('print', {'patientUuid' : patientProfileData.patient.uuid});
+                    goToActionUrl('print', patientProfileData);
                 });
             } else {
                 goToActionUrl($scope.submitSource, patientProfileData);
