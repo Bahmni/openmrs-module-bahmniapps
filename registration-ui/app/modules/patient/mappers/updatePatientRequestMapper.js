@@ -1,14 +1,15 @@
 'use strict';
 
 var UpdatePatientRequestMapper = (function () {
+    var ObjectUtil = Bahmni.Registration.Util.ObjectUtil;
 
     UpdatePatientRequestMapper.prototype.currentDate = undefined;
 
     function UpdatePatientRequestMapper(currentDate) {
         this.currentDate = currentDate;
     }
-
-    UpdatePatientRequestMapper.prototype.mapFromPatient = function (patientAttributeTypes, openMRSPatient, patient) {
+    
+    UpdatePatientRequestMapper.prototype.mapFromPatient = function (patientAttributeTypes, openMRSPatient, patient) {        
         var openMRSPatientProfile = {
             patient: {
                 person: {
@@ -20,18 +21,7 @@ var UpdatePatientRequestMapper = (function () {
                             "preferred": true
                         }
                     ],
-                    addresses: [
-                        {
-                            uuid: openMRSPatient.person.addresses[0].uuid,
-                            address1: patient.address.address1,
-                            address2: patient.address.address2,
-                            address3: patient.address.address3,
-                            cityVillage: patient.address.cityVillage,
-                            countyDistrict: patient.address.countyDistrict,
-                            stateProvince: patient.address.stateProvince,
-                            "preferred": true
-                        }
-                    ],
+                    addresses: [ObjectUtil.slice(patient.address, constants.allAddressFileds)],
                     birthdate: this.getBirthdate(patient.birthdate, patient.age),
                     birthdateEstimated: patient.birthdate === undefined || patient.birthdate === "",
                     gender: patient.gender,
@@ -71,7 +61,7 @@ var UpdatePatientRequestMapper = (function () {
             attributes.push(attr);
         });
         return attributes;
-    };
+    };    
 
     var setAttributeValue = function (attributeType, attr, value) {
         if (attributeType.format === "org.openmrs.Concept") {

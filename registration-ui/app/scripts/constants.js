@@ -17,5 +17,7 @@ var constants = {
     emrApiRESTBaseURL: "/openmrs/ws/rest/emrapi",
     webServiceRestBaseURL: "/openmrs/ws/rest/v1",
     registrationFeesConcept: "REGISTRATION FEES",
-    defaultVisitTypeName: "REG" //TODO: Read this from config            
+    defaultVisitTypeName: "REG", //TODO: Read this from config
+    allAddressFileds: ["uuid", "preferred", "address1", "address2", "address3", "address4", "address5", "address6", "cityVillage", "countyDistrict", "stateProvince", "postalCode", "country", "latitude", "longitude"]
 };
+

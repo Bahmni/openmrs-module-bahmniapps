@@ -1,7 +1,6 @@
 'use strict';
 
 var CreatePatientRequestMapper = (function () {
-
     function CreatePatientRequestMapper(currentDate) {
         this.currentDate = currentDate;
     }
@@ -17,16 +16,7 @@ var CreatePatientRequestMapper = (function () {
                             "preferred": false
                         }
                     ],
-                    addresses: [
-                        {
-                            address1: patient.address.address1,
-                            address2: patient.address.address2,
-                            address3: patient.address.address3,
-                            cityVillage: patient.address.cityVillage,
-                            countyDistrict: patient.address.countyDistrict,
-                            stateProvince: patient.address.stateProvince
-                        }
-                    ],
+                    addresses: [Bahmni.Registration.Util.ObjectUtil.slice(patient.address, constants.allAddressFileds) ],
                     birthdate: this.getBirthdate(patient.birthdate, patient.age),
                     birthdateEstimated: patient.birthdate === undefined,
                     gender: patient.gender,
