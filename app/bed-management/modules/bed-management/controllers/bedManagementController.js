@@ -13,9 +13,6 @@ angular.module('opd.bedManagement.controllers')
         var minY = 1;
         var currentWardUuid = null;
         var encounterUuid = $route.current.params.encounterUuid;
-        var transferConceptName = 'TRANSFER';
-        var transferConcept = null;
-
         
         var init = function () {
             $('.bed-info').hide();
@@ -24,10 +21,6 @@ angular.module('opd.bedManagement.controllers')
             } else {
                 $scope.showWardList();
             }
-
-            ConceptSetService.getConceptSetMembers(transferConceptName).success(function(data) {
-                transferConcept = data.results.length > 0 ? data.results[0] : null;
-            });
         };
 
         $scope.showWardLayout = function (wardUuid) {
@@ -82,13 +75,6 @@ angular.module('opd.bedManagement.controllers')
             var encounterData = {};
             encounterData.patientUuid = $scope.patient.uuid;
             encounterData.encounterTypeUuid = $rootScope.encounterConfig.encounterTypes['TRANSFER'];
-            // if (transferConcept) {
-            //     var transferObservation = { 
-            //         concept: { uuid: transferConcept.uuid },
-            //         value : 'transferring patient - ' + $scope.patient.identifier + ', to bed - ' + bed.bed.bedNumber
-            //     };
-            //     encounterData.observations = [transferObservation];
-            // }
             encounterService.create(encounterData).success(function(encounter) {
                 encounterUuid = encounter.encounterUuid;
                 assignBedToPatient(bed, encounterUuid);
