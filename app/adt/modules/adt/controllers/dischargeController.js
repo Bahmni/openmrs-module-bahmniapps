@@ -16,7 +16,7 @@ angular.module('opd.adt.controllers')
                 encounterService.create(encounterData).then(function (response) {
                     bedService.getBedDetailsForPatient($scope.patient.uuid).then(function (response) {
                         bedService.freeBed(response.data.results[0].bedId).success(function () {
-                            if (forwardUrl) {
+                            if (forwardLink) {
                                 var forwardUrl = appDescriptor.formatUrl(forwardLink, {'patientUuid' : $scope.patient.uuid});
                                 window.location = forwardUrl;
                             }
