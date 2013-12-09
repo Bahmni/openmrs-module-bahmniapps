@@ -26,8 +26,8 @@ var RegistrationObservations = (function () {
     };
 
     var defaultRegistrationFees = function (observations, isNewPatient, encounterConfig) {
-        registrationFeesUUID = encounterConfig.getConceptUUID(constants.registrationFeesConcept);
-        registrationFee = getConceptObservation(observations, registrationFeesUUID);
+        var registrationFeesUUID = encounterConfig.getConceptUUID(constants.registrationFeesConcept);
+        var registrationFee = getConceptObservation(observations, registrationFeesUUID);
         if (registrationFee === null) {
             observations.push(new ObservationData(null, {uuid: registrationFeesUUID, name: constants.registrationFeesConcept}, defaults.registration_fees(isNewPatient)));
         }
