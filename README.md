@@ -29,7 +29,7 @@ app/components)
 
 Project Structure
 -----------------
-
+<pre>
 ├── app (Entire webapp, source code)
 │   ├── components (All front end components)
 │   │   ├── angular
@@ -79,4 +79,4 @@ Project Structure
     ├── output (Results of test run)
     ├── support (Test support code)
     └── unit (Test code folder)
-
+</pre>
