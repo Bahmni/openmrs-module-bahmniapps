@@ -1,21 +1,32 @@
-Bahmni.Opd.Consultation.Diagnosis = function (concept, order, certainty, existingObsUuid) {
+Bahmni.Opd.Consultation.Diagnosis = function (codedAnswer, order, certainty, existingObsUuid,freeTextAnswer,diagnosisDateTime) {
     var self = this;
-    self.concept = concept;
+    self.codedAnswer = codedAnswer;
     self.order = order ? order : "PRIMARY";
     self.certainty = certainty ? certainty : "PRESUMED";
-    self.existingObsUuid = existingObsUuid;
-    self.displayName = self.concept.conceptName
+    self.existingObs = existingObsUuid;
+    self.freeTextAnswer = freeTextAnswer;
+    self.diagnosisDateTime = diagnosisDateTime;
+    self.conceptName = self.codedAnswer.name;
 
-    self.conceptName = function(){
-        return concept.conceptName;
-    };
+    self.getDisplayName = function(){
+        if(self.freeTextAnswer ){
+            return self.freeTextAnswer ;
+        }
+        else{
+            return self.codedAnswer.name;
+        }
+    }
 
     self.isPrimary = function(){
         return self.order == "PRIMARY";
     }
 
     self.isValid = function(){
-        return (self.displayName !== undefined && self.concept.conceptUuid !== undefined)
-            || (self.displayName === undefined && self.concept.conceptUuid === undefined);
+        return (self.codedAnswer.name !== undefined && self.codedAnswer.uuid !== undefined )
+            || (self.codedAnswer.name === undefined && self.freeTextAnswer === undefined);
+    }
+
+    self.isEmpty = function(){
+        return  self.getDisplayName() === undefined || self.getDisplayName().length === 0;
     }
 };

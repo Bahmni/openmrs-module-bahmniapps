@@ -10,15 +10,18 @@ angular.module('opd.consultation.controllers')
 
                     if(response.data.results && response.data.results.length){
                         $rootScope.disposition.dispositionActionUuid = response.data.results[0].uuid;
-                        $scope.dispositionActions = response.data.results.filter(function(concept){
-                            return concept.name.name === Bahmni.Opd.Consultation.Constants.dispositionConcept
-                        })[0].answers;
+                        $scope.dispositionActions = response.data.results[0].answers;
                     }
 
-                    var disposition = $rootScope.disposition.dispositions[$rootScope.disposition.currentActionIndex];
+                    var disposition = $rootScope.disposition;
                     if(disposition){
-                        $scope.dispositionAction =  disposition.adtName;
-                        $scope.dispositionNotes = disposition.adtNoteValue;
+                        $scope.dispositionAction =  disposition.code;
+                        if(disposition.additionalObs){
+                            $scope.dispositionNotes = disposition.additionalObs.filter(function(obs){
+                                return  obs.concept.uuid === $scope.dispositionNoteConceptUuid;
+                            })[0];
+                        }
+
                     }
                 }
 
@@ -34,7 +37,7 @@ angular.module('opd.consultation.controllers')
         }
 
 
-        var getMappingCode = function(concept){
+        $scope.getMappingCode = function(concept){
             var mappingCode="";
             if(concept.mappings){
                 concept.mappings.forEach(function(mapping){
@@ -47,31 +50,45 @@ angular.module('opd.consultation.controllers')
             return mappingCode;
         }
 
-        var getSelectedDispositionAction = function(){
+        var getSelectedDisposition = function(){
             var selectedAction ='';
-
             if($scope.dispositionAction){
                 for(var i=0;i< $scope.dispositionActions.length;i++){
-                    if($scope.dispositionActions[i].name.name.toLowerCase() === $scope.dispositionAction.toLowerCase()){
+                    if($scope.getMappingCode($scope.dispositionActions[i]) === $scope.dispositionAction){
                         selectedAction =   $scope.dispositionActions[i];
                         break;
                     }
                 }
-
                 var d = new Date();
+                var additionalObs = constructDispositionNoteObs($scope.dispositionNotes);
                 return {
-                    adtValueUuid : selectedAction.uuid,
-                    adtDateTime : d.toDateString() +" "+d.getHours()+":"+d.getMinutes(),
-                    adtNoteValue : $scope.dispositionNotes,
-                    adtName : selectedAction.name.name,
-                    adtCode: getMappingCode(selectedAction)
+                    dispositionDateTime : d,//.toDateString() +" "+d.getHours()+":"+d.getMinutes(),
+                    additionalObs :additionalObs ,
+                    code: $scope.getMappingCode(selectedAction),
+                    conceptName: selectedAction.name.name
                 };
             }
 
         }
 
+        var constructDispositionNoteObs = function(notesObs){
+            if(notesObs){
+                var additionalObs =   [
+                    {
+                        concept:{
+                            uuid:$scope.dispositionNoteConceptUuid
+                        },
+                        value: notesObs.value
+                    }
+                ];
+                return additionalObs;
+            }
+            else{
+                return "";
+            }
+        }
 
-        var updateDispositionsList = function(){
+       /* var updateDispositionsList = function(){
             if(!$rootScope.disposition.dispositions){
                 $rootScope.disposition.dispositions =  [];
             }
@@ -86,27 +103,15 @@ angular.module('opd.consultation.controllers')
                     $rootScope.disposition.dispositions.push(currentAction);
                 }
             }
-        }
+        }*/
 
-        var getDispositionInSaveFormat = function(){
-            var selectedAction = getSelectedDispositionAction();
-            if(selectedAction){
-                return {
-                    code : selectedAction.adtCode,
-                    additionalObs :[{
-                        concept: { uuid: $scope.dispositionNoteConceptUuid },
-                        value : selectedAction.adtNoteValue
-                    }]
-                }
-            }
-        }
 
 
 
         loadDispositionActions();
 
         $scope.$on('$destroy', function() {
-            updateDispositionsList();
-            $rootScope.disposition.adtToStore  =   getDispositionInSaveFormat();
+      //      updateDispositionsList();
+            $rootScope.disposition  =   getSelectedDisposition();
         });
     }]);

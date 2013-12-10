@@ -28,8 +28,8 @@
         <div id="selectedNodesArea" tabindex="0">
             <span ng-repeat="investigation in consultation.investigations"
                 class="selectedNode"
-                ng-class="{panel: investigation.isSet, voided: investigation.voided}">
-                <span class="test-name">{{investigation.name}}</span>
+                ng-class="{panel: investigation.concept.isSet, voided: investigation.voided}">
+                <span class="test-name">{{investigation.concept.name}}</span>
                 <button class="icon-remove icon-white" ng-click="removeInvestigation(investigation)"></button>
             </span>
         </div>

@@ -1,6 +1,6 @@
 Bahmni.Opd.LabResultsMapper = function() {
-    this.map = function (encounter) {
-        return getLabResults(getLabResultObs(encounter));
+    this.map = function (encounterTransaction) {
+        return getLabResults(getLabResultObs(encounterTransaction));
     };
 
     var getLabResults = function(observations) {
@@ -35,9 +35,9 @@ Bahmni.Opd.LabResultsMapper = function() {
         return resultObs.length == 1 ? resultObs[0].value : null;
     };
 
-    var getLabResultObs = function (encounter) {
+    var getLabResultObs = function (encounterTransaction) {
         var labResultObs;
-        encounter.obs.forEach(function(observation) {
+        encounterTransaction.observations.forEach(function(observation) {
             if(observation.concept.name.name == "Laboratory") {
                 labResultObs = observation.groupMembers;
             };

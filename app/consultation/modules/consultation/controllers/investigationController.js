@@ -8,7 +8,7 @@ angular.module('opd.consultation.controllers')
             {name: 'Laboratory', orderType: 'Lab Order'},
             {name: 'Radiology', orderType: 'Radiology Order'},
             {name: 'Endoscopy'},
-            {name: 'Others'},
+            {name: 'Others'}
         ]
 
         $scope.activateTab = function(tab){

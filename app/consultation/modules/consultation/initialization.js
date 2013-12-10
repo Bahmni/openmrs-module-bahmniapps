@@ -17,10 +17,10 @@ angular.module('opd.consultation').factory('initialization',
         var getVisit = function() {
             return visitService.getVisit($route.current.params.visitUuid).success(function (visit) {
                 $rootScope.visit = visit;
-                $rootScope.consultation = new Bahmni.Opd.ConsultationMapper($rootScope.encounterConfig,
-                    $rootScope.dosageFrequencyConfig, $rootScope.dosageInstructionConfig, $rootScope.consultationNoteConcept).map(visit);
-                $rootScope.disposition = new Bahmni.Opd.DispositionMapper($rootScope.encounterConfig).map(visit);
-                $rootScope.disposition.currentActionIndex = 0; // this will be used in case we have multiple encounters with dispositions
+//                $rootScope.consultation = new Bahmni.Opd.ConsultationMapper($rootScope.encounterConfig,
+//                    $rootScope.dosageFrequencyConfig, $rootScope.dosageInstructionConfig, $rootScope.consultationNoteConcept).map(visit);
+//                $rootScope.disposition = new Bahmni.Opd.DispositionMapper($rootScope.encounterConfig).map(visit);
+//                $rootScope.disposition.currentActionIndex = 0; // this will be used in case we have multiple encounters with dispositions
             });
         };
 
@@ -41,10 +41,14 @@ angular.module('opd.consultation').factory('initialization',
         //     visitUuid: $route.current.params.visitUuid,
         //     redirectUrl:  $route.current.params["redirect-url"]
         // };
-        var getActiveEncounter = function(visitResponse) {
-            var visit = visitResponse.data;
-            return encounterService.recent(visit.patient.uuid,$rootScope.encounterConfig.getOpdConsultationEncounterUuid(),visit.visitType.uuid).success(function (encounterTransaction) {
+        var getActiveEncounter = function() {
+            var visit = $rootScope.visit;
+            return encounterService.activeEncounter(visit.patient.uuid,$rootScope.encounterConfig.getOpdConsultationEncounterUuid(),visit.visitType.uuid,true).success(function (encounterTransaction) {
                 $rootScope.activeEncounterTransaction = encounterTransaction;
+                $rootScope.consultation = new Bahmni.Opd.ConsultationMapper($rootScope.encounterConfig,
+                    $rootScope.dosageFrequencyConfig, $rootScope.dosageInstructionConfig, $rootScope.consultationNoteConcept).map(encounterTransaction);
+                    $rootScope.disposition = encounterTransaction.disposition;
+                    $rootScope.disposition.currentActionIndex = 0; // this will be used in case we have multiple encounters with dispositions
             });
         };
 
@@ -53,7 +57,7 @@ angular.module('opd.consultation').factory('initialization',
         };
 
         return authenticator.authenticateUser().then(initApp).then(getConsultationConfigs)
-                            .then(getVisit).then(getPatient).then(getVisitSummary);
+                            .then(getVisit).then(getPatient).then(getActiveEncounter).then(getVisitSummary);
     }]
 );
 

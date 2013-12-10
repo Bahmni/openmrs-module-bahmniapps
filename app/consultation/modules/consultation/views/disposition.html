@@ -4,13 +4,13 @@
     <br/>
     <form ng-submit="submit()">
         <p >
-            <select ng-model="dispositionAction" ng-options="d.name.name as d.name.name for d in dispositionActions" >
+            <select ng-model="dispositionAction" ng-options="getMappingCode(d) as d.name.name for d in dispositionActions" >
 
             </select>
         </p>
 
         <br/>
-        <textarea id="dispositionNotes" ng-model="dispositionNotes">
+        <textarea id="dispositionNotes" ng-model="dispositionNotes.value">
 
         </textarea>
         <br/>

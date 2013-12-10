@@ -18,32 +18,32 @@
             <div class="diagnosis-type">
                 <h3>Primary Diagnoses</h3>
                 <div ng-repeat="diagnosis in consultation.diagnoses" ng-show="diagnosis.isPrimary()">
-                    {{diagnosis.conceptName()}}&nbsp;({{diagnosis.certainty}})
+                    {{diagnosis.conceptName}}&nbsp;({{diagnosis.certainty}})
                 </div>
             </div>
             <div class="diagnosis-type">
                 <h3>Secondary Diagnoses</h3>
                 <div ng-repeat="diagnosis in consultation.diagnoses" ng-hide="diagnosis.isPrimary()">
-                    {{diagnosis.conceptName()}}&nbsp;({{diagnosis.certainty}})
+                    {{diagnosis.conceptName}}&nbsp;({{diagnosis.certainty}})
                 </div>
             </div>
         </div>
     </section>
     <section class="block disposition">
         <h2>Disposition</h2>
-        <div ng-repeat="disposition in disposition.dispositions"  class="block-content">
+
             <ul>
                 <li>
-                    -&nbsp; {{disposition.adtName}}
+                    -&nbsp; {{disposition.conceptName}}
                 </li>
                 <li>
-                    -&nbsp; {{disposition.adtDateTime}}
+                    -&nbsp; {{disposition.dispositionDateTime | date :'dd-MM-yyyy hh:mm' }}
                 </li>
                 <li>
-                    - &nbsp;{{disposition.adtNoteValue}}
+                    - &nbsp;{{disposition.additionalObs[0].value}}
                 </li>
             </ul>
-        </div>
+
     </section>
     <section class="block treatment">
         <h2>Treatment</h2>

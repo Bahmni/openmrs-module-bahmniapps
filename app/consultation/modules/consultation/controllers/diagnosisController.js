@@ -15,7 +15,7 @@ angular.module('opd.consultation.controllers')
     var _canAdd = function (diagnosis) {
         var canAdd = true;
         $scope.diagnosisList.forEach(function (observation) {
-            if (observation.concept.conceptName === diagnosis.concept.conceptName) {
+            if (observation.conceptName === diagnosis.conceptName) {
                 canAdd = false;
             }
         });
@@ -60,9 +60,6 @@ angular.module('opd.consultation.controllers')
         return invalidDrugs.length === 0;
     }
 
-    var isNotEmptyDiagnosis = function (diagnosis) {
-        return diagnosis.concept !== undefined && diagnosis.displayName !== undefined && diagnosis.displayName.length !== 0;
-    }
 
     $scope.selectItem = function (item, index) {
         addDiagnosis(item.concept, index);
@@ -76,8 +73,9 @@ angular.module('opd.consultation.controllers')
 
     $scope.$on('$destroy', function () {
         $rootScope.consultation.diagnoses = $scope.diagnosisList.filter(function (diagnosis) {
-            return diagnosis.concept.conceptName !== undefined;
+            return !diagnosis.isEmpty();
         });
+
     });
 
     $scope.processDiagnoses = function (data) {
@@ -100,12 +98,12 @@ angular.module('opd.consultation.controllers')
     $scope.clearEmptyRows = function (index) {
         var iter;
         for(iter=0; iter<$scope.diagnosisList.length; iter++){
-            if(!isNotEmptyDiagnosis($scope.diagnosisList[iter]) && iter !== index){
+            if($scope.diagnosisList[iter].isEmpty() && iter !== index){
                 $scope.diagnosisList.splice(iter, 1)
             }
         }
         var emptyRows = $scope.diagnosisList.filter(function (diagnosis) {
-                return !isNotEmptyDiagnosis(diagnosis);
+                return diagnosis.isEmpty();
             }
         )
         if(emptyRows.length == 0){
@@ -133,12 +131,18 @@ angular.module('opd.consultation.controllers')
                                 if (concept.conceptName === concept.matchedName) {
                                     return {
                                         'value':concept.matchedName,
-                                        'concept':concept
+                                        'concept':{
+                                            'name': concept.conceptName,
+                                            'uuid':concept.conceptUuid
+                                        }
                                     }
                                 }
                                 return {
                                     'value':concept.matchedName + "=>" + concept.conceptName,
-                                    'concept':concept
+                                    'concept':{
+                                        'name': concept.conceptName,
+                                        'uuid': concept.conceptUuid
+                                    }
                                 }
                             }
                         ));

@@ -15,6 +15,10 @@ Bahmni.Opd.Consultation.TreatmentDrug = function () {
     this.empty = true;
     this.savedDrug = false;
 
+    this.setNumberOfDosageDays = function(startDate,endDate){
+        this.numberOfDosageDays = Bahmni.Common.Util.DateUtil.diffInDays(new Date(endDate), new Date(startDate))
+    }
+
     this.requestFormat = function(startDate) {
         var endDate = new Date(startDate);
         endDate.setDate(endDate.getDate() + this.numberOfDosageDays);

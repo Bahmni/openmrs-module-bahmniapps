@@ -13,7 +13,7 @@
                     <div ng-repeat="diagnosis in diagnosisList" class="table-body">
                         <div class="row">
                             <div class="col col1">
-                                <input ng-model="diagnosis.displayName" type="text" name="name" ui-autocomplete
+                                <input ng-model="diagnosis.codedAnswer.name" type="text" name="name" ui-autocomplete
                                        ng-change="clearEmptyRows($index)">
                             </div>
                             <div class="col col2">
@@ -26,7 +26,7 @@
                             </div>
                             <div class="col col4">
                                 <button type="button" class="small-btn" ng-click="removeObservation($index)"
-                                        ng-show="diagnosis.displayName">
+                                        ng-show="diagnosis.codedAnswer.name">
                                     <span class="icon-remove"></span>
                                 </button>
                             </div>

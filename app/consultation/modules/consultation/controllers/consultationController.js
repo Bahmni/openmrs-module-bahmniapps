@@ -13,10 +13,10 @@ angular.module('opd.consultation.controllers')
         if ($rootScope.consultation.diagnoses && $rootScope.consultation.diagnoses.length > 0){
             encounterData.diagnoses = $rootScope.consultation.diagnoses.map(function (diagnosis) {
                 return {
-                    codedAnswer: { uuid: diagnosis.concept.conceptUuid },
+                    codedAnswer: { uuid: diagnosis.codedAnswer.uuid },
                     order:diagnosis.order,
                     certainty:diagnosis.certainty,
-                    existingObs:diagnosis.existingObsUuid
+                    existingObs:diagnosis.existingObs
                 }
             });
         }
@@ -37,7 +37,7 @@ angular.module('opd.consultation.controllers')
             });
         }
 
-        encounterData.disposition = $rootScope.disposition.adtToStore;
+        encounterData.disposition = $rootScope.disposition;
 
         var addObservationsToEncounter = function(){
             if ($scope.consultation.consultationNote.value) {
