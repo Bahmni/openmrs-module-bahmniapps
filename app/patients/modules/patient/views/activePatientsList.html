@@ -16,7 +16,7 @@
     </div>
     <div resize class="active-visits">
         <div infinite-scroll='loadMore()' >
-            <li  ng-repeat="patient in visiblePatients" style="display: inline-block;margin:5px;" ng-click="consultation(patient)">
+            <li  ng-repeat="patient in visiblePatients" style="display: inline-block;margin:5px;" ng-click="forwardPatient(patient)">
                 <img class="smallImages" ng-src="{{patient.image}}"  onerror="this.onerror=null;this.src='../images/blank-user.gif';" >
                 <div class="centered">{{patient.name}}</div>
                 <div class="centered">{{patient.identifier}}</div>

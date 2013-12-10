@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('opd.consultation').factory('initialization',
-    ['$rootScope', '$route', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'authenticator', 'appService',
-    function ($rootScope, $route, configurationService, visitService, patientService, patientMapper, authenticator, appService) {
+    ['$rootScope', '$route', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'authenticator', 'appService', '$location', 
+    function ($rootScope, $route, configurationService, visitService, patientService, patientMapper, authenticator, appService, $location) {
         var getConsultationConfigs = function() {
             var configNames = ['encounterConfig', 'patientConfig', 'dosageFrequencyConfig','dosageInstructionConfig', 'consultationNoteConfig'];
             return configurationService.getConfigurations(configNames).then(function (configurations) {
@@ -36,6 +36,11 @@ angular.module('opd.consultation').factory('initialization',
                 $rootScope.visitSummary = Bahmni.Opd.Consultation.VisitSummary.create(encounterTransactions);
             });
         };
+
+        // $rootScope.context = {
+        //     visitUuid: $route.current.params.visitUuid,
+        //     redirectUrl:  $route.current.params["redirect-url"]
+        // };
 
         var initApp = function() {
             return appService.initApp('clinical', {'extension' : true});

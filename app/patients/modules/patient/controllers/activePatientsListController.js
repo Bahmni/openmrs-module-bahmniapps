@@ -68,7 +68,7 @@ angular.module('opd.patient.controllers')
             }
         };
 
-        $scope.consultation = function (patient) {
+        $scope.forwardPatient = function (patient) {
             var currentAppExtension = $scope.searchTypes.filter(function (searchType) {
                 return $scope.searchCriteria.type.id == searchType.id;
             })[0];
@@ -76,6 +76,7 @@ angular.module('opd.patient.controllers')
             var options = {
                 patientUuid:patient.uuid,
                 visitUuid:patient.activeVisitUuid,
+                redirectUrl: escape($location.absUrl()),
                 orderTypeUuid:$scope.encounterConfig.orderTypes[Bahmni.Common.Constants.radiologyOrderType]
             };
 
