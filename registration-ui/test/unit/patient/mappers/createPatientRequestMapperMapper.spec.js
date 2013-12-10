@@ -87,7 +87,7 @@ describe('patient mapper', function () {
             {
                 "identifier": "GAN200011",
                 "identifierType": {
-                    "name": "JSS"
+                    "name": "Bahmni Id"
                 },
                 "preferred": true,
                 "voided": false
