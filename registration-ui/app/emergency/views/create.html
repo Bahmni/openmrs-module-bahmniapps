@@ -53,15 +53,7 @@
                         </div>
                     </div>
                 </article>
-                <article class="form-field">
-                    <div class="field-attribute">
-                        <label class="control-label" for="village">Village</label>
-                    </div>
-                    <div class="field-value">
-                        <input type="text" id="village" ng-model="patient.address.cityVillage" placeholder="Village"
-                               my-autocomplete source="getVillageList" response-map="getAddressDataResults" on-select="villageSelected">
-                    </div>
-                </article>
+                <article address-fields data-address-levels="addressLevels" data-address="patient.address"></article>
             </section>
             <div class="submit-btn-container">
                 <div class="right">

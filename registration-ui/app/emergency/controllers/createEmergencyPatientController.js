@@ -3,6 +3,13 @@
 angular.module('registration.emergency.controllers')
     .controller('CreateEmergencyPatientController', [ '$rootScope', '$scope', '$location', 'patient', 'patientService', 'encounterService', 'Preferences', 'addressAttributeService', 'spinner',
     function ($rootScope, $scope, $location, patientModel, patientService, encounterService, preferences, addressAttributeService, spinner) {
+
+        var getVillageAddressLevel = function(){
+            return $scope.addressLevels.filter(function(item) {
+                return (item.name === "Village");
+            });
+        }
+
         var init = function(){
             $scope.patient = patientModel.create();
             $scope.identifierSources = $rootScope.patientConfiguration.identifierSources;
@@ -15,7 +22,7 @@ angular.module('registration.emergency.controllers')
             var visitTypeUuid = $scope.encounterConfiguration.visitTypes[constants.visitType.emergency];
             var encounterTypeUuid = $scope.encounterConfiguration.encounterTypes[constants.encounterType.registration];
             $scope.encounter = {visitTypeUuid: visitTypeUuid, encounterTypeUuid: encounterTypeUuid, observations: []};
-
+            $scope.addressLevels = getVillageAddressLevel();
         };
         init();
 
@@ -53,19 +60,5 @@ angular.module('registration.emergency.controllers')
                 spinner.forPromise(visitPromise);
             });
             spinner.forPromise(patientPromise);
-        };
-
-        $scope.getAddressDataResults = function (data) {
-            return data.map(function (addressField) {
-                return {'value': addressField.name, 'label': addressField.name + ( addressField.parent ? ", " + addressField.parent.name : "" ), addressField: addressField}
-            });
-        };
-
-        $scope.getVillageList = function (id, query, type) {
-            return addressAttributeService.search("cityVillage", query);
-        };
-
-        $scope.villageSelected = function (item) {
-            $scope.patient.address.cityVillage = item.addressField;
         };
     }]);
