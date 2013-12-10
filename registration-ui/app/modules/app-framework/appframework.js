@@ -105,26 +105,13 @@ angular.module('appFramework', ['authentication'])
         };
     }])
     .directive('appExtensionList', ['appService', function(appService) {
-        var urlFormatter =  function (url, options) {
-            var pattern = /{{([^}]*)}}/g;
-            var matches = url.match(pattern);
-            var replacedString = url;
-            if (matches) {
-                matches.forEach(function(el) {
-                    var key = el.replace("{{",'').replace("}}",'');
-                    var value = options[key];
-                    if (value) {
-                        replacedString = replacedString.replace(el, options[key]);
-                    }
-                });
-            }
-            return replacedString.trim();
-        };
+        var appDescriptor = appService.getAppDescriptor(); 
         return {
             restrict:'EA',
             template: '<ul><li ng-repeat="appExtn in appExtensions">'
-                + '<a href="{{formatUrl(appExtn.url, extnParams)}}" onclick="return false;" title="{{appExtn.label}}" ng-click="extnLinkClick(appExtn, extnParams)">'
-                + '<span ng-show="showLabel">{{appExtn.label}}</span>'
+                + '<a href="{{formatUrl(appExtn.url, extnParams)}}" class="{{appExtn.icon}}" '
+                + ' onclick="return false;" title="{{appExtn.label}}" ng-click="extnLinkClick(appExtn, extnParams)">'
+                + ' <span ng-show="showLabel">{{appExtn.label}}</span>'
                 +'</a></li></ul>',
             scope: {
                 extnPointId : '@',
@@ -133,7 +120,6 @@ angular.module('appFramework', ['authentication'])
                 contextModel:'&'
             },
             compile: function(cElement, cAttrs) {
-                var appDescriptor = appService.getAppDescriptor();
                 var extnList = appDescriptor.getExtensions(cAttrs.extnPointId);
                 return function(scope, lElement, attrs) {
                     scope.appExtensions = extnList;
@@ -142,11 +128,11 @@ angular.module('appFramework', ['authentication'])
                 };
             },
             controller: function($scope, $location) {
-                $scope.formatUrl = urlFormatter;
+                $scope.formatUrl = appDescriptor.formatUrl;
                 $scope.extnLinkClick = function(extn, params) {
                     var proceedWithDefault = true;
                     var clickHandler = $scope.onExtensionClick();
-                    var target = urlFormatter(extn.url, params);
+                    var target = appDescriptor.formatUrl(extn.url, params);
                     if (clickHandler) {
                         var event = {
                             'src': extn,
