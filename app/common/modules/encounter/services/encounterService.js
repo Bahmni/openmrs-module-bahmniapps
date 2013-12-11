@@ -86,14 +86,9 @@ angular.module('bahmni.common.encounter.services')
         return searchable.promise;
     };
 
-    this.activeEncounter = function (patientUUID,encounterTypeUUID,visitTypeUUID,includeAll) {
+    this.activeEncounter = function (params) {
         return $http.get(Bahmni.Common.Constants.recentEncounterUrl, {
-            params:{
-                patientUuid : patientUUID,
-                encounterTypeUuid : encounterTypeUUID,
-                visitTypeUuid : visitTypeUUID,
-                includeAll : includeAll
-            },
+            params: params,
             withCredentials : true
         });
     };

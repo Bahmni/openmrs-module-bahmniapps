@@ -1,12 +1,16 @@
 'use strict';
 
 angular.module('opd.consultation.controllers').controller('ConsultationNavigationController',
-    ['$scope', '$rootScope', '$location', '$route', '$window', 'appService',
-        function ($scope, $rootScope, $location, $route, $window, appService) {
+    ['$scope', '$rootScope', '$location', '$route', '$window', 'appService', 'urlHelper',
+        function ($scope, $rootScope, $location, $route, $window, appService, urlHelper) {
             //$scope.mainButtonText = "Consultation";
+            var boardTypes = {
+                visit: 'visit',
+                consultation: 'consultation'
+            };
             $scope.availableBoards = [
-                { name: 'Visit', url: 'visit'},
-                { name: 'Consultation', url: 'consultation'}
+                { name: 'Visit', url: '', type: boardTypes.visit},
+                { name: 'Consultation', url: 'consultation', type: boardTypes.consultation }
             ];
             $scope.currentBoard = $scope.availableBoards[0];
             $scope.showBoard = function (name) {
@@ -29,7 +33,7 @@ angular.module('opd.consultation.controllers').controller('ConsultationNavigatio
                     var appExtensions = appService.getAppDescriptor().getExtensions("org.bahmni.clinical.consultation.board", "link");
                     var addlBoards = [];
                     appExtensions.forEach(function (appExtn) {
-                        addlBoards.push({ name: appExtn.label, url: appExtn.url });
+                        addlBoards.push({ name: appExtn.label, url: appExtn.url, type: boardTypes.consultation });
                     });
                     $scope.availableBoards = $scope.availableBoards.concat(addlBoards);
                     setCurrentBoardBasedOnPath();
@@ -55,7 +59,8 @@ angular.module('opd.consultation.controllers').controller('ConsultationNavigatio
             };
 
             var getUrl = function (board) {
-                return $location.url("/visit/" + $rootScope.visit.uuid + "/" + board.url);
+                var urlPrefix = board.type === boardTypes.visit ? urlHelper.getVisitUrl($rootScope.activeEncounterTransaction.visitUuid) : urlHelper.getPatientUrl();
+                return $location.url( urlPrefix + "/" + board.url);                    
             };
 
 

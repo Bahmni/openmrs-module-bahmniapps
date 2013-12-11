@@ -7,7 +7,6 @@ describe("LabResultsMapper", function () {
         expect(mappedLabResults.length).toBe(1);
 
         expect(mappedLabResults[0].name).toBe("Anaemia Panel");
-        console.log(mappedLabResults[0]);
         expect(mappedLabResults[0].value).toBe("100.0");
        // expect(mappedLabResults[0].notes).toEqual(["I am a note"]);
         expect(mappedLabResults[0].members.length).toBe(1);
