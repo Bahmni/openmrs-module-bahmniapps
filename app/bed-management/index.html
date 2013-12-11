@@ -9,7 +9,7 @@
         <title>Bed-Management</title>
     </head>
     <body>
-        <div ng-app="bedManagement" ng-controller="NavigationController">
+        <div ng-app="bedManagement">
             <div ng-include src="'../common/modules/patient/header/views/header.html'"></div>
             <div class="opd-wrapper">
                 <div ng-view id="view-content" class="opd-content-wrapper"></div>
@@ -47,7 +47,6 @@
 
             <script src="modules/bed-management/init.js"></script>
             <script src="modules/bed-management/initialization.js"></script>
-            <script src="modules/bed-management/controllers/navigationController.js"></script>
             <script src="modules/bed-management/controllers/bedManagementController.js"></script>
             <script src="modules/bed-management/services/wardService.js"></script>
             <script src="modules/bed-management/services/bedService.js"></script>
