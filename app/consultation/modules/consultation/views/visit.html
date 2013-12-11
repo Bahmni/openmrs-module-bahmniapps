@@ -19,7 +19,7 @@
         <li ng-click="showVisitSummary(visit)" class="visit-history-entry" ng-class="{'selected': isCurrentVisit(visit)}" ng-repeat="visit in visits">
             <a href="">
                 <span bo-text="visit.startDatetime | date: 'd MMM yy'"></span>
-                <span bo-text="'-' + (visit.stopDatetime | date: 'd MMM yy')" bo-hide="visit.isOneDayVisit()"></span>
+                <span bo-text="'- ' + (visit.stopDatetime | date: 'd MMM yy')" bo-hide="visit.isOneDayVisit()"></span>
             </a>
         </li>
     </ul>

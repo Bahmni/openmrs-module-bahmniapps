@@ -6,6 +6,10 @@ angular.module('opd.consultation.helpers')
     	return '/patient/' + $route.current.params.patientUuid;
     };
 
+	this.getConsultationUrl = function() {
+		return this.getPatientUrl() + '/consultation';
+	}
+
     this.getVisitUrl = function(visitUuid) {
     	return this.getPatientUrl() + '/visit/' + visitUuid;
     }
