@@ -17,10 +17,6 @@ angular.module('opd.consultation').factory('initialization',
         var getVisit = function() {
             return visitService.getVisit($route.current.params.visitUuid).success(function (visit) {
                 $rootScope.visit = visit;
-//                $rootScope.consultation = new Bahmni.Opd.ConsultationMapper($rootScope.encounterConfig,
-//                    $rootScope.dosageFrequencyConfig, $rootScope.dosageInstructionConfig, $rootScope.consultationNoteConcept).map(visit);
-//                $rootScope.disposition = new Bahmni.Opd.DispositionMapper($rootScope.encounterConfig).map(visit);
-//                $rootScope.disposition.currentActionIndex = 0; // this will be used in case we have multiple encounters with dispositions
             });
         };
 
