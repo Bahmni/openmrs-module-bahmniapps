@@ -3,6 +3,7 @@
 angular.module('appFramework', ['authentication'])
     .service('appService', ['$http', '$q', 'sessionService','$rootScope', function ($http, $q, sessionService, $rootScope) {
         var currentUser = null;
+        var currentProvider = null;
         var baseUrl = "/bahmni_config/openmrs/apps/";
         var appDescriptor = null;
 
@@ -84,7 +85,11 @@ angular.module('appFramework', ['authentication'])
                 return currentUser;
             });
 
-            promises.push(sessionService.loadCredentials());
+            var loadCredentialsPromise = sessionService.loadCredentials();
+            var loadProvidersPromise = loadCredentialsPromise.then(sessionService.loadProviders)
+
+            promises.push(loadCredentialsPromise);
+            promises.push(loadProvidersPromise);
             if (opts.extension) {
                 promises.push(loadExtensions(appDescriptor));
             }

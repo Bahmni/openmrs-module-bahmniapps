@@ -37,21 +37,35 @@ angular.module('authentication', ['ngCookies'])
 
         this.loadCredentials = function () {
             var deferrable = $q.defer();
+             
             var currentUser = $cookieStore.get('bahmni.user');
             $http.get("/openmrs/ws/rest/v1/user", {
                 method: "GET",
                 params: {
                     username: currentUser,
-                    v: "custom:(username,privileges:(name,retired))"
+                    v: "custom:(username,uuid,privileges:(name,retired))"
                 },
                 cache: false
-            }).success(function (data) {
-                    $rootScope.currentUser = data.results[0];
-                    deferrable.resolve(data.results[0]);
-                }).error(function () {
+            }).success(function(data) {
+                $rootScope.currentUser = data.results[0];
+                deferrable.resolve(data.results[0]);
+            }).error(function () {
                     deferrable.reject('Could not get roles for the current user.');
                 });
             return deferrable.promise;
+        };
+
+        this.loadProviders = function(data) {
+            return $http.get("/openmrs/ws/rest/v1/provider", {
+                        method: "GET",
+                        params: {
+                            user: $rootScope.currentUser.uuid
+                        },
+                        cache: false
+                    }).success(function (data) {
+                        $rootScope.currentProvider = { uuid:data.results[0].uuid };
+                        console.log($rootScope.currentProvider);
+                    });
         };
 
     }]).factory('authenticator', ['$rootScope', '$q', '$window', 'sessionService', function ($rootScope, $q, $window, sessionService) {
