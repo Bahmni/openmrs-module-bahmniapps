@@ -84,7 +84,7 @@ angular.module('opd.consultation.controllers')
                 return additionalObs;
             }
             else{
-                return "";
+                return [];
             }
         }
 
