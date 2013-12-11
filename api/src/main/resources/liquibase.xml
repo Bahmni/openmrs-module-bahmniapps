@@ -10,45 +10,95 @@
         for a list of supported elements and attributes
     -->
  
-    <changeSet id="bahmni-reg-20130930-01" author="mario-areias">
+    <changeSet id="20130930-01" author="mario-areias">
         <customChange class="org.openmrs.util.databasechange.SourceMySqldiffFile">
-			<param name="sqlFile">V1_10__SetupVisitAndEncounterTypes.sql</param>
+			<param name="sqlFile">V1_10__Registration.sql</param>
 		</customChange>
     </changeSet>
 
-    <changeSet id="bahmni-reg-20130930-02" author="mario-areias">
+    <changeSet id="20130930-02" author="mario-areias">
         <customChange class="org.openmrs.util.databasechange.SourceMySqldiffFile">
-            <param name="sqlFile">V1_11__CreateConceptSetForRegistrationConcepts.sql</param>
+            <param name="sqlFile">V1_11__Registration.sql</param>
         </customChange>
     </changeSet>
 
-    <changeSet id="bahmni-reg-20130930-03" author="mario-areias">
+    <changeSet id="20130930-03" author="mario-areias">
         <customChange class="org.openmrs.util.databasechange.SourceMySqldiffFile">
-            <param name="sqlFile">V1_20__CreateVisitTypeForRevisit.sql</param>
+            <param name="sqlFile">V1_13__Registration.sql</param>
         </customChange>
     </changeSet>
 
-    <changeSet id="bahmni-reg-20130930-04" author="mario-areias">
+    <changeSet id="20130930-04" author="mario-areias">
         <customChange class="org.openmrs.util.databasechange.SourceMySqldiffFile">
-            <param name="sqlFile">V1_22__AddConceptWordsForRegistrationConceptSet.sql</param>
+            <param name="sqlFile">V1_14__Registration.sql</param>
         </customChange>
     </changeSet>
 
-    <changeSet id="bahmni-reg-20130930-05" author="mario-areias">
+    <changeSet id="20130930-05" author="mario-areias">
         <customChange class="org.openmrs.util.databasechange.SourceMySqldiffFile">
-            <param name="sqlFile">V1_24__AddUniqueConstraintToPatientidentifier.sql</param>
+            <param name="sqlFile">V1_15__Registration.sql</param>
         </customChange>
     </changeSet>
 
-    <changeSet id="bahmni-reg-20130930-06" author="mario-areias">
+    <changeSet id="20130930-06" author="mario-areias">
         <customChange class="org.openmrs.util.databasechange.SourceMySqldiffFile">
-            <param name="sqlFile">V1_25__RegistrationConceptSetFix.sql</param>
-        </customChange>
-    </changeSet>
-    <changeSet id="bahmni-reg-20130930-06" author="mario-areias">
-        <customChange class="org.openmrs.util.databasechange.SourceMySqldiffFile">
-            <param name="sqlFile">V1_63__AddEmergencyVisitType.sql</param>
+            <param name="sqlFile">V1_16__Registration.sql</param>
         </customChange>
     </changeSet>
 
+    <changeSet id="20130930-07" author="mario-areias">
+        <customChange class="org.openmrs.util.databasechange.SourceMySqldiffFile">
+            <param name="sqlFile">V1_19__RegistrationRole.sql</param>
+        </customChange>
+    </changeSet>
+
+    <changeSet id="20130930-08" author="mario-areias">
+        <customChange class="org.openmrs.util.databasechange.SourceMySqldiffFile">
+            <param name="sqlFile">V1_20__Registration.sql</param>
+        </customChange>
+    </changeSet>
+
+    <changeSet id="20130930-09" author="mario-areias">
+        <customChange class="org.openmrs.util.databasechange.SourceMySqldiffFile">
+            <param name="sqlFile">V1_21__Registration.sql</param>
+        </customChange>
+    </changeSet>
+
+
+    <changeSet id="20130930-10" author="mario-areias">
+        <customChange class="org.openmrs.util.databasechange.SourceMySqldiffFile">
+            <param name="sqlFile">V1_22__AddConceptWordsForRegistration.sql</param>
+        </customChange>
+    </changeSet>
+
+    <changeSet id="20130930-11" author="mario-areias">
+        <customChange class="org.openmrs.util.databasechange.SourceMySqldiffFile">
+            <param name="sqlFile">V1_24__AddUniqueConstraintToPatientIdentifier.sql</param>
+        </customChange>
+    </changeSet>
+
+    <changeSet id="20130930-12" author="mario-areias">
+        <customChange class="org.openmrs.util.databasechange.SourceMySqldiffFile">
+            <param name="sqlFile">V1_25__RegistrationConceptFix.sql</param>
+        </customChange>
+    </changeSet>
+
+    <changeSet id="20130930-13" author="mario-areias">
+        <customChange class="org.openmrs.util.databasechange.SourceMySqldiffFile">
+            <param name="sqlFile">V1_28__RegistrationAttributesNameAndDescriptionFix.sql</param>
+        </customChange>
+    </changeSet>
+
+    <changeSet id="20130930-14" author="mario-areias">
+        <customChange class="org.openmrs.util.databasechange.SourceMySqldiffFile">
+            <param name="sqlFile">V1_35__RegistrationAttributesNameAndDescriptionFix.sql</param>
+        </customChange>
+    </changeSet>
+
+    <changeSet id="20130930-15" author="mario-areias">
+        <customChange class="org.openmrs.util.databasechange.SourceMySqldiffFile">
+            <param name="sqlFile">V1_41__AddingIndexToCityVillage.sql</param>
+        </customChange>
+    </changeSet>
+ 
 </databaseChangeLog>

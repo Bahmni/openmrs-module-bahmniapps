@@ -1,0 +1,1 @@
+ALTER TABLE patient_identifier ADD CONSTRAINT unique_patient_identifier UNIQUE (identifier);

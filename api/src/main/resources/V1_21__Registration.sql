@@ -1,0 +1,1 @@
+UPDATE concept_name SET name = 'COMMENTS' WHERE name = 'CHIEF COMPLAINT';
