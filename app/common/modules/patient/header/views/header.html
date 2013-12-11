@@ -1,7 +1,7 @@
 <div class="opd-header-wrapper">
-    <div ng-include src="'../common/modules/common/header.html'"></div>
+    <div class="opd-header-top" ng-include src="'../common/modules/common/header.html'"></div>
 
-    <header class="tabs">
+    <div class="opd-header-bottom tabs">
         <ul class="header-tabs">
             <li ng-repeat="board in availableBoards" ng-class="{'tab-selected':currentBoard.name==board.name}">
                 <button ng-click="showBoard(board.name)" class="button">
@@ -26,7 +26,7 @@
                 <li ng-show="bedDetails">{{bedDetails.bedNumber}}</li>
             </ul>
         </div>
-    </header>
+    </div>
 </div>
 <div>
     <p style="display: none" class="caution" ng-show="server_error">{{server_error}}</p>

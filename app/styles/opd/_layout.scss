@@ -25,21 +25,19 @@ body{
             .header-logo{
                 background:url("../images/jss_logo.png") no-repeat left top;
                 padding:10px 0px 7px 40px;
-                float:left;
-                margin-top:7px;
+                margin:0px auto;
+                width:200px;
+                display: inline-block;
             }
             .header-links{
                 padding:10px 10px 7px 0px;
-                float:left;
                 margin-top:7px;
+                @include pie-clearfix;
+                display: inline-block;
             }
             ul{
-                &.header-tabs{
-                    float:left;
-                    margin-top:10px;
-                }
-                &.patient-info{
-                    float:right;    
+                &.user-info{
+                    float:right;
                 }
                 li{
                     @include font-size(0.9);
@@ -63,6 +61,20 @@ body{
                  }
                 }
             }
+        }
+        .opd-header-top,header{
+            background:#000;
+        }
+        .opd-header-bottom{
+            width:960px;
+            margin:0px auto;
+            border-radius:0px;
+            padding:2px;
+            position:relative;
+            .header-tabs{
+                    float:left;
+                    margin-top:10px;
+            }
             .patient-detail{
                 position:absolute;
                 top:58px;
@@ -73,6 +85,9 @@ body{
                     line-height: 18px;
                 }
             }
+            .patient-info{
+                    float:right;    
+                }
         }
     }
 .opd-wrapper{
