@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('opd.consultation').factory('initialization',
-    ['$rootScope', '$route', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'authenticator', 'appService', '$location', 'encounterService',
-    function ($rootScope, $route, configurationService, visitService, patientService, patientMapper, authenticator, appService,encounterService, $location) {
+    ['$rootScope', '$route', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'authenticator', 'appService', 'encounterService',
+    function ($rootScope, $route, configurationService, visitService, patientService, patientMapper, authenticator, appService,encounterService) {
         var getConsultationConfigs = function() {
             var configNames = ['encounterConfig', 'patientConfig', 'dosageFrequencyConfig','dosageInstructionConfig', 'consultationNoteConfig'];
             return configurationService.getConfigurations(configNames).then(function (configurations) {
@@ -37,10 +37,6 @@ angular.module('opd.consultation').factory('initialization',
             });
         };
 
-        // $rootScope.context = {
-        //     visitUuid: $route.current.params.visitUuid,
-        //     redirectUrl:  $route.current.params["redirect-url"]
-        // };
         var getActiveEncounter = function() {
             var visit = $rootScope.visit;
             return encounterService.activeEncounter(visit.patient.uuid,$rootScope.encounterConfig.getOpdConsultationEncounterUuid(),visit.visitType.uuid,true).success(function (encounterTransaction) {
