@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('opd.consultation').factory('initialization',
-    ['$rootScope', '$route', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'authenticator', 'appService', 'encounterService',
-    function ($rootScope, $route, configurationService, visitService, patientService, patientMapper, authenticator, appService,encounterService) {
+    ['$rootScope', '$route', '$q', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'authenticator', 'appService', 'encounterService',
+    function ($rootScope, $route, $q, configurationService, visitService, patientService, patientMapper, authenticator, appService,encounterService) {
         var patientUuid = $route.current.params.patientUuid;
 
         var getConsultationConfigs = function() {
@@ -38,7 +38,9 @@ angular.module('opd.consultation').factory('initialization',
         };
 
         return authenticator.authenticateUser().then(initApp).then(getConsultationConfigs)
-                            .then(getPatient).then(getActiveEncounter);
+                            .then(function(){
+                                return $q.all([getActiveEncounter(), getPatient()])
+                            });
     }]
 );
 
