@@ -24,6 +24,10 @@ angular.module('opd.consultation.controllers')
         $location.path('/visit/' + visit.uuid);
     }
 
+    $scope.isCurrentVisit = function(visit) {
+        return visit.uuid === visitUuid;
+    }
+
     var markLoadingDone = function() {
         loading = false;
     }
