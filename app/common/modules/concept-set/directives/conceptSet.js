@@ -30,7 +30,7 @@ angular.module('opd.conceptSet')
                         var conceptSet = response.results[0];
                         $rootScope.observationList[conceptSetName] =
                             new Bahmni.ConceptSet.ObservationMapper($rootScope.encounterConfig)
-                            .map($rootScope.visit, conceptSet);
+                            .map($rootScope.activeEncounterTransaction, conceptSet);
                         $scope.rootObservation = $rootScope.observationList[conceptSetName];
                     }
                 });

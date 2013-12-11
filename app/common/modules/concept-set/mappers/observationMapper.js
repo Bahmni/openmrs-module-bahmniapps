@@ -54,14 +54,11 @@ Bahmni.ConceptSet.ObservationMapper = function (encounterConfig) {
         return observation;
     };
 
-    this.map = function (visit, rootConcept) {
-        var encounter = visit.encounters.filter(function (encounter) {
-            return encounter.encounterType.uuid === encounterConfig.getOpdConsultationEncounterUuid();
-        })[0];
+    this.map = function (activeEncounterTransaction, rootConcept) {
 
         var allSavedObs = [];
-        if (encounter) {
-            allSavedObs = encounter.obs;
+        if (activeEncounterTransaction) {
+            allSavedObs = activeEncounterTransaction.observations;
         }
         return mapObservation(rootConcept, allSavedObs);
     };

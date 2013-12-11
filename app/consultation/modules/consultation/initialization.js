@@ -34,8 +34,7 @@ angular.module('opd.consultation').factory('initialization',
                 $rootScope.activeEncounterTransaction = encounterTransaction;
                 $rootScope.consultation = new Bahmni.Opd.ConsultationMapper($rootScope.encounterConfig,
                     $rootScope.dosageFrequencyConfig, $rootScope.dosageInstructionConfig, $rootScope.consultationNoteConcept).map(encounterTransaction);
-                    $rootScope.disposition = encounterTransaction.disposition;
-                    $rootScope.disposition.currentActionIndex = 0; // this will be used in case we have multiple encounters with dispositions
+                    $rootScope.disposition = encounterTransaction.disposition || {};
             });
         };
 
