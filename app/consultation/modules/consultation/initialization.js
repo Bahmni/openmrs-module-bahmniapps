@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('opd.consultation').factory('initialization',
-    ['$rootScope', '$route', '$q', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'authenticator', 'appService', 'encounterService',
-    function ($rootScope, $route, $q, configurationService, visitService, patientService, patientMapper, authenticator, appService,encounterService) {
+    ['$rootScope', '$route', '$q', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'authenticator', 'appService', 'encounterService', 'spinner',
+    function ($rootScope, $route, $q, configurationService, visitService, patientService, patientMapper, authenticator, appService, encounterService, spinner) {
         var patientUuid = $route.current.params.patientUuid;
 
         var getConsultationConfigs = function() {
@@ -37,10 +37,10 @@ angular.module('opd.consultation').factory('initialization',
             return appService.initApp('clinical', {'extension' : true});
         };
 
-        return authenticator.authenticateUser().then(initApp).then(getConsultationConfigs)
+        return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(getConsultationConfigs)
                             .then(function(){
                                 return $q.all([getActiveEncounter(), getPatient()])
-                            });
+                            }));
     }]
 );
 

@@ -275,6 +275,21 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
   background-position:center;
 }
 
+#overlay {
+  display: none;
+  z-index: 10000;
+  background: #000;
+  position: fixed;
+  width: 100%;
+  opacity: .6;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  background-image: url('../images/spinner.gif');
+  background-repeat:no-repeat;
+  background-position:center;
+}
+
 p.caution{
   color:#f00;
   padding: 5px;

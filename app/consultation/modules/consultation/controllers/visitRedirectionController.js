@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('opd.consultation.controllers')
-    .controller('VisitRedirectionController', ['$rootScope', 'patientVisitHistoryService', 'urlHelper', '$location', function ($rootScope, patientVisitHistoryService, urlHelper, $location) {
+    .controller('VisitRedirectionController', ['$rootScope', 'patientVisitHistoryService', 'urlHelper', '$location',function ($rootScope, patientVisitHistoryService, urlHelper, $location) {
     	var getRedirectionUrl = function(visits) {
 	        if(visits.length && visits[0].encounters && visits[0].encounters.length) {
-	        	return urlHelper.getVisitUrl(visits[0].uuid).replace();
+	        	return urlHelper.getVisitUrl(visits[0].uuid);
 	        } else {
-	        	return urlHelper.getPatientUrl();
+	        	return urlHelper.getPatientUrl() + '/consultation';
 	        }
     	}
 
