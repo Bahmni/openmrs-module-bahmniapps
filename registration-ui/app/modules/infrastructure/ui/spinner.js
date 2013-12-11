@@ -26,24 +26,9 @@ angular.module('infrastructure.spinner', [])
             });
         };
 
-        var forMethod = function (method, options) {
-            options = options || {};
-            show();
-            return method().then(function (response) {
-                if (!options.doNotHideOnSuccess) {
-                    hide();
-                }
-                return response;
-            }, function (response) {
-                hide();
-                return $q.reject(response);
-            });
-        };
-
         return {
             show: show,
             hide: hide,
-            forPromise: forPromise,
-            forMethod: forMethod
+            forPromise: forPromise
         }
     }]);
