@@ -83,17 +83,17 @@ angular.module('opd.bedManagement.controllers')
             });
         };
 
-        var checkEncounterBeforeBedAssignment = function(bed, assingmentType) {
-            var encounterTypeUuid = $rootScope.encounterConfig.encounterTypes[assingmentType];
+        var checkEncounterBeforeBedAssignment = function(bed, assignmentType) {
+            var encounterTypeUuid = $rootScope.encounterConfig.encounterTypes[assignmentType];
             encounterService.identifyEncounterForType($scope.patient.uuid, encounterTypeUuid).then(
                 function(encounter) {
                     if (encounter) {
                         encounterUuid = encounter.uuid;
                         assignBedToPatient(bed, encounterUuid);
-                    } else if (assingmentType == 'TRANSFER') {
+                    } else if (assignmentType == 'TRANSFER') {
                         createTransferEncounterAndAssignBed(bed);
                     } else {
-                        showAssignmentError("There is no appropriate encounter for " + assingmentType);    
+                        showAssignmentError("There is no appropriate encounter for " + assignmentType);    
                     }
                 },
                 function(errorMsg) {
@@ -104,11 +104,11 @@ angular.module('opd.bedManagement.controllers')
 
         $scope.assignBed = function (bed) {
             clearAssignmentError();
-            var assingmentType = $rootScope.bedDetails ? 'TRANSFER' : 'ADMISSION';
+            var assignmentType = $rootScope.bedDetails ? 'TRANSFER' : 'ADMISSION';
             if (encounterUuid) {
                 assignBedToPatient(bed, encounterUuid);
             } else {
-                checkEncounterBeforeBedAssignment(bed, assingmentType);
+                checkEncounterBeforeBedAssignment(bed, assignmentType);
             }
         };
 
