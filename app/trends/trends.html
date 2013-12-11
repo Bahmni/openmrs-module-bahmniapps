@@ -1,17 +1,7 @@
-<div>
+<div ng-repeat="(concept, details) in observations">
     <nvd3-line-chart
-        data="observations.WEIGHT"
-        showXAxis="true"
-        showYAxis="true"
-        tooltips="true"
-        interactive="true"
-        showLegend="true"
-        xAxisTickFormat="xAxisTickFormatFunction()"
-        >
-        <svg></svg>
-    </nvd3-line-chart>
-    <nvd3-line-chart
-        data="observations.BMI"
+        data="details"
+        height="400"
         showXAxis="true"
         showYAxis="true"
         tooltips="true"

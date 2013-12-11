@@ -38,10 +38,6 @@ angular.module("trends").controller("TrendsController", ["$scope", "$routeParams
             return sentenceCase(concept);
         },
 
-        cleanse = function(token) {
-            return token.replace(" ", "_");
-        },
-
         init = function() {
             fetchedObservations.success(function(observations) {
                 var allConcepts = observations.map(function(observation) {
@@ -54,7 +50,7 @@ angular.module("trends").controller("TrendsController", ["$scope", "$routeParams
                     var displayName = displayNameFor(concept),
                         values = fetch(observations, concept);
 
-                    $scope.observations[cleanse(concept)] = [{
+                    $scope.observations[concept] = [{
                         "key": displayName,
                         "values": values
                     }];

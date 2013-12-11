@@ -51,7 +51,7 @@ describe("TrendsController", function() {
                         [1371619826000, 17.91]
                     ]
                 }],
-                "REGISTRATION_FEES": [{
+                "REGISTRATION FEES": [{
                     "key": "Fees",
                     "values": [
                         [1372821738000, 15]
@@ -72,7 +72,7 @@ describe("TrendsController", function() {
             expect(scope.observations.WEIGHT).toEqual(expectedObservations.WEIGHT);
             expect(scope.observations.HEIGHT).toEqual(expectedObservations.HEIGHT);
             expect(scope.observations.BMI).toEqual(expectedObservations.BMI);
-            expect(scope.observations.REGISTRATION_FEES).toEqual(expectedObservations.REGISTRATION_FEES);
+            expect(scope.observations["REGISTRATION FEES"]).toEqual(expectedObservations["REGISTRATION FEES"]);
         }));
     });
 });
