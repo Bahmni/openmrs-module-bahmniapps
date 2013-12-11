@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+ 
+    <!--
+        See http://www.liquibase.org/manual/home#available_database_refactorings
+        for a list of supported elements and attributes
+    -->
+ 
+    <changeSet id="bahmni-reg-1" author="tw" context="rel2">
+        <comment>rel2</comment>
+        <sqlFile path="V1_11__CreateConceptSetForRegistrationConcepts.sql" />
+    </changeSet>
+
+    <changeSet id="bahmni-reg-2" author="tw" context="rel2">
+        <comment>rel2</comment>
+        <sqlFile path="V1_22__AddConceptWordsForRegistrationConceptSet.sql" />
+    </changeSet>
+
+    <changeSet id="bahmni-reg-3" author="tw" context="rel2">
+        <comment>rel2</comment>
+        <sqlFile path="V1_25__RegistrationConceptSetFix.sql" />
+    </changeSet>
+
+    <changeSet id="bahmni-reg-4" author="tw" context="rel3">
+        <comment>rel3</comment>
+        <sqlFile path="V1_79__AddressTemplateWithAllFields.sql" />
+    </changeSet>
+
+</databaseChangeLog>
