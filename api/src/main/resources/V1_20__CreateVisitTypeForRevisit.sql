@@ -1,0 +1,1 @@
+INSERT INTO visit_type (name, description, creator, uuid, date_created) VALUES ('REVISIT', 'Returning patient visit', 1, uuid(), curdate());
