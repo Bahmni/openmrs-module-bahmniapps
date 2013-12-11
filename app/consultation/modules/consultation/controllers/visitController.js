@@ -46,13 +46,4 @@ angular.module('opd.consultation.controllers')
             loadEncounters(previousDate)            
         } 
     };
-}])
-.directive('observationSummary',function () {
-    return {
-        restrict:'E',
-        scope:{
-            observation:"="
-        },
-        template: "<ng-include src=\"'observationSummaryTemplate'\"/>"
-    }
-});
+}]);
