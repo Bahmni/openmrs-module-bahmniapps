@@ -86,10 +86,8 @@ angular.module('appFramework', ['authentication'])
             });
 
             var loadCredentialsPromise = sessionService.loadCredentials();
-            var loadProvidersPromise = loadCredentialsPromise.then(sessionService.loadProviders)
-
+            
             promises.push(loadCredentialsPromise);
-            promises.push(loadProvidersPromise);
             if (opts.extension) {
                 promises.push(loadExtensions(appDescriptor));
             }

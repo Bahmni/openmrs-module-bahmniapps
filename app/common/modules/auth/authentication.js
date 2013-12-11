@@ -37,7 +37,6 @@ angular.module('authentication', ['ngCookies'])
 
         this.loadCredentials = function () {
             var deferrable = $q.defer();
-             
             var currentUser = $cookieStore.get('bahmni.user');
             $http.get("/openmrs/ws/rest/v1/user", {
                 method: "GET",
@@ -48,25 +47,31 @@ angular.module('authentication', ['ngCookies'])
                 cache: false
             }).success(function(data) {
                 $rootScope.currentUser = data.results[0];
+                $rootScope.$broadcast('event:user-credentialsLoaded', data.results[0]);
                 deferrable.resolve(data.results[0]);
             }).error(function () {
-                    deferrable.reject('Could not get roles for the current user.');
-                });
+                deferrable.reject('Could not get roles for the current user.');
+            });
             return deferrable.promise;
         };
 
-        this.loadProviders = function(data) {
+        var loadProviders = function(userInfo) {
             return $http.get("/openmrs/ws/rest/v1/provider", {
-                        method: "GET",
-                        params: {
-                            user: $rootScope.currentUser.uuid
-                        },
-                        cache: false
-                    }).success(function (data) {
-                        $rootScope.currentProvider = { uuid:data.results[0].uuid };
-                        console.log($rootScope.currentProvider);
-                    });
+                 method: "GET",
+                 params: {
+                     user: userInfo.uuid
+                 },
+                 cache: false
+             }).success(function (data) {
+                var providerUuid = (data.results.length > 0) ? data.results[0].uuid : undefined;
+                $rootScope.currentProvider = { uuid: providerUuid };
+                console.log($rootScope.currentProvider);
+             });
         };
+
+        $rootScope.$on('event:user-credentialsLoaded', function (event, userInfo) {
+            loadProviders(userInfo);
+        });
 
     }]).factory('authenticator', ['$rootScope', '$q', '$window', 'sessionService', function ($rootScope, $q, $window, sessionService) {
         var authenticateUser = function () {
