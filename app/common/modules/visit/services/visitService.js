@@ -4,9 +4,8 @@ angular.module('bahmni.common.visit.services')
     .service('visitService', ['$http', function ($http) {
 
     this.getVisit = function (uuid) {
-        return $http.get("/openmrs/ws/rest/v1/visit/" + uuid,
+        return $http.get(Bahmni.Common.Constants.visitUrl + '/' + uuid,
          	{ 
-         		method:"GET",
          		params: {
                     v: "custom:(uuid,visitType,patient,encounters:(uuid,encounterType,orders:(uuid,orderType,voided,concept:(uuid,set,name),),obs:(uuid,value,concept,obsDatetime,groupMembers:(uuid,concept:(uuid,name),obsDatetime,value:(uuid,name),groupMembers:(uuid,concept:(uuid,name),value:(uuid,name),groupMembers:(uuid,concept:(uuid,name),value:(uuid,name)))))))"
          		}
@@ -14,11 +13,17 @@ angular.module('bahmni.common.visit.services')
         );
     };
     this.getVisitSummary = function (uuid) {
-        return $http.get("/openmrs/ws/rest/v1/bahmnicore/visitsummary/" + uuid,
+        return $http.get(Bahmni.Common.Constants.visitSummaryUrl + '/' + uuid,
          	{
-         		method:"GET"
+         		withCredentials: true
          	}
         );
     };
 
+    this.search = function(parameters) {
+        return $http.get(Bahmni.Common.Constants.visitUrl, {
+            params: parameters,
+            withCredentials: true
+        });
+    };
 }]);

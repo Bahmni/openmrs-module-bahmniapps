@@ -9,6 +9,7 @@ Bahmni.Common.Constants = {
     recentEncounterUrl: "/openmrs/ws/rest/emrapi/encounter/active",
     conceptUrl: "/openmrs/ws/rest/v1/concept",
     visitUrl: "/openmrs/ws/rest/v1/visit",
+    visitSummaryUrl: "/openmrs/ws/rest/v1/bahmnicore/visitsummary",
     openmrsUrl: "/openmrs",
     bahmniRESTBaseURL: "/openmrs/ws/rest/v1/bahmnicore",
     dosageFrequencyConceptName : 'Dosage Frequency',

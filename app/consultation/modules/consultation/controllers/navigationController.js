@@ -5,8 +5,8 @@ angular.module('opd.consultation.controllers').controller('ConsultationNavigatio
         function ($scope, $rootScope, $location, $route, $window, appService) {
             //$scope.mainButtonText = "Consultation";
             $scope.availableBoards = [
-                { name: 'Visit', url: ''},
-                { name: 'Consultation', url: 'current'}
+                { name: 'Visit', url: 'visit'},
+                { name: 'Consultation', url: 'consultation'}
             ];
             $scope.currentBoard = $scope.availableBoards[0];
             $scope.showBoard = function (name) {
@@ -14,12 +14,17 @@ angular.module('opd.consultation.controllers').controller('ConsultationNavigatio
                 return buttonClickAction(board);
             };
 
+            var setCurrentBoardBasedOnPath = function() {
+                var currentPath = $location.path();
+                var board = findBoardByUrl(currentPath);
+                $scope.currentBoard = board || $scope.availableBoards[0];
+            };
+
             var stringContains = function (sourceString, pattern) {
                 return (sourceString.search(pattern) >= 0);
             };
 
             var initialize = function () {
-                var currentPath = $location.path();
                 $rootScope.$on('event:appExtensions-loaded', function () {
                     var appExtensions = appService.getAppDescriptor().getExtensions("org.bahmni.clinical.consultation.board", "link");
                     var addlBoards = [];
@@ -27,10 +32,13 @@ angular.module('opd.consultation.controllers').controller('ConsultationNavigatio
                         addlBoards.push({ name: appExtn.label, url: appExtn.url });
                     });
                     $scope.availableBoards = $scope.availableBoards.concat(addlBoards);
-                    var board = findBoardByUrl(currentPath);
-                    $scope.currentBoard = board || $scope.availableBoards[0];
+                    setCurrentBoardBasedOnPath();
                 });
             };
+
+            $scope.$on('$routeChangeStart', function(next, current) { 
+                setCurrentBoardBasedOnPath();
+            });
 
             var findBoardByname = function (name) {
                 var boards = $scope.availableBoards.filter(function (board) {

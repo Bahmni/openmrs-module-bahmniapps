@@ -31,11 +31,6 @@ angular.module('opd.consultation').factory('initialization',
             });
         };
 
-        var getVisitSummary = function() {
-            return visitService.getVisitSummary($route.current.params.visitUuid).success(function (encounterTransactions) {
-                $rootScope.visitSummary = Bahmni.Opd.Consultation.VisitSummary.create(encounterTransactions);
-            });
-        };
 
         var getActiveEncounter = function() {
             var visit = $rootScope.visit;
@@ -53,7 +48,7 @@ angular.module('opd.consultation').factory('initialization',
         };
 
         return authenticator.authenticateUser().then(initApp).then(getConsultationConfigs)
-                            .then(getVisit).then(getPatient).then(getActiveEncounter).then(getVisitSummary);
+                            .then(getVisit).then(getPatient).then(getActiveEncounter);
     }]
 );
 

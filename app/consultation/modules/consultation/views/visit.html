@@ -13,7 +13,18 @@
         </ul>
     </div>    
 </script>
-<article bindonce class="visit">
+<aside bindonce class="visit-history">
+    <h2>Visit History</h2>
+    <ul>
+        <li ng-click="showVisitSummary(visit)" ng-repeat="visit in visits">
+            <a href="">
+                <span bo-text="visit.startDatetime | date: 'd MMM yy'"></span>
+                <span bo-text="'-' + (visit.stopDatetime | date: 'd MMM yy')" bo-hide="visit.isOneDayVisit()"></span>
+            </a>
+        </li>
+    </ul>
+</aside>
+<article bindonce="visitSummary" class="visit">
     <div bo-hide="visitSummary.hasEncounters()">There are no encounter for this patient yet.</div>
 	<section  bo-show="visitSummary.hasEncounters()" class="block investigation">
         <h2>Diagnoses</h2>
