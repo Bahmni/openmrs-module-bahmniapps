@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('opd.consultation.controllers')
-    .controller('DiagnosisController', ['$scope', '$rootScope', function ($scope, $rootScope, diagnosisService) {
+    .controller('DiagnosisController', ['$scope', '$rootScope', 'DiagnosisService', function ($scope, $rootScope, DiagnosisService) {
 
     $scope.placeholder = "Add Diagnosis";
     $scope.hasAnswers = false;
@@ -9,7 +9,7 @@ angular.module('opd.consultation.controllers')
     $scope.certaintyOptions = ['CONFIRMED', 'PRESUMED'];
 
     $scope.getDiagnosis = function (searchTerm) {
-        return diagnosisService.getAllFor(searchTerm);
+        return DiagnosisService.getAllFor(searchTerm);
     }
 
     var _canAdd = function (diagnosis) {
