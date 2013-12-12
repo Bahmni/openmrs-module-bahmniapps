@@ -4,6 +4,11 @@
 		padding:10px;
 	}
 }
-.visit-history-entry.selected {
-	font-size: 30px;
+.visit-history-entry {
+	&.selected {
+		font-size: 30px;
+	}
+	&.active {
+		font-style: italic;
+	}
 }
