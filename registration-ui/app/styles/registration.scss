@@ -9,6 +9,9 @@ $total-width: 100%;
 
 @import "compass";
 
+html,body{
+  height:100%;
+}
 /*** grid form elements css start ***/
 .form-field-inline{
   .form-field{
@@ -86,6 +89,9 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
     background-color: #eee;
     outline:none;
   }
+}
+.reg-search-wrapper .split-button li{
+  width:7.5em;
 }
 .split-button{
   overflow:hidden;
@@ -228,6 +234,7 @@ body{
 }
 .reg-wrapper{
   margin:0px auto;
+  height:100%;
   @include clearfix();
   .inline-element,select,input,button{
       display:inline-block;
@@ -315,7 +322,7 @@ body{
 }  
 table{
     td,th{
-        padding:5px 8px 5px 8px;
+        padding:9px 8px 9px 8px;
         text-align:left;
     }
     tr:hover{
@@ -326,8 +333,15 @@ table{
         width:40px;
   }
   .edit-col{
-      width:40px;
-      padding:1px 2px 0px 2px;
+      width:160px;
+      padding:2px 2px 2px 2px;
+      position:relative;
+      .split-button{
+        position:absolute;
+        top:2px;
+        left:10px;
+        z-index: 99999;
+      }
       a{
         background:image-url("edit.png") top left no-repeat;
         width:30px;

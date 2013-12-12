@@ -130,8 +130,13 @@ angular.module('registration.patient.controllers')
             }
         };
 
-        $scope.doExtensionAction = function(extension, patient) {
-            var forwardTo = formatUrl(extension.url, { 'patientUuid': patient.uuid });
+        $scope.forPatient = function(patient){
+            $scope.selectedPatient = patient;
+            return $scope;
+        }
+
+        $scope.doExtensionAction = function(extension) {
+            var forwardTo = formatUrl(extension.url, { 'patientUuid': $scope.selectedPatient.uuid });
             if (extension.label === 'Print') {
                 var params = identifyParams(forwardTo);
                 if (params.launch === 'dialog') {
@@ -148,6 +153,9 @@ angular.module('registration.patient.controllers')
             }
         };
 
+        $scope.extensionActionText = function(extension) {
+            return extension.label;
+        }
 
         $scope.printLayout = function () {
             return $route.routes['/printPatient'].templateUrl;
