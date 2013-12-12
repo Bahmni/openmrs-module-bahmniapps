@@ -1,14 +1,25 @@
-<div ng-repeat="(concept, details) in observations">
-    <nvd3-line-chart
-        data="details"
-        height="400"
-        showXAxis="true"
-        showYAxis="true"
-        tooltips="true"
-        interactive="true"
-        showLegend="true"
-        xAxisTickFormat="xAxisTickFormatFunction()"
-        >
-        <svg></svg>
-    </nvd3-line-chart>
+<div style="float:left;width:10%" >
+    <div ng-repeat="concept in concepts">
+        <div>
+            {{concept}}
+            <hr/>
+        </div>
+    </div>
+</div>
+
+<div style="float:left;width:90%">
+    <div ng-repeat="(concept, details) in observations">
+        <nvd3-line-chart
+            data="details"
+            height="400"
+            showXAxis="true"
+            showYAxis="true"
+            tooltips="true"
+            interactive="true"
+            showLegend="true"
+            xAxisTickFormat="xAxisTickFormatFunction()"
+            >
+            <svg></svg>
+        </nvd3-line-chart>
+    </div>
 </div>

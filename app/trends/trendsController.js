@@ -47,6 +47,8 @@ angular.module("trends").controller("TrendsController", ["$scope", "$routeParams
                     uniqueConcepts = unique(allConcepts);
 
                 $scope.observations = {};
+                $scope.concepts = [];
+
                 uniqueConcepts.forEach(function(concept) {
                     var displayName = displayNameFor(concept),
                         values = fetch(observations, concept);
@@ -56,6 +58,7 @@ angular.module("trends").controller("TrendsController", ["$scope", "$routeParams
                             "key": displayName,
                             "values": values
                         }];
+                        $scope.concepts.push(displayName);
                     }
                 });
             });

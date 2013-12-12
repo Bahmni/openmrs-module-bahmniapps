@@ -50,6 +50,7 @@ describe("TrendsController", function() {
                 "key": "Height",
                 "values": [ [1371619826000, 147.0], [1372227320000, 148.0] ]
             }]);
+            expect(scope.concepts.sort()).toEqual(["Height", "Weight"]);
         }));
 
         it("renames special keys like BMI & REGISTRATION FEES", inject(function() {
@@ -69,6 +70,7 @@ describe("TrendsController", function() {
                 "key": "Fees",
                 "values": [ [1371619826000, 15], [1372227320000, 10] ]
             }]);
+            expect(scope.concepts.sort()).toEqual(["BMI", "Fees"]);
         }));
 
         it("rejects samples without enough data", inject(function() {
@@ -77,6 +79,7 @@ describe("TrendsController", function() {
             ]);
 
             expect(sortedKeys(scope.observations)).toEqual([]);
+            expect(scope.concepts).toEqual([]);
         }));
     });
 });
