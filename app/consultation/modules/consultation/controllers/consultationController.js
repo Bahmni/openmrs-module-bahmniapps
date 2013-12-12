@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('opd.consultation.controllers')
-    .controller('ConsultationController', ['$scope', '$rootScope', 'encounterService', '$route', '$location', function ($scope, $rootScope, encounterService, $route, $location) {
+    .controller('ConsultationController', ['$scope', '$rootScope', 'encounterService', '$route', '$location', 'spinner', function ($scope, $rootScope, encounterService, $route, $location, spinner) {
 
     $scope.save = function () {
         
@@ -55,9 +55,9 @@ angular.module('opd.consultation.controllers')
 
         addObservationsToEncounter();
 
-        encounterService.create(encounterData).success(function () {
+        spinner.forPromise(encounterService.create(encounterData).success(function () {
             window.location = Bahmni.Opd.Consultation.Constants.activePatientsListUrl;
-        });
+        }));
     };        
 }]);
 

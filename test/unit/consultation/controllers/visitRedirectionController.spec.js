@@ -9,7 +9,7 @@ describe("VisitControllerTest", function () {
     var patientConsultationUrl = "/patient/abc/consultation";
     var visitUrl = "/visit/123";
 
-    beforeEach(module('opd.consultation'));
+    beforeEach(module('opd.consultation.controllers'));
 
     beforeEach(inject(function ($rootScope, $location) {
         patientVisitHistoryService = jasmine.createSpyObj('patientVisitHistoryService', ['getVisits']);

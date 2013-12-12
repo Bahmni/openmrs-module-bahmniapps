@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('opd.patient.controllers')
-    .controller('ActivePatientsListController', ['$route', '$scope', '$location', '$window', 'patientService', 'patientMapper', '$rootScope', 'appService',
-    function ($route, $scope, $location, $window, patientService, patientMapper, $rootScope, appService) {
+    .controller('ActivePatientsListController', ['$route', '$scope', '$location', '$window', 'patientService', 'patientMapper', '$rootScope', 'appService', 'spinner',
+    function ($route, $scope, $location, $window, patientService, patientMapper, $rootScope, appService, spinner) {
 
         $scope.searchTypes = [];
         var handlePatientList = function (patientList, callback) {
@@ -23,11 +23,12 @@ angular.module('opd.patient.controllers')
         };
 
         var findPatientsByHandler = function (handlerName) {
-            patientService.findPatients(handlerName).success(function (data) {
+            var findPatientsPromise = patientService.findPatients(handlerName).success(function (data) {
                 handlePatientList(data, function () {
                     $scope.searchPatients();
                 });
             });
+            spinner.forPromise(findPatientsPromise);
         };
 
         $scope.loadMore = function () {

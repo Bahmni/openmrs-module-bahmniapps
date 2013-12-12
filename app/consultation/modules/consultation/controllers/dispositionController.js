@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('opd.consultation.controllers')
-    .controller('DispositionController', ['$scope', '$rootScope','dispositionService', function ($scope, $rootScope,dispositionService) {
+    .controller('DispositionController', ['$scope', '$q', '$rootScope','dispositionService', 'spinner', function ($scope, $q, $rootScope,dispositionService, spinner) {
 
 
         var loadDispositionActions = function(){
-            dispositionService.getDispositionActions().then(function (response) {
+            var dispositionActionsPromise = dispositionService.getDispositionActions().then(function (response) {
                 if (response.data && response.data.results) {
 
                     if(response.data.results && response.data.results.length){
@@ -28,12 +28,13 @@ angular.module('opd.consultation.controllers')
 
             });
 
-            dispositionService.getDispositionNoteConcept().then(function (response) {
+            var dispositionNotePromise = dispositionService.getDispositionNoteConcept().then(function (response) {
                 if (response.data) {
                     $scope.dispositionNoteConceptUuid = response.data.results[0].uuid;
                 }
             });
 
+            return $q.all([dispositionActionsPromise, dispositionNotePromise]);
 
         }
 
@@ -109,7 +110,7 @@ angular.module('opd.consultation.controllers')
 
 
 
-        loadDispositionActions();
+        spinner.forPromise(loadDispositionActions());
 
         $scope.$on('$destroy', function() {
       //      updateDispositionsList();

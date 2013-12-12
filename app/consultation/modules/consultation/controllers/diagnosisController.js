@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('opd.consultation.controllers')
-    .controller('DiagnosisController', ['$scope', '$rootScope', 'DiagnosisService', function ($scope, $rootScope, diagnosisService) {
+    .controller('DiagnosisController', ['$scope', '$rootScope', function ($scope, $rootScope, diagnosisService) {
 
     $scope.placeholder = "Add Diagnosis";
     $scope.hasAnswers = false;

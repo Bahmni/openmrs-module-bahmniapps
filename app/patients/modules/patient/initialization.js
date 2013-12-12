@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('opd.patient').factory('initialization', ['$rootScope', '$q', 'configurationService', 'authenticator', 'appService', '$route',
-    function ($rootScope, $q, configurationService, authenticator, appService, $route) {
+angular.module('opd.patient').factory('initialization', ['$rootScope', '$q', 'configurationService', 'authenticator', 'appService', '$route', 'spinner',
+    function ($rootScope, $q, configurationService, authenticator, appService, $route, spinner) {
 
         var getAppContext = function(prefix) {
             var appContext = $route.current.params["appContext"];
@@ -30,6 +30,6 @@ angular.module('opd.patient').factory('initialization', ['$rootScope', '$q', 'co
             });
         });
 
-        return initializationPromise.promise;
+        return spinner.forPromise(initializationPromise.promise);
     }]
 );    

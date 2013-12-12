@@ -6,6 +6,7 @@ describe("ActivePatientListController", function () {
     var controller;
     var patientService;
     var appService;
+    var spinner;
     var route = {current: {params: { location: "Ganiyari"}}};
 
     var appExtensions = [
@@ -48,6 +49,7 @@ describe("ActivePatientListController", function () {
 
     beforeEach(module('opd.patient'));
     beforeEach(inject(function () {
+        spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         patientMapper = jasmine.createSpyObj('patientMapper', ['constructImageUrl']);
         patientMapper.constructImageUrl.andReturn("dumb");
 
@@ -87,6 +89,7 @@ describe("ActivePatientListController", function () {
                 patientMapper: patientMapper,
                 patientService: patientService,
                 appService: appService,
+                spinner: spinner,
                 $route: route
             });
         });

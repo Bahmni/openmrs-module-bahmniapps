@@ -12,10 +12,12 @@ describe("VisitControllerTest", function () {
     var visitSummaryPromise;
     var visitHistoryPromise;
     var visitSummary;
+    var spinner;
 
     beforeEach(module('opd.consultation'));
 
     beforeEach(inject(function ($rootScope) {
+        spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         encounterService = jasmine.createSpyObj('encounterService', ['search']);
         visitService = jasmine.createSpyObj('visitService', ['getVisitSummary']);
         patientVisitHistoryService = jasmine.createSpyObj('patientVisitHistoryService', ['getVisits']);
@@ -37,6 +39,7 @@ describe("VisitControllerTest", function () {
             visitController = $controller('VisitController', {
                 $scope: scope,
                 $route: route,
+                spinner: spinner,
                 visitService: visitService,
                 patientVisitHistoryService: patientVisitHistoryService,
                 encounterService: encounterService
