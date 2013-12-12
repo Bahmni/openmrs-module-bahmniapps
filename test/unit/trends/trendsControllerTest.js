@@ -50,7 +50,7 @@ describe("TrendsController", function() {
                 "key": "Height",
                 "values": [ [1371619826000, 147.0], [1372227320000, 148.0] ]
             }]);
-            expect(scope.concepts.sort()).toEqual(["Height", "Weight"]);
+            expect(scope.concepts).toEqual({"HEIGHT":"Height", "WEIGHT":"Weight"});
         }));
 
         it("renames special keys like BMI & REGISTRATION FEES", inject(function() {
@@ -70,7 +70,7 @@ describe("TrendsController", function() {
                 "key": "Fees",
                 "values": [ [1371619826000, 15], [1372227320000, 10] ]
             }]);
-            expect(scope.concepts.sort()).toEqual(["BMI", "Fees"]);
+            expect(scope.concepts).toEqual({"BMI":"BMI", "REGISTRATION FEES":"Fees"});
         }));
 
         it("rejects samples without enough data", inject(function() {
@@ -79,7 +79,27 @@ describe("TrendsController", function() {
             ]);
 
             expect(sortedKeys(scope.observations)).toEqual([]);
-            expect(scope.concepts).toEqual([]);
+            expect(scope.concepts).toEqual({});
+        }));
+    });
+
+    describe("addObservations", function() {
+        it("adds the specified observation to visible observation", inject(function() {
+            observationFetchPromise.callSuccessCallBack([
+                {"observationDate":1371619826000,"conceptName":"WEIGHT","value":38.7},
+                {"observationDate":1372227320000,"conceptName":"WEIGHT","value":40.0},
+                {"observationDate":1371619826000,"conceptName":"HEIGHT","value":147.0},
+                {"observationDate":1372227320000,"conceptName":"HEIGHT","value":148.0}
+            ]);
+
+            scope.addObservations("WEIGHT");
+
+            expect(scope.visibleObservations).toEqual({
+                "WEIGHT": [{
+                    "key": "Weight",
+                    "values": [ [1371619826000, 38.7], [1372227320000, 40.0] ]
+                }]
+            });
         }));
     });
 });

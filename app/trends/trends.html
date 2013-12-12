@@ -1,14 +1,11 @@
 <div style="float:left;width:10%" >
-    <div ng-repeat="concept in concepts">
-        <div>
-            {{concept}}
-            <hr/>
-        </div>
+    <div ng-repeat="(conceptKey, conceptName) in concepts">
+        <span style="float:left;width:70%;padding-bottom:1em" ng-click="addObservations(conceptKey)">{{conceptName}}</span>
     </div>
 </div>
 
 <div style="float:left;width:90%">
-    <div ng-repeat="(concept, details) in observations">
+    <div ng-repeat="(concept, details) in visibleObservations">
         <nvd3-line-chart
             data="details"
             height="400"

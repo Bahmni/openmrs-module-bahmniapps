@@ -47,7 +47,8 @@ angular.module("trends").controller("TrendsController", ["$scope", "$routeParams
                     uniqueConcepts = unique(allConcepts);
 
                 $scope.observations = {};
-                $scope.concepts = [];
+                $scope.visibleObservations = {};
+                $scope.concepts = {};
 
                 uniqueConcepts.forEach(function(concept) {
                     var displayName = displayNameFor(concept),
@@ -58,7 +59,7 @@ angular.module("trends").controller("TrendsController", ["$scope", "$routeParams
                             "key": displayName,
                             "values": values
                         }];
-                        $scope.concepts.push(displayName);
+                        $scope.concepts[concept] = displayName;
                     }
                 });
             });
@@ -66,6 +67,10 @@ angular.module("trends").controller("TrendsController", ["$scope", "$routeParams
 
     $scope.xAxisTickFormatFunction = function(){
         return epochToDateString;
+    };
+
+    $scope.addObservations = function(concept){
+        $scope.visibleObservations[concept] = $scope.observations[concept];
     };
 
     init();
