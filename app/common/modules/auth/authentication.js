@@ -65,7 +65,6 @@ angular.module('authentication', ['ngCookies'])
              }).success(function (data) {
                 var providerUuid = (data.results.length > 0) ? data.results[0].uuid : undefined;
                 $rootScope.currentProvider = { uuid: providerUuid };
-                console.log($rootScope.currentProvider);
              });
         };
 
