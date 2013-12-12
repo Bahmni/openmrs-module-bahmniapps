@@ -13,7 +13,7 @@
         </ul>
     </div>    
 </script>
-<aside bindonce class="visit-history">
+<aside bindonce class="visit-history" ng-controller="VisitHistoryController">
     <h2>Visit History</h2>
     <ul>
         <li ng-click="showVisitSummary(visit)" class="visit-history-entry" ng-class="{'selected': isCurrentVisit(visit)}" ng-repeat="visit in visits">

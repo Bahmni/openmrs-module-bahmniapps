@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('opd.consultation.controllers')
-    .controller('VisitController', ['$scope', 'encounterService', 'visitService', 'patientVisitHistoryService','$route','$location', '$rootScope', 'urlHelper', 'spinner', function ($scope, encounterService, visitService, patientVisitHistoryService, $route, $location, $rootScope, urlHelper, spinner) {
+    .controller('VisitController', ['$scope', 'encounterService', 'visitService','$route', 'spinner', function ($scope, encounterService, visitService, $route, spinner) {
     var visitUuid = $route.current.params.visitUuid;
 	$scope.visitDays = [];
     $scope.hasMoreVisitDays;
@@ -9,24 +9,12 @@ angular.module('opd.consultation.controllers')
     var loading;
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
-    patientVisitHistoryService.getVisits($rootScope.patient.uuid).then(function(visits){
-        $scope.visits = visits.map(function(visitData){ return new Bahmni.Opd.Consultation.VisitHistoryEntry(visitData) });
-    });        
-
     spinner.forPromise(visitService.getVisitSummary(visitUuid).success(function (encounterTransactions) {
         $scope.visitSummary = Bahmni.Opd.Consultation.VisitSummary.create(encounterTransactions);
         if($scope.visitSummary.hasEncounters()) {
             loadEncounters($scope.visitSummary.mostRecentEncounterDateTime);
         }
     }));
-
-    $scope.showVisitSummary = function(visit) {
-        $location.path(urlHelper.getVisitUrl(visit.uuid));
-    }
-
-    $scope.isCurrentVisit = function(visit) {
-        return visit.uuid === visitUuid;
-    }
 
     var markLoadingDone = function() {
         loading = false;
