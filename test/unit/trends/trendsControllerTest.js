@@ -60,7 +60,10 @@ describe("TrendsController", function() {
             }));
 
             it("populates concepts", inject(function() {
-                expect(scope.concepts).toEqual({"HEIGHT":"Height", "WEIGHT":"Weight"});
+                expect(scope.concepts).toEqual({
+                    "HEIGHT": { name:"Height", displayed:false },
+                    "WEIGHT": { name:"Weight", displayed:false }
+                });
             }));
         });
 
@@ -87,7 +90,10 @@ describe("TrendsController", function() {
             }));
 
             it("renames concepts", inject(function() {
-                expect(scope.concepts).toEqual({"BMI":"BMI", "REGISTRATION FEES":"Fees"});
+                expect(scope.concepts).toEqual({
+                    "BMI": { name:"BMI", displayed:false },
+                    "REGISTRATION FEES": { name:"Fees", displayed:false }
+                });
             }));
         });
 
@@ -111,17 +117,21 @@ describe("TrendsController", function() {
     describe("addObservations", function() {
         beforeEach(function() {
             serverCallForWeightAndHeight();
+
+            scope.addObservations("WEIGHT");
         });
 
         it("adds the specified observation to visible observation", inject(function() {
-            scope.addObservations("WEIGHT");
-
             expect(scope.visibleObservations).toEqual({
                 "WEIGHT": [{
                     "key": "Weight",
                     "values": [ [1371619826000, 38.7], [1372227320000, 40.0], [1372821738000, 40.3] ]
                 }]
             });
+        }));
+
+        it("marks the category as displayed", inject(function() {
+            expect(scope.concepts.WEIGHT.displayed).toBeTruthy();
         }));
     });
 
@@ -130,17 +140,21 @@ describe("TrendsController", function() {
             serverCallForWeightAndHeight();
             scope.addObservations("WEIGHT");
             scope.addObservations("HEIGHT");
+
+            scope.removeObservations("HEIGHT");
         });
 
         it("removes the specified observation from visible observation", inject(function() {
-            scope.removeObservations("HEIGHT");
-
             expect(scope.visibleObservations).toEqual({
                 "WEIGHT": [{
                     "key": "Weight",
                     "values": [ [1371619826000, 38.7], [1372227320000, 40.0], [1372821738000, 40.3] ]
                 }]
             });
+        }));
+
+        it("marks the category as not displayed", inject(function() {
+            expect(scope.concepts.HEIGHT.displayed).toBeFalsy();
         }));
     });
 });

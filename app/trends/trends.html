@@ -1,23 +1,26 @@
 <div style="float:left;width:10%" >
-    <div ng-repeat="(conceptKey, conceptName) in concepts">
-        <span style="float:left;width:70%;padding-bottom:1em" ng-click="addObservations(conceptKey)">{{conceptName}}</span>
+    <div ng-repeat="(conceptKey, conceptValue) in concepts">
+        <span style="float:left;width:70%;padding-bottom:1em;background-color: {{conceptValue.displayed && '#D5D0D0' || 'white'}};" ng-click="addObservations(conceptKey)">{{conceptValue.name}}</span>
         <button style="float:left;width:15%" ng-click="removeObservations(conceptKey)">X</button>
     </div>
 </div>
 
 <div style="float:left;width:90%">
-    <div ng-repeat="(concept, details) in visibleObservations">
-        <nvd3-line-chart
-            data="details"
-            height="400"
-            showXAxis="true"
-            showYAxis="true"
-            tooltips="true"
-            interactive="true"
-            showLegend="true"
-            xAxisTickFormat="xAxisTickFormatFunction()"
-            >
-            <svg></svg>
-        </nvd3-line-chart>
+    <div ng-repeat="(conceptKey, details) in visibleObservations">
+        <div style="float:left;width:95%;">
+            <nvd3-line-chart
+                data="details"
+                height="400"
+                showXAxis="true"
+                showYAxis="true"
+                tooltips="true"
+                interactive="true"
+                showLegend="true"
+                xAxisTickFormat="xAxisTickFormatFunction()"
+                >
+                <svg></svg>
+            </nvd3-line-chart>
+        </div>
+        <button style="float:left;width:2%" ng-click="removeObservations(conceptKey)">X</button>
     </div>
 </div>

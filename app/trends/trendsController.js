@@ -59,7 +59,10 @@ angular.module("trends").controller("TrendsController", ["$scope", "$routeParams
                             "key": displayName,
                             "values": values
                         }];
-                        $scope.concepts[concept] = displayName;
+                        $scope.concepts[concept] = {
+                            name: displayName,
+                            displayed: false
+                        };
                     }
                 });
             });
@@ -71,10 +74,12 @@ angular.module("trends").controller("TrendsController", ["$scope", "$routeParams
 
     $scope.addObservations = function(concept){
         $scope.visibleObservations[concept] = $scope.observations[concept];
+        $scope.concepts[concept].displayed = true;
     };
 
     $scope.removeObservations = function(concept){
         delete $scope.visibleObservations[concept];
+        $scope.concepts[concept].displayed = false;
     };
 
     init();
