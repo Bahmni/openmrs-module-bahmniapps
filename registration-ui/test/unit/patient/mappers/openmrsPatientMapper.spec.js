@@ -153,4 +153,15 @@ describe('patientMapper', function () {
         openmrsPatient.person.preferredAddress = null;
         mapper.map(openmrsPatient);
     });
+
+    it("should not fail if an attribute does not exist", function () {
+        openmrsPatient.person.attributes.push({
+            "uuid": "2a71ee67-3446-4f66-8267-82446bda21a8",
+            "value": "someRandomValue",
+            "attributeType": {
+                "uuid": "nonExistingUuid"
+            }
+        });
+        mapper.map(openmrsPatient);
+    });
 });
