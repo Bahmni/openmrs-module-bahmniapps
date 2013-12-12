@@ -9,6 +9,7 @@ angular.module('opd.consultation.controllers')
                 if (response.data && response.data.results) {
 
                     if(response.data.results && response.data.results.length){
+                        $rootScope.disposition = $rootScope.disposition || {};
                         $rootScope.disposition.dispositionActionUuid = response.data.results[0].uuid;
                         $scope.dispositionActions = response.data.results[0].answers;
                     }
