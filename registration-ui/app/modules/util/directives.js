@@ -43,17 +43,28 @@ angular.module('registration.util')
         var link = function($scope, element) {            
             var toggleButton = element.find('.toggle-button');
 
+            var docClickHandler = function(e) {
+                var $clicked = $(e.target);
+                if ($clicked.closest(toggleButton).length === 0 || $clicked.closest(element.find('.options')).length !== 0) {
+                    element.find('.secondaryOption').hide();
+                    toggleButton.removeClass('open'); 
+                    $(document).off('click', docClickHandler);
+                }
+            }
+
             toggleButton.on('click', function(){
                 element.find('.secondaryOption').toggle();
                 element.find('.secondaryOption button')[0].focus();
-            });
-
-            $(document).on('click', function(e){
-                var $clicked = $(e.target);
-                if ($clicked.closest(toggleButton).length === 0 || $clicked.closest(element.find('.options')).length !== 0) {
-                   element.find('.secondaryOption').hide(); 
+                if(toggleButton.hasClass('open')) {
+                    toggleButton.removeClass('open');
+                    $(document).off('click', docClickHandler);
+                } else {
+                    $(document).on('click', docClickHandler);
+                    toggleButton.addClass('open');
                 }
-            });
+                }
+            );
+            
         };
 
         var controller = function($scope) {
