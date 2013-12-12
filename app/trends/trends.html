@@ -1,6 +1,7 @@
 <div style="float:left;width:10%" >
     <div ng-repeat="(conceptKey, conceptName) in concepts">
         <span style="float:left;width:70%;padding-bottom:1em" ng-click="addObservations(conceptKey)">{{conceptName}}</span>
+        <button style="float:left;width:15%" ng-click="removeObservations(conceptKey)">X</button>
     </div>
 </div>
 

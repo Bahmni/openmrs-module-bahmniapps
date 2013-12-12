@@ -102,4 +102,26 @@ describe("TrendsController", function() {
             });
         }));
     });
+
+    describe("removeObservations", function() {
+        it("removes the specified observation from visible observation", inject(function() {
+            observationFetchPromise.callSuccessCallBack([
+                {"observationDate":1371619826000,"conceptName":"WEIGHT","value":38.7},
+                {"observationDate":1372227320000,"conceptName":"WEIGHT","value":40.0},
+                {"observationDate":1371619826000,"conceptName":"HEIGHT","value":147.0},
+                {"observationDate":1372227320000,"conceptName":"HEIGHT","value":148.0}
+            ]);
+            scope.addObservations("WEIGHT");
+            scope.addObservations("HEIGHT");
+
+            scope.removeObservations("HEIGHT");
+
+            expect(scope.visibleObservations).toEqual({
+                "WEIGHT": [{
+                    "key": "Weight",
+                    "values": [ [1371619826000, 38.7], [1372227320000, 40.0] ]
+                }]
+            });
+        }));
+    });
 });

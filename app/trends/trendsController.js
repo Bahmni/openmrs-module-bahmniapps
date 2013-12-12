@@ -73,5 +73,9 @@ angular.module("trends").controller("TrendsController", ["$scope", "$routeParams
         $scope.visibleObservations[concept] = $scope.observations[concept];
     };
 
+    $scope.removeObservations = function(concept){
+        delete $scope.visibleObservations[concept];
+    };
+
     init();
 }]);
