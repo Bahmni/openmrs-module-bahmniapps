@@ -1,7 +1,7 @@
 Bahmni.ADT.Constants = (function() {
 	return {
         activePatientsListUrl: "../patients/#/adt",
-        adtConceptSet: 'ADT',
+        adtConceptSet: 'Admission',
         dischargeConceptSet: 'DISCHARGE'
 	};
 })();
