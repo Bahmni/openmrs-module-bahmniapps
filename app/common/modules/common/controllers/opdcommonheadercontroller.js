@@ -1,20 +1,12 @@
 'use strict';
 
 angular.module('bahmni.common.controllers', [])
-    .controller('CommonHeaderController', ['$scope', '$rootScope', '$route', function ($scope, $rootScope, $route) {
+    .controller('CommonHeaderController', ['$scope', '$rootScope', '$location', function ($scope, $rootScope, $location) {
+        var redirectUrl = $location.search()['redirect-url'] || '/home';
 
-        var createContext = function () {
-            if (!$rootScope.context && $route.current) {
-                $rootScope.context = {
-                    visitUuid: $route.current.params.visitUuid,
-                    redirectUrl:  $route.current.params["redirect-url"]
-                };
-            }
-        };
-
-        createContext();
-
-        $scope.$on('$routeChangeStart', createContext);
+        if (!$rootScope.context) {
+            $rootScope.context = {redirectUrl:  redirectUrl};
+        }
 
         $scope.shouldShowBackButton = function () {
             return $rootScope.context 
