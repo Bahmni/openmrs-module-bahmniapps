@@ -28,6 +28,11 @@ body{
                 margin:0px auto;
                 width:200px;
                 display: inline-block;
+                position:absolute;
+                left:0px;
+                right:7px;
+                top:7px;
+                bottom:0px;
             }
             .header-links{
                 padding:10px 10px 7px 0px;
@@ -43,20 +48,28 @@ body{
                     @include font-size(0.9);
                     display: inline-block;
                     &.logoff{
-                        margin:4px 0px 0px 0px;
+                        margin:2px 0px 2px 0px;
                         button{
-                            padding:10px;
+                            padding:8px;
                             margin-top: 1px;
                             background:#447772;
                             border:1px solid #00463F;
                             &:hover{
                               background:#4D9B92;
+                              color:#f0f0f0;
                            }
                         }
                     }  
                 a{
                     padding-top:10px;
                     cursor:pointer;
+                    &.user-name{
+                        color:#ADADAD;
+                        &:hover{
+                            text-decoration: none;
+                            cursor:pointer;
+                        }
+                    }
                     
                  }
                 }
