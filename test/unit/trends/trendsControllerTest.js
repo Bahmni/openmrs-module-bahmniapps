@@ -70,5 +70,13 @@ describe("TrendsController", function() {
                 "values": [ [1371619826000, 15], [1372227320000, 10] ]
             }]);
         }));
+
+        it("rejects samples without enough data", inject(function() {
+            observationFetchPromise.callSuccessCallBack([
+                {"observationDate":1371619826000,"conceptName":"BMI","value":17.91}
+            ]);
+
+            expect(sortedKeys(scope.observations)).toEqual([]);
+        }));
     });
 });

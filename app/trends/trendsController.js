@@ -1,6 +1,7 @@
 angular.module("trends").controller("TrendsController", ["$scope", "$routeParams", "observationService", function ($scope, $routeParams, observationService) {
     var patientUUID = $routeParams.patientUUID,
         fetchedObservations = observationService.fetch(patientUUID),
+        MINIMUM_REQUIRED_READINGS = 2,
 
         fetch = function(observations, concept) {
             return observations.filter(function(observation) {
@@ -50,10 +51,12 @@ angular.module("trends").controller("TrendsController", ["$scope", "$routeParams
                     var displayName = displayNameFor(concept),
                         values = fetch(observations, concept);
 
-                    $scope.observations[concept] = [{
-                        "key": displayName,
-                        "values": values
-                    }];
+                    if (values.length >= MINIMUM_REQUIRED_READINGS) {
+                        $scope.observations[concept] = [{
+                            "key": displayName,
+                            "values": values
+                        }];
+                    }
                 });
             });
         };
