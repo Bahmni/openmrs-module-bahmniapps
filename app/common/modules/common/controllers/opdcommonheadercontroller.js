@@ -9,8 +9,8 @@ angular.module('bahmni.common.controllers', [])
         }
 
         $scope.shouldShowBackButton = function () {
-            return $rootScope.context 
-                && $rootScope.context.redirectUrl 
+            return $rootScope.context
+                && $rootScope.context.redirectUrl
                 && $rootScope.context.redirectUrl.length > 0;
         };
-}]);
+    }]);
