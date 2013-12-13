@@ -115,6 +115,8 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
           border-top: 1px solid #cecece;
           button{
               background:#fff;
+              position:relative;
+              z-index:99;
           }
         }
         button {
