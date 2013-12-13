@@ -9,6 +9,7 @@ angular.module('consultation').config(['$routeProvider', '$httpProvider', functi
         $routeProvider.when('/patient/:patientUuid/diagnosis', {templateUrl: 'modules/consultation/views/addObservation.html', controller: 'DiagnosisController', resolve: {initialization: 'initialization'}});
         $routeProvider.when('/patient/:patientUuid/treatment', {templateUrl: 'modules/consultation/views/treatment.html', controller: 'TreatmentController', resolve: {initialization: 'initialization'}});
         $routeProvider.when('/patient/:patientUuid/investigation', {templateUrl: 'modules/consultation/views/investigations.html', controller: 'InvestigationController', resolve: {initialization: 'initialization'}});
+        $routeProvider.when('/patient/:patientUuid/new-investigation', {templateUrl: 'modules/consultation/views/newInvestigations.html', controller: 'NewInvestigationController', resolve: {initialization: 'initialization'}});
         $routeProvider.when('/patient/:patientUuid/notes', {templateUrl: 'modules/consultation/views/notes.html'});
         $routeProvider.when('/patient/:patientUuid/templates', {templateUrl: 'modules/consultation/views/comingSoon.html'});
         $routeProvider.when('/patient/:patientUuid/disposition', {templateUrl: 'modules/consultation/views/disposition.html',controller: 'DispositionController',resolve: {initialization: 'initialization'}});

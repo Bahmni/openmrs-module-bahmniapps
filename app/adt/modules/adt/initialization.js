@@ -2,7 +2,7 @@
 
 angular.module('opd.adt').factory('initialization',
     ['$rootScope', '$q', '$route', 'appService', 'configurationService', 'visitService', 'patientService', 'patientMapper',
-        'ConceptSetService', 'authenticator',
+        'conceptSetService', 'authenticator',
         function ($rootScope, $q, $route, appService, configurationService, visitService, patientService, patientMapper,
                   conceptSetService, authenticator) {
             var initializationPromise = $q.defer();

@@ -15,7 +15,7 @@ angular.module('opd.conceptSet')
         '<show-concept observation="rootObservation"></show-concept>' +
         '</form>';
 
-    var controller = function ($scope, $routeParams, ConceptSetService) {
+    var controller = function ($scope, $routeParams, conceptSetService) {
 
         var conceptSetName = $scope.conceptSetName || $routeParams.conceptSetName;
 
@@ -25,7 +25,7 @@ angular.module('opd.conceptSet')
 
         $scope.init = function () {
             if (!$rootScope.observationList[conceptSetName]) {
-                ConceptSetService.getConceptSetMembers(conceptSetName).success(function (response) {
+                conceptSetService.getConceptSetMembers(conceptSetName).success(function (response) {
                     if (response.results && response.results.length > 0) {
                         var conceptSet = response.results[0];
                         $rootScope.observationList[conceptSetName] =

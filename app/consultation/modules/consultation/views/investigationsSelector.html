@@ -1,0 +1,21 @@
+<ul class="filters">
+	<li ng-repeat="filter in filters">
+		<a href="">{{filter.name}}</a>
+	</li>
+</ul>
+<header>{{groupTitle}}</header>
+<ul class="groups">
+	<li ng-repeat="group in groups">
+		{{group.name}}
+	</li>
+</ul>
+<ul class="categories">
+	<li ng-repeat="category in categories">
+		<header>{{category.name}}</header>
+		<ul class="tests">
+			<li ng-repeat="test in category.tests">
+				{{test.name}}
+			</li>
+		</ul>
+	</li>
+</ul>
