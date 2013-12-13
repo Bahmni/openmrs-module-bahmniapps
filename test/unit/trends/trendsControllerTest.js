@@ -16,7 +16,6 @@ describe("TrendsController", function() {
                 {"observationDate":1371619826000,"conceptName":"HEIGHT","value":147.0},
                 {"observationDate":1372227320000,"conceptName":"HEIGHT","value":148.0}
             ]);
-
         };
 
     beforeEach(function () {
@@ -34,10 +33,10 @@ describe("TrendsController", function() {
         });
     });
 
-    describe("xAxisTickFormatFunction", function() {
+    describe("xAxisTickFormatAsDate", function() {
         it("converts epoch time to formatted date", inject(function() {
             var epochTimeFor21stDecember2013 = new Date(2013, 11, 21).getTime();
-            expect(scope.xAxisTickFormatFunction()(epochTimeFor21stDecember2013)).toEqual("21/12/13");
+            expect(scope.xAxisTickFormatAsDate()(epochTimeFor21stDecember2013)).toEqual("21/12/13");
         }));
     });
 

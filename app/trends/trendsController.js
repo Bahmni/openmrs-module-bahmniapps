@@ -68,7 +68,7 @@ angular.module("trends").controller("TrendsController", ["$scope", "$routeParams
             });
         };
 
-    $scope.xAxisTickFormatFunction = function(){
+    $scope.xAxisTickFormatAsDate = function(){
         return epochToDateString;
     };
 
