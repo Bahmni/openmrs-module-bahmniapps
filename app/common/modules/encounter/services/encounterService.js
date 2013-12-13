@@ -1,13 +1,19 @@
 'use strict';
 
 angular.module('bahmni.common.encounter.services')
-    .service('encounterService', ['$http', '$q', function ($http, $q) {
+    .service('encounterService', ['$http', '$q', '$rootScope', function ($http, $q, $rootScope) {
 
     this.create = function (encounter) {
         encounter.observations = encounter.observations || [];
         encounter.observations.forEach(function(obs) {
             stripExtraConceptInfo(obs);
         });
+
+        encounter.providers = encounter.providers || [];
+        if ($rootScope.currentProvider && $rootScope.currentProvider.uuid) {
+            encounter.providers.push( { "uuid" : $rootScope.currentProvider.uuid } );
+        }
+
         return $http.post(Bahmni.Common.Constants.encounterUrl, encounter, {
             withCredentials:true
         });
