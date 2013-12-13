@@ -4,6 +4,12 @@ angular.module('registration.patient.services')
     .factory('encounterService', ['$http', '$rootScope', function ($http, $rootScope) {
     
     var create = function (encounter) {
+
+        encounter.providers = encounter.providers || [];
+        if ($rootScope.currentProvider && $rootScope.currentProvider.uuid) {
+            encounter.providers.push( { "uuid" : $rootScope.currentProvider.uuid } );
+        }
+
         return $http.post(constants.emrApiRESTBaseURL + '/encounter', encounter, {
             withCredentials: true
         });

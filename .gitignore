@@ -42,4 +42,10 @@ registration-ui/dist
 registration-ui/app/styles/*.css
 >>>>>>> fixing module dependencies and using uicommons for registration
 omod/src/main/webapp/*
+<<<<<<< HEAD
 >>>>>>> creating maven task to pack angular app as a omod
+=======
+dist
+node_modules
+.sass-cache
+>>>>>>> Mujir | #1561 | loading and storing provider in registration
