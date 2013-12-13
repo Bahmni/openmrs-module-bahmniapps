@@ -1,7 +1,9 @@
 <div style="float:left;width:10%" >
     <div ng-repeat="(conceptKey, conceptValue) in concepts">
-        <span style="float:left;width:70%;padding-bottom:1em;background-color: {{conceptValue.displayed && '#D5D0D0' || 'white'}};" ng-click="addObservations(conceptKey)">{{conceptValue.name}}</span>
-        <button style="float:left;width:15%" ng-click="removeObservations(conceptKey)">X</button>
+        <span style="float:left;width:70%;padding-bottom:1em;background-color:{{conceptValue.displayed && '#E5DDDD' || 'white'}};" ng-click="addObservations(conceptKey)">
+            {{conceptValue.name}}
+        </span>
+        <button style="float:left;width:2em" ng-click="removeObservations(conceptKey)" ng-show="conceptValue.displayed">X</button>
     </div>
 </div>
 
@@ -21,6 +23,6 @@
                 <svg></svg>
             </nvd3-line-chart>
         </div>
-        <button style="float:left;width:2%" ng-click="removeObservations(conceptKey)">X</button>
+        <button style="float:left;width:2em" ng-click="removeObservations(conceptKey)">X</button>
     </div>
 </div>
