@@ -1,5 +1,17 @@
 <div class="adt">
+	<div ng-show="admissionNotePresent()">
+		<header>
+			<h1>Physician's admission note</h1>
+		</header>
+		<section>
+		<p>{{admissionNote}}</p>
+		</section>
+		<br>
+	</div>
+    <header>
+    	<h1>Admission Form</h1>
+	</header>
+	<br>
     <show-concept-set concept-set-name="'ADT'"></show-concept-set>
     <button type="button" ng-click="admit()">Admit</button>
 </div>
-

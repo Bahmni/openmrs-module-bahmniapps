@@ -3,9 +3,15 @@
 angular.module('opd.adt.controllers')
     .controller('AdmissionController', ['$scope', '$rootScope', 'encounterService', '$route', 'appService',
     function ($scope, $rootScope, encounterService, $route, appService) {
+        var appDescriptor, forwardLink;
 
-        var appDescriptor = appService.getAppDescriptor();
-        var forwardLink = appDescriptor.getConfig("onAdmissionForwardTo");
+        $scope.admissionNote = Bahmni.ADT.dispositionNote($rootScope.visit);
+        $scope.admissionNotePresent = function () {
+            return $scope.admissionNote && $scope.admissionNote.length > 0;
+        }
+
+        appDescriptor = appService.getAppDescriptor();
+        forwardLink = appDescriptor.getConfig("onAdmissionForwardTo");
         forwardLink = forwardLink && forwardLink.value;
 
         $scope.admit = function () {
