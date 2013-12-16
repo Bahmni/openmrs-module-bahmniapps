@@ -1,4 +1,29 @@
-.investigation{
+.investigation {
+    .two-column  {
+        display: inline-flex;
+
+        .first {
+            width: 25%;
+        }
+
+        .last {
+            width: 75%;
+        }
+    }
+
+    .filters, .panels, .tests {
+        li {
+            padding: 5px;
+        }
+    }
+
+    .panels, .tests {
+        li {
+            width: 48%;
+            display: inline-block;
+        }
+    }
+
     padding:10px;
      div:focus{
         outline:none;

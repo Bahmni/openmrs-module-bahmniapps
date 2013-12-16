@@ -1,23 +1,28 @@
-<ul class="filters">
-	<li ng-repeat="filter in filters">
-		<a href="">{{filter.name}}</a>
-	</li>
-</ul>
-<header>{{groupTitle}}</header>
-<ul class="panels">
-	<li ng-repeat="panel in selectablePanels" ng-click="togglePanel(panel)">
-		<span class="icon-ok" ng-show="panel.isSelected()"></span>
-		{{panel.name}}
-	</li>
-</ul>
-<ul class="categories">
-	<li ng-repeat="category in categories">
-		<header>{{category.name}}</header>
-		<ul class="tests">
-			<li ng-repeat="test in category.tests" ng-click="toggleTest(test)">
-				<span class="icon-ok" ng-show="test.isSelected()"></span>
-				{{test.name}}
-			</li>
-		</ul>
-	</li>
-</ul>
+<section class="first">
+	<header>Samples</header>
+	<ul class="filters">
+		<li ng-repeat="filter in filters">
+			<a href="">{{filter.name}}</a>
+		</li>
+	</ul>
+</section>
+<section class="last">
+	<header>Panels</header>
+	<ul class="panels">
+		<li ng-repeat="panel in selectablePanels" ng-click="togglePanel(panel)">
+			<span class="icon-ok" ng-show="panel.isSelected()"></span>
+			{{panel.name}}
+		</li>
+	</ul>
+	<ul class="categories">
+		<li ng-repeat="category in categories">
+			<header>{{category.name}}</header>
+			<ul class="tests">
+				<li ng-repeat="test in category.tests" ng-click="toggleTest(test)">
+					<span class="icon-ok" ng-show="test.isSelected()"></span>
+					{{test.name}}
+				</li>
+			</ul>
+		</li>
+	</ul>
+</section>
