@@ -58,7 +58,7 @@ angular.module('opd.consultation')
         }
     }
 
-    var controller = function($scope, $rootScope) {
+    var controller = function($scope, $rootScope, spinner) {
         var onSelectionChange = function(selectable) {
             if(selectable.isSelected()) {
                 if(selectable.isSelectedFromSelf()) addInvestigationForSelectable(selectable);
@@ -67,12 +67,12 @@ angular.module('opd.consultation')
             }
         }
 
-        var initializeTests = function() {
+        var initializeTests = function(tests) {
             var categories = [];
             var selectablePanels = [];
             var selectableTests = []
             var filters = [];
-            angular.forEach($scope.tests, function(test){
+            angular.forEach(tests, function(test){
                 var selectableTest = new Selectable(test, [], onSelectionChange);            
                 selectableTests.push(selectableTest);
                 var categoryData = test[$scope.categoryColumn] || {name: "Other"};
@@ -140,12 +140,12 @@ angular.module('opd.consultation')
             return $scope.investigations.filter(function(investigation){ return investigation.concept.uuid === selectable.uuid })[0];
         }
 
-        $scope.$watch('tests', function(){
-            initializeTests();
+        spinner.forPromise($scope.testsProvider.getTests()).then(function(tests){
+            initializeTests(tests);
             selectSelectablesBasedOnInvestigations();
             $scope.clearFilter();
         });
-
+        
         $scope.clearFilter = function() {
             $scope.filterBy(null)
         }
@@ -178,7 +178,7 @@ angular.module('opd.consultation')
         require: 'ngModel',
         scope: {
             investigations: '=ngModel',
-            tests: "=",
+            testsProvider: "=",
             filterColumn: "@",
             categoryColumn: "@"
         }

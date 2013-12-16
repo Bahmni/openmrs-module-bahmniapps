@@ -25,7 +25,8 @@ angular.module('opd.conceptSet')
 
         $scope.init = function () {
             if (!$rootScope.observationList[conceptSetName]) {
-                conceptSetService.getConceptSetMembers(conceptSetName).success(function (response) {
+                var params = {name: conceptSetName, v: "fullchildren"}
+                conceptSetService.getConceptSetMembers(params).success(function (response) {
                     if (response.results && response.results.length > 0) {
                         var conceptSet = response.results[0];
                         $rootScope.observationList[conceptSetName] =

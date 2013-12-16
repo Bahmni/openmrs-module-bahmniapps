@@ -1,17 +1,22 @@
 'use strict';
 
 angular.module('opd.consultation.controllers')
-    .controller('NewInvestigationController', ['$scope', '$q', '$rootScope', 'conceptSetService', 'spinner', function ($scope, $q, $rootScope, conceptSetService, spinner) {
+    .controller('NewInvestigationController', ['$scope', '$q', '$rootScope', 'conceptSetService', 'spinner', 'labTestsProvider', function ($scope, $q, $rootScope, conceptSetService, spinner, labTestsProvider) {
         var investigations = $rootScope.consultation.investigations;
 
-        var labConceptsPromise =conceptSetService.getConceptSetMembers('Laboratory');
-        var departmentConceptsPromise = conceptSetService.getConceptSetMembers('Lab Departments');
+        $scope.tabs = [
+            {name: 'Laboratory', testsProvider: labTestsProvider, filterColumn: "sample", categoryColumn: "department"},
+            {name: 'Other', testsProvider: labTestsProvider, filterColumn: "sample", categoryColumn: "department"},
+        ];
 
-        spinner.forPromise($q.all([labConceptsPromise, departmentConceptsPromise]).then(function(results){
-            var labConceptsSet = results[0].data.results[0];
-            var labDepartmentsSet = results[1].data.results[0];
-            var labEntities = new Bahmni.Opd.LabConceptsMapper().map(labConceptsSet, labDepartmentsSet);           
-            $scope.tests = labEntities.tests;
-        }));
+        $scope.activateTab = function(tab){
+            $scope.activeTab && ($scope.activeTab.klass="");
+            $scope.activeTab = tab;
+            $scope.activeTab.klass="active";
+        }
+
+        $scope.activateTab($scope.tabs[0]);
+
+        $scope.options = {testsProvider: labTestsProvider};
     }]
 );
