@@ -19,7 +19,7 @@
         <li ng-click="showVisitSummary(visit)" class="visit-history-entry" ng-class="{'selected': isCurrentVisit(visit), 'active': visit.isActive()}" ng-repeat="visit in visits">
             <a href="">
                 <span bo-text="visit.startDatetime | date: 'd MMM yy'"></span>
-                <span bo-text="'- ' + (visit.stopDatetime | date: 'd MMM yy')" bo-hide="visit.isOneDayVisit()"></span>
+                <span bo-text="'- ' + (visit.stopDatetime | date: 'd MMM yy')" bo-hide="visit.isActive()"></span>
             </a>
         </li>
     </ul>
@@ -34,7 +34,7 @@
                     <span bo-show="!visitSummary.isPrimaryOrder(diagnosis.order)">S</span>
                     <span bo-text="diagnosis.codedAnswer.name"></span>
                     <span bo-text="'(' + diagnosis.certainty + ')'" bo-hide = "visitSummary.isConfirmedDiagnosis(diagnosis.certainty)"></span>
-                    <span bo-text="(diagnosis.diagnosisDate | date:'d-MMM-yy h:mm a')"></span>
+                    <span bo-text="(diagnosis.diagnosisDateTime | date:'d-MMM-yy h:mm a')"></span>
                     <span bo-text="diagnosis.provider.name"></span>
             </li>
             <div bo-show="!visitSummary.hasDiagnosis()">A diagnosis has not been made for this patient yet.</div>
@@ -46,7 +46,7 @@
             <div  >
                 <li ng-repeat="disposition in visitSummary.dispositions">
                     <span bo-text="disposition.code"></span>
-                    <span bo-text="(disposition.dispositionDate | date:'d-MMM-yy h:mm a')"></span>
+                    <span bo-text="(disposition.dispositionDateTime | date:'d-MMM-yy h:mm a')"></span>
                     <span bo-text="disposition.provider.name"></span>
                     <span ng-repeat="note in disposition.additionalObs">
                         <expander class='expander'>
