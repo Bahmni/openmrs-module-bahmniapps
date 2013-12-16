@@ -4,16 +4,18 @@
 	</li>
 </ul>
 <header>{{groupTitle}}</header>
-<ul class="groups">
-	<li ng-repeat="group in groups">
-		{{group.name}}
+<ul class="panels">
+	<li ng-repeat="panel in selectablePanels" ng-click="togglePanel(panel)">
+		<span class="icon-ok" ng-show="panel.isSelected()"></span>
+		{{panel.name}}
 	</li>
 </ul>
 <ul class="categories">
 	<li ng-repeat="category in categories">
 		<header>{{category.name}}</header>
 		<ul class="tests">
-			<li ng-repeat="test in category.tests">
+			<li ng-repeat="test in category.tests" ng-click="toggleTest(test)">
+				<span class="icon-ok" ng-show="test.isSelected()"></span>
 				{{test.name}}
 			</li>
 		</ul>

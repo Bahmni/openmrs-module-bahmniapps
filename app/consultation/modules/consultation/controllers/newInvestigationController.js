@@ -12,8 +12,6 @@ angular.module('opd.consultation.controllers')
             var labDepartmentsSet = results[1].data.results[0];
             var labEntities = new Bahmni.Opd.LabConceptsMapper().map(labConceptsSet, labDepartmentsSet);           
             $scope.tests = labEntities.tests;
-            $scope.panels = labEntities.panels;
-            $scope.samples = labEntities.samples;
         }));
     }]
 );
