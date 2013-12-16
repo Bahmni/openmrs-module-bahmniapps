@@ -1,24 +1,29 @@
 <section class="first">
 	<header>Samples</header>
 	<ul class="filters">
-		<li ng-repeat="filter in filters">
+		<li ng-click="clearFilter()" ng-class="{selected: !hasFilter()}">
+			<a href="">All</a>
+		</li>
+		<li ng-repeat="filter in filters" ng-click="filterBy(filter)" ng-class="{selected: isFilteredBy(filter)}">
 			<a href="">{{filter.name}}</a>
 		</li>
 	</ul>
 </section>
 <section class="last">
-	<header>Panels</header>
-	<ul class="panels">
-		<li ng-repeat="panel in selectablePanels" ng-click="togglePanel(panel)">
-			<span class="icon-ok" ng-show="panel.isSelected()"></span>
-			{{panel.name}}
-		</li>
-	</ul>
+	<section ng-show="filteredPanels.length">
+		<header>Panels</header>
+		<ul class="panels" >
+			<li ng-repeat="panel in filteredPanels" ng-click="panel.toggle()">
+				<span class="icon-ok" ng-show="panel.isSelected()"></span>
+				{{panel.name}}
+			</li>
+		</ul>
+	</section>
 	<ul class="categories">
-		<li ng-repeat="category in categories">
+		<li ng-repeat="category in categories" ng-show="category.hasTests()">
 			<header>{{category.name}}</header>
 			<ul class="tests">
-				<li ng-repeat="test in category.tests" ng-click="toggleTest(test)">
+				<li ng-repeat="test in category.filteredTests" ng-click="test.toggle()">
 					<span class="icon-ok" ng-show="test.isSelected()"></span>
 					{{test.name}}
 				</li>

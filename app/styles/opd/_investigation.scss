@@ -11,6 +11,10 @@
         }
     }
 
+    .filters .selected {
+        font-size: 30px;
+    }
+
     .filters, .panels, .tests {
         li {
             padding: 5px;
@@ -19,7 +23,7 @@
 
     .panels, .tests {
         li {
-            width: 48%;
+            width: 47%;
             display: inline-block;
         }
     }
