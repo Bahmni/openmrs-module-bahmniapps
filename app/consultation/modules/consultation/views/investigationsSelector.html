@@ -1,13 +1,30 @@
 <section class="first">
-	<header>Samples</header>
-	<ul class="filters">
-		<li ng-click="clearFilter()" ng-class="{selected: !hasFilter()}">
-			<a href="">All</a>
-		</li>
-		<li ng-repeat="filter in filters" ng-click="filterBy(filter)" ng-class="{selected: isFilteredBy(filter)}">
-			<a href="">{{filter.name}}</a>
-		</li>
-	</ul>
+	<section>
+		<header>Samples</header>
+		<ul class="filters">
+			<li ng-click="clearFilter()" ng-class="{selected: !hasFilter()}">
+				<a href="">All</a>
+			</li>
+			<li ng-repeat="filter in filters" ng-click="filterBy(filter)" ng-class="{selected: isFilteredBy(filter)}">
+				<a href="">{{filter.name}}</a>
+			</li>
+		</ul>
+	</section>
+	<section class="investigation-results">
+		<form>
+		    <fieldset>
+		        <legend>Review Selection</legend>
+		        <div id="selectedNodesArea" tabindex="0">
+		            <span ng-repeat="investigation in investigations" class="selectedNode" 
+		                ng-class="{panel: investigation.concept.isSet, voided: investigation.voided}">
+		                <span class="test-name">{{investigation.concept.name}}</span>
+		                <button class="icon-remove icon-white" ng-click="removeInvestigation(investigation)"></button>
+		            </span>
+		        </div>
+		    </fieldset>
+		</form>
+	</section>
+
 </section>
 <section class="last">
 	<section ng-show="filteredPanels.length">
