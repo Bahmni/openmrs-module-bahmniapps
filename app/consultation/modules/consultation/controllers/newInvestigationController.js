@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('opd.consultation.controllers')
-    .controller('NewInvestigationController', ['$scope', '$q', '$rootScope', 'conceptSetService', 'spinner', 'labTestsProvider', function ($scope, $q, $rootScope, conceptSetService, spinner, labTestsProvider) {
+    .controller('NewInvestigationController', ['$scope', '$rootScope', 'spinner', 'labTestsProvider', 'otherTestsProvider', function ($scope, $rootScope, spinner, labTestsProvider, otherTestsProvider) {
         var investigations = $rootScope.consultation.investigations;
 
         $scope.tabs = [
             {name: 'Laboratory', testsProvider: labTestsProvider, filterColumn: "sample", categoryColumn: "department"},
-            {name: 'Other', testsProvider: labTestsProvider, filterColumn: "sample", categoryColumn: "department"},
+            {name: 'Other', testsProvider: otherTestsProvider, filterColumn: "type", categoryColumn: "category"},
         ];
 
         $scope.activateTab = function(tab){
@@ -16,7 +16,5 @@ angular.module('opd.consultation.controllers')
         }
 
         $scope.activateTab($scope.tabs[0]);
-
-        $scope.options = {testsProvider: labTestsProvider};
     }]
 );

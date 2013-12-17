@@ -1,7 +1,6 @@
 'use strict';
 
 describe("LabConceptsMapper", function () {
-
     var createTest = function(uuid, name) {
         return { uuid: uuid, name: { name: name}, conceptClass: { name: "Test"}}  
     }
@@ -17,6 +16,11 @@ describe("LabConceptsMapper", function () {
                         name: { name: "Anaemia Panel"},
                         conceptClass: { name: "LabSet"},
                         setMembers: [ createTest("1-1-1", "Absolute Eosinphil Count") ]
+                    },
+                    {
+                        name: { name: "Misconfigured Panel With Wrong conceptClass"},
+                        conceptClass: { name: "SomeSet"},
+                        setMembers: [ createTest("x-x-x", "MisconfiguredTest") ]
                     },
                     createTest("2-2-2", "Hb1AC"),
                     createTest("3-3-3", "ATTT"),
@@ -39,27 +43,42 @@ describe("LabConceptsMapper", function () {
         ]
     };
 
-    it('should map lab concepts to samples panels and tests', function () {
-        var labEntities = new Bahmni.Opd.LabConceptsMapper().map(labConceptSet, departmentsConceptSet);
+    describe("map", function(){
+        var mapper;
 
-        expect(labEntities).not.toBe(null);
-        expect(labEntities.samples[0].name).toBe('Blood');
-        var bloodSample = labEntities.samples[0];
-        expect(labEntities.panels[0].name).toBe('Anaemia Panel');
-        expect(labEntities.panels[0].sample).toEqual(bloodSample);
-        var anaemiaPanel = labEntities.panels[0];
-        expect(labEntities.tests.length).toBe(4);
-        expect(labEntities.tests[0].name).toBe('Absolute Eosinphil Count');
-        expect(labEntities.tests[0].panels).toEqual([anaemiaPanel]);
-        expect(labEntities.tests[0].sample).toEqual(bloodSample);
-        expect(labEntities.tests[0].department.name).toEqual('Haematology');
-        var haematologyDepartment = labEntities.tests[0].department;
-        expect(labEntities.tests[1].name).toBe('Hb1AC');
-        expect(labEntities.tests[1].panels).toEqual([]);
-        expect(labEntities.tests[1].sample).toEqual(bloodSample);
-        expect(labEntities.tests[1].department).toBe(haematologyDepartment);
-        expect(labEntities.tests[2].department.name).toEqual('Clinical Pathology');
-        expect(labEntities.tests[3].department).toEqual(undefined);
+        beforeEach(function(){
+            mapper = new Bahmni.Opd.LabConceptsMapper();
+        });
+
+        it('should map lab concepts to tests associated to panels and department', function () {
+            var tests = mapper.map(labConceptSet, departmentsConceptSet);
+
+            expect(tests.length).toBe(4);
+            expect(tests[0].name).toBe('Absolute Eosinphil Count');
+            expect(tests[0].panels[0].name).toEqual('Anaemia Panel');
+            expect(tests[0].sample.name).toEqual('Blood');
+            expect(tests[0].department.name).toEqual('Haematology');
+            var bloodSample = tests[0].sample;
+            var haematologyDepartment = tests[0].department;
+            expect(tests[1].name).toBe('Hb1AC');
+            expect(tests[1].panels).toEqual([]);
+            expect(tests[1].sample).toEqual(bloodSample);
+            expect(tests[1].department).toBe(haematologyDepartment);
+            expect(tests[2].department.name).toEqual('Clinical Pathology');
+            expect(tests[3].department).toEqual(undefined);
+        });
+
+        it("should return zero tests when labConceptSet does not exist", function(){
+            var tests = mapper.map(null, departmentsConceptSet);
+
+            expect(tests.length).toBe(0);
+        });
+
+        it("should map wthout categories when departmentsConceptSet does not exist", function(){
+            var tests = mapper.map(labConceptSet, null);
+
+            expect(tests.length).toBe(4);
+        });
     });
 });
 
