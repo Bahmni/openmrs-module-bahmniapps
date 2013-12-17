@@ -18,7 +18,7 @@
 		            <span ng-repeat="investigation in investigations" class="selectedNode" 
 		                ng-class="{panel: investigation.concept.isSet, voided: investigation.voided}">
 		                <span class="test-name">{{investigation.concept.name}}</span>
-		                <button class="icon-remove icon-white" ng-click="removeInvestigation(investigation)"></button>
+		                <button class="icon-remove icon-white" ng-click="toggleInvestigation(investigation)"></button>
 		            </span>
 		        </div>
 		    </fieldset>

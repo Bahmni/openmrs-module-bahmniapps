@@ -1,64 +1,15 @@
 angular.module('opd.consultation')
 .directive('investigationsSelector',function(){
-    var Selectable = function(data, selectableChildren, onSelectionChange) {
-        angular.extend(this, data);
-        var selectionSources = [];
-        var children = selectableChildren || [];
-
-        this.isSelected = function() {
-            return selectionSources.length > 0;
-        }
-
-        this.isSelectedFromSelf = function() {
-            return selectionSources.indexOf(this) !== -1;
-        }
-
-        this.addChild = function(selectable) {
-            children.push(selectable);
-        }
-        
-        this.toggle = function(selectionSource) {
-            selectionSource = selectionSource || this;
-            this.isSelected() ? this.unselect(selectionSource) : this.select(selectionSource);
-        }
-
-        this.select = function(selectionSource) {
-            selectionSource = selectionSource || this;
-            if(selectionSources.indexOf(selectionSource) === -1) {
-                selectionSources.push(selectionSource);  
-                angular.forEach(children, function(child){ 
-                    child.unselect(child); 
-                    child.select(selectionSource); 
-                });
-                onSelectionChange(this); 
-            }
-        }        
-
-        this.unselect = function(selectionSource) {
-            selectionSource = selectionSource || this;
-            var index = selectionSources.indexOf(selectionSource)
-            if(index !== -1) {
-                selectionSources.splice(index, 1);
-                angular.forEach(children, function(child){ child.unselect(selectionSource); });
-                onSelectionChange(this);
-            }
-        }        
-    }
-
-    var Category = function(name, tests) {
-        this.name = name;
-        this.tests = tests;
-        
-        this.filter = function(filterFunction) {
-            this.filteredTests = tests.filter(filterFunction);
-        }
-
-        this.hasTests = function() {
-            return this.filteredTests.length > 0;
-        }
-    }
+    var Selectable = Bahmni.Opd.Consultation.Selectable;
+    var Category = Bahmni.Opd.Consultation.Category;
 
     var controller = function($scope, $rootScope, spinner) {
+        spinner.forPromise($scope.testsProvider.getTests()).then(function(tests){
+            initializeTests(tests);
+            selectSelectablesBasedOnInvestigations();
+            $scope.clearFilter();
+        });
+
         var onSelectionChange = function(selectable) {
             if(selectable.isSelected()) {
                 if(selectable.isSelectedFromSelf()) addInvestigationForSelectable(selectable);
@@ -68,10 +19,10 @@ angular.module('opd.consultation')
         }
 
         var initializeTests = function(tests) {
-            var categories = [];
-            var selectablePanels = [];
-            var selectableTests = []
-            var filters = [];
+            var categories = $scope.categories = [];
+            var selectablePanels = $scope.selectablePanels = [];
+            var selectableTests = $scope.selectableTests = []
+            var filters = $scope.filters = [];
             angular.forEach(tests, function(test){
                 var selectableTest = new Selectable(test, [], onSelectionChange);            
                 selectableTests.push(selectableTest);
@@ -92,18 +43,18 @@ angular.module('opd.consultation')
                 var filter = test[$scope.filterColumn];
                 if(filters.indexOf(filter) === -1) filters.push(filter);
             });
-            $scope.categories = categories;
-            $scope.selectablePanels = selectablePanels;
-            $scope.selectableTests = selectableTests;
-            $scope.filters = filters;
         };
 
         var selectSelectablesBasedOnInvestigations = function() {
             var selectables = $scope.selectablePanels.concat($scope.selectableTests);
             angular.forEach($scope.investigations, function(investigation){
-                var selectable = selectables.filter(function(selectableConcept){ return selectableConcept.uuid === investigation.concept.uuid; })[0];
+                var selectable = findSelectableForInvestigation(selectables, investigation);
                 if(selectable) selectable.select();
             });
+        }
+        
+        var findSelectableForInvestigation = function(selectables, investigation) {
+            return selectables.filter(function(selectableConcept){ return selectableConcept.uuid === investigation.concept.uuid; })[0];
         }
         
         var createInvestigationFromSelectable = function(selectable) {
@@ -139,15 +90,15 @@ angular.module('opd.consultation')
         var findInvestigationForSelectable = function(selectable) {
             return $scope.investigations.filter(function(investigation){ return investigation.concept.uuid === selectable.uuid })[0];
         }
-
-        spinner.forPromise($scope.testsProvider.getTests()).then(function(tests){
-            initializeTests(tests);
-            selectSelectablesBasedOnInvestigations();
-            $scope.clearFilter();
-        });
         
         $scope.clearFilter = function() {
             $scope.filterBy(null)
+        }
+
+        $scope.toggleInvestigation = function(investigation) {
+            var selectables = $scope.selectablePanels.concat($scope.selectableTests);
+            var selectable = findSelectableForInvestigation(selectables, investigation);
+            if(selectable) selectable.toggle();
         }
 
         var applyCurrentFilterByFilterCoulmn = function(selectable) {
