@@ -7,7 +7,7 @@ angular.module('opd.consultation')
         spinner.forPromise($scope.testsProvider.getTests()).then(function(tests){
             initializeTests(tests);
             selectSelectablesBasedOnInvestigations();
-            $scope.clearFilter();
+            $scope.showAll();
         });
 
         var onSelectionChange = function(selectable) {
@@ -47,7 +47,8 @@ angular.module('opd.consultation')
 
         var selectSelectablesBasedOnInvestigations = function() {
             var selectables = $scope.selectablePanels.concat($scope.selectableTests);
-            angular.forEach($scope.investigations, function(investigation){
+            var currentInvestigations = $scope.investigations.filter(function(investigation){ return !investigation.voided; })
+            angular.forEach(currentInvestigations, function(investigation){
                 var selectable = findSelectableForInvestigation(selectables, investigation);
                 if(selectable) selectable.select();
             });
@@ -91,7 +92,7 @@ angular.module('opd.consultation')
             return $scope.investigations.filter(function(investigation){ return investigation.concept.uuid === selectable.uuid })[0];
         }
         
-        $scope.clearFilter = function() {
+        $scope.showAll = function() {
             $scope.filterBy(null)
         }
 

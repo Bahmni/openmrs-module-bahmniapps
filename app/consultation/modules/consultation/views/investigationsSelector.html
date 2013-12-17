@@ -2,7 +2,7 @@
 	<section>
 		<header>Samples</header>
 		<ul class="filters">
-			<li ng-click="clearFilter()" ng-class="{selected: !hasFilter()}">
+			<li ng-click="showAll()" ng-class="{selected: !hasFilter()}">
 				<a href="">All</a>
 			</li>
 			<li ng-repeat="filter in filters" ng-click="filterBy(filter)" ng-class="{selected: isFilteredBy(filter)}">
