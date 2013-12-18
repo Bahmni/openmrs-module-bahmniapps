@@ -12,9 +12,9 @@ test/output
 target
 output
 .sass-cache
-.css/
+clinical-ui/.css/
 .tmp
-node_modules
-app/components
-dist
-app/**/*.css
+clinical-ui/node_modules
+clinical-ui/app/components
+clinical-ui/dist
+clinical-ui/app/**/*.css
