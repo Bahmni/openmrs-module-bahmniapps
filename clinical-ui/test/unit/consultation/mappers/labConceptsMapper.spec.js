@@ -83,7 +83,6 @@ describe("LabConceptsMapper", function () {
 
             var tests = mapper.map(labConceptSet, departmentsConceptSet);
 
-            console.log(tests);
             expect(tests.length).toBe(1);
             expect(tests[0].panels.length).toBe(2);
         });

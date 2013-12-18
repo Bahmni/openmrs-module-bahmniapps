@@ -32,7 +32,6 @@ angular.module('opd.treeSelect')
                 var item = convertDataToItem(node.data);
                 if(!selectedItemshasItem(item)){
                     $scope.selectedItems.push(item);
-                    console.log($scope.selectedItems);
                 };
             } 
 

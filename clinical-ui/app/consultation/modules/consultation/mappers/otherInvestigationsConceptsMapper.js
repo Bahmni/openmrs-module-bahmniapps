@@ -17,11 +17,12 @@ Bahmni.Opd.OtherInvestigationsConceptsMapper = (function(){
 	}
 
 	var createTest = function(concept, investigationType, orderTypesMap) {
+		var orderTypeName = orderTypesMap[investigationType.name] || investigationType.name;
 		return {
 			uuid: concept.uuid,
 			name: concept.name.name,
 			type: investigationType,
-			orderTypeName: orderTypesMap[investigationType.name]
+			orderTypeName: orderTypeName
 		};
 	};
 	

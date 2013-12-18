@@ -1,45 +1,49 @@
 'use strict';
 
 describe("OtherInvestigationsConceptsMapper", function () {
+    var otherInvestigationsConceptSet;
+    var categoriesConceptSet;
+
     var createTest = function(uuid, name) {
         return { uuid: uuid, name: { name: name}, conceptClass: { name: Bahmni.Opd.Consultation.Constants.testConceptName}}  
     }
 
-    var otherInvestigationsConceptSet = { 
-        name: {name: Bahmni.Opd.Consultation.Constants.otherInvestigationsConceptSetName},
-        setMembers: [
-            {
-                name: { name: "Radiology"},
-                conceptClass: { name: "ConvSet"}, set: true,
-                setMembers: [
-                    createTest("1-1-1", "Chest XRay"),
-                    createTest("2-2-2", "Head Scan"),
-                    createTest("3-3-3", "Body Scan")
-                ]
-            },
-            {
-                name: { name: "Endoscopy"},
-                conceptClass: { name: "ConvSet"}, set: true,
-                setMembers: [
-                    createTest("4-4-4", "Colonoscopy"),
-                    createTest("5-5-5", "Endoscopic Ultrasound (EUS)")
-                ]
-            }            
-        ]
-    };
-    
-    var categoriesConceptSet = {
-        setMembers: [
-            {
-                name: { name: "XRay"},
-                setMembers: [ {uuid: "1-1-1"}]
-            },
-            {
-                name: { name: "Scan"},
-                setMembers: [ {uuid: "2-2-2"}, {uuid: "3-3-3"} ]
-            }        
-        ]
-    };
+    beforeEach(function(){
+        otherInvestigationsConceptSet = { 
+            name: {name: Bahmni.Opd.Consultation.Constants.otherInvestigationsConceptSetName},
+            setMembers: [
+                {
+                    name: { name: "Radiology"},
+                    conceptClass: { name: "ConvSet"}, set: true,
+                    setMembers: [
+                        createTest("1-1-1", "Chest XRay"),
+                        createTest("2-2-2", "Head Scan"),
+                        createTest("3-3-3", "Body Scan")
+                    ]
+                },
+                {
+                    name: { name: "Endoscopy"},
+                    conceptClass: { name: "ConvSet"}, set: true,
+                    setMembers: [
+                        createTest("4-4-4", "Colonoscopy"),
+                        createTest("5-5-5", "Endoscopic Ultrasound (EUS)")
+                    ]
+                }            
+            ]
+        };        
+        categoriesConceptSet = {
+            setMembers: [
+                {
+                    name: { name: "XRay"},
+                    setMembers: [ {uuid: "1-1-1"}]
+                },
+                {
+                    name: { name: "Scan"},
+                    setMembers: [ {uuid: "2-2-2"}, {uuid: "3-3-3"} ]
+                }        
+            ]
+        };        
+    });
 
     describe("map", function(){
         var mapper;
@@ -70,6 +74,17 @@ describe("OtherInvestigationsConceptsMapper", function () {
             expect(tests[2].category).toEqual(scan);
             expect(tests[3].category).toEqual(undefined);
             expect(tests[3].orderTypeName).toEqual(orderTypesMap.Endoscopy);
+        });
+
+        it("should map orderTypeName to investigation type name if not order types are not configured", function(){
+             var unConfiguredInvestigationType = { name: { name: "FutureScopy"}, conceptClass: { name: "ConvSet"}, set: true,
+                                               setMembers: [ createTest("1-1-1", "FutureScopy Test")]}
+            otherInvestigationsConceptSet.setMembers = [unConfiguredInvestigationType]
+
+            var tests = mapper.map(otherInvestigationsConceptSet, categoriesConceptSet);
+
+            expect(tests.length).toBe(1);
+            expect(tests[0].orderTypeName).toBe('FutureScopy');
         });
 
         it("should return zero tests when otherInvestigationsConceptSet does not exist", function(){

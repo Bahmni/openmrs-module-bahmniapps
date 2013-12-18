@@ -5,7 +5,7 @@
 			<li ng-click="showAll()" ng-class="{selected: !hasFilter()}">
 				<a href="">All</a>
 			</li>
-			<li ng-repeat="filter in filters" ng-click="filterBy(filter)" ng-class="{selected: isFilteredBy(filter)}">
+			<li ng-repeat="filter in filters | orderBy:'name'" ng-click="filterBy(filter)" ng-class="{selected: isFilteredBy(filter)}">
 				<a href="">{{filter.name}}</a>
 			</li>
 		</ul>
@@ -30,17 +30,17 @@
 	<section ng-show="filteredPanels.length">
 		<header>Panels</header>
 		<ul class="panels" >
-			<li ng-repeat="panel in filteredPanels" ng-click="panel.toggle()">
+			<li ng-repeat="panel in filteredPanels | orderBy:'name'" ng-click="panel.toggle()">
 				<span class="icon-ok" ng-show="panel.isSelected()"></span>
 				{{panel.name}}
 			</li>
 		</ul>
 	</section>
 	<ul class="categories">
-		<li ng-repeat="category in categories" ng-show="category.hasTests()">
+		<li ng-repeat="category in categories | orderBy:'name'" ng-show="category.hasTests()">
 			<header>{{category.name}}</header>
 			<ul class="tests">
-				<li ng-repeat="test in category.filteredTests" ng-click="test.toggle()">
+				<li ng-repeat="test in category.filteredTests | orderBy:'name'" ng-click="test.toggle()">
 					<span class="icon-ok" ng-show="test.isSelected()"></span>
 					{{test.name}}
 				</li>
