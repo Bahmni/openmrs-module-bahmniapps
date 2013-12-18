@@ -20,13 +20,13 @@ Bahmni.Opd.LabConceptsMapper = (function(){
 
     var mapPanelTests = function(sample, tests, panelConcept) {
         var panel = {uuid: panelConcept.uuid, name: panelConcept.name.name, sample: sample};
-        var panelTestConcepts = panelConcept.setMembers.filter(forConcptClass('Test'));
-        angular.forEach(panelTestConcepts, function(panelTestConcept){
-            var test = tests.filter(function(test){ return test.uuid === concept.uuid })[0];
+        var testConcepts = panelConcept.setMembers.filter(forConcptClass('Test'));
+        angular.forEach(testConcepts, function(testConcept){
+            var test = tests.filter(function(test){ return test.uuid === testConcept.uuid; })[0];
             if(test) {
                 test.panels.push(panel);
             } else {
-                tests.push({uuid: panelTestConcept.uuid, name: panelTestConcept.name.name, sample: sample, panels: [panel]});
+                tests.push({uuid: testConcept.uuid, name: testConcept.name.name, sample: sample, panels: [panel]});
             }
         });
     }

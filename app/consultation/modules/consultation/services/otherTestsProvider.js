@@ -10,8 +10,8 @@ angular.module('opd.consultation.services')
         $q.all([otherInvestigationsConceptPromise, categoriesConceptPromise]).then(function(results){
             var otherInvestigationConcept = results[0].data.results[0];
             var labDepartmentsSet = results[1].data.results[0];
-            var labEntities = new Bahmni.Opd.OtherInvestigationsConceptsMapper().map(otherInvestigationConcept, labDepartmentsSet);           
-            deferer.resolve(labEntities.tests);
+            var tests = new Bahmni.Opd.OtherInvestigationsConceptsMapper().map(otherInvestigationConcept, labDepartmentsSet);           
+            deferer.resolve(tests);
         }, deferer.reject);
   		return deferer.promise;
   	}

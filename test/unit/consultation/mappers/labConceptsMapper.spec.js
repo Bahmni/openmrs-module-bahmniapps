@@ -1,47 +1,51 @@
 'use strict';
 
 describe("LabConceptsMapper", function () {
+    var labConceptSet;    
+    var departmentsConceptSet;
     var createTest = function(uuid, name) {
         return { uuid: uuid, name: { name: name}, conceptClass: { name: "Test"}}  
     }
 
-    var labConceptSet = { 
-        name: {name: 'Laboratory'},
-        setMembers: [
-            {
-                name: { name: "Blood"},
-                conceptClass: { name: "ConvSet"},
-                setMembers: [
-                    {
-                        name: { name: "Anaemia Panel"},
-                        conceptClass: { name: "LabSet"},
-                        setMembers: [ createTest("1-1-1", "Absolute Eosinphil Count") ]
-                    },
-                    {
-                        name: { name: "Misconfigured Panel With Wrong conceptClass"},
-                        conceptClass: { name: "SomeSet"},
-                        setMembers: [ createTest("x-x-x", "MisconfiguredTest") ]
-                    },
-                    createTest("2-2-2", "Hb1AC"),
-                    createTest("3-3-3", "ATTT"),
-                    createTest("4-4-4", "Morphology")
-                ]
-            }
-        ]
-    };
-    
-    var departmentsConceptSet = {
-        setMembers: [
-            {
-                name: { name: "Haematology"},
-                setMembers: [ {uuid: "1-1-1"}, {uuid: "2-2-2"} ]
-            },
-            {
-                name: { name: "Clinical Pathology"},
-                setMembers: [ {uuid: "3-3-3"}]
-            },
-        ]
-    };
+    beforeEach(function(){
+        labConceptSet = { 
+            name: {name: 'Laboratory'},
+            setMembers: [
+                {
+                    name: { name: "Blood"},
+                    conceptClass: { name: "ConvSet"},
+                    setMembers: [
+                        {
+                            name: { name: "Anaemia Panel"},
+                            conceptClass: { name: "LabSet"},
+                            setMembers: [ createTest("1-1-1", "Absolute Eosinphil Count") ]
+                        },
+                        {
+                            name: { name: "Misconfigured Panel With Wrong conceptClass"},
+                            conceptClass: { name: "SomeSet"},
+                            setMembers: [ createTest("x-x-x", "MisconfiguredTest") ]
+                        },
+                        createTest("2-2-2", "Hb1AC"),
+                        createTest("3-3-3", "ATTT"),
+                        createTest("4-4-4", "Morphology")
+                    ]
+                }
+            ]
+        };        
+
+        departmentsConceptSet = {
+            setMembers: [
+                {
+                    name: { name: "Haematology"},
+                    setMembers: [ {uuid: "1-1-1"}, {uuid: "2-2-2"} ]
+                },
+                {
+                    name: { name: "Clinical Pathology"},
+                    setMembers: [ {uuid: "3-3-3"}]
+                },
+            ]
+        };
+    });
 
     describe("map", function(){
         var mapper;
@@ -66,6 +70,20 @@ describe("LabConceptsMapper", function () {
             expect(tests[1].department).toBe(haematologyDepartment);
             expect(tests[2].department.name).toEqual('Clinical Pathology');
             expect(tests[3].department).toEqual(undefined);
+        });
+
+        it("should map the tests belonging to multiple panels as single test", function(){
+            var testConcept = createTest("1-1-1", "Test1")
+            var panelConcept1 = {name: { name: "Panel1"}, conceptClass: { name: "LabSet"}, setMembers: [testConcept]};
+            var panelConcept2 = {name: { name: "Panel2"}, conceptClass: { name: "LabSet"}, setMembers: [testConcept]};
+            var sampleConcept = {name: { name: "Blood"}, conceptClass: { name: "ConvSet"}, setMembers: [panelConcept1, panelConcept2]};
+            labConceptSet.setMembers = [sampleConcept];
+
+            var tests = mapper.map(labConceptSet, departmentsConceptSet);
+
+            console.log(tests);
+            expect(tests.length).toBe(1);
+            expect(tests[0].panels.length).toBe(2);
         });
 
         it("should return zero tests when labConceptSet does not exist", function(){
