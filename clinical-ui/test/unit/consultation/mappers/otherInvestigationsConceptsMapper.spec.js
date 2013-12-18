@@ -2,11 +2,11 @@
 
 describe("OtherInvestigationsConceptsMapper", function () {
     var createTest = function(uuid, name) {
-        return { uuid: uuid, name: { name: name}, conceptClass: { name: "Test"}}  
+        return { uuid: uuid, name: { name: name}, conceptClass: { name: Bahmni.Opd.Consultation.Constants.testConceptName}}  
     }
 
     var otherInvestigationsConceptSet = { 
-        name: {name: 'Other Investigations'},
+        name: {name: Bahmni.Opd.Consultation.Constants.otherInvestigationsConceptSetName},
         setMembers: [
             {
                 name: { name: "Radiology"},
@@ -43,25 +43,33 @@ describe("OtherInvestigationsConceptsMapper", function () {
 
     describe("map", function(){
         var mapper;
+        var orderTypesMap;
 
         beforeEach(function(){
-            mapper = new Bahmni.Opd.OtherInvestigationsConceptsMapper();
+            orderTypesMap = {
+                "Radiology": "Radiology Order",
+                "Endoscopy": "Endoscopy Order",
+            };
+            mapper = new Bahmni.Opd.OtherInvestigationsConceptsMapper(orderTypesMap);
         });
 
-        it('should map other investigations concepts to tests associated to type and category', function () {
+        it('should map other investigations concepts to tests associated to type, category and orderTypeName', function () {
             var tests = mapper.map(otherInvestigationsConceptSet, categoriesConceptSet);
 
             expect(tests.length).toBe(5);
             expect(tests[0].name).toBe('Chest XRay');
             expect(tests[0].type.name).toEqual('Radiology');
+            expect(tests[0].orderTypeName).toEqual(orderTypesMap.Radiology);
             expect(tests[0].category.name).toEqual('XRay');
             var radiology = tests[0].type;
             expect(tests[1].name).toBe('Head Scan');
             expect(tests[1].type).toEqual(radiology);
+            expect(tests[1].orderTypeName).toEqual(orderTypesMap.Radiology);
             expect(tests[1].category.name).toBe('Scan');
             var scan = tests[1].category;
             expect(tests[2].category).toEqual(scan);
             expect(tests[3].category).toEqual(undefined);
+            expect(tests[3].orderTypeName).toEqual(orderTypesMap.Endoscopy);
         });
 
         it("should return zero tests when otherInvestigationsConceptSet does not exist", function(){

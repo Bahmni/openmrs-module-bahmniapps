@@ -317,7 +317,7 @@ var encounterTransaction = {
         "comment": null,
         "concept": {
             "uuid": "db6fcf3d-0a6a-11e3-87b2-05a83b2f3a98",
-            "name": "Laboratory"
+            "name": Bahmni.Opd.Consultation.Constants.labConceptSetName
         },
         "voided": false
     }

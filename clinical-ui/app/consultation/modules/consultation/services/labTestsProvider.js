@@ -5,8 +5,8 @@ angular.module('opd.consultation.services')
 
   	this.getTests = function() {
 	  	var deferer = $q.defer();
-        var labConceptsPromise = conceptSetService.getConceptSetMembers({name: 'Laboratory', v: "fullchildren"}, true);
-        var departmentConceptsPromise = conceptSetService.getConceptSetMembers({name: 'Lab Departments', v: "custom:(uuid,setMembers:(uuid,name,setMembers:(uuid,name)))"}, true);
+        var labConceptsPromise = conceptSetService.getConceptSetMembers({name: Bahmni.Opd.Consultation.Constants.labConceptSetName, v: "fullchildren"}, true);
+        var departmentConceptsPromise = conceptSetService.getConceptSetMembers({name: Bahmni.Opd.Consultation.Constants.labDepartmentsConceptSetName, v: "custom:(uuid,setMembers:(uuid,name,setMembers:(uuid,name)))"}, true);
         $q.all([labConceptsPromise, departmentConceptsPromise]).then(function(results){
             var labConceptsSet = results[0].data.results[0];
             var labDepartmentsSet = results[1].data.results[0];

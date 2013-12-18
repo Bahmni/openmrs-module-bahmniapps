@@ -11,22 +11,30 @@ Bahmni.Opd.LabConceptsMapper = (function(){
             var department = { name: departmentConcept.name.name };
             angular.forEach(departmentConcept.setMembers, function(testConcept){
                 var test = tests.filter(function(test){ return test.uuid === testConcept.uuid })[0];
-                if(test) {
-                    test.department = department;
-                }
+                if(test) test.department = department;
             });
         });
     }
 
+    var createTest = function(concept, sample, panels) {
+        return {
+                uuid: concept.uuid,
+                name: concept.name.name,
+                sample: sample,
+                panels: panels,
+                orderTypeName: Bahmni.Opd.Consultation.Constants.labOrderType
+            };
+    }
+
     var mapPanelTests = function(sample, tests, panelConcept) {
         var panel = {uuid: panelConcept.uuid, name: panelConcept.name.name, sample: sample};
-        var testConcepts = panelConcept.setMembers.filter(forConcptClass('Test'));
+        var testConcepts = panelConcept.setMembers.filter(forConcptClass(Bahmni.Opd.Consultation.Constants.testConceptName));
         angular.forEach(testConcepts, function(testConcept){
             var test = tests.filter(function(test){ return test.uuid === testConcept.uuid; })[0];
             if(test) {
                 test.panels.push(panel);
             } else {
-                tests.push({uuid: testConcept.uuid, name: testConcept.name.name, sample: sample, panels: [panel]});
+                tests.push(createTest(testConcept, sample, [panel]));
             }
         });
     }
@@ -38,13 +46,13 @@ Bahmni.Opd.LabConceptsMapper = (function(){
             var sampleConcepts = labConceptSet.setMembers
             angular.forEach(sampleConcepts, function(sampleConcept) {
                 var sample = {uuid : sampleConcept.uuid, name : sampleConcept.name.name }
-                var panelConcepts = sampleConcept.setMembers.filter(forConcptClass('LabSet'));
-                var testConcepts = sampleConcept.setMembers.filter(forConcptClass('Test'));
+                var panelConcepts = sampleConcept.setMembers.filter(forConcptClass(Bahmni.Opd.Consultation.Constants.labSetConceptName));
+                var testConcepts = sampleConcept.setMembers.filter(forConcptClass(Bahmni.Opd.Consultation.Constants.testConceptName));
                 angular.forEach(panelConcepts, function(panelConcept){
                     mapPanelTests(sample, tests, panelConcept);
                 });
                 angular.forEach(testConcepts, function(testConcept){
-                    tests.push({uuid: testConcept.uuid, name: testConcept.name.name, sample: sample, panels: []});
+                    tests.push(createTest(testConcept, sample, []));
                 });
             });
             assignDepartmentToTests(tests, departmentConceptSet);

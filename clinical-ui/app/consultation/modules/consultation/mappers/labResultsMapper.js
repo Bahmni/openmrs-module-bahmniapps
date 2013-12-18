@@ -40,7 +40,7 @@ Bahmni.Opd.LabResultsMapper = function() {
     var getLabResultObs = function (encounterTransaction) {
         var labResultObs;
         encounterTransaction.observations.forEach(function(observation) {
-            if(observation.concept.name == "Laboratory") {
+            if(observation.concept.name == Bahmni.Opd.Consultation.Constants.labConceptSetName) {
                 labResultObs = observation.groupMembers;
             };
         });

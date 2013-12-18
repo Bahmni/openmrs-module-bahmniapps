@@ -1,16 +1,19 @@
 'use strict';
 
 angular.module('opd.consultation.services')
-  .service('otherTestsProvider', ['$q', 'conceptSetService', function ($q, conceptSetService) {
+  .service('otherTestsProvider', ['$q', 'conceptSetService', 'appService',function ($q, conceptSetService, appService) {
+    var orderTypesMapConfig = appService.getAppDescriptor().getConfig("otherInvestigationsMap");
+    var orderTypesMap = orderTypesMapConfig ? orderTypesMapConfig.value : {};
+    var mapper = new Bahmni.Opd.OtherInvestigationsConceptsMapper(orderTypesMap);
 
   	this.getTests = function() {
 	  	var deferer = $q.defer();
-        var otherInvestigationsConceptPromise = conceptSetService.getConceptSetMembers({name: 'Other Investigations', v: "fullchildren"}, true);
-        var categoriesConceptPromise = conceptSetService.getConceptSetMembers({name: 'Other Investigations Categories', v: "custom:(uuid,setMembers:(uuid,name,setMembers:(uuid,name)))"}, true);
+        var otherInvestigationsConceptPromise = conceptSetService.getConceptSetMembers({name: Bahmni.Opd.Consultation.Constants.otherInvestigationsConceptSetName, v: "fullchildren"}, true);
+        var categoriesConceptPromise = conceptSetService.getConceptSetMembers({name: Bahmni.Opd.Consultation.Constants.otherInvestigationCategoriesConceptSetName, v: "custom:(uuid,setMembers:(uuid,name,setMembers:(uuid,name)))"}, true);
         $q.all([otherInvestigationsConceptPromise, categoriesConceptPromise]).then(function(results){
             var otherInvestigationConcept = results[0].data.results[0];
             var labDepartmentsSet = results[1].data.results[0];
-            var tests = new Bahmni.Opd.OtherInvestigationsConceptsMapper().map(otherInvestigationConcept, labDepartmentsSet);           
+            var tests = mapper.map(otherInvestigationConcept, labDepartmentsSet);           
             deferer.resolve(tests);
         }, deferer.reject);
   		return deferer.promise;

@@ -6,7 +6,7 @@ Bahmni.Opd.TreeSelect.Node = function() {
         this.display = concept.display;
         this.conceptClass = concept.conceptClass != null ? concept.conceptClass.display : "";
         this.isSet = concept.set;
-        this.isSelectableType = this.conceptClass === "LabSet" || !this.isSet;
+        this.isSelectableType = this.conceptClass === Bahmni.Opd.Consultation.Constants.labSetConceptName || !this.isSet;
 
         this.children = children || [];
         this.focus = false;

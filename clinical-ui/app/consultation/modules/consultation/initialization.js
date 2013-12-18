@@ -34,7 +34,7 @@ angular.module('opd.consultation').factory('initialization',
         };
 
         var initApp = function() {
-            return appService.initApp('clinical', {'extension' : true});
+            return appService.initApp('clinical', {'app': true, 'extension' : true });
         };
 
         return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(getConsultationConfigs)

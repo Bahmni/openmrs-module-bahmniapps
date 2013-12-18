@@ -41,7 +41,7 @@ Bahmni.Opd.Consultation.VisitDay.create = function(dayNumber, visitDate, encount
 	var labTestOrders = [];
 	var otherTestOrders = [];
 
-	var labTestOrderTypeUuid = orderTypes[Bahmni.Opd.Consultation.Constants.orderTypes.lab];
+	var labTestOrderTypeUuid = orderTypes[Bahmni.Opd.Consultation.Constants.labOrderType];
 
     angular.forEach(encounterTransactions, function(encounterTransaction) {
         var provider = encounterTransaction.providers[0];

@@ -1,5 +1,7 @@
 Bahmni.Opd.OtherInvestigationsConceptsMapper = (function(){
-	var OtherInvestigationsConceptsMapper = function() {};
+	var OtherInvestigationsConceptsMapper = function(orderTypesMap) {
+		this.orderTypesMap = orderTypesMap;
+	};
 
 	var assignCategoriesToTests = function(tests, categoryConceptSet){
 	    var categoryConcepts = categoryConceptSet ? categoryConceptSet.setMembers : [];
@@ -13,17 +15,27 @@ Bahmni.Opd.OtherInvestigationsConceptsMapper = (function(){
 			});
 		});
 	}
+
+	var createTest = function(concept, investigationType, orderTypesMap) {
+		return {
+			uuid: concept.uuid,
+			name: concept.name.name,
+			type: investigationType,
+			orderTypeName: orderTypesMap[investigationType.name]
+		};
+	};
 	
 	OtherInvestigationsConceptsMapper.prototype = {
 		map: function(otherInvestigationsConcept, categoryConceptSet) {
+			var self = this;
 	        if(!otherInvestigationsConcept) return [];
 	        var tests = [];
 	        var testTypeSets = otherInvestigationsConcept.setMembers.filter(function(concept) { return concept.set; });
 	        angular.forEach(testTypeSets, function(concept) {
 	            var type = {uuid : concept.uuid, name : concept.name.name }
-	            var testConcepts = concept.setMembers.filter(function(concept) { return concept.conceptClass.name === 'Test'});
+	            var testConcepts = concept.setMembers.filter(function(concept) { return concept.conceptClass.name === Bahmni.Opd.Consultation.Constants.testConceptName});
 	            angular.forEach(testConcepts, function(testConcept){
-	                tests.push({uuid: testConcept.uuid, name: testConcept.name.name, type: type});
+	                tests.push(createTest(testConcept, type, self.orderTypesMap));
 	            });
 	        });
 	        assignCategoriesToTests(tests, categoryConceptSet);

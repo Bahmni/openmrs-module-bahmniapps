@@ -61,7 +61,7 @@ angular.module('opd.consultation')
         var createInvestigationFromSelectable = function(selectable) {
             return {
                 concept: {uuid: selectable.uuid, name: selectable.name},
-                orderTypeUuid: $rootScope.encounterConfig.orderTypes['Lab Order']//TODO: Fetch this based on tab    
+                orderTypeUuid: $rootScope.encounterConfig.orderTypes[selectable.orderTypeName]
             };
         }
 
