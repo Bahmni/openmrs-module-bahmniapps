@@ -1,5 +1,7 @@
 <header ng-controller="CommonHeaderController">
-    <a class="header-links" href="{{context.redirectUrl}}" ng-show="shouldShowBackButton()">Home</a>
+
+    <a class="back-btn" href="{{context.redirectUrl}}" ng-show="shouldShowBackButton()"><span class="arrow-btn-head"></span>
+    <span class="arrow-btn-body">Back</span></a>
 	<a class="header-logo" href="/home">Jan Swasthya Sahyog</a>
 	<ul class="user-info">
 		<li>

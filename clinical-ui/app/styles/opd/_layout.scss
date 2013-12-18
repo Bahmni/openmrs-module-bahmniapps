@@ -16,6 +16,7 @@ body{
 .opd-header-wrapper{
         @include pie-clearfix;
         background:#00463F;
+        
         header{
             width:960px;
             margin:0px auto;
@@ -34,11 +35,36 @@ body{
                 top:7px;
                 bottom:0px;
             }
-            .header-links{
-                padding:10px 10px 7px 0px;
-                margin-top:7px;
+            .back-btn{
                 @include pie-clearfix;
                 display: inline-block;
+                margin-top:2px;
+                width: 100px;
+                &:hover{
+                    text-decoration: none;
+                    opacity:0.9;
+                }
+                .arrow-btn-head{
+                    background:url(../images/button-back-start.png) no-repeat top left;
+                    display:inline-block;
+                    height:44px;
+                    width:29px;
+                    float: left;    
+                }
+                .arrow-btn-body{
+                    background:url(../images/button-back-bg.jpg) repeat-x top left;
+                    display:inline-block;
+                    height:34px;
+                    vertical-align:top;
+                    padding:12px 10px 0px 0px;
+                    float: left;
+                    -webkit-border-top-right-radius: 5px;
+                    -webkit-border-bottom-right-radius: 5px;
+                    -moz-border-radius-topright: 5px;
+                    -moz-border-radius-bottomright: 5px;
+                    border-top-right-radius: 5px;
+                    border-bottom-right-radius: 5px;
+            }
             }
             ul{
                 &.user-info{
