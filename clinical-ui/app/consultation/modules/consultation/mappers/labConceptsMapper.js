@@ -22,12 +22,23 @@ Bahmni.Opd.LabConceptsMapper = (function(){
                 name: concept.name.name,
                 sample: sample,
                 panels: panels,
+                isSet: false,
                 orderTypeName: Bahmni.Opd.Consultation.Constants.labOrderType
             };
     }
 
+    var createPanel = function(concept, sample) {
+        return {
+                uuid: concept.uuid,
+                name: concept.name.name,
+                sample: sample,
+                isSet: true,
+                orderTypeName: Bahmni.Opd.Consultation.Constants.labOrderType
+        };
+    }
+
     var mapPanelTests = function(sample, tests, panelConcept) {
-        var panel = {uuid: panelConcept.uuid, name: panelConcept.name.name, sample: sample};
+        var panel = createPanel(panelConcept, sample);
         var testConcepts = panelConcept.setMembers.filter(forConcptClass(Bahmni.Opd.Consultation.Constants.testConceptName));
         angular.forEach(testConcepts, function(testConcept){
             var test = tests.filter(function(test){ return test.uuid === testConcept.uuid; })[0];
