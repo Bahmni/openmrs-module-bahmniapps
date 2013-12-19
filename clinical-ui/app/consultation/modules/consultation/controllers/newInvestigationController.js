@@ -5,8 +5,8 @@ angular.module('opd.consultation.controllers')
         var investigations = $rootScope.consultation.investigations;
 
         $scope.tabs = [
-            {name: 'Laboratory', testsProvider: labTestsProvider, filterColumn: "sample", categoryColumn: "department"},
-            {name: 'Other', testsProvider: otherTestsProvider, filterColumn: "type", categoryColumn: "category"},
+            {name: 'Laboratory', testsProvider: labTestsProvider, filterColumn: "sample", filterHeader: "Sample",categoryColumn: "department"},
+            {name: 'Other', testsProvider: otherTestsProvider, filterColumn: "type", filterHeader: "Investigation",categoryColumn: "category"},
         ];
 
         $scope.activateTab = function(tab){

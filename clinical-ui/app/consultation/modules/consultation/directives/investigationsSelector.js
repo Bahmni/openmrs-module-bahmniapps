@@ -121,6 +121,11 @@ angular.module('opd.consultation')
             return !!$scope.currentFilter;
         }
 
+        $scope.hasTests = function() {
+            return $scope.selectableTests.length > 0;
+        }
+
+
         $scope.isFilteredBy = function(filter) {
             return $scope.currentFilter === filter;
         }
@@ -135,6 +140,7 @@ angular.module('opd.consultation')
             investigations: '=ngModel',
             testsProvider: "=",
             filterColumn: "@",
+            filterHeader: "@",
             categoryColumn: "@"
         }
     }
