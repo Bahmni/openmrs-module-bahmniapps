@@ -128,7 +128,7 @@ angular.module('opd.consultation')
     }
 
     $scope.hasTests = function() {
-        return $scope.selectableTests.length > 0;
+        return $scope.selectableTests && $scope.selectableTests.length > 0;
     }
 
     $scope.isFilteredBy = function(filter) {

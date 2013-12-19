@@ -9,7 +9,7 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
         var opdEncounter =  encounterTransaction.encounterTypeUuid === encounterConfig.getOpdConsultationEncounterUuid();
 
         if (opdEncounter) {
-            investigations = encounterTransaction.testOrders
+            investigations = encounterTransaction.testOrders.filter(function(testOrder) { return !testOrder.voided });
             labResults = new Bahmni.Opd.LabResultsMapper().map(encounterTransaction);
 
             treatmentDrugs = encounterTransaction.drugOrders.map(function(drugOrder){
