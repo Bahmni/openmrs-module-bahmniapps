@@ -15,6 +15,10 @@ Bahmni.Opd.Consultation.Selectable = function(data, selectableChildren, onSelect
     this.addChild = function(selectable) {
         children.push(selectable);
     }
+
+    this.getChildrenCount = function() {
+        return children.length;                
+    } 
     
     this.toggle = function(selectionSource) {
         this.isSelected() ? this.unselect(selectionSource) : this.select(selectionSource);

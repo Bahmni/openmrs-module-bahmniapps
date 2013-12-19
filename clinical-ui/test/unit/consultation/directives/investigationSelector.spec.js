@@ -1,0 +1,267 @@
+'use strict';
+
+describe("InvestigationsSelectorControllerTest", function () {
+    var scope, spinner, tests, getTestsPromise, testsProvider, tests;
+
+    beforeEach(module('opd.consultation'));
+
+    beforeEach(inject(function ($rootScope) {
+        var department1 = {name: "D1"};
+        var department2 = {name: "D2"};
+        var sample1 = {name: "S1"};
+        var sample2 = {name: "S2"};
+        var panel1 = {uuid: "p1-p1", sample: sample1, name: "P1", set: true};
+        var panel2 = {uuid: "p2-p2", sample: sample2, name: "P2", set: true};
+        var test1 = {uuid: "t1-t1", name: "T1", set: false, sample: sample1, panels: [panel1], department: department1};
+        var test2 = {uuid: "t2-t2", name: "T2", set: false, sample: sample1, panels: [panel1], department: department1};
+        var test3 = {uuid: "t3-t3", name: "T3", set: false, sample: sample1, panels: [panel1], department: department2};
+        var test4 = {uuid: "t4-t4", name: "T4", set: false, sample: sample2, panels: [panel2], department: department2};
+        var test5 = {uuid: "t5-t5", name: "T5", set: false, sample: sample2, panels: [panel2], department: department2};
+        var test6 = {uuid: "t6-t6", name: "T6", set: false, sample: sample2, panels: [], department: department2};
+        tests = [test1, test2, test3, test4, test5];
+        spinner = jasmine.createSpyObj('spinner', ['forPromise']);
+        testsProvider = jasmine.createSpyObj('testsProvider', ['getTests']);
+        getTestsPromise = specUtil.createServicePromise('getTests');
+        testsProvider.getTests.andReturn(getTestsPromise);
+        spinner.forPromise.andReturn(getTestsPromise);
+        scope = $rootScope.$new();
+        scope.testsProvider = testsProvider;
+        scope.filterColumn = "sample";
+        scope.categoryColumn = "department";
+        scope.investigations = [];
+        $rootScope.encounterConfig = {orderTypes: {}};
+    }));
+
+    var setUpController = function () {
+        inject(function ($controller) {
+            $controller('InvestigationsSelectorController', {
+                $scope: scope,
+                spinner: spinner,
+            });
+        });
+    };
+
+
+    var getByName = function(items, name) {
+        return items.filter(function(item) { return item.name == name})[0];
+    }
+
+    var getSelectableByName = function(name) {
+        var selectables = scope.selectableTests.concat(scope.selectablePanels);
+        return getByName(selectables, name);
+    }
+
+    describe("after loading tests", function(){
+        beforeEach(function(){
+            setUpController();
+        });
+        
+        it("should initialize selectable tests, panels, filters, categories", function(){
+            scope.investigations = [];
+
+            getTestsPromise.callThenCallBack(tests);
+
+            expect(scope.hasTests()).toBe(true);
+            expect(scope.selectableTests.length).toBe(5);
+            expect(scope.selectablePanels.length).toBe(2);
+            expect(scope.categories.length).toBe(2);
+            expect(scope.filters.length).toBe(2);
+            expect(scope.categories[0].tests.length).toBe(2);
+            expect(scope.categories[1].tests.length).toBe(3);
+            expect(scope.selectablePanels[0].getChildrenCount()).toBe(3);
+            expect(scope.selectablePanels[1].getChildrenCount()).toBe(2);
+        });
+
+        it("should select the selectables and the children for existing investigations", function(){
+            scope.investigations = [{uuid: "inv1", concept: {uuid: "t1-t1"}}, {uuid: "inv2", concept: {uuid: "p2-p2"}}];
+
+            getTestsPromise.callThenCallBack(tests);
+
+            expect(getSelectableByName("T1").isSelected()).toBe(true);            
+            expect(getSelectableByName("P2").isSelected()).toBe(true);            
+            expect(getSelectableByName("T4").isSelected()).toBe(true);            
+            expect(getSelectableByName("T5").isSelected()).toBe(true);            
+        });
+        
+        it("should not select the selectables for voided investigations", function(){
+            scope.investigations = [{uuid: "inv1", concept: {uuid: "t1-t1"}, voided: true}];
+
+            getTestsPromise.callThenCallBack(tests);
+
+            expect(getSelectableByName("T1").isSelected()).toBe(false);            
+        });
+
+        it("should add an investigation on selecting a test", function(){
+            scope.investigations = [];
+            getTestsPromise.callThenCallBack(tests);
+
+            getSelectableByName("T1").select();
+
+            expect(scope.investigations.length).toBe(1);
+            expect(scope.investigations[0].concept.name).toBe("T1");
+            expect(scope.investigations[0].concept.uuid).toBe("t1-t1");
+            expect(scope.investigations[0].concept.set).toBe(false);
+        });
+
+        it("should add only one investigation on selecting a panel with tests", function(){
+            scope.investigations = [];
+            getTestsPromise.callThenCallBack(tests);
+
+            getSelectableByName("P2").select();
+
+            expect(scope.investigations.length).toBe(1);
+            expect(scope.investigations[0].concept.name).toBe("P2");
+            expect(scope.investigations[0].concept.uuid).toBe("p2-p2");
+            expect(scope.investigations[0].concept.set).toBe(true);
+        });
+
+        it("should remove unsaved investigation when test is unselected", function(){
+            scope.investigations = [];
+            getTestsPromise.callThenCallBack(tests);
+
+            getSelectableByName("T1").select();
+            getSelectableByName("T1").unselect();
+
+            expect(scope.investigations.length).toBe(0);            
+        });
+
+        it("should void saved investigation when corresponding test is unselected", function(){
+            scope.investigations = [{uuid: "inv1", concept: {uuid: "t1-t1"}, voided: false}];
+            getTestsPromise.callThenCallBack(tests);
+
+            getSelectableByName("T1").unselect();
+
+            expect(scope.investigations.length).toBe(1);            
+            expect(scope.investigations[0].voided).toBe(true);            
+        });
+
+        it("should unvoid the voided investigation when corresponding test is selected", function(){
+            scope.investigations = [{uuid: "inv1", concept: {uuid: "t1-t1"}, voided: true}];
+            getTestsPromise.callThenCallBack(tests);
+
+            getSelectableByName("T1").select();
+
+            expect(scope.investigations.length).toBe(1);            
+            expect(scope.investigations[0].voided).toBe(false);            
+        });
+    });
+
+    describe("filterBy", function(){
+        beforeEach(function(){
+            setUpController();
+        });
+        
+        it("should filter tests, panels and categories", function(){
+            getTestsPromise.callThenCallBack(tests);
+            var sample1 = getByName(scope.filters, "S1");
+            var department1 = getByName(scope.categories, "D1");
+            var department2 = getByName(scope.categories, "D2");
+
+            scope.filterBy(sample1);
+
+            expect(scope.hasFilter()).toBe(true);
+            expect(scope.isFilteredBy(sample1)).toBe(true);
+            expect(scope.filteredPanels.length).toBe(1);
+            expect(department1.filteredTests.length).toBe(2);
+            expect(department2.filteredTests.length).toBe(1);
+        });
+    });
+
+    describe("showAll", function(){
+        beforeEach(function(){
+            setUpController();
+        });
+        
+        it("should clear the filters", function(){
+            getTestsPromise.callThenCallBack(tests);
+            var sample1 = getByName(scope.filters, "S1");
+            var department1 = getByName(scope.categories, "D1");
+            var department2 = getByName(scope.categories, "D2");
+
+            scope.filterBy(sample1)
+            scope.showAll();
+
+            expect(scope.filteredPanels.length).toBe(2);
+            expect(department1.filteredTests.length).toBe(2);
+            expect(department2.filteredTests.length).toBe(3);
+        });
+    });
+
+    describe("toggleInvestigation", function(){
+        beforeEach(function(){
+            setUpController();
+        });
+        
+        it("should remove newly added investigation and unselect the test", function(){
+            getTestsPromise.callThenCallBack(tests);
+            getSelectableByName("T1").select();
+
+            scope.toggleInvestigation(scope.investigations[0]);
+
+            expect(scope.investigations.length).toBe(0);            
+            expect(getSelectableByName("T1").isSelected()).toBe(false);            
+        });
+
+        it("should void the existing investigation and unselect the test", function(){
+            scope.investigations = [{uuid: "inv1", concept: {uuid: "t1-t1"}, voided: false}];
+            getTestsPromise.callThenCallBack(tests);
+
+            scope.toggleInvestigation(scope.investigations[0]);
+
+            expect(scope.investigations.length).toBe(1);            
+            expect(scope.investigations[0].voided).toBe(true);            
+            expect(getSelectableByName("T1").isSelected()).toBe(false);            
+        });
+
+        it("should unvoid the voided investigation and select the test", function(){
+            scope.investigations = [{uuid: "inv1", concept: {uuid: "t1-t1"}, voided: true}];
+            getTestsPromise.callThenCallBack(tests);
+
+            scope.toggleInvestigation(scope.investigations[0]);
+
+            expect(scope.investigations.length).toBe(1);            
+            expect(scope.investigations[0].voided).toBe(false);            
+            expect(getSelectableByName("T1").isSelected()).toBe(true);            
+        });
+
+        it("should remove the newly added investigation without corresponding selectable in this tab", function(){
+            scope.investigations = [{concept: {uuid: "ttt1-ttt1"}}];
+            getTestsPromise.callThenCallBack(tests);
+
+            scope.toggleInvestigation(scope.investigations[0]);
+
+            expect(scope.investigations.length).toBe(0);            
+        });
+
+        it("should void the existing investigation without corresponding selectable in this tab", function(){
+            scope.investigations = [{uuid: "invFromOtherTab", concept: {uuid: "ttt1-ttt1"}, voided: false}];
+            getTestsPromise.callThenCallBack(tests);
+
+            scope.toggleInvestigation(scope.investigations[0]);
+
+            expect(scope.investigations.length).toBe(1);            
+            expect(scope.investigations[0].voided).toBe(true);            
+        });
+
+        it("should unvoid the existing voided investigation without corresponding selectable in this tab", function(){
+            scope.investigations = [{uuid: "invFromOtherTab", concept: {uuid: "ttt1-ttt1"}, voided: true}];
+            getTestsPromise.callThenCallBack(tests);
+
+            scope.toggleInvestigation(scope.investigations[0]);
+
+            expect(scope.investigations.length).toBe(1);            
+            expect(scope.investigations[0].voided).toBe(false);            
+        });
+
+        it("should void the existing investigation and unselect the test", function(){
+            scope.investigations = [{uuid: "inv1", concept: {uuid: "t1-t1"}, voided: false}];
+            getTestsPromise.callThenCallBack(tests);
+
+            scope.toggleInvestigation(scope.investigations[0]);
+
+            expect(scope.investigations.length).toBe(1);            
+            expect(scope.investigations[0].voided).toBe(true);            
+            expect(getSelectableByName("T1").isSelected()).toBe(false);            
+        });
+    });
+});
