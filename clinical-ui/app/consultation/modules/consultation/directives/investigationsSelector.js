@@ -99,7 +99,10 @@ angular.module('opd.consultation')
         $scope.toggleInvestigation = function(investigation) {
             var selectables = $scope.selectablePanels.concat($scope.selectableTests);
             var selectable = findSelectableForInvestigation(selectables, investigation);
-            if(selectable) selectable.toggle();
+            if(selectable) 
+                selectable.toggle();
+            else
+                removeInvestigation(investigation);
         }
 
         var applyCurrentFilterByFilterCoulmn = function(selectable) {
