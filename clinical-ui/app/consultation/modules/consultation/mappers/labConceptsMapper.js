@@ -22,7 +22,7 @@ Bahmni.Opd.LabConceptsMapper = (function(){
                 name: concept.name.name,
                 sample: sample,
                 panels: panels,
-                isSet: false,
+                set: false,
                 orderTypeName: Bahmni.Opd.Consultation.Constants.labOrderType
             };
     }
@@ -32,7 +32,7 @@ Bahmni.Opd.LabConceptsMapper = (function(){
                 uuid: concept.uuid,
                 name: concept.name.name,
                 sample: sample,
-                isSet: true,
+                set: true,
                 orderTypeName: Bahmni.Opd.Consultation.Constants.labOrderType
         };
     }

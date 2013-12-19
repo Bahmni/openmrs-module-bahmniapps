@@ -5,8 +5,8 @@ Bahmni.Opd.TreeSelect.Node = function() {
         this.uuid = concept.uuid;
         this.display = concept.display;
         this.conceptClass = concept.conceptClass != null ? concept.conceptClass.display : "";
-        this.isSet = concept.set;
-        this.isSelectableType = this.conceptClass === Bahmni.Opd.Consultation.Constants.labSetConceptName || !this.isSet;
+        this.set = concept.set;
+        this.isSelectableType = this.conceptClass === Bahmni.Opd.Consultation.Constants.labSetConceptName || !this.set;
 
         this.children = children || [];
         this.focus = false;
@@ -24,7 +24,7 @@ Bahmni.Opd.TreeSelect.Node = function() {
         },
 
         isSelectableTypeSet: function() {
-            return this.isSelectableType && this.isSet;
+            return this.isSelectableType && this.set;
         },
         
         isSelectable: function(){
@@ -32,7 +32,7 @@ Bahmni.Opd.TreeSelect.Node = function() {
         },
 
         shouldBeShown: function(){
-            return !this.isSet || (this.children.length > 0);
+            return !this.set || (this.children.length > 0);
         },
 
         setFocus: function() {

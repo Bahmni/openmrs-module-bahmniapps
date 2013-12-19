@@ -59,12 +59,12 @@ describe("LabConceptsMapper", function () {
 
             expect(tests.length).toBe(4);
             expect(tests[0].name).toBe('Absolute Eosinphil Count');
-            expect(tests[0].isSet).toBe(false);
+            expect(tests[0].set).toBe(false);
             expect(tests[0].panels[0].name).toEqual('Anaemia Panel');
             expect(tests[0].sample.name).toEqual('Blood');
             expect(tests[0].orderTypeName).toEqual(Bahmni.Opd.Consultation.Constants.labOrderType);
             expect(tests[0].panels[0].orderTypeName).toEqual(Bahmni.Opd.Consultation.Constants.labOrderType);
-            expect(tests[0].panels[0].isSet).toEqual(true);
+            expect(tests[0].panels[0].set).toEqual(true);
             expect(tests[0].department.name).toEqual('Haematology');
             var bloodSample = tests[0].sample;
             var haematologyDepartment = tests[0].department;
