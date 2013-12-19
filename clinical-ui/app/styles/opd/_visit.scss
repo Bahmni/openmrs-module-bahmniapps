@@ -1,14 +1,72 @@
 .visit {
+	h2{
+			color:#fff;
+			background:#66b298;
+			padding:4px 0px 4px 6px;
+			margin-bottom:10px;
+			font-family: OpenSansBold;
+	}
 	.block{
 		min-height:150px;
 		padding:10px;
+		
+		li{
+			background:#F1EEEE;
+			padding: 4px 0px 4px 12px;
+			margin:2px 0px;
+		}
+	}
+	.block-day{
+		border:3px solid #67ad95;
+		padding:10px;
+		header{
+			background:#fff;
+			h1{
+				color:#274b59;
+				float:left;
+				padding:0px 10px;
+				font-family: OpenSansBold;
+			}
+			ul{
+				float:right;
+				margin-right:10px;
+				li{
+					font-size: 12px;
+					color:#274b59;
+					padding-left:25px;
+					font-family: OpenSansBold;
+					padding-top:4px;
+					&.date{
+
+					}
+				}
+			}
+		} 
+	}
+	aside{
+		z-index:999;
+		display: none;
+		a{
+			color:#fff;
+		}
+		&.visit-history{
+			position:absolute;
+			padding:10px;
+			right:0px;
+			width:200px;
+			background:#31a4ac;
+			height:100%;
+		}
+		.visit-history-entry {
+			&.selected {
+				background:#00463F;
+			}
+			&.active {
+				font-style: italic;
+			}
+		}
 	}
 }
-.visit-history-entry {
-	&.selected {
-		font-size: 30px;
-	}
-	&.active {
-		font-style: italic;
-	}
-}
+
+
+

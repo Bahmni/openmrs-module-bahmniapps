@@ -13,6 +13,7 @@
         </ul>
     </div>    
 </script>
+<article class="visit">
 <aside bindonce class="visit-history" ng-controller="VisitHistoryController">
     <h2>Visit History</h2>
     <ul>
@@ -24,7 +25,7 @@
         </li>
     </ul>
 </aside>
-<article bindonce="visitSummary" class="visit">
+<article bindonce="visitSummary">
     <div bo-hide="visitSummary.hasEncounters()">There are no encounter for this patient yet.</div>
 	<section  bo-show="visitSummary.hasEncounters()" class="block investigation">
         <h2>Diagnoses</h2>
@@ -58,10 +59,12 @@
         </ul>
     </section>
 
-    <div infinite-scroll="loadEncountersForPreviousDay()" infinite-scroll-disabled="!hasMoreVisitDays" ng-show="visitDay.hasData()" ng-repeat="visitDay in visitDays">
+    <section infinite-scroll="loadEncountersForPreviousDay()" infinite-scroll-disabled="!hasMoreVisitDays" ng-show="visitDay.hasData()" ng-repeat="visitDay in visitDays" class="block-day">
         <header>
             <h1 bo-text="'Day ' + visitDay.dayNumber"></h1>
-            <span bo-text="(visitDay.visitDate | date:'d-MMM-yyyy')"></span>
+            <ul>
+                <li bo-text="(visitDay.visitDate | date:'d-MMM-yyyy')" class="date"></li>
+            </ul>
         </header>   
         <section class="block treatment" ng-show="visitDay.hasDrugOrders()">
             <h2>Treatment</h2>
@@ -124,6 +127,7 @@
                 </li>
             </ul>        
         </section>
-    </div>
+    </section>
     <div id="loader" ng-show="hasMoreVisitDays">Loading data for previous days...</div>
+</article>
 </article>
