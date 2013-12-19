@@ -58,12 +58,13 @@ body{
                     vertical-align:top;
                     padding:12px 10px 0px 0px;
                     float: left;
-                    -webkit-border-top-right-radius: 5px;
-                    -webkit-border-bottom-right-radius: 5px;
-                    -moz-border-radius-topright: 5px;
-                    -moz-border-radius-bottomright: 5px;
-                    border-top-right-radius: 5px;
-                    border-bottom-right-radius: 5px;
+                    border-right:1px solid #626262;
+                    -webkit-border-top-right-radius: 8px;
+                    -webkit-border-bottom-right-radius: 8px;
+                    -moz-border-radius-topright: 8px;
+                    -moz-border-radius-bottomright: 8px;
+                    border-top-right-radius: 8px;
+                    border-bottom-right-radius: 8px;
             }
             }
             ul{
