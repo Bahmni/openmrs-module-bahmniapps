@@ -16,13 +16,13 @@
                 </article>
                 <article class="form-field">
                     <div class="field-attribute">
-                        <label for="patientName">Patient Name</label>
+                        <label for="patientName">Patient Name<span class="asterick">*</span</label>
                     </div>
 
                     <div class="field-value" id="patientName">
-                        <input type="text" id="givenName" ng-model="patient.givenName" placeholder="First Name"
+                        <input type="text" non-blank id="givenName" ng-model="patient.givenName" placeholder="First Name"
                                title="Enter patient's first name.">
-                        <input type="text" id="familyName" ng-model="patient.familyName"
+                        <input type="text" non-blank id="familyName" ng-model="patient.familyName"
                                placeholder="Last Name" title="Enter patient's last name.">
                     </div>
                 </article>
@@ -32,7 +32,7 @@
                     </div>
 
                     <div class="field-value">
-                        <select id="gender" ng-model="patient.gender" required="required" title="Select Gender" required="required">
+                        <select id="gender" ng-model="patient.gender" required="required" title="Select Gender">
                             <option value="">Select Gender</option>
                             <option value="M">Male</option>
                             <option value="F">Female</option>
