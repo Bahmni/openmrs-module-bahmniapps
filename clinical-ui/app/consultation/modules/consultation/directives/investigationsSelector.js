@@ -60,7 +60,8 @@ angular.module('opd.consultation')
     var createInvestigationFromSelectable = function(selectable) {
         return {
             concept: {uuid: selectable.uuid, name: selectable.name, set: selectable.set },
-            orderTypeUuid: $rootScope.encounterConfig.orderTypes[selectable.orderTypeName]
+            orderTypeUuid: $rootScope.encounterConfig.orderTypes[selectable.orderTypeName],
+            voided: false
         };
     }
 

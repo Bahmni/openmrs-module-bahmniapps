@@ -113,6 +113,7 @@ describe("InvestigationsSelectorControllerTest", function () {
             expect(scope.investigations[0].concept.name).toBe("S1P1D1T1");
             expect(scope.investigations[0].concept.uuid).toBe("t1-t1");
             expect(scope.investigations[0].concept.set).toBe(false);
+            expect(scope.investigations[0].voided).toBe(false);
         });
 
         it("should add only one investigation on selecting a panel with tests", function(){
