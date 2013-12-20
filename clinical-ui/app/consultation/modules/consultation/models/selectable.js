@@ -12,6 +12,10 @@ Bahmni.Opd.Consultation.Selectable = function(data, selectableChildren, onSelect
         return selectionSources.indexOf(this) !== -1;
     }
 
+    this.isSelectedFromOtherSource = function() {
+        return this.isSelected() && !this.isSelectedFromSelf();
+    }
+
     this.addChild = function(selectable) {
         children.push(selectable);
     }

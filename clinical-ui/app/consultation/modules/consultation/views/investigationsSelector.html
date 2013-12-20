@@ -41,7 +41,7 @@
 		<li ng-repeat="category in categories | orderBy:'name'" ng-show="category.hasTests()">
 			<header>{{category.name}}</header>
 			<ul class="tests">
-				<li ng-repeat="test in category.filteredTests | orderBy:'name'" ng-click="test.toggle()">
+				<li ng-repeat="test in category.filteredTests | orderBy:'name'" ng-click="test.toggle()" ng-class="{'selected-via-panel': test.isSelectedFromOtherSource()}">
 					<span class="icon-ok" ng-show="test.isSelected()"></span>
 					{{test.name}}
 				</li>

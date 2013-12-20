@@ -20,6 +20,7 @@ describe("Selectable", function () {
 			selectable.select(parentSlectable);
 
 			expect(selectable.isSelected()).toBeTruthy();
+			expect(selectable.isSelectedFromOtherSource()).toBeTruthy();
 			expect(selectable.isSelectedFromSelf()).toBeFalsy();
 		});
 
