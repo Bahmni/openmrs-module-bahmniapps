@@ -6,6 +6,7 @@ angular.module('opd.consultation')
     spinner.forPromise($scope.testsProvider.getTests()).then(function(tests){
         initializeTests(tests);
         selectSelectablesBasedOnInvestigations();
+        $scope.showAll();
     });
 
     var onSelectionChange = function(selectable) {
