@@ -1,4 +1,5 @@
-<section class="first">
+<p ng-hide="hasTests()">There are no tests. Please setup tests</p>
+<section class="first" ng-show="hasTests()">
 	<section>
 		<header>{{filterHeader}}</header>
 		<ul class="filters">
@@ -24,10 +25,8 @@
 		    </fieldset>
 		</form>
 	</section>
-
 </section>
-<section class="last">
-	<p ng-hide="hasTests()">There are no tests. Please setup tests</p>
+<section class="last" ng-show="hasTests()">
 	<section ng-show="filteredPanels.length">
 		<header>Panels</header>
 		<ul class="panels" >
