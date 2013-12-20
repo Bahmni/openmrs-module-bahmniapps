@@ -1,15 +1,13 @@
 'use strict';
 
 angular.module('opd.consultation.controllers')
-    .controller('InvestigationController', ['$scope', '$rootScope', function ($scope, $rootScope) {
+    .controller('InvestigationController', ['$scope', '$rootScope', 'spinner', 'labTestsProvider', 'otherTestsProvider', function ($scope, $rootScope, spinner, labTestsProvider, otherTestsProvider) {
         var investigations = $rootScope.consultation.investigations;
-        
+
         $scope.tabs = [
-            {name: 'Laboratory', orderType: 'Lab Order'},
-            {name: 'Radiology', orderType: 'Radiology Order'},
-            {name: 'Endoscopy'},
-            {name: 'Others'}
-        ]
+            {name: 'Laboratory', testsProvider: labTestsProvider, filterColumn: "sample", filterHeader: "Sample",categoryColumn: "department"},
+            {name: 'Other', testsProvider: otherTestsProvider, filterColumn: "type", filterHeader: "Investigation",categoryColumn: "category"},
+        ];
 
         $scope.activateTab = function(tab){
             $scope.activeTab && ($scope.activeTab.klass="");
@@ -18,29 +16,5 @@ angular.module('opd.consultation.controllers')
         }
 
         $scope.activateTab($scope.tabs[0]);
-
-        var toggleVoiding = function(investigation) {
-            investigation.voided = !investigation.voided;
-        }
-
-        var isAlreadySavedInDb = function(investigation) {
-            return investigation.uuid != null
-        }
-
-        $scope.removeInvestigation = function(investigation){
-            if(isAlreadySavedInDb(investigation)) {
-                toggleVoiding(investigation);
-            } else {
-                $rootScope.$broadcast('treeSelectRemoveItem', investigation);
-            }
-        }
-
-        $scope.investigationComparer = function(investigation1, investigation2) {
-            return investigation1.concept.uuid === investigation2.concept.uuid;
-        }
-        
-        $scope.conceptToInvestigationMapper = function(concept, treeAdditionalData) {
-            return{ concept: { uuid: concept.uuid , name: concept.display,
-                    set: concept.set}, orderTypeUuid: $rootScope.encounterConfig.orderTypes[treeAdditionalData.orderType] };
-        }
-    }]);
+    }]
+);

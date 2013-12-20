@@ -7,4 +7,4 @@ Bahmni.Opd.Consultation = Bahmni.Opd.Consultation || {};
 angular.module('opd.consultation.helpers', []);
 angular.module('opd.consultation.services', []);
 angular.module('opd.consultation.controllers', ['opd.consultation.services', 'infinite-scroll', 'opd.consultation.helpers', 'bahmni.common.infrastructure']);
-angular.module('opd.consultation', ['opd.consultation.controllers', 'opd.consultation.services', 'opd.treeSelect','opd.conceptSet']);
+angular.module('opd.consultation', ['opd.consultation.controllers', 'opd.consultation.services','opd.conceptSet']);
