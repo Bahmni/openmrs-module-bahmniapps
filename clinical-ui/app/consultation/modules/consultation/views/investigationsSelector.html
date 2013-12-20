@@ -15,10 +15,10 @@
 		    <fieldset>
 		        <legend>Review Selection</legend>
 		        <div id="selectedNodesArea" tabindex="0">
-		            <span ng-repeat="investigation in investigations | filter: {voided: false}" class="selectedNode" 
-		                ng-class="{panel: investigation.concept.set, voided: investigation.voided}">
-		                <span class="test-name">{{investigation.concept.name}}</span>
-		                <button class="icon-remove icon-white" ng-click="toggleInvestigation(investigation)"></button>
+		            <span ng-repeat="selectable in selctedSelectables()" class="selectedNode" 
+		                ng-class="{panel: selectable.set}">
+		                <span class="test-name">{{selectable.name}}</span>
+		                <button class="icon-remove icon-white" ng-click="selectable.unselect()"></button>
 		            </span>
 		        </div>
 		    </fieldset>

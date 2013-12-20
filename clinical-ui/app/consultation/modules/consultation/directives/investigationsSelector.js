@@ -2,6 +2,8 @@ angular.module('opd.consultation')
 .controller('InvestigationsSelectorController', function($scope, $rootScope, spinner) {
     var Selectable = Bahmni.Opd.Consultation.Selectable;
     var Category = Bahmni.Opd.Consultation.Category;
+    $scope.selectablePanels = [];
+    $scope.selectableTests = [];
 
     spinner.forPromise($scope.testsProvider.getTests()).then(function(tests){
         initializeTests(tests);
@@ -45,7 +47,7 @@ angular.module('opd.consultation')
     };
 
     var selectSelectablesBasedOnInvestigations = function() {
-        var selectables = $scope.selectablePanels.concat($scope.selectableTests);
+        var selectables = $scope.allSelectables();
         var currentInvestigations = $scope.investigations.filter(function(investigation){ return !investigation.voided; })
         angular.forEach(currentInvestigations, function(investigation){
             var selectable = findSelectableForInvestigation(selectables, investigation);
@@ -74,14 +76,6 @@ angular.module('opd.consultation')
         }         
     }
 
-    var toggleInvestigationWithoutSelectable = function(investigation) {
-        if(investigation.voided) {
-            investigation.voided = false;
-        } else {
-            removeInvestigation(investigation);
-        }
-    }
-
     var removeInvestigationForSelectable = function(selectable) {
         var investigation = findInvestigationForSelectable(selectable);
         if(investigation) removeInvestigation(investigation);;
@@ -102,15 +96,6 @@ angular.module('opd.consultation')
     
     $scope.showAll = function() {
         $scope.filterBy(null)
-    }
-
-    $scope.toggleInvestigation = function(investigation) {
-        var selectables = $scope.selectablePanels.concat($scope.selectableTests);
-        var selectable = findSelectableForInvestigation(selectables, investigation);
-        if(selectable) 
-            selectable.toggle();
-        else
-            toggleInvestigationWithoutSelectable(investigation);
     }
 
     var applyCurrentFilterByFilterCoulmn = function(selectable) {
@@ -135,6 +120,14 @@ angular.module('opd.consultation')
 
     $scope.isFilteredBy = function(filter) {
         return $scope.currentFilter === filter;
+    }
+
+    $scope.allSelectables = function() {
+        return $scope.selectablePanels.concat($scope.selectableTests);
+    }
+
+    $scope.selctedSelectables = function() {
+        return $scope.allSelectables().filter(function(selectable){ return selectable.isSelectedFromSelf(); });
     }
 })
 .directive('investigationsSelector',function(){

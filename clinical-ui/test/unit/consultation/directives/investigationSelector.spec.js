@@ -62,6 +62,7 @@ describe("InvestigationsSelectorControllerTest", function () {
             getTestsPromise.callThenCallBack(tests);
 
             expect(scope.hasTests()).toBe(true);
+            expect(scope.allSelectables().length).toBe(8);
             expect(scope.selectableTests.length).toBe(6);
             expect(scope.selectablePanels.length).toBe(2);
             expect(scope.categories.length).toBe(3);
@@ -89,6 +90,7 @@ describe("InvestigationsSelectorControllerTest", function () {
 
             getTestsPromise.callThenCallBack(tests);
 
+            expect(scope.selctedSelectables().length).toBe(2);
             expect(getSelectableByName("S1P1D1T1").isSelected()).toBe(true);            
             expect(getSelectableByName("S2P2").isSelected()).toBe(true);            
             expect(getSelectableByName("S2P2D2T2").isSelected()).toBe(true);            
@@ -197,84 +199,6 @@ describe("InvestigationsSelectorControllerTest", function () {
             expect(scope.filteredPanels.length).toBe(2);
             expect(department1.filteredTests.length).toBe(2);
             expect(department2.filteredTests.length).toBe(3);
-        });
-    });
-
-    describe("toggleInvestigation", function(){
-        beforeEach(function(){
-            setUpController();
-        });
-        
-        it("should remove newly added investigation and unselect the test", function(){
-            getTestsPromise.callThenCallBack(tests);
-            getSelectableByName("S1P1D1T1").select();
-
-            scope.toggleInvestigation(scope.investigations[0]);
-
-            expect(scope.investigations.length).toBe(0);            
-            expect(getSelectableByName("S1P1D1T1").isSelected()).toBe(false);            
-        });
-
-        it("should void the existing investigation and unselect the test", function(){
-            scope.investigations = [{uuid: "inv1", concept: {uuid: "t1-t1"}, voided: false}];
-            getTestsPromise.callThenCallBack(tests);
-
-            scope.toggleInvestigation(scope.investigations[0]);
-
-            expect(scope.investigations.length).toBe(1);            
-            expect(scope.investigations[0].voided).toBe(true);            
-            expect(getSelectableByName("S1P1D1T1").isSelected()).toBe(false);            
-        });
-
-        it("should unvoid the voided investigation and select the test", function(){
-            scope.investigations = [{uuid: "inv1", concept: {uuid: "t1-t1"}, voided: true}];
-            getTestsPromise.callThenCallBack(tests);
-
-            scope.toggleInvestigation(scope.investigations[0]);
-
-            expect(scope.investigations.length).toBe(1);            
-            expect(scope.investigations[0].voided).toBe(false);            
-            expect(getSelectableByName("S1P1D1T1").isSelected()).toBe(true);            
-        });
-
-        it("should remove the newly added investigation without corresponding selectable in this tab", function(){
-            scope.investigations = [{concept: {uuid: "ttt1-ttt1"}}];
-            getTestsPromise.callThenCallBack(tests);
-
-            scope.toggleInvestigation(scope.investigations[0]);
-
-            expect(scope.investigations.length).toBe(0);            
-        });
-
-        it("should void the existing investigation without corresponding selectable in this tab", function(){
-            scope.investigations = [{uuid: "invFromOtherTab", concept: {uuid: "ttt1-ttt1"}, voided: false}];
-            getTestsPromise.callThenCallBack(tests);
-
-            scope.toggleInvestigation(scope.investigations[0]);
-
-            expect(scope.investigations.length).toBe(1);            
-            expect(scope.investigations[0].voided).toBe(true);            
-        });
-
-        it("should unvoid the existing voided investigation without corresponding selectable in this tab", function(){
-            scope.investigations = [{uuid: "invFromOtherTab", concept: {uuid: "ttt1-ttt1"}, voided: true}];
-            getTestsPromise.callThenCallBack(tests);
-
-            scope.toggleInvestigation(scope.investigations[0]);
-
-            expect(scope.investigations.length).toBe(1);            
-            expect(scope.investigations[0].voided).toBe(false);            
-        });
-
-        it("should void the existing investigation and unselect the test", function(){
-            scope.investigations = [{uuid: "inv1", concept: {uuid: "t1-t1"}, voided: false}];
-            getTestsPromise.callThenCallBack(tests);
-
-            scope.toggleInvestigation(scope.investigations[0]);
-
-            expect(scope.investigations.length).toBe(1);            
-            expect(scope.investigations[0].voided).toBe(true);            
-            expect(getSelectableByName("S1P1D1T1").isSelected()).toBe(false);            
         });
     });
 });
