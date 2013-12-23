@@ -94,7 +94,7 @@ body{
                         color:#ADADAD;
                         &:hover{
                             text-decoration: none;
-                            cursor:pointer;
+                            cursor:default;
                         }
                     }
                     
@@ -116,17 +116,56 @@ body{
                     margin-top:10px;
             }
             .patient-detail{
+                width:150px;
+                background:#fafafa;
+                border:1px solid #cecece;
+                border-radius:5px;
+                padding:6px;
                 position:absolute;
-                top:58px;
-                right:10px;
+                box-shadow:3px 3px 5px #717473;
+                top:60px;
+                right:0px;
                 color:#F26522;
                 z-index:999;
                 li{
-                    line-height: 18px;
+                    line-height: 20px;
+                    float:none;
+                    margin-bottom: 4px;
+                    background:#F1EEEE;
+                    margin-right:0px;
+                    padding-left:5px;
+                    font-size:0.95em;
                 }
             }
             .patient-info{
-                    float:right;    
+                    float:right;
+                    li{
+                        color:#fff;
+                        cursor:pointer;
+                        &.patient-img{
+                            padding:2px 6px 0px;
+                            &:hover{
+                                background:#44866A;
+                                border-radius:6px;
+                            }
+                        }
+                        &:first-child{
+                            padding:15px 0px 0px 0px;
+                            text-align: right;
+                        }
+                        &.patient-detail-pointer{
+                            position: absolute;
+                            bottom: -22px;
+                            color: #00463F;
+                            font-size: 26px;
+                            z-index: 9999;
+                            right: 3px;
+                            .icon-caret-up{
+                                color:#fff;
+                            }
+                        }
+                    }  
+
                 }
         }
     }
@@ -138,7 +177,7 @@ body{
     
     .opd-content-wrapper{
        background:#ffffff;
-       padding:26px 10px 20px 10px;
+       padding:0px 10px 20px 10px;
        height:99%;
     }
 

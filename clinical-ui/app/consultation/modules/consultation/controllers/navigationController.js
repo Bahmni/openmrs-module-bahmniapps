@@ -13,10 +13,15 @@ angular.module('opd.consultation.controllers').controller('ConsultationNavigatio
                 { name: 'Consultation', url: 'consultation', type: boardTypes.consultation }
             ];
             $scope.currentBoard = $scope.availableBoards[0];
+            $scope.showPatientDetails = false;
             $scope.showBoard = function (name) {
                 var board = findBoardByname(name);
                 return buttonClickAction(board);
             };
+
+            $scope.togglePatientDetails = function() {
+                $scope.showPatientDetails = !$scope.showPatientDetails;
+            }
 
             var setCurrentBoardBasedOnPath = function() {
                 var currentPath = $location.path();

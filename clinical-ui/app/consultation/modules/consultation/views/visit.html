@@ -34,9 +34,15 @@
                     <span bo-show="visitSummary.isPrimaryOrder(diagnosis.order)">P</span>
                     <span bo-show="!visitSummary.isPrimaryOrder(diagnosis.order)">S</span>
                     <span bo-text="diagnosis.codedAnswer.name"></span>
-                    <span bo-text="'(' + diagnosis.certainty + ')'" bo-hide = "visitSummary.isConfirmedDiagnosis(diagnosis.certainty)"></span>
-                    <span bo-text="(diagnosis.diagnosisDateTime | date:'d-MMM-yy h:mm a')"></span>
-                    <span bo-text="diagnosis.provider.name"></span>
+                    <ul class="add-info">
+                        <li>
+                            <span bo-text="'(' + diagnosis.certainty + ')'" bo-hide = "visitSummary.isConfirmedDiagnosis(diagnosis.certainty)"></span>
+                        </li><li>
+                            <span bo-text="(diagnosis.diagnosisDateTime | date:'d-MMM-yy h:mm a')"></span>
+                        </li><li>
+                            <span bo-text="diagnosis.provider.name"></span>
+                        </li>
+                    </ul>
             </li>
             <div bo-show="!visitSummary.hasDiagnosis()">A diagnosis has not been made for this patient yet.</div>
         </ul>
@@ -44,28 +50,30 @@
     <section class="block investigation" bo-show="visitSummary.hasDisposition()">
         <h2>Disposition</h2>
         <ul class="block-content">
-            <div  >
                 <li ng-repeat="disposition in visitSummary.dispositions">
                     <span bo-text="disposition.code"></span>
-                    <span bo-text="(disposition.dispositionDateTime | date:'d-MMM-yy h:mm a')"></span>
-                    <span bo-text="disposition.provider.name"></span>
-                    <span ng-repeat="note in disposition.additionalObs">
-                        <expander class='expander'>
-                            <span bo-text="note.value"></span>
-                        </expander>
-                    </span>
+                    <ul class="add-info">
+                        <li>
+                            <span bo-text="(disposition.dispositionDateTime | date:'d-MMM-yy h:mm a')"></span>
+                        </li><li>
+                            <span bo-text="disposition.provider.name"></span>
+                        </li><li ng-repeat="note in disposition.additionalObs">
+                                <expander class='expander'>
+                                    <span bo-text="note.value"></span>
+                                </expander>
+                        </li>
+                    </ul>
                 </li>
-            </div>
         </ul>
     </section>
 
-    <section infinite-scroll="loadEncountersForPreviousDay()" infinite-scroll-disabled="!hasMoreVisitDays" ng-show="visitDay.hasData()" ng-repeat="visitDay in visitDays" class="block-day">
-        <header>
+    <section infinite-scroll="loadEncountersForPreviousDay()" infinite-scroll-disabled="!hasMoreVisitDays" ng-show="visitDay.hasData()" ng-repeat="visitDay in visitDays" class="block-day block">
+        <div>
             <h1 bo-text="'Day ' + visitDay.dayNumber"></h1>
-            <ul>
+            <ul class="add-info">
                 <li bo-text="(visitDay.visitDate | date:'d-MMM-yyyy')" class="date"></li>
             </ul>
-        </header>   
+        </div>   
         <section class="block treatment" ng-show="visitDay.hasDrugOrders()">
             <h2>Treatment</h2>
 	        <ul>

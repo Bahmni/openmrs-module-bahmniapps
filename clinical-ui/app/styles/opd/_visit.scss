@@ -9,6 +9,21 @@
 	.block{
 		min-height:150px;
 		padding:10px;
+		ul{
+			&.add-info{
+				float:right;
+				margin-right:10px;
+				li{
+					font-size: 12px;
+					color:#274b59;
+					font-family: OpenSansBold;
+					padding:2px 10px 0px 25px;
+					&.date{
+
+					}
+				}
+			}
+		}
 		
 		li{
 			background:#F1EEEE;
@@ -19,7 +34,6 @@
 	.block-day{
 		border:3px solid #67ad95;
 		padding:10px;
-		header{
 			background:#fff;
 			h1{
 				color:#274b59;
@@ -27,25 +41,12 @@
 				padding:0px 10px;
 				font-family: OpenSansBold;
 			}
-			ul{
-				float:right;
-				margin-right:10px;
-				li{
-					font-size: 12px;
-					color:#274b59;
-					padding-left:25px;
-					font-family: OpenSansBold;
-					padding-top:4px;
-					&.date{
-
-					}
-				}
+			li{
+				background:none;
 			}
-		} 
+		
 	}
 	aside{
-		z-index:999;
-		display: none;
 		a{
 			color:#fff;
 		}
@@ -56,6 +57,7 @@
 			width:200px;
 			background:#31a4ac;
 			height:100%;
+			opacity:0.9;
 		}
 		.visit-history-entry {
 			&.selected {
