@@ -4,12 +4,6 @@ angular.module('registration.emergency.controllers')
     .controller('CreateEmergencyPatientController', [ '$rootScope', '$scope', '$location', 'patient', 'patientService', 'encounterService', 'Preferences', 'addressAttributeService', 'spinner',
     function ($rootScope, $scope, $location, patientModel, patientService, encounterService, preferences, addressAttributeService, spinner) {
 
-        var getVillageAddressLevel = function(){
-            return $scope.addressLevels.filter(function(item) {
-                return (item.name === "Village");
-            });
-        }
-
         var init = function(){
             $scope.patient = patientModel.create();
             $scope.identifierSources = $rootScope.patientConfiguration.identifierSources;
@@ -22,15 +16,19 @@ angular.module('registration.emergency.controllers')
             var visitTypeUuid = $scope.encounterConfiguration.visitTypes[constants.visitType.emergency];
             var encounterTypeUuid = $scope.encounterConfiguration.encounterTypes[constants.encounterType.registration];
             $scope.encounter = {visitTypeUuid: visitTypeUuid, encounterTypeUuid: encounterTypeUuid, observations: []};
-            $scope.addressLevels = getVillageAddressLevel();
+            $scope.addressLevels = [{name: "Village", addressField: "cityVillage", required: false}];
         };
         init();
 
         var createPatient = function() {
             return patientService.generateIdentifier($scope.patient)
                 .then(function (data) {
-                    $scope.patient.identifier = data.data;
-                    return patientService.create($scope.patient);
+                    var patient = $scope.patient;
+                    patient.identifier = data.data;
+                    patient.familyName = patient.familyName || "Unknown";
+                    patient.givenName = patient.givenName || "Unknown";
+                    patient.address.cityVillage = patient.address.cityVillage || "Unknown";
+                    return patientService.create(patient);
                 }).then(successCallback);
         };
 
@@ -55,10 +53,6 @@ angular.module('registration.emergency.controllers')
         };
 
         $scope.create = function(){
-            var patientPromise = createPatient().then(function(data) {
-                var visitPromise = createVisit();
-                spinner.forPromise(visitPromise);
-            });
-            spinner.forPromise(patientPromise);
+            spinner.forPromise(createPatient().then(createVisit));
         };
     }]);
