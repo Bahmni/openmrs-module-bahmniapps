@@ -117,13 +117,13 @@ body{
             }
             .patient-detail{
                 width:150px;
-                background:#fafafa;
+                background:#5C5A5A;
                 border:1px solid #cecece;
                 border-radius:5px;
                 padding:6px;
                 position:absolute;
                 box-shadow:3px 3px 5px #717473;
-                top:60px;
+                top:59px;
                 right:0px;
                 color:#F26522;
                 z-index:999;
@@ -131,9 +131,10 @@ body{
                     line-height: 20px;
                     float:none;
                     margin-bottom: 4px;
-                    background:#F1EEEE;
+                    background:#727070;
                     margin-right:0px;
                     padding-left:5px;
+                    color:#fff;
                     font-size:0.95em;
                 }
             }
@@ -155,13 +156,13 @@ body{
                         }
                         &.patient-detail-pointer{
                             position: absolute;
-                            bottom: -22px;
+                            bottom: -21px;
                             color: #00463F;
                             font-size: 26px;
                             z-index: 9999;
                             right: 3px;
                             .icon-caret-up{
-                                color:#fff;
+                                color:#5C5A5A;
                             }
                         }
                     }  
