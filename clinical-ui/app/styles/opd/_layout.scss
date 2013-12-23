@@ -153,6 +153,9 @@ body{
                         &:first-child{
                             padding:15px 0px 0px 0px;
                             text-align: right;
+                            width:80px;
+                            height:33px;
+                            overflow:hidden;
                         }
                         &.patient-detail-pointer{
                             position: absolute;

@@ -29,15 +29,15 @@
     <div bo-hide="visitSummary.hasEncounters()">There are no encounter for this patient yet.</div>
 	<section  bo-show="visitSummary.hasEncounters()" class="block investigation">
         <h2>Diagnoses</h2>
-        <ul class="block-content">
+        <ul class="block-content visit-diagnosis">
             <li ng-repeat="diagnosis in visitSummary.diagnoses" >
-                    <span bo-show="visitSummary.isPrimaryOrder(diagnosis.order)">P</span>
-                    <span bo-show="!visitSummary.isPrimaryOrder(diagnosis.order)">S</span>
+                    <span class="diag-ps" bo-show="visitSummary.isPrimaryOrder(diagnosis.order)">P</span>
+                    <span class="diag-ps" bo-show="!visitSummary.isPrimaryOrder(diagnosis.order)">S</span>
                     <span bo-text="diagnosis.codedAnswer.name"></span>
+                    <span bo-text="'(' + diagnosis.certainty + ')'" bo-hide = "visitSummary.isConfirmedDiagnosis(diagnosis.certainty)"></span>
+                        
                     <ul class="add-info">
-                        <li>
-                            <span bo-text="'(' + diagnosis.certainty + ')'" bo-hide = "visitSummary.isConfirmedDiagnosis(diagnosis.certainty)"></span>
-                        </li><li>
+                       <li>
                             <span bo-text="(diagnosis.diagnosisDateTime | date:'d-MMM-yy h:mm a')"></span>
                         </li><li>
                             <span bo-text="diagnosis.provider.name"></span>
@@ -93,9 +93,10 @@
                         <span bo-text='drugOrder.notes'></span>
                     </expander>
                     </span>
-                    
-                    <span bo-text="drugOrder.dateCreated | date: 'h:mm a'"></span>
-                    <span bo-text="drugOrder.provider.name"></span>
+                    <ul class="add-info">
+                    <li><span bo-text="drugOrder.dateCreated | date: 'h:mm a'"></span>
+                    <span bo-text="drugOrder.provider.name"></span></li>
+                    </ul>
 	           </li>
 			</ul>        
         </section>
@@ -104,8 +105,10 @@
             <ul>
                 <li ng-repeat="note in visitDay.consultationNotes">
                     <span bo-text="note.value"></span>
-                    <span bo-text="note.observationDateTime | date: 'h:mm a'"></span>
-                    <span bo-text="note.provider.name"></span>
+                    <ul class="add-info">
+                    <li><span bo-text="note.observationDateTime | date: 'h:mm a'"></span>
+                    <span bo-text="note.provider.name"></span></li>
+                    </ul>
                 </li>
             </ul>        
         </section>

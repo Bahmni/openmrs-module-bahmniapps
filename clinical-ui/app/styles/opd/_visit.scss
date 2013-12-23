@@ -31,6 +31,17 @@
 			margin:2px 0px;
 		}
 	}
+	.visit-diagnosis{
+		.diag-ps{
+			background:#3d99cc;
+			color: #fff;
+			padding:1px 4px;
+		}
+		li{
+			padding-left:0px;
+		}
+	}
+
 	.block-day{
 		border:3px solid #67ad95;
 		padding:10px;
@@ -41,12 +52,12 @@
 				padding:0px 10px;
 				font-family: OpenSansBold;
 			}
-			li{
-				background:none;
-			}
 		
 	}
 	aside{
+		h2{
+			background:none;
+		}
 		a{
 			color:#fff;
 		}
@@ -55,17 +66,21 @@
 			padding:10px;
 			right:0px;
 			width:200px;
-			background:#31a4ac;
+			background:#1C4455;
 			height:100%;
 			opacity:0.9;
+			min-height:500px;
+			li{
+				padding: 8px 6px;
+				border-right:1px solid #fff;
+			}
 		}
 		.visit-history-entry {
 			&.selected {
-				background:#00463F;
+				background:#407b94;
 			}
 			&.active {
-				font-style: italic;
-			}
+				color: #fafafa;			}
 		}
 	}
 }
