@@ -3,7 +3,7 @@ Bahmni.ConceptSet.ObservationMapper = function (encounterConfig) {
     var newObservation = function (concept) {
         var observation = { concept: concept, units: concept.units, label: concept.display, possibleAnswers: []};
         if (concept.answers.length > 0) observation.possibleAnswers = concept.answers;
-        observation = angular.extend(new Bahmni.Opd.Consultation.Observation(), observation);
+        observation = angular.extend(new Bahmni.ConceptSet.Observation(), observation);
         return observation;
     };
 

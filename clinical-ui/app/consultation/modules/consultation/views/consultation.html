@@ -59,7 +59,7 @@
 
     <section class="block consultationNote">
         <h2>Consultation Notes</h2>
-        <textarea ng-model="consultation.consultationNote.value" placeholder="Notes: " rows="6"></textarea>
+        <textarea ng-model="consultation.consultationNote.value" ng-change="onNoteChanged()" placeholder="Notes: " rows="6"></textarea>
     </section>
 </article>
 

@@ -1,7 +1,7 @@
-Bahmni.Opd.Consultation.Observation = function () {
+Bahmni.ConceptSet.Observation = function () {
 };
 
-Bahmni.Opd.Consultation.Observation.prototype = {
+Bahmni.ConceptSet.Observation.prototype = {
     displayValue: function () {
         if (this.possibleAnswers.length > 0) {
             for (var i = 0; i < this.possibleAnswers.length; i++) {
@@ -31,5 +31,9 @@ Bahmni.Opd.Consultation.Observation.prototype = {
 
     getLowAbsolute: function() {
         return this.concept.lowAbsolute;
+    },
+
+    onValueChanged: function() {
+        this.observationDateTime = new Date();
     }
 }

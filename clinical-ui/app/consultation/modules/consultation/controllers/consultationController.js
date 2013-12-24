@@ -8,15 +8,16 @@ angular.module('opd.consultation.controllers')
         var encounterData = {};
         encounterData.patientUuid = $scope.patient.uuid;
         encounterData.encounterTypeUuid = $rootScope.encounterConfig.getOpdConsultationEncounterUuid();
-        encounterData.encounterDateTime = new Date();
+        encounterData.encounterDateTime = $rootScope.consultation.encounterDateTime || new Date();
 
         if ($rootScope.consultation.diagnoses && $rootScope.consultation.diagnoses.length > 0){
             encounterData.diagnoses = $rootScope.consultation.diagnoses.map(function (diagnosis) {
                 return {
                     codedAnswer: { uuid: diagnosis.codedAnswer.uuid },
-                    order:diagnosis.order,
-                    certainty:diagnosis.certainty,
-                    existingObs:diagnosis.existingObs
+                    order: diagnosis.order,
+                    certainty: diagnosis.certainty,
+                    existingObs: diagnosis.existingObs,
+                    diagnosisDateTime: diagnosis.diagnosisDateTime
                 }
             });
         }
@@ -58,6 +59,10 @@ angular.module('opd.consultation.controllers')
         spinner.forPromise(encounterService.create(encounterData).success(function () {
             window.location = Bahmni.Opd.Consultation.Constants.activePatientsListUrl;
         }));
-    };        
+    };
+
+    $scope.onNoteChanged = function() {
+        $scope.consultation.consultationNote.observationDateTime = new Date();
+    }        
 }]);
 

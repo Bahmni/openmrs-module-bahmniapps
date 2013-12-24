@@ -39,6 +39,10 @@ angular.module('opd.conceptSet')
                 $scope.rootObservation = $rootScope.observationList[conceptSetName];
             }
         };
+
+        $scope.observationChanged = function(observation) {
+            observation.observationDateTime = new Date();
+        };
     };
 
     return {

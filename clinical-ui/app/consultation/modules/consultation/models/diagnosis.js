@@ -5,7 +5,7 @@ Bahmni.Opd.Consultation.Diagnosis = function (codedAnswer, order, certainty, exi
     self.certainty = certainty ? certainty : "PRESUMED";
     self.existingObs = existingObsUuid;
     self.freeTextAnswer = freeTextAnswer;
-    self.diagnosisDateTime = diagnosisDateTime;
+    self.diagnosisDateTime = diagnosisDateTime || new Date();
     self.conceptName = self.codedAnswer.name;
 
     self.getDisplayName = function(){
