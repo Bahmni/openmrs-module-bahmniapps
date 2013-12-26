@@ -3,7 +3,6 @@
 angular.module('opd.consultation.controllers')
     .controller('DispositionController', ['$scope', '$q', '$rootScope','dispositionService', 'spinner', function ($scope, $q, $rootScope,dispositionService, spinner) {
 
-
         var loadDispositionActions = function(){
             var dispositionActionsPromise = dispositionService.getDispositionActions().then(function (response) {
                 if (response.data && response.data.results) {
@@ -38,7 +37,6 @@ angular.module('opd.consultation.controllers')
 
         }
 
-
         $scope.getMappingCode = function(concept){
             var mappingCode="";
             if(concept.mappings){
@@ -52,6 +50,10 @@ angular.module('opd.consultation.controllers')
             return mappingCode;
         }
 
+        $scope.clearDispositionNote = function(){
+             $scope.dispositionNotes = {};
+        }
+
         var getSelectedDisposition = function(){
             var selectedAction ='';
             if($scope.dispositionAction){
@@ -61,10 +63,9 @@ angular.module('opd.consultation.controllers')
                         break;
                     }
                 }
-                var d = new Date();
                 var additionalObs = constructDispositionNoteObs($scope.dispositionNotes);
                 return {
-                    dispositionDateTime : d,//.toDateString() +" "+d.getHours()+":"+d.getMinutes(),
+                    dispositionDateTime : new Date(),
                     additionalObs :additionalObs ,
                     code: $scope.getMappingCode(selectedAction),
                     conceptName: selectedAction.name.name
@@ -90,30 +91,9 @@ angular.module('opd.consultation.controllers')
             }
         }
 
-       /* var updateDispositionsList = function(){
-            if(!$rootScope.disposition.dispositions){
-                $rootScope.disposition.dispositions =  [];
-            }
-
-            var currentAction = getSelectedDispositionAction();
-            if(currentAction){
-                if($rootScope.disposition.currentActionIndex !== undefined){
-                    $rootScope.disposition.dispositions[$rootScope.disposition.currentActionIndex] = currentAction;
-                }
-                else{
-                    $rootScope.disposition.currentActionIndex =  $rootScope.disposition.dispositions.length-1;
-                    $rootScope.disposition.dispositions.push(currentAction);
-                }
-            }
-        }*/
-
-
-
-
         spinner.forPromise(loadDispositionActions());
 
         $scope.$on('$destroy', function() {
-      //      updateDispositionsList();
             $rootScope.disposition  =   getSelectedDisposition();
         });
     }]);
