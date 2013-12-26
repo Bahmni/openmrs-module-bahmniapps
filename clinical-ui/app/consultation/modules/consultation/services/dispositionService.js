@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('opd.consultation.services')
-    .factory('dispositionService', ['$http', '$rootScope', function ($http, $rootScope) {
+        .factory('dispositionService', ['$http', '$rootScope', function ($http, $rootScope) {
 
         var getDispositionActions = function () {
             return $http.get(Bahmni.Common.Constants.conceptUrl

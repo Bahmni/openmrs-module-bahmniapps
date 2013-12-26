@@ -1,4 +1,6 @@
 'use strict';
+var Bahmni = Bahmni || {};
+Bahmni.ADT = Bahmni.ADT || {};
 
 Bahmni.ADT.dispositionNote = function (visit) {
     var encounters = visit.encounters,
