@@ -1,29 +1,22 @@
 "use strict";
 
 angular.module('opd.adt.controllers')
-    .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService', 'encounterService', 'BedService', 'appService', 'adtService',
-        function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService, appService, adtService) {
+    .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService', 'encounterService', 'BedService', 'appService',
+        function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService, appService) {
             var rankActions = {};
+            $scope.latestEncounter = null;
             var actionConfigs = {};
             var init = function () {
-                var dispositionActionsPromise = dispositionService.getDispositionActions().then(function (response) {
+                return dispositionService.getDispositionActions().then(function (response) {
                     if (response.data && response.data.results) {
                         if (response.data.results && response.data.results.length) {
                             $rootScope.disposition = $rootScope.disposition || {};
                             $rootScope.disposition.dispositionActionUuid = response.data.results[0].uuid;
                             $scope.dispositionActions = response.data.results[0].answers;
-                            setLatestActionAndNotes();
+                            setLatestAction();
                         }
                     }
                 });
-
-                var adtNotesPromise = adtService.getAdtNoteConcept().then(function (response) {
-                    if (response.data) {
-                        $scope.adtNotesUuid = response.data.results[0].uuid;
-                    }
-                });
-
-                return $q.all([dispositionActionsPromise, adtNotesPromise]);
             };
 
             spinner.forPromise(init());
@@ -32,7 +25,7 @@ angular.module('opd.adt.controllers')
                 actionConfigs[getSelectedDispositionCode()].action();
             };
 
-            $scope.cancel = function(){
+            $scope.cancel = function () {
                 window.location = Bahmni.Opd.ADT.Constants.activePatientsListUrl;
             };
 
@@ -56,34 +49,43 @@ angular.module('opd.adt.controllers')
                 })[0];
 
                 if (selectedEncounter) {
-                    setAdtNotes(selectedEncounter);
+                    $scope.latestEncounter = selectedEncounter;
+                    var activeEncounter = $scope.getActiveEncounter();
+                    activeEncounter.success(function (data) {
+                        $rootScope.setObservation(data);
+                    });
                 } else {
-                    $scope.adtNotes = null;
+                    $rootScope.setObservation(null);
                 }
             };
 
-            var setLatestActionAndNotes = function () {
-                var latestEncounter = null;
-                if ($scope.visit) {
-                    var max = 0;
-                    $scope.visit.encounters.forEach(function (encounter) {
-                        if (rankActions[encounter.encounterType.uuid] && rankActions[encounter.encounterType.uuid] > max) {
-                            max = rankActions[encounter.encounterType.uuid];
-                            latestEncounter = encounter;
-                        }
-                    });
-                    if (latestEncounter) {
-                        setAdtNotes(latestEncounter);
-                        setAdtAction(latestEncounter);
+            var getLatestEncounter = function () {
+                if (!$scope.latestEncounter) {
+                    if ($scope.visit) {
+                        var max = 0;
+                        $scope.visit.encounters.forEach(function (encounter) {
+                            if (rankActions[encounter.encounterType.uuid] && rankActions[encounter.encounterType.uuid] > max) {
+                                max = rankActions[encounter.encounterType.uuid];
+                                $scope.latestEncounter = encounter;
+                            }
+                        });
                     }
                 }
+                return $scope.latestEncounter;
             };
 
-            function setAdtNotes(latestEncounter) {
-                $scope.adtNotes = latestEncounter.obs.filter(function (observation) {
-                    return observation.concept.display === Bahmni.Opd.ADT.Constants.adtNotes;
-                })[0];
-            }
+            var setLatestAction = function () {
+                var latestEncounter = getLatestEncounter();
+                if (latestEncounter) {
+                    setAdtAction(latestEncounter);
+                }
+            };
+
+            $scope.getActiveEncounter = function () {
+                var latestEncounter = getLatestEncounter();
+                if (!latestEncounter) return null;
+                return encounterService.activeEncounter({ patientUuid: $scope.patient.uuid, encounterTypeUuid: latestEncounter.encounterType.uuid, includeAll: true});
+            };
 
             function setAdtAction(encounter) {
                 $scope.dispositionAction = $scope.dispositionActions.filter(function (dispositionAction) {
@@ -100,32 +102,10 @@ angular.module('opd.adt.controllers')
 
             var getEncounterData = function (encounterUuid) {
                 var encounterData = {};
-                var adtNotes = constructAdtNoteObs($scope.adtNotes);
                 encounterData.patientUuid = $scope.patient.uuid;
                 encounterData.encounterTypeUuid = encounterUuid;
-                if(adtNotes) {
-                    encounterData.observations = adtNotes;
-                }
+                encounterData.observations = [$rootScope.observationList[Bahmni.Opd.ADT.Constants["adtNotes"]]];
                 return encounterData;
-            };
-
-
-            var constructAdtNoteObs = function (notesObs) {
-                if (notesObs) {
-                    if(notesObs.concept){
-                        return [notesObs];
-                    }
-                    var additionalObs = [
-                        {
-                            concept: {
-                                uuid: $scope.adtNotesUuid
-                            },
-                            value: notesObs.value
-                        }
-                    ];
-                    return additionalObs;
-                }
-                return null;
             };
 
             var forwardUrl = function (response, option) {
@@ -149,7 +129,7 @@ angular.module('opd.adt.controllers')
             var transfer = function () {
                 var encounterData = getEncounterData($scope.encounterConfig.getTransferEncounterUuid());
                 encounterService.create(encounterData).then(function (response) {
-                    forwardUrl(response.data, "onAdmissionForwardTo");
+                    forwardUrl(response.data, "onTransferForwardTo");
                 });
             };
 
@@ -175,4 +155,6 @@ angular.module('opd.adt.controllers')
                 actionConfigs[Bahmni.Opd.ADT.Constants.dischargeCode] = {encounterUuid: $scope.encounterConfig.getDischargeEncounterUuid(), action: discharge};
                 actionConfigs[Bahmni.Opd.ADT.Constants.transferCode] = {encounterUuid: $scope.encounterConfig.getTransferEncounterUuid(), action: transfer};
             }
-        }]);
+        }
+    ])
+;

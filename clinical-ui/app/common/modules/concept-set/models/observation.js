@@ -25,6 +25,10 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.concept.datatype && this.concept.datatype.name == "Numeric";
     },
 
+    isText: function(){
+        return this.concept.datatype && this.concept.datatype.name === "Text";
+    },
+
     getHighAbsolute: function() {
         return this.concept.hiAbsolute;
     },

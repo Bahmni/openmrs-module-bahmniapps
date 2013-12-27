@@ -5,33 +5,47 @@
             <span class="label-add-on" ng-show="observation.units">({{observation.units}})</span>
         </div>
 
-        <div ng-switch on="observation.possibleAnswers.length">
-            <div ng-switch-when="0" add-obs-constraints obs="observation">
-                <div class="field-value">
-                    <input type="text" ng-model="$parent.observation.value" ng-change="$parent.observation.onValueChanged()"></input>
+        <div ng-switch on="$parent.observation.isText()">
+            <div ng-switch-when="true">
+                <div>
+                    <textarea ng-model="$parent.observation.value"
+                              ng-change="$parent.observation.onValueChanged()"
+                              value="$parent.observation.displayValue()"></textarea>
                 </div>
             </div>
 
-            <div ng-switch-default ng-show="observation.possibleAnswers.length > 0">
-                <div class="field-value">
-                    <select class=""  ng-model="observation.value" ng-change="observation.onValueChanged()"
-                            ng-options="answer.uuid as answer.display for answer in observation.possibleAnswers">
-                    </select>
+            <div ng-switch-default>
+
+                <div ng-switch on="observation.possibleAnswers.length">
+                    <div ng-switch-when="0" add-obs-constraints obs="observation">
+                        <div class="field-value">
+                            <input type="text" ng-model="obs.value"
+                                   ng-change="obs.onValueChanged()"/>
+                        </div>
+                    </div>
+                    <div ng-switch-default ng-show="observation.possibleAnswers.length > 0">
+                        <div class="field-value">
+                            <select class="" ng-model="observation.value" ng-change="observation.onValueChanged()"
+                                    ng-options="answer.uuid as answer.display for answer in observation.possibleAnswers">
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
 
+        <fieldset ng-show="observation.isGroup()">
+            <div class="form-field">
+                <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers">
+                    <div ng-switch on="$index">
+                        <legend ng-switch-when="0" class="mylegend"><strong>{{observation.label}}</strong>
+                        </legend>
+                    </div>
+
+                    <show-concept observation="member"></show-concept>
+                </div>
+            </div>
+        </fieldset>
     </div>
-
-    <fieldset ng-show="observation.isGroup()">
-        <div class="form-field">
-            <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers">
-                <div ng-switch on="$index">
-                    <legend ng-switch-when="0" class="mylegend"><strong>{{observation.label}}</strong></legend>
-                </div>
-
-                <show-concept observation="member"></show-concept>
-            </div>
-        </div>
-    </fieldset>
 </div>

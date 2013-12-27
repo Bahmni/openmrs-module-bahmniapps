@@ -9,7 +9,7 @@
         </label>
     </div>
     <div>
-        <textarea id="adtNotes" ng-model="adtNotes.value"></textarea>
+        <show-concept-set concept-set-name="'AdtNotes'" encounter-transaction="getActiveEncounter()"></show-concept-set>
     </div>
 
     <button type="button" ng-click="cancel()">Cancel</button>
