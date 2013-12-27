@@ -2,10 +2,10 @@
 
     <li ng-repeat="drug in consultation.treatmentDrugs">
                 {{$index+1}}) {{drug.name}}
-                -  {{drug.strength + ' ' + drug.dosageForm}}
+                - {{drug.strength + ' ' + drug.dosageForm}}
                 - {{drug.numberPerDosage}}
-                <span ng-show="drug.dosageFrequency && drug.dosageFrequency!=''"> - {{drug.dosageFrequency.name.name}}</span>
-                <span ng-show="drug.dosageInstruction && drug.dosageInstruction!=''"> - {{drug.dosageInstruction.name.name}}</span>
+                <span ng-show="drug.dosageFrequency && drug.dosageFrequency!=''"> - {{drug.dosageFrequency.name}}</span>
+                <span ng-show="drug.dosageInstruction && drug.dosageInstruction!=''"> - {{drug.dosageInstruction.name}}</span>
                 - for {{drug.numberOfDosageDays}} day(s)
                 <span ng-show="drug.prn"> - Take as required.</span>
                 <span ng-show="drug.notes && drug.notes!=''" class="notes">( {{drug.notes}})</span>

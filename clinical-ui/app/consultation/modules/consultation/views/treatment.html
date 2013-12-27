@@ -29,7 +29,7 @@
                     </div>
                     <div class="col col4">
                         <span class="select-arrow">
-                            <select ng-model="drug.dosageFrequency" ng-options="df.name.name for df in dosageFrequencyAnswers"
+                            <select ng-model="drug.dosageFrequency" ng-options="df.name for df in dosageFrequencyAnswers"
                                     ng-class="{'illegalValue': !isValidDosageFrequency(drug)}" ng-required="!drug.empty" ng-disabled="drug.savedDrug">
                                 <option value=""></option>
                             </select>
@@ -37,7 +37,7 @@
                     </div>
                     <div class="col col5">
                         <span class="select-arrow">
-                            <select ng-model="drug.dosageInstruction" ng-options="di.name.name for di in dosageInstructionAnswers" ng-disabled="drug.savedDrug">
+                            <select ng-model="drug.dosageInstruction" ng-options="di.name for di in dosageInstructionAnswers" ng-disabled="drug.savedDrug">
                                 <option value=""></option>
                             </select>
                         </span>

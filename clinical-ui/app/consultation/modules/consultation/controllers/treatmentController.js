@@ -168,17 +168,18 @@ angular.module('opd.consultation.controllers')
 
         });
 
+        var extractAnswers = function(config) {
+            if(config.results.length > 0) {
+                return config.results[0].answers.map(function(answer) {
+                    return {uuid: answer.uuid, name: answer.name.name}
+                })
+            }
+            return [];
+        };
+
         var initialize = function () {
-            $scope.dosageFrequencyAnswers = [];
-            if ($scope.dosageFrequencyConfig.results.length > 0) {
-                $scope.dosageFrequencyAnswers = $scope.dosageFrequencyConfig.results[0].answers;
-            }
-
-            $scope.dosageInstructionAnswers = [];
-            if ($scope.dosageInstructionConfig.results.length > 0) {
-                $scope.dosageInstructionAnswers = $scope.dosageInstructionConfig.results[0].answers;
-            }
-
+            $scope.dosageFrequencyAnswers = extractAnswers($scope.dosageFrequencyConfig);
+            $scope.dosageInstructionAnswers = extractAnswers($scope.dosageInstructionConfig);
             $rootScope.beforeContextChange = allowContextChange;
 
             if ($rootScope.consultation.treatmentDrugs) {
@@ -187,6 +188,11 @@ angular.module('opd.consultation.controllers')
             } else {
                 $scope.selectedDrugs = [ new Bahmni.Opd.Consultation.TreatmentDrug() ];
             }
+
+            $scope.selectedDrugs.forEach(function(drug) {
+                drug.dosageFrequency = $scope.dosageFrequencyAnswers.filter(function(df) { return df.uuid === drug.dosageFrequency.uuid})[0];
+                drug.dosageInstruction = $scope.dosageInstructionAnswers.filter(function(di) { return di.uuid === drug.dosageInstruction.uuid})[0];
+            });
         };
 
         initialize();

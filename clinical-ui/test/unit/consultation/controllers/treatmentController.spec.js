@@ -12,7 +12,7 @@ describe("TreatmentControllerTest", function () {
                 "uuid": "62ff9e01-2696-11e3-895c-0800271c1b75",
                 "name": {"name": "Dosage Frequency" },
                 "answers": [
-                    { "display": "qD" }
+                    { "display": "qD", "name": {"name": "qD"}}
                 ]
             }
         ]};
@@ -22,7 +22,7 @@ describe("TreatmentControllerTest", function () {
                 "uuid": "63272569-2696-11e3-895c-0800271c1b75",
                 "name": {"name": "Dosage Instructions"},
                 "answers": [
-                    { "display": "AC"}
+                    { "display": "AC", "name": {"name": "AC"}}
                 ]
             }
         ]
