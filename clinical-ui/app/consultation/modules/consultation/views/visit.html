@@ -14,7 +14,7 @@
     </div>    
 </script>
 <article class="visit">
-<aside bindonce class="visit-history" ng-controller="VisitHistoryController">
+<aside bindonce class="visit-history" ng-click="toggleDrawer()" ng-controller="VisitHistoryController">
     <h2>Visit History</h2>
     <ul>
         <li ng-click="showVisitSummary(visit)" class="visit-history-entry" ng-class="{'selected': isCurrentVisit(visit), 'active': visit.isActive()}" ng-repeat="visit in visits">
