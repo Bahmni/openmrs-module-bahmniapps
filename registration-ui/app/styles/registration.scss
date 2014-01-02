@@ -236,7 +236,6 @@ body{
 }
 .reg-wrapper{
   margin:0px auto;
-  height:100%;
   @include clearfix();
   .inline-element,select,input,button{
       display:inline-block;
