@@ -57,20 +57,22 @@
 	aside{
 		h2{
 			background:none;
+			color: #000;
 		}
 		a{
 			color:#fff;
 		}
 		&.visit-history{
-			position:absolute;
+			position:fixed;
 			padding:10px;
 			right:0px;
 			width:200px;
-			background:#1C4455;
+			background:#185472;
 			height:100%;
 			opacity:0.9;
 			min-height:500px;
 			overflow: hidden;
+			border-left: 7px solid #979494;
 			ul,h2{
 				width:200px;
 			}
