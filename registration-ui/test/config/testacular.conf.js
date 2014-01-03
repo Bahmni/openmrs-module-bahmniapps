@@ -4,6 +4,7 @@ files = [
     JASMINE,
     JASMINE_ADAPTER,
     '../app/components/angular/angular.js',
+    '../app/components/angular-route/angular-route.js',
     '../app/components/moment/moment.js',
     '../app/components/jquery/jquery.js',
     '../app/components/angular-mocks/angular-mocks.js',

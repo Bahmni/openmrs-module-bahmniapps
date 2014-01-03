@@ -113,6 +113,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
         border-right:1px solid #cecece;
         &.secondaryOption{
           border-top: 1px solid #cecece;
+          display: none;
           button{
               background:#fff;
               position:relative;

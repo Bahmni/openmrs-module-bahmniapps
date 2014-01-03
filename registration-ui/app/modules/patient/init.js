@@ -1,4 +1,4 @@
-angular.module('registration.patient.models', ['registration.util']);
+angular.module('registration.patient.models', ['ngRoute', 'registration.util']);
 angular.module('registration.patient.mappers', ['registration.patient.models']);
 
 //angular.module('resources.patientAttributeType', [])

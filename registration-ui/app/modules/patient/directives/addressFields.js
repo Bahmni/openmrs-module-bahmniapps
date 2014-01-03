@@ -8,7 +8,7 @@ angular.module('registration.patient.directives')
                                     '<label for="{{addressLevel.addressField}}">{{addressLevel.name}}<span class="asterick" ng-show="addressLevel.required">*</span></label>'+
                                 '</div>'+
                                 '<div class="field-value">'+
-                                    '<input type="text" id="{{addressLevel.addressField}}" non-blank="$parent.addressLevel.required" ng-model="$parent.address[$parent.addressLevel.addressField]" placeholder="{{$parent.addressLevel.name}}"' +
+                                    '<input type="text" id="{{addressLevel.addressField}}" non-blank="addressLevel.required" ng-model="$parent.address[addressLevel.addressField]" placeholder="{{addressLevel.name}}"' +
                                     'my-autocomplete source="getAddressEntryList(addressLevel.addressField)" response-map="getAddressDataResults" on-select="addressFieldSelected(addressLevel.addressField)"' +
                                      '>'+
                                 '</div>'+

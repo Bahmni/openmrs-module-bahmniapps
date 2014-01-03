@@ -87,7 +87,6 @@ angular.module('registration.util')
                             '<ul class="options">' +
                             '<li ng-repeat="option in sortedOptions"' +
                                 'ng-class="{primaryOption: $index == 0, secondaryOption: $index > 0}"' +
-                                'ng-show="$index == 0"' +
                              '>' +
                                 '<button ng-click="optionClick()(option)">{{optionText()(option)}}</a>' +
                             '</li>' +
@@ -116,7 +115,7 @@ angular.module('registration.util')
     })
 
     .directive('myAutocomplete', function ($parse) {
-        var link = function (scope, element, attrs) {
+        var link = function (scope, element, attrs, ngModelCtrl) {
             var ngModel = $parse(attrs.ngModel);
             var source = scope.source();
             var responseMap = scope.responseMap();
@@ -133,7 +132,7 @@ angular.module('registration.util')
                 },
                 select: function (event, ui) {
                     scope.$apply(function (scope) {
-                        ngModel.assign(scope, ui.item.value);
+                        ngModelCtrl.$setViewValue(ui.item.value);
                         scope.$eval(attrs.ngChange);
                         if(onSelect != null) {
                             onSelect(ui.item);
@@ -151,6 +150,7 @@ angular.module('registration.util')
         }
         return {
             link: link,
+            require: 'ngModel',
             scope: {
                 source: '&',
                 responseMap: '&',
