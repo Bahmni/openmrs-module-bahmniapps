@@ -2,7 +2,7 @@
 
 
 angular
-.module('bahmnihome', ['http-auth-interceptor', 'httpErrorInterceptor', 'infrastructure', 'ngCookies'])
+.module('bahmnihome', ['ngRoute', 'http-auth-interceptor', 'httpErrorInterceptor', 'infrastructure', 'ngCookies'])
 .provider('$cookieStore', [function(){
     var self = this;
     self.defaultOptions = {};
