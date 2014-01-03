@@ -4,6 +4,7 @@ files = [
   JASMINE,
   JASMINE_ADAPTER,
     '../app/components/angular/angular.js',
+    '../app/components/angular-route/angular-route.js',
     '../app/components/angular-mocks/angular-mocks.js',
     '../app/components/ngInfiniteScroll/ng-infinite-scroll.js',
     '../app/components/d3/d3.min.js',

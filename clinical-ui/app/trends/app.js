@@ -1,5 +1,5 @@
 angular
-    .module("trends", ["nvd3ChartDirectives"])
+    .module("trends", ['ngRoute', "nvd3ChartDirectives"])
     .config(["$routeProvider", "$httpProvider", function ($routeProvider, $httpProvider) {
         $routeProvider.when("/patients/:patientUUID", {
             templateUrl: "trends.html",

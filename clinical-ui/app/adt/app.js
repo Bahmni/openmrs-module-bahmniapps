@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('adt', ['opd.consultation.services', 'bahmni.common.infrastructure', 'bahmni.common.patient',
+angular.module('adt', ['ngRoute', 'opd.consultation.services', 'bahmni.common.infrastructure', 'bahmni.common.patient',
     'opd.conceptSet', 'authentication', 'appFramework', 'httpErrorInterceptor', 'opd.adt',
     'bahmni.common.encounter', 'bahmni.common.visit', 'opd.bedManagement.services', 'bahmni.common.controllers']);
 angular.module('adt').config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {

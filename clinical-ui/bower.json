@@ -11,9 +11,10 @@
     "components"
   ],
   "dependencies": {
-    "angular": "1.0.5",
-    "angular-cookies": "1.0.5",
+    "angular": "1.2.6",
+    "angular-cookies": "1.2.6",
     "angular-bindonce": "0.2.1",
+    "angular-route": "1.2.6",
     "jquery": "1.9.1",
     "jquery-ui": "1.10.2",
     "ngInfiniteScroll": "1.0.0",
@@ -23,11 +24,11 @@
     "openmrs-uicommons": "master"
   },
   "devDependencies": {
-    "angular-mocks": "1.0.5",
-    "angular-scenario": "1.0.5"
+    "angular-mocks": "1.2.6",
+    "angular-scenario": "1.2.6"
   },
   "resolutions": {
-    "angular": "1.0.5",
+    "angular": "1.2.6",
     "moment": "2.4.0"
   }
 }
