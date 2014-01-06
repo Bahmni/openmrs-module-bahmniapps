@@ -1,13 +1,15 @@
-angular.module("trends").controller("TrendsController", ["$scope", "$routeParams", "observationService", function ($scope, $routeParams, observationService) {
-    var patientUUID = $routeParams.patientUUID,
+angular.module("trends").controller("TrendsController", ["$scope", "$routeParams", "observationService",'backlinkService',
+    function ($scope, $routeParams, observationService,backlinkService) {
+        var patientUUID = $routeParams.patientUUID,
+        obsConcept = $routeParams.obsConcept,
         fetchedObservations = observationService.fetch(patientUUID),
-        MINIMUM_REQUIRED_READINGS = 2,
+        MINIMUM_REQUIRED_READINGS = 1,
 
         fetch = function(observations, concept) {
             return observations.filter(function(observation) {
                 return observation.conceptName === concept;
             }).map(function(observation) {
-                return [observation.observationDate, observation.value];
+                return [observation.observationDate, observation.value, observation.units];
             });
         },
 
@@ -44,7 +46,7 @@ angular.module("trends").controller("TrendsController", ["$scope", "$routeParams
                 var allConcepts = observations.map(function(observation) {
                         return observation.conceptName;
                     }),
-                    uniqueConcepts = unique(allConcepts);
+                uniqueConcepts = unique(allConcepts);
 
                 $scope.observations = {};
                 $scope.visibleObservations = {};
@@ -57,7 +59,8 @@ angular.module("trends").controller("TrendsController", ["$scope", "$routeParams
                     if (values.length >= MINIMUM_REQUIRED_READINGS) {
                         $scope.observations[concept] = [{
                             "key": displayName,
-                            "values": values
+                            "values": values,
+                            "units":getObsUnit(values[0])
                         }];
                         $scope.concepts[concept] = {
                             name: displayName,
@@ -65,12 +68,28 @@ angular.module("trends").controller("TrendsController", ["$scope", "$routeParams
                         };
                     }
                 });
+
+                if(obsConcept){
+                    $scope.addObservations(obsConcept);
+                }
             });
+
+            initBackLinks();
         };
 
     $scope.xAxisTickFormatAsDate = function(){
         return epochToDateString;
     };
+
+    var getObsUnit = function(observation) {
+        return observation[2];
+    }
+
+    $scope.getUnitsFromDetails = function(details){
+        if(details[0]){
+            return details[0].units;
+        }
+    }
 
     $scope.addObservations = function(concept){
         $scope.visibleObservations[concept] = $scope.observations[concept];
@@ -82,5 +101,10 @@ angular.module("trends").controller("TrendsController", ["$scope", "$routeParams
         $scope.concepts[concept].displayed = false;
     };
 
+    var initBackLinks =  function () {
+        backlinkService.addUrl("Consultation","/clinical/consultation/#/patient/"+patientUUID);
+    };
+
     init();
+
 }]);

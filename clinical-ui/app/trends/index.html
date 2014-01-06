@@ -6,19 +6,22 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF8">
 
     <link rel="stylesheet" href="../components/angularjs-nvd3-directives/examples/stylesheets/nv.d3.css"/>
+    <link rel="stylesheet" href="../styles/styles.css"/>
 
     <script src="../components/angular/angular.js"></script>
     <script src="../components/angular-route/angular-route.js"></script>
     <script src="../components/d3/d3.min.js"></script>
     <script src="../components/nvd3/nv.d3.min.js"></script>
     <script src="../components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js"></script>
-
+    <script src="../common/modules/backlink/services/backlinkService.js"></script>
+    <script src="../common/modules/common/controllers/opdcommonheadercontroller.js"></script>
     <script src="app.js"></script>
     <script src="trendsController.js"></script>
     <script src="observationService.js"></script>
 </head>
 
 <body ng-app="trends">
+    <div ng-include src="'../common/modules/common/header.html'"></div>
     <div ng-view> </div>
 </body>
 </html>

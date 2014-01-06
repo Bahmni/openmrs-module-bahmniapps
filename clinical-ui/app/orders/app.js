@@ -5,4 +5,7 @@ angular.module('orders').config(['$routeProvider', '$httpProvider', function ($r
         $routeProvider.when('/patient/:patientUuid/:orderTypeUuid', {templateUrl: 'modules/pending-orders/views/pendingOrders.html', controller: 'PendingOrdersController',resolve: {initialization: 'initialization'}});
         $routeProvider.otherwise({redirectTo: "../patients"});
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
-}]);
+}]).run(['backlinkService', function (backlinkService) {
+        backlinkService.addUrl("Patient Search", "/clinical/patients/#/clinical");
+    }]);
+

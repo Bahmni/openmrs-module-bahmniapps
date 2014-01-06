@@ -134,7 +134,10 @@
             <h2>Observations</h2>
             <ul>
                 <li ng-repeat="observation in visitDay.observations">
-                    <observation-summary observation="observation"/>
+                    <div>
+                        <observation-summary observation="observation"/>
+                    </div>
+                    <a href="/clinical/trends/#/patients/{{patientUuid}}/{{observation.concept.name}}" ng-show="isNumeric(observation.value)">view trends</a>
                 </li>
             </ul>        
         </section>

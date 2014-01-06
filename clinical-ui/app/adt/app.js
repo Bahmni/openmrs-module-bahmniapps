@@ -7,4 +7,6 @@ angular.module('adt').config(['$routeProvider', '$httpProvider', function ($rout
     $routeProvider.when('/dashboard/visit/:visitUuid', {templateUrl: 'modules/adt/views/dashboard.html', controller: 'AdtController', resolve: {initialization: 'initialization'}});
     $routeProvider.otherwise({templateUrl: '../common/modules/common/error.html'});
     $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
-}]);
+}]).run(['backlinkService', function (backlinkService) {
+        backlinkService.addUrl("ADT", "/clinical/patients/#/adt");
+    }]);

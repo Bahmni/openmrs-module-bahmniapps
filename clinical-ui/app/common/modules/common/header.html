@@ -1,8 +1,11 @@
 <header ng-controller="CommonHeaderController">
+    <ul>
+        <li ng-repeat="(label, url) in backLinks">
+            <a href="{{url}}">{{label}}</a>
+        </li>
+    </ul>
 
-    <a class="back-btn" href="{{context.redirectUrl}}" ng-show="shouldShowBackButton()"><span class="arrow-btn-head"></span>
-    <span class="arrow-btn-body">Back</span></a>
-	<a class="header-logo" href="/home">Jan Swasthya Sahyog</a>
+    <a class="header-logo" href="/home">Jan Swasthya Sahyog</a>
 	<ul class="user-info">
 		<li>
 		  <a class="user-name"><i class="icon-user icon-white small"></i><span ng-bind="currentUser.username"></span></a>

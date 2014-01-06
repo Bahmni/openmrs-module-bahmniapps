@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('opd.consultation.controllers')
-    .controller('VisitController', ['$scope', 'encounterService', 'visitService','$route', 'spinner', function ($scope, encounterService, visitService, $route, spinner) {
+    .controller('VisitController', ['$scope', 'encounterService', 'visitService','$route', 'spinner','$routeParams',
+        function ($scope, encounterService, visitService, $route, spinner,$routeParams) {
     var visitUuid = $route.current.params.visitUuid;
 	$scope.visitDays = [];
     $scope.hasMoreVisitDays;
+    $scope.patientUuid = $routeParams.patientUuid;
     var currentEncounterDate;
     var loading;
     var DateUtil = Bahmni.Common.Util.DateUtil;
@@ -38,4 +40,11 @@ angular.module('opd.consultation.controllers')
             loadEncounters(previousDate)            
         } 
     };
+
+
+    $scope.isNumeric = function(value){
+        return $.isNumeric(value);
+    }
+
+
 }]);
