@@ -30,4 +30,8 @@
         <sqlFile path="V1_79__AddressTemplateWithAllFields.sql" />
     </changeSet>
 
+    <changeSet id="bahmni-reg-5" author="vivek-tw" context="rel3">
+        <comment>rel3</comment>
+        <sql>update patient_identifier_type set name = 'Bahmni Id' where name = 'JSS'</sql>
+    </changeSet>
 </databaseChangeLog>
