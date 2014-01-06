@@ -3,7 +3,7 @@ angular.module("trends").controller("TrendsController", ["$scope", "$routeParams
         var patientUUID = $routeParams.patientUUID,
         obsConcept = $routeParams.obsConcept,
         fetchedObservations = observationService.fetch(patientUUID),
-        MINIMUM_REQUIRED_READINGS = 1,
+        MINIMUM_REQUIRED_READINGS = 2,
 
         fetch = function(observations, concept) {
             return observations.filter(function(observation) {
@@ -59,8 +59,7 @@ angular.module("trends").controller("TrendsController", ["$scope", "$routeParams
                     if (values.length >= MINIMUM_REQUIRED_READINGS) {
                         $scope.observations[concept] = [{
                             "key": displayName,
-                            "values": values,
-                            "units":getObsUnit(values[0])
+                            "values": values
                         }];
                         $scope.concepts[concept] = {
                             name: displayName,
@@ -81,13 +80,10 @@ angular.module("trends").controller("TrendsController", ["$scope", "$routeParams
         return epochToDateString;
     };
 
-    var getObsUnit = function(observation) {
-        return observation[2];
-    }
 
     $scope.getUnitsFromDetails = function(details){
         if(details[0]){
-            return details[0].units;
+            return details[0].values[0][2];
         }
     }
 

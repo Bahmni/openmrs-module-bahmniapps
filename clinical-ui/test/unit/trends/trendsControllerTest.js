@@ -10,11 +10,11 @@ describe("TrendsController", function() {
         },
         serverCallForWeightAndHeight = function() {
             observationFetchPromise.callSuccessCallBack([
-                {"observationDate":1371619826000,"conceptName":"WEIGHT","value":38.7},
-                {"observationDate":1372227320000,"conceptName":"WEIGHT","value":40.0},
-                {"observationDate":1372821738000,"conceptName":"WEIGHT","value":40.3},
-                {"observationDate":1371619826000,"conceptName":"HEIGHT","value":147.0},
-                {"observationDate":1372227320000,"conceptName":"HEIGHT","value":148.0}
+                {"observationDate":1371619826000,"conceptName":"WEIGHT","value":38.7,"units":"kg"},
+                {"observationDate":1372227320000,"conceptName":"WEIGHT","value":40.0,"units":"kg"},
+                {"observationDate":1372821738000,"conceptName":"WEIGHT","value":40.3,"units":"kg"},
+                {"observationDate":1371619826000,"conceptName":"HEIGHT","value":147.0,"units":"cm"},
+                {"observationDate":1372227320000,"conceptName":"HEIGHT","value":148.0,"units":"cm"}
             ]);
         };
 
@@ -50,11 +50,11 @@ describe("TrendsController", function() {
                 expect(sortedKeys(scope.observations)).toEqual(["HEIGHT", "WEIGHT"]);
                 expect(scope.observations.WEIGHT).toEqual([{
                     "key": "Weight",
-                    "values": [ [1371619826000, 38.7], [1372227320000, 40.0], [1372821738000, 40.3] ]
+                    "values": [ [1371619826000, 38.7,"kg"], [1372227320000, 40.0,"kg"], [1372821738000, 40.3,"kg"] ]
                 }]);
                 expect(scope.observations.HEIGHT).toEqual([{
                     "key": "Height",
-                    "values": [ [1371619826000, 147.0], [1372227320000, 148.0] ]
+                    "values": [ [1371619826000, 147.0,"cm"], [1372227320000, 148.0,"cm"] ]
                 }]);
             }));
 
@@ -69,10 +69,10 @@ describe("TrendsController", function() {
         describe("for observations that need a different name from the sever send name", function() {
             beforeEach(function() {
                 observationFetchPromise.callSuccessCallBack([
-                    {"observationDate":1371619826000,"conceptName":"BMI","value":17.91},
-                    {"observationDate":1372227320000,"conceptName":"BMI","value":18.27},
-                    {"observationDate":1371619826000,"conceptName":"REGISTRATION FEES","value":15},
-                    {"observationDate":1372227320000,"conceptName":"REGISTRATION FEES","value":10}
+                    {"observationDate":1371619826000,"conceptName":"BMI","value":17.91,"units":"kg/m sq"},
+                    {"observationDate":1372227320000,"conceptName":"BMI","value":18.27,"units":"kg/m sq"},
+                    {"observationDate":1371619826000,"conceptName":"REGISTRATION FEES","value":15,"units":"rupees"},
+                    {"observationDate":1372227320000,"conceptName":"REGISTRATION FEES","value":10,"units":"rupees"}
                 ]);
             });
 
@@ -80,11 +80,11 @@ describe("TrendsController", function() {
                 expect(sortedKeys(scope.observations)).toEqual(["BMI", "REGISTRATION FEES"]);
                 expect(scope.observations.BMI).toEqual([{
                     "key": "BMI",
-                    "values": [ [1371619826000, 17.91], [1372227320000, 18.27] ]
+                    "values": [ [1371619826000, 17.91,"kg/m sq"], [1372227320000, 18.27,"kg/m sq"] ]
                 }]);
                 expect(scope.observations["REGISTRATION FEES"]).toEqual([{
                     "key": "Fees",
-                    "values": [ [1371619826000, 15], [1372227320000, 10] ]
+                    "values": [ [1371619826000, 15,"rupees"], [1372227320000, 10,"rupees"] ]
                 }]);
             }));
 
@@ -99,7 +99,7 @@ describe("TrendsController", function() {
         describe("for observations with insufficient data", function() {
             beforeEach(function() {
                 observationFetchPromise.callSuccessCallBack([
-                    {"observationDate":1371619826000,"conceptName":"BMI","value":17.91}
+                    {"observationDate":1371619826000,"conceptName":"BMI","value":17.91,"units":"kg/m sq"}
                 ]);
             });
 
@@ -124,7 +124,7 @@ describe("TrendsController", function() {
             expect(scope.visibleObservations).toEqual({
                 "WEIGHT": [{
                     "key": "Weight",
-                    "values": [ [1371619826000, 38.7], [1372227320000, 40.0], [1372821738000, 40.3] ]
+                    "values": [ [1371619826000, 38.7,"kg"], [1372227320000, 40.0,"kg"], [1372821738000, 40.3,"kg"] ]
                 }]
             });
         }));
@@ -147,7 +147,7 @@ describe("TrendsController", function() {
             expect(scope.visibleObservations).toEqual({
                 "WEIGHT": [{
                     "key": "Weight",
-                    "values": [ [1371619826000, 38.7], [1372227320000, 40.0], [1372821738000, 40.3] ]
+                    "values": [ [1371619826000, 38.7,"kg"], [1372227320000, 40.0,"kg"], [1372821738000, 40.3,'kg'] ]
                 }]
             });
         }));
