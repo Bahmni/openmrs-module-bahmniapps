@@ -142,6 +142,7 @@ module.exports = function (grunt) {
                 '<%= yeoman.app %>/adt/**/*.html',
                 '<%= yeoman.app %>/bed-management/**/*.html',
                 '<%= yeoman.app %>/common/**/*.html',
+                '<%= yeoman.app %>/trends/**/*.html',
                 '<%= yeoman.app %>/orders/**/*.html'
             ],
             css: '<%= yeoman.app %>/styles/.css/**/*.css',
@@ -156,6 +157,7 @@ module.exports = function (grunt) {
                 '<%= yeoman.dist %>/adt/**/*.html',
                 '<%= yeoman.dist %>/bed-management/**/*.html',
                 '<%= yeoman.dist %>/common/**/*.html',
+                '<%= yeoman.dist %>/trends/**/*.html',
                 '<%= yeoman.dist %>/orders/**/*.html'
             ],
             css: '<%= yeoman.dist %>/styles/**/*.css',
@@ -201,6 +203,7 @@ module.exports = function (grunt) {
                             'adt/**/*.html',
                             'bed-management/**/*.html',
                             'common/**/*.html',
+                            'trends/**/*.html',
                             'orders/**/*.html'
                         ],
                         dest: '<%= yeoman.dist %>'
@@ -234,6 +237,12 @@ module.exports = function (grunt) {
                         cwd: '<%= yeoman.dist %>/bed-management',
                         src: '**/*.js',
                         dest: '<%= yeoman.dist %>/bed-management'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>/trends',
+                        src: '**/*.js',
+                        dest: '<%= yeoman.dist %>/trends'
                     },
                     {
                         expand: true,
@@ -281,6 +290,7 @@ module.exports = function (grunt) {
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['adt.min.js'], dest: '<%= yeoman.dist %>/adt/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['bed-management.min.js'], dest: '<%= yeoman.dist %>/bed-management/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['orders.min.js'], dest: '<%= yeoman.dist %>/orders/'},
+                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['trends.min.js'], dest: '<%= yeoman.dist %>/trends/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['patients.min.css'], dest: '<%= yeoman.dist %>/patients/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['consultation.min.css'], dest: '<%= yeoman.dist %>/consultation/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['adt.min.css'], dest: '<%= yeoman.dist %>/adt/'},

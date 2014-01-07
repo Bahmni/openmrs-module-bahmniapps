@@ -2,11 +2,11 @@ angular
     .module("trends", ["ngRoute","nvd3ChartDirectives","bahmni.common.controllers"])
     .config(["$routeProvider", "$httpProvider", function ($routeProvider, $httpProvider) {
         $routeProvider.when("/patients/:patientUUID", {
-            templateUrl: "trends.html",
+            templateUrl: "views/trends.html",
             controller: "TrendsController"
         });
         $routeProvider.when("/patients/:patientUUID/:obsConcept", {
-            templateUrl: "trends.html",
+            templateUrl: "views/trends.html",
             controller: "TrendsController"
         });
         $httpProvider.defaults.headers.common["Disable-WWW-Authenticate"] = true;
