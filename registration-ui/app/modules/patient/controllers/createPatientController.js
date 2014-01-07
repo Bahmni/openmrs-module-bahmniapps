@@ -116,9 +116,6 @@ angular.module('registration.patient.controllers')
 
             var errorCallBack = function (data) {
                 spinner.hide();
-                if (errorCode.isOpenERPError(data)) {
-                    successCallback(data.patient);
-                }
             };
 
             if (!$scope.patient.identifier) {
