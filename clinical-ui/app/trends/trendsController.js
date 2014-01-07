@@ -15,7 +15,7 @@ angular.module("trends").controller("TrendsController", ["$scope", "$routeParams
 
         epochToDateString = function(epoch){
             var date = new Date(epoch);
-            return d3.time.format("%d/%m/%y")(date);
+            return d3.time.format("'%d/%m/%y %H:%M'")(date);
         },
 
         displayableConceptNames = {
@@ -82,14 +82,16 @@ angular.module("trends").controller("TrendsController", ["$scope", "$routeParams
 
 
     $scope.getUnitsFromDetails = function(details){
-        if(details[0]){
+        if(details && details[0]){
             return details[0].values[0][2];
         }
     }
 
     $scope.addObservations = function(concept){
         $scope.visibleObservations[concept] = $scope.observations[concept];
-        $scope.concepts[concept].displayed = true;
+        if($scope.concepts[concept]){
+            $scope.concepts[concept].displayed = true;
+        }
     };
 
     $scope.removeObservations = function(concept){

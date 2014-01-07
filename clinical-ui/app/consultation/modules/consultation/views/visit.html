@@ -4,11 +4,12 @@
             <span bo-text="observation.concept.name + ' - ' + observation.value"></span>
             <span bo-text="observation.observationDateTime | date: 'h:mm a'"></span>
             <span bo-text="observation.provider.name"></span>
-        </div>    
+            <a bo-href="'/clinical/trends/#/patients/'+patientUuid+'/'+observation.concept.name" ng-show="isNumeric(observation.value)">view trends</a>
+        </div>
         <ul ng-switch-default>
             <span bo-text="observation.concept.name"></span>
             <li ng-repeat="groupMember in observation.groupMembers">
-                <observation-summary observation="groupMember"/>
+                <observation-summary patient-uuid="patientUuid" observation="groupMember"/>
             </li>
         </ul>
     </div>    
@@ -135,9 +136,8 @@
             <ul>
                 <li ng-repeat="observation in visitDay.observations">
                     <div>
-                        <observation-summary observation="observation"/>
+                        <observation-summary patient-uuid="patientUuid" observation="observation"/>
                     </div>
-                    <a href="/clinical/trends/#/patients/{{patientUuid}}/{{observation.concept.name}}" ng-show="isNumeric(observation.value)">view trends</a>
                 </li>
             </ul>        
         </section>

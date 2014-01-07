@@ -35,8 +35,8 @@ describe("TrendsController", function() {
 
     describe("xAxisTickFormatAsDate", function() {
         it("converts epoch time to formatted date", inject(function() {
-            var epochTimeFor21stDecember2013 = new Date(2013, 11, 21).getTime();
-            expect(scope.xAxisTickFormatAsDate()(epochTimeFor21stDecember2013)).toEqual("21/12/13");
+            var epochTimeFor21stDecember2013 = new Date(2013, 11, 21,1,1).getTime();
+            expect(scope.xAxisTickFormatAsDate()(epochTimeFor21stDecember2013)).toEqual('\'21/12/13 01:01\'');
         }));
     });
 
