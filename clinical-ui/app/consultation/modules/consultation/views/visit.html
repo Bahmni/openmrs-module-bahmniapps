@@ -2,10 +2,14 @@
     <div ng-switch="observation.groupMembers.length">
         <div ng-switch-when="0">
             <span bo-text="observation.concept.name + ' - ' + observation.value"></span>
-            <span bo-text="observation.observationDateTime | date: 'h:mm a'"></span>
-            <span bo-text="observation.provider.name"></span>
-            <a bo-href="'/clinical/trends/#/patients/'+patientUuid+'/'+observation.concept.name" ng-show="isNumeric(observation.value)">view trends</a>
+            <ul class="add-info">
+                <li><span bo-text="observation.observationDateTime | date: 'h:mm a'"></span></li>
+                <li><span bo-text="observation.provider.name"></span></li>
+                <li><a bo-href="'/clinical/trends/#/patients/'+patientUuid+'/'+observation.concept.name" ng-show="isNumeric(observation.value)">view trends
+                </a></li>
+            </ul>
         </div>
+
         <ul ng-switch-default>
             <span bo-text="observation.concept.name"></span>
             <li ng-repeat="groupMember in observation.groupMembers">
@@ -79,21 +83,24 @@
             <h2>Treatment</h2>
 	        <ul>
 			    <li ng-repeat="drugOrder in visitDay.drugOrders">
-                    <span bo-text="drugOrder.drugName"></span>
-                    <span bo-show="drugOrder.doseStrength" bo-text="' - ' + drugOrder.doseStrength"></span>
-                    <span bo-show="drugOrder.drugUnits" bo-text="' ' + drugOrder.drugUnits"></span>
-                    <span bo-show="drugOrder.dosageForm" bo-text="' ' + drugOrder.dosageForm"></span>
-                    <span bo-show="drugOrder.numberPerDosage" bo-text="' - ' + drugOrder.numberPerDosage"></span>
-                    <span bo-show="drugOrder.dosageFrequency" bo-text="' - ' + drugOrder.dosageFrequency.name"> </span>
-                    <span bo-show="drugOrder.dosageInstruction" bo-text="' - ' + drugOrder.dosageInstruction.name" > </span>
-                    <span bo-text="' - ' + (drugOrder.startDate  | date:'d MMM yy')"> </span>
-                    <span bo-text="' - for ' + visitSummary.numberOfDosageDaysForDrugOrder(drugOrder) + ' day(s)'"> - </span>
-                    <span bo-show="drugOrder.prn"> - Take as required.</span>
-                    <span bo-show="drugOrder.notes" class="notes">
+                    <div class="treatment-details">
+                        <span bo-text="drugOrder.drugName"></span>
+                        <span bo-show="drugOrder.doseStrength" bo-text="' - ' + drugOrder.doseStrength"></span>
+                        <span bo-show="drugOrder.drugUnits" bo-text="' ' + drugOrder.drugUnits"></span>
+                        <span bo-show="drugOrder.dosageForm" bo-text="' ' + drugOrder.dosageForm"></span>
+                        <span bo-show="drugOrder.numberPerDosage" bo-text="' - ' + drugOrder.numberPerDosage"></span>
+                        <span bo-show="drugOrder.dosageFrequency" bo-text="' - ' + drugOrder.dosageFrequency.name"> </span>
+                        <span bo-show="drugOrder.dosageInstruction" bo-text="' - ' + drugOrder.dosageInstruction.name" > </span>
+                        <span bo-text="' - ' + (drugOrder.startDate  | date:'d MMM yy')"> </span>
+                        <span bo-text="' - for ' + visitSummary.numberOfDosageDaysForDrugOrder(drugOrder) + ' day(s)'"> - </span>
+                        <span bo-show="drugOrder.prn"> - Take as required.</span>
+                    </div>
+                    <div class="treatment-notes">
+                    <span bo-show="drugOrder.notes" class="notes"></span>
                     <expander class='expander'>
                         <span bo-text='drugOrder.notes'></span>
                     </expander>
-                    </span>
+                    </div>
                     <ul class="add-info">
                     <li><span bo-text="drugOrder.dateCreated | date: 'h:mm a'"></span>
                     <span bo-text="drugOrder.provider.name"></span></li>
@@ -127,7 +134,10 @@
             <ul>
                 <li ng-repeat="testOrder in visitDay.otherTestOrders">
                     <span bo-text="testOrder.concept.name"></span>
-                    <span bo-text="testOrder.provider.name"></span>
+                    <ul class="add-info">
+                        <li>
+                            <span bo-text="testOrder.provider.name"></span>
+                        </li>
                 </li>
             </ul>        
         </section>

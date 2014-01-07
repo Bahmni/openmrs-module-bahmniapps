@@ -5,7 +5,7 @@ angular.module('opd.consultation')
         replace: true,
         transclude: true,
         template : '<div>' +
-        '<div class="title" ng-click="toggle()">+</div>' +
+        '<div class="title icon-double-angle-down" ng-click="toggle()"></div>' +
         '<div class="body" ng-show="showMe" ng-transclude></div>' +
         '</div>',
         link: function(scope,element,attrs) {
