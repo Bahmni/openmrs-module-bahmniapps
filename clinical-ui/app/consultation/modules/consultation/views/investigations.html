@@ -2,7 +2,6 @@
     <div id="tabButtonRow">
     	<button ng-repeat="tab in tabs" class="{{tab.klass}}" ng-click="activateTab(tab)">{{tab.name}} </button>
     </div>
-    <!-- TODO: Replace this with ng-if after updating to angular >= 1.1.5 -->
     <div ng-switch="activeTab" class="investigation-selection">
         <div ng-switch-default>
 		    <div investigations-selector class="two-column" tests-provider="activeTab.testsProvider" filter-column="{{activeTab.filterColumn}}" filter-header="{{activeTab.filterHeader}}" category-column="{{activeTab.categoryColumn}}" ng-model="consultation.investigations">
