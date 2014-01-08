@@ -35,6 +35,41 @@ body{
                 top:7px;
                 bottom:0px;
             }
+            ul{
+                &:first-child{
+                    float:left;
+                    margin-top:2px;
+                    li{
+                        opacity:0.8;
+                        filter:alpha(opacity=80);
+                        &:first-child{
+                            background:url(../images/button-back-start.png) no-repeat top left;  
+                            padding-left:20px;
+                        }
+                        &:hover{
+                            opacity:1;
+                            filter:alpha(opacity=100);
+                        }
+                        a{
+                            padding:15px 10px 15px 0px;
+                            background:url(../images/button-back-bg.jpg) repeat-x top left;
+                            display: inline-block;
+                            -webkit-border-top-right-radius: 5px;
+                            -webkit-border-bottom-right-radius: 5px;
+                            -moz-border-radius-topright: 5px;
+                            -moz-border-radius-bottomright: 5px;
+                            border-top-right-radius: 5px;
+                            border-bottom-right-radius: 5px;
+                            border-right:1px solid #A09F9F;
+                            &:hover{
+                                text-decoration: none;
+                            }
+                        }
+
+
+                    }
+                }
+            }
             .back-btn{
                 @include pie-clearfix;
                 display: inline-block;
