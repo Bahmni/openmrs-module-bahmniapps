@@ -1,3 +1,19 @@
 .nv-axislabel {
   font-weight: bold;
 }
+
+.nvd3.nv-line .nvd3.nv-scatter .nv-groups .nv-point {
+  fill-opacity: 1;
+  stroke-opacity: 1;
+
+  border:5px solid blue;
+  border-radius: 5px;
+}
+
+
+
+.nvd3.nv-line .nvd3.nv-scatter .nv-groups .nv-point:before {
+  content: ' \25CF';
+  font-size: 50px;
+}
+

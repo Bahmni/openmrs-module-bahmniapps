@@ -1,7 +1,10 @@
 <header ng-controller="CommonHeaderController">
     <ul>
         <li ng-repeat="(label, url) in backLinks">
-            <a href="{{url}}">{{label}}</a>
+            <a class="back-btn" href="{{url}}">
+                <span class="arrow-btn-head"></span>
+                <span class="arrow-btn-body">{{label}}</span>
+            </a>
         </li>
     </ul>
 

@@ -16,5 +16,5 @@ angular.module('consultation').config(['$routeProvider', '$httpProvider', functi
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
 
     }]).run(['backlinkService', function (backlinkService) {
-        backlinkService.addUrl("Patient Search", "/clinical/patients/#/clinical");
+        backlinkService.addUrl("Patient Q", "/clinical/patients/#/clinical");
     }]);
