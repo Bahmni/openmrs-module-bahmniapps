@@ -6,6 +6,11 @@
 			margin-bottom:10px;
 			font-family: OpenSansBold;
 	}
+	.info-message{
+			padding:10px;
+			color:red;
+			border:1px solid #cecece;
+	}
 	.block{
 		min-height:150px;
 		padding:10px;
@@ -65,6 +70,9 @@
 		}
 		.treatment-notes{
 			float:left;
+		}
+		.expander-row{
+			overflow:hidden;
 		}
 		.expander{
 			padding-left:15px;

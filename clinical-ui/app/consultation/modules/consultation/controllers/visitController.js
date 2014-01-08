@@ -46,5 +46,8 @@ angular.module('opd.consultation.controllers')
         return $.isNumeric(value);
     }
 
+    $scope.toggle = function(item) {
+        item.show = !item.show
+    }
 
 }]);

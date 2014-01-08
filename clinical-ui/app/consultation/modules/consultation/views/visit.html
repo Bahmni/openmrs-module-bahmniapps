@@ -31,7 +31,9 @@
     </ul>
 </aside>
 <article bindonce="visitSummary">
-    <div bo-hide="visitSummary.hasEncounters()">There are no encounter for this patient yet.</div>
+    <div bo-hide="visitSummary.hasEncounters()" class="info-message">
+                <p>There are no encounter for this patient</p>
+    </div>
 	<section  bo-show="visitSummary.hasEncounters()" class="block investigation">
         <h2>Diagnoses</h2>
         <ul class="block-content visit-diagnosis">
@@ -56,20 +58,25 @@
         <h2>Disposition</h2>
         <ul class="block-content">
                 <li ng-repeat="disposition in visitSummary.dispositions">
-                    <span bo-text="disposition.code"></span>
-                    <span ng-repeat="note in disposition.additionalObs">
-                        <expander class='expander'>
-                            <span bo-text="note.value"></span>
-                        </expander>
-                    </span>
-                    <ul class="add-info">
-                        <li>
-                            <span bo-text="(disposition.dispositionDateTime | date:'d-MMM-yy h:mm a')"></span>
-                        </li>
-                        <li>
-                            <span bo-text="disposition.provider.name"></span>
-                        </li>
-                    </ul>
+                    <div class="expander-row">
+                        <span bo-text="disposition.code"></span>
+                       <span ng-repeat="note in disposition.additionalObs">
+                            <div class="icon-double-angle-down" ng-click="toggle(note)"></div>
+                       </span>
+                        <ul class="add-info">
+                            <li>
+                                <span bo-text="(disposition.dispositionDateTime | date:'d-MMM-yy h:mm a')"></span>
+                            </li>
+                            <li>
+                                <span bo-text="disposition.provider.name"></span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                       <span ng-repeat="note in disposition.additionalObs">
+                            <span ng-show="note.show" bo-text="note.value"></span>
+                       </span>
+                    </div>
                 </li>
         </ul>
     </section>
@@ -85,6 +92,7 @@
             <h2>Treatment</h2>
 	        <ul>
 			    <li ng-repeat="drugOrder in visitDay.drugOrders">
+                    <div class="expander-row">
                     <div class="treatment-details">
                         <span bo-text="drugOrder.drugName"></span>
                         <span bo-show="drugOrder.doseStrength" bo-text="' - ' + drugOrder.doseStrength"></span>
@@ -98,15 +106,16 @@
                         <span bo-show="drugOrder.prn"> - Take as required.</span>
                     </div>
                     <div class="treatment-notes">
-                    <span bo-show="drugOrder.notes" class="notes"></span>
-                    <expander class='expander'>
-                        <span bo-text='drugOrder.notes'></span>
-                    </expander>
+                    <div bo-show="drugOrder.notes" class="icon-double-angle-down" ng-click="toggle(drugOrder)"></div>
                     </div>
                     <ul class="add-info">
                     <li><span bo-text="drugOrder.dateCreated | date: 'h:mm a'"></span></li>
                     <li><span bo-text="drugOrder.provider.name"></span></li>
                     </ul>
+                </div>
+                    <div>
+                        <span ng-show="drugOrder.show" bo-text='drugOrder.notes'></span>
+                    </div>
 	           </li>
 			</ul>        
         </section>
