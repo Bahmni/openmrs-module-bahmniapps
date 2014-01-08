@@ -57,15 +57,17 @@
         <ul class="block-content">
                 <li ng-repeat="disposition in visitSummary.dispositions">
                     <span bo-text="disposition.code"></span>
+                    <span ng-repeat="note in disposition.additionalObs">
+                        <expander class='expander'>
+                            <span bo-text="note.value"></span>
+                        </expander>
+                    </span>
                     <ul class="add-info">
                         <li>
                             <span bo-text="(disposition.dispositionDateTime | date:'d-MMM-yy h:mm a')"></span>
-                        </li><li>
+                        </li>
+                        <li>
                             <span bo-text="disposition.provider.name"></span>
-                        </li><li ng-repeat="note in disposition.additionalObs">
-                                <expander class='expander'>
-                                    <span bo-text="note.value"></span>
-                                </expander>
                         </li>
                     </ul>
                 </li>
@@ -102,8 +104,8 @@
                     </expander>
                     </div>
                     <ul class="add-info">
-                    <li><span bo-text="drugOrder.dateCreated | date: 'h:mm a'"></span>
-                    <span bo-text="drugOrder.provider.name"></span></li>
+                    <li><span bo-text="drugOrder.dateCreated | date: 'h:mm a'"></span></li>
+                    <li><span bo-text="drugOrder.provider.name"></span></li>
                     </ul>
 	           </li>
 			</ul>        
@@ -125,7 +127,9 @@
             <ul>
                 <li ng-repeat="testOrder in visitDay.labTestOrders">
                     <span bo-text="testOrder.concept.name"></span>
-                    <span bo-text="testOrder.provider.name"></span>
+                    <ul class="add-info">
+                        <li><span bo-text="testOrder.provider.name"></span></li>
+                    </ul>
                 </li>
             </ul>        
         </section>
