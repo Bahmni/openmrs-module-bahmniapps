@@ -34,18 +34,13 @@
             </div>
 
         </div>
-
-        <fieldset ng-show="observation.isGroup()">
-            <div class="form-field">
-                <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers">
-                    <div ng-switch on="$index">
-                        <legend ng-switch-when="0" class="mylegend"><strong>{{observation.label}}</strong>
-                        </legend>
-                    </div>
-
-                    <show-concept observation="member"></show-concept>
-                </div>
-            </div>
-        </fieldset>
     </div>
+    <fieldset ng-show="observation.isGroup()">
+        <div class="form-field">
+            <legend class="mylegend"><strong>{{observation.label}}</strong></legend>
+            <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers">
+                <show-concept observation="member"></show-concept>
+            </div>
+        </div>
+    </fieldset>
 </div>
