@@ -26,15 +26,18 @@
 					padding:2px 10px 0px 18px;
 					background:none;
 					&.datetime{
-						background:url(../images/datetime.png) no-repeat top left;
+						background:url(../images/sprites.png) no-repeat;
 						padding-left:23px;
+						background-position: 0 -36px ;
 					}
 					&.time{
-						background:url(../images/time.png) no-repeat 0px 2px;
+						background:url(../images/sprites.png) no-repeat;
 						line-height: 14px;
+						background-position: 0 2px;
 					}
 					&.date{
-						background:url(../images/date.png) no-repeat top left;
+						background:url(../images/sprites.png) no-repeat;
+						background-position: 0 -72px ;
 					}
 				}
 			}

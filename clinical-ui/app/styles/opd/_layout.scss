@@ -43,7 +43,8 @@ body{
                         opacity:0.8;
                         filter:alpha(opacity=80);
                         &:first-child{
-                            background:url(../images/button-back-start.png) no-repeat top left;  
+                            background:url(../images/sprites.png) no-repeat;
+                            background-position: 0 -108px ;  
                             padding-left:20px;
                         }
                         &:hover{
@@ -52,7 +53,8 @@ body{
                         }
                         a{
                             padding:15px 10px 15px 0px;
-                            background:url(../images/button-back-bg.jpg) repeat-x top left;
+                            background:url(../images/sprites.png) repeat-x;
+                            background-position: 0 -181px ;
                             display: inline-block;
                             -webkit-border-top-right-radius: 5px;
                             -webkit-border-bottom-right-radius: 5px;
@@ -69,38 +71,6 @@ body{
 
                     }
                 }
-            }
-            .back-btn{
-                @include pie-clearfix;
-                display: inline-block;
-                margin-top:2px;
-                width: 100px;
-                &:hover{
-                    text-decoration: none;
-                    opacity:0.9;
-                }
-                .arrow-btn-head{
-                    background:url(../images/button-back-start.png) no-repeat top left;
-                    display:inline-block;
-                    height:44px;
-                    width:29px;
-                    float: left;    
-                }
-                .arrow-btn-body{
-                    background:url(../images/button-back-bg.jpg) repeat-x top left;
-                    display:inline-block;
-                    height:34px;
-                    vertical-align:top;
-                    padding:12px 10px 0px 0px;
-                    float: left;
-                    border-right:1px solid #626262;
-                    -webkit-border-top-right-radius: 8px;
-                    -webkit-border-bottom-right-radius: 8px;
-                    -moz-border-radius-topright: 8px;
-                    -moz-border-radius-bottomright: 8px;
-                    border-top-right-radius: 8px;
-                    border-bottom-right-radius: 8px;
-            }
             }
             ul{
                 &.user-info{
