@@ -3,7 +3,7 @@
         <div ng-switch-when="0">
             <span bo-text="observation.concept.name + ' - ' + observation.value"></span>
             <ul class="add-info">
-                <li><span bo-text="observation.observationDateTime | date: 'h:mm a'"></span></li>
+                <li class="time"><span bo-text="observation.observationDateTime | date: 'h:mm a'"></span></li>
                 <li><span bo-text="observation.provider.name"></span></li>
                 <li><a bo-href="'/clinical/trends/#/patients/'+patientUuid+'/'+observation.concept.name" ng-show="isNumeric(observation.value)">view trends
                 </a></li>
@@ -44,7 +44,7 @@
                     <span bo-text="'(' + diagnosis.certainty + ')'" bo-hide = "visitSummary.isConfirmedDiagnosis(diagnosis.certainty)"></span>
                         
                     <ul class="add-info">
-                       <li>
+                       <li class="datetime">
                             <span bo-text="(diagnosis.diagnosisDateTime | date:'d-MMM-yy h:mm a')"></span>
                         </li><li>
                             <span bo-text="diagnosis.provider.name"></span>
@@ -64,7 +64,7 @@
                             <div class="icon-double-angle-down" ng-click="toggle(note)"></div>
                        </span>
                         <ul class="add-info">
-                            <li>
+                            <li class="datetime">
                                 <span bo-text="(disposition.dispositionDateTime | date:'d-MMM-yy h:mm a')"></span>
                             </li>
                             <li>
@@ -85,7 +85,7 @@
         <div>
             <h1 bo-text="'Day ' + visitDay.dayNumber"></h1>
             <ul class="add-info">
-                <li bo-text="(visitDay.visitDate | date:'d-MMM-yyyy')" class="date"></li>
+                <li class="date" bo-text="(visitDay.visitDate | date:'d-MMM-yyyy')"></li>
             </ul>
         </div>   
         <section class="block treatment" ng-show="visitDay.hasDrugOrders()">
@@ -109,8 +109,8 @@
                     <div bo-show="drugOrder.notes" class="icon-double-angle-down" ng-click="toggle(drugOrder)"></div>
                     </div>
                     <ul class="add-info">
-                    <li><span bo-text="drugOrder.dateCreated | date: 'h:mm a'"></span></li>
-                    <li><span bo-text="drugOrder.provider.name"></span></li>
+                        <li class="time"><span bo-text="drugOrder.dateCreated | date: 'h:mm a'"></span></li>
+                        <li><span bo-text="drugOrder.provider.name"></span></li>
                     </ul>
                 </div>
                     <div>
@@ -125,7 +125,7 @@
                 <li ng-repeat="note in visitDay.consultationNotes">
                     <span bo-text="note.value"></span>
                     <ul class="add-info">
-                    <li><span bo-text="note.observationDateTime | date: 'h:mm a'"></span>
+                    <li class="datetime"><span bo-text="note.observationDateTime | date: 'h:mm a'"></span>
                     <span bo-text="note.provider.name"></span></li>
                     </ul>
                 </li>
