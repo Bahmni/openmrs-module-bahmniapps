@@ -4,7 +4,7 @@ angular.module('bahmni.common.infrastructure')
     .factory('spinner', ['$q', function ($q) {
         var show = function () {
            if($('#overlay').length == 0) {
-            $('body').prepend('<div id="overlay"></div>');
+            $('body').prepend('<div id="overlay"><div></div></div>');
            }
            $('#view-content').hide();
            $('#overlay').show();
