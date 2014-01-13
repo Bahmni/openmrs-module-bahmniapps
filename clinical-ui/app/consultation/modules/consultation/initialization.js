@@ -26,7 +26,6 @@ angular.module('opd.consultation').factory('initialization',
         var getActiveEncounter = function() {
             return encounterService.activeEncounter({ patientUuid : patientUuid, encounterTypeUuid : $rootScope.encounterConfig.getOpdConsultationEncounterTypeUuid(),providerUuid : $rootScope.currentProvider.uuid,includeAll : true
                 }).success(function (encounterTransaction) {
-                    $rootScope.activeEncounterTransaction = encounterTransaction;
                     $rootScope.consultation = new Bahmni.Opd.ConsultationMapper($rootScope.encounterConfig,
                     $rootScope.dosageFrequencyConfig, $rootScope.dosageInstructionConfig, $rootScope.consultationNoteConcept).map(encounterTransaction);
                     $rootScope.disposition = encounterTransaction.disposition || {};

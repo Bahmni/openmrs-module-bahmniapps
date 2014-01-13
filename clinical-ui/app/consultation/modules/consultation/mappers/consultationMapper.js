@@ -34,11 +34,13 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
         consultationNote = mapConsultationNote(encounterTransaction.observations)
 
         return {
+            visitUuid: encounterTransaction.visitUuid,
             investigations: investigations,
             treatmentDrugs: treatmentDrugs,
             diagnoses: diagnoses,
             labResults: labResults,
             consultationNote: consultationNote || emptyConsultationNote(),
+            observations: encounterTransaction.observations,
             encounterDateTime: encounterTransaction.encounterDateTime
         };
     };

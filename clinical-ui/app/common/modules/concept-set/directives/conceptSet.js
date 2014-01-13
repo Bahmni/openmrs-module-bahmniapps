@@ -21,9 +21,8 @@ angular.module('opd.conceptSet')
             $rootScope.observationList = $rootScope.observationList || {};
             conceptSetService.getConceptSetMembers({name: conceptSetName, v: "fullchildren"}).success(function (response) {
                 var conceptSet = response.results[0];
-                $scope.$watch('encounterTransaction', function (encounterTransaction) {
-                    $scope.rootObservation = conceptSet ? observationMapper.map(encounterTransaction, conceptSet) : null;
-                    $rootScope.observationList[conceptSetName] = $scope.rootObservation;
+                $scope.$watch('observations', function (observations) {
+                    $rootScope.observationList[conceptSetName] = $scope.rootObservation = conceptSet ? observationMapper.map(observations, conceptSet) : null;
                 });
             });
 
@@ -36,7 +35,7 @@ angular.module('opd.conceptSet')
             restrict: 'E',
             scope: {
                 conceptSetName: "=",
-                encounterTransaction: "="
+                observations: "="
             },
             template: template,
             controller: controller

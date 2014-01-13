@@ -64,7 +64,7 @@ angular.module('opd.consultation.controllers').controller('ConsultationNavigatio
             };
 
             var getUrl = function (board) {
-                var urlPrefix = board.type === boardTypes.visit ? urlHelper.getVisitUrl($rootScope.activeEncounterTransaction.visitUuid) : urlHelper.getPatientUrl();
+                var urlPrefix = board.type === boardTypes.visit ? urlHelper.getVisitUrl($rootScope.consultation.visitUuid) : urlHelper.getPatientUrl();
                 return $location.url( urlPrefix + "/" + board.url);                    
             };
 

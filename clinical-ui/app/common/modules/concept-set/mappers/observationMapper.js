@@ -27,8 +27,7 @@ Bahmni.ConceptSet.ObservationMapper = function (encounterConfig) {
         return observation;
     };
 
-    this.map = function (encounterTransaction, rootConcept) {
-        var allSavedObs = encounterTransaction ? encounterTransaction.observations : [];
-        return mapObservation(rootConcept, allSavedObs);
+    this.map = function (observations, rootConcept) {
+        return mapObservation(rootConcept, observations || []);
     };
 };
