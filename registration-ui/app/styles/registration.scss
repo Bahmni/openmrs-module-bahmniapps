@@ -90,6 +90,11 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
     outline:none;
   }
 }
+input[required],select[required]{
+    box-shadow:none;
+    &:focus{
+  }
+}
 .reg-search-wrapper .split-button li{
   width:7.5em;
 }
@@ -416,16 +421,20 @@ table{
 #overlay {
   display: none;
   z-index: 10000;
-  background: #000;
   position: fixed;
   width: 100%;
-  opacity: .6;
   height: 100%;
   top: 0px;
   left: 0px;
-  background-image:image-url("spinner.gif");
+  background-image: url('../images/spinner.gif');
   background-repeat:no-repeat;
   background-position:center;
+  div{
+    opacity: 0.6;
+    background:#000;
+    width:100%;
+    height: 100%;
+  }
 }
 
 #loader {
@@ -561,7 +570,7 @@ video{
 
 .age-field {
   .input-prepend {
-    margin-right: 5px;
+    margin: 5px;
   }
 
   #ageYears {
