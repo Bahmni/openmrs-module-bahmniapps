@@ -342,7 +342,11 @@ table{
   .edit-col{
       width:160px;
       padding:2px 2px 2px 2px;
-      position:relative;
+      .split-button-wrapper{
+          @include legacy-pie-clearfix();
+          position: relative;
+          height: 37px;
+      }
       .split-button{
         position:absolute;
         top:2px;
