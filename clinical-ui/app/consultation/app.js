@@ -12,7 +12,7 @@ angular.module('consultation').config(['$routeProvider', '$httpProvider', functi
         $routeProvider.when('/patient/:patientUuid/notes', {templateUrl: 'modules/consultation/views/notes.html'});
         $routeProvider.when('/patient/:patientUuid/templates', {templateUrl: 'modules/consultation/views/comingSoon.html'});
         $routeProvider.when('/patient/:patientUuid/disposition', {templateUrl: 'modules/consultation/views/disposition.html', controller: 'DispositionController', resolve: {initialization: 'initialization'}});
-        $routeProvider.when('/patient/:patientUuid/concept-set/:conceptSetName', {template: '<show-concept-set/>', resolve: {initialization: 'initialization'}});
+        $routeProvider.when('/patient/:patientUuid/concept-set/:conceptSetName', {templateUrl: 'modules/consultation/views/conceptSet.html', controller: 'ConceptSetPageController', resolve: {initialization: 'initialization'}});
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
 
     }]).run(['backlinkService', function (backlinkService) {

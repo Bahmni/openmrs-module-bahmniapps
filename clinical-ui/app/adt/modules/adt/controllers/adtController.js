@@ -4,16 +4,45 @@ angular.module('opd.adt.controllers')
     .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService', 'encounterService', 'BedService', 'appService',
         function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService, appService) {
             var rankActions = {};
-            $scope.latestEncounter = null;
             var actionConfigs = {};
+            var encounterConfig = $rootScope.encounterConfig;
+            var Constants = Bahmni.Opd.ADT.Constants;
+            $scope.activeEncounter = null;
+
+            if ($scope.encounterConfig) {
+                rankActions[encounterConfig.getAdmissionEncounterTypeUuid()] = 1;
+                rankActions[encounterConfig.getTransferEncounterTypeUuid()] = 2;
+                rankActions[encounterConfig.getDischargeEncounterTypeUuid()] = 3;
+            }
+
+            var getEncounterWithHigestRank = function() {
+                var max = 0;
+                var encounterWithHigestRank = null;
+                $scope.visit.encounters.forEach(function (encounter) {
+                    if (rankActions[encounter.encounterType.uuid] && rankActions[encounter.encounterType.uuid] > max) {
+                        max = rankActions[encounter.encounterType.uuid];
+                         encounterWithHigestRank = encounter;
+                    }
+                });
+                return encounterWithHigestRank;
+            }
+
+            var changeActiveEncounter = function(encounterTypeUuid) {
+                encounterService.activeEncounter({ patientUuid: $scope.patient.uuid, encounterTypeUuid: encounterTypeUuid, includeAll: true}).success(function (data) {
+                    $scope.activeEncounter = data;
+                });
+            }
+
             var init = function () {
+                var encounterWithHigestRank = getEncounterWithHigestRank();
+                changeActiveEncounter(encounterWithHigestRank.encounterType.uuid);
                 return dispositionService.getDispositionActions().then(function (response) {
                     if (response.data && response.data.results) {
                         if (response.data.results && response.data.results.length) {
                             $rootScope.disposition = $rootScope.disposition || {};
                             $rootScope.disposition.dispositionActionUuid = response.data.results[0].uuid;
                             $scope.dispositionActions = response.data.results[0].answers;
-                            setLatestAction();
+                            $scope.dispositionAction = encounterWithHigestRank ? getAdtActionForEncounterType(encounterWithHigestRank.encounterType.uuid) : null;
                         }
                     }
                 });
@@ -45,51 +74,18 @@ angular.module('opd.adt.controllers')
             $scope.changeNote = function () {
                 var selectedCode = getSelectedDispositionCode();
                 var selectedEncounter = $scope.visit.encounters.filter(function (encounter) {
-                    return encounter.encounterType.uuid && encounter.encounterType.uuid == actionConfigs[selectedCode].encounterUuid;
+                    return encounter.encounterType.uuid && encounter.encounterType.uuid == actionConfigs[selectedCode].encounterTypeUuid;
                 })[0];
-
                 if (selectedEncounter) {
-                    $scope.latestEncounter = selectedEncounter;
-                    var activeEncounter = $scope.getActiveEncounter();
-                    activeEncounter.success(function (data) {
-                        $rootScope.setObservation(data);
-                    });
+                    changeActiveEncounter(selectedEncounter.encounterType.uuid);
                 } else {
-                    $rootScope.setObservation(null);
+                    $scope.activeEncounter = null;
                 }
             };
 
-            var getLatestEncounter = function () {
-                if (!$scope.latestEncounter) {
-                    if ($scope.visit) {
-                        var max = 0;
-                        $scope.visit.encounters.forEach(function (encounter) {
-                            if (rankActions[encounter.encounterType.uuid] && rankActions[encounter.encounterType.uuid] > max) {
-                                max = rankActions[encounter.encounterType.uuid];
-                                $scope.latestEncounter = encounter;
-                            }
-                        });
-                    }
-                }
-                return $scope.latestEncounter;
-            };
-
-            var setLatestAction = function () {
-                var latestEncounter = getLatestEncounter();
-                if (latestEncounter) {
-                    setAdtAction(latestEncounter);
-                }
-            };
-
-            $scope.getActiveEncounter = function () {
-                var latestEncounter = getLatestEncounter();
-                if (!latestEncounter) return null;
-                return encounterService.activeEncounter({ patientUuid: $scope.patient.uuid, encounterTypeUuid: latestEncounter.encounterType.uuid, includeAll: true});
-            };
-
-            function setAdtAction(encounter) {
-                $scope.dispositionAction = $scope.dispositionActions.filter(function (dispositionAction) {
-                    return actionConfigs[$scope.getActionCode(dispositionAction)].encounterUuid === encounter.encounterType.uuid;
+            var getAdtActionForEncounterType = function(encounterTypeUuid) {
+                return $scope.dispositionActions.filter(function (dispositionAction) {
+                    return actionConfigs[$scope.getActionCode(dispositionAction)].encounterTypeUuid === encounterTypeUuid;
                 })[0];
             }
 
@@ -100,11 +96,12 @@ angular.module('opd.adt.controllers')
                 return null;
             };
 
-            var getEncounterData = function (encounterUuid) {
+            var getEncounterData = function (encounterTypeUuid) {
+                var adtNotesObservations = $rootScope.observationList[Bahmni.Opd.ADT.Constants.adtNotes];
                 var encounterData = {};
                 encounterData.patientUuid = $scope.patient.uuid;
-                encounterData.encounterTypeUuid = encounterUuid;
-                encounterData.observations = [$rootScope.observationList[Bahmni.Opd.ADT.Constants["adtNotes"]]];
+                encounterData.encounterTypeUuid = encounterTypeUuid;
+                encounterData.observations = adtNotesObservations ? [adtNotesObservations] : [] ;
                 return encounterData;
             };
 
@@ -120,21 +117,21 @@ angular.module('opd.adt.controllers')
             };
 
             var admit = function () {
-                var encounterData = getEncounterData($scope.encounterConfig.getAdmissionEncounterUuid());
+                var encounterData = getEncounterData($scope.encounterConfig.getAdmissionEncounterTypeUuid());
                 encounterService.create(encounterData).success(function (response) {
                     forwardUrl(response, "onAdmissionForwardTo");
                 });
             };
 
             var transfer = function () {
-                var encounterData = getEncounterData($scope.encounterConfig.getTransferEncounterUuid());
+                var encounterData = getEncounterData($scope.encounterConfig.getTransferEncounterTypeUuid());
                 encounterService.create(encounterData).then(function (response) {
                     forwardUrl(response.data, "onTransferForwardTo");
                 });
             };
 
             var discharge = function () {
-                var encounterData = getEncounterData($scope.encounterConfig.getDischargeEncounterUuid());
+                var encounterData = getEncounterData($scope.encounterConfig.getDischargeEncounterTypeUuid());
                 encounterService.create(encounterData).then(function (response) {
                     bedService.getBedDetailsForPatient($scope.patient.uuid).then(function (response) {
                         bedService.freeBed(response.data.results[0].bedId).success(function () {
@@ -145,15 +142,9 @@ angular.module('opd.adt.controllers')
             };
 
             if ($scope.encounterConfig) {
-                rankActions[$rootScope.encounterConfig.getAdmissionEncounterUuid()] = 1;
-                rankActions[$rootScope.encounterConfig.getTransferEncounterUuid()] = 2;
-                rankActions[$rootScope.encounterConfig.getDischargeEncounterUuid()] = 3;
-            }
-
-            if ($scope.encounterConfig) {
-                actionConfigs[Bahmni.Opd.ADT.Constants.admissionCode] = {encounterUuid: $scope.encounterConfig.getAdmissionEncounterUuid(), action: admit};
-                actionConfigs[Bahmni.Opd.ADT.Constants.dischargeCode] = {encounterUuid: $scope.encounterConfig.getDischargeEncounterUuid(), action: discharge};
-                actionConfigs[Bahmni.Opd.ADT.Constants.transferCode] = {encounterUuid: $scope.encounterConfig.getTransferEncounterUuid(), action: transfer};
+                actionConfigs[Constants.admissionCode] = {encounterTypeUuid: encounterConfig.getAdmissionEncounterTypeUuid(), action: admit};
+                actionConfigs[Constants.dischargeCode] = {encounterTypeUuid: encounterConfig.getDischargeEncounterTypeUuid(), action: discharge};
+                actionConfigs[Constants.transferCode] = {encounterTypeUuid: encounterConfig.getTransferEncounterTypeUuid(), action: transfer};
             }
         }
     ])

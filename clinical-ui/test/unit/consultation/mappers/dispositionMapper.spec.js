@@ -332,8 +332,8 @@ describe("ConsultationModule", function () {
 
     beforeEach(inject(function () {
 
-        encounterConfig = jasmine.createSpyObj('EncounterConfig', ['getOpdConsultationEncounterUuid'])
-        encounterConfig.getOpdConsultationEncounterUuid.andReturn("c9614b8a-00e7-11e3-8c55-0800271c1b75");
+        encounterConfig = jasmine.createSpyObj('EncounterConfig', ['getOpdConsultationEncounterTypeUuid'])
+        encounterConfig.getOpdConsultationEncounterTypeUuid.andReturn("c9614b8a-00e7-11e3-8c55-0800271c1b75");
 
 
     }));

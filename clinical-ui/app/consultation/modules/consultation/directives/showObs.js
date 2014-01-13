@@ -1,5 +1,5 @@
 angular.module('opd.consultation')
-.directive('showObs', ['$rootScope', function () {
+.directive('showObs', [function () {
     return {
         restrict:'E',
         scope:{

@@ -5,8 +5,6 @@ angular.module('opd.adt').factory('initialization',
         'conceptSetService', 'authenticator',
         function ($rootScope, $q, $route, appService, configurationService, visitService, patientService, patientMapper,
                   conceptSetService, authenticator) {
-            var initializationPromise = $q.defer();
-
             var getVisit = function() {
                 return visitService.getVisit($route.current.params.visitUuid).success(function (visit) {
                     $rootScope.visit = visit;
@@ -24,7 +22,6 @@ angular.module('opd.adt').factory('initialization',
                 return getVisit().then(getPatient);
             };
 
-
             var getConsultationConfigs = function () {
                 var configNames = ['encounterConfig', 'patientConfig'];
                 return configurationService.getConfigurations(configNames).then(function (configurations) {
@@ -34,25 +31,13 @@ angular.module('opd.adt').factory('initialization',
             };
 
             var getConfigAndVisitInfo = function() {
-                var deferrables = $q.defer();
-                var promises = [];
-                promises.push(getConsultationConfigs());
-                promises.push(getPatientVisitInfo());
-                $q.all(promises).then(function() {
-                    deferrables.resolve();
-                });
-                return deferrables.promise;
+                return $q.all([getConsultationConfigs(), getPatientVisitInfo()]);
             };
 
             var initApp = function() {
                 return appService.initApp('adt');
             };
 
-
-            authenticator.authenticateUser().then(initApp).then(getConfigAndVisitInfo).then(function() {
-                initializationPromise.resolve();
-            });
-
-            return initializationPromise.promise;
+            return authenticator.authenticateUser().then(initApp).then(getConfigAndVisitInfo);
         }]
 );

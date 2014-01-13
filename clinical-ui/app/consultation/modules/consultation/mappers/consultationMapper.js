@@ -36,7 +36,7 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
         return {
             investigations: investigations,
             treatmentDrugs: treatmentDrugs,
-            diagnoses:diagnoses,
+            diagnoses: diagnoses,
             labResults: labResults,
             consultationNote: consultationNote || emptyConsultationNote(),
             encounterDateTime: encounterTransaction.encounterDateTime

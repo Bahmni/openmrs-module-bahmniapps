@@ -11,49 +11,21 @@ angular.module('opd.conceptSet')
         }
     }]).directive('showConceptSet', ['$rootScope', function ($rootScope) {
         var template =
-            '<form ng-init="init()">' +
+            '<form>' +
                 '<show-concept observation="rootObservation"></show-concept>' +
-                '</form>';
+            '</form>';
 
-        var controller = function ($scope, $routeParams, conceptSetService) {
-
-            var conceptSetName = $scope.conceptSetName || $routeParams.conceptSetName;
-
-            if (!$rootScope.observationList)
-                $rootScope.observationList = {};
-
-            $scope.init = function () {
-                if (!$rootScope.observationList[conceptSetName]) {
-                    var encounterTransaction = $scope.encounterTransaction();
-                    if (encounterTransaction) {
-                        encounterTransaction.success(function (data) {
-                            if (data) {
-                                $rootScope.setObservation(data);
-                            }
-                            else {
-                                $rootScope.setObservation($rootScope.activeEncounterTransaction);
-                            }
-                        });
-                    } else {
-                        $rootScope.setObservation($rootScope.activeEncounterTransaction);
-                    }
-                } else {
-                    $scope.rootObservation = $rootScope.observationList[conceptSetName];
-                }
-            };
-
-            $rootScope.setObservation = function (activeEncounterTransaction) {
-                var params = {name: conceptSetName, v: "fullchildren"}
-                conceptSetService.getConceptSetMembers(params).success(function (response) {
-                    if (response.results && response.results.length > 0) {
-                        var conceptSet = response.results[0];
-                        $rootScope.observationList[conceptSetName] =
-                            new Bahmni.ConceptSet.ObservationMapper($rootScope.encounterConfig)
-                                .map(activeEncounterTransaction, conceptSet);
-                        $scope.rootObservation = $rootScope.observationList[conceptSetName];
-                    }
+        var controller = function ($scope, conceptSetService) {
+            var conceptSetName = $scope.conceptSetName;
+            var observationMapper = new Bahmni.ConceptSet.ObservationMapper($rootScope.encounterConfig);
+            $rootScope.observationList = $rootScope.observationList || {};
+            conceptSetService.getConceptSetMembers({name: conceptSetName, v: "fullchildren"}).success(function (response) {
+                var conceptSet = response.results[0];
+                $scope.$watch('encounterTransaction', function (encounterTransaction) {
+                    $scope.rootObservation = conceptSet ? observationMapper.map(encounterTransaction, conceptSet) : null;
+                    $rootScope.observationList[conceptSetName] = $scope.rootObservation;
                 });
-            }
+            });
 
             $scope.observationChanged = function (observation) {
                 observation.observationDateTime = new Date();
@@ -64,7 +36,7 @@ angular.module('opd.conceptSet')
             restrict: 'E',
             scope: {
                 conceptSetName: "=",
-                encounterTransaction: "&"
+                encounterTransaction: "="
             },
             template: template,
             controller: controller

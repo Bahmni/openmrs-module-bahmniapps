@@ -3,19 +3,19 @@ var EncounterConfig = (function () {
         this.encounterTypes = encounterTypes;
     }
     EncounterConfig.prototype = {
-        getOpdConsultationEncounterUuid:function () {
+        getOpdConsultationEncounterTypeUuid:function () {
             return this.encounterTypes["OPD"];
         },
-        getAdmissionEncounterUuid:function () {
+        getAdmissionEncounterTypeUuid:function () {
             return this.encounterTypes["ADMISSION"];
         },
-        getInvestigationEncounterUuid:function () {
+        getInvestigationEncounterTypeUuid:function () {
             return this.encounterTypes["INVESTIGATION"];
         },
-        getDischargeEncounterUuid:function () {
+        getDischargeEncounterTypeUuid:function () {
             return this.encounterTypes["DISCHARGE"];
         },
-        getTransferEncounterUuid:function () {
+        getTransferEncounterTypeUuid:function () {
             return this.encounterTypes["TRANSFER"];
         }
     };

@@ -7,7 +7,7 @@ angular.module('opd.consultation.controllers')
         
         var encounterData = {};
         encounterData.patientUuid = $scope.patient.uuid;
-        encounterData.encounterTypeUuid = $rootScope.encounterConfig.getOpdConsultationEncounterUuid();
+        encounterData.encounterTypeUuid = $rootScope.encounterConfig.getOpdConsultationEncounterTypeUuid();
         encounterData.encounterDateTime = $rootScope.consultation.encounterDateTime || new Date();
 
         if ($rootScope.consultation.diagnoses && $rootScope.consultation.diagnoses.length > 0){
