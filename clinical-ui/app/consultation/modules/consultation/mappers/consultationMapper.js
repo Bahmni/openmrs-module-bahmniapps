@@ -1,15 +1,9 @@
 Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, dosageInstructions, consultationNoteConcept) {
     this.map = function (encounterTransaction) {
-        var investigations = [];
-        var treatmentDrugs = [];
-        var diagnoses = [];
-        var labResults = [];
-        var consultationNote;
-
-        investigations = encounterTransaction.testOrders.filter(function(testOrder) { return !testOrder.voided });
-        labResults = new Bahmni.Opd.LabResultsMapper().map(encounterTransaction);
-
-        treatmentDrugs = encounterTransaction.drugOrders.map(function(drugOrder) {
+        var specilaObservationConceptUuids = [consultationNoteConcept.uuid];
+        var investigations = encounterTransaction.testOrders.filter(function(testOrder) { return !testOrder.voided });
+        var labResults = new Bahmni.Opd.LabResultsMapper().map(encounterTransaction);
+        var treatmentDrugs = encounterTransaction.drugOrders.map(function(drugOrder) {
             var treatmentDrug = new Bahmni.Opd.Consultation.TreatmentDrug();
             treatmentDrug.concept = drugOrder.concept;
             treatmentDrug.uuid = drugOrder.uuid;
@@ -27,12 +21,13 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
             treatmentDrug.savedDrug = true;
             return treatmentDrug;
         });
-
-        diagnoses = encounterTransaction.diagnoses.map(function(diagnosis){
+        var diagnoses = encounterTransaction.diagnoses.map(function(diagnosis){
             return new Bahmni.Opd.Consultation.Diagnosis(diagnosis.codedAnswer,diagnosis.order,diagnosis.certainty,diagnosis.existingObs,diagnosis.freeTextAnswer,diagnosis.diagnosisDateTime );
         });
-        consultationNote = mapConsultationNote(encounterTransaction.observations)
-
+        var consultationNote = mapConsultationNote(encounterTransaction.observations)
+        var observations = encounterTransaction.observations.filter(function(observation){
+            return specilaObservationConceptUuids.indexOf(observation.concept.uuid) === -1;
+        });
         return {
             visitUuid: encounterTransaction.visitUuid,
             investigations: investigations,
@@ -40,7 +35,7 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
             diagnoses: diagnoses,
             labResults: labResults,
             consultationNote: consultationNote || emptyConsultationNote(),
-            observations: encounterTransaction.observations,
+            observations: observations,
             encounterDateTime: encounterTransaction.encounterDateTime
         };
     };

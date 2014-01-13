@@ -97,11 +97,10 @@ angular.module('opd.adt.controllers')
             };
 
             var getEncounterData = function (encounterTypeUuid) {
-                var adtNotesObservations = $rootScope.observationList[Bahmni.Opd.ADT.Constants.adtNotes];
                 var encounterData = {};
                 encounterData.patientUuid = $scope.patient.uuid;
                 encounterData.encounterTypeUuid = encounterTypeUuid;
-                encounterData.observations = adtNotesObservations ? [adtNotesObservations] : [] ;
+                encounterData.observations = $scope.activeEncounter.observations;
                 return encounterData;
             };
 

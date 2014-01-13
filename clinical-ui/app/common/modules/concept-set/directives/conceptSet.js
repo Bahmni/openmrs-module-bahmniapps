@@ -18,17 +18,27 @@ angular.module('opd.conceptSet')
         var controller = function ($scope, conceptSetService) {
             var conceptSetName = $scope.conceptSetName;
             var observationMapper = new Bahmni.ConceptSet.ObservationMapper($rootScope.encounterConfig);
-            $rootScope.observationList = $rootScope.observationList || {};
             conceptSetService.getConceptSetMembers({name: conceptSetName, v: "fullchildren"}).success(function (response) {
                 var conceptSet = response.results[0];
                 $scope.$watch('observations', function (observations) {
-                    $rootScope.observationList[conceptSetName] = $scope.rootObservation = conceptSet ? observationMapper.map(observations, conceptSet) : null;
+                    $scope.rootObservation = conceptSet ? observationMapper.map(observations, conceptSet) : null;
+                    changeObservations();
                 });
             });
 
             $scope.observationChanged = function (observation) {
                 observation.observationDateTime = new Date();
             };
+
+            var changeObservations = function() {
+                for (var i = 0; i < $scope.observations.length; i++) {
+                    if($scope.observations[i].concept.uuid === $scope.rootObservation.concept.uuid) {
+                        $scope.observations[i] = $scope.rootObservation;
+                        return;
+                    }
+                };
+                $scope.observations.push($scope.rootObservation);
+            }
         };
 
         return {

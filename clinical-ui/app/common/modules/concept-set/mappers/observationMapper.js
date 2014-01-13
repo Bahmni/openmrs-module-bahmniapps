@@ -1,8 +1,19 @@
 Bahmni.ConceptSet.ObservationMapper = function (encounterConfig) {
     var newObservation = function (concept) {
-        var observation = { concept: concept, units: concept.units, label: concept.display, possibleAnswers: concept.answers, groupMembers: []};
+        var observation = { concept: mapConcept(concept), units: concept.units, label: concept.display, possibleAnswers: concept.answers, groupMembers: []};
         return angular.extend(new Bahmni.ConceptSet.Observation(), observation);
     };
+
+    var mapConcept = function(openMrsConcept) {
+        return {
+            uuid: openMrsConcept.uuid,
+            name: openMrsConcept.name.name,
+            set: openMrsConcept.set,
+            datatype: openMrsConcept.datatype,
+            hiAbsolute: openMrsConcept.hiAbsolute,
+            lowAbsolute: openMrsConcept.lowAbsolute
+        }
+    }
 
     var findInSavedObservation = function (concept, observations) {
         return observations.filter(function (obs) {

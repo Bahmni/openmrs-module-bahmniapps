@@ -41,17 +41,11 @@ angular.module('opd.consultation.controllers')
         encounterData.disposition = $rootScope.disposition;
 
         var addObservationsToEncounter = function(){
+            encounterData.observations = encounterData.observations || [];
             if ($scope.consultation.consultationNote.value) {
-                encounterData.observations = encounterData.observations || [];
                 encounterData.observations.push($scope.consultation.consultationNote);
             }
-
-            encounterData.observations = encounterData.observations || [];
-            for (var i in $rootScope.observationList) {
-                if ($rootScope.observationList[i]) {
-                    encounterData.observations = encounterData.observations.concat($rootScope.observationList[i]);
-                }
-            }
+            encounterData.observations = encounterData.observations.concat($rootScope.consultation.observations);
         };
 
         addObservationsToEncounter();
