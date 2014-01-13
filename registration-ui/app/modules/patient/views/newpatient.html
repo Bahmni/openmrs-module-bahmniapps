@@ -19,7 +19,7 @@
                     <div class="field-value" id="patientID">
                         <span>
                         <select id="identifierPrefix" ng-model="patient.identifierPrefix"
-                                ng-options="identifierSource.prefix for identifierSource in identifierSources"
+                                ng-options="identifierSource.prefix for identifierSource in identifierSources" ng-change="patient.generateIdentifier()"
                                 required> </select>
                         </span>
                         <span>
