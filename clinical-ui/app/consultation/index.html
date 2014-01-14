@@ -12,7 +12,8 @@
     </head>
     <body>
         <div ng-app="consultation" ng-controller="ConsultationNavigationController">
-            <div ng-include src="'../common/modules/patient/header/views/header.html'"></div>
+            <div ng-hide="tiles && tiles.header" ng-include src="'../common/modules/patient/header/views/header.html'"></div>
+            <div ng-show="tiles && tiles.header" ng-include src="tiles.header"></div>
             <div class="opd-wrapper">
                 <div ng-view id="view-content" class="opd-content-wrapper"></div>
             </div>
@@ -55,8 +56,11 @@
             <script src="../common/modules/infrastructure/encounterConfig.js"></script>
             <script src="modules/consultation/init.js"></script>
             <script src="modules/consultation/initialization.js"></script>
+            <script src="modules/consultation/tilesLayout.js"></script>
 
             <script src="constants.js"></script>
+
+            <script src="modules/patient-dashboard/controllers/patientDashboardController.js"></script>
 
             <script src="modules/consultation/models/treatmentDrug.js"></script>
             <script src="modules/consultation/models/labResult.js"></script>

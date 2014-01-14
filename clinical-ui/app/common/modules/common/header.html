@@ -1,21 +1,24 @@
-<header ng-controller="CommonHeaderController">
-    <ul>
-        <li ng-repeat="(label, url) in backLinks">
-            <a href="{{url}}">
-                <span class="arrow-btn-head"></span>
-                <span class="arrow-btn-body">{{label}}</span>
-            </a>
-        </li>
-    </ul>
+<div class="opd-header-wrapper">
+    <div class="opd-header-top">
+        <header ng-controller="CommonHeaderController">
+            <ul>
+                <li ng-repeat="(label, url) in backLinks">
+                    <a href="{{url}}">
+                        <span class="arrow-btn-head"></span>
+                        <span class="arrow-btn-body">{{label}}</span>
+                    </a>
+                </li>
+            </ul>
 
-    <a class="header-logo" href="/home">Jan Swasthya Sahyog</a>
-	<ul class="user-info">
-		<li>
-		  <a class="user-name"><i class="icon-user icon-white small"></i><span ng-bind="currentUser.username"></span></a>
-		</li>
-		<li class="logoff">
-			<button log-out><i class="icon-off icon-white small"></i></button>
-		</li>
-	</ul>
-</header>
-
+            <a class="header-logo" href="/home">Jan Swasthya Sahyog</a>
+            <ul class="user-info">
+                <li>
+                  <a class="user-name"><i class="icon-user icon-white small"></i><span ng-bind="currentUser.username"></span></a>
+                </li>
+                <li class="logoff">
+                    <button log-out><i class="icon-off icon-white small"></i></button>
+                </li>
+            </ul>
+        </header>
+    </div>
+</div>
