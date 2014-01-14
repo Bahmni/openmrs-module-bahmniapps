@@ -19,8 +19,26 @@
     </div>    
 </script>
 <article class="visit">
-<aside bindonce class="visit-history" ng-click="toggleDrawer()" ng-controller="VisitHistoryController">
-    <h2>Visit Historysss</h2>
+<aside bindonce class="visit-history">
+    <div>
+        <ul class="patient-info">
+            <li class="patient-img">
+                <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
+            </li>
+            <li>{{patient.name}}</li>
+            <li>{{patient.identifier}}</li>
+            <li>{{patient.gender | gender }} {{patient.age}}</li>
+        </ul>
+    </div>
+
+    <h2>Actions</h2>
+    <ul>
+        <li><a href="#{{getConsultationPadLink()}}">Consultation</a></li>
+        <li><a href="/clinical/trends/#/patients/{{patient.uuid}}">Trends</a></li>
+    </ul>
+
+
+    <h2>Visit History</h2>
     <ul>
         <li ng-click="showVisitSummary(visit)" class="visit-history-entry" ng-class="{'selected': isCurrentVisit(visit), 'active': visit.isActive()}" ng-repeat="visit in visits">
             <a href="">
@@ -30,6 +48,7 @@
         </li>
     </ul>
 </aside>
+
 <article bindonce="visitSummary">
     <section  bo-show="visitSummary.hasEncounters()" class="block investigation">
         <h2>Diagnoses</h2>
@@ -156,7 +175,7 @@
             <ul>
                 <li ng-repeat="observation in visitDay.observations">
                     <div>
-                        <observation-summary patient-uuid="patientUuid" observation="observation"/>
+                        <observation-summary patient-uuid="patientUuid" observation="observation" show-trends="'false'"/>
                     </div>
                 </li>
             </ul>        
