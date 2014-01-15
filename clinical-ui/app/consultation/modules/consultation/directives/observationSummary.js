@@ -7,7 +7,8 @@ angular.module('opd.consultation')
             patientUuid:"=",
             showTrends:"="
         },
-        template: "<ng-include src=\"'observationSummaryTemplate'\"/>" ,
+        //not able to use templateUrl, because of recurssive use of directive. Not sure what the error is.
+        template: '<ng-include src="\'../consultation/modules/consultation/views/observationSummaryTemplate.html\'" />',  
         link: function(scope,element,attrs){
             if(scope.showTrends != "false"){
                 scope.isNumeric = function(value){

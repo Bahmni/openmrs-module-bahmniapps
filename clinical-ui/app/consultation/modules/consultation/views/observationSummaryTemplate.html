@@ -1,0 +1,18 @@
+<div ng-switch="observation.groupMembers.length">
+    <div ng-switch-when="0">
+        <span bo-text="observation.concept.name + ' - ' + observation.value"></span>
+        <ul class="add-info">
+            <li class="time"><span bo-text="observation.observationDateTime | date: 'h:mm a'"></span></li>
+            <li><span bo-text="observation.provider.name"></span></li>
+            <li ng-show="isNumeric(observation.value)"><a bo-href="'/clinical/trends/#/patients/'+patientUuid+'/'+observation.concept.name">view trends
+            </a></li>
+        </ul>
+    </div>
+
+    <ul ng-switch-default>
+        <span bo-text="observation.concept.name"></span>
+        <li ng-repeat="groupMember in observation.groupMembers">
+            <observation-summary patient-uuid="patientUuid" observation="groupMember"/>
+        </li>
+    </ul>
+</div>    

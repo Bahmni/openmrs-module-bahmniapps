@@ -1,0 +1,26 @@
+<section class="block investigation" bo-show="visitSummary.hasDisposition()">
+    <h2>Disposition</h2>
+    <ul class="block-content">
+        <li ng-repeat="disposition in visitSummary.dispositions">
+            <div class="expander-row">
+                <span bo-text="disposition.code"></span>
+               <span ng-repeat="note in disposition.additionalObs">
+                    <div class="icon-double-angle-down" ng-click="toggle(note)"></div>
+               </span>
+                <ul class="add-info">
+                    <li class="datetime">
+                        <span bo-text="(disposition.dispositionDateTime | date:'d-MMM-yy h:mm a')"></span>
+                    </li>
+                    <li>
+                        <span bo-text="disposition.provider.name"></span>
+                    </li>
+                </ul>
+            </div>
+            <div>
+               <span ng-repeat="note in disposition.additionalObs">
+                    <span ng-show="note.show" bo-text="note.value"></span>
+               </span>
+            </div>
+        </li>
+    </ul>
+</section>

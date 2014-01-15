@@ -1,0 +1,85 @@
+<section infinite-scroll="loadEncountersForPreviousDay()" infinite-scroll-disabled="!hasMoreVisitDays" ng-show="visitDay.hasData()" ng-repeat="visitDay in visitDays" class="block-day block">
+    <div>
+        <h1 bo-text="'Day ' + visitDay.dayNumber"></h1>
+        <ul class="add-info">
+            <li class="date" bo-text="(visitDay.visitDate | date:'d-MMM-yyyy')"></li>
+        </ul>
+    </div>   
+    <section class="block treatment" ng-show="visitDay.hasDrugOrders()">
+        <h2>Treatment</h2>
+        <ul>
+		    <li ng-repeat="drugOrder in visitDay.drugOrders">
+                <div class="expander-row">
+                <div class="treatment-details">
+                    <span bo-text="drugOrder.drugName"></span>
+                    <span bo-show="drugOrder.doseStrength" bo-text="' - ' + drugOrder.doseStrength"></span>
+                    <span bo-show="drugOrder.drugUnits" bo-text="' ' + drugOrder.drugUnits"></span>
+                    <span bo-show="drugOrder.dosageForm" bo-text="' ' + drugOrder.dosageForm"></span>
+                    <span bo-show="drugOrder.numberPerDosage" bo-text="' - ' + drugOrder.numberPerDosage"></span>
+                    <span bo-show="drugOrder.dosageFrequency" bo-text="' - ' + drugOrder.dosageFrequency.name"> </span>
+                    <span bo-show="drugOrder.dosageInstruction" bo-text="' - ' + drugOrder.dosageInstruction.name" > </span>
+                    <span bo-text="' - ' + (drugOrder.startDate  | date:'d MMM yy')"> </span>
+                    <span bo-text="' - for ' + visitSummary.numberOfDosageDaysForDrugOrder(drugOrder) + ' day(s)'"> - </span>
+                    <span bo-show="drugOrder.prn"> - Take as required.</span>
+                </div>
+                <div class="treatment-notes">
+                <div bo-show="drugOrder.notes" class="icon-double-angle-down" ng-click="toggle(drugOrder)"></div>
+                </div>
+                <ul class="add-info">
+                    <li class="time"><span bo-text="drugOrder.dateCreated | date: 'h:mm a'"></span></li>
+                    <li><span bo-text="drugOrder.provider.name"></span></li>
+                </ul>
+            </div>
+                <div>
+                    <span ng-show="drugOrder.show" bo-text='drugOrder.notes'></span>
+                </div>
+           </li>
+		</ul>        
+    </section>
+    <section class="block notes" ng-show="visitDay.hasConsultationNotes()">
+        <h2>Notes</h2>
+        <ul>
+            <li ng-repeat="note in visitDay.consultationNotes">
+                <span bo-text="note.value"></span>
+                <ul class="add-info">
+                <li class="datetime"><span bo-text="note.observationDateTime | date: 'h:mm a'"></span>
+                <span bo-text="note.provider.name"></span></li>
+                </ul>
+            </li>
+        </ul>        
+    </section>
+    <section class="block labTestOrders" ng-show="visitDay.hasLabTestOrders()">
+        <h2>Investigations</h2>
+        <ul>
+            <li ng-repeat="testOrder in visitDay.labTestOrders">
+                <span bo-text="testOrder.concept.name"></span>
+                <ul class="add-info">
+                    <li><span bo-text="testOrder.provider.name"></span></li>
+                </ul>
+            </li>
+        </ul>        
+    </section>
+    <section class="block otherTestOrders" ng-show="visitDay.hasOtherTestOrders()">
+        <h2>Other Investigations</h2>
+        <ul>
+            <li ng-repeat="testOrder in visitDay.otherTestOrders">
+                <span bo-text="testOrder.concept.name"></span>
+                <ul class="add-info">
+                    <li>
+                        <span bo-text="testOrder.provider.name"></span>
+                    </li>
+            </li>
+        </ul>        
+    </section>
+    <section class="block observation" ng-show="visitDay.hasObservations()">
+        <h2>Observations</h2>
+        <ul>
+            <li ng-repeat="observation in visitDay.observations">
+                <div>
+                    <observation-summary patient-uuid="patientUuid" observation="observation"/>
+                </div>
+            </li>
+        </ul>        
+    </section>
+</section>
+<div id="loader" ng-show="hasMoreVisitDays">Loading data for previous days...</div>
