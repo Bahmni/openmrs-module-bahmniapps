@@ -49,7 +49,7 @@ angular.module('consultation').config(['$routeProvider', '$httpProvider', functi
         $routeProvider.when('/patient/:patientUuid/concept-set/:conceptSetName', {
             templateUrl: 'modules/consultation/views/conceptSet.html',
             controller: 'ConceptSetPageController',
-            resolve: {initialization: 'initialization'
+            resolve: {initialization: 'initialization'}
         });
 
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
