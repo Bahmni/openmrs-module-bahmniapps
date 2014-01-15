@@ -19,17 +19,6 @@
     </div>    
 </script>
 <article class="visit">
-<aside bindonce class="visit-history" ng-click="toggleDrawer()" ng-controller="VisitHistoryController">
-    <h2>Visit History</h2>
-    <ul>
-        <li ng-click="showVisitSummary(visit)" class="visit-history-entry" ng-class="{'selected': isCurrentVisit(visit), 'active': visit.isActive()}" ng-repeat="visit in visits">
-            <a href="">
-                <span bo-text="visit.startDatetime | date: 'd MMM yy'"></span>
-                <span bo-text="'- ' + (visit.stopDatetime | date: 'd MMM yy')" bo-hide="visit.isActive()"></span>
-            </a>
-        </li>
-    </ul>
-</aside>
 <article bindonce="visitSummary">
     <div bo-hide="visitSummary.hasEncounters()" class="info-message">
                 <p>There are no encounter for this patient</p>

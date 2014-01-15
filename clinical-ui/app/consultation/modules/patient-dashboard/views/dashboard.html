@@ -28,6 +28,7 @@
             <li>{{patient.name}}</li>
             <li>{{patient.identifier}}</li>
             <li>{{patient.gender | gender }} {{patient.age}}</li>
+            <li>{{patient.address.cityVillage}}</li>
         </ul>
     </div>
 
@@ -67,7 +68,7 @@
                         </li>
                     </ul>
             </li>
-            <div bo-show="!visitSummary.hasDiagnosis()">A diagnosis has not been made for this patient yet.</div>
+            <div ng-hide="visitSummary.hasDiagnosis()">A diagnosis has not been made for this patient yet.</div>
         </ul>
     </section>
     <section class="block investigation" bo-show="visitSummary.hasDisposition()">

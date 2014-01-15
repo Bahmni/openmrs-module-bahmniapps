@@ -25,7 +25,7 @@ angular.module('opd.patientDashboard',[])
         var loadEncounters = function(encounterDate) {
             if(loading) return;
             loading = true;
-            encounterService.search($scope.currentVisit.uuid, encounterDate.toISOString().substring(0, 10)).success(function(encounterTransactions){
+            encounterService.search($scope.selectedVisit.uuid, encounterDate.toISOString().substring(0, 10)).success(function(encounterTransactions){
                 var dayNumber = DateUtil.getDayNumber($scope.visitSummary.visitStartDateTime, encounterDate);
                 var visitDay = Bahmni.Opd.Consultation.VisitDay.create(dayNumber, encounterDate, encounterTransactions, $scope.consultationNoteConcept, $scope.encounterConfig.orderTypes);
                 $scope.visitDays.push(visitDay);
@@ -41,36 +41,32 @@ angular.module('opd.patientDashboard',[])
             }
         };
 
-
         $scope.isNumeric = function(value){
             return $.isNumeric(value);
         }
 
-        $scope.toggle = function(item) {
-            item.show = !item.show
-        }
-
         patientVisitHistoryService.getVisits($scope.patientUuid).then(function(visits) {
             $scope.visits = visits.map(function(visitData){ return new Bahmni.Opd.Consultation.VisitHistoryEntry(visitData) });
-            $scope.currentVisit = $scope.visits[0];
-            getVisitSummary($scope.currentVisit);
+            $scope.activeVisit = $scope.visits.filter(function(visit) {return visit.isActive()})[0];
+            $scope.selectedVisit = $scope.visits[0];
+            getVisitSummary($scope.selectedVisit);
         });
 
         $scope.showVisitSummary = function(visit) {
-            $scope.currentVisit = visit;
-            getVisitSummary($scope.currentVisit);
+            $scope.selectedVisit = visit;
+            getVisitSummary($scope.selectedVisit);
         }
 
         $scope.getConsultationPadLink = function() {
-            if($scope.currentVisit) {
-                return urlHelper.getVisitUrl($scope.currentVisit.uuid);
+            if($scope.activeVisit) {
+                return urlHelper.getVisitUrl($scope.activeVisit.uuid);
             } else {
                 return urlHelper.getConsultationUrl();
             }
         }
 
         $scope.isCurrentVisit = function(visit) {
-            return visit.uuid === $scope.currentVisit.uuid;
+            return visit.uuid === $scope.selectedVisit.uuid;
         }
 
     }]);
