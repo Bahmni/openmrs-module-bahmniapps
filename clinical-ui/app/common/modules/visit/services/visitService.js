@@ -26,4 +26,11 @@ angular.module('bahmni.common.visit.services')
             withCredentials: true
         });
     };
+
+    this.getVisitType = function() {
+        return $http.get(Bahmni.Common.Constants.visitTypeUrl, {
+            withCredentials: true
+        });
+
+    }
 }]);

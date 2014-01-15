@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('document', ['ngRoute', 'opd.document',  'bahmni.common.infrastructure', 'bahmni.common.patient','authentication', 'appFramework', 'httpErrorInterceptor', 'bahmni.common.controllers' ]);
+angular.module('document', ['ngRoute', 'opd.document',  'bahmni.common.infrastructure', 'bahmni.common.patient','authentication', 'appFramework', 'httpErrorInterceptor', 'bahmni.common.controllers','bahmni.common.visit','bahmni.common.util']);
 angular.module('document').config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
     $routeProvider.when('/patient/:patientUuid/document', {templateUrl: 'modules/document/views/documentUpload.html', controller: 'DocumentController', resolve: {initialization: 'initialization'}});
     $routeProvider.otherwise({templateUrl: '../common/modules/common/error.html'});

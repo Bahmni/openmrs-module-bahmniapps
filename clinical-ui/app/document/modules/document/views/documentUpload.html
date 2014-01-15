@@ -1,3 +1,26 @@
 <div class="document">
-    
+    <div>
+        <label>
+            Visit Type: <select ng-model="visitType"
+                                ng-options="vt.display for vt in visitTypes">
+        </select>
+        </label>
+
+        <label>
+            Start Date:
+            <input type="text" ng-model="startDate" datepicker/>
+        </label>
+
+        <label>
+            End Date:
+            <input type="text" ng-model="endDate" datepicker/>
+        </label>
+
+        <input id="file-input" type="file" name="image" accept="image/*" capture="camera" file-upload/>
+
+        <button type="button" ng-click="save()">SAVE</button>
+    </div>
+    <div id="visitDiv">
+        <img ng-repeat="img in images" ng-src="{{img}}" width="100"/>
+    </div>
 </div>
