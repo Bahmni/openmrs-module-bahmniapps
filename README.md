@@ -9,7 +9,7 @@ To set up the application, do the following
 
   npm install -g bower
   npm install -g grunt-cli
-  gem intall compass
+  gem install compass
 
 2. Set up local node dependencies. (This installs all the node
 dependencies into node_modules.
