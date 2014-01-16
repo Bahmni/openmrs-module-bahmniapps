@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('opd.consultation').factory('initialization',
-    ['$rootScope', '$route', '$q', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'authenticator', 'appService', 'encounterService', 'spinner',
-    function ($rootScope, $route, $q, configurationService, visitService, patientService, patientMapper, authenticator, appService, encounterService, spinner) {
+    ['$rootScope', '$route', '$q', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'authenticator', 'appService', 'encounterService', 'BedService', 'spinner',
+    function ($rootScope, $route, $q, configurationService, visitService, patientService, patientMapper, authenticator, appService, encounterService, bedService, spinner) {
         var patientUuid = $route.current.params.patientUuid;
 
         var getConsultationConfigs = function() {
@@ -19,9 +19,12 @@ angular.module('opd.consultation').factory('initialization',
         var getPatient = function() {
             return patientService.getPatient(patientUuid).success(function (openMRSPatient) {
                 $rootScope.patient = patientMapper.map(openMRSPatient);
-            });
+            })
         };
 
+        var getPatientBedDetails = function() {
+            return bedService.getBedDetailsForPatient($rootScope.patient.uuid);
+        }
 
         var getActiveEncounter = function() {
             var currentProviderUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
@@ -37,13 +40,16 @@ angular.module('opd.consultation').factory('initialization',
             return appService.initApp('clinical', {'app': true, 'extension' : true });
         };
 
-        return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(getConsultationConfigs)
-                            .then(function(){
-                                return $q.all([getActiveEncounter(), getPatient()])
-                            }));
+        return spinner.forPromise(
+            authenticator.authenticateUser()
+            .then(initApp)
+            .then(getConsultationConfigs)
+            .then(function(){
+                return $q.all([
+                    getActiveEncounter(),
+                    getPatient().then(getPatientBedDetails)
+                ])
+            })
+        );
     }]
 );
-
-
-
-

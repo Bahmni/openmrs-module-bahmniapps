@@ -8,11 +8,11 @@
                 </button>
             </li>
         </ul>
-        <ul class="patient-info" ng-click="togglePatientDetails()">
-            <li>{{patient.name}}</li>
+        <ul class="patient-info" >
+            <li ng-click="togglePatientDetails()">{{patient.name}}</li>
             <li class="patient-detail-pointer"><span class="icon-white small" ng-class="{'icon-caret-up': showPatientDetails, 'icon-caret-down': !showPatientDetails}"></span></li>
-            <li class="patient-img"><img class="roundImages" ng-src="{{patient.image}}"
-                     onerror="this.onerror=null;this.src='../images/blank-user.gif';">
+            <li class="patient-img">
+                <img class="roundImages" ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';" ng-click="gotoPatientDashboard()">
             </li>
         </ul>
 

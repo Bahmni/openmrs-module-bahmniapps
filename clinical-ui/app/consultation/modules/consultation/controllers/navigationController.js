@@ -23,6 +23,10 @@ angular.module('opd.consultation.controllers').controller('ConsultationNavigatio
                 $scope.showPatientDetails = !$scope.showPatientDetails;
             }
 
+            $scope.gotoPatientDashboard = function() {
+                $location.path("/patient/" + $rootScope.patient.uuid);
+            }
+
             var setCurrentBoardBasedOnPath = function() {
                 var currentPath = $location.path();
                 var board = findBoardByUrl(currentPath);

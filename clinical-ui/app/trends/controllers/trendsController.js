@@ -100,7 +100,7 @@ angular.module("trends").controller("TrendsController", ["$scope", "$routeParams
     };
 
     var initBackLinks =  function () {
-        backlinkService.addUrl("Consultation","/clinical/consultation/#/patient/"+patientUUID);
+        backlinkService.addUrl("Dashboard", "/clinical/consultation/#/patient/" + patientUUID);
     };
 
     init();
