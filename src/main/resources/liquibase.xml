@@ -14,4 +14,11 @@
             INSERT INTO `privilege` (`privilege`,`description`, `uuid`) VALUES ('app:radiologyOrders','Radiology orders app',uuid());
         </sql>
     </changeSet>
+
+    <changeSet author="bahmni-ui-clinical" id="3">
+        <sql>
+            INSERT INTO `privilege` (`privilege`,`description`, `uuid`) VALUES ('app:documents','Document upload app',uuid());
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>
