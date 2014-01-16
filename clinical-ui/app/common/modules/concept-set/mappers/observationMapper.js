@@ -33,8 +33,9 @@ Bahmni.ConceptSet.ObservationMapper = function (encounterConfig) {
         if (savedObs) {
             observation.uuid = savedObs.uuid;
             observation.value = savedObs.value instanceof Object ? savedObs.value.uuid : savedObs.value;
-            observation.groupMembers = concept.set ? mapObservationGroupMembers(savedObs.groupMembers, concept.setMembers) : [];
         }
+        var savedObsGroupMembers = savedObs ? savedObs.groupMembers  : [];
+        observation.groupMembers = concept.set ? mapObservationGroupMembers(savedObsGroupMembers, concept.setMembers) : [];
         return observation;
     };
 

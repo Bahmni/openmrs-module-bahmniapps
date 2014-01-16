@@ -26,7 +26,7 @@ Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, do
         });
         var consultationNote = mapConsultationNote(encounterTransaction.observations)
         var observations = encounterTransaction.observations.filter(function(observation){
-            return specilaObservationConceptUuids.indexOf(observation.concept.uuid) === -1;
+            return !observation.voided && specilaObservationConceptUuids.indexOf(observation.concept.uuid) === -1;
         });
         return {
             visitUuid: encounterTransaction.visitUuid,
