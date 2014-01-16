@@ -55,7 +55,7 @@ angular.module('authentication', ['ngCookies'])
             return deferrable.promise;
         };
 
-        var loadProviders = function(userInfo) {
+        this.loadProviders = function(userInfo) {
             return $http.get("/openmrs/ws/rest/v1/provider", {
                  method: "GET",
                  params: {
@@ -67,10 +67,6 @@ angular.module('authentication', ['ngCookies'])
                 $rootScope.currentProvider = { uuid: providerUuid };
              });
         };
-
-        $rootScope.$on('event:user-credentialsLoaded', function (event, userInfo) {
-            loadProviders(userInfo);
-        });
 
     }]).factory('authenticator', ['$rootScope', '$q', '$window', 'sessionService', function ($rootScope, $q, $window, sessionService) {
         var authenticateUser = function () {
