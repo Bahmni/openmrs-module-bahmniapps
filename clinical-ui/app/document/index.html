@@ -13,6 +13,7 @@
         <div ng-app="document">
             <div ng-include src="'../common/modules/patient/header/views/header.html'"></div>
             <div class="opd-wrapper">
+                <p class="caution" ng-show="server_error"><i class="icon-exclamation-sign small"></i>{{server_error}}</p>
                 <div ng-view id="view-content" class="opd-content-wrapper"></div>
             </div>
 

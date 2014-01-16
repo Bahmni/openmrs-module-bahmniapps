@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('opd.document')
-    .controller('DocumentController', ['$scope', 'visitService', 'spinner', 'visitDocumentService',
-        function ($scope, visitService, spinner, visitDocumentService) {
+    .controller('DocumentController', ['$scope', 'visitService', 'spinner', 'visitDocumentService','$rootScope',
+        function ($scope, visitService, spinner, visitDocumentService, $rootScope) {
             $scope.visitTypes = [];
             var init = function () {
                 return visitService.getVisitType().then(function (response) {
@@ -13,21 +13,28 @@ angular.module('opd.document')
             $scope.images = [];
 
             var parseDate = function (dateString) {
-                return moment(dateString, Bahmni.Common.Constants.dateFormat.toUpperCase()).toDate();
+                return moment(moment(dateString, Bahmni.Common.Constants.dateFormat.toUpperCase()).toDate()).format("YYYY-MM-DDTHH:mm:ss");
             }
 
             $scope.save = function () {
+                if($scope.images.length == 0) {
+                    $rootScope.server_error = "0 documents to upload";
+                    return;
+                }
                 var visitDocument = {};
                 visitDocument.patientUuid = $scope.patient.uuid;
                 visitDocument.visitTypeUuid = $scope.visitType.uuid;
                 visitDocument.visitStartDate = parseDate($scope.startDate);
                 visitDocument.visitEndDate = $scope.endDate ? parseDate($scope.endDate) : visitDocument.visitStartDate;
-                visitDocument.encounterTypeUuid = $scope.encounterConfig.getOpdConsultationEncounterTypeUuid();
+                visitDocument.encounterTypeUuid = $scope.encounterConfig.getRadiologyEncounterTypeUuid();
                 visitDocument.encounterDateTime = visitDocument.visitStartDate;
-                visitDocument.documents = [
-                    {testUuid: "f14f2f84-699a-11e3-af88-005056821db0", image: $scope.images[0].replace("data:image/jpeg;base64", "")}
-                ];
-                visitDocumentService.save(visitDocument);
+                visitDocument.documents = [];
+                $scope.images.forEach(function (image) {
+                    visitDocument.documents.push({testUuid: "f14f2f84-699a-11e3-af88-005056821db0", image: image.replace(/data:image\/.*;base64/, "")})
+                })
+                visitDocumentService.save(visitDocument).success(function () {
+                    $scope.success = true;
+                });
             }
         }])
     .directive('fileUpload', function () {
@@ -36,10 +43,16 @@ angular.module('opd.document')
             link: function (scope, element) {
                 element.bind("change", function () {
                     var file = element[0].files[0],
-                    reader = new FileReader();
+                        reader = new FileReader();
                     reader.onload = function (event) {
-                        scope.images.push(event.target.result);
-                        scope.$apply();
+                        var image = event.target.result;
+                        var alreadyPresent = scope.images.filter(function (img) {
+                            return img === image;
+                        })
+                        if (alreadyPresent.length == 0) {
+                            scope.images.push(image);
+                            scope.$apply();
+                        }
                     };
                     reader.readAsDataURL(file);
                 });

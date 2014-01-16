@@ -1,19 +1,24 @@
 angular.module('bahmni.common.util')
-    .directive('datepicker', function() {
-    return {
-        restrict: 'A',
-        require : 'ngModel',
-        link : function (scope, element, attrs, ngModelCtrl) {
+    .directive('datepicker', function ($parse) {
+        var link = function ($scope, element, attrs, ngModel) {
             $(function(){
+                var today = new Date();
                 element.datepicker({
-                    dateFormat: Bahmni.Common.Constants.dateFormat,
-                    onSelect: function (date) {
-                        scope.$apply(function () {
-                            ngModelCtrl.$setViewValue(date);
+                    changeYear: true,
+                    changeMonth: true,
+                    maxDate: today,
+                    dateFormat: 'dd/mm/yy',
+                    onSelect: function (dateText) {
+                        $scope.$apply(function (scope) {
+                            ngModel.$setViewValue(dateText);
                         });
                     }
                 });
-            });
+            })
         }
-    }
-});
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: link
+        }
+    });

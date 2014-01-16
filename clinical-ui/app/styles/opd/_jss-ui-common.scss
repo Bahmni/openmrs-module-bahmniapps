@@ -22,6 +22,13 @@ form,.form{
   padding:0px;
   width:100%;
 }
+ &.form-field-inline{
+   @include clearfix();
+   .form-field{
+     float: left;
+     margin-right:15px;
+   }
+ }
 .form-field{
   @include clearfix();
   .field-attribute{
@@ -39,6 +46,7 @@ form,.form{
         float:left;
         width:12.5em;
     }
+
     input[type="number"]{
         width:8em;
     }
@@ -297,4 +305,10 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
 p.caution{
   color:#f00;
   padding: 5px;
+}
+
+p.success{
+  color:#f8f8ff;
+  padding: 5px;
+  background: #000000;
 }

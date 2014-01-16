@@ -17,6 +17,9 @@ var EncounterConfig = (function () {
         },
         getTransferEncounterTypeUuid:function () {
             return this.encounterTypes["TRANSFER"];
+        },
+        getRadiologyEncounterTypeUuid:function () {
+            return this.encounterTypes["RADIOLOGY"];
         }
     };
     return EncounterConfig;
