@@ -14,7 +14,7 @@ angular.module('opd.documentupload.controllers')
                 if (data.results.length > 0) {
                     var patient = data.results[0];
                     $rootScope.patient = patient;
-                    $location.path("/documentupload/"+$scope.patientIdentifier);
+                    $location.path("/patient/" + patient.uuid);
                 } else {
                     $scope.noResultsMessage = "Could not find patient with identifier " + patientIdentifier + ". Please verify the patient ID entered "
                 }
