@@ -310,6 +310,7 @@ module.exports = function (grunt) {
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['orders.min.js'], dest: '<%= yeoman.dist %>/orders/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['trends.min.js'], dest: '<%= yeoman.dist %>/trends/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['document.min.js'], dest: '<%= yeoman.dist %>/document/'},
+                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['document-upload.min.js'], dest: '<%= yeoman.dist %>/document-upload/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['patients.min.css'], dest: '<%= yeoman.dist %>/patients/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['consultation.min.css'], dest: '<%= yeoman.dist %>/consultation/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['adt.min.css'], dest: '<%= yeoman.dist %>/adt/'},
