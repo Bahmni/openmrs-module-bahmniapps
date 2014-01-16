@@ -5,10 +5,10 @@
                 <li class="patient-img">
                     <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
                 </li>
-                <li>{{patient.name}}</li>
-                <li>{{patient.identifier}}</li>
-                <li>{{patient.gender}} {{patient.age}}, {{patient.address.cityVillage}}</li>
-                <li>{{bedDetails.wardName}}, {{bedDetails.bedNumber}}</li>
+                <li bo-text="patient.name"></li>
+                <li bo-text="patient.identifier"></li>
+                <li bo-text="patient.gender + patient.age + ', ' + patient.address.cityVillage"></li>
+                <li bo-text="bedDetails.wardName + ', ' + bedDetails.bedNumber"></li>
             </ul>
         </div>
 

@@ -1,4 +1,4 @@
-    <section  bo-show="visitSummary.hasEncounters()" class="block investigation">
+    <section  ng-show="visitSummary.hasEncounters()" class="block investigation">
         <h2>Diagnoses</h2>
         <ul class="block-content visit-diagnosis">
             <li ng-repeat="diagnosis in visitSummary.diagnoses" >
@@ -15,6 +15,6 @@
                         </li>
                     </ul>
             </li>
-            <div bo-show="!visitSummary.hasDiagnosis()">A diagnosis has not been made for this patient yet.</div>
+            <div ng-show="!visitSummary.hasDiagnosis()">A diagnosis has not been made for this patient yet.</div>
         </ul>
     </section>
