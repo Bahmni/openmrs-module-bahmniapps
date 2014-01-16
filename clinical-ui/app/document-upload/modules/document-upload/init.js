@@ -1,3 +1,3 @@
-angular.module('documentUpload.controllers', ['bahmni.common.patient.services','bahmni.common.infrastructure']);
-angular.module('documentUpload', ['bahmni.common.patient.services', 'documentUpload.controllers']);
+angular.module('opd.documentupload.controllers', ['bahmni.common.patient.services','bahmni.common.infrastructure']);
+angular.module('opd.documentupload', ['bahmni.common.patient.services', 'opd.documentupload.controllers']);
 

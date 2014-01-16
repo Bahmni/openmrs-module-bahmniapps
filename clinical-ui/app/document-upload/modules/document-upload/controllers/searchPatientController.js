@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('documentupload')
+angular.module('opd.documentupload.controllers')
     .controller('SearchPatientController', ['$rootScope', '$scope', '$route', '$location', '$window',  'patientService', 'appService', function ($rootScope, $scope, $route, $location, $window,  patientService, appService) {
         $scope.results = [];
 
@@ -14,7 +14,7 @@ angular.module('documentupload')
                 if (data.results.length > 0) {
                     var patient = data.results[0];
                     $rootScope.patient = patient;
-                    $location.path("/documentUpload/"+$scope.patientIdentifier);
+                    $location.path("/documentupload/"+$scope.patientIdentifier);
                 } else {
                     $scope.noResultsMessage = "Could not find patient with identifier " + patientIdentifier + ". Please verify the patient ID entered "
                 }
