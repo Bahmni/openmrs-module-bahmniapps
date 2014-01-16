@@ -10,10 +10,19 @@
   border-radius: 5px;
 }
 
-
-
 .nvd3.nv-line .nvd3.nv-scatter .nv-groups .nv-point:before {
   content: ' \25CF';
   font-size: 50px;
+}
+
+.trends {
+    .info-message{
+        padding:10px;
+        color:red;
+        border:1px solid #cecece;
+    }
+    .center {
+        text-align: center;
+    }
 }
 

@@ -7,6 +7,7 @@ angular.module('opd.consultation.controllers')
 	$scope.visitDays = [];
     $scope.hasMoreVisitDays;
     $scope.patientUuid = $routeParams.patientUuid;
+    $scope.showTrends = true;
     var currentEncounterDate;
     var loading;
     var DateUtil = Bahmni.Common.Util.DateUtil;

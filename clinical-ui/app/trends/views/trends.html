@@ -1,32 +1,38 @@
-<div style="float:left;width:10%" >
-    <div ng-repeat="(conceptKey, conceptValue) in concepts">
-        <span style="float:left;width:70%;padding-bottom:1em;background-color:{{conceptValue.displayed && '#E5DDDD' || 'white'}};" ng-click="addObservations(conceptKey)">
-            {{conceptValue.name}}
-        </span>
-        <button style="float:left;width:2em" ng-click="removeObservations(conceptKey)" ng-show="conceptValue.displayed">X</button>
+<div class="trends">
+    <div ng-hide="hasConcepts" class="center info-message">
+        <p>There are no concepts with two or more observations</p>
     </div>
-</div>
 
-<div style="float:left;width:90%">
-    <div ng-repeat="(conceptKey, details) in visibleObservations">
-        <div style="float:left;width:95%;">
-            <nvd3-line-chart
-                data="details"
-                height="400"
-                showXAxis="true"
-                showYAxis="true"
-                tooltips="true"
-                margin="{left:80,top:50,bottom:50,right:10}"
-                interactive="true"
-                showLegend="true"
-                xAxisTickFormat="xAxisTickFormatAsDate()"
-                xaxislabel="date"
-                yaxislabel="{{getUnitsFromDetails(details)}}"
-                xAxisRotateLabels="20"
-                >
-                <svg></svg>
-            </nvd3-line-chart>
+    <div style="float:left;width:10%" >
+        <div ng-repeat="(conceptKey, conceptValue) in concepts">
+            <span style="float:left;width:70%;padding-bottom:1em;background-color:{{conceptValue.displayed && '#E5DDDD' || 'white'}};" ng-click="addObservations(conceptKey)">
+                {{conceptValue.name}}
+            </span>
+            <button style="float:left;width:2em" ng-click="removeObservations(conceptKey)" ng-show="conceptValue.displayed">X</button>
         </div>
-        <button style="float:left;width:2em" ng-click="removeObservations(conceptKey)">X</button>
+    </div>
+
+    <div style="float:left;width:90%">
+        <div ng-repeat="(conceptKey, details) in visibleObservations">
+            <div style="float:left;width:95%;">
+                <nvd3-line-chart
+                    data="details"
+                    height="400"
+                    showXAxis="true"
+                    showYAxis="true"
+                    tooltips="true"
+                    margin="{left:80,top:50,bottom:50,right:10}"
+                    interactive="true"
+                    showLegend="true"
+                    xAxisTickFormat="xAxisTickFormatAsDate()"
+                    xaxislabel="date"
+                    yaxislabel="{{getUnitsFromDetails(details)}}"
+                    xAxisRotateLabels="20"
+                    >
+                    <svg></svg>
+                </nvd3-line-chart>
+            </div>
+            <button style="float:left;width:2em" ng-click="removeObservations(conceptKey)">X</button>
+        </div>
     </div>
 </div>

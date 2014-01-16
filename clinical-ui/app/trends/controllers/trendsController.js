@@ -1,47 +1,47 @@
 angular.module("trends").controller("TrendsController", ["$scope", "$routeParams", "observationService",'backlinkService',
     function ($scope, $routeParams, observationService,backlinkService) {
-        var patientUUID = $routeParams.patientUUID,
-        obsConcept = $routeParams.obsConcept,
-        fetchedObservations = observationService.fetch(patientUUID),
-        MINIMUM_REQUIRED_READINGS = 2,
+        var patientUUID = $routeParams.patientUUID;
+        var obsConcept = $routeParams.obsConcept;
+        var fetchedObservations = observationService.fetch(patientUUID);
+        var MINIMUM_REQUIRED_READINGS = 2;
 
-        fetch = function(observations, concept) {
+        var fetch = function(observations, concept) {
             return observations.filter(function(observation) {
                 return observation.conceptName === concept;
             }).map(function(observation) {
                 return [observation.observationDate, observation.value, observation.units];
             });
-        },
+        };
 
-        epochToDateString = function(epoch){
+        var epochToDateString = function(epoch){
             var date = new Date(epoch);
             return d3.time.format("'%d/%m/%y %H:%M'")(date);
-        },
+        }
 
-        displayableConceptNames = {
+        var displayableConceptNames = {
             "BMI": "BMI",
             "REGISTRATION FEES": "Fees"
-        },
+        };
 
-        unique = function(array) {
+        var unique = function(array) {
             return array.filter(function(item, position) {
                 return array.indexOf(item) === position;
             });
-        },
+        }
 
-        sentenceCase = function(words) {
+        var sentenceCase = function(words) {
             return words[0].toUpperCase() + words.slice(1, words.length).toLowerCase();
-        },
+        };
 
-        displayNameFor = function(concept) {
+        var displayNameFor = function(concept) {
             if (displayableConceptNames[concept]) {
                 return displayableConceptNames[concept];
             }
 
             return sentenceCase(concept);
-        },
+        };
 
-        init = function() {
+        var init = function() {
             fetchedObservations.success(function(observations) {
                 var allConcepts = observations.map(function(observation) {
                         return observation.conceptName;
@@ -65,8 +65,10 @@ angular.module("trends").controller("TrendsController", ["$scope", "$routeParams
                             name: displayName,
                             displayed: false
                         };
+                        $scope.hasConcepts = true;
                     }
                 });
+
 
                 if(obsConcept){
                     $scope.addObservations(obsConcept);
@@ -76,33 +78,33 @@ angular.module("trends").controller("TrendsController", ["$scope", "$routeParams
             initBackLinks();
         };
 
-    $scope.xAxisTickFormatAsDate = function(){
-        return epochToDateString;
-    };
+        $scope.xAxisTickFormatAsDate = function(){
+            return epochToDateString;
+        };
 
 
-    $scope.getUnitsFromDetails = function(details){
-        if(details && details[0]){
-            return details[0].values[0][2];
-        }
+        $scope.getUnitsFromDetails = function(details){
+            if(details && details[0]){
+                return details[0].values[0][2];
+            }
+        };
+
+        $scope.addObservations = function(concept){
+            $scope.visibleObservations[concept] = $scope.observations[concept];
+            if($scope.concepts[concept]){
+                $scope.concepts[concept].displayed = true;
+            }
+        };
+
+        $scope.removeObservations = function(concept){
+            delete $scope.visibleObservations[concept];
+            $scope.concepts[concept].displayed = false;
+        };
+
+        var initBackLinks =  function () {
+            backlinkService.addUrl("Dashboard", "/clinical/consultation/#/patient/" + patientUUID);
+        };
+
+        init();
     }
-
-    $scope.addObservations = function(concept){
-        $scope.visibleObservations[concept] = $scope.observations[concept];
-        if($scope.concepts[concept]){
-            $scope.concepts[concept].displayed = true;
-        }
-    };
-
-    $scope.removeObservations = function(concept){
-        delete $scope.visibleObservations[concept];
-        $scope.concepts[concept].displayed = false;
-    };
-
-    var initBackLinks =  function () {
-        backlinkService.addUrl("Dashboard", "/clinical/consultation/#/patient/" + patientUUID);
-    };
-
-    init();
-
-}]);
+]);
