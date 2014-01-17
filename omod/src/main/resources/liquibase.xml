@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
  
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
-                  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
  
     <!--
         See http://www.liquibase.org/manual/home#available_database_refactorings
@@ -33,5 +33,16 @@
     <changeSet id="bahmni-reg-5" author="vivek-tw" context="rel3">
         <comment>rel3</comment>
         <sql>update patient_identifier_type set name = 'Bahmni Id' where name = 'JSS'</sql>
+    </changeSet>
+
+    <changeSet id="bahmni-reg-201401171330" author="banka-tw" context="rel3">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from privilege where privilege = 'app:registration'</sqlCheck>
+        </preConditions>
+        <insert tableName="privilege">
+            <column name="privilege" value="app:registration"/>
+            <column name="description" value="Bahmni registration app access privilege"/>
+            <column name="uuid" valueComputed="uuid()"/>
+        </insert>
     </changeSet>
 </databaseChangeLog>
