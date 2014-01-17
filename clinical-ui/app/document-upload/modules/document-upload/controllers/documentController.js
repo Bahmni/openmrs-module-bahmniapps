@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('opd.documentupload')
-    .controller('DocumentController', ['$scope', 'visitService', 'spinner', 'visitDocumentService','$rootScope',
-        function ($scope, visitService, spinner, visitDocumentService, $rootScope) {
+    .controller('DocumentController', ['$scope', 'visitService', 'spinner', 'visitDocumentService','$rootScope', '$http','$q',
+        function ($scope, visitService, spinner, visitDocumentService, $rootScope, $http, $q) {
 
+            var testUuid;
             var clearForm = function(){
                 $scope.visitType = null;
                 $scope.images = [];
@@ -11,19 +12,37 @@ angular.module('opd.documentupload')
                 $scope.startDate = "";
             }
 
-            var init = function () {
-                clearForm();
+            var getVisitTypes = function(){
                 return visitService.getVisitType().then(function (response) {
                     $scope.visitTypes = response.data.results;
+                })
+            }
+
+            var getDummyTestUuid = function(){                                     //Placeholder testUuid until future stories are played
+                return $http.get(Bahmni.Common.Constants.conceptUrl,
+                    {
+                        params: {name: "cd4 test"}
+                    }).then(function(response){
+                        testUuid = response.data.results[0].uuid;
+                    });
+            }
+
+            var init = function () {
+                clearForm();
+                var deferrables = $q.defer();
+                var promises = [];
+                promises.push(getVisitTypes());
+                promises.push(getDummyTestUuid());
+                $q.all(promises).then(function () {
+                    deferrables.resolve();
                 });
+                return deferrables.promise;
             };
             spinner.forPromise(init());
-
 
             var parseDate = function (dateString) {
                 return moment(dateString, Bahmni.Common.Constants.dateFormat.toUpperCase()).toDate();
             }
-
 
             $scope.save = function () {
                 if($scope.images.length == 0) {
@@ -40,7 +59,7 @@ angular.module('opd.documentupload')
                 visitDocument.providerUuid = $rootScope.currentProvider.uuid;
                 visitDocument.documents = [];
                 $scope.images.forEach(function (image) {
-                    visitDocument.documents.push({testUuid: "f14f2f84-699a-11e3-af88-005056821db0", image: image.replace(/data:image\/.*;base64/, ""),
+                    visitDocument.documents.push({testUuid: testUuid, image: image.replace(/data:image\/.*;base64/, ""),
                         format: image.split(";base64")[0].split("data:image/")[1]})
                 })
                 visitDocumentService.save(visitDocument).success(function () {
