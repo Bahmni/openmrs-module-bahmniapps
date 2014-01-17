@@ -3,22 +3,31 @@
 angular.module('opd.documentupload')
     .controller('DocumentController', ['$scope', 'visitService', 'spinner', 'visitDocumentService','$rootScope',
         function ($scope, visitService, spinner, visitDocumentService, $rootScope) {
-            $scope.visitTypes = [];
+
+            var clearForm = function(){
+                $scope.visitType = null;
+                $scope.images = [];
+                $scope.endDate = "";
+                $scope.startDate = "";
+            }
+
             var init = function () {
+                clearForm();
                 return visitService.getVisitType().then(function (response) {
                     $scope.visitTypes = response.data.results;
                 });
             };
             spinner.forPromise(init());
-            $scope.images = [];
+
 
             var parseDate = function (dateString) {
-                return moment(moment(dateString, Bahmni.Common.Constants.dateFormat.toUpperCase()).toDate()).format("YYYY-MM-DDTHH:mm:ss");
+                return moment(dateString, Bahmni.Common.Constants.dateFormat.toUpperCase()).toDate();
             }
+
 
             $scope.save = function () {
                 if($scope.images.length == 0) {
-                    $rootScope.server_error = "0 documents to upload";
+                    $rootScope.server_error = "Please select at least one document to upload";
                     return;
                 }
                 var visitDocument = {};
@@ -28,12 +37,15 @@ angular.module('opd.documentupload')
                 visitDocument.visitEndDate = $scope.endDate ? parseDate($scope.endDate) : visitDocument.visitStartDate;
                 visitDocument.encounterTypeUuid = $scope.encounterConfig.getRadiologyEncounterTypeUuid();
                 visitDocument.encounterDateTime = visitDocument.visitStartDate;
+                visitDocument.providerUuid = $rootScope.currentProvider.uuid;
                 visitDocument.documents = [];
                 $scope.images.forEach(function (image) {
-                    visitDocument.documents.push({testUuid: "f14f2f84-699a-11e3-af88-005056821db0", image: image.replace(/data:image\/.*;base64/, "")})
+                    visitDocument.documents.push({testUuid: "f14f2f84-699a-11e3-af88-005056821db0", image: image.replace(/data:image\/.*;base64/, ""),
+                        format: image.split(";base64")[0].split("data:image/")[1]})
                 })
                 visitDocumentService.save(visitDocument).success(function () {
                     $scope.success = true;
+                    clearForm()
                 });
             }
         }])
