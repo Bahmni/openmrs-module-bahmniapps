@@ -11,7 +11,7 @@
 	        <div class="col col6">Action</div>-->
 
 	    </div>
-		<div ng-repeat="(key, value) in orders" class="table-body">
+		<div ng-repeat="(key, value) in orders" class="table-body" ng-show="value.data.results.length > 0">
 			{{key}}
 			<div ng-repeat="order in value.data.results" class="table-body">
 		        <div class="row">

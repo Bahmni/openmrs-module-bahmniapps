@@ -15,7 +15,7 @@ angular.module('orders.pending.controllers')
             var visitUuid = order.encounter.visit.uuid;
             var patientUuid = $routeParams.patientUuid;
             var encounterTypeUuid = $scope.encounterTypes[Bahmni.Common.Constants.investigationEncounterType];
-            var resultConceptUuid = $scope.radiologyObservationConcept.uuid;
+            var resultConceptUuid = order.concept.uuid;
             var resultValue = order.resultText;
 
             var encounterTransaction = {
