@@ -2,11 +2,11 @@
     <section class="reg-search">
         <article class="search-seperator-l">
             <form name="searchByIdForm" ng-submit="searchById()" class="simple-form-ui" >
-                <label for="patientIdentifier"><strong>Patient ID</strong></label>
+                <label for="patientIdentifier"><strong>Patient ID or Name</strong></label>
 
                 <div class="search-patient-id left">
                     <input type="text" id="patientIdentifier" ng-model="patientIdentifier" autofocus
-                           placeholder="Enter ID">
+                           placeholder="Enter ID or Name">
                 </div>
 
                 <div class="reg-srch-btn left">
@@ -39,7 +39,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="result in results">
+            <tr ng-repeat="result in results" ng-click="gotoDocumentUpload(result.uuid)">
                 <td>{{$index + 1}}</td>
                 <td>{{result.identifier}}</td>
                 <td>{{result.givenName}} {{result.familyName}}</td>
