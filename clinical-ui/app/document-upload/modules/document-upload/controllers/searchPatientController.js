@@ -9,7 +9,7 @@ angular.module('opd.documentupload')
         }
 
         $scope.gotoDocumentUpload = function(patientUuid) {
-            $location.path("/patient/" + patientUuid);
+            $location.path("/patient/" + patientUuid + '/document');
         }
 
         var searchPromise = function(patientIdentifier) {
@@ -18,7 +18,6 @@ angular.module('opd.documentupload')
                 if (data.results.length > 0) {
                     var patient = data.results[0];
                     $rootScope.patient = patient;
-                    $location.path("/patient/" + patient.uuid + "/document");
                     if(data.results.length == 1)
                         $scope.gotoDocumentUpload(patient.uuid);
 
