@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('opd.document')
+angular.module('opd.documentupload')
     .controller('DocumentController', ['$scope', 'visitService', 'spinner', 'visitDocumentService','$rootScope',
         function ($scope, visitService, spinner, visitDocumentService, $rootScope) {
             $scope.visitTypes = [];

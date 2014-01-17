@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('opd.document').factory('initialization',
-    ['$rootScope', '$q', '$route', 'appService', 'configurationService', 'patientService', 'patientMapper', 'authenticator',
-        function ($rootScope, $q, $route, appService, configurationService, patientService, patientMapper, authenticator) {
+angular.module('opd.documentupload').factory('initialization',
+    ['$rootScope', '$q', '$route', 'configurationService', 'patientService', 'patientMapper', 'authenticator',
+        function ($rootScope, $q, $route, configurationService, patientService, patientMapper, authenticator) {
 
             var initializationPromise = $q.defer();
 
@@ -31,12 +31,7 @@ angular.module('opd.document').factory('initialization',
                 return deferrables.promise;
             };
 
-            var initApp = function () {
-                return appService.initApp('dashboard');
-            };
-
-
-            authenticator.authenticateUser().then(initApp).then(getConfigAndPatientInfo).then(function () {
+            authenticator.authenticateUser().then(getConfigAndPatientInfo).then(function () {
                 initializationPromise.resolve();
             });
 

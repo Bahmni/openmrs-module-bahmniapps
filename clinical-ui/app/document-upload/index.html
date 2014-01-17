@@ -2,25 +2,31 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.3.custom.min.css">
         <!-- build:css document-upload.min.css -->
+        <link rel="stylesheet" href="../components/jquery-ui/themes/smoothness/jquery-ui.min.css">
         <link rel="stylesheet" href="../styles/styles.css"/>
         <!-- endbuild -->
-        <title>Patients</title>
+        <title>Document Upload</title>
     </head>
     <body>
         <div ng-app="documentupload">
-            <div ng-view id="view-content" class="opd-inner-wrapper"></div>
+            <div ng-include src="'../common/modules/patient/header/views/header.html'"></div>
+            <div class="opd-wrapper">
+                <p class="caution" ng-show="server_error">{{server_error}}</p>
+                <div ng-view id="view-content" class="opd-content-wrapper"></div>
+            </div>
             <script src="../components/jquery/jquery.js"></script>
-            <script src="../lib/jquery/jquery-ui-1.10.3.custom.min.js"></script>
-            
+            <script src="../components/jquery-ui/ui/minified/jquery-ui.custom.min.js"></script>
+
             <script src="../components/angular/angular.js"></script>
             <script src="../components/angular-route/angular-route.js"></script>
             <script src="../components/angular-cookies/angular-cookies.js"></script>
+            <script src="../components/moment/moment.js"></script>
 
             <!-- build:js document-upload.min.js -->
             <script src="../components/ngInfiniteScroll/ng-infinite-scroll.js"></script>
 
+            <script src="../common/modules/infrastructure/httpErrorInterceptor.js"></script>
             <script src="../common/modules/auth/authentication.js"></script>
             <script src="../common/modules/app-framework/appdescriptor.js"></script>
             <script src="../common/modules/app-framework/appframework.js"></script>
@@ -28,16 +34,26 @@
             <script src="../common/constants.js"></script>
             <script src="../common/modules/infrastructure/init.js"></script>
             <script src="../common/modules/infrastructure/services/configurationService.js"></script>
+            <script src="../common/modules/infrastructure/encounterConfig.js"></script>
+            <script src="../common/modules/infrastructure/spinner.js"></script>
 
             <script src="../common/modules/patient/init.js"></script>
             <script src="../common/modules/patient/mappers/patientMapper.js"></script>
             <script src="../common/modules/patient/services/patientService.js"></script>
+            <script src="../common/modules/patient/filters/gender.js"></script>
+
+            <script src="../common/modules/visit/init.js"></script>
+            <script src="../common/modules/visit/services/visitService.js"></script>
+
+            <script src="../common/modules/util/init.js"></script>
+            <script src="../common/modules/util/datePicker.js"></script>
 
             <script src="app.js"></script>
-
-            
             <script src="modules/document-upload/init.js"></script>
+            <script src="modules/document-upload/initialization.js"></script>
             <script src="modules/document-upload/controllers/searchPatientController.js"></script>
+            <script src="modules/document-upload/controllers/documentController.js"></script>
+            <script src="modules/document-upload/services/visitDocumentService.js"></script>
             <script src="../common/modules/backlink/services/backlinkService.js"></script>
             <script src="../common/modules/common/controllers/opdcommonheadercontroller.js"></script>
             <!-- endbuild -->

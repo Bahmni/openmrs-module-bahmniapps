@@ -1,5 +1,39 @@
-<div class="opd-header-wrapper">
-    <div class="opd-header-top" ng-include src="'../common/modules/common/header.html'"></div>
-</div>
+<div class="document-upload">
+    <form class="form-field-inline" ng-submit="save()">
+        <div class="form-field">
+            <div>
+                <label>Visit Type:</label>
+            </div>
+            <div class="field-value">
+                <select ng-model="visitType" ng-options="vt.display for vt in visitTypes" required>
+                    <option value></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-field">
+            <div>
+                <label class="form-attribute">Start Date:</label></div>
+            <div class="field-value">
+                <input type="text" ng-model="startDate" datepicker required class="field-value"/></div>
+        </div>
+        <div class="form-field">
+            <div>
+                <label class="form-attribute">End Date:</label></div>
+            <div class="field-value">
+                <input type="text" ng-model="endDate" datepicker class="field-value"/></div>
+        </div>
+        <div class="upload-inline-buttons">
+            <input id="file-browse" type="file" name="image" accept="image/*" capture="camera" file-upload
+                   style="position:absolute;left:-9999px;visibility: hidden;" file-required/>
 
-<div >Dummy Page for Document Upload Patient Id :{{patient.uuid}}</div>
+            <button type="button"><label for="file-browse" class="icon-camera"> SCAN </label></button>
+            <button type="submit"><label class="icon-save"/> SAVE</button>
+        </div>
+        <div id="visitDiv" class="clear">
+            <img ng-repeat="img in images" ng-src="{{img}}" width="100"/>
+        </div>
+    </form>
+    <div id="messages">
+        <p class="success" ng-show="success"><i class="icon-ok-circle white small"></i>File(s) uploaded successfully</p>
+    </div>
+</div>
