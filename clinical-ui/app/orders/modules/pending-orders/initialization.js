@@ -11,6 +11,7 @@ angular.module('orders.pending').factory('initialization', ['$rootScope', '$q', 
             var configurationsPromises = $q.defer();
             configurationService.getConfigurations(['radiologyObservationConfig','encounterConfig']).then(function (configurations) {
                 $rootScope.encounterTypes = configurations.encounterConfig.encounterTypes;
+                $rootScope.orderTypes = configurations.encounterConfig.orderTypes;
                 $rootScope.radiologyObservationConcept = configurations.radiologyObservationConfig.results[0];
                 configurationsPromises.resolve();
             });

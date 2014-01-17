@@ -11,27 +11,28 @@
 	        <div class="col col6">Action</div>-->
 
 	    </div>
-
-		<div ng-repeat="order in orders" class="table-body">
-	        <div class="row">
-	            <div class="col col1">
-	                <label>{{order.concept.name.display}}</label>
-	            </div>
-	            <div class="col col2">
-	                <label>{{order.dateCreated | date:'d MMM, yyyy h:mma'}}</label>
-	            </div>
-	            <div class="col col3">
-	                <label>{{order.creator.person.display}}</label>
-	            </div>
-                <div class="col col5">
-                    <button ng-click="toggleResultsEntry($index)">Enter results</button>
-                </div>
-                <form  ng-show="resultsEntry[$index]" ng-submit="saveResult(order)">
-                    <textarea ng-model="order.resultText" name="" id="" cols="20" rows="5"></textarea>
-                    <input type="submit" >
-                </form>
-
-	        </div>
-		</div>                
+		<div ng-repeat="(key, value) in orders" class="table-body">
+			{{key}}
+			<div ng-repeat="order in value.data.results" class="table-body">
+		        <div class="row">
+		            <div class="col col1">
+		                <label>{{order.concept.name.display}}</label>
+		            </div>
+		            <div class="col col2">
+		                <label>{{order.dateCreated | date:'d MMM, yyyy h:mma'}}</label>
+		            </div>
+		            <div class="col col3">
+		                <label>{{order.creator.person.display}}</label>
+		            </div>
+	                <div class="col col5">
+	                    <button ng-click="toggleResultsEntry($index)">Enter results</button>
+	                </div>
+	                <form  ng-show="resultsEntry[$index]" ng-submit="saveResult(order)">
+	                    <textarea ng-model="order.resultText" name="" id="" cols="20" rows="5"></textarea>
+	                    <input type="submit" >
+	                </form>
+		        </div>
+			</div> 
+		</div>               
 	</div>
 </div>

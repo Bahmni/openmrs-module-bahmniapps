@@ -1,11 +1,12 @@
 "use strict";
 
 angular.module('orders.pending.controllers')
-    .controller('PendingOrdersController', ['$scope','$rootScope','$route', '$routeParams', 'PendingOrderService', function ($scope,$rootScope,$route,$routeParams, pendingOrderService) {
+    .controller('PendingOrdersController', ['$scope','$rootScope','$route', '$routeParams', 'PendingOrderService','$q', function ($scope,$rootScope,$route,$routeParams, pendingOrderService,$q) {
 
     	$scope.getOrders = function (patientUuid, orderTypeUuid) {
+            var results =[];
     		pendingOrderService.getOrders(patientUuid, orderTypeUuid).success(function(response){
-    			$scope.orders = response.results;
+    			return response.results;
     		});
     	};
 
@@ -47,16 +48,33 @@ angular.module('orders.pending.controllers')
 
 
         };
+        var getResults = function() {
+            var patientUuid = $routeParams.patientUuid;
+            var orderTypeUuid = $routeParams.orderTypeUuid;
+            $scope.resultsEntry = [];
+            $rootScope.availableBoards = [
+                { name: 'Pending Orders', url: ''}
+            ];
+            $rootScope.currentBoard = $scope.availableBoards[0];
+            var nonLabOrderTypes = [];
+            Object.keys($rootScope.orderTypes).forEach(function(orderTypeKey) {
+                if (orderTypeKey != "Drug Order" && orderTypeKey != "Lab Order") {
+                    nonLabOrderTypes[orderTypeKey] = $rootScope.orderTypes[orderTypeKey]
+                }
+            });
+            var getOrdersPromises ={};
+            for(var key in nonLabOrderTypes) {
+                getOrdersPromises[key] = pendingOrderService.getOrders(patientUuid, nonLabOrderTypes[key])
+            }
+            return $q.all(getOrdersPromises);
+        };
 
-
-    	var patientUuid = $routeParams.patientUuid;
-    	var orderTypeUuid = $routeParams.orderTypeUuid;
-        $scope.resultsEntry = [];
-        $rootScope.availableBoards = [
-            { name: 'Pending Orders', url: ''}
-        ];
-        $rootScope.currentBoard = $scope.availableBoards[0];
-
-
-    	$scope.getOrders(patientUuid,orderTypeUuid);
+        $scope.orders = {};
+        getResults().then(function(results){
+            for(var key in results) {
+                $scope.orders[key] = results[key];
+            }
+        });
+        
+        
 }]);
