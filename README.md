@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #Bhamni OPD
+=======
+#Bahmni Registration application
+>>>>>>> fixed spelling
 
 This application will help doctors capture data in OPD. 
 
