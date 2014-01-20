@@ -12,7 +12,7 @@
 
 	    </div>
 		<div ng-repeat="(key, value) in orders" class="table-body" ng-show="value.data.results.length > 0">
-			{{key}}
+			<h2>{{key}}</h2>
 			<div ng-repeat="order in value.data.results" class="table-body">
 		        <div class="row">
 		            <div class="col col1">

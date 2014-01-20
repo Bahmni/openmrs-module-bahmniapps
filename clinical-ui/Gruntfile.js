@@ -161,6 +161,7 @@ module.exports = function (grunt) {
                 '<%= yeoman.dist %>/common/**/*.html',
                 '<%= yeoman.dist %>/trends/**/*.html',
                 '<%= yeoman.dist %>/trends/**/*.html',
+                '<%= yeoman.dist %>/orders/**/*.html',
                 '<%= yeoman.dist %>/document/**/*.html',
                 '<%= yeoman.dist %>/document-upload/**/*.html',
             ],
