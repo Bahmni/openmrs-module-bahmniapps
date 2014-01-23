@@ -1,76 +1,112 @@
 .investigation {
+    padding-top: 10px;
+    header {
+        padding: 10px 10px;
+        margin: 5px;
+    }
     .two-column  {
-        display: inline-flex;
-
         .first {
             width: 25%;
+            float: left;
         }
 
         .last {
             width: 75%;
+            float: left;
         }
-    }
-
-    .filters .selected {
-        font-size: 30px;
     }
 
     .filters, .panels, .tests {
         li {
             padding: 5px;
+            margin: 2px;
         }
     }
 
-    .selected-via-panel {
-        color: grey;
+    .filters {
+        li {
+            color: #17589A;
+            background: #f8f8f8;
+            margin: 2px 7px;
+            &.selected {
+                color: #046DD7;
+                background: #E6E6E6;
+            }
+        }
     }
 
     .panels, .tests {
+        margin: 5px 5px 10px;
         li {
             width: 47%;
             display: inline-block;
+            background: #f2f2f2;
+            .icon-ok {
+                display: none;
+            }
+            &.selected {
+                // .icon-ok {
+                //    display: inline-block;
+                // }
+                background: #C6DCBC;
+            }
+            &.selected-via-panel {
+                color: grey;
+            }
         }
     }
 
-    padding:10px;
-     div:focus{
+    div:focus {
         outline:none;
     }
+
     #selectedNodesArea {
         min-height: 100px;
-        padding:20px;
+        padding-left: 7px;
     }
-    .investigation-results{
-        legend{
+
+    .investigation-results {
+        legend {
             font-weight: bold;
             color:#868686;
             font-family:arial;
         }
     }
+
     .selectedNode {
         background-color: #f1f1f1;
         color: #474747;
-        padding: 0px 0px 0px 5px;
+        padding: 0px 15px 0px 5px;
         border-radius: 5px;
         border:1px solid #cecece;
         margin-right: 10px;
         font: 25px;
         display: inline-block;
         margin-bottom: 10px;
-        .test-name{
+        position: relative;
+        border-left: 5px solid #DEE1E4;
+        .test-name {
             min-width:70px;
             display: inline-block;
         }
-        &.panel{
+        &.panel {
             border-left:5px solid #85CF15;
         }
         &.voided .test-name {
             text-decoration: line-through;
         }
+        > span {
+            padding: 10px 20px 10px 10px;
+        }
+        button {
+            position: absolute;
+            top: 25%;
+            right: 3px;
+        }
     }
-    .selectableTypeSet{
-        .icon-ok{
-            color:#85CF15;
+
+    .selectableTypeSet {
+        .icon-ok {
         }
     }
 
@@ -105,12 +141,12 @@
 }
 
 @media only screen and (max-width: 768px) {
-   .investigation{ 
+   .investigation{
         .column ul{
             width:241px;
             li{
-                @include font-size(0.8); 
-                overflow-wrap: repeat-y;               
+                @include font-size(0.8);
+                overflow-wrap: repeat-y;
             }
         }
     }
