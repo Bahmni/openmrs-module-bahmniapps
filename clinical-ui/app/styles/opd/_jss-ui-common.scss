@@ -312,3 +312,13 @@ p.success{
   padding: 5px;
   background: #000000;
 }
+
+.asterick {
+    color:red;
+}
+
+input[file-upload] {
+    position:absolute;
+    left:-9999px;
+    visibility: hidden;
+}
