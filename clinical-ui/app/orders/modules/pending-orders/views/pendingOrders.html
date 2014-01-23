@@ -25,9 +25,9 @@
 		                <label>{{order.creator.person.display}}</label>
 		            </div>
 	                <div class="col col5">
-	                    <button ng-click="toggleResultsEntry($index)">Enter results</button>
+	                    <button ng-click="toggleResultsEntry($parent.$index, $index)">Enter results</button>
 	                </div>
-	                <form  ng-show="resultsEntry[$index]" ng-submit="saveResult(order)">
+	                <form  ng-show="resultsEntry[$parent.$index][$index]" ng-submit="saveResult(order)">
 	                    <textarea ng-model="order.resultText" name="" id="" cols="20" rows="5"></textarea>
 	                    <input type="submit" >
 	                </form>
