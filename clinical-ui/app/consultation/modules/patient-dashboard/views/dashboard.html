@@ -82,7 +82,7 @@
             <h2>Lab Orders</h2>
             <ul class="block-content">
                 <li ng-repeat="labOrder in visitSummary.labTestOrderObsMap">
-                    <div>
+                    <div  bo-show="labOrder.observations.length == 0 || labOrder.observations[0].concept.set">
                         <span bo-text="labOrder.testOrder.concept.name"></span>
                         <ul class="add-info">
                             <li>
@@ -93,7 +93,7 @@
                     <div ng-repeat="observation in labOrder.observations">
                         <section class="observation" bo-show="observation">
                             <div>
-                                <observation-summary observation="observation" hide-parent-obs-name="true"/>
+                                <observation-summary observation="observation" hide-parent-obs-name="true" full-date="true" />
                             </div>
                         </section>
                     </div>
@@ -179,7 +179,7 @@
                     <ul>
                         <li ng-repeat="observation in visitDay.observations">
                             <div>
-                                <observation-summary patient-uuid="patientUuid" observation="observation" show-trends="showTrends"/>
+                                <observation-summary patient-uuid="patientUuid" observation="observation" show-trends="showTrends" />
                             </div>
                         </li>
                     </ul>        

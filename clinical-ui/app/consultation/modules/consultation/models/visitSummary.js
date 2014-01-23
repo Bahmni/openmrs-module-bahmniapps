@@ -43,6 +43,7 @@ Bahmni.Opd.Consultation.VisitSummary.create = function (encounterTransactions, o
     var visitStartDateTime;
     var mostRecentEncounterDateTime;
     var labTestOrderObsMap = [];
+    var provider;
 
 
     var labTestOrderTypeUuid = orderTypes[Bahmni.Opd.Consultation.Constants.labOrderType];
@@ -50,17 +51,45 @@ Bahmni.Opd.Consultation.VisitSummary.create = function (encounterTransactions, o
     var mapTestOrderWithObs = function (testOrder) {
         var obs = [];
         angular.forEach(encounterTransactions, function (encounterTransaction) {
-            getObservationForOrderIfExist(encounterTransaction.observations, testOrder, obs);
+            provider = encounterTransaction.providers[0];
+            getObservationForOrderIfExist(encounterTransaction.observations, testOrder, obs, provider);
         });
         labTestOrderObsMap.push({"testOrder": testOrder, "observations": obs});
     }
+    var setProviderToObservation = function(observation) {
+        observation.provider = provider;
+        angular.forEach(observation.groupMembers, setProviderToObservation);
+    }
 
-    var getObservationForOrderIfExist = function (observations, testOrder, obs) {
+    var makeCommentsAsAdditionalObs = function(observation) {
+        angular.forEach(observation.groupMembers, makeCommentsAsAdditionalObs);
+        if(observation.groupMembers) {
+
+            var additionalObs = [];
+            var testObservation = [];
+            angular.forEach(observation.groupMembers, function(obs){
+                if(obs.concept.name === Bahmni.Opd.Consultation.Constants.commentConceptName) {
+                    additionalObs.push(obs);
+                }
+                else {
+                    testObservation.push(obs);
+                }
+            })
+            observation.groupMembers = testObservation;
+            if(observation.groupMembers[0] && additionalObs.length > 0){
+                observation.groupMembers[0].additionalObs = additionalObs;
+            }
+        }
+    }
+
+    var getObservationForOrderIfExist = function (observations, testOrder, obs, provider) {
          angular.forEach(observations, function (observation) {
             if (testOrder.uuid === observation.orderUuid) {
+                setProviderToObservation(observation);
+                makeCommentsAsAdditionalObs(observation);
                 obs.push(observation);
             } else if (observation.orderUuid == null && observation.groupMembers.length > 0) {
-                 getObservationForOrderIfExist(observation.groupMembers, testOrder, obs);
+                 getObservationForOrderIfExist(observation.groupMembers, testOrder, obs, provider);
             }
         });
     }
@@ -75,7 +104,6 @@ Bahmni.Opd.Consultation.VisitSummary.create = function (encounterTransactions, o
             }
         });
     });
-
 
     if (encounterTransactions.length > 0) {
         var encountersInAscendingOrder = encounterTransactions.slice(0).sort(function (e1, e2) {

@@ -69,4 +69,8 @@ angular.module('opd.patientDashboard',[])
             return visit.uuid === $scope.selectedVisit.uuid;
         }
 
+        $scope.toggle = function(item) {
+            item.show = !item.show
+        }
+
     }]);

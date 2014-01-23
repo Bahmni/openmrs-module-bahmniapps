@@ -23,6 +23,7 @@ Bahmni.Opd.Consultation.Constants = (function() {
                 labDepartmentsConceptSetName: "Lab Departments",
                 otherInvestigationsConceptSetName: "Other Investigations",
                 otherInvestigationCategoriesConceptSetName: "Other Investigations Categories",
+                commentConceptName: "COMMENTS"
 	};
 })();
 

@@ -6,7 +6,8 @@ angular.module('opd.consultation')
             observation:"=",
             patientUuid:"=",
             showTrends:"=",
-            hideParentObsName:"@"
+            hideParentObsName:"@",
+            fullDate:"@"
         },
         //not able to use templateUrl, because of recurssive use of directive. Not sure what the error is.
         template: '<ng-include src="\'../consultation/modules/consultation/views/observationSummaryTemplate.html\'" />',
@@ -18,6 +19,14 @@ angular.module('opd.consultation')
             }
             if(!scope.hideParentObsName) {
                 scope.hideParentObsName = false;
+            }
+            if(!scope.fullDate) {
+                scope.fullDate = false;
+            }
+            scope.toggle = function(items) {
+                angular.forEach(items, function(item) {
+                    item.show = !item.show;
+                })
             }
         }
     }
