@@ -10,7 +10,9 @@
     </head>
     <body>
         <div ng-app="documentupload">
-            <div ng-include src="'../common/modules/patient/header/views/header.html'"></div>
+            <div ng-hide="tiles && tiles.header" ng-include src="'../common/modules/patient/header/views/header.html'"></div>
+            <div ng-show="tiles && tiles.header" ng-include src="tiles.header"></div>
+
             <div class="opd-wrapper">
                 <div ng-view id="view-content" class="opd-content-wrapper"></div>
             </div>
@@ -49,6 +51,7 @@
 
             <script src="../common/modules/util/init.js"></script>
             <script src="../common/modules/util/datePicker.js"></script>
+            <script src="../common/modules/util/tilesLayout.js"></script>
 
             <script src="app.js"></script>
             <script src="modules/document-upload/init.js"></script>

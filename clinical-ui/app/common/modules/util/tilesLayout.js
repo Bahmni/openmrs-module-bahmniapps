@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('opd.consultation').factory('tilesLayout',
+angular.module('bahmni.common.util').factory('tilesLayout',
     ['$rootScope', '$route', '$location', function($rootScope, $route, $location) {
         var handleTiles = function() {
             var routes = Object.keys($route.routes).map(function (key) {

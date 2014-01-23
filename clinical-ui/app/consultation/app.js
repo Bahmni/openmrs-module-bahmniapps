@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('consultation', ['ngRoute','opd.consultation', 'bahmni.common.patient',
+angular.module('consultation', ['ngRoute','opd.consultation', 'bahmni.common.patient', 'bahmni.common.util',
     'bahmni.common.visit', 'bahmni.common.encounter', 'opd.conceptSet', 'authentication', 'appFramework', 'opd.bedManagement.services',
     'httpErrorInterceptor', 'pasvaz.bindonce', 'bahmni.common.controllers', 'bahmni.common.backlink', 'opd.patientDashboard']);
 angular.module('consultation').config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {

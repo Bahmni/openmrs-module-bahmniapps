@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('opd.documentupload')
-    .controller('DocumentController', ['$scope', 'visitService', 'spinner', 'visitDocumentService','$rootScope', '$http','$q',
-        function ($scope, visitService, spinner, visitDocumentService, $rootScope, $http, $q) {
+    .controller('DocumentController', ['$scope', '$route', 'visitService', 'patientService', 'patientMapper', 'spinner', 'visitDocumentService','$rootScope', '$http','$q',
+        function ($scope, $route, visitService, patientService, patientMapper, spinner, visitDocumentService, $rootScope, $http, $q) {
 
             var testUuid;
             var clearForm = function(){
@@ -18,6 +18,13 @@ angular.module('opd.documentupload')
                 })
             }
 
+            var getPatient = function () {
+                return patientService.getPatient($route.current.params.patientUuid).success(function (openMRSPatient) {
+                    $rootScope.patient = patientMapper.map(openMRSPatient);
+                });
+            };
+
+
             var getDummyTestUuid = function(){                                     //Placeholder testUuid until future stories are played
                 return $http.get(Bahmni.Common.Constants.conceptUrl,
                     {
@@ -32,6 +39,7 @@ angular.module('opd.documentupload')
                 var deferrables = $q.defer();
                 var promises = [];
                 promises.push(getVisitTypes());
+                promises.push(getPatient());
                 promises.push(getDummyTestUuid());
                 $q.all(promises).then(function () {
                     deferrables.resolve();
