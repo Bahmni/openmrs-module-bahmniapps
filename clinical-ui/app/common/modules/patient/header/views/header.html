@@ -8,24 +8,8 @@
                 </button>
             </li>
         </ul>
-        <ul class="patient-info" >
-            <li ng-click="togglePatientDetails()">{{patient.name}}</li>
-            <li class="patient-detail-pointer"><span class="icon-white small" ng-class="{'icon-caret-up': showPatientDetails, 'icon-caret-down': !showPatientDetails}"></span></li>
-            <li class="patient-img">
-                <img class="roundImages" ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';" ng-click="gotoPatientDashboard()">
-            </li>
-        </ul>
 
-        <div class="patient-detail" ng-show="showPatientDetails">
-            <ul>
-                <li>{{patient.identifier}}</li>
-                
-                <li>{{patient.gender | gender }}</li><li> {{patient.age}}</li>
-                <li ng-show="bedDetails">{{bedDetails.wardName}}</li>
-                <li ng-show="bedDetails">{{bedDetails.bedNumber}}</li>
-            </ul>
-        </div>
-    </div>
+        <patient-summary patient="patient" bed-details="bedDetails" on-image-click-handler="gotoPatientDashboard()"/>
 </div>
 <div>
     <p class="caution" ng-show="server_error">{{server_error}}</p>
