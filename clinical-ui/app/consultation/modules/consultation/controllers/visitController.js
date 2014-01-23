@@ -13,7 +13,7 @@ angular.module('opd.consultation.controllers')
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
     spinner.forPromise(visitService.getVisitSummary(visitUuid).success(function (encounterTransactions) {
-        $scope.visitSummary = Bahmni.Opd.Consultation.VisitSummary.create(encounterTransactions);
+        $scope.visitSummary = Bahmni.Opd.Consultation.VisitSummary.create(encounterTransactions, $scope.encounterConfig.orderTypes);
         if($scope.visitSummary.hasEncounters()) {
             loadEncounters($scope.visitSummary.mostRecentEncounterDateTime);
         }

@@ -78,6 +78,29 @@
                 </ul>
             </section>
 
+        <section class="block labTestOrders" bo-show="visitSummary.hasLabTests()">
+            <h2>Lab Orders</h2>
+            <ul class="block-content">
+                <li ng-repeat="labOrder in visitSummary.labTestOrderObsMap">
+                    <div>
+                        <span bo-text="labOrder.testOrder.concept.name"></span>
+                        <ul class="add-info">
+                            <li>
+                                <span bo-text="labOrder.testOrder.provider.name"></span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div ng-repeat="observation in labOrder.observations">
+                        <section class="observation" bo-show="observation">
+                            <div>
+                                <observation-summary observation="observation" hide-parent-obs-name="true"/>
+                            </div>
+                        </section>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
             <section infinite-scroll="loadEncountersForPreviousDay()" infinite-scroll-disabled="!hasMoreVisitDays" ng-show="visitDay.hasData()" ng-repeat="visitDay in visitDays" class="block-day block">
                 <div>
                     <h1 bo-text="'Day ' + visitDay.dayNumber"></h1>
@@ -137,7 +160,7 @@
                                 <li><span bo-text="testOrder.provider.name"></span></li>
                             </ul>
                         </li>
-                    </ul>        
+                    </ul>
                 </section>
                 <section class="block otherTestOrders" ng-show="visitDay.hasOtherTestOrders()">
                     <h2>Other Investigations</h2>

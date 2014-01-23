@@ -11,7 +11,7 @@ angular.module('opd.patientDashboard',[])
             $scope.visitDays = [];
             $scope.hasMoreVisitDays;
             visitService.getVisitSummary(visit.uuid).success(function (encounterTransactions) {
-                $scope.visitSummary = Bahmni.Opd.Consultation.VisitSummary.create(encounterTransactions);
+                $scope.visitSummary = Bahmni.Opd.Consultation.VisitSummary.create(encounterTransactions, $scope.encounterConfig.orderTypes);
                 if($scope.visitSummary.hasEncounters()) {
                     loadEncounters($scope.visitSummary.mostRecentEncounterDateTime);
                 }

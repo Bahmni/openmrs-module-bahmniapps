@@ -10,9 +10,9 @@
     </div>
 
     <ul ng-switch-default>
-        <span bo-text="observation.concept.name"></span>
+        <span bo-text="observation.concept.name" bo-hide="hideParentObsName"></span>
         <li ng-repeat="groupMember in observation.groupMembers">
-            <observation-summary patient-uuid="patientUuid" observation="groupMember"/>
+            <observation-summary patient-uuid="patientUuid" observation="groupMember" hide-parent-obs-name="{{hideParentObsName}}" />
         </li>
     </ul>
 </div>    
