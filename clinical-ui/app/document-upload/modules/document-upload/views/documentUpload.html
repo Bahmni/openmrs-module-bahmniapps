@@ -5,8 +5,8 @@
                 <label>Visit Type<span class="asterick">*</span></label>
             </div>
             <div class="field-value">
-                <select ng-model="visitType" ng-options="vt.display for vt in visitTypes" required>
-                    <option value></option>
+                <select ng-model="visitType" ng-options="vt.display for vt in visitTypes" required="">
+                    <option value=""></option>
                 </select>
             </div>
         </div>
@@ -14,24 +14,44 @@
             <div>
                 <label class="form-attribute">Start Date<span class="asterick">*</span></label></div>
             <div class="field-value">
-                <input type="text" ng-model="startDate" datepicker required class="field-value"/></div>
+                <input type="text" ng-model="startDate" datepicker="" required="" class="field-value"></div>
         </div>
         <div class="form-field">
             <div>
                 <label class="form-attribute">End Date</label></div>
             <div class="field-value">
-                <input type="text" ng-model="endDate" datepicker class="field-value"/></div>
+                <input type="text" ng-model="endDate" datepicker="" class="field-value"></div>
         </div>
         <div class="upload-inline-buttons">
-            <input id="file-browse" type="file" accept="image/*" capture="camera" file-upload required/>
 
-            <label for="file-browse" class="icon-camera">SCAN</label>
-            <button type="submit" class="icon-save">SAVE</button>
+            <input id="file-browse" type="file" name="image" accept="image/*" capture="camera" file-upload required>
+
+            <button type="button"><label for="file-browse" class="icon-camera"> SCAN </label></button>
+            <button type="submit"><label class="icon-save" ng-click="save()"> SAVE</button>
         </div>
-        <div id="visitDiv" class="clear">
-            <img ng-repeat="img in images" ng-src="{{img}}" width="100"/>
-        </div>
+
+        
     </form>
+    
+    <div id="allVisitsDiv" class="clear">
+            <div>
+                <div ng-repeat="visit in visits" >
+                    <span ng-click="resetCurrentVisit(visit)">{{visit.startDatetime}}</span>
+                    <span ng-click="resetCurrentVisit(visit)">{{visit.stopDatetime}}</span>
+                    <button type="button" ng-click="resetCurrentVisit(visit)"><label for="file-browse" class="icon-camera"> SCAN </label></button>
+                    <button type="submit"><label class="icon-save" ng-click="save()"> SAVE</button>
+                    <div class="clear" ng-if="isCurrentUuid(visit.uuid)">
+                        <div ng-repeat="document in oldDocumentForVisit[visit.uuid]">
+                            <img ng-src="/document_images/{{document}}" width="100">
+                        </div>
+                    </div>
+                    <div id="visitDiv" class="clear">
+                        <img ng-repeat="img in newImagesForVisit[visit.uuid]" ng-src="{{img}}" width="100">
+                    </div>
+                </div>
+            </div>
+    </div>
+
     <div id="messages">
         <p class="success" ng-show="success"><i class="icon-ok-circle white small"></i>File(s) uploaded successfully</p>
     </div>

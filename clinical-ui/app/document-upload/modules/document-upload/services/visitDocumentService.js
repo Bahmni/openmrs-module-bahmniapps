@@ -5,5 +5,5 @@ angular.module('opd.documentupload')
     this.save = function (visitDocument) {
         var url = "/openmrs/ws/rest/v1/bahmnicore/visitDocument";
           return $http.post(url, visitDocument);
-      };
+    };
 }]);
