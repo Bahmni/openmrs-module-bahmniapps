@@ -322,3 +322,18 @@ input[file-upload] {
     left:-9999px;
     visibility: hidden;
 }
+
+.form-horizontal {
+  fieldset {
+    label {
+      float: left;
+      width: 200px;
+      margin-left: 20px;
+    }
+    &.hasLegend {
+      label {
+        margin-left: 10px;
+      }
+    }
+  }
+}
