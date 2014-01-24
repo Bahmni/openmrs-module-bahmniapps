@@ -16,7 +16,15 @@ body{
 .opd-header-wrapper{
         @include pie-clearfix;
         background:#00463F;
-        
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        z-index: 1000;
+        &#opd-tabs {
+            top: 50px;
+        }
+
         header{
             width:960px;
             margin:0px auto;
@@ -44,7 +52,7 @@ body{
                         filter:alpha(opacity=80);
                         &:first-child{
                             background:url(../images/sprites.png) no-repeat;
-                            background-position: 0 -108px ;  
+                            background-position: 0 -108px ;
                             padding-left:20px;
                         }
                         &:hover{
@@ -91,7 +99,7 @@ body{
                               color:#f0f0f0;
                            }
                         }
-                    }  
+                    }
                 a{
                     padding-top:10px;
                     cursor:pointer;
@@ -102,7 +110,7 @@ body{
                             cursor:default;
                         }
                     }
-                    
+
                  }
                 }
             }
@@ -173,21 +181,30 @@ body{
                                 color:#5C5A5A;
                             }
                         }
-                    }  
+                    }
 
                 }
         }
     }
-.opd-wrapper{
-    margin:0px auto;
+.opd-wrapper {
+    margin: 0px auto;
     width:960px;
     position: relative;
-    
-    
-    .opd-content-wrapper{
-       background:#ffffff;
-       padding:0px 10px 20px 10px;
-       height:99%;
+    top: 110px;
+    .opd-content-wrapper {
+        background:#ffffff;
+        padding:10px 10px 20px 10px;
+        height:99%;
+        nav.navbar {
+            background: #F8F8F8;
+            overflow: hidden;
+            padding: 5px 5px;
+            margin: 15px 0;
+            @include border-radius(3px);
+            .navbar-right {
+                float: right;
+            }
+        }
     }
 
 
@@ -197,7 +214,7 @@ table{
     tr{
         th{
             color: #555555;
-            @include background-image(linear-gradient(white, #e2e2e2)); 
+            @include background-image(linear-gradient(white, #e2e2e2));
             text-align: left;
             padding:10px  7px 10px 7px ;
         }
@@ -219,7 +236,7 @@ textarea{
     height:100px;
     width:100px;
 }
-button[disabled] {  
+button[disabled] {
     background: #F7F7F7;
 }
 .active-visits{
@@ -228,7 +245,7 @@ button[disabled] {
         div{
             margin:5px 0px;
             @include font-size(0.9);
-            color:#4d4d4d; 
+            color:#4d4d4d;
         }
     }
 }

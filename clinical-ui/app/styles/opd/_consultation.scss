@@ -2,12 +2,6 @@
     @include pie-clearfix;
 	margin:0px 0px 10px;
 	color:#585858;
-	.header-action{
-		background:#ffffff;
-		width:100px;
-		margin:0px auto;
-		position:relative;
-	}
 	h2{
         @include font-size(1.1);
 		border-bottom:1px solid #00463f;
