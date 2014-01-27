@@ -36,8 +36,8 @@ angular.module('orders.pending.controllers')
         };
 
 
-        $scope.toggleResultsEntry = function(parent, index){
-            $scope.resultsEntry[parent][index] = $scope.resultsEntry[parent][index]?false:true;
+        $scope.toggleResultsEntry = function(toggleOrderUuid){
+            $scope.resultsEntry[toggleOrderUuid] = $scope.resultsEntry[toggleOrderUuid]?false:true;
         }
 
         $scope.saveResult = function(order){
@@ -51,7 +51,7 @@ angular.module('orders.pending.controllers')
         var getResults = function() {
             var patientUuid = $routeParams.patientUuid;
             var orderTypeUuid = $routeParams.orderTypeUuid;
-            $scope.resultsEntry = [[]];
+            $scope.resultsEntry = {};
             $rootScope.availableBoards = [
                 { name: 'Pending Orders', url: ''}
             ];
