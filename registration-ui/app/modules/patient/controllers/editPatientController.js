@@ -63,15 +63,15 @@ angular.module('registration.patient.controllers')
 
             var goToVisitPage = function(patientData) {
                 $scope.patient.uuid = patientData.patient.uuid;
-                $scope.patient.name = patientData.patient.person.names[0].name;
+                $scope.patient.name = patientData.patient.person.names[0].display;
                 patientService.rememberPatient($scope.patient);
-                $location.path("/patient/" + patientData.uuid + "/visit");
+                $location.path("/patient/" + patientData.patient.uuid + "/visit");
             };
 
             var createVisit = function(patientProfileData){
                 $scope.visitControl.createVisit(patientProfileData.patient.uuid).success(function() {
                     $scope.patient.uuid = patientProfileData.patient.uuid;
-                    $scope.patient.name = patientProfileData.patient.person.names[0].name;
+                    $scope.patient.name = patientProfileData.patient.person.names[0].display;
                     patientService.rememberPatient($scope.patient);
                     goToActionUrl("startVisit", patientProfileData);
                 }).error(function() { spinner.hide(); });

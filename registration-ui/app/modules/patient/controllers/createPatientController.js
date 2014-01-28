@@ -59,7 +59,7 @@ angular.module('registration.patient.controllers')
         var successCallback = function (patientProfileData) {
             $scope.patient.uuid = patientProfileData.patient.uuid;
             $scope.patient.identifier = patientProfileData.patient.identifiers[0].identifier;
-            $scope.patient.name = patientProfileData.patient.name;
+            $scope.patient.name = patientProfileData.patient.person.names[0].display;
             $scope.patient.isNew = true;
             $scope.patient.registrationDate = dateUtil.now();
         };
