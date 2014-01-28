@@ -3,8 +3,8 @@
 angular.module('opd.consultation.controllers')
     .controller('DispositionController', ['$scope', '$q', '$rootScope','dispositionService', 'spinner', function ($scope, $q, $rootScope,dispositionService, spinner) {
 
-        var loadDispositionActions = function(){
-            var dispositionActionsPromise = dispositionService.getDispositionActions().then(function (response) {
+        var getDispositionActionsPromise = function() {
+            return dispositionService.getDispositionActions().then(function (response) {
                 if (response.data && response.data.results) {
 
                     if(response.data.results && response.data.results.length){
@@ -16,25 +16,29 @@ angular.module('opd.consultation.controllers')
                     var disposition = $rootScope.disposition;
                     if(disposition){
                         $scope.dispositionAction =  disposition.code;
-                        if(disposition.additionalObs){
-                            $scope.dispositionNotes = disposition.additionalObs.filter(function(obs){
+                        if(disposition.additionalObs) {
+                            var matchedObs = disposition.additionalObs.filter(function(obs){
                                 return  obs.concept.uuid === $scope.dispositionNoteConceptUuid;
-                            })[0];
+                            });
+                            $scope.dispositionNotes = matchedObs.length > 0 ? matchedObs[0] : null;
                         }
 
                     }
                 }
 
             });
+        }
 
-            var dispositionNotePromise = dispositionService.getDispositionNoteConcept().then(function (response) {
+        var getDispositionNotePromise = function() {
+            return dispositionService.getDispositionNoteConcept().then(function (response) {
                 if (response.data) {
                     $scope.dispositionNoteConceptUuid = response.data.results[0].uuid;
                 }
             });
+        }
 
-            return $q.all([dispositionActionsPromise, dispositionNotePromise]);
-
+        var loadDispositionActions = function() {
+            return getDispositionNotePromise().then(getDispositionActionsPromise);
         }
 
         $scope.getMappingCode = function(concept){
