@@ -133,6 +133,15 @@ textarea{
   width:426.6px;
   height: 84px;
 }
+
+.transparent {
+  opacity: 0.2;
+}
+
+.opaque {
+  opacity: 1;
+}
+
 .simple-form-ui select.illegalValue{
   border: 2px solid;
   border-color: #ff6666;
