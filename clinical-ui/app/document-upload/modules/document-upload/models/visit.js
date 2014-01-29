@@ -17,7 +17,7 @@ Bahmni.Opd.DocumentUpload.Visit = function () {
             encounter.obs && encounter.obs.forEach(function (observation) {
                 observation.groupMembers && observation.groupMembers.forEach(function (member) {
                     if (member.concept.name.name == 'Document') {
-                        savedImages.push({"encodedValue": member.value});
+                        savedImages.push({"encodedValue": member.value, "obsUuid": member.uuid});
                     }
                 });
             });

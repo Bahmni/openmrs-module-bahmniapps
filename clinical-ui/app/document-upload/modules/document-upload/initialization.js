@@ -7,9 +7,8 @@ angular.module('opd.documentupload').factory('initialization',
             var initializationPromise = $q.defer();
 
             var getConsultationConfigs = function () {
-                var configNames = ['encounterConfig', 'patientConfig'];
+                var configNames = ['encounterConfig'];
                 return configurationService.getConfigurations(configNames).then(function (configurations) {
-                    $rootScope.patientConfig = configurations.patientConfig;
                     $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig);
                 });
             };

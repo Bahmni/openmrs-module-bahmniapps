@@ -85,7 +85,7 @@ angular.module('opd.documentupload')
 
                 visit.savedImages.forEach(function (image) {
                     if (image.voided == true) {
-                        visitDocument.documents.push({testUuid: testUuid, image: image.encodedValue, voided: true});
+                        visitDocument.documents.push({testUuid: testUuid, image: image.encodedValue, voided: true, obsUuid: image.obsUuid});
                     }
                 });
 
@@ -98,10 +98,6 @@ angular.module('opd.documentupload')
 
             $scope.save = function (existingVisit) {
                 $scope.resetCurrentVisit(existingVisit);
-                if (existingVisit.images.length == 0) {
-                    $rootScope.server_error = "Please select at least one document to upload";
-                    return;
-                }
 
                 var visitDocument = createVisitDocument(existingVisit);
                 spinner.forPromise(function () {
