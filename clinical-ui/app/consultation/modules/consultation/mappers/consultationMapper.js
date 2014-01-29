@@ -1,4 +1,4 @@
-Bahmni.Opd.ConsultationMapper = function (encounterConfig, dosageFrequencies, dosageInstructions, consultationNoteConcept) {
+Bahmni.Opd.ConsultationMapper = function (dosageFrequencies, dosageInstructions, consultationNoteConcept) {
     this.map = function (encounterTransaction) {
         var specilaObservationConceptUuids = [consultationNoteConcept.uuid];
         var investigations = encounterTransaction.testOrders.filter(function(testOrder) { return !testOrder.voided });

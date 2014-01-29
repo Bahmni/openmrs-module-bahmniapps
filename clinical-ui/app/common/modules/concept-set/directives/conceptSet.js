@@ -9,7 +9,7 @@ angular.module('opd.conceptSet')
             },
             template: '<ng-include src="\'../common/modules/concept-set/views/observation.html\'" />'
         }
-    }]).directive('showConceptSet', ['$rootScope', function ($rootScope) {
+    }]).directive('showConceptSet', ['$rootScope', function () {
         var template =
             '<form>' +
                 '<show-concept observation="rootObservation"></show-concept>' +
@@ -17,7 +17,7 @@ angular.module('opd.conceptSet')
 
         var controller = function ($scope, conceptSetService) {
             var conceptSetName = $scope.conceptSetName;
-            var observationMapper = new Bahmni.ConceptSet.ObservationMapper($rootScope.encounterConfig);
+            var observationMapper = new Bahmni.ConceptSet.ObservationMapper();
             conceptSetService.getConceptSetMembers({name: conceptSetName, v: "fullchildren"}).success(function (response) {
                 var conceptSet = response.results[0];
                 $scope.$watch('observations', function (observations) {
