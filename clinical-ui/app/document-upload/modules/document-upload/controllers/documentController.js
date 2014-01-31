@@ -49,6 +49,14 @@ angular.module('opd.documentupload')
                     });
             };
 
+            var sortVisits = function() {
+                $scope.visits.sort(function(a, b) {
+                        var date1 = new Date(a.startDatetime);
+                        var date2 = new Date(b.startDatetime);
+                        return date2.getTime() - date1.getTime();
+                    });
+            }
+
             var init = function () {
                 initNewVisit();
                 var deferrables = $q.defer();
@@ -109,6 +117,8 @@ angular.module('opd.documentupload')
                             } else {
                                 $scope.visits[$scope.visits.indexOf(existingVisit)] = createVisit(savedVisit);
                             }
+                        }).success(function(){
+                            sortVisits();
                         });
                     });
                 }())
