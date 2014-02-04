@@ -116,6 +116,7 @@ angular.module('registration.patient.controllers')
 
         $scope.forPatient = function(patient){
             $scope.selectedPatient = patient;
+            patientService.rememberPatient(patient);
             return $scope;
         }
 
