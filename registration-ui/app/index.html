@@ -23,18 +23,15 @@
                             <li>
                                 <a><i class="icon-user icon-white small"></i><span ng-bind="currentUser.username"></span></a>
                             </li>
-                            <li>
-                                <a href="#/search"><i class="icon-search icon-white small"></i><span class="nav-link">Search</span></a>
-                            </li>
-                            <li>
-                                <a ng-click="createNew()"><i class="icon-plus icon-white small"></i><span class="nav-link">Create New</span></a>
+                            <li ng-repeat="extension in extensions">
+                                <a ng-click="goTo(extension.url)"><i class="{{extension.icon}} icon-white small"></i><span class="nav-link" ng-bind="extension.label"></span></a>
                             </li>
                             <li>
                                 <a log-out><i class="icon-off icon-white small"></i><span class="nav-link">Logout</span></a>
                             </li>
                         </ul>
                 </header>
-                <p class="caution" ng-show="server_error"><i class="icon-exclamation-sign small"></i>{{server_error}}</p>
+                <p class="caution" ng-show="server_error"><i ng-cloak class="icon-exclamation-sign small"></i><span ng-bind="server_error"></span></p>
                 <div ng-view id="view-content"></div>
                 <script src="components/jquery/jquery.js"></script>
                 <script src="lib/jquery/jquery-ui-1.10.2.1.custom.min.js"></script>
