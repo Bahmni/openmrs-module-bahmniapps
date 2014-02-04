@@ -41,22 +41,6 @@ angular.module('registration.patient.controllers')
             $scope.searchActions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.patient.search.action");
         };
 
-        var formatUrl = function (url, options) {
-            var pattern = /{{([^}]*)}}/g;
-            var matches = url.match(pattern);
-            var replacedString = url;
-            if (matches) {
-                matches.forEach(function(el) {
-                    var key = el.replace("{{",'').replace("}}",'');
-                    var value = options[key];
-                    if (value) {
-                        replacedString = replacedString.replace(el, options[key]);
-                    }
-                });
-            }
-            return replacedString.trim();
-        };
-
         var identifyParams = function (querystring) {
             querystring = querystring.substring(querystring.indexOf('?')+1).split('&');
             var params = {}, pair, d = decodeURIComponent;
@@ -136,7 +120,7 @@ angular.module('registration.patient.controllers')
         }
 
         $scope.doExtensionAction = function(extension) {
-            var forwardTo = formatUrl(extension.url, { 'patientUuid': $scope.selectedPatient.uuid });
+            var forwardTo = appService.getAppDescriptor().formatUrl(extension.url, { 'patientUuid': $scope.selectedPatient.uuid });
             if (extension.label === 'Print') {
                 var params = identifyParams(forwardTo);
                 if (params.launch === 'dialog') {

@@ -83,14 +83,6 @@ angular.module('registration.patient.controllers')
             }
         };
 
-        var formatUrl = function (url, options) {
-            var temp = url;
-            for (var key in options) {
-                temp = temp.replace("{{"+key+"}}", options[key]);
-            }
-            return temp;
-        };
-
         var goToActionUrl = function(actionName, patientProfileData) {
             if ($scope.createActions) {
                 var matchedExtensions = $scope.createActions.filter(function(extension) {
@@ -99,7 +91,7 @@ angular.module('registration.patient.controllers')
                 if (matchedExtensions.length > 0) {
                     var extensionParams = matchedExtensions[0].extensionParams;
                     if (extensionParams && extensionParams.forwardUrl) {
-                        var fwdUrl = formatUrl(extensionParams.forwardUrl, {'patientUuid' : patientProfileData.patient.uuid} );
+                        var fwdUrl = appService.getAppDescriptor().formatUrl(extensionParams.forwardUrl, {'patientUuid' : patientProfileData.patient.uuid} );
                         spinner.hide();
                         $location.url(fwdUrl);
                     }

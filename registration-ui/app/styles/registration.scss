@@ -121,8 +121,13 @@ input[required],select[required]{
           display: none;
           button{
               background:#fff;
+              color:#000;
               position:relative;
               z-index:99;
+
+            &:hover {
+              background: #f5f5f5;
+            }
           }
         }
         button {
@@ -134,9 +139,6 @@ input[required],select[required]{
           font-size: 14px;
           &:focus{
             outline:none;
-          }
-          &:hover{
-            background: #f5f5f5;
           }
         }
     }

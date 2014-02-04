@@ -79,6 +79,10 @@ angular.module('registration.util')
                     return $scope.options;
                 }
             })();
+
+            $scope.hasMultipleOptions = function() {
+                return $scope.options.length > 1;
+            }
         }
 
         return {
@@ -88,17 +92,18 @@ angular.module('registration.util')
                             '<li ng-repeat="option in sortedOptions"' +
                                 'ng-class="{primaryOption: $index == 0, secondaryOption: $index > 0}"' +
                              '>' +
-                                '<button ng-click="optionClick()(option)">{{optionText()(option)}}</a>' +
+                                '<button ng-class="buttonClass" ng-click="optionClick()(option)">{{optionText()(option)}}</a>' +
                             '</li>' +
                         '</ul>' +
-                        '<button class="toggle-button icon-caret-down" type="button"></button></div>',
+                        '<button class="toggle-button icon-caret-down" ng-show="hasMultipleOptions()" type="button"></button></div>',
             link: link,
             controller: controller,
             scope: {
                 options: '=',
                 primaryOption: '=',
                 optionText: '&',
-                optionClick: '&'
+                optionClick: '&',
+                buttonClass: '='
             }
         };
     })
