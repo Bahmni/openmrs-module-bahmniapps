@@ -4,8 +4,7 @@ angular.module('registration.patient.controllers')
     .controller('PatientCommonController', ['$scope', '$http', 'patientAttributeService', 'addressAttributeService', 'appService',
         function ($scope, $http, patientAttributeService, addressAttributeService, appService) {
 
-            var autoCompleteConfig = appService.getAppDescriptor().getConfig("autoCompleteFields");
-            var autoCompleteFields = autoCompleteConfig ? (autoCompleteConfig.value || []) : [];
+            var autoCompleteFields = appService.getAppDescriptor().getConfigValue("autoCompleteFields", []);
 
             $scope.isAutoComplete = function(fieldName) {
                 return autoCompleteFields.indexOf(fieldName) > -1;

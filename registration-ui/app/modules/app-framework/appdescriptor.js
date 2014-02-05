@@ -96,10 +96,14 @@ function AppDescriptor(context, inheritContext, retrieveUserCallback) {
     };
 
     this.getConfig = function(configName) {
-        var cfgList = that.configs.filter(function(cfg) {
+        return that.configs.filter(function(cfg) {
             return cfg.name == configName;
-        });
-        return (cfgList.length > 0) ? cfgList[0] : null;
+        })[0];
+    };
+
+    this.getConfigValue = function(configName, defaultValue) {
+        var config = that.getConfig(configName);
+        return config ? (config.value || defaultValue) : defaultValue;
     };
 
     this.formatUrl =  function (url, options) {

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('registration.initialization', ['infrastructure', 'authentication', 'infrastructure.spinner'])
-    .factory('initialization', ['$rootScope', '$q', 'configurationService', 'authenticator', 'spinner', 'appService',
-        function ($rootScope, $q, configurationService, authenticator, spinner, appService) {
+    .factory('initialization', ['$rootScope', '$q', 'configurationService', 'authenticator', 'spinner', 'appService', 'Preferences',
+        function ($rootScope, $q, configurationService, authenticator, spinner, appService, preferences) {
             var initializationPromiseDefer = $q.defer();
 
             var loadData = function () {
@@ -33,8 +33,9 @@ angular.module('registration.initialization', ['infrastructure', 'authentication
                 var appLoadOptions = {'app': true, 'extension': true};
                 appService.initApp('registration', appLoadOptions).then(function (result) {
                     var loadDataPromise = loadData();
-                    spinner.forPromise(loadDataPromise);
+                    spinner.forPromise(loadDataPromise);                    
                     loadDataPromise.then(function () {
+                        preferences.identifierPrefix = appService.getAppDescriptor().getConfigValue("defaultIdentifierPrefix");
                         initializationPromiseDefer.resolve();
                     });
                 });
