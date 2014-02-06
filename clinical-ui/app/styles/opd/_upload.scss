@@ -1,14 +1,14 @@
-.document-upload{
-  padding-top: 20px;
+.document-upload {
+  h1 {
+    height: 40px;
+    line-height: 40px;
+    background: #EEE;
+    border-bottom: 1px solid #CCC;
+    padding: 0 10px;
+    font-weight: bold;
+  }
 
-  .upload-inline-buttons{
-      float: left;
-      padding-top:25px;
-    button{
-      margin-left: 20px;
-    }
-   }
-  .clear {
-    clear:both;
+  .form-field {
+    clear: both;
   }
 }
