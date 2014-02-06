@@ -46,8 +46,8 @@
     <div id="allVisitsDiv" class="clear">
         <div>
             <div ng-repeat="visit in visits">
-                <span ng-click="resetCurrentVisit(visit)">{{visit.startDatetime | date:'d-MMM-yy h:mm a'}}</span>
-                <span ng-click="resetCurrentVisit(visit)"> - {{visit.stopDatetime | date:'d-MMM-yy h:mm a'}}</span>
+                <span ng-click="resetCurrentVisit(visit)">{{visit.startDatetime | date:'d-MMM-yy'}}</span>
+                <span ng-click="resetCurrentVisit(visit)"> - {{visit.stopDatetime | date:'d-MMM-yy'}}</span>
 
                 <div class="upload-inline-buttons">
                     <input id="file-browse-{{visit.uuid}}" type="file" name="image" accept="image/*" capture="camera"
