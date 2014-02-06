@@ -4,7 +4,7 @@ angular.module('opd.documentupload')
     .controller('DocumentController', ['$scope', '$route', 'visitService', 'patientService', 'patientMapper', 'spinner', 'visitDocumentService', '$rootScope', '$http', '$q',
         function ($scope, $route, visitService, patientService, patientMapper, spinner, visitDocumentService, $rootScope, $http, $q) {
 
-            var testUuid;
+            var topLevelConceptUuid;
             var customVisitParams = 'custom:(uuid,startDatetime,stopDatetime,visitType,patient,encounters:(uuid,encounterType,orders:(uuid,orderType,voided,concept:(uuid,set,name),),obs:(uuid,value,concept,obsDatetime,groupMembers:(uuid,concept:(uuid,name),obsDatetime,value:(uuid,name),groupMembers:(uuid,concept:(uuid,name),value:(uuid,name),groupMembers:(uuid,concept:(uuid,name),value:(uuid,name)))))))';
 
             $scope.visits = [];
@@ -40,12 +40,11 @@ angular.module('opd.documentupload')
                 });
             };
 
-            var getDummyTestUuid = function () {                                     //Placeholder testUuid until future stories are played
-                return $http.get(Bahmni.Common.Constants.conceptUrl,
-                    {
-                        params: {name: "cd4 test"}
+            var getTopLevelConceptUuid = function () { 
+                return $http.get(Bahmni.Common.Constants.conceptUrl, { params: {name: "Radiology"}
                     }).then(function (response) {
-                        testUuid = response.data.results[0].uuid;
+                        var topLevelConcept = response.data.results[0];
+                        topLevelConceptUuid = topLevelConcept ? topLevelConcept.uuid : null;
                     });
             };
 
@@ -63,13 +62,30 @@ angular.module('opd.documentupload')
                 var promises = [];
                 promises.push(getVisitTypes());
                 promises.push(getPatient().then(getVisits));
-                promises.push(getDummyTestUuid());
+                promises.push(getTopLevelConceptUuid());
                 $q.all(promises).then(function () {
                     deferrables.resolve();
                 });
                 return deferrables.promise;
             };
             spinner.forPromise(init());
+
+            $scope.getConcepts = function(elementId, query){
+                return $http.get(Bahmni.Common.Constants.conceptUrl, { params: {q: query, memberOf: topLevelConceptUuid, v: "custom:(uuid,name)"}});
+            };
+
+            $scope.getDataResults = function(data){
+                return data.results.map(function (concept) {
+                    return {'concept': {uuid: concept.uuid, name: concept.name.name}, 'value': concept.name.name}
+                });
+            };
+
+            $scope.onConceptSelected = function(image){
+                return function(selectedItem){
+                    image.concept = selectedItem.concept;
+                    image.changed = true;
+                }
+            };
 
             $scope.resetCurrentVisit = function (visit) {
                 $scope.currentVisit = visit;
@@ -92,13 +108,13 @@ angular.module('opd.documentupload')
                 visitDocument.documents = [];
 
                 visit.savedImages.forEach(function (image) {
-                    if (image.voided == true) {
-                        visitDocument.documents.push({testUuid: testUuid, image: image.encodedValue, voided: true, obsUuid: image.obsUuid});
+                    if (image.changed == true) {
+                        visitDocument.documents.push({testUuid: image.concept.uuid, image: image.encodedValue, voided: image.voided, obsUuid: image.obsUuid});
                     }
                 });
 
                 visit.images.forEach(function (image) {
-                    visitDocument.documents.push({testUuid: testUuid, image: image.encodedValue.replace(/data:image\/.*;base64/, ""),
+                    visitDocument.documents.push({testUuid: image.concept.uuid, image: image.encodedValue.replace(/data:image\/.*;base64/, ""),
                         format: image.encodedValue.split(";base64")[0].split("data:image/")[1]})
                 });
                 return visitDocument;

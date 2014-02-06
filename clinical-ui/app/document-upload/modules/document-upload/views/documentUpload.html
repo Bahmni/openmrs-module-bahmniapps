@@ -56,18 +56,20 @@
                 <button ng-click="resetCurrentVisit(visit)" type="button"><label for="file-browse-{{visit.uuid}}"
                                                                                  class="icon-camera">
                     SCAN </label></button>
-                <button type="submit" ng-disabled="visit.changed == false" ng-click="save(visit)"><label
+                <button type="submit" ng-disabled="!visit.changed" ng-click="save(visit)"><label
                         class="icon-save"> SAVE</label></button>
                 <div class="clear" ng-if="isCurrentVisit(visit)">
                         <span ng-repeat="image in visit.savedImages">
-                                <img ng-src="/document_images/{{image.encodedValue}}" width="100"
+                            <img ng-src="/document_images/{{image.encodedValue}}" width="100"
                                      ng-class="{true:'transparent', false:'opaque'}[image.voided]"/>
+                            <input ng-model="image.concept.name" my-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" ng-change="visit.markAsUpdated()" ng-disabled="image.voided"></input>
                             <button class="icon-remove icon-white"
-                                    ng-click="visit.markAsVoided(image)"></button>
+                                    ng-click="visit.toggleVoidingOfImage(image)"></button>
                         </span>
 
                         <span class="clear" ng-repeat="image in visit.images">
                             <img ng-src="{{image.encodedValue}}" width="100">
+                            <input ng-model="image.concept.name" my-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)"></input>
                             <button class="icon-remove icon-white"
                                     ng-click="visit.removeNewAddedImage(image)"></button>
                         </span>

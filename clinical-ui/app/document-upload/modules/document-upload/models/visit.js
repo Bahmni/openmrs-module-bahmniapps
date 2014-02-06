@@ -17,7 +17,7 @@ Bahmni.Opd.DocumentUpload.Visit = function () {
             encounter.obs && encounter.obs.forEach(function (observation) {
                 observation.groupMembers && observation.groupMembers.forEach(function (member) {
                     if (member.concept.name.name == 'Document') {
-                        savedImages.push({"encodedValue": member.value, "obsUuid": member.uuid});
+                        savedImages.push({"encodedValue": member.value, "obsUuid": observation.uuid, concept: {uuid: observation.concept.uuid, name: observation.concept.name.name}});
                     }
                 });
             });
@@ -50,16 +50,8 @@ Bahmni.Opd.DocumentUpload.Visit = function () {
     };
 
     this.markAsUpdated = function () {
-        this.changed = false;
-        for (var i in this.savedImages) {
-            if (this.savedImages[i].voided == true) {
-                this.changed = true;
-            }
-        }
-
-        if (this.images && this.images.length > 0) {
-            this.changed = true;
-        }
+        var savedImagesChanged = this.savedImages.some(function(image) { return image.changed; });
+        this.changed = savedImagesChanged || (this.images && this.images.length > 0);
     };
 
     this.removeNewAddedImage = function (image) {
@@ -68,8 +60,9 @@ Bahmni.Opd.DocumentUpload.Visit = function () {
         this.markAsUpdated();
     };
 
-    this.markAsVoided = function (image) {
-        image["voided"] = image["voided"] && image["voided"] == true ? false : true;
+    this.toggleVoidingOfImage = function (image) {
+        image.voided = !image.voided;
+        image.changed = true;
         this.markAsUpdated();
     };
 };
