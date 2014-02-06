@@ -44,7 +44,7 @@ Bahmni.Opd.DocumentUpload.Visit = function () {
             return img.encodedValue === image;
         });
         if (alreadyPresent.length == 0) {
-            this.images.push({"encodedValue": image, "new": true});
+            this.images.unshift({"encodedValue": image, "new": true});
         }
         this.markAsUpdated();
     };

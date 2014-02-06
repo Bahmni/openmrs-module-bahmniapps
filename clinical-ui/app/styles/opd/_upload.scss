@@ -1,4 +1,7 @@
 .document-upload {
+  max-width: 960px;
+  min-width: 320px;
+  margin: 0 auto;
   h1 {
     height: 40px;
     line-height: 40px;
@@ -6,6 +9,72 @@
     border-bottom: 1px solid #CCC;
     padding: 0 10px;
     font-weight: bold;
+    small {
+      font-size: 90%;
+      color: #5A9993;
+    }
+    .currentVisitMarker {
+      color: #E8A000;
+      float: right;
+    }
+  }
+
+  .visit-content {
+      padding: 10px;
+      label.btn {
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        -ms-border-radius: 3px;
+        -o-border-radius: 3px;
+        border-radius: 3px;
+        background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #dddddd));
+        background: -webkit-linear-gradient(top, #ffffff, #dddddd);
+        background: -moz-linear-gradient(top, #ffffff, #dddddd);
+        background: -o-linear-gradient(top, #ffffff, #dddddd);
+        background: linear-gradient(top, #ffffff, #dddddd);
+        background-color: #dddddd;
+        border: #dddddd 1px solid;
+        padding: 8px 20px;
+        display: inline-block;
+        line-height: 1.2em;
+        color: #363463;
+        cursor: pointer;
+        min-width: 0;
+        max-width: 300px;
+        text-decoration: none;
+      }
+      button[disabled] {
+        position: relative;
+        top: 1px;
+        color: #EEE;
+      }
+      .btn {
+        &.btn-primary {
+          background: #447772;
+          color: #FFF;
+        }
+      }
+      .files > li {
+          clear: none;
+          border-bottom: 1px solid #CCC;
+          overflow: hidden;
+          padding: 10px;
+          .upload-inline-buttons {
+              float: left;
+          }
+          img {
+              float: left;
+          }
+          .concept-name {
+              min-width: 40%;
+              float: right;
+          }
+          .file-actions {
+              clear: right;
+              float: right;
+              margin: 10px;
+          }
+      }
   }
 
   .form-field {

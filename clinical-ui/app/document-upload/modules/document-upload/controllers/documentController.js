@@ -88,7 +88,7 @@ angular.module('opd.documentupload')
             };
 
             $scope.resetCurrentVisit = function (visit) {
-                $scope.currentVisit = visit;
+                $scope.currentVisit = ($scope.isCurrentVisit(visit)) ? $scope.newVisit : visit;
             };
 
             $scope.isCurrentVisit = function (visit) {

@@ -26,11 +26,14 @@ body{
         }
 
         header{
-            width:960px;
-            margin:0px auto;
             border-radius:0px;
             padding:2px;
             position:relative;
+            margin: 0px;
+            @media screen and (min-width: 960px) {
+                width: 960px;
+                margin: 0px auto;
+            }
             .header-logo{
                 background:url("../images/jss_logo.png") no-repeat left top;
                 padding:10px 0px 7px 40px;
@@ -118,12 +121,15 @@ body{
         .opd-header-top,header{
             background:#000;
         }
-        .opd-header-bottom{
-            width:960px;
-            margin:0px auto;
+        .opd-header-bottom {
             border-radius:0px;
             padding:2px;
             position:relative;
+            margin: 0px;
+            @media screen and (min-width: 960px) {
+                width: 960px;
+                margin: 0px auto;
+            }
             .header-tabs{
                     float:left;
                     margin-top:10px;
@@ -187,14 +193,19 @@ body{
         }
     }
 .opd-wrapper {
-    margin: 0px auto;
-    width:960px;
     position: relative;
     top: 110px;
+    margin: 0px;
+    @media screen and (min-width: 960px) {
+        width: 960px;
+        margin: 0px auto;
+    }
     .opd-content-wrapper {
         background:#ffffff;
-        padding:10px 10px 20px 10px;
         height:99%;
+        @media screen and (min-width: 960px) {
+            padding:10px 10px 20px 10px;
+        }
         nav.navbar {
             background: #F8F8F8;
             overflow: hidden;
@@ -262,7 +273,3 @@ button[disabled] {
 form select, .form select{
     min-width: 100px;
 }
-@media only screen and (max-width: 768px) {
-  .opd-header-wrapper header{ width:764px; }
-  .opd-wrapper{width:768px; font-size:0.9em;}
- }
