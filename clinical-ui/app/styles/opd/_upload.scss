@@ -52,6 +52,10 @@
         &.btn-primary {
           background: #447772;
           color: #FFF;
+
+          &[disabled] {
+            background: grey;
+          }
         }
       }
       .files > li {

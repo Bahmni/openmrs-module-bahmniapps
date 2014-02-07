@@ -70,13 +70,17 @@ angular.module('opd.documentupload')
             };
             spinner.forPromise(init());
 
+            $scope.escapeRegExp = function(str) {
+              return (str || "").replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+            }
+
             $scope.getConcepts = function(elementId, query){
                 return $http.get(Bahmni.Common.Constants.conceptUrl, { params: {q: query, memberOf: topLevelConceptUuid, v: "custom:(uuid,name)"}});
             };
 
             $scope.getDataResults = function(data){
                 return data.results.map(function (concept) {
-                    return {'concept': {uuid: concept.uuid, name: concept.name.name}, 'value': concept.name.name}
+                    return {'concept': {uuid: concept.uuid, name: concept.name.name, editableName: concept.name.name}, 'value': concept.name.name}
                 });
             };
 
@@ -140,4 +144,18 @@ angular.module('opd.documentupload')
                 }())
             };
 
-        }]);
+        }])
+.directive('documentConceptAutocomplete', function ($parse, $compile) {
+    return function (scope, element, attrs) {
+        element.removeAttr('document-concept-autocomplete');
+        element.attr("pattern", "{{escapeRegExp(image.concept.name)}}");
+        element.attr("title", "Select from autocomplete");
+        element.attr("ng-model", "image.concept.editableName");
+        element.attr("my-autocomplete", "");
+        element.attr("source", "getConcepts");
+        element.attr("response-map", "getDataResults");
+        element.attr("on-select", "onConceptSelected(image)");
+        element.attr("required", "");
+        $compile(element)(scope);
+    }
+});

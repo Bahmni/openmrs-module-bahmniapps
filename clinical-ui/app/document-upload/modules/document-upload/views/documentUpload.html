@@ -3,7 +3,7 @@
         <li id="newVisit">
             <h1 ng-click="resetCurrentVisit(newVisit)">Visit: New</h1>
             <div ng-if="isCurrentVisit(newVisit)" class="visit-content">
-                <form ng-submit="save()">
+                <form ng-submit="save(newVisit)">
                     <div class="form-field">
                         <div>
                             <label>Visit Type
@@ -34,23 +34,19 @@
                             <input type="text" ng-model="newVisit.stopDatetime" datepicker="" class="field-value">
                         </div>
                     </div>
-                    <div class="upload-inline-buttons">
-                        <input id="file-browse" type="file" name="image" accept="image/*" capture="camera" file-upload visit="newVisit">
-
-                        <button type="button" ng-click="resetCurrentVisit(newVisit)">
-                            <label for="file-browse" class="icon-camera">
-                                SCAN</label>
-                        </button>
-                        <button type="submit" ng-click="save(newVisit)" ng-disabled="newVisit.images.length == 0">
-                            <label class="icon-save">SAVE</label>
-                        </button>
-                    </div>
-
                     <div>
                         <span class="clear" ng-repeat="image in newVisit.images">
                             <img ng-src="{{image.encodedValue}}" width="100">
-                            <button class="icon-remove icon-white" ng-click="newVisit.removeNewAddedImage(image)"></button>
+                            <input class="concept-name" document-concept-autocomplete></input>
+                            <button type="button" class="icon-remove icon-white" ng-click="newVisit.removeNewAddedImage(image)"></button>
                         </span>
+                    </div>
+                    <div class="upload-inline-buttons">
+                        <input id="file-browse" type="file" name="image" accept="image/*" capture="camera" file-upload visit="newVisit">
+                        <label for="file-browse" class="btn btn-primary" ng-click="resetCurrentVisit(newVisit)"><i class="icon-camera icon-white"></i>SCAN</label>
+                        <button type="submit" ng-disabled="newVisit.images.length == 0" class="btn btn-primary">
+                            <i class="icon-save icon-white"></i>SAVE
+                        </button>
                     </div>
                 </form>
             </div>
@@ -60,7 +56,7 @@
             <h1 ng-click="resetCurrentVisit(visit)">
                 Visit: <small>From: </small>
                 <span>{{visit.startDatetime | date:'dd-MMM-yy'}}</span>
-                <small>To: </small>
+                <small ng-if="visit.stopDatetime">To: </small>
                 <span ng-if="visit.stopDatetime">{{visit.stopDatetime | date:'dd-MMM-yy'}}</span>
                 <span ng-if="!visit.stopDatetime" class="currentVisitMarker"><i class="icon-star"></i></span>
             </h1>
@@ -74,29 +70,29 @@
                                         <div class="upload-inline-buttons">
                                             <input id="file-browse-{{visit.uuid}}" type="file" name="image" accept="image/*" capture="camera" file-upload visit="visit">
                                         </div>
-                                        <label for="file-browse-{{visit.uuid}}" class="btn btn-primary"><i class="icon-camera icon-white"></i>SCAN</label>
+                                        <label for="file-browse-{{visit.uuid}}" class="btn btn-primary">
+                                            <i class="icon-camera icon-white"></i>SCAN
+                                        </label>
                                         <button type="submit" ng-disabled="!visit.changed" class="btn btn-primary">
-                                            <i class="icon-save icon-white"></i>
-                                            SAVE
+                                            <i class="icon-save icon-white"></i>SAVE
                                         </button>
                                     </div>
                                 </li>
                                 <li ng-repeat="image in visit.images">
                                     <div>
                                         <img ng-src="{{image.encodedValue}}" width="100">
-                                        <input class="concept-name" ng-model="image.concept.name" my-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required></input>
+                                        <input class="concept-name" document-concept-autocomplete></input>
                                     </div>
                                     <div class="file-actions">
-                                        <button ng-click="visit.removeNewAddedImage(image)"><i class="icon-trash"></i></button>
+                                        <button type="button" ng-click="visit.removeNewAddedImage(image)"><i class="icon-trash"></i></button>
                                     </div>
                                 </li>
                                 <li ng-repeat="image in visit.savedImages">
                                     <div>
                                         <img ng-src="/document_images/{{image.encodedValue}}" width="100" ng-class="{true:'transparent', false:'opaque'}[image.voided]" />
-                                        <input class="concept-name" ng-model="image.concept.name" my-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" ng-change="visit.markAsUpdated()" ng-disabled="image.voided" required></input>
-                                    </div>
+                                        <input class="concept-name" document-concept-autocomplete ng-change="visit.markAsUpdated()" ng-disabled="image.voided"></input>
                                     <div class="file-actions">
-                                        <button ng-click="visit.toggleVoidingOfImage(image)"><i class="icon-trash"></i></button>
+                                        <button type="button" ng-click="visit.toggleVoidingOfImage(image)"><i class="icon-trash"></i></button>
                                     </div>
                                 </li>
                             </ul>
