@@ -149,8 +149,7 @@ angular.module('opd.documentupload')
     return function (scope, element, attrs) {
         element.removeAttr('document-concept-autocomplete');
         element.attr("pattern", "{{escapeRegExp(image.concept.name)}}");
-        element.attr("title", "Select from autocomplete");
-        element.attr("ng-model", "image.concept.editableName");
+        element.attr("title", "Select the test from autocomplete");
         element.attr("my-autocomplete", "");
         element.attr("source", "getConcepts");
         element.attr("response-map", "getDataResults");

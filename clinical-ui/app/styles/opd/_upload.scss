@@ -81,6 +81,10 @@
       }
   }
 
+  input:invalid {
+      border: solid 1px #FF9494;
+  }
+
   .form-field {
     clear: both;
   }

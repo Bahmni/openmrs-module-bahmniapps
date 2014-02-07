@@ -37,7 +37,7 @@
                     <div>
                         <span class="clear" ng-repeat="image in newVisit.images">
                             <img ng-src="{{image.encodedValue}}" width="100">
-                            <input class="concept-name" document-concept-autocomplete></input>
+                            <input class="concept-name" ng-model="image.concept.editableName" document-concept-autocomplete></input>
                             <button type="button" class="icon-remove icon-white" ng-click="newVisit.removeNewAddedImage(image)"></button>
                         </span>
                     </div>
@@ -61,7 +61,7 @@
                 <span ng-if="!visit.stopDatetime" class="currentVisitMarker"><i class="icon-star"></i></span>
             </h1>
             <div class="visit-content" ng-if="isCurrentVisit(visit)">
-                <form ng-submit="save(visit)" ng-disabled="!visit.changed">
+                <form name="{{'visit' + $index}}" ng-submit="save(visit)" ng-disabled="!visit.changed">
                     <ul>
                         <li>
                             <ul class="files">
@@ -81,7 +81,7 @@
                                 <li ng-repeat="image in visit.images">
                                     <div>
                                         <img ng-src="{{image.encodedValue}}" width="100">
-                                        <input class="concept-name" document-concept-autocomplete></input>
+                                        <input class="concept-name" ng-model="image.concept.editableName" document-concept-autocomplete></input>
                                     </div>
                                     <div class="file-actions">
                                         <button type="button" ng-click="visit.removeNewAddedImage(image)"><i class="icon-trash"></i></button>
@@ -90,7 +90,7 @@
                                 <li ng-repeat="image in visit.savedImages">
                                     <div>
                                         <img ng-src="/document_images/{{image.encodedValue}}" width="100" ng-class="{true:'transparent', false:'opaque'}[image.voided]" />
-                                        <input class="concept-name" document-concept-autocomplete ng-change="visit.markAsUpdated()" ng-disabled="image.voided"></input>
+                                        <input name="{{'image'+$index}}" class="concept-name" ng-model="image.concept.editableName" document-concept-autocomplete ng-change="visit.markAsUpdated()" ng-disabled="image.voided"></input>
                                     <div class="file-actions">
                                         <button type="button" ng-click="visit.toggleVoidingOfImage(image)"><i class="icon-trash"></i></button>
                                     </div>
