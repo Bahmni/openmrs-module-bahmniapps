@@ -156,6 +156,8 @@ angular.module('opd.documentupload')
         element.attr("response-map", "getDataResults");
         element.attr("on-select", "onConceptSelected(image)");
         element.attr("required", "");
+        element.attr("autocorrect", "off");
+        element.attr("autocomplete", "off");
         $compile(element)(scope);
     }
 });

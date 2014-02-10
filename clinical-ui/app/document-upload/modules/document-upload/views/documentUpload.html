@@ -23,7 +23,7 @@
                             </label>
                         </div>
                         <div class="field-value">
-                            <input type="text" ng-model="newVisit.startDatetime" datepicker="" required class="field-value">
+                            <input type="date" ng-model="newVisit.startDatetime" required class="field-value">
                         </div>
                     </div>
                     <div class="form-field">
@@ -31,14 +31,14 @@
                             <label class="form-attribute">End Date</label>
                         </div>
                         <div class="field-value">
-                            <input type="text" ng-model="newVisit.stopDatetime" datepicker="" class="field-value">
+                            <input type="date" ng-model="newVisit.stopDatetime" class="field-value">
                         </div>
                     </div>
                     <div>
                         <span class="clear" ng-repeat="image in newVisit.images">
                             <img ng-src="{{image.encodedValue}}" width="100">
                             <input class="concept-name" ng-model="image.concept.editableName" document-concept-autocomplete></input>
-                            <button type="button" class="icon-remove icon-white" ng-click="newVisit.removeNewAddedImage(image)"></button>
+                            <button type="button" ng-click="newVisit.removeNewAddedImage(image)"><i class="icon-trash"></i></button>
                         </span>
                     </div>
                     <div class="upload-inline-buttons">
@@ -92,7 +92,7 @@
                                         <img ng-src="/document_images/{{image.encodedValue}}" width="100" ng-class="{true:'transparent', false:'opaque'}[image.voided]" />
                                         <input name="{{'image'+$index}}" class="concept-name" ng-model="image.concept.editableName" document-concept-autocomplete ng-change="visit.markAsUpdated()" ng-disabled="image.voided"></input>
                                     <div class="file-actions">
-                                        <button type="button" ng-click="visit.toggleVoidingOfImage(image)"><i class="icon-trash"></i></button>
+                                        <button type="button" ng-click="visit.toggleVoidingOfImage(image)"><i  ng-class="{'icon-trash': !image.voided, 'icon-undo': image.voided }"></i></button>
                                     </div>
                                 </li>
                             </ul>

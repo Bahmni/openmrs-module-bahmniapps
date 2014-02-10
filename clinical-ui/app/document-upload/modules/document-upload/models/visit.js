@@ -7,6 +7,7 @@ Bahmni.Opd.DocumentUpload.Visit = function () {
     this.savedImages = [];
     this.images = [];
     this.encounters = [];
+    var androidDateFormat = "yyyy-mm-dd";
 
     this.initSavedImages = function () {
         this.savedImages = [];
@@ -32,12 +33,15 @@ Bahmni.Opd.DocumentUpload.Visit = function () {
     this.startDate = function () {
         return this.parseDate(this.startDatetime);
     };
+    
     this.endDate = function () {
         return this.stopDatetime ? this.parseDate(this.stopDatetime) : this.startDate();
     };
 
     this.parseDate = function (date) {
-        return this.uuid ? date : moment(date, Bahmni.Common.Constants.dateFormat.toUpperCase()).toDate();
+        if(date instanceof Date) return date;
+        var dateFormat = (date && date.indexOf('-') !== -1) ? androidDateFormat : Bahmni.Common.Constants.dateFormat;
+        return  moment(date, dateFormat.toUpperCase()).toDate();
     };
 
     this.addImage = function (image) {
