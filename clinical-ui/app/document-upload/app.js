@@ -16,5 +16,5 @@ angular.module('documentupload').config(['$routeProvider', '$httpProvider', func
         $routeProvider.otherwise({redirectTo: '/search'});
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
     }]).run(['backlinkService', function (backlinkService) {
-        backlinkService.addUrl("Home", "/home");
+        backlinkService.addBackUrl();
     }]);

@@ -2,8 +2,8 @@
     <div class="opd-header-top">
         <header ng-controller="CommonHeaderController">
             <ul>
-                <li ng-repeat="(label, url) in backLinks">
-                    <a href="{{url}}">
+                <li ng-repeat="(label, goToUrl) in backLinks">
+                    <a ng-click="goToUrl()">
                         <span class="arrow-btn-head"></span>
                         <span class="arrow-btn-body">{{label}}</span>
                     </a>
