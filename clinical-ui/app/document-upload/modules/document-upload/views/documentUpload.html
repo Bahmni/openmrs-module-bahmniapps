@@ -1,4 +1,9 @@
 <div class="document-upload">
+
+    <div id="messages">
+        <p class="success" ng-show="success"><i class="icon-ok-circle white small"></i>File(s) uploaded successfully</p>
+    </div>
+
     <ul>
         <li id="newVisit">
             <h1 ng-click="resetCurrentVisit(newVisit)">Visit: New</h1>
@@ -37,7 +42,7 @@
                     <div>
                         <span class="clear" ng-repeat="image in newVisit.images">
                             <img ng-src="{{image.encodedValue}}" width="100">
-                            <input class="concept-name" ng-model="image.concept.editableName" document-concept-autocomplete></input>
+                            <input class="concept-name" ng-model="image.concept.editableName" document-concept-autocomplete/>
                             <button type="button" ng-click="newVisit.removeNewAddedImage(image)"><i class="icon-trash"></i></button>
                         </span>
                     </div>
@@ -81,7 +86,7 @@
                                 <li ng-repeat="image in visit.images">
                                     <div>
                                         <img ng-src="{{image.encodedValue}}" width="100">
-                                        <input class="concept-name" ng-model="image.concept.editableName" document-concept-autocomplete></input>
+                                        <input class="concept-name" ng-model="image.concept.editableName" document-concept-autocomplete/>
                                     </div>
                                     <div class="file-actions">
                                         <button type="button" ng-click="visit.removeNewAddedImage(image)"><i class="icon-trash"></i></button>
@@ -90,7 +95,8 @@
                                 <li ng-repeat="image in visit.savedImages">
                                     <div>
                                         <img ng-src="/document_images/{{image.encodedValue}}" width="100" ng-class="{true:'transparent', false:'opaque'}[image.voided]" />
-                                        <input name="{{'image'+$index}}" class="concept-name" ng-model="image.concept.editableName" document-concept-autocomplete ng-change="visit.markAsUpdated()" ng-disabled="image.voided"></input>
+                                        <input name="{{'image'+$index}}" class="concept-name" ng-model="image.concept.editableName" document-concept-autocomplete ng-change="visit.markAsUpdated()" ng-disabled="image.voided"/>
+                                    </div>
                                     <div class="file-actions">
                                         <button type="button" ng-click="visit.toggleVoidingOfImage(image)"><i  ng-class="{'icon-trash': !image.voided, 'icon-undo': image.voided }"></i></button>
                                     </div>
@@ -102,8 +108,4 @@
             </div>
         </li>
     </ul>
-
-    <div id="messages">
-        <p class="success" ng-show="success"><i class="icon-ok-circle white small"></i>File(s) uploaded successfully</p>
-    </div>
 </div>

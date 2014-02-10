@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('opd.documentupload')
-    .controller('DocumentController', ['$scope', '$route', 'visitService', 'patientService', 'patientMapper', 'spinner', 'visitDocumentService', '$rootScope', '$http', '$q',
-        function ($scope, $route, visitService, patientService, patientMapper, spinner, visitDocumentService, $rootScope, $http, $q) {
+    .controller('DocumentController', ['$scope', '$route', 'visitService', 'patientService', 'patientMapper', 'spinner', 'visitDocumentService', '$rootScope', '$http', '$q', '$timeout',
+        function ($scope, $route, visitService, patientService, patientMapper, spinner, visitDocumentService, $rootScope, $http, $q, $timeout) {
 
             var topLevelConceptUuid;
             var customVisitParams = 'custom:(uuid,startDatetime,stopDatetime,visitType,patient,encounters:(uuid,encounterType,orders:(uuid,orderType,voided,concept:(uuid,set,name),),obs:(uuid,value,concept,obsDatetime,groupMembers:(uuid,concept:(uuid,name),obsDatetime,value:(uuid,name),groupMembers:(uuid,concept:(uuid,name),value:(uuid,name),groupMembers:(uuid,concept:(uuid,name),value:(uuid,name)))))))';
@@ -124,6 +124,13 @@ angular.module('opd.documentupload')
                 return visitDocument;
             };
 
+            function flashSuccessMessage() {
+                $scope.success = true;
+                $timeout(function () {
+                    $scope.success = false;
+                }, 2000);
+            }
+
             $scope.save = function (existingVisit) {
                 $scope.resetCurrentVisit(existingVisit);
 
@@ -139,6 +146,7 @@ angular.module('opd.documentupload')
                             }
                         }).success(function(){
                             sortVisits();
+                            flashSuccessMessage();
                         });
                     });
                 }())
