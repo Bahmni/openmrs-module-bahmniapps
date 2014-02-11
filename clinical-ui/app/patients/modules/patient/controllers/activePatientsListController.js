@@ -85,6 +85,7 @@ angular.module('opd.patient.controllers')
         };
 
         $scope.showPatientsForType = function (sType) {
+            $scope.searchCriteria.searchParameter= '';
             $scope.searchCriteria.type = sType;
             findPatientsByHandler(sType.handler);
         };

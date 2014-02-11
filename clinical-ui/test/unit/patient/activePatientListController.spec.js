@@ -106,15 +106,17 @@ describe("ActivePatientListController", function () {
     describe("searchPatientsTest", function () {
         it('should search the activePatients based on the search text (case insensitive)', function () {
             setUp();
-            scope.searchCriteria.searchParameter = "Gan";
             scope.showPatientsForType({handler:"emrapi.sqlSearch.activePatients"});
+            scope.searchCriteria.searchParameter = "Gan";
+            scope.searchPatients();
             expect(scope.searchResults.length).toBe(3);
         });
 
         it('should filter the activePatients to be admitted based on the search text', function () {
             setUp();
-            scope.searchCriteria.searchParameter = "Gan";
             scope.showPatientsForType({handler:"emrapi.sqlSearch.patientsToAdmit"});
+            scope.searchCriteria.searchParameter = "Gan";
+            scope.searchPatients();
             expect(scope.searchResults.length).toBe(1);
         });
     });
