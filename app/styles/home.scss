@@ -14,11 +14,7 @@ $total-width: 100%;
   .form-field{
       float:left;
       @include column(6);
-      margin-bottom:10px;  
-      //&:last-child{
-      //  .field-attribute{
-      //  }
-      //}
+      margin-bottom:10px;
   }
   @include clearfix();
 }
@@ -37,7 +33,7 @@ $total-width: 100%;
   }
   .field-value{
     float:left;
-     input[type="text"],input[type="password"]{  
+     input[type="text"],input[type="password"]{
         float:left;
         width:12.5em;
     }
@@ -61,7 +57,7 @@ $total-width: 100%;
   }
   .add-on{
     @extend input;
-    @include border-radius();  
+    @include border-radius();
     height: 21px;
     min-width: 17px;
     padding: 4px 5px;
@@ -98,7 +94,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
       border-left: none;
       background: #fff;
     }
-  } 
+  }
 }
 p.caution {
   color: red;
@@ -124,7 +120,7 @@ button[disabled], button[disabled]:hover, button.disabled, button.disabled:hover
     cursor:default;
 }
 /*** grid form elements css end ***/
-body{   
+body{
   width:100%;
   max-width:100%;
 	background:#f5f5f6;
@@ -135,40 +131,9 @@ body{
 	height:50px;
 }
 .remove-margin{
-  margin:0px !important; 
+  margin:0px !important;
 }
 
-/*** login specific css start ***/
-.login{
-    bottom: 0px;
-    height: 300px;
-    left: 0px;
-    margin: auto;
-    position: absolute;
-    right: 0px;
-    top: 0px;
-    font-size:0.865em;
-    width: 500px;
-}
-.login-body{
-    @include clearfix();
-    padding-top:20px;
-    background:#ffffff;
-    border:1px solid #eaeaea;
-    padding-bottom:10px;
-    p.caution{
-      padding:0px;
-    }
-    .note-container .note{
-      margin:0px auto 18px auto;
-    }
-    .form-field .field-value{
-      input[type="text"],input[type="password"]{
-        width:15em;
-      }
-    }
-
-}
 #overlay {
   display: none;
   z-index: 10000;
@@ -180,7 +145,7 @@ body{
   background-image: url('../images/spinner.gif');
   background-repeat:no-repeat;
   background-position:center;
-  div{
+  div {
     opacity: 0.6;
     background:#000;
     width:100%;
@@ -202,6 +167,7 @@ body{
 /*** search page css start ****/
 body{
   max-width:1200px;
+  background: #00463f
 }
 .reg-wrapper{
   margin:0px auto;
@@ -216,7 +182,7 @@ body{
   header {
     position: relative;
     color: #CCC;
-    @include border-radius();  
+    @include border-radius();
     .header-logo{
       background: image-url("jss_logo.png") no-repeat scroll left top transparent;
       color: #ffffff;
@@ -225,7 +191,7 @@ body{
       height: 32px;
       margin:4px 0px 0px 5px;
       padding:11px 0px 0px 49px;
-      text-decoration:none; 
+      text-decoration:none;
       line-height:15px;
       float:left;
     }
@@ -254,7 +220,7 @@ body{
     margin-top:5px;
     border:1px solid #cecece;
     background:#fff;
-    @include border-radius();  
+    @include border-radius();
     .reg-search{
         margin-bottom:10px;
         @include clearfix;
@@ -279,7 +245,7 @@ body{
     .note-container{
         text-align:left;
        .note {
-           padding:6px 10px 6px 10px; 
+           padding:6px 10px 6px 10px;
            .text{
             p{
               max-width:100%;
@@ -289,7 +255,7 @@ body{
           }
         }
     }
-}  
+}
 }
  /*** search page css end ***/
 .apps{
@@ -297,13 +263,13 @@ body{
       display:inline-block;
       a{
         padding: 20px 10px;
-        width: 150px;
+        width: 130px;
         min-height: 90px;
         vertical-align: top;
         line-height: 1.3em;
         margin: 10px;
         text-align: center;
-        font-size:1.3em; 
+        font-size:1.3em;
         &:hover{
           background:#e2e2e2;
           border:1px solid #d0d0d0;
@@ -316,4 +282,105 @@ body{
         }
       }
     }
+}
+
+/*** Login Page Styles ***/
+/******************************************************************************/
+
+.login {
+  height: 300px;
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 0;
+  margin: 50px auto;
+  font-size:0.865em;
+  max-width: 500px;
+  header {
+    a.header-logo {
+      float: none;
+      margin: 0 auto;
+      width: 240px;
+      padding-bottom: 20px;
+    }
+  }
+  .login-body{
+    background:#ffffff;
+    border:1px solid #eaeaea;
+    padding-bottom:10px;
+    margin-top: 20px;
+    p.caution{
+      padding:0px;
+    }
+    .note-container .note{
+      margin:0px auto 18px auto;
+    }
+    .form-field {
+      display: block;
+      margin: 10px;
+      .field-attribute {
+        label {
+          text-align: left;
+          padding-left: 3px;
+        }
+      }
+      .field-value {
+        clear: both;
+        float: none;
+        width: 100%;
+        input[type="text"],input[type="password"]{
+          width: 96.9%;
+          display: block;
+          margin: 0px;
+          min-width: 10%;
+          padding: 10px 4px
+        }
+      }
+    }
+    .form-footer {
+      margin: 10px;
+      button.confirm {
+        margin: 2px auto;
+        max-width: 100%;
+        width: 100%;
+      }
+    }
+  }
+  @media screen and (min-width: 960px) {
+    width: 500px;
+    margin: auto;
+    bottom: 0;
+    .login-body {
+      padding-top:20px;
+      .form-field {
+        padding: 0;
+        .field-attribute {
+          label {
+            text-align: right;
+          }
+        }
+        .field-value {
+          clear: none;
+          float: left;
+          width: auto;
+          input[type="text"],input[type="password"] {
+            width:15em;
+            display: inline-block;
+            margin: 2px;
+            min-width: 80%;
+            padding: 4px;
+          }
+        }
+      }
+      .form-footer {
+        padding-left: 13.8em;
+        button.confirm {
+          display: inline-block;
+          margin: 2px;
+          max-width: 300px;
+          width: auto;
+        }
+      }
+    }
+  }
 }

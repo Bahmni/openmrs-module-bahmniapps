@@ -3,6 +3,8 @@
     <head>
         <meta charset="utf-8">
         <title>Bahmni Home</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
         <link rel="stylesheet" href="lib/jquery-ui-1.10.2.1/jquery-ui-1.10.2.1.custom.min.css"/>
         <!-- build:css styles/main.min.css -->
         <link rel="stylesheet" href="styles/style.css"/>
@@ -15,9 +17,9 @@
     <body>
         <div class="reg-wrapper">
             <div ng-app="bahmnihome">
-                <div id="overlay"></div>
                 <p style="display: none" class="caution" ng-show="server_error"><i class="icon-exclamation-sign small"></i>{{server_error}}</p>
                 <div ng-view id="view-content"></div>
+                <div id="overlay"></div>
                 <script src="components/jquery/jquery.js"></script>
                 <script src="lib/jquery/jquery-ui-1.10.2.1.custom.min.js"></script>
                 <script src="components/jquery.cookie/jquery.cookie.js"></script>

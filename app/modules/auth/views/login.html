@@ -1,45 +1,44 @@
-    <div class="login">
+<div class="login">
 
     <header class="reg-header ">
         <a class="header-logo pull-left" href="/home">Jan Swasthya Sahyog</a>
     </header>
-    
-        <form ng-submit="login()" class="" name="loginForm">
+
+    <form ng-submit="login()" class="" name="loginForm">
         <div class="login-body">
             <div class="note-container">
                 <div class="note error" ng-show="errorMessage">
                     <div class="text">
-                    {{errorMessage}}
-                </div>
+                        {{errorMessage}}
+                    </div>
                 </div>
             </div>
             <div class="form-field">
                 <div class="field-attribute">
-                    <label for="username"><strong>Username *</strong></label>
+                    <label for="username">
+                        <strong>Username *</strong>
+                    </label>
                 </div>
 
                 <div class="field-value">
-                    <input type="text" name="username" id="username" ng-model="username" autofocus required placeholder="Enter your username">
+                    <input type="text" name="username" id="username" ng-model="username" autofocus="autofocus" required placeholder="Enter your username">
                 </div>
             </div>
             <div class="form-field">
                 <div class="field-attribute">
-                    <label for="password"><strong>Password *</strong></label>
+                    <label for="password">
+                        <strong>Password *</strong>
+                    </label>
                 </div>
                 <div class="field-value">
-                    <input type="password" id="password" name="password" ng-model="password" required placeholder="Enter your password" >
+                    <input type="password" id="password" name="password" ng-model="password" required placeholder="Enter your password">
                 </div>
             </div>
 
-            <div class="form-field">
-                <div class="field-attribute">
-                    <label></label>
-                </div>
-                <div class="field-value">
-                    <button type="submit" class="confirm">Login</button>
-                </div>
+            <div class="form-footer">
+                <button type="submit" class="confirm">Login</button>
             </div>
         </div>
-        </form>
-    
-    </div>
+    </form>
+
+</div>
