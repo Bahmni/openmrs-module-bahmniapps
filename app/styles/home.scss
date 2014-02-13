@@ -84,6 +84,14 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
   }
 }
 
+.icon-red {
+  color: #990000;
+}
+
+.icon-white {
+  color: #f6f6f6;
+}
+
 /********************** overridding the common ui ***********************/
 .simple-form-ui{
   form{
@@ -167,7 +175,7 @@ body{
 /*** search page css start ****/
 body{
   max-width:1200px;
-  background: #00463f
+  margin: 0 auto;
 }
 .reg-wrapper{
   margin:0px auto;
@@ -182,17 +190,18 @@ body{
   header {
     position: relative;
     color: #CCC;
-    @include border-radius();
+    height: 50px;
+    border-radius: 0;
     .header-logo{
-      background: image-url("jss_logo.png") no-repeat scroll left top transparent;
+      background: image-url("jss_logo.png") no-repeat scroll left 2px transparent;
       color: #ffffff;
       display: block;
-      font-size: 2em;
-      height: 32px;
+      font-size: 16px;
       margin:4px 0px 0px 5px;
-      padding:11px 0px 0px 49px;
+      padding:10px 0px 0px 40px;
       text-decoration:none;
-      line-height:15px;
+      line-height:18px;
+      height:35px;
       float:left;
     }
     ul{
@@ -264,7 +273,7 @@ body{
       a{
         padding: 20px 10px;
         width: 130px;
-        min-height: 90px;
+        max-height: 90px;
         vertical-align: top;
         line-height: 1.3em;
         margin: 10px;
@@ -299,8 +308,8 @@ body{
   header {
     a.header-logo {
       float: none;
-      margin: 0 auto;
-      width: 240px;
+      margin: 5px auto;
+      width: 165px;
       padding-bottom: 20px;
     }
   }
@@ -308,7 +317,6 @@ body{
     background:#ffffff;
     border:1px solid #eaeaea;
     padding-bottom:10px;
-    margin-top: 20px;
     p.caution{
       padding:0px;
     }
@@ -381,6 +389,57 @@ body{
           width: auto;
         }
       }
+    }
+  }
+}
+
+/*** Dashboard Styles ***/
+/******************************************************************************/
+
+.dashboard {
+  header {
+    .btn-user-info {
+      @include background(linear-gradient(top, #015B52, #00463f));
+      padding: 7px;
+      border: none;
+      float: right;
+      margin: 8px;
+      i.mini {
+        font-size: .9em;
+      }
+      & + ul {
+        display: none;
+        &.active {
+          background: #00463f;
+          display: block;
+          position: absolute;
+          right: 0;
+          top: 50px;
+        }
+        li {
+          float: left;
+          clear: both;
+          text-align: left;
+          padding-left: 10px;
+        }
+      }
+    }
+  }
+  .apps {
+    li {
+      a {
+        width: 130px;
+        i {
+          margin-bottom: 5px;
+        }
+      }
+    }
+  }
+  @media screen and (min-width: 960px) {
+    .apps {
+      width: 600px;
+      margin: 80px auto;
+      padding-bottom: 100px;
     }
   }
 }
