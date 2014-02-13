@@ -1,91 +1,171 @@
 .document-upload {
-  max-width: 960px;
-  min-width: 320px;
-  margin: 0 auto;
-  h1 {
-    height: 40px;
-    line-height: 40px;
-    background: #EEE;
-    border-bottom: 1px solid #CCC;
-    padding: 0 10px;
-    font-weight: bold;
-    small {
-      font-size: 90%;
-      color: #5A9993;
+  header {
+    .header-logo {
+      position: static;
     }
-    .currentVisitMarker {
-      color: #E8A000;
-      float: right;
+    ul:first-child {
+      display: none;
     }
   }
-
-  .visit-content {
-      padding: 10px;
-      label.btn {
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        -ms-border-radius: 3px;
-        -o-border-radius: 3px;
-        border-radius: 3px;
-        background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #dddddd));
-        background: -webkit-linear-gradient(top, #ffffff, #dddddd);
-        background: -moz-linear-gradient(top, #ffffff, #dddddd);
-        background: -o-linear-gradient(top, #ffffff, #dddddd);
-        background: linear-gradient(top, #ffffff, #dddddd);
-        background-color: #dddddd;
-        border: #dddddd 1px solid;
-        padding: 8px 20px;
-        display: inline-block;
-        line-height: 1.2em;
-        color: #363463;
-        cursor: pointer;
-        min-width: 0;
-        max-width: 300px;
-        text-decoration: none;
+  .main {
+    max-width: 960px;
+    min-width: 320px;
+    margin: 0 auto;
+    h1 {
+      height: 40px;
+      line-height: 40px;
+      background: #EEE;
+      border-bottom: 1px solid #CCC;
+      padding: 0 10px;
+      font-weight: bold;
+      small {
+        font-size: 90%;
+        color: #5A9993;
       }
-      button[disabled] {
-        position: relative;
-        top: 1px;
-        color: #EEE;
+      .currentVisitMarker {
+        color: #E8A000;
+        float: right;
       }
-      .btn {
-        &.btn-primary {
-          background: #447772;
-          color: #FFF;
+    }
+    .visit-content {
+        padding: 10px;
+        label.btn {
+          -webkit-border-radius: 3px;
+          -moz-border-radius: 3px;
+          -ms-border-radius: 3px;
+          -o-border-radius: 3px;
+          border-radius: 3px;
+          background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #dddddd));
+          background: -webkit-linear-gradient(top, #ffffff, #dddddd);
+          background: -moz-linear-gradient(top, #ffffff, #dddddd);
+          background: -o-linear-gradient(top, #ffffff, #dddddd);
+          background: linear-gradient(top, #ffffff, #dddddd);
+          background-color: #dddddd;
+          border: #dddddd 1px solid;
+          padding: 8px 20px;
+          display: inline-block;
+          line-height: 1.2em;
+          color: #363463;
+          cursor: pointer;
+          min-width: 0;
+          max-width: 300px;
+          text-decoration: none;
+        }
+        button[disabled] {
+          position: relative;
+          top: 1px;
+          color: #EEE;
+        }
+        .btn {
+          &.btn-primary {
+            background: #447772;
+            color: #FFF;
 
-          &[disabled] {
-            background: grey;
+            &[disabled] {
+              background: grey;
+            }
           }
         }
-      }
-      .files > li {
-          clear: none;
-          border-bottom: 1px solid #CCC;
-          overflow: hidden;
-          padding: 10px;
-          .upload-inline-buttons {
-              float: left;
-          }
-          img {
-              float: left;
-          }
-          .concept-name {
-              min-width: 40%;
-              float: right;
-          }
-          .file-actions {
-              clear: right;
-              float: right;
-              margin: 10px;
-          }
-      }
+        .files > li {
+            clear: none;
+            border-bottom: 1px solid #CCC;
+            overflow: hidden;
+            padding: 10px;
+            .upload-inline-buttons {
+                float: left;
+            }
+            img {
+                float: left;
+            }
+            .concept-name {
+                min-width: 40%;
+                float: right;
+            }
+            .file-actions {
+                clear: right;
+                float: right;
+                margin: 10px;
+            }
+        }
+    }
+    input:invalid {
+        border: solid 1px #FF9494;
+    }
+    .form-field {
+      clear: both;
+    }
   }
 
-  input:invalid {
-      border: solid 1px #FF9494;
-  }
-
-  .form-field {
-    clear: both;
+  .reg-search-wrapper {
+    padding-left: 10px;
+    h1 {
+      font-size: 18px;
+      padding: 0 5px;
+      margin-bottom: 20px;
+    }
+    label {
+      display: none;
+    }
+    input[type="text"] {
+      height: 23px;
+    }
+    .reg-srch-btn {
+      margin: 4px 0 0 5px;
+    }
+    h2 {
+      font-size: 16px;
+      margin: 10px 0;
+      padding: 10px 5px;
+      border-top: 1px solid #AAA;
+      border-bottom: 1px solid #CCC;
+      background: #F2F2F2;
+    }
+    .patients {
+      li {
+        display: block;
+        position: relative;
+        border-bottom: 1px solid #CCC;
+        height: 65px;
+        i {
+          position: absolute;
+          left: 5px;
+          top: 10px;
+          color: #999;
+          & + div {
+            position: absolute;
+            left: 35px;
+            top: 12px;
+            h3 {
+              font-size: 18px;
+              margin-bottom: 7px;
+            }
+            .id {
+              margin-right: 5px;
+            }
+            .name {
+              margin-right: 5px;
+            }
+            .village {
+              font-size: 14px;
+            }
+            .gender, .age {
+              font-size: 14px;
+              display: inline-block;
+              padding: 3px;
+              background: #EEE;
+              @include border-radius(3);
+              width: 20px;
+              text-align: center;
+            }
+          }
+        }
+        .registration {
+          font-size: 12px;
+          position: absolute;
+          right: 10px;
+          bottom: 10px;
+        }
+      }
+    }
   }
 }

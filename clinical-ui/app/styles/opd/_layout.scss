@@ -7,6 +7,9 @@ $columns: 12;
 @import "compass";
 @import "compass/reset";
 
+.icon-white {
+    color: #f6f6f6;
+}
 
 body{
     font-family: "OpenSans",Arial,sans-serif;
@@ -26,25 +29,25 @@ body{
         }
 
         header{
-            border-radius:0px;
-            padding:2px;
-            position:relative;
-            margin: 0px;
+            position: relative;
+            color: #CCC;
+            height: 50px;
+            border-radius: 0;
             @media screen and (min-width: 960px) {
                 width: 960px;
                 margin: 0px auto;
             }
             .header-logo{
-                background:url("../images/jss_logo.png") no-repeat left top;
-                padding:10px 0px 7px 40px;
-                margin:0px auto;
-                width:200px;
-                display: inline-block;
-                position:absolute;
-                left:0px;
-                right:7px;
-                top:7px;
-                bottom:0px;
+                background: image-url("jss_logo.png") no-repeat scroll left 2px transparent;
+                color: #ffffff;
+                display: block;
+                font-size: 16px;
+                margin:4px 0px 0px 5px;
+                padding:10px 0px 0px 40px;
+                text-decoration:none;
+                line-height:18px;
+                height:35px;
+                float:left;
             }
             ul{
                 &:first-child{
@@ -117,9 +120,44 @@ body{
                  }
                 }
             }
+            .btn-user-info {
+              @include background(linear-gradient(top, #015B52, #00463f));
+              padding: 7px;
+              border: none;
+              float: right;
+              margin: 8px;
+              i.mini {
+                font-size: .9em;
+              }
+              & + ul {
+                display: none;
+                &.active {
+                  background: #00463f;
+                  display: block;
+                  position: absolute;
+                  right: 5px;
+                  top: 50px;
+                }
+                li {
+                  float: left;
+                  clear: both;
+                  text-align: left;
+                  padding-left: 10px;
+                  border-bottom: 1px solid #187269;
+                  margin: 0;
+                  padding: 10px 10px 10px 5px;
+                  a.disabled {
+                    color: #999;
+                    .icon-user {
+                        color: #999;
+                    }
+                  }
+                }
+              }
+            }
         }
         .opd-header-top,header{
-            background:#000;
+            background: #00463f;
         }
         .opd-header-bottom {
             border-radius:0px;

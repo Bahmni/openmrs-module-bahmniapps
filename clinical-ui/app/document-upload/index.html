@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
 
         <!-- build:css document-upload.min.css -->
         <link rel="stylesheet" href="../components/jquery-ui/themes/smoothness/jquery-ui.min.css">
@@ -11,7 +11,7 @@
         <title>Document Upload</title>
     </head>
     <body>
-        <div ng-app="documentupload">
+        <div ng-app="documentupload" class="document-upload">
             <div ng-hide="tiles && tiles.header" ng-include src="'../common/modules/patient/header/views/header.html'"></div>
             <div ng-show="tiles && tiles.header" ng-include src="tiles.header"></div>
 

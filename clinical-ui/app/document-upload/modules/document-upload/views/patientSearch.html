@@ -1,7 +1,10 @@
 <section class="reg-search-wrapper">
     <section class="reg-search">
         <article class="search-seperator-l">
-            <form name="searchByIdForm" ng-submit="searchById()" class="simple-form-ui" >
+            <h1>Search Patient</h1>
+            <form name="searchByIdForm" ng-submit="searchById()">
+
+
                 <label for="patientIdentifier"><strong>Patient ID or Name</strong></label>
 
                 <div class="search-patient-id left">
@@ -10,7 +13,10 @@
                 </div>
 
                 <div class="reg-srch-btn left">
-                    <button type="submit" ng-disabled="!patientIdentifier" >Search</button>
+                    <button type="submit" ng-disabled="!patientIdentifier" >
+                        <i class="icon-search"></i>
+                        Search
+                    </button>
                 </div>
             </form>
         </article>
@@ -24,38 +30,31 @@
         </div>
     </div>
 
-    <div>
-        <table ng-show="resultsPresent()" class="table table-hover">
-            <thead>
-            <tr>
-                <th class="slno_col"><strong>Sl.No</strong></th>
-                <th><strong>ID</strong></th>
-                <th><strong>Name</strong></th>
-                <th><strong>Gender</strong></th>
-                <th><strong>Age</strong></th>
-                <th><strong>Village</strong></th>
-                <th><strong>Registration Date</strong></th>
-                <th class="edit-col"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="result in results" ng-click="gotoDocumentUpload(result.uuid)">
-                <td>{{$index + 1}}</td>
-                <td>{{result.identifier}}</td>
-                <td>{{result.givenName}} {{result.familyName}}</td>
-                <td>{{result.gender}}</td>
-                <td>{{result.age}}</td>
-                <td>{{result.cityVillage}}</td>
-                <td>{{result.dateCreated | date:'dd-MM-yyyy'}}</td>
-                <td class="edit-col">
-                    <div split-button options="searchActions"
-                         primary-option="searchActions[0]"
-                         option-text="extensionActionText" option-click="forPatient(result).doExtensionAction">
+    <div ng-show="resultsPresent()">
+        <h2>Results for "{{patientIdentifier}}"</h2>
+        <div class="patients">
+            <ul>
+                <li ng-repeat="result in results" ng-click="gotoDocumentUpload(result.uuid)">
+                    <i class="icon-user"></i>
+                    <div>
+                        <h3>
+                            <span class="id">{{result.identifier}}</span>
+                            <span class="name">{{result.givenName}} {{result.familyName}}, </span>
+                        </h3>
+                        <span class="gender">{{result.gender}}</span>
+                        <span class="age">{{result.age}}</span>
+                        <span class="village">{{result.cityVillage}}</span>
                     </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                    <span class="registration">Registered: {{result.dateCreated | date:'dd-MM-yyyy'}}</span>
+                    <div class="edit-col">
+                        <div split-button options="searchActions"
+                             primary-option="searchActions[0]"
+                             option-text="extensionActionText" option-click="forPatient(result).doExtensionAction">
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <!--<div id="loader"></div>-->
