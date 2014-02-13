@@ -36,8 +36,12 @@ angular.module('bahmnihome')
         return {
             restrict: 'CA',
             link: function(scope, elem, attrs) {
-                elem.bind('click', function() {
+                elem.bind('click', function(event) {
                     $(this).next().toggleClass('active');
+                    event.stopPropagation();
+                });
+                $(document).find('html').bind('click', function() {
+                    $(elem).next().removeClass('active');
                 });
             }
         };

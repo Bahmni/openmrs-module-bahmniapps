@@ -320,8 +320,13 @@ body{
     p.caution{
       padding:0px;
     }
-    .note-container .note{
-      margin:0px auto 18px auto;
+    .note-container {
+      width: 95.1%;
+      margin: auto;
+      .note {
+        min-width: 10px;
+        display: block;
+      }
     }
     .form-field {
       display: block;
@@ -359,7 +364,10 @@ body{
     margin: auto;
     bottom: 0;
     .login-body {
-      padding-top:20px;
+      padding-top: 10px;
+      .note-container .note {
+        margin: 0px auto;
+      }
       .form-field {
         padding: 0;
         .field-attribute {
@@ -413,7 +421,7 @@ body{
           background: #00463f;
           display: block;
           position: absolute;
-          right: 0;
+          right: 5px;
           top: 50px;
         }
         li {
@@ -421,25 +429,42 @@ body{
           clear: both;
           text-align: left;
           padding-left: 10px;
+          border-bottom: 1px solid #187269;
+          margin: 0;
+          padding: 10px 10px 10px 5px;
+          a.disabled {
+            color: #999;
+            .icon-user {
+                color: #999;
+            }
+          }
         }
       }
     }
   }
   .apps {
-    li {
-      a {
-        width: 130px;
-        i {
-          margin-bottom: 5px;
+    ul {
+      margin: auto;
+      max-width: 345px;
+      li {
+        a {
+          width: 130px;
+          i {
+            margin-bottom: 5px;
+          }
         }
       }
     }
   }
+
   @media screen and (min-width: 960px) {
     .apps {
       width: 600px;
       margin: 80px auto;
       padding-bottom: 100px;
+      ul {
+        max-width: 600px;
+      }
     }
   }
 }
