@@ -23,6 +23,7 @@ angular.module('bahmni.common.util')
                     }
                     ngModelCtrl.$setViewValue(ui.item.value);
                     scope.$eval(attrs.ngChange);
+                    if(scope.blurOnSelect) element.blur();
                 });
                 return true;
             },
@@ -41,7 +42,8 @@ angular.module('bahmni.common.util')
             source: '&',
             responseMap: '&',
             onSelect: '&',
-            minLength: '='
+            minLength: '=',
+            blurOnSelect: '='
         }
     }
 });

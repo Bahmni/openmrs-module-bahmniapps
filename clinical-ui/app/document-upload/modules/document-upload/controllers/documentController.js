@@ -163,6 +163,7 @@ angular.module('opd.documentupload')
         element.attr("source", "getConcepts");
         element.attr("response-map", "getDataResults");
         element.attr("on-select", "onConceptSelected(image)");
+        element.attr("blur-on-select", "true");
         element.attr("required", "");
         element.attr("autocorrect", "off");
         element.attr("autocomplete", "off");

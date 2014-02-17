@@ -14,6 +14,7 @@ angular.module('opd.documentupload')
 
         var searchPromise = function(patientIdentifier) {
             return patientService.search(patientIdentifier).success(function (data) {
+                $scope.noResultsMessage = null;
                 $scope.results = data.results;
                 if (data.results.length > 0) {
                     var patient = data.results[0];
@@ -23,7 +24,7 @@ angular.module('opd.documentupload')
 
                 } else {
                     spinner.hide();
-                    $scope.noResultsMessage = "Could not find patient with identifier " + patientIdentifier + ". Please verify the patient ID entered "
+                    $scope.noResultsMessage = "Could not find patient with identifier/name " + patientIdentifier + ". Please verify the patient ID entered "
                 }
             }).error(spinner.hide);
         }
