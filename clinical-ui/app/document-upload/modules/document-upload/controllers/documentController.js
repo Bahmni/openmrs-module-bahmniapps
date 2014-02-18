@@ -153,23 +153,6 @@ angular.module('opd.documentupload')
             };
 
         }])
-.directive('documentConceptAutocomplete', function ($parse, $compile) {
-    return function (scope, element, attrs) {
-        element.removeAttr('document-concept-autocomplete');
-        element.attr("pattern", "{{escapeRegExp(image.concept.name)}}");
-        element.attr("title", "Select the test from autocomplete");
-        element.attr("placeholder", "Enter the test name");
-        element.attr("my-autocomplete", "");
-        element.attr("source", "getConcepts");
-        element.attr("response-map", "getDataResults");
-        element.attr("on-select", "onConceptSelected(image)");
-        element.attr("blur-on-select", "true");
-        element.attr("required", "");
-        element.attr("autocorrect", "off");
-        element.attr("autocomplete", "off");
-        $compile(element)(scope);
-    }
-})
 .directive('btnUserInfo', ['$rootScope', '$window', function($rootScope, $window) {
     return {
         restrict: 'CA',
