@@ -47,7 +47,7 @@ describe('CreatePatientController', function () {
                 $location: location,
                 Preferences: preferences,
                 spinner: spinner,
-                $rootScope: {encounterConfiguration: new EncounterConfig({visitTypes: {}}), patientConfiguration: patientConfiguration},
+                $rootScope: {encounterConfiguration: new EncounterConfig({visitTypes: {}},{encounterTypes: {"REG" : "someUUID"}}), patientConfiguration: patientConfiguration },
                 appService: appService,
                 $route: route
             });

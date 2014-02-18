@@ -6,6 +6,7 @@ angular.module('registration.patient.controllers')
             var uuid;
             var editActionsConfig = [];
             var defaultActions = ["save", "print"];
+            var regEncounterTypeUuid = $scope.encounterConfiguration.encounterTypes[constants.encounterType.registration];
 
             var identifyEditActions = function() {
                 editActionsConfig = appService.getAppDescriptor().getExtensions("org.bahmni.registration.patient.edit.action", "config");
@@ -68,8 +69,19 @@ angular.module('registration.patient.controllers')
                 $location.path("/patient/" + patientData.patient.uuid + "/visit");
             };
 
+            var createEncounterObject = function() {
+                var encounter = {
+                    encounterTypeUuid:regEncounterTypeUuid
+                }
+                encounter.providers = encounter.providers || [];
+                if ($rootScope.currentProvider && $rootScope.currentProvider.uuid) {
+                    encounter.providers.push( { "uuid" : $rootScope.currentProvider.uuid } );
+                }
+                return encounter;
+            }
+
             var createVisit = function(patientProfileData){
-                $scope.visitControl.createVisit(patientProfileData.patient.uuid).success(function() {
+                $scope.visitControl.createVisit(patientProfileData.patient.uuid, createEncounterObject()).success(function() {
                     $scope.patient.uuid = patientProfileData.patient.uuid;
                     $scope.patient.name = patientProfileData.patient.person.names[0].display;
                     patientService.rememberPatient($scope.patient);

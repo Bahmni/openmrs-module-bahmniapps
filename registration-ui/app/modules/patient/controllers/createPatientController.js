@@ -5,7 +5,7 @@ angular.module('registration.patient.controllers')
     function ($scope, $rootScope, patientService, visitService, $location, preferences, $route, patientModel, $window, errorCode, dateUtil, spinner, printer, appService, $timeout) {
         var createActionsConfig = [];
         var defaultActions = ["save", "print", "startVisit"];
-
+        var regEncounterTypeUuid = $rootScope.encounterConfiguration.encounterTypes[constants.encounterType.registration];
         var identifyEditActions = function() {
             createActionsConfig = appService.getAppDescriptor().getExtensions("org.bahmni.registration.patient.create.action", "config");
             var createActions = createActionsConfig.filter(function(config) {
@@ -64,9 +64,20 @@ angular.module('registration.patient.controllers')
             $scope.patient.registrationDate = dateUtil.now();
         };
 
+        var createEncounterObject = function() {
+            var encounter = {
+                encounterTypeUuid:regEncounterTypeUuid
+            }
+            encounter.providers = encounter.providers || [];
+            if ($rootScope.currentProvider && $rootScope.currentProvider.uuid) {
+                encounter.providers.push( { "uuid" : $rootScope.currentProvider.uuid } );
+            }
+            return encounter;
+        }
+
         var followUpAction = function(patientProfileData) {
             if($scope.submitSource == 'startVisit') {
-                $scope.visitControl.createVisit(patientProfileData.patient.uuid).success(function(){
+                $scope.visitControl.createVisit(patientProfileData.patient.uuid, createEncounterObject()).success(function(){
                     var patientUrl = $location.absUrl().replace("new", patientProfileData.patient.uuid) + "?newpatient=true";
                     $scope.patient.registrationDate = dateUtil.now();
                     patientService.rememberPatient($scope.patient);

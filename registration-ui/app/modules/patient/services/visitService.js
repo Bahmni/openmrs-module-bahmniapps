@@ -4,7 +4,7 @@ angular.module('registration.patient.services')
     .factory('visitService', ['$http', function ($http) {
     
     var create = function (visit) {
-        return $http.post(constants.webServiceRestBaseURL + '/visit', visit, {
+        return $http.post(constants.emrApiEncounterUrl , visit, {
             withCredentials: true
         });
     };

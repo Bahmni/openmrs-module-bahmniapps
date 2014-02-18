@@ -16,6 +16,7 @@ var constants = {
     baseOpenMRSRESTURL: "/openmrs/ws/rest/v1",
     bahmniRESTBaseURL: "/openmrs/ws/rest/v1/bahmnicore",
     emrApiRESTBaseURL: "/openmrs/ws/rest/emrapi",
+    emrApiEncounterUrl: "/openmrs/ws/rest/emrapi/encounter",
     webServiceRestBaseURL: "/openmrs/ws/rest/v1",
     registrationFeesConcept: "REGISTRATION FEES",
     defaultVisitTypeName: "REG", //TODO: Read this from config

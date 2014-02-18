@@ -13,10 +13,14 @@ Bahmni.Registration.VisitControl = function(visitTypes, defaultVisitTypeName, vi
         self.selectedVisitType = visitType;
     };
 
-    self.createVisit = function(patientUuid) {
-        var today12AM = new Date(new Date().toDateString());
-        today12AM = moment(today12AM).format("YYYY-MM-DDTHH:mm:ss") + "Z";
-        var visit = {patient: patientUuid, visitType: self.selectedVisitType.uuid, startDatetime: today12AM, encounters: []}
+    self.createVisit = function(patientUuid, encounter) {
+        var visit = {patientUuid: patientUuid, visitTypeUuid: self.selectedVisitType.uuid}
+        if(encounter && encounter.encounterTypeUuid){
+            visit.encounterTypeUuid = encounter.encounterTypeUuid;
+        }
+        if(encounter && encounter.providers){
+            visit.providers = encounter.providers;
+        }
         return visitService.create(visit);
     };
 };
