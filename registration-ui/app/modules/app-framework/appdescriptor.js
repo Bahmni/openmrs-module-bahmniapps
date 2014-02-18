@@ -78,6 +78,16 @@ function AppDescriptor(context, inheritContext, retrieveUserCallback) {
         }
     };
 
+    var getUniqueById = function(extensions) {
+        var uniqueExtensions = {};
+        return extensions.filter(function(ext) {
+            if(uniqueExtensions[ext.id] == null) {
+                uniqueExtensions[ext.id] = ext;
+                return true;
+            }
+        })
+    };
+
     this.getExtensions = function (extPointId, type) {
         var currentUser = retrieveUserCallback();
         if (currentUser && that.extensions) {
@@ -91,7 +101,8 @@ function AppDescriptor(context, inheritContext, retrieveUserCallback) {
             appsExtns.sort(function(extn1, extn2) {
                 return extn1.order - extn2.order;
             });
-            return appsExtns;
+
+            return getUniqueById(appsExtns);
         }
     };
 
