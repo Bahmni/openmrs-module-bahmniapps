@@ -35,7 +35,8 @@ Bahmni.Opd.DocumentUpload.Visit = function () {
     };
     
     this.endDate = function () {
-        return this.stopDatetime ? this.parseDate(this.stopDatetime) : this.startDate();
+        var endDateTime = this.stopDatetime ? this.parseDate(this.stopDatetime) : this.startDate();
+        return endDateTime.setHours(23,59,59,000);
     };
 
     this.parseDate = function (date) {
