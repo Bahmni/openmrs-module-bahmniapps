@@ -65,7 +65,7 @@ angular.module('registration.patient.controllers')
             var searchPromise = patientService.search(patientIdentifier).success(function (data) {
                 if (data.results.length > 0) {
                     var patient = data.results[0];
-                    var forwardUrl = appService.getAppDescriptor().getConfigValue("searchByIdForwardUrl");
+                    var forwardUrl = appService.getAppDescriptor().getConfigValue("searchByIdForwardUrl") || "/patient/{{patientUuid}}";
                     $location.url(appService.getAppDescriptor().formatUrl(forwardUrl, {'patientUuid': patient.uuid} ));
                 } else {
                     spinner.hide();
