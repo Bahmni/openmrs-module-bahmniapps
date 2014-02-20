@@ -92,7 +92,7 @@ angular.module('registration.util')
                             '<li ng-repeat="option in sortedOptions"' +
                                 'ng-class="{primaryOption: $index == 0, secondaryOption: $index > 0}"' +
                              '>' +
-                                '<button ng-class="buttonClass" ng-click="optionClick()(option)">{{optionText()(option)}}</a>' +
+                                '<button ng-class="buttonClass" ng-click="optionClick()(option)">{{optionText()(option)}}</button>' +
                             '</li>' +
                         '</ul>' +
                         '<button class="toggle-button icon-caret-down" ng-show="hasMultipleOptions()" type="button"></button></div>',
