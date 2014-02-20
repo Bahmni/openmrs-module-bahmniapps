@@ -38,7 +38,7 @@ angular.module('registration.patient.controllers')
         };
 
         var initialize = function() {
-            $scope.searchActions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.patient.search.action");
+            $scope.searchActions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.patient.search.result.action");
         };
 
         var identifyParams = function (querystring) {
@@ -65,7 +65,8 @@ angular.module('registration.patient.controllers')
             var searchPromise = patientService.search(patientIdentifier).success(function (data) {
                 if (data.results.length > 0) {
                     var patient = data.results[0];
-                    $location.url($scope.editPatientUrl("/patient/{{uuid}}", {'uuid':patient.uuid} ));
+                    var forwardUrl = appService.getAppDescriptor().getConfigValue("searchByIdForwardUrl");
+                    $location.url(appService.getAppDescriptor().formatUrl(forwardUrl, {'patientUuid': patient.uuid} ));
                 } else {
                     spinner.hide();
                     $scope.noResultsMessage = "Could not find patient with identifier " + patientIdentifier + ". Please verify the patient ID entered or create a new patient record with this ID."

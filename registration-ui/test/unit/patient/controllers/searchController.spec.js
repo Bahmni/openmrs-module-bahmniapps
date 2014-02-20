@@ -38,11 +38,8 @@ describe('SearchPatientController', function () {
         patientResource.search.andReturn(searchPromise);
         spinner = jasmine.createSpyObj('spinner', ['show', 'hide', 'forPromise']);
         loader = jasmine.createSpyObj('loader', ['show', 'hide', 'forPromise']);
-        appDescriptor = {
-            getExtensions: function (id) {
-                return [];
-            }
-        };
+        appDescriptor = jasmine.createSpyObj('appDescriptor', ['getExtensions', 'getConfigValue', 'formatUrl']);
+        appDescriptor.getExtensions.andReturn([]);
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         appService.getAppDescriptor.andReturn(appDescriptor);
         $controller('SearchPatientController', {
@@ -239,14 +236,17 @@ describe('SearchPatientController', function () {
 
             it("should go to edit patient without hiding spinner when a patient is found", function () {
                 spyOn(location, 'search');
-                spyOn(location, 'path');
+                spyOn(location, 'url');
+                appDescriptor.getConfigValue.andReturn("/patient/patientUuid");
+                appDescriptor.formatUrl.andReturn("/patient/8989-90909");
 
                 searchPromise.callSuccessCallBack({results: [
                     {uuid: "8989-90909"}
                 ]});
 
-                expect(location.path).toHaveBeenCalledWith("/patient/8989-90909");
+                expect(location.url).toHaveBeenCalledWith("/patient/8989-90909");
                 expect(spinner.hide).not.toHaveBeenCalled();
+                expect(appDescriptor.formatUrl).toHaveBeenCalledWith("/patient/patientUuid", {patientUuid: '8989-90909'});
             });
 
             it("should show 'no patient found message' and hide the spinner when patient is not found", function () {
