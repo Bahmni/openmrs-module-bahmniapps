@@ -97,7 +97,6 @@
   }
 
   .reg-search-wrapper {
-    padding-left: 10px;
     h1 {
       font-size: 18px;
       padding: 0 5px;
@@ -114,7 +113,7 @@
     }
     h2 {
       font-size: 16px;
-      margin: 10px 0;
+      margin: 10px 0 0 0;
       padding: 10px 5px;
       border-top: 1px solid #AAA;
       border-bottom: 1px solid #CCC;
@@ -126,6 +125,13 @@
         position: relative;
         border-bottom: 1px solid #CCC;
         height: 65px;
+        &:hover, &:focus, &:active {
+          cursor: pointer;
+          background: #f8f8f8;
+          .icon-user, h3 {
+            color: #009384;
+          }
+        }
         i {
           position: absolute;
           left: 5px;

@@ -18,14 +18,14 @@ body{
 }
 .opd-header-wrapper{
         @include pie-clearfix;
-        background:#00463F;
-        position: fixed;
-        top: 0px;
-        left: 0px;
-        right: 0px;
-        z-index: 1000;
+        // position: fixed;
+        // top: 0px;
+        // left: 0px;
+        // right: 0px;
+        // z-index: 1000;
         &#opd-tabs {
-            top: 50px;
+          top: 50px;
+          background: #669999;
         }
 
         header{
@@ -121,31 +121,51 @@ body{
                 }
             }
             .btn-user-info {
-              @include background(linear-gradient(top, #015B52, #00463f));
+              // @include background(linear-gradient(top, #015B52, #00463f));
+              background: #015B52;
               padding: 7px;
               border: none;
               float: right;
               margin: 8px;
+              @media screen and (max-width: 959px) {
+                margin: 0;
+                padding: 15px;
+              }
+              &:focus {
+                outline: 0;
+              }
               i.mini {
                 font-size: .9em;
               }
               & + ul {
                 display: none;
                 &.active {
-                  background: #00463f;
+                  background: #015B52;
                   display: block;
                   position: absolute;
-                  right: 5px;
-                  top: 50px;
+                  right: 8px;
+                  top: 40px;
+                  z-index: 10000;
+                  @media screen and (max-width: 959px) {
+                    top: 49px;
+                    right: 0;
+                  }
                 }
                 li {
                   float: left;
                   clear: both;
                   text-align: left;
-                  padding-left: 10px;
-                  border-bottom: 1px solid #187269;
+                  border-bottom: 1px solid #02675d;
                   margin: 0;
-                  padding: 10px 10px 10px 5px;
+                  a {
+                    padding: 5px;
+                    display: inline-block;
+                    min-width: 190px;
+                    &:hover {
+                      text-decoration: none;
+                      background: #02675d;
+                    }
+                  }
                   a.disabled {
                     color: #999;
                     .icon-user {
@@ -157,7 +177,7 @@ body{
             }
         }
         .opd-header-top,header{
-            background: #00463f;
+          background: #00463f;
         }
         .opd-header-bottom {
             border-radius:0px;
@@ -169,30 +189,29 @@ body{
                 margin: 0px auto;
             }
             .header-tabs{
-                    float:left;
-                    margin-top:10px;
+              float:left;
+              margin-top:10px;
             }
             .patient-detail{
-                width:150px;
-                background:#5C5A5A;
-                border:1px solid #cecece;
-                border-radius:5px;
-                padding:6px;
+                width:200px;
+                background:#727070;
+                border-radius: 3px;
                 position:absolute;
-                box-shadow:3px 3px 5px #717473;
                 top:59px;
-                right:0px;
+                right:10px;
                 color:#F26522;
                 z-index:999;
                 li{
-                    line-height: 20px;
-                    float:none;
-                    margin-bottom: 4px;
-                    background:#727070;
-                    margin-right:0px;
-                    padding-left:5px;
-                    color:#fff;
-                    font-size:0.95em;
+                  float: none;
+                  font-size: .85em;
+                  color: #fff;
+                  padding: 10px;
+                  border-bottom: 1px solid #696969;
+                  margin-right: 0;
+                  border-radius: 0 0 3px 3px;
+                  &:last-child {
+                    border-bottom: 0;
+                  }
                 }
             }
             .patient-info{
@@ -202,15 +221,14 @@ body{
                         cursor:pointer;
                         &.patient-img{
                             padding:2px 6px 0px;
-                            &:hover{
-                                background:#44866A;
-                                border-radius:6px;
-                            }
+                            // &:hover{
+                            //     background:#44866A;
+                            //     border-radius:6px;
+                            // }
                         }
                         &:first-child{
                             padding:15px 0px 0px 0px;
                             text-align: right;
-                            width:80px;
                             height:33px;
                             overflow:hidden;
                         }
@@ -220,9 +238,12 @@ body{
                             color: #00463F;
                             font-size: 26px;
                             z-index: 9999;
-                            right: 3px;
+                            right: 6px;
+                            .icon-caret-down {
+                              display: none;
+                            }
                             .icon-caret-up{
-                                color:#5C5A5A;
+                                color:#727070;
                             }
                         }
                     }
@@ -234,6 +255,9 @@ body{
     position: relative;
     top: 110px;
     margin: 0px;
+    @media screen and (max-width: 959px) {
+      width: 100%;
+    }
     @media screen and (min-width: 960px) {
         width: 960px;
         margin: 0px auto;
@@ -241,6 +265,9 @@ body{
     .opd-content-wrapper {
         background:#ffffff;
         height:99%;
+        @media screen and (max-width: 959px) {
+          padding: 5px;
+        }
         @media screen and (min-width: 960px) {
             padding:10px 10px 20px 10px;
         }
