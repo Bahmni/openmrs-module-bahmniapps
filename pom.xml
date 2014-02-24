@@ -4,7 +4,7 @@
 
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>bahmniregistration</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>4.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Bahmni Registration Module</name>
 	<description>Configurable Registration for Bahmni</description>
