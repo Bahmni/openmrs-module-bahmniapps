@@ -13,7 +13,7 @@ angular.module('opd.adt').factory('initialization',
 
             var getPatient = function(visitResponse) {
                 var visit = visitResponse.data;
-                return patientService.getPatient(visit.patient.uuid).success(function (openMRSPatient) {
+                return patientService.getPatient($route.current.params.patientUuid).success(function (openMRSPatient) {
                     $rootScope.patient = patientMapper.map(openMRSPatient);
                 });
             };
