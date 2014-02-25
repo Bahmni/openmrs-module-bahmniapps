@@ -105,6 +105,15 @@ angular.module("trends").controller("TrendsController", ["$scope", "$routeParams
             backlinkService.addUrl("Dashboard", "/clinical/consultation/#/patient/" + patientUUID);
         };
 
+        $scope.atleastOneForDisplay = function(){
+            if($scope.visibleObservations){
+              for(var property in $scope.visibleObservations){
+                return true;
+              }
+            }
+            return false;
+        }
+
         init();
     }
 ]);
