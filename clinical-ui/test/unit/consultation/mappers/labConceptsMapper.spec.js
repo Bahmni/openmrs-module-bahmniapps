@@ -90,6 +90,19 @@ describe("LabConceptsMapper", function () {
             expect(tests[0].panels.length).toBe(2);
         });
 
+        it("should map the tests belonging to multiple panels as single test", function(){
+            var testConcept = createTest("1-1-1", "Test1")
+            var panelConcept1 = {name: { name: "Panel1"}, setMembers: [testConcept], conceptClass: { name: Bahmni.Opd.Consultation.Constants.labSetConceptName}};
+            var sampleConcept = {name: { name: "Blood"}, conceptClass: { name: "ConvSet"}, setMembers: [panelConcept1, testConcept]};
+            labConceptSet.setMembers = [sampleConcept];
+
+            var tests = mapper.map(labConceptSet, departmentsConceptSet);
+
+            expect(tests.length).toBe(1);
+            expect(tests[0].panels.length).toBe(1);
+            expect(tests[0].sample.name).toBe(sampleConcept.name.name);
+        });
+
         it("should return zero tests when labConceptSet does not exist", function(){
             var tests = mapper.map(null, departmentsConceptSet);
 

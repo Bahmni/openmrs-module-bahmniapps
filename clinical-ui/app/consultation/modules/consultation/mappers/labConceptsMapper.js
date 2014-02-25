@@ -63,7 +63,10 @@ Bahmni.Opd.LabConceptsMapper = (function(){
                     mapPanelTests(sample, tests, panelConcept);
                 });
                 angular.forEach(testConcepts, function(testConcept){
-                    tests.push(createTest(testConcept, sample, []));
+                    var test = tests.filter(function(test){ return test.uuid === testConcept.uuid; })[0];
+                    if(!test) {
+                        tests.push(createTest(testConcept, sample, []));
+                    }
                 });
             });
             assignDepartmentToTests(tests, departmentConceptSet);
