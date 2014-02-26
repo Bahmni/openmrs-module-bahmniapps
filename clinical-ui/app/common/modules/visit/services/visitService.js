@@ -20,7 +20,6 @@ angular.module('bahmni.common.visit.services')
     };
 
     this.updateVisit = function (visitUuid, attributes) {
-
         return $http.post(Bahmni.Common.Constants.visitUrl + '/' + visitUuid, attributes, {
             withCredentials:true
         });

@@ -20,6 +20,13 @@ var EncounterConfig = (function () {
         },
         getRadiologyEncounterTypeUuid:function () {
             return this.encounterTypes["RADIOLOGY"];
+        },
+        getVisitTypes:function(){
+            var visitTypesArray = [];
+            for(var name in this.visitTypes) {
+                visitTypesArray.push({name: name, uuid: this.visitTypes[name]});
+            }
+            return visitTypesArray;
         }
     };
     return EncounterConfig;

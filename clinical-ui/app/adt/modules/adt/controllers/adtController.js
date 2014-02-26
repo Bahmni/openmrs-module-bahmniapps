@@ -34,6 +34,8 @@ angular.module('opd.adt.controllers')
             }
 
             var init = function () {
+                $scope.admitActions = appService.getAppDescriptor().getExtensions("org.bahmni.adt.admit.action", "config");
+                $scope.visitTypes = $rootScope.encounterConfig.getVisitTypes();
                 var encounterWithHigestRank = getEncounterWithHigestRank();
                 if (encounterWithHigestRank) {
                     setObservationsFromActiveEncounterOfType(encounterWithHigestRank.encounterType.uuid);
@@ -50,6 +52,10 @@ angular.module('opd.adt.controllers')
                 });
             };
 
+            $scope.call = function(functionName) {
+                $scope[functionName]();
+            }
+
             $scope.save = function () {
                 var actionConfig = actionConfigs[getSelectedDispositionCode()];
                 if (actionConfig) {
@@ -60,8 +66,10 @@ angular.module('opd.adt.controllers')
                 
             };
 
-            $scope.startNewVisit = function() {
-                visitService.endVisit($scope.visit.uuid);
+            $scope.startNewVisit = function(visitTypeUuid) {
+                visitService.endVisit($scope.visit.uuid).success(function(){
+                    admit(visitTypeUuid)
+                });
             };
 
             $scope.cancel = function () {
@@ -115,10 +123,11 @@ angular.module('opd.adt.controllers')
                 return null;
             };
 
-            var getEncounterData = function (encounterTypeUuid) {
+            var getEncounterData = function (encounterTypeUuid,  visitTypeUuid) {
                 var encounterData = {};
                 encounterData.patientUuid = $scope.patient.uuid;
                 encounterData.encounterTypeUuid = encounterTypeUuid;
+                encounterData.visitTypeUuid = visitTypeUuid;
                 encounterData.observations = $scope.adtObservations;
                 return encounterData;
             };
@@ -134,8 +143,8 @@ angular.module('opd.adt.controllers')
                 }
             };
 
-            var admit = function () {
-                var encounterData = getEncounterData($scope.encounterConfig.getAdmissionEncounterTypeUuid());
+            var admit = function (visitTypeUuid) {
+                var encounterData = getEncounterData($scope.encounterConfig.getAdmissionEncounterTypeUuid(), visitTypeUuid);
                 encounterService.create(encounterData).success(function (response) {
                     forwardUrl(response, "onAdmissionForwardTo");
                 });
@@ -168,4 +177,72 @@ angular.module('opd.adt.controllers')
             spinner.forPromise(init());
         }
     ])
+
+.directive('splitButton', function ($parse) {
+        var link = function($scope, element) {
+            var toggleButton = element.find('.toggle-button');
+            var docClickHandler = function(e) {
+                var $clicked = $(e.target);
+                if ($clicked.closest(toggleButton).length === 0 || $clicked.closest(element.find('.options')).length !== 0) {
+                    element.find('.secondaryOption').hide();
+                    toggleButton.removeClass('open');
+                    $(document).off('click', docClickHandler);
+                }
+            }
+
+            toggleButton.on('click', function(){
+                element.find('.secondaryOption').toggle();
+                element.find('.secondaryOption button')[0].focus();
+                if(toggleButton.hasClass('open')) {
+                    toggleButton.removeClass('open');
+                    $(document).off('click', docClickHandler);
+                } else {
+                    $(document).on('click', docClickHandler);
+                    toggleButton.addClass('open');
+                }
+                }
+            );
+        };
+
+        var controller = function($scope) {
+            $scope.sortedOptions = (function() {
+                var indexOfPrimaryOption = $scope.options.indexOf($scope.primaryOption)
+                if(indexOfPrimaryOption > 0){
+                    var clonedOptions = $scope.options.slice(0);
+                    clonedOptions.splice(indexOfPrimaryOption, 1);
+                    clonedOptions.splice(0, 0, $scope.primaryOption)
+                    return clonedOptions;
+                } else {
+                    return $scope.options;
+                }
+            })();
+
+            $scope.hasMultipleOptions = function() {
+                return $scope.options.length > 1;
+            }
+        }
+
+        return {
+            restrict: 'A',
+            template: '<div class="split-button">'+
+                            '<ul class="options">' +
+                            '<li ng-repeat="option in sortedOptions"' +
+                                'ng-class="{primaryOption: $index == 0, secondaryOption: $index > 0}"' +
+                             '>' +
+                                '<button ng-class="buttonClass" ng-click="optionClick()(option.uuid)">Start {{option.name}} Visit</a>' +
+                            '</li>' +
+                        '</ul>' +
+                        '<button class="toggle-button icon-caret-down" ng-show="hasMultipleOptions()" type="button"></button></div>',
+            link: link,
+            controller: controller,
+            scope: {
+                options: '=',
+                primaryOption: '=',
+                optionText: '&',
+                optionClick: '&',
+                buttonClass: '='
+            }
+        };
+    })
+
 ;
