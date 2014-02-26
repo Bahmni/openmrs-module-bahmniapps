@@ -13,6 +13,19 @@ angular.module('bahmni.common.visit.services')
          	}
         );
     };
+ 
+    this.endVisit = function (visitUuid) {
+        var attributes = {'stopDatetime' : Bahmni.Common.Util.DateUtil.getCurrentDate()};
+        return this.updateVisit(visitUuid, attributes);
+    };
+
+    this.updateVisit = function (visitUuid, attributes) {
+
+        return $http.post(Bahmni.Common.Constants.visitUrl + '/' + visitUuid, attributes, {
+            withCredentials:true
+        });
+    };
+ 
     this.getVisitSummary = function (uuid) {
         return $http.get(Bahmni.Common.Constants.visitSummaryUrl + '/' + uuid,
          	{

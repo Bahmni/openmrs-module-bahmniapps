@@ -4,7 +4,7 @@ angular.module('adt', ['ngRoute', 'opd.consultation.services', 'bahmni.common.in
     'opd.conceptSet', 'authentication', 'appFramework', 'httpErrorInterceptor', 'opd.adt',
     'bahmni.common.encounter', 'bahmni.common.visit', 'opd.bedManagement.services', 'bahmni.common.controllers']);
 angular.module('adt').config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
-    $routeProvider.when('/dashboard/patient/:patientUuid/visit/:visitUuid',
+    $routeProvider.when('/dashboard/patient/:patientUuid/visit/:visitUuid/:action',
         {
             templateUrl: 'modules/adt/views/dashboard.html',
             controller: 'AdtController',

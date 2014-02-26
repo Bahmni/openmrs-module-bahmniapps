@@ -1,8 +1,8 @@
 "use strict";
 
 angular.module('opd.adt.controllers')
-    .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService', 'encounterService', 'BedService', 'appService',
-        function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService, appService) {
+    .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService', 'encounterService', 'BedService', 'appService', 'visitService',
+        function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService, appService, visitService) {
             var rankActions = {};
             var actionConfigs = {};
             var encounterConfig = $rootScope.encounterConfig;
@@ -58,6 +58,10 @@ angular.module('opd.adt.controllers')
                     $rootScope.server_error = "Oops! The system can't yet process the selected action.";
                 }
                 
+            };
+
+            $scope.startNewVisit = function() {
+                visitService.endVisit($scope.visit.uuid);
             };
 
             $scope.cancel = function () {

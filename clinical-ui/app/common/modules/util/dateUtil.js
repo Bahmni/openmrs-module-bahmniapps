@@ -11,5 +11,9 @@ Bahmni.Common.Util.DateUtil = {
 
 	getDate: function (dateTime) {
 		return new Date(dateTime.getFullYear(), dateTime.getMonth(), dateTime.getDate());
+	},
+
+	getCurrentDate: function(){
+		return moment(Date.now()).format("YYYY-MM-DDTHH:mm:ss") + "Z";
 	}
 }
