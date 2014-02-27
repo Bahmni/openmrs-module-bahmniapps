@@ -9,7 +9,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
             uuid: openMrsConcept.uuid,
             name: openMrsConcept.name.name,
             set: openMrsConcept.set,
-            datatype: openMrsConcept.datatype,
+            dataType: openMrsConcept.datatype.name,
             hiAbsolute: openMrsConcept.hiAbsolute,
             lowAbsolute: openMrsConcept.lowAbsolute
         }

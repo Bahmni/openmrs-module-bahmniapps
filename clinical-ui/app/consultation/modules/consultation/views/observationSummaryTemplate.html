@@ -1,6 +1,6 @@
 <div ng-switch="observation.groupMembers.length">
     <div ng-switch-when="0">
-        <span bo-text="observation.concept.name + ' - ' + observation.value"></span>
+        <span bo-text="observation.concept.name + ' - ' + (observation | observationValue)"></span>
         <span bo-show="observation.additionalObs.length > 0">
              <div class="icon-double-angle-down" ng-click="toggle(observation.additionalObs)"></div>
         </span>

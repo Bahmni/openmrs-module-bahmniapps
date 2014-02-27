@@ -4,7 +4,7 @@
             <label>{{observation.concept.name}}</label>
             <span class="label-add-on" ng-show="observation.concept.units">({{observation.concept.units}})</span>
         </div>
-        <span class="value-text-only" >{{observation.value}}</span>
+        <span class="value-text-only">{{observation | observationValue}}</span>
     </div>
     <fieldset ng-show="observation.groupMembers.length">
         <div class="form-field">

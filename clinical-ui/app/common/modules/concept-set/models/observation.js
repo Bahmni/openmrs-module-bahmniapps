@@ -35,7 +35,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     getDataTypeName: function(){
-        return this.concept.datatype ? this.concept.datatype.name : "" ;
+        return this.concept.dataType;
     },
 
     isHtml5InputDataType: function(){
