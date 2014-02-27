@@ -31,7 +31,7 @@ angular.module('opd.adt').factory('initialization',
             };
 
             var getConfigAndVisitInfo = function() {
-                return $q.all([getConsultationConfigs(), getPatientVisitInfo(), getVisitTypes()]);
+                return $q.all([getConsultationConfigs(), getPatientVisitInfo()]);
             };
 
             var initApp = function() {
