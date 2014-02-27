@@ -27,7 +27,7 @@
                             </label>
                         </div>
                         <div class="field-value">
-                            <input type="date" ng-model="newVisit.startDatetime" required class="field-value">
+                            <input type="date" ng-model="newVisit.startDatetime" ng-change="setDefaultEndDate(newVisit)" required class="field-value">
                         </div>
                     </div>
                     <div class="form-field">

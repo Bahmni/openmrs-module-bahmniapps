@@ -131,6 +131,11 @@ angular.module('opd.documentupload')
                 }, 2000);
             }
 
+            $scope.setDefaultEndDate = function(newVisit) {
+                var date = new Date(newVisit.endDate());
+                $scope.newVisit.stopDatetime = moment(date).format("YYYY-MM-DD");;
+            }
+
             $scope.save = function (existingVisit) {
                 $scope.resetCurrentVisit(existingVisit);
 
