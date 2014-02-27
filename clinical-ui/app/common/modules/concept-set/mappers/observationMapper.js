@@ -1,7 +1,7 @@
 Bahmni.ConceptSet.ObservationMapper = function () {
     var newObservation = function (concept) {
         var observation = { concept: mapConcept(concept), units: concept.units, label: concept.display, possibleAnswers: concept.answers, groupMembers: []};
-        return angular.extend(new Bahmni.ConceptSet.Observation(), observation);
+        return new Bahmni.ConceptSet.Observation(observation);
     };
 
     var mapConcept = function(openMrsConcept) {

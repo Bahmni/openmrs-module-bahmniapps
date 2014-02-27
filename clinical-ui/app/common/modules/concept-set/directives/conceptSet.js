@@ -51,25 +51,24 @@ angular.module('opd.conceptSet')
             controller: controller
         }
     }]).directive('addObsConstraints', function () {
-        var link = function ($scope, element, attrs) {
-            var input = element.find("input");
+        var attributesMap = {'Numeric': 'number', 'Date': 'date'};
+        var link = function ($scope, element, attrs, ctrl) {
             var attributes = {};
-            if ($scope.obs.isNumeric()) {
-                attributes['type'] = 'number'
-            }
+            attributes['type'] = attributesMap[$scope.obs.getDataTypeName()] || "text";
             if ($scope.obs.getHighAbsolute()) {
                 attributes['max'] = $scope.obs.getHighAbsolute();
             }
             if ($scope.obs.getLowAbsolute()) {
                 attributes['min'] = $scope.obs.getLowAbsolute();
             }
-            input.attr(attributes);
+            element.attr(attributes);
         }
 
         return {
             link: link,
             scope: {
                 obs: '='
-            }
+            },
+            require: 'ngModel'
         }
     });

@@ -1,4 +1,5 @@
-Bahmni.ConceptSet.Observation = function () {
+Bahmni.ConceptSet.Observation = function (observation) {
+    angular.extend(this, observation);
 };
 
 Bahmni.ConceptSet.Observation.prototype = {
@@ -22,11 +23,27 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isNumeric: function() {
-        return this.concept.datatype && this.concept.datatype.name == "Numeric";
+        return this.getDataTypeName() === "Numeric";
     },
 
-    isText: function(){
-        return this.concept.datatype && this.concept.datatype.name === "Text";
+    isText: function() {
+        return this.getDataTypeName() === "Text";
+    },
+
+    isCoded: function() {
+        return this.getDataTypeName() === "Coded";
+    },
+
+    getDataTypeName: function(){
+        return this.concept.datatype ? this.concept.datatype.name : "" ;
+    },
+
+    isHtml5InputDataType: function(){
+        return ['Date', 'Numeric'].indexOf(this.getDataTypeName()) != -1;
+    },
+
+    hasSupportedDataType: function(){
+        return ['Text', 'Date', 'Numeric', 'Coded'].indexOf(this.getDataTypeName()) != -1;
     },
 
     getHighAbsolute: function() {

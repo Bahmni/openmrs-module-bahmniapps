@@ -5,33 +5,23 @@
                 <span>{{observation.label}}&nbsp;</span>
                 <span ng-show="observation.units">({{observation.units}})</span>
             </label>
-            <div ng-switch on="$parent.observation.isText()">
-                <div ng-switch-when="true">
-                    <textarea class="form-control" ng-model="$parent.observation.value"
-                              ng-change="$parent.observation.onValueChanged()"
-                              value="$parent.observation.displayValue()"></textarea>
-                </div>
+            <div class="field-value">
+                <input ng-if="$parent.observation.isHtml5InputDataType()" add-obs-constraints obs="$parent.observation" class="form-control" ng-model="$parent.observation.value" ng-change="$parent.observation.onValueChanged()"
+                value="$parent.observation.displayValue()"/>
 
-                <div ng-switch-default>
-                    <div ng-switch on="observation.possibleAnswers.length">
-                        <div ng-switch-when="0" add-obs-constraints obs="observation">
-                            <div class="field-value">
-                                <input type="text" class="form-control" ng-model="observation.value"
-                                       ng-change="observation.onValueChanged()"/>
-                            </div>
-                        </div>
-                        <div ng-switch-default ng-show="observation.possibleAnswers.length > 0">
-                            <div class="field-value">
-                                <select class="form-control" ng-model="observation.value" ng-change="observation.onValueChanged()"
-                                        ng-options="answer.uuid as answer.display for answer in observation.possibleAnswers">
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <textarea ng-if="$parent.observation.isText()" class="form-control" ng-model="$parent.observation.value"
+                          ng-change="$parent.observation.onValueChanged()"
+                          value="$parent.observation.displayValue()"></textarea>
 
+                <select ng-if="$parent.observation.isCoded()" class="form-control" ng-model="observation.value" ng-change="observation.onValueChanged()"
+                        ng-options="answer.uuid as answer.display for answer in observation.possibleAnswers">
+                </select>
+
+                <span class="form-control" ng-if="!$parent.observation.hasSupportedDataType()">
+                    The concept data type '{{$parent.observation.getDataTypeName()}}' is not supported yet.
+                </span>
             </div>
-    </fieldset>
+        </fieldset>
 
     <fieldset ng-show="observation.isGroup()" class="hasLegend">
         <legend class="mylegend"><strong>{{observation.label}}</strong></legend>
