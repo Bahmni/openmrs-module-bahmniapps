@@ -17,7 +17,7 @@
                         ng-options="answer.uuid as answer.display for answer in observation.possibleAnswers">
                 </select>
 
-                <span class="form-control" ng-if="!$parent.observation.hasSupportedDataType()">
+                <span class="ng-cloak form-control" ng-if="!$parent.observation.hasSupportedDataType()">
                     The concept data type '{{$parent.observation.getDataTypeName()}}' is not supported yet.
                 </span>
             </div>
