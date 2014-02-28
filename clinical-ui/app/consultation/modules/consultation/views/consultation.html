@@ -14,6 +14,7 @@
                 <span ng-show="investigation.concept.set" class="panel">P</span>
             </li>
         </ul>
+        <div ng-show="consultation.labOrderNote.value">{{consultation.labOrderNote.value}}</div>
         <ng-include src="'modules/consultation/views/labResults.html'" ng-init="labResults=consultation.labResults"/>
     </section>
     <section class="block diagnosis">

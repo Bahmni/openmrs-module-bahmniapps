@@ -18,6 +18,7 @@ Bahmni.Common.Constants = {
     consultationNoteConceptName : 'Consultation Note',
     radiologyOrderType : 'Radiology Order',
     radiologyResultConceptName :"Radiology Result",
-    investigationEncounterType:"INVESTIGATION"
+    investigationEncounterType:"INVESTIGATION",
+    labOrderNotesConcept: "Lab Order Notes"
 
 };

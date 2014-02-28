@@ -1,6 +1,6 @@
-Bahmni.Opd.ConsultationMapper = function (dosageFrequencies, dosageInstructions, consultationNoteConcept) {
+Bahmni.Opd.ConsultationMapper = function (dosageFrequencies, dosageInstructions, consultationNoteConcept, labOrderNoteConcept) {
     this.map = function (encounterTransaction) {
-        var specilaObservationConceptUuids = [consultationNoteConcept.uuid];
+        var specilaObservationConceptUuids = [consultationNoteConcept.uuid, labOrderNoteConcept.uuid];
         var investigations = encounterTransaction.testOrders.filter(function(testOrder) { return !testOrder.voided });
         var labResults = new Bahmni.Opd.LabResultsMapper().map(encounterTransaction);
         var treatmentDrugs = encounterTransaction.drugOrders.map(function(drugOrder) {
@@ -24,7 +24,11 @@ Bahmni.Opd.ConsultationMapper = function (dosageFrequencies, dosageInstructions,
         var diagnoses = encounterTransaction.diagnoses.map(function(diagnosis){
             return new Bahmni.Opd.Consultation.Diagnosis(diagnosis.codedAnswer,diagnosis.order,diagnosis.certainty,diagnosis.existingObs,diagnosis.freeTextAnswer,diagnosis.diagnosisDateTime );
         });
-        var consultationNote = mapConsultationNote(encounterTransaction.observations)
+
+        var consultationNote = mapSpecialObservation(encounterTransaction.observations,consultationNoteConcept);
+
+        var labOrderNote = mapSpecialObservation(encounterTransaction.observations,labOrderNoteConcept);
+
         var observations = encounterTransaction.observations.filter(function(observation){
             return !observation.voided && specilaObservationConceptUuids.indexOf(observation.concept.uuid) === -1;
         });
@@ -34,26 +38,29 @@ Bahmni.Opd.ConsultationMapper = function (dosageFrequencies, dosageInstructions,
             treatmentDrugs: treatmentDrugs,
             diagnoses: diagnoses,
             labResults: labResults,
-            consultationNote: consultationNote || emptyConsultationNote(),
+            consultationNote: consultationNote || emptyObservation(consultationNoteConcept),
+            labOrderNote: labOrderNote || emptyObservation(labOrderNoteConcept),
             observations: observations,
             encounterDateTime: encounterTransaction.encounterDateTime
         };
     };
 
 
-    var emptyConsultationNote = function() {
-        return { concept: { uuid: consultationNoteConcept.uuid }};
+    var emptyObservation = function(concept) {
+        return { concept: { uuid: concept.uuid }};
     }
     
-    var mapConsultationNote = function(encounterObservations) {
-        var consultationNote = emptyConsultationNote();
-        var consultationNoteObservation = encounterObservations.filter(function(obs) {        
-            return (obs.concept && obs.concept.uuid === consultationNoteConcept.uuid);
+    var mapSpecialObservation = function(encounterObservations, specialConcept) {
+        var observation = emptyObservation(specialConcept);
+        var obsFromEncounter = encounterObservations.filter(function(obs) {
+            return (obs.concept && obs.concept.uuid === specialConcept.uuid);
         })[0];
-        if(consultationNoteObservation) {
-            consultationNote.value = consultationNoteObservation.value;
-            consultationNote.uuid = consultationNoteObservation.uuid;
+        if(obsFromEncounter) {
+            observation.value = obsFromEncounter.value;
+            observation.uuid = obsFromEncounter.uuid;
         }
-        return consultationNote;
+        return observation;
     };
+
+
 };

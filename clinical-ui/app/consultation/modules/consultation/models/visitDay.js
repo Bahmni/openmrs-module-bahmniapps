@@ -34,7 +34,7 @@ Bahmni.Opd.Consultation.VisitDay.prototype = {
     }
 };
 
-Bahmni.Opd.Consultation.VisitDay.create = function(dayNumber, visitDate, encounterTransactions, consultationNoteConcept, orderTypes) {
+Bahmni.Opd.Consultation.VisitDay.create = function(dayNumber, visitDate, encounterTransactions, consultationNoteConcept, labOrderNoteConcept, orderTypes) {
 	var drugOrders = [];
 	var observations = [];
 	var consultationNotes = [];
@@ -88,7 +88,7 @@ Bahmni.Opd.Consultation.VisitDay.create = function(dayNumber, visitDate, encount
         angular.forEach(validObservations, setProviderToObservation);
 
         angular.forEach(validObservations, function(observation){
-            if(observation.concept.uuid === consultationNoteConcept.uuid) {
+            if(observation.concept.uuid === consultationNoteConcept.uuid || observation.concept.uuid === labOrderNoteConcept.uuid) {
                 consultationNotes.push(observation)
             } else {
                 var observationClone = angular.copy(observation);

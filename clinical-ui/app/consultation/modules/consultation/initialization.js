@@ -6,13 +6,14 @@ angular.module('opd.consultation').factory('initialization',
         var patientUuid = $route.current.params.patientUuid;
 
         var getConsultationConfigs = function() {
-            var configNames = ['encounterConfig', 'patientConfig', 'dosageFrequencyConfig','dosageInstructionConfig', 'consultationNoteConfig'];
+            var configNames = ['encounterConfig', 'patientConfig', 'dosageFrequencyConfig','dosageInstructionConfig', 'consultationNoteConfig','labOrderNotesConfig'];
             return configurationService.getConfigurations(configNames).then(function (configurations) {
                 $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig);
                 $rootScope.patientConfig = configurations.patientConfig;
                 $rootScope.dosageFrequencyConfig = configurations.dosageFrequencyConfig;
                 $rootScope.dosageInstructionConfig = configurations.dosageInstructionConfig;
                 $rootScope.consultationNoteConcept = configurations.consultationNoteConfig.results[0];
+                $rootScope.labOrderNotesConcept = configurations.labOrderNotesConfig.results[0];
             });
         };
 
@@ -31,7 +32,7 @@ angular.module('opd.consultation').factory('initialization',
             return encounterService.activeEncounter({ patientUuid : patientUuid, encounterTypeUuid : $rootScope.encounterConfig.getOpdConsultationEncounterTypeUuid(),providerUuid: currentProviderUuid, includeAll : true
                 }).success(function (encounterTransaction) {
                     $rootScope.consultation = new Bahmni.Opd.ConsultationMapper(
-                    $rootScope.dosageFrequencyConfig, $rootScope.dosageInstructionConfig, $rootScope.consultationNoteConcept).map(encounterTransaction);
+                    $rootScope.dosageFrequencyConfig, $rootScope.dosageInstructionConfig, $rootScope.consultationNoteConcept, $rootScope.labOrderNotesConcept).map(encounterTransaction);
                     $rootScope.disposition = encounterTransaction.disposition || {};
             });
         };

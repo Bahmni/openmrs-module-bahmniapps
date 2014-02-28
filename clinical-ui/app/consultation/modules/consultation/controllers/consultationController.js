@@ -45,6 +45,9 @@ angular.module('opd.consultation.controllers')
             if ($scope.consultation.consultationNote.value) {
                 encounterData.observations.push($scope.consultation.consultationNote);
             }
+            if ($scope.consultation.labOrderNote.value) {
+                encounterData.observations.push($scope.consultation.labOrderNote);
+            }
             encounterData.observations = encounterData.observations.concat($rootScope.consultation.observations);
         };
 
