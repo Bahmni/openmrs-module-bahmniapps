@@ -63,10 +63,13 @@ angular.module('registration.patient.controllers')
             $location.search({identifierPrefix: $scope.identifierPrefix.prefix, registrationNumber: $scope.registrationNumber});
             spinner.show();
             var searchPromise = patientService.search(patientIdentifier).success(function (data) {
-                if (data.results.length > 0) {
+                if (data.results.length == 1) {
                     var patient = data.results[0];
                     var forwardUrl = appService.getAppDescriptor().getConfigValue("searchByIdForwardUrl") || "/patient/{{patientUuid}}";
                     $location.url(appService.getAppDescriptor().formatUrl(forwardUrl, {'patientUuid': patient.uuid} ));
+                } else if(data.results.length > 1) {
+                    spinner.hide();
+                    $scope.results = data.results;
                 } else {
                     spinner.hide();
                     $scope.noResultsMessage = "Could not find patient with identifier " + patientIdentifier + ". Please verify the patient ID entered or create a new patient record with this ID."
