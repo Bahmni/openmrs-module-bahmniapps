@@ -2,7 +2,7 @@
 
 angular.module('opd.conceptSet')
     .directive('showConcept', ['$rootScope', function () {
-        var controller = function($scope, $q) {
+        var controller = function($scope, $q, $filter) {
             var conceptMapper = new Bahmni.ConceptSet.ConceptMapper();
     
             $scope.getPossibleAnswers = function() {
@@ -10,7 +10,7 @@ angular.module('opd.conceptSet')
             }
 
             $scope.getValues = function(request) {
-                return $q.when({data: $scope.getPossibleAnswers() });
+                return $q.when({data: $filter('filter')($scope.getPossibleAnswers(), {name: request.term}) });
             };
         }
 
