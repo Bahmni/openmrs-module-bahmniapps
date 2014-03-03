@@ -4,6 +4,9 @@ angular.module('opd.consultation')
         if(obs.concept.dataType === 'Date') {
             return $filter('date')(obs.value, 'd-MMM-yyyy');
         } 
+        if(obs.concept.dataType === 'Coded') {
+            return obs.value.name;
+        } 
         return obs.value;
     }
 });

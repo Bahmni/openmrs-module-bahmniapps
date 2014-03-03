@@ -41,7 +41,7 @@
                     <div>
                         <span class="clear" ng-repeat="image in newVisit.images">
                             <img ng-src="{{image.encodedValue}}" width="100">
-                            <input class="concept-name" ng-model="image.concept.editableName" my-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter the test name" title="Select the test from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
+                            <input class="concept-name" ng-concept-model="image.concept" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter the test name" title="Select the test from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
                             <button type="button" ng-click="newVisit.removeNewAddedImage(image)"><i class="icon-trash"></i></button>
                         </span>
                     </div>
@@ -85,7 +85,7 @@
                                 <li ng-repeat="image in visit.images">
                                     <div>
                                         <img ng-src="{{image.encodedValue}}" width="100">
-                                        <input class="concept-name" ng-model="image.concept.editableName" my-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter the test name" title="Select the test from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
+                                        <input class="concept-name" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter the test name" title="Select the test from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
                                     </div>
                                     <div class="file-actions">
                                         <button type="button" ng-click="visit.removeNewAddedImage(image)"><i class="icon-trash"></i></button>
@@ -94,7 +94,7 @@
                                 <li ng-repeat="image in visit.savedImages">
                                     <div>
                                         <img ng-src="/document_images/{{image.encodedValue}}" width="100" ng-class="{true:'transparent', false:'opaque'}[image.voided]" />
-                                        <input name="{{'image'+$index}}" class="concept-name" ng-model="image.concept.editableName" my-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter the test name" title="Select the test from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true" ng-change="visit.markAsUpdated()" ng-disabled="image.voided"/>
+                                        <input name="{{'image'+$index}}" class="concept-name" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter the test name" title="Select the test from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true" ng-change="visit.markAsUpdated()" ng-disabled="image.voided"/>
                                     </div>
                                     <div class="file-actions">
                                         <button type="button" ng-click="visit.toggleVoidingOfImage(image)"><i  ng-class="{'icon-trash': !image.voided, 'icon-undo': image.voided }"></i></button>

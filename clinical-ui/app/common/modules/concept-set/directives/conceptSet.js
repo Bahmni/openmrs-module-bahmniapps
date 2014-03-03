@@ -2,11 +2,24 @@
 
 angular.module('opd.conceptSet')
     .directive('showConcept', ['$rootScope', function () {
+        var controller = function($scope, $q) {
+            var conceptMapper = new Bahmni.ConceptSet.ConceptMapper();
+    
+            $scope.getPossibleAnswers = function() {
+                return $scope.observation.possibleAnswers.map(conceptMapper.map);   
+            }
+
+            $scope.getValues = function(request) {
+                return $q.when({data: $scope.getPossibleAnswers() });
+            };
+        }
+
         return {
             restrict: 'E',
             scope: {
                 observation: "="
             },
+            controller: controller,
             template: '<ng-include src="\'../common/modules/concept-set/views/observation.html\'" />'
         }
     }]).directive('showConceptSet', ['$rootScope', function () {

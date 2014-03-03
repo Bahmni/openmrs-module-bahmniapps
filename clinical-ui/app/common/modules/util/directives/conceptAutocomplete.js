@@ -1,27 +1,29 @@
 angular.module('bahmni.common.util')
-.directive('myAutocomplete', function ($parse) {
+.directive('conceptAutocomplete', function ($parse) {
     var link = function (scope, element, attrs, ngModelCtrl) {
-        var ngModel = $parse(attrs.ngModel);
         var source = scope.source();
-        var responseMap = scope.responseMap();
-        var onSelect = scope.onSelect();
         var minLength = scope.minLength || 2;
+
+        scope.$watch('concept', function(){
+            var concept = scope.concept;
+            element.val(concept ? concept.name : "");
+        });
 
         element.autocomplete({
             autofocus: true,
             minLength: minLength,
             source: function (request, response) {
-                source(attrs.id, request.term, attrs.type).success(function (data) {
-                    var results = responseMap ? responseMap(data) : data ;
+                source({elementId: attrs.id, term: request.term, elementType: attrs.type}).then(function (resp) {
+                    var results = resp.data.map(function (concept) {
+                        return {'value': concept.name, 'concept': concept };
+                    });
                     response(results);
                 });
             },
             select: function (event, ui) {
                 scope.$apply(function (scope) {
-                    if(onSelect != null) {
-                        onSelect(ui.item);
-                    }
-                    ngModelCtrl.$setViewValue(ui.item.value);
+                    scope.concept = ui.item.concept;
+                    element.val(ui.item.value);
                     scope.$eval(attrs.ngChange);
                     if(scope.blurOnSelect) element.blur();
                 });
@@ -37,11 +39,9 @@ angular.module('bahmni.common.util')
     }
     return {
         link: link,
-        require: 'ngModel',
         scope: {
             source: '&',
-            responseMap: '&',
-            onSelect: '&',
+            concept: '=',
             minLength: '=',
             blurOnSelect: '='
         }

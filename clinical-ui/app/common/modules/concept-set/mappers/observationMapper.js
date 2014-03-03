@@ -1,19 +1,10 @@
 Bahmni.ConceptSet.ObservationMapper = function () {
+    var conceptMapper = new Bahmni.ConceptSet.ConceptMapper();
+    
     var newObservation = function (concept) {
-        var observation = { concept: mapConcept(concept), units: concept.units, label: concept.display, possibleAnswers: concept.answers, groupMembers: []};
+        var observation = { concept: conceptMapper.map(concept), units: concept.units, label: concept.display, possibleAnswers: concept.answers, groupMembers: []};
         return new Bahmni.ConceptSet.Observation(observation);
     };
-
-    var mapConcept = function(openMrsConcept) {
-        return {
-            uuid: openMrsConcept.uuid,
-            name: openMrsConcept.name.name,
-            set: openMrsConcept.set,
-            dataType: openMrsConcept.datatype.name,
-            hiAbsolute: openMrsConcept.hiAbsolute,
-            lowAbsolute: openMrsConcept.lowAbsolute
-        }
-    }
 
     var findInSavedObservation = function (concept, observations) {
         return observations.filter(function (obs) {
@@ -32,7 +23,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         var savedObs = findInSavedObservation(concept, savedObservations);
         if (savedObs) {
             observation.uuid = savedObs.uuid;
-            observation.value = savedObs.value instanceof Object ? savedObs.value.uuid : savedObs.value;
+            observation.value = savedObs.value;
         }
         var savedObsGroupMembers = savedObs ? savedObs.groupMembers  : [];
         observation.groupMembers = concept.set ? mapObservationGroupMembers(savedObsGroupMembers, concept.setMembers) : [];

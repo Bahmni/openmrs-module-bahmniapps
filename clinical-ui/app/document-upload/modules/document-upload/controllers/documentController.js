@@ -74,8 +74,8 @@ angular.module('opd.documentupload')
               return (str || "").replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
             }
 
-            $scope.getConcepts = function(elementId, query){
-                return $http.get(Bahmni.Common.Constants.conceptUrl, { params: {q: query, memberOf: topLevelConceptUuid, v: "custom:(uuid,name)"}});
+            $scope.getConcepts = function(request){
+                return $http.get(Bahmni.Common.Constants.conceptUrl, { params: {q: request.term, memberOf: topLevelConceptUuid, v: "custom:(uuid,name)"}});
             };
 
             $scope.getDataResults = function(data){

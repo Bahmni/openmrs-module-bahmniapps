@@ -1,5 +1,5 @@
 <div class="vitals form-horizontal">
-    <fieldset ng-hide="observation.isGroup()">
+    <fieldset ng-if="!observation.isGroup()">
         <div class="form-group">
             <label class="control-label">
                 <span>{{observation.label}}&nbsp;</span>
@@ -14,8 +14,11 @@
                           value="$parent.observation.displayValue()"></textarea>
 
                 <select ng-if="$parent.observation.isCoded()" class="form-control" ng-model="observation.value" ng-change="observation.onValueChanged()"
-                        ng-options="answer.uuid as answer.display for answer in observation.possibleAnswers">
+                        ng-options="answer as answer.name for answer in getPossibleAnswers() track by answer.uuid">
                 </select>
+                <input ng-if="$parent.observation.isCoded() && false" concept-autocomplete source="getValues"
+                        class="form-control" concept="observation.value" concept-change="observation.onValueChanged()">
+                </input>
 
                 <span class="ng-cloak form-control" ng-if="!$parent.observation.hasSupportedDataType()">
                     The concept data type '{{$parent.observation.getDataTypeName()}}' is not supported yet.
@@ -23,7 +26,7 @@
             </div>
         </fieldset>
 
-    <fieldset ng-show="observation.isGroup()" class="hasLegend">
+    <fieldset ng-if="observation.isGroup()" class="hasLegend">
         <legend class="mylegend"><strong>{{observation.label}}</strong></legend>
         <div class="form-group">
             <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers">
