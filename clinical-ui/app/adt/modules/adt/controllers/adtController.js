@@ -21,40 +21,56 @@ angular.module('opd.adt.controllers')
                 $scope.visit.encounters.forEach(function (encounter) {
                     if (rankActions[encounter.encounterType.uuid] && rankActions[encounter.encounterType.uuid] > max) {
                         max = rankActions[encounter.encounterType.uuid];
-                         encounterWithHigestRank = encounter;
+                        encounterWithHigestRank = encounter;
                     }
                 });
                 return encounterWithHigestRank;
-            }
+            };
 
-            var setObservationsFromActiveEncounterOfType = function(encounterTypeUuid) {
-                encounterService.activeEncounter({ patientUuid: $scope.patient.uuid, encounterTypeUuid: encounterTypeUuid, includeAll: true}).success(function (data) {
-                    $scope.adtObservations = data.observations;
+            var setDispositionActionFromVisit = function(){
+                var encounterWithHigestRank = getEncounterWithHigestRank();
+                if (encounterWithHigestRank) {
+                    $scope.adtObservations = encounterWithHigestRank.obs;
+                }
+                $scope.dispositionAction = encounterWithHigestRank ? getAdtActionForEncounterType(encounterWithHigestRank.encounterType.uuid) : null;
+            };
+
+            var getVisitEncounterFor = function(encounterTypeUuid) {
+                var matchedEncounters = $scope.visit.encounters.filter(function (encounter) {
+                    return encounter.encounterType.uuid && encounter.encounterType.uuid == encounterTypeUuid;
                 });
-            }
+                return matchedEncounters[0];
+            };
 
             var init = function () {
                 $scope.admitActions = appService.getAppDescriptor().getExtensions("org.bahmni.adt.admit.action", "config");
                 $scope.visitTypes = $rootScope.encounterConfig.getVisitTypes();
-                var encounterWithHigestRank = getEncounterWithHigestRank();
-                if (encounterWithHigestRank) {
-                    setObservationsFromActiveEncounterOfType(encounterWithHigestRank.encounterType.uuid);
-                }
                 return dispositionService.getDispositionActions().then(function (response) {
-                    if (response.data && response.data.results) {
-                        if (response.data.results && response.data.results.length) {
-                            $rootScope.disposition = $rootScope.disposition || {};
-                            $rootScope.disposition.dispositionActionUuid = response.data.results[0].uuid;
-                            $scope.dispositionActions = response.data.results[0].answers;
-                            $scope.dispositionAction = encounterWithHigestRank ? getAdtActionForEncounterType(encounterWithHigestRank.encounterType.uuid) : null;
+                    if (response.data && response.data.results && response.data.results.length) {
+                        $rootScope.disposition = $rootScope.disposition || {};
+                        $rootScope.disposition.dispositionActionUuid = response.data.results[0].uuid;
+                        $scope.dispositionActions = response.data.results[0].answers;
+                        if($scope.visit){
+                            setDispositionActionFromVisit();
                         }
                     }
                 });
             };
 
             $scope.call = function(functionName) {
-                $scope[functionName]();
-            }
+                if(functionName){
+                    $scope[functionName]();
+                }else{
+                    return true;
+                }
+            };
+
+            $scope.visitExists = function() {
+                if($scope.visit){
+                    return true;
+                }
+                return false;
+            };
 
             $scope.save = function () {
                 var actionConfig = actionConfigs[getSelectedDispositionCode()];
@@ -67,9 +83,13 @@ angular.module('opd.adt.controllers')
             };
 
             $scope.startNewVisit = function(visitTypeUuid) {
-                visitService.endVisit($scope.visit.uuid).success(function(){
-                    admit(visitTypeUuid)
-                });
+                if($scope.visit){
+                    visitService.endVisit($scope.visit.uuid).success(function(){
+                        admit(visitTypeUuid);
+                    });
+                }else{
+                    admit(visitTypeUuid);
+                }
             };
 
             $scope.cancel = function () {
@@ -90,20 +110,14 @@ angular.module('opd.adt.controllers')
             };
 
             $scope.changeNote = function () {
-                var actionConfig = actionConfigs[getSelectedDispositionCode()];
-                if (actionConfig) {
-                    var matchedEncounters = $scope.visit.encounters.filter(function (encounter) {
-                        return encounter.encounterType.uuid && encounter.encounterType.uuid == actionConfig.encounterTypeUuid;
-                    });
-
-                    if (matchedEncounters.length > 0) {
-                        setObservationsFromActiveEncounterOfType(matchedEncounters[0].encounterType.uuid);
-                    } else {
+                if($scope.visit){
+                    var selectedEncounterTypeUuid = actionConfig[getSelectedDispositionCode()].encounterTypeUuid;
+                    var encounterForSelectedDisposition = getVisitEncounterFor(selectedEncounterTypeUuid);
+                    if(encounterForSelectedDisposition){
+                        $scope.adtObservations = encounterForSelectedDisposition.obs;
+                    }else{
                         $scope.adtObservations = [];
                     }
-                } 
-                else  {
-                    $scope.adtObservations = [];
                 }
             };
 
@@ -114,7 +128,7 @@ angular.module('opd.adt.controllers')
                 });
                 return adtActionsForType.length > 0 ? adtActionsForType[0] : null;
 
-            }
+            };
 
             var getSelectedDispositionCode = function () {
                 if ($scope.dispositionAction) {
@@ -176,73 +190,4 @@ angular.module('opd.adt.controllers')
 
             spinner.forPromise(init());
         }
-    ])
-
-.directive('splitButton', function ($parse) {
-        var link = function($scope, element) {
-            var toggleButton = element.find('.toggle-button');
-            var docClickHandler = function(e) {
-                var $clicked = $(e.target);
-                if ($clicked.closest(toggleButton).length === 0 || $clicked.closest(element.find('.options')).length !== 0) {
-                    element.find('.secondaryOption').hide();
-                    toggleButton.removeClass('open');
-                    $(document).off('click', docClickHandler);
-                }
-            }
-
-            toggleButton.on('click', function(){
-                element.find('.secondaryOption').toggle();
-                element.find('.secondaryOption button')[0].focus();
-                if(toggleButton.hasClass('open')) {
-                    toggleButton.removeClass('open');
-                    $(document).off('click', docClickHandler);
-                } else {
-                    $(document).on('click', docClickHandler);
-                    toggleButton.addClass('open');
-                }
-                }
-            );
-        };
-
-        var controller = function($scope) {
-            $scope.sortedOptions = (function() {
-                var indexOfPrimaryOption = $scope.options.indexOf($scope.primaryOption)
-                if(indexOfPrimaryOption > 0){
-                    var clonedOptions = $scope.options.slice(0);
-                    clonedOptions.splice(indexOfPrimaryOption, 1);
-                    clonedOptions.splice(0, 0, $scope.primaryOption)
-                    return clonedOptions;
-                } else {
-                    return $scope.options;
-                }
-            })();
-
-            $scope.hasMultipleOptions = function() {
-                return $scope.options.length > 1;
-            }
-        }
-
-        return {
-            restrict: 'A',
-            template: '<div class="split-button">'+
-                            '<ul class="options">' +
-                            '<li ng-repeat="option in sortedOptions"' +
-                                'ng-class="{primaryOption: $index == 0, secondaryOption: $index > 0}"' +
-                             '>' +
-                                '<button ng-class="buttonClass" ng-click="optionClick()(option.uuid)">Start {{option.name}} Visit</a>' +
-                            '</li>' +
-                        '</ul>' +
-                        '<button class="toggle-button icon-caret-down" ng-show="hasMultipleOptions()" type="button"></button></div>',
-            link: link,
-            controller: controller,
-            scope: {
-                options: '=',
-                primaryOption: '=',
-                optionText: '&',
-                optionClick: '&',
-                buttonClass: '='
-            }
-        };
-    })
-
-;
+    ]);

@@ -6,9 +6,18 @@ angular.module('opd.adt').factory('initialization',
         function ($rootScope, $q, $route, appService, configurationService, visitService, patientService, patientMapper,
                   conceptSetService, authenticator) {
             var getVisit = function() {
-                return visitService.getVisit($route.current.params.visitUuid).success(function (visit) {
-                    $rootScope.visit = visit;
-                });
+                if($route.current.params.visitUuid != 'null') {
+                    return visitService.getVisit($route.current.params.visitUuid).success(function (visit) {
+                        $rootScope.visit = visit;
+                     });
+                } else {
+                    var deferrable = $q.defer();
+                    deferrable.resolve({
+                        id: 1,
+                        status: "Returned from service.",
+                        promiseComplete: true });
+                    return deferrable.promise;
+                }
             };
 
             var getPatient = function(visitResponse) {

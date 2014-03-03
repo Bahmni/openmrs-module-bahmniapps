@@ -3,7 +3,7 @@
         <span ng-show="myForm.service_id.$error.required">Select Action</span>
         <label>
             Action: <select ng-model="dispositionAction"
-                            ng-options="getActionCode(d) for d in dispositionActions"
+                            ng-options="d.name.display for d in dispositionActions"
                             ng-change="changeNote()">
         </select>
         </label>
@@ -21,7 +21,7 @@
                      option-click="startNewVisit" class="right">
                     </div>
                 <button ng-switch-default="" type="submit" class="right"
-                ng-click="call(extn.extensionParams.action)">
+                ng-click="call(extn.extensionParams.action)" ng-show="call(extn.extensionParams.showCondition)">
                     {{extn.extensionParams.display}}
                 </button>
                 </span>
