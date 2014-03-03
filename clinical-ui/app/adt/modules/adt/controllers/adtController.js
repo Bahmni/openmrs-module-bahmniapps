@@ -3,39 +3,20 @@
 angular.module('opd.adt.controllers')
     .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService', 'encounterService', 'BedService', 'appService', 'visitService',
         function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService, appService, visitService) {
-            var rankActions = {};
             var actionConfigs = {};
             var encounterConfig = $rootScope.encounterConfig;
             var Constants = Bahmni.Opd.ADT.Constants;
             $scope.adtObservations = [];
 
-            if ($scope.encounterConfig) {
-                rankActions[encounterConfig.getAdmissionEncounterTypeUuid()] = 1;
-                rankActions[encounterConfig.getTransferEncounterTypeUuid()] = 2;
-                rankActions[encounterConfig.getDischargeEncounterTypeUuid()] = 3;
-            }
-
-            var getEncounterWithHigestRank = function() {
-                var max = 0;
-                var encounterWithHigestRank = null;
-                $scope.visit.encounters.forEach(function (encounter) {
-                    if (rankActions[encounter.encounterType.uuid] && rankActions[encounter.encounterType.uuid] > max) {
-                        max = rankActions[encounter.encounterType.uuid];
-                        encounterWithHigestRank = encounter;
-                    }
+            var getAdtActionForEncounterType = function(encounterTypeUuid) {
+                var adtActionsForType =  $scope.dispositionActions.filter(function (dispositionAction) {
+                    var actionConfig = actionConfigs[$scope.getActionCode(dispositionAction)];
+                    return actionConfig ? actionConfig.encounterTypeUuid === encounterTypeUuid : false;
                 });
-                return encounterWithHigestRank;
+                return adtActionsForType.length > 0 ? adtActionsForType[0] : null;
             };
 
-            var setDispositionActionFromVisit = function(){
-                var encounterWithHigestRank = getEncounterWithHigestRank();
-                if (encounterWithHigestRank) {
-                    $scope.adtObservations = encounterWithHigestRank.obs;
-                }
-                $scope.dispositionAction = encounterWithHigestRank ? getAdtActionForEncounterType(encounterWithHigestRank.encounterType.uuid) : null;
-            };
-
-            var getVisitEncounterFor = function(encounterTypeUuid) {
+            var getEncounterFromVisitFor = function(encounterTypeUuid) {
                 var matchedEncounters = $scope.visit.encounters.filter(function (encounter) {
                     return encounter.encounterType.uuid && encounter.encounterType.uuid == encounterTypeUuid;
                 });
@@ -44,32 +25,26 @@ angular.module('opd.adt.controllers')
 
             var init = function () {
                 $scope.admitActions = appService.getAppDescriptor().getExtensions("org.bahmni.adt.admit.action", "config");
-                $scope.visitTypes = $rootScope.encounterConfig.getVisitTypes();
+                $scope.visitTypes = encounterConfig.getVisitTypes();
+                if (encounterConfig) {
+                    actionConfigs[Constants.admissionCode] = {encounterTypeUuid: encounterConfig.getAdmissionEncounterTypeUuid(), action: admit};
+                    actionConfigs[Constants.dischargeCode] = {encounterTypeUuid: encounterConfig.getDischargeEncounterTypeUuid(), action: discharge};
+                    actionConfigs[Constants.transferCode] = {encounterTypeUuid: encounterConfig.getTransferEncounterTypeUuid(), action: transfer};
+                }
                 return dispositionService.getDispositionActions().then(function (response) {
                     if (response.data && response.data.results && response.data.results.length) {
                         $rootScope.disposition = $rootScope.disposition || {};
                         $rootScope.disposition.dispositionActionUuid = response.data.results[0].uuid;
                         $scope.dispositionActions = response.data.results[0].answers;
                         if($scope.visit){
-                            setDispositionActionFromVisit();
+                            var encounterToDisplay = Bahmni.ADT.DispositionDisplayUtil.getEncounterToDisplay(encounterConfig, $scope.visit);
+                            if (encounterToDisplay) {
+                                $scope.adtObservations = encounterToDisplay.obs;
+                                $scope.dispositionAction = getAdtActionForEncounterType(encounterToDisplay.encounterType.uuid);
+                            }
                         }
                     }
                 });
-            };
-
-            $scope.call = function(functionName) {
-                if(functionName){
-                    $scope[functionName]();
-                }else{
-                    return true;
-                }
-            };
-
-            $scope.visitExists = function() {
-                if($scope.visit){
-                    return true;
-                }
-                return false;
             };
 
             $scope.save = function () {
@@ -111,8 +86,8 @@ angular.module('opd.adt.controllers')
 
             $scope.changeNote = function () {
                 if($scope.visit){
-                    var selectedEncounterTypeUuid = actionConfig[getSelectedDispositionCode()].encounterTypeUuid;
-                    var encounterForSelectedDisposition = getVisitEncounterFor(selectedEncounterTypeUuid);
+                    var selectedEncounterTypeUuid = actionConfigs[getSelectedDispositionCode()].encounterTypeUuid;
+                    var encounterForSelectedDisposition = getEncounterFromVisitFor(selectedEncounterTypeUuid);
                     if(encounterForSelectedDisposition){
                         $scope.adtObservations = encounterForSelectedDisposition.obs;
                     }else{
@@ -121,13 +96,19 @@ angular.module('opd.adt.controllers')
                 }
             };
 
-            var getAdtActionForEncounterType = function(encounterTypeUuid) {
-                var adtActionsForType =  $scope.dispositionActions.filter(function (dispositionAction) {
-                    var actionConfig = actionConfigs[$scope.getActionCode(dispositionAction)];
-                    return actionConfig ? actionConfig.encounterTypeUuid === encounterTypeUuid : false;
-                });
-                return adtActionsForType.length > 0 ? adtActionsForType[0] : null;
+            $scope.call = function(functionName) {
+                if(functionName){
+                    $scope[functionName]();
+                }else{
+                    return true;
+                }
+            };
 
+            $scope.visitExists = function() {
+                if($scope.visit){
+                    return true;
+                }
+                return false;
             };
 
             var getSelectedDispositionCode = function () {
@@ -181,12 +162,6 @@ angular.module('opd.adt.controllers')
                     })
                 });
             };
-
-            if ($scope.encounterConfig) {
-                actionConfigs[Constants.admissionCode] = {encounterTypeUuid: encounterConfig.getAdmissionEncounterTypeUuid(), action: admit};
-                actionConfigs[Constants.dischargeCode] = {encounterTypeUuid: encounterConfig.getDischargeEncounterTypeUuid(), action: discharge};
-                actionConfigs[Constants.transferCode] = {encounterTypeUuid: encounterConfig.getTransferEncounterTypeUuid(), action: transfer};
-            }
 
             spinner.forPromise(init());
         }
