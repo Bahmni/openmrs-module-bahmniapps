@@ -1,9 +1,9 @@
 Bahmni.ConceptSet.ObservationMapper = function () {
     var conceptMapper = new Bahmni.ConceptSet.ConceptMapper();
     
-    var newObservation = function (concept) {
+    var newObservation = function (concept, conceptUIConfig) {
         var observation = { concept: conceptMapper.map(concept), units: concept.units, label: concept.display, possibleAnswers: concept.answers, groupMembers: []};
-        return new Bahmni.ConceptSet.Observation(observation);
+        return new Bahmni.ConceptSet.Observation(observation, conceptUIConfig);
     };
 
     var findInSavedObservation = function (concept, observations) {
@@ -12,25 +12,26 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         })[0];
     };
 
-    var mapObservationGroupMembers = function (savedObservations, conceptSetMembers) {
+    var mapObservationGroupMembers = function (savedObservations, conceptSetMembers, conceptSetconfig) {
         return conceptSetMembers.map(function (memberConcept) {
-            return mapObservation(memberConcept, savedObservations);
+            return mapObservation(memberConcept, savedObservations, conceptSetconfig);
         });
     };
 
-    var mapObservation = function (concept, savedObservations) {
-        var observation = newObservation(concept);
+    var mapObservation = function (concept, savedObservations, conceptSetconfig) {
+        var currentConceptConfig = conceptSetconfig[concept.name.name] || {};
+        var observation = newObservation(concept, currentConceptConfig);
         var savedObs = findInSavedObservation(concept, savedObservations);
         if (savedObs) {
             observation.uuid = savedObs.uuid;
             observation.value = savedObs.value;
         }
         var savedObsGroupMembers = savedObs ? savedObs.groupMembers  : [];
-        observation.groupMembers = concept.set ? mapObservationGroupMembers(savedObsGroupMembers, concept.setMembers) : [];
+        observation.groupMembers = concept.set ? mapObservationGroupMembers(savedObsGroupMembers, concept.setMembers, currentConceptConfig || {}) : [];
         return observation;
     };
 
-    this.map = function (observations, rootConcept) {
-        return mapObservation(rootConcept, observations || []);
+    this.map = function (observations, rootConcept, conceptSetconfig) {
+        return mapObservation(rootConcept, observations || [], conceptSetconfig);
     };
 };

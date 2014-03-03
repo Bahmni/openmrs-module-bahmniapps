@@ -28,20 +28,17 @@ angular.module('opd.conceptSet')
                 '<show-concept observation="rootObservation"></show-concept>' +
             '</form>';
 
-        var controller = function ($scope, conceptSetService) {
+        var controller = function ($scope, conceptSetService, appService) {
             var conceptSetName = $scope.conceptSetName;
+            var conceptSetUIConfig = appService.getAppDescriptor().getConfig("conceptSetUI") || {};
             var observationMapper = new Bahmni.ConceptSet.ObservationMapper();
             conceptSetService.getConceptSetMembers({name: conceptSetName, v: "fullchildren"}).success(function (response) {
                 var conceptSet = response.results[0];
                 $scope.$watch('observations', function (observations) {
-                    $scope.rootObservation = conceptSet ? observationMapper.map(observations, conceptSet) : null;
+                    $scope.rootObservation = conceptSet ? observationMapper.map(observations, conceptSet, conceptSetUIConfig.value || {}) : null;
                     changeObservations();
                 });
             });
-
-            $scope.observationChanged = function (observation) {
-                observation.observationDateTime = new Date();
-            };
 
             var changeObservations = function() {
                 for (var i = 0; i < $scope.observations.length; i++) {

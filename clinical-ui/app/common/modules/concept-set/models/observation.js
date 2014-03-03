@@ -1,5 +1,6 @@
-Bahmni.ConceptSet.Observation = function (observation) {
+Bahmni.ConceptSet.Observation = function (observation, conceptUIConfig) {
     angular.extend(this, observation);
+    this.conceptUIConfig = conceptUIConfig;
 };
 
 Bahmni.ConceptSet.Observation.prototype = {
@@ -20,6 +21,13 @@ Bahmni.ConceptSet.Observation.prototype = {
         if (this.groupMembers)
             return this.groupMembers.length > 0;
         return false;
+    },
+
+    getControlType: function() {
+        if(this.isHtml5InputDataType()) return "html5InputDataType";
+        if(this.isText()) return "text";
+        if(this.isCoded()) return this.conceptUIConfig.autocomplete ? "autocomplete" : "dropdown";
+        return "unknown";
     },
 
     isNumeric: function() {

@@ -5,22 +5,23 @@
                 <span>{{observation.label}}&nbsp;</span>
                 <span ng-show="observation.units">({{observation.units}})</span>
             </label>
-            <div class="field-value">
-                <input ng-if="$parent.observation.isHtml5InputDataType()" add-obs-constraints obs="$parent.observation" class="form-control" ng-model="$parent.observation.value" ng-change="$parent.observation.onValueChanged()"
+            <div class="field-value" ng-switch on="observation.getControlType()">
+                <input ng-switch-when="html5InputDataType" add-obs-constraints obs="$parent.observation" class="form-control" ng-model="$parent.observation.value" ng-change="$parent.observation.onValueChanged()"
                 value="$parent.observation.displayValue()"/>
 
-                <textarea ng-if="$parent.observation.isText()" class="form-control" ng-model="$parent.observation.value"
+                <textarea ng-switch-when="text" class="form-control" ng-model="$parent.observation.value"
                           ng-change="$parent.observation.onValueChanged()"
                           value="$parent.observation.displayValue()"></textarea>
 
-                <select ng-if="$parent.observation.isCoded()" class="form-control" ng-model="observation.value" ng-change="observation.onValueChanged()"
+                <select ng-switch-when="dropdown" class="form-control" ng-model="observation.value" ng-change="observation.onValueChanged()"
                         ng-options="answer as answer.name for answer in getPossibleAnswers() track by answer.uuid">
                 </select>
-                <input ng-if="$parent.observation.isCoded() && false" concept-autocomplete source="getValues"
+
+                <input ng-switch-when="autocomplete" concept-autocomplete source="getValues"
                         class="form-control" concept="observation.value" concept-change="observation.onValueChanged()">
                 </input>
 
-                <span class="ng-cloak form-control" ng-if="!$parent.observation.hasSupportedDataType()">
+                <span ng-switch-default class="form-control">
                     The concept data type '{{$parent.observation.getDataTypeName()}}' is not supported yet.
                 </span>
             </div>
