@@ -50,10 +50,6 @@ Bahmni.ConceptSet.Observation.prototype = {
         return ['Date', 'Numeric'].indexOf(this.getDataTypeName()) != -1;
     },
 
-    hasSupportedDataType: function(){
-        return ['Text', 'Date', 'Numeric', 'Coded'].indexOf(this.getDataTypeName()) != -1;
-    },
-
     getHighAbsolute: function() {
         return this.concept.hiAbsolute;
     },
