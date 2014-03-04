@@ -4,7 +4,7 @@
         <label>
             Action: <select ng-model="dispositionAction"
                             ng-options="d.name.display for d in dispositionActions"
-                            ng-change="changeNote()">
+                            ng-change="refreshView()">
         </select>
         </label>
     </div>
@@ -15,14 +15,14 @@
 
     <div class="submit-btn-container">
         <div class="right">
-            <span ng-repeat="extn in admitActions">
+            <span ng-repeat="extn in actions">
                 <span ng-switch="extn.extensionParams.action">
                     <div ng-switch-when="startVisit" split-button="" options="visitTypes"
                      option-click="startNewVisit" class="right">
                     </div>
                 <button ng-switch-default="" type="submit" class="right"
                 ng-click="call(extn.extensionParams.action)" ng-show="call(extn.extensionParams.showCondition)">
-                    {{extn.extensionParams.display}}
+                    {{getDisplay(extn.extensionParams.displayFunction, extn.extensionParams.display)}}
                 </button>
                 </span>
             </span>
