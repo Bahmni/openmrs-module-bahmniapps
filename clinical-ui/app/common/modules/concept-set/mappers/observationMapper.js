@@ -14,20 +14,19 @@ Bahmni.ConceptSet.ObservationMapper = function () {
 
     var mapObservationGroupMembers = function (savedObservations, conceptSetMembers, conceptSetconfig) {
         return conceptSetMembers.map(function (memberConcept) {
-            return mapObservation(memberConcept, savedObservations, conceptSetconfig);
+            return mapObservation(memberConcept, savedObservations, conceptSetconfig[memberConcept.name.name] || {});
         });
     };
 
     var mapObservation = function (concept, savedObservations, conceptSetconfig) {
-        var currentConceptConfig = conceptSetconfig[concept.name.name] || {};
-        var observation = newObservation(concept, currentConceptConfig);
+        var observation = newObservation(concept, conceptSetconfig);
         var savedObs = findInSavedObservation(concept, savedObservations);
         if (savedObs) {
             observation.uuid = savedObs.uuid;
             observation.value = savedObs.value;
         }
         var savedObsGroupMembers = savedObs ? savedObs.groupMembers  : [];
-        observation.groupMembers = concept.set ? mapObservationGroupMembers(savedObsGroupMembers, concept.setMembers, currentConceptConfig || {}) : [];
+        observation.groupMembers = concept.set ? mapObservationGroupMembers(savedObsGroupMembers, concept.setMembers, conceptSetconfig) : [];
         return observation;
     };
 
