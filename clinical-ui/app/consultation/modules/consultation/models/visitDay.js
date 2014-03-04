@@ -88,9 +88,10 @@ Bahmni.Opd.Consultation.VisitDay.create = function(dayNumber, visitDate, encount
         angular.forEach(validObservations, setProviderToObservation);
 
         angular.forEach(validObservations, function(observation){
-            if(observation.concept.uuid === consultationNoteConcept.uuid || observation.concept.uuid === labOrderNoteConcept.uuid) {
+            if(observation.concept.uuid === consultationNoteConcept.uuid) {
                 consultationNotes.push(observation)
-            } else {
+            }
+            else if(observation.concept.uuid != labOrderNoteConcept.uuid) {
                 var observationClone = angular.copy(observation);
                 removeInvalidGroupMembers(observationClone);
                 observations.push(observationClone);

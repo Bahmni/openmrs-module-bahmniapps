@@ -4,7 +4,7 @@
     </div>
     <div ng-show="activeTab.name == 'Laboratory'" >
         <button  name="notes" ng-click="toggleNote()">Add Notes</button>
-        <textarea ng-model="consultation.labOrderNote.value" ng-show="noteState" placeholder="Notes" ng-change="onNoteChanged()" />
+        <textarea ng-model="consultation.labOrderNote.value" ng-show="noteState" placeholder="Notes" ng-change="onNoteChanged()"></textarea>
     </div>
     <div ng-switch="activeTab" class="investigation-selection">
         <div ng-switch-default>
