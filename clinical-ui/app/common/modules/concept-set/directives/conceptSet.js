@@ -9,6 +9,22 @@ angular.module('opd.conceptSet')
                 return $scope.observation.possibleAnswers.map(conceptMapper.map);   
             }
 
+            var getPropertyFunction = function(propertyName) {
+                return function(entity) {
+                    return entity[propertyName];
+                }
+            }
+
+            $scope.selectOptions = {
+                query: function(options) {
+                    return options.callback({results:  $filter('filter')($scope.getPossibleAnswers(), {name: options.term})});
+                },
+                width: '20em',
+                formatResult: getPropertyFunction('name'),
+                formatSelection: getPropertyFunction('name'),
+                id: getPropertyFunction('uuid')
+            }
+
             $scope.getValues = function(request) {
                 return $q.when({data: $filter('filter')($scope.getPossibleAnswers(), {name: request.term}) });
             };

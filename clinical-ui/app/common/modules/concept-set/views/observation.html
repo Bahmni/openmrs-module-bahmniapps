@@ -13,12 +13,16 @@
                           ng-change="$parent.observation.onValueChanged()"
                           value="$parent.observation.displayValue()"></textarea>
 
-                <select ng-switch-when="dropdown" class="form-control" ng-model="observation.value" ng-change="observation.onValueChanged()"
+                <select ng-switch-when="dropdown" foo-bar class="form-control" ng-model="observation.value" ng-change="observation.onValueChanged()"
                         ng-options="answer as answer.name for answer in getPossibleAnswers() track by answer.uuid">
                 </select>
 
-                <input ng-switch-when="autocomplete" concept-autocomplete source="getValues"
+<!--            <input ng-switch-when="autocomplete" concept-autocomplete source="getValues"
                         class="form-control" concept="observation.value" concept-change="observation.onValueChanged()">
+                </input>
+ -->
+                <input ng-switch-when="autocomplete" type='hidden' ui-select2="selectOptions"
+                        class="form-control" ng-model="observation.value" ng-change="observation.onValueChanged()">
                 </input>
 
                 <span ng-switch-default class="form-control">
