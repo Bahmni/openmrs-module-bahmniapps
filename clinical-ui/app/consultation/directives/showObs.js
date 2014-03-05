@@ -5,6 +5,6 @@ angular.module('opd.consultation')
         scope:{
             observation:"="
         },
-        template:'<ng-include src="\'modules/consultation/views/showObservation.html\'" />'
+        template:'<ng-include src="\'views/showObservation.html\'" />'
     }
 }]);

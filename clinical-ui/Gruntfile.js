@@ -138,7 +138,7 @@ module.exports = function (grunt) {
             html: [
                 '<%= yeoman.app %>/patients/*.html',
                 '<%= yeoman.app %>/consultation/*.html',
-                '<%= yeoman.app %>/modules/**/*.html',
+                '<%= yeoman.app %>/**/*.html',
                 '<%= yeoman.app %>/adt/**/*.html',
                 '<%= yeoman.app %>/bed-management/**/*.html',
                 '<%= yeoman.app %>/common/**/*.html',

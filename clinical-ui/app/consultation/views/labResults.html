@@ -2,7 +2,7 @@
     <div ng-repeat="result in labResults">
         <div ng-show="result.isPanel()" class="row panel">
             <div class="panel-name">{{result.name}}</div>
-            <ng-include src="'modules/consultation/views/labResults.html'" ng-init="labResults=result.members"/>
+            <ng-include src="'views/labResults.html'" ng-init="labResults=result.members"/>
         </div>
         <div ng-hide="result.isPanel()" class="row" ng-class="{abnormal:result.isAbnormal()}">
             <div class="name">{{result.name}}</div>

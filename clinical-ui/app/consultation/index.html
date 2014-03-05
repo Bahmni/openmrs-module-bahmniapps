@@ -13,7 +13,7 @@
     </head>
     <body>
         <div ng-app="consultation" ng-controller="ConsultationNavigationController">
-            <div ng-hide="tiles && tiles.header" ng-include src="'../common/modules/patient/header/views/header.html'"></div>
+            <div ng-hide="tiles && tiles.header" ng-include src="'../common/patient/header/views/header.html'"></div>
             <div ng-show="tiles && tiles.header" ng-include src="tiles.header"></div>
             <div class="opd-wrapper">
                 <div ng-view id="view-content" class="opd-content-wrapper"></div>
@@ -33,89 +33,89 @@
 
             <!-- build:js consultation.min.js -->
             <script src="../common/constants.js"></script>
-            <script src="../common/modules/util/init.js"></script>
-            <script src="../common/modules/util/dateUtil.js"></script>
-            <script src="../common/modules/util/tilesLayout.js"></script>
-            <script src="../common/modules/infrastructure/httpErrorInterceptor.js"></script>
-            <script src="../common/modules/auth/authentication.js"></script>
-            <script src="../common/modules/app-framework/appdescriptor.js"></script>
-            <script src="../common/modules/app-framework/appframework.js"></script>
-            <script src="../common/modules/infrastructure/init.js"></script>
-            <script src="../common/modules/infrastructure/spinner.js"></script>
-            <script src="../common/modules/infrastructure/services/configurationService.js"></script>
+            <script src="../common/util/init.js"></script>
+            <script src="../common/util/dateUtil.js"></script>
+            <script src="../common/util/tilesLayout.js"></script>
+            <script src="../common/infrastructure/httpErrorInterceptor.js"></script>
+            <script src="../common/auth/authentication.js"></script>
+            <script src="../common/app-framework/appdescriptor.js"></script>
+            <script src="../common/app-framework/appframework.js"></script>
+            <script src="../common/infrastructure/init.js"></script>
+            <script src="../common/infrastructure/spinner.js"></script>
+            <script src="../common/infrastructure/services/configurationService.js"></script>
 
-            <script src="../common/modules/patient/init.js"></script>
-            <script src="../common/modules/patient/mappers/patientMapper.js"></script>
-            <script src="../common/modules/patient/services/patientService.js"></script>
-            <script src="../common/modules/patient/filters/gender.js"></script>
-            <script src="../common/modules/patient/directives/patientSummary.js"></script>
+            <script src="../common/patient/init.js"></script>
+            <script src="../common/patient/mappers/patientMapper.js"></script>
+            <script src="../common/patient/services/patientService.js"></script>
+            <script src="../common/patient/filters/gender.js"></script>
+            <script src="../common/patient/directives/patientSummary.js"></script>
 
-            <script src="../common/modules/visit/init.js"></script>
-            <script src="../common/modules/visit/services/visitService.js"></script>
+            <script src="../common/visit/init.js"></script>
+            <script src="../common/visit/services/visitService.js"></script>
 
-            <script src="../common/modules/concept-set/init.js"></script>
-            <script src="../common/modules/concept-set/models/observation.js"></script>
+            <script src="../common/concept-set/init.js"></script>
+            <script src="../common/concept-set/models/observation.js"></script>
 
-            <script src="../common/modules/encounter/init.js"></script>
-            <script src="../common/modules/encounter/services/encounterService.js"></script>
-            <script src="../common/modules/infrastructure/encounterConfig.js"></script>
-            <script src="modules/consultation/init.js"></script>
-            <script src="modules/consultation/initialization.js"></script>
+            <script src="../common/encounter/init.js"></script>
+            <script src="../common/encounter/services/encounterService.js"></script>
+            <script src="../common/infrastructure/encounterConfig.js"></script>
+            <script src="init.js"></script>
+            <script src="initialization.js"></script>
 
             <script src="constants.js"></script>
 
-            <script src="modules/patient-dashboard/controllers/patientDashboardController.js"></script>
+            <script src="controllers/patientDashboardController.js"></script>
 
-            <script src="modules/consultation/models/treatmentDrug.js"></script>
-            <script src="modules/consultation/models/labResult.js"></script>
-            <script src="modules/consultation/mappers/labResultsMapper.js"></script>
-            <script src="modules/consultation/mappers/consultationMapper.js"></script>
-            <script src="modules/consultation/mappers/dispositionMapper.js"></script>
-            <script src="modules/consultation/mappers/otherInvestigationsConceptsMapper.js"></script>
-            <script src="modules/consultation/mappers/labConceptsMapper.js"></script>
-            <script src="modules/consultation/controllers/visitController.js"></script>
-            <script src="modules/consultation/controllers/consultationController.js"></script>
-            <script src="modules/consultation/controllers/diagnosisController.js"></script>
-            <script src="modules/consultation/controllers/investigationController.js"></script>
-            <script src="modules/consultation/controllers/treatmentController.js"></script>
-            <script src="modules/consultation/controllers/dispositionController.js"></script>
-            <script src="modules/consultation/controllers/navigationController.js"></script>
-            <script src="modules/consultation/controllers/conceptSetPageController.js"></script>
-            <script src="modules/consultation/services/treatmentService.js"></script>
-            <script src="modules/consultation/services/diagnosisService.js"></script>
-            <script src="modules/consultation/services/dispositionService.js"></script>
-            <script src="modules/consultation/services/patientVisitHistoryService.js"></script>            
-            <script src="modules/consultation/services/labTestsProvider.js"></script>            
-            <script src="modules/consultation/services/otherTestsProvider.js"></script>            
-            <script src="modules/consultation/models/diagnosis.js"></script>
-            <script src="modules/consultation/models/visitSummary.js"></script>
-            <script src="modules/consultation/models/visitDay.js"></script>
-            <script src="modules/consultation/models/visitHistoryEntry.js"></script>
-            <script src="modules/consultation/models/category.js"></script>
-            <script src="modules/consultation/models/selectable.js"></script>
-            <script src="modules/consultation/filters/observationValue.js"></script>
-            <script src="modules/consultation/directives/buttonsRadio.js"></script>
-            <script src="modules/consultation/directives/expander.js"></script>
-            <script src="modules/consultation/directives/myAutocomplete.js"></script>
-            <script src="modules/consultation/directives/observationSummary.js"></script>
-            <script src="modules/consultation/directives/showObs.js"></script>
-            <script src="modules/consultation/directives/uiAutocomplete.js"></script>
-            <script src="modules/consultation/directives/investigationsSelector.js"></script>
-            <script src="modules/consultation/helpers/urlHelper.js"></script>
+            <script src="models/treatmentDrug.js"></script>
+            <script src="models/labResult.js"></script>
+            <script src="mappers/labResultsMapper.js"></script>
+            <script src="mappers/consultationMapper.js"></script>
+            <script src="mappers/dispositionMapper.js"></script>
+            <script src="mappers/otherInvestigationsConceptsMapper.js"></script>
+            <script src="mappers/labConceptsMapper.js"></script>
+            <script src="controllers/visitController.js"></script>
+            <script src="controllers/consultationController.js"></script>
+            <script src="controllers/diagnosisController.js"></script>
+            <script src="controllers/investigationController.js"></script>
+            <script src="controllers/treatmentController.js"></script>
+            <script src="controllers/dispositionController.js"></script>
+            <script src="controllers/navigationController.js"></script>
+            <script src="controllers/conceptSetPageController.js"></script>
+            <script src="services/treatmentService.js"></script>
+            <script src="services/diagnosisService.js"></script>
+            <script src="services/dispositionService.js"></script>
+            <script src="services/patientVisitHistoryService.js"></script>            
+            <script src="services/labTestsProvider.js"></script>            
+            <script src="services/otherTestsProvider.js"></script>            
+            <script src="models/diagnosis.js"></script>
+            <script src="models/visitSummary.js"></script>
+            <script src="models/visitDay.js"></script>
+            <script src="models/visitHistoryEntry.js"></script>
+            <script src="models/category.js"></script>
+            <script src="models/selectable.js"></script>
+            <script src="filters/observationValue.js"></script>
+            <script src="directives/buttonsRadio.js"></script>
+            <script src="directives/expander.js"></script>
+            <script src="directives/myAutocomplete.js"></script>
+            <script src="directives/observationSummary.js"></script>
+            <script src="directives/showObs.js"></script>
+            <script src="directives/uiAutocomplete.js"></script>
+            <script src="directives/investigationsSelector.js"></script>
+            <script src="helpers/urlHelper.js"></script>
             <script src="app.js"></script>
 
-            <script src="../common/modules/concept-set/init.js"></script>
-            <script src="../common/modules/util/directives/bahmniAutocomplete.js"></script>
-            <script src="../common/modules/concept-set/directives/conceptSet.js"></script>
-            <script src="../common/modules/concept-set/services/conceptSetServices.js"></script>
-            <script src="../common/modules/concept-set/mappers/observationMapper.js"></script>
-            <script src="../common/modules/concept-set/mappers/conceptMapper.js"></script>
-            <script src="../common/modules/backlink/services/backlinkService.js"></script>
-            <script src="../common/modules/common/controllers/opdcommonheadercontroller.js"></script>
-            <script src="../common/modules/util/directives/conceptAutocomplete.js"></script>
+            <script src="../common/concept-set/init.js"></script>
+            <script src="../common/util/directives/bahmniAutocomplete.js"></script>
+            <script src="../common/concept-set/directives/conceptSet.js"></script>
+            <script src="../common/concept-set/services/conceptSetServices.js"></script>
+            <script src="../common/concept-set/mappers/observationMapper.js"></script>
+            <script src="../common/concept-set/mappers/conceptMapper.js"></script>
+            <script src="../common/backlink/services/backlinkService.js"></script>
+            <script src="../common/common/controllers/opdcommonheadercontroller.js"></script>
+            <script src="../common/util/directives/conceptAutocomplete.js"></script>
 
-            <script src="../bed-management/modules/bed-management/init.js"></script>
-            <script src="../bed-management/modules/bed-management/services/bedService.js"></script>
+            <script src="../bed-management/init.js"></script>
+            <script src="../bed-management/services/bedService.js"></script>
 
 
             <!-- endbuild -->

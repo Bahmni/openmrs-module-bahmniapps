@@ -16,7 +16,7 @@ angular.module('bahmni.common.patient').directive('patientSummary', function() {
 
     return {
         restrict: 'E',
-        templateUrl: '../common/modules/patient/header/views/patientSummary.html',
+        templateUrl: '../common/patient/header/views/patientSummary.html',
         link: link,
         required: 'patient',
         scope: {

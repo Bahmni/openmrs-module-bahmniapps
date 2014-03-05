@@ -133,7 +133,7 @@ angular.module('opd.consultation')
 .directive('investigationsSelector',function(){
     return {
         restrict: 'EA',
-        templateUrl: 'modules/consultation/views/investigationsSelector.html',
+        templateUrl: 'views/investigationsSelector.html',
         controller: 'InvestigationsSelectorController',
         require: 'ngModel',
         scope: {

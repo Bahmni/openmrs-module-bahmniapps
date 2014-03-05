@@ -36,7 +36,7 @@ angular.module('opd.conceptSet')
                 observation: "="
             },
             controller: controller,
-            template: '<ng-include src="\'../common/modules/concept-set/views/observation.html\'" />'
+            template: '<ng-include src="\'../common/concept-set/views/observation.html\'" />'
         }
     }]).directive('showConceptSet', ['$rootScope', function () {
         var template =

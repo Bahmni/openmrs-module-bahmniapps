@@ -10,7 +10,7 @@ angular.module('opd.consultation')
             fullDate:"@"
         },
         //not able to use templateUrl, because of recurssive use of directive. Not sure what the error is.
-        template: '<ng-include src="\'../consultation/modules/consultation/views/observationSummaryTemplate.html\'" />',
+        template: '<ng-include src="\'../consultation/views/observationSummaryTemplate.html\'" />',
         link: function(scope,element,attrs){
             if(scope.showTrends){
                 scope.isNumeric = function(value){

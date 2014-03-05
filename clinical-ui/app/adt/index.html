@@ -10,7 +10,7 @@
     </head>
     <body>
         <div ng-app="adt">
-            <div ng-include src="'../common/modules/patient/header/views/header.html'"></div>
+            <div ng-include src="'../common/patient/header/views/header.html'"></div>
             <div class="opd-wrapper">
                 <div ng-view id="view-content" class="opd-content-wrapper"></div>
             </div>
@@ -24,54 +24,54 @@
             <script src="../components/moment/moment.js"></script>
 
             <!-- build:js adt.min.js -->
-            <script src="../common/modules/infrastructure/httpErrorInterceptor.js"></script>
-            <script src="../common/modules/auth/authentication.js"></script>
-            <script src="../common/modules/app-framework/appdescriptor.js"></script>
-            <script src="../common/modules/app-framework/appframework.js"></script>
+            <script src="../common/infrastructure/httpErrorInterceptor.js"></script>
+            <script src="../common/auth/authentication.js"></script>
+            <script src="../common/app-framework/appdescriptor.js"></script>
+            <script src="../common/app-framework/appframework.js"></script>
 
             <script src="../common/constants.js"></script>
-            <script src="../common/modules/util/init.js"></script>
-            <script src="../common/modules/util/dateUtil.js"></script>
-            <script src="../common/modules/util/directives/splitButton.js"></script>
-            <script src="../common/modules/infrastructure/init.js"></script>
-            <script src="../common/modules/infrastructure/services/configurationService.js"></script>
-            <script src="../common/modules/infrastructure/spinner.js"></script>
+            <script src="../common/util/init.js"></script>
+            <script src="../common/util/dateUtil.js"></script>
+            <script src="../common/util/directives/splitButton.js"></script>
+            <script src="../common/infrastructure/init.js"></script>
+            <script src="../common/infrastructure/services/configurationService.js"></script>
+            <script src="../common/infrastructure/spinner.js"></script>
 
-            <script src="../common/modules/patient/init.js"></script>
-            <script src="../common/modules/patient/mappers/patientMapper.js"></script>
-            <script src="../common/modules/patient/services/patientService.js"></script>
-            <script src="../common/modules/patient/filters/gender.js"></script>
-            <script src="../common/modules/patient/directives/patientSummary.js"></script>
-            <script src="../common/modules/encounter/init.js"></script>
-            <script src="../common/modules/encounter/services/encounterService.js"></script>
-            <script src="../common/modules/infrastructure/encounterConfig.js"></script>
+            <script src="../common/patient/init.js"></script>
+            <script src="../common/patient/mappers/patientMapper.js"></script>
+            <script src="../common/patient/services/patientService.js"></script>
+            <script src="../common/patient/filters/gender.js"></script>
+            <script src="../common/patient/directives/patientSummary.js"></script>
+            <script src="../common/encounter/init.js"></script>
+            <script src="../common/encounter/services/encounterService.js"></script>
+            <script src="../common/infrastructure/encounterConfig.js"></script>
 
-            <script src="../common/modules/visit/init.js"></script>
-            <script src="../common/modules/visit/services/visitService.js"></script>
+            <script src="../common/visit/init.js"></script>
+            <script src="../common/visit/services/visitService.js"></script>
 
-            <script src="../common/modules/concept-set/init.js"></script>
-            <script src="../common/modules/concept-set/directives/conceptSet.js"></script>
-            <script src="../common/modules/concept-set/services/conceptSetServices.js"></script>
-            <script src="../common/modules/concept-set/mappers/observationMapper.js"></script>
-            <script src="../common/modules/concept-set/mappers/conceptMapper.js"></script>
-            <script src="../common/modules/concept-set/models/observation.js"></script>
+            <script src="../common/concept-set/init.js"></script>
+            <script src="../common/concept-set/directives/conceptSet.js"></script>
+            <script src="../common/concept-set/services/conceptSetServices.js"></script>
+            <script src="../common/concept-set/mappers/observationMapper.js"></script>
+            <script src="../common/concept-set/mappers/conceptMapper.js"></script>
+            <script src="../common/concept-set/models/observation.js"></script>
 
-            <script src="../consultation/modules/consultation/init.js"></script>
-            <script src="../consultation/modules/consultation/services/dispositionService.js"></script>
+            <script src="../consultation/init.js"></script>
+            <script src="../consultation/services/dispositionService.js"></script>
             <script src="../consultation/constants.js"></script>
 
-            <script src="../bed-management/modules/bed-management/init.js"></script>
-            <script src="../bed-management/modules/bed-management/services/bedService.js"></script>
+            <script src="../bed-management/init.js"></script>
+            <script src="../bed-management/services/bedService.js"></script>
 
-            <script src="../common/modules/backlink/services/backlinkService.js"></script>
+            <script src="../common/backlink/services/backlinkService.js"></script>
 
             <script src="app.js"></script>
-            <script src="modules/adt/init.js"></script>
-            <script src="modules/adt/constants.js"></script>
-            <script src="modules/adt/initialization.js"></script>
-            <script src="modules/adt/util/dispositionDisplayUtil.js"></script>
-            <script src="modules/adt/controllers/adtController.js"></script>
-            <script src="../common/modules/common/controllers/opdcommonheadercontroller.js"></script>
+            <script src="init.js"></script>
+            <script src="constants.js"></script>
+            <script src="initialization.js"></script>
+            <script src="util/dispositionDisplayUtil.js"></script>
+            <script src="controllers/adtController.js"></script>
+            <script src="../common/common/controllers/opdcommonheadercontroller.js"></script>
             <!-- endbuild -->
         </div>
     </body>

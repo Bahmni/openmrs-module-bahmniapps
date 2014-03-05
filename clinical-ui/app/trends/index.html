@@ -19,8 +19,8 @@
     <script src="../components/d3/d3.min.js"></script>
     <script src="../components/nvd3/nv.d3.min.js"></script>
     <script src="../components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js"></script>
-    <script src="../common/modules/backlink/services/backlinkService.js"></script>
-    <script src="../common/modules/common/controllers/opdcommonheadercontroller.js"></script>
+    <script src="../common/backlink/services/backlinkService.js"></script>
+    <script src="../common/common/controllers/opdcommonheadercontroller.js"></script>
     <script src="app.js"></script>
     <script src="controllers/trendsController.js"></script>
     <script src="services/observationService.js"></script>
@@ -29,7 +29,7 @@
 </head>
 
 <body ng-app="trends">
-    <div ng-include src="'../common/modules/common/header.html'"></div>
+    <div ng-include src="'../common/common/header.html'"></div>
     <div ng-view> </div>
 </body>
 </html>
