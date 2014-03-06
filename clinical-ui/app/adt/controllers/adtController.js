@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module('opd.adt.controllers')
+angular.module('opd.adt')
     .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService', 'encounterService', 'BedService', 'appService', 'visitService',
         function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService, appService, visitService) {
             var actionConfigs = {};

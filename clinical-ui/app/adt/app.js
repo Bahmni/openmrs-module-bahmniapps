@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('adt', ['ngRoute', 'opd.consultation.services', 'bahmni.common.infrastructure', 'bahmni.common.patient',
+angular.module('adt', ['ngRoute', 'opd.consultation', 'bahmni.common.infrastructure', 'bahmni.common.patient',
     'bahmni.common.util','opd.conceptSet', 'authentication', 'appFramework', 'httpErrorInterceptor', 'opd.adt',
-    'bahmni.common.encounter', 'bahmni.common.visit', 'opd.bedManagement.services', 'bahmni.common.controllers']);
+    'bahmni.common.encounter', 'bahmni.common.visit', 'opd.bedManagement', 'bahmni.common']);
 angular.module('adt').config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
     $routeProvider.when('/dashboard/patient/:patientUuid/visit/:visitUuid/:action',
         {

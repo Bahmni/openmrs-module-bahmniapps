@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('opd.consultation.controllers')
+angular.module('opd.consultation')
 .controller('InvestigationController', ['$scope', '$rootScope', 'spinner', 'labTestsProvider', 'otherTestsProvider', function ($scope, $rootScope, spinner, labTestsProvider, otherTestsProvider) {
     var investigations = $rootScope.consultation.investigations;
 

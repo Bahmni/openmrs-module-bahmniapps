@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('opd.consultation.controllers')
+angular.module('opd.consultation')
     .controller('DispositionController', ['$scope', '$q', '$rootScope','dispositionService', 'spinner', function ($scope, $q, $rootScope,dispositionService, spinner) {
 
         var getDispositionActionsPromise = function() {

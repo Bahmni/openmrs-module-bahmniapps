@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('opd.consultation.controllers')
+angular.module('opd.consultation')
     .controller('ConsultationController', ['$scope', '$rootScope', 'encounterService', '$route', '$location', 'spinner', function ($scope, $rootScope, encounterService, $route, $location, spinner) {
 
     $scope.save = function () {

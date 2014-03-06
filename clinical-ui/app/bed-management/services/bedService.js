@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('opd.bedManagement.services')
+angular.module('opd.bedManagement')
     .service('BedService', ['$http', '$rootScope', function ($http, $rootScope) {
 
         this.getBedDetailsForPatient = function (uuid) {

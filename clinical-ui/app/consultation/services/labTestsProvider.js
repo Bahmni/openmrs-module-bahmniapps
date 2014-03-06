@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('opd.consultation.services')
+angular.module('opd.consultation')
   .service('labTestsProvider', ['$q', 'conceptSetService', function ($q, conceptSetService) {
 
   	this.getTests = function() {

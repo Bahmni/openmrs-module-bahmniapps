@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('opd.consultation.services')
+angular.module('opd.consultation')
     .factory('treatmentService', ['$http', function ($http) {
 
     var search = function (query) {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('opd.consultation.controllers').controller('ConsultationNavigationController',
+angular.module('opd.consultation').controller('ConsultationNavigationController',
     ['$scope', '$rootScope', '$location', '$route', '$window', 'appService', 'urlHelper',
         function ($scope, $rootScope, $location, $route, $window, appService, urlHelper) {
             //$scope.mainButtonText = "Consultation";

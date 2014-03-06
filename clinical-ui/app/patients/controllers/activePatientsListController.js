@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('opd.patient.controllers')
+angular.module('opd.patient')
     .controller('ActivePatientsListController', ['$route', '$scope', '$location', '$window', 'patientService', 'patientMapper', '$rootScope', 'appService', 'spinner',
     function ($route, $scope, $location, $window, patientService, patientMapper, $rootScope, appService, spinner) {
 

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('opd.consultation.services')
+angular.module('opd.consultation')
   .service('DiagnosisService', ['$http', function ($http) {
     this.getAllFor = function (searchTerm) {
         var url = "/openmrs/ws/rest/emrapi/concept";

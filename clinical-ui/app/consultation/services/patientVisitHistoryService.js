@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('opd.consultation.services')
+angular.module('opd.consultation')
   .service('patientVisitHistoryService', ['visitService', '$q', '$rootScope', function (visitService, $q, $rootScope) {
     var patientVisitsMap = {};
     

@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module('orders.pending.controllers')
+angular.module('orders.pending')
     .controller('PendingOrdersController', ['$scope','$rootScope','$route', '$routeParams', 'PendingOrderService','$q', function ($scope,$rootScope,$route,$routeParams, pendingOrderService,$q) {
 
     	$scope.getOrders = function (patientUuid, orderTypeUuid) {

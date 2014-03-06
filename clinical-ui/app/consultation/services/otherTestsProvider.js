@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('opd.consultation.services')
+angular.module('opd.consultation')
   .service('otherTestsProvider', ['$q', 'conceptSetService', 'appService',function ($q, conceptSetService, appService) {
     var orderTypesMapConfig = appService.getAppDescriptor().getConfig("otherInvestigationsMap");
     var orderTypesMap = orderTypesMapConfig ? orderTypesMapConfig.value : {};

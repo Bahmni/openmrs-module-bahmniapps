@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('orders', ['ngRoute', 'orders.pending', 'bahmni.common.infrastructure','authentication', 'appFramework', 'httpErrorInterceptor','bahmni.common.patient', 'bahmni.common.controllers']);
+angular.module('orders', ['ngRoute', 'orders.pending', 'bahmni.common.infrastructure','authentication', 'appFramework', 'httpErrorInterceptor','bahmni.common.patient', 'bahmni.common']);
 angular.module('orders').config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
         $routeProvider.when('/patient/:patientUuid/:orderTypeUuid', {templateUrl: 'views/pendingOrders.html', controller: 'PendingOrdersController',resolve: {initialization: 'initialization'}});
         $routeProvider.otherwise({redirectTo: "../patients"});

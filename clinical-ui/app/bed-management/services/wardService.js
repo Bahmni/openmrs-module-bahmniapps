@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('opd.bedManagement.services')
+angular.module('opd.bedManagement')
     .service('WardService', ['$http', function ($http) {
 
         this.bedsForWard = function (uuid) {

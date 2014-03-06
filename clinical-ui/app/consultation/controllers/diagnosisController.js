@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('opd.consultation.controllers')
+angular.module('opd.consultation')
     .controller('DiagnosisController', ['$scope', '$rootScope', 'DiagnosisService', function ($scope, $rootScope, DiagnosisService) {
 
     $scope.placeholder = "Add Diagnosis";

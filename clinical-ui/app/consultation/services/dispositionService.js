@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('opd.consultation.services')
+angular.module('opd.consultation')
         .factory('dispositionService', ['$http', '$rootScope', function ($http, $rootScope) {
 
         var getDispositionActions = function () {

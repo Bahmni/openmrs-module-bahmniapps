@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('opd.consultation.controllers')
+angular.module('opd.consultation')
     .controller('VisitController', ['$scope', 'encounterService', 'visitService','$route', 'spinner','$routeParams',
         function ($scope, encounterService, visitService, $route, spinner,$routeParams) {
     var visitUuid = $route.current.params.visitUuid;

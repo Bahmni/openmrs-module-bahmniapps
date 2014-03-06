@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('documentupload', ['ngRoute', 'opd.documentupload', 'bahmni.common.patient', 'authentication', 'appFramework', 'bahmni.common.controllers', 'bahmni.common.infrastructure', 'httpErrorInterceptor', 'bahmni.common.visit', 'bahmni.common.util']);
+angular.module('documentupload', ['ngRoute', 'opd.documentupload', 'bahmni.common.patient', 'authentication', 'appFramework', 'bahmni.common', 'bahmni.common.infrastructure', 'httpErrorInterceptor', 'bahmni.common.visit', 'bahmni.common.util']);
 angular.module('documentupload').config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
         $routeProvider.when('/search', {
             templateUrl: 'views/patientSearch.html',

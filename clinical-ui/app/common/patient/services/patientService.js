@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.patient.services')
+angular.module('bahmni.common.patient')
     .service('patientService', ['$http', function ($http) {
         
         this.getPatient = function (uuid) {
