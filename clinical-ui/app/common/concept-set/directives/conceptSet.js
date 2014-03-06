@@ -20,6 +20,8 @@ angular.module('opd.conceptSet')
                     return options.callback({results:  $filter('filter')($scope.getPossibleAnswers(), {name: options.term})});
                 },
                 width: '20em',
+                allowClear: true,
+                placeholder: 'Select',
                 formatResult: getPropertyFunction('name'),
                 formatSelection: getPropertyFunction('name'),
                 id: getPropertyFunction('uuid')
