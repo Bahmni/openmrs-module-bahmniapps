@@ -2,8 +2,8 @@
     <div id="tabButtonRow">
     	<button ng-repeat="tab in tabs" class="{{tab.klass}}" ng-click="activateTab(tab)">{{tab.name}} </button>
     </div>
-    <div ng-show="activeTab.name == 'Laboratory'" >
-        <button  name="notes" ng-click="toggleNote()">Add Notes</button>
+    <div ng-show="activeTab.name == 'Laboratory'">
+        <button  name="notes" ng-click="toggleNote()" ng-disabled="!isValidInvestigation()">Add Notes</button>
         <textarea ng-model="consultation.labOrderNote.value" ng-show="noteState" placeholder="Notes" ng-change="onNoteChanged()"></textarea>
     </div>
     <div ng-switch="activeTab" class="investigation-selection">

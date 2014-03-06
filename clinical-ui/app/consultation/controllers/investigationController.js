@@ -15,6 +15,10 @@ angular.module('opd.consultation')
         $scope.activeTab.klass="active";
     }
 
+    $scope.isValidInvestigation = function() {
+        return $rootScope.consultation.investigations.length > 0;
+    }
+
     $scope.activateTab($scope.tabs[0]);
 
     $scope.toggleNote = function() {
