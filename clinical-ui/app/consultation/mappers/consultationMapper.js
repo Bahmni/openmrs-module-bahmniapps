@@ -53,7 +53,7 @@ Bahmni.Opd.ConsultationMapper = function (dosageFrequencies, dosageInstructions,
     var mapSpecialObservation = function(encounterObservations, specialConcept) {
         var observation = emptyObservation(specialConcept);
         var obsFromEncounter = encounterObservations.filter(function(obs) {
-            return (obs.concept && obs.concept.uuid === specialConcept.uuid);
+            return (obs.concept && obs.concept.uuid === specialConcept.uuid) && !obs.voided;
         })[0];
         if(obsFromEncounter) {
             observation.value = obsFromEncounter.value;
