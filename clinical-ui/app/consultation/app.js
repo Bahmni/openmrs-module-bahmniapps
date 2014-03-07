@@ -1,18 +1,26 @@
 'use strict';
 
-angular.module('consultation', ['ui.router', 'opd.consultation', 'bahmni.common.patient', 'bahmni.common.util',
+angular.module('consultation', ['ui.router', 'opd.consultation', 'bahmni.common.patient', 'bahmni.common.util', 'bahmni.common.patientSearch',
     'bahmni.common.visit', 'bahmni.common.encounter', 'opd.conceptSet', 'authentication', 'appFramework', 'opd.bedManagement',
-    'httpErrorInterceptor', 'pasvaz.bindonce', 'bahmni.common', 'bahmni.common.backlink', 'opd.patientDashboard', 'ui.select2']);
+    'httpErrorInterceptor', 'pasvaz.bindonce', 'bahmni.common', 'bahmni.common.backlink', 'opd.patientDashboard', 'ui.select2', 'infinite-scroll']);
 angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
 
         $stateProvider
+            .state('patientsearch', {
+                url: '/patient/search',
+                templateUrl: '../common/patient-search/views/activePatientsList.html',
+                controller : 'ActivePatientsListController',
+                resolve: {
+                    initialization: 'initialization'
+                }
+            })
             .state('patient', {
                 url: '/patient/:patientUuid',
                 abstract: true,
                 template: '<ui-view/>',
                 resolve: {
-                    initialization: function(initialization, $stateParams) {
-                    return initialization($stateParams.patientUuid);
+                    consultationInitialization: function(consultationInitialization, $stateParams) {
+                    return consultationInitialization($stateParams.patientUuid);
                 }}
             })
             .state('patient.dashboard', {
@@ -70,5 +78,5 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
             })
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
     }]).run(['backlinkService', function (backlinkService) {
-        backlinkService.addUrl("Patient Q", "/clinical/patients/#/clinical");
+        backlinkService.addUrl("Patient Q", "/clinical/consultation/#/patient/search");
     }]);

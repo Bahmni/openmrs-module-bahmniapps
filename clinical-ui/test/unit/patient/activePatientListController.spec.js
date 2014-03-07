@@ -47,7 +47,7 @@ describe("ActivePatientListController", function () {
     ];
 
 
-    beforeEach(module('opd.patient'));
+    beforeEach(module('bahmni.common.patientSearch'));
     beforeEach(inject(function () {
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         patientMapper = jasmine.createSpyObj('patientMapper', ['constructImageUrl']);

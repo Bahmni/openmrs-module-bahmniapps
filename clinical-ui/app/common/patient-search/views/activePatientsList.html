@@ -1,0 +1,23 @@
+<div class="opd-wrapper">
+    <div class="tabs">
+        <ul>
+            <li class="tab-item" ng-repeat="sType in searchTypes" ng-class="{'tab-selected':searchCriteria.type==sType}">
+                <a href="" ng-click="showPatientsForType(sType)"> <span>{{sType.display}}</span></a>
+            </li>
+        </ul> 
+    </div>
+    <div class="tab-content">
+        <div class="search-wrapper">
+            <input type="text" ng-model="searchCriteria.searchParameter"  ng-change="searchPatients()"  placeholder="Search Name/ID  ..."/>
+        </div>
+        <div resize class="active-visits">
+            <div infinite-scroll='loadMore()' >
+                <li  ng-repeat="patient in visiblePatients" style="display: inline-block;margin:5px;" ng-click="forwardPatient(patient)">
+                    <img class="smallImages" ng-src="{{patient.image}}"  onerror="this.onerror=null;this.src='../images/blank-user.gif';" >
+                    <div class="centered">{{patient.name}}</div>
+                    <div class="centered">{{patient.identifier}}</div>
+                </li>
+            </div>
+        </div>
+    </div>
+</div>

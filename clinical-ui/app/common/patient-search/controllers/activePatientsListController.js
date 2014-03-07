@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('opd.patient')
-    .controller('ActivePatientsListController', ['$route', '$scope', '$location', '$window', 'patientService', 'patientMapper', '$rootScope', 'appService', 'spinner',
-    function ($route, $scope, $location, $window, patientService, patientMapper, $rootScope, appService, spinner) {
+angular.module('bahmni.common.patientSearch')
+    .controller('ActivePatientsListController', ['$scope', '$location', '$window', 'patientService', 'patientMapper', '$rootScope', 'appService', 'spinner',
+    function ($scope, $location, $window, patientService, patientMapper, $rootScope, appService, spinner) {
 
         $scope.searchTypes = [];
         var handlePatientList = function (patientList, callback) {
@@ -48,10 +48,10 @@ angular.module('opd.patient')
             var windowWidth = window.innerWidth;
             var windowHeight = window.innerHeight;
 
-            var tileWidth = Bahmni.Opd.Patient.Constants.patientTileWidth;
-            var tileHeight = Bahmni.Opd.Patient.Constants.patientTileHeight;
+            var tileWidth = Bahmni.Common.PatientSearch.Constants.patientTileWidth;
+            var tileHeight = Bahmni.Common.PatientSearch.Constants.patientTileHeight;
             $scope.tilesToFit = Math.ceil(windowWidth * windowHeight / (tileWidth * tileHeight));
-            $scope.tilesToLoad = Math.ceil($scope.tilesToFit * Bahmni.Opd.Patient.Constants.tileLoadRatio);
+            $scope.tilesToLoad = Math.ceil($scope.tilesToFit * Bahmni.Common.PatientSearch.Constants.tileLoadRatio);
         };
 
 
@@ -77,7 +77,6 @@ angular.module('opd.patient')
             var options = {
                 patientUuid:patient.uuid,
                 visitUuid:patient.activeVisitUuid,
-                redirectUrl: escape($location.absUrl()),
                 orderTypeUuid:$scope.encounterConfig.orderTypes[Bahmni.Common.Constants.radiologyOrderType]
             };
 
