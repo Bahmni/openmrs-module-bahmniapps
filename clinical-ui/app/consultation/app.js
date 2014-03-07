@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('consultation', ['ui.router', 'opd.consultation', 'bahmni.common.patient', 'bahmni.common.util', 'bahmni.common.patientSearch',
-    'bahmni.common.visit', 'bahmni.common.encounter', 'opd.conceptSet', 'authentication', 'appFramework', 'opd.bedManagement',
+    'bahmni.common.visit', 'bahmni.common.encounter', 'opd.conceptSet', 'authentication', 'bahmni.common.appFramework', 'opd.bedManagement',
     'httpErrorInterceptor', 'pasvaz.bindonce', 'bahmni.common', 'bahmni.common.backlink', 'opd.patientDashboard', 'ui.select2', 'infinite-scroll', 'bahmni.common.disposition']);
 angular.module('consultation').config(['$stateProvider', '$httpProvider', function ($stateProvider, $httpProvider) {
 

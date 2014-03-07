@@ -1,4 +1,4 @@
-function AppDescriptor(context, inheritContext, retrieveUserCallback) {
+Bahmni.Common.AppFramework.AppDescriptor = function (context, inheritContext, retrieveUserCallback) {
     this.id = null;
     this.instanceOf = null;
     this.description = null;

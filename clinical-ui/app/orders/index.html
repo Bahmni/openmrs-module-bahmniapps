@@ -14,38 +14,38 @@
             <div class="pending-orders-wrapper">
                 <p style="display: none" class="caution" ng-show="server_error">{{server_error}}</p>
                 <div ng-view="" id="view-content" class="pending-orders-content-wrapper"></div>
-            </div>
-           
-            <script src="../components/jquery/jquery.js"></script>
-            <script src="../lib/jquery/jquery-ui-1.10.3.custom.min.js"></script>
-            <script src="../components/keyboardjs/keyboard.js"></script>
-            <script src="../components/angular/angular.js"></script>
-            <script src="../components/angular-route/angular-route.js"></script>
-            <script src="../components/angular-cookies/angular-cookies.js"></script>
-
-            <!-- build:js orders.min.js -->
-            <script src="../common/infrastructure/httpErrorInterceptor.js"></script>
-            <script src="../common/auth/authentication.js"></script>
-            <script src="../common/app-framework/appdescriptor.js"></script>
-            <script src="../common/app-framework/appframework.js"></script>
-            <script src="../common/constants.js"></script>
-            <script src="../common/infrastructure/init.js"></script>
-            <script src="../common/infrastructure/services/configurationService.js"></script>
-
-            <script src="../common/patient/init.js"></script>
-            <script src="../common/patient/mappers/patientMapper.js"></script>
-            <script src="../common/patient/services/patientService.js"></script>
-            <script src="../common/patient/filters/gender.js"></script>
-            <script src="../common/patient/directives/patientSummary.js"></script>
-            <script src="../common/backlink/services/backlinkService.js"></script>
-
-            <script src="app.js"></script>
-            <script src="init.js"></script>
-            <script src="initialization.js"></script>
-            <script src="services/pendingOrdersService.js"></script>            
-            <script src="controllers/pendingOrdersController.js"></script>
-            <script src="../common/common/controllers/opdcommonheadercontroller.js"></script>
-
-            <!-- endbuild -->
+            </div>           
         </div>
+        <script src="../components/jquery/jquery.js"></script>
+        <script src="../lib/jquery/jquery-ui-1.10.3.custom.min.js"></script>
+        <script src="../components/keyboardjs/keyboard.js"></script>
+        <script src="../components/angular/angular.js"></script>
+        <script src="../components/angular-route/angular-route.js"></script>
+        <script src="../components/angular-cookies/angular-cookies.js"></script>
+
+        <!-- build:js orders.min.js -->
+        <script src="../common/infrastructure/httpErrorInterceptor.js"></script>
+        <script src="../common/auth/authentication.js"></script>
+        <script src="../common/app-framework/init.js"></script>
+        <script src="../common/app-framework/services/appService.js"></script>
+        <script src="../common/app-framework/directives/appExtensionList.js"></script>
+        <script src="../common/app-framework/models/appDescriptor.js"></script>
+        <script src="../common/constants.js"></script>
+        <script src="../common/infrastructure/init.js"></script>
+        <script src="../common/infrastructure/services/configurationService.js"></script>
+
+        <script src="../common/patient/init.js"></script>
+        <script src="../common/patient/mappers/patientMapper.js"></script>
+        <script src="../common/patient/services/patientService.js"></script>
+        <script src="../common/patient/filters/gender.js"></script>
+        <script src="../common/patient/directives/patientSummary.js"></script>
+        <script src="../common/backlink/services/backlinkService.js"></script>
+
+        <script src="app.js"></script>
+        <script src="init.js"></script>
+        <script src="initialization.js"></script>
+        <script src="services/pendingOrdersService.js"></script>
+        <script src="controllers/pendingOrdersController.js"></script>
+        <script src="../common/common/controllers/opdcommonheadercontroller.js"></script>
+        <!-- endbuild -->
     </body>
