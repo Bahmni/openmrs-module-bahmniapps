@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('opd.consultation')
-  .service('urlHelper', ['$route', function ($route) {
+  .service('urlHelper', ['$stateParams', function ($stateParams) {
     this.getPatientUrl = function () {
-    	return '/patient/' + $route.current.params.patientUuid;
+    	return '/patient/' + $stateParams.patientUuid;
     };
 
 	this.getConsultationUrl = function() {

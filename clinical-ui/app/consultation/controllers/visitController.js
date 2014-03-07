@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('opd.consultation')
-    .controller('VisitController', ['$scope', 'encounterService', 'visitService','$route', 'spinner','$routeParams',
-        function ($scope, encounterService, visitService, $route, spinner,$routeParams) {
-    var visitUuid = $route.current.params.visitUuid;
+    .controller('VisitController', ['$scope', 'encounterService', 'visitService', 'spinner','$stateParams',
+        function ($scope, encounterService, visitService, spinner, $stateParams) {
+    var visitUuid = $stateParams.visitUuid;
 	$scope.visitDays = [];
     $scope.hasMoreVisitDays;
-    $scope.patientUuid = $routeParams.patientUuid;
+    $scope.patientUuid = $stateParams.patientUuid;
     $scope.showTrends = true;
     var currentEncounterDate;
     var loading;

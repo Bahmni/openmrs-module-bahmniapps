@@ -5,9 +5,8 @@ describe("VisitControllerTest", function () {
     var visitService;
     var scope;
     var visitController;
-    var visitUuid = "c8a76229-5b96-438e-a41a-cdd5b19b539f"
-    var route = {current: {params: { visitUuid: visitUuid}}};
-    var routeParams ={patientUuid:'pat-uuid'};
+    var visitUuid = "c8a76229-5b96-438e-a41a-cdd5b19b539f";
+    var stateParams = {patientUuid: 'pat-uuid', visitUuid: visitUuid};
     var encounterSearchPromise;
     var visitSummaryPromise;
     var visitHistoryPromise;
@@ -28,7 +27,9 @@ describe("VisitControllerTest", function () {
         scope = $rootScope.$new();
         scope.encounterConfig = {};
         $rootScope.patient = { uuid: '1234'}
-        visitSummary = { hasEncounters: function() { return true; }}
+        visitSummary = { hasEncounters: function () {
+            return true;
+        }}
         spyOn(Bahmni.Opd.Consultation.VisitSummary, 'create').andReturn(visitSummary);
     }));
 
@@ -36,55 +37,54 @@ describe("VisitControllerTest", function () {
         inject(function ($controller) {
             visitController = $controller('VisitController', {
                 $scope: scope,
-                $route: route,
                 spinner: spinner,
                 visitService: visitService,
-                $routeParams : routeParams,
+                $stateParams: stateParams,
                 encounterService: encounterService
             });
         });
     };
 
 
-    describe("after loading visitSummary", function(){
-        beforeEach(function(){
+    describe("after loading visitSummary", function () {
+        beforeEach(function () {
             setUpController();
         });
-     
-        it("should load the visit details for most recent encounter date", function(){
+
+        it("should load the visit details for most recent encounter date", function () {
             visitSummary.mostRecentEncounterDateTime = new Date("2013-12-03");
             visitSummary.visitStartDateTime = new Date("2013-12-01");
 
-        	visitSummaryPromise.callSuccessCallBack();
+            visitSummaryPromise.callSuccessCallBack();
 
             expect(encounterService.search.callCount).toBe(1);
             expect(encounterService.search).toHaveBeenCalledWith(visitUuid, "2013-12-03");
             expect(scope.hasMoreVisitDays).toBe(true);
         })
 
-        it("should populate visit days with the day number after succesfully fetching the vist details for a day", function(){
+        it("should populate visit days with the day number after succesfully fetching the vist details for a day", function () {
             visitSummary.mostRecentEncounterDateTime = new Date("2013-12-03");
             visitSummary.visitStartDateTime = new Date("2013-12-01");
             spyOn(Bahmni.Opd.Consultation.VisitDay, 'create').andReturn({});
-            
-        	visitSummaryPromise.callSuccessCallBack();
-			encounterSearchPromise.callSuccessCallBack([]);
-            
+
+            visitSummaryPromise.callSuccessCallBack();
+            encounterSearchPromise.callSuccessCallBack([]);
+
             expect(scope.visitDays.length).toBe(1);
             expect(Bahmni.Opd.Consultation.VisitDay.create.mostRecentCall.args[0]).toBe(3); //day 3
         })
     });
 
-    describe("loadEncountersForPreviousDay", function(){
-        beforeEach(function(){
+    describe("loadEncountersForPreviousDay", function () {
+        beforeEach(function () {
             setUpController();
         });
 
-        it("should load previous day visit details if fetching the current day visit details is completed",function(){
+        it("should load previous day visit details if fetching the current day visit details is completed", function () {
             visitSummary.mostRecentEncounterDateTime = new Date("2013-12-03");
             visitSummary.visitStartDateTime = new Date("2013-12-01");
-        	visitSummaryPromise.callSuccessCallBack();
-            
+            visitSummaryPromise.callSuccessCallBack();
+
             encounterSearchPromise.callThenCallBack(); // Loading visit details for 2013-12-03 is completed            
             scope.loadEncountersForPreviousDay();
 
@@ -94,11 +94,11 @@ describe("VisitControllerTest", function () {
             expect(scope.hasMoreVisitDays).toBe(true);
         })
 
-        it("should not load previous day visit details if fetching the current day visit details is is progress",function(){
+        it("should not load previous day visit details if fetching the current day visit details is is progress", function () {
             visitSummary.mostRecentEncounterDateTime = new Date("2013-12-03");
             visitSummary.visitStartDateTime = new Date("2013-12-01");
-        	visitSummaryPromise.callSuccessCallBack();
-            
+            visitSummaryPromise.callSuccessCallBack();
+
             scope.loadEncountersForPreviousDay();
             scope.loadEncountersForPreviousDay();
             scope.loadEncountersForPreviousDay();
@@ -106,17 +106,17 @@ describe("VisitControllerTest", function () {
             expect(encounterService.search.callCount).toBe(1);
         })
 
-        it("should not load visit details beyond visit start date",function(){
+        it("should not load visit details beyond visit start date", function () {
             visitSummary.mostRecentEncounterDateTime = new Date("2013-12-03");
             visitSummary.visitStartDateTime = new Date("2013-12-02");
-        	visitSummaryPromise.callSuccessCallBack();
+            visitSummaryPromise.callSuccessCallBack();
             encounterSearchPromise.callThenCallBack(); // Loading visit details for 2013-12-03 is completed
-            
+
             scope.loadEncountersForPreviousDay();
             encounterSearchPromise.callThenCallBack(); // Loading visit details for 2013-12-02 is completed
 
             expect(scope.hasMoreVisitDays).toBe(false);
-            
+
             scope.loadEncountersForPreviousDay();
             scope.loadEncountersForPreviousDay();
             expect(encounterService.search.callCount).toBe(2);

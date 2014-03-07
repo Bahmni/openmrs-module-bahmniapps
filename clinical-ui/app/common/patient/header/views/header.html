@@ -1,4 +1,3 @@
-<div ng-include src="'../common/common/header.html'"></div>
 <div class="opd-header-wrapper" id="opd-tabs">
     <div class="opd-header-bottom tabs">
         <ul class="header-tabs">
@@ -10,8 +9,8 @@
         </ul>
 
         <patient-summary patient="patient" bed-details="bedDetails" on-image-click-handler="gotoPatientDashboard()"/>
+    </div>
 </div>
 <div>
     <p class="caution" ng-show="server_error">{{server_error}}</p>
 </div>
-

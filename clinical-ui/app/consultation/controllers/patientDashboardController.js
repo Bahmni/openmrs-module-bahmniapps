@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('opd.patientDashboard',[])
-    .controller('PatientDashboardController', ['$scope', '$rootScope', '$location', '$routeParams', 'patientVisitHistoryService', 'urlHelper', 'visitService', 'encounterService', function($scope, $rootScope, $location, $routeParams, patientVisitHistoryService, urlHelper, visitService, encounterService) {
-        $scope.patientUuid = $routeParams.patientUuid;
+    .controller('PatientDashboardController', ['$scope', '$rootScope', '$location', '$stateParams', 'patientVisitHistoryService', 'urlHelper', 'visitService', 'encounterService',
+        function($scope, $rootScope, $location, $stateParams, patientVisitHistoryService, urlHelper, visitService, encounterService) {
+        $scope.patientUuid = $stateParams.patientUuid;
         var currentEncounterDate;
         var loading;
         var DateUtil = Bahmni.Common.Util.DateUtil;

@@ -1,4 +1,4 @@
 angular.module('opd.consultation')
-.controller('ConceptSetPageController', ['$scope','$routeParams', function($scope, $routeParams) {
-	$scope.conceptSetName = $routeParams.conceptSetName;
+.controller('ConceptSetPageController', ['$scope','$stateParams', function($scope, $stateParams) {
+	$scope.conceptSetName = $stateParams.conceptSetName;
 }]);

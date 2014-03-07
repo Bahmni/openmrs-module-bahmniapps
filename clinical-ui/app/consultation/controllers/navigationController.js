@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('opd.consultation').controller('ConsultationNavigationController',
-    ['$scope', '$rootScope', '$location', '$route', '$window', 'appService', 'urlHelper',
-        function ($scope, $rootScope, $location, $route, $window, appService, urlHelper) {
+    ['$scope', '$rootScope', '$location', '$window', 'appService', 'urlHelper',
+        function ($scope, $rootScope, $location, $window, appService, urlHelper) {
             //$scope.mainButtonText = "Consultation";
             var boardTypes = {
                 visit: 'visit',
@@ -44,7 +44,7 @@ angular.module('opd.consultation').controller('ConsultationNavigationController'
                 });
             };
 
-            $scope.$on('$routeChangeStart', function(next, current) { 
+            $scope.$on('$stateChangeStart', function() { 
                 setCurrentBoardBasedOnPath();
             });
 
@@ -64,7 +64,8 @@ angular.module('opd.consultation').controller('ConsultationNavigationController'
 
             var getUrl = function (board) {
                 var urlPrefix = board.type === boardTypes.visit ? urlHelper.getVisitUrl($rootScope.consultation.visitUuid) : urlHelper.getPatientUrl();
-                return $location.url( urlPrefix + "/" + board.url);                    
+                var url = board.url ? urlPrefix + "/" + board.url : urlPrefix ; 
+                return $location.url(url);                    
             };
 
 

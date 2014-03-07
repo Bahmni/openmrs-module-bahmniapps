@@ -1,57 +1,73 @@
 'use strict';
 
-angular.module('consultation', ['ngRoute','opd.consultation', 'bahmni.common.patient', 'bahmni.common.util',
+angular.module('consultation', ['ui.router', 'opd.consultation', 'bahmni.common.patient', 'bahmni.common.util',
     'bahmni.common.visit', 'bahmni.common.encounter', 'opd.conceptSet', 'authentication', 'appFramework', 'opd.bedManagement',
     'httpErrorInterceptor', 'pasvaz.bindonce', 'bahmni.common', 'bahmni.common.backlink', 'opd.patientDashboard', 'ui.select2']);
-angular.module('consultation').config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
-        $routeProvider.when('/patient/:patientUuid/visit/:visitUuid', {
-            templateUrl: 'views/visit.html',
-            controller: 'VisitController',
-            resolve: {initialization: 'initialization'}
-        });
-        $routeProvider.when('/patient/:patientUuid', {
-            templateUrl: 'views/dashboard.html',
-            controller: 'PatientDashboardController',
-            tiles: {header: "../common/common/header.html"},
-            resolve: {initialization: 'initialization', tilesLayout: 'tilesLayout'}
-        });
-        $routeProvider.when('/patient/:patientUuid/consultation', {
-            templateUrl: 'views/consultation.html',
-            controller: 'ConsultationController',
-            resolve: {initialization: 'initialization'}
-        });
-        $routeProvider.when('/patient/:patientUuid/diagnosis', {
-            templateUrl: 'views/addObservation.html',
-            controller: 'DiagnosisController',
-            resolve: {initialization: 'initialization'}
-        });
-        $routeProvider.when('/patient/:patientUuid/treatment', {
-            templateUrl: 'views/treatment.html',
-            controller: 'TreatmentController',
-            resolve: {initialization: 'initialization'}
-        });
-        $routeProvider.when('/patient/:patientUuid/investigation', {
-            templateUrl: 'views/investigations.html',
-            controller: 'InvestigationController',
-            resolve: {initialization: 'initialization'}
-        });
-        $routeProvider.when('/patient/:patientUuid/notes', {
-            templateUrl: 'views/notes.html'
-        });
-        $routeProvider.when('/patient/:patientUuid/templates', {
-            templateUrl: 'views/comingSoon.html'
-        });
-        $routeProvider.when('/patient/:patientUuid/disposition', {
-            templateUrl: 'views/disposition.html',
-            controller: 'DispositionController',
-            resolve: {initialization: 'initialization'}
-        });
-        $routeProvider.when('/patient/:patientUuid/concept-set/:conceptSetName', {
-            templateUrl: 'views/conceptSet.html',
-            controller: 'ConceptSetPageController',
-            resolve: {initialization: 'initialization'}
-        });
+angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
 
+        $stateProvider
+            .state('patient', {
+                url: '/patient/:patientUuid',
+                abstract: true,
+                template: '<ui-view/>',
+                resolve: {
+                    initialization: function(initialization, $stateParams) {
+                    return initialization($stateParams.patientUuid);
+                }}
+            })
+            .state('patient.dashboard', {
+                url: '/dashboard',
+                templateUrl: 'views/dashboard.html',
+                controller: 'PatientDashboardController'
+            })
+            .state('patient.consultation', {
+                url: '',
+                abstract: true,
+                templateUrl: 'consultation_layout.html'
+            })
+            .state('patient.consultation.visit', {
+                url: '/visit/:visitUuid',
+                templateUrl: 'views/visit.html',
+                controller: 'VisitController'
+            })
+            .state('patient.consultation.summary', {
+                url: '/consultation',
+                templateUrl: 'views/consultation.html',
+                controller: 'ConsultationController'
+            })
+            .state('patient.consultation.investigation', {
+                url: '/investigation',
+                templateUrl: 'views/investigations.html',
+                controller: 'InvestigationController'
+            })
+            .state('patient.consultation.diagnosis', {
+                url: '/diagnosis',
+                templateUrl: 'views/addObservation.html',
+                controller: 'DiagnosisController'
+            })
+            .state('patient.consultation.treatment', {
+                url: '/treatment',
+                templateUrl: 'views/treatment.html',
+                controller: 'TreatmentController'
+            })
+            .state('patient.consultation.disposition', {
+                url: '/disposition',
+                templateUrl: 'views/disposition.html',
+                controller: 'DispositionController'
+            })
+            .state('patient.consultation.conceptSet', {
+                url: '/concept-set/:conceptSetName',
+                templateUrl: 'views/conceptSet.html',
+                controller: 'ConceptSetPageController'
+            })
+            .state('patient.consultation.notes', {
+                url: '/notes',
+                templateUrl: 'views/notes.html'
+            })
+            .state('patient.consultation.templates', {
+                url: '/templates',
+                templateUrl: 'views/comingSoon.html'
+            })
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
     }]).run(['backlinkService', function (backlinkService) {
         backlinkService.addUrl("Patient Q", "/clinical/patients/#/clinical");
