@@ -21,7 +21,6 @@ files = [
     '../app/consultation/**/*.js',
     '../app/document-upload/**/*.js',
     '../app/orders/**/*.js',
-    '../app/patients/**/*.js',
     '../app/trends/**/*.js',
     'support/**/*.js',
     'unit/**/*.js'
