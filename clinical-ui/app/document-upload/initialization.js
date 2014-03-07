@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('opd.documentupload').factory('initialization',
-    ['$rootScope', '$q', '$route', 'configurationService', 'patientService', 'patientMapper', 'authenticator', 'appService',
-        function ($rootScope, $q, $route, configurationService, patientService, patientMapper, authenticator, appService) {
+    ['$rootScope', '$q', 'configurationService', 'patientService', 'patientMapper', 'authenticator', 'appService',
+        function ($rootScope, $q, configurationService, patientService, patientMapper, authenticator, appService) {
 
             var initializationPromise = $q.defer();
 

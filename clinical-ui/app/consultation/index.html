@@ -7,13 +7,11 @@
         <link rel="stylesheet" href="../styles/styles.css"/>
         <link rel="stylesheet" href="../components/select2/select2.css"/>
         <!-- endbuild -->
-        <script type="text/javascript" src="./modernizr.custom.js"></script>
-
         <title>OPD</title>
     </head>
     <body>
         <div ng-app="consultation" ng-controller="ConsultationNavigationController">
-            <div ng-include src="'../common/common/header.html'"></div>
+            <div ng-include src="'../common/ui-helper/header.html'"></div>
             <div ui-view id="view-content"></div>
         </div>
         <script src="../components/jquery/jquery.js"></script>
@@ -75,7 +73,7 @@
         <script src="../common/concept-set/mappers/conceptMapper.js"></script>
         
         <script src="../common/backlink/services/backlinkService.js"></script>
-        <script src="../common/common/controllers/opdcommonheadercontroller.js"></script>
+        <script src="../common/ui-helper/controllers/opdcommonheadercontroller.js"></script>
 
         <script src="init.js"></script>
         <script src="initialization.js"></script>

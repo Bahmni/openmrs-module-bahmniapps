@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('opd.documentupload')
-    .controller('SearchPatientController', ['$rootScope', '$scope', '$route', '$location', '$window','spinner',  'patientService', 'appService', function ($rootScope, $scope, $route, $location, $window,spinner,  patientService, appService) {
+    .controller('SearchPatientController', ['$rootScope', '$scope', '$location', '$window','spinner',  'patientService',
+        function ($rootScope, $scope, $location, $window,spinner,  patientService) {
         $scope.results = [];
 
         $scope.resultsPresent = function () {
