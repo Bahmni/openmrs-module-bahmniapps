@@ -67,7 +67,8 @@ angular.module('bahmni.clinical')
 
     $scope.removeObservation = function (index) {
         if (index >= 0) {
-            $scope.diagnosisList.splice(index, 1)
+            $scope.diagnosisList[index].voided = true;
+            $scope.$apply();
         }
     }
 

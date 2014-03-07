@@ -9,7 +9,7 @@
                         <div class="col col3"><span>Certainty</span></div>
                     </div>
 
-                    <div ng-repeat="diagnosis in diagnosisList" class="table-body">
+                    <div ng-repeat="diagnosis in diagnosisList" ng-hide="diagnosis.voided" class="table-body">
                         <div class="row">
                             <div class="col col1">
                                 <input ng-model="diagnosis.codedAnswer.name" type="text" name="name" ui-autocomplete
