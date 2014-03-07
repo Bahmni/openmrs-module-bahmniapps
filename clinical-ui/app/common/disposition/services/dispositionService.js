@@ -1,17 +1,16 @@
 'use strict';
 
-angular.module('opd.consultation')
-        .factory('dispositionService', ['$http', '$rootScope', function ($http, $rootScope) {
-
+angular.module('bahmni.common.disposition')
+    .factory('dispositionService', ['$http', function ($http) {
         var getDispositionActions = function () {
             return $http.get(Bahmni.Common.Constants.conceptUrl
-                +"?name="+Bahmni.Opd.Consultation.Constants.dispositionConcept
+                +"?name="+Bahmni.Common.Constants.dispositionConcept
                 +"&v=custom:(uuid,name,answers:(uuid,name,mappings))", {cache: true});
         };
 
         var getDispositionNoteConcept = function(){
             return $http.get(Bahmni.Common.Constants.conceptUrl
-                +"?name="+Bahmni.Opd.Consultation.Constants.dispositionNoteConcept
+                +"?name="+Bahmni.Common.Constants.dispositionNoteConcept
                 +"&v=custom:(uuid,name:(name))", {cache: true});
         };
 

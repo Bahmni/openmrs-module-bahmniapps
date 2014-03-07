@@ -46,7 +46,7 @@ angular.module('opd.consultation')
             if(concept.mappings){
                 concept.mappings.forEach(function(mapping){
                     var mappingSource = mapping.display.split(":")[0];
-                    if(mappingSource === Bahmni.Opd.Consultation.Constants.emrapiConceptMappingSource){
+                    if(mappingSource === Bahmni.Common.Constants.emrapiConceptMappingSource){
                         mappingCode = $.trim(mapping.display.split(":")[1]);;
                     }
                 });

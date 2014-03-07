@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('adt', ['opd.consultation', 'bahmni.common.infrastructure', 'bahmni.common.patient', 'bahmni.common.patientSearch',
+angular.module('adt', ['bahmni.common.infrastructure', 'bahmni.common.patient', 'bahmni.common.patientSearch',
     'bahmni.common.util', 'opd.conceptSet', 'authentication', 'appFramework', 'httpErrorInterceptor', 'opd.adt',
-    'bahmni.common.encounter', 'bahmni.common.visit', 'opd.bedManagement', 'bahmni.common', 'ui.router']);
+    'bahmni.common.encounter', 'bahmni.common.visit', 'opd.bedManagement', 'bahmni.common', 'ui.router', 'bahmni.common.disposition']);
 angular.module('adt').config(['$stateProvider', '$httpProvider', function ($stateProvider, $httpProvider) {
         $stateProvider
             .state('patientsearch', {

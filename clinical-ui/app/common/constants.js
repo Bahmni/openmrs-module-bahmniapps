@@ -19,6 +19,9 @@ Bahmni.Common.Constants = {
     radiologyOrderType : 'Radiology Order',
     radiologyResultConceptName :"Radiology Result",
     investigationEncounterType:"INVESTIGATION",
-    labOrderNotesConcept: "Lab Order Notes"
-
+    labOrderNotesConcept: "Lab Order Notes",
+    dispositionConcept : "Disposition",
+    dispositionGroupConcept : "Disposition Set",
+    dispositionNoteConcept : "Disposition Note",
+    emrapiConceptMappingSource :"org.openmrs.module.emrapi"
 };

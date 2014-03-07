@@ -9,10 +9,6 @@ Bahmni.Opd.Consultation.Constants = (function() {
 	};
 	return {
                 activePatientsListUrl: "../patients/#/clinical",
-                dispositionConcept : "Disposition",
-                dispositionGroupConcept : "Disposition Set",
-                dispositionNoteConcept : "Disposition Note",
-                emrapiConceptMappingSource :"org.openmrs.module.emrapi",
                 diagnosisObservationConceptName : "Visit Diagnoses",
                 orderConceptName : "Diagnosis order",                   //TODO : should be fetched from a config
                 certaintyConceptName : "Diagnosis Certainty",           //TODO : should be fetched from a config
