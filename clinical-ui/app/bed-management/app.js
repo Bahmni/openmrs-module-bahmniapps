@@ -8,5 +8,5 @@ angular.module('bedManagement', ['authentication', 'bahmni.common.appFramework',
     $routeProvider.otherwise({templateUrl:'../common/ui-helper/error.html'});
     $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
 }]).run(['backlinkService', function (backlinkService) {
-        backlinkService.addUrl("ADT", "/clinical/patients/#/adt");
+        backlinkService.addUrl("ADT", "/clinical/adt/#/patient/search");
 }]);

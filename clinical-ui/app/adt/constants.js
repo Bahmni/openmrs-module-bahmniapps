@@ -1,6 +1,6 @@
 Bahmni.Opd.ADT.Constants = (function() {
 	return {
-        activePatientsListUrl: "../patients/#/adt",
+        activePatientsListUrl: "/patient/search",
         adtNotes: 'Adt Notes',
         admissionCode: 'ADMIT',
         dischargeCode: 'DISCHARGE',
