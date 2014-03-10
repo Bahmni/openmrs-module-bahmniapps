@@ -28,6 +28,7 @@ files = [
 
 singleRun = true;
 
+process.env['PHANTOMJS_BIN'] = 'node_modules/.bin/phantomjs';
 browsers = ['PhantomJS'];
 
 reporters = ['dots', 'junit'];
