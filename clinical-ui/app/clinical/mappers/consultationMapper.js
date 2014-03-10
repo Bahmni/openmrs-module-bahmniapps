@@ -22,7 +22,9 @@ Bahmni.Opd.ConsultationMapper = function (dosageFrequencies, dosageInstructions,
             return treatmentDrug;
         });
         var diagnoses = encounterTransaction.diagnoses.map(function(diagnosis){
-            return new Bahmni.Opd.Consultation.Diagnosis(diagnosis.codedAnswer,diagnosis.order,diagnosis.certainty,diagnosis.existingObs,diagnosis.freeTextAnswer,diagnosis.diagnosisDateTime );
+            return new Bahmni.Opd.Consultation.Diagnosis(
+                diagnosis.codedAnswer,diagnosis.order,diagnosis.certainty,diagnosis.existingObs,
+                diagnosis.freeTextAnswer,diagnosis.diagnosisDateTime,diagnosis.voided);
         });
 
         var consultationNote = mapSpecialObservation(encounterTransaction.observations,consultationNoteConcept);

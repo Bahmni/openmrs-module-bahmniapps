@@ -23,5 +23,6 @@ Bahmni.Common.Constants = {
     dispositionConcept : "Disposition",
     dispositionGroupConcept : "Disposition Set",
     dispositionNoteConcept : "Disposition Note",
-    emrapiConceptMappingSource :"org.openmrs.module.emrapi"
+    emrapiConceptMappingSource :"org.openmrs.module.emrapi",
+    includeAllObservations: false
 };

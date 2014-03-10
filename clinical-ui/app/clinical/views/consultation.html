@@ -19,16 +19,16 @@
     </section>
     <section class="block diagnosis">
         <h2>Diagnosis</h2>
-        <div class="block-content" ng-show="consultation.diagnoses.length > 0">
+        <div class="block-content" ng-show="hasNonVoidedDiagnoses()">
             <div class="diagnosis-type">
                 <h3>Primary Diagnoses</h3>
-                <div ng-repeat="diagnosis in consultation.diagnoses" ng-show="diagnosis.isPrimary()">
+                <div ng-repeat="diagnosis in nonVoidedDiagnoses" ng-show="diagnosis.isPrimary()">
                     {{diagnosis.conceptName}}&nbsp;({{diagnosis.certainty}})
                 </div>
             </div>
             <div class="diagnosis-type">
                 <h3>Secondary Diagnoses</h3>
-                <div ng-repeat="diagnosis in consultation.diagnoses" ng-hide="diagnosis.isPrimary()">
+                <div ng-repeat="diagnosis in nonVoidedDiagnoses" ng-hide="diagnosis.isPrimary()">
                     {{diagnosis.conceptName}}&nbsp;({{diagnosis.certainty}})
                 </div>
             </div>

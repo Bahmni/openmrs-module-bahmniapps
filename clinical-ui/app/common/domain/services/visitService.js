@@ -28,6 +28,9 @@ angular.module('bahmni.common.domain')
     this.getVisitSummary = function (uuid) {
         return $http.get(Bahmni.Common.Constants.visitSummaryUrl + '/' + uuid,
          	{
+                params: {
+                    includeAll: Bahmni.Common.Constants.includeAllObservations
+                },
          		withCredentials: true
          	}
         );

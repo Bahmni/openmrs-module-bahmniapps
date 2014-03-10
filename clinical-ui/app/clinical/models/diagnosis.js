@@ -1,4 +1,4 @@
-Bahmni.Opd.Consultation.Diagnosis = function (codedAnswer, order, certainty, existingObsUuid,freeTextAnswer,diagnosisDateTime) {
+Bahmni.Opd.Consultation.Diagnosis = function (codedAnswer, order, certainty, existingObsUuid,freeTextAnswer,diagnosisDateTime, voided) {
     var self = this;
     self.codedAnswer = codedAnswer;
     self.order = order ? order : "PRIMARY";
@@ -7,6 +7,7 @@ Bahmni.Opd.Consultation.Diagnosis = function (codedAnswer, order, certainty, exi
     self.freeTextAnswer = freeTextAnswer;
     self.diagnosisDateTime = diagnosisDateTime || new Date();
     self.conceptName = self.codedAnswer.name;
+    self.voided = voided
 
     self.getDisplayName = function(){
         if(self.freeTextAnswer ){

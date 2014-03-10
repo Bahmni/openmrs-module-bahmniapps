@@ -31,7 +31,8 @@ angular.module('bahmni.common.domain')
         return $http.get(Bahmni.Common.Constants.encounterUrl, {
         	params:{
         		visitUuid : visitUuid,
-        		encounterDate : encounterDate
+                encounterDate : encounterDate,
+                includeAll : Bahmni.Common.Constants.includeAllObservations
         	},        	
           withCredentials : true
         });
@@ -98,7 +99,5 @@ angular.module('bahmni.common.domain')
             withCredentials : true
         });
     };
-
-
 }]);
 

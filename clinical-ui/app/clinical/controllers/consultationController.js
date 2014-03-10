@@ -3,6 +3,13 @@
 angular.module('bahmni.clinical')
     .controller('ConsultationController', ['$scope', '$rootScope', 'encounterService', '$location', 'spinner', function ($scope, $rootScope, encounterService, $location, spinner) {
 
+    $scope.hasNonVoidedDiagnoses = function(){
+        $scope.nonVoidedDiagnoses = $rootScope.consultation.diagnoses.filter(function(diagnosis){
+            return diagnosis.voided != true; 
+        })
+        return $scope.nonVoidedDiagnoses.length > 0
+    }
+
     $scope.save = function () {
         
         var encounterData = {};
@@ -17,7 +24,8 @@ angular.module('bahmni.clinical')
                     order: diagnosis.order,
                     certainty: diagnosis.certainty,
                     existingObs: diagnosis.existingObs,
-                    diagnosisDateTime: diagnosis.diagnosisDateTime
+                    diagnosisDateTime: diagnosis.diagnosisDateTime,
+                    voided: diagnosis.voided
                 }
             });
         }
