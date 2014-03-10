@@ -1,4 +1,4 @@
-angular.module('bahmni.common.util')
+angular.module('bahmni.common.uiHelper')
     .directive('splitButton', function ($parse) {
         var link = function($scope, element) {
             var toggleButton = element.find('.toggle-button');

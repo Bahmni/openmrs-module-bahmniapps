@@ -1,5 +1,5 @@
 angular.module("trends").controller("TrendsController", ["$scope", "$routeParams", "observationService",'backlinkService',
-    function ($scope, $routeParams, observationService,backlinkService) {
+    function ($scope, $routeParams, observationService, backlinkService) {
         var patientUUID = $routeParams.patientUUID;
         var obsConcept = $routeParams.obsConcept;
         var fetchedObservations = observationService.fetch(patientUUID);

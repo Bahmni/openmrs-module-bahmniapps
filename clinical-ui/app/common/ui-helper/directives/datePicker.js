@@ -1,4 +1,4 @@
-angular.module('bahmni.common.util')
+angular.module('bahmni.common.uiHelper')
     .directive('datepicker', function ($parse) {
         var link = function ($scope, element, attrs, ngModel) {
             $(function(){

@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.patient', 'bahmni.common.util', 'bahmni.common.patientSearch',
+angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.patient', 'bahmni.common.uiHelper', 'bahmni.common.patientSearch',
     'bahmni.common.visit', 'bahmni.common.encounter', 'opd.conceptSet', 'authentication', 'bahmni.common.appFramework', 'opd.bedManagement',
-    'httpErrorInterceptor', 'pasvaz.bindonce', 'bahmni.common', 'bahmni.common.backlink', 'opd.patientDashboard', 'ui.select2', 'infinite-scroll', 'bahmni.common.disposition']);
+    'httpErrorInterceptor', 'pasvaz.bindonce', 'opd.patientDashboard', 'ui.select2', 'infinite-scroll', 'bahmni.common.disposition']);
 angular.module('consultation').config(['$stateProvider', '$httpProvider', function ($stateProvider, $httpProvider) {
 
         $stateProvider
@@ -31,7 +31,7 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', functi
             .state('patient.consultation', {
                 url: '',
                 abstract: true,
-                templateUrl: 'consultation_layout.html'
+                templateUrl: 'views/consultation_layout.html'
             })
             .state('patient.consultation.visit', {
                 url: '/visit/:visitUuid',

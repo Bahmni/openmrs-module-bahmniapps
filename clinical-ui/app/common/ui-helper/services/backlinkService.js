@@ -1,4 +1,4 @@
-angular.module('bahmni.common.backlink', [])
+angular.module('bahmni.common.uiHelper')
     .service('backlinkService', function ($location, $window) {
 
         var urls = {};

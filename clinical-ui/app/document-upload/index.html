@@ -16,16 +16,15 @@
             <div ui-view id="view-content"></div>
         </div>
 
+
+        <!-- build:js document-upload.min.js -->
         <script src="../components/jquery/jquery.js"></script>
         <script src="../components/jquery-ui/ui/minified/jquery-ui.custom.min.js"></script>
-
         <script src="../components/angular/angular.js"></script>
         <script src="../components/angular-route/angular-route.js"></script>
         <script src="../components/angular-cookies/angular-cookies.js"></script>
         <script src="../components/angular-ui-router/release/angular-ui-router.js"></script>
         <script src="../components/moment/moment.js"></script>
-
-        <!-- build:js document-upload.min.js -->
         <script src="../components/ngInfiniteScroll/ng-infinite-scroll.js"></script>
 
         <script src="../common/infrastructure/httpErrorInterceptor.js"></script>
@@ -38,10 +37,8 @@
 
         <script src="../common/constants.js"></script>
         <script src="../common/infrastructure/init.js"></script>
-        <script src="../common/infrastructure/spinner.js"></script>
         <script src="../common/infrastructure/services/configurationService.js"></script>
         <script src="../common/infrastructure/encounterConfig.js"></script>
-        <script src="../common/infrastructure/spinner.js"></script>
 
         <script src="../common/patient/init.js"></script>
         <script src="../common/patient/mappers/patientMapper.js"></script>
@@ -53,8 +50,13 @@
         <script src="../common/visit/services/visitService.js"></script>
 
         <script src="../common/util/init.js"></script>
-        <script src="../common/util/directives/bahmniAutocomplete.js"></script>
-        <script src="../common/util/directives/datePicker.js"></script>
+
+        <script src="../common/ui-helper/init.js"></script>
+        <script src="../common/ui-helper/spinner.js"></script>
+        <script src="../common/ui-helper/directives/bahmniAutocomplete.js"></script>
+        <script src="../common/ui-helper/directives/datePicker.js"></script>
+        <script src="../common/ui-helper/services/backlinkService.js"></script>
+        <script src="../common/ui-helper/controllers/opdcommonheadercontroller.js"></script>
 
         <script src="app.js"></script>
         <script src="init.js"></script>
@@ -64,8 +66,6 @@
         <script src="directives/fileUpload.js"></script>
         <script src="controllers/searchPatientController.js"></script>
         <script src="controllers/documentController.js"></script>
-        <script src="../common/backlink/services/backlinkService.js"></script>
-        <script src="../common/ui-helper/controllers/opdcommonheadercontroller.js"></script>
         <!-- endbuild -->
     </body>
 </html>

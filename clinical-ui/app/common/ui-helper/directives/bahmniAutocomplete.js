@@ -1,4 +1,4 @@
-angular.module('bahmni.common.util')
+angular.module('bahmni.common.uiHelper')
 .directive('bahmniAutocomplete', function ($parse) {
     var link = function (scope, element, attrs, ngModelCtrl) {
         var ngModel = $parse(attrs.ngModel);
