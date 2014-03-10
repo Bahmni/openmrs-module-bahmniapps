@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.infrastructure')
+angular.module('bahmni.common.uiHelper')
     .factory('spinner', ['$q', function ($q) {
         var show = function () {
            if($('#overlay').length == 0) {

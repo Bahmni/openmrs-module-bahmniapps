@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.encounter')
+angular.module('bahmni.common.domain')
     .service('encounterService', ['$http', '$q', '$rootScope', function ($http, $q, $rootScope) {
 
     this.create = function (encounter) {

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('documentupload', ['ui.router', 'opd.documentupload', 'bahmni.common.patient', 'authentication', 'bahmni.common.appFramework',
- 'bahmni.common.infrastructure', 'httpErrorInterceptor', 'bahmni.common.visit', 'bahmni.common.uiHelper']);
+    'httpErrorInterceptor', 'bahmni.common.domain', 'bahmni.common.uiHelper']);
 angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/search');
         $stateProvider

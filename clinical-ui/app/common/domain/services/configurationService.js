@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.infrastructure')
+angular.module('bahmni.common.domain')
     .factory('configurationService', ['$http', '$q', function ($http, $q) {
       
         var configurationFunctions = {};

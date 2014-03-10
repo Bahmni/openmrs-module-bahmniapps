@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.disposition')
+angular.module('bahmni.common.domain')
     .factory('dispositionService', ['$http', function ($http) {
         var getDispositionActions = function () {
             return $http.get(Bahmni.Common.Constants.conceptUrl

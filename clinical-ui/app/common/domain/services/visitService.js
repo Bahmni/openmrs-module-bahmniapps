@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.visit')
+angular.module('bahmni.common.domain')
     .service('visitService', ['$http', function ($http) {
 
     this.getVisit = function (uuid, params) {
