@@ -1,19 +1,20 @@
 .visit {
 	h2{
-			color:#fff;
-			background:#66b298;
-			padding:4px 0px 4px 6px;
-			margin-bottom:10px;
-			font-family: OpenSansBold;
+  	color:#66b298;
+    border-bottom: 1px solid #66b298;
+  	padding:5px 0px;
+  	margin-bottom:10px;
+    font-size: 18px;
+    font-weight: normal;
 	}
+  table 
 	.info-message{
 			padding:10px;
 			color:red;
 			border:1px solid #cecece;
 	}
 	.block{
-		min-height:150px;
-		padding:10px;
+		padding:10px 0;
 		ul{
 			&.add-info{
 				float:right;
@@ -132,6 +133,47 @@
 		}
 	}
 }
+.visit {
+  table tr th {
+    background: #eee;
+    background-image: none; 
+  }
+  table tbody {
+    tr.test td{
+      padding-top: 12px;
+      font-size: 14px;
+    }
+    tr.test.abnormal td{
+      color: red;
+    }
+    tr.test.abnormal td.lab-tech{
+      color: #333;
+    }
+    tr.test.referred td span{
+      background: #669999;
+      color: #fff;
+      display: inline-block;
+      padding: 5px;
+      border-radius: 5px;
+      float: right;
+    }
+    tr.notes td {
+      font-size: 13px;
+      padding-bottom: 12px; 
+    }
+  }
+  td {
+    .datetime {
+      background:url(../images/sprites.png) no-repeat;
+      padding-left:23px;
+      background-position: 0 -36px ;
+      font-size: 14px;
+      padding-bottom: 2px;
+      display: inline-block;
+      color: #333;
+    }
+  }
 
+}
 
 
