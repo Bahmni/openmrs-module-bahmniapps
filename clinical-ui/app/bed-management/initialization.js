@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('opd.bedManagement').factory('initialization',
+angular.module('bahmni.bedManagement').factory('initialization',
     ['$rootScope', '$route', 'authenticator', 'BedService', 'patientService', 'patientMapper', 'configurationService',
         function ($rootScope, $route, authenticator, bedService, patientService, patientMapper, configurationService) {
             var bedDetailsForPatient = function (response) {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('opd.conceptSet')
+angular.module('bahmni.common.conceptSet')
     .directive('showConcept', ['$rootScope', function () {
         var controller = function($scope, $q, $filter) {
             var conceptMapper = new Bahmni.ConceptSet.ConceptMapper();

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('opd.bedManagement')
+angular.module('bahmni.bedManagement')
     .controller('BedManagementController', ['$scope', '$rootScope', '$location', 'WardService', 'BedService', '$route', 'encounterService', function ($scope, $rootScope, $location, wardService, bedService, $route, encounterService) {
         $scope.wards = null;
         $scope.currentView = "wards";

@@ -2,4 +2,4 @@
 var Bahmni = Bahmni || {};
 Bahmni.ConceptSet = Bahmni.ConceptSet || {};
 
-angular.module('opd.conceptSet', []);
+angular.module('bahmni.common.conceptSet', []);
