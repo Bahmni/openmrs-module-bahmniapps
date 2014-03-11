@@ -7,13 +7,13 @@ angular.module('bahmni.common.conceptSet')
     
             $scope.getPossibleAnswers = function() {
                 return $scope.observation.possibleAnswers.map(conceptMapper.map);   
-            }
+            };
 
             var getPropertyFunction = function(propertyName) {
                 return function(entity) {
                     return entity[propertyName];
                 }
-            }
+            };
 
             $scope.selectOptions = {
                 query: function(options) {
@@ -25,7 +25,7 @@ angular.module('bahmni.common.conceptSet')
                 formatResult: getPropertyFunction('name'),
                 formatSelection: getPropertyFunction('name'),
                 id: getPropertyFunction('uuid')
-            }
+            };
 
             $scope.getValues = function(request) {
                 return $q.when({data: $filter('filter')($scope.getPossibleAnswers(), {name: request.term}) });
@@ -46,7 +46,7 @@ angular.module('bahmni.common.conceptSet')
                 '<show-concept observation="rootObservation"></show-concept>' +
             '</form>';
 
-        var controller = function ($scope, conceptSetService, appService) {
+        var controller = function ($scope, conceptSetService, appService, $rootScope) {
             var conceptSetName = $scope.conceptSetName;
             var conceptSetUIConfig = appService.getAppDescriptor().getConfig("conceptSetUI") || {};
             var observationMapper = new Bahmni.ConceptSet.ObservationMapper();
@@ -64,9 +64,19 @@ angular.module('bahmni.common.conceptSet')
                         $scope.observations[i] = $scope.rootObservation;
                         return;
                     }
-                };
+                }
                 $scope.observations.push($scope.rootObservation);
-            }
+            };
+
+
+            var allowContextChange = function () {
+                var invalidObservations = $scope.observations.filter(function(observation){
+                    return !observation.isValid();
+                });
+                return invalidObservations.length == 0;
+            };
+
+            $rootScope.beforeContextChange = allowContextChange;
         };
 
         return {
@@ -90,7 +100,7 @@ angular.module('bahmni.common.conceptSet')
                 attributes['min'] = $scope.obs.getLowAbsolute();
             }
             element.attr(attributes);
-        }
+        };
 
         return {
             link: link,

@@ -6,8 +6,13 @@
                 <span ng-show="observation.units">({{observation.units}})</span>
             </label>
             <div class="field-value" ng-switch on="observation.getControlType()">
-                <input ng-switch-when="html5InputDataType" add-obs-constraints obs="$parent.observation" class="form-control" ng-model="$parent.observation.value" ng-change="$parent.observation.onValueChanged()"
-                value="$parent.observation.displayValue()"/>
+                <div ng-switch-when="html5InputDataType">
+                    <input ng-class="{'illegalValue': !observation.isValid()}"
+                           add-obs-constraints obs="$parent.observation"
+                           class="form-control" ng-model="$parent.observation.value"
+                           ng-change="$parent.observation.onValueChanged()"
+                           value="$parent.observation.displayValue()"/>
+                </div>
 
                 <textarea ng-switch-when="text" class="form-control" ng-model="$parent.observation.value"
                           ng-change="$parent.observation.onValueChanged()"
@@ -29,7 +34,8 @@
                     The concept data type '{{$parent.observation.getDataTypeName()}}' is not supported yet.
                 </span>
             </div>
-        </fieldset>
+        </div>
+    </fieldset>
 
     <fieldset ng-if="observation.isGroup()" class="hasLegend">
         <legend class="mylegend"><strong>{{observation.label}}</strong></legend>

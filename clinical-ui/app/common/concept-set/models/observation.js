@@ -50,6 +50,10 @@ Bahmni.ConceptSet.Observation.prototype = {
         return ['Date', 'Numeric'].indexOf(this.getDataTypeName()) != -1;
     },
 
+    isDateDataType: function(){
+        return 'Date'.indexOf(this.getDataTypeName()) != -1;
+    },
+
     getHighAbsolute: function() {
         return this.concept.hiAbsolute;
     },
@@ -60,5 +64,32 @@ Bahmni.ConceptSet.Observation.prototype = {
 
     onValueChanged: function() {
         this.observationDateTime = new Date();
+    },
+
+    getInputType: function() {
+        return this.getDataTypeName();
+    },
+
+    isValid: function() {
+        if (this.isGroup()){
+            for(var key in this.groupMembers){
+                if(!this.groupMembers[key].isValid()){
+                    return false;
+                }
+            }
+            return true;
+        }
+        else if(this.isDateDataType()){
+            return this.isValidDate();
+        }
+        return true;
+    },
+
+    isValidDate: function(){
+        if(!this.displayValue()){ // to allow switching to other tabs, if not date is entered
+            return true;
+        }
+        var date = new Date(this.displayValue());
+        return date.getUTCFullYear() && date.getUTCFullYear().toString().length <= 4;
     }
-}
+};
