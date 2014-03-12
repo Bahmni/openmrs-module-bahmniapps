@@ -12,7 +12,8 @@
     <body>
         <div ng-app="consultation" ng-controller="ConsultationNavigationController">
             <div ng-include src="'../common/ui-helper/header.html'"></div>
-            <div ui-view id="view-content"></div>
+            <div ui-view id="view-content">
+            </div>
         </div>
         <script src="../components/jquery/jquery.js"></script>
         <script src="../lib/jquery/jquery-ui-1.10.3.custom.min.js"></script>
@@ -115,8 +116,8 @@
         <script src="helpers/urlHelper.js"></script>
         <script src="app.js"></script>
 
-        <script src="../bed-management/init.js"></script>
-        <script src="../bed-management/services/bedService.js"></script>
+        <script src="../adt/init.js"></script>
+        <script src="../adt/services/bedService.js"></script>
         <!-- endbuild -->
     </body>
 </html>

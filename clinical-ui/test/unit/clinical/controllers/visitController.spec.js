@@ -30,7 +30,7 @@ describe("VisitControllerTest", function () {
         visitSummary = { hasEncounters: function () {
             return true;
         }}
-        spyOn(Bahmni.Opd.Consultation.VisitSummary, 'create').andReturn(visitSummary);
+        spyOn(Bahmni.Clinical.VisitSummary, 'create').andReturn(visitSummary);
     }));
 
     var setUpController = function () {
@@ -65,13 +65,13 @@ describe("VisitControllerTest", function () {
         it("should populate visit days with the day number after succesfully fetching the vist details for a day", function () {
             visitSummary.mostRecentEncounterDateTime = new Date("2013-12-03");
             visitSummary.visitStartDateTime = new Date("2013-12-01");
-            spyOn(Bahmni.Opd.Consultation.VisitDay, 'create').andReturn({});
+            spyOn(Bahmni.Clinical.VisitDay, 'create').andReturn({});
 
             visitSummaryPromise.callSuccessCallBack();
             encounterSearchPromise.callSuccessCallBack([]);
 
             expect(scope.visitDays.length).toBe(1);
-            expect(Bahmni.Opd.Consultation.VisitDay.create.mostRecentCall.args[0]).toBe(3); //day 3
+            expect(Bahmni.Clinical.VisitDay.create.mostRecentCall.args[0]).toBe(3); //day 3
         })
     });
 

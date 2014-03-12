@@ -1,4 +1,4 @@
-Bahmni.Opd.LabResultsMapper = function() {
+Bahmni.LabResultsMapper = function() {
     this.map = function (encounterTransaction) {
         return getLabResults(getLabResultObs(encounterTransaction));
     };
@@ -9,7 +9,7 @@ Bahmni.Opd.LabResultsMapper = function() {
             //TODO:Need be revisited after the results structure in the encountertransaction contract is finalized
             var resultValue =  obs.value; //getResultValue(obs);
             var members = isLeaf(obs) ? [] : getLabResults(obs.groupMembers);
-            return new Bahmni.Opd.Consultation.LabResult(obs.concept.name, resultValue, obs.comments, null, null, null, notes, members);
+            return new Bahmni.Clinical.LabResult(obs.concept.name, resultValue, obs.comments, null, null, null, notes, members);
         });
     };
 
@@ -40,7 +40,7 @@ Bahmni.Opd.LabResultsMapper = function() {
     var getLabResultObs = function (encounterTransaction) {
         var labResultObs;
         encounterTransaction.observations.forEach(function(observation) {
-            if(observation.concept.name == Bahmni.Opd.Consultation.Constants.labConceptSetName) {
+            if(observation.concept.name == Bahmni.Clinical.Constants.labConceptSetName) {
                 labResultObs = observation.groupMembers;
             };
         });

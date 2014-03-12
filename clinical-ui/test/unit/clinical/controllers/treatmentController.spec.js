@@ -36,7 +36,7 @@ describe("TreatmentControllerTest", function () {
 
 
     var setUp = function () {
-        drug = new Bahmni.Opd.Consultation.TreatmentDrug();
+        drug = new Bahmni.Clinical.TreatmentDrug();
         inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
             scope.consultation = [];
@@ -122,7 +122,7 @@ describe("TreatmentControllerTest", function () {
             setUp();
             var drugUuid = "drug-uuid";
 
-            scope.selectedDrugs = [new Bahmni.Opd.Consultation.TreatmentDrug()];
+            scope.selectedDrugs = [new Bahmni.Clinical.TreatmentDrug()];
 
             var chosenDrug = {};
             chosenDrug.uuid = drugUuid;
@@ -160,14 +160,14 @@ describe("TreatmentControllerTest", function () {
     describe("disableTabChangeIfThereAreInvalidDrugsTest", function () {
         it('should allow tab switch if no drug is selected', function () {
             setUp();
-            var emptyDrug = new Bahmni.Opd.Consultation.TreatmentDrug();
+            var emptyDrug = new Bahmni.Clinical.TreatmentDrug();
             scope.selectedDrugs = [ emptyDrug];
             expect(scope.beforeContextChange()).toBe(true);
         });
 
         it('should not allow tab switch if drug is selected and mandatory fields not filled', function () {
             setUp();
-            var drug = new Bahmni.Opd.Consultation.TreatmentDrug();
+            var drug = new Bahmni.Clinical.TreatmentDrug();
             drug.empty = false;
 
             scope.selectedDrugs = [drug];
@@ -176,7 +176,7 @@ describe("TreatmentControllerTest", function () {
 
         it('should not allow tab switch if drug is selected and mandatory fields are partially filled', function () {
             setUp();
-            var drug = new Bahmni.Opd.Consultation.TreatmentDrug();
+            var drug = new Bahmni.Clinical.TreatmentDrug();
             drug.empty = false;
             drug.uuid = "drug uuid";
             drug.name = "drug name";
@@ -188,14 +188,14 @@ describe("TreatmentControllerTest", function () {
 
         it('should allow tab switch if drug is selected and all mandatory fields are filled', function () {
             setUp();
-            var drug = new Bahmni.Opd.Consultation.TreatmentDrug();
+            var drug = new Bahmni.Clinical.TreatmentDrug();
             drug.empty = false;
             drug.uuid = "drug uuid";
             drug.name = "drug name";
             drug.prn = true;
             drug.numberOfDosageDays = 2;
             drug.numberPerDosage = 1;
-            var emptyDrug = new Bahmni.Opd.Consultation.TreatmentDrug();
+            var emptyDrug = new Bahmni.Clinical.TreatmentDrug();
 
             scope.selectedDrugs = [drug, emptyDrug];
             expect(scope.beforeContextChange()).toBe(true);

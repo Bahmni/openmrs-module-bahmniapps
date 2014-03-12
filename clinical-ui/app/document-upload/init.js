@@ -1,8 +1,7 @@
 'use strict';
 
 var Bahmni = Bahmni || {};
-Bahmni.Opd = Bahmni.Opd || {};
-Bahmni.Opd.DocumentUpload = Bahmni.Opd.DocumentUpload || {};
+Bahmni.DocumentUpload = Bahmni.DocumentUpload || {};
 
 angular.module('opd.documentupload', ['bahmni.common.patient', 'bahmni.common.domain']);
 

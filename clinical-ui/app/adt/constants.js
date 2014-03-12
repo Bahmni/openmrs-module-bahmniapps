@@ -1,4 +1,9 @@
-Bahmni.Opd.ADT.Constants = (function() {
+'use strict';
+
+var Bahmni = Bahmni || {};
+Bahmni.ADT = Bahmni.ADT || {};
+
+Bahmni.ADT.Constants = (function() {
 	return {
         activePatientsListUrl: "/patient/search",
         adtNotes: 'Adt Notes',

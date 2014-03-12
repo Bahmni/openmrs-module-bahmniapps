@@ -1,4 +1,4 @@
-Bahmni.Opd.Consultation.VisitHistoryEntry = (function(){
+Bahmni.Clinical.VisitHistoryEntry = (function(){
 	var DateUtil = Bahmni.Common.Util.DateUtil;
 	
 	var VisitHistoryEntry = function(visitData) {

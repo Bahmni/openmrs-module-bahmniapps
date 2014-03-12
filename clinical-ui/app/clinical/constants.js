@@ -1,8 +1,7 @@
 var Bahmni = Bahmni || {};
-Bahmni.Opd = Bahmni.Opd || {};
-Bahmni.Opd.Consultation = Bahmni.Opd.Consultation || {};
+Bahmni.Clinical = Bahmni.Clinical || {};
 
-Bahmni.Opd.Consultation.Constants = (function() {
+Bahmni.Clinical.Constants = (function() {
 	var orderTypes = {
 	    	lab: "Lab Order",
                 radiology: "Radiology Order"

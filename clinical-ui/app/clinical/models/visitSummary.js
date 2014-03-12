@@ -1,4 +1,4 @@
-Bahmni.Opd.Consultation.VisitSummary = function (visitStartDateTime, mostRecentEncounterDateTime, diagnoses, dispositions, encounterTransactions, labTestOrderObsMap) {
+Bahmni.Clinical.VisitSummary = function (visitStartDateTime, mostRecentEncounterDateTime, diagnoses, dispositions, encounterTransactions, labTestOrderObsMap) {
     this.visitStartDateTime = visitStartDateTime;
     this.mostRecentEncounterDateTime = mostRecentEncounterDateTime;
     this.diagnoses = diagnoses;
@@ -7,7 +7,7 @@ Bahmni.Opd.Consultation.VisitSummary = function (visitStartDateTime, mostRecentE
     this.encounterTransactions = encounterTransactions;
 };
 
-Bahmni.Opd.Consultation.VisitSummary.prototype = {
+Bahmni.Clinical.VisitSummary.prototype = {
     isConfirmedDiagnosis: function (certainity) {
         return certainity === 'CONFIRMED';
     },
@@ -37,7 +37,7 @@ Bahmni.Opd.Consultation.VisitSummary.prototype = {
     }
 }
 
-Bahmni.Opd.Consultation.VisitSummary.create = function (encounterTransactions, orderTypes) {
+Bahmni.Clinical.VisitSummary.create = function (encounterTransactions, orderTypes) {
     var diagnoses = [];
     var dispositions = [];
     var visitStartDateTime;
@@ -46,7 +46,7 @@ Bahmni.Opd.Consultation.VisitSummary.create = function (encounterTransactions, o
     var provider;
 
 
-    var labTestOrderTypeUuid = orderTypes[Bahmni.Opd.Consultation.Constants.labOrderType];
+    var labTestOrderTypeUuid = orderTypes[Bahmni.Clinical.Constants.labOrderType];
 
     var mapTestOrderWithObs = function (testOrder) {
         var obs = [];
@@ -68,7 +68,7 @@ Bahmni.Opd.Consultation.VisitSummary.create = function (encounterTransactions, o
             var additionalObs = [];
             var testObservation = [];
             angular.forEach(observation.groupMembers, function(obs){
-                if(obs.concept.name === Bahmni.Opd.Consultation.Constants.commentConceptName) {
+                if(obs.concept.name === Bahmni.Clinical.Constants.commentConceptName) {
                     additionalObs.push(obs);
                 }
                 else {

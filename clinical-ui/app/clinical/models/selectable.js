@@ -1,4 +1,4 @@
-Bahmni.Opd.Consultation.Selectable = function(data, selectableChildren, onSelectionChange) {
+Bahmni.Clinical.Selectable = function(data, selectableChildren, onSelectionChange) {
     angular.extend(this, data);
     var selectionSources = [];
     var children = selectableChildren || [];

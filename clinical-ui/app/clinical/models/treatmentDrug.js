@@ -1,4 +1,4 @@
-Bahmni.Opd.Consultation.TreatmentDrug = function () {
+Bahmni.Clinical.TreatmentDrug = function () {
     this.uuid = "";
     this.name = "";
     this.originalName = "";

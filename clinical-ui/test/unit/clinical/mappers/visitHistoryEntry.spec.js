@@ -1,7 +1,7 @@
 'use strict';
 
 describe("VisitHistoryEntry", function() {
-	var VisitHistoryEntry = Bahmni.Opd.Consultation.VisitHistoryEntry;
+	var VisitHistoryEntry = Bahmni.Clinical.VisitHistoryEntry;
 	
 	describe("isAcitve",function() {
 		it("should be true when there is no stopDatetime", function() {

@@ -42,7 +42,7 @@
                     <div>
                         <span class="clear" ng-repeat="image in newVisit.images">
                             <img ng-src="{{image.encodedValue}}" width="100">
-                            <input class="concept-name" ng-concept-model="image.concept" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter the test name" title="Select the test from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
+                            <input class="concept-name" ng-model="image.concept" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter the test name" title="Select the test from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
                             <button type="button" ng-click="newVisit.removeNewAddedImage(image)"><i class="icon-trash"></i></button>
                         </span>
                     </div>

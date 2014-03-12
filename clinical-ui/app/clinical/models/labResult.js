@@ -1,4 +1,4 @@
-Bahmni.Opd.Consultation.LabResult = function(name, value, alert, lowNormal, highNormal, unit, notes, members) {
+Bahmni.Clinical.LabResult = function(name, value, alert, lowNormal, highNormal, unit, notes, members) {
     this.name = name;
     this.value = value;
     this.alert = alert;
@@ -9,7 +9,7 @@ Bahmni.Opd.Consultation.LabResult = function(name, value, alert, lowNormal, high
     this.members = members;
 }
 
-Bahmni.Opd.Consultation.LabResult.prototype = {
+Bahmni.Clinical.LabResult.prototype = {
     isPanel: function() {
         return this.members.length > 0;
     },

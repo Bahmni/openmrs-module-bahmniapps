@@ -1,4 +1,4 @@
-Bahmni.Opd.OtherInvestigationsConceptsMapper = (function(){
+Bahmni.OtherInvestigationsConceptsMapper = (function(){
 	var OtherInvestigationsConceptsMapper = function(orderTypesMap) {
 		this.orderTypesMap = orderTypesMap;
 	};
@@ -34,7 +34,7 @@ Bahmni.Opd.OtherInvestigationsConceptsMapper = (function(){
 	        var testTypeSets = otherInvestigationsConcept.setMembers.filter(function(concept) { return concept.set; });
 	        angular.forEach(testTypeSets, function(concept) {
 	            var type = {uuid : concept.uuid, name : concept.name.name }
-	            var testConcepts = concept.setMembers.filter(function(concept) { return concept.conceptClass.name === Bahmni.Opd.Consultation.Constants.testConceptName});
+	            var testConcepts = concept.setMembers.filter(function(concept) { return concept.conceptClass.name === Bahmni.Clinical.Constants.testConceptName});
 	            angular.forEach(testConcepts, function(testConcept){
 	                tests.push(createTest(testConcept, type, self.orderTypesMap));
 	            });

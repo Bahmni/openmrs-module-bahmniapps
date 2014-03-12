@@ -11,7 +11,10 @@
     <body>
         <div ng-app="adt">
             <div ng-include src="'../common/ui-helper/header.html'"></div>
-            <div ui-view id="view-content"></div>
+            <div ui-view="additional-header"></div>
+            <div  class="opd-wrapper">
+                <div ui-view="content" id="view-content" class="opd-content-wrapper"></div>
+            </div>
         </div>
 
         <script src="../components/jquery/jquery.js"></script>
@@ -66,16 +69,18 @@
         <script src="../common/ui-helper/controllers/opdcommonheadercontroller.js"></script>
         <script src="../common/ui-helper/spinner.js"></script>
 
-        <script src="../bed-management/init.js"></script>
-        <script src="../bed-management/services/bedService.js"></script>
 
-        <script src="app.js"></script>
         <script src="init.js"></script>
         <script src="constants.js"></script>
+        <script src="app.js"></script>
         <script src="initialization.js"></script>
+        <script src="patientInitialization.js"></script>
         <script src="visitInitialization.js"></script>
         <script src="util/dispositionDisplayUtil.js"></script>
         <script src="controllers/adtController.js"></script>
+        <script src="controllers/bedManagementController.js"></script>
+        <script src="services/bedService.js"></script>
+        <script src="services/wardService.js"></script>
         <!-- endbuild -->
     </body>
 </html>

@@ -1,4 +1,4 @@
-Bahmni.Opd.Consultation.Category = function(name, tests) {
+Bahmni.Clinical.Category = function(name, tests) {
     this.name = name;
     this.tests = tests;
     this.filteredTests = tests;

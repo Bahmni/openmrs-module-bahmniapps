@@ -1,7 +1,7 @@
 'use strict';
 
 describe("Category", function () {
-	var Category = Bahmni.Opd.Consultation.Category;
+	var Category = Bahmni.Clinical.Category;
 
 	describe("filteredTests", function() {
 		it("should have all tests by default", function () {

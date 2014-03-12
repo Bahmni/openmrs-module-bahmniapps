@@ -1,4 +1,4 @@
-Bahmni.Opd.Consultation.Diagnosis = function (codedAnswer, order, certainty, existingObsUuid,freeTextAnswer,diagnosisDateTime, voided) {
+Bahmni.Clinical.Diagnosis = function (codedAnswer, order, certainty, existingObsUuid,freeTextAnswer,diagnosisDateTime, voided) {
     var self = this;
     self.codedAnswer = codedAnswer;
     self.order = order ? order : "PRIMARY";

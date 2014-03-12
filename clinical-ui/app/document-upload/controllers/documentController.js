@@ -10,12 +10,12 @@ angular.module('opd.documentupload')
             $scope.visits = [];
 
             var initNewVisit = function () {
-                $scope.newVisit = new Bahmni.Opd.DocumentUpload.Visit();
+                $scope.newVisit = new Bahmni.DocumentUpload.Visit();
                 $scope.currentVisit = $scope.newVisit;
             };
 
             var createVisit = function (visit) {
-                var newVisit = angular.extend(new Bahmni.Opd.DocumentUpload.Visit(), visit);
+                var newVisit = angular.extend(new Bahmni.DocumentUpload.Visit(), visit);
                 newVisit.initSavedImages();
                 return newVisit;
             };

@@ -1,9 +1,9 @@
 'use strict';
 
-angular.module('opd.adt').factory('visitInitialization',
-    ['$rootScope', '$q', 'visitService', 'patientService', 'patientMapper', 'initialization',
-        function ($rootScope, $q, visitService, patientService, patientMapper, initialization) {
-            return function(patientUuid, visitUuid) {
+angular.module('bahmni.adt').factory('visitInitialization',
+    ['$rootScope', '$q', 'visitService', 'initialization',
+        function ($rootScope, $q, visitService, initialization) {
+            return function(visitUuid) {
                 var getVisit = function() {
                     if(visitUuid != 'null') {
                         return visitService.getVisit(visitUuid).success(function (visit) {
@@ -14,15 +14,7 @@ angular.module('opd.adt').factory('visitInitialization',
                     }
                 };
 
-                var getPatient = function() {
-                    return patientService.getPatient(patientUuid).success(function (openMRSPatient) {
-                        $rootScope.patient = patientMapper.map(openMRSPatient);
-                    });
-                };
-
-                return initialization.then(function() { 
-                    return $q.all([getVisit(), getPatient()])
-                });
+                return initialization.then(getVisit);
             }
         }]
 );

@@ -1,10 +1,10 @@
-Bahmni.Opd.ConsultationMapper = function (dosageFrequencies, dosageInstructions, consultationNoteConcept, labOrderNoteConcept) {
+Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, consultationNoteConcept, labOrderNoteConcept) {
     this.map = function (encounterTransaction) {
         var specilaObservationConceptUuids = [consultationNoteConcept.uuid, labOrderNoteConcept.uuid];
         var investigations = encounterTransaction.testOrders.filter(function(testOrder) { return !testOrder.voided });
-        var labResults = new Bahmni.Opd.LabResultsMapper().map(encounterTransaction);
+        var labResults = new Bahmni.LabResultsMapper().map(encounterTransaction);
         var treatmentDrugs = encounterTransaction.drugOrders.map(function(drugOrder) {
-            var treatmentDrug = new Bahmni.Opd.Consultation.TreatmentDrug();
+            var treatmentDrug = new Bahmni.Clinical.TreatmentDrug();
             treatmentDrug.concept = drugOrder.concept;
             treatmentDrug.uuid = drugOrder.uuid;
             treatmentDrug.name = drugOrder.drugName;
@@ -22,7 +22,7 @@ Bahmni.Opd.ConsultationMapper = function (dosageFrequencies, dosageInstructions,
             return treatmentDrug;
         });
         var diagnoses = encounterTransaction.diagnoses.map(function(diagnosis){
-            return new Bahmni.Opd.Consultation.Diagnosis(
+            return new Bahmni.Clinical.Diagnosis(
                 diagnosis.codedAnswer,diagnosis.order,diagnosis.certainty,diagnosis.existingObs,
                 diagnosis.freeTextAnswer,diagnosis.diagnosisDateTime,diagnosis.voided);
         });

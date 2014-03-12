@@ -1,35 +1,32 @@
-<div ng-include src="'../common/patient/header/views/header.html'"></div>
-<div class="opd-wrapper">
-    <div class="adt opd-content-wrapper">
-        <div>
-            <span ng-show="myForm.service_id.$error.required">Select Action</span>
-            <label>
-                Action: <select ng-model="dispositionAction"
-                                ng-options="d.name.display for d in dispositionActions"
-                                ng-change="refreshView()">
-            </select>
-            </label>
-        </div>
+<div class="adt">
+    <div>
+        <span ng-show="myForm.service_id.$error.required">Select Action</span>
+        <label>
+            Action: <select ng-model="dispositionAction"
+                            ng-options="d.name.display for d in dispositionActions"
+                            ng-change="refreshView()">
+        </select>
+        </label>
+    </div>
 
-        <div>
-            <show-concept-set concept-set-name="'Adt Notes'" observations="adtObservations"></show-concept-set>
-        </div>
+    <div>
+        <show-concept-set concept-set-name="'Adt Notes'" observations="adtObservations"></show-concept-set>
+    </div>
 
-        
-        <div class="submit-btn-container">
-            <div class="right">
-        <span ng-repeat="extn in actions">
-            <span ng-switch="extn.extensionParams.action">
-                <div ng-switch-when="startVisit" split-button="" options="visitTypes"
-                     option-click="startNewVisit" class="right">
-                </div>
-            <button ng-switch-default="" type="submit" class="right"
-                    ng-click="call(extn.extensionParams.action)" ng-show="call(extn.extensionParams.showCondition)">
-                {{getDisplay(extn.extensionParams.displayFunction, extn.extensionParams.display)}}
-            </button>
-            </span>
-        </span>
+    
+    <div class="submit-btn-container">
+        <div class="right">
+    <span ng-repeat="extn in actions">
+        <span ng-switch="extn.extensionParams.action">
+            <div ng-switch-when="startVisit" split-button="" options="visitTypes"
+                 option-click="startNewVisit" class="right">
             </div>
+        <button ng-switch-default="" type="submit" class="right"
+                ng-click="call(extn.extensionParams.action)" ng-show="call(extn.extensionParams.showCondition)">
+            {{getDisplay(extn.extensionParams.displayFunction, extn.extensionParams.display)}}
+        </button>
+        </span>
+    </span>
         </div>
     </div>
 </div>

@@ -1,11 +1,11 @@
 "use strict";
 
-angular.module('opd.adt')
-    .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService', 'encounterService', 'BedService', 'appService', 'visitService',
-        function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService, appService, visitService) {
+angular.module('bahmni.adt')
+    .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService', 'encounterService', 'bedService', 'appService', 'visitService', '$location',
+        function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService, appService, visitService, $location) {
             var actionConfigs = {};
             var encounterConfig = $rootScope.encounterConfig;
-            var Constants = Bahmni.Opd.ADT.Constants;
+            var Constants = Bahmni.ADT.Constants;
             $scope.adtObservations = [];
 
             var getActionCode = function (concept) {
@@ -89,7 +89,7 @@ angular.module('opd.adt')
             };
 
             $scope.cancel = function () {
-                window.location = Bahmni.Opd.ADT.Constants.activePatientsListUrl;
+                window.location = Bahmni.ADT.Constants.activePatientsListUrl;
             };
 
             $scope.refreshView = function () {
@@ -140,7 +140,7 @@ angular.module('opd.adt')
 
                 var options = {'patientUuid': $scope.patient.uuid, 'encounterUuid': response.encounterUuid};
                 if (forwardLink) {
-                    window.location = appDescriptor.formatUrl(forwardLink, options);
+                    $location.path(appDescriptor.formatUrl(forwardLink, options));
                 }
             };
 

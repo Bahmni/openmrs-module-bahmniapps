@@ -12,7 +12,7 @@ angular.module('opd.patientDashboard',[])
             $scope.visitDays = [];
             $scope.hasMoreVisitDays;
             visitService.getVisitSummary(visit.uuid).success(function (encounterTransactions) {
-                $scope.visitSummary = Bahmni.Opd.Consultation.VisitSummary.create(encounterTransactions, $scope.encounterConfig.orderTypes);
+                $scope.visitSummary = Bahmni.Clinical.VisitSummary.create(encounterTransactions, $scope.encounterConfig.orderTypes);
                 if($scope.visitSummary.hasEncounters()) {
                     loadEncounters($scope.visitSummary.mostRecentEncounterDateTime);
                 }
@@ -28,7 +28,7 @@ angular.module('opd.patientDashboard',[])
             loading = true;
             encounterService.search($scope.selectedVisit.uuid, encounterDate.toISOString().substring(0, 10)).success(function(encounterTransactions){
                 var dayNumber = DateUtil.getDayNumber($scope.visitSummary.visitStartDateTime, encounterDate);
-                var visitDay = Bahmni.Opd.Consultation.VisitDay.create(dayNumber, encounterDate, encounterTransactions, $scope.consultationNoteConcept, $scope.labOrderNotesConcept, $scope.encounterConfig.orderTypes);
+                var visitDay = Bahmni.Clinical.VisitDay.create(dayNumber, encounterDate, encounterTransactions, $scope.consultationNoteConcept, $scope.labOrderNotesConcept, $scope.encounterConfig.orderTypes);
                 $scope.visitDays.push(visitDay);
             }).then(markLoadingDone, markLoadingDone);
             currentEncounterDate = encounterDate;
@@ -47,7 +47,7 @@ angular.module('opd.patientDashboard',[])
         }
 
         patientVisitHistoryService.getVisits($scope.patientUuid).then(function(visits) {
-            $scope.visits = visits.map(function(visitData){ return new Bahmni.Opd.Consultation.VisitHistoryEntry(visitData) });
+            $scope.visits = visits.map(function(visitData){ return new Bahmni.Clinical.VisitHistoryEntry(visitData) });
             $scope.activeVisit = $scope.visits.filter(function(visit) {return visit.isActive()})[0];
             $scope.selectedVisit = $scope.visits[0];
             getVisitSummary($scope.selectedVisit);

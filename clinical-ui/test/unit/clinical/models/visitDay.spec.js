@@ -5,7 +5,7 @@ describe('visit Day',function(){
 	var labOrderTypeUuid = 'safsafds';
 	var orderTypes = { };
 	var provider = {uuid: 'hjjhjhj', name: 'Dr. Vinkesh Banka'}
-	orderTypes[Bahmni.Opd.Consultation.Constants.labOrderType] = labOrderTypeUuid;
+	orderTypes[Bahmni.Clinical.Constants.labOrderType] = labOrderTypeUuid;
 	
 	var createEncounter = function(encounterData) {
 		var encounterTransaction = {observations: [], drugOrders: [], testOrders: [], providers: [provider]} 
@@ -14,7 +14,7 @@ describe('visit Day',function(){
 	}
 
 	var createVisitDay = function() {
-		return Bahmni.Opd.Consultation.VisitDay.create('1', new Date('2013-12-02'), encounterTransactions, consultationNoteConcept,labOrderNoteConcept, orderTypes);
+		return Bahmni.Clinical.VisitDay.create('1', new Date('2013-12-02'), encounterTransactions, consultationNoteConcept,labOrderNoteConcept, orderTypes);
 	}
 
 	describe('create',function(){	

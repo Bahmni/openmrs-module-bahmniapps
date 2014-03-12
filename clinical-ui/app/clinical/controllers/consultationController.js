@@ -62,7 +62,7 @@ angular.module('bahmni.clinical')
         addObservationsToEncounter();
 
         spinner.forPromise(encounterService.create(encounterData).success(function () {
-            $location.path(Bahmni.Opd.Consultation.Constants.activePatientsListUrl);
+            $location.path(Bahmni.Clinical.Constants.activePatientsListUrl);
         }));
     };
 

@@ -17,7 +17,6 @@ files = [
     '../app/**/constants.js',
     '../app/common/**/*.js',
     '../app/adt/**/*.js',
-    '../app/bed-management/**/*.js',
     '../app/clinical/**/*.js',
     '../app/document-upload/**/*.js',
     '../app/orders/**/*.js',

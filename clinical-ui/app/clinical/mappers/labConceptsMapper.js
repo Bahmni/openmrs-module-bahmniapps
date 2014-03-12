@@ -1,4 +1,4 @@
-Bahmni.Opd.LabConceptsMapper = (function(){
+Bahmni.LabConceptsMapper = (function(){
     LabConceptsMapper = function() { };
 
     var forConcptClass = function(conceptClassName) {
@@ -23,7 +23,7 @@ Bahmni.Opd.LabConceptsMapper = (function(){
                 sample: sample,
                 panels: panels,
                 set: false,
-                orderTypeName: Bahmni.Opd.Consultation.Constants.labOrderType
+                orderTypeName: Bahmni.Clinical.Constants.labOrderType
             };
     }
 
@@ -33,13 +33,13 @@ Bahmni.Opd.LabConceptsMapper = (function(){
                 name: concept.name.name,
                 sample: sample,
                 set: true,
-                orderTypeName: Bahmni.Opd.Consultation.Constants.labOrderType
+                orderTypeName: Bahmni.Clinical.Constants.labOrderType
         };
     }
 
     var mapPanelTests = function(sample, tests, panelConcept) {
         var panel = createPanel(panelConcept, sample);
-        var testConcepts = panelConcept.setMembers.filter(forConcptClass(Bahmni.Opd.Consultation.Constants.testConceptName));
+        var testConcepts = panelConcept.setMembers.filter(forConcptClass(Bahmni.Clinical.Constants.testConceptName));
         angular.forEach(testConcepts, function(testConcept){
             var test = tests.filter(function(test){ return test.uuid === testConcept.uuid; })[0];
             if(test) {
@@ -57,8 +57,8 @@ Bahmni.Opd.LabConceptsMapper = (function(){
             var sampleConcepts = labConceptSet.setMembers
             angular.forEach(sampleConcepts, function(sampleConcept) {
                 var sample = {uuid : sampleConcept.uuid, name : sampleConcept.name.name }
-                var panelConcepts = sampleConcept.setMembers.filter(forConcptClass(Bahmni.Opd.Consultation.Constants.labSetConceptName));
-                var testConcepts = sampleConcept.setMembers.filter(forConcptClass(Bahmni.Opd.Consultation.Constants.testConceptName));
+                var panelConcepts = sampleConcept.setMembers.filter(forConcptClass(Bahmni.Clinical.Constants.labSetConceptName));
+                var testConcepts = sampleConcept.setMembers.filter(forConcptClass(Bahmni.Clinical.Constants.testConceptName));
                 angular.forEach(panelConcepts, function(panelConcept){
                     mapPanelTests(sample, tests, panelConcept);
                 });

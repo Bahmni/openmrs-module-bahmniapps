@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.bedManagement')
+angular.module('bahmni.adt')
     .service('WardService', ['$http', function ($http) {
 
         this.bedsForWard = function (uuid) {

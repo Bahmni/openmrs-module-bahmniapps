@@ -2,7 +2,7 @@
 
 describe("LabResultsMapper", function () {
     it('should map lab result observations', function () {
-        var mappedLabResults = new Bahmni.Opd.LabResultsMapper().map(encounterTransaction);
+        var mappedLabResults = new Bahmni.LabResultsMapper().map(encounterTransaction);
         expect(mappedLabResults).not.toBe(null);
         expect(mappedLabResults.length).toBe(1);
 
@@ -317,7 +317,7 @@ var encounterTransaction = {
         "comment": null,
         "concept": {
             "uuid": "db6fcf3d-0a6a-11e3-87b2-05a83b2f3a98",
-            "name": Bahmni.Opd.Consultation.Constants.labConceptSetName
+            "name": Bahmni.Clinical.Constants.labConceptSetName
         },
         "voided": false
     }

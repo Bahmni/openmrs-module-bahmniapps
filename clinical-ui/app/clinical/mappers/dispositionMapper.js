@@ -1,4 +1,4 @@
-Bahmni.Opd.DispositionMapper = function(encounterConfig) {
+Bahmni.DispositionMapper = function(encounterConfig) {
     this.map = function(visit) {
         var opdEncounters = visit.encounters.filter(function(encounter){
             return encounter.encounterType.uuid === encounterConfig.encounterTypes.OPD;

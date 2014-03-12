@@ -1,7 +1,7 @@
 'use strict';
 
 describe("Selectable", function () {
-	var Selectable = Bahmni.Opd.Consultation.Selectable;
+	var Selectable = Bahmni.Clinical.Selectable;
 
 	describe("select", function() {
 		it("should select with self as source when source not specified", function() {

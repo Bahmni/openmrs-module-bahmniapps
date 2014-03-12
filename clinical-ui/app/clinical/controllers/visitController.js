@@ -13,7 +13,7 @@ angular.module('bahmni.clinical')
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
     spinner.forPromise(visitService.getVisitSummary(visitUuid).success(function (encounterTransactions) {
-        $scope.visitSummary = Bahmni.Opd.Consultation.VisitSummary.create(encounterTransactions, $scope.encounterConfig.orderTypes);
+        $scope.visitSummary = Bahmni.Clinical.VisitSummary.create(encounterTransactions, $scope.encounterConfig.orderTypes);
         if($scope.visitSummary.hasEncounters()) {
             loadEncounters($scope.visitSummary.mostRecentEncounterDateTime);
         }
@@ -28,7 +28,7 @@ angular.module('bahmni.clinical')
         loading = true;
         encounterService.search(visitUuid, encounterDate.toISOString().substring(0, 10)).success(function(encounterTransactions){
             var dayNumber = DateUtil.getDayNumber($scope.visitSummary.visitStartDateTime, encounterDate);
-            var visitDay = Bahmni.Opd.Consultation.VisitDay.create(dayNumber, encounterDate, encounterTransactions, $scope.consultationNoteConcept, $scope.labOrderNotesConcept, $scope.encounterConfig.orderTypes);
+            var visitDay = Bahmni.Clinical.VisitDay.create(dayNumber, encounterDate, encounterTransactions, $scope.consultationNoteConcept, $scope.labOrderNotesConcept, $scope.encounterConfig.orderTypes);
             $scope.visitDays.push(visitDay);
 	    }).then(markLoadingDone, markLoadingDone);
     	currentEncounterDate = encounterDate;

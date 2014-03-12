@@ -1,7 +1,7 @@
 angular.module('bahmni.clinical')
 .controller('InvestigationsSelectorController', function($scope, $rootScope, spinner) {
-    var Selectable = Bahmni.Opd.Consultation.Selectable;
-    var Category = Bahmni.Opd.Consultation.Category;
+    var Selectable = Bahmni.Clinical.Selectable;
+    var Category = Bahmni.Clinical.Category;
     $scope.selectablePanels = [];
     $scope.selectableTests = [];
 

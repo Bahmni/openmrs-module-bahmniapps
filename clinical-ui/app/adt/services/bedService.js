@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('bahmni.bedManagement')
-    .service('BedService', ['$http', '$rootScope', function ($http, $rootScope) {
+angular.module('bahmni.adt')
+    .service('bedService', ['$http', '$rootScope', function ($http, $rootScope) {
 
         this.getBedDetailsForPatient = function (uuid) {
             return $http.get("/openmrs/ws/rest/v1/beds", {

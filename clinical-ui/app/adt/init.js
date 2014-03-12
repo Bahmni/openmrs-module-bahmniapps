@@ -1,7 +1,3 @@
 'use strict';
 
-var Bahmni = Bahmni || {};
-Bahmni.Opd = Bahmni.Opd || {};
-Bahmni.Opd.ADT = Bahmni.Opd.ADT || {};
-
-angular.module('opd.adt', ['bahmni.common.conceptSet']);
+angular.module('bahmni.adt', ['bahmni.common.conceptSet']);

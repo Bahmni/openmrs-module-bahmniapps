@@ -1,4 +1,4 @@
-Bahmni.Opd.DocumentUpload.Visit = function () {
+Bahmni.DocumentUpload.Visit = function () {
 
     this.startDatetime = "";
     this.stopDatetime = "";

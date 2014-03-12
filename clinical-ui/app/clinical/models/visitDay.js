@@ -1,4 +1,4 @@
-Bahmni.Opd.Consultation.VisitDay = function(dayNumber, visitDate, drugOrders, consultationNotes, labTestOrders, otherTestOrders, observations) {
+Bahmni.Clinical.VisitDay = function(dayNumber, visitDate, drugOrders, consultationNotes, labTestOrders, otherTestOrders, observations) {
     this.dayNumber = dayNumber;
 	this.visitDate = visitDate;
     this.drugOrders = drugOrders;
@@ -8,7 +8,7 @@ Bahmni.Opd.Consultation.VisitDay = function(dayNumber, visitDate, drugOrders, co
 	this.observations = observations;
 }
 
-Bahmni.Opd.Consultation.VisitDay.prototype = {
+Bahmni.Clinical.VisitDay.prototype = {
     hasDrugOrders : function() {
         return this.drugOrders.length > 0;
     },
@@ -34,14 +34,14 @@ Bahmni.Opd.Consultation.VisitDay.prototype = {
     }
 };
 
-Bahmni.Opd.Consultation.VisitDay.create = function(dayNumber, visitDate, encounterTransactions, consultationNoteConcept, labOrderNoteConcept, orderTypes) {
+Bahmni.Clinical.VisitDay.create = function(dayNumber, visitDate, encounterTransactions, consultationNoteConcept, labOrderNoteConcept, orderTypes) {
 	var drugOrders = [];
 	var observations = [];
 	var consultationNotes = [];
 	var labTestOrders = [];
 	var otherTestOrders = [];
 
-	var labTestOrderTypeUuid = orderTypes[Bahmni.Opd.Consultation.Constants.labOrderType];
+	var labTestOrderTypeUuid = orderTypes[Bahmni.Clinical.Constants.labOrderType];
 
     angular.forEach(encounterTransactions, function(encounterTransaction) {
         var provider = encounterTransaction.providers[0];

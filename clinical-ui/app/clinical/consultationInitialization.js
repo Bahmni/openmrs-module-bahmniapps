@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical').factory('consultationInitialization',
-    ['$rootScope', '$q', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'authenticator', 'appService', 'encounterService', 'BedService', 'spinner', 'initialization',
+    ['$rootScope', '$q', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'authenticator', 'appService', 'encounterService', 'bedService', 'spinner', 'initialization',
     function ($rootScope, $q, configurationService, visitService, patientService, patientMapper, authenticator, appService, encounterService, bedService, spinner, initialization) {
         return function(patientUuid) {
 
@@ -23,7 +23,7 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                     providerUuid: currentProviderUuid,
                     includeAll :  Bahmni.Common.Constants.includeAllObservations
                 }).success(function (encounterTransaction) {
-                    $rootScope.consultation = new Bahmni.Opd.ConsultationMapper(
+                    $rootScope.consultation = new Bahmni.ConsultationMapper(
                         $rootScope.dosageFrequencyConfig, $rootScope.dosageInstructionConfig, $rootScope.consultationNoteConcept, $rootScope.labOrderNotesConcept).map(encounterTransaction);
                     $rootScope.disposition = encounterTransaction.disposition || {};
                 });

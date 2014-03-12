@@ -39,7 +39,7 @@ angular.module('bahmni.clinical')
             if ($scope.selectedDrugs[length - 1]) {
                 var lastItem = $scope.selectedDrugs[length - 1];
                 if (lastItem.name) {
-                    $scope.selectedDrugs.push(new Bahmni.Opd.Consultation.TreatmentDrug());
+                    $scope.selectedDrugs.push(new Bahmni.Clinical.TreatmentDrug());
                 }
                 else if ($scope.selectedDrugs[length - 2] && !$scope.selectedDrugs[length - 2].name) {
                     $scope.selectedDrugs.pop();
@@ -184,9 +184,9 @@ angular.module('bahmni.clinical')
 
             if ($rootScope.consultation.treatmentDrugs) {
                 $scope.selectedDrugs = $rootScope.consultation.treatmentDrugs;
-                $scope.selectedDrugs.push(new Bahmni.Opd.Consultation.TreatmentDrug());
+                $scope.selectedDrugs.push(new Bahmni.Clinical.TreatmentDrug());
             } else {
-                $scope.selectedDrugs = [ new Bahmni.Opd.Consultation.TreatmentDrug() ];
+                $scope.selectedDrugs = [ new Bahmni.Clinical.TreatmentDrug() ];
             }
 
             $scope.selectedDrugs.forEach(function(drug) {

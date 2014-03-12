@@ -5,12 +5,12 @@ describe("OtherInvestigationsConceptsMapper", function () {
     var categoriesConceptSet;
 
     var createTest = function(uuid, name) {
-        return { uuid: uuid, name: { name: name}, conceptClass: { name: Bahmni.Opd.Consultation.Constants.testConceptName}}  
+        return { uuid: uuid, name: { name: name}, conceptClass: { name: Bahmni.Clinical.Constants.testConceptName}}  
     }
 
     beforeEach(function(){
         otherInvestigationsConceptSet = { 
-            name: {name: Bahmni.Opd.Consultation.Constants.otherInvestigationsConceptSetName},
+            name: {name: Bahmni.Clinical.Constants.otherInvestigationsConceptSetName},
             setMembers: [
                 {
                     name: { name: "Radiology"},
@@ -54,7 +54,7 @@ describe("OtherInvestigationsConceptsMapper", function () {
                 "Radiology": "Radiology Order",
                 "Endoscopy": "Endoscopy Order",
             };
-            mapper = new Bahmni.Opd.OtherInvestigationsConceptsMapper(orderTypesMap);
+            mapper = new Bahmni.OtherInvestigationsConceptsMapper(orderTypesMap);
         });
 
         it('should map other investigations concepts to tests associated to type, category and orderTypeName', function () {

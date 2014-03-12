@@ -25,11 +25,11 @@ angular.module('bahmni.clinical')
     var addDiagnosis = function (concept, index) {
         var diagnosisBeingEdited = $scope.diagnosisList[index]
         if(diagnosisBeingEdited){
-            var diagnosis = new Bahmni.Opd.Consultation.Diagnosis(concept, diagnosisBeingEdited.order,
+            var diagnosis = new Bahmni.Clinical.Diagnosis(concept, diagnosisBeingEdited.order,
                 diagnosisBeingEdited.certainty, diagnosisBeingEdited.existingObsUuid)
         }
         else {
-            var diagnosis = new Bahmni.Opd.Consultation.Diagnosis(concept);
+            var diagnosis = new Bahmni.Clinical.Diagnosis(concept);
         }
         if (_canAdd(diagnosis)) {
             $scope.diagnosisList.splice(index, 1, diagnosis);
@@ -37,7 +37,7 @@ angular.module('bahmni.clinical')
     };
 
     var addPlaceHolderDiagnosis = function () {
-        var diagnosis = new Bahmni.Opd.Consultation.Diagnosis('');
+        var diagnosis = new Bahmni.Clinical.Diagnosis('');
         $scope.diagnosisList.push(diagnosis);
     }
 

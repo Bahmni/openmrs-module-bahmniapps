@@ -341,7 +341,7 @@ describe("ConsultationModule", function () {
     describe("dispositionMapperTest", function () {
         it('should map orders and observations within an encounter', function () {
 
-        //    var dispositionMapper = new Bahmni.Opd.DispositionMapper(encounterConfig,dispositionNoteConcept)
+        //    var dispositionMapper = new Bahmni.DispositionMapper(encounterConfig,dispositionNoteConcept)
 
          //   var foundResult = dispositionMapper.map(visit);
 

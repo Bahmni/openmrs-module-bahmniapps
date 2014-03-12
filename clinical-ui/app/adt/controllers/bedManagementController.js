@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('bahmni.bedManagement')
-    .controller('BedManagementController', ['$scope', '$rootScope', '$location', 'WardService', 'BedService', '$route', 'encounterService', function ($scope, $rootScope, $location, wardService, bedService, $route, encounterService) {
+angular.module('bahmni.adt')
+    .controller('BedManagementController', ['$scope', '$rootScope', '$location', 'WardService', 'bedService', '$stateParams', 'encounterService', function ($scope, $rootScope, $location, wardService, bedService, $stateParams, encounterService) {
         $scope.wards = null;
         $scope.currentView = "wards";
         $scope.layout = [];
@@ -12,7 +12,7 @@ angular.module('bahmni.bedManagement')
         var minX = 1;
         var minY = 1;
         var currentWardUuid = null;
-        var encounterUuid = $route.current.params.encounterUuid;
+        var encounterUuid = $stateParams.encounterUuid;
         
         var init = function () {
             $('.bed-info').hide();
