@@ -10,6 +10,7 @@
     </head>
     <body>
         <div ng-app="bedManagement">
+            <div ng-include src="'../common/ui-helper/header.html'"></div>
             <div ng-include src="'../common/patient/header/views/header.html'"></div>
             <div class="opd-wrapper">
                 <div ng-view id="view-content" class="opd-content-wrapper"></div>
