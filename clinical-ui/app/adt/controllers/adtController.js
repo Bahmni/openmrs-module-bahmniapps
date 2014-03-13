@@ -140,7 +140,7 @@ angular.module('bahmni.adt')
 
                 var options = {'patientUuid': $scope.patient.uuid, 'encounterUuid': response.encounterUuid};
                 if (forwardLink) {
-                    $location.path(appDescriptor.formatUrl(forwardLink, options));
+                       $window.location = appDescriptor.formatUrl(forwardLink, options);
                 }
             };
 

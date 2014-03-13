@@ -80,7 +80,7 @@ angular.module('bahmni.common.patientSearch')
                 orderTypeUuid:$scope.encounterConfig.orderTypes[Bahmni.Common.Constants.radiologyOrderType]
             };
 
-            $location.path(appService.getAppDescriptor().formatUrl(currentAppExtension.forwardUrl, options));
+            $window.location = appService.getAppDescriptor().formatUrl(currentAppExtension.forwardUrl, options);
         };
 
         $scope.showPatientsForType = function (sType) {
