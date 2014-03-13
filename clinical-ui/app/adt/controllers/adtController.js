@@ -89,7 +89,7 @@ angular.module('bahmni.adt')
             };
 
             $scope.cancel = function () {
-                window.location = Bahmni.ADT.Constants.activePatientsListUrl;
+                $location.url(Bahmni.ADT.Constants.activePatientsListUrl);
             };
 
             $scope.refreshView = function () {
