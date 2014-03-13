@@ -1,13 +1,13 @@
 'use strict';
 
-angular.module('bahmnihome')
+angular.module('bahmni.home')
     .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'spinner', '$q',
      function ($rootScope, $scope, $window, $location, sessionService, spinner, $q) {
         var landingPagePath = "/dashboard";
         var loginPagePath = "/login";
 
         var redirectToLandingPageIfAlreadyAuthenticated = function() {
-            sessionService.getSession().success(function (data) {
+            sessionService.get().success(function (data) {
                 if (data.authenticated) {
                     $location.path(landingPagePath);
                 }

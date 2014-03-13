@@ -27,8 +27,33 @@ angular.module('authentication', ['ngCookies'])
         });
     }]).service('sessionService', ['$rootScope', '$http', '$q', '$cookieStore', function ($rootScope, $http, $q, $cookieStore) {
         var sessionResourcePath = '/openmrs/ws/rest/v1/session';
-        this.destroy = function () {
-            return $http.delete(sessionResourcePath);
+
+        var createSession = function(username, password){
+            return $http.get(sessionResourcePath, {
+                headers: {'Authorization': 'Basic ' + window.btoa(username + ':' + password)},
+                cache: false
+            });
+        };
+
+        this.destroy = function(){
+            return $http.delete(sessionResourcePath).success(function(data){
+                $rootScope.currentUser = null;
+            });
+        };
+
+        this.loginUser = function(username, password) {
+            var deferrable = $q.defer();
+            createSession(username,password).success(function(data) {
+                if (data.authenticated) {
+                    $cookieStore.put('bahmni.user', username, {path: '/', expires: 7});
+                    deferrable.resolve();
+                } else {
+                   deferrable.reject('Authentication failed. Please try again.');   
+                }
+            }).error(function(){
+                deferrable.reject('Authentication failed. Please try again.');   
+            });
+            return deferrable.promise;
         };
 
         this.get = function () {
@@ -67,7 +92,6 @@ angular.module('authentication', ['ngCookies'])
                 $rootScope.currentProvider = { uuid: providerUuid };
              });
         };
-
     }]).factory('authenticator', ['$rootScope', '$q', '$window', 'sessionService', function ($rootScope, $q, $window, sessionService) {
         var authenticateUser = function () {
             var defer = $q.defer();
@@ -93,7 +117,7 @@ angular.module('authentication', ['ngCookies'])
                     scope.$apply(function() {
                         sessionService.destroy().then(
                             function () {
-                                $window.location = "/home/#/login";
+                                $window.location = "/clinical/home/#/login";
                             }
                         );
                     });

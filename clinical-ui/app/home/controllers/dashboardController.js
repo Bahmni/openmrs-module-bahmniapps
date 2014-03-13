@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmnihome')
+angular.module('bahmni.home')
     .controller('DashboardController', ['$scope', '$location', 'appService', '$q', 'sessionService', 'spinner', '$window', function ($scope, $location, appService, $q, sessionService, spinner, $window) {
         $scope.openApp = function (appName) {
             $window.location = "/" + appName;
@@ -8,29 +8,15 @@ angular.module('bahmnihome')
 
         $scope.appExtensions = [];
 
-        var loadAppExtensions = function() {
-            return appService.loadAppExtensions('home');
+        var initializeExtenstions = function() {
+            $scope.appExtensions = appService.getAppDescriptor().getExtensions("org.bahmni.home.dashboard", "link");
         }
 
         var initialize = function() {
-             var deferrable = $q.defer();
-             sessionService.loadCredentials().then(loadAppExtensions).then(
-                 function() {
-                     deferrable.resolve();
-                 },
-                 function() {
-                     deferrable.reject();
-                 }
-             );
-             return deferrable.promise;
+            return appService.initApp('home').then(initializeExtenstions);
         };
 
-        spinner.forPromise(initialize()).then(
-            function() {
-                $scope.appExtensions = appService.allowedApps("org.bahmni.home.dashboard");
-            }
-        );
-
+        spinner.forPromise(initialize());
     }])
     .directive('btnUserInfo', ['$rootScope', '$window', function($rootScope, $window) {
         return {

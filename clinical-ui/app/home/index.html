@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Bahmni Home</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+        <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.3.custom.min.css">
+
+        <!-- build:css home.min.css -->
+        <link rel="stylesheet" href="../styles/style.css"/>
+        <!-- endbuild -->
+    </head>
+    <body>
+        <div class="reg-wrapper">
+            <div ng-app="bahmni.home">
+                <p style="display: none" class="caution" ng-show="server_error"><i class="icon-exclamation-sign small"></i>{{server_error}}</p>
+                <div ng-view id="view-content"></div>
+                <div id="overlay"></div>
+                <script src="../components/jquery/jquery.js"></script>
+                <script src="../lib/jquery/jquery-ui-1.10.3.custom.min.js"></script>
+                <script src="../components/jquery.cookie/jquery.cookie.js"></script>
+                <script src="../components/angular/angular.js"></script>
+                <script src="../components/angular-route/angular-route.js"></script>
+                <script src="../components/angular-cookies/angular-cookies.js"></script>
+                <script src="../components/ngInfiniteScroll/ng-infinite-scroll.js"></script>
+
+                <!-- build:js home.min.js -->
+                <script src="../common/constants.js"></script>
+
+                <script src="../common/util/init.js"></script>
+                <script src="../common/util/httpErrorInterceptor.js"></script>
+
+                <script src="../common/auth/authentication.js"></script>
+
+                <script src="../common/app-framework/init.js"></script>
+                <script src="../common/app-framework/models/appDescriptor.js"></script>
+                <script src="../common/app-framework/services/appService.js"></script>
+
+                <script src="../common/ui-helper/init.js"></script>
+                <script src="../common/ui-helper/spinner.js"></script>
+
+                <script src="app.js"></script>
+                <script src="httpAuthInterceptor.js"></script>
+                <script src="controllers/loginController.js"></script>
+                <script src="controllers/dashboardController.js"></script>
+                <!-- endbuild -->
+            </div>
+        </div>
+    </body>
+</html>

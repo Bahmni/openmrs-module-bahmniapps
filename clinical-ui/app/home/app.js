@@ -1,8 +1,7 @@
 'use strict';
 
 
-angular
-.module('bahmnihome', ['ngRoute', 'http-auth-interceptor', 'httpErrorInterceptor', 'infrastructure', 'ngCookies'])
+angular.module('bahmni.home', ['ngRoute', 'http-auth-interceptor', 'httpErrorInterceptor', 'bahmni.common.uiHelper', 'bahmni.common.util', 'bahmni.common.appFramework', 'ngCookies'])
 .provider('$cookieStore', [function(){
     var self = this;
     self.defaultOptions = {};
@@ -32,12 +31,12 @@ angular
 }]).config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
     $routeProvider.when('/login', 
     { 
-        templateUrl: 'modules/auth/views/login.html', 
+        templateUrl: 'views/login.html', 
         controller: 'LoginController'
     });
     $routeProvider.when('/dashboard', 
     {
-        templateUrl: 'modules/dashboard/views/dashboard.html', 
+        templateUrl: 'views/dashboard.html', 
         controller: 'DashboardController'
     });
     $routeProvider.otherwise({redirectTo: '/dashboard'});
