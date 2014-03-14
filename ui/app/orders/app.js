@@ -6,6 +6,6 @@ angular.module('orders').config(['$routeProvider', '$httpProvider', function ($r
         $routeProvider.otherwise({redirectTo: "../patients"});
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
 }]).run(['backlinkService', function (backlinkService) {
-        backlinkService.addUrl("Patient Search", "/clinical/clinical/#/patient/search");
+        backlinkService.addUrl("Patient Search", "/clinical/#/patient/search");
     }]);
 

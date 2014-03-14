@@ -55,6 +55,6 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', function($state
     }
 ]).run(['backlinkService',
     function(backlinkService) {
-        backlinkService.addUrl("ADT", "/clinical/adt/#/patient/search");
+        backlinkService.addUrl("ADT", "/adt/#/patient/search");
     }
 ]);

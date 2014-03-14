@@ -12,7 +12,7 @@
                 <span bo-text="observation.observationDateTime | date:'d-MMM-yy h:mm a'"></span>
             </li>
             <li><span bo-text="observation.provider.name"></span></li>
-            <li ng-show="isNumeric(observation.value)"><a bo-href="'/clinical/trends/#/patients/'+patientUuid+'/'+observation.concept.name">view trends
+            <li ng-show="isNumeric(observation.value)"><a bo-href="'/trends/#/patients/'+patientUuid+'/'+observation.concept.name">view trends
             </a></li>
         </ul>
         <div>
