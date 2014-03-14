@@ -346,3 +346,9 @@ input[file-upload] {
     }
   }
 }
+
+.illegalValue {
+  border: 2px solid;
+  border-color: #ff6666;
+  background: white;
+}
