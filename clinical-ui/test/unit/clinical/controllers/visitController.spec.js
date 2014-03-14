@@ -45,7 +45,6 @@ describe("VisitControllerTest", function () {
         });
     };
 
-
     describe("after loading visitSummary", function () {
         beforeEach(function () {
             setUpController();

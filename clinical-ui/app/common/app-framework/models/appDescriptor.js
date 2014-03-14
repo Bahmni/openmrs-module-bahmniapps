@@ -102,6 +102,11 @@ Bahmni.Common.AppFramework.AppDescriptor = function (context, inheritContext, re
         return (cfgList.length > 0) ? cfgList[0] : null;
     };
 
+    this.getConfigValue = function(configName) {
+        var config = this.getConfig(configName);
+        return config ? config.value : null;
+    }
+
     this.formatUrl =  function (url, options) {
         var pattern = /{{([^}]*)}}/g;
         var matches = url.match(pattern);

@@ -7,7 +7,6 @@ build.xml
 .project
 .settings
 .idea/*
-<<<<<<< HEAD
 test/output
 target
 output
@@ -19,33 +18,5 @@ clinical-ui/app/components
 clinical-ui/dist
 clinical-ui/app/**/*.css
 **/.DS_Store
-nbproject
-manifest.mf
-node_modules/*
 test_out
-=======
-registration-ui/node_modules/*
-registration-ui/test_out
-registration-ui/test/output
-*target
-registration-ui/output
-registration-ui/.sass-cache
-registration-ui/.tmp
-registration-ui/node_modules
-registration-ui/app/components
-registration-ui/dist
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> moving registration code to another folder
-=======
-=======
-registration-ui/app/styles/*.css
->>>>>>> fixing module dependencies and using uicommons for registration
 omod/src/main/webapp/*
-<<<<<<< HEAD
->>>>>>> creating maven task to pack angular app as a omod
-=======
-dist
-node_modules
-.sass-cache
->>>>>>> Mujir | #1561 | loading and storing provider in registration

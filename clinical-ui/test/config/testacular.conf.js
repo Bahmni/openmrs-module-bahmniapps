@@ -20,6 +20,8 @@ files = [
     '../app/clinical/**/*.js',
     '../app/document-upload/**/*.js',
     '../app/orders/**/*.js',
+    '../app/home/**/*.js',
+    '../app/registration/**/*.js',
     '../app/trends/**/*.js',
     'support/**/*.js',
     'unit/**/*.js'

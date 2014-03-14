@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Patient Registration</title>
+        <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.4.custom.min.css">
+        <!-- build:css registration.min.css -->
+        <link rel="stylesheet" href="../styles/registration_style.css"/>
+        <link rel="stylesheet" href="../styles/registration.css"/>
+        <!-- endbuild -->
+    </head>
+    <body>
+        <div class="reg-wrapper">
+            <div ng-app="registration">
+                <div id="overlay"><div></div></div>
+                <header class="reg-header" ng-controller="NavigationController">
+                        <a class="header-logo" href="/home">Jan Swasthya Sahyog</a>
+                        <ul>
+                            <li>
+                                <a><i class="icon-user icon-white small"></i><span ng-bind="currentUser.username"></span></a>
+                            </li>
+                            <li ng-repeat="extension in extensions">
+                                <a ng-click="goTo(extension.url)"><i class="{{extension.icon}} icon-white small"></i><span class="nav-link" ng-bind="extension.label"></span></a>
+                            </li>
+                            <li>
+                                <a log-out><i class="icon-off icon-white small"></i><span class="nav-link">Logout</span></a>
+                            </li>
+                        </ul>
+                </header>
+                <p class="caution" ng-show="server_error"><i ng-cloak class="icon-exclamation-sign small"></i><span ng-bind="server_error"></span></p>
+                <div ng-view id="view-content"></div>
+
+                <script src="../components/jquery/jquery.js"></script>
+                <script src="../lib/jquery/jquery-ui-1.10.4.custom.min.js"></script>
+                <script src="../components/angular/angular.js"></script>
+                <script src="../components/angular-route/angular-route.js"></script>
+                <script src="../components/angular-cookies/angular-cookies.js"></script>
+                <script src="../components/moment/moment.js"></script>
+                <script src="../components/ngInfiniteScroll/ng-infinite-scroll.js"></script>
+
+                <!-- build:js registration.min.js -->
+                <script src="../common/constants.js"></script>
+                <script src="../common/util/init.js"></script>
+                <script src="../common/util/dateUtil.js"></script>
+                <script src="../common/util/arrayUtil.js"></script>
+                <script src="../common/util/objectUtil.js"></script>
+                <script src="../common/util/httpErrorInterceptor.js"></script>
+
+                <script src="../common/domain/init.js"></script>
+                <script src="../common/domain/services/configurationService.js"></script>
+
+                <script src="../common/ui-helper/init.js"></script>
+                <script src="../common/ui-helper/directives.js"></script>
+                <script src="../common/ui-helper/spinner.js"></script>
+                <script src="../common/ui-helper/loader.js"></script>
+                <script src="../common/ui-helper/printer.js"></script>
+                
+                <script src="../common/photo-capture/directives/capturePhoto.js"></script>
+
+                <script src="../common/auth/authentication.js"></script>
+                
+                <script src="../common/app-framework/init.js"></script>
+                <script src="../common/app-framework/models/appDescriptor.js"></script>
+                <script src="../common/app-framework/services/appService.js"></script>
+
+                <script src="init.js"></script>
+                <script src="app.js"></script>
+                <script src="initialization.js"></script>
+                <script src="defaults.js"></script>
+                <script src="constants.js"></script>
+                
+                
+                <script src="directives/addressFields.js"></script>
+                <script src="controllers/navigationController.js"></script>
+                <script src="controllers/searchController.js"></script>
+                <script src="controllers/patientCommonController.js"></script>
+                <script src="controllers/createPatientController.js"></script>
+                <script src="controllers/editPatientController.js"></script>
+                <script src="controllers/visitController.js"></script>
+                <script src="controllers/printController.js"></script>
+                <script src="services/patientService.js"></script>
+                <script src="services/encounterService.js"></script>
+                <script src="services/visitService.js"></script>
+                <script src="services/patientAttributeService.js"></script>
+                <script src="services/addressAttributeService.js"></script>
+                <script src="mappers/patientMapper.js"></script>
+                <script src="mappers/patientAttributeTypeMapper.js"></script>
+                <script src="mappers/encounterDataMapper.js"></script>
+                <script src="mappers/openmrsPatientMapper.js"></script>
+                <script src="mappers/createPatientRequestMapper.js"></script>
+                <script src="mappers/updatePatientRequestMapper.js"></script>
+                <script src="models/age.js"></script>
+                <script src="models/patient.js"></script>
+                <script src="models/preferences.js"></script>
+                <script src="models/registrationObservations.js"></script>
+                <script src="models/visitControl.js"></script>
+                <script src="models/bmi.js"></script>
+                <script src="models/encounterConfig.js"></script>
+                <script src="models/patientConfig.js"></script>
+                <!-- endbuild -->
+            </div>
+        </div>
+    </body>
+</html>

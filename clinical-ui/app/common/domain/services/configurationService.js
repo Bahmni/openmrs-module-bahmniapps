@@ -19,6 +19,12 @@ angular.module('bahmni.common.domain')
             return patientConfig;
         };
 
+        configurationFunctions.patientAttributesConfig = function () {
+            return $http.get(Bahmni.Common.Constants.openmrsUrl + "/ws/rest/v1/personattributetype?v=full", {
+                withCredentials: true
+            });
+        };
+
         configurationFunctions.dosageFrequencyConfig = function () {
             var dosageFrequencyConfig =  $http.get(Bahmni.Common.Constants.conceptUrl, {
                 method:"GET",
@@ -63,6 +69,18 @@ angular.module('bahmni.common.domain')
             });
             return labOrderNotesConfig;
         }
+
+        configurationFunctions.addressLevels = function () {
+            return $http.get(constants.openmrsUrl + "/module/addresshierarchy/ajax/getOrderedAddressHierarchyLevels.form", {
+                withCredentials: true
+            });
+        };
+
+        configurationFunctions.identifierSourceConfig = function () {
+           return $http.get(Bahmni.Common.Constants.idgenConfigurationURL, {
+                withCredentials: true
+            });
+        };
 
         var getConfigurations = function(configurationNames) {
             var configurations = {};

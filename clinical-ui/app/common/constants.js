@@ -12,6 +12,7 @@ Bahmni.Common.Constants = {
     visitTypeUrl: "/openmrs/ws/rest/v1/visittype",
     visitSummaryUrl: "/openmrs/ws/rest/v1/bahmnicore/visitsummary",
     openmrsUrl: "/openmrs",
+    idgenConfigurationURL: "/openmrs/ws/rest/v1/idgen/identifiersources",
     bahmniRESTBaseURL: "/openmrs/ws/rest/v1/bahmnicore",
     dosageFrequencyConceptName : 'Dosage Frequency',
     dosageInstructionConceptName : 'Dosage Instructions',
