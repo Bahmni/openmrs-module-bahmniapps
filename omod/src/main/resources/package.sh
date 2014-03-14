@@ -3,7 +3,7 @@
 set -e
 
 baseDir=$(dirname $0)
-codeBaseDir=$baseDir/../../../../registration-ui/
+codeBaseDir=$baseDir/../../../../ui/
 webappDir=$baseDir/../webapp/resources/
 
 rm -rf $webappDir

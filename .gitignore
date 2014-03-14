@@ -11,12 +11,12 @@ test/output
 target
 output
 .sass-cache
-clinical-ui/.css/
+ui/.css/
 .tmp
-clinical-ui/node_modules
-clinical-ui/app/components
-clinical-ui/dist
-clinical-ui/app/**/*.css
+ui/node_modules
+ui/app/components
+ui/dist
+ui/app/**/*.css
 **/.DS_Store
 test_out
 omod/src/main/webapp/*

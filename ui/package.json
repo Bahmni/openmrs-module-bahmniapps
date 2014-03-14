@@ -1,7 +1,7 @@
 {
-  "name": "bahmni-opd",
+  "name": "bahmni.apps",
   "version": "0.0.1",
-  "description": "OPD app for Bahmni",
+  "description": "Bahmni Apps",
   "main": "app/app.js",
   "directories": {
     "test": "test"

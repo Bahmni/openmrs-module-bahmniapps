@@ -1,5 +1,5 @@
 {
-    "name": "bahmni.opd",
+    "name": "bahmni.apps",
     "version": "0.0.1",
     "main": [
         "app/index.html",

@@ -4,14 +4,14 @@
 
 	<parent>
 		<groupId>org.openmrs.module</groupId>
-		<artifactId>bahmniregistration</artifactId>
+		<artifactId>bahmniapps</artifactId>
 		<version>4.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>bahmniregistration-api</artifactId>
+	<artifactId>bahmniapps-api</artifactId>
 	<packaging>jar</packaging>
-	<name>Bahmni Registration Module API</name>
-	<description>API project for BahmniRegistration</description>
+	<name>Bahmni Apps Module API</name>
+	<description>API project for BahmniApps</description>
 
 	<dependencies>
 	

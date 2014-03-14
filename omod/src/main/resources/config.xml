@@ -24,7 +24,7 @@
 
 	
 	<!-- Module Activator -->
-	<activator>${project.parent.groupId}.${project.parent.artifactId}.BahmniRegistrationActivator</activator>
+	<activator>${project.parent.groupId}.${project.parent.artifactId}.BahmniAppsActivator</activator>
 	
 	
 	<!-- Maps hibernate file's, if present -->
