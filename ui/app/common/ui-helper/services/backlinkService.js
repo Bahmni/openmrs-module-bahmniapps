@@ -25,7 +25,8 @@ angular.module('bahmni.common.uiHelper')
         }
 
         self.addBackUrl = function(label) {
-            urls[label || "Back"] =  function() {
+            var backLabel = label || "Back";
+            urls[backLabel] =  function() {
               $window.history.back();  
             } 
         };

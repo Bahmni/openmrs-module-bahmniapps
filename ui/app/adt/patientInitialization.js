@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('bahmni.adt').factory('patientInitialization', ['$rootScope', '$q', 'patientService', 'patientMapper', 'initialization', 'bedService',
-    function($rootScope, $q, patientService, patientMapper, initialization, bedService) {
+angular.module('bahmni.adt').factory('patientInitialization', ['$rootScope', '$q', 'patientService', 'patientMapper', 'initialization', 'bedService','spinner',
+    function($rootScope, $q, patientService, patientMapper, initialization, bedService, spinner) {
         return function(patientUuid) {
             var getPatient = function() {
                 return patientService.getPatient(patientUuid).success(function(openMRSPatient) {
@@ -13,9 +13,9 @@ angular.module('bahmni.adt').factory('patientInitialization', ['$rootScope', '$q
                 return bedService.getBedDetailsForPatient(patientUuid);
             };
             
-            return initialization.then(function(){
+            return spinner.forPromise(initialization.then(function(){
                 $q.all([getPatient(), bedDetailsForPatient()]);
-            });
+            }));
         }
     }
 ]);

@@ -78,13 +78,13 @@ angular.module('bahmni.registration')
 
         var followUpAction = function(patientProfileData) {
             if($scope.submitSource == 'startVisit') {
-                $scope.visitControl.createVisit(patientProfileData.patient.uuid, createEncounterObject()).success(function(){
+                return $scope.visitControl.createVisit(patientProfileData.patient.uuid, createEncounterObject()).success(function(){
                     var patientUrl = $location.absUrl().replace("new", patientProfileData.patient.uuid) + "?newpatient=true";
                     $scope.patient.registrationDate = dateUtil.now();
                     patientService.rememberPatient($scope.patient);
                     $window.history.pushState(null, null, patientUrl);
                     $location.path("/patient/" + patientProfileData.patient.uuid + "/visit");
-                }).error(function(){ spinner.hide(); });
+                });
             } else if ($scope.submitSource == 'print') {
                 $timeout(function(){
                     printer.print('registrationCard');
@@ -104,7 +104,6 @@ angular.module('bahmni.registration')
                     var extensionParams = matchedExtensions[0].extensionParams;
                     if (extensionParams && extensionParams.forwardUrl) {
                         var fwdUrl = appService.getAppDescriptor().formatUrl(extensionParams.forwardUrl, {'patientUuid' : patientProfileData.patient.uuid} );
-                        spinner.hide();
                         $location.url(fwdUrl);
                     }
                 }
@@ -117,19 +116,13 @@ angular.module('bahmni.registration')
 
         $scope.create = function () {
             setPreferences();
-
-            var errorCallBack = function (data) {
-                spinner.hide();
-            };
-
             if (!$scope.patient.identifier) {
-                patientService.generateIdentifier($scope.patient).then(function (response) {
+                spinner.forPromise(patientService.generateIdentifier($scope.patient).then(function (response) {
                     $scope.patient.identifier = response.data;
-                    patientService.create($scope.patient).success(successCallback).success(followUpAction).error(errorCallBack);
-                });
+                    return patientService.create($scope.patient).success(successCallback).success(followUpAction);
+                }));
             } else {
-                patientService.create($scope.patient).success(successCallback).success(followUpAction).error(errorCallBack);
+                spinner.forPromise(patientService.create($scope.patient).success(successCallback).success(followUpAction));
             }
-            spinner.show();
         };
     }]);

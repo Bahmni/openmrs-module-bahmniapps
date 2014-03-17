@@ -202,7 +202,7 @@ describe('SearchPatientController', function () {
 
             scope.searchById();
 
-            expect(spinner.show).toHaveBeenCalled();
+            expect(spinner.forPromise).toHaveBeenCalled();
         });
 
         it('should change the search parameter to patient identifier', function () {
@@ -234,7 +234,7 @@ describe('SearchPatientController', function () {
                 scope.searchById();
             });
 
-            it("should go to edit patient without hiding spinner when a patient is found", function () {
+            it("should go to edit patient when a patient is found", function () {
                 spyOn(location, 'search');
                 spyOn(location, 'url');
                 appDescriptor.getConfigValue.andReturn("/patient/patientUuid");
@@ -245,30 +245,13 @@ describe('SearchPatientController', function () {
                 ]});
 
                 expect(location.url).toHaveBeenCalledWith("/patient/8989-90909");
-                expect(spinner.hide).not.toHaveBeenCalled();
                 expect(appDescriptor.formatUrl).toHaveBeenCalledWith("/patient/patientUuid", {patientUuid: '8989-90909'});
             });
 
-            it("should show 'no patient found message' and hide the spinner when patient is not found", function () {
+            it("should show 'no patient found message' when patient is not found", function () {
                 searchPromise.callSuccessCallBack({results: []});
 
                 expect(scope.noResultsMessage).toMatch("Could not find patient with identifier GAN20001");
-                expect(spinner.hide).toHaveBeenCalled();
-            });
-        });
-
-        describe("on error", function () {
-            beforeEach(function () {
-                scope.identifierPrefix = {};
-                scope.identifierPrefix.prefix = "GAN";
-                scope.registrationNumber = "20001";
-                scope.searchById();
-            });
-
-            it("should hide the spinner", function () {
-                searchPromise.callErrorCallBack({});
-
-                expect(spinner.hide).toHaveBeenCalled();
             });
         });
     });

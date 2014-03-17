@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.adt').factory('visitInitialization',
-    ['$rootScope', '$q', 'visitService', 'initialization',
-        function ($rootScope, $q, visitService, initialization) {
+    ['$rootScope', '$q', 'visitService', 'initialization','spinner',
+        function ($rootScope, $q, visitService, initialization, spinner) {
             return function(visitUuid) {
                 var getVisit = function() {
                     if(visitUuid != 'null') {
@@ -14,7 +14,7 @@ angular.module('bahmni.adt').factory('visitInitialization',
                     }
                 };
 
-                return initialization.then(getVisit);
+                return spinner.forPromise(initialization.then(getVisit));
             }
         }]
 );

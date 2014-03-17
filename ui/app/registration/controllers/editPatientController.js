@@ -30,11 +30,8 @@ angular.module('bahmni.registration')
                 });
                 var searchActiveVisitsPromise = visitService.search({patient: uuid, includeInactive: false, v: "custom:(uuid)"}).success(function(data){
                     $scope.hasActiveVisit = data.results.length > 0;
-                    if ($scope.hasActiveVisit) {
-                        defaultActions.push("enterVisitDetails");
-                    } else {
-                        defaultActions.push("startVisit");
-                    }
+                    var actionName = $scope.hasActiveVisit ? "enterVisitDetails" : "startVisit"
+                    defaultActions.push(actionName);
                     identifyEditActions();
                 });
                 spinner.forPromise($q.all([getPatientPromise, searchActiveVisitsPromise]));
@@ -81,12 +78,12 @@ angular.module('bahmni.registration')
             }
 
             var createVisit = function(patientProfileData){
-                $scope.visitControl.createVisit(patientProfileData.patient.uuid, createEncounterObject()).success(function() {
+                return $scope.visitControl.createVisit(patientProfileData.patient.uuid, createEncounterObject()).success(function() {
                     $scope.patient.uuid = patientProfileData.patient.uuid;
                     $scope.patient.name = patientProfileData.patient.person.names[0].display;
                     patientService.rememberPatient($scope.patient);
                     goToActionUrl("startVisit", patientProfileData);
-                }).error(function() { spinner.hide(); });
+                });
             };
 
             var goToActionUrl = function(actionName, patientProfileData) {
@@ -98,7 +95,6 @@ angular.module('bahmni.registration')
                         var extensionParams = matchedExtensions[0].extensionParams;
                         if (extensionParams && extensionParams.forwardUrl) {
                             var fwdUrl = appService.getAppDescriptor().formatUrl(extensionParams.forwardUrl, {'patientUuid' : patientProfileData.patient.uuid} );
-                            spinner.hide();
                             $location.url(fwdUrl);
                         }
                     }
@@ -107,27 +103,23 @@ angular.module('bahmni.registration')
             
             $scope.update = function () {
                 var patientUpdatePromise = patientService.update($scope.patient, $scope.openMRSPatient).success(function (patientProfileData) {
-                    switch($scope.submitSource) {
-                        case 'print':
-                            printer.print('registrationCard');
-                            spinner.hide();
-                            goToActionUrl($scope.submitSource, patientProfileData);
-                            break;
-                        case 'startVisit':
-                            createVisit(patientProfileData);                        
-                            break;
-                        case 'enterVisitDetails':
-                            goToVisitPage(patientProfileData);
-                            break;
-                        case 'save':
-                        default:
-                            spinner.hide();
-                            goToActionUrl($scope.submitSource, patientProfileData);
-                    }
+                    var submitSource = $scope.submitSource;
                     $scope.submitSource = null;
                     $rootScope.server_error = null;
+                    switch(submitSource) {
+                        case 'print':
+                            printer.print('registrationCard');
+                            return goToActionUrl(submitSource, patientProfileData);
+                        case 'startVisit':
+                            return createVisit(patientProfileData);                        
+                        case 'enterVisitDetails':
+                            return goToVisitPage(patientProfileData);
+                        case 'save':
+                        default:
+                            return goToActionUrl(submitSource, patientProfileData);
+                    }
                 });
-                spinner.forPromise(patientUpdatePromise, {doNotHideOnSuccess: true});
+                spinner.forPromise(patientUpdatePromise);
             };
 
             $scope.showBackButton = function () {
