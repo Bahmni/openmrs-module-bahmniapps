@@ -1,19 +1,23 @@
 <div>
-    <div class="form-field" ng-hide="observation.groupMembers.length">
-        <div class="field-attribute">
-            <label>{{observation.concept.name}}</label>
-            <span class="label-add-on" ng-show="observation.concept.units">({{observation.concept.units}})</span>
-        </div>
-        <span class="value-text-only">{{observation | observationValue}}</span>
-    </div>
-    <fieldset ng-show="observation.groupMembers.length">
-        <div class="form-field">
-            <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers">
-                <div ng-switch on="$index">
-                    <legend ng-switch-when="0" class="mylegend"><strong>{{observation.concept.name}}</strong></legend>
-                </div>
-                <show-obs observation="member"></show-obs>
+    <div>
+        <div class="form-field" ng-hide="observation.groupMembers.length">
+            <div class="field-attribute" ng-show="showObservation()">
+                <label>{{observation.concept.name}}</label>
+                <span class="label-add-on" ng-show="observation.concept.units">({{observation.concept.units}})</span>
             </div>
+            <span class="value-text-only">{{observation | observationValue}}</span>
         </div>
-    </fieldset>
+    <div>
+    <div>
+        <fieldset ng-show="observation.groupMembers.length">
+            <div class="form-field">
+                <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers">
+                    <div ng-switch on="$index" ng-show="showObservation()">
+                        <legend ng-switch-when="0" class="mylegend"><strong>{{observation.concept.name}}</strong></legend>
+                    </div>
+                    <show-obs observation="member"></show-obs>
+                </div>
+            </div>
+        </fieldset>
+    </div>
 </div>

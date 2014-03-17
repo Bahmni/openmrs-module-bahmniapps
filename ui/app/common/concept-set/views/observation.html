@@ -2,47 +2,49 @@
     <fieldset ng-if="!observation.isGroup()">
         <div class="form-group">
             <label class="control-label">
-                <span>{{observation.label}}&nbsp;</span>
-                <span ng-show="observation.units">({{observation.units}})</span>
+                <span>{{observation.label()}}&nbsp;</span>
+                <span ng-show="observation.units">({{observation.units()}})</span>
             </label>
             <div class="field-value" ng-switch on="observation.getControlType()">
                 <div ng-switch-when="html5InputDataType">
                     <input ng-class="{'illegalValue': !observation.isValid()}"
                            add-obs-constraints obs="$parent.observation"
-                           class="form-control" ng-model="$parent.observation.value"
+                           class="form-control" ng-model="$parent.observation.observation.value"
                            ng-change="$parent.observation.onValueChanged()"
                            value="$parent.observation.displayValue()"/>
                 </div>
 
-                <textarea ng-switch-when="text" class="form-control" ng-model="$parent.observation.value"
+                <textarea ng-switch-when="text" class="form-control" ng-model="$parent.observation.observation.value"
                           ng-change="$parent.observation.onValueChanged()"
                           value="$parent.observation.displayValue()"></textarea>
 
-                <select ng-switch-when="dropdown" foo-bar class="form-control" ng-model="observation.value" ng-change="observation.onValueChanged()"
+                <select ng-switch-when="dropdown" foo-bar class="form-control" ng-model="observation.observation.value" ng-change="observation.onValueChanged()"
                         ng-options="answer as answer.name for answer in getPossibleAnswers() track by answer.uuid">
                 </select>
-
-<!--            <input ng-switch-when="autocomplete" concept-autocomplete source="getValues"
-                        class="form-control" concept="observation.value" concept-change="observation.onValueChanged()">
-                </input>
- -->
                 <input ng-switch-when="autocomplete" type='hidden' ui-select2="selectOptions"
-                        class="form-control" ng-model="observation.value" ng-change="observation.onValueChanged()">
+                        class="form-control" ng-model="observation.observation.value" ng-change="observation.onValueChanged()">
                 </input>
 
                 <span ng-switch-default class="form-control">
                     The concept data type '{{$parent.observation.getDataTypeName()}}' is not supported yet.
                 </span>
             </div>
+            <label class="checkbox-inline" ng-show="observation.isAbnormal">
+              <input type="checkbox" ng-model="observation.isAbnormal.value" value="observation.isAbnormal.value">
+              Abnormal
+              </input>
+            </label>
         </div>
     </fieldset>
 
     <fieldset ng-if="observation.isGroup()" class="hasLegend">
+        
         <legend class="mylegend"><strong>{{observation.label}}</strong></legend>
         <div class="form-group">
-            <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers">
+            <div class="form-field form-field-group" ng-repeat="member in observation.getGroupMembers()">
                 <show-concept observation="member"></show-concept>
             </div>
         </div>
+        
     </fieldset>
 </div>

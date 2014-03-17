@@ -1,6 +1,12 @@
 angular.module('bahmni.clinical')
 .directive('observationSummary',function () {
+    var controller = function($scope) {
+        $scope.showObservation = function(){
+            return Bahmni.Clinical.Constants.groupObservations.indexOf($scope.observation.concept.name) < 0;
+        };
+    };
     return {
+        controller : controller,
         restrict:'E',
         scope:{
             observation:"=",

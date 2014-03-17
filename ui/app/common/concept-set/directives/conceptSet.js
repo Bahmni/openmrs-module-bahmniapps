@@ -40,22 +40,27 @@ angular.module('bahmni.common.conceptSet')
             controller: controller,
             template: '<ng-include src="\'../common/concept-set/views/observation.html\'" />'
         }
-    }]).directive('showConceptSet', ['$rootScope', function () {
+    }]).directive('showConceptSet', ['$rootScope', '$q', function () {
         var template =
             '<form>' +
                 '<show-concept observation="rootObservation"></show-concept>' +
             '</form>';
 
-        var controller = function ($scope, conceptSetService, appService, $rootScope) {
+        var controller = function ($scope, conceptSetService, appService, $rootScope, $q) {
             var conceptSetName = $scope.conceptSetName;
             var conceptSetUIConfig = appService.getAppDescriptor().getConfig("conceptSetUI") || {};
-            var observationMapper = new Bahmni.ConceptSet.ObservationMapper();
-            conceptSetService.getConceptSetMembers({name: conceptSetName, v: "fullchildren"}).success(function (response) {
-                var conceptSet = response.results[0];
+            var conceptSetPromise = conceptSetService.getConceptSetMembers(
+                                        {name: conceptSetName, v: "fullchildren"});
+            var xCompoundObservationPromise = conceptSetService.getConceptSetMembers({name: 'XCompoundObservation', v: "full"});
+            
+            var promises = [conceptSetPromise, xCompoundObservationPromise];
+            $q.all(promises).then(function(responses) {
+                var xCompoundObservation = responses[1].data.results[0];
+                var conceptSet = responses[0].data.results[0];
                 $scope.$watch('observations', function (observations) {
-                    $scope.rootObservation = conceptSet ? observationMapper.map(observations, conceptSet, conceptSetUIConfig.value || {}) : null;
+                    $scope.rootObservation = conceptSet ? new Bahmni.ConceptSet.ObservationMapper(conceptSetUIConfig.value || {}, xCompoundObservation).map(observations, conceptSet) : null;
                     changeObservations();
-                });
+                });                
             });
 
             var changeObservations = function() {

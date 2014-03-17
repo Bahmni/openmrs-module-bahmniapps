@@ -89,7 +89,6 @@ var observation = {
           {
             "uuid": "7832f2f8-abd8-4866-87f9-4de301cd0eea",
             "observationDateTime": "2014-03-10T00:57:37.000+0530",
-            "groupMembers": [],
             "voidReason": null,
             "orderUuid": null,
             "value": {

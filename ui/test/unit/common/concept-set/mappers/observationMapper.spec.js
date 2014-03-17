@@ -9,10 +9,21 @@ describe("ObservationMapper", function () {
             setMembers: conceptData.setMembers || []
         };
         return concept;
-    }
+    }, 
+    getObservations = function(observations, conceptName) {
+        return observations.filter(function(obs) {
+            return obs.concept.name === conceptName;
+        });
+    },
+    getXObservationByConceptName = function(xObservations, conceptName) {
+        return xObservations.filter(function(xObs) {
+            return xObs.groupMembers.some(function(groupMember) {
+                return groupMember.concept.name === conceptName;
+            });
+        });
+    };
 
     it('should map observations with ui config', function () {
-        var observationMapper = new Bahmni.ConceptSet.ObservationMapper();
         var conceptSet = 
             build({name: "VITALS_CONCEPT", set: true,
                 setMembers : [
@@ -23,27 +34,50 @@ describe("ObservationMapper", function () {
         var conceptSetUIConfig = {
             "Pulse": {},
             "BP": {
-                "Systolic": {abnormalIndicator: true},
-                "Diastolic": {abnormalIndicator: false}
+                "Systolic": {showAbnormalIndicator: true},
+                "Diastolic": {showAbnormalIndicator: false}
             }
-        }
+        };
+        var compoundObservation = build({name: "XCompoundObservation", 
+            set: true, 
+            setMembers: [
+                build({name: "IS_ABNORMAL"})
+            ]
+        });
         
-        var rootObservation = observationMapper.map([], conceptSet, conceptSetUIConfig);
+        var observationMapper = new Bahmni.ConceptSet.ObservationMapper(conceptSetUIConfig, compoundObservation);
+        var rootObservation = observationMapper.map([], conceptSet);
+        expect(rootObservation.concept.name).toBe('XCompoundObservation');
+        
+        var vitalsObservation = getObservations(rootObservation.groupMembers, "VITALS_CONCEPT")[0];
+        expect(vitalsObservation).toBeDefined();
+        
+        var vitalsGroup = vitalsObservation.groupMembers;
+        expect(vitalsGroup.length).toBe(3);
 
-        expect(rootObservation.concept.name).toBe('VITALS_CONCEPT');
-        expect(rootObservation.groupMembers.length).toBe(3);
-        expect(rootObservation.groupMembers[0].concept.name).toBe('Pulse');
-        expect(rootObservation.groupMembers[0].conceptUIConfig).toBe(conceptSetUIConfig["Pulse"]);
-        
-        expect(rootObservation.groupMembers[1].concept.name).toBe('BP');
-        var bpObservation = rootObservation.groupMembers[1];
-        expect(bpObservation.conceptUIConfig).toBe(conceptSetUIConfig["BP"]);
+        var pulseObservation = getXObservationByConceptName(vitalsGroup, 'Pulse')[0];
+        expect(pulseObservation).toBeDefined();
+
+        var pulseObservationIsAbnormal = getObservations(pulseObservation.groupMembers, 'IS_ABNORMAL');
+        expect(pulseObservationIsAbnormal.length).toBe(0);
+
+        var sugarObservation = getXObservationByConceptName(vitalsGroup, 'Sugar')[0];
+        expect(sugarObservation).toBeDefined();
+
+        var xBpObservation = getXObservationByConceptName(vitalsGroup, 'BP')[0];
+        expect(xBpObservation).toBeDefined(); 
+
+        var bpObservation = getObservations(xBpObservation.groupMembers, 'BP')[0];
         expect(bpObservation.groupMembers.length).toBe(2);
-        expect(bpObservation.groupMembers[0].conceptUIConfig).toBe(conceptSetUIConfig["BP"]["Systolic"]);
-        expect(bpObservation.groupMembers[1].conceptUIConfig).toBe(conceptSetUIConfig["BP"]["Diastolic"]);
 
-        expect(rootObservation.groupMembers[2].concept.name).toBe('Sugar');
-        expect(rootObservation.groupMembers[2].conceptUIConfig).toEqual({});
+        var xSystolicObservation = getXObservationByConceptName(bpObservation.groupMembers, 'Systolic')[0];
+        expect(xSystolicObservation).toBeDefined();
+
+        var systolicObservation = getObservations(xSystolicObservation.groupMembers, 'Systolic');
+        expect(systolicObservation).toBeDefined();
+
+        var systolicIsAbnormal = getObservations(xSystolicObservation.groupMembers, 'IS_ABNORMAL');
+        expect(systolicIsAbnormal).toBeDefined();
     });
 });
 

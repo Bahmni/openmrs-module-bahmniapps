@@ -22,7 +22,8 @@ Bahmni.Clinical.Constants = (function() {
                 labDepartmentsConceptSetName: "Lab Departments",
                 otherInvestigationsConceptSetName: "Other Investigations",
                 otherInvestigationCategoriesConceptSetName: "Other Investigations Categories",
-                commentConceptName: "COMMENTS"
+                commentConceptName: "COMMENTS",
+                groupObservations: ["XCompoundObservation"]
 	};
 })();
 
