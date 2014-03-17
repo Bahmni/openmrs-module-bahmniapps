@@ -11,7 +11,7 @@ angular.module('bahmni.common.uiHelper')
                         var code = "<!doctype html>"+
                                     "<html>"+
                                         "<head>" +
-                                            "<link rel=\"stylesheet\" href=\"styles/print.css\"/>" +
+                                            "<link rel=\"stylesheet\" href=\"../styles/print.css\"/>" +
                                        "</head>"+
                                         '<body onload="printAndRemove();">' +
                                              document.getElementById(printElementId).innerHTML +

@@ -15,19 +15,19 @@ $fontPath: "../components/openmrs-uicommons/omod/src/main/webapp/resources/fonts
 @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fragments/notifications";
 
 // JSS css files
-@import "opd/jss-ui-common";
-@import "opd/layout";
-@import "opd/patientSearch";
-@import "opd/visit";
-@import "opd/consultation";
-@import "opd/investigation";
-@import "opd/diagnosis";
-@import "opd/treatment";
-@import "opd/trends";
+@import "clinical/jss-ui-common";
+@import "clinical/layout";
+@import "clinical/patientSearch";
+@import "clinical/visit";
+@import "clinical/consultation";
+@import "clinical/investigation";
+@import "clinical/diagnosis";
+@import "clinical/treatment";
+@import "clinical/trends";
 @import "bed-management/wardLayout";
-@import "opd/vitals";
-@import "opd/patientDashboard";
-@import "opd/upload";
-@import "opd/adt"
+@import "clinical/vitals";
+@import "clinical/patientDashboard";
+@import "clinical/upload";
+@import "clinical/adt"
 
 
