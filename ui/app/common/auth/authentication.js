@@ -23,7 +23,7 @@ angular.module('authentication', ['ngCookies'])
     }).run(['$rootScope', '$window', function ($rootScope, $window) {
         $rootScope.$on('event:auth-loginRequired', function () {
             $rootScope.errorMessage = "You are not authenticated right now. Please login.";
-            $window.location = "/home";
+            $window.location = "/home/#/login";
         });
     }]).service('sessionService', ['$rootScope', '$http', '$q', '$cookieStore', function ($rootScope, $http, $q, $cookieStore) {
         var sessionResourcePath = '/openmrs/ws/rest/v1/session';
@@ -100,7 +100,7 @@ angular.module('authentication', ['ngCookies'])
                     defer.resolve();
                 } else {
                     defer.reject('User not authenticated');
-                    $window.location = "/home";
+                    $window.location = "/home/#/login";
                 }
             });
             return defer.promise;
@@ -117,7 +117,7 @@ angular.module('authentication', ['ngCookies'])
                     scope.$apply(function() {
                         sessionService.destroy().then(
                             function () {
-                                $window.location = "/clinical/home/#/login";
+                                $window.location = "/home/#/login";
                             }
                         );
                     });
