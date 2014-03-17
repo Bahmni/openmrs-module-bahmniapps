@@ -1,10 +1,14 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'spinner', '$q',
-     function ($rootScope, $scope, $window, $location, sessionService, spinner, $q) {
+    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'spinner', '$q', '$routeParams',
+     function ($rootScope, $scope, $window, $location, sessionService, spinner, $q, $routeParams) {
         var landingPagePath = "/dashboard";
         var loginPagePath = "/login";
+
+        if($routeParams.showLoginMessage) {
+            $scope.errorMessage = "You are not authenticated right now. Please login.";
+        }
 
         var redirectToLandingPageIfAlreadyAuthenticated = function() {
             sessionService.get().success(function (data) {
