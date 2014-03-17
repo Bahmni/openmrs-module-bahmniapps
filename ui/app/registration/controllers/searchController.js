@@ -22,7 +22,6 @@ angular.module('bahmni.registration')
             $scope.registrationNumber = $location.search().registrationNumber || "";
             if ($scope.name.trim().length > 0 || $scope.village.trim().length > 0) {
                 var searchPromise = patientService.search($scope.name, $scope.village, offset);
-                loader.forPromise(searchPromise);
                 return searchPromise;
             }
         };

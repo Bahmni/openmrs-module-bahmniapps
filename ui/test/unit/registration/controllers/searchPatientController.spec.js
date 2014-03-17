@@ -112,14 +112,6 @@ describe('SearchPatientController', function () {
             expect(patientResource.search).not.toHaveBeenCalled();
         });
 
-        it('should show the spinner while searching', function () {
-            spyOn(location, 'search').andReturn({"name": "foo"});
-
-            urlSearchChangeCallback();
-
-            expect(loader.forPromise).toHaveBeenCalledWith(searchPromise);
-        });
-
         it('should not search for patients if search parameter is not provided', function () {
             spyOn(location, 'search').andReturn({});
 
