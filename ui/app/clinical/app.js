@@ -9,6 +9,9 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', functi
             .state('patientsearch', {
                 url: '/patient/search',
                 templateUrl: '../common/patient-search/views/activePatientsList.html',
+                data: {
+                    backLinks: [{label: "Home", url: "/home"}]
+                },
                 controller : 'ActivePatientsListController',
                 resolve: {
                     initialization: 'initialization'
@@ -17,6 +20,9 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', functi
             .state('patient', {
                 url: '/patient/:patientUuid',
                 abstract: true,
+                data: {
+                    backLinks: [{label: "Patient Q", url: "/clinical/#/patient/search"}]
+                },
                 template: '<ui-view/>',
                 resolve: {
                     consultationInitialization: function(consultationInitialization, $stateParams) {
@@ -77,6 +83,4 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', functi
                 templateUrl: 'views/comingSoon.html'
             })
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
-    }]).run(['backlinkService', function (backlinkService) {
-        backlinkService.addUrl("Patient Q", "/clinical/#/patient/search");
     }]);

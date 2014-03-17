@@ -4,6 +4,9 @@ angular.module('adt', ['bahmni.common.patient', 'bahmni.common.patientSearch', '
 angular.module('adt').config(['$stateProvider', '$httpProvider', function($stateProvider, $httpProvider) {
         $stateProvider.state('patientsearch', {
             url: '/patient/search',
+            data: {
+                backLinks: [{label: "Home", url: "/home"}]
+            },
             views: {
                 'content': {
                     templateUrl: '../common/patient-search/views/activePatientsList.html',
@@ -16,6 +19,9 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', function($state
         })
         .state('patient', {
             url: '/patient/:patientUuid',
+            data: {
+                backLinks: [{label: "ADT", url: "/adt/#/patient/search"}]
+            },
             abstract: true,
             views: {
                 'content': {
@@ -52,9 +58,5 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', function($state
             templateUrl: 'views/bedManagement.html',
             controller: 'BedManagementController',
         });
-    }
-]).run(['backlinkService',
-    function(backlinkService) {
-        backlinkService.addUrl("ADT", "/adt/#/patient/search");
     }
 ]);
