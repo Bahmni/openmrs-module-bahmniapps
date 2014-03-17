@@ -37,7 +37,6 @@ describe('SearchPatientController', function () {
         searchPromise = specUtil.createServicePromise('search');
         patientResource.search.andReturn(searchPromise);
         spinner = jasmine.createSpyObj('spinner', ['show', 'hide', 'forPromise']);
-        loader = jasmine.createSpyObj('loader', ['show', 'hide', 'forPromise']);
         appDescriptor = jasmine.createSpyObj('appDescriptor', ['getExtensions', 'getConfigValue', 'formatUrl']);
         appDescriptor.getExtensions.andReturn([]);
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
@@ -48,7 +47,6 @@ describe('SearchPatientController', function () {
             $location: location,
             $window: $window,
             spinner: spinner,
-            loader: loader,
             appService: appService,
             preferences: preferences,
             $rootScope: rootScope

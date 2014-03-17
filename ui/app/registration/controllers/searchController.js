@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('SearchPatientController', ['$rootScope', '$scope', '$route', '$location', '$window', 'spinner', 'loader', 'patientService', 'appService', 'Preferences', function ($rootScope, $scope, $route, $location, $window, spinner, loader, patientService, appService, preferences) {
+    .controller('SearchPatientController', ['$rootScope', '$scope', '$route', '$location', '$window', 'spinner', 'patientService', 'appService', 'Preferences',
+     function ($rootScope, $scope, $route, $location, $window, spinner, patientService, appService, preferences) {
         $scope.identifierSources = $rootScope.patientConfiguration.identifierSources;
         $scope.results = [];
 
