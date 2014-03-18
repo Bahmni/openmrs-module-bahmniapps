@@ -2,7 +2,7 @@
 
 
 angular
-    .module('registration', ['ngRoute', 'bahmni.registration', 'authentication', 'bahmni.common.appFramework', 'httpErrorInterceptor'])
+    .module('registration', ['ngRoute', 'bahmni.registration', 'authentication', 'bahmni.common.appFramework', 'httpErrorInterceptor', 'bahmni.common.photoCapture'])
     .config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
         $routeProvider.when('/search', {reloadOnSearch: false, templateUrl: 'views/search.html', controller: 'SearchPatientController', resolve: {initialization: 'initialization'}});
         $routeProvider.when('/patient/new', {templateUrl: 'views/newpatient.html', controller: 'CreatePatientController', resolve: {initialization: 'initialization'}});

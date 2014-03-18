@@ -5,6 +5,7 @@ angular.module('bahmni.registration')
      function ($rootScope, $scope, $route, $location, $window, spinner, patientService, appService, preferences) {
         $scope.identifierSources = $rootScope.patientConfiguration.identifierSources;
         $scope.results = [];
+        var searching = false;
 
         var searchBasedOnQueryParameters = function(offset) {
             $scope.village = $location.search().village || '';
@@ -23,6 +24,7 @@ angular.module('bahmni.registration')
             $scope.registrationNumber = $location.search().registrationNumber || "";
             if ($scope.name.trim().length > 0 || $scope.village.trim().length > 0) {
                 var searchPromise = patientService.search($scope.name, $scope.village, offset);
+                searching = true;
                 return searchPromise;
             }
         };
@@ -75,6 +77,10 @@ angular.module('bahmni.registration')
             spinner.forPromise(searchPromise);
         };
 
+        $scope.loadingMoreResults = function() {
+            return searching && ! $scope.noMoreResultsPresent;
+        }
+        
         $scope.searchByVillageAndName = function () {
             var queryParams = {};
             if($scope.name){
