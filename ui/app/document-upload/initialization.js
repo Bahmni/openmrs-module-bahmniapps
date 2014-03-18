@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('opd.documentupload').factory('initialization',
-    ['$rootScope', '$q', 'configurationService', 'patientService', 'patientMapper', 'authenticator', 'appService',
-        function ($rootScope, $q, configurationService, patientService, patientMapper, authenticator, appService) {
+    ['$rootScope', '$q', '$window', 'configurationService', 'patientService', 'patientMapper', 'authenticator', 'appService',
+        function ($rootScope, $q, $window, configurationService, patientService, patientMapper, authenticator, appService) {
 
             var initializationPromise = $q.defer();
+            var url = purl(decodeURIComponent($window.location));
+            $rootScope.appConfig = url.param();
 
             var getConsultationConfigs = function () {
                 var configNames = ['encounterConfig'];

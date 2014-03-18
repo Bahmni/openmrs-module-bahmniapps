@@ -41,7 +41,7 @@ angular.module('opd.documentupload')
             };
 
             var getTopLevelConceptUuid = function () { 
-                return $http.get(Bahmni.Common.Constants.conceptUrl, { params: {name: "Radiology"}
+                return $http.get(Bahmni.Common.Constants.conceptUrl, { params: {name: $rootScope.appConfig.topLevelConcept}
                     }).then(function (response) {
                         var topLevelConcept = response.data.results[0];
                         topLevelConceptUuid = topLevelConcept ? topLevelConcept.uuid : null;
@@ -105,7 +105,7 @@ angular.module('opd.documentupload')
                 visitDocument.visitTypeUuid = visit.visitType.uuid;
                 visitDocument.visitStartDate = visit.startDate();
                 visitDocument.visitEndDate = visit.endDate();
-                visitDocument.encounterTypeUuid = $scope.encounterConfig.getRadiologyEncounterTypeUuid();
+                visitDocument.encounterTypeUuid = $scope.encounterConfig.getEncounterTypeUuid($rootScope.appConfig.encounterType);
                 visitDocument.encounterDateTime = visitDocument.visitStartDate;
                 visitDocument.providerUuid = $rootScope.currentProvider.uuid;
                 visitDocument.visitUuid = visit.uuid;

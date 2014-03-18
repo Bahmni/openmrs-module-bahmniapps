@@ -20,6 +20,7 @@
         "jquery.cookie":"1.4.0",
         "ngInfiniteScroll": "1.0.0",
         "moment": "2.4.0",
+        "purl": "2.3.1",
         "keyboardjs": "RobertWHurst/KeyboardJS",
         "angularjs-nvd3-directives": "v0.0.4-beta",
         "openmrs-uicommons": "master",

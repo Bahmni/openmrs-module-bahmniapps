@@ -21,6 +21,9 @@ var EncounterConfig = (function () {
         getRadiologyEncounterTypeUuid:function () {
             return this.encounterTypes["RADIOLOGY"];
         },
+        getEncounterTypeUuid:function(encounterTypeName) {
+            return this.encounterTypes[encounterTypeName]
+        },
         getVisitTypes:function(){
             var visitTypesArray = [];
             for(var name in this.visitTypes) {
