@@ -1,111 +1,108 @@
-<div ng-include src="'../common/patient/header/views/header.html'"></div>
-<div class="opd-content-wrapper main opd-wrapper">
-    <div id="messages">
-        <p class="success" ng-show="success"><i class="icon-ok-circle white small"></i>File(s) uploaded successfully</p>
-    </div>
-
-    <ul>
-        <li id="newVisit">
-            <h1 ng-click="resetCurrentVisit(newVisit)">Visit: New</h1>
-            <div ng-if="isCurrentVisit(newVisit)" class="visit-content">
-                <form ng-submit="save(newVisit)">
-                    <div class="form-field">
-                        <div>
-                            <label>Visit Type
-                                <span class="asterick">*</span>
-                            </label>
-                        </div>
-                        <div class="field-value">
-                            <select ng-model="newVisit.visitType" ng-options="vt.display for vt in visitTypes" required>
-                                <option value=""></option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-field">
-                        <div>
-                            <label class="form-attribute">Start Date
-                                <span class="asterick">*</span>
-                            </label>
-                        </div>
-                        <div class="field-value">
-                            <input type="date" ng-model="newVisit.startDatetime" ng-change="setDefaultEndDate(newVisit)" required class="field-value">
-                        </div>
-                    </div>
-                    <div class="form-field">
-                        <div>
-                            <label class="form-attribute">End Date</label>
-                        </div>
-                        <div class="field-value">
-                            <input type="date" ng-model="newVisit.stopDatetime" class="field-value">
-                        </div>
-                    </div>
-                    <div>
-                        <span class="clear" ng-repeat="image in newVisit.images">
-                            <img ng-src="{{image.encodedValue}}" width="100">
-                            <input class="concept-name" ng-model="image.concept" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter the test name" title="Select the test from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
-                            <button type="button" ng-click="newVisit.removeNewAddedImage(image)"><i class="icon-trash"></i></button>
-                        </span>
-                    </div>
-                    <div class="upload-inline-buttons">
-                        <input id="file-browse" type="file" name="image" accept="image/*" capture="camera" file-upload visit="newVisit">
-                        <label for="file-browse" class="btn btn-primary" ng-click="resetCurrentVisit(newVisit)"><i class="icon-camera icon-white"></i>SCAN</label>
-                        <button type="submit" ng-disabled="newVisit.images.length == 0" class="btn btn-primary">
-                            <i class="icon-save icon-white"></i>SAVE
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </li>
-
-        <li ng-repeat="visit in visits">
-            <h1 ng-click="resetCurrentVisit(visit)">
-                Visit: <small>From: </small>
-                <span>{{visit.startDatetime | date:'dd-MMM-yy'}}</span>
-                <small ng-if="visit.stopDatetime">To: </small>
-                <span ng-if="visit.stopDatetime">{{visit.stopDatetime | date:'dd-MMM-yy'}}</span>
-                <span ng-if="!visit.stopDatetime" class="currentVisitMarker"><i class="icon-star"></i></span>
-            </h1>
-            <div class="visit-content" ng-if="isCurrentVisit(visit)">
-                <form name="{{'visit' + $index}}" ng-submit="save(visit)" ng-disabled="!visit.changed">
-                    <ul>
-                        <li>
-                            <ul class="files">
-                                <li>
-                                    <div class="file-actions">
-                                        <div class="upload-inline-buttons">
-                                            <input id="file-browse-{{visit.uuid}}" type="file" name="image" accept="image/*" capture="camera" file-upload visit="visit">
-                                        </div>
-                                        <label for="file-browse-{{visit.uuid}}" class="btn btn-primary">
-                                            <i class="icon-camera icon-white"></i>SCAN
-                                        </label>
-                                        <button type="submit" ng-disabled="!visit.changed" class="btn btn-primary">
-                                            <i class="icon-save icon-white"></i>SAVE
-                                        </button>
-                                    </div>
-                                </li>
-                                <li ng-repeat="image in visit.images">
-                                    <div>
-                                        <img ng-src="{{image.encodedValue}}" width="100">
-                                        <input class="concept-name" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter the test name" title="Select the test from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
-                                    </div>
-                                    <div class="file-actions">
-                                        <button type="button" ng-click="visit.removeNewAddedImage(image)"><i class="icon-trash"></i></button>
-                                    </div>
-                                </li>
-                                <li ng-repeat="image in visit.savedImages">
-                                    <div>
-                                        <img ng-src="/document_images/{{image.encodedValue}}" width="100" ng-class="{true:'transparent', false:'opaque'}[image.voided]" />
-                                        <input name="{{'image'+$index}}" class="concept-name" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter the test name" title="Select the test from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true" ng-change="visit.markAsUpdated()" ng-disabled="image.voided"/>
-                                    </div>
-                                    <div class="file-actions">
-                                        <button type="button" ng-click="visit.toggleVoidingOfImage(image)"><i  ng-class="{'icon-trash': !image.voided, 'icon-undo': image.voided }"></i></button>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </form>
-            </div>
-        </li>
-    </ul>
+<div id="messages">
+    <p class="success" ng-show="success"><i class="icon-ok-circle white small"></i>File(s) uploaded successfully</p>
 </div>
+
+<ul>
+    <li id="newVisit">
+        <h1 ng-click="resetCurrentVisit(newVisit)">Visit: New</h1>
+        <div ng-if="isCurrentVisit(newVisit)" class="visit-content">
+            <form ng-submit="save(newVisit)">
+                <div class="form-field">
+                    <div>
+                        <label>Visit Type
+                            <span class="asterick">*</span>
+                        </label>
+                    </div>
+                    <div class="field-value">
+                        <select ng-model="newVisit.visitType" ng-options="vt.display for vt in visitTypes" required>
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div>
+                        <label class="form-attribute">Start Date
+                            <span class="asterick">*</span>
+                        </label>
+                    </div>
+                    <div class="field-value">
+                        <input type="date" ng-model="newVisit.startDatetime" ng-change="setDefaultEndDate(newVisit)" required class="field-value">
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div>
+                        <label class="form-attribute">End Date</label>
+                    </div>
+                    <div class="field-value">
+                        <input type="date" ng-model="newVisit.stopDatetime" class="field-value">
+                    </div>
+                </div>
+                <div>
+                    <span class="clear" ng-repeat="image in newVisit.images">
+                        <img ng-src="{{image.encodedValue}}" width="100">
+                        <input class="concept-name" ng-model="image.concept" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter the test name" title="Select the test from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
+                        <button type="button" ng-click="newVisit.removeNewAddedImage(image)"><i class="icon-trash"></i></button>
+                    </span>
+                </div>
+                <div class="upload-inline-buttons">
+                    <input id="file-browse" type="file" name="image" accept="image/*" capture="camera" file-upload visit="newVisit">
+                    <label for="file-browse" class="btn btn-primary" ng-click="resetCurrentVisit(newVisit)"><i class="icon-camera icon-white"></i>SCAN</label>
+                    <button type="submit" ng-disabled="newVisit.images.length == 0" class="btn btn-primary">
+                        <i class="icon-save icon-white"></i>SAVE
+                    </button>
+                </div>
+            </form>
+        </div>
+    </li>
+
+    <li ng-repeat="visit in visits">
+        <h1 ng-click="resetCurrentVisit(visit)">
+            Visit: <small>From: </small>
+            <span>{{visit.startDatetime | date:'dd-MMM-yy'}}</span>
+            <small ng-if="visit.stopDatetime">To: </small>
+            <span ng-if="visit.stopDatetime">{{visit.stopDatetime | date:'dd-MMM-yy'}}</span>
+            <span ng-if="!visit.stopDatetime" class="currentVisitMarker"><i class="icon-star"></i></span>
+        </h1>
+        <div class="visit-content" ng-if="isCurrentVisit(visit)">
+            <form name="{{'visit' + $index}}" ng-submit="save(visit)" ng-disabled="!visit.changed">
+                <ul>
+                    <li>
+                        <ul class="files">
+                            <li>
+                                <div class="file-actions">
+                                    <div class="upload-inline-buttons">
+                                        <input id="file-browse-{{visit.uuid}}" type="file" name="image" accept="image/*" capture="camera" file-upload visit="visit">
+                                    </div>
+                                    <label for="file-browse-{{visit.uuid}}" class="btn btn-primary">
+                                        <i class="icon-camera icon-white"></i>SCAN
+                                    </label>
+                                    <button type="submit" ng-disabled="!visit.changed" class="btn btn-primary">
+                                        <i class="icon-save icon-white"></i>SAVE
+                                    </button>
+                                </div>
+                            </li>
+                            <li ng-repeat="image in visit.images">
+                                <div>
+                                    <img ng-src="{{image.encodedValue}}" width="100">
+                                    <input class="concept-name" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter the test name" title="Select the test from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
+                                </div>
+                                <div class="file-actions">
+                                    <button type="button" ng-click="visit.removeNewAddedImage(image)"><i class="icon-trash"></i></button>
+                                </div>
+                            </li>
+                            <li ng-repeat="image in visit.savedImages">
+                                <div>
+                                    <img ng-src="/document_images/{{image.encodedValue}}" width="100" ng-class="{true:'transparent', false:'opaque'}[image.voided]" />
+                                    <input name="{{'image'+$index}}" class="concept-name" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter the test name" title="Select the test from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true" ng-change="visit.markAsUpdated()" ng-disabled="image.voided"/>
+                                </div>
+                                <div class="file-actions">
+                                    <button type="button" ng-click="visit.toggleVoidingOfImage(image)"><i  ng-class="{'icon-trash': !image.voided, 'icon-undo': image.voided }"></i></button>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </li>
+</ul>

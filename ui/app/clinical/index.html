@@ -12,7 +12,9 @@
     <body>
         <div ng-app="consultation" ng-controller="ConsultationNavigationController">
             <div ng-include src="'../common/ui-helper/header.html'"></div>
-            <div ui-view id="view-content">
+            <div ui-view="additional-header"></div>
+            <div class="opd-wrapper">
+                <div ui-view="content" id="view-content" class="opd-content-wrapper"></div>
             </div>
         </div>
         <script src="../components/jquery/jquery.js"></script>

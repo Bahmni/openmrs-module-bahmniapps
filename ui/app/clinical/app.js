@@ -8,11 +8,15 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', functi
         $stateProvider
             .state('patientsearch', {
                 url: '/patient/search',
-                templateUrl: '../common/patient-search/views/activePatientsList.html',
+                views: {
+                    'content': { 
+                        templateUrl: '../common/patient-search/views/activePatientsList.html',
+                        controller : 'ActivePatientsListController'
+                    }
+                },
                 data: {
                     backLinks: [{label: "Home", url: "/home"}]
                 },
-                controller : 'ActivePatientsListController',
                 resolve: {
                     initialization: 'initialization'
                 }
@@ -23,7 +27,10 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', functi
                 data: {
                     backLinks: [{label: "Patient Q", url: "/clinical/#/patient/search"}]
                 },
-                template: '<ui-view/>',
+                views: {
+                    'additional-header': { template: '<div ui-view="additional-header"></div>' },
+                    'content': { template: '<div ui-view="content"></div>' }
+                },
                 resolve: {
                     consultationInitialization: function(consultationInitialization, $stateParams) {
                     return consultationInitialization($stateParams.patientUuid);
@@ -31,13 +38,20 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', functi
             })
             .state('patient.dashboard', {
                 url: '/dashboard',
-                templateUrl: 'views/dashboard.html',
-                controller: 'PatientDashboardController'
+                views: {
+                    'content': {
+                        templateUrl: 'views/dashboard.html',
+                        controller: 'PatientDashboardController'
+                    }
+                },
             })
             .state('patient.consultation', {
                 url: '',
                 abstract: true,
-                templateUrl: 'views/consultation_layout.html'
+                views: {
+                    'content': { template: '<ui-view/>' },
+                    'additional-header': { templateUrl: '../common/patient/header/views/header.html' }
+                }
             })
             .state('patient.consultation.visit', {
                 url: '/visit/:visitUuid',

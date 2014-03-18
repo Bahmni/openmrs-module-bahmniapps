@@ -13,7 +13,10 @@
     <body>
         <div ng-app="documentupload" class="document-upload">
             <div ng-include src="'../common/ui-helper/header.html'"></div>
-            <div ui-view id="view-content"></div>
+            <div ui-view="additional-header"></div>
+            <div class="opd-wrapper">
+                <div ui-view="content" id="view-content" class="main opd-content-wrapper"></div>
+            </div>
         </div>
 
 

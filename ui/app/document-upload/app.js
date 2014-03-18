@@ -7,16 +7,27 @@ angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$ur
         $stateProvider
             .state('search', {
                 url: '/search',
-                templateUrl: 'views/patientSearch.html',
-                controller: 'SearchPatientController',
+                views: {
+                    'content': {
+                        templateUrl: 'views/patientSearch.html',
+                        controller: 'SearchPatientController'
+                    }
+                },
                 resolve: {
                     initialization: 'initialization'
                 }
             })
             .state('upload', {
                 url: '/patient/:patientUuid/document',
-                templateUrl: 'views/documentUpload.html',
-                controller: 'DocumentController',
+                views: {
+                    'content': {
+                        templateUrl: 'views/documentUpload.html',
+                        controller: 'DocumentController',
+                    },
+                    'additional-header': { 
+                        templateUrl: '../common/patient/header/views/header.html' 
+                    }
+                },
                 resolve: {
                     initialization: 'initialization'
                 }
