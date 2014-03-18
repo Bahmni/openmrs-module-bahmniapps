@@ -59,6 +59,11 @@ angular.module('bahmni.clinical')
             encounterData.observations = encounterData.observations.concat($rootScope.consultation.observations);
         };
 
+				var observationFilter = new Bahmni.ObservationFilter();
+				$rootScope.consultation.observations.forEach(function(observation){
+					observationFilter.voidIfNull(observation);
+				});
+
         addObservationsToEncounter();
 
         spinner.forPromise(encounterService.create(encounterData).success(function () {
