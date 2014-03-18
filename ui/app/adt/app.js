@@ -9,8 +9,8 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', function($state
             },
             views: {
                 'content': {
-                    templateUrl: '../common/patient-search/views/activePatientsList.html',
-                    controller: 'ActivePatientsListController'
+                    templateUrl: '../common/patient-search/views/patientsList.html',
+                    controller: 'PatientsListController'
                 }
             },
             resolve: {

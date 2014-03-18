@@ -7,7 +7,7 @@ Bahmni.Clinical.Constants = (function() {
                 radiology: "Radiology Order"
 	};
 	return {
-                activePatientsListUrl: "/patient/search",
+                patientsListUrl: "/patient/search",
                 diagnosisObservationConceptName : "Visit Diagnoses",
                 orderConceptName : "Diagnosis order",                   //TODO : should be fetched from a config
                 certaintyConceptName : "Diagnosis Certainty",           //TODO : should be fetched from a config

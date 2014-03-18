@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.patientSearch')
-    .controller('ActivePatientsListController', ['$scope', '$location', '$window', 'patientService', 'patientMapper', '$rootScope', 'appService', 'spinner',
+    .controller('PatientsListController', ['$scope', '$location', '$window', 'patientService', 'patientMapper', '$rootScope', 'appService', 'spinner',
     function ($scope, $location, $window, patientService, patientMapper, $rootScope, appService, spinner) {
 
         $scope.searchTypes = [];

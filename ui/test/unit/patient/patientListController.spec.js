@@ -1,6 +1,6 @@
 'use strict';
 
-describe("ActivePatientListController", function () {
+describe("PatientListController", function () {
     var patientMapper;
     var scope;
     var controller;
@@ -84,7 +84,7 @@ describe("ActivePatientListController", function () {
     var setUp = function () {
         inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
-            controller = $controller('ActivePatientsListController', {
+            controller = $controller('PatientsListController', {
                 $scope: scope,
                 patientMapper: patientMapper,
                 patientService: patientService,

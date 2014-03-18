@@ -10,8 +10,8 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', functi
                 url: '/patient/search',
                 views: {
                     'content': { 
-                        templateUrl: '../common/patient-search/views/activePatientsList.html',
-                        controller : 'ActivePatientsListController'
+                        templateUrl: '../common/patient-search/views/patientsList.html',
+                        controller : 'PatientsListController'
                     }
                 },
                 data: {

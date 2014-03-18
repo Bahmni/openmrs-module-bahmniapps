@@ -50,7 +50,7 @@ angular.module('orders.pending')
         };
         var getResults = function() {
             var patientUuid = $routeParams.patientUuid;
-            var orderTypeUuid = $routeParams.orderTypeUuid;
+            var orderTypeUuid = $scope.orderTypes[Bahmni.Common.Constants[$routeParams.orderType]];
             $scope.resultsEntry = {};
             $rootScope.availableBoards = [
                 { name: 'Pending Orders', url: ''}
