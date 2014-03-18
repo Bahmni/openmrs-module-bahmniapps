@@ -8,4 +8,4 @@ rm -rf $ROOT_DIR/target/bahmni.zip
 
 rvm use 1.9.3
 grunt dist
-cd $ROOT_DIR/dist && zip -r ../target/bahmni.zip *
+cd $ROOT_DIR/dist && zip -r ../target/bahmniapps.zip *
