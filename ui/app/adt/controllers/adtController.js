@@ -80,7 +80,7 @@ angular.module('bahmni.adt')
 
             $scope.startNewVisit = function(visitTypeUuid) {
                 if($scope.visit){
-                    visitService.endVisit($scope.visit.uuid).success(function(){
+                    visitService.endVisit($scope.visit.visitId).then(function(){
                         $scope.admit(visitTypeUuid);
                     });
                 }else{
@@ -140,7 +140,7 @@ angular.module('bahmni.adt')
 
                 var options = {'patientUuid': $scope.patient.uuid, 'encounterUuid': response.encounterUuid};
                 if (forwardLink) {
-                       $window.location = appDescriptor.formatUrl(forwardLink, options);
+                    $location.url(appDescriptor.formatUrl(forwardLink, options));
                 }
             };
 
@@ -167,6 +167,19 @@ angular.module('bahmni.adt')
                         })
                     })
                 });
+            };
+
+            $scope.dischargeAndCloseVisit = function () {
+                var encounterData = getEncounterData($scope.encounterConfig.getDischargeEncounterTypeUuid());
+                encounterService.create(encounterData).then(function (response) {
+                    bedService.getBedDetailsForPatient($scope.patient.uuid).then(function (response) {
+                        bedService.freeBed(response.data.results[0].bedId).success(function () {
+                            visitService.endVisit($scope.visit.visitId).success(function () {
+                                forwardUrl(response, "onDischargeForwardTo")
+                            })
+                        })
+                    })
+                })
             };
 
             spinner.forPromise(init());

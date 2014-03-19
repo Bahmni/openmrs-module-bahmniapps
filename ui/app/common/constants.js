@@ -9,6 +9,7 @@ Bahmni.Common.Constants = {
     recentEncounterUrl: "/openmrs/ws/rest/emrapi/encounter/active",
     conceptUrl: "/openmrs/ws/rest/v1/concept",
     visitUrl: "/openmrs/ws/rest/v1/visit",
+    endVisitUrl: "/openmrs/ws/rest/v1/bahmnicore/visit/endVisit",
     visitTypeUrl: "/openmrs/ws/rest/v1/visittype",
     visitSummaryUrl: "/openmrs/ws/rest/v1/bahmnicore/visitsummary",
     openmrsUrl: "/openmrs",
