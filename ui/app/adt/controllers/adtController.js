@@ -1,8 +1,8 @@
 "use strict";
 
 angular.module('bahmni.adt')
-    .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService', 'encounterService', 'bedService', 'appService', 'visitService', '$location',
-        function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService, appService, visitService, $location) {
+    .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService', 'encounterService', 'bedService', 'appService', 'visitService', '$location', '$window',
+        function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService, appService, visitService, $location, $window) {
             var actionConfigs = {};
             var encounterConfig = $rootScope.encounterConfig;
             var Constants = Bahmni.ADT.Constants;
