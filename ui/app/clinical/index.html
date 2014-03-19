@@ -14,6 +14,7 @@
             <div ng-include src="'../common/ui-helper/header.html'"></div>
             <div ui-view="additional-header"></div>
             <div class="opd-wrapper">
+                <p class="caution" ng-show="server_error"><i ng-cloak class="icon-exclamation-sign small"></i><span ng-bind="server_error"></span></p>
                 <div ui-view="content" id="view-content" class="opd-content-wrapper"></div>
             </div>
         </div>

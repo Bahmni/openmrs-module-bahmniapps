@@ -5,11 +5,14 @@ angular.module('bahmni.common.patientSearch')
     function ($scope, $location, $window, patientService, patientMapper, $rootScope, appService, spinner) {
 
         $scope.searchTypes = [];
+        $scope.searchCriteria = {searchParameter:'', type: undefined};
+
         var handlePatientList = function (patientList, callback) {
             resetPatientLists();
             if (patientList) {
                 $scope.storeWindowDimensions();
                 patientList.forEach(function (patient) {
+                    patient.name = getPatientDisplayName(patient);
                     patient.display = patient.identifier + " - " + patient.name;
                     patient.image = patientMapper.constructImageUrl(patient.uuid);
                 });
@@ -22,6 +25,15 @@ angular.module('bahmni.common.patientSearch')
             }
         };
 
+        var getPatientDisplayName = function(patient) {
+            if (patient.hasOwnProperty("name")) {
+                return patient.name;
+            } else {
+                return patient.givenName + ' ' + patient.familyName;
+            }
+            
+        };
+
         var findPatientsByHandler = function (handlerName) {
             var findPatientsPromise = patientService.findPatients(handlerName).success(function (data) {
                 handlePatientList(data, function () {
@@ -29,6 +41,15 @@ angular.module('bahmni.common.patientSearch')
                 });
             });
             spinner.forPromise(findPatientsPromise);
+        };
+
+        var searchPatientsWithIdentifier = function(patientIdentifier) {
+            return spinner.forPromise(patientService.search(patientIdentifier).success(function (data) {
+                handlePatientList(data.results);
+                if (data.results.length === 0) {
+                    $rootScope.server_error = "Could not find patient with identifier/name " + patientIdentifier + ". Please verify the patient ID entered "
+                }
+            }));
         };
 
         $scope.loadMore = function () {
@@ -60,12 +81,16 @@ angular.module('bahmni.common.patientSearch')
         };
 
         $scope.searchPatients = function () {
-            var searchList = $scope.activePatients.filter(function (patient) {
-                return matchesNameOrId(patient);
-            });
-            $scope.searchResults = searchList;
-            if ($scope.searchResults) {
-                $scope.visiblePatients = $scope.searchResults.slice(0, $scope.tilesToFit);
+            if (shouldUseCustomHandler($scope.searchCriteria.type)) {
+                var searchList = $scope.activePatients.filter(function (patient) {
+                    return matchesNameOrId(patient);
+                });
+                $scope.searchResults = searchList;
+                if ($scope.searchResults) {
+                    $scope.visiblePatients = $scope.searchResults.slice(0, $scope.tilesToFit);
+                }
+            } else {
+                searchPatientsWithIdentifier($scope.searchCriteria.searchParameter);
             }
         };
 
@@ -74,19 +99,33 @@ angular.module('bahmni.common.patientSearch')
                 return $scope.searchCriteria.type.id == searchType.id;
             })[0];
 
+            //TODO: since the search is used from multiple apps (clinical, adt etc),
+            //need to find an effective way to pass parameters for forward URL. 
+            //This is currently documented in app.contextModel as what possible values the 
+            //extensions can have access to. However, there is still issues since "search" is 
+            //used from multiple places which can expect different values. 
+            
             var options = {
                 patientUuid:patient.uuid,
-                visitUuid:patient.activeVisitUuid,
-                orderTypeUuid:$scope.encounterConfig.orderTypes[Bahmni.Common.Constants.radiologyOrderType]
+                visitUuid:patient.activeVisitUuid || null
             };
 
             $window.location = appService.getAppDescriptor().formatUrl(currentAppExtension.forwardUrl, options);
         };
 
+        var shouldUseCustomHandler = function(sType) {
+            return sType.handler ? true : false;
+        };
+
         $scope.showPatientsForType = function (sType) {
             $scope.searchCriteria.searchParameter= '';
             $scope.searchCriteria.type = sType;
-            findPatientsByHandler(sType.handler);
+            if (shouldUseCustomHandler(sType)) {
+                findPatientsByHandler(sType.handler);
+            } else {
+                handlePatientList([]);
+            }
+            
         };
 
         var resetPatientLists = function () {

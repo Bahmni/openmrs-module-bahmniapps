@@ -5,10 +5,26 @@
         </li>
     </ul> 
 </div>
-<div class="tab-content">
-    <div class="search-wrapper">
-        <input type="text" ng-model="searchCriteria.searchParameter"  ng-change="searchPatients()"  placeholder="Search Name/ID  ..."/>
-    </div>
+<div class="tab-content" ng-show="searchTypes.length > 0">
+    <span ng-if="searchCriteria.type && searchCriteria.type.handler">
+        <div class="search-wrapper">
+            <input type="text" id="patientIdentifierInList" ng-model="searchCriteria.searchParameter"  ng-change="searchPatients()"  placeholder="Search Name/ID  ..."/>
+        </div>
+    </span>
+    <span ng-if="searchCriteria.type && !searchCriteria.type.handler">    
+        <form name="searchPatientForm" ng-submit="searchPatients()"> 
+            <div class="search-patient-id left">
+                <input type="text" autofocus id="patientIdentifier" ng-model="searchCriteria.searchParameter"  placeholder="Search Name/ID  ..."/>
+            </div>
+
+            <div class="reg-srch-btn left">
+                <button type="submit" ng-disabled="!searchCriteria.searchParameter">
+                    <i class="icon-search"></i>
+                    Search
+                </button>
+            </div>
+        </form>
+    </span>        
     <div resize class="active-visits">
         <div infinite-scroll='loadMore()' >
             <li  ng-repeat="patient in visiblePatients" style="display: inline-block;margin:5px;" ng-click="forwardPatient(patient)">

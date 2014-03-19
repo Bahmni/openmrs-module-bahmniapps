@@ -55,6 +55,7 @@ Bahmni.Common.AppFramework.AppDescriptor = function (context, inheritContext, re
         that.instanceOf = instance.instanceOf;
         that.id = instance.id;
         that.description = instance.description;
+        that.contextModel = instance.contextModel;
         if (instance.extensionPoints) {
             instance.extensionPoints.forEach(function(iep) {
                 var existing = that.extensionPoints.filter(function(ep) {
@@ -115,9 +116,7 @@ Bahmni.Common.AppFramework.AppDescriptor = function (context, inheritContext, re
             matches.forEach(function(el) {
                 var key = el.replace("{{",'').replace("}}",'');
                 var value = options[key];
-                if (value) {
-                    replacedString = replacedString.replace(el, options[key]);
-                }
+                replacedString = replacedString.replace(el, value);
             });
         }
         return replacedString.trim();

@@ -11,7 +11,7 @@ angular.module('bahmni.adt').factory('initialization', ['$rootScope', '$q', 'app
         };
 
         var initApp = function() {
-            return appService.initApp('adt');
+            return appService.initApp('adt', {'app': true, 'extension' : true });
         };
 
         return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(getConfigs));
