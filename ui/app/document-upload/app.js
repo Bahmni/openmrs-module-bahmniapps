@@ -31,6 +31,10 @@ angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$ur
                 resolve: {
                     initialization: 'initialization'
                 }
+            })
+            .state('error', {
+                url: '/error',
+                templateUrl: '../../common/ui-helper/error.html',
             });
 
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;

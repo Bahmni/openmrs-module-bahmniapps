@@ -40,7 +40,11 @@ angular.module('opd.documentupload')
                 });
             };
 
-            var getTopLevelConceptUuid = function () { 
+            var getTopLevelConceptUuid = function () {
+                if($rootScope.appConfig.topLevelConcept == null ) {
+                    topLevelConceptUuid = null;
+                    return $q.when({});
+                }
                 return $http.get(Bahmni.Common.Constants.conceptUrl, { params: {name: $rootScope.appConfig.topLevelConcept}
                     }).then(function (response) {
                         var topLevelConcept = response.data.results[0];
