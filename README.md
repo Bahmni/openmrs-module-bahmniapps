@@ -1,7 +1,7 @@
 Bhamni Apps
 ============
 
-This application 
+This application contains Bahmni apps for openmrs.
 
  To set up the application, do the following in ui folder
 
