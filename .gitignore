@@ -16,7 +16,7 @@ ui/.css/
 ui/node_modules
 ui/app/components
 ui/dist
-ui/app/**/*.css
+ui/app/styles/**/*.css
 **/.DS_Store
 test_out
 omod/src/main/webapp/*
