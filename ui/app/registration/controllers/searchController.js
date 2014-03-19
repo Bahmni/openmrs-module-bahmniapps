@@ -25,6 +25,7 @@ angular.module('bahmni.registration')
             if ($scope.name.trim().length > 0 || $scope.village.trim().length > 0) {
                 var searchPromise = patientService.search($scope.name, $scope.village, offset);
                 searching = true;
+                searchPromise['finally'](function() { searching = false; });
                 return searchPromise;
             }
         };
