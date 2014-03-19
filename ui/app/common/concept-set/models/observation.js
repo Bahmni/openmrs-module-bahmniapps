@@ -164,13 +164,13 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.observation.concept.lowAbsolute;
     },
     validateNumericValue: function(){
-        if (this.displayValue() > this.getHighAbsolute() || this.displayValue() < this.getLowAbsolute()) {
-            this.isAbnormal.value = true;
-        }else{
+        var valueInRange = this.displayValue() < this.getHighAbsolute() && this.displayValue() > this.getLowAbsolute();
+        if (!this.displayValue() || valueInRange) {
             this.isAbnormal.value = false;
+        }else {
+            this.isAbnormal.value = true;
         }
     },
-
     onValueChanged: function () {
         this.observation.observationDateTime = new Date();
         if(this.isNumeric()){
