@@ -97,12 +97,16 @@ angular.module('bahmni.common.conceptSet')
         var attributesMap = {'Numeric': 'number', 'Date': 'date'};
         var link = function ($scope, element, attrs, ctrl) {
             var attributes = {};
+            var obs = $scope.obs;
             attributes['type'] = attributesMap[$scope.obs.getDataTypeName()] || "text";
-            if ($scope.obs.getHighAbsolute()) {
+            if (obs.getHighAbsolute()) {
                 attributes['max'] = $scope.obs.getHighAbsolute();
             }
-            if ($scope.obs.getLowAbsolute()) {
+            if (obs.getLowAbsolute()) {
                 attributes['min'] = $scope.obs.getLowAbsolute();
+            }
+            if (obs.getLowAbsolute() && obs.getHighAbsolute()) {
+                attributes['title'] = "Valid from " + $scope.obs.getLowAbsolute() +" to "+ $scope.obs.getHighAbsolute();
             }
             element.attr(attributes);
         };
