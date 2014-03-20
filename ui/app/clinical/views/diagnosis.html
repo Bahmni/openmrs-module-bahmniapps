@@ -42,8 +42,8 @@
                         <div class="col col1"><span>Diagnosis</span></div>
                         <div class="col col2"><span>Order</span></div>
                         <div class="col col3"><span>Certainty</span></div>
-                        <div class="col col3"><span>Datetime</span></div>
-                        <div class="col col3"><span>Provider</span></div>
+                        <div class="col col4"><span>Datetime</span></div>
+                        <div class="col col5"><span>Provider</span></div>
                     </div>
 
                     <div ng-repeat="diagnosis in consultation.pastDiagnoses"
@@ -67,7 +67,7 @@
                                 </span>
                             </div>
                             <div class="col col5">
-                                <span>Dr. Dummy</span>
+                                <span ng-repeat="provider in diagnosis.providers">{{provider.name}}<br/></span>
                             </div>
                         </div>
                     </div>
