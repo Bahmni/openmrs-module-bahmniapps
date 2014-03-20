@@ -7,7 +7,7 @@ Bahmni.Clinical.Diagnosis = function (codedAnswer, order, certainty, existingObs
     self.freeTextAnswer = freeTextAnswer;
     self.diagnosisDateTime = diagnosisDateTime || new Date();
     self.conceptName = self.codedAnswer.name;
-    self.voided = voided
+    self.voided = voided;
 
     self.getDisplayName = function(){
         if(self.freeTextAnswer ){

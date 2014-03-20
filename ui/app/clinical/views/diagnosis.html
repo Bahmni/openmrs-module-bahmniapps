@@ -31,10 +31,7 @@
                             </div>
                         </div>
                     </div>
-
-
                 </div>
-
                 <hr/>
 
                 <div class="table" ng-if="consultation.pastDiagnoses.length > 0">
@@ -55,11 +52,11 @@
                             </div>
                             <div class="col col2">
                                 <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.order'
-                                               options='orderOptions'/>
+                                               options='orderOptions' dirty-check-flag='diagnosis.dirty' />
                             </div>
                             <div class="col col3">
                                 <buttons-radio class="small-btn" data-toggle="buttons-radio" model='diagnosis.certainty'
-                                               options='certaintyOptions'/>
+                                               options='certaintyOptions' dirty-check-flag='diagnosis.dirty'/>
                             </div>
                             <div class="col col4">
                                 <span>

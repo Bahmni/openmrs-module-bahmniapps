@@ -97,6 +97,12 @@ angular.module('bahmni.clinical')
         }
 
         $scope.$on('$destroy', function () {
+            $scope.consultation.pastDiagnoses.forEach(function(diagnosis){
+                if(diagnosis.dirty == true){
+                    $rootScope.consultation.diagnoses.push(diagnosis);
+                }
+            })
+            console.log($rootScope.consultation.diagnoses);
             $rootScope.consultation.diagnoses = $scope.diagnosisList.filter(function (diagnosis) {
                 return !diagnosis.isEmpty();
             });
