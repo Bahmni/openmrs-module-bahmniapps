@@ -70,7 +70,7 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', functi
             })
             .state('patient.consultation.diagnosis', {
                 url: '/diagnosis',
-                templateUrl: 'views/addObservation.html',
+                templateUrl: 'views/diagnosis.html',
                 controller: 'DiagnosisController'
             })
             .state('patient.consultation.treatment', {

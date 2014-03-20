@@ -1,0 +1,79 @@
+<form>
+    <fieldset>
+        <div class="diagnosis">
+            <div id="selectedNodesArea">
+                <div class="table">
+                    <div class="row table-header">
+                        <div class="col col1"><span>Diagnosis</span></div>
+                        <div class="col col2"><span>Order</span></div>
+                        <div class="col col3"><span>Certainty</span></div>
+                    </div>
+
+                    <div ng-repeat="diagnosis in diagnosisList" ng-hide="diagnosis.voided" class="table-body">
+                        <div class="row">
+                            <div class="col col1">
+                                <input ng-model="diagnosis.codedAnswer.name" type="text" name="name" ui-autocomplete
+                                       ng-change="clearEmptyRows($index)">
+                            </div>
+                            <div class="col col2">
+                                <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.order'
+                                               options='orderOptions'/>
+                            </div>
+                            <div class="col col3">
+                                <buttons-radio class="small-btn" data-toggle="buttons-radio" model='diagnosis.certainty'
+                                               options='certaintyOptions'/>
+                            </div>
+                            <div class="col col4">
+                                <button type="button" class="small-btn" ng-click="removeObservation($index)"
+                                        ng-show="diagnosis.codedAnswer.name">
+                                    <span class="icon-remove"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <hr/>
+
+                <div class="table">
+                    <div class="row table-header">
+                        <div class="col col1"><span>Diagnosis</span></div>
+                        <div class="col col2"><span>Order</span></div>
+                        <div class="col col3"><span>Certainty</span></div>
+                        <div class="col col3"><span>Datetime</span></div>
+                        <div class="col col3"><span>Provider</span></div>
+                    </div>
+
+                    <div ng-repeat="diagnosis in consultation.pastDiagnoses"
+                         ng-if="!presentInCurrentEncounter(diagnosis)" class="table-body">
+                        <div class="row">
+                            <div class="col col1">
+                                <label ng-if="diagnosis.codedAnswer.name">{{diagnosis.codedAnswer.name}}</label>
+                                <label ng-if="diagnosis.freeTextAnswer">{{diagnosis.freeTextAnswer}}</label>
+                            </div>
+                            <div class="col col2">
+                                <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.order'
+                                               options='orderOptions'/>
+                            </div>
+                            <div class="col col3">
+                                <buttons-radio class="small-btn" data-toggle="buttons-radio" model='diagnosis.certainty'
+                                               options='certaintyOptions'/>
+                            </div>
+                            <div class="col col4">
+                                <span>
+                                    {{diagnosis.diagnosisDateTime | date :'dd-MM-yyyy hh:mm'}}
+                                </span>
+                            </div>
+                            <div class="col col5">
+                                <span>Dr. Dummy</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </fieldset>
+</form>
