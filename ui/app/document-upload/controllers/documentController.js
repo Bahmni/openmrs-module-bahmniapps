@@ -58,7 +58,7 @@ angular.module('opd.documentupload')
                         var date2 = new Date(b.startDatetime);
                         return date2.getTime() - date1.getTime();
                     });
-            }
+            };
 
             var init = function () {
                 initNewVisit();
@@ -76,7 +76,7 @@ angular.module('opd.documentupload')
 
             $scope.escapeRegExp = function(str) {
               return (str || "").replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-            }
+            };
 
             $scope.getConcepts = function(request){
                 return $http.get(Bahmni.Common.Constants.conceptUrl, { params: {q: request.term, memberOf: topLevelConceptUuid, v: "custom:(uuid,name)"}});
