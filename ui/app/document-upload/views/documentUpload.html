@@ -61,6 +61,7 @@
             <span>{{visit.startDatetime | date:'dd-MMM-yy'}}</span>
             <small ng-if="visit.stopDatetime">To: </small>
             <span ng-if="visit.stopDatetime">{{visit.stopDatetime | date:'dd-MMM-yy'}}</span>
+            <span ng-if="hasImages(visit)" class="icon-picture" title="This visit contains images"></span>
             <span ng-if="!visit.stopDatetime" class="currentVisitMarker"><i class="icon-star"></i></span>
         </h1>
         <div class="visit-content" ng-if="isCurrentVisit(visit)">

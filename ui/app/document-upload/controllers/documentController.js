@@ -14,6 +14,10 @@ angular.module('opd.documentupload')
                 $scope.currentVisit = $scope.newVisit;
             };
 
+            $scope.hasImages = function(visit) {
+                return visit.savedImages && visit.savedImages.length > 0;
+            };
+
             var createVisit = function (visit) {
                 var newVisit = angular.extend(new Bahmni.DocumentUpload.Visit(), visit);
                 newVisit.initSavedImages();
@@ -34,7 +38,15 @@ angular.module('opd.documentupload')
 
             var getVisits = function () {
                 return visitService.search({patient: $rootScope.patient.uuid, v: customVisitParams, includeInactive: true}).then(function (response) {
-                    response.data.results.forEach(function (visit) {
+                    var visits = response.data.results;
+                    if (visits.length > 0) {
+                        if (!visits[0].stopDatetime){
+                            $scope.currentVisit = visits[0];
+                        } else {
+                            $scope.currentVisit = null;
+                        }
+                    }
+                    visits.forEach(function (visit) {
                         $scope.visits.push(createVisit(visit));
                     });
                 });
@@ -100,7 +112,7 @@ angular.module('opd.documentupload')
             };
 
             $scope.isCurrentVisit = function (visit) {
-                return $scope.currentVisit.uuid === visit.uuid;
+                return $scope.currentVisit && $scope.currentVisit.uuid === visit.uuid;
             };
 
             var createVisitDocument = function (visit) {
@@ -141,17 +153,20 @@ angular.module('opd.documentupload')
             }
 
             $scope.save = function (existingVisit) {
-                $scope.resetCurrentVisit(existingVisit);
 
                 var visitDocument = createVisitDocument(existingVisit);
                 spinner.forPromise(function () {
                     return visitDocumentService.save(visitDocument).success(function (response) {
                         visitService.getVisit(response.visitUuid, customVisitParams).success(function (savedVisit) {
                             if (existingVisit.isNew()) {
-                                existingVisit = $scope.visits.push(createVisit(savedVisit));
+                                var visit = createVisit(savedVisit);
+                                existingVisit = $scope.visits.push(visit);
                                 initNewVisit();
+                                $scope.currentVisit = visit;
                             } else {
-                                $scope.visits[$scope.visits.indexOf(existingVisit)] = createVisit(savedVisit);
+                                var visit = createVisit(savedVisit);
+                                $scope.visits[$scope.visits.indexOf(existingVisit)] = visit;
+                                $scope.currentVisit = visit;
                             }
                         }).success(function(){
                             sortVisits();
