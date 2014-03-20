@@ -6,7 +6,7 @@ angular.module('bahmni.common.conceptSet')
             var conceptMapper = new Bahmni.ConceptSet.ConceptMapper();
     
             $scope.getPossibleAnswers = function() {
-                return $scope.observation.possibleAnswers.map(conceptMapper.map);   
+                return $scope.observation.getPossibleAnswers().map(conceptMapper.map);
             };
 
             var getPropertyFunction = function(propertyName) {

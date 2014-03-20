@@ -77,6 +77,10 @@ Bahmni.ConceptSet.Observation.prototype = {
         }
     },
 
+    getPossibleAnswers: function(){
+        return this.observation.possibleAnswers;
+    },
+
     getIsAbnormal : function() {
         return this.isAbnormal;
     },
