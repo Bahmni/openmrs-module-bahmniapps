@@ -1,7 +1,7 @@
 "use strict";
 
-angular.module('orders.pending')
-    .controller('PendingOrdersController', ['$scope','$rootScope','$route', '$routeParams', 'PendingOrderService','$q', function ($scope,$rootScope,$route,$routeParams, pendingOrderService,$q) {
+angular.module('bahmni.orders')
+    .controller('PendingOrdersController', ['$scope','$rootScope', '$stateParams', 'PendingOrderService','$q', 'spinner', function ($scope, $rootScope, $stateParams, pendingOrderService, $q, spinner) {
 
     	$scope.getOrders = function (patientUuid, orderTypeUuid) {
             var results =[];
@@ -13,7 +13,7 @@ angular.module('orders.pending')
         var constructEncounterTransactionObject = function(order){
             var orderUuid = order.uuid;
             var visitUuid = order.encounter.visit.uuid;
-            var patientUuid = $routeParams.patientUuid;
+            var patientUuid = $stateParams.patientUuid;
             var encounterTypeUuid = $scope.encounterTypes[Bahmni.Common.Constants.investigationEncounterType];
             var resultConceptUuid = order.concept.uuid;
             var resultValue = order.resultText;
@@ -43,14 +43,15 @@ angular.module('orders.pending')
         $scope.saveResult = function(order){
             var encounterTransactionObj = constructEncounterTransactionObject(order);
             pendingOrderService.saveOrderResult(encounterTransactionObj).success(function() {
-                $route.reload();
+                init();
             });
 
 
         };
+        
         var getResults = function() {
-            var patientUuid = $routeParams.patientUuid;
-            var orderTypeUuid = $scope.orderTypes[Bahmni.Common.Constants[$routeParams.orderType]];
+            var patientUuid = $stateParams.patientUuid;
+            var orderTypeUuid = $scope.orderTypes[Bahmni.Common.Constants[$stateParams.orderType]];
             $scope.resultsEntry = {};
             $rootScope.availableBoards = [
                 { name: 'Pending Orders', url: ''}
@@ -69,12 +70,14 @@ angular.module('orders.pending')
             return $q.all(getOrdersPromises);
         };
 
-        $scope.orders = {};
-        getResults().then(function(results){
-            for(var key in results) {
-                $scope.orders[key] = results[key];
-            }
-        });
-        
-        
+        var init = function() {
+            $scope.orders = {};
+            spinner.forPromise(getResults().then(function(results){
+                for(var key in results) {
+                    $scope.orders[key] = results[key];
+                }
+            }));
+        }
+
+        init();        
 }]);

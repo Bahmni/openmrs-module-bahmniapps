@@ -10,21 +10,26 @@
     </head>
     <body>
         <div ng-app="orders" >
+            <div ng-include src="'../common/ui-helper/header.html'"></div>
             <div ng-include src="'../common/patient/header/views/header.html'"></div>
             <div class="pending-orders-wrapper">
                 <p style="display: none" class="caution" ng-show="server_error">{{server_error}}</p>
-                <div ng-view="" id="view-content" class="pending-orders-content-wrapper"></div>
+                <div ui-view id="view-content" class="pending-orders-content-wrapper"></div>
             </div>           
         </div>
         <script src="../components/jquery/jquery.js"></script>
         <script src="../lib/jquery/jquery-ui-1.10.4.custom.min.js"></script>
         <script src="../components/keyboardjs/keyboard.js"></script>
         <script src="../components/angular/angular.js"></script>
-        <script src="../components/angular-route/angular-route.js"></script>
+        <script src="../components/angular-ui-router/release/angular-ui-router.js"></script>
         <script src="../components/angular-cookies/angular-cookies.js"></script>
 
         <!-- build:js orders.min.js -->
+        <script src="../common/constants.js"></script>
+        <script src="../common/util/init.js"></script>
+        <script src="../common/util/arrayUtil.js"></script>
         <script src="../common/util/httpErrorInterceptor.js"></script>
+        
         <script src="../common/auth/authentication.js"></script>
         <script src="../common/app-framework/init.js"></script>
         <script src="../common/app-framework/services/appService.js"></script>
@@ -42,6 +47,7 @@
         <script src="../common/patient/directives/patientSummary.js"></script>
 
         <script src="../common/ui-helper/init.js"></script>
+        <script src="../common/ui-helper/spinner.js"></script>
         <script src="../common/ui-helper/services/backlinkService.js"></script>
         <script src="../common/ui-helper/controllers/commonHeaderController.js"></script>
 

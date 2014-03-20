@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('orders.pending')
+angular.module('bahmni.orders')
     .factory('PendingOrderService', ['$http', function ($http) {
 
     var getOrders = function (patientUuid, orderTypeUuid) {
