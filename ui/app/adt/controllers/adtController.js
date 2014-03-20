@@ -162,9 +162,14 @@ angular.module('bahmni.adt')
                 var encounterData = getEncounterData($scope.encounterConfig.getDischargeEncounterTypeUuid());
                 encounterService.create(encounterData).then(function (response) {
                     bedService.getBedDetailsForPatient($scope.patient.uuid).then(function (response) {
-                        bedService.freeBed(response.data.results[0].bedId).success(function () {
-                            forwardUrl(response, "onDischargeForwardTo")
-                        })
+                        if(response.data.results.length > 0) {
+                            bedService.freeBed(response.data.results[0].bedId).success(function () {
+                                forwardUrl(response, "onDischargeForwardTo");
+                            })
+                        } else {
+                            forwardUrl(response, "onDischargeForwardTo");
+                        }
+
                     })
                 });
             };
@@ -173,11 +178,16 @@ angular.module('bahmni.adt')
                 var encounterData = getEncounterData($scope.encounterConfig.getDischargeEncounterTypeUuid());
                 encounterService.create(encounterData).then(function (response) {
                     bedService.getBedDetailsForPatient($scope.patient.uuid).then(function (response) {
-                        bedService.freeBed(response.data.results[0].bedId).success(function () {
+                        if(response.data.results.length > 0) {
+                            bedService.freeBed(response.data.results[0].bedId).success(function () {
+                                visitService.endVisit($scope.visit.visitId).success(function () {
+                                    forwardUrl(response, "onDischargeForwardTo")
+                                })
+                            })} else {
                             visitService.endVisit($scope.visit.visitId).success(function () {
                                 forwardUrl(response, "onDischargeForwardTo")
                             })
-                        })
+                        }
                     })
                 })
             };
