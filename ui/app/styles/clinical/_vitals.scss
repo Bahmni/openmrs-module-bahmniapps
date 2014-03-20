@@ -1,56 +1,75 @@
-.vitals{
-	padding:2px 0px 0px 10px;
-	.form-field{
+.vitals {
+	// padding:2px 0px 0px 10px;
+	.form-field {
 		padding-bottom: 10px;
 	}
-	.field-attribute{
+	.field-attribute {
 		width:18em;
-		label{
-			text-transform: uppercase;
-		}
-		.label-add-on{
-	        float:left;
-	        text-align:left;
-	        margin:0.5em 0em 0em 0em;
-	    }
+		.label-add-on {
+      float:left;
+      text-align:left;
+      margin:0.5em 0em 0em 0em;
     }
-    fieldset{
-    	margin-top:10px;
-        margin-bottom:10px;
-    	position:relative;
-    	width:96%;
-        fieldset{
-    	legend{
-    		position:absolute;
-    		top:-14px;
-    		left:20px;
-    		background:#fff;
-    		padding:5px 10px;
-    		font-family: OpenSansBold;
-    		color:#A8A5A5;
-    	}
-         .form-field-group{
-            &:first-child{
-                padding-top:15px;
-                border-top:1px solid #cecece;
-                border-right:1px solid #cecece;
-                border-left:1px solid #cecece;
-            }
-            &:last-child{
-                border-bottom:1px solid #cecece;
-                border-right:1px solid #cecece;
-                border-left:1px solid #cecece;
-                padding-bottom:15px;
-            }
+  }
+  fieldset {
+  	margin-top:10px;
+    margin-bottom:10px;
+  	position:relative;
+  	width: 100%;
+    fieldset {
+      .form-group {
+        margin: 0 20%;
+        label span {
+          text-transform: uppercase;
         }
+      }
+      legend + .form-group {
+        margin: 0;
+      }
+      legend {
+        position:absolute;
+        top:-14px;
+        left:20px;
+        background:#fff;
+        padding:5px 10px;
+        font-family: OpenSansBold;
+        color:#A8A5A5;
+      }
+      .form-field-group {
+        &:first-child {
+          padding-top:15px;
+          border-top:1px solid #cecece;
+          border-right:1px solid #cecece;
+          border-left:1px solid #cecece;
         }
-
+        &:last-child {
+          border-bottom:1px solid #cecece;
+          border-right:1px solid #cecece;
+          border-left:1px solid #cecece;
+          padding-bottom:15px;
+        }
+      }
     }
-    
+  }
+  .hint {
+    font-size: 13px;
+    margin-top: 7px;
+    display: inline-block;
+    color: #777;
+  } 
+}
+form .vitals .form-field .field-value {
+  input, select, textarea {
+    width: 10em;
+  }
 }
 
 show-concept{
-    input:invalid {
-        background-color: #FF9494;
+  input:invalid {
+    background-color: #ffcdcd;
+    outline: 2px solid #ff0000;
+    &:focus {
+      outline: 2px solid #ff0000;
     }
+  }
 }

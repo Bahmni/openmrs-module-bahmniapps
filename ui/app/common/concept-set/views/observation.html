@@ -11,7 +11,8 @@
                            add-obs-constraints obs="$parent.observation"
                            class="form-control" ng-model="$parent.observation.observation.value"
                            ng-change="$parent.observation.onValueChanged()"
-                           value="$parent.observation.displayValue()"/>
+                           value="$parent.observation.displayValue()" />
+                           <small class="hint">(Valid Range from {{observation.getLowAbsolute()}} to {{observation.getHighAbsolute()}})</small>
                 </div>
 
                 <textarea ng-switch-when="text" class="form-control" ng-model="$parent.observation.observation.value"
