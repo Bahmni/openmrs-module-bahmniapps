@@ -1,16 +1,18 @@
 'use strict';
 
 angular.module('documentupload', ['ui.router', 'opd.documentupload', 'bahmni.common.patient', 'authentication', 'bahmni.common.appFramework',
-    'httpErrorInterceptor', 'bahmni.common.domain', 'bahmni.common.uiHelper']);
+    'httpErrorInterceptor', 'bahmni.common.domain', 'bahmni.common.uiHelper', 'bahmni.common.patientSearch']);
 angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/search');
-        $stateProvider
-            .state('search', {
-                url: '/search',
+        $stateProvider.state('search', {
+                url:'/search',
+                data: {
+                    backLinks: [{label: "Home", url: "/home"}]
+                },
                 views: {
                     'content': {
-                        templateUrl: 'views/patientSearch.html',
-                        controller: 'SearchPatientController'
+                        templateUrl: '../common/patient-search/views/patientsList.html',
+                        controller: 'PatientsListController'
                     }
                 },
                 resolve: {
@@ -34,7 +36,11 @@ angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$ur
             })
             .state('error', {
                 url: '/error',
-                templateUrl: '../../common/ui-helper/error.html',
+                views: {
+                    'content': {
+                        templateUrl: '../common/ui-helper/error.html'
+                    }
+                }
             });
 
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;

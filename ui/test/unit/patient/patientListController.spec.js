@@ -7,7 +7,7 @@ describe("PatientListController", function () {
     var patientService;
     var appService;
     var spinner;
-    var route = {current: {params: { location: "Ganiyari"}}};
+    var stateParams = { location: "Ganiyari"};
 
     var appExtensions = [
         {
@@ -84,13 +84,14 @@ describe("PatientListController", function () {
     var setUp = function () {
         inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
+            //$scope, $location, $window, patientService, patientMapper, $rootScope, appService, spinner, $stateParams
             controller = $controller('PatientsListController', {
                 $scope: scope,
                 patientMapper: patientMapper,
                 patientService: patientService,
                 appService: appService,
                 spinner: spinner,
-                $route: route
+                $stateParams: stateParams
             });
         });
     }

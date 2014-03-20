@@ -15,6 +15,7 @@
             <div ng-include src="'../common/ui-helper/header.html'"></div>
             <div ui-view="additional-header"></div>
             <div class="opd-wrapper">
+                <p class="caution" ng-show="server_error"><i ng-cloak class="icon-exclamation-sign small"></i><span ng-bind="server_error"></span></p>
                 <div ui-view="content" id="view-content" class="main opd-content-wrapper"></div>
             </div>
         </div>
@@ -54,6 +55,10 @@
 
         <script src="../common/util/init.js"></script>
         <script src="../common/util/arrayUtil.js"></script>
+
+        <script src="../common/patient-search/init.js"></script>
+        <script src="../common/patient-search/constants.js"></script>
+        <script src="../common/patient-search/controllers/patientsListController.js"></script>
 
         <script src="../common/ui-helper/init.js"></script>
         <script src="../common/ui-helper/spinner.js"></script>

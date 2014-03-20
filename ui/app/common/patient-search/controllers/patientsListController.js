@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('bahmni.common.patientSearch')
-    .controller('PatientsListController', ['$scope', '$location', '$window', 'patientService', 'patientMapper', '$rootScope', 'appService', 'spinner',
-    function ($scope, $location, $window, patientService, patientMapper, $rootScope, appService, spinner) {
+    .controller('PatientsListController', ['$scope', '$location', '$window', 'patientService', 'patientMapper', '$rootScope', 'appService', 'spinner', '$stateParams',
+    function ($scope, $location, $window, patientService, patientMapper, $rootScope, appService, spinner, $stateParams) {
 
         $scope.searchTypes = [];
         $scope.searchCriteria = {searchParameter:'', type: undefined};
+        var routeParameters = angular.extend({}, $stateParams);
 
         var handlePatientList = function (patientList, callback) {
             resetPatientLists();
@@ -45,10 +46,13 @@ angular.module('bahmni.common.patientSearch')
 
         var searchPatientsWithIdentifier = function(patientIdentifier) {
             return spinner.forPromise(patientService.search(patientIdentifier).success(function (data) {
-                handlePatientList(data.results);
-                if (data.results.length === 0) {
-                    $rootScope.server_error = "Could not find patient with identifier/name " + patientIdentifier + ". Please verify the patient ID entered "
-                }
+                handlePatientList(data.results, function() {
+                    if ($scope.activePatients.length === 0) {
+                        $rootScope.server_error = "Could not find patient with identifier/name " + patientIdentifier + ". Please verify the patient ID entered ";
+                    } else if ($scope.activePatients.length === 1) {
+                        $scope.forwardPatient($scope.activePatients[0]);
+                    }
+                });
             }));
         };
 
@@ -99,18 +103,13 @@ angular.module('bahmni.common.patientSearch')
                 return $scope.searchCriteria.type.id == searchType.id;
             })[0];
 
-            //TODO: since the search is used from multiple apps (clinical, adt etc),
-            //need to find an effective way to pass parameters for forward URL. 
-            //This is currently documented in app.contextModel as what possible values the 
-            //extensions can have access to. However, there is still issues since "search" is 
-            //used from multiple places which can expect different values. 
-            
-            var options = {
+            var options = $.extend({}, routeParameters);
+            $.extend(options, {
                 patientUuid:patient.uuid,
                 visitUuid:patient.activeVisitUuid || null
-            };
+            });
 
-            $window.location = appService.getAppDescriptor().formatUrl(currentAppExtension.forwardUrl, options);
+            $window.location = appService.getAppDescriptor().formatUrl(currentAppExtension.forwardUrl, options, true);
         };
 
         var shouldUseCustomHandler = function(sType) {
@@ -150,7 +149,7 @@ angular.module('bahmni.common.patientSearch')
             $scope.searchTypes = allowedSearches;
             var defaultType = $scope.searchTypes.length > 0 ? $scope.searchTypes[0] : null;
             $scope.searchCriteria = { searchParameter:'', type:defaultType};
-            if (defaultType) {
+            if (defaultType && defaultType.handler) {
                 findPatientsByHandler($scope.searchCriteria.type.handler);
             }
         };

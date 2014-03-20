@@ -17,25 +17,25 @@ angular.module('opd.documentupload').factory('initialization',
             };
 
             var validate = function() {
-                var promise = $q.defer();
+                var deferrable = $q.defer();
                 var throwValidationError = function(errorMessage) {
                     $rootScope.error = errorMessage;
                     initializationPromise.reject();
-                    promise.reject();
+                    deferrable.reject();
                 }
 
                 if($rootScope.appConfig.encounterType == null) {
-                    throwValidationError("encounterType should be configured in config")
+                    throwValidationError("encounterType should be configured in config");
                 } else if($rootScope.encounterConfig.getEncounterTypeUuid($rootScope.appConfig.encounterType) == null) {
                     throwValidationError("Configured encounterType does not exist");
                 }
 
-                promise.resolve();
-                return promise;
+                deferrable.resolve();
+                return deferrable;
             }
 
             var initApp = function() {
-                return appService.initApp('document-upload', {'app': false, 'extension' : false});
+                return appService.initApp('documentUpload', {'app': true, 'extension' : true});
             };
 
             $rootScope.$on("$stateChangeError", function() {

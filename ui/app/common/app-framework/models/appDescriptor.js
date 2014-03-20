@@ -108,17 +108,37 @@ Bahmni.Common.AppFramework.AppDescriptor = function (context, inheritContext, re
         return config ? config.value : null;
     }
 
-    this.formatUrl =  function (url, options) {
-        var pattern = /{{([^}]*)}}/g;
-        var matches = url.match(pattern);
-        var replacedString = url;
+    this.formatUrl =  function (url, options, useQueryParams) {
+        var pattern = /{{([^}]*)}}/g,
+            matches = url.match(pattern),
+            replacedString = url,
+            checkQueryParams = useQueryParams || false,
+            queryParameters = this.parseQueryParams();
         if (matches) {
             matches.forEach(function(el) {
                 var key = el.replace("{{",'').replace("}}",'');
                 var value = options[key];
+                if (!value && (checkQueryParams===true)) {
+                    value = queryParameters[key] || null;
+                }
                 replacedString = replacedString.replace(el, value);
             });
         }
         return replacedString.trim();
+    };
+
+    this.parseQueryParams = function(locationSearchString) {
+        var urlParams;
+        var match,
+            pl     = /\+/g,  // Regex for replacing addition symbol with a space
+            search = /([^&=]+)=?([^&]*)/g,
+            decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+            queryString  = locationSearchString || window.location.search.substring(1);
+
+        urlParams = {};
+        while (match = search.exec(queryString)) {
+           urlParams[decode(match[1])] = decode(match[2]);
+        }
+        return urlParams;
     };
 }
