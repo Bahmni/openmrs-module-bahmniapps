@@ -9,9 +9,9 @@ else
 	FOLDER="$1"
 fi
 
-run_in_vagrant "sudo rm -f /var/www/bahmniapps"
-run_in_vagrant "sudo ln -s /Project/openmrs-module-bahmniapps/ui/$FOLDER/ /var/www/bahmniapps"
-run_in_vagrant "sudo chown -h jss:jss /var/www/bahmniapps"
+run_in_vagrant -c "sudo rm -f /var/www/bahmniapps"
+run_in_vagrant -c "sudo ln -s /Project/openmrs-module-bahmniapps/ui/$FOLDER/ /var/www/bahmniapps"
+run_in_vagrant -c "sudo chown -h jss:jss /var/www/bahmniapps"
 
 
 

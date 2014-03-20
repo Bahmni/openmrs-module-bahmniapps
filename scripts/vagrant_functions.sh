@@ -12,6 +12,10 @@ TIMEOUT="-o ConnectTimeout=5"
 
 function run_in_vagrant {
     
-    ssh vagrant@$MACHINE_IP -i $KEY_FILE $TIMEOUT "$1"
+    if [ "$1" == "-c" ]; then
+		ssh vagrant@$MACHINE_IP -i $KEY_FILE $TIMEOUT "$2"
+	elif [ "$1" == "-f" ]; then
+		ssh vagrant@$MACHINE_IP -i $KEY_FILE $TIMEOUT < "$2"
+	fi
 
 }
