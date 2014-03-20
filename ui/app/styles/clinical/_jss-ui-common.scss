@@ -195,7 +195,7 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
         float:left;
         margin-right:10px;
         a,button{
-          padding:10px 20px;
+          padding:10px;
           background:#447772;
           display:inline-block;
           color:#fff;
@@ -245,6 +245,12 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
        border:2px solid #cecece;
        background:#f1f1f1;
       @include border-radius(6px, 6px);
+    }
+  }
+  .reg-srch-btn {
+    margin: 3px 15px;
+    button[disabled="disabled"] {
+      cursor: not-allowed;
     }
   }
 }
