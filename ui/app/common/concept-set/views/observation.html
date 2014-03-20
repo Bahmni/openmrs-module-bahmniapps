@@ -1,5 +1,5 @@
 <div class="vitals form-horizontal">
-    <fieldset ng-if="!observation.isGroup()">
+    <fieldset ng-show="{{$parent.observation}}" ng-if="!observation.isGroup()">
         <div class="form-group">
             <label class="control-label">
                 <span>{{observation.label()}}&nbsp;</span>
