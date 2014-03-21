@@ -1,5 +1,5 @@
 <div class="vitals form-horizontal">
-    <fieldset ng-show="{{$parent.observation}}" ng-if="!observation.isGroup()">
+    <fieldset  ng-if="observation && !observation.isGroup()">
         <div class="form-group">
             <label class="control-label">
                 <span>{{observation.label()}}&nbsp;</span>
@@ -38,7 +38,7 @@
         </div>
     </fieldset>
 
-    <fieldset ng-if="observation.isGroup()" class="hasLegend">
+    <fieldset ng-if="observation && observation.isGroup()" class="hasLegend">
         
         <legend class="mylegend"><strong>{{observation.label}}</strong></legend>
         <div class="form-group">
