@@ -176,19 +176,4 @@ angular.module('opd.documentupload')
                 }())
             };
 
-        }])
-.directive('btnUserInfo', ['$rootScope', '$window', function($rootScope, $window) {
-    return {
-        restrict: 'CA',
-        link: function(scope, elem, attrs) {
-            elem.bind('click', function(event) {
-                $(this).next().toggleClass('active');
-                event.stopPropagation();
-            });
-            $(document).find('body').bind('click', function() {
-                $(elem).next().removeClass('active');
-            });
-        }
-    };
-  }
-]);
+        }]);
