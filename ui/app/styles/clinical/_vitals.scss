@@ -56,10 +56,16 @@
     margin-top: 7px;
     display: inline-block;
     color: #777;
+  }
+  .info {
+    color: #0099ff;
+    width: 200px;
+    font-size: 14px;
+    line-height: 1.4em;
   } 
 }
 form .vitals .form-field .field-value {
-  input, select, textarea {
+  input {
     width: 10em;
   }
 }
