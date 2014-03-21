@@ -5,7 +5,7 @@
     <form ng-submit="submit()">
         <p >
             <select ng-model="dispositionAction" ng-options="getMappingCode(d) as d.name.name for d in dispositionActions" ng-change="clearDispositionNote()">
-
+							<option value=""></option>
             </select>
         </p>
 
