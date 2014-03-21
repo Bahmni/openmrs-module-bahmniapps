@@ -28,6 +28,7 @@ app/components)
 5. For creating a symlink into your vagrant /var/www:  
 
   `./scripts/vagrant-link.sh` (links app folder)
+  
   `./scripts/vagrant-link.sh dist` (links dist folder)
 
 
