@@ -7,19 +7,29 @@ This application contains Bahmni apps for openmrs.
 
 1. Install the following modules required globally (This is a one time task)
 
-  npm install -g bower
-  npm install -g grunt-cli
-  gem install compass
+  `npm install -g bower`
+  `npm install -g grunt-cli`
+  `gem install compass`
 
 2. Install node dependencies (Installed into node_modules).
 
-  npm install
+  `npm install`
 
 
 3. Set up UI component/dependencies (This installs all the UI dependencies into
 app/components)
 
-  bower install
+  `bower install`
+
+4. Build the application (into dist folder) using Grunt
+
+  `grunt`
+
+5. For creating a symlink into your vagrant /var/www:  
+
+  `./scripts/vagrant-link.sh` (links app folder)
+  `./scripts/vagrant-link.sh dist` (links dist folder)
+
 
 
 Project Structure
