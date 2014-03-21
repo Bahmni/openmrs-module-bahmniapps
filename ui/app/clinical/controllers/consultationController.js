@@ -4,7 +4,7 @@ angular.module('bahmni.clinical')
     .controller('ConsultationController', ['$scope', '$rootScope', 'encounterService', '$location', 'spinner', function ($scope, $rootScope, encounterService, $location, spinner) {
 
     var addEditedPastDiagnoses = function (diagnosisList) {
-        $rootScope.consultation.pastDiagnoses.forEach(function (diagnosis) {
+        $rootScope.consultation.pastDiagnoses && $rootScope.consultation.pastDiagnoses.forEach(function (diagnosis) {
             if (diagnosis.isDirty) {
                 var editedPastDiagnosis = angular.extend(new Bahmni.Clinical.Diagnosis(diagnosis.codedAnswer), diagnosis);
                 editedPastDiagnosis.existingObs = '';
