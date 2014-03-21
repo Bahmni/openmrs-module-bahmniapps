@@ -22,7 +22,7 @@
     </section>
     <section class="block diagnosis">
         <h2>Diagnosis</h2>
-        <div class="block-content" ng-show="hasNonVoidedDiagnoses()">
+        <div class="block-content" ng-show="nonVoidedDiagnoses.length > 0">
             <div class="diagnosis-type">
                 <h3>Primary Diagnoses</h3>
                 <div ng-repeat="diagnosis in nonVoidedDiagnoses" ng-show="diagnosis.isPrimary()">

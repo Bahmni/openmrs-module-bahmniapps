@@ -3,11 +3,22 @@
 angular.module('bahmni.clinical')
     .controller('ConsultationController', ['$scope', '$rootScope', 'encounterService', '$location', 'spinner', function ($scope, $rootScope, encounterService, $location, spinner) {
 
-    $scope.hasNonVoidedDiagnoses = function(){
+    var addEditedPastDiagnoses = function (diagnosisList) {
+        $rootScope.consultation.pastDiagnoses.forEach(function (diagnosis) {
+            if (diagnosis.isDirty) {
+                var editedPastDiagnosis = angular.extend(new Bahmni.Clinical.Diagnosis(diagnosis.codedAnswer), diagnosis);
+                editedPastDiagnosis.existingObs = '';
+                diagnosisList.push(editedPastDiagnosis);
+            }
+        });
+    }
+
+    var init = function(){
         $scope.nonVoidedDiagnoses = $rootScope.consultation.diagnoses.filter(function(diagnosis){
-            return diagnosis.voided != true; 
-        })
-        return $scope.nonVoidedDiagnoses.length > 0
+            return diagnosis.voided != true;
+        });
+        addEditedPastDiagnoses($scope.nonVoidedDiagnoses);
+
     }
 
     $scope.save = function () {
@@ -17,6 +28,7 @@ angular.module('bahmni.clinical')
         encounterData.encounterTypeUuid = $rootScope.encounterConfig.getOpdConsultationEncounterTypeUuid();
         encounterData.encounterDateTime = $rootScope.consultation.encounterDateTime || new Date();
 
+        addEditedPastDiagnoses($rootScope.consultation.diagnoses);
         if ($rootScope.consultation.diagnoses && $rootScope.consultation.diagnoses.length > 0){
             encounterData.diagnoses = $rootScope.consultation.diagnoses.map(function (diagnosis) {
                 return {
@@ -59,10 +71,10 @@ angular.module('bahmni.clinical')
             encounterData.observations = encounterData.observations.concat($rootScope.consultation.observations);
         };
 
-				var observationFilter = new Bahmni.ObservationFilter();
-				$rootScope.consultation.observations.forEach(function(observation){
-					observationFilter.voidIfNull(observation);
-				});
+        var observationFilter = new Bahmni.ObservationFilter();
+        $rootScope.consultation.observations.forEach(function(observation){
+            observationFilter.voidIfNull(observation);
+        });
 
         addObservationsToEncounter();
 
@@ -73,6 +85,8 @@ angular.module('bahmni.clinical')
 
     $scope.onNoteChanged = function() {
         $scope.consultation.consultationNote.observationDateTime = new Date();
-    }        
+    }
+
+    init();
 }]);
 

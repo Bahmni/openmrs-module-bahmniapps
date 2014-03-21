@@ -56,17 +56,21 @@ angular.module('bahmni.clinical')
 
         var loadPastDiagnoses = function () {
             var patientUuid = $stateParams.patientUuid;
-
-            if (!$rootScope.consultation.pastDiagnoses) {
+            $rootScope.consultation.pastDiagnoses = $rootScope.consultation.pastDiagnoses || [];
+            if ($rootScope.consultation.pastDiagnoses.length == 0) {
                 DiagnosisService.getPastDiagnoses(patientUuid).success(function (response) {
-
-                    $rootScope.consultation.pastDiagnoses = response;
+                    response.forEach(function(pastDiagnosis){
+                        if(!presentInList(pastDiagnosis, $scope.diagnosisList) && !presentInList(pastDiagnosis, $rootScope.consultation.pastDiagnoses)){
+                            $rootScope.consultation.pastDiagnoses.push(pastDiagnosis);
+                        }
+                    });
                 });
             }
         }
 
-        $scope.presentInCurrentEncounter = function (diagnosisToCheck) {
-            return $scope.diagnosisList.filter(function (diagnosis) {
+        var presentInList = function (diagnosisToCheck, diagnosisList) {
+            diagnosisList = diagnosisList || $scope.diagnosisList;
+            return diagnosisList.filter(function (diagnosis) {
                 var contains = false;
                 if (diagnosisToCheck.freeTextAnswer) {
                     contains = diagnosis.freeTextAnswer === diagnosisToCheck.freeTextAnswer;
@@ -97,16 +101,9 @@ angular.module('bahmni.clinical')
         }
 
         $scope.$on('$destroy', function () {
-            $scope.consultation.pastDiagnoses.forEach(function(diagnosis){
-                if(diagnosis.dirty == true){
-                    $rootScope.consultation.diagnoses.push(diagnosis);
-                }
-            })
-            console.log($rootScope.consultation.diagnoses);
             $rootScope.consultation.diagnoses = $scope.diagnosisList.filter(function (diagnosis) {
                 return !diagnosis.isEmpty();
             });
-
         });
 
         $scope.processDiagnoses = function (data) {
