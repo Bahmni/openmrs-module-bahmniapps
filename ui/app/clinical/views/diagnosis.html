@@ -1,75 +1,69 @@
 <form>
-    <fieldset>
-        <div class="diagnosis">
-            <div id="selectedNodesArea">
-                <div class="table">
-                    <div class="row table-header">
-                        <div class="col col1"><span>Diagnosis</span></div>
-                        <div class="col col2"><span>Order</span></div>
-                        <div class="col col3"><span>Certainty</span></div>
-                    </div>
+  <fieldset>
+    <div class="diagnosis">
+      <div id="selectedNodesArea">
+        <h2>New</h2>
+        <div class="table new-diagnosis">
+          <div class="row table-header">
+            <div class="col col1"><span>Diagnosis</span></div>
+            <div class="col col2"><span>Order</span></div>
+            <div class="col col3"><span>Certainty</span></div>
+          </div>
 
-                    <div ng-repeat="diagnosis in diagnosisList" ng-hide="diagnosis.voided" class="table-body">
-                        <div class="row">
-                            <div class="col col1">
-                                <input ng-model="diagnosis.codedAnswer.name" type="text" name="name" ui-autocomplete
-                                       ng-change="clearEmptyRows($index)">
-                            </div>
-                            <div class="col col2">
-                                <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.order'
-                                               options='orderOptions'/>
-                            </div>
-                            <div class="col col3">
-                                <buttons-radio class="small-btn" data-toggle="buttons-radio" model='diagnosis.certainty'
-                                               options='certaintyOptions'/>
-                            </div>
-                            <div class="col col4">
-                                <button type="button" class="small-btn" ng-click="removeObservation($index)"
-                                        ng-show="diagnosis.codedAnswer.name">
-                                    <span class="icon-remove"></span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <hr/>
-
-                <div class="table" ng-if="consultation.pastDiagnoses.length > 0">
-                    <div class="row table-header">
-                        <div class="col col1"><span>Diagnosis</span></div>
-                        <div class="col col2"><span>Order</span></div>
-                        <div class="col col3"><span>Certainty</span></div>
-                        <div class="col col4"><span>Datetime</span></div>
-                        <div class="col col5"><span>Provider</span></div>
-                    </div>
-
-                    <div ng-repeat="diagnosis in consultation.pastDiagnoses" class="table-body">
-                        <div class="row">
-                            <div class="col col1">
-                                <label ng-if="diagnosis.codedAnswer.name">{{diagnosis.codedAnswer.name}}</label>
-                                <label ng-if="diagnosis.freeTextAnswer">{{diagnosis.freeTextAnswer}}</label>
-                            </div>
-                            <div class="col col2">
-                                <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.order'
-                                               options='orderOptions' dirty-check-flag='diagnosis.isDirty' />
-                            </div>
-                            <div class="col col3">
-                                <buttons-radio class="small-btn" data-toggle="buttons-radio" model='diagnosis.certainty'
-                                               options='certaintyOptions' dirty-check-flag='diagnosis.isDirty'/>
-                            </div>
-                            <div class="col col4">
-                                <span>
-                                    {{diagnosis.diagnosisDateTime | date :'dd-MM-yyyy hh:mm'}}
-                                </span>
-                            </div>
-                            <div class="col col5">
-                                <span ng-repeat="provider in diagnosis.providers">{{provider.name}}<br/></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+          <div ng-repeat="diagnosis in diagnosisList" ng-hide="diagnosis.voided" class="table-body">
+            <div class="row">
+              <div class="col col1">
+                <input ng-model="diagnosis.codedAnswer.name" type="text" name="name" ui-autocomplete
+                       ng-change="clearEmptyRows($index)">
+              </div>
+              <div class="col col2">
+                <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.order'
+                options='orderOptions'/>
+              </div>
+              <div class="col col3">
+                <buttons-radio class="small-btn" data-toggle="buttons-radio" model='diagnosis.certainty'
+                options='certaintyOptions'/>
+              </div>
+              <div class="col col4">
+                <button type="button" class="small-btn row-remover" ng-click="removeObservation($index)" ng-show="diagnosis.codedAnswer.name">
+                <span class="icon-remove"></span>
+                </button>
+              </div>
             </div>
+          </div>
         </div>
-    </fieldset>
+        <h2>History</h2>
+        <div class="table history-diagnosis" ng-if="consultation.pastDiagnoses.length > 0">
+          <div class="row table-header">
+            <div class="col col1"><span>Diagnosis</span></div>
+            <div class="col col2"><span>Order</span></div>
+            <div class="col col3"><span>Certainty</span></div>
+          </div>
+
+          <div ng-repeat="diagnosis in consultation.pastDiagnoses" class="table-body">
+            <div class="row">
+              <div class="col col1">
+                <label ng-if="diagnosis.codedAnswer.name">{{diagnosis.codedAnswer.name}}</label>
+                <label ng-if="diagnosis.freeTextAnswer">{{diagnosis.freeTextAnswer}}</label>
+              </div>
+              <div class="col col2">
+                <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.order'
+                               options='orderOptions' dirty-check-flag='diagnosis.isDirty' />
+              </div>
+              <div class="col col3">
+                <buttons-radio class="small-btn" data-toggle="buttons-radio" model='diagnosis.certainty'
+                               options='certaintyOptions' dirty-check-flag='diagnosis.isDirty'/>
+              </div>
+            </div>
+            <div class="footer-note">
+              <span class="date">{{diagnosis.diagnosisDateTime | date :'dd-MM-yyyy hh:mm'}}</span>
+              <span class="provider">Provider: Navaneeth</span> <!-- temp placeholder -->
+              <!-- <span ng-repeat="provider in diagnosis.providers">{{provider.name}}<br/></span> -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </fieldset>
 </form>
