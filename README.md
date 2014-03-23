@@ -1,6 +1,8 @@
 Bhamni Apps
 ============
 
+[![Build Status](https://travis-ci.org/Bhamni/openmrs-module-bahmniapps.svg?branch=master)](https://travis-ci.org/Bhamni/openmrs-module-bahmniapps)
+
 This application contains Bahmni apps for openmrs.
 
  To set up the application, do the following in ui folder
