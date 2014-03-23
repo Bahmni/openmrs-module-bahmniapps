@@ -6,6 +6,7 @@ addons:
 before_install:
  - gem install compass
 before_script:
+  - cd ui
   - npm install -g grunt-cli
   - npm install -g bower
   - npm install
