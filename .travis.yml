@@ -13,4 +13,8 @@ before_script:
   - bower install
   - grunt
 notifications:
-  email: false
+  email:
+      recipients:
+        - bahmni@thoughtworks.com
+      on_success: change
+      on_failure: change
