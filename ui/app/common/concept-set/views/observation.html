@@ -15,6 +15,13 @@
                            <small class="hint">(Valid Range from {{observation.getLowAbsolute()}} to {{observation.getHighAbsolute()}})</small>
                 </div>
 
+                <div ng-switch-when="freeTextAutocomplete">
+                    <input class="concept-name" ng-model="observation.observation.value" concept-autocomplete
+                    coded-concept-uuid="observation.getConceptConfig().freeTextAutocomplete.codedConceptUuid"
+                    concept-set-uuid="observation.getConceptConfig().freeTextAutocomplete.conceptSetUuid"
+                    blur-on-select="false"/>
+                </div>
+
                 <textarea ng-switch-when="text" class="form-control" ng-model="$parent.observation.observation.value"
                           ng-change="$parent.observation.onValueChanged()"
                           value="$parent.observation.displayValue()"></textarea>
@@ -37,13 +44,11 @@
     </fieldset>
 
     <fieldset ng-if="observation && observation.isGroup()" class="hasLegend">
-        
         <legend class="mylegend"><strong>{{observation.label}}</strong></legend>
         <div class="form-group">
             <div class="form-field form-field-group" ng-repeat="member in observation.getGroupMembers()">
                 <show-concept observation="member"></show-concept>
             </div>
         </div>
-        
     </fieldset>
 </div>

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.conceptSet')
+angular.module('bahmni.common.conceptSet', ['bahmni.common.uiHelper'])
     .directive('showConcept', ['$rootScope', function () {
         var controller = function($scope, $q, $filter) {
             var conceptMapper = new Bahmni.ConceptSet.ConceptMapper();
@@ -46,9 +46,9 @@ angular.module('bahmni.common.conceptSet')
                 '<show-concept observation="rootObservation"></show-concept>' +
             '</form>';
 
-        var controller = function ($scope, conceptSetService, appService, $rootScope, $q) {
+        var controller = function ($scope, conceptSetService, conceptSetUiConfigService, $rootScope, $q) {
             var conceptSetName = $scope.conceptSetName;
-            var conceptSetUIConfig = appService.getAppDescriptor().getConfig("conceptSetUI") || {};
+            var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
             var conceptSetPromise = conceptSetService.getConceptSetMembers(
                                         {name: conceptSetName, v: "fullchildren"});
             var xCompoundObservationPromise = conceptSetService.getConceptSetMembers({name: 'XCompoundObservation', v: "full"});

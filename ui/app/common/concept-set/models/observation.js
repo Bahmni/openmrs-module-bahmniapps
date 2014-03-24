@@ -138,6 +138,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     getControlType: function () {
+        if (this.getConceptConfig().freeTextAutocomplete) return "freeTextAutocomplete";
         if (this.isHtml5InputDataType()) return "html5InputDataType";
         if (this.isText()) return "text";
         if (this.isCoded()) return this.getConceptConfig().autocomplete ? "autocomplete" : "dropdown";
