@@ -4,7 +4,7 @@ angular.module('bahmni.common.uiHelper')
             $scope.element = element;
 
             $scope.$on("$destroy", function() {
-                $.magnificPopup.close();
+                $scope.element.magnificPopup('close');
             });
         };
 
@@ -14,10 +14,11 @@ angular.module('bahmni.common.uiHelper')
             this.initGallery = function() {
                 var options = {
                     type:'image',
+                    delegate: 'img',
                     key: galleryName, 
                     gallery: {enabled: true}
                 };
-                $($scope.element).find('img').magnificPopup(options);
+                $scope.element.magnificPopup(options);
             }
         };
 
