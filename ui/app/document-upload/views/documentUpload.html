@@ -39,7 +39,7 @@
                 </div>
                 <div>
                     <span class="clear" ng-repeat="image in newVisit.images">
-                        <img image-gallery-item ng-src="{{image.encodedValue}}" width="100">
+                        <img image-gallery-item ng-src="{{image.encodedValue}}" title="{{image.getTitle()}}" width="100">
                         <input class="concept-name" ng-model="image.concept.name" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter the test name" title="Select the test from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
                         <button type="button" ng-click="newVisit.removeNewAddedImage(image)"><i class="icon-trash"></i></button>
                     </span>
@@ -84,7 +84,7 @@
                             </li>
                             <li ng-repeat="image in visit.images" >
                                 <div>
-                                    <img ng-src="{{image.encodedValue}}" image-gallery-item width="100">
+                                    <img ng-src="{{image.encodedValue}}" image-gallery-item title="{{image.getTitle()}}" width="100">
                                     <input class="concept-name" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter the test name" title="Select the test from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
                                 </div>
                                 <div class="file-actions">

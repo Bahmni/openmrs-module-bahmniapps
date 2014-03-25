@@ -3,6 +3,7 @@ Bahmni.Common = Bahmni.Common || {};
 
 Bahmni.Common.Constants = {
     dateFormat: "dd/mm/yyyy",
+    dateDisplayFormat: "dd-MMM-yyyy",
     emrapiDiagnosisUrl :"/openmrs/ws/rest/emrapi/diagnosis",
     emrapiConceptUrl :"/openmrs/ws/rest/emrapi/concept",
     encounterConfigurationUrl: "/openmrs/ws/rest/v1/bahmnicore/bahmniencounter/config",

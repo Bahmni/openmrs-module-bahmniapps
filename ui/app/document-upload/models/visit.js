@@ -19,7 +19,8 @@ Bahmni.DocumentUpload.Visit = function () {
                 observation.groupMembers && observation.groupMembers.forEach(function (member) {
                     if (member.concept.name.name == 'Document') {
                         var conceptName = observation.concept.name.name;
-                        savedImages.push(new DocumentImage({"encodedValue": member.value, "obsUuid": observation.uuid, concept: {uuid: observation.concept.uuid, editableName: conceptName, name: conceptName}}));
+                        savedImages.push(new DocumentImage({"encodedValue": member.value, "obsUuid": observation.uuid, obsDatetime: observation.obsDatetime,
+                                         concept: {uuid: observation.concept.uuid, editableName: conceptName, name: conceptName}}));
                     }
                 });
             });

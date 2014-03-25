@@ -4,11 +4,14 @@ Bahmni.DocumentUpload.DocumentImage = function(data){
 
 Bahmni.DocumentUpload.DocumentImage.prototype = {
     getTitle: function() {
-        var title = "";
+        var titleComponents = [];
         if(this.concept) {
-            title = title + this.concept.name;
+            titleComponents.push(this.concept.name);
+        }        
+        if(this.obsDatetime) {
+        	titleComponents.push(moment(this.obsDatetime).format(Bahmni.Common.Constants.dateDisplayFormat.toUpperCase()));
         }
-        return title;
+        return titleComponents.join(', ');
     }
 }
 
