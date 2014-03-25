@@ -2,9 +2,10 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
 
         <!-- build:css document-upload.min.css -->
+        <link rel="stylesheet" href="../components/magnific-popup/dist/magnific-popup.css">
         <link rel="stylesheet" href="../components/jquery-ui/themes/smoothness/jquery-ui.min.css">
         <link rel="stylesheet" href="../styles/clinical.css"/>
         <!-- endbuild -->
@@ -21,7 +22,6 @@
         </div>
 
 
-        <!-- build:js document-upload.min.js -->
         <script src="../components/jquery/jquery.js"></script>
         <script src="../components/jquery-ui/ui/minified/jquery-ui.custom.min.js"></script>
         <script src="../components/angular/angular.js"></script>
@@ -31,7 +31,9 @@
         <script src="../components/moment/moment.js"></script>
         <script src="../components/ngInfiniteScroll/ng-infinite-scroll.js"></script>
         <script src="../components/purl/purl.js"></script>
+        <script src="../components/magnific-popup/dist/jquery.magnific-popup.js"></script>
 
+        <!-- build:js document-upload.min.js -->
         <script src="../common/util/httpErrorInterceptor.js"></script>
         <script src="../common/auth/authentication.js"></script>
         <script src="../common/app-framework/init.js"></script>
@@ -64,6 +66,7 @@
         <script src="../common/ui-helper/spinner.js"></script>
         <script src="../common/ui-helper/directives/bahmniAutocomplete.js"></script>
         <script src="../common/ui-helper/directives/datePicker.js"></script>
+        <script src="../common/ui-helper/directives/imageGallery.js"></script>
         <script src="../common/ui-helper/services/backlinkService.js"></script>
         <script src="../common/ui-helper/controllers/commonHeaderController.js"></script>
 
@@ -71,6 +74,7 @@
         <script src="init.js"></script>
         <script src="initialization.js"></script>
         <script src="models/visit.js"></script>
+        <script src="models/documentImage.js"></script>
         <script src="services/visitDocumentService.js"></script>
         <script src="directives/fileUpload.js"></script>
         <script src="controllers/documentController.js"></script>

@@ -3,7 +3,7 @@
 </div>
 
 <ul>
-    <li id="newVisit">
+    <li id="newVisit" image-gallery="visit-new">
         <h1 ng-click="resetCurrentVisit(newVisit)">Visit: New</h1>
         <div ng-if="isCurrentVisit(newVisit)" class="visit-content">
             <form ng-submit="save(newVisit)">
@@ -39,7 +39,7 @@
                 </div>
                 <div>
                     <span class="clear" ng-repeat="image in newVisit.images">
-                        <img ng-src="{{image.encodedValue}}" width="100">
+                        <img image-gallery-item ng-src="{{image.encodedValue}}" width="100">
                         <input class="concept-name" ng-model="image.concept.name" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter the test name" title="Select the test from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
                         <button type="button" ng-click="newVisit.removeNewAddedImage(image)"><i class="icon-trash"></i></button>
                     </span>
@@ -64,7 +64,7 @@
             <span ng-if="hasImages(visit)" class="icon-picture" title="This visit contains images"></span>
             <span ng-if="!visit.stopDatetime" class="currentVisitMarker"><i class="icon-star"></i></span>
         </h1>
-        <div class="visit-content" ng-if="isCurrentVisit(visit)">
+        <div class="visit-content" ng-if="isCurrentVisit(visit)" image-gallery="visit-{{visit.uuid}}" >
             <form name="{{'visit' + $index}}" ng-submit="save(visit)" ng-disabled="!visit.changed">
                 <ul>
                     <li>
@@ -82,9 +82,9 @@
                                     </button>
                                 </div>
                             </li>
-                            <li ng-repeat="image in visit.images">
+                            <li ng-repeat="image in visit.images" >
                                 <div>
-                                    <img ng-src="{{image.encodedValue}}" width="100">
+                                    <img ng-src="{{image.encodedValue}}" image-gallery-item width="100">
                                     <input class="concept-name" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter the test name" title="Select the test from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
                                 </div>
                                 <div class="file-actions">
@@ -93,7 +93,7 @@
                             </li>
                             <li ng-repeat="image in visit.savedImages">
                                 <div>
-                                    <img ng-src="/document_images/{{image.encodedValue}}" width="100" ng-class="{true:'transparent', false:'opaque'}[image.voided]" />
+                                    <img image-gallery-item title="{{image.getTitle()}}" ng-src="/document_images/{{image.encodedValue}}" width="100" ng-class="{true:'transparent', false:'opaque'}[image.voided]" />
                                     <input name="{{'image'+$index}}" class="concept-name" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter the test name" title="Select the test from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true" ng-change="visit.markAsUpdated()" ng-disabled="image.voided"/>
                                 </div>
                                 <div class="file-actions">
