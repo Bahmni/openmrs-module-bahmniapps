@@ -2,12 +2,22 @@ angular.module('bahmni.common.uiHelper')
 .directive('imageGallery', function(){
         var link = function($scope, element){
             $scope.element = element;
+
+            $scope.$on("$destroy", function() {
+                $.magnificPopup.close();
+            });
         };
 
-        var controller = function($scope) {
+        var controller = function($scope, $location) {
             var galleryName = $scope.galleryName || "default-gallery";
+
             this.initGallery = function() {
-                $($scope.element).find('img').magnificPopup({type:'image', key: galleryName, gallery: {enabled: true}});
+                var options = {
+                    type:'image',
+                    key: galleryName, 
+                    gallery: {enabled: true}
+                };
+                $($scope.element).find('img').magnificPopup(options);
             }
         };
 
@@ -23,6 +33,10 @@ angular.module('bahmni.common.uiHelper')
     var link = function($scope, element, attrs, imageGalleryCtrl){
         $(element).attr('data-mfp-src', attrs.ngSrc);
         imageGalleryCtrl.initGallery();
+
+        $scope.$on("$destroy", function() {
+            imageGalleryCtrl.initGallery();
+        });
     };
 
     return {
