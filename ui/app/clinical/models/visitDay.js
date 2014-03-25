@@ -4,7 +4,7 @@ Bahmni.Clinical.VisitDay = function(dayNumber, visitDate, drugOrders, consultati
     this.drugOrders = drugOrders;
     this.consultationNotes = consultationNotes;
     this.labTestOrders = labTestOrders;
-    this.otherTestOrders = otherTestOrders;
+    this.otherInvestigations = otherTestOrders;
 	this.observations = observations;
 }
 
@@ -18,7 +18,7 @@ Bahmni.Clinical.VisitDay.prototype = {
     },
 
     hasOtherTestOrders : function() {
-        return this.otherTestOrders.length > 0;
+        return this.otherInvestigations.length > 0;
     },
 
     hasObservations: function() {

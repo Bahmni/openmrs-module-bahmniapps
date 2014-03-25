@@ -25,9 +25,21 @@ angular.module('bahmni.common.domain')
         obs.groupMembers.forEach(function(groupMember) {
             stripExtraConceptInfo(groupMember);
         });
-    }
+    };
+
+    var searchWithoutEncounterDate = function (visitUuid) {
+        return $http.get(Bahmni.Common.Constants.encounterUrl, {
+            params:{
+                visitUuid : visitUuid,
+                includeAll : Bahmni.Common.Constants.includeAllObservations
+            },          
+          withCredentials : true
+        });
+    };
 
     this.search = function (visitUuid,encounterDate) {
+        if (!encounterDate) return searchWithoutEncounterDate(visitUuid);
+
         return $http.get(Bahmni.Common.Constants.encounterUrl, {
         	params:{
         		visitUuid : visitUuid,

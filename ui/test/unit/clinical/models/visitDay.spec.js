@@ -119,9 +119,9 @@ describe('visit Day',function(){
 			expect(visitDay.labTestOrders.length).toBe(1);
 			expect(visitDay.labTestOrders[0].concept).toEqual(testorder11.concept);
 			expect(visitDay.labTestOrders[0].provider).toEqual(provider);
-			expect(visitDay.otherTestOrders.length).toBe(1);
-			expect(visitDay.otherTestOrders[0].concept).toEqual(testorder12.concept);			
-			expect(visitDay.otherTestOrders[0].provider).toEqual(provider);			
+			expect(visitDay.otherInvestigations.length).toBe(1);
+			expect(visitDay.otherInvestigations[0].concept).toEqual(testorder12.concept);
+			expect(visitDay.otherInvestigations[0].provider).toEqual(provider);
 		});
 	})
 })

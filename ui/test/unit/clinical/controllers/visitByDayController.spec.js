@@ -1,6 +1,6 @@
 'use strict';
 
-describe("VisitControllerTest", function () {
+describe("VisitByDayController", function () {
     var encounterService;
     var visitService;
     var scope;
@@ -35,7 +35,7 @@ describe("VisitControllerTest", function () {
 
     var setUpController = function () {
         inject(function ($controller) {
-            visitController = $controller('VisitController', {
+            visitController = $controller('VisitByDayController', {
                 $scope: scope,
                 spinner: spinner,
                 visitService: visitService,
