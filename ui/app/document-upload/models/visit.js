@@ -37,7 +37,7 @@ Bahmni.DocumentUpload.Visit = function () {
     
     this.endDate = function () {
         var endDateTime = this.stopDatetime ? this.parseDate(this.stopDatetime) : this.startDate();
-        return endDateTime.setHours(23,59,59,000);
+        return endDateTime.setHours(23,59,59,0);
     };
 
     this.parseDate = function (date) {
