@@ -14,10 +14,15 @@
     h1 {
       height: 40px;
       line-height: 40px;
-      background: #EEE;
-      border-bottom: 1px solid #CCC;
-      padding: 0 10px;
-      font-weight: bold;
+      @include background(linear-gradient(top, #fff, #ddd));
+      border: 1px solid #CCC;
+      padding: 0 5px;
+      cursor: pointer;
+      i.state {
+        color: #999;
+        font-size: 18px;
+        padding: 0;
+      }
       small {
         font-size: 90%;
         color: #5A9993;
@@ -27,8 +32,18 @@
         float: right;
       }
     }
+    .reg-srch-btn {
+      margin-right: 0;
+    }
+    .tab-content {
+      padding-right: 0;
+    }
+    .containsImageMarker {
+      color: #0099cc;
+      float: right;
+    }
     .visit-content {
-        padding: 10px;
+        padding: 10px 10px 15px 10px;
         label.btn {
           -webkit-border-radius: 3px;
           -moz-border-radius: 3px;
@@ -50,6 +65,12 @@
           min-width: 0;
           max-width: 300px;
           text-decoration: none;
+          @media screen and (max-width: 480px) {
+            width: 49%;
+            padding-left: 0;
+            padding-right: 0;
+            text-align: center;
+          }
         }
         button[disabled] {
           position: relative;
@@ -64,6 +85,12 @@
             &[disabled] {
               background: grey;
             }
+          }
+          @media screen and (max-width: 480px) {
+            width: 49%;
+            padding-left: 0;
+            padding-right: 0;
+            text-align: center;
           }
         }
         .files > li {
@@ -88,8 +115,13 @@
             }
         }
     }
-    input:invalid {
-        border: solid 1px #FF9494;
+    @media screen and (max-width: 480px) {
+      .field-value, form select {
+        width: 100%;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+      }
     }
     .form-field {
       clear: both;
