@@ -8,6 +8,15 @@
 //      display: none;
     }
   }
+  p.success {
+    color: #f8f8ff;
+    padding: 5px;
+    background: #333;
+    margin-bottom: 10px;
+    @include transition-property(display);
+    @include transition-duration(0.15s);
+    @include transition-timing-function(ease-in-out);
+  }
   .main {
     max-width: 960px;
     min-width: 320px;
@@ -120,7 +129,7 @@
           }
           .concept-name.saved {
             font-family: OpenSansBold;
-            border: 1px solid #efefef;
+            border: 1px solid #fefefe;
           }
           .placeholder {
             border: 2px dashed #eee;
