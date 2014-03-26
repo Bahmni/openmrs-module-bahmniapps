@@ -358,3 +358,15 @@ input[file-upload] {
   border-color: #ff6666;
   background: white;
 }
+
+.row-remover {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  float: right;
+  padding: 5px 10px;
+  span {
+    font-size: 20px;
+    color: #660000;
+    padding: 0;
+  }
+}

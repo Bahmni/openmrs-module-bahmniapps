@@ -1,4 +1,5 @@
 .document-upload {
+  font-size: 14px;
   header {
     .header-logo {
       position: static;
@@ -78,6 +79,7 @@
           color: #EEE;
         }
         .btn {
+          padding-top: 7px;
           &.btn-primary {
             background: #447772;
             color: #FFF;
@@ -94,25 +96,65 @@
           }
         }
         .files > li {
-            clear: none;
-            border-bottom: 1px solid #CCC;
-            overflow: hidden;
-            padding: 10px;
-            .upload-inline-buttons {
-                float: left;
+          clear: both;
+          overflow: auto;
+          padding: 10px 0;
+          border-bottom: 1px solid #eee;
+          &:last-child {
+            border-bottom: 0;
+          }
+          .upload-inline-buttons {
+            float: left;
+          }
+          img {
+            float: left;
+            width: 50px;
+            height: 50px;
+            background: #ccc;
+            padding: 5px;
+            margin-right: 10px;
+          }
+          .concept-name {
+            min-width: 60%;
+            margin: 0;
+          }
+          .concept-name.saved {
+            font-family: OpenSansBold;
+            border: 1px solid #efefef;
+          }
+          .placeholder {
+            border: 2px dashed #eee;
+            width: 50px;
+            height: 50px;
+            background: #fefefe;
+            i {
+              color: #eee;
+              font-size: 20px;
+              line-height: 40px;
+              width: 40px;
             }
-            img {
-                float: left;
+          }
+          .file {
+            overflow: auto;
+            float: left;
+            @media screen and (max-width: 480px) {
+              width: 80%;
             }
-            .concept-name {
-                min-width: 40%;
-                float: right;
+          }
+          .file-actions {
+            clear: right;
+            float: right;
+            padding: 10px 0;
+            @media screen and (max-width: 480px) {
+              width: 100%;
+              -webkit-box-sizing: border-box;
+              -moz-box-sizing: border-box;
+              box-sizing: border-box;
             }
-            .file-actions {
-                clear: right;
-                float: right;
-                margin: 10px;
-            }
+          }
+          .file-remove {
+            float: right;
+          }
         }
     }
     @media screen and (max-width: 480px) {
