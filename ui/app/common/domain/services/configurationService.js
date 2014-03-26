@@ -52,6 +52,15 @@ angular.module('bahmni.common.domain')
             return consultationNoteConfig;
         };
 
+        configurationFunctions.ruledOutDiagnosisConfig = function () {
+            var ruledOutDiagnosisConfig =  $http.get(Bahmni.Common.Constants.conceptUrl, {
+                method:"GET",
+                params: { v: 'custom:(uuid,name,answers)', name: Bahmni.Common.Constants.ruledOutDiagnosisConceptName },
+                withCredentials: true
+            });
+            return ruledOutDiagnosisConfig;
+        };
+
         configurationFunctions.radiologyObservationConfig = function(){
             var radiologyObservationConfig =  $http.get(Bahmni.Common.Constants.conceptUrl, {
                 method:"GET",

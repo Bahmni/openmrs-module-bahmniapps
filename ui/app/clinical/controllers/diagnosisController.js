@@ -5,8 +5,10 @@ angular.module('bahmni.clinical')
 
         $scope.placeholder = "Add Diagnosis";
         $scope.hasAnswers = false;
+
+        // TODO : Mujir/Sushmita - remove this hard coding. 'Ruled Out' would not be configured as certainty in OpenMRS.
         $scope.orderOptions = ['PRIMARY', 'SECONDARY'];
-        $scope.certaintyOptions = ['CONFIRMED', 'PRESUMED'];
+        $scope.certaintyOptions = ['CONFIRMED', 'PRESUMED', Bahmni.Common.Constants.ruledOutCertainty];
 
         $scope.getDiagnosis = function (searchTerm) {
             return DiagnosisService.getAllFor(searchTerm);
