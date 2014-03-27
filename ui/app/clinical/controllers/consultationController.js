@@ -15,6 +15,7 @@ angular.module('bahmni.clinical')
 
         var getRuledOutDiagnosesObservations = function () {
             var ruledOutDiagnosisObservations = [];
+            if (!$rootScope.consultation.pastDiagnoses) return [];
             $rootScope.consultation.pastDiagnoses.forEach(function (diagnosis) {
                 if (diagnosis.isDirty && diagnosis.certainty == Bahmni.Common.Constants.ruledOutCertainty) {
                     //TODO: Sushmita/Mujir - remove hardcoded concept, add liquibase migration. also remove 'ruled out' hard coding.
