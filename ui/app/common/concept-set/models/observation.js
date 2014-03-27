@@ -17,6 +17,9 @@ Bahmni.ConceptSet.Observation = function (observation, conceptUIConfig, xCompoun
     },
     shouldMarkAsAbnormal = function(conceptName) {
         return conceptUIConfig[conceptName] && conceptUIConfig[conceptName].showAbnormalIndicator;
+    },
+    shouldMarkAsRequired = function(conceptName) {
+        return conceptUIConfig[conceptName] && conceptUIConfig[conceptName].required;
     };
 
     xObservation = createConcept(xCompoundObservationConcept, [observation]);
@@ -24,6 +27,9 @@ Bahmni.ConceptSet.Observation = function (observation, conceptUIConfig, xCompoun
         var abnormal = createConcept(findConcept('IS_ABNORMAL'));
         this.isAbnormal = abnormal;
         xObservation.groupMembers.push(abnormal);
+    }
+    if(shouldMarkAsRequired(observation.concept.name)) {
+        this.isRequired = true;
     }
     angular.extend(this, xObservation);
     this.conceptUIConfig = conceptUIConfig;
@@ -196,10 +202,36 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.getDataTypeName();
     },
 
-    isValid: function () {
+    isValid: function(checkRequiredFields) {
+        return this._checkValidity(checkRequiredFields);
+    },
+
+    atLeastOneValueSet: function () {
+        return this._atLeastOneValueSet(false);
+    },
+
+    _atLeastOneValueSet: function (isSet) {
         if (this.isGroup()) {
             for (var key in this.observation.groupMembers) {
-                if (!this.observation.groupMembers[key].isValid()) {
+                var groupMember = this.observation.groupMembers[key];
+                if (groupMember.isGroup()) {
+                    if (groupMember._atLeastOneValueSet()) {
+                        isSet = true;
+                    }
+                }
+                else if (groupMember.observation.value) {
+                    isSet = true;
+                }
+            }
+        }
+        return isSet;
+    },
+
+    _checkValidity: function (checkRequiredFields) {
+        if (this.isGroup()) {
+            for (var key in this.observation.groupMembers) {
+                var groupMember = this.observation.groupMembers[key];
+                if (!groupMember._checkValidity(checkRequiredFields)) {
                     return false;
                 }
             }
@@ -207,7 +239,15 @@ Bahmni.ConceptSet.Observation.prototype = {
         } else if (this.isDateDataType()) {
             return this.isValidDate();
         }
+
+        if (checkRequiredFields && this.isValidRequiredField()) {
+            return false;
+        }
         return true;
+    },
+
+    isValidRequiredField: function() {
+        return this.isRequired && !(this.observation.value)
     },
 
     isValidDate: function () {

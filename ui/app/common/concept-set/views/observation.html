@@ -4,10 +4,11 @@
             <label class="control-label">
                 <span>{{observation.label()}}&nbsp;</span>
                 <span ng-show="observation.units">({{observation.units()}})</span>
+                <span ng-show="observation.isRequired">*</span>
             </label>
             <div class="field-value" ng-switch on="observation.getControlType()">
                 <div ng-switch-when="html5InputDataType">
-                    <input ng-class="{'illegalValue': !observation.isValid()}"
+                    <input ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"
                            add-obs-constraints obs="$parent.observation"
                            class="form-control" ng-model="$parent.observation.observation.value"
                            ng-change="$parent.observation.onValueChanged()"
@@ -17,21 +18,30 @@
 
                 <div ng-switch-when="freeTextAutocomplete">
                     <input class="concept-name" ng-model="observation.observation.value" concept-autocomplete
-                    coded-concept-uuid="observation.getConceptConfig().freeTextAutocomplete.codedConceptUuid"
-                    concept-set-uuid="observation.getConceptConfig().freeTextAutocomplete.conceptSetUuid"
-                    blur-on-select="false"/>
+                       ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"
+                       coded-concept-uuid="observation.getConceptConfig().freeTextAutocomplete.codedConceptUuid"
+                       concept-set-uuid="observation.getConceptConfig().freeTextAutocomplete.conceptSetUuid"
+                       blur-on-select="false"/>
                 </div>
 
                 <textarea ng-switch-when="text" class="form-control" ng-model="$parent.observation.observation.value"
+                          ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"
+                          foo="{{atLeastOneValueIsSet}}"
                           ng-change="$parent.observation.onValueChanged()"
                           value="$parent.observation.displayValue()"></textarea>
 
                 <select ng-switch-when="dropdown" foo-bar class="form-control" ng-model="observation.observation.value" ng-change="observation.onValueChanged()"
+                        ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"
                         ng-options="answer as answer.name for answer in getPossibleAnswers() track by answer.uuid">
                 </select>
-                <input ng-switch-when="autocomplete" type='hidden' ui-select2="selectOptions"
-                        class="form-control" ng-model="observation.observation.value" ng-change="observation.onValueChanged()">
-                </input>
+
+                <div ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"
+                     ng-switch-when="autocomplete">
+                    <input ui-select2="selectOptions"
+                           class="form-control" ng-model="observation.observation.value"
+                           ng-change="observation.onValueChanged()">
+                    </input>
+                </div>
 
                 <p ng-switch-default class="field-value info icon-info-sign"> The concept data type '{{$parent.observation.getDataTypeName()}}' is not supported yet.</p>
             </div>
@@ -47,7 +57,7 @@
         <legend class="mylegend"><strong>{{observation.label}}</strong></legend>
         <div class="form-group">
             <div class="form-field form-field-group" ng-repeat="member in observation.getGroupMembers()">
-                <show-concept observation="member"></show-concept>
+                <show-concept observation="member" at-least-one-value-is-set="atLeastOneValueIsSet"></show-concept>
             </div>
         </div>
     </fieldset>

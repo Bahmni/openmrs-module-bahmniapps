@@ -4,7 +4,6 @@ angular.module('bahmni.common.conceptSet', ['bahmni.common.uiHelper'])
     .directive('showConcept', ['$rootScope', function () {
         var controller = function($scope, $q, $filter) {
             var conceptMapper = new Bahmni.ConceptSet.ConceptMapper();
-    
             $scope.getPossibleAnswers = function() {
                 return $scope.observation.getPossibleAnswers().map(conceptMapper.map);
             };
@@ -35,7 +34,8 @@ angular.module('bahmni.common.conceptSet', ['bahmni.common.uiHelper'])
         return {
             restrict: 'E',
             scope: {
-                observation: "="
+                observation: "=",
+                atLeastOneValueIsSet : "="
             },
             controller: controller,
             template: '<ng-include src="\'../common/concept-set/views/observation.html\'" />'
@@ -43,7 +43,7 @@ angular.module('bahmni.common.conceptSet', ['bahmni.common.uiHelper'])
     }]).directive('showConceptSet', ['$rootScope', '$q', function () {
         var template =
             '<form>' +
-                '<show-concept observation="rootObservation"></show-concept>' +
+                '<show-concept observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet"></show-concept>' +
             '</form>';
 
         var controller = function ($scope, conceptSetService, conceptSetUiConfigService, $rootScope, $q) {
@@ -52,18 +52,17 @@ angular.module('bahmni.common.conceptSet', ['bahmni.common.uiHelper'])
             var conceptSetPromise = conceptSetService.getConceptSetMembers(
                                         {name: conceptSetName, v: "fullchildren"});
             var xCompoundObservationPromise = conceptSetService.getConceptSetMembers({name: 'XCompoundObservation', v: "full"});
+
+            $scope.atLeastOneValueIsSet = false;
             
             var promises = [conceptSetPromise, xCompoundObservationPromise];
             $q.all(promises).then(function(responses) {
                 var xCompoundObservation = responses[1].data.results[0];
                 var conceptSet = responses[0].data.results[0];
-                $scope.$watch('observations', function (observations) {
-                    $scope.rootObservation = conceptSet ? new Bahmni.ConceptSet.ObservationMapper(conceptSetUIConfig.value || {}, xCompoundObservation).map(observations, conceptSet) : null;
-                    changeObservations();
-                });                
+                $scope.rootObservation = conceptSet ? new Bahmni.ConceptSet.ObservationMapper(conceptSetUIConfig.value || {}, xCompoundObservation).map($scope.observations, conceptSet) : null;
             });
 
-            var changeObservations = function() {
+            var updateObservations = function() {
                 for (var i = 0; i < $scope.observations.length; i++) {
                     if($scope.observations[i].concept.uuid === $scope.rootObservation.concept.uuid) {
                         $scope.observations[i] = $scope.rootObservation;
@@ -73,12 +72,13 @@ angular.module('bahmni.common.conceptSet', ['bahmni.common.uiHelper'])
                 $scope.observations.push($scope.rootObservation);
             };
 
-
             var allowContextChange = function () {
+                updateObservations();
                 var invalidObservations = $scope.observations.filter(function(observation){
-                    return !observation.isValid();
+                    $scope.atLeastOneValueIsSet = observation.atLeastOneValueSet();
+                    return !observation.isValid($scope.atLeastOneValueIsSet);
                 });
-                return invalidObservations.length == 0;
+                return invalidObservations.length === 0;
             };
 
             $rootScope.beforeContextChange = allowContextChange;

@@ -102,14 +102,6 @@ angular.module('bahmni.clinical')
 
         };
 
-        $scope.saveTreatment = function () {
-            var noOfDrugs = $scope.selectedDrugs.length;
-            var lastDrug = $scope.selectedDrugs[noOfDrugs - 1];
-            if (lastDrug.uuid === '') {
-                $scope.selectedDrugs = $scope.selectedDrugs.slice(0, noOfDrugs - 1);
-            }
-        };
-
         $scope.removeDrug = function (index) {
             $scope.selectedDrugs.splice(index, 1);
         };
