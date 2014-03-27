@@ -15,10 +15,10 @@ angular.module('bahmni.registration')
         });
     };
 
-    var getActiveEncounter =  function (patientUuid, visitTypeUuid, encounterTypeUuid) {
+    var getActiveEncounter =  function (patientUuid, visitTypeUuid, encounterTypeUuid, providerUuid) {
         var url = constants.emrApiRESTBaseURL + "/encounter/active";
         return $http.get(url, {
-            params: {"patientUuid": patientUuid, "visitTypeUuid" : visitTypeUuid, "encounterTypeUuid" : encounterTypeUuid, "includeAll" : false},
+            params: {"patientUuid": patientUuid, "visitTypeUuid" : visitTypeUuid, "encounterTypeUuid" : encounterTypeUuid, providerUuid: providerUuid, "includeAll" : false},
             withCredentials: true
         });
     }

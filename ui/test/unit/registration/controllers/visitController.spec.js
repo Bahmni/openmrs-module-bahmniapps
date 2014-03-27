@@ -12,7 +12,11 @@ describe('VisitController', function () {
     var $window;
     var $timeout;
     var spinner;
-    var getPromise;
+    var getEncounterPromise;
+    var getPatientPromise;
+    var route;
+    var patientMapper;
+    var q;
     var stubAllPromise = function () {
         return {
             then: function () {
@@ -29,42 +33,58 @@ describe('VisitController', function () {
     }
 
     var sampleConfig = {
-       "conceptData": {
-           "WEIGHT": {
-               "uuid": "b4aa3728-c79a-11e2-b0c0-8e397087571c"
-           },
-           "COMMENTS": {
-               "uuid": "b499a980-c79a-11e2-b0c0-8e397087571c"
-           },
-           "BMI": {
-               "uuid": "b4acc09c-c79a-11e2-b0c0-8e397087571c"
-           },
-           "HEIGHT": {
-               "uuid": "b4a7aa80-c79a-11e2-b0c0-8e397087571c"
-           },
-           "REGISTRATION FEES": {
-               "uuid": "b4a52102-c79a-11e2-b0c0-8e397087571c"
-           }
-       },
-       "encounterTypes": {
-           "REG": "b45de99a-c79a-11e2-b0c0-8e397087571c"
-       },
-       "visitTypes": {
-           "REG": "b45ca846-c79a-11e2-b0c0-8e397087571c",
-           "REVISIT": "b5ba5576-c79a-11e2-b0c0-8e397087571c"
-       }
-                       }
+        "conceptData": {
+            "WEIGHT": {
+                "uuid": "b4aa3728-c79a-11e2-b0c0-8e397087571c"
+            },
+            "COMMENTS": {
+                "uuid": "b499a980-c79a-11e2-b0c0-8e397087571c"
+            },
+            "BMI": {
+                "uuid": "b4acc09c-c79a-11e2-b0c0-8e397087571c"
+            },
+            "HEIGHT": {
+                "uuid": "b4a7aa80-c79a-11e2-b0c0-8e397087571c"
+            },
+            "REGISTRATION FEES": {
+                "uuid": "b4a52102-c79a-11e2-b0c0-8e397087571c"
+            }
+        },
+        "encounterTypes": {
+            "REG": "b45de99a-c79a-11e2-b0c0-8e397087571c"
+        },
+        "visitTypes": {
+            "REG": "b45ca846-c79a-11e2-b0c0-8e397087571c",
+            "REVISIT": "b5ba5576-c79a-11e2-b0c0-8e397087571c"
+        }
+    }
     var sampleEncounter = {
         "observations": []
-    }
+    };
 
     beforeEach(module('bahmni.registration'));
-    beforeEach(inject(['$injector', '$location', '$window', '$timeout', function ($injector, location, window, timeout) {
+    beforeEach(inject(['$injector', '$location', '$window', '$timeout', '$route', '$q', function ($injector, location, window, timeout, $route, $q) {
+        q = $q;
+        route = $route;
+        route.current = {
+            params: {
+                patientUuid: '21308498-2502-4495-b604-7b704a55522d'
+            }
+        };
+        patient = {
+            uuid: "21308498-2502-4495-b604-7b704a55522d",
+            isNew: "true",
+            person: {
+                names: [
+                    "name"
+                ]
+            }
+        };
         $controller = $injector.get('$controller');
         scope = { "$watch": jasmine.createSpy() }
-        patientService = jasmine.createSpyObj('patientService', ['getPatient', 'clearPatient']);
+        patientService = jasmine.createSpyObj('patientService', ['getPatient', 'clearPatient', 'get']);
+        patientMapper = jasmine.createSpyObj('patientMapper', ['map']);
         dateUtil = Bahmni.Common.Util.DateUtil;
-        patient = {uuid: "21308498-2502-4495-b604-7b704a55522d", isNew: "true"};
         $location = location;
         $window = window;
         $timeout = timeout;
@@ -73,34 +93,46 @@ describe('VisitController', function () {
         scope.encounterConfiguration = angular.extend(new RegistrationEncounterConfig(), sampleConfig);
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         encounterService = jasmine.createSpyObj('encounterService', ['create', 'getActiveEncounter']);
-        getPromise = specUtil.createServicePromise('getActiveEncounter');
-        encounterService.getActiveEncounter.andReturn(getPromise);
+        getEncounterPromise = specUtil.createServicePromise('getActiveEncounter');
+        getPatientPromise = specUtil.createServicePromise('get');
+        encounterService.getActiveEncounter.andReturn(getEncounterPromise);
+        patientService.get.andReturn(getPatientPromise);
+        scope.currentProvider = {uuid: ''};
+        patientMapper.map.andReturn(patient);
     }]));
 
     describe('initialization', function () {
         it('should set the patient from patient data and the default registration fee', function () {
-            patient.isNew = true;
+            $location.search("newpatient", true);
+
             $controller('VisitController', {
                 $scope: scope,
                 spinner: spinner,
                 encounterService: encounterService,
-                patientService: patientService
+                patientService: patientService,
+                $route: route,
+                openmrsPatientMapper: patientMapper
             });
-            getPromise.callSuccessCallBack(sampleEncounter);
+
+            getPatientPromise.callSuccessCallBack(patient);
+            getEncounterPromise.callSuccessCallBack(sampleEncounter);
 
             expect(scope.obs["REGISTRATION FEES"]).toBe(defaults.registration_fees_newPatient);
             expect(scope.patient).toBe(patient);
         });
 
         it('should set the registration fee for returning patient', function () {
-            patient.isNew = false;
+
             $controller('VisitController', {
                 $scope: scope,
                 spinner: spinner,
                 encounterService: encounterService,
-                patientService: patientService
+                patientService: patientService,
+                $route: route,
+                openmrsPatientMapper: patientMapper
             });
-            getPromise.callSuccessCallBack(sampleEncounter);
+            getPatientPromise.callSuccessCallBack(patient);
+            getEncounterPromise.callSuccessCallBack(sampleEncounter);
 
             expect(scope.obs["REGISTRATION FEES"]).toBe(defaults.registration_fees_oldPatient);
             expect(scope.patient).toBe(patient);
@@ -115,9 +147,12 @@ describe('VisitController', function () {
                 encounterService: encounterService,
                 $location: $location,
                 spinner: spinner,
-                dateUtil: dateUtil
+                dateUtil: dateUtil,
+                $route: route,
+                openmrsPatientMapper: patientMapper
             });
-            getPromise.callSuccessCallBack(sampleEncounter);
+            getPatientPromise.callSuccessCallBack(patient);
+            getEncounterPromise.callSuccessCallBack(sampleEncounter);
 
             spyOn(scope, 'save').andCallFake(stubAllPromise);
         });
@@ -201,9 +236,12 @@ describe('VisitController', function () {
                 encounterService: encounterService,
                 $location: $location,
                 spinner: spinner,
-                dateUtil: dateUtil
+                dateUtil: dateUtil,
+                $route: route,
+                openmrsPatientMapper: patientMapper
             });
-            getPromise.callSuccessCallBack(sampleEncounter);
+            getPatientPromise.callSuccessCallBack(patient);
+            getEncounterPromise.callSuccessCallBack(sampleEncounter);
             encounterService.create.andCallFake(stubOnePromise);
             patientService.clearPatient.andCallFake(stubOnePromise);
             spyOn(scope, 'validate').andCallFake(stubOnePromise);
@@ -232,9 +270,12 @@ describe('VisitController', function () {
                     encounterService: encounterService,
                     $location: $location,
                     spinner: spinner,
-                    dateUtil: dateUtil
+                    dateUtil: dateUtil,
+                    $route: route,
+                    openmrsPatientMapper: patientMapper
                 });
-                getPromise.callSuccessCallBack(sampleEncounter);
+                getPatientPromise.callSuccessCallBack(patient);
+                getEncounterPromise.callSuccessCallBack(sampleEncounter);
 
                 scope.print = jasmine.createSpy().andCallFake(stubOnePromise);
                 scope.save = jasmine.createSpy().andCallFake(stubOnePromise);
@@ -276,9 +317,12 @@ describe('VisitController', function () {
                 $scope: scope,
                 encounterService: encounterService,
                 patientService: patientService,
-                spinner: spinner
+                spinner: spinner,
+                $route: route,
+                openmrsPatientMapper: patientMapper
             });
-            getPromise.callSuccessCallBack(sampleEncounter);
+            getPatientPromise.callSuccessCallBack(patient);
+            getEncounterPromise.callSuccessCallBack(sampleEncounter);
 
             encounterService.create.andCallFake(stubOnePromise);
             patientService.clearPatient.andCallFake(stubOnePromise);
@@ -333,9 +377,12 @@ describe('VisitController', function () {
                 $scope: scope,
                 spinner: spinner,
                 encounterService: encounterService,
-                patientService: patientService
+                patientService: patientService,
+                $route: route,
+                openmrsPatientMapper: patientMapper
             });
-            getPromise.callSuccessCallBack(sampleEncounter);
+            getPatientPromise.callSuccessCallBack(patient);
+            getEncounterPromise.callSuccessCallBack(sampleEncounter);
         });
 
         it("should set bmi, bmi_status and bmi_error when height and weight are present", function () {
