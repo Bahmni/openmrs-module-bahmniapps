@@ -14,10 +14,6 @@ angular.module('opd.documentupload')
                 $scope.currentVisit = $scope.newVisit;
             };
 
-            $scope.hasImages = function(visit) {
-                return visit.savedImages && visit.savedImages.length > 0;
-            };
-
             var createVisit = function (visit) {
                 var newVisit = angular.extend(new Bahmni.DocumentUpload.Visit(), visit);
                 newVisit.initSavedImages();

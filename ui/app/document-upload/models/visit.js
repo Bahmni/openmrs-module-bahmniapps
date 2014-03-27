@@ -31,6 +31,10 @@ Bahmni.DocumentUpload.Visit = function () {
         return this.uuid == null;
     };
 
+    this.hasImages = function () {
+        return this.savedImages.length || this.images.length;
+    };
+
     this.startDate = function () {
         return this.parseDate(this.startDatetime);
     };

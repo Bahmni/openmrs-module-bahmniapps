@@ -124,24 +124,33 @@
             margin-right: 10px;
           }
           .concept-name {
-            min-width: 60%;
+            min-width: 200px;
             margin: 0;
           }
           .concept-name.saved {
             font-family: OpenSansBold;
-            border: 1px solid #fefefe;
+            border: 1px solid #efefef;
+            width: 200px;
           }
           .placeholder {
-            border: 2px dashed #eee;
+            border: 3px dashed #eee;
             width: 50px;
             height: 50px;
             background: #fefefe;
+            padding: 2px;
+            float: left;
+            margin-right: 20px;
             i {
               color: #eee;
               font-size: 20px;
               line-height: 40px;
               width: 40px;
             }
+          }
+          .placeholder-text {
+            margin-top: 30px;
+            display: inline-block;
+            color: #eee;
           }
           .file {
             overflow: auto;

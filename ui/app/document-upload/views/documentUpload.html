@@ -71,14 +71,14 @@
       <span>{{visit.startDatetime | date:'dd-MMM-yy'}}</span>
       <small ng-if="visit.stopDatetime">To: </small>
       <span ng-if="visit.stopDatetime">{{visit.stopDatetime | date:'dd-MMM-yy'}}</span>
-      <span ng-if="hasImages(visit)" class="containsImageMarker" title="Visit has images"><i class="icon-picture"></i></span>
+      <span ng-if="visit.hasImages()" class="containsImageMarker" title="Visit has images"><i class="icon-picture"></i></span>
       <span ng-if="!visit.stopDatetime" class="currentVisitMarker" title="Current Visit"><i class="icon-star"></i></span>
     </h1>
     <div class="visit-content" ng-if="isCurrentVisit(visit)" image-gallery="visit-{{visit.uuid}}" >
       <form name="{{'visit' + $index}}" ng-submit="save(visit)" ng-disabled="!visit.changed">
         <ul>
           <li>
-            <ul class="files">     
+            <ul class="files">
               <li ng-repeat="image in visit.savedImages">
                 <div class="file">
                   <img image-gallery-item title="{{image.getTitle()}}" ng-src="/document_images/{{image.encodedValue}}" width="100" ng-class="{true:'transparent', false:'opaque'}[image.voided]" />
@@ -97,15 +97,14 @@
                   <button type="button" ng-click="visit.removeNewAddedImage(image)" class="row-remover"><span class="icon-remove"></span></button>
                 </div>
               </li>
+              <li>
+                <input id="file-browse-{{visit.uuid}}" type="file" name="image" accept="image/*" capture="camera" file-upload visit="visit">
+                <label class="placeholder" for="file-browse-{{visit.uuid}}"><i class="icon-plus"></i></label>
+                <span class="placeholder-text"> Add new docs.</span>
+              </li>    
              
               <li>
                 <div class="file-actions">
-                  <div class="upload-inline-buttons">
-                    <input id="file-browse-{{visit.uuid}}" type="file" name="image" accept="image/*" capture="camera" file-upload visit="visit">
-                  </div>
-                  <label for="file-browse-{{visit.uuid}}" class="btn btn-primary">
-                    <i class="icon-camera icon-white"></i> SCAN
-                  </label>
                   <button type="submit" ng-disabled="!visit.changed" class="btn btn-primary">
                     <i class="icon-save icon-white"></i> SAVE
                   </button>
