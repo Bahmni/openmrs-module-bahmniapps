@@ -41,13 +41,17 @@
             <input type="date" ng-model="newVisit.stopDatetime" class="field-value" placeholder="dd-mm-yyyy"> 
           </div>
         </div>
-        <div>
-          <span class="clear" ng-repeat="image in newVisit.images">
-            <img image-gallery-item ng-src="{{image.encodedValue}}" title="{{image.getTitle()}}" width="100">
-            <input class="concept-name" ng-model="image.concept.name" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter the test name" title="Select the test from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
-            <button type="button" ng-click="newVisit.removeNewAddedImage(image)"><i class="icon-trash"></i></button>
-          </span>
-        </div>
+        <ul class="files">
+          <li class="clear" ng-repeat="image in newVisit.images">
+            <div class="file">
+              <img image-gallery-item ng-src="{{image.encodedValue}}" title="{{image.getTitle()}}" width="100">
+              <input class="concept-name" ng-model="image.concept.name" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter the test name" title="Select the test from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
+            </div>
+            <div>
+              <button type="button" ng-click="newVisit.removeNewAddedImage(image)" class="row-remover"><span class="icon-remove"></span></button>
+            </div>
+          </li>
+        </ul>
         <div class="upload-inline-buttons">
           <input id="file-browse" type="file" name="image" accept="image/*" capture="camera" file-upload visit="newVisit">
           <label for="file-browse" class="btn btn-primary" ng-click="resetCurrentVisit(newVisit)"><i class="icon-camera icon-white"></i> SCAN</label>
@@ -74,11 +78,7 @@
       <form name="{{'visit' + $index}}" ng-submit="save(visit)" ng-disabled="!visit.changed">
         <ul>
           <li>
-            <ul class="files">
-              <li ng-hide="visit.savedImages || visit.images">
-                <input id="file-browse-{{visit.uuid}}" type="file" name="image" accept="image/*" capture="camera" file-upload visit="visit">
-                <label class="placeholder" for="file-browse-{{visit.uuid}}"><i class="icon-plus"></i></label>
-              </li>             
+            <ul class="files">     
               <li ng-repeat="image in visit.savedImages">
                 <div class="file">
                   <img image-gallery-item title="{{image.getTitle()}}" ng-src="/document_images/{{image.encodedValue}}" width="100" ng-class="{true:'transparent', false:'opaque'}[image.voided]" />
