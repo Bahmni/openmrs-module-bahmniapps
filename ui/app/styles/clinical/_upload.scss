@@ -163,6 +163,9 @@
           }
           .file-remove {
             float: right;
+            .row-remover span.icon-undo {
+              color: #333;
+            }
           }
         }
     }
@@ -257,4 +260,15 @@
       }
     }
   }
+}
+button.mfp-close:hover {
+  background: none!important;
+  cursor: pointer!important;
+}
+.mfp-arrow {
+  top: initial;
+}
+.mfp-arrow-left, .mfp-arrow-right {
+  bottom: 0;
+  background: #ccc!important;
 }

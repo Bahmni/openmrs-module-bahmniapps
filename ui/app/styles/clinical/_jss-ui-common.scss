@@ -359,6 +359,8 @@ input[file-upload] {
   background: white;
 }
 
+button:focus, a:focus, .btn:focus {outline:0;}
+
 .row-remover {
   border: 1px solid #ccc;
   border-radius: 5px;
