@@ -3,7 +3,7 @@ angular.module('bahmni.common.uiHelper')
         var link = function($scope, element){
             $scope.element = element;
 
-            $scope.$on("$destroy", function() {
+            element.bind("$destroy", function() {
                 $scope.element.magnificPopup('close');
             });
         };
@@ -35,7 +35,7 @@ angular.module('bahmni.common.uiHelper')
         $(element).attr('data-mfp-src', attrs.ngSrc);
         imageGalleryCtrl.initGallery();
 
-        $scope.$on("$destroy", function() {
+        element.bind("$destroy", function() {
             imageGalleryCtrl.initGallery();
         });
     };
