@@ -26,7 +26,6 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
                 diagnosis.codedAnswer,diagnosis.order,diagnosis.certainty,diagnosis.existingObs,
                 diagnosis.freeTextAnswer,diagnosis.diagnosisDateTime,diagnosis.voided);
         });
-
         var consultationNote = mapSpecialObservation(encounterTransaction.observations,consultationNoteConcept);
 
         var labOrderNote = mapSpecialObservation(encounterTransaction.observations,labOrderNoteConcept);
@@ -47,10 +46,9 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
         };
     };
 
-
     var emptyObservation = function(concept) {
         return { concept: { uuid: concept.uuid }};
-    }
+    };
     
     var mapSpecialObservation = function(encounterObservations, specialConcept) {
         var observation = emptyObservation(specialConcept);

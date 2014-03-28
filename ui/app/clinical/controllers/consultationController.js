@@ -3,9 +3,9 @@
 angular.module('bahmni.clinical')
     .controller('ConsultationController', ['$scope', '$rootScope', 'encounterService', '$location', 'spinner', function ($scope, $rootScope, encounterService, $location, spinner) {
 
-        var addEditedPastDiagnoses = function (diagnosisList) {
+        var addEditedPastDiagnoses = function (diagnosisList, additionalCheck) {
             $rootScope.consultation.pastDiagnoses && $rootScope.consultation.pastDiagnoses.forEach(function (diagnosis) {
-                if (diagnosis.isDirty && diagnosis.certainty != Bahmni.Common.Constants.ruledOutCertainty) {
+                if (diagnosis.isDirty && additionalCheck(diagnosis)) {
                     var editedPastDiagnosis = angular.extend(new Bahmni.Clinical.Diagnosis(diagnosis.codedAnswer), diagnosis);
                     editedPastDiagnosis.existingObs = '';
                     diagnosisList.push(editedPastDiagnosis);
@@ -30,7 +30,7 @@ angular.module('bahmni.clinical')
             $scope.nonVoidedDiagnoses = $rootScope.consultation.diagnoses.filter(function (diagnosis) {
                 return diagnosis.voided != true;
             });
-            addEditedPastDiagnoses($scope.nonVoidedDiagnoses);
+            addEditedPastDiagnoses($scope.nonVoidedDiagnoses, function(){return true;});
 
         }
 
@@ -41,7 +41,7 @@ angular.module('bahmni.clinical')
             encounterData.encounterTypeUuid = $rootScope.encounterConfig.getOpdConsultationEncounterTypeUuid();
             encounterData.encounterDateTime = $rootScope.consultation.encounterDateTime || new Date();
 
-            addEditedPastDiagnoses($rootScope.consultation.diagnoses);
+            addEditedPastDiagnoses($rootScope.consultation.diagnoses, function(diagnosis){diagnosis.certainty != Bahmni.Common.Constants.ruledOutCertainty});
             if ($rootScope.consultation.diagnoses && $rootScope.consultation.diagnoses.length > 0) {
                 encounterData.diagnoses = $rootScope.consultation.diagnoses.map(function (diagnosis) {
                     return {

@@ -31,5 +31,7 @@ Bahmni.Common.Constants = {
     ruledOutDiagnosisConceptName : 'Ruled Out Diagnosis',
     ruledOutCertainty : 'RULED OUT',
     emrapiConceptMappingSource :"org.openmrs.module.emrapi",
-    includeAllObservations: false
+    includeAllObservations: false,
+    openmrsObsUrl :"/openmrs/ws/rest/v1/obs",
+    openmrsObsRepresentation :"custom:(uuid,obsDatetime,value:(uuid,name:(uuid,name)))"
 };

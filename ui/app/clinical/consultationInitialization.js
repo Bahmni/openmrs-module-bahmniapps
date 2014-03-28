@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical').factory('consultationInitialization',
-    ['$rootScope', '$q', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'authenticator', 'appService', 'encounterService', 'bedService', 'spinner', 'initialization',
-    function ($rootScope, $q, configurationService, visitService, patientService, patientMapper, authenticator, appService, encounterService, bedService, spinner, initialization) {
+    ['$rootScope', '$q', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'authenticator', 'appService', 'encounterService', 'bedService', 'spinner', 'initialization', 'diagnosisService',
+    function ($rootScope, $q, configurationService, visitService, patientService, patientMapper, authenticator, appService, encounterService, bedService, spinner, initialization, diagnosisService) {
         return function(patientUuid) {
 
             var getPatient = function() {
@@ -13,7 +13,7 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
 
             var getPatientBedDetails = function() {
                 return bedService.getBedDetailsForPatient($rootScope.patient.uuid);
-            }
+            };
 
             var getActiveEncounter = function() {
                 var currentProviderUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
@@ -29,9 +29,22 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                 });
             };
 
+            var getPastDiagnoses = function() {
+                return diagnosisService.getPastDiagnoses(patientUuid).success(function (response) {
+                    var diagnosisMapper = new Bahmni.DiagnosisMapper($rootScope.consultation, $rootScope.ruledOutDiagnoses);
+                    $rootScope.consultation.pastDiagnoses = diagnosisMapper.mapPastDiagnosis(response);
+                });
+            };
+
+            var getRuledOutDiagnoses = function() {
+                return diagnosisService.getRuledOutDiagnoses(patientUuid, $rootScope.ruledOutDiagnosisConcept.uuid). success(function(response){
+                    $rootScope.ruledOutDiagnoses = response.results;
+                })
+            };
+
             return spinner.forPromise(
                 initialization.then(function(){
-                    return $q.all([getActiveEncounter(),getPatient().then(getPatientBedDetails)]);
+                    return $q.all([getActiveEncounter().then(getRuledOutDiagnoses).then(getPastDiagnoses),getPatient().then(getPatientBedDetails)]);
                  })
             );
         }
