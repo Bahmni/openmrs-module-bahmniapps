@@ -1,8 +1,18 @@
 angular.module('bahmni.clinical')
 .directive('observationSummary',function () {
     var controller = function($scope) {
-        $scope.showObservation = function(){
-            return Bahmni.Clinical.Constants.groupObservations.indexOf($scope.observation.concept.name) < 0;
+        $scope.hideObservation = function () {
+            return $scope.obsIgnoreList.indexOf($scope.observation.concept.name) > -1;
+        };
+
+        $scope.showXCompoundObservation = function() {
+            for(var i in $scope.observation.groupMembers) {
+                var member = $scope.observation.groupMembers[i];
+                if($scope.obsIgnoreList.indexOf(member.concept.name) > -1) {
+                    return false;
+                }
+            }
+            return true;
         };
     };
     return {
@@ -13,7 +23,8 @@ angular.module('bahmni.clinical')
             patientUuid:"=",
             showTrends:"=",
             hideParentObsName:"@",
-            fullDate:"@"
+            fullDate:"@",
+            obsIgnoreList: "="
         },
         //not able to use templateUrl, because of recurssive use of directive. Not sure what the error is.
         template: '<ng-include src="\'../clinical/views/observationSummaryTemplate.html\'" />',

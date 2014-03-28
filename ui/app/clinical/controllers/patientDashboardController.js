@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('opd.patientDashboard',[])
-    .controller('PatientDashboardController', ['$scope', '$rootScope', '$location', '$stateParams', 'patientVisitHistoryService', 'urlHelper', 'visitService', 'encounterService',
-        function($scope, $rootScope, $location, $stateParams, patientVisitHistoryService, urlHelper, visitService, encounterService) {
+    .controller('PatientDashboardController', ['$scope', '$rootScope', '$location', '$stateParams', 'patientVisitHistoryService', 'urlHelper', 'visitService', 'encounterService', 'appService', function($scope, $rootScope, $location, $stateParams, patientVisitHistoryService, urlHelper, visitService, encounterService, appService) {
         $scope.patientUuid = $stateParams.patientUuid;
         var currentEncounterDate;
+
+        $scope.obsIgnoreList = appService.getAppDescriptor().getConfig("obsIgnoreList").value || {};
 
         var getEnountersForVisit = function(visitUuid) {
             encounterService.search(visitUuid).success(function(encounterTransactions){

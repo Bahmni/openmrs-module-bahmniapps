@@ -100,7 +100,7 @@
                         <div ng-repeat="observation in labOrder.obs">
                             <section class="observation" bo-show="observation">
                                 <div>
-                                    <observation-summary observation="observation" hide-parent-obs-name="true" full-date="true" />
+                                    <observation-summary observation="observation" hide-parent-obs-name="true" full-date="true" obs-ignore-list="obsIgnoreList"/>
                                 </div>
                             </section>
                         </div>
@@ -186,7 +186,7 @@
                         <li ng-repeat="observation in observations.obs">
                             <div>
                                 <observation-summary patient-uuid="patientUuid" observation="observation"
-                                                     show-trends="showTrends" full-date="true"/>
+                                                     show-trends="showTrends" full-date="true" obs-ignore-list="obsIgnoreList"/>
                             </div>
                         </li>
                     </div>

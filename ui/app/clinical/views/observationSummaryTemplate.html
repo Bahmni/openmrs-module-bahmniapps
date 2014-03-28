@@ -1,5 +1,5 @@
-<div ng-switch="observation.groupMembers.length">
-    <div ng-switch-when="0"  ng-show="showObservation()">
+<div>
+    <div ng-if="observation.groupMembers.length <= 0 && !hideObservation()">
         <span bo-text="observation.concept.name + ' - ' + (observation | observationValue)"></span>
         <span bo-show="observation.additionalObs.length > 0">
              <div class="icon-double-angle-down" ng-click="toggle(observation.additionalObs)"></div>
@@ -22,10 +22,21 @@
         </div>
     </div>
 
-    <ul ng-switch-default>
-        <span bo-text="observation.concept.name" bo-show="observation.concept.set && !hideParentObsName" ng-show="showObservation()"></span>
-        <li ng-repeat="groupMember in observation.groupMembers">
-            <observation-summary patient-uuid="patientUuid" observation="groupMember" full-date="{{fullDate}}" hide-parent-obs-name="{{hideParentObsName}}"  />
-        </li>
+    <ul ng-if="observation.groupMembers.length > 0">
+        <div ng-switch on="observation.concept.name">
+            <div ng-switch-when="XCompoundObservation" ng-show="showXCompoundObservation()">
+                <li ng-repeat="groupMember in observation.groupMembers">
+                    <observation-summary patient-uuid="patientUuid" observation="groupMember" full-date="{{fullDate}}"
+                                         hide-parent-obs-name="{{hideParentObsName}}" obs-ignore-list="obsIgnoreList"/>
+                </li>
+            </div>
+            <div ng-switch-default>
+                <span bo-text="observation.concept.name" bo-show="observation.concept.set && !hideParentObsName"></span>
+                <li ng-repeat="groupMember in observation.groupMembers">
+                    <observation-summary patient-uuid="patientUuid" observation="groupMember" full-date="{{fullDate}}"
+                                         hide-parent-obs-name="{{hideParentObsName}}" obs-ignore-list="obsIgnoreList"/>
+                </li>
+            </div>
+        </div>
     </ul>
 </div>    
