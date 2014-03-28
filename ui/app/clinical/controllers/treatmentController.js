@@ -1,11 +1,10 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('TreatmentController', ['$scope', '$rootScope', 'treatmentService', function ($scope, $rootScope, treatmentService) {
+    .controller('TreatmentController', ['$scope', '$rootScope', 'treatmentService', 'contextChangeHandler',
+    function ($scope, $rootScope, treatmentService, contextChangeHandler) {
         $scope.placeholder = "Add Treatment Advice";
-        
         $scope.searchResults = [];
-
         $scope.selectedDrugs = [];
 
         var areStringsEqual = function(str1, str2) {
@@ -172,7 +171,7 @@ angular.module('bahmni.clinical')
         var initialize = function () {
             $scope.dosageFrequencyAnswers = extractAnswers($scope.dosageFrequencyConfig);
             $scope.dosageInstructionAnswers = extractAnswers($scope.dosageInstructionConfig);
-            $rootScope.beforeContextChange = allowContextChange;
+            contextChangeHandler.add(allowContextChange);
 
             if ($rootScope.consultation.treatmentDrugs) {
                 $scope.selectedDrugs = $rootScope.consultation.treatmentDrugs;

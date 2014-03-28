@@ -1,11 +1,12 @@
 'use strict';
 
-describe("TreatmentControllerTest", function () {
+describe("TreatmentController", function () {
 
     var treatmentService;
     var scope;
     var treatmentController;
     var drug;
+    var contextChangeHandler;
     var dosageFrequencies = {
         "results": [
             {
@@ -30,9 +31,10 @@ describe("TreatmentControllerTest", function () {
 
     beforeEach(module('bahmni.clinical'));
 
-    beforeEach(inject(function () {
+    beforeEach(inject(['contextChangeHandler', function (contextChangeHandlerInjected) {
         treatmentService = jasmine.createSpyObj('treatmentService', ['search']);
-    }));
+        contextChangeHandler = contextChangeHandlerInjected;
+    }]));
 
 
     var setUp = function () {
@@ -162,7 +164,7 @@ describe("TreatmentControllerTest", function () {
             setUp();
             var emptyDrug = new Bahmni.Clinical.TreatmentDrug();
             scope.selectedDrugs = [ emptyDrug];
-            expect(scope.beforeContextChange()).toBe(true);
+            expect(contextChangeHandler.execute()).toBe(true);
         });
 
         it('should not allow tab switch if drug is selected and mandatory fields not filled', function () {
@@ -171,7 +173,7 @@ describe("TreatmentControllerTest", function () {
             drug.empty = false;
 
             scope.selectedDrugs = [drug];
-            expect(scope.beforeContextChange()).toBe(false);
+            expect(contextChangeHandler.execute()).toBe(false);
         });
 
         it('should not allow tab switch if drug is selected and mandatory fields are partially filled', function () {
@@ -183,7 +185,7 @@ describe("TreatmentControllerTest", function () {
             drug.prn = true;
 
             scope.selectedDrugs = [drug];
-            expect(scope.beforeContextChange()).toBe(false);
+            expect(contextChangeHandler.execute()).toBe(false);
         });
 
         it('should allow tab switch if drug is selected and all mandatory fields are filled', function () {
@@ -198,7 +200,7 @@ describe("TreatmentControllerTest", function () {
             var emptyDrug = new Bahmni.Clinical.TreatmentDrug();
 
             scope.selectedDrugs = [drug, emptyDrug];
-            expect(scope.beforeContextChange()).toBe(true);
+            expect(contextChangeHandler.execute()).toBe(true);
         });
     });
 

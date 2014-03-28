@@ -2,4 +2,4 @@
 var Bahmni = Bahmni || {};
 Bahmni.ConceptSet = Bahmni.ConceptSet || {};
 
-angular.module('bahmni.common.conceptSet', []);
+angular.module('bahmni.common.conceptSet', ['bahmni.common.uiHelper']);

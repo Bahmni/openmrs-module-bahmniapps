@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('bahmni.clinical').controller('ConsultationNavigationController',
-    ['$scope', '$rootScope', '$location', '$window', 'appService', 'urlHelper',
-        function ($scope, $rootScope, $location, $window, appService, urlHelper) {
+    ['$scope', '$rootScope', '$location', '$window', 'appService', 'urlHelper', 'contextChangeHandler',
+        function ($scope, $rootScope, $location, $window, appService, urlHelper, contextChangeHandler) {
             //$scope.mainButtonText = "Consultation";
+            
             var boardTypes = {
                 visit: 'visit',
                 consultation: 'consultation'
@@ -70,19 +71,9 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
 
 
             var buttonClickAction = function (board) {
-                if ($scope.currentBoard) {
-                    if ($scope.currentBoard === board) {
-                        return;
-                    }
-                }
-
-                if ($rootScope.beforeContextChange) {
-                    var changeCtx = $rootScope.beforeContextChange();
-                    if (!changeCtx) {
-                        return;
-                    }
-                }
-                $rootScope.beforeContextChange = null;
+                if ($scope.currentBoard === board) return;
+                if (!contextChangeHandler.execute()) return;
+                contextChangeHandler.reset();
                 $scope.currentBoard = board;
                 return getUrl(board);
             };

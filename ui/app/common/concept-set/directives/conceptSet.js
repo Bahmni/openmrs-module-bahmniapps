@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('bahmni.common.conceptSet', ['bahmni.common.uiHelper'])
-    .directive('showConcept', ['$rootScope', function () {
+angular.module('bahmni.common.conceptSet')
+    .directive('showConcept', [function() {
         var controller = function($scope, $q, $filter) {
             var conceptMapper = new Bahmni.ConceptSet.ConceptMapper();
             $scope.getPossibleAnswers = function() {
@@ -40,7 +40,7 @@ angular.module('bahmni.common.conceptSet', ['bahmni.common.uiHelper'])
             controller: controller,
             template: '<ng-include src="\'../common/concept-set/views/observation.html\'" />'
         }
-    }]).directive('showConceptSet', ['$rootScope', '$q', function () {
+    }]).directive('showConceptSet', ['contextChangeHandler', function (contextChangeHandler) {
         var template =
             '<form>' +
                 '<show-concept observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet"></show-concept>' +
@@ -63,6 +63,7 @@ angular.module('bahmni.common.conceptSet', ['bahmni.common.uiHelper'])
             });
 
             var updateObservations = function() {
+                if(!$scope.rootObservation) return;
                 for (var i = 0; i < $scope.observations.length; i++) {
                     if($scope.observations[i].concept.uuid === $scope.rootObservation.concept.uuid) {
                         $scope.observations[i] = $scope.rootObservation;
@@ -80,8 +81,7 @@ angular.module('bahmni.common.conceptSet', ['bahmni.common.uiHelper'])
                 });
                 return invalidObservations.length === 0;
             };
-
-            $rootScope.beforeContextChange = allowContextChange;
+            contextChangeHandler.add(allowContextChange);
         };
 
         return {

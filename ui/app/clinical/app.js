@@ -84,7 +84,7 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', functi
                 controller: 'DispositionController'
             })
             .state('patient.consultation.conceptSet', {
-                url: '/concept-set/:conceptSetName',
+                url: '/concept-set-group/:conceptSetGroupName',
                 templateUrl: 'views/conceptSet.html',
                 controller: 'ConceptSetPageController'
             })
