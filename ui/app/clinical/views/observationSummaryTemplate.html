@@ -1,26 +1,29 @@
 <div>
-    <div ng-if="observation.groupMembers.length <= 0 && !hideObservation()">
-        <span bo-text="observation.concept.name + ' - ' + (observation | observationValue)"></span>
+    <li ng-if="observation.groupMembers.length <= 0" ng-hide="hideObservation()">
+        <div>
+            <span bo-text="observation.concept.name + ' - ' + (observation | observationValue)"></span>
         <span bo-show="observation.additionalObs.length > 0">
              <div class="icon-double-angle-down" ng-click="toggle(observation.additionalObs)"></div>
         </span>
-        <ul class="add-info">
-            <li bo-hide="fullDate" class="time">
-                <span bo-text="observation.observationDateTime | date: 'h:mm a'"></span>
-            </li>
-            <li bo-show="fullDate" class="datetime">
-                <span bo-text="observation.observationDateTime | date:'d-MMM-yy h:mm a'"></span>
-            </li>
-            <li><span bo-text="observation.provider.name"></span></li>
-            <li ng-show="isNumeric(observation.value)"><a bo-href="'/trends/#/patients/'+patientUuid+'/'+observation.concept.name">view trends
-            </a></li>
-        </ul>
-        <div>
+            <ul class="add-info">
+                <li bo-hide="fullDate" class="time">
+                    <span bo-text="observation.observationDateTime | date: 'h:mm a'"></span>
+                </li>
+                <li bo-show="fullDate" class="datetime">
+                    <span bo-text="observation.observationDateTime | date:'d-MMM-yy h:mm a'"></span>
+                </li>
+                <li><span bo-text="observation.provider.name"></span></li>
+                <li ng-show="isNumeric(observation.value)"><a
+                        bo-href="'/trends/#/patients/'+patientUuid+'/'+observation.concept.name">view trends
+                </a></li>
+            </ul>
+            <div>
              <span ng-repeat="note in observation.additionalObs">
                   <div ng-show="note.show" bo-text="note.value"></div>
              </span>
+            </div>
         </div>
-    </div>
+    </li>
 
     <ul ng-if="observation.groupMembers.length > 0">
         <div ng-switch on="observation.concept.name">
@@ -32,7 +35,7 @@
             </div>
             <div ng-switch-default>
                 <span bo-text="observation.concept.name" bo-show="observation.concept.set && !hideParentObsName"></span>
-                <li ng-repeat="groupMember in observation.groupMembers">
+                <li class="dshbf" ng-repeat="groupMember in observation.groupMembers" >
                     <observation-summary patient-uuid="patientUuid" observation="groupMember" full-date="{{fullDate}}"
                                          hide-parent-obs-name="{{hideParentObsName}}" obs-ignore-list="obsIgnoreList"/>
                 </li>

@@ -153,12 +153,11 @@
                 <h2>Observations</h2>
                 <ul>
                     <div ng-repeat="observations in visit.observations">
-                        <li ng-repeat="observation in observations.obs">
-                            <div>
-                                <observation-summary patient-uuid="patientUuid" observation="observation"
-                                                     show-trends="showTrends" full-date="true" obs-ignore-list="obsIgnoreList"/>
-                            </div>
-                        </li>
+                        <div ng-repeat="observation in observations.obs">
+                            <observation-summary patient-uuid="patientUuid" observation="observation"
+                                                 show-trends="showTrends" full-date="true"
+                                                 obs-ignore-list="obsIgnoreList"/>
+                        </div>
                     </div>
                 </ul>
             </section>
