@@ -27,9 +27,11 @@ angular.module('bahmni.common.conceptSet')
         }
 
         var getConfig = function() {
-            var config = appService.getAppDescriptor().getConfig("conceptSetUI") || {};
-            setExtraData(config.value);
-            return config;
+            var config = appService.getAppDescriptor().getConfig("conceptSetUI");
+            if(config) {
+                setExtraData(config.value);
+            }
+            return config  || {};
         }
 
         return {
