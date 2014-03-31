@@ -133,7 +133,7 @@
             width: 200px;
           }
           .placeholder {
-            border: 3px dashed #eee;
+            border: 3px dashed #ddd;
             width: 50px;
             height: 50px;
             background: #fefefe;
@@ -141,16 +141,11 @@
             float: left;
             margin-right: 20px;
             i {
-              color: #eee;
+              color: #ccc;
               font-size: 20px;
               line-height: 40px;
               width: 40px;
             }
-          }
-          .placeholder-text {
-            margin-top: 30px;
-            display: inline-block;
-            color: #eee;
           }
           .file {
             overflow: auto;
@@ -178,6 +173,10 @@
           }
         }
     }
+    input:invalid {
+      border: solid 2px #FF9494; 
+    }
+
     @media screen and (max-width: 480px) {
       .field-value, form select {
         width: 100%;
