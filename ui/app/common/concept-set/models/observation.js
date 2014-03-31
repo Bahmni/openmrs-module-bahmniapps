@@ -16,6 +16,15 @@
         return createObservation(findConcept(xCompoundObservationConcept.setMembers, 'IS_ABNORMAL'));
     };
 
+    if(shouldMarkAsRequired(observation.concept.name)) {
+        this.isRequired = true;
+    }
+    angular.extend(this, xObservation);
+    this.conceptUIConfig = conceptUIConfig;
+    this.observation = observation;
+    this.isAbnormal = {};
+
+
     var createObservation = function(baseConcept, groupMembers) {
         return { concept: { name: baseConcept.name.name, uuid: baseConcept.uuid },
                  groupMembers: groupMembers || []

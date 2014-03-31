@@ -7,7 +7,7 @@ angular
         $routeProvider.when('/search', {reloadOnSearch: false, templateUrl: 'views/search.html', controller: 'SearchPatientController', resolve: {initialization: 'initialization'}});
         $routeProvider.when('/patient/new', {templateUrl: 'views/newpatient.html', controller: 'CreatePatientController', resolve: {initialization: 'initialization'}});
         $routeProvider.when('/patient/:patientUuid', {templateUrl: 'views/editpatient.html', controller: 'EditPatientController', resolve: {initialization: 'initialization'}});
-        $routeProvider.when('/patient/:patientUuid/visit', {templateUrl: 'views/visit.html', controller: 'VisitController', resolve: {initialization: 'initialization'}});
+        $routeProvider.when('/patient/:patientUuid/visit', {templateUrl: 'views/visit.html', controller: 'VisitController', resolve: {initialization: 'visitPageInitialization'}});
         $routeProvider.when('/printPatient', {templateUrl: 'views/print.html'});
         $routeProvider.when('/patientcommon', {templateUrl: 'views/patientcommon.html'});
         $routeProvider.when('/patient/:patientUuid/print', {templateUrl: 'views/print.html', controller: 'PrintController', resolve: {initialization: 'initialization'}});

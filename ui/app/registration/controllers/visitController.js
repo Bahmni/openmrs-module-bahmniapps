@@ -1,40 +1,27 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('VisitController', ['$scope', '$location', 'patientService', 'encounterService', 'bmi', '$window', '$route', 'spinner', '$timeout', '$q', 'printer', 'openmrsPatientMapper',
-        function ($scope, $location, patientService, encounterService, bmiModule, $window, $route, spinner, $timeout, $q, printer, patientMapper) {
-            (function () {
-                var visitTypeUuid;
-                var encounterTypeUuid = $scope.encounterConfiguration.encounterTypes[constants.encounterType.registration];
+    .controller('VisitController', ['$scope', '$rootScope', '$location', 'patientService', 'encounterService', 'bmi', '$window', '$route', 'spinner', '$timeout', '$q', 'printer', 'appService',
+        function ($scope, $rootScope, $location, patientService, encounterService, bmiModule, $window, $route, spinner, $timeout, $q, printer,appService) {
 
-                $scope.patient = patientService.getPatient();
+            $scope.conceptSetName = appService.getAppDescriptor().getConfig("registrationConceptSet").value;
+            $scope.patient = $rootScope.registration.patient;
+            $scope.registrationFeeLabel = $scope.patient.isNew ? "Registration Fee" : "Consultation Fee";
+            $scope.obs = {};
 
-                var patientPromise = patientService.get($route.current.params['patientUuid']);
+            var mapObservations = function () {
+                $scope.encounterObservations = $rootScope.registration.encounter.observations;
+                $scope.registrationObservations = new RegistrationObservations($rootScope.registration.encounter, $scope.patient.isNew, $scope.encounterConfiguration);
+                if ($scope.encounterObservations.length > 0) {
+                    $scope.obs = {};
+                    $scope.registrationObservations.observations.forEach(function (observation) {
+                        $scope.obs[observation.concept.name] = observation.value
+                        observation.groupMembers = [];
+                    });
+                    $scope.calculateBMI();
+                }
+            }
 
-                patientPromise.success(function (openmrsPatient) {
-                    $scope.patient = patientMapper.map(openmrsPatient);
-                    $scope.patient.isNew = ($location.search()).newpatient;
-                    $scope.patient.name = openmrsPatient.person.names[0].display;
-                    $scope.patient.uuid = openmrsPatient.uuid;
-                    $scope.registrationFeeLabel = $scope.patient.isNew ? "Registration Fee" : "Consultation Fee";
-
-                    visitTypeUuid = $scope.encounterConfiguration.visitTypeId($scope.patient.isNew);
-                    $scope.encounter = {visitTypeUuid: visitTypeUuid, encounterTypeUuid: encounterTypeUuid, patientUuid: $scope.patient.uuid};
-
-                    var encounterPromise = encounterService.getActiveEncounter($scope.patient.uuid, visitTypeUuid, encounterTypeUuid, $scope.currentProvider.uuid)
-                        .success(function (data) {
-                            $scope.registrationObservations = new RegistrationObservations(data, $scope.patient.isNew, $scope.encounterConfiguration);
-                            $scope.obs = {};
-                            $scope.registrationObservations.observations.forEach(function (observation) {
-                                $scope.obs[observation.concept.name] = observation.value
-                            });
-                            $scope.calculateBMI();
-                        });
-                    spinner.forPromise(encounterPromise);
-                });
-
-                spinner.forPromise(patientPromise);
-            })();
 
             $scope.calculateBMI = function () {
                 if ($scope.obs.HEIGHT && $scope.obs.WEIGHT) {
@@ -49,6 +36,8 @@ angular.module('bahmni.registration')
                     $scope.obs.bmi_status = null;
                 }
             };
+
+            mapObservations();
 
             $scope.back = function () {
                 $window.history.back();
@@ -68,7 +57,11 @@ angular.module('bahmni.registration')
 
 
             $scope.save = function () {
+                var visitTypeUuid = $scope.encounterConfiguration.visitTypeId($scope.patient.isNew);
+                var encounterTypeUuid = $scope.encounterConfiguration.encounterTypes[constants.encounterType.registration];
+                $scope.encounter = {visitTypeUuid: visitTypeUuid, encounterTypeUuid: encounterTypeUuid, patientUuid: $scope.patient.uuid};
                 $scope.encounter.observations = $scope.registrationObservations.updateObservations($scope.obs);
+                $scope.encounter.observations = $scope.encounter.observations.concat($scope.encounterObservations);
                 var createPromise = encounterService.create($scope.encounter);
                 spinner.forPromise(createPromise);
                 return createPromise;

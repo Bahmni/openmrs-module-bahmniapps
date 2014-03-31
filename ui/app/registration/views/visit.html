@@ -108,7 +108,11 @@
                     <button type="submit" ng-disabled="obs.bmi_error" ng-click="submitBtnClicked('savePrint')">Save and Print</button>
                     <button type="submit" class="confirm" ng-disabled="obs.bmi_error" ng-click="submitBtnClicked('save')" >Save</button>
                 </div>
-             </div>   
+            </div>
+
+            <hr/>
+            <show-concept-set concept-set-name="conceptSetName" observations="encounterObservations"></show-concept-set>
+
         </form>
         <br>
     </div>
