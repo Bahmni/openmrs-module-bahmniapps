@@ -7,7 +7,7 @@ Bahmni.DocumentUpload.Visit = function () {
     this.savedImages = [];
     this.images = [];
     this.encounters = [];
-    var androidDateFormat = "yyyy-mm-dd";
+    var androidDateFormat = "YYYY-MM-DD hh:mm:ss";
 
     this.initSavedImages = function () {
         this.savedImages = [];
@@ -47,7 +47,7 @@ Bahmni.DocumentUpload.Visit = function () {
     this.parseDate = function (date) {
         if(date instanceof Date) return date;
         var dateFormat = (date && date.indexOf('-') !== -1) ? androidDateFormat : Bahmni.Common.Constants.dateFormat;
-        return  moment(date, dateFormat.toUpperCase()).toDate();
+        return  moment(date, dateFormat).toDate();
     };
 
     this.addImage = function (image) {
