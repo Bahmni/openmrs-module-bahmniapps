@@ -11,13 +11,13 @@ describe("EncounterTransactionToObsMapper", function () {
         var encounterTransactions = [
             {   providers: [{uuid: "provider"}],
                 observations: [
-                {uuid: "a61436b6-7813-42fd-8af2-eb5d23ed726c", voided: false, value: 100},
-                {uuid: "b61436b6-7813-42fd-8af2-eb5d23ed726c", voided: false, value: 100}
+                {uuid: "a61436b6-7813-42fd-8af2-eb5d23ed726c", voided: false, value: 100, groupMembers: []},
+                {uuid: "b61436b6-7813-42fd-8af2-eb5d23ed726c", voided: false, value: 100, groupMembers: []}
             ]},
             {
                 providers: [{uuid: "provider"}],
                 observations: [
-                {uuid: "c61436b6-7813-42fd-8af2-eb5d23ed726c", voided: false, value: 100}
+                {uuid: "c61436b6-7813-42fd-8af2-eb5d23ed726c", voided: false, value: 100, groupMembers: []}
             ]}
         ];
 
@@ -32,13 +32,13 @@ describe("EncounterTransactionToObsMapper", function () {
         var encounterTransactions = [
             {   providers: [{uuid: "provider"}],
                 observations: [
-                    {uuid: "a61436b6-7813-42fd-8af2-eb5d23ed726c", voided: true, value: 100},
-                    {uuid: "b61436b6-7813-42fd-8af2-eb5d23ed726c", voided: false, value: 100}
+                    {uuid: "a61436b6-7813-42fd-8af2-eb5d23ed726c", voided: true, value: 100, groupMembers: []},
+                    {uuid: "b61436b6-7813-42fd-8af2-eb5d23ed726c", voided: false, value: 100, groupMembers: []}
                 ]},
             {
                 providers: [{uuid: "provider"}],
                 observations: [
-                    {uuid: "c61436b6-7813-42fd-8af2-eb5d23ed726c", voided: false, value: 100}
+                    {uuid: "c61436b6-7813-42fd-8af2-eb5d23ed726c", voided: false, value: 100, groupMembers: []}
                 ]}
         ];
 
@@ -53,13 +53,13 @@ describe("EncounterTransactionToObsMapper", function () {
         var encounterTransactions = [
             {   providers: [{uuid: "provider1"}],
                 observations: [
-                    {uuid: "a61436b6-7813-42fd-8af2-eb5d23ed726c", voided: false, value: 100},
-                    {uuid: "b61436b6-7813-42fd-8af2-eb5d23ed726c", voided: false, value: 100}
+                    {uuid: "a61436b6-7813-42fd-8af2-eb5d23ed726c", voided: false, value: 100, groupMembers: []},
+                    {uuid: "b61436b6-7813-42fd-8af2-eb5d23ed726c", voided: false, value: 100, groupMembers: []}
                 ]},
             {
                 providers: [{uuid: "provider2"}],
                 observations: [
-                    {uuid: "c61436b6-7813-42fd-8af2-eb5d23ed726c", voided: false, value: 100}
+                    {uuid: "c61436b6-7813-42fd-8af2-eb5d23ed726c", voided: false, value: 100, groupMembers: []}
                 ]}
         ];
 
