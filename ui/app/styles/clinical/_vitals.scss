@@ -51,6 +51,9 @@
       }
     }
   }
+  input[type="date"] + .hint {
+    display: none;
+  }
   .hint {
     font-size: 13px;
     margin-top: 7px;
