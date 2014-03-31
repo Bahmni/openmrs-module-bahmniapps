@@ -22,9 +22,22 @@ Bahmni.Clinical.EncounterTransactionToObsMapper = function () {
                     setProviderFunction(observation);
                 });
             },
+            removeAbnormalObs = function(observation){
+                observation.groupMembers.forEach(function(obsMember, index){
+                  if(Bahmni.Clinical.Constants.abnormalObservation.indexOf(obsMember.concept.name)>=0){ // if setMember is isAbnormal
+                    observation.groupMembers[index-1].is_abnormal = obsMember.value; //assuming observation is stored at next level than isAbnormal
+                    delete observation.groupMembers[index];
+                    return;
+                  }
+                  else {
+                       angular.forEach(obsMember.groupMembers, removeAbnormalObs);
+                  }
+                })
+            },
             flatten = function (transactions, item) {
                 return transactions.reduce(function (result, transaction) {
                     setProviderToObservations(transaction[item], transaction.providers[0]);
+                    angular.forEach(transaction[item], removeAbnormalObs);
                     return result.concat(transaction[item]);
                 }, []);
             },
