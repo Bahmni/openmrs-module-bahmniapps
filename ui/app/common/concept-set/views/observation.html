@@ -2,9 +2,9 @@
     <fieldset  ng-if="observation && !observation.isGroup()">
         <div class="form-group">
             <label class="control-label">
-                <span>{{observation.label()}}&nbsp;</span>
+                <span>{{observation.label()}}</span>
                 <span ng-show="observation.units">({{observation.units()}})</span>
-                <span ng-show="observation.isRequired">*</span>
+                <span ng-show="observation.isRequired" class="asterick">*</span>
             </label>
             <div class="field-value" ng-switch on="observation.getControlType()">
                 <div ng-switch-when="html5InputDataType">
@@ -36,7 +36,7 @@
                 </select>
 
                 <div ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"
-                     ng-switch-when="autocomplete">
+                     ng-switch-when="autocomplete" class="autocomplete">
                     <input ui-select2="selectOptions"
                            class="form-control" ng-model="observation.observation.value"
                            ng-change="observation.onValueChanged()">
