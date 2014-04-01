@@ -30,165 +30,173 @@
     </aside>
 
     <article bindonce="visit">
-        <div bo-hide="visit.hasEncounters()" class="info-message">
-            <p>There are no encounter for this patient</p>
+        <div bo-hide="visit.hasObservations()" class="info-message">
+            <p>There are no encounters for this patient</p>
         </div>
-        <section ng-show="visit.hasDiagnosis()" class="block investigation">
-            <h2>Diagnoses</h2>
-            <ul class="block-content visit-diagnosis">
-                <li ng-repeat="diagnosis in visit.diagnoses">
-                    <span class="diag-ps" bo-show="visit.isPrimaryOrder(diagnosis.order)">P</span>
-                    <span class="diag-ps" bo-show="!visit.isPrimaryOrder(diagnosis.order)">S</span>
-                    <span bo-text="diagnosis.codedAnswer.name"></span>
+        <section ng-show="visit.hasObservations()" class="block investigation">
+            <section ng-show="visit.hasDiagnosis()" class="block investigation">
+                <h2>Diagnoses</h2>
+                <ul class="block-content visit-diagnosis">
+                    <li ng-repeat="diagnosis in visit.diagnoses">
+                        <span class="diag-ps" bo-show="visit.isPrimaryOrder(diagnosis.order)">P</span>
+                        <span class="diag-ps" bo-show="!visit.isPrimaryOrder(diagnosis.order)">S</span>
+                        <span bo-text="diagnosis.codedAnswer.name"></span>
                     <span bo-text="'(' + diagnosis.certainty + ')'"
                           bo-hide="visit.isConfirmedDiagnosis(diagnosis.certainty)"></span>
 
-                    <ul class="add-info">
-                        <li class="datetime">
-                            <span bo-text="(diagnosis.diagnosisDateTime | date:'d-MMM-yy h:mm a')"></span>
-                        </li>
-                        <li>
-                            <span bo-text="diagnosis.provider.name"></span>
-                        </li>
-                    </ul>
-                </li>
-                <div ng-show="!visit.hasDiagnosis()">A diagnosis has not been made for this patient yet.</div>
-            </ul>
-        </section>
+                        <ul class="add-info">
+                            <li class="datetime">
+                                <span bo-text="(diagnosis.diagnosisDateTime | date:'d-MMM-yy h:mm a')"></span>
+                            </li>
+                            <li>
+                                <span bo-text="diagnosis.provider.name"></span>
+                            </li>
+                        </ul>
+                    </li>
+                    <div ng-show="!visit.hasDiagnosis()">A diagnosis has not been made for this patient yet.</div>
+                </ul>
+            </section>
 
-        <section class="block investigation" ng-show="visit.hasDisposition()">
-            <h2>Disposition</h2>
-            <ul class="block-content">
-                <li ng-repeat="disposition in visit.dispositions">
-                    <div class="expander-row">
-                        <span bo-text="disposition.code"></span>
+            <section class="block investigation" ng-show="visit.hasDisposition()">
+                <h2>Disposition</h2>
+                <ul class="block-content">
+                    <li ng-repeat="disposition in visit.dispositions">
+                        <div class="expander-row">
+                            <span bo-text="disposition.code"></span>
                            <span ng-repeat="note in disposition.additionalObs">
                                 <div class="icon-double-angle-down" ng-click="toggle(note)"></div>
                            </span>
-                        <ul class="add-info">
-                            <li class="datetime">
-                                <span bo-text="(disposition.dispositionDateTime | date:'d-MMM-yy h:mm a')"></span>
-                            </li>
-                            <li>
-                                <span bo-text="disposition.provider.name"></span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                           <span ng-repeat="note in disposition.additionalObs">
-                                <span ng-show="note.show" bo-text="note.value"></span>
-                           </span>
-                    </div>
-                </li>
-            </ul>
-        </section>
-
-        <section class="block labTestOrders" ng-show="visit.hasLabTests()">
-            <h2>Lab Orders</h2>
-            <ul class="block-content">
-                <div ng-repeat="labOrders in visit.labTestOrderObsMap">
-                    <li bo-text="(labOrders.date  | date:'d MMM yy')"></li>
-                    <li ng-repeat="labOrder in labOrders.orders">
-                        <div  bo-show="labOrder.obs.length == 0 || labOrder.obs[0].concept.set">
-                            <span bo-text="labOrder.concept.name"></span>
                             <ul class="add-info">
+                                <li class="datetime">
+                                    <span bo-text="(disposition.dispositionDateTime | date:'d-MMM-yy h:mm a')"></span>
+                                </li>
                                 <li>
-                                    <span bo-text="labOrder.provider.name"></span>
+                                    <span bo-text="disposition.provider.name"></span>
                                 </li>
                             </ul>
                         </div>
-                        <div ng-repeat="observation in labOrder.obs">
-                            <section class="observation" bo-show="observation">
-                                <div>
-                                    <observation-summary observation="observation" hide-parent-obs-name="true" full-date="true" obs-ignore-list="obsIgnoreList"/>
-                                </div>
-                            </section>
+                        <div>
+                           <span ng-repeat="note in disposition.additionalObs">
+                                <span ng-show="note.show" bo-text="note.value"></span>
+                           </span>
                         </div>
                     </li>
-                </div>
-            </ul>
-        </section>
+                </ul>
+            </section>
 
-        <section class="block">
-            <section class="block treatment" ng-show="visit.hasDrugOrders()">
-                <h2>Treatment</h2>
-                <ul>
-                    <div ng-repeat="drugOrders in visit.drugOrders">
-                        <li bo-text="(drugOrders.date  | date:'d MMM yy')"></li>
-                        <li ng-repeat="drugOrder in drugOrders.orders">
-                            <div class="expander-row">
-                                <div class="treatment-details">
-                                    <span bo-text="drugOrder.drugName"></span>
-                                    <span bo-show="drugOrder.doseStrength" bo-text="' - ' + drugOrder.doseStrength"></span>
-                                    <span bo-show="drugOrder.drugUnits" bo-text="' ' + drugOrder.drugUnits"></span>
-                                    <span bo-show="drugOrder.dosageForm" bo-text="' ' + drugOrder.dosageForm"></span>
+            <section class="block labTestOrders" ng-show="visit.hasLabTests()">
+                <h2>Lab Orders</h2>
+                <ul class="block-content">
+                    <div ng-repeat="labOrders in visit.labTestOrderObsMap">
+                        <li bo-text="(labOrders.date  | date:'d MMM yy')"></li>
+                        <li ng-repeat="labOrder in labOrders.orders">
+                            <div bo-show="labOrder.obs.length == 0 || labOrder.obs[0].concept.set">
+                                <span bo-text="labOrder.concept.name"></span>
+                                <ul class="add-info">
+                                    <li>
+                                        <span bo-text="labOrder.provider.name"></span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div ng-repeat="observation in labOrder.obs">
+                                <section class="observation" bo-show="observation">
+                                    <div>
+                                        <observation-summary observation="observation" hide-parent-obs-name="true"
+                                                             full-date="true" obs-ignore-list="obsIgnoreList"/>
+                                    </div>
+                                </section>
+                            </div>
+                        </li>
+                    </div>
+                </ul>
+            </section>
+
+            <section class="block">
+                <section class="block treatment" ng-show="visit.hasDrugOrders()">
+                    <h2>Treatment</h2>
+                    <ul>
+                        <div ng-repeat="drugOrders in visit.drugOrders">
+                            <li bo-text="(drugOrders.date  | date:'d MMM yy')"></li>
+                            <li ng-repeat="drugOrder in drugOrders.orders">
+                                <div class="expander-row">
+                                    <div class="treatment-details">
+                                        <span bo-text="drugOrder.drugName"></span>
+                                        <span bo-show="drugOrder.doseStrength"
+                                              bo-text="' - ' + drugOrder.doseStrength"></span>
+                                        <span bo-show="drugOrder.drugUnits" bo-text="' ' + drugOrder.drugUnits"></span>
+                                        <span bo-show="drugOrder.dosageForm"
+                                              bo-text="' ' + drugOrder.dosageForm"></span>
                                     <span bo-show="drugOrder.numberPerDosage"
                                           bo-text="' - ' + drugOrder.numberPerDosage"></span>
                                     <span bo-show="drugOrder.dosageFrequency"
                                           bo-text="' - ' + drugOrder.dosageFrequency.name"> </span>
                                     <span bo-show="drugOrder.dosageInstruction"
                                           bo-text="' - ' + drugOrder.dosageInstruction.name"> </span>
-                                    <span bo-text="' - ' + (drugOrder.startDate  | date:'d MMM yy')"> </span>
-                                    <span bo-text="' - for ' + visit.numberOfDosageDaysForDrugOrder(drugOrder) + ' day(s)'"> - </span>
-                                    <span bo-show="drugOrder.prn"> - Take as required.</span>
+                                        <span bo-text="' - ' + (drugOrder.startDate  | date:'d MMM yy')"> </span>
+                                        <span bo-text="' - for ' + visit.numberOfDosageDaysForDrugOrder(drugOrder) + ' day(s)'"> - </span>
+                                        <span bo-show="drugOrder.prn"> - Take as required.</span>
+                                    </div>
+                                    <div class="treatment-notes">
+                                        <div bo-show="drugOrder.notes" class="icon-double-angle-down"
+                                             ng-click="toggle(drugOrder)"></div>
+                                    </div>
+                                    <ul class="add-info">
+                                        <li class="time"><span
+                                                bo-text="drugOrder.dateCreated | date: 'd-MMM-yy h:mm a'"></span></li>
+                                        <li><span bo-text="drugOrder.provider.name"></span></li>
+                                    </ul>
                                 </div>
-                                <div class="treatment-notes">
-                                    <div bo-show="drugOrder.notes" class="icon-double-angle-down"
-                                         ng-click="toggle(drugOrder)"></div>
+                                <div>
+                                    <span ng-show="drugOrder.show" bo-text='drugOrder.notes'></span>
                                 </div>
-                                <ul class="add-info">
-                                    <li class="time"><span bo-text="drugOrder.dateCreated | date: 'd-MMM-yy h:mm a'"></span></li>
-                                    <li><span bo-text="drugOrder.provider.name"></span></li>
-                                </ul>
-                            </div>
-                            <div>
-                                <span ng-show="drugOrder.show" bo-text='drugOrder.notes'></span>
-                            </div>
-                        </li>
-                    </div>
-                </ul>
-            </section>
-
-            <section class="block notes" ng-show="visit.hasConsultationNotes()">
-                <h2>Notes</h2>
-                <ul>
-                    <div ng-repeat="notes in visit.consultationNotes">
-                        <li ng-repeat="note in notes.obs">
-                            <span bo-text="note.value"></span>
-                            <ul class="add-info">
-                                <li class="datetime"><span bo-text="note.observationDateTime | date: 'd-MMM-yy h:mm a'"></span>
-                                    <span bo-text="note.provider.name"></span></li>
-                            </ul>
-                        </li>
-                    </div>
-                </ul>
-            </section>
-            <section class="block otherTestOrders" ng-show="visit.hasOtherInvestigations()">
-                <h2>Other Investigations</h2>
-                <ul>
-                    <div ng-repeat="otherInvestigations in visit.otherInvestigations">
-                        <li bo-text="(otherInvestigations.date | date:'d MMM yy')"></li>
-                        <li ng-repeat="investigation in otherInvestigations.orders">
-                            <span bo-text="investigation.concept.name"></span>
-                            <ul class="add-info">
-                                <li>
-                                    <span bo-text="investigation.provider.name"></span>
-                                </li>
-                            </ul>
-                        </li>
-                    </div>
-                </ul>
-            </section>
-            <section class="block observation" ng-show="visit.hasObservations()">
-                <h2>Observations</h2>
-                <ul>
-                    <div ng-repeat="observations in visit.observations">
-                        <div ng-repeat="observation in observations.obs">
-                            <observation-summary patient-uuid="patientUuid" observation="observation"
-                                                 show-trends="showTrends" full-date="true" obs-ignore-list="obsIgnoreList"/>
+                            </li>
                         </div>
-                    </div>
-                </ul>
+                    </ul>
+                </section>
+
+                <section class="block notes" ng-show="visit.hasConsultationNotes()">
+                    <h2>Notes</h2>
+                    <ul>
+                        <div ng-repeat="notes in visit.consultationNotes">
+                            <li ng-repeat="note in notes.obs">
+                                <span bo-text="note.value"></span>
+                                <ul class="add-info">
+                                    <li class="datetime"><span
+                                            bo-text="note.observationDateTime | date: 'd-MMM-yy h:mm a'"></span>
+                                        <span bo-text="note.provider.name"></span></li>
+                                </ul>
+                            </li>
+                        </div>
+                    </ul>
+                </section>
+                <section class="block otherTestOrders" ng-show="visit.hasOtherInvestigations()">
+                    <h2>Other Investigations</h2>
+                    <ul>
+                        <div ng-repeat="otherInvestigations in visit.otherInvestigations">
+                            <li bo-text="(otherInvestigations.date | date:'d MMM yy')"></li>
+                            <li ng-repeat="investigation in otherInvestigations.orders">
+                                <span bo-text="investigation.concept.name"></span>
+                                <ul class="add-info">
+                                    <li>
+                                        <span bo-text="investigation.provider.name"></span>
+                                    </li>
+                                </ul>
+                            </li>
+                        </div>
+                    </ul>
+                </section>
+                <section class="block observation" ng-show="visit.hasObservations()">
+                    <h2>Observations</h2>
+                    <ul>
+                        <div ng-repeat="observations in visit.observations">
+                            <div ng-repeat="observation in observations.obs">
+                                <observation-summary patient-uuid="patientUuid" observation="observation"
+                                                     show-trends="showTrends" full-date="true"
+                                                     obs-ignore-list="obsIgnoreList"/>
+                            </div>
+                        </div>
+                    </ul>
+                </section>
             </section>
         </section>
     </article>
