@@ -23,11 +23,11 @@ Bahmni.ConceptSet.Observation = function (observation, conceptUIConfig, xCompoun
     };
 
     xObservation = createConcept(xCompoundObservationConcept, [observation]);
-    if (shouldMarkAsAbnormal(observation.concept.name)) {
-        var abnormal = createConcept(findConcept('IS_ABNORMAL'));
-        this.isAbnormal = abnormal;
-        xObservation.groupMembers.push(abnormal);
-    }
+    var abnormal = createConcept(findConcept('IS_ABNORMAL'));
+    this.isAbnormal = abnormal;
+    xObservation.groupMembers.push(abnormal);
+    xObservation.showAbnormalIndicator = shouldMarkAsAbnormal(observation.concept.name);
+
     if(shouldMarkAsRequired(observation.concept.name)) {
         this.isRequired = true;
     }

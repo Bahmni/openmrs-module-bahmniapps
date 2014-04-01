@@ -45,7 +45,7 @@
 
                 <p ng-switch-default class="field-value info icon-info-sign"> The concept data type '{{$parent.observation.getDataTypeName()}}' is not supported yet.</p>
             </div>
-            <label class="checkbox-inline" ng-show="observation.isAbnormal">
+            <label class="checkbox-inline" ng-show="observation.showAbnormalIndicator">
               <input type="checkbox" ng-model="observation.isAbnormal.value" value="observation.isAbnormal.value">
               Abnormal
               </input>
