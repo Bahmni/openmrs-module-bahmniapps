@@ -6,7 +6,7 @@ angular.module('bahmni.clinical')
         }
 
         var hasValue = function(observation) {
-            return observation.value;
+            return observation.value !== undefined && observation.value !== '' && observation.value !== null;
         }
 
         var hasValueOrMembers = function(observation) {
