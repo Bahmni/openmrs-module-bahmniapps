@@ -70,6 +70,38 @@ describe("EncounterTransactionToObsMapper", function () {
         expect(obsMatchingUuid(observations, "c61436b6-7813-42fd-8af2-eb5d23ed726c")[0].provider.uuid).toBe("provider2");
     });
 
+    it("should remove Abnormal observation from each observation", function () {
+        var encounterTransactions = [
+            {
+                providers: [{uuid: "provider1"}],
+                observations: [
+                {
+                    uuid: "a61436b6-7813-42fd-8af2-eb5d23ed726c", voided: false, value: [44, true],
+                    concept: {uuid: "b61436b6-7813-42fd-8af2-eb4e23ed728d", name: "XCompoundObservation"},
+                            groupMembers: [
+                            {
+                                value: 44,
+                                concept: {uuid: "b61436b6-7813-42fd-8af2-eb4e23ed728d", name: "Weight"},
+                                groupMembers: []
+                            },
+                            {
+                                value: true,
+                                concept: {uuid: "b61437a7-7899-42fd-8af2-eb4e23ed728d", name: "IS_ABNORMAL"},
+                                groupMembers: []
+                            }
+                ]},
+                ]
+            },
+        ]
+
+        var observations = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions);
+        expect(observations.length).toBe(1);
+        expect(observations[0].groupMembers.length).toBe(1);
+        expect(observations[0].groupMembers[0].concept.name).toBe("Weight");
+        expect(observations[0].groupMembers[0].value).toBe(44);
+        expect(observations[0].groupMembers[0].is_abnormal).toBe(true);
+    });
+
 
 });
 
