@@ -1,63 +1,60 @@
 <div class="vitals form-horizontal">
-    <fieldset  ng-if="observation && !observation.isGroup()">
+    <fieldset ng-if="!node.isGroup()">
         <div class="form-group">
             <label class="control-label">
-                <span>{{observation.label()}}</span>
-                <span ng-show="observation.units">({{observation.units()}})</span>
-                <span ng-show="observation.isRequired" class="asterick">*</span>
+                <span>{{node.label}}</span>
+                <span ng-show="node.units">({{node.units}})</span>
+                <span ng-show="node.isRequired" class="asterick">*</span>
             </label>
-            <div class="field-value" ng-switch on="observation.getControlType()">
+            <div class="field-value" ng-switch on="node.getControlType()">
                 <div ng-switch-when="html5InputDataType">
-                    <input ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"
-                           add-obs-constraints obs="$parent.observation"
-                           class="form-control" ng-model="$parent.observation.observation.value"
-                           ng-change="$parent.observation.onValueChanged()"
-                           value="$parent.observation.displayValue()" />
-                           <small class="hint" ng-show="observation.getLowAbsolute() || observation.getHighAbsolute()">(Valid Range from {{observation.getLowAbsolute()}} to {{observation.getHighAbsolute()}})</small>
+                    <input ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}"
+                           add-obs-constraints obs="$parent.node"
+                           class="form-control" ng-model="$parent.node.primaryObservation.value"
+                           ng-change="$parent.node.onValueChanged()"/>
+                           <small class="hint" ng-show="node.lowAbsolute || node.highAbsolute">(Valid Range from {{node.lowAbsolute}} to {{node.hiAbsolute}})</small>
                 </div>
 
                 <div ng-switch-when="freeTextAutocomplete">
-                    <input class="concept-name" ng-model="observation.observation.value" concept-autocomplete
-                       ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"
-                       coded-concept-uuid="observation.getConceptConfig().freeTextAutocomplete.codedConceptUuid"
-                       concept-set-uuid="observation.getConceptConfig().freeTextAutocomplete.conceptSetUuid"
+                    <input class="concept-name" ng-model="node.primaryObservation.value" concept-autocomplete
+                       ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}"
+                       coded-concept-uuid="node.getConceptConfig().freeTextAutocomplete.codedConceptUuid"
+                       concept-set-uuid="node.getConceptConfig().freeTextAutocomplete.conceptSetUuid"
                        blur-on-select="false"/>
                 </div>
 
-                <textarea ng-switch-when="text" class="form-control" ng-model="$parent.observation.observation.value"
-                          ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"
-                          foo="{{atLeastOneValueIsSet}}"
-                          ng-change="$parent.observation.onValueChanged()"
-                          value="$parent.observation.displayValue()"></textarea>
+                <textarea ng-switch-when="text" class="form-control" ng-model="$parent.node.primaryObservation.value"
+                          ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}"
+                          ng-change="$parent.node.onValueChanged()"></textarea>
 
-                <select ng-switch-when="dropdown" foo-bar class="form-control" ng-model="observation.observation.value" ng-change="observation.onValueChanged()"
-                        ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"
+                <select ng-switch-when="dropdown" foo-bar class="form-control" ng-model="node.primaryObservation.value" ng-change="node.onValueChanged()"
+                        ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}"
                         ng-options="answer as answer.name for answer in getPossibleAnswers() track by answer.uuid">
                 </select>
 
-                <div ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"
+                <div ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}"
                      ng-switch-when="autocomplete" class="autocomplete">
                     <input ui-select2="selectOptions"
-                           class="form-control" ng-model="observation.observation.value"
-                           ng-change="observation.onValueChanged()">
+                           class="form-control" ng-model="node.primaryObservation.value"
+                           ng-change="node.onValueChanged()">
                     </input>
                 </div>
 
-                <p ng-switch-default class="field-value info icon-info-sign"> The concept data type '{{$parent.observation.getDataTypeName()}}' is not supported yet.</p>
+                <p ng-switch-default class="field-value info icon-info-sign"> The concept data type '{{$parent.node.dataTypeName}}' is not supported yet.</p>
             </div>
-            <label class="checkbox-inline" ng-show="observation.showAbnormalIndicator">
-              <input type="checkbox" ng-model="observation.isAbnormal.value" value="observation.isAbnormal.value">
+            <label class="checkbox-inline" ng-if="node.showAbnormalIndicator">
+              <input type="checkbox" ng-model="node.abnormalityObservation.value" value="node.abnormalityObservation.value">
               Abnormal
               </input>
             </label>
         </div>
     </fieldset>
 
-    <fieldset ng-if="observation && observation.isGroup()" class="hasLegend">
-        <legend class="mylegend"><strong>{{observation.label}}</strong></legend>
+    <fieldset ng-if="node.isGroup()" class="hasLegend">
+        <legend class="mylegend"><strong>{{node.label}}</strong></legend>
         <div class="form-group">
-            <div class="form-field form-field-group" ng-repeat="member in observation.getGroupMembers()">
-                <show-concept observation="member" at-least-one-value-is-set="atLeastOneValueIsSet"></show-concept>
+            <div class="form-field form-field-group" ng-repeat="member in node.children">
+                <show-concept node="member" at-least-one-value-is-set="atLeastOneValueIsSet"></show-concept>
             </div>
         </div>
     </fieldset>

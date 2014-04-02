@@ -1,205 +1,121 @@
 'use strict';
 
-Bahmni.ConceptSet.Observation = function (observation, conceptUIConfig, xCompoundObservationConcept) {
-    var xObservation,
-    createConcept = function(baseConcept, groupMembers) {
-        return {concept: {
-                    name: baseConcept.name.name,
-                    uuid: baseConcept.uuid
-                },
-                groupMembers: groupMembers || []
-            };
-    },
-    findConcept = function(name) {
-        return xCompoundObservationConcept.setMembers.filter(function(member) {
+(function(){
+    var findPrimaryObservation = function(observations, xCompoundObservationConcept) {
+        var compundObservationMemberUuids = xCompoundObservationConcept.setMembers.map(function(member) { return member.uuid; });
+        return observations.filter(function(observation) {
+            return compundObservationMemberUuids.indexOf(observation.concept.uuid) === -1; 
+        })[0];
+    };
+
+    var findAbnormalityObservation = function(observations) {
+        return observations.filter(function(observation) { return observation.concept.name === "IS_ABNORMAL"; })[0];
+    };
+
+    var newAbnormalityObservation = function(xCompoundObservationConcept) {
+        return createObservation(findConcept(xCompoundObservationConcept.setMembers, 'IS_ABNORMAL'));
+    };
+
+    var createObservation = function(baseConcept, groupMembers) {
+        return { concept: { name: baseConcept.name.name, uuid: baseConcept.uuid },
+                 groupMembers: groupMembers || []
+                };
+    };
+
+    var findConcept = function(concepts, name) {
+        return concepts.filter(function(member) {
             return member.name.name === name;
         })[0];
-    },
-    shouldMarkAsAbnormal = function(conceptName) {
-        return conceptUIConfig[conceptName] && conceptUIConfig[conceptName].showAbnormalIndicator;
-    },
-    shouldMarkAsRequired = function(conceptName) {
-        return conceptUIConfig[conceptName] && conceptUIConfig[conceptName].required;
     };
 
-    xObservation = createConcept(xCompoundObservationConcept, [observation]);
-    var abnormal = createConcept(findConcept('IS_ABNORMAL'));
-    this.isAbnormal = abnormal;
-    xObservation.groupMembers.push(abnormal);
-    xObservation.showAbnormalIndicator = shouldMarkAsAbnormal(observation.concept.name);
+    Bahmni.ConceptSet.CompundObservationNode = function(compoundObservation, primaryObservation, primaryConcept, abnormalityObservation, conceptUIConfig){
+        var conceptName = primaryConcept.name.name;
+        var conceptConfig = conceptUIConfig[conceptName] || {};
+        this.primaryObservation = primaryObservation;
+        this.abnormalityObservation = abnormalityObservation;
+        this.compoundObservation = compoundObservation;
+        this.compoundObservation.groupMembers = [primaryObservation, abnormalityObservation];
+        this.showAbnormalIndicator =  conceptConfig.showAbnormalIndicator;
+        this.isRequired = conceptConfig.required;
+        this.conceptConfig = conceptConfig;
+        this.label = conceptName;
+        this.units = primaryConcept.units;
+        this.dataTypeName = primaryConcept.datatype.name;
+        this.hiAbsolute = primaryConcept.hiAbsolute;
+        this.lowAbsolute = primaryConcept.lowAbsolute;
+        this.possibleAnswers = primaryConcept.answers;
+        this.children = [];
+    };
 
-    if(shouldMarkAsRequired(observation.concept.name)) {
-        this.isRequired = true;
+    Bahmni.ConceptSet.CompundObservationNode.create = function(compoundObservation, primaryConcept, xCompoundObservationConcept, conceptUIConfig) {
+        var primaryObservation = findPrimaryObservation(compoundObservation.groupMembers, xCompoundObservationConcept);
+        var abnormalityObservation = findAbnormalityObservation(compoundObservation.groupMembers) || newAbnormalityObservation(xCompoundObservationConcept);
+        return new this(compoundObservation, primaryObservation, primaryConcept, abnormalityObservation, conceptUIConfig);
     }
-    angular.extend(this, xObservation);
-    this.conceptUIConfig = conceptUIConfig;
-    this.observation = observation;
-};
 
-Bahmni.ConceptSet.Observation.create = function(obs, xCompoundObservationConcept, conceptUIConfig) {
-    var Observation = function(observation){
-        var findObservation = function(observations) {
-            var finalObservation, 
-            invalidConcepts = xCompoundObservationConcept.setMembers.map(function(member) {
-                return member.uuid;
-            });
+    Bahmni.ConceptSet.CompundObservationNode.createNew = function(primaryObservation, primaryConcept, xCompoundObservationConcept, conceptUIConfig) {
+        var compoundObservation = createObservation(xCompoundObservationConcept, [primaryObservation]);
+        var abnormalityObservation = newAbnormalityObservation(xCompoundObservationConcept);
+        return new this(compoundObservation, primaryObservation, primaryConcept, abnormalityObservation, conceptUIConfig);
+    }
+})();
 
-            observations.forEach(function(observation) {
-                var observationUuid = observation.concept.uuid;
-                if (invalidConcepts.indexOf(observationUuid) < 0) {
-                    finalObservation = observation;
-                }
-            });
-            return finalObservation;
-        },
-        findAbnormal = function(observations) {
-            return observations.filter(function(observation) {
-                return observation.concept.name === "IS_ABNORMAL";
-            })[0];
-        };
 
-        angular.extend(this, observation);
-        this.observation = findObservation(observation.groupMembers);
-        this.isAbnormal = findAbnormal(observation.groupMembers);
-        this.groupMembers.push(this.observation);
-        this.isAbnormal && this.groupMembers.push(this.isAbnormal);
-    };
-
-    Observation.prototype = Bahmni.ConceptSet.Observation.prototype;
-    
-    return new Observation(obs);
-}
-
-Bahmni.ConceptSet.Observation.prototype = {
-    displayValue: function () {
-        if (this.observation.possibleAnswers.length > 0) {
-            for (var i = 0; i < this.observation.possibleAnswers.length; i++) {
-                if (this.observation.possibleAnswers[i].uuid === this.observation.value) {
-                    return this.observation.possibleAnswers[i].display;
-                }
-            }
-        } else {
-            return this.observation.value;
-        }
-    },
-
+Bahmni.ConceptSet.CompundObservationNode.prototype = {
     getPossibleAnswers: function(){
-        return this.observation.possibleAnswers;
-    },
-
-    getConceptName: function() {
-        return this.observation.concept.name;
+        return this.possibleAnswers;
     },
 
     getConceptConfig: function() {
-        return this.conceptUIConfig[this.getConceptName()] || {};
+        return this.conceptConfig;
     },
 
-    getIsAbnormal : function() {
-        return this.isAbnormal;
-    },
-
-    setIsAbnormal: function(abnormal) {
-        if (abnormal && this.isAbnormal) {
-            this.isAbnormal.uuid = abnormal.uuid;
-            if (typeof(abnormal.value) === "boolean") {
-                this.isAbnormal.value = abnormal.value;
-            } else {
-                this.isAbnormal.value = abnormal.value ? abnormal.value.trim().toLowerCase() === "true" : false;
-            }
-        }
-    },
-
-    getUuid: function() {
-        return this.observation.uuid;
-    },
-
-    getValue: function() {
-        return this.observation.value;
-    },
-
-    setUuid: function(uuid) {
-        this.observation.uuid = uuid;
-    },
-
-    setValue: function(value){
-        this.observation.value = value;
-    },
-
-    label: function() {
-        return this.observation.label;
-    },
-    units: function() {
-        return this.observation.units;
+    addChild: function(child) {
+        return this.children.push(child);
     },
 
     isGroup: function () {
-        if (this.observation.groupMembers)
-            return this.observation.groupMembers.length > 0;
-        return false;
-    },
-
-    getGroupMembers: function() {
-        return this.observation.groupMembers;
+        return this.primaryObservation.groupMembers && this.primaryObservation.groupMembers.length;
     },
 
     getControlType: function () {
         if (this.getConceptConfig().freeTextAutocomplete) return "freeTextAutocomplete";
-        if (this.isHtml5InputDataType()) return "html5InputDataType";
-        if (this.isText()) return "text";
-        if (this.isCoded()) return this.getConceptConfig().autocomplete ? "autocomplete" : "dropdown";
-
+        if (this._isHtml5InputDataType()) return "html5InputDataType";
+        if (this._isText()) return "text";
+        if (this._isCoded()) return this.getConceptConfig().autocomplete ? "autocomplete" : "dropdown";
         return "unknown";
     },
 
-    isNumeric: function () {
-        return this.getDataTypeName() === "Numeric";
+    _isNumeric: function () {
+        return this.dataTypeName === "Numeric";
     },
 
-    isText: function () {
-        return this.getDataTypeName() === "Text";
+    _isText: function () {
+        return this.dataTypeName === "Text";
     },
 
-    isCoded: function () {
-        return this.getDataTypeName() === "Coded";
+    _isCoded: function () {
+        return this.dataTypeName === "Coded";
     },
 
-    getDataTypeName: function () {
-        return this.observation.concept.dataType;
+    _isHtml5InputDataType: function () {
+        return ['Date', 'Numeric'].indexOf(this.dataTypeName) != -1;
     },
 
-    isHtml5InputDataType: function () {
-        return ['Date', 'Numeric'].indexOf(this.getDataTypeName()) != -1;
+    _isDateDataType: function () {
+        return 'Date'.indexOf(this.dataTypeName) != -1;
     },
 
-    isDateDataType: function () {
-        return 'Date'.indexOf(this.getDataTypeName()) != -1;
-    },
-
-    getHighAbsolute: function () {
-        return this.observation.concept.hiAbsolute;
-    },
-
-    getLowAbsolute: function () {
-        return this.observation.concept.lowAbsolute;
-    },
     validateNumericValue: function(){
-        var valueInRange = this.displayValue() < (this.getHighAbsolute() || Infinity) && this.displayValue() > (this.getLowAbsolute() || 0);
-        if (!this.displayValue() || valueInRange) {
-            this.isAbnormal.value = false;
-        }else {
-            this.isAbnormal.value = true;
-        }
+        var valueInRange = this.value < (this.hiAbsolute|| Infinity) && this.value > (this.lowAbsolute|| 0);
+        this.abnormalityObservation.value = this.value && !valueInRange;
     },
+
     onValueChanged: function () {
-        this.observation.observationDateTime = new Date();
-        if(this.isNumeric()){
+        this.primaryObservation.observationDateTime = new Date();
+        if(this._isNumeric()){
             this.validateNumericValue();
         }
-    },
-
-    getInputType: function () {
-        return this.getDataTypeName();
     },
 
     isValid: function(checkRequiredFields) {
@@ -212,34 +128,32 @@ Bahmni.ConceptSet.Observation.prototype = {
 
     _atLeastOneValueSet: function (isSet) {
         if (this.isGroup()) {
-            for (var key in this.observation.groupMembers) {
-                var groupMember = this.observation.groupMembers[key];
-                if (groupMember.isGroup()) {
-                    if (groupMember._atLeastOneValueSet()) {
+            this.children.forEach(function(childNode){
+                if (childNode.isGroup()) {
+                    if (childNode._atLeastOneValueSet()) {
                         isSet = true;
                     }
                 }
-                else if (groupMember.observation.value) {
+                else if (childNode.primaryObservation.value) {
                     isSet = true;
                 }
-            }
+            });
+
         }
         return isSet;
     },
 
     _checkValidity: function (checkRequiredFields) {
         if (this.isGroup()) {
-            for (var key in this.observation.groupMembers) {
-                var groupMember = this.observation.groupMembers[key];
-                if (!groupMember._checkValidity(checkRequiredFields)) {
+            this.children.forEach(function(childNode){
+                if (!childNode._checkValidity(checkRequiredFields)) {
                     return false;
                 }
-            }
+            });
             return true;
-        } else if (this.isDateDataType()) {
+        } else if (this._isDateDataType()) {
             return this.isValidDate();
         }
-
         if (checkRequiredFields && this.isValidRequiredField()) {
             return false;
         }
@@ -247,14 +161,14 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isValidRequiredField: function() {
-        return this.isRequired && !(this.observation.value)
+        return this.isRequired && !(this.primaryObservation.value)
     },
 
     isValidDate: function () {
-        if (!this.displayValue()) { // to allow switching to other tabs, if not date is entered
+        if (!this.primaryObservation.value) { // to allow switching to other tabs, if not date is entered
             return true;
         }
-        var date = new Date(this.displayValue());
+        var date = new Date(this.primaryObservation.value);
         return date.getUTCFullYear() && date.getUTCFullYear().toString().length <= 4;
     }
 };

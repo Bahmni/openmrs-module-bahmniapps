@@ -11,7 +11,7 @@
     <div>
         <fieldset ng-show="observation.groupMembers.length">
             <div class="form-field">
-                <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers">
+                <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers track by $index">
                     <div ng-switch on="$index" ng-show="showObservation()">
                         <legend ng-switch-when="0" class="mylegend"><strong>{{observation.concept.name}}</strong></legend>
                     </div>

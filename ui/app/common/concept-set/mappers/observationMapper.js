@@ -1,52 +1,44 @@
 'use strict';
 
-Bahmni.ConceptSet.ObservationMapper = function (uiConfig, compoundObservation) {
+Bahmni.ConceptSet.ObservationMapper = function (uiConfig, compoundConcept) {
     this.uiConfig = uiConfig;
-    this.compoundObservation = compoundObservation;
+    this.compoundConcept = compoundConcept;
+    var CompundObservationNode = Bahmni.ConceptSet.CompundObservationNode;
 
     var self = this,
-    conceptMapper = new Bahmni.ConceptSet.ConceptMapper(), 
-    newObservation = function (concept) {
-        var observation = { concept: conceptMapper.map(concept), units: concept.units, label: concept.display, possibleAnswers: concept.answers, groupMembers: []};
-        return new Bahmni.ConceptSet.Observation(observation, self.uiConfig, self.compoundObservation);
-    }, 
-    findInSavedObservation = function (concept, observations) {
-        var savedObs = observations.filter(function(observation){
-            return observation.groupMembers && observation.groupMembers.some(function (obs) {
-                return concept.uuid === obs.concept.uuid;
+        conceptMapper = new Bahmni.ConceptSet.ConceptMapper(), 
+        newCompondObservationNode = function (concept) {
+            var primaryObservation = { concept: conceptMapper.map(concept), groupMembers: []};
+            return CompundObservationNode.createNew(primaryObservation, concept, self.compoundConcept, self.uiConfig);
+        }, 
+        
+        findInSavedObservation = function (observations, concept) {
+            return observations.filter(function(observation){
+                return observation.groupMembers && observation.groupMembers.some(function (obs) {
+                    return concept.uuid === obs.concept.uuid;
+                });
+            })[0];
+        }, 
+        
+        mapObservationGroupMembers = function (node, conceptSetMembers) {
+            var savedObservations = node.primaryObservation.groupMembers;
+            return conceptSetMembers.map(function (memberConcept) {
+                var childNode = mapObservation(memberConcept, savedObservations);
+                node.addChild(childNode);
+                return childNode.compoundObservation;
             });
-        })[0];
-
-        return savedObs && Bahmni.ConceptSet.Observation.create(savedObs, self.compoundObservation, self.uiConfig);
-    }, 
-    mapObservationGroupMembers = function (savedObservations, conceptSetMembers) {
-        return conceptSetMembers.map(function (memberConcept) {
-            var newObs = mapObservation(memberConcept, savedObservations);
-            return newObs;
-        });
-    }, 
-    mapObservation = function (concept, savedObservations) {
-        var observation = newObservation(concept);
-        var savedObs = findInSavedObservation(concept, savedObservations);
-        if (savedObs) {
-            observation.uuid = savedObs.uuid;
-            observation.value = savedObs.value;
-            observation.setUuid(savedObs.getUuid());
-            observation.setValue(savedObs.getValue());
-            observation.setIsAbnormal(savedObs.getIsAbnormal());
-        }
-        var savedObsGroupMembers = savedObs ? savedObs.getGroupMembers()  : [];
-        if (concept.set) {
-            observation.observation.groupMembers = mapObservationGroupMembers(savedObsGroupMembers, concept.setMembers);
-        }
-        return observation;
-    };
+        }, 
+        
+        mapObservation = function (concept, savedObservations) {
+            var compoundObservation = findInSavedObservation(savedObservations, concept);
+            var node = compoundObservation ? CompundObservationNode.create(compoundObservation, concept, self.compoundConcept, self.uiConfig) : newCompondObservationNode(concept)
+            if (concept.set) {
+                node.primaryObservation.groupMembers = mapObservationGroupMembers(node, concept.setMembers);
+            }
+            return node;
+        };
 
     this.map = function (observations, rootConcept) {
-        var obs = observations.map(function(observation) {
-            var newObs = Bahmni.ConceptSet.Observation.create(observation, self.compoundObservation, self.uiConfig);
-            return newObs;
-        })
-        return mapObservation(rootConcept, obs || []);
+        return mapObservation(rootConcept, observations || []);
     };
 };

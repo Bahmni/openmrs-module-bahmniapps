@@ -23,7 +23,7 @@ describe("ObservationMapper", function () {
         });
     };
 
-    it('should map observations with ui config', function () {
+    it('should map new observations with given concept set and ui config', function () {
         var conceptSet = 
             build({name: "VITALS_CONCEPT", set: true,
                 setMembers : [
@@ -33,51 +33,47 @@ describe("ObservationMapper", function () {
                 ]});
         var conceptSetUIConfig = {
             "Pulse": {},
-            "BP": {
-                "Systolic": {showAbnormalIndicator: true},
-                "Diastolic": {showAbnormalIndicator: false}
-            }
+            "Systolic": {showAbnormalIndicator: true},
+            "Diastolic": {showAbnormalIndicator: false}
         };
         var compoundObservation = build({name: "XCompoundObservation", 
             set: true, 
-            setMembers: [
-                build({name: "IS_ABNORMAL"})
-            ]
+            setMembers: [ build({name: "IS_ABNORMAL"})]
         });
         
         var observationMapper = new Bahmni.ConceptSet.ObservationMapper(conceptSetUIConfig, compoundObservation);
-        var rootObservation = observationMapper.map([], conceptSet);
-        expect(rootObservation.concept.name).toBe('XCompoundObservation');
-        
-        var vitalsObservation = getObservations(rootObservation.groupMembers, "VITALS_CONCEPT")[0];
-        expect(vitalsObservation).toBeDefined();
-        
-        var vitalsGroup = vitalsObservation.groupMembers;
-        expect(vitalsGroup.length).toBe(3);
+        var rootNode = observationMapper.map([], conceptSet);
 
-        var pulseObservation = getXObservationByConceptName(vitalsGroup, 'Pulse')[0];
-        expect(pulseObservation).toBeDefined();
+        expect(rootNode.compoundObservation.concept.name).toBe('XCompoundObservation');
+        expect(rootNode.primaryObservation.concept.name).toBe('VITALS_CONCEPT');
+        expect(rootNode.abnormalityObservation).toBeDefined();
+        expect(rootNode.children.length).toBe(3);
+        expect(rootNode.primaryObservation.groupMembers.length).toBe(3);
+        expect(rootNode.primaryObservation.groupMembers[0].concept.name).toBe('XCompoundObservation');
+        expect(rootNode.primaryObservation.groupMembers[0].groupMembers[0].concept.name).toBe('Pulse');
+        expect(rootNode.primaryObservation.groupMembers[0].groupMembers[1].concept.name).toBe('IS_ABNORMAL');
+        expect(rootNode.primaryObservation.groupMembers[1].concept.name).toBe('XCompoundObservation');
+        expect(rootNode.primaryObservation.groupMembers[1].groupMembers[0].concept.name).toBe('BP');
+        expect(rootNode.primaryObservation.groupMembers[1].groupMembers[0].groupMembers[0].concept.name).toBe('XCompoundObservation');
+        expect(rootNode.primaryObservation.groupMembers[1].groupMembers[0].groupMembers[0].groupMembers[0].concept.name).toBe('Systolic');
+        expect(rootNode.primaryObservation.groupMembers[1].groupMembers[0].groupMembers[0].groupMembers[1].concept.name).toBe('IS_ABNORMAL');
+        expect(rootNode.primaryObservation.groupMembers[1].groupMembers[0].groupMembers[1].concept.name).toBe('XCompoundObservation');
+        expect(rootNode.primaryObservation.groupMembers[1].groupMembers[0].groupMembers[1].groupMembers[0].concept.name).toBe('Diastolic');
+        expect(rootNode.primaryObservation.groupMembers[1].groupMembers[0].groupMembers[1].groupMembers[1].concept.name).toBe('IS_ABNORMAL');
+        expect(rootNode.primaryObservation.groupMembers[1].groupMembers[1].concept.name).toBe('IS_ABNORMAL');
+        expect(rootNode.primaryObservation.groupMembers[2].concept.name).toBe('XCompoundObservation');
+        expect(rootNode.primaryObservation.groupMembers[2].groupMembers[0].concept.name).toBe('Sugar');
+        expect(rootNode.primaryObservation.groupMembers[2].groupMembers[1].concept.name).toBe('IS_ABNORMAL');
 
-        var pulseObservationIsAbnormal = getObservations(pulseObservation.groupMembers, 'IS_ABNORMAL');
-        expect(pulseObservationIsAbnormal.length).toBe(1);
-
-        var sugarObservation = getXObservationByConceptName(vitalsGroup, 'Sugar')[0];
-        expect(sugarObservation).toBeDefined();
-
-        var xBpObservation = getXObservationByConceptName(vitalsGroup, 'BP')[0];
-        expect(xBpObservation).toBeDefined(); 
-
-        var bpObservation = getObservations(xBpObservation.groupMembers, 'BP')[0];
-        expect(bpObservation.groupMembers.length).toBe(2);
-
-        var xSystolicObservation = getXObservationByConceptName(bpObservation.groupMembers, 'Systolic')[0];
-        expect(xSystolicObservation).toBeDefined();
-
-        var systolicObservation = getObservations(xSystolicObservation.groupMembers, 'Systolic');
-        expect(systolicObservation).toBeDefined();
-
-        var systolicIsAbnormal = getObservations(xSystolicObservation.groupMembers, 'IS_ABNORMAL');
-        expect(systolicIsAbnormal).toBeDefined();
+        var nodeForBP = rootNode.children[1];
+        expect(nodeForBP.compoundObservation.concept.name).toBe('XCompoundObservation');
+        expect(nodeForBP.primaryObservation.concept.name).toBe('BP');
+        expect(nodeForBP.children.length).toBe(2);
+        expect(nodeForBP.primaryObservation.groupMembers.length).toBe(2);
+        expect(nodeForBP.children[0].primaryObservation.concept.name).toBe('Systolic');
+        expect(nodeForBP.children[0].showAbnormalIndicator).toBe(true);
+        expect(nodeForBP.children[1].primaryObservation.concept.name).toBe('Diastolic');
+        expect(nodeForBP.children[1].showAbnormalIndicator).toBe(false);
     });
 });
 

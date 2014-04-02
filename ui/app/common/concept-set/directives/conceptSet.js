@@ -5,7 +5,7 @@ angular.module('bahmni.common.conceptSet')
         var controller = function($scope, $q, $filter) {
             var conceptMapper = new Bahmni.ConceptSet.ConceptMapper();
             $scope.getPossibleAnswers = function() {
-                return $scope.observation.getPossibleAnswers().map(conceptMapper.map);
+                return $scope.node.getPossibleAnswers().map(conceptMapper.map);
             };
 
             var getPropertyFunction = function(propertyName) {
@@ -34,7 +34,7 @@ angular.module('bahmni.common.conceptSet')
         return {
             restrict: 'E',
             scope: {
-                observation: "=",
+                node: "=",
                 atLeastOneValueIsSet : "="
             },
             controller: controller,
@@ -43,44 +43,59 @@ angular.module('bahmni.common.conceptSet')
     }]).directive('showConceptSet', ['contextChangeHandler', function (contextChangeHandler) {
         var template =
             '<form>' +
-                '<show-concept observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet"></show-concept>' +
+                '<show-concept node="rootNode" at-least-one-value-is-set="atLeastOneValueIsSet"></show-concept>' +
             '</form>';
 
         var controller = function ($scope, conceptSetService, conceptSetUiConfigService, $rootScope, $q) {
             var conceptSetName = $scope.conceptSetName;
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
-            var conceptSetPromise = conceptSetService.getConceptSetMembers(
-                                        {name: conceptSetName, v: "fullchildren"});
-            var xCompoundObservationPromise = conceptSetService.getConceptSetMembers({name: 'XCompoundObservation', v: "full"});
+            var conceptSetPromise = conceptSetService.getConceptSetMembers({name: conceptSetName, v: "fullchildren"});
+            var xCompoundConceptPromise = conceptSetService.getConceptSetMembers({name: 'XCompoundObservation', v: "full"});
 
             $scope.atLeastOneValueIsSet = false;
             
-            var promises = [conceptSetPromise, xCompoundObservationPromise];
+            var promises = [conceptSetPromise, xCompoundConceptPromise];
+
             $q.all(promises).then(function(responses) {
-                var xCompoundObservation = responses[1].data.results[0];
-                var conceptSet = responses[0].data.results[0];
-                $scope.rootObservation = conceptSet ? new Bahmni.ConceptSet.ObservationMapper(conceptSetUIConfig.value || {}, xCompoundObservation).map($scope.observations, conceptSet) : null;
+                var xCompoundConcept = responses[1].data.results[0];
+                var conceptSet = responses[0].data.results[0];                
+                if(conceptSet) {
+                    var mapper = new Bahmni.ConceptSet.ObservationMapper(conceptSetUIConfig.value || {}, xCompoundConcept);
+                    $scope.rootNode = mapper.map($scope.observations, conceptSet)        
+                }
+                updateObservations();
             });
 
             var updateObservations = function() {
-                if(!$scope.rootObservation) return;
+                if(!$scope.rootNode) return;
                 for (var i = 0; i < $scope.observations.length; i++) {
-                    if($scope.observations[i].concept.uuid === $scope.rootObservation.concept.uuid) {
-                        $scope.observations[i] = $scope.rootObservation;
+                    if(getValueObservation($scope.observations[i]).concept.uuid === $scope.rootNode.primaryObservation.concept.uuid) {
+                        $scope.observations[i] = $scope.rootNode.compoundObservation;
                         return;
                     }
                 }
-                $scope.observations.push($scope.rootObservation);
+                $scope.observations.push($scope.rootNode.compoundObservation);
             };
 
+            //TODO: Extract constants
+            var getValueObservation = function(observation){
+                if(observation.concept.name === 'XCompoundObservation') {
+                    return observation.groupMembers.filter(function(memberObs){
+                        return memberObs.concept.name !== 'IS_ABNORMAL'
+                    })[0];
+                } else {
+                    return observation;
+                }
+            }
+
             var allowContextChange = function () {
-                updateObservations();
-                var invalidObservations = $scope.observations.filter(function(observation){
-                    $scope.atLeastOneValueIsSet = observation.atLeastOneValueSet();
-                    return !observation.isValid($scope.atLeastOneValueIsSet);
+                var invalidNodes = $scope.rootNode.children.filter(function(childNode){
+                    $scope.atLeastOneValueIsSet = childNode.atLeastOneValueSet();
+                    return !childNode.isValid($scope.atLeastOneValueIsSet);
                 });
-                return invalidObservations.length === 0;
+                return invalidNodes.length === 0;
             };
+            
             contextChangeHandler.add(allowContextChange);
         };
 
@@ -98,15 +113,15 @@ angular.module('bahmni.common.conceptSet')
         var link = function ($scope, element, attrs, ctrl) {
             var attributes = {};
             var obs = $scope.obs;
-            attributes['type'] = attributesMap[$scope.obs.getDataTypeName()] || "text";
-            if (obs.getHighAbsolute()) {
-                attributes['max'] = $scope.obs.getHighAbsolute();
+            attributes['type'] = attributesMap[$scope.obs.dataTypeName] || "text";
+            if (obs.hiAbsolute) {
+                attributes['max'] = $scope.obs.hiAbsolute;
             }
-            if (obs.getLowAbsolute()) {
-                attributes['min'] = $scope.obs.getLowAbsolute();
+            if (obs.lowAbsolute) {
+                attributes['min'] = $scope.obs.lowAbsolute;
             }
-            if (obs.getLowAbsolute() && obs.getHighAbsolute()) {
-                attributes['title'] = "Valid from " + $scope.obs.getLowAbsolute() +" to "+ $scope.obs.getHighAbsolute();
+            if (obs.lowAbsolute && obs.hiAbsolute) {
+                attributes['title'] = "Valid from " + $scope.obs.lowAbsolute +" to "+ $scope.obs.hiAbsolute;
             }
             element.attr(attributes);
         };
