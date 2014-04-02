@@ -65,7 +65,7 @@ describe("ObservationMapper", function () {
         expect(sugarObservation).toBeDefined();
 
         var xBpObservation = getXObservationByConceptName(vitalsGroup, 'BP')[0];
-        expect(xBpObservation).toBeDefined();
+        expect(xBpObservation).toBeDefined(); 
 
         var bpObservation = getObservations(xBpObservation.groupMembers, 'BP')[0];
         expect(bpObservation.groupMembers.length).toBe(2);
