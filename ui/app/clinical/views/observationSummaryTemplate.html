@@ -1,7 +1,7 @@
 <div>
     <li ng-if="observation.groupMembers.length <= 0" ng-hide="hideObservation()">
         <div>
-            <span ng-class="{true: 'is-abnormal'}[observation.is_abnormal]" bo-text="observation.concept.name + ' - ' + (observation | observationValue)"></span>
+            <span style="white-space: pre" ng-class="{true: 'is-abnormal'}[observation.is_abnormal]" bo-text="observation.concept.name + ' - ' + (observation | observationValue)"></span>
         <span bo-show="observation.additionalObs.length > 0">
              <div class="icon-double-angle-down" ng-click="toggle(observation.additionalObs)"></div>
         </span>
