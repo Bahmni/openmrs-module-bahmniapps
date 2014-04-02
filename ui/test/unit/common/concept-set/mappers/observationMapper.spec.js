@@ -59,13 +59,13 @@ describe("ObservationMapper", function () {
         expect(pulseObservation).toBeDefined();
 
         var pulseObservationIsAbnormal = getObservations(pulseObservation.groupMembers, 'IS_ABNORMAL');
-        expect(pulseObservationIsAbnormal.length).toBe(0);
+        expect(pulseObservationIsAbnormal.length).toBe(1);
 
         var sugarObservation = getXObservationByConceptName(vitalsGroup, 'Sugar')[0];
         expect(sugarObservation).toBeDefined();
 
         var xBpObservation = getXObservationByConceptName(vitalsGroup, 'BP')[0];
-        expect(xBpObservation).toBeDefined(); 
+        expect(xBpObservation).toBeDefined();
 
         var bpObservation = getObservations(xBpObservation.groupMembers, 'BP')[0];
         expect(bpObservation.groupMembers.length).toBe(2);
