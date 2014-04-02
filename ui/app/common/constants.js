@@ -33,5 +33,6 @@ Bahmni.Common.Constants = {
     emrapiConceptMappingSource :"org.openmrs.module.emrapi",
     includeAllObservations: false,
     openmrsObsUrl :"/openmrs/ws/rest/v1/obs",
-    openmrsObsRepresentation :"custom:(uuid,obsDatetime,value:(uuid,name:(uuid,name)))"
+    openmrsObsRepresentation :"custom:(uuid,obsDatetime,value:(uuid,name:(uuid,name)))" ,
+    compoundObservationConceptName:"XCompoundObservation"
 };

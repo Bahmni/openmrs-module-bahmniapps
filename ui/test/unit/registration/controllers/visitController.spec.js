@@ -17,6 +17,7 @@ describe('VisitController', function () {
     var route;
     var patientMapper;
     var q;
+    var appService;
     var stubAllPromise = function () {
         return {
             then: function () {
@@ -57,6 +58,7 @@ describe('VisitController', function () {
             "REG": "b45ca846-c79a-11e2-b0c0-8e397087571c",
             "REVISIT": "b5ba5576-c79a-11e2-b0c0-8e397087571c"
         }
+
     }
     var sampleEncounter = {
         "observations": []
@@ -83,6 +85,7 @@ describe('VisitController', function () {
         $controller = $injector.get('$controller');
         scope = { "$watch": jasmine.createSpy() }
         patientService = jasmine.createSpyObj('patientService', ['getPatient', 'clearPatient', 'get']);
+        appService = jasmine.createSpyObj('appService',['getDescription']);
         patientMapper = jasmine.createSpyObj('patientMapper', ['map']);
         dateUtil = Bahmni.Common.Util.DateUtil;
         $location = location;
@@ -99,6 +102,7 @@ describe('VisitController', function () {
         patientService.get.andReturn(getPatientPromise);
         scope.currentProvider = {uuid: ''};
         patientMapper.map.andReturn(patient);
+
     }]));
 
     describe('initialization', function () {
@@ -111,7 +115,8 @@ describe('VisitController', function () {
                 encounterService: encounterService,
                 patientService: patientService,
                 $route: route,
-                openmrsPatientMapper: patientMapper
+                openmrsPatientMapper: patientMapper,
+                appService:appService
             });
 
             getPatientPromise.callSuccessCallBack(patient);
@@ -129,6 +134,7 @@ describe('VisitController', function () {
                 encounterService: encounterService,
                 patientService: patientService,
                 $route: route,
+                appService:appService,
                 openmrsPatientMapper: patientMapper
             });
             getPatientPromise.callSuccessCallBack(patient);
@@ -149,6 +155,7 @@ describe('VisitController', function () {
                 spinner: spinner,
                 dateUtil: dateUtil,
                 $route: route,
+                appService:appService,
                 openmrsPatientMapper: patientMapper
             });
             getPatientPromise.callSuccessCallBack(patient);
@@ -238,6 +245,7 @@ describe('VisitController', function () {
                 spinner: spinner,
                 dateUtil: dateUtil,
                 $route: route,
+                appService:appService,
                 openmrsPatientMapper: patientMapper
             });
             getPatientPromise.callSuccessCallBack(patient);
@@ -257,8 +265,8 @@ describe('VisitController', function () {
             scope.saveAndPrint();
 
             expect(scope.encounter.observations.length).toBe(2);
-            expect(scope.encounter.observations).toContain({uuid: null, concept: {uuid: 'b4a52102-c79a-11e2-b0c0-8e397087571c', name: 'REGISTRATION FEES'}, value: '100' });
-            expect(scope.encounter.observations).toContain({uuid: null, concept: {uuid: 'b499a980-c79a-11e2-b0c0-8e397087571c', name: 'COMMENTS'}, value: 'fine' })
+            expect(scope.encounter.observations).toContain({uuid: null, concept: {uuid: 'b4a52102-c79a-11e2-b0c0-8e397087571c', name: 'REGISTRATION FEES'}, value: '100',groupMembers:[] });
+            expect(scope.encounter.observations).toContain({uuid: null, concept: {uuid: 'b499a980-c79a-11e2-b0c0-8e397087571c', name: 'COMMENTS'}, value: 'fine',groupMembers:[] })
             expect(encounterService.create).toHaveBeenCalledWith(scope.encounter);
         });
 
@@ -272,6 +280,7 @@ describe('VisitController', function () {
                     spinner: spinner,
                     dateUtil: dateUtil,
                     $route: route,
+                    appService:appService,
                     openmrsPatientMapper: patientMapper
                 });
                 getPatientPromise.callSuccessCallBack(patient);
@@ -319,6 +328,7 @@ describe('VisitController', function () {
                 patientService: patientService,
                 spinner: spinner,
                 $route: route,
+                appService:appService,
                 openmrsPatientMapper: patientMapper
             });
             getPatientPromise.callSuccessCallBack(patient);
@@ -379,6 +389,7 @@ describe('VisitController', function () {
                 encounterService: encounterService,
                 patientService: patientService,
                 $route: route,
+                appService:appService,
                 openmrsPatientMapper: patientMapper
             });
             getPatientPromise.callSuccessCallBack(patient);

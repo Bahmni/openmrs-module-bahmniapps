@@ -1,7 +1,7 @@
 var RegistrationObservations = (function () {
 
-    function RegistrationObservations(encounterObservations, isNewPatient, encounterConfig) {
-        this.observations = encounterObservations.observations.map(function (obs) {
+    function RegistrationObservations(regObservations, isNewPatient, encounterConfig) {
+        this.observations = regObservations.map(function (obs) {
             return new ObservationData(obs.uuid, obs.concept, obs.value)
         });
         defaultRegistrationFees(this.observations, isNewPatient, encounterConfig);

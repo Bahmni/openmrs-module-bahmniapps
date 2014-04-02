@@ -33,7 +33,7 @@
                              <input id="patientName" ng-model="patient.name" readonly type="text">
                         </div>
                 </article>
-                </section>                
+                </section>
                 <legend class="mylegend "><span><strong>Visit Information</strong></span></legend>
                 <section class="form-field-inline">
                     <article class="form-field">
@@ -111,7 +111,11 @@
             </div>
 
             <hr/>
-            <show-concept-set concept-set-name="conceptSetName" observations="encounterObservations"></show-concept-set>
+
+            <section ng-if="observations">
+                <show-concept-set concept-set-name="registration.conceptSetName" observations="observations.compoundObservations"></show-concept-set>
+            </section>
+
 
         </form>
         <br>

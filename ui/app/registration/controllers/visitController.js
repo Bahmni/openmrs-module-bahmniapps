@@ -1,25 +1,41 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('VisitController', ['$scope', '$rootScope', '$location', 'patientService', 'encounterService', 'bmi', '$window', '$route', 'spinner', '$timeout', '$q', 'printer', 'appService',
-        function ($scope, $rootScope, $location, patientService, encounterService, bmiModule, $window, $route, spinner, $timeout, $q, printer,appService) {
+    .controller('VisitController', ['$scope', '$rootScope', '$location', 'patientService', 'encounterService', 'bmi', '$window', '$route', 'spinner', '$timeout', '$q', 'printer', 'appService', 'openmrsPatientMapper','contextChangeHandler',
+        function ($scope, $rootScope, $location, patientService, encounterService, bmiModule, $window, $route, spinner, $timeout, $q, printer, appService, patientMapper,contextChangeHandler) {
 
-            $scope.conceptSetName = appService.getAppDescriptor().getConfig("registrationConceptSet").value;
-            $scope.patient = $rootScope.registration.patient;
-            $scope.registrationFeeLabel = $scope.patient.isNew ? "Registration Fee" : "Consultation Fee";
-            $scope.obs = {};
+            var patientUuid = $route.current.params['patientUuid'];
+            var isNewPatient = ($location.search()).newpatient;
+            var visitTypeUuid = $scope.encounterConfiguration.visitTypeId(isNewPatient);
+            var encounterTypeUuid = $scope.encounterConfiguration.encounterTypes[constants.encounterType.registration];
 
-            var mapObservations = function () {
-                $scope.encounterObservations = $rootScope.registration.encounter.observations;
-                $scope.registrationObservations = new RegistrationObservations($rootScope.registration.encounter, $scope.patient.isNew, $scope.encounterConfiguration);
-                if ($scope.encounterObservations.length > 0) {
-                    $scope.obs = {};
-                    $scope.registrationObservations.observations.forEach(function (observation) {
-                        $scope.obs[observation.concept.name] = observation.value
-                        observation.groupMembers = [];
+            var getPatient = function () {
+                return patientService.get(patientUuid).success(function (openMRSPatient) {
+                    $scope.patient = patientMapper.map(openMRSPatient);
+                    $scope.patient.name = openMRSPatient.person.names[0].display;
+                    $scope.patient.uuid = openMRSPatient.uuid;
+                    $scope.patient.isNew = isNewPatient;
+                    return $scope.patient;
+                })
+            };
+
+            var getActiveEncounter = function () {
+                return encounterService.getActiveEncounter(patientUuid, visitTypeUuid, encounterTypeUuid, $scope.currentProvider.uuid)
+                    .success(function (data) {
+                        $scope.observations = observationMapper().map(data.observations);
+                        $scope.registrationFeeLabel = isNewPatient ? "Registration Fee" : "Consultation Fee";
+                        mapRegistrationObservations();
                     });
-                    $scope.calculateBMI();
-                }
+            }
+
+            var mapRegistrationObservations = function () {
+                $scope.obs = {};
+                $scope.registrationObservations = new RegistrationObservations($scope.observations.regularObservations, isNewPatient, $scope.encounterConfiguration);
+                $scope.registrationObservations.observations.forEach(function (observation) {
+                    $scope.obs[observation.concept.name] = observation.value
+                    observation.groupMembers = [];
+                });
+                $scope.calculateBMI();
             }
 
 
@@ -37,7 +53,6 @@ angular.module('bahmni.registration')
                 }
             };
 
-            mapObservations();
 
             $scope.back = function () {
                 $window.history.back();
@@ -57,11 +72,11 @@ angular.module('bahmni.registration')
 
 
             $scope.save = function () {
-                var visitTypeUuid = $scope.encounterConfiguration.visitTypeId($scope.patient.isNew);
-                var encounterTypeUuid = $scope.encounterConfiguration.encounterTypes[constants.encounterType.registration];
                 $scope.encounter = {visitTypeUuid: visitTypeUuid, encounterTypeUuid: encounterTypeUuid, patientUuid: $scope.patient.uuid};
-                $scope.encounter.observations = $scope.registrationObservations.updateObservations($scope.obs);
-                $scope.encounter.observations = $scope.encounter.observations.concat($scope.encounterObservations);
+                var registrationObservations = $scope.registrationObservations.updateObservations($scope.obs);
+                $scope.encounter.observations =[];
+                $scope.encounter.observations = $scope.encounter.observations.concat(registrationObservations).concat($scope.observations.compoundObservations);
+
                 var createPromise = encounterService.create($scope.encounter);
                 spinner.forPromise(createPromise);
                 return createPromise;
@@ -75,13 +90,18 @@ angular.module('bahmni.registration')
             };
 
             $scope.validate = function () {
+                var deferred = $q.defer();
+                if(!contextChangeHandler.execute()){
+                    deferred.reject("Some fields are not valid");
+                    return deferred.promise;
+                }
                 if ($scope.obs['REGISTRATION FEES'] === 0 && (!$scope.obs.COMMENTS || $scope.obs.COMMENTS === '')) {
                     return $scope.confirmDialog.show();
                 } else {
-                    var deferred = $q.defer();
                     deferred.resolve();
                     return deferred.promise;
                 }
+
             }
 
             $scope.submit = function () {
@@ -121,9 +141,11 @@ angular.module('bahmni.registration')
                     {
                         return false;
                     }
-
                 });
             };
+
+            getPatient();
+            getActiveEncounter();
         }])
 
     .directive('confirmDialog', function ($q) {

@@ -16,6 +16,7 @@ angular.module('bahmni.registration').factory('initialization',
             });
         };
 
+
         var initApp = function() {
             return appService.initApp('registration', {'app': true, 'extension' : true });
         };
@@ -24,6 +25,11 @@ angular.module('bahmni.registration').factory('initialization',
             preferences.identifierPrefix = appService.getAppDescriptor().getConfigValue("defaultIdentifierPrefix");
         }
 
-        return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(getConfigs).then(getIdentifierPrefix));
+        var initAppConfigs = function(){
+            $rootScope.registration = $rootScope.registration ||{};
+            $rootScope.registration.conceptSetName = appService.getAppDescriptor().getConfig("registrationConceptSet").value;
+            getIdentifierPrefix();
+        }
+        return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(getConfigs).then(initAppConfigs));
     }]
 );
