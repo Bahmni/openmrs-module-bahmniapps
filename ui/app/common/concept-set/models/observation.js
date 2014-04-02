@@ -184,7 +184,7 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.observation.concept.lowAbsolute;
     },
     validateNumericValue: function(){
-        var valueInRange = this.displayValue() < this.getHighAbsolute() && this.displayValue() > this.getLowAbsolute();
+        var valueInRange = this.displayValue() < (this.getHighAbsolute() || Infinity) && this.displayValue() > (this.getLowAbsolute() || 0);
         if (!this.displayValue() || valueInRange) {
             this.isAbnormal.value = false;
         }else {

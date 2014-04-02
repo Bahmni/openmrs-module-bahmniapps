@@ -13,7 +13,7 @@
                            class="form-control" ng-model="$parent.observation.observation.value"
                            ng-change="$parent.observation.onValueChanged()"
                            value="$parent.observation.displayValue()" />
-                           <small class="hint">(Valid Range from {{observation.getLowAbsolute()}} to {{observation.getHighAbsolute()}})</small>
+                           <small class="hint" ng-show="observation.getLowAbsolute() || observation.getHighAbsolute()">(Valid Range from {{observation.getLowAbsolute()}} to {{observation.getHighAbsolute()}})</small>
                 </div>
 
                 <div ng-switch-when="freeTextAutocomplete">
