@@ -9,6 +9,7 @@ Bahmni.Common.Constants = {
     encounterConfigurationUrl: "/openmrs/ws/rest/v1/bahmnicore/bahmniencounter/config",
     patientConfigurationUrl:"/openmrs/ws/rest/v1/bahmnicore/patient/config",
     encounterUrl: "/openmrs/ws/rest/emrapi/encounter",
+    bahmniEncounterUrl: "/openmrs/ws/rest/v1/bahmnicore/bahmniencounter",
     recentEncounterUrl: "/openmrs/ws/rest/emrapi/encounter/active",
     conceptUrl: "/openmrs/ws/rest/v1/concept",
     visitUrl: "/openmrs/ws/rest/v1/visit",

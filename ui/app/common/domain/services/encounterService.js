@@ -14,7 +14,7 @@ angular.module('bahmni.common.domain')
             encounter.providers.push( { "uuid" : $rootScope.currentProvider.uuid } );
         }
 
-        return $http.post(Bahmni.Common.Constants.encounterUrl, encounter, {
+        return $http.post(Bahmni.Common.Constants.bahmniEncounterUrl, encounter, {
             withCredentials:true
         });
     };
