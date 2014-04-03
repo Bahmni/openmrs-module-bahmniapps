@@ -29,7 +29,7 @@
 
                 <select ng-switch-when="dropdown" foo-bar class="form-control" ng-model="node.primaryObservation.value" ng-change="node.onValueChanged()"
                         ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}"
-                        ng-options="answer as answer.name for answer in getPossibleAnswers() track by answer.uuid">
+                        ng-options="answer as answer.name for answer in getPossibleAnswers() track by answer.uuid"> <option value=""></option>
                 </select>
 
                 <div ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}"
