@@ -107,8 +107,8 @@ Bahmni.ConceptSet.CompundObservationNode.prototype = {
     },
 
     validateNumericValue: function(){
-        var valueInRange = this.value < (this.hiAbsolute|| Infinity) && this.value > (this.lowAbsolute|| 0);
-        this.abnormalityObservation.value = this.value && !valueInRange;
+        var valueInRange = this.primaryObservation.value < (this.hiAbsolute|| Infinity) && this.primaryObservation.value > (this.lowAbsolute|| 0);
+        this.abnormalityObservation.value = this.primaryObservation.value && !valueInRange;
     },
 
     onValueChanged: function () {

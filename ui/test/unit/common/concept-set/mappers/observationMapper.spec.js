@@ -2,7 +2,10 @@
 
 describe("ObservationMapper", function () {
     var conceptSet, conceptSetUIConfig, compoundObservationConcept, observationMapper;
-    
+    var build = Bahmni.Tests.openMRSConceptMother.build;
+    var buildObservation = Bahmni.Tests.observationMother.build;
+    var mapToConcept = Bahmni.Tests.openMRSConceptHelper.mapToConcept;
+
     beforeEach(function() {
         conceptSet = 
             build({name: "VITALS_CONCEPT", set: true,
@@ -18,7 +21,7 @@ describe("ObservationMapper", function () {
             "Diastolic": {showAbnormalIndicator: false}
         };
 
-        compoundObservationConcept = build({name: "XCompoundObservation", set: true, setMembers: [ build({name: "IS_ABNORMAL"})]});
+        compoundObservationConcept = Bahmni.Tests.openMRSConceptMother.buildCompoundObservationConcept();
 
         observationMapper = new Bahmni.ConceptSet.ObservationMapper(conceptSetUIConfig, compoundObservationConcept);
     });
@@ -88,52 +91,15 @@ describe("ObservationMapper", function () {
         expect(nodeForBP.children[1].showAbnormalIndicator).toBe(false);
     });
 
-    var build = function(conceptData) {
-        var concept = {
-            uuid: conceptData.uuid || genUUID(),
-            name: { name: conceptData.name || "conceptName"},
-            datatype: {name: "N/A"},
-            set: conceptData.set,
-            setMembers: conceptData.setMembers || []
-        };
-        return concept;
-    }; 
-    
-    var genUUID = function() { return (Math.random() * Math.pow(10, 16)).toString(); };
-    
-    var getConceptByName = function(concepts, conceptName) {
-        var foundConcept = concepts.filter(function(concept) {
-            return concept.name.name === conceptName;
-        })[0];
-        if(foundConcept) return foundConcept;
-        concepts.forEach(function(concept){
-            if(!foundConcept) foundConcept = getConceptByName(concept.setMembers, conceptName);
-        });
-        return foundConcept;
-    };
-
     var getConcept = function(conceptName) {
-        var openMRSConcept = getConceptByName([conceptSet], conceptName);
-        return mapConcept(openMRSConcept);
-    };
-
-    var mapConcept = function(openMRSConcept) {
-        return {uuid: openMRSConcept.uuid, name: openMRSConcept.name.name};
-    };
-
-    var buildObservation = function(observationData) {
-        return {
-            uuid: observationData.uuid || genUUID(),
-            value: observationData.value,
-            concept: observationData.concept,
-            groupMembers: observationData.groupMembers
-        }
+        var openMRSConcept = Bahmni.Tests.openMRSConceptHelper.getConceptByName([conceptSet], conceptName);
+        return mapToConcept(openMRSConcept);
     };
 
     var buildCompundObservation = function(groupMember, isAbnormal) {
         var groupMembers = [groupMember];
-        if(isAbnormal !== undefined) groupMembers.push(buildObservation({value: isAbnormal ,concept: mapConcept(build({name: "IS_ABNORMAL"}))}));
-        return buildObservation({concept: mapConcept(compoundObservationConcept), groupMembers: groupMembers})
+        if(isAbnormal !== undefined) groupMembers.push(buildObservation({value: isAbnormal ,concept: mapToConcept(build({name: "IS_ABNORMAL"}))}));
+        return buildObservation({concept: mapToConcept(compoundObservationConcept), groupMembers: groupMembers})
     }
 });
 

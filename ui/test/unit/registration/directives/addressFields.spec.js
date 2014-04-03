@@ -35,7 +35,7 @@ describe('AddressFieldsDirectiveController', function () {
         beforeEach(setupController);
 
         it("should update tehsil, district and state", function(){
-           var village = bahmni.villageMother.build();
+           var village = Bahmni.Tests.villageMother.build();
 
            scope.addressFieldSelected('cityVillage')({addressField : village });
 
@@ -45,7 +45,7 @@ describe('AddressFieldsDirectiveController', function () {
        });
 
         it("should not update tehsil, district and state when selected village does not have parents", function () {
-            var village = bahmni.villageMother.build();
+            var village = Bahmni.Tests.villageMother.build();
             village.parent = null;
             scope.address = {address3: "", countyDistrict: "", stateProvince: ""}
 
