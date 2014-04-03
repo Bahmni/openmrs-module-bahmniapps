@@ -40,7 +40,7 @@ angular.module('bahmni.common.conceptSet')
             controller: controller,
             template: '<ng-include src="\'../common/concept-set/views/observation.html\'" />'
         }
-    }]).directive('showConceptSet', ['contextChangeHandler', function (contextChangeHandler) {
+    }]).directive('showConceptSet', ['contextChangeHandler', 'spinner', function (contextChangeHandler, spinner) {
         var template =
             '<form>' +
                 '<show-concept node="rootNode" at-least-one-value-is-set="atLeastOneValueIsSet"></show-concept>' +
@@ -56,7 +56,7 @@ angular.module('bahmni.common.conceptSet')
             
             var promises = [conceptSetPromise, xCompoundConceptPromise];
 
-            $q.all(promises).then(function(responses) {
+            spinner.forPromise($q.all(promises).then(function(responses) {
                 var xCompoundConcept = responses[1].data.results[0];
                 var conceptSet = responses[0].data.results[0];                
                 if(conceptSet) {
@@ -64,7 +64,7 @@ angular.module('bahmni.common.conceptSet')
                     $scope.rootNode = mapper.map($scope.observations, conceptSet)        
                 }
                 updateObservations();
-            });
+            }));
 
             var updateObservations = function() {
                 if(!$scope.rootNode) return;
