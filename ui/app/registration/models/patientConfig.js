@@ -32,7 +32,7 @@ var PatientConfig = (function () {
             //Avoiding multiple calls from angular code. Side effect of the way angular does dirty check. [Shruti/ Sush]
             if (this.attributeRows === undefined) {
                 var attributes = this.personAttributeTypes.filter(function (item) {
-                    return item.name != "healthCenter" && item.name != "givenNameLocal" && item.name != "familyNameLocal";
+                    return item.name != "healthCenter" && item.name != "givenNameLocal" && item.name != "middleNameLocal" && item.name != "familyNameLocal";
                 });
 
                 autocompleteConfig.configure(attributes);
@@ -69,12 +69,15 @@ var PatientConfig = (function () {
             var givenName = this.personAttributeTypes.filter(function (item) {
                 return item.name == "givenNameLocal";
             })[0];
+            var middleName = this.personAttributeTypes.filter(function (item) {
+                return item.name == "middleNameLocal";
+            })[0];
             var familyName = this.personAttributeTypes.filter(function (item) {
                 return item.name == "familyNameLocal";
             })[0];
 
-            if (givenName && familyName)
-                return { "showNameField": true, "labelForNameField": givenName.description, "placeholderForGivenName": givenName.description, "placeholderForFamilyName": familyName.description};
+            if (givenName && middleName && familyName)
+                return { "showNameField": true, "labelForNameField": givenName.description, "placeholderForGivenName": givenName.description ,"placeholderForMiddleName": middleName.description , "placeholderForFamilyName": familyName.description};
             return {"showNameField": false}
         }
 

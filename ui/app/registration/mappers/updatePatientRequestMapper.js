@@ -17,6 +17,7 @@ var UpdatePatientRequestMapper = (function () {
                         {
                             uuid: openMRSPatient.person.names[0].uuid,
                             givenName: patient.givenName,
+                            middleName: patient.middleName,
                             familyName: patient.familyName,
                             "preferred": true
                         }

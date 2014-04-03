@@ -12,6 +12,7 @@ var CreatePatientRequestMapper = (function () {
                     names: [
                         {
                             givenName: patient.givenName,
+                            middleName: patient.middleName,
                             familyName: patient.familyName,
                             "preferred": false
                         }

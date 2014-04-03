@@ -6,7 +6,7 @@ var PatientMapper = (function () {
     PatientMapper.prototype.map = function (patientConfig, patient) {
         return {
             names: [
-                {familyName: patient.familyName, givenName: patient.givenName}
+                {familyName: patient.familyName, middleName: patient.middleName, givenName: patient.givenName}
             ],
             age: patient.age,
             birthdate: patient.birthdate,

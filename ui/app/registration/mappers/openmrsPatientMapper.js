@@ -37,6 +37,7 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 var patient = patientModel.create(),
                     birthdate = parseDate(openmrsPatient.person.birthdate);
                 patient.givenName = openmrsPatient.person.preferredName.givenName;
+                patient.middleName = openmrsPatient.person.preferredName.middleName;
                 patient.familyName = openmrsPatient.person.preferredName.familyName;
                 patient.birthdate = openmrsPatient.person.birthdateEstimated || !birthdate ? "" : getDateStr(birthdate);
                 patient.age = birthdate ? age.fromBirthDate(parseDate(openmrsPatient.person.birthdate)) : null;

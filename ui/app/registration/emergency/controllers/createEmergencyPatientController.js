@@ -25,8 +25,9 @@ angular.module('bahmni.registration.emergency')
                 .then(function (data) {
                     var patient = $scope.patient;
                     patient.identifier = data.data;
-                    patient.familyName = patient.familyName || "Unknown";
                     patient.givenName = patient.givenName || "Unknown";
+                    patient.middleName = patient.middleName || "Unknown";
+                    patient.familyName = patient.familyName || "Unknown";
                     patient.address.cityVillage = patient.address.cityVillage || "Unknown";
                     return patientService.create(patient);
                 }).then(successCallback);

@@ -27,8 +27,9 @@ angular.module('bahmni.registration')
 
             var fullNameLocal = function () {
                 var givenNameLocal = this.givenNameLocal || "";
+                var middleNameLocal = this.middleNameLocal || "";
                 var familyNameLocal = this.familyNameLocal || "";
-                return (givenNameLocal.trim() + " " + familyNameLocal.trim()).trim();
+                return (givenNameLocal.trim() + " " + (middleNameLocal ? middleNameLocal + " " : "" ) + familyNameLocal.trim()).trim();
             };
 
             var getImageData = function () {
