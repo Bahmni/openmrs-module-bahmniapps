@@ -56,7 +56,10 @@
               </div>
             </div>
             <div class="footer-note">
-              <span class="date">{{diagnosis.diagnosisDateTime | date :'dd-MM-yyyy hh:mm'}}</span>
+              <span class="time-stamp">
+                <span class="date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
+                <span class="time">{{diagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
+              </span>
               <span class="provider" ng-repeat="provider in diagnosis.providers">{{provider.name}}<br/></span>
             </div>
           </div>

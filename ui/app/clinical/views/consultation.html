@@ -14,10 +14,10 @@
                 <span ng-show="investigation.concept.set" class="panel">P</span>
             </li>
         </ul>
-        <p ng-show="consultation.labOrderNote.value" class="consult-notes">
-          <span class="consult-notes-title">Notes:</span>
-          <span class="consult-notes-content">{{consultation.labOrderNote.value}}</span>
-        </p>
+        <div ng-show="consultation.labOrderNote.value" class="notes">
+          <h5 class="title">Notes:</h5>
+          <p class="content">{{consultation.labOrderNote.value}}</p>
+        </div>
         <ng-include src="'views/labResults.html'" ng-init="labResults=consultation.labResults"/>
     </section>
     <section class="block diagnosis">

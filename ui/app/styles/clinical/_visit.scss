@@ -15,52 +15,58 @@
 	}
 	.block{
 		padding:10px 0;
-		ul{
-			&.add-info{
-				float:right;
-				margin-right:10px;
-				li{
-					display: inline-block;
-					font-size: 12px;
-					color:#274b59;
-					font-family: OpenSansBold;
-					padding:2px 10px 0px 18px;
-					background:none;
-					&.datetime{
-						background:url(../images/sprites.png) no-repeat;
-						padding-left:23px;
-						background-position: 0 -36px ;
-					}
-					&.time{
-						background:url(../images/sprites.png) no-repeat;
-						line-height: 14px;
-						background-position: 0 2px;
-					}
-					&.date{
-						background:url(../images/sprites.png) no-repeat;
-						background-position: 0 -72px ;
-					}
-				}
-			}
-		}
+		// ul{
+		// 	// &.add-info{
+		// 	// 	float:right;
+		// 	// 	margin-right:10px;
+		// 		// li{
+		// 		// 	display: inline-block;
+		// 		// 	font-size: 12px;
+		// 		// 	color:#274b59;
+		// 		// 	font-family: OpenSansBold;
+		// 		// 	padding:2px 10px 0px 18px;
+		// 		// 	background:none;
+		// 		// 	&.datetime{
+		// 		// 		background:url(../images/sprites.png) no-repeat;
+		// 		// 		padding-left:23px;
+		// 		// 		background-position: 0 -36px ;
+		// 		// 	}
+		// 		// 	&.time{
+		// 		// 		background:url(../images/sprites.png) no-repeat;
+		// 		// 		line-height: 14px;
+		// 		// 		background-position: 0 2px;
+		// 		// 	}
+		// 		// 	&.date{
+		// 		// 		background:url(../images/sprites.png) no-repeat;
+		// 		// 		background-position: 0 -72px ;
+		// 		// 	}
+		// 		// }
+		// 	// }
+		// }
 		
-		li{
-			background:#F1EEEE;
-			padding: 4px 0px 4px 12px;
-			margin:2px 0px;
-		}
+		// li{
+		// 	background:#F1EEEE;
+		// 	padding: 4px 0px 4px 12px;
+		// 	margin:2px 0px;
+		// }
 
 	}
-	.visit-diagnosis{
-		.diag-ps{
-			background:#3d99cc;
-			color: #fff;
-			padding:1px 4px;
-		}
-		li{
-			padding-left:0px;
-		}
-	}
+	// .visit-diagnosis{
+	// 	.diag-ps{
+	// 		background:#3d99cc;
+	// 		color: #fff;
+	// 		padding: 5px;
+ //      font-size: 12px;
+ //      text-transform: uppercase;
+	// 	}
+	// 	li{
+	// 		padding-left:0px;
+	// 	}
+	// }
+
+  // li {
+  //   padding-left: 10px;
+  // }
 
 	.block-day{
 		border:3px solid #67ad95;
@@ -74,24 +80,24 @@
 			}
 		
 	}
-	.treatment{
-		li{
-			overflow:hidden;
-		}
-		.treatment-details{
-			float:left;
-		}
-		.treatment-notes{
-			float:left;
-		}
-		.expander-row{
-			overflow:hidden;
-		}
-		.expander{
-			padding-left:15px;
-			padding-right:15px;
-		}
-	}
+	// .treatment{
+	// 	li{
+	// 		overflow:hidden;
+	// 	}
+	// 	.treatment-details{
+	// 		float:left;
+	// 	}
+	// 	.treatment-notes{
+	// 		float:left;
+	// 	}
+	// 	.expander-row{
+	// 		overflow:hidden;
+	// 	}
+	// 	.expander{
+	// 		padding-left:15px;
+	// 		padding-right:15px;
+	// 	}
+	// }
 	aside{
 		h2{
 			background:none;
@@ -174,6 +180,155 @@
     }
   }
 
+}
+
+.diagnosis-section {
+  ul li {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    clear: both;
+    overflow: auto;
+    .diagnosis-name, .diagonsis-order, .footer-note {
+      float: left;
+    }
+    .diagnosis-name {
+      width:40%;
+    }
+    .diagonsis-order {
+      width: 30%;
+    }
+    .footer-note {
+      width: 20%;
+      float: right;
+    }
+  }
+}
+.observation-section {
+  h3 {
+    font-family: OpenSansBold;
+    margin-top: 10px;
+  }
+  .observation-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    clear: both;
+    overflow: auto;
+  }
+  // .concept-set {
+  //   color:red;
+  //   h3 {
+  //     color: blue;
+  //   }
+  // }
+  .is-abnormal {
+    color: red;
+  }
+}
+.visit {
+  .footer-note {
+    text-align: right;
+    padding: 0;
+    .provider {
+      float: none;
+    }  
+    .time-stamp {
+      display: block;
+      margin-bottom: 5px;
+    }
+  }
+
+  .order {
+    background: #3d99cc;
+    color: #fff;
+  }
+  .order, .certainty {
+    font-size: 12px;
+    padding: 5px;
+  }
+}
+
+.temp-class {
+  float: left;
+}
+
+.obs-concept {
+  width: 80%;
+}
+
+.expander-row, .laborder-section li {
+  padding: 5px 10px;
+  border-bottom: 1px solid #eee;
+  clear: both;
+  overflow: auto;
+}
+
+.toggle {
+  float: left;
+  background: none;
+  border: none;
+  padding: 0;
+  &:hover {
+    background: none;
+    border: none;
+  }
+  i {
+    padding: 0 10px;
+    color: #666;
+  }
+}
+
+.consult-notes {
+  margin: 0;
+  padding: 10px!important;
+  overflow: auto;
+  h5 {
+    font-family: OpenSansBold;
+    float: left;
+    margin-right: 10px;
+  }
+  .consult-notes-text {
+    width: 80%;
+    float: left;
+  }
+}
+
+.consult-notes-item {
+  border-top: 1px solid #ccc;
+  overflow: auto;
+  padding-top: 10px;
+  &:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+}
+
+.inline-notes {
+  margin: 0 0 15px 0;
+}
+
+strong {
+  font-family: OpenSansBold;
+}
+
+.drug-name, .dosage-days {width: 340px;}
+
+.treatment-section {
+  table {
+    tr td {
+      font-size: 14px;
+    }
+    .drug-name {
+      font-size: 16px;
+    }
+    .drugorder-date {
+      text-transform: uppercase;
+    }
+    .dosage-days {
+      .inline-notes {
+        margin-top: 10px;
+      }
+    }
+  }
 }
 
 

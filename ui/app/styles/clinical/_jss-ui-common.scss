@@ -372,3 +372,22 @@ button:focus, a:focus, .btn:focus {outline:0;}
     padding: 0;
   }
 }
+
+.notes {
+  .title {
+    text-transform: uppercase;
+    font-family: OpenSansBold;
+    margin-right: 10px;
+    display: inline;
+    float: left;
+  }
+  .content {
+    background: none;
+  }
+  font-size: 14px;
+  margin: 20px;
+  background: #fef7e3;
+  line-height: 1.4em;
+  border-bottom: 1px solid #fdf4d8;
+  padding: 10px;
+}

@@ -86,33 +86,6 @@
 			}
 		}
 	}
-	.notes{
-		margin-top:20px;
-		textarea{
-		    resize: none;
-		}
-	}
-  .consult-notes {
-    span {
-      font-size: 14px;
-      padding: 10px;
-      display: block;
-    }
-    .consult-notes-title {
-      background: #fdf4d8;
-      text-transform: uppercase;
-      font-family: OpenSansBold;
-    }
-    .consult-notes-content {
-      background: none;
-    }
-    margin: 20px;
-    background: #fef7e3;
-    line-height: 1.4em;
-    border-bottom: 1px solid #fdf4d8;
-  }
-}
-.expander {
 }
 .expander > .title {
 	padding: .1em .3em;
