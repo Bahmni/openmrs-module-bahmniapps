@@ -27,7 +27,8 @@ angular.module('bahmni.registration').factory('initialization',
 
         var initAppConfigs = function(){
             $rootScope.registration = $rootScope.registration ||{};
-            $rootScope.registration.conceptSetName = appService.getAppDescriptor().getConfig("registrationConceptSet").value;
+            var registrationConceptSet = appService.getAppDescriptor().getConfig("registrationConceptSet");
+            $rootScope.registration.conceptSetName = registrationConceptSet.value || "";
             getIdentifierPrefix();
         }
         return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(getConfigs).then(initAppConfigs));
