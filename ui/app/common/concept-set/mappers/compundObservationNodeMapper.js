@@ -1,6 +1,6 @@
 'use strict';
 
-Bahmni.ConceptSet.ObservationMapper = function (uiConfig, compoundConcept) {
+Bahmni.ConceptSet.CompundObservationNodeMapper = function (uiConfig, compoundConcept) {
     this.uiConfig = uiConfig;
     this.compoundConcept = compoundConcept;
     var CompundObservationNode = Bahmni.ConceptSet.CompundObservationNode;

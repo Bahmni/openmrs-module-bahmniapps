@@ -60,7 +60,7 @@ angular.module('bahmni.common.conceptSet')
                 var xCompoundConcept = responses[1].data.results[0];
                 var conceptSet = responses[0].data.results[0];                
                 if(conceptSet) {
-                    var mapper = new Bahmni.ConceptSet.ObservationMapper(conceptSetUIConfig.value || {}, xCompoundConcept);
+                    var mapper = new Bahmni.ConceptSet.CompundObservationNodeMapper(conceptSetUIConfig.value || {}, xCompoundConcept);
                     $scope.rootNode = mapper.map($scope.observations, conceptSet)        
                 }
                 updateObservations();

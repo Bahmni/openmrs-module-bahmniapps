@@ -1,7 +1,7 @@
 'use strict';
 
-describe("ObservationMapper", function () {
-    var conceptSet, conceptSetUIConfig, compoundObservationConcept, observationMapper;
+describe("CompundObservationNodeMapper", function () {
+    var conceptSet, conceptSetUIConfig, compoundObservationConcept, mapper;
     var build = Bahmni.Tests.openMRSConceptMother.build;
     var buildObservation = Bahmni.Tests.observationMother.build;
     var mapToConcept = Bahmni.Tests.openMRSConceptHelper.mapToConcept;
@@ -23,13 +23,13 @@ describe("ObservationMapper", function () {
 
         compoundObservationConcept = Bahmni.Tests.openMRSConceptMother.buildCompoundObservationConcept();
 
-        observationMapper = new Bahmni.ConceptSet.ObservationMapper(conceptSetUIConfig, compoundObservationConcept);
+        mapper = new Bahmni.ConceptSet.CompundObservationNodeMapper(conceptSetUIConfig, compoundObservationConcept);
     });
 
     it('should map new observations with given concept set and ui config', function () {
         var existingObservations = [];
 
-        var rootNode = observationMapper.map(existingObservations, conceptSet);
+        var rootNode = mapper.map(existingObservations, conceptSet);
 
         expect(rootNode.compoundObservation.concept.name).toBe('XCompoundObservation');
         expect(rootNode.primaryObservation.concept.name).toBe('VITALS_CONCEPT');
@@ -71,7 +71,7 @@ describe("ObservationMapper", function () {
         var vitals = buildObservation({concept:  getConcept("VITALS_CONCEPT"), groupMembers: [buildCompundObservation(pulse, true), buildCompundObservation(bp)]});
         var existingObservations = [buildCompundObservation(vitals)];
 
-        var rootNode = observationMapper.map(existingObservations, conceptSet);
+        var rootNode = mapper.map(existingObservations, conceptSet);
 
         expect(rootNode.compoundObservation.concept.name).toBe('XCompoundObservation');
         expect(rootNode.primaryObservation).toBe(vitals);
