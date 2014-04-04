@@ -33,7 +33,7 @@
         <h2>Observations</h2>
         <ul>
           <div ng-repeat="observations in visit.observations">
-            <div ng-repeat="observation in observations.obs">
+            <div ng-repeat="observation in observations.obs" class="obs-item">
               <observation-summary patient-uuid="patientUuid" observation="observation"
                                    show-trends="showTrends" full-date="true"
                                    obs-ignore-list="obsIgnoreList"/>
@@ -46,13 +46,16 @@
       <h2>Lab Orders</h2>
       <ul class="block-content">
         <div ng-repeat="labOrders in visit.labTestOrderObsMap">
-          <!-- <li bo-text="(labOrders.date  | date:'dd MMM yy')"></li> -->
-          <li ng-repeat="labOrder in labOrders.orders">
+          <li ng-repeat="labOrder in labOrders.orders" class="laborder-item">
+            <div class="footer-note fr">
+              <span class="time-stamp">
+                <span class="date">{{labOrders.date | date:'dd MMM yy'}}</span>
+                <span class="time">{{labOrders.date | date :'hh:mm a'}}</span>
+              </span>
+              <span class="provider" bo-text="labOrder.provider.name"></span>
+            </div>
             <div bo-show="labOrder.obs.length == 0 || labOrder.obs[0].concept.set">
               <span bo-text="labOrder.concept.name" class="temp-class"></span>
-<!--               <ul class="add-info">
-                <li><span bo-text="labOrder.provider.name"></span></li>
-              </ul> -->
             </div>
             <div ng-repeat="observation in labOrder.obs">
               <section class="observation" bo-show="observation">
@@ -62,13 +65,7 @@
                 </div>
               </section>
             </div>
-            <div class="footer-note">
-              <span class="time-stamp">
-                <span class="date">{{labOrders.date | date:'dd MMM yy'}}</span>
-                <span class="time">{{labOrders.date | date :'hh:mm a'}}</span>
-              </span>
-              <span class="provider" bo-text="labOrder.provider.name"></span>
-            </div>
+
           </li>
         </div>
       </ul>
@@ -120,7 +117,7 @@
             <td class="dosage-days">
               <span>{{'From ' + (drugOrder.startDate | date:'d MMM yy') + ' for' +  + visit.numberOfDosageDaysForDrugOrder(drugOrder) + ' day(s)'}}</span>
               <span bo-show="drugOrder.prn">Take as required</span>
-              <button class="toggle">
+              <button class="toggle fr">
                 <i class="icon-plus-sign" ng-click="toggle(drugOrder)" ng-hide="drugOrder.show"></i>
                 <i class="icon-minus-sign" ng-click="toggle(drugOrder)" ng-show="drugOrder.show"></i>
               </button>
@@ -142,7 +139,7 @@
       </table>
 
     </section>
-    <section class="block investigation" ng-show="visit.hasDisposition()">
+    <section class="block disposition-section" ng-show="visit.hasDisposition()">
       <h2>Disposition</h2>
       <ul class="block-content">
         <li ng-repeat="disposition in visit.dispositions">

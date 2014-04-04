@@ -184,7 +184,7 @@
 
 .diagnosis-section {
   ul li {
-    padding: 10px;
+    padding: 5px 10px;
     border-bottom: 1px solid #eee;
     clear: both;
     overflow: auto;
@@ -196,6 +196,7 @@
     }
     .diagonsis-order {
       width: 30%;
+      margin-top: 5px;
     }
     .footer-note {
       width: 20%;
@@ -208,12 +209,13 @@
     font-family: OpenSansBold;
     margin-top: 10px;
   }
-  .observation-item {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-    clear: both;
-    overflow: auto;
-  }
+
+  // .observation-item {
+  //   padding: 10px;
+  //   border-bottom: 1px solid #eee;
+  //   clear: both;
+  //   overflow: auto;
+  // }
   // .concept-set {
   //   color:red;
   //   h3 {
@@ -257,9 +259,14 @@
 
 .expander-row, .laborder-section li {
   padding: 5px 10px;
-  border-bottom: 1px solid #eee;
+  // border-bottom: 1px solid #eee;
   clear: both;
   overflow: auto;
+}
+.disposition-section {
+  li {
+    border-bottom: 1px solid #eee;
+  }
 }
 
 .toggle {
@@ -330,5 +337,43 @@ strong {
     }
   }
 }
+.laborder-section, .observation {
+  .temp-class {
+    font-family: OpenSansBold;
+  }
+  table {
+    margin-top: 0;
+  }
+}
+.laborder-item, .obs-item {
+  background: #eee;
+  color: #555555;
+  text-align: left;
+  padding: 10px 7px 10px 7px;
+  border: 1px solid #DDD;
+  display: block;
+}
+.dshbf .dshbf .dshbf {
+  padding: 0!important;
+  // padding-bottom: 0!important;
+}
+.dshbf {
+  padding-left: 0!important;
+  padding-right: 0!important;
+}
+.obs-item .labresults-item {
+  margin: 10px 0;
+}
+td.value {
+  width: 500px;
+}
+// .concept-set {
+//   background: #ccc;
+// }
+
+.fl {float: left;}
+.fr {float: right;}
+ 
+// Work in progresss - this _visit.scss needs cleaning!
 
 
