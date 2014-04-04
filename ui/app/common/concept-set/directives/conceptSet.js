@@ -1,49 +1,10 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('showConcept', [function() {
-        var controller = function($scope, $q, $filter) {
-            var conceptMapper = new Bahmni.ConceptSet.ConceptMapper();
-            $scope.getPossibleAnswers = function() {
-                return $scope.node.getPossibleAnswers().map(conceptMapper.map);
-            };
-
-            var getPropertyFunction = function(propertyName) {
-                return function(entity) {
-                    return entity[propertyName];
-                }
-            };
-
-            $scope.selectOptions = {
-                query: function(options) {
-                    return options.callback({results:  $filter('filter')($scope.getPossibleAnswers(), {name: options.term})});
-                },
-                width: '20em',
-                allowClear: true,
-                placeholder: 'Select',
-                formatResult: getPropertyFunction('name'),
-                formatSelection: getPropertyFunction('name'),
-                id: getPropertyFunction('uuid')
-            };
-
-            $scope.getValues = function(request) {
-                return $q.when({data: $filter('filter')($scope.getPossibleAnswers(), {name: request.term}) });
-            };
-        }
-
-        return {
-            restrict: 'E',
-            scope: {
-                node: "=",
-                atLeastOneValueIsSet : "="
-            },
-            controller: controller,
-            template: '<ng-include src="\'../common/concept-set/views/observation.html\'" />'
-        }
-    }]).directive('showConceptSet', ['contextChangeHandler', 'spinner', function (contextChangeHandler, spinner) {
+   .directive('conceptSet', ['contextChangeHandler', 'spinner', function (contextChangeHandler, spinner) {
         var template =
             '<form>' +
-                '<show-concept node="rootNode" at-least-one-value-is-set="atLeastOneValueIsSet"></show-concept>' +
+                '<concept node="rootNode" at-least-one-value-is-set="atLeastOneValueIsSet"></concept>' +
             '</form>';
 
         var controller = function ($scope, conceptSetService, conceptSetUiConfigService, $rootScope, $q) {
@@ -108,29 +69,4 @@ angular.module('bahmni.common.conceptSet')
             template: template,
             controller: controller
         }
-    }]).directive('addObsConstraints', function () {
-        var attributesMap = {'Numeric': 'number', 'Date': 'date'};
-        var link = function ($scope, element, attrs, ctrl) {
-            var attributes = {};
-            var obs = $scope.obs;
-            attributes['type'] = attributesMap[$scope.obs.dataTypeName] || "text";
-            if (obs.hiAbsolute) {
-                attributes['max'] = $scope.obs.hiAbsolute;
-            }
-            if (obs.lowAbsolute) {
-                attributes['min'] = $scope.obs.lowAbsolute;
-            }
-            if (obs.lowAbsolute && obs.hiAbsolute) {
-                attributes['title'] = "Valid from " + $scope.obs.lowAbsolute +" to "+ $scope.obs.hiAbsolute;
-            }
-            element.attr(attributes);
-        };
-
-        return {
-            link: link,
-            scope: {
-                obs: '='
-            },
-            require: 'ngModel'
-        }
-    });
+    }]);

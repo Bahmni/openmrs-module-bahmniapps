@@ -9,7 +9,7 @@
             <div class="field-value" ng-switch on="node.getControlType()">
                 <div ng-switch-when="html5InputDataType">
                     <input ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}"
-                           add-obs-constraints obs="$parent.node"
+                           obs-constraints obs="$parent.node"
                            class="form-control" ng-model="$parent.node.primaryObservation.value"
                            ng-change="$parent.node.onValueChanged()"/>
                            <small class="hint" ng-show="node.lowAbsolute || node.highAbsolute">(Valid Range from {{node.lowAbsolute}} to {{node.hiAbsolute}})</small>
@@ -54,7 +54,7 @@
         <legend class="mylegend"><strong>{{node.label}}</strong></legend>
         <div class="form-group">
             <div class="form-field form-field-group" ng-repeat="member in node.children">
-                <show-concept node="member" at-least-one-value-is-set="atLeastOneValueIsSet"></show-concept>
+                <concept node="member" at-least-one-value-is-set="atLeastOneValueIsSet"></concept>
             </div>
         </div>
     </fieldset>

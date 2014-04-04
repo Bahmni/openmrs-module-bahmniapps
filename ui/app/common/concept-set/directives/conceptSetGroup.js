@@ -12,10 +12,7 @@ angular.module('bahmni.common.conceptSet')
             },
             controller: controller,
             template: '<div ng-repeat="extension in extensions">' +
-                        '<fieldset>' +
-                            // '<legend>{{extension.label}}</legend>' + 
-                            '<show-concept-set concept-set-name="extension.extensionParams.conceptName" observations="observations"></show-concept-set>' +
-                        '</fieldset>' +
+                            '<concept-set concept-set-name="extension.extensionParams.conceptName" observations="observations"></concept-set>' +
                       '</div>'
         }
     }]);
