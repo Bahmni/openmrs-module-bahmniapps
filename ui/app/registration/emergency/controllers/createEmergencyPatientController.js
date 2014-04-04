@@ -26,7 +26,7 @@ angular.module('bahmni.registration.emergency')
                     var patient = $scope.patient;
                     patient.identifier = data.data;
                     patient.givenName = patient.givenName || "Unknown";
-                    patient.middleName = patient.middleName || "Unknown";
+                    patient.middleName = patient.middleName;
                     patient.familyName = patient.familyName || "Unknown";
                     patient.address.cityVillage = patient.address.cityVillage || "Unknown";
                     return patientService.create(patient);
