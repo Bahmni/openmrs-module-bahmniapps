@@ -1,4 +1,4 @@
-Bahmni.ObservationFilter = function () {
+Bahmni.Common.Domain.ObservationFilter = function () {
 	var self = this;
 
 	var Observation = function(observationData) {

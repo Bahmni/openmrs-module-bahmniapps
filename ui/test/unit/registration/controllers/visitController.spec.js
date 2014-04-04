@@ -259,14 +259,16 @@ describe('VisitController', function () {
             var now = new Date();
             spyOn(dateUtil, "now").andReturn(now);
             scope.print = jasmine.createSpy().andCallFake(stubOnePromise);
-            scope.obs.COMMENTS = "fine";
             scope.obs["REGISTRATION FEES"] = "100";
+            scope.obs["COMMENTS"] = "fine";
 
             scope.saveAndPrint();
 
             expect(scope.encounter.observations.length).toBe(2);
-            expect(scope.encounter.observations).toContain({uuid: null, concept: {uuid: 'b4a52102-c79a-11e2-b0c0-8e397087571c', name: 'REGISTRATION FEES'}, value: '100',groupMembers:[] });
-            expect(scope.encounter.observations).toContain({uuid: null, concept: {uuid: 'b499a980-c79a-11e2-b0c0-8e397087571c', name: 'COMMENTS'}, value: 'fine',groupMembers:[] })
+            expect(scope.encounter.observations[0].concept).toEqual({uuid: 'b4a52102-c79a-11e2-b0c0-8e397087571c', name: 'REGISTRATION FEES'});
+            expect(scope.encounter.observations[0].value).toEqual('100');
+            expect(scope.encounter.observations[1].concept).toEqual({uuid: 'b499a980-c79a-11e2-b0c0-8e397087571c', name: 'COMMENTS'});
+            expect(scope.encounter.observations[1].value).toEqual('fine');
             expect(encounterService.create).toHaveBeenCalledWith(scope.encounter);
         });
 

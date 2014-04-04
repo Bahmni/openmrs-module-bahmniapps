@@ -3,7 +3,7 @@ describe("Observation Filter", function () {
       it("should remove new observations without value", function() {
         var buildObservation = Bahmni.Tests.observationMother.build;
         var observations = [buildObservation({value: null, uuid: null}), buildObservation({value: 10, uuid: null})];
-        var observationFilter = new Bahmni.ObservationFilter();
+        var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
 
         var filteredObservations = observationFilter.filter(observations);
         
@@ -14,7 +14,7 @@ describe("Observation Filter", function () {
       it("should void existing observations without value", function() {
         var buildObservation = Bahmni.Tests.observationMother.build;
         var observations = [buildObservation({value: null, uuid: '1111'}), buildObservation({value: 10, uuid: '2222'})];
-        var observationFilter = new Bahmni.ObservationFilter();
+        var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
 
         var filteredObservations = observationFilter.filter(observations);
         
@@ -32,7 +32,7 @@ describe("Observation Filter", function () {
           groupMembers: [buildObservation({value: 10, uuid: null})]
         });
         var observations = [observation1, observation2];
-        var observationFilter = new Bahmni.ObservationFilter();
+        var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
 
         var filteredObservations = observationFilter.filter(observations);
         
@@ -45,7 +45,7 @@ describe("Observation Filter", function () {
         var observations = [buildObservation({ uuid: '1111',
           groupMembers: [buildObservation({value: null, uuid: '2222'})]
         })];
-        var observationFilter = new Bahmni.ObservationFilter();
+        var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
 
         var filteredObservations = observationFilter.filter(observations);
         
@@ -59,7 +59,7 @@ describe("Observation Filter", function () {
         var observations = [buildObservation({ uuid: '1111', value: null,
           groupMembers: [buildObservation({value: '10', uuid: '2222'})]
         })];
-        var observationFilter = new Bahmni.ObservationFilter();
+        var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
 
         var filteredObservations = observationFilter.filter(observations);
         
@@ -74,7 +74,7 @@ describe("Observation Filter", function () {
           groupMembers: [buildObservation({value: null, uuid: null}), buildObservation({value: 10, uuid: null})]
         });
         var observations = [observation];
-        var observationFilter = new Bahmni.ObservationFilter();
+        var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
 
         var filteredObservations = observationFilter.filter(observations);
         

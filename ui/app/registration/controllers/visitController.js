@@ -76,6 +76,7 @@ angular.module('bahmni.registration')
                 var registrationObservations = $scope.registrationObservations.updateObservations($scope.obs);
                 $scope.encounter.observations =[];
                 $scope.encounter.observations = $scope.encounter.observations.concat(registrationObservations).concat($scope.observations.compoundObservations);
+                $scope.encounter.observations = new Bahmni.Common.Domain.ObservationFilter().filter($scope.encounter.observations);
 
                 var createPromise = encounterService.create($scope.encounter);
                 spinner.forPromise(createPromise);

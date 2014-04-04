@@ -93,7 +93,7 @@ angular.module('bahmni.clinical')
                 encounterData.observations = encounterData.observations.concat($rootScope.consultation.observations);
             };
 
-            $rootScope.consultation.observations = new Bahmni.ObservationFilter().filter($rootScope.consultation.observations);
+            $rootScope.consultation.observations = new Bahmni.Common.Domain.ObservationFilter().filter($rootScope.consultation.observations);
             addObservationsToEncounter();
 
             spinner.forPromise(encounterService.create(encounterData).success(function () {

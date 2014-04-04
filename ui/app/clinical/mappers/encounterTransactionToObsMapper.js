@@ -24,7 +24,7 @@ Bahmni.Clinical.EncounterTransactionToObsMapper = function () {
             },
             removeAbnormalObs = function(observation){
                 observation.groupMembers.forEach(function(obsMember, index){
-                  if(Bahmni.Clinical.Constants.abnormalObservation.indexOf(obsMember.concept.name)>=0){ // if setMember is isAbnormal
+                  if(Bahmni.Common.Constants.abnormalObservationConceptName.indexOf(obsMember.concept.name)>=0){ // if setMember is isAbnormal
                     var concept = observation.groupMembers.filter(function(obs){ return obs.concept != obsMember.concept})[0]
                     concept.is_abnormal = obsMember.value; //abnormal now stored at concept level than isAbnormal
                     delete observation.groupMembers[index];

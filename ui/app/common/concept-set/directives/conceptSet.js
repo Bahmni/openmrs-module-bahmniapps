@@ -50,7 +50,7 @@ angular.module('bahmni.common.conceptSet')
             var conceptSetName = $scope.conceptSetName;
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
             var conceptSetPromise = conceptSetService.getConceptSetMembers({name: conceptSetName, v: "fullchildren"});
-            var xCompoundConceptPromise = conceptSetService.getConceptSetMembers({name: 'XCompoundObservation', v: "full"});
+            var xCompoundConceptPromise = conceptSetService.getConceptSetMembers({name: Bahmni.Common.Constants.compoundObservationConceptName, v: "full"});
 
             $scope.atLeastOneValueIsSet = false;
             
@@ -69,7 +69,8 @@ angular.module('bahmni.common.conceptSet')
             var updateObservations = function() {
                 if(!$scope.rootNode) return;
                 for (var i = 0; i < $scope.observations.length; i++) {
-                    if(getValueObservation($scope.observations[i]).concept.uuid === $scope.rootNode.primaryObservation.concept.uuid) {
+                    var primaryObservation = getPrimaryObservation($scope.observations[i]);
+                    if(primaryObservation && primaryObservation.concept.uuid === $scope.rootNode.primaryObservation.concept.uuid) {
                         $scope.observations[i] = $scope.rootNode.compoundObservation;
                         return;
                     }
@@ -77,11 +78,10 @@ angular.module('bahmni.common.conceptSet')
                 $scope.observations.push($scope.rootNode.compoundObservation);
             };
 
-            //TODO: Extract constants
-            var getValueObservation = function(observation){
-                if(observation.concept.name === 'XCompoundObservation') {
+            var getPrimaryObservation = function(observation){
+                if(observation.concept.name === Bahmni.Common.Constants.compoundObservationConceptName) {
                     return observation.groupMembers.filter(function(memberObs){
-                        return memberObs.concept.name !== 'IS_ABNORMAL'
+                        return memberObs.concept.name !== Bahmni.Common.Constants.abnormalObservationConceptName;
                     })[0];
                 } else {
                     return observation;

@@ -9,11 +9,11 @@
     };
 
     var findAbnormalityObservation = function(observations) {
-        return observations.filter(function(observation) { return observation.concept.name === "IS_ABNORMAL"; })[0];
+        return observations.filter(function(observation) { return observation.concept.name === Bahmni.Common.Constants.abnormalObservationConceptName; })[0];
     };
 
     var newAbnormalityObservation = function(xCompoundObservationConcept) {
-        return createObservation(findConcept(xCompoundObservationConcept.setMembers, 'IS_ABNORMAL'));
+        return createObservation(findConcept(xCompoundObservationConcept.setMembers, Bahmni.Common.Constants.abnormalObservationConceptName));
     };
 
     var createObservation = function(baseConcept, groupMembers) {
