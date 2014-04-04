@@ -47,10 +47,10 @@ Bahmni.Tests.openMRSConceptMother = {
 Bahmni.Tests.observationMother = {
     build: function(observationData) {
         return {
-            uuid: observationData.uuid || Bahmni.Tests.genUUID(),
+            uuid: observationData.uuid === undefined ? Bahmni.Tests.genUUID() : observationData.uuid,
             value: observationData.value,
             concept: observationData.concept,
-            groupMembers: observationData.groupMembers
+            groupMembers: observationData.groupMembers || []
         }
     }
 }
