@@ -37,7 +37,14 @@ describe("CompundObservationNode", function() {
 
 				expect(node.abnormalityObservation.value).toBe(false);
 			});
-		});
 
+			it("should set abnormality to undefined when value is not set", function() {
+				node.primaryObservation.value = "";
+				
+				node.onValueChanged();
+
+				expect(node.abnormalityObservation.value).toBe(undefined);
+			});
+		});
 	});
 });

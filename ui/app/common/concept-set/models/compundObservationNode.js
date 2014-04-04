@@ -107,8 +107,12 @@ Bahmni.ConceptSet.CompundObservationNode.prototype = {
     },
 
     validateNumericValue: function(){
-        var valueInRange = this.primaryObservation.value < (this.hiAbsolute|| Infinity) && this.primaryObservation.value > (this.lowAbsolute|| 0);
-        this.abnormalityObservation.value = this.primaryObservation.value && !valueInRange;
+        if(this.primaryObservation.value) {
+            var valueInRange = this.primaryObservation.value < (this.hiAbsolute|| Infinity) && this.primaryObservation.value > (this.lowAbsolute|| 0);
+            this.abnormalityObservation.value = !valueInRange;
+        } else {
+            this.abnormalityObservation.value = undefined;
+        }
     },
 
     onValueChanged: function () {
