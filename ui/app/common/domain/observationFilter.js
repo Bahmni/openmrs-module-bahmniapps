@@ -1,5 +1,30 @@
-Bahmni.Common.Domain.ObservationFilter = function () {
-	var self = this;
+(function(){
+	Bahmni.Common.Domain.ObservationFilter = function () {
+		var self = this;
+
+		var voidExistingObservationWithOutValue = function(observations) {
+			observations.forEach(function(observation){
+				voidExistingObservationWithOutValue(observation.groupMembers);
+				observation.voided = observation.isExisting() && (observation.isLeafNodeWithOutValue() || observation.isGroupWithOnlyVoidedMembers());
+			});
+		}
+
+		var removeNewObservationsWithoutValue = function(observations) {
+			observations.forEach(function(observation){
+				observation.groupMembers = removeNewObservationsWithoutValue(observation.groupMembers);
+			});
+			return observations.filter(function(observation) {
+				return observation.isExisting() || observation.hasValue() || observation.hasMemberWithValue();
+			});
+		}
+
+		self.filter = function(observations) {
+			var wrappedObservations = observations.map(Observation.wrap);
+			voidExistingObservationWithOutValue(wrappedObservations);
+			var filteredObservations = removeNewObservationsWithoutValue(wrappedObservations);
+			return filteredObservations;
+		}
+	}
 
 	var Observation = function(observationData) {
 		angular.extend(this, observationData);
@@ -46,28 +71,5 @@ Bahmni.Common.Domain.ObservationFilter = function () {
 		observation.groupMembers = observation.groupMembers.map(Observation.wrap);
 		return observation;
 	}
-
-	var voidExistingObservationWithOutValue = function(observations) {
-		observations.forEach(function(observation){
-			voidExistingObservationWithOutValue(observation.groupMembers);
-			observation.voided = observation.isExisting() && (observation.isLeafNodeWithOutValue() || observation.isGroupWithOnlyVoidedMembers());
-		});
-	}
-
-	var removeNewObservationsWithoutValue = function(observations) {
-		observations.forEach(function(observation){
-			observation.groupMembers = removeNewObservationsWithoutValue(observation.groupMembers);
-		});
-		return observations.filter(function(observation) {
-			return observation.isExisting() || observation.hasValue() || observation.hasMemberWithValue();
-		});
-	}
-
-	self.filter = function(observations) {
-		var wrappedObservations = observations.map(Observation.wrap);
-		voidExistingObservationWithOutValue(wrappedObservations);
-		var filteredObservations = removeNewObservationsWithoutValue(wrappedObservations);
-		return filteredObservations;
-	}
-}
+})();
 
