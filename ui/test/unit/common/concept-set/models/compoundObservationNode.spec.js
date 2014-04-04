@@ -2,15 +2,14 @@ describe("CompundObservationNode", function() {
 	var CompundObservationNode = Bahmni.ConceptSet.CompundObservationNode;
 	var build = Bahmni.Tests.openMRSConceptMother.build;
 	var compoundObservationConcept = Bahmni.Tests.openMRSConceptMother.buildCompoundObservationConcept()
+	var conceptUIConfig, primaryObservation, primaryConcept, node;
 
 	describe("onValueChanged", function() {
 		describe("for numeric observation", function() {
-			var node;
-			
 			beforeEach(function() {
-				var primaryObservation = {};
-				var primaryConcept = build({name: "Pulse", dataTypeName: "Numeric",hiAbsolute: 10, lowAbsolute: 2});
-				var conceptUIConfig = {};
+				primaryObservation = {};
+				primaryConcept = build({name: "Pulse", dataTypeName: "Numeric",hiAbsolute: 10, lowAbsolute: 2});
+				conceptUIConfig = {};
 				node = CompundObservationNode.createNew(primaryObservation, primaryConcept, compoundObservationConcept, conceptUIConfig);
 			});
 
@@ -45,6 +44,57 @@ describe("CompundObservationNode", function() {
 
 				expect(node.abnormalityObservation.value).toBe(undefined);
 			});
+		});
+	});
+
+	describe("atLeastOneValueSet", function() {
+		beforeEach(function() {
+			primaryConcept = build({name: "Vitals"});
+			conceptUIConfig = {};
+		});
+
+		var createNode = function(conceptName, value) {
+			return CompundObservationNode.createNew({value: value, concpet: {name: conceptName}}, primaryConcept, compoundObservationConcept, conceptUIConfig);
+		}
+		
+		it("should be true if value of one of immediate child is set", function() {
+			var pulseNode = createNode("Pulse");
+			var sugarNode = createNode("Sugar");
+			var vitalsNode = createNode("Vitals")
+			vitalsNode.children = [pulseNode, sugarNode];
+			
+			sugarNode.primaryObservation.value = '';
+			pulseNode.primaryObservation.value = 10;
+
+			expect(vitalsNode.atLeastOneValueSet()).toBe(true);
+		});
+
+		it("should be true if value of one of second level child is set", function() {
+			var systolicNode = createNode("systolic");
+			var diastolicNode = createNode("diastolic");
+			var bpNode = createNode("BP");
+			var vitalsNode = createNode("Vitals")
+			bpNode.children = [systolicNode, diastolicNode];
+			vitalsNode.children = [bpNode];
+			
+			diastolicNode.primaryObservation.value = '';
+			systolicNode.primaryObservation.value = 10;
+
+			expect(vitalsNode.atLeastOneValueSet()).toBe(true);
+		});
+
+		it("should be false if none of child or their children value is set", function() {
+			var systolicNode = createNode("systolic");
+			var diastolicNode = createNode("diastolic");
+			var bpNode = createNode("BP");
+			var vitalsNode = createNode("Vitals")
+			bpNode.children = [systolicNode, diastolicNode];
+			vitalsNode.children = [bpNode];
+			
+			diastolicNode.primaryObservation.value = '';
+			systolicNode.primaryObservation.value = '';
+
+			expect(vitalsNode.atLeastOneValueSet()).toBe(false);
 		});
 	});
 });

@@ -50,8 +50,8 @@ angular.module('bahmni.common.conceptSet')
             }
 
             var allowContextChange = function () {
+                $scope.atLeastOneValueIsSet = $scope.rootNode.atLeastOneValueSet();
                 var invalidNodes = $scope.rootNode.children.filter(function(childNode){
-                    $scope.atLeastOneValueIsSet = childNode.atLeastOneValueSet();
                     return !childNode.isValid($scope.atLeastOneValueIsSet);
                 });
                 return invalidNodes.length === 0;

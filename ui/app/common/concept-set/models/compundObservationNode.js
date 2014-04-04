@@ -75,7 +75,7 @@ Bahmni.ConceptSet.CompundObservationNode.prototype = {
     },
 
     isGroup: function () {
-        return this.primaryObservation.groupMembers && this.primaryObservation.groupMembers.length;
+        return this.children.length > 0;
     },
 
     getControlType: function () {
@@ -122,56 +122,29 @@ Bahmni.ConceptSet.CompundObservationNode.prototype = {
         }
     },
 
+    hasValue: function() {
+        return this.primaryObservation.value ? true : false;
+    },
+
+    atLeastOneValueSet: function() {
+        return this.children.some(function(childNode){
+            return childNode.hasValue() || childNode.atLeastOneValueSet();
+        })
+    },
+
     isValid: function(checkRequiredFields) {
-        return this._checkValidity(checkRequiredFields);
-    },
-
-    atLeastOneValueSet: function () {
-        return this._atLeastOneValueSet(false);
-    },
-
-    _atLeastOneValueSet: function (isSet) {
-        if (this.isGroup()) {
-            this.children.forEach(function(childNode){
-                if (childNode.isGroup()) {
-                    if (childNode._atLeastOneValueSet()) {
-                        isSet = true;
-                    }
-                }
-                else if (childNode.primaryObservation.value) {
-                    isSet = true;
-                }
-            });
-
-        }
-        return isSet;
-    },
-
-    _checkValidity: function (checkRequiredFields) {
-        if (this.isGroup()) {
-            this.children.forEach(function(childNode){
-                if (!childNode._checkValidity(checkRequiredFields)) {
-                    return false;
-                }
-            });
-            return true;
-        } else if (this._isDateDataType()) {
-            return this.isValidDate();
-        }
-        if (checkRequiredFields && this.isValidRequiredField()) {
-            return false;
-        }
+        if(this.isGroup()) return this._hasValidChildren(checkRequiredFields);
+        if(checkRequiredFields && this.isRequired && !this.hasValue()) return false;
+        if(this._isDateDataType()) return this._isValidDate();
         return true;
     },
 
-    isValidRequiredField: function() {
-        return this.isRequired && !(this.primaryObservation.value)
+    _hasValidChildren: function(checkRequiredFields) {
+        return this.children.every(function(childNode){ return childNode.isValid(checkRequiredFields) });
     },
 
-    isValidDate: function () {
-        if (!this.primaryObservation.value) { // to allow switching to other tabs, if not date is entered
-            return true;
-        }
+    _isValidDate: function () {
+        if (!this.hasValue()) return true;
         var date = new Date(this.primaryObservation.value);
         return date.getUTCFullYear() && date.getUTCFullYear().toString().length <= 4;
     }
