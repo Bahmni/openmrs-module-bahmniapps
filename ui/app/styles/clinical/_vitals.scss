@@ -20,7 +20,7 @@
       .form-group {
         margin: 0 20%;
         label span {
-          text-transform: uppercase;
+          text-transform: capitalize;
         }
       }
       legend + .form-group {
@@ -79,7 +79,24 @@ form .vitals .form-field .field-value {
   }
 }
 
-concept{
+.form-horizontal {
+  fieldset {
+    label {
+      float: left;
+      width: 200px;
+      margin-left: 20px;
+      margin-right: 40px;
+      text-align: right;
+    }
+    &.hasLegend {
+      label {
+        margin-left: 10px;
+      }
+    }
+  }
+}
+
+concept {
   input:invalid {
     background-color: #ffcdcd;
     outline: 2px solid #ff0000;
@@ -88,3 +105,5 @@ concept{
     }
   }
 }
+
+
