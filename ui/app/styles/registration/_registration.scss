@@ -808,6 +808,17 @@ form .vitals .form-field .field-value {
   }
 }
 
+.checkbox-inline {
+  padding: 10px;
+  input[type="checkbox"] {
+    margin-left: 10px!important;
+  }
+  span {
+    display: inline-block;
+    margin-top: 2px;
+  }
+}
+
 concept {
   input:invalid {
     background-color: #ffcdcd;

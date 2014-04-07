@@ -42,11 +42,10 @@
 
                 <p ng-switch-default class="field-value info icon-info-sign"> The concept data type '{{$parent.node.dataTypeName}}' is not supported yet.</p>
             </div>
-            <label class="checkbox-inline" ng-if="node.showAbnormalIndicator">
-              <input type="checkbox" ng-model="node.abnormalityObservation.value">
-              Abnormal
-              </input>
-            </label>
+            <div class="checkbox-inline" ng-if="node.showAbnormalIndicator">
+              <input id="isAbnormal" type="checkbox" ng-model="node.abnormalityObservation.value" />
+              <span for="isAbnormal">Abnormal</span>
+            </div>
         </div>
     </fieldset>
 
