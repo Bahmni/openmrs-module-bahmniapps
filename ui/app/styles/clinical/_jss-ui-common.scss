@@ -359,6 +359,14 @@ input[file-upload] {
   background: white;
 }
 
+.is-abnormal {
+  color: red;
+}
+
+.referred-out {
+  color: green;
+}
+
 button:focus, a:focus, .btn:focus {outline:0;}
 
 .row-remover {

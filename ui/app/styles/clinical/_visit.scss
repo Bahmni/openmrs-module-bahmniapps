@@ -396,6 +396,22 @@ span.range {
     width: 400px;
   }
 }
+
+.dosage-days {
+  .dosage {
+    float: left;
+  }
+  .copy {
+    font-size: 14px;
+    color: #888;
+
+  }    
+  .prn {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+  }
+}
  
 // Work in progresss - this _visit.scss needs cleaning!
 

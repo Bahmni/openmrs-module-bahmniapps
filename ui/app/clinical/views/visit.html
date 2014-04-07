@@ -135,8 +135,10 @@
               <span bo-show="!drugOrder.dosageInstruction" bo-text="' - '"></span>
             </td>
             <td class="dosage-days">
-              <span>{{'From ' + (drugOrder.startDate | date:'d MMM yy') + ' for' +  visit.numberOfDosageDaysForDrugOrder(drugOrder) + ' day(s)'}}</span>
-              <span bo-show="drugOrder.prn">Take as required</span>
+              <div class="dosage">
+                <span><span class="copy">From </span>{{(drugOrder.startDate | date:'d MMM yy')}}<span class="copy"> for </span>{{visit.numberOfDosageDaysForDrugOrder(drugOrder)}} day(s)<span> 
+                <span bo-show="drugOrder.prn" class="prn">Take as required</span>
+              </div>
               <button class="toggle fr">
                 <i class="icon-plus-sign" ng-click="toggle(drugOrder)" ng-hide="drugOrder.show"></i>
                 <i class="icon-minus-sign" ng-click="toggle(drugOrder)" ng-show="drugOrder.show"></i>
