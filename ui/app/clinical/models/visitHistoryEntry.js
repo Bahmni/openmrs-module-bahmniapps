@@ -3,7 +3,7 @@ Bahmni.Clinical.VisitHistoryEntry = (function(){
 	
 	var VisitHistoryEntry = function(visitData) {
 	    angular.extend(this, visitData);
-	}
+	};
 
 	VisitHistoryEntry.prototype = {
 	    isActive: function() {
@@ -20,7 +20,7 @@ Bahmni.Clinical.VisitHistoryEntry = (function(){
 	    hasEncounters: function() {
 	    	return this.encounters && this.encounters.length;
 	    }
-	}
+	};
 
 	return VisitHistoryEntry;	
 })();

@@ -16,11 +16,15 @@
         <ul>
             <li><a href="#{{getConsultationPadLink()}}">Consultation</a></li>
             <li><a href="/trends/#/patients/{{patient.uuid}}">Trends</a></li>
+            <li class="summary" ng-class="{'selected': patientSummary}"
+                ng-click="showSummary()"><a href="">Summary</a></li>
         </ul>
 
         <h2>Visit History</h2>
         <ul>
-            <li ng-click="showVisitSummary(visit)" class="visit-history-entry" ng-class="{'selected': isCurrentVisit(visit), 'active': visit.isActive()}" ng-repeat="visit in visits">
+            <li ng-click="showVisitSummary(visit)" class="visit-history-entry"
+                ng-class="{'selected': isCurrentVisit(visit), 'active': visit.isActive()}"
+                ng-repeat="visit in visits">
                 <a href="">
                     <span bo-text="visit.startDatetime | date: 'd MMM yy'"></span>
                     <span bo-text="'- ' + (visit.stopDatetime | date: 'd MMM yy')" bo-hide="visit.isActive()"></span>
@@ -29,7 +33,7 @@
         </ul>
     </aside>
 
-    <article bindonce="visit">
+    <article bindonce="visit" ng-if="!patientSummary">
         <div bo-hide="visit.hasObservations()" class="info-message">
             <p>There are no encounters for this patient</p>
         </div>
@@ -200,4 +204,16 @@
             </section>
         </section>
     </article>
+
+    <article bindonce="patientSummary" ng-if="patientSummary">
+        <div ng-repeat="section in patientDashboardSections">
+            <h2>{{section.description}}</h2>
+            <h4 ng-if="!activeVisit">no current visit.</h4>
+            <section class="block"
+                     ng-if="activeVisit" ng-repeat="observation in patientSummary">
+                <observation-summary observation="observation"></observation-summary>
+            </section>
+        </div>
+    </article>
+
 </article>

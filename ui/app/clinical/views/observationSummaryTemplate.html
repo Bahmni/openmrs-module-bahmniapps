@@ -6,7 +6,7 @@
       <span class="value">{{(observation | observationValue)}}</span>
     </div> -->
     <table>
-      <tr ng-class="{true: 'is-abnormal'}[observation.is_abnormal]">
+      <tr ng-class="{'is-abnormal': observation.is_abnormal}">
         <td class="label">{{observation.concept.name}}</td>
         <td class="value">{{(observation | observationValue)}}</td>
       </tr>

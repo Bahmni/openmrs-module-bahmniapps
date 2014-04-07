@@ -2,13 +2,13 @@ angular.module('bahmni.clinical')
 .directive('observationSummary',function () {
     var controller = function($scope) {
         $scope.hideObservation = function () {
-            return $scope.obsIgnoreList.map(function(a){return a.toLowerCase()}).indexOf($scope.observation.concept.name.toLowerCase()) > -1;
+            return $scope.obsIgnoreList && $scope.obsIgnoreList.map(function(a){return a.toLowerCase()}).indexOf($scope.observation.concept.name.toLowerCase()) > -1;
         };
 
         $scope.showXCompoundObservation = function() {
             for(var i in $scope.observation.groupMembers) {
                 var member = $scope.observation.groupMembers[i];
-                if($scope.obsIgnoreList.map(function(a){return a.toLowerCase()}).indexOf(member.concept.name.toLowerCase()) > -1) {
+                if($scope.obsIgnoreList && $scope.obsIgnoreList.map(function(a){return a.toLowerCase()}).indexOf(member.concept.name.toLowerCase()) > -1) {
                     return false;
                 }
             }

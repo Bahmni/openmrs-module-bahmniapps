@@ -137,6 +137,11 @@
 			&.active {
 				color: #fafafa;			}
 		}
+        .summary {
+			&.selected {
+				background:#407b94;
+			}
+		}
 		&.drawerClose{
 			padding:10px 0px 10px 20px;
 		}
