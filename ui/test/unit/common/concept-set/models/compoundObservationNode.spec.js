@@ -96,5 +96,20 @@ describe("CompundObservationNode", function() {
 
 			expect(vitalsNode.atLeastOneValueSet()).toBe(false);
 		});
+
+		it("should be false if group has value and none of the children has value", function() {
+			var systolicNode = createNode("systolic");
+			var diastolicNode = createNode("diastolic");
+			var bpNode = createNode("BP");
+			var vitalsNode = createNode("Vitals")
+			bpNode.children = [systolicNode, diastolicNode];
+			vitalsNode.children = [bpNode];
+			
+			bpNode.primaryObservation.value = '110, 180';
+			diastolicNode.primaryObservation.value = '';
+			systolicNode.primaryObservation.value = '';
+
+			expect(vitalsNode.atLeastOneValueSet()).toBe(false);
+		});
 	});
 });

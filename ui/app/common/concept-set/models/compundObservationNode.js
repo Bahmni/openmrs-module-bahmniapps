@@ -127,9 +127,11 @@ Bahmni.ConceptSet.CompundObservationNode.prototype = {
     },
 
     atLeastOneValueSet: function() {
-        return this.children.some(function(childNode){
-            return childNode.hasValue() || childNode.atLeastOneValueSet();
-        })
+        if(this.isGroup()) {
+            return this.children.some(function(childNode){ return childNode.atLeastOneValueSet(); })
+        } else {
+            return this.hasValue();
+        }
     },
 
     isValid: function(checkRequiredFields) {
