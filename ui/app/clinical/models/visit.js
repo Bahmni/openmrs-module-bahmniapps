@@ -54,7 +54,7 @@ Bahmni.Clinical.Visit.prototype = {
 };
 
 Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNoteConcept, labOrderNoteConcept, orderTypes) {
-    var drugOrders, consultationNotes, otherInvestigations, observations, diagnoses = [], dispositions = [], testOrders,
+    var drugOrders, consultationNotes, otherInvestigations, observations, diagnoses = [], dispositions = [], testOrders = [],
         orderGroup = new Bahmni.Clinical.OrderGroup(),
         orderGroupWithObs = new Bahmni.Clinical.OrderGroupWithObs(),
         resultGrouper = new Bahmni.Clinical.ResultGrouper(),
@@ -84,11 +84,25 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
 
     drugOrders = orderGroup.create(encounterTransactions, 'drugOrders');
     otherInvestigations = orderGroup.create(encounterTransactions, 'testOrders', isNonLabTests);
-    testOrders = orderGroupWithObs.create(encounterTransactions, 'testOrders', isLabTests);
+    var testOrders = orderGroupWithObs.create(encounterTransactions, 'testOrders', isLabTests);
+    testOrders.forEach(function(testOrder) {
+        testOrder.orders.forEach(function(order) {
+            order.temp = Bahmni.Clinical.TestOrder.create(order);
+        });
+    });
+
+    testOrders.forEach(function(testOrder) {
+        testOrder.orderList = [];
+        testOrder.orders.forEach(function(order) {
+            order.temp = Bahmni.Clinical.TestOrder.create(order);
+            testOrder.orderList.push(Bahmni.Clinical.TestOrder.create(order));
+        });
+    });
 
     var allObs = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions);
     consultationNotes = resultGrouper.group(allObs.filter(isConsultationNote), observationGroupingFunction, 'obs', 'date');
     observations = resultGrouper.group(allObs.filter(isOtherObservation), observationGroupingFunction, 'obs', 'date');
+
 
     angular.forEach(encounterTransactions, function (encounterTransaction) {
         angular.forEach(encounterTransaction.diagnoses, function (diagnosis) {

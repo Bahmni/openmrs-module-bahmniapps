@@ -43,32 +43,52 @@
       </section>
     </section>
     <section class="block laborder-section" ng-show="visit.hasLabTests()">
-      <h2>Lab Orders</h2>
-      <ul class="block-content">
+        <h2>Lab Orders</h2>
         <div ng-repeat="labOrders in visit.labTestOrderObsMap">
-          <li ng-repeat="labOrder in labOrders.orders" class="laborder-item">
-            <div class="footer-note fr">
-              <span class="time-stamp">
-                <span class="date">{{labOrders.date | date:'dd MMM yy'}}</span>
-                <span class="time">{{labOrders.date | date :'hh:mm a'}}</span>
-              </span>
-              <span class="provider" bo-text="labOrder.provider.name"></span>
-            </div>
-            <div bo-show="labOrder.obs.length == 0 || labOrder.obs[0].concept.set">
-              <span bo-text="labOrder.concept.name" class="temp-class"></span>
-            </div>
-            <div ng-repeat="observation in labOrder.obs">
-              <section class="observation" bo-show="observation">
-                <div>
-                  <observation-summary observation="observation" hide-parent-obs-name="true"
-                                       full-date="true" obs-ignore-list="obsIgnoreList"/>
-                </div>
-              </section>
-            </div>
+            <table ng-repeat="labOrder in labOrders.orderList">
+                <thead>
+                    <th colspan="2">
+                        <span class="date" bo-text="labOrders.date | date:'dd MMM yy'"></span>
+                    </th>
+                </thead>
+                <tbody ng-repeat="line in labOrder.result.display">
+                    <!-- HACKTAG: Apparently bo-if makes this go into an infinite loop-->
+                    <tr ng-if="line.isSummary" class="header">
+                        <td colspan="2" bo-text="line.name"></td>
+                    </tr>
+                    <tr ng-if="!line.isSummary" ng-class="{'is-abnormal': !line.isAbnormal, 'referred-out': !line.referredOut}">
+                        <td bo-text="line.name">
+                            <span class="range">
+                                <span bo-text="line.minNormal + ' - ' + line.maxNormal">
+                                </span>
+                                <span bo-text="'Units: ' + line.units">
+                                </span>
+                            </span>
+                        </td>
+                        <td class="value">
+                            {{line.value}}
+                            <button class="toggle fr">
+                                <i class="icon-plus-sign" ng-click="toggle(line)" ng-hide="line.show"></i>
+                                <i class="icon-minus-sign" ng-click="toggle(line)" ng-show="line.show"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr ng-show="!line.isSummary && line.show">
+                        <td colspan="2" class="notes inline-notes">
+                            <p><strong>Lab Tech Notes: </strong>{{line.notes}}</p>
+                            <div class="footer-note right">
+                                <span class="time-stamp">
+                                    <span class="date" bo-text="line.observationDateTime | date:'dd MMM yy'"></span>
+                                    <span class="time" bo-text="line.observationDateTime | date :'hh:mm a'"></span>
+                                </span>
+                                <span class="provider" bo-text="line.providerName"></span>
+                            </div>
 
-          </li>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-      </ul>
     </section>
     <section class="block otherTestOrders" ng-show="visit.hasOtherInvestigations()">
       <h2>Other Investigations</h2>
