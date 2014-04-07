@@ -115,7 +115,7 @@
               <span bo-show="!drugOrder.dosageInstruction" bo-text="' - '"></span>
             </td>
             <td class="dosage-days">
-              <span>{{'From ' + (drugOrder.startDate | date:'d MMM yy') + ' for' +  + visit.numberOfDosageDaysForDrugOrder(drugOrder) + ' day(s)'}}</span>
+              <span>{{'From ' + (drugOrder.startDate | date:'d MMM yy') + ' for' +  visit.numberOfDosageDaysForDrugOrder(drugOrder) + ' day(s)'}}</span>
               <span bo-show="drugOrder.prn">Take as required</span>
               <button class="toggle fr">
                 <i class="icon-plus-sign" ng-click="toggle(drugOrder)" ng-hide="drugOrder.show"></i>
@@ -123,10 +123,10 @@
               </button>
             </td>
           </tr>
-          <tr class="inline-notes notes" ng-show="drugOrder.show">
-            <td colspan="7">
-              <strong>Treatment Notes: </strong>{{drugOrder.notes}}
-               <div class="footer-note">
+          <tr ng-show="drugOrder.show">
+            <td colspan="7" class="inline-notes notes">
+              <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.notes}}</p>
+              <div class="footer-note right">
                 <span class="time-stamp">
                   <span class="date">{{drugOrder.dateCreated | date:'dd MMM yy'}}</span>
                   <span class="time">{{drugOrder.dateCreated | date :'hh:mm a'}}</span>
@@ -171,13 +171,13 @@
         <div ng-repeat="notes in visit.consultationNotes">
           <li ng-repeat="note in notes.obs" class="consult-notes-item">
             <span class="consult-notes-text"><strong>Consultaion Notes: </strong>{{note.value}}</span>
-              <div class="footer-note">
-                <span class="time-stamp">
-                  <span class="date">{{note.observationDateTime | date:'dd MMM yy'}}</span>
-                  <span class="time">{{note.observationDateTime | date :'hh:mm a'}}</span>
-                </span>
-                <span class="provider" bo-text="note.provider.name"></span>
-              </div>
+            <div class="footer-note">
+              <span class="time-stamp">
+                <span class="date">{{note.observationDateTime | date:'dd MMM yy'}}</span>
+                <span class="time">{{note.observationDateTime | date :'hh:mm a'}}</span>
+              </span>
+              <span class="provider" bo-text="note.provider.name"></span>
+            </div>
           </li>
         </div>
       </ul>

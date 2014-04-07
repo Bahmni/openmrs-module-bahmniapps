@@ -388,6 +388,17 @@ button:focus, a:focus, .btn:focus {outline:0;}
   margin: 20px;
   background: #fef7e3;
   line-height: 1.4em;
-  border-bottom: 1px solid #fdf4d8;
+  // border-bottom: 1px solid #fdf4d8;
   padding: 10px;
+}
+
+.notes p.left {
+  width: 80%;
+  float: left;
+  text-align: left;
+}
+
+.footer-note.right {
+  width: 20%;
+  float: right;
 }

@@ -1,4 +1,7 @@
 .visit {
+  table tr:nth-child(even), table tr:nth-child(odd) {
+    background: #fff;
+  }
 	h2{
   	color:#66b298;
     border-bottom: 1px solid #66b298;
@@ -373,6 +376,26 @@ td.value {
 
 .fl {float: left;}
 .fr {float: right;}
+
+td.header {
+  background: #eee;
+  color: #555555;
+  padding: 10px 7px;
+}
+
+span.range {
+  font-size: 14px;
+  color: #888;
+  display: block;
+  margin-top: 5px;
+  .units {color: #aaa;}
+}
+
+.new-lab-orders {
+  .value {
+    width: 400px;
+  }
+}
  
 // Work in progresss - this _visit.scss needs cleaning!
 
