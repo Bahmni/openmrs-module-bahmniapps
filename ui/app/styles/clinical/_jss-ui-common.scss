@@ -363,8 +363,18 @@ input[file-upload] {
   color: red;
 }
 
+.referred {
+  display: none;
+}
 .referred-out {
-  color: green;
+  .referred {
+    display: inline-block;
+    font-size: 12px;
+    background: #619b9a;
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 5px;
+  }
 }
 
 button:focus, a:focus, .btn:focus {outline:0;}

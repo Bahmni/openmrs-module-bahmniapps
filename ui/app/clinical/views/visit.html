@@ -56,7 +56,7 @@
                     <tr ng-if="line.isSummary" class="header">
                         <td colspan="2" bo-text="line.name"></td>
                     </tr>
-                    <tr ng-if="!line.isSummary" ng-class="{'is-abnormal': !line.isAbnormal, 'referred-out': !line.referredOut}">
+                    <tr ng-if="!line.isSummary" ng-class="{'is-abnormal': line.isAbnormal, 'referred-out': line.referredOut}">
                         <td bo-text="line.name">
                             <span class="range">
                                 <span bo-text="line.minNormal + ' - ' + line.maxNormal">
@@ -67,6 +67,7 @@
                         </td>
                         <td class="value">
                             {{line.value}}
+                            <span class="referred">Referred Out</span>
                             <button class="toggle fr">
                                 <i class="icon-plus-sign" ng-click="toggle(line)" ng-hide="line.show"></i>
                                 <i class="icon-minus-sign" ng-click="toggle(line)" ng-show="line.show"></i>
