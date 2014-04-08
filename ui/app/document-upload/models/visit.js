@@ -9,6 +9,26 @@ Bahmni.DocumentUpload.Visit = function () {
     this.encounters = [];
     var androidDateFormat = "YYYY-MM-DD hh:mm:ss";
 
+    this._sortSavedImages = function(savedImages) {
+        var sortedSavedImages = [];
+        var conceptUuids = [];
+
+        savedImages.sort(function(image1,image2){
+            return image1.id - image2.id
+        });
+
+        savedImages.forEach(function(image){
+            if(conceptUuids.indexOf(image.concept.uuid) < 0){
+                var groupedImages = savedImages.filter(function(img){
+                    return img.concept.uuid === image.concept.uuid;
+                });
+                sortedSavedImages = sortedSavedImages.concat(groupedImages);
+                conceptUuids.push(image.concept.uuid);
+            }
+        });
+        return sortedSavedImages;
+    };
+
     this.initSavedImages = function () {
         this.savedImages = [];
         this.images = [];
@@ -19,12 +39,13 @@ Bahmni.DocumentUpload.Visit = function () {
                 observation.groupMembers && observation.groupMembers.forEach(function (member) {
                     if (member.concept.name.name == 'Document') {
                         var conceptName = observation.concept.name.name;
-                        savedImages.push(new DocumentImage({"encodedValue": member.value, "obsUuid": observation.uuid, obsDatetime: observation.obsDatetime,
+                        savedImages.push(new DocumentImage({"id":member.id, "encodedValue": member.value, "obsUuid": observation.uuid, obsDatetime: observation.obsDatetime,
                                          concept: {uuid: observation.concept.uuid, editableName: conceptName, name: conceptName}}));
                     }
                 });
             });
         });
+        this.savedImages = this._sortSavedImages(savedImages);
     };
 
     this.isNew = function () {
@@ -55,7 +76,7 @@ Bahmni.DocumentUpload.Visit = function () {
             return img.encodedValue === image;
         });
         if (alreadyPresent.length == 0) {
-            this.images.unshift(new DocumentImage({"encodedValue": image, "new": true}));
+            this.images.push(new DocumentImage({"encodedValue": image, "new": true}));
         }
         this.markAsUpdated();
     };

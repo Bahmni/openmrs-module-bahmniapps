@@ -25,7 +25,7 @@ angular.module('bahmni.common.patient')
 
         this.search = function (query, offset) {
             offset = offset || 0;
-            return $http.get("/openmrs//ws/rest/v1/patient", {
+            return $http.get("/openmrs/ws/rest/v1/patient", {
                 method: "GET",
                 params: {q: query, s: "byIdOrNameOrVillage", startIndex: offset},
                 withCredentials: true

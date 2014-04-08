@@ -5,7 +5,7 @@ angular.module('opd.documentupload')
         function ($scope, $stateParams, visitService, patientService, patientMapper, spinner, visitDocumentService, $rootScope, $http, $q, $timeout) {
 
             var topLevelConceptUuid;
-            var customVisitParams = 'custom:(uuid,startDatetime,stopDatetime,visitType,patient,encounters:(uuid,encounterType,orders:(uuid,orderType,voided,concept:(uuid,set,name),),obs:(uuid,value,concept,obsDatetime,groupMembers:(uuid,concept:(uuid,name),obsDatetime,value:(uuid,name),groupMembers:(uuid,concept:(uuid,name),value:(uuid,name),groupMembers:(uuid,concept:(uuid,name),value:(uuid,name)))))))';
+            var customVisitParams = 'custom:(uuid,startDatetime,stopDatetime,visitType,patient,encounters:(uuid,encounterType,orders:(uuid,orderType,voided,concept:(uuid,set,name),),obs:(id,uuid,value,concept,obsDatetime,groupMembers:(id,uuid,concept:(uuid,name),obsDatetime,value:(uuid,name),groupMembers:(id,uuid,concept:(uuid,name),value:(uuid,name),groupMembers:(id,uuid,concept:(uuid,name),value:(uuid,name)))))))';
 
             $scope.visits = [];
 
