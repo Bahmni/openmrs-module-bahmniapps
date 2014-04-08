@@ -270,6 +270,7 @@
   // border-bottom: 1px solid #eee;
   clear: both;
   overflow: auto;
+  padding-right: 0;
 }
 .disposition-section {
   li {
@@ -329,6 +330,8 @@ strong {
 
 .treatment-section {
   table {
+    margin-top: 0;
+    margin-bottom: 10px;
     tr td {
       font-size: 14px;
     }

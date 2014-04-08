@@ -76,7 +76,7 @@
                     </tr>
                     <tr ng-show="!line.isSummary && line.show">
                         <td colspan="2" class="notes inline-notes">
-                            <p><strong>Lab Tech Notes: </strong>{{line.notes}}</p>
+                            <p class="left"><strong>Lab Tech Notes: </strong>{{line.notes}}</p>
                             <div class="footer-note right">
                                 <span class="time-stamp">
                                     <span class="date" bo-text="line.observationDateTime | date:'dd MMM yy'"></span>
@@ -169,21 +169,27 @@
           <div class="expander-row">
 
             <span bo-text="disposition.code" class="temp-class"></span>
-            <button ng-repeat="note in disposition.additionalObs" class="toggle">
+            <button ng-repeat="note in disposition.additionalObs" class="toggle fr">
               <i class="icon-plus-sign" ng-click="toggle(note)" ng-hide="note.show"></i>
               <i class="icon-minus-sign" ng-click="toggle(note)" ng-show="note.show"></i>
             </button>
-            <div class="footer-note">
-              <span class="time-stamp">
-                <span class="date">{{disposition.dispositionDateTime | date:'dd MMM yy'}}</span>
-                <span class="time">{{disposition.dispositionDateTime | date :'hh:mm a'}}</span>
-              </span>
-              <span class="provider" bo-text="disposition.provider.name"></span>
-            </div>
+            
           </div>
           <div>
             <div ng-repeat="note in disposition.additionalObs">
-              <p ng-show="note.show" class="inline-notes notes"><strong>Disposition Notes: </strong>{{note.value}}</p>
+                <div ng-show="note.show" class="inline-notes notes">
+                    <p class="left">
+                        <strong>Disposition Notes: </strong>{{note.value}}
+                    </p>                
+                    <div class="footer-note right">
+                      <span class="time-stamp">
+                        <span class="date">{{disposition.dispositionDateTime | date:'dd MMM yy'}}</span>
+                        <span class="time">{{disposition.dispositionDateTime | date :'hh:mm a'}}</span>
+                      </span>
+                      <span class="provider" bo-text="disposition.provider.name"></span>
+                    </div>                    
+                </div>
+
             </div>
           </div>
         </li>
@@ -193,7 +199,7 @@
       <ul>
         <div ng-repeat="notes in visit.consultationNotes">
           <li ng-repeat="note in notes.obs" class="consult-notes-item">
-            <span class="consult-notes-text"><strong>Consultaion Notes: </strong>{{note.value}}</span>
+            <span class="consult-notes-text"><strong>Consultation Notes: </strong>{{note.value}}</span>
             <div class="footer-note">
               <span class="time-stamp">
                 <span class="date">{{note.observationDateTime | date:'dd MMM yy'}}</span>
