@@ -57,12 +57,11 @@
                         <td colspan="2" bo-text="line.name"></td>
                     </tr>
                     <tr ng-if="!line.isSummary" ng-class="{'is-abnormal': line.isAbnormal, 'referred-out': line.referredOut}">
-                        <td bo-text="line.name">
+                        <td>
+                            <span>{{line.name}}</span>
                             <span class="range">
-                                <span bo-text="line.minNormal + ' - ' + line.maxNormal">
-                                </span>
-                                <span bo-text="'Units: ' + line.units">
-                                </span>
+                                Valid range {{' (' + line.minNormal + ' - ' + line.maxNormal + ') '}}
+                                <span class="units">{{line.units}}</span>
                             </span>
                         </td>
                         <td class="value">
