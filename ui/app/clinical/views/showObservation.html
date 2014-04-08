@@ -1,11 +1,12 @@
 <div>
     <div>
-        <div class="form-field" ng-hide="observation.groupMembers.length">
-            <div class="field-attribute" ng-show="showObservation()">
-                <label>{{observation.concept.name}}</label>
+        <div class="form-field" ng-hide="observation.groupMembers.length" ng-class="{true: 'is-abnormal'}[observation.is_abnormal]">
+            <span class="field-attribute" ng-show="showObservation()">
+                <label>{{observation.concept.name}}:</label>
                 <span class="label-add-on" ng-show="observation.concept.units">({{observation.concept.units}})</span>
-            </div>
+            </span>
             <span class="value-text-only">{{observation | observationValue}}</span>
+            <span class="value-text-only">{{observation.time}}</span>
         </div>
     <div>
     <div>

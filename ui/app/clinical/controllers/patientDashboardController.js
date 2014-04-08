@@ -4,11 +4,9 @@ angular.module('opd.patientDashboard', [])
     .controller('PatientDashboardController', ['$scope', '$rootScope', '$location', '$stateParams', 'patientVisitHistoryService', 'urlHelper', 'visitService', 'encounterService', 'appService', '$window', function ($scope, $rootScope, $location, $stateParams, patientVisitHistoryService, urlHelper, visitService, encounterService, appService, $window) {
         $scope.patientUuid = $stateParams.patientUuid;
         $scope.activeVisitData = {};
-        var currentEncounterDate;
 
         $scope.obsIgnoreList = appService.getAppDescriptor().getConfigValue("obsIgnoreList") || {};
         $scope.patientDashboardSections = appService.getAppDescriptor().getConfigValue("patientDashboardSections") || {};
-
 
         var getEncountersForVisit = function (visitUuid) {
             encounterService.search(visitUuid).success(function (encounterTransactions) {
@@ -22,6 +20,23 @@ angular.module('opd.patientDashboard', [])
 
         var clearPatientSummary = function(){
             $scope.patientSummary = undefined;
+        };
+
+        var groupByObservationDateTime = function(flattenedObservations){
+            var observationsGroupedByDate = {};
+            flattenedObservations.forEach(function(observation){
+                var date = moment(observation.observationDateTime).format(Bahmni.Common.Constants.dateDisplayFormat);
+                observationsGroupedByDate[date] = observationsGroupedByDate[date] || [];
+                observationsGroupedByDate[date].push(observation);
+            });
+            var observations = [];
+            for (var date in observationsGroupedByDate) {
+                var item = {};
+                item.date = date;
+                item.observations = observationsGroupedByDate[date];
+                observations.push(item);
+            }
+            return observations;
         };
 
         var init = function () {
@@ -41,12 +56,12 @@ angular.module('opd.patientDashboard', [])
             encounterService.search($scope.activeVisit.uuid).success(function (encounterTransactions) {
                 var visitData = createObservationsObject(encounterTransactions);
                 var flattenedObservations = new Bahmni.Clinical.CompoundObservationMapper().flatten(visitData);
-                $scope.patientSummary.data =
-                    flattenedObservations.filter(function (obs) {
-                        return obs.concept.name == conceptSetName
-                    });
-                if($scope.patientSummary.data.length == 0){
-                    $scope.patientSummary.message =  Bahmni.Clinical.Constants.messageForNoObservation;
+                var observationsForConceptSet = flattenedObservations.filter(function (obs) {
+                    return obs.concept.name == conceptSetName
+                });
+                $scope.patientSummary.data = groupByObservationDateTime(observationsForConceptSet);
+                if ($scope.patientSummary.data.length == 0) {
+                    $scope.patientSummary.message = Bahmni.Clinical.Constants.messageForNoObservation;
                 }
             });
         };

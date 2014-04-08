@@ -1,7 +1,6 @@
 Bahmni.Clinical.CompoundObservationMapper = function () {
     var self = this;
-    var compoundObservationName = Bahmni.Common.Constants.compoundObservationConceptName
-    var abnormalConceptName = Bahmni.Common.Constants.abnormalObservationConceptName
+    var compoundObservationName = Bahmni.Common.Constants.compoundObservationConceptName;
 
     self.flatten = function (observations) {
         var flattenedObservations = [];
@@ -18,11 +17,12 @@ Bahmni.Clinical.CompoundObservationMapper = function () {
         var flattenedObservation = {};
         memberObservations.forEach(function (member) {
             flattenedObservation.concept = member.concept;
+            flattenedObservation.observationDateTime = moment(member.observationDateTime).format(Bahmni.Common.Constants.dateDisplayFormat);
+            flattenedObservation.time = moment(member.observationDateTime).format(Bahmni.Common.Constants.timeDisplayFormat);
             if (member.groupMembers.length == 0) {
                 flattenedObservation.value = member.value;
                 flattenedObservation.is_abnormal = member.is_abnormal;
                 flattenedObservation.groupMembers = [];
-                flattenedObservation.observationDateTime = moment(member.observationDateTime).format(Bahmni.Common.Constants.dateDisplayFormat);
             }
             else {
                 flattenedObservation.groupMembers = self.flatten(member.groupMembers);

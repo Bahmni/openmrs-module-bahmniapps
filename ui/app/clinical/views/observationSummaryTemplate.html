@@ -4,7 +4,6 @@
       <tr ng-class="{true: 'is-abnormal'}[observation.is_abnormal]">
         <td class="label">{{observation.concept.name}}</td>
         <td class="value">{{(observation | observationValue)}}</td>
-        <td class="label">{{observation.observationDateTime}}</td>
       </tr>
     </table>
 
