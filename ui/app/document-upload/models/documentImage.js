@@ -9,7 +9,7 @@ Bahmni.DocumentUpload.DocumentImage.prototype = {
             titleComponents.push(this.concept.name);
         }        
         if(this.obsDatetime) {
-        	titleComponents.push(moment(this.obsDatetime).format(Bahmni.Common.Constants.dateDisplayFormat.toUpperCase()));
+            titleComponents.push(moment(this.obsDatetime).format(Bahmni.Common.Constants.dateDisplayFormat));
         }
         return titleComponents.join(', ');
     }

@@ -33,7 +33,7 @@
         </ul>
     </aside>
 
-    <article bindonce="visit" ng-if="!patientSummary">
+    <article bindonce="visit" ng-if="!patientSummary && visit">
         <div bo-hide="visit.hasObservations()" class="info-message">
             <p>There are no encounters for this patient</p>
         </div>
@@ -205,12 +205,13 @@
         </section>
     </article>
 
-    <article bindonce="patientSummary" ng-if="patientSummary">
-        <div ng-repeat="section in patientDashboardSections">
+
+    <article bindonce="patientSummary">
+        <div ng-repeat="section in patientDashboardSections" ng-if="patientSummary">
             <h2>{{section.description}}</h2>
-            <h4 ng-if="!activeVisit">no current visit.</h4>
+            <h4>{{patientSummary.message}}</h4>
             <section class="block"
-                     ng-if="activeVisit" ng-repeat="observation in patientSummary">
+                     ng-if="activeVisit" ng-repeat="observation in patientSummary.data">
                 <observation-summary observation="observation"></observation-summary>
             </section>
         </div>
