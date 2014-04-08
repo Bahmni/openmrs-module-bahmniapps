@@ -96,5 +96,9 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', functi
                 url: '/templates',
                 templateUrl: 'views/comingSoon.html'
             })
+            .state('patient.consultation.new', {
+                url: '/new',
+                templateUrl: 'views/patientDashboard.html'
+            })
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
     }]);

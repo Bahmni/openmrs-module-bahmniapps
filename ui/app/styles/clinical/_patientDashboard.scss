@@ -9,3 +9,28 @@
         }
     }
 }
+
+.patient-dashboard section {
+  width: 50%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  float: left;
+  h2 {
+    padding: 10px;
+    font-family: OpenSansBold;
+  }
+  table {
+    margin-top: 0;
+  }
+  table tr th, table tr td {
+    border: 0;
+  }
+  table th {
+    background-image: none;
+  }
+  button {
+    width: 100%;
+    max-width: 100%;
+    color: #006699;
+  }
+}
