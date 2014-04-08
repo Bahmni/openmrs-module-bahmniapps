@@ -45,13 +45,13 @@
     <section class="block laborder-section" ng-show="visit.hasLabTests()">
         <h2>Lab Orders</h2>
         <div ng-repeat="labOrders in visit.labTestOrderObsMap">
-            <table ng-repeat="labOrder in labOrders.orderList">
+            <table>
                 <thead>
                     <th colspan="2">
                         <span class="date" bo-text="labOrders.date | date:'dd MMM yy'"></span>
                     </th>
                 </thead>
-                <tbody ng-repeat="line in labOrder.result.display">
+                <tbody ng-repeat="line in labOrders.displayList">
                     <!-- HACKTAG: Apparently bo-if makes this go into an infinite loop-->
                     <tr ng-if="line.isSummary" class="header">
                         <td colspan="2" bo-text="line.name"></td>

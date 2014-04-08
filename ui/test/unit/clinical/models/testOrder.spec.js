@@ -149,7 +149,6 @@ describe('Order group with obs', function () {
         expect(results.name).toBe('Gram Stain (Asitic Fluid)');
         var wrappedResult = results.results[0];
         expect(wrappedResult.name).toBe('Gram Stain (Asitic Fluid)');
-        console.log(results.displayList());
     });
 
     it('should create a Panel object', function() {

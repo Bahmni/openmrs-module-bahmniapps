@@ -40,6 +40,10 @@ Bahmni.Clinical.TestOrder = (function () {
         return result;
     };
 
+    TestOrder.prototype.displayList = function(){
+        return this.result.displayList();
+    };
+
     TestOrder.create = function (orderGroupWithObs) {
         return new Bahmni.Clinical.TestOrder({
             name: orderGroupWithObs.concept.name,

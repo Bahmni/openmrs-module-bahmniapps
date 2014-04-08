@@ -92,11 +92,15 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
     });
 
     testOrders.forEach(function(testOrder) {
-        testOrder.orderList = [];
+        var orderList = [];
         testOrder.orders.forEach(function(order) {
-            order.temp = Bahmni.Clinical.TestOrder.create(order);
-            testOrder.orderList.push(Bahmni.Clinical.TestOrder.create(order));
+            orderList.push(Bahmni.Clinical.TestOrder.create(order));
         });
+
+        testOrder.displayList = [];
+        orderList.forEach(function(order) {
+            testOrder.displayList = testOrder.displayList.concat(order.displayList());
+        })
     });
 
     var allObs = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions);

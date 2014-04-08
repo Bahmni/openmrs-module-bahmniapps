@@ -33,7 +33,7 @@ Bahmni.Clinical.Results = (function () {
         }
         response = response.concat(this.results);
         return response;
-    }
+    };
 
     return Results;
 })();
