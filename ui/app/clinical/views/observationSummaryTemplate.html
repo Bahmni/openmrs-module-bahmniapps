@@ -1,10 +1,5 @@
 <div class="observation-section">
   <div ng-if="observation.groupMembers.length <= 0" ng-hide="hideObservation()">
-
-<!--     <div >
-      <span class="label">{{observation.concept.name}}</span>
-      <span class="value">{{(observation | observationValue)}}</span>
-    </div> -->
     <table>
       <tr ng-class="{true: 'is-abnormal'}[observation.is_abnormal]">
         <td class="label">{{observation.concept.name}}</td>
@@ -15,15 +10,11 @@
 
     <div>
 
-      <!-- lable - value-->
-<!--       <span bo-text="observation.concept.name + ' - ' + (observation | observationValue)">
-      </span> -->
-
 
       <!-- toggle button -->
-<!--       <div bo-show="observation.additionalObs.length > 0">
+      <div bo-show="observation.additionalObs.length > 0">
         <div class="icon-double-angle-down" ng-click="toggle(observation.additionalObs)"></div>
-      </div> -->
+      </div>
 
 
 
@@ -46,22 +37,14 @@
         </span>
       </div>
     </div>
-<!--     <div class="footer-note">
+    <div class="footer-note">
       <span class="time-stamp">
         <span class="date">{{observation.observationDateTime | date:'dd MMM yy'}}</span>
         <span class="time">{{observation.observationDateTime | date:'hh:mm a'}}</span>
       </span>
       <span class="provider" bo-text="observation.provider.name"></span>
     </div>
-   --></div>
-
-
-<!--   <div class="notes">
-    <h5 class="title">Notes:</h5>
-    <p class="content" ng-repeat="note in observation.additionalObs"><span ng-show="note.show" bo-text="note.value"></span></p>
-  </div> -->
-
-
+  </div>
 
   <ul ng-if="observation.groupMembers.length > 0" class="concept-set">  
     <div ng-switch on="observation.concept.name">
