@@ -402,6 +402,14 @@ span.range {
 .laborder-section {
   table {
     margin-bottom: 10px;
+    tr td {
+      padding-left: 20px;
+    }
+    tr.header td {
+      font-family: OpenSansBold;
+      background: #f6f6f6;
+      padding-left: 10px;
+    }
   }
 }
 
