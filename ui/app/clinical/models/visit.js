@@ -79,6 +79,18 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
         isOtherObservation = function (observation) {
             return !conceptMatches(observation, [consultationNoteConcept, labOrderNoteConcept])
         },
+        allOrders = function(){
+            return encounterTransactions.map(function(encounterTransaction) {
+                return encounterTransaction.testOrders;
+            }).reduce(function(a, b) {
+                    return a.concat(b);
+                });
+        },
+        doesNotHaveOrder = function(obs){
+            return !allOrders().some(function(order){
+                return order.uuid === obs.orderUuid;
+            });
+        },
         hasEncounters = encounterTransactions.length > 0;
 
 
@@ -105,7 +117,7 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
 
     var allObs = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions);
     consultationNotes = resultGrouper.group(allObs.filter(isConsultationNote), observationGroupingFunction, 'obs', 'date');
-    observations = resultGrouper.group(allObs.filter(isOtherObservation), observationGroupingFunction, 'obs', 'date');
+    observations = resultGrouper.group(allObs.filter(isOtherObservation).filter(doesNotHaveOrder), observationGroupingFunction, 'obs', 'date');
 
 
     angular.forEach(encounterTransactions, function (encounterTransaction) {
