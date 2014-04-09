@@ -60,7 +60,7 @@ describe('patient mapper', function () {
             "isNew": "true"
         });
 
-        var openmrsPatient = new CreatePatientRequestMapper(new Date()).mapFromPatient(patientAttributeTypes, patient);
+        var openmrsPatient = new Bahmni.Registration.CreatePatientRequestMapper(new Date()).mapFromPatient(patientAttributeTypes, patient);
 
         expect(openmrsPatient.patient.person.names).toEqual([
             {
@@ -116,7 +116,7 @@ describe('patient mapper', function () {
             }
         });
 
-        var openmrsPatient = new CreatePatientRequestMapper(new Date('2013-09-23')).mapFromPatient(patientAttributeTypes, patient);
+        var openmrsPatient = new Bahmni.Registration.CreatePatientRequestMapper(new Date('2013-09-23')).mapFromPatient(patientAttributeTypes, patient);
 
         expect(openmrsPatient.patient.person.birthdate).toBe("2012-08-06");
         expect(openmrsPatient.patient.person.birthdateEstimated).toBeTruthy();
@@ -128,7 +128,7 @@ describe('patient mapper', function () {
             "birthdate": "06-05-2013"
         });
 
-        var openmrsPatient = new CreatePatientRequestMapper(new Date('2013-09-23')).mapFromPatient(patientAttributeTypes, patient);
+        var openmrsPatient = new Bahmni.Registration.CreatePatientRequestMapper(new Date('2013-09-23')).mapFromPatient(patientAttributeTypes, patient);
 
         expect(openmrsPatient.patient.person.birthdate).toBe("2013-05-06");
         expect(openmrsPatient.patient.person.birthdateEstimated).toBeFalsy();
@@ -145,7 +145,7 @@ describe('patient mapper', function () {
             }
         });
 
-        var openmrsPatient = new CreatePatientRequestMapper(new Date('2013-09-23')).mapFromPatient(patientAttributeTypes, patient);
+        var openmrsPatient = new Bahmni.Registration.CreatePatientRequestMapper(new Date('2013-09-23')).mapFromPatient(patientAttributeTypes, patient);
 
         expect(openmrsPatient.patient.person.birthdate).toBe("2011-05-06");
         expect(openmrsPatient.patient.person.birthdateEstimated).toBeFalsy();
@@ -156,7 +156,7 @@ describe('patient mapper', function () {
             image: 'data:image/jpeg;base64,asdfasdfasdfkalsdfkj'
         });
 
-        var mappedPatientData = new CreatePatientRequestMapper().mapFromPatient(patientAttributeTypes, patient);
+        var mappedPatientData = new Bahmni.Registration.CreatePatientRequestMapper().mapFromPatient(patientAttributeTypes, patient);
 
         expect(mappedPatientData.image).toBe('asdfasdfasdfkalsdfkj');
     });
@@ -166,7 +166,7 @@ describe('patient mapper', function () {
             image: 'asdfasdfasdfkalsdfkj'
         });
 
-        var mappedPatientData = new CreatePatientRequestMapper().mapFromPatient(patientAttributeTypes, patient);
+        var mappedPatientData = new Bahmni.Registration.CreatePatientRequestMapper().mapFromPatient(patientAttributeTypes, patient);
 
         expect(mappedPatientData.image).toBeFalsy();
     });
@@ -176,7 +176,7 @@ describe('patient mapper', function () {
             image: null
         });
 
-        var mappedPatientData = new CreatePatientRequestMapper().mapFromPatient(patientAttributeTypes, patient);
+        var mappedPatientData = new Bahmni.Registration.CreatePatientRequestMapper().mapFromPatient(patientAttributeTypes, patient);
 
         expect(mappedPatientData.image).toBeFalsy();
     });

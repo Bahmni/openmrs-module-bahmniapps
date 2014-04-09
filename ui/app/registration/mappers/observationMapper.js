@@ -1,4 +1,4 @@
-var observationMapper = function(){
+Bahmni.Registration.ObservationMapper = function(){
     this.map = function(savedObservations){
         var observations ={
             regularObservations:[],
@@ -16,11 +16,5 @@ var observationMapper = function(){
         return observations;
     }
 
-    this.findObservation = function(conceptName,observations){
-        var result = observations.filter(function(obs){
-            return obs && obs.groupMembers[0] && obs.groupMembers[0].concept.name === conceptName;
-        });
-        return result;
-    }
     return this;
 }

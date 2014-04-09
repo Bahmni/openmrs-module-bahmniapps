@@ -22,7 +22,7 @@ angular.module('bahmni.registration')
             var getActiveEncounter = function () {
                 return encounterService.getActiveEncounter(patientUuid, visitTypeUuid, encounterTypeUuid, $scope.currentProvider.uuid)
                     .success(function (data) {
-                        $scope.observations = observationMapper().map(data.observations);
+                        $scope.observations = Bahmni.Registration.ObservationMapper().map(data.observations);
                         $scope.registrationFeeLabel = isNewPatient ? "Registration Fee" : "Consultation Fee";
                         mapRegistrationObservations();
                     });

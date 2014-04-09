@@ -43,7 +43,7 @@ angular.module('bahmni.registration')
         };
 
         var create = function (patient) {
-            var patientJson = new CreatePatientRequestMapper(moment()).mapFromPatient($rootScope.patientConfiguration.personAttributeTypes, patient);
+            var patientJson = new Bahmni.Registration.CreatePatientRequestMapper(moment()).mapFromPatient($rootScope.patientConfiguration.personAttributeTypes, patient);
             return $http.post(constants.baseOpenMRSRESTURL + "/patientprofile", patientJson, {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}

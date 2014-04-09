@@ -7,7 +7,7 @@ angular.module('bahmni.registration').factory('initialization',
             var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierSourceConfig', 'addressLevels'];
             return configurationService.getConfigurations(configNames).then(function (configurations) {
                 var patientConfig = new PatientConfig();
-                var patientAttributeTypes = new PatientAttributeTypeMapper().mapFromOpenmrsPatientAttributeTypes(configurations.patientAttributesConfig.results);
+                var patientAttributeTypes = new Bahmni.Registration.PatientAttributeTypeMapper().mapFromOpenmrsPatientAttributeTypes(configurations.patientAttributesConfig.results);
 
                 $rootScope.encounterConfiguration = angular.extend(new RegistrationEncounterConfig(), configurations.encounterConfig);
                 $rootScope.patientConfiguration = angular.extend(patientConfig, patientAttributeTypes);

@@ -1,4 +1,5 @@
 'use strict';
+
 var PatientMapper = (function () {
     function PatientMapper() {
     }

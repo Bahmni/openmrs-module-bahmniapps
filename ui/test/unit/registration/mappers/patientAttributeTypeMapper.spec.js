@@ -148,7 +148,7 @@ describe('PatientAttributeTypeMapper', function () {
             }
         ];
 
-        var patientConfigs = new PatientAttributeTypeMapper().mapFromOpenmrsPatientAttributeTypes(mrspatientAttributeTypes);
+        var patientConfigs = new Bahmni.Registration.PatientAttributeTypeMapper().mapFromOpenmrsPatientAttributeTypes(mrspatientAttributeTypes);
 
         expect(patientConfigs).toEqual({ personAttributeTypes: [
             {
