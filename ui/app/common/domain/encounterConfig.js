@@ -30,6 +30,12 @@ var EncounterConfig = (function () {
                 visitTypesArray.push({name: name, uuid: this.visitTypes[name]});
             }
             return visitTypesArray;
+        },
+        getVisitTypeByUuid: function(uuid) {
+            var visitTypes = this.getVisitTypes();
+            return visitTypes.filter(function(visitType){
+                return visitType.uuid === uuid;
+            })[0];
         }
     };
     return EncounterConfig;

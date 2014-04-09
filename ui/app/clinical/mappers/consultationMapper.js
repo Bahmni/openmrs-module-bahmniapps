@@ -35,6 +35,7 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
         });
         return {
             visitUuid: encounterTransaction.visitUuid,
+            visitTypeUuid: encounterTransaction.visitTypeUuid,
             investigations: investigations,
             treatmentDrugs: treatmentDrugs,
             diagnoses: diagnoses,
