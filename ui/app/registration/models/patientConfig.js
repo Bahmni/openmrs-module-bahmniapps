@@ -1,4 +1,4 @@
-var PatientConfig = (function () {
+Bahmni.Registration.PatientConfig = (function () {
     var autocompleteConfig = {
         map: {
             'caste': {

@@ -37,7 +37,7 @@ describe('Patient resource', function () {
             $provide.value('$http', mockHttp);
         });
 
-        patientConfiguration = new PatientConfig([
+        patientConfiguration = new Bahmni.Registration.PatientConfig([
             {"uuid": "d3d93ab0-e796-11e2-852f-0800271c1b75", "sortWeight": 2.0, "name": "caste", "description": "Caste", "format": "java.lang.String", "answers": []},
             {"uuid": "d3e6dc74-e796-11e2-852f-0800271c1b75", "sortWeight": 2.0, "name": "class", "description": "Class", "format": "org.openmrs.Concept",
                 "answers": [

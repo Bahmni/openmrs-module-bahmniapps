@@ -1,6 +1,6 @@
 'use strict';
 
-var UpdatePatientRequestMapper = (function () {
+Bahmni.Registration.UpdatePatientRequestMapper = (function () {
     var ObjectUtil = Bahmni.Common.Util.ObjectUtil;
 
     UpdatePatientRequestMapper.prototype.currentDate = undefined;

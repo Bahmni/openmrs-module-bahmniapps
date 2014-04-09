@@ -30,7 +30,7 @@ angular.module('bahmni.registration')
 
             var mapRegistrationObservations = function () {
                 $scope.obs = {};
-                $scope.registrationObservations = new RegistrationObservations($scope.observations.regularObservations, isNewPatient, $scope.encounterConfiguration);
+                $scope.registrationObservations = new Bahmni.Registration.RegistrationObservations($scope.observations.regularObservations, isNewPatient, $scope.encounterConfiguration);
                 $scope.registrationObservations.observations.forEach(function (observation) {
                     $scope.obs[observation.concept.name] = observation.value
                     observation.groupMembers = [];

@@ -37,7 +37,7 @@ describe('CreatePatientController', function () {
 
     var setupController = function(preferenceObj){
         preferences = preferenceObj != undefined ? preferenceObj : {identifierPrefix: "GAN", hasOldIdentifier: false };
-        var patientConfiguration = new PatientConfig();
+        var patientConfiguration = new Bahmni.Registration.PatientConfig();
         patientConfiguration.identifierSources = [{name: "SEM", prefix: "SEM"}, {name: "SIV", prefix: "SIV"}, {name: "GAN", prefix: "GAN"}];
         inject(function($controller, $rootScope){
             scope = $rootScope.$new();
@@ -47,7 +47,7 @@ describe('CreatePatientController', function () {
                 $location: location,
                 Preferences: preferences,
                 spinner: spinner,
-                $rootScope: {encounterConfiguration: new RegistrationEncounterConfig({visitTypes: {}},{encounterTypes: {"REG" : "someUUID"}}), patientConfiguration: patientConfiguration },
+                $rootScope: {encounterConfiguration: new Bahmni.Registration.RegistrationEncounterConfig({visitTypes: {}},{encounterTypes: {"REG" : "someUUID"}}), patientConfiguration: patientConfiguration },
                 appService: appService,
                 $route: route
             });

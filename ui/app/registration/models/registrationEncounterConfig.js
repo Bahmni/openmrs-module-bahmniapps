@@ -1,4 +1,4 @@
-var RegistrationEncounterConfig = (function() {
+Bahmni.Registration.RegistrationEncounterConfig = (function() {
   function RegistrationEncounterConfig(conceptData, encounterTypes, visitTypes) {
     this.conceptData = conceptData;
     this.encounterTypes = encounterTypes;

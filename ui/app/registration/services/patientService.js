@@ -51,7 +51,7 @@ angular.module('bahmni.registration')
         };
 
         var update = function (patient, openMRSPatient) {
-            var patientJson = new UpdatePatientRequestMapper(moment()).mapFromPatient($rootScope.patientConfiguration.personAttributeTypes, openMRSPatient, patient);
+            var patientJson = new Bahmni.Registration.UpdatePatientRequestMapper(moment()).mapFromPatient($rootScope.patientConfiguration.personAttributeTypes, openMRSPatient, patient);
             return $http.post(constants.baseOpenMRSRESTURL + "/patientprofile/" + openMRSPatient.uuid, patientJson, {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}

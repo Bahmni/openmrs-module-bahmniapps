@@ -93,7 +93,7 @@ describe('VisitController', function () {
         $timeout = timeout;
         patientService.getPatient.andReturn(patient);
         success = jasmine.createSpy();
-        scope.encounterConfiguration = angular.extend(new RegistrationEncounterConfig(), sampleConfig);
+        scope.encounterConfiguration = angular.extend(new Bahmni.Registration.RegistrationEncounterConfig(), sampleConfig);
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         encounterService = jasmine.createSpyObj('encounterService', ['create', 'getActiveEncounter']);
         getEncounterPromise = specUtil.createServicePromise('getActiveEncounter');

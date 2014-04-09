@@ -1,6 +1,6 @@
 'use strict';
 
-var RegistrationObservations = (function () {
+Bahmni.Registration.RegistrationObservations = (function () {
 
     var RegistrationObservations = function(regObservations, isNewPatient, encounterConfig) {
         this.observations = regObservations.map(function (obs) {
