@@ -30,7 +30,7 @@ Bahmni.Tests.openMRSConceptMother = {
         var concept = {
             uuid: conceptData.uuid || Bahmni.Tests.genUUID(),
             name: { name: conceptData.name || "conceptName"},
-            datatype: {name: conceptData.dataTypeName || "N/A"},
+            datatype: {name: conceptData.dataType || "N/A"},
             set: conceptData.set,
             setMembers: conceptData.setMembers || [],
             hiAbsolute: conceptData.hiAbsolute,
@@ -44,14 +44,27 @@ Bahmni.Tests.openMRSConceptMother = {
     }
 }
 
+Bahmni.Tests.conceptMother = {
+    build: function(conceptData) {
+        var defaultConcept = {
+            uuid: Bahmni.Tests.genUUID(),
+            name: "conceptName",
+            dataType: "N/A",
+            set: false,
+            voided: false
+        }
+        return angular.extend(defaultConcept, conceptData);
+    }
+}
+
 Bahmni.Tests.observationMother = {
     build: function(observationData) {
-        return {
-            uuid: observationData.uuid === undefined ? Bahmni.Tests.genUUID() : observationData.uuid,
-            value: observationData.value,
-            concept: observationData.concept,
-            groupMembers: observationData.groupMembers || []
+        var defaultObservation = {
+            uuid: Bahmni.Tests.genUUID(),
+            groupMembers: []
         }
+
+        return angular.extend(defaultObservation, observationData);
     }
 }
 

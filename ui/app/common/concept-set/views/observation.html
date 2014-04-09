@@ -8,43 +8,37 @@
             </label>
             <div class="field-value" ng-switch on="node.getControlType()">
                 <div ng-switch-when="html5InputDataType">
-                    <input ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}"
-                           obs-constraints obs="$parent.node"
-                           class="form-control" ng-model="$parent.node.primaryObservation.value"
-                           ng-change="$parent.node.onValueChanged()"/>
-                           <small class="hint" ng-show="node.lowAbsolute || node.highAbsolute">(Valid Range from {{node.lowAbsolute}} to {{node.hiAbsolute}})</small>
+                    <input obs-constraints obs="node"
+                           ng-model="node.value" ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}"/>
+                    <small class="hint" ng-show="node.lowAbsolute || node.highAbsolute">(Valid Range from {{node.lowAbsolute}} to {{node.hiAbsolute}})</small>
                 </div>
 
-                <div ng-switch-when="freeTextAutocomplete">
-                    <input class="concept-name" ng-model="node.primaryObservation.value" concept-autocomplete
-                       ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}"
-                       coded-concept-uuid="node.getConceptConfig().freeTextAutocomplete.codedConceptUuid"
-                       concept-set-uuid="node.getConceptConfig().freeTextAutocomplete.conceptSetUuid"
-                       blur-on-select="false"/>
-                </div>
+                <input ng-switch-when="freeTextAutocomplete" class="concept-name" ng-model="node.value" concept-autocomplete
+                   ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}"
+                   coded-concept-uuid="node.getConceptConfig().freeTextAutocomplete.codedConceptUuid"
+                   concept-set-uuid="node.getConceptConfig().freeTextAutocomplete.conceptSetUuid"
+                   blur-on-select="false"/>
 
-                <textarea ng-switch-when="text" class="form-control" ng-model="$parent.node.primaryObservation.value"
-                          ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}"
-                          ng-change="$parent.node.onValueChanged()"></textarea>
+                <textarea ng-switch-when="text" ng-model="node.value"
+                          ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}"></textarea>
 
-                <select ng-switch-when="dropdown" foo-bar class="form-control" ng-model="node.primaryObservation.value" ng-change="node.onValueChanged()"
+                <select ng-switch-when="dropdown" foo-bar ng-model="node.value"
                         ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}"
                         ng-options="answer as answer.name for answer in getPossibleAnswers() track by answer.uuid"> <option value=""></option>
                 </select>
 
-                <div ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}"
-                     ng-switch-when="autocomplete" class="autocomplete">
-                    <input ui-select2="selectOptions"
-                           class="form-control" ng-model="node.primaryObservation.value"
-                           ng-change="node.onValueChanged()">
-                    </input>
+                <div ng-switch-when="autocomplete"  ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}" class="autocomplete">
+                  <input type="hidden" ui-select2="selectOptions" ng-model="node.value"></input>
                 </div>
 
-                <p ng-switch-default class="field-value info icon-info-sign"> The concept data type '{{$parent.node.dataTypeName}}' is not supported yet.</p>
+                <div ng-switch-when="multiselect" ui-select2="multiSelectOptions" ng-model="node.value" ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}">
+                </div>
+
+                <p ng-switch-default class="field-value info icon-info-sign"> The concept data type '{{node.dataTypeName}}' is not supported yet.</p>
             </div>
             <div class="checkbox-inline" ng-if="node.showAbnormalIndicator">
-              <input id="isAbnormal" type="checkbox" ng-model="node.abnormalityObservation.value" />
-              <span for="isAbnormal">Abnormal</span>
+              <input id="isAbnormal-{{$index}}" type="checkbox" ng-model="node.abnormalityObservation.value" />
+              <span for="isAbnormal-{{$index}}">Abnormal</span>
             </div>
         </div>
     </fieldset>

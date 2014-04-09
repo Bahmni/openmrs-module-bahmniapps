@@ -1,60 +1,189 @@
+'use strict';
+
 describe("CompundObservationNode", function() {
 	var CompundObservationNode = Bahmni.ConceptSet.CompundObservationNode;
-	var build = Bahmni.Tests.openMRSConceptMother.build;
+	var buildMRSConcept = Bahmni.Tests.openMRSConceptMother.build;
 	var compoundObservationConcept = Bahmni.Tests.openMRSConceptMother.buildCompoundObservationConcept()
-	var conceptUIConfig, primaryObservation, primaryConcept, node;
+	var buildConcept = Bahmni.Tests.conceptMother.build;
+    var buildObservation = Bahmni.Tests.observationMother.build;
+    var mapConcept = new Bahmni.ConceptSet.ConceptMapper().map;
+	var conceptUIConfig, primaryObservation, primaryMRSConcept, node, primaryConcept;
+	
+	describe("create", function() {
+	 	describe("for multiselect", function() {
+			beforeEach(function() {
+				primaryMRSConcept = buildMRSConcept({name: "Complaints", dataType: "Coded"});
+				primaryConcept = mapConcept(primaryMRSConcept)
+				conceptUIConfig = {multiselect: true};
+			});
 
-	describe("onValueChanged", function() {
+			it("shoud initialize value to an array of primary observation's values", function() {
+			 	var coughConcept = buildConcept({name: "Cough"});
+			 	var chestPainConcept = buildConcept({name: "Chest Pain"});
+			 	var coughObservation = buildObservation({concept: primaryConcept, value: coughConcept});
+			 	var chestPainbservation = buildObservation({concept: primaryConcept, value: chestPainConcept});
+			 	var compoundObservation = buildObservation({groupMembers: [coughObservation, chestPainbservation]});
+				node = CompundObservationNode.create(compoundObservation, primaryMRSConcept, compoundObservationConcept, conceptUIConfig);
+			 	
+			 	var value = node.value;
+
+			 	expect(value.length).toBe(2);
+				expect(value).toContain(coughConcept);
+				expect(value).toContain(chestPainConcept);
+			});
+
+			it("shoud ignore the voided observation's", function() {
+			 	var coughConcept = buildConcept({name: "Cough"});
+			 	var chestPainConcept = buildConcept({name: "Chest Pain"});
+			 	var coughObservation = buildObservation({voided: true, concept: primaryConcept, value: coughConcept});
+			 	var chestPainbservation = buildObservation({concept: primaryConcept, value: chestPainConcept});
+			 	var compoundObservation = buildObservation({groupMembers: [coughObservation, chestPainbservation]});
+				node = CompundObservationNode.create(compoundObservation, primaryMRSConcept, compoundObservationConcept, conceptUIConfig);
+			 	
+			 	var value = node.value;
+
+			 	expect(value.length).toBe(1);
+				expect(value).toContain(chestPainConcept);
+			});
+	 	});
+	});
+
+	describe("on changing value", function() {
 		describe("for numeric observation", function() {
 			beforeEach(function() {
-				primaryObservation = {};
-				primaryConcept = build({name: "Pulse", dataTypeName: "Numeric",hiAbsolute: 10, lowAbsolute: 2});
-				conceptUIConfig = {};
-				node = CompundObservationNode.createNew(primaryObservation, primaryConcept, compoundObservationConcept, conceptUIConfig);
+				primaryMRSConcept = buildMRSConcept({name: "Pulse", dataType: "Numeric", hiAbsolute: 10, lowAbsolute: 2});
+				node = CompundObservationNode.createNew(primaryMRSConcept, compoundObservationConcept, {});
 			});
 
 			it("should set abnormality to true when value is beyond max", function() {
-				node.primaryObservation.value = 11;
-
-				node.onValueChanged();
+				node.value = 11;
 
 				expect(node.abnormalityObservation.value).toBe(true);
 			});
 
 			it("should set abnormality to true when value is below min", function() {
-				node.primaryObservation.value = 1;
-
-				node.onValueChanged();
+				node.value = 1;
 
 				expect(node.abnormalityObservation.value).toBe(true);
 			});
 
 			it("should set abnormality to false when value is in range", function() {
-				node.primaryObservation.value = 9;
+				node.value = 9;
 				
-				node.onValueChanged();
-
 				expect(node.abnormalityObservation.value).toBe(false);
 			});
 
 			it("should set abnormality to undefined when value is not set", function() {
-				node.primaryObservation.value = "";
+				node.value = "";
 				
-				node.onValueChanged();
-
 				expect(node.abnormalityObservation.value).toBe(undefined);
+			});
+		});
+
+		describe("for multiselect value", function() {
+			beforeEach(function() {
+				primaryMRSConcept = buildMRSConcept({name: "Complaints", dataType: "Coded"});
+				primaryConcept = mapConcept(primaryMRSConcept)
+				conceptUIConfig = {multiselect: true};
+			});
+
+			it("should add an observation for each new value", function() {
+			 	var coughConcept = buildConcept({name: "Cough"});
+			 	var chestPainConcept = buildConcept({name: "Chest Pain"});
+				node = CompundObservationNode.createNew(primaryMRSConcept, compoundObservationConcept, conceptUIConfig);
+			 	
+			 	node.value = [coughConcept, chestPainConcept];
+
+			 	expect(node.compoundObservation.groupMembers.length).toBe(2 + 1);
+			 	expect(node.compoundObservation.groupMembers[0].concept.name).toBe("IS_ABNORMAL");
+			 	expect(node.compoundObservation.groupMembers[1].concept.name).toBe("Complaints");
+			 	expect(node.compoundObservation.groupMembers[1].value).toBe(coughConcept);
+			 	expect(node.compoundObservation.groupMembers[2].concept.name).toBe("Complaints");
+			 	expect(node.compoundObservation.groupMembers[2].value).toBe(chestPainConcept);
+			});
+
+			it("should remove newly added observation when value is removed", function() {
+			 	var coughConcept = buildConcept({name: "Cough"});
+			 	var chestPainConcept = buildConcept({name: "Chest Pain"});
+				node = CompundObservationNode.createNew(primaryMRSConcept, compoundObservationConcept, conceptUIConfig);
+			 	
+			 	node.value = [coughConcept, chestPainConcept];
+			 	node.value = [coughConcept];
+
+			 	expect(node.compoundObservation.groupMembers.length).toBe(1 + 1);
+			 	expect(node.compoundObservation.groupMembers[0].concept.name).toBe("IS_ABNORMAL");
+			 	expect(node.compoundObservation.groupMembers[1].concept.name).toBe("Complaints");
+			 	expect(node.compoundObservation.groupMembers[1].value).toBe(coughConcept);
+			});
+
+			it("should retain the previous observation when value is retained", function() {
+			 	var coughConcept = buildConcept({name: "Cough"});
+			 	var chestPainConcept = buildConcept({name: "Chest Pain"});
+			 	var coughObservation = buildObservation({concept: primaryConcept, value: coughConcept});
+			 	var compoundObservation = buildObservation({groupMembers: [coughObservation]});
+				node = CompundObservationNode.create(compoundObservation, primaryMRSConcept, compoundObservationConcept, conceptUIConfig);
+			 	
+			 	node.value = [coughConcept, chestPainConcept];
+
+			 	expect(node.compoundObservation.groupMembers.length).toBe(2 + 1);
+			 	expect(node.compoundObservation.groupMembers[0].concept.name).toBe("Complaints");
+			 	expect(node.compoundObservation.groupMembers[0].uuid).toBe(coughObservation.uuid);
+			 	expect(node.compoundObservation.groupMembers[0].value).toBe(coughConcept);
+			 	expect(node.compoundObservation.groupMembers[2].concept.name).toBe("Complaints");
+			 	expect(node.compoundObservation.groupMembers[2].uuid).toBe(undefined);
+			 	expect(node.compoundObservation.groupMembers[2].value).toBe(chestPainConcept);
+			});
+
+			it("should void the previous observation when value is removed", function() {
+			 	var coughConcept = buildConcept({name: "Cough"});
+			 	var chestPainConcept = buildConcept({name: "Chest Pain"});
+			 	var coughObservation = buildObservation({concept: primaryConcept, value: coughConcept});
+			 	var compoundObservation = buildObservation({groupMembers: [coughObservation]});
+				node = CompundObservationNode.create(compoundObservation, primaryMRSConcept, compoundObservationConcept, conceptUIConfig);
+			 	
+			 	node.value = [chestPainConcept];
+
+			 	expect(node.compoundObservation.groupMembers.length).toBe(2 + 1);
+			 	expect(node.compoundObservation.groupMembers[0].concept.name).toBe("Complaints");
+			 	expect(node.compoundObservation.groupMembers[0].uuid).toBe(coughObservation.uuid);
+			 	expect(node.compoundObservation.groupMembers[0].value).toBe(coughConcept);
+			 	expect(node.compoundObservation.groupMembers[0].voided).toBe(true);
+			 	expect(node.compoundObservation.groupMembers[2].concept.name).toBe("Complaints");
+			 	expect(node.compoundObservation.groupMembers[2].uuid).toBe(undefined);
+			 	expect(node.compoundObservation.groupMembers[2].value).toBe(chestPainConcept);
+			});
+
+			it("should un-void the previous observation when value is removed and added again", function() {
+			 	var coughConcept = buildConcept({name: "Cough"});
+			 	var chestPainConcept = buildConcept({name: "Chest Pain"});
+			 	var coughObservation = buildObservation({concept: primaryConcept, value: coughConcept, voided: true});
+			 	var compoundObservation = buildObservation({groupMembers: [coughObservation]});
+				node = CompundObservationNode.create(compoundObservation, primaryMRSConcept, compoundObservationConcept, conceptUIConfig);
+			 	
+			 	node.value = [coughConcept, chestPainConcept];
+
+			 	expect(node.compoundObservation.groupMembers.length).toBe(2 + 1);
+			 	expect(node.compoundObservation.groupMembers[0].concept.name).toBe("Complaints");
+			 	expect(node.compoundObservation.groupMembers[0].uuid).toBe(coughObservation.uuid);
+			 	expect(node.compoundObservation.groupMembers[0].value).toBe(coughConcept);
+			 	expect(node.compoundObservation.groupMembers[0].voided).toBe(false);
+			 	expect(node.compoundObservation.groupMembers[2].concept.name).toBe("Complaints");
+			 	expect(node.compoundObservation.groupMembers[2].uuid).toBe(undefined);
+			 	expect(node.compoundObservation.groupMembers[2].value).toBe(chestPainConcept);
 			});
 		});
 	});
 
 	describe("atLeastOneValueSet", function() {
 		beforeEach(function() {
-			primaryConcept = build({name: "Vitals"});
+			primaryMRSConcept = buildMRSConcept({name: "Vitals"});
 			conceptUIConfig = {};
 		});
 
 		var createNode = function(conceptName, value) {
-			return CompundObservationNode.createNew({value: value, concpet: {name: conceptName}}, primaryConcept, compoundObservationConcept, conceptUIConfig);
+			var primaryObservation = {value: value, concept: {name: conceptName}};
+			var compoundObservation = {groupMembers: [primaryObservation]};
+			return CompundObservationNode.create(compoundObservation, primaryMRSConcept, compoundObservationConcept, conceptUIConfig);
 		}
 		
 		it("should be true if value of one of immediate child is set", function() {
@@ -63,8 +192,8 @@ describe("CompundObservationNode", function() {
 			var vitalsNode = createNode("Vitals")
 			vitalsNode.children = [pulseNode, sugarNode];
 			
-			sugarNode.primaryObservation.value = '';
-			pulseNode.primaryObservation.value = 10;
+			sugarNode.value = '';
+			pulseNode.value = 10;
 
 			expect(vitalsNode.atLeastOneValueSet()).toBe(true);
 		});
@@ -77,8 +206,8 @@ describe("CompundObservationNode", function() {
 			bpNode.children = [systolicNode, diastolicNode];
 			vitalsNode.children = [bpNode];
 			
-			diastolicNode.primaryObservation.value = '';
-			systolicNode.primaryObservation.value = 10;
+			diastolicNode.value = '';
+			systolicNode.value = 10;
 
 			expect(vitalsNode.atLeastOneValueSet()).toBe(true);
 		});
@@ -91,8 +220,8 @@ describe("CompundObservationNode", function() {
 			bpNode.children = [systolicNode, diastolicNode];
 			vitalsNode.children = [bpNode];
 			
-			diastolicNode.primaryObservation.value = '';
-			systolicNode.primaryObservation.value = '';
+			diastolicNode.value = '';
+			systolicNode.value = '';
 
 			expect(vitalsNode.atLeastOneValueSet()).toBe(false);
 		});
@@ -105,9 +234,9 @@ describe("CompundObservationNode", function() {
 			bpNode.children = [systolicNode, diastolicNode];
 			vitalsNode.children = [bpNode];
 			
-			bpNode.primaryObservation.value = '110, 180';
-			diastolicNode.primaryObservation.value = '';
-			systolicNode.primaryObservation.value = '';
+			bpNode.value = '110, 180';
+			diastolicNode.value = '';
+			systolicNode.value = '';
 
 			expect(vitalsNode.atLeastOneValueSet()).toBe(false);
 		});

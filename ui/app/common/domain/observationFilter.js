@@ -5,7 +5,7 @@
 		var voidExistingObservationWithOutValue = function(observations) {
 			observations.forEach(function(observation){
 				voidExistingObservationWithOutValue(observation.groupMembers);
-				observation.voided = observation.isExisting() && (observation.isLeafNodeWithOutValue() || observation.isGroupWithOnlyVoidedMembers());
+				observation.voided = observation.voided || observation.canBeVoided();
 			});
 		}
 
@@ -63,6 +63,10 @@
 
 		this.isLeafNodeWithOutValue = function() {
 			return this.isLeaf() && !this.hasValue();
+		}
+
+		this.canBeVoided = function() {
+			return this.isExisting() && (this.isLeafNodeWithOutValue() || this.isGroupWithOnlyVoidedMembers());
 		}
 	}
 

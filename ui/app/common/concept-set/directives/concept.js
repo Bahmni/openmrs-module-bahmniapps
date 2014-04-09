@@ -16,11 +16,22 @@ angular.module('bahmni.common.conceptSet')
 
             $scope.selectOptions = {
                 query: function(options) {
-                    return options.callback({results:  $filter('filter')($scope.getPossibleAnswers(), {name: options.term})});
+                    return options.callback({results: $filter('filter')($scope.getPossibleAnswers(), {name: options.term})});
                 },
                 width: '20em',
                 allowClear: true,
                 placeholder: 'Select',
+                formatResult: getPropertyFunction('name'),
+                formatSelection: getPropertyFunction('name'),
+                id: getPropertyFunction('uuid')
+            };
+
+            $scope.multiSelectOptions = {
+                query: function(options) {
+                    return options.callback({results: $filter('filter')($scope.getPossibleAnswers(), {name: options.term})});
+                },
+                width: '20em',
+                multiple: true,
                 formatResult: getPropertyFunction('name'),
                 formatSelection: getPropertyFunction('name'),
                 id: getPropertyFunction('uuid')

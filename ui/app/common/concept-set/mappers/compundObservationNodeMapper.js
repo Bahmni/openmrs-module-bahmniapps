@@ -7,12 +7,11 @@ Bahmni.ConceptSet.CompundObservationNodeMapper = function (uiConfig, compoundCon
 
     var self = this,
         conceptMapper = new Bahmni.ConceptSet.ConceptMapper(),
-        newCompondObservationNode = function (concept) {
-            var primaryObservation = { concept: conceptMapper.map(concept), groupMembers: []};
-            return CompundObservationNode.createNew(primaryObservation, concept, self.compoundConcept, self.uiConfig);
+        newCompoundObservation = function (concept) {
+            return { concept: conceptMapper.map(compoundConcept), groupMembers: []};
         },
 
-        findInSavedObservation = function (observations, concept) {
+        findCompoundObservation = function (observations, concept) {
             return observations.filter(function (observation) {
                 return observation.groupMembers && observation.groupMembers.some(function (obs) {
                     return obs && concept.uuid === obs.concept.uuid;
@@ -20,25 +19,21 @@ Bahmni.ConceptSet.CompundObservationNodeMapper = function (uiConfig, compoundCon
             })[0];
         },
 
-        mapObservationGroupMembers = function (node, conceptSetMembers) {
-            var savedObservations = node.primaryObservation.groupMembers;
-            return conceptSetMembers.map(function (memberConcept) {
-                var childNode = mapObservation(memberConcept, savedObservations);
-                node.addChild(childNode);
-                return childNode.compoundObservation;
-            });
+        mapObservationGroupMembers = function (concepts, observations) {
+            return concepts.map(function (concept) { return createNode(concept, observations); });
         },
 
-        mapObservation = function (concept, savedObservations) {
-            var compoundObservation = findInSavedObservation(savedObservations, concept);
-            var node = compoundObservation ? CompundObservationNode.create(compoundObservation, concept, self.compoundConcept, self.uiConfig) : newCompondObservationNode(concept)
-            if (concept.set) {
-                node.primaryObservation.groupMembers = mapObservationGroupMembers(node, concept.setMembers);
+        createNode = function (concept, observations) {
+            var compoundObservation = findCompoundObservation(observations, concept) || newCompoundObservation(concept);
+            var node = CompundObservationNode.create(compoundObservation, concept, self.compoundConcept, self.uiConfig[concept.name.name]);
+            if(concept.set && node.primaryObservation) {
+                node.children = mapObservationGroupMembers(concept.setMembers, node.primaryObservation.groupMembers);
+                node.primaryObservation.groupMembers = node.children.map(function(childNode) { return childNode.compoundObservation; });
             }
             return node;
         };
 
     this.map = function (observations, rootConcept) {
-        return mapObservation(rootConcept, observations || []);
+        return createNode(rootConcept, observations || []);
     };
 };

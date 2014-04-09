@@ -14,7 +14,7 @@ angular.module('bahmni.clinical')
         };
 
         $scope.showObservation = function(){
-            return Bahmni.Clinical.Constants.groupObservations.indexOf($scope.observation.concept.name) < 0 && hasValueOrMembers($scope.observation);
+            return !$scope.observation.voided && Bahmni.Clinical.Constants.groupObservations.indexOf($scope.observation.concept.name) < 0 && hasValueOrMembers($scope.observation);
         };
     };
     return {
