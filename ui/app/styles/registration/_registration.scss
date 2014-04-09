@@ -469,6 +469,18 @@ table{
         margin-top:2px;
         }
 }
+@media screen and (max-width: 1100px) {
+  .caste-lastname {
+    display: block;
+    width: 205px;
+    overflow: auto;
+    position: absolute;
+    right: 207px;
+    top: 165px;
+  }
+}
+
+
 .submit-btn-container{
   @include clearfix();
   padding:10px 20px 0px 20px;
@@ -626,7 +638,11 @@ video{
 
 .age-field {
   .input-prepend {
-    margin: 5px;
+    margin: 5px 2px;
+    .add-on {
+      padding: 4px;
+
+    }
   }
 
   #ageYears {
