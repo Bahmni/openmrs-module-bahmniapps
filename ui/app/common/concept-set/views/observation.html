@@ -31,7 +31,8 @@
                   <input type="hidden" ui-select2="selectOptions" ng-model="node.value"></input>
                 </div>
 
-                <div ng-switch-when="multiselect" ui-select2="multiSelectOptions" ng-model="node.value" ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}">
+                <div ng-switch-when="multiselect"  ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}" class="autocomplete">
+                    <div ui-select2="multiSelectOptions" ng-model="node.value"></div>
                 </div>
 
                 <p ng-switch-default class="field-value info icon-info-sign"> The concept data type '{{node.dataTypeName}}' is not supported yet.</p>
