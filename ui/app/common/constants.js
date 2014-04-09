@@ -20,6 +20,7 @@ Bahmni.Common.Constants = {
     openmrsUrl: "/openmrs",
     idgenConfigurationURL: "/openmrs/ws/rest/v1/idgen/identifiersources",
     bahmniRESTBaseURL: "/openmrs/ws/rest/v1/bahmnicore",
+    allTestsAndPanelsConceptName : 'All_Tests_and_Panels',
     dosageFrequencyConceptName : 'Dosage Frequency',
     dosageInstructionConceptName : 'Dosage Instructions',
     consultationNoteConceptName : 'Consultation Note',

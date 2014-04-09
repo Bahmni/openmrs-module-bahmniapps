@@ -53,7 +53,7 @@ Bahmni.Clinical.Visit.prototype = {
     }
 };
 
-Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNoteConcept, labOrderNoteConcept, orderTypes) {
+Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNoteConcept, labOrderNoteConcept, orderTypes, allTestAndPanels) {
     var drugOrders, consultationNotes, otherInvestigations, observations, diagnoses = [], dispositions = [], testOrders = [],
         orderGroup = new Bahmni.Clinical.OrderGroup(),
         orderGroupWithObs = new Bahmni.Clinical.OrderGroupWithObs(),
@@ -96,17 +96,41 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
 
     drugOrders = orderGroup.create(encounterTransactions, 'drugOrders');
     otherInvestigations = orderGroup.create(encounterTransactions, 'testOrders', isNonLabTests);
-    var testOrders = orderGroupWithObs.create(encounterTransactions, 'testOrders', isLabTests);
-    testOrders.forEach(function(testOrder) {
-        testOrder.orders.forEach(function(order) {
-            order.temp = Bahmni.Clinical.TestOrder.create(order);
-        });
-    });
 
-    testOrders.forEach(function(testOrder) {
+    var filterFunction = function(aTestOrPanel, testOrder){
+        return aTestOrPanel.name.name == testOrder.concept.name;
+    };
+    var sort = function(allTestsAndPanels, encountersWithTestOrders, filterFunction){
+        var indexOf = function(allTestAndPanels, order) {
+            var indexCount = 0;
+            allTestAndPanels.setMembers.every(function(aTestOrPanel) {
+                if (filterFunction(aTestOrPanel, order))
+                    return false;
+                else {
+                    indexCount++;
+                    return true;
+                }
+            });
+            return indexCount;
+        };
+
+        encountersWithTestOrders.forEach(function(encounterWithTestOrders) {
+            encounterWithTestOrders.orders.sort(function(firstElement, secondElement) {
+                var indexOfFirstElement = indexOf(allTestsAndPanels, firstElement);
+                var indexOfSecondElement = indexOf(allTestsAndPanels, secondElement);
+                return indexOfFirstElement - indexOfSecondElement;
+            });
+        });
+        return encountersWithTestOrders;
+    };
+
+    var encountersWithTestOrders = orderGroupWithObs.create(encounterTransactions, 'testOrders', isLabTests);
+    encountersWithTestOrders = allTestAndPanels ? sort(allTestAndPanels, encountersWithTestOrders, filterFunction) : encountersWithTestOrders;
+
+    encountersWithTestOrders.forEach(function(testOrder) {
         var orderList = [];
         testOrder.orders.forEach(function(order) {
-            orderList.push(Bahmni.Clinical.TestOrder.create(order));
+            orderList.push(Bahmni.Clinical.TestOrder.create(order, allTestAndPanels));
         });
 
         testOrder.displayList = [];
@@ -132,5 +156,5 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
         }
     });
 
-    return new this(drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, testOrders, hasEncounters);
+    return new this(drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, encountersWithTestOrders, hasEncounters);
 }

@@ -10,7 +10,7 @@ angular.module('opd.patientDashboard', [])
 
         var getEncountersForVisit = function (visitUuid) {
             encounterService.search(visitUuid).success(function (encounterTransactions) {
-                $scope.visit = Bahmni.Clinical.Visit.create(encounterTransactions, $scope.consultationNoteConcept, $scope.labOrderNotesConcept, $scope.encounterConfig.orderTypes)
+                $scope.visit = Bahmni.Clinical.Visit.create(encounterTransactions, $scope.consultationNoteConcept, $scope.labOrderNotesConcept, $scope.encounterConfig.orderTypes, $rootScope.allTestsAndPanelsConcept)
             });
         };
 

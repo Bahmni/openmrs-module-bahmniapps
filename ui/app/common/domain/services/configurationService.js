@@ -85,6 +85,15 @@ angular.module('bahmni.common.domain')
             });
         };
 
+        configurationFunctions.allTestsAndPanelsConcept = function () {
+            var allTestsAndPanelsConcept =  $http.get(Bahmni.Common.Constants.conceptUrl, {
+                method:"GET",
+                params: { v: 'custom:(uuid,name:(uuid,name),setMembers:(uuid,name:(uuid,name)))', name: Bahmni.Common.Constants.allTestsAndPanelsConceptName },
+                withCredentials: true
+            });
+            return allTestsAndPanelsConcept;
+        };
+
         configurationFunctions.identifierSourceConfig = function () {
            return $http.get(Bahmni.Common.Constants.idgenConfigurationURL, {
                 withCredentials: true

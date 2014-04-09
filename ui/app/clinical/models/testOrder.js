@@ -15,7 +15,35 @@ Bahmni.Clinical.TestOrder = (function () {
         };
     };
 
-    var createResult = function (observationList) {
+    var sort = function (allTestsAndPanels, panelList, filterFunction) {
+        var indexOf = function (allTestAndPanels, order) {
+            var indexCount = 0;
+            allTestAndPanels.setMembers.every(function (aTestOrPanel) {
+                if (filterFunction(aTestOrPanel, order))
+                    return false;
+                else {
+                    indexCount++;
+                    return true;
+                }
+            });
+            return indexCount;
+        };
+
+        panelList.forEach(function (aPanel) {
+            aPanel.results.sort(function (firstElement, secondElement) {
+                var indexOfFirstElement = indexOf(allTestsAndPanels, firstElement);
+                var indexOfSecondElement = indexOf(allTestsAndPanels, secondElement);
+                return indexOfFirstElement - indexOfSecondElement;
+            });
+        });
+        return panelList;
+    };
+
+    var filterFunction = function (aTestOrPanel, aPanelResult) {
+        return aTestOrPanel.name.name == aPanelResult.name;
+    };
+
+    var createResult = function (observationList, allTestAndPanels) {
         var isPanel, panelList = [], result,
             depth = function (obs) {
                 var result = 0, temp = obs;
@@ -32,6 +60,10 @@ Bahmni.Clinical.TestOrder = (function () {
             observationList.forEach(function (observation) {
                 panelList.push(Bahmni.Clinical.Panel.create(observation));
             });
+
+
+            panelList = allTestAndPanels ? sort(allTestAndPanels, panelList, filterFunction) : panelList;
+
             result = Bahmni.Clinical.Panel.merge(panelList);
         } else {
             result = Bahmni.Clinical.Results.create(observationList[0]);
@@ -40,14 +72,14 @@ Bahmni.Clinical.TestOrder = (function () {
         return result;
     };
 
-    TestOrder.prototype.displayList = function(){
+    TestOrder.prototype.displayList = function () {
         return this.result.displayList();
     };
 
-    TestOrder.create = function (orderGroupWithObs) {
+    TestOrder.create = function (orderGroupWithObs, allTestAndPanels) {
         return new Bahmni.Clinical.TestOrder({
             name: orderGroupWithObs.concept.name,
-            result: createResult(orderGroupWithObs.obs) || new Bahmni.Clinical.Results({name: orderGroupWithObs.concept.name}),
+            result: createResult(orderGroupWithObs.obs, allTestAndPanels) || new Bahmni.Clinical.Results({name: orderGroupWithObs.concept.name}),
             orderDate: orderGroupWithObs.dateCreated,
             ordererComment: "",
             fulfillerComment: ""
