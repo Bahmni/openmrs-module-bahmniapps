@@ -41,7 +41,7 @@ angular.module('bahmni.registration')
                 var defaultVisitType = $route.current.params.visitType || constants.defaultVisitTypeName;
                 var visitTypesAsArray = $rootScope.encounterConfiguration.getVistTypesAsArray();
                 var visitArray = visitTypesAsArray.filter(function(visitType) {
-                    return visitType.name == defaultVisitType;
+                    return visitType.name === defaultVisitType;
                 });
                 return visitArray.length > 0 ? visitArray[0].name : constants.defaultVisitTypeName;
             };

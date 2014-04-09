@@ -138,7 +138,7 @@ angular.module('bahmni.registration')
 
             $scope.disableFormSubmitOnEnter = function () {
                 $('.visit-patient').find('input').keypress(function (e) {
-                    if (e.which == 13) // Enter key = keycode 13
+                    if (e.which === 13) // Enter key = keycode 13
                     {
                         return false;
                     }

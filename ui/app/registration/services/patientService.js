@@ -5,7 +5,7 @@ angular.module('bahmni.registration')
         var patient;
 
         var getPatient = function () {
-            if (patient != undefined) {
+            if (patient !== undefined) {
                 patient.image = constants.baseOpenMRSRESTURL + "/personimage/" + patient.uuid + ".jpeg" + "?q=" + new Date().getTime();
                 return patient;
             }

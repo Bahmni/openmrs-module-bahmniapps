@@ -31,7 +31,7 @@ angular.module('bahmni.registration')
             });
 
             $scope.$watch('patient.caste', function () {
-                if ($scope.patient.sameAsLastName && ($scope.patient.familyName != $scope.patient.caste)) {
+                if ($scope.patient.sameAsLastName && ($scope.patient.familyName !== $scope.patient.caste)) {
                     $scope.patient.sameAsLastName = false;
                 }
             });

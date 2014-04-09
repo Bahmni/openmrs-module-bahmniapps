@@ -7,10 +7,10 @@ var PatientConfig = (function () {
             }
         },
 
-        configure: function(attributes) {
+        configure: function (attributes) {
             var self = this;
-            attributes.forEach(function(attr) {
-                if(self.map[attr.name] != null) {
+            attributes.forEach(function (attr) {
+                if (self.map[attr.name] !== null) {
                     attr.autocompleteConfig = self.map[attr.name];
                 }
             });
@@ -32,7 +32,7 @@ var PatientConfig = (function () {
             //Avoiding multiple calls from angular code. Side effect of the way angular does dirty check. [Shruti/ Sush]
             if (this.attributeRows === undefined) {
                 var attributes = this.personAttributeTypes.filter(function (item) {
-                    return item.name != "healthCenter" && item.name != "givenNameLocal" && item.name != "middleNameLocal" && item.name != "familyNameLocal";
+                    return item.name !== "healthCenter" && item.name !== "givenNameLocal" && item.name !== "middleNameLocal" && item.name !== "familyNameLocal";
                 });
 
                 autocompleteConfig.configure(attributes);
@@ -47,12 +47,12 @@ var PatientConfig = (function () {
             var row = [];
             for (var i in attributes) {
                 row.push(attributes[i]);
-                if (i != 0 && (i % 2) != 0) {
+                if (i !== 0 && (i % 2) !== 0) {
                     attributeRows.push(row);
                     row = [];
                 }
             }
-            if(row.length > 0) {
+            if (row.length > 0) {
                 attributeRows.push(row);
             }
 
@@ -61,23 +61,24 @@ var PatientConfig = (function () {
 
         heathCentreAttribute: function () {
             return this.personAttributeTypes.filter(function (item) {
-                return item.name == "healthCenter";
+                return item.name === "healthCenter";
             })[0];
         },
 
         local: function () {
             var givenName = this.personAttributeTypes.filter(function (item) {
-                return item.name == "givenNameLocal";
+                return item.name === "givenNameLocal";
             })[0];
             var middleName = this.personAttributeTypes.filter(function (item) {
-                return item.name == "middleNameLocal";
+                return item.name === "middleNameLocal";
             })[0];
             var familyName = this.personAttributeTypes.filter(function (item) {
-                return item.name == "familyNameLocal";
+                return item.name === "familyNameLocal";
             })[0];
 
-            if (givenName && middleName && familyName)
-                return { "showNameField": true, "labelForNameField": givenName.description, "placeholderForGivenName": givenName.description ,"placeholderForMiddleName": middleName.description , "placeholderForFamilyName": familyName.description};
+            if (givenName && middleName && familyName) {
+                return { "showNameField": true, "labelForNameField": givenName.description, "placeholderForGivenName": givenName.description, "placeholderForMiddleName": middleName.description, "placeholderForFamilyName": familyName.description};
+            }
             return {"showNameField": false}
         }
 

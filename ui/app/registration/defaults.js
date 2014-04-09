@@ -1,3 +1,5 @@
+'use strict';
+
 var defaults = {
     registration_fees_newPatient : 10,
     registration_fees_oldPatient : 0,

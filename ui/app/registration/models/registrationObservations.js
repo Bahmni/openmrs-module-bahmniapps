@@ -1,6 +1,8 @@
+'use strict';
+
 var RegistrationObservations = (function () {
 
-    function RegistrationObservations(regObservations, isNewPatient, encounterConfig) {
+    var RegistrationObservations = function(regObservations, isNewPatient, encounterConfig) {
         this.observations = regObservations.map(function (obs) {
             return new ObservationData(obs.uuid, obs.concept, obs.value)
         });
@@ -35,7 +37,7 @@ var RegistrationObservations = (function () {
 
     var getConceptObservation = function (observations, conceptUuid) {
         var filteredObs = observations.filter(function (observation) {
-            return observation.concept.uuid == conceptUuid
+            return observation.concept.uuid === conceptUuid
         });
         return filteredObs.length > 0 ? filteredObs[0] : null;
     };
@@ -46,7 +48,7 @@ var RegistrationObservations = (function () {
             var filteredObservation = observations.filter(function (observation) {
                 return observation.concept.uuid === configuredConcept.uuid
             });
-            if (filteredObservation.length == 0) {
+            if (filteredObservation.length === 0) {
                 observations.push(new ObservationData(null, {uuid: configuredConcept.uuid, name: configuredConceptName}, null));
             }
         });

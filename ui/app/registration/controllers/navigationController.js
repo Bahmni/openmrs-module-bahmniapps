@@ -3,7 +3,6 @@
 angular.module('bahmni.registration')
     .controller('NavigationController', ['$scope', '$rootScope', '$location', 'sessionService', '$window', 'appService',
         function ($scope, $rootScope, $location, sessionService, $window, appService) {
-        var loginPagePath = "/login";
 
         $rootScope.$on('event:appExtensions-loaded', function () {
             $scope.extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.navigation", "link");

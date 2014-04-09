@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.registration')
-.directive('addressFields', function ($parse) {
+.directive('addressFields', function () {
     var template =  '<section class="form-field-inline" ng-repeat="addressLevels in addressLevelsChunks">'+
                         '<article class="form-field" ng-repeat="addressLevel in addressLevels">'+
                                 '<div class="field-attribute">'+
@@ -44,7 +44,7 @@ angular.module('bahmni.registration')
     };
 
     $scope.getAddressEntryList = function (field) {
-        return function(id, query, type) {
+        return function(id, query) {
             return addressAttributeService.search(field, query);
         };
     };

@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.Registration.VisitControl = function(visitTypes, defaultVisitTypeName, visitService){
     var self = this;
     self.visitTypes = visitTypes;

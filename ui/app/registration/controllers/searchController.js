@@ -35,7 +35,7 @@ angular.module('bahmni.registration')
             if(searchPromise) {
                 searchPromise.success(function(data) {
                     $scope.results = data.results;
-                    $scope.noResultsMessage = $scope.results.length == 0 ?  "No results found" : null;
+                    $scope.noResultsMessage = $scope.results.length === 0 ?  "No results found" : null;
                 });
             }
         };
@@ -65,7 +65,7 @@ angular.module('bahmni.registration')
             preferences.identifierPrefix = $scope.identifierPrefix.prefix;
             $location.search({identifierPrefix: $scope.identifierPrefix.prefix, registrationNumber: $scope.registrationNumber});
             var searchPromise = patientService.search(patientIdentifier).success(function (data) {
-                if (data.results.length == 1) {
+                if (data.results.length === 1) {
                     var patient = data.results[0];
                     var forwardUrl = appService.getAppDescriptor().getConfigValue("searchByIdForwardUrl") || "/patient/{{patientUuid}}";
                     $location.url(appService.getAppDescriptor().formatUrl(forwardUrl, {'patientUuid': patient.uuid} ));
@@ -114,10 +114,10 @@ angular.module('bahmni.registration')
             if(promise) {
                 promise.success(function(data) {
                     data.results.forEach(function(result) {$scope.results.push(result)});
-                    $scope.noMoreResultsPresent = (data.results.length == 0 ? true : false);
+                    $scope.noMoreResultsPresent = (data.results.length === 0);
                     $scope.nextPageLoading = false;
                 });
-                promise.error(function(data) {
+                promise.error(function() {
                     $scope.nextPageLoading = false;
                 });
             }

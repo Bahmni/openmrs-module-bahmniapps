@@ -34,13 +34,13 @@ angular.module('bahmni.registration')
             var defaultVisitType = $route.current.params.visitType || constants.defaultVisitTypeName;
             var visitTypesAsArray = $rootScope.encounterConfiguration.getVistTypesAsArray();
             var visitArray = visitTypesAsArray.filter(function(visitType) {
-                return visitType.name == defaultVisitType;
+                return visitType.name === defaultVisitType;
             });
             return visitArray.length > 0 ? visitArray[0].name : constants.defaultVisitTypeName;
         };
 
         $scope.visitControl = new Bahmni.Registration.VisitControl($rootScope.encounterConfiguration.getVistTypesAsArray(), getDefaultVisitType(), visitService);
-        $scope.visitControl.onStartVisit = function(visitType) {
+        $scope.visitControl.onStartVisit = function() {
             $scope.setSubmitSource('startVisit');
         };
 
@@ -77,7 +77,7 @@ angular.module('bahmni.registration')
         }
 
         var followUpAction = function(patientProfileData) {
-            if($scope.submitSource == 'startVisit') {
+            if($scope.submitSource === 'startVisit') {
                 return $scope.visitControl.createVisit(patientProfileData.patient.uuid, createEncounterObject()).success(function(){
                     var patientUrl = $location.absUrl().replace("new", patientProfileData.patient.uuid) + "?newpatient=true";
                     $scope.patient.registrationDate = dateUtil.now();
@@ -85,7 +85,7 @@ angular.module('bahmni.registration')
                     $window.history.pushState(null, null, patientUrl);
                     $location.path("/patient/" + patientProfileData.patient.uuid + "/visit");
                 });
-            } else if ($scope.submitSource == 'print') {
+            } else if ($scope.submitSource === 'print') {
                 $timeout(function(){
                     printer.print('registrationCard');
                     goToActionUrl('print', patientProfileData);
