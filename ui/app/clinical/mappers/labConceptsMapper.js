@@ -1,5 +1,5 @@
 Bahmni.LabConceptsMapper = (function(){
-    LabConceptsMapper = function() { };
+    var LabConceptsMapper = function() { };
 
     var forConcptClass = function(conceptClassName) {
         return function(concept) { return concept.conceptClass.name === conceptClassName };

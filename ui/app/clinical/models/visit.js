@@ -54,7 +54,7 @@ Bahmni.Clinical.Visit.prototype = {
 };
 
 Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNoteConcept, labOrderNoteConcept, orderTypes, allTestAndPanels) {
-    var drugOrders, consultationNotes, otherInvestigations, observations, diagnoses = [], dispositions = [], testOrders = [],
+    var drugOrders, consultationNotes, otherInvestigations, observations, diagnoses = [], dispositions = [],
         orderGroup = new Bahmni.Clinical.OrderGroup(),
         orderGroupWithObs = new Bahmni.Clinical.OrderGroupWithObs(),
         resultGrouper = new Bahmni.Clinical.ResultGrouper(),
