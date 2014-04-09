@@ -16,7 +16,7 @@ Bahmni.Clinical.Results = (function () {
     Results.create = function (obs) {
         var options = {results: []};
         obs.groupMembers.forEach(function (groupMember) {
-            options.results.push(Bahmni.Clinical.Result.create(groupMember.groupMembers));
+            options.results.push(Bahmni.Clinical.Result.create(obs.concept.name, groupMember.groupMembers));
         });
         options.name = obs.concept.name;
         options.orderDate = obs.observationDateTime;

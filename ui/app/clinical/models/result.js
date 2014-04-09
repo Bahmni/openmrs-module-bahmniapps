@@ -34,19 +34,31 @@ Bahmni.Clinical.Result = (function () {
             })[0];
         };
 
-    Result.create = function (observationList) {
+    Result.create = function (parentName, observationList) {
         var realObs = getRealObs(observationList);
-        return new Bahmni.Clinical.Result({
-            name: realObs.concept.name,
-            value: realObs.value,
-            isAbnormal: valueOf(observationList, "LAB_ABNORMAL") === 'true',
-            minNormal: valueOf(observationList, "LAB_MINNORMAL"),
-            maxNormal: valueOf(observationList, "LAB_MAXNORMAL"),
-            notes: valueOf(observationList, "LAB_NOTES"),
-            referredOut: matchingObservations(observationList, "REFERRED_OUT").length > 0,
-            observationDateTime: realObs.observationDateTime,
-            providerName: realObs.provider.name
-        });
+        if (realObs) {
+            return new Bahmni.Clinical.Result({
+                name: realObs.concept.name,
+                value: realObs.value,
+                isAbnormal: valueOf(observationList, "LAB_ABNORMAL") === 'true',
+                minNormal: valueOf(observationList, "LAB_MINNORMAL"),
+                maxNormal: valueOf(observationList, "LAB_MAXNORMAL"),
+                notes: valueOf(observationList, "LAB_NOTES"),
+                referredOut: matchingObservations(observationList, "REFERRED_OUT").length > 0,
+                observationDateTime: realObs.observationDateTime,
+                providerName: realObs.provider.name
+            });
+        } else {
+            return new Bahmni.Clinical.Result({
+                name: parentName,
+                isAbnormal: valueOf(observationList, "LAB_ABNORMAL") === 'true',
+                minNormal: valueOf(observationList, "LAB_MINNORMAL"),
+                maxNormal: valueOf(observationList, "LAB_MAXNORMAL"),
+                notes: valueOf(observationList, "LAB_NOTES"),
+                referredOut: matchingObservations(observationList, "REFERRED_OUT").length > 0
+            });
+        }
+
     };
 
     return Result;
