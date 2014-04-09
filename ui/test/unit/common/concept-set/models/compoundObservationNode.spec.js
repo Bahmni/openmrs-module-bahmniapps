@@ -23,7 +23,7 @@ describe("CompundObservationNode", function() {
 			 	var coughObservation = buildObservation({concept: primaryConcept, value: coughConcept});
 			 	var chestPainbservation = buildObservation({concept: primaryConcept, value: chestPainConcept});
 			 	var compoundObservation = buildObservation({groupMembers: [coughObservation, chestPainbservation]});
-				node = CompundObservationNode.create(compoundObservation, primaryMRSConcept, compoundObservationConcept, conceptUIConfig);
+				node = new CompundObservationNode(compoundObservation, primaryMRSConcept, compoundObservationConcept, conceptUIConfig);
 			 	
 			 	var value = node.value;
 
@@ -38,7 +38,7 @@ describe("CompundObservationNode", function() {
 			 	var coughObservation = buildObservation({voided: true, concept: primaryConcept, value: coughConcept});
 			 	var chestPainbservation = buildObservation({concept: primaryConcept, value: chestPainConcept});
 			 	var compoundObservation = buildObservation({groupMembers: [coughObservation, chestPainbservation]});
-				node = CompundObservationNode.create(compoundObservation, primaryMRSConcept, compoundObservationConcept, conceptUIConfig);
+				node = new CompundObservationNode(compoundObservation, primaryMRSConcept, compoundObservationConcept, conceptUIConfig);
 			 	
 			 	var value = node.value;
 
@@ -52,7 +52,7 @@ describe("CompundObservationNode", function() {
 		describe("for numeric observation", function() {
 			beforeEach(function() {
 				primaryMRSConcept = buildMRSConcept({name: "Pulse", dataType: "Numeric", hiAbsolute: 10, lowAbsolute: 2});
-				node = CompundObservationNode.createNew(primaryMRSConcept, compoundObservationConcept, {});
+				node = new CompundObservationNode(buildObservation(), primaryMRSConcept, compoundObservationConcept, {});
 			});
 
 			it("should set abnormality to true when value is beyond max", function() {
@@ -90,7 +90,7 @@ describe("CompundObservationNode", function() {
 			it("should add an observation for each new value", function() {
 			 	var coughConcept = buildConcept({name: "Cough"});
 			 	var chestPainConcept = buildConcept({name: "Chest Pain"});
-				node = CompundObservationNode.createNew(primaryMRSConcept, compoundObservationConcept, conceptUIConfig);
+				node = new CompundObservationNode(buildObservation(), primaryMRSConcept, compoundObservationConcept, conceptUIConfig);
 			 	
 			 	node.value = [coughConcept, chestPainConcept];
 
@@ -105,7 +105,7 @@ describe("CompundObservationNode", function() {
 			it("should remove newly added observation when value is removed", function() {
 			 	var coughConcept = buildConcept({name: "Cough"});
 			 	var chestPainConcept = buildConcept({name: "Chest Pain"});
-				node = CompundObservationNode.createNew(primaryMRSConcept, compoundObservationConcept, conceptUIConfig);
+				node = new CompundObservationNode(buildObservation(), primaryMRSConcept, compoundObservationConcept, conceptUIConfig);
 			 	
 			 	node.value = [coughConcept, chestPainConcept];
 			 	node.value = [coughConcept];
@@ -121,7 +121,7 @@ describe("CompundObservationNode", function() {
 			 	var chestPainConcept = buildConcept({name: "Chest Pain"});
 			 	var coughObservation = buildObservation({concept: primaryConcept, value: coughConcept});
 			 	var compoundObservation = buildObservation({groupMembers: [coughObservation]});
-				node = CompundObservationNode.create(compoundObservation, primaryMRSConcept, compoundObservationConcept, conceptUIConfig);
+				node = new CompundObservationNode(compoundObservation, primaryMRSConcept, compoundObservationConcept, conceptUIConfig);
 			 	
 			 	node.value = [coughConcept, chestPainConcept];
 
@@ -139,7 +139,7 @@ describe("CompundObservationNode", function() {
 			 	var chestPainConcept = buildConcept({name: "Chest Pain"});
 			 	var coughObservation = buildObservation({concept: primaryConcept, value: coughConcept});
 			 	var compoundObservation = buildObservation({groupMembers: [coughObservation]});
-				node = CompundObservationNode.create(compoundObservation, primaryMRSConcept, compoundObservationConcept, conceptUIConfig);
+				node = new CompundObservationNode(compoundObservation, primaryMRSConcept, compoundObservationConcept, conceptUIConfig);
 			 	
 			 	node.value = [chestPainConcept];
 
@@ -158,7 +158,7 @@ describe("CompundObservationNode", function() {
 			 	var chestPainConcept = buildConcept({name: "Chest Pain"});
 			 	var coughObservation = buildObservation({concept: primaryConcept, value: coughConcept, voided: true});
 			 	var compoundObservation = buildObservation({groupMembers: [coughObservation]});
-				node = CompundObservationNode.create(compoundObservation, primaryMRSConcept, compoundObservationConcept, conceptUIConfig);
+				node = new CompundObservationNode(compoundObservation, primaryMRSConcept, compoundObservationConcept, conceptUIConfig);
 			 	
 			 	node.value = [coughConcept, chestPainConcept];
 
@@ -183,7 +183,7 @@ describe("CompundObservationNode", function() {
 		var createNode = function(conceptName, value) {
 			var primaryObservation = {value: value, concept: {name: conceptName}};
 			var compoundObservation = {groupMembers: [primaryObservation]};
-			return CompundObservationNode.create(compoundObservation, primaryMRSConcept, compoundObservationConcept, conceptUIConfig);
+			return new CompundObservationNode(compoundObservation, primaryMRSConcept, compoundObservationConcept, conceptUIConfig);
 		}
 		
 		it("should be true if value of one of immediate child is set", function() {

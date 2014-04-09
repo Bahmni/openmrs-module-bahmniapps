@@ -25,7 +25,7 @@ Bahmni.ConceptSet.CompundObservationNodeMapper = function (uiConfig, compoundCon
 
         createNode = function (concept, observations) {
             var compoundObservation = findCompoundObservation(observations, concept) || newCompoundObservation(concept);
-            var node = CompundObservationNode.create(compoundObservation, concept, self.compoundConcept, self.uiConfig[concept.name.name]);
+            var node = new CompundObservationNode(compoundObservation, concept, self.compoundConcept, self.uiConfig[concept.name.name]);
             if(concept.set && node.primaryObservation) {
                 node.children = mapObservationGroupMembers(concept.setMembers, node.primaryObservation.groupMembers);
                 node.primaryObservation.groupMembers = node.children.map(function(childNode) { return childNode.compoundObservation; });
