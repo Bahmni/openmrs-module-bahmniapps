@@ -712,6 +712,10 @@ video{
       }
     }
   }
+  .form-field {
+    padding-top: 10px;
+    margin-bottom: 0;
+  }
   .field-attribute {
     width:18em;
     .label-add-on {
@@ -721,8 +725,7 @@ video{
     }
   }
   fieldset {
-    margin-top:10px;
-    // margin-bottom:10px;
+    padding-bottom: 0;
     padding-top: 0;
     position:relative;
     width: 100%;
@@ -781,9 +784,10 @@ video{
   }
   .hint {
     font-size: 13px;
-    margin-top: 7px;
     display: inline-block;
     color: #777;
+    float: left;
+    margin-top: 7px;
   }
   .info {
     color: #0099ff;
@@ -825,7 +829,8 @@ form .vitals .form-field .field-value {
 }
 
 .checkbox-inline {
-  padding: 10px;
+  margin-top: 7px;
+  float: left;
   input[type="checkbox"] {
     margin-left: 10px!important;
   }

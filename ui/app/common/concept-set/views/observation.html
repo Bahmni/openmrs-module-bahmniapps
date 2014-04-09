@@ -10,7 +10,7 @@
                 <div ng-switch-when="html5InputDataType">
                     <input obs-constraints obs="node"
                            ng-model="node.value" ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}"/>
-                    <small class="hint" ng-show="node.lowAbsolute || node.highAbsolute">(Valid Range from {{node.lowAbsolute}} to {{node.hiAbsolute}})</small>
+
                 </div>
 
                 <input ng-switch-when="freeTextAutocomplete" class="concept-name" ng-model="node.value" concept-autocomplete
@@ -36,11 +36,12 @@
                 </div>
 
                 <p ng-switch-default class="field-value info icon-info-sign"> The concept data type '{{node.dataTypeName}}' is not supported yet.</p>
-            </div>
+            </div>            
+            <small class="hint" ng-show="node.lowAbsolute || node.highAbsolute">(Valid Range from {{node.lowAbsolute}} to {{node.hiAbsolute}})</small>
             <div class="checkbox-inline" ng-if="node.showAbnormalIndicator">
               <input id="isAbnormal-{{$index}}" type="checkbox" ng-model="node.abnormalityObservation.value" />
               <span for="isAbnormal-{{$index}}">Abnormal</span>
-            </div>
+            </div>                    
         </div>
     </fieldset>
 

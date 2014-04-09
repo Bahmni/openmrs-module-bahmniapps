@@ -1,7 +1,8 @@
 .vitals {
 	// padding:2px 0px 0px 10px;
 	.form-field {
-		padding-bottom: 10px;
+		// padding-bottom: 10px;
+    padding-top: 10px;
 	}
 	.field-attribute {
 		width:18em;
@@ -12,8 +13,8 @@
     }
   }
   fieldset {
-  	margin-top:10px;
-    margin-bottom:10px;
+  	// margin-top:10px;
+   //  margin-bottom:10px;
   	position:relative;
   	width: 100%;
     legend {
@@ -21,7 +22,7 @@
     }
     fieldset {
       .form-group {
-        margin: 0 20%;
+        // margin: 0 20%;
         label span {
           text-transform: capitalize;
         }
@@ -59,15 +60,17 @@
   }
   .hint {
     font-size: 13px;
-    margin-top: 7px;
     display: inline-block;
     color: #777;
+    float: left;
+    padding: 15px 10px;
   }
   .info {
     color: #0099ff;
     width: 200px;
     font-size: 14px;
     line-height: 1.4em;
+    margin-bottom: 0;
   } 
 }
 form .vitals .form-field .field-value {
@@ -90,6 +93,7 @@ form .vitals .form-field .field-value {
       margin-left: 20px;
       margin-right: 40px;
       text-align: right;
+      font-size: 14px;
     }
     &.hasLegend {
       label {
@@ -99,7 +103,8 @@ form .vitals .form-field .field-value {
   }
 }
 .checkbox-inline {
-  padding: 10px;
+  padding: 10px 0;
+  float: left;
   input[type="checkbox"] {
     margin-left: 10px!important;
   }
