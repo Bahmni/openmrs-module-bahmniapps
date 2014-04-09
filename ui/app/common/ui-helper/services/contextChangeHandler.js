@@ -1,8 +1,13 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
- .service('contextChangeHandler', [function() {
-	var callbacks = []; 
+ .service('contextChangeHandler', ['$rootScope', function($rootScope) {
+	var callbacks = [];
+    var self = this;
+
+    $rootScope.$on('$stateChangeSuccess',function(){
+        self.reset();
+    });
 
 	this.reset = function() {
 	    callbacks = []; 
