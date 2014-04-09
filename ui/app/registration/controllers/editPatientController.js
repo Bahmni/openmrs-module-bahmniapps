@@ -6,6 +6,7 @@ angular.module('bahmni.registration')
             var uuid;
             var editActionsConfig = [];
             var defaultActions = ["save", "print"];
+            var constants = Bahmni.Registration.Constants;
             var regEncounterTypeUuid = $scope.encounterConfiguration.encounterTypes[constants.encounterType.registration];
 
             var identifyEditActions = function() {
@@ -47,7 +48,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.visitControl = new Bahmni.Registration.VisitControl($rootScope.encounterConfiguration.getVistTypesAsArray(), getDefaultVisitType(), visitService);
-            $scope.visitControl.onStartVisit = function(visitType) {
+            $scope.visitControl.onStartVisit = function() {
                 $scope.setSubmitSource('startVisit');
             };
 

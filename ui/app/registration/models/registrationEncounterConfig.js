@@ -7,6 +7,7 @@ Bahmni.Registration.RegistrationEncounterConfig = (function() {
 
   RegistrationEncounterConfig.prototype = {
     visitTypeId: function(isNewPatient) {
+        var constants = Bahmni.Registration.Constants;
       if (isNewPatient) {
         return this.visitTypes[constants.visitType.registration];
       } else {

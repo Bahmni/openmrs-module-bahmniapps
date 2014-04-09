@@ -2,12 +2,11 @@
 
 Bahmni.Registration.UpdatePatientRequestMapper = (function () {
     var ObjectUtil = Bahmni.Common.Util.ObjectUtil;
-
-    UpdatePatientRequestMapper.prototype.currentDate = undefined;
-
-    function UpdatePatientRequestMapper(currentDate) {
+    var UpdatePatientRequestMapper = function (currentDate) {
         this.currentDate = currentDate;
     }
+
+    UpdatePatientRequestMapper.prototype.currentDate = undefined;
     
     UpdatePatientRequestMapper.prototype.mapFromPatient = function (patientAttributeTypes, openMRSPatient, patient) {        
         var openMRSPatientProfile = {
@@ -22,7 +21,7 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
                             "preferred": true
                         }
                     ],
-                    addresses: [ObjectUtil.slice(patient.address, constants.allAddressFileds)],
+                    addresses: [ObjectUtil.slice(patient.address, Bahmni.Registration.Constants.allAddressFileds)],
                     birthdate: this.getBirthdate(patient.birthdate, patient.age),
                     birthdateEstimated: patient.birthdate === undefined || patient.birthdate === "",
                     gender: patient.gender,
@@ -83,5 +82,4 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
     };
 
     return UpdatePatientRequestMapper;
-
 })();

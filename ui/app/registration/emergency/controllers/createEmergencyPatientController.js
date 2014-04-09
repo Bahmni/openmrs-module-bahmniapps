@@ -13,6 +13,7 @@ angular.module('bahmni.registration.emergency')
 
             $scope.patient.identifierPrefix = identifierPrefix[0] || $scope.identifierSources[0];
             $scope.showMiddleName = appService.getAppDescriptor().getConfigValue("showMiddleName");
+            var constants = Bahmni.Registration.Constants;
             var visitTypeUuid = $scope.encounterConfiguration.visitTypes[constants.visitType.emergency];
             var encounterTypeUuid = $scope.encounterConfiguration.encounterTypes[constants.encounterType.registration];
             $scope.encounter = {visitTypeUuid: visitTypeUuid, encounterTypeUuid: encounterTypeUuid, observations: []};
@@ -48,7 +49,7 @@ angular.module('bahmni.registration.emergency')
 
         var createVisit = function() {
             $scope.encounter.patientUuid = $scope.patient.uuid;
-            return encounterService.create($scope.encounter).success(function(data) {
+            return encounterService.create($scope.encounter).success(function() {
                 $location.path("/summary");
             });
         };

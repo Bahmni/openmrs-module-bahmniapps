@@ -10,13 +10,13 @@ angular.module('bahmni.registration')
             encounter.providers.push( { "uuid" : $rootScope.currentProvider.uuid } );
         }
 
-        return $http.post(constants.emrApiRESTBaseURL + '/encounter', encounter, {
+        return $http.post(Bahmni.Registration.Constants.emrApiRESTBaseURL + '/encounter', encounter, {
             withCredentials: true
         });
     };
 
     var getActiveEncounter =  function (patientUuid, visitTypeUuid, encounterTypeUuid, providerUuid) {
-        var url = constants.emrApiRESTBaseURL + "/encounter/active";
+        var url = Bahmni.Registration.Constants.emrApiRESTBaseURL + "/encounter/active";
         return $http.get(url, {
             params: {"patientUuid": patientUuid, "visitTypeUuid" : visitTypeUuid, "encounterTypeUuid" : encounterTypeUuid, providerUuid: providerUuid, "includeAll" : false},
             withCredentials: true

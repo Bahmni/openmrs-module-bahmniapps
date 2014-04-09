@@ -7,7 +7,7 @@ angular.module('bahmni.registration')
             var patientUuid = $route.current.params['patientUuid'];
             var isNewPatient = ($location.search()).newpatient;
             var visitTypeUuid = $scope.encounterConfiguration.visitTypeId(isNewPatient);
-            var encounterTypeUuid = $scope.encounterConfiguration.encounterTypes[constants.encounterType.registration];
+            var encounterTypeUuid = $scope.encounterConfiguration.encounterTypes[Bahmni.Registration.Constants.encounterType.registration];
 
             var getPatient = function () {
                 return patientService.get(patientUuid).success(function (openMRSPatient) {

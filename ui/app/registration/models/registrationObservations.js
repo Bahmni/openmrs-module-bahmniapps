@@ -28,10 +28,10 @@ Bahmni.Registration.RegistrationObservations = (function () {
     };
 
     var defaultRegistrationFees = function (observations, isNewPatient, encounterConfig) {
-        var registrationFeesUUID = encounterConfig.getConceptUUID(constants.registrationFeesConcept);
+        var registrationFeesUUID = encounterConfig.getConceptUUID(Bahmni.Registration.Constants.registrationFeesConcept);
         var registrationFee = getConceptObservation(observations, registrationFeesUUID);
         if (registrationFee === null) {
-            observations.push(new ObservationData(null, {uuid: registrationFeesUUID, name: constants.registrationFeesConcept}, defaults.registration_fees(isNewPatient)));
+            observations.push(new ObservationData(null, {uuid: registrationFeesUUID, name: Bahmni.Registration.Constants.registrationFeesConcept}, defaults.registration_fees(isNewPatient)));
         }
     };
 

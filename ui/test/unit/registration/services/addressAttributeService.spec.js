@@ -44,7 +44,7 @@ describe('addressAttributeService', function () {
 
     describe("search", function () {
         it('Should get list of addresses from address hierarchy service', inject(['addressAttributeService', function (addressAttributeService) {
-            constants.openmrsUrl = 'http://blah.com/openmrs';
+            Bahmni.Registration.Constants.openmrsUrl = 'http://blah.com/openmrs';
             var query = "bilas";
             var fieldName = "Village";
 

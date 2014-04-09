@@ -6,6 +6,7 @@ angular.module('bahmni.registration')
         var dateUtil = Bahmni.Common.Util.DateUtil;
         var createActionsConfig = [];
         var defaultActions = ["save", "print", "startVisit"];
+        var constants = Bahmni.Registration.Constants;
         var regEncounterTypeUuid = $rootScope.encounterConfiguration.encounterTypes[constants.encounterType.registration];
         var identifyEditActions = function() {
             createActionsConfig = appService.getAppDescriptor().getExtensions("org.bahmni.registration.patient.create.action", "config");

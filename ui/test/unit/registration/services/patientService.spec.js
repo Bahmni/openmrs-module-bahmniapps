@@ -33,7 +33,7 @@ describe('Patient resource', function () {
         module('bahmni.registration');
 
         module(function ($provide) {
-            constants.openmrsUrl = openmrsUrl;
+            Bahmni.Registration.Constants.openmrsUrl = openmrsUrl;
             $provide.value('$http', mockHttp);
         });
 

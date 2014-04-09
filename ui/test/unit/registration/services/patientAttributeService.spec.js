@@ -14,9 +14,10 @@ describe('patientAttributeService', function () {
     }));
 
     describe("search", function () {
+        var openmrsUrl = 'http://blah.com';
+        Bahmni.Registration.Constants.openmrsUrl = openmrsUrl;
+
         it('Should get unique list of family names', inject(['patientAttributeService', function (patientAttributeService) {
-            var openmrsUrl = 'http://blah.com';
-            constants.openmrsUrl = openmrsUrl;
             var key = "familyName";
             var query = "res";
 
@@ -30,8 +31,6 @@ describe('patientAttributeService', function () {
         }]));
 
         it('Should get unique list of caste',inject(['patientAttributeService', function (patientAttributeService){
-            var openmrsUrl = 'http://blah.com';
-            constants.openmrsUrl = openmrsUrl;
             var key = "caste";
             var query = "res";
 
@@ -45,8 +44,6 @@ describe('patientAttributeService', function () {
         }]))
 
         it('Should trim leading whitespaces',inject(['patientAttributeService', function (patientAttributeService){
-            var openmrsUrl = 'http://blah.com';
-            constants.openmrsUrl = openmrsUrl;
             var key = "caste";
             var query = "       res        ";
 

@@ -3,7 +3,7 @@
 angular.module('bahmni.registration')
     .factory('addressAttributeService', ['$http', function ($http) {
         var search = function(fieldName, query){
-            var url = constants.openmrsUrl + "/module/addresshierarchy/ajax/getPossibleAddressHierarchyEntriesWithParents.form";
+            var url = Bahmni.Registration.Constants.openmrsUrl + "/module/addresshierarchy/ajax/getPossibleAddressHierarchyEntriesWithParents.form";
 
             return $http.get(url, {
                 method: "GET",

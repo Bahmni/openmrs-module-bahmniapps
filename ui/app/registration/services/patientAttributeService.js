@@ -14,7 +14,7 @@ angular.module('bahmni.registration')
     init();
 
     var search = function(fieldName, query, type){
-        var url = constants.openmrsUrl + urlMap[type];
+        var url = Bahmni.Registration.Constants.openmrsUrl + urlMap[type];
         var queryWithoutTrailingSpaces = query.trimLeft();
 
         return $http.get(url, {

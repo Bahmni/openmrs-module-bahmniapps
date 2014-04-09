@@ -6,6 +6,7 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
     }
 
     CreatePatientRequestMapper.prototype.mapFromPatient = function (patientAttributeTypes, patient) {
+        var constants = Bahmni.Registration.Constants;
         var openMRSPatient = {
             patient: {
                 person: {

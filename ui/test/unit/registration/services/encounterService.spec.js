@@ -13,7 +13,7 @@ describe('EncounterService', function () {
 
     it('should create a encounter', inject(['encounterService', function (encounterService) {
         var openmrsUrl = 'http://blah.com';
-        constants.openmrsUrl = openmrsUrl;
+        Bahmni.Registration.Constants.openmrsUrl = openmrsUrl;
         var encounter = {
             "encounterTypeUuid": "b469afaa-c79a-11e2-b284-107d46e7b2c5",
             "patientUuid": "027eca99-0b1e-4421-954e-e8778161ddc1",
@@ -27,7 +27,7 @@ describe('EncounterService', function () {
         var results = encounterService.create(encounter);
 
         expect(mockHttp.post).toHaveBeenCalled();
-        expect(mockHttp.post.mostRecentCall.args[0]).toBe(constants.emrApiRESTBaseURL +  '/encounter');
+        expect(mockHttp.post.mostRecentCall.args[0]).toBe(Bahmni.Registration.Constants.emrApiRESTBaseURL +  '/encounter');
         expect(mockHttp.post.mostRecentCall.args[1]).toEqual(encounter);
         expect(results).toBe('success');
     }]));

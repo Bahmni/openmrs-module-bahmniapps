@@ -1,7 +1,7 @@
 var Bahmni = Bahmni || {};
 Bahmni.Registration = Bahmni.Registration || {};
 
-var constants = {
+Bahmni.Registration.Constants = {
     patientIdentifierTypeName: "Bahmni Id",
     encounterType: {
         registration: "REG"

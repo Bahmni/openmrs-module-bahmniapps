@@ -80,7 +80,7 @@ angular.module('bahmni.common.domain')
         }
 
         configurationFunctions.addressLevels = function () {
-            return $http.get(constants.openmrsUrl + "/module/addresshierarchy/ajax/getOrderedAddressHierarchyLevels.form", {
+            return $http.get(Bahmni.Common.Constants.openmrsUrl + "/module/addresshierarchy/ajax/getOrderedAddressHierarchyLevels.form", {
                 withCredentials: true
             });
         };

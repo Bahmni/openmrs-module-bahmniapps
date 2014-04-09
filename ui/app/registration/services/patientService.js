@@ -3,10 +3,12 @@
 angular.module('bahmni.registration')
     .factory('patientService', ['$http', '$rootScope', 'patient', function ($http, $rootScope) {
         var patient;
+        var openmrsUrl = Bahmni.Registration.Constants.openmrsUrl;
+        var baseOpenMRSRESTURL = Bahmni.Registration.Constants.baseOpenMRSRESTURL;
 
         var getPatient = function () {
             if (patient !== undefined) {
-                patient.image = constants.baseOpenMRSRESTURL + "/personimage/" + patient.uuid + ".jpeg" + "?q=" + new Date().getTime();
+                patient.image = baseOpenMRSRESTURL + "/personimage/" + patient.uuid + ".jpeg" + "?q=" + new Date().getTime();
                 return patient;
             }
             return {};
@@ -22,7 +24,7 @@ angular.module('bahmni.registration')
 
         var search = function (query, village, offset) {
             offset = offset || 0;
-            return $http.get(constants.openmrsUrl + "/ws/rest/v1/patient", {
+            return $http.get(openmrsUrl + "/ws/rest/v1/patient", {
                 method: "GET",
                 params: {q: query, s: "byIdOrNameOrVillage", 'city_village': village, startIndex: offset},
                 withCredentials: true
@@ -30,7 +32,7 @@ angular.module('bahmni.registration')
         };
 
         var get = function (uuid) {
-            return $http.get(constants.openmrsUrl + "/ws/rest/v1/patient/" + uuid, {
+            return $http.get(openmrsUrl + "/ws/rest/v1/patient/" + uuid, {
                 method: "GET",
                 params: {v: "full"},
                 withCredentials: true
@@ -39,12 +41,12 @@ angular.module('bahmni.registration')
 
         var generateIdentifier = function (patient) {
             var idgenJson = {"identifierSourceName": patient.identifierPrefix.prefix};
-            return $http.post(constants.openmrsUrl + "/ws/rest/v1/idgen", idgenJson);
+            return $http.post(openmrsUrl + "/ws/rest/v1/idgen", idgenJson);
         };
 
         var create = function (patient) {
             var patientJson = new Bahmni.Registration.CreatePatientRequestMapper(moment()).mapFromPatient($rootScope.patientConfiguration.personAttributeTypes, patient);
-            return $http.post(constants.baseOpenMRSRESTURL + "/patientprofile", patientJson, {
+            return $http.post(baseOpenMRSRESTURL + "/patientprofile", patientJson, {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
             });
@@ -52,14 +54,14 @@ angular.module('bahmni.registration')
 
         var update = function (patient, openMRSPatient) {
             var patientJson = new Bahmni.Registration.UpdatePatientRequestMapper(moment()).mapFromPatient($rootScope.patientConfiguration.personAttributeTypes, openMRSPatient, patient);
-            return $http.post(constants.baseOpenMRSRESTURL + "/patientprofile/" + openMRSPatient.uuid, patientJson, {
+            return $http.post(baseOpenMRSRESTURL + "/patientprofile/" + openMRSPatient.uuid, patientJson, {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
             });
         };
 
         var updateImage = function (uuid, image) {
-            var updateImageUrl = constants.baseOpenMRSRESTURL + "/personimage/";
+            var updateImageUrl = baseOpenMRSRESTURL + "/personimage/";
             var imageRequest = {
                 "person": {
                     "uuid": uuid
