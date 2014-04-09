@@ -29,13 +29,13 @@ Bahmni.DocumentUpload.Visit = function () {
         return sortedSavedImages;
     };
 
-    this.initSavedImages = function () {
+    this.initSavedImages = function (encounterTypeUuid) {
         this.savedImages = [];
         this.images = [];
 
         var savedImages = this.savedImages;
         this.encounters.forEach(function (encounter) {
-            encounter.obs && encounter.obs.forEach(function (observation) {
+            encounter.encounterType.uuid == encounterTypeUuid && encounter.obs && encounter.obs.forEach(function (observation) {
                 observation.groupMembers && observation.groupMembers.forEach(function (member) {
                     if (member.concept.name.name == 'Document') {
                         var conceptName = observation.concept.name.name;
@@ -72,13 +72,16 @@ Bahmni.DocumentUpload.Visit = function () {
     };
 
     this.addImage = function (image) {
+        var savedImage = null;
         var alreadyPresent = this.images.filter(function (img) {
             return img.encodedValue === image;
         });
         if (alreadyPresent.length == 0) {
-            this.images.push(new DocumentImage({"encodedValue": image, "new": true}));
+            savedImage = new DocumentImage({"encodedValue": image, "new": true});
+            this.images.push(savedImage);
         }
         this.markAsUpdated();
+        return savedImage;
     };
 
     this.markAsUpdated = function () {

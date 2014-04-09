@@ -4,22 +4,22 @@ var EncounterConfig = (function () {
     }
     EncounterConfig.prototype = {
         getOpdConsultationEncounterTypeUuid:function () {
-            return this.encounterTypes["OPD"];
+            return this.getEncounterTypeUuid("OPD");
         },
         getAdmissionEncounterTypeUuid:function () {
-            return this.encounterTypes["ADMISSION"];
+            return this.getEncounterTypeUuid("ADMISSION");
         },
         getInvestigationEncounterTypeUuid:function () {
-            return this.encounterTypes["INVESTIGATION"];
+            return this.getEncounterTypeUuid("INVESTIGATION");
         },
         getDischargeEncounterTypeUuid:function () {
-            return this.encounterTypes["DISCHARGE"];
+            return this.getEncounterTypeUuid("DISCHARGE");
         },
         getTransferEncounterTypeUuid:function () {
-            return this.encounterTypes["TRANSFER"];
+            return this.getEncounterTypeUuid("TRANSFER");
         },
         getRadiologyEncounterTypeUuid:function () {
-            return this.encounterTypes["RADIOLOGY"];
+            return this.getEncounterTypeUuid("RADIOLOGY");
         },
         getEncounterTypeUuid:function(encounterTypeName) {
             return this.encounterTypes[encounterTypeName]

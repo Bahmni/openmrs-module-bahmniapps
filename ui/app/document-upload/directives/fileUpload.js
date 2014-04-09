@@ -7,7 +7,8 @@ angular.module('opd.documentupload')
                 var reader = new FileReader();
                 reader.onload = function (event) {
                     var image = event.target.result;
-                    scope.visit.addImage(image);
+                    var savedImage = scope.visit.addImage(image);
+                    scope.onSelect()(savedImage, scope.defaultConcept);
                     scope.$apply();
                     element.val(null);
                 };
@@ -18,7 +19,9 @@ angular.module('opd.documentupload')
         return {
             restrict: 'A',
             scope: {
-                'visit': '='
+                'visit': '=',
+                'onSelect':'&',
+                'defaultConcept': '='
             },
             link: link
         }

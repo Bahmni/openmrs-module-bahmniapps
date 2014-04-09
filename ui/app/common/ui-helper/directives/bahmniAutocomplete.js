@@ -18,14 +18,12 @@ angular.module('bahmni.common.uiHelper')
                 });
             },
             select: function (event, ui) {
-                scope.$apply(function (scope) {
-                    if(onSelect != null) {
-                        onSelect(ui.item);
-                    }
-                    ngModelCtrl.$setViewValue(ui.item.value);
-                    scope.$eval(attrs.ngChange);
-                    if(scope.blurOnSelect) element.blur();
-                });
+                if(onSelect != null) {
+                    onSelect(ui.item);
+                }
+                ngModelCtrl.$setViewValue(ui.item.value);
+                scope.$apply();
+                if(scope.blurOnSelect) element.blur();
                 return true;
             },
             search: function (event) {
