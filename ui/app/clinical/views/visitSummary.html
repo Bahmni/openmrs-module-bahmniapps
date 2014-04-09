@@ -51,24 +51,26 @@
             </thead>
             <tbody ng-repeat="line in labOrders.displayList">
             <!-- HACKTAG: Apparently bo-if makes this go into an infinite loop-->
-            <tr ng-if="line.isSummary && this.hasResults" class="header">
+            <tr ng-if="line.isSummary && line.hasResults" class="header">
                 <td colspan="2" bo-text="line.name"></td>
             </tr>
-            <tr ng-if="line.isSummary && !this.hasResults">
-                <td bo-text="line.name"></td>
-                <td>No Results yet</td>
+            <tr ng-if="line.isSummary && !line.hasResults" class="pending-result">
+                <td colspan="2">{{line.name}} <span class="status">Pending!</span></td>
             </tr>
-            <tr ng-if="!line.isSummary" ng-class="{'is-abnormal': line.isAbnormal, 'referred-out': line.referredOut}">
-                <td bo-text="line.name">
-                                <span class="range">
-                                    <span bo-text="line.minNormal + ' - ' + line.maxNormal">
-                                    </span>
-                                    <span bo-text="'Units: ' + line.units">
-                                    </span>
-                                </span>
+            <tr ng-if="!line.isSummary" 
+                ng-class="{'is-abnormal': line.isAbnormal, 'referred-out': line.referredOut}">
+                <td>
+                  <span>{{line.name}}</span>
+
                 </td>
                 <td class="value">
                     {{line.value}}
+                    <span class="range">
+                      <span ng-if="line.minNormal && line.maxNormal">
+                        Valid range {{' (' + line.minNormal + ' - ' + line.maxNormal + ') '}}
+                      </span>
+                      <span class="units">{{line.units}}</span>
+                    </span>
                     <span class="referred">Referred Out</span>
                     <button class="toggle fr">
                         <i class="icon-plus-sign" ng-click="toggle(line)" ng-hide="line.show"></i>

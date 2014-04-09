@@ -394,7 +394,6 @@ td.header {
 span.range {
   font-size: 14px;
   color: #aaa;
-  display: block;
   margin-top: 5px;
   .units {color: #ccc;}
 }
@@ -402,13 +401,14 @@ span.range {
 .laborder-section {
   table {
     margin-bottom: 10px;
-    tr td {
-      padding-left: 20px;
-    }
-    tr.header td {
-      font-family: OpenSansBold;
+    tr.header td, tr.pending-result td {
       background: #f6f6f6;
-      padding-left: 10px;
+    }
+    tr.pending-result {
+      .status {
+        color: #cc6600;
+        float: right;
+      }
     }
   }
 }

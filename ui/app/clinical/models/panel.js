@@ -32,7 +32,8 @@ Bahmni.Clinical.Panel = (function () {
         var response = [];
         response.push({
             name: this.name,
-            isSummary: true
+            isSummary: true,
+            hasResults: true
         });
         this.results.forEach(function(result) {
             response = response.concat(result.displayList());
