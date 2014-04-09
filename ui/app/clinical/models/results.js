@@ -28,7 +28,8 @@ Bahmni.Clinical.Results = (function () {
         if (this.isActuallyMultiValued() || this.results.length === 0) {
             response.push({
                 name: this.name,
-                isSummary: true
+                isSummary: true,
+                hasResults: this.results.length > 0
             });
         }
         response = response.concat(this.results);

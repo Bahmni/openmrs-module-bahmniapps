@@ -51,8 +51,12 @@
             </thead>
             <tbody ng-repeat="line in labOrders.displayList">
             <!-- HACKTAG: Apparently bo-if makes this go into an infinite loop-->
-            <tr ng-if="line.isSummary" class="header">
+            <tr ng-if="line.isSummary && this.hasResults" class="header">
                 <td colspan="2" bo-text="line.name"></td>
+            </tr>
+            <tr ng-if="line.isSummary && !this.hasResults">
+                <td bo-text="line.name"></td>
+                <td>No Results yet</td>
             </tr>
             <tr ng-if="!line.isSummary" ng-class="{'is-abnormal': line.isAbnormal, 'referred-out': line.referredOut}">
                 <td bo-text="line.name">
