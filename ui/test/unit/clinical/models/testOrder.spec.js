@@ -133,10 +133,10 @@ describe('Order group with obs', function () {
         expect(testOrder.result instanceof Bahmni.Clinical.Panel).toBe(true);
     });
 
-    it ("should create a Result from a list of observations", function() {
+    iit("should create a Result from a list of observations", function() {
         var orderGroup = new orderGroupWithObs();
         var observations = orderGroup.obs[0].groupMembers[0].groupMembers[0].groupMembers;
-        var result = Bahmni.Clinical.Result.create(observations);
+        var result = Bahmni.Clinical.Result.create("Gram Stain", observations);
         expect(result.name).toBe('Gram Stain (Asitic Fluid)');
         expect(result.value).toBe('Positive');
         expect(result.isAbnormal).toBe(false);
