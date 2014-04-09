@@ -3,7 +3,7 @@
 
 angular
     .module('emergency', ['authentication', 'bahmni.common.appFramework', 'httpErrorInterceptor', 'bahmni.registration.emergency'])
-    .config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
+    .config(['$routeProvider', '$httpProvider', function ($routeProvider) {
         $routeProvider.when('/create', {templateUrl: 'views/create.html', controller: 'CreateEmergencyPatientController', resolve: {initialization: 'initialization'}});
         $routeProvider.when('/summary', {templateUrl: 'views/summary.html', controller: 'EmergencyRegistrationSummaryController'});
         $routeProvider.otherwise({redirectTo: '/create'});

@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.Registration.ObservationMapper = function(){
     this.map = function(savedObservations){
         var observations ={

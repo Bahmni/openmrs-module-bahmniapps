@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.Registration.PatientConfig = (function () {
     var autocompleteConfig = {
         map: {

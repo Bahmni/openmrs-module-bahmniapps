@@ -1,6 +1,15 @@
 'use strict';
 
 Bahmni.Registration.RegistrationObservations = (function () {
+    var ObservationData = (function () {
+        function ObservationData(uuid, concept, value) {
+            this.uuid = uuid;
+            this.concept = concept;
+            this.value = value;
+        }
+
+        return ObservationData;
+    })();
 
     var RegistrationObservations = function(regObservations, isNewPatient, encounterConfig) {
         this.observations = regObservations.map(function (obs) {
@@ -8,7 +17,7 @@ Bahmni.Registration.RegistrationObservations = (function () {
         });
         defaultRegistrationFees(this.observations, isNewPatient, encounterConfig);
         addRequiredConceptObservations(this.observations, encounterConfig.conceptData);
-    }
+    };
 
     RegistrationObservations.prototype.updateObservations = function (updatedObservations) {
         this.observations.forEach(function (observationData) {
@@ -55,14 +64,4 @@ Bahmni.Registration.RegistrationObservations = (function () {
     };
 
     return RegistrationObservations;
-})();
-
-var ObservationData = (function () {
-    function ObservationData(uuid, concept, value) {
-        this.uuid = uuid;
-        this.concept = concept;
-        this.value = value;
-    }
-
-    return ObservationData;
 })();

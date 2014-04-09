@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.Registration.RegistrationEncounterConfig = (function() {
   function RegistrationEncounterConfig(conceptData, encounterTypes, visitTypes) {
     this.conceptData = conceptData;
