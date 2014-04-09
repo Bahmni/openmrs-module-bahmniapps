@@ -36,3 +36,62 @@
     color: #006699;
   }
 }
+
+.dashboard-observation-section {
+  width: 47%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  float: left;
+  margin: 1%;
+  h2 {
+    padding: 10px;
+    font-family: OpenSansBold;
+    margin-bottom: 0;
+  }
+  section.block {
+    padding: 0!important;
+  }
+  section {
+    label.date {
+      font-family: OpenSansBold;
+      background: #eee;
+      padding: 10px;
+      display: block;
+      margin-bottom: 5px;
+    }
+    .form-field-group .form-field {
+      border: 0;
+    }
+    .form-field .form-field {
+      padding: 0;
+      border: 0;
+      .form-field {
+        padding: 0;
+        border: 0;}
+    }
+    .form-field {
+      border-bottom: 1px solid #ccc;
+      padding: 5px;
+      font-size: 14px;
+      .field-attribute {
+        color: #888;
+      }
+      .time {
+        font-size: 12px;
+        color: #bbb;
+        float: right;
+      }
+    }
+    .is-abnormal .field-attribute {
+      color: red;
+    }
+  }
+  button {
+    width: 100%;
+    max-width: 100%;
+    color: #006699;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    margin-top: 10px;
+  }
+}

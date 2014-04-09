@@ -1,9 +1,9 @@
-<div ng-repeat="section in patientDashboardSections" ng-if="patientSummary">
+<div ng-repeat="section in patientDashboardSections" ng-if="patientSummary" class="dashboard-observation-section">
     <h2>{{section.description}}</h2>
     <h4>{{patientSummary.message}}</h4>
     <section class="block"
              ng-if="activeVisit" ng-repeat="data in patientSummary.data">
-        <label>{{data.date}}</label>
+        <label class="date">{{data.date}}</label>
 
         <div ng-repeat="observationsForDate in data.observations">
             <div ng-repeat="member in observationsForDate.groupMembers">
@@ -11,5 +11,6 @@
             </div>
         </div>
     </section>
+    <button>View more</button>
 </div>
 
