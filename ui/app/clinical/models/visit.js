@@ -46,7 +46,7 @@ Bahmni.Clinical.Visit.prototype = {
         return this.dispositions.length > 0;
     },
     numberOfDosageDaysForDrugOrder: function (drugOrder) {
-        return Bahmni.Common.Util.DateUtil.diffInDays(new Date(drugOrder.endDate), new Date(drugOrder.startDate));
+        return Bahmni.Common.Util.DateUtil.diffInDays(new Date(drugOrder.startDate), new Date(drugOrder.endDate));
     },
     hasEncounters: function () {
         return this.containsEncounters;
