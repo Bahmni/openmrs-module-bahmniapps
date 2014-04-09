@@ -35,7 +35,7 @@ angular.module('opd.documentupload').factory('initialization',
             }
 
             var initApp = function() {
-                return appService.initApp('documentUpload', {'app': true, 'extension' : true});
+                return appService.initApp('documentUpload', {'app': true, 'extension' : true}, $rootScope.appConfig.encounterType);
             };
 
             $rootScope.$on("$stateChangeError", function() {

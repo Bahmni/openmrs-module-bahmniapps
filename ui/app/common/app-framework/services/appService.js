@@ -52,9 +52,9 @@ angular.module('bahmni.common.appFramework')
             return deferrable.promise;
         };
 
-        var loadExtensions = function(appDescriptor) {
+        var loadExtensions = function(appDescriptor, extensionFileName) {
             var deferrable = $q.defer();
-            loadConfig(baseUrl + appDescriptor.extensionPath + "/extension.json").then(
+            loadConfig(baseUrl + appDescriptor.extensionPath + extensionFileName).then(
                 function(result) {
                     appDescriptor.setExtensions(result.data);
                     deferrable.resolve(appDescriptor);
@@ -74,8 +74,9 @@ angular.module('bahmni.common.appFramework')
             return appDescriptor;
         };
 
-        this.initApp = function(appName, options) {
+        this.initApp = function(appName, options, extensionFileSuffix) {
             var appLoader = $q.defer();
+            var extensionFileName = extensionFileSuffix ? "/extension-" + extensionFileSuffix + ".json" : "/extension.json";
             var promises = [];
             var opts = options || {'app': true, 'extension' : true};
 
@@ -91,7 +92,7 @@ angular.module('bahmni.common.appFramework')
             promises.push(loadCredentialsPromise);
             promises.push(loadProviderPromise);
             if (opts.extension) {
-                promises.push(loadExtensions(appDescriptor));
+                promises.push(loadExtensions(appDescriptor, extensionFileName));
             }
             if (opts.template) {
                 promises.push(loadTemplate(appDescriptor));
