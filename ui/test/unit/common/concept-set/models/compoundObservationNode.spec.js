@@ -48,6 +48,56 @@ describe("CompundObservationNode", function() {
 	 	});
 	});
 
+	describe("hasValue", function() {
+		beforeEach(function() {
+			primaryMRSConcept = buildMRSConcept({});
+			node = new CompundObservationNode(buildObservation(), primaryMRSConcept, compoundObservationConcept, {});
+		});
+
+		it("should be false when value is empty string or null or undefined", function() {
+			node.value = '';
+			expect(node.hasValue()).toBe(false);
+
+			node.value = null;
+			expect(node.hasValue()).toBe(false);
+
+			node.value = undefined;
+			expect(node.hasValue()).toBe(false);
+		});
+
+		it("should be false when value is empty array", function() {
+			node.value = [];
+
+			expect(node.hasValue()).toBe(false);
+		});
+
+		it("should be true when value is non empty array", function() {
+			node.value = [buildConcept()];
+
+			expect(node.hasValue()).toBe(true);
+		});
+
+		it("should be true when value is not empty", function() {
+			node.value = 'foo';
+			expect(node.hasValue()).toBe(true);
+
+			node.value = 10;
+			expect(node.hasValue()).toBe(true);
+		});
+
+		it("should be true when value is 0", function() {
+			node.value = 0;
+
+			expect(node.hasValue()).toBe(true);
+		});
+
+		it("should be true when value is false", function() {
+			node.value = false;
+
+			expect(node.hasValue()).toBe(true);
+		});
+	});
+
 	describe("on changing value", function() {
 		describe("for numeric observation", function() {
 			beforeEach(function() {

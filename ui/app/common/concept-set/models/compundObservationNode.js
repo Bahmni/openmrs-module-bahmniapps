@@ -99,7 +99,9 @@ Bahmni.ConceptSet.CompundObservationNode.prototype = {
     },
 
     hasValue: function() {
-        return this.value ? true : false;
+        if(this.value === '' || this.value === null || this.value === undefined) return false;
+        if(this.value instanceof Array) return this.value.length > 0;
+        return true;
     },
 
     atLeastOneValueSet: function() {
