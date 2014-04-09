@@ -5,8 +5,8 @@ angular.module('bahmni.registration')
         function ($scope, $http, patientAttributeService, addressAttributeService, appService) {
 
             var autoCompleteFields = appService.getAppDescriptor().getConfigValue("autoCompleteFields", []);
-
-            $scope.isAutoComplete = function(fieldName) {
+            $scope.showMiddleName = appService.getAppDescriptor().getConfigValue("showMiddleName");
+            $scope.isAutoComplete = function (fieldName) {
                 return autoCompleteFields.indexOf(fieldName) > -1;
             };
 

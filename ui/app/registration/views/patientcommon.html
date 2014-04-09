@@ -6,7 +6,7 @@
         <div class="field-value" id="patientNameLocal">
             <input type="text" id="givenNameLocal" ng-model="patient.givenNameLocal"
                    placeholder="{{patientConfiguration.local()['placeholderForGivenName']}}" autofocus>
-            <input type="text" id="middleNameLocal" ng-model="patient.middleNameLocal"
+            <input ng-show="showMiddleName" type="text" id="middleNameLocal" ng-model="patient.middleNameLocal"
                    placeholder="{{patientConfiguration.local()['placeholderForMiddleName']}}">
             <input type="text" id="familyNameLocal" ng-model="patient.familyNameLocal"
                    placeholder="{{patientConfiguration.local()['placeholderForFamilyName']}}">
@@ -31,7 +31,7 @@
             </span>
 
 
-            <span data-ng-switch="isAutoComplete('middleName')">
+            <span ng-show="showMiddleName" data-ng-switch="isAutoComplete('middleName')">
                 <input data-ng-switch-when="true"
                        type="text" id="middleName" ng-model="$parent.patient.middleName"
                        my-autocomplete source="getAutoCompleteList" response-map="getDataResults" data-type="personName"

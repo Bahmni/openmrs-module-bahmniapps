@@ -22,7 +22,7 @@
                     <div class="field-value" id="patientName">
                         <input type="text" id="givenName" ng-model="patient.givenName" placeholder="First Name"
                                title="Enter patient's first name.">
-                        <input type="text" id="middleName" ng-model="patient.middleName" placeholder="Middle Name"
+                        <input ng-show="showMiddleName" type="text" id="middleName" ng-model="patient.middleName" placeholder="Middle Name"
                                title="Enter patient's middle name.">
                         <input type="text" id="familyName" ng-model="patient.familyName"
                                placeholder="Last Name" title="Enter patient's last name.">

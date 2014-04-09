@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration.emergency')
-    .controller('CreateEmergencyPatientController', [ '$rootScope', '$scope', '$location', 'patient', 'patientService', 'encounterService', 'Preferences', 'spinner',
-    function ($rootScope, $scope, $location, patientModel, patientService, encounterService, preferences, spinner) {
+    .controller('CreateEmergencyPatientController', [ '$rootScope', '$scope', '$location', 'patient', 'patientService', 'encounterService', 'Preferences', 'spinner', 'appService',
+    function ($rootScope, $scope, $location, patientModel, patientService, encounterService, preferences, spinner, appService) {
 
         var init = function(){
             $scope.patient = patientModel.create();
@@ -12,7 +12,7 @@ angular.module('bahmni.registration.emergency')
             });
 
             $scope.patient.identifierPrefix = identifierPrefix[0] || $scope.identifierSources[0];
-
+            $scope.showMiddleName = appService.getAppDescriptor().getConfigValue("showMiddleName");
             var visitTypeUuid = $scope.encounterConfiguration.visitTypes[constants.visitType.emergency];
             var encounterTypeUuid = $scope.encounterConfiguration.encounterTypes[constants.encounterType.registration];
             $scope.encounter = {visitTypeUuid: visitTypeUuid, encounterTypeUuid: encounterTypeUuid, observations: []};
