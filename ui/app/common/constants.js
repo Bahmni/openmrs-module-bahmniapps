@@ -33,7 +33,6 @@ Bahmni.Common.Constants = {
     dispositionGroupConcept : "Disposition Set",
     dispositionNoteConcept : "Disposition Note",
     ruledOutDiagnosisConceptName : 'Ruled Out Diagnosis',
-    ruledOutCertainty : 'RULED OUT',
     emrapiConceptMappingSource :"org.openmrs.module.emrapi",
     includeAllObservations: false,
     openmrsObsUrl :"/openmrs/ws/rest/v1/obs",
