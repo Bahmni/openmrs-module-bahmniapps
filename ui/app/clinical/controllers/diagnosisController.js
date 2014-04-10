@@ -18,7 +18,7 @@ angular.module('bahmni.clinical')
 
             var _canAdd = function (diagnosis) {
                 var canAdd = true;
-                $scope.newDiagnoses.forEach(function (observation) {
+                $scope.newlyAddedDiagnoses.forEach(function (observation) {
                     if (observation.conceptName === diagnosis.conceptName) {
                         canAdd = false;
                     }
@@ -28,7 +28,7 @@ angular.module('bahmni.clinical')
 
             // TODO : edited scenario is not valid anymore : need to remove : shruthi
             var addDiagnosis = function (concept, index) {
-                var diagnosisBeingEdited = $scope.newDiagnoses[index];
+                var diagnosisBeingEdited = $scope.newlyAddedDiagnoses[index];
                 if (diagnosisBeingEdited) {
                     var diagnosis = new Bahmni.Clinical.Diagnosis(concept, diagnosisBeingEdited.order,
                         diagnosisBeingEdited.certainty, diagnosisBeingEdited.existingObs);
@@ -37,29 +37,29 @@ angular.module('bahmni.clinical')
                     var diagnosis = new Bahmni.Clinical.Diagnosis(concept);
                 }
                 if (_canAdd(diagnosis)) {
-                    $scope.newDiagnoses.splice(index, 1, diagnosis);
+                    $scope.newlyAddedDiagnoses.splice(index, 1, diagnosis);
                 }
             };
 
             var addPlaceHolderDiagnosis = function () {
                 var diagnosis = new Bahmni.Clinical.Diagnosis('');
-                $scope.newDiagnoses.push(diagnosis);
+                $scope.newlyAddedDiagnoses.push(diagnosis);
             };
 
             var init = function () {
-                $scope.newDiagnoses = $rootScope.consultation.newlyAddedDiagnoses;
+                $scope.newlyAddedDiagnoses = $rootScope.consultation.newlyAddedDiagnoses;
                 addPlaceHolderDiagnosis();
                 contextChangeHandler.add(allowContextChange);
             };
 
             var allowContextChange = function () {
-                var invalidNewDiagnoses = $scope.newDiagnoses.filter(function (diagnosis) {
+                var invalidnewlyAddedDiagnoses = $scope.newlyAddedDiagnoses.filter(function (diagnosis) {
                     return !$scope.isValid(diagnosis);
                 });
                 var invalidPastDiagnoses = $rootScope.consultation.pastDiagnoses.filter(function (diagnosis) {
                     return !$scope.isValid(diagnosis);
                 });
-                return invalidNewDiagnoses.length === 0 || invalidPastDiagnoses.length === 0;
+                return invalidnewlyAddedDiagnoses.length === 0 || invalidPastDiagnoses.length === 0;
             };
 
             $scope.cleanOutDiagnosisList = function (data) {
@@ -102,7 +102,7 @@ angular.module('bahmni.clinical')
 
             var alreadyAddedToDiagnosis = function (diagnosis) {
                 var isPresent = false;
-                $scope.newDiagnoses.forEach(function (d) {
+                $scope.newlyAddedDiagnoses.forEach(function (d) {
                     if (d.codedAnswer.uuid == diagnosis.concept.uuid) {
                         isPresent = true;
                     }
@@ -116,12 +116,12 @@ angular.module('bahmni.clinical')
             
             $scope.removeObservation = function (index) {
                 if (index >= 0) {
-                    $scope.newDiagnoses.splice(index, 1);
+                    $scope.newlyAddedDiagnoses.splice(index, 1);
                 }
             };
 
             $scope.$on('$destroy', function () {
-                $rootScope.consultation.newlyAddedDiagnoses = $scope.newDiagnoses.filter(function (diagnosis) {
+                $rootScope.consultation.newlyAddedDiagnoses = $scope.newlyAddedDiagnoses.filter(function (diagnosis) {
                     return !diagnosis.isEmpty();
                 });
             });
@@ -145,12 +145,12 @@ angular.module('bahmni.clinical')
 
             $scope.clearEmptyRows = function (index) {
                 var iter;
-                for (iter = 0; iter < $scope.newDiagnoses.length; iter++) {
-                    if ($scope.newDiagnoses[iter].isEmpty() && iter !== index) {
-                        $scope.newDiagnoses.splice(iter, 1)
+                for (iter = 0; iter < $scope.newlyAddedDiagnoses.length; iter++) {
+                    if ($scope.newlyAddedDiagnoses[iter].isEmpty() && iter !== index) {
+                        $scope.newlyAddedDiagnoses.splice(iter, 1)
                     }
                 }
-                var emptyRows = $scope.newDiagnoses.filter(function (diagnosis) {
+                var emptyRows = $scope.newlyAddedDiagnoses.filter(function (diagnosis) {
                         return diagnosis.isEmpty();
                     }
                 );

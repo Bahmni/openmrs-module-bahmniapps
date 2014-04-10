@@ -41,7 +41,6 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
             investigations: investigations,
             treatmentDrugs: treatmentDrugs,
 //            diagnoses: diagnoses,
-            bahmniDiagnoses: [],
             newlyAddedDiagnoses: [],
             labResults: labResults,
             consultationNote: consultationNote || emptyObservation(consultationNoteConcept),
