@@ -162,4 +162,15 @@ angular.module('bahmni.common.util')
                 onSelect: '&'
             }
         }
+    })
+    .directive('autofillable', function () {
+        return function (scope, elem, attrs) {
+            setTimeout(function () {
+                elem.unbind('submit').submit(function (e) {
+                    e.preventDefault();
+                    elem.find('input').trigger('change');
+                    scope.$apply(attrs.ngSubmit);
+                });
+            }, 0);
+        }
     });
