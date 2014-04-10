@@ -24,27 +24,34 @@ $total-width: 100%;
   .field-attribute{
     float:left;
     label{
-        width:13em;
+        width:11em;
         line-height:20px;
         float:left;
         text-align:right;
         margin:8px 0.8em 8px 0px;
+        font-size: 14px;
     }
   }
   .field-value{
     float:left;
+    font-size: 14px;
      input[type="text"],input[type="password"]{
         float:left;
         width:12.5em;
+        padding: 5px 10px;
     }
     input[type="number"]{
         width:8em;
+        padding: 5px 10px;
     }
     span.text-only{
        display:inline-block;
        margin:8px 5px 8px 5px;
     }
   }
+}
+.asterick{
+    color:red;
 }
 .input-prepend{
   float:left;
@@ -292,10 +299,17 @@ body{
   left: 10px;
   right: 10px;
   top: 0;
-  margin: 50px auto;
+  margin: 80px auto;
   font-size:0.865em;
   max-width: 500px;
+  form {
+    border-radius: 0 0 10px 10px;    
+    -webkit-box-shadow: 0 8px 6px -8px #888;
+     -moz-box-shadow: 0 8px 6px -8px #888;
+        box-shadow: 0 8px 6px -8px #888;
+  }
   header {
+    border-radius: 10px 10px 0 0;
     a.header-logo {
       float: none;
       margin: 5px auto;
@@ -307,6 +321,8 @@ body{
     background:#ffffff;
     border:1px solid #eaeaea;
     padding-bottom:10px;
+    border-radius: 0 0 10px 10px;
+
     p.caution{
       padding:0px;
     }
@@ -320,11 +336,12 @@ body{
     }
     .form-field {
       display: block;
-      margin: 10px;
+      margin: 10px 13px 10px 17px;
       .field-attribute {
         label {
           text-align: left;
           padding-left: 3px;
+          margin: 0;
         }
       }
       .field-value {
@@ -341,15 +358,17 @@ body{
       }
     }
     .form-footer {
-      margin: 10px;
+      margin: 10px 13px 10px 17px;
       button.confirm {
         margin: 2px auto;
         max-width: 100%;
-        width: 100%;
+        width: 99%;
+        padding: 10px;
+        font-size: 16px;
       }
     }
   }
-  @media screen and (min-width: 960px) {
+  @media screen and (min-width: 1025px) {
     width: 500px;
     margin: auto;
     bottom: 0;
@@ -363,6 +382,7 @@ body{
         .field-attribute {
           label {
             text-align: right;
+            margin: 8px 0.8em 8px 0px;
           }
         }
         .field-value {
@@ -383,8 +403,7 @@ body{
         button.confirm {
           display: inline-block;
           margin: 2px;
-          max-width: 300px;
-          width: auto;
+          width: 73%;
         }
       }
     }
