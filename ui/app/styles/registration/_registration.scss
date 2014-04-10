@@ -765,7 +765,6 @@ video{
       }
       .form-field-group {
         &:first-child {
-          padding-top:15px;
           border-top:1px solid #cecece;
           border-right:1px solid #cecece;
           border-left:1px solid #cecece;
@@ -774,7 +773,7 @@ video{
           border-bottom:1px solid #cecece;
           border-right:1px solid #cecece;
           border-left:1px solid #cecece;
-          padding-bottom:15px;
+          padding-bottom:9px;
         }
       }
     }

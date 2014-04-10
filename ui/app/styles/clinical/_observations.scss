@@ -41,7 +41,6 @@
       }
       .form-field-group {
         &:first-child {
-          padding-top:15px;
           border-top:1px solid #cecece;
           border-right:1px solid #cecece;
           border-left:1px solid #cecece;
@@ -50,7 +49,7 @@
           border-bottom:1px solid #cecece;
           border-right:1px solid #cecece;
           border-left:1px solid #cecece;
-          padding-bottom:15px;
+          padding-bottom:9px;
         }
       }
     }
@@ -91,7 +90,7 @@ form .vitals .form-field .field-value {
       float: left;
       width: 200px;
       margin-left: 20px;
-      margin-right: 40px;
+      margin-right: 20px;
       text-align: right;
       font-size: 14px;
     }
