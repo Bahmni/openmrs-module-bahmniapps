@@ -26,16 +26,10 @@ angular.module('bahmni.clinical')
                 return canAdd;
             };
 
-            // TODO : edited scenario is not valid anymore : need to remove : shruthi
-            var addDiagnosis = function (concept, index) {
+            $scope.addNewDiagnosis = function (index, concept) {
                 var diagnosisBeingEdited = $scope.newlyAddedDiagnoses[index];
-                if (diagnosisBeingEdited) {
-                    var diagnosis = new Bahmni.Clinical.Diagnosis(concept, diagnosisBeingEdited.order,
-                        diagnosisBeingEdited.certainty, diagnosisBeingEdited.existingObs);
-                }
-                else {
-                    var diagnosis = new Bahmni.Clinical.Diagnosis(concept);
-                }
+                var diagnosis = new Bahmni.Clinical.Diagnosis(concept, diagnosisBeingEdited.order,
+                    diagnosisBeingEdited.certainty, diagnosisBeingEdited.existingObs);
                 if (_canAdd(diagnosis)) {
                     $scope.newlyAddedDiagnoses.splice(index, 1, diagnosis);
                 }
@@ -108,10 +102,6 @@ angular.module('bahmni.clinical')
                     }
                 });
                 return isPresent;
-            };
-
-            $scope.selectItem = function (index, selectedConcept) {
-                addDiagnosis(selectedConcept, index);
             };
             
             $scope.removeObservation = function (index) {

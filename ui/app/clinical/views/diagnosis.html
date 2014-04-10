@@ -16,7 +16,7 @@
                         <div class="row">
                             <div class="col col1">
                                 <input ng-model="diagnosis.codedAnswer.name" type="text" name="name"
-                                       my-autocomplete="{{ {'src': 'getDiagnosis', 'responseHandler': 'cleanOutDiagnosisList', 'onSelect':'selectItem', 'index' : $index} }}"
+                                       my-autocomplete="{{ {'src': 'getDiagnosis', 'responseHandler': 'cleanOutDiagnosisList', 'onSelect':'addNewDiagnosis', 'index' : $index} }}"
                                        ng-change="clearEmptyRows($index)"
                                        ng-class="{'illegalValue': !diagnosis.isValidAnswer()}">
                             </div>
