@@ -839,6 +839,12 @@ form .vitals .form-field .field-value {
   }
 }
 
+.illegalValue {
+  border: 2px solid;
+  border-color: #ff6666;
+  background: white;
+}
+
 concept {
   input:invalid {
     background-color: #ffcdcd;
