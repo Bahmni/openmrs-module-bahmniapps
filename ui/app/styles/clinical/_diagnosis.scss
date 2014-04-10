@@ -44,10 +44,11 @@
   .history-diagnosis {
     .col1 label{
       padding-left: 10px;
-      font-size: 16px;
+      font-size: 14px;
     }
     .table-body .row {
       background: #fafafa;
+      padding-bottom: 20px; 
     }
   }
   .table-header{
@@ -75,37 +76,75 @@
     button:first-child {
       margin-left:10px;
     }
-    width: 25%;
+    width: 23%;
   }
   .col3{
     @include column(3);
     button:first-child{
       margin-left:10px;
     }
-    width: 25%;
+    width: 24%;
   }
   .col4{
     @include column(2);
-    width: 25%;
+    width: 23%;
   }
   .col5{
     @include column(1);
-    width: 10%;
+    width: 4%;
   }
+  .history-diagnosis .row {
+    position: relative;
+    .footer-note {
+      position: absolute;
+      right: 0;
+      top: 10px;
+      text-align: right;
+      .provider {
+        display: block;
+        float: right;
+        margin-top: 5px;
+      }
+    }
+    .message {
+      position: absolute;
+      left: 10px;
+      bottom: 0;
+      color: #cc6600;
+      margin-bottom: 5px;
+      display: none;
+    }
+  }
+  .history-diagnosis .row.edited {
+    background: #ffffcc;
+    .message {
+      display: block;
+    }
+  }
+  buttons-radio.illegalValue {
+    border: 0;
+    background: none;
+    button {
+      border: 1px solid red;
+    }
+  } 
   button:first-child {
     margin-left:10px;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
-    border-right: 0;
+    border-right: 1;
   }
   button:last-child {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
-    border-left: 0;
+    border-left: 1;
   }
   button {
     padding: 8px 10px;
     font-size: 12px;
+  }
+  .status button {
+    border-radius: 3px;
   }
   button:focus {
     outline: 0;

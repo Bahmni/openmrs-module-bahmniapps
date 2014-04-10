@@ -31,7 +31,7 @@
                                                options='certaintyOptions'/>
                             </div>
                             <div class="col col4">
-                                <buttons-radio class="small-btn" data-toggle="buttons-radio"
+                                <buttons-radio class="small-btn status" data-toggle="buttons-radio"
                                                model='diagnosis.diagnosisStatus'
                                                options='diagnosisStatuses'/>
                             </div>
@@ -44,8 +44,9 @@
                         </div>
                     </div>
                 </div>
-                <h2>History</h2>
+                
                 <div class="table history-diagnosis" ng-if="consultation.pastDiagnoses.length > 0">
+                    <h2>History</h2>
                     <div class="row table-header">
                         <div class="col col1"><span>Diagnosis</span></div>
                         <div class="col col2"><span>Order</span></div>
@@ -54,10 +55,11 @@
                     </div>
 
                     <div ng-repeat="diagnosis in consultation.pastDiagnoses" class="table-body">
-                        <div class="row" ng-class="{'illegalValue': diagnosis.isDirty}">
+                        <div class="row" ng-class="{'edited': diagnosis.isDirty}">
                             <div class="col col1">
                                 <label ng-if="diagnosis.codedAnswer.name">{{diagnosis.codedAnswer.name}}</label>
                                 <label ng-if="diagnosis.freeTextAnswer">{{diagnosis.freeTextAnswer}}</label>
+                                <span class="message">Edited!</span>
                             </div>
                             <div class="col col2">
                                 <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.order'
@@ -68,19 +70,20 @@
                                                options='certaintyOptions' dirty-check-flag='diagnosis.isDirty'/>
                             </div>
                             <div class="col col4">
-                                <buttons-radio class="small-btn" data-toggle="buttons-radio"
+                                <buttons-radio class="small-btn status" data-toggle="buttons-radio"
                                                model='diagnosis.diagnosisStatus'
                                                options='diagnosisStatuses' dirty-check-flag='diagnosis.isDirty'/>
                             </div>
-                        </div>
-                        <div class="footer-note">
+                            <div class="footer-note">
                               <span class="time-stamp">
                                 <span class="date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
                                 <span class="time">{{diagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
                               </span>
-                            <span class="provider"
-                                  ng-repeat="provider in diagnosis.providers">{{provider.name}}<br/></span>
+                              <span class="provider"
+                                    ng-repeat="provider in diagnosis.providers">{{provider.name}}<br/></span>
+                            </div>
                         </div>
+
                     </div>
                 </div>
             </div>
