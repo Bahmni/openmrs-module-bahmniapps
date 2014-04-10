@@ -6,6 +6,7 @@ Bahmni.Common.Constants = {
     dateDisplayFormat: "DD-MMM-YYYY",
     timeDisplayFormat: "hh:mm",
     emrapiDiagnosisUrl :"/openmrs/ws/rest/emrapi/diagnosis",
+    bahmniDiagnosisUrl :"/openmrs/ws/rest/v1/bahmnicore/diagnosis/search",
     emrapiConceptUrl :"/openmrs/ws/rest/emrapi/concept",
     encounterConfigurationUrl: "/openmrs/ws/rest/v1/bahmnicore/bahmniencounter/config",
     patientConfigurationUrl:"/openmrs/ws/rest/v1/bahmnicore/patient/config",

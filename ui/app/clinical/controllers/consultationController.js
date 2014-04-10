@@ -3,58 +3,42 @@
 angular.module('bahmni.clinical')
     .controller('ConsultationController', ['$scope', '$rootScope', 'encounterService', '$location', 'spinner', function ($scope, $rootScope, encounterService, $location, spinner) {
 
-        var addEditedPastDiagnoses = function (diagnosisList, additionalCheck) {
+        var addEditedPastDiagnoses = function (diagnosisList) {
             $rootScope.consultation.pastDiagnoses && $rootScope.consultation.pastDiagnoses.forEach(function (diagnosis) {
-                if (diagnosis.isDirty && additionalCheck(diagnosis)) {
-                    var editedPastDiagnosis = angular.extend(new Bahmni.Clinical.Diagnosis(diagnosis.codedAnswer), diagnosis);
-                    editedPastDiagnosis.existingObs = '';
-                    diagnosisList.push(editedPastDiagnosis);
+                if (diagnosis.isDirty) {
+                    if ($rootScope.consultation.encounterUuid == null || $rootScope.consultation.encounterUuid !== diagnosis.encounterUuid) { //encounter has changed or its a new encounter
+                        diagnosis.previousObs = diagnosis.existingObs;
+                        diagnosis.existingObs = '';
+                    }
+                    diagnosis.setDiagnosisStatusConcept();
+                    diagnosis.diagnosisDateTime = undefined;
+                    diagnosisList.push(diagnosis);
                 }
             });
-        }
-
-        var getRuledOutDiagnosesObservations = function () {
-            var ruledOutDiagnosisObservations = [];
-            if (!$rootScope.consultation.pastDiagnoses) return [];
-            $rootScope.consultation.pastDiagnoses.forEach(function (diagnosis) {
-                if (diagnosis.isDirty && diagnosis.certainty == Bahmni.Common.Constants.ruledOutCertainty) {
-                    //TODO: Sushmita/Mujir - remove hardcoded concept, add liquibase migration. also remove 'ruled out' hard coding.
-                    var ruledOutDiagnosisConceptUuid = $rootScope.ruledOutDiagnosisConcept.uuid;
-                    ruledOutDiagnosisObservations.push({ value: diagnosis.codedAnswer.uuid, concept: {uuid: ruledOutDiagnosisConceptUuid}});
-                }
-            });
-            return ruledOutDiagnosisObservations;
         };
 
-
-        var init = function () {
-            $scope.nonVoidedDiagnoses = $rootScope.consultation.diagnoses.filter(function (diagnosis) {
-                return diagnosis.voided != true;
-            });
-            addEditedPastDiagnoses($scope.nonVoidedDiagnoses, function(){return true;});
-
-        }
-
         $scope.save = function () {
-
             var encounterData = {};
             encounterData.patientUuid = $scope.patient.uuid;
             encounterData.encounterTypeUuid = $rootScope.encounterConfig.getOpdConsultationEncounterTypeUuid();
             encounterData.encounterDateTime = $rootScope.consultation.encounterDateTime || new Date();
 
-            addEditedPastDiagnoses($rootScope.consultation.diagnoses, function(diagnosis){diagnosis.certainty != Bahmni.Common.Constants.ruledOutCertainty});
-            if ($rootScope.consultation.diagnoses && $rootScope.consultation.diagnoses.length > 0) {
-                encounterData.diagnoses = $rootScope.consultation.diagnoses.map(function (diagnosis) {
+            if ($rootScope.consultation.newlyAddedDiagnoses && $rootScope.consultation.newlyAddedDiagnoses.length > 0) {
+                encounterData.bahmniDiagnoses = $rootScope.consultation.newlyAddedDiagnoses.map(function (diagnosis) {
                     return {
                         codedAnswer: { uuid: diagnosis.codedAnswer.uuid },
                         order: diagnosis.order,
                         certainty: diagnosis.certainty,
-                        existingObs: diagnosis.existingObs,
-                        diagnosisDateTime: diagnosis.diagnosisDateTime,
+                        existingObs: null,
+                        diagnosisDateTime: null,
+                        diagnosisStatusConcept: diagnosis.getDiagnosisStatusConcept(),
                         voided: diagnosis.voided
                     }
                 });
+            } else {
+                encounterData.bahmniDiagnoses = [];
             }
+            addEditedPastDiagnoses(encounterData.bahmniDiagnoses);
 
             encounterData.testOrders = $rootScope.consultation.investigations.map(function (investigation) {
                 return { uuid: investigation.uuid, concept: {uuid: investigation.concept.uuid }, orderTypeUuid: investigation.orderTypeUuid, voided: investigation.voided || false};
@@ -77,13 +61,6 @@ angular.module('bahmni.clinical')
             var addObservationsToEncounter = function () {
                 encounterData.observations = encounterData.observations || [];
 
-                var ruledOutDiagnosesObservations = getRuledOutDiagnosesObservations();
-                if (ruledOutDiagnosesObservations) {
-                    ruledOutDiagnosesObservations.forEach(function (diagnosis) {
-                        encounterData.observations.push(diagnosis);
-                    });
-                }
-
                 if ($scope.consultation.consultationNote.value) {
                     encounterData.observations.push($scope.consultation.consultationNote);
                 }
@@ -103,9 +80,7 @@ angular.module('bahmni.clinical')
 
         $scope.onNoteChanged = function () {
             $scope.consultation.consultationNote.observationDateTime = new Date();
-        }
-
-        init();
+        };
     }
     ])
 ;

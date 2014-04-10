@@ -71,20 +71,26 @@
     }
   }
   .col2{
-    @include column(4);
+    @include column(3);
     button:first-child {
       margin-left:10px;
     }
+    width: 25%;
   }
   .col3{
-    @include column(4);
+    @include column(3);
     button:first-child{
       margin-left:10px;
     }
+    width: 25%;
   }
   .col4{
+    @include column(2);
+    width: 25%;
+  }
+  .col5{
     @include column(1);
-    width:60px;
+    width: 10%;
   }
   button:first-child {
     margin-left:10px;

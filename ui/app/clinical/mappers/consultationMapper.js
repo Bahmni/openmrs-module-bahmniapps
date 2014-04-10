@@ -1,5 +1,6 @@
 Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, consultationNoteConcept, labOrderNoteConcept) {
     this.map = function (encounterTransaction) {
+        var encounterUuid = encounterTransaction.encounterUuid;
         var specilaObservationConceptUuids = [consultationNoteConcept.uuid, labOrderNoteConcept.uuid];
         var investigations = encounterTransaction.testOrders.filter(function(testOrder) { return !testOrder.voided });
         var labResults = new Bahmni.LabResultsMapper().map(encounterTransaction);
@@ -21,11 +22,11 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
             treatmentDrug.savedDrug = true;
             return treatmentDrug;
         });
-        var diagnoses = encounterTransaction.diagnoses.map(function(diagnosis){
-            return new Bahmni.Clinical.Diagnosis(
-                diagnosis.codedAnswer,diagnosis.order,diagnosis.certainty,diagnosis.existingObs,
-                diagnosis.freeTextAnswer,diagnosis.diagnosisDateTime,diagnosis.voided);
-        });
+//        var diagnoses = encounterTransaction.diagnoses.map(function(diagnosis){
+//            return new Bahmni.Clinical.Diagnosis(
+//                diagnosis.codedAnswer,diagnosis.order,diagnosis.certainty,diagnosis.existingObs,
+//                diagnosis.freeTextAnswer,diagnosis.diagnosisDateTime,diagnosis.voided);
+//        });
         var consultationNote = mapSpecialObservation(encounterTransaction.observations,consultationNoteConcept);
 
         var labOrderNote = mapSpecialObservation(encounterTransaction.observations,labOrderNoteConcept);
@@ -36,9 +37,12 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
         return {
             visitUuid: encounterTransaction.visitUuid,
             visitTypeUuid: encounterTransaction.visitTypeUuid,
+            encounterUuid: encounterUuid,
             investigations: investigations,
             treatmentDrugs: treatmentDrugs,
-            diagnoses: diagnoses,
+//            diagnoses: diagnoses,
+            bahmniDiagnoses: [],
+            newlyAddedDiagnoses: [],
             labResults: labResults,
             consultationNote: consultationNote || emptyObservation(consultationNoteConcept),
             labOrderNote: labOrderNote || emptyObservation(labOrderNoteConcept),

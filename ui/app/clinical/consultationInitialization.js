@@ -31,11 +31,12 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
 
             var getPastDiagnoses = function() {
                 return diagnosisService.getPastDiagnoses(patientUuid).success(function (response) {
-                    var diagnosisMapper = new Bahmni.DiagnosisMapper($rootScope.consultation, $rootScope.ruledOutDiagnoses);
+                    var diagnosisMapper = new Bahmni.DiagnosisMapper($rootScope.consultation);
                     $rootScope.consultation.pastDiagnoses = diagnosisMapper.mapPastDiagnosis(response);
                 });
             };
 
+            // TODO : remove this : shruthi
             var getRuledOutDiagnoses = function() {
                 return diagnosisService.getRuledOutDiagnoses(patientUuid, $rootScope.ruledOutDiagnosisConcept.uuid). success(function(response){
                     $rootScope.ruledOutDiagnoses = response.results;

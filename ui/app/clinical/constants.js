@@ -25,7 +25,8 @@ Bahmni.Clinical.Constants = (function () {
         commentConceptName: "COMMENTS",
         groupObservations: [Bahmni.Common.Constants.compoundObservationConceptName],
         messageForNoObservation: "No observations captured for this visit.",
-        messageForNoActiveVisit: "No active visit."
+        messageForNoActiveVisit: "No active visit.",
+        diagnosisStatuses : {"RULED OUT" : "Ruled Out Diagnosis"}
     };
 })();
 

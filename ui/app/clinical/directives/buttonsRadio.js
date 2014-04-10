@@ -10,7 +10,11 @@ angular.module('bahmni.clinical')
             },
             controller:function ($scope) {
                 $scope.activate = function (option) {
-                    $scope.model = option;
+                    if ($scope.model === option) {
+                        $scope.model = undefined;
+                    } else {
+                        $scope.model = option;
+                    }
                     if ($scope.hasDirtyFlag) {
                         $scope.dirtyCheckFlag = true;
                     }
