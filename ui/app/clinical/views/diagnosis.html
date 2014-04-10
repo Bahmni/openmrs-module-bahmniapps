@@ -7,9 +7,10 @@
                 <div class="table new-diagnosis">
                     <div class="row table-header">
                         <div class="col col1"><span>Diagnosis</span></div>
-                        <div class="col col2"><span>Order</span></div>
-                        <div class="col col3"><span>Certainty</span></div>
-                        <div class="col col4"><span>Status</span></div>
+                        <div class="col col2"><span>Freetext</span></div>
+                        <div class="col col3"><span>Order</span></div>
+                        <div class="col col4"><span>Certainty</span></div>
+                        <div class="col col5"><span>Status</span></div>
                     </div>
 
                     <div ng-repeat="diagnosis in newlyAddedDiagnoses" ng-hide="diagnosis.voided" class="table-body">
@@ -21,32 +22,40 @@
                                        ng-class="{'illegalValue': !diagnosis.isValidAnswer()}">
                             </div>
                             <div class="col col2">
+                                <input ng-model="diagnosis.freeTextAnswer" type="text" name="name"
+                                       ng-change="clearEmptyRows($index); addDiagnosis({}, $index)"
+                                       ng-class="{'illegalValue': !diagnosis.isValidAnswer()}">
+                            </div>
+                            <div class="col col3">
                                 <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.order'
                                                ng-class="{'illegalValue': !diagnosis.isValidOrder()}"
                                                options='orderOptions'/>
                             </div>
-                            <div class="col col3">
+                            <div class="col col4">
                                 <buttons-radio class="small-btn" data-toggle="buttons-radio" model='diagnosis.certainty'
                                                ng-class="{'illegalValue': !diagnosis.isValidCertainty()}"
                                                options='certaintyOptions'/>
                             </div>
-                            <div class="col col4">
+                            <div class="col col5">
                                 <buttons-radio class="small-btn status" data-toggle="buttons-radio"
                                                model='diagnosis.diagnosisStatus'
                                                options='diagnosisStatuses'/>
                             </div>
-                            <div class="col col5">
+                            <div class="col col6">
                                 <button type="button" class="small-btn row-remover" ng-click="removeObservation($index)"
-                                        ng-show="diagnosis.codedAnswer.name">
+                                        ng-show="diagnosis.codedAnswer.name || diagnosis.freeTextAnswer">
                                     <span class="icon-remove"></span>
                                 </button>
                             </div>
                         </div>
                     </div>
+
                 </div>
-                
+                <h2>History</h2>
+
                 <div class="table history-diagnosis" ng-if="consultation.pastDiagnoses.length > 0">
                     <h2>History</h2>
+
                     <div class="row table-header">
                         <div class="col col1"><span>Diagnosis</span></div>
                         <div class="col col2"><span>Order</span></div>
@@ -55,7 +64,15 @@
                     </div>
 
                     <div ng-repeat="diagnosis in consultation.pastDiagnoses" class="table-body">
-                        <div class="row" ng-class="{'edited': diagnosis.isDirty}">
+                        <div class="row">
+                            <div class="footer-note">
+                              <span class="time-stamp">
+                                <span class="date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
+                                <span class="time">{{diagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
+                              </span>
+                            <span class="provider"
+                                  ng-repeat="provider in diagnosis.providers">{{provider.name}}<br/></span>
+                            </div>
                             <div class="col col1">
                                 <label ng-if="diagnosis.codedAnswer.name">{{diagnosis.codedAnswer.name}}</label>
                                 <label ng-if="diagnosis.freeTextAnswer">{{diagnosis.freeTextAnswer}}</label>
@@ -63,24 +80,19 @@
                             </div>
                             <div class="col col2">
                                 <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.order'
-                                               options='orderOptions' dirty-check-flag='diagnosis.isDirty'/>
+                                               options='orderOptions' dirty-check-flag='diagnosis.isDirty'
+                                               ng-class="{'illegalValue': !diagnosis.isValidOrder()}"/>
                             </div>
                             <div class="col col3">
                                 <buttons-radio class="small-btn" data-toggle="buttons-radio" model='diagnosis.certainty'
-                                               options='certaintyOptions' dirty-check-flag='diagnosis.isDirty'/>
+                                               options='certaintyOptions' dirty-check-flag='diagnosis.isDirty'
+                                               ng-class="{'illegalValue': !diagnosis.isValidCertainty()}"
+                                        />
                             </div>
                             <div class="col col4">
                                 <buttons-radio class="small-btn status" data-toggle="buttons-radio"
                                                model='diagnosis.diagnosisStatus'
                                                options='diagnosisStatuses' dirty-check-flag='diagnosis.isDirty'/>
-                            </div>
-                            <div class="footer-note">
-                              <span class="time-stamp">
-                                <span class="date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
-                                <span class="time">{{diagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
-                              </span>
-                              <span class="provider"
-                                    ng-repeat="provider in diagnosis.providers">{{provider.name}}<br/></span>
                             </div>
                         </div>
 

@@ -29,12 +29,20 @@ Bahmni.Clinical.Diagnosis = function (codedAnswer, order, certainty, existingObs
         return (self.codedAnswer.name === undefined && self.freeTextAnswer === undefined);
     };
 
+    var hasBothCodedAndFreeText = function() {
+        return self.codedAnswer.name && self.codedAnswer.uuid && self.freeTextAnswer;
+    };
+
     self.isValidAnswer = function () {
+        if (hasBothCodedAndFreeText() ) {
+            return false;
+        }
         return (self.codedAnswer.name !== undefined && self.codedAnswer.uuid !== undefined )
+            || (self.freeTextAnswer !== undefined )
             || self.answerNotFilled();
     };
     self.isValidOrder = function () {
-        return self.answerNotFilled() || self.order !== undefined; 
+        return self.answerNotFilled() || self.order !== undefined;
     };
 
     self.isValidCertainty = function () {

@@ -3,7 +3,12 @@ Bahmni.DiagnosisMapper = function (consultation) {
         var pastDiagnoses = [];
         pastDiagnosesResponse.forEach(function (pastDiagnosis) {
             if (!presentInList(pastDiagnosis, consultation.diagnosis) && !presentInList(pastDiagnosis, consultation.pastDiagnoses)) {
-
+                if(!pastDiagnosis.codedAnswer){
+                    pastDiagnosis.codedAnswer = {
+                        name: undefined,
+                        uuid: undefined
+                    }
+                }
                 var mappedPastDiagnosis = angular.extend(new Bahmni.Clinical.Diagnosis(), pastDiagnosis);
                 mappedPastDiagnosis.setDiagnosisStatus(pastDiagnosis.diagnosisStatusConcept);
                 pastDiagnoses.push(mappedPastDiagnosis);
