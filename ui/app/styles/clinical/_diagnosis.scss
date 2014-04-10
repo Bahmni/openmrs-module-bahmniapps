@@ -95,6 +95,7 @@
   }
   .history-diagnosis .row {
     position: relative;
+    -webkit-transition: background-color 1s ease;
     .footer-note {
       position: absolute;
       right: 0;
@@ -116,8 +117,9 @@
     }
   }
   .history-diagnosis .row.edited {
-    background: #ffffcc;
+    background-color: #ffffcc;
     .message {
+      -webkit-transition: background-color 1s ease;
       display: block;
     }
   }
