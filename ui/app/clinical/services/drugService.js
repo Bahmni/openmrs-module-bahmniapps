@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .factory('treatmentService', ['$http', function ($http) {
+    .factory('DrugService', ['$http', function ($http) {
 
     var search = function (query) {
         return $http.get("/openmrs/ws/rest/v1/drug",

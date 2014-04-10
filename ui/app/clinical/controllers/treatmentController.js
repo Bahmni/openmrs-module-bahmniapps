@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('TreatmentController', ['$scope', '$rootScope', 'treatmentService', 'contextChangeHandler',
+    .controller('TreatmentController', ['$scope', '$rootScope', 'DrugService', 'contextChangeHandler',
     function ($scope, $rootScope, treatmentService, contextChangeHandler) {
         $scope.placeholder = "Add Treatment Advice";
         $scope.searchResults = [];

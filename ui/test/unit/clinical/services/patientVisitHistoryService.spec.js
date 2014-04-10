@@ -11,8 +11,8 @@ describe("patientVisitHistoryService", function() {
     }));
 
     beforeEach(inject(function ($rootScope) {
-        visitSearchPromise = specUtil.createServicePromise('visitSeacrh');
-        visitService.search.andReturn(visitSearchPromise);
+        drugOrderPromise = specUtil.createServicePromise('visitSeacrh');
+        visitService.search.andReturn(drugOrderPromise);
         rootScope = $rootScope
     }));
 
@@ -38,7 +38,7 @@ describe("patientVisitHistoryService", function() {
 			var vistHistoryReturnedByThirdCall;
 
 			patientVisitHistoryService.getVisits("1234").then(function(data){ vistHistoryReturnedByFirstCall = data });
-			visitSearchPromise.callSuccessCallBack(visitSearchData);
+			drugOrderPromise.callSuccessCallBack(visitSearchData);
 			patientVisitHistoryService.getVisits("1234").then(function(data){ vistHistoryReturnedBySecondCall = data });
 			patientVisitHistoryService.getVisits("1234").then(function(data){ vistHistoryReturnedByThirdCall = data });
 			rootScope.$digest();

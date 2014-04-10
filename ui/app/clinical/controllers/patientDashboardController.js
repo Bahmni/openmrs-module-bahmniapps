@@ -57,7 +57,7 @@ angular.module('opd.patientDashboard', [])
         };
 
         var addViewNameToSection = function (section) {
-            section.viewName = "views/" + section.name + ".html";
+            section.viewName = "views/dashboardSections/" + section.name + ".html";
         };
 
         $scope.showSummary = function () {
