@@ -58,8 +58,8 @@ Bahmni.ConceptSet.CompundObservationNode.prototype = {
 
     _getCodedControlType: function() {
         var conceptConfig = this.getConceptConfig();
-        if(conceptConfig.autocomplete) return "autocomplete";
         if(conceptConfig.multiselect) return "multiselect";
+        if(conceptConfig.autocomplete) return "autocomplete";
         return "dropdown";
     },
 
