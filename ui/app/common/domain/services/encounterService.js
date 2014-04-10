@@ -28,7 +28,7 @@ angular.module('bahmni.common.domain')
     };
 
     var searchWithoutEncounterDate = function (visitUuid) {
-        return $http.get(Bahmni.Common.Constants.encounterUrl, {
+        return $http.get(Bahmni.Common.Constants.bahmniEncounterUrl, {
             params:{
                 visitUuid : visitUuid,
                 includeAll : Bahmni.Common.Constants.includeAllObservations

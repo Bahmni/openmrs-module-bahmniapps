@@ -1,27 +1,45 @@
-<div bo-hide="visit.hasObservations()" class="info-message">
-    <p>There are no encounters for this patient</p>
-</div>
-
-<section ng-show="visit.hasObservations()">
+<section>
     <section ng-show="visit.hasDiagnosis()" class="block diagnosis-section">
         <h2>Diagnoses</h2>
         <ul class="block-content visit-diagnosis">
-            <li ng-repeat="diagnosis in visit.diagnoses" ng-show="visit.hasDiagnosis()">
+            <li ng-repeat="diagnosis in visit.diagnoses" ng-show="!diagnosis.revised">
                 <div>
                     <span class="diagnosis-name" bo-text="diagnosis.codedAnswer.name"></span>
+
                     <div class="diagonsis-order">
                         <span class="order" bo-show="visit.isPrimaryOrder(diagnosis.order)">Primary</span>
                         <span class="order" bo-show="!visit.isPrimaryOrder(diagnosis.order)">Secondary</span>
-                    <span class="certainty" bo-text="'(' + diagnosis.certainty + ')'"
-                          bo-hide="visit.isConfirmedDiagnosis(diagnosis.certainty)"></span>
+                        <span class="certainty" bo-text="'(' + diagnosis.certainty + ')'"></span>
+                    </div>
+                    <span class="certainty" bo-text="'' + diagnosis.diagnosisStatus + ''"></span>
+
+                    <div class="footer-note">
+                      <span class="time-stamp">
+                        <span class="date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
+                        <span class="time">{{diagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
+                      </span>
+                      <span class="provider" bo-text="diagnosis.providers[0].name"></span>
                     </div>
                 </div>
-                <div class="footer-note">
-                  <span class="time-stamp">
-                    <span class="date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
-                    <span class="time">{{diagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
-                  </span>
-                    <span class="provider" bo-text="diagnosis.provider.name"></span>
+                <div ng-show="diagnosis.firstDiagnosis.revised">
+                    <span class="diagnosis-name">Previously was</span>
+
+                    <div class="diagonsis-order">
+                        <span class="order"
+                              bo-show="visit.isPrimaryOrder(diagnosis.firstDiagnosis.order)">Primary</span>
+                        <span class="order"
+                              bo-show="!visit.isPrimaryOrder(diagnosis.firstDiagnosis.order)">Secondary</span>
+                        <span class="certainty" bo-text="'(' + diagnosis.firstDiagnosis.certainty + ')'"></span>
+                    </div>
+                    <span class="certainty" bo-text="'' + diagnosis.firstDiagnosis.diagnosisStatus + ''"></span>
+
+                    <div class="footer-note">
+                          <span class="time-stamp">
+                            <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
+                            <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
+                          </span>
+                          <span class="provider" bo-text="diagnosis.firstDiagnosis.providers[0].name"></span>
+                    </div>
                 </div>
             </li>
             <div ng-show="!visit.hasDiagnosis()">A diagnosis has not been made for this patient yet.</div>
@@ -42,6 +60,7 @@
 </section>
 <section class="block laborder-section" ng-show="visit.hasLabTests()">
     <h2>Lab Investigations</h2>
+
     <div ng-repeat="labOrders in visit.labTestOrderObsMap">
         <table>
             <thead>
@@ -57,10 +76,10 @@
             <tr ng-if="line.isSummary && !line.hasResults" class="pending-result">
                 <td colspan="2">{{line.name}} <span class="status">Pending!</span></td>
             </tr>
-            <tr ng-if="!line.isSummary" 
+            <tr ng-if="!line.isSummary"
                 ng-class="{'is-abnormal': line.isAbnormal, 'referred-out': line.referredOut}">
                 <td>
-                  <span>{{line.name}}</span>
+                    <span>{{line.name}}</span>
 
                 </td>
                 <td class="value">
@@ -81,6 +100,7 @@
             <tr ng-show="!line.isSummary && line.show">
                 <td colspan="2" class="notes inline-notes">
                     <p class="left"><strong>Lab Tech Notes: </strong>{{line.notes}}</p>
+
                     <div class="footer-note right">
                                     <span class="time-stamp">
                                         <span class="date" bo-text="line.observationDateTime | date:'dd MMM yy'"></span>
@@ -101,6 +121,7 @@
         <div ng-repeat="otherInvestigationGroup in visit.otherInvestigationGroups">
             <li ng-repeat="investigation in otherInvestigationGroup.orders">
                 <span bo-text="investigation.concept.name" class="temp-class"></span>
+
                 <div class="footer-note">
                   <span class="time-stamp">
                     <span class="date">{{otherInvestigationGroup.date | date:'dd MMM yy'}}</span>
@@ -126,7 +147,7 @@
                 <span bo-show="drugOrder.drugUnits" bo-text="' ' + drugOrder.drugUnits"></span>
                 <span bo-show="!drugOrder.doseStrength && !drugOrder.drugUnits" bo-text="' - '"></span>
             </td>
-            <td >
+            <td>
                 <span bo-show="drugOrder.numberPerDosage" bo-text="drugOrder.numberPerDosage"></span>
                 <span bo-show="drugOrder.dosageForm" bo-text="drugOrder.dosageForm"></span>
                 <span bo-show="!drugOrder.dosageForm && !drugOrder.numberPerDosage" bo-text="' - '"></span>
@@ -153,6 +174,7 @@
         <tr ng-show="drugOrder.show">
             <td colspan="7" class="inline-notes notes">
                 <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.notes}}</p>
+
                 <div class="footer-note right">
                     <span class="time-stamp">
                       <span class="date">{{drugOrder.dateCreated | date:'dd MMM yy'}}</span>
@@ -200,6 +222,7 @@
                         <p class="left">
                             <strong>Disposition Notes: </strong>{{note.value}}
                         </p>
+
                         <div class="footer-note right">
                           <span class="time-stamp">
                             <span class="date">{{disposition.dispositionDateTime | date:'dd MMM yy'}}</span>
@@ -219,6 +242,7 @@
         <div ng-repeat="notes in visit.consultationNotes">
             <li ng-repeat="note in notes.obs" class="consult-notes-item">
                 <span class="consult-notes-text"><strong>Consultation Notes: </strong>{{note.value}}</span>
+
                 <div class="footer-note">
                   <span class="time-stamp">
                     <span class="date">{{note.observationDateTime | date:'dd MMM yy'}}</span>

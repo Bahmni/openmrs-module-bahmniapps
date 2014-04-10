@@ -168,9 +168,9 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
 
 
     angular.forEach(encounterTransactions, function (encounterTransaction) {
-        angular.forEach(encounterTransaction.diagnoses, function (diagnosis) {
-            diagnosis.provider = encounterTransaction.providers[0];
-            diagnoses.push(diagnosis);
+        angular.forEach(encounterTransaction.bahmniDiagnoses, function (diagnosis) {
+            var diagnosisMapper = new Bahmni.DiagnosisMapper();
+            diagnoses.push(diagnosisMapper.mapDiagnosis(diagnosis));
         });
 
         if (encounterTransaction.disposition) {

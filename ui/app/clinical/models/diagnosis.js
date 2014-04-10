@@ -11,6 +11,7 @@ Bahmni.Clinical.Diagnosis = function (codedAnswer, order, certainty, existingObs
         self.conceptName = self.codedAnswer.name;
     }
     self.voided = voided;
+    self.firstDiagnosis = null;
 
     self.getDisplayName = function () {
         if (self.freeTextAnswer) {
@@ -84,4 +85,8 @@ Bahmni.Clinical.Diagnosis = function (codedAnswer, order, certainty, existingObs
             }
         }
     };
+    
+    //    self.hasBeenRevised = function() {
+    //        return this.
+    //    }
 };
