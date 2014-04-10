@@ -36,16 +36,9 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                 });
             };
 
-            // TODO : remove this : shruthi
-            var getRuledOutDiagnoses = function() {
-                return diagnosisService.getRuledOutDiagnoses(patientUuid, $rootScope.ruledOutDiagnosisConcept.uuid). success(function(response){
-                    $rootScope.ruledOutDiagnoses = response.results;
-                })
-            };
-
             return spinner.forPromise(
                 initialization.then(function(){
-                    return $q.all([getActiveEncounter().then(getRuledOutDiagnoses).then(getPastDiagnoses),getPatient().then(getPatientBedDetails)]);
+                    return $q.all([getActiveEncounter().then(getPastDiagnoses),getPatient().then(getPatientBedDetails)]);
                  })
             );
         }

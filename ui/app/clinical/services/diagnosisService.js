@@ -18,18 +18,4 @@ angular.module('bahmni.clinical')
         });
     };
 
-        // TODO : remove this : shruthi
-    this.getRuledOutDiagnoses = function (patientUuid, conceptUuid) {
-        var url = Bahmni.Common.Constants.openmrsObsUrl;
-        return $http.get(url, {
-            method:"GET",
-            params:{
-                patient:patientUuid,
-                concept:conceptUuid,
-                v:Bahmni.Common.Constants.openmrsObsRepresentation
-            }
-        });
-
-    };
-
 }]);
