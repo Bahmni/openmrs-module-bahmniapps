@@ -61,6 +61,7 @@ angular.module('opd.patientDashboard', [])
         };
 
         $scope.showSummary = function () {
+            $scope.patientSummary = {}
             $scope.patientDashboardSections.forEach(addViewNameToSection);
         };
     }]);
