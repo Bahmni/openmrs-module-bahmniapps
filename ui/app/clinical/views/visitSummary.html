@@ -98,13 +98,13 @@
 <section class="block otherTestOrders" ng-show="visit.hasOtherInvestigations()">
     <h2>Other Investigations</h2>
     <ul>
-        <div ng-repeat="otherInvestigations in visit.otherInvestigations">
-            <li ng-repeat="investigation in otherInvestigations.orders">
+        <div ng-repeat="otherInvestigationGroup in visit.otherInvestigationGroups">
+            <li ng-repeat="investigation in otherInvestigationGroup.orders">
                 <span bo-text="investigation.concept.name" class="temp-class"></span>
                 <div class="footer-note">
                   <span class="time-stamp">
-                    <span class="date">{{otherInvestigations.date | date:'dd MMM yy'}}</span>
-                    <span class="time">{{otherInvestigations.date | date :'hh:mm a'}}</span>
+                    <span class="date">{{otherInvestigationGroup.date | date:'dd MMM yy'}}</span>
+                    <span class="time">{{otherInvestigationGroup.date | date :'hh:mm a'}}</span>
                   </span>
                     <span class="provider" bo-text="investigation.provider.name"></span>
                 </div>
@@ -114,11 +114,11 @@
 </section>
 <section class="block treatment-section" ng-show="visit.hasDrugOrders()">
     <h2>Treatment</h2>
-    <table ng-repeat="drugOrders in visit.drugOrders">
+    <table ng-repeat="drugOrderGroup in visit.drugOrderGroups">
         <tr>
-            <th class="drugorder-date" colspan="7"><strong>{{(drugOrders.date | date:'dd MMM yy')}}</strong></th>
+            <th class="drugorder-date" colspan="7"><strong>{{(drugOrderGroup.date | date:'dd MMM yy')}}</strong></th>
         </tr>
-        <tbody ng-repeat="drugOrder in drugOrders.orders">
+        <tbody ng-repeat="drugOrder in drugOrderGroup.orders">
         <tr>
             <td class="drug-name" bo-text="drugOrder.drugName"></td>
             <td>
@@ -165,6 +165,22 @@
         </tbody>
     </table>
 </section>
+<section class="block ipd-treatment-section" bo-if="visit.ipdTreatment">
+    <h2>IPD Treatment</h2>
+    <table>
+        <tr>
+            <th>Drug</th>
+            <th ng-repeat="day in visit.ipdTreatment.days" bo-text="'D'+ day.dayNumber"></th>
+        </tr>
+        <tr ng-repeat="drugOrder in visit.ipdTreatment.drugOrders">
+            <td bo-text="drugOrder.drugName"></td>
+            <td ng-repeat="day in visit.ipdTreatment.days">
+                <span class="icon-ok" bo-if="drugOrder.isDrugConsumedOnDate(day.date)"/>
+            </td>
+        </tr>
+    </table>
+</section>
+
 <section class="block disposition-section" ng-show="visit.hasDisposition()">
     <h2>Disposition</h2>
     <ul class="block-content">

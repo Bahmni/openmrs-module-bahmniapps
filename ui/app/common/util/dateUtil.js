@@ -5,12 +5,19 @@ Bahmni.Common.Util.DateUtil = {
 		return Math.floor((dateTo - dateFrom) / (60 * 1000 * 60 * 24));
 	},
 
+	addDays: function (date, days) {
+		var newDate = new Date(date);
+		newDate.setDate(date.getDate() + days);
+		return newDate;
+	},
+
 	getDayNumber: function (referenceDate, date) {
 		return this.diffInDays(this.getDate(referenceDate), this.getDate(date))  + 1;
 	},
 
 	getDate: function (dateTime) {
-		return new Date(dateTime.getFullYear(), dateTime.getMonth(), dateTime.getDate());
+		var dateTimeObject = new Date(dateTime);
+		return new Date(dateTimeObject.getFullYear(), dateTimeObject.getMonth(), dateTimeObject.getDate());
 	},
 
 	getCurrentDate: function(){

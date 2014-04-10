@@ -1,6 +1,7 @@
 'use strict';
 
-Bahmni.Clinical.Visit = function (drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, labOrders, hasEncounters) {
+Bahmni.Clinical.Visit = function (encounters, drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, labOrders, encounterConfig) {
+    this.encounters = encounters;
     this.drugOrders = drugOrders;
     this.consultationNotes = consultationNotes;
     this.otherInvestigations = otherInvestigations;
@@ -8,7 +9,11 @@ Bahmni.Clinical.Visit = function (drugOrders, consultationNotes, otherInvestigat
     this.diagnoses = diagnoses;
     this.dispositions = dispositions;
     this.labTestOrderObsMap = labOrders;
-    this.containsEncounters = hasEncounters;
+    this.encounterConfig = encounterConfig;
+    this.ipdTreatment = this.hasDrugOrders() && this.hasAdmissionEncounter() ? Bahmni.Clinical.DrugSchedule.create(this) : null;
+    var orderGroup = new Bahmni.Clinical.OrderGroup();
+    this.drugOrderGroups = orderGroup.group(drugOrders);
+    this.otherInvestigationGroups = orderGroup.group(otherInvestigations);
 }
 
 Bahmni.Clinical.Visit.prototype = {
@@ -49,17 +54,36 @@ Bahmni.Clinical.Visit.prototype = {
         return Bahmni.Common.Util.DateUtil.diffInDays(new Date(drugOrder.startDate), new Date(drugOrder.endDate));
     },
     hasEncounters: function () {
-        return this.containsEncounters;
-    }
+        return this.encounters.length > 0;
+    },
+    _getAdmissionEncounter: function() {
+        var self = this;
+        return this.encounters.filter(function(encounter){ return encounter.encounterTypeUuid === self.encounterConfig.getAdmissionEncounterTypeUuid(); })[0];
+    },
+    hasAdmissionEncounter: function() {
+        return this._getAdmissionEncounter() ? true : false;
+    },
+    getAdmissionDate: function() {
+        var admissionEncounter = this._getAdmissionEncounter();
+        return admissionEncounter ? new Date(admissionEncounter.encounterDateTime) : null;
+    },
+    _getDischargeEncounter: function() {
+        var self = this;
+        return this.encounters.filter(function(encounter){ return encounter.encounterTypeUuid === self.encounterConfig.getDischargeEncounterTypeUuid(); })[0];
+    },
+    getDischargeDate: function() {
+        var dischargeEncounter = this._getDischargeEncounter();
+        return dischargeEncounter ? new Date(dischargeEncounter.encounterDateTime) : null;
+    }    
 };
 
-Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNoteConcept, labOrderNoteConcept, orderTypes, allTestAndPanels) {
+Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNoteConcept, labOrderNoteConcept, encounterConfig, allTestAndPanels) {
     var drugOrders, consultationNotes, otherInvestigations, observations, diagnoses = [], dispositions = [],
         orderGroup = new Bahmni.Clinical.OrderGroup(),
         orderGroupWithObs = new Bahmni.Clinical.OrderGroupWithObs(),
         resultGrouper = new Bahmni.Clinical.ResultGrouper(),
         isLabTests = function (order) {
-            var labTestOrderTypeUuid = orderTypes[Bahmni.Clinical.Constants.labOrderType];
+            var labTestOrderTypeUuid = encounterConfig.orderTypes[Bahmni.Clinical.Constants.labOrderType];
             return order.orderTypeUuid === labTestOrderTypeUuid;
         },
         isNonLabTests = function (order) {
@@ -90,12 +114,11 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
             return !allOrders().some(function(order){
                 return order.uuid === obs.orderUuid;
             });
-        },
-        hasEncounters = encounterTransactions.length > 0;
+        };
 
 
-    drugOrders = orderGroup.create(encounterTransactions, 'drugOrders');
-    otherInvestigations = orderGroup.create(encounterTransactions, 'testOrders', isNonLabTests);
+    drugOrders = orderGroup.flatten(encounterTransactions, 'drugOrders');
+    otherInvestigations = orderGroup.flatten(encounterTransactions, 'testOrders', isNonLabTests);
 
     var filterFunction = function(aTestOrPanel, testOrder){
         return aTestOrPanel.name.name == testOrder.concept.name;
@@ -156,5 +179,5 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
         }
     });
 
-    return new this(drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, encountersWithTestOrders, hasEncounters);
+    return new this(encounterTransactions, drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, encountersWithTestOrders, encounterConfig);
 }

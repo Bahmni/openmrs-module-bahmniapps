@@ -2,32 +2,28 @@
 
 Bahmni.Clinical.OrderGroup = function(){};
 
-Bahmni.Clinical.OrderGroup.prototype.convert = function(listOfOrders) {
-    var groupingFunction = function(order) {
-        return order.dateCreated.substring(0, 10);
-    };
-    var groupedOrders = new Bahmni.Clinical.ResultGrouper().group(listOfOrders, groupingFunction, 'orders', 'date');
+Bahmni.Clinical.OrderGroup.prototype.group = function(orders) {
+    var groupByDate = function(order) { return order.dateCreated.substring(0, 10); };
+    var groupedOrders = new Bahmni.Clinical.ResultGrouper().group(orders, groupByDate, 'orders', 'date');
     return groupedOrders.map(function(order) {
         return {
             date: new Date(order.date),
             orders: order.orders
         };
-    }).sort(function(first, second) {
-            return first.date < second.date ? -1: 1;
-        });
+    }).sort(function(first, second) { return first.date < second.date ? -1: 1; });
 };
 
-Bahmni.Clinical.OrderGroup.prototype.create = function (encounterTransactions, item, filterFunction) {
+Bahmni.Clinical.OrderGroup.prototype.create = function (encounterTransactions, ordersName, filterFunction) {
+    var filteredOrders = this.flatten(encounterTransactions, ordersName, filterFunction);
+    return this.group(filteredOrders);
+};
+
+Bahmni.Clinical.OrderGroup.prototype.flatten = function (encounterTransactions, ordersName, filterFunction) {
     filterFunction = filterFunction || function(){return true;}
-    var flatten = function(transactions) {
-        return transactions.reduce(function (result, transaction) {
-            var providers = transaction.providers;
-            transaction[item].forEach(function(order) {
-                 order.provider = providers.length > 0 ? providers[0] : null;
-            });
-            return result.concat(transaction[item]);
-        }, []);
-    };
-    var flattenedOrders = flatten(encounterTransactions).filter(filterFunction);
-    return this.convert(flattenedOrders);
+    var setOrderProvider = function (encounter) { 
+        encounter[ordersName].forEach(function(order) { order.provider = encounter.providers[0]; }); 
+    }
+    encounterTransactions.forEach(setOrderProvider);
+    var flattenedOrders = encounterTransactions.reduce(function(orders, encounter) { return orders.concat(encounter[ordersName]) }, []);
+    return flattenedOrders.filter(filterFunction);
 };

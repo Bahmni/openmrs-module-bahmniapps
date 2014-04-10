@@ -11,7 +11,7 @@ angular.module('bahmni.clinical')
             $scope.obsIgnoreList = appService.getAppDescriptor().getConfig("obsIgnoreList").value || {};
 
             spinner.forPromise(encounterService.search(visitUuid).success(function (encounterTransactions) {
-                $scope.visit = Bahmni.Clinical.Visit.create(encounterTransactions, $scope.consultationNoteConcept, $scope.labOrderNotesConcept, $scope.encounterConfig.orderTypes, $rootScope.allTestsAndPanelsConcept)
+                $scope.visit = Bahmni.Clinical.Visit.create(encounterTransactions, $scope.consultationNoteConcept, $scope.labOrderNotesConcept, $scope.encounterConfig, $rootScope.allTestsAndPanelsConcept)
             }));
 
             $scope.isNumeric = function (value) {
