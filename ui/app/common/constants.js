@@ -13,7 +13,7 @@ Bahmni.Common = Bahmni.Common || {};
         timeDisplayFormat: "hh:mm",
         emrapiDiagnosisUrl : EMRAPI + "/diagnosis",
         bahmniDiagnosisUrl :BAHMNI_CORE + "/diagnosis/search",
-        emrapiConceptUrl :EMRAPI + "concept",
+        emrapiConceptUrl :EMRAPI + "/concept",
         encounterConfigurationUrl: BAHMNI_CORE + "/bahmniencounter/config",
         patientConfigurationUrl:BAHMNI_CORE + "/patient/config",
         encounterUrl: EMRAPI + "/encounter",
