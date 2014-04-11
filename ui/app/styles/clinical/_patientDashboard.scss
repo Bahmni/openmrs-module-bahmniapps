@@ -53,6 +53,7 @@
     color: #666;
     padding: 10px;
     text-align: center;
+    display: none;
   }
   section.block {
     padding: 0!important;
@@ -98,6 +99,29 @@
     color: #006699;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-    margin-top: 10px;
+  }
+}
+
+.treatment-section {
+  table {
+    margin: 0;
+    tr, td {
+      border-left: 0;
+      border-right: 0;
+    }
+    h5 {
+      font-family: OpenSansBold;
+      span {
+        font-size: 14px;
+        color: #ccc;
+      }
+    }
+    td.days, td.dosage {
+      font-size: 14px;
+      width: 30%;
+      span {
+        color: #aaa;
+      }
+    }
   }
 }

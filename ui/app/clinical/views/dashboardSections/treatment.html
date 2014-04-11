@@ -1,13 +1,14 @@
 <div ng-controller="VisitDashboardTreatmentController">
     <h2>{{section.description}}</h2>
 
-    <section class="block">
+    <section class="block treatment-section">
         <table>
             <tr ng-repeat="drugOrder in drugOrders">
-                <td>{{drugOrder.name}}</td>
-                <td>{{drugOrder.orderDate | date:'d MMM yy'}}</td>
-                <td>{{drugOrder.dosage}}</td>
-                <td>{{drugOrder.days}}</td>
+                <td class="drug"><h5>{{drugOrder.name}} </h5></td>
+                <td class="dosage">{{drugOrder.dose}} <span>{{drugOrder.dosage}}</span></td>
+                <td class="days"><span>From </span>{{drugOrder.orderDate | date:'d MMM yy'}}<span> for </span>{{drugOrder.days}}
+                    day(s)
+                </td>
             </tr>
         </table>
     </section>
