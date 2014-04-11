@@ -39,7 +39,7 @@ angular.module('bahmni.clinical')
                 encounterData.bahmniDiagnoses = $rootScope.consultation.newlyAddedDiagnoses.map(function (diagnosis) {
                     return {
                         codedAnswer: { uuid: diagnosis.codedAnswer.uuid },
-                        freeTextAnswer: diagnosis.freeTextAnswer,
+                        freeTextAnswer: diagnosis.freeTextAnswer ? diagnosis.freeTextAnswer : undefined,
                         order: diagnosis.order,
                         certainty: diagnosis.certainty,
                         existingObs: null,
