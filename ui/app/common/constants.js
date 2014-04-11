@@ -44,6 +44,9 @@ Bahmni.Common = Bahmni.Common || {};
         includeAllObservations: false,
         openmrsObsUrl :RESTWS_V1 + "/obs",
         openmrsObsRepresentation :"custom:(uuid,obsDatetime,value:(uuid,name:(uuid,name)))" ,
+        admissionCode: 'ADMIT',
+        dischargeCode: 'DISCHARGE',
+        transferCode: 'TRANSFER',
         compoundObservationConceptName:"XCompoundObservation",
         abnormalObservationConceptName: "IS_ABNORMAL"
 };

@@ -5,7 +5,6 @@ angular.module('bahmni.adt')
         function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService, appService, visitService, $location, $window) {
             var actionConfigs = {};
             var encounterConfig = $rootScope.encounterConfig;
-            var Constants = Bahmni.ADT.Constants;
             $scope.adtObservations = [];
 
             var getActionCode = function (concept) {
@@ -41,6 +40,7 @@ angular.module('bahmni.adt')
                 var transferActions = appService.getAppDescriptor().getExtensions("org.bahmni.adt.transfer.action", "config");
                 var dischargeActions = appService.getAppDescriptor().getExtensions("org.bahmni.adt.discharge.action", "config");
                 if (encounterConfig) {
+                    var Constants = Bahmni.Common.Constants;
                     actionConfigs[Constants.admissionCode] = {encounterTypeUuid: encounterConfig.getAdmissionEncounterTypeUuid(), allowedActions: admitActions};
                     actionConfigs[Constants.dischargeCode] = {encounterTypeUuid: encounterConfig.getDischargeEncounterTypeUuid(), allowedActions: dischargeActions};
                     actionConfigs[Constants.transferCode] = {encounterTypeUuid: encounterConfig.getTransferEncounterTypeUuid(), allowedActions: transferActions};

@@ -77,6 +77,10 @@ Bahmni.Clinical.Visit.prototype = {
     },
     hasIPDDrugOrdes: function() {
         return this.ipdDrugSchedule && this.ipdDrugSchedule.hasDrugOrders();;
+    },
+    getDischargeDispositionDate: function() {
+        var dischargeDisposition = this.dispositions.filter(function(disposition) { return disposition.code === Bahmni.Common.Constants.dischargeCode; })[0];
+        return dischargeDisposition ? new Date(dischargeDisposition.dispositionDateTime) : null;
     }    
 };
 
