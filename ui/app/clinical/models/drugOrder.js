@@ -1,11 +1,10 @@
+'use strict';
+
 Bahmni.Clinical.DrugOrder = (function () {
-    var DrugOrder = function (options) {
-        options = options || {};
-        this.name = options.name;
-        this.orderDate = options.orderDate;
-        this.dosage = options.dosage;
-        this.days = options.days;
-        this.dose = options.dose;
+	var DateUtil = Bahmni.Common.Util.DateUtil;
+
+    var DrugOrder = function (drugOrderData) {
+		angular.extend(this, drugOrderData);
     };
 
     DrugOrder.createFromOpenMRSRest = function (drugOrder) {
@@ -16,6 +15,16 @@ Bahmni.Clinical.DrugOrder = (function () {
             days: Bahmni.Common.Util.DateUtil.diffInDays(new Date(drugOrder.startDate), new Date(drugOrder.autoExpireDate))}
     };
 
-    return DrugOrder;
+    DrugOrder.create = function(drugOrderData) {
+		return new DrugOrder(drugOrderData);
+	}
+
+	DrugOrder.prototype = {
+		isDrugConsumedOnDate: function(date) {
+			return date >= DateUtil.getDate(this.startDate) && date <= DateUtil.getDate(this.endDate);
+		}
+	}
+
+	return DrugOrder;
 })();
 

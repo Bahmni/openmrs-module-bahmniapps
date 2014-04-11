@@ -24,6 +24,10 @@ Bahmni.Common.Util.DateUtil = {
 		return moment(Date.now()).format("YYYY-MM-DDTHH:mm:ss") + "Z";
 	},
 
+	parse: function(dateString){
+		return moment(dateString).toDate();
+	},
+
 	now: function(){
 	    return new Date();
 	},

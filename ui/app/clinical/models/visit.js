@@ -10,7 +10,7 @@ Bahmni.Clinical.Visit = function (encounters, drugOrders, consultationNotes, oth
     this.dispositions = dispositions;
     this.labTestOrderObsMap = labOrders;
     this.encounterConfig = encounterConfig;
-    this.ipdTreatment = this.hasDrugOrders() && this.hasAdmissionEncounter() ? Bahmni.Clinical.DrugSchedule.create(this) : null;
+    this.ipdDrugSchedule = this.hasAdmissionEncounter() ? Bahmni.Clinical.DrugSchedule.create(this) : null;
     var orderGroup = new Bahmni.Clinical.OrderGroup();
     this.drugOrderGroups = orderGroup.group(drugOrders);
     this.otherInvestigationGroups = orderGroup.group(otherInvestigations);
@@ -74,6 +74,9 @@ Bahmni.Clinical.Visit.prototype = {
     getDischargeDate: function() {
         var dischargeEncounter = this._getDischargeEncounter();
         return dischargeEncounter ? new Date(dischargeEncounter.encounterDateTime) : null;
+    },
+    hasIPDDrugOrdes: function() {
+        return this.ipdDrugSchedule && this.ipdDrugSchedule.hasDrugOrders();;
     }    
 };
 

@@ -187,16 +187,16 @@
         </tbody>
     </table>
 </section>
-<section class="block ipd-treatment-section" bo-if="visit.ipdTreatment">
+<section class="block ipd-treatment-section" ng-if="visit.hasIPDDrugOrdes()">
     <h2>IPD Treatment</h2>
     <table>
         <tr>
             <th>Drug</th>
-            <th ng-repeat="day in visit.ipdTreatment.days" bo-text="'D'+ day.dayNumber"></th>
+            <th ng-repeat="day in visit.ipdDrugSchedule.days" bo-text="'D'+ day.dayNumber"></th>
         </tr>
-        <tr ng-repeat="drugOrder in visit.ipdTreatment.drugOrders">
+        <tr ng-repeat="drugOrder in visit.ipdDrugSchedule.drugOrders">
             <td bo-text="drugOrder.drugName"></td>
-            <td ng-repeat="day in visit.ipdTreatment.days">
+            <td ng-repeat="day in visit.ipdDrugSchedule.days">
                 <span class="icon-ok" bo-if="drugOrder.isDrugConsumedOnDate(day.date)"/>
             </td>
         </tr>
