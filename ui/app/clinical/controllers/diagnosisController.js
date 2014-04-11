@@ -19,7 +19,7 @@ angular.module('bahmni.clinical')
             var _canAdd = function (diagnosis) {
                 var canAdd = true;
                 $scope.newlyAddedDiagnoses.forEach(function (observation) {
-                    if (observation.conceptName === diagnosis.conceptName) {
+                    if (observation.codedAnswer.uuid === diagnosis.codedAnswer.uuid) {
                         canAdd = false;
                     }
                 });
@@ -111,6 +111,11 @@ angular.module('bahmni.clinical')
                 if (index >= 0) {
                     $scope.newlyAddedDiagnoses.splice(index, 1);
                 }
+            };
+
+            $scope.clearDiagnosis = function(index) {
+                var diagnosisBeingEdited = $scope.newlyAddedDiagnoses[index];
+                diagnosisBeingEdited.clearCodedAnswerUuid();
             };
 
             $scope.$on('$destroy', function () {

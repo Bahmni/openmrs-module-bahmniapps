@@ -7,10 +7,9 @@
                 <div class="table new-diagnosis">
                     <div class="row table-header">
                         <div class="col col1"><span>Diagnosis</span></div>
-                        <div class="col col2"><span>Freetext</span></div>
-                        <div class="col col3"><span>Order</span></div>
-                        <div class="col col4"><span>Certainty</span></div>
-                        <div class="col col5"><span>Status</span></div>
+                        <div class="col col2"><span>Order</span></div>
+                        <div class="col col3"><span>Certainty</span></div>
+                        <div class="col col4"><span>Status</span></div>
                     </div>
 
                     <div ng-repeat="diagnosis in newlyAddedDiagnoses" ng-hide="diagnosis.voided" class="table-body">
@@ -18,32 +17,32 @@
                             <div class="col col1">
                                 <input ng-model="diagnosis.codedAnswer.name" type="text" name="name"
                                        my-autocomplete="{{ {'src': 'getDiagnosis', 'responseHandler': 'cleanOutDiagnosisList', 'onSelect':'addNewDiagnosis', 'index' : $index} }}"
+                                       ng-change="clearEmptyRows($index); diagnosis.clearCodedAnswerUuid();">
+
+                                <input type="checkbox" ng-model="diagnosis.isNonCodedAnswer"
                                        ng-change="clearEmptyRows($index)"
-                                       ng-class="{'illegalValue': !diagnosis.isValidAnswer()}">
+                                       ng-class="{'illegalValue': diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid && !diagnosis.isNonCodedAnswer}"
+                                       ng-disabled="diagnosis.codedAnswer.uuid">
+                                <label class="add-new">Add New?</label>
                             </div>
                             <div class="col col2">
-                                <input ng-model="diagnosis.freeTextAnswer" type="text" name="name"
-                                       ng-change="clearEmptyRows($index); addDiagnosis({}, $index)"
-                                       ng-class="{'illegalValue': !diagnosis.isValidAnswer()}">
-                            </div>
-                            <div class="col col3">
                                 <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.order'
                                                ng-class="{'illegalValue': !diagnosis.isValidOrder()}"
                                                options='orderOptions'/>
                             </div>
-                            <div class="col col4">
+                            <div class="col col3">
                                 <buttons-radio class="small-btn" data-toggle="buttons-radio" model='diagnosis.certainty'
                                                ng-class="{'illegalValue': !diagnosis.isValidCertainty()}"
                                                options='certaintyOptions'/>
                             </div>
-                            <div class="col col5">
+                            <div class="col col4">
                                 <buttons-radio class="small-btn status" data-toggle="buttons-radio"
                                                model='diagnosis.diagnosisStatus'
                                                options='diagnosisStatuses'/>
                             </div>
-                            <div class="col col6">
+                            <div class="col col5">
                                 <button type="button" class="small-btn row-remover" ng-click="removeObservation($index)"
-                                        ng-show="diagnosis.codedAnswer.name || diagnosis.freeTextAnswer">
+                                        ng-show="diagnosis.codedAnswer.name">
                                     <span class="icon-remove"></span>
                                 </button>
                             </div>
@@ -70,6 +69,7 @@
                 
                 <div class="table history-diagnosis" ng-if="consultation.pastDiagnoses.length > 0">
                     <h2>Past Diagnosis</h2>
+
                     <div class="row table-header">
                         <div class="col col1"><span>Diagnosis</span></div>
                         <div class="col col2"><span>Order</span></div>

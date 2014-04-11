@@ -65,28 +65,38 @@
   }
   .col1 {
     @include column(3);
-    input {
+    input[type="text"] {
+      min-width: 160px;
       margin-left: 10px;
       margin-top: 0;
+      float: left;
     }
+    input[type="checkbox"] {
+      margin-top: 8px;
+    }
+    input[type="checkbox"].illegalValue {
+      border: 2px solid red;
+    }
+    label.add-new {margin-top: 10px;}
+    width: 31%;
   }
   .col2 {
     @include column(3);
     button:first-child {
       margin-left: 10px;
     }
-    width: 23%;
+    width: 22%;
   }
   .col3 {
     @include column(3);
     button:first-child {
       margin-left: 10px;
     }
-    width: 24%;
+    width: 21%;
   }
   .col4 {
     @include column(2);
-    width: 23%;
+    width: 19%;
   }
   .col5 {
     @include column(1);

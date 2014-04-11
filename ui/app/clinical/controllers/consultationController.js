@@ -42,8 +42,8 @@ angular.module('bahmni.clinical')
             if ($rootScope.consultation.newlyAddedDiagnoses && $rootScope.consultation.newlyAddedDiagnoses.length > 0) {
                 encounterData.bahmniDiagnoses = $rootScope.consultation.newlyAddedDiagnoses.map(function (diagnosis) {
                     return {
-                        codedAnswer: { uuid: diagnosis.codedAnswer.uuid },
-                        freeTextAnswer: diagnosis.freeTextAnswer ? diagnosis.freeTextAnswer : undefined,
+                        codedAnswer: { uuid: !diagnosis.isNonCodedAnswer ? diagnosis.codedAnswer.uuid : undefined},
+                        freeTextAnswer: diagnosis.isNonCodedAnswer ? diagnosis.codedAnswer.name : undefined,
                         order: diagnosis.order,
                         certainty: diagnosis.certainty,
                         existingObs: null,

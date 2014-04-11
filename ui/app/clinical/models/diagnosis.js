@@ -7,6 +7,7 @@ Bahmni.Clinical.Diagnosis = function (codedAnswer, order, certainty, existingObs
     self.freeTextAnswer = freeTextAnswer;
     self.diagnosisDateTime = diagnosisDateTime || new Date();
     self.diagnosisStatus = undefined;
+    self.isNonCodedAnswer = false;
     if (self.codedAnswer) {
         self.conceptName = self.codedAnswer.name;
     }
@@ -31,19 +32,12 @@ Bahmni.Clinical.Diagnosis = function (codedAnswer, order, certainty, existingObs
     };
 
     self.answerNotFilled = function () {
-        return (self.codedAnswer.name === undefined && self.freeTextAnswer === undefined);
-    };
-
-    var hasBothCodedAndFreeText = function() {
-        return self.codedAnswer.name && self.codedAnswer.uuid && self.freeTextAnswer;
+        return !self.codedAnswer.name;
     };
 
     self.isValidAnswer = function () {
-        if (hasBothCodedAndFreeText() ) {
-            return false;
-        }
-        return (self.codedAnswer.name !== undefined && self.codedAnswer.uuid !== undefined )
-            || (self.freeTextAnswer !== undefined )
+        return (self.codedAnswer.name && self.codedAnswer.uuid)
+            || (self.codedAnswer.name && !self.codedAnswer.uuid && self.isNonCodedAnswer)
             || self.answerNotFilled();
     };
     self.isValidOrder = function () {
@@ -88,6 +82,10 @@ Bahmni.Clinical.Diagnosis = function (codedAnswer, order, certainty, existingObs
                 "name": Bahmni.Clinical.Constants.diagnosisStatuses[self.diagnosisStatus]
             }
         }
+    };
+
+    self.clearCodedAnswerUuid = function(){
+        self.codedAnswer.uuid = undefined;
     };
     
     //    self.hasBeenRevised = function() {
