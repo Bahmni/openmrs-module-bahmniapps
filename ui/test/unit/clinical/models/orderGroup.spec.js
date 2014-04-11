@@ -60,10 +60,10 @@ describe('Drug Order', function () {
         ];
         var orders = new Bahmni.Clinical.OrderGroup().create(encounterTransaction, 'drugOrders');
         expect(orders.length).toBe(2);
-        expect(orders[0].date.toISOString().substring(0, 10)).toBe("2014-03-24");
-        expect(orders[1].date.toISOString().substring(0, 10)).toBe("2014-03-25");
-        expect(orders[0].orders.length).toBe(2);
-        expect(orders[1].orders.length).toBe(1);
+        expect(orders[0].date.toISOString().substring(0, 10)).toBe("2014-03-25");
+        expect(orders[1].date.toISOString().substring(0, 10)).toBe("2014-03-24");
+        expect(orders[0].orders.length).toBe(1);
+        expect(orders[1].orders.length).toBe(2);
     });
 
     it('should filter based on filter function', function () {
@@ -94,6 +94,6 @@ describe('Drug Order', function () {
         var orders = new Bahmni.Clinical.OrderGroup().create(encounterTransaction, 'drugOrders', function () {
             return true;
         });
-        expect(orders[1].orders[0].provider.name).toBe(sampleProvider().name);
+        expect(orders[0].orders[0].provider.name).toBe(sampleProvider().name);
     });
 });

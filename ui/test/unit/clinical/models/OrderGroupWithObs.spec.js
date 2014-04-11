@@ -51,22 +51,22 @@ describe('Order group with obs', function () {
         var encounterTransactions = listOfEncounterTransactions();
         var orderGroupWithObs = Bahmni.Clinical.OrderGroupWithObs.prototype.create(encounterTransactions,'testOrders', null);
         expect(orderGroupWithObs.length).toBe(2);
-        expect(orderGroupWithObs[0].orders[0].obs.length).toBe(1);
+        expect(orderGroupWithObs[0].orders[0].obs.length).toBe(0);
         expect(orderGroupWithObs[1].orders.length).toBe(1);
-        expect(orderGroupWithObs[1].orders[0].obs.length).toBe(0);
+        expect(orderGroupWithObs[1].orders[0].obs.length).toBe(1);
     });
 
     it("should set providers for each observation",function(){
         var encounterTransactions = listOfEncounterTransactions();
         var orderGroupWithObs = Bahmni.Clinical.OrderGroupWithObs.prototype.create(encounterTransactions,'testOrders', null);
         expect(orderGroupWithObs.length).toBe(2);
-        expect(orderGroupWithObs[0].orders[0].obs[0].provider.name).toBe("Lab System");
+        expect(orderGroupWithObs[1].orders[0].obs[0].provider.name).toBe("Lab System");
     });
 
     it("should set providers for nested observations",function(){
         var encounterTransactions = listOfEncounterTransactions();
         var orderGroupWithObs = Bahmni.Clinical.OrderGroupWithObs.prototype.create(encounterTransactions,'testOrders', null);
         expect(orderGroupWithObs.length).toBe(2);
-        expect(orderGroupWithObs[0].orders[0].obs[0].provider.name).toBe("Lab System");
+        expect(orderGroupWithObs[1].orders[0].obs[0].provider.name).toBe("Lab System");
     });
 });

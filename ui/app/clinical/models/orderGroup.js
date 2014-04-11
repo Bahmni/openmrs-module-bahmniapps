@@ -10,7 +10,7 @@ Bahmni.Clinical.OrderGroup.prototype.group = function(orders) {
             date: new Date(order.date),
             orders: order.orders
         };
-    }).sort(function(first, second) { return first.date < second.date ? -1: 1; });
+    }).sort(function(first, second) { return first.date < second.date ? 1: -1; });
 };
 
 Bahmni.Clinical.OrderGroup.prototype.create = function (encounterTransactions, ordersName, filterFunction) {
