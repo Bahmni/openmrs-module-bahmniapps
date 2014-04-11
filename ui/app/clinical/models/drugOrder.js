@@ -22,6 +22,10 @@ Bahmni.Clinical.DrugOrder = (function () {
 	DrugOrder.prototype = {
 		isDrugConsumedOnDate: function(date) {
 			return date >= DateUtil.getDate(this.startDate) && date <= DateUtil.getDate(this.endDate);
+		},
+
+		isActive: function() {
+			return this.isDrugConsumedOnDate(DateUtil.today());
 		}
 	}
 

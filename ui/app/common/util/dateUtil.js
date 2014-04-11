@@ -32,6 +32,10 @@ Bahmni.Common.Util.DateUtil = {
 	    return new Date();
 	},
 
+	today: function(){
+	    return this.getDate(this.now());
+	},
+
 	diffInYearsMonthsDays: function (dateFrom, dateTo) {
 	    var from = {
 	        d: dateFrom.getDate(),

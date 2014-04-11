@@ -15,4 +15,26 @@ describe("DrugOrder", function() {
 			expect(drugOrder.isDrugConsumedOnDate(DateUtil.parse('2014-04-12'))).toBe(false);
 		});
 	});
+
+	describe("isActive", function() {
+		it("should be true if drug is consumed today", function() {
+			spyOn(DateUtil, 'today');
+			var drugOrder = new DrugOrder({
+				startDate: DateUtil.parse('2014-04-10T15:52:59.000+0530'),
+				endDate: DateUtil.parse('2014-04-11T15:52:59.000+0530')
+			});
+
+			DateUtil.today.andReturn(DateUtil.parse('2014-04-09'));
+			expect(drugOrder.isActive()).toBe(false);
+			
+			DateUtil.today.andReturn(DateUtil.parse('2014-04-10'));
+			expect(drugOrder.isActive()).toBe(true);
+			
+			DateUtil.today.andReturn(DateUtil.parse('2014-04-11'));
+			expect(drugOrder.isActive()).toBe(true);
+			
+			DateUtil.today.andReturn(DateUtil.parse('2014-04-12'));
+			expect(drugOrder.isActive()).toBe(false);
+		});
+	});
 });
