@@ -17,6 +17,18 @@ angular.module('bahmni.clinical')
             });
         };
 
+        var initEditedPastDiagnoses = function () {
+            var editedPastDiagnoses = [];
+            $rootScope.consultation.pastDiagnoses.forEach(function (pastDiagnosis) {
+                if (pastDiagnosis.isDirty) {
+                    editedPastDiagnoses.push(pastDiagnosis);
+                }
+            });
+            $scope.editedPastDiagnoses = editedPastDiagnoses;
+        };
+        initEditedPastDiagnoses();
+        
+
         $scope.save = function () {
             var encounterData = {};
             encounterData.patientUuid = $scope.patient.uuid;
@@ -82,7 +94,6 @@ angular.module('bahmni.clinical')
         $scope.onNoteChanged = function () {
             $scope.consultation.consultationNote.observationDateTime = new Date();
         };
-    }
-    ])
-;
+
+    }]);
 

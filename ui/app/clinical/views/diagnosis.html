@@ -52,7 +52,7 @@
 
                 </div>
                 <div class="table history-diagnosis" ng-if="consultation.pastDiagnoses.length > 0">
-                    <h2>History</h2>
+                    <h2>Past Diagnosis</h2>
                     <div class="row table-header">
                         <div class="col col1"><span>Diagnosis</span></div>
                         <div class="col col2"><span>Order</span></div>
@@ -83,8 +83,7 @@
                             <div class="col col3">
                                 <buttons-radio class="small-btn" data-toggle="buttons-radio" model='diagnosis.certainty'
                                                options='certaintyOptions' dirty-check-flag='diagnosis.isDirty'
-                                               ng-class="{'illegalValue': !diagnosis.isValidCertainty()}"
-                                        />
+                                               ng-class="{'illegalValue': !diagnosis.isValidCertainty()}"/>
                             </div>
                             <div class="col col4">
                                 <buttons-radio class="small-btn status" data-toggle="buttons-radio"

@@ -22,17 +22,33 @@
     </section>
     <section class="block diagnosis">
         <h2>Diagnosis</h2>
-        <div class="block-content" ng-show="nonVoidedDiagnoses.length > 0">
+        <div class="block-content" ng-show="consultation.newlyAddedDiagnoses.length > 0">
+            <h4>Newly added</h4>
             <div class="diagnosis-type">
                 <h3>Primary Diagnoses</h3>
-                <div ng-repeat="diagnosis in nonVoidedDiagnoses" ng-show="diagnosis.isPrimary()">
-                    {{diagnosis.conceptName}}&nbsp;({{diagnosis.certainty}})
+                <div ng-repeat="diagnosis in consultation.newlyAddedDiagnoses" ng-show="diagnosis.isPrimary()">
+                    {{diagnosis.getDisplayName()}}&nbsp;({{diagnosis.certainty}})&nbsp({{diagnosis.diagnosisStatus}})
                 </div>
             </div>
             <div class="diagnosis-type">
                 <h3>Secondary Diagnoses</h3>
-                <div ng-repeat="diagnosis in nonVoidedDiagnoses" ng-hide="diagnosis.isPrimary()">
-                    {{diagnosis.conceptName}}&nbsp;({{diagnosis.certainty}})
+                <div ng-repeat="diagnosis in consultation.newlyAddedDiagnoses" ng-hide="diagnosis.isPrimary()">
+                    {{diagnosis.getDisplayName()}}&nbsp;({{diagnosis.certainty}})
+                </div>
+            </div>
+        </div>
+        <div class="block-content" ng-show="editedPastDiagnoses.length > 0">
+            <h4>Edited past diagnosis</h4>
+            <div class="diagnosis-type">
+                <h3>Primary Diagnoses</h3>
+                <div ng-repeat="diagnosis in editedPastDiagnoses" ng-show="diagnosis.isPrimary() && diagnosis.isDirty">
+                    {{diagnosis.getDisplayName()}}&nbsp;({{diagnosis.certainty}})&nbsp({{diagnosis.diagnosisStatus}})
+                </div>
+            </div>
+            <div class="diagnosis-type">
+                <h3>Secondary Diagnoses</h3>
+                <div ng-repeat="diagnosis in editedPastDiagnoses" ng-hide="diagnosis.isPrimary() && diagnosis.isDirty">
+                    {{diagnosis.getDisplayName()}}&nbsp;({{diagnosis.certainty}})
                 </div>
             </div>
         </div>
