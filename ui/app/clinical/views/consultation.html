@@ -44,12 +44,22 @@
                 <h3>Primary Diagnoses</h3>
                 <div ng-repeat="diagnosis in consultation.savedDiagnosesFromCurrentEncounter" ng-show="diagnosis.isPrimary()">
                     {{diagnosis.getDisplayName()}}&nbsp;({{diagnosis.certainty}})&nbsp({{diagnosis.diagnosisStatus}})
+                    <div ng-show="diagnosis.firstDiagnosis" class="time-stamp">
+                        <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>,
+                        <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
+                        <div class="provider" ng-repeat="provider in diagnosis.firstDiagnosis.providers">{{provider.name}}</div>
+                    </div>
                 </div>
             </div>
             <div class="diagnosis-type">
                 <h3>Secondary Diagnoses</h3>
                 <div ng-repeat="diagnosis in consultation.savedDiagnosesFromCurrentEncounter" ng-hide="diagnosis.isPrimary()">
                     {{diagnosis.getDisplayName()}}&nbsp;({{diagnosis.certainty}})
+                    <div ng-show="diagnosis.firstDiagnosis" class="time-stamp">
+                        <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>,
+                        <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
+                        <div class="provider" ng-repeat="provider in diagnosis.firstDiagnosis.providers">{{provider.name}}</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -60,12 +70,17 @@
                 <h3>Primary Diagnoses</h3>
                 <div ng-repeat="diagnosis in editedDiagnosesFromPastEncounters" ng-show="diagnosis.isPrimary()">
                     {{diagnosis.getDisplayName()}}&nbsp;({{diagnosis.certainty}})&nbsp({{diagnosis.diagnosisStatus}})
+                    <div ng-show="diagnosis.firstDiagnosis" class="time-stamp">
+                        <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>,
+                        <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
+                        <div class="provider" ng-repeat="provider in diagnosis.firstDiagnosis.providers">{{provider.name}}</div>
+                    </div>
                 </div>
             </div>
             <div class="diagnosis-type">
                 <h3>Secondary Diagnoses</h3>
                 <div ng-repeat="diagnosis in editedDiagnosesFromPastEncounters" ng-show="diagnosis.isSecondary()">
-                    {{diagnosis.getDisplayName()}}&nbsp;({{diagnosis.certainty}})
+                    {{diagnosis.getDisplayName()}}&nbsp;({{diagnosis.certainty}})&nbsp({{diagnosis.diagnosisStatus}})
                 </div>
             </div>
         </div>
