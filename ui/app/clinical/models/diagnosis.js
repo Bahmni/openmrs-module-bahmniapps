@@ -26,6 +26,10 @@ Bahmni.Clinical.Diagnosis = function (codedAnswer, order, certainty, existingObs
         return self.order == "PRIMARY";
     };
 
+    self.isSecondary = function () {
+        return self.order == "SECONDARY";
+    };
+
     self.answerNotFilled = function () {
         return (self.codedAnswer.name === undefined && self.freeTextAnswer === undefined);
     };

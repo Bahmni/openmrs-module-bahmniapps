@@ -1,0 +1,28 @@
+<div class="footer-note">
+                              <span class="time-stamp">
+                                <span class="date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
+                                <span class="time">{{diagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
+                              </span>
+                            <span class="provider"
+                                  ng-repeat="provider in diagnosis.providers">{{provider.name}}<br/></span>
+</div>
+<div class="col col1">
+    <label ng-if="diagnosis.codedAnswer.name">{{diagnosis.codedAnswer.name}}</label>
+    <label ng-if="diagnosis.freeTextAnswer">{{diagnosis.freeTextAnswer}}</label>
+    <span class="message">Changed!</span>
+</div>
+<div class="col col2">
+    <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.order'
+                   options='orderOptions' dirty-check-flag='diagnosis.isDirty'
+                   ng-class="{'illegalValue': !diagnosis.isValidOrder()}"/>
+</div>
+<div class="col col3">
+    <buttons-radio class="small-btn" data-toggle="buttons-radio" model='diagnosis.certainty'
+                   options='certaintyOptions' dirty-check-flag='diagnosis.isDirty'
+                   ng-class="{'illegalValue': !diagnosis.isValidCertainty()}"/>
+</div>
+<div class="col col4">
+    <buttons-radio class="small-btn status" data-toggle="buttons-radio"
+                   model='diagnosis.diagnosisStatus'
+                   options='diagnosisStatuses' dirty-check-flag='diagnosis.isDirty'/>
+</div>

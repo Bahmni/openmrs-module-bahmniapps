@@ -23,7 +23,7 @@
     <section class="block diagnosis">
         <h2>Diagnosis</h2>
         <div class="block-content" ng-show="consultation.newlyAddedDiagnoses.length > 0">
-            <h4>Newly added</h4>
+            <h4>Newly added diagnosis</h4>
             <div class="diagnosis-type">
                 <h3>Primary Diagnoses</h3>
                 <div ng-repeat="diagnosis in consultation.newlyAddedDiagnoses" ng-show="diagnosis.isPrimary()">
@@ -37,17 +37,34 @@
                 </div>
             </div>
         </div>
-        <div class="block-content" ng-show="editedPastDiagnoses.length > 0">
-            <h4>Edited past diagnosis</h4>
+        
+        <div class="block-content" ng-show="consultation.savedDiagnosesFromCurrentEncounter.length > 0">
+            <h4>Current diagnosis</h4>
             <div class="diagnosis-type">
                 <h3>Primary Diagnoses</h3>
-                <div ng-repeat="diagnosis in editedPastDiagnoses" ng-show="diagnosis.isPrimary() && diagnosis.isDirty">
+                <div ng-repeat="diagnosis in consultation.savedDiagnosesFromCurrentEncounter" ng-show="diagnosis.isPrimary()">
                     {{diagnosis.getDisplayName()}}&nbsp;({{diagnosis.certainty}})&nbsp({{diagnosis.diagnosisStatus}})
                 </div>
             </div>
             <div class="diagnosis-type">
                 <h3>Secondary Diagnoses</h3>
-                <div ng-repeat="diagnosis in editedPastDiagnoses" ng-hide="diagnosis.isPrimary() && diagnosis.isDirty">
+                <div ng-repeat="diagnosis in consultation.savedDiagnosesFromCurrentEncounter" ng-hide="diagnosis.isPrimary()">
+                    {{diagnosis.getDisplayName()}}&nbsp;({{diagnosis.certainty}})
+                </div>
+            </div>
+        </div>
+
+        <div class="block-content" ng-show="editedDiagnosesFromPastEncounters.length > 0">
+            <h4>Past Diagnosis</h4>
+            <div class="diagnosis-type">
+                <h3>Primary Diagnoses</h3>
+                <div ng-repeat="diagnosis in editedDiagnosesFromPastEncounters" ng-show="diagnosis.isPrimary()">
+                    {{diagnosis.getDisplayName()}}&nbsp;({{diagnosis.certainty}})&nbsp({{diagnosis.diagnosisStatus}})
+                </div>
+            </div>
+            <div class="diagnosis-type">
+                <h3>Secondary Diagnoses</h3>
+                <div ng-repeat="diagnosis in editedDiagnosesFromPastEncounters" ng-show="diagnosis.isSecondary()">
                     {{diagnosis.getDisplayName()}}&nbsp;({{diagnosis.certainty}})
                 </div>
             </div>

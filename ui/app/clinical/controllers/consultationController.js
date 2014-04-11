@@ -3,13 +3,18 @@
 angular.module('bahmni.clinical')
     .controller('ConsultationController', ['$scope', '$rootScope', 'encounterService', '$location', 'spinner', function ($scope, $rootScope, encounterService, $location, spinner) {
 
-        var addEditedPastDiagnoses = function (diagnosisList) {
+        var addEditedDiagnoses = function (diagnosisList) {
             $rootScope.consultation.pastDiagnoses && $rootScope.consultation.pastDiagnoses.forEach(function (diagnosis) {
                 if (diagnosis.isDirty) {
-                    if ($rootScope.consultation.encounterUuid == null || $rootScope.consultation.encounterUuid !== diagnosis.encounterUuid) { //encounter has changed or its a new encounter
-                        diagnosis.previousObs = diagnosis.existingObs;
-                        diagnosis.existingObs = '';
-                    }
+                    diagnosis.previousObs = diagnosis.existingObs;
+                    diagnosis.existingObs = '';
+                    diagnosis.setDiagnosisStatusConcept();
+                    diagnosis.diagnosisDateTime = undefined;
+                    diagnosisList.push(diagnosis);
+                }
+            });
+            $rootScope.consultation.savedDiagnosesFromCurrentEncounter && $rootScope.consultation.savedDiagnosesFromCurrentEncounter.forEach(function (diagnosis) {
+                if (diagnosis.isDirty) {
                     diagnosis.setDiagnosisStatusConcept();
                     diagnosis.diagnosisDateTime = undefined;
                     diagnosisList.push(diagnosis);
@@ -17,17 +22,16 @@ angular.module('bahmni.clinical')
             });
         };
 
-        var initEditedPastDiagnoses = function () {
-            var editedPastDiagnoses = [];
+        var geEditedDiagnosesFromPastEncounters = function () {
+            var editedDiagnosesFromPastEncounters = [];
             $rootScope.consultation.pastDiagnoses.forEach(function (pastDiagnosis) {
-                if (pastDiagnosis.isDirty) {
-                    editedPastDiagnoses.push(pastDiagnosis);
+                if (pastDiagnosis.isDirty && pastDiagnosis.encounterUuid !== $rootScope.consultation.encounterUuid) {
+                    editedDiagnosesFromPastEncounters.push(pastDiagnosis);
                 }
             });
-            $scope.editedPastDiagnoses = editedPastDiagnoses;
+            return editedDiagnosesFromPastEncounters;
         };
-        initEditedPastDiagnoses();
-        
+        $scope.editedDiagnosesFromPastEncounters = geEditedDiagnosesFromPastEncounters();
 
         $scope.save = function () {
             var encounterData = {};
@@ -51,7 +55,7 @@ angular.module('bahmni.clinical')
             } else {
                 encounterData.bahmniDiagnoses = [];
             }
-            addEditedPastDiagnoses(encounterData.bahmniDiagnoses);
+            addEditedDiagnoses(encounterData.bahmniDiagnoses);
 
             encounterData.testOrders = $rootScope.consultation.investigations.map(function (investigation) {
                 return { uuid: investigation.uuid, concept: {uuid: investigation.concept.uuid }, orderTypeUuid: investigation.orderTypeUuid, voided: investigation.voided || false};
