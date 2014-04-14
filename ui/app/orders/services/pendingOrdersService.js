@@ -15,7 +15,7 @@ angular.module('bahmni.orders')
     } ;
 
     var saveOrderResult = function(encounterTransaction){
-        return $http.post(Bahmni.Common.Constants.encounterUrl, encounterTransaction, {
+        return $http.post(Bahmni.Common.Constants.emrEncounterUrl, encounterTransaction, {
             withCredentials:true
         });
     };

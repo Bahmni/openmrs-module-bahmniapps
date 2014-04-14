@@ -173,4 +173,34 @@ angular.module('bahmni.common.util')
                 });
             }, 0);
         }
+    })
+    .directive("popUp", function () {
+        var link = function (scope, elem) {
+            var items = [];
+            scope.onClickHandler()().then(function (response) {
+                items = new Bahmni.Clinical.PatientFileObservationsMapper().mapToDisplayItems(response.data.results);
+                var inlineItems = [
+                    {
+                        src:'<div class="white-popup">No patient files uploaded</div>',
+                        type:'inline'
+                    }
+                ];
+                items = items.length == 0 ? inlineItems : items;
+                var options = {
+                    gallery:{
+                        enabled:true,
+                        preload:[1, 1]
+                    },
+                    type:'image',
+                    items:items
+                };
+                elem.magnificPopup(options);
+            });
+        };
+        return {
+            link: link,
+            scope: {
+                onClickHandler: "&"
+            }
+        }
     });

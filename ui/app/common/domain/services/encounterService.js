@@ -28,7 +28,7 @@ angular.module('bahmni.common.domain')
     };
 
     var searchWithoutEncounterDate = function (visitUuid) {
-        return $http.get(Bahmni.Common.Constants.bahmniEncounterUrl, {
+        return $http.get(Bahmni.Common.Constants.emrEncounterUrl, {
             params:{
                 visitUuid : visitUuid,
                 includeAll : Bahmni.Common.Constants.includeAllObservations
@@ -40,7 +40,7 @@ angular.module('bahmni.common.domain')
     this.search = function (visitUuid,encounterDate) {
         if (!encounterDate) return searchWithoutEncounterDate(visitUuid);
 
-        return $http.get(Bahmni.Common.Constants.encounterUrl, {
+        return $http.get(Bahmni.Common.Constants.emrEncounterUrl, {
         	params:{
         		visitUuid : visitUuid,
                 encounterDate : encounterDate,
@@ -111,5 +111,16 @@ angular.module('bahmni.common.domain')
             withCredentials : true
         });
     };
+
+    this.getEncountersForEncounterType = function(patientUuid, encounterTypeUuid) {
+        return $http.get(Bahmni.Common.Constants.encounterUrl, {
+            params:{
+                patient: patientUuid,
+                encounterType: encounterTypeUuid,
+                v: "custom:(uuid,obs:(uuid,concept:(uuid,name),groupMembers:(id,uuid,obsDatetime,value)))"
+            },
+            withCredentials : true
+        });
+    }
 }]);
 

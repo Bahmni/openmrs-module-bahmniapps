@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('opd.patientDashboard', [])
-    .controller('PatientDashboardController', ['$scope', '$rootScope', '$location', '$stateParams', 'patientVisitHistoryService', 'urlHelper', 'visitService', 'encounterService', 'appService', '$window', function ($scope, $rootScope, $location, $stateParams, patientVisitHistoryService, urlHelper, visitService, encounterService, appService, $window) {
+    .controller('PatientDashboardController', ['$scope', '$rootScope', '$location', '$stateParams', 'patientVisitHistoryService', 'urlHelper', 'visitService', 'encounterService', 'appService', '$window', 'spinner',
+    function ($scope, $rootScope, $location, $stateParams, patientVisitHistoryService, urlHelper, visitService, encounterService, appService, $window, spinner) {
         $scope.patientUuid = $stateParams.patientUuid;
         $scope.activeVisitData = {};
 
@@ -63,5 +64,11 @@ angular.module('opd.patientDashboard', [])
         $scope.showSummary = function () {
             $scope.patientSummary = {}
             $scope.patientDashboardSections.forEach(addViewNameToSection);
+        };
+
+        $scope.getPatientFiles = function () {
+            var encounterTypeUuid = $rootScope.encounterConfig.getPatientDocumentEncounterTypeUuid();
+            var promise = encounterService.getEncountersForEncounterType($scope.patientUuid, encounterTypeUuid);
+            return spinner.forPromise(promise);
         };
     }]);

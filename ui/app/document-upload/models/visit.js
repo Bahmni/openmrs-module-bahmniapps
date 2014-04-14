@@ -1,5 +1,5 @@
 Bahmni.DocumentUpload.Visit = function () {
-    var DocumentImage = Bahmni.DocumentUpload.DocumentImage;
+    var DocumentImage = Bahmni.Common.DocumentImage;
     this.startDatetime = "";
     this.stopDatetime = "";
     this.visitType = null;

@@ -1,8 +1,9 @@
-Bahmni.DocumentUpload.DocumentImage = function(data){
+Bahmni.Common.DocumentImage = function(data){
     angular.extend(this, data);
-}
+    this.title = this.getTitle();
+};
 
-Bahmni.DocumentUpload.DocumentImage.prototype = {
+Bahmni.Common.DocumentImage.prototype = {
     getTitle: function() {
         var titleComponents = [];
         if(this.concept) {
@@ -13,5 +14,7 @@ Bahmni.DocumentUpload.DocumentImage.prototype = {
         }
         return titleComponents.join(', ');
     }
-}
+};
+
+
 

@@ -1,7 +1,7 @@
 'use strict';
 
 describe("DocumentImage", function() {
-	var DocumentImage = Bahmni.DocumentUpload.DocumentImage;
+	var DocumentImage = Bahmni.Common.DocumentImage;
 
 	describe("getTitle", function() {
 		it("should have concept name when concept is present", function() {
