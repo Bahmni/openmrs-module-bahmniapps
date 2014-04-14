@@ -4,6 +4,8 @@
       <tr ng-class="{true: 'is-abnormal'}[observation.is_abnormal]">
         <td class="label">{{observation.concept.name}}</td>
         <td class="value">{{(observation | observationValue)}}</td>
+        <td class="value">{{(observation.observationDateTime |  date:'dd MMM yyyy hh:mm')}}</td>
+        <td class="value">{{(observation.provider.name)}}</td>
       </tr>
     </table>
 
