@@ -12,8 +12,8 @@
         <div ng-app="adt">
             <div ng-include src="'../common/ui-helper/header.html'"></div>
             <div ui-view="additional-header"></div>
-            <div  class="opd-wrapper">
-                <p class="caution" ng-cloak ng-show="server_error"><iclass="icon-exclamation-sign small"></i><span ng-bind="server_error"></span></p>
+            <div class="opd-wrapper">
+                <p class="caution" ng-cloak ng-show="server_error"><i class="icon-exclamation-sign small"></i><span ng-bind="server_error"></span></p>
                 <div ui-view="content" id="view-content" class="opd-content-wrapper"></div>
             </div>
         </div>
