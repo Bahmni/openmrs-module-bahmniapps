@@ -197,10 +197,10 @@
             </th>
             <th ng-repeat="day in visit.ipdDrugSchedule.days" bo-text="'D'+ day.dayNumber"></th>
         </tr>
-        <tr ng-repeat="drugOrder in visit.ipdDrugSchedule.drugOrders">
-            <td bo-text="drugOrder.drugName" class="drug" ng-class="{active: drugOrder.isActive()}"></td>
+        <tr ng-repeat="drug in visit.ipdDrugSchedule.drugs">
+            <td bo-text="drug.name" class="drug" ng-class="{active: drug.isActive()}"></td>
             <td ng-repeat="day in visit.ipdDrugSchedule.days">
-                <span class="icon-ok" bo-if="drugOrder.isDrugConsumedOnDate(day.date)"/>
+                <span class="icon-ok" bo-if="drug.isActiveOnDate(day.date)"/>
             </td>
         </tr>
     </table>

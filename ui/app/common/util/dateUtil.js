@@ -16,7 +16,7 @@ Bahmni.Common.Util.DateUtil = {
 	},
 
 	getDate: function (dateTime) {
-		var dateTimeObject = new Date(dateTime);
+		var dateTimeObject = this.parse(dateTime);
 		return new Date(dateTimeObject.getFullYear(), dateTimeObject.getMonth(), dateTimeObject.getDate());
 	},
 

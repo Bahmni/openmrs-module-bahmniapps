@@ -1,10 +1,11 @@
 describe("DrugSchedule", function() {
 	var visit;
 	var DrugSchedule = Bahmni.Clinical.DrugSchedule;
+	var DrugOrder = Bahmni.Clinical.DrugOrder;
 	var DateUtil = Bahmni.Common.Util.DateUtil;
 	
 	var createDrugOrder = function(name, startDate, endDate) {
-		return {drugName: name, startDate: startDate, endDate: endDate}
+		return {drugName: name, startDate: startDate, endDate: endDate};
 	}
 
 	beforeEach(function() {
@@ -97,6 +98,28 @@ describe("DrugSchedule", function() {
 			expect(days[0].date).toEqual(DateUtil.parse('2014-04-10'));
 			expect(days[1].date).toEqual(DateUtil.parse('2014-04-11'));
 			expect(days[2].date).toEqual(DateUtil.parse('2014-04-12'));
+		});
+	});
+
+	describe("getDrugs", function() {
+		it("should group drug orders by drug", function() {
+		  	var fromDate = DateUtil.parse('2014-04-10T15:52:59.000+0530');
+		  	var toDate = DateUtil.parse('2014-04-15T16:52:59.000+0530');
+		  	var calpolRepeatOrder = createDrugOrder('Calpol', '2014-04-14T15:52:59.000+0530', '2014-04-15T15:52:59.000+0530');
+		  	var amoxyOrder = createDrugOrder('Amoxy', '2014-04-13T15:52:59.000+0530', '2014-04-15T15:52:59.000+0530');
+		  	var calpolInitialOrder = createDrugOrder('Calpol', '2014-04-10T15:52:59.000+0530', '2014-04-12T15:52:59.000+0530');
+			var drugSchedule = new DrugSchedule(fromDate, toDate, [calpolRepeatOrder, amoxyOrder, calpolInitialOrder]);
+
+			var drugs = drugSchedule.getDrugs();
+
+			expect(drugs.length).toBe(2);
+			expect(drugs[0].name).toBe('Calpol');
+			expect(drugs[0].orders.length).toBe(2);
+			expect(drugs[0].isActiveOnDate(DateUtil.parse('2014-04-12'))).toBe(true);
+			expect(drugs[0].isActiveOnDate(DateUtil.parse('2014-04-13'))).toBe(false);
+			expect(drugs[0].isActiveOnDate(DateUtil.parse('2014-04-14'))).toBe(true);
+			expect(drugs[1].name).toBe('Amoxy');
+			expect(drugs[1].orders.length).toBe(1);
 		});
 	});
 });
