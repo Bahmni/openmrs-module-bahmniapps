@@ -15,6 +15,7 @@ $fontPath: "../components/openmrs-uicommons/omod/src/main/webapp/resources/fonts
 @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fragments/notifications";
 
 // JSS css files
+@import "clinical/angular-fix";
 @import "clinical/jss-ui-common";
 @import "clinical/layout";
 @import "clinical/patientSearch";

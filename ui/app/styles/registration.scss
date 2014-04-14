@@ -4,5 +4,6 @@
 $fontPath: "../components/openmrs-uicommons/omod/src/main/webapp/resources/fonts"; //overwritting the path of the fonts file to point to correct file location.
 @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/reference";
 
+@import "clinical/angular-fix";
 @import "registration/registration";
 // @import "clinical/vitals";

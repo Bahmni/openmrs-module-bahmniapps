@@ -13,7 +13,7 @@
             <div ng-include src="'../common/ui-helper/header.html'"></div>
             <div ng-include src="'../common/patient/header/views/header.html'"></div>
             <div class="pending-orders-wrapper">
-                <p style="display: none" class="caution" ng-show="server_error">{{server_error}}</p>
+                <p ng-cloak class="caution" ng-show="server_error">{{server_error}}</p>
                 <div ui-view id="view-content" class="pending-orders-content-wrapper"></div>
             </div>           
         </div>
