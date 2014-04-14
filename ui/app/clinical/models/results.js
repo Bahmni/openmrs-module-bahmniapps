@@ -31,6 +31,11 @@ Bahmni.Clinical.Results = (function () {
                 isSummary: true,
                 hasResults: this.results.length > 0
             });
+            response.push({
+                name: "",
+                isSummary: true,
+                hasResults: this.results.length > 0
+            });
         }
         response = response.concat(this.results);
         return response;

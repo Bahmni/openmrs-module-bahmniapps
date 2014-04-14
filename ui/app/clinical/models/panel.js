@@ -37,10 +37,11 @@ Bahmni.Clinical.Panel = (function () {
         });
         this.results.forEach(function(result) {
             response = response.concat(result.displayList());
-        })
+        });
         response.push({
             name: "",
-            isSummary: true
+            isSummary: true,
+            hasResults: false
         });
         return response;
     };
