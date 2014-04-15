@@ -3,12 +3,15 @@
 
     <section class="block treatment-section">
         <table>
-            <tr ng-repeat="drugOrder in drugOrders">
+            <tr ng-repeat="drugOrder in drugOrders" ng-show="drugOrders.length">
                 <td class="drug"><h5>{{drugOrder.name}} </h5></td>
                 <td class="dosage">{{drugOrder.dose}} <span>{{drugOrder.dosage}}</span></td>
                 <td class="days"><span>From </span>{{drugOrder.orderDate | date:'d MMM yy'}}<span> for </span>{{drugOrder.days}}
                     day(s)
                 </td>
+            </tr>
+            <tr ng-show="!drugOrders.length">
+                <td class="drug">There is no active treatment currently for the patient.</td>
             </tr>
         </table>
     </section>

@@ -5,6 +5,12 @@ Bahmni.Common.Util.DateUtil = {
 		return Math.floor((dateTo - dateFrom) / (60 * 1000 * 60 * 24));
 	},
 
+    diffInDaysRegardlessOfTime: function(dateFrom, dateTo) {
+        dateFrom.setHours(0,0,0,0);
+        dateTo.setHours(0,0,0,0);
+        return Math.floor((dateTo - dateFrom) / (60 * 1000 * 60 * 24));
+    },
+
 	addDays: function (date, days) {
 		var newDate = new Date(date);
 		newDate.setDate(date.getDate() + days);
