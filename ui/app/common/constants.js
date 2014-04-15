@@ -49,7 +49,9 @@ Bahmni.Common = Bahmni.Common || {};
         dischargeCode: 'DISCHARGE',
         transferCode: 'TRANSFER',
         compoundObservationConceptName:"XCompoundObservation",
-        abnormalObservationConceptName: "IS_ABNORMAL"
+        abnormalObservationConceptName: "IS_ABNORMAL",
+        documentsPath: '/document_images',
+        documentsConceptName: 'Document'
 };
     
 })();

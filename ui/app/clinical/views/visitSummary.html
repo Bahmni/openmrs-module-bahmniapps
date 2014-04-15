@@ -119,6 +119,21 @@
         </table>
     </div>
 </section>
+<section class="block radiologyInvestigations" ng-show="visit.radiologyDocs.length">
+    <h2>Radiology Investigations</h2>
+    <ul image-gallery image-gallery-target=".document-link">        
+        <li ng-repeat="radiologyDoc in visit.radiologyDocs">
+            <a class="document-link temp-class" title="{{radiologyDoc.name}}" bo-text="radiologyDoc.name" ng-src="{{radiologyDoc.src}}" image-gallery-item></a>
+            <div class="footer-note">
+                <span class="time-stamp">
+                    <span class="date">{{radiologyDoc.dateTime | date:'dd MMM yy'}}</span>
+                    <span class="time">{{radiologyDoc.dateTime | date :'hh:mm a'}}</span>
+                </span>
+                <span class="provider" bo-text="radiologyDoc.provider.name"></span>
+            </div>
+        </li>
+    </ul>
+</section>
 <section class="block otherTestOrders" ng-show="visit.hasOtherInvestigations()">
     <h2>Other Investigations</h2>
     <ul>

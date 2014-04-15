@@ -37,9 +37,9 @@ Bahmni.DocumentUpload.Visit = function () {
         this.encounters.forEach(function (encounter) {
             encounter.encounterType.uuid == encounterTypeUuid && encounter.obs && encounter.obs.forEach(function (observation) {
                 observation.groupMembers && observation.groupMembers.forEach(function (member) {
-                    if (member.concept.name.name == 'Document') {
+                    if (member.concept.name.name == Bahmni.Common.Constants.documentsConceptName) {
                         var conceptName = observation.concept.name.name;
-                        savedImages.push(new DocumentImage({"id":member.id, "encodedValue": member.value, "obsUuid": observation.uuid, obsDatetime: observation.obsDatetime,
+                        savedImages.push(new DocumentImage({"id":member.id, "encodedValue": Bahmni.Common.Constants.documentsPath + '/' + member.value, "obsUuid": observation.uuid, obsDatetime: observation.obsDatetime,
                                          concept: {uuid: observation.concept.uuid, editableName: conceptName, name: conceptName}}));
                     }
                 });

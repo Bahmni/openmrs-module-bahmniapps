@@ -10,11 +10,12 @@ angular.module('bahmni.common.uiHelper')
 
         var controller = function($scope, $location) {
             var galleryName = $scope.galleryName || "default-gallery";
+            var imageGalleryTarget = $scope.imageGalleryTarget || "img";
 
             this.initGallery = function() {
                 var options = {
                     type:'image',
-                    delegate: 'img',
+                    delegate: imageGalleryTarget,
                     key: galleryName, 
                     gallery: {enabled: true}
                 };
@@ -26,7 +27,8 @@ angular.module('bahmni.common.uiHelper')
             link: link,
             controller: controller,
             scope: {
-                galleryName: '@imageGallery'
+                galleryName: '@imageGallery',
+                imageGalleryTarget: '@imageGalleryTarget'
             }
         };
     })

@@ -1,6 +1,6 @@
 'use strict';
 
-Bahmni.Clinical.Visit = function (encounters, drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, labOrders, encounterConfig) {
+Bahmni.Clinical.Visit = function (encounters, drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, labOrders, encounterConfig, radiologyDocs) {
     this.encounters = encounters;
     this.drugOrders = drugOrders;
     this.consultationNotes = consultationNotes;
@@ -10,6 +10,7 @@ Bahmni.Clinical.Visit = function (encounters, drugOrders, consultationNotes, oth
     this.dispositions = dispositions;
     this.labTestOrderObsMap = labOrders;
     this.encounterConfig = encounterConfig;
+    this.radiologyDocs = radiologyDocs;
     this.ipdDrugSchedule = this.hasAdmissionEncounter() ? Bahmni.Clinical.DrugSchedule.create(this) : null;
     var orderGroup = new Bahmni.Clinical.OrderGroup();
     this.drugOrderGroups = orderGroup.group(drugOrders);
@@ -89,6 +90,7 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
         orderGroup = new Bahmni.Clinical.OrderGroup(),
         orderGroupWithObs = new Bahmni.Clinical.OrderGroupWithObs(),
         resultGrouper = new Bahmni.Clinical.ResultGrouper(),
+        ArrayUtil = Bahmni.Common.Util.ArrayUtil,
         isLabTests = function (order) {
             var labTestOrderTypeUuid = encounterConfig.orderTypes[Bahmni.Clinical.Constants.labOrderType];
             return order.orderTypeUuid === labTestOrderTypeUuid;
@@ -123,6 +125,19 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
             });
         };
 
+    var radiologyDocs = [];
+    encounterTransactions.forEach(function (encounterTransaction) {
+        if(encounterTransaction.encounterTypeUuid == encounterConfig.getRadiologyEncounterTypeUuid()) {
+            ArrayUtil.removeItem(encounterTransactions, encounterTransaction);
+            encounterTransaction.observations.forEach(function (observation) {
+                observation.groupMembers.forEach(function (member) {
+                    if (member.concept.name == Bahmni.Common.Constants.documentsConceptName) {
+                        radiologyDocs.push({name: observation.concept.name, src: Bahmni.Common.Constants.documentsPath + '/' + member.value, dateTime: observation.observationDateTime, provider: encounterTransaction.providers[0]});
+                    }
+                });
+            });
+        }
+    });
 
     drugOrders = orderGroup.flatten(encounterTransactions, 'drugOrders');
     otherInvestigations = orderGroup.flatten(encounterTransactions, 'testOrders', isNonLabTests);
@@ -186,5 +201,5 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
         }
     });
 
-    return new this(encounterTransactions, drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, encountersWithTestOrders, encounterConfig);
+    return new this(encounterTransactions, drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, encountersWithTestOrders, encounterConfig, radiologyDocs);
 }
