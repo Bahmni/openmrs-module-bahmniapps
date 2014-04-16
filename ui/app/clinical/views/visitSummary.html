@@ -4,7 +4,7 @@
         <ul class="block-content visit-diagnosis">
             <li ng-repeat="diagnosis in visit.diagnoses">
                 <div>
-                    <span class="diagnosis-name" bo-text="diagnosis.codedAnswer.name"></span>
+                    <span class="diagnosis-name" bo-text="diagnosis.getDisplayName()"></span>
 
                     <div class="diagonsis-order">
                         <span class="order" bo-show="visit.isPrimaryOrder(diagnosis.order)">Primary</span>
