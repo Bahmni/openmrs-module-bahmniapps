@@ -1,6 +1,6 @@
 'use strict';
 
-describe("CompoundObservationMapper", function () {
+describe("CompoundObservation", function () {
     it("should flatten compound observations", function () {
         var parentConceptSetName = "Temperature";
         var observations = [
@@ -28,7 +28,7 @@ describe("CompoundObservationMapper", function () {
             }
         ];
 
-        var flattenedObservation = new Bahmni.Clinical.CompoundObservationMapper().flatten(observations);
+        var flattenedObservation = new Bahmni.Clinical.CompoundObservation(observations).tree;
         expect(flattenedObservation[0].concept.name).toBe(parentConceptSetName);
         expect(flattenedObservation[0].groupMembers.length).toBe(0);
         expect(flattenedObservation[0].value).toBe("32");
@@ -127,7 +127,7 @@ describe("CompoundObservationMapper", function () {
             }
         ];
 
-        var flattenedObservations = new Bahmni.Clinical.CompoundObservationMapper().flatten(observations);
+        var flattenedObservations = new Bahmni.Clinical.CompoundObservation(observations).tree;
         expect(flattenedObservations[0].concept.name).toBe(parentConceptSetName);
         expect(flattenedObservations[0].groupMembers.length).toBe(3);
         expect(flattenedObservations[0].value).toBe(undefined);

@@ -5,7 +5,7 @@
              ng-if="activeVisit" ng-repeat="data in patientSummary.data">
         <label class="date">{{data.date}}</label>
 
-        <div ng-repeat="observationsForDate in data.observations">
+        <div ng-repeat="observationsForDate in data.obs">
             <div ng-repeat="member in observationsForDate.groupMembers">
                 <show-obs group-by-date="true" observation="member"/>
             </div>

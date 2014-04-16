@@ -40,19 +40,23 @@ form,.form{
         margin:0.5em 0.8em 0em 0em;
     }
   }
-  .field-value{
-    float:left;
-     input[type="text"],input[type="password"]{  
-        float:left;
-        width:12.5em;
+  .field-value {
+    float: left;
+    input[type="text"], input[type="password"] {
+      float: left;
+      width: 12.5em;
     }
 
-    input[type="number"]{
-        width:8em;
+    input[type="number"] {
+      width: 8em;
     }
-    span.value-text-only{
-       display:inline-block;
-       margin:0.5em 0.8em 0em 0em;
+    .value-text-only {
+      display: inline-block;
+      margin: 0.5em 0.8em 0em 0em;
+    }
+
+    .provider {
+      float: right;
     }
   }
 }
@@ -420,4 +424,16 @@ button:focus, a:focus, .btn:focus {outline:0;}
 .footer-note.right {
   width: 20%;
   float: right;
+}
+
+.name{
+  width: 30%;
+}
+
+.value{
+  width: 30%;
+}
+
+.provider{
+  width: 40%;
 }

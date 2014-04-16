@@ -11,7 +11,7 @@ angular.module('bahmni.clinical')
             $scope.obsIgnoreList = appService.getAppDescriptor().getConfig("obsIgnoreList").value || {};
 
             spinner.forPromise(encounterService.search(visitUuid).success(function (encounterTransactions) {
-                $scope.visit = Bahmni.Clinical.Visit.create(encounterTransactions, $scope.consultationNoteConcept, $scope.labOrderNotesConcept, $scope.encounterConfig, $rootScope.allTestsAndPanelsConcept)
+                $scope.visit = Bahmni.Clinical.Visit.create(encounterTransactions, $scope.consultationNoteConcept, $scope.labOrderNotesConcept, $scope.encounterConfig, $rootScope.allTestsAndPanelsConcept);
             }));
 
             $scope.isNumeric = function (value) {
@@ -22,7 +22,7 @@ angular.module('bahmni.clinical')
                 item.show = !item.show
             };
 
-            $scope.testResultClass = function(line) {
+            $scope.testResultClass = function (line) {
                 var style = {};
                 if ($scope.pendingResults(line)) {
                     style["pending-result"] = true;
@@ -32,7 +32,7 @@ angular.module('bahmni.clinical')
                 }
                 return style;
             };
-            $scope.pendingResults = function(line) {
+            $scope.pendingResults = function (line) {
                 return line.isSummary && !line.hasResults && line.name !== "";
             }
         }]);

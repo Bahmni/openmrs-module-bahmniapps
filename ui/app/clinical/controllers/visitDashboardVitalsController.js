@@ -9,25 +9,6 @@ angular.module('bahmni.clinical')
 
         $scope.patientSummary = {};
 
-
-        var groupByObservationDateTime = function (flattenedObservations) {
-            var observationsGroupedByDate = {};
-            flattenedObservations.forEach(function (observation) {
-                var date = moment(observation.observationDateTime).format(Bahmni.Common.Constants.dateDisplayFormat);
-                observationsGroupedByDate[date] = observationsGroupedByDate[date] || [];
-                observationsGroupedByDate[date].push(observation);
-            });
-            var observations = [];
-            for (var date in observationsGroupedByDate) {
-                var item = {};
-                item.date = date;
-                item.observations = observationsGroupedByDate[date];
-                observations.push(item);
-            }
-            return observations;
-        };
-
-
         var getVisitHistory = function (visitData) {
             return new Bahmni.Clinical.VisitHistoryEntry(visitData)
         };
@@ -35,7 +16,6 @@ angular.module('bahmni.clinical')
         var isVisitActive = function (visit) {
             return visit.isActive()
         };
-
 
         var init = function () {
             return patientVisitHistoryService.getVisits($scope.patientUuid).then(function (visits) {
@@ -48,16 +28,19 @@ angular.module('bahmni.clinical')
         };
 
         var isObservationConcept = function (obs) {
-            return obs.concept.name == conceptName
-        }
+            return obs.concept.name === conceptName;
+        };
 
+        var observationGroupingFunction = function (obs) {
+            return obs.observationDateTime.substring(0, 10);
+        };
 
         var createPatientSummary = function () {
             encounterService.search($scope.activeVisit.uuid).success(function (encounterTransactions) {
                 var visitData = createObservationsObject(encounterTransactions);
-                var flattenedObservations = new Bahmni.Clinical.CompoundObservationMapper().flatten(visitData);
+                var flattenedObservations = new Bahmni.Clinical.CompoundObservation(visitData).tree;
                 var observationsForConceptSet = flattenedObservations.filter(isObservationConcept);
-                $scope.patientSummary.data = groupByObservationDateTime(observationsForConceptSet);
+                $scope.patientSummary.data = new Bahmni.Clinical.ResultGrouper().group(observationsForConceptSet, observationGroupingFunction, 'obs', 'date');
                 if ($scope.patientSummary.data.length == 0) {
                     $scope.patientSummary.message = Bahmni.Clinical.Constants.messageForNoObservation;
                 }

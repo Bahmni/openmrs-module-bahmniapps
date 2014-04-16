@@ -1,67 +1,25 @@
-<div class="observation-section">
-  <div ng-if="observation.groupMembers.length <= 0" ng-hide="hideObservation()">
-    <table>
-      <tr ng-class="{true: 'is-abnormal'}[observation.is_abnormal]">
-        <td class="label">{{observation.concept.name}}</td>
-        <td class="value">{{(observation | observationValue)}}</td>
-        <td class="value">{{(observation.observationDateTime |  date:'dd MMM yyyy hh:mm')}}</td>
-        <td class="value">{{(observation.provider.name)}}</td>
-      </tr>
-    </table>
-
-    <div>
-
-
-      <!-- toggle button -->
-      <div bo-show="observation.additionalObs.length > 0">
-        <div class="icon-double-angle-down" ng-click="toggle(observation.additionalObs)"></div>
-      </div>
-
-
-
-      <!-- time provider   will be added back once the layout is fixed-->
-<!--         <ul class="add-info">
-        <li bo-hide="fullDate" class="time">
-          <span bo-text="observation.observationDateTime | date: 'h:mm a'"></span>
-        </li>
-        <li bo-show="fullDate" class="datetime">
-          <span bo-text="observation.observationDateTime | date:'d-MMM-yy h:mm a'"></span>
-        </li>
-        <li><span bo-text="observation.provider.name"></span></li>
-        <li ng-show="isNumeric(observation.value)"><a
-            bo-href="'/trends/#/patients/'+patientUuid+'/'+observation.concept.name">view trends
-        </a></li>
-      </ul> -->
-      <div>
-        <span ng-repeat="note in observation.additionalObs">
-          <div ng-show="note.show" bo-text="note.value"></div>
-        </span>
-      </div>
-    </div>
-<!--     <div class="footer-note">
-      <span class="time-stamp">
-        <span class="date">{{observation.observationDateTime | date:'dd MMM yy'}}</span>
-        <span class="time">{{observation.observationDateTime | date:'hh:mm a'}}</span>
-      </span>
-      <span class="provider" bo-text="observation.provider.name"></span>
-    </div> -->
-  </div>
-
-  <ul ng-if="observation.groupMembers.length > 0" class="concept-set">  
-    <div ng-switch on="observation.concept.name">
-      <div ng-switch-when="XCompoundObservation" ng-show="showXCompoundObservation()">
-        <li ng-repeat="groupMember in observation.groupMembers">
-          <observation-summary patient-uuid="patientUuid" observation="groupMember" full-date="{{fullDate}}"
-                               hide-parent-obs-name="{{hideParentObsName}}" obs-ignore-list="obsIgnoreList"/>
-        </li>
-      </div>
-      <div ng-switch-default class="labresults-item">
-        <h3 bo-text="observation.concept.name" bo-show="observation.concept.set && !hideParentObsName"></h3>
-        <li class="dshbf" ng-repeat="groupMember in observation.groupMembers" >
-          <observation-summary patient-uuid="patientUuid" observation="groupMember" full-date="{{fullDate}}"
-                               hide-parent-obs-name="{{hideParentObsName}}" obs-ignore-list="obsIgnoreList"/>
-        </li>
-      </div>
-    </div>
-  </ul>
-</div>    
+<table>
+    <thead>
+    <th colspan="3">
+        <span class="date" bo-text="observation.date"></span>
+    </th>
+    </thead>
+    <tbody ng-repeat="obs in observation.obs.list">
+    <tr ng-class="{true: 'is-abnormal'}[obs.is_abnormal]">
+        <td class="name">
+            {{obs.concept.name}}
+        </td>
+        <td class="value">
+            {{obs.value}}
+        </td>
+        <td>
+            <div class="footer-note">
+                <span class="time-stamp">
+                    <span class="time">{{obs.observationDateTime | date :'hh:mm a'}}</span>
+                </span>
+                <span class="provider" bo-text="obs.provider.name"></span>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>

@@ -82,7 +82,7 @@ Bahmni.Clinical.Visit.prototype = {
     getDischargeDispositionDate: function() {
         var dischargeDisposition = this.dispositions.filter(function(disposition) { return disposition.code === Bahmni.Common.Constants.dischargeCode; })[0];
         return dischargeDisposition ? new Date(dischargeDisposition.dispositionDateTime) : null;
-    }    
+    }
 };
 
 Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNoteConcept, labOrderNoteConcept, encounterConfig, allTestAndPanels) {
@@ -184,9 +184,13 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
         })
     });
 
+
     var allObs = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions);
     consultationNotes = resultGrouper.group(allObs.filter(isConsultationNote), observationGroupingFunction, 'obs', 'date');
     observations = resultGrouper.group(allObs.filter(isOtherObservation).filter(doesNotHaveOrder), observationGroupingFunction, 'obs', 'date');
+    observations.forEach(function(observation){
+        observation.obs = new Bahmni.Clinical.CompoundObservation(observation.obs);
+    });
 
 
     angular.forEach(encounterTransactions, function (encounterTransaction) {
