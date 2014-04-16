@@ -1,7 +1,7 @@
 Bahmni.Clinical.OrderGroupWithObs = function () {
 };
 
-Bahmni.Clinical.OrderGroupWithObs.prototype.create = function (encounterTransactions, orderListHandle, filter) {
+Bahmni.Clinical.OrderGroupWithObs.prototype.create = function (encounterTransactions, orderListHandle, filter, groupingParameter) {
     var orderGroup,
         setProviderToObservation = function (provider) {
             var setProvider = function (observation) {
@@ -50,7 +50,7 @@ Bahmni.Clinical.OrderGroupWithObs.prototype.create = function (encounterTransact
         };
 
 
-    orderGroup = new Bahmni.Clinical.OrderGroup().create(encounterTransactions, orderListHandle, filter);
+    orderGroup = new Bahmni.Clinical.OrderGroup().create(encounterTransactions, orderListHandle, filter, groupingParameter);
     orderGroup.forEach(function (orders) {
         orders.orders.forEach(function (order) {
             mapTestOrderWithObs(encounterTransactions, order);

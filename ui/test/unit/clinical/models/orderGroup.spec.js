@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Drug Order', function () {
+describe('Order Group', function () {
     var sampleOrder = function () {
             return {
                 "numberPerDosage": 1,
@@ -35,6 +35,23 @@ describe('Drug Order', function () {
                 }
             };
         },
+        sampleTestOrder = function(){
+            return{
+                "uuid": "c71c52da-d446-4162-8d27-b9ece3c971a3",
+                "voided": false,
+                "voidReason": null,
+                "instructions": null,
+                "dateCreated": "2014-04-15T11:09:45.000+0530",
+                "dateChanged": null,
+                "orderTypeUuid": "a28516de-a2a1-11e3-af88-005056821db0",
+                "concept": {
+                    "uuid": "a55ac0bc-4059-4e92-9695-2b376f2ef80e",
+                    "name": "Culture (Tissue)",
+                    "set": false,
+                    "dataType": "Text"
+                }
+            }
+        },
         sampleProvider = function () {
             return {
                 "uuid": "35ba3170-cf80-4749-9672-b3b678c77b6a",
@@ -45,6 +62,12 @@ describe('Drug Order', function () {
             var order = sampleOrder();
             order.dateCreated = date;
             order.drugName = drugName;
+            return order;
+        },
+        createTestOrder = function (testName, date) {
+            var order = sampleTestOrder();
+            order.dateCreated = date;
+            order.concept.name = testName;
             return order;
         };
 
@@ -96,4 +119,39 @@ describe('Drug Order', function () {
         });
         expect(orders[0].orders[0].provider.name).toBe(sampleProvider().name);
     });
+
+    it('should populate accessionUuid for testOrders from encounterTransaction', function () {
+        var firstTestOrder = createTestOrder("culture(pus)", "2014-03-24T14:38:13.000+0530");
+        var secondTestOrder = createTestOrder("culture(tissue)", "2014-03-24T14:38:13.000+0530");
+        var thirdTestOrder = createTestOrder("platelet count", "2014-03-25T14:38:13.000+0530");
+        var encounterUuid1 = "encounterUuid1";
+        var encounterUuid2 = "encounterUuid2";
+        var encounterTransactions = [
+            {providers: [sampleProvider()], testOrders: [thirdTestOrder], encounterUuid: encounterUuid1},
+            {providers: [sampleProvider()], testOrders: [firstTestOrder, secondTestOrder], encounterUuid: encounterUuid2}
+        ];
+        var orders = new Bahmni.Clinical.OrderGroup().create(encounterTransactions, 'testOrders', function () {
+            return true;
+        });
+        expect(orders[0].orders[0].accessionUuid).toBe(encounterUuid1);
+        expect(orders[1].orders[0].accessionUuid).toBe(encounterUuid2);
+    });
+
+    it('should group based on groupParameter',function(){
+        var firstTestOrder = createTestOrder("culture(pus)", "2014-03-24T14:38:13.000+0530");
+        var secondTestOrder = createTestOrder("culture(tissue)", "2014-03-24T14:38:13.000+0530");
+        var thirdTestOrder = createTestOrder("platelet count", "2014-03-25T14:38:13.000+0530");
+        var encounterUuid1 = "encounterUuid1";
+        var encounterUuid2 = "encounterUuid2";
+        var encounterTransactions = [
+            {providers: [sampleProvider()], testOrders: [thirdTestOrder], encounterUuid: encounterUuid1},
+            {providers: [sampleProvider()], testOrders: [firstTestOrder, secondTestOrder], encounterUuid: encounterUuid2}
+        ];
+        var filterFunction = function () {return true;};
+        var orders = new Bahmni.Clinical.OrderGroup().create(encounterTransactions, 'testOrders', filterFunction, 'accessionUuid');
+        expect(orders[0].accessionUuid).toBe(encounterUuid1);
+        expect(orders[0].orders.length).toBe(1);
+        expect(orders[1].accessionUuid).toBe(encounterUuid2);
+        expect(orders[1].orders.length).toBe(2);
+    })
 });

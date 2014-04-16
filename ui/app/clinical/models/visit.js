@@ -169,7 +169,7 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
         return encountersWithTestOrders;
     };
 
-    var encountersWithTestOrders = orderGroupWithObs.create(encounterTransactions, 'testOrders', isLabTests);
+    var encountersWithTestOrders = orderGroupWithObs.create(encounterTransactions, 'testOrders', isLabTests, 'accessionUuid');
     encountersWithTestOrders = allTestAndPanels ? sort(allTestAndPanels, encountersWithTestOrders, filterFunction) : encountersWithTestOrders;
 
     encountersWithTestOrders.forEach(function(testOrder) {

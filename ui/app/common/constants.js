@@ -6,7 +6,7 @@ Bahmni.Common = Bahmni.Common || {};
     var RESTWS_V1 = "/openmrs/ws/rest/v1";
     var BAHMNI_CORE = RESTWS_V1 + "/bahmnicore";
     var EMRAPI = RESTWS + "/emrapi";
-    
+
     Bahmni.Common.Constants = {
         dateFormat: "dd/mm/yyyy",
         dateDisplayFormat: "DD-MMM-YYYY",
