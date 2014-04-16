@@ -192,7 +192,6 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
         observation.obs = new Bahmni.Clinical.CompoundObservation(observation.obs);
     });
 
-
     angular.forEach(encounterTransactions, function (encounterTransaction) {
         angular.forEach(encounterTransaction.bahmniDiagnoses, function (diagnosis) {
             var diagnosisMapper = new Bahmni.DiagnosisMapper();

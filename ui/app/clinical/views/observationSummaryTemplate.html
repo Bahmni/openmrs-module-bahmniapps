@@ -1,7 +1,7 @@
 <table>
     <thead>
     <th colspan="3">
-        <span class="date" bo-text="observation.date"></span>
+        <span class="date">{{observation.date | date :'dd MMM yy'}}</span>
     </th>
     </thead>
     <tbody ng-repeat="obs in observation.obs.list">

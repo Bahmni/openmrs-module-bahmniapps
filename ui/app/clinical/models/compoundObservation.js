@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.Clinical.CompoundObservation = function (observations) {
     this.tree = this.treeView(observations);
     this.list = this.listView(observations);
