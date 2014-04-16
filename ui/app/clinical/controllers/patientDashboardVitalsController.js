@@ -1,5 +1,5 @@
 angular.module('bahmni.clinical')
-    .controller('VisitDashboardVitalsController', ['$scope', '$stateParams', 'patientVisitHistoryService', 'encounterService', '$q', function ($scope, $stateParams, patientVisitHistoryService, encounterService, $q) {
+    .controller('PatientDashboardVitalsController', ['$scope', '$stateParams', 'patientVisitHistoryService', 'encounterService', '$q', function ($scope, $stateParams, patientVisitHistoryService, encounterService, $q) {
         $scope.test = "randomStuff";
         $scope.patientUuid = $stateParams.patientUuid;
         var createObservationsObject = function (encounterTransactions) {

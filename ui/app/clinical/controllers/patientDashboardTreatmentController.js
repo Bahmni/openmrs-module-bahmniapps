@@ -1,5 +1,5 @@
 angular.module('bahmni.clinical')
-    .controller('VisitDashboardTreatmentController', ['$scope', '$stateParams', 'TreatmentService', function ($scope, $stateParams, treatmentService) {
+    .controller('PatientDashboardTreatmentController', ['$scope', '$stateParams', 'TreatmentService', function ($scope, $stateParams, treatmentService) {
 
         var dateCompare = function (drugOrder1, drugOrder2) {
             return drugOrder1.orderDate > drugOrder2.orderDate? -1: 1;
