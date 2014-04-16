@@ -26,6 +26,9 @@ Bahmni.ConceptSet.CompundObservationNode = function(compoundObservation, primary
         set: function(newValue) {
             _value = newValue;
             this.compoundObservationWrapper.setValue(newValue);                    
+            if(!this.hasValue()) {
+                this.abnormalityObservation.value = undefined;
+            }
             this.onValueChanged();
         }
     });

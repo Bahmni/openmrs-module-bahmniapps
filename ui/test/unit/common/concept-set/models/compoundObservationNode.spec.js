@@ -130,6 +130,23 @@ describe("CompundObservationNode", function() {
 			});
 		});
 
+		describe("for single value observation", function() {
+			beforeEach(function() {
+				primaryMRSConcept = buildMRSConcept({});
+				node = new CompundObservationNode(buildObservation(), primaryMRSConcept, compoundObservationConcept, {});
+			});
+
+			it("should clear abnormality observation value when primary is cleared", function() {
+				node.abnormalityObservation.value = true;
+
+				node.value = '';
+
+				expect(node.abnormalityObservation.value).toBe(undefined);		  
+			});
+		});
+
+
+
 		describe("for multiselect value", function() {
 			beforeEach(function() {
 				primaryMRSConcept = buildMRSConcept({name: "Complaints", dataType: "Coded"});
@@ -220,6 +237,14 @@ describe("CompundObservationNode", function() {
 			 	expect(node.compoundObservation.groupMembers[2].concept.name).toBe("Complaints");
 			 	expect(node.compoundObservation.groupMembers[2].uuid).toBe(undefined);
 			 	expect(node.compoundObservation.groupMembers[2].value).toBe(chestPainConcept);
+			});
+			
+			it("should clear abnormality observation value when primary is cleared", function() {
+				node.abnormalityObservation.value = true;
+
+				node.value = [];
+
+				expect(node.abnormalityObservation.value).toBe(undefined);		  
 			});
 		});
 	});
