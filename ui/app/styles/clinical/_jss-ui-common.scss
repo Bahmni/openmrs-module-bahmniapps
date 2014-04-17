@@ -237,18 +237,26 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
 }
 .tab-content{
   overflow:hidden;
-  padding:20px;
-  border:1px solid #cecece;
+  padding:14px;
   background:#fff;
+  border: 1px solid #cecece;
   li{
     text-align: center;
     cursor:pointer;
     padding-top:10px;
-    border:2px solid #fff;
+    border: 1px solid #fff;
+    background: #f6f6f6;
+    .patient-name {
+      font-size: 12px;
+      color: #888;
+      text-transform: capitalize;
+    }
+    .patient-id {
+      color: #222;
+    }
     &:hover{
-       border:2px solid #cecece;
+       border: 1px solid #cecece;
        background:#f1f1f1;
-      @include border-radius(6px, 6px);
     }
   }
   .reg-srch-btn {
