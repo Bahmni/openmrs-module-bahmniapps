@@ -197,14 +197,14 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
   ul{
     li{
         float:left;
-        margin-right:10px;
+        margin-bottom: -2px;
         a,button{
-          padding:10px;
+          padding: 10px 15px;
           background:#447772;
           display:inline-block;
           color:#fff;
           border:1px solid #00463f;
-          @include border-radius();
+          // @include border-radius();
           border-bottom-right-radius:0px;
           border-bottom-left-radius:0px;
           text-decoration:none;
@@ -219,12 +219,12 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
         }
         &.tab-selected a, &.tab-selected button{
               position:relative;
-              top:2px;
               background:#fff;
               color:#00463f;
               border:1px solid #cecece;
               border-bottom:none;
               outline:none;
+              padding-bottom: 11px;
         }
         &.tab-selected button{
               top:4px;
