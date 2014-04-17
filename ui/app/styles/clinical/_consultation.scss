@@ -3,13 +3,13 @@
 	margin:0px 0px 10px;
 	color:#585858;
 	h2{
-        @include font-size(1.1);
-		border-bottom:1px solid #00463f;
-		color:#777575;
-		padding-bottom:3px;
-		margin-bottom:10px;
-        font-weight: bold;
-        font-family:arial;
+    @include font-size(1.1);
+    border-bottom:1px solid #00463f;
+    color:#777575;
+    padding-bottom:3px;
+    margin-bottom:10px;
+    font-weight: bold;
+    font-family:arial;
 	}
 	.block{
 		min-height:150px;

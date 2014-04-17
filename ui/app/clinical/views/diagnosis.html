@@ -2,9 +2,8 @@
     <fieldset>
         <div class="diagnosis">
             <div id="selectedNodesArea">
-                <h2>New</h2>
-
                 <div class="table new-diagnosis">
+                    <h2>Add New</h2>
                     <div class="row table-header">
                         <div class="col col1"><span>Diagnosis</span></div>
                         <div class="col col2"><span>Order</span></div>
@@ -23,6 +22,7 @@
                                        ng-change="clearEmptyRows($index)"
                                        ng-class="{'illegalValue': diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid && !diagnosis.isNonCodedAnswer}"
                                        ng-disabled="diagnosis.codedAnswer.uuid">
+
                                 <label class="add-new">Add New?</label>
                             </div>
                             <div class="col col2">
@@ -51,34 +51,19 @@
 
                 </div>
 
-                <div class="table history-diagnosis" ng-if="consultation.savedDiagnosesFromCurrentEncounter.length > 0">
-                    <h2>Current Diagnosis</h2>
-                    <div class="row table-header">
-                        <div class="col col1"><span>Diagnosis</span></div>
-                        <div class="col col2"><span>Order</span></div>
-                        <div class="col col3"><span>Certainty</span></div>
-                        <div class="col col4"><span>Status</span></div>
-                    </div>
-
+                <div class="table current-diagnosis" ng-if="consultation.savedDiagnosesFromCurrentEncounter.length > 0">
+                    <h2>Current</h2>
                     <div ng-repeat="diagnosis in consultation.savedDiagnosesFromCurrentEncounter" class="table-body">
-                        <div class="row">
+                        <div class="row diagnosis-row">
                             <ng-include src="'views/diagnosisRow.html'" />
                         </div>
                     </div>
                 </div>
                 
                 <div class="table history-diagnosis" ng-if="consultation.pastDiagnoses.length > 0">
-                    <h2>Past Diagnosis</h2>
-
-                    <div class="row table-header">
-                        <div class="col col1"><span>Diagnosis</span></div>
-                        <div class="col col2"><span>Order</span></div>
-                        <div class="col col3"><span>Certainty</span></div>
-                        <div class="col col4"><span>Status</span></div>
-                    </div>
-
+                    <h2>Past</h2>
                     <div ng-repeat="diagnosis in consultation.pastDiagnoses" class="table-body">
-                        <div class="row">
+                        <div class="row diagnosis-row">
                             <ng-include src="'views/diagnosisRow.html'" />
                         </div>
                     </div>

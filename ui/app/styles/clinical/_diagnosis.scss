@@ -12,22 +12,32 @@
 .diagnosis {
   h2 {
     color: #66b298;
-    padding: 5px 0px;
-    margin-bottom: 10px;
+    padding: 5px 10px;
     font-size: 18px;
     font-weight: normal;
+    border-bottom: 1px solid #66b298;
   }
   .table {
     border: 0;
     .row {
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid #ccc;
     }
     .table-header.row {
       border-bottom: 1px solid #cecece;
     }
   }
-  .new-diagnosis {
+  .new-diagnosis, .current-diagnosis, .history-diagnosis {
     margin-bottom: 25px;
+  }
+  .new-diagnosis {
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    margin: 20px 5px;
+    box-shadow: 0px 0px 8px -1px #ccc;
+    h2 {
+      padding: 10px;
+      font-family: OpenSansBold;
+    }
     .row-remover {
       border: 1px solid #ccc;
       border-radius: 5px;
@@ -41,13 +51,8 @@
     }
   }
   .history-diagnosis {
-    .col1 label {
-      padding-left: 10px;
-      font-size: 14px;
-    }
     .table-body .row {
       background: #fafafa;
-      padding-bottom: 20px;
     }
   }
   .table-header {
@@ -77,8 +82,8 @@
     input[type="checkbox"].illegalValue {
       border: 2px solid red;
     }
-    label.add-new {margin-top: 10px;}
-    width: 31%;
+    label.add-new {margin-top: 10px; font-size: 12px;}
+    width: 39%;
   }
   .col2 {
     @include column(3);
@@ -92,41 +97,31 @@
     button:first-child {
       margin-left: 10px;
     }
-    width: 21%;
+    width: 23%;
   }
   .col4 {
     @include column(2);
-    width: 19%;
+    width: 12%;
   }
   .col5 {
     @include column(1);
-    width: 4%;
+    width: 3%;
   }
-  .history-diagnosis .row {
+  .diagnosis-row.row {
     position: relative;
     -webkit-transition: background-color 1s ease;
-    .footer-note {
-      position: absolute;
-      right: 0;
-      top: 10px;
-      text-align: right;
-      .provider {
-        display: block;
-        float: right;
-        margin-top: 5px;
-      }
-    }
     .message {
       position: absolute;
       -webkit-transition: display 1s ease;
-      left: 10px;
-      bottom: 0;
+      left: 37%;
+      bottom: 5px;
       color: #cc6600;
       margin-bottom: 5px;
+      font-size: 14px;
       display: none;
     }
   }
-  .history-diagnosis .row.edited {
+  .diagnosis-row.row.edited {
     background-color: #ffffcc;
     .message {
       display: block;
@@ -151,8 +146,8 @@
     border-left: 1;
   }
   button {
-    padding: 8px 10px;
-    font-size: 12px;
+    padding: 8px 7px;
+    font-size: 11px;
   }
   .status button {
     border-radius: 3px;
@@ -161,8 +156,8 @@
     outline: 0;
   }
   button.active {
-    color: white;
-    background: #457FAC;
+    color: #457FAC;
+    padding-top: 7px;
     span:before {
       font-family: FontAwesome;
       content: "\f00c";
@@ -172,8 +167,84 @@
   }
 }
 
+.current-diagnosis, .history-diagnosis {
+  .diagnosis-row {
+    overflow: auto;
+    clear: both;
+    .primary-section {
+      overflow: auto;
+      clear: both;
+      padding: 5px 0;
+      .primary {
+        float: left;
+        width: 38%;
+        label.diagnosis-name {
+          padding-left: 10px;
+          font-size: 16px;
+          font-family: OpenSansBold;
+        }
+      }
+      .secondary {
+        float: right;
+        width: 60%;
+        .initial {
+          padding-bottom: 0;
+        }
+        .initial:before {
+          font-family: FontAwesome;
+          content: "\f060";
+          font-size: 18px;
+          margin-right: 10px;
+          color: #bbb;
+        }
+        .current, .initial {
+          float: left;
+        }
+        .current {
+          font-size: 14px;
+          margin-top: 5px;
+          .date {
+            text-transform: uppercase;
+          }
+          .time {
+            color: #888;
+            margin-left: 5px;
+          }
+          .provider {
+            display: block;
+            font-size: 12px;
+            margin: 2px 0;
+          }
+        }
+      }
+    }
+    button.toggle {
+      font-size: 100%;
+    }
+  }
+}
+
+.edit-diagnosis {
+  overflow: auto;
+  clear: both;
+  padding: 10px 10px 10px 0;
+  background: #eee;
+  .button-toggle {
+    float: right;
+  }
+  .button-toggle.status {
+    float: left;
+  }
+}
+
+.ruled-out label.diagnosis-name {
+  color: #777;
+  text-decoration: line-through;
+}
+
 .footer-note {
   padding: 2px 10px 15px 10px;
+  text-align: right;
   span {
     font-size: 12px;
     color: #888;

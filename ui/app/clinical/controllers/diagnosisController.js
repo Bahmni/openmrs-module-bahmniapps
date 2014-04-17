@@ -157,6 +157,10 @@ angular.module('bahmni.clinical')
                 }
             };
 
+            $scope.toggle = function (item) {
+                item.show = !item.show
+            };
+
             $scope.isValid = function (diagnosis) {
                 return diagnosis.isValidAnswer() && diagnosis.isValidOrder() && diagnosis.isValidCertainty();
             };
