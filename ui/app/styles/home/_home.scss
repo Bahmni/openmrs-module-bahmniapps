@@ -407,23 +407,30 @@ body{
 /******************************************************************************/
 
 .dashboard {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 0; right: 0;
   header {
     .btn-user-info {
-      @include background(linear-gradient(top, #015B52, #00463f));
-      padding: 7px;
+      background: #015B52;
+      padding: 15px;
       border: none;
-      float: right;
-      margin: 8px;
+      border-radius: 0;
+      margin: 0;
+      position: absolute;
+      top: 0;
+      right: 0;
+      &:focus {outline:0;}
       i.mini {
         font-size: .9em;
       }
       & + ul {
         display: none;
         &.active {
-          background: #00463f;
+          background: #015B52;
           display: block;
           position: absolute;
-          right: 5px;
+          right: 0;
           top: 50px;
         }
         li {
@@ -431,7 +438,7 @@ body{
           clear: both;
           text-align: left;
           padding-left: 10px;
-          border-bottom: 1px solid #187269;
+          border-bottom: 1px solid #02675d;
           margin: 0;
           padding: 10px 10px 10px 5px;
           a.disabled {
@@ -446,8 +453,8 @@ body{
   }
   .apps {
     ul {
-      margin: auto;
-      max-width: 345px;
+      margin: 50px auto;
+      max-width: 520px;
       li {
         a {
           width: 130px;
@@ -458,10 +465,17 @@ body{
       }
     }
   }
+  @media screen and (max-width: 520px) {
+    .apps {
+      ul {
+        max-width: 345px;
+      }
+    }
+  }
 
   @media screen and (min-width: 960px) {
     .apps {
-      width: 600px;
+      width: 520px;
       margin: 80px auto;
       padding-bottom: 100px;
       ul {
