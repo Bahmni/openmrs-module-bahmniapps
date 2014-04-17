@@ -33,21 +33,20 @@ body{
             color: #CCC;
             height: 50px;
             border-radius: 0;
-            @media screen and (min-width: 960px) {
-                width: 960px;
+            @media screen and (min-width: 1024px) {
+                width: 1024px;
                 margin: 0px auto;
             }
             .header-logo{
-                background: image-url("jss_logo.png") no-repeat scroll left 2px transparent;
-                color: #ffffff;
+              display: block;
+              width: 35px;
+              margin: 8px auto;
+              img {
                 display: block;
-                font-size: 16px;
-                margin:4px 0px 0px 5px;
-                padding:10px 0px 0px 40px;
-                text-decoration:none;
-                line-height:18px;
-                height:35px;
-                float:left;
+                width: 35px;
+                border-radius: 17px;
+                box-shadow: 0 8px 6px -7px #000;
+              }
             }
             ul{
                 &:first-child{
@@ -121,12 +120,14 @@ body{
                 }
             }
             .btn-user-info {
-              // @include background(linear-gradient(top, #015B52, #00463f));
-              background: #015B52;
-              padding: 7px;
-              border: none;
-              float: right;
-              margin: 8px;
+                background: #015B52;
+                padding: 15px;
+                border: none;
+                border-radius: 0;
+                margin: 0;
+                position: absolute;
+                top: 0;
+                right: 0;
               @media screen and (max-width: 959px) {
                 margin: 0;
                 padding: 15px;
@@ -143,8 +144,8 @@ body{
                   background: #015B52;
                   display: block;
                   position: absolute;
-                  right: 8px;
-                  top: 40px;
+                  right: 0;
+                  top: 50px;
                   z-index: 10000;
                   @media screen and (max-width: 959px) {
                     top: 49px;
