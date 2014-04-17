@@ -63,16 +63,25 @@
     <h2>Lab Investigations</h2>
 
     <div ng-repeat="labOrders in visit.labTestOrderObsMap">
-        <div class="notes inline-notes">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab aspernatur atque cumque dignissimos et,
-                illum nam officia quibusdam quisquam rem repellat suscipit veritatis voluptas. Commodi modi praesentium
-                quae saepe ut</p>
-        </div>
         <table>
             <thead>
-            <th colspan="2">
-                <span class="date" bo-text="'Lab Report ' + $index+1"></span>
-            </th>
+            <tr>
+                <th colspan="2"><span class="date" bo-text="'Lab Report ' +($index+1)"></span></th>
+            </tr>
+            <tr ng-if="labOrders.accessionNotes">
+                <th colspan="2" class="notes inline-notes">
+                    <div ng-repeat="accessionNote in labOrders.accessionNotes" class="accession">
+                        <p class="left">{{accessionNote.text}}</p>
+                        <div class="footer-note fr">
+                            <span class="time-stamp">
+                                <span class="date" bo-text="accessionNote.dateTime | date:'dd MMM yy'"></span>
+                                <span class="time" bo-text="accessionNote.dateTime | date :'hh:mm a'"></span>
+                            </span>
+                            <span class="provider" bo-text="accessionNote.providerName"></span>
+                        </div>
+                    </div>
+                </th>
+            </tr>
             </thead>
             <tbody ng-repeat="line in labOrders.displayList">
             <!-- HACKTAG: Apparently bo-if makes this go into an infinite loop-->

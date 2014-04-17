@@ -24,6 +24,9 @@ var EncounterConfig = (function () {
         getPatientDocumentEncounterTypeUuid: function() {
             return this.getEncounterTypeUuid("Patient Document");
         },
+        getValidationEncounterTypeUuid: function() {
+            return this.getEncounterTypeUuid(Bahmni.Common.Constants.validationNotesEncounterType);
+        },
         getEncounterTypeUuid:function(encounterTypeName) {
             return this.encounterTypes[encounterTypeName]
         },

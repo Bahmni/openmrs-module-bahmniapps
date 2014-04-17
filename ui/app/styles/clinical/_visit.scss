@@ -82,6 +82,14 @@
     background: #eee;
     background-image: none; 
   }
+  table tr th.notes {
+    background: #fef7e3;
+    .accession {
+      clear: both;
+      overflow: auto;
+      margin-bottom: 10px;
+    }
+  }
   table tbody {
     tr.test td{
       padding-top: 12px;

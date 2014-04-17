@@ -95,6 +95,9 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
             var labTestOrderTypeUuid = encounterConfig.orderTypes[Bahmni.Clinical.Constants.labOrderType];
             return order.orderTypeUuid === labTestOrderTypeUuid;
         },
+        isValidationEncounter = function (encounterTransaction) {
+            return encounterTransaction.encounterTypeUuid === encounterConfig.getValidationEncounterTypeUuid();
+        },
         isNonLabTests = function (order) {
             return !isLabTests(order);
         },
@@ -123,6 +126,29 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
             return !allOrders().some(function(order){
                 return order.uuid === obs.orderUuid;
             });
+        },
+        mapAccessionNotes = function(encountersWithTestOrders){
+            encounterTransactions.forEach(function (encounterTransaction) {
+                if (isValidationEncounter(encounterTransaction)) {
+                    encounterTransaction.accessionNotes.forEach(function (accessionNote) {
+                        addAccessionNotes(encountersWithTestOrders, accessionNote);
+                    });
+                }
+            });
+
+            encountersWithTestOrders.forEach(function(encounterWithTestOrders){
+                encounterWithTestOrders.accessionNotes &&
+                    Bahmni.Common.Util.ArrayUtil.sortInReverseOrderOfField(encounterWithTestOrders.accessionNotes, 'dateTime');
+            })
+        },
+        addAccessionNotes = function(encountersWithTestOrders, accessionNote){
+            var encounterWithTestOrdersForAccessionUuid = encountersWithTestOrders.filter(function (encounterWithTestOrder) {
+                return encounterWithTestOrder.accessionUuid === accessionNote.accessionUuid
+            })[0];
+            if (encounterWithTestOrdersForAccessionUuid) {
+                encounterWithTestOrdersForAccessionUuid.accessionNotes = encounterWithTestOrdersForAccessionUuid.accessionNotes || [];
+                encounterWithTestOrdersForAccessionUuid.accessionNotes.push(accessionNote);
+            }
         };
 
     var radiologyDocs = [];
@@ -184,6 +210,7 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
         })
     });
 
+    mapAccessionNotes(encountersWithTestOrders);
 
     var allObs = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions);
     consultationNotes = resultGrouper.group(allObs.filter(isConsultationNote), observationGroupingFunction, 'obs', 'date');

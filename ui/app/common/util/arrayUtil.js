@@ -11,5 +11,9 @@ Bahmni.Common.Util.ArrayUtil = {
     	if(index !== -1) {
     		array.splice(index, 1)
     	}
+    },
+
+    sortInReverseOrderOfField: function(array, field){
+        return array.sort(function(first, second) { return first[field] < second[field] ? 1: -1; });
     }
 };

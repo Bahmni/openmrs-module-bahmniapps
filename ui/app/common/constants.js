@@ -36,6 +36,7 @@ Bahmni.Common = Bahmni.Common || {};
         radiologyOrderType : 'Radiology Order',
         radiologyResultConceptName :"Radiology Result",
         investigationEncounterType:"INVESTIGATION",
+        validationNotesEncounterType: "VALIDATION NOTES",
         labOrderNotesConcept: "Lab Order Notes",
         dispositionConcept : "Disposition",
         dispositionGroupConcept : "Disposition Set",
