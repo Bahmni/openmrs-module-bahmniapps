@@ -1,4 +1,4 @@
-ddescribe('ArrayUtil', function () {
+describe('ArrayUtil', function () {
     var arrayUtil = Bahmni.Common.Util.ArrayUtil;
 
     it('should sort in reverse order of field', function () {
