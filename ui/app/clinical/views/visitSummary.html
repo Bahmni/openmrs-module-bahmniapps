@@ -4,45 +4,47 @@
         <ul class="block-content visit-diagnosis">
             <li ng-repeat="diagnosis in visit.diagnoses">
                 <div>
-                    <span class="diagnosis-name" bo-text="diagnosis.getDisplayName()"></span>
-
-                    <div class="diagonsis-order">
-                        <span class="order" bo-show="visit.isPrimaryOrder(diagnosis.order)">Primary</span>
-                        <span class="order" bo-show="!visit.isPrimaryOrder(diagnosis.order)">Secondary</span>
-                        <span class="certainty" bo-text="'(' + diagnosis.certainty + ')'"></span>
-                    </div>
-                    <span class="certainty" bo-text="'' + diagnosis.diagnosisStatus + ''"></span>
-
-                    <div class="footer-note">
+                    <span class="diagnosis-name" bo-text="diagnosis.getDisplayName()" ng-class="{'ruled-out': diagnosis.diagnosisStatus}"></span>
+                    <div class="current">
                       <span class="time-stamp">
                         <span class="date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
                         <span class="time">{{diagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
                       </span>
                         <span class="provider" bo-text="diagnosis.providers[0].name"></span>
                     </div>
-                </div>
-                <div class="diagnosis-name" ng-show="diagnosis.revised">revised in a later encounter</div>
-                </br>
-                <div ng-show="diagnosis.firstDiagnosis.revised">
-                    </br>
-                    <span class="diagnosis-name">Previously was</span>
-
                     <div class="diagonsis-order">
-                        <span class="order"
-                              bo-show="visit.isPrimaryOrder(diagnosis.firstDiagnosis.order)">Primary</span>
-                        <span class="order"
-                              bo-show="!visit.isPrimaryOrder(diagnosis.firstDiagnosis.order)">Secondary</span>
-                        <span class="certainty" bo-text="'(' + diagnosis.firstDiagnosis.certainty + ')'"></span>
+                        <span class="order" bo-show="visit.isPrimaryOrder(diagnosis.order)">Primary</span>
+                        <span class="order" bo-show="!visit.isPrimaryOrder(diagnosis.order)">Secondary</span>
+                        <span class="certainty" bo-text="diagnosis.certainty"></span>
+                        <!-- <span class="status" bo-text="'' + diagnosis.diagnosisStatus + ''"></span> -->
+                        <button class="toggle fr" ng-hide="!diagnosis.firstDiagnosis.revised || !diagnosis.revised">
+                            <i class="icon-plus-sign" ng-click="toggle(diagnosis)" ng-hide="diagnosis.show"></i>
+                            <i class="icon-minus-sign" ng-click="toggle(diagnosis)" ng-show="diagnosis.show"></i>
+                        </button>
                     </div>
-                    <span class="certainty" bo-text="'' + diagnosis.firstDiagnosis.diagnosisStatus + ''"></span>
 
-                    <div class="footer-note">
-                          <span class="time-stamp">
-                            <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
-                            <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
-                          </span>
-                        <span class="provider" bo-text="diagnosis.firstDiagnosis.providers[0].name"></span>
+
+                </div>
+                <div class="history" ng-show="diagnosis.show">
+                    <div ng-show="diagnosis.firstDiagnosis.revised" class="previous-state">
+                      <span class="diagnosis-name">Intially diagnosed</span>
+                      <div class="current">
+                            <span class="time-stamp">
+                              <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
+                              <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
+                            </span>
+                          <span class="provider" bo-text="diagnosis.firstDiagnosis.providers[0].name"></span>
+                      </div>
+                      <div class="diagonsis-order">
+                          <span class="order"
+                                bo-show="visit.isPrimaryOrder(diagnosis.firstDiagnosis.order)">Primary</span>
+                          <span class="order"
+                                bo-show="!visit.isPrimaryOrder(diagnosis.firstDiagnosis.order)">Secondary</span>
+                          <span class="certainty" bo-text="diagnosis.firstDiagnosis.certainty"></span>
+                          <!-- <span class="status" bo-text="'' + diagnosis.firstDiagnosis.diagnosisStatus + ''"></span> -->
+                      </div>
                     </div>
+                    <div ng-show="diagnosis.revised" class="revised">Revised in a later encounter!</div>
                 </div>
             </li>
             <div ng-show="!visit.hasDiagnosis()">A diagnosis has not been made for this patient yet.</div>
