@@ -2,22 +2,26 @@
     @include pie-clearfix;
 	margin:0px 0px 10px;
 	color:#585858;
-	h2{
-    @include font-size(1.1);
-    border-bottom:1px solid #00463f;
-    color:#777575;
-    padding-bottom:3px;
-    margin-bottom:10px;
-    font-weight: bold;
-    font-family:arial;
-	}
+  h2 {
+    color: #66b298;
+    padding: 5px 10px;
+    font-size: 18px;
+    font-weight: normal;
+    border-bottom: 1px solid #66b298;
+    margin-bottom: 15px;
+  }
 	.block{
 		min-height:150px;
 		padding:10px;
 		.block-content{
-			padding-left:20px;
 			color:#5C5B5C;
 			@include font-size(1);
+      h4.section {
+        background: #fafafa;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #eee;
+      }
 		}
 		&.investigation{
 			li{
@@ -46,6 +50,7 @@
 			}
 		}
 		&.diagnosis{
+      h2 {margin-bottom: 0;}
 			h3{
 				margin-bottom: 10px;
 				color: #FFF;
@@ -100,3 +105,76 @@
 		width:352px;
 	}
  }
+
+.consultation {
+  .diagnosis-row {
+    overflow: auto;
+    clear: both;
+    border-bottom: 1px solid #ccc;
+    padding: 5px 10px;
+    min-height: 30px;
+    h4.diagnosis-name {
+      float: left;
+      width: 38%;
+      font-size: 16px;
+      font-family: OpenSansBold;
+      color: #333;
+    }
+    .secondary {
+      float: right;
+      width: 60%;
+      font-size: 14px;
+      .now {
+        width: 180px;
+        display: inline-block;
+      }
+      .initial {
+        padding-bottom: 0;
+      }
+      // .initial:before {
+      //   font-family: FontAwesome;
+      //   content: "\f060";
+      //   font-size: 18px;
+      //   margin-right: 10px;
+      //   color: #bbb;
+      // }
+      .current, .initial {
+        float: left;
+      }
+      .current {
+        font-size: 14px;
+        margin-top: 5px;
+        .date {
+          text-transform: uppercase;
+        }
+        .time {
+          color: #888;
+          margin-left: 5px;
+        }
+        .provider {
+          display: block;
+          font-size: 12px;
+          margin: 2px 0;
+        }
+      }
+      .state {
+        float: right;
+        width: 50%;
+      }
+      .certainty, .status {
+        font-size: 12px;
+        color: #888;
+      }
+      .status {
+        float: right;
+        color: #333;
+      }
+    }
+  }
+
+  h4.diagnosis-name.ruled-out {
+    color: #777;
+    text-decoration: line-through;
+  }
+}
+
