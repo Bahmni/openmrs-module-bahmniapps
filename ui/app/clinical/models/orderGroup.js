@@ -2,8 +2,23 @@
 
 Bahmni.Clinical.OrderGroup = function(){};
 
-Bahmni.Clinical.OrderGroup.prototype.group = function(orders, groupingParameter, groupingFunction) {
+function getGroupingFunction(groupingParameter) {
+    var groupingFunction;
+    if (groupingParameter == 'date') {
+        groupingFunction = function (order) {
+            return order.dateCreated.substring(0, 10);
+        };
+    } else {
+        groupingFunction = function (order) {
+            return order.accessionUuid;
+        }
+    }
+    return groupingFunction;
+}
 
+Bahmni.Clinical.OrderGroup.prototype.group = function(orders, groupingParameter) {
+    groupingParameter = groupingParameter || 'date';
+    var groupingFunction = getGroupingFunction(groupingParameter);
     var groupedOrders = new Bahmni.Clinical.ResultGrouper().group(orders, groupingFunction, 'orders', groupingParameter);
     if(groupingParameter == 'date'){
         return groupedOrders.map(function(order) {
@@ -23,14 +38,7 @@ Bahmni.Clinical.OrderGroup.prototype.group = function(orders, groupingParameter,
 
 Bahmni.Clinical.OrderGroup.prototype.create = function (encounterTransactions, ordersName, filterFunction, groupingParameter) {
     var filteredOrders = this.flatten(encounterTransactions, ordersName, filterFunction);
-    groupingParameter = groupingParameter || 'date';
-    var groupingFunction;
-    if(groupingParameter == 'date'){
-        groupingFunction = function(order) { return order.dateCreated.substring(0, 10); };
-    }else{
-        groupingFunction = function(order) { return order.accessionUuid; }
-    }
-    var group = this.group(filteredOrders, groupingParameter, groupingFunction);
+    var group = this.group(filteredOrders, groupingParameter);
     return group;
 };
 
