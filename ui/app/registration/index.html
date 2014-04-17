@@ -13,21 +13,27 @@
             <div ng-app="registration">
                 <div id="overlay"><div></div></div>
                 <header class="reg-header" ng-controller="NavigationController">
-                        <a class="header-logo" href="/home">Jan Swasthya Sahyog</a>
+                        <a class="header-logo" href="/home"><img src="/images/jss_logo.png" alt="Bahmni" title="Bahmni"></a>                        
+                        <button class="btn-user-info">
+                            <i class="icon-user-md icon-white small"></i>
+                            <i class="icon-caret-down icon-white mini"></i>
+                        </button>
                         <ul>
                             <li>
                                 <a><i class="icon-user icon-white small"></i><span ng-bind="currentUser.username"></span></a>
-                            </li>
-                            <li ng-repeat="extension in extensions">
-                                <a ng-click="goTo(extension.url)"><i class="{{extension.icon}} icon-white small"></i><span class="nav-link" ng-bind="extension.label"></span></a>
-                            </li>
+                            </li>                            
                             <li>
                                 <a log-out><i class="icon-off icon-white small"></i><span class="nav-link">Logout</span></a>
                             </li>
                         </ul>
+                        <ul class="top-nav">
+                            <li ng-repeat="extension in extensions">
+                                <a ng-click="goTo(extension.url)"><i class="{{extension.icon}} icon-white small"></i><span class="nav-link" ng-bind="extension.label"></span></a>
+                            </li>
+                        </ul>
                 </header>
-                <p class="caution" ng-cloak ng-show="server_error"><iclass="icon-exclamation-sign small"></i><span ng-bind="server_error"></span></p>
-                <div ng-view id="view-content"></div>
+                <p class="caution" ng-cloak ng-show="server_error"><i class="icon-exclamation-sign small"></i><span ng-bind="server_error"></span></p>
+                <div ng-view id="view-content" class="pg-container"></div>
 
                 <script src="../components/jquery/jquery.js"></script>
                 <script src="../lib/jquery/jquery-ui-1.10.4.custom.min.js"></script>

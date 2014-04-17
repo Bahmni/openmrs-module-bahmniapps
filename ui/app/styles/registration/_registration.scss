@@ -289,11 +289,12 @@ body{
 }
 /*** login specific css end ***/
 /*** search page css start ****/
-body{
-  max-width:1200px;
-}
 .reg-wrapper{
-  margin:0px auto;
+  .pg-container {
+    max-width:1200px;
+    margin: 0px auto;
+  }
+
   .inline-element,select,input,button{
       display:inline-block;
       margin:2px;
@@ -304,35 +305,81 @@ body{
   header {
     position: relative;
     color: #CCC;
-    @include border-radius();  
+    border-radius: 0;
     .header-logo{
-      background: image-url("jss_logo.png") no-repeat scroll left top transparent;
-      color: #ffffff;
       display: block;
-      font-size: 2em;
-      height: 32px;
-      margin:4px 0px 0px 5px;
-      padding:11px 0px 0px 49px;
-      text-decoration:none; 
-      line-height:15px;
-      float:left;
+      width: 35px;
+      margin: 8px auto;
+      img {
+        display: block;
+        width: 35px;
+        border-radius: 17px;
+        box-shadow: 0 8px 6px -7px #000;
+      }
+    }
+    .top-nav {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .btn-user-info {
+      background: #015B52;
+      padding: 15px;
+      border: none;
+      border-radius: 0;
+      margin: 0;
+      position: absolute;
+      top: 0;
+      right: 0;
+      color: #fff;
+      &:focus {outline:0;}
+      i.mini {
+        font-size: .9em;
+      }
+      & + ul {
+        display: none;
+        &.active {
+          background: #015B52;
+          display: block;
+          position: absolute;
+          right: 0;
+          top: 50px;
+          z-index: 1000;
+        }
+        li {
+          float: left;
+          clear: both;
+          text-align: left;
+          padding-left: 10px;
+          border-bottom: 1px solid #02675d;
+          margin: 0;
+          padding: 10px 10px 10px 5px;
+          a.disabled {
+            color: #999;
+            .icon-user {
+                color: #999;
+            }
+          }
+        }
+      }
     }
     ul{
-      float:right;
       li{
-        margin:11px 15px 10px 0px;
+        
         display:inline-block;
         a{
           color:#f2f2f2;
           font-weight:bold;
           cursor:pointer;
           text-decoration:none;
+          display: block;
+          padding:11px 15px 10px 0px;
           .nav-link{
             padding-left:2px;
-            &:hover{
-              text-decoration:underline;
-            }
           }
+        &:hover {
+          background: #015B52;
+        }
        }
       }
     }
