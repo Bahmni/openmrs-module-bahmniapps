@@ -6,20 +6,6 @@
             </li>
         </ul>
     </nav>
-    <section class="block investigation">
-        <h2>Investigation</h2>
-        <ul class="block-content">
-            <li ng-repeat="investigation in consultation.investigations" ng-class="{panel: investigation.concept.set, voided: investigation.voided}">
-                <span>{{investigation.concept.name}}</span>
-                <span ng-show="investigation.concept.set" class="panel">P</span>
-            </li>
-        </ul>
-        <div ng-show="consultation.labOrderNote.value" class="notes">
-          <h5 class="title">Notes:</h5>
-          <p class="content">{{consultation.labOrderNote.value}}</p>
-        </div>
-        <ng-include src="'views/labResults.html'" ng-init="labResults=consultation.labResults"/>
-    </section>
     <section class="block diagnosis">
         <h2>Diagnosis</h2>
         <div class="block-content" ng-show="consultation.newlyAddedDiagnoses.length > 0">
@@ -85,6 +71,30 @@
             </div>
         </div>
     </section>
+    <section class="block">
+        <h2>Observations</h2>
+        <section class="block" ng-repeat="observation in consultation.observations">
+            <show-obs observation="observation"></show-obs>
+        </section>
+    </section>
+    <section class="block investigation">
+        <h2>Investigation</h2>
+        <ul class="block-content">
+            <li ng-repeat="investigation in consultation.investigations" ng-class="{panel: investigation.concept.set, voided: investigation.voided}">
+                <span>{{investigation.concept.name}}</span>
+                <span ng-show="investigation.concept.set" class="panel">P</span>
+            </li>
+        </ul>
+        <div ng-show="consultation.labOrderNote.value" class="notes">
+          <h5 class="title">Notes:</h5>
+          <p class="content">{{consultation.labOrderNote.value}}</p>
+        </div>
+        <ng-include src="'views/labResults.html'" ng-init="labResults=consultation.labResults"/>
+    </section>
+    <section class="block treatment">
+        <h2>Treatment</h2>
+         <div  class="block-content" ng-include src="'views/treatmentDrugs.html'"></div>
+    </section>
     <section class="block disposition">
         <h2>Disposition</h2>
 
@@ -101,18 +111,6 @@
             </ul>
 
     </section>
-    <section class="block treatment">
-        <h2>Treatment</h2>
-         <div  class="block-content" ng-include src="'views/treatmentDrugs.html'"></div>
-    </section>
-    
-    <section class="block">
-        <h2>Observations</h2>
-        <section class="block" ng-repeat="observation in consultation.observations">
-            <show-obs observation="observation"></show-obs>
-        </section>
-    </section>
-
     <section class="block consultationNote">
         <h2>Consultation Notes</h2>
         <textarea ng-model="consultation.consultationNote.value" ng-change="onNoteChanged()" placeholder="Notes: " rows="6"></textarea>
