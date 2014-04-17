@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.patientSearch')
-    .controller('PatientsListController', ['$scope', '$location', '$window', 'patientService', 'patientMapper', '$rootScope', 'appService', 'spinner', '$stateParams',
-    function ($scope, $location, $window, patientService, patientMapper, $rootScope, appService, spinner, $stateParams) {
+    .controller('PatientsListController', ['$scope', '$location', '$window', 'patientService', 'patientMapper', '$rootScope', 'appService', 'spinner', '$stateParams','$q',
+    function ($scope, $location, $window, patientService, patientMapper, $rootScope, appService, spinner, $stateParams, $q) {
 
         $scope.searchTypes = [];
         $scope.searchCriteria = {searchParameter:'', type: undefined};
@@ -127,34 +127,50 @@ angular.module('bahmni.common.patientSearch')
             
         };
 
+
         var resetPatientLists = function () {
             $scope.activePatients = [];
             $scope.searchResults = [];
             $scope.visiblePatients = [];
         };
 
-        var initialize = function () {
-            resetPatientLists();
+        var getAllowedSearchTypes = function () {
             var appExtensions = appService.getAppDescriptor().getExtensions("org.bahmni.patient.search", "config");
             var allowedSearches = [];
             appExtensions.forEach(function (appExtn) {
                 allowedSearches.push({
-                    name:appExtn.label,
-                    display:appExtn.extensionParams.display,
-                    handler:appExtn.extensionParams.searchHandler,
-                    forwardUrl:appExtn.extensionParams.forwardUrl,
-                    id:appExtn.id
+                    name: appExtn.label,
+                    display: appExtn.extensionParams.display,
+                    handler: appExtn.extensionParams.searchHandler,
+                    forwardUrl: appExtn.extensionParams.forwardUrl,
+                    id: appExtn.id
                 });
             });
             $scope.searchTypes = allowedSearches;
+            return allowedSearches;
+        }
+
+        var setDefaultType = function () {
             var defaultType = $scope.searchTypes.length > 0 ? $scope.searchTypes[0] : null;
-            $scope.searchCriteria = { searchParameter:'', type:defaultType};
+            $scope.searchCriteria = { searchParameter: '', type: defaultType};
             if (defaultType && defaultType.handler) {
                 findPatientsByHandler($scope.searchCriteria.type.handler);
             }
+        }
+
+        var initialize = function () {
+            var deferrables = $q.defer();
+            var promises = [];
+            resetPatientLists();
+            promises.push(getAllowedSearchTypes());
+            setDefaultType();
+            $q.all(promises).then(function () {
+                deferrables.resolve();
+            });
+            return deferrables.promise;
         };
 
-        initialize();
+        spinner.forPromise(initialize());
 
     }]).directive('resize', function ($window) {
         return function (scope, element) {
