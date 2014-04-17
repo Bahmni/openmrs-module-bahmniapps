@@ -190,16 +190,15 @@ body{
     height: 50px;
     border-radius: 0;
     .header-logo{
-      background: image-url("jss_logo.png") no-repeat scroll left 2px transparent;
-      color: #ffffff;
       display: block;
-      font-size: 16px;
-      margin:4px 0px 0px 5px;
-      padding:10px 0px 0px 40px;
-      text-decoration:none;
-      line-height:18px;
-      height:35px;
-      float:left;
+      width: 35px;
+      margin: 8px auto;
+      img {
+        display: block;
+        width: 35px;
+        border-radius: 17px;
+        box-shadow: 0 8px 6px -7px #000;
+      }
     }
     ul{
       float:right;
@@ -310,19 +309,13 @@ body{
   }
   header {
     border-radius: 10px 10px 0 0;
-    a.header-logo {
-      float: none;
-      margin: 5px auto;
-      width: 165px;
-      padding-bottom: 20px;
-    }
   }
   .login-body{
     background:#ffffff;
     border:1px solid #eaeaea;
     padding-bottom:10px;
     border-radius: 0 0 10px 10px;
-
+    padding-top: 10px;
     p.caution{
       padding:0px;
     }
@@ -349,11 +342,11 @@ body{
         float: none;
         width: 100%;
         input[type="text"],input[type="password"]{
-          width: 96.9%;
+          width: 95%;
           display: block;
           margin: 0px;
           min-width: 10%;
-          padding: 10px 4px
+          padding: 10px 4px 10px 10px;
         }
       }
     }
