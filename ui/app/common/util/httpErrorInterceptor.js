@@ -38,6 +38,7 @@ angular.module('httpErrorInterceptor',[])
                 } else if (response.status === 403) {
                     var errorMessage = data.error && data.error.message ? stringAfter(data.error.message, ':') : unexpecetedError;
                     showError(errorMessage);
+                    $rootScope.$broadcast('event:auth-loginRequired');
                 } else if (response.status === 404) {
                     showError("The requested information does not exist");
                 }

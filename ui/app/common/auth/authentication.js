@@ -94,13 +94,18 @@ angular.module('authentication', ['ngCookies'])
     }]).factory('authenticator', ['$rootScope', '$q', '$window', 'sessionService', function ($rootScope, $q, $window, sessionService) {
         var authenticateUser = function () {
             var defer = $q.defer();
-            sessionService.get().success(function (data) {
+            var sessionDetails = sessionService.get();
+            sessionDetails.success(function (data) {
                 if (data.authenticated) {
                     defer.resolve();
                 } else {
                     defer.reject('User not authenticated');
                     $rootScope.$broadcast('event:auth-loginRequired');
                 }
+            });
+            sessionDetails.error(function(data){
+                defer.reject('User not authenticated');
+                $rootScope.$broadcast('event:auth-loginRequired');
             });
             return defer.promise;
         }
