@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('EditPatientController', ['$scope', '$rootScope', 'patientService', 'visitService','$location', 'Preferences', '$route', 'openmrsPatientMapper', '$window', '$q','spinner', 'printer', 'appService',
-        function ($scope, $rootScope, patientService, visitService,$location, preferences, $route, patientMapper, $window, $q, spinner, printer, appService) {
+    .controller('EditPatientController', ['$scope', '$rootScope', 'patientService', 'encounterService', 'visitService','$location', 'Preferences', '$route', 'openmrsPatientMapper', '$window', '$q','spinner', 'printer', 'appService',
+        function ($scope, $rootScope, patientService, encounterService, visitService,$location, preferences, $route, patientMapper, $window, $q, spinner, printer, appService) {
             var uuid;
             var editActionsConfig = [];
             var defaultActions = ["save", "print"];
@@ -35,7 +35,14 @@ angular.module('bahmni.registration')
                     defaultActions.push(actionName);
                     identifyEditActions();
                 });
-                spinner.forPromise($q.all([getPatientPromise, searchActiveVisitsPromise]));
+
+                var encounterTypeUuid = $rootScope.encounterConfig.getPatientDocumentEncounterTypeUuid();
+                var patientIsDigitized = encounterService.getDigitized(uuid, encounterTypeUuid)
+                patientIsDigitized.success(function(data) {
+                    $scope.isDigitized = data.results.length > 1;
+                });
+
+                spinner.forPromise($q.all([getPatientPromise, searchActiveVisitsPromise, patientIsDigitized]));
             })();
 
             var getDefaultVisitType = function() {

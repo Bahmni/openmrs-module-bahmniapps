@@ -121,6 +121,17 @@ angular.module('bahmni.common.domain')
             },
             withCredentials : true
         });
+    };
+
+    this.getDigitized = function(patientUuid, encounterTypeUuid) {
+        return $http.get(Bahmni.Common.Constants.encounterUrl, {
+            params:{
+                patient: patientUuid,
+                encounterType: encounterTypeUuid,
+                v: "custom:(uuid)"
+            },
+            withCredentials : true
+        });
     }
 }]);
 
