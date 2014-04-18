@@ -32,6 +32,11 @@ Bahmni.Clinical.Result = (function () {
             return observationList.filter(function (observation) {
                 return invalidConcepts.indexOf(observation.concept.name) < 0;
             })[0];
+        },
+        latestMatchingObservationValue = function(observationList, conceptName){
+            var matchingObs = matchingObservations(observationList, conceptName);
+            var sortedObservations = Bahmni.Common.Util.ArrayUtil.sortInReverseOrderOfField(matchingObs, 'observationDateTime');
+            return sortedObservations[0] && sortedObservations[0].value;
         };
 
     Result.create = function (parentName, observationList) {
@@ -43,7 +48,7 @@ Bahmni.Clinical.Result = (function () {
                 isAbnormal: valueOf(observationList, "LAB_ABNORMAL") === 'true',
                 minNormal: valueOf(observationList, "LAB_MINNORMAL"),
                 maxNormal: valueOf(observationList, "LAB_MAXNORMAL"),
-                notes: valueOf(observationList, "LAB_NOTES"),
+                notes: latestMatchingObservationValue(observationList, "LAB_NOTES"),
                 referredOut: matchingObservations(observationList, "REFERRED_OUT").length > 0,
                 observationDateTime: realObs.observationDateTime,
                 providerName: realObs.provider.name
@@ -54,7 +59,7 @@ Bahmni.Clinical.Result = (function () {
                 isAbnormal: valueOf(observationList, "LAB_ABNORMAL") === 'true',
                 minNormal: valueOf(observationList, "LAB_MINNORMAL"),
                 maxNormal: valueOf(observationList, "LAB_MAXNORMAL"),
-                notes: valueOf(observationList, "LAB_NOTES"),
+                notes: latestMatchingObservationValue(observationList, "LAB_NOTES"),
                 referredOut: matchingObservations(observationList, "REFERRED_OUT").length > 0
             });
         }

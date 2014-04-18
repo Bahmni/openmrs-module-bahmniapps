@@ -17,14 +17,20 @@ Bahmni.Clinical.OrderGroup.prototype.group = function(orders, groupingParameter)
     groupingParameter = groupingParameter || 'date';
     var groupingFunction = getGroupingFunction(groupingParameter);
     var groupedOrders = new Bahmni.Clinical.ResultGrouper().group(orders, groupingFunction, 'orders', groupingParameter);
-    var mappedGroupedOrders = groupedOrders.map(function (order) {
-        return {
-            accessionUuid:order.accessionUuid,
-            orders:order.orders,
-            date: new Date(order.date)
-        }
+    if(groupingParameter == 'date'){
+        return groupedOrders.map(function(order) {
+            return {
+                date: new Date(order.date),
+                orders: order.orders
+            };
+        }).sort(function(first, second) { return first.date < second.date ? 1: -1; });
+    }
+    return groupedOrders.map(function (order) {
+        var returnObj = {};
+        returnObj[groupingParameter] = order[groupingParameter];
+        returnObj['orders'] = order.orders;
+        return returnObj;
     });
-    return Bahmni.Common.Util.ArrayUtil.sortInReverseOrderOfField(mappedGroupedOrders, 'date')
 };
 
 Bahmni.Clinical.OrderGroup.prototype.create = function (encounterTransactions, ordersName, filterFunction, groupingParameter) {
