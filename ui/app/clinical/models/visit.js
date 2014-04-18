@@ -81,7 +81,8 @@ Bahmni.Clinical.Visit.prototype = {
     },
     _getEncounterWithDisposition: function(dispositionCode) {
         return this.encounters.filter(function(encounter){ 
-            return encounter.dispositions.some(function(disposition) { return disposition.code === dischargeCode; });
+            if(encounter.dispositions) 
+                return encounter.dispositions.some(function(disposition) { return disposition.code === dischargeCode; });
         })[0];
     },
     getDischargeDispositionEncounterDate: function() {
