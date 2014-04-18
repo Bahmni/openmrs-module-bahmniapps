@@ -79,9 +79,14 @@ Bahmni.Clinical.Visit.prototype = {
     hasIPDDrugOrdes: function() {
         return this.ipdDrugSchedule && this.ipdDrugSchedule.hasDrugOrders();;
     },
-    getDischargeDispositionDate: function() {
-        var dischargeDisposition = this.dispositions.filter(function(disposition) { return disposition.code === Bahmni.Common.Constants.dischargeCode; })[0];
-        return dischargeDisposition ? new Date(dischargeDisposition.dispositionDateTime) : null;
+    _getEncounterWithDisposition: function(dispositionCode) {
+        return this.encounters.filter(function(encounter){ 
+            return encounter.dispositions.some(function(disposition) { return disposition.code === dischargeCode; });
+        })[0];
+    },
+    getDischargeDispositionEncounterDate: function() {
+        var dischargeDispositionEncounter = this._getEncounterWithDisposition(Bahmni.Common.Constants.dischargeCode);
+        return dischargeDispositionEncounter ? new Date(dischargeDispositionEncounter.encounterDateTime) : null;
     }
 };
 

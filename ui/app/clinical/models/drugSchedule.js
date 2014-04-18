@@ -36,9 +36,9 @@
 
 	Bahmni.Clinical.DrugSchedule.create = function(visit) {
 		var fromDate = visit.getAdmissionDate();
-		var toDate = visit.getDischargeDispositionDate() || visit.getDischargeDate() || DateUtil.now();
+		var toDate = visit.getDischargeDispositionEncounterDate() || visit.getDischargeDate() || DateUtil.now();
 		var drugOrdersDuringIpd = visit.drugOrders.filter(function(drugOrder){
-			return DateUtil.parse(drugOrder.startDate) <= toDate && DateUtil.parse(drugOrder.endDate) >= fromDate;
+			return DateUtil.parse(drugOrder.startDate) < toDate && DateUtil.parse(drugOrder.endDate) >= fromDate;
 		});
 		return new this(fromDate, toDate, drugOrdersDuringIpd);
 	}

@@ -61,7 +61,8 @@ Bahmni.Tests.observationMother = {
     build: function(observationData) {
         var defaultObservation = {
             uuid: Bahmni.Tests.genUUID(),
-            groupMembers: []
+            groupMembers: [],
+            concept: Bahmni.Tests.conceptMother.build()
         }
 
         return angular.extend(defaultObservation, observationData);

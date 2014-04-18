@@ -9,23 +9,24 @@ describe("DrugSchedule", function() {
 	}
 
 	beforeEach(function() {
-		visit = jasmine.createSpyObj('visit', ['getAdmissionDate', 'getDischargeDispositionDate', 'getDischargeDate']);
+		visit = jasmine.createSpyObj('visit', ['getAdmissionDate', 'getDischargeDispositionEncounterDate', 'getDischargeDate']);
 	});
 	
 	describe("create", function() {
 		it("should initialize DrugSchedule with visit admission date, discharge disposition date and drug orders within these dates", function() {
 		  	visit.getAdmissionDate.andReturn(DateUtil.parse('2014-04-10T15:52:59.000+0530'));	  
-		  	visit.getDischargeDispositionDate.andReturn(DateUtil.parse('2014-04-20T15:52:59.000+0530'));
+		  	visit.getDischargeDispositionEncounterDate.andReturn(DateUtil.parse('2014-04-20T15:52:59.000+0530'));
 		  	var beclomateAfterDischarge = createDrugOrder('Beclomate', '2014-04-21T15:55:00.000+0530', '2014-04-26T15:52:59.000+0530');
 		  	var calpolAfterAdmissionBeforeDishcarge = createDrugOrder('Calpol', '2014-04-15T15:55:00.000+0530', '2014-04-18T15:52:59.000+0530');
 		  	var amoxyBeforeAdmissionAfterDishcarge = createDrugOrder('Amoxy', '2014-04-06T11:52:00.000+0530', '2014-04-22T11:52:59.000+0530');
 		  	var paracetamolBeforeAdmission = createDrugOrder('Paracetamol', '2014-04-04T11:52:00.000+0530', '2014-04-09T11:52:59.000+0530');
-		  	visit.drugOrders = [beclomateAfterDischarge, calpolAfterAdmissionBeforeDishcarge, amoxyBeforeAdmissionAfterDishcarge, paracetamolBeforeAdmission];
+		  	var salbutamolDuringDichrageDisposition = createDrugOrder('Salbutamol', visit.getDischargeDispositionEncounterDate(), '2014-04-29T11:52:59.000+0530');
+		  	visit.drugOrders = [beclomateAfterDischarge, calpolAfterAdmissionBeforeDishcarge, amoxyBeforeAdmissionAfterDishcarge, paracetamolBeforeAdmission, salbutamolDuringDichrageDisposition];
 
 		  	var drugSchedule = DrugSchedule.create(visit);
 
 		  	expect(drugSchedule.fromDate).toBe(visit.getAdmissionDate());
-		  	expect(drugSchedule.toDate).toBe(visit.getDischargeDispositionDate());
+		  	expect(drugSchedule.toDate).toBe(visit.getDischargeDispositionEncounterDate());
 		  	expect(drugSchedule.drugOrders.length).toBe(2);
 		  	expect(drugSchedule.drugOrders[0].drugName).toBe('Calpol');
 		  	expect(drugSchedule.drugOrders[1].drugName).toBe('Amoxy');
@@ -33,7 +34,7 @@ describe("DrugSchedule", function() {
 
 		it("should initialize end date to today when discharge date is not provided", function() {
 		  	visit.getAdmissionDate.andReturn(DateUtil.parse('2014-04-10T15:52:59.000+0530'));	  
-		  	visit.getDischargeDispositionDate.andReturn(null);
+		  	visit.getDischargeDispositionEncounterDate.andReturn(null);
 		  	visit.getDischargeDate.andReturn(DateUtil.parse('2014-04-20T15:52:59.000+0530'));
 		  	var beclomateAfterDischarge = createDrugOrder('Beclomate', '2014-04-21T15:55:00.000+0530', '2014-04-26T15:52:59.000+0530');
 		  	var calpolAfterAdmissionBeforeDishcarge = createDrugOrder('Calpol', '2014-04-15T15:55:00.000+0530', '2014-04-18T15:52:59.000+0530');
@@ -52,7 +53,7 @@ describe("DrugSchedule", function() {
 
 		it("should initialize end date to today when discharge disposition date and duscharge date is not provided", function() {
 		  	visit.getAdmissionDate.andReturn(DateUtil.parse('2014-04-10T15:52:59.000+0530'));	  
-		  	visit.getDischargeDispositionDate.andReturn(null);
+		  	visit.getDischargeDispositionEncounterDate.andReturn(null);
 		  	visit.getDischargeDate.andReturn(null);
 		  	spyOn(DateUtil, 'now').andReturn(DateUtil.parse('2014-04-20T15:52:59.000+0530'))
 		  	var calpolAfterAdmission = createDrugOrder('Calpol', '2014-04-15T15:55:00.000+0530', '2014-04-18T15:52:59.000+0530');
