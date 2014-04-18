@@ -27,7 +27,7 @@ describe('EncounterService', function () {
         var results = encounterService.create(encounter);
 
         expect(mockHttp.post).toHaveBeenCalled();
-        expect(mockHttp.post.mostRecentCall.args[0]).toBe(Bahmni.Registration.Constants.emrApiRESTBaseURL +  '/encounter');
+        expect(mockHttp.post.mostRecentCall.args[0]).toBe(Bahmni.Common.Constants.bahmniEncounterUrl);
         expect(mockHttp.post.mostRecentCall.args[1]).toEqual(encounter);
         expect(results).toBe('success');
     }]));

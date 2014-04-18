@@ -95,10 +95,10 @@ describe('VisitController', function () {
         success = jasmine.createSpy();
         scope.encounterConfiguration = angular.extend(new Bahmni.Registration.RegistrationEncounterConfig(), sampleConfig);
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
-        encounterService = jasmine.createSpyObj('encounterService', ['create', 'getActiveEncounter']);
-        getEncounterPromise = specUtil.createServicePromise('getActiveEncounter');
+        encounterService = jasmine.createSpyObj('encounterService', ['create', 'activeEncounter']);
+        getEncounterPromise = specUtil.createServicePromise('activeEncounter');
         getPatientPromise = specUtil.createServicePromise('get');
-        encounterService.getActiveEncounter.andReturn(getEncounterPromise);
+        encounterService.activeEncounter.andReturn(getEncounterPromise);
         patientService.get.andReturn(getPatientPromise);
         scope.currentProvider = {uuid: ''};
         patientMapper.map.andReturn(patient);
