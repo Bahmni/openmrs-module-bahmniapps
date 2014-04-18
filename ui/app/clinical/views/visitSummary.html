@@ -69,10 +69,16 @@
         <table>
             <thead>
             <tr>
-                <th colspan="2"><span class="date" bo-text="'Lab Report ' +($index+1)"></span></th>
+                <th colspan="2">
+                  <span class="date" bo-text="'Lab Report ' +($index+1)"></span>
+                  <button class="toggle fr" ng-hide="!accessionNote.text || !accessionNote.dateTime">
+                      <i class="icon-plus-sign" ng-click="toggle(accessionNote)" ng-hide="accessionNote.show"></i>
+                      <i class="icon-minus-sign" ng-click="toggle(accessionNote)" ng-show="accessionNote.show"></i>
+                  </button>
+                </th>
             </tr>
             <tr ng-if="labOrders.accessionNotes">
-                <th colspan="2" class="notes inline-notes">
+                <th colspan="2" class="notes inline-notes">                   
                     <div ng-repeat="accessionNote in labOrders.accessionNotes" class="accession">
                         <pre class="left">{{accessionNote.text}}</pre>
                         <div class="footer-note fr">
@@ -89,7 +95,7 @@
             <tbody ng-repeat="line in labOrders.displayList">
             <!-- HACKTAG: Apparently bo-if makes this go into an infinite loop-->
             <tr ng-if="line.isSummary" ng-class="testResultClass(line)">
-                <td colspan="2">
+                <td colspan="2" ng-hide="!line.name">
                     {{line.name}}
                     <span class="status" ng-show="pendingResults(line)">Pending!</span>
                 </td>

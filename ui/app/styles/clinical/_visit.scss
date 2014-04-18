@@ -312,8 +312,18 @@ strong {
     font-family: OpenSansBold;
   }
   table {
-    margin-top: 0;
+    margin-top: 0;  
+    td.name {
+      padding: 5px;
+    }
+    td.value {
+      .obs-value {
+        float: left;
+        width: 80%;
+      }
+    }
   }
+
 }
 .laborder-item, .obs-item {
   background: #eee;
@@ -360,8 +370,18 @@ span.range {
 .laborder-section {
   table {
     margin-bottom: 10px;
-    tr.header td, tr.pending-result td {
-      background: #f6f6f6;
+    th {padding-right: 10px;}
+    th.notes.inline-notes {
+      font-family: "OpenSans", Arial, sans-serif;
+    }
+    tr.header td {
+      background: #f4f4f4;
+      font-family: OpenSansBold;
+      color: #888;
+    }
+    tr.header.pending-result td{
+      font-family: "OpenSans", Arial, sans-serif;
+      color: #333;
     }
     tr.pending-result {
       .status {
