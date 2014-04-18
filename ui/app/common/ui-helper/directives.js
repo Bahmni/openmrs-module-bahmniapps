@@ -181,7 +181,7 @@ angular.module('bahmni.common.util')
                 items = new Bahmni.Clinical.PatientFileObservationsMapper().mapToDisplayItems(response.data.results);
                 var inlineItems = [
                     {
-                        src:'<div class="white-popup">No patient files uploaded</div>',
+                        src:'<div class="white-popup">No patient documents uploaded</div>',
                         type:'inline'
                     }
                 ];

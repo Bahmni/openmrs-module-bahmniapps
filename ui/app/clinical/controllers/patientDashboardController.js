@@ -66,7 +66,7 @@ angular.module('opd.patientDashboard', [])
             $scope.patientDashboardSections.forEach(addViewNameToSection);
         };
 
-        $scope.getPatientFiles = function () {
+        $scope.getPatientDocuments = function () {
             var encounterTypeUuid = $rootScope.encounterConfig.getPatientDocumentEncounterTypeUuid();
             var promise = encounterService.getEncountersForEncounterType($scope.patientUuid, encounterTypeUuid);
             return spinner.forPromise(promise);

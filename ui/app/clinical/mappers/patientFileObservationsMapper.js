@@ -2,6 +2,7 @@ Bahmni.Clinical.PatientFileObservationsMapper = function () {
     this.mapToDisplayItems = function (encounters) {
         var displayItems = [];
         encounters.forEach(function (encounter) {
+            var visitUuid = encounter.visit.uuid;
             encounter.obs.forEach(function (parentObservation) {
                 var imageConcept = parentObservation.concept.name;
                 parentObservation.groupMembers.forEach(function (member) {
@@ -11,7 +12,8 @@ Bahmni.Clinical.PatientFileObservationsMapper = function () {
                             id:member.id,
                             src:"/document_images/" + member.value,
                             concept:imageConcept,
-                            obsDatetime:member.obsDatetime
+                            obsDatetime:member.obsDatetime,
+                            visitUuid: visitUuid
                         });
                     displayItems.push(documentImage);
                 })
