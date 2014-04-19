@@ -5,6 +5,8 @@
     <form name="myForm"  ng-submit="update()">
         <legend class="mylegend">
             <span><strong>Patient : {{patient.identifier}}</strong></span>
+            <span ng-show= "isDigitized" class="right"><strong>Scanned</strong></span>
+            <span ng-show= "!isDigitized" class="right"><strong>Paper</strong></span>
         </legend>
         <div>
             <span class="photo-container-wrapper">
