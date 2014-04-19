@@ -9,7 +9,7 @@ angular.module('bahmni.registration').factory('initialization',
                 var patientConfig = new Bahmni.Registration.PatientConfig();
                 var patientAttributeTypes = new Bahmni.Registration.PatientAttributeTypeMapper().mapFromOpenmrsPatientAttributeTypes(configurations.patientAttributesConfig.results);
 
-                $rootScope.encounterConfiguration = angular.extend(new Bahmni.Registration.RegistrationEncounterConfig(), configurations.encounterConfig);
+                $rootScope.regEncounterConfiguration = angular.extend(new Bahmni.Registration.RegistrationEncounterConfig(), configurations.encounterConfig);
                 $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig);
                 $rootScope.patientConfiguration = angular.extend(patientConfig, patientAttributeTypes);
                 $rootScope.patientConfiguration = angular.extend(patientConfig, {identifierSources: configurations.identifierSourceConfig});            
@@ -32,7 +32,6 @@ angular.module('bahmni.registration').factory('initialization',
             $rootScope.registration.conceptSetName = registrationConceptSet ?registrationConceptSet.value : "";
             getIdentifierPrefix();
         }
-
         return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(getConfigs).then(initAppConfigs));
     }]
 );

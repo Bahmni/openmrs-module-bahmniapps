@@ -6,8 +6,8 @@ angular.module('bahmni.registration')
 
             var patientUuid = $route.current.params['patientUuid'];
             var isNewPatient = ($location.search()).newpatient;
-            var visitTypeUuid = $scope.encounterConfiguration.visitTypeId(isNewPatient);
-            var encounterTypeUuid = $scope.encounterConfiguration.encounterTypes[Bahmni.Registration.Constants.encounterType.registration];
+            var visitTypeUuid = $scope.regEncounterConfiguration.visitTypeId(isNewPatient);
+            var encounterTypeUuid = $scope.regEncounterConfiguration.encounterTypes[Bahmni.Registration.Constants.encounterType.registration];
 
             var getPatient = function () {
                 return patientService.get(patientUuid).success(function (openMRSPatient) {
@@ -30,7 +30,7 @@ angular.module('bahmni.registration')
 
             var mapRegistrationObservations = function () {
                 $scope.obs = {};
-                $scope.registrationObservations = new Bahmni.Registration.RegistrationObservations($scope.observations.regularObservations, isNewPatient, $scope.encounterConfiguration);
+                $scope.registrationObservations = new Bahmni.Registration.RegistrationObservations($scope.observations.regularObservations, isNewPatient, $scope.regEncounterConfiguration);
                 $scope.registrationObservations.observations.forEach(function (observation) {
                     $scope.obs[observation.concept.name] = observation.value
                     observation.groupMembers = [];

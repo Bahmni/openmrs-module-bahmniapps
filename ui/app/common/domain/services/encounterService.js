@@ -123,11 +123,12 @@ angular.module('bahmni.common.domain')
         });
     };
 
-    this.getDigitized = function(patientUuid, encounterTypeUuid) {
+    this.getDigitized = function(patientUuid) {
+    var patientDocumentEncounterTypeUuid = $rootScope.encounterConfig.getPatientDocumentEncounterTypeUuid();
         return $http.get(Bahmni.Common.Constants.encounterUrl, {
             params:{
                 patient: patientUuid,
-                encounterType: encounterTypeUuid,
+                encounterType: patientDocumentEncounterTypeUuid,
                 v: "custom:(uuid)"
             },
             withCredentials : true
