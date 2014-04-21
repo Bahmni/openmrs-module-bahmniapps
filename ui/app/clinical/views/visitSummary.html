@@ -74,7 +74,7 @@
             <tr ng-if="labOrders.accessionNotes">
                 <th colspan="2" class="notes inline-notes">
                     <div ng-repeat="accessionNote in labOrders.accessionNotes" class="accession">
-                        <p class="left">{{accessionNote.text}}</p>
+                        <pre class="left">{{accessionNote.text}}</pre>
                         <div class="footer-note fr">
                             <span class="time-stamp">
                                 <span class="date" bo-text="accessionNote.dateTime | date:'dd MMM yy'"></span>
@@ -116,7 +116,8 @@
             </tr>
             <tr ng-show="!line.isSummary && line.show">
                 <td colspan="2" class="notes inline-notes">
-                    <p class="left"><strong>Lab Tech Notes: </strong>{{line.notes}}</p>
+                    <strong class="left">Lab Tech Notes: </strong>
+                    <pre class="left">{{line.notes}}</pre>
 
                     <div class="footer-note right">
                                     <span class="time-stamp">
