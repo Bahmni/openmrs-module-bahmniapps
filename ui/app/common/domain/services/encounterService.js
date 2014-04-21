@@ -129,7 +129,7 @@ angular.module('bahmni.common.domain')
             params:{
                 patient: patientUuid,
                 encounterType: patientDocumentEncounterTypeUuid,
-                v: "custom:(uuid)"
+                v: "custom:(uuid,obs:(uuid))"
             },
             withCredentials : true
         });

@@ -36,9 +36,12 @@ angular.module('bahmni.registration')
                     identifyEditActions();
                 });
 
-                var isDigitized = encounterService.getDigitized(uuid)
+                var isDigitized = encounterService.getDigitized(uuid);
                 isDigitized.success(function(data) {
-                    $scope.isDigitized = data.results.length > 0;
+                    var encountersWithObservations = data.results.filter(function (encounter) {
+                        return encounter.obs.length > 0
+                    });
+                    $scope.isDigitized = encountersWithObservations.length > 0;
                 });
 
                 spinner.forPromise($q.all([getPatientPromise, searchActiveVisitsPromise, isDigitized]));
