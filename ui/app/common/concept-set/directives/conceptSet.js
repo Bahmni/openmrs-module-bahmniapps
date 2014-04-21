@@ -4,7 +4,8 @@ angular.module('bahmni.common.conceptSet')
    .directive('conceptSet', ['contextChangeHandler', 'spinner', function (contextChangeHandler, spinner) {
         var template =
             '<form>' +
-                '<concept node="rootNode" at-least-one-value-is-set="atLeastOneValueIsSet"></concept>' +
+                '<div class="illegalValue" ng-if="!conceptSet">Concept "{{ conceptSetName }}" does not exist. Please contact "ADMIN".</div>' +
+                '<concept ng-if="conceptSet" node="rootNode" at-least-one-value-is-set="atLeastOneValueIsSet"></concept>' +
             '</form>';
 
         var controller = function ($scope, conceptSetService, conceptSetUiConfigService, $rootScope, $q) {
@@ -14,15 +15,15 @@ angular.module('bahmni.common.conceptSet')
             var xCompoundConceptPromise = conceptSetService.getConceptSetMembers({name: Bahmni.Common.Constants.compoundObservationConceptName, v: "full"});
 
             $scope.atLeastOneValueIsSet = false;
-            
+
             var promises = [conceptSetPromise, xCompoundConceptPromise];
 
             spinner.forPromise($q.all(promises).then(function(responses) {
                 var xCompoundConcept = responses[1].data.results[0];
-                var conceptSet = responses[0].data.results[0];                
-                if(conceptSet) {
+                $scope.conceptSet = responses[0].data.results[0];
+                if($scope.conceptSet) {
                     var mapper = new Bahmni.ConceptSet.CompundObservationNodeMapper(conceptSetUIConfig.value || {}, xCompoundConcept);
-                    $scope.rootNode = mapper.map($scope.observations, conceptSet)        
+                    $scope.rootNode = mapper.map($scope.observations, $scope.conceptSet);
                 }
                 updateObservations();
             }));
@@ -50,13 +51,13 @@ angular.module('bahmni.common.conceptSet')
             }
 
             var allowContextChange = function () {
-                $scope.atLeastOneValueIsSet = $scope.rootNode.atLeastOneValueSet();
-                var invalidNodes = $scope.rootNode.children.filter(function(childNode){
+                $scope.atLeastOneValueIsSet = $scope.rootNode && $scope.rootNode.atLeastOneValueSet();
+                var invalidNodes = $scope.rootNode && $scope.rootNode.children.filter(function(childNode){
                     return !childNode.isValid($scope.atLeastOneValueIsSet);
                 });
-                return invalidNodes.length === 0;
+                return !invalidNodes || invalidNodes.length === 0;
             };
-            
+
             contextChangeHandler.add(allowContextChange);
         };
 
