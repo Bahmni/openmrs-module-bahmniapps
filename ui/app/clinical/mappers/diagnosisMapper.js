@@ -19,21 +19,29 @@ Bahmni.DiagnosisMapper = function () {
 
     self.mapDiagnosis = mapDiagnosis;
     
-    self.mapPastDiagnosis = function (pastDiagnoses, currentEncounterUuid) {
+    self.mapDiagnoses = function (diagnoses) {
+        var mappedDiagnoses = [];
+        diagnoses.forEach(function (diagnosis) {
+            mappedDiagnoses.push(mapDiagnosis(diagnosis));
+        });
+        return mappedDiagnoses;
+    };
+    
+    self.mapPastDiagnosis = function (diagnoses, currentEncounterUuid) {
         var pastDiagnosesResponse = [];
-        pastDiagnoses.forEach(function (pastDiagnosis) {
-            if (pastDiagnosis.encounterUuid !== currentEncounterUuid) {
-                pastDiagnosesResponse.push(mapDiagnosis(pastDiagnosis));
+        diagnoses.forEach(function (diagnosis) {
+            if (diagnosis.encounterUuid !== currentEncounterUuid) {
+                pastDiagnosesResponse.push(diagnosis);
             }
         });
         return pastDiagnosesResponse;
     };
 
-    self.mapSavedDiagnosesFromCurrentEncounter = function (pastDiagnoses, currentEncounterUuid) {
+    self.mapSavedDiagnosesFromCurrentEncounter = function (diagnoses, currentEncounterUuid) {
         var savedDiagnosesFromCurrentEncounter = [];
-        pastDiagnoses.forEach(function (pastDiagnosis) {
-            if (pastDiagnosis.encounterUuid === currentEncounterUuid) {
-                savedDiagnosesFromCurrentEncounter.push(mapDiagnosis(pastDiagnosis));
+        diagnoses.forEach(function (diagnosis) {
+            if (diagnosis.encounterUuid === currentEncounterUuid) {
+                savedDiagnosesFromCurrentEncounter.push(diagnosis);
             }
         });
         return savedDiagnosesFromCurrentEncounter;

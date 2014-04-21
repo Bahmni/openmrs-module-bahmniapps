@@ -1,0 +1,38 @@
+<div>
+    <h2>{{section.description}}</h2>
+
+    <section class="block treatment-section">
+        <div class="table current-diagnosis" ng-if="allDiagnoses.length > 0">
+
+            <div ng-repeat="diagnosis in allDiagnoses" class="diagnosis-row">
+                <h4 class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">
+                    {{diagnosis.getDisplayName()}}
+                </h4>
+                <div class="state">
+                    <span>{{diagnosis.order}}</span>
+                    <span>{{diagnosis.certainty}}</span>
+                    <span>{{diagnosis.diagnosisStatus}}</span>
+                </div>
+
+                <div class="current">
+                            <span class="time-stamp">
+                                <span class="date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
+                                <span class="time">{{diagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
+                               <span ng-repeat="provider in diagnosis.providers">{{provider.name}}</span>
+                            </span>
+                    </div>
+                    <div ng-show="diagnosis.firstDiagnosis.revised" class="current">
+                        <span class="time-stamp">
+                            <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
+                            <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
+                            <span ng-repeat="provider in diagnosis.firstDiagnosis.providers">{{provider.name}}</span>
+                        </span>
+                    </div>
+                </br>
+            </div>
+        </div>
+        <div ng-if="allDiagnoses.length == 0">
+            There are no diagnosis made for the patient yet!
+        </div>
+    </section>
+</div>

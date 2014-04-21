@@ -43,7 +43,7 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', functi
                         templateUrl: 'views/dashboard.html',
                         controller: 'PatientDashboardController'
                     }
-                },
+                }
             })
             .state('patient.consultation', {
                 url: '',

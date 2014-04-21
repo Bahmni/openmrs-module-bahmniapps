@@ -32,8 +32,9 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
             var getPastDiagnoses = function() {
                 return diagnosisService.getPastDiagnoses(patientUuid).success(function (response) {
                     var diagnosisMapper = new Bahmni.DiagnosisMapper();
-                    $rootScope.consultation.pastDiagnoses = diagnosisMapper.mapPastDiagnosis(response, $rootScope.consultation.encounterUuid);
-                    $rootScope.consultation.savedDiagnosesFromCurrentEncounter = diagnosisMapper.mapSavedDiagnosesFromCurrentEncounter(response, $rootScope.consultation.encounterUuid);
+                    $rootScope.allDiagnoses = diagnosisMapper.mapDiagnoses(response); 
+                    $rootScope.consultation.pastDiagnoses = diagnosisMapper.mapPastDiagnosis($rootScope.allDiagnoses, $rootScope.consultation.encounterUuid);
+                    $rootScope.consultation.savedDiagnosesFromCurrentEncounter = diagnosisMapper.mapSavedDiagnosesFromCurrentEncounter($rootScope.allDiagnoses, $rootScope.consultation.encounterUuid);
                 });
             };
 
