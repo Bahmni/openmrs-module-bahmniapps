@@ -41,6 +41,9 @@ Bahmni.Clinical.CompoundObservation.prototype.listView = function (observations)
         var flattenedObservations = [];
         observations.forEach(function (observation) {
             if (observation.groupMembers && observation.groupMembers.length == 0) {
+                if(observation.value.name){
+                    observation.value = observation.value.name;
+                }
                 flattenedObservations.push(observation);
             } else {
                 flattenedObservations = flattenedObservations.concat(flatten(observation.groupMembers));
