@@ -19,6 +19,10 @@
 			return observation ? observation.value : null;
 		},
 
+		getFinalDiagnoses: function() {
+			return this.visit.diagnoses.filter(function(diagnosis) { return !diagnosis.revised; });
+		},
+
 		getTreatmentRecieved: function() {
 			return this.visit.ipdDrugSchedule.drugOrders;
 		},

@@ -49,7 +49,14 @@
 	  <section>
 	    <h3>Final Diagnosis</h3>
 	    <ul>
-	    	<li ng-repeat="diagnosis in visit.diagnoses">{{diagnosis.getDisplayName()}}</li>
+	    	<li ng-repeat="diagnosis in dischargeSummary.getFinalDiagnoses()">
+                <span>{{diagnosis.getDisplayName()}}</span>
+                <span ng-if="diagnosis.diagnosisStatus">{{diagnosis.diagnosisStatus}}</span>
+                <span ng-if="!diagnosis.diagnosisStatus">
+	                <span>{{diagnosis.order}}</span>
+	                <span>{{diagnosis.certainty}}</span>
+                </span>
+	    	</li>
 	    </ul>
 	  </section>
 	  <section>
