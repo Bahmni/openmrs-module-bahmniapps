@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('CreatePatientController', ['$scope', '$rootScope','patientService', 'visitService','$location', 'Preferences', '$route', 'patient', '$window', 'spinner', 'printer', 'appService', '$timeout',
-    function ($scope, $rootScope, patientService, visitService, $location, preferences, $route, patientModel, $window, spinner, printer, appService, $timeout) {
+    .controller('CreatePatientController', ['$scope', '$rootScope','patientService', 'visitService','$location', 'Preferences', '$route', 'patient', '$window', 'spinner', 'registrationCardPrinter', 'appService', '$timeout',
+    function ($scope, $rootScope, patientService, visitService, $location, preferences, $route, patientModel, $window, spinner, registrationCardPrinter, appService, $timeout) {
         var dateUtil = Bahmni.Common.Util.DateUtil;
         var createActionsConfig = [];
         var defaultActions = ["save", "print", "startVisit"];
@@ -88,7 +88,7 @@ angular.module('bahmni.registration')
                 });
             } else if ($scope.submitSource === 'print') {
                 $timeout(function(){
-                    printer.print('views/print.html', {patient: $scope.patient});
+                    registrationCardPrinter.print($scope.patient);
                     goToActionUrl('print', patientProfileData);
                 });
             } else {

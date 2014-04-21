@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('VisitController', ['$scope', '$rootScope', '$location', 'patientService', 'encounterService', 'bmi', '$window', '$route', 'spinner', '$timeout', '$q', 'printer', 'appService', 'openmrsPatientMapper','contextChangeHandler',
-        function ($scope, $rootScope, $location, patientService, encounterService, bmiModule, $window, $route, spinner, $timeout, $q, printer, appService, patientMapper,contextChangeHandler) {
+    .controller('VisitController', ['$scope', '$rootScope', '$location', 'patientService', 'encounterService', 'bmi', '$window', '$route', 'spinner', '$timeout', '$q', 'registrationCardPrinter', 'appService', 'openmrsPatientMapper','contextChangeHandler',
+        function ($scope, $rootScope, $location, patientService, encounterService, bmiModule, $window, $route, spinner, $timeout, $q, registrationCardPrinter, appService, patientMapper,contextChangeHandler) {
 
             var patientUuid = $route.current.params['patientUuid'];
             var isNewPatient = ($location.search()).newpatient;
@@ -66,7 +66,7 @@ angular.module('bahmni.registration')
 
             $scope.print = function () {
                 return $timeout(function () {
-                    printer.print('views/print.html', {patient: $scope.patient});
+                    registrationCardPrinter.print($scope.patient);
                 }, 0);
             };
 
