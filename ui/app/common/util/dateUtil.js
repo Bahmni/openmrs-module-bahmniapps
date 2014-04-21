@@ -43,6 +43,9 @@ Bahmni.Common.Util.DateUtil = {
 	},
 
     isSameDate: function(date1, date2) {
+    	if(date1 == null || date2 == null) {
+    		return false;
+    	}
         var dateOne = this.parse(date1);
         var dateTwo = this.parse(date2);
         return dateOne.getFullYear() == dateTwo.getFullYear()

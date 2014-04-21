@@ -141,24 +141,26 @@
         </table>
     </div>
 
+    <div ng-show="visit.admissionDate">
+        <h2> IPD Investigations</h2>
+        <ul class="block-content">
+            <table>
+                <tr>
+                    <th>
+                        <strong bo-text="(visit.admissionDate | date:'dd MMM yy') + ' - '+ (visit.visitEndDate | date:'dd MMM yy')"></strong>
+                    </th>
+                    <th ng-repeat="day in visit.tabularResults.getDays()" bo-text="'D'+ day.dayNumber"></th>
+                </tr>
+                <tr ng-repeat="testOrder in visit.tabularResults.getRows()">
+                    <td bo-text="testOrder.testName" ></td>
+                    <td ng-repeat="resultDay in testOrder.results">
+                        <div ng-repeat="result in resultDay" ng-class="{'is-abnormal': result.isAbnormal}">{{result.value}}</div>
+                    </td>
+                </tr>
+            </table>
+        </ul>
+    </div>
 
-    <h2> IPD Investigations</h2>
-    <ul class="block-content">
-        <table>
-            <tr>
-                <th>
-                    <strong bo-text="(visit.admissionDate | date:'dd MMM yy') + ' - '+ (visit.visitEndDate | date:'dd MMM yy')"></strong>
-                </th>
-                <th ng-repeat="day in visit.tabularResults.getDays()" bo-text="'D'+ day.dayNumber"></th>
-            </tr>
-            <tr ng-repeat="testOrder in visit.tabularResults.getRows()">
-                <td bo-text="testOrder.testName" ></td>
-                <td ng-repeat="resultDay in testOrder.results">
-                    <div ng-repeat="result in resultDay">{{result.value}}</div>
-                </td>
-            </tr>
-        </table>
-    </ul>
 </section>
 <section class="block radiologyInvestigations" ng-show="visit.radiologyDocs.length">
     <h2>Radiology Investigations</h2>

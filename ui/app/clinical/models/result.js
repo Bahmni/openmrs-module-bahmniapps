@@ -36,13 +36,22 @@ Bahmni.Clinical.Result = (function () {
             return new Result({
                 concept: realObs.concept,
                 value: realObs.value,
-                isAbnormal: valueOf(observationList, "LAB_ABNORMAL"),
+                isAbnormal: valueOf(observationList, "LAB_ABNORMAL") === true,
                 minNormal: valueOf(observationList, "LAB_MINNORMAL"),
                 maxNormal: valueOf(observationList, "LAB_MAXNORMAL"),
                 notes: latestMatchingObservationValue(observationList, "LAB_NOTES"),
                 referredOut: matchingObservations(observationList, "REFERRED_OUT").length > 0,
                 observationDateTime: realObs.observationDateTime,
                 providerName: realObs.provider? realObs.provider.name : ""
+            });
+        } else {
+            return new Bahmni.Clinical.Result({
+                name: parentName,
+                isAbnormal: valueOf(observationList, "LAB_ABNORMAL") === true,
+                minNormal: valueOf(observationList, "LAB_MINNORMAL"),
+                maxNormal: valueOf(observationList, "LAB_MAXNORMAL"),
+                notes: latestMatchingObservationValue(observationList, "LAB_NOTES"),
+                referredOut: matchingObservations(observationList, "REFERRED_OUT").length > 0
             });
         }
 

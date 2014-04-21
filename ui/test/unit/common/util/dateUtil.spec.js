@@ -5,6 +5,8 @@ describe('DateUtil',function(){
         expect(dateUtil.isSameDate("2014-01-20T11:12:13.000Z", "2014-01-20T00:00:00.000Z")).toBeTruthy();
         expect(dateUtil.isSameDate("2014-01-20T11:12:13.000+0530", "2014-01-20T00:00:00.000+0530")).toBeTruthy();
         expect(dateUtil.isSameDate("2014-01-21T11:12:13.000Z", "2014-01-20T00:00:00.000Z")).toBeFalsy();
+        expect(dateUtil.isSameDate(undefined, new Date().toString())).toBeFalsy();
+        expect(dateUtil.isSameDate(new Date().toString(), null)).toBeFalsy();
     });
     
     describe('diffInYearsMonthsDays', function(){

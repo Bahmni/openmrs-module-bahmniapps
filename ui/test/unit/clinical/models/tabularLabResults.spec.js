@@ -32,7 +32,7 @@ describe("TabularLabResults", function() {
         expect(res.getRows()[1].results.length).toBe(6);
         expect(res.getRows()[2].results.length).toBe(6);
 
-        expect(res.getRows()[0].results).toEqual([[], [result1], [], [], [], []]);
+        expect(res.getRows()[0].results).toEqual([[], [], [], [], [], []]);
         expect(res.getRows()[1].results).toEqual([[], [result2], [result3], [], [], []]);
         expect(res.getRows()[2].results).toEqual([[result4, result5], [], [], [], [result6], []]);
     });
