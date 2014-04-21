@@ -10,6 +10,9 @@
                 <show-obs group-by-date="true" observation="member"/>
             </div>
         </div>
+
     </section>
-    <button onclick="alert('MORE. HA Just because you asked for it.')">View more</button>
+    <div ng-show="!patientSummary.data.length">
+        <div class="drug">No vitals recorded for this patient.</div>
+    </div>
 </div>

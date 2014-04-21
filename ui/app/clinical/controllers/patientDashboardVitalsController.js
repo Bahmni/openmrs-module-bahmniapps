@@ -36,15 +36,20 @@ angular.module('bahmni.clinical')
         };
 
         var createPatientSummary = function () {
-            encounterService.search($scope.activeVisit.uuid).success(function (encounterTransactions) {
-                var visitData = createObservationsObject(encounterTransactions);
-                var flattenedObservations = new Bahmni.Clinical.CompoundObservation(visitData).tree;
-                var observationsForConceptSet = flattenedObservations.filter(isObservationConcept);
-                $scope.patientSummary.data = new Bahmni.Clinical.ResultGrouper().group(observationsForConceptSet, observationGroupingFunction, 'obs', 'date');
-                if ($scope.patientSummary.data.length == 0) {
-                    $scope.patientSummary.message = Bahmni.Clinical.Constants.messageForNoObservation;
-                }
-            });
+            if ($scope.activeVisit) {
+                encounterService.search($scope.activeVisit.uuid).success(function (encounterTransactions) {
+                    var visitData = createObservationsObject(encounterTransactions);
+                    var flattenedObservations = new Bahmni.Clinical.CompoundObservation(visitData).tree;
+                    var observationsForConceptSet = flattenedObservations.filter(isObservationConcept);
+                    $scope.patientSummary.data = new Bahmni.Clinical.ResultGrouper().group(observationsForConceptSet, observationGroupingFunction, 'obs', 'date');
+                    if ($scope.patientSummary.data.length == 0) {
+                        $scope.patientSummary.message = Bahmni.Clinical.Constants.messageForNoObservation;
+                    }
+                });
+            }
+            else {
+                $scope.patientSummary.message = Bahmni.Clinical.Constants.messageForNoObservation;
+            }
         };
 
         init().then(createPatientSummary);
