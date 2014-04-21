@@ -37,7 +37,7 @@
 
                 <p ng-switch-default class="field-value info icon-info-sign"> The concept data type '{{node.dataTypeName}}' is not supported yet.</p>
             </div>            
-            <small class="hint" ng-show="node.lowAbsolute || node.highAbsolute">(Valid Range from {{node.lowAbsolute}} to {{node.hiAbsolute}})</small>
+            <small class="hint" ng-show="node.lowNormal || node.hiNormal">(Valid Range from {{node.lowNormal}} to {{node.hiNormal}})</small>
             <div class="checkbox-inline" ng-if="node.showAbnormalIndicator">
               <input id="isAbnormal-{{$index}}" type="checkbox" ng-model="node.abnormalityObservation.value" ng-disabled="!node.hasValue()"/>
               <span for="isAbnormal-{{$index}}">Abnormal</span>

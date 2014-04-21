@@ -7,14 +7,14 @@ angular.module('bahmni.common.conceptSet')
             var attributes = {};
             var obs = $scope.obs;
             attributes['type'] = attributesMap[$scope.obs.dataTypeName] || "text";
-            if (obs.hiAbsolute) {
-                attributes['max'] = $scope.obs.hiAbsolute;
+            if (obs.hiNormal) {
+                attributes['max'] = $scope.obs.hiNormal;
             }
-            if (obs.lowAbsolute) {
-                attributes['min'] = $scope.obs.lowAbsolute;
+            if (obs.lowNormal) {
+                attributes['min'] = $scope.obs.lowNormal;
             }
-            if (obs.lowAbsolute && obs.hiAbsolute) {
-                attributes['title'] = "Valid from " + $scope.obs.lowAbsolute +" to "+ $scope.obs.hiAbsolute;
+            if (obs.lowNormal && obs.hiNormal) {
+                attributes['title'] = "Valid from " + $scope.obs.lowNormal +" to "+ $scope.obs.hiNormal;
             }
             element.attr(attributes);
         };

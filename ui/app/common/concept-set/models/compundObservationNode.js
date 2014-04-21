@@ -10,8 +10,8 @@ Bahmni.ConceptSet.CompundObservationNode = function(compoundObservation, primary
     this.label = conceptName;
     this.units = primaryMRSConcept.units;
     this.dataTypeName = primaryMRSConcept.datatype.name;
-    this.hiAbsolute = primaryMRSConcept.hiAbsolute;
-    this.lowAbsolute = primaryMRSConcept.lowAbsolute;
+    this.hiNormal = primaryMRSConcept.hiNormal;
+    this.lowNormal = primaryMRSConcept.lowNormal;
     this.possibleAnswers = primaryMRSConcept.answers;
     this.children = [];
 
@@ -88,7 +88,7 @@ Bahmni.ConceptSet.CompundObservationNode.prototype = {
 
     validateNumericValue: function(){
         if(this.value) {
-            var valueInRange = this.value < (this.hiAbsolute|| Infinity) && this.value > (this.lowAbsolute|| 0);
+            var valueInRange = this.value < (this.hiNormal|| Infinity) && this.value > (this.lowNormal|| 0);
             this.abnormalityObservation.value = !valueInRange;
         } else {
             this.abnormalityObservation.value = undefined;

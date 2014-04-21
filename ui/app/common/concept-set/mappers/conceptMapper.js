@@ -5,8 +5,8 @@ Bahmni.ConceptSet.ConceptMapper = function () {
             name: openMrsConcept.name.name,
             set: openMrsConcept.set,
             dataType: openMrsConcept.datatype.name,
-            hiAbsolute: openMrsConcept.hiAbsolute,
-            lowAbsolute: openMrsConcept.lowAbsolute
+            hiNormal: openMrsConcept.hiNormal,
+            lowNormal: openMrsConcept.lowNormal
         }
     };
 };
