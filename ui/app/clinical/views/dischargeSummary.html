@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="../styles/dischargeSummaryPrint.css"/>
 <div class="discharge-summary-print">
 	<header>
-	  <img src="../images/jss-icon.png" alt="logo"> 
+	  <img class="logo" src="../images/jss-icon.png" alt="logo"> 
 	  <h1>Jan Swasthya Sahyog Community Health Centre <span>(Inpatient Ward)</span></h1>
 	  <h2>Discharge Summary</h2>
 	</header>
@@ -14,16 +14,12 @@
 	      </li>
 	      <li>
 	        <span class="label">Age / Sex:</span>
-	        <span class="value">{{patient.age}}y/{{patient.gender}}</span>
+	        <span class="value">{{patient.age}}y / {{patient.gender}}</span>
 	      </li>          
 	      <li>
-	        <span class="label">Registration No.(OPD)</span>
+	        <span class="label">Registration No.</span>
 	        <span class="value">{{patient.identifier}}</span>
 	      </li>
-	      <li>
-	        <span class="label">Registration No.(IPD)</span>
-	        <span class="value">{{patient.identifier}}</span>
-	      </li>          
 	      <li>
 	        <span class="label">Village / Town:</span>
 	        <span class="value">{{patient.address.cityVillage}}</span>
@@ -66,7 +62,7 @@
 	  <section>
 	    <h3>Treatment received</h3>
 	    <ul>
-	    	<li ng-repeat="drugOrder in dischargeSummary.getTreatmentRecieved()">{{drugOrder.drugName}} {{drugOrder.dosageForm}} {{drugOrder.startDate | days:drugOrder.endDate }} days<li>
+	    	<li ng-repeat="drugOrder in dischargeSummary.getTreatmentRecieved()">{{drugOrder.drugName}} {{drugOrder.numberPerDosage}} {{drugOrder.dosageForm}} {{drugOrder.dosageFrequency.name}} for {{drugOrder.startDate | days:drugOrder.endDate }} day(s)<li>
 	    </ul>
 	  </section>
 	  <section>
@@ -80,16 +76,14 @@
 	  <section>
 	    <h3>Advice on discharge</h3>
 	    <ul>
-	    	<li ng-repeat="drugOrder in dischargeSummary.getTreatmentAdviced()">{{drugOrder.drugName}} {{drugOrder.dosageForm}} {{drugOrder.startDate | days:drugOrder.endDate }} days<li>
+	    	<li ng-repeat="drugOrder in dischargeSummary.getTreatmentAdviced()">{{drugOrder.drugName}} {{drugOrder.numberPerDosage}} {{drugOrder.dosageForm}} {{drugOrder.dosageFrequency.name}} for {{drugOrder.startDate | days:drugOrder.endDate }} day(s)<li>
 	    </ul>
 	  </section>
 	  <section>
 	    <h3>Follow up on</h3>
 	    <span class="value">{{dischargeSummary.getObservationValue('Follow up Date') | date: 'd MMM yy'}}</span>
 	  </section>
-
 	</main>
 	<footer>
-	  
 	</footer>
 </div>

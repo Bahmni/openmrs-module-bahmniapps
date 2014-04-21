@@ -13,6 +13,6 @@ angular.module('bahmni.clinical')
             patient:"="
         },
         controller: controller,
-        template:'<button type="button" ng-click="printDischrageSummary()">Print Discharge Summary</button>'
+        template:'<button type="button" ng-if="visit.hasAdmissionEncounter()" ng-click="printDischrageSummary()">Print Discharge Summary</button>'
     }
 }]);
