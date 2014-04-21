@@ -118,7 +118,7 @@ angular.module('bahmni.registration')
                     $rootScope.server_error = null;
                     switch(submitSource) {
                         case 'print':
-                            printer.print('registrationCard');
+                            printer.print('views/print.html', {patient: $scope.patient});
                             return goToActionUrl(submitSource, patientProfileData);
                         case 'startVisit':
                             return createVisit(patientProfileData);                        
@@ -138,9 +138,5 @@ angular.module('bahmni.registration')
 
             $scope.back = function () {
                 $window.history.back();
-            };
-
-            $scope.printLayout = function () {
-                return $route.routes['/printPatient'].templateUrl;
             };
         }]);

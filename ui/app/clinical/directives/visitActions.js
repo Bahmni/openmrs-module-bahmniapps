@@ -1,10 +1,8 @@
 angular.module('bahmni.clinical')
 .directive('visitActions', [function () {
-    var controller = function($scope) {
-        $scope.dischargeSummary = new Bahmni.Clinical.DischargeSummary($scope.patient, $scope.visit);
-
+    var controller = function($scope, printer, $compile) {
         $scope.printDischrageSummary = function() {
-            alert('Print coming soon!');
+            printer.print('views/dischargeSummary.html', new Bahmni.Clinical.DischargeSummary($scope.patient, $scope.visit));
         }
     };
     return {

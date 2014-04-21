@@ -150,8 +150,4 @@ angular.module('bahmni.registration')
         $scope.extensionActionText = function(extension) {
             return extension.label;
         }
-
-        $scope.printLayout = function () {
-            return $route.routes['/printPatient'].templateUrl;
-        };
     }]);

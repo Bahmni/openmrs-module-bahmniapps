@@ -66,7 +66,7 @@ angular.module('bahmni.registration')
 
             $scope.print = function () {
                 return $timeout(function () {
-                    printer.print('registrationCard');
+                    printer.print('views/print.html', {patient: $scope.patient});
                 }, 0);
             };
 
@@ -126,10 +126,6 @@ angular.module('bahmni.registration')
 
             $scope.today = function () {
                 return new Date();
-            };
-
-            $scope.printLayout = function () {
-                return $route.routes['/printPatient'].templateUrl;
             };
 
             $scope.submitBtnClicked = function (name) {

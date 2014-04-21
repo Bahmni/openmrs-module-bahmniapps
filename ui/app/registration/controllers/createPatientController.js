@@ -88,7 +88,7 @@ angular.module('bahmni.registration')
                 });
             } else if ($scope.submitSource === 'print') {
                 $timeout(function(){
-                    printer.print('registrationCard');
+                    printer.print('views/print.html', {patient: $scope.patient});
                     goToActionUrl('print', patientProfileData);
                 });
             } else {
@@ -109,10 +109,6 @@ angular.module('bahmni.registration')
                     }
                 }
             }
-        };
-
-        $scope.printLayout = function () {
-            return $route.routes['/printPatient'].templateUrl;
         };
 
         $scope.create = function () {
