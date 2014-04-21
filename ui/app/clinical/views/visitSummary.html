@@ -54,8 +54,8 @@
     <section class="block observation" ng-show="visit.hasObservations()">
         <h2>Observations</h2>
         <ul>
-            <div ng-repeat="observations in visit.observations">
-                <observation-summary patient-uuid="patientUuid" observation="observations"
+            <div ng-repeat="observationGroup in visit.observationGroups">
+                <observation-summary patient-uuid="patientUuid" observation="observationGroup"
                                      show-trends="showTrends" full-date="true"
                                      obs-ignore-list="obsIgnoreList"></observation-summary>
             </div>
@@ -274,7 +274,7 @@
 </section>
 <section class="block consult-notes notes" ng-show="visit.hasConsultationNotes()">
     <ul>
-        <div ng-repeat="notes in visit.consultationNotes">
+        <div ng-repeat="notes in visit.consultationNoteGroups">
             <li ng-repeat="note in notes.obs" class="consult-notes-item">
                 <span class="consult-notes-text"><strong>Consultation Notes: </strong>{{note.value}}</span>
 

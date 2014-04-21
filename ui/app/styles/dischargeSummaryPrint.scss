@@ -1,0 +1,80 @@
+@charset "UTF-8";
+@page {
+  margin-left: 0.2cm;
+  margin-right: 0.2cm;
+  margin-top: 0.2cm;
+  margin-bottom: 0.2cm;
+}
+p, h1, h2, h3, table, tr, td, div, span, li {
+  margin: 0px;
+  padding: 0px;
+  font-size: 12pt;
+}
+
+ul li {
+  list-style-type: none;
+}
+
+h1, h2, h3 {
+  text-align: center;
+}
+
+.print-center {
+  text-align: center;
+}
+
+.discharge-summary-print {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: none;
+  font-size: 12pt;
+  font-family: arial;
+}
+
+header {
+  margin: 0 auto;
+  text-align: center;
+}
+header h1, header h2 {
+  text-transform: uppercase;
+}
+header h1 span {
+  display: block;
+}
+header h2 {
+  margin-top: 5px;
+  text-decoration: underline;
+}
+
+.patient-info {
+  margin-bottom: 20px;
+  overflow: auto;
+}
+.patient-info ul {
+  float: left;
+}
+
+.patient-info ul li {
+  float: left;
+  width: 30%;
+}
+.patient-info ul li .value {
+  width: auto;
+  display: inline-block;
+  border-bottom: 1px solid #ccc;
+}
+
+section {
+  clear: both;
+  text-align: left;
+  min-height: 100px;
+}
+section h3 {
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-align: left;
+}
+section h3:after {
+  content: ":";
+}

@@ -1,2 +1,88 @@
-<h1>{{patient.age}}</h1>
-<h1>{{patient.name}}</h1>
+<link rel="stylesheet" href="../styles/dischargeSummaryPrint.css"/>
+<div class="discharge-summary-print">
+	<header>
+	  <img src="../images/jss-icon.png" alt="logo"> 
+	  <h1>Jan Swasthya Sahyog Community Health Centre <span>(Inpatient Ward)</span></h1>
+	  <h2>Discharge Summary</h2>
+	</header>
+	<main>
+	  <div class="patient-info">
+	    <ul>
+	      <li>
+	        <span class="label">Name:</span>
+	        <span class="value">{{patient.name}}</span>
+	      </li>
+	      <li>
+	        <span class="label">Age / Sex:</span>
+	        <span class="value">{{patient.age}}y/{{patient.gender}}</span>
+	      </li>          
+	      <li>
+	        <span class="label">Registration No.(OPD)</span>
+	        <span class="value">{{patient.identifier}}</span>
+	      </li>
+	      <li>
+	        <span class="label">Registration No.(IPD)</span>
+	        <span class="value">{{patient.identifier}}</span>
+	      </li>          
+	      <li>
+	        <span class="label">Village / Town:</span>
+	        <span class="value">{{patient.address.cityVillage}}</span>
+	      </li>
+	      <li>
+	        <span class="label">P.O.</span>
+	        <span class="value">{{patient.address.address3}}</span>
+	      </li>
+	      <li>
+	        <span class="label">DOA</span>
+	        <span class="value">{{visit.getAdmissionDate() | date: 'd MMM yy'}}</span>
+	      </li>          
+	      <li>
+	        <span class="label">DOO</span>
+	        <span class="value">{{dischargeSummary.getObservationValue('Date of Operation') | date: 'd MMM yy'}}</span>
+	      </li>
+	      <li>
+	        <span class="label">DOD</span>
+	        <span class="value">{{visit.getDischargeDispositionEncounterDate() | date: 'd MMM yy'}}</span>
+	      </li>
+	    </ul>
+	  </div>
+	  <section>
+	    <h3>Final Diagnosis</h3>
+	    <ul>
+	    	<li ng-repeat="diagnosis in visit.diagnoses">{{diagnosis.getDisplayName()}}</li>
+	    </ul>
+	  </section>
+	  <section>
+	    <h3>History &amp; Examination</h3>
+	    <span>{{dischargeSummary.getObservationValue('History and Examination Notes')}}</span>
+	  </section>
+	  <section>
+	    <h3>Treatment received</h3>
+	    <ul>
+	    	<li ng-repeat="drugOrder in dischargeSummary.getTreatmentRecieved()">{{drugOrder.drugName}} {{drugOrder.dosageForm}} {{drugOrder.startDate | days:drugOrder.endDate }} days<li>
+	    </ul>
+	  </section>
+	  <section>
+	    <h3>Operative procedure</h3>
+	    <span>{{dischargeSummary.getObservationValue('Operative Procedure')}}</span>
+	  </section>
+	  <section>
+	    <h3>Hospital course</h3>
+	    <span>{{dischargeSummary.getObservationValue('Hospital Course')}}</span>
+	  </section>
+	  <section>
+	    <h3>Advice on discharge</h3>
+	    <ul>
+	    	<li ng-repeat="drugOrder in dischargeSummary.getTreatmentAdviced()">{{drugOrder.drugName}} {{drugOrder.dosageForm}} {{drugOrder.startDate | days:drugOrder.endDate }} days<li>
+	    </ul>
+	  </section>
+	  <section>
+	    <h3>Follow up on</h3>
+	    <span class="value">{{dischargeSummary.getObservationValue('Follow up Date') | date: 'd MMM yy'}}</span>
+	  </section>
+
+	</main>
+	<footer>
+	  
+	</footer>
+</div>

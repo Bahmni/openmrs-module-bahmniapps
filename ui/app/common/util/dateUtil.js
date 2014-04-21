@@ -2,7 +2,7 @@
 
 Bahmni.Common.Util.DateUtil = {
 	diffInDays: function (dateFrom, dateTo) {
-		return Math.floor((dateTo - dateFrom) / (60 * 1000 * 60 * 24));
+		return Math.floor((this.parse(dateTo) - this.parse(dateFrom)) / (60 * 1000 * 60 * 24));
 	},
 
     diffInDaysRegardlessOfTime: function(dateFrom, dateTo) {
