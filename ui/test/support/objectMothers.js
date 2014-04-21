@@ -33,8 +33,8 @@ Bahmni.Tests.openMRSConceptMother = {
             datatype: {name: conceptData.dataType || "N/A"},
             set: conceptData.set,
             setMembers: conceptData.setMembers || [],
-            hiAbsolute: conceptData.hiAbsolute,
-            lowAbsolute: conceptData.lowAbsolute
+            hiNormal: conceptData.hiNormal,
+            lowNormal: conceptData.lowNormal
         };
         return concept;
     },

@@ -101,7 +101,7 @@ describe("CompundObservationNode", function() {
 	describe("on changing value", function() {
 		describe("for numeric observation", function() {
 			beforeEach(function() {
-				primaryMRSConcept = buildMRSConcept({name: "Pulse", dataType: "Numeric", hiAbsolute: 10, lowAbsolute: 2});
+				primaryMRSConcept = buildMRSConcept({name: "Pulse", dataType: "Numeric", hiNormal: 10, lowNormal: 2});
 				node = new CompundObservationNode(buildObservation(), primaryMRSConcept, compoundObservationConcept, {});
 			});
 
