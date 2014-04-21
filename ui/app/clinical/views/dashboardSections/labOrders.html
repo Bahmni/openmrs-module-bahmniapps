@@ -1,0 +1,25 @@
+<div ng-controller="PatientDashboardLabOrdersController">
+    <h2>{{section.description}}</h2>
+
+    <p>{{patientSummary.message}}</p>
+    <section class="block" ng-repeat="order in patientSummary.data">
+
+            <!--<div ng-repeat="order in orderGroupWithResults.displayList">-->
+
+                <div ng-if="order.isSummary" class="row panel">
+                    <label ng-if="order.isSummary" class="panel-name">{{order.name}}</label>
+                </div>
+
+                <div ng-if="!order.isSummary" class="row" ng-class="{abnormal:order.isAbnormal}">
+                    <label>{{ order.name }}</label>
+                    <label>{{ order.value }}</label>
+                    <label ng-if="order.minNormal">({{ order.minNormal }} - </label>
+                    <label ng-if="order.maxNormal">{{ order.maxNormal }})</label>
+                    <label>{{ order.orderDate | date :'dd MMM yy'}}</label>
+                </div>
+
+            <!--</div>-->
+
+    </section>
+</div>
+

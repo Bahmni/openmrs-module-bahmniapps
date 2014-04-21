@@ -17,11 +17,12 @@ Bahmni.Clinical.OrderGroup.prototype.group = function(orders, groupingParameter)
     groupingParameter = groupingParameter || 'date';
     var groupingFunction = getGroupingFunction(groupingParameter);
     var groupedOrders = new Bahmni.Clinical.ResultGrouper().group(orders, groupingFunction, 'orders', groupingParameter);
-    if(groupingParameter == 'date'){
+    if(groupingParameter === 'date'){
         return groupedOrders.map(function(order) {
+            var sortedOrders = order.orders.sort(function(first, second) { first.dateCreated < second.dateCreated ? 1 : -1; });
             return {
                 date: new Date(order.date),
-                orders: order.orders
+                orders: sortedOrders
             };
         }).sort(function(first, second) { return first.date < second.date ? 1: -1; });
     }

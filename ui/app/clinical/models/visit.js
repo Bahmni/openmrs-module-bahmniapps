@@ -178,35 +178,7 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
     drugOrders = orderGroup.flatten(encounterTransactions, 'drugOrders');
     otherInvestigations = orderGroup.flatten(encounterTransactions, 'testOrders', isNonLabTests);
 
-    var filterFunction = function(aTestOrPanel, testOrder){
-        return aTestOrPanel.name.name == testOrder.concept.name;
-    };
-    var sort = function(allTestsAndPanels, encountersWithTestOrders, filterFunction){
-        var indexOf = function(allTestAndPanels, order) {
-            var indexCount = 0;
-            allTestAndPanels.setMembers.every(function(aTestOrPanel) {
-                if (filterFunction(aTestOrPanel, order))
-                    return false;
-                else {
-                    indexCount++;
-                    return true;
-                }
-            });
-            return indexCount;
-        };
-
-        encountersWithTestOrders.forEach(function(encounterWithTestOrders) {
-            encounterWithTestOrders.orders.sort(function(firstElement, secondElement) {
-                var indexOfFirstElement = indexOf(allTestsAndPanels, firstElement);
-                var indexOfSecondElement = indexOf(allTestsAndPanels, secondElement);
-                return indexOfFirstElement - indexOfSecondElement;
-            });
-        });
-        return encountersWithTestOrders;
-    };
-
-    var encountersWithTestOrders = orderGroupWithObs.create(encounterTransactions, 'testOrders', isLabTests, 'accessionUuid');
-    encountersWithTestOrders = allTestAndPanels ? sort(allTestAndPanels, encountersWithTestOrders, filterFunction) : encountersWithTestOrders;
+    var encountersWithTestOrders = orderGroupWithObs.create(encounterTransactions, 'testOrders', isLabTests, allTestAndPanels, 'accessionUuid');
 
     encountersWithTestOrders.forEach(function(testOrder) {
         var orderList = [];

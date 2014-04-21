@@ -18,7 +18,7 @@ Bahmni.Clinical.TestOrder = (function () {
     var sort = function (allTestsAndPanels, panelList, filterFunction) {
         var indexOf = function (allTestAndPanels, order) {
             var indexCount = 0;
-            allTestAndPanels.setMembers.every(function (aTestOrPanel) {
+            allTestAndPanels.setMembers && allTestAndPanels.setMembers.every(function (aTestOrPanel) {
                 if (filterFunction(aTestOrPanel, order))
                     return false;
                 else {
@@ -73,7 +73,12 @@ Bahmni.Clinical.TestOrder = (function () {
     };
 
     TestOrder.prototype.displayList = function () {
-        return this.result.displayList();
+        var resultDisplayList = this.result.displayList();
+        var thisOrderDate = this.orderDate;
+        resultDisplayList.forEach(function(item) {
+            item.orderDate = thisOrderDate;
+        });
+        return resultDisplayList;
     };
 
     TestOrder.create = function (orderGroupWithObs, allTestAndPanels) {

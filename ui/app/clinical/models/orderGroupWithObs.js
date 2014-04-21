@@ -1,7 +1,7 @@
 Bahmni.Clinical.OrderGroupWithObs = function () {
 };
 
-Bahmni.Clinical.OrderGroupWithObs.prototype.create = function (encounterTransactions, orderListHandle, filter, groupingParameter) {
+Bahmni.Clinical.OrderGroupWithObs.prototype.create = function (encounterTransactions, orderListHandle, filter, allTestAndPanels, groupingParameter) {
     var orderGroup,
         setProviderToObservation = function (provider) {
             var setProvider = function (observation) {
@@ -47,8 +47,33 @@ Bahmni.Clinical.OrderGroupWithObs.prototype.create = function (encounterTransact
                 getObservationForOrderIfExist(encounterTransaction.observations, testOrder, obs, provider);
             });
             testOrder.obs = obs;
-        };
+        },
+        filterFunction = function (aTestOrPanel, testOrder) {
+            return aTestOrPanel.name.name == testOrder.concept.name;
+        },
+        sort = function (allTestsAndPanels, encountersWithTestOrders, filterFunction) {
+            var indexOf = function (allTestAndPanels, order) {
+                var indexCount = 0;
+                allTestAndPanels.setMembers.every(function (aTestOrPanel) {
+                    if (filterFunction(aTestOrPanel, order))
+                        return false;
+                    else {
+                        indexCount++;
+                        return true;
+                    }
+                });
+                return indexCount;
+            };
 
+            encountersWithTestOrders.forEach(function (encounterWithTestOrders) {
+                encounterWithTestOrders.orders.sort(function (firstElement, secondElement) {
+                    var indexOfFirstElement = indexOf(allTestsAndPanels, firstElement);
+                    var indexOfSecondElement = indexOf(allTestsAndPanels, secondElement);
+                    return indexOfFirstElement - indexOfSecondElement;
+                });
+            });
+            return encountersWithTestOrders;
+        };
 
     orderGroup = new Bahmni.Clinical.OrderGroup().create(encounterTransactions, orderListHandle, filter, groupingParameter);
     orderGroup.forEach(function (orders) {
@@ -56,6 +81,7 @@ Bahmni.Clinical.OrderGroupWithObs.prototype.create = function (encounterTransact
             mapTestOrderWithObs(encounterTransactions, order);
         });
     });
+    orderGroup = allTestAndPanels ? sort(allTestAndPanels, orderGroup, filterFunction) : orderGroup;
 
     return orderGroup;
 };

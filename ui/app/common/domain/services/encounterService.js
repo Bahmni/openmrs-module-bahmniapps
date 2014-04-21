@@ -30,7 +30,7 @@ angular.module('bahmni.common.domain')
     var searchWithoutEncounterDate = function (visitUuid) {
         return $http.get(Bahmni.Common.Constants.bahmniEncounterUrl, {
             params:{
-                visitUuid : visitUuid,
+                visitUuids : visitUuid,
                 includeAll : Bahmni.Common.Constants.includeAllObservations
             },          
           withCredentials : true
@@ -49,6 +49,17 @@ angular.module('bahmni.common.domain')
           withCredentials : true
         });
     };
+
+    this.searchForVisits = function(visitUuids) {
+            return $http.get(Bahmni.Common.Constants.bahmniEncounterUrl, {
+                params:{
+                    visitUuids : visitUuids,
+                    includeAll : Bahmni.Common.Constants.includeAllObservations
+                },
+                withCredentials : true
+            });
+
+        }
 
     var getEncountersOfCurrentVisit = function(patientUuid) {
         var deferredEncounters = $q.defer();
