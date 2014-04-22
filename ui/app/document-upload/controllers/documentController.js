@@ -155,7 +155,7 @@ angular.module('opd.documentupload')
 
                 visit.images.forEach(function (image) {
                     visitDocument.documents.push({testUuid: image.concept.uuid, image: image.encodedValue.replace(/data:image\/.*;base64/, ""),
-                        format: image.encodedValue.split(";base64")[0].split("data:image/")[1]})
+                        obsDateTime: new Date(), format: image.encodedValue.split(";base64")[0].split("data:image/")[1]})
                 });
                 return visitDocument;
             };
