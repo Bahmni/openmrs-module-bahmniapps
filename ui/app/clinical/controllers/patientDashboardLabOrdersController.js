@@ -10,6 +10,7 @@ angular.module('bahmni.clinical')
             $scope.patientSummary = {};
 
             var init = function () {
+                var OrdersUtil = Bahmni.Clinical.OrdersUtil;
                 var getLastNVisitUuids = function (visits, number) {
                     var lastNVisits = visits.slice(0, number);
                     return lastNVisits.map(function (visit) {
@@ -46,7 +47,7 @@ angular.module('bahmni.clinical')
                         return uniqueTests;
                     }
 
-                    return unique(flattenOrders(orderGroupWithResultsArgs));
+                    return OrdersUtil.unique(flattenOrders(orderGroupWithResultsArgs));
                 };
 
                 var getDisplayListForUniqueOrders = function (uniqueTests) {
