@@ -102,7 +102,6 @@ Bahmni.Clinical.Visit.prototype = {
 Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNoteConcept, labOrderNoteConcept, encounterConfig, allTestAndPanels) {
     var drugOrders, otherInvestigations, diagnoses = [], dispositions = [],
         orderGroup = new Bahmni.Clinical.OrderGroup(),
-        orderGroupWithObs = new Bahmni.Clinical.OrderGroupWithObs(),
         ArrayUtil = Bahmni.Common.Util.ArrayUtil,
         isLabTests = function (order) {
             var labTestOrderTypeUuid = encounterConfig.orderTypes[Bahmni.Clinical.Constants.labOrderType];
@@ -178,7 +177,7 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
     drugOrders = orderGroup.flatten(encounterTransactions, 'drugOrders');
     otherInvestigations = orderGroup.flatten(encounterTransactions, 'testOrders', isNonLabTests);
 
-    var encountersWithTestOrders = orderGroupWithObs.create(encounterTransactions, 'testOrders', isLabTests, allTestAndPanels, 'accessionUuid');
+    var encountersWithTestOrders = new Bahmni.Clinical.OrderGroupWithObs().create(encounterTransactions, 'testOrders', isLabTests, allTestAndPanels, 'accessionUuid');
 
     encountersWithTestOrders.forEach(function(testOrder) {
         var orderList = [];

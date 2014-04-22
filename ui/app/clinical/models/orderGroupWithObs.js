@@ -66,9 +66,9 @@ Bahmni.Clinical.OrderGroupWithObs.prototype.create = function (encounterTransact
             };
 
             encountersWithTestOrders.forEach(function (encounterWithTestOrders) {
-                encounterWithTestOrders.orders.sort(function (firstElement, secondElement) {
-                    var indexOfFirstElement = indexOf(allTestsAndPanels, firstElement);
-                    var indexOfSecondElement = indexOf(allTestsAndPanels, secondElement);
+                encounterWithTestOrders.orders.sort(function (firstOrder, secondOrder) {
+                    var indexOfFirstElement = indexOf(allTestsAndPanels, firstOrder);
+                    var indexOfSecondElement = indexOf(allTestsAndPanels, secondOrder);
                     return indexOfFirstElement - indexOfSecondElement;
                 });
             });

@@ -46,6 +46,7 @@ Bahmni.Clinical.OrderGroup.prototype.flatten = function (encounterTransactions, 
         encounter[ordersName].forEach(function(order) {
             order.provider = encounter.providers[0];
             order.accessionUuid = encounter.encounterUuid;
+            order.visitUuid = encounter.visitUuid;
         });
     };
     encounterTransactions.forEach(setOrderProvider);
