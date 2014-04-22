@@ -1,4 +1,4 @@
-<div class="view-past" ng-click="toggle(diagnosis)">
+<div class="view-past" ng-click="toggle(diagnosis)" ng-class="{'edited': diagnosis.isDirty}">
   <div class="col col1" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">
     <label class="diagnosis-name" ng-if="diagnosis.codedAnswer.name">{{diagnosis.codedAnswer.name}}</label>
     <label class="diagnosis-name" ng-if="diagnosis.freeTextAnswer">{{diagnosis.freeTextAnswer}}</label>
@@ -31,14 +31,15 @@
       </span>
       <span class="provider" ng-repeat="provider in diagnosis.providers">{{provider.name}}</span>
     </div>
-  </div>  
+  </div>
+  <span class="message">Changed!</span>   
   <button class="toggle fr">
     <i class="icon-edit"></i>
   </button>
 </div>
 
-<div class="edit-diagnosis row" ng-show="diagnosis.show" ng-class="{'edited': diagnosis.isDirty}">    
-  <span class="message">Changed!</span> 
+<div class="edit-diagnosis row" ng-show="diagnosis.show">    
+
   <div class="col col1"></div> 
   <div class="button-toggle col col2">
       <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.order'

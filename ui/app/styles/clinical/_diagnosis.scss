@@ -107,22 +107,22 @@
     @include column(1);
     width: 3%;
   }
-  .edit-diagnosis.row {
+  .view-past {
     position: relative;
-    // -webkit-transition: background-color 1s ease;
+    -webkit-transition: background-color 1s ease;
     .message {
       position: absolute;
-      // -webkit-transition: display 1s ease;
-      left: 10px;
-      bottom: 15px;
+      -webkit-transition: display 1s ease;
+      right: 66px;
+      top: 10px;
       color: #cc6600;
       margin-bottom: 5px;
       font-size: 14px;
       display: none;
     }
   }
-  .edit-diagnosis.row.edited {
-    // background-color: #ffffcc;
+  .view-past.edited {
+    background-color: #ffffcc;
     .message {
       display: block;
     }
