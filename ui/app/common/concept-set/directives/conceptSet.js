@@ -11,7 +11,7 @@ angular.module('bahmni.common.conceptSet')
         var controller = function ($scope, conceptSetService, conceptSetUiConfigService, $rootScope, $q) {
             var conceptSetName = $scope.conceptSetName;
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
-            var conceptSetPromise = conceptSetService.getConceptSetMembers({name: conceptSetName, v: "fullchildren"});
+            var conceptSetPromise = conceptSetService.getConceptSetMembers({name: conceptSetName, v: "conceptsetconfig"});
             var xCompoundConceptPromise = conceptSetService.getConceptSetMembers({name: Bahmni.Common.Constants.compoundObservationConceptName, v: "full"});
 
             $scope.atLeastOneValueIsSet = false;
