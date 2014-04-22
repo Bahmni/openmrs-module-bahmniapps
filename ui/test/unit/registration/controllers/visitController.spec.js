@@ -4,6 +4,7 @@ describe('VisitController', function () {
     var scope;
     var $controller;
     var success;
+    var registrationCardPrinter;
     var encounterService;
     var patientService;
     var patient;
@@ -87,6 +88,7 @@ describe('VisitController', function () {
         patientService = jasmine.createSpyObj('patientService', ['getPatient', 'clearPatient', 'get']);
         appService = jasmine.createSpyObj('appService',['getDescription']);
         patientMapper = jasmine.createSpyObj('patientMapper', ['map']);
+        registrationCardPrinter = jasmine.createSpyObj('registrationCardPrinter', ['print']);
         dateUtil = Bahmni.Common.Util.DateUtil;
         $location = location;
         $window = window;
@@ -116,7 +118,8 @@ describe('VisitController', function () {
                 patientService: patientService,
                 $route: route,
                 openmrsPatientMapper: patientMapper,
-                appService:appService
+                appService:appService,
+                registrationCardPrinter: registrationCardPrinter
             });
 
             getPatientPromise.callSuccessCallBack(patient);
@@ -135,7 +138,8 @@ describe('VisitController', function () {
                 patientService: patientService,
                 $route: route,
                 appService:appService,
-                openmrsPatientMapper: patientMapper
+                openmrsPatientMapper: patientMapper,
+                registrationCardPrinter: registrationCardPrinter
             });
             getPatientPromise.callSuccessCallBack(patient);
             getEncounterPromise.callSuccessCallBack(sampleEncounter);
@@ -156,7 +160,8 @@ describe('VisitController', function () {
                 dateUtil: dateUtil,
                 $route: route,
                 appService:appService,
-                openmrsPatientMapper: patientMapper
+                openmrsPatientMapper: patientMapper,
+                registrationCardPrinter: registrationCardPrinter
             });
             getPatientPromise.callSuccessCallBack(patient);
             getEncounterPromise.callSuccessCallBack(sampleEncounter);
@@ -246,7 +251,8 @@ describe('VisitController', function () {
                 dateUtil: dateUtil,
                 $route: route,
                 appService:appService,
-                openmrsPatientMapper: patientMapper
+                openmrsPatientMapper: patientMapper,
+                registrationCardPrinter: registrationCardPrinter
             });
             getPatientPromise.callSuccessCallBack(patient);
             getEncounterPromise.callSuccessCallBack(sampleEncounter);
@@ -283,7 +289,8 @@ describe('VisitController', function () {
                     dateUtil: dateUtil,
                     $route: route,
                     appService:appService,
-                    openmrsPatientMapper: patientMapper
+                    openmrsPatientMapper: patientMapper,
+                    registrationCardPrinter: registrationCardPrinter
                 });
                 getPatientPromise.callSuccessCallBack(patient);
                 getEncounterPromise.callSuccessCallBack(sampleEncounter);
@@ -331,7 +338,8 @@ describe('VisitController', function () {
                 spinner: spinner,
                 $route: route,
                 appService:appService,
-                openmrsPatientMapper: patientMapper
+                openmrsPatientMapper: patientMapper,
+                registrationCardPrinter: registrationCardPrinter
             });
             getPatientPromise.callSuccessCallBack(patient);
             getEncounterPromise.callSuccessCallBack(sampleEncounter);
@@ -392,7 +400,8 @@ describe('VisitController', function () {
                 patientService: patientService,
                 $route: route,
                 appService:appService,
-                openmrsPatientMapper: patientMapper
+                openmrsPatientMapper: patientMapper,
+                registrationCardPrinter: registrationCardPrinter
             });
             getPatientPromise.callSuccessCallBack(patient);
             getEncounterPromise.callSuccessCallBack(sampleEncounter);
