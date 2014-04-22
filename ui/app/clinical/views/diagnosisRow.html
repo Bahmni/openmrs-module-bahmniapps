@@ -1,48 +1,60 @@
-<div class="primary-section">
-  <div class="primary" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">
+<div class="view-past" ng-click="toggle(diagnosis)">
+  <div class="col col1" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">
     <label class="diagnosis-name" ng-if="diagnosis.codedAnswer.name">{{diagnosis.codedAnswer.name}}</label>
     <label class="diagnosis-name" ng-if="diagnosis.freeTextAnswer">{{diagnosis.freeTextAnswer}}</label>
-    
-
   </div>
-  <div class="secondary">
-    <div class="current">
-      <span class="time-stamp">
-        <span class="date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
-        <span class="time">{{diagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
-      </span>
-      <span class="provider" ng-repeat="provider in diagnosis.providers">{{provider.name}}<br/></span>
+  
+  <div ng-show="diagnosis.firstDiagnosis.revised" class="col col2">
+    <div class="view">
+      <span class="certainty">{{diagnosis.firstDiagnosis.certainty}}</span>
+      <span class="order">{{diagnosis.firstDiagnosis.order}}</span>
+      <span class="status">{{diagnosis.firstDiagnosis.diagnosisStatus}}</span>
     </div>
-
-    <div ng-show="diagnosis.firstDiagnosis.revised" class="initial footer-note">
+    <div>
       <span class="time-stamp">
         <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span> 
-        <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
       </span>
       <span class="provider" ng-repeat="provider in diagnosis.firstDiagnosis.providers">{{provider.name}}</span>
-    </div>  
-    <button class="toggle fr">
-      <i class="icon-plus-sign" ng-click="toggle(diagnosis)" ng-hide="diagnosis.show"></i>
-      <i class="icon-minus-sign" ng-click="toggle(diagnosis)" ng-show="diagnosis.show"></i>
-    </button>
+    </div>
+
   </div>
+  <div ng-show="!diagnosis.firstDiagnosis.revised" class="col col2"></div>    
+  <div class="col col3">
+    <div class="view">
+      <span class="certainty">{{diagnosis.certainty}}</span>
+      <span class="order">{{diagnosis.order}}</span>
+      <span class="status">{{diagnosis.diagnosisStatus}}</span>
+    </div>
+    <div>
+      <span class="time-stamp">
+        <span class="date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
+      </span>
+      <span class="provider" ng-repeat="provider in diagnosis.providers">{{provider.name}}</span>
+    </div>
+  </div>  
+  <button class="toggle fr">
+    <i class="icon-edit"></i>
+  </button>
 </div>
-<div class="edit-diagnosis" ng-show="diagnosis.show">    
-  <div class="button-toggle status">
-        <buttons-radio class="small-btn status" data-toggle="buttons-radio"
-                       model='diagnosis.diagnosisStatus'
-                       options='diagnosisStatuses' dirty-check-flag='diagnosis.isDirty'/>
-  </div>
+
+<div class="edit-diagnosis row" ng-show="diagnosis.show" ng-class="{'edited': diagnosis.isDirty}">    
   <span class="message">Changed!</span> 
-  <div class="button-toggle">
+  <div class="col col1"></div> 
+  <div class="button-toggle col col2">
+      <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.order'
+                     options='orderOptions' dirty-check-flag='diagnosis.isDirty'
+                     ng-class="{'illegalValue': !diagnosis.isValidOrder()}"/>
+  </div>  
+  <div class="button-toggle col col3">
       <buttons-radio class="small-btn" data-toggle="buttons-radio" model='diagnosis.certainty'
                      options='certaintyOptions' dirty-check-flag='diagnosis.isDirty'
                      ng-class="{'illegalValue': !diagnosis.isValidCertainty()}"/>
   </div>  
-  <div class="button-toggle">
-      <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.order'
-                     options='orderOptions' dirty-check-flag='diagnosis.isDirty'
-                     ng-class="{'illegalValue': !diagnosis.isValidOrder()}"/>
+ 
+  <div class="button-toggle status col col4">
+        <buttons-radio class="small-btn status" data-toggle="buttons-radio"
+                       model='diagnosis.diagnosisStatus'
+                       options='diagnosisStatuses' dirty-check-flag='diagnosis.isDirty'/>
   </div>
 </div>
 

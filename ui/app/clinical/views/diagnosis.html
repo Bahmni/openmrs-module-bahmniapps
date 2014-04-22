@@ -3,7 +3,6 @@
         <div class="diagnosis">
             <div id="selectedNodesArea">
                 <div class="table new-diagnosis">
-                    <h2>Add New</h2>
                     <div class="row table-header">
                         <div class="col col1"><span>Diagnosis</span></div>
                         <div class="col col2"><span>Order</span></div>
@@ -61,7 +60,11 @@
                 </div>
                 
                 <div class="table history-diagnosis" ng-if="consultation.pastDiagnoses.length > 0">
-                    <h2>Past</h2>
+                    <div class="row table-header">
+                      <div class="col col1"><span>Past Diagnosis</span></div>
+                      <div class="col col2"><span>Initial</span></div>
+                      <div class="col col3"><span>Current</span></div>
+                    </div>
                     <div ng-repeat="diagnosis in consultation.pastDiagnoses" class="table-body">
                         <div class="row diagnosis-row">
                             <ng-include src="'views/diagnosisRow.html'" />

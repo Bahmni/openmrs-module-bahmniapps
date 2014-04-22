@@ -107,22 +107,22 @@
     @include column(1);
     width: 3%;
   }
-  .diagnosis-row.row {
+  .edit-diagnosis.row {
     position: relative;
-    -webkit-transition: background-color 1s ease;
+    // -webkit-transition: background-color 1s ease;
     .message {
       position: absolute;
-      -webkit-transition: display 1s ease;
-      left: 37%;
-      bottom: 5px;
+      // -webkit-transition: display 1s ease;
+      left: 10px;
+      bottom: 15px;
       color: #cc6600;
       margin-bottom: 5px;
       font-size: 14px;
       display: none;
     }
   }
-  .diagnosis-row.row.edited {
-    background-color: #ffffcc;
+  .edit-diagnosis.row.edited {
+    // background-color: #ffffcc;
     .message {
       display: block;
     }
@@ -166,55 +166,43 @@
     }
   }
 }
-
+// .history-diagnosis .table-header {
+//   .col2, .col3 {
+//     width: 27%;
+//   }
+// }
 .current-diagnosis, .history-diagnosis {
   .diagnosis-row {
     overflow: auto;
     clear: both;
-    .primary-section {
+    .view-past {
       overflow: auto;
       clear: both;
-      padding: 5px 0;
-      .primary {
-        float: left;
-        width: 38%;
-        label.diagnosis-name {
-          padding-left: 10px;
-          font-size: 16px;
-          font-family: OpenSansBold;
-        }
+      cursor: pointer;
+      .col {padding-top: 0; padding-bottom: 5px;}
+      label.diagnosis-name {
+        padding-left: 10px;
+        font-size: 16px;
+        font-family: OpenSansBold;
       }
-      .secondary {
-        float: right;
-        width: 60%;
-        .initial {
-          padding-bottom: 0;
+      .col2 {padding-left: 10px;}
+      .col2, .col3 {
+        font-size: 12px;
+        margin-top: 5px;
+        // width: 26%;
+        
+        .view {margin-bottom: 5px;}
+        .date {
+          margin-right: 5px;
         }
-        .initial:before {
-          font-family: FontAwesome;
-          content: "\f060";
-          font-size: 18px;
-          margin-right: 10px;
-          color: #bbb;
+        .time {
+          color: #888;
+          margin-left: 5px;
         }
-        .current, .initial {
-          float: left;
-        }
-        .current {
-          font-size: 14px;
-          margin-top: 5px;
-          .date {
-            text-transform: uppercase;
-          }
-          .time {
-            color: #888;
-            margin-left: 5px;
-          }
-          .provider {
-            display: block;
-            font-size: 12px;
-            margin: 2px 0;
-          }
+        .provider {
+          color: #aaa;
+          font-size: 12px;
+          margin: 2px 0;
         }
       }
     }
@@ -224,17 +212,11 @@
   }
 }
 
-.edit-diagnosis {
+.diagnosis .history-diagnosis .table-body .row.edit-diagnosis {
   overflow: auto;
   clear: both;
-  padding: 10px 10px 10px 0;
   background: #eee;
-  .button-toggle {
-    float: right;
-  }
-  .button-toggle.status {
-    float: left;
-  }
+  border-bottom: 0;
 }
 
 .ruled-out label.diagnosis-name {
