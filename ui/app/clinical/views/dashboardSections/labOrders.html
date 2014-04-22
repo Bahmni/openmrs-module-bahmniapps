@@ -10,7 +10,7 @@
             <td colspan="2" ng-hide="!line.name">
                 {{line.name}}
                 <span class="status" ng-show="pendingResults(line)">Pending!</span>
-                <label>{{ line.orderDate | date :'dd MMM yy'}}</label>
+
             </td>
         </tr>
         <tr ng-if="!line.isSummary"
@@ -27,7 +27,7 @@
                       <span class="units">{{line.units}}</span>
                     </span>
                 <span class="referred">Referred Out</span>
-                <label>{{ line.orderDate | date :'dd MMM yy'}}</label>
+                <span class="fr">{{ line.orderDate | date :'dd MMM yy'}}</span>
             </td>
         </tr>
         </tbody>
