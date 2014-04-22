@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('bahmni.registration')
-.factory('registrationCardPrinter', ['printer', function(printer){
+.factory('registrationCardPrinter', ['printer', 'appService', function(printer, appService){
     var print = function(patient) {
-        printer.print('views/print.html', {patient: patient});
-    }
+        var templatePath = appService.getAppDescriptor().getConfigValue("registrationCardPrintLayout") || "";
+        printer.print(templatePath, {patient: patient});
+    };
     return {print: print};
 }]);
