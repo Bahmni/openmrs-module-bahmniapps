@@ -1,55 +1,56 @@
 <section>
     <section visit-actions patient="patient" visit="visit"></section>
-    <section ng-show="visit.hasDiagnosis()" class="block diagnosis-section">
+    <section ng-show="visit.hasDiagnosis()" class="block diagnosis">
         <h2>Diagnoses</h2>
-        <ul class="block-content visit-diagnosis">
-            <li ng-repeat="diagnosis in visit.diagnoses">
-                <div>
-                    <span class="diagnosis-name" bo-text="diagnosis.getDisplayName()" ng-class="{'ruled-out': diagnosis.diagnosisStatus}"></span>
-                    <div class="current">
-                      <span class="time-stamp">
-                        <span class="date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
-                        <span class="time">{{diagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
-                      </span>
+        <div class="table history-diagnosis">
+            <div class="row table-header">
+              <div class="col col1"><span>Diagnosis</span></div>
+              <div class="col col2"><span>Initial</span></div>
+              <div class="col col3"><span>Current</span></div>
+              <div class="col col4"><span>Revised</span></div>
+            </div>
+
+            <div class="table-body">
+                <div class="row placeholder" ng-show="!visit.hasDiagnosis()">A diagnosis has not been made for this patient yet.</div>
+                <div class="row diagnosis-row" ng-repeat="diagnosis in visit.diagnoses">
+                    <div class="view-past">
+                    <div class="col col1">
+                      <span class="diagnosis-name" bo-text="diagnosis.getDisplayName()" ng-class="{'ruled-out': diagnosis.diagnosisStatus}"></span>
+                    </div>
+                    <div class="col col2" ng-show="diagnosis.firstDiagnosis.revised" >
+                      <div class="view">
+                        <span class="certainty">{{diagnosis.firstDiagnosis.certainty}}</span>
+                        <span class="order">{{diagnosis.firstDiagnosis.order}}</span>
+                        <span class="status">{{diagnosis.firstDiagnosis.diagnosisStatus}}</span>
+                      </div>
+                      <div>
+                        <span class="time-stamp">
+                          <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span> 
+                        </span>
                         <span class="provider" bo-text="diagnosis.providers[0].name"></span>
-                    </div>
-                    <div class="diagonsis-order">
-                        <span class="order" bo-show="visit.isPrimaryOrder(diagnosis.order)">Primary</span>
-                        <span class="order" bo-show="!visit.isPrimaryOrder(diagnosis.order)">Secondary</span>
-                        <span class="certainty" bo-text="diagnosis.certainty"></span>
-                        <!-- <span class="status" bo-text="'' + diagnosis.diagnosisStatus + ''"></span> -->
-                        <button class="toggle fr" ng-hide="!diagnosis.firstDiagnosis.revised || !diagnosis.revised">
-                            <i class="icon-plus-sign" ng-click="toggle(diagnosis)" ng-hide="diagnosis.show"></i>
-                            <i class="icon-minus-sign" ng-click="toggle(diagnosis)" ng-show="diagnosis.show"></i>
-                        </button>
-                    </div>
-
-
-                </div>
-                <div class="history" ng-show="diagnosis.show">
-                    <div ng-show="diagnosis.firstDiagnosis.revised" class="previous-state">
-                      <span class="diagnosis-name">Intially diagnosed</span>
-                      <div class="current">
-                            <span class="time-stamp">
-                              <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
-                              <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
-                            </span>
-                          <span class="provider" bo-text="diagnosis.firstDiagnosis.providers[0].name"></span>
-                      </div>
-                      <div class="diagonsis-order">
-                          <span class="order"
-                                bo-show="visit.isPrimaryOrder(diagnosis.firstDiagnosis.order)">Primary</span>
-                          <span class="order"
-                                bo-show="!visit.isPrimaryOrder(diagnosis.firstDiagnosis.order)">Secondary</span>
-                          <span class="certainty" bo-text="diagnosis.firstDiagnosis.certainty"></span>
-                          <!-- <span class="status" bo-text="'' + diagnosis.firstDiagnosis.diagnosisStatus + ''"></span> -->
                       </div>
                     </div>
-                    <div ng-show="diagnosis.revised" class="revised">Revised in a later encounter!</div>
+                    <div ng-show="!diagnosis.firstDiagnosis.revised" class="col col2"></div>
+                    <div class="col col3">
+                      <div class="view">
+                        <span class="certainty">{{diagnosis.certainty}}</span>
+                        <span class="order">{{diagnosis.order}}</span>
+                        <span class="status">{{diagnosis.diagnosisStatus}}</span>
+                      </div>
+                      <div>
+                        <span class="time-stamp">
+                          <span class="date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
+                        </span>
+                        <span class="provider" bo-text="diagnosis.providers[0].name"></span>
+                      </div>
+                    </div>
+                    <div class="col col4">
+                      <i ng-show="diagnosis.revised" class="icon-ok"></i>
+                    </div>
+                    </div>
                 </div>
-            </li>
-            <div ng-show="!visit.hasDiagnosis()">A diagnosis has not been made for this patient yet.</div>
-        </ul>
+            </div>
+        </div>
     </section>
     <section class="block observation" ng-show="visit.hasObservations()">
         <h2>Observations</h2>

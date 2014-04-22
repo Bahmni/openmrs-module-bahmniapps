@@ -127,56 +127,81 @@
   }
 
 }
-
-.diagnosis-section {
-  ul li {
-    padding: 5px 10px;
-    border-bottom: 1px solid #eee;
-    clear: both;
-    overflow: auto;
-    .history {
-      clear: both;
-      background: #eee;
-      position: relative;
-      margin: 0 -10px -5px -10px;
-      padding: 5px 10px;
-      .revised, .previous-state {
-        clear: both;
-        font-size: 14px;
-      }
-      .revised {padding-bottom: 10px;text-align: right;color: #cc6600;}
-      .previous-state {
-        color: #888;
-        .diagnosis-name {padding-top: 5px;}
-      }
-    }
-    .diagnosis-name.ruled-out {
-      color: #777;
-      text-decoration: line-through;
-    }
-    .diagnosis-name {
-      float: left;
-      width: 38%;
-    }
-    .current {
-      float: left;
-    }
-    .diagonsis-order {
-      float: right;
-      width: 20%;
-      font-size: 14px;
-      margin-top: 5px;
-    }
-    .certainty, .status {
-      font-size: 12px;
-      color: #888;
-    }
-    .status {
-      float: right;
-      color: #333;
-    }
+.visit .diagnosis h2, .visit .diagnosis .history-diagnosis {margin-bottom:0;}
+.diagnosis .history-diagnosis .table-header {
+  .col.col4 {
+    float: right;
+    width: 9%;
+    padding: 10px;
+    display: inline-block;
   }
 }
+.diagnosis .history-diagnosis .table-body {
+  .placeholder {
+    font-size: 14px;
+    padding: 10px;
+  }
+  .diagnosis-name {
+    padding: 10px;
+    display: inline-block;
+  }
+  .col.col4 {
+    float: right;
+    width: 9%;
+    padding: 10px;
+    display: inline-block;
+  }
+}
+
+// .diagnosis-section {
+//   ul li {
+//     padding: 5px 10px;
+//     border-bottom: 1px solid #eee;
+//     clear: both;
+//     overflow: auto;
+//     .history {
+//       clear: both;
+//       background: #eee;
+//       position: relative;
+//       margin: 0 -10px -5px -10px;
+//       padding: 5px 10px;
+//       .revised, .previous-state {
+//         clear: both;
+//         font-size: 14px;
+//       }
+//       .revised {padding-bottom: 10px;text-align: right;color: #cc6600;}
+//       .previous-state {
+//         color: #888;
+//         .diagnosis-name {padding-top: 5px;}
+//       }
+//     }
+//     .diagnosis-name.ruled-out {
+//       color: #777;
+//       text-decoration: line-through;
+//     }
+//     .diagnosis-name {
+//       float: left;
+//       width: 38%;
+//     }
+//     .current {
+//       float: left;
+//     }
+//     .diagonsis-order {
+//       float: right;
+//       width: 20%;
+//       font-size: 14px;
+//       margin-top: 5px;
+//     }
+//     .certainty, .status {
+//       font-size: 12px;
+//       color: #888;
+//     }
+//     .status {
+//       float: right;
+//       color: #333;
+//     }
+//   }
+// }
 .observation-section {
   h3 {
     font-family: OpenSansBold;
