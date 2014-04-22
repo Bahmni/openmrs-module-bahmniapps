@@ -45,13 +45,13 @@ angular.module('bahmni.clinical')
                     encounterService.searchForVisits(lastTwoVisitUuids).success(function (encounterTransactions) {
 
                         var orderGroupWithResults = new Bahmni.Clinical.OrderGroupWithObs().create(encounterTransactions, 'testOrders', isLabTests, $rootScope.allTestsAndPanelsConcept, "visitUuid");
-                        if (orderGroupWithResults.length == 0) {
-                            var displayList = [];
+                        var displayList = [];
+                        var uniqueTests = [];
+                        if (orderGroupWithResults.length != 0) {
+                            uniqueTests = getUniqueOrdersWithinAVisit(orderGroupWithResults);
+                            displayList = getDisplayListForUniqueOrders(uniqueTests);
                         }
-                        else {
-                            var uniqueTests = getUniqueOrdersWithinAVisit(orderGroupWithResults);
-                            var displayList = getDisplayListForUniqueOrders(uniqueTests);
-                        }
+
                         $scope.patientSummary.data = displayList;
                         if ($scope.patientSummary.data.length == 0) {
                             $scope.patientSummary.message = Bahmni.Clinical.Constants.messageForNoLabOrders;
