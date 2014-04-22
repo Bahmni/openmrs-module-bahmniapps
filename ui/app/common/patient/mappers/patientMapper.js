@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.patient.mappers')
+angular.module('bahmni.common.patient')
     .factory('patientMapper', ['$rootScope',
         function ( $rootScope) {
             var getPatientConfigByUuid = function (patientConfig,attributeUuid) {
