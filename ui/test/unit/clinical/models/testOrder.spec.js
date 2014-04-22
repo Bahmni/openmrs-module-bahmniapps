@@ -19,7 +19,7 @@ describe('Order group with obs', function () {
                             "groupMembers": [{
                                 "observationDateTime": "2014-04-03T14:37:15.000+0530",
                                 "groupMembers": [],
-                                "value": "false",
+                                "value": false,
                                 "concept": {
                                     "name": "LAB_ABNORMAL",
                                     "set": false,
@@ -87,7 +87,7 @@ describe('Order group with obs', function () {
                             }, {
                                 "observationDateTime": "2014-04-03T14:37:15.000+0530",
                                 "groupMembers": [],
-                                "value": "true",
+                                "value": true,
                                 "concept": {
                                     "name": "LAB_ABNORMAL",
                                     "set": false

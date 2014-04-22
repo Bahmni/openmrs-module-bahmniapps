@@ -33,7 +33,7 @@ Bahmni.Clinical.Result = (function () {
                 return invalidConcepts.indexOf(observation.concept.name) < 0;
             })[0];
         },
-        latestMatchingObservationValue = function(observationList, conceptName){
+        latestMatchingObservationValue = function (observationList, conceptName) {
             var matchingObs = matchingObservations(observationList, conceptName);
             var sortedObservations = Bahmni.Common.Util.ArrayUtil.sortInReverseOrderOfField(matchingObs, 'observationDateTime');
             return sortedObservations[0] && sortedObservations[0].value;
@@ -45,7 +45,7 @@ Bahmni.Clinical.Result = (function () {
             return new Bahmni.Clinical.Result({
                 name: realObs.concept.name,
                 value: realObs.value,
-                isAbnormal: valueOf(observationList, "LAB_ABNORMAL") === 'true',
+                isAbnormal: valueOf(observationList, "LAB_ABNORMAL"),
                 minNormal: valueOf(observationList, "LAB_MINNORMAL"),
                 maxNormal: valueOf(observationList, "LAB_MAXNORMAL"),
                 notes: latestMatchingObservationValue(observationList, "LAB_NOTES"),
@@ -53,16 +53,16 @@ Bahmni.Clinical.Result = (function () {
                 observationDateTime: realObs.observationDateTime,
                 providerName: realObs.provider.name
             });
-        } else {
-            return new Bahmni.Clinical.Result({
-                name: parentName,
-                isAbnormal: valueOf(observationList, "LAB_ABNORMAL") === 'true',
-                minNormal: valueOf(observationList, "LAB_MINNORMAL"),
-                maxNormal: valueOf(observationList, "LAB_MAXNORMAL"),
-                notes: latestMatchingObservationValue(observationList, "LAB_NOTES"),
-                referredOut: matchingObservations(observationList, "REFERRED_OUT").length > 0
-            });
         }
+
+        return new Bahmni.Clinical.Result({
+            name: parentName,
+            isAbnormal: valueOf(observationList, "LAB_ABNORMAL"),
+            minNormal: valueOf(observationList, "LAB_MINNORMAL"),
+            maxNormal: valueOf(observationList, "LAB_MAXNORMAL"),
+            notes: latestMatchingObservationValue(observationList, "LAB_NOTES"),
+            referredOut: matchingObservations(observationList, "REFERRED_OUT").length > 0
+        });
 
     };
 

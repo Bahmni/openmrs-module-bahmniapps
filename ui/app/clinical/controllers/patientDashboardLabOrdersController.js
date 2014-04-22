@@ -10,7 +10,6 @@ angular.module('bahmni.clinical')
             $scope.patientSummary = {};
 
             var init = function () {
-                var OrdersUtil = Bahmni.Clinical.OrdersUtil;
                 var getLastNVisitUuids = function (visits, number) {
                     var lastNVisits = visits.slice(0, number);
                     return lastNVisits.map(function (visit) {
@@ -23,31 +22,13 @@ angular.module('bahmni.clinical')
                     return order.orderTypeUuid === labTestOrderTypeUuid;
                 };
 
-                var getUniqueOrders = function (orderGroupWithResultsArgs) {
-                    var flattenOrders = function (orderGroupWithResults) {
-                        return  orderGroupWithResults.map(function (orderGroup) {
-                            return orderGroup.orders;
-                        }).reduce(function (a, b) {
-                            return a.concat(b);
-                        });
-                    };
-
-                    var unique = function (orderList) {
-                        var contains = function (order, orderList) {
-                            return orderList.some(function (orderInList) {
-                                return orderInList.concept.name === order.concept.name;
-                            });
-                        };
-                        var uniqueTests = [];
-                        orderList.forEach(function (order) {
-                            if (!contains(order, uniqueTests)) {
-                                uniqueTests.push(order);
-                            }
-                        });
-                        return uniqueTests;
-                    }
-
-                    return OrdersUtil.unique(flattenOrders(orderGroupWithResultsArgs));
+                var getUniqueOrdersWithinAVisit = function (orderGroupWithResultsArgs) {
+                    var uniqueOrders = [];
+                    orderGroupWithResultsArgs.forEach(function(orderGroupWithResultsForAVisit) {
+                        var items = Bahmni.Clinical.OrdersUtil.unique(orderGroupWithResultsForAVisit.orders);
+                        uniqueOrders = uniqueOrders.concat(items);
+                    })
+                    return uniqueOrders;
                 };
 
                 var getDisplayListForUniqueOrders = function (uniqueTests) {
@@ -68,7 +49,7 @@ angular.module('bahmni.clinical')
                             var displayList = [];
                         }
                         else {
-                            var uniqueTests = getUniqueOrders(orderGroupWithResults);
+                            var uniqueTests = getUniqueOrdersWithinAVisit(orderGroupWithResults);
                             var displayList = getDisplayListForUniqueOrders(uniqueTests);
                         }
                         $scope.patientSummary.data = displayList;
