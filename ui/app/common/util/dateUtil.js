@@ -42,6 +42,14 @@ Bahmni.Common.Util.DateUtil = {
 	    return this.getDate(this.now());
 	},
 
+    isSameDate: function(date1, date2) {
+        var dateOne = this.parse(date1);
+        var dateTwo = this.parse(date2);
+        return dateOne.getFullYear() == dateTwo.getFullYear()
+            && dateOne.getMonth() == dateTwo.getMonth()
+            && dateOne.getDate() == dateTwo.getDate();
+    },
+
 	diffInYearsMonthsDays: function (dateFrom, dateTo) {
 	    dateFrom = this.parse(dateFrom)
 	    dateTo = this.parse(dateTo)
