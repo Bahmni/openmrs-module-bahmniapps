@@ -46,9 +46,8 @@ angular.module('bahmni.clinical')
 
                         var orderGroupWithResults = new Bahmni.Clinical.OrderGroupWithObs().create(encounterTransactions, 'testOrders', isLabTests, $rootScope.allTestsAndPanelsConcept, "visitUuid");
                         var displayList = [];
-                        var uniqueTests = [];
                         if (orderGroupWithResults.length != 0) {
-                            uniqueTests = getUniqueOrdersWithinAVisit(orderGroupWithResults);
+                            var uniqueTests = getUniqueOrdersWithinAVisit(orderGroupWithResults);
                             displayList = getDisplayListForUniqueOrders(uniqueTests);
                         }
 
