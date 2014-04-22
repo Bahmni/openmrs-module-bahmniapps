@@ -70,15 +70,16 @@
             <thead>
             <tr>
                 <th colspan="2">
-                  <span class="date" bo-text="'Lab Report ' +($index+1)"></span>
-                  <button class="toggle fr" ng-hide="!accessionNote.text || !accessionNote.dateTime">
-                      <i class="icon-plus-sign" ng-click="toggle(accessionNote)" ng-hide="accessionNote.show"></i>
-                      <i class="icon-minus-sign" ng-click="toggle(accessionNote)" ng-show="accessionNote.show"></i>
+                  <span class="date" bo-text="'Lab Report ' +($index+1)"> </span>
+                  <button class="toggle-btn fr" ng-click="toggle(labOrders)" ng-if="labOrders.accessionNotes">
+                      <i class="icon-envelope" ng-hide="labOrders.show"></i>
+                      <i class="icon-envelope-alt" ng-show="labOrders.show"></i>
+                      Notes
                   </button>
                 </th>
             </tr>
-            <tr ng-if="labOrders.accessionNotes">
-                <th colspan="2" class="notes inline-notes">                   
+            <tr ng-show="labOrders.show">
+                <th colspan="2" class="notes inline-notes" ng-if="labOrders.accessionNotes">                   
                     <div ng-repeat="accessionNote in labOrders.accessionNotes" class="accession">
                         <pre class="left">{{accessionNote.text}}</pre>
                         <div class="footer-note fr">
