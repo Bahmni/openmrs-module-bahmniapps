@@ -26,6 +26,7 @@ angular.module('bahmni.common.uiHelper')
                 var element = $compile($(template))(printScope);
                 $timeout(function(){
                     printElement(element);
+                    printScope.$destroy();
                 });
             });
         };

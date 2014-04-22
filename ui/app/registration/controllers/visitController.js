@@ -65,9 +65,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.print = function () {
-                return $timeout(function () {
-                    registrationCardPrinter.print($scope.patient);
-                }, 0);
+                return registrationCardPrinter.print($scope.patient);
             };
 
 
