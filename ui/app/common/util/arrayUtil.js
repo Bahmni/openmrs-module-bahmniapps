@@ -13,7 +13,18 @@ Bahmni.Common.Util.ArrayUtil = {
     	}
     },
 
-    sortInReverseOrderOfField: function(array, field){
-        return array.sort(function(first, second) { return first[field] < second[field] ? 1: -1; });
+    flatten: function(items, propertyName){
+        return items.reduce(function(flattenedValues, item){
+            return flattenedValues.concat(item[propertyName] || []);
+        }, []);        
+    },
+
+    sortReverse: function(array, field){
+        return this.sort(array, field).reverse();
+    },
+    
+    sort: function(array, field){
+        if(!array) return [];
+        return array.sort(function(first, second) { return first[field] < second[field] ? -1: 1; });
     }
 };

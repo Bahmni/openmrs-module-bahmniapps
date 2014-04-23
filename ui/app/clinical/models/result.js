@@ -35,7 +35,7 @@ Bahmni.Clinical.Result = (function () {
         },
         latestMatchingObservationValue = function (observationList, conceptName) {
             var matchingObs = matchingObservations(observationList, conceptName);
-            var sortedObservations = Bahmni.Common.Util.ArrayUtil.sortInReverseOrderOfField(matchingObs, 'observationDateTime');
+            var sortedObservations = Bahmni.Common.Util.ArrayUtil.sortReverse(matchingObs, 'observationDateTime');
             return sortedObservations[0] && sortedObservations[0].value;
         };
 

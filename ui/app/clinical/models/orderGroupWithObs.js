@@ -2,14 +2,15 @@ Bahmni.Clinical.OrderGroupWithObs = function () {
 };
 
 Bahmni.Clinical.OrderGroupWithObs.prototype.create = function (encounterTransactions, orderListHandle, filter, allTestAndPanels, groupingParameter) {
-    var orderGroup,
-        setProviderToObservation = function (provider) {
-            var setProvider = function (observation) {
-                observation.provider = provider;
-                angular.forEach(observation.groupMembers, setProvider);
-            };
-            return setProvider;
-        },
+    var orderGroup = new Bahmni.Clinical.OrderGroup();
+    var orders = orderGroup.flatten(encounterTransactions, orderListHandle, filter);
+    var observations = Bahmni.Common.Util.ArrayUtil.flatten(encounterTransactions, 'observations');
+    this.map(observations, orders, allTestAndPanels);
+    return orderGroup.group(orders, groupingParameter);
+};
+
+Bahmni.Clinical.OrderGroupWithObs.prototype.map = function (observations, orders, allTestAndPanels) {
+    var allTestsPanelsConcept = new Bahmni.Clinical.AllTestsPanelsConcept(allTestAndPanels);
         makeCommentsAsAdditionalObs = function (observation) {
             angular.forEach(observation.groupMembers, makeCommentsAsAdditionalObs);
             if (observation.groupMembers) {
@@ -29,59 +30,22 @@ Bahmni.Clinical.OrderGroupWithObs.prototype.create = function (encounterTransact
                 }
             }
         },
-        getObservationForOrderIfExist = function (observations, testOrder, obs, provider) {
+        getObservationForOrderIfExist = function (observations, testOrder, obs) {
             angular.forEach(observations, function (observation) {
                 if (testOrder.uuid === observation.orderUuid) {
-                    setProviderToObservation(provider)(observation);
                     makeCommentsAsAdditionalObs(observation);
                     obs.push(observation);
                 } else if (observation.orderUuid == null && observation.groupMembers.length > 0) {
-                    getObservationForOrderIfExist(observation.groupMembers, testOrder, obs, provider);
+                    getObservationForOrderIfExist(observation.groupMembers, testOrder, obs);
                 }
             });
         },
-        mapTestOrderWithObs = function (encounterTransactions, testOrder) {
+        mapTestOrderWithObs = function (observations, testOrder) {
             var obs = [];
-            angular.forEach(encounterTransactions, function (encounterTransaction) {
-                var provider = encounterTransaction.providers[0];
-                getObservationForOrderIfExist(encounterTransaction.observations, testOrder, obs, provider);
-            });
+            getObservationForOrderIfExist(observations, testOrder, obs);
             testOrder.obs = obs;
-        },
-        filterFunction = function (aTestOrPanel, testOrder) {
-            return aTestOrPanel.name.name == testOrder.concept.name;
-        },
-        sort = function (allTestsAndPanels, encountersWithTestOrders, filterFunction) {
-            var indexOf = function (allTestAndPanels, order) {
-                var indexCount = 0;
-                allTestAndPanels.setMembers.every(function (aTestOrPanel) {
-                    if (filterFunction(aTestOrPanel, order))
-                        return false;
-                    else {
-                        indexCount++;
-                        return true;
-                    }
-                });
-                return indexCount;
-            };
-
-            encountersWithTestOrders.forEach(function (encounterWithTestOrders) {
-                encounterWithTestOrders.orders.sort(function (firstOrder, secondOrder) {
-                    var indexOfFirstElement = indexOf(allTestsAndPanels, firstOrder);
-                    var indexOfSecondElement = indexOf(allTestsAndPanels, secondOrder);
-                    return indexOfFirstElement - indexOfSecondElement;
-                });
-            });
-            return encountersWithTestOrders;
         };
 
-    orderGroup = new Bahmni.Clinical.OrderGroup().create(encounterTransactions, orderListHandle, filter, groupingParameter);
-    orderGroup.forEach(function (orders) {
-        orders.orders.forEach(function (order) {
-            mapTestOrderWithObs(encounterTransactions, order);
-        });
-    });
-    orderGroup = allTestAndPanels ? sort(allTestAndPanels, orderGroup, filterFunction) : orderGroup;
-
-    return orderGroup;
+    orders.forEach(function (order) { mapTestOrderWithObs(observations, order); });
+    allTestsPanelsConcept.sortOrders(orders);
 };
