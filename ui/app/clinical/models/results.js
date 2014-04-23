@@ -10,7 +10,7 @@ Bahmni.Clinical.Results = (function () {
         this.isActuallyMultiValued = function () {
             return self.results.length > 1;
         };
-        this.display = this.displayList();
+        this.display = this.getDisplayList();
     };
 
     Results.create = function (obs) {
@@ -23,7 +23,7 @@ Bahmni.Clinical.Results = (function () {
         return new Bahmni.Clinical.Results(options);
     };
 
-    Results.prototype.displayList = function() {
+    Results.prototype.getDisplayList = function() {
         var response = [];
         if (this.isActuallyMultiValued() || this.results.length === 0) {
             response.push({

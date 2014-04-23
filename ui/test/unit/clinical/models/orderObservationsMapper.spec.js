@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Order group with obs', function () {
+describe('OrderObservationsMapper', function () {
     var listOfEncounterTransactions = function() {
         return [
             {
@@ -49,10 +49,10 @@ describe('Order group with obs', function () {
 
     it("should create and map test orders with observations",function(){
         var encounterTransactions = listOfEncounterTransactions();
-        var orderGroupWithObs = Bahmni.Clinical.OrderGroupWithObs.prototype.create(encounterTransactions,'testOrders', null);
-        expect(orderGroupWithObs.length).toBe(2);
-        expect(orderGroupWithObs[0].orders[0].obs.length).toBe(0);
-        expect(orderGroupWithObs[1].orders.length).toBe(1);
-        expect(orderGroupWithObs[1].orders[0].obs.length).toBe(1);
+        var orderObservationsMapper = new Bahmni.Clinical.OrderObservationsMapper().createOrderGroup(encounterTransactions,'testOrders', null);
+        expect(orderObservationsMapper.length).toBe(2);
+        expect(orderObservationsMapper[0].orders[0].obs.length).toBe(0);
+        expect(orderObservationsMapper[1].orders.length).toBe(1);
+        expect(orderObservationsMapper[1].orders[0].obs.length).toBe(1);
     });
 });

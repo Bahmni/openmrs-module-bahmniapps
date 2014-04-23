@@ -34,7 +34,7 @@ angular.module('bahmni.clinical')
                 var getDisplayListForUniqueOrders = function (uniqueTests) {
                     var displayList = [];
                     uniqueTests.forEach(function (uniqueOrder) {
-                        displayList = displayList.concat(Bahmni.Clinical.TestOrder.create(uniqueOrder, $rootScope.allTestsAndPanelsConcept).displayList());
+                        displayList = displayList.concat(Bahmni.Clinical.TestOrder.create(uniqueOrder, $rootScope.allTestsAndPanelsConcept).getDisplayList());
                     });
                     return displayList;
                 };
@@ -44,7 +44,7 @@ angular.module('bahmni.clinical')
                     var lastTwoVisitUuids = getLastNVisitUuids($scope.visits, 2);
                     encounterService.searchForVisits(lastTwoVisitUuids).success(function (encounterTransactions) {
 
-                        var orderGroupWithResults = new Bahmni.Clinical.OrderGroupWithObs().create(encounterTransactions, 'testOrders', isLabTests, $rootScope.allTestsAndPanelsConcept, "visitUuid");
+                        var orderGroupWithResults = new Bahmni.Clinical.OrderObservationsMapper().createOrderGroup(encounterTransactions, 'testOrders', isLabTests, $rootScope.allTestsAndPanelsConcept, "visitUuid");
                         var displayList = [];
                         if (orderGroupWithResults.length != 0) {
                             var uniqueTests = getUniqueOrdersWithinAVisit(orderGroupWithResults);

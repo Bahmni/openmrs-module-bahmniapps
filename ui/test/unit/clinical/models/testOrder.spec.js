@@ -127,7 +127,7 @@ describe('Order group with obs', function () {
     };
 
     it("should create and map test orders with observations", function () {
-        var orderGroup = orderGroupWithObs();
+        var orderGroup = new orderGroupWithObs();
         var testOrder = Bahmni.Clinical.TestOrder.create(orderGroup, undefined);
         expect(testOrder.name).toBe('Asitic Fluid');
         expect(testOrder.result instanceof Bahmni.Clinical.Panel).toBe(true);

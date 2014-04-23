@@ -1,17 +1,16 @@
-Bahmni.Clinical.OrderGroupWithObs = function () {
+Bahmni.Clinical.OrderObservationsMapper = function () {
 };
 
-Bahmni.Clinical.OrderGroupWithObs.prototype.create = function (encounterTransactions, orderListHandle, filter, allTestAndPanels, groupingParameter) {
+Bahmni.Clinical.OrderObservationsMapper.prototype.createOrderGroup = function (encounterTransactions, ordersName, filter, groupingParameter) {
     var orderGroup = new Bahmni.Clinical.OrderGroup();
-    var orders = orderGroup.flatten(encounterTransactions, orderListHandle, filter);
+    var orders = orderGroup.flatten(encounterTransactions, ordersName, filter);
     var observations = Bahmni.Common.Util.ArrayUtil.flatten(encounterTransactions, 'observations');
-    this.map(observations, orders, allTestAndPanels);
+    this.map(observations, orders);
     return orderGroup.group(orders, groupingParameter);
 };
 
-Bahmni.Clinical.OrderGroupWithObs.prototype.map = function (observations, orders, allTestAndPanels) {
-    var allTestsPanelsConcept = new Bahmni.Clinical.AllTestsPanelsConcept(allTestAndPanels);
-        makeCommentsAsAdditionalObs = function (observation) {
+Bahmni.Clinical.OrderObservationsMapper.prototype.map = function (observations, orders) {
+    var makeCommentsAsAdditionalObs = function (observation) {
             angular.forEach(observation.groupMembers, makeCommentsAsAdditionalObs);
             if (observation.groupMembers) {
                 var additionalObs = [];
@@ -47,5 +46,4 @@ Bahmni.Clinical.OrderGroupWithObs.prototype.map = function (observations, orders
         };
 
     orders.forEach(function (order) { mapTestOrderWithObs(observations, order); });
-    allTestsPanelsConcept.sortOrders(orders);
 };

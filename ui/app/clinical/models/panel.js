@@ -5,7 +5,7 @@ Bahmni.Clinical.Panel = (function () {
         options = options || {};
         this.name = options.name;
         this.results = options.results || [];
-        this.display = this.displayList();
+        this.display = this.getDisplayList();
     };
 
     Panel.create = function (obs) {
@@ -28,7 +28,7 @@ Bahmni.Clinical.Panel = (function () {
             });
     };
 
-    Panel.prototype.displayList = function() {
+    Panel.prototype.getDisplayList = function() {
         var response = [];
         response.push({
             name: this.name,
@@ -36,7 +36,7 @@ Bahmni.Clinical.Panel = (function () {
             hasResults: true
         });
         this.results.forEach(function(result) {
-            response = response.concat(result.displayList());
+            response = response.concat(result.getDisplayList());
         });
         response.push({
             name: "",

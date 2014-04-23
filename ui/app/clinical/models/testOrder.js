@@ -72,8 +72,8 @@ Bahmni.Clinical.TestOrder = (function () {
         return result;
     };
 
-    TestOrder.prototype.displayList = function () {
-        var resultDisplayList = this.result.displayList();
+    TestOrder.prototype.getDisplayList = function () {
+        var resultDisplayList = this.result.getDisplayList();
         var thisOrderDate = this.orderDate;
         resultDisplayList.forEach(function(item) {
             item.orderDate = thisOrderDate;

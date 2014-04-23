@@ -34,13 +34,13 @@ Bahmni.Clinical.OrderGroup.prototype.group = function(orders, groupingParameter)
     });
 };
 
-Bahmni.Clinical.OrderGroup.prototype.create = function (encounterTransactions, ordersName, filterFunction, groupingParameter) {
-    var filteredOrders = this.flatten(encounterTransactions, ordersName, filterFunction);
-    var group = this.group(filteredOrders, groupingParameter);
-    return group;
+Bahmni.Clinical.OrderGroup.prototype.create = function (encounterTransactions, ordersName, filterFunction, groupingParameter, allTestAndPanels) {
+    var filteredOrders = this.flatten(encounterTransactions, ordersName, filterFunction, allTestAndPanels);
+    return this.group(filteredOrders, groupingParameter);
 };
 
-Bahmni.Clinical.OrderGroup.prototype.flatten = function (encounterTransactions, ordersName, filterFunction) {
+Bahmni.Clinical.OrderGroup.prototype.flatten = function (encounterTransactions, ordersName, filterFunction, allTestAndPanels) {
+    var allTestsPanelsConcept = new Bahmni.Clinical.AllTestsPanelsConcept(allTestAndPanels)
     filterFunction = filterFunction || function(){return true;}
     var setOrderProvider = function (encounter) { 
         encounter[ordersName].forEach(function(order) {
@@ -50,6 +50,7 @@ Bahmni.Clinical.OrderGroup.prototype.flatten = function (encounterTransactions, 
         });
     };
     encounterTransactions.forEach(setOrderProvider);
-    var flattenedOrders = encounterTransactions.reduce(function(orders, encounter) { return orders.concat(encounter[ordersName]) }, []);
-    return flattenedOrders.filter(filterFunction);
+    var flattenedOrders = Bahmni.Common.Util.ArrayUtil.flatten(encounterTransactions, ordersName);
+    var filteredOrders = flattenedOrders.filter(filterFunction);
+    return allTestsPanelsConcept.sortOrders(filteredOrders);
 };
