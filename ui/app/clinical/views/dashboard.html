@@ -1,5 +1,8 @@
+<div class="dashobard-header">
+  <button ng-click="toggle(patient)"></button>
+</div>
 <article class="visit">
-    <aside bindonce class="visit-history">
+    <aside bindonce class="visit-history" ng-show="patient.show">
         <div>
             <ul class="patient-info">
                 <li class="patient-img">

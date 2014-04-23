@@ -1,37 +1,39 @@
-<div ng-controller="PatientDashboardLabOrdersController">
+<div ng-controller="PatientDashboardLabOrdersController" class="dashboard-laborders-section">
     <h2>{{section.description}}</h2>
+    <section class="block">
+        <p>{{patientSummary.message}}</p>
 
-    <p>{{patientSummary.message}}</p>
-
-    <table>
-        <tbody ng-repeat="line in patientSummary.data">
-        <!-- HACKTAG: Apparently bo-if makes this go into an infinite loop-->
-        <tr ng-if="line.isSummary" ng-class="testResultClass(line)">
-            <td colspan="2" ng-hide="!line.name">
-                {{line.name}}
-                <span class="status" ng-show="pendingResults(line)">Pending!</span>
-
-            </td>
-        </tr>
-        <tr ng-if="!line.isSummary"
-            ng-class="{'is-abnormal': line.isAbnormal, 'referred-out': line.referredOut}">
-            <td>
-                <span>{{line.name}}</span>
-            </td>
-            <td class="value">
-                {{line.value}}
-                    <span class="range">
-                      <span ng-if="line.minNormal && line.maxNormal">
-                        Valid range {{' (' + line.minNormal + ' - ' + line.maxNormal + ') '}}
-                      </span>
-                      <span class="units">{{line.units}}</span>
+        <table>
+            <tbody ng-repeat="line in patientSummary.data">
+            <!-- HACKTAG: Apparently bo-if makes this go into an infinite loop-->
+            <tr ng-if="line.isSummary" ng-class="testResultClass(line)">
+                <td colspan="2" ng-hide="!line.name">
+                    {{line.name}}
+                    <span class="status" ng-show="pendingResults(line)">Pending!</span>
+                </td>
+            </tr>
+            <tr ng-if="!line.isSummary"
+                ng-class="{'is-abnormal': line.isAbnormal, 'referred-out': line.referredOut}">
+                <td>
+                    <span>{{line.name}}</span>
+                </td>
+                <td class="value">
+                    <span class="line-value">
+                        {{line.value}}
+                        <span class="range">
+                          <span ng-if="line.minNormal && line.maxNormal">
+                            Valid range {{' (' + line.minNormal + ' - ' + line.maxNormal + ') '}}
+                          </span>
+                          <span class="units">{{line.units}}</span>
+                        </span>
+                        <span class="referred">Referred Out</span>
                     </span>
-                <span class="referred">Referred Out</span>
-                <span class="fr">{{ line.orderDate | date :'dd MMM yy'}}</span>
-            </td>
-        </tr>
-        </tbody>
-    </table>
 
+                    <span class="fr date">{{ line.orderDate | date :'dd MMM yy'}}</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
 </div>
 
