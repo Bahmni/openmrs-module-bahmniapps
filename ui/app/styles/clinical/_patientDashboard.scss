@@ -125,6 +125,10 @@
     }
   }
 }
+.placeholder-text {
+  font-size: 14px;
+  padding: 10px;
+}
 .white-popup {
   position: relative;
   background: #FFF;
@@ -133,4 +137,48 @@
   max-width: 200px;
   margin: 20px auto;
   text-align: center;
+}
+.dashboard-diagnosis-section {
+  .diagnosis .history-diagnosis .table-body {
+    .diagnosis-name {
+      color: #333;
+      float: left;
+      padding: 0 0 0 10px;
+    }
+    .ruled-out.diagnosis-name {
+      color: #777;
+      text-decoration: line-through;
+    }
+  }
+  .table .col {padding: 6px 0;}
+  .col.col1 {
+    width: 60%;
+    float: left;
+  }
+  .col.col2 {
+    width: 35%;
+    float: right;
+    .order {
+      margin: 0;
+    }
+  }
+  .table-header {
+    .col.col2 {
+      span {padding: 0;}
+    }
+  }
+  .table-body {
+    .col.col2 {
+      font-size: 11px;
+      padding-left: 10px;
+      .view {
+        margin-bottom: 3px;
+        .date {
+          float: right;
+          color: #888;
+          padding-right: 10px;
+        }
+      }
+    }
+  }
 }

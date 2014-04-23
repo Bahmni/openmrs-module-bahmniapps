@@ -1,37 +1,31 @@
-<div>
+<div class="dashboard-diagnosis-section">
     <h2>{{section.description}}</h2>
 
-    <section class="block treatment-section">
-        <div class="table current-diagnosis" ng-if="allDiagnoses.length > 0">
-
-            <div ng-repeat="diagnosis in allDiagnoses" class="diagnosis-row">
-                <h4 class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">
-                    {{diagnosis.getDisplayName()}}
-                </h4>
-                <div class="state">
-                    <span>{{diagnosis.order}}</span>
-                    <span>{{diagnosis.certainty}}</span>
-                    <span>{{diagnosis.diagnosisStatus}}</span>
-                </div>
-
-                <div class="current">
-                            <span class="time-stamp">
+    <section class="block diagnosis">
+        <div class="table history-diagnosis" ng-if="allDiagnoses.length > 0">
+<!--             <div class="row table-header">
+                <div class="col col1"></div>
+                <div class="col col2"><span>Current</span></div>
+            </div> -->
+            <div class="table-body">
+                <div ng-repeat="diagnosis in allDiagnoses" class="row">
+                    <div class="view-past">
+                        <div class="col col1">
+                            <h4 class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">
+                                {{diagnosis.getDisplayName()}}
+                            </h4>
+                        </div>
+                        <div class="col col2">
+                            <div class="view">
+                                <span class="certainty">{{diagnosis.certainty}}</span>
                                 <span class="date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
-                                <span class="time">{{diagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
-                               <span ng-repeat="provider in diagnosis.providers">{{provider.name}}</span>
-                            </span>
+                            </div>
+                        </div>
                     </div>
-                    <div ng-show="diagnosis.firstDiagnosis.revised" class="current">
-                        <span class="time-stamp">
-                            <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
-                            <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
-                            <span ng-repeat="provider in diagnosis.firstDiagnosis.providers">{{provider.name}}</span>
-                        </span>
-                    </div>
-                </br>
+                </div>
             </div>
         </div>
-        <div ng-if="allDiagnoses.length == 0">
+        <div class="placeholder-text" ng-if="allDiagnoses.length == 0">
             No diagnoses made for this patient.
         </div>
     </section>
