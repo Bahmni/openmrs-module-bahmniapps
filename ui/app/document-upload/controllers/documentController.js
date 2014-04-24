@@ -6,6 +6,8 @@ angular.module('opd.documentupload')
             var encounterTypeUuid;
             var topLevelConceptUuid;
             var customVisitParams = Bahmni.DocumentUpload.Constants.visitRepresentation;
+            var encounterVisitParams = Bahmni.DocumentUpload.Constants.visitWithEncounterRepresentation;
+
             $scope.visits = [];
 
             var initNewVisit = function () {
@@ -52,12 +54,6 @@ angular.module('opd.documentupload')
                         visit.encounters = encounters.results.filter(function(a) {return(a.visit.uuid==visit.uuid)});
                         visit.initSavedImages();
                     });
-                });
-            };
-            var getEncountersForVisit = function(visit) {
-                return encounterService.getEncountersForEncounterType($rootScope.patient.uuid, encounterTypeUuid).success(function (encounters) {
-                    visit.encounters = encounters.results.filter(function(a) {return(a.visit.uuid==visit.uuid)});
-                    visit.initSavedImages();
                 });
             };
 
@@ -191,22 +187,25 @@ angular.module('opd.documentupload')
                 var visitDocument = createVisitDocument(existingVisit);
                 spinner.forPromise(function () {
                     return visitDocumentService.save(visitDocument).success(function (response) {
-                           existingVisit.uuid = response.visitUuid;
-//                        Replace this call for even better performance by getting only visit specific encounters and refresh.
-                            getEncountersForVisit(existingVisit).success(function () {
-                                if (existingVisit.isNew()) {
-                                    existingVisit = $scope.visits.push(visit);
-                                    initNewVisit();
-                                    $scope.currentVisit = visit;
-                                } else {
-                                    $scope.visits[$scope.visits.indexOf(existingVisit)] = visit;
-                                    $scope.currentVisit = visit;
-                                }
-                            }).success(function () {
-                                sortVisits();
-                                flashSuccessMessage();
+                        visitService.getVisit(response.visitUuid, encounterVisitParams).success(function (savedVisit) {
+                            var visit = createVisit(savedVisit);
+                            visit.encounters = visit.encounters.filter(function (encounter) {
+                                return(encounter.encounterType.uuid == encounterTypeUuid)
                             });
-                        })
+                            visit.initSavedImages();
+                            if (existingVisit.isNew()) {
+                                existingVisit = $scope.visits.push(visit);
+                                initNewVisit();
+                                $scope.currentVisit = visit;
+                            } else {
+                                $scope.visits[$scope.visits.indexOf(existingVisit)] = visit;
+                                $scope.currentVisit = visit;
+                            }
+                        }).success(function () {
+                            sortVisits();
+                            flashSuccessMessage();
+                        });
+                    })
                 }())
             };
 
