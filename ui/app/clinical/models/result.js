@@ -42,7 +42,7 @@ Bahmni.Clinical.Result = (function () {
                 notes: latestMatchingObservationValue(observationList, "LAB_NOTES"),
                 referredOut: matchingObservations(observationList, "REFERRED_OUT").length > 0,
                 observationDateTime: realObs.observationDateTime,
-                providerName: realObs.provider.name
+                providerName: realObs.provider? realObs.provider.name : ""
             });
         }
 
