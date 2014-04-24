@@ -22,11 +22,11 @@ angular.module('bahmni.registration')
             patient = null;
         };
 
-        var search = function (query, village, offset) {
+        var search = function (query, village, localName, offset) {
             offset = offset || 0;
             return $http.get(openmrsUrl + "/ws/rest/v1/patient", {
                 method: "GET",
-                params: {q: query, s: "byIdOrNameOrVillage", 'city_village': village, startIndex: offset},
+                params: {q: query, s: "byIdOrNameOrVillage", 'city_village': village, 'local_name': localName, startIndex: offset},
                 withCredentials: true
             });
         };

@@ -159,7 +159,7 @@ describe('SearchPatientController', function () {
             scope.name = "Ram Singh";
             spyOn(location, 'search');
 
-            scope.searchByVillageAndName();
+            scope.searchByVillageAndNameAndLocalName();
 
             expect(location.search).toHaveBeenCalledWith({'name': "Ram Singh"});
         });
@@ -168,9 +168,18 @@ describe('SearchPatientController', function () {
             scope.village = "Bilaspur";
             spyOn(location, 'search');
 
-            scope.searchByVillageAndName();
+            scope.searchByVillageAndNameAndLocalName();
 
             expect(location.search).toHaveBeenCalledWith({'village': "Bilaspur"});
+        });
+
+        it("should go to search page with localName", function () {
+            scope.localName = "localName";
+            spyOn(location, 'search');
+
+            scope.searchByVillageAndNameAndLocalName();
+
+            expect(location.search).toHaveBeenCalledWith({'localName': "localName"});
         });
     });
 

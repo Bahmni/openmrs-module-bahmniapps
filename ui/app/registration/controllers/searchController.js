@@ -10,6 +10,7 @@ angular.module('bahmni.registration')
         var searchBasedOnQueryParameters = function(offset) {
             $scope.village = $location.search().village || '';
             $scope.name = $location.search().name || '';
+            $scope.localName = $location.search().localName || '';
             var identifierPrefix = $location.search().identifierPrefix;
             if (!identifierPrefix || identifierPrefix.length === 0) {
                 identifierPrefix = preferences.identifierPrefix;
@@ -22,8 +23,8 @@ angular.module('bahmni.registration')
             $scope.identifierPrefix = $scope.identifierPrefix ||  $scope.identifierSources[0];
 
             $scope.registrationNumber = $location.search().registrationNumber || "";
-            if ($scope.name.trim().length > 0 || $scope.village.trim().length > 0) {
-                var searchPromise = patientService.search($scope.name, $scope.village, offset);
+            if ($scope.name.trim().length > 0 || $scope.village.trim().length > 0 || $scope.localName.trim().length > 0) {
+                var searchPromise = patientService.search($scope.name, $scope.village, $scope.localName, offset);
                 searching = true;
                 searchPromise['finally'](function() { searching = false; });
                 return searchPromise;
@@ -42,6 +43,7 @@ angular.module('bahmni.registration')
 
         var initialize = function() {
             $scope.searchActions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.patient.search.result.action");
+            appService.get
         };
 
         var identifyParams = function (querystring) {
@@ -82,13 +84,16 @@ angular.module('bahmni.registration')
             return searching && ! $scope.noMoreResultsPresent;
         }
         
-        $scope.searchByVillageAndName = function () {
+        $scope.searchByVillageAndNameAndLocalName = function () {
             var queryParams = {};
             if($scope.name){
                 queryParams.name = $scope.name;
             }
             if ($scope.village) {
                 queryParams.village = $scope.village;
+            }
+            if ($scope.localName) {
+                queryParams.localName = $scope.localName;
             }
             $location.search(queryParams);
         };
