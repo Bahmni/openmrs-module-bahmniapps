@@ -8,14 +8,14 @@ angular.module('bahmni.common.uiHelper')
                 hiddenFrame.contentWindow.print();
                 $(hiddenFrame).remove();
             };
-            var emptyBody = "<!doctype html>"+
+            var htmlContent = "<!doctype html>"+
                         "<html>"+
                             '<body onload="printAndRemove();">' +
-                            "</body>"+
+                                $(element).html() +
+                            '</body>'+
                         "</html>";
             var doc = hiddenFrame.contentWindow.document.open("text/html", "replace");
-            doc.write(emptyBody);
-            $(element).appendTo($(doc).find('body'));
+            doc.write(htmlContent);
             doc.close();
         };
 
@@ -23,11 +23,16 @@ angular.module('bahmni.common.uiHelper')
             $http.get(templateUrl).success(function(template){
                 var printScope = $rootScope.$new()
                 angular.extend(printScope, data);
-                var element = $compile($(template))(printScope);
-                $timeout(function(){
-                    printElement(element);
-                    printScope.$destroy();
-                });
+                var element = $compile($('<div>' + template + '</div>'))(printScope);
+                var waitForRenderAndPrint = function() {
+                    if(printScope.$$phase || $http.pendingRequests.length) {
+                        $timeout(waitForRenderAndPrint);
+                    } else {
+                        printElement(element);
+                        printScope.$destroy();
+                    }
+                }
+                waitForRenderAndPrint();
             });
         };
 
