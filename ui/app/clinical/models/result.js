@@ -4,16 +4,7 @@
 //Use Bahmni.Clinical.LabResult
 Bahmni.Clinical.Result = (function () {
     var Result = function (options) {
-        options = options || {};
-        this.name = options.name;
-        this.value = options.value;
-        this.minNormal = options.minNormal;
-        this.maxNormal = options.maxNormal;
-        this.isAbnormal = options.isAbnormal;
-        this.providerName = options.providerName;
-        this.observationDateTime = options.observationDateTime;
-        this.notes = options.notes;
-        this.referredOut = options.referredOut;
+        angular.extend(this, options);
         this.isSummary = false;
     };
 
@@ -39,11 +30,11 @@ Bahmni.Clinical.Result = (function () {
             return sortedObservations[0] && sortedObservations[0].value;
         };
 
-    Result.create = function (parentName, observationList) {
+    Result.create = function (parentConcept, observationList) {
         var realObs = getRealObs(observationList);
         if (realObs) {
             return new Bahmni.Clinical.Result({
-                name: realObs.concept.name,
+                concept: realObs.concept,
                 value: realObs.value,
                 isAbnormal: valueOf(observationList, "LAB_ABNORMAL"),
                 minNormal: valueOf(observationList, "LAB_MINNORMAL"),
@@ -56,7 +47,7 @@ Bahmni.Clinical.Result = (function () {
         }
 
         return new Bahmni.Clinical.Result({
-            name: parentName,
+            concept: parentConcept,
             isAbnormal: valueOf(observationList, "LAB_ABNORMAL"),
             minNormal: valueOf(observationList, "LAB_MINNORMAL"),
             maxNormal: valueOf(observationList, "LAB_MAXNORMAL"),

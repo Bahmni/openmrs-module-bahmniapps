@@ -1,6 +1,6 @@
 'use strict';
 
-Bahmni.Clinical.Visit = function (encounters, drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, labOrders, encounterConfig, radiologyDocs, allTestAndPanels) {
+Bahmni.Clinical.Visit = function (encounters, drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, labOrders, encounterConfig, radiologyDocs) {
     this.encounters = encounters;
     this.drugOrders = drugOrders;
     this.consultationNotes = consultationNotes;

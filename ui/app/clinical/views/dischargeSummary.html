@@ -83,6 +83,14 @@
 	    <h3>Follow up on</h3>
 	    <span class="value">{{dischargeSummary.getObservationValue('Follow up Date') | date: 'd MMM yy'}}</span>
 	  </section>
+	  <section>
+	    <h3>Lab Investigations</h3>
+	    <ul>
+	    	<li ng-repeat="labOrder in dischargeSummary.getUniqueLabOrders()">
+	    		{{labOrder.concept.name}}
+	    	<li>
+	    </ul>
+	  </section>
 	</main>
 	<footer>
 	</footer>

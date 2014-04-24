@@ -34,6 +34,10 @@
 			return this.visit.drugOrders.filter(function(drugOrder) {
 				return DateUtil.parse(drugOrder.startDate) >= dischargeDate;
 			});
+		},
+
+		getUniqueLabOrders: function() {
+			return Bahmni.Clinical.OrdersUtil.unique(this.visit.labOrders);
 		}
 	}
 })();

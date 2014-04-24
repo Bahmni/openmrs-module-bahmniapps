@@ -3,55 +3,27 @@
 Bahmni.Clinical.Panel = (function () {
     var Panel = function (options) {
         options = options || {};
-        this.name = options.name;
+        this.concept = options.concept;
         this.results = options.results || [];
         this.display = this.getDisplayList();
     };
 
     Panel.create = function (obs) {
-        var results = [];
-        obs.groupMembers.forEach(function (groupMember) {
-            results.push(Bahmni.Clinical.Results.create(groupMember));
-        });
-
-        return new Bahmni.Clinical.Panel({
-            name: obs.concept.name,
-            results: results
-        });
-    };
-
-    var flattenResults = function (panels) {
-        return panels.map(function (panel) {
-            return panel.results;
-        }).reduce(function (a, b) {
-                return a.concat(b);
-            });
+        var results = obs.groupMembers.map(Bahmni.Clinical.Results.create);
+        return new Bahmni.Clinical.Panel({ concept: obs.concept, results: results });
     };
 
     Panel.prototype.getDisplayList = function() {
-        var response = [];
-        response.push({
-            name: this.name,
-            isSummary: true,
-            hasResults: true
-        });
-        this.results.forEach(function(result) {
-            response = response.concat(result.getDisplayList());
-        });
-        response.push({
-            name: "",
-            isSummary: true,
-            hasResults: false
-        });
-        return response;
+        var displayList = [];
+        displayList.push({ name: this.concept.name, isSummary: true, hasResults: true });
+        this.results.forEach(function(result) { displayList = displayList.concat(result.getDisplayList()); });
+        displayList.push({ name: "", isSummary: true, hasResults: false });
+        return displayList;
     };
 
     Panel.merge = function (panels) {
-        var results = flattenResults(panels);
-        return new Bahmni.Clinical.Panel({
-            name: panels[0].name,
-            results: results
-        });
+        var results = Bahmni.Common.Util.ArrayUtil.flatten(panels, 'results');
+        return new Bahmni.Clinical.Panel({ concept: panels[0].concept, results: results });
     };
 
     return Panel;

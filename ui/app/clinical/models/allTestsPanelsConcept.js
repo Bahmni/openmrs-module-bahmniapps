@@ -1,13 +1,14 @@
 'use strict';
 
 Bahmni.Clinical.AllTestsPanelsConcept = function(allTestAndPanels) {
-	this.sortOrders = function(orders) {
-		if(!allTestAndPanels) return orders;
-		allTestAndPanels.setMembers.forEach(function(concept, index){
-			orders.forEach(function(order){ 
-				if(order.concept.name === concept.name) order.sortWeight = index;
+	var sortedConcepts = allTestAndPanels ? allTestAndPanels.setMembers : [];
+
+	this.sort = function(conceptHolders) {
+		sortedConcepts.forEach(function(concept, index){
+			conceptHolders.forEach(function(conceptHolder){ 
+				if(conceptHolder.concept.name === concept.name) conceptHolder.sortWeight = index;
 			});
 		});
-		return Bahmni.Common.Util.ArrayUtil.sort(orders, 'sortWeight');
+		return Bahmni.Common.Util.ArrayUtil.sort(conceptHolders, 'sortWeight');
 	};
 }

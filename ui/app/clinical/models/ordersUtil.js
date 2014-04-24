@@ -8,7 +8,6 @@ Bahmni.Clinical.OrdersUtil = (function () {
     };
 
     var OrdersUtil = {
-
         //The logic except comparer can be moved to ArrayUtil
         unique: function (orders) {
             var uniqueOrders = [];

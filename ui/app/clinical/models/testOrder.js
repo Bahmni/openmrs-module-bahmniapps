@@ -3,93 +3,47 @@
 //Top level object per test order
 Bahmni.Clinical.TestOrder = (function () {
     var TestOrder = function (options) {
-        options = options || {};
-        var self = this;
-        self.name = options.name;
-        self.result = options.result;
-        self.orderDate = options.orderDate;
-        self.ordererComment = options.ordererComment;
-        self.fulfillerComment = options.fulfillerComment;
-        self.isPanel = function () {
-            return self.result instanceof Bahmni.Clinical.Panel;
-        };
+        angular.extend(this, options);
+        self.isPanel = this.result instanceof Bahmni.Clinical.Panel;
     };
 
-    var sort = function (allTestsAndPanels, panelList, filterFunction) {
-        var indexOf = function (allTestAndPanels, order) {
-            var indexCount = 0;
-            allTestAndPanels.setMembers && allTestAndPanels.setMembers.every(function (aTestOrPanel) {
-                if (filterFunction(aTestOrPanel, order))
-                    return false;
-                else {
-                    indexCount++;
-                    return true;
-                }
-            });
-            return indexCount;
-        };
-
-        panelList.forEach(function (aPanel) {
-            aPanel.results.sort(function (firstElement, secondElement) {
-                var indexOfFirstElement = indexOf(allTestsAndPanels, firstElement);
-                var indexOfSecondElement = indexOf(allTestsAndPanels, secondElement);
-                return indexOfFirstElement - indexOfSecondElement;
-            });
-        });
-        return panelList;
-    };
-
-    var filterFunction = function (aTestOrPanel, aPanelResult) {
-        return aTestOrPanel.name.name == aPanelResult.name;
-    };
-
-    var createResult = function (observationList, allTestAndPanels) {
-        var isPanel, panelList = [], result,
-            depth = function (obs) {
-                var result = 0, temp = obs;
-                while (temp.groupMembers.length > 0) {
-                    result++;
-                    temp = temp.groupMembers[0];
-                }
-                return result;
-            };
-        if (observationList.length === 0) return null;
-
-        isPanel = depth(observationList[0]) === 3;
-        if (isPanel) {
-            observationList.forEach(function (observation) {
-                panelList.push(Bahmni.Clinical.Panel.create(observation));
-            });
-
-
-            panelList = allTestAndPanels ? sort(allTestAndPanels, panelList, filterFunction) : panelList;
-
-            result = Bahmni.Clinical.Panel.merge(panelList);
+    var createResult = function (observations, allTestAndPanels) {
+        if (observations.length === 0) return null;
+        var allTestsPanelsConcept = new Bahmni.Clinical.AllTestsPanelsConcept(allTestAndPanels)
+        if (isPanel(observations[0])) {
+            var panels = allTestsPanelsConcept.sort(observations.map(Bahmni.Clinical.Panel.create));
+            return Bahmni.Clinical.Panel.merge(panels);
         } else {
-            result = Bahmni.Clinical.Results.create(observationList[0]);
+            return Bahmni.Clinical.Results.create(observations[0]);
         }
-
-        return result;
     };
 
     TestOrder.prototype.getDisplayList = function () {
+        var self = this;
         var resultDisplayList = this.result.getDisplayList();
-        var thisOrderDate = this.orderDate;
-        resultDisplayList.forEach(function(item) {
-            item.orderDate = thisOrderDate;
-        });
+        resultDisplayList.forEach(function(item) { item.orderDate = self.orderDate; });
         return resultDisplayList;
     };
 
     TestOrder.create = function (orderGroupWithObs, allTestAndPanels) {
         return new Bahmni.Clinical.TestOrder({
-            name: orderGroupWithObs.concept.name,
-            result: createResult(orderGroupWithObs.obs, allTestAndPanels) || new Bahmni.Clinical.Results({name: orderGroupWithObs.concept.name}),
-            orderDate: orderGroupWithObs.dateCreated,
-            ordererComment: "",
-            fulfillerComment: ""
+            concept: orderGroupWithObs.concept,
+            result: createResult(orderGroupWithObs.obs, allTestAndPanels) || new Bahmni.Clinical.Results({concept: orderGroupWithObs.concept}),
+            orderDate: orderGroupWithObs.dateCreated
         });
     };
 
+    var isPanel = function(observation) {
+        return depth(observation) === 3;
+    }
+
+    var depth = function (obs) {
+        var result = 0, temp = obs;
+        while (temp.groupMembers.length > 0) {
+            result++;
+            temp = temp.groupMembers[0];
+        }
+        return result;
+    };
     return TestOrder;
 })();

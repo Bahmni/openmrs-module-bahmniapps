@@ -52,5 +52,5 @@ Bahmni.Clinical.OrderGroup.prototype.flatten = function (encounterTransactions, 
     encounterTransactions.forEach(setOrderProvider);
     var flattenedOrders = Bahmni.Common.Util.ArrayUtil.flatten(encounterTransactions, ordersName);
     var filteredOrders = flattenedOrders.filter(filterFunction);
-    return allTestsPanelsConcept.sortOrders(filteredOrders);
+    return allTestsPanelsConcept.sort(filteredOrders);
 };

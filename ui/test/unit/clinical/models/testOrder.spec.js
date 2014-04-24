@@ -129,15 +129,15 @@ describe('Order group with obs', function () {
     it("should create and map test orders with observations", function () {
         var orderGroup = new orderGroupWithObs();
         var testOrder = Bahmni.Clinical.TestOrder.create(orderGroup, undefined);
-        expect(testOrder.name).toBe('Asitic Fluid');
+        expect(testOrder.concept.name).toBe('Asitic Fluid');
         expect(testOrder.result instanceof Bahmni.Clinical.Panel).toBe(true);
     });
 
     it("should create a Result from a list of observations", function() {
         var orderGroup = new orderGroupWithObs();
         var observations = orderGroup.obs[0].groupMembers[0].groupMembers[0].groupMembers;
-        var result = Bahmni.Clinical.Result.create("Gram Stain", observations);
-        expect(result.name).toBe('Gram Stain (Asitic Fluid)');
+        var result = Bahmni.Clinical.Result.create({name: "Gram Stain"}, observations);
+        expect(result.concept.name).toBe('Gram Stain (Asitic Fluid)');
         expect(result.value).toBe('Positive');
         expect(result.isAbnormal).toBe(false);
     });
@@ -146,9 +146,9 @@ describe('Order group with obs', function () {
         var orderGroup = new orderGroupWithObs();
         var obs = orderGroup.obs[0].groupMembers[0];
         var results = Bahmni.Clinical.Results.create(obs);
-        expect(results.name).toBe('Gram Stain (Asitic Fluid)');
+        expect(results.concept.name).toBe('Gram Stain (Asitic Fluid)');
         var wrappedResult = results.results[0];
-        expect(wrappedResult.name).toBe('Gram Stain (Asitic Fluid)');
+        expect(wrappedResult.concept.name).toBe('Gram Stain (Asitic Fluid)');
     });
 
     it('should create a Panel object', function() {
