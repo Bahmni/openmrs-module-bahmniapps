@@ -1,0 +1,20 @@
+<div class="vitals form-horizontal">
+    <fieldset ng-if="!observation.isGroup()">
+        <div class="form-group">
+            <show-primary-concept observation="observation.primaryObs" at-least-one-value-is-set="atLeastOneValueIsSet"></show-primary-concept>
+            <div class="checkbox-inline" ng-if="observation.abnormal">
+                <input id="isAbnormal-{{$index}}" type="checkbox" ng-model="observation.abnormal.value" ng-disabled="!observation.hasValue()"/>
+                <span for="isAbnormal-{{$index}}">Abnormal</span>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset ng-if="observation.isGroup()" class="hasLegend">
+        <legend class="mylegend"><strong>{{observation.label}}</strong></legend>
+        <div class="form-group">
+            <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers">
+                <concept observation="member" at-least-one-value-is-set="atLeastOneValueIsSet"></concept>
+            </div>
+        </div>
+    </fieldset>
+</div>

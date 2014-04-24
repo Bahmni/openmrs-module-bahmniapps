@@ -52,7 +52,10 @@ Bahmni.Common = Bahmni.Common || {};
         compoundObservationConceptName:"XCompoundObservation",
         abnormalObservationConceptName: "IS_ABNORMAL",
         documentsPath: '/document_images',
-        documentsConceptName: 'Document'
+        documentsConceptName: 'Document',
+        miscConceptClassName: 'Misc',
+        abnormalConceptClassName: 'Abnormal',
+        conceptDetailsClassName: 'Concept Details'
 };
     
 })();
