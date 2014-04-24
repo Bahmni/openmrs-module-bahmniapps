@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('showPrimaryConcept', [function () {
+    .directive('concept', [function () {
         var controller = function ($scope, $q, $filter) {
+            
             var conceptMapper = new Bahmni.ConceptSet.ConceptMapper();
 
             $scope.getPossibleAnswers = function () {
@@ -39,17 +40,7 @@ angular.module('bahmni.common.conceptSet')
                 observation: "=",
                 atLeastOneValueIsSet : "="
             },
-            template: '<ng-include src="\'../common/concept-set/views/primaryObservation.html\'" />'
-        }
-
-    }]).directive('concept', [function () {
-        return {
-            restrict: 'E',
-            scope: {
-                observation: "=",
-                atLeastOneValueIsSet : "="
-            },
-            template: '<ng-include src="\'../common/concept-set/views/observation.html\'" />'
+            template: '<ng-include src="\'../common/new-concept-set/views/observation.html\'" />'
         }
     }]).directive('conceptSet', ['contextChangeHandler', function (contextChangeHandler) {
         var template =
@@ -63,15 +54,13 @@ angular.module('bahmni.common.conceptSet')
             var observationMapper = new Bahmni.ConceptSet.ObservationMapper();
             conceptSetService.getConceptSetMembers({name: conceptSetName, v: "fullchildren"}).success(function (response) {
                 var conceptSet = response.results[0];
-                $scope.$watch('observations', function (observations) {
-                    $scope.rootObservation = conceptSet ? observationMapper.map(observations, conceptSet, conceptSetUIConfig.value || {}) : null;
-                    changeObservations();
-                });
+                $scope.rootObservation = conceptSet ? observationMapper.map($scope.observations, conceptSet, conceptSetUIConfig.value || {}) : null;
+                updateObservationsOnRootScope();
             });
 
             $scope.atLeastOneValueIsSet = false;
 
-            var changeObservations = function () {
+            var updateObservationsOnRootScope = function () {
                 for (var i = 0; i < $scope.observations.length; i++) {
                     if ($scope.observations[i].concept.uuid === $scope.rootObservation.concept.uuid) {
                         $scope.observations[i] = $scope.rootObservation;

@@ -1,9 +1,15 @@
-Bahmni.ConceptSet.Observation = function (observation) {
+Bahmni.ConceptSet.Observation = function (observation, savedObs) {
     angular.extend(this, observation);
+    this.isObservation = true;
+
+    if (savedObs) {
+        this.uuid = savedObs.uuid;
+        this.value = savedObs.value;
+    }
 };
 
 Bahmni.ConceptSet.Observation.prototype = {
-
+    
     displayValue: function () {
         if (this.possibleAnswers.length > 0) {
             for (var i = 0; i < this.possibleAnswers.length; i++) {
@@ -74,5 +80,12 @@ Bahmni.ConceptSet.Observation.prototype = {
         if (value === '' || value === null || value === undefined) return false;
         if (value instanceof Array) return value.length > 0;
         return true;
+    },
+
+    isValidDate: function () {
+        if (!this.hasValue()) return true;
+        var date = new Date(this.value);
+        return date.getUTCFullYear() && date.getUTCFullYear().toString().length <= 4;
     }
+
 };
