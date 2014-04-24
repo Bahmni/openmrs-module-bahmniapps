@@ -1,7 +1,7 @@
 'use strict';
 
-describe('Order group with obs', function () {
-    var orderGroupWithObs = function () {
+describe('Lab Order', function () {
+    var newOrder = function () {
         return {
                 "concept": {
                     "name": "Asitic Fluid",
@@ -10,7 +10,7 @@ describe('Order group with obs', function () {
                 "provider": {
                     "name": "superman"
                 },
-                "obs": [{
+                "observations": [{
                     "observationDateTime": "2014-04-03T14:37:15.000+0530",
                     "groupMembers": [{
                         "observationDateTime": "2014-04-03T14:37:15.000+0530",
@@ -126,34 +126,33 @@ describe('Order group with obs', function () {
             };
     };
 
-    it("should create and map test orders with observations", function () {
-        var orderGroup = new orderGroupWithObs();
-        var testOrder = Bahmni.Clinical.TestOrder.create(orderGroup, undefined);
-        expect(testOrder.concept.name).toBe('Asitic Fluid');
-        expect(testOrder.result instanceof Bahmni.Clinical.Panel).toBe(true);
+    it("should create and map lab orders with observations", function () {
+        var order = newOrder();
+        var labOrder = Bahmni.Clinical.LabOrder.create(order);
+        expect(labOrder.concept.name).toBe('Asitic Fluid');
+        expect(labOrder.orderable instanceof Bahmni.Clinical.Panel).toBe(true);
     });
 
     it("should create a Result from a list of observations", function() {
-        var orderGroup = new orderGroupWithObs();
-        var observations = orderGroup.obs[0].groupMembers[0].groupMembers[0].groupMembers;
+        var order = newOrder();
+        var observations = order.observations[0].groupMembers[0].groupMembers[0].groupMembers;
         var result = Bahmni.Clinical.Result.create({name: "Gram Stain"}, observations);
         expect(result.concept.name).toBe('Gram Stain (Asitic Fluid)');
         expect(result.value).toBe('Positive');
         expect(result.isAbnormal).toBe(false);
     });
 
-    it('should create Results object from a results obs', function() {
-        var orderGroup = new orderGroupWithObs();
-        var obs = orderGroup.obs[0].groupMembers[0];
-        var results = Bahmni.Clinical.Results.create(obs);
-        expect(results.concept.name).toBe('Gram Stain (Asitic Fluid)');
-        var wrappedResult = results.results[0];
-        expect(wrappedResult.concept.name).toBe('Gram Stain (Asitic Fluid)');
+    it('should create Results object from a results observations', function() {
+        var order = newOrder();
+        var observations = order.observations[0].groupMembers[0];
+        var test = Bahmni.Clinical.Test.create(observations);
+        expect(test.concept.name).toBe('Gram Stain (Asitic Fluid)');
+        var result = test.results[0];
+        expect(result.concept.name).toBe('Gram Stain (Asitic Fluid)');
     });
 
     it('should create a Panel object', function() {
-        var orderGroup = new orderGroupWithObs();
-        var panelObs = orderGroup.obs[0];
-        var panel = Bahmni.Clinical.Panel.create(panelObs);
+        var order = newOrder();
+        var panel = Bahmni.Clinical.Panel.create(order.concept, order.observations);
     });
 });

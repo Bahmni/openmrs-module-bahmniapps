@@ -34,7 +34,7 @@ angular.module('bahmni.clinical')
                 var getDisplayListForUniqueOrders = function (uniqueTests) {
                     var displayList = [];
                     uniqueTests.forEach(function (uniqueOrder) {
-                        displayList = displayList.concat(Bahmni.Clinical.TestOrder.create(uniqueOrder, $rootScope.allTestsAndPanelsConcept).getDisplayList());
+                        displayList = displayList.concat(Bahmni.Clinical.LabOrder.create(uniqueOrder, $rootScope.allTestsAndPanelsConcept).getDisplayList());
                     });
                     return displayList;
                 };

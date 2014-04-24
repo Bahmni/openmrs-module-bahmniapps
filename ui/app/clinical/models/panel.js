@@ -1,29 +1,23 @@
 'use strict';
 
 Bahmni.Clinical.Panel = (function () {
+    var ArrayUtil = Bahmni.Common.Util.ArrayUtil;
+    
     var Panel = function (options) {
-        options = options || {};
-        this.concept = options.concept;
-        this.results = options.results || [];
-        this.display = this.getDisplayList();
+        angular.extend(this, options);
     };
 
-    Panel.create = function (obs) {
-        var results = obs.groupMembers.map(Bahmni.Clinical.Results.create);
-        return new Bahmni.Clinical.Panel({ concept: obs.concept, results: results });
+    Panel.create = function (concept, observations) {
+        var tests = ArrayUtil.flatten(observations, 'groupMembers').map(Bahmni.Clinical.Test.create);
+        return new Panel({ concept: concept, tests: tests });
     };
 
-    Panel.prototype.getDisplayList = function() {
+    Panel.prototype.getDisplayList = function()     {
         var displayList = [];
         displayList.push({ name: this.concept.name, isSummary: true, hasResults: true });
-        this.results.forEach(function(result) { displayList = displayList.concat(result.getDisplayList()); });
+        this.tests.forEach(function(test) { displayList = displayList.concat(test.getDisplayList()); });
         displayList.push({ name: "", isSummary: true, hasResults: false });
         return displayList;
-    };
-
-    Panel.merge = function (panels) {
-        var results = Bahmni.Common.Util.ArrayUtil.flatten(panels, 'results');
-        return new Bahmni.Clinical.Panel({ concept: panels[0].concept, results: results });
     };
 
     return Panel;

@@ -3,7 +3,7 @@ Bahmni.Clinical.OrderObservationsMapper = function () {
 
 Bahmni.Clinical.OrderObservationsMapper.prototype.createOrderGroup = function (encounterTransactions, ordersName, filter, groupingParameter) {
     var orderGroup = new Bahmni.Clinical.OrderGroup();
-    var orders = orderGroup.flatten(encounterTransactions, ordersName, filter);
+    var orders = orderGroup.flatten(encounterTransactions, ordersName).filter(filter);
     var observations = Bahmni.Common.Util.ArrayUtil.flatten(encounterTransactions, 'observations');
     this.map(observations, orders);
     return orderGroup.group(orders, groupingParameter);
@@ -40,9 +40,9 @@ Bahmni.Clinical.OrderObservationsMapper.prototype.map = function (observations, 
             });
         },
         mapTestOrderWithObs = function (observations, testOrder) {
-            var obs = [];
-            getObservationForOrderIfExist(observations, testOrder, obs);
-            testOrder.obs = obs;
+            var orderObservations = [];
+            getObservationForOrderIfExist(observations, testOrder, orderObservations);
+            testOrder.observations = orderObservations;
         };
 
     orders.forEach(function (order) { mapTestOrderWithObs(observations, order); });

@@ -49,10 +49,13 @@ describe('OrderObservationsMapper', function () {
 
     it("should create and map test orders with observations",function(){
         var encounterTransactions = listOfEncounterTransactions();
-        var orderObservationsMapper = new Bahmni.Clinical.OrderObservationsMapper().createOrderGroup(encounterTransactions,'testOrders', null);
+        var filter = function() {return true; }
+
+        var orderObservationsMapper = new Bahmni.Clinical.OrderObservationsMapper().createOrderGroup(encounterTransactions,'testOrders', filter);
+        
         expect(orderObservationsMapper.length).toBe(2);
-        expect(orderObservationsMapper[0].orders[0].obs.length).toBe(0);
+        expect(orderObservationsMapper[0].orders[0].observations.length).toBe(0);
         expect(orderObservationsMapper[1].orders.length).toBe(1);
-        expect(orderObservationsMapper[1].orders[0].obs.length).toBe(1);
+        expect(orderObservationsMapper[1].orders[0].observations.length).toBe(1);
     });
 });

@@ -35,13 +35,13 @@ Bahmni.Clinical.OrderGroup.prototype.group = function(orders, groupingParameter)
 };
 
 Bahmni.Clinical.OrderGroup.prototype.create = function (encounterTransactions, ordersName, filterFunction, groupingParameter, allTestAndPanels) {
-    var filteredOrders = this.flatten(encounterTransactions, ordersName, filterFunction, allTestAndPanels);
+    filterFunction = filterFunction || function() {return true; };
+    var filteredOrders = this.flatten(encounterTransactions, ordersName, allTestAndPanels).filter(filterFunction);
     return this.group(filteredOrders, groupingParameter);
 };
 
-Bahmni.Clinical.OrderGroup.prototype.flatten = function (encounterTransactions, ordersName, filterFunction, allTestAndPanels) {
+Bahmni.Clinical.OrderGroup.prototype.flatten = function (encounterTransactions, ordersName, allTestAndPanels) {
     var allTestsPanelsConcept = new Bahmni.Clinical.AllTestsPanelsConcept(allTestAndPanels)
-    filterFunction = filterFunction || function(){return true;}
     var setOrderProvider = function (encounter) { 
         encounter[ordersName].forEach(function(order) {
             order.provider = encounter.providers[0];
@@ -51,6 +51,5 @@ Bahmni.Clinical.OrderGroup.prototype.flatten = function (encounterTransactions, 
     };
     encounterTransactions.forEach(setOrderProvider);
     var flattenedOrders = Bahmni.Common.Util.ArrayUtil.flatten(encounterTransactions, ordersName);
-    var filteredOrders = flattenedOrders.filter(filterFunction);
-    return allTestsPanelsConcept.sort(filteredOrders);
+    return allTestsPanelsConcept.sort(flattenedOrders);
 };
