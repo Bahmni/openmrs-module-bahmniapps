@@ -7,6 +7,7 @@ angular.module('bahmni.clinical')
             $scope.visit = null;
             $scope.patientUuid = $stateParams.patientUuid;
             $scope.showTrends = true;
+            $scope.showLabInvestigations = true;
 
             $scope.obsIgnoreList = appService.getAppDescriptor().getConfig("obsIgnoreList").value || {};
 
@@ -20,6 +21,10 @@ angular.module('bahmni.clinical')
 
             $scope.toggle = function (item) {
                 item.show = !item.show
+            };
+
+            $scope.toggleLabInvestigation = function () {
+                $scope.showLabInvestigations = !$scope.showLabInvestigations;
             };
 
             $scope.testResultClass = function (line) {

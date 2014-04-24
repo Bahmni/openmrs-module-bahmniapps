@@ -30,6 +30,7 @@
                         <span class="provider" bo-text="diagnosis.providers[0].name"></span>
                       </div>
                     </div>
+
                     <div ng-show="!diagnosis.firstDiagnosis.revised" class="col col2"></div>
                     <div class="col col3">
                       <div class="view">
@@ -64,9 +65,55 @@
     </section>
 </section>
 <section class="block laborder-section" ng-show="visit.hasLabTests()">
-    <h2>Lab Investigations</h2>
+    <div ng-if="visit.admissionDate" ng-init="toggleLabInvestigation()">
+        <h2> IPD Investigations</h2>
+        <ul class="block-content">
+            <table>
+                <tr>
+                    <th>
+                        <strong bo-text="(visit.admissionDate | date:'dd MMM yy') + ' - '+ (visit.visitEndDate | date:'dd MMM yy')"></strong>
+                    </th>
+                    <th ng-repeat="day in visit.tabularResults.getDays()" bo-text="'D'+ day.dayNumber"></th>
+                </tr>
+                <tr ng-repeat="testOrder in visit.tabularResults.getRows()">
+                    <td ng-class="testResultClass(testOrder)"
+                        colspan="{{testOrder.results.length + 1}}" ng-if="testOrder.isSummary">
+                        {{testOrder.name}}
+                        <span class="status" ng-show="pendingResults(testOrder)">Pending!</span>
+                    </td>
 
-    <div ng-repeat="labOrders in visit.labTestOrderObsMap">
+                    <td ng-if="!testOrder.isSummary">
+                        {{testOrder.name}}
+                        <span class="status" ng-show="pendingResults(testOrder)">Pending!</span>
+                        <span class="range">
+                            <span ng-if="testOrder.minNormal && testOrder.maxNormal">
+                                Valid range {{' (' + testOrder.minNormal + ' - ' + testOrder.maxNormal + ') '}}
+                            </span>
+                        <span class="units">{{testOrder.units}}</span>
+                    </span>
+                    </td>
+
+                    <td ng-repeat="resultDay in testOrder.results" ng-if="!testOrder.isSummary" >
+                        <ul>
+                            <li ng-repeat="result in resultDay" ng-class="{'is-abnormal': result.isAbnormal}">
+                                {{result.value}}
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </ul>
+    </div>
+    <h2>Lab Investigations
+        <button class="toggle fr" ng-if="visit.admissionDate">
+            <i class="icon-plus-sign" ng-click="toggleLabInvestigation()"
+               ng-hide="showLabInvestigations"></i>
+            <i class="icon-minus-sign" ng-click="toggleLabInvestigation()"
+               ng-show="showLabInvestigations"></i>
+        </button>
+    </h2>
+
+    <div ng-repeat="labOrders in visit.labTestOrderObsMap" ng-show="showLabInvestigations">
         <table>
             <thead>
             <tr>
@@ -140,33 +187,15 @@
             </tbody>
         </table>
     </div>
-
-    <div ng-show="visit.admissionDate">
-        <h2> IPD Investigations</h2>
-        <ul class="block-content">
-            <table>
-                <tr>
-                    <th>
-                        <strong bo-text="(visit.admissionDate | date:'dd MMM yy') + ' - '+ (visit.visitEndDate | date:'dd MMM yy')"></strong>
-                    </th>
-                    <th ng-repeat="day in visit.tabularResults.getDays()" bo-text="'D'+ day.dayNumber"></th>
-                </tr>
-                <tr ng-repeat="testOrder in visit.tabularResults.getRows()">
-                    <td bo-text="testOrder.testName" ></td>
-                    <td ng-repeat="resultDay in testOrder.results">
-                        <div ng-repeat="result in resultDay" ng-class="{'is-abnormal': result.isAbnormal}">{{result.value}}</div>
-                    </td>
-                </tr>
-            </table>
-        </ul>
-    </div>
-
 </section>
+
 <section class="block radiologyInvestigations" ng-show="visit.radiologyDocs.length">
     <h2>Radiology Investigations</h2>
-    <ul image-gallery image-gallery-target=".document-link">        
+    <ul image-gallery image-gallery-target=".document-link">
         <li ng-repeat="radiologyDoc in visit.radiologyDocs">
-            <a class="document-link temp-class" title="{{radiologyDoc.name}}" bo-text="radiologyDoc.name" ng-src="{{radiologyDoc.src}}" image-gallery-item></a>
+            <a class="document-link temp-class" title="{{radiologyDoc.name}}" bo-text="radiologyDoc.name"
+               ng-src="{{radiologyDoc.src}}" image-gallery-item></a>
+
             <div class="footer-note">
                 <span class="time-stamp">
                     <span class="date">{{radiologyDoc.dateTime | date:'dd MMM yy'}}</span>
@@ -224,7 +253,8 @@
             </td>
             <td class="dosage-days">
                 <div class="dosage">
-                    <span><span class="copy">From </span>{{(drugOrder.startDate | date:'d MMM yy')}}<span class="copy"> for </span>{{visit.numberOfDosageDaysForDrugOrder(drugOrder)}} day(s)<span>
+                    <span><span class="copy">From </span>{{(drugOrder.startDate | date:'d MMM yy')}}<span
+                            class="copy"> for </span>{{visit.numberOfDosageDaysForDrugOrder(drugOrder)}} day(s)</span>
                     <span bo-show="drugOrder.prn" class="prn">Take as required</span>
                 </div>
                 <button class="toggle fr">
