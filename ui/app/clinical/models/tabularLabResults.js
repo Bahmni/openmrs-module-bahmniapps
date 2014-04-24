@@ -103,9 +103,9 @@ Bahmni.Clinical.TabularLabResults = (function () {
     };
 
     TabularLabResults.create = function (testOrdersArray, visitStartDate, visitEndDate,allTestsAndPanel) {
-        var mergedTestOrders = sort(allTestsAndPanel,testOrdersArray);
+//        var mergedTestOrders = sort(allTestsAndPanel,testOrdersArray);
         var visitDays = createVisitDays(visitStartDate, visitEndDate);
-        var rows = createTable(mergedTestOrders, visitDays);
+        var rows = createTable(testOrdersArray, visitDays);
         return new TabularLabResults(rows, visitDays);
     };
 

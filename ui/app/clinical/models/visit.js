@@ -168,26 +168,6 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
         }
     });
 
-//    drugOrders = orderGroup.flatten(encounterTransactions, 'drugOrders');
-//    otherInvestigations = orderGroup.flatten(encounterTransactions, 'testOrders', isNonLabTests);
-//
-//    var encountersWithTestOrders = new Bahmni.Clinical.OrderGroupWithObs().create(encounterTransactions, 'testOrders', isLabTests, allTestAndPanels, 'accessionUuid');
-//
-//    encountersWithTestOrders.forEach(function (testOrder) {
-//        var orderList = [];
-//        testOrder.orders.forEach(function (order) {
-//            orderList.push(Bahmni.Clinical.TestOrder.create(order, allTestAndPanels));
-//        });
-//
-//        testOrder.orderList = orderList;
-//        testOrder.displayList = [];
-//        orderList.forEach(function (order) {
-//            testOrder.displayList = testOrder.displayList.concat(order.displayList());
-//        })
-//    });
-//
-//    mapAccessionNotes(encountersWithTestOrders);
-
 
     var allObs = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions);
     var drugOrders = orderGroup.flatten(encounterTransactions, 'drugOrders');
@@ -209,14 +189,5 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
 
     var visit = new this(encounterTransactions, drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, labOrders, encounterConfig, radiologyDocs, allTestAndPanels);
 
-//    var testOrders = [];
-//    encountersWithTestOrders.forEach(function (labOrderObsMap) {
-//        testOrders = testOrders.concat(labOrderObsMap.orderList);
-//    });
-
-//    visit.admissionDate = visit.getAdmissionDate();
-//    visit.visitEndDate = visit.getDischargeDispositionEncounterDate() || visit.getDischargeDate() || Bahmni.Common.Util.DateUtil.now();
-//
-//    visit.tabularResults = Bahmni.Clinical.TabularLabResults.create(labOrders, visit.admissionDate, visit.visitEndDate, allTestAndPanels);
     return  visit;
 };
