@@ -185,9 +185,10 @@ body{
             padding:2px;
             position:relative;
             margin: 0px;
-            @media screen and (min-width: 960px) {
-                width: 960px;
+            @media screen and (min-width: 1024px) {
+                width: 1004px;
                 margin: 0px auto;
+                padding: 0 10px;
             }
             .header-tabs{
               float:left;
@@ -260,9 +261,10 @@ body{
     @media screen and (max-width: 959px) {
       width: 100%;
     }
-    @media screen and (min-width: 960px) {
-        width: 960px;
+    @media screen and (min-width: 1024px) {
+        width: 1024px;
         margin: 0px auto;
+        // padding: 0 10px;
     }
     .opd-content-wrapper {
         background:#ffffff;
@@ -270,9 +272,9 @@ body{
         @media screen and (max-width: 959px) {
           padding: 5px;
         }
-        @media screen and (min-width: 960px) {
-            padding:10px 0 20px 0;
-        }
+        // @media screen and (min-width: 960px) {
+        //     padding:10px 0 20px 0;
+        // }
         nav.navbar {
             background: #F8F8F8;
             overflow: hidden;

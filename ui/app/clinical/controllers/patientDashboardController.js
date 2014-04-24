@@ -57,6 +57,10 @@ angular.module('opd.patientDashboard', [])
             item.show = !item.show
         };
 
+        // $scope.shiftBack = function() {
+        //     $('.pgContainer').removeClass('shift');
+        // };
+
         var addViewNameToSection = function (section) {
             section.viewName = "views/dashboardSections/" + section.name + ".html";
         };

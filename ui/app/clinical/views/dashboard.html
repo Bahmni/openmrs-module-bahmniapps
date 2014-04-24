@@ -1,18 +1,12 @@
-<!-- <div class="dashobard-header">
-  <button ng-click="toggle(patient)"></button>
-</div> -->
-<article class="visit">
+<article class="patient-dashboard visit">
     <aside bindonce class="visit-history">
-        <div>
-            <ul class="patient-info">
-                <li class="patient-img">
-                    <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
-                </li>
-                <li bo-text="patient.name"></li>
-                <li bo-text="patient.identifier"></li>
-                <li bo-text="patient.gender + patient.age + ', ' + patient.address.cityVillage"></li>
-                <li bo-text="bedDetails.wardName + ', ' + bedDetails.bedNumber"></li>
-            </ul>
+        <div class="patient-info">
+            <div class="patient-img">
+                <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
+            </div>
+            <h4>{{patient.name}}<span bo-text="' (' + patient.gender + ', ' + patient.age + ')'"></span></h4>
+            <h5>{{patient.identifier}}<span bo-text="' (' + patient.address.cityVillage + ')'"></span></h5>
+            <span  class="ward" bo-text="bedDetails.wardName + ' ' + bedDetails.bedNumber"></span>
         </div>
 
         <h2>Actions</h2>
@@ -26,17 +20,23 @@
 
         <h2>Visit History</h2>
         <ul>
-            <li ng-click="showVisitSummary(visit)" class="visit-history-entry"
+            <li ng-click="showVisitSummary(visit) && shiftBack()" class="visit-history-entry"
                 ng-class="{'selected': isCurrentVisit(visit), 'active': visit.isActive()}"
                 ng-repeat="visit in visits">
                 <a href="">
                     <span bo-text="visit.startDatetime | date: 'd MMM yy'"></span>
                     <span bo-text="'- ' + (visit.stopDatetime | date: 'd MMM yy')" bo-hide="visit.isActive()"></span>
+                    <i class="icon-star" title="Current Visit"></i>
                 </a>
             </li>
         </ul>
     </aside>
-
-    <article bindonce="patientSummary" ng-include="'views/patientSummary.html'"></article>
-    <article bindonce="visit" ng-if="!patientSummary && visit" ng-include="'views/visitSummary.html'"></article>
+    <div class="pgContainer" ng-class="{'shift':patient.show}">
+        <div class="dashboard-header">
+            <h1>Patient Dashboard</h1>
+           <button class="toggle-patient" ng-click="toggle(patient)"></button> 
+        </div>
+        <article bindonce="patientSummary" ng-include="'views/patientSummary.html'"></article>
+        <article bindonce="visit" ng-if="!patientSummary && visit" ng-include="'views/visitSummary.html'"></article>
+    </div>
 </article>

@@ -1,53 +1,117 @@
-.dashobard-header {
+.pgContainer {
+  position: relative;
+  background: #fff;
+  overflow-y: auto;
+  overflow-x: hidden; 
+  width: 1024px;
+  height: 100%;
+  -webkit-transition: right .3s ease,-webkit-transform .3s ease;
+  -moz-transition: right .3s ease,-moz-transform .3s ease;
+  -o-transition: right .3s ease,transform .3s ease;
+  -ms-transition: right .3s ease,transform .3s ease;
+  transition: right .3s ease,transform .3s ease;
+  right: 0;
+  overflow-y: scroll; -webkit-overflow-scrolling: touch;
+}
+.pgContainer.shift {
+  right: 250px;
+}
+.dashboard-header {
   width: 100%;
   height: 50px;
-  background: #ccc;
-}
-.visit aside.visit-history {
-    .patient-info {
-        background-color: black;
-        color: white;
-        text-align: center;
-        li {
-            padding: 2px 6px;
-            border-right: none;
-        }
-    }
-}
-
-.patient-dashboard section {
-  width: 47%;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  float: left;
-  margin: 1%;
-  
-  h2 {
-    padding: 10px;
-    font-family: OpenSansBold;
-  }
-  table {
-    margin-top: 0;
-  }
-  table tr th, table tr td {
-    border: 0;
-  }
-  table th {
-    background-image: none;
+  background: #669999;
+  h1 {
+    float: left;
+    margin: 15px;
+    color: #eee;
   }
   button {
-    width: 100%;
-    max-width: 100%;
-    color: #006699;
+    float: right;
+    margin: 10px;
+    height: 30px;
+    // background: url("/images/patient-summary.png") no-repeat center center;
+    // border: 0;
   }
 }
+aside{
+  h2{
+    background:none;
+    color: #000;
+  }
+  a{
+    color:#fff;
+  }
+  &.visit-history{
+    position:absolute;
+    // padding:10px;
+    right:0;
+    width:250px;
+    background:#333333;
+    overflow: scroll;
+    bottom: 0;
+    top: 0;
+    box-shadow: inset 4px 0px 10px rgba(0, 0, 0, 0.2);
+    h2 {
+      color: #666;
+      font-size: 14px;
+      border-bottom-color: #555;
+      padding-left: 10px;
+      margin-bottom: 5px;
+    }
+    ul {
+      margin-bottom: 10px;
+    }
+    li a {
+      display: block;
+      padding: 8px 10px 8px 20px;
+      color: #aaa;
+      font-size: 14px;
+      &:hover {
+        text-decoration: none;
+        background: #2e2e2e;
+        color: #bbb;
+      }
+    }
+    .patient-info {
+      padding-bottom: 10px;
+      .patient-img img {
+        border-radius: 50%;
+        margin: 8% 21%;
+        width: 150px;
+      }
+      h4 {text-transform: capitalize;}
+      h4, h5, .ward {
+        text-align: center;
+        color: #ddd;
+        display: block;
+      }
+      h5, .ward {color: #888; margin-top: 5px;}
+    }
+  }
 
+  .visit-history-entry, .summary {
+    &.selected, &.selected:hover{
+      background :#2b2b2b;
+      font-family: FontAwesome;
+      &:before {
+        content: "\f0da";
+        float: left;
+        font-size: 30px;
+        color: #fff;
+        margin-left: -2px;
+      }
+    }
+    &.active {color: #fafafa;}
+    .icon-star {color: #E8A000; display: none;}
+    &.active .icon-star {display: inline-block;}
+  }
+}  
 .dashboard-observation-section {
-  width: 47%;
+  width: 47.5%;
   border: 1px solid #ccc;
   border-radius: 5px;
   float: left;
-  margin: 1%;
+  margin: 1.5% 0 0 1.5%;
   font-size: 14px;
   h2 {
     padding: 10px;

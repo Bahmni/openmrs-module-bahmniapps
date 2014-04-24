@@ -1,3 +1,5 @@
+.opd-wrapper {overflow: auto;}
+
 .visit {
   table tr:nth-child(even), table tr:nth-child(odd) {
     background: #fff;
@@ -30,51 +32,6 @@
 				font-family: OpenSansBold;
 			}
 		
-	}
-	aside{
-		h2{
-			background:none;
-			color: #000;
-		}
-		a{
-			color:#fff;
-		}
-		&.visit-history{
-			position:fixed;
-			margin-top:11px;
-			padding:10px;
-			right:0px;
-			width:200px;
-			background:#185472;
-			height:100%;
-			opacity:0.9;
-			min-height:500px;
-			overflow: hidden;
-			border-left: 7px solid #979494;
-			top: 40px;
-			ul,h2{
-				width:200px;
-			}
-			li{
-				padding: 8px 6px;
-				border-right:1px solid #fff;
-			}
-		}
-		.visit-history-entry {
-			&.selected {
-				background:#407b94;
-			}
-			&.active {
-				color: #fafafa;			}
-		}
-        .summary {
-			&.selected {
-				background:#407b94;
-			}
-		}
-		&.drawerClose{
-			padding:10px 0px 10px 20px;
-		}
 	}
 }
 .visit {
