@@ -3,6 +3,7 @@ Bahmni.DocumentUpload.Visit = function () {
     this.startDatetime = "";
     this.stopDatetime = "";
     this.visitType = null;
+    this.uuid = null;
     this.changed = false;
     this.savedImages = [];
     this.images = [];
@@ -29,19 +30,17 @@ Bahmni.DocumentUpload.Visit = function () {
         return sortedSavedImages;
     };
 
-    this.initSavedImages = function (encounterTypeUuid) {
+    this.initSavedImages = function () {
         this.savedImages = [];
         this.images = [];
 
         var savedImages = this.savedImages;
         this.encounters.forEach(function (encounter) {
-            encounter.encounterType.uuid == encounterTypeUuid && encounter.obs && encounter.obs.forEach(function (observation) {
+            encounter.obs && encounter.obs.forEach(function (observation) {
                 observation.groupMembers && observation.groupMembers.forEach(function (member) {
-                    if (member.concept.name.name == Bahmni.Common.Constants.documentsConceptName) {
                         var conceptName = observation.concept.name.name;
                         savedImages.push(new DocumentImage({"id":member.id, "encodedValue": Bahmni.Common.Constants.documentsPath + '/' + member.value, "obsUuid": observation.uuid, obsDatetime: observation.obsDatetime,
                                          concept: {uuid: observation.concept.uuid, editableName: conceptName, name: conceptName}}));
-                    }
                 });
             });
         });
