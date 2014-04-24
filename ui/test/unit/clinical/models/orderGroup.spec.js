@@ -136,22 +136,4 @@ describe('Order Group', function () {
         expect(orders[0].orders[0].accessionUuid).toBe(encounterUuid1);
         expect(orders[1].orders[0].accessionUuid).toBe(encounterUuid2);
     });
-
-    it('should group based on groupParameter',function(){
-        var firstTestOrder = createTestOrder("culture(pus)", "2014-03-24T14:38:13.000+0530");
-        var secondTestOrder = createTestOrder("culture(tissue)", "2014-03-24T14:38:13.000+0530");
-        var thirdTestOrder = createTestOrder("platelet count", "2014-03-25T14:38:13.000+0530");
-        var encounterUuid1 = "encounterUuid1";
-        var encounterUuid2 = "encounterUuid2";
-        var encounterTransactions = [
-            {providers: [sampleProvider()], testOrders: [thirdTestOrder], encounterUuid: encounterUuid1},
-            {providers: [sampleProvider()], testOrders: [firstTestOrder, secondTestOrder], encounterUuid: encounterUuid2}
-        ];
-        var filterFunction = function () {return true;};
-        var orders = new Bahmni.Clinical.OrderGroup().create(encounterTransactions, 'testOrders', filterFunction, 'accessionUuid');
-        expect(orders[0].accessionUuid).toBe(encounterUuid1);
-        expect(orders[0].orders.length).toBe(1);
-        expect(orders[1].accessionUuid).toBe(encounterUuid2);
-        expect(orders[1].orders.length).toBe(2);
-    })
 });
