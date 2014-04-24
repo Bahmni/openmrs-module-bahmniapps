@@ -33,7 +33,7 @@ Bahmni.Clinical.Result = (function () {
     Result.create = function (parentConcept, observationList) {
         var realObs = getRealObs(observationList);
         if (realObs) {
-            return new Bahmni.Clinical.Result({
+            return new Result({
                 concept: realObs.concept,
                 value: realObs.value,
                 isAbnormal: valueOf(observationList, "LAB_ABNORMAL"),
@@ -46,7 +46,7 @@ Bahmni.Clinical.Result = (function () {
             });
         }
 
-        return new Bahmni.Clinical.Result({
+        return new Result({
             concept: parentConcept,
             isAbnormal: valueOf(observationList, "LAB_ABNORMAL"),
             minNormal: valueOf(observationList, "LAB_MINNORMAL"),

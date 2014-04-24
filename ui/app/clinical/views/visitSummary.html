@@ -105,7 +105,7 @@
             <tr ng-if="!line.isSummary"
                 ng-class="{'is-abnormal': line.isAbnormal, 'referred-out': line.referredOut}">
                 <td>
-                    <span>{{line.name}}</span>
+                    <span>{{line.concept.name}}</span>
                 </td>
                 <td class="value">
                     {{line.value}}
