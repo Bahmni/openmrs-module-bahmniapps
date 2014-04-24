@@ -114,20 +114,22 @@
 .treatment-section {
   table {
     margin: 0;
+    border-left: 0;
+    border-right: 0;
     tr, td {
-      border-left: 0;
-      border-right: 0;
+      border-left: 0!important;
+      border-right: 0!important;
     }
     h5 {
-      font-family: OpenSansBold;
+      // font-family: OpenSansBold;
       span {
         font-size: 14px;
         color: #ccc;
       }
     }
     td.days, td.dosage {
-      font-size: 14px;
-      width: 30%;
+      font-size: 12px;
+      width: 25%;
       span {
         color: #aaa;
       }
@@ -212,6 +214,32 @@
       float: right;
       font-size: 11px;
       color: #aaa;
+    }
+  }
+}
+.dashboard-radiology-section {
+  .radiology-doc-item {
+    overflow: auto;
+    clear: both;
+    border-bottom: 1px solid #ccc;
+    a {
+      display: block;
+      padding: 5px 10px 7px 10px;
+      width: 77%;
+      float: left;
+      &:hover {
+        text-decoration: none;
+        background: #eee;
+        cursor: pointer;
+        border-right: 1px solid #ccc;
+      }
+      i {padding-left: 0;}
+    }
+    span {
+      float: right;
+      font-size: 11px;
+      padding: 10px;
+      color: #888;
     }
   }
 }

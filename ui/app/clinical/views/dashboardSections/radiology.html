@@ -1,9 +1,13 @@
-<div ng-controller="PatientDashboardRadiologyController">
+<div ng-controller="PatientDashboardRadiologyController" class="dashboard-radiology-section">
     <h2>{{section.description}}</h2>
     <section class="block">
-      <div ng-repeat="radiologyRecord in radiologyRecords">
-          <a ng-href="" show-items records="radiologyRecord.records">{{radiologyRecord.name}}<i class="icon-caret-right"></i></a>{{radiologyRecord.date}}
-      </div>
+        <ul>
+            <li ng-repeat="radiologyRecord in radiologyRecords" class="radiology-doc-item">
+                <a ng-href="" show-items records="radiologyRecord.records"><i class="icon-file"></i>{{radiologyRecord.name}}</a>
+                <span>{{radiologyRecord.date | date:'dd MMM yy'}}</span>
+            </li>
+        </ul>
+
       <div ng-show="!radiologyRecords.length">
           <div class="placeholder-text">There are no radiology documents for this patient.</div>
       </div>

@@ -33,7 +33,7 @@ Bahmni.Clinical.RadiologyRecordsMapper = function () {
             result[index]["records"].push(record);
         }
         else {
-            result.push({"name": record.concept.name, "date": record.title.split(",").pop(), "records": [record], "concept": record.concept.uuid, "visitUuid": record.visitUuid});
+            result.push({"name": record.concept.name, "date": record.obsDatetime, "records": [record], "concept": record.concept.uuid, "visitUuid": record.visitUuid});
         }
         return record;
     };
