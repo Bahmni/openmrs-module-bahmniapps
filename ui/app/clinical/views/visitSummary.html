@@ -1,5 +1,6 @@
 <section>
-    <section visit-actions patient="patient" visit="visit"></section>
+    <section visit-actions patient="patient" visit="visit" action="'printDischargeSummary'" ng-if="visit.hasAdmissionEncounter()" ></section>
+    <section visit-actions patient="patient" visit="visit" action="'printVisitSummary'"></section>
     <section ng-show="visit.hasDiagnosis()" class="block diagnosis">
         <h2>Diagnoses</h2>
         <div class="table history-diagnosis">
@@ -65,7 +66,7 @@
     </section>
 </section>
 <section class="block laborder-section" ng-show="visit.hasLabTests()">
-    <div ng-if="visit.admissionDate && false" ng-init="toggleLabInvestigation()">
+    <div ng-if="visit.admissionDate && false">
         <h2> IPD Investigations</h2>
         <ul class="block-content">
             <table>

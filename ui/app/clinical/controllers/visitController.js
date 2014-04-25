@@ -7,12 +7,12 @@ angular.module('bahmni.clinical')
             $scope.visit = null;
             $scope.patientUuid = $stateParams.patientUuid;
             $scope.showTrends = true;
-            $scope.showLabInvestigations = true;
 
             $scope.obsIgnoreList = appService.getAppDescriptor().getConfig("obsIgnoreList").value || {};
 
             spinner.forPromise(encounterService.search(visitUuid).success(function (encounterTransactions) {
                 $scope.visit = Bahmni.Clinical.Visit.create(encounterTransactions, $scope.consultationNoteConcept, $scope.labOrderNotesConcept, $scope.encounterConfig, $rootScope.allTestsAndPanelsConcept);
+                $scope.showLabInvestigations = visit.admissionDate ? false: true;
             }));
 
             $scope.isNumeric = function (value) {
