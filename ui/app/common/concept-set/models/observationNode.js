@@ -15,6 +15,12 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptSetU
         }
     });
 
+    Object.defineProperty(this, 'duration', {
+        get: function () {
+            return this.getDuration();
+        }
+    });
+
     Object.defineProperty(this, 'abnormal', {
         get: function () {
             return this.getAbnormal();
@@ -35,7 +41,6 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptSetU
 
 };
 
-
 Bahmni.ConceptSet.ObservationNode.prototype = {
 
     getPossibleAnswers: function () {
@@ -45,6 +50,13 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     getAbnormal: function () {
         var abnormalAsArray = this.groupMembers.filter(function (member) {
             return (member.concept.conceptClass.name === Bahmni.Common.Constants.abnormalConceptClassName);
+        });
+        return abnormalAsArray[0];
+    },
+
+    getDuration: function () {
+        var abnormalAsArray = this.groupMembers.filter(function (member) {
+            return (member.concept.conceptClass.name === Bahmni.Common.Constants.durationConceptClassName);
         });
         return abnormalAsArray[0];
     },
