@@ -189,19 +189,19 @@
     </div>
 </section>
 
-<section class="block radiology-investigations" ng-show="visit.radiologyDocs.length">
+<section class="block radiology-investigations" ng-show="visit.radiologyOrders.length">
     <h2>Radiology Investigations</h2>
     <ul image-gallery image-gallery-target=".document-link">
-        <li ng-repeat="radiologyDoc in visit.radiologyDocs" class="radiology-doc-item">
-            <a class="document-link temp-class" title="{{radiologyDoc.name}}"
-               ng-src="{{radiologyDoc.src}}" image-gallery-item><i class="icon-file"></i>{{radiologyDoc.name}}</a>
+        <li ng-repeat="radiologyOrder in visit.radiologyOrders" class="radiology-doc-item">
+            <a class="document-link temp-class" title="{{radiologyOrder.concept.name}}"
+               ng-src="{{radiologyOrder.src}}" image-gallery-item><i class="icon-file"></i>{{radiologyOrder.concept.name}}</a>
 
             <div class="footer-note">
                 <span class="time-stamp">
-                    <span class="date">{{radiologyDoc.dateTime | date:'dd MMM yy'}}</span>
-                    <span class="time">{{radiologyDoc.dateTime | date :'hh:mm a'}}</span>
+                    <span class="date">{{radiologyOrder.dateTime | date:'dd MMM yy'}}</span>
+                    <span class="time">{{radiologyOrder.dateTime | date :'hh:mm a'}}</span>
                 </span>
-                <span class="provider" bo-text="radiologyDoc.provider.name"></span>
+                <span class="provider" bo-text="radiologyOrder.provider.name"></span>
             </div>
         </li>
     </ul>

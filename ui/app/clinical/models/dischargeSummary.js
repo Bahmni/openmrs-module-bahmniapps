@@ -38,6 +38,10 @@
 
 		getUniqueLabOrders: function() {
 			return Bahmni.Clinical.OrdersUtil.unique(this.visit.labOrders);
+		},
+
+		getUniqueRadiologyOrders: function() {
+			return Bahmni.Clinical.OrdersUtil.unique(this.visit.radiologyOrders);
 		}
 	}
 })();

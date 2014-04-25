@@ -1,6 +1,6 @@
 'use strict';
 
-Bahmni.Clinical.Visit = function (encounters, drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, labOrders, encounterConfig, radiologyDocs, allTestsAndPanels) {
+Bahmni.Clinical.Visit = function (encounters, drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, labOrders, encounterConfig, radiologyOrders, allTestsAndPanels) {
     this.encounters = encounters;
     this.drugOrders = drugOrders;
     this.consultationNotes = consultationNotes;
@@ -10,7 +10,7 @@ Bahmni.Clinical.Visit = function (encounters, drugOrders, consultationNotes, oth
     this.dispositions = dispositions;
     this.labOrders = labOrders;
     this.encounterConfig = encounterConfig;
-    this.radiologyDocs = radiologyDocs;
+    this.radiologyOrders = radiologyOrders;
 
     var orderGroup = new Bahmni.Clinical.OrderGroup();
     this.ipdDrugSchedule = this.hasAdmissionEncounter() ? Bahmni.Clinical.DrugSchedule.create(this) : null;
@@ -150,14 +150,14 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
             return !obs.orderUuid;
         };
 
-    var radiologyDocs = [];
+    var radiologyOrders = [];
     encounterTransactions.forEach(function (encounterTransaction) {
         if (encounterTransaction.encounterTypeUuid == encounterConfig.getRadiologyEncounterTypeUuid()) {
             ArrayUtil.removeItem(encounterTransactions, encounterTransaction);
             encounterTransaction.observations.forEach(function (observation) {
                 observation.groupMembers.forEach(function (member) {
                     if (member.concept.name == Bahmni.Common.Constants.documentsConceptName) {
-                        radiologyDocs.push({name: observation.concept.name, src: Bahmni.Common.Constants.documentsPath + '/' + member.value, dateTime: observation.observationDateTime, provider: encounterTransaction.providers[0]});
+                        radiologyOrders.push({concept: observation.concept, src: Bahmni.Common.Constants.documentsPath + '/' + member.value, dateTime: observation.observationDateTime, provider: encounterTransaction.providers[0]});
                     }
                 });
             });
@@ -183,5 +183,5 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
         }
     });
 
-    return new this(encounterTransactions, drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, labOrders, encounterConfig, radiologyDocs, allTestAndPanels);
+    return new this(encounterTransactions, drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, labOrders, encounterConfig, radiologyOrders, allTestAndPanels);
 };
