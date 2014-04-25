@@ -88,7 +88,7 @@ Bahmni.ConceptSet.CompundObservationNode.prototype = {
 
     validateNumericValue: function(){
         if(this.value) {
-            var valueInRange = this.value < (this.hiNormal|| Infinity) && this.value > (this.lowNormal|| 0);
+            var valueInRange = this.value <= (this.hiNormal|| Infinity) && this.value >= (this.lowNormal|| 0);
             this.abnormalityObservation.value = !valueInRange;
         } else {
             this.abnormalityObservation.value = undefined;
