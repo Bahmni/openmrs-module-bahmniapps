@@ -1,12 +1,9 @@
 'use strict';
 
-//Holds multi-value results
 Bahmni.Clinical.Test = (function () {
     var Test = function (options) {
         angular.extend(this, options);
         this.results = this.results || [];
-        this.isActuallyMultiValued = this.results.length > 1;
-        this.display = this.getDisplayList();
     };
 
     Test.create = function (obs) {
@@ -14,14 +11,28 @@ Bahmni.Clinical.Test = (function () {
         return new Test({concept: obs.concept, orderDate: obs.observationDateTime, results: results});
     };
 
-    Test.prototype.getDisplayList = function() {
-        var displayList = [];
-        if (this.isActuallyMultiValued || this.results.length === 0) {
-            displayList.push({ name: this.concept.name, isSummary: true, hasResults: this.results.length > 0 });
-            displayList.push({ name: "", isSummary: true, hasResults: this.results.length > 0 });
+    Test.prototype = {
+       hasMultipleResults: function() {
+            return this.results.length > 1;
+       },
+
+       hasPendingResults: function() {
+            return this.results.length === 0;
+       },
+
+       hasResults: function() {
+            return !this.hasPendingResults();
+       },
+
+       getDisplayList: function() {
+            var displayList = [];
+            if (this.hasMultipleResults() || this.hasPendingResults()) {
+                displayList.push({ name: this.concept.name, isSummary: true, hasResults: this.hasResults() });
+                displayList.push({ name: "", isSummary: true, hasResults: this.hasResults() });
+            }
+            return displayList.concat(this.results);
         }
-        return displayList.concat(this.results);
-    };
+    }
 
     return Test;
 })();

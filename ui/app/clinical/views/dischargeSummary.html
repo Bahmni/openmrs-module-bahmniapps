@@ -1,4 +1,26 @@
 <link rel="stylesheet" href="../styles/dischargeSummaryPrint.css"/>
+<script type="text/ng-template" id="resultTemplate">
+	<span ng-class="{abnormal: result.isAbnormal}">
+		<span>{{result.concept.name}}</span>
+		<span>{{result.value}}</span>
+		<span>{{test.orderDate | date:'d MMM yy'}}</span>
+	</span>
+ </script>
+<script type="text/ng-template" id="testTemplate">
+	<span ng-switch="test.results.length">
+		<span ng-switch-when="0">
+			<span>{{test.concept.name}}</span>
+			<span>Pending!!</span>
+		</span>
+		<span ng-switch-when="1" ng-init="result = test.results[0]">
+			<span ng-include="'resultTemplate'">
+		</span>
+		<ul ng-switch-default>
+			<li class="result" ng-repeat="result in test.results" ng-include="'resultTemplate'">
+			</li>
+		</ul>
+    </span>	
+ </script>
 <div class="discharge-summary-print">
 	<header>
 	  <img class="logo" src="../images/jss-icon.png" alt="logo"> 
@@ -86,8 +108,17 @@
 	  <section>
 	    <h3>Lab Investigations</h3>
 	    <ul>
-	    	<li ng-repeat="labOrder in dischargeSummary.getUniqueLabOrders()">
-	    		{{labOrder.concept.name}}
+	    	<li ng-switch="labOrder.getOrderableType()" ng-repeat="labOrder in dischargeSummary.getUniqueLabOrders()">
+	    		<span ng-switch-when="Panel" ng-init="panel = labOrder.orderable">
+	    			<span>{{panel.concept.name}}</span>
+    				<span ng-if="!panel.hasResults()">Pending!!</span>
+	    			<ul>
+	    				<li ng-repeat="test in panel.tests" ng-include="'testTemplate'"></li>
+	    			</ul>
+	    		</span>
+	    		<span ng-switch-when="Test" ng-init="test = labOrder.orderable">
+					<span ng-include="'testTemplate'"></span>
+	    		</span>
 	    	<li>
 	    </ul>
 	  </section>

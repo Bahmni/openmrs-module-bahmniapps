@@ -12,13 +12,19 @@ Bahmni.Clinical.Panel = (function () {
         return new Panel({ concept: concept, tests: tests });
     };
 
-    Panel.prototype.getDisplayList = function()     {
-        var displayList = [];
-        displayList.push({ name: this.concept.name, isSummary: true, hasResults: true });
-        this.tests.forEach(function(test) { displayList = displayList.concat(test.getDisplayList()); });
-        displayList.push({ name: "", isSummary: true, hasResults: false });
-        return displayList;
-    };
+    Panel.prototype = {
+        getDisplayList: function()     {
+            var displayList = [];
+            displayList.push({ name: this.concept.name, isSummary: true, hasResults: true });
+            this.tests.forEach(function(test) { displayList = displayList.concat(test.getDisplayList()); });
+            displayList.push({ name: "", isSummary: true, hasResults: false });
+            return displayList;
+        },
+
+        hasResults: function() {
+            return this.tests.length > 0;
+        }
+    }
 
     return Panel;
 })();

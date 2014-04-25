@@ -5,7 +5,6 @@ Bahmni.Clinical.LabOrder = (function () {
         angular.extend(this, order);
         this.orderable = orderable;
         this.orderDate = order.dateCreated;
-        this.isPanel = this.orderable instanceof Bahmni.Clinical.Panel;
     };
 
     var createOrderable = function (order) {
@@ -17,12 +16,20 @@ Bahmni.Clinical.LabOrder = (function () {
         }
     };
 
-    LabOrder.prototype.getDisplayList = function () {
-        var self = this;
-        var displayList = this.orderable.getDisplayList();
-        displayList.forEach(function(item) { item.orderDate = self.orderDate; });
-        return displayList;
-    };
+    LabOrder.prototype = {
+        isPanel: function() {
+            return this.concept.set;
+        },
+        getOrderableType: function() {
+            return this.concept.set ? "Panel" : "Test" ;
+        },
+        getDisplayList: function () {
+            var self = this;
+            var displayList = this.orderable.getDisplayList();
+            displayList.forEach(function(item) { item.orderDate = self.orderDate; });
+            return displayList;
+        }
+    }
 
     LabOrder.create = function (order) {
         return new LabOrder(order, createOrderable(order));
