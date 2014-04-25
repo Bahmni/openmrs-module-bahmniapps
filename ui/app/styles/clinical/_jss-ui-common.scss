@@ -418,11 +418,26 @@ button:focus, a:focus, .btn:focus {outline:0;}
   margin: 20px;
   background: #fef7e3;
   line-height: 1.4em;
-  // border-bottom: 1px solid #fdf4d8;
   padding: 10px;
   overflow: auto;
 }
+.opd-wrapper .has-toggle {cursor: pointer;margin-bottom:0;}
+.section-toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-right: 10px;
 
+  &:hover {
+    background: none;
+    border: none;
+  }
+  i {
+    padding: 0;
+    font-size: 26px;
+    color: green;
+  }
+}
 .notes p.left {
   width: 80%;
   float: left;
@@ -432,14 +447,6 @@ button:focus, a:focus, .btn:focus {outline:0;}
 .footer-note.right {
   width: 20%;
   float: right;
-}
-
-.name{
-  width: 30%;
-}
-
-.value{
-  width: 30%;
 }
 
 .provider{

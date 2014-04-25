@@ -104,13 +104,13 @@
             </table>
         </ul>
     </div>
-    <h2>Lab Investigations
-        <button class="toggle fr" ng-if="visit.admissionDate">
-            <i class="icon-plus-sign" ng-click="toggleLabInvestigation()"
+    <h2 ng-click="toggleLabInvestigation()" ng-class="{'has-toggle': visit.admissionDate}">
+        <button class="section-toggle" ng-if="visit.admissionDate">
+            <i class="icon-caret-right" 
                ng-hide="showLabInvestigations"></i>
-            <i class="icon-minus-sign" ng-click="toggleLabInvestigation()"
+            <i class="icon-caret-down"
                ng-show="showLabInvestigations"></i>
-        </button>
+        </button>Lab Investigations
     </h2>
 
     <div ng-repeat="labOrders in visit.labTestOrderObsMap" ng-show="showLabInvestigations">
@@ -189,12 +189,12 @@
     </div>
 </section>
 
-<section class="block radiologyInvestigations" ng-show="visit.radiologyDocs.length">
+<section class="block radiology-investigations" ng-show="visit.radiologyDocs.length">
     <h2>Radiology Investigations</h2>
     <ul image-gallery image-gallery-target=".document-link">
-        <li ng-repeat="radiologyDoc in visit.radiologyDocs">
-            <a class="document-link temp-class" title="{{radiologyDoc.name}}" bo-text="radiologyDoc.name"
-               ng-src="{{radiologyDoc.src}}" image-gallery-item></a>
+        <li ng-repeat="radiologyDoc in visit.radiologyDocs" class="radiology-doc-item">
+            <a class="document-link temp-class" title="{{radiologyDoc.name}}"
+               ng-src="{{radiologyDoc.src}}" image-gallery-item><i class="icon-file"></i>{{radiologyDoc.name}}</a>
 
             <div class="footer-note">
                 <span class="time-stamp">
@@ -282,18 +282,23 @@
 <section class="block ipd-treatment-section" ng-if="visit.hasIPDDrugOrdes()">
     <h2>IPD Treatment</h2>
     <table>
-        <tr>
-            <th>
-                <strong bo-text="(visit.ipdDrugSchedule.fromDate | date:'dd MMM yy') + ' - '+ (visit.ipdDrugSchedule.toDate | date:'dd MMM yy')"></strong>
-            </th>
-            <th ng-repeat="day in visit.ipdDrugSchedule.days" bo-text="'D'+ day.dayNumber"></th>
-        </tr>
-        <tr ng-repeat="drug in visit.ipdDrugSchedule.drugs">
-            <td bo-text="drug.name" class="drug" ng-class="{active: drug.isActive()}"></td>
-            <td ng-repeat="day in visit.ipdDrugSchedule.days">
-                <span class="icon-ok" bo-if="drug.isActiveOnDate(day.date)"/>
-            </td>
-        </tr>
+        <thead>
+            <tr>
+                <th>
+                    <span bo-text="(visit.ipdDrugSchedule.fromDate | date:'dd MMM yy') + ' - '+ (visit.ipdDrugSchedule.toDate | date:'dd MMM yy')"></span>
+                </th>
+                <th ng-repeat="drug in visit.ipdDrugSchedule.drugs" bo-text="drug.name" class="drug" ng-class="{active: drug.isActive()}"></th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="day in visit.ipdDrugSchedule.days">
+                <td bo-text="'D'+ day.dayNumber"></td>
+                <td  ng-repeat="drug in visit.ipdDrugSchedule.drugs">
+                    <span class="icon-ok" bo-if="drug.isActiveOnDate(day.date)"/>
+                </td>
+            </tr> 
+        </tbody>
     </table>
 </section>
 

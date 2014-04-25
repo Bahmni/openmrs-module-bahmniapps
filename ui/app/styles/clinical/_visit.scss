@@ -1,5 +1,5 @@
 .opd-wrapper {overflow: auto;}
-
+#view-content .visit {padding: 10px;}
 .visit {
   table tr:nth-child(even), table tr:nth-child(odd) {
     background: #fff;
@@ -103,6 +103,12 @@
       padding: 10px;
       display: inline-block;
     }
+    .col.col1 {
+      .diagnosis-name.ruled-out {
+          color: #777;
+          text-decoration: line-through;
+      }
+    }
     .col.col4 {
       float: right;
       width: 8%;
@@ -129,7 +135,6 @@
     }  
     .time-stamp {
       display: block;
-      margin-bottom: 5px;
     }
   }
   .current {
@@ -245,14 +250,39 @@ strong {
   border-left: 1px solid #DDD;
   border-right: 1px solid #DDD;
 }
+.visit .ipd-treatment-section {
+  table {
+    width: 100%; border-collapse: collapse; border-spacing: 0;
+    display: block; position: relative;
+    border-left: 1px solid #eee;
+    border-right: 1px solid #eee;
+    font-size: 14px;
+    margin-top: 0;
+    th, td { margin: 0; vertical-align: top; }
+    th { text-align: left; background: #eee;}
+    th.drug {font-family: "OpenSans", Arial, sans-serif;}
+
+    thead { display: block; float: left; }
+    tbody { display: block; width: auto; position: relative; overflow-x: auto; white-space: nowrap; }
+    thead tr { display: block; border: 0;}
+    th { display: block;}
+    tbody tr { display: table-cell; vertical-align: top; border-top: 0;}
+    td { display: block; min-height: 1.71em; text-align: left; }
+
+      /* sort out borders */
+    th { border-bottom: 0; border-left: 0; }
+    td { border-left: 0; border-right: 0; border-bottom: 0; }
+  }
+}
 .laborder-section, .observation {
   .temp-class {
     font-family: OpenSansBold;
   }
   table {
-    margin-top: 0;  
+    margin-top: 0;
+    td {font-size: 14px;}  
     td.name {
-      padding: 5px;
+      padding: 5px 10px;
     }
     td.value {
       .obs-value {
@@ -262,6 +292,14 @@ strong {
     }
   }
 
+}
+.observation table tr td{
+  padding: 2px 10px;
+  &.value {
+    .obs-value {
+      margin-top: 5px;
+    }
+  }
 }
 .laborder-item, .obs-item {
   background: #eee;
@@ -329,7 +367,30 @@ span.range {
     }
   }
 }
-
+.radiology-investigations {
+  .radiology-doc-item {
+    overflow: auto;
+    clear: both;
+    border-bottom: 1px solid #eee;
+    a {
+      display: block;
+      padding: 8px;
+      width: 85%;
+      float: left;
+      font-size: 14px;
+      &:hover {
+        text-decoration: none;
+        background: #eee;
+        cursor: pointer;
+        border-right: 1px solid #ccc;
+      }
+      i {padding-left: 0;}
+    }
+    .footer-note {
+      margin-top: 3px;
+    }
+  }
+}
 .toggle-btn {
   padding: 2px;
   font-family: arial;

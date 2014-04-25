@@ -10,10 +10,8 @@
             {{obs.concept.name}}
         </td>
         <td class="value">
-            {{obs.value}}
-        </td>
-        <td>
-            <div class="footer-note">
+            <span class="obs-value">{{obs.value}}</span>           
+            <div class="footer-note fr">
                 <span class="time-stamp">
                     <span class="time">{{obs.observationDateTime | date :'hh:mm a'}}</span>
                 </span>

@@ -37,6 +37,6 @@
            <button class="toggle-patient" ng-click="toggle(patient)"></button> 
         </div>
         <article bindonce="patientSummary" ng-include="'views/patientSummary.html'"></article>
-        <article bindonce="visit" ng-if="!patientSummary && visit" ng-include="'views/visitSummary.html'"></article>
+        <article class="dashboard-visit-summary" bindonce="visit" ng-if="!patientSummary && visit" ng-include="'views/visitSummary.html'"></article>
     </div>
 </article>
