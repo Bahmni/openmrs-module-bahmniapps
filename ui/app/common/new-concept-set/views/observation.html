@@ -12,27 +12,27 @@
                            ng-model="observation.value" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"/>
                 </div>
 
-                <input ng-switch-when="freeTextAutocomplete" class="concept-name" ng-model="node.value" concept-autocomplete
-                       ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}"
-                       coded-concept-uuid="node.getConceptConfig().freeTextAutocomplete.codedConceptUuid"
-                       concept-set-uuid="node.getConceptConfig().freeTextAutocomplete.conceptSetUuid"
-                       blur-on-select="false"/>
+                <textarea ng-switch-when="text" ng-model="observation.value"
+                          ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"></textarea>
 
-                <textarea ng-switch-when="text" ng-model="node.value"
-                          ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}"></textarea>
-
-                <select ng-switch-when="dropdown" foo-bar ng-model="node.value"
-                        ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}"
+                <select ng-switch-when="dropdown" foo-bar ng-model="observation.value"
+                        ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"
                         ng-options="answer as answer.name for answer in getPossibleAnswers() track by answer.uuid"> <option value=""></option>
                 </select>
 
-                <div ng-switch-when="autocomplete"  ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}" class="autocomplete">
-                    <input type="hidden" ui-select2="selectOptions" ng-model="node.value"/>
+                <input ng-switch-when="freeTextAutocomplete" class="concept-name" ng-model="observation.value" concept-autocomplete
+                       ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"
+                       coded-concept-uuid="observation.getConceptUIConfig().freeTextAutocomplete.codedConceptUuid"
+                       concept-set-uuid="observation.getConceptUIConfig().freeTextAutocomplete.conceptSetUuid"
+                       blur-on-select="false"/>
+
+                <div ng-switch-when="autocomplete"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}" class="autocomplete">
+                    <input type="hidden" ui-select2="selectOptions" ng-model="observation.value"/>
                 </div>
 
-                <div ng-switch-when="multiselect"  ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}" class="autocomplete">
-                    <div ui-select2="multiSelectOptions" ng-model="node.value"></div>
-                </div>
+                <!--div ng-switch-when="multiselect"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}" class="autocomplete">
+                    <div ui-select2="multiSelectOptions" ng-model="observation.value"></div>
+                </div-->
 
                 <p ng-switch-default class="field-value info icon-info-sign"> The concept data type '{{observation.dataTypeName}}' is not supported yet.</p>
             </div>

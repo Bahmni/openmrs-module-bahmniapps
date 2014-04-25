@@ -7,7 +7,7 @@ angular.module('bahmni.common.conceptSet')
             var conceptMapper = new Bahmni.ConceptSet.ConceptMapper();
 
             $scope.getPossibleAnswers = function () {
-                return $scope.observation.possibleAnswers.map(conceptMapper.map);
+                return $scope.observation.getPossibleAnswers().map(conceptMapper.map);
             };
 
             $scope.getValues = function (request) {
@@ -48,9 +48,10 @@ angular.module('bahmni.common.conceptSet')
                 '<concept observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet"></concept>' +
                 '</form>';
 
-        var controller = function ($scope, conceptSetService, appService) {
+        var controller = function ($scope, conceptSetService, conceptSetUiConfigService) {
             var conceptSetName = $scope.conceptSetName;
-            var conceptSetUIConfig = appService.getAppDescriptor().getConfig("conceptSetUI") || {};
+            var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
+//            var conceptSetUIConfig = appService.getAppDescriptor().getConfig("conceptSetUI") || {};
             var observationMapper = new Bahmni.ConceptSet.ObservationMapper();
             conceptSetService.getConceptSetMembers({name: conceptSetName, v: "fullchildren"}).success(function (response) {
                 var conceptSet = response.results[0];

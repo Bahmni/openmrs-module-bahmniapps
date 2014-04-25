@@ -17,7 +17,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
     var mapObservationGroupMembers = function (savedObservations, conceptSetMembers, conceptSetConfig) {
         var observationGroupMembers = [];
         conceptSetMembers.forEach(function (memberConcept) {
-            observationGroupMembers.push(mapObservation(memberConcept, savedObservations, conceptSetConfig[memberConcept.name.name] || {}))
+            observationGroupMembers.push(mapObservation(memberConcept, savedObservations, conceptSetConfig || {}))
         });
         return observationGroupMembers;
     };
