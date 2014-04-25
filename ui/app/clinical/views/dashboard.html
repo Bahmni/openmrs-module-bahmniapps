@@ -20,7 +20,7 @@
 
         <h2>Visit History</h2>
         <ul>
-            <li ng-click="showVisitSummary(visit) && shiftBack()" class="visit-history-entry"
+            <li ng-click="showVisitSummary(visit)" class="visit-history-entry"
                 ng-class="{'selected': isCurrentVisit(visit), 'active': visit.isActive()}"
                 ng-repeat="visit in visits">
                 <a href="">
@@ -31,7 +31,7 @@
             </li>
         </ul>
     </aside>
-    <div class="pgContainer" ng-class="{'shift':patient.show}">
+    <div class="pgContainer" ng-class="{'shift': !patient.show}">
         <div class="dashboard-header">
             <h1>Patient Dashboard</h1>
            <button class="toggle-patient" ng-click="toggle(patient)"></button> 

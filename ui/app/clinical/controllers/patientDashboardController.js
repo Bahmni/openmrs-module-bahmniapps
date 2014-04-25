@@ -35,6 +35,7 @@ angular.module('opd.patientDashboard', [])
             clearPatientSummary();
             $scope.selectedVisit = visit;
             getEncountersForVisit($scope.selectedVisit.uuid);
+            $scope.toggle($scope.patient);
         };
 
 
@@ -57,10 +58,6 @@ angular.module('opd.patientDashboard', [])
             item.show = !item.show
         };
 
-        // $scope.shiftBack = function() {
-        //     $('.pgContainer').removeClass('shift');
-        // };
-
         var addViewNameToSection = function (section) {
             section.viewName = "views/dashboardSections/" + section.name + ".html";
         };
@@ -68,11 +65,13 @@ angular.module('opd.patientDashboard', [])
         $scope.showSummary = function () {
             $scope.patientSummary = {}
             $scope.patientDashboardSections.forEach(addViewNameToSection);
+            $scope.toggle($scope.patient);
         };
 
         $scope.getPatientDocuments = function () {
             var encounterTypeUuid = $rootScope.encounterConfig.getPatientDocumentEncounterTypeUuid();
             var promise = encounterService.getEncountersForEncounterType($scope.patientUuid, encounterTypeUuid);
             return spinner.forPromise(promise);
+            $scope.toggle($scope.patient);
         };
     }]);
