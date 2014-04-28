@@ -8,7 +8,7 @@ Bahmni.Clinical.RadiologyRecordsMapper = function () {
                 return matchRecordIndex = index;
             }
         });
-        if (matchRecordIndex) {
+        if (matchRecordIndex!=null) {
             result[matchRecordIndex]["records"].push(record);
         }
         else {

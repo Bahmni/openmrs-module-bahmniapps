@@ -185,13 +185,37 @@ describe("RadiologyRecordsMapper", function () {
             "obsDatetime": "2014-04-24T00:19:12.000+0530",
             "visitUuid": "59fb00c4-cbae-4edf-9851-65fd8f077b60",
             "title": "Hip - Right, 2 views (X-ray), 24-Apr-2014"
+        },
+        {
+            "id": 66100,
+            "src": "/document_images/152000/151915-RADIOLOGY-abcda929-67c0-4cc4-8e8d-f443d1827197.jpeg",
+            "concept": {
+                "display": "Hip - Right, 2 views (X-ray)",
+                "uuid": "068e91e0-b4ce-11e3-9f29-0800271c1b77",
+                "name": "Face - Right, 2 views (X-ray)",
+            },
+            "obsDatetime": "2014-04-24T00:19:12.000+0530",
+            "visitUuid": "59fb00c4-cbae-4edf-9851-65fd8f077b61",
+            "title": "Face - Right, 2 views (X-ray), 22-Apr-2014"
+        },
+        {
+            "id": 66101,
+            "src": "/document_images/152000/151915-RADIOLOGY-xyz4a929-67c0-4cc4-8e8d-f443d1827197.jpeg",
+            "concept": {
+                "display": "Hip - Right, 2 views (X-ray)",
+                "uuid": "068e91e0-b4ce-11e3-9f29-0800271c1b77",
+                "name": "Face - Right, 2 views (X-ray)",
+            },
+            "obsDatetime": "2014-04-24T00:19:14.000+0530",
+            "visitUuid": "59fb00c4-cbae-4edf-9851-65fd8f077b61",
+            "title": "Face - Right, 2 views (X-ray), 22-Apr-2014"
         }
     ];
 
     it("should map radiology record observations", function () {
         var displayItems = new Bahmni.Clinical.RadiologyRecordsMapper().mapToDisplayItems(encounters);
 
-        expect(displayItems.length).toBe(12);
+        expect(displayItems.length).toBe(13);
 
         var recordsForChest2Views = displayItems.filter(function (clubbedRecordRow) {
             return (clubbedRecordRow.visitUuid == "a2960f37-79f1-4915-a997-11cb745e0a2a" && clubbedRecordRow.concept=="0670d355-b4ce-11e3-9f29-0800271c1b75" )
@@ -202,5 +226,11 @@ describe("RadiologyRecordsMapper", function () {
             return (clubbedRecordRow.visitUuid == "644a4443-b794-409f-95c4-e385c9affc68" && clubbedRecordRow.concept=="09c3c0db-b4ce-11e3-9f29-0800271c1b75" )
         })[0];
         expect(headSkullAP.records.length).toBe(2);
+
+        var hipRightXRay = displayItems.filter(function (clubbedRecordRow) {
+            return (clubbedRecordRow.visitUuid == "59fb00c4-cbae-4edf-9851-65fd8f077b61" && clubbedRecordRow.concept=="068e91e0-b4ce-11e3-9f29-0800271c1b77" )
+        })[0];
+        expect(hipRightXRay.records.length).toBe(2);
+
     })
 });
