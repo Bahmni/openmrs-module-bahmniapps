@@ -2,16 +2,15 @@
   position: relative;
   background: #fff;
   overflow-y: auto;
-  overflow-x: hidden; 
   width: 1024px;
   height: 100%;
+  min-height: 768px;
   -webkit-transition: right .3s ease,-webkit-transform .3s ease;
   -moz-transition: right .3s ease,-moz-transform .3s ease;
   -o-transition: right .3s ease,transform .3s ease;
   -ms-transition: right .3s ease,transform .3s ease;
   transition: right .3s ease,transform .3s ease;
   right: 0;
-  overflow-y: scroll; -webkit-overflow-scrolling: touch;
 }
 .pgContainer.shift {
   right: 250px;
@@ -49,7 +48,7 @@ aside{
     right:0;
     width:250px;
     background:#333333;
-    overflow: scroll;
+    // overflow: scroll;
     bottom: 0;
     top: 0;
     box-shadow: inset 4px 0px 10px rgba(0, 0, 0, 0.2);
