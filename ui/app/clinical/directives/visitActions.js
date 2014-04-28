@@ -28,7 +28,7 @@ angular.module('bahmni.clinical')
                 patient: "="
             },
             controller: controller,
-            template: '<button type="button" ng-click="act()">{{title}}</button>'
+            template: '<button type="button" ng-click="act()"><i class="icon-print"></i>{{title}}</button>'
         }
     }])
 ;

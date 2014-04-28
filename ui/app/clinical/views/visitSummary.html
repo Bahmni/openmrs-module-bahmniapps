@@ -1,6 +1,6 @@
 <section>
-    <section visit-actions patient="patient" visit="visit" action="'printDischargeSummary'" ng-if="visit.hasAdmissionEncounter()" ></section>
-    <section visit-actions patient="patient" visit="visit" action="'printVisitSummary'"></section>
+    <section class="visit-actions" visit-actions patient="patient" visit="visit" action="'printDischargeSummary'" ng-if="visit.hasAdmissionEncounter()" ></section>
+    <section class="visit-actions" visit-actions patient="patient" visit="visit" action="'printVisitSummary'"></section>
     <section ng-show="visit.hasDiagnosis()" class="block diagnosis">
         <h2>Diagnoses</h2>
         <div class="table history-diagnosis">
