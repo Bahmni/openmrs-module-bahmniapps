@@ -55,7 +55,6 @@ Bahmni.Common = Bahmni.Common || {};
         documentsConceptName: 'Document',
         miscConceptClassName: 'Misc',
         abnormalConceptClassName: 'Abnormal',
-        durationConceptClassName: 'Duration',
         conceptDetailsClassName: 'Concept Details'
 };
     

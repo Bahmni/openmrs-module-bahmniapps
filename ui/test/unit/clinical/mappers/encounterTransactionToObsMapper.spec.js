@@ -70,7 +70,7 @@ describe("EncounterTransactionToObsMapper", function () {
         expect(obsMatchingUuid(observations, "c61436b6-7813-42fd-8af2-eb5d23ed726c")[0].provider.uuid).toBe("provider2");
     });
 
-    xit("should remove Abnormal observation from each observation", function () {
+    it("should remove Abnormal observation from each observation", function () {
         var encounterTransactions = [
             {
                 providers: [{uuid: "provider1"}],

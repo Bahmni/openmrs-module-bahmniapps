@@ -22,23 +22,23 @@ Bahmni.Clinical.EncounterTransactionToObsMapper = function () {
                     setProviderFunction(observation);
                 });
             },
-//            removeAbnormalObs = function(observation){
-//                angular.forEach(observation.groupMembers, function(obsMember, index){
-//                  if(Bahmni.Common.Constants.abnormalObservationConceptName.indexOf(obsMember.concept.name)>=0){ // if setMember is isAbnormal
-//                    var concept = observation.groupMembers.filter(function(obs){ return obs.concept != obsMember.concept})[0]
-//                    concept.is_abnormal = obsMember.value; //abnormal now stored at concept level than isAbnormal
-//                    delete observation.groupMembers[index];
-//                    return;
-//                  }
-//                  else {
-//                       angular.forEach(obsMember.groupMembers, removeAbnormalObs);
-//                  }
-//                })
-//            },
+            removeAbnormalObs = function(observation){
+                angular.forEach(observation.groupMembers, function(obsMember, index){
+                  if(Bahmni.Common.Constants.abnormalObservationConceptName.indexOf(obsMember.concept.name)>=0){ // if setMember is isAbnormal
+                    var concept = observation.groupMembers.filter(function(obs){ return obs.concept != obsMember.concept})[0]
+                    concept.is_abnormal = obsMember.value; //abnormal now stored at concept level than isAbnormal
+                    delete observation.groupMembers[index];
+                    return;
+                  }
+                  else {
+                       angular.forEach(obsMember.groupMembers, removeAbnormalObs);
+                  }
+                })
+            },
             flatten = function (transactions, item) {
                 return transactions.reduce(function (result, transaction) {
                     setProviderToObservations(transaction[item], transaction.providers[0]);
-//                    angular.forEach(transaction[item], removeAbnormalObs);
+                    angular.forEach(transaction[item], removeAbnormalObs);
                     return result.concat(transaction[item]);
                 }, []);
             },

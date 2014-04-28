@@ -1,57 +1,55 @@
 <div class="vitals form-horizontal">
-    <fieldset ng-if="observation.isObservationNode">
+    <fieldset ng-if="!node.isGroup()">
         <div class="form-group">
             <label class="control-label">
-                <span>{{observation.primaryObs.label}}&nbsp;</span>
-                <span ng-show="observation.units">({{observation.primaryObs.units}})</span>
+                <span>{{node.label}}</span>
+                <span ng-show="node.units">({{node.units}})</span>
+                <span ng-show="node.isRequired" class="asterick">*</span>
             </label>
-            <div class="field-value" ng-switch on="observation.getControlType()">
-
+            <div class="field-value" ng-switch on="node.getControlType()">
                 <div ng-switch-when="html5InputDataType">
-                    <input obs-constraints obs="observation.primaryObs"
-                           ng-model="observation.value" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"/>
+                    <input obs-constraints obs="node"
+                           ng-model="node.value" ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}"/>
+
                 </div>
 
-                <textarea ng-switch-when="text" ng-model="observation.value"
-                          ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"></textarea>
+                <input ng-switch-when="freeTextAutocomplete" class="concept-name" ng-model="node.value" concept-autocomplete
+                   ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}"
+                   coded-concept-uuid="node.getConceptConfig().freeTextAutocomplete.codedConceptUuid"
+                   concept-set-uuid="node.getConceptConfig().freeTextAutocomplete.conceptSetUuid"
+                   blur-on-select="false"/>
 
-                <select ng-switch-when="dropdown" foo-bar ng-model="observation.value"
-                        ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"
+                <textarea ng-switch-when="text" ng-model="node.value"
+                          ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}"></textarea>
+
+                <select ng-switch-when="dropdown" foo-bar ng-model="node.value"
+                        ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}"
                         ng-options="answer as answer.name for answer in getPossibleAnswers() track by answer.uuid"> <option value=""></option>
                 </select>
 
-                <input ng-switch-when="freeTextAutocomplete" class="concept-name" ng-model="observation.value" concept-autocomplete
-                       ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"
-                       coded-concept-uuid="observation.getConceptUIConfig().freeTextAutocomplete.codedConceptUuid"
-                       concept-set-uuid="observation.getConceptUIConfig().freeTextAutocomplete.conceptSetUuid"
-                       blur-on-select="false"/>
-
-                <div ng-switch-when="autocomplete"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}" class="autocomplete">
-                    <input type="hidden" ui-select2="selectOptions" ng-model="observation.value"/>
+                <div ng-switch-when="autocomplete"  ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}" class="autocomplete">
+                  <input type="hidden" ui-select2="selectOptions" ng-model="node.value"></input>
                 </div>
 
-                <!--div ng-switch-when="multiselect"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}" class="autocomplete">
-                    <div ui-select2="multiSelectOptions" ng-model="observation.value"></div>
-                </div-->
+                <div ng-switch-when="multiselect"  ng-class="{'illegalValue': !node.isValid(atLeastOneValueIsSet)}" class="autocomplete">
+                    <div ui-select2="multiSelectOptions" ng-model="node.value"></div>
+                </div>
 
-                <p ng-switch-default class="field-value info icon-info-sign"> The concept data type '{{observation.dataTypeName}}' is not supported yet.</p>
-            </div>
-            <small class="hint" ng-show="observation.primaryObs.concept.lowNormal || observation.primaryObs.concept.hiNormal">(Valid Range from {{observation.primaryObs.concept.lowNormal}} to {{observation.primaryObs.concept.hiNormal}})</small>
-            <div class="checkbox-inline" ng-if="observation.abnormal">
-                <input id="isAbnormal-{{$index}}" type="checkbox" ng-model="observation.abnormal.value" ng-disabled="!observation.primaryObs.hasValue()"/>
-                <span for="isAbnormal-{{$index}}">Abnormal</span>
-            </div>
-            <div class="checkbox-inline" ng-if="observation.duration">
-                <duration ng-model="observation.duration.value" disabled="!observation.primaryObs.hasValue()"></duration>
-            </div>
+                <p ng-switch-default class="field-value info icon-info-sign"> The concept data type '{{node.dataTypeName}}' is not supported yet.</p>
+            </div>            
+            <small class="hint" ng-show="node.lowNormal || node.hiNormal">(Valid Range from {{node.lowNormal}} to {{node.hiNormal}})</small>
+            <div class="checkbox-inline" ng-if="node.showAbnormalIndicator">
+              <input id="isAbnormal-{{$index}}" type="checkbox" ng-model="node.abnormalityObservation.value" ng-disabled="!node.hasValue()"/>
+              <span for="isAbnormal-{{$index}}">Abnormal</span>
+            </div>                    
         </div>
     </fieldset>
 
-    <fieldset ng-if="!observation.isObservationNode" class="hasLegend">
-        <legend class="mylegend"><strong>{{observation.label}}</strong></legend>
+    <fieldset ng-if="node.isGroup()" class="hasLegend">
+        <legend class="mylegend"><strong>{{node.label}}</strong></legend>
         <div class="form-group">
-            <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers">
-                <concept observation="member" at-least-one-value-is-set="atLeastOneValueIsSet"></concept>
+            <div class="form-field form-field-group" ng-repeat="member in node.children">
+                <concept node="member" at-least-one-value-is-set="atLeastOneValueIsSet"></concept>
             </div>
         </div>
     </fieldset>
