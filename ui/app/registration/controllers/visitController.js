@@ -20,7 +20,7 @@ angular.module('bahmni.registration')
             };
 
             var getActiveEncounter = function () {
-                return encounterService.activeEncounter(patientUuid, visitTypeUuid, encounterTypeUuid, $scope.currentProvider.uuid)
+                return encounterService.activeEncounter({"patientUuid": patientUuid, "visitTypeUuid" : visitTypeUuid, "encounterTypeUuid" : encounterTypeUuid, "providerUuid" : $scope.currentProvider.uuid, "includeAll" : false})
                     .success(function (data) {
                         $scope.observations = Bahmni.Registration.ObservationMapper().map(data.observations);
                         $scope.registrationFeeLabel = isNewPatient ? "Registration Fee" : "Consultation Fee";
