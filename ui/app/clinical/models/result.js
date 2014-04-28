@@ -39,6 +39,7 @@ Bahmni.Clinical.Result = (function () {
                 isAbnormal: valueOf(observations, "LAB_ABNORMAL") === true,
                 minNormal: valueOf(observations, "LAB_MINNORMAL"),
                 maxNormal: valueOf(observations, "LAB_MAXNORMAL"),
+                units: realObs.concept.units || null,
                 notes: latestMatchingObservationValue(observations, "LAB_NOTES"),
                 referredOut: matchingObservations(observations, "REFERRED_OUT").length > 0,
                 observationDateTime: realObs.observationDateTime,

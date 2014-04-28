@@ -27,7 +27,7 @@ Bahmni.Clinical.Test = (function () {
        getDisplayList: function() {
             var displayList = [];
             if (this.hasMultipleResults() || this.hasPendingResults()) {
-                displayList.push({ name: this.concept.name, isSummary: true, hasResults: this.hasResults() });
+                displayList.push({ name: this.concept.name, units: this.concept.units, isSummary: true, hasResults: this.hasResults() });
                 displayList.push({ name: "", isSummary: true, hasResults: this.hasResults() });
             }
             return displayList.concat(this.results);
