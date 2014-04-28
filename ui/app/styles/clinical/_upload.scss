@@ -176,6 +176,9 @@
     input:invalid {
       border: solid 2px #FF9494; 
     }
+    select:invalid {
+      border: solid 2px #FF9494;
+    }
 
     @media screen and (max-width: 480px) {
       .field-value, form select {
