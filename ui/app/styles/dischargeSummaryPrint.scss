@@ -10,7 +10,20 @@ p, h1, h2, h3, table, tr, td, div, span, li {
   padding: 0px;
   font-size: 12pt;
 }
-
+ul {
+  padding-left: 10px;
+  margin: 0;
+}
+ol {
+  padding-left: 25px;
+  margin: 0;
+}
+table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+table tr td {border: 1px solid #ccc; padding: 5px;}
 ul li {
   list-style-type: none;
 }
@@ -48,32 +61,30 @@ header h2 {
 }
 
 .patient-info {
-  margin-bottom: 20px;
   overflow: auto;
-}
-.patient-info ul {
-  float: left;
-}
-
-.patient-info ul li {
-  float: left;
-  width: 30%;
-}
-.patient-info ul li .value {
-  width: auto;
-  display: inline-block;
-  border-bottom: 1px solid #ccc;
+  table {
+    margin: 15px auto;
+    tr td {
+      .value {
+        font-weight: bold;
+        margin-left: 5px;
+        display: inline-block;
+      }
+    }
+  }
 }
 
 section {
   clear: both;
   text-align: left;
-  min-height: 100px;
+  margin: 20px 0;
 }
 section h3 {
   text-transform: uppercase;
   text-decoration: underline;
   text-align: left;
+  margin-right: 10px;
+  margin-bottom: 10px;
 }
 section h3:after {
   content: ":";
@@ -84,4 +95,42 @@ section h3:after {
 }
 .abnormal {
   font-weight: bold;
+}
+.follow-up {
+  h3 {
+    float: left;
+  }
+}
+.diagnosis-print {
+  .diagnosis-name {
+    display: inline-block;
+    margin-right: 15px;
+  }
+}
+.lab-print {  
+  li.test-item {
+    border-bottom: 1px solid #ccc;
+    padding: 5px 0;
+  }
+  ol li {
+    .pending-status {
+      float: right;
+    }
+    .test-name {
+      width: 50%;
+      display: inline-block;
+    }
+    .test-date {
+      float: right;
+      width: 15%;
+      display: inline-block;
+      text-align: right;
+    }
+    .test-value {
+      width: 200px;
+      display: inline-block;
+      float: right;
+    }
+  }
+
 }

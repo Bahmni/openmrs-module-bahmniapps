@@ -1,0 +1,115 @@
+@charset "UTF-8";
+@page {
+  margin-left: 0.2cm;
+  margin-right: 0.2cm;
+  margin-top: 0.2cm;
+  margin-bottom: 0.2cm;
+}
+p, h1, h2, h3, table, tr, td, div, span, li {
+  margin: 0px;
+  padding: 0px;
+  font-size: 12pt;
+  font-family: arial;
+}
+ul {
+  padding-left: 10px;
+  margin: 0;
+}
+ol {
+  padding-left: 25px;
+  margin: 0;
+}
+table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+table tr td {border: 1px solid #ccc; padding: 5px;}
+ul li {
+  list-style-type: none;
+}
+
+.print-center {
+  text-align: center;
+}
+
+.visit-summary-print {
+  width: 98%;
+  margin: 0;
+  padding: 0;
+  background: none;
+  font-size: 12pt;
+  font-family: arial;
+  padding: 1%;
+}
+
+header {
+  margin: 0 auto;
+  text-align: center;
+  background: none;
+  .logo {
+    width: 12mm; 
+    height: 12mm;
+    float: none;
+  }
+  h1, h2 {
+    text-align: center;
+    font-weight: bold;
+    color: #000;
+    padding: 0;
+  }
+}
+header h1, header h2 {
+  text-transform: uppercase;
+  color: #000;
+}
+header h1 span {
+  display: block;
+}
+header h2 {
+  margin-top: 5px;
+  text-decoration: underline;
+}
+
+h2, .diagnosis h2 {
+  text-align: left;
+  font-weight: bold;
+  color: #000;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  text-decoration: underline;
+  border: 0;
+  padding-left: 0;
+  margin-top: 15px;
+  padding-top: 0;
+}
+
+.patient-info {
+  overflow: auto;
+  table {
+    margin: 15px auto;
+    tr td {
+      .value {
+        font-weight: bold;
+        margin-left: 5px;
+        display: inline-block;
+      }
+    }
+  }
+}
+.is-abnormal td, .is-abnormal td span{
+  font-weight: bold;
+  color: #000;
+}
+.diagnosis .table .table-header.row {border-top: 1px solid #ccc;}
+.block.observation ul {padding-left:0;}
+.observation table td.value .obs-value {float: none;}
+.history-diagnosis .diagnosis-row .view-past .col1 .diagnosis-name {padding-left: 10px;}
+.history-diagnosis .diagnosis-row .view-past .col3 span,
+.history-diagnosis .diagnosis-row .view-past .col2 span
+{font-size: 12px;}
+.radiology-investigations .radiology-doc-item a {width: 65%;}
+.radiology-investigations .radiology-doc-item .footer-note {float: right;}
+button, input[type="button"] {
+  display: none;
+}
