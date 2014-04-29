@@ -36,7 +36,7 @@ angular.module('bahmni.common.uiHelper')
                         $timeout(waitForRenderAndPrint);
                     } else {
                         // Replace printHtml with openNewWindow for debugging
-                        openNewWindow(element.html());
+                        printHtml(element.html());
                         printScope.$destroy();
                     }
                 }
