@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DispositionController', ['$scope', '$q', '$rootScope','dispositionService', 'spinner', function ($scope, $q, $rootScope,dispositionService, spinner) {
+    .controller('DispositionController', ['$scope', '$q', '$rootScope','dispositionService', 'spinner', 'RegisterTabService', function ($scope, $q, $rootScope,dispositionService, spinner, registerTabService) {
 
         var getDispositionActionsPromise = function() {
             return dispositionService.getDispositionActions().then(function (response) {
@@ -27,7 +27,7 @@ angular.module('bahmni.clinical')
                 }
 
             });
-        }
+        };
 
         var getDispositionNotePromise = function() {
             return dispositionService.getDispositionNoteConcept().then(function (response) {
@@ -35,11 +35,11 @@ angular.module('bahmni.clinical')
                     $scope.dispositionNoteConceptUuid = response.data.results[0].uuid;
                 }
             });
-        }
+        };
 
         var loadDispositionActions = function() {
             return getDispositionNotePromise().then(getDispositionActionsPromise);
-        }
+        };
 
         $scope.getMappingCode = function(concept){
             var mappingCode="";
@@ -52,11 +52,11 @@ angular.module('bahmni.clinical')
                 });
             }
             return mappingCode;
-        }
+        };
 
         $scope.clearDispositionNote = function(){
              $scope.dispositionNotes = {};
-        }
+        };
 
         var getSelectedDisposition = function(){
             var selectedAction ='';
@@ -76,7 +76,7 @@ angular.module('bahmni.clinical')
                 };
             }
 
-        }
+        };
 
         var constructDispositionNoteObs = function(notesObs){
             if(notesObs){
@@ -93,11 +93,16 @@ angular.module('bahmni.clinical')
             else{
                 return [];
             }
-        }
+        };
 
         spinner.forPromise(loadDispositionActions());
 
-        $scope.$on('$destroy', function() {
+
+        var saveDispositions = function() {
             $rootScope.disposition  =   getSelectedDisposition();
-        });
+        };
+
+        registerTabService.register(saveDispositions);
+
+        $scope.$on('$destroy', saveDispositions);
     }]);

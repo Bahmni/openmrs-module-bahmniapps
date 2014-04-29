@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical').controller('ConsultationNavigationController',
-    ['$scope', '$rootScope', '$location', '$window', 'appService', 'urlHelper', 'contextChangeHandler',
-        function ($scope, $rootScope, $location, $window, appService, urlHelper, contextChangeHandler) {
+    ['$scope', '$rootScope', '$location', '$window', 'appService', 'urlHelper', 'contextChangeHandler', 'spinner', 'encounterService', 'RegisterTabService',
+        function ($scope, $rootScope, $location, $window, appService, urlHelper, contextChangeHandler, spinner, encounterService, registerTabService) {
             //$scope.mainButtonText = "Consultation";
             
             var boardTypes = {
@@ -76,6 +76,92 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 $scope.currentBoard = board;
                 return getUrl(board);
             };
+
+
+
+
+            var addEditedDiagnoses = function (diagnosisList) {
+                $rootScope.consultation.pastDiagnoses && $rootScope.consultation.pastDiagnoses.forEach(function (diagnosis) {
+                    if (diagnosis.isDirty) {
+                        diagnosis.previousObs = diagnosis.existingObs;
+                        diagnosis.existingObs = '';
+                        diagnosis.setDiagnosisStatusConcept();
+                        diagnosis.diagnosisDateTime = undefined;
+                        diagnosisList.push(diagnosis);
+                    }
+                });
+                $rootScope.consultation.savedDiagnosesFromCurrentEncounter && $rootScope.consultation.savedDiagnosesFromCurrentEncounter.forEach(function (diagnosis) {
+                    if (diagnosis.isDirty) {
+                        diagnosis.setDiagnosisStatusConcept();
+                        diagnosis.diagnosisDateTime = undefined;
+                        diagnosisList.push(diagnosis);
+                    }
+                });
+            };
+
+            $scope.save = function () {
+                registerTabService.fire();
+                var encounterData = {};
+                encounterData.patientUuid = $scope.patient.uuid;
+                encounterData.encounterTypeUuid = $rootScope.encounterConfig.getOpdConsultationEncounterTypeUuid();
+                encounterData.encounterDateTime = $rootScope.consultation.encounterDateTime || new Date();
+
+                if ($rootScope.consultation.newlyAddedDiagnoses && $rootScope.consultation.newlyAddedDiagnoses.length > 0) {
+                    encounterData.bahmniDiagnoses = $rootScope.consultation.newlyAddedDiagnoses.map(function (diagnosis) {
+                        return {
+                            codedAnswer: { uuid: !diagnosis.isNonCodedAnswer ? diagnosis.codedAnswer.uuid : undefined},
+                            freeTextAnswer: diagnosis.isNonCodedAnswer ? diagnosis.codedAnswer.name : undefined,
+                            order: diagnosis.order,
+                            certainty: diagnosis.certainty,
+                            existingObs: null,
+                            diagnosisDateTime: null,
+                            diagnosisStatusConcept: diagnosis.getDiagnosisStatusConcept(),
+                            voided: diagnosis.voided
+                        }
+                    });
+                } else {
+                    encounterData.bahmniDiagnoses = [];
+                }
+                addEditedDiagnoses(encounterData.bahmniDiagnoses);
+
+                encounterData.testOrders = $rootScope.consultation.investigations.map(function (investigation) {
+                    return { uuid: investigation.uuid, concept: {uuid: investigation.concept.uuid }, orderTypeUuid: investigation.orderTypeUuid, voided: investigation.voided || false};
+                });
+
+                var startDate = new Date();
+                var allTreatmentDrugs = $rootScope.consultation.treatmentDrugs || [];
+                var newlyAddedTreatmentDrugs = allTreatmentDrugs.filter(function (drug) {
+                    return !drug.savedDrug;
+                });
+
+                if (newlyAddedTreatmentDrugs) {
+                    encounterData.drugOrders = newlyAddedTreatmentDrugs.map(function (drug) {
+                        return drug.requestFormat(startDate);
+                    });
+                }
+
+                encounterData.disposition = $rootScope.disposition;
+
+                var addObservationsToEncounter = function () {
+                    encounterData.observations = encounterData.observations || [];
+
+                    if ($scope.consultation.consultationNote.value) {
+                        encounterData.observations.push($scope.consultation.consultationNote);
+                    }
+                    if ($scope.consultation.labOrderNote.value) {
+                        encounterData.observations.push($scope.consultation.labOrderNote);
+                    }
+                    encounterData.observations = encounterData.observations.concat($rootScope.consultation.observations);
+                };
+
+                $rootScope.consultation.observations = new Bahmni.Common.Domain.ObservationFilter().filter($rootScope.consultation.observations);
+                addObservationsToEncounter();
+
+                spinner.forPromise(encounterService.create(encounterData).success(function () {
+                    $location.path(Bahmni.Clinical.Constants.patientsListUrl);
+                }));
+            };
+
 
             initialize();
 

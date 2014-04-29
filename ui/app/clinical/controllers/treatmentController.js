@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('TreatmentController', ['$scope', '$rootScope', 'DrugService', 'contextChangeHandler',
-    function ($scope, $rootScope, treatmentService, contextChangeHandler) {
+    .controller('TreatmentController', ['$scope', '$rootScope', 'DrugService', 'contextChangeHandler', 'RegisterTabService',
+    function ($scope, $rootScope, treatmentService, contextChangeHandler, registerTabService) {
         $scope.placeholder = "Add Treatment Advice";
         $scope.searchResults = [];
         $scope.selectedDrugs = [];
@@ -17,7 +17,7 @@ angular.module('bahmni.clinical')
             }
 
             return str1 === str2;
-        }
+        };
 
         $scope.addNewRowIfNotExists = function (index) {
             var drugBeingEdited = $scope.selectedDrugs[index];
@@ -52,7 +52,7 @@ angular.module('bahmni.clinical')
                 if (m == "}}") { return "}"; }
                 return args[n];
             });
-        }
+        };
 
 
         $scope.getDataResults = function (data) {
@@ -151,13 +151,17 @@ angular.module('bahmni.clinical')
             return  drug.empty || (dosageDays != null && dosageDays != '');
         };
 
-        $scope.$on('$destroy', function() {
-
-            $rootScope.consultation.treatmentDrugs = $scope.selectedDrugs.filter(function(drug){
+        var saveTreatments = function () {
+            $rootScope.consultation.treatmentDrugs = $scope.selectedDrugs.filter(function (drug) {
                 return !drug.empty;
             });
+        };
 
-        });
+
+
+        registerTabService.register(saveTreatments);
+
+        $scope.$on('$destroy', saveTreatments);
 
         var extractAnswers = function(config) {
             if(config.results.length > 0) {

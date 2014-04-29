@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DiagnosisController', ['$scope', '$rootScope', '$stateParams', 'diagnosisService', 'contextChangeHandler',
-        function ($scope, $rootScope, $stateParams, diagnosisService, contextChangeHandler) {
+    .controller('DiagnosisController', ['$scope', '$rootScope', '$stateParams', 'diagnosisService', 'contextChangeHandler', 'RegisterTabService',
+        function ($scope, $rootScope, $stateParams, diagnosisService, contextChangeHandler, registerTabService) {
 
             $scope.placeholder = "Add Diagnosis";
             $scope.hasAnswers = false;
@@ -118,11 +118,17 @@ angular.module('bahmni.clinical')
                 diagnosisBeingEdited.clearCodedAnswerUuid();
             };
 
-            $scope.$on('$destroy', function () {
+
+            var saveDiagnosis = function () {
                 $rootScope.consultation.newlyAddedDiagnoses = $scope.newlyAddedDiagnoses.filter(function (diagnosis) {
                     return !diagnosis.isEmpty();
                 });
-            });
+            };
+
+
+            registerTabService.register(saveDiagnosis);
+            
+            $scope.$on('$destroy', saveDiagnosis);
 
             $scope.processDiagnoses = function (data) {
                 data.map(
