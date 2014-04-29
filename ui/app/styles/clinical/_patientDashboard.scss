@@ -129,7 +129,7 @@ aside{
   section.block {
     padding: 0!important;
     height: 250px;
-    overflow-y: scroll;
+    overflow-y: auto;
     border-radius: 0 0 5px 5px;
   }
   section {
@@ -204,7 +204,7 @@ aside{
 .placeholder-text {
   font-size: 14px;
   padding: 10px;
-  border: 0;
+  border-bottom: 1px solid #cecece;
 }
 .white-popup {
   position: relative;
