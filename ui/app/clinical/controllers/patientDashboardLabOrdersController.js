@@ -25,7 +25,7 @@ angular.module('bahmni.clinical')
                 var getUniqueOrdersWithinAVisit = function (orderGroupWithResultsArgs) {
                     var uniqueOrders = [];
                     orderGroupWithResultsArgs.forEach(function(orderGroupWithResultsForAVisit) {
-                        var items = Bahmni.Clinical.OrdersUtil.unique(orderGroupWithResultsForAVisit.orders);
+                        var items = Bahmni.Clinical.OrdersUtil.latest(orderGroupWithResultsForAVisit.orders);
                         uniqueOrders = uniqueOrders.concat(items);
                     })
                     return uniqueOrders;

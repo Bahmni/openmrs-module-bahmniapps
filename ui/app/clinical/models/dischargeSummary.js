@@ -36,12 +36,12 @@
 			});
 		},
 
-		getUniqueLabOrders: function() {
-			return Bahmni.Clinical.OrdersUtil.unique(this.visit.labOrders);
+		getLatestLabOrders: function() {
+			return Bahmni.Clinical.OrdersUtil.latest(this.visit.labOrders);
 		},
 
-		getUniqueRadiologyOrders: function() {
-			return Bahmni.Clinical.OrdersUtil.unique(this.visit.radiologyOrders);
+		getLatestRadiologyOrders: function() {
+			return Bahmni.Clinical.OrdersUtil.latest(this.visit.radiologyOrders);
 		}
 	}
 })();

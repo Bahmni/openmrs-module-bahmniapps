@@ -93,7 +93,7 @@
 	  <section class="lab-print">
 	    <h3>Lab Investigations</h3>      
 	    <ol>
-	    	<li class="test-item" ng-switch="labOrder.getOrderableType()" ng-repeat="labOrder in dischargeSummary.getUniqueLabOrders()">
+	    	<li class="test-item" ng-switch="labOrder.getOrderableType()" ng-repeat="labOrder in dischargeSummary.getLatestLabOrders()">
 	    		<span ng-switch-when="Panel" ng-init="panel = labOrder.orderable">
 	    			<span class="test-name">{{panel.concept.name}}</span>
     				<span ng-if="!panel.hasResults()" class="pending-status">Pending!!</span>
@@ -114,7 +114,7 @@
 	  <section class="radiology-print">
 	    <h3>Radiology Investigations</h3>
 	    <ul>
-	    	<li ng-repeat="radiologyOrder in dischargeSummary.getUniqueRadiologyOrders()">
+	    	<li ng-repeat="radiologyOrder in dischargeSummary.getLatestRadiologyOrders()">
 	    		{{radiologyOrder.concept.name}}
 	    	<li>
 	    </ul>

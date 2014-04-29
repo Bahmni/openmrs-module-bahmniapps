@@ -1,22 +1,23 @@
 'use strict';
 
 Bahmni.Clinical.OrdersUtil = (function () {
-    var contains = function (order, orderList) {
-        return orderList.some(function (orderInList) {
-            return orderInList.concept.name === order.concept.name;
+    var DateUtil = Bahmni.Common.Util.DateUtil;
+
+    var containsOlderOrder = function (orders, orderToCheck) {
+        return orders.some(function (order) {
+            return order.concept.name === orderToCheck.concept.name && DateUtil.parse(order.orderDate) > DateUtil.parse(orderToCheck.orderDate);
         });
     };
 
     var OrdersUtil = {
-        //The logic except comparer can be moved to ArrayUtil
-        unique: function (orders) {
-            var uniqueOrders = [];
-            orders.forEach(function (order) {
-                if (!contains(order, uniqueOrders)) {
-                    uniqueOrders.push(order);
+        latest: function (orders) {
+            var clonedOrders = Bahmni.Common.Util.ArrayUtil.clone(orders);
+            clonedOrders.forEach(function (order) {
+                if (containsOlderOrder(clonedOrders, order)) {
+                    Bahmni.Common.Util.ArrayUtil.removeItem(clonedOrders, order);
                 }
             });
-            return uniqueOrders;
+            return clonedOrders;
         }
     }
 

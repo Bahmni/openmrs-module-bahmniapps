@@ -1,4 +1,5 @@
 'use strict';
+
 Bahmni.Common.Util.ArrayUtil = {
     chunk: function(array, chunkSize) {
         var chunks = [];
@@ -7,10 +8,14 @@ Bahmni.Common.Util.ArrayUtil = {
     },
 
     removeItem: function(array, item) {
-    	var index = array.indexOf(item);
-    	if(index !== -1) {
-    		array.splice(index, 1)
-    	}
+        var index = array.indexOf(item);
+        if(index !== -1) {
+            array.splice(index, 1)
+        }
+    },
+
+    clone: function(array) {
+    	return array.slice(0);
     },
 
     flatten: function(items, propertyName){
@@ -20,7 +25,8 @@ Bahmni.Common.Util.ArrayUtil = {
     },
 
     sortReverse: function(array, field){
-        return this.sort(array, field).reverse();
+        if(!array) return [];
+        return array.sort(function(first, second) { return first[field] > second[field] ? -1: 1; });
     },
     
     sort: function(array, field){
