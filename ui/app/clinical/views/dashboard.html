@@ -5,7 +5,8 @@
                 <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
             </div>
             <h4>{{patient.name}}<span bo-text="' (' + patient.gender + ', ' + patient.age + ')'"></span></h4>
-            <h5>{{patient.identifier}}<span bo-text="' (' + patient.address.cityVillage + ')'"></span></h5>
+            <h5>{{patient.identifier}}<span bo-text="' (' + patient.address.cityVillage + ')'" 
+              bo-hide="!patient.address.cityVillage"></span></h5>
             <span  class="ward" bo-text="bedDetails.wardName + ' ' + bedDetails.bedNumber"></span>
         </div>
 

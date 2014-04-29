@@ -1,9 +1,8 @@
 <div ng-controller="PatientDashboardLabOrdersController" class="dashboard-laborders-section">
     <h2>{{section.description}}</h2>
     <section class="block">
-        <p>{{patientSummary.message}}</p>
-
-        <table>
+        <p class="placeholder-text" ng-if="patientSummary.data.length == 0">{{patientSummary.message}}</p>
+        <table ng-if="patientSummary.data.length > 0">
             <tbody ng-repeat="line in patientSummary.data">
             <!-- HACKTAG: Apparently bo-if makes this go into an infinite loop-->
             <tr ng-if="line.isSummary" ng-class="testResultClass(line)">
