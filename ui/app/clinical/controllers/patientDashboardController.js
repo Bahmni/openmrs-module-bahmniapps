@@ -38,9 +38,23 @@ angular.module('opd.patientDashboard', [])
             $scope.toggle($scope.patient);
         };
 
+        $scope.isVisitActive = function (visit) {
+            return visit.isActive();
+        };
+
+        var getActiveVisit = function (){
+            if($scope.visits){
+                return $scope.visits.filter($scope.isVisitActive);
+            }
+            else{
+                return null;
+            }
+        };
 
         $scope.getConsultationPadLink = function () {
+            $scope.activeVisit = getActiveVisit();
             if ($scope.activeVisit) {
+                $scope.activeVisit = $scope.activeVisit[0];
                 return urlHelper.getVisitUrl($scope.activeVisit.uuid);
             } else {
                 return urlHelper.getConsultationUrl();

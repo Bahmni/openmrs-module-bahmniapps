@@ -21,3 +21,4 @@ ui/app/styles/*.css
 **/.DS_Store
 test_out
 omod/src/main/webapp/*
+ui/.idea/
