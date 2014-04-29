@@ -5,7 +5,7 @@ Bahmni.Clinical.OrdersUtil = (function () {
 
     var containsOlderOrder = function (orders, orderToCheck) {
         return orders.some(function (order) {
-            return order.concept.name === orderToCheck.concept.name && DateUtil.parse(order.orderDate) > DateUtil.parse(orderToCheck.orderDate);
+            return order.concept.name === orderToCheck.concept.name && DateUtil.parse(order.dateCreated) > DateUtil.parse(orderToCheck.dateCreated);
         });
     };
 

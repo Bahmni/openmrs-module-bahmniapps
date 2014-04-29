@@ -1,16 +1,20 @@
 <link rel="stylesheet" href="../styles/dischargeSummaryPrint.css"/>
 <script type="text/ng-template" id="resultTemplate">
-	<span ng-class="{abnormal: result.isAbnormal}">
+	<span ng-if="!result.value">
 		<span class="test-name">{{result.concept.name}}</span>
-    <span class="test-date">{{test.orderDate | date:'d MMM yy'}}</span>
-    <span class="test-value">{{result.value}}</span>
+		<span class="pending-status">Pending</span>
+	</span>
+	<span ng-if="result.value" ng-class="{abnormal: result.isAbnormal}">
+		<span class="test-name">{{result.concept.name}}</span>
+    	<span class="test-date">{{test.orderDate | date:'d MMM yy'}}</span>
+    	<span class="test-value">{{result.value}}</span>
 	</span>
  </script>
 <script type="text/ng-template" id="testTemplate">
 	<span ng-switch="test.results.length">
 		<span ng-switch-when="0">
 			<span class="test-name">{{test.concept.name}}</span>
-			<span class="pending-status">Pending!!</span>
+			<span class="pending-status">Pending</span>
 		</span>
 		<span ng-switch-when="1" ng-init="result = test.results[0]">
 			<span ng-include="'resultTemplate'"></span>
@@ -96,7 +100,7 @@
 	    	<li class="test-item" ng-switch="labOrder.getOrderableType()" ng-repeat="labOrder in dischargeSummary.getLatestLabOrders()">
 	    		<span ng-switch-when="Panel" ng-init="panel = labOrder.orderable">
 	    			<span class="test-name">{{panel.concept.name}}</span>
-    				<span ng-if="!panel.hasResults()" class="pending-status">Pending!!</span>
+    				<span ng-if="!panel.hasResults()" class="pending-status">Pending</span>
 	    			<ul>
 	    				<li ng-repeat="test in panel.tests" ng-include="'testTemplate'"></li>
 	    			</ul>

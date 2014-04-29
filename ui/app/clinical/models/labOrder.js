@@ -3,6 +3,7 @@
 Bahmni.Clinical.LabOrder = (function () {
     var LabOrder = function (data) {
         angular.extend(this, data);
+        this.orderDate = data.dateCreated;
     };
 
     var createOrderable = function (order) {
@@ -30,7 +31,7 @@ Bahmni.Clinical.LabOrder = (function () {
     };
 
     LabOrder.create = function (order) {
-        return new LabOrder({concept: order.concept, orderable: createOrderable(order), orderDate: order.dateCreated});
+        return new LabOrder({concept: order.concept, orderable: createOrderable(order), dateCreated: order.dateCreated});
     };
 
     return LabOrder;
