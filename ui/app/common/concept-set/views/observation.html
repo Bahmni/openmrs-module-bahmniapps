@@ -4,6 +4,7 @@
             <label class="control-label">
                 <span>{{observation.primaryObs.label}}&nbsp;</span>
                 <span ng-show="observation.units">({{observation.primaryObs.units}})</span>
+                <span ng-if="observation.isRequired()" class="asterick">*</span>
             </label>
             <div class="field-value" ng-switch on="observation.getControlType()">
 

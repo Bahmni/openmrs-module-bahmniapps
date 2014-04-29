@@ -161,7 +161,7 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     isRequired: function () {
-        return true;
+        return this.getConceptUIConfig().required || false;
     },
 
     _hasValidChildren: function (checkRequiredFields) {

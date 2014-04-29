@@ -61,19 +61,21 @@ angular.module('bahmni.common.conceptSet')
             $scope.atLeastOneValueIsSet = false;
 
             var updateObservationsOnRootScope = function () {
-                for (var i = 0; i < $scope.observations.length; i++) {
-                    if ($scope.observations[i].concept.uuid === $scope.rootObservation.concept.uuid) {
-                        $scope.observations[i] = $scope.rootObservation;
-                        return;
+                if($scope.rootObservation){
+                    for (var i = 0; i < $scope.observations.length; i++) {
+                        if ($scope.observations[i].concept.uuid === $scope.rootObservation.concept.uuid) {
+                            $scope.observations[i] = $scope.rootObservation;
+                            return;
+                        }
                     }
+                    $scope.observations.push($scope.rootObservation);
                 }
-                $scope.observations.push($scope.rootObservation);
             };
 
             var allowContextChange = function () {
-                $scope.atLeastOneValueIsSet = $scope.rootNode && $scope.rootNode.atLeastOneValueSet();
-                var invalidNodes = $scope.rootNode && $scope.rootNode.children.filter(function(childNode){
-                    return !childNode.isValid($scope.atLeastOneValueIsSet);
+                $scope.atLeastOneValueIsSet = $scope.rootObservation && $scope.rootObservation.atLeastOneValueSet();
+                var invalidNodes = $scope.rootObservation && $scope.rootObservation.groupMembers.filter(function(childNode){
+                    return childNode.isObservationNode && !childNode.isValid($scope.atLeastOneValueIsSet);
                 });
                 return !invalidNodes || invalidNodes.length === 0;
             };
