@@ -1,15 +1,7 @@
 Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptSetUIConfig) {
 
-    this.isObservationNode = true;
-    if (savedObs) {
-        this.uuid = savedObs.uuid;
-    }
-
     angular.extend(this, observation);
     angular.extend(this, Bahmni.ConceptSet.Observation);
-
-    this.conceptUIConfig = conceptSetUIConfig;
-
     Object.defineProperty(this, 'value', {
         get: function () {
             if (this.primaryObs) {
@@ -19,10 +11,13 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptSetU
         },
         set: function (newValue) {
             this.primaryObs.value = newValue;
-            if (!this.primaryObs.hasValue()) {
-                this.abnormal.value = undefined;
-            }
             this.onValueChanged();
+        }
+    });
+
+    Object.defineProperty(this, 'duration', {
+        get: function () {
+            return this.getDuration();
         }
     });
 
@@ -30,21 +25,38 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptSetU
         get: function () {
             return this.getAbnormal();
         }
-    }); 
-    
+    });
+
     Object.defineProperty(this, 'primaryObs', {
         get: function () {
             return this.getPrimaryObs();
         }
     });
+
+    this.conceptSetUIConfig = conceptSetUIConfig;
+    this.isObservationNode = true;
+    if (savedObs) {
+        this.uuid = savedObs.uuid;
+    }
+
 };
 
-
 Bahmni.ConceptSet.ObservationNode.prototype = {
+
+    getPossibleAnswers: function () {
+        return this.getPrimaryObs().concept.answers;
+    },
 
     getAbnormal: function () {
         var abnormalAsArray = this.groupMembers.filter(function (member) {
             return (member.concept.conceptClass.name === Bahmni.Common.Constants.abnormalConceptClassName);
+        });
+        return abnormalAsArray[0];
+    },
+
+    getDuration: function () {
+        var abnormalAsArray = this.groupMembers.filter(function (member) {
+            return (member.concept.conceptClass.name === Bahmni.Common.Constants.durationConceptClassName);
         });
         return abnormalAsArray[0];
     },
@@ -57,15 +69,18 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     onValueChanged: function () {
-        if (this.primaryObs.isNumeric()) {
+        if (!this.getPrimaryObs().hasValue() && this.getAbnormal()) {
+            this.getAbnormal().value = undefined;
+        }
+        if (this.getPrimaryObs().isNumeric()) {
             this.setAbnormal();
         }
 //        this.observationDateTime = new Date();
     },
 
     setAbnormal: function () {
-        if (this.primaryObs.hasValue()) {
-            var valueInRange = this.value <= (this.primaryObs.concept.hiNormal || Infinity) && this.value >= (this.primaryObs.concept.lowNormal || 0);
+        if (this.getPrimaryObs().hasValue()) {
+            var valueInRange = this.value <= (this.getPrimaryObs().concept.hiNormal || Infinity) && this.value >= (this.getPrimaryObs().concept.lowNormal || 0);
             this.abnormal.value = !valueInRange;
         } else {
             this.abnormal.value = undefined;
@@ -89,19 +104,31 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
         return false;
     },
 
+    getConceptUIConfig: function () {
+        return this.conceptSetUIConfig[this.getPrimaryObs().concept.name] || [];
+    },
+
     getControlType: function () {
+        if (this.getConceptUIConfig().freeTextAutocomplete) return "freeTextAutocomplete";
         if (this.isHtml5InputDataType()) return "html5InputDataType";
-        if (this.primaryObs.isText()) return "text";
-        if (this.primaryObs.isCoded()) return this.conceptUIConfig.autocomplete ? "autocomplete" : "dropdown";
+        if (this.getPrimaryObs().isText()) return "text";
+        if (this.getPrimaryObs().isCoded()) return this._getCodedControlType();
         return "unknown";
     },
 
+    _getCodedControlType: function () {
+        var conceptUIConfig = this.getConceptUIConfig();
+        if (conceptUIConfig.multiselect) return "multiselect";
+        if (conceptUIConfig.autocomplete) return "autocomplete";
+        return "dropdown";
+    },
+
     isHtml5InputDataType: function () {
-        return ['Date', 'Numeric'].indexOf(this.primaryObs.getDataTypeName()) != -1;
+        return ['Date', 'Numeric'].indexOf(this.getPrimaryObs().getDataTypeName()) != -1;
     },
 
     _isDateDataType: function () {
-        return 'Date'.indexOf(this.primaryObs.getDataTypeName()) != -1;
+        return 'Date'.indexOf(this.getPrimaryObs().getDataTypeName()) != -1;
     },
 
     getHighAbsolute: function () {
@@ -122,14 +149,14 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
                 return childNode.atLeastOneValueSet();
             })
         } else {
-            return this.primaryObs.hasValue();
+            return this.getPrimaryObs().hasValue();
         }
     },
 
     isValid: function (checkRequiredFields) {
         if (this.isGroup()) return this._hasValidChildren(checkRequiredFields);
-        if (checkRequiredFields && this.isRequired() && !this.primaryObs.hasValue()) return false;
-        if (this._isDateDataType()) return this.primaryObs.isValidDate();
+        if (checkRequiredFields && this.isRequired() && !this.getPrimaryObs().hasValue()) return false;
+        if (this._isDateDataType()) return this.getPrimaryObs().isValidDate();
         return true;
     },
 

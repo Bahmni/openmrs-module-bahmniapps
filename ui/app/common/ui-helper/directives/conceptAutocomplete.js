@@ -19,6 +19,7 @@ angular.module('bahmni.common.uiHelper')
             },
             select: function (event, ui) {
                 scope.$apply(function (scope) {
+                    debugger;
                     ngModelCtrl.$setViewValue(ui.item.value);
                     scope.$eval(attrs.ngChange);
                     if(scope.blurOnSelect) element.blur();
