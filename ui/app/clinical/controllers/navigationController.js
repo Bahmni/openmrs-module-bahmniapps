@@ -10,8 +10,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 consultation: 'consultation'
             };
             $scope.availableBoards = [
-                { name: 'Visit', url: '', type: boardTypes.visit},
-                { name: 'Consultation', url: 'consultation', type: boardTypes.consultation }
+                { name: 'Visit', url: '', type: boardTypes.visit}
             ];
             $scope.currentBoard = $scope.availableBoards[0];
             $scope.showBoard = function (name) {
@@ -21,7 +20,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
 
             $scope.gotoPatientDashboard = function() {
                 $location.path("/patient/" + $rootScope.patient.uuid + "/dashboard");
-            }
+            };
 
             var setCurrentBoardBasedOnPath = function() {
                 var currentPath = $location.path();
