@@ -1,14 +1,6 @@
 Bahmni.Clinical.OrderObservationsMapper = function () {
 };
 
-Bahmni.Clinical.OrderObservationsMapper.prototype.createOrderGroup = function (encounterTransactions, ordersName, filter, groupingParameter) {
-    var orderGroup = new Bahmni.Clinical.OrderGroup();
-    var orders = orderGroup.flatten(encounterTransactions, ordersName).filter(filter);
-    var observations = Bahmni.Common.Util.ArrayUtil.flatten(encounterTransactions, 'observations');
-    this.map(observations, orders);
-    return orderGroup.group(orders, groupingParameter);
-};
-
 Bahmni.Clinical.OrderObservationsMapper.prototype.map = function (observations, orders) {
     var makeCommentsAsAdditionalObs = function (observation) {
             angular.forEach(observation.groupMembers, makeCommentsAsAdditionalObs);
@@ -22,7 +14,7 @@ Bahmni.Clinical.OrderObservationsMapper.prototype.map = function (observations, 
                     else {
                         testObservation.push(obs);
                     }
-                })
+                });
                 observation.groupMembers = testObservation;
                 if (observation.groupMembers[0] && additionalObs.length > 0) {
                     observation.groupMembers[0].additionalObs = additionalObs;

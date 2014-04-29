@@ -8,6 +8,12 @@ Bahmni.Clinical.Result = (function () {
         this.isSummary = false;
     };
 
+    Result.prototype = {
+        isOnDate: function(date) {
+            return Bahmni.Common.Util.DateUtil.isSameDate(this.observationDateTime, date);
+        }
+    };
+
     var matchingObservations = function (observations, conceptName) {
             var result = observations.filter(function (observation) {
                 return observation.concept.name === conceptName;
@@ -32,28 +38,21 @@ Bahmni.Clinical.Result = (function () {
 
     Result.create = function (parentConcept, observations) {
         var realObs = getRealObs(observations);
-        if (realObs) {
-            return new Result({
-                concept: realObs.concept,
-                value: realObs.value,
-                isAbnormal: valueOf(observations, "LAB_ABNORMAL") === true,
-                minNormal: valueOf(observations, "LAB_MINNORMAL"),
-                maxNormal: valueOf(observations, "LAB_MAXNORMAL"),
-                units: realObs.concept.units || null,
-                notes: latestMatchingObservationValue(observations, "LAB_NOTES"),
-                referredOut: matchingObservations(observations, "REFERRED_OUT").length > 0,
-                observationDateTime: realObs.observationDateTime,
-                providerName: realObs.provider? realObs.provider.name : ""
-            });
-        } 
-        return new Result({
+        var resultData = {
             concept: parentConcept,
-            isAbnormal: valueOf(observations, "LAB_ABNORMAL"),
+            isAbnormal: valueOf(observations, "LAB_ABNORMAL") === true,
             minNormal: valueOf(observations, "LAB_MINNORMAL"),
             maxNormal: valueOf(observations, "LAB_MAXNORMAL"),
             notes: latestMatchingObservationValue(observations, "LAB_NOTES"),
             referredOut: matchingObservations(observations, "REFERRED_OUT").length > 0
-        });
+        }
+        if (realObs) {
+            resultData.value = realObs.value;
+            resultData.concept = realObs.concept;
+            resultData.observationDateTime = realObs.observationDateTime;
+            resultData.providerName = realObs.provider? realObs.provider.name : "";
+        }
+        return new Result(resultData);
 
     };
 

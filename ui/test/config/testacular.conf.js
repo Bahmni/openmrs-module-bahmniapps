@@ -12,6 +12,7 @@ files = [
     '../app/components/angularjs-nvd3-directives/dist/*.js',
     '../app/components/moment/moment.js',
     '../app/components/angular-ui-router/release/angular-ui-router.js',
+    '../app/components/lodash/dist/lodash.min.js',
     '../app/common/constants.js',
     '../app/**/init.js',
     '../app/**/constants.js',

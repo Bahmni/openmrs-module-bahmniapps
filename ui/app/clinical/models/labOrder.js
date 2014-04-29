@@ -1,17 +1,15 @@
 'use strict';
 
 Bahmni.Clinical.LabOrder = (function () {
-    var LabOrder = function (order, orderable) {
-        angular.extend(this, order);
-        this.orderable = orderable;
-        this.orderDate = order.dateCreated;
+    var LabOrder = function (data) {
+        angular.extend(this, data);
     };
 
     var createOrderable = function (order) {
-        if (order.observations.length === 0) return new Bahmni.Clinical.Test({concept: order.concept});
         if (order.concept.set) {
             return Bahmni.Clinical.Panel.create(order.concept, order.observations);
         } else {
+            if (order.observations.length === 0) return new Bahmni.Clinical.Test({concept: order.concept});
             return Bahmni.Clinical.Test.create(order.observations[0]);
         }
     };
@@ -29,10 +27,10 @@ Bahmni.Clinical.LabOrder = (function () {
             displayList.forEach(function(item) { item.orderDate = self.orderDate; });
             return displayList;
         }
-    }
+    };
 
     LabOrder.create = function (order) {
-        return new LabOrder(order, createOrderable(order));
+        return new LabOrder({concept: order.concept, orderable: createOrderable(order), orderDate: order.dateCreated});
     };
 
     return LabOrder;

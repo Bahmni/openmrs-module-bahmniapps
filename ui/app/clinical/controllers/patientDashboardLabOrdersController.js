@@ -44,7 +44,7 @@ angular.module('bahmni.clinical')
                     var lastTwoVisitUuids = getLastNVisitUuids($scope.visits, 2);
                     encounterService.searchForVisits(lastTwoVisitUuids).success(function (encounterTransactions) {
 
-                        var orderGroupWithResults = new Bahmni.Clinical.OrderObservationsMapper().createOrderGroup(encounterTransactions, 'testOrders', isLabTests, $rootScope.allTestsAndPanelsConcept, "visitUuid");
+                        var orderGroupWithResults = new Bahmni.Clinical.OrdersMapper().create(encounterTransactions, 'testOrders', isLabTests, "visitUuid", $rootScope.allTestsAndPanelsConcept);
                         var displayList = [];
                         if (orderGroupWithResults.length != 0) {
                             var uniqueTests = getUniqueOrdersWithinAVisit(orderGroupWithResults);

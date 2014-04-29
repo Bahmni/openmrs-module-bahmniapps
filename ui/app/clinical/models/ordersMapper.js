@@ -1,8 +1,8 @@
 'use strict';
 
-Bahmni.Clinical.OrderGroup = function(){};
+Bahmni.Clinical.OrdersMapper = function(){};
 
-Bahmni.Clinical.OrderGroup.prototype.group = function(orders, groupingParameter) {
+Bahmni.Clinical.OrdersMapper.prototype.group = function(orders, groupingParameter) {
     var getGroupingFunction = function (groupingParameter) {
         if (groupingParameter == 'date') {
             return function (order) {
@@ -34,15 +34,16 @@ Bahmni.Clinical.OrderGroup.prototype.group = function(orders, groupingParameter)
     });
 };
 
-Bahmni.Clinical.OrderGroup.prototype.create = function (encounterTransactions, ordersName, filterFunction, groupingParameter, allTestAndPanels) {
+Bahmni.Clinical.OrdersMapper.prototype.create = function (encounterTransactions, ordersName, filterFunction, groupingParameter, allTestAndPanels) {
     filterFunction = filterFunction || function() {return true; };
-    var filteredOrders = this.flatten(encounterTransactions, ordersName, allTestAndPanels).filter(filterFunction);
+    var filteredOrders = this.map(encounterTransactions, ordersName, allTestAndPanels).filter(filterFunction);
     return this.group(filteredOrders, groupingParameter);
 };
 
-Bahmni.Clinical.OrderGroup.prototype.flatten = function (encounterTransactions, ordersName, allTestAndPanels) {
-    var allTestsPanelsConcept = new Bahmni.Clinical.AllTestsPanelsConcept(allTestAndPanels)
-    var setOrderProvider = function (encounter) { 
+Bahmni.Clinical.OrdersMapper.prototype.map = function (encounterTransactions, ordersName, allTestAndPanels) {
+    var allTestsPanelsConcept = new Bahmni.Clinical.SortedConceptSet(allTestAndPanels);
+    var orderObservationsMapper = new Bahmni.Clinical.OrderObservationsMapper();
+    var setOrderProvider = function (encounter) {
         encounter[ordersName].forEach(function(order) {
             order.provider = encounter.providers[0];
             order.accessionUuid = encounter.encounterUuid;
@@ -51,5 +52,13 @@ Bahmni.Clinical.OrderGroup.prototype.flatten = function (encounterTransactions, 
     };
     encounterTransactions.forEach(setOrderProvider);
     var flattenedOrders = Bahmni.Common.Util.ArrayUtil.flatten(encounterTransactions, ordersName);
-    return allTestsPanelsConcept.sort(flattenedOrders);
+    var allObservations = Bahmni.Common.Util.ArrayUtil.flatten(encounterTransactions, 'observations');
+    orderObservationsMapper.map(allObservations, flattenedOrders);
+    var sortedOrders = allTestsPanelsConcept.sort(flattenedOrders);
+    sortedOrders.forEach(function(order) {
+        order.observations.forEach(function(obs){
+            obs.groupMembers = allTestsPanelsConcept.sort(obs.groupMembers);
+        });
+    });
+    return  sortedOrders;
 };

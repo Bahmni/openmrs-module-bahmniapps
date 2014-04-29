@@ -2,16 +2,16 @@
 
 Bahmni.Clinical.TabularLabResults = (function () {
     var DateUtil = Bahmni.Common.Util.DateUtil;
-    var TabularLabResults = function (rows, visitDays) {
+    var TabularLabResults = function (orderables, visitDays) {
         this.visitDays = visitDays;
-        this.rows = rows;
+        this.orderables = orderables;
 
         this.getDays = function () {
             return this.visitDays;
         };
 
-        this.getRows = function () {
-            return this.rows;
+        this.getOrderables = function () {
+            return this.orderables;
         };
     };
 
@@ -26,87 +26,53 @@ Bahmni.Clinical.TabularLabResults = (function () {
         return days;
     };
 
-
-    var createTable = function (testOrders, visitDays) {
-        var results = {};
-        var resultProperties = {};
-        visitDays.forEach(function (day) {
-            testOrders.forEach(function (item) {
-                if(item.name == null) return;
-                results[item.name] = results[item.name] || {};
-                resultProperties[item.name] = resultProperties[item.name] || {};
-                resultProperties[item.name]["isSummary"] = item.isSummary;
-                resultProperties[item.name]["hasResults"] = item.hasResults;
-                resultProperties[item.name]["minNormal"] = item.minNormal;
-                resultProperties[item.name]["maxNormal"] = item.maxNormal;
-                resultProperties[item.name]["units"] = item.units;
-                results[item.name][day.dayNumber] = results[item.name][day.dayNumber] || [];
-                if (DateUtil.isSameDate(item.observationDateTime, day.date)) {
-                    results[item.name][day.dayNumber].push(item);
-                }
-            })
-        });
-
-        return  flattenResultsToRows(results, resultProperties);
+    var flattenOrderables = function(orderables){
+        return orderables.reduce(function(flatOrderables, orderable){
+            flatOrderables.push(orderable);
+            if(orderable.concept.set){ flatOrderables.push.apply(flatOrderables, orderable.tests); }
+            return flatOrderables;
+        }, []);
     };
 
-    var flattenResultsToRows = function(results, resultProperties) {
-        return Object.keys(results).map(function (testName) {
-            var row = Object.keys(results[testName]).map(function(key) {
-                return results[testName][key];
+    function getUniqueTests(topLevelTests) {
+        var testsGroupedByName = _.groupBy(topLevelTests, function (test) {return test.concept.name;});
+        return _.map(testsGroupedByName, function (tests) {
+            return new Bahmni.Clinical.Test({concept: tests[0].concept, results: _.flatten(tests, 'results')})
+        });
+    }
+
+    function getUniquePanels(allPanels) {
+        var panelsGroupedByName = _.groupBy(allPanels, function (panel) { return panel.concept.name });
+        return _.map(panelsGroupedByName, function (panels) {
+            return new Bahmni.Clinical.Panel({concept: panels[0].concept, tests: _.flatten(panels, 'tests')})
+        });
+    }
+
+    var getOrderables = function(labOrders, sortedConceptSet){
+        var topLevelTests = labOrders.filter(function(order) { return order.getOrderableType() === "Test"}).map(function(order) { return order.orderable; });
+        var allPanels = labOrders.filter(function(order) { return order.getOrderableType() === "Panel"}).map(function(order) { return order.orderable; });
+        var uniquePanels = getUniquePanels(allPanels);
+        uniquePanels.forEach(function(panel){
+            var testsBelongingToThisPanel = topLevelTests.filter(function(test) {
+                return panel.tests.some(function(testFromPanel){ return testFromPanel.concept.name === test.concept.name });
             });
-            return {
-                "name": testName,
-                "results": row,
-                "isSummary":resultProperties[testName].isSummary,
-                "hasResults":resultProperties[testName].hasResults,
-                "minNormal":  resultProperties[testName].minNormal,
-                "maxNormal": resultProperties[testName].maxNormal,
-                "units": resultProperties[testName].units
-            }
+            panel.tests = getUniqueTests(panel.tests.concat(testsBelongingToThisPanel));
+            sortedConceptSet.sort(panel.tests);
+            panel.tests.forEach(function(test) { test.belongsToPanel = true; });
+            testsBelongingToThisPanel.forEach(function(test){ _.pull(topLevelTests, test); })
         });
+        var uniqueTests = getUniqueTests(topLevelTests);
+        var allOrderables = uniqueTests.concat(uniquePanels);
+        sortedConceptSet.sort(allOrderables);
+        return  allOrderables;
     };
 
-    var filterFunction = function (aTestOrPanel, testOrder) {
-        return aTestOrPanel.name.name == testOrder.name;
-    };
-
-
-    var sort = function (allTestsAndPanels,testOrders) {
-        var indexOf = function (allTestAndPanels, order) {
-            var indexCount = 0;
-            allTestAndPanels.setMembers && allTestAndPanels.setMembers.every(function (aTestOrPanel) {
-                if (filterFunction(aTestOrPanel, order))
-                    return false;
-                else {
-                    indexCount++;
-                    return true;
-                }
-            });
-            return indexCount;
-        };
-
-        var sortedOrderList = testOrders.sort(function (firstElement, secondElement) {
-            if(firstElement.isSummary && !secondElement.isSummary){
-                return -1;
-            }
-            var indexOfFirstElement = indexOf(allTestsAndPanels, firstElement);
-            var indexOfSecondElement = indexOf(allTestsAndPanels, secondElement);
-            return indexOfFirstElement - indexOfSecondElement;
-        });
-
-        var sortedDisplayList = [];
-        sortedOrderList.forEach(function (order) {
-            sortedDisplayList = sortedDisplayList.concat(order.displayList());
-        });
-        return sortedDisplayList;
-    };
-
-    TabularLabResults.create = function (testOrdersArray, visitStartDate, visitEndDate,allTestsAndPanel) {
-//        var mergedTestOrders = sort(allTestsAndPanel,testOrdersArray);
+    TabularLabResults.create = function (labOrders, visitStartDate, visitEndDate, allTestsAndPanelsConceptSet) {
+        var sortedConceptSet = new Bahmni.Clinical.SortedConceptSet(allTestsAndPanelsConceptSet);
+        var orderables = getOrderables(labOrders, sortedConceptSet);
         var visitDays = createVisitDays(visitStartDate, visitEndDate);
-        var rows = createTable(testOrdersArray, visitDays);
-        return new TabularLabResults(rows, visitDays);
+        var flatOrderables = flattenOrderables(orderables);
+        return new TabularLabResults(flatOrderables, visitDays);
     };
 
     return TabularLabResults;

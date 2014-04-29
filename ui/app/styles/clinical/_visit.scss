@@ -366,6 +366,15 @@ span.range {
       }
     }
   }
+  td.belongsToPanel {
+    padding-left: 30px;
+    span {
+      display: block;
+    }
+    span.range {
+      font-size: 12px;
+    }
+  }
 }
 .radiology-investigations {
   .radiology-doc-item {

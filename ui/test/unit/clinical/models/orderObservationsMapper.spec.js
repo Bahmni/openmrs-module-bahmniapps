@@ -8,11 +8,13 @@ describe('OrderObservationsMapper', function () {
                 "encounterUuid": "44f473d1-18a3-468f-8bc9-d2fea42e3124",
                 "testOrders": [
                     {
+                        "concept":{name:"name1"},
                         "uuid": "34a9d9ff-b243-4f73-a7bc-4f2f2ffeec2a",
                         "voided": false,
                         "dateCreated": "2014-03-24T14:38:13.000+0530"
                     },
                     {
+                        "concept":{name:"name2"},
                         "uuid": "ff09eced-a3a7-424c-9963-2fd0e98f8708",
                         "voided": false,
                         "dateCreated": "2014-03-25T14:38:13.000+0530"
@@ -37,9 +39,10 @@ describe('OrderObservationsMapper', function () {
                 ],
                 "observations": [
                     {
+                        "concept":{name:"name1"},
                         "orderUuid": "34a9d9ff-b243-4f73-a7bc-4f2f2ffeec2a",
                         "value": "100",
-                        "voided": false,
+                        "voided": false
 
                     }
                 ]
@@ -49,9 +52,8 @@ describe('OrderObservationsMapper', function () {
 
     it("should create and map test orders with observations",function(){
         var encounterTransactions = listOfEncounterTransactions();
-        var filter = function() {return true; }
 
-        var orderObservationsMapper = new Bahmni.Clinical.OrderObservationsMapper().createOrderGroup(encounterTransactions,'testOrders', filter);
+        var orderObservationsMapper = new Bahmni.Clinical.OrdersMapper().create(encounterTransactions,'testOrders');
         
         expect(orderObservationsMapper.length).toBe(2);
         expect(orderObservationsMapper[0].orders[0].observations.length).toBe(0);

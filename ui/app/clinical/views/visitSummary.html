@@ -66,7 +66,7 @@
     </section>
 </section>
 <section class="block laborder-section" ng-show="visit.hasLabTests()">
-    <div ng-if="visit.admissionDate && false">
+    <div ng-if="visit.admissionDate">
         <h2> IPD Investigations</h2>
         <ul class="block-content">
             <table>
@@ -76,28 +76,30 @@
                     </th>
                     <th ng-repeat="day in visit.tabularResults.getDays()" bo-text="'D'+ day.dayNumber"></th>
                 </tr>
-                <tr ng-repeat="testOrder in visit.tabularResults.getRows()">
-                    <td ng-class="testResultClass(testOrder)"
-                        colspan="{{testOrder.results.length + 1}}" ng-if="testOrder.isSummary">
-                        {{testOrder.name}}
-                        <span class="status" ng-show="pendingResults(testOrder)">Pending!</span>
+                <tr ng-repeat="orderable in visit.tabularResults.getOrderables()">
+                    <td ng-if="orderable.concept.set" class="header"
+                        colspan="{{visit.tabularResults.getDays().length + 1}}">
+                        {{orderable.concept.name}}
                     </td>
 
-                    <td ng-if="!testOrder.isSummary">
-                        {{testOrder.name}}
-                        <span class="status" ng-show="pendingResults(testOrder)">Pending!</span>
+                    <td ng-class="{'belongsToPanel': test.belongsToPanel}" ng-if="!orderable.concept.set"
+                        ng-init="test = orderable">
+                        <span >{{test.concept.name}}</span>
                         <span class="range">
-                            <span ng-if="testOrder.minNormal && testOrder.maxNormal">
-                                Valid range {{' (' + testOrder.minNormal + ' - ' + testOrder.maxNormal + ') '}}
+                            <span ng-if="test.getMinNormal() && test.getMaxNormal()">
+                                Valid range {{' (' + test.getMinNormal() + ' - ' + test.getMaxNormal() + ')
+                                '}}
                             </span>
-                        <span class="units">{{testOrder.units}}</span>
-                    </span>
+                            <span class="units">{{test.getUnits()}}</span>
+                        </span>
                     </td>
 
-                    <td ng-repeat="resultDay in testOrder.results" ng-if="!testOrder.isSummary" >
+                    <td ng-if="!orderable.concept.set"
+                        ng-init="test = orderable" ng-repeat="day in visit.tabularResults.getDays()">
                         <ul>
-                            <li ng-repeat="result in resultDay" ng-class="{'is-abnormal': result.isAbnormal}">
-                                {{result.value}}
+                            <li ng-repeat="result in test.results | orderBy:'observationDateTime':false"
+                                class="test-result">
+                                <span ng-if="result.isOnDate(day.date)" ng-class="{'is-abnormal': result.isAbnormal}">{{result.value}}</span>
                             </li>
                         </ul>
                     </td>

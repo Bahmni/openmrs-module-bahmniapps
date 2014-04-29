@@ -24,6 +24,18 @@ Bahmni.Clinical.Test = (function () {
             return !this.hasPendingResults();
        },
 
+       getMinNormal: function() {
+            return this.hasResults() ? this.results[0].minNormal : undefined;
+       },
+
+       getMaxNormal: function() {
+            return this.hasResults() ? this.results[0].maxNormal : undefined;
+       },
+
+       getUnits: function() {
+            return this.concept.units;
+       },
+
        getDisplayList: function() {
             var displayList = [];
             if (this.hasMultipleResults() || this.hasPendingResults()) {
