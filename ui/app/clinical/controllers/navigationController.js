@@ -158,7 +158,9 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 addObservationsToEncounter();
 
                 spinner.forPromise(encounterService.create(encounterData).success(function () {
-                    $location.path(Bahmni.Clinical.Constants.patientsListUrl);
+                    $rootScope.success_message = "Consultation information saved";
+                }).error(function(){
+                    $rootScope.server_error = "Failed to save consultation information";
                 }));
             };
 
