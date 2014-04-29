@@ -20,19 +20,19 @@
 
                 <article class="left">
                     <label for="name"><strong>Name</strong></label>
-                    <input type="text" id="name" ng-model="name" placeholder="Enter name">
+                    <input type="text" id="name" ng-model="searchParameters.name" placeholder="Enter name">
+                </article>
+                <article class="left" ng-if="showLocalNameSearch">
+                    <label for="name"><strong>{{localNameSearchLabel}}</strong></label>
+                    <input type="text" id="localName" ng-model="searchParameters.localName" placeholder="{{localNameSearchPlaceholder}}">
                 </article>
                 <article class="left">
                     <label for="name"><strong>Village</strong></label>
-                    <input type="text" id="village" ng-model="village" placeholder="Enter village name">
-                </article>
-                <article class="left">
-                    <label for="name"><strong>Local Name</strong></label>
-                    <input type="text" id="localName" ng-model="localName" placeholder="Enter local name">
+                    <input type="text" id="village" ng-model="searchParameters.village" placeholder="Enter village name">
                 </article>
                 <article class="left">
                     <div class="reg-srch-btn">
-                        <button type="submit" ng-disabled="!name && !village && !localName">Search</button>
+                        <button type="submit" ng-disabled="disableSearchButton()">Search</button>
                     </div>
                 </article>
             </form>
@@ -55,6 +55,7 @@
                 <th class="slno_col"><strong>Sl.No</strong></th>
                 <th><strong>ID</strong></th>
                 <th><strong>Name</strong></th>
+                <th ng-if="localNameAttributes"><strong>{{localNameSearchLabel}}</strong></th>
                 <th><strong>Gender</strong></th>
                 <th><strong>Age</strong></th>
                 <th><strong>Village</strong></th>
@@ -67,6 +68,7 @@
                 <td>{{$index + 1}}</td>
                 <td>{{result.identifier}}</td>
                 <td>{{result.givenName}} {{result.middleName}} {{result.familyName}}</td>
+                <td ng-if="localNameAttributes">{{result.localNameDisplay}}</td>
                 <td>{{result.gender}}</td>
                 <td>{{result.age}}</td>
                 <td>{{result.cityVillage}}</td>

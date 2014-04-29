@@ -91,8 +91,8 @@ describe('SearchPatientController', function () {
 
             urlSearchChangeCallback();
 
-            expect(scope.name).toBe(searchParams.name);
-            expect(scope.village).toBe(searchParams.village);
+            expect(scope.searchParameters.name).toBe(searchParams.name);
+            expect(scope.searchParameters.village).toBe(searchParams.village);
             expect(patientResource.search).toHaveBeenCalled();
             expect(patientResource.search.mostRecentCall.args[0]).toBe(searchParams.name);
             expect(patientResource.search.mostRecentCall.args[1]).toBe(searchParams.village);
@@ -156,7 +156,7 @@ describe('SearchPatientController', function () {
 
     describe("searchByVillageAndName", function () {
         it("should go to search page with name", function () {
-            scope.name = "Ram Singh";
+            scope.searchParameters.name = "Ram Singh";
             spyOn(location, 'search');
 
             scope.searchByVillageAndNameAndLocalName();
@@ -165,7 +165,7 @@ describe('SearchPatientController', function () {
         });
 
         it("should go to search page with village", function () {
-            scope.village = "Bilaspur";
+            scope.searchParameters.village = "Bilaspur";
             spyOn(location, 'search');
 
             scope.searchByVillageAndNameAndLocalName();
@@ -173,8 +173,9 @@ describe('SearchPatientController', function () {
             expect(location.search).toHaveBeenCalledWith({'village': "Bilaspur"});
         });
 
-        it("should go to search page with localName", function () {
-            scope.localName = "localName";
+        it("should go to search page with localName if showLocalNameSearch has been set", function () {
+            scope.searchParameters.localName = "localName";
+            scope.showLocalNameSearch = true;
             spyOn(location, 'search');
 
             scope.searchByVillageAndNameAndLocalName();
