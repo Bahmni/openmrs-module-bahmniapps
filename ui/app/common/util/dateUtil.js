@@ -17,6 +17,17 @@ Bahmni.Common.Util.DateUtil = {
 		return newDate;
 	},
 
+    createDays: function (startDate, endDate) {
+        var startDate = this.getDate(startDate);
+        var endDate = this.getDate(endDate);
+        var numberOfDays = this.diffInDays(startDate, endDate);
+        var days = [];
+        for (var i = 0; i <= numberOfDays; i++) {
+            days.push({dayNumber: i + 1, date: this.addDays(startDate, i)});
+        }
+        return days;
+    },
+
 	getDayNumber: function (referenceDate, date) {
 		return this.diffInDays(this.getDate(referenceDate), this.getDate(date))  + 1;
 	},

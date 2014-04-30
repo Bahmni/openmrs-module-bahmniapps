@@ -10,13 +10,7 @@
 
 	Bahmni.Clinical.DrugSchedule.prototype = {
 		getDays: function() {
-			var startDate = DateUtil.getDate(this.fromDate);
-			var numberOfDays = DateUtil.diffInDays(startDate, this.toDate);
-			var days = [];
-			for (var i = 0; i <= numberOfDays; i++) {
-				days.push({dayNumber: i + 1, date: DateUtil.addDays(startDate, i)});
-			};
-			return days;
+			return DateUtil.createDays(this.fromDate, this.toDate);
 		},
 
 		getDrugs: function() {
