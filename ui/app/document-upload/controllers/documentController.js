@@ -7,6 +7,7 @@ angular.module('opd.documentupload')
             var topLevelConceptUuid;
             var customVisitParams = Bahmni.DocumentUpload.Constants.visitRepresentation;
             var encounterVisitParams = Bahmni.DocumentUpload.Constants.visitWithEncounterRepresentation;
+            var DateUtil = Bahmni.Common.Util.DateUtil;
 
             $scope.visits = [];
 
@@ -30,6 +31,21 @@ angular.module('opd.documentupload')
                 return patientService.getPatient($stateParams.patientUuid).success(function (openMRSPatient) {
                     $rootScope.patient = patientMapper.map(openMRSPatient);
                 });
+            };
+
+            $scope.isVisitDateValid = function(newVisit){
+                var newVisitWithoutTime = Object();
+                newVisitWithoutTime.startDatetime = DateUtil.getDate(newVisit.startDatetime);
+                newVisitWithoutTime.stopDatetime = DateUtil.getDate(newVisit.stopDatetime);
+
+                var existingVisitsInSameRange = $scope.visits.map(function (record) {
+                    return { "startDatetime": DateUtil.getDate(record.startDatetime), "stopDatetime": DateUtil.getDate(record.stopDatetime)}
+                }).filter(function (existingVisit) {
+                    return ((newVisitWithoutTime.startDatetime < existingVisit.stopDatetime && newVisitWithoutTime.stopDatetime > existingVisit.startDatetime) ||
+                        (DateUtil.isSameDate(newVisitWithoutTime.startDatetime, existingVisit.startDatetime) && DateUtil.isSameDate(newVisitWithoutTime.startDatetime, newVisitWithoutTime.stopDatetime)))
+                });
+                $scope.isDateValid = existingVisitsInSameRange.length == 0;
+                return existingVisitsInSameRange.length == 0;
             };
 
             var getVisits = function () {
@@ -180,7 +196,7 @@ angular.module('opd.documentupload')
 
             $scope.setDefaultEndDate = function(newVisit) {
                 var date = new Date(newVisit.endDate());
-                $scope.newVisit.stopDatetime = moment(date).format("YYYY-MM-DD");;
+                $scope.newVisit.stopDatetime = moment(date).format("YYYY-MM-DD");
             }
 
             $scope.save = function (existingVisit) {

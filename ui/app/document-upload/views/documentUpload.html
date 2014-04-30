@@ -10,7 +10,7 @@
       Visit: New
     </h1>
     <div ng-if="isCurrentVisit(newVisit)" class="visit-content">
-      <form ng-submit="save(newVisit)">
+      <form name="newVisitForm" ng-submit="save(newVisit)">
         <div class="form-field">
           <div>
             <label><strong>Visit Type</strong>
@@ -30,7 +30,8 @@
             </label>
           </div>
           <div class="field-value">
-            <input type="date" ng-model="newVisit.startDatetime" ng-change="setDefaultEndDate(newVisit)" required class="field-value" placeholder="dd-mm-yyyy">
+            <input name="startDate" type="date" ng-model="newVisit.startDatetime" dependent-model="newVisit.stopDatetime" date-validator ng-change="setDefaultEndDate(newVisit)" required class="field-value" placeholder="dd-mm-yyyy"/>
+            <div ng-show="newVisitForm.startDate.$error.overlap">Date overlaps with other visit date</div>
           </div>
         </div>
         <div class="form-field">
@@ -38,7 +39,8 @@
             <label class="form-attribute"><strong>End Date</strong></label>
           </div>
           <div class="field-value">
-            <input type="date" ng-model="newVisit.stopDatetime" class="field-value" placeholder="dd-mm-yyyy"> 
+              <input name="endDate" type="date" ng-model="newVisit.stopDatetime" class="field-value" placeholder="dd-mm-yyyy">
+              <span ng-show="newVisitForm.endDate.$error.overlap">Date overlaps with other visit date</span>
           </div>
         </div>
         <ul class="files">
