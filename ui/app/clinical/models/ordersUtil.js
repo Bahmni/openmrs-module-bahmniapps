@@ -11,7 +11,7 @@ Bahmni.Clinical.OrdersUtil = (function () {
 
     var OrdersUtil = {
         latest: function (orders) {
-            var clonedOrders = Bahmni.Common.Util.ArrayUtil.clone(orders);
+            var clonedOrders = _.clone(orders);
             clonedOrders.forEach(function (order) {
                 if (containsOlderOrder(clonedOrders, order)) {
                     _.pull(clonedOrders, order);

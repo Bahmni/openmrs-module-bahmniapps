@@ -2,12 +2,11 @@
 
 (function(){    
     Bahmni.ConceptSet.MultiValueCompundObservation = function(compoundObservation, primaryConcept, compoundObservationConcept) {
-        var ArrayUtil = Bahmni.Common.Util.ArrayUtil;
         angular.extend(this, new Bahmni.ConceptSet.CompundObservation(compoundObservation, primaryConcept, compoundObservationConcept));
         
         var removeObservation = function(observation) {
                 if(observation.uuid) { observation.voided = true; }
-                else { ArrayUtil.removeItem(compoundObservation.groupMembers, observation); }
+                else { _.pull(compoundObservation.groupMembers, observation); }
             },
 
             getPrimaryObservations = function() {

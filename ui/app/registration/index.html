@@ -33,92 +33,91 @@
                         </ul>
                 </header>
                 <p class="caution" ng-cloak ng-show="server_error"><i class="icon-exclamation-sign small"></i><span ng-bind="server_error"></span></p>
-                <div ng-view id="view-content" class="pg-container"></div>
-
-                <script src="../components/jquery/jquery.js"></script>
-                <script src="../lib/jquery/jquery-ui-1.10.4.custom.min.js"></script>
-                <script src="../components/angular/angular.js"></script>
-                <script src="../components/angular-route/angular-route.js"></script>
-                <script src="../components/angular-cookies/angular-cookies.js"></script>
-                <script src="../components/moment/moment.js"></script>
-                <script src="../components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
-
-                <!-- build:js registration.min.js -->
-                <script src="../common/constants.js"></script>
-                <script src="../common/util/init.js"></script>
-                <script src="../common/util/dateUtil.js"></script>
-                <script src="../common/util/arrayUtil.js"></script>
-                <script src="../common/util/objectUtil.js"></script>
-                <script src="../common/util/httpErrorInterceptor.js"></script>
-
-                <script src="../common/domain/init.js"></script>
-                <script src="../common/domain/services/configurationService.js"></script>
-                <script src="../common/domain/observationFilter.js"></script>
-
-                <script src="../common/domain/services/encounterService.js"></script>
-                <script src="../common/domain/encounterConfig.js"></script>
-
-                <script src="../common/ui-helper/init.js"></script>
-                <script src="../common/ui-helper/directives.js"></script>
-                <script src="../common/ui-helper/spinner.js"></script>
-                <script src="../common/ui-helper/printer.js"></script>
-                <script src="../common/ui-helper/services/contextChangeHandler.js"></script>
-
-                <script src="../common/photo-capture/init.js"></script>
-                <script src="../common/photo-capture/directives/capturePhoto.js"></script>
-
-                <script src="../common/auth/authentication.js"></script>
-                
-                <script src="../common/app-framework/init.js"></script>
-                <script src="../common/app-framework/models/appDescriptor.js"></script>
-                <script src="../common/app-framework/services/appService.js"></script>
-
-                <script src="../common/concept-set/init.js"></script>
-                <script src="../common/concept-set/directives/conceptSet.js"></script>
-                <script src="../common/concept-set/directives/obsConstraints.js"></script>
-                <script src="../common/concept-set/directives/conceptSetGroup.js"></script>
-                <script src="../common/concept-set/models/observation.js"></script>
-                <script src="../common/concept-set/models/observationNode.js"></script>
-                <script src="../common/concept-set/mappers/observationMapper.js"></script>
-                <script src="../common/concept-set/services/conceptSetServices.js"></script>
-                <script src="../common/concept-set/services/conceptSetUiConfigService.js"></script>
-                <script src="../common/concept-set/mappers/conceptMapper.js"></script>
-
-                <script src="init.js"></script>
-                <script src="app.js"></script>
-                <script src="initialization.js"></script>
-                <script src="defaults.js"></script>
-                <script src="constants.js"></script>
-                
-                
-                <script src="directives/addressFields.js"></script>
-                <script src="controllers/navigationController.js"></script>
-                <script src="controllers/searchController.js"></script>
-                <script src="controllers/patientCommonController.js"></script>
-                <script src="controllers/createPatientController.js"></script>
-                <script src="controllers/editPatientController.js"></script>
-                <script src="controllers/visitController.js"></script>
-                <script src="controllers/printController.js"></script>
-                <script src="services/patientService.js"></script>
-                <script src="services/visitService.js"></script>
-                <script src="services/patientAttributeService.js"></script>
-                <script src="services/addressAttributeService.js"></script>
-                <script src="services/registrationCardPrinter.js"></script>
-                <script src="mappers/patientAttributeTypeMapper.js"></script>
-                <script src="mappers/openmrsPatientMapper.js"></script>
-                <script src="mappers/createPatientRequestMapper.js"></script>
-                <script src="mappers/updatePatientRequestMapper.js"></script>
-                <script src="mappers/observationMapper.js"></script>
-                <script src="models/age.js"></script>
-                <script src="models/patient.js"></script>
-                <script src="models/preferences.js"></script>
-                <script src="models/registrationObservations.js"></script>
-                <script src="models/visitControl.js"></script>
-                <script src="models/bmi.js"></script>
-                <script src="models/registrationEncounterConfig.js"></script>
-                <script src="models/patientConfig.js"></script>
-                <!-- endbuild -->
+                <div ng-view id="view-content" class="pg-container"></div>        
             </div>
         </div>
+        <script src="../components/lodash/dist/lodash.min.js"></script>
+        <script src="../components/jquery/jquery.js"></script>
+        <script src="../lib/jquery/jquery-ui-1.10.4.custom.min.js"></script>
+        <script src="../components/angular/angular.js"></script>
+        <script src="../components/angular-route/angular-route.js"></script>
+        <script src="../components/angular-cookies/angular-cookies.js"></script>
+        <script src="../components/moment/moment.js"></script>
+        <script src="../components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
+
+        <!-- build:js registration.min.js -->
+        <script src="../common/constants.js"></script>
+        <script src="../common/util/init.js"></script>
+        <script src="../common/util/dateUtil.js"></script>
+        <script src="../common/util/arrayUtil.js"></script>
+        <script src="../common/util/httpErrorInterceptor.js"></script>
+
+        <script src="../common/domain/init.js"></script>
+        <script src="../common/domain/services/configurationService.js"></script>
+        <script src="../common/domain/observationFilter.js"></script>
+
+        <script src="../common/domain/services/encounterService.js"></script>
+        <script src="../common/domain/encounterConfig.js"></script>
+
+        <script src="../common/ui-helper/init.js"></script>
+        <script src="../common/ui-helper/directives.js"></script>
+        <script src="../common/ui-helper/spinner.js"></script>
+        <script src="../common/ui-helper/printer.js"></script>
+        <script src="../common/ui-helper/services/contextChangeHandler.js"></script>
+
+        <script src="../common/photo-capture/init.js"></script>
+        <script src="../common/photo-capture/directives/capturePhoto.js"></script>
+
+        <script src="../common/auth/authentication.js"></script>
+        
+        <script src="../common/app-framework/init.js"></script>
+        <script src="../common/app-framework/models/appDescriptor.js"></script>
+        <script src="../common/app-framework/services/appService.js"></script>
+
+        <script src="../common/concept-set/init.js"></script>
+        <script src="../common/concept-set/directives/conceptSet.js"></script>
+        <script src="../common/concept-set/directives/obsConstraints.js"></script>
+        <script src="../common/concept-set/directives/conceptSetGroup.js"></script>
+        <script src="../common/concept-set/models/observation.js"></script>
+        <script src="../common/concept-set/models/observationNode.js"></script>
+        <script src="../common/concept-set/mappers/observationMapper.js"></script>
+        <script src="../common/concept-set/services/conceptSetServices.js"></script>
+        <script src="../common/concept-set/services/conceptSetUiConfigService.js"></script>
+        <script src="../common/concept-set/mappers/conceptMapper.js"></script>
+
+        <script src="init.js"></script>
+        <script src="app.js"></script>
+        <script src="initialization.js"></script>
+        <script src="defaults.js"></script>
+        <script src="constants.js"></script>
+        
+        
+        <script src="directives/addressFields.js"></script>
+        <script src="controllers/navigationController.js"></script>
+        <script src="controllers/searchController.js"></script>
+        <script src="controllers/patientCommonController.js"></script>
+        <script src="controllers/createPatientController.js"></script>
+        <script src="controllers/editPatientController.js"></script>
+        <script src="controllers/visitController.js"></script>
+        <script src="controllers/printController.js"></script>
+        <script src="services/patientService.js"></script>
+        <script src="services/visitService.js"></script>
+        <script src="services/patientAttributeService.js"></script>
+        <script src="services/addressAttributeService.js"></script>
+        <script src="services/registrationCardPrinter.js"></script>
+        <script src="mappers/patientAttributeTypeMapper.js"></script>
+        <script src="mappers/openmrsPatientMapper.js"></script>
+        <script src="mappers/createPatientRequestMapper.js"></script>
+        <script src="mappers/updatePatientRequestMapper.js"></script>
+        <script src="mappers/observationMapper.js"></script>
+        <script src="models/age.js"></script>
+        <script src="models/patient.js"></script>
+        <script src="models/preferences.js"></script>
+        <script src="models/registrationObservations.js"></script>
+        <script src="models/visitControl.js"></script>
+        <script src="models/bmi.js"></script>
+        <script src="models/registrationEncounterConfig.js"></script>
+        <script src="models/patientConfig.js"></script>
+        <!-- endbuild -->
     </body>
 </html>

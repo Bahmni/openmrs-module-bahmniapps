@@ -1,7 +1,6 @@
 'use strict';
 
 Bahmni.Registration.UpdatePatientRequestMapper = (function () {
-    var ObjectUtil = Bahmni.Common.Util.ObjectUtil;
     var UpdatePatientRequestMapper = function (currentDate) {
         this.currentDate = currentDate;
     }
@@ -21,7 +20,7 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
                             "preferred": true
                         }
                     ],
-                    addresses: [ObjectUtil.slice(patient.address, Bahmni.Registration.Constants.allAddressFileds)],
+                    addresses: [_.pick(patient.address, Bahmni.Registration.Constants.allAddressFileds)],
                     birthdate: this.getBirthdate(patient.birthdate, patient.age),
                     birthdateEstimated: patient.birthdate === undefined || patient.birthdate === "",
                     gender: patient.gender,

@@ -18,7 +18,7 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
                             "preferred": false
                         }
                     ],
-                    addresses: [Bahmni.Common.Util.ObjectUtil.slice(patient.address, constants.allAddressFileds) ],
+                    addresses: [_.pick(patient.address, constants.allAddressFileds) ],
                     birthdate: this.getBirthdate(patient.birthdate, patient.age),
                     birthdateEstimated: patient.birthdate === undefined,
                     gender: patient.gender,
