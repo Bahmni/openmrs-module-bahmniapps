@@ -5,16 +5,16 @@ angular.module('bahmni.common.conceptSet')
         var attributesMap = {'Numeric': 'number', 'Date': 'date'};
         var link = function ($scope, element, attrs, ctrl) {
             var attributes = {};
-            var obsConcept = $scope.obs.concept;
-            attributes['type'] = attributesMap[obsConcept.dataType] || "text";
-            if (obsConcept.hiNormal) {
-                attributes['max'] = obsConcept.hiNormal;
+            var obs = $scope.obs;
+            attributes['type'] = attributesMap[$scope.obs.dataTypeName] || "text";
+            if (obs.hiNormal) {
+                attributes['max'] = $scope.obs.hiNormal;
             }
-            if (obsConcept.lowNormal) {
-                attributes['min'] = obsConcept.lowNormal;
+            if (obs.lowNormal) {
+                attributes['min'] = $scope.obs.lowNormal;
             }
-            if (obsConcept.lowNormal && obsConcept.hiNormal) {
-                attributes['title'] = "Valid from " + obsConcept.lowNormal +" to "+ obsConcept.hiNormal;
+            if (obs.lowNormal && obs.hiNormal) {
+                attributes['title'] = "Valid from " + $scope.obs.lowNormal +" to "+ $scope.obs.hiNormal;
             }
             element.attr(attributes);
         };

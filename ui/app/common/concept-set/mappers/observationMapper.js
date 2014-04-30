@@ -9,15 +9,18 @@ Bahmni.ConceptSet.ObservationMapper = function () {
 
 
     var findInSavedObservation = function (concept, observations) {
-        return observations.filter(function (obs) {
-            return concept.uuid === obs.concept.uuid;
-        })[0];
+        if (observations && observations.length > 0) {
+            return observations.filter(function (obs) {
+                return obs && concept.uuid === obs.concept.uuid;
+            })[0];
+        }
+        return [];
     };
 
     var mapObservationGroupMembers = function (savedObservations, conceptSetMembers, conceptSetConfig) {
         var observationGroupMembers = [];
         conceptSetMembers.forEach(function (memberConcept) {
-            observationGroupMembers.push(mapObservation(memberConcept, savedObservations, conceptSetConfig[memberConcept.name.name] || {}))
+            observationGroupMembers.push(mapObservation(memberConcept, savedObservations, conceptSetConfig || {}))
         });
         return observationGroupMembers;
     };

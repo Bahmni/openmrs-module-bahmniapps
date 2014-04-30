@@ -67,7 +67,7 @@ Bahmni.ConceptSet.Observation.prototype = {
 
     atLeastOneValueSet: function () {
         if (this.isGroup()) {
-            return this.children.some(function (childNode) {
+            return this.groupMembers.some(function (childNode) {
                 return childNode.atLeastOneValueSet();
             })
         } else {

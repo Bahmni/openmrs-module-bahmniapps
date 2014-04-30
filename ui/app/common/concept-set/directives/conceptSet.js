@@ -1,59 +1,81 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-   .directive('conceptSet', ['contextChangeHandler', 'spinner', function (contextChangeHandler, spinner) {
+    .directive('concept', [function () {
+        var controller = function ($scope, $q, $filter) {
+            
+            var conceptMapper = new Bahmni.ConceptSet.ConceptMapper();
+
+            $scope.getPossibleAnswers = function () {
+                return $scope.observation.getPossibleAnswers().map(conceptMapper.map);
+            };
+
+            $scope.getValues = function (request) {
+                return $q.when({data: $filter('filter')($scope.getPossibleAnswers(), {name: request.term}) });
+            };
+
+            var getPropertyFunction = function (propertyName) {
+                return function (entity) {
+                    return entity[propertyName];
+                }
+            };
+
+            $scope.selectOptions = {
+                query: function (options) {
+                    return options.callback({results: $filter('filter')($scope.getPossibleAnswers(), {name: options.term})});
+                },
+                width: '20em',
+                allowClear: true,
+                placeholder: 'Select',
+                formatResult: getPropertyFunction('name'),
+                formatSelection: getPropertyFunction('name'),
+                id: getPropertyFunction('uuid')
+            };
+        };
+
+        return {
+            restrict: 'E',
+            controller: controller,
+            scope: {
+                observation: "=",
+                atLeastOneValueIsSet : "="
+            },
+            template: '<ng-include src="\'../common/concept-set/views/observation.html\'" />'
+        }
+    }]).directive('conceptSet', ['contextChangeHandler', function (contextChangeHandler) {
         var template =
             '<form>' +
-                '<div class="illegalValue" ng-if="!conceptSet">Concept "{{ conceptSetName }}" does not exist. Please contact "ADMIN".</div>' +
-                '<concept ng-if="conceptSet" node="rootNode" at-least-one-value-is-set="atLeastOneValueIsSet"></concept>' +
-            '</form>';
+                '<concept observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet"></concept>' +
+                '</form>';
 
-        var controller = function ($scope, conceptSetService, conceptSetUiConfigService, $rootScope, $q) {
+        var controller = function ($scope, conceptSetService, conceptSetUiConfigService) {
             var conceptSetName = $scope.conceptSetName;
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
-            var conceptSetPromise = conceptSetService.getConceptSetMembers({name: conceptSetName, v: "conceptsetconfig"});
-            var xCompoundConceptPromise = conceptSetService.getConceptSetMembers({name: Bahmni.Common.Constants.compoundObservationConceptName, v: "full"});
+            var observationMapper = new Bahmni.ConceptSet.ObservationMapper();
+            conceptSetService.getConceptSetMembers({name: conceptSetName, v: "fullchildren"}).success(function (response) {
+                var conceptSet = response.results[0];
+                $scope.rootObservation = conceptSet ? observationMapper.map($scope.observations, conceptSet, conceptSetUIConfig.value || {}) : null;
+                updateObservationsOnRootScope();
+            });
 
             $scope.atLeastOneValueIsSet = false;
 
-            var promises = [conceptSetPromise, xCompoundConceptPromise];
-
-            spinner.forPromise($q.all(promises).then(function(responses) {
-                var xCompoundConcept = responses[1].data.results[0];
-                $scope.conceptSet = responses[0].data.results[0];
-                if($scope.conceptSet) {
-                    var mapper = new Bahmni.ConceptSet.CompundObservationNodeMapper(conceptSetUIConfig.value || {}, xCompoundConcept);
-                    $scope.rootNode = mapper.map($scope.observations, $scope.conceptSet);
-                }
-                updateObservations();
-            }));
-
-            var updateObservations = function() {
-                if(!$scope.rootNode) return;
-                for (var i = 0; i < $scope.observations.length; i++) {
-                    var primaryObservation = getPrimaryObservation($scope.observations[i]);
-                    if(primaryObservation && primaryObservation.concept.uuid === $scope.rootNode.primaryObservation.concept.uuid) {
-                        $scope.observations[i] = $scope.rootNode.compoundObservation;
-                        return;
+            var updateObservationsOnRootScope = function () {
+                if($scope.rootObservation){
+                    for (var i = 0; i < $scope.observations.length; i++) {
+                        if ($scope.observations[i].concept.uuid === $scope.rootObservation.concept.uuid) {
+                            $scope.observations[i] = $scope.rootObservation;
+                            return;
+                        }
                     }
+                    $scope.observations.push($scope.rootObservation);
                 }
-                $scope.observations.push($scope.rootNode.compoundObservation);
             };
 
-            var getPrimaryObservation = function(observation){
-                if(observation.concept.name === Bahmni.Common.Constants.compoundObservationConceptName) {
-                    return observation.groupMembers.filter(function(memberObs){
-                        return memberObs.concept.name !== Bahmni.Common.Constants.abnormalObservationConceptName;
-                    })[0];
-                } else {
-                    return observation;
-                }
-            }
-
             var allowContextChange = function () {
-                $scope.atLeastOneValueIsSet = $scope.rootNode && $scope.rootNode.atLeastOneValueSet();
-                var invalidNodes = $scope.rootNode && $scope.rootNode.children.filter(function(childNode){
-                    return !childNode.isValid($scope.atLeastOneValueIsSet);
+                $scope.atLeastOneValueIsSet = $scope.rootObservation && $scope.rootObservation.atLeastOneValueSet();
+                var invalidNodes = $scope.rootObservation && $scope.rootObservation.groupMembers.filter(function(childNode){
+                    return childNode.isObservationNode && !childNode.isValid($scope.atLeastOneValueIsSet);
                 });
                 return !invalidNodes || invalidNodes.length === 0;
             };
