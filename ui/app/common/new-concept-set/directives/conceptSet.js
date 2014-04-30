@@ -14,12 +14,6 @@ angular.module('bahmni.common.conceptSet')
                 return $q.when({data: $filter('filter')($scope.getPossibleAnswers(), {name: request.term}) });
             };
 
-            var getPropertyFunction = function (propertyName) {
-                return function (entity) {
-                    return entity[propertyName];
-                }
-            };
-
             $scope.selectOptions = {
                 query: function (options) {
                     return options.callback({results: $filter('filter')($scope.getPossibleAnswers(), {name: options.term})});
@@ -27,9 +21,9 @@ angular.module('bahmni.common.conceptSet')
                 width: '20em',
                 allowClear: true,
                 placeholder: 'Select',
-                formatResult: getPropertyFunction('name'),
-                formatSelection: getPropertyFunction('name'),
-                id: getPropertyFunction('uuid')
+                formatResult: _.property('name'),
+                formatSelection: _.property('name'),
+                id: _.property('uuid')
             };
         };
 
