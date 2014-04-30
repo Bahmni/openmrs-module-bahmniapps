@@ -13,7 +13,7 @@
                     </div>
 
                 <section>
-                <article class="form-field">
+                <div class="form-field">
                         <div class="field-attribute">
                             <label  for="patientId">Patient Identifier</label>
                         </div>
@@ -21,8 +21,8 @@
                         <div class="field-value">
                                 <input id="patientId" ng-model="patient.identifier" readonly type="text">
                         </div>
-                </article>
-                <article class="form-field photocontainer-spacing">
+                </div>
+                <div class="form-field photocontainer-spacing">
                         <div class="field-attribute">
                             <label class="control-label" for="patientName">Patient Name</label>
                         </div>
@@ -30,11 +30,11 @@
                         <div class="field-value">
                              <input id="patientName" ng-model="patient.name" readonly type="text">
                         </div>
-                </article>
+                </div>
                 </section>
                 <legend class="mylegend "><span><strong>Visit Information</strong></span></legend>
                 <section class="form-field-inline">
-                    <article class="form-field">
+                    <div class="form-field">
                             <div class="field-attribute">
                                 <label class="control-label" for="registrationFee">{{registrationFeeLabel}}</label>
                             </div>
@@ -42,8 +42,8 @@
                             <div class="field-value">
                                 <input type="number" id="registrationFee" ng-model="obs['REGISTRATION FEES']">
                             </div>
-                    </article>
-                    <article class="form-field">
+                    </div>
+                    <div class="form-field">
                             <div class="field-attribute">
                                 <label class="control-label" for="comments">Comments</label>
                             </div>
@@ -51,10 +51,10 @@
                             <div class="field-value">
                                  <input type="text" id="comments" ng-model="obs.COMMENTS" placeholder="Comments" autofocus>
                             </div>
-                    </article>
+                    </div>
                 </section>
                 <section class="form-field-inline">
-                <article class="form-field">
+                <div class="form-field">
                         <div class="field-attribute">
                             <label class="control-label" for="height">Height (cm)</label>
                         </div>
@@ -62,8 +62,8 @@
                         <div class="field-value">
                             <input id="height" type="number" step="0.01" ng-model="obs.HEIGHT" min="10" max="250" ng-change="calculateBMI()" placeholder="Height">
                         </div>
-                </article>
-                <article class="form-field">
+                </div>
+                <div class="form-field">
                         <div class="field-attribute">
                             <label class="control-label" for="height">Weight (kg)</label>
                         </div>
@@ -71,10 +71,10 @@
                         <div class="field-value">
                                <input id="weight" type="number" step="0.01" ng-model="obs.WEIGHT" min="0" max="200" ng-change="calculateBMI()" placeholder="Weight">
                         </div>
-                </article>
+                </div>
             </section>
             <section class="form-field-inline">
-                 <article class="form-field">
+                 <div class="form-field">
                         <div class="field-attribute">
                             <label class="control-label" for="bmi">BMI</label>
                         </div>
@@ -82,8 +82,8 @@
                         <div class="field-value">
                               <input type="text" id="bmi" ng-model="obs.BMI" readonly tabindex="1000000">
                         </div>
-                </article>
-                <article class="form-field">
+                </div>
+                <div class="form-field">
                         <div class="field-attribute">
                          <label class="control-label" for="bmiStatus">BMI Status</label>
                         </div>
@@ -91,7 +91,7 @@
                         <div class="field-value">
                              <input type="text" id="bmiStatus" ng-model="obs.bmi_status" readonly tabindex="1000001">
                         </div>
-                </article>
+                </div>
             </section>
             <div class="alert alert-error text-error" ng-show="obs.bmi_error">
                Invalid BMI. Please check the height and weight
