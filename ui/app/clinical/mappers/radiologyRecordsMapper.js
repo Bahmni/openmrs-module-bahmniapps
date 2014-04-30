@@ -7,6 +7,7 @@ Bahmni.Clinical.RadiologyRecordsMapper = function () {
             if (resultRecord.concept == record.concept.uuid && resultRecord.visitUuid == record.visitUuid) {
                 return matchRecordIndex = index;
             }
+            return false;
         });
         if (matchRecordIndex!=null) {
             result[matchRecordIndex]["records"].push(record);
@@ -18,10 +19,10 @@ Bahmni.Clinical.RadiologyRecordsMapper = function () {
     };
 
     this.mapToDisplayItems = function (records) {
-        var dateCompare = function (record1, record2) {
-            return record1.obsDatetime > record2.obsDatetime ? -1: 1;
+        var sortById = function (record1, record2) {
+            return record1.id > record2.id ? -1: 1;
         };
-        records = records.sort(dateCompare)
+        records = records.sort(sortById);
         records.map(addRecordToResult);
         return result;
     };
