@@ -5,9 +5,7 @@
                 <a ng-click="showBoard(board.name)" class="button">{{board.name}}</a>
             </li>
         </ul>
-
-            <button style="float:right;" ng-click="save()" class="confirm">Save</button>
-
+        <button ng-show="availableBoards" style="float:right;" ng-click="save()" class="confirm">Save</button>
 
         <patient-summary patient="patient" bed-details="bedDetails" on-image-click-handler="gotoPatientDashboard()"/>
     </div>
