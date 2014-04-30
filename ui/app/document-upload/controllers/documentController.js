@@ -184,30 +184,24 @@ angular.module('opd.documentupload')
             }
 
             $scope.save = function (existingVisit) {
-
                 var visitDocument = createVisitDocument(existingVisit);
-                spinner.forPromise(function () {
-                    return visitDocumentService.save(visitDocument).success(function (response) {
-                        visitService.getVisit(response.visitUuid, encounterVisitParams).success(function (savedVisit) {
-                            var visit = createVisit(savedVisit);
-                            visit.encounters = visit.encounters.filter(function (encounter) {
-                                return(encounter.encounterType.uuid == encounterTypeUuid)
-                            });
-                            visit.initSavedImages();
-                            if (existingVisit.isNew()) {
-                                existingVisit = $scope.visits.push(visit);
-                                initNewVisit();
-                                $scope.currentVisit = visit;
-                            } else {
-                                $scope.visits[$scope.visits.indexOf(existingVisit)] = visit;
-                                $scope.currentVisit = visit;
-                            }
-                        }).success(function () {
-                            sortVisits();
-                            flashSuccessMessage();
-                        });
-                    })
-                }())
+                spinner.forPromise(visitDocumentService.save(visitDocument).then(function (response) {
+                    return visitService.getVisit(response.data.visitUuid, encounterVisitParams).then(function (visitResponse) {
+                        var visit = createVisit(visitResponse.data);
+                        visit.encounters = visit.encounters.filter(function (encounter) {return(encounter.encounterType.uuid == encounterTypeUuid) });
+                        visit.initSavedImages();
+                        if (existingVisit.isNew()) {
+                            existingVisit = $scope.visits.push(visit);
+                            initNewVisit();
+                            $scope.currentVisit = visit;
+                        } else {
+                            $scope.visits[$scope.visits.indexOf(existingVisit)] = visit;
+                            $scope.currentVisit = visit;
+                        }
+                        sortVisits();
+                        flashSuccessMessage();
+                    });
+                }));
             };
 
         }]);
