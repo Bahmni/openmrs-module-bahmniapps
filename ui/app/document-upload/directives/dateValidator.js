@@ -6,7 +6,7 @@ angular.module('opd.documentupload')
             require: 'ngModel',
             link: function(scope, element, attrs, ngModel) {
                 function validate(value) {
-                    var visitDateValid = scope.isVisitDateValid(scope.newVisit);
+                    var visitDateValid = scope.isNewVisitDateValid();
                     ngModel.$setValidity("overlap", visitDateValid);
 
                 }

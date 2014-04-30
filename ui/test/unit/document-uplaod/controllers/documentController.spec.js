@@ -52,69 +52,67 @@ describe("DocumentController", function () {
         it('should not be valid date if date overlaps with existing visit', function () {
             setUp();
             var newVisit = new Bahmni.DocumentUpload.Visit();
+            scope.newVisit = newVisit
+
             newVisit.startDatetime = "April 22, 2014";
             newVisit.stopDatetime = "April 22, 2014 23:59:59";
-            expect(scope.isVisitDateValid(newVisit)).toBe(false);
+            expect(scope.isNewVisitDateValid(newVisit)).toBe(false);
 
             newVisit.startDatetime = "April 21, 2014"
             newVisit.stopDatetime = "April 21, 2014 23:59:59"
-            expect(scope.isVisitDateValid(newVisit)).toBe(false);
+            expect(scope.isNewVisitDateValid(newVisit)).toBe(false);
 
             newVisit.startDatetime = "April 24, 2014"
             newVisit.stopDatetime = "April 25, 2014 23:59:59"
-            expect(scope.isVisitDateValid(newVisit)).toBe(true);
+            expect(scope.isNewVisitDateValid(newVisit)).toBe(false);
 
             newVisit.startDatetime = "April 4, 2014"
             newVisit.stopDatetime = "April 5, 2014 23:59:59"
-            expect(scope.isVisitDateValid(newVisit)).toBe(true);
+            expect(scope.isNewVisitDateValid(newVisit)).toBe(true);
 
             newVisit.startDatetime = "April 29, 2014"
             newVisit.stopDatetime = "April 30, 2014 23:59:59"
-            expect(scope.isVisitDateValid(newVisit)).toBe(true);
+            expect(scope.isNewVisitDateValid(newVisit)).toBe(true);
 
             newVisit.startDatetime = "April 26, 2014"
             newVisit.stopDatetime = "April 26, 2014 23:59:59"
-            expect(scope.isVisitDateValid(newVisit)).toBe(true);
+            expect(scope.isNewVisitDateValid(newVisit)).toBe(true);
 
             newVisit.startDatetime = "April 25, 2014"
             newVisit.stopDatetime = "April 25, 2014 23:59:59"
-            expect(scope.isVisitDateValid(newVisit)).toBe(false);
+            expect(scope.isNewVisitDateValid(newVisit)).toBe(false);
 
             newVisit.startDatetime = "April 21, 2014"
             newVisit.stopDatetime = "April 26, 2014 23:59:59"
-            expect(scope.isVisitDateValid(newVisit)).toBe(false);
+            expect(scope.isNewVisitDateValid(newVisit)).toBe(false);
 
             newVisit.startDatetime = "April 23, 2014"
             newVisit.stopDatetime = "April 26, 2014 23:59:59"
-            expect(scope.isVisitDateValid(newVisit)).toBe(false);
+            expect(scope.isNewVisitDateValid(newVisit)).toBe(false);
 
             newVisit.startDatetime = "April 19, 2014"
             newVisit.stopDatetime = "April 23, 2014 23:59:59"
-            expect(scope.isVisitDateValid(newVisit)).toBe(false);
+            expect(scope.isNewVisitDateValid(newVisit)).toBe(false);
 
             newVisit.startDatetime = "April 20, 2014"
             newVisit.stopDatetime = "April 24, 2014 23:59:59"
-            expect(scope.isVisitDateValid(newVisit)).toBe(false);
-
-            newVisit.startDatetime = "April 20, 2014"
-            newVisit.stopDatetime = "April 24, 2014 23:59:59"
-            expect(scope.isVisitDateValid(newVisit)).toBe(false);
+            expect(scope.isNewVisitDateValid(newVisit)).toBe(false);
 
             newVisit.startDatetime = "April 19, 2014"
             newVisit.stopDatetime = "April 29, 2014 23:59:59"
-            expect(scope.isVisitDateValid(newVisit)).toBe(false);
+            expect(scope.isNewVisitDateValid(newVisit)).toBe(false);
 
             newVisit.startDatetime = "April 21, 2014"
             newVisit.stopDatetime = "April 29, 2014 23:59:59"
-            expect(scope.isVisitDateValid(newVisit)).toBe(false);
+            expect(scope.isNewVisitDateValid(newVisit)).toBe(false);
 
             newVisit.startDatetime = "April 21, 2014"
             newVisit.stopDatetime = "April 24, 2014 23:59:59"
-            expect(scope.isVisitDateValid(newVisit)).toBe(false);
+            expect(scope.isNewVisitDateValid(newVisit)).toBe(false);
 
             newVisit.startDatetime = "April 25, 2014"
             newVisit.stopDatetime = "April 26, 2014 23:59:59"
-            expect(scope.isVisitDateValid(newVisit)).toBe(true);
+            expect(scope.isNewVisitDateValid(newVisit)).toBe(false);
         });
 
     });

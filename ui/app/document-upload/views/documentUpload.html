@@ -18,7 +18,7 @@
             </label>
           </div>
           <div class="field-value">
-            <select ng-model="newVisit.visitType" ng-options="vt.display for vt in visitTypes" required>
+            <select ng-model="newVisit.visitType" ng-options="vt.display for vt in visitTypes" ng-required="newVisit.images.length >0">
               <option value=""></option>
             </select>
           </div>
@@ -30,8 +30,8 @@
             </label>
           </div>
           <div class="field-value">
-            <input name="startDate" type="date" ng-model="newVisit.startDatetime" dependent-model="newVisit.stopDatetime" date-validator ng-change="setDefaultEndDate(newVisit)" required class="field-value" placeholder="dd-mm-yyyy"/>
-            <div ng-show="newVisitForm.startDate.$error.overlap">Date overlaps with other visit date</div>
+            <input name="startDate" type="date" ng-model="newVisit.startDatetime" dependent-model="newVisit.stopDatetime" date-validator ng-change="setDefaultEndDate(newVisit)" ng-required="newVisit.images.length >0" class="field-value" placeholder="dd-mm-yyyy"/>
+            <div ng-show="newVisitForm.startDate.$error.overlap">There is already a visit that falls within the entered dates. Please upload documents against this visit.</div>
           </div>
         </div>
         <div class="form-field">
@@ -40,7 +40,6 @@
           </div>
           <div class="field-value">
               <input name="endDate" type="date" ng-model="newVisit.stopDatetime" class="field-value" placeholder="dd-mm-yyyy">
-              <span ng-show="newVisitForm.endDate.$error.overlap">Date overlaps with other visit date</span>
           </div>
         </div>
         <ul class="files">
@@ -57,7 +56,7 @@
         <div class="upload-inline-buttons">
           <input id="file-browse" type="file" name="image" accept="image/*" capture="camera" file-upload visit="newVisit" on-select="setConceptOnImage" default-concept="defaultConcept">
           <label for="file-browse" class="btn btn-primary" ng-click="resetCurrentVisit(newVisit)"><i class="icon-camera icon-white"></i> SCAN</label>
-          <button type="submit" ng-disabled="newVisit.images.length == 0" class="btn btn-primary">
+          <button type="submit" ng-disabled="newVisit.images.length == 0 || newVisitForm.startDate.$error.overlap" class="btn btn-primary">
             <i class="icon-save icon-white"></i> SAVE
           </button>
         </div>
