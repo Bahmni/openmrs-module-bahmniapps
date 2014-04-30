@@ -30,6 +30,7 @@ Bahmni.Clinical.Visit = function (encounters, drugOrders, consultationNotes, oth
     this.admissionDate = this.getAdmissionDate();
     this.visitEndDate = this.getDischargeDispositionEncounterDate() || this.getDischargeDate() || Bahmni.Common.Util.DateUtil.now();
     this.tabularResults = Bahmni.Clinical.TabularLabResults.create(labOrders, this.admissionDate, this.visitEndDate, allTestsAndPanelsConceptSet);
+    this.showLabInvestigations = this.admissionDate ? false: true;
 };
 
 Bahmni.Clinical.Visit.prototype = {
@@ -119,6 +120,9 @@ Bahmni.Clinical.Visit.prototype = {
         });
         accessionNotesMapper.map(this.encounters, accessions);
         return accessions;
+    },
+    toggleLabInvestigation : function () {
+        this.showLabInvestigations = !this.showLabInvestigations;
     }
 };
 

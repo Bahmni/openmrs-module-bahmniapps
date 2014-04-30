@@ -12,7 +12,6 @@ angular.module('bahmni.clinical')
 
             spinner.forPromise(encounterService.search(visitUuid).success(function (encounterTransactions) {
                 $scope.visit = Bahmni.Clinical.Visit.create(encounterTransactions, $scope.consultationNoteConcept, $scope.labOrderNotesConcept, $scope.encounterConfig, $rootScope.allTestsAndPanelsConcept);
-                $scope.showLabInvestigations = $scope.visit.admissionDate ? false: true;
             }));
 
             $scope.isNumeric = function (value) {
@@ -21,10 +20,6 @@ angular.module('bahmni.clinical')
 
             $scope.toggle = function (item) {
                 item.show = !item.show
-            };
-
-            $scope.toggleLabInvestigation = function () {
-                $scope.showLabInvestigations = !$scope.showLabInvestigations;
             };
 
             $scope.testResultClass = function (line) {

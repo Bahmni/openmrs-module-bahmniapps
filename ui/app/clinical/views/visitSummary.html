@@ -107,16 +107,16 @@
             </table>
         </ul>
     </div>
-    <h2 ng-click="toggleLabInvestigation()" ng-class="{'has-toggle': visit.admissionDate}">
+    <h2 ng-click="visit.toggleLabInvestigation()" class="has-toggle">
         <button class="section-toggle" ng-if="visit.admissionDate">
             <i class="icon-caret-right" 
-               ng-hide="showLabInvestigations"></i>
+               ng-hide="visit.showLabInvestigations"></i>
             <i class="icon-caret-down"
-               ng-show="showLabInvestigations"></i>
+               ng-show="visit.showLabInvestigations"></i>
         </button>Lab Investigations
     </h2>
 
-    <div ng-repeat="labOrders in visit.labTestOrderObsMap" ng-show="showLabInvestigations">
+    <div ng-repeat="labOrders in visit.labTestOrderObsMap" ng-show="visit.showLabInvestigations">
         <table>
             <thead>
             <tr>
