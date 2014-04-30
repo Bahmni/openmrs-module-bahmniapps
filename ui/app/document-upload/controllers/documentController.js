@@ -128,6 +128,7 @@ angular.module('opd.documentupload')
                 if (selectedItem) {
                     image.concept = Object.create(selectedItem.concept);
                     image.changed = true;
+                    $scope.$apply(image);
                 }
             };
 
