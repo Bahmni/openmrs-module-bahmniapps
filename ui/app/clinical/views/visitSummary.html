@@ -13,7 +13,7 @@
 
             <div class="table-body">
                 <div class="row placeholder" ng-show="!visit.hasDiagnosis()">A diagnosis has not been made for this patient yet.</div>
-                <div class="row diagnosis-row" ng-repeat="diagnosis in visit.diagnoses">
+                <div class="row diagnosis-row" ng-repeat="diagnosis in visit.getLatestDiagnoses()">
                     <div class="view-past">
                     <div class="col col1">
                       <span class="diagnosis-name" bo-text="diagnosis.getDisplayName()" ng-class="{'ruled-out': diagnosis.diagnosisStatus}"></span>
@@ -28,7 +28,7 @@
                         <span class="time-stamp">
                           <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span> 
                         </span>
-                        <span class="provider" bo-text="diagnosis.providers[0].name"></span>
+                        <span class="provider" bo-text="diagnosis.firstDiagnosis.providers[0].name"></span>
                       </div>
                     </div>
 

@@ -123,6 +123,9 @@ Bahmni.Clinical.Visit.prototype = {
     },
     toggleLabInvestigation : function () {
         this.showLabInvestigations = !this.showLabInvestigations;
+    },
+    getLatestDiagnoses: function(){
+        return _.uniq(this.diagnoses, function(diagnosis){ return diagnosis.getDisplayName(); });
     }
 };
 
