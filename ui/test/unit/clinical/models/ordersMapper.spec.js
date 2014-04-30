@@ -77,9 +77,9 @@ describe('OrdersMapper', function () {
         var secondOrder = createOrder("cetrizine", "2014-03-24T14:38:13.000+0530");
         var thirdOrder = createOrder("calpol", "2014-03-25T14:38:13.000+0530");
         var encounterTransactions = [
-            {   providers: [],
+            {   providers: [], observations: [],
                 drugOrders: [thirdOrder]},
-            {   providers: [],
+            {   providers: [], observations: [],
                 drugOrders: [firstOrder, secondOrder]}
         ];
         var orders = new Bahmni.Clinical.OrdersMapper().create(encounterTransactions, 'drugOrders');
@@ -95,9 +95,9 @@ describe('OrdersMapper', function () {
         var secondOrder = createOrder("cetrizine", "2014-03-24T14:38:13.000+0530");
         var thirdOrder = createOrder("calpol", "2014-03-25T14:38:13.000+0530");
         var encounterTransactions = [
-            {   providers: [],
+            {   providers: [], observations: [],
                 drugOrders: [thirdOrder]},
-            {   providers: [],
+            {   providers: [], observations: [],
                 drugOrders: [firstOrder, secondOrder]}
         ];
         var orders = new Bahmni.Clinical.OrdersMapper().create(encounterTransactions, 'drugOrders', function () {
@@ -111,8 +111,8 @@ describe('OrdersMapper', function () {
         var secondOrder = createOrder("cetrizine", "2014-03-24T14:38:13.000+0530");
         var thirdOrder = createOrder("calpol", "2014-03-25T14:38:13.000+0530");
         var encounterTransactions = [
-            {providers: [sampleProvider()], drugOrders: [thirdOrder]},
-            {   providers: [],
+            {providers: [sampleProvider()], drugOrders: [thirdOrder], observations: []},
+            {   providers: [], observations: [],
                 drugOrders: [firstOrder, secondOrder]}
         ];
         var orders = new Bahmni.Clinical.OrdersMapper().create(encounterTransactions, 'drugOrders', function () {
@@ -128,8 +128,8 @@ describe('OrdersMapper', function () {
         var encounterUuid1 = "encounterUuid1";
         var encounterUuid2 = "encounterUuid2";
         var encounterTransactions = [
-            {providers: [sampleProvider()], testOrders: [thirdTestOrder], encounterUuid: encounterUuid1},
-            {providers: [sampleProvider()], testOrders: [firstTestOrder, secondTestOrder], encounterUuid: encounterUuid2}
+            {providers: [sampleProvider()], testOrders: [thirdTestOrder], encounterUuid: encounterUuid1, observations: []},
+            {providers: [sampleProvider()], testOrders: [firstTestOrder, secondTestOrder], encounterUuid: encounterUuid2, observations: []}
         ];
         var orders = new Bahmni.Clinical.OrdersMapper().create(encounterTransactions, 'testOrders', function () {
             return true;
@@ -145,7 +145,7 @@ describe('OrdersMapper', function () {
         var thirdTestOrder = createTestOrder("Test3", "2014-03-25T14:38:13.000+0530");
         var allTestsAndPanelsConcept = {setMembers:[{name:{name:"Test2"}}, {name:{name:"Test1"}}]};
         var encounterTransactions = [
-            {providers: [sampleProvider()], testOrders: [firstTestOrder, secondTestOrder]}
+            {providers: [sampleProvider()], testOrders: [firstTestOrder, secondTestOrder], observations: []}
         ];
 
         var sortedOrders = new Bahmni.Clinical.OrdersMapper().map(encounterTransactions, 'testOrders', allTestsAndPanelsConcept);

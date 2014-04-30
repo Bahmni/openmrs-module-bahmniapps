@@ -6,6 +6,7 @@ describe('OrderObservationsMapper', function () {
             {
                 "encounterDateTime": "2014-03-24T14:27:36.000+0530",
                 "encounterUuid": "44f473d1-18a3-468f-8bc9-d2fea42e3124",
+                "observations": [],
                 "testOrders": [
                     {
                         "concept":{name:"name1"},

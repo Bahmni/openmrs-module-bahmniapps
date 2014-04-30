@@ -171,7 +171,7 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
 
     var consultationNotes = allObs.filter(isConsultationNote);
     var observations = allObs.filter(isOtherObservation).filter(doesNotHaveOrder);
-    var diagnoses = ArrayUtil.flatten(encounterTransactions, 'bahmniDiagnoses').map(diagnosisMapper.mapDiagnosis);
+    var diagnoses = _.flatten(encounterTransactions, 'bahmniDiagnoses').map(diagnosisMapper.mapDiagnosis);
 
     var dispositions = [];
     angular.forEach(encounterTransactions, function (encounterTransaction) {

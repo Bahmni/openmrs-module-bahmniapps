@@ -51,8 +51,8 @@ Bahmni.Clinical.OrdersMapper.prototype.map = function (encounterTransactions, or
         });
     };
     encounterTransactions.forEach(setOrderProvider);
-    var flattenedOrders = Bahmni.Common.Util.ArrayUtil.flatten(encounterTransactions, ordersName);
-    var allObservations = Bahmni.Common.Util.ArrayUtil.flatten(encounterTransactions, 'observations');
+    var flattenedOrders = _.flatten(encounterTransactions, ordersName);
+    var allObservations = _.flatten(encounterTransactions, 'observations');
     orderObservationsMapper.map(allObservations, flattenedOrders);
     var sortedOrders = allTestsPanelsConcept.sort(flattenedOrders);
     sortedOrders.forEach(function(order) {

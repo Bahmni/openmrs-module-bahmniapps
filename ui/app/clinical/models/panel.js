@@ -8,7 +8,7 @@ Bahmni.Clinical.Panel = (function () {
     };
 
     Panel.create = function (concept, observations) {
-        var tests = ArrayUtil.flatten(observations, 'groupMembers').map(Bahmni.Clinical.Test.create);
+        var tests = _.flatten(observations, 'groupMembers').map(Bahmni.Clinical.Test.create);
         return new Panel({ concept: concept, tests: tests });
     };
 
