@@ -57,7 +57,7 @@ angular.module('bahmni.common.photoCapture')
                         onConfirmationSuccess(image);
                     }, function(response){
                         $rootScope.server_error = null;
-                        alert("Failed to save image. Plaese try again later");
+                        alert("Failed to save image. Please try again later");
                     });
                 } else {
                     onConfirmationSuccess(image);
