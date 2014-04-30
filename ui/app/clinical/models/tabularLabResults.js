@@ -46,14 +46,13 @@ Bahmni.Clinical.TabularLabResults = (function () {
                 return panel.tests.some(function(testFromPanel){ return testFromPanel.concept.name === test.concept.name });
             });
             panel.tests = getUniqueTests(panel.tests.concat(testsBelongingToThisPanel));
-            sortedConceptSet.sort(panel.tests);
+            panel.tests = sortedConceptSet.sort(panel.tests);
             panel.tests.forEach(function(test) { test.belongsToPanel = true; });
             testsBelongingToThisPanel.forEach(function(test){ _.pull(topLevelTests, test); })
         });
         var uniqueTests = getUniqueTests(topLevelTests);
         var allOrderables = uniqueTests.concat(uniquePanels);
-        sortedConceptSet.sort(allOrderables);
-        return  allOrderables;
+        return sortedConceptSet.sort(allOrderables);
     };
 
     TabularLabResults.create = function (labOrders, visitStartDate, visitEndDate, allTestsAndPanelsConceptSet) {
