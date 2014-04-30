@@ -44,7 +44,7 @@ angular.module('opd.patientDashboard', [])
 
         var getActiveVisit = function (){
             if($scope.visits){
-                return $scope.visits.filter($scope.isVisitActive);
+                return $scope.visits.filter($scope.isVisitActive)[0];
             }
             else{
                 return null;
@@ -54,7 +54,6 @@ angular.module('opd.patientDashboard', [])
         $scope.getConsultationPadLink = function () {
             $scope.activeVisit = getActiveVisit();
             if ($scope.activeVisit) {
-                $scope.activeVisit = $scope.activeVisit[0];
                 return urlHelper.getVisitUrl($scope.activeVisit.uuid);
             } else {
                 return urlHelper.getConsultationUrl();
