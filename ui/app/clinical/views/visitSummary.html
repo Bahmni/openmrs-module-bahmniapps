@@ -68,7 +68,7 @@
 <section class="block laborder-section" ng-show="visit.hasLabTests()">
     <div ng-if="visit.admissionDate">
         <h2> IPD Investigations</h2>
-        <table class="thalaiva">
+        <table class="ipd-investigation">
             <thead>
                 <tr>
                     <th><span bo-text="(visit.admissionDate | date:'dd MMM yy') + ' - '+ (visit.visitEndDate | date:'dd MMM yy')"></span></th>
@@ -90,54 +90,19 @@
             </thead>
             <tbody>
                 <tr ng-repeat="day in visit.tabularResults.getDays()">
-                  <td bo-text="'D'+ day.dayNumber"></td>
-                  <td ng-if="!orderable.concept.set"
-                      ng-init="test = orderable" ng-repeat="orderable in visit.tabularResults.getOrderables()">
-                      <ul>
-                          <li ng-repeat="result in test.results | orderBy:'observationDateTime':false"
-                              class="test-result">
-                              <span ng-if="result.isOnDate(day.date)" ng-class="{'is-abnormal': result.isAbnormal}">{{result.value}}</span>
-                          </li>
-                      </ul>
-                  </td>
-                </tr>              
-            </tbody>
-        </table>
-        <table>
-            <tr>
-                <th>
-                    <span bo-text="(visit.admissionDate | date:'dd MMM yy') + ' - '+ (visit.visitEndDate | date:'dd MMM yy')"></span>
-                </th>
-                <th ng-repeat="day in visit.tabularResults.getDays()" bo-text="'D'+ day.dayNumber"></th>
-            </tr>
-            <tr ng-repeat="orderable in visit.tabularResults.getOrderables()">
-                <td ng-if="orderable.concept.set" class="header"
-                    colspan="{{visit.tabularResults.getDays().length + 1}}">
-                    {{orderable.concept.name}}
-                </td>
-
-                <td ng-class="{'belongsToPanel': test.belongsToPanel}" ng-if="!orderable.concept.set"
-                    ng-init="test = orderable">
-                    <span >{{test.concept.name}}</span>
-                    <span class="range">
-                        <span ng-if="test.getMinNormal() && test.getMaxNormal()">
-                            Valid range {{' (' + test.getMinNormal() + ' - ' + test.getMaxNormal() + ')
-                            '}}
-                        </span>
-                        <span class="units">{{test.getUnits()}}</span>
-                    </span>
-                </td>
-
-                <td ng-if="!orderable.concept.set"
-                    ng-init="test = orderable" ng-repeat="day in visit.tabularResults.getDays()">
-                    <ul>
-                        <li ng-repeat="result in test.results | orderBy:'observationDateTime':false"
+                    <td bo-text="'D'+ day.dayNumber"></td>
+                    <td ng-init="test = orderable" ng-repeat="orderable in visit.tabularResults.getOrderables()">
+                        <span ng-if="!orderable.concept.set" ng-repeat="result in test.results |
+                         orderBy:'observationDateTime':false"
                             class="test-result">
-                            <span ng-if="result.isOnDate(day.date)" ng-class="{'is-abnormal': result.isAbnormal}">{{result.value}}</span>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
+                            <span ng-if="result.isOnDate(day.date)">
+                                <span ng-class="{'is-abnormal': result.isAbnormal, 'one-result': test.results.length==1}"
+                                      class="ipd-test-results">{{result.value}}</span>
+                            </span>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
         </table>
     </div>
     <h2 ng-click="visit.toggleLabInvestigation()" class="has-toggle">

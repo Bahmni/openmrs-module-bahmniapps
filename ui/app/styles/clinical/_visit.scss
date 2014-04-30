@@ -274,7 +274,7 @@ strong {
     td { border-left: 0; border-right: 0; border-bottom: 0; }
   }
 }
-table.thalaiva {
+table.ipd-investigation {
   width: 100%; border-collapse: collapse; border-spacing: 0;
   display: block; position: relative;
   border-left: 1px solid #eee;
@@ -295,7 +295,13 @@ table.thalaiva {
     /* sort out borders */
   th { border-bottom: 0; border-left: 0; }
   td { border-left: 0; border-right: 0; border-bottom: 0; }
+  .belongsToPanel {padding-left: 25px; font-family: sans-serif;}
 }
+.ipd-test-results {
+  padding: 3px 5px;
+  border-right: 1px solid #eee;
+}
+.one-result.ipd-test-results {border:0}
 .laborder-section, .observation {
   .temp-class {
     font-family: OpenSansBold;
