@@ -203,4 +203,24 @@ angular.module('bahmni.common.util')
                 onClickHandler: "&"
             }
         }
+    })
+    .directive("showItems", function () {
+        var link = function (scope, elem) {
+            var options = {
+                    gallery:{
+                        enabled:true,
+                        preload:[1, 1]
+                    },
+                    type:'image',
+                    items: scope.records
+                };
+                elem.magnificPopup(options);
+
+        };
+        return {
+            link: link,
+            scope: {
+                records: "="
+            }
+        }
     });

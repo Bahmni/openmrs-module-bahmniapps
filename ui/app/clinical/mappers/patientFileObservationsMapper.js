@@ -2,7 +2,7 @@ Bahmni.Clinical.PatientFileObservationsMapper = function () {
     this.mapToDisplayItems = function (encounters) {
         var displayItems = [];
         encounters.forEach(function (encounter) {
-            var visitUuid = encounter.visit.uuid;
+            var visitUuid = encounter.visit && encounter.visit.uuid;
             encounter.obs.forEach(function (parentObservation) {
                 var imageConcept = parentObservation.concept.name;
                 parentObservation.groupMembers.forEach(function (member) {

@@ -3,7 +3,7 @@ angular.module('bahmni.clinical')
         var encounterTypeUuid = $rootScope.encounterConfig.getRadiologyEncounterTypeUuid();
         encounterService.getEncountersForEncounterType($stateParams.patientUuid, encounterTypeUuid).success(function (data) {
             var radiologyDocuments = new Bahmni.Clinical.PatientFileObservationsMapper().mapToDisplayItems(data.results);
-            $scope.displayRadiologyRecords = new Bahmni.Clinical.RadiologyRecordsMapper().mapToDisplayItems(radiologyDocuments);
+            $scope.radiologyRecords = new Bahmni.Clinical.RadiologyRecordsMapper().mapToDisplayItems(radiologyDocuments);
         });
 
     }]);
