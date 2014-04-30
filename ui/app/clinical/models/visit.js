@@ -129,7 +129,6 @@ Bahmni.Clinical.Visit.prototype = {
 Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNoteConcept, labOrderNoteConcept, encounterConfig, allTestAndPanelsConcept) {
     var diagnosisMapper = new Bahmni.DiagnosisMapper(),
         ordersMapper = new Bahmni.Clinical.OrdersMapper(),
-        ArrayUtil = Bahmni.Common.Util.ArrayUtil,
         isLabTests = function (order) {
             var labTestOrderTypeUuid = encounterConfig.orderTypes[Bahmni.Clinical.Constants.labOrderType];
             return order.orderTypeUuid === labTestOrderTypeUuid;
@@ -155,7 +154,7 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
     var radiologyOrders = [];
     encounterTransactions.forEach(function (encounterTransaction) {
         if (encounterTransaction.encounterTypeUuid == encounterConfig.getRadiologyEncounterTypeUuid()) {
-            ArrayUtil.removeItem(encounterTransactions, encounterTransaction);
+            _.pull(encounterTransactions, encounterTransaction);
             encounterTransaction.observations.forEach(function (observation) {
                 observation.groupMembers.forEach(function (member) {
                     if (member.concept.name == Bahmni.Common.Constants.documentsConceptName) {

@@ -16,21 +16,5 @@ Bahmni.Common.Util.ArrayUtil = {
 
     clone: function(array) {
     	return array.slice(0);
-    },
-
-    flatten: function(items, propertyName){
-        return items.reduce(function(flattenedValues, item){
-            return flattenedValues.concat(item[propertyName] || []);
-        }, []);        
-    },
-
-    sortReverse: function(array, field){
-        if(!array) return [];
-        return array.sort(function(first, second) { return first[field] > second[field] ? -1: 1; });
-    },
-    
-    sort: function(array, field){
-        if(!array) return [];
-        return array.sort(function(first, second) { return first[field] < second[field] ? -1: 1; });
     }
 };

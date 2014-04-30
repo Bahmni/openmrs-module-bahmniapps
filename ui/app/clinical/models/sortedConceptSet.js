@@ -10,6 +10,6 @@ Bahmni.Clinical.SortedConceptSet = function(allTestAndPanelsConcept) {
             var index = sortedNames.indexOf(conceptHolder.concept.name);
             conceptHolder.sortWeight = index === -1 ? 999 : index;
 		});
-		return Bahmni.Common.Util.ArrayUtil.sort(conceptHolders, 'sortWeight');
+		return _.sortBy(conceptHolders, 'sortWeight');
 	};
 };

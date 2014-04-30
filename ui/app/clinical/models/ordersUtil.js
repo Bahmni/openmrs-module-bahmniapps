@@ -14,7 +14,7 @@ Bahmni.Clinical.OrdersUtil = (function () {
             var clonedOrders = Bahmni.Common.Util.ArrayUtil.clone(orders);
             clonedOrders.forEach(function (order) {
                 if (containsOlderOrder(clonedOrders, order)) {
-                    Bahmni.Common.Util.ArrayUtil.removeItem(clonedOrders, order);
+                    _.pull(clonedOrders, order);
                 }
             });
             return clonedOrders;

@@ -17,7 +17,7 @@ Bahmni.Clinical.AccessionNotesMapper = function(encounterConfig) {
         var validationEncounters = encounters.filter(isValidationEncounter);
         var accessionNotes = _.flatten(validationEncounters, 'accessionNotes');
         accessionNotes.forEach(function (accessionNote) { addAccessionNote(accessions, accessionNote); });
-        accessions.forEach(function(accession){ ArrayUtil.sortReverse(accessions.accessionNotes, 'dateTime'); });
+        accessions.forEach(function(accession){ _.sortBy(accessions.accessionNotes, 'dateTime').reverse(); });
         return accessions;
     }
 }
