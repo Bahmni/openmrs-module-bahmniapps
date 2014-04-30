@@ -21,10 +21,13 @@ angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$ur
             })
             .state('upload', {
                 url: '/patient/:patientUuid/document',
+                data: {
+                    backLinks: [{label: "Patient Q", url: "#/search"}]
+                },
                 views: {
                     'content': {
                         templateUrl: 'views/documentUpload.html',
-                        controller: 'DocumentController',
+                        controller: 'DocumentController'
                     },
                     'additional-header': { 
                         templateUrl: '../common/patient/header/views/header.html' 
