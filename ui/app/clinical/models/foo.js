@@ -192,7 +192,7 @@
                         ], "voidReason": null, "value": "1221.0, true", "comment": null, "concept": {"uuid": "2fbc945b-af3e-11e3-a5d1-0800271c1b75", "name": "XCompoundObservation", "set": true, "dataType": "N/A"}, "voided": false}
                     ], "voidReason": null, "value": "1221.0, true", "comment": null, "concept": {"uuid": "727002d1-ceff-4d9e-af24-6dd21f20865f", "name": "blood pressure", "set": true, "dataType": "N/A"}, "voided": false}
                 ], "voidReason": null, "value": "1221.0, true", "comment": null, "concept": {"uuid": "2fbc945b-af3e-11e3-a5d1-0800271c1b75", "name": "XCompoundObservation", "set": true, "dataType": "N/A"}, "voided": false}
-            ], "voidReason": null, "value": "12.0, true, 1221.0, true", "comment": null, "concept": {"uuid": "5a54af95-9bc6-11e3-b8ce-43d3573b23fb", "name": "VITALS_CONCEPT", "set": true, "dataType": "N/A"}, "voided": false}
+            ], "voidReason": null, "value": "12.0, true, 1221.0, true", "comment": null, "concept": {"uuid": "5a54af95-9bc6-11e3-b8ce-43d3573b23fb", "name": "Vitals", "set": true, "dataType": "N/A"}, "voided": false}
         ], "voidReason": null, "value": "12.0, true, 1221.0, true", "comment": null, "concept": {"uuid": "2fbc945b-af3e-11e3-a5d1-0800271c1b75", "name": "XCompoundObservation", "set": true, "dataType": "N/A"}, "voided": false}
     ], "providers": [
         {"uuid": "d343be59-985c-4aa6-845c-550dc5d575b6", "name": "Super User"}

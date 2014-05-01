@@ -43,7 +43,7 @@ describe("CompoundObservation", function () {
         });
 
         it("should remove" + Bahmni.Common.Constants.compoundObservationConceptName + "from tree", function () {
-            var parentConceptSetName = "VITALS_CONCEPT";
+            var parentConceptSetName = "Vitals";
             var observations = [
                 {
                     "groupMembers": [

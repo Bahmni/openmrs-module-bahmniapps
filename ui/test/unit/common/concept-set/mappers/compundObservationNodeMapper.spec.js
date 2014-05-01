@@ -8,7 +8,7 @@ describe("CompundObservationNodeMapper", function () {
 
     beforeEach(function() {
         conceptSet = 
-            build({name: "VITALS_CONCEPT", set: true,
+            build({name: "Vitals", set: true,
                 setMembers : [
                     build({name: "Pulse"}),
                     build({name: "BP", set: true, setMembers: [build({name: "Systolic"}), build({name: "Diastolic"})]}),
@@ -32,7 +32,7 @@ describe("CompundObservationNodeMapper", function () {
         var rootNode = mapper.map(existingObservations, conceptSet);
 
         expect(rootNode.compoundObservation.concept.name).toBe('XCompoundObservation');
-        expect(rootNode.primaryObservation.concept.name).toBe('VITALS_CONCEPT');
+        expect(rootNode.primaryObservation.concept.name).toBe('Vitals');
         expect(rootNode.abnormalityObservation).toBeDefined();
         expect(rootNode.children.length).toBe(3);
         expect(rootNode.primaryObservation.groupMembers.length).toBe(3);
@@ -68,7 +68,7 @@ describe("CompundObservationNodeMapper", function () {
         var diastolic = buildObservation({concept: getConcept("Diastolic"), value: 20});
         var bp = buildObservation({concept: getConcept("BP"), groupMembers: [buildCompundObservation(systolic, false), buildCompundObservation(diastolic)]});
         var pulse = buildObservation({concept: getConcept("Pulse"), value: 30});
-        var vitals = buildObservation({concept:  getConcept("VITALS_CONCEPT"), groupMembers: [buildCompundObservation(pulse, true), buildCompundObservation(bp)]});
+        var vitals = buildObservation({concept:  getConcept("Vitals"), groupMembers: [buildCompundObservation(pulse, true), buildCompundObservation(bp)]});
         var existingObservations = [buildCompundObservation(vitals)];
 
         var rootNode = mapper.map(existingObservations, conceptSet);
