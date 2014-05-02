@@ -19,6 +19,10 @@
               <i class="icon-exclamation-sign small"></i>
               <span >Visit date should not be in the future.</span>
           </p>
+          <p class="caution" ng-show="newVisitForm.startDate.$error.dateSequence">
+              <i class="icon-exclamation-sign small"></i>
+              <span >Start Date should not be greater than End Date.</span>
+          </p>
 
         <div class="form-field">
           <div>

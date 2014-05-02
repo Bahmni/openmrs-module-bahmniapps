@@ -9,6 +9,12 @@ angular.module('opd.documentupload')
             return (DateUtil.getDate(visitDate.startDatetime) > new Date() || (DateUtil.getDate(visitDate.stopDatetime) > new Date()));
         };
 
+        var isStartDateBeforeEndDate = function(visitDate){
+            if (!visitDate.startDatetime && !visitDate.stopDatetime)
+                return true;
+            return (DateUtil.getDate(visitDate.startDatetime) <= DateUtil.getDate(visitDate.stopDatetime));
+        }
+
         return {
             restrict: 'A',
             require: 'ngModel',
@@ -16,6 +22,7 @@ angular.module('opd.documentupload')
                 function validate() {
                     ngModel.$setValidity("overlap", scope.isNewVisitDateValid());
                     ngModel.$setValidity("future", !isVisitDateFromFuture(scope.newVisit));
+                    ngModel.$setValidity("dateSequence", isStartDateBeforeEndDate(scope.newVisit));
 
                 }
                 scope.$watch(attrs.ngModel, validate);
