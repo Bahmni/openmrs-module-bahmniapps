@@ -68,10 +68,14 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 return $location.url(url);                    
             };
 
+            var allowContextChange = function() {
+                return contextChangeHandler.execute();
+            };
 
             var buttonClickAction = function (board) {
                 if ($scope.currentBoard === board) return;
-                if (!contextChangeHandler.execute()) return;
+
+                if (!allowContextChange()) return;
                 contextChangeHandler.reset();
                 $scope.currentBoard = board;
                 return getUrl(board);
@@ -104,6 +108,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
             };
 
             $scope.save = function () {
+                if (!allowContextChange()) return;
                 registerTabService.fire();
                 var encounterData = {};
                 encounterData.patientUuid = $scope.patient.uuid;
