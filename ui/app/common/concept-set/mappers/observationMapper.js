@@ -7,20 +7,24 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         return new Bahmni.ConceptSet.Observation(observation, savedObs);
     };
 
-
     var findInSavedObservation = function (concept, observations) {
-        if (observations && observations.length > 0) {
-            return observations.filter(function (obs) {
-                return obs && concept.uuid === obs.concept.uuid;
-            })[0];
-        }
-        return [];
+        return observations.filter(function (obs) {
+            return obs && concept.uuid === obs.concept.uuid;
+        });
     };
 
-    var mapObservationGroupMembers = function (savedObservations, conceptSetMembers, conceptSetConfig) {
+    var mapObservationGroupMembers = function (observations, conceptSetMembers, conceptSetConfig) {
         var observationGroupMembers = [];
         conceptSetMembers.forEach(function (memberConcept) {
-            observationGroupMembers.push(mapObservation(memberConcept, savedObservations, conceptSetConfig || {}))
+            var savedObservations = findInSavedObservation(memberConcept, observations);
+            var configForConcept = conceptSetConfig[memberConcept.name.name] || {};
+            var numberOfNodes = configForConcept.multiple || 1; 
+            for(var i =0; i < savedObservations.length; i++) {
+                observationGroupMembers.push(mapObservation(memberConcept, savedObservations[i], conceptSetConfig || {}))
+            }
+            for(var i =0; i < numberOfNodes - savedObservations.length; i++) {
+                observationGroupMembers.push(mapObservation(memberConcept, null, conceptSetConfig || {}))
+            }
         });
         return observationGroupMembers;
     };
@@ -30,9 +34,9 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         return new Bahmni.ConceptSet.ObservationNode(observation, savedObsNode, conceptSetUIConfig);
     };
 
-    var mapObservation = function (concept, savedObservations, conceptSetUIConfig) {
-        var savedObs = findInSavedObservation(concept, savedObservations);
-        if (savedObs && (savedObs.isObservation || savedObs.isObservationNode)) return savedObs;
+    var mapObservation = function (concept, savedObs, conceptSetUIConfig) {
+        if (savedObs && (savedObs.isObservation || savedObs.isObservationNode)) 
+            return savedObs;
 
         var observation;
         if (concept.conceptClass.name === Bahmni.Common.Constants.conceptDetailsClassName) {
@@ -48,6 +52,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
     };
 
     this.map = function (observations, rootConcept, conceptSetConfig) {
-        return mapObservation(rootConcept, observations || [], conceptSetConfig);
+        var savedObs = findInSavedObservation(rootConcept, observations)[0];
+        return mapObservation(rootConcept, savedObs || [], conceptSetConfig);
     };
 };
