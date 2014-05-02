@@ -1,7 +1,7 @@
 <div class="dashboard-diagnosis-section">
     <h2>{{section.description}}</h2>
 
-    <section class="block diagnosis">
+    <section class="block diagnosis" ng-class="{'more': allDiagnoses.show}">
         <div class="table history-diagnosis" ng-if="allDiagnoses.length > 0">
             <div class="table-body">
                 <div ng-repeat="diagnosis in allDiagnoses" class="row">
@@ -24,5 +24,8 @@
         <div class="placeholder-text" ng-if="allDiagnoses.length == 0">
             No diagnoses made for this patient.
         </div>
+        <button class="show-more" ng-if="allDiagnoses.length > 7" ng-click="toggle(allDiagnoses)">
+          <span class="more-text">Show more</span><span class="less-text">Show less</span>
+        </button>
     </section>
 </div>

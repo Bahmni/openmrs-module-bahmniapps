@@ -1,6 +1,6 @@
 <div ng-controller="PatientDashboardLabOrdersController" class="dashboard-laborders-section">
     <h2>{{section.description}}</h2>
-    <section class="block">
+    <section class="block" ng-class="{'more': patientSummary.show}">
         <p class="placeholder-text" ng-if="patientSummary.data.length == 0">{{patientSummary.message}}</p>
         <table ng-if="patientSummary.data.length > 0">
             <tbody ng-repeat="line in patientSummary.data">
@@ -25,7 +25,7 @@
                           </span>
                           <span class="units">{{line.units}}</span>
                         </span>
-                        <span class="referred">Referred Out</span>
+                        <span class="referred">R</span>
                     </span>
 
                     <span class="fr date">{{ line.orderDate | date :'dd MMM yy'}}</span>
@@ -33,6 +33,9 @@
             </tr>
             </tbody>
         </table>
+        <button class="show-more" ng-if="patientSummary.data.length > 8" ng-click="toggle(patientSummary)">
+            <span class="more-text">Show more</span><span class="less-text">Show less</span>
+        </button>
     </section>
 </div>
 

@@ -1,7 +1,7 @@
 <div ng-controller="PatientDashboardTreatmentController" class="dashboard-treatment-section">
     <h2>{{section.description}}</h2>
 
-    <section class="block treatment-section">
+    <section class="block treatment-section" ng-class="{'more': drugOrders.show}">
         <table>
             <tr ng-show="!drugOrders.length" >
                 <td class="placeholder-text">No active treatment for this patient.</td>
@@ -14,5 +14,8 @@
                 </td>
             </tr>
         </table>
+        <button class="show-more" ng-if="drugOrders.length > 6" ng-click="toggle(drugOrders)">
+            <span class="more-text">Show more</span><span class="less-text">Show less</span>
+        </button>
     </section>
 </div>

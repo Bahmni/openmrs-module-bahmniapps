@@ -1,6 +1,6 @@
 <div ng-controller="PatientDashboardRadiologyController" class="dashboard-radiology-section">
     <h2>{{section.description}}</h2>
-    <section class="block">
+    <section class="block" ng-class="{'more': radiologyRecords.show}">
         <ul>
             <li ng-repeat="radiologyRecord in radiologyRecords" class="radiology-doc-item">
                 <a ng-href="" show-items records="radiologyRecord.records"><i class="icon-file"></i>{{radiologyRecord.name}}</a>
@@ -11,6 +11,10 @@
       <div ng-show="!radiologyRecords.length">
           <div class="placeholder-text">There are no radiology documents for this patient.</div>
       </div>
+
+      <button class="show-more" ng-if="radiologyRecords.length > 7" ng-click="toggle(radiologyRecords)">
+          <span class="more-text">Show more</span><span class="less-text">Show less</span>
+      </button>
     </section>
 
 </div>
