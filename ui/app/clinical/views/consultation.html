@@ -13,7 +13,6 @@
             <div class="diagnosis-row" ng-repeat="diagnosis in consultation.newlyAddedDiagnoses">
                 <h4 class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">{{diagnosis.getDisplayName()}}</h4>
                 <div class="secondary">
-                    <span class="now">Now!</span>
                     <div class="state">
                         <span ng-show="diagnosis.isPrimary()" class="order">Primary</span>
                         <span ng-hide="diagnosis.isPrimary()" class="order">Secondary</span>
