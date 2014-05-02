@@ -121,8 +121,7 @@
                         <span>{{test.concept.name}}</span>
                             <span class="range">
                                 <span ng-if="test.getMinNormal() && test.getMaxNormal()">
-                                    Valid range {{' (' + test.getMinNormal() + ' - ' + test.getMaxNormal() + ')
-                                    '}}
+                                    {{' (' + test.getMinNormal() + ' - ' + test.getMaxNormal() + ')'}}
                                 </span>
                                 <span class="units">{{test.getUnits()}}</span>
                             </span>
@@ -199,16 +198,17 @@
             <tr ng-if="!line.isSummary"
                 ng-class="{'is-abnormal': line.isAbnormal, 'referred-out': line.referredOut}">
                 <td>
-                    <span>{{line.concept.name}}</span>
-                </td>
-                <td class="value">
-                    {{line.value}}
+                    <span>{{line.concept.name}}</span>                    
                     <span class="range">
                       <span ng-if="line.minNormal && line.maxNormal">
-                        Valid range {{' (' + line.minNormal + ' - ' + line.maxNormal + ') '}}
+                        {{' (' + line.minNormal + ' - ' + line.maxNormal + ') '}}
                       </span>
                       <span class="units">{{line.units}}</span>
                     </span>
+                </td>
+                <td class="value">
+                    {{line.value}}
+
                     <span class="referred">Referred Out</span>
                     <button class="toggle fr">
                         <i class="icon-plus-sign" ng-click="toggle(line)" ng-hide="line.show"></i>

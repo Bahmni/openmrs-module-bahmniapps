@@ -14,17 +14,18 @@
             <tr ng-if="!line.isSummary"
                 ng-class="{'is-abnormal': line.isAbnormal, 'referred-out': line.referredOut}">
                 <td>
-                    <span>{{line.concept.name}}</span>
+                    <span>{{line.concept.name}}</span>                        
+                    <span class="range">
+                      <span ng-if="line.minNormal && line.maxNormal">
+                        {{' (' + line.minNormal + ' - ' + line.maxNormal + ') '}}
+                      </span>
+                      <span class="units">{{line.units}}</span>
+                    </span>
                 </td>
                 <td class="value">
                     <span class="line-value">
                         {{line.value}}
-                        <span class="range">
-                          <span ng-if="line.minNormal && line.maxNormal">
-                            Valid range {{' (' + line.minNormal + ' - ' + line.maxNormal + ') '}}
-                          </span>
-                          <span class="units">{{line.units}}</span>
-                        </span>
+
                         <span class="referred">R</span>
                     </span>
 
