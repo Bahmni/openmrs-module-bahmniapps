@@ -186,9 +186,9 @@ body{
             position:relative;
             margin: 0px;
             @media screen and (min-width: 1024px) {
-                width: 1004px;
+                width: 1014px;
                 margin: 0px auto;
-                padding: 0 10px;
+                padding: 0 0 0 10px;
             }
             .header-tabs{
               float:left;
@@ -324,8 +324,8 @@ button[disabled] {
 }
 .active-visits{
     li{
-        width:134px;
-        padding: 10px 1% 0 1%;
+        width:140px;
+        padding: 10px 0;
         div{
             margin:5px 0px;
             @include font-size(0.9);
