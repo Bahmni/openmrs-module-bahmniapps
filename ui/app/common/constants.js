@@ -49,6 +49,7 @@ Bahmni.Common = Bahmni.Common || {};
         admissionCode: 'ADMIT',
         dischargeCode: 'DISCHARGE',
         transferCode: 'TRANSFER',
+        vitalsConceptName: "Vitals",
         compoundObservationConceptName:"XCompoundObservation",
         abnormalObservationConceptName: "IS_ABNORMAL",
         documentsPath: '/document_images',

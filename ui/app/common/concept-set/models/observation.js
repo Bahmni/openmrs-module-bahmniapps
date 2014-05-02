@@ -5,6 +5,7 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs) {
     if (savedObs) {
         this.uuid = savedObs.uuid;
         this.value = savedObs.value;
+        this.observationDateTime = savedObs.observationDateTime;
     }
 };
 

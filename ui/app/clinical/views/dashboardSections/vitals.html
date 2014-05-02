@@ -5,9 +5,7 @@
         <div ng-repeat="data in patientSummary.data">
             <label class="date">{{data.date}}</label>
             <div ng-repeat="observationsForDate in data.obs">
-                <div ng-repeat="member in observationsForDate.groupMembers">
-                    <show-obs group-by-date="true" observation="member"/>
-                </div>
+                <show-obs group-by-date="true" observation="observationsForDate"/>
             </div>
         </div>    
         <div ng-show="!patientSummary.data.length">
