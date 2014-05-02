@@ -49,21 +49,21 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
 
     getAbnormal: function () {
         var abnormalAsArray = this.groupMembers.filter(function (member) {
-            return (member.concept.conceptClass.name === Bahmni.Common.Constants.abnormalConceptClassName);
+            return (member.concept.conceptClass.name === Bahmni.Common.Constants.abnormalConceptClassName) || (member.concept.conceptClass === Bahmni.Common.Constants.abnormalConceptClassName);
         });
         return abnormalAsArray[0];
     },
 
     getDuration: function () {
         var abnormalAsArray = this.groupMembers.filter(function (member) {
-            return (member.concept.conceptClass.name === Bahmni.Common.Constants.durationConceptClassName);
+            return (member.concept.conceptClass.name === Bahmni.Common.Constants.durationConceptClassName) || (member.concept.conceptClass === Bahmni.Common.Constants.durationConceptClassName);
         });
         return abnormalAsArray[0];
     },
 
     getPrimaryObs: function () {
         var abnormalAsArray = this.groupMembers.filter(function (member) {
-            return (member.concept.conceptClass.name === Bahmni.Common.Constants.miscConceptClassName);
+            return (member.concept.conceptClass.name === Bahmni.Common.Constants.miscConceptClassName) || (member.concept.conceptClass === Bahmni.Common.Constants.miscConceptClassName);
         });
         return abnormalAsArray[0];
     },

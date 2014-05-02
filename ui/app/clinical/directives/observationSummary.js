@@ -11,7 +11,7 @@ angular.module('bahmni.clinical')
             obsIgnoreList: "="
         },
         //not able to use templateUrl, because of recurssive use of directive. Not sure what the error is.
-        template: '<ng-include src="\'../clinical/views/observationSummaryTemplate.html\'" />',
+        template: '<ng-include src="\'views/observationSummaryTemplate.html\'" />',
         link: function(scope,element,attrs){
             if(scope.showTrends){
                 scope.isNumeric = function(value){

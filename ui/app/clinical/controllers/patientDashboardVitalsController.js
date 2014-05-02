@@ -44,9 +44,6 @@ angular.module('bahmni.clinical')
         };
 
         var observationGroupingFunction = function (obs) {
-            if (obs.isObservationNode)
-                return obs.primaryObs.observationDateTime.substring(0, 10);
-
             return obs.observationDateTime.substring(0, 10);
         };
 
@@ -56,9 +53,9 @@ angular.module('bahmni.clinical')
                     var visitData = createObservationsObject(encounterTransactions);
 
                     var vitalsObservations = visitData.filter(isObservationForVitals);
-                    var mappedObservations = new Bahmni.ConceptSet.ObservationMapper().map(vitalsObservations, vitalsConcept);
+                    var mappedObservations = new Bahmni.ConceptSet.ObservationMapper().getObservationsForView(vitalsObservations);
 
-                    $scope.patientSummary.data = new Bahmni.Clinical.ResultGrouper().group(mappedObservations.groupMembers, observationGroupingFunction, 'obs', 'date');
+                    $scope.patientSummary.data = new Bahmni.Clinical.ResultGrouper().group(mappedObservations, observationGroupingFunction, 'obs', 'date');
                     if ($scope.patientSummary.data.length == 0) {
                         $scope.patientSummary.message = Bahmni.Clinical.Constants.messageForNoObservation;
                     }

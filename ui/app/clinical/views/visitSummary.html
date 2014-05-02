@@ -1,54 +1,59 @@
 <section>
-    <section class="visit-actions" visit-actions patient="patient" visit="visit" action="'printDischargeSummary'" ng-if="visit.hasAdmissionEncounter()" ></section>
+    <section class="visit-actions" visit-actions patient="patient" visit="visit" action="'printDischargeSummary'"
+             ng-if="visit.hasAdmissionEncounter()"></section>
     <section class="visit-actions" visit-actions patient="patient" visit="visit" action="'printVisitSummary'"></section>
     <section ng-show="visit.hasDiagnosis()" class="block diagnosis">
         <h2>Diagnoses</h2>
+
         <div class="table history-diagnosis">
             <div class="row table-header">
-              <div class="col col1"><span>Diagnosis</span></div>
-              <div class="col col2"><span>Initial</span></div>
-              <div class="col col3"><span>Current</span></div>
-              <div class="col col4"><span>Revised</span></div>
+                <div class="col col1"><span>Diagnosis</span></div>
+                <div class="col col2"><span>Initial</span></div>
+                <div class="col col3"><span>Current</span></div>
+                <div class="col col4"><span>Revised</span></div>
             </div>
 
             <div class="table-body">
-                <div class="row placeholder" ng-show="!visit.hasDiagnosis()">A diagnosis has not been made for this patient yet.</div>
+                <div class="row placeholder" ng-show="!visit.hasDiagnosis()">A diagnosis has not been made for this
+                    patient yet.
+                </div>
                 <div class="row diagnosis-row" ng-repeat="diagnosis in visit.getLatestDiagnoses()">
                     <div class="view-past">
-                    <div class="col col1">
-                      <span class="diagnosis-name" bo-text="diagnosis.getDisplayName()" ng-class="{'ruled-out': diagnosis.diagnosisStatus}"></span>
-                    </div>
-                    <div class="col col2" ng-show="diagnosis.firstDiagnosis.revised" >
-                      <div class="view">
-                        <span class="certainty">{{diagnosis.firstDiagnosis.certainty}}</span>
-                        <span class="order">{{diagnosis.firstDiagnosis.order}}</span>
-                        <span class="status">{{diagnosis.firstDiagnosis.diagnosisStatus}}</span>
-                      </div>
-                      <div>
+                        <div class="col col1">
+                            <span class="diagnosis-name" bo-text="diagnosis.getDisplayName()"
+                                  ng-class="{'ruled-out': diagnosis.diagnosisStatus}"></span>
+                        </div>
+                        <div class="col col2" ng-show="diagnosis.firstDiagnosis.revised">
+                            <div class="view">
+                                <span class="certainty">{{diagnosis.firstDiagnosis.certainty}}</span>
+                                <span class="order">{{diagnosis.firstDiagnosis.order}}</span>
+                                <span class="status">{{diagnosis.firstDiagnosis.diagnosisStatus}}</span>
+                            </div>
+                            <div>
                         <span class="time-stamp">
                           <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span> 
                         </span>
-                        <span class="provider" bo-text="diagnosis.firstDiagnosis.providers[0].name"></span>
-                      </div>
-                    </div>
+                                <span class="provider" bo-text="diagnosis.firstDiagnosis.providers[0].name"></span>
+                            </div>
+                        </div>
 
-                    <div ng-show="!diagnosis.firstDiagnosis.revised" class="col col2"></div>
-                    <div class="col col3">
-                      <div class="view">
-                        <span class="certainty">{{diagnosis.certainty}}</span>
-                        <span class="order">{{diagnosis.order}}</span>
-                        <span class="status">{{diagnosis.diagnosisStatus}}</span>
-                      </div>
-                      <div>
+                        <div ng-show="!diagnosis.firstDiagnosis.revised" class="col col2"></div>
+                        <div class="col col3">
+                            <div class="view">
+                                <span class="certainty">{{diagnosis.certainty}}</span>
+                                <span class="order">{{diagnosis.order}}</span>
+                                <span class="status">{{diagnosis.diagnosisStatus}}</span>
+                            </div>
+                            <div>
                         <span class="time-stamp">
                           <span class="date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
                         </span>
-                        <span class="provider" bo-text="diagnosis.providers[0].name"></span>
-                      </div>
-                    </div>
-                    <div class="col col4">
-                      <i ng-show="diagnosis.revised" class="icon-ok"></i>
-                    </div>
+                                <span class="provider" bo-text="diagnosis.providers[0].name"></span>
+                            </div>
+                        </div>
+                        <div class="col col4">
+                            <i ng-show="diagnosis.revised" class="icon-ok"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -58,9 +63,36 @@
         <h2>Observations</h2>
         <ul>
             <div ng-repeat="observationGroup in visit.observationGroups">
-                <observation-summary patient-uuid="patientUuid" observation="observationGroup"
-                                     show-trends="showTrends" full-date="true"
-                                     obs-ignore-list="obsIgnoreList"></observation-summary>
+                <table>
+                    <thead>
+                    <th colspan="3">
+                        <span class="date">{{observationGroup.date | date :'dd MMM yy'}}</span>
+                    </th>
+                    </thead>
+
+                    <tbody>
+                    <tr ng-repeat="observation in observationGroup.obs"
+                        ng-class="{true: 'is-abnormal'}[observation.abnormal.value]">
+                        <td class="name">
+                            <span class="obs-value">{{observation.concept.name}}</span>
+                        </td>
+                        <td class="value">
+                            <span class="obs-value">{{observation.value}}</span>
+
+                            <div class="footer-note fr">
+                                <span class="time-stamp">
+                                    <span class="time">{{observation.observationDateTime | date :'hh:mm a'}}</span>
+                                </span>
+                                <span class="provider" bo-text="observation.provider.name"></span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!--<observation-summary patient-uuid="patientUuid" observation="observation"-->
+                    <!--show-trends="showTrends" full-date="true"-->
+                    <!--obs-ignore-list="obsIgnoreList"></observation-summary>-->
+                    </tbody>
+                </table>
             </div>
         </ul>
     </section>
@@ -70,12 +102,14 @@
         <h2> IPD Investigations</h2>
         <table class="ipd-investigation">
             <thead>
-                <tr>
-                    <th><span bo-text="(visit.admissionDate | date:'dd MMM yy') + ' - '+ (visit.visitEndDate | date:'dd MMM yy')"></span></th>
-                    <th ng-repeat="orderable in visit.tabularResults.getOrderables()">
-                        <div ng-class="{'belongsToPanel': test.belongsToPanel}" ng-if="!orderable.concept.set"
-                            ng-init="test = orderable">
-                            <span >{{test.concept.name}}</span>
+            <tr>
+                <th><span
+                        bo-text="(visit.admissionDate | date:'dd MMM yy') + ' - '+ (visit.visitEndDate | date:'dd MMM yy')"></span>
+                </th>
+                <th ng-repeat="orderable in visit.tabularResults.getOrderables()">
+                    <div ng-class="{'belongsToPanel': test.belongsToPanel}" ng-if="!orderable.concept.set"
+                         ng-init="test = orderable">
+                        <span>{{test.concept.name}}</span>
                             <span class="range">
                                 <span ng-if="test.getMinNormal() && test.getMaxNormal()">
                                     Valid range {{' (' + test.getMinNormal() + ' - ' + test.getMaxNormal() + ')
@@ -83,35 +117,38 @@
                                 </span>
                                 <span class="units">{{test.getUnits()}}</span>
                             </span>
-                        </div>
-                        <div ng-if="orderable.concept.set" class="header" rowspan="{{visit.tabularResults.getDays().length + 1}}" >{{orderable.concept.name}}</div>
-                    </th>
-                </tr>
+                    </div>
+                    <div ng-if="orderable.concept.set" class="header"
+                         rowspan="{{visit.tabularResults.getDays().length + 1}}">{{orderable.concept.name}}
+                    </div>
+                </th>
+            </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="day in visit.tabularResults.getDays()">
-                    <td bo-text="'D'+ day.dayNumber"></td>
-                    <td ng-init="test = orderable" ng-repeat="orderable in visit.tabularResults.getOrderables()">
+            <tr ng-repeat="day in visit.tabularResults.getDays()">
+                <td bo-text="'D'+ day.dayNumber"></td>
+                <td ng-init="test = orderable" ng-repeat="orderable in visit.tabularResults.getOrderables()">
                         <span ng-if="!orderable.concept.set" ng-repeat="result in test.results |
                          orderBy:'observationDateTime':false"
-                            class="test-result">
+                              class="test-result">
                             <span ng-if="result.isOnDate(day.date)">
                                 <span ng-class="{'is-abnormal': result.isAbnormal, 'one-result': test.results.length==1}"
                                       class="ipd-test-results">{{result.value}}</span>
                             </span>
                         </span>
-                    </td>
-                </tr>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>
     <h2 ng-click="visit.toggleLabInvestigation()" class="has-toggle">
         <button class="section-toggle" ng-if="visit.admissionDate">
-            <i class="icon-caret-right" 
+            <i class="icon-caret-right"
                ng-hide="visit.showLabInvestigations"></i>
             <i class="icon-caret-down"
                ng-show="visit.showLabInvestigations"></i>
-        </button>Lab Investigations
+        </button>
+        Lab Investigations
     </h2>
 
     <div ng-repeat="labOrders in visit.labTestOrderObsMap" ng-show="visit.showLabInvestigations">
@@ -119,16 +156,16 @@
             <thead>
             <tr>
                 <th colspan="2">
-                  <span class="date" bo-text="'Lab Report ' +($index+1)"> </span>
-                  <button class="toggle-btn fr" ng-click="toggle(labOrders)" ng-if="labOrders.accessionNotes">
-                      <i class="icon-envelope" ng-hide="labOrders.show"></i>
-                      <i class="icon-envelope-alt" ng-show="labOrders.show"></i>
-                      Notes
-                  </button>
+                    <span class="date" bo-text="'Lab Report ' +($index+1)"> </span>
+                    <button class="toggle-btn fr" ng-click="toggle(labOrders)" ng-if="labOrders.accessionNotes">
+                        <i class="icon-envelope" ng-hide="labOrders.show"></i>
+                        <i class="icon-envelope-alt" ng-show="labOrders.show"></i>
+                        Notes
+                    </button>
                 </th>
             </tr>
             <tr ng-show="labOrders.show">
-                <th colspan="2" class="notes inline-notes" ng-if="labOrders.accessionNotes">                   
+                <th colspan="2" class="notes inline-notes" ng-if="labOrders.accessionNotes">
                     <div ng-repeat="accessionNote in labOrders.accessionNotes" class="accession">
                         <pre class="left">{{accessionNote.text}}</pre>
                         <div class="footer-note fr">
@@ -284,21 +321,22 @@
     <h2>IPD Treatment</h2>
     <table>
         <thead>
-            <tr>
-                <th>
-                    <span bo-text="(visit.ipdDrugSchedule.fromDate | date:'dd MMM yy') + ' - '+ (visit.ipdDrugSchedule.toDate | date:'dd MMM yy')"></span>
-                </th>
-                <th ng-repeat="drug in visit.ipdDrugSchedule.drugs" bo-text="drug.name" class="drug" ng-class="{active: drug.isActive()}"></th>
-                
-            </tr>
+        <tr>
+            <th>
+                <span bo-text="(visit.ipdDrugSchedule.fromDate | date:'dd MMM yy') + ' - '+ (visit.ipdDrugSchedule.toDate | date:'dd MMM yy')"></span>
+            </th>
+            <th ng-repeat="drug in visit.ipdDrugSchedule.drugs" bo-text="drug.name" class="drug"
+                ng-class="{active: drug.isActive()}"></th>
+
+        </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="day in visit.ipdDrugSchedule.days">
-                <td bo-text="'D'+ day.dayNumber"></td>
-                <td  ng-repeat="drug in visit.ipdDrugSchedule.drugs">
-                    <span class="icon-ok" bo-if="drug.isActiveOnDate(day.date)"/>
-                </td>
-            </tr> 
+        <tr ng-repeat="day in visit.ipdDrugSchedule.days">
+            <td bo-text="'D'+ day.dayNumber"></td>
+            <td ng-repeat="drug in visit.ipdDrugSchedule.drugs">
+                <span class="icon-ok" bo-if="drug.isActiveOnDate(day.date)"/>
+            </td>
+        </tr>
         </tbody>
     </table>
 </section>

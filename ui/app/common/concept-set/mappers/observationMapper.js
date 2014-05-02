@@ -29,6 +29,12 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         return observationGroupMembers;
     };
 
+    var newObservation = function (concept, savedObs) {
+        var observation = { concept: conceptMapper.map(concept), units: concept.units, label: concept.display, possibleAnswers: concept.answers, groupMembers: []};
+        return new Bahmni.ConceptSet.Observation(observation, savedObs);
+    };
+
+    // tODO : remove conceptUIConfig
     var newObservationNode = function (concept, savedObsNode, conceptSetConfig) {
         var observation = { concept: conceptMapper.map(concept), units: concept.units, label: concept.display, possibleAnswers: concept.answers, groupMembers: []};
         return new Bahmni.ConceptSet.ObservationNode(observation, savedObsNode, conceptSetConfig);
@@ -55,4 +61,35 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         var savedObs = findInSavedObservation(rootConcept, observations)[0];
         return mapObservation(rootConcept, savedObs, conceptSetConfig || {});
     };
+
+    this.getObservationsForView = function (observations) {
+        return internalMapForDisplay(observations);
+    };
+
+    var internalMapForDisplay = function (observations) {
+        var observationsForDisplay = [];
+
+        var createObservationForDisplay = function (observationTemp, obsConcept) {
+            return { "value": observationTemp.value, "abnormal": observationTemp.abnormal, "duration": observationTemp.duration,
+                "provider": observationTemp.provider ? observationTemp.provider.name : "",
+                "observationDateTime": observationTemp.observationDateTime, "concept": obsConcept};
+        }
+
+        observations.forEach(function (savedObs) {
+            if (savedObs.concept.conceptClass === Bahmni.Common.Constants.conceptDetailsClassName) {
+                var observationNode = new Bahmni.ConceptSet.ObservationNode(savedObs, savedObs, []);
+                observationsForDisplay.push(createObservationForDisplay(observationNode, observationNode.primaryObs.concept));
+            } else {
+                if (!savedObs.concept.set) {
+                    var observationTemp = newObservation(savedObs.concept, savedObs);
+                    observationsForDisplay.push(createObservationForDisplay(observationTemp, observationTemp.concept));
+                } else {
+                    var groupMemberObservationsForDisplay = internalMapForDisplay(savedObs.groupMembers);
+                    observationsForDisplay = observationsForDisplay.concat(groupMemberObservationsForDisplay);
+                }
+            }
+        });
+        return observationsForDisplay;
+    }
+
 };

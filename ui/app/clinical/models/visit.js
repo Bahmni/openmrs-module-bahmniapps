@@ -24,7 +24,7 @@ Bahmni.Clinical.Visit = function (encounters, drugOrders, consultationNotes, oth
     this.consultationNoteGroups = resultGrouper.group(consultationNotes, observationGroupingFunction, 'obs', 'date')
     this.observationGroups = resultGrouper.group(observations, observationGroupingFunction, 'obs', 'date')
     this.observationGroups.forEach(function (observationGroup) {
-        observationGroup.obs = new Bahmni.Clinical.CompoundObservation(observationGroup.obs);
+        observationGroup.obs = new Bahmni.ConceptSet.ObservationMapper().getObservationsForView(observationGroup.obs);
     });
     this.labTestOrderObsMap = this.getLabOrdersGroupedByAccession();
     this.admissionDate = this.getAdmissionDate();
