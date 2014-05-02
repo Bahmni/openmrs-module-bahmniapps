@@ -39,6 +39,17 @@ angular.module('bahmni.registration')
             }
 
 
+            $scope.hideFields = appService.getAppDescriptor().getConfigValue("hideFields");
+
+            $scope.isHiddenInConfig = function (fieldname) {
+                if (!$scope.hideFields) return false;
+
+                var toUpper = function (s){
+                    return s.toUpperCase();
+                }
+                return $scope.hideFields.map(toUpper).indexOf(fieldname.toUpperCase()) > -1;
+            };
+
             $scope.calculateBMI = function () {
                 if ($scope.obs.HEIGHT && $scope.obs.WEIGHT) {
                     var bmi = bmiModule.calculateBmi($scope.obs.HEIGHT, $scope.obs.WEIGHT);

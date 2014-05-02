@@ -19,6 +19,7 @@ describe('VisitController', function () {
     var patientMapper;
     var q;
     var appService;
+    var appDescriptor;
     var stubAllPromise = function () {
         return {
             then: function () {
@@ -86,7 +87,9 @@ describe('VisitController', function () {
         $controller = $injector.get('$controller');
         scope = { "$watch": jasmine.createSpy() }
         patientService = jasmine.createSpyObj('patientService', ['getPatient', 'clearPatient', 'get']);
-        appService = jasmine.createSpyObj('appService',['getDescription']);
+        appService = jasmine.createSpyObj('appService',['getDescription', 'getAppDescriptor']);
+        appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+        appService.getAppDescriptor.andReturn(appDescriptor);
         patientMapper = jasmine.createSpyObj('patientMapper', ['map']);
         registrationCardPrinter = jasmine.createSpyObj('registrationCardPrinter', ['print']);
         dateUtil = Bahmni.Common.Util.DateUtil;
@@ -445,6 +448,51 @@ describe('VisitController', function () {
             expect(scope.obs.BMI).toBe(null);
             expect(scope.obs.bmi_error).toBe(false);
             expect(scope.obs.bmi_status).toBe(null);
+        });
+    });
+
+
+    describe("checkHiddenFieldsConfiguration", function () {
+        beforeEach(function () {
+            $controller('VisitController', {
+                $scope: scope,
+                spinner: spinner,
+                encounterService: encounterService,
+                patientService: patientService,
+                $route: route,
+                appService:appService,
+                openmrsPatientMapper: patientMapper,
+                registrationCardPrinter: registrationCardPrinter
+            });
+            getPatientPromise.callSuccessCallBack(patient);
+            getEncounterPromise.callSuccessCallBack(sampleEncounter);
+        });
+
+        it("should not throw any error if hideFields config is not specified", function () {
+            expect(scope.isHiddenInConfig('Height')).toBe(false);
+        });
+
+        it("should not throw any error if hideFields is undefined", function () {
+            scope.hideFields = undefined;
+            expect(scope.isHiddenInConfig('Height')).toBe(false);
+        });
+
+        it("should not throw any error if hideFields is empty array", function () {
+            scope.hideFields = [];
+            expect(scope.isHiddenInConfig('Height')).toBe(false);
+        });
+
+        it("should hideField if value is specified in hideFields - case insensitive", function () {
+            scope.hideFields = ['HEIght'];
+            expect(scope.isHiddenInConfig('Height')).toBe(true);
+        });
+        it("should hideField if value is contained in hideFields - case insensitive", function () {
+            scope.hideFields = ['HEIght', 'Weight'];
+            expect(scope.isHiddenInConfig('WEIGHT')).toBe(true);
+        });
+        it("should not hideField if value is not contained in hideFields", function () {
+            scope.hideFields = ['HEIght', 'Weight'];
+            expect(scope.isHiddenInConfig('BMI')).toBe(false);
         });
     });
 });
