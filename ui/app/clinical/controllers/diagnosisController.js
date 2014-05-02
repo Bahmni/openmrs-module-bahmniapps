@@ -119,16 +119,21 @@ angular.module('bahmni.clinical')
             };
 
 
-            var saveDiagnosis = function () {
+            var setDiagnosis = function () {
                 $rootScope.consultation.newlyAddedDiagnoses = $scope.newlyAddedDiagnoses.filter(function (diagnosis) {
                     return !diagnosis.isEmpty();
                 });
             };
 
+            var saveDiagnosis = function () {
+                setDiagnosis();
+                $scope.newlyAddedDiagnoses = [];
+            };
+
 
             registerTabService.register(saveDiagnosis);
             
-            $scope.$on('$destroy', saveDiagnosis);
+            $scope.$on('$destroy', setDiagnosis);
 
             $scope.processDiagnoses = function (data) {
                 data.map(

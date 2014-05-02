@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical').controller('ConsultationNavigationController',
-    ['$scope', '$rootScope', '$location', '$window', 'appService', 'urlHelper', 'contextChangeHandler', 'spinner', 'encounterService', 'RegisterTabService',
-        function ($scope, $rootScope, $location, $window, appService, urlHelper, contextChangeHandler, spinner, encounterService, registerTabService) {
+    ['$scope', '$rootScope', '$state', '$location', '$window', 'appService', 'urlHelper', 'contextChangeHandler', 'spinner', 'encounterService', 'RegisterTabService',
+        function ($scope, $rootScope, $state, $location, $window, appService, urlHelper, contextChangeHandler, spinner, encounterService, registerTabService) {
             //$scope.mainButtonText = "Consultation";
             
             var boardTypes = {
@@ -99,6 +99,10 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 });
             };
 
+            var clearRootScope = function(){
+                $rootScope.consultation.newlyAddedDiagnoses = [];
+            };
+
             $scope.save = function () {
                 registerTabService.fire();
                 var encounterData = {};
@@ -158,9 +162,13 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 addObservationsToEncounter();
 
                 spinner.forPromise(encounterService.create(encounterData).success(function () {
-                    $rootScope.success_message = "Consultation information saved";
-                }).error(function(){
-                    $rootScope.server_error = "Failed to save consultation information";
+                    clearRootScope();
+                    $state.transitionTo($state.current, $state.params, {
+                        reload: true,
+                        inherit: false,
+                        notify: true
+                    });
+
                 }));
             };
 

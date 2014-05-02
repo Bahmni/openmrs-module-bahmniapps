@@ -50,7 +50,7 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', functi
                 abstract: true,
                 views: {
                     'content': { template: '<ui-view/>' },
-                    'additional-header': { templateUrl: '../common/patient/header/views/header.html' }
+                    'additional-header': { templateUrl: 'views/includes/header.html' }
                 }
             })
             .state('patient.consultation.visit', {

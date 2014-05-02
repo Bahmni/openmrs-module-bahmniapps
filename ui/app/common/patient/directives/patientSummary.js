@@ -5,14 +5,14 @@ angular.module('bahmni.common.patient').directive('patientSummary', function() {
         $scope.showPatientDetails = false;
         $scope.togglePatientDetails = function() {
             $scope.showPatientDetails = !$scope.showPatientDetails;
-        }
+        };
 
         $scope.onImageClick = function() {
             if($scope.onImageClickHandler) {
                 $scope.onImageClickHandler();
             }
         }
-    }
+    };
 
     return {
         restrict: 'E',
@@ -25,4 +25,4 @@ angular.module('bahmni.common.patient').directive('patientSummary', function() {
             onImageClickHandler: "&",
         }
     }
-})
+});
