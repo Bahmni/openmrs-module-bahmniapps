@@ -5,8 +5,9 @@
                 <a ng-click="showBoard(board.name)" class="button">{{board.name}}</a>
             </li>
         </ul>
-        <button ng-show="availableBoards" style="float:right;" ng-click="save()" class="confirm">Save</button>
 
-        <patient-summary patient="patient" bed-details="bedDetails" on-image-click-handler="gotoPatientDashboard()"/>
+        <button class="toggle-patient" ng-click="gotoPatientDashboard()"></button>  <!-- temp redirect to dashboard-->     
+        <button class="confirm save-consultation" ng-show="availableBoards" ng-click="save()" class="confirm">Save</button> 
+        <!-- <patient-summary patient="patient" bed-details="bedDetails" on-image-click-handler="gotoPatientDashboard()"/> -->
     </div>
 </div>
