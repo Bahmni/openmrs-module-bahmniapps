@@ -5,15 +5,8 @@
   width: 1024px;
   height: 100%;
   min-height: 768px;
-  -webkit-transition: right .3s ease,-webkit-transform .3s ease;
-  -moz-transition: right .3s ease,-moz-transform .3s ease;
-  -o-transition: right .3s ease,transform .3s ease;
-  -ms-transition: right .3s ease,transform .3s ease;
-  transition: right .3s ease,transform .3s ease;
   right: 0;
-}
-.pgContainer.shift {
-  right: 250px;
+  padding-bottom: 10px;
 }
 #view-content .patient-dashboard.visit {padding: 0;}
 .dashboard-visit-summary {padding: 10px;}
@@ -28,13 +21,23 @@
   }
   button {
     float: right;
-    margin: 10px;
+    margin: 0;
+    padding: 25px 35px;
     height: 30px;
     background: url("/images/bars.png") no-repeat center center;
     border: 0;
+    border-radius: 0;
+  }
+  button.shift {
+    background: #333 url("/images/close-bars.png") no-repeat center center;
   }
 }
-aside{
+aside{  
+  -webkit-transition: right .3s ease,-webkit-transform .3s ease;
+  -moz-transition: right .3s ease,-moz-transform .3s ease;
+  -o-transition: right .3s ease,transform .3s ease;
+  -ms-transition: right .3s ease,transform .3s ease;
+  transition: right .3s ease,transform .3s ease;
   h2{
     background:none;
     color: #000;
@@ -45,13 +48,14 @@ aside{
   &.visit-history{
     position:absolute;
     // padding:10px;
-    right:0;
+    right:-350px;
     width:250px;
     background:#333333;
     // overflow: scroll;
     bottom: 0;
-    top: 0;
-    box-shadow: inset 4px 0px 10px rgba(0, 0, 0, 0.2);
+    top: 50px;
+    box-shadow: -3px 5px 10px #777;
+    z-index: 10;
     h2 {
       color: #666;
       font-size: 14px;
@@ -89,18 +93,21 @@ aside{
       h5, .ward {color: #888; margin-top: 5px;}
     }
   }
+  &.visit-history.shift {
+    right: 0;
+  }
 
   .visit-history-entry, .summary {
     &.selected, &.selected:hover{
       background :#2b2b2b;
-      font-family: FontAwesome;
-      &:before {
-        content: "\f0da";
-        float: left;
-        font-size: 30px;
-        color: #fff;
-        margin-left: -2px;
-      }
+      // font-family: FontAwesome;
+      // &:before {
+      //   content: "\f0da";
+      //   float: left;
+      //   font-size: 30px;
+      //   color: #fff;
+      //   margin-left: -2px;
+      // }
     }
     &.active {color: #fafafa;}
     .icon-star {color: #E8A000; display: none;}
@@ -114,6 +121,8 @@ aside{
   float: left;
   margin: 1.5% 0 0 1.5%;
   font-size: 14px;
+  position: relative;
+  padding-bottom: 35px;
   h2 {
     padding: 10px;
     font-family: OpenSansBold;
@@ -129,7 +138,7 @@ aside{
   section.block {
     padding: 0!important;
     height: 250px;
-    overflow-y: auto;
+    overflow-y: hidden;
     border-radius: 0 0 5px 5px;
   }
   section {
@@ -308,3 +317,12 @@ aside{
     }
   }
 }
+.less-text {display: none;}
+.show-more {position: absolute; bottom: 0; font-size: 14px!important; height: 35px;}
+.dashboard-observation-section section.block.more {
+  height: auto;
+  .less-text {display: inline-block;}
+  .more-text {display: none;}
+}
+
+

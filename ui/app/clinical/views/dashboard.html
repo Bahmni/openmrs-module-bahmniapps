@@ -1,5 +1,5 @@
 <article class="patient-dashboard visit">
-    <aside bindonce class="visit-history">
+    <aside bindonce class="visit-history" ng-class="{'shift': !patient.show}">
         <div class="patient-info">
             <div class="patient-img">
                 <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
@@ -32,10 +32,10 @@
             </li>
         </ul>
     </aside>
-    <div class="pgContainer" ng-class="{'shift': !patient.show}">
+    <div class="pgContainer">
         <div class="dashboard-header">
             <h1>Patient Dashboard</h1>
-           <button class="toggle-patient" ng-click="toggle(patient)"></button> 
+           <button class="toggle-patient" ng-click="toggle(patient)" ng-class="{'shift': !patient.show}"></button> 
         </div>
         <article bindonce="patientSummary" ng-include="'views/patientSummary.html'"></article>
         <article class="dashboard-visit-summary" bindonce="visit" ng-if="!patientSummary && visit" ng-include="'views/visitSummary.html'"></article>
