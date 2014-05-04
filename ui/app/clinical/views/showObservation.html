@@ -7,6 +7,7 @@
                 </span>
             <span class="value-text-only">{{observation.primaryObs.value}}</span>
             <span class="value-text-only time">{{observation.primaryObs.observationDateTime | date :'hh:mm a'}}</span>
+            <span class="provider" bo-text="observation.provider"></span>
         </div>
 
     </fieldset>
@@ -21,6 +22,7 @@
                 </span>
             <span class="value-text-only">{{observation.value}}</span>
             <span class="value-text-only time">{{observation.observationDateTime | date :'hh:mm a'}}</span>
+            <span class="provider" bo-text="observation.provider"></span>
         </div>
     </fieldset>
 

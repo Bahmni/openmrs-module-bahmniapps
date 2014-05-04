@@ -75,7 +75,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
                 "observationDateTime": observationTemp.observationDateTime, "concept": obsConcept};
         }
 
-        observations.forEach(function (savedObs) {
+        _.forEach(observations, function (savedObs) {
             if (savedObs.concept.conceptClass === Bahmni.Common.Constants.conceptDetailsClassName) {
                 var observationNode = new Bahmni.ConceptSet.ObservationNode(savedObs, savedObs, []);
                 observationsForDisplay.push(createObservationForDisplay(observationNode, observationNode.primaryObs.concept));
