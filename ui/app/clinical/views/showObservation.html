@@ -6,43 +6,49 @@
                     <span class="label-add-on" ng-show="observation.concept.units">({{observation.primaryObs.concept.units}})</span>
                 </span>
             <span class="value-text-only">{{observation.primaryObs.value}}</span>
-            <span class="value-text-only time">{{observation.primaryObs.observationDateTime | date :'hh:mm a'}}</span>
-            <span class="provider" bo-text="observation.provider"></span>
+
+            <div class="footer-note fr">
+                <span class="value-text-only time">{{observation.primaryObs.observationDateTime | date :'hh:mm a'}}</span>
+                <span class="provider" bindonce="observation" bo-text="observation.provider"></span>
+            </div>
         </div>
 
     </fieldset>
 
     <fieldset ng-if="!observation.isObservationNode && observation.groupMembers.length == 0">
-    <fieldset>
-        <div class="form-field" ng-class="{true: 'is-abnormal'}[observation.abnormal.value]">
+        <fieldset>
+            <div class="form-field" ng-class="{true: 'is-abnormal'}[observation.abnormal.value]">
                 <span class="field-attribute">
                     <label>{{observation.concept.name}}:</label>
                     <span class="label-add-on"
                           ng-show="observation.concept.units">({{observation.concept.units}})</span>
                 </span>
-            <span class="value-text-only">{{observation.value}}</span>
-            <span class="value-text-only time">{{observation.observationDateTime | date :'hh:mm a'}}</span>
-            <span class="provider" bo-text="observation.provider"></span>
-        </div>
-    </fieldset>
+                <span class="value-text-only">{{observation.value}}</span>
 
-    <div>
-        <div>
-            <fieldset ng-if="!observation.isObservationNode && observation.groupMembers.length > 0"
-                      ng-show="observation.groupMembers.length">
-                <div class="form-field">
-                    <div class="form-field form-field-group"
-                         ng-repeat="member in observation.groupMembers track by $index">
-                        <div ng-switch on="$index">
-                            <legend ng-switch-when="0" class="mylegend">
-                                <strong>{{observation.concept.name}}</strong></legend>
-                        </div>
-                        <show-obs observation="member"></show-obs>
-                    </div>
+                <div class="footer-note fr">
+                    <span class="value-text-only time">{{observation.observationDateTime | date :'hh:mm a'}}</span>
+                    <span class="provider" bindonce="observation" bo-text="observation.provider"></span>
                 </div>
-            </fieldset>
+            </div>
+        </fieldset>
+
+        <div>
+            <div>
+                <fieldset ng-if="!observation.isObservationNode && observation.groupMembers.length > 0"
+                          ng-show="observation.groupMembers.length">
+                    <div class="form-field">
+                        <div class="form-field form-field-group"
+                             ng-repeat="member in observation.groupMembers track by $index">
+                            <div ng-switch on="$index">
+                                <legend ng-switch-when="0" class="mylegend">
+                                    <strong>{{observation.concept.name}}</strong></legend>
+                            </div>
+                            <show-obs observation="member"></show-obs>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
         </div>
-    </div>
 </div>
 
 

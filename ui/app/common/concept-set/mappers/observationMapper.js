@@ -70,7 +70,14 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         var observationsForDisplay = [];
 
         var createObservationForDisplay = function (observationTemp, obsConcept) {
-            return { "value": observationTemp.value, "abnormal": observationTemp.abnormal, "duration": observationTemp.duration,
+            var observationValue = observationTemp.value.name ? observationTemp.value.name : observationTemp.value;
+
+            if (observationTemp.duration) {
+                var durationForDisplay = Bahmni.Common.Util.DateUtil.convertToUnits(observationTemp.duration.value);
+                observationValue = observationValue.concat(" since " + durationForDisplay["value"] + " " + durationForDisplay["unitName"]);
+            }
+
+            return { "value": observationValue, "abnormal": observationTemp.abnormal, "duration": observationTemp.duration,
                 "provider": observationTemp.provider ? observationTemp.provider.name : "",
                 "observationDateTime": observationTemp.observationDateTime, "concept": obsConcept};
         }

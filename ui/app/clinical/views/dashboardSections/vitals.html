@@ -4,24 +4,23 @@
     <section class="block" ng-if="activeVisit" ng-class="{'more': patientSummary.show}">
         <div ng-repeat="data in patientSummary.data">
             <label class="date">{{data.date}}</label>
+
             <div ng-repeat="observation in data.obs">
                 <fieldset>
                     <div class="form-field" ng-class="{true: 'is-abnormal'}[observation.abnormal.value]">
-                <span class="field-attribute">
-                    <label>{{observation.concept.name}}:</label>
-                    <span class="label-add-on"
-                          ng-show="observation.concept.units">({{observation.concept.units}})</span>
-                </span>
+                        <span class="field-attribute"><label>{{observation.concept.name}}:</label></span>
                         <span class="value-text-only">{{observation.value}}</span>
-                        <span class="value-text-only time">{{observation.observationDateTime | date :'hh:mm a'}}</span>
-                        <span class="provider" bo-text="observation.provider"></span>
+                        <span class="label-add-on" ng-show="observation.concept.units"> {{observation.concept.units}}</span>
+                        <div class="footer-note fr">
+                            <span class="value-text-only time">{{observation.observationDateTime | date :'hh:mm a'}}</span>
+                        </div>
                     </div>
                 </fieldset>
                 <!--<show-obs group-by-date="true" observation="observationsForDate"/>-->
             </div>
-        </div>    
+        </div>
         <div ng-show="!patientSummary.data.length">
-          <div class="placeholder-text">No vitals recorded for this patient.</div>
+            <div class="placeholder-text">No vitals recorded for this patient.</div>
         </div>
         <button class="show-more" ng-if="patientSummary.data.length > 7" ng-click="toggle(patientSummary)">
             <span class="more-text">Show more</span><span class="less-text">Show less</span>

@@ -26,19 +26,11 @@ angular.module('bahmni.common.conceptSet')
         };
 
         var controller = function ($scope) {
+            var valueAndUnit = Bahmni.Common.Util.DateUtil.convertToUnits($scope.hours);
+            $scope.units = valueAndUnit["allUnits"];
+            $scope.measureValue = valueAndUnit["value"];
+            $scope.unitValue = valueAndUnit["unitValueInHours"];
 
-            $scope.units = {"Years": 365 * 30 * 24, "Months": 30 * 24, "Days": 24, "Hours": 1};
-
-            for (var unit in $scope.units) {
-                var hours = $scope.units[unit];
-                if ($scope.hours || $scope.hours !== 0) {
-                    if ($scope.hours > hours && $scope.hours % hours === 0) {
-                        $scope.unitValue = hours;
-                        $scope.measureValue = $scope.hours / hours;
-                        break;
-                    }
-                }
-            }
         };
 
         return {

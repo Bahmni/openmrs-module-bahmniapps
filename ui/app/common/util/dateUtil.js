@@ -96,5 +96,24 @@ Bahmni.Common.Util.DateUtil = {
 	        months: to.m - from.m,
 	        years:  to.y - from.y
 	    };
-	}
+	},
+
+    convertToUnits: function (hours) {
+        var allUnits = {"Years": 365 * 30 * 24, "Months": 30 * 24, "Weeks": 7 * 24, "Days": 24, "Hours": 1};
+
+        var durationRepresentation = function (value, unitName, unitValueInHours) {
+            return {"value": value, "unitName": unitName, "unitValueInHours": unitValueInHours, "allUnits": allUnits };
+        }
+
+        for (var unitName in  allUnits) {
+            var unitValueInHours = allUnits[unitName];
+            if (hours || hours !== 0) {
+                if (hours > unitValueInHours && hours % unitValueInHours === 0) {
+                    return durationRepresentation(hours / unitValueInHours, unitName, unitValueInHours);
+                }
+            }
+        }
+        return durationRepresentation(0, "Hours", 1);
+    }
+
 }
