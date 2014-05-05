@@ -21,11 +21,23 @@ Bahmni.Clinical.Visit = function (encounters, drugOrders, consultationNotes, oth
     var observationGroupingFunction = function (obs) {
         return obs.observationDateTime.substring(0, 10);
     };
-    this.consultationNoteGroups = resultGrouper.group(consultationNotes, observationGroupingFunction, 'obs', 'date')
+    this.consultationNoteGroups = resultGrouper.group(consultationNotes, observationGroupingFunction, 'obs', 'date');
     this.observationGroups = resultGrouper.group(observations, observationGroupingFunction, 'obs', 'date')
+
+
+    var observationSubGroupingFunction = function (obs) {
+        if (!obs.concept.set) return "Others";
+
+        return obs.concept.name;
+    };
     this.observationGroups.forEach(function (observationGroup) {
-        observationGroup.obs = new Bahmni.ConceptSet.ObservationMapper().getObservationsForView(observationGroup.obs);
+        var observationSubGroups = resultGrouper.group(observationGroup.obs, observationSubGroupingFunction, 'obs', 'conceptName')
+        observationSubGroups.forEach(function (observationSubGroup) {
+            observationSubGroup.obs = new Bahmni.ConceptSet.ObservationMapper().getObservationsForView(observationSubGroup.obs);
+        });
+        observationGroup.subGroups = observationSubGroups;
     });
+
     this.labTestOrderObsMap = this.getLabOrdersGroupedByAccession();
     this.admissionDate = this.getAdmissionDate();
     this.visitEndDate = this.getDischargeDispositionEncounterDate() || this.getDischargeDate() || Bahmni.Common.Util.DateUtil.now();

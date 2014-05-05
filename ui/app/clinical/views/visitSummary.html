@@ -70,23 +70,31 @@
                     </th>
                     </thead>
 
-                    <tbody>
-                    <tr ng-repeat="observation in observationGroup.obs"
-                        ng-class="{true: 'is-abnormal'}[observation.abnormal.value]">
-                        <td class="name">
-                            <span class="obs-value">{{observation.concept.name}}</span>
-                        </td>
-                        <td class="value">
-                            <span class="obs-value">{{observation.value}}</span>
+                    <tbody ng-repeat="observationSubGroup in observationGroup.subGroups">
 
-                            <div class="footer-note fr">
+                        <tr>
+                            <td colspan="3" class="headerRow">
+                                <span class="obs-value">{{observationSubGroup.conceptName}}</span>
+                            </td>
+                        </tr>
+
+
+                        <tr ng-repeat="observation in observationSubGroup.obs"
+                            ng-class="{true: 'is-abnormal'}[observation.abnormal.value]">
+                            <td class="name">
+                                <span class="obs-value">{{observation.concept.name}}</span>
+                            </td>
+                            <td class="value">
+                                <span class="obs-value">{{observation.value}} {{observation.concept.units}}</span>
+
+                                <div class="footer-note fr">
                                 <span class="time-stamp">
                                     <span class="time">{{observation.observationDateTime | date :'hh:mm a'}}</span>
                                 </span>
-                                <span class="provider" bindonce="observation" bo-text="observation.provider"></span>
-                            </div>
-                        </td>
-                    </tr>
+                                    <span class="provider" bindonce="observation" bo-text="observation.provider"></span>
+                                </div>
+                            </td>
+                        </tr>
 
                     <!--<observation-summary patient-uuid="patientUuid" observation="observation"-->
                     <!--show-trends="showTrends" full-date="true"-->
