@@ -1,0 +1,12 @@
+<div ng-controller="MessageController" class="messages">
+    <ul>
+        <li ng-repeat="info in messages.info">
+            <div class="info-message">{{info}}</div>
+        </li>
+    </ul>
+    <ul>
+        <li ng-repeat="error in messages.error">
+            <div class="error-message">{{error}}</div>
+        </li>
+    </ul>
+</div>

@@ -14,9 +14,8 @@
         <div ng-app="consultation" ng-controller="ConsultationNavigationController">
             <div ng-include src="'../common/ui-helper/header.html'"></div>
             <div ui-view="additional-header"></div>
+            <div ng-include src="'views/includes/messages.html'"></div>
             <div class="opd-wrapper">
-                <p class="caution" ng-cloak ng-show="server_error"><i class="icon-exclamation-sign small"></i><span ng-bind="server_error"></span></p>
-                <!--TODO:SHOW MESSAGE ONLY FOR 8Seconds-->
                 <div ui-view="content" id="view-content" class="opd-content-wrapper"></div>
             </div>
         </div>
@@ -89,6 +88,7 @@
         <script src="../common/concept-set/services/conceptSetServices.js"></script>
         <script src="../common/concept-set/services/conceptSetUiConfigService.js"></script>
         <script src="../common/concept-set/mappers/conceptMapper.js"></script>
+
         
         <script src="../common/models/documentImage.js"></script>
 
@@ -124,6 +124,7 @@
         <script src="controllers/dispositionController.js"></script>
         <script src="controllers/navigationController.js"></script>
         <script src="controllers/conceptSetPageController.js"></script>
+        <script src="controllers/messageController.js"></script>
         <script src="services/treatmentService.js"></script>
         <script src="services/drugService.js"></script>
         <script src="services/diagnosisService.js"></script>
@@ -131,6 +132,7 @@
         <script src="services/labTestsProvider.js"></script>
         <script src="services/otherTestsProvider.js"></script>
         <script src="services/registerTabService.js"></script>
+        <script src="services/messagingService.js"></script>
         <script src="models/ordersUtil.js"></script>
         <script src="models/result.js"></script>
         <script src="models/test.js"></script>

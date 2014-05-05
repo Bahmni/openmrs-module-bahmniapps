@@ -476,3 +476,25 @@ button.toggle-patient {
   background: url("/images/bars.png") no-repeat center center;
   border: 0;
 }
+
+.messages {
+
+  .error-message, .info-message {
+    width: 50%;
+    top: 100px;
+    margin: 5px auto;
+    color: #333;
+    padding: 5px;
+    border-radius: 2px;
+    box-shadow: 0px 0px 8px -1px #ccc;
+    font-size: 14px;
+  }
+  .error-message {
+    background: #ffcccc;
+    border: 1px solid #ff9999;
+  }
+  .info-message {
+    background: #f9edbe;
+    border: 1px solid #f0c36d;
+  }
+}

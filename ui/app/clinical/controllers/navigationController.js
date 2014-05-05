@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.clinical').controller('ConsultationNavigationController',
-    ['$scope', '$rootScope', '$state', '$location', '$window', 'appService', 'urlHelper', 'contextChangeHandler', 'spinner', 'encounterService', 'RegisterTabService',
-        function ($scope, $rootScope, $state, $location, $window, appService, urlHelper, contextChangeHandler, spinner, encounterService, registerTabService) {
-            //$scope.mainButtonText = "Consultation";
+    ['$scope', '$rootScope', '$state', '$location', '$window', 'appService', 'urlHelper', 'contextChangeHandler', 'spinner', 'encounterService', 'RegisterTabService', 'MessagingService',
+        function ($scope, $rootScope, $state, $location, $window, appService, urlHelper, contextChangeHandler, spinner, encounterService, registerTabService, messagingService) {
+
             
             var boardTypes = {
                 visit: 'visit',
@@ -107,7 +107,10 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
             };
 
             $scope.save = function () {
-                if (!allowContextChange()) return;
+                if (!allowContextChange()){
+                    messagingService.showMessage('error', 'Please correct errors in the form. Information not saved');
+                    return;
+                }
                 registerTabService.fire();
                 var encounterData = {};
                 encounterData.patientUuid = $scope.patient.uuid;
@@ -171,8 +174,11 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                         reload: true,
                         inherit: false,
                         notify: true
+                    }).then(function() {
+                        messagingService.showMessage('info', 'Information saved');
                     });
-
+                 }).error(function (){
+                    messagingService.showMessage('error', 'An error has occurred on the server. Information not saved.');
                 }));
             };
 
