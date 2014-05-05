@@ -31,6 +31,8 @@ Bahmni.DiagnosisMapper = function () {
         var pastDiagnosesResponse = [];
         diagnoses.forEach(function (diagnosis) {
             if (diagnosis.encounterUuid !== currentEncounterUuid) {
+                diagnosis.previousObs = diagnosis.existingObs;
+                diagnosis.existingObs = null;
                 pastDiagnosesResponse.push(diagnosis);
             }
         });

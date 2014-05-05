@@ -87,8 +87,6 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
             var addEditedDiagnoses = function (diagnosisList) {
                 $rootScope.consultation.pastDiagnoses && $rootScope.consultation.pastDiagnoses.forEach(function (diagnosis) {
                     if (diagnosis.isDirty) {
-                        diagnosis.previousObs = diagnosis.existingObs;
-                        diagnosis.existingObs = '';
                         diagnosis.setDiagnosisStatusConcept();
                         diagnosis.diagnosisDateTime = undefined;
                         diagnosisList.push(diagnosis);
@@ -96,6 +94,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 });
                 $rootScope.consultation.savedDiagnosesFromCurrentEncounter && $rootScope.consultation.savedDiagnosesFromCurrentEncounter.forEach(function (diagnosis) {
                     if (diagnosis.isDirty) {
+                        // TODO : shruthi : can avoid this using javascript property
                         diagnosis.setDiagnosisStatusConcept();
                         diagnosis.diagnosisDateTime = undefined;
                         diagnosisList.push(diagnosis);

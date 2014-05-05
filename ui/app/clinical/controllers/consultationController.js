@@ -6,8 +6,6 @@ angular.module('bahmni.clinical')
         var addEditedDiagnoses = function (diagnosisList) {
             $rootScope.consultation.pastDiagnoses && $rootScope.consultation.pastDiagnoses.forEach(function (diagnosis) {
                 if (diagnosis.isDirty) {
-                    diagnosis.previousObs = diagnosis.existingObs;
-                    diagnosis.existingObs = '';
                     diagnosis.setDiagnosisStatusConcept();
                     diagnosis.diagnosisDateTime = undefined;
                     diagnosisList.push(diagnosis);
