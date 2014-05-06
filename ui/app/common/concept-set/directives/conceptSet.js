@@ -41,17 +41,21 @@ angular.module('bahmni.common.conceptSet')
             },
             template: '<ng-include src="\'../common/concept-set/views/observation.html\'" />'
         }
-    }]).directive('conceptSet', ['contextChangeHandler', function (contextChangeHandler) {
+    }]).directive('conceptSet', ['contextChangeHandler', 'appService', function (contextChangeHandler, appService) {
         var template =
             '<form>' +
                 '<concept observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet"></concept>' +
-                '</form>';
+            '</form>';
+
+        var numberOfLevels = appService.getAppDescriptor().getConfigValue('maxConceptSetLevels') || 4;
+        var fields = ['uuid','name','set','hiNormal','lowNormal','units','conceptClass','datatype'];
+        var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels)
 
         var controller = function ($scope, conceptSetService, conceptSetUiConfigService, spinner) {
             var conceptSetName = $scope.conceptSetName;
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
             var observationMapper = new Bahmni.ConceptSet.ObservationMapper();
-            spinner.forPromise(conceptSetService.getConceptSetMembers({name: conceptSetName, v: "custom:(uuid,name,set,hiNormal,lowNormal,units,conceptClass,datatype,setMembers:(uuid,name,set,hiNormal,lowNormal,units,conceptClass,datatype,setMembers:(uuid,name,set,hiNormal,lowNormal,units,conceptClass,datatype,setMembers:(uuid,name,set,hiNormal,lowNormal,units,conceptClass,datatype,setMembers:(uuid,name,set,hiNormal,lowNormal,units)))))"}, true)).success(function (response) {
+            spinner.forPromise(conceptSetService.getConceptSetMembers({name: conceptSetName, v: "custom:" + customRepresentation}, true)).success(function (response) {
                 var conceptSet = response.results[0];
                 $scope.rootObservation = conceptSet ? observationMapper.map($scope.observations, conceptSet, conceptSetUIConfig.value || {}) : null;
                 updateObservationsOnRootScope();
