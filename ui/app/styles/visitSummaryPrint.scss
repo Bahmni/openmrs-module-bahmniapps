@@ -83,7 +83,11 @@ h2, .diagnosis h2 {
   margin-top: 15px;
   padding-top: 0;
 }
-
+.notes, .inline-notes.notes {
+  display: block!important;
+  border: 1px solid #ccc;
+  page-break-inside: avoid;
+}
 .patient-info {
   overflow: auto;
   table {
