@@ -153,10 +153,29 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
         }
     },
 
+    hasDuration: function () {
+        if(!this.getDuration()){
+            return false;
+        }
+        else {
+            if (!this.getDuration().value) {
+                return true;
+            }
+            else if(this.getDuration().value < 0){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+
+    },
+
     isValid: function (checkRequiredFields) {
         if (this.isGroup()) return this._hasValidChildren(checkRequiredFields);
         if (checkRequiredFields && this.isRequired() && !this.getPrimaryObs().hasValue()) return false;
         if (this._isDateDataType()) return this.getPrimaryObs().isValidDate();
+        if (this.getPrimaryObs().hasValue() && this.hasDuration()) return false;
         return true;
     },
 

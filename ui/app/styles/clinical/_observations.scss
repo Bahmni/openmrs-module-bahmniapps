@@ -74,6 +74,17 @@
     margin-bottom: 0;
   } 
 }
+div.duration.checkbox-inline {
+  margin-top: -16px;
+  margin-left: 15px;
+  input.duration {
+    width: 50px;
+    margin: 0 10px;
+  }
+  select.duration-label {
+    margin-left: 25px;
+  }
+}
 form .vitals .form-field .field-value {
   input {
     width: 10em;
@@ -83,6 +94,9 @@ form .vitals .form-field .field-value {
   }
   .select2-drop-active, .select2-container-active .select2-choice, .select2-container-active .select2-choices, .select2-drop.select2-drop-above.select2-drop-active {
     border: 1px solid #aaa;
+  }
+  textarea {
+    width: 35em;
   }
 }
 

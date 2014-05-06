@@ -42,8 +42,8 @@
                 <input id="isAbnormal-{{$index}}" type="checkbox" ng-model="observation.abnormal.value" ng-disabled="!observation.primaryObs.hasValue()"/>
                 <span for="isAbnormal-{{$index}}">Abnormal</span>
             </div>
-            <div class="checkbox-inline" ng-if="observation.duration">
-                <duration ng-model="observation.duration.value" disabled="!observation.primaryObs.hasValue()"></duration>
+            <div class="checkbox-inline" ng-if="observation.duration" ng-class="{'duration': observation.duration}">
+                <span>for</span><duration ng-model="observation.duration.value" disabled="!observation.primaryObs.hasValue()" illegal-value="!observation.isValid(atLeastOneValueIsSet)"></duration>
             </div>
         </div>
     </fieldset>

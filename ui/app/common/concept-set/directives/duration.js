@@ -2,7 +2,6 @@ angular.module('bahmni.common.conceptSet')
     .directive('duration', function () {
 
         var link = function ($scope, element, attrs, ngModelController) {
-
             var setValue = function () {
                 if ($scope.unitValue && $scope.measureValue) {
                     var value = $scope.unitValue * $scope.measureValue;
@@ -39,11 +38,12 @@ angular.module('bahmni.common.conceptSet')
             controller: controller,
             scope: {
                 hours: "=ngModel",
+                illegalValue: "=",
                 disabled: "="
             },
             link: link,
-            template: '<span>for</span><span><input type="number" ng-model=\'measureValue\' ng-disabled="disabled"/></span>' +
-                '<span><select ng-model=\'unitValue\' ng-options="name for (name , value) in units" ng-disabled="disabled"><option value=""></option>>' +
+            template: '<span><input type="number" class="duration" ng-class="{\'illegalValue\': illegalValue}" ng-model=\'measureValue\' ng-disabled="disabled"/></span>' +
+                '<span><select ng-model=\'unitValue\' class="duration-label" ng-class="{\'illegalValue\': illegalValue}" ng-options="name for (name , value) in units" ng-disabled="disabled"><option value=""></option>>' +
                 '</select></span>'
         }
     });
