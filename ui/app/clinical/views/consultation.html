@@ -89,15 +89,13 @@
     <section class="block disposition">
         <h2>Disposition</h2>
 
+
             <ul ng-if="disposition.conceptName">
                 <li>
-                    -&nbsp; {{disposition.conceptName}}
-                </li>
-                <li>
-                    -&nbsp; {{disposition.dispositionDateTime | date :'dd-MM-yyyy hh:mm' }}
-                </li>
-                <li>
-                    - &nbsp;{{disposition.additionalObs[0].value}}
+                    <span>{{disposition.conceptName}}</span><span class="disposition-time">{{disposition.dispositionDateTime | date :'dd-MM-yyyy hh:mm' }}</span>
+                    <div class="notes inline-notes">
+                        {{disposition.additionalObs[0].value}}
+                    </div>
                 </li>
             </ul>
 

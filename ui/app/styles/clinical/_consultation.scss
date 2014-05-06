@@ -84,9 +84,16 @@
 			}
 		}
 		&.disposition{
+      .disposition-time {
+        float: right;
+      }
+      .disposition-time + div.notes {
+        margin-top: 10px;
+      }
 			ul{
 				li{
 				  	margin-bottom:10px;
+
 				  }
 			}
 		}

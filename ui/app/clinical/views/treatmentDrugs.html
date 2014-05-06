@@ -1,13 +1,25 @@
-<ul ng-show="consultation.treatmentDrugs.length > 0">
-
-    <li ng-repeat="drug in consultation.treatmentDrugs">
-                {{$index+1}}) {{drug.name}}
-                - {{drug.strength + ' ' + drug.dosageForm}}
-                - {{drug.numberPerDosage}}
-                <span ng-show="drug.dosageFrequency && drug.dosageFrequency!=''"> - {{drug.dosageFrequency.name}}</span>
-                <span ng-show="drug.dosageInstruction && drug.dosageInstruction!=''"> - {{drug.dosageInstruction.name}}</span>
-                - for {{drug.numberOfDosageDays}} day(s)
-                <span ng-show="drug.prn"> - Take as required.</span>
-                <span ng-show="drug.notes && drug.notes!=''" class="notes">( {{drug.notes}})</span>
-    </li>
-</ul>
+<table ng-show="consultation.treatmentDrugs.length > 0">
+  <thead>
+    <tr>
+      <th>Drug Name</th>
+      <th>Strength &amp; Form</th>
+      <th># per Dosage</th>
+      <th>Dosage Frequency</th>
+      <th>Dosage Instructions</th>
+      <th># of Days</th>
+    </tr>
+  </thead>
+  <tbody ng-repeat="drug in consultation.treatmentDrugs">
+    <tr>
+      <td>{{drug.name}}</td>
+      <td>{{drug.strength + ' ' + drug.dosageForm}}</td>
+      <td>{{drug.numberPerDosage}}</td>
+      <td ng-show="drug.dosageFrequency && drug.dosageFrequency!=''">{{drug.dosageFrequency.name}}</td>
+      <td ng-show="drug.dosageInstruction && drug.dosageInstruction!=''">{{drug.dosageInstruction.name}}</td>
+      <td>for {{drug.numberOfDosageDays}} day(s) <span ng-show="drug.prn">Take as required.</span></td>
+    </tr>
+    <tr ng-show="drug.notes" class="notes inline-notes">
+      <td colspan="6" >{{drug.notes}}</td>
+    </tr>
+  </tbody>
+</table>
