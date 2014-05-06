@@ -3,34 +3,33 @@
 angular.module('bahmni.common.conceptSet')
     .directive('concept', [function () {
         var controller = function ($scope, $q, $filter) {
-            
             var conceptMapper = new Bahmni.ConceptSet.ConceptMapper();
 
-            $scope.getPossibleAnswers = function () {
-                return $scope.observation.getPossibleAnswers().map(conceptMapper.map);
-            };
-
-            $scope.getValues = function (request) {
-                return $q.when({data: $filter('filter')($scope.getPossibleAnswers(), {name: request.term}) });
-            };
-
-            var getPropertyFunction = function (propertyName) {
-                return function (entity) {
-                    return entity[propertyName];
-                }
-            };
-
-            $scope.selectOptions = {
-                query: function (options) {
-                    return options.callback({results: $filter('filter')($scope.getPossibleAnswers(), {name: options.term})});
-                },
-                width: '20em',
-                allowClear: true,
-                placeholder: 'Select',
-                formatResult: getPropertyFunction('name'),
-                formatSelection: getPropertyFunction('name'),
-                id: getPropertyFunction('uuid')
-            };
+            $scope.selectOptions = function(codedConcept){
+                return {
+                    ajax: {
+                        url: Bahmni.Common.Constants.conceptUrl,
+                        dataType: 'json',
+                        quietMillis: 100,
+                        data: function (term, page) {
+                            return {
+                                q: term,
+                                answerTo: codedConcept.uuid,
+                                v: "custom:(uuid,name)"
+                            };
+                        },
+                        results: function (data, page) {
+                            return {results: data.results.map(conceptMapper.map), more: false};
+                        }
+                    },
+                    width: '20em',
+                    allowClear: true,
+                    placeholder: 'Select',
+                    formatResult: _.property('name'),
+                    formatSelection: _.property('name'),
+                    id: _.property('uuid')
+                };
+            }
         };
 
         return {
@@ -48,11 +47,11 @@ angular.module('bahmni.common.conceptSet')
                 '<concept observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet"></concept>' +
                 '</form>';
 
-        var controller = function ($scope, conceptSetService, conceptSetUiConfigService) {
+        var controller = function ($scope, conceptSetService, conceptSetUiConfigService, spinner) {
             var conceptSetName = $scope.conceptSetName;
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
             var observationMapper = new Bahmni.ConceptSet.ObservationMapper();
-            conceptSetService.getConceptSetMembers({name: conceptSetName, v: "fullchildren"}).success(function (response) {
+            spinner.forPromise(conceptSetService.getConceptSetMembers({name: conceptSetName, v: "custom:(uuid,name,set,hiNormal,lowNormal,units,conceptClass,datatype,setMembers:(uuid,name,set,hiNormal,lowNormal,units,conceptClass,datatype,setMembers:(uuid,name,set,hiNormal,lowNormal,units,conceptClass,datatype,setMembers:(uuid,name,set,hiNormal,lowNormal,units,conceptClass,datatype,setMembers:(uuid,name,set,hiNormal,lowNormal,units)))))"}, true)).success(function (response) {
                 var conceptSet = response.results[0];
                 $scope.rootObservation = conceptSet ? observationMapper.map($scope.observations, conceptSet, conceptSetUIConfig.value || {}) : null;
                 updateObservationsOnRootScope();

@@ -3,7 +3,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
 
     // tODO : remove conceptUIConfig
     var newObservation = function (concept, savedObs) {
-        var observation = { concept: conceptMapper.map(concept), units: concept.units, label: concept.display, possibleAnswers: concept.answers, groupMembers: []};
+        var observation = { concept: conceptMapper.map(concept), units: concept.units, label: concept.name.name, possibleAnswers: concept.answers, groupMembers: []};
         return new Bahmni.ConceptSet.Observation(observation, savedObs);
     };
 
@@ -30,13 +30,13 @@ Bahmni.ConceptSet.ObservationMapper = function () {
     };
 
     var newObservation = function (concept, savedObs) {
-        var observation = { concept: conceptMapper.map(concept), units: concept.units, label: concept.display, possibleAnswers: concept.answers, groupMembers: []};
+        var observation = { concept: conceptMapper.map(concept), units: concept.units, label: concept.name.name, possibleAnswers: concept.answers, groupMembers: []};
         return new Bahmni.ConceptSet.Observation(observation, savedObs);
     };
 
     // tODO : remove conceptUIConfig
     var newObservationNode = function (concept, savedObsNode, conceptSetConfig) {
-        var observation = { concept: conceptMapper.map(concept), units: concept.units, label: concept.display, possibleAnswers: concept.answers, groupMembers: []};
+        var observation = { concept: conceptMapper.map(concept), units: concept.units, label: concept.name.name, possibleAnswers: concept.answers, groupMembers: []};
         return new Bahmni.ConceptSet.ObservationNode(observation, savedObsNode, conceptSetConfig);
     };
 

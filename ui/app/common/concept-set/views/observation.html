@@ -15,20 +15,24 @@
 
                 <textarea ng-switch-when="text" ng-model="observation.value"
                           ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"></textarea>
-
+<!-- Dropdowns won't be supported in release - 3
                 <select ng-switch-when="dropdown" foo-bar ng-model="observation.value"
                         ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"
                         ng-options="answer as answer.name for answer in getPossibleAnswers() track by answer.uuid"> <option value=""></option>
                 </select>
 
-                <input ng-switch-when="freeTextAutocomplete" class="concept-name" ng-model="observation.value" concept-autocomplete
+ -->
+                <span ng-switch-when="dropdown">Dropdowns are not supported. Change it to autocomplete</span>
+                
+
+                 <input ng-switch-when="freeTextAutocomplete" class="concept-name" ng-model="observation.value" concept-autocomplete
                        ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"
                        coded-concept-uuid="observation.getConceptUIConfig().freeTextAutocomplete.codedConceptUuid"
                        concept-set-uuid="observation.getConceptUIConfig().freeTextAutocomplete.conceptSetUuid"
                        blur-on-select="false"/>
 
                 <div ng-switch-when="autocomplete"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}" class="autocomplete">
-                    <input type="hidden" ui-select2="selectOptions" ng-model="observation.value"/>
+                    <input type="hidden" ui-select2="selectOptions(observation.primaryObs.concept)" ng-model="observation.value"/>
                 </div>
 
                 <!--div ng-switch-when="multiselect"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}" class="autocomplete">
