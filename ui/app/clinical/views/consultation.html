@@ -64,8 +64,19 @@
     </section>
     <section class="block">
         <h2>Observations</h2>
-        <section class="block" ng-repeat="observation in consultation.observations">
-            <show-obs observation="observation"></show-obs>
+        <section class="block">
+            <!--<show-obs observation="observation"></show-obs>-->
+                <fieldset ng-repeat="observation in observationsToDisplay">
+                    <div class="form-field" ng-class="{true: 'is-abnormal'}[observation.abnormal.value]">
+                        <span class="field-attribute"><label>{{observation.concept.name}}:</label></span>
+                        <span class="value-text-only">{{observation.value}}</span>
+                        <span class="label-add-on" ng-show="observation.concept.units"> {{observation.concept.units}}</span>
+                        <div class="footer-note fr">
+                            <span class="value-text-only time">{{observation.observationDateTime | date :'hh:mm a'}}</span>
+                        </div>
+                    </div>
+                </fieldset>
+                <!--<show-obs group-by-date="true" observation="observationsForDate"/>-->
         </section>
     </section>
     <section class="block investigation">

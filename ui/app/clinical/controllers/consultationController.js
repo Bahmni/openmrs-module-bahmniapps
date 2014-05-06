@@ -12,10 +12,13 @@ angular.module('bahmni.clinical')
             return editedDiagnosesFromPastEncounters;
         };
         $scope.editedDiagnosesFromPastEncounters = geEditedDiagnosesFromPastEncounters();
+        var observationsToDisplay = new Bahmni.ConceptSet.ObservationMapper().getObservationsForView($scope.consultation.observations);
+        $scope.observationsToDisplay = observationsToDisplay;
 
         $scope.onNoteChanged = function () {
             $scope.consultation.consultationNote.observationDateTime = new Date();
         };
+
 
     }]);
 

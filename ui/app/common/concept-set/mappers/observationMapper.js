@@ -70,6 +70,9 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         var observationsForDisplay = [];
 
         var createObservationForDisplay = function (observationTemp, obsConcept) {
+            if (!observationTemp.value) {
+                return;
+            }
             var observationValue = observationTemp.value.name ? observationTemp.value.name : observationTemp.value;
 
             if (observationTemp.duration) {
@@ -83,13 +86,17 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         }
 
         _.forEach(observations, function (savedObs) {
-            if (savedObs.concept.conceptClass === Bahmni.Common.Constants.conceptDetailsClassName) {
+            if (savedObs.concept.conceptClass === Bahmni.Common.Constants.conceptDetailsClassName || savedObs.concept.conceptClass.name === Bahmni.Common.Constants.conceptDetailsClassName) {
                 var observationNode = new Bahmni.ConceptSet.ObservationNode(savedObs, savedObs, []);
-                observationsForDisplay.push(createObservationForDisplay(observationNode, observationNode.primaryObs.concept));
+                var obsToDisplay = createObservationForDisplay(observationNode, observationNode.primaryObs.concept);
+                if (obsToDisplay)
+                    observationsForDisplay.push(obsToDisplay);
             } else {
                 if (!savedObs.concept.set) {
                     var observationTemp = newObservation(savedObs.concept, savedObs);
-                    observationsForDisplay.push(createObservationForDisplay(observationTemp, observationTemp.concept));
+                    var obsToDisplay = createObservationForDisplay(observationTemp, observationTemp.concept);
+                    if (obsToDisplay)
+                        observationsForDisplay.push(obsToDisplay);
                 } else {
                     var groupMemberObservationsForDisplay = internalMapForDisplay(savedObs.groupMembers);
                     observationsForDisplay = observationsForDisplay.concat(groupMemberObservationsForDisplay);
