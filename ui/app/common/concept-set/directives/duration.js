@@ -42,7 +42,7 @@ angular.module('bahmni.common.conceptSet')
                 disabled: "="
             },
             link: link,
-            template: '<span>Duration</span><span><input type="number" ng-model=\'measureValue\' ng-disabled="disabled"/></span>' +
+            template: '<span>for</span><span><input type="number" ng-model=\'measureValue\' ng-disabled="disabled"/></span>' +
                 '<span><select ng-model=\'unitValue\' ng-options="name for (name , value) in units" ng-disabled="disabled"><option value=""></option>>' +
                 '</select></span>'
         }
