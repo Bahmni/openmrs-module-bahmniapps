@@ -47,11 +47,9 @@ aside{
   }
   &.visit-history{
     position:absolute;
-    // padding:10px;
     right:-350px;
     width:250px;
     background:#333333;
-    // overflow: scroll;
     bottom: 0;
     top: 50px;
     box-shadow: -3px 5px 10px #777;
@@ -100,14 +98,6 @@ aside{
   .visit-history-entry, .summary {
     &.selected, &.selected:hover{
       background :#2b2b2b;
-      // font-family: FontAwesome;
-      // &:before {
-      //   content: "\f0da";
-      //   float: left;
-      //   font-size: 30px;
-      //   color: #fff;
-      //   margin-left: -2px;
-      // }
     }
     &.active {color: #fafafa;}
     .icon-star {color: #E8A000; display: none;}

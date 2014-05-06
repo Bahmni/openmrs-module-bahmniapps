@@ -3,6 +3,7 @@
               ng-if="visit.hasAdmissionEncounter()"></section>
     <section class="visit-actions" visit-actions patient="patient" visit="visit"
              visit-date="selectedVisit.startDatetime" action="'printVisitSummary'"></section>
+    <section class="visit-actions" visit-actions patient="patient" visit="visit" action="'printVisit'"></section>
     <section ng-show="visit.hasDiagnosis()" class="block diagnosis">
         <h2>Diagnoses</h2>
 
@@ -108,7 +109,7 @@
 </section>
 <section class="block laborder-section" ng-show="visit.hasLabTests()">
     <div ng-if="visit.admissionDate">
-        <h2> IPD Investigations</h2>
+        <h2 class="ipd-investigation-title"> IPD Investigations</h2>
         <table class="ipd-investigation">
             <thead>
             <tr>
@@ -159,7 +160,7 @@
         Lab Investigations
     </h2>
 
-    <div ng-repeat="labOrders in visit.labTestOrderObsMap" ng-show="visit.showLabInvestigations">
+    <div ng-repeat="labOrders in visit.labTestOrderObsMap" ng-show="visit.showLabInvestigations" class="lab-investigation">
         <table>
             <thead>
             <tr>
@@ -285,7 +286,7 @@
                 <span bo-show="drugOrder.drugUnits" bo-text="' ' + drugOrder.drugUnits"></span>
                 <span bo-show="!drugOrder.doseStrength && !drugOrder.drugUnits" bo-text="' - '"></span>
             </td>
-            <td>
+            <td class="dosage-form">
                 <span bo-show="drugOrder.numberPerDosage" bo-text="drugOrder.numberPerDosage"></span>
                 <span bo-show="drugOrder.dosageForm" bo-text="drugOrder.dosageForm"></span>
                 <span bo-show="!drugOrder.dosageForm && !drugOrder.numberPerDosage" bo-text="' - '"></span>

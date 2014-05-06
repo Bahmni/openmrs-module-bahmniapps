@@ -1,0 +1,30 @@
+<div class="visit-summary-print">
+    <link rel="stylesheet" href="../styles/clinical.css"/>
+    <link rel="stylesheet" href="../styles/visitPrint.css"/>
+    <header>
+        <img class="logo" src="../images/jss-icon.png" alt="logo">
+        <h1>Jan Swasthya Sahyog</h1>
+        <h2>Visit Summary</h2>
+    </header>
+    <main>
+        <div class="patient-info">
+          <table>
+            <tr>
+              <td colspan="2">Name: <span class="value">{{patient.name}}</span></td>
+              <td>Age / Sex: <span class="value">{{patient.birthdate | age:visit.dateStarted}} / {{patient.gender}}</span></td>
+            </tr>
+            <tr>          
+              <td>Registration No. <span class="value">{{patient.identifier}}</span></td>
+              <td>Village / Town: <span class="value">{{patient.address.cityVillage}}</span></td>
+              <td>P.O. <span class="value">{{patient.address.address3}}</span></td>
+            </tr>
+            <tr>
+              <td colspan="3">Visit Date: <span class="value">{{visit.dateStarted}}</span></td>
+            </tr>
+          </table>
+        </div>
+        <div ng-include="'views/visitSummary.html'" bindonce="visit"></div>
+    </main>
+    <footer>
+    </footer>
+</div>
