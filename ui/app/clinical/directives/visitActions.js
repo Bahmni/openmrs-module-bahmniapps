@@ -13,7 +13,7 @@ angular.module('bahmni.clinical')
                     $scope.title = "Print Visit Summary";
                     $scope.act = function () {
                         var showLabInvestigations = $scope.visit.admissionDate ? false: true;
-                        printer.print('views/visitSummaryPrint.html', {visit: $scope.visit, patient: $scope.patient, showLabInvestigations: showLabInvestigations});
+                        printer.print('views/visitSummaryPrint.html', {visit: $scope.visit, patient: $scope.patient, showLabInvestigations: showLabInvestigations, visitDate: $scope.visitDate});
                     };
                 }
             };
@@ -25,7 +25,8 @@ angular.module('bahmni.clinical')
             scope: {
                 action: "=",
                 visit: "=",
-                patient: "="
+                patient: "=",
+                visitDate: "="
             },
             controller: controller,
             template: '<button type="button" ng-click="act()"><i class="icon-print"></i>{{title}}</button>'

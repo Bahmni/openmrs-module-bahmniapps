@@ -19,7 +19,7 @@
               <td>P.O. <span class="value">{{patient.address.address3}}</span></td>
             </tr>
             <tr>
-              <td colspan="3">Visit Date: <span class="value">{{visit.dateStarted}}</span></td>
+              <td colspan="3">Visit Date: <span class="value">{{visitDate | date: 'dd MMM yy'}}</span></td>
             </tr>
           </table>
         </div>
