@@ -1,4 +1,7 @@
-<div ng-repeat="section in patientDashboardSections" class="dashboard-observation-section" ng-show="patientSummary">
-    <ng-include src="section.viewName"></ng-include>
+<div class="dashboard-section-wrapper">
+  <div ng-repeat="section in patientDashboardSections" class="dashboard-observation-section" ng-show="patientSummary">
+      <ng-include src="section.viewName"></ng-include>
+  </div>
 </div>
+
 

@@ -7,6 +7,14 @@
   min-height: 768px;
   right: 0;
   padding-bottom: 10px;
+
+}
+.dashboard-section-wrapper {
+  -moz-column-count: 2;
+  -moz-column-gap: 5px;
+  -webkit-column-count: 2;
+  -webkit-column-gap: 5px;
+  padding-top: 1%;
 }
 #view-content .patient-dashboard.visit {padding: 0;}
 .dashboard-visit-summary {padding: 10px;}
@@ -105,14 +113,19 @@ aside{
   }
 }  
 .dashboard-observation-section {
-  width: 47.5%;
+  // width: 47.5%;
   border: 1px solid #ccc;
   border-radius: 5px;
-  float: left;
-  margin: 1.5% 0 0 1.5%;
+  // float: left;
+  margin-bottom: 1%;
   font-size: 14px;
   position: relative;
   padding-bottom: 35px;
+  break-inside: avoid; /* W3C */
+  -webkit-column-break-inside: avoid; /* Safari & Chrome */
+  -moz-column-break-inside: avoid; /* Firefox */
+  -ms-column-break-inside: avoid; /* Internet Explorer */
+  -o-column-break-inside: avoid; /* Opera */
   h2 {
     padding: 10px;
     font-family: OpenSansBold;
@@ -127,8 +140,8 @@ aside{
   }
   section.block {
     padding: 0!important;
-    height: 250px;
-    overflow-y: hidden;
+    min-height: 250px;
+    // overflow-y: hidden;
     border-radius: 0 0 5px 5px;
   }
   section {
@@ -167,6 +180,7 @@ aside{
     }
   }
   button {
+    display: none;
     width: 100%;
     max-width: 100%;
     color: #006699;
