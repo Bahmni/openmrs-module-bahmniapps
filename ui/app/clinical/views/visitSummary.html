@@ -82,7 +82,7 @@
 
 
                         <tr ng-repeat="observation in observationSubGroup.obs"
-                            ng-class="{true: 'is-abnormal'}[observation.abnormal.value]">
+                            ng-class="{true: 'is-abnormal'}[observation.abnormal.value]" ng-if="shouldShowObservation(observation)">
                             <td class="name">
                                 <span class="obs-value">{{observation.concept.name}}</span>
                             </td>
