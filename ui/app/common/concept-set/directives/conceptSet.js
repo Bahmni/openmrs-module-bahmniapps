@@ -6,6 +6,7 @@ angular.module('bahmni.common.conceptSet')
             var conceptMapper = new Bahmni.ConceptSet.ConceptMapper();
 
             $scope.selectOptions = function(codedConcept){
+                var limit = 10;
                 return {
                     ajax: {
                         url: Bahmni.Common.Constants.conceptUrl,
@@ -14,6 +15,8 @@ angular.module('bahmni.common.conceptSet')
                         data: function (term, page) {
                             return {
                                 q: term,
+                                limit: limit,
+                                startIndex: (page - 1) * limit,
                                 answerTo: codedConcept.uuid,
                                 v: "custom:(uuid,name:(name))"
                             };
@@ -22,7 +25,7 @@ angular.module('bahmni.common.conceptSet')
                             return {
                                 //Remove uniq logic after web service rest bug is fixed
                                 results: _.uniq(data.results, _.property('uuid')).map(conceptMapper.map),
-                                more: false
+                                more: !!_.find(data.links, function(link) { return link.rel === "next"; })
                             };
                         }
                     },
