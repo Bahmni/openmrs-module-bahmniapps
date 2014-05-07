@@ -88,6 +88,15 @@ h2, .diagnosis h2 {
   border: 1px solid #ccc;
   page-break-inside: avoid;
 }
+tr.ng-hide {
+  display: table-row!important;
+  td.notes.inline-notes {
+    display: table-cell!important;
+  }
+}
+div.notes.inline-notes {
+  width: 98%;
+}
 .patient-info {
   overflow: auto;
   table {
