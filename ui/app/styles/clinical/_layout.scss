@@ -258,6 +258,7 @@ body{
     position: relative;
     // top: 110px;
     margin: 0px;
+    min-height: 768px;
     @media screen and (max-width: 959px) {
       width: 100%;
     }

@@ -5,7 +5,7 @@
                 <a ng-click="showBoard(board.name)" class="button">{{board.name}}</a>
             </li>
         </ul>
-        <button class="toggle-patient" ng-click="gotoPatientDashboard()"></button>
+        <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}"></button>
         <button class="confirm save-consultation" ng-show="availableBoards" ng-click="save()" class="confirm">Save</button>
     </div>
 </div>

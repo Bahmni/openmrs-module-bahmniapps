@@ -19,56 +19,10 @@ angular.module('opd.patientDashboard', [])
             $scope.patientSummary = undefined;
         };
 
-        var get_visit_history = function (visitData) {
-            return new Bahmni.Clinical.VisitHistoryEntry(visitData)
-        };
-
-        var init = function () {
-            patientVisitHistoryService.getVisits($scope.patientUuid).then(function (visits) {
-                $scope.visits = visits.map(get_visit_history);
-                $scope.showSummary();
-            });
-        };
-        init();
-
         $scope.showVisitSummary = function (visit) {
             clearPatientSummary();
             $scope.selectedVisit = visit;
             getEncountersForVisit($scope.selectedVisit.uuid);
-            $scope.toggle($scope.patient);
-        };
-
-        $scope.isVisitActive = function (visit) {
-            return visit.isActive();
-        };
-
-        var getActiveVisit = function (){
-            if($scope.visits){
-                return $scope.visits.filter($scope.isVisitActive)[0];
-            }
-            else{
-                return null;
-            }
-        };
-
-        $scope.getConsultationPadLink = function () {
-            $scope.activeVisit = getActiveVisit();
-            if ($scope.activeVisit) {
-                return urlHelper.getVisitUrl($scope.activeVisit.uuid);
-            } else {
-                return urlHelper.getConsultationUrl();
-            }
-        };
-
-        $scope.isCurrentVisit = function (visit) {
-            if ($scope.selectedVisit) {
-                return visit.uuid === $scope.selectedVisit.uuid && !$scope.patientSummary;
-            }
-            return false;
-        };
-
-        $scope.toggle = function (item) {
-            item.show = !item.show
         };
 
         var addViewNameToSection = function (section) {
@@ -78,13 +32,11 @@ angular.module('opd.patientDashboard', [])
         $scope.showSummary = function () {
             $scope.patientSummary = {}
             $scope.patientDashboardSections.forEach(addViewNameToSection);
-            $scope.toggle($scope.patient);
         };
 
-        $scope.getPatientDocuments = function () {
-            var encounterTypeUuid = $rootScope.encounterConfig.getPatientDocumentEncounterTypeUuid();
-            var promise = encounterService.getEncountersForEncounterType($scope.patientUuid, encounterTypeUuid);
-            return spinner.forPromise(promise);
-            $scope.toggle($scope.patient);
+        var init = function () {
+            $scope.showSummary();
         };
+        init();
+
     }]);

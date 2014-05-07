@@ -81,9 +81,6 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 return getUrl(board);
             };
 
-
-
-
             var addEditedDiagnoses = function (diagnosisList) {
                 $rootScope.consultation.pastDiagnoses && $rootScope.consultation.pastDiagnoses.forEach(function (diagnosis) {
                     if (diagnosis.isDirty) {

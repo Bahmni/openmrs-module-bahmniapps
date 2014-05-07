@@ -478,17 +478,8 @@ button.save-consultation {
   float: right;
   margin: 6px 20px;
 }
-button.toggle-patient {
-  float: right;
-  margin: 0;
-  padding: 25px 35px;
-  height: 30px;
-  background: url("/images/bars.png") no-repeat center center;
-  border: 0;
-}
 
 .messages {
-
   .error-message, .info-message {
     width: 50%;
     top: 100px;
@@ -506,5 +497,94 @@ button.toggle-patient {
   .info-message {
     background: #f9edbe;
     border: 1px solid #f0c36d;
+  }
+}
+
+button.toggle-patient {
+  float: right;
+  margin: 0;
+  padding: 25px 35px;
+  height: 30px;
+  background: url("/images/bars.png") no-repeat center center;
+  border: 0;
+  &.shift {
+    background: #333 url("/images/close-bars.png") no-repeat center center;  
+  }
+}
+
+.patient-control-panel {
+  padding: 0;
+}
+aside{
+  -webkit-transition: right .3s ease,-webkit-transform .3s ease;
+  -moz-transition: right .3s ease,-moz-transform .3s ease;
+  -o-transition: right .3s ease,transform .3s ease;
+  -ms-transition: right .3s ease,transform .3s ease;
+  transition: right .3s ease,transform .3s ease;
+  h2{
+    background:none;
+    color: #000;
+  }
+  a{
+    color:#fff;
+  }
+  &.visit-history{
+    position:absolute;
+    right:-350px;
+    width:250px;
+    background:#333333;
+    bottom: 0;
+    top: 0;
+    box-shadow: -3px 5px 10px #777;
+    z-index: 10;
+    h2 {
+      color: #666;
+      font-size: 14px;
+      border-bottom-color: #555;
+      padding-left: 10px;
+      margin-bottom: 5px;
+    }
+    ul {
+      margin-bottom: 10px;
+    }
+    li a {
+      display: block;
+      padding: 8px 10px 8px 20px;
+      color: #aaa;
+      font-size: 14px;
+      &:hover {
+        text-decoration: none;
+        background: #2e2e2e;
+        color: #bbb;
+      }
+    }
+    .patient-info {
+      padding-bottom: 10px;
+      .patient-img img {
+        border-radius: 50%;
+        margin: 8% 21%;
+        width: 150px;
+      }
+      h4 {text-transform: capitalize;}
+      h4, h5, .ward {
+        text-align: center;
+        color: #ddd;
+        display: block;
+      }
+      h5, .ward {color: #888; margin-top: 5px;}
+    }
+  }
+  &.visit-history.shift {
+    right: 0;
+  }
+
+
+  .visit-history-entry, .summary {
+    &.selected, &.selected:hover{
+      background :#2b2b2b;
+    }
+    &.active {color: #fafafa;}
+    .icon-star {color: #E8A000; display: none;}
+    &.active .icon-star {display: inline-block;}
   }
 }

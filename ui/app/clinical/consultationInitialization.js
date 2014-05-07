@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('bahmni.clinical').factory('consultationInitialization',
-    ['$rootScope', '$q', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'authenticator', 'appService', 'encounterService', 'bedService', 'spinner', 'initialization', 'diagnosisService',
-    function ($rootScope, $q, configurationService, visitService, patientService, patientMapper, authenticator, appService, encounterService, bedService, spinner, initialization, diagnosisService) {
+    ['$rootScope', '$q', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'authenticator', 'appService', 'encounterService', 'bedService', 'spinner', 'initialization', 'diagnosisService', 'patientVisitHistoryService',
+    function ($rootScope, $q, configurationService, visitService, patientService, patientMapper, authenticator, appService, encounterService, bedService, spinner, initialization, diagnosisService, patientVisitHistoryService) {
         return function(patientUuid) {
-
             var getPatient = function() {
                 return patientService.getPatient(patientUuid).success(function (openMRSPatient) {
                     $rootScope.patient = patientMapper.map(openMRSPatient);
@@ -38,10 +37,22 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                 });
             };
 
+            var getPatientVisitHistory = function () {
+                patientVisitHistoryService.getVisits(patientUuid).then(function (visits) {
+                    $rootScope.visits = visits.map(function(visitData) {
+                        return new Bahmni.Clinical.VisitHistoryEntry(visitData)
+                    });
+                });
+            };
+
+            $rootScope.toggleControlPanel = function () {
+                $rootScope.showControlPanel = !$rootScope.showControlPanel;
+            };
+
             return spinner.forPromise(
                 initialization.then(function(){
-                    return $q.all([getActiveEncounter().then(getPastDiagnoses),getPatient().then(getPatientBedDetails)]);
-                 })
+                    return $q.all([getActiveEncounter().then(getPastDiagnoses),getPatient().then(getPatientBedDetails),getPatientVisitHistory()]);
+                })
             );
         }
     }]

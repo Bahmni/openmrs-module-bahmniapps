@@ -29,7 +29,7 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', functi
                 },
                 views: {
                     'additional-header': { template: '<div ui-view="additional-header"></div>' },
-                    'content': { template: '<div ui-view="content"></div>' }
+                    'content': { template: '<div ui-view="content"></div><patient-control-panel/>' }
                 },
                 resolve: {
                     consultationInitialization: function(consultationInitialization, $stateParams) {
@@ -39,11 +39,26 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', functi
             .state('patient.dashboard', {
                 url: '/dashboard',
                 views: {
+                    'additional-header': { templateUrl: 'views/dashboardHeader.html' },
                     'content': {
                         templateUrl: 'views/dashboard.html',
                         controller: 'PatientDashboardController'
                     }
                 }
+            })
+            .state('patient.visit', {
+                url: '/dashboard/visit/:visitUuid',
+                views: {
+                    'additional-header': { templateUrl: 'views/dashboardHeader.html' },
+                    'content': {
+                        templateUrl: 'views/visit.html',
+                        controller: 'VisitController'
+                    }
+                },
+                resolve: {
+                    visitInitialization: function(visitInitialization, $stateParams) {
+                    return visitInitialization($stateParams.patientUuid, $stateParams.visitUuid);
+                }}
             })
             .state('patient.consultation', {
                 url: '',
@@ -56,7 +71,11 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', functi
             .state('patient.consultation.visit', {
                 url: '/visit/:visitUuid',
                 templateUrl: 'views/visit.html',
-                controller: 'VisitController'
+                controller: 'VisitController',
+                resolve: {
+                    visitInitialization: function(visitInitialization, $stateParams) {
+                    return visitInitialization($stateParams.patientUuid, $stateParams.visitUuid);
+                }}
             })
             .state('patient.consultation.summary', {
                 url: '/consultation',
