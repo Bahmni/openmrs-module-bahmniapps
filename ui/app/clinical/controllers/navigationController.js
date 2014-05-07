@@ -175,7 +175,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                         inherit: false,
                         notify: true
                     }).then(function() {
-                        messagingService.showMessage('info', 'Information saved');
+                        messagingService.showMessage('info', 'Information saved successfully.');
                     });
                  }).error(function (){
                     messagingService.showMessage('error', 'An error has occurred on the server. Information not saved.');
