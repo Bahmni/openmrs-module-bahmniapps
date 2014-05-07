@@ -1,14 +1,12 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitController', ['$scope', 'encounterService', 'visitService', 'spinner', '$stateParams', 'appService', '$rootScope',
-        function ($scope, encounterService, visitService, spinner, $stateParams, appService, $rootScope) {
+    .controller('VisitController', ['$scope', 'encounterService', 'visitService', 'spinner', '$stateParams', '$rootScope',
+        function ($scope, encounterService, visitService, spinner, $stateParams, $rootScope) {
             var visitUuid = $stateParams.visitUuid;
             $scope.visit = $rootScope.visit;
             $scope.patientUuid = $stateParams.patientUuid;
             $scope.showTrends = true;
-
-            $scope.obsIgnoreList = appService.getAppDescriptor().getConfig("obsIgnoreList").value || {};
 
             $scope.isNumeric = function (value) {
                 return $.isNumeric(value);

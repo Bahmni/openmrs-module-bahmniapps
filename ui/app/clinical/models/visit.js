@@ -141,7 +141,7 @@ Bahmni.Clinical.Visit.prototype = {
     }
 };
 
-Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNoteConcept, labOrderNoteConcept, encounterConfig, allTestAndPanelsConcept) {
+Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNoteConcept, labOrderNoteConcept, encounterConfig, allTestAndPanelsConcept, obsIgnoteList) {
     var diagnosisMapper = new Bahmni.DiagnosisMapper(),
         ordersMapper = new Bahmni.Clinical.OrdersMapper(),
         isLabTests = function (order) {
@@ -180,8 +180,10 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
         }
     });
 
-
-    var allObs = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions);
+    var removeUnwantedObs = function(observation) {
+        return !obsIgnoteList.some(function(ignoredObsName) {return ignoredObsName === observation.concept.name;});
+    }
+    var allObs = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions).filter(removeUnwantedObs);
     var drugOrders = ordersMapper.map(encounterTransactions, 'drugOrders');
     var testOrders = ordersMapper.map(encounterTransactions, 'testOrders', allTestAndPanelsConcept);
     var otherInvestigations = testOrders.filter(isNonLabTests);
