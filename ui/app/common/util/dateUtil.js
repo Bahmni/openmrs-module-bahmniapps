@@ -108,7 +108,7 @@ Bahmni.Common.Util.DateUtil = {
         for (var unitName in  allUnits) {
             var unitValueInHours = allUnits[unitName];
             if (hours || hours !== 0) {
-                if (hours > unitValueInHours && hours % unitValueInHours === 0) {
+                if (hours >= unitValueInHours && hours % unitValueInHours === 0) {
                     return durationRepresentation(hours / unitValueInHours, unitName, unitValueInHours);
                 }
             }
