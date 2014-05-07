@@ -29,6 +29,9 @@ describe('CreatePatientController', function () {
         appDescriptor = {
             getExtensions : function(id) {
                 return [];
+            },
+            getConfigValue: function() {
+                return 'OPD'
             }
         };
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor'])

@@ -6,7 +6,6 @@ angular.module('bahmni.registration')
 
             var patientUuid = $route.current.params['patientUuid'];
             var isNewPatient = ($location.search()).newpatient;
-            var visitTypeUuid = $scope.regEncounterConfiguration.visitTypeId(isNewPatient);
             var encounterTypeUuid = $scope.regEncounterConfiguration.encounterTypes[Bahmni.Registration.Constants.encounterType.registration];
 
             var getPatient = function () {
@@ -20,7 +19,7 @@ angular.module('bahmni.registration')
             };
 
             var getActiveEncounter = function () {
-                return encounterService.activeEncounter({"patientUuid": patientUuid, "visitTypeUuid" : visitTypeUuid, "encounterTypeUuid" : encounterTypeUuid, "providerUuid" : $scope.currentProvider.uuid, "includeAll" : false})
+                return encounterService.activeEncounter({"patientUuid": patientUuid, "encounterTypeUuid" : encounterTypeUuid, "providerUuid" : $scope.currentProvider.uuid, "includeAll" : false})
                     .success(function (data) {
                         $scope.observations = Bahmni.Registration.ObservationMapper().map(data.observations);
                         $scope.registrationFeeLabel = isNewPatient ? "Registration Fee" : "Consultation Fee";
@@ -81,7 +80,7 @@ angular.module('bahmni.registration')
 
 
             $scope.save = function () {
-                $scope.encounter = {visitTypeUuid: visitTypeUuid, encounterTypeUuid: encounterTypeUuid, patientUuid: $scope.patient.uuid};
+                $scope.encounter = {encounterTypeUuid: encounterTypeUuid, patientUuid: $scope.patient.uuid};
                 var registrationObservations = $scope.registrationObservations.updateObservations($scope.obs);
                 $scope.encounter.observations =[];
                 $scope.encounter.observations = $scope.encounter.observations.concat(registrationObservations).concat($scope.observations.compoundObservations);

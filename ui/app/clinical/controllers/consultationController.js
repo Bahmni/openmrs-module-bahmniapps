@@ -18,7 +18,5 @@ angular.module('bahmni.clinical')
         $scope.onNoteChanged = function () {
             $scope.consultation.consultationNote.observationDateTime = new Date();
         };
-
-
     }]);
 

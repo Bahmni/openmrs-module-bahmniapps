@@ -8,6 +8,7 @@ angular.module('bahmni.registration')
             var defaultActions = ["save", "print"];
             var constants = Bahmni.Registration.Constants;
             var regEncounterTypeUuid = $scope.regEncounterConfiguration.encounterTypes[constants.encounterType.registration];
+            var defaultVisitType = appService.getAppDescriptor().getConfigValue('defaultVisitType');
 
             var identifyEditActions = function() {
                 editActionsConfig = appService.getAppDescriptor().getExtensions("org.bahmni.registration.patient.edit.action", "config");
@@ -47,16 +48,7 @@ angular.module('bahmni.registration')
                 spinner.forPromise($q.all([getPatientPromise, searchActiveVisitsPromise, isDigitized]));
             })();
 
-            var getDefaultVisitType = function() {
-                var defaultVisitType = $route.current.params.visitType || constants.defaultVisitTypeName;
-                var visitTypesAsArray = $rootScope.regEncounterConfiguration.getVistTypesAsArray();
-                var visitArray = visitTypesAsArray.filter(function(visitType) {
-                    return visitType.name === defaultVisitType;
-                });
-                return visitArray.length > 0 ? visitArray[0].name : constants.defaultVisitTypeName;
-            };
-
-            $scope.visitControl = new Bahmni.Registration.VisitControl($rootScope.regEncounterConfiguration.getVistTypesAsArray(), getDefaultVisitType(), visitService);
+            $scope.visitControl = new Bahmni.Registration.VisitControl($rootScope.regEncounterConfiguration.getVistTypesAsArray(), defaultVisitType, visitService);
             $scope.visitControl.onStartVisit = function() {
                 $scope.setSubmitSource('startVisit');
             };
