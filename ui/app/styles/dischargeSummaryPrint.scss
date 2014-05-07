@@ -2,13 +2,13 @@
 @page {
   margin-left: 0.2cm;
   margin-right: 0.2cm;
-  margin-top: 0.2cm;
-  margin-bottom: 0.2cm;
+  margin-top: 0.5cm;
+  margin-bottom: 0.5cm;
 }
 p, h1, h2, h3, table, tr, td, div, span, li {
   margin: 0px;
   padding: 0px;
-  font-size: 12pt;
+  font-size: 10pt!important;
 }
 ul {
   padding-left: 10px;
@@ -41,7 +41,7 @@ h1, h2, h3 {
   margin: 0;
   padding: 0;
   background: none;
-  font-size: 12pt;
+  font-size: 10pt;
   font-family: arial;
 }
 
@@ -57,13 +57,14 @@ header h1 span {
 }
 header h2 {
   margin-top: 5px;
+  margin-bottom: 0;
   text-decoration: underline;
 }
 
 .patient-info {
   overflow: auto;
   table {
-    margin: 15px auto;
+    margin: 5px auto;
     tr td {
       .value {
         font-weight: bold;
@@ -92,6 +93,7 @@ section h3:after {
 .logo {
   width: 12mm; 
   height: 12mm;
+  margin-top: 0;
 }
 .abnormal {
   font-weight: bold;

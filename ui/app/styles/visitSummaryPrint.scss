@@ -2,13 +2,13 @@
 @page {
   margin-left: 0.2cm;
   margin-right: 0.2cm;
-  margin-top: 0.2cm;
-  margin-bottom: 0.2cm;
+  margin-top: 0.5cm;
+  margin-bottom: 0.5cm;
 }
 p, h1, h2, h3, table, tr, td, div, span, li {
   margin: 0px;
   padding: 0px;
-  font-size: 12pt;
+  font-size: 10pt!important;
   font-family: arial;
 }
 ul {
@@ -38,7 +38,7 @@ ul li {
   margin: 0;
   padding: 0;
   background: none;
-  font-size: 12pt;
+  font-size: 10pt;
   font-family: arial;
   padding: 1%;
 }
@@ -51,6 +51,7 @@ header {
     width: 12mm; 
     height: 12mm;
     float: none;
+    margin-top: 0;
   }
   h1, h2 {
     text-align: center;
@@ -68,6 +69,7 @@ header h1 span {
 }
 header h2 {
   margin-top: 5px;
+  margin-bottom: 0;
   text-decoration: underline;
 }
 
@@ -87,6 +89,7 @@ h2, .diagnosis h2 {
   display: block!important;
   border: 1px solid #ccc;
   page-break-inside: avoid;
+  padding: 2px 5px;
 }
 tr.ng-hide {
   display: table-row!important;
@@ -97,10 +100,21 @@ tr.ng-hide {
 div.notes.inline-notes {
   width: 98%;
 }
+.notes p.left {width: 70%;}
+.notes pre.left {width: 60%;}
+.footer-note.right, .footer-note.fr, .footer-note {
+  float: right;
+  width: auto;
+  padding: 0;
+  .time-stamp, .provider {
+    display: block;
+  }
+  .provider {white-space: nowrap; width: auto;}
+}
 .patient-info {
   overflow: auto;
   table {
-    margin: 15px auto;
+    margin: 5px auto;
     tr td {
       .value {
         font-weight: bold;
@@ -109,6 +123,12 @@ div.notes.inline-notes {
       }
     }
   }
+}
+section.block h2 {
+  margin: 5px 0 0 0!important;
+}
+.diagnosis .history-diagnosis {
+  margin-bottom: 0;
 }
 .lab-investigation, .observation {
   table tr td.value {width: 300px;}
