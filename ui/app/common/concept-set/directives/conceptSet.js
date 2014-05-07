@@ -15,11 +15,15 @@ angular.module('bahmni.common.conceptSet')
                             return {
                                 q: term,
                                 answerTo: codedConcept.uuid,
-                                v: "custom:(uuid,name)"
+                                v: "custom:(uuid,name:(name))"
                             };
                         },
                         results: function (data, page) {
-                            return {results: data.results.map(conceptMapper.map), more: false};
+                            return {
+                                //Remove uniq logic after web service rest bug is fixed
+                                results: _.uniq(data.results, _.property('uuid')).map(conceptMapper.map),
+                                more: false
+                            };
                         }
                     },
                     width: '20em',
