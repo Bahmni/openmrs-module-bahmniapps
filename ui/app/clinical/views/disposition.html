@@ -1,21 +1,9 @@
-<div class="disposition">
-    <h3>Disposition Actions</h3>
-
-    <br/>
+<div class="disposition-tab">
     <form ng-submit="submit()">
-        <p >
-            <select ng-model="dispositionAction" ng-options="getMappingCode(d) as d.name.name for d in dispositionActions" ng-change="clearDispositionNote()">
-							<option value=""></option>
-            </select>
-        </p>
-
-        <br/>
-        <textarea id="dispositionNotes" ng-model="dispositionNotes.value">
-
-        </textarea>
-        <br/>
-
+        <label for="dispositionAction">Disposition Actions</label>
+        <select id="dispositionAction" ng-model="dispositionAction" ng-options="getMappingCode(d) as d.name.name for d in dispositionActions" ng-change="clearDispositionNote()">
+			<option value=""></option>
+        </select>
+        <textarea id="dispositionNotes" ng-model="dispositionNotes.value"></textarea>
     </form>
-
-
 </div>

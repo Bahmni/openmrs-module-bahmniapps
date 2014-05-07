@@ -193,6 +193,9 @@ body{
             .header-tabs{
               float:left;
               margin-top:10px;
+              @media screen and (max-width: 768px) {
+                margin-top: 14px;
+              }
             }
             .patient-detail{
                 width:200px;
@@ -270,9 +273,9 @@ body{
     .opd-content-wrapper {
         background:#ffffff;
         height:99%;
-        @media screen and (max-width: 959px) {
-          padding: 5px;
-        }
+        // @media screen and (max-width: 959px) {
+        //   padding: 5px;
+        // }
         // @media screen and (min-width: 960px) {
         //     padding:10px 0 20px 0;
         // }
@@ -287,8 +290,6 @@ body{
             }
         }
     }
-
-
 }
 table{
     margin-top:20px;
@@ -344,6 +345,6 @@ button[disabled] {
         color: WHITE !important;
     }
 }
-form select, .form select{
-    min-width: 100px;
+form select, .form select {
+  min-width: 100px;
 }

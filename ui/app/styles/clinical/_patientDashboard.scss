@@ -2,7 +2,7 @@
   position: relative;
   background: #fff;
   overflow-y: auto;
-  width: 1024px;
+  width: 100%;
   height: 100%;
   min-height: 768px;
   right: 0;
@@ -13,6 +13,10 @@
   -moz-column-count: 2;
   -webkit-column-count: 2;
   padding-top: 1%;
+  @media screen and (max-width: 859px) {
+    -moz-column-count: 1;
+    -webkit-column-count: 1;
+  }
 }
 #view-content .patient-dashboard.visit {padding: 0;}
 .dashboard-visit-summary {padding: 10px;}
