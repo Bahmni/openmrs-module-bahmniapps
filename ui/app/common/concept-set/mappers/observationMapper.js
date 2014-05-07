@@ -70,7 +70,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         var observationsForDisplay = [];
 
         var createObservationForDisplay = function (observationTemp, obsConcept) {
-            if (!observationTemp.value) {
+            if (observationTemp.value === null || observationTemp.value === undefined || observationTemp === "") {
                 return;
             }
             var observationValue = observationTemp.value.name ? observationTemp.value.name : observationTemp.value;

@@ -6,7 +6,7 @@ Bahmni.Clinical.EncounterTransactionToObsMapper = function () {
         var allObs,
             validObservation = function (observation) {
                 if (observation.voided) return false;
-                if (observation.value && !isObservationAgroup(observation)) return true;
+                if ((observation.value || observation.value ===0) && !isObservationAgroup(observation)) return true;
                 return isObservationAgroup(observation) && observation.groupMembers.some(validObservation);
             },
             setProvider = function (provider) {
