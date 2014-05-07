@@ -507,6 +507,7 @@ button.toggle-patient {
   height: 30px;
   background: url("/images/bars.png") no-repeat center center;
   border: 0;
+  border-radius: 0;
   &.shift {
     background: #333 url("/images/close-bars.png") no-repeat center center;  
   }
