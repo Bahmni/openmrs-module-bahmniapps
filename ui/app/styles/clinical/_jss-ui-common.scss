@@ -304,7 +304,17 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
     }
   }
 }
-
+.patient-search-wrapper {
+  @media screen and (min-width: 960px) {
+    padding: 0 5px;
+  }
+  @media screen and (max-width: 959px) {
+    .tabs ul li a {
+      padding: 10px;
+      font-size: 14px;
+    }
+  }
+}
 #loader {
   z-index: 10000;
   width: 100%;

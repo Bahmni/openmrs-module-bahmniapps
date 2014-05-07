@@ -1,37 +1,40 @@
-<div class="tabs">
-    <ul>
-        <li class="tab-item" ng-repeat="sType in searchTypes" ng-class="{'tab-selected':searchCriteria.type==sType}">
-            <a href="" ng-click="showPatientsForType(sType)"> <span>{{sType.display}}</span></a>
-        </li>
-    </ul> 
-</div>
-<div class="tab-content" ng-show="searchTypes.length > 0">
-    <span ng-if="searchCriteria.type && searchCriteria.type.handler">
-        <div class="search-wrapper">
-            <input type="text" id="patientIdentifierInList" ng-model="searchCriteria.searchParameter"  ng-change="searchPatients()"  placeholder="Search Name/ID  ..."/>
-        </div>
-    </span>
-    <span ng-if="searchCriteria.type && !searchCriteria.type.handler">    
-        <form name="searchPatientForm" ng-submit="searchPatients()"> 
-            <div class="search-patient-id left">
-                <input type="text" autofocus id="patientIdentifier" ng-model="searchCriteria.searchParameter"  placeholder="Search Name/ID  ..."/>
-            </div>
-
-            <div class="reg-srch-btn left">
-                <button type="submit" ng-disabled="!searchCriteria.searchParameter">
-                    <i class="icon-search"></i>
-                    Search
-                </button>
-            </div>
-        </form>
-    </span>        
-    <div resize class="active-visits">
-        <div infinite-scroll='loadMore()' >
-            <li ng-repeat="patient in visiblePatients" class="patient-list" ng-click="forwardPatient(patient)">
-                <img class="smallImages" ng-src="{{patient.image}}"  onerror="this.onerror=null;this.src='../images/blank-user.png';" >
-                <div class="patient-name">{{patient.name}}</div>
-                <div class="patient-id">{{patient.identifier}}</div>
+<div class="patient-search-wrapper">
+    <div class="tabs">
+        <ul>
+            <li class="tab-item" ng-repeat="sType in searchTypes" ng-class="{'tab-selected':searchCriteria.type==sType}">
+                <a href="" ng-click="showPatientsForType(sType)"> <span>{{sType.display}}</span></a>
             </li>
+        </ul> 
+    </div>
+    <div class="tab-content" ng-show="searchTypes.length > 0">
+        <span ng-if="searchCriteria.type && searchCriteria.type.handler">
+            <div class="search-wrapper">
+                <input type="text" id="patientIdentifierInList" ng-model="searchCriteria.searchParameter"  ng-change="searchPatients()"  placeholder="Search Name/ID  ..."/>
+            </div>
+        </span>
+        <span ng-if="searchCriteria.type && !searchCriteria.type.handler">    
+            <form name="searchPatientForm" ng-submit="searchPatients()"> 
+                <div class="search-patient-id left">
+                    <input type="text" autofocus id="patientIdentifier" ng-model="searchCriteria.searchParameter"  placeholder="Search Name/ID  ..."/>
+                </div>
+
+                <div class="reg-srch-btn left">
+                    <button type="submit" ng-disabled="!searchCriteria.searchParameter">
+                        <i class="icon-search"></i>
+                        Search
+                    </button>
+                </div>
+            </form>
+        </span>        
+        <div resize class="active-visits">
+            <div infinite-scroll='loadMore()' >
+                <li ng-repeat="patient in visiblePatients" class="patient-list" ng-click="forwardPatient(patient)">
+                    <img class="smallImages" ng-src="{{patient.image}}"  onerror="this.onerror=null;this.src='../images/blank-user.png';" >
+                    <div class="patient-name">{{patient.name}}</div>
+                    <div class="patient-id">{{patient.identifier}}</div>
+                </li>
+            </div>
         </div>
     </div>
 </div>
+
