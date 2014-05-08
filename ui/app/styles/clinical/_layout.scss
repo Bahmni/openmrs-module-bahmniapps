@@ -182,7 +182,6 @@ body{
         }
         .opd-header-bottom {
             border-radius:0px;
-            padding:2px;
             position:relative;
             margin: 0px;
             @media screen and (min-width: 1024px) {
@@ -193,7 +192,7 @@ body{
             .header-tabs{
               float:left;
               margin-top:10px;
-              @media screen and (max-width: 768px) {
+              @media screen and (max-width: 959px) {
                 margin-top: 14px;
               }
             }
@@ -226,10 +225,6 @@ body{
                         cursor:pointer;
                         &.patient-img{
                             padding:2px 6px 0px;
-                            // &:hover{
-                            //     background:#44866A;
-                            //     border-radius:6px;
-                            // }
                         }
                         &:first-child{
                             padding:15px 0px 0px 0px;
@@ -259,26 +254,16 @@ body{
     }
 .opd-wrapper {
     position: relative;
-    // top: 110px;
     margin: 0px;
     min-height: 768px;
-    @media screen and (max-width: 959px) {
-      width: 100%;
-    }
+    width: 100%;
     @media screen and (min-width: 1024px) {
         width: 1024px;
         margin: 0px auto;
-        // padding: 0 10px;
     }
     .opd-content-wrapper {
         background:#ffffff;
         height:99%;
-        // @media screen and (max-width: 959px) {
-        //   padding: 5px;
-        // }
-        // @media screen and (min-width: 960px) {
-        //     padding:10px 0 20px 0;
-        // }
         nav.navbar {
             background: #F8F8F8;
             overflow: hidden;
