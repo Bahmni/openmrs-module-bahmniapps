@@ -33,18 +33,41 @@ angular.module('opd.documentupload')
                 });
             };
 
+            var getVisitStartStopDateTime = function (visit) {
+                return { "startDatetime": DateUtil.getDate(visit.startDatetime), "stopDatetime": DateUtil.getDate(visit.stopDatetime)}
+            };
+
+            var compareVisitStartWithExistingStop = function (newVisitStart, existingVisit) {
+                if(newVisitStart >= existingVisit.startDatetime && DateUtil.isInvalid(existingVisit.stopDatetime)) return true;
+                return (newVisitStart <= existingVisit.stopDatetime || DateUtil.isSameDate(newVisitStart, existingVisit.stopDatetime));
+            };
+
+            var compareVisitStopWithExistingStart = function (newVisitStop, existingVisitStart) {
+                return (newVisitStop >= existingVisitStart || DateUtil.isSameDate(newVisitStop, existingVisitStart));
+            };
+
+            var isVisitInSameRange = function (newVisitWithoutTime, existingVisit) {
+                if (DateUtil.isInvalid(existingVisit.stopDatetime)) {
+                    return (compareVisitStartWithExistingStop(newVisitWithoutTime.startDatetime, existingVisit) ||
+                        compareVisitStopWithExistingStart(newVisitWithoutTime.stopDatetime, existingVisit.startDatetime));
+                }
+                else {
+                    return (compareVisitStartWithExistingStop(newVisitWithoutTime.startDatetime, existingVisit) &&
+                        compareVisitStopWithExistingStart(newVisitWithoutTime.stopDatetime, existingVisit.startDatetime));
+                }
+
+
+            };
+
             $scope.isNewVisitDateValid = function(){
+                var filterExistingVisitsInSameDateRange = function (existingVisit) {
+                    return isVisitInSameRange(newVisitWithoutTime, existingVisit);
+                };
                 var newVisitWithoutTime = Object();
                 newVisitWithoutTime.startDatetime = DateUtil.getDate($scope.newVisit.startDatetime);
                 newVisitWithoutTime.stopDatetime = $scope.newVisit.stopDatetime ? DateUtil.getDate($scope.newVisit.stopDatetime) : newVisitWithoutTime.startDatetime;
-
-                var existingVisitsInSameRange = $scope.visits.map(function (record) {
-                    return { "startDatetime": DateUtil.getDate(record.startDatetime), "stopDatetime": DateUtil.getDate(record.stopDatetime)}
-                }).filter(function (existingVisit) {
-                    return ((newVisitWithoutTime.startDatetime < existingVisit.stopDatetime || DateUtil.isSameDate(newVisitWithoutTime.startDatetime, existingVisit.stopDatetime)) &&
-                        (newVisitWithoutTime.stopDatetime > existingVisit.startDatetime || DateUtil.isSameDate(newVisitWithoutTime.stopDatetime, existingVisit.startDatetime)))
-                });
-
+                var visitStartStopDateTime = $scope.visits.map(getVisitStartStopDateTime);
+                var existingVisitsInSameRange = visitStartStopDateTime.filter(filterExistingVisitsInSameDateRange);
                 $scope.isDateValid = existingVisitsInSameRange.length == 0;
                 return existingVisitsInSameRange.length == 0;
             };
@@ -200,10 +223,10 @@ angular.module('opd.documentupload')
                     var date = new Date(newVisit.endDate());
                     $scope.newVisit.stopDatetime = moment(date).format("YYYY-MM-DD");
                 }
-            }
+            };
 
             $scope.save = function (existingVisit) {
-                var visitDocument
+                var visitDocument;
                 if ($scope.isNewVisitDateValid()) {
                     visitDocument = createVisitDocument(existingVisit);
                 }

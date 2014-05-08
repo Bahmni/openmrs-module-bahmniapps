@@ -5,6 +5,10 @@ Bahmni.Common.Util.DateUtil = {
 		return Math.floor((this.parse(dateTo) - this.parse(dateFrom)) / (60 * 1000 * 60 * 24));
 	},
 
+    isInvalid: function(date){
+        return date == "Invalid Date";
+    },
+
     diffInDaysRegardlessOfTime: function(dateFrom, dateTo) {
         dateFrom.setHours(0,0,0,0);
         dateTo.setHours(0,0,0,0);

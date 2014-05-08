@@ -19,7 +19,7 @@ describe("DocumentController", function () {
         encounterConfig = jasmine.createSpyObj('encounterConfig', ['getEncounterTypeUuid']);
         appConfig = jasmine.createSpyObj('encounterConfig', ['encounterType']);
         visitService = jasmine.createSpyObj('visitService', ['getVisitSummary']);
-    }))
+    }));
 
 
     var setUp = function () {
@@ -33,6 +33,7 @@ describe("DocumentController", function () {
             var visit2 = new Bahmni.DocumentUpload.Visit();
             visit2.startDatetime = "April 25, 2014";
             visit2.stopDatetime = "April 25, 2014 23:59:59";
+
 
             scope.encounterConfig = encounterConfig;
             scope.appConfig = appConfig;
@@ -52,7 +53,7 @@ describe("DocumentController", function () {
         it('should not be valid date if date overlaps with existing visit', function () {
             setUp();
             var newVisit = new Bahmni.DocumentUpload.Visit();
-            scope.newVisit = newVisit
+            scope.newVisit = newVisit;
 
             newVisit.startDatetime = "April 22, 2014";
             newVisit.stopDatetime = "April 22, 2014 23:59:59";
@@ -113,6 +114,53 @@ describe("DocumentController", function () {
             newVisit.startDatetime = "April 25, 2014"
             newVisit.stopDatetime = "April 26, 2014 23:59:59"
             expect(scope.isNewVisitDateValid()).toBe(false);
+        });
+        it('should not be valid date if date overlaps with existing visit when the visit has no end date', function () {
+            var visit3 = new Bahmni.DocumentUpload.Visit();
+            visit3.startDatetime = "April 25, 2014";
+            visit3.stopDatetime = "Invalid Date";
+            setUp();
+            var newVisit = new Bahmni.DocumentUpload.Visit();
+            scope.newVisit = newVisit;
+            scope.visits = [visit3];
+
+            newVisit.startDatetime = "April 25, 2014";
+            newVisit.stopDatetime = "";
+            expect(scope.isNewVisitDateValid()).toBe(false);
+
+            newVisit.startDatetime = "April 26, 2014";
+            newVisit.stopDatetime = "";
+            expect(scope.isNewVisitDateValid()).toBe(false);
+
+            newVisit.startDatetime = "April 26, 2014";
+            newVisit.stopDatetime = "April 27, 2014";
+            expect(scope.isNewVisitDateValid()).toBe(false);
+
+            newVisit.startDatetime = "April 26, 2014";
+            newVisit.stopDatetime = "April 26, 2014";
+            expect(scope.isNewVisitDateValid()).toBe(false);
+
+            newVisit.startDatetime = "April 24, 2014";
+            newVisit.stopDatetime = "April 24, 2014";
+            expect(scope.isNewVisitDateValid()).toBe(true);
+
+            newVisit.startDatetime = "April 23, 2014";
+            newVisit.stopDatetime = "April 24, 2014";
+            expect(scope.isNewVisitDateValid()).toBe(true);
+
+            newVisit.startDatetime = "April 25, 2014";
+            newVisit.stopDatetime = "April 25, 2014";
+            expect(scope.isNewVisitDateValid()).toBe(false);
+
+
+            newVisit.startDatetime = "December 25, 2014";
+            newVisit.stopDatetime = "";
+            expect(scope.isNewVisitDateValid()).toBe(false);
+
+            newVisit.startDatetime = "December 25, 2013";
+            newVisit.stopDatetime = "April 25, 2014";
+            expect(scope.isNewVisitDateValid()).toBe(false);
+
         });
 
     });

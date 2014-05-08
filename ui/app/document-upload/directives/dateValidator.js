@@ -10,14 +10,11 @@ angular.module('opd.documentupload')
         };
 
         var isStartDateBeforeEndDate = function(visitDate){
-            var stopDatetime = visitDate.stopDatetime;
-            var startDatetime = visitDate.startDatetime;
-            if (!startDatetime)
+            if (!visitDate.startDatetime || !visitDate.stopDatetime)
                 return true;
-            else if(!stopDatetime)
-                 stopDatetime = startDatetime;
-            return (DateUtil.getDate(startDatetime) <= DateUtil.getDate(stopDatetime));
-        }
+            return (DateUtil.getDate(visitDate.startDatetime) <= DateUtil.getDate(visitDate.stopDatetime));
+        };
+
 
         return {
             restrict: 'A',
