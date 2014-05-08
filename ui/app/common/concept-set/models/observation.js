@@ -118,7 +118,6 @@ Bahmni.ConceptSet.Observation.prototype = {
         if (this.isGroup()) return this._hasValidChildren(checkRequiredFields);
         if (checkRequiredFields && this.isRequired() && !this.hasValue()) return false;
         if (this._isDateDataType()) return this.isValidDate();
-        if (this.hasValue()) return false;
         return true;
     },
 

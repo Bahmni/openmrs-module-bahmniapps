@@ -3,7 +3,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
 
     var findInSavedObservation = function (concept, observations) {
         return _.filter(observations, function (obs) {
-            return obs && concept.uuid === obs.concept.uuid;
+            return obs && obs.concept && concept.uuid === obs.concept.uuid;
         });
     };
 

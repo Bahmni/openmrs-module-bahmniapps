@@ -96,9 +96,10 @@
             <div class="alert alert-error text-error" ng-show="obs.bmi_error">
                Invalid BMI. Please check the height and weight
             </div>
+            {{registration.conceptSetName}}
 
             <section ng-if="observations && registration.conceptSetName" class="observation-section">
-                <concept-set concept-set-name="registration.conceptSetName" observations="observations.compoundObservations"></concept-set>
+                <concept-set concept-set-name="registration.conceptSetName" observations="observations"></concept-set>
             </section>
 
             <div class="submit-btn-container" ng-switch on="patient.isNew">
