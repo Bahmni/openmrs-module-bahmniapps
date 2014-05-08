@@ -419,12 +419,11 @@ span.range {
 }
 .radiology-investigations {
   .radiology-doc-item {
-    overflow: auto;
     clear: both;
     border-bottom: 1px solid #eee;
     a {
       display: block;
-      padding: 8px;
+      padding: 5px;
       width: 85%;
       float: left;
       font-size: 14px;
@@ -435,9 +434,6 @@ span.range {
         border-right: 1px solid #ccc;
       }
       i {padding-left: 0;}
-    }
-    .footer-note {
-      margin-top: 3px;
     }
   }
 }
