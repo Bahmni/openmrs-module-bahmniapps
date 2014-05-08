@@ -12,7 +12,7 @@
                         <span class="value-text-only">{{observation.value}}</span>
                         <span class="label-add-on" ng-hide="!observation.concept.units"> {{observation.concept.units}}</span>
                         <div class="footer-note fr">
-                            <span class="value-text-only time">{{observation.observationDateTime | date :'hh:mm a'}}</span>
+                            <span class="value-text-only time">{{observation.observationDateTime | date :'dd MMM yy'}}</span>
                         </div>
                     </div>
                 </fieldset>
