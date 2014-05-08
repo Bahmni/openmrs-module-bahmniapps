@@ -1,6 +1,7 @@
 'use strict';
 
-Bahmni.Clinical.Visit = function (encounters, drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, labOrders, encounterConfig, radiologyOrders, allTestsAndPanelsConceptSet) {
+Bahmni.Clinical.Visit = function (encounters, drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, labOrders, encounterConfig, radiologyOrders, allTestsAndPanelsConceptSet, visitUuid) {
+    this.uuid = visitUuid;
     this.encounters = encounters;
     this.drugOrders = drugOrders;
     this.consultationNotes = consultationNotes;
@@ -141,7 +142,7 @@ Bahmni.Clinical.Visit.prototype = {
     }
 };
 
-Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNoteConcept, labOrderNoteConcept, encounterConfig, allTestAndPanelsConcept, obsIgnoteList) {
+Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNoteConcept, labOrderNoteConcept, encounterConfig, allTestAndPanelsConcept, obsIgnoteList, visitUuid) {
     var diagnosisMapper = new Bahmni.DiagnosisMapper(),
         ordersMapper = new Bahmni.Clinical.OrdersMapper(),
         isLabTests = function (order) {
@@ -201,5 +202,5 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
         }
     });
 
-    return new this(encounterTransactions, drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, labOrders, encounterConfig, radiologyOrders, allTestAndPanelsConcept);
+    return new this(encounterTransactions, drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, labOrders, encounterConfig, radiologyOrders, allTestAndPanelsConcept, visitUuid);
 };

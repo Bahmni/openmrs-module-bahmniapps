@@ -8,7 +8,7 @@ angular.module('bahmni.common.patient')
             var promise = encounterService.getEncountersForEncounterType($rootScope.patient.uuid, encounterTypeUuid);
             return spinner.forPromise(promise);
         };
-    }
+    };
 
     var link = function($scope) {
         $scope.patient = $rootScope.patient;
@@ -35,7 +35,7 @@ angular.module('bahmni.common.patient')
                 return;
             }
             $rootScope.toggleControlPanel();
-        }
+        };
 
         $scope.isCurrentVisit = function (visit) {
             return $stateParams.visitUuid == visit.uuid;
@@ -45,48 +45,55 @@ angular.module('bahmni.common.patient')
             var state = $state.current.name;
             if(state.match("patient.consultation")) {
                 return appendPrintLinks([
-                    {text: "Summary", href: "#/patient/" + $scope.patient.uuid + "/dashboard"},
+                    {text: "Summary", href: "#/patient/" + $scope.patient.uuid + "/dashboard"}
                 ]);
             } else if(state.match("patient.dashboard")) {
                 return [
                     {text: "Consultation", href: "#" + $scope.getConsultationPadLink()},
-                    {text: "Trends", href: "/trends/#/patients/" + $scope.patient.uuid},
+                    {text: "Trends", href: "/trends/#/patients/" + $scope.patient.uuid}
                 ];
             } else if(state.match("patient.visit")) {
                 return appendPrintLinks([
                     {text: "Summary", href: "#/patient/" + $scope.patient.uuid + "/dashboard"},
-                    {text: "Consultation", href: "#" + $scope.getConsultationPadLink()},
+                    {text: "Consultation", href: "#" + $scope.getConsultationPadLink()}
                 ]);
             }
-        }
+        };
+
+        var getStartDateTime = function () {
+            return $scope.visits.filter(function (visit) {
+                return visit.uuid === $rootScope.visit.uuid;
+            })[0].startDatetime;
+        };
 
         var appendPrintLinks = function(links) {
             if ($rootScope.visit) {
+
                 links.push({text: "Print Visit Details", onClick: function($event) {
-                    visitActionsService.printVisit($scope.patient, $rootScope.visit);
+                    visitActionsService.printVisit($scope.patient, $rootScope.visit, getStartDateTime());
                     $event.preventDefault();
                 }});
 
                 links.push({text: "Print Visit Summary", onClick: function($event) {
-                    visitActionsService.printVisitSummary($scope.patient, $rootScope.visit, null);
+                    visitActionsService.printVisitSummary($scope.patient, $rootScope.visit, getStartDateTime());
                     $event.preventDefault();
                 }});
 
                 if($rootScope.visit.hasAdmissionEncounter()) {
                     links.push({text: "Print Discharge Summary", onClick: function($event) {
-                        visitActionsService.printDischargeSummary($scope.patient, $rootScope.visit)
+                        visitActionsService.printDischargeSummary($scope.patient, $rootScope.visit);
                         $event.preventDefault();
                     }});
                 }
             }
             return links;
-        }
+        };
 
         $scope.links = getLinks();
         $rootScope.$on('$stateChangeSuccess', function() {
             $scope.links = getLinks($state.current.name);
         })
-    }
+    };
 
     return {
         restrict: 'E',
@@ -95,4 +102,4 @@ angular.module('bahmni.common.patient')
         link: link,
         scope: {}
     }
-}])
+}]);
