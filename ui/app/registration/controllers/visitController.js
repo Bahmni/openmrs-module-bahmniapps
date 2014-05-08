@@ -21,7 +21,7 @@ angular.module('bahmni.registration')
             var getActiveEncounter = function () {
                 return encounterService.activeEncounter({"patientUuid": patientUuid, "encounterTypeUuid" : encounterTypeUuid, "providerUuid" : $scope.currentProvider.uuid, "includeAll" : false})
                     .success(function (data) {
-                        $scope.observations = Bahmni.Registration.ObservationMapper().map(data.observations);
+                        $scope.observations = data.observations;
                         $scope.registrationFeeLabel = isNewPatient ? "Registration Fee" : "Consultation Fee";
                         mapRegistrationObservations();
                     });
@@ -29,7 +29,7 @@ angular.module('bahmni.registration')
 
             var mapRegistrationObservations = function () {
                 $scope.obs = {};
-                $scope.registrationObservations = new Bahmni.Registration.RegistrationObservations($scope.observations.regularObservations, isNewPatient, $scope.regEncounterConfiguration);
+                $scope.registrationObservations = new Bahmni.Registration.RegistrationObservations($scope.observations, isNewPatient, $scope.regEncounterConfiguration);
                 $scope.registrationObservations.observations.forEach(function (observation) {
                     $scope.obs[observation.concept.name] = observation.value
                     observation.groupMembers = [];
@@ -82,8 +82,8 @@ angular.module('bahmni.registration')
             $scope.save = function () {
                 $scope.encounter = {encounterTypeUuid: encounterTypeUuid, patientUuid: $scope.patient.uuid};
                 var registrationObservations = $scope.registrationObservations.updateObservations($scope.obs);
-                $scope.encounter.observations =[];
-                $scope.encounter.observations = $scope.encounter.observations.concat(registrationObservations).concat($scope.observations.compoundObservations);
+                $scope.encounter.observations = $scope.observations;
+                $scope.encounter.observations = $scope.encounter.observations.concat(registrationObservations);
                 $scope.encounter.observations = new Bahmni.Common.Domain.ObservationFilter().filter($scope.encounter.observations);
 
                 var createPromise = encounterService.create($scope.encounter);
