@@ -154,9 +154,13 @@
     }
   }
 }
-
-.temp-class {
+.disposition-state {
+  font-size: 14px;
   float: left;
+  span {
+    color: #888;
+    margin-left: 10px;
+  }
 }
 
 .obs-concept {

@@ -357,7 +357,7 @@
         <li ng-repeat="disposition in visit.dispositions">
             <div class="expander-row">
 
-                <span bo-text="disposition.code" class="temp-class"></span>
+                <span class="disposition-state">{{disposition.code}} <span>on</span> {{disposition.dispositionDateTime | date:'dd MMM yy hh:mm a'}} <span>by</span> {{disposition.provider.name}}</span>
                 <button ng-repeat="note in disposition.additionalObs" class="toggle fr">
                     <i class="icon-plus-sign" ng-click="toggle(note)" ng-hide="note.show"></i>
                     <i class="icon-minus-sign" ng-click="toggle(note)" ng-show="note.show"></i>
@@ -370,16 +370,7 @@
                         <p class="left">
                             <strong>Disposition Notes: </strong>{{note.value}}
                         </p>
-
-                        <div class="footer-note right">
-                          <span class="time-stamp">
-                            <span class="date">{{disposition.dispositionDateTime | date:'dd MMM yy'}}</span>
-                            <span class="time">{{disposition.dispositionDateTime | date :'hh:mm a'}}</span>
-                          </span>
-                            <span class="provider" bo-text="disposition.provider.name"></span>
-                        </div>
                     </div>
-
                 </div>
             </div>
         </li>
