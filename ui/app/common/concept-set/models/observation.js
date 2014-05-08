@@ -1,6 +1,7 @@
-Bahmni.ConceptSet.Observation = function (observation, savedObs) {
+Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig) {
     angular.extend(this, observation);
     this.isObservation = true;
+    this.conceptUIConfig = conceptUIConfig;
 
     if (savedObs) {
         this.uuid = savedObs.uuid;
@@ -59,6 +60,29 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.concept.lowAbsolute;
     },
 
+    getConceptUIConfig: function () {
+        return this.conceptUIConfig[this.concept.name] || [];
+    },
+
+    isHtml5InputDataType: function () {
+        return ['Date', 'Numeric'].indexOf(this.getDataTypeName()) != -1;
+    },
+
+    getControlType: function () {
+        if (this.getConceptUIConfig().freeTextAutocomplete) return "freeTextAutocomplete";
+        if (this.isHtml5InputDataType()) return "html5InputDataType";
+        if (this.isText()) return "text";
+        if (this.isCoded()) return this._getCodedControlType();
+        return "unknown";
+    },
+
+    _getCodedControlType: function () {
+        var conceptUIConfig = this.getConceptUIConfig();
+        if (conceptUIConfig.multiselect) return "multiselect";
+        if (conceptUIConfig.autocomplete) return "autocomplete";
+        return "dropdown";
+    },
+
     onValueChanged: function () {
         this.observationDateTime = new Date();
     },
@@ -88,6 +112,28 @@ Bahmni.ConceptSet.Observation.prototype = {
         if (!this.hasValue()) return true;
         var date = new Date(this.value);
         return date.getUTCFullYear() && date.getUTCFullYear().toString().length <= 4;
+    },
+
+    isValid: function (checkRequiredFields) {
+        if (this.isGroup()) return this._hasValidChildren(checkRequiredFields);
+        if (checkRequiredFields && this.isRequired() && !this.hasValue()) return false;
+        if (this._isDateDataType()) return this.isValidDate();
+        if (this.hasValue()) return false;
+        return true;
+    },
+
+    _isDateDataType: function () {
+        return 'Date'.indexOf(this.getDataTypeName()) != -1;
+    },
+
+    isRequired: function () {
+        return this.getConceptUIConfig().required || false;
+    },
+
+    _hasValidChildren: function (checkRequiredFields) {
+        return this.groupMembers.every(function (member) {
+            return member.isValid(checkRequiredFields)
+        });
     }
 
 };

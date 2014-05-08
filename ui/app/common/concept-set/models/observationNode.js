@@ -1,4 +1,4 @@
-Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptSetUIConfig) {
+Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUIConfig) {
 
     angular.extend(this, observation);
     angular.extend(this, Bahmni.ConceptSet.Observation);
@@ -33,7 +33,7 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptSetU
         }
     });
 
-    this.conceptSetUIConfig = conceptSetUIConfig;
+    this.conceptUIConfig = conceptUIConfig;
     this.isObservationNode = true;
     if (savedObs) {
         this.uuid = savedObs.uuid;
@@ -105,7 +105,7 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     getConceptUIConfig: function () {
-        return this.conceptSetUIConfig[this.getPrimaryObs().concept.name] || [];
+        return this.conceptUIConfig[this.getPrimaryObs().concept.name] || [];
     },
 
     getControlType: function () {
@@ -154,14 +154,14 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     hasDuration: function () {
-        if(!this.getDuration()){
+        if (!this.getDuration()){
             return false;
         }
         else {
             if (!this.getDuration().value) {
                 return true;
             }
-            else if(this.getDuration().value < 0){
+            else if (this.getDuration().value < 0){
                 return true;
             }
             else{

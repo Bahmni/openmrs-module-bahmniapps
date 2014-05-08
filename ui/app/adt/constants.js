@@ -5,8 +5,7 @@ Bahmni.ADT = Bahmni.ADT || {};
 
 Bahmni.ADT.Constants = (function() {
 	return {
-        patientsListUrl: "/patient/search",
-        adtNotesData: 'Adt Notes Data'
+        patientsListUrl: "/patient/search"
 	};
 })();
 

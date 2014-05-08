@@ -1,12 +1,6 @@
 Bahmni.ConceptSet.ObservationMapper = function () {
     var conceptMapper = new Bahmni.ConceptSet.ConceptMapper();
 
-    // tODO : remove conceptUIConfig
-    var newObservation = function (concept, savedObs) {
-        var observation = { concept: conceptMapper.map(concept), units: concept.units, label: concept.name.name, possibleAnswers: concept.answers, groupMembers: []};
-        return new Bahmni.ConceptSet.Observation(observation, savedObs);
-    };
-
     var findInSavedObservation = function (concept, observations) {
         return _.filter(observations, function (obs) {
             return obs && concept.uuid === obs.concept.uuid;
@@ -29,9 +23,10 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         return observationGroupMembers;
     };
 
-    var newObservation = function (concept, savedObs) {
+    // tODO : remove conceptUIConfig
+    var newObservation = function (concept, savedObs, conceptSetConfig) {
         var observation = { concept: conceptMapper.map(concept), units: concept.units, label: concept.name.name, possibleAnswers: concept.answers, groupMembers: []};
-        return new Bahmni.ConceptSet.Observation(observation, savedObs);
+        return new Bahmni.ConceptSet.Observation(observation, savedObs, conceptSetConfig);
     };
 
     // tODO : remove conceptUIConfig
@@ -48,7 +43,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         if (concept.conceptClass.name === Bahmni.Common.Constants.conceptDetailsClassName) {
             observation = newObservationNode(concept, savedObs, conceptSetConfig);
         } else {
-            observation = newObservation(concept, savedObs);
+            observation = newObservation(concept, savedObs, conceptSetConfig);
         }
 
         var savedObsGroupMembers = savedObs ? savedObs.groupMembers : [];
@@ -93,7 +88,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
                     observationsForDisplay.push(obsToDisplay);
             } else {
                 if (!savedObs.concept.set) {
-                    var observationTemp = newObservation(savedObs.concept, savedObs);
+                    var observationTemp = newObservation(savedObs.concept, savedObs, []);
                     var obsToDisplay = createObservationForDisplay(observationTemp, observationTemp.concept);
                     if (obsToDisplay)
                         observationsForDisplay.push(obsToDisplay);
