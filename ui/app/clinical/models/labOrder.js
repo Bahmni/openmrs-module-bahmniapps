@@ -31,7 +31,7 @@ Bahmni.Clinical.LabOrder = (function () {
     };
 
     LabOrder.create = function (order) {
-        return new LabOrder({concept: order.concept, orderable: createOrderable(order), dateCreated: order.dateCreated});
+        return new LabOrder({concept: order.concept, orderable: createOrderable(order), dateCreated: order.dateCreated, accessionUuid: order.accessionUuid});
     };
 
     return LabOrder;

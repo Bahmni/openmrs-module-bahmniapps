@@ -103,7 +103,7 @@ Bahmni.Common.Util.DateUtil = {
 	},
 
     convertToUnits: function (hours) {
-        var allUnits = {"Years": 365 * 30 * 24, "Months": 30 * 24, "Weeks": 7 * 24, "Days": 24, "Hours": 1};
+        var allUnits = {"Years": 365 * 24, "Months": 30 * 24, "Weeks": 7 * 24, "Days": 24, "Hours": 1};
 
         var durationRepresentation = function (value, unitName, unitValueInHours) {
             return {"value": value, "unitName": unitName, "unitValueInHours": unitValueInHours, "allUnits": allUnits };
