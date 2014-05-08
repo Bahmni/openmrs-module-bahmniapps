@@ -1,9 +1,10 @@
 <div class="disposition-tab">
     <form ng-submit="submit()">
-        <label for="dispositionAction">Disposition Actions</label>
+        <label for="dispositionAction">Disposition Action</label>
         <select id="dispositionAction" ng-model="dispositionAction" ng-options="getMappingCode(d) as d.name.name for d in dispositionActions" ng-change="clearDispositionNote()">
 			<option value=""></option>
         </select>
+        <label for="dispositionNotes">Disposition Notes</label>
         <textarea id="dispositionNotes" ng-model="dispositionNotes.value"></textarea>
     </form>
 </div>
