@@ -10,7 +10,8 @@ Bahmni.ConceptSet.ConceptMapper = function () {
             hiNormal: openMrsConcept.hiNormal,
             lowNormal: openMrsConcept.lowNormal,
             conceptClass: openMrsConcept.conceptClass,
-            answers: openMrsConcept.answers
+            answers: openMrsConcept.answers,
+            units: openMrsConcept.units
         }
     };
 };
