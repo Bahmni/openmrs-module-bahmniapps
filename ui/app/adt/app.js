@@ -20,7 +20,7 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', function($state
         .state('patient', {
             url: '/patient/:patientUuid',
             data: {
-                backLinks: [{label: "ADT", url: "/adt/#/patient/search"}]
+                backLinks: [{label: "Patient Q", url: "/adt/#/patient/search"}]
             },
             abstract: true,
             views: {
