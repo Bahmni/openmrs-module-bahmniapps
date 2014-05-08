@@ -43,7 +43,9 @@
             </label>
           </div>
           <div class="field-value">
-            <input name="startDate" type="date" ng-model="newVisit.startDatetime" dependent-model="newVisit.stopDatetime" date-validator ng-change="setDefaultEndDate(newVisit)" ng-required="newVisit.images.length >0" class="field-value" placeholder="dd-mm-yyyy"/>
+            <input name="startDate" type="date" ng-model="newVisit.startDatetime"
+                   dependent-model="newVisit.stopDatetime" date-validator ng-blur="setDefaultEndDate(newVisit)"
+                   ng-required="newVisit.images.length >0" class="field-value" placeholder="dd-mm-yyyy"/>
           </div>
         </div>
         <div class="form-field">
