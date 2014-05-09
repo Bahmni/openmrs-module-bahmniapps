@@ -28,5 +28,11 @@ angular.module('bahmni.clinical')
             };
             $scope.pendingResults = function (line) {
                 return line.isSummary && !line.hasResults && line.name !== "";
+            };
+
+            $scope.getVisitDate = function(){
+                return $scope.visits.filter(function (visit) {
+                    return visit.uuid === $rootScope.visit.uuid;
+                })[0].startDatetime;
             }
         }]);

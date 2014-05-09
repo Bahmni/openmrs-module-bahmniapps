@@ -8,16 +8,16 @@ angular.module('bahmni.clinical')
                         visitActionsService.printDischargeSummary($scope.patient, $scope.visit);
                     };
                 },
+                printOpdSummary: function () {
+                    $scope.title = "OPD Summary";
+                    $scope.act = function () {
+                        visitActionsService.printOpdSummary($scope.patient, $scope.visit, $scope.visitDate);
+                    };
+                },
                 printVisitSummary: function () {
                     $scope.title = "Visit Summary";
                     $scope.act = function () {
                         visitActionsService.printVisitSummary($scope.patient, $scope.visit, $scope.visitDate);
-                    };
-                },
-                printVisit: function () {
-                    $scope.title = "Visit";
-                    $scope.act = function () {
-                        visitActionsService.printVisit($scope.patient, $scope.visit);
                     };
                 }
             };
