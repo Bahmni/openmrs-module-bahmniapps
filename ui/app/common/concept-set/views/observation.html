@@ -10,7 +10,12 @@
 
                 <div ng-switch-when="html5InputDataType">
                     <input obs-constraints obs="observation.primaryObs"
+                           ng-if="!observation.primaryObs.isNumeric()"
                            ng-model="observation.value" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"/>
+
+                    <input obs-constraints obs="observation.primaryObs" ng-if="observation.primaryObs.isNumeric()"
+                           ng-model="observation.value"
+                           ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}" only-number/>
                 </div>
 
                 <textarea ng-switch-when="text" ng-model="observation.value"
@@ -63,6 +68,10 @@
 
                 <div ng-switch-when="html5InputDataType">
                     <input obs-constraints obs="observation"
+                           ng-model="observation.value" ng-if="observation.isNumeric()"
+                           ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}" only-number/>
+
+                    <input obs-constraints obs="observation" ng-if="!observation.isNumeric()"
                            ng-model="observation.value" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"/>
                 </div>
 
