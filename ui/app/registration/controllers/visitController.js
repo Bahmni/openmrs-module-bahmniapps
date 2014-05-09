@@ -104,7 +104,7 @@ angular.module('bahmni.registration')
                     deferred.reject("Some fields are not valid");
                     return deferred.promise;
                 }
-                if ($scope.obs['REGISTRATION FEES'] === 0 && (!$scope.obs.COMMENTS || $scope.obs.COMMENTS === '')) {
+                if ($scope.obs['REGISTRATION FEES'] === 0 && (!$scope.obs.COMMENTS || $scope.obs.COMMENTS === '') && !($scope.isHiddenInConfig('Comments') && $scope.isHiddenInConfig('REGISTRATION FEES'))) {
                     return $scope.confirmDialog.show();
                 } else {
                     deferred.resolve();

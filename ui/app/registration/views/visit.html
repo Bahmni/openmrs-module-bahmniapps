@@ -32,9 +32,9 @@
                         </div>
                 </div>
                 </section>
-                <legend class="mylegend "><span><strong>Visit Information</strong></span></legend>
+                <legend class="mylegend" ng-hide="isHiddenInConfig('REGISTRATION FEES') && isHiddenInConfig('Comments') && isHiddenInConfig('Height') && isHiddenInConfig('Weight') && isHiddenInConfig('BMI')"><span><strong>Visit Information</strong></span></legend>
                 <section class="form-field-inline">
-                    <div class="form-field">
+                    <div class="form-field" ng-hide="isHiddenInConfig('REGISTRATION FEES')">
                             <div class="field-attribute">
                                 <label class="control-label" for="registrationFee">{{registrationFeeLabel}}</label>
                             </div>
@@ -43,7 +43,7 @@
                                 <input type="number" id="registrationFee" min="0" ng-model="obs['REGISTRATION FEES']">
                             </div>
                     </div>
-                    <div class="form-field">
+                    <div class="form-field" ng-hide="isHiddenInConfig('Comments')">
                             <div class="field-attribute">
                                 <label class="control-label" for="comments">Comments</label>
                             </div>
@@ -118,7 +118,11 @@
         <br>
     </div>
     <div id="dialog-confirm" handle="confirmDialog" title="Warning" confirm-dialog>
-        <p>There is no registration fee, and no comments entered. Do you want to continue? </p>
+        <p>There is
+            <span ng-hide="isHiddenInConfig('REGISTRATION FEES')">no registration fee</span>
+            <span ng-hide="!(isHiddenInConfig('Comments') && isHiddenInConfig('REGISTRATION FEES'))"> and</span>
+            <span ng-hide="isHiddenInConfig('Comments')"> no comments</span>
+            entered. Do you want to continue? </p>
     </div>
 </div>
 </div>
