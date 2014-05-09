@@ -543,21 +543,26 @@ aside{
       font-size: 14px;
       border-bottom-color: #555;
       padding-left: 10px;
-      margin-bottom: 5px;
+      margin-bottom: 8px;
     }
     ul {
-      margin-bottom: 10px;
+      margin-bottom: 20px;
     }
     li a {
       display: block;
-      padding: 8px 10px 8px 20px;
+      padding: 8px 10px 8px 10px;
       color: #aaa;
-      font-size: 14px;
+      font-size: 16px;
+      border-bottom: 1px solid #222;
+      border-top: 1px solid #444;
       &:hover {
         text-decoration: none;
         background: #2e2e2e;
         color: #bbb;
       }
+    }
+    li:last-child a {
+      border-bottom: 0;
     }
     .patient-info {
       padding-bottom: 10px;
@@ -589,8 +594,25 @@ aside{
     &.active .icon-star {display: inline-block;}
   }
 }
-
 .status {
   color: #cc6600;
   float: right;
 }
+.btn-patient-doc .icon-file {
+  color: #eee;
+  margin-right: 5px;
+  font-size: 18px;
+}
+.dashboard-btn {
+  [class^="icon-"],
+  [class*=" icon-"] {
+    display: none;
+    color: #eee;
+    margin-right: 5px;
+    font-size: 18px;
+  }
+}
+.btn-consultation {.icon-vitals-2 {display: inline-block;}}
+.btn-trends {.icon-bar-chart {display: inline-block;}}
+.btn-summary {.icon-th-large {display: inline-block;}}
+.btn-print {.icon-print {display: inline-block;}}

@@ -11,7 +11,6 @@
                         <span ng-show="diagnosis.isPrimary()" class="order">Primary</span>
                         <span ng-hide="diagnosis.isPrimary()" class="order">Secondary</span>
                         <span class="certainty">{{diagnosis.certainty}}</span>
-                        <!-- <span class="status">{{diagnosis.diagnosisStatus}}</span>  -->
                     </div>
 
                 </div>
@@ -77,18 +76,6 @@
                     </tr>
                 </tbody>
             </table>
-            <!--<show-obs observation="observation"></show-obs>-->
-<!--                 <fieldset ng-repeat="observation in observationsToDisplay">
-                    <div class="form-field" ng-class="{true: 'is-abnormal'}[observation.abnormal.value]">
-                        <span class="field-attribute"><label>{{observation.concept.name}}:</label></span>
-                        <span class="value-text-only">{{observation.value}}</span>
-                        <span class="label-add-on" ng-hide="!observation.concept.units"> {{observation.concept.units}}</span>
-                        <div class="footer-note fr">
-                            <span class="value-text-only time">{{observation.observationDateTime | date :'hh:mm a'}}</span>
-                        </div>
-                    </div>
-                </fieldset> -->
-                <!--<show-obs group-by-date="true" observation="observationsForDate"/>-->
         </section>
     </section>
     <section class="block investigation">

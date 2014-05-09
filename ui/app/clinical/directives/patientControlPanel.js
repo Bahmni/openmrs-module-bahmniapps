@@ -45,17 +45,17 @@ angular.module('bahmni.common.patient')
             var state = $state.current.name;
             if (state.match("patient.consultation")) {
                 return appendPrintLinks([
-                    {text: "Summary", href: "#/patient/" + $scope.patient.uuid + "/dashboard"}
+                    {text: "Summary", icon: "btn-summary dashboard-btn", href: "#/patient/" + $scope.patient.uuid + "/dashboard"}
                 ]);
             } else {
                 var links = [];
                 if ($scope.activeVisit) {
-                    links.push({text: "Consultation", href: "#" + $scope.getConsultationPadLink()});
+                    links.push({text: "Consultation", icon: "btn-consultation dashboard-btn", href: "#" + $scope.getConsultationPadLink()});
                 }
                 if (state.match("patient.dashboard")) {
-                    links.push({text: "Trends", href: "/trends/#/patients/" + $scope.patient.uuid});
+                    links.push({text: "Trends", icon: "btn-trends dashboard-btn", href: "/trends/#/patients/" + $scope.patient.uuid});
                 } else if (state.match("patient.visit")) {
-                    links.push({text: "Summary", href: "#/patient/" + $scope.patient.uuid + "/dashboard"});
+                    links.push({text: "Summary", icon: "btn-summary dashboard-btn", href: "#/patient/" + $scope.patient.uuid + "/dashboard"});
                     links = appendPrintLinks(links);
                 }
                 return links;
@@ -70,19 +70,18 @@ angular.module('bahmni.common.patient')
 
         var appendPrintLinks = function(links) {
             if ($rootScope.visit) {
-
-                links.push({text: "Visit Summary", onClick: function($event) {
+                links.push({text: "Visit Summary", icon: "btn-print dashboard-btn", onClick: function($event) {
                     visitActionsService.printVisitSummary($scope.patient, $rootScope.visit, getStartDateTime());
                     $event.preventDefault();
                 }});
 
-                links.push({text: "OPD Summary (For Admit)", onClick: function($event) {
+                links.push({text: "OPD Summary (For Admit)", icon: "btn-print dashboard-btn", onClick: function($event) {
                     visitActionsService.printOpdSummary($scope.patient, $rootScope.visit, getStartDateTime());
                     $event.preventDefault();
                 }});
 
                 if($rootScope.visit.hasAdmissionEncounter()) {
-                    links.push({text: "Discharge Summary", onClick: function($event) {
+                    links.push({text: "Discharge Summary", icon: "btn-print dashboard-btn", onClick: function($event) {
                         visitActionsService.printDischargeSummary($scope.patient, $rootScope.visit);
                         $event.preventDefault();
                     }});
