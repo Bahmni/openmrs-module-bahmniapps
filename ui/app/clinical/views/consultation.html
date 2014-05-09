@@ -62,11 +62,23 @@
             </div>
         </div>
     </section>
-    <section class="block">
+    <section class="block observation">
         <h2>Observations</h2>
         <section class="block">
+            <table>
+                <tbody ng-repeat="observation in observationsToDisplay">
+                    <tr class="form-field" ng-class="{true: 'is-abnormal'}[observation.abnormal.value]">
+                        <td><span class="field-attribute"><label>{{observation.concept.name}}:</label></span></td>
+                        <td>
+                            <span class="value-text-only">{{observation.value}}</span>
+                            <span class="label-add-on" ng-hide="!observation.concept.units"> {{observation.concept.units}}</span>
+                            <span class="fr time">{{observation.observationDateTime | date :'hh:mm a'}}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
             <!--<show-obs observation="observation"></show-obs>-->
-                <fieldset ng-repeat="observation in observationsToDisplay">
+<!--                 <fieldset ng-repeat="observation in observationsToDisplay">
                     <div class="form-field" ng-class="{true: 'is-abnormal'}[observation.abnormal.value]">
                         <span class="field-attribute"><label>{{observation.concept.name}}:</label></span>
                         <span class="value-text-only">{{observation.value}}</span>
@@ -75,7 +87,7 @@
                             <span class="value-text-only time">{{observation.observationDateTime | date :'hh:mm a'}}</span>
                         </div>
                     </div>
-                </fieldset>
+                </fieldset> -->
                 <!--<show-obs group-by-date="true" observation="observationsForDate"/>-->
         </section>
     </section>
