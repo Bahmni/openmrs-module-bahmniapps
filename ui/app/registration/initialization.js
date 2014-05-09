@@ -24,14 +24,12 @@ angular.module('bahmni.registration').factory('initialization',
 
         var getIdentifierPrefix = function() {
             preferences.identifierPrefix = appService.getAppDescriptor().getConfigValue("defaultIdentifierPrefix");
-        }
+        };
 
         var initAppConfigs = function(){
             $rootScope.registration = $rootScope.registration ||{};
-            var registrationConceptSet = appService.getAppDescriptor().getConfig("registrationConceptSet");
-            $rootScope.registration.conceptSetName = registrationConceptSet ?registrationConceptSet.value : "";
             getIdentifierPrefix();
-        }
+        };
         return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(getConfigs).then(initAppConfigs));
     }]
 );

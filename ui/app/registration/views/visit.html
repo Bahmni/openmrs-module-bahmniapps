@@ -97,8 +97,9 @@
                Invalid BMI. Please check the height and weight
             </div>
 
-            <section ng-if="observations && registration.conceptSetName" class="observation-section">
-                <concept-set concept-set-name="registration.conceptSetName" observations="observations"></concept-set>
+            <!-- TODO: need to find a better way to render the directive again on context change or after all the calls are made.-->
+            <section class="observation-section" ng-if="context">
+                <concept-set-group concept-set-group-extension-id="conceptSetGroupExtensionId" observations="observations" context="context"></concept-set-group>
             </section>
 
             <div class="submit-btn-container" ng-switch on="patient.isNew">

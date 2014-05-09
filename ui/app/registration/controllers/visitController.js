@@ -14,18 +14,18 @@ angular.module('bahmni.registration')
                     $scope.patient.name = openMRSPatient.person.names[0].display;
                     $scope.patient.uuid = openMRSPatient.uuid;
                     $scope.patient.isNew = isNewPatient;
-                    return $scope.patient;
                 })
             };
 
             var getActiveEncounter = function () {
                 return encounterService.activeEncounter({"patientUuid": patientUuid, "encounterTypeUuid" : encounterTypeUuid, "providerUuid" : $scope.currentProvider.uuid, "includeAll" : false})
                     .success(function (data) {
+                        $scope.visitTypeUuid = data.visitTypeUuid;
                         $scope.observations = data.observations;
                         $scope.registrationFeeLabel = isNewPatient ? "Registration Fee" : "Consultation Fee";
                         mapRegistrationObservations();
                     });
-            }
+            };
 
             var mapRegistrationObservations = function () {
                 $scope.obs = {};
@@ -35,7 +35,7 @@ angular.module('bahmni.registration')
                     observation.groupMembers = [];
                 });
                 $scope.calculateBMI();
-            }
+            };
 
 
             $scope.hideFields = appService.getAppDescriptor().getConfigValue("hideFields");
@@ -132,6 +132,7 @@ angular.module('bahmni.registration')
                 return $scope.validate().then($scope.save).then(patientService.clearPatient).then($scope.print).then($scope.moveToNextPage);
             };
 
+
             $scope.today = function () {
                 return new Date();
             };
@@ -149,8 +150,13 @@ angular.module('bahmni.registration')
                 });
             };
 
-            getPatient();
-            getActiveEncounter();
+            var getConceptSet = function(){
+                $scope.conceptSetGroupExtensionId = 'org.bahmni.registration.conceptSetGroup.observations';
+                var visitType = $scope.encounterConfig.getVisitTypeByUuid($scope.visitTypeUuid);
+                $scope.context = {visitType:  visitType, patient: $scope.patient};
+            };
+
+            spinner.forPromise(getPatient().then(getActiveEncounter).then(getConceptSet));
         }])
 
     .directive('confirmDialog', function ($q) {
