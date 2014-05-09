@@ -13,6 +13,7 @@ files = [
     '../app/components/moment/moment.js',
     '../app/components/angular-ui-router/release/angular-ui-router.js',
     '../app/components/lodash/dist/lodash.min.js',
+    '../app/components/angular-ui-select2/src/select2.js',
     '../app/common/constants.js',
     '../app/**/init.js',
     '../app/**/constants.js',
