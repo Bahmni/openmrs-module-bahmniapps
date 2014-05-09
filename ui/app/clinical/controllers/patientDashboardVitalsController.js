@@ -1,6 +1,5 @@
 angular.module('bahmni.clinical')
     .controller('PatientDashboardVitalsController', ['$scope', '$stateParams', 'patientVisitHistoryService', 'encounterService', 'conceptSetService', '$q', 'spinner', function ($scope, $stateParams, patientVisitHistoryService, encounterService, conceptSetService, $q, spinner) {
-        $scope.test = "randomStuff";
         $scope.patientUuid = $stateParams.patientUuid;
         var createObservationsObject = function (encounterTransactions) {
             return new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions);
