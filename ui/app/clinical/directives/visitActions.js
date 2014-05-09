@@ -9,7 +9,7 @@ angular.module('bahmni.clinical')
                     };
                 },
                 printOpdSummary: function () {
-                    $scope.title = "OPD Summary";
+                    $scope.title = "OPD Summary (For Admit)";
                     $scope.act = function () {
                         visitActionsService.printOpdSummary($scope.patient, $scope.visit, $scope.visitDate);
                     };

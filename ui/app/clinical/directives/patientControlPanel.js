@@ -76,7 +76,7 @@ angular.module('bahmni.common.patient')
                     $event.preventDefault();
                 }});
 
-                links.push({text: "OPD Summary", onClick: function($event) {
+                links.push({text: "OPD Summary (For Admit)", onClick: function($event) {
                     visitActionsService.printOpdSummary($scope.patient, $rootScope.visit, getStartDateTime());
                     $event.preventDefault();
                 }});

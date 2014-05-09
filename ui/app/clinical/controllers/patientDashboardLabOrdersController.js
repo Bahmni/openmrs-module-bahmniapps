@@ -2,80 +2,81 @@ angular.module('bahmni.clinical')
     .controller('PatientDashboardLabOrdersController', ['$scope', '$rootScope', '$stateParams', 'patientVisitHistoryService', 'encounterService', '$q',
         function ($scope, $rootScope, $stateParams, patientVisitHistoryService, encounterService, $q) {
             $scope.patientUuid = $stateParams.patientUuid;
-            var lastTwoVisitUuids;
-            var createObservationsObject = function (encounterTransactions) {
-                return new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions);
+            $scope.patientSummary = {message: "No Lab Orders made for this patient."};
+            $scope.labOrdersForLatestVisits = {
+                "Latest": {displayName: "Latest", labOrders: undefined},
+                "Previous": {displayName: "Previous", labOrders: undefined}
             };
 
-            $scope.patientSummary = {};
+            function getLatestLabOrder(visit) {
+                var groupedLabOrders = _.groupBy(visit.labOrders, function (labOrder) {
+                    return labOrder.concept.name;
+                });
+
+                var labOrders = [];
+                for (var key in groupedLabOrders) {
+                    labOrders.push(groupedLabOrders[key][0])
+                }
+                return labOrders;
+            }
+
+            var getLastNVisitUuids = function (visits, number) {
+                var lastNVisits = visits.slice(0, number);
+                lastNVisits.sort(function (visit1, visit2) {
+                    return visit1.startDatetime - visit2.startDatetime;
+                });
+
+                return lastNVisits.map(function (visit) {
+                    return visit.uuid;
+                });
+            };
+
 
             var init = function () {
-                var getLastNVisitUuids = function (visits, number) {
-                    var lastNVisits = visits.slice(0, number);
-                    return lastNVisits.map(function (visit) {
-                        return visit.uuid;
-                    });
-                };
-
-                var isLabTests = function (order) {
-                    var labTestOrderTypeUuid = $rootScope.encounterConfig.orderTypes[Bahmni.Clinical.Constants.labOrderType];
-                    return order.orderTypeUuid === labTestOrderTypeUuid;
-                };
-
-                var getUniqueOrdersWithinAVisit = function (orderGroupWithResultsArgs) {
-                    var uniqueOrders = [];
-                    orderGroupWithResultsArgs.forEach(function(orderGroupWithResultsForAVisit) {
-                        var items = Bahmni.Clinical.OrdersUtil.latest(orderGroupWithResultsForAVisit.orders);
-                        uniqueOrders = uniqueOrders.concat(items);
-                    })
-                    return uniqueOrders;
-                };
-
-                var getDisplayListForUniqueOrders = function (uniqueTests) {
-                    var displayList = [];
-                    uniqueTests.forEach(function (uniqueOrder) {
-                        displayList = displayList.concat(Bahmni.Clinical.LabOrder.create(uniqueOrder, $rootScope.allTestsAndPanelsConcept).getDisplayList());
-                    });
-                    return displayList;
-                };
-
 
                 if ($scope.visits) {
-                    lastTwoVisitUuids = getLastNVisitUuids($scope.visits, 2);
-                    encounterService.searchForVisits(lastTwoVisitUuids).success(function (encounterTransactions) {
-                        var grouppedVisits = [];
+                    var lastTwoVisitUuids = getLastNVisitUuids($scope.visits, 2);
 
-                        encounterTransactions.forEach(function(encounter){
-                            existingGrouppedVisit = grouppedVisits.filter(function(visit) {return visit.visitUuid == encounter.visitUuid})[0]
-                            if(existingGrouppedVisit){
-                                existingGrouppedVisit.records.push(encounter);
-                            }
-                            else{
-                                if(getLastNVisitUuids($scope.visits, 1)[0] == encounter.visitUuid){
-                                    grouppedVisits.push({records: [], name: "Latest", visitUuid: encounter.visitUuid});
-                                }
-                                else{
-                                    grouppedVisits.push({records: [], name: "Previous", visitUuid: encounter.visitUuid});
-                                }
-                            }
+                    encounterService.searchForVisits(lastTwoVisitUuids).success(function (encounterTransactions) {
+                        var groupedEncounterTransactions = _.groupBy(encounterTransactions, function (encounterTransaction) {
+                            return encounterTransaction.visitUuid;
                         });
-                        grouppedVisits.forEach(function(grouppedVisit){
-                            var orderGroupWithResults = new Bahmni.Clinical.OrdersMapper().create(grouppedVisit.records, 'testOrders', isLabTests, "visitUuid", $rootScope.allTestsAndPanelsConcept);
-                            var displayList = [];
-                            if (orderGroupWithResults.length != 0) {
-                                var uniqueTests = getUniqueOrdersWithinAVisit(orderGroupWithResults);
-                                displayList = getDisplayListForUniqueOrders(uniqueTests);
+                        for (var key in groupedEncounterTransactions) {
+                            var visit = Bahmni.Clinical.Visit.create(groupedEncounterTransactions[key], $rootScope.consultationNoteConcept, $rootScope.labOrderNotesConcept, $rootScope.encounterConfig, $rootScope.allTestsAndPanelsConcept, [], undefined);
+
+                            var labOrders = getLatestLabOrder(visit);
+                            if (!$scope.labOrdersForLatestVisits.Latest.labOrders) {
+                                $scope.labOrdersForLatestVisits.Latest.labOrders = labOrders;
+                            } else {
+                                $scope.labOrdersForLatestVisits.Previous.labOrders = labOrders;
                             }
-                            grouppedVisit.records = displayList;
-                        });
-                        $scope.patientSummary.data = grouppedVisits;
-                        if ($scope.patientSummary.data.length == 0) {
-                            $scope.patientSummary.message = Bahmni.Clinical.Constants.messageForNoLabOrders;
                         }
                     });
                 }
             };
 
-            init();
+            function hasLatestLabOrders() {
+                return $scope.labOrdersForLatestVisits.Latest.labOrders && $scope.labOrdersForLatestVisits.Latest.labOrders.length > 0;
+            }
 
+            function hasPreviousLabOrders() {
+                return $scope.labOrdersForLatestVisits.Previous.labOrders && $scope.labOrdersForLatestVisits.Previous.labOrders.length > 0;
+            }
+
+            $scope.hasLabOrders = function () {
+                return hasLatestLabOrders() || hasPreviousLabOrders();
+            };
+
+            $scope.hasRange = function (result) {
+                return result.minNormal && result.maxNormal;
+            };
+
+            $scope.hasResult = function(test){
+                return test.results.length > 0
+            };
+
+            $scope.isReferredOut = function(results){
+                console.log(results);
+            };
+            init();
         }]);

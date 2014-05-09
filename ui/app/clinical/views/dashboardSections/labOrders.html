@@ -1,47 +1,89 @@
 <div ng-controller="PatientDashboardLabOrdersController" class="dashboard-laborders-section">
     <h2>{{section.description}}</h2>
     <section class="block" ng-class="{'more': patientSummary.show}">
-        <p class="placeholder-text" ng-if="patientSummary.data.length == 0">{{patientSummary.message}}</p>
-        <div ng-if="patientSummary.data.length > 0">
-            <table ng-repeat="summaryLine in patientSummary.data">
+        <p class="placeholder-text" ng-if="!hasLabOrders()">{{ patientSummary.message }}</p>
+
+        <div ng-if="hasLabOrders()">
+            <table ng-repeat="labOrdersForVisit in labOrdersForLatestVisits">
                 <thead>
-                    <tr>
-                        <th colspan="2">{{summaryLine.name}}</th>
-                    </tr>
+                <tr>
+                    <th colspan="2">{{labOrdersForVisit.displayName}}</th>
+                </tr>
                 </thead>
-                <tbody ng-repeat="line in summaryLine.records">
-                <!-- HACKTAG: Apparently bo-if makes this go into an infinite loop-->
-                <tr ng-if="line.isSummary" ng-class="testResultClass(line)" >
+                <tbody ng-repeat="labOrder in labOrdersForVisit.labOrders">
+                <tr ng-if="labOrder.isPanel()" ng-class="testResultClass(labOrder)">
                     <td colspan="2">
-                        {{line.name}}
-                        <span class="status" ng-show="pendingResults(line)">Pending!</span>
+                        {{labOrder.concept.name}}
+                        <span class="status" ng-show="pendingResults(labOrder)">Pending!</span>
                     </td>
                 </tr>
-                <tr ng-if="!line.isSummary"
-                    ng-class="{'is-abnormal': line.isAbnormal, 'referred-out': line.referredOut}">
+                <tr ng-if="labOrder.isPanel()" ng-repeat="test in labOrder.orderable.tests">
                     <td>
-                        <span>{{line.concept.name}}</span>
-                    <span class="range">
-                      <span ng-if="line.minNormal && line.maxNormal">
-                        {{' (' + line.minNormal + ' - ' + line.maxNormal + ') '}}
-                      </span>
-                      <span class="units">{{line.units}}</span>
-                    </span>
+                        <span class="testUnderPanel">{{test.concept.name}}</span>
+                            <span class="range"
+                                  ng-if="hasResult(test) && hasRange(test.results[0])">
+                                <span>
+                                {{' (' + test.results[0].minNormal  + ' - ' + test.results[0].maxNormal  + ') '}}
+                                </span>
+                                <span class="units">{{test.results[0].units }}</span>
+                            </span>
                     </td>
                     <td class="value">
-                    <span class="line-value">
-                        {{line.value}}
+                        <span ng-class="{'referred-out': isReferredOut(test)}">
+                            <span class="referred">
+                                R
+                            </span>
+                        </span>
 
-                        <span class="referred">R</span>
-                    </span>
+                        <span ng-if="hasResult(test)">
+                            <span class="line-value"
+                                  ng-class="{'is-abnormal': test.results[0].isAbnormal}">
+                            {{test.results[0].value}}
 
-                        <span class="fr date">{{ line.orderDate | date :'dd MMM yy'}}</span>
+                            </span>
+                            <span class="fr date">{{ labOrder.orderDate | date :'dd MMM yy'}}</span>
+                        </span>
+                        <span class="status" ng-if="!hasResult(test)">
+                            Pending!
+                        </span>
                     </td>
                 </tr>
+
+                <tr ng-if="!labOrder.isPanel()">
+                    <td>
+                        <span>{{labOrder.concept.name}}</span>
+                            <span class="range"
+                                  ng-if="hasResult(labOrder.orderable) && hasRange(labOrder.orderable.results[0])">
+                                <span>
+                                {{' (' + labOrder.orderable.results[0].minNormal  + ' - ' +
+                                    labOrder.orderable.results[0].maxNormal
+                                    + ') '}}
+                                </span>
+                                <span class="units">{{labOrder.orderable.results[0].units }}</span>
+                            </span>
+                    </td>
+                    <td class="value">
+                        <span
+                                ng-class="{'referred-out': isReferredOut(labOrder)}">
+                            <span class="referred">
+                                R
+                            </span>
+                        </span>
+                        <span ng-if="hasResult(labOrder.orderable)">
+                            <span class="line-value"
+                                  ng-class="{'is-abnormal': labOrder.orderable.results[0].isAbnormal}">
+                                {{labOrder.orderable.results[0].value}}
+                            </span>
+                            <span class="fr date">{{ labOrder.orderDate | date :'dd MMM yy'}}</span>
+                        </span>
+                        <span ng-if="!hasResult(labOrder.orderable)" class="status">
+                            Pending!
+                        </span>
+                    </td>
                 </tr>
                 </tbody>
-
             </table>
+
             <button class="show-more" ng-if="patientSummary.data.length > 8" ng-click="toggle(patientSummary)">
                 <span class="more-text">Show more</span><span class="less-text">Show less</span>
             </button>
