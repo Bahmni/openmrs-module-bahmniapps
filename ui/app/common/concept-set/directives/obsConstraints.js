@@ -7,6 +7,9 @@ angular.module('bahmni.common.conceptSet')
             var attributes = {};
             var obsConcept = $scope.obs.concept;
             attributes['type'] = attributesMap[obsConcept.dataType] || "text";
+            if (attributes['type'] === 'number') {
+                attributes['step'] = 'any';
+            }
             if (obsConcept.hiNormal) {
                 attributes['max'] = obsConcept.hiNormal;
             }
