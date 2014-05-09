@@ -2,41 +2,50 @@
     <h2>{{section.description}}</h2>
     <section class="block" ng-class="{'more': patientSummary.show}">
         <p class="placeholder-text" ng-if="patientSummary.data.length == 0">{{patientSummary.message}}</p>
-        <table ng-if="patientSummary.data.length > 0">
-            <tbody ng-repeat="line in patientSummary.data">
-            <!-- HACKTAG: Apparently bo-if makes this go into an infinite loop-->
-            <tr ng-if="line.isSummary" ng-class="testResultClass(line)">
-                <td colspan="2" ng-hide="!line.name">
-                    {{line.name}}
-                    <span class="status" ng-show="pendingResults(line)">Pending!</span>
-                </td>
-            </tr>
-            <tr ng-if="!line.isSummary"
-                ng-class="{'is-abnormal': line.isAbnormal, 'referred-out': line.referredOut}">
-                <td>
-                    <span>{{line.concept.name}}</span>                        
+        <div ng-if="patientSummary.data.length > 0">
+            <table ng-repeat="summaryLine in patientSummary.data">
+                <thead>
+                    <tr>
+                        <th colspan="2">{{summaryLine.name}}</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="line in summaryLine.records">
+                <!-- HACKTAG: Apparently bo-if makes this go into an infinite loop-->
+                <tr ng-if="line.isSummary" ng-class="testResultClass(line)" >
+                    <td colspan="2">
+                        {{line.name}}
+                        <span class="status" ng-show="pendingResults(line)">Pending!</span>
+                    </td>
+                </tr>
+                <tr ng-if="!line.isSummary"
+                    ng-class="{'is-abnormal': line.isAbnormal, 'referred-out': line.referredOut}">
+                    <td>
+                        <span>{{line.concept.name}}</span>
                     <span class="range">
                       <span ng-if="line.minNormal && line.maxNormal">
                         {{' (' + line.minNormal + ' - ' + line.maxNormal + ') '}}
                       </span>
                       <span class="units">{{line.units}}</span>
                     </span>
-                </td>
-                <td class="value">
+                    </td>
+                    <td class="value">
                     <span class="line-value">
                         {{line.value}}
 
                         <span class="referred">R</span>
                     </span>
 
-                    <span class="fr date">{{ line.orderDate | date :'dd MMM yy'}}</span>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <button class="show-more" ng-if="patientSummary.data.length > 8" ng-click="toggle(patientSummary)">
-            <span class="more-text">Show more</span><span class="less-text">Show less</span>
-        </button>
+                        <span class="fr date">{{ line.orderDate | date :'dd MMM yy'}}</span>
+                    </td>
+                </tr>
+                </tr>
+                </tbody>
+
+            </table>
+            <button class="show-more" ng-if="patientSummary.data.length > 8" ng-click="toggle(patientSummary)">
+                <span class="more-text">Show more</span><span class="less-text">Show less</span>
+            </button>
+        </div>
+
     </section>
 </div>
-
