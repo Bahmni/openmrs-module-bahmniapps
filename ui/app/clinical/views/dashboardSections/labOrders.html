@@ -29,7 +29,7 @@
                             </span>
                     </td>
                     <td class="value">
-                        <span ng-class="{'referred-out': isReferredOut(test)}">
+                        <span ng-class="{'referred-out': isReferredOut(test.results)}">
                             <span class="referred">
                                 R
                             </span>
@@ -64,7 +64,7 @@
                     </td>
                     <td class="value">
                         <span
-                                ng-class="{'referred-out': isReferredOut(labOrder)}">
+                                ng-class="{'referred-out': isReferredOut(labOrder.orderable.results)}">
                             <span class="referred">
                                 R
                             </span>

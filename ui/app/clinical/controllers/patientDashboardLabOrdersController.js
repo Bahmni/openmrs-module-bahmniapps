@@ -76,7 +76,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.isReferredOut = function(results){
-                console.log(results);
+                return results.length > 0 && results[0].referredOut;
             };
             init();
         }]);
