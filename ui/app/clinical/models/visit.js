@@ -183,7 +183,7 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
 
     var removeUnwantedObs = function(observation) {
         return !obsIgnoteList.some(function(ignoredObsName) {return ignoredObsName === observation.concept.name;});
-    }
+    };
     var allObs = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions).filter(removeUnwantedObs);
     var drugOrders = ordersMapper.map(encounterTransactions, 'drugOrders');
     var testOrders = ordersMapper.map(encounterTransactions, 'testOrders', allTestAndPanelsConcept);

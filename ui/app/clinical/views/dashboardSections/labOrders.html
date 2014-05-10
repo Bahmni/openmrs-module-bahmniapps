@@ -18,24 +18,22 @@
                     </td>
                 </tr>
                 <tr ng-if="labOrder.isPanel()" ng-repeat="test in labOrder.orderable.tests">
-                    <td>
-                        <span class="testUnderPanel">{{test.concept.name}}</span>
-                            <span class="range"
-                                  ng-if="hasResult(test) && hasRange(test.results[0])">
-                                <span>
-                                {{' (' + test.results[0].minNormal  + ' - ' + test.results[0].maxNormal  + ') '}}
-                                </span>
-                                <span class="units">{{test.results[0].units }}</span>
+                    <td class="testUnderPanel">
+                        <span >{{test.concept.name}}</span>
+                        <span class="range" ng-if="hasResult(test) && hasRange(test.results[0])">
+                            <span>
+                            {{' (' + test.results[0].minNormal  + ' - ' + test.results[0].maxNormal  + ') '}}
                             </span>
+                            <span class="units">{{test.results[0].units }}</span>
+                        </span>
                     </td>
                     <td class="value">
-                        <span ng-class="{'referred-out': isReferredOut(test.results)}">
-                            <span class="referred">
-                                R
-                            </span>
-                        </span>
-
                         <span ng-if="hasResult(test)">
+                            <span ng-class="{'referred-out': isReferredOut(test.results)}">
+                                <span class="referred">
+                                    R
+                                </span>
+                            </span>
                             <span class="line-value"
                                   ng-class="{'is-abnormal': test.results[0].isAbnormal}">
                             {{test.results[0].value}}
@@ -63,15 +61,13 @@
                             </span>
                     </td>
                     <td class="value">
-                        <span
-                                ng-class="{'referred-out': isReferredOut(labOrder.orderable.results)}">
-                            <span class="referred">
-                                R
-                            </span>
-                        </span>
                         <span ng-if="hasResult(labOrder.orderable)">
-                            <span class="line-value"
-                                  ng-class="{'is-abnormal': labOrder.orderable.results[0].isAbnormal}">
+                            <span ng-class="{'referred-out': isReferredOut(labOrder.orderable.results)}">
+                                <span class="referred">
+                                    R
+                                </span>
+                            </span>
+                            <span class="line-value" ng-class="{'is-abnormal': labOrder.orderable.results[0].isAbnormal}">
                                 {{labOrder.orderable.results[0].value}}
                             </span>
                             <span class="fr date">{{ labOrder.orderDate | date :'dd MMM yy'}}</span>
