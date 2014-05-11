@@ -333,12 +333,8 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
   height: 100%;
   top: 0px;
   left: 0px;
-  background-image: url('../images/spinner.gif');
-  background-repeat:no-repeat;
-  background-position:center;
+  background: rgba(0,0,0,0.6) url('../images/spinner.gif') no-repeat center center;
   div{
-    opacity: 0.6;
-    background:#000;
     width:100%;
     height: 100%;
   }
@@ -552,7 +548,7 @@ aside{
       display: block;
       padding: 8px 10px 8px 10px;
       color: #aaa;
-      font-size: 16px;
+      font-size: 14px;
       border-bottom: 1px solid #222;
       border-top: 1px solid #444;
       &:hover {
@@ -594,7 +590,7 @@ aside{
     &.active .icon-star {display: inline-block;}
   }
 }
-.status {
+td .status {
   color: #cc6600;
   float: right;
 }
