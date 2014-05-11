@@ -542,12 +542,8 @@ table{
   height: 100%;
   top: 0px;
   left: 0px;
-  background-image: image-url('spinner.gif');
-  background-repeat:no-repeat;
-  background-position:center;
+  background: rgba(0,0,0,0.6) url('../images/spinner.gif') no-repeat center center;
   div{
-    opacity: 0.6;
-    background:#000;
     width:100%;
     height: 100%;
   }
