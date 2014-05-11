@@ -9,6 +9,18 @@ angular.module('opd.patientDashboard', [])
         $scope.obsIgnoreList = appService.getAppDescriptor().getConfigValue("obsIgnoreList") || {};
         $scope.patientDashboardSections = appService.getAppDescriptor().getConfigValue("patientDashboardSections") || {};
 
+        $scope.filterOdd = function(index) {
+          return function(item) {
+            return index++ % 2 == 0;
+          };
+        };
+
+        $scope.filterEven = function(index) {
+          return function(item) {
+            return index++ % 2 == 1;
+          };
+        };
+
         var getEncountersForVisit = function (visitUuid) {
             encounterService.search(visitUuid).success(function (encounterTransactions) {
                 $scope.visit = Bahmni.Clinical.Visit.create(encounterTransactions, $scope.consultationNoteConcept, $scope.labOrderNotesConcept, $scope.encounterConfig, $rootScope.allTestsAndPanelsConcept, $scope.obsIgnoreList, visitUuid);

@@ -10,13 +10,15 @@
 
 }
 .dashboard-section-wrapper {
-  -moz-column-count: 2;
-  -webkit-column-count: 2;
-  padding-top: 1%;
-  @media screen and (max-width: 859px) {
-    -moz-column-count: 1;
-    -webkit-column-count: 1;
+  .dashboard-sections {
+    width: 50%;
+    float: left;  
+    @media screen and (max-width: 859px) {
+      width: 100%;
+      float: none;
+    }
   }
+
 }
 #view-content .patient-dashboard.visit {padding: 0;}
 .dashboard-visit-summary {padding: 10px;}
@@ -31,19 +33,13 @@
   }
 }
 .dashboard-observation-section {
-  // width: 47.5%;
   border: 1px solid #ccc;
   border-radius: 5px;
-  // float: left;
-  margin-bottom: 1%;
+  margin: 1%;
   font-size: 14px;
   position: relative;
   padding-bottom: 35px;
-  break-inside: avoid; /* W3C */
-  -webkit-column-break-inside: avoid; /* Safari & Chrome */
-  -moz-column-break-inside: avoid; /* Firefox */
-  -ms-column-break-inside: avoid; /* Internet Explorer */
-  -o-column-break-inside: avoid; /* Opera */
+  min-height: 250px;
   h2 {
     padding: 10px;
     font-family: OpenSansBold;
@@ -59,7 +55,6 @@
   section.block {
     padding: 0!important;
     min-height: 250px;
-    // overflow-y: hidden;
     border-radius: 0 0 5px 5px;
   }
   section {
@@ -196,8 +191,11 @@
       border-left: 0;
       border-right: 0;
     }
+    td span.range {
+      font-size: 11px;
+    }
     tr td.value {
-      width: 55%;
+      width: 49%;
       padding: 5px;
       border-left: 1px solid #ccc;
       .line-value {

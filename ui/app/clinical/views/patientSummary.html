@@ -1,6 +1,14 @@
 <div class="dashboard-section-wrapper">
-  <div ng-repeat="section in patientDashboardSections" class="dashboard-observation-section" ng-show="patientSummary">
+  <div class="dashboard-sections">
+    <div ng-repeat="section in patientDashboardSections | filter:filterOdd(0)" class="dashboard-observation-section" ng-show="patientSummary">        
       <ng-include src="section.viewName"></ng-include>
+    </div> 
+  </div>
+
+  <div class="dashboard-sections">
+    <div ng-repeat="section in patientDashboardSections | filter:filterEven(0)" class="dashboard-observation-section" ng-show="patientSummary">
+        <ng-include src="section.viewName"></ng-include>
+    </div>
   </div>
 </div>
 
