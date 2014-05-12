@@ -25,10 +25,10 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', function($state
             abstract: true,
             views: {
                 'content': {
-                    template: '<ui-view/>',
+                    template: '<ui-view/>'
                 },
                 'additional-header': {
-                    templateUrl: '../common/patient/header/views/header.html',
+                    templateUrl: '../common/patient/header/views/header.html'
                 }
             },
 
@@ -51,12 +51,12 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', function($state
         .state('patient.bedForExistingEncounter', {
             url: '/encounter/:encounterUuid/bed',
             templateUrl: 'views/bedManagement.html',
-            controller: 'BedManagementController',
+            controller: 'BedManagementController'
         })
         .state('patient.bedForNewEncounter', {
             url: '/bed',
             templateUrl: 'views/bedManagement.html',
-            controller: 'BedManagementController',
+            controller: 'BedManagementController'
         });
     }
 ]);
