@@ -13,7 +13,7 @@
                 <tbody ng-repeat="labOrder in labOrdersForVisit.labOrders">
                 <tr ng-if="labOrder.isPanel()" ng-class="testResultClass(labOrder)">
                     <td colspan="2">
-                        {{labOrder.concept.name}}
+                        <strong>{{labOrder.concept.name}}</strong>
                         <span class="status" ng-show="pendingResults(labOrder)">Pending!</span>
                     </td>
                 </tr>

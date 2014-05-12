@@ -4,9 +4,10 @@
             <div class="patient-img">
                 <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
             </div>
-            <h4><span bo-text="patient.name + ' (' + patient.gender + ', ' + patient.age + ')'"></span></h4>
-            <h5><span bo-text="patient.identifier + ' (' + patient.address.cityVillage + ')'"
-              bo-hide="!patient.address.cityVillage"></span></h5>
+            <h4><span bo-text="patient.name"></span></h4>
+            <h5><span bo-text="calculateAge(patient.birthdate)"></span></h5>
+            <h5><span bo-text="patient.identifier"></span></h5>
+            <h5><span bo-text="patient.address.cityVillage"></span></h5>
             <span class="ward" bo-text="bedDetails.wardName + ' ' + bedDetails.bedNumber"></span>
         </div>
 

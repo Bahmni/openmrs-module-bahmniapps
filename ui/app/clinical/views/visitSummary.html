@@ -1,10 +1,4 @@
 <section>
-    <section class="visit-actions" visit-actions patient="patient" visit="visit" action="'printDischargeSummary'"
-              ng-if="visit.hasAdmissionEncounter()"></section>
-    <section class="visit-actions" visit-actions patient="patient" visit="visit"
-             visit-date="getVisitDate()" action="'printOpdSummary'"></section>
-    <section class="visit-actions" visit-actions patient="patient" visit="visit"
-             visit-date="getVisitDate()" action="'printVisitSummary'"></section>
     <section ng-show="visit.hasDiagnosis()" class="block diagnosis">
         <h2>Diagnoses</h2>
 

@@ -13,6 +13,7 @@ angular.module('bahmni.common.patient')
     var link = function($scope) {
         $scope.patient = $rootScope.patient;
         $scope.visits = $rootScope.visits;
+        var DateUtil = Bahmni.Common.Util.DateUtil;
 
         $scope.activeVisit = (function (){
             return $scope.visits.filter(function(visit) {
@@ -39,6 +40,15 @@ angular.module('bahmni.common.patient')
 
         $scope.isCurrentVisit = function (visit) {
             return $stateParams.visitUuid == visit.uuid;
+        };
+
+        $scope.calculateAge = function(birthDate){
+            var age = DateUtil.diffInYearsMonthsDays(birthDate, DateUtil.now());
+            var ageInString = "";
+            if(age.years) ageInString += age.years + " Years ";
+            if(age.months) ageInString += age.months + " Months ";
+            if(age.days) ageInString += age.days + " Days";
+            return ageInString;
         };
 
         var getLinks = function () {
