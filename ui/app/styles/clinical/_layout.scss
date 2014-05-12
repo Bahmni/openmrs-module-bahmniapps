@@ -303,16 +303,67 @@ textarea{
   display: inline-block;
 }
 .smallImages{
-    height: 50px;
-    width: 50px;
+    height: 80px;
+    width: 80px;
 }
 button[disabled] {
     background: #F7F7F7;
 }
+
 .active-visits{
     li{
-        width:140px;
-        padding: 10px 0;
+        padding: 7px 0;
+        border-radius: 10px;
+        @media screen and (min-width: 1013px) {
+          width: 14%;
+        }
+        @media screen and (max-width: 1013px) {
+          width: 136px;
+        }        
+        @media screen and (max-width: 1005px) {
+          width: 135px;
+        }
+        @media screen and (max-width: 1000px) {
+          width: 134px;
+        }
+        @media screen and (max-width: 995px) {
+          width: 133px;
+        }
+        @media screen and (max-width: 990px) {
+          width: 132px;
+        }
+        @media screen and (max-width: 980px) {
+          width: 130px;
+        }
+        @media screen and (max-width: 965px) {
+          width: 128px;
+        }
+        @media screen and (max-width: 947px) {
+          width: 126px;
+        }
+        @media screen and (max-width: 947px) {
+          width: 126px;
+        }
+        @media screen and (max-width: 925px) {
+          width: 125px;
+        }
+        @media screen and (min-width: 701px) and (max-width: 900px) {
+          width: 19.7%;
+        }
+        @media screen and (min-width: 601px) and (max-width: 700px) {
+          width: 24.6%;
+        }
+        @media screen and (min-width: 481px) and (max-width: 600px) {
+          width: 32%;
+        }
+        @media screen and (max-width: 480px) {
+          width: 32%;
+          .patient-name{
+            text-align: left;
+            padding-left: 20px;
+            width: 93px;
+          }
+        }
         div{
             margin:5px 0px;
             @include font-size(0.9);

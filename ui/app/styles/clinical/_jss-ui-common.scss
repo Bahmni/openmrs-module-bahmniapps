@@ -247,7 +247,7 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
     border: 1px solid #fff;
     background: #f2f2f2;
     .patient-name {
-      font-size: 12px;
+      font-size: 13px;
       color: #888;
       text-transform: capitalize;
       width: 130px;
@@ -255,6 +255,7 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
       overflow: hidden;
       text-overflow: ellipsis;
       padding: 0 5px;
+      line-height: 1.5em;
     }
     .patient-id {
       color: #222;
