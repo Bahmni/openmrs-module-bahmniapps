@@ -3,7 +3,9 @@
     <aside bindonce="patient" class="visit-history" ng-class="{'shift': $parent.showControlPanel}">
         <div class="patient-info">
             <div class="patient-img">
-                <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
+                <a href="{{getDashboardLink()}}" ng-click="changeContext($event)">
+                  <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
+                </a>
             </div>
             <h4 class="patient-name"><span bo-text="patient.name"></span></h4>
             <h5 class="patient-identifier"><span bo-text="patient.identifier"></span></h5>

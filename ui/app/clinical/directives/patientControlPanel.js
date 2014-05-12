@@ -30,6 +30,10 @@ angular.module('bahmni.common.patient')
             }
         };
 
+        $scope.getDashboardLink = function() {
+          return "#/patient/" + $scope.patient.uuid + "/dashboard";
+        }
+
         $scope.changeContext = function($event) {
             if(!contextChangeHandler.execute()) {
                 $event.preventDefault();
@@ -55,7 +59,7 @@ angular.module('bahmni.common.patient')
             var state = $state.current.name;
             if (state.match("patient.consultation")) {
                 return appendPrintLinks([
-                    {text: "Dashboard", icon: "btn-summary dashboard-btn", href: "#/patient/" + $scope.patient.uuid + "/dashboard"}
+                    {text: "Dashboard", icon: "btn-summary dashboard-btn", href: $scope.getDashboardLink()}
                 ]);
             } else {
                 var links = [];
