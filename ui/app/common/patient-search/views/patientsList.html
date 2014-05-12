@@ -33,6 +33,13 @@
                     <div class="patient-name">{{patient.name}}</div>
                     <div class="patient-id">{{patient.identifier}}</div>
                 </li>
+                <div class="note-container" ng-show="noResultsMessage">
+                    <div class="note warning">
+                        <div class="text">
+                            <p class="ng-binding">{{noResultsMessage}}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

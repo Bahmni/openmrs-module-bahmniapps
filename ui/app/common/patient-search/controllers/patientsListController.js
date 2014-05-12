@@ -5,6 +5,7 @@ angular.module('bahmni.common.patientSearch')
     function ($scope, $location, $window, patientService, patientMapper, $rootScope, appService, spinner, $stateParams, $q) {
 
         $scope.searchTypes = [];
+        $scope.noResultsMessage = null;
         $scope.searchCriteria = {searchParameter:'', type: undefined};
         var routeParameters = angular.extend({}, $stateParams);
 
@@ -48,7 +49,7 @@ angular.module('bahmni.common.patientSearch')
             return spinner.forPromise(patientService.search(patientIdentifier).success(function (data) {
                 handlePatientList(data.results, function() {
                     if ($scope.activePatients.length === 0) {
-                        $rootScope.server_error = "Could not find patient with identifier/name " + patientIdentifier + ". Please verify the patient ID entered ";
+                        $scope.noResultsMessage = "No results found";
                     } else if ($scope.activePatients.length === 1) {
                         $scope.forwardPatient($scope.activePatients[0]);
                     }

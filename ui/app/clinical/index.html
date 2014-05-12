@@ -18,6 +18,7 @@
             <div ui-view="additional-header"></div>
             <div ng-include src="'views/includes/messages.html'"></div>
             <div class="opd-wrapper">
+                <p class="caution" ng-cloak ng-show="server_error"><i class="icon-exclamation-sign small"></i><span ng-bind="server_error"></span></p>
                 <div ui-view="content" id="view-content" class="opd-content-wrapper"></div>
             </div>
         </div>
