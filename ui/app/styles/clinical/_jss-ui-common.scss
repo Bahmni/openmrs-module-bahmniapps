@@ -472,9 +472,13 @@ button:focus, a:focus, .btn:focus {outline:0;}
     margin: 0 5px;
   }
 }
-button.save-consultation {
+button.save-consultation, .quick-links {
   float: right;
   margin: 6px 20px;
+}
+
+a.quick-links {
+  @include button($success, darken($success, 8%), white);
 }
 
 .messages {
