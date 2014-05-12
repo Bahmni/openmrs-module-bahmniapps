@@ -39,9 +39,6 @@ Bahmni.Tests.openMRSConceptMother = {
         return concept;
     },
 
-    buildCompoundObservationConcept: function() {
-        return this.build({name: Bahmni.Common.Constants.compoundObservationConceptName, set: true, setMembers: [ this.build({name: Bahmni.Common.Constants.abnormalObservationConceptName})]});
-    }
 }
 
 Bahmni.Tests.conceptMother = {

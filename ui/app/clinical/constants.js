@@ -23,7 +23,6 @@ Bahmni.Clinical.Constants = (function () {
         otherInvestigationsConceptSetName: "Other Investigations",
         otherInvestigationCategoriesConceptSetName: "Other Investigations Categories",
         commentConceptName: "COMMENTS",
-        groupObservations: [Bahmni.Common.Constants.compoundObservationConceptName],
         messageForNoLabOrders: "No lab orders.",
         messageForNoObservation: "No observations captured for this visit.",
         messageForNoActiveVisit: "No active visit.",

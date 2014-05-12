@@ -50,13 +50,12 @@ Bahmni.Common = Bahmni.Common || {};
         dischargeCode: 'DISCHARGE',
         transferCode: 'TRANSFER',
         vitalsConceptName: "Vitals",
-        compoundObservationConceptName:"XCompoundObservation",
         abnormalObservationConceptName: "IS_ABNORMAL",
         documentsPath: '/document_images',
         documentsConceptName: 'Document',
         miscConceptClassName: 'Misc',
         abnormalConceptClassName: 'Abnormal',
-       durationConceptClassName: 'Duration',
+        durationConceptClassName: 'Duration',
         conceptDetailsClassName: 'Concept Details'
 };
     
