@@ -43,7 +43,7 @@ angular.module('bahmni.clinical')
         };
 
         var observationGroupingFunction = function (obs) {
-            return obs.observationDateTime.substring(0, 10);
+            return obs.observationDateTime;
         };
 
         var createPatientSummary = function (vitalsConcept) {
