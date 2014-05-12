@@ -499,15 +499,16 @@ button.save-consultation {
 
 button.toggle-patient {
   float: right;
-  margin: 0;
-  padding: 25px 35px;
+  margin: 3px 5px;
   height: 30px;
+  @include background(linear-gradient(top, #669999, #4d8282));
   background: url("/images/bars.png") no-repeat center center;
-  border: 0;
-  border-radius: 0;
-  &.shift {
-    background: #333 url("/images/close-bars.png") no-repeat center center;  
-  }
+  border: 1px solid #4d8282;
+  padding: 20px 25px;
+}
+
+button.toggle-patient:hover, button.toggle-patient.shift {
+  background: #4d8282 url("/images/bars.png") no-repeat center center;
 }
 
 .patient-control-panel {
