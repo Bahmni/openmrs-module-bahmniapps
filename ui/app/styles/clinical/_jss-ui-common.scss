@@ -516,6 +516,16 @@ button.toggle-patient:hover, button.toggle-patient.shift {
 
 .patient-control-panel {
   padding: 0;
+  .overlay {
+    position: absolute;
+    top:0; bottom:0;
+    left:0; right:0;
+    background: rgba(0,0,0,0.4);
+    display: none;
+  }
+  .overlay.shift {
+    display: block;
+  }
 }
 aside{
   -webkit-transition: right .3s ease,-webkit-transform .3s ease;
@@ -568,16 +578,20 @@ aside{
     .patient-info {
       padding-bottom: 10px;
       .patient-img img {
-        border-radius: 50%;
-        margin: 10% 29%;
+        border-radius: 10px;
+        margin: 15px 52px;
+        width: 150px;
       }
-      h4 {text-transform: capitalize;}
       h4, h5, .ward {
-        text-align: center;
         color: #ddd;
         display: block;
+        padding-left: 10px;
+        font-size: 14px;
+        text-align: center;
       }
+      h4.patient-name {text-transform: capitalize; font-size: 16px;}
       h5, .ward {color: #888; margin-top: 5px;}
+      h5.patient-identifier {color: #ddd;}
     }
   }
   &.visit-history.shift {

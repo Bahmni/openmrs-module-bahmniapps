@@ -55,7 +55,7 @@ angular.module('bahmni.common.patient')
             var state = $state.current.name;
             if (state.match("patient.consultation")) {
                 return appendPrintLinks([
-                    {text: "Summary", icon: "btn-summary dashboard-btn", href: "#/patient/" + $scope.patient.uuid + "/dashboard"}
+                    {text: "Dashboard", icon: "btn-summary dashboard-btn", href: "#/patient/" + $scope.patient.uuid + "/dashboard"}
                 ]);
             } else {
                 var links = [];
@@ -65,7 +65,7 @@ angular.module('bahmni.common.patient')
                 if (state.match("patient.dashboard")) {
                     links.push({text: "Trends", icon: "btn-trends dashboard-btn", href: "/trends/#/patients/" + $scope.patient.uuid});
                 } else if (state.match("patient.visit")) {
-                    links.push({text: "Summary", icon: "btn-summary dashboard-btn", href: "#/patient/" + $scope.patient.uuid + "/dashboard"});
+                    links.push({text: "Dashboard", icon: "btn-summary dashboard-btn", href: "#/patient/" + $scope.patient.uuid + "/dashboard"});
                     links = appendPrintLinks(links);
                 }
                 return links;
