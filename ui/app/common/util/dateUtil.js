@@ -107,7 +107,7 @@ Bahmni.Common.Util.DateUtil = {
 
         var durationRepresentation = function (value, unitName, unitValueInHours) {
             return {"value": value, "unitName": unitName, "unitValueInHours": unitValueInHours, "allUnits": allUnits };
-        }
+        };
 
         for (var unitName in  allUnits) {
             var unitValueInHours = allUnits[unitName];
@@ -120,4 +120,4 @@ Bahmni.Common.Util.DateUtil = {
         return durationRepresentation(0, "Hours", 1);
     }
 
-}
+};
