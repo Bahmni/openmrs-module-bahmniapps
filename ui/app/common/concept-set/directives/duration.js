@@ -29,7 +29,7 @@ angular.module('bahmni.common.conceptSet')
             $scope.units = valueAndUnit["allUnits"];
             $scope.measureValue = valueAndUnit["value"];
             $scope.unitValue = valueAndUnit["unitValueInHours"];
-            $scope.keys = Object.keys($scope.units).reverse();
+//            $scope.keys = Object.keys($scope.units).reverse();
 
         };
 
@@ -44,7 +44,7 @@ angular.module('bahmni.common.conceptSet')
             },
             link: link,
             template: '<span><input type="number" min="0" class="duration" ng-class="{\'illegalValue\': illegalValue}" ng-model=\'measureValue\' ng-disabled="disabled"/></span>' +
-                '<span><select ng-model=\'unitValue\' class="duration-label" ng-class="{\'illegalValue\': illegalValue}" ng-options="name for name in keys" ng-disabled="disabled"><option value=""></option>>' +
+                '<span><select ng-model=\'unitValue\' class="duration-label" ng-class="{\'illegalValue\': illegalValue}" ng-options="name for (name, value) in units" ng-disabled="disabled"><option value=""></option>>' +
                 '</select></span>'
         }
     });

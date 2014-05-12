@@ -154,7 +154,7 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     hasDuration: function () {
-        if (!this.getDuration()){
+        if (!this.getDuration() || !this.getConceptUIConfig().durationRequired){
             return false;
         }
         else {
