@@ -9,6 +9,9 @@
                 <tr>
                     <th colspan="2">{{labOrdersForVisit.displayName}}</th>
                 </tr>
+                <tr ng-if="!labOrdersForVisit.labOrders">
+                    <td colspan="2">No lab orders for this visit</td>
+                </tr>
                 </thead>
                 <tbody ng-repeat="labOrder in labOrdersForVisit.labOrders">
                 <tr ng-if="labOrder.isPanel()" ng-class="testResultClass(labOrder)">

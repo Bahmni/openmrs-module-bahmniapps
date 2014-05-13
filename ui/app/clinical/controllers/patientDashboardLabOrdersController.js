@@ -2,7 +2,7 @@ angular.module('bahmni.clinical')
     .controller('PatientDashboardLabOrdersController', ['$scope', '$rootScope', '$stateParams', 'patientVisitHistoryService', 'encounterService', '$q',
         function ($scope, $rootScope, $stateParams, patientVisitHistoryService, encounterService, $q) {
             $scope.patientUuid = $stateParams.patientUuid;
-            $scope.patientSummary = {message: "No Lab Orders made for this patient."};
+            $scope.patientSummary = {message: "No Lab Orders for this patient."};
             $scope.labOrdersForLatestVisits = {
                 "Latest": {displayName: "Latest Visit", labOrders: undefined},
                 "Previous": {displayName: "Previous Visit", labOrders: undefined}
