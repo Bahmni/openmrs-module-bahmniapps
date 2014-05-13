@@ -12,26 +12,9 @@ angular.module('bahmni.clinical')
         };
 
         var init = function () {
-            var deferer = $q.defer();
-
-            var vitalsConceptPromise = conceptSetService.getConceptSetMembers({name: Bahmni.Common.Constants.vitalsConceptName, v: "fullchildren"}, true);
-            var patientsHistoryServicePromise = patientVisitHistoryService.getVisits($scope.patientUuid);
-            var vitalsConcept = null;
-
-            $q.all([patientsHistoryServicePromise, vitalsConceptPromise]).then(function (results) {
-                var visits = results[0];
-                vitalsConcept = results[1].data.results[0];
-
-                $scope.visits = visits.map(getVisitHistory);
-                $scope.activeVisit = $rootScope.activeVisit;
-
-                createPatientSummary(vitalsConcept);
-
-                deferer.resolve();
-            }, deferer.reject);
-
-
-            return deferer.promise;
+            $scope.visits = $rootScope.visits;
+            $scope.activeVisit = $rootScope.activeVisit;
+            createPatientSummary();
         };
 
         var isObservationForVitals = function (obs) {
@@ -42,7 +25,7 @@ angular.module('bahmni.clinical')
             return obs.observationDateTime;
         };
 
-        var createPatientSummary = function (vitalsConcept) {
+        var createPatientSummary = function () {
             if ($scope.activeVisit) {
                 encounterService.search($scope.activeVisit.uuid).success(function (encounterTransactions) {
                     var visitData = createObservationsObject(encounterTransactions);
