@@ -244,3 +244,34 @@
     float: right;
   }
 }
+@media screen and (max-width: 930px) {
+  .diagnosis .status button {
+    white-space: nowrap;
+    border-radius: 3px!important;
+  }
+  .diagnosis {
+    button {
+      width: 100px;
+    }
+    button:first-child {
+      margin-left: 10px;
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      border-right: 1;
+    }
+    button:last-child {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      border-bottom-left-radius: 3px;
+      border-bottom-right-radius: 3px;
+      border-left: 1;
+      margin-left: 10px;
+    }
+    .view-past .message {
+      font-size: 10px;
+      top: 8px;
+    }
+  }
+}
