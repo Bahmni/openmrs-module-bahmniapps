@@ -137,5 +137,24 @@ concept {
     }
   }
 }
-
+//custom changes: auto complete form field -> will be moved globally once finalized.
+.select2-container .select2-choice {
+  padding: 5px;
+  margin-top: -5px;
+}
+.select2-results .select2-result-label {
+  font-size: 14px;
+  padding: 10px;
+}
+.select2-container .select2-choice abbr, .select2-container .select2-choice abbr:hover {
+  background: none;
+  top: 5px;
+  right: 33px;
+}
+.select2-container .select2-choice abbr:before {
+  font-family: FontAwesome;
+  content: "\f00d";
+  font-size: 24px;
+  color: #aaa;
+}
 

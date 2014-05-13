@@ -48,7 +48,7 @@
             </div>
             <small class="hint" ng-show="observation.primaryObs.concept.lowNormal || observation.primaryObs.concept.hiNormal">(Valid Range from {{observation.primaryObs.concept.lowNormal}} to {{observation.primaryObs.concept.hiNormal}})</small>
             <div class="checkbox-inline" ng-if="observation.abnormal">
-                <input id="isAbnormal-{{$index}}" type="checkbox" ng-model="observation.abnormal.value" ng-disabled="!observation.primaryObs.hasValue()"/>
+                <input id="isAbnormal-{{$index}}" type="checkbox" ng-model="observation.abnormal.value" ng-disabled="!observation.primaryObs.hasValue()" tabindex="-1" />
                 <span for="isAbnormal-{{$index}}">Abnormal</span>
             </div>
             <div class="checkbox-inline" ng-if="observation.duration" ng-class="{'duration': observation.duration}">
