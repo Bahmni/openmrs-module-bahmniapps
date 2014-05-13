@@ -1,4 +1,4 @@
-(function(){
+var dischargeSummary = function(){
 	var getObservationByName = function(observations, name){
 		for (var i = 0; i < observations.length; i++) {
 			var observation = observations[i];
@@ -6,12 +6,12 @@
 			var observationMember = getObservationByName(observation.groupMembers, name);
 			if(observationMember) return observationMember;
 		};
-	}
+	};
 
 	Bahmni.Clinical.DischargeSummary = function(patient, visit){
 		this.patient = patient;
 		this.visit = visit;
-	}
+	};
 
 	Bahmni.Clinical.DischargeSummary.prototype = {
 		getObservationValue: function(name) { 
@@ -44,4 +44,5 @@
 			return Bahmni.Clinical.OrdersUtil.latest(this.visit.radiologyOrders);
 		}
 	}
-})();
+};
+dischargeSummary();
