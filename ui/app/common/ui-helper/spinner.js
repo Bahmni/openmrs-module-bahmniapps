@@ -11,7 +11,7 @@ angular.module('bahmni.common.uiHelper')
                 $('body').prepend('<div id="overlay"><div></div></div>');
            }
            $('#view-content').hide();
-           $('#overlay').show();
+            $('#overlay').fadeIn();
            return token;
         }
 
