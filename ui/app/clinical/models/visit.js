@@ -123,6 +123,7 @@ Bahmni.Clinical.Visit.prototype = {
         return dischargeDispositionEncounter ? new Date(dischargeDispositionEncounter.encounterDateTime) : null;
     },
     getLabOrdersGroupedByAccession: function() {
+        var self = this;
         var orderGroup = new Bahmni.Clinical.OrdersMapper();
         var accessionNotesMapper = new Bahmni.Clinical.AccessionNotesMapper(this.encounterConfig);
         var accessions = orderGroup.group(this.labOrders, 'accessionUuid');
@@ -131,8 +132,24 @@ Bahmni.Clinical.Visit.prototype = {
                 return accessionDisplayList.concat(order.getDisplayList());
             }, []);
         });
+
         accessionNotesMapper.map(this.encounters, accessions);
-        return accessions;
+
+        function mapEncounterDateTime(encounters, accessions) {
+            accessions.forEach(function (accession) {
+                encounters.forEach(function (encounter) {
+                    if (encounter.encounterUuid === accession.accessionUuid) {
+                        accession.encounterDateTime = encounter.encounterDateTime;
+                    }
+                });
+            });
+        }
+
+        mapEncounterDateTime(this.encounters, accessions);
+
+        return _.sortBy(accessions,function (accession) {
+            return accession.encounterDateTime;
+        }).reverse();
     },
     toggleLabInvestigation : function () {
         this.showLabInvestigations = !this.showLabInvestigations;
