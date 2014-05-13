@@ -45,6 +45,7 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                 });
             };
 
+            $rootScope.showControlPanel = false;
             $rootScope.toggleControlPanel = function () {
                 $rootScope.showControlPanel = !$rootScope.showControlPanel;
             };

@@ -1,5 +1,6 @@
 <div class="dashboard-header opd-header-wrapper" ng-controller="PatientDashboardController">
     <div class="opd-header-bottom">
-        <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}"></button><a class="confirm quick-links" ng-if="activeVisit" href="#/patient/{{patient.uuid}}/visit/{{activeVisit.uuid}}">Start Consultation</a>
+        <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}"></button>
+        <a class="confirm quick-links" ng-if="activeVisit" ng-click="toggleControlPanel()" href="#/patient/{{patient.uuid}}/visit/{{activeVisit.uuid}}">Start Consultation</a>
     </div>
 </div>
