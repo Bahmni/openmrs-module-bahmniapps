@@ -39,6 +39,18 @@ angular.module('bahmni.common.patient')
                 return dateStr;
             };
 
+            var mapGenderText = function(genderChar) {
+                if (genderChar == null ) {
+                    return null;
+                } else if(genderChar == 'M' || genderChar == 'm')  {
+                    return "Male";
+                } else if (genderChar == 'F' || genderChar == 'f') {
+                    return "Female";
+                } else {
+                    return "Other";
+                }
+            }
+
             var map = function (openmrsPatient) {
                 var patient = {};
                 var birthdate = parseDate(openmrsPatient.person.birthdate);
@@ -49,6 +61,7 @@ angular.module('bahmni.common.patient')
                 patient.birthdate = birthdate;
                 patient.age =  openmrsPatient.person.age;
                 patient.gender = openmrsPatient.person.gender;
+                patient.genderText = mapGenderText(patient.gender);
                 patient.address = mapAddress(openmrsPatient.person.preferredAddress);
                 patient.identifier = openmrsPatient.identifiers[0].identifier;
                 patient.image = "/openmrs/ws/rest/v1/personimage/" + openmrsPatient.uuid + ".jpeg" + "?q=" + new Date().getTime();
