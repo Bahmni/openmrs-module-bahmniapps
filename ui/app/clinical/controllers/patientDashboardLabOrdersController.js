@@ -4,8 +4,8 @@ angular.module('bahmni.clinical')
             $scope.patientUuid = $stateParams.patientUuid;
             $scope.patientSummary = {message: "No Lab Orders made for this patient."};
             $scope.labOrdersForLatestVisits = {
-                "Latest": {displayName: "Latest", labOrders: undefined},
-                "Previous": {displayName: "Previous", labOrders: undefined}
+                "Latest": {displayName: "Latest Visit", labOrders: undefined},
+                "Previous": {displayName: "Previous Visit", labOrders: undefined}
             };
 
             function getLatestLabOrder(visit) {
