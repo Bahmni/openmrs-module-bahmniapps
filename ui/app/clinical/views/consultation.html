@@ -66,7 +66,8 @@
         <section class="block">
             <table>
                 <tbody ng-repeat="observation in observationsToDisplay">
-                    <tr class="form-field" ng-class="{true: 'is-abnormal'}[observation.abnormal.value]">
+                    <tr class="form-field" ng-class="{true: 'is-abnormal'}[observation.abnormal.value]"
+                        ng-if="observation.value">
                         <td><span class="field-attribute"><label>{{observation.concept.name}}:</label></span></td>
                         <td>
                             <span class="value-text-only">{{observation.value}}</span>
