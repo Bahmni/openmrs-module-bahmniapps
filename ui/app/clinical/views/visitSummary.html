@@ -188,7 +188,6 @@
             <tr ng-if="line.isSummary" ng-class="testResultClass(line)">
                 <td colspan="2" ng-hide="!line.name">
                     {{line.name}}
-                    <span class="status" ng-show="pendingResults(line)">Pending!</span>
                 </td>
             </tr>
             <tr ng-if="!line.isSummary"

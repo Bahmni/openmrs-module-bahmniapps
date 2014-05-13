@@ -14,7 +14,6 @@
                 <tr ng-if="labOrder.isPanel()" ng-class="testResultClass(labOrder)">
                     <td colspan="2">
                         <strong>{{labOrder.concept.name}}</strong>
-                        <span class="status" ng-show="pendingResults(labOrder)">Pending!</span>
                     </td>
                 </tr>
                 <tr ng-if="labOrder.isPanel()" ng-repeat="test in labOrder.orderable.tests">
@@ -40,9 +39,6 @@
 
                             </span>
                             <span class="fr date">{{ labOrder.orderDate | date :'dd MMM yy'}}</span>
-                        </span>
-                        <span class="status" ng-if="!hasResult(test)">
-                            Pending!
                         </span>
                     </td>
                 </tr>
@@ -71,9 +67,6 @@
                                 {{labOrder.orderable.results[0].value}}
                             </span>
                             <span class="fr date">{{ labOrder.orderDate | date :'dd MMM yy'}}</span>
-                        </span>
-                        <span ng-if="!hasResult(labOrder.orderable)" class="status">
-                            Pending!
                         </span>
                     </td>
                 </tr>
