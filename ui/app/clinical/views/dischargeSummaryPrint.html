@@ -7,7 +7,7 @@
 	<span ng-if="result.value" ng-class="{abnormal: result.isAbnormal}">
 		<span class="test-name">{{result.concept.name}}</span>
     	<span class="test-date">{{test.orderDate | date:'d MMM yy'}}</span>
-    	<span class="test-value">{{result.value}}</span>
+        <span class="test-value">{{result.value}} {{result.units}}</span>
 	</span>
  </script>
 <script type="text/ng-template" id="testTemplate">
