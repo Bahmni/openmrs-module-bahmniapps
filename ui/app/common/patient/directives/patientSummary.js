@@ -22,7 +22,7 @@ angular.module('bahmni.common.patient').directive('patientSummary', function() {
         scope: {
             patient: "=",
             bedDetails: "=",
-            onImageClickHandler: "&",
+            onImageClickHandler: "&"
         }
     }
 });

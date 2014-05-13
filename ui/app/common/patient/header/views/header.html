@@ -1,11 +1,5 @@
 <div class="opd-header-wrapper" id="opd-tabs">
     <div class="opd-header-bottom tabs">
-        <ul class="header-tabs">
-            <li ng-repeat="board in availableBoards" ng-class="{'tab-selected':currentBoard.name==board.name}">
-                <a ng-click="showBoard(board.name)" class="button">{{board.name}}</a>
-            </li>
-        </ul>
-
         <patient-summary patient="patient" bed-details="bedDetails" on-image-click-handler="gotoPatientDashboard()"/>
     </div>
 </div>

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('opd.documentupload').factory('initialization',
-    ['$rootScope', '$q', '$window', '$location', 'configurationService', 'patientService', 'patientMapper', 'authenticator', 'appService','spinner',
-        function ($rootScope, $q, $window, $location, configurationService, patientService, patientMapper, authenticator, appService, spinner) {
+    ['$rootScope', '$q', '$window', '$location', 'configurationService', 'authenticator', 'appService','spinner',
+        function ($rootScope, $q, $window, $location, configurationService, authenticator, appService, spinner) {
 
             var initializationPromise = $q.defer();
             var url = purl(decodeURIComponent($window.location));
