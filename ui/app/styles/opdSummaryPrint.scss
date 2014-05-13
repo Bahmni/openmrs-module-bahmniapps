@@ -23,6 +23,9 @@ table {
   width: 100%;
   border-spacing: 0;
   border-collapse: collapse;
+  th {
+    font-weight: bold;
+  }
 }
 table tr td {border: 1px solid #ccc; padding: 5px;}
 ul li {
@@ -153,4 +156,9 @@ section.block h2 {
 .radiology-investigations .radiology-doc-item .footer-note {float: right;}
 button, input[type="button"] {
   display: none;
+}
+.lab-investigation table th span.lab-report-title {
+  font-weight: bold;
+  color: #000;
+  font-size: 15px!important;
 }
