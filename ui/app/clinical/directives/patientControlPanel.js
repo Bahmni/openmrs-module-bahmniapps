@@ -13,14 +13,8 @@ angular.module('bahmni.common.patient')
     var link = function($scope) {
         $scope.patient = $rootScope.patient;
         $scope.visits = $rootScope.visits;
+        $scope.activeVisit = $rootScope.activeVisit;
         var DateUtil = Bahmni.Common.Util.DateUtil;
-
-        $scope.activeVisit = (function (){
-            return $scope.visits.filter(function(visit) {
-                return visit.isActive();
-            })[0];
-        })();
-
 
         $scope.getConsultationPadLink = function () {
             if ($scope.activeVisit) {

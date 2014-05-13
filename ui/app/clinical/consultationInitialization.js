@@ -39,9 +39,12 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
 
             var getPatientVisitHistory = function () {
                 patientVisitHistoryService.getVisits(patientUuid).then(function (visits) {
-                    $rootScope.visits = visits.map(function(visitData) {
+                    $rootScope.visits = visits.map(function (visitData) {
                         return new Bahmni.Clinical.VisitHistoryEntry(visitData)
                     });
+                    $rootScope.activeVisit = $rootScope.visits.filter(function (visit) {
+                        return visit.isActive();
+                    })[0];
                 });
             };
 

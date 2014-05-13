@@ -1,5 +1,5 @@
 angular.module('bahmni.clinical')
-    .controller('PatientDashboardVitalsController', ['$scope', '$stateParams', 'patientVisitHistoryService', 'encounterService', 'conceptSetService', '$q', 'spinner', function ($scope, $stateParams, patientVisitHistoryService, encounterService, conceptSetService, $q, spinner) {
+    .controller('PatientDashboardVitalsController', ['$scope', '$stateParams', 'patientVisitHistoryService', 'encounterService', 'conceptSetService', '$q', 'spinner', '$rootScope', function ($scope, $stateParams, patientVisitHistoryService, encounterService, conceptSetService, $q, spinner, $rootScope) {
         $scope.patientUuid = $stateParams.patientUuid;
         var createObservationsObject = function (encounterTransactions) {
             return new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions);
@@ -9,10 +9,6 @@ angular.module('bahmni.clinical')
 
         var getVisitHistory = function (visitData) {
             return new Bahmni.Clinical.VisitHistoryEntry(visitData);
-        };
-
-        var isVisitActive = function (visit) {
-            return visit.isActive();
         };
 
         var init = function () {
@@ -27,7 +23,7 @@ angular.module('bahmni.clinical')
                 vitalsConcept = results[1].data.results[0];
 
                 $scope.visits = visits.map(getVisitHistory);
-                $scope.activeVisit = $scope.visits.filter(isVisitActive)[0];
+                $scope.activeVisit = $rootScope.activeVisit;
 
                 createPatientSummary(vitalsConcept);
 

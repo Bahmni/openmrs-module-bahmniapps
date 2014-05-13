@@ -34,8 +34,8 @@ angular.module('bahmni.clinical')
 
             var init = function () {
 
-                if ($scope.visits) {
-                    var lastTwoVisitUuids = getLastNVisitUuids($scope.visits, 2);
+                if ($rootScope.visits) {
+                    var lastTwoVisitUuids = getLastNVisitUuids($rootScope.visits, 2);
 
                     encounterService.searchForVisits(lastTwoVisitUuids).success(function (encounterTransactions) {
                         var groupedEncounterTransactions = _.groupBy(encounterTransactions, function (encounterTransaction) {
