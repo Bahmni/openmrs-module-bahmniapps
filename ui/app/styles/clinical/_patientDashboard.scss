@@ -64,7 +64,6 @@
       background: #eee;
       padding: 10px;
       display: block;
-      margin-bottom: 5px;
     }
     .form-field-group .form-field {
       border: 0;
@@ -81,7 +80,8 @@
       padding: 5px;
       font-size: 14px;
       .field-attribute {
-        color: #888;
+        width: 50%;
+        display: inline-block;
       }
       .time {
         font-size: 11px;
