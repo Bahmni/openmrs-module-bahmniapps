@@ -266,9 +266,42 @@
         </div>
     </ul>
 </section>
+
+<section class="block ipd-treatment-section" ng-if="visit.hasIPDDrugOrdes()">
+    <h2>In Patient Treatment</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>
+                <span bo-text="(visit.ipdDrugSchedule.fromDate | date:'dd MMM yy') + ' - '+ (visit.ipdDrugSchedule.toDate | date:'dd MMM yy')"></span>
+            </th>
+            <th ng-repeat="drug in visit.ipdDrugSchedule.drugs" bo-text="drug.name" class="drug"
+                ng-class="{active: drug.isActive()}"></th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="day in visit.ipdDrugSchedule.days">
+            <td bo-text="'D'+ day.dayNumber"></td>
+            <td ng-repeat="drug in visit.ipdDrugSchedule.drugs">
+                <span class="icon-ok" bo-if="drug.isActiveOnDate(day.date)"/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+
 <section class="block treatment-section" ng-show="visit.hasDrugOrders()">
-    <h2>Treatment</h2>
-    <table ng-repeat="drugOrderGroup in visit.drugOrderGroups">
+    <h2 ng-click="visit.toggleTreatmentSection()" class="has-toggle">
+        <button class="section-toggle" ng-if="visit.admissionDate">
+            <i class="icon-caret-right"
+               ng-hide="visit.showTreatmentSection"></i>
+            <i class="icon-caret-down"
+               ng-show="visit.showTreatmentSection"></i>
+        </button>
+        Treatment
+    </h2>
+    <table ng-repeat="drugOrderGroup in visit.drugOrderGroups" ng-show="visit.showTreatmentSection">
         <tr>
             <th class="drugorder-date" colspan="7"><strong>{{(drugOrderGroup.date | date:'dd MMM yy')}}</strong></th>
         </tr>
@@ -316,29 +349,6 @@
                     </span>
                     <span class="provider" bo-text="drugOrder.provider.name"></span>
                 </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</section>
-<section class="block ipd-treatment-section" ng-if="visit.hasIPDDrugOrdes()">
-    <h2>In Patient Treatment</h2>
-    <table>
-        <thead>
-        <tr>
-            <th>
-                <span bo-text="(visit.ipdDrugSchedule.fromDate | date:'dd MMM yy') + ' - '+ (visit.ipdDrugSchedule.toDate | date:'dd MMM yy')"></span>
-            </th>
-            <th ng-repeat="drug in visit.ipdDrugSchedule.drugs" bo-text="drug.name" class="drug"
-                ng-class="{active: drug.isActive()}"></th>
-
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="day in visit.ipdDrugSchedule.days">
-            <td bo-text="'D'+ day.dayNumber"></td>
-            <td ng-repeat="drug in visit.ipdDrugSchedule.drugs">
-                <span class="icon-ok" bo-if="drug.isActiveOnDate(day.date)"/>
             </td>
         </tr>
         </tbody>

@@ -44,6 +44,7 @@ Bahmni.Clinical.Visit = function (encounters, drugOrders, consultationNotes, oth
     this.visitEndDate = this.getDischargeDispositionEncounterDate() || this.getDischargeDate() || Bahmni.Common.Util.DateUtil.now();
     this.tabularResults = Bahmni.Clinical.TabularLabResults.create(labOrders, this.admissionDate, this.visitEndDate, allTestsAndPanelsConceptSet);
     this.showLabInvestigations = this.admissionDate ? false: true;
+    this.showTreatmentSection = this.admissionDate ? false: true;
 };
 
 Bahmni.Clinical.Visit.prototype = {
@@ -159,6 +160,9 @@ Bahmni.Clinical.Visit.prototype = {
     },
     toggleLabInvestigation : function () {
         this.showLabInvestigations = !this.showLabInvestigations;
+    },
+    toggleTreatmentSection : function () {
+        this.showTreatmentSection = !this.showTreatmentSection;
     },
     getLatestDiagnoses: function(){
         return _.uniq(this.diagnoses, function(diagnosis){ return diagnosis.getDisplayName(); });
