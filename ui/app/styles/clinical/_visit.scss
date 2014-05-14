@@ -491,6 +491,12 @@ span.range {
   text-align: center;
   border-radius: 3px;
 }
+.row-click {
+  cursor: pointer;
+}
+.visit .history-diagnosis .diagnosis-row .view-past {
+  cursor: default;
+}
 
 
 // Work in progresss - this _visit.scss needs cleaning!

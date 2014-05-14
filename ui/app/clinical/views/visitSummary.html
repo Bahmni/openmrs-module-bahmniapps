@@ -143,7 +143,7 @@
             </tbody>
         </table>
     </div>
-    <h2 ng-click="visit.toggleLabInvestigation()" class="has-toggle" ng-if="visit.admissionDate">
+    <h2 ng-click="visit.toggleLabInvestigation()" class="has-toggle row-click" ng-if="visit.admissionDate">
         <button class="section-toggle">
             <i class="icon-caret-right"
                ng-hide="visit.showLabInvestigations"></i>
@@ -157,10 +157,10 @@
     <div ng-repeat="labOrders in visit.labTestOrderObsMap" ng-show="visit.showLabInvestigations" class="lab-investigation">
         <table>
             <thead>
-            <tr>
+            <tr ng-click="toggle(labOrders)" class="row-click">
                 <th colspan="2">
                     <span class="date" bo-text="'Lab Report ' +($index+1)"> </span>
-                    <button class="toggle-btn fr" ng-click="toggle(labOrders)" ng-if="labOrders.accessionNotes">
+                    <button class="toggle-btn fr" ng-if="labOrders.accessionNotes">
                         <i class="icon-envelope" ng-hide="labOrders.show"></i>
                         <i class="icon-envelope-alt" ng-show="labOrders.show"></i>
                         Notes
@@ -190,7 +190,7 @@
                 </td>
             </tr>
             <tr ng-if="!line.isSummary"
-                ng-class="{'is-abnormal': line.isAbnormal, 'referred-out': line.referredOut}">
+                ng-class="{'is-abnormal': line.isAbnormal, 'referred-out': line.referredOut}" ng-click="toggle(line)" class="row-click">
                 <td>
                     <span>{{line.concept.name}}</span>                    
                     <span class="range">
@@ -205,8 +205,8 @@
 
                     <span class="referred">Referred Out</span>
                     <button class="toggle fr">
-                        <i class="icon-plus-sign" ng-click="toggle(line)" ng-hide="line.show"></i>
-                        <i class="icon-minus-sign" ng-click="toggle(line)" ng-show="line.show"></i>
+                        <i class="icon-plus-sign"  ng-hide="line.show"></i>
+                        <i class="icon-minus-sign" ng-show="line.show"></i>
                     </button>
                 </td>
             </tr>
@@ -308,7 +308,7 @@
             <th class="drugorder-date" colspan="7"><strong>{{(drugOrderGroup.date | date:'dd MMM yy')}}</strong></th>
         </tr>
         <tbody ng-repeat="drugOrder in drugOrderGroup.orders">
-        <tr>
+        <tr ng-click="toggle(drugOrder)" class="row-click">
             <td class="drug-name" bo-text="drugOrder.drugName"></td>
             <td>
                 <span bo-show="drugOrder.doseStrength" bo-text="drugOrder.doseStrength"></span>
@@ -335,8 +335,8 @@
                     <span bo-show="drugOrder.prn" class="prn">Take as required</span>
                 </div>
                 <button class="toggle fr">
-                    <i class="icon-plus-sign" ng-click="toggle(drugOrder)" ng-hide="drugOrder.show"></i>
-                    <i class="icon-minus-sign" ng-click="toggle(drugOrder)" ng-show="drugOrder.show"></i>
+                    <i class="icon-plus-sign"  ng-hide="drugOrder.show"></i>
+                    <i class="icon-minus-sign" ng-show="drugOrder.show"></i>
                 </button>
             </td>
         </tr>
@@ -361,12 +361,11 @@
     <h2>Disposition</h2>
     <ul class="block-content">
         <li ng-repeat="disposition in visit.dispositions">
-            <div class="expander-row">
-
+            <div class="expander-row" ng-click="toggle(note)" class="row-click">
                 <span class="disposition-state">{{disposition.code}} <span>on</span> {{disposition.dispositionDateTime | date:'dd MMM yy hh:mm a'}} <span>by</span> {{disposition.provider.name}}</span>
                 <button ng-repeat="note in disposition.additionalObs" class="toggle fr">
-                    <i class="icon-plus-sign" ng-click="toggle(note)" ng-hide="note.show"></i>
-                    <i class="icon-minus-sign" ng-click="toggle(note)" ng-show="note.show"></i>
+                    <i class="icon-plus-sign" ng-hide="note.show"></i>
+                    <i class="icon-minus-sign" ng-show="note.show"></i>
                 </button>
 
             </div>
