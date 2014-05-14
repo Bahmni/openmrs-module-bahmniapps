@@ -5,7 +5,6 @@ angular.module('opd.patientDashboard', [])
     function ($scope, $rootScope, $location, $stateParams, patientVisitHistoryService, urlHelper, visitService, encounterService, appService, $window, spinner) {
         $scope.patientUuid = $stateParams.patientUuid;
         $scope.activeVisitData = {};
-        $scope.patient = $rootScope.patient;
 
         $scope.obsIgnoreList = appService.getAppDescriptor().getConfigValue("obsIgnoreList") || {};
         $scope.patientDashboardSections = appService.getAppDescriptor().getConfigValue("patientDashboardSections") || {};
@@ -49,7 +48,6 @@ angular.module('opd.patientDashboard', [])
 
         var init = function () {
             $scope.showSummary();
-            $scope.activeVisit = $rootScope.activeVisit;
         };
         init();
 
