@@ -71,7 +71,11 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', functi
             .state('patient.consultation.visit', {
                 url: '/visit/:visitUuid',
                 templateUrl: 'views/visit.html',
-                controller: 'VisitController'
+                controller: 'VisitController',
+                resolve: {
+                    visitInitialization: function(visitInitialization, $stateParams) {
+                    return visitInitialization($stateParams.patientUuid, $stateParams.visitUuid);
+                }}
             })
             .state('patient.consultation.summary', {
                 url: '/consultation',
