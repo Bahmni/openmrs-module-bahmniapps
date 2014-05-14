@@ -1,4 +1,7 @@
 <section>
+    <section ng-show="!visit.hasData()">
+        No visit information for this patient
+    </section>
     <section ng-show="visit.hasDiagnosis()" class="block diagnosis">
         <h2>Diagnoses</h2>
 
@@ -11,9 +14,6 @@
             </div>
 
             <div class="table-body">
-                <div class="row placeholder" ng-show="!visit.hasDiagnosis()">A diagnosis has not been made for this
-                    patient yet.
-                </div>
                 <div class="row diagnosis-row" ng-repeat="diagnosis in visit.getLatestDiagnoses()">
                     <div class="view-past">
                         <div class="col col1">
