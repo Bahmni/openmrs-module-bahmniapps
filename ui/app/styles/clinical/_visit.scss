@@ -234,6 +234,11 @@ strong {
   table {
     margin-top: 0;
     margin-bottom: 10px;
+    tr.title th {
+      background: #f6f6f6;
+      font-size: 14px;
+      white-space: nowrap;
+    }
     tr td {
       font-size: 14px;
     }
@@ -242,6 +247,9 @@ strong {
     }
     .drugorder-date {
       text-transform: uppercase;
+    }
+    .dosage-form {
+      white-space: nowrap;
     }
     .dosage-days {
       .inline-notes {

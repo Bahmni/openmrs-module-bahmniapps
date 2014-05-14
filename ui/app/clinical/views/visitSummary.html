@@ -297,9 +297,19 @@
         Treatment
     </h2>
     <table ng-repeat="drugOrderGroup in visit.drugOrderGroups" ng-show="visit.showTreatmentSection">
-        <tr>
-            <th class="drugorder-date" colspan="7"><strong>{{(drugOrderGroup.date | date:'dd MMM yy')}}</strong></th>
-        </tr>
+ 	 <thead>
+            <tr>
+                <th class="drugorder-date" colspan="7"><strong>{{(drugOrderGroup.date | date:'dd MMM yy')}}</strong></th>
+            </tr>
+            <tr class="title">
+                <th>Drug Name</th>
+                <th>Strength</th>
+                <th>Form</th>
+                <th>Frequency</th>
+                <th>Instruction</th>
+                <th>Duration</th>
+            </tr>
+        </thead>
         <tbody ng-repeat="drugOrder in drugOrderGroup.orders">
         <tr ng-click="toggle(drugOrder)" class="row-click">
             <td class="drug-name" bo-text="drugOrder.drugName"></td>
