@@ -83,9 +83,10 @@
         color: #888;
       }
       .time {
-        font-size: 12px;
-        color: #bbb;
+        font-size: 11px;
+        color: #888;
         float: right;
+        padding-right: 5px;
       }
     }
     .is-abnormal .field-attribute {
@@ -118,10 +119,10 @@
       }
     }
     td.days, td.dosage {
-      font-size: 12px;
+      font-size: 11px;
       width: 25%;
       span {
-        color: #aaa;
+        color: #888;
       }
     }
   }
@@ -142,6 +143,7 @@
 }
 .dashboard-diagnosis-section {
   .diagnosis .history-diagnosis .table-body {
+    .row {background: #fff;}
     .diagnosis-name {
       color: #333;
       float: left;
@@ -193,6 +195,7 @@
     }
     td span.range {
       font-size: 11px;
+      color: #888;
     }
     tr td.value {
       width: 49%;
@@ -206,7 +209,7 @@
     tr td .fr.date {
       float: right;
       font-size: 11px;
-      color: #aaa;
+      color: #888;
     }
   }
 }
@@ -245,6 +248,6 @@
 }
 
 .testUnderPanel{
-  padding-left: 30px;
+  padding-left: 20px;
 }
 
