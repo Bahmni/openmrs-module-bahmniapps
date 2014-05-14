@@ -102,7 +102,7 @@
 </section>
 <section class="block laborder-section" ng-show="visit.hasLabTests()">
     <div ng-if="visit.admissionDate">
-        <h2 class="ipd-investigation-title"> In Patient Investigations</h2>
+        <h2 class="ipd-investigation-title">Investigations Chart</h2>
         <table class="ipd-investigation">
             <thead>
             <tr>
@@ -159,7 +159,8 @@
             <thead>
             <tr ng-click="toggle(labOrders)" class="row-click">
                 <th colspan="2">
-                    <span class="date" bo-text="'Lab Report ' +($index+1)"> </span>
+                    <span>Accession time: </span>
+                    <span bo-text="labOrders.encounterDateTime | date:'dd MMM yy hh:mm a'"></span>
                     <button class="toggle-btn fr" ng-if="labOrders.accessionNotes">
                         <i class="icon-envelope" ng-hide="labOrders.show"></i>
                         <i class="icon-envelope-alt" ng-show="labOrders.show"></i>
@@ -172,10 +173,6 @@
                     <div ng-repeat="accessionNote in labOrders.accessionNotes" class="accession">
                         <pre class="left">{{accessionNote.text}}</pre>
                         <div class="footer-note fr">
-                            <span class="time-stamp">
-                                <span class="date" bo-text="accessionNote.dateTime | date:'dd MMM yy'"></span>
-                                <span class="time" bo-text="accessionNote.dateTime | date :'hh:mm a'"></span>
-                            </span>
                             <span class="provider" bo-text="accessionNote.providerName"></span>
                         </div>
                     </div>
@@ -216,10 +213,6 @@
                     <pre class="left">{{line.notes}}</pre>
 
                     <div class="footer-note right">
-                                    <span class="time-stamp">
-                                        <span class="date" bo-text="line.observationDateTime | date:'dd MMM yy'"></span>
-                                        <span class="time" bo-text="line.observationDateTime | date :'hh:mm a'"></span>
-                                    </span>
                         <span class="provider" bo-text="line.providerName"></span>
                     </div>
 
@@ -351,6 +344,29 @@
                     </span>
                     <span class="provider" bo-text="drugOrder.provider.name"></span>
                 </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+<section class="block ipd-treatment-section" ng-if="visit.hasIPDDrugOrdes()">
+    <h2>Treatment Chart</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>
+                <span bo-text="(visit.ipdDrugSchedule.fromDate | date:'dd MMM yy') + ' - '+ (visit.ipdDrugSchedule.toDate | date:'dd MMM yy')"></span>
+            </th>
+            <th ng-repeat="drug in visit.ipdDrugSchedule.drugs" bo-text="drug.name" class="drug"
+                ng-class="{active: drug.isActive()}"></th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="day in visit.ipdDrugSchedule.days">
+            <td bo-text="'D'+ day.dayNumber"></td>
+            <td ng-repeat="drug in visit.ipdDrugSchedule.drugs">
+                <span class="icon-ok" bo-if="drug.isActiveOnDate(day.date)"/>
             </td>
         </tr>
         </tbody>
