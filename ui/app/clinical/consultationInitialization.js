@@ -48,7 +48,6 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
 
                     encounterService.search($rootScope.activeVisit.uuid).success(function (encounterTransactions) {
                         var obsIgnoreList = appService.getAppDescriptor().getConfig("obsIgnoreList").value || {};
-                        console.log("inside CI");
                         $rootScope.visit = Bahmni.Clinical.Visit.create(encounterTransactions, $rootScope.consultationNoteConcept, $rootScope.labOrderNotesConcept, $rootScope.encounterConfig, $rootScope.allTestsAndPanelsConcept, obsIgnoreList, $rootScope.activeVisit.uuid);
                     });
                 });
