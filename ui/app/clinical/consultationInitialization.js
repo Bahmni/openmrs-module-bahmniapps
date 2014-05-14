@@ -58,6 +58,10 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                 $rootScope.showControlPanel = !$rootScope.showControlPanel;
             };
 
+            $rootScope.collapseControlPanel = function () {
+                $rootScope.showControlPanel = false;
+            };
+
             return spinner.forPromise(
                 initialization.then(function(){
                     return $q.all([getActiveEncounter().then(getPastDiagnoses),getPatient().then(getPatientBedDetails),getPatientVisitHistory()]);
