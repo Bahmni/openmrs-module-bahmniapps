@@ -81,7 +81,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         }
 
         _.forEach(observations, function (savedObs) {
-            if (savedObs.concept.conceptClass === Bahmni.Common.Constants.conceptDetailsClassName || savedObs.concept.conceptClass.name === Bahmni.Common.Constants.conceptDetailsClassName) {
+            if (savedObs.concept.conceptClass && (savedObs.concept.conceptClass === Bahmni.Common.Constants.conceptDetailsClassName || savedObs.concept.conceptClass.name === Bahmni.Common.Constants.conceptDetailsClassName)) {
                 var observationNode = new Bahmni.ConceptSet.ObservationNode(savedObs, savedObs, []);
                 var obsToDisplay = createObservationForDisplay(observationNode, observationNode.primaryObs.concept);
                 if (obsToDisplay)

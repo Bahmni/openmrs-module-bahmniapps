@@ -104,7 +104,7 @@
             <ul ng-if="disposition.conceptName">
                 <li>
                     <span>{{disposition.conceptName}}</span><span class="disposition-time">{{disposition.dispositionDateTime | date :'dd-MM-yyyy hh:mm' }}</span>
-                    <div class="notes inline-notes">
+                    <div class="notes inline-notes" ng-if="disposition.additionalObs[0].value">
                         {{disposition.additionalObs[0].value}}
                     </div>
                 </li>
