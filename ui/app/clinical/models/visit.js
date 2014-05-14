@@ -66,14 +66,19 @@ Bahmni.Clinical.Visit.prototype = {
     hasLabTests: function () {
         return this.labTestOrderObsMap.length > 0;
     },
+    hasRadiologyOrders: function(){
+        return this.radiologyOrders && this.radiologyOrders.length > 0;
+    },
     hasData: function () {
+        console.log(this.radiologyOrders);
         return this.hasDrugOrders()
             || this.hasObservations()
             || this.hasConsultationNotes()
             || this.hasLabTests()
             || this.hasOtherInvestigations()
             || this.hasDiagnosis()
-            || this.hasDisposition();
+            || this.hasDisposition()
+            || this.hasRadiologyOrders();
     },
     isConfirmedDiagnosis: function (certainity) {
         return certainity === 'CONFIRMED';

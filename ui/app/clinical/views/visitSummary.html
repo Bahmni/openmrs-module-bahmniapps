@@ -145,8 +145,8 @@
             </tbody>
         </table>
     </div>
-    <h2 ng-click="visit.toggleLabInvestigation()" class="has-toggle">
-        <button class="section-toggle" ng-if="visit.admissionDate">
+    <h2 ng-click="visit.toggleLabInvestigation()" class="has-toggle" ng-if="visit.admissionDate">
+        <button class="section-toggle">
             <i class="icon-caret-right"
                ng-hide="visit.showLabInvestigations"></i>
             <i class="icon-caret-down"
@@ -154,6 +154,7 @@
         </button>
         Lab Investigations
     </h2>
+    <h2 ng-if="!visit.admissionDate">Lab Investigations</h2>
 
     <div ng-repeat="labOrders in visit.labTestOrderObsMap" ng-show="visit.showLabInvestigations" class="lab-investigation">
         <table>
@@ -292,13 +293,16 @@
 </section>
 
 <section class="block treatment-section" ng-show="visit.hasDrugOrders()">
-    <h2 ng-click="visit.toggleTreatmentSection()" class="has-toggle">
-        <button class="section-toggle" ng-if="visit.admissionDate">
+    <h2 ng-click="visit.toggleTreatmentSection()" class="has-toggle" ng-if="visit.admissionDate">
+        <button class="section-toggle">
             <i class="icon-caret-right"
                ng-hide="visit.showTreatmentSection"></i>
             <i class="icon-caret-down"
                ng-show="visit.showTreatmentSection"></i>
         </button>
+        Treatment
+    </h2>
+    <h2 ng-if="!visit.admissionDate">
         Treatment
     </h2>
     <table ng-repeat="drugOrderGroup in visit.drugOrderGroups" ng-show="visit.showTreatmentSection">
