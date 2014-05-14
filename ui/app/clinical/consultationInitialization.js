@@ -16,7 +16,7 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
 
             var getActiveEncounter = function() {
                 var currentProviderUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
-                return encounterService.activeEncounter({ 
+                return encounterService.activeEncounter({
                     patientUuid : patientUuid,
                     encounterTypeUuid : $rootScope.encounterConfig.getOpdConsultationEncounterTypeUuid(),
                     providerUuid: currentProviderUuid,
@@ -31,7 +31,7 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
             var getPastDiagnoses = function() {
                 return diagnosisService.getPastDiagnoses(patientUuid).success(function (response) {
                     var diagnosisMapper = new Bahmni.DiagnosisMapper();
-                    $rootScope.allDiagnoses = diagnosisMapper.mapDiagnoses(response); 
+                    $rootScope.allDiagnoses = diagnosisMapper.mapDiagnoses(response);
                     $rootScope.consultation.pastDiagnoses = diagnosisMapper.mapPastDiagnosis($rootScope.allDiagnoses, $rootScope.consultation.encounterUuid);
                     $rootScope.consultation.savedDiagnosesFromCurrentEncounter = diagnosisMapper.mapSavedDiagnosesFromCurrentEncounter($rootScope.allDiagnoses, $rootScope.consultation.encounterUuid);
                 });
@@ -45,6 +45,12 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                     $rootScope.activeVisit = $rootScope.visits.filter(function (visit) {
                         return visit.isActive();
                     })[0];
+
+                    encounterService.search($rootScope.activeVisit.uuid).success(function (encounterTransactions) {
+                        var obsIgnoreList = appService.getAppDescriptor().getConfig("obsIgnoreList").value || {};
+                        console.log("inside CI");
+                        $rootScope.visit = Bahmni.Clinical.Visit.create(encounterTransactions, $rootScope.consultationNoteConcept, $rootScope.labOrderNotesConcept, $rootScope.encounterConfig, $rootScope.allTestsAndPanelsConcept, obsIgnoreList, $rootScope.activeVisit.uuid);
+                    });
                 });
             };
 
