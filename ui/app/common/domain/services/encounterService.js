@@ -51,15 +51,14 @@ angular.module('bahmni.common.domain')
     };
 
     this.searchForVisits = function(visitUuids) {
-            return $http.get(Bahmni.Common.Constants.bahmniEncounterUrl, {
-                params:{
-                    visitUuids : visitUuids,
-                    includeAll : Bahmni.Common.Constants.includeAllObservations
-                },
-                withCredentials : true
-            });
-
-        }
+        return $http.get(Bahmni.Common.Constants.bahmniEncounterUrl, {
+            params:{
+                visitUuids : visitUuids,
+                includeAll : Bahmni.Common.Constants.includeAllObservations
+            },
+            withCredentials : true
+        });
+    }
 
     var getEncountersOfCurrentVisit = function(patientUuid) {
         var deferredEncounters = $q.defer();
