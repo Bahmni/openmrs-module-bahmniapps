@@ -564,6 +564,10 @@ aside{
     ul {
       margin-bottom: 20px;
     }
+    ul.visit-history {
+      height: 264px;
+      overflow-y: auto;
+    }
     li a {
       display: block;
       padding: 8px 10px 8px 10px;

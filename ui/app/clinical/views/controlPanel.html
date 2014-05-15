@@ -23,7 +23,7 @@
         </ul>
 
         <h2>Visit History</h2>
-        <ul>
+        <ul class="visit-history">
             <li ng-click="changeContext($event)" class="visit-history-entry"
                 ng-class="{'selected': isCurrentVisit(visit), 'active': visit.isActive()}"
                 ng-repeat="visit in $parent.visits">
