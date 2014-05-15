@@ -64,14 +64,14 @@ angular.module('bahmni.common.patient')
                 patient.genderText = mapGenderText(patient.gender);
                 patient.address = mapAddress(openmrsPatient.person.preferredAddress);
                 patient.identifier = openmrsPatient.identifiers[0].identifier;
-                patient.image = "/openmrs/ws/rest/v1/personimage/" + openmrsPatient.uuid + ".jpeg" + "?q=" + new Date().getTime();
+                patient.image = "/openmrs/ws/rest/v1/personimage/" + openmrsPatient.uuid + ".jpeg";
                 patient.registrationDate = parseDate(openmrsPatient.person.personDateCreated);
                 mapAttributes(patient, openmrsPatient.person.attributes);
                 return patient;
             };
 
             var constructImageUrl = function (patientUuid) {
-                return  "/openmrs/ws/rest/v1/personimage/" + patientUuid + ".jpeg" + "?q=" + new Date().getTime();
+                return  "/openmrs/ws/rest/v1/personimage/" + patientUuid + ".jpeg";
             };
 
             return {
