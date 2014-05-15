@@ -31,6 +31,10 @@ Bahmni.Clinical.Diagnosis = function (codedAnswer, order, certainty, existingObs
         return self.order == "SECONDARY";
     };
 
+    self.isRuledOut = function(){
+        return self.diagnosisStatus == "RULED OUT";
+    };
+
     self.answerNotFilled = function () {
         return !self.codedAnswer.name;
     };

@@ -70,7 +70,6 @@ Bahmni.Clinical.Visit.prototype = {
         return this.radiologyOrders && this.radiologyOrders.length > 0;
     },
     hasData: function () {
-        console.log(this.radiologyOrders);
         return this.hasDrugOrders()
             || this.hasObservations()
             || this.hasConsultationNotes()
