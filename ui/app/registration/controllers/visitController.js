@@ -156,7 +156,7 @@ angular.module('bahmni.registration')
                 $scope.context = {visitType:  visitType, patient: $scope.patient};
             };
 
-            spinner.forPromise(getPatient().then(getActiveEncounter).then(getConceptSet));
+            spinner.forPromise($q.all([getPatient(), getActiveEncounter()]).then(getConceptSet));
         }])
 
     .directive('confirmDialog', function ($q) {
