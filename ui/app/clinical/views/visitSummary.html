@@ -363,17 +363,17 @@
     <h2>Disposition</h2>
     <ul class="block-content">
         <li ng-repeat="disposition in visit.dispositions">
-            <div class="expander-row" ng-click="toggle(note)" class="row-click">
+            <div class="expander-row" ng-click="toggle(disposition)" class="row-click">
                 <span class="disposition-state">{{disposition.code}} <span>on</span> {{disposition.dispositionDateTime | date:'dd MMM yy hh:mm a'}} <span>by</span> {{disposition.provider.name}}</span>
                 <button ng-repeat="note in disposition.additionalObs" class="toggle fr">
-                    <i class="icon-plus-sign" ng-hide="note.show"></i>
-                    <i class="icon-minus-sign" ng-show="note.show"></i>
+                    <i class="icon-plus-sign" ng-hide="disposition.show"></i>
+                    <i class="icon-minus-sign" ng-show="disposition.show"></i>
                 </button>
 
             </div>
             <div>
                 <div ng-repeat="note in disposition.additionalObs">
-                    <div ng-show="note.show" class="inline-notes notes">
+                    <div ng-show="disposition.show" class="inline-notes notes">
                         <p class="left">
                             <strong>Disposition Notes: </strong>{{note.value}}
                         </p>

@@ -74,7 +74,11 @@ header h2 {
     }
   }
 }
-
+section.diagnosis-print, section.treatment-print {
+  table tr th {
+    text-align: left!important;
+  }
+}
 section {
   clear: both;
   text-align: left;
@@ -113,6 +117,8 @@ section h3:after {
   li.test-item {
     border-bottom: 1px solid #ccc;
     padding: 5px 0;
+    overflow: auto;
+    clear: both;
   }
   ol li {
     .pending-status {

@@ -1,6 +1,6 @@
+<link rel="stylesheet" href="../styles/clinical.css"/>
+<link rel="stylesheet" href="../styles/visitSummaryPrint.css"/>
 <div class="visit-summary-print">
-    <link rel="stylesheet" href="../styles/clinical.css"/>
-    <link rel="stylesheet" href="../styles/visitSummaryPrint.css"/>
     <header>
         <img class="logo" src="../images/jss-icon.png" alt="logo">
 
@@ -30,28 +30,21 @@
             <section ng-show="visit.hasDiagnosis()" class="block diagnosis">
                 <h2>Diagnoses</h2>
 
-                <div class="table history-diagnosis">
-                    <div class="row table-header">
-                        <div class="col col1"><span>Diagnosis Name</span></div>
-                        <div class="col col2"><span>Certainty</span></div>
-                    </div>
+                <table>
+                    <tr>
+                        <th>Diagnosis Name</th>
+                        <th>Certainty</th>
+                    </tr>
+                    <tr ng-repeat="diagnosis in visit.getLatestDiagnoses()" ng-if="!diagnosis.isRuledOut()">
+                        <td>
 
-                    <div class="table-body">
-                        <div class="row diagnosis-row" ng-repeat="diagnosis in visit.getLatestDiagnoses()"
-                             ng-if="!diagnosis.isRuledOut()">
-                            <div class="view-past">
-                                <div class="col col1">
-                                    <span class="diagnosis-name" bo-text="diagnosis.getDisplayName()"></span>
-                                </div>
-                                <div class="col col2">
-                                    <div class="view">
-                                        <span class="certainty">{{diagnosis.certainty}}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                            <span>{{diagnosis.getDisplayName()}}</span>
+                        </td>
+                        <td>
+                            <span>{{diagnosis.certainty}}</span>
+                        </td>
+                    </tr>
+                </table>
             </section>
             <section class="block treatment-section" ng-show="visit.hasDrugOrders()">
                 <h2>Treatment</h2>
@@ -121,15 +114,11 @@
                     <table>
                         <thead>
                         <tr>
-                            <th colspan="2">
-                                <span>Accession at </span>
-                                <span bo-text="labOrders.encounterDateTime | date:'dd MMM yy hh:mm a'"></span>
-                                <button class="toggle-btn fr" ng-click="toggle(labOrders)"
-                                        ng-if="labOrders.accessionNotes">
-                                    <i class="icon-envelope" ng-hide="labOrders.show"></i>
-                                    <i class="icon-envelope-alt" ng-show="labOrders.show"></i>
-                                    Notes
-                                </button>
+                            <th colspan="2" class="lab-report-title">
+                                <span>
+                                    <span>Accession at </span>
+                                    <span bo-text="labOrders.encounterDateTime | date:'dd MMM yy hh:mm a'"></span>
+                                </span>
                             </th>
                         </tr>
                         <tr ng-show="labOrders.show">
@@ -159,12 +148,8 @@
                             </td>
                             <td class="value" ng-class="{'is-abnormal': line.isAbnormal, 'referred-out': line.referredOut}">
                                 {{line.value}}
-
-                                <span class="referred">Referred Out</span>
-                                <button class="toggle fr">
-                                    <i class="icon-plus-sign" ng-click="toggle(line)" ng-hide="line.show"></i>
-                                    <i class="icon-minus-sign" ng-click="toggle(line)" ng-show="line.show"></i>
-                                </button>
+                                <span class="referred"> (Referred Out)</span>
+                                <span class="abnormal"> (Abnormal)</span>
                             </td>
                         </tr>
                         <tr ng-show="!line.isSummary && line.show">
