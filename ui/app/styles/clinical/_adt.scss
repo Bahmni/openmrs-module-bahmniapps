@@ -1,4 +1,23 @@
 .adt{
+  padding-top: 10px;
+  select.disposition-action {
+    color: #363463;
+    display: block;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    background-color: #FFF;
+    border: 1px solid #DDD;
+  }
+  .form-horizontal fieldset label {
+    text-align: left;
+    margin-left: 0;
+    padding-bottom: 5px;
+  }
+  .form-group .field-value textarea {
+    width: 97.5%;
+    margin-bottom: 5px;
+  }
   .split-button{
   overflow:hidden;
   margin: 2px;

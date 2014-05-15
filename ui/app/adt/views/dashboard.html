@@ -2,9 +2,9 @@
     <div>
         <span ng-show="myForm.service_id.$error.required">Select Action</span>
         <label>
-            Action: <select ng-model="dispositionAction"
-                            ng-options="d.name.display for d in dispositionActions"
-                            ng-change="refreshView()">
+            <select ng-model="dispositionAction"
+                    ng-options="d.name.display for d in dispositionActions"
+                    ng-change="refreshView()" class="disposition-action">
         </select>
         </label>
     </div>
