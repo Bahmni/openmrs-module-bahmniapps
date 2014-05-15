@@ -25,6 +25,7 @@ Bahmni.Common = Bahmni.Common || {};
         visitUrl: RESTWS_V1 + "/visit",
         endVisitUrl: BAHMNI_CORE + "/visit/endVisit",
         visitTypeUrl: RESTWS_V1 + "/visittype",
+        patientImageUrl: "/patient_images/",
         visitSummaryUrl: BAHMNI_CORE + "/visitsummary",
         openmrsUrl: "/openmrs",
         idgenConfigurationURL: RESTWS_V1 + "/idgen/identifiersources",

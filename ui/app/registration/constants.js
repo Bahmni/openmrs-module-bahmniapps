@@ -12,6 +12,7 @@ Bahmni.Registration.Constants = {
     },
     openmrsUrl: "/openmrs",
     baseOpenMRSRESTURL: "/openmrs/ws/rest/v1",
+    patientImageURL: "/patient_images/",
     bahmniRESTBaseURL: "/openmrs/ws/rest/v1/bahmnicore",
     emrApiRESTBaseURL: "/openmrs/ws/rest/emrapi",
     emrApiEncounterUrl: "/openmrs/ws/rest/emrapi/encounter",

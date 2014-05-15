@@ -97,6 +97,6 @@ describe('Patient resource', function () {
 
         var rememberedPatient = patientService.getPatient();
 
-        expect(rememberedPatient.image).toContain("/openmrs/ws/rest/v1/personimage/" + patient.uuid + ".jpeg")
+        expect(rememberedPatient.image).toContain("/patient_images/" + patient.uuid + ".jpeg")
     })
 });

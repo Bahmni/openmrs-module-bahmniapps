@@ -5,10 +5,11 @@ angular.module('bahmni.registration')
         var patient;
         var openmrsUrl = Bahmni.Registration.Constants.openmrsUrl;
         var baseOpenMRSRESTURL = Bahmni.Registration.Constants.baseOpenMRSRESTURL;
+        var patientImageURL = Bahmni.Registration.Constants.patientImageURL;
 
         var getPatient = function () {
             if (patient !== undefined) {
-                patient.image = baseOpenMRSRESTURL + "/personimage/" + patient.uuid + ".jpeg";
+                patient.image = patientImageURL + patient.uuid + ".jpeg?q=" + new Date().toISOString();
                 return patient;
             }
             return {};
