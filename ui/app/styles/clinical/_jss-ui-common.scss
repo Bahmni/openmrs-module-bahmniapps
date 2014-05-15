@@ -319,8 +319,8 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
 #loader {
   z-index: 10000;
   width: 100%;
-  height: 50px;
-  margin-bottom: 20px;
+  height: 20px;
+  margin: 20px auto;
   background-image: url('../images/loader.gif');
   background-repeat:no-repeat;
   background-position:center;
@@ -523,7 +523,7 @@ button.toggle-patient:hover, button.toggle-patient.shift {
   padding: 0;
   .overlay {
     position: absolute;
-    top:0; bottom:0;
+    top:0; bottom: 0;
     left:0; right:0;
     background: rgba(0,0,0,0.4);
     display: none;
