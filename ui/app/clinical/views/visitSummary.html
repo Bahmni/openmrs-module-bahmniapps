@@ -157,7 +157,7 @@
     <div ng-repeat="labOrders in visit.labTestOrderObsMap" ng-show="visit.showLabInvestigations" class="lab-investigation">
         <table>
             <thead>
-            <tr ng-click="toggle(labOrders)" class="row-click">
+            <tr ng-click="toggle(labOrders)" ng-class="{'row-click':labOrders.accessionNotes}">
                 <th colspan="2">
                     <span>Accession at </span>
                     <span bo-text="labOrders.encounterDateTime | date:'dd MMM yy hh:mm a'"></span>
@@ -363,7 +363,7 @@
     <h2>Disposition</h2>
     <ul class="block-content">
         <li ng-repeat="disposition in visit.dispositions">
-            <div class="expander-row" ng-click="toggle(disposition)" class="row-click">
+            <div class="expander-row row-click" ng-click="toggle(disposition)">
                 <span class="disposition-state">{{disposition.code}} <span>on</span> {{disposition.dispositionDateTime | date:'dd MMM yy hh:mm a'}} <span>by</span> {{disposition.provider.name}}</span>
                 <button ng-repeat="note in disposition.additionalObs" class="toggle fr">
                     <i class="icon-plus-sign" ng-hide="disposition.show"></i>
