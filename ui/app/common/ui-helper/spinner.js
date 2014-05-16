@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .factory('spinner', ['$q', function ($q) {
+    .factory('spinner', ['$timeout', function ($timeout) {
         var tokens = [];
 
         var show = function () {
@@ -10,16 +10,14 @@ angular.module('bahmni.common.uiHelper')
            if($('#overlay').length == 0) {
                 $('body').prepend('<div id="overlay"><div></div></div>');
            }
-           // $('#view-content').fadeOut();
-            $('#overlay').fadeIn();
+           $('#overlay').stop().show();
            return token;
         }
 
         var hide = function (token) {
             _.pull(tokens, token);
             if(tokens.length === 0) {
-                $('#overlay').fadeOut();
-                // $('#view-content').fadeIn();
+                $('#overlay').fadeOut(300);
             }
         }
 

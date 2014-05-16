@@ -1,6 +1,6 @@
 angular.module('bahmni.clinical')
-    .controller('PatientDashboardLabOrdersController', ['$scope', '$rootScope', '$stateParams', 'patientVisitHistoryService', 'encounterService', '$q',
-        function ($scope, $rootScope, $stateParams, patientVisitHistoryService, encounterService, $q) {
+    .controller('PatientDashboardLabOrdersController', ['$scope', '$rootScope', '$stateParams', 'patientVisitHistoryService', 'encounterService', '$q', 'spinner',
+        function ($scope, $rootScope, $stateParams, patientVisitHistoryService, encounterService, $q, spinner) {
             $scope.patientUuid = $stateParams.patientUuid;
             $scope.patientSummary = {message: "No Lab Orders for this patient."};
             $scope.labOrdersForLatestVisits = {
@@ -37,7 +37,7 @@ angular.module('bahmni.clinical')
                 if ($rootScope.visits) {
                     var lastTwoVisitUuids = getLastNVisitUuids($rootScope.visits, 2);
 
-                    encounterService.searchForVisits(lastTwoVisitUuids).success(function (encounterTransactions) {
+                    spinner.forPromise(encounterService.searchForVisits(lastTwoVisitUuids).success(function (encounterTransactions) {
                         var groupedEncounterTransactions = _.groupBy(encounterTransactions, function (encounterTransaction) {
                             return encounterTransaction.visitUuid;
                         });
@@ -51,7 +51,7 @@ angular.module('bahmni.clinical')
                                 $scope.labOrdersForLatestVisits.Previous.labOrders = labOrders;
                             }
                         }
-                    });
+                    }));
                 }
             };
 

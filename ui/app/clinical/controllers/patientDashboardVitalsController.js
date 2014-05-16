@@ -27,7 +27,7 @@ angular.module('bahmni.clinical')
 
         var createPatientSummary = function () {
             if ($scope.activeVisit) {
-                encounterService.search($scope.activeVisit.uuid).success(function (encounterTransactions) {
+                spinner.forPromise(encounterService.search($scope.activeVisit.uuid).success(function (encounterTransactions) {
                     var visitData = createObservationsObject(encounterTransactions);
 
                     var vitalsObservations = visitData.filter(isObservationForVitals);
@@ -37,7 +37,7 @@ angular.module('bahmni.clinical')
                     if ($scope.patientSummary.data.length == 0) {
                         $scope.patientSummary.message = Bahmni.Clinical.Constants.messageForNoObservation;
                     }
-                });
+                }));
             }
             else {
                 $scope.patientSummary.message = Bahmni.Clinical.Constants.messageForNoObservation;
