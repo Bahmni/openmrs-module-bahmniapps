@@ -131,9 +131,9 @@
                 <td bo-text="'D'+ day.dayNumber"></td>
                 <td ng-init="test = orderable" ng-repeat="orderable in visit.tabularResults.getOrderables()">
                         <span ng-if="!orderable.concept.set" ng-repeat="result in test.results |
-                         orderBy:'observationDateTime':false"
+                         orderBy:'orderDate':false"
                               class="test-result">
-                            <span ng-if="result.isOnDate(day.date)">
+                            <span ng-if="result.isOnOrderDate(day.date)">
                                 <span ng-class="{'is-abnormal': result.isAbnormal, 'one-result': test.results.length==1}"
                                       class="ipd-test-results">{{result.value}}</span>
                             </span>

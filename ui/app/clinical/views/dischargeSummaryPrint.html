@@ -5,7 +5,7 @@
 	</span>
 	<span ng-if="result.value" ng-class="{abnormal: result.isAbnormal}">
 		<span class="test-name">{{result.concept.name}}</span>
-    	<span class="test-date">{{test.orderDate | date:'d MMM yy'}}</span>
+    	<span class="test-date">{{result.orderDate | date:'d MMM yy'}}</span>
         <span class="test-value">{{result.value}} {{result.units}}</span>
 	</span>
  </script>
@@ -93,7 +93,7 @@
 	    <span class="value">{{dischargeSummary.getObservationValue('Follow up Date') | date: 'd MMM yy'}}</span>
 	  </section>
 	  <section class="lab-print">
-	    <h3>Lab Investigations</h3>      
+	    <h3>Lab Investigations</h3>
 	    <ol>
 	    	<li class="test-item" ng-switch="labOrder.getOrderableType()" ng-repeat="labOrder in dischargeSummary.getLatestLabOrders()">
 	    		<span ng-switch-when="Panel" ng-init="panel = labOrder.orderable">
