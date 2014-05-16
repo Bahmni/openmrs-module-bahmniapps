@@ -20,8 +20,8 @@
 
 		self.filter = function(observations) {
 			var wrappedObservations = observations.map(Observation.wrap);
-			voidExistingObservationWithOutValue(wrappedObservations);
-			var filteredObservations = removeNewObservationsWithoutValue(wrappedObservations);
+            var filteredObservations = removeNewObservationsWithoutValue(wrappedObservations);
+			voidExistingObservationWithOutValue(filteredObservations);
 			return filteredObservations;
 		}
 	}
