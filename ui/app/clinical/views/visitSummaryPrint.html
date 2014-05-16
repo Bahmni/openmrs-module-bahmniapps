@@ -23,7 +23,7 @@
                     <td>District: <span class="value">{{patient.address.countyDistrict}}</span></td>
                 </tr>
                 <tr>
-                    <td colspan="3">Visit Date: <span class="value">{{visitDate | date: 'dd MMM yy'}}</span></td>
+                    <td colspan="3">Visit Date: <span class="value">{{visitDate | date: 'd MMM yyyy'}}</span></td>
                 </tr>
             </table>
         </div>
@@ -121,7 +121,7 @@
                             <th colspan="2" class="lab-report-title">
                                 <span>
                                     <span>Accession at </span>
-                                    <span bo-text="labOrders.encounterDateTime | date:'dd MMM yy hh:mm a'"></span>
+                                    <span bo-text="labOrders.encounterDateTime | date:'d MMM yyyy hh:mm a'"></span>
                                 </span>
                             </th>
                         </tr>
