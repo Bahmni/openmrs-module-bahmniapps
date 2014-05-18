@@ -1,7 +1,9 @@
 <div class="adt">
     <div>
         <span ng-show="myForm.service_id.$error.required">Select Action</span>
+
         <label>
+            <span class="fl adt-disposition-action">Patient Movement:</span>
             <select ng-model="dispositionAction"
                     ng-options="d.name.display for d in dispositionActions"
                     ng-change="refreshView()" class="disposition-action">
