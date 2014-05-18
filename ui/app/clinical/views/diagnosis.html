@@ -20,9 +20,9 @@
                                 <input type="checkbox" ng-model="diagnosis.isNonCodedAnswer"
                                        ng-change="clearEmptyRows($index)"
                                        ng-class="{'illegalValue': diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid && !diagnosis.isNonCodedAnswer}"
-                                       ng-disabled="diagnosis.codedAnswer.uuid">
+                                       ng-disabled="diagnosis.codedAnswer.uuid" id="addNewDiagnosis-{{$index}}">
 
-                                <label class="add-new">Add New?</label>
+                                <label class="add-new checkbox-btn" for="addNewDiagnosis-{{$index}}">Add New?</label>
                             </div>
                             <div class="col col2">
                                 <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.order'

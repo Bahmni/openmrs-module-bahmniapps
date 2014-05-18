@@ -639,3 +639,17 @@ td .status {
 .btn-trends {.icon-bar-chart {display: inline-block;}}
 .btn-summary {.icon-th-large {display: inline-block;}}
 .btn-print {.icon-print {display: inline-block;}}
+
+// .checkbox-btn {
+//   @include button();
+//   margin: 0!important;
+//   padding: 8px 7px;
+// }
+
+.abnormal-vitals {
+  width: auto!important;
+  margin: 4px!important;
+}
+// .abnormal-vitals-checkbox {
+//   margin-top: 7px!important;
+// }
