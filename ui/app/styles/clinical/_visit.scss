@@ -505,7 +505,13 @@ span.range {
 .visit .history-diagnosis .diagnosis-row .view-past {
   cursor: default;
 }
-
+.concept-set-group {
+  border: 1px solid #669999;
+  padding: 10px;
+  margin-bottom: 20px;
+  background: #f9fdf9;
+}
+legend.mylegend {background: #f9fdf9!important;}
 
 // Work in progresss - this _visit.scss needs cleaning!
 
