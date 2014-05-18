@@ -484,7 +484,7 @@ a.quick-links {
 
 .messages {
   .error-message, .info-message {
-    width: 50%;
+    width: 35%;
     top: 100px;
     margin: 5px auto;
     color: #333;
@@ -492,6 +492,8 @@ a.quick-links {
     border-radius: 2px;
     box-shadow: 0px 0px 8px -1px #ccc;
     font-size: 14px;
+    font-family: OpenSansBold;
+    text-align: center;
   }
   .error-message {
     background: #ffcccc;
@@ -500,6 +502,13 @@ a.quick-links {
   .info-message {
     background: #f9edbe;
     border: 1px solid #f0c36d;
+    color: green;
+    p:before {
+      content: "\f00c";
+      font-family: FontAwesome;
+      margin-right: 5px;
+      font-size: 18px;
+    }
   }
 }
 
