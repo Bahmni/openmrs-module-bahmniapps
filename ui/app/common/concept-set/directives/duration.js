@@ -28,7 +28,7 @@ angular.module('bahmni.common.conceptSet')
             var valueAndUnit = Bahmni.Common.Util.DateUtil.convertToUnits($scope.hours);
             $scope.units = valueAndUnit["allUnits"];
             $scope.measureValue = valueAndUnit["value"];
-            $scope.unitValue = valueAndUnit["unitValueInHours"];
+            $scope.unitValue = valueAndUnit["unitValueInMinutes"];
             var durations = Object.keys($scope.units).reverse();
             $scope.displayUnits = durations.map(function(duration){
                 return {"name": duration, "value": $scope.units[duration]};
