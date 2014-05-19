@@ -6,12 +6,13 @@ angular.module('bahmni.common.conceptSet')
             var conceptMapper = new Bahmni.ConceptSet.ConceptMapper();
 
             $scope.selectOptions = function(codedConcept){
-                var limit = 10;
+                var limit = 1000;
                 return {
                     ajax: {
                         url: Bahmni.Common.Constants.conceptUrl,
                         dataType: 'json',
                         quietMillis: 100,
+                        cache: true,
                         data: function (term, page) {
                             return {
                                 q: term,
