@@ -14,13 +14,15 @@ Bahmni.Clinical.TreatmentDrug = function () {
     this.notesVisible = false;
     this.empty = true;
     this.savedDrug = false;
+    var DateUtil = Bahmni.Common.Util.DateUtil;
+
 
     this.setNumberOfDosageDays = function(startDate,endDate){
-        this.numberOfDosageDays = Bahmni.Common.Util.DateUtil.diffInDays(new Date(startDate), new Date(endDate));
+        this.numberOfDosageDays = DateUtil.diffInDays(DateUtil.parse(startDate), DateUtil.parse(endDate));
     }
 
     this.requestFormat = function(startDate) {
-        var endDate = new Date(startDate);
+        var endDate = DateUtil.parse(startDate);
         endDate.setDate(endDate.getDate() + this.numberOfDosageDays);
         return {
             uuid: this.uuid,

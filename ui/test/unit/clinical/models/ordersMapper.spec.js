@@ -87,8 +87,8 @@ describe('OrdersMapper', function () {
         var orders = new Bahmni.Clinical.OrdersMapper().create(encounterTransactions, 'drugOrders');
 
         expect(orders.length).toBe(2);
-        expect(orders[0].date.toISOString().substring(0, 10)).toBe("2014-03-30");
-        expect(orders[1].date.toISOString().substring(0, 10)).toBe("2014-03-26");
+        expect(orders[0].date).toEqual(moment("2014-03-30").toDate());
+        expect(orders[1].date).toEqual(moment("2014-03-26").toDate());
         expect(orders[0].orders.length).toBe(2);
         expect(orders[1].orders.length).toBe(1);
     });

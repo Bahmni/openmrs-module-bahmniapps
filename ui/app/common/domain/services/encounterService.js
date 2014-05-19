@@ -78,7 +78,7 @@ angular.module('bahmni.common.domain')
                 encounters = data.results[0].encounters;
                 encounters.forEach(function(enc) {
                     if (typeof enc.encounterDatetime == 'string') {
-                        enc.encounterDatetime = new Date(enc.encounterDatetime);
+                        enc.encounterDatetime = Bahmni.Common.Util.DateUtil.parse(enc.encounterDatetime);
                     } 
                     enc.encounterTypeUuid = enc.encounterType.uuid;
                 });

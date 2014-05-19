@@ -2,9 +2,9 @@
 
 angular.module('bahmni.clinical')
     .factory('TreatmentService', ['$http', '$q', function ($http, $q) {
-        var dateUtil = Bahmni.Common.Util.DateUtil,
+        var DateUtil = Bahmni.Common.Util.DateUtil,
             activeDrugs = function (drugOrder) {
-                return (!drugOrder.autoExpireDate || dateUtil.diffInDaysRegardlessOfTime(new Date(), new Date(drugOrder.autoExpireDate)) >= 0);
+                return (!drugOrder.autoExpireDate || DateUtil.diffInDaysRegardlessOfTime(new Date(), DateUtil.parse(drugOrder.autoExpireDate)) >= 0);
             },
             toViewModel = function (drugOrder) {
                 return Bahmni.Clinical.DrugOrder.createFromOpenMRSRest(drugOrder);

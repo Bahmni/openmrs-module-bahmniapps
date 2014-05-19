@@ -37,8 +37,7 @@ Bahmni.Common.Util.DateUtil = {
 	},
 
 	getDate: function (dateTime) {
-		var dateTimeObject = this.parse(dateTime);
-		return new Date(dateTimeObject.getFullYear(), dateTimeObject.getMonth(), dateTimeObject.getDate());
+		return moment(this.parse(dateTime)).startOf('day').toDate();
 	},
 
 	getCurrentDate: function(){

@@ -110,7 +110,7 @@ Bahmni.ConceptSet.Observation.prototype = {
 
     isValidDate: function () {
         if (!this.hasValue()) return true;
-        var date = new Date(this.value);
+        var date = Bahmni.Common.Util.DateUtil.parse(this.value);
         return date.getUTCFullYear() && date.getUTCFullYear().toString().length <= 4;
     },
 

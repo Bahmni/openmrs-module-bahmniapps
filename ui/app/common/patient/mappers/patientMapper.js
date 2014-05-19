@@ -35,7 +35,7 @@ angular.module('bahmni.common.patient')
 
             var parseDate = function (dateStr) {
                 if (dateStr)
-                    return new Date(dateStr.substr(0, 10));
+                    return Bahmni.Common.Util.DateUtil.parse(dateStr.substr(0, 10));
                 return dateStr;
             };
 

@@ -129,8 +129,8 @@ angular.module('opd.documentupload')
 
             var sortVisits = function() {
                 $scope.visits.sort(function(a, b) {
-                        var date1 = new Date(a.startDatetime);
-                        var date2 = new Date(b.startDatetime);
+                        var date1 = DateUtil.parse(a.startDatetime);
+                        var date2 = DateUtil.parse(b.startDatetime);
                         return date2.getTime() - date1.getTime();
                     });
             };
@@ -220,7 +220,7 @@ angular.module('opd.documentupload')
 
             $scope.setDefaultEndDate = function(newVisit) {
                 if(!newVisit.stopDatetime){
-                    var date = new Date(newVisit.endDate());
+                    var date = DateUtil.parse(newVisit.endDate());
                     $scope.newVisit.stopDatetime = moment(date).format("YYYY-MM-DD");
                 }
             };
