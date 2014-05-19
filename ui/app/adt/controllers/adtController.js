@@ -49,7 +49,10 @@ angular.module('bahmni.adt')
 
             var init = function () {
                 initializeActionConfig();
-                $scope.visitTypes = encounterConfig.getVisitTypes();
+                var defaultVisitType = appService.getAppDescriptor().getConfigValue('defaultVisitType');
+                var visitTypes = encounterConfig.getVisitTypes();
+                $scope.visitControl = new Bahmni.Common.VisitControl(visitTypes, defaultVisitType, visitService);
+
                 return dispositionService.getDispositionActions().then(function (response) {
                     if (response.data && response.data.results && response.data.results.length) {
                         $rootScope.disposition = $rootScope.disposition || {};

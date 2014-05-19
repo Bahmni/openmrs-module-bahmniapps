@@ -33,7 +33,7 @@ angular.module('bahmni.registration')
             identifyEditActions();
         })();
 
-        $scope.visitControl = new Bahmni.Registration.VisitControl($rootScope.regEncounterConfiguration.getVistTypesAsArray(), defaultVisitType, visitService);
+        $scope.visitControl = new Bahmni.Common.VisitControl($rootScope.regEncounterConfiguration.getVistTypesAsArray(), defaultVisitType, visitService);
         $scope.visitControl.onStartVisit = function() {
             $scope.setSubmitSource('startVisit');
         };
