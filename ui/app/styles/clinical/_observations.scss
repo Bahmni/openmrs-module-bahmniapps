@@ -45,12 +45,16 @@
           border-top:1px solid #cecece;
           border-right:1px solid #cecece;
           border-left:1px solid #cecece;
+          border-top-left-radius: 5px;
+          border-top-right-radius: 5px;
         }
         &:last-child {
           border-bottom:1px solid #cecece;
           border-right:1px solid #cecece;
           border-left:1px solid #cecece;
           padding-bottom:9px;
+          border-bottom-left-radius: 5px;
+          border-bottom-right-radius: 5px;
         }
       }
     }
