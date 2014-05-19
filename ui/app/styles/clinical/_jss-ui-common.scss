@@ -494,6 +494,10 @@ a.quick-links {
     font-size: 14px;
     font-family: OpenSansBold;
     text-align: center;
+    position: fixed;
+    top: 100px;
+    left: 32%;
+    z-index: 1;
   }
   .error-message {
     background: #ffcccc;
