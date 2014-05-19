@@ -418,7 +418,7 @@ describe('VisitController', function () {
 
             expect(scope.obs.BMI).toBe(400);
             expect(scope.obs.bmi_error).toBe(true);
-            expect(scope.obs.bmi_status).toBe("Invalid");
+            expect(scope.obs[Bahmni.Common.Constants.bmiStatusConceptName]).toBe("Invalid");
 
         });
 
@@ -433,7 +433,7 @@ describe('VisitController', function () {
 
             expect(scope.obs.BMI).toBe(null);
             expect(scope.obs.bmi_error).toBe(false);
-            expect(scope.obs.bmi_status).toBe(null);
+            expect(scope.obs[Bahmni.Common.Constants.bmiStatusConceptName]).toBe(null);
         });
 
         it("should clear the bmi, bmi_status when weight is not present", function () {
@@ -447,7 +447,7 @@ describe('VisitController', function () {
 
             expect(scope.obs.BMI).toBe(null);
             expect(scope.obs.bmi_error).toBe(false);
-            expect(scope.obs.bmi_status).toBe(null);
+            expect(scope.obs[Bahmni.Common.Constants.bmiStatusConceptName]).toBe(null);
         });
     });
 

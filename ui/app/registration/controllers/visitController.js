@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('VisitController', ['$scope', '$rootScope', '$location', 'patientService', 'encounterService', 'bmi', '$window', '$route', 'spinner', '$timeout', '$q', 'registrationCardPrinter', 'appService', 'openmrsPatientMapper','contextChangeHandler',
-        function ($scope, $rootScope, $location, patientService, encounterService, bmiModule, $window, $route, spinner, $timeout, $q, registrationCardPrinter, appService, patientMapper,contextChangeHandler) {
-
+    .controller('VisitController', ['$scope', '$rootScope', '$location', 'patientService', 'encounterService', '$window', '$route', 'spinner', '$timeout', '$q', 'registrationCardPrinter', 'appService', 'openmrsPatientMapper','contextChangeHandler',
+        function ($scope, $rootScope, $location, patientService, encounterService, $window, $route, spinner, $timeout, $q, registrationCardPrinter, appService, patientMapper,contextChangeHandler) {
+            var bmiCalculator = new Bahmni.Common.BMI();
             var patientUuid = $route.current.params['patientUuid'];
             var isNewPatient = ($location.search()).newpatient;
             var encounterTypeUuid = $scope.regEncounterConfiguration.encounterTypes[Bahmni.Registration.Constants.encounterType.registration];
@@ -34,6 +34,7 @@ angular.module('bahmni.registration')
                     $scope.obs[observation.concept.name] = observation.value
                     observation.groupMembers = [];
                 });
+
                 $scope.calculateBMI();
             }
 
@@ -51,15 +52,15 @@ angular.module('bahmni.registration')
 
             $scope.calculateBMI = function () {
                 if ($scope.obs.HEIGHT && $scope.obs.WEIGHT) {
-                    var bmi = bmiModule.calculateBmi($scope.obs.HEIGHT, $scope.obs.WEIGHT);
+                    var bmi = bmiCalculator.calculateBmi($scope.obs.HEIGHT, $scope.obs.WEIGHT);
                     var valid = bmi.valid();
                     $scope.obs.bmi_error = !valid;
                     $scope.obs.BMI = bmi.value;
-                    $scope.obs.bmi_status = valid ? bmi.status() : "Invalid";
+                    $scope.obs[Bahmni.Common.Constants.bmiStatusConceptName] = valid ? bmi.status() : "Invalid";
                 } else {
                     $scope.obs.bmi_error = false;
                     $scope.obs.BMI = null;
-                    $scope.obs.bmi_status = null;
+                    $scope.obs[Bahmni.Common.Constants.bmiStatusConceptName] = null;
                 }
             };
 
