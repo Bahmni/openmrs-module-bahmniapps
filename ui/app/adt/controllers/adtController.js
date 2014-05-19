@@ -52,12 +52,11 @@ angular.module('bahmni.adt')
                 var defaultVisitType = appService.getAppDescriptor().getConfigValue('defaultVisitType');
                 var visitTypes = encounterConfig.getVisitTypes();
                 $scope.visitControl = new Bahmni.Common.VisitControl(visitTypes, defaultVisitType, visitService);
-
                 return dispositionService.getDispositionActions().then(function (response) {
                     if (response.data && response.data.results && response.data.results.length) {
                         $rootScope.disposition = $rootScope.disposition || {};
                         $rootScope.disposition.dispositionActionUuid = response.data.results[0].uuid;
-                        $scope.dispositionActions = response.data.results[0].answers;
+                        $scope.dispositionActions = [undefined].concat(response.data.results[0].answers);
                         if($scope.visit){
                             $scope.currentVisitType = $scope.visit.visitType.display;
                             var encounterToDisplay = Bahmni.ADT.DispositionDisplayUtil.getEncounterToDisplay(encounterConfig, $scope.visit);
@@ -121,10 +120,7 @@ angular.module('bahmni.adt')
             };
 
             $scope.visitExists = function() {
-                if($scope.visit){
-                    return true;
-                }
-                return false;
+                return $scope.visit ? true : false;
             };
 
             var getEncounterData = function (encounterTypeUuid,  visitTypeUuid) {
