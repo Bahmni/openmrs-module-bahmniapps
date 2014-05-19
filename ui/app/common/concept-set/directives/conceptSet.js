@@ -25,7 +25,7 @@ angular.module('bahmni.common.conceptSet')
                         results: function (data, page) {
                             return {
                                 //Remove uniq logic after web service rest bug is fixed
-                                results: _.uniq(data.results, _.property('uuid')).map(conceptMapper.map),
+                                results: _.sortBy(_.uniq(data.results, _.property('uuid')).map(conceptMapper.map), 'name'),
                                 more: !!_.find(data.links, function(link) { return link.rel === "next"; })
                             };
                         }
