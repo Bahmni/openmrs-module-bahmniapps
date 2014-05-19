@@ -45,11 +45,12 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                     $rootScope.activeVisit = $rootScope.visits.filter(function (visit) {
                         return visit.isActive();
                     })[0];
-
-                    encounterService.search($rootScope.activeVisit.uuid).success(function (encounterTransactions) {
-                        var obsIgnoreList = appService.getAppDescriptor().getConfig("obsIgnoreList").value || {};
-                        $rootScope.visit = Bahmni.Clinical.Visit.create(encounterTransactions, $rootScope.consultationNoteConcept, $rootScope.labOrderNotesConcept, $rootScope.encounterConfig, $rootScope.allTestsAndPanelsConcept, obsIgnoreList, $rootScope.activeVisit.uuid);
-                    });
+                    if($rootScope.activeVisit){
+                        encounterService.search($rootScope.activeVisit.uuid).success(function (encounterTransactions) {
+                            var obsIgnoreList = appService.getAppDescriptor().getConfig("obsIgnoreList").value || {};
+                            $rootScope.visit = Bahmni.Clinical.Visit.create(encounterTransactions, $rootScope.consultationNoteConcept, $rootScope.labOrderNotesConcept, $rootScope.encounterConfig, $rootScope.allTestsAndPanelsConcept, obsIgnoreList, $rootScope.activeVisit.uuid);
+                        });
+                    }
                 });
             };
 
