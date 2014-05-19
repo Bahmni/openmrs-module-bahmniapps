@@ -56,13 +56,14 @@
     }
   }
   .table-header {
-    background: none;
+    background: #f6f6f6;
     span {
-      display: inline-block;
+      font-size: 14px;
+      white-space: nowrap;
+      color: #555;
+      font-family: OpenSansBold;
+      font-weight: normal;
       padding-left: 10px;
-      color: #ccc;
-      text-transform: uppercase;
-      font-size: 12px;
     }
   }
   input[type=number] {
@@ -182,8 +183,7 @@
       .col {padding-top: 0; padding-bottom: 5px;}
       label.diagnosis-name {
         padding-left: 10px;
-        font-size: 16px;
-        font-family: OpenSansBold;
+        font-size: 14px;
       }
       .col2 {padding-left: 10px;}
       .col2, .col3 {
@@ -208,6 +208,13 @@
     }
     button.toggle {
       font-size: 100%;
+      i {
+        // -moz-box-shadow: 0 0 5px #888;
+        // -webkit-box-shadow: 0 0 5px#888;
+        // box-shadow: 0 0 5px #888;
+        @include button();
+        padding: 0 12px;
+      }
     }
   }
 }
