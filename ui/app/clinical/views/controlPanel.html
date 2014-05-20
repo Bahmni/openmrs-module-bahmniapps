@@ -1,6 +1,6 @@
 <div class="patient-control-panel">
-    <div class="overlay" ng-class="{'shift': $parent.showControlPanel}" ng-click="$parent.toggleControlPanel()"></div>
-    <aside bindonce="patient" class="visit-history" ng-class="{'shift': $parent.showControlPanel}">
+    <div class="overlay" ng-show="$parent.showControlPanel" ng-click="$parent.toggleControlPanel()"></div>
+    <aside bindonce="patient" class="visit-history ng-hide" ng-show="$parent.showControlPanel">
         <div class="patient-info">
             <div class="patient-img">
                 <a href="{{getDashboardLink()}}" ng-click="changeContext($event)">

@@ -539,18 +539,9 @@ button.toggle-patient:hover, button.toggle-patient.shift {
     top:0; bottom: 0;
     left:0; right:0;
     background: rgba(0,0,0,0.4);
-    display: none;
-  }
-  .overlay.shift {
-    display: block;
   }
 }
 aside{
-  -webkit-transition: right .3s ease,-webkit-transform .3s ease;
-  -moz-transition: right .3s ease,-moz-transform .3s ease;
-  -o-transition: right .3s ease,transform .3s ease;
-  -ms-transition: right .3s ease,transform .3s ease;
-  transition: right .3s ease,transform .3s ease;
   h2{
     background:none;
     color: #000;
@@ -560,7 +551,6 @@ aside{
   }
   &.visit-history{
     position:absolute;
-    right:-350px;
     width:250px;
     background:#333333;
     bottom: 0;
@@ -616,10 +606,29 @@ aside{
       h5.patient-identifier {color: #ddd;}
     }
   }
-  &.visit-history.shift {
+  
+
+  &.visit-history.ng-hide-add, &.visit-history.ng-hide-remove {
+    -webkit-transition:all linear 0.3s;
+    -moz-transition:all linear 0.3s;
+    -o-transition:all linear 0.3s;
+    transition:all linear 0.3s;
+    display:block!important;
+  }
+
+  &.visit-history.ng-hide-add.ng-hide-add-active,
+  &.visit-history.ng-hide-remove {
+    right: -350px;
+  }
+
+  &.visit-history.ng-hide-add,
+  &.visit-history.ng-hide-remove.ng-hide-remove-active {
     right: 0;
   }
 
+  &.visit-history {
+    right: 0;
+  }
 
   .visit-history-entry, .summary {
     &.selected, &.selected:hover{
