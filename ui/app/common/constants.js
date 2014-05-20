@@ -61,7 +61,9 @@ Bahmni.Common = Bahmni.Common || {};
         miscConceptClassName: 'Misc',
         abnormalConceptClassName: 'Abnormal',
         durationConceptClassName: 'Duration',
-        conceptDetailsClassName: 'Concept Details'
+        conceptDetailsClassName: 'Concept Details',
+        admissionEncounterTypeName: 'ADMISSION',
+        dischargeEncounterTypeName: 'DISCHARGE'
 };
     
 })();

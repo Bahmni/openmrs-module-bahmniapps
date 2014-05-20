@@ -1,4 +1,13 @@
 <div class="adt">
+    <div class="patient-disposition-status fr">
+        <div ng-if="hasAdmitEncounter() && !hasDischargeEncounter()">
+            <i class="icon-ok"></i>Admitted
+        </div>
+        <div ng-if="hasDischargeEncounter()">
+            <i class="icon-ok"></i>Discharged
+        </div>
+    </div>
+
     <div>
         <label>
             <span class="fl adt-disposition-action">Patient Movement:</span>

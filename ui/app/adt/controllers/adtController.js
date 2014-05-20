@@ -47,6 +47,34 @@ angular.module('bahmni.adt')
                 }
             };
 
+            $scope.hasAdmitEncounter = function(){
+                return ($scope.visitExists() && $scope.visit.encounters && $scope.visit.encounters.filter(function (encounter) {
+                    return encounter.encounterType.name === Bahmni.Common.Constants.admissionEncounterTypeName;
+                })).length > 0
+            };
+
+            $scope.hasDischargeEncounter = function(){
+                return ($scope.visitExists() && $scope.visit.encounters && $scope.visit.encounters.filter(function (encounter) {
+                    return encounter.encounterType.name === Bahmni.Common.Constants.dischargeEncounterTypeName;
+                })).length > 0
+            };
+
+            var filterAction = function(actions, actionType){
+                return _.filter(actions, function (action) {
+                    return action.name.name === actionType;
+                });
+            };
+
+            var getDispositionActions = function (actions) {
+                if ($scope.hasDischargeEncounter()) {
+                    return [];
+                } else if ($scope.hasAdmitEncounter()) {
+                    return filterAction(actions, 'Discharge Patient');
+                } else {
+                    return filterAction(actions, 'Admit Patient');
+                }
+            };
+
             var init = function () {
                 initializeActionConfig();
                 var defaultVisitType = appService.getAppDescriptor().getConfigValue('defaultVisitType');
@@ -56,7 +84,7 @@ angular.module('bahmni.adt')
                     if (response.data && response.data.results && response.data.results.length) {
                         $rootScope.disposition = $rootScope.disposition || {};
                         $rootScope.disposition.dispositionActionUuid = response.data.results[0].uuid;
-                        $scope.dispositionActions = response.data.results[0].answers;
+                        $scope.dispositionActions = getDispositionActions(response.data.results[0].answers);
                         if($scope.visit){
                             $scope.currentVisitType = $scope.visit.visitType.display;
                             var encounterToDisplay = Bahmni.ADT.DispositionDisplayUtil.getEncounterToDisplay(encounterConfig, $scope.visit);
