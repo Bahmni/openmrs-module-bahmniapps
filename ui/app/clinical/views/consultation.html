@@ -79,7 +79,7 @@
             </table>
         </section>
     </section>
-    <section class="block investigation">
+    <section class="block investigation" style="display:none;"> <!--Hiding the section for release 4-->
         <h2>Investigation</h2>
         <ul class="block-content">
             <li ng-repeat="investigation in consultation.investigations" ng-class="{panel: investigation.concept.set, voided: investigation.voided}">
@@ -93,7 +93,7 @@
         </div>
         <ng-include src="'views/labResults.html'" ng-init="labResults=consultation.labResults"/>
     </section>
-    <section class="block treatment">
+    <section class="block treatment" style="display:none;"> <!--Hiding the section for release 4-->
         <h2>Treatment</h2>
          <div  class="block-content" ng-include src="'views/treatmentDrugs.html'"></div>
     </section>
