@@ -19,8 +19,12 @@ angular.module('bahmni.clinical')
             createPatientSummary();
         };
 
-        var isObservationForVitalsAndRegistration = function (obs) {
-            return obs.concept && (obs.concept.name === Bahmni.Common.Constants.vitalsConceptName || obs.concept.name === Bahmni.Common.Constants.heightConceptName || obs.concept.name === Bahmni.Common.Constants.weightConceptName || obs.concept.name === Bahmni.Common.Constants.bmiConceptName || obs.concept.name === Bahmni.Common.Constants.bmiStatusConceptName) ? true : false;
+        var isObservationForVitals = function (obs) {
+            return obs.concept && obs.concept.name === Bahmni.Common.Constants.vitalsConceptName ? true : false;
+        };
+
+        var isObservationForRegistration = function (obs) {
+            return obs.concept && (obs.concept.name === Bahmni.Common.Constants.heightConceptName || obs.concept.name === Bahmni.Common.Constants.weightConceptName || obs.concept.name === Bahmni.Common.Constants.bmiConceptName || obs.concept.name === Bahmni.Common.Constants.bmiStatusConceptName) ? true : false;
         };
 
         var observationGroupingFunction = function (obs) {
@@ -32,13 +36,17 @@ angular.module('bahmni.clinical')
                 spinner.forPromise(encounterService.search($scope.activeVisit.uuid).success(function (encounterTransactions) {
                     var visitData = createObservationsObject(encounterTransactions);
 
-                    var vitalsAndRegistrationObservations = visitData.filter(isObservationForVitalsAndRegistration);
-                    var mappedObservations = new Bahmni.ConceptSet.ObservationMapper().getObservationsForView(vitalsAndRegistrationObservations);
-                    var sortedObservations = _.sortBy(mappedObservations, function(obs){
+                    var vitalsObservations = visitData.filter(isObservationForVitals);
+                    var registrationObservations = visitData.filter(isObservationForRegistration);
+                    var mappedVitalsObservations = new Bahmni.ConceptSet.ObservationMapper().getObservationsForView(vitalsObservations);
+                    var mappedRegistrationObservations = new Bahmni.ConceptSet.ObservationMapper().getObservationsForView(registrationObservations);
+                    var sortedRegistrationObservations = _.sortBy(mappedRegistrationObservations, function(obs){
                         return obs.concept.name;
                     });
 
-                    $scope.patientSummary.data = new Bahmni.Clinical.ResultGrouper().group(sortedObservations, observationGroupingFunction, 'obs', 'date');
+                    var vitalsAndRegistrationObservations = mappedVitalsObservations.concat(sortedRegistrationObservations);
+
+                    $scope.patientSummary.data = new Bahmni.Clinical.ResultGrouper().group(vitalsAndRegistrationObservations, observationGroupingFunction, 'obs', 'date');
                     if ($scope.patientSummary.data.length == 0) {
                         $scope.patientSummary.message = Bahmni.Clinical.Constants.messageForNoObservation;
                     }
