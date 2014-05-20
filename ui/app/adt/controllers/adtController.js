@@ -56,7 +56,7 @@ angular.module('bahmni.adt')
                     if (response.data && response.data.results && response.data.results.length) {
                         $rootScope.disposition = $rootScope.disposition || {};
                         $rootScope.disposition.dispositionActionUuid = response.data.results[0].uuid;
-                        $scope.dispositionActions = [undefined].concat(response.data.results[0].answers);
+                        $scope.dispositionActions = response.data.results[0].answers;
                         if($scope.visit){
                             $scope.currentVisitType = $scope.visit.visitType.display;
                             var encounterToDisplay = Bahmni.ADT.DispositionDisplayUtil.getEncounterToDisplay(encounterConfig, $scope.visit);
@@ -68,6 +68,23 @@ angular.module('bahmni.adt')
                     }
                 });
             };
+
+            $scope.$watch('dispositionAction', function(){
+                var dispositionCode;
+                if ($scope.dispositionAction) {
+                    dispositionCode = getActionCode($scope.dispositionAction);
+                    if($scope.visit){
+                        var selectedEncounterTypeUuid = actionConfigs[dispositionCode].encounterTypeUuid;
+                        var encounterForSelectedDisposition = getEncounterFromVisitFor(selectedEncounterTypeUuid);
+                        if(encounterForSelectedDisposition){
+                            $scope.adtObservations = encounterForSelectedDisposition.obs;
+                        }else{
+                            $scope.adtObservations = [];
+                        }
+                    }
+                }
+                $scope.actions = dispositionCode ? actionConfigs[dispositionCode].allowedActions : [];
+            });
 
             $scope.getDisplayForContinuingVisit = function(){
                 return "Continue " + $scope.currentVisitType + " Visit";
@@ -92,23 +109,6 @@ angular.module('bahmni.adt')
 
             $scope.cancel = function () {
                 $location.url(Bahmni.ADT.Constants.patientsListUrl);
-            };
-
-            $scope.refreshView = function () {
-                var dispositionCode;
-                if ($scope.dispositionAction) {
-                    dispositionCode = getActionCode($scope.dispositionAction);
-                }
-                if($scope.visit){
-                    var selectedEncounterTypeUuid = actionConfigs[dispositionCode].encounterTypeUuid;
-                    var encounterForSelectedDisposition = getEncounterFromVisitFor(selectedEncounterTypeUuid);
-                    if(encounterForSelectedDisposition){
-                        $scope.adtObservations = encounterForSelectedDisposition.obs;
-                    }else{
-                        $scope.adtObservations = [];
-                    }
-                }
-                $scope.actions = actionConfigs[dispositionCode].allowedActions;
             };
 
             $scope.call = function(functionName) {

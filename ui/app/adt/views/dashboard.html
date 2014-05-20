@@ -3,8 +3,8 @@
         <label>
             <span class="fl adt-disposition-action">Patient Movement:</span>
             <select ng-model="dispositionAction"
-                    ng-options="(d ? d.name.display : 'Select') for d in dispositionActions"
-                    ng-change="refreshView()" class="disposition-action">
+                    ng-options="d.name.display for d in dispositionActions" class="disposition-action">
+                    <option value="">Select</option>
         </select>
         </label>
     </div>
