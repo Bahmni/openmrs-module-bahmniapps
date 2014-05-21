@@ -601,7 +601,10 @@ aside{
         font-size: 14px;
         text-align: center;
       }
-      h4.patient-name {text-transform: capitalize; font-size: 16px;}
+      h4.patient-name {
+        text-transform: capitalize; font-size: 16px; 
+        a {color: #ddd;}
+      }
       h5, .ward {color: #888; margin-top: 5px;}
       h5.patient-identifier {color: #ddd;}
     }
