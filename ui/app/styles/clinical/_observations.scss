@@ -19,7 +19,7 @@
   	position:relative;
   	width: 100%;
     legend {
-      margin-bottom: 20px;
+      // margin-bottom: 20px;
     }
     fieldset {
       .form-group {
@@ -69,6 +69,9 @@
     float: left;
     padding: 15px 10px;
     width: 100px;
+    @media screen and (max-width: 595px) {
+      padding: 4px 10px;
+    }
   }
   .info {
     color: #0099ff;
@@ -81,6 +84,15 @@
 div.duration.checkbox-inline {
   margin-top: -16px;
   margin-left: 15px;
+  @media screen and (max-width: 850px) and (min-width: 600px) {
+    margin-top: 0;
+    margin-left: 230px;
+  }
+  @media screen and (max-width: 595px) {
+    margin-left: 10px;
+    margin-top: 0;
+    float: left;
+  }
   input.duration {
     width: 50px;
     margin: 0 10px;
@@ -90,6 +102,10 @@ div.duration.checkbox-inline {
   }
 }
 form .vitals .form-field .field-value {
+  @media screen and (max-width: 595px) {
+    margin-left: 10px;
+    width: 97%;
+  }
   input {
     width: 10em;
   }
@@ -113,6 +129,10 @@ form .vitals .form-field .field-value {
       margin-right: 20px;
       text-align: right;
       font-size: 14px;
+      @media screen and (max-width: 595px) {
+        width: 96%;
+        text-align: left;
+      }
     }
     &.hasLegend {
       label {
@@ -124,6 +144,15 @@ form .vitals .form-field .field-value {
 .checkbox-inline {
   padding: 10px 0;
   float: left;
+  @media screen and (max-width: 685px) and (min-width: 600px) {
+    padding: 0;
+    margin-left: 221px;
+  }
+  @media screen and (max-width: 595px) {
+    float: right;
+    margin-right: 16%;
+    padding: 0;
+  }
   input[type="checkbox"] {
     margin-left: 10px!important;
   }
@@ -145,6 +174,9 @@ concept {
 .select2-container .select2-choice {
   padding: 5px;
   margin-top: -5px;
+  @media screen and (max-width: 595px) {
+    margin-top: 5px;
+  }
 }
 .select2-results .select2-result-label {
   font-size: 14px;
