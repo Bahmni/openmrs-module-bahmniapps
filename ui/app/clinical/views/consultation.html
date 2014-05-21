@@ -64,19 +64,33 @@
     <section class="block observation">
         <h2>Observations</h2>
         <section class="block">
-            <table>
-                <tbody ng-repeat="observation in observationsToDisplay">
-                    <tr class="form-field" ng-class="{true: 'is-abnormal'}[observation.abnormal.value]"
-                        ng-if="observation.value">
-                        <td><span class="field-attribute"><label>{{observation.concept.name}}</label></span></td>
-                        <td>
-                            <span class="value-text-only">{{observation.value}}</span>
-                            <span class="label-add-on" ng-hide="!observation.concept.units"> {{observation.concept.units}}</span>
-                            <span class="fr time">{{observation.observationDateTime | date :'hh:mm a'}}</span>
+            <div ng-repeat="observationGroup in groupedObservations">
+                <table>
+                    <tr>
+                        <td colspan="3" class="headerRow">
+                            <span class="obs-value">{{observationGroup.conceptSetName}}</span>
                         </td>
                     </tr>
-                </tbody>
-            </table>
+
+                    <tr ng-repeat="observation in observationGroup.groupMembers"
+                        ng-class="{true: 'is-abnormal'}[observation.abnormal.value]">
+                        <td class="name">
+                            <span class="obs-value">{{observation.concept.name}}</span>
+                        </td>
+                        <td class="value">
+                            <span class="obs-value">{{observation.value}} {{observation.concept.units}}</span>
+
+                            <div class="footer-note fr">
+                                <span class="time-stamp">
+                                    <span class="time">{{observation.observationDateTime | date :'hh:mm a'}}</span>
+                                </span>
+                                <span class="provider" bindonce="observation" bo-text="observation.provider"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
     </section>
     <section class="block investigation" style="display:none;"> <!--Hiding the section for release 4-->
