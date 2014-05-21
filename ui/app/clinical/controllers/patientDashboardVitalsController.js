@@ -20,7 +20,7 @@ angular.module('bahmni.clinical')
         };
 
         var isObservationForVitals = function (obs) {
-            return obs.concept && obs.concept.name === Bahmni.Common.Constants.vitalsConceptName ? true : false;
+            return obs.concept && obs.concept.name &&(obs.concept.name.indexOf(Bahmni.Common.Constants.vitalsConceptName) > -1) ? true : false;
         };
 
         var isObservationForRegistration = function (obs) {
