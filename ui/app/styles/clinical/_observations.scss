@@ -84,6 +84,22 @@
 div.duration.checkbox-inline {
   margin-top: -16px;
   margin-left: 15px;
+  @media screen and (min-width: 1024px) {
+    float: right;
+    margin-right: 18%;
+  }
+  @media screen and (max-width: 1023px) and (min-width: 941px) {
+    float: right;
+    margin-right: 10%;
+  }
+  @media screen and (max-width: 940px) and (min-width: 900px) {
+    float: right;
+    margin-right: 5%;
+  }  
+  @media screen and (min-width: 851px) and (max-width: 899px) {
+    margin-right: 0;
+    float: right;
+  }
   @media screen and (max-width: 850px) and (min-width: 596px) {
     margin-top: 0;
     margin-left: 230px;
@@ -118,6 +134,7 @@ form .vitals .form-field .field-value {
   textarea {
     width: 34.5em;
     height: 75px;
+    margin-bottom: 10px;
     @media screen and (max-width: 850px) and (min-width: 701px) {
       width: 25em;
     }
