@@ -11,10 +11,10 @@ Bahmni.Clinical.OrdersUtil = (function () {
 
     var OrdersUtil = {
         latest: function (orders) {
-            var clonedOrders = _.clone(orders);
-            clonedOrders.forEach(function (order) {
-                if (containsOlderOrder(clonedOrders, order)) {
-                    _.pull(clonedOrders, order);
+            var clonedOrders = [];
+            orders.forEach(function (order) {
+                if (!containsOlderOrder(orders, order)) {
+                     clonedOrders.push(order);
                 }
             });
             return clonedOrders;
