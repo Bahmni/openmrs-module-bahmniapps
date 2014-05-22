@@ -137,5 +137,34 @@ section h3 {
       float: right;
     }
   }
+  .belongsToPanel {
+    margin-left: 15px;
+  }
+  .is-abnormal {
+    font-weight: bold;
+  }
+  .ipd-investigation {
+    th {
+      text-align: left;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      padding: 5px;
+      text-transform: uppercase;
+    }
+    th.test-name {
+      width: 40%;
+    }
+    th.initial-value, th.final-value {
+      width: 30%;
+    }
+  }
+  .date{
+    float: right;
+  }
+}
 
+.observations{
+  .date{
+    float: right;
+  }
 }

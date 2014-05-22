@@ -173,6 +173,12 @@ Bahmni.Clinical.Visit = (function(){
         },
         getLatestDiagnoses: function(){
             return _.uniq(this.diagnoses, function(diagnosis){ return diagnosis.getDisplayName(); });
+        },
+        getWeightAndBMIObservations: function(){
+            var isObservationForRegistration = function (obs) {
+                return obs.concept && (obs.concept.name === Bahmni.Common.Constants.weightConceptName || obs.concept.name === Bahmni.Common.Constants.bmiConceptName || obs.concept.name === Bahmni.Common.Constants.bmiStatusConceptName) ? true : false;
+            };
+            return this.observations.filter(isObservationForRegistration);
         }
     };
 

@@ -12,14 +12,15 @@
         <div class="patient-info">
             <table>
                 <tr>
-                    <td colspan="2">Name: <span class="value">{{patient.name}}</span></td>
+                    <td>Name: <span class="value">{{patient.name}}</span></td>
                     <td>Age / Sex: <span class="value">{{patient.birthdate | age:visit.dateStarted}} / {{patient.gender}}</span>
                     </td>
+                    <td>Registration No. <span class="value">{{patient.identifier}}</span></td>
                 </tr>
                 <tr>
-                    <td>Registration No. <span class="value">{{patient.identifier}}</span></td>
                     <td>Village / Town: <span class="value">{{patient.address.cityVillage}}</span></td>
                     <td>P.O. <span class="value">{{patient.address.address2}}</span></td>
+                    <td>District: <span class="value">{{patient.address.countyDistrict}}</span></td>
                 </tr>
                 <tr>
                     <td colspan="3">Visit Date: <span class="value">{{visitDate | date: 'dd MMM yy'}}</span></td>
@@ -27,25 +28,30 @@
             </table>
         </div>
         <section bindonce="visit">
-            <section ng-show="visit.hasDiagnosis()" class="block diagnosis">
-                <h2>Diagnoses</h2>
-
-                <table>
+            <section class="block">
+                <h2>Observations</h2>
+                <table class="observations">
+                    <tbody ng-repeat="observation in visit.getWeightAndBMIObservations()">
                     <tr>
-                        <th>Diagnosis Name</th>
-                        <th>Certainty</th>
-                    </tr>
-                    <tr ng-repeat="diagnosis in visit.getLatestDiagnoses()" ng-if="!diagnosis.isRuledOut()">
                         <td>
-
-                            <span>{{diagnosis.getDisplayName()}}</span>
+                            <span>{{observation.concept.name}}</span>
                         </td>
                         <td>
-                            <span>{{diagnosis.certainty}}</span>
+                            <span>{{observation.value}}</span>
+                            <span>{{observation.concept.units}}</span>
+                            <span class="date">{{observation.observationDateTime | date :'d MMM yyyy'}}</span>
                         </td>
                     </tr>
+                    </tbody>
                 </table>
             </section>
+            <section ng-show="visit.hasDiagnosis()" class="block diagnosis">
+                <h2>Diagnoses</h2>
+                <ul>
+                    <li ng-repeat="diagnosis in visit.getLatestDiagnoses()" ng-if="!diagnosis.isRuledOut()">
+                        <span>{{diagnosis.getDisplayName()}}</span>
+                    </li>
+                </ul>            </section>
             <section class="block treatment-section" ng-show="visit.hasDrugOrders()">
                 <h2>Treatment</h2>
                 <table>
@@ -81,9 +87,7 @@
                         </td>
                         <td class="dosage-days">
                             <div class="dosage">
-                        <span><span class="copy">From </span>{{(drugOrder.startDate | date:'d MMM yy')}}<span
-                                class="copy"> for </span>{{visit.numberOfDosageDaysForDrugOrder(drugOrder)}} day(s)</span>
-                                <span bo-show="drugOrder.prn" class="prn">Take as required</span>
+                                <span>For {{visit.numberOfDosageDaysForDrugOrder(drugOrder)}} day(s)</span>
                             </div>
                             <button class="toggle fr">
                                 <i class="icon-plus-sign" ng-click="toggle(drugOrder)" ng-hide="drugOrder.show"></i>
@@ -165,5 +169,6 @@
         </section>
     </main>
     <footer>
+        <h1>This is a computer generated receipt and does not require a signature.</h1>
     </footer>
 </div>

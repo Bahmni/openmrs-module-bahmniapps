@@ -34,14 +34,15 @@
         <div class="patient-info">
             <table>
                 <tr>
-                    <td colspan="2">Name: <span class="value">{{patient.name}}</span></td>
+                    <td>Name: <span class="value">{{patient.name}}</span></td>
                     <td>Age / Sex: <span class="value">{{patient.birthdate | age:visit.getDischargeDispositionEncounterDate()}} / {{patient.gender}}</span>
                     </td>
+                    <td>Registration No. <span class="value">{{patient.identifier}}</span></td>
                 </tr>
                 <tr>
-                    <td>Registration No. <span class="value">{{patient.identifier}}</span></td>
                     <td>Village / Town: <span class="value">{{patient.address.cityVillage}}</span></td>
                     <td>P.O. <span class="value">{{patient.address.address2}}</span></td>
+                    <td>District: <span class="value">{{patient.address.countyDistrict}}</span></td>
                 </tr>
                 <tr>
                     <td>DOA: <span class="value">{{visit.getAdmissionDate() | date: 'd MMM yyyy'}}</span></td>
@@ -53,23 +54,30 @@
                 </tr>
             </table>
         </div>
+        <section class="observations">
+            <h3>Observations</h3>
+            <table>
+                <tbody ng-repeat="observation in visit.getWeightAndBMIObservations()">
+                <tr>
+                    <td>
+                        <span>{{observation.concept.name}}</span>
+                    </td>
+                    <td>
+                        <span>{{observation.value}}</span>
+                        <span>{{observation.concept.units}}</span>
+                        <span class="date">{{observation.observationDateTime | date :'d MMM yyyy'}}</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
         <section class="diagnosis-print">
             <h3>Final Diagnosis</h3>
-            <table>
-                <tr>
-                    <th>Diagnosis Name</th>
-                    <th>Certainty</th>
-                </tr>
-                <tr ng-repeat="diagnosis in visit.getLatestDiagnoses()" ng-if="!diagnosis.isRuledOut()">
-                    <td>
-
-                        <span>{{diagnosis.getDisplayName()}}</span>
-                    </td>
-                    <td>
-                        <span>{{diagnosis.certainty}}</span>
-                    </td>
-                </tr>
-            </table>
+            <ul>
+                <li ng-repeat="diagnosis in visit.getLatestDiagnoses()" ng-if="!diagnosis.isRuledOut()">
+                    <span>{{diagnosis.getDisplayName()}}</span>
+                </li>
+            </ul>
         </section>
         <section class="history-print">
             <h3>History &amp; Examination</h3>
@@ -77,7 +85,7 @@
         </section>
         <section class="treatment-print">
             <h3>Treatment received</h3>
-            <table>
+            <table ng-if="dischargeSummary.getTreatmentRecieved() && dischargeSummary.getTreatmentRecieved().length > 0">
                 <tr>
                     <th>Drug Name</th>
                     <th>Form</th>
@@ -86,7 +94,7 @@
                 <tr ng-repeat="drugOrder in dischargeSummary.getTreatmentRecieved()">
                     <td>{{drugOrder.drugName}}</td>
                     <td>{{drugOrder.numberPerDosage}} {{drugOrder.dosageForm}}</td>
-                    <td>{{drugOrder.dosageFrequency.name}} for {{drugOrder.startDate | days:drugOrder.endDate }}
+                    <td>for {{drugOrder.startDate | days:drugOrder.endDate }}
                         day(s)
                     </td>
                 </tr>
@@ -115,20 +123,46 @@
         </section>
         <section class="lab-print">
             <h3>Lab Investigations</h3>
-            <ol>
-                <li class="test-item" ng-switch="labOrder.getOrderableType()"
-                    ng-repeat="labOrder in dischargeSummary.getLatestLabOrders()">
-	    		<span ng-switch-when="Panel" ng-init="panel = labOrder.orderable">
-	    			<span class="test-name">{{panel.concept.name}}</span>
-	    			<ul>
-                        <li ng-repeat="test in panel.tests" ng-include="'testTemplate'"></li>
-                    </ul>
-	    		</span>
-          <span ng-switch-when="Test" ng-init="test = labOrder.orderable">
-           <span ng-include="'testTemplate'"></span>
-          </span>
-                </li>
-            </ol>
+            <table class="ipd-investigation">
+                <thead>
+                <tr>
+                    <th class="test-name">Test</th>
+                    <th class="initial-value">Initial</th>
+                    <th class="final-value">Final</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="orderable in visit.tabularResults.getOrderables()">
+                    <td colspan="3" ng-if="orderable.concept.set">{{orderable.concept.name}}</td>
+                    <td ng-if="!orderable.concept.set">
+                        <span ng-class="{'belongsToPanel': orderable.belongsToPanel}">{{orderable.concept
+                            .name}}</span>
+                        <span class="range">
+                            <span ng-if="orderable.getMinNormal() && orderable.getMaxNormal()">
+                                {{' (' + orderable.getMinNormal() + ' - ' + orderable.getMaxNormal() + ')'}}
+                            </span>
+                            <span class="units">{{orderable.getUnits()}}</span>
+                        </span>
+                    </td>
+                    <td ng-if="!orderable.concept.set" ng-init="result = orderable.results[0]">
+                        <span ng-if="result">
+                            <span ng-class="{'is-abnormal': result.isAbnormal}">
+                                {{result.value}}
+                            </span>
+                            <span class="date">({{result.orderDate | date :'d MMM yyyy'}})</span>
+                        </span>
+                    </td>
+                    <td ng-if="!orderable.concept.set" ng-init="result = orderable.results[orderable.results.length - 1]">
+                        <span ng-if="result">
+                            <span ng-class="{'is-abnormal': result.isAbnormal}">
+                                {{result.value}}
+                            </span>
+                            <span class="date">({{result.orderDate | date :'d MMM yyyy'}})</span>
+                        </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </section>
         <section class="lab-notes-print" ng-if="dischargeSummary.getObservationValue('Lab Investigation Notes')">
             <h3>Lab Investigation Notes</h3>
@@ -148,5 +182,10 @@
         </section>
     </main>
     <footer>
+    </footer>
+</div>
+<div>
+    <footer>
+        <h1>This is a computer generated receipt and does not require a signature.</h1>
     </footer>
 </div>

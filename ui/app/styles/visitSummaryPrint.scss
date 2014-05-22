@@ -8,3 +8,15 @@ section.block.ipd-treatment-section, section.block.disposition-section, section.
 .lab-investigation {
   display: block!important;
 }
+
+.observations{
+  .date{
+    float: right;
+  }
+}
+
+footer h1{
+  margin-top: 10px;
+  text-align: center;
+  font-weight: bold;
+}
