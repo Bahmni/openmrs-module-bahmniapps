@@ -127,8 +127,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="day in visit.tabularResults.getDays()">
-                <td bo-text="'D'+ day.dayNumber"></td>
+            <tr ng-repeat="day in visit.tabularResults.getDays()" ng-if="visit.atleastOneResultPerDay(day)">
+                <td bo-text="'D'+ day.dayNumber + ' (' + displayDate(day.date) + ')'"></td>
                 <td ng-init="test = orderable" ng-repeat="orderable in visit.tabularResults.getOrderables()">
                         <span ng-if="!orderable.concept.set" ng-repeat="result in test.results |
                          orderBy:'orderDate':false"
@@ -349,8 +349,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="day in visit.ipdDrugSchedule.days">
-            <td bo-text="'D'+ day.dayNumber"></td>
+        <tr ng-repeat="day in visit.ipdDrugSchedule.days" ng-if="visit.atleastOneDrugForDay(day)">
+            <td bo-text="'D'+ day.dayNumber + ' (' + displayDate(day.date) + ')'"></td>
             <td ng-repeat="drug in visit.ipdDrugSchedule.drugs">
                 <span class="icon-ok" bo-if="drug.isActiveOnDate(day.date)"/>
             </td>

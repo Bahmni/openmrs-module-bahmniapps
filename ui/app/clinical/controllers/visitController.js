@@ -35,4 +35,8 @@ angular.module('bahmni.clinical')
                     return visit.uuid === $rootScope.visit.uuid;
                 })[0].startDatetime;
             };
+
+            $scope.displayDate = function(date) {
+                return moment(date).format("DD-MMM-YY");
+            }
         }]);

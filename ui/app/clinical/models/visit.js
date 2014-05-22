@@ -179,6 +179,28 @@ Bahmni.Clinical.Visit = (function(){
                 return obs.concept && (obs.concept.name === Bahmni.Common.Constants.weightConceptName || obs.concept.name === Bahmni.Common.Constants.bmiConceptName || obs.concept.name === Bahmni.Common.Constants.bmiStatusConceptName) ? true : false;
             };
             return this.observations.filter(isObservationForRegistration);
+        },
+        atleastOneResultPerDay: function (day) {
+            var atleastOneResultForDay = false;
+            this.tabularResults.getOrderables().forEach(function(test){
+                if(!test.concept.set) {
+                    test.results.forEach(function (result) {
+                        if(result.isOnOrderDate(day.date)) {
+                            atleastOneResultForDay = true;
+                        }
+                    })
+                }
+            });
+            return atleastOneResultForDay;
+        },
+        atleastOneDrugForDay: function (day) {
+            var atleastOneDrugForDay = false;
+            this.ipdDrugSchedule.drugs.forEach(function (drug) {
+                if (drug.isActiveOnDate(day.date)) {
+                    atleastOneDrugForDay = true;
+                }
+            })
+            return atleastOneDrugForDay;
         }
     };
 
