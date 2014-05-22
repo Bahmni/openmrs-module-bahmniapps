@@ -103,6 +103,23 @@
                     </tbody>
                 </table>
             </section>
+            <section class="dispositions">
+                <h2>
+                    Disposition
+                </h2>
+                <ul>
+                    <li ng-repeat="disposition in visit.dispositions">
+                        <span class="name">{{disposition.conceptName}}</span>
+                        <ul>
+                            <li ng-repeat="note in disposition.additionalObs">
+                                <span ng-if="note && note.value">
+                                    <span>Note: {{note.value}}</span>
+                                </span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
             <section ng-if="visit.labTestOrderObsMap">
                 <h2 ng-click="visit.toggleLabInvestigation()" class="has-toggle">
                     <button class="section-toggle" ng-if="visit.admissionDate">
