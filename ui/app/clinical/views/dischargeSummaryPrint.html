@@ -180,6 +180,10 @@
             <h3>Radiology Investigation Notes</h3>
             <span class="value">{{dischargeSummary.getObservationValue('Radiology Notes')}}</span>
         </section>
+        <section class="other-notes-print" ng-if="dischargeSummary.getObservationValue('Other Notes')">
+            <h3>Other Notes</h3>
+            <span>{{dischargeSummary.getObservationValue('Other Notes')}}</span>
+        </section>
     </main>
     <footer>
     </footer>
