@@ -28,7 +28,7 @@ angular.module('bahmni.common.patient')
                     "address2": preferredAddress.address2,
                     "address3": preferredAddress.address3,
                     "cityVillage": preferredAddress.cityVillage,
-                    "countyDistrict": preferredAddress.countyDistrict,
+                    "countyDistrict": preferredAddress.countyDistrict === null ? '' : preferredAddress.countyDistrict,
                     "stateProvince": preferredAddress.stateProvince
                 } : {};
             };
