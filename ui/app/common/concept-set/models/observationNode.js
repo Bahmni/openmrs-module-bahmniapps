@@ -55,10 +55,10 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     getDuration: function () {
-        var abnormalAsArray = this.groupMembers.filter(function (member) {
+        var durationAsArray = this.groupMembers.filter(function (member) {
             return (member.concept.conceptClass.name === Bahmni.Common.Constants.durationConceptClassName) || (member.concept.conceptClass === Bahmni.Common.Constants.durationConceptClassName);
         });
-        return abnormalAsArray[0];
+        return durationAsArray[0];
     },
 
     getPrimaryObs: function () {

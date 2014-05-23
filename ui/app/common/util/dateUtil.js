@@ -116,7 +116,7 @@ Bahmni.Common.Util.DateUtil = {
                 }
             }
         }
-        return durationRepresentation(0, "Minutes", 1);
+        return durationRepresentation(undefined, undefined, undefined);
     }
 
 };

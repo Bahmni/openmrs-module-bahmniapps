@@ -72,7 +72,9 @@ Bahmni.ConceptSet.ObservationMapper = function () {
 
             if (observationTemp.duration) {
                 var durationForDisplay = Bahmni.Common.Util.DateUtil.convertToUnits(observationTemp.duration.value);
-                observationValue = observationValue.concat(" since " + durationForDisplay["value"] + " " + durationForDisplay["unitName"]);
+                if (durationForDisplay["value"] && durationForDisplay["unitName"]) {
+                    observationValue = observationValue.concat(" since " + durationForDisplay["value"] + " " + durationForDisplay["unitName"]);
+                }
             }
 
             return { "value": observationValue, "abnormal": observationTemp.abnormal, "duration": observationTemp.duration,
