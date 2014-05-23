@@ -2,6 +2,7 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
     angular.extend(this, observation);
     this.isObservation = true;
     this.conceptUIConfig = conceptUIConfig;
+    this.observationDateTime = Bahmni.Common.Util.DateUtil.now();
 
     if (savedObs) {
         this.uuid = savedObs.uuid;
