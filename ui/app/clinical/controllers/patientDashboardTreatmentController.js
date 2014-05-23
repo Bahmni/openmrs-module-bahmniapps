@@ -6,6 +6,5 @@ angular.module('bahmni.clinical')
         };
         treatmentService.getActiveDrugOrders($stateParams.patientUuid).then(function (drugOrders) {
             $scope.drugOrders = drugOrders.sort(dateCompare);
-
         });
     }]);

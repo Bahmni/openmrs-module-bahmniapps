@@ -19,6 +19,7 @@ Bahmni.Common = Bahmni.Common || {};
         emrEncounterUrl: EMRAPI + "/encounter",
         encounterUrl: RESTWS_V1 + "/encounter",
         orderUrl: RESTWS_V1 + "/order",
+        bahmniOrderUrl: BAHMNI_CORE + "/orders",
         bahmniEncounterUrl: BAHMNI_CORE + "/bahmniencounter",
         recentEncounterUrl: EMRAPI + "/encounter/active",
         conceptUrl: RESTWS_V1 + "/concept",
