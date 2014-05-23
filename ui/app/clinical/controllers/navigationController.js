@@ -153,16 +153,18 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 var addObservationsToEncounter = function () {
                     encounterData.observations = encounterData.observations || [];
 
-                    if ($scope.consultation.consultationNote.value) {
+                    if ($scope.consultation.consultationNote) {
                         encounterData.observations.push($scope.consultation.consultationNote);
                     }
-                    if ($scope.consultation.labOrderNote.value) {
+                    if ($scope.consultation.labOrderNote) {
                         encounterData.observations.push($scope.consultation.labOrderNote);
                     }
                     encounterData.observations = encounterData.observations.concat($rootScope.consultation.observations);
                 };
-
-                $rootScope.consultation.observations = new Bahmni.Common.Domain.ObservationFilter().filter($rootScope.consultation.observations);
+                var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
+                $rootScope.consultation.observations = observationFilter.filter($rootScope.consultation.observations);
+                $rootScope.consultation.consultationNote = observationFilter.filter([$rootScope.consultation.consultationNote])[0];
+                $rootScope.consultation.labOrderNote = observationFilter.filter([$rootScope.consultation.labOrderNote])[0];
                 addObservationsToEncounter();
 
                 spinner.forPromise(encounterService.create(encounterData).success(function () {

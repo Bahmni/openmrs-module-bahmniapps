@@ -72,7 +72,7 @@
 
 	Observation.wrap = function(observationData) {
 		var observation = new Observation(observationData);
-		observation.groupMembers = observation.groupMembers.map(Observation.wrap);
+		observation.groupMembers = observation.groupMembers ? observation.groupMembers.map(Observation.wrap) : [];
 		return observation;
 	}
 })();
