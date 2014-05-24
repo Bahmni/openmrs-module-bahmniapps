@@ -115,7 +115,8 @@ angular.module('bahmni.adt')
             });
 
             $scope.getDisplayForContinuingVisit = function(){
-                return "Continue " + $scope.currentVisitType + " Visit";
+                //return "Continue " + $scope.currentVisitType + " Visit";
+                return "Continue Visit";
             };
 
             $scope.getDisplay = function(displayFunction, display){
