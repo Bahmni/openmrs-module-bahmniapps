@@ -67,7 +67,7 @@
           background: linear-gradient(top, #ffffff, #dddddd);
           background-color: #dddddd;
           border: #dddddd 1px solid;
-          padding: 8px 20px;
+          padding: 21px 30px;
           display: inline-block;
           line-height: 1.2em;
           color: #363463;
@@ -80,7 +80,7 @@
             padding-left: 0;
             padding-right: 0;
             text-align: center;
-            padding: 15px 0;
+            padding: 20px 0;
             margin-top: 8px;
           }
         }
@@ -90,7 +90,7 @@
           color: #EEE;
         }
         .btn {
-          padding-top: 7px;
+          padding: 20px 30px;
           &.btn-primary {
             background: #447772;
             color: #FFF;
@@ -104,7 +104,7 @@
             padding-left: 0;
             padding-right: 0;
             text-align: center;
-            padding: 15px 0;
+            padding: 20px 0;
             margin-top: 8px;
           }
         }
@@ -276,6 +276,9 @@
       }
     }
   }
+}
+.doc-upload-accordion {
+  margin: 5px;
 }
 button.mfp-close:hover {
   background: none!important;
