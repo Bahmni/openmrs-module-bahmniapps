@@ -10,6 +10,18 @@ angular.module('opd.documentupload')
 
             $scope.visits = [];
 
+            var setOrientationWarning = function() {
+                $scope.orientation_warning = (window.orientation && (window.orientation < 0 || window.orientation > 90));
+            }
+            setOrientationWarning();
+            var onOrientationChange = function() {
+                $scope.$apply(setOrientationWarning);
+            }
+            window.addEventListener('orientationchange', onOrientationChange);
+            $scope.$on('$destroy', function(){
+                window.removeEventListene('orientationchange', onOrientationChange);
+            });
+
             var initNewVisit = function () {
                 $scope.newVisit = new Bahmni.DocumentUpload.Visit();
                 $scope.currentVisit = $scope.newVisit;
