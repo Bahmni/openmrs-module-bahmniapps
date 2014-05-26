@@ -12,7 +12,7 @@
             </div>
 
             <div class="table-body">
-                <div class="row diagnosis-row" ng-repeat="diagnosis in visit.getLatestDiagnoses()">
+                <div class="row diagnosis-row" ng-repeat="diagnosis in visit.getLatestDiagnoses() | primaryDiagnosisFirst">
                     <div class="view-past">
                         <div class="col col1">
                             <span class="diagnosis-name" bo-text="diagnosis.getDisplayName()"

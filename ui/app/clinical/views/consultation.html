@@ -4,7 +4,7 @@
         <h2>Diagnosis</h2>
         <div class="block-content" ng-show="consultation.newlyAddedDiagnoses.length > 0">
             <h4 class="section">Newly added</h4>
-            <div class="diagnosis-row" ng-repeat="diagnosis in consultation.newlyAddedDiagnoses">
+            <div class="diagnosis-row" ng-repeat="diagnosis in consultation.newlyAddedDiagnoses | primaryDiagnosisFirst">
                 <h4 class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">{{diagnosis.getDisplayName()}}</h4>
                 <div class="secondary">
                     <div class="state">
@@ -19,7 +19,7 @@
         
         <div class="block-content" ng-show="consultation.savedDiagnosesFromCurrentEncounter.length > 0">
             <h4 class="section">Current</h4>
-            <div class="diagnosis-row" ng-repeat="diagnosis in consultation.savedDiagnosesFromCurrentEncounter">
+            <div class="diagnosis-row" ng-repeat="diagnosis in consultation.savedDiagnosesFromCurrentEncounter | primaryDiagnosisFirst">
                 <h4 class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">{{diagnosis.getDisplayName()}}</h4>
                 <div class="secondary">
                     <div ng-show="diagnosis.firstDiagnosis" class="current">
@@ -41,7 +41,7 @@
 
         <div class="block-content" ng-show="editedDiagnosesFromPastEncounters.length > 0">
             <h4 class="section">Past</h4>
-            <div class="diagnosis-row" ng-repeat="diagnosis in editedDiagnosesFromPastEncounters">
+            <div class="diagnosis-row" ng-repeat="diagnosis in editedDiagnosesFromPastEncounters | primaryDiagnosisFirst">
                 <h4 class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">{{diagnosis.getDisplayName()}}</h4>
                 <div class="secondary">
                     <div ng-show="diagnosis.firstDiagnosis" class="current">

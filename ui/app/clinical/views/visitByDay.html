@@ -6,7 +6,7 @@
 
         <section bo-show="visitSummary.hasEncounters()" class="block investigation">
             <h2>Diagnoses</h2>
-            <ul class="block-content visit-diagnosis">
+            <ul class="block-content visit-diagnosis | primaryDiagnosisFirst">
                 <li ng-repeat="diagnosis in visitSummary.diagnoses">
                     <span class="diag-ps" bo-show="visitSummary.isPrimaryOrder(diagnosis.order)">P</span>
                     <span class="diag-ps" bo-show="!visitSummary.isPrimaryOrder(diagnosis.order)">S</span>

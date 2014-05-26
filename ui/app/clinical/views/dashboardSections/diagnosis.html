@@ -4,7 +4,7 @@
     <section class="block diagnosis" ng-class="{'more': allDiagnoses.show}">
         <div class="table history-diagnosis" ng-if="allDiagnoses.length > 0">
             <div class="table-body">
-                <div ng-repeat="diagnosis in allDiagnoses" class="row">
+                <div ng-repeat="diagnosis in allDiagnoses | primaryDiagnosisFirst" class="row">
                     <div class="view-past">
                         <div class="col col1">
                             <h4 class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">

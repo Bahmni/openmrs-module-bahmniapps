@@ -74,7 +74,7 @@
         <section class="diagnosis-print">
             <h3>Final Diagnosis</h3>
             <ul>
-                <li ng-repeat="diagnosis in visit.getLatestDiagnoses()" ng-if="!diagnosis.isRuledOut()">
+                <li ng-repeat="diagnosis in visit.getLatestDiagnoses() | primaryDiagnosisFirst" ng-if="!diagnosis.isRuledOut()">
                     <span>{{diagnosis.getDisplayName()}}</span>
                 </li>
             </ul>
