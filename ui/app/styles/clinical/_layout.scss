@@ -159,7 +159,7 @@ body{
                   border-bottom: 1px solid #02675d;
                   margin: 0;
                   a {
-                    padding: 5px;
+                    padding: 10px 5px;
                     display: inline-block;
                     min-width: 190px;
                     &:hover {
@@ -255,7 +255,7 @@ body{
 .opd-wrapper {
     position: relative;
     margin: 0px;
-    min-height: 768px;
+    min-height: 1200px;
     width: 100%;
     @media screen and (min-width: 1024px) {
         width: 1024px;

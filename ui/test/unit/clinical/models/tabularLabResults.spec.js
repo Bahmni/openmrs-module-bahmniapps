@@ -39,12 +39,12 @@ describe("TabularLabResults", function () {
 
 
     it("should combine result of the same tests", function () {
-        var firstDayResult = setUpResult("MCH", "2014-04-17T00:00:00.000+0530", 12);
-        var secondDayResult = setUpResult("MCH", "2014-04-18T00:00:00.000+0530", 16);
+        var firstDayResult = setUpResult("MCH", "2014-04-20T00:00:00.000+0530", 12, "2014-04-19T00:00:00.000+0530");
+        var secondDayResult = setUpResult("MCH", "2014-04-21T00:00:00.000+0530", 16, "2014-04-20T00:00:00.000+0530");
         var MCH1 = setUpTest("MCH", [firstDayResult]);
         var MCH2 = setUpTest("MCH", [secondDayResult]);
         var labOrder1 = setUpLabOrder("2014-04-19T00:00:00.000+0530", MCH1);
-        var labOrder2 = setUpLabOrder("2014-04-19T00:00:00.000+0530", MCH2);
+        var labOrder2 = setUpLabOrder("2014-04-20T00:00:00.000+0530", MCH2);
         var labOrders = [labOrder1, labOrder2];
 
         var res = Bahmni.Clinical.TabularLabResults.create(labOrders, visitStartDate, visitEndDate);
@@ -56,15 +56,15 @@ describe("TabularLabResults", function () {
     });
 
     it("should return results of tests under panel with the attribute belongsToPanel true", function () {
-        var mchResult1 = setUpResult("MCH", "2014-04-17T00:00:00.000+0530", 12);
-        var mchResult2 = setUpResult("MCH", "2014-04-18T00:00:00.000+0530", 16);
-        var mcvResult = setUpResult("MCV", "2014-04-18T00:00:00.000+0530", 16);
+        var mchResult1 = setUpResult("MCH", "2014-04-20T00:00:00.000+0530", 12, "2014-04-19T00:00:00.000+0530");
+        var mchResult2 = setUpResult("MCH", "2014-04-21T00:00:00.000+0530", 16, "2014-04-20T00:00:00.000+0530");
+        var mcvResult = setUpResult("MCV", "2014-04-21T00:00:00.000+0530", 16, "2014-04-20T00:00:00.000+0530");
         var test1 = setUpTest("MCH", [mchResult1]);
         var test2 = setUpTest("MCH", [mchResult2]);
         var test3 = setUpTest("MCV", [mcvResult]);
         var anaemiaPanel = setUpPanel("Anaemia Panel", [test1, test3]);
         var labOrder1 = setUpLabOrder("2014-04-19T00:00:00.000+0530", anaemiaPanel);
-        var labOrder2 = setUpLabOrder("2014-04-19T00:00:00.000+0530", test2);
+        var labOrder2 = setUpLabOrder("2014-04-20T00:00:00.000+0530", test2);
         var labOrders = [labOrder1, labOrder2];
 
         var res = Bahmni.Clinical.TabularLabResults.create(labOrders, visitStartDate, visitEndDate);
@@ -80,16 +80,16 @@ describe("TabularLabResults", function () {
     });
 
     it("should combine results of tests from multiple order of same panel", function () {
-        var mchResult1 = setUpResult("MCH", "2014-04-17T00:00:00.000+0530", 12);
-        var mchResult2 = setUpResult("MCH", "2014-04-18T00:00:00.000+0530", 16);
-        var mcvResult = setUpResult("MCV", "2014-04-18T00:00:00.000+0530", 16);
+        var mchResult1 = setUpResult("MCH", "2014-04-20T00:00:00.000+0530", 12, "2014-04-19T00:00:00.000+0530");
+        var mchResult2 = setUpResult("MCH", "2014-04-21T00:00:00.000+0530", 16, "2014-04-20T00:00:00.000+0530");
+        var mcvResult = setUpResult("MCV", "2014-04-21T00:00:00.000+0530", 16, "2014-04-20T00:00:00.000+0530");
         var test1 = setUpTest("MCH", [mchResult1]);
         var test2 = setUpTest("MCH", [mchResult2]);
         var test3 = setUpTest("MCV", [mcvResult]);
         var anaemiaPanel1 = setUpPanel("Anaemia Panel", [test1, test3]);
         var anaemiaPanel2 = setUpPanel("Anaemia Panel", [test2]);
         var labOrder1 = setUpLabOrder("2014-04-19T00:00:00.000+0530", anaemiaPanel1);
-        var labOrder2 = setUpLabOrder("2014-04-19T00:00:00.000+0530", anaemiaPanel2);
+        var labOrder2 = setUpLabOrder("2014-04-20T00:00:00.000+0530", anaemiaPanel2);
         var labOrders = [labOrder1, labOrder2];
 
         var res = Bahmni.Clinical.TabularLabResults.create(labOrders, visitStartDate, visitEndDate);
@@ -104,13 +104,14 @@ describe("TabularLabResults", function () {
         expect(res.getOrderables()[2].results).toEqual([mcvResult]);
     });
 
-    function setUpResult(testName, obsDateTime, value) {
+    function setUpResult(testName, obsDateTime, value, orderDate) {
         return new Bahmni.Clinical.Result({
             value: value,
             observationDateTime: obsDateTime,
             concept: {
                 name: testName
-            }
+            },
+            orderDate: orderDate
         });
     }
 

@@ -55,12 +55,30 @@ Bahmni.Clinical.TabularLabResults = (function () {
         return sortedConceptSet.sort(allOrderables);
     };
 
+    var sortResultsInOrderables = function(orderables){
+        orderables.forEach(function(orderable){
+            if(!orderable.concept.set){
+                orderable.results = _.sortBy(orderable.results, function(result){
+                    return result.orderDate;
+                });
+            }else{
+                orderable.tests.forEach(function(test){
+                    test.results = _.sortBy(test.results, function(result){
+                        return result.orderDate;
+                    });
+                });
+            }
+        });
+        return orderables;
+    };
+
     TabularLabResults.create = function (labOrders, visitStartDate, visitEndDate, allTestsAndPanelsConceptSet) {
         var sortedConceptSet = new Bahmni.Clinical.SortedConceptSet(allTestsAndPanelsConceptSet);
         var orderables = getOrderables(labOrders, sortedConceptSet);
         var visitDays = DateUtil.createDays(visitStartDate, visitEndDate);
         var flatOrderables = flattenOrderables(orderables);
-        return new TabularLabResults(flatOrderables, visitDays);
+        var sortedOrderables = sortResultsInOrderables(flatOrderables);
+        return new TabularLabResults(sortedOrderables, visitDays);
     };
 
     return TabularLabResults;

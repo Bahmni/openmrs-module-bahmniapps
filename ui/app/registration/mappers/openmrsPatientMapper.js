@@ -44,7 +44,7 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 patient.gender = openmrsPatient.person.gender;
                 patient.address = mapAddress(openmrsPatient.person.preferredAddress);
                 patient.identifier = openmrsPatient.identifiers[0].identifier;
-                patient.image = Bahmni.Registration.Constants.baseOpenMRSRESTURL + "/personimage/" + openmrsPatient.uuid + ".jpeg" + "?q=" + new Date().getTime();
+                patient.image = Bahmni.Registration.Constants.patientImageURL + openmrsPatient.uuid + ".jpeg?q=" + new Date().toISOString();
                 patient.registrationDate = parseDate(openmrsPatient.person.auditInfo.dateCreated);
                 mapAttributes(patient, openmrsPatient.person.attributes);
                 return patient;

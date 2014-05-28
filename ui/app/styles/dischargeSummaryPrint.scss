@@ -74,7 +74,11 @@ header h2 {
     }
   }
 }
-
+section.diagnosis-print, section.treatment-print {
+  table tr th {
+    text-align: left!important;
+  }
+}
 section {
   clear: both;
   text-align: left;
@@ -86,9 +90,6 @@ section h3 {
   text-align: left;
   margin-right: 10px;
   margin-bottom: 10px;
-}
-section h3:after {
-  content: ":";
 }
 .logo {
   width: 12mm; 
@@ -113,6 +114,8 @@ section h3:after {
   li.test-item {
     border-bottom: 1px solid #ccc;
     padding: 5px 0;
+    overflow: auto;
+    clear: both;
   }
   ol li {
     .pending-status {
@@ -134,5 +137,34 @@ section h3:after {
       float: right;
     }
   }
+  .belongsToPanel {
+    margin-left: 15px;
+  }
+  .is-abnormal {
+    font-weight: bold;
+  }
+  .ipd-investigation {
+    th {
+      text-align: left;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      padding: 5px;
+      text-transform: uppercase;
+    }
+    th.test-name {
+      width: 40%;
+    }
+    th.initial-value, th.final-value {
+      width: 30%;
+    }
+  }
+  .date{
+    float: right;
+  }
+}
 
+.observations{
+  .date{
+    float: right;
+  }
 }

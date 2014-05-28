@@ -2,7 +2,6 @@
 
 angular.module('bahmni.clinical')
     .controller('DispositionController', ['$scope', '$q', '$rootScope','dispositionService', 'spinner', 'RegisterTabService', function ($scope, $q, $rootScope,dispositionService, spinner, registerTabService) {
-
         var getDispositionActionsPromise = function() {
             return dispositionService.getDispositionActions().then(function (response) {
                 if (response.data && response.data.results) {
@@ -16,11 +15,12 @@ angular.module('bahmni.clinical')
                     var disposition = $rootScope.disposition;
                     if(disposition){
                         $scope.dispositionAction =  disposition.code;
+                        $scope.dispositionNote = {concept:{uuid:$scope.dispositionNoteConceptUuid},value: undefined, voided: false};
                         if(disposition.additionalObs) {
                             var matchedObs = disposition.additionalObs.filter(function(obs){
                                 return  obs.concept.uuid === $scope.dispositionNoteConceptUuid;
                             });
-                            $scope.dispositionNotes = matchedObs.length > 0 ? matchedObs[0] : null;
+                            $scope.dispositionNote = matchedObs.length > 0 ? matchedObs[0] : $scope.dispositionNote;
                         }
 
                     }
@@ -47,7 +47,7 @@ angular.module('bahmni.clinical')
                 concept.mappings.forEach(function(mapping){
                     var mappingSource = mapping.display.split(":")[0];
                     if(mappingSource === Bahmni.Common.Constants.emrapiConceptMappingSource){
-                        mappingCode = $.trim(mapping.display.split(":")[1]);;
+                        mappingCode = $.trim(mapping.display.split(":")[1]);
                     }
                 });
             }
@@ -55,7 +55,7 @@ angular.module('bahmni.clinical')
         };
 
         $scope.clearDispositionNote = function(){
-             $scope.dispositionNotes = {};
+             $scope.dispositionNote = {concept:{uuid:$scope.dispositionNoteConceptUuid},value: undefined};
         };
 
         var getSelectedDisposition = function(){
@@ -67,10 +67,10 @@ angular.module('bahmni.clinical')
                         break;
                     }
                 }
-                var additionalObs = constructDispositionNoteObs($scope.dispositionNotes);
+                if(!$scope.dispositionNote.value){$scope.dispositionNote.voided = true};
                 return {
                     dispositionDateTime : new Date(),
-                    additionalObs :additionalObs ,
+                    additionalObs :[$scope.dispositionNote],
                     code: $scope.getMappingCode(selectedAction),
                     conceptName: selectedAction.name.name
                 };
@@ -78,28 +78,11 @@ angular.module('bahmni.clinical')
 
         };
 
-        var constructDispositionNoteObs = function(notesObs){
-            if(notesObs){
-                var additionalObs =   [
-                    {
-                        concept:{
-                            uuid:$scope.dispositionNoteConceptUuid
-                        },
-                        value: notesObs.value
-                    }
-                ];
-                return additionalObs;
-            }
-            else{
-                return [];
-            }
-        };
-
         spinner.forPromise(loadDispositionActions());
 
 
         var saveDispositions = function() {
-            $rootScope.disposition  =   getSelectedDisposition();
+            $rootScope.disposition  =  getSelectedDisposition();
         };
 
         registerTabService.register(saveDispositions);

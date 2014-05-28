@@ -17,7 +17,7 @@ angular.module('bahmni.common.uiHelper')
                     type:'image',
                     delegate: imageGalleryTarget,
                     key: galleryName, 
-                    gallery: {enabled: true}
+                    gallery: {enabled: true, navigateByImgClick: false}
                 };
                 $scope.element.magnificPopup(options);
             }

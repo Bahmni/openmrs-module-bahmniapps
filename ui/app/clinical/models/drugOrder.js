@@ -12,7 +12,7 @@ Bahmni.Clinical.DrugOrder = (function () {
             orderDate: drugOrder.startDate,
             dosage: drugOrder.drug.dosageForm.display,
             dose: drugOrder.dose,
-            days: Bahmni.Common.Util.DateUtil.diffInDays(new Date(drugOrder.startDate), new Date(drugOrder.autoExpireDate))}
+            days: DateUtil.diffInDays(DateUtil.parse(drugOrder.startDate), DateUtil.parse(drugOrder.autoExpireDate))}
     };
 
     DrugOrder.create = function(drugOrderData) {

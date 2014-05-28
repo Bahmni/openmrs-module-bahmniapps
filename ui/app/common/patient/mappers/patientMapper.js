@@ -28,14 +28,14 @@ angular.module('bahmni.common.patient')
                     "address2": preferredAddress.address2,
                     "address3": preferredAddress.address3,
                     "cityVillage": preferredAddress.cityVillage,
-                    "countyDistrict": preferredAddress.countyDistrict,
+                    "countyDistrict": preferredAddress.countyDistrict === null ? '' : preferredAddress.countyDistrict,
                     "stateProvince": preferredAddress.stateProvince
                 } : {};
             };
 
             var parseDate = function (dateStr) {
                 if (dateStr)
-                    return new Date(dateStr.substr(0, 10));
+                    return Bahmni.Common.Util.DateUtil.parse(dateStr.substr(0, 10));
                 return dateStr;
             };
 
@@ -64,14 +64,14 @@ angular.module('bahmni.common.patient')
                 patient.genderText = mapGenderText(patient.gender);
                 patient.address = mapAddress(openmrsPatient.person.preferredAddress);
                 patient.identifier = openmrsPatient.identifiers[0].identifier;
-                patient.image = "/openmrs/ws/rest/v1/personimage/" + openmrsPatient.uuid + ".jpeg" + "?q=" + new Date().getTime();
+                patient.image = Bahmni.Common.Constants.patientImageUrl + openmrsPatient.uuid + ".jpeg";
                 patient.registrationDate = parseDate(openmrsPatient.person.personDateCreated);
                 mapAttributes(patient, openmrsPatient.person.attributes);
                 return patient;
             };
 
             var constructImageUrl = function (patientUuid) {
-                return  "/openmrs/ws/rest/v1/personimage/" + patientUuid + ".jpeg" + "?q=" + new Date().getTime();
+                return  Bahmni.Common.Constants.patientImageUrl + patientUuid + ".jpeg";
             };
 
             return {

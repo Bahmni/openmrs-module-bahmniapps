@@ -36,7 +36,7 @@ Bahmni.DispositionMapper = function(encounterConfig) {
                             disposition.adtName= dispositionGroupMember.value.name.display;
                             disposition.adtCode= getMappingCode(dispositionGroupMember.value)
                             disposition.adtValueUuid = dispositionGroupMember.value.uuid;
-                            var d=new Date(dispositionGroupMember.obsDatetime);
+                            var d = Bahmni.Common.Util.DateUtil.parse(dispositionGroupMember.obsDatetime);
                             disposition.adtDateTime = d.toDateString() +" "+d.getHours()+":"+d.getMinutes();
                         }
                         else if(conceptName && conceptName === Bahmni.Common.Constants.dispositionNoteConcept){

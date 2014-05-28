@@ -6,7 +6,7 @@ Bahmni.Clinical.OrdersMapper.prototype.group = function(orders, groupingParamete
     var getGroupingFunction = function (groupingParameter) {
         if (groupingParameter == 'date') {
             return function (order) {
-                return order.dateCreated.substring(0, 10);
+                return Bahmni.Common.Util.DateUtil.getDate(order.startDate);
             };
         }
         return function (order) {
@@ -19,10 +19,9 @@ Bahmni.Clinical.OrdersMapper.prototype.group = function(orders, groupingParamete
     var groupedOrders = new Bahmni.Clinical.ResultGrouper().group(orders, groupingFunction, 'orders', groupingParameter);
     if(groupingParameter === 'date'){
         return groupedOrders.map(function(order) {
-            var sortedOrders = order.orders.sort(function(first, second) { first.dateCreated < second.dateCreated ? 1 : -1; });
             return {
-                date: new Date(order.date),
-                orders: sortedOrders
+                date: Bahmni.Common.Util.DateUtil.parse(order.date),
+                orders: _.sortBy(order.orders, 'startDate')
             };
         }).sort(function(first, second) { return first.date < second.date ? 1: -1; });
     }

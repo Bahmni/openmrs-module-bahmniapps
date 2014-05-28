@@ -1,6 +1,11 @@
-<div class="dashboard-header opd-header-wrapper">
+<div bindonce class="dashboard-header opd-header-wrapper">
     <div class="opd-header-bottom">
+        <h1>
+        	<i class="icon-user"></i>
+        	<span bo-text="patient.name"></span> 
+        	<span bo-text="'(' + patient.identifier + ')'"></span>
+       	</h1>
         <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}"></button>
-        <a class="confirm quick-links" ng-if="activeVisit" ng-click="collapseControlPanel()" href="#/patient/{{patient.uuid}}/visit/{{activeVisit.uuid}}">Start Consultation</a>
+        <a class="confirm quick-links" ng-if="activeVisit" ng-click="collapseControlPanel()" href="#/patient/{{patient.uuid}}/visit/{{activeVisit.uuid}}">Consultation</a>
     </div>
 </div>

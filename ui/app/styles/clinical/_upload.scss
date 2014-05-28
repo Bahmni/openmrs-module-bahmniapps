@@ -67,7 +67,7 @@
           background: linear-gradient(top, #ffffff, #dddddd);
           background-color: #dddddd;
           border: #dddddd 1px solid;
-          padding: 8px 20px;
+          padding: 21px 30px;
           display: inline-block;
           line-height: 1.2em;
           color: #363463;
@@ -80,6 +80,8 @@
             padding-left: 0;
             padding-right: 0;
             text-align: center;
+            padding: 20px 0;
+            margin-top: 8px;
           }
         }
         button[disabled] {
@@ -88,7 +90,7 @@
           color: #EEE;
         }
         .btn {
-          padding-top: 7px;
+          padding: 20px 30px;
           &.btn-primary {
             background: #447772;
             color: #FFF;
@@ -102,6 +104,8 @@
             padding-left: 0;
             padding-right: 0;
             text-align: center;
+            padding: 20px 0;
+            margin-top: 8px;
           }
         }
         .files > li {
@@ -133,17 +137,18 @@
             width: 200px;
           }
           .placeholder {
-            border: 3px dashed #ddd;
+            // border: 3px dashed #ddd;
             width: 50px;
             height: 50px;
-            background: #fefefe;
+            // background: #fefefe;
             padding: 2px;
             float: left;
-            margin-right: 20px;
+            margin: 5px 20px 5px 2px;
+            text-align: center;
             i {
-              color: #ccc;
+              color: green;
               font-size: 20px;
-              line-height: 40px;
+              line-height: 55px;
               width: 40px;
             }
           }
@@ -271,6 +276,9 @@
       }
     }
   }
+}
+.doc-upload-accordion {
+  margin: 5px;
 }
 button.mfp-close:hover {
   background: none!important;

@@ -20,7 +20,7 @@ angular.module('bahmni.common.conceptSet')
             context: "="
         },
         controller: 'ConceptSetGroupController',
-        template: '<div ng-repeat="extension in extensions">' +
+        template: '<div ng-repeat="extension in extensions" class="concept-set-group">' +
                     '<concept-set ng-if=showConceptSet(extension) concept-set-name="extension.extensionParams.conceptName" observations="observations"></concept-set>' +
                   '</div>'
     }

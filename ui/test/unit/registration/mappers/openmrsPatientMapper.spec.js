@@ -99,7 +99,7 @@ describe('patientMapper', function () {
         expect(patient.address.stateProvince).toBe(openmrsPatient.person.preferredAddress.stateProvince);
         var urlParts = patient.image.split('?');
         expect(urlParts.length).toBe(2);
-        expect(urlParts[0]).toBe("/openmrs/ws/rest/v1/personimage/" + openmrsPatient.uuid + ".jpeg");
+        expect(urlParts[0]).toBe("/patient_images/" + openmrsPatient.uuid + ".jpeg");
     });
 
     it('should map attributes from openmrsPatient to our patient object', function () {

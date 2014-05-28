@@ -95,6 +95,7 @@
     }
   }
   .diagnosis .history-diagnosis .table-body {
+    .row {background: #fff;}
     .placeholder {
       font-size: 14px;
       padding: 10px;
@@ -234,6 +235,11 @@ strong {
   table {
     margin-top: 0;
     margin-bottom: 10px;
+    tr.title th {
+      background: #f6f6f6;
+      font-size: 14px;
+      white-space: nowrap;
+    }
     tr td {
       font-size: 14px;
     }
@@ -242,6 +248,9 @@ strong {
     }
     .drugorder-date {
       text-transform: uppercase;
+    }
+    .dosage-form {
+      white-space: nowrap;
     }
     .dosage-days {
       .inline-notes {
@@ -319,7 +328,7 @@ table.ipd-investigation {
     td.value {
       .obs-value {
         float: left;
-        width: 65%;
+        width: 60%;
       }
     }
   }
@@ -482,7 +491,30 @@ span.range {
   }
 }
 //disposition tab - temp placed here
- 
+ .no-visit {
+  padding: 30px 10px;
+  color: #666;
+  border: 1px solid #ccc;
+  background: #ddd;
+  margin-top: 10px;
+  text-align: center;
+  border-radius: 3px;
+}
+.row-click {
+  cursor: pointer;
+}
+.visit .history-diagnosis .diagnosis-row .view-past {
+  cursor: default;
+}
+.concept-set-group {
+  border: 1px solid #eee;
+  padding: 10px;
+  margin-bottom: 20px;
+  background: #f9fdf9;
+  border-radius: 10px;
+}
+legend.mylegend {background: #f9fdf9!important;}
+
 // Work in progresss - this _visit.scss needs cleaning!
 
 

@@ -1,6 +1,6 @@
+<link rel="stylesheet" href="../styles/clinical.css"/>
+<link rel="stylesheet" href="../styles/visitSummaryPrint.css"/>
 <div class="visit-summary-print">
-    <link rel="stylesheet" href="../styles/clinical.css"/>
-    <link rel="stylesheet" href="../styles/visitSummaryPrint.css"/>
     <header>
         <img class="logo" src="../images/jss-icon.png" alt="logo">
 
@@ -12,71 +12,58 @@
         <div class="patient-info">
             <table>
                 <tr>
-                    <td colspan="2">Name: <span class="value">{{patient.name}}</span></td>
+                    <td>Name: <span class="value">{{patient.name}}</span></td>
                     <td>Age / Sex: <span class="value">{{patient.birthdate | age:visit.dateStarted}} / {{patient.gender}}</span>
                     </td>
+                    <td>Registration No. <span class="value">{{patient.identifier}}</span></td>
                 </tr>
                 <tr>
-                    <td>Registration No. <span class="value">{{patient.identifier}}</span></td>
                     <td>Village / Town: <span class="value">{{patient.address.cityVillage}}</span></td>
                     <td>P.O. <span class="value">{{patient.address.address2}}</span></td>
+                    <td>District: <span class="value">{{patient.address.countyDistrict}}</span></td>
                 </tr>
                 <tr>
-                    <td colspan="3">Visit Date: <span class="value">{{visitDate | date: 'dd MMM yy'}}</span></td>
+                    <td colspan="3">Visit Date: <span class="value">{{visitDate | date: 'd MMM yyyy'}}</span></td>
                 </tr>
             </table>
         </div>
         <section bindonce="visit">
+            <section class="block">
+                <h2>Observations</h2>
+                <table class="observations">
+                    <tbody ng-repeat="observation in visit.getWeightAndBMIObservations()">
+                    <tr>
+                        <td>
+                            <span>{{observation.concept.name}}</span>
+                        </td>
+                        <td>
+                            <span>{{observation.value}}</span>
+                            <span>{{observation.concept.units}}</span>
+                            <span class="date">{{observation.observationDateTime | date :'d MMM yyyy'}}</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
             <section ng-show="visit.hasDiagnosis()" class="block diagnosis">
                 <h2>Diagnoses</h2>
-
-                <div class="table history-diagnosis">
-                    <div class="row table-header">
-                        <div class="col col1"><span>Diagnosis</span></div>
-                        <div class="col col2"><span>Initial</span></div>
-                        <div class="col col3"><span>Current</span></div>
-                    </div>
-
-                    <div class="table-body">
-                        <div class="row placeholder" ng-show="!visit.hasDiagnosis()">A diagnosis has not been made for
-                            this
-                            patient yet.
-                        </div>
-                        <div class="row diagnosis-row" ng-repeat="diagnosis in visit.getLatestDiagnoses()">
-                            <div class="view-past">
-                                <div class="col col1">
-                                    <span class="diagnosis-name" bo-text="diagnosis.getDisplayName()"
-                                          ng-class="{'ruled-out': diagnosis.diagnosisStatus}"></span>
-                                </div>
-                                <div class="col col2" ng-show="diagnosis.firstDiagnosis.revised">
-                                    <div class="view">
-                                        <span class="certainty">{{diagnosis.firstDiagnosis.certainty}}</span>
-                                        <span class="order">{{diagnosis.firstDiagnosis.order}}</span>
-                                        <span class="status">{{diagnosis.firstDiagnosis.diagnosisStatus}}</span>
-                                    </div>
-                                </div>
-
-                                <div ng-show="!diagnosis.firstDiagnosis.revised" class="col col2"></div>
-                                <div class="col col3">
-                                    <div class="view">
-                                        <span class="certainty">{{diagnosis.certainty}}</span>
-                                        <span class="order">{{diagnosis.order}}</span>
-                                        <span class="status">{{diagnosis.diagnosisStatus}}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+                <ul>
+                    <li ng-repeat="diagnosis in visit.getLatestDiagnoses() | primaryDiagnosisFirst" ng-if="!diagnosis.isRuledOut()">
+                        <span>{{diagnosis.getDisplayName()}}</span>
+                    </li>
+                </ul>            </section>
             <section class="block treatment-section" ng-show="visit.hasDrugOrders()">
                 <h2>Treatment</h2>
-                <table ng-repeat="drugOrderGroup in visit.drugOrderGroups">
+                <table>
                     <tr>
-                        <th class="drugorder-date" colspan="7"><strong>{{(drugOrderGroup.date | date:'dd MMM
-                            yy')}}</strong></th>
+                        <th>Drug Name</th>
+                        <th>Strength</th>
+                        <th>Form</th>
+                        <th>Frequency</th>
+                        <th>Instruction</th>
+                        <th>Duration</th>
                     </tr>
-                    <tbody ng-repeat="drugOrder in drugOrderGroup.orders">
+                    <tbody ng-repeat="drugOrder in visit.drugOrders">
                     <tr>
                         <td class="drug-name" bo-text="drugOrder.drugName"></td>
                         <td>
@@ -100,9 +87,7 @@
                         </td>
                         <td class="dosage-days">
                             <div class="dosage">
-                        <span><span class="copy">From </span>{{(drugOrder.startDate | date:'d MMM yy')}}<span
-                                class="copy"> for </span>{{visit.numberOfDosageDaysForDrugOrder(drugOrder)}} day(s)</span>
-                                <span bo-show="drugOrder.prn" class="prn">Take as required</span>
+                                <span>For {{visit.numberOfDosageDaysForDrugOrder(drugOrder)}} day(s)</span>
                             </div>
                             <button class="toggle fr">
                                 <i class="icon-plus-sign" ng-click="toggle(drugOrder)" ng-hide="drugOrder.show"></i>
@@ -117,6 +102,23 @@
                     </tr>
                     </tbody>
                 </table>
+            </section>
+            <section class="dispositions">
+                <h2>
+                    Disposition
+                </h2>
+                <ul>
+                    <li ng-repeat="disposition in visit.dispositions">
+                        <span class="name">{{disposition.conceptName}}</span>
+                        <ul>
+                            <li ng-repeat="note in disposition.additionalObs">
+                                <span ng-if="note && note.value">
+                                    <span>Note: {{note.value}}</span>
+                                </span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </section>
             <section ng-if="visit.labTestOrderObsMap">
                 <h2 ng-click="visit.toggleLabInvestigation()" class="has-toggle">
@@ -133,14 +135,11 @@
                     <table>
                         <thead>
                         <tr>
-                            <th colspan="2">
-                                <span class="lab-report-title">Lab Report {{$index+1}}</span>
-                                <button class="toggle-btn fr" ng-click="toggle(labOrders)"
-                                        ng-if="labOrders.accessionNotes">
-                                    <i class="icon-envelope" ng-hide="labOrders.show"></i>
-                                    <i class="icon-envelope-alt" ng-show="labOrders.show"></i>
-                                    Notes
-                                </button>
+                            <th colspan="2" class="lab-report-title">
+                                <span>
+                                    <span>Accession at </span>
+                                    <span bo-text="labOrders.encounterDateTime | date:'d MMM yyyy hh:mm a'"></span>
+                                </span>
                             </th>
                         </tr>
                         <tr ng-show="labOrders.show">
@@ -158,8 +157,7 @@
                                 {{line.name}}
                             </td>
                         </tr>
-                        <tr ng-if="!line.isSummary"
-                            ng-class="{'is-abnormal': line.isAbnormal, 'referred-out': line.referredOut}">
+                        <tr ng-if="!line.isSummary">
                             <td>
                                 <span>{{line.concept.name}}</span>
                                 <span class="range">
@@ -169,14 +167,9 @@
                                 <span class="units">{{line.units}}</span>
                                 </span>
                             </td>
-                            <td class="value">
+                            <td class="value" ng-class="{'is-abnormal': line.isAbnormal, 'referred-out': line.referredOut}">
                                 {{line.value}}
-
-                                <span class="referred">Referred Out</span>
-                                <button class="toggle fr">
-                                    <i class="icon-plus-sign" ng-click="toggle(line)" ng-hide="line.show"></i>
-                                    <i class="icon-minus-sign" ng-click="toggle(line)" ng-show="line.show"></i>
-                                </button>
+                                <span class="referred"> (Referred Out)</span>
                             </td>
                         </tr>
                         <tr ng-show="!line.isSummary && line.show">
@@ -192,5 +185,6 @@
         </section>
     </main>
     <footer>
+        <h1>This is a computer generated receipt and does not require a signature.</h1>
     </footer>
 </div>

@@ -1,10 +1,19 @@
 <div class="adt">
+    <div class="patient-disposition-status fr">
+        <div ng-if="hasAdmitEncounter() && !hasDischargeEncounter()">
+            <i class="icon-ok"></i>Admitted
+        </div>
+        <div ng-if="hasDischargeEncounter()">
+            <i class="icon-ok"></i>Discharged
+        </div>
+    </div>
+
     <div>
-        <span ng-show="myForm.service_id.$error.required">Select Action</span>
         <label>
-            Action: <select ng-model="dispositionAction"
-                            ng-options="d.name.display for d in dispositionActions"
-                            ng-change="refreshView()">
+            <span class="fl adt-disposition-action">Patient Movement:</span>
+            <select ng-model="dispositionAction"
+                    ng-options="d.name.display for d in dispositionActions" class="disposition-action">
+                    <option value="">Select</option>
         </select>
         </label>
     </div>
@@ -14,11 +23,12 @@
     </div>
 
     
-    <div class="submit-btn-container">
+    <div class="submit-btn-container" ng-if="dispositionAction">
         <div class="right">
     <span ng-repeat="extn in actions">
         <span ng-switch="extn.extensionParams.action">
-            <div ng-switch-when="startVisit" split-button="" options="visitTypes"
+            <div ng-switch-when="startVisit" split-button="" options="visitControl.visitTypes"
+                 primary-option="visitControl.defaultVisitType" option-text="visitControl.startButtonText"
                  option-click="startNewVisit" class="right">
             </div>
         <button ng-switch-default="" type="submit" class="right"

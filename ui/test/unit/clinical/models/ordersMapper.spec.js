@@ -58,9 +58,10 @@ describe('OrdersMapper', function () {
                 "name": "superman"
             }
         },
-        createOrder = function (drugName, date) {
+        createOrder = function (drugName, createDate, startDate) {
             var order = sampleOrder();
-            order.dateCreated = date;
+            order.dateCreated = createDate;
+            order.startDate = startDate;
             order.drugName = drugName;
             return order;
         },
@@ -68,14 +69,15 @@ describe('OrdersMapper', function () {
             var order = sampleTestOrder();
             order.uuid = Bahmni.Tests.genUUID();
             order.dateCreated = date;
+            order.startDate = date;
             order.concept.name = testName;
             return order;
         };
 
     it('should create drugOrders from a list of encounterTransaction objects', function () {
-        var firstOrder = createOrder("aspirin", "2014-03-24T14:38:13.000+0530");
-        var secondOrder = createOrder("cetrizine", "2014-03-24T14:38:13.000+0530");
-        var thirdOrder = createOrder("calpol", "2014-03-25T14:38:13.000+0530");
+        var firstOrder = createOrder("aspirin", "2014-03-24T14:38:13.000+0530", "2014-03-30T14:38:13.000+0530");
+        var secondOrder = createOrder("cetrizine", "2014-03-24T14:38:13.000+0530", "2014-03-30T14:38:13.000+0530");
+        var thirdOrder = createOrder("calpol", "2014-03-25T14:38:13.000+0530", "2014-03-26T14:38:13.000+0530");
         var encounterTransactions = [
             {   providers: [], observations: [],
                 drugOrders: [thirdOrder]},
@@ -83,11 +85,12 @@ describe('OrdersMapper', function () {
                 drugOrders: [firstOrder, secondOrder]}
         ];
         var orders = new Bahmni.Clinical.OrdersMapper().create(encounterTransactions, 'drugOrders');
+
         expect(orders.length).toBe(2);
-        expect(orders[0].date.toISOString().substring(0, 10)).toBe("2014-03-25");
-        expect(orders[1].date.toISOString().substring(0, 10)).toBe("2014-03-24");
-        expect(orders[0].orders.length).toBe(1);
-        expect(orders[1].orders.length).toBe(2);
+        expect(orders[0].date).toEqual(moment("2014-03-30").toDate());
+        expect(orders[1].date).toEqual(moment("2014-03-26").toDate());
+        expect(orders[0].orders.length).toBe(2);
+        expect(orders[1].orders.length).toBe(1);
     });
 
     it('should filter based on filter function', function () {
@@ -107,9 +110,9 @@ describe('OrdersMapper', function () {
     });
 
     it('should populate provider from encounterTransaction', function () {
-        var firstOrder = createOrder("aspirin", "2014-03-24T14:38:13.000+0530");
-        var secondOrder = createOrder("cetrizine", "2014-03-24T14:38:13.000+0530");
-        var thirdOrder = createOrder("calpol", "2014-03-25T14:38:13.000+0530");
+        var firstOrder = createOrder("aspirin", "2014-03-24T14:38:13.000+0530", "2014-03-30T14:38:13.000+0530");
+        var secondOrder = createOrder("cetrizine", "2014-03-24T14:38:13.000+0530", "2014-03-30T14:38:13.000+0530");
+        var thirdOrder = createOrder("calpol", "2014-03-25T14:38:13.000+0530", "2014-03-30T14:38:13.000+0530");
         var encounterTransactions = [
             {providers: [sampleProvider()], drugOrders: [thirdOrder], observations: []},
             {   providers: [], observations: [],

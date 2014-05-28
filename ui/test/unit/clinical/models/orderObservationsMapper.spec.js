@@ -12,13 +12,15 @@ describe('OrderObservationsMapper', function () {
                         "concept":{name:"name1"},
                         "uuid": "34a9d9ff-b243-4f73-a7bc-4f2f2ffeec2a",
                         "voided": false,
-                        "dateCreated": "2014-03-24T14:38:13.000+0530"
+                        "dateCreated": "2014-03-24T14:38:13.000+0530",
+                        "startDate": "2014-03-24T14:38:13.000+0530"
                     },
                     {
                         "concept":{name:"name2"},
                         "uuid": "ff09eced-a3a7-424c-9963-2fd0e98f8708",
                         "voided": false,
-                        "dateCreated": "2014-03-25T14:38:13.000+0530"
+                        "dateCreated": "2014-03-25T14:38:13.000+0530",
+                        "startDate": "2014-03-25T14:38:13.000+0530"
                     }
                 ],
                 "providers": [

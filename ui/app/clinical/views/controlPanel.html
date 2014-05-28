@@ -1,16 +1,18 @@
 <div class="patient-control-panel">
-    <div class="overlay" ng-class="{'shift': $parent.showControlPanel}" ng-click="$parent.toggleControlPanel()"></div>
-    <aside bindonce="patient" class="visit-history" ng-class="{'shift': $parent.showControlPanel}">
+    <div class="overlay" ng-show="$parent.showControlPanel" ng-click="$parent.toggleControlPanel()"></div>
+    <aside bindonce="patient" class="visit-history ng-hide" ng-show="$parent.showControlPanel">
         <div class="patient-info">
             <div class="patient-img">
                 <a href="{{getDashboardLink()}}" ng-click="changeContext($event)">
                   <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
                 </a>
             </div>
-            <h4 class="patient-name"><span bo-text="patient.name"></span><span ng-show="patient.gender"> ({{patient.genderText}})</span></h4>
+
+            <h4 class="patient-name"><a href="{{getDashboardLink()}}" ng-click="changeContext($event)"><span bo-text="patient.name"></span></a><span ng-show="patient.genderText"> ({{patient.genderText}})</span></h4>
             <h5 class="patient-identifier"><span bo-text="patient.identifier"></span></h5>
             <h5><span bo-text="calculateAge(patient.birthdate)"></span></h5>
-            <h5><span bo-text="patient.address.cityVillage"></span></h5>
+            <h5><span bo-text="patient.address.cityVillage"></span>
+              <span ng-show="patient.address.countyDistrict"> / {{patient.address.countyDistrict}}</span></h5>
             <span class="ward" bo-text="bedDetails.wardName + ' ' + bedDetails.bedNumber"></span>
         </div>
 
@@ -23,10 +25,10 @@
         </ul>
 
         <h2>Visit History</h2>
-        <ul>
+        <ul class="visit-history">
             <li ng-click="changeContext($event)" class="visit-history-entry"
                 ng-class="{'selected': isCurrentVisit(visit), 'active': visit.isActive()}"
-                ng-repeat="visit in visits">
+                ng-repeat="visit in $parent.visits">
                 <a href="#/patient/{{patient.uuid}}/dashboard/visit/{{visit.uuid}}">
                     <span bo-text="visit.startDatetime | date: 'd MMM yy'"></span>
                     <span bo-text="'- ' + (visit.stopDatetime | date: 'd MMM yy')" bo-hide="visit.isActive()"></span>

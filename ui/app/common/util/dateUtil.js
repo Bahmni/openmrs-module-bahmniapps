@@ -37,8 +37,7 @@ Bahmni.Common.Util.DateUtil = {
 	},
 
 	getDate: function (dateTime) {
-		var dateTimeObject = this.parse(dateTime);
-		return new Date(dateTimeObject.getFullYear(), dateTimeObject.getMonth(), dateTimeObject.getDate());
+		return moment(this.parse(dateTime)).startOf('day').toDate();
 	},
 
 	getCurrentDate: function(){
@@ -102,22 +101,22 @@ Bahmni.Common.Util.DateUtil = {
 	    };
 	},
 
-    convertToUnits: function (hours) {
-        var allUnits = {"Years": 365 * 24, "Months": 30 * 24, "Weeks": 7 * 24, "Days": 24, "Hours": 1};
+    convertToUnits: function (minutes) {
+        var allUnits = {"Years": 365 * 24 * 60, "Months": 30 * 24 * 60, "Weeks": 7 * 24 * 60, "Days": 24 * 60, "Hours": 60, "Minutes": 1};
 
-        var durationRepresentation = function (value, unitName, unitValueInHours) {
-            return {"value": value, "unitName": unitName, "unitValueInHours": unitValueInHours, "allUnits": allUnits };
+        var durationRepresentation = function (value, unitName, unitValueInMinutes) {
+            return {"value": value, "unitName": unitName, "unitValueInMinutes": unitValueInMinutes, "allUnits": allUnits };
         };
 
         for (var unitName in  allUnits) {
-            var unitValueInHours = allUnits[unitName];
-            if (hours || hours !== 0) {
-                if (hours >= unitValueInHours && hours % unitValueInHours === 0) {
-                    return durationRepresentation(hours / unitValueInHours, unitName, unitValueInHours);
+            var unitValueInMinutes = allUnits[unitName];
+            if (minutes || minutes !== 0) {
+                if (minutes >= unitValueInMinutes && minutes % unitValueInMinutes === 0) {
+                    return durationRepresentation(minutes / unitValueInMinutes, unitName, unitValueInMinutes);
                 }
             }
         }
-        return durationRepresentation(0, "Hours", 1);
+        return durationRepresentation(undefined, undefined, undefined);
     }
 
 };

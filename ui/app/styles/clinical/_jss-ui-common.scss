@@ -247,8 +247,8 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
     border: 1px solid #fff;
     background: #f2f2f2;
     .patient-name {
-      font-size: 13px;
-      color: #888;
+      font-size: 14px;
+      color: #222;
       text-transform: capitalize;
       width: 130px;
       white-space: nowrap;
@@ -258,7 +258,7 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
       line-height: 1.5em;
     }
     .patient-id {
-      color: #222;
+      color: #555;
     }
     &:hover{
        border: 1px solid #cecece;
@@ -319,8 +319,8 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
 #loader {
   z-index: 10000;
   width: 100%;
-  height: 50px;
-  margin-bottom: 20px;
+  height: 20px;
+  margin: 20px auto;
   background-image: url('../images/loader.gif');
   background-repeat:no-repeat;
   background-position:center;
@@ -334,7 +334,7 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
   height: 100%;
   top: 0px;
   left: 0px;
-  background: url('../images/spinner.gif') no-repeat center center;
+  background: rgba(0,0,0,0.6) url('../images/spinner.gif') no-repeat center center;
   div{
     width:100%;
     height: 100%;
@@ -397,7 +397,7 @@ input[file-upload] {
     font-size: 12px;
     background: #619b9a;
     color: #fff;
-    padding: 3px 10px;
+    padding: 1px 7px;
     border-radius: 5px;
     margin-right: 7px;
   }
@@ -484,7 +484,7 @@ a.quick-links {
 
 .messages {
   .error-message, .info-message {
-    width: 50%;
+    width: 35%;
     top: 100px;
     margin: 5px auto;
     color: #333;
@@ -492,6 +492,12 @@ a.quick-links {
     border-radius: 2px;
     box-shadow: 0px 0px 8px -1px #ccc;
     font-size: 14px;
+    font-family: OpenSansBold;
+    text-align: center;
+    position: fixed;
+    top: 100px;
+    left: 32%;
+    z-index: 1;
   }
   .error-message {
     background: #ffcccc;
@@ -500,6 +506,13 @@ a.quick-links {
   .info-message {
     background: #f9edbe;
     border: 1px solid #f0c36d;
+    color: green;
+    p:before {
+      content: "\f00c";
+      font-family: FontAwesome;
+      margin-right: 5px;
+      font-size: 18px;
+    }
   }
 }
 
@@ -523,21 +536,12 @@ button.toggle-patient:hover, button.toggle-patient.shift {
   padding: 0;
   .overlay {
     position: absolute;
-    top:0; bottom:0;
+    top:0; bottom: 0;
     left:0; right:0;
     background: rgba(0,0,0,0.4);
-    display: none;
-  }
-  .overlay.shift {
-    display: block;
   }
 }
 aside{
-  -webkit-transition: right .3s ease,-webkit-transform .3s ease;
-  -moz-transition: right .3s ease,-moz-transform .3s ease;
-  -o-transition: right .3s ease,transform .3s ease;
-  -ms-transition: right .3s ease,transform .3s ease;
-  transition: right .3s ease,transform .3s ease;
   h2{
     background:none;
     color: #000;
@@ -547,7 +551,6 @@ aside{
   }
   &.visit-history{
     position:absolute;
-    right:-350px;
     width:250px;
     background:#333333;
     bottom: 0;
@@ -563,6 +566,10 @@ aside{
     }
     ul {
       margin-bottom: 20px;
+    }
+    ul.visit-history {
+      height: 656px;
+      overflow-y: auto;
     }
     li a {
       display: block;
@@ -594,15 +601,37 @@ aside{
         font-size: 14px;
         text-align: center;
       }
-      h4.patient-name {text-transform: capitalize; font-size: 16px;}
+      h4.patient-name {
+        text-transform: capitalize; font-size: 16px; 
+        a {color: #ddd;}
+      }
       h5, .ward {color: #888; margin-top: 5px;}
       h5.patient-identifier {color: #ddd;}
     }
   }
-  &.visit-history.shift {
+  
+
+  &.visit-history.ng-hide-add, &.visit-history.ng-hide-remove {
+    -webkit-transition:all linear 0.3s;
+    -moz-transition:all linear 0.3s;
+    -o-transition:all linear 0.3s;
+    transition:all linear 0.3s;
+    display:block!important;
+  }
+
+  &.visit-history.ng-hide-add.ng-hide-add-active,
+  &.visit-history.ng-hide-remove {
+    right: -350px;
+  }
+
+  &.visit-history.ng-hide-add,
+  &.visit-history.ng-hide-remove.ng-hide-remove-active {
     right: 0;
   }
 
+  &.visit-history {
+    right: 0;
+  }
 
   .visit-history-entry, .summary {
     &.selected, &.selected:hover{
@@ -635,3 +664,24 @@ td .status {
 .btn-trends {.icon-bar-chart {display: inline-block;}}
 .btn-summary {.icon-th-large {display: inline-block;}}
 .btn-print {.icon-print {display: inline-block;}}
+
+// .checkbox-btn {
+//   @include button();
+//   margin: 0!important;
+//   padding: 8px 7px;
+// }
+
+.abnormal-vitals {
+  width: auto!important;
+  margin: 4px!important;
+}
+.adt-disposition-action {
+  margin: 5px;
+}
+pre.chief-notes {
+  background: none;
+  float: left;
+}
+// .abnormal-vitals-checkbox {
+//   margin-top: 7px!important;
+// }

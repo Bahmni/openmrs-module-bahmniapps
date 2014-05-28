@@ -1,3 +1,4 @@
+<div class="observations-tab">
 <div class="vitals form-horizontal">
     <fieldset ng-if="observation.isObservationNode">
         <div class="form-group">
@@ -46,10 +47,11 @@
 
                 <p ng-switch-default class="field-value info icon-info-sign"> The concept data type '{{observation.dataTypeName}}' is not supported yet.</p>
             </div>
-            <small class="hint" ng-show="observation.primaryObs.concept.lowNormal || observation.primaryObs.concept.hiNormal">(Valid Range from {{observation.primaryObs.concept.lowNormal}} to {{observation.primaryObs.concept.hiNormal}})</small>
+            <small class="hint" ng-show="observation.primaryObs.concept.lowNormal || observation.primaryObs.concept.hiNormal">({{observation.primaryObs.concept.lowNormal}} - {{observation.primaryObs.concept.hiNormal}})</small>
             <div class="checkbox-inline" ng-if="observation.abnormal">
-                <input id="isAbnormal-{{$index}}" type="checkbox" ng-model="observation.abnormal.value" ng-disabled="!observation.primaryObs.hasValue()" tabindex="-1" />
-                <span for="isAbnormal-{{$index}}">Abnormal</span>
+                <input id="isAbnormal-{{observation.primaryObs.concept.name}}" type="checkbox"
+                       ng-model="observation.abnormal.value" ng-disabled="!observation.primaryObs.hasValue()" tabindex="-1" class="abnormal-vitals-checkbox" />
+                <label for="isAbnormal-{{observation.primaryObs.concept.name}}" class="abnormal-vitals checkbox-btn">Abnormal</label>
             </div>
             <div class="checkbox-inline" ng-if="observation.duration" ng-class="{'duration': observation.duration}">
                 <span>for</span><duration ng-model="observation.duration.value" disabled="!observation.primaryObs.hasValue()" illegal-value="!observation.isValid(atLeastOneValueIsSet)"></duration>
@@ -114,4 +116,5 @@
             </div>
         </div>
     </fieldset>
+</div>
 </div>

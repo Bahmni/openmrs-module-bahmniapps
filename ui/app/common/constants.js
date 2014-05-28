@@ -19,12 +19,14 @@ Bahmni.Common = Bahmni.Common || {};
         emrEncounterUrl: EMRAPI + "/encounter",
         encounterUrl: RESTWS_V1 + "/encounter",
         orderUrl: RESTWS_V1 + "/order",
+        bahmniOrderUrl: BAHMNI_CORE + "/orders",
         bahmniEncounterUrl: BAHMNI_CORE + "/bahmniencounter",
         recentEncounterUrl: EMRAPI + "/encounter/active",
         conceptUrl: RESTWS_V1 + "/concept",
         visitUrl: RESTWS_V1 + "/visit",
         endVisitUrl: BAHMNI_CORE + "/visit/endVisit",
         visitTypeUrl: RESTWS_V1 + "/visittype",
+        patientImageUrl: "/patient_images/",
         visitSummaryUrl: BAHMNI_CORE + "/visitsummary",
         openmrsUrl: "/openmrs",
         idgenConfigurationURL: RESTWS_V1 + "/idgen/identifiersources",
@@ -50,13 +52,19 @@ Bahmni.Common = Bahmni.Common || {};
         dischargeCode: 'DISCHARGE',
         transferCode: 'TRANSFER',
         vitalsConceptName: "Vitals",
+        heightConceptName: "HEIGHT",
+        weightConceptName: "WEIGHT",
+        bmiConceptName: "BMI",
+        bmiStatusConceptName: "BMI STATUS",
         abnormalObservationConceptName: "IS_ABNORMAL",
         documentsPath: '/document_images',
         documentsConceptName: 'Document',
         miscConceptClassName: 'Misc',
         abnormalConceptClassName: 'Abnormal',
         durationConceptClassName: 'Duration',
-        conceptDetailsClassName: 'Concept Details'
+        conceptDetailsClassName: 'Concept Details',
+        admissionEncounterTypeName: 'ADMISSION',
+        dischargeEncounterTypeName: 'DISCHARGE'
 };
     
 })();

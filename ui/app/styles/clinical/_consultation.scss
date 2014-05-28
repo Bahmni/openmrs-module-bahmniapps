@@ -17,10 +17,15 @@
 			color:#5C5B5C;
 			@include font-size(1);
       h4.section {
-        background: #fafafa;
+        background: #f6f6f6;
         padding: 10px;
         font-size: 14px;
-        border: 1px solid #eee;
+        white-space: nowrap;
+        color: #555;
+        font-family: OpenSansBold;
+        font-weight: normal;
+        padding-left: 10px;
+        border-bottom: 1px solid #ccc;
       }
 		}
 		&.investigation{
@@ -119,12 +124,11 @@
     clear: both;
     border-bottom: 1px solid #ccc;
     padding: 5px 10px;
-    min-height: 30px;
+    min-height: 23px;
     h4.diagnosis-name {
       float: left;
       width: 38%;
-      font-size: 16px;
-      font-family: OpenSansBold;
+      font-size: 14px;
       color: #333;
     }
     .secondary {

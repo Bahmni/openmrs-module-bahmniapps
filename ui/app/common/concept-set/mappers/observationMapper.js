@@ -72,7 +72,9 @@ Bahmni.ConceptSet.ObservationMapper = function () {
 
             if (observationTemp.duration) {
                 var durationForDisplay = Bahmni.Common.Util.DateUtil.convertToUnits(observationTemp.duration.value);
-                observationValue = observationValue.concat(" since " + durationForDisplay["value"] + " " + durationForDisplay["unitName"]);
+                if (durationForDisplay["value"] && durationForDisplay["unitName"]) {
+                    observationValue = observationValue.concat(" since " + durationForDisplay["value"] + " " + durationForDisplay["unitName"]);
+                }
             }
 
             return { "value": observationValue, "abnormal": observationTemp.abnormal, "duration": observationTemp.duration,
@@ -81,7 +83,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         }
 
         _.forEach(observations, function (savedObs) {
-            if (savedObs.concept.conceptClass === Bahmni.Common.Constants.conceptDetailsClassName || savedObs.concept.conceptClass.name === Bahmni.Common.Constants.conceptDetailsClassName) {
+            if (savedObs.concept.conceptClass && (savedObs.concept.conceptClass === Bahmni.Common.Constants.conceptDetailsClassName || savedObs.concept.conceptClass.name === Bahmni.Common.Constants.conceptDetailsClassName)) {
                 var observationNode = new Bahmni.ConceptSet.ObservationNode(savedObs, savedObs, []);
                 var obsToDisplay = createObservationForDisplay(observationNode, observationNode.primaryObs.concept);
                 if (obsToDisplay)

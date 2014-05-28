@@ -65,6 +65,8 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
     var setAttributeValue = function (attributeType, attr, value) {
         if (attributeType.format === "org.openmrs.Concept") {
             attr.hydratedObject = value;
+        } else if(value === "" || value === null || value === undefined) {
+            attr.voided = true;
         } else {
             attr.value = value;
         }

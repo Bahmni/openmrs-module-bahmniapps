@@ -1,133 +1,195 @@
 <link rel="stylesheet" href="../styles/dischargeSummaryPrint.css"/>
 <script type="text/ng-template" id="resultTemplate">
-	<span ng-if="!result.value">
+    <span ng-if="!result.value">
 		<span class="test-name">{{result.concept.name}}</span>
-		<span class="pending-status">Pending</span>
 	</span>
-	<span ng-if="result.value" ng-class="{abnormal: result.isAbnormal}">
+    <span ng-if="result.value" ng-class="{abnormal: result.isAbnormal}">
 		<span class="test-name">{{result.concept.name}}</span>
-    	<span class="test-date">{{test.orderDate | date:'d MMM yy'}}</span>
+    	<span class="test-date">{{result.orderDate | date:'d MMM yyyy'}}</span>
         <span class="test-value">{{result.value}} {{result.units}}</span>
 	</span>
- </script>
+</script>
 <script type="text/ng-template" id="testTemplate">
-	<span ng-switch="test.results.length">
+    <span ng-switch="test.results.length">
 		<span ng-switch-when="0">
 			<span class="test-name">{{test.concept.name}}</span>
-			<span class="pending-status">Pending</span>
 		</span>
 		<span ng-switch-when="1" ng-init="result = test.results[0]">
 			<span ng-include="'resultTemplate'"></span>
 		</span>
 		<ul ng-switch-default>
-			<li class="result" ng-repeat="result in test.results" ng-include="'resultTemplate'"></li>
-		</ul>
-    </span>	
- </script>
+            <li class="result" ng-repeat="result in test.results" ng-include="'resultTemplate'"></li>
+        </ul>
+    </span>
+</script>
 <div class="discharge-summary-print">
-	<header>
-	  <img class="logo" src="../images/jss-icon.png" alt="logo"> 
-	  <h1>Jan Swasthya Sahyog Community Health Centre <span>(Inpatient Ward)</span></h1>
-	  <h2>Discharge Summary</h2>
-	</header>
-	<main>
-	  <div class="patient-info">
-      <table>
-        <tr>
-          <td colspan="2">Name: <span class="value">{{patient.name}}</span></td>
-          <td>Age / Sex: <span class="value">{{patient.birthdate | age:visit.getDischargeDispositionEncounterDate()}} / {{patient.gender}}</span></td>
-        </tr>
-        <tr>          
-          <td>Registration No. <span class="value">{{patient.identifier}}</span></td>
-          <td>Village / Town: <span class="value">{{patient.address.cityVillage}}</span></td>
-          <td>P.O. <span class="value">{{patient.address.address2}}</span></td>
-        </tr>
-        <tr>
-          <td>DOA: <span class="value">{{visit.getAdmissionDate() | date: 'd MMM yy'}}</span></td>
-          <td>DOO: <span class="value">{{dischargeSummary.getObservationValue('Date of Operation') | date: 'd MMM yy'}}</span></td>
-          <td>DOD: <span class="value">{{visit.getDischargeDispositionEncounterDate() | date: 'd MMM yy'}}</span></td>
-        </tr>
-      </table>
-	  </div>
-	  <section class="diagnosis-print">
-	    <h3>Final Diagnosis</h3>
-	    <ul>
-	    	<li ng-repeat="diagnosis in dischargeSummary.getFinalDiagnoses()">
-                <span class="diagnosis-name">{{diagnosis.getDisplayName()}}</span>
-                <span ng-if="diagnosis.diagnosisStatus">{{diagnosis.diagnosisStatus}}</span>
-                <span ng-if="!diagnosis.diagnosisStatus">
-	                <span>{{diagnosis.order}}</span>
-	                <span>{{diagnosis.certainty}}</span>
-                </span>
-	    	</li>
-	    </ul>
-	  </section>
-	  <section class="history-print">
-	    <h3>History &amp; Examination</h3>
-	    <span>{{dischargeSummary.getObservationValue('History and Examination Notes')}}</span>
-	  </section>
-	  <section class="treatment-print">
-	    <h3>Treatment received</h3>
-      <table>
-        <tr ng-repeat="drugOrder in dischargeSummary.getTreatmentRecieved()">
-          <td>{{drugOrder.drugName}}</td>
-          <td>{{drugOrder.numberPerDosage}} {{drugOrder.dosageForm}}</td>
-          <td>{{drugOrder.dosageFrequency.name}} for {{drugOrder.startDate | days:drugOrder.endDate }} day(s)</td>
-        </tr>
-      </table>
-	  </section>
-	  <section class="operative-print">
-	    <h3>Operative procedure</h3>
-	    <span>{{dischargeSummary.getObservationValue('Operative Procedure')}}</span>
-	  </section>
-	  <section class="hospital-course-print">
-	    <h3>Hospital course</h3>
-	    <span>{{dischargeSummary.getObservationValue('Hospital Course')}}</span>
-	  </section>
-	  <section class="advice-print">
-	    <h3>Advice on discharge</h3>
-	    <ul>
-	    	<li ng-repeat="drugOrder in dischargeSummary.getTreatmentAdviced()">{{drugOrder.drugName}} {{drugOrder.numberPerDosage}} {{drugOrder.dosageForm}} {{drugOrder.dosageFrequency.name}} for {{drugOrder.startDate | days:drugOrder.endDate }} day(s)<li>
-	    </ul>
-	  </section>
-	  <section class="follow-up">
-	    <h3>Follow up on</h3>
-	    <span class="value">{{dischargeSummary.getObservationValue('Follow up Date') | date: 'd MMM yy'}}</span>
-	  </section>
-	  <section class="lab-print">
-	    <h3>Lab Investigations</h3>      
-	    <ol>
-	    	<li class="test-item" ng-switch="labOrder.getOrderableType()" ng-repeat="labOrder in dischargeSummary.getLatestLabOrders()">
-	    		<span ng-switch-when="Panel" ng-init="panel = labOrder.orderable">
-	    			<span class="test-name">{{panel.concept.name}}</span>
-    				<span ng-if="!panel.hasResults()" class="pending-status">Pending</span>
-	    			<ul>
-	    				<li ng-repeat="test in panel.tests" ng-include="'testTemplate'"></li>
-	    			</ul>
-	    		</span>
-          <span ng-switch-when="Test" ng-init="test = labOrder.orderable">
-           <span ng-include="'testTemplate'"></span>
-          </span>
-	    	</li>
-	    </ol>
-	  </section>
-	  <section  class="lab-notes-print" ng-if="dischargeSummary.getObservationValue('Lab Investigation Notes')">
-	    <h3>Lab Investigation Notes</h3>
-	    <span class="value">{{dischargeSummary.getObservationValue('Lab Investigation Notes')}}</span>
-	  </section>
-	  <section class="radiology-print">
-	    <h3>Radiology Investigations</h3>
-	    <ul>
-	    	<li ng-repeat="radiologyOrder in dischargeSummary.getLatestRadiologyOrders()">
-	    		{{radiologyOrder.concept.name}}
-	    	<li>
-	    </ul>
-	  </section>
-	  <section  class="radiology-notes-print" ng-if="dischargeSummary.getObservationValue('Radiology Notes')">
-	    <h3>Radiology Investigation Notes</h3>
-	    <span class="value">{{dischargeSummary.getObservationValue('Radiology Notes')}}</span>
-	  </section>
-	</main>
-	<footer>
-	</footer>
+    <header>
+        <img class="logo" src="../images/jss-icon.png" alt="logo">
+
+        <h1>Jan Swasthya Sahyog Community Health Centre <span>(Inpatient Ward)</span></h1>
+
+        <h2>Discharge Summary</h2>
+    </header>
+    <main>
+        <div class="patient-info">
+            <table>
+                <tr>
+                    <td>Name: <span class="value">{{patient.name}}</span></td>
+                    <td>Age / Sex: <span class="value">{{patient.birthdate | age:visit.getDischargeDispositionEncounterDate()}} / {{patient.gender}}</span>
+                    </td>
+                    <td>Registration No. <span class="value">{{patient.identifier}}</span></td>
+                </tr>
+                <tr>
+                    <td>Village / Town: <span class="value">{{patient.address.cityVillage}}</span></td>
+                    <td>P.O. <span class="value">{{patient.address.address2}}</span></td>
+                    <td>District: <span class="value">{{patient.address.countyDistrict}}</span></td>
+                </tr>
+                <tr>
+                    <td>DOA: <span class="value">{{visit.getAdmissionDate() | date: 'd MMM yyyy'}}</span></td>
+                    <td>DOO: <span class="value">{{dischargeSummary.getObservationValue('Date of Operation') | date:'d MMM yyyy'}}</span>
+                    </td>
+                    <td>DOD: <span
+                            class="value">{{visit.getDischargeDispositionEncounterDate() | date: 'd MMM yyyy'}}</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <section class="observations">
+            <h3>Observations</h3>
+            <table>
+                <tbody ng-repeat="observation in visit.getWeightAndBMIObservations()">
+                <tr>
+                    <td>
+                        <span>{{observation.concept.name}}</span>
+                    </td>
+                    <td>
+                        <span>{{observation.value}}</span>
+                        <span>{{observation.concept.units}}</span>
+                        <span class="date">{{observation.observationDateTime | date :'d MMM yyyy'}}</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+        <section class="diagnosis-print">
+            <h3>Final Diagnosis</h3>
+            <ul>
+                <li ng-repeat="diagnosis in visit.getLatestDiagnoses() | primaryDiagnosisFirst" ng-if="!diagnosis.isRuledOut()">
+                    <span>{{diagnosis.getDisplayName()}}</span>
+                </li>
+            </ul>
+        </section>
+        <section class="history-print">
+            <h3>History &amp; Examination</h3>
+            <span>{{dischargeSummary.getObservationValue('History and Examination Notes')}}</span>
+        </section>
+        <section class="treatment-print">
+            <h3>Treatment received</h3>
+            <table ng-if="dischargeSummary.getTreatmentRecieved() && dischargeSummary.getTreatmentRecieved().length > 0">
+                <tr>
+                    <th>Drug Name</th>
+                    <th>Form</th>
+                    <th>Duration</th>
+                </tr>
+                <tr ng-repeat="drugOrder in dischargeSummary.getTreatmentRecieved()">
+                    <td>{{drugOrder.drugName}}</td>
+                    <td>{{drugOrder.numberPerDosage}} {{drugOrder.dosageForm}}</td>
+                    <td>for {{drugOrder.startDate | days:drugOrder.endDate }}
+                        day(s)
+                    </td>
+                </tr>
+            </table>
+        </section>
+        <section class="operative-print">
+            <h3>Operative procedure</h3>
+            <span>{{dischargeSummary.getObservationValue('Operative Procedure')}}</span>
+        </section>
+        <section class="hospital-course-print">
+            <h3>Hospital course</h3>
+            <span>{{dischargeSummary.getObservationValue('Hospital Course')}}</span>
+        </section>
+        <section class="advice-print">
+            <h3>Advice on discharge</h3>
+            <ul>
+                <li ng-repeat="drugOrder in dischargeSummary.getTreatmentAdviced()">{{drugOrder.drugName}}
+                    {{drugOrder.numberPerDosage}} {{drugOrder.dosageForm}} {{drugOrder.dosageFrequency.name}} for
+                    {{drugOrder.startDate | days:drugOrder.endDate }} day(s)
+                <li>
+            </ul>
+        </section>
+        <section class="follow-up">
+            <h3>Follow up on</h3>
+            <span class="value">{{dischargeSummary.getObservationValue('Follow up Date') | date: 'd MMM yyyy'}}</span>
+        </section>
+        <section class="lab-print">
+            <h3>Lab Investigations</h3>
+            <table class="ipd-investigation">
+                <thead>
+                <tr>
+                    <th class="test-name">Test</th>
+                    <th class="initial-value">Initial</th>
+                    <th class="final-value">Final</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="orderable in visit.tabularResults.getOrderables()">
+                    <td colspan="3" ng-if="orderable.concept.set">{{orderable.concept.name}}</td>
+                    <td ng-if="!orderable.concept.set">
+                        <span ng-class="{'belongsToPanel': orderable.belongsToPanel}">{{orderable.concept
+                            .name}}</span>
+                        <span class="range">
+                            <span ng-if="orderable.getMinNormal() && orderable.getMaxNormal()">
+                                {{' (' + orderable.getMinNormal() + ' - ' + orderable.getMaxNormal() + ')'}}
+                            </span>
+                            <span class="units">{{orderable.getUnits()}}</span>
+                        </span>
+                    </td>
+                    <td ng-if="!orderable.concept.set" ng-init="result = orderable.results[0]">
+                        <span ng-if="result">
+                            <span ng-class="{'is-abnormal': result.isAbnormal}">
+                                {{result.value}}
+                            </span>
+                            <span class="date">({{result.orderDate | date :'d MMM yyyy'}})</span>
+                        </span>
+                    </td>
+                    <td ng-if="!orderable.concept.set" ng-init="result = orderable.results[orderable.results.length - 1]">
+                        <span ng-if="result">
+                            <span ng-class="{'is-abnormal': result.isAbnormal}">
+                                {{result.value}}
+                            </span>
+                            <span class="date">({{result.orderDate | date :'d MMM yyyy'}})</span>
+                        </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+        <section class="lab-notes-print" ng-if="dischargeSummary.getObservationValue('Lab Investigation Notes')">
+            <h3>Lab Investigation Notes</h3>
+            <span class="value">{{dischargeSummary.getObservationValue('Lab Investigation Notes')}}</span>
+        </section>
+        <section class="radiology-print">
+            <h3>Radiology Investigations</h3>
+            <ul>
+                <li ng-repeat="radiologyOrder in dischargeSummary.getLatestRadiologyOrders()">
+                    {{radiologyOrder.concept.name}}
+                <li>
+            </ul>
+        </section>
+        <section class="radiology-notes-print" ng-if="dischargeSummary.getObservationValue('Radiology Notes')">
+            <h3>Radiology Investigation Notes</h3>
+            <span class="value">{{dischargeSummary.getObservationValue('Radiology Notes')}}</span>
+        </section>
+        <section class="other-notes-print" ng-if="dischargeSummary.getObservationValue('Other Notes')">
+            <h3>Other Notes</h3>
+            <span>{{dischargeSummary.getObservationValue('Other Notes')}}</span>
+        </section>
+    </main>
+    <footer>
+    </footer>
+</div>
+<div>
+    <footer>
+        <h1>This is a computer generated receipt and does not require a signature.</h1>
+    </footer>
 </div>

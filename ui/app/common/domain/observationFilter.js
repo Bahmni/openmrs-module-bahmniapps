@@ -20,8 +20,8 @@
 
 		self.filter = function(observations) {
 			var wrappedObservations = observations.map(Observation.wrap);
-			voidExistingObservationWithOutValue(wrappedObservations);
-			var filteredObservations = removeNewObservationsWithoutValue(wrappedObservations);
+            var filteredObservations = removeNewObservationsWithoutValue(wrappedObservations);
+			voidExistingObservationWithOutValue(filteredObservations);
 			return filteredObservations;
 		}
 	}
@@ -72,7 +72,7 @@
 
 	Observation.wrap = function(observationData) {
 		var observation = new Observation(observationData);
-		observation.groupMembers = observation.groupMembers.map(Observation.wrap);
+		observation.groupMembers = observation.groupMembers ? observation.groupMembers.map(Observation.wrap) : [];
 		return observation;
 	}
 })();

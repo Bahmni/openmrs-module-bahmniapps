@@ -12,7 +12,6 @@ angular.module('bahmni.common.patient')
 
     var link = function($scope) {
         $scope.patient = $rootScope.patient;
-        $scope.visits = $rootScope.visits;
         $scope.activeVisit = $rootScope.activeVisit;
         var DateUtil = Bahmni.Common.Util.DateUtil;
 
@@ -71,7 +70,7 @@ angular.module('bahmni.common.patient')
         };
 
         var getStartDateTime = function () {
-            return $scope.visits.filter(function (visit) {
+            return $rootScope.visits.filter(function (visit) {
                 return visit.uuid === $rootScope.visit.uuid;
             })[0].startDatetime;
         };

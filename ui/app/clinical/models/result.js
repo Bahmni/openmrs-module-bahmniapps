@@ -9,8 +9,8 @@ Bahmni.Clinical.Result = (function () {
     };
 
     Result.prototype = {
-        isOnDate: function(date) {
-            return Bahmni.Common.Util.DateUtil.isSameDate(this.observationDateTime, date);
+        isOnOrderDate: function(date) {
+            return Bahmni.Common.Util.DateUtil.isSameDate(this.orderDate, date);
         }
     };
 

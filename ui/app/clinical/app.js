@@ -2,7 +2,7 @@
 
 angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.patient', 'bahmni.common.uiHelper', 'bahmni.common.patientSearch',
     'bahmni.common.domain', 'bahmni.common.conceptSet', 'authentication', 'bahmni.common.appFramework', 'bahmni.adt',
-    'httpErrorInterceptor', 'pasvaz.bindonce', 'opd.patientDashboard', 'infinite-scroll', 'bahmni.common.util']);
+    'httpErrorInterceptor', 'pasvaz.bindonce', 'opd.patientDashboard', 'infinite-scroll', 'bahmni.common.util', 'ngAnimate']);
 angular.module('consultation').config(['$stateProvider', '$httpProvider', function ($stateProvider, $httpProvider) {
 
         $stateProvider
@@ -71,7 +71,11 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', functi
             .state('patient.consultation.visit', {
                 url: '/visit/:visitUuid',
                 templateUrl: 'views/visit.html',
-                controller: 'VisitController'
+                controller: 'VisitController',
+                resolve: {
+                    visitInitialization: function(visitInitialization, $stateParams) {
+                    return visitInitialization($stateParams.patientUuid, $stateParams.visitUuid);
+                }}
             })
             .state('patient.consultation.summary', {
                 url: '/consultation',

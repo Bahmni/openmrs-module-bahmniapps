@@ -16,9 +16,6 @@ angular.module('bahmni.common.conceptSet')
             if (obsConcept.lowNormal) {
                 attributes['min'] = obsConcept.lowNormal;
             }
-            if (obsConcept.lowNormal && obsConcept.hiNormal) {
-                attributes['title'] = "Valid from " + obsConcept.lowNormal +" to "+ obsConcept.hiNormal;
-            }
             element.attr(attributes);
         };
 

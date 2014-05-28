@@ -19,7 +19,7 @@
   	position:relative;
   	width: 100%;
     legend {
-      margin-bottom: 20px;
+      // margin-bottom: 20px;
     }
     fieldset {
       .form-group {
@@ -45,12 +45,16 @@
           border-top:1px solid #cecece;
           border-right:1px solid #cecece;
           border-left:1px solid #cecece;
+          border-top-left-radius: 5px;
+          border-top-right-radius: 5px;
         }
         &:last-child {
           border-bottom:1px solid #cecece;
           border-right:1px solid #cecece;
           border-left:1px solid #cecece;
           padding-bottom:9px;
+          border-bottom-left-radius: 5px;
+          border-bottom-right-radius: 5px;
         }
       }
     }
@@ -64,7 +68,10 @@
     color: #777;
     float: left;
     padding: 15px 10px;
-    width: 200px;
+    width: 100px;
+    @media screen and (max-width: 595px) {
+      padding: 4px 10px;
+    }
   }
   .info {
     color: #0099ff;
@@ -77,6 +84,31 @@
 div.duration.checkbox-inline {
   margin-top: -16px;
   margin-left: 15px;
+  @media screen and (min-width: 1024px) {
+    float: right;
+    margin-right: 18%;
+  }
+  @media screen and (max-width: 1023px) and (min-width: 941px) {
+    float: right;
+    margin-right: 10%;
+  }
+  @media screen and (max-width: 940px) and (min-width: 900px) {
+    float: right;
+    margin-right: 5%;
+  }  
+  @media screen and (min-width: 851px) and (max-width: 899px) {
+    margin-right: 0;
+    float: right;
+  }
+  @media screen and (max-width: 850px) and (min-width: 596px) {
+    margin-top: 0;
+    margin-left: 230px;
+  }
+  @media screen and (max-width: 595px) {
+    margin-left: 10px;
+    margin-top: 0;
+    float: left;
+  }
   input.duration {
     width: 50px;
     margin: 0 10px;
@@ -86,6 +118,10 @@ div.duration.checkbox-inline {
   }
 }
 form .vitals .form-field .field-value {
+  @media screen and (max-width: 595px) {
+    margin-left: 10px;
+    width: 97%;
+  }
   input {
     width: 10em;
   }
@@ -96,7 +132,24 @@ form .vitals .form-field .field-value {
     border: 1px solid #aaa;
   }
   textarea {
-    width: 18.5em;
+    width: 34.5em;
+    height: 100px;
+    margin-bottom: 10px;
+    @media screen and (max-width: 850px) and (min-width: 701px) {
+      width: 25em;
+    }
+    @media screen and (max-width: 700px) {
+      width: 35em;
+      margin-left: 10px;
+    }
+    @media screen and (max-width: 640px) and (min-width: 596px) {
+      width: 30em;
+      margin-left: 10px;
+    }
+    @media screen and (max-width: 595px) {
+      margin-left: 0;
+      width: 18.5em;
+    }
   }
 }
 
@@ -109,6 +162,10 @@ form .vitals .form-field .field-value {
       margin-right: 20px;
       text-align: right;
       font-size: 14px;
+      @media screen and (max-width: 595px) {
+        width: 96%;
+        text-align: left;
+      }
     }
     &.hasLegend {
       label {
@@ -120,6 +177,15 @@ form .vitals .form-field .field-value {
 .checkbox-inline {
   padding: 10px 0;
   float: left;
+  @media screen and (max-width: 685px) and (min-width: 600px) {
+    padding: 0;
+    margin-left: 221px;
+  }
+  @media screen and (max-width: 595px) {
+    float: right;
+    margin-right: 16%;
+    padding: 0;
+  }
   input[type="checkbox"] {
     margin-left: 10px!important;
   }
@@ -141,6 +207,9 @@ concept {
 .select2-container .select2-choice {
   padding: 5px;
   margin-top: -5px;
+  @media screen and (max-width: 595px) {
+    margin-top: 5px;
+  }
 }
 .select2-results .select2-result-label {
   font-size: 14px;

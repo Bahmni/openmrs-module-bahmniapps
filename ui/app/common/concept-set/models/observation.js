@@ -2,6 +2,7 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
     angular.extend(this, observation);
     this.isObservation = true;
     this.conceptUIConfig = conceptUIConfig;
+    this.observationDateTime = Bahmni.Common.Util.DateUtil.now();
 
     if (savedObs) {
         this.uuid = savedObs.uuid;
@@ -110,7 +111,7 @@ Bahmni.ConceptSet.Observation.prototype = {
 
     isValidDate: function () {
         if (!this.hasValue()) return true;
-        var date = new Date(this.value);
+        var date = Bahmni.Common.Util.DateUtil.parse(this.value);
         return date.getUTCFullYear() && date.getUTCFullYear().toString().length <= 4;
     },
 

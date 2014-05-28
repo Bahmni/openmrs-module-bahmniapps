@@ -6,10 +6,21 @@ angular.module('opd.documentupload')
             var encounterTypeUuid;
             var topLevelConceptUuid;
             var customVisitParams = Bahmni.DocumentUpload.Constants.visitRepresentation;
-            var encounterVisitParams = Bahmni.DocumentUpload.Constants.visitWithEncounterRepresentation;
             var DateUtil = Bahmni.Common.Util.DateUtil;
 
             $scope.visits = [];
+
+            var setOrientationWarning = function() {
+                $scope.orientation_warning = (window.orientation && (window.orientation < 0 || window.orientation > 90));
+            }
+            setOrientationWarning();
+            var onOrientationChange = function() {
+                $scope.$apply(setOrientationWarning);
+            }
+            window.addEventListener('orientationchange', onOrientationChange);
+            $scope.$on('$destroy', function(){
+                window.removeEventListene('orientationchange', onOrientationChange);
+            });
 
             var initNewVisit = function () {
                 $scope.newVisit = new Bahmni.DocumentUpload.Visit();
@@ -129,8 +140,8 @@ angular.module('opd.documentupload')
 
             var sortVisits = function() {
                 $scope.visits.sort(function(a, b) {
-                        var date1 = new Date(a.startDatetime);
-                        var date2 = new Date(b.startDatetime);
+                        var date1 = DateUtil.parse(a.startDatetime);
+                        var date2 = DateUtil.parse(b.startDatetime);
                         return date2.getTime() - date1.getTime();
                     });
             };
@@ -220,9 +231,19 @@ angular.module('opd.documentupload')
 
             $scope.setDefaultEndDate = function(newVisit) {
                 if(!newVisit.stopDatetime){
-                    var date = new Date(newVisit.endDate());
+                    var date = DateUtil.parse(newVisit.endDate());
                     $scope.newVisit.stopDatetime = moment(date).format("YYYY-MM-DD");
                 }
+            };
+
+            var updateVisit = function(visit, encounters){
+                visit.encounters = encounters.filter(function(encounter){
+                    return visit.uuid === encounter.visit.uuid;
+                });
+                visit.initSavedImages();
+                $scope.currentVisit = visit;
+                sortVisits();
+                flashSuccessMessage();
             };
 
             $scope.save = function (existingVisit) {
@@ -232,20 +253,18 @@ angular.module('opd.documentupload')
                 }
 
                 spinner.forPromise(visitDocumentService.save(visitDocument).then(function (response) {
-                    return visitService.getVisit(response.data.visitUuid, encounterVisitParams).then(function (visitResponse) {
-                        var visit = createVisit(visitResponse.data);
-                        visit.encounters = visit.encounters.filter(function (encounter) {return(encounter.encounterType.uuid == encounterTypeUuid) });
-                        visit.initSavedImages();
-                        if (existingVisit.isNew()) {
-                            existingVisit = $scope.visits.push(visit);
-                            initNewVisit();
-                            $scope.currentVisit = visit;
-                        } else {
-                            $scope.visits[$scope.visits.indexOf(existingVisit)] = visit;
-                            $scope.currentVisit = visit;
+                    return encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function(encounterResponse){
+                        var savedVisit = $scope.visits[$scope.visits.indexOf(existingVisit)];
+                        if(!savedVisit){
+                            visitService.getVisit(response.data.visitUuid, customVisitParams).then(function(visitResponse){
+                                var newVisit = createVisit(visitResponse.data);
+                                existingVisit = $scope.visits.push(newVisit);
+                                initNewVisit();
+                                updateVisit(newVisit, encounterResponse.data.results);
+                            });
+                        }else{
+                            updateVisit(savedVisit, encounterResponse.data.results)
                         }
-                        sortVisits();
-                        flashSuccessMessage();
                     });
                 }));
             };

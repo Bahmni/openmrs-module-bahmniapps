@@ -25,6 +25,8 @@ table {
   border-collapse: collapse;
   th {
     font-weight: bold;
+    color: #222!important;
+    background-color: #eee;
   }
 }
 table tr td {border: 1px solid #ccc; padding: 5px;}
@@ -140,12 +142,27 @@ section.block h2 {
 .treatment-section .dosage-form {
   white-space: nowrap;
 }
-
-.is-abnormal td, .is-abnormal td span{
+span.abnormal, span.referred {display: none;}
+ td.value.is-abnormal,  td.value span.is-abnormal{
   font-weight: bold;
-  color: #000;
+  color: #222;
+  span.abnormal{
+    display: inline-block;
+    float: none;
+  }
 }
-.diagnosis .table .table-header.row {border-top: 1px solid #ccc;}
+.referred-out .referred {
+  font-weight: bold;
+  color: #222;
+  display: inline-block;
+  float: none;
+}
+.diagnosis .history-diagnosis .table-body .row, .diagnosis .table .table-header.row {
+  border: 1px solid #aaa;
+}
+.diagnosis .history-diagnosis .table-body .row {
+  border-top: 0;
+}
 .block.observation ul {padding-left:0;}
 .observation table td.value .obs-value {float: none;}
 .history-diagnosis .diagnosis-row .view-past .col1 .diagnosis-name {padding-left: 10px;}
@@ -157,8 +174,8 @@ section.block h2 {
 button, input[type="button"] {
   display: none;
 }
-.lab-investigation table th span.lab-report-title {
+.lab-investigation table th.lab-report-title span{
   font-weight: bold;
-  color: #000;
+  color: #222;
   font-size: 15px!important;
 }

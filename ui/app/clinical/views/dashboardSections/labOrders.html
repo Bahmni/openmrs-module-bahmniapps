@@ -9,7 +9,7 @@
                 <tr>
                     <th colspan="2">{{labOrdersForVisit.displayName}}</th>
                 </tr>
-                <tr ng-if="!labOrdersForVisit.labOrders">
+                <tr ng-if="!labOrdersForVisit.labOrders || labOrdersForVisit.labOrders.length === 0">
                     <td colspan="2">No lab orders for this visit</td>
                 </tr>
                 </thead>

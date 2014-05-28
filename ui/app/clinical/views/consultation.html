@@ -4,7 +4,7 @@
         <h2>Diagnosis</h2>
         <div class="block-content" ng-show="consultation.newlyAddedDiagnoses.length > 0">
             <h4 class="section">Newly added</h4>
-            <div class="diagnosis-row" ng-repeat="diagnosis in consultation.newlyAddedDiagnoses">
+            <div class="diagnosis-row" ng-repeat="diagnosis in consultation.newlyAddedDiagnoses | primaryDiagnosisFirst">
                 <h4 class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">{{diagnosis.getDisplayName()}}</h4>
                 <div class="secondary">
                     <div class="state">
@@ -19,7 +19,7 @@
         
         <div class="block-content" ng-show="consultation.savedDiagnosesFromCurrentEncounter.length > 0">
             <h4 class="section">Current</h4>
-            <div class="diagnosis-row" ng-repeat="diagnosis in consultation.savedDiagnosesFromCurrentEncounter">
+            <div class="diagnosis-row" ng-repeat="diagnosis in consultation.savedDiagnosesFromCurrentEncounter | primaryDiagnosisFirst">
                 <h4 class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">{{diagnosis.getDisplayName()}}</h4>
                 <div class="secondary">
                     <div ng-show="diagnosis.firstDiagnosis" class="current">
@@ -41,7 +41,7 @@
 
         <div class="block-content" ng-show="editedDiagnosesFromPastEncounters.length > 0">
             <h4 class="section">Past</h4>
-            <div class="diagnosis-row" ng-repeat="diagnosis in editedDiagnosesFromPastEncounters">
+            <div class="diagnosis-row" ng-repeat="diagnosis in editedDiagnosesFromPastEncounters | primaryDiagnosisFirst">
                 <h4 class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">{{diagnosis.getDisplayName()}}</h4>
                 <div class="secondary">
                     <div ng-show="diagnosis.firstDiagnosis" class="current">
@@ -64,22 +64,36 @@
     <section class="block observation">
         <h2>Observations</h2>
         <section class="block">
-            <table>
-                <tbody ng-repeat="observation in observationsToDisplay">
-                    <tr class="form-field" ng-class="{true: 'is-abnormal'}[observation.abnormal.value]"
-                        ng-if="observation.value">
-                        <td><span class="field-attribute"><label>{{observation.concept.name}}:</label></span></td>
-                        <td>
-                            <span class="value-text-only">{{observation.value}}</span>
-                            <span class="label-add-on" ng-hide="!observation.concept.units"> {{observation.concept.units}}</span>
-                            <span class="fr time">{{observation.observationDateTime | date :'hh:mm a'}}</span>
+            <div ng-repeat="observationGroup in groupedObservations">
+                <table>
+                    <tr>
+                        <td colspan="3" class="headerRow">
+                            <span class="obs-value">{{observationGroup.conceptSetName}}</span>
                         </td>
                     </tr>
-                </tbody>
-            </table>
+
+                    <tr ng-repeat="observation in observationGroup.groupMembers"
+                        ng-class="{true: 'is-abnormal'}[observation.abnormal.value]">
+                        <td class="name">
+                            <span class="obs-value">{{observation.concept.name}}</span>
+                        </td>
+                        <td class="value">
+                            <span class="obs-value"><pre class="chief-notes">{{observation.value}} {{observation.concept.units}}</pre></span>
+
+                            <div class="footer-note fr">
+                                <span class="time-stamp">
+                                    <span class="time">{{observation.observationDateTime | date :'hh:mm a'}}</span>
+                                </span>
+                                <span class="provider" bindonce="observation" bo-text="observation.provider"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
     </section>
-    <section class="block investigation">
+    <section class="block investigation" style="display:none;"> <!--Hiding the section for release 4-->
         <h2>Investigation</h2>
         <ul class="block-content">
             <li ng-repeat="investigation in consultation.investigations" ng-class="{panel: investigation.concept.set, voided: investigation.voided}">
@@ -93,7 +107,7 @@
         </div>
         <ng-include src="'views/labResults.html'" ng-init="labResults=consultation.labResults"/>
     </section>
-    <section class="block treatment">
+    <section class="block treatment" style="display:none;"> <!--Hiding the section for release 4-->
         <h2>Treatment</h2>
          <div  class="block-content" ng-include src="'views/treatmentDrugs.html'"></div>
     </section>
@@ -104,7 +118,7 @@
             <ul ng-if="disposition.conceptName">
                 <li>
                     <span>{{disposition.conceptName}}</span><span class="disposition-time">{{disposition.dispositionDateTime | date :'dd-MM-yyyy hh:mm' }}</span>
-                    <div class="notes inline-notes">
+                    <div class="notes inline-notes" ng-if="disposition.additionalObs[0].value">
                         {{disposition.additionalObs[0].value}}
                     </div>
                 </li>
