@@ -280,6 +280,18 @@
 .doc-upload-accordion {
   margin: 5px;
 }
+button.mfp-close {
+  font-size: 50px;
+  color: #fff;
+  opacity: 1!important;
+  &:before {
+    content: "Close";
+    font-size: 24px;
+    position: relative;
+    bottom: 10px;
+    right: 10px;
+  }
+}
 button.mfp-close:hover {
   background: none!important;
   cursor: pointer!important;
@@ -289,7 +301,13 @@ button.mfp-close:hover {
 }
 .mfp-arrow-left, .mfp-arrow-right {
   bottom: 0;
-  background: #ccc!important;
+  background: #4D9B92!important;
+  opacity: 1!important;
+}
+.mfp-title, .mfp-counter {
+  color: #fff;
+  opacity: 1!important;
+  font-size: 16px;
 }
 .visit-content form p {
   margin-bottom: 0;}
