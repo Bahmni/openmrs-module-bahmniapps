@@ -114,6 +114,7 @@ div.duration.checkbox-inline {
   input.duration {
     width: 30px;
     margin: 0 10px;
+    padding: 0 5px;
   }
   select.duration-label {
     margin-left: 25px;
@@ -129,6 +130,7 @@ form .vitals .form-field .field-value {
   }
   .autocomplete {
     border-radius: 5px;
+    width: 357px;
   }
   .select2-drop-active, .select2-container-active .select2-choice, .select2-container-active .select2-choices, .select2-drop.select2-drop-above.select2-drop-active {
     border: 1px solid #aaa;
