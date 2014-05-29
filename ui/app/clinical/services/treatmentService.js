@@ -4,7 +4,7 @@ angular.module('bahmni.clinical')
     .factory('TreatmentService', ['$http', '$q', function ($http, $q) {
 
         var orderDateFromStringToDate = function (drugOrder) {
-            drugOrder.orderDate = new Date(drugOrder.orderDate);
+            drugOrder.orderDate = Bahmni.Common.Util.DateUtil.parse(drugOrder.orderDate);
             return drugOrder;
         };
 
