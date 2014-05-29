@@ -14,6 +14,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
             ];
             $scope.currentBoard = $scope.availableBoards[0];
             $scope.showBoard = function (name) {
+                $rootScope.collapseControlPanel();
                 var board = findBoardByname(name);
                 return buttonClickAction(board);
             };
