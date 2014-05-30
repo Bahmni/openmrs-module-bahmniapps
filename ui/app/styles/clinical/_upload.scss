@@ -296,6 +296,11 @@ button.mfp-close:hover {
   background: none!important;
   cursor: pointer!important;
 }
+.white-popup {
+  button.mfp-close {
+    width: auto;
+  }
+}
 .mfp-arrow {
   top: initial;
 }
