@@ -19,7 +19,7 @@ angular.module('opd.documentupload')
             }
             window.addEventListener('orientationchange', onOrientationChange);
             $scope.$on('$destroy', function(){
-                window.removeEventListene('orientationchange', onOrientationChange);
+                window.removeEventListener('orientationchange', onOrientationChange);
             });
 
             var initNewVisit = function () {
