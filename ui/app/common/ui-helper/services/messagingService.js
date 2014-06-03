@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.clinical')
+angular.module('bahmni.common.uiHelper')
     .service('MessagingService', ['$timeout', function ($timeout) {
         this.messages = {error: [], info: []};
         var that = this;

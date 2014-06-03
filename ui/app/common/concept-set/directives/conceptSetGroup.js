@@ -21,7 +21,7 @@ angular.module('bahmni.common.conceptSet')
         },
         controller: 'ConceptSetGroupController',
         template: '<div ng-repeat="extension in extensions" class="concept-set-group">' +
-                    '<concept-set ng-if=showConceptSet(extension) concept-set-name="extension.extensionParams.conceptName" observations="observations"></concept-set>' +
+                    '<concept-set ng-if=showConceptSet(extension) concept-set-name="extension.extensionParams.conceptName" required="extension.extensionParams.required" observations="observations"></concept-set>' +
                   '</div>'
     }
 });

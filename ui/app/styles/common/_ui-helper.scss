@@ -1,0 +1,33 @@
+.messages {
+	.error-message, .info-message {
+		width: 35%;
+		top: 100px;
+		margin: 5px auto;
+		color: #333;
+		padding: 5px;
+		border-radius: 2px;
+		box-shadow: 0px 0px 8px -1px #ccc;
+		font-size: 14px;
+		font-family: OpenSansBold;
+		text-align: center;
+		position: fixed;
+		top: 100px;
+		left: 32%;
+		z-index: 1;
+	}
+	.error-message {
+		background: #ffcccc;
+		border: 1px solid #ff9999;
+	}
+	.info-message {
+		background: #f9edbe;
+		border: 1px solid #f0c36d;
+		color: green;
+		p:before {
+			content: "\f00c";
+			font-family: FontAwesome;
+			margin-right: 5px;
+			font-size: 18px;
+		}
+	}
+}

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('VisitController', ['$scope', '$rootScope', '$location', 'patientService', 'encounterService', '$window', '$route', 'spinner', '$timeout', '$q', 'registrationCardPrinter', 'appService', 'openmrsPatientMapper','contextChangeHandler',
-        function ($scope, $rootScope, $location, patientService, encounterService, $window, $route, spinner, $timeout, $q, registrationCardPrinter, appService, patientMapper,contextChangeHandler) {
+    .controller('VisitController', ['$scope', '$rootScope', '$location', 'patientService', 'encounterService', '$window', '$route', 'spinner', '$timeout', '$q', 'registrationCardPrinter', 'appService', 'openmrsPatientMapper','contextChangeHandler','MessagingService',
+        function ($scope, $rootScope, $location, patientService, encounterService, $window, $route, spinner, $timeout, $q, registrationCardPrinter, appService, patientMapper,contextChangeHandler, messagingService) {
             var bmiCalculator = new Bahmni.Common.BMI();
             var patientUuid = $route.current.params['patientUuid'];
             var isNewPatient = ($location.search()).newpatient;
@@ -102,6 +102,7 @@ angular.module('bahmni.registration')
             $scope.validate = function () {
                 var deferred = $q.defer();
                 if(!contextChangeHandler.execute()){
+                    messagingService.showMessage('error', 'Please correct errors in the form. Information not saved');
                     deferred.reject("Some fields are not valid");
                     return deferred.promise;
                 }

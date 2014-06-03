@@ -115,8 +115,9 @@ Bahmni.ConceptSet.Observation.prototype = {
         return date.getUTCFullYear() && date.getUTCFullYear().toString().length <= 4;
     },
 
-    isValid: function (checkRequiredFields) {
-        if (this.isGroup()) return this._hasValidChildren(checkRequiredFields);
+    isValid: function (checkRequiredFields, conceptSetRequired) {
+        if (this.isGroup()) return this._hasValidChildren(checkRequiredFields, conceptSetRequired);
+        if (conceptSetRequired && this.isRequired() && !this.hasValue()) return false;
         if (checkRequiredFields && this.isRequired() && !this.hasValue()) return false;
         if (this._isDateDataType()) return this.isValidDate();
         return true;
@@ -130,9 +131,9 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.getConceptUIConfig().required || false;
     },
 
-    _hasValidChildren: function (checkRequiredFields) {
+    _hasValidChildren: function (checkRequiredFields, conceptSetRequired) {
         return this.groupMembers.every(function (member) {
-            return member.isValid(checkRequiredFields)
+            return member.isValid(checkRequiredFields, conceptSetRequired)
         });
     }
 

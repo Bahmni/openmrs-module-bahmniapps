@@ -45,14 +45,15 @@ angular.module('bahmni.common.conceptSet')
             controller: controller,
             scope: {
                 observation: "=",
-                atLeastOneValueIsSet : "="
+                atLeastOneValueIsSet : "=",
+                conceptSetRequired: "="
             },
             template: '<ng-include src="\'../common/concept-set/views/observation.html\'" />'
         }
     }]).directive('conceptSet', ['contextChangeHandler', 'appService', function (contextChangeHandler, appService) {
         var template =
             '<form>' +
-                '<concept observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet"></concept>' +
+                '<concept concept-set-required="conceptSetRequired" observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet"></concept>' +
             '</form>';
 
         var numberOfLevels = appService.getAppDescriptor().getConfigValue('maxConceptSetLevels') || 4;
@@ -70,6 +71,7 @@ angular.module('bahmni.common.conceptSet')
             });
 
             $scope.atLeastOneValueIsSet = false;
+            $scope.conceptSetRequired = false;
 
             var updateObservationsOnRootScope = function () {
                 if($scope.rootObservation){
@@ -85,8 +87,9 @@ angular.module('bahmni.common.conceptSet')
 
             var allowContextChange = function () {
                 $scope.atLeastOneValueIsSet = $scope.rootObservation && $scope.rootObservation.atLeastOneValueSet();
+                $scope.conceptSetRequired = $scope.required;
                 var invalidNodes = $scope.rootObservation && $scope.rootObservation.groupMembers.filter(function(childNode){
-                    return childNode.isObservationNode && !childNode.isValid($scope.atLeastOneValueIsSet);
+                    return !childNode.isValid($scope.atLeastOneValueIsSet, $scope.conceptSetRequired);
                 });
                 return !invalidNodes || invalidNodes.length === 0;
             };
@@ -98,7 +101,8 @@ angular.module('bahmni.common.conceptSet')
             restrict: 'E',
             scope: {
                 conceptSetName: "=",
-                observations: "="
+                observations: "=",
+                required: "="
             },
             template: template,
             controller: controller

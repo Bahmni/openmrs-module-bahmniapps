@@ -16,7 +16,7 @@
         <div ng-app="consultation" ng-controller="ConsultationNavigationController">
             <div ng-include src="'../common/ui-helper/header.html'"></div>
             <div ui-view="additional-header"></div>
-            <div ng-include src="'views/includes/messages.html'"></div>
+            <div ng-include src="'../common/ui-helper/messages.html'"></div>
             <div class="opd-wrapper">
                 <p class="caution" ng-cloak ng-show="server_error"><i class="icon-exclamation-sign small"></i><span ng-bind="server_error"></span></p>
                 <div ui-view="content" id="view-content" class="opd-content-wrapper"></div>
@@ -81,6 +81,9 @@
         <script src="../common/ui-helper/services/backlinkService.js"></script>
         <script src="../common/ui-helper/services/contextChangeHandler.js"></script>
         <script src="../common/ui-helper/controllers/commonHeaderController.js"></script>
+        <script src="../common/ui-helper/controllers/messageController.js"></script>
+        <script src="../common/ui-helper/services/messagingService.js"></script>
+
 
         <script src="../common/concept-set/init.js"></script>
         <script src="../common/concept-set/directives/conceptSet.js"></script>
@@ -132,7 +135,6 @@
         <script src="controllers/dispositionController.js"></script>
         <script src="controllers/navigationController.js"></script>
         <script src="controllers/conceptSetPageController.js"></script>
-        <script src="controllers/messageController.js"></script>
         <script src="services/treatmentService.js"></script>
         <script src="services/drugService.js"></script>
         <script src="services/diagnosisService.js"></script>
@@ -140,7 +142,6 @@
         <script src="services/labTestsProvider.js"></script>
         <script src="services/otherTestsProvider.js"></script>
         <script src="services/registerTabService.js"></script>
-        <script src="services/messagingService.js"></script>
         <script src="services/visitActionsService.js"></script>
         <script src="models/ordersUtil.js"></script>
         <script src="models/result.js"></script>

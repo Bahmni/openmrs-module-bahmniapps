@@ -173,8 +173,9 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
 
     },
 
-    isValid: function (checkRequiredFields) {
-        if (this.isGroup()) return this._hasValidChildren(checkRequiredFields);
+    isValid: function (checkRequiredFields, conceptSetRequired) {
+        if (this.isGroup()) return this._hasValidChildren(checkRequiredFields, conceptSetRequired);
+        if (conceptSetRequired && this.isRequired() && !this.getPrimaryObs().hasValue()) return false;
         if (checkRequiredFields && this.isRequired() && !this.getPrimaryObs().hasValue()) return false;
         if (this._isDateDataType()) return this.getPrimaryObs().isValidDate();
         if (this.getPrimaryObs().hasValue() && this.hasDuration()) return false;
@@ -185,9 +186,9 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
         return this.getConceptUIConfig().required || false;
     },
 
-    _hasValidChildren: function (checkRequiredFields) {
+    _hasValidChildren: function (checkRequiredFields, conceptSetRequired) {
         return this.groupMembers.every(function (member) {
-            return member.isValid(checkRequiredFields)
+            return member.isValid(checkRequiredFields, conceptSetRequired)
         });
     }
 };

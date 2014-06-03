@@ -34,6 +34,7 @@
                         </ul>
                 </header>
                 <p class="caution" ng-cloak ng-show="server_error"><i class="icon-exclamation-sign small"></i><span ng-bind="server_error"></span></p>
+                <div ng-include src="'../common/ui-helper/messages.html'"></div>
                 <div ng-view id="view-content" class="pg-container"></div>        
             </div>
         </div>
@@ -69,6 +70,8 @@
         <script src="../common/ui-helper/spinner.js"></script>
         <script src="../common/ui-helper/printer.js"></script>
         <script src="../common/ui-helper/services/contextChangeHandler.js"></script>
+        <script src="../common/ui-helper/controllers/messageController.js"></script>
+        <script src="../common/ui-helper/services/messagingService.js"></script>
 
         <script src="../common/photo-capture/init.js"></script>
         <script src="../common/photo-capture/directives/capturePhoto.js"></script>
