@@ -112,7 +112,7 @@
         <legend ng-if="showTitle" class="mylegend"><strong>{{observation.label}}</strong></legend>
         <div class="form-group">
             <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers">
-                <concept observation="member" at-least-one-value-is-set="atLeastOneValueIsSet"></concept>
+                <concept observation="member" at-least-one-value-is-set="atLeastOneValueIsSet" show-title="true"></concept>
             </div>
         </div>
     </fieldset>

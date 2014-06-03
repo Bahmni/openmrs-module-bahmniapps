@@ -54,7 +54,7 @@ angular.module('bahmni.common.conceptSet')
     }]).directive('conceptSet', ['contextChangeHandler', 'appService', function (contextChangeHandler, appService) {
         var template =
             '<form>' +
-                '<concept observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet"></concept>' +
+                '<concept observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet" show-title="showTitleValue"></concept>' +
             '</form>';
 
         var numberOfLevels = appService.getAppDescriptor().getConfigValue('maxConceptSetLevels') || 4;
@@ -65,6 +65,8 @@ angular.module('bahmni.common.conceptSet')
             var conceptSetName = $scope.conceptSetName;
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
             var observationMapper = new Bahmni.ConceptSet.ObservationMapper();
+            var validationHandler = $scope.validationHandler() || contextChangeHandler;
+    
             spinner.forPromise(conceptSetService.getConceptSetMembers({name: conceptSetName, v: "custom:" + customRepresentation}, true)).success(function (response) {
                 var conceptSet = response.results[0];
                 $scope.rootObservation = conceptSet ? observationMapper.map($scope.observations, conceptSet, conceptSetUIConfig.value || {}) : null;
@@ -72,6 +74,7 @@ angular.module('bahmni.common.conceptSet')
             });
 
             $scope.atLeastOneValueIsSet = false;
+            $scope.showTitleValue = $scope.showTitle();
 
             var updateObservationsOnRootScope = function () {
                 if($scope.rootObservation){
@@ -85,7 +88,7 @@ angular.module('bahmni.common.conceptSet')
                 }
             };
 
-            var allowContextChange = function () {
+            var validateObservationTree = function () {
                 if(!$scope.rootObservation) return true;
                 $scope.atLeastOneValueIsSet = $scope.rootObservation.atLeastOneValueSet();
                 var invalidNodes = $scope.rootObservation.groupMembers.filter(function(childNode){
@@ -94,14 +97,16 @@ angular.module('bahmni.common.conceptSet')
                 return !invalidNodes || invalidNodes.length === 0;
             };
 
-            contextChangeHandler.add(allowContextChange);
+            validationHandler.add(validateObservationTree);
         };
 
         return {
             restrict: 'E',
             scope: {
                 conceptSetName: "=",
-                observations: "="
+                observations: "=",
+                showTitle: "&",
+                validationHandler: "&"
             },
             template: template,
             controller: controller

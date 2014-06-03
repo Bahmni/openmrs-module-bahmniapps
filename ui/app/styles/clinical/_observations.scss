@@ -231,3 +231,16 @@ concept {
   color: #aaa;
 }
 
+concept-set {
+  display: block;
+}
+
+.concept-set-group {
+  .concept-set-title {
+    cursor: pointer;
+  }
+
+  concept-set {
+    margin-top: 10px;
+  }
+}
