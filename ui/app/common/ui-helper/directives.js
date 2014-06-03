@@ -2,7 +2,11 @@ angular.module('bahmni.common.util')
     .directive('nonBlank', function () {
         return function ($scope, element, attrs) {
             var addNonBlankAttrs = function () {
-                element.attr({'required': 'required', "pattern": '^.*[^\\s]+.*'});
+                if(!attrs.attrPattern) {
+                    element.attr({'required': 'required', "pattern": '^.*[^\\s]+.*'});
+                } else {
+                    element.attr({'required': 'required', "pattern": $scope[attrs.attrPattern]});
+                }
             };
 
             var removeNonBlankAttrs = function () {
