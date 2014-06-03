@@ -106,7 +106,7 @@
               </li> 
               <li ng-repeat="image in visit.images" >
                 <div class="file">
-                  <img ng-src="{{image.encodedValue}}" image-gallery-item title="{{image.getTitle()}}" width="100">
+                  <img non-sanitized-src="{{image.encodedValue}}" image-gallery-item title="{{image.getTitle()}}" width="100">
                   <input class="concept-name" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter a value" title="Select a value from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
                 </div>
                 <div class="file-remove">
