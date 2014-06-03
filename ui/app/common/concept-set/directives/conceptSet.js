@@ -4,6 +4,7 @@ angular.module('bahmni.common.conceptSet')
     .directive('concept', [function () {
         var controller = function ($scope, $q, $filter) {
             var conceptMapper = new Bahmni.ConceptSet.ConceptMapper();
+            $scope.showTitle = $scope.showTitle === undefined ? true : $scope.showTitle;
 
             $scope.selectOptions = function(codedConcept){
                 var limit = 1000;
@@ -45,6 +46,7 @@ angular.module('bahmni.common.conceptSet')
             controller: controller,
             scope: {
                 observation: "=",
+                showTitle: "=",
                 atLeastOneValueIsSet : "="
             },
             template: '<ng-include src="\'../common/concept-set/views/observation.html\'" />'
@@ -84,8 +86,9 @@ angular.module('bahmni.common.conceptSet')
             };
 
             var allowContextChange = function () {
-                $scope.atLeastOneValueIsSet = $scope.rootObservation && $scope.rootObservation.atLeastOneValueSet();
-                var invalidNodes = $scope.rootObservation && $scope.rootObservation.groupMembers.filter(function(childNode){
+                if(!$scope.rootObservation) return true;
+                $scope.atLeastOneValueIsSet = $scope.rootObservation.atLeastOneValueSet();
+                var invalidNodes = $scope.rootObservation.groupMembers.filter(function(childNode){
                     return childNode.isObservationNode && !childNode.isValid($scope.atLeastOneValueIsSet);
                 });
                 return !invalidNodes || invalidNodes.length === 0;
