@@ -67,7 +67,7 @@ angular.module('bahmni.common.conceptSet')
             var observationMapper = new Bahmni.ConceptSet.ObservationMapper();
             var validationHandler = $scope.validationHandler() || contextChangeHandler;
     
-            spinner.forPromise(conceptSetService.getConceptSetMembers({name: conceptSetName, v: "custom:" + customRepresentation}, true)).success(function (response) {
+            spinner.forPromise(conceptSetService.getConceptSetMembers({name: conceptSetName, v: "custom:" + customRepresentation})).success(function (response) {
                 var conceptSet = response.results[0];
                 $scope.rootObservation = conceptSet ? observationMapper.map($scope.observations, conceptSet, conceptSetUIConfig.value || {}) : null;
                 updateObservationsOnRootScope();
