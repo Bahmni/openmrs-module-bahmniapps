@@ -53,7 +53,7 @@ angular.module('bahmni.common.conceptSet')
         }
     }]).directive('conceptSet', ['contextChangeHandler', 'appService', function (contextChangeHandler, appService) {
         var template =
-            '<form>' +
+            '<form bindonce>' +
                 '<concept observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet" show-title="showTitleValue"></concept>' +
             '</form>';
 

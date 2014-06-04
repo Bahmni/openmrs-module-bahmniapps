@@ -24,32 +24,26 @@ Bahmni.ConceptSet.ObservationMapper = function () {
     };
 
     // tODO : remove conceptUIConfig
-    var newObservation = function (concept, savedObs, conceptSetConfig) {
-        var observation = { concept: conceptMapper.map(concept), units: concept.units, label: concept.name.name, possibleAnswers: concept.answers, groupMembers: []};
-        return new Bahmni.ConceptSet.Observation(observation, savedObs, conceptSetConfig);
+    var newObservation = function (concept, savedObs, conceptSetConfig, mappedGroupMembers) {
+        var observation = { concept: conceptMapper.map(concept), units: concept.units, label: concept.name.name, possibleAnswers: concept.answers, groupMembers: mappedGroupMembers};
+        return new Bahmni.ConceptSet.Observation(observation, savedObs, conceptSetConfig, mappedGroupMembers);
     };
 
     // tODO : remove conceptUIConfig
-    var newObservationNode = function (concept, savedObsNode, conceptSetConfig) {
-        var observation = { concept: conceptMapper.map(concept), units: concept.units, label: concept.name.name, possibleAnswers: concept.answers, groupMembers: []};
+    var newObservationNode = function (concept, savedObsNode, conceptSetConfig, mappedGroupMembers) {
+        var observation = { concept: conceptMapper.map(concept), units: concept.units, label: concept.name.name, possibleAnswers: concept.answers, groupMembers: mappedGroupMembers};
         return new Bahmni.ConceptSet.ObservationNode(observation, savedObsNode, conceptSetConfig);
     };
 
     var mapObservation = function (concept, savedObs, conceptSetConfig) {
         if (savedObs && (savedObs.isObservation || savedObs.isObservationNode)) 
             return savedObs;
-
-        var observation;
+        var mappedGroupMembers = concept.set ? mapObservationGroupMembers(savedObs ? savedObs.groupMembers : [], concept.setMembers, conceptSetConfig) : [];
         if (concept.conceptClass.name === Bahmni.Common.Constants.conceptDetailsClassName) {
-            observation = newObservationNode(concept, savedObs, conceptSetConfig);
+            return newObservationNode(concept, savedObs, conceptSetConfig, mappedGroupMembers);
         } else {
-            observation = newObservation(concept, savedObs, conceptSetConfig);
+            return newObservation(concept, savedObs, conceptSetConfig, mappedGroupMembers);
         }
-
-        var savedObsGroupMembers = savedObs ? savedObs.groupMembers : [];
-        observation.groupMembers = concept.set ? mapObservationGroupMembers(savedObsGroupMembers, concept.setMembers, conceptSetConfig) : [];
-
-        return observation;
     };
 
     this.map = function (observations, rootConcept, conceptSetConfig) {

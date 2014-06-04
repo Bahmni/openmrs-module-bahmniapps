@@ -1,38 +1,15 @@
 Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUIConfig) {
-
     angular.extend(this, observation);
-    angular.extend(this, Bahmni.ConceptSet.Observation);
     Object.defineProperty(this, 'value', {
         get: function () {
-            if (this.primaryObs) {
-                return this.primaryObs.value;
-            }
-            return null;
+            return this.primaryObs ? this.primaryObs.value : null;
         },
         set: function (newValue) {
             this.primaryObs.value = newValue;
             this.onValueChanged();
         }
     });
-
-    Object.defineProperty(this, 'duration', {
-        get: function () {
-            return this.getDuration();
-        }
-    });
-
-    Object.defineProperty(this, 'abnormal', {
-        get: function () {
-            return this.getAbnormal();
-        }
-    });
-
-    Object.defineProperty(this, 'primaryObs', {
-        get: function () {
-            return this.getPrimaryObs();
-        }
-    });
-
+ 
     this.conceptUIConfig = conceptUIConfig;
     this.isObservationNode = true;
     this.observationDateTime = Bahmni.Common.Util.DateUtil.now();
@@ -40,49 +17,48 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUICo
         this.uuid = savedObs.uuid;
         this.observationDateTime = savedObs.observationDateTime;
     }
-
+    this.duration = this.getDuration();
+    this.abnormal = this.getAbnormal();
+    this.primaryObs = this.getPrimaryObs();
 };
 
 Bahmni.ConceptSet.ObservationNode.prototype = {
 
     getPossibleAnswers: function () {
-        return this.getPrimaryObs().concept.answers;
+        return this.primaryObs.concept.answers;
+    },
+
+    _getGroupMemberWithClass: function(className) {
+        return this.groupMembers.filter(function (member) {
+            return (member.concept.conceptClass.name === className) || (member.concept.conceptClass === className);
+        })[0];
     },
 
     getAbnormal: function () {
-        var abnormalAsArray = this.groupMembers.filter(function (member) {
-            return (member.concept.conceptClass.name === Bahmni.Common.Constants.abnormalConceptClassName) || (member.concept.conceptClass === Bahmni.Common.Constants.abnormalConceptClassName);
-        });
-        return abnormalAsArray[0];
+        return this._getGroupMemberWithClass(Bahmni.Common.Constants.abnormalConceptClassName);
     },
 
     getDuration: function () {
-        var durationAsArray = this.groupMembers.filter(function (member) {
-            return (member.concept.conceptClass.name === Bahmni.Common.Constants.durationConceptClassName) || (member.concept.conceptClass === Bahmni.Common.Constants.durationConceptClassName);
-        });
-        return durationAsArray[0];
+        return this._getGroupMemberWithClass(Bahmni.Common.Constants.durationConceptClassName);
     },
 
     getPrimaryObs: function () {
-        var abnormalAsArray = this.groupMembers.filter(function (member) {
-            return (member.concept.conceptClass.name === Bahmni.Common.Constants.miscConceptClassName) || (member.concept.conceptClass === Bahmni.Common.Constants.miscConceptClassName);
-        });
-        return abnormalAsArray[0];
+        return this._getGroupMemberWithClass(Bahmni.Common.Constants.miscConceptClassName);
     },
 
     onValueChanged: function () {
-        if (!this.getPrimaryObs().hasValue() && this.getAbnormal()) {
+        if (!this.primaryObs.hasValue() && this.getAbnormal()) {
             this.getAbnormal().value = undefined;
         }
-        if (this.getPrimaryObs().isNumeric()) {
+        if (this.primaryObs.isNumeric()) {
             this.setAbnormal();
         }
 //        this.observationDateTime = new Date();
     },
 
     setAbnormal: function () {
-        if (this.getPrimaryObs().hasValue()) {
-            var valueInRange = this.value <= (this.getPrimaryObs().concept.hiNormal || Infinity) && this.value >= (this.getPrimaryObs().concept.lowNormal || 0);
+        if (this.primaryObs.hasValue()) {
+            var valueInRange = this.value <= (this.primaryObs.concept.hiNormal || Infinity) && this.value >= (this.primaryObs.concept.lowNormal || 0);
             this.abnormal.value = !valueInRange;
         } else {
             this.abnormal.value = undefined;
@@ -107,14 +83,14 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     getConceptUIConfig: function () {
-        return this.conceptUIConfig[this.getPrimaryObs().concept.name] || [];
+        return this.conceptUIConfig[this.primaryObs.concept.name] || [];
     },
 
     getControlType: function () {
         if (this.getConceptUIConfig().freeTextAutocomplete) return "freeTextAutocomplete";
         if (this.isHtml5InputDataType()) return "html5InputDataType";
-        if (this.getPrimaryObs().isText()) return "text";
-        if (this.getPrimaryObs().isCoded()) return this._getCodedControlType();
+        if (this.primaryObs.isText()) return "text";
+        if (this.primaryObs.isCoded()) return this._getCodedControlType();
         return "unknown";
     },
 
@@ -126,11 +102,11 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     isHtml5InputDataType: function () {
-        return ['Date', 'Numeric'].indexOf(this.getPrimaryObs().getDataTypeName()) != -1;
+        return ['Date', 'Numeric'].indexOf(this.primaryObs.getDataTypeName()) != -1;
     },
 
     _isDateDataType: function () {
-        return 'Date'.indexOf(this.getPrimaryObs().getDataTypeName()) != -1;
+        return 'Date'.indexOf(this.primaryObs.getDataTypeName()) != -1;
     },
 
     getHighAbsolute: function () {
@@ -151,7 +127,7 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
                 return childNode.atLeastOneValueSet();
             })
         } else {
-            return this.getPrimaryObs().hasValue();
+            return this.primaryObs.hasValue();
         }
     },
 
@@ -175,9 +151,9 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
 
     isValid: function (checkRequiredFields) {
         if (this.isGroup()) return this._hasValidChildren(checkRequiredFields);
-        if (checkRequiredFields && this.isRequired() && !this.getPrimaryObs().hasValue()) return false;
-        if (this._isDateDataType()) return this.getPrimaryObs().isValidDate();
-        if (this.getPrimaryObs().hasValue() && this.hasDuration()) return false;
+        if (checkRequiredFields && this.isRequired() && !this.primaryObs.hasValue()) return false;
+        if (this._isDateDataType()) return this.primaryObs.isValidDate();
+        if (this.primaryObs.hasValue() && this.hasDuration()) return false;
         return true;
     },
 
