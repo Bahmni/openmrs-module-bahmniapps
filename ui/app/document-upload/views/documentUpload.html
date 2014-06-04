@@ -4,7 +4,7 @@
 </div>
 
 <ul class="doc-upload-accordion">
-  <li id="newVisit" image-gallery="visit-new">
+  <li id="newVisit" image-gallery="visit-new" reverse-counter="true">
     <h1 ng-click="resetCurrentVisit(newVisit)">
       <i ng-hide="isCurrentVisit(newVisit)" class="icon-plus-sign state"></i>
       <i ng-if="isCurrentVisit(newVisit)" class="icon-minus-sign state"></i>
@@ -91,7 +91,7 @@
       <span ng-if="visit.hasImages()" class="containsImageMarker" title="Visit has images"><i class="icon-picture"></i></span>
       <span ng-if="!visit.stopDatetime" class="currentVisitMarker" title="Current Visit"><i class="icon-star"></i></span>
     </h1>
-    <div class="visit-content" ng-if="isCurrentVisit(visit)" image-gallery="visit-{{visit.uuid}}" >
+    <div class="visit-content" ng-if="isCurrentVisit(visit)" image-gallery="visit-{{visit.uuid}}" reverse-counter="true">
       <form name="{{'visit' + $index}}" ng-submit="save(visit)" ng-disabled="!visit.changed">
         <ul>
           <li>

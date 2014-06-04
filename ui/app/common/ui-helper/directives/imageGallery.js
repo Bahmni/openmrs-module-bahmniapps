@@ -12,12 +12,26 @@ angular.module('bahmni.common.uiHelper')
             var galleryName = $scope.galleryName || "default-gallery";
             var imageGalleryTarget = $scope.imageGalleryTarget || "img";
 
+            var addFooterCounter = function() {
+                var counterSpan = $('.mfp-counter>span')[0];
+                var total = counterSpan.getAttribute('data-total');
+                var currentIndex = counterSpan.getAttribute('data-curr');
+                var index = $scope.reverseCounter ? (total - currentIndex + 1) : currentIndex;
+                counterSpan.innerHTML = index + " of " + total;
+            }
             this.initGallery = function() {
                 var options = {
                     type:'image',
                     delegate: imageGalleryTarget,
-                    key: galleryName, 
-                    gallery: {enabled: true, navigateByImgClick: false}
+                    key: galleryName,
+                    callbacks: {
+                        imageLoadComplete: addFooterCounter,
+                    },
+                    gallery: {
+                        enabled: true,
+                        navigateByImgClick: false,
+                        tCounter: '<span data-total="%total%" data-curr="%curr%"></span>'
+                    }
                 };
                 $scope.element.magnificPopup(options);
             }
@@ -28,7 +42,8 @@ angular.module('bahmni.common.uiHelper')
             controller: controller,
             scope: {
                 galleryName: '@imageGallery',
-                imageGalleryTarget: '@imageGalleryTarget'
+                imageGalleryTarget: '@imageGalleryTarget',
+                reverseCounter: '@reverseCounter',
             }
         };
     })
