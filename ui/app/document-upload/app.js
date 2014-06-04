@@ -49,4 +49,5 @@ angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$ur
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
     }]).run(['backlinkService', function (backlinkService) {
         backlinkService.addBackUrl();
+        FastClick.attach(document.body);
     }]);
