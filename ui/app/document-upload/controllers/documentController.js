@@ -100,7 +100,7 @@ angular.module('opd.documentupload')
             };
 
             var getEncountersForVisits = function () {
-                encounterService.getEncountersForEncounterType($rootScope.patient.uuid, encounterTypeUuid).success(function (encounters) {
+                return encounterService.getEncountersForEncounterType($rootScope.patient.uuid, encounterTypeUuid).success(function (encounters) {
                     $scope.visits.forEach(function (visit) {
                         visit.encounters = encounters.results.filter(function(a) {return(a.visit.uuid==visit.uuid)});
                         visit.initSavedImages();
@@ -146,6 +146,19 @@ angular.module('opd.documentupload')
                     });
             };
 
+            var initializeImageLoading = function() {
+                var newScope = $rootScope.$new();
+                var waitForRenderAndEnableLazyLoad = function() {
+                    if(newScope.$$phase || $http.pendingRequests.length) {
+                        $timeout(waitForRenderAndEnableLazyLoad);
+                    } else {
+                        $rootScope.enableImageLazyLoading && $rootScope.enableImageLazyLoading();
+                        newScope.$destroy();
+                    }
+                }
+                waitForRenderAndEnableLazyLoad();
+            }
+
             var init = function () {
                 encounterTypeUuid = $scope.encounterConfig.getEncounterTypeUuid($rootScope.appConfig.encounterType);
                 initNewVisit();
@@ -155,6 +168,7 @@ angular.module('opd.documentupload')
                 promises.push(getPatient().then(getVisits).then(getEncountersForVisits));
                 promises.push(getTopLevelConcept());
                 $q.all(promises).then(function () {
+                    initializeImageLoading();
                     deferrables.resolve();
                 });
                 return deferrables.promise;
@@ -216,7 +230,7 @@ angular.module('opd.documentupload')
                 });
 
                 visit.images.forEach(function (image) {
-                    visitDocument.documents.push({testUuid: image.concept.uuid, image: image.encodedValue.replace(/data:image\/.*;base64/, ""),
+                    visitDocument.documents.unshift({testUuid: image.concept.uuid, image: image.encodedValue.replace(/data:image\/.*;base64/, ""),
                         obsDateTime: new Date(), format: image.encodedValue.split(";base64")[0].split("data:image/")[1]})
                 });
                 return visitDocument;
@@ -244,6 +258,7 @@ angular.module('opd.documentupload')
                 $scope.currentVisit = visit;
                 sortVisits();
                 flashSuccessMessage();
+                initializeImageLoading();
             };
 
             $scope.save = function (existingVisit) {

@@ -57,6 +57,14 @@
               <input name="endDate" type="date" ng-model="newVisit.stopDatetime" dependent-model="newVisit.startDatetime" date-validator class="field-value" placeholder="dd-mm-yyyy">
           </div>
         </div>
+        <div class="upload-inline-buttons">
+          <input id="file-browse" type="file" name="image" accept="image/*" capture="camera" file-upload visit="newVisit" on-select="setConceptOnImage" default-concept="defaultConcept">
+          <label for="file-browse" class="btn btn-primary" ng-click="resetCurrentVisit(newVisit)"><i class="icon-camera icon-white"></i> SCAN</label>
+          <button type="submit" ng-disabled="newVisit.images.length == 0 || newVisitForm.$invalid" class="btn btn-primary">
+            <i class="icon-save icon-white"></i> SAVE
+          </button>
+        </div>
+
         <ul class="files">
           <li class="clear" ng-repeat="image in newVisit.images">
             <div class="file">
@@ -68,13 +76,6 @@
             </div>
           </li>
         </ul>
-        <div class="upload-inline-buttons">
-          <input id="file-browse" type="file" name="image" accept="image/*" capture="camera" file-upload visit="newVisit" on-select="setConceptOnImage" default-concept="defaultConcept">
-          <label for="file-browse" class="btn btn-primary" ng-click="resetCurrentVisit(newVisit)"><i class="icon-camera icon-white"></i> SCAN</label>
-          <button type="submit" ng-disabled="newVisit.images.length == 0 || newVisitForm.$invalid" class="btn btn-primary">
-            <i class="icon-save icon-white"></i> SAVE
-          </button>
-        </div>
       </form>
     </div>
   </li>
@@ -95,24 +96,6 @@
         <ul>
           <li>
             <ul class="files">
-              <li ng-repeat="image in visit.savedImages">
-                <div class="file">
-                  <img image-gallery-item title="{{image.getTitle()}}" ng-src="{{image.encodedValue}}" width="100" ng-class="{true:'transparent', false:'opaque'}[image.voided]" />
-                  <input name="{{'image'+$index}}" class="concept-name saved" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter a value" title="Select a value from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true" ng-change="visit.markAsUpdated()" ng-disabled="image.voided"/>
-                </div>
-                <div class="file-remove">
-                  <button type="button" ng-click="visit.toggleVoidingOfImage(image)" class="row-remover"><span ng-class="{'icon-remove': !image.voided, 'icon-undo': image.voided }"></span></button>
-                </div>
-              </li> 
-              <li ng-repeat="image in visit.images" >
-                <div class="file">
-                  <img non-sanitized-src="{{image.encodedValue}}" image-gallery-item title="{{image.getTitle()}}" width="100">
-                  <input class="concept-name" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter a value" title="Select a value from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
-                </div>
-                <div class="file-remove">
-                  <button type="button" ng-click="visit.removeNewAddedImage(image)" class="row-remover"><span class="icon-remove"></span></button>
-                </div>
-              </li>
               <li>
                 <input id="file-browse-{{visit.uuid}}" type="file" name="image" accept="image/*" capture="camera" file-upload visit="visit" on-select="setConceptOnImage" default-concept="defaultConcept">
                 <label class="placeholder btn" for="file-browse-{{visit.uuid}}"><i class="icon-plus"></i></label>
@@ -125,6 +108,26 @@
                   </button>
                 </div>
               </li>
+
+              <li ng-repeat="image in visit.images" >
+                <div class="file">
+                  <img non-sanitized-src="{{image.encodedValue}}" image-gallery-item title="{{image.getTitle()}}" width="100">
+                  <input class="concept-name" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter a value" title="Select a value from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
+                </div>
+                <div class="file-remove">
+                  <button type="button" ng-click="visit.removeNewAddedImage(image)" class="row-remover"><span class="icon-remove"></span></button>
+                </div>
+              </li>
+
+              <li ng-repeat="image in visit.savedImages">
+                <div class="file">
+                  <img image-gallery-item title="{{image.getTitle()}}" lazy-load-src="{{image.encodedValue}}" width="100" ng-class="{true:'transparent', false:'opaque'}[image.voided]" class="lazy"/>
+                  <input name="{{'image'+$index}}" class="concept-name saved" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter a value" title="Select a value from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true" ng-change="visit.markAsUpdated()" ng-disabled="image.voided"/>
+                </div>
+                <div class="file-remove">
+                  <button type="button" ng-click="visit.toggleVoidingOfImage(image)" class="row-remover"><span ng-class="{'icon-remove': !image.voided, 'icon-undo': image.voided }"></span></button>
+                </div>
+              </li> 
             </ul>
           </li>
         </ul>
