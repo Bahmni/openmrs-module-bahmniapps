@@ -205,6 +205,7 @@ angular.module('opd.documentupload')
 
             $scope.resetCurrentVisit = function (visit) {
                 $scope.currentVisit = ($scope.isCurrentVisit(visit)) ? $scope.newVisit : visit;
+                initializeImageLoading();
             };
 
             $scope.isCurrentVisit = function (visit) {
