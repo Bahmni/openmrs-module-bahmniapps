@@ -1,6 +1,7 @@
 Bahmni.Common.DocumentImage = function(data){
     angular.extend(this, data);
     this.title = this.getTitle();
+    this.thumbnail = this.getThumbnail();
 };
 
 Bahmni.Common.DocumentImage.prototype = {
@@ -13,8 +14,10 @@ Bahmni.Common.DocumentImage.prototype = {
             titleComponents.push(moment(this.obsDatetime).format(Bahmni.Common.Constants.dateDisplayFormat));
         }
         return titleComponents.join(', ');
+    },
+
+    getThumbnail: function() {
+        var src = this.src || this.encodedValue;
+        return this["new"] ? src : src && src.replace(/(.*)\.(.*)$/, "$1_thumbnail.$2");
     }
 };
-
-
-
