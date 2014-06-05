@@ -102,14 +102,17 @@ angular.module('bahmni.registration')
             $scope.validate = function () {
                 var deferred = $q.defer();
                 if(!contextChangeHandler.execute()){
+                    contextChangeHandler.reset();
                     messagingService.showMessage('error', 'Please correct errors in the form. Information not saved');
                     deferred.reject("Some fields are not valid");
                     return deferred.promise;
                 }
                 if ($scope.obs['REGISTRATION FEES'] === 0 && (!$scope.obs.COMMENTS || $scope.obs.COMMENTS === '') && !($scope.isHiddenInConfig('Comments') && $scope.isHiddenInConfig('REGISTRATION FEES'))) {
+                    contextChangeHandler.reset();
                     return $scope.confirmDialog.show();
                 } else {
                     deferred.resolve();
+                    contextChangeHandler.reset();
                     return deferred.promise;
                 }
 
