@@ -120,7 +120,4 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', functi
                 templateUrl: 'views/patientDashboard.html'
             })
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
-}])
-.run(function() {
-    FastClick.attach(document.body);
-});
+}]);
