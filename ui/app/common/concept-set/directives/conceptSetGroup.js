@@ -20,7 +20,7 @@ angular.module('bahmni.common.conceptSet')
         },
         controller: 'ConceptSetGroupController',
         template: '<div ng-repeat="conceptSet in conceptSets" class="concept-set-group">' +
-                    '<div ng-click="conceptSet.toggle()" ng-if="conceptSet.isAvailable()" class="concept-set-title">' +
+                    '<div ng-click="conceptSet.toggle()" ng-if="conceptSet.isAvailable(context)" class="concept-set-title">' +
                         '<legend class="mylegend">' + 
                             '<i class="icon-caret-right" ng-hide="conceptSet.isOpen"></i>' +
                             '<i class="icon-caret-down" ng-show="conceptSet.isOpen"></i>' + 

@@ -12,7 +12,7 @@ Bahmni.ConceptSet.ConceptSetSection = function(options) {
     }
 
     self.isAvailable = function(context) {
-        return getShowIfFunction()(context);
+        return getShowIfFunction()(context || {});
     }
 
     self.toggle = function() {
