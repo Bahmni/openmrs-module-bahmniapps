@@ -12,14 +12,15 @@ angular.module('bahmni.common.uiHelper')
             source: function (request, response) {
                 source({elementId: attrs.id, term: request.term, elementType: attrs.type}).then(function (resp) {
                     var results = resp.data.results.map(function (concept) {
-                        return {'value': concept.name.name, 'concept': concept, uuid: concept.uuid };
+                        //todo : get rid of either 'value' or 'name' fields
+                        return {'value': concept.name.name, 'concept': concept, uuid: concept.uuid,name:concept.name.name };
                     });
                     response(results);
                 });
             },
             select: function (event, ui) {
                 scope.$apply(function (scope) {
-                    ngModelCtrl.$setViewValue(ui.item.value);
+                    ngModelCtrl.$setViewValue(ui.item);
                     scope.$eval(attrs.ngChange);
                     if(scope.blurOnSelect) element.blur();
                 });
