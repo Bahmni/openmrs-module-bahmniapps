@@ -29,7 +29,6 @@
     "angular-ui-router": "0.2.7",
     "magnific-popup": "~0.9.9",
     "lodash": "~2.4.1",
-    "jquery.lazyload": "1.9.3"
   },
   "devDependencies": {
     "angular-mocks": "1.2.6",

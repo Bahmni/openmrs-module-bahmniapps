@@ -146,19 +146,6 @@ angular.module('opd.documentupload')
                     });
             };
 
-            var initializeImageLoading = function() {
-                var newScope = $rootScope.$new();
-                var waitForRenderAndEnableLazyLoad = function() {
-                    if(newScope.$$phase || $http.pendingRequests.length) {
-                        $timeout(waitForRenderAndEnableLazyLoad);
-                    } else {
-                        $rootScope.enableImageLazyLoading && $rootScope.enableImageLazyLoading();
-                        newScope.$destroy();
-                    }
-                }
-                waitForRenderAndEnableLazyLoad();
-            }
-
             var init = function () {
                 encounterTypeUuid = $scope.encounterConfig.getEncounterTypeUuid($rootScope.appConfig.encounterType);
                 initNewVisit();
@@ -168,7 +155,6 @@ angular.module('opd.documentupload')
                 promises.push(getPatient().then(getVisits).then(getEncountersForVisits));
                 promises.push(getTopLevelConcept());
                 $q.all(promises).then(function () {
-                    initializeImageLoading();
                     deferrables.resolve();
                 });
                 return deferrables.promise;
@@ -205,7 +191,6 @@ angular.module('opd.documentupload')
 
             $scope.resetCurrentVisit = function (visit) {
                 $scope.currentVisit = ($scope.isCurrentVisit(visit)) ? $scope.newVisit : visit;
-                initializeImageLoading();
             };
 
             $scope.isCurrentVisit = function (visit) {
@@ -259,7 +244,6 @@ angular.module('opd.documentupload')
                 $scope.currentVisit = visit;
                 sortVisits();
                 flashSuccessMessage();
-                initializeImageLoading();
             };
 
             $scope.save = function (existingVisit) {
