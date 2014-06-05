@@ -121,9 +121,9 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', functi
             })
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
     }]).run(['$rootScope', '$state', '$window', function ($rootScope, $state, $window) {
-        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-            if (!$state.is('patientsearch')) return;
-            event.preventDefault();
-            $window.location.reload();
-        })
+//        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+//            if (!$state.is('patientsearch')) return;
+//            event.preventDefault();
+//            $window.location.reload();
+//        })
     }]);
