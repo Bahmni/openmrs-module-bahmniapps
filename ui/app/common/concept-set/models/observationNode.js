@@ -3,7 +3,8 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUICo
     Object.defineProperty(this, 'value', {
         get: function () {
             if (this.primaryObs) {
-                return typeof this.getPrimaryObs().value==="object"? this.getPrimaryObs().value.name:this.getPrimaryObs().value;
+                return typeof this.getPrimaryObs().value==="object" ?
+                    this.getPrimaryObs().value.name:this.getPrimaryObs().value;
             }
             return undefined;
         },
@@ -12,26 +13,28 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUICo
                 this.getCodedObs().value = newValue;
                 this.getCodedObs().voided = false;
 
-                if(this.getFreeTextObs().uuid){
-                    this.getFreeTextObs().voided = true;
-                }else{
-                    this.getFreeTextObs().value = undefined;
+                if(this.getFreeTextObs()){
+                    if(this.getFreeTextObs().uuid){
+                        this.getFreeTextObs().voided = true;
+                    }else{
+                        this.getFreeTextObs().value = undefined;
+                    }
                 }
             }
             else {
                 this.getFreeTextObs().value = newValue;
                 this.getFreeTextObs().voided = false;
-
-                if(this.getCodedObs().uuid){
-                    this.getCodedObs().voided = true;
-                }else{
-                    this.getCodedObs().value = undefined;
+                if(this.getCodedObs()){
+                    if(this.getCodedObs().uuid){
+                        this.getCodedObs().voided = true;
+                    }else{
+                        this.getCodedObs().value = undefined;
+                    }
                 }
             }
             this.onValueChanged(newValue);
         }
     });
-
 
     Object.defineProperty(this, 'primaryObs', {
         get: function () {
@@ -48,7 +51,6 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUICo
         },
         set : function(isNonCoded){
             this.getPrimaryObs().nonCodedAnswer = isNonCoded;
-//            this.onAddNewFreeTextValueChange(isNonCoded)
         }
     });
 
@@ -61,7 +63,6 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUICo
     }
     this.duration = this.getDuration();
     this.abnormal = this.getAbnormal();
-    this.primaryObs = this.getPrimaryObs();
 };
 
 Bahmni.ConceptSet.ObservationNode.prototype = {
@@ -71,9 +72,15 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     _getGroupMemberWithClass: function(className) {
-        return this.groupMembers.filter(function (member) {
+        return this._getGroupMembersWithClass(className)[0];
+    },
+
+    _getGroupMembersWithClass: function(className) {
+         var groupMembers = this.groupMembers.filter(function (member) {
             return (member.concept.conceptClass.name === className) || (member.concept.conceptClass === className);
-        })[0];
+        });
+
+        return groupMembers;
     },
 
     getAbnormal: function () {
@@ -81,14 +88,14 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     getDuration: function () {
-        return this._getGroupMemberWithClass(Bahmni.Common.Constants.durationConceptClassName);
+        var groupMemberWithClass = this._getGroupMemberWithClass(Bahmni.Common.Constants.durationConceptClassName);
+        return  groupMemberWithClass;
     },
 
     getPrimaryObs: function () {
-        return this._getGroupMemberWithClass(Bahmni.Common.Constants.miscConceptClassName);
-
-        var observations = this._getGroupMemberWithClass(Bahmni.Common.Constants.miscConceptClassName);
+        var observations = this._getGroupMembersWithClass(Bahmni.Common.Constants.miscConceptClassName);
         //todo : add migration to set correct sort orders for the concepts
+        //this is needed when you have freetext autocomplete
         var primaryObs = observations[1] && observations[1].uuid && !observations[1].voided? observations[1]:observations[0];
         if(primaryObs.uuid && !primaryObs.voided) return primaryObs;
 
@@ -220,7 +227,7 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
             this.freeTextPrimaryObs = this.groupMembers.filter(function (member) {
                 return (((member.concept.conceptClass.name === Bahmni.Common.Constants.miscConceptClassName)
                     || (member.concept.conceptClass === Bahmni.Common.Constants.miscConceptClassName))
-                    && (member.concept.dataType==="Text"));
+                    && (member.concept.dataType!=="Coded"));
             })[0];
         }
         return this.freeTextPrimaryObs;
