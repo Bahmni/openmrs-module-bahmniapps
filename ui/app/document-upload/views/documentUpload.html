@@ -97,16 +97,16 @@
           <li>
             <ul class="files">
               <li>
-                <input id="file-browse-{{visit.uuid}}" type="file" name="image" accept="image/*" capture="camera" file-upload visit="visit" on-select="setConceptOnImage" default-concept="defaultConcept">
-                <label class="placeholder btn" for="file-browse-{{visit.uuid}}"><i class="icon-plus"></i></label>
-              </li>    
-             
-              <li>
                 <div class="file-actions">
                   <button type="submit" ng-disabled="!visit.changed" class="btn btn-primary">
                     <i class="icon-save icon-white"></i> SAVE
                   </button>
                 </div>
+              </li>
+
+              <li>
+                <input id="file-browse-{{visit.uuid}}" type="file" name="image" accept="image/*" capture="camera" file-upload visit="visit" on-select="setConceptOnImage" default-concept="defaultConcept">
+                <label class="placeholder btn" for="file-browse-{{visit.uuid}}"><i class="icon-plus"></i></label>
               </li>
 
               <li ng-repeat="image in visit.images" >
