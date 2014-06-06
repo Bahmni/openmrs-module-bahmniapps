@@ -68,7 +68,7 @@
         <ul class="files">
           <li class="clear" ng-repeat="image in newVisit.images">
             <div class="file">
-              <img image-gallery-item ng-src="{{image.encodedValue}}" title="{{image.getTitle()}}" width="100">
+              <img image-gallery-item="{{image.encodedValue}}" ng-src="{{image.thumbnail}}" title="{{image.getTitle()}}" width="100">
               <input class="concept-name" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter a value" title="Select a value from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
             </div>
             <div>
@@ -111,7 +111,7 @@
 
               <li ng-repeat="image in visit.images" >
                 <div class="file">
-                  <img non-sanitized-src="{{image.encodedValue}}" image-gallery-item title="{{image.getTitle()}}" width="100">
+                  <img ng-src="{{image.thumbnail}}" image-gallery-item="{{image.encodedValue}}" title="{{image.getTitle()}}" width="100">
                   <input class="concept-name" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter a value" title="Select a value from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
                 </div>
                 <div class="file-remove">

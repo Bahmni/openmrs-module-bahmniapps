@@ -18,6 +18,6 @@ Bahmni.Common.DocumentImage.prototype = {
 
     getThumbnail: function() {
         var src = this.src || this.encodedValue;
-        return this["new"] ? src : src && src.replace(/(.*)\.(.*)$/, "$1_thumbnail.$2");
+        return src && src.replace(/(.*)\.(.*)$/, "$1_thumbnail.$2") || null;
     }
 };

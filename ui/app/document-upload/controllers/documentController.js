@@ -179,7 +179,6 @@ angular.module('opd.documentupload')
                 if (selectedItem) {
                     image.concept = Object.create(selectedItem.concept);
                     image.changed = true;
-                    $scope.$apply(image);
                 }
             };
 
@@ -216,8 +215,8 @@ angular.module('opd.documentupload')
                 });
 
                 visit.images.forEach(function (image) {
-                    visitDocument.documents.unshift({testUuid: image.concept.uuid, image: image.encodedValue.replace(/data:image\/.*;base64/, ""),
-                        obsDateTime: new Date(), format: image.encodedValue.split(";base64")[0].split("data:image/")[1]})
+                    var imageUrl = image.encodedValue.replace(Bahmni.Common.Constants.documentsPath + "/", "");
+                    visitDocument.documents.unshift({testUuid: image.concept.uuid, image: imageUrl, obsDateTime: new Date()})
                 });
                 return visitDocument;
             };
