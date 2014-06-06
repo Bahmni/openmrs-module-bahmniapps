@@ -63,6 +63,8 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUICo
     }
     this.duration = this.getDuration();
     this.abnormal = this.getAbnormal();
+//    this.primaryObs = this.getPrimaryObs();
+
 };
 
 Bahmni.ConceptSet.ObservationNode.prototype = {
@@ -99,7 +101,7 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
         var primaryObs = observations[1] && observations[1].uuid && !observations[1].voided? observations[1]:observations[0];
         if(primaryObs.uuid && !primaryObs.voided) return primaryObs;
 
-        return observations[1] && observations[1].value && !observations[1].voided? observations[1]:observations[0];
+        return observations[1] && (observations[1].value || observations[1].value === "") && !observations[1].voided? observations[1]:observations[0];
     },
 
     onValueChanged: function () {
