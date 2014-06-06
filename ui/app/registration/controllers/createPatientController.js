@@ -79,7 +79,7 @@ angular.module('bahmni.registration')
                     $scope.patient.registrationDate = dateUtil.now();
                     patientService.rememberPatient($scope.patient);
                     $window.history.pushState(null, null, patientUrl);
-                    $location.path("/patient/" + patientProfileData.patient.uuid + "/visit");
+                    $location.path("/patient/" + patientProfileData.patient.uuid + "/visit").search({newpatient: true});
                 });
             } else if ($scope.submitSource === 'print') {
                 $timeout(function(){

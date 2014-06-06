@@ -19,7 +19,7 @@ describe('CreatePatientController', function () {
     beforeEach(module('bahmni.registration'));
     beforeEach(inject([function () {
         dateUtil = Bahmni.Common.Util.DateUtil;
-        location = jasmine.createSpyObj('$location', ['path','absUrl']);
+        location = jasmine.createSpyObj('$location', ['path','absUrl','search']);
         spinner = jasmine.createSpyObj('spinner', ['show', 'hide', 'forPromise'])
         location.absUrl = function(){return "/patient/new"};
         patientService = jasmine.createSpyObj('patientService', ['create', 'getPatient', 'rememberPatient']);
@@ -36,6 +36,7 @@ describe('CreatePatientController', function () {
         };
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor'])
         appService.getAppDescriptor.andReturn(appDescriptor);
+        location.path.andReturn(location);
         //$route.current.params.visitType
         route = { "current" : { "params" : { "visitType" : "REG" } }};
     }]));
@@ -106,6 +107,7 @@ describe('CreatePatientController', function () {
                     it('should redirect to new visit page', function () {
                         createVisitPromise.callSuccessCallBack();
                         expect(location.path).toHaveBeenCalledWith("/patient/someUUID/visit");
+                        expect(location.search).toHaveBeenCalledWith({newpatient: true});
                     });
 
                     it('should set registration date to today', function () {
