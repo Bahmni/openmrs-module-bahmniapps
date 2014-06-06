@@ -49,7 +49,7 @@ angular.module('bahmni.common.uiHelper')
     })
 .directive('imageGalleryItem', function() {
     var link = function($scope, element, attrs, imageGalleryCtrl){
-        $(element).attr('data-mfp-src', attrs.imageGalleryItem || attrs.ngSrc || attrs.nonSanitizedSrc);
+        $(element).attr('data-mfp-src', attrs.imageGalleryItem || attrs.ngSrc);
         imageGalleryCtrl.initGallery();
 
         element.bind("$destroy", function() {
