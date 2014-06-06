@@ -93,7 +93,7 @@ angular.module('bahmni.common.conceptSet')
                 });
                 return !invalidNodes || invalidNodes.length === 0;
             };
-
+            contextChangeHandler.reset();
             contextChangeHandler.add(allowContextChange);
         };
 
