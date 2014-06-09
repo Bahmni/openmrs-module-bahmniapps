@@ -512,8 +512,18 @@ span.range {
   margin-bottom: 20px;
   background: #f1fef1;
   border-radius: 10px;
+  .checkbox-inline {
+    input[type="checkbox"], label.add-new.checkbox-btn {
+      width: auto!important;
+      margin-left: 0 !important;
+    }
+    label.add-new.checkbox-btn {
+      margin: 4px;
+    }
+  }
 }
 legend.mylegend {background: #f1fef1!important;}
+
 
 // Work in progresss - this _visit.scss needs cleaning!
 
