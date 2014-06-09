@@ -113,6 +113,9 @@
                     <button type="submit" ng-disabled="obs.bmi_error" ng-click="submitBtnClicked('savePrint')">Save and Print</button>
                     <button type="submit" class="confirm" ng-disabled="obs.bmi_error" ng-click="submitBtnClicked('save')" >Save</button>
                 </div>
+                <div ng-show="allowPrintingSupplementalPaper">
+                    <button type="button" ng-click="printSupplemental()">Print Supplemental Paper</button>
+                </div>
             </div>
 
         </form>

@@ -6,5 +6,13 @@ angular.module('bahmni.registration')
             var templatePath = appService.getAppDescriptor().getConfigValue("registrationCardPrintLayout") || "views/nolayoutfound.html";
             printer.print(templatePath, {patient: patient});
         };
-        return {print: print};
+
+        var printSupplementalPaper = function(patient) {
+            var templatePath = appService.getAppDescriptor().getConfigValue("supplementalPaperPrintLayout") || "views/nolayoutfound.html";
+            printer.print(templatePath, {patient: patient, today: new Date()});
+        }
+        return {
+            print: print,
+            printSupplementalPaper: printSupplementalPaper
+        };
     }]);

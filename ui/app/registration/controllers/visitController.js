@@ -40,6 +40,7 @@ angular.module('bahmni.registration')
 
 
             $scope.hideFields = appService.getAppDescriptor().getConfigValue("hideFields");
+            $scope.allowPrintingSupplementalPaper = appService.getAppDescriptor().getConfigValue("supplementalPaperPrintLayout") != null;
 
             $scope.isHiddenInConfig = function (fieldname) {
                 if (!$scope.hideFields) return false;
@@ -79,6 +80,9 @@ angular.module('bahmni.registration')
                 return registrationCardPrinter.print($scope.patient);
             };
 
+            $scope.printSupplemental = function() {
+                return registrationCardPrinter.printSupplementalPaper($scope.patient);
+            }
 
             $scope.save = function () {
                 $scope.encounter = {encounterTypeUuid: encounterTypeUuid, patientUuid: $scope.patient.uuid};
