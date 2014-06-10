@@ -19,7 +19,7 @@ describe('CreatePatientController', function () {
     beforeEach(module('bahmni.registration'));
     beforeEach(inject([function () {
         dateUtil = Bahmni.Common.Util.DateUtil;
-        location = jasmine.createSpyObj('$location', ['path','absUrl','search']);
+        location = jasmine.createSpyObj('$location', ['url','absUrl','search']);
         spinner = jasmine.createSpyObj('spinner', ['show', 'hide', 'forPromise'])
         location.absUrl = function(){return "/patient/new"};
         patientService = jasmine.createSpyObj('patientService', ['create', 'getPatient', 'rememberPatient']);
@@ -28,15 +28,31 @@ describe('CreatePatientController', function () {
         patientService.create.andReturn(createPromise);
         appDescriptor = {
             getExtensions : function(id) {
-                return [];
+                return [
+                    {
+                        "id": "bahmni.patient.edit.action.startVisit",
+                        "extensionPointId": "org.bahmni.registration.patient.edit.action",
+                        "type": "config",
+                        "extensionParams" : {
+                            "action" : "startVisit",
+                            "display": "Start Visit",
+                            "forwardUrl" : "/patient/{{patientUuid}}/visit"
+                        },
+                        "order": 1,
+                        "requiredPrivilege": "Add Visits"
+                    }
+                ];
             },
             getConfigValue: function() {
                 return 'OPD'
+            },
+            formatUrl: function(){
+                return "/patient/someUUID/visit"
             }
         };
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor'])
         appService.getAppDescriptor.andReturn(appDescriptor);
-        location.path.andReturn(location);
+        location.url.andReturn(location);
         //$route.current.params.visitType
         route = { "current" : { "params" : { "visitType" : "REG" } }};
     }]));
@@ -106,7 +122,7 @@ describe('CreatePatientController', function () {
 
                     it('should redirect to new visit page', function () {
                         createVisitPromise.callSuccessCallBack();
-                        expect(location.path).toHaveBeenCalledWith("/patient/someUUID/visit");
+                        expect(location.url).toHaveBeenCalledWith("/patient/someUUID/visit");
                         expect(location.search).toHaveBeenCalledWith({newpatient: true});
                     });
 

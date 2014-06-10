@@ -75,11 +75,11 @@ angular.module('bahmni.registration')
         var followUpAction = function(patientProfileData) {
             if($scope.submitSource === 'startVisit') {
                 return $scope.visitControl.createVisit(patientProfileData.patient.uuid, createEncounterObject()).success(function(){
-                    var patientUrl = $location.absUrl().replace("new", patientProfileData.patient.uuid) + "?newpatient=true";
+                    var patientUrl = $location.absUrl().replace("new", patientProfileData.patient.uuid);
                     $scope.patient.registrationDate = dateUtil.now();
                     patientService.rememberPatient($scope.patient);
                     $window.history.pushState(null, null, patientUrl);
-                    $location.path("/patient/" + patientProfileData.patient.uuid + "/visit").search({newpatient: true});
+                    goToActionUrl($scope.submitSource, patientProfileData, {newpatient: true});
                 });
             } else if ($scope.submitSource === 'print') {
                 $timeout(function(){
@@ -91,7 +91,7 @@ angular.module('bahmni.registration')
             }
         };
 
-        var goToActionUrl = function(actionName, patientProfileData) {
+        var goToActionUrl = function(actionName, patientProfileData, queryParams) {
             if ($scope.createActions) {
                 var matchedExtensions = $scope.createActions.filter(function(extension) {
                     return extension.extensionParams && extension.extensionParams.action === actionName;
@@ -100,7 +100,10 @@ angular.module('bahmni.registration')
                     var extensionParams = matchedExtensions[0].extensionParams;
                     if (extensionParams && extensionParams.forwardUrl) {
                         var fwdUrl = appService.getAppDescriptor().formatUrl(extensionParams.forwardUrl, {'patientUuid' : patientProfileData.patient.uuid} );
-                        $location.url(fwdUrl);
+                        if(!queryParams) {
+                            $location.url(fwdUrl);
+                        }
+                        $location.url(fwdUrl).search(queryParams);
                     }
                 }
             }
