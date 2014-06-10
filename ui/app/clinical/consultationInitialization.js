@@ -16,15 +16,14 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
 
             var getActiveEncounter = function() {
                 var currentProviderUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
+                var consultationMapper = new Bahmni.ConsultationMapper($rootScope.dosageFrequencyConfig, $rootScope.dosageInstructionConfig, $rootScope.consultationNoteConcept, $rootScope.labOrderNotesConcept);
                 return encounterService.activeEncounter({
                     patientUuid : patientUuid,
                     encounterTypeUuid : $rootScope.encounterConfig.getOpdConsultationEncounterTypeUuid(),
                     providerUuid: currentProviderUuid,
                     includeAll :  Bahmni.Common.Constants.includeAllObservations
                 }).success(function (encounterTransaction) {
-                    $rootScope.consultation = new Bahmni.ConsultationMapper(
-                        $rootScope.dosageFrequencyConfig, $rootScope.dosageInstructionConfig, $rootScope.consultationNoteConcept, $rootScope.labOrderNotesConcept).map(encounterTransaction);
-                    $rootScope.disposition = encounterTransaction.disposition || {};
+                    $rootScope.consultation = consultationMapper.map(encounterTransaction);
                 });
             };
 

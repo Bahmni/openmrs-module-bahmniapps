@@ -1,7 +1,7 @@
 <div class="disposition-tab">
     <form ng-submit="submit()">
         <label for="dispositionAction">Disposition Type: </label>
-        <select id="dispositionAction" ng-model="dispositionAction" ng-options="getMappingCode(d) as d.name.name for d in dispositionActions" ng-change="clearDispositionNote()">
+        <select id="dispositionAction" ng-model="dispositionCode" ng-options="d.code as d.name for d in dispositionActions" ng-change="clearDispositionNote()">
 			<option value=""></option>
         </select>
         <label class="disposition-notes" for="dispositionNotes">Disposition Notes: </label>

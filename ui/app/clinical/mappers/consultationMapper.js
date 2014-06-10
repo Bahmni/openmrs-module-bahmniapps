@@ -46,6 +46,7 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
             consultationNote: consultationNote || emptyObservation(consultationNoteConcept),
             labOrderNote: labOrderNote || emptyObservation(labOrderNoteConcept),
             observations: observations,
+            disposition: encounterTransaction.disposition,
             encounterDateTime: encounterTransaction.encounterDateTime
         };
     };

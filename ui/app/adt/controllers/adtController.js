@@ -82,8 +82,6 @@ angular.module('bahmni.adt')
                 $scope.visitControl = new Bahmni.Common.VisitControl(visitTypes, defaultVisitType, visitService);
                 return dispositionService.getDispositionActions().then(function (response) {
                     if (response.data && response.data.results && response.data.results.length) {
-                        $rootScope.disposition = $rootScope.disposition || {};
-                        $rootScope.disposition.dispositionActionUuid = response.data.results[0].uuid;
                         $scope.dispositionActions = getDispositionActions(response.data.results[0].answers);
                         if($scope.visit){
                             $scope.currentVisitType = $scope.visit.visitType.display;

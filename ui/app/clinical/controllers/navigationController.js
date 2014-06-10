@@ -149,7 +149,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                     });
                 }
 
-                encounterData.disposition = $rootScope.disposition;
+                encounterData.disposition = $rootScope.consultation.disposition;
 
                 var addObservationsToEncounter = function () {
                     encounterData.observations = encounterData.observations || [];
