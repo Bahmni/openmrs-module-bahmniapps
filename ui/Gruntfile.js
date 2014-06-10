@@ -1,8 +1,4 @@
 'use strict';
-var lrSnippet = require('grunt-contrib-livereload/lib/utils').livereloadSnippet;
-var mountFolder = function (connect, dir) {
-    return connect.static(require('path').resolve(dir));
-};
 
 module.exports = function (grunt) {
     // load all grunt tasks
@@ -25,66 +21,7 @@ module.exports = function (grunt) {
         watch: {
             compass: {
                 files: ['<%= yeoman.app %>/styles/**/*.{scss,sass}'],
-                tasks: ['compass']
-            },
-            livereload: {
-                files: [
-                    '<%= yeoman.app %>/**/*.html',
-                    '<%= yeoman.app %>/**/*.js',
-                    '<%= yeoman.app %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
-                    '<%= yeoman.app %>/styles/*.css',
-                    '!<%= yeoman.app %>/components',
-                    '!<%= yeoman.app %>/lib'
-                ],
-                tasks: ['livereload']
-            }
-            // Tried to link watch to karma, so that watch can run all
-            // the background tasks which need to run on file change, including
-            // karma. Doesn't seem to be working.
-            //
-            // https://github.com/karma-runner/grunt-karma#karma-server-with-grunt-watchregarde
-            // https://github.com/karma-runner/grunt-karma/issues/30
-            // https://github.com/karma-runner/grunt-karma/issues/33
-            // https://github.com/karma-runner/grunt-karma/issues/22
-            // https://github.com/karma-runner/grunt-karma/issues/36
-            //test: {
-            //files: [
-            //'<%= yeoman.app %>/**/*.js',
-            //'<%= yeoman.test %>/unit/**/*.js',
-            //'<%= yeoman.test %>/support/**/*.js'
-            //],
-            //tasks: ['karma:unitd:run']
-            //}
-        },
-        connect: {
-            options: {
-                port: 9000,
-                // Change this to '0.0.0.0' to access the server from outside.
-                hostname: 'localhost'
-            },
-            livereload: {
-                options: {
-                    middleware: function (connect) {
-                        return [
-                            lrSnippet,
-                            mountFolder(connect, yeomanConfig.app)
-                        ];
-                    }
-                }
-            },
-            test: {
-                options: {
-                    middleware: function (connect) {
-                        return [
-                            mountFolder(connect, 'test')
-                        ];
-                    }
-                }
-            }
-        },
-        open: {
-            server: {
-                url: 'http://localhost:<%= connect.options.port %>'
+                tasks: ['compass:debug']
             }
         },
         clean: {
@@ -100,8 +37,8 @@ module.exports = function (grunt) {
                     }
                 ]
             },
-            server: [
-                '<%= yeoman.app %>/styles/.css/**'
+            debug: [
+                '<%= yeoman.app %>/styles/*.css'
             ]
         },
         karma: {
@@ -128,7 +65,7 @@ module.exports = function (grunt) {
                 relativeAssets: true
             },
             dist: {},
-            server: {
+            debug: {
                 options: {
                     debugInfo: true
                 }
@@ -329,19 +266,9 @@ module.exports = function (grunt) {
 
     grunt.renameTask('regarde', 'watch');
 
-    grunt.registerTask('server', [
-        'clean:server',
-        'compass:server',
-        'livereload-start',
-        'connect:livereload',
-        'open',
-        'watch'
-    ]);
-
     grunt.registerTask('test', [
-        'clean:server',
-        'compass',
-        'connect:test',
+        'clean:debug',
+        'compass:debug',
         'karma:unit'
     ]);
 

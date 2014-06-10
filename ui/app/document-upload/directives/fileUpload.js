@@ -1,5 +1,5 @@
 angular.module('opd.documentupload')
-    .directive('fileUpload', function () {
+    .directive('fileUpload', ['$rootScope', 'visitDocumentService', 'spinner', function ($rootScope, visitDocumentService, spinner) {
 
         var link = function (scope, element) {
             element.bind("change", function () {
@@ -7,10 +7,12 @@ angular.module('opd.documentupload')
                 var reader = new FileReader();
                 reader.onload = function (event) {
                     var image = event.target.result;
-                    var savedImage = scope.visit.addImage(image);
-                    scope.onSelect()(savedImage, scope.defaultConcept);
-                    scope.$apply();
-                    element.val(null);
+                    spinner.forPromise(visitDocumentService.saveImage(image, $rootScope.patient.uuid, $rootScope.appConfig.encounterType).then(function(response) {
+                        var imageUrl = Bahmni.Common.Constants.documentsPath + '/' + response.data;
+                        var savedImage = scope.visit.addImage(imageUrl);
+                        scope.onSelect()(savedImage, scope.defaultConcept);
+                        element.val(null);
+                    }));
                 };
                 reader.readAsDataURL(file);
             });
@@ -25,4 +27,4 @@ angular.module('opd.documentupload')
             },
             link: link
         }
-    });
+    }]);

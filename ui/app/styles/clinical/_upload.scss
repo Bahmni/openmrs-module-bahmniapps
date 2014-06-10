@@ -8,15 +8,15 @@
 //      display: none;
     }
   }
-  p.success {
-    color: #f8f8ff;
-    padding: 5px;
-    background: #333;
-    margin-bottom: 10px;
-    @include transition-property(display);
-    @include transition-duration(0.15s);
-    @include transition-timing-function(ease-in-out);
-  }
+  // p.success {
+  //   color: #f8f8ff;
+  //   padding: 5px;
+  //   background: #333;
+  //   margin-bottom: 10px;
+  //   @include transition-property(display);
+  //   @include transition-duration(0.15s);
+  //   @include transition-timing-function(ease-in-out);
+  // }
   .main {
     max-width: 960px;
     min-width: 320px;
@@ -280,16 +280,75 @@
 .doc-upload-accordion {
   margin: 5px;
 }
+button.mfp-close {
+  font-size: 50px;
+  color: #fff;
+  opacity: 1!important;
+  &:before {
+    content: "Close";
+    font-size: 24px;
+    position: relative;
+    bottom: 10px;
+    right: 10px;
+  }
+}
 button.mfp-close:hover {
   background: none!important;
   cursor: pointer!important;
+}
+.white-popup {
+  button.mfp-close {
+    width: auto;
+  }
 }
 .mfp-arrow {
   top: initial;
 }
 .mfp-arrow-left, .mfp-arrow-right {
-  bottom: 0;
-  background: #ccc!important;
+  bottom: 40%;
+  background: #4D9B92!important;
+  opacity: 1!important;
+}
+.mfp-title, .mfp-counter {
+  color: #fff;
+  opacity: 1!important;
+  font-size: 16px;
 }
 .visit-content form p {
   margin-bottom: 0;}
+.messages {
+  .error-message, .info-message {
+    width: 35%;
+    top: 100px;
+    margin: 5px auto;
+    color: #333;
+    padding: 5px;
+    border-radius: 2px;
+    box-shadow: 0px 0px 8px -1px #ccc;
+    font-size: 14px;
+    font-family: OpenSansBold;
+    text-align: center;
+    position: fixed;
+    top: 100px;
+    left: 32%;
+    z-index: 1;
+    @include transition-property(display);
+    @include transition-duration(2s);
+    @include transition-timing-function(ease-in-out);
+  }
+  .error-message {
+    background: #ffcccc;
+    border: 1px solid #ff9999;
+  }
+  .info-message {
+    background: #f9edbe;
+    border: 1px solid #f0c36d;
+    color: green;
+    p:before {
+      content: "\f00c";
+      font-family: FontAwesome;
+      margin-right: 5px;
+      font-size: 18px;
+    }
+  }
+}

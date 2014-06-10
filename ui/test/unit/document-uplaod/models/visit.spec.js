@@ -2,7 +2,7 @@
 
 describe ("Visit ", function() {
     describe("sortSavedImages ", function(){
-       it("should sort by id", function(){
+       it("should sort by id in descending order", function(){
            var documentUploadVisit = new Bahmni.DocumentUpload.Visit;
 
            var savedImages = [
@@ -15,14 +15,14 @@ describe ("Visit ", function() {
 
            var sortedImages = documentUploadVisit._sortSavedImages(savedImages);
 
-           expect(sortedImages[0].id).toBe(2);
-           expect(sortedImages[1].id).toBe(9);
+           expect(sortedImages[0].id).toBe(56);
+           expect(sortedImages[1].id).toBe(19);
            expect(sortedImages[2].id).toBe(12);
-           expect(sortedImages[3].id).toBe(19);
-           expect(sortedImages[4].id).toBe(56);
+           expect(sortedImages[3].id).toBe(9);
+           expect(sortedImages[4].id).toBe(2);
        });
 
-        it("should sort by id and group by concept", function(){
+        it("should sort descendingly by id and group by concept", function(){
             var documentUploadVisit = new Bahmni.DocumentUpload.Visit;
 
             var savedImages = [
@@ -35,11 +35,11 @@ describe ("Visit ", function() {
 
             var sortedImages = documentUploadVisit._sortSavedImages(savedImages);
 
-            expect(sortedImages[0].id).toBe(2);
+            expect(sortedImages[0].id).toBe(56);
             expect(sortedImages[1].id).toBe(19);
-            expect(sortedImages[2].id).toBe(9);
+            expect(sortedImages[2].id).toBe(2);
             expect(sortedImages[3].id).toBe(12);
-            expect(sortedImages[4].id).toBe(56);
+            expect(sortedImages[4].id).toBe(9);
         });
     });
 })

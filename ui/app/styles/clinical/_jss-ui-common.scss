@@ -534,12 +534,12 @@ aside{
       margin-bottom: 20px;
     }
     ul.visit-history {
-      height: 656px;
+      height: 816px;
       overflow-y: auto;
     }
     li a {
       display: block;
-      padding: 8px 10px 8px 10px;
+      padding: 12px 10px;
       color: #aaa;
       font-size: 14px;
       border-bottom: 1px solid #222;
@@ -600,8 +600,10 @@ aside{
   }
 
   .visit-history-entry, .summary {
-    &.selected, &.selected:hover{
-      background :#2b2b2b;
+    &.selected a, &.selected a:hover{
+      background :#555;
+      color: #fff;
+      cursor: default;
     }
     &.active {color: #fafafa;}
     .icon-star {color: #E8A000; display: none;}

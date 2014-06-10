@@ -4,6 +4,7 @@ angular.module('bahmni.common.conceptSet')
     .directive('concept', [function () {
         var controller = function ($scope, $q, $filter) {
             var conceptMapper = new Bahmni.ConceptSet.ConceptMapper();
+            $scope.showTitle = $scope.showTitle === undefined ? true : $scope.showTitle;
 
             $scope.selectOptions = function(codedConcept){
                 var limit = 1000;
@@ -46,14 +47,14 @@ angular.module('bahmni.common.conceptSet')
             scope: {
                 observation: "=",
                 atLeastOneValueIsSet : "=",
-                conceptSetRequired: "="
+                showTitle: "="
             },
             template: '<ng-include src="\'../common/concept-set/views/observation.html\'" />'
         }
     }]).directive('conceptSet', ['contextChangeHandler', 'appService', function (contextChangeHandler, appService) {
         var template =
             '<form>' +
-                '<concept concept-set-required="conceptSetRequired" observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet"></concept>' +
+                '<concept concept-set-required="conceptSetRequired" observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet" show-title="showTitleValue"></concept>' +
             '</form>';
 
         var numberOfLevels = appService.getAppDescriptor().getConfigValue('maxConceptSetLevels') || 4;
@@ -64,7 +65,9 @@ angular.module('bahmni.common.conceptSet')
             var conceptSetName = $scope.conceptSetName;
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
             var observationMapper = new Bahmni.ConceptSet.ObservationMapper();
-            spinner.forPromise(conceptSetService.getConceptSetMembers({name: conceptSetName, v: "custom:" + customRepresentation}, true)).success(function (response) {
+            var validationHandler = $scope.validationHandler() || contextChangeHandler;
+    
+            spinner.forPromise(conceptSetService.getConceptSetMembers({name: conceptSetName, v: "custom:" + customRepresentation})).success(function (response) {
                 var conceptSet = response.results[0];
                 $scope.rootObservation = conceptSet ? observationMapper.map($scope.observations, conceptSet, conceptSetUIConfig.value || {}) : null;
                 updateObservationsOnRootScope();
@@ -72,6 +75,7 @@ angular.module('bahmni.common.conceptSet')
 
             $scope.atLeastOneValueIsSet = false;
             $scope.conceptSetRequired = false;
+            $scope.showTitleValue = $scope.showTitle();
 
             var updateObservationsOnRootScope = function () {
                 if($scope.rootObservation){
@@ -95,6 +99,16 @@ angular.module('bahmni.common.conceptSet')
             };
             contextChangeHandler.reset();
             contextChangeHandler.add(allowContextChange);
+            var validateObservationTree = function () {
+                if(!$scope.rootObservation) return true;
+                $scope.atLeastOneValueIsSet = $scope.rootObservation.atLeastOneValueSet();
+                var invalidNodes = $scope.rootObservation.groupMembers.filter(function(childNode){
+                    return childNode.isObservationNode && !childNode.isValid($scope.atLeastOneValueIsSet);
+                });
+                return !invalidNodes || invalidNodes.length === 0;
+            };
+
+            validationHandler.add(validateObservationTree);
         };
 
         return {
@@ -102,7 +116,9 @@ angular.module('bahmni.common.conceptSet')
             scope: {
                 conceptSetName: "=",
                 observations: "=",
-                required: "="
+                required: "=",
+                showTitle: "&",
+                validationHandler: "&"
             },
             template: template,
             controller: controller

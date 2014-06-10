@@ -1,15 +1,14 @@
 angular.module('bahmni.common.conceptSet')
-.controller('ConceptSetGroupController', ['$scope', 'appService', function ($scope, appService) {
-    $scope.extensions = appService.getAppDescriptor().getExtensions($scope.conceptSetGroupExtensionId, "config");
+.controller('ConceptSetGroupController', ['$scope', 'appService', 'contextChangeHandler', function ($scope, appService, contextChangeHandler) {
+    var extensions = appService.getAppDescriptor().getExtensions($scope.conceptSetGroupExtensionId, "config");
+    $scope.conceptSets = extensions.map(function(extension) { return new Bahmni.ConceptSet.ConceptSetSection(extension.extensionParams); });
+    var availableConceptSets = $scope.conceptSets.filter(function(conceptSet){ return conceptSet.isAvailable($scope.context); });
+    if (availableConceptSets.length) { availableConceptSets[0].show(); };
 
-    $scope.showConceptSet = function(extension) {
-        var context = $scope.context || {};
-        var extensionParams = extension.extensionParams || {};
-        var showIfFunctionStrings = extensionParams.showIf || [];
-        if(showIfFunctionStrings.length === 0) return true;
-        var showIf = new Function("context", showIfFunctionStrings.join('\n'));
-        return showIf(context);
-    }
+    $scope.validationHandler = new Bahmni.ConceptSet.ConceptSetGroupValidationHandler($scope.conceptSets);
+
+    contextChangeHandler.add($scope.validationHandler.validate);
+
 }])
 .directive('conceptSetGroup', function () {
     return {
@@ -20,8 +19,15 @@ angular.module('bahmni.common.conceptSet')
             context: "="
         },
         controller: 'ConceptSetGroupController',
-        template: '<div ng-repeat="extension in extensions" class="concept-set-group">' +
-                    '<concept-set ng-if=showConceptSet(extension) concept-set-name="extension.extensionParams.conceptName" required="extension.extensionParams.required" observations="observations"></concept-set>' +
+        template: '<div ng-repeat="conceptSet in conceptSets" ng-if="conceptSet.isAvailable(context)" class="concept-set-group">' +
+                    '<div ng-click="conceptSet.toggle()" class="concept-set-title">' +
+                        '<legend class="mylegend">' + 
+                            '<i class="icon-caret-right" ng-hide="conceptSet.isOpen"></i>' +
+                            '<i class="icon-caret-down" ng-show="conceptSet.isOpen"></i>' + 
+                            '<strong>{{conceptSet.options.conceptName}}</strong>' + 
+                        '</legend>' +
+                    '</div>' +
+                    '<concept-set ng-if="conceptSet.isLoaded" ng-show="conceptSet.isOpen" concept-set-name="conceptSet.options.conceptName" required="conceptSet.options.required" observations="observations" show-title="false" validation-handler="validationHandler"></concept-set>' +
                   '</div>'
     }
 });

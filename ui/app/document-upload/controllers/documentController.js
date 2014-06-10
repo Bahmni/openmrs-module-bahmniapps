@@ -19,7 +19,7 @@ angular.module('opd.documentupload')
             }
             window.addEventListener('orientationchange', onOrientationChange);
             $scope.$on('$destroy', function(){
-                window.removeEventListene('orientationchange', onOrientationChange);
+                window.removeEventListener('orientationchange', onOrientationChange);
             });
 
             var initNewVisit = function () {
@@ -100,7 +100,7 @@ angular.module('opd.documentupload')
             };
 
             var getEncountersForVisits = function () {
-                encounterService.getEncountersForEncounterType($rootScope.patient.uuid, encounterTypeUuid).success(function (encounters) {
+                return encounterService.getEncountersForEncounterType($rootScope.patient.uuid, encounterTypeUuid).success(function (encounters) {
                     $scope.visits.forEach(function (visit) {
                         visit.encounters = encounters.results.filter(function(a) {return(a.visit.uuid==visit.uuid)});
                         visit.initSavedImages();
@@ -179,7 +179,6 @@ angular.module('opd.documentupload')
                 if (selectedItem) {
                     image.concept = Object.create(selectedItem.concept);
                     image.changed = true;
-                    $scope.$apply(image);
                 }
             };
 
@@ -216,8 +215,8 @@ angular.module('opd.documentupload')
                 });
 
                 visit.images.forEach(function (image) {
-                    visitDocument.documents.push({testUuid: image.concept.uuid, image: image.encodedValue.replace(/data:image\/.*;base64/, ""),
-                        obsDateTime: new Date(), format: image.encodedValue.split(";base64")[0].split("data:image/")[1]})
+                    var imageUrl = image.encodedValue.replace(Bahmni.Common.Constants.documentsPath + "/", "");
+                    visitDocument.documents.unshift({testUuid: image.concept.uuid, image: imageUrl, obsDateTime: new Date()})
                 });
                 return visitDocument;
             };

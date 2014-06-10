@@ -81,7 +81,7 @@
         </section>
         <section class="history-print">
             <h3>History &amp; Examination</h3>
-            <span>{{dischargeSummary.getObservationValue('History and Examination Notes')}}</span>
+            <pre>{{dischargeSummary.getObservationValue('History and Examination Notes')}}</pre>
         </section>
         <section class="treatment-print">
             <h3>Treatment received</h3>
@@ -102,20 +102,16 @@
         </section>
         <section class="operative-print">
             <h3>Operative procedure</h3>
-            <span>{{dischargeSummary.getObservationValue('Operative Procedure')}}</span>
+            <pre>{{dischargeSummary.getObservationValue('Operative Procedure')}}</pre>
         </section>
         <section class="hospital-course-print">
             <h3>Hospital course</h3>
-            <span>{{dischargeSummary.getObservationValue('Hospital Course')}}</span>
+            <pre>{{dischargeSummary.getObservationValue('Hospital Course')}}</pre>
         </section>
         <section class="advice-print">
             <h3>Advice on discharge</h3>
-            <ul>
-                <li ng-repeat="drugOrder in dischargeSummary.getTreatmentAdviced()">{{drugOrder.drugName}}
-                    {{drugOrder.numberPerDosage}} {{drugOrder.dosageForm}} {{drugOrder.dosageFrequency.name}} for
-                    {{drugOrder.startDate | days:drugOrder.endDate }} day(s)
-                <li>
-            </ul>
+            <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+            <pre>{{dischargeSummary.getObservationValue('Additional Advice on Discharge')}}</pre>
         </section>
         <section class="follow-up">
             <h3>Follow up on</h3>
@@ -166,7 +162,7 @@
         </section>
         <section class="lab-notes-print" ng-if="dischargeSummary.getObservationValue('Lab Investigation Notes')">
             <h3>Lab Investigation Notes</h3>
-            <span class="value">{{dischargeSummary.getObservationValue('Lab Investigation Notes')}}</span>
+            <pre class="value">{{dischargeSummary.getObservationValue('Lab Investigation Notes')}}</span>
         </section>
         <section class="radiology-print">
             <h3>Radiology Investigations</h3>
@@ -178,11 +174,11 @@
         </section>
         <section class="radiology-notes-print" ng-if="dischargeSummary.getObservationValue('Radiology Notes')">
             <h3>Radiology Investigation Notes</h3>
-            <span class="value">{{dischargeSummary.getObservationValue('Radiology Notes')}}</span>
+            <pre class="value">{{dischargeSummary.getObservationValue('Radiology Notes')}}</span>
         </section>
         <section class="other-notes-print" ng-if="dischargeSummary.getObservationValue('Other Notes')">
             <h3>Other Notes</h3>
-            <span>{{dischargeSummary.getObservationValue('Other Notes')}}</span>
+            <pre>{{dischargeSummary.getObservationValue('Other Notes')}}</pre>
         </section>
     </main>
     <footer>

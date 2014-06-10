@@ -193,7 +193,8 @@ angular.module('bahmni.common.util')
                 var options = {
                     gallery:{
                         enabled:true,
-                        preload:[1, 1]
+                        preload:[1, 1],
+                        navigateByImgClick: false
                     },
                     type:'image',
                     items:items
@@ -213,7 +214,8 @@ angular.module('bahmni.common.util')
             var options = {
                     gallery:{
                         enabled:true,
-                        preload:[1, 1]
+                        preload:[1, 1],
+                        navigateByImgClick: false
                     },
                     type:'image',
                     items: scope.records

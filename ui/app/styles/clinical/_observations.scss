@@ -41,6 +41,8 @@
         color:#A8A5A5;
       }
       .form-field-group {
+        border-right:1px solid #cecece;
+        border-left:1px solid #cecece;
         &:first-child {
           border-top:1px solid #cecece;
           border-right:1px solid #cecece;
@@ -84,25 +86,25 @@
 div.duration.checkbox-inline {
   margin-top: -16px;
   margin-left: 15px;
-  @media screen and (min-width: 1024px) {
-    float: right;
-    margin-right: 18%;
-  }
-  @media screen and (max-width: 1023px) and (min-width: 941px) {
-    float: right;
-    margin-right: 10%;
-  }
-  @media screen and (max-width: 940px) and (min-width: 900px) {
-    float: right;
-    margin-right: 5%;
-  }  
-  @media screen and (min-width: 851px) and (max-width: 899px) {
-    margin-right: 0;
-    float: right;
-  }
+  // @media screen and (min-width: 1024px) {
+  //   float: right;
+  //   margin-right: 18%;
+  // }
+  // @media screen and (max-width: 1023px) and (min-width: 941px) {
+  //   float: right;
+  //   margin-right: 10%;
+  // }
+  // @media screen and (max-width: 940px) and (min-width: 900px) {
+  //   float: right;
+  //   margin-right: 5%;
+  // }  
+  // @media screen and (min-width: 851px) and (max-width: 899px) {
+  //   margin-right: 0;
+  //   float: right;
+  // }
   @media screen and (max-width: 850px) and (min-width: 596px) {
     margin-top: 0;
-    margin-left: 230px;
+    margin-left: 166px;
   }
   @media screen and (max-width: 595px) {
     margin-left: 10px;
@@ -110,8 +112,9 @@ div.duration.checkbox-inline {
     float: left;
   }
   input.duration {
-    width: 50px;
+    width: 30px;
     margin: 0 10px;
+    padding: 5px;
   }
   select.duration-label {
     margin-left: 25px;
@@ -127,12 +130,13 @@ form .vitals .form-field .field-value {
   }
   .autocomplete {
     border-radius: 5px;
+    width: 357px;
   }
   .select2-drop-active, .select2-container-active .select2-choice, .select2-container-active .select2-choices, .select2-drop.select2-drop-above.select2-drop-active {
     border: 1px solid #aaa;
   }
   textarea {
-    width: 34.5em;
+    width: 35em;
     height: 100px;
     margin-bottom: 10px;
     @media screen and (max-width: 850px) and (min-width: 701px) {
@@ -157,7 +161,7 @@ form .vitals .form-field .field-value {
   fieldset {
     label {
       float: left;
-      width: 200px;
+      width: 135px;
       margin-left: 20px;
       margin-right: 20px;
       text-align: right;
@@ -227,3 +231,16 @@ concept {
   color: #aaa;
 }
 
+concept-set {
+  display: block;
+}
+
+.concept-set-group {
+  .concept-set-title {
+    cursor: pointer;
+  }
+
+  concept-set {
+    margin-top: 10px;
+  }
+}

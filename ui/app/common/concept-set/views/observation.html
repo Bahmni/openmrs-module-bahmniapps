@@ -1,53 +1,53 @@
 <div class="observations-tab">
-<div class="vitals form-horizontal">
-    <fieldset ng-if="observation.isObservationNode">
+<div bindonce="observation" class="vitals form-horizontal">
+    <fieldset bo-if="observation.isObservationNode">
         <div class="form-group">
             <label class="control-label">
-                <span>{{observation.primaryObs.label}}&nbsp;</span>
-                <span ng-show="observation.units">({{observation.primaryObs.units}})</span>
-                <span ng-if="observation.isRequired()" class="asterick">*</span>
+                <span bo-text="observation.primaryObs.label"></span>
+                <span bo-show="observation.primaryObs.units" bo-text="'(' + observation.primaryObs.units + ')'"></span>
+                <span bo-if="observation.isRequired()" class="asterick">*</span>
             </label>
-            <div class="field-value" ng-switch on="observation.getControlType()">
+            <div class="field-value" bo-switch="observation.getControlType()">
 
-                <div ng-switch-when="html5InputDataType">
+                <div bo-switch-when="html5InputDataType">
                     <input obs-constraints obs="observation.primaryObs"
-                           ng-if="!observation.primaryObs.isNumeric()"
+                           bo-if="!observation.primaryObs.isNumeric()"
                            ng-model="observation.value" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}"/>
-                    <input obs-constraints obs="observation.primaryObs" ng-if="observation.primaryObs.isNumeric()"
+                    <input obs-constraints obs="observation.primaryObs" bo-if="observation.primaryObs.isNumeric()"
                            ng-model="observation.value"
                            ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}" only-number/>
                 </div>
 
-                <textarea ng-switch-when="text" ng-model="observation.value"
+                <textarea bo-switch-when="text" ng-model="observation.value"
                           ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"></textarea>
 <!-- Dropdowns won't be supported in release - 3
-                <select ng-switch-when="dropdown" foo-bar ng-model="observation.value"
+                <select bo-switch-when="dropdown" foo-bar ng-model="observation.value"
                         ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"
                         ng-options="answer as answer.name for answer in getPossibleAnswers() track by answer.uuid"> <option value=""></option>
                 </select>
 
  -->
-                <span ng-switch-when="dropdown" class="field-value info icon-info-sign"> Dropdowns are not supported. Change it to autocomplete</span>
+                <span bo-switch-when="dropdown" class="field-value info icon-info-sign"> Dropdowns are not supported. Change it to autocomplete</span>
                 
 
-                 <input ng-switch-when="freeTextAutocomplete" class="concept-name" ng-model="observation.value" concept-autocomplete
+                 <input bo-switch-when="freeTextAutocomplete" class="concept-name" ng-model="observation.value" concept-autocomplete
                        ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"
                        coded-concept-uuid="observation.getConceptUIConfig().freeTextAutocomplete.codedConceptUuid"
                        concept-set-uuid="observation.getConceptUIConfig().freeTextAutocomplete.conceptSetUuid"
                        blur-on-select="false"/>
 
-                <div ng-switch-when="autocomplete"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}" class="autocomplete">
+                <div bo-switch-when="autocomplete"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}" class="autocomplete">
                     <input type="hidden" ui-select2="selectOptions(observation.primaryObs.concept)" ng-model="observation.value"/>
                 </div>
 
-                <!--div ng-switch-when="multiselect"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}" class="autocomplete">
+                <!--div bo-switch-when="multiselect"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}" class="autocomplete">
                     <div ui-select2="multiSelectOptions" ng-model="observation.value"></div>
                 </div-->
 
-                <p ng-switch-default class="field-value info icon-info-sign"> The concept data type '{{observation.dataTypeName}}' is not supported yet.</p>
+                <p bo-switch-default class="field-value info icon-info-sign"> The concept data type '{{observation.dataTypeName}}' is not supported yet.</p>
             </div>
-            <small class="hint" ng-show="observation.primaryObs.concept.lowNormal || observation.primaryObs.concept.hiNormal">({{observation.primaryObs.concept.lowNormal}} - {{observation.primaryObs.concept.hiNormal}})</small>
-            <div class="checkbox-inline" ng-if="observation.abnormal">
+            <small class="hint" bo-show="observation.primaryObs.concept.lowNormal || observation.primaryObs.concept.hiNormal" bo-text="'(' + observation.primaryObs.concept.lowNormal + ' - ' + observation.primaryObs.concept.hiNormal + ')'"></small>
+            <div class="checkbox-inline" bo-if="observation.abnormal">
                 <input id="isAbnormal-{{observation.primaryObs.concept.name}}" type="checkbox"
                        ng-model="observation.abnormal.value" ng-disabled="!observation.primaryObs.hasValue()" tabindex="-1" class="abnormal-vitals-checkbox" />
                 <label for="isAbnormal-{{observation.primaryObs.concept.name}}" class="abnormal-vitals checkbox-btn">Abnormal</label>
@@ -58,60 +58,60 @@
         </div>
     </fieldset>
 
-    <fieldset ng-if="observation.groupMembers.length === 0">
+    <fieldset bo-if="observation.groupMembers.length === 0">
         <div class="form-group">
             <label class="control-label">
-                <span>{{observation.label}}&nbsp;</span>
-                <span ng-show="observation.units">({{observation.units}})</span>
-                <span ng-if="observation.isRequired()" class="asterick">*</span>
+                <span bo-text="observation.label"></span>
+                <span bo-show="observation.units" bo-text="'(' + observation.units + ')'"></span>
+                <span bo-if="observation.isRequired()" class="asterick">*</span>
             </label>
-            <div class="field-value" ng-switch on="observation.getControlType()">
-
-                <div ng-switch-when="html5InputDataType">
+            <div class="field-value" bo-switch="observation.getControlType()">
+                <div bo-switch-when="html5InputDataType">
                     <input obs-constraints obs="observation"
-                           ng-model="observation.value" ng-if="observation.isNumeric()"
+                           ng-model="observation.value" bo-if="observation.isNumeric()"
                            ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}" only-number/>
-
-                    <input obs-constraints obs="observation" ng-if="!observation.isNumeric()"
+                    
+                    
+                    <input obs-constraints obs="observation" bo-if="!observation.isNumeric()"
                            ng-model="observation.value" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}"/>
                 </div>
 
-                <textarea ng-switch-when="text" ng-model="observation.value"
+                <textarea bo-switch-when="text" ng-model="observation.value"
                           ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}"></textarea>
                 <!-- Dropdowns won't be supported in release - 3
-                                <select ng-switch-when="dropdown" foo-bar ng-model="observation.value"
+                                <select bo-switch-when="dropdown" foo-bar ng-model="observation.value"
                                         ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}"
                                         ng-options="answer as answer.name for answer in getPossibleAnswers() track by answer.uuid"> <option value=""></option>
                                 </select>
 
                  -->
-                <span ng-switch-when="dropdown" class="field-value info icon-info-sign"> Dropdowns are not supported. Change it to autocomplete</span>
+                <span bo-switch-when="dropdown" class="field-value info icon-info-sign"> Dropdowns are not supported. Change it to autocomplete</span>
 
 
-                <input ng-switch-when="freeTextAutocomplete" class="concept-name" ng-model="observation.value" concept-autocomplete
+                <input bo-switch-when="freeTextAutocomplete" class="concept-name" ng-model="observation.value" concept-autocomplete
                        ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}"
                        coded-concept-uuid="observation.getConceptUIConfig().freeTextAutocomplete.codedConceptUuid"
                        concept-set-uuid="observation.getConceptUIConfig().freeTextAutocomplete.conceptSetUuid"
                        blur-on-select="false"/>
 
-                <div ng-switch-when="autocomplete"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}" class="autocomplete">
+                <div bo-switch-when="autocomplete"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}" class="autocomplete">
                     <input type="hidden" ui-select2="selectOptions(observation.concept)" ng-model="observation.value"/>
                 </div>
 
-                <!--div ng-switch-when="multiselect"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}" class="autocomplete">
+                <!--div bo-switch-when="multiselect"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}" class="autocomplete">
                     <div ui-select2="multiSelectOptions" ng-model="observation.value"></div>
                 </div-->
 
-                <p ng-switch-default class="field-value info icon-info-sign"> The concept data type '{{observation.dataTypeName}}' is not supported yet.</p>
+                <p bo-switch-default class="field-value info icon-info-sign"> The concept data type '{{observation.dataTypeName}}' is not supported yet.</p>
             </div>
         </div>
     </fieldset>
 
-    <fieldset ng-if="!observation.isObservationNode && observation.groupMembers.length !== 0" class="hasLegend">
-        <legend class="mylegend"><strong>{{observation.label}}</strong></legend>
+    <fieldset bo-if="!observation.isObservationNode && observation.groupMembers.length !== 0" class="hasLegend">
+        <legend bo-if="showTitle" class="mylegend"><strong>{{observation.label}}</strong></legend>
         <div class="form-group">
             <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers">
-                <concept observation="member" at-least-one-value-is-set="atLeastOneValueIsSet" concept-set-required="conceptSetRequired"></concept>
+                <concept observation="member" at-least-one-value-is-set="atLeastOneValueIsSet" show-title="true" concept-set-required="conceptSetRequired"></concept>
             </div>
         </div>
     </fieldset>
