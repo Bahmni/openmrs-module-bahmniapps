@@ -388,7 +388,7 @@
     <ul>
         <div ng-repeat="notes in visit.consultationNoteGroups">
             <li ng-repeat="note in notes.obs" class="consult-notes-item">
-                <span class="consult-notes-text"><strong>Consultation Notes: </strong>{{note.value}}</span>
+                <span class="consult-notes-text"><strong>Consultation Notes: </strong><pre>{{note.value}}</pre></span>
 
                 <div class="footer-note">
                   <span class="time-stamp">
