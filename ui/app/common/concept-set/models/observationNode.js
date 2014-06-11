@@ -215,7 +215,7 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     isValidFreeTextAutocomplete : function(){
-        if (this.getPrimaryObs().concept.dataType!=="Coded" && !this.markedAsNonCoded) {
+        if (this.getPrimaryObs().concept.dataType!=="Coded" && !this.markedAsNonCoded && this.getPrimaryObs().value) {
            return false;
         }
         return true;
