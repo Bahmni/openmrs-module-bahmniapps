@@ -3,7 +3,7 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUICo
     Object.defineProperty(this, 'value', {
         get: function () {
             if (this.primaryObs) {
-                return typeof this.getPrimaryObs().value==="object" ?
+                return typeof this.getPrimaryObs().value==="object"  && this.getPrimaryObs().value!==null?
                     this.getPrimaryObs().value.name:this.getPrimaryObs().value;
             }
             return undefined;
@@ -42,10 +42,10 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUICo
         }
     });
 
-    Object.defineProperty(this, 'isNonCoded', {
+    Object.defineProperty(this, 'markedAsNonCoded', {
         get: function () {
-            if(!this.getPrimaryObs().nonCodedAnswer){
-                this.getPrimaryObs().nonCodedAnswer = this.getPrimaryObs().concept.dataType!=="Coded";
+            if(this.getPrimaryObs().nonCodedAnswer===undefined){
+                this.getPrimaryObs().nonCodedAnswer = Boolean(this.getPrimaryObs().concept.dataType!=="Coded" && this.getPrimaryObs().uuid);
             }
             return this.getPrimaryObs().nonCodedAnswer;
         },
@@ -63,8 +63,6 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUICo
     }
     this.duration = this.getDuration();
     this.abnormal = this.getAbnormal();
-//    this.primaryObs = this.getPrimaryObs();
-
 };
 
 Bahmni.ConceptSet.ObservationNode.prototype = {
@@ -210,12 +208,24 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
         if (this.isGroup()) return this._hasValidChildren(checkRequiredFields);
         if (checkRequiredFields && this.isRequired() && !this.primaryObs.hasValue()) return false;
         if (this._isDateDataType()) return this.primaryObs.isValidDate();
+        if (this.getControlType() === "freeTextAutocomplete" ) { return this.isValidFreeTextAutocomplete()}
         if (this.primaryObs.hasValue() && this.hasDuration()) return false;
+        return true;
+    },
+
+    isValidFreeTextAutocomplete : function(){
+        if (this.getPrimaryObs().concept.dataType!=="Coded" && !this.markedAsNonCoded) {
+           return false;
+        }
         return true;
     },
 
     isRequired: function () {
         return this.getConceptUIConfig().required || false;
+    },
+
+    isDurationRequired: function () {
+        return this.getConceptUIConfig().durationRequired || false;
     },
 
     _hasValidChildren: function (checkRequiredFields) {

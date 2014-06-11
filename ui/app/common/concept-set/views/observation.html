@@ -32,17 +32,16 @@
  -->
                 <span ng-switch-when="dropdown" class="field-value info icon-info-sign"> Dropdowns are not supported. Change it to autocomplete</span>
 
-                <div ng-switch-when="freeTextAutocomplete"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}" class="autocomplete">
+                <div ng-switch-when="freeTextAutocomplete"  class="autocomplete">
 
                     <input class="concept-name" ng-model="observation.value" concept-autocomplete
-                           ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"
                            coded-concept-uuid="observation.codedPrimaryObs.concept.uuid"
                            concept-set-uuid="observation.getConceptUIConfig().freeTextAutocomplete.conceptSetUuid"
                            blur-on-select="false"
                             />
 
-                    <div class="checkbox-inline" ng-show="observation.isNonCoded">
-                        <input type="checkbox" ng-model="observation.isNonCoded" onclick="return false"
+                    <div class="checkbox-inline" ng-if="!observation.primaryObs.isCoded()">
+                        <input type="checkbox" ng-model="observation.markedAsNonCoded" required="required"
                                id="addNewAnswer-{{$index}}">
 
                         <label class="add-new checkbox-btn" for="addNewAnswer-{{$index}}">Add New?</label>
@@ -66,7 +65,7 @@
                 <label for="isAbnormal-{{observation.primaryObs.concept.name}}" class="abnormal-vitals checkbox-btn">Abnormal</label>
             </div>
             <div class="checkbox-inline" ng-if="observation.duration" ng-class="{'duration': observation.duration}">
-                <span>for</span><duration ng-model="observation.duration.value" disabled="!observation.primaryObs.hasValue()" illegal-value="!observation.isValid(atLeastOneValueIsSet)"></duration>
+                <span>for</span><duration ng-model="observation.duration.value" disabled="!observation.primaryObs.hasValue()" illegal-value="observation.isDurationRequired() && !observation.hasDuration()"></duration>
             </div>
         </div>
     </fieldset>
