@@ -2,14 +2,58 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUICo
     angular.extend(this, observation);
     Object.defineProperty(this, 'value', {
         get: function () {
-            return this.primaryObs ? this.primaryObs.value : null;
+            if (this.primaryObs) {
+                return typeof this.getPrimaryObs().value==="object"  && this.getPrimaryObs().value!==null?
+                    this.getPrimaryObs().value.name:this.getPrimaryObs().value;
+            }
+            return undefined;
         },
         set: function (newValue) {
-            this.primaryObs.value = newValue;
-            this.onValueChanged();
+            if(typeof newValue === "object"){
+                this.getCodedObs().value = newValue;
+                this.getCodedObs().voided = false;
+
+                if(this.getFreeTextObs()){
+                    if(this.getFreeTextObs().uuid){
+                        this.getFreeTextObs().voided = true;
+                    }else{
+                        this.getFreeTextObs().value = undefined;
+                    }
+                }
+            }
+            else {
+                this.getFreeTextObs().value = newValue;
+                this.getFreeTextObs().voided = false;
+                if(this.getCodedObs()){
+                    if(this.getCodedObs().uuid){
+                        this.getCodedObs().voided = true;
+                    }else{
+                        this.getCodedObs().value = undefined;
+                    }
+                }
+            }
+            this.onValueChanged(newValue);
         }
     });
- 
+
+    Object.defineProperty(this, 'primaryObs', {
+        get: function () {
+            return this.getPrimaryObs();
+        }
+    });
+
+    Object.defineProperty(this, 'markedAsNonCoded', {
+        get: function () {
+            if(this.getPrimaryObs().nonCodedAnswer===undefined){
+                this.getPrimaryObs().nonCodedAnswer = Boolean(this.getPrimaryObs().concept.dataType!=="Coded" && this.getPrimaryObs().uuid);
+            }
+            return this.getPrimaryObs().nonCodedAnswer;
+        },
+        set : function(isNonCoded){
+            this.getPrimaryObs().nonCodedAnswer = isNonCoded;
+        }
+    });
+
     this.conceptUIConfig = conceptUIConfig;
     this.isObservationNode = true;
     this.observationDateTime = Bahmni.Common.Util.DateUtil.now();
@@ -19,7 +63,6 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUICo
     }
     this.duration = this.getDuration();
     this.abnormal = this.getAbnormal();
-    this.primaryObs = this.getPrimaryObs();
 };
 
 Bahmni.ConceptSet.ObservationNode.prototype = {
@@ -29,9 +72,15 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     _getGroupMemberWithClass: function(className) {
-        return this.groupMembers.filter(function (member) {
+        return this._getGroupMembersWithClass(className)[0];
+    },
+
+    _getGroupMembersWithClass: function(className) {
+         var groupMembers = this.groupMembers.filter(function (member) {
             return (member.concept.conceptClass.name === className) || (member.concept.conceptClass === className);
-        })[0];
+        });
+
+        return groupMembers;
     },
 
     getAbnormal: function () {
@@ -39,11 +88,18 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     getDuration: function () {
-        return this._getGroupMemberWithClass(Bahmni.Common.Constants.durationConceptClassName);
+        var groupMemberWithClass = this._getGroupMemberWithClass(Bahmni.Common.Constants.durationConceptClassName);
+        return  groupMemberWithClass;
     },
 
     getPrimaryObs: function () {
-        return this._getGroupMemberWithClass(Bahmni.Common.Constants.miscConceptClassName);
+        var observations = this._getGroupMembersWithClass(Bahmni.Common.Constants.miscConceptClassName);
+        //todo : add migration to set correct sort orders for the concepts
+        //this is needed when you have freetext autocomplete
+        var primaryObs = observations[1] && observations[1].uuid && !observations[1].voided? observations[1]:observations[0];
+        if(primaryObs.uuid && !primaryObs.voided) return primaryObs;
+
+        return observations[1] && (observations[1].value || observations[1].value === "") && !observations[1].voided? observations[1]:observations[0];
     },
 
     onValueChanged: function () {
@@ -53,7 +109,6 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
         if (this.primaryObs.isNumeric()) {
             this.setAbnormal();
         }
-//        this.observationDateTime = new Date();
     },
 
     setAbnormal: function () {
@@ -154,7 +209,15 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
         if (conceptSetRequired && this.isRequired() && !this.getPrimaryObs().hasValue()) return false;
         if (checkRequiredFields && this.isRequired() && !this.getPrimaryObs().hasValue()) return false;
         if (this._isDateDataType()) return this.getPrimaryObs().isValidDate();
+        if (this.getControlType() === "freeTextAutocomplete" ) { return this.isValidFreeTextAutocomplete()}
         if (this.getPrimaryObs().hasValue() && this.hasDuration()) return false;
+        return true;
+    },
+
+    isValidFreeTextAutocomplete : function(){
+        if (this.getPrimaryObs().concept.dataType!=="Coded" && !this.markedAsNonCoded) {
+           return false;
+        }
         return true;
     },
 
@@ -162,9 +225,36 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
         return this.getConceptUIConfig().required || false;
     },
 
+    isDurationRequired: function () {
+        return this.getConceptUIConfig().durationRequired || false;
+    },
+
     _hasValidChildren: function (checkRequiredFields, conceptSetRequired) {
         return this.groupMembers.every(function (member) {
             return member.isValid(checkRequiredFields, conceptSetRequired)
         });
+    },
+
+    getFreeTextObs : function(){
+        if(!this.freeTextPrimaryObs){
+            this.freeTextPrimaryObs = this.groupMembers.filter(function (member) {
+                return (((member.concept.conceptClass.name === Bahmni.Common.Constants.miscConceptClassName)
+                    || (member.concept.conceptClass === Bahmni.Common.Constants.miscConceptClassName))
+                    && (member.concept.dataType!=="Coded"));
+            })[0];
+        }
+        return this.freeTextPrimaryObs;
+    },
+
+    getCodedObs: function(){
+        if(!this.codedPrimaryObs){
+            this.codedPrimaryObs= this.groupMembers.filter(function (member) {
+                return (((member.concept.conceptClass.name === Bahmni.Common.Constants.miscConceptClassName)
+                    || (member.concept.conceptClass === Bahmni.Common.Constants.miscConceptClassName))
+                    && (member.concept.dataType==="Coded"));
+            })[0];
+        }
+        return this.codedPrimaryObs;
     }
+
 };
