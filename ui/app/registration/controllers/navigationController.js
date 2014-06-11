@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('NavigationController', ['$scope', '$rootScope', '$location', 'sessionService', '$window', 'appService',
-        function ($scope, $rootScope, $location, sessionService, $window, appService) {
+    .controller('NavigationController', ['$scope', '$rootScope', '$location', 'sessionService', '$window', 'appService', '$sce',
+        function ($scope, $rootScope, $location, sessionService, $window, appService, $sce) {
 
         $rootScope.$on('event:appExtensions-loaded', function () {
             $scope.extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.navigation", "link");
@@ -11,6 +11,10 @@ angular.module('bahmni.registration')
         $scope.goTo = function(url) {
             $location.url(url);
         };
+
+        $scope.htmlLabel = function(label){
+            return $sce.trustAsHtml(label);
+        }
 
         $scope.logout = function () {
             $rootScope.errorMessage = null;

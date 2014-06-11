@@ -29,7 +29,7 @@
                         </ul>
                         <ul class="top-nav">
                             <li ng-repeat="extension in extensions">
-                                <a ng-click="goTo(extension.url)" accesskey="{{extension.shortcutKey}}"><i class="{{extension.icon}} icon-white small"></i><span class="nav-link" ng-bind="extension.label"></span></a>
+                                <a ng-click="goTo(extension.url)" accesskey="{{extension.shortcutKey}}"><i class="{{extension.icon}} icon-white small"></i><span class="nav-link" ng-bind-html="htmlLabel(extension.label)"></span></a>
                             </li>
                         </ul>
                 </header>
