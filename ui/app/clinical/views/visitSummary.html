@@ -303,33 +303,17 @@
             </tr>
             <tr class="title">
                 <th>Drug Name</th>
-                <th>Strength</th>
-                <th>Form</th>
-                <th>Frequency</th>
-                <th>Instruction</th>
+                <th>Dosage per Day</th>
                 <th>Duration</th>
             </tr>
         </thead>
         <tbody ng-repeat="drugOrder in drugOrderGroup.orders">
         <tr ng-click="toggle(drugOrder)" class="row-click">
             <td class="drug-name" bo-text="drugOrder.drugName"></td>
-            <td>
-                <span bo-show="drugOrder.doseStrength" bo-text="drugOrder.doseStrength"></span>
-                <span bo-show="drugOrder.drugUnits" bo-text="' ' + drugOrder.drugUnits"></span>
-                <span bo-show="!drugOrder.doseStrength && !drugOrder.drugUnits" bo-text="' - '"></span>
-            </td>
             <td class="dosage-form">
                 <span bo-show="drugOrder.numberPerDosage" bo-text="drugOrder.numberPerDosage"></span>
                 <span bo-show="drugOrder.dosageForm" bo-text="drugOrder.dosageForm"></span>
                 <span bo-show="!drugOrder.dosageForm && !drugOrder.numberPerDosage" bo-text="' - '"></span>
-            </td>
-            <td>
-                <span bo-show="drugOrder.dosageFrequency" bo-text="drugOrder.dosageFrequency.name"></span>
-                <span bo-show="!drugOrder.dosageFrequency" bo-text="' - '"></span>
-            </td>
-            <td>
-                <span bo-show="drugOrder.dosageInstruction" bo-text="drugOrder.dosageInstruction.name"></span>
-                <span bo-show="!drugOrder.dosageInstruction" bo-text="' - '"></span>
             </td>
             <td class="dosage-days">
                 <div class="dosage">
