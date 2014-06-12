@@ -3,8 +3,8 @@
 angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.patient', 'bahmni.common.uiHelper', 'bahmni.common.patientSearch',
     'bahmni.common.domain', 'bahmni.common.conceptSet', 'authentication', 'bahmni.common.appFramework', 'bahmni.adt',
     'httpErrorInterceptor', 'pasvaz.bindonce', 'opd.patientDashboard', 'infinite-scroll', 'bahmni.common.util', 'ngAnimate']);
-angular.module('consultation').config(['$stateProvider', '$httpProvider', function ($stateProvider, $httpProvider) {
-
+angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
+        $urlRouterProvider.otherwise('/patient/search');
         $stateProvider
             .state('patientsearch', {
                 url: '/patient/search',

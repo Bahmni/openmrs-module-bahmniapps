@@ -28,7 +28,7 @@
         </span>        
         <div resize class="active-visits">
             <div infinite-scroll='loadMore()' >
-                <li ng-repeat="patient in visiblePatients" class="patient-list" ng-click="forwardPatient(patient)">
+                <li ng-repeat="patient in visiblePatients" class="active-patient" ng-click="forwardPatient(patient)">
                     <img class="smallImages" ng-src="{{patient.image}}"  onerror="this.onerror=null;this.src='../images/blank-user.png';" >
                     <div class="patient-name">{{patient.name}}</div>
                     <div class="patient-id">{{patient.identifier}}</div>
