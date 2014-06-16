@@ -4,6 +4,7 @@ angular.module('bahmni.clinical')
     .controller('DispositionController', ['$scope', '$q', '$rootScope','dispositionService', 'spinner', 'RegisterTabService', function ($scope, $q, $rootScope,dispositionService, spinner, registerTabService) {
         var consultation = $rootScope.consultation;
 
+
         var getDispositionActionsPromise = function() {
             return dispositionService.getDispositionActions().then(function (response) {
                 $scope.dispositionActions = new Bahmni.Clinical.DispostionActionMapper().map(response.data.results[0].answers);
@@ -11,6 +12,10 @@ angular.module('bahmni.clinical')
                 $scope.dispositionNote =  previousDispositionNote || {concept: {uuid: $scope.dispositionNoteConceptUuid }};
                 $scope.dispositionCode = consultation.disposition ? consultation.disposition.code : null;
             });
+        };
+
+        $scope.showWarningForEarlierDispositionNote = function(){
+            return !$scope.dispositionCode && consultation.disposition;
         };
 
         var getDispositionNotePromise = function() {
@@ -46,7 +51,11 @@ angular.module('bahmni.clinical')
             if(selectedDisposition) {
                 consultation.disposition  =  selectedDisposition;
             } else {
-                if(consultation.disposition) consultation.disposition.voided = true;
+                if(consultation.disposition){
+                    consultation.disposition.voided = true;
+                    consultation.disposition.voidReason = "Cancelled during encounter";
+                }
+
             }
         };
 

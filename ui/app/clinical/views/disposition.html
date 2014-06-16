@@ -5,6 +5,10 @@
 			<option value=""></option>
         </select>
         <label class="disposition-notes" for="dispositionNotes">Disposition Notes: </label>
+        <p ng-if="showWarningForEarlierDispositionNote()" class="caution" >
+            <i class="icon-exclamation-sign small"></i>
+            <span>The Disposition Note will also be removed</span>
+        </p>
         <textarea id="dispositionNotes" ng-model="dispositionNote.value"></textarea>
     </form>
 </div>
