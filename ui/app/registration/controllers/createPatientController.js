@@ -79,7 +79,7 @@ angular.module('bahmni.registration')
                     $scope.patient.registrationDate = dateUtil.now();
                     patientService.rememberPatient($scope.patient);
                     $window.history.pushState(null, null, patientUrl);
-                    goToActionUrl($scope.submitSource, patientProfileData, {newpatient: true});
+                    goToActionUrl($scope.submitSource, patientProfileData, {newpatient: 'true'});
                 });
             } else if ($scope.submitSource === 'print') {
                 $timeout(function(){
