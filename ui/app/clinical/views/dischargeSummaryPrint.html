@@ -94,9 +94,7 @@
                 <tr ng-repeat="drugOrder in dischargeSummary.getTreatmentRecieved()">
                     <td>{{drugOrder.drugName}}</td>
                     <td>{{drugOrder.numberPerDosage}} {{drugOrder.dosageForm}}</td>
-                    <td>for {{drugOrder.startDate | days:drugOrder.endDate }}
-                        day(s)
-                    </td>
+                    <td>From {{(drugOrder.startDate | date:'d MMM yy')}} for {{visit.numberOfDosageDaysForDrugOrder(drugOrder)}} day(s)</td>
                 </tr>
             </table>
         </section>
