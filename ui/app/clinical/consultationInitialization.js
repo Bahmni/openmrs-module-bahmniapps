@@ -1,5 +1,6 @@
 'use strict';
 
+var timeout = 0;
 angular.module('bahmni.clinical').factory('consultationInitialization',
     ['$rootScope', '$q', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'authenticator', 'appService', 'encounterService', 'bedService', 'spinner', 'initialization', 'diagnosisService', 'patientVisitHistoryService',
     function ($rootScope, $q, configurationService, visitService, patientService, patientMapper, authenticator, appService, encounterService, bedService, spinner, initialization, diagnosisService, patientVisitHistoryService) {
@@ -22,8 +23,8 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                     encounterTypeUuid : $rootScope.encounterConfig.getOpdConsultationEncounterTypeUuid(),
                     providerUuid: currentProviderUuid,
                     includeAll :  Bahmni.Common.Constants.includeAllObservations
-                }).success(function (encounterTransaction) {
-                    $rootScope.consultation = consultationMapper.map(encounterTransaction);
+                }).then(function (encounterTransactionResponse) {
+                    $rootScope.consultation = consultationMapper.map(encounterTransactionResponse.data);
                 });
             };
 
