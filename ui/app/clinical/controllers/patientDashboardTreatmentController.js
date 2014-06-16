@@ -16,12 +16,9 @@ angular.module('bahmni.clinical')
         }
 
         var getLastPrescribedDrugOrders = function() {
-            var now = new Date();
-            var numberOfVisits = $scope.section.options && $scope.section.options.numberOfVisitsForPastTreatments || 2;
+            var numberOfVisits = $scope.section.options && $scope.section.options.numberOfVisitsForPastTreatments || 1;
             return treatmentService.getPrescribedDrugOrders($stateParams.patientUuid, numberOfVisits).then(function (drugOrders) {
-                $scope.drugOrderSections.past.orders = drugOrders.sort(dateCompare).filter(function(order) {
-                    return order.expireDate == null || order.expireDate <=  now;
-                });
+                $scope.drugOrderSections.past.orders = drugOrders.sort(dateCompare);
             });
         }
         spinner.forPromise($q.all([getActiveDrugOrders(), getLastPrescribedDrugOrders()]));
