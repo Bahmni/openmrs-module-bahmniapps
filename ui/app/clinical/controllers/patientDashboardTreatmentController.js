@@ -2,7 +2,7 @@ angular.module('bahmni.clinical')
     .controller('PatientDashboardTreatmentController', ['$q', '$scope', '$stateParams', 'TreatmentService', 'spinner', function ($q, $scope, $stateParams, treatmentService, spinner) {
         $scope.drugOrderSections = {
             "active": {displayName: "Active Treatment", orders: null},
-            "past": {displayName: "Past Treatment", orders: null},
+            "past": {displayName: "Last Prescription", orders: null},
         }
 
         var dateCompare = function (drugOrder1, drugOrder2) {
