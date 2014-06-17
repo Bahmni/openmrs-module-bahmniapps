@@ -81,7 +81,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.printSupplemental = function() {
-                return registrationCardPrinter.printSupplementalPaper($scope.patient);
+                return registrationCardPrinter.printSupplementalPaper($scope.patient, $scope.obs);
             }
 
             $scope.save = function () {
