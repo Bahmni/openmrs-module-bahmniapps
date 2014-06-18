@@ -13,5 +13,5 @@ rm -rf $ROOT_DIR/target/$ZIP_FILE_NAME
 rvm use 1.9.3
 npm install
 bower install
-grunt dist
+grunt build
 cd $ROOT_DIR/dist && zip -r ../target/$ZIP_FILE_NAME *
