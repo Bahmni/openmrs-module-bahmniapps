@@ -675,6 +675,10 @@ pre {
     display: none;
   }
 }
+
+.ngdialog.ngdialog-theme-default .ngdialog-content {
+  width: 800px;
+}
 // .abnormal-vitals-checkbox {
 //   margin-top: 7px!important;
 // }
