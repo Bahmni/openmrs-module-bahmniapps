@@ -19,6 +19,10 @@ angular.module('bahmni.clinical')
                 return $scope.currentVisit && $scope.currentVisit.uuid === visit.uuid;
             };
 
+            $scope.displayDate = function(date) {
+                return moment(date).format("DD-MMM-YY");
+            }
+
             $scope.currentVisit = $rootScope.visits[0];
             initVisit($scope.currentVisit);
 

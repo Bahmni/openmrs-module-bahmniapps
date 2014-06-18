@@ -9,7 +9,7 @@
         <span ng-if="!visitDetail.stopDatetime" class="currentVisitMarker" title="Current Visit"><i class="icon-star"></i></span>
     </h1>
 
-    <div class="visit-content" ng-if="isCurrentVisit(visitDetail)">
+    <div class="visit-content" ng-if="isCurrentVisit(visitDetail)" bindonce="visit">
         <div ng-if="visit.admissionDate">
             <h2 class="ipd-investigation-title">Investigations Chart</h2>
             <table class="ipd-investigation">
