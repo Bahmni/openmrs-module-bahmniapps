@@ -26,7 +26,7 @@ describe("Age Filter", function () {
     });
 
     it("should age w.r.t current time when reference date is not given", function() {
-      spyOn(Bahmni.Common.Util.DateUtil, 'now').andReturn('2014-10-01');
+      spyOn(Bahmni.Common.Util.DateUtil, 'now').and.returnValue('2014-10-01');
       
       expect(ageFilter('2014-09-30')).toBe('1 d');
       expect(ageFilter('2013-09-30')).toBe('1 y');

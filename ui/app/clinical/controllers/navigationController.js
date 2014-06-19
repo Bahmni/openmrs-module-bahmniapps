@@ -168,7 +168,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 $rootScope.consultation.labOrderNote = observationFilter.filter([$rootScope.consultation.labOrderNote])[0];
                 addObservationsToEncounter();
 
-                spinner.forPromise(encounterService.create(encounterData).success(function () {
+                spinner.forPromise(encounterService.create(encounterData).then(function () {
                     clearRootScope();
                     $state.transitionTo($state.current, $state.params, {
                         reload: true,
@@ -177,7 +177,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                     }).then(function() {
                         messagingService.showMessage('info', 'Saved');
                     });
-                 }).error(function (){
+                 }).catch(function (){
                     messagingService.showMessage('error', 'An error has occurred on the server. Information not saved.');
                 }));
             };

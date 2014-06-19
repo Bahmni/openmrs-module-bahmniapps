@@ -35,12 +35,12 @@ describe('SearchPatientController', function () {
         scope = rootScope.$new();
         patientResource = jasmine.createSpyObj('patientService', ['search']);
         searchPromise = specUtil.createServicePromise('search');
-        patientResource.search.andReturn(searchPromise);
+        patientResource.search.and.returnValue(searchPromise);
         spinner = jasmine.createSpyObj('spinner', ['show', 'hide', 'forPromise']);
         appDescriptor = jasmine.createSpyObj('appDescriptor', ['getExtensions', 'getConfigValue', 'formatUrl']);
-        appDescriptor.getExtensions.andReturn([]);
+        appDescriptor.getExtensions.and.returnValue([]);
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-        appService.getAppDescriptor.andReturn(appDescriptor);
+        appService.getAppDescriptor.and.returnValue(appDescriptor);
         $controller('SearchPatientController', {
             $scope: scope,
             patientService: patientResource,
@@ -66,7 +66,7 @@ describe('SearchPatientController', function () {
                 loader: loader,
                 appService: appService
             });
-            urlSearchChangeCallback = scope.$watch.mostRecentCall.args[1];
+            urlSearchChangeCallback = scope.$watch.calls.mostRecent().args[1];
         });
 
         it("should default to preferences.identifierPrefix when nothing available on search string", function () {
@@ -87,21 +87,21 @@ describe('SearchPatientController', function () {
 
         it('should initialize scope with name search params from url and load the patients if a name search parameter is provided', function () {
             var searchParams = {"name": 'john', village: 'Kanpur'};
-            spyOn(location, 'search').andReturn(searchParams);
+            spyOn(location, 'search').and.returnValue(searchParams);
 
             urlSearchChangeCallback();
 
             expect(scope.searchParameters.name).toBe(searchParams.name);
             expect(scope.searchParameters.village).toBe(searchParams.village);
             expect(patientResource.search).toHaveBeenCalled();
-            expect(patientResource.search.mostRecentCall.args[0]).toBe(searchParams.name);
-            expect(patientResource.search.mostRecentCall.args[1]).toBe(searchParams.village);
+            expect(patientResource.search.calls.mostRecent().args[0]).toBe(searchParams.name);
+            expect(patientResource.search.calls.mostRecent().args[1]).toBe(searchParams.village);
             expect(searchPromise.success).toHaveBeenCalled();
         });
 
         it('should initialize scope with id search params from url but do not search for patient', function () {
             var searchParams = {"identifierPrefix": 'GAN', registrationNumber: '200001'};
-            spyOn(location, 'search').andReturn(searchParams);
+            spyOn(location, 'search').and.returnValue(searchParams);
 
             urlSearchChangeCallback();
 
@@ -111,7 +111,7 @@ describe('SearchPatientController', function () {
         });
 
         it('should not search for patients if search parameter is not provided', function () {
-            spyOn(location, 'search').andReturn({});
+            spyOn(location, 'search').and.returnValue({});
 
             urlSearchChangeCallback();
 
@@ -120,7 +120,7 @@ describe('SearchPatientController', function () {
 
         describe("on success", function () {
             beforeEach(function () {
-                spyOn(location, 'search').andReturn({"name": "foo"});
+                spyOn(location, 'search').and.returnValue({"name": "foo"});
                 urlSearchChangeCallback();
             });
 
@@ -237,8 +237,8 @@ describe('SearchPatientController', function () {
             it("should go to edit patient when a patient is found", function () {
                 spyOn(location, 'search');
                 spyOn(location, 'url');
-                appDescriptor.getConfigValue.andReturn("/patient/patientUuid");
-                appDescriptor.formatUrl.andReturn("/patient/8989-90909");
+                appDescriptor.getConfigValue.and.returnValue("/patient/patientUuid");
+                appDescriptor.formatUrl.and.returnValue("/patient/8989-90909");
 
                 searchPromise.callSuccessCallBack({results: [
                     {uuid: "8989-90909"}

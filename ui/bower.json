@@ -1,42 +1,43 @@
 {
-  "name": "bahmni.apps",
-  "version": "0.0.1",
-  "main": [
-    "app/index.html",
-    "app/app.js"
-  ],
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "components"
-  ],
-  "dependencies": {
-    "angular": "1.2.6",
-    "angular-animate": "1.2.6",
-    "angular-cookies": "1.2.6",
-    "angular-bindonce": "0.3.1",
-    "angular-route": "1.2.6",
-    "jquery": "1.9.1",
-    "jquery-ui": "1.10.2",
-    "jquery.cookie": "1.4.0",
-    "ngInfiniteScroll": "1.0.0",
-    "moment": "2.4.0",
-    "purl": "2.3.1",
-    "keyboardjs": "RobertWHurst/KeyboardJS",
-    "angularjs-nvd3-directives": "v0.0.4-beta",
-    "openmrs-uicommons": "master",
-    "angular-ui-select2": "0.0.5",
-    "angular-ui-router": "0.2.7",
-    "magnific-popup": "~0.9.9",
-    "lodash": "~2.4.1",
-    "ngDialog": "0.1.8"
-  },
-  "devDependencies": {
-    "angular-mocks": "1.2.6",
-    "angular-scenario": "1.2.6"
-  },
-  "resolutions": {
-    "angular": "1.2.6",
-    "moment": "2.4.0"
-  }
+    "name": "bahmni.apps",
+    "version": "0.0.1",
+    "main": [
+        "app/index.html",
+        "app/app.js"
+    ],
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "components"
+    ],
+    "dependencies": {
+        "angular": "1.2.18",
+        "angular-animate": "1.2.18",
+        "angular-cookies": "1.2.18",
+        "angular-bindonce": "0.3.1",
+        "angular-route": "1.2.18",
+        "jquery": "1.9.1",
+        "jquery-ui": "1.10.2",
+        "jquery.cookie": "1.4.0",
+        "ngInfiniteScroll": "1.0.0",
+        "moment": "2.4.0",
+        "purl": "2.3.1",
+        "keyboardjs": "RobertWHurst/KeyboardJS",
+        "angularjs-nvd3-directives": "v0.0.4-beta",
+        "openmrs-uicommons": "master",
+        "angular-ui-select2": "0.0.5",
+        "angular-ui-router": "0.2.7",
+        "magnific-popup": "~0.9.9",
+        "lodash": "~2.4.1",
+        "ngDialog": "0.1.8"
+    },
+    "devDependencies": {
+        "angular-mocks": "1.2.18",
+        "angular-scenario": "1.2.18",
+        "q": "1.0.1"
+    },
+    "resolutions": {
+        "angular": "1.2.18",
+        "moment": "2.4.0"
+    }
 }

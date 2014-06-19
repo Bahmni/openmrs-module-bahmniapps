@@ -2,7 +2,7 @@
     <div class="tabs">
         <ul>
             <li class="tab-item" ng-repeat="sType in searchTypes" ng-class="{'tab-selected':searchCriteria.type==sType}">
-                <a href="" ng-click="showPatientsForType(sType)"> <span>{{sType.display}}</span></a>
+                <a href="" ng-click="switchSearchType(sType)"> <span>{{sType.display}}</span></a>
             </li>
         </ul> 
     </div>

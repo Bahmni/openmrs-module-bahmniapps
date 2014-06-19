@@ -82,7 +82,7 @@ describe('patientMapper', function () {
 
     it('should map values from the openmrs Patient to our patient object', function () {
         var age = {years: 2, months: 3, days: 25};
-        spyOn(ageModule, 'fromBirthDate').andReturn(age);
+        spyOn(ageModule, 'fromBirthDate').and.returnValue(age);
 
         var patient = mapper.map(openmrsPatient);
 
@@ -129,7 +129,7 @@ describe('patientMapper', function () {
         openmrsPatient.person.birthdate = "2013-04-01T00:00:00.000+0530";
         openmrsPatient.person.birthdateEstimated = false;
         var age = {years: 2, months: 3, days: 25};
-        spyOn(ageModule, 'fromBirthDate').andReturn(age);
+        spyOn(ageModule, 'fromBirthDate').and.returnValue(age);
 
         var patient = mapper.map(openmrsPatient);
 
@@ -141,7 +141,7 @@ describe('patientMapper', function () {
         openmrsPatient.person.birthdate = "2013-04-01T00:00:00.000+0530";
         openmrsPatient.person.birthdateEstimated = true;
         var age = {years: 2, months: 3, days: 25};
-        spyOn(ageModule, 'fromBirthDate').andReturn(age);
+        spyOn(ageModule, 'fromBirthDate').and.returnValue(age);
 
         var patient = mapper.map(openmrsPatient);
 

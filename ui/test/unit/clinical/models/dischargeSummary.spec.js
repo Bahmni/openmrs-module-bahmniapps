@@ -29,7 +29,7 @@ describe("DischgeSummary", function() {
 
 	describe("getTreatmentAdviced", function() {
 		it("should drug orders after discharge disposition encounter date", function() {
-		  	visit.getDischargeDispositionEncounterDate.andReturn(DateUtil.parse('2014-04-20T15:52:59.000+0530'));
+		  	visit.getDischargeDispositionEncounterDate.and.returnValue(DateUtil.parse('2014-04-20T15:52:59.000+0530'));
 		  	var calpolBeforeDishcarge = createDrugOrder('Calpol', '2014-04-15T15:55:00.000+0530', '2014-04-18T15:52:59.000+0530');
 		  	var salbutamolDuringDichrageDisposition = createDrugOrder('Salbutamol', visit.getDischargeDispositionEncounterDate(), '2014-04-29T11:52:59.000+0530');
 		  	var beclomateAfterDischarge = createDrugOrder('Beclomate', '2014-04-20T15:55:00.000+0530', '2014-04-26T15:52:59.000+0530');
@@ -44,7 +44,7 @@ describe("DischgeSummary", function() {
 		});
 
 		it("should be empty if discharge disposition is not given", function() {
-		  	visit.getDischargeDispositionEncounterDate.andReturn(null);
+		  	visit.getDischargeDispositionEncounterDate.and.returnValue(null);
 		  	var calpolBeforeDishcarge = createDrugOrder('Calpol', '2014-04-15T15:55:00.000+0530', '2014-04-18T15:52:59.000+0530');
 		  	visit.drugOrders = [calpolBeforeDishcarge];
 			var dischargeSummary = new Bahmni.Clinical.DischargeSummary(null, visit);

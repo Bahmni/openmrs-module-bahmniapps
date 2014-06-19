@@ -1,8 +1,11 @@
 'use strict';
 
-angular.module('bahmni.orders').factory('initialization', ['$rootScope', '$q', 'configurationService', 'authenticator', 'patientService', 'patientMapper', 'spinner',
-    function ($rootScope, $q, configurationService, authenticator, patientService, patientMapper, spinner) {
+angular.module('bahmni.orders').factory('initialization', ['$rootScope', '$q', 'configurationService', 'authenticator', 'patientService', 'spinner',
+    function ($rootScope, $q, configurationService, authenticator, patientService, spinner) {
         return function(appContext, patientUuid) {
+
+            var patientMapper = new Bahmni.PatientMapper($rootScope.patientConfig);
+
             var initializationPromise = $q.defer();
             var getConfigs = function () {
                 var configurationsPromises = $q.defer();
@@ -17,8 +20,8 @@ angular.module('bahmni.orders').factory('initialization', ['$rootScope', '$q', '
 
             var getPatient = function(patientUuid) {
                 var patientDeferrable = $q.defer();
-                patientService.getPatient(patientUuid).success(function (openMRSPatient) {
-                    $rootScope.patient = patientMapper.map(openMRSPatient);
+                patientService.getPatient(patientUuid).then(function (openMRSPatientResponse) {
+                    $rootScope.patient = patientMapper.map(openMRSPatientResponse.data);
                     patientDeferrable.resolve();
                 });
                 return patientDeferrable.promise;

@@ -34,7 +34,7 @@ describe('addressAttributeService', function () {
         }
     ];
     var mockHttp = {defaults:{headers:{common:{'X-Requested-With':'present'}} },
-        get:jasmine.createSpy('Http get').andReturn(resultList)
+        get:jasmine.createSpy('Http get').and.returnValue(resultList)
     };
 
     beforeEach(module('bahmni.registration'));
@@ -51,9 +51,9 @@ describe('addressAttributeService', function () {
             var results = addressAttributeService.search(fieldName,query);
 
             expect(mockHttp.get).toHaveBeenCalled();
-            expect(mockHttp.get.mostRecentCall.args[0]).toBe('http://blah.com/openmrs/module/addresshierarchy/ajax/getPossibleAddressHierarchyEntriesWithParents.form');
-            expect(mockHttp.get.mostRecentCall.args[1].params.searchString).toBe(query);
-            expect(mockHttp.get.mostRecentCall.args[1].params.addressField).toBe(fieldName);
+            expect(mockHttp.get.calls.mostRecent().args[0]).toBe('http://blah.com/openmrs/module/addresshierarchy/ajax/getPossibleAddressHierarchyEntriesWithParents.form');
+            expect(mockHttp.get.calls.mostRecent().args[1].params.searchString).toBe(query);
+            expect(mockHttp.get.calls.mostRecent().args[1].params.addressField).toBe(fieldName);
             expect(results).toBe(resultList);
         }]));
     });

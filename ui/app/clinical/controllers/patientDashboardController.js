@@ -22,8 +22,8 @@ angular.module('opd.patientDashboard', [])
         };
 
         var getEncountersForVisit = function (visitUuid) {
-            encounterService.search(visitUuid).success(function (encounterTransactions) {
-                $scope.visit = Bahmni.Clinical.Visit.create(encounterTransactions, $scope.consultationNoteConcept, $scope.labOrderNotesConcept, $scope.encounterConfig, $rootScope.allTestsAndPanelsConcept, $scope.obsIgnoreList, visitUuid);
+            encounterService.search(visitUuid).then(function (encounterTransactionsResponse) {
+                $scope.visit = Bahmni.Clinical.Visit.create(encounterTransactionsResponse.data, $scope.consultationNoteConcept, $scope.labOrderNotesConcept, $scope.encounterConfig, $rootScope.allTestsAndPanelsConcept, $scope.obsIgnoreList, visitUuid);
             });
         };
 

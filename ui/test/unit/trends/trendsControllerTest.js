@@ -22,7 +22,7 @@ describe("TrendsController", function() {
         module("trends");
         observationService = jasmine.createSpyObj("observationService", ["fetch"]);
         observationFetchPromise = specUtil.createServicePromise("observationService");
-        observationService.fetch.andReturn(observationFetchPromise);
+        observationService.fetch.and.returnValue(observationFetchPromise);
         inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
             controller = $controller("TrendsController", {

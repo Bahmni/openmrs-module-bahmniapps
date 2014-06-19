@@ -2,12 +2,15 @@
 
 var timeout = 0;
 angular.module('bahmni.clinical').factory('consultationInitialization',
-    ['$rootScope', '$q', 'configurationService', 'visitService', 'patientService', 'patientMapper', 'authenticator', 'appService', 'encounterService', 'bedService', 'spinner', 'initialization', 'diagnosisService', 'patientVisitHistoryService',
-    function ($rootScope, $q, configurationService, visitService, patientService, patientMapper, authenticator, appService, encounterService, bedService, spinner, initialization, diagnosisService, patientVisitHistoryService) {
+    ['$rootScope', '$q', 'configurationService', 'visitService', 'patientService', 'authenticator', 'appService', 'encounterService', 'bedService', 'spinner', 'initialization', 'diagnosisService', 'patientVisitHistoryService',
+    function ($rootScope, $q, configurationService, visitService, patientService, authenticator, appService, encounterService, bedService, spinner, initialization, diagnosisService, patientVisitHistoryService) {
+
+        var patientMapper = new Bahmni.PatientMapper($rootScope.patientConfig);
+
         return function(patientUuid) {
             var getPatient = function() {
-                return patientService.getPatient(patientUuid).success(function (openMRSPatient) {
-                    $rootScope.patient = patientMapper.map(openMRSPatient);
+                return patientService.getPatient(patientUuid).then(function (openMRSPatientResponse) {
+                    $rootScope.patient = patientMapper.map(openMRSPatientResponse.data);
                 })
             };
 
@@ -46,9 +49,9 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                         return visit.isActive();
                     })[0];
                     if($rootScope.activeVisit){
-                        encounterService.search($rootScope.activeVisit.uuid).success(function (encounterTransactions) {
+                        encounterService.search($rootScope.activeVisit.uuid).then(function (encounterTransactionsResponse) {
                             var obsIgnoreList = appService.getAppDescriptor().getConfig("obsIgnoreList").value || {};
-                            $rootScope.visit = Bahmni.Clinical.Visit.create(encounterTransactions, $rootScope.consultationNoteConcept, $rootScope.labOrderNotesConcept, $rootScope.encounterConfig, $rootScope.allTestsAndPanelsConcept, obsIgnoreList, $rootScope.activeVisit.uuid);
+                            $rootScope.visit = Bahmni.Clinical.Visit.create(encounterTransactionsResponse.data, $rootScope.consultationNoteConcept, $rootScope.labOrderNotesConcept, $rootScope.encounterConfig, $rootScope.allTestsAndPanelsConcept, obsIgnoreList, $rootScope.activeVisit.uuid);
                         });
                     }
                 });

@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('opd.documentupload')
-    .controller('DocumentController', ['$scope', '$stateParams', 'visitService', 'patientService', 'encounterService', 'patientMapper', 'spinner', 'visitDocumentService', '$rootScope', '$http', '$q', '$timeout',
-        function ($scope, $stateParams, visitService, patientService, encounterService, patientMapper, spinner, visitDocumentService, $rootScope, $http, $q, $timeout) {
+    .controller('DocumentController', ['$scope', '$stateParams', 'visitService', 'patientService', 'encounterService', 'spinner', 'visitDocumentService', '$rootScope', '$http', '$q', '$timeout',
+        function ($scope, $stateParams, visitService, patientService, encounterService, spinner, visitDocumentService, $rootScope, $http, $q, $timeout) {
             var encounterTypeUuid;
             var topLevelConceptUuid;
             var customVisitParams = Bahmni.DocumentUpload.Constants.visitRepresentation;
             var DateUtil = Bahmni.Common.Util.DateUtil;
+            var patientMapper = new Bahmni.PatientMapper($rootScope.patientConfig);
 
             $scope.visits = [];
 

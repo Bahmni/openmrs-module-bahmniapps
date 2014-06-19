@@ -16,7 +16,7 @@ describe("Patient", function(){
         it("should update age as difference between dateofBirth and today in years, months and days", function(){
             patient.birthdate = "25-06-1980";
             var age = {years: 12, months: 5, days: 29};
-            spyOn(ageFactory, 'fromBirthDate').andReturn(age);            
+            spyOn(ageFactory, 'fromBirthDate').and.returnValue(age);            
 
             patient.calculateAge();
 

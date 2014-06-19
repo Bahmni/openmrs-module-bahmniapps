@@ -12,7 +12,7 @@ describe("patientVisitHistoryService", function() {
 
     beforeEach(inject(function ($rootScope) {
         drugOrderPromise = specUtil.createServicePromise('visitSeacrh');
-        visitService.search.andReturn(drugOrderPromise);
+        visitService.search.and.returnValue(drugOrderPromise);
         rootScope = $rootScope
     }));
 
@@ -27,7 +27,7 @@ describe("patientVisitHistoryService", function() {
 			patientVisitHistoryService.getVisits("1234")
 
 			expect(visitService.search).toHaveBeenCalled();
-			expect(visitService.search.mostRecentCall.args[0].patient).toBe("1234");
+			expect(visitService.search.calls.mostRecent().args[0].patient).toBe("1234");
 		});
 		
 		it("should return cached visits on the second and subsequent calls for same patient", function(){
@@ -43,7 +43,7 @@ describe("patientVisitHistoryService", function() {
 			patientVisitHistoryService.getVisits("1234").then(function(data){ vistHistoryReturnedByThirdCall = data });
 			rootScope.$digest();
 
-			expect(visitService.search.callCount).toBe(1);
+			expect(visitService.search.calls.count()).toBe(1);
 			expect(vistHistoryReturnedByFirstCall).toBe(visits);
 			expect(vistHistoryReturnedBySecondCall).toBe(vistHistoryReturnedByFirstCall);
 			expect(vistHistoryReturnedByThirdCall).toBe(vistHistoryReturnedByFirstCall);

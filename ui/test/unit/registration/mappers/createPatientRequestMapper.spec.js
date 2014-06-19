@@ -66,6 +66,7 @@ describe('patient mapper', function () {
             {
                 givenName: "gname",
                 familyName: "fname",
+                middleName: undefined,
                 "preferred": false
             }
         ]);

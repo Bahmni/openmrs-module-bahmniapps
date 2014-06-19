@@ -141,7 +141,7 @@ describe("Selectable", function () {
 
 			selectable.select();
 
-			expect(onSelectionChange.callCount).toBe(2);
+			expect(onSelectionChange.calls.count()).toBe(2);
 			expect(onSelectionChange).toHaveBeenCalledWith(selectable);
 			expect(onSelectionChange).toHaveBeenCalledWith(child);
 		});
@@ -152,8 +152,8 @@ describe("Selectable", function () {
 			selectable.select();
 			selectable.unselect();
 
-			expect(onSelectionChange.callCount).toBe(2);
-			expect(onSelectionChange.mostRecentCall.args[0]).toBe(selectable);
+			expect(onSelectionChange.calls.count()).toBe(2);
+			expect(onSelectionChange.calls.mostRecent().args[0]).toBe(selectable);
 		});
 
 		it("should be triggered on child and parent on unselecting parent", function() {
@@ -163,9 +163,9 @@ describe("Selectable", function () {
 			selectable.select();
 			selectable.unselect();
 
-			expect(onSelectionChange.callCount).toBe(4);
-			expect(onSelectionChange.calls[2].args[0]).toBe(child);
-			expect(onSelectionChange.calls[3].args[0]).toBe(selectable);
+			expect(onSelectionChange.calls.count()).toBe(4);
+			expect(onSelectionChange.calls.all()[2].args[0]).toBe(child);
+			expect(onSelectionChange.calls.all()[3].args[0]).toBe(selectable);
 		});
 
 		it("should not be triggered on selecting, when it is already selected via same source", function() {
@@ -175,7 +175,7 @@ describe("Selectable", function () {
 			selectable.select();
 			selectable.select();
 
-			expect(onSelectionChange.callCount).toBe(1);
+			expect(onSelectionChange.calls.count()).toBe(1);
 		});
 
 		it("should not be triggered on unselecting, when it is already unselected via same source", function() {
@@ -186,7 +186,7 @@ describe("Selectable", function () {
 			selectable.unselect();
 			selectable.unselect();
 
-			expect(onSelectionChange.callCount).toBe(2);
+			expect(onSelectionChange.calls.count()).toBe(2);
 		});
 
 		it("should be triggered on selecting already selected one via diffrent sources", function() {
@@ -197,7 +197,7 @@ describe("Selectable", function () {
 			child.select(parent1);
 			child.select(parent2);
 
-			expect(onSelectionChange.callCount).toBe(2);
+			expect(onSelectionChange.calls.count()).toBe(2);
 		});
 
 		it("should be triggered on unselecting already unselected one via diffrent sources", function() {
@@ -210,7 +210,7 @@ describe("Selectable", function () {
 			child.unselect(parent1);
 			child.unselect(parent2);
 
-			expect(onSelectionChange.callCount).toBe(4);
+			expect(onSelectionChange.calls.count()).toBe(4);
 		});
 	});
 });

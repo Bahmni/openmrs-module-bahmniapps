@@ -43,15 +43,7 @@ module.exports = function (grunt) {
         },
         karma: {
             unit: {
-                configFile: 'test/config/testacular.conf.js'
-            },
-            e2e: {
-                configFile: 'test/config/testacular-e2e.conf.js'
-            },
-            auto: {
-                configFile: 'test/config/testacular.conf.js',
-                autoWatch: true,
-                singleRun: false
+                configFile: 'test/config/karma.conf.js'
             }
         },
         compass: {

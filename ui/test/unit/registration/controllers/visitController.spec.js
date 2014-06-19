@@ -89,14 +89,14 @@ describe('VisitController', function () {
         patientService = jasmine.createSpyObj('patientService', ['getPatient', 'clearPatient', 'get']);
         appService = jasmine.createSpyObj('appService',['getDescription', 'getAppDescriptor']);
         appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
-        appService.getAppDescriptor.andReturn(appDescriptor);
+        appService.getAppDescriptor.and.returnValue(appDescriptor);
         patientMapper = jasmine.createSpyObj('patientMapper', ['map']);
         registrationCardPrinter = jasmine.createSpyObj('registrationCardPrinter', ['print']);
         dateUtil = Bahmni.Common.Util.DateUtil;
         $location = location;
         $window = window;
         $timeout = timeout;
-        patientService.getPatient.andReturn(patient);
+        patientService.getPatient.and.returnValue(patient);
         success = jasmine.createSpy();
         scope.regEncounterConfiguration = angular.extend(new Bahmni.Registration.RegistrationEncounterConfig(), sampleConfig);
         scope.encounterConfig = angular.extend(new EncounterConfig(), sampleConfig);
@@ -104,10 +104,10 @@ describe('VisitController', function () {
         encounterService = jasmine.createSpyObj('encounterService', ['create', 'activeEncounter']);
         getEncounterPromise = specUtil.createServicePromise('activeEncounter');
         getPatientPromise = specUtil.createServicePromise('get');
-        encounterService.activeEncounter.andReturn(getEncounterPromise);
-        patientService.get.andReturn(getPatientPromise);
+        encounterService.activeEncounter.and.returnValue(getEncounterPromise);
+        patientService.get.and.returnValue(getPatientPromise);
         scope.currentProvider = {uuid: ''};
-        patientMapper.map.andReturn(patient);
+        patientMapper.map.and.returnValue(patient);
 
     }]));
 
@@ -170,11 +170,11 @@ describe('VisitController', function () {
             getPatientPromise.callSuccessCallBack(patient);
             getEncounterPromise.callSuccessCallBack(sampleEncounter);
 
-            spyOn(scope, 'save').andCallFake(stubAllPromise);
+            spyOn(scope, 'save').and.callFake(stubAllPromise);
         });
 
         it("should be called during save and print", function () {
-            scope.validate = jasmine.createSpy('validate').andCallFake(stubOnePromise);
+            scope.validate = jasmine.createSpy('validate').and.callFake(stubOnePromise);
 
             scope.saveAndPrint();
 
@@ -183,7 +183,7 @@ describe('VisitController', function () {
 
         it("should be called during submit for new patient", function () {
             scope.patient.isNew = true;
-            scope.validate = jasmine.createSpy('validate').andCallFake(stubOnePromise);
+            scope.validate = jasmine.createSpy('validate').and.callFake(stubOnePromise);
 
             scope.submit();
 
@@ -192,7 +192,7 @@ describe('VisitController', function () {
 
         it("should be called during submit for existing patient", function () {
             scope.patient.isNew = false;
-            scope.validate = jasmine.createSpy('validate').andCallFake(stubOnePromise);
+            scope.validate = jasmine.createSpy('validate').and.callFake(stubOnePromise);
 
             scope.submit();
 
@@ -203,7 +203,7 @@ describe('VisitController', function () {
             scope.obs["REGISTRATION FEES"] = 0;
             scope.obs.COMMENTS = '';
             scope.confirmDialog = jasmine.createSpyObj('confirmDialog', ['show']);
-            scope.confirmDialog.show.andCallFake(stubOnePromise);
+            scope.confirmDialog.show.and.callFake(stubOnePromise);
 
             scope.validate();
 
@@ -214,7 +214,7 @@ describe('VisitController', function () {
             scope.obs["REGISTRATION FEES"] = 10;
             scope.obs.COMMENTS = '';
             scope.confirmDialog = jasmine.createSpyObj('confirmDialog', ['show']);
-            scope.confirmDialog.show.andCallFake(stubOnePromise);
+            scope.confirmDialog.show.and.callFake(stubOnePromise);
 
             scope.validate();
 
@@ -225,7 +225,7 @@ describe('VisitController', function () {
             scope.obs["REGISTRATION FEES"] = 0;
             scope.obs.COMMENTS = 'adfadfs';
             scope.confirmDialog = jasmine.createSpyObj('confirmDialog', ['show']);
-            scope.confirmDialog.show.andCallFake(stubOnePromise);
+            scope.confirmDialog.show.and.callFake(stubOnePromise);
 
             scope.validate();
 
@@ -236,7 +236,7 @@ describe('VisitController', function () {
             scope.obs["REGISTRATION FEES"] = 0;
             scope.obs.COMMENTS = 'adfadfs';
             scope.confirmDialog = jasmine.createSpyObj('confirmDialog', ['show']);
-            scope.confirmDialog.show.andCallFake(stubOnePromise);
+            scope.confirmDialog.show.and.callFake(stubOnePromise);
 
             var result = scope.validate();
 
@@ -260,15 +260,15 @@ describe('VisitController', function () {
             });
             getPatientPromise.callSuccessCallBack(patient);
             getEncounterPromise.callSuccessCallBack(sampleEncounter);
-            encounterService.create.andCallFake(stubOnePromise);
-            patientService.clearPatient.andCallFake(stubOnePromise);
-            spyOn(scope, 'validate').andCallFake(stubOnePromise);
+            encounterService.create.and.callFake(stubOnePromise);
+            patientService.clearPatient.and.callFake(stubOnePromise);
+            spyOn(scope, 'validate').and.callFake(stubOnePromise);
         });
 
         it("should create visit", function () {
             var now = new Date();
-            spyOn(dateUtil, "now").andReturn(now);
-            scope.print = jasmine.createSpy().andCallFake(stubOnePromise);
+            spyOn(dateUtil, "now").and.returnValue(now);
+            scope.print = jasmine.createSpy().and.callFake(stubOnePromise);
             scope.obs["REGISTRATION FEES"] = "100";
             scope.obs["COMMENTS"] = "fine";
 
@@ -299,9 +299,9 @@ describe('VisitController', function () {
                 getPatientPromise.callSuccessCallBack(patient);
                 getEncounterPromise.callSuccessCallBack(sampleEncounter);
 
-                scope.print = jasmine.createSpy().andCallFake(stubOnePromise);
-                scope.save = jasmine.createSpy().andCallFake(stubOnePromise);
-                spyOn(scope, 'validate').andCallFake(stubOnePromise);
+                scope.print = jasmine.createSpy().and.callFake(stubOnePromise);
+                scope.save = jasmine.createSpy().and.callFake(stubOnePromise);
+                spyOn(scope, 'validate').and.callFake(stubOnePromise);
             });
 
             it(" should print patient and go to create new page on creation of visit for new patient", function () {
@@ -348,12 +348,12 @@ describe('VisitController', function () {
             getPatientPromise.callSuccessCallBack(patient);
             getEncounterPromise.callSuccessCallBack(sampleEncounter);
 
-            encounterService.create.andCallFake(stubOnePromise);
-            patientService.clearPatient.andCallFake(stubOnePromise);
+            encounterService.create.and.callFake(stubOnePromise);
+            patientService.clearPatient.and.callFake(stubOnePromise);
             scope.patient = {uuid: "21308498-2502-4495-b604-7b704a55522d"};
-            spyOn(scope, 'print').andCallFake(stubOnePromise);
+            spyOn(scope, 'print').and.callFake(stubOnePromise);
             spyOn($location, 'path');
-            spyOn(scope, 'validate').andCallFake(stubOnePromise);
+            spyOn(scope, 'validate').and.callFake(stubOnePromise);
         });
 
         describe("on successful creation of new patient visit", function () {

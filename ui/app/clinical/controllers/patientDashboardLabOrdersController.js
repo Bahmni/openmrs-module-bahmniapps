@@ -37,8 +37,8 @@ angular.module('bahmni.clinical')
                 if ($rootScope.visits) {
                     var lastTwoVisitUuids = getLastNVisitUuids($rootScope.visits, 2);
 
-                    spinner.forPromise(encounterService.searchForVisits(lastTwoVisitUuids).success(function (encounterTransactions) {
-                        var groupedEncounterTransactions = _.groupBy(encounterTransactions, function (encounterTransaction) {
+                    spinner.forPromise(encounterService.searchForVisits(lastTwoVisitUuids).then(function (encounterTransactionsResponse) {
+                        var groupedEncounterTransactions = _.groupBy(encounterTransactionsResponse.data, function (encounterTransaction) {
                             return encounterTransaction.visitUuid;
                         });
                         for (var key in groupedEncounterTransactions) {

@@ -8,8 +8,8 @@ describe('Patient resource', function () {
 
     var mockHttp = {
         defaults: {headers: {common: {'X-Requested-With': 'present'}}},
-        get: jasmine.createSpy('Http get').andReturn({'name': 'john'}),
-        post: jasmine.createSpy('Http post').andReturn({
+        get: jasmine.createSpy('Http get').and.returnValue({'name': 'john'}),
+        post: jasmine.createSpy('Http post').and.returnValue({
             'success': function (onSuccess) {
                 return {
                     'then': function (thenMethod) {
@@ -58,8 +58,8 @@ describe('Patient resource', function () {
         var results = patientService.search(query);
 
         expect(mockHttp.get).toHaveBeenCalled();
-        expect(mockHttp.get.mostRecentCall.args[0]).toBe(openmrsUrl + '/ws/rest/v1/patient');
-        expect(mockHttp.get.mostRecentCall.args[1].params.q).toBe(query);
+        expect(mockHttp.get.calls.mostRecent().args[0]).toBe(openmrsUrl + '/ws/rest/v1/patient');
+        expect(mockHttp.get.calls.mostRecent().args[1].params.q).toBe(query);
         expect(results.name).toBe('john');
     });
 
@@ -82,13 +82,13 @@ describe('Patient resource', function () {
         });
 
         expect(mockHttp.post).toHaveBeenCalled();
-        expect(mockHttp.post.mostRecentCall.args[0]).toBe('/openmrs/ws/rest/v1/patientprofile');
-        expect(mockHttp.post.mostRecentCall.args[1].patient.person.gender).toEqual("M");
-        expect(mockHttp.post.mostRecentCall.args[1].patient.person.names[0].givenName).toEqual("someGivenName");
-        expect(mockHttp.post.mostRecentCall.args[1].patient.person.names[0].familyName).toEqual("someFamilyName");
-        expect(mockHttp.post.mostRecentCall.args[1].patient.person.birthdate).toEqual(moment().subtract('years', 1).subtract('months', 2).subtract('days', 23).format('YYYY-MM-DD'));
-        expect(mockHttp.post.mostRecentCall.args[2].headers['Content-Type']).toBe('application/json');
-        expect(mockHttp.post.mostRecentCall.args[2].headers['Accept']).toBe('application/json');
+        expect(mockHttp.post.calls.mostRecent().args[0]).toBe('/openmrs/ws/rest/v1/patientprofile');
+        expect(mockHttp.post.calls.mostRecent().args[1].patient.person.gender).toEqual("M");
+        expect(mockHttp.post.calls.mostRecent().args[1].patient.person.names[0].givenName).toEqual("someGivenName");
+        expect(mockHttp.post.calls.mostRecent().args[1].patient.person.names[0].familyName).toEqual("someFamilyName");
+        expect(mockHttp.post.calls.mostRecent().args[1].patient.person.birthdate).toEqual(moment().subtract('years', 1).subtract('months', 2).subtract('days', 23).format('YYYY-MM-DD'));
+        expect(mockHttp.post.calls.mostRecent().args[2].headers['Content-Type']).toBe('application/json');
+        expect(mockHttp.post.calls.mostRecent().args[2].headers['Accept']).toBe('application/json');
     });
 
     it('Should always set the patient image url if patient is remembered', function () {

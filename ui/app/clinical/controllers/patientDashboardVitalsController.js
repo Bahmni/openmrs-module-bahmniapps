@@ -33,8 +33,8 @@ angular.module('bahmni.clinical')
 
         var createPatientSummary = function () {
             if ($scope.activeVisit) {
-                spinner.forPromise(encounterService.search($scope.activeVisit.uuid).success(function (encounterTransactions) {
-                    var visitData = createObservationsObject(encounterTransactions);
+                spinner.forPromise(encounterService.search($scope.activeVisit.uuid).then(function (encounterTransactionsResponse) {
+                    var visitData = createObservationsObject(encounterTransactionsResponse.data);
 
                     var vitalsObservations = visitData.filter(isObservationForVitals);
                     var registrationObservations = visitData.filter(isObservationForRegistration);

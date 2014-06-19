@@ -106,8 +106,8 @@ angular.module('bahmni.common.domain')
             var promises = [];
 
             configurationNames.forEach(function(configurationName){
-              promises.push(configurationFunctions[configurationName]().success(function (data) {
-                  configurations[configurationName] = data;
+              promises.push(configurationFunctions[configurationName]().then(function (response) {
+                  configurations[configurationName] = response.data;
                 })
               );
             });

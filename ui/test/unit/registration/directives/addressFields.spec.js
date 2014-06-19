@@ -10,7 +10,7 @@ describe('AddressFieldsDirectiveController', function () {
     beforeEach(angular.mock.inject(function ($injector) {
         success = jasmine.createSpy('Successful');
         patientAttributeService = jasmine.createSpyObj('patientAttributeService', ['search']);
-        patientAttributeService.search.andReturn({success:success});
+        patientAttributeService.search.and.returnValue({success:success});
     }));
 
     var setupController = function () {

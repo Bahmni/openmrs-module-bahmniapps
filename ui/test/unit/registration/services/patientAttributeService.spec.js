@@ -5,7 +5,7 @@ describe('patientAttributeService', function () {
     var resultList = {"results":["result1","result2","result3","result4"]};
     var $http,
         mockHttp = {defaults:{headers:{common:{'X-Requested-With':'present'}} },
-                    get:jasmine.createSpy('Http get').andReturn(resultList)
+                    get:jasmine.createSpy('Http get').and.returnValue(resultList)
                    };
 
     beforeEach(module('bahmni.registration'));
@@ -24,9 +24,9 @@ describe('patientAttributeService', function () {
             var results = patientAttributeService.search(key,query, 'personName');
 
             expect(mockHttp.get).toHaveBeenCalled();
-            expect(mockHttp.get.mostRecentCall.args[0]).toBe(openmrsUrl + '/ws/rest/v1/bahmnicore/unique/personname');
-            expect(mockHttp.get.mostRecentCall.args[1].params.q).toBe(query);
-            expect(mockHttp.get.mostRecentCall.args[1].params.key).toBe(key);
+            expect(mockHttp.get.calls.mostRecent().args[0]).toBe(openmrsUrl + '/ws/rest/v1/bahmnicore/unique/personname');
+            expect(mockHttp.get.calls.mostRecent().args[1].params.q).toBe(query);
+            expect(mockHttp.get.calls.mostRecent().args[1].params.key).toBe(key);
             expect(results).toBe(resultList);
         }]));
 
@@ -37,9 +37,9 @@ describe('patientAttributeService', function () {
             var results = patientAttributeService.search(key,query,'personAttribute');
 
             expect(mockHttp.get).toHaveBeenCalled();
-            expect(mockHttp.get.mostRecentCall.args[0]).toBe(openmrsUrl + "/ws/rest/v1/bahmnicore/unique/personattribute");
-            expect(mockHttp.get.mostRecentCall.args[1].params.q).toBe(query);
-            expect(mockHttp.get.mostRecentCall.args[1].params.key).toBe(key);
+            expect(mockHttp.get.calls.mostRecent().args[0]).toBe(openmrsUrl + "/ws/rest/v1/bahmnicore/unique/personattribute");
+            expect(mockHttp.get.calls.mostRecent().args[1].params.q).toBe(query);
+            expect(mockHttp.get.calls.mostRecent().args[1].params.key).toBe(key);
             expect(results).toBe(resultList);
         }]))
 
@@ -50,9 +50,9 @@ describe('patientAttributeService', function () {
             var results = patientAttributeService.search(key,query, 'personAttribute');
 
             expect(mockHttp.get).toHaveBeenCalled();
-            expect(mockHttp.get.mostRecentCall.args[0]).toBe(openmrsUrl + "/ws/rest/v1/bahmnicore/unique/personattribute");
-            expect(mockHttp.get.mostRecentCall.args[1].params.q).toBe(query.trimLeft());
-            expect(mockHttp.get.mostRecentCall.args[1].params.key).toBe(key);
+            expect(mockHttp.get.calls.mostRecent().args[0]).toBe(openmrsUrl + "/ws/rest/v1/bahmnicore/unique/personattribute");
+            expect(mockHttp.get.calls.mostRecent().args[1].params.q).toBe(query.trimLeft());
+            expect(mockHttp.get.calls.mostRecent().args[1].params.key).toBe(key);
             expect(results).toBe(resultList);
         }]))
     });

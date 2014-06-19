@@ -24,16 +24,16 @@ describe("DrugOrder", function() {
 				endDate: '2014-04-11T15:52:59.000+0530'
 			});
 
-			DateUtil.today.andReturn(DateUtil.parse('2014-04-09'));
+			DateUtil.today.and.returnValue(DateUtil.parse('2014-04-09'));
 			expect(drugOrder.isActive()).toBe(false);
 			
-			DateUtil.today.andReturn(DateUtil.parse('2014-04-10'));
+			DateUtil.today.and.returnValue(DateUtil.parse('2014-04-10'));
 			expect(drugOrder.isActive()).toBe(true);
 			
-			DateUtil.today.andReturn(DateUtil.parse('2014-04-11'));
+			DateUtil.today.and.returnValue(DateUtil.parse('2014-04-11'));
 			expect(drugOrder.isActive()).toBe(true);
 			
-			DateUtil.today.andReturn(DateUtil.parse('2014-04-12'));
+			DateUtil.today.and.returnValue(DateUtil.parse('2014-04-12'));
 			expect(drugOrder.isActive()).toBe(false);
 		});
 	});

@@ -22,8 +22,8 @@ describe("InvestigationsSelectorControllerTest", function () {
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         testsProvider = jasmine.createSpyObj('testsProvider', ['getTests']);
         getTestsPromise = specUtil.createServicePromise('getTests');
-        testsProvider.getTests.andReturn(getTestsPromise);
-        spinner.forPromise.andReturn(getTestsPromise);
+        testsProvider.getTests.and.returnValue(getTestsPromise);
+        spinner.forPromise.and.returnValue(getTestsPromise);
         scope = $rootScope.$new();
         scope.testsProvider = testsProvider;
         scope.filterColumn = "sample";

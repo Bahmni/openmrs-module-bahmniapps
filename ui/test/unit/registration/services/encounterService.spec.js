@@ -4,7 +4,7 @@ describe('EncounterService', function () {
 
     var $http,
         mockHttp = {defaults: {headers: {common: {'X-Requested-With': 'present'}} },
-            post: jasmine.createSpy('Http post').andReturn('success')};
+            post: jasmine.createSpy('Http post').and.returnValue('success')};
 
     beforeEach(module('bahmni.registration'));
     beforeEach(module(function ($provide) {
@@ -27,8 +27,8 @@ describe('EncounterService', function () {
         var results = encounterService.create(encounter);
 
         expect(mockHttp.post).toHaveBeenCalled();
-        expect(mockHttp.post.mostRecentCall.args[0]).toBe(Bahmni.Common.Constants.bahmniEncounterUrl);
-        expect(mockHttp.post.mostRecentCall.args[1]).toEqual(encounter);
+        expect(mockHttp.post.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.bahmniEncounterUrl);
+        expect(mockHttp.post.calls.mostRecent().args[1]).toEqual(encounter);
         expect(results).toBe('success');
     }]));
 

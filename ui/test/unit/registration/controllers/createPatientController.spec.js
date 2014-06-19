@@ -25,7 +25,7 @@ describe('CreatePatientController', function () {
         patientService = jasmine.createSpyObj('patientService', ['create', 'getPatient', 'rememberPatient']);
         createPromise = specUtil.createServicePromise('patientCreate');
         registrationCardPrinter = jasmine.createSpyObj('registrationCardPrinter', ['print']);
-        patientService.create.andReturn(createPromise);
+        patientService.create.and.returnValue(createPromise);
         appDescriptor = {
             getExtensions : function(id) {
                 return [
@@ -51,8 +51,8 @@ describe('CreatePatientController', function () {
             }
         };
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor'])
-        appService.getAppDescriptor.andReturn(appDescriptor);
-        location.url.andReturn(location);
+        appService.getAppDescriptor.and.returnValue(appDescriptor);
+        location.url.and.returnValue(location);
         //$route.current.params.visitType
         route = { "current" : { "params" : { "visitType" : "REG" } }};
     }]));
@@ -103,7 +103,7 @@ describe('CreatePatientController', function () {
                 var createVisitPromise = specUtil.createServicePromise('createVisit');
                 beforeEach(function () {
                     scope.submitSource = 'startVisit';
-                    spyOn(scope.visitControl, 'createVisit').andReturn(createVisitPromise);
+                    spyOn(scope.visitControl, 'createVisit').and.returnValue(createVisitPromise);
                 });
 
                 it('should create visit', function () {
@@ -128,7 +128,7 @@ describe('CreatePatientController', function () {
 
                     it('should set registration date to today', function () {
                         var today = new Date("01-10-2012");
-                        spyOn(dateUtil, 'now').andReturn(today);
+                        spyOn(dateUtil, 'now').and.returnValue(today);
                         createVisitPromise.callSuccessCallBack();
                         expect(scope.patient.registrationDate).toBe(today);
                     });
