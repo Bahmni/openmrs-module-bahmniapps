@@ -1,0 +1,15 @@
+<table ng-repeat="drugOrdersGroup in allTreatments" bindonce="allTreatments">
+    <thead>
+        <th colspan="3" bo-text="drugOrdersGroup.values[0].orderDate | date:'dd MMM, yyyy'"></th>
+    </thead>
+    <tbody>
+        <tr ng-repeat="drugOrder in drugOrdersGroup.values" >
+            <td class="drug"><h5 bo-text="drugOrder.name"></h5></td>
+            <td class="dosage">
+                <span bo-text="drugOrder.dose"></span>
+                <span bo-text="drugOrder.dosage"></span>
+            </td>
+            <td class="days"><span>for </span><span bo-text="drugOrder.days"></span> day(s)</td>
+        </tr>
+    </tbody>
+</table>

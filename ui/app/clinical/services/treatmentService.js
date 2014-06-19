@@ -26,11 +26,11 @@ angular.module('bahmni.clinical')
             return deferred.promise;
         };
 
-        var getPrescribedDrugOrders = function(patientUuid, numberOfVisits) {
+        var getPrescribedDrugOrders = function(patientUuid, includeActiveVisit, numberOfVisits) {
             var deferred = $q.defer();
-            $http.get(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/past", {
+            $http.get(Bahmni.Common.Constants.bahmniDrugOrderUrl, {
                 method: "GET",
-                params: { patientUuid: patientUuid, numberOfVisits: numberOfVisits  },
+                params: { patientUuid: patientUuid, numberOfVisits: numberOfVisits, includeActiveVisit: includeActiveVisit},
                 withCredentials: true
             }).success(function (response) {
                 var activeDrugOrders = response.map(orderDateFromStringToDate);
