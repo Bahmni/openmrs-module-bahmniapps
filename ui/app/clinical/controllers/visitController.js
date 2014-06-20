@@ -15,6 +15,9 @@ angular.module('bahmni.clinical')
             $scope.toggle = function (item) {
                 item.show = !item.show
             };
+            $scope.isNonEmpty = function(notes){
+                return notes.trim().length> 0
+            }
 
             $scope.testResultClass = function (line) {
                 var style = {};

@@ -186,6 +186,7 @@
   background: none;
   border: none;
   padding: 0;
+  width: 26px;
   &:hover {
     background: none;
     border: none;
@@ -193,6 +194,9 @@
   i {
     padding: 0 10px;
     color: #666;
+  }
+  i.icon-file-alt {
+    color: orange;
   }
 }
 

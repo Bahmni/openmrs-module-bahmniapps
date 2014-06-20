@@ -202,8 +202,11 @@
 
                     <span class="referred">Referred Out</span>
                     <button class="toggle fr">
-                        <i class="icon-plus-sign"  ng-hide="line.show"></i>
+                        <i class="icon-plus-sign" ng-hide="line.show"></i>
                         <i class="icon-minus-sign" ng-show="line.show"></i>
+                    </button>
+                    <button class="toggle fr">
+                        <i ng-class="{'icon-file-alt': isNonEmpty(line.notes)}"></i>
                     </button>
                 </td>
             </tr>
