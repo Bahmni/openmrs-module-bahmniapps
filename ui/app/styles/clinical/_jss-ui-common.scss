@@ -678,6 +678,40 @@ pre {
 
 .ngdialog.ngdialog-theme-default .ngdialog-content {
   width: 800px;
+  background: #fff;
+}
+
+.ngdialog-content {
+    font-size: 14px!important;
+    color: #333;
+    h2 {
+        color: #66b298;
+        border-bottom: 1px solid #66b298;
+        font-size: 18px;
+        font-weight: normal;
+        font-family: OpenSansBold;
+    }
+    table {
+        th {
+            background: #eee;
+            background-image: none;
+            color: #555;
+            padding: 5px 10px;
+        }      
+        tr:nth-child(even), tr:nth-child(odd) {
+            background: #fff;
+        }
+        tr th, tr td {
+            font-size: 14px;
+            color: #333;
+        }
+        tr {
+            td.days, td.dosage {
+                width: 150px;
+            }
+        }
+    }
+
 }
 // .abnormal-vitals-checkbox {
 //   margin-top: 7px!important;

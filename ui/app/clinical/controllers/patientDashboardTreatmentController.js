@@ -1,7 +1,7 @@
 angular.module('bahmni.clinical')
     .controller('PatientDashboardTreatmentController', ['$q', '$scope', '$stateParams', 'TreatmentService', 'spinner', function ($q, $scope, $stateParams, treatmentService, spinner) {
         $scope.drugOrderSections = {
-            "active": {displayName: "Active Treatment", orders: null},
+            "active": {displayName: "Active Prescription", orders: null},
             "past": {displayName: "Last Prescription", orders: null},
         }
 

@@ -45,6 +45,11 @@
     padding: 10px;
     font-family: OpenSansBold;
     margin-bottom: 0;
+    cursor: pointer;
+    &:hover {
+        background: #e1f9fe;
+        color: #52957e;
+    }
   }
   .placeholder-message {
     background: #ddd;
@@ -94,14 +99,14 @@
       color: red;
     }
   }
-  button {
-    display: none;
-    width: 100%;
-    max-width: 100%;
-    color: #006699;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-  }
+  // button {
+  //   display: none;
+  //   width: 100%;
+  //   max-width: 100%;
+  //   color: #006699;
+  //   border-top-left-radius: 0;
+  //   border-top-right-radius: 0;
+  // }
 }
 
 .dashboard-treatment-section {
@@ -250,5 +255,12 @@
 
 .testUnderPanel{
   padding-left: 20px;
+}
+
+.btn-expand {
+    i.icon-external-link {
+        color: #007fff;
+        padding-right: 0;
+    }
 }
 
