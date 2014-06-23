@@ -3,8 +3,8 @@
     <head>
         <meta charset="utf-8">
         <title>Emergency Patient Registration</title>
-        <link rel="stylesheet" href="../../lib/jquery/jquery-ui-1.10.4.custom.min.css"/>
         <!-- build:css ../emergency.min.css -->
+        <link rel="stylesheet" href="../../lib/jquery/jquery-ui-1.10.4.custom.min.css"/>
         <link rel="stylesheet" href="../../styles/registration.css"/>
         <!-- endbuild -->
     </head>
@@ -31,6 +31,9 @@
                 <div ng-view id="view-content"></div>
             </div>
         </div>
+
+        <!-- build:js ../emergency.min.js -->
+        <!-- The lib scripts are include here due to weird structure of emergency app which doen't work with grunt-filerev -->
         <script src="../../components/lodash/dist/lodash.min.js"></script>
         <script src="../../components/jquery/jquery.js"></script>
         <script src="../../lib/jquery/jquery-ui-1.10.4.custom.min.js"></script>
@@ -43,7 +46,6 @@
         <script src="../../components/angular-ui-select2/src/select2.js"></script>
         <script src="../../components/angular-bindonce/bindonce.js"></script>
 
-        <!-- build:js ../emergency.min.js -->
         <script src="../../common/constants.js"></script>
         <script src="../../common/util/init.js"></script>
         <script src="../../common/util/dateUtil.js"></script>

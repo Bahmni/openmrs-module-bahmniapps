@@ -17,7 +17,7 @@
 
                     <input obs-constraints obs="observation.primaryObs" ng-if="observation.primaryObs.isNumeric()"
                            ng-model="observation.value"
-                           ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}" only-number/>
+                           ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}" only-number="true"/>
                 </div>
 
                 <textarea ng-switch-when="text" ng-model="observation.value" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}">
@@ -81,7 +81,7 @@
                 <div ng-switch-when="html5InputDataType">
                     <input obs-constraints obs="observation"
                            ng-model="observation.value" ng-if="observation.isNumeric()"
-                           ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}" only-number/>
+                           ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}" only-number="true"/>
 
                     <input obs-constraints obs="observation" ng-if="!observation.isNumeric()"
                            ng-model="observation.value" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}"/>
