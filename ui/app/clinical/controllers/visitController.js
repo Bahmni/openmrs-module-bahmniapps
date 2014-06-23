@@ -16,7 +16,7 @@ angular.module('bahmni.clinical')
                 item.show = !item.show
             };
             $scope.isNonEmpty = function(notes){
-                return notes.trim().length> 0
+                return notes.trim().length> 1
             }
 
             $scope.testResultClass = function (line) {
