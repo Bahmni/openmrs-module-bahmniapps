@@ -25,12 +25,6 @@ var specUtil = {
         var deferred = Q.defer();
         deferred.resolve({"data": data});
         return deferred.promise;
-    },
-
-    waitFor: function (promise) {
-        promise.finally(function () {
-            dump("done waiting you chipmunk!")
-        });
-        return promise;
     }
+
 };

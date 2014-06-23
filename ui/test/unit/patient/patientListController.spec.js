@@ -48,8 +48,8 @@ describe("PatientListController", function () {
 
         beforeEach(function () {
             _spinner = jasmine.createSpyObj('spinner', ['forPromise']);
-            _spinner.forPromise.and.callFake(function (param) {
-                return specUtil.waitFor(param);
+            _spinner.forPromise.and.callFake(function (promiseParam) {
+                return promiseParam;
             });
 
             _appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
