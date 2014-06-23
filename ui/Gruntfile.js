@@ -214,11 +214,7 @@ module.exports = function (grunt) {
 
     grunt.renameTask('regarde', 'watch');
 
-    grunt.registerTask('test', [
-        'clean:debug',
-        'compass:debug',
-        'karma:unit'
-    ]);
+    grunt.registerTask('test', ['karma:unit']);
 
     grunt.registerTask('dist', [
         'clean:dist',
