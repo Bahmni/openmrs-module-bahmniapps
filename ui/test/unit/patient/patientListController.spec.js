@@ -59,9 +59,9 @@ describe("PatientListController", function () {
 
             _patientService = jasmine.createSpyObj('patientService', ['findPatients']);
             _patientService.findPatients.and.callFake(function (param) {
-                if (param === "emrapi.sqlSearch.activePatients") {
+                if (param.q === "emrapi.sqlSearch.activePatients") {
                     return specUtil.respondWith(allActivePatients)
-                } else if (param === "emrapi.sqlSearch.patientsToAdmit") {
+                } else if (param.q === "emrapi.sqlSearch.patientsToAdmit") {
                     return specUtil.respondWith(allActivePatientsForAdmission);
                 }
                 fail();
@@ -72,8 +72,10 @@ describe("PatientListController", function () {
             inject(function ($controller, $rootScope) {
                 scope = $rootScope.$new();
                 $rootScope.patientConfig = Bahmni.Registration.PatientConfig();
+                $rootScope.currentProvider = {uuid:"1111-2222"}
                 controller = $controller('PatientsListController', {
                     $scope: scope,
+                    $rootScope: $rootScope,
                     patientService: _patientService,
                     appService: _appService,
                     spinner: _spinner,
@@ -89,7 +91,7 @@ describe("PatientListController", function () {
                 controller.loaded.then(function () {
                     expect(_patientService.findPatients).toHaveBeenCalled();
                     expect(scope.searchResults.length).toBe(4);
-                    expect(scope.searchCriteria.type).toEqual({ name: 'All active patients', display: 'All active patients', handler: 'emrapi.sqlSearch.activePatients', forwardUrl: undefined, id: 'bahmni.clinical.patients.allPatients' });
+                    expect(scope.searchCriteria.type).toEqual({ name: 'All active patients', display: 'All active patients', handler: 'emrapi.sqlSearch.activePatients', forwardUrl: undefined, id: 'bahmni.clinical.patients.allPatients',params:undefined });
                     done();
                 })
             });

@@ -12,13 +12,10 @@ angular.module('bahmni.common.patient')
             return patient;
         };
 
-        this.findPatients = function (handler) {
+        this.findPatients = function (params) {
             return $http.get("/openmrs/ws/rest/v1/bahmnicore/sql" , {
                 method: "GET",
-                params: {
-                    q:handler,
-                    v: "full"
-                },
+                params: params,
                 withCredentials: true
             });
         };

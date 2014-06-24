@@ -69,7 +69,8 @@ angular.module('bahmni.common.patientSearch')
                         display: appExtn.extensionParams.display,
                         handler: appExtn.extensionParams.searchHandler,
                         forwardUrl: appExtn.extensionParams.forwardUrl,
-                        id: appExtn.id
+                        id: appExtn.id,
+                        params:appExtn.extensionParams.searchParams
                     });
                 });
                 $scope.searchTypes = allowedSearches;
@@ -87,8 +88,24 @@ angular.module('bahmni.common.patientSearch')
                 return  patient;
             }
 
+            var parametersForHandler = function(searchType) {
+                var params = {
+                    q:searchType.handler,
+                    v:"full"
+                }
+                if(searchType.params){
+                    searchType.params.forEach(function(param){
+                        if(param ==="provider_uuid"){
+                            params.provider_uuid = $rootScope.currentProvider.uuid;
+                        }
+                    });
+                }
+                return params;
+            }
+
             var fetchPatients = function (searchType) {
-                return patientService.findPatients(searchType.handler).then(function (response) {
+                var params = parametersForHandler(searchType)
+                return patientService.findPatients(params).then(function (response) {
                     var searchResults = response.data.map(function (patient) {
                         return mapBasic(patient);
                     });
