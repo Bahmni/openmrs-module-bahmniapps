@@ -178,6 +178,9 @@
 .disposition-section {
   li {
     border-bottom: 1px solid #eee;
+    .toggle i {
+        padding-right: 0;
+    }
   }
 }
 
@@ -186,7 +189,7 @@
   background: none;
   border: none;
   padding: 0;
-  width: 26px;
+  // width: 26px; 
   &:hover {
     background: none;
     border: none;
@@ -194,10 +197,17 @@
   i {
     padding: 0 10px;
     color: #666;
+    font-size: 22px;
   }
-  i.icon-file-alt {
-    color: orange;
+  .has-notes {
+    color: orange
   }
+}
+.has-toggle-btn {
+    border-right: 1px solid #fff!important;
+}
+.toggle-btn {
+    padding: 0;
 }
 
 .consult-notes {

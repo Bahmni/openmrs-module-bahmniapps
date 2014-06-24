@@ -158,7 +158,7 @@
         <table>
             <thead>
             <tr ng-click="toggle(labOrders)" ng-class="{'row-click':labOrders.accessionNotes}">
-                <th colspan="2">
+                <th colspan="3">
                     <span>Accession at </span>
                     <span bo-text="labOrders.encounterDateTime | date:'dd MMM yy hh:mm a'"></span>
                     <button class="toggle-btn fr" ng-if="labOrders.accessionNotes">
@@ -169,7 +169,7 @@
                 </th>
             </tr>
             <tr ng-show="labOrders.show">
-                <th colspan="2" class="notes inline-notes" ng-if="labOrders.accessionNotes">
+                <th colspan="3" class="notes inline-notes" ng-if="labOrders.accessionNotes">
                     <div ng-repeat="accessionNote in labOrders.accessionNotes" class="accession">
                         <pre class="left">{{accessionNote.text}}</pre>
                         <div class="footer-note fr">
@@ -182,7 +182,7 @@
             <tbody ng-repeat="line in labOrders.displayList">
             <!-- HACKTAG: Apparently bo-if makes this go into an infinite loop-->
             <tr ng-if="line.isSummary" ng-class="testResultClass(line)">
-                <td colspan="2" ng-hide="!line.name">
+                <td colspan="3" ng-hide="!line.name">
                     {{line.name}}
                 </td>
             </tr>
@@ -197,21 +197,19 @@
                       <span class="units">{{line.units}}</span>
                     </span>
                 </td>
-                <td class="value">
+                <td class="value has-toggle-btn">
                     {{line.value}}
-
                     <span class="referred">Referred Out</span>
+                </td>
+                <td class="toggle-btn">
                     <button class="toggle fr">
-                        <i class="icon-plus-sign" ng-hide="line.show"></i>
-                        <i class="icon-minus-sign" ng-show="line.show"></i>
-                    </button>
-                    <button class="toggle fr">
-                        <i ng-class="{'icon-file-alt': isNonEmpty(line.notes)}"></i>
+                        <i class="icon-plus-sign" ng-hide="line.show" ng-class="{'has-notes': isNonEmpty(line.notes)}"></i>
+                        <i class="icon-minus-sign" ng-show="line.show" ng-class="{'has-notes': isNonEmpty(line.notes)}"></i>
                     </button>
                 </td>
             </tr>
             <tr ng-show="!line.isSummary && line.show">
-                <td colspan="2" class="notes inline-notes">
+                <td colspan="3" class="notes inline-notes">
                     <strong class="left">Lab Tech Notes: </strong>
                     <pre class="left">{{line.notes}}</pre>
 
@@ -307,7 +305,7 @@
             <tr class="title">
                 <th>Drug Name</th>
                 <th>Dosage per Day</th>
-                <th>Duration</th>
+                <th colspan="2">Duration</th>
             </tr>
         </thead>
         <tbody ng-repeat="drugOrder in drugOrderGroup.orders">
@@ -318,12 +316,15 @@
                 <span bo-show="drugOrder.dosageForm" bo-text="drugOrder.dosageForm"></span>
                 <span bo-show="!drugOrder.dosageForm && !drugOrder.numberPerDosage" bo-text="' - '"></span>
             </td>
-            <td class="dosage-days">
+            <td class="dosage-days has-toggle-btn">
                 <div class="dosage">
                     <span><span class="copy">From </span>{{(drugOrder.startDate | date:'d MMM yy')}}<span
                             class="copy"> for </span>{{visit.numberOfDosageDaysForDrugOrder(drugOrder)}} day(s)</span>
                     <span bo-show="drugOrder.prn" class="prn">Take as required</span>
                 </div>
+
+            </td>
+            <td class="toggle-btn">
                 <button class="toggle fr">
                     <i class="icon-plus-sign"  ng-hide="drugOrder.show"></i>
                     <i class="icon-minus-sign" ng-show="drugOrder.show"></i>
