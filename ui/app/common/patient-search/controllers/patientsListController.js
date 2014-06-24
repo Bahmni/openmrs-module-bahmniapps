@@ -20,7 +20,7 @@ angular.module('bahmni.common.patientSearch')
             };
 
             $scope.switchSearchType = function (searchType) {
-                
+
                 $scope.searchCriteria.searchParameter = '';
                 $scope.searchCriteria.type = searchType;
                 resetPatientLists();
@@ -33,26 +33,31 @@ angular.module('bahmni.common.patientSearch')
                 }
             };
 
+            var updateVisiblePatients = function updateVisiblePatients() {
+                $scope.visiblePatients = $scope.searchResults.slice(0, $scope.tilesToFit);
+            };
+
             $scope.searchPatients = function () {
                 if ($scope.searchCriteria.type.handler) {
-                    if ($scope.searchCriteria.searchParameter != '') {
+                    if ($scope.searchCriteria.searchParameter == '') {
+                        $scope.searchResults = $scope.activePatients;
+                    } else {
                         $scope.searchResults = $scope.activePatients.filter(function (patient) {
                             return  matchesNameOrId(patient);
                         });
                     }
+                } else {
+                    spinner.forPromise(fetchPatientsByIdentifier($scope.searchCriteria.searchParameter)).then(function() {
+                        if ($scope.activePatients.length === 0 && $scope.searchCriteria.searchParameter != '') {
+                            $scope.noResultsMessage = "No results found";
+                        }
+                        if ($scope.activePatients.length === 1) {
+                            $scope.forwardPatient($scope.activePatients[0]);
+                        }
+                    });
                 }
-                else {
-                    spinner.forPromise(fetchPatientsByIdentifier($scope.searchCriteria.searchParameter));
-                    if ($scope.activePatients.length === 1) {
-                        $scope.forwardPatient($scope.activePatients[0]);
-                    }
-                }
-
+                updateVisiblePatients();
                 $scope.storeWindowDimensions();
-
-                if ($scope.activePatients.length === 0 && $scope.searchCriteria.searchParameter != '') {
-                    $scope.noResultsMessage = "No results found";
-                }
             };
 
             var setAllowedSearchTypes = function () {
@@ -87,7 +92,7 @@ angular.module('bahmni.common.patientSearch')
                     var searchResults = response.data.map(function (patient) {
                         return mapBasic(patient);
                     });
-                    updateSearchResults(searchResults);
+                    updatePatientList(searchResults);
                 })
             };
 
@@ -105,11 +110,12 @@ angular.module('bahmni.common.patientSearch')
                     var searchResults = response.data.results.map(function (patient) {
                         return mapBasic(patient);
                     });
-                    updateSearchResults(searchResults);
+                    updatePatientList(searchResults);
                 });
             };
 
-            var updateSearchResults = function (patientList) {
+            
+            var updatePatientList = function (patientList) {
                 $scope.activePatients = patientList;
                 $scope.searchResults = $scope.activePatients;
                 $scope.visiblePatients = $scope.searchResults.slice(0, $scope.tilesToFit);

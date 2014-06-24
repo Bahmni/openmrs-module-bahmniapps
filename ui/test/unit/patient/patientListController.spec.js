@@ -102,6 +102,7 @@ describe("PatientListController", function () {
                     scope.searchCriteria.searchParameter = "Gan";
                     scope.searchPatients();
                     expect(scope.searchResults.length).toBe(3);
+                    expect(scope.visiblePatients.length).toBe(3);
                     done();
                 });
             });
@@ -113,6 +114,7 @@ describe("PatientListController", function () {
                         scope.searchCriteria.searchParameter = "Gan";
                         scope.searchPatients();
                         expect(scope.searchResults.length).toBe(1);
+                        expect(scope.visiblePatients.length).toBe(1);
                         done();    
                     });
                 });
