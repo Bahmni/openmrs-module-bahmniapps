@@ -22,7 +22,7 @@ angular.module('authentication', ['ngCookies'])
         $httpProvider.responseInterceptors.push(interceptor);
     }).run(['$rootScope', '$window', function ($rootScope, $window) {
         $rootScope.$on('event:auth-loginRequired', function () {
-            $window.location = "/home/#/login?showLoginMessage=true";
+            $window.location = "../home/#/login?showLoginMessage=true";
         });
     }]).service('sessionService', ['$rootScope', '$http', '$q', '$cookieStore', function ($rootScope, $http, $q, $cookieStore) {
         var sessionResourcePath = '/openmrs/ws/rest/v1/session';
@@ -121,7 +121,7 @@ angular.module('authentication', ['ngCookies'])
                     scope.$apply(function() {
                         sessionService.destroy().then(
                             function () {
-                                $window.location = "/home/#/login";
+                                $window.location = "../home/#/login";
                             }
                         );
                     });

@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('adt', ['bahmni.common.patient', 'bahmni.common.patientSearch', 'bahmni.common.uiHelper', 'bahmni.common.conceptSet', 'authentication', 'bahmni.common.appFramework', 'httpErrorInterceptor', 'bahmni.adt', 'bahmni.common.domain', 'ui.router']);
-angular.module('adt').config(['$stateProvider', '$httpProvider', function($stateProvider, $httpProvider) {
+angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function($stateProvider, $httpProvider, $urlRouterProvider) {
+        $urlRouterProvider.otherwise('/patient/search');
         $stateProvider.state('patientsearch', {
             url: '/patient/search',
             data: {
-                backLinks: [{label: "Home", url: "/home"}]
+                backLinks: [{label: "Home", url: "../home"}]
             },
             views: {
                 'content': {
@@ -20,7 +21,7 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', function($state
         .state('patient', {
             url: '/patient/:patientUuid',
             data: {
-                backLinks: [{label: "Patient Q", url: "/adt/#/patient/search"}]
+                backLinks: [{label: "Patient Q", url: "#/patient/search"}]
             },
             abstract: true,
             views: {

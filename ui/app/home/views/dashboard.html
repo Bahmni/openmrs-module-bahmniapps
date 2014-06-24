@@ -1,6 +1,6 @@
 <div class="dashboard">
   <header class="reg-header">
-    <a class="header-logo" href="/home"><img src="/images/jss_logo.png" alt="Bahmni" title="Bahmni"></a>
+    <a class="header-logo" href="../home"><img src="../images/jss_logo.png" alt="Bahmni" title="Bahmni"></a>
     <button class="btn-user-info">
       <i class="icon-user-md icon-white small"></i>
       <i class="icon-caret-down icon-white mini"></i>
@@ -21,7 +21,7 @@
   <div class="apps">
     <ul>
         <li ng-repeat="extn in appExtensions">
-          <a ng-click="openApp(extn.url)" class="button app big"><i class="{{extn.icon}}"></i>{{extn.label}}</a>
+          <a ng-href="{{extn.url}}" class="button app big"><i class="{{extn.icon}}"></i>{{extn.label}}</a>
         </li>
     </ul>
   </div>

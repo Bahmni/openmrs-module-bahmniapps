@@ -15,7 +15,7 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
                     }
                 },
                 data: {
-                    backLinks: [{label: "Home", url: "/home"}]
+                    backLinks: [{label: "Home", url: "../home"}]
                 },
                 resolve: {
                     initialization: 'initialization'
@@ -25,7 +25,7 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
                 url: '/patient/:patientUuid',
                 abstract: true,
                 data: {
-                    backLinks: [{label: "Patient Q", url: "/clinical/#/patient/search"}]
+                    backLinks: [{label: "Patient Q", url: "#/patient/search"}]
                 },
                 views: {
                     'additional-header': { template: '<div ui-view="additional-header"></div>' },

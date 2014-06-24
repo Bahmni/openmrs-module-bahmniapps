@@ -2,10 +2,6 @@
 
 angular.module('bahmni.home')
     .controller('DashboardController', ['$scope', '$location', 'appService', '$q', 'sessionService', 'spinner', '$window', function ($scope, $location, appService, $q, sessionService, spinner, $window) {
-        $scope.openApp = function (appName) {
-            $window.location = "/" + appName;
-        }
-
         $scope.appExtensions = [];
 
         var initializeExtenstions = function() {
