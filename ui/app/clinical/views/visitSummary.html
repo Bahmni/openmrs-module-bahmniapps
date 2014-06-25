@@ -343,7 +343,7 @@
                 </button>
             </td>
         </tr>
-        <tr ng-show="drugOrder.show">
+        <tr ng-if="!print && drugOrder.show">
             <td colspan="7" class="inline-notes notes">
                 <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.notes}}</p>
 
@@ -356,6 +356,20 @@
                 </div>
             </td>
         </tr>
+        <tr ng-if="print && drugOrder.notes && drugOrder.notes.length > 0 ">
+            <td colspan="7" class="inline-notes notes">
+                <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.notes}}</p>
+
+                <div class="footer-note right">
+                    <span class="time-stamp">
+                      <span class="date">{{drugOrder.startDate | date:'dd MMM yy'}}</span>
+                      <span class="time">{{drugOrder.startDate | date :'hh:mm a'}}</span>
+                    </span>
+                    <span class="provider" bo-text="drugOrder.provider.name"></span>
+                </div>
+            </td>
+        </tr>
+
         </tbody>
     </table>
 </section>
