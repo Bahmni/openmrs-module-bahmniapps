@@ -176,7 +176,7 @@
             </thead>
             <tbody ng-repeat="line in labOrders.displayList">
             <!-- HACKTAG: Apparently bo-if makes this go into an infinite loop-->
-            <tr ng-if="line.isSummary" ng-class="testResultClass(line)">
+            <tr ng-if="line.isSummary && !print" ng-class="testResultClass(line)">
                 <td colspan="3" ng-hide="!line.name">
                     {{line.name}}
                 </td>
