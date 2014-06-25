@@ -47,6 +47,17 @@ module.exports = function (grunt) {
                 configFile: 'test/config/karma.conf.js'
             }
         },
+        coverage: {
+            options: {
+                thresholds: {
+                    'statements': 24.51,
+                    'branches': 9.66,
+                    'lines': 29.55,
+                    'functions': 14.32
+                },
+                dir: 'coverage',
+                root: '.'
+            }},
         compass: {
             options: {
                 sassDir: '<%= yeoman.app %>/styles',
@@ -214,7 +225,7 @@ module.exports = function (grunt) {
 
     grunt.renameTask('regarde', 'watch');
 
-    grunt.registerTask('test', ['karma:unit']);
+    grunt.registerTask('test', ['karma:unit', 'coverage']);
 
     grunt.registerTask('dist', [
         'clean:dist',

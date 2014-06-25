@@ -22,3 +22,4 @@ ui/app/styles/*.css
 test_out
 omod/src/main/webapp/*
 ui/.idea/
+coverage

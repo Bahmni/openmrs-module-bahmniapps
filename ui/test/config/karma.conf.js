@@ -33,17 +33,17 @@ module.exports = function (config) {
             'test/support/**/*.js',
             'test/unit/**/*.js'
         ],
-        reporters: ['dots', 'junit'],
+        reporters: ['junit', 'progress', 'coverage'],
+        preprocessors: {
+            'app/**/**/*.js': ['coverage']
+        },
+        coverageReporter: {
+            type: 'json',
+            dir: 'coverage/'
+        },
         junitReporter: {
             outputFile: 'output/unit.xml',
             suite: 'unit'
         }
     });
 };
-
-//singleRun = true;
-//autoWatch = false;
-
-//process.env['PHANTOMJS_BIN'] = 'node_modules/.bin/phantomjs';
-//browsers = ['PhantomJS'];
-//
