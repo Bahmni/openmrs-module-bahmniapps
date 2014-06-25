@@ -33,7 +33,7 @@
     text-transform: capitalize;
   }
 }
-.dashboard-observation-section {
+.dashboard-section {
   border: 1px solid #ccc;
   border-radius: 5px;
   margin: 1%;
@@ -247,7 +247,7 @@
 }
 .less-text {display: none;}
 .show-more {position: absolute; bottom: 0; font-size: 14px!important; height: 35px;}
-.dashboard-observation-section section.block.more {
+.dashboard-section section.block.more {
   height: auto;
   .less-text {display: inline-block;}
   .more-text {display: none;}
