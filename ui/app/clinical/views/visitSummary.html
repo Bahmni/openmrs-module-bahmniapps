@@ -203,12 +203,24 @@
                 </td>
                 <td class="toggle-btn">
                     <button class="toggle fr">
-                        <i class="icon-plus-sign" ng-hide="line.show" ng-class="{'has-notes': isNonEmpty(line.notes)}"></i>
-                        <i class="icon-minus-sign" ng-show="line.show" ng-class="{'has-notes': isNonEmpty(line.notes)}"></i>
+                        <i class="icon-plus-sign" ng-hide="line.show" ng-class="{'has-notes': !isEmpty(line.notes)}"></i>
+                        <i class="icon-minus-sign" ng-show="line.show" ng-class="{'has-notes': !isEmpty(line.notes)}"></i>
                     </button>
                 </td>
             </tr>
-            <tr ng-show="!line.isSummary && line.show">
+            <tr ng-if="!print && !line.isSummary && line.show">
+                <td colspan="3" class="notes inline-notes">
+                    <strong class="left">Lab Tech Notes: </strong>
+                    <pre class="left">{{line.notes}}</pre>
+
+                    <div class="footer-note right">
+                        <span class="provider" bo-text="line.providerName"></span>
+                    </div>
+
+                </td>
+            </tr>
+
+            <tr ng-if="print && line.notes && line.notes.trim().length > 0 && !line.isSummary">
                 <td colspan="3" class="notes inline-notes">
                     <strong class="left">Lab Tech Notes: </strong>
                     <pre class="left">{{line.notes}}</pre>

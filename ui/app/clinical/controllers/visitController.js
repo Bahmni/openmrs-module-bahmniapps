@@ -15,8 +15,11 @@ angular.module('bahmni.clinical')
             $scope.toggle = function (item) {
                 item.show = !item.show
             };
-            $scope.isNonEmpty = function(notes){
-                return notes.trim().length> 1
+            $scope.isEmpty = function (notes) {
+                if (notes) {
+                    return notes.trim().length < 1;
+                }
+                return true;
             }
 
             $scope.testResultClass = function (line) {
