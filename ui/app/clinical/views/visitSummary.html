@@ -2,7 +2,6 @@
     <p class="no-visit" ng-show="!visit.hasData()">No visit information for this patient</p>
     <section ng-show="visit.hasDiagnosis()" class="block diagnosis">
         <h2>Diagnoses</h2>
-
         <div class="table history-diagnosis">
             <div class="row table-header">
                 <div class="col col1"><span>Diagnosis</span></div>
@@ -24,10 +23,8 @@
                                 <span class="order">{{diagnosis.firstDiagnosis.order}}</span>
                                 <span class="status">{{diagnosis.firstDiagnosis.diagnosisStatus}}</span>
                             </div>
-                            <div>
-                        <span class="time-stamp">
-                          <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span> 
-                        </span>
+                            <div ng-if="!print">
+                                <span class="time-stamp date">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
                                 <span class="provider" bo-text="diagnosis.firstDiagnosis.providers[0].name"></span>
                             </div>
                         </div>
@@ -39,10 +36,8 @@
                                 <span class="order">{{diagnosis.order}}</span>
                                 <span class="status">{{diagnosis.diagnosisStatus}}</span>
                             </div>
-                            <div>
-                        <span class="time-stamp">
-                          <span class="date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
-                        </span>
+                            <div ng-if="!print">
+                                <span class="time-stamp date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
                                 <span class="provider" bo-text="diagnosis.providers[0].name"></span>
                             </div>
                         </div>
