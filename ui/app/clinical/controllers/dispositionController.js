@@ -32,13 +32,24 @@ angular.module('bahmni.clinical')
             $scope.dispositionNote = {concept: {uuid: $scope.dispositionNoteConceptUuid }};
         };
 
+        var getSelectedConceptName = function(dispositionCode){
+            var selectedDispositionConceptName;
+            $scope.dispositionActions.forEach(function(dispositionAction){
+                if(dispositionAction.code === dispositionCode){
+                    selectedDispositionConceptName = dispositionAction.name;
+                }
+            })
+            return selectedDispositionConceptName;
+        };
+
         var getSelectedDisposition = function(){
             if($scope.dispositionCode){
                 if(!$scope.dispositionNote.value){ $scope.dispositionNote.voided = true};
                 return {
                     dispositionDateTime : new Date(),
                     additionalObs :[$scope.dispositionNote],
-                    code: $scope.dispositionCode
+                    code: $scope.dispositionCode,
+                    conceptName: getSelectedConceptName($scope.dispositionCode)
                 };
             }
         };

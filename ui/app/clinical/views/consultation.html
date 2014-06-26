@@ -113,9 +113,7 @@
     </section>
     <section class="block disposition">
         <h2>Disposition</h2>
-
-
-            <ul ng-if="disposition.conceptName">
+            <ul ng-if="disposition.code && !disposition.voided">
                 <li>
                     <span>{{disposition.conceptName}}</span><span class="disposition-time">{{disposition.dispositionDateTime | date :'dd-MM-yyyy hh:mm' }}</span>
                     <div class="notes inline-notes" ng-if="disposition.additionalObs[0].value">
@@ -123,7 +121,6 @@
                     </div>
                 </li>
             </ul>
-
     </section>
     <section class="block consultationNote">
         <h2>Consultation Notes</h2>
