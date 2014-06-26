@@ -96,11 +96,11 @@ h2, .diagnosis h2 {
   page-break-inside: avoid;
   padding: 2px 5px;
 }
-tr.ng-hide {
-  display: table-row!important;
-  td.notes.inline-notes {
+// tr.ng-hide {
+//   display: table-row!important;
+// }
+td.notes.inline-notes {
     display: table-cell!important;
-  }
 }
 div.notes.inline-notes {
   width: 98%;
@@ -178,4 +178,11 @@ button, input[type="button"] {
   font-weight: bold;
   color: #222;
   font-size: 15px!important;
+}
+.consult-notes.ng-hide {
+    border: 0;
+    background: none;
+}
+.disposition-section ul.block-content li .inline-notes.notes {
+    margin-bottom: 0;
 }
