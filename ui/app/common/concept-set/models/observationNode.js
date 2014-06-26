@@ -56,6 +56,7 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUICo
 
     this.conceptUIConfig = conceptUIConfig;
     this.isObservationNode = true;
+    this.uniqueId = _.uniqueId('observation_');
     this.observationDateTime = Bahmni.Common.Util.DateUtil.now();
     if (savedObs) {
         this.uuid = savedObs.uuid;

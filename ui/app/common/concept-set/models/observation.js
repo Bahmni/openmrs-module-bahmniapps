@@ -3,6 +3,7 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
     this.isObservation = true;
     this.conceptUIConfig = conceptUIConfig;
     this.observationDateTime = Bahmni.Common.Util.DateUtil.now();
+    this.uniqueId = _.uniqueId('observation_');
 
     if (savedObs) {
         this.uuid = savedObs.uuid;
