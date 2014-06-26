@@ -1,7 +1,7 @@
 
 <div class="observations-tab">
 <div class="vitals form-horizontal">
-    <fieldset ng-if="observation.isObservationNode">
+    <fieldset class="leaf-observation-node" ng-if="observation.isObservationNode">
         <div class="form-group">
             <label class="control-label" for="{{observation.uniqueId}}">
                 <span ng-bind="observation.primaryObs.label"></span>
@@ -71,7 +71,7 @@
         </div>
     </fieldset>
 
-    <fieldset ng-if="observation.groupMembers.length === 0">
+    <fieldset class="leaf-observation-node" ng-if="observation.groupMembers.length === 0">
         <div class="form-group">
             <label class="control-label" for="{{observation.uniqueId}}">
                 <span ng-bind="observation.label"></span>
