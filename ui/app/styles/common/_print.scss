@@ -1,0 +1,21 @@
+pre {
+  white-space: pre-wrap;
+}
+
+/** Start: Doesn't work on Chrome **/
+
+thead{
+  display:table-header-group;/*repeat table headers on each page*/
+}
+tbody{
+  display:table-row-group;
+}
+tfoot{
+  display:table-footer-group;/*repeat table footers on each page*/
+}
+
+tr {
+  page-break-inside:avoid;
+}
+
+/** End: Doesn't work on Chrome **/
