@@ -23,7 +23,7 @@ Bahmni.Clinical.Visit = (function(){
 
         var resultGrouper = new Bahmni.Clinical.ResultGrouper()
         var observationGroupingFunction = function (obs) {
-            return obs.observationDateTime.substring(0, 10);
+            return Bahmni.Common.Util.DateUtil.getDateWithoutHours(obs.observationDateTime);
         };
         this.consultationNoteGroups = resultGrouper.group(consultationNotes, observationGroupingFunction, 'obs', 'date');
         this.observationGroups = resultGrouper.group(observations, observationGroupingFunction, 'obs', 'date')

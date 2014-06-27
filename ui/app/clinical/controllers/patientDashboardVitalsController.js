@@ -28,7 +28,7 @@ angular.module('bahmni.clinical')
         };
 
         var observationGroupingFunction = function (obs) {
-            return obs.observationDateTime;
+            return Bahmni.Common.Util.DateUtil.getDateWithoutHours(obs.observationDateTime);
         };
 
         var createPatientSummary = function () {

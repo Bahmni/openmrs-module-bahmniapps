@@ -56,6 +56,10 @@ Bahmni.Common.Util.DateUtil = {
 	    return this.getDate(this.now());
 	},
 
+	getDateWithoutHours: function(dateString){
+	    return moment(dateString).toDate().setHours(0,0,0,0);
+	},
+
     isSameDate: function(date1, date2) {
     	if(date1 == null || date2 == null) {
     		return false;
