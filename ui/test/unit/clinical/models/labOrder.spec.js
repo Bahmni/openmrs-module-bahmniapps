@@ -37,7 +37,7 @@ describe('Lab Order', function () {
                                     "set": false,
                                     "dataType": "Text"
                                 },
-                                "voided": false,
+                                "xvoided": false,
                                 "provider": {
                                     "name": "Lab System"
                                 }

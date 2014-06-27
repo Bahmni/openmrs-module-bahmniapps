@@ -65,12 +65,14 @@ describe('OrdersMapper', function () {
             order.drugName = drugName;
             return order;
         },
-        createTestOrder = function (testName, date) {
+        createTestOrder = function (testName, date, voided) {
             var order = sampleTestOrder();
             order.uuid = Bahmni.Tests.genUUID();
             order.dateCreated = date;
             order.startDate = date;
             order.concept.name = testName;
+            if(voided)
+                order.voided = voided;
             return order;
         };
 
@@ -156,6 +158,22 @@ describe('OrdersMapper', function () {
         expect(sortedOrders[0].concept.name).toBe("Test2");
         expect(sortedOrders[1].concept.name).toBe("Test1");
     });
+
+    it("should remove tests that are voided", function(){
+        var firstTestOrder = createTestOrder("Test1", "2014-03-24T14:38:13.000+0530");
+        var secondTestOrder = createTestOrder("Test2", "2014-03-24T14:38:13.000+0530", true);
+        var thirdTestOrder = createTestOrder("Test3", "2014-03-25T14:38:13.000+0530");
+
+        var allTestsAndPanelsConcept = {setMembers:[{name:{name:"Test2"}}, {name:{name:"Test3"}}, {name:{name:"Test1"}}]};
+        var encounterTransactions = [
+            {providers: [sampleProvider()], testOrders: [firstTestOrder, secondTestOrder, thirdTestOrder], observations: []}
+        ];
+
+        var sortedOrders = new Bahmni.Clinical.OrdersMapper().map(encounterTransactions, 'testOrders', allTestsAndPanelsConcept);
+
+        expect(sortedOrders[0].concept.name).toBe("Test3");
+        expect(sortedOrders[1].concept.name).toBe("Test1");
+    })
 
     it("should sort tests under panel", function () {
         var panelOrder = createTestOrder("Panel1", "2014-03-25T14:38:13.000+0530");
