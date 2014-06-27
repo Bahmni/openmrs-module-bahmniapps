@@ -70,11 +70,16 @@ Bahmni.ConceptSet.Observation.prototype = {
         return ['Date', 'Numeric'].indexOf(this.getDataTypeName()) != -1;
     },
 
+    isGrid: function () {
+        return this.getConceptUIConfig().grid;
+    },
+
     getControlType: function () {
         if (this.getConceptUIConfig().freeTextAutocomplete) return "freeTextAutocomplete";
         if (this.isHtml5InputDataType()) return "html5InputDataType";
         if (this.isText()) return "text";
         if (this.isCoded()) return this._getCodedControlType();
+        if (this.isGrid()) return "grid";
         return "unknown";
     },
 
@@ -130,6 +135,10 @@ Bahmni.ConceptSet.Observation.prototype = {
 
     isRequired: function () {
         return this.getConceptUIConfig().required || false;
+    },
+
+    isFormElement: function() {
+        return this.groupMembers.length === 0 || this.isGrid();
     },
 
     _hasValidChildren: function (checkRequiredFields, conceptSetRequired) {

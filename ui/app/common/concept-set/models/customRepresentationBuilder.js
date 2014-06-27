@@ -5,8 +5,8 @@ Bahmni.ConceptSet.CustomRepresentationBuilder = {
         var customRepresentation = singleEntityString;
         for (var i = 0; i < numberOfLevels; i++) {
             customRepresentation = customRepresentation.replace("{{entity_fileds}}", singleEntityString);
-        };
-        customRepresentation = customRepresentation.replace("," + childPropertyRep, '');;
+        }
+        customRepresentation = customRepresentation.replace("," + childPropertyRep, '');
         return customRepresentation;
 	}
-}
+};

@@ -58,15 +58,15 @@ angular.module('bahmni.common.conceptSet')
             '</form>';
 
         var numberOfLevels = appService.getAppDescriptor().getConfigValue('maxConceptSetLevels') || 4;
-        var fields = ['uuid','name','set','hiNormal','lowNormal','units','conceptClass','datatype'];
-        var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels)
+        var fields = ['uuid','name','set','hiNormal','lowNormal','units','conceptClass','datatype', 'answers:(uuid,name,displayString,names)', 'descriptions'];
+        var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels);
 
         var controller = function ($scope, conceptSetService, conceptSetUiConfigService, spinner) {
             var conceptSetName = $scope.conceptSetName;
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
             var observationMapper = new Bahmni.ConceptSet.ObservationMapper();
             var validationHandler = $scope.validationHandler() || contextChangeHandler;
-    
+
             spinner.forPromise(conceptSetService.getConceptSetMembers({name: conceptSetName, v: "custom:" + customRepresentation})).then(function (response) {
                 var conceptSet = response.data.results[0];
                 $scope.rootObservation = conceptSet ? observationMapper.map($scope.observations, conceptSet, conceptSetUIConfig.value || {}) : null;
@@ -123,4 +123,30 @@ angular.module('bahmni.common.conceptSet')
             template: template,
             controller: controller
         }
-    }]);
+    }])
+    .directive('gridRow', function () {
+        return {
+            restrict:'E',
+            scope:{ observation:'='},
+            link:function(scope, element, attrs){
+                if(attrs.dirtyCheckFlag){
+                    scope.hasDirtyFlag = true;
+                }
+            },
+            controller:function ($scope) {
+                $scope.select = function (answer) {
+                    if ($scope.observation.value && $scope.observation.value.uuid === answer.uuid) {
+                        $scope.observation.value = null;
+                    } else {
+                        $scope.observation.value = answer;
+                    }
+                };
+
+                $scope.getAnswerDisplayName = function(answer) {
+                    var shortName = _.first(answer.names.filter(function(name) {return name.conceptNameType === 'SHORT'}));
+                    return  shortName  ? shortName.name : answer.displayString;
+                };
+            },
+            template:"<span ng-repeat='answer in observation.possibleAnswers'><button ng-class='{selectedgridrowelement: observation.value.uuid == answer.uuid}' ng-click='select(answer)'>{{getAnswerDisplayName(answer)}}</button></span>"
+        };
+    });;
