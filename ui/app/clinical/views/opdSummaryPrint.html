@@ -11,7 +11,7 @@
           <table>
             <tr>
               <td colspan="2">Name: <span class="value">{{patient.name}}</span></td>
-              <td>Age / Sex: <span class="value">{{patient.birthdate | age:visit.dateStarted}} / {{patient.gender}}</span></td>
+              <td>Age / Sex: <span class="value">{{patient.birthdate | dateToAge:visit.dateStarted}} / {{patient.gender}}</span></td>
             </tr>
             <tr>          
               <td>Registration No. <span class="value">{{patient.identifier}}</span></td>

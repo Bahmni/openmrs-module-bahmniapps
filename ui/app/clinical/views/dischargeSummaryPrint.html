@@ -35,7 +35,7 @@
             <table>
                 <tr>
                     <td>Name: <span class="value">{{patient.name}}</span></td>
-                    <td>Age / Sex: <span class="value">{{patient.birthdate | age:visit.getDischargeDispositionEncounterDate()}} / {{patient.gender}}</span>
+                    <td>Age / Sex: <span class="value">{{patient.birthdate | dateToAge:visit.getDischargeDispositionEncounterDate()}} / {{patient.gender}}</span>
                     </td>
                     <td>Registration No. <span class="value">{{patient.identifier}}</span></td>
                 </tr>

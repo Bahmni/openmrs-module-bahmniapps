@@ -1,1 +1,1 @@
-angular.module('bahmni.registration', ['bahmni.common.domain', 'bahmni.common.util', 'bahmni.common.uiHelper', 'bahmni.common.conceptSet','infinite-scroll', 'ngRoute']);
+angular.module('bahmni.registration', ['bahmni.common.domain', 'bahmni.common.util', 'bahmni.common.uiHelper', 'bahmni.common.conceptSet','infinite-scroll', 'ngRoute', 'bahmni.common.patient']);
