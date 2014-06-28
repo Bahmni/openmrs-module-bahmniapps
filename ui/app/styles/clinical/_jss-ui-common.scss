@@ -713,6 +713,22 @@ pre {
     }
 
 }
+@media screen and (max-width: 1000px) {
+    .ui-autocomplete {
+        .ui-menu-item{
+            border-bottom: 1px solid #bbb;
+        }
+        .ui-menu-item a{
+            padding: 10px 5px;
+            &:active, &:focus {
+                background: #fef9e2;
+                border: 1px solid #c77405;
+                color: #c77405;
+                font-weight: bold;
+            }
+        }
+    }
+}
 // .abnormal-vitals-checkbox {
 //   margin-top: 7px!important;
 // }
