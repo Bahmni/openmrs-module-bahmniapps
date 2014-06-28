@@ -4,10 +4,10 @@
         <h2>Diagnoses</h2>
         <div class="table history-diagnosis">
             <div class="row table-header">
-                <div class="col col1"><span>Diagnosis</span></div>
-                <div class="col col2"><span>Initial</span></div>
-                <div class="col col3"><span>Current</span></div>
-                <div class="col col4"><span>Revised</span></div>
+                <div class="col col1"><span class="table-head-title">Diagnosis</span></div>
+                <div class="col col2"><span class="table-head-title">Initial</span></div>
+                <div class="col col3"><span class="table-head-title">Current</span></div>
+                <div class="col col4"><span class="table-head-title">Revised</span></div>
             </div>
 
             <div class="table-body">
@@ -96,7 +96,7 @@
     </section>
 </section>
 <section class="block laborder-section" ng-show="visit.hasLabTests()">
-    <div ng-if="visit.admissionDate">
+    <div ng-if="visit.admissionDate && !print">
         <h2 class="ipd-investigation-title">Investigations Chart</h2>
         <table class="ipd-investigation">
             <thead>
@@ -267,7 +267,7 @@
     </ul>
 </section>
 
-<section class="block ipd-treatment-section" ng-if="visit.hasIPDDrugOrdes()">
+<section class="block ipd-treatment-section" ng-if="visit.hasIPDDrugOrdes() && !print">
     <h2>Treatment Chart</h2>
     <table>
         <thead>
@@ -307,12 +307,12 @@
     <table ng-repeat="drugOrderGroup in visit.drugOrderGroups" ng-show="visit.showTreatmentSection">
  	 <thead>
             <tr>
-                <th class="drugorder-date" colspan="4"><strong>{{(drugOrderGroup.date | date:'dd MMM yy')}}</strong></th>
+                <th class="drugorder-date" colspan="4"><strong><span class="table-head-title">{{(drugOrderGroup.date | date:'dd MMM yy')}}</span></strong></th>
             </tr>
             <tr class="title">
-                <th>Drug Name</th>
-                <th>Dosage per Day</th>
-                <th colspan="2">Duration</th>
+                <th><span class="table-head-title">Drug Name</span></th>
+                <th><span class="table-head-title">Dosage per Day</span></th>
+                <th colspan="2"><span class="table-head-title">Duration</span></th>
             </tr>
         </thead>
         <tbody ng-repeat="drugOrder in drugOrderGroup.orders">
@@ -339,7 +339,7 @@
             </td>
         </tr>
         <tr ng-if="!print && drugOrder.show">
-            <td colspan="7" class="inline-notes notes">
+            <td colspan="4" class="inline-notes notes">
                 <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.notes}}</p>
 
                 <div class="footer-note right">
@@ -352,7 +352,7 @@
             </td>
         </tr>
         <tr ng-if="print && drugOrder.notes && drugOrder.notes.length > 0 ">
-            <td colspan="7" class="inline-notes notes">
+            <td colspan="4" class="inline-notes notes">
                 <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.notes}}</p>
 
                 <div class="footer-note right">

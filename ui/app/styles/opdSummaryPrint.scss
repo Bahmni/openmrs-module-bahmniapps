@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@import "common/print";
 @page {
   margin-left: 0.2cm;
   margin-right: 0.2cm;
@@ -185,4 +186,14 @@ button, input[type="button"] {
 }
 .disposition-section ul.block-content li .inline-notes.notes {
     margin-bottom: 0;
+}
+strong {
+    font-family: arial!important;
+}
+.table-head-title {
+    font-family: arial!important;
+    font-weight: bold;
+    page-break-inside: avoid;
+    display: inline-block!important;
+    color: #333;
 }
