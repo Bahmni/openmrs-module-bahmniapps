@@ -35,11 +35,21 @@ module.exports = function (config) {
         ],
         reporters: ['junit', 'progress', 'coverage'],
         preprocessors: {
-            'app/**/**/*.js': ['coverage']
+            'app/common/**/*.js': ['coverage'],
+            'app/adt/**/*.js': ['coverage'],
+            'app/clinical/**/*.js': ['coverage'],
+            'app/document-upload/**/*.js': ['coverage'],
+            'app/orders/**/*.js': ['coverage'],
+            'app/home/**/*.js': ['coverage'],
+            'app/registration/**/*.js': ['coverage'],
+            'app/trends/**/*.js': ['coverage']
         },
         coverageReporter: {
-            type: 'json',
-            dir: 'coverage/'
+            reporters: [
+                {type: 'json', dir: 'coverage/' },
+                {type: 'html', dir: 'coverage/' },
+                {type: 'text-summary'}
+            ]
         },
         junitReporter: {
             outputFile: 'output/unit.xml',
