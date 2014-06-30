@@ -23,7 +23,7 @@ var specUtil = {
 
     respondWith: function (data) {
         var deferred = Q.defer();
-        deferred.resolve({"data": data});
+        deferred.resolve(data);
         return deferred.promise;
     }
 

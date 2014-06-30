@@ -60,9 +60,9 @@ describe("PatientListController", function () {
             _patientService = jasmine.createSpyObj('patientService', ['findPatients']);
             _patientService.findPatients.and.callFake(function (param) {
                 if (param.q === "emrapi.sqlSearch.activePatients") {
-                    return specUtil.respondWith(allActivePatients)
+                    return specUtil.respondWith({"data": allActivePatients})
                 } else if (param.q === "emrapi.sqlSearch.patientsToAdmit") {
-                    return specUtil.respondWith(allActivePatientsForAdmission);
+                    return specUtil.respondWith({"data": allActivePatientsForAdmission});
                 }
                 fail();
             });
