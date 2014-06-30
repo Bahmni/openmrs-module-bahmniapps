@@ -197,6 +197,14 @@ angular.module('opd.documentupload')
                 return $scope.currentVisit && $scope.currentVisit.uuid === visit.uuid;
             };
 
+            function getEncounterStartDateTime(visit) {
+                var currentDate = new Date();
+                if(visit.endDate()){
+                    return currentDate <= visit.endDate() ? currentDate : visit.startDate();
+                }
+                return currentDate;
+            }
+
             var createVisitDocument = function (visit) {
                 var visitDocument = {};
                 visitDocument.patientUuid = $scope.patient.uuid;
@@ -204,7 +212,7 @@ angular.module('opd.documentupload')
                 visitDocument.visitStartDate = visit.startDate();
                 visitDocument.visitEndDate = visit.endDate();
                 visitDocument.encounterTypeUuid = encounterTypeUuid;
-                visitDocument.encounterDateTime = visitDocument.visitStartDate;
+                visitDocument.encounterDateTime = getEncounterStartDateTime(visit);
                 visitDocument.providerUuid = $rootScope.currentProvider.uuid;
                 visitDocument.visitUuid = visit.uuid;
                 visitDocument.documents = [];
@@ -231,7 +239,7 @@ angular.module('opd.documentupload')
 
             $scope.setDefaultEndDate = function(newVisit) {
                 if(!newVisit.stopDatetime){
-                    var date = DateUtil.parse(newVisit.endDate());
+                    var date = newVisit.endDate() ? DateUtil.parse(newVisit.endDate()) : new Date();
                     $scope.newVisit.stopDatetime = moment(date).format("YYYY-MM-DD");
                 }
             };
