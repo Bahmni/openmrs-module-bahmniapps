@@ -1,0 +1,73 @@
+//start - back btn will be changed globally, temp styling added.
+.ngdialog-close {
+    display: none;
+}
+.btn-wrap {
+    background: url(../images/sprites.png) no-repeat;
+    background-position: 0 -108px;
+    padding: 0px 20px;
+    margin: 3px 20px;
+    display: inline-block;
+    .ngdialog-close.template-back {
+        padding: 15px 10px 15px 0;
+        background: url(../images/sprites.png) repeat-x 0 -181px;
+        display: inline-block;
+        border-radius: 5px;
+        border: 0;
+        border-right: 1px solid #A09F9F;
+        color: #fff;
+        &:before {
+            content: "";
+        }
+    }
+}
+//end - back btn will be changed globally, temp styling added.
+
+
+.template-header {
+    height: 50px;
+    background: #00463f;
+    border-radius: 0;
+    margin-bottom: 15px;
+}
+.template-container {
+    padding: 0 20px 20px 20px;
+}
+
+.ngdialog-content {
+    font-size: 14px!important;
+    color: #333;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    h2 {
+        color: #66b298;
+        border-bottom: 1px solid #66b298;
+        font-size: 18px;
+        font-weight: normal;
+        font-family: OpenSansBold;
+    }
+    table {
+        th {
+            background: #eee;
+            background-image: none;
+            color: #555;
+            padding: 5px 10px;
+        }      
+        tr:nth-child(even), tr:nth-child(odd) {
+            background: #fff;
+        }
+        tr th, tr td {
+            font-size: 14px;
+            color: #333;
+        }
+        tr {
+            td.days, td.dosage {
+                width: 150px;
+            }
+        }
+    }
+
+}

@@ -676,56 +676,17 @@ pre {
   }
 }
 
-.ngdialog.ngdialog-theme-default .ngdialog-content {
-  width: 800px;
-  background: #fff;
-}
-
-.ngdialog-content {
-    font-size: 14px!important;
-    color: #333;
-    h2 {
-        color: #66b298;
-        border-bottom: 1px solid #66b298;
-        font-size: 18px;
-        font-weight: normal;
-        font-family: OpenSansBold;
+.ui-autocomplete {
+    .ui-menu-item{
+        border-bottom: 1px solid #bbb;
     }
-    table {
-        th {
-            background: #eee;
-            background-image: none;
-            color: #555;
-            padding: 5px 10px;
-        }      
-        tr:nth-child(even), tr:nth-child(odd) {
-            background: #fff;
-        }
-        tr th, tr td {
-            font-size: 14px;
-            color: #333;
-        }
-        tr {
-            td.days, td.dosage {
-                width: 150px;
-            }
-        }
-    }
-
-}
-@media screen and (max-width: 1000px) {
-    .ui-autocomplete {
-        .ui-menu-item{
-            border-bottom: 1px solid #bbb;
-        }
-        .ui-menu-item a{
-            padding: 10px 5px;
-            &:active, &:focus {
-                background: #fef9e2;
-                border: 1px solid #c77405;
-                color: #c77405;
-                font-weight: bold;
-            }
+    .ui-menu-item a{
+        padding: 10px 5px;
+        &:active, &:focus {
+            background: #fef9e2;
+            border: 1px solid #c77405;
+            color: #c77405;
+            font-weight: bold;
         }
     }
 }
