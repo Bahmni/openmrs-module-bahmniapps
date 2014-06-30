@@ -91,14 +91,8 @@ angular.module('bahmni.common.patientSearch')
             var parametersForHandler = function(searchType) {
                 var params = {
                     q:searchType.handler,
-                    v:"full"
-                }
-                if(searchType.params){
-                    searchType.params.forEach(function(param){
-                        if(param ==="provider_uuid"){
-                            params.provider_uuid = $rootScope.currentProvider.uuid;
-                        }
-                    });
+                    v:"full",
+                    provider_uuid:$rootScope.currentProvider.uuid
                 }
                 return params;
             }
