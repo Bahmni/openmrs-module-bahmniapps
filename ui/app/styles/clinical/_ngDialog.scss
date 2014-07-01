@@ -29,9 +29,28 @@
     background: #00463f;
     border-radius: 0;
     margin-bottom: 15px;
+    h1 {
+        display: inline-block;
+        color: #ddd;
+    }
+    h2 {
+        display: inline-block;
+        width: auto;
+        float: right;
+        margin: 15px 20px;
+    }
 }
 .template-container {
     padding: 0 20px 20px 20px;
+    section {
+        margin-bottom: 15px;
+    }
+    table {
+        margin-top: 5px;
+    }
+    .ipd-investigation tr th {
+        background: #eee;
+    }
 }
 
 .ngdialog-content {
@@ -42,6 +61,8 @@
     bottom: 0;
     left: 0;
     right: 0;
+    overflow: auto;
+    clear: both;
     h2 {
         color: #66b298;
         border-bottom: 1px solid #66b298;
