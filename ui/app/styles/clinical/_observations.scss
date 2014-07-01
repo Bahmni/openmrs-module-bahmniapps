@@ -253,8 +253,22 @@ concept-set {
     margin-top: 10px;
   }
 }
-
-
-.selectedgridrowelement {
-  background: lightskyblue;
+.grid-row {
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+}
+.grid-row-element {
+    margin: 0 5px 5px 0;
+    // width: 200px;
+    .icon-ok {
+        display: none;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+}
+.grid-row-element.active {
+    color: #457FAC;
+    .icon-ok {
+        display: inline-block;
+    }
 }
