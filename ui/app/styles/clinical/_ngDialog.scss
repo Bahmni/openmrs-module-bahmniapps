@@ -51,6 +51,14 @@
     .ipd-investigation tr th {
         background: #eee;
     }
+    td.value {
+        width: 50%;
+    }
+    table.ipd-investigation td {
+        display: block;
+        min-height: 1.79em;
+        text-align: left;
+    }
 }
 
 .ngdialog-content {
