@@ -145,6 +145,10 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.groupMembers.every(function (member) {
             return member.isValid(checkRequiredFields, conceptSetRequired)
         });
+    },
+
+    markAsNonCoded: function() {
+      this.markedAsNonCoded = !this.markedAsNonCoded;
     }
 
 };

@@ -42,11 +42,11 @@
                     <!--concept-set-uuid="observation.getConceptUIConfig().freeTextAutocomplete.conceptSetUuid"-->
                     <!--TODO : check if jss-config is meant to have uuid Mujir, Shruthi-->
 
-                    <div class="checkbox-inline" ng-if="!observation.primaryObs.isCoded()">
-                        <input type="checkbox" ng-model="observation.markedAsNonCoded" required="required"
-                               id="addNewAnswer-{{$index}}">
-
-                        <label class="add-new checkbox-btn" for="addNewAnswer-{{$index}}">Add New?</label>
+                    <div>
+                        <button type="button" ng-model="observation.markedAsNonCoded" class="small-btn"
+                                   ng-click="observation.markAsNonCoded()"
+                               ng-class="{'illegalValue': observation.primaryObs.value.length > 0 && !observation.markedAsNonCoded, active: observation.markedAsNonCoded}"
+                                ng-disabled="observation.primaryObs.isCoded() && observation.primaryObs.value"><span></span>Accept</button>
                     </div>
                 </div>
 

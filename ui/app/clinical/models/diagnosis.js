@@ -91,8 +91,12 @@ Bahmni.Clinical.Diagnosis = function (codedAnswer, order, certainty, existingObs
     self.clearCodedAnswerUuid = function(){
         self.codedAnswer.uuid = undefined;
     };
-    
+
+    self.setAsNonCodedAnswer =  function() {
+        self.isNonCodedAnswer = !self.isNonCodedAnswer;
+    };
     //    self.hasBeenRevised = function() {
     //        return this.
     //    }
+
 };

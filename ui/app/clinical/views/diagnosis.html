@@ -16,13 +16,12 @@
                                 <input ng-model="diagnosis.codedAnswer.name" type="text" name="name"
                                        my-autocomplete="{{ {'src': 'getDiagnosis', 'responseHandler': 'cleanOutDiagnosisList', 'onSelect':'addNewDiagnosis', 'index' : $index} }}"
                                        ng-change="clearEmptyRows($index); diagnosis.clearCodedAnswerUuid();">
-                                <span ng-hide="diagnosis.codedAnswer.uuid">
-                                    <input type="checkbox" ng-model="diagnosis.isNonCodedAnswer"
-                                       ng-change="clearEmptyRows($index)"
-                                       ng-class="{'illegalValue': diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid && !diagnosis.isNonCodedAnswer}"
-                                       ng-disabled="diagnosis.codedAnswer.uuid" id="addNewDiagnosis-{{$index}}">
 
-                                    <label class="add-new checkbox-btn" for="addNewDiagnosis-{{$index}}">Add New?</label>
+                                <span>
+                                    <button type="button" ng-model="diagnosis.isNonCodedAnswer" class="small-btn"
+                                           ng-click="diagnosis.setAsNonCodedAnswer() && clearEmptyRows($index)"
+                                           ng-class="{'illegalValue': diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid && !diagnosis.isNonCodedAnswer, active: diagnosis.isNonCodedAnswer}"
+                                           ng-disabled="diagnosis.codedAnswer.uuid"><span></span>Accept</button>
                                 </span>
 
                             </div>

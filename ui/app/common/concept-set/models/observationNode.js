@@ -256,6 +256,10 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
             })[0];
         }
         return this.codedPrimaryObs;
+    },
+
+    markAsNonCoded: function() {
+        this.markedAsNonCoded = !this.markedAsNonCoded;
     }
 
 };
