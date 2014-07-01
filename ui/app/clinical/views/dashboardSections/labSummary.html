@@ -7,68 +7,73 @@
     <h2>All Lab Orders and Results</h2>
 </header>
 
-<div class="template-container">
-    <section>
-        <h2 ng-click="toggleInvestigationChart()" class="has-toggle row-click">
-            <button class="section-toggle">
-                <i class="icon-caret-right" ng-hide="showInvestigationChart"></i>
-                <i class="icon-caret-down" ng-show="showInvestigationChart"></i>
-            </button>
-            Investigation Chart
-        </h2>
+<div ng-show="tabular">
+    <div ng-hide="tabular.hasValues()" class="messages">
+        <p class="messages null-data-message">No Lab Orders for this patient.</p>
+    </div>
+    <div class="template-container" ng-show="tabular.hasValues()">
+        <section>
+            <h2 ng-click="toggleInvestigationChart()" class="has-toggle row-click">
+                <button class="section-toggle">
+                    <i class="icon-caret-right" ng-hide="showInvestigationChart"></i>
+                    <i class="icon-caret-down" ng-show="showInvestigationChart"></i>
+                </button>
+                Investigation Chart
+            </h2>
 
-        <table class="ipd-investigation" bindonce="tabular" ng-show="showInvestigationChart">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th class="normal" ng-repeat="testOrderLabel in tabular.getTestOrderLabels()">
-                        <span>{{testOrderLabel.testName}}</span>
-                        <span ng-show="tabular.hasRange(testOrderLabel)" class="range">
-                            <span bo-text="'(' + testOrderLabel.minNormal + ' - ' + testOrderLabel.maxNormal + ')'"></span> 
-                            <span bo-text="testOrderLabel.testUnitOfMeasurement"></span>
-                        </span>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="dateLabel in tabular.getDateLabels()">
-                    <td>{{dateLabel.date}}</td>
-                    <td ng-repeat="testOrderLabel in tabular.getTestOrderLabels()">
-                        <span ng-init="results = tabular.getResult(dateLabel, testOrderLabel)">
-                            <span class="test-result"  ng-repeat="res in results">
-                                <span ng-show="res.result" ng-class="{'is-abnormal': res.abnormal, 'one-result': results.length==1}" class="ipd-test-results" bo-text="res.result"></span>
+            <table class="ipd-investigation" bindonce="tabular" ng-show="showInvestigationChart">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th class="normal" ng-repeat="testOrderLabel in tabular.getTestOrderLabels()">
+                            <span>{{testOrderLabel.testName}}</span>
+                            <span ng-show="tabular.hasRange(testOrderLabel)" class="range">
+                                <span bo-text="'(' + testOrderLabel.minNormal + ' - ' + testOrderLabel.maxNormal + ')'"></span> 
+                                <span bo-text="testOrderLabel.testUnitOfMeasurement"></span>
                             </span>
-                        </span>
-                    </td>
-                </tr>
-            <tbody>
-        </table>
-    </section>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="dateLabel in tabular.getDateLabels()">
+                        <td>{{dateLabel.date}}</td>
+                        <td ng-repeat="testOrderLabel in tabular.getTestOrderLabels()">
+                            <span ng-init="results = tabular.getResult(dateLabel, testOrderLabel)">
+                                <span class="test-result"  ng-repeat="res in results">
+                                    <span ng-show="res.result" ng-class="{'is-abnormal': res.abnormal, 'one-result': results.length==1}" class="ipd-test-results" bo-text="res.result"></span>
+                                </span>
+                            </span>
+                        </td>
+                    </tr>
+                <tbody>
+            </table>
+        </section>
 
-    <section>
-        <h2>Lab Investigations</h2>
+        <section>
+            <h2>Lab Investigations</h2>
 
-        <table ng-repeat="labOrderResults in labAccessions" bindonce="labAccessions">
-            <thead>
-                <th colspan="3">
-                    <span>Accession at </span>
-                    <span bo-text="labOrderResults[0].accessionDateTime | date:'dd-MMM-yyyy HH:mm'"></span>
-                </th>
-            </thead>
-            <tbody>
-                <tr ng-repeat="labOrderResult in labOrderResults">
-                    <td>
-                        <span bo-text="labOrderResult.testName"></span>
-                        <span ng-show="labOrderResult.hasRange" class="range">
-                            <span >({{labOrderResult.minNormal}} - {{labOrderResult.maxNormal}})</span>
-                            <span ng-show="labOrderResult.testUnitOfMeasurement" class="units" bo-text="labOrderResult.testUnitOfMeasurement"></span>
-                        </span>
-                    </td>
-                    <td class="value">
-                        <span ng-show="labOrderResult.result" ng-class="{'is-abnormal': labOrderResult.abnormal}" class="value" bo-text="labOrderResult.result"></span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
+            <table ng-repeat="labOrderResults in labAccessions" bindonce="labAccessions">
+                <thead>
+                    <th colspan="3">
+                        <span>Accession at </span>
+                        <span bo-text="labOrderResults[0].accessionDateTime | date:'dd-MMM-yyyy HH:mm'"></span>
+                    </th>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="labOrderResult in labOrderResults">
+                        <td>
+                            <span bo-text="labOrderResult.testName"></span>
+                            <span ng-show="labOrderResult.hasRange" class="range">
+                                <span >({{labOrderResult.minNormal}} - {{labOrderResult.maxNormal}})</span>
+                                <span ng-show="labOrderResult.testUnitOfMeasurement" class="units" bo-text="labOrderResult.testUnitOfMeasurement"></span>
+                            </span>
+                        </td>
+                        <td class="value">
+                            <span ng-show="labOrderResult.result" ng-class="{'is-abnormal': labOrderResult.abnormal}" class="value" bo-text="labOrderResult.result"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
 </div>
