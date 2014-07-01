@@ -1,9 +1,9 @@
 Bahmni.Clinical.AccessionNotesMapper = function(encounterConfig) {
-    var ArrayUtil = Bahmni.Common.Util.ArrayUtil
+    var ArrayUtil = Bahmni.Common.Util.ArrayUtil;
     
     var isValidationEncounter = function (encounterTransaction) {
         return encounterTransaction.encounterTypeUuid === encounterConfig.getValidationEncounterTypeUuid();
-    }
+    };
 
 	var addAccessionNote = function(accessions, accessionNote){
 	    var accession = accessions.filter(function (accession) { return accession.accessionUuid === accessionNote.accessionUuid })[0];
@@ -11,7 +11,7 @@ Bahmni.Clinical.AccessionNotesMapper = function(encounterConfig) {
 	        accession.accessionNotes = accession.accessionNotes || [];
 	        accession.accessionNotes.push(accessionNote);
 	    }
-    }
+    };
 
     this.map = function(encounters, accessions){
         var validationEncounters = encounters.filter(isValidationEncounter);
@@ -21,5 +21,5 @@ Bahmni.Clinical.AccessionNotesMapper = function(encounterConfig) {
             accessions.accessionNotes = _.sortBy(accessions.accessionNotes, 'dateTime').reverse(); 
         });
         return accessions;
-    }
-}
+    };
+};
