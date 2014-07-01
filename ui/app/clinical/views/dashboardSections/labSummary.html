@@ -28,7 +28,7 @@
                 <td ng-repeat="testOrderLabel in tabular.getTestOrderLabels()">
                     <span ng-init="results = tabular.getResult(dateLabel, testOrderLabel)">
                         <span class="test-result"  ng-repeat="res in results">
-                            <span ng-class="{'is-abnormal': res.abnormal, 'one-result': results.length==1}" class="ipd-test-results" bo-text="res.result"></span>
+                            <span ng-show="res.result" ng-class="{'is-abnormal': res.abnormal, 'one-result': results.length==1}" class="ipd-test-results" bo-text="res.result"></span>
                         </span>
                     </span>
                 </td>
@@ -56,8 +56,8 @@
                         <span ng-show="labOrderResult.testUnitOfMeasurement" class="units" bo-text="labOrderResult.testUnitOfMeasurement"></span>
                     </span>
                 </td>
-                <td  ng-class="{'is-abnormal': labOrderResult.abnormal}">
-                    <span class="value" bo-text="labOrderResult.result"></span>
+                <td>
+                    <span ng-show="labOrderResult.result" ng-class="{'is-abnormal': labOrderResult.abnormal}" class="value" bo-text="labOrderResult.result"></span>
                 </td>
             </tr>
         </tbody>
