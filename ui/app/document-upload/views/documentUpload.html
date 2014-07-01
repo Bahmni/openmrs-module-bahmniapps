@@ -115,7 +115,7 @@
                   <input class="concept-name" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter a value" title="Select a value from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
                 </div>
                 <div class="file-remove">
-                  <button type="button" ng-click="visit.removeNewAddedImage(image)" class="row-remover"><span class="icon-remove"></span></button>
+                  <button type="button" ng-click="visit.removeNewAddedImage(image)"  class="row-remover"><span class="icon-remove"></span></button>
                 </div>
               </li>
 
@@ -125,7 +125,7 @@
                   <input name="{{'image'+$index}}" class="concept-name saved" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter a value" title="Select a value from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true" ng-change="visit.markAsUpdated()" ng-disabled="image.voided"/>
                 </div>
                 <div class="file-remove">
-                  <button type="button" ng-click="visit.toggleVoidingOfImage(image)" class="row-remover"><span ng-class="{'icon-remove': !image.voided, 'icon-undo': image.voided }"></span></button>
+                  <button type="button" ng-click="visit.toggleVoidingOfImage(image)" ng-if="canDeleteImage(image)" class="row-remover"><span ng-class="{'icon-remove': !image.voided, 'icon-undo': image.voided }"></span></button>
                 </div>
               </li> 
             </ul>

@@ -39,8 +39,15 @@ Bahmni.DocumentUpload.Visit = function () {
             encounter.obs && encounter.obs.forEach(function (observation) {
                 observation.groupMembers && observation.groupMembers.forEach(function (member) {
                         var conceptName = observation.concept.name.name;
-                        savedImages.push(new DocumentImage({"id":member.id, "encodedValue": Bahmni.Common.Constants.documentsPath + '/' + member.value, "obsUuid": observation.uuid, obsDatetime: observation.obsDatetime,
-                                         concept: {uuid: observation.concept.uuid, editableName: conceptName, name: conceptName}}));
+                        savedImages.push(new DocumentImage({
+                            id:member.id,
+                            encodedValue: Bahmni.Common.Constants.documentsPath + '/' + member.value,
+                            obsUuid: observation.uuid,
+                            obsDatetime: observation.obsDatetime,
+                            visitUuid: encounter.visit.uuid,
+                            encounterUuid: encounter.uuid,
+                            providerUuid: encounter.provider.uuid,
+                            concept: {uuid: observation.concept.uuid, editableName: conceptName, name: conceptName}}));
                 });
             });
         });

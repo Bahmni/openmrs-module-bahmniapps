@@ -66,7 +66,7 @@ angular.module('authentication', ['ngCookies'])
                 method: "GET",
                 params: {
                     username: currentUser,
-                    v: "custom:(username,uuid,privileges:(name,retired))"
+                    v: "custom:(username,uuid,person:(uuid,),privileges:(name,retired))"
                 },
                 cache: false
             }).success(function(data) {

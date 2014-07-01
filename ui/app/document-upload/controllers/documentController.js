@@ -8,6 +8,7 @@ angular.module('opd.documentupload')
             var customVisitParams = Bahmni.DocumentUpload.Constants.visitRepresentation;
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var patientMapper = new Bahmni.PatientMapper($rootScope.patientConfig);
+            var activeEncounter = {};
 
             $scope.visits = [];
 
@@ -147,12 +148,25 @@ angular.module('opd.documentupload')
                     });
             };
 
+            var getActiveEncounter = function() {
+                var currentProviderUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
+                return encounterService.activeEncounter({
+                    patientUuid : $stateParams.patientUuid,
+                    encounterTypeUuid : encounterTypeUuid,
+                    providerUuid: currentProviderUuid,
+                    includeAll :  Bahmni.Common.Constants.includeAllObservations
+                }).then(function (encounterTransactionResponse) {
+                    activeEncounter = encounterTransactionResponse.data;
+                });
+            };
+
             var init = function () {
                 encounterTypeUuid = $scope.encounterConfig.getEncounterTypeUuid($rootScope.appConfig.encounterType);
                 initNewVisit();
                 var deferrables = $q.defer();
                 var promises = [];
                 promises.push(getVisitTypes());
+                promises.push(getActiveEncounter());
                 promises.push(getPatient().then(getVisits).then(getEncountersForVisits));
                 promises.push(getTopLevelConcept());
                 $q.all(promises).then(function () {
@@ -244,6 +258,22 @@ angular.module('opd.documentupload')
                 }
             };
 
+            function isInActiveEncounter(obs) {
+                return activeEncounter.encounterUuid === obs.encounterUuid;
+            }
+
+            function isNotInActiveVisit(obs) {
+                return activeEncounter.visitUuid !== obs.visitUuid;
+            }
+
+            function isObsByCurrentProvider(obs) {
+                return $rootScope.currentUser.person.uuid === obs.providerUuid;
+            }
+
+            $scope.canDeleteImage = function(obs){
+                return (isNotInActiveVisit(obs) || isInActiveEncounter(obs)) && isObsByCurrentProvider(obs);
+            };
+
             var updateVisit = function(visit, encounters){
                 visit.encounters = encounters.filter(function(encounter){
                     return visit.uuid === encounter.visit.uuid;
@@ -273,6 +303,7 @@ angular.module('opd.documentupload')
                         }else{
                             updateVisit(savedVisit, encounterResponse.data.results)
                         }
+                        getActiveEncounter();
                     });
                 }));
             };

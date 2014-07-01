@@ -127,7 +127,7 @@ angular.module('bahmni.common.domain')
             params:{
                 patient: patientUuid,
                 encounterType: encounterTypeUuid,
-                v: "custom:(uuid,visit:(uuid,),obs:(uuid,concept:(uuid,name),groupMembers:(id,uuid,obsDatetime,value)))"
+                v: "custom:(uuid,provider:(uuid,),visit:(uuid,),obs:(uuid,concept:(uuid,name),groupMembers:(id,uuid,obsDatetime,value)))"
             },
             withCredentials : true
         });
