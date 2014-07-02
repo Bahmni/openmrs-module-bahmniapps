@@ -186,36 +186,34 @@ angular.module('bahmni.adt')
 
             $scope.discharge = function () {
                 var encounterData = getEncounterData($scope.encounterConfig.getDischargeEncounterTypeUuid());
-                encounterService.create(encounterData).then(function (response) {
-                    bedService.getBedDetailsForPatient($scope.patient.uuid).then(function (response) {
+                spinner.forPromise(encounterService.create(encounterData).then(function (response) {
+                    return bedService.getBedDetailsForPatient($scope.patient.uuid).then(function (response) {
                         if(response.data.results.length > 0) {
-                            bedService.freeBed(response.data.results[0].bedId).success(function () {
+                            return bedService.freeBed(response.data.results[0].bedId).success(function () {
                                 forwardUrl(response, "onDischargeForwardTo");
                             })
-                        } else {
-                            forwardUrl(response, "onDischargeForwardTo");
                         }
-
+                        forwardUrl(response, "onDischargeForwardTo");
                     })
-                });
+                }));
             };
 
             $scope.dischargeAndCloseVisit = function () {
                 var encounterData = getEncounterData($scope.encounterConfig.getDischargeEncounterTypeUuid());
-                encounterService.create(encounterData).then(function (response) {
-                    bedService.getBedDetailsForPatient($scope.patient.uuid).then(function (response) {
+                spinner.forPromise(encounterService.create(encounterData).then(function (response) {
+                    return bedService.getBedDetailsForPatient($scope.patient.uuid).then(function (response) {
                         if(response.data.results.length > 0) {
-                            bedService.freeBed(response.data.results[0].bedId).success(function () {
-                                visitService.endVisit($scope.visit.visitId).success(function () {
+                            return bedService.freeBed(response.data.results[0].bedId).success(function () {
+                                return visitService.endVisit($scope.visit.visitId).success(function () {
                                     forwardUrl(response, "onDischargeForwardTo")
                                 })
-                            })} else {
-                            visitService.endVisit($scope.visit.visitId).success(function () {
-                                forwardUrl(response, "onDischargeForwardTo")
                             })
                         }
+                        return visitService.endVisit($scope.visit.visitId).success(function () {
+                            forwardUrl(response, "onDischargeForwardTo")
+                        })
                     })
-                })
+                }))
             };
 
             spinner.forPromise(init());
