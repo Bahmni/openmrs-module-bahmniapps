@@ -57,9 +57,9 @@ describe("PatientFileObservationsMapper", function () {
     it("should map", function () {
         var displayItems = new Bahmni.Clinical.PatientFileObservationsMapper().mapToDisplayItems(encounters);
         expect(displayItems.length).toBe(2);
-        expect(displayItems[0].src).toBe("/document_images/document-3.jpeg");
-        expect(displayItems[1].src).toBe("/document_images/document-4.jpeg");
-        expect(displayItems[0].title).toBe(observationConceptName+", " + moment(obsDatetimeForDoc3).format(Bahmni.Common.Constants.dateDisplayFormat));
-        expect(displayItems[1].title).toBe(observationConceptName+", " + moment(obsDatetimeForDoc4).format(Bahmni.Common.Constants.dateDisplayFormat));
+        expect(displayItems[0].src).toBe("/document_images/document-4.jpeg");
+        expect(displayItems[1].src).toBe("/document_images/document-3.jpeg");
+        expect(displayItems[0].title).toBe(observationConceptName+", " + moment(obsDatetimeForDoc4).format(Bahmni.Common.Constants.dateDisplayFormat));
+        expect(displayItems[1].title).toBe(observationConceptName+", " + moment(obsDatetimeForDoc3).format(Bahmni.Common.Constants.dateDisplayFormat));
     })
 });
