@@ -60,7 +60,7 @@ angular.module('bahmni.common.patient')
                     links.push({text: "Consultation", icon: "btn-consultation dashboard-btn", href: "#" + $scope.getConsultationPadLink()});
                 }
                 if (state.match("patient.dashboard")) {
-                    links.push({text: "Trends", icon: "btn-trends dashboard-btn", href: "/trends/#/patients/" + $scope.patient.uuid});
+                    links.push({text: "Trends", icon: "btn-trends dashboard-btn", href: "../trends/#/patients/" + $scope.patient.uuid});
                 } else if (state.match("patient.visit")) {
                     links.push({text: "Dashboard", icon: "btn-summary dashboard-btn", href: "#/patient/" + $scope.patient.uuid + "/dashboard"});
                     links = appendPrintLinks(links);
