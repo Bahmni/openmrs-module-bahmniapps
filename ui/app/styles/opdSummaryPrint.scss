@@ -160,9 +160,9 @@ span.abnormal, span.referred {display: none;}
 }
 .diagnosis .history-diagnosis .table-body .row, .diagnosis .table .table-header.row {
   border: 1px solid #aaa;
-}
-.diagnosis .history-diagnosis .table-body .row {
-  border-top: 0;
+  .col.col4 {
+    float: right;
+  }
 }
 .block.observation ul {padding-left:0;}
 .observation table td.value .obs-value {float: none;}
