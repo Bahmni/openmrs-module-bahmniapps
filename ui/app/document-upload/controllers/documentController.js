@@ -211,13 +211,13 @@ angular.module('opd.documentupload')
                 return $scope.currentVisit && $scope.currentVisit.uuid === visit.uuid;
             };
 
-            function getEncounterStartDateTime(visit) {
+            var getEncounterStartDateTime = function (visit) {
                 var currentDate = new Date();
                 if(visit.endDate()){
                     return currentDate <= visit.endDate() ? currentDate : visit.startDate();
                 }
                 return currentDate;
-            }
+            };
 
             var createVisitDocument = function (visit) {
                 var visitDocument = {};
@@ -239,7 +239,7 @@ angular.module('opd.documentupload')
 
                 visit.images.forEach(function (image) {
                     var imageUrl = image.encodedValue.replace(Bahmni.Common.Constants.documentsPath + "/", "");
-                    visitDocument.documents.unshift({testUuid: image.concept.uuid, image: imageUrl, obsDateTime: new Date()})
+                    visitDocument.documents.unshift({testUuid: image.concept.uuid, image: imageUrl, obsDateTime: getEncounterStartDateTime(visit)})
                 });
                 return visitDocument;
             };
@@ -258,17 +258,17 @@ angular.module('opd.documentupload')
                 }
             };
 
-            function isInActiveEncounter(obs) {
+            var isInActiveEncounter =function (obs) {
                 return activeEncounter.encounterUuid === obs.encounterUuid;
-            }
+            };
 
-            function isNotInActiveVisit(obs) {
+            var isNotInActiveVisit = function (obs) {
                 return activeEncounter.visitUuid !== obs.visitUuid;
-            }
+            };
 
-            function isObsByCurrentProvider(obs) {
+            var isObsByCurrentProvider = function (obs) {
                 return $rootScope.currentUser.person.uuid === obs.providerUuid;
-            }
+            };
 
             $scope.canDeleteImage = function(obs){
                 return (isNotInActiveVisit(obs) || isInActiveEncounter(obs)) && isObsByCurrentProvider(obs);

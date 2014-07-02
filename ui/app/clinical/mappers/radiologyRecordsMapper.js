@@ -4,7 +4,7 @@ Bahmni.Clinical.RadiologyRecordsMapper = function () {
     var addRecordToResult = function (record) {
         var matchRecordIndex = null;
         result.some(function (resultRecord, index) {
-            if (resultRecord.concept == record.concept.uuid && resultRecord.visitUuid == record.visitUuid) {
+            if (resultRecord.concept == record.concept.uuid) {
                 return matchRecordIndex = index;
             }
             return false;

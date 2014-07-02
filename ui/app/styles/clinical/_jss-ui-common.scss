@@ -693,6 +693,7 @@ pre {
         outline: 0;
     }
 }
+
 .accept-btn.active {
   color: #457FAC;
   padding-top: 7px;
@@ -702,4 +703,8 @@ pre {
     font-size: 18px;
     margin-right: 5px;
   }
+}
+
+.current-visit-icon {
+	color: #E8A000;
 }

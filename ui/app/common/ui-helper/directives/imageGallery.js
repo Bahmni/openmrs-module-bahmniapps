@@ -25,7 +25,7 @@ angular.module('bahmni.common.uiHelper')
                     delegate: imageGalleryTarget,
                     key: galleryName,
                     callbacks: {
-                        imageLoadComplete: addFooterCounter,
+                        imageLoadComplete: addFooterCounter
                     },
                     gallery: {
                         enabled: true,
@@ -43,7 +43,7 @@ angular.module('bahmni.common.uiHelper')
             scope: {
                 galleryName: '@imageGallery',
                 imageGalleryTarget: '@imageGalleryTarget',
-                reverseCounter: '@reverseCounter',
+                reverseCounter: '@reverseCounter'
             }
         };
     })

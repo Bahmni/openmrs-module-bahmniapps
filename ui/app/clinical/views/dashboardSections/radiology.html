@@ -4,10 +4,10 @@
         <ul>
             <li ng-repeat="radiologyRecord in radiologyRecords" class="radiology-doc-item">
                 <a ng-href="" show-items records="radiologyRecord.records"><i class="icon-file"></i>{{radiologyRecord.name}}</a>
-                <span>{{radiologyRecord.date | date:'dd MMM yy'}}</span>
+                <i ng-if="isRecordForCurrentVisit(radiologyRecord)" class="icon-star current-visit-icon fr"></i>
+                <span ng-if="radiologyRecord.records.length > 1">({{radiologyRecord.records.length}})</span>
             </li>
         </ul>
-
       <div ng-show="!radiologyRecords.length">
           <div class="placeholder-text">No radiology documents for this patient.</div>
       </div>
