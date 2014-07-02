@@ -94,7 +94,7 @@ angular.module('bahmni.registration')
                 var createPromise = encounterService.create($scope.encounter);
                 spinner.forPromise(createPromise);
                 return createPromise;
-            }
+            };
 
             $scope.moveToNextPage = function () {
                 return $timeout(function () {
@@ -110,14 +110,11 @@ angular.module('bahmni.registration')
                     deferred.reject("Some fields are not valid");
                     return deferred.promise;
                 }
-                if ($scope.obs['REGISTRATION FEES'] === 0 && (!$scope.obs.COMMENTS || $scope.obs.COMMENTS === '') && !($scope.isHiddenInConfig('Comments') && $scope.isHiddenInConfig('REGISTRATION FEES'))) {
-                    return $scope.confirmDialog.show();
-                } else {
+                else {
                     deferred.resolve();
                     return deferred.promise;
                 }
-
-            }
+            };
 
             $scope.submit = function () {
                 if ($scope.submittedFrom === 'savePrint') {
@@ -163,43 +160,4 @@ angular.module('bahmni.registration')
             };
 
             spinner.forPromise($q.all([getPatient(), getActiveEncounter()]).then(getConceptSet));
-        }])
-
-    .directive('confirmDialog', function ($q) {
-        return function (scope, element, attrs) {
-            var dialogObject = {};
-            dialogObject.dialogElement = $('#dialog-confirm');
-            dialogObject.continue = false;
-            dialogObject.dialogElement.dialog({autoOpen: false,
-                buttons: {
-                    "Continue": function () {
-                        dialogObject.continue = true;
-                        $(this).dialog("close");
-                    },
-                    "Go back": function () {
-                        dialogObject.continue = false;
-                        $(this).dialog("close");
-                    }
-                }
-            });
-
-            dialogObject.show = function () {
-                var deferred = $q.defer();
-
-                var dialogObject = this;
-                this.dialogElement.on("dialogclose", function () {
-                    scope.$apply(function () {
-                        if (dialogObject.continue) {
-                            deferred.resolve();
-                        } else {
-                            deferred.reject();
-                        }
-                    });
-                });
-                this.dialogElement.dialog('open');
-                return deferred.promise;
-            };
-
-            scope[attrs['handle']] = dialogObject;
-        }
-    });
+        }]);

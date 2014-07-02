@@ -32,28 +32,8 @@
                         </div>
                 </div>
                 </section>
-                <legend class="mylegend" ng-hide="isHiddenInConfig('REGISTRATION FEES') && isHiddenInConfig('Comments') && isHiddenInConfig('Height') && isHiddenInConfig('Weight') && isHiddenInConfig('BMI')"><span><strong>Visit Information</strong></span></legend>
-                <section class="form-field-inline">
-                    <div class="form-field" ng-hide="isHiddenInConfig('REGISTRATION FEES')">
-                            <div class="field-attribute">
-                                <label class="control-label" for="registrationFee">{{registrationFeeLabel}}</label>
-                            </div>
 
-                            <div class="field-value">
-                                <input type="number" id="registrationFee" min="0" ng-model="obs['REGISTRATION FEES']">
-                            </div>
-                    </div>
-                    <div class="form-field" ng-hide="isHiddenInConfig('Comments')">
-                            <div class="field-attribute">
-                                <label class="control-label" for="comments">Comments</label>
-                            </div>
-
-                            <div class="field-value">
-                                 <input type="text" id="comments" ng-model="obs.COMMENTS" placeholder="Comments" autofocus>
-                            </div>
-                    </div>
-                </section>
-                <section class="form-field-inline">
+            <section class="form-field-inline">
                 <div class="form-field" ng-hide="isHiddenInConfig('Height')">
                         <div class="field-attribute">
                             <label class="control-label" for="height">Height (cm)</label>
@@ -120,13 +100,6 @@
 
         </form>
         <br>
-    </div>
-    <div id="dialog-confirm" handle="confirmDialog" title="Warning" confirm-dialog>
-        <p>There is
-            <span ng-hide="isHiddenInConfig('REGISTRATION FEES')">no registration fee</span>
-            <span ng-hide="!(isHiddenInConfig('Comments') && isHiddenInConfig('REGISTRATION FEES'))"> and</span>
-            <span ng-hide="isHiddenInConfig('Comments')"> no comments</span>
-            entered. Do you want to continue? </p>
     </div>
 </div>
 </div>

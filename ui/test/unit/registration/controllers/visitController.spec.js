@@ -198,51 +198,7 @@ describe('VisitController', function () {
 
             expect(scope.validate).toHaveBeenCalled();
         });
-
-        it("should open popup when consultation fee = 0 and comments are empty", function () {
-            scope.obs["REGISTRATION FEES"] = 0;
-            scope.obs.COMMENTS = '';
-            scope.confirmDialog = jasmine.createSpyObj('confirmDialog', ['show']);
-            scope.confirmDialog.show.and.callFake(stubOnePromise);
-
-            scope.validate();
-
-            expect(scope.confirmDialog.show).toHaveBeenCalled();
-        });
-
-        it("should not open popup when consultation fee != 0", function () {
-            scope.obs["REGISTRATION FEES"] = 10;
-            scope.obs.COMMENTS = '';
-            scope.confirmDialog = jasmine.createSpyObj('confirmDialog', ['show']);
-            scope.confirmDialog.show.and.callFake(stubOnePromise);
-
-            scope.validate();
-
-            expect(scope.confirmDialog.show).not.toHaveBeenCalled();
-        });
-
-        it("should not open popup when comments are not empty", function () {
-            scope.obs["REGISTRATION FEES"] = 0;
-            scope.obs.COMMENTS = 'adfadfs';
-            scope.confirmDialog = jasmine.createSpyObj('confirmDialog', ['show']);
-            scope.confirmDialog.show.and.callFake(stubOnePromise);
-
-            scope.validate();
-
-            expect(scope.confirmDialog.show).not.toHaveBeenCalled();
-        })
-
-        it("should always return a promise", function () {
-            scope.obs["REGISTRATION FEES"] = 0;
-            scope.obs.COMMENTS = 'adfadfs';
-            scope.confirmDialog = jasmine.createSpyObj('confirmDialog', ['show']);
-            scope.confirmDialog.show.and.callFake(stubOnePromise);
-
-            var result = scope.validate();
-
-            expect(result.then).toBeTruthy();
-        });
-    })
+    });
 
     describe("saveAndPrint", function () {
         beforeEach(function () {

@@ -46,7 +46,8 @@ Bahmni.ConceptSet.ObservationMapper = function () {
 
     // tODO : remove conceptUIConfig
     var newObservation = function (concept, savedObs, conceptSetConfig, mappedGroupMembers) {
-        var observation = { concept: conceptMapper.map(concept), units: concept.units, label: concept.name.name, possibleAnswers: concept.answers, groupMembers: mappedGroupMembers};
+        var displayLabel = conceptSetConfig[concept.name.name] && conceptSetConfig[concept.name.name]["label"];
+        var observation = { concept: conceptMapper.map(concept), units: concept.units, label: displayLabel || concept.name.name, possibleAnswers: concept.answers, groupMembers: mappedGroupMembers};
         return new Bahmni.ConceptSet.Observation(observation, savedObs, conceptSetConfig, mappedGroupMembers);
     };
 
