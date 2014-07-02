@@ -51,7 +51,7 @@
                 </div>
 
                 <div ng-switch-when="autocomplete"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}" class="autocomplete">
-                    <input type="hidden" ui-select2="selectOptions(observation.primaryObs.concept)" ng-model="observation.value"/>
+                    <input type="hidden" ui-select2="selectOptions(observation.primaryObs.concept)" ng-model="observation.primaryObs.value"/>
                 </div>
 
                 <!--div ng-switch-when="multiselect"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}" class="autocomplete">
