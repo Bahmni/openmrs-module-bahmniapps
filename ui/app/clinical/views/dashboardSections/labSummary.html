@@ -26,7 +26,7 @@
                     <tr>
                         <th>Date</th>
                         <th class="normal" ng-repeat="testOrderLabel in tabular.getTestOrderLabels()">
-                            <span>{{testOrderLabel.testName}}</span>
+                            <span bo-text="testOrderLabel.testName"></span>
                             <span ng-show="tabular.hasRange(testOrderLabel)" class="range">
                                 <span bo-text="'(' + testOrderLabel.minNormal + ' - ' + testOrderLabel.maxNormal + ')'"></span> 
                                 <span bo-text="testOrderLabel.testUnitOfMeasurement"></span>
@@ -36,11 +36,14 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="dateLabel in tabular.getDateLabels()">
-                        <td>{{dateLabel.date}}</td>
+                        <td bo-text="dateLabel.date"></td>
                         <td ng-repeat="testOrderLabel in tabular.getTestOrderLabels()">
                             <span ng-init="results = tabular.getResult(dateLabel, testOrderLabel)">
                                 <span class="test-result"  ng-repeat="res in results">
-                                    <span ng-show="res.result" ng-class="{'is-abnormal': res.abnormal, 'one-result': results.length==1}" class="ipd-test-results" bo-text="res.result"></span>
+                                    <span ng-class="{'referred-out': res.referredOut}">
+                                        <span class="referred">R</span>
+                                    </span>
+                                    <span ng-show="res.result" ng-class="{'is-abnormal': res.abnormal, 'one-result': results.length==1}"class="ipd-test-results" bo-text="res.result"></span>
                                 </span>
                             </span>
                         </td>
@@ -64,11 +67,14 @@
                         <td>
                             <span bo-text="labOrderResult.testName"></span>
                             <span ng-show="labOrderResult.hasRange" class="range">
-                                <span >({{labOrderResult.minNormal}} - {{labOrderResult.maxNormal}})</span>
+                                <span bo-text="'(' + labOrderResult.minNormal + ' - ' + labOrderResult.maxNormal + ')'"></span>
                                 <span ng-show="labOrderResult.testUnitOfMeasurement" class="units" bo-text="labOrderResult.testUnitOfMeasurement"></span>
                             </span>
                         </td>
                         <td class="value">
+                            <span ng-class="{'referred-out': labOrderResult.referredOut}">
+                                <span class="referred">Referred Out</span>
+                            </span>
                             <span ng-show="labOrderResult.result" ng-class="{'is-abnormal': labOrderResult.abnormal}" class="value" bo-text="labOrderResult.result"></span>
                         </td>
                     </tr>
