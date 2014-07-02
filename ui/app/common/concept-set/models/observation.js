@@ -10,6 +10,8 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
         this.value = savedObs.value;
         this.observationDateTime = savedObs.observationDateTime;
         this.provider = savedObs.provider;
+    } else {
+        this.value = this.getConceptUIConfig().defaultValue;         
     }
 };
 

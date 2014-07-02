@@ -58,12 +58,15 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUICo
     this.isObservationNode = true;
     this.uniqueId = _.uniqueId('observation_');
     this.observationDateTime = Bahmni.Common.Util.DateUtil.now();
+    this.duration = this.getDuration();
+    this.abnormal = this.getAbnormal();
+
     if (savedObs) {
         this.uuid = savedObs.uuid;
         this.observationDateTime = savedObs.observationDateTime;
+    } else {
+        this.value = this.getConceptUIConfig().defaultValue;
     }
-    this.duration = this.getDuration();
-    this.abnormal = this.getAbnormal();
 };
 
 Bahmni.ConceptSet.ObservationNode.prototype = {
