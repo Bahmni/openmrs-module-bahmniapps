@@ -236,14 +236,19 @@ concept-set {
 }
 .grid-row-element {
     font-size: 12px;
+    padding-left: 15px;
+    padding-right: 15px;
     .icon-ok {
         display: none;
         padding-top: 0;
         padding-bottom: 0;
+        font-size: 18px;
     }
 }
 .grid-row-element.active {
     color: #457FAC;
+    padding-top: 5px;
+    padding-bottom: 7px;
     .icon-ok {
         display: inline-block;
     }
