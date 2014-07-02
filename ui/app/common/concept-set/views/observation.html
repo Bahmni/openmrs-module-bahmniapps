@@ -43,7 +43,7 @@
                     <!--TODO : check if jss-config is meant to have uuid Mujir, Shruthi-->
 
                     <div>
-                        <button type="button" ng-model="observation.markedAsNonCoded" class="small-btn"
+                        <button type="button" ng-model="observation.markedAsNonCoded" class="small-btn accept-btn"
                                    ng-click="observation.markAsNonCoded()"
                                ng-class="{'illegalValue': observation.primaryObs.value.length > 0 && !observation.markedAsNonCoded, active: observation.markedAsNonCoded}"
                                 ng-disabled="observation.primaryObs.isCoded() && observation.primaryObs.value"><span></span>Accept</button>

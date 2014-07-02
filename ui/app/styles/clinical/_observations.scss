@@ -1,9 +1,7 @@
 .clinical-observations {padding: 10px;}
 .vitals {
-	// padding:2px 0px 0px 10px;
 	.form-field {
-		// padding-bottom: 10px;
-    padding-top: 10px;
+        padding-top: 10px;
 	}
 	.field-attribute {
 		width:18em;
@@ -14,16 +12,10 @@
     }
   }
   fieldset {
-  	// margin-top:10px;
-   //  margin-bottom:10px;
   	position:relative;
   	width: 100%;
-    legend {
-      // margin-bottom: 20px;
-    }
     fieldset {
       .form-group {
-        // margin: 0 20%;
         label span {
           text-transform: capitalize;
         }
@@ -86,22 +78,6 @@
 div.duration.checkbox-inline {
   margin-top: -10px;
   margin-left: 15px;
-  // @media screen and (min-width: 1024px) {
-  //   float: right;
-  //   margin-right: 18%;
-  // }
-  // @media screen and (max-width: 1023px) and (min-width: 941px) {
-  //   float: right;
-  //   margin-right: 10%;
-  // }
-  // @media screen and (max-width: 940px) and (min-width: 900px) {
-  //   float: right;
-  //   margin-right: 5%;
-  // }  
-  // @media screen and (min-width: 851px) and (max-width: 899px) {
-  //   margin-right: 0;
-  //   float: right;
-  // }
   @media screen and (max-width: 850px) and (min-width: 596px) {
     margin-top: 0;
     margin-left: 166px;
@@ -136,6 +112,9 @@ form .vitals .form-field .field-value {
       float: left;
       min-width: 200px;
       margin-right: 27px;
+    }
+    .accept-btn {
+        margin-top: 6px;
     }
   }
   .select2-drop-active, .select2-container-active .select2-choice, .select2-container-active .select2-choices, .select2-drop.select2-drop-above.select2-drop-active {
@@ -219,7 +198,6 @@ concept {
 //custom changes: auto complete form field -> will be moved globally once finalized.
 .select2-container .select2-choice {
   padding: 5px;
-  margin-top: -5px;
   @media screen and (max-width: 595px) {
     margin-top: 5px;
   }
@@ -254,12 +232,10 @@ concept-set {
   }
 }
 .grid-row {
-    width: 100%;
-    border-bottom: 1px solid #ccc;
+    padding: 2px;
 }
 .grid-row-element {
-    margin: 0 5px 5px 0;
-    // width: 200px;
+    font-size: 12px;
     .icon-ok {
         display: none;
         padding-top: 0;

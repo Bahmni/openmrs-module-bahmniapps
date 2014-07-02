@@ -384,3 +384,10 @@ button[disabled] {
 form select, .form select {
   min-width: 100px;
 }
+
+.section-grid {
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    margin: 5px 0;
+    box-shadow: 0px 0px 8px -1px #ccc;
+}

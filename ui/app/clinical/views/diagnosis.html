@@ -18,7 +18,7 @@
                                        ng-change="clearEmptyRows($index); diagnosis.clearCodedAnswerUuid();">
 
                                 <span>
-                                    <button type="button" ng-model="diagnosis.isNonCodedAnswer" class="small-btn"
+                                    <button type="button" ng-model="diagnosis.isNonCodedAnswer" class="small-btn accept-btn"
                                            ng-click="diagnosis.setAsNonCodedAnswer() && clearEmptyRows($index)"
                                            ng-class="{'illegalValue': diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid && !diagnosis.isNonCodedAnswer, active: diagnosis.isNonCodedAnswer}"
                                            ng-disabled="diagnosis.codedAnswer.uuid"><span></span>Accept</button>
