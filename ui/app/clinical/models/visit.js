@@ -204,6 +204,12 @@ Bahmni.Clinical.Visit = (function(){
         }
     };
 
+    var removeEncounters = function(radiologyEncounters, encounterTransactions) {
+        radiologyEncounters.forEach(function (radiologyEncounter) {
+            _.pull(encounterTransactions, radiologyEncounter);
+        });
+    };
+
     Visit.create = function (encounterTransactions, consultationNoteConcept, labOrderNoteConcept, encounterConfig, allTestAndPanelsConcept, obsIgnoteList, visitUuid) {
         var diagnosisMapper = new Bahmni.DiagnosisMapper(),
             ordersMapper = new Bahmni.Clinical.OrdersMapper(),
@@ -230,18 +236,21 @@ Bahmni.Clinical.Visit = (function(){
             };
 
         var radiologyOrders = [];
+        var radiologyEncounters= [];
         encounterTransactions.forEach(function (encounterTransaction) {
             if (encounterTransaction.encounterTypeUuid == encounterConfig.getRadiologyEncounterTypeUuid()) {
-                _.pull(encounterTransactions, encounterTransaction);
+                radiologyEncounters.push(encounterTransaction);
                 encounterTransaction.observations.forEach(function (observation) {
                     observation.groupMembers.forEach(function (member) {
-                        if (member.concept.name == Bahmni.Common.Constants.documentsConceptName) {
+                        if (member.concept.name === Bahmni.Common.Constants.documentsConceptName) {
                             radiologyOrders.push({concept: observation.concept, src: Bahmni.Common.Constants.documentsPath + '/' + member.value, dateTime: observation.observationDateTime, provider: encounterTransaction.providers[0]});
                         }
                     });
                 });
             }
         });
+
+        removeEncounters(radiologyEncounters, encounterTransactions);
 
         var removeUnwantedObs = function(observation) {
             return !obsIgnoteList.some(function(ignoredObsName) {return ignoredObsName === observation.concept.name;});

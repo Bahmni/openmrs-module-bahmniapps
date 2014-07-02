@@ -12,7 +12,7 @@ describe("RadiologyRecordsMapper", function () {
             "concept": {
                 "display": "CHEST AP",
                 "uuid": "0983ad38-b4ce-11e3-9f29-0800271c1b75",
-                "name": "CHEST AP",
+                "name": "CHEST AP"
             },
             "obsDatetime": "2014-04-18T15:22:42.000+0530",
             "visitUuid": "644a4443-b794-409f-95c4-e385c9affc68",
@@ -24,7 +24,7 @@ describe("RadiologyRecordsMapper", function () {
             "concept": {
                 "display": "ARM Scapula Lateral",
                 "uuid": "08a5dfef-b4ce-11e3-9f29-0800271c1b75",
-                "name": "ARM Scapula Lateral",
+                "name": "ARM Scapula Lateral"
             },
             "obsDatetime": "2014-04-21T00:00:00.000+0530",
             "visitUuid": "aa15a8fe-6aaa-40d6-8294-6df528d77817",
@@ -36,7 +36,7 @@ describe("RadiologyRecordsMapper", function () {
             "concept": {
                 "display": "Shoulder - Right, 2 views (X-ray)",
                 "uuid": "07522831-b4ce-11e3-9f29-0800271c1b75",
-                "name": "Shoulder - Right, 2 views (X-ray)",
+                "name": "Shoulder - Right, 2 views (X-ray)"
             },
             "obsDatetime": "2014-04-21T00:00:00.000+0530",
             "visitUuid": "aa15a8fe-6aaa-40d6-8294-6df528d77817",
@@ -48,7 +48,7 @@ describe("RadiologyRecordsMapper", function () {
             "concept": {
                 "display": "HEAD Skull AP",
                 "uuid": "09c3c0db-b4ce-11e3-9f29-0800271c1b75",
-                "name": "HEAD Skull AP",
+                "name": "HEAD Skull AP"
             },
             "obsDatetime": "2014-04-18T15:22:42.000+0530",
             "visitUuid": "644a4443-b794-409f-95c4-e385c9affc68",
@@ -60,7 +60,7 @@ describe("RadiologyRecordsMapper", function () {
             "concept": {
                 "display": "HEAD Skull AP",
                 "uuid": "09c3c0db-b4ce-11e3-9f29-0800271c1b75",
-                "name": "HEAD Skull AP",
+                "name": "HEAD Skull AP"
             },
             "obsDatetime": "2014-04-18T15:22:42.000+0530",
             "visitUuid": "644a4443-b794-409f-95c4-e385c9affc68",
@@ -72,7 +72,7 @@ describe("RadiologyRecordsMapper", function () {
             "concept": {
                 "display": "Chest, 2 views (X-ray)",
                 "uuid": "0670d355-b4ce-11e3-9f29-0800271c1b75",
-                "name": "Chest, 2 views (X-ray)",
+                "name": "Chest, 2 views (X-ray)"
             },
             "obsDatetime": "2014-04-21T00:00:00.000+0530",
             "visitUuid": "a2960f37-79f1-4915-a997-11cb745e0a2a",
@@ -84,7 +84,7 @@ describe("RadiologyRecordsMapper", function () {
             "concept": {
                 "display": "Chest, 2 views (X-ray)",
                 "uuid": "0670d355-b4ce-11e3-9f29-0800271c1b75",
-                "name": "Chest, 2 views (X-ray)",
+                "name": "Chest, 2 views (X-ray)"
             },
             "obsDatetime": "2014-04-21T00:00:00.000+0530",
             "visitUuid": "a2960f37-79f1-4915-a997-11cb745e0a2a",
@@ -96,7 +96,7 @@ describe("RadiologyRecordsMapper", function () {
             "concept": {
                 "display": "Chest, 2 views (X-ray)",
                 "uuid": "0670d355-b4ce-11e3-9f29-0800271c1b75",
-                "name": "Chest, 2 views (X-ray)",
+                "name": "Chest, 2 views (X-ray)"
             },
             "obsDatetime": "2014-04-21T00:00:00.000+0530",
             "visitUuid": "a2960f37-79f1-4915-a997-11cb745e0a2a",
@@ -108,7 +108,7 @@ describe("RadiologyRecordsMapper", function () {
             "concept": {
                 "display": "ARM Humerus AP",
                 "uuid": "08b53c15-b4ce-11e3-9f29-0800271c1b75",
-                "name": "ARM Humerus AP",
+                "name": "ARM Humerus AP"
             },
             "obsDatetime": "2014-04-23T17:29:59.000+0530",
             "visitUuid": "644a4443-b794-409f-95c4-e385c9affc68",
@@ -120,7 +120,7 @@ describe("RadiologyRecordsMapper", function () {
             "concept": {
                 "display": "Shoulder - Right, 2 views (X-ray)",
                 "uuid": "07522831-b4ce-11e3-9f29-0800271c1b75",
-                "name": "Shoulder - Right, 2 views (X-ray)",
+                "name": "Shoulder - Right, 2 views (X-ray)"
             },
             "obsDatetime": "2014-04-23T17:32:56.000+0530",
             "visitUuid": "644a4443-b794-409f-95c4-e385c9affc68",
@@ -132,7 +132,7 @@ describe("RadiologyRecordsMapper", function () {
             "concept": {
                 "display": "ARM Elbow Lateral",
                 "uuid": "08cc4b63-b4ce-11e3-9f29-0800271c1b75",
-                "name": "ARM Elbow Lateral",
+                "name": "ARM Elbow Lateral"
             },
             "obsDatetime": "2014-04-23T17:35:26.000+0530",
             "visitUuid": "644a4443-b794-409f-95c4-e385c9affc68",
@@ -144,7 +144,7 @@ describe("RadiologyRecordsMapper", function () {
             "concept": {
                 "display": "Shoulder - Left, 2 views (X-ray)",
                 "uuid": "07491e10-b4ce-11e3-9f29-0800271c1b75",
-                "name": "Shoulder - Left, 2 views (X-ray)",
+                "name": "Shoulder - Left, 2 views (X-ray)"
             },
             "obsDatetime": "2014-04-23T17:37:15.000+0530",
             "visitUuid": "59fb00c4-cbae-4edf-9851-65fd8f077b60",
@@ -156,7 +156,7 @@ describe("RadiologyRecordsMapper", function () {
             "concept": {
                 "display": "ARM Wrist PA",
                 "uuid": "08e43484-b4ce-11e3-9f29-0800271c1b75",
-                "name": "ARM Wrist PA",
+                "name": "ARM Wrist PA"
             },
             "obsDatetime": "2014-04-23T17:46:26.000+0530",
             "visitUuid": "59fb00c4-cbae-4edf-9851-65fd8f077b60",
@@ -168,7 +168,7 @@ describe("RadiologyRecordsMapper", function () {
             "concept": {
                 "display": "LEG Lower leg including ankle",
                 "uuid": "094c2c9c-b4ce-11e3-9f29-0800271c1b75",
-                "name": "LEG Lower leg including ankle",
+                "name": "LEG Lower leg including ankle"
             },
             "obsDatetime": "2014-04-23T17:47:13.000+0530",
             "visitUuid": "59fb00c4-cbae-4edf-9851-65fd8f077b60",
@@ -180,7 +180,7 @@ describe("RadiologyRecordsMapper", function () {
             "concept": {
                 "display": "Hip - Right, 2 views (X-ray)",
                 "uuid": "068e91e0-b4ce-11e3-9f29-0800271c1b75",
-                "name": "Hip - Right, 2 views (X-ray)",
+                "name": "Hip - Right, 2 views (X-ray)"
             },
             "obsDatetime": "2014-04-24T00:19:12.000+0530",
             "visitUuid": "59fb00c4-cbae-4edf-9851-65fd8f077b60",
@@ -190,9 +190,9 @@ describe("RadiologyRecordsMapper", function () {
             "id": 66100,
             "src": "/document_images/152000/151915-RADIOLOGY-abcda929-67c0-4cc4-8e8d-f443d1827197.jpeg",
             "concept": {
-                "display": "Hip - Right, 2 views (X-ray)",
+                "display": "Face - Right, 2 views (X-ray)",
                 "uuid": "068e91e0-b4ce-11e3-9f29-0800271c1b77",
-                "name": "Face - Right, 2 views (X-ray)",
+                "name": "Face - Right, 2 views (X-ray)"
             },
             "obsDatetime": "2014-04-24T00:19:12.000+0530",
             "visitUuid": "59fb00c4-cbae-4edf-9851-65fd8f077b61",
@@ -202,9 +202,9 @@ describe("RadiologyRecordsMapper", function () {
             "id": 66101,
             "src": "/document_images/152000/151915-RADIOLOGY-xyz4a929-67c0-4cc4-8e8d-f443d1827197.jpeg",
             "concept": {
-                "display": "Hip - Right, 2 views (X-ray)",
+                "display": "Face - Right, 2 views (X-ray)",
                 "uuid": "068e91e0-b4ce-11e3-9f29-0800271c1b77",
-                "name": "Face - Right, 2 views (X-ray)",
+                "name": "Face - Right, 2 views (X-ray)"
             },
             "obsDatetime": "2014-04-24T00:19:14.000+0530",
             "visitUuid": "59fb00c4-cbae-4edf-9851-65fd8f077b61",
@@ -215,7 +215,7 @@ describe("RadiologyRecordsMapper", function () {
     it("should map radiology record observations", function () {
         var displayItems = new Bahmni.Clinical.RadiologyRecordsMapper().mapToDisplayItems(encounters);
 
-        expect(displayItems.length).toBe(13);
+        expect(displayItems.length).toBe(12);
 
         var recordsForChest2Views = displayItems.filter(function (clubbedRecordRow) {
             return (clubbedRecordRow.visitUuid == "a2960f37-79f1-4915-a997-11cb745e0a2a" && clubbedRecordRow.concept=="0670d355-b4ce-11e3-9f29-0800271c1b75" )
