@@ -160,6 +160,13 @@ span.abnormal, span.referred {display: none;}
 }
 .diagnosis .history-diagnosis .table-body .row, .diagnosis .table .table-header.row {
   border: 1px solid #aaa;
+  .col.col2 {
+    width: 0;
+    display: none;
+  }
+  .col.col3 {
+    width: 35%;
+  }
   .col.col4 {
     float: right;
   }
