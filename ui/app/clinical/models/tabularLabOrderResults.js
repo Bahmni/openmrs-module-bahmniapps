@@ -5,7 +5,10 @@ Bahmni.Clinical.TabularLabOrderResults = (function () {
     var TabularLabOrderResults = function (tabularResult) {
         this.tabularResult = tabularResult;
         this.getDateLabels = function () {
-            return this.tabularResult.dates;
+            return this.tabularResult.dates.map(function(date) {
+                date.date = moment(date.date).toDate();
+                return date;  
+            });
         };
 
         this.getTestOrderLabels = function () {

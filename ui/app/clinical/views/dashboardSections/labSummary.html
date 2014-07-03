@@ -24,7 +24,7 @@
             <table class="ipd-investigation" bindonce="tabular" ng-show="showInvestigationChart">
                 <thead>
                     <tr>
-                        <th>Date</th>
+                        <th>&nbsp;</th>
                         <th class="normal" ng-repeat="testOrderLabel in tabular.getTestOrderLabels()">
                             <span bo-text="testOrderLabel.testName"></span>
                             <span ng-show="tabular.hasRange(testOrderLabel)" class="range">
@@ -36,7 +36,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="dateLabel in tabular.getDateLabels()">
-                        <td bo-text="dateLabel.date"></td>
+                        <td>{{dateLabel.date | date :'dd MMM yy'}}</td>
                         <td ng-repeat="testOrderLabel in tabular.getTestOrderLabels()">
                             <span ng-init="results = tabular.getResult(dateLabel, testOrderLabel)">
                                 <span class="test-result"  ng-repeat="res in results">
