@@ -40,17 +40,11 @@ describe('VisitController', function () {
             "WEIGHT": {
                 "uuid": "b4aa3728-c79a-11e2-b0c0-8e397087571c"
             },
-            "COMMENTS": {
-                "uuid": "b499a980-c79a-11e2-b0c0-8e397087571c"
-            },
             "BMI": {
                 "uuid": "b4acc09c-c79a-11e2-b0c0-8e397087571c"
             },
             "HEIGHT": {
                 "uuid": "b4a7aa80-c79a-11e2-b0c0-8e397087571c"
-            },
-            "REGISTRATION FEES": {
-                "uuid": "b4a52102-c79a-11e2-b0c0-8e397087571c"
             }
         },
         "encounterTypes": {
@@ -61,7 +55,7 @@ describe('VisitController', function () {
             "REVISIT": "b5ba5576-c79a-11e2-b0c0-8e397087571c"
         }
 
-    }
+    };
     var sampleEncounter = {
         "observations": []
     };
@@ -112,7 +106,7 @@ describe('VisitController', function () {
     }]));
 
     describe('initialization', function () {
-        it('should set the patient from patient data and the default registration fee', function () {
+        it('should set the patient from patient data', function () {
             $location.search("newpatient", true);
 
             $controller('VisitController', {
@@ -129,26 +123,6 @@ describe('VisitController', function () {
             getPatientPromise.callSuccessCallBack(patient);
             getEncounterPromise.callSuccessCallBack(sampleEncounter);
 
-            expect(scope.obs["REGISTRATION FEES"]).toBe(defaults.registration_fees_newPatient);
-            expect(scope.patient).toBe(patient);
-        });
-
-        it('should set the registration fee for returning patient', function () {
-
-            $controller('VisitController', {
-                $scope: scope,
-                spinner: spinner,
-                encounterService: encounterService,
-                patientService: patientService,
-                $route: route,
-                appService:appService,
-                openmrsPatientMapper: patientMapper,
-                registrationCardPrinter: registrationCardPrinter
-            });
-            getPatientPromise.callSuccessCallBack(patient);
-            getEncounterPromise.callSuccessCallBack(sampleEncounter);
-
-            expect(scope.obs["REGISTRATION FEES"]).toBe(defaults.registration_fees_oldPatient);
             expect(scope.patient).toBe(patient);
         });
     });
@@ -225,16 +199,19 @@ describe('VisitController', function () {
             var now = new Date();
             spyOn(dateUtil, "now").and.returnValue(now);
             scope.print = jasmine.createSpy().and.callFake(stubOnePromise);
-            scope.obs["REGISTRATION FEES"] = "100";
-            scope.obs["COMMENTS"] = "fine";
+            scope.observations = [];
+            scope.observations = [{"concept": {"uuid": "7fd05fdb-7603-4b46-87d4-a6700dc69c1a"}, "label": "Fee Information",
+                    "groupMembers": [
+                        {"concept": {"uuid": "b4afc27e-c79a-11e2-b284-107d46e7b2c5"}, "label": "Fee", "value": "100"},
+                        {"concept": {"uuid": "b4a3ebc0-c79a-11e2-b284-107d46e7b2c5"}, "label": "COMMENTS", "value": "fine"}
+                    ],
+                    "voided": false}];
 
             scope.saveAndPrint();
 
-            expect(scope.encounter.observations.length).toBe(2);
-            expect(scope.encounter.observations[0].concept).toEqual({uuid: 'b4a52102-c79a-11e2-b0c0-8e397087571c', name: 'REGISTRATION FEES'});
-            expect(scope.encounter.observations[0].value).toEqual('100');
-            expect(scope.encounter.observations[1].concept).toEqual({uuid: 'b499a980-c79a-11e2-b0c0-8e397087571c', name: 'COMMENTS'});
-            expect(scope.encounter.observations[1].value).toEqual('fine');
+            expect(scope.encounter.observations.length).toBe(1);
+            expect(scope.encounter.observations[0].concept.uuid).toBe('7fd05fdb-7603-4b46-87d4-a6700dc69c1a');
+            expect(scope.encounter.observations[0].groupMembers.length).toBe(2);
             expect(encounterService.create).toHaveBeenCalledWith(scope.encounter);
         });
 

@@ -15,7 +15,6 @@ Bahmni.Registration.RegistrationObservations = (function () {
         this.observations = regObservations.map(function (obs) {
             return new ObservationData(obs.uuid, obs.concept, obs.value)
         });
-        defaultRegistrationFees(this.observations, isNewPatient, encounterConfig);
         addRequiredConceptObservations(this.observations, encounterConfig.conceptData);
     };
 
@@ -34,21 +33,6 @@ Bahmni.Registration.RegistrationObservations = (function () {
         });
 
         return obsToSave;
-    };
-
-    var defaultRegistrationFees = function (observations, isNewPatient, encounterConfig) {
-        var registrationFeesUUID = encounterConfig.getConceptUUID(Bahmni.Registration.Constants.registrationFeesConcept);
-        var registrationFee = getConceptObservation(observations, registrationFeesUUID);
-        if (registrationFee === null) {
-            observations.push(new ObservationData(null, {uuid: registrationFeesUUID, name: Bahmni.Registration.Constants.registrationFeesConcept}, defaults.registration_fees(isNewPatient)));
-        }
-    };
-
-    var getConceptObservation = function (observations, conceptUuid) {
-        var filteredObs = observations.filter(function (observation) {
-            return observation.concept.uuid === conceptUuid
-        });
-        return filteredObs.length > 0 ? filteredObs[0] : null;
     };
 
     var addRequiredConceptObservations = function (observations, configuredEncounterConcepts) {

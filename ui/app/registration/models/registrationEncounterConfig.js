@@ -14,11 +14,6 @@ Bahmni.Registration.RegistrationEncounterConfig = (function() {
           visitTypesArray.push({name: name, uuid: this.visitTypes[name]});
       }
       return visitTypesArray;
-    },
-
-    getConceptUUID: function(conceptName) {
-      var concept = this.conceptData[conceptName];
-      return  concept !== undefined ?  concept.uuid : null;
     }
   }
 

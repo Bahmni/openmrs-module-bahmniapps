@@ -22,7 +22,6 @@ angular.module('bahmni.registration')
                     .success(function (data) {
                         $scope.visitTypeUuid = data.visitTypeUuid;
                         $scope.observations = data.observations;
-                        $scope.registrationFeeLabel = isNewPatient ? "Registration Fee" : "Consultation Fee";
                         mapRegistrationObservations();
                     });
             };
