@@ -7,7 +7,9 @@ angular.module('bahmni.clinical')
             }
 
             spinner.forPromise(labOrderResultService.getAllForPatient($rootScope.patient.uuid).then(function(results) {
-                $scope.labAccessions = results.accessions;
+                var sortedConceptSet = new Bahmni.Clinical.SortedConceptSet($rootScope.allTestsAndPanelsConcept);
+                $scope.labAccessions = results.accessions.map(sortedConceptSet.sortTestResults);
                 $scope.tabular = results.tabularResult;
+                $scope.tabular.tabularResult.orders = sortedConceptSet.sortTestResults($scope.tabular.tabularResult.orders);
             }));
         }]);

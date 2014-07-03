@@ -12,4 +12,13 @@ Bahmni.Clinical.SortedConceptSet = function(allTestAndPanelsConcept) {
 		});
 		return _.sortBy(conceptHolders, 'sortWeight');
 	};
+
+    this.sortTestResults = function(labOrderResults) {
+        if(!labOrderResults) return [];
+        labOrderResults.forEach(function(labOrderResult){
+            var index = sortedNames.indexOf(labOrderResult.testName);
+            labOrderResult.sortWeight = index === -1 ? 999 : index;
+        });
+        return _.sortBy(labOrderResults, 'sortWeight');
+    };
 };
