@@ -19,8 +19,8 @@ Bahmni.Clinical.TabularLabOrderResults = (function () {
             return testOrderLabel.minNormal && testOrderLabel.maxNormal;
         };
 
-        this.hasValues = function() {
-            return this.tabularResult.values.length > 0;
+        this.hasOrders = function() {
+            return this.tabularResult.orders.length > 0;
         }
 
         this.getResult = function(dateLabel, testOrderLabel) {

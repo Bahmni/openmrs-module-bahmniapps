@@ -8,10 +8,10 @@
 </header>
 
 <div ng-show="tabular">
-    <div ng-hide="tabular.hasValues()" class="messages">
+    <div ng-hide="tabular.hasOrders()" class="messages">
         <p class="messages null-data-message">No Lab Orders for this patient.</p>
     </div>
-    <div class="template-container" ng-show="tabular.hasValues()">
+    <div class="template-container" ng-show="tabular.hasOrders()">
         <section>
             <h2 ng-click="toggleInvestigationChart()" class="has-toggle row-click">
                 <button class="section-toggle">
