@@ -204,8 +204,8 @@ Bahmni.Clinical.Visit = (function(){
         }
     };
 
-    var removeEncounters = function(radiologyEncounters, encounterTransactions) {
-        radiologyEncounters.forEach(function (radiologyEncounter) {
+    var removeEncounters = function(encounters, encounterTransactions) {
+        encounters.forEach(function (radiologyEncounter) {
             _.pull(encounterTransactions, radiologyEncounter);
         });
     };
@@ -253,7 +253,9 @@ Bahmni.Clinical.Visit = (function(){
         removeEncounters(radiologyEncounters, encounterTransactions);
 
         var removeUnwantedObs = function(observation) {
-            return !obsIgnoteList.some(function(ignoredObsName) {return ignoredObsName === observation.concept.name;});
+            return !obsIgnoteList.some(function(ignoredObsName) {
+                return ignoredObsName === observation.concept.name;
+            });
         };
         var allObs = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions).filter(removeUnwantedObs);
         var drugOrders = ordersMapper.map(encounterTransactions, 'drugOrders');

@@ -20,7 +20,9 @@ Bahmni.Clinical.RadiologyRecordsMapper = function () {
 
     this.mapToDisplayItems = function (records) {
         var sortById = function (record1, record2) {
-            return record1.id > record2.id ? -1: 1;
+            return Date.parse(record2.obsDatetime) !==  Date.parse(record1.obsDatetime)?
+                Date.parse(record2.obsDatetime) -  Date.parse(record1.obsDatetime):
+                record2.id - record1.id;
         };
         records = records.sort(sortById);
         records.map(addRecordToResult);

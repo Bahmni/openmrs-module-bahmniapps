@@ -25,7 +25,9 @@ Bahmni.Clinical.PatientFileObservationsMapper = function () {
 
     var sortDisplayItems = function (displayItems) {
         displayItems.sort(function (image1, image2) {
-            return Date.parse(image1.obsDatetime) - Date.parse(image2.obsDatetime)
+            return Date.parse(image1.obsDatetime) !==  Date.parse(image2.obsDatetime)?
+                Date.parse(image1.obsDatetime) -  Date.parse(image2.obsDatetime):
+                image1.id - image2.id;
         });
     }
 };

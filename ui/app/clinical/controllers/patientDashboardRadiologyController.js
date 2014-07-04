@@ -8,6 +8,8 @@ angular.module('bahmni.clinical')
         }));
 
         $scope.isRecordForCurrentVisit = function(record){
-            return record.visitUuid === $rootScope.activeVisit.uuid;
+            return _.some(record.records,function(innerRecord){
+                return innerRecord.visitUuid === $rootScope.activeVisit.uuid;
+            });
         };
     }]);
