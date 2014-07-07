@@ -124,7 +124,7 @@ angular.module('bahmni.common.conceptSet')
             controller: controller
         }
     }])
-    .directive('gridRow', function () {
+    .directive('buttonSelect', function () {
         return {
             restrict:'E',
             scope:{ observation:'='},

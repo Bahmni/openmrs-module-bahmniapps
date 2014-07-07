@@ -76,6 +76,10 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.getConceptUIConfig().grid;
     },
 
+    isButtonRadio: function () {
+        return this.getConceptUIConfig().buttonRadio;
+    },
+
     getControlType: function () {
         if (this.getConceptUIConfig().freeTextAutocomplete) return "freeTextAutocomplete";
         if (this.isHtml5InputDataType()) return "html5InputDataType";
@@ -89,6 +93,7 @@ Bahmni.ConceptSet.Observation.prototype = {
         var conceptUIConfig = this.getConceptUIConfig();
         if (conceptUIConfig.multiselect) return "multiselect";
         if (conceptUIConfig.autocomplete) return "autocomplete";
+        if (conceptUIConfig.buttonSelect) return "buttonselect";
         return "dropdown";
     },
 

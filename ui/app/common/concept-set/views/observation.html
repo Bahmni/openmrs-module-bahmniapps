@@ -95,8 +95,11 @@
                 <!--{{observation.groupMembers}}-->
                 <div ng-switch-when="grid">
                     <div  ng-repeat="member in observation.groupMembers" class="grid-row">
-                        <grid-row observation="member" ></grid-row>
+                        <button-select observation="member" ></button-select>
                     </div>
+                </div>
+                <div ng-switch-when="buttonselect">
+                    <button-select observation="observation" ></button-select>
                 </div>
 
 
