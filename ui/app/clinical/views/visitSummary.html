@@ -219,7 +219,7 @@
                 </td>
             </tr>
 
-            <tr ng-if="print && line.notes && line.notes.trim().length > 0 && !line.isSummary">
+            <tr ng-if="print && line.notes && line.notes.trim().length > 1 && !line.isSummary">
                 <td colspan="3" class="notes inline-notes">
                     <strong class="left">Lab Tech Notes: </strong>
                     <pre class="left">{{line.notes}}</pre>

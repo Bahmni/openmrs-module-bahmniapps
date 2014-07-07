@@ -17,7 +17,7 @@ angular.module('bahmni.clinical')
             };
             $scope.isEmpty = function (notes) {
                 if (notes) {
-                    return notes.trim().length < 1;
+                    return notes.trim().length < 2;
                 }
                 return true;
             }
