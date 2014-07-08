@@ -4,7 +4,7 @@ Bahmni.ConceptSet.ConceptMapper = function () {
             uuid: openMrsConcept.uuid,
             name: openMrsConcept.name.name || openMrsConcept.name,
             set: openMrsConcept.set,
-            dataType: openMrsConcept.dataType? openMrsConcept.dataType : null,
+            dataType: getDataTypeOfConcept(openMrsConcept),
             hiAbsolute: openMrsConcept.hiAbsolute,
             lowAbsolute: openMrsConcept.lowAbsolute,
             hiNormal: openMrsConcept.hiNormal,
@@ -13,5 +13,13 @@ Bahmni.ConceptSet.ConceptMapper = function () {
             answers: openMrsConcept.answers,
             units: openMrsConcept.units
         }
+    };
+
+    var getDataTypeOfConcept = function(concept){
+        return concept.datatype ? concept.datatype.name : getObservationConceptDataType(concept);
+    };
+
+    var getObservationConceptDataType = function(concept){
+        return concept.dataType ? concept.dataType : null
     };
 };
