@@ -46,7 +46,7 @@
     font-family: OpenSansBold;
     margin-bottom: 0;
     cursor: pointer;
-    &:hover {
+    &:active {
         background: #e1f9fe;
         color: #52957e;
     }
@@ -60,7 +60,6 @@
   }
   section.block {
     padding: 0!important;
-    // min-height: 250px;
     border-radius: 0 0 5px 5px;
   }
   section {
@@ -99,14 +98,6 @@
       color: red;
     }
   }
-  // button {
-  //   display: none;
-  //   width: 100%;
-  //   max-width: 100%;
-  //   color: #006699;
-  //   border-top-left-radius: 0;
-  //   border-top-right-radius: 0;
-  // }
 }
 
 .dashboard-treatment-section {
