@@ -4,7 +4,7 @@ Bahmni.ConceptSet.ConceptMapper = function () {
             uuid: openMrsConcept.uuid,
             name: openMrsConcept.name.name || openMrsConcept.name,
             set: openMrsConcept.set,
-            dataType: openMrsConcept.datatype? openMrsConcept.datatype.name : null,
+            dataType: openMrsConcept.dataType? openMrsConcept.dataType : null,
             hiAbsolute: openMrsConcept.hiAbsolute,
             lowAbsolute: openMrsConcept.lowAbsolute,
             hiNormal: openMrsConcept.hiNormal,
