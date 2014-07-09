@@ -15,7 +15,7 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
                     }
                 },
                 data: {
-                    backLinks: [{label: "Home", url: "../home"}]
+                    backLinks: [{label: "Home", url: "../home/"}]
                 },
                 resolve: {
                     initialization: 'initialization'

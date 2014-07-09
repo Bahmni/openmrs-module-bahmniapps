@@ -6,7 +6,7 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
         $stateProvider.state('patientsearch', {
             url: '/patient/search',
             data: {
-                backLinks: [{label: "Home", url: "../home"}]
+                backLinks: [{label: "Home", url: "../home/"}]
             },
             views: {
                 'content': {

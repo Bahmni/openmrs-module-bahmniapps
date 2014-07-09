@@ -7,7 +7,7 @@ angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$ur
         $stateProvider.state('search', {
                 url:'/search',
                 data: {
-                    backLinks: [{label: "Home", url: "../home"}]
+                    backLinks: [{label: "Home", url: "../home/"}]
                 },
                 views: {
                     'content': {
