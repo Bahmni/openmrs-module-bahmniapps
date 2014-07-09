@@ -32,7 +32,10 @@
   .new-diagnosis {
     border: 1px solid #bbb;
     border-radius: 5px;
-    margin: 20px 5px;
+    margin: 35px 5px 20px 5px;
+    @media screen and (max-width: 768px) {
+        margin-top: 20px;
+    }
     box-shadow: 0px 0px 8px -1px #ccc;
     h2 {
       padding: 10px;
@@ -57,6 +60,7 @@
   }
   .table-header {
     background: #f6f6f6;
+    border-radius: 5px 5px 0 0;
     span {
       font-size: 14px;
       white-space: nowrap;

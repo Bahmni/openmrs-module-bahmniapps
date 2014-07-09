@@ -1,13 +1,13 @@
 <div class="treatment">
     <form name="treatmentForm" class="simple-form-ui">
-        <div class="table">
+        <div class="table section-grid">
             <div class="row table-header">
                 <div class="col col1">Drug Name</div>
-                <div class="col col2">Strength &amp; Form</div>
+                <!-- <div class="col col2">Strength &amp; Form</div> -->
                 <div class="col col3"># per Dosage</div>
                 <div class="col col4">Dosage Frequency</div>
                 <div class="col col5">Dosage Instructions</div>
-                <div class="col col6">PRN</div>
+                <!-- <div class="col col6">PRN</div> -->
                 <div class="col col7"># of Days</div>
                 <div class="col col8">Notes</div>
             </div>
@@ -19,9 +19,9 @@
                                 my-autocomplete="{{ {'src': 'getDrugList', 'responseHandler': 'getDataResults', 'onSelect':'onDrugSelected', 'index' : $index} }}"
                                 ng-change="addNewRowIfNotExists($index)" ng-class="{'illegalValue': !isValidDrugName(drug)}" ng-disabled="drug.savedDrug">
                     </div>
-                    <div class="col col2">
+<!--                     <div class="col col2">
                         <span class="drug-strength"> {{drug.strength + ' ' + drug.dosageForm}} </span>
-                    </div>
+                    </div> -->
                     <div class="col col3">
                         <input ng-model="drug.numberPerDosage" type="number" name="numberPerDosage" min="0"
                                 value="{{drug.numberPerDosage}}" ng-required="!drug.empty"
@@ -42,9 +42,9 @@
                             </select>
                         </span>
                     </div>
-                    <div class="col col6">
+<!--                     <div class="col col6">
                         <input ng-model="drug.prn" name="prn" type="checkbox" value="{{drug.prn}}" ng-disabled="drug.savedDrug">
-                    </div>
+                    </div> -->
                     <div class="col col7">
                         <input ng-model="drug.numberOfDosageDays" name="numberOfDosageDays"
                                type="number" value="{{drug.numberOfDosageDays}}" min="0"

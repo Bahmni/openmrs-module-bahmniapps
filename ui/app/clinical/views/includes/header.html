@@ -7,8 +7,7 @@
         </ul>
 
         <h1 class="patient-details">
-            <i class="icon-user"></i>
-            <span>{{patient.name}}</span>
+            <a href="#/patient/{{patient.uuid}}/dashboard" ng-click="changeContext($event)"><span><i class="icon-user"></i> {{patient.name}}</span></a>
         </h1>
         <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}"></button>
         <button class="confirm save-consultation" ng-show="availableBoards" ng-click="save()" class="confirm">Save</button>

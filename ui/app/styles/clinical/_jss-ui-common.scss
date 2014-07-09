@@ -649,26 +649,34 @@ pre.chief-notes {
 pre {
   background: none;
 }
-
 .patient-details {
-  margin-top: 21px;
-  color: #eee;
-  text-transform: capitalize;
-  display: inline-block;
-  width: 25%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: right;
-  @media screen and (min-width: 959px) and (max-width: 979px) {
-    width: 20%;
-  }
-  @media screen and (min-width: 769px) and (max-width: 912px) {
-    width: 15%;
-  }
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
+    display: inline-block;
+    position: absolute;
+    top: 54px;
+    right: 5px;
+    z-index: 1;
+}
+.patient-details a {
+    text-transform: capitalize;
+    width: 22%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: right;
+    background: #eee;
+    padding: 5px 10px;
+    border-radius: 0 0 5px 5px;
+    color: #007fff;
+    box-shadow: 0px 4px 5px -2px #ccc;
+    right: 5px;
+    border: 1px solid #ccc;
+    border-top: 0;
+    &:hover {
+        text-decoration: none;
+    }
+    @media screen and (max-width: 768px) {
+        display: none;
+    }
 }
 
 .ui-autocomplete {

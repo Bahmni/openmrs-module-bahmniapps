@@ -46,15 +46,15 @@
   }
   .col3{
     @include column(1);
-    width:8%;
+    width:14%;
   }
   .col4{
     @include column(2);
-    width:10%;
+    width:14%;
   }
   .col5{
     @include column(2);
-    width:10%;
+    width:14%;
   }
   .col6{
     @include column(1);
@@ -63,13 +63,12 @@
   }
   .col7{
     @include column(1);
-    width:10%;
-     text-align: center;
+    width:14%;
   }
   .col8{
     @include column(2);
     float: right;
-    width:100px;
+    width:13%;
     button:first-child{
       margin-right:15%;
     }
@@ -94,3 +93,29 @@
 
 
  }
+
+.treatment {
+    .table {
+        margin: 15px 5px 20px 5px;
+        @media screen and (max-width: 768px) {
+            margin-top: 0;
+        }
+    }
+    .table-header {
+        background: #f6f6f6;
+        border-radius: 5px 5px 0 0;
+        div.col {
+            font-size: 14px;
+            white-space: nowrap;
+            color: #555;
+            font-family: OpenSansBold;
+            font-weight: normal;
+        }
+    }
+    .table-body {
+        border-radius: 0 0 5px 5px;
+    }
+    .table .row {
+        border-bottom: 1px solid #ccc;
+    }
+}
