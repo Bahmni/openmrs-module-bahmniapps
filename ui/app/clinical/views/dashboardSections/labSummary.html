@@ -62,8 +62,8 @@
                         <span bo-text="labOrderResults[0].accessionDateTime | date:'dd-MMM-yyyy HH:mm'"></span>
                     </th>
                 </thead>
-                <tbody>
-                    <tr ng-repeat="labOrderResult in labOrderResults">
+                <tbody ng-repeat="labOrderResult in labOrderResults">
+                    <tr ng-click="toggle(labOrderResult)">
                         <td>
                             <span bo-text="labOrderResult.testName"></span>
                             <span ng-show="labOrderResult.hasRange" class="range">
@@ -71,11 +71,26 @@
                                 <span ng-show="labOrderResult.testUnitOfMeasurement" class="units" bo-text="labOrderResult.testUnitOfMeasurement"></span>
                             </span>
                         </td>
-                        <td class="value">
+                        <td class="value has-toggle-btn">
                             <span ng-class="{'referred-out': labOrderResult.referredOut}">
                                 <span class="referred">Referred Out</span>
                             </span>
                             <span ng-show="labOrderResult.result" ng-class="{'is-abnormal': labOrderResult.abnormal}" class="value" bo-text="labOrderResult.result"></span>
+                        </td>
+                        <td class="toggle-btn">
+                            <button class="toggle fr">
+                                <i class="icon-plus-sign" ng-hide="labOrderResult.show" ng-class="{'has-notes': labOrderResult.notes}"></i>
+                                <i class="icon-minus-sign" ng-show="labOrderResult.show" ng-class="{'has-notes': labOrderResult.notes}"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr ng-show="labOrderResult.showNotes">
+                        <td colspan="3" class="notes inline-notes">
+                            <strong class="left">Lab Tech Notes: </strong>
+                            <pre class="left">{{labOrderResult.notes}}</pre>
+                            <div class="footer-note right">
+                                <span class="provider" bo-text="labOrderResult.provider"></span>
+                            </div>
                         </td>
                     </tr>
                 </tbody>

@@ -6,6 +6,10 @@ angular.module('bahmni.clinical')
                 $scope.showInvestigationChart = !$scope.showInvestigationChart;
             }
 
+            $scope.toggle = function(line) {
+                line.showNotes = !line.showNotes;
+            }
+
             spinner.forPromise(labOrderResultService.getAllForPatient($rootScope.patient.uuid).then(function(results) {
                 var sortedConceptSet = new Bahmni.Clinical.SortedConceptSet($rootScope.allTestsAndPanelsConcept);
                 $scope.labAccessions = results.accessions.map(sortedConceptSet.sortTestResults);

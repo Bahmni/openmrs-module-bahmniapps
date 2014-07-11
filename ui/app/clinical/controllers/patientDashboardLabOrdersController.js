@@ -4,8 +4,8 @@ angular.module('bahmni.clinical')
             $scope.patientUuid = $stateParams.patientUuid;
             $scope.patientSummary = {message: "No Lab Orders for this patient."};
             $scope.labOrdersForLatestVisits = {
-                "Latest": {displayName: "Latest Visit", labOrders: undefined},
-                "Previous": {displayName: "Previous Visit", labOrders: undefined}
+                "Latest": {displayName: "Latest Visit", labOrders: undefined, shouldBeShown: function() {return hasLatestLabOrders()}},
+                "Previous": {displayName: "Previous Visit", labOrders: undefined, shouldBeShown: function() {return !hasLatestLabOrders()}}
             };
 
             function getLatestLabOrder(visit) {
@@ -33,7 +33,6 @@ angular.module('bahmni.clinical')
 
 
             var init = function () {
-
                 if ($rootScope.visits) {
                     var lastTwoVisitUuids = getLastNVisitUuids($rootScope.visits, 2);
 

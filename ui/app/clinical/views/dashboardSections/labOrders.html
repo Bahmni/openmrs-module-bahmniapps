@@ -7,15 +7,7 @@
         <p class="placeholder-text" ng-if="!hasLabOrders()">{{ patientSummary.message }}</p>
 
         <div ng-if="hasLabOrders()">
-            <table ng-repeat="labOrdersForVisit in labOrdersForLatestVisits">
-                <thead>
-                <tr>
-                    <th colspan="2">{{labOrdersForVisit.displayName}}</th>
-                </tr>
-                <tr ng-if="!labOrdersForVisit.labOrders || labOrdersForVisit.labOrders.length === 0">
-                    <td colspan="2">No lab orders for this visit</td>
-                </tr>
-                </thead>
+            <table ng-repeat="labOrdersForVisit in labOrdersForLatestVisits" ng-show="labOrdersForVisit.shouldBeShown()">
                 <tbody ng-repeat="labOrder in labOrdersForVisit.labOrders">
                 <tr ng-if="labOrder.isPanel()" ng-class="testResultClass(labOrder)">
                     <td colspan="2">
@@ -72,6 +64,7 @@
                             <span class="line-value" ng-class="{'is-abnormal': labOrder.orderable.results[0].isAbnormal}">
                                 {{labOrder.orderable.results[0].value}}
                             </span>
+                            <i class="icon-file-alt" ng-show="labOrder.orderable.results[0].notes"></i>
                             <span class="fr date">{{ labOrder.orderDate | date :'dd MMM yy'}}</span>
                         </span>
                     </td>
