@@ -69,6 +69,12 @@
             <div class="checkbox-inline" ng-if="observation.duration" ng-class="{'duration': observation.duration}">
                 <span>for</span><duration ng-model="observation.duration.value" disabled="!observation.primaryObs.hasValue()" illegal-value="observation.isDurationRequired() && !observation.hasDuration()"></duration>
             </div>
+            <button toggle="observation.showComment" class="toggle fr" ng-class="{'has-notes': observation.comment}">
+                <i class="icon-plus-sign" ng-hide="observation.showComment"></i>
+                <i class="icon-minus-sign" ng-show="observation.showComment"></i>
+            </button>
+            <textarea ng-show="observation.showComment" maxlength="255" ng-model="observation.comment">
+            </textarea>
         </div>
     </fieldset>
 

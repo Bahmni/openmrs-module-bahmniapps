@@ -184,23 +184,29 @@
   }
 }
 
-.toggle {
-  float: left;
-  background: none;
-  border: none;
-  padding: 0;
-  // width: 26px; 
+table {
+  .toggle {
+    background: none;
+    border: none;
+    padding: 0;
+  }
+
   &:hover {
     background: none;
     border: none;
   }
+}
+
+.toggle {
+  float: left;
+  color: #666;
+  // width: 26px; 
+  &.has-notes {
+    color: orange;
+  }
   i {
     padding: 0 10px;
-    color: #666;
     font-size: 22px;
-  }
-  .has-notes {
-    color: orange
   }
 }
 .has-toggle-btn {

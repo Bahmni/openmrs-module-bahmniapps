@@ -47,13 +47,16 @@ Bahmni.ConceptSet.ObservationMapper = function () {
     // tODO : remove conceptUIConfig
     var newObservation = function (concept, savedObs, conceptSetConfig, mappedGroupMembers) {
         var displayLabel = conceptSetConfig[concept.name.name] && conceptSetConfig[concept.name.name]["label"];
-        var observation = { concept: conceptMapper.map(concept), units: concept.units, label: displayLabel || concept.name.name, possibleAnswers: concept.answers, groupMembers: mappedGroupMembers};
+        var comment = savedObs ? savedObs.comment : null;
+        var observation = { concept: conceptMapper.map(concept), units: concept.units, label: displayLabel || concept.name.name, possibleAnswers: concept.answers, groupMembers: mappedGroupMembers, comment: comment};
+
         return new Bahmni.ConceptSet.Observation(observation, savedObs, conceptSetConfig, mappedGroupMembers);
     };
 
     // TODO : remove conceptUIConfig
     var newObservationNode = function (concept, savedObsNode, conceptSetConfig, mappedGroupMembers) {
-        var observation = { concept: conceptMapper.map(concept), units: concept.units, label: concept.name.name, possibleAnswers: concept.answers, groupMembers: mappedGroupMembers};
+        var comment = savedObsNode ? savedObsNode.comment : null;
+        var observation = { concept: conceptMapper.map(concept), units: concept.units, label: concept.name.name, possibleAnswers: concept.answers, groupMembers: mappedGroupMembers, comment: comment};
         return new Bahmni.ConceptSet.ObservationNode(observation, savedObsNode, conceptSetConfig);
     };
 
@@ -88,7 +91,8 @@ Bahmni.ConceptSet.ObservationMapper = function () {
 
             return { "value": observationValue, "abnormal": observationTemp.abnormal, "duration": observationTemp.duration,
                 "provider": observationTemp.provider ? observationTemp.provider.name : "",
-                "observationDateTime": observationTemp.observationDateTime, "concept": obsConcept};
+                "observationDateTime": observationTemp.observationDateTime, "concept": obsConcept,
+                comment: observationTemp.comment };
         }
 
         _.forEach(observations, function (savedObs) {
