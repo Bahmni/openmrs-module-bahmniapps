@@ -5,45 +5,31 @@ describe("PatientDashboardLabOrdersController", function(){
     beforeEach(module('bahmni.clinical'));
 
     var scope;
-    var result;
+    var labOrderResultService;
     var stateParams;
+    var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
+
+    var labOrderResults = {
+        "accessions": [[
+            {"accessionUuid": "uuid1", "accessionDateTime":1401437955000, "testName": "ZN Stain(Sputum)"},
+            {"accessionUuid": "uuid1", "accessionDateTime":1401437955000, "testName": "ZN Stain(Sputum)"},
+            {"accessionUuid": "uuid1", "accessionDateTime":1401437955000, "testName": "Haemoglobin", "panelName": "Routine Blood"},
+            {"accessionUuid": "uuid1", "accessionDateTime":1401437955000, "testName": "ESR", "panelName": "Routine Blood"},
+        ], [
+            {"accessionUuid": "uuid2", "accessionDateTime":1401437956000, "testName": "ZN Stain(Sputum)"}
+        ]],
+        "tabularResult": {}
+    }
 
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
 
-        result = {
-            "concept":{
-                "uuid":"478eddf6-92b2-435f-b86e-a31915dcb5cb",
-                "units":null,
-                "name":"Sugar (Routine Urine)",
-                "set":false,
-                "conceptClass":"Test",
-                "dataType":"Text"
-            },
-            "orderDate":"2014-06-25T11:35:40.000+0530",
-            "results":[{
-                "concept":{
-                    "uuid":"478eddf6-92b2-435f-b86e-a31915dcb5cb",
-                    "units":null,
-                    "name":"Some Test",
-                    "set":false,
-                    "conceptClass":"Test",
-                    "dataType":"Text"
-                },
-                "isAbnormal":false,
-                "units":null,
-                "notes":"Testing 123",
-                "minNormal":4500,
-                "maxNormal":11000,
-                "referredOut":false,
-                "voided":false,
-                "value":"Nil",
-                "observationDateTime":"2014-06-25T11:35:40.000+0530",
-                "providerName":"admin",
-                "isSummary":false,
-                "orderDate":"2014-04-02T11:51:20.000+0530"
-            }]
-        };
+        spinner.forPromise.and.callFake(function(param) {return {}});
+
+        labOrderResultService = jasmine.createSpyObj('LabOrderResultService', ['getAllForPatient']);
+        labOrderResultService.getAllForPatient.and.callFake(function(param) {
+            return specUtil.respondWith(labOrderResults);
+        });
 
         stateParams = {
             patientUuid: "some uuid"
@@ -51,15 +37,17 @@ describe("PatientDashboardLabOrdersController", function(){
 
         $controller('PatientDashboardLabOrdersController', {
             $scope: scope,
-            result: result,
-            $stateParams: stateParams
+            $rootScope: {'allTestsAndPanelsConcept': []},
+            $stateParams: stateParams,
+            LabOrderResultService: labOrderResultService,
+            spinner: spinner
         });
     }));
 
     describe("The controller is loaded", function(){
         it("should setup the scope", function() {
             expect(scope.patientUuid).toBe('some uuid');
+            expect(labOrderResultService.getAllForPatient).toHaveBeenCalledWith("some uuid", 1);
         });
     });
-
 });

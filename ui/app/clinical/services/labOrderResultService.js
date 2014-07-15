@@ -20,11 +20,11 @@ angular.module('bahmni.clinical')
         return {accessions: accessions, tabularResult: tabularResult};
     }
 
-    var getAllForPatient = function (patientUuid) {
+    var getAllForPatient = function (patientUuid, numberOfVisit) {
         var deferred = $q.defer();
         $http.get(Bahmni.Common.Constants.bahmniLabOrderResultsUrl, {
             method:"GET",
-            params: {patientUuid: patientUuid},
+            params: {patientUuid: patientUuid, numberOfVisit: numberOfVisit},
             withCredentials: true
         }).then(function(results) {
             deferred.resolve(transformGroupSort(results.data));

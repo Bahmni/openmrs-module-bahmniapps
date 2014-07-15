@@ -3,79 +3,33 @@
     <h2 ng-dialog="views/dashboardSections/labSummary.html"
                ng-dialog-class="ngdialog-theme-flat ngdialog-theme-custom"
                ng-dialog-controller="PatientDashboardLabSummaryController">{{section.description}}<button class="fr toggle btn-expand"><i class="icon-external-link"></i></button></h2>
-    <section class="block" ng-class="{'more': patientSummary.show}">
+    <section class="block">
         <p class="placeholder-text" ng-if="!hasLabOrders()">{{ patientSummary.message }}</p>
 
         <div ng-if="hasLabOrders()">
-            <table ng-repeat="labOrdersForVisit in labOrdersForLatestVisits" ng-show="labOrdersForVisit.shouldBeShown()">
-                <tbody ng-repeat="labOrder in labOrdersForVisit.labOrders">
-                <tr ng-if="labOrder.isPanel()" ng-class="testResultClass(labOrder)">
-                    <td colspan="2">
-                        <strong>{{labOrder.concept.name}}</strong>
-                    </td>
-                </tr>
-                <tr ng-if="labOrder.isPanel()" ng-repeat="test in labOrder.orderable.tests">
-                    <td class="testUnderPanel">
-                        <span >{{test.concept.name}}</span>
-                        <span class="range" ng-if="hasResult(test) && hasRange(test.results[0])">
-                            <span>
-                            {{' (' + test.results[0].minNormal  + ' - ' + test.results[0].maxNormal  + ') '}}
+            <table ng-repeat="labOrderResults in labAccessions" bindonce="labAccessions">
+                <tbody>
+                    <tr ng-repeat="labOrderResult in labOrderResults">
+                        <td>
+                            <span bo-text="labOrderResult.testName"></span>
+                            <span ng-show="labOrderResult.hasRange" class="range">
+                                <span bo-text="'(' + labOrderResult.minNormal + ' - ' + labOrderResult.maxNormal + ')'"></span>
+                                <span ng-show="labOrderResult.testUnitOfMeasurement" class="units" bo-text="labOrderResult.testUnitOfMeasurement"></span>
                             </span>
-                            <span class="units">{{test.results[0].units }}</span>
-                        </span>
-                    </td>
-                    <td class="value">
-                        <span ng-if="hasResult(test)">
-                            <span ng-class="{'referred-out': isReferredOut(test.results)}">
-                                <span class="referred">
-                                    R
-                                </span>
+                        </td>
+                        <td class="value has-toggle-btn">
+                            <span ng-class="{'referred-out': labOrderResult.referredOut}">
+                                <span class="referred">R</span>
                             </span>
-                            <span class="line-value"
-                                  ng-class="{'is-abnormal': test.results[0].isAbnormal}">
-                            {{test.results[0].value}}
-
+                            <span ng-show="labOrderResult.result" ng-class="{'is-abnormal': labOrderResult.abnormal}" class="value" bo-text="labOrderResult.result"></span>
+                            <span class="fr date">
+                                <i class="icon-file-alt" ng-show="labOrderResult.notes"></i>    
+                                <span>{{ labOrderResult.accessionDateTime | date :'dd MMM yy'}}</span>
                             </span>
-                            <span class="fr date">{{ labOrder.orderDate | date :'dd MMM yy'}}</span>
-                        </span>
-                    </td>
-                </tr>
-
-                <tr ng-if="!labOrder.isPanel()">
-                    <td>
-                        <span>{{labOrder.concept.name}}</span>
-                            <span class="range"
-                                  ng-if="hasResult(labOrder.orderable) && hasRange(labOrder.orderable.results[0])">
-                                <span>
-                                {{' (' + labOrder.orderable.results[0].minNormal  + ' - ' +
-                                    labOrder.orderable.results[0].maxNormal
-                                    + ') '}}
-                                </span>
-                                <span class="units">{{labOrder.orderable.results[0].units }}</span>
-                            </span>
-                    </td>
-                    <td class="value">
-                        <span ng-if="hasResult(labOrder.orderable)">
-                            <span ng-class="{'referred-out': isReferredOut(labOrder.orderable.results)}">
-                                <span class="referred">
-                                    R
-                                </span>
-                            </span>
-                            <span class="line-value" ng-class="{'is-abnormal': labOrder.orderable.results[0].isAbnormal}">
-                                {{labOrder.orderable.results[0].value}}
-                            </span>
-                            <i class="icon-file-alt" ng-show="labOrder.orderable.results[0].notes"></i>
-                            <span class="fr date">{{ labOrder.orderDate | date :'dd MMM yy'}}</span>
-                        </span>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
-
-            <button class="show-more" ng-if="patientSummary.data.length > 8" ng-click="toggle(patientSummary)">
-                <span class="more-text">Show more</span><span class="less-text">Show less</span>
-            </button>
         </div>
-
     </section>
 </div>
