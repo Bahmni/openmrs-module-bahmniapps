@@ -72,7 +72,7 @@
                         </td>
                     </tr>
 
-                    <tr ng-repeat-start="observation in observationGroup.groupMembers"
+                    <tr toggle="observation.showComment" ng-repeat-start="observation in observationGroup.groupMembers"
                         ng-class="{true: 'is-abnormal'}[observation.abnormal.value]">
                         <td class="name">
                             <span class="obs-value">{{observation.concept.name}}</span>
@@ -88,8 +88,9 @@
                             </div>
                         </td>
                         <td>
-                            <button class="toggle fr" toggle="observation.showComment" ng-if="observation.comment">
-                                <i class="icon-plus"></i>
+                            <button class="toggle fr" ng-if="observation.comment">
+                                <i class="icon-plus-sign" ng-hide="observation.showComment"></i>
+                                <i class="icon-minus-sign" ng-show="observation.showComment"></i>
                             </button>
                         </td>
                     </tr>
