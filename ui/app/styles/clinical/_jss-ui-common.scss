@@ -518,7 +518,7 @@ aside{
   }
   &.visit-history{
     position:absolute;
-    width:250px;
+    width:300px;
     background:#333333;
     bottom: 0;
     top: 0;
@@ -558,15 +558,22 @@ aside{
       padding-bottom: 10px;
       .patient-img img {
         border-radius: 10px;
-        margin: 15px 52px;
-        width: 150px;
+        margin: 10px;
+        width: 50px;
+        float: left;
+        display: block;
+      }
+      .patient-handler {
+        float: right;
+        width: 230px;
+        margin-top: 20px;
       }
       h4, h5, .ward {
         color: #ddd;
         display: block;
         padding-left: 10px;
         font-size: 14px;
-        text-align: center;
+        text-align: left;
       }
       h4.patient-name {
         text-transform: capitalize; font-size: 16px; 
@@ -715,4 +722,32 @@ pre {
 
 .current-visit-icon {
 	color: #E8A000;
+}
+//home
+.bahmni-home {
+    margin-bottom: 5px!important;
+    .icon-home {
+        color: #eee;
+        margin-right: 5px;
+        font-size: 18px;
+    }
+}
+
+//Back button
+.back-arrow-head {
+    background: url(../images/sprites.png) no-repeat;
+    background-position: 0 -108px;
+    padding-left: 20px;
+    margin: 2px;
+    cursor: pointer;
+    opacity: 0.6;
+}
+.back-arrow-body {
+    padding: 15px 10px 15px 0px!important;
+    background: url(../images/sprites.png) repeat-x!important;
+    background-position: 0 -181px!important;
+    display: inline-block!important;
+    border-radius: 5px!important;
+    border: 0!important;
+    border-right: 1px solid #A09F9F!important;
 }

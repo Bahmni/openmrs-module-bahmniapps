@@ -1,26 +1,43 @@
 <div class="patient-control-panel">
     <div class="overlay" ng-show="$parent.showControlPanel" ng-click="$parent.toggleControlPanel()"></div>
     <aside bindonce="patient" class="visit-history ng-hide" ng-show="$parent.showControlPanel">
-        <div class="patient-info">
-            <div class="patient-img">
-                <a href="{{getDashboardLink()}}" ng-click="changeContext($event)">
-                  <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
-                </a>
-            </div>
 
-            <h4 class="patient-name"><a href="{{getDashboardLink()}}" ng-click="changeContext($event)"><span bo-text="patient.name"></span></a><span ng-show="patient.genderText"> ({{patient.genderText}})</span></h4>
-            <h5 class="patient-identifier"><span bo-text="patient.identifier"></span></h5>
+        <div class="patient-info">
+            <div>
+                <a class="patient-img" href="{{getDashboardLink()}}" ng-click="changeContext($event)">
+                      <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
+                </a>
+                <div class="patient-handler">
+                    <h4 class="patient-name">
+                    <a href="{{getDashboardLink()}}" ng-click="changeContext($event)"><span bo-text="patient.name"></span></a><span ng-show="patient.genderText"> ({{patient.genderText}})</span></h4>
+                    <h5 class="patient-identifier"><span bo-text="patient.identifier"></span></h5>
+                </div>
+            </div>
             <h5><span bo-text="calculateAge(patient.birthdate)"></span></h5>
             <h5><span bo-text="patient.address.cityVillage"></span>
               <span ng-show="patient.address.countyDistrict"> / {{patient.address.countyDistrict}}</span></h5>
             <span class="ward" bo-text="bedDetails.wardName + ' ' + bedDetails.bedNumber"></span>
         </div>
+        
+        <ul class="bahmni-home">
+            <li><a class="header-logo" href="../home/"><i class="icon-home"></i>Bahmni Home</a></li>
+        </ul>
 
         <h2>Actions</h2>
         <ul>
             <li class="btn-patient-doc"><a href="" pop-up on-click-handler="getPatientDocuments"><i class="icon-file"></i>Patient Documents</a></li>
             <li class="{{link.icon}}" ng-click="changeContext($event)" ng-repeat="link in links">
                 <a href="{{link.href}}" ng-click="link.onClick($event)"><i class="icon-th-large"></i><i class="icon-bar-chart"></i><i class="icon-vitals-2"></i><i class="icon-print"></i>{{link.text}}</a>
+            </li>
+        </ul>
+
+        <h2>Other Actions</h2>
+        <ul>
+            <li>
+                <a log-out><i class="icon-off icon-white small"></i> Logout
+                <span ng-show="$parent.currentUser.username">
+                    ({{$parent.currentUser.username}})
+                </span></a>
             </li>
         </ul>
 

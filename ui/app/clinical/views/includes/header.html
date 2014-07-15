@@ -1,5 +1,15 @@
 <div class="opd-header-wrapper" id="opd-tabs">
-    <div class="opd-header-bottom tabs">
+
+    <div class="opd-header-bottom tabs">    
+        <div ng-controller="CommonHeaderController">
+            <ul>
+                <li class="back-arrow-head" ng-repeat="(label, goToUrl) in backLinks">
+                    <a class="back-arrow-body" ng-click="goToUrl()">
+                        <span>{{label}}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
         <ul class="header-tabs">
             <li ng-repeat="board in availableBoards" ng-class="{'tab-selected':currentBoard.name==board.name}">
                 <a ng-click="showBoard(board.name)" class="button">{{board.name}}</a>
@@ -11,6 +21,6 @@
         </h1>
         <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}"></button>
         <button class="confirm save-consultation" ng-show="availableBoards" ng-click="save()" class="confirm">Save</button>
-
     </div>
+
 </div>
