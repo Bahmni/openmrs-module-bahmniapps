@@ -27,10 +27,11 @@
   height: 50px;
   background: #669999;
   h1 {
-    float: left;
+    // float: left;
     margin: 15px 0;
     color: #eee;
     text-transform: capitalize;
+    display: inline-block;
   }
 }
 .dashboard-section {
