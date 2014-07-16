@@ -197,7 +197,7 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
   ul{
     li{
         float:left;
-        margin-bottom: -2px;
+        // margin-bottom: -2px;
         a,button{
           padding: 10px 15px;
           background:#447772;
@@ -521,9 +521,9 @@ aside{
     width:300px;
     background:#333333;
     bottom: 0;
-    top: 0;
+    top: 50px;
     box-shadow: -3px 5px 10px #777;
-    z-index: 10;
+    z-index: 5;
     h2 {
       color: #666;
       font-size: 14px;
@@ -659,7 +659,7 @@ pre {
 .patient-details {
     display: inline-block;
     position: absolute;
-    top: 54px;
+    top: 56px;
     right: 5px;
     z-index: 1;
 }
