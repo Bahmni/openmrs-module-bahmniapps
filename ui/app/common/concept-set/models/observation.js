@@ -48,6 +48,10 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.getDataTypeName() === "Coded";
     },
 
+    isImage: function () {
+        return this.getDataTypeName() === "Complex" && this.concept.handler == "ImageUrlHandler";
+    },
+
     getDataTypeName: function () {
         return this.concept.dataType;
     },
@@ -83,6 +87,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     getControlType: function () {
         if (this.getConceptUIConfig().freeTextAutocomplete) return "freeTextAutocomplete";
         if (this.isHtml5InputDataType()) return "html5InputDataType";
+        if (this.isImage()) return "image";
         if (this.isText()) return "text";
         if (this.isCoded()) return this._getCodedControlType();
         if (this.isGrid()) return "grid";

@@ -253,3 +253,28 @@ concept-set {
         display: inline-block;
     }
 }
+
+.vitals {
+  .placeholder {
+    // border: 3px dashed #ddd;
+    width: 50px;
+    height: 50px;
+    // background: #fefefe;
+    padding: 2px;
+    float: left;
+    margin: 5px 20px 5px 2px;
+    text-align: center;
+    border: #dddddd 1px solid;
+    i {
+      color: green;
+      font-size: 20px;
+      line-height: 55px;
+      width: 40px;
+    }
+  }
+  .file-browse {
+    position: absolute;
+    left: -9999px;
+    visibility: hidden;
+  }
+}

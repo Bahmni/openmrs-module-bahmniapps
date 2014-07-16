@@ -8,6 +8,7 @@ Bahmni.ConceptSet.ConceptMapper = function () {
             hiAbsolute: openMrsConcept.hiAbsolute,
             lowAbsolute: openMrsConcept.lowAbsolute,
             hiNormal: openMrsConcept.hiNormal,
+            handler: openMrsConcept.handler,
             lowNormal: openMrsConcept.lowNormal,
             conceptClass: openMrsConcept.conceptClass,
             answers: openMrsConcept.answers,

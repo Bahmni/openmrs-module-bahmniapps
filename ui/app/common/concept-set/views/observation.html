@@ -107,7 +107,13 @@
                 <div ng-switch-when="buttonselect">
                     <button-select observation="observation" ></button-select>
                 </div>
-
+                <div ng-switch-when="image">
+                        <input id="file-browse-{{observation.uniqueId}}" class="file-browse" type="file" name="image" accept="image/*" capture="camera" image-upload ng-model="observation.value" url="observation.value">
+                        <label class="placeholder btn" for="file-browse-{{observation.uniqueId}}"><i class="icon-plus needsclick"></i></label>
+                        <div class="file">
+                            <img ng-src="{{observation.value}}" width="100">
+                        </div>
+                </div>
 
 
                 <!-- Dropdowns won't be supported in release - 3
