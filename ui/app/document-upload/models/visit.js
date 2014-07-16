@@ -15,7 +15,9 @@ Bahmni.DocumentUpload.Visit = function () {
         var conceptUuids = [];
 
         savedImages.sort(function(image1,image2){
-            return image2.id - image1.id
+            return (Date.parse(image2.obsDatetime) !==  Date.parse(image1.obsDatetime)) ?
+                Date.parse(image2.obsDatetime) -  Date.parse(image1.obsDatetime):
+                image2.id - image1.id;
         });
 
         savedImages.forEach(function(image){
@@ -43,7 +45,7 @@ Bahmni.DocumentUpload.Visit = function () {
                             id:member.id,
                             encodedValue: Bahmni.Common.Constants.documentsPath + '/' + member.value,
                             obsUuid: observation.uuid,
-                            obsDatetime: observation.obsDatetime,
+                            obsDatetime: member.obsDatetime,
                             visitUuid: encounter.visit.uuid,
                             encounterUuid: encounter.uuid,
                             providerUuid: encounter.provider.uuid,

@@ -298,7 +298,7 @@ describe("DocumentController", function () {
             },
             {
                 testUuid: "4553bd77-9bcd-11e3-b8ce-43d3573b23fb",
-                image: "/document_images/157100/157051-RADIOLOGY-e9d1f0cc-9af9-431b-a178-a5d05d7f16b2.jpeg",
+                image: "157100/157051-RADIOLOGY-e9d1f0cc-9af9-431b-a178-a5d05d7f16b2.jpeg",
                 obsUuid: "dd24732d-a4f9-49be-af7f-6fc2c2c39f0c",
                 voided: undefined
             }

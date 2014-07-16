@@ -233,7 +233,8 @@ angular.module('opd.documentupload')
 
                 visit.savedImages.forEach(function (image) {
                     if (image.changed == true) {
-                        visitDocument.documents.push({testUuid: image.concept.uuid, image: image.encodedValue, voided: image.voided, obsUuid: image.obsUuid});
+                        var imageUrl = image.encodedValue.replace(Bahmni.Common.Constants.documentsPath + "/", "");
+                        visitDocument.documents.push({testUuid: image.concept.uuid, image: imageUrl, voided: image.voided, obsUuid: image.obsUuid});
                     }
                 });
 
@@ -241,6 +242,8 @@ angular.module('opd.documentupload')
                     var imageUrl = image.encodedValue.replace(Bahmni.Common.Constants.documentsPath + "/", "");
                     visitDocument.documents.unshift({testUuid: image.concept.uuid, image: imageUrl, obsDateTime: getEncounterStartDateTime(visit)})
                 });
+
+                
                 return visitDocument;
             };
 
@@ -258,20 +261,12 @@ angular.module('opd.documentupload')
                 }
             };
 
-            var isInActiveEncounter =function (obs) {
-                return activeEncounter.encounterUuid === obs.encounterUuid;
-            };
-
-            var isNotInActiveVisit = function (obs) {
-                return activeEncounter.visitUuid !== obs.visitUuid;
-            };
-
             var isObsByCurrentProvider = function (obs) {
                 return $rootScope.currentUser.person.uuid === obs.providerUuid;
             };
 
             $scope.canDeleteImage = function(obs){
-                return (isNotInActiveVisit(obs) || isInActiveEncounter(obs)) && isObsByCurrentProvider(obs);
+                return isObsByCurrentProvider(obs) || obs.new;
             };
 
             var updateVisit = function(visit, encounters){
