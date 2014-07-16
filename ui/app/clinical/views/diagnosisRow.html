@@ -42,18 +42,18 @@
 
   <div class="col col1"></div> 
   <div class="button-toggle col col2">
-      <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.order'
+      <buttons-radio class="btn-group" model='diagnosis.order'
                      options='orderOptions' dirty-check-flag='diagnosis.isDirty'
                      ng-class="{'illegalValue': !diagnosis.isValidOrder()}"/>
   </div>  
   <div class="button-toggle col col3">
-      <buttons-radio class="small-btn" data-toggle="buttons-radio" model='diagnosis.certainty'
+      <buttons-radio class="small-btn" model='diagnosis.certainty'
                      options='certaintyOptions' dirty-check-flag='diagnosis.isDirty'
                      ng-class="{'illegalValue': !diagnosis.isValidCertainty()}"/>
   </div>  
  
   <div class="button-toggle status col col4">
-        <buttons-radio class="small-btn status" data-toggle="buttons-radio"
+        <buttons-radio class="small-btn status"
                        model='diagnosis.diagnosisStatus'
                        options='diagnosisStatuses' dirty-check-flag='diagnosis.isDirty'/>
   </div>

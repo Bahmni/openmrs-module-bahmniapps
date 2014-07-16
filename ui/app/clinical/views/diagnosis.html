@@ -26,17 +26,17 @@
 
                             </div>
                             <div class="col col2">
-                                <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.order'
+                                <buttons-radio class="btn-group" model='diagnosis.order'
                                                ng-class="{'illegalValue': !diagnosis.isValidOrder()}"
                                                options='orderOptions'/>
                             </div>
                             <div class="col col3">
-                                <buttons-radio class="small-btn" data-toggle="buttons-radio" model='diagnosis.certainty'
+                                <buttons-radio class="small-btn" model='diagnosis.certainty'
                                                ng-class="{'illegalValue': !diagnosis.isValidCertainty()}"
                                                options='certaintyOptions'/>
                             </div>
                             <div class="col col4">
-                                <buttons-radio class="small-btn status" data-toggle="buttons-radio"
+                                <buttons-radio class="small-btn status"
                                                model='diagnosis.diagnosisStatus'
                                                options='diagnosisStatuses'/>
                             </div>
