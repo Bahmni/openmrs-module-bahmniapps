@@ -1,0 +1,13 @@
+<div ng-controller="PatientDashboardCaseSummaryController">
+    <h2>{{section.title}}</h2>
+
+    <section class="block" ng-if="activeVisit" ng-class="{'more': patientSummary.show}">
+        <div ng-repeat="observation in bahmniObservations">
+            <label class="date">{{observation.time | date: 'dd MMM yy'}}</label>
+                <div class="notes">{{observation.value}}</div>
+        </div>
+        <div ng-show="!bahmniObservations.length">
+            <div class="placeholder-text">No case summary for this patient.</div>
+        </div>
+    </section>
+</div>
