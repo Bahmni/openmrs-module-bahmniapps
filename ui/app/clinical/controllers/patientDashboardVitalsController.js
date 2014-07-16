@@ -33,7 +33,7 @@ angular.module('bahmni.clinical')
 
         var createPatientSummary = function () {
             if ($scope.activeVisit) {
-                spinner.forPromise(observationsService.fetch($scope.patientUuid, ['Vitals', 'REGISTRATION_CONCEPTS']).then(function(observations) {
+                spinner.forPromise(observationsService.fetch($scope.patientUuid, $scope.section.conceptNames, $scope.section.numberOfVisits).then(function(observations) {
                     var bahmniObservations = new Bahmni.ConceptSet.ObservationMapper().forView(observations.data);
 
                     $scope.patientSummary.data = new Bahmni.Clinical.ResultGrouper().group(bahmniObservations, observationGroupingFunction, 'obs', 'date');

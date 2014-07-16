@@ -37,13 +37,13 @@ angular.module('opd.patientDashboard', [])
             getEncountersForVisit($scope.selectedVisit.uuid);
         };
 
-        var addViewNameToSection = function (section) {
-            section.viewName = "views/dashboardSections/" + section.name + ".html";
+        var createPatientDashboardSection = function (section) {
+            return new Bahmni.Clinical.PatientDashboardSection(section);
         };
 
         $scope.showSummary = function () {
-            $scope.patientSummary = {}
-            $scope.patientDashboardSections.forEach(addViewNameToSection);
+            $scope.patientSummary = {};
+            $scope.patientDashboardSections = _.map($scope.patientDashboardSections, createPatientDashboardSection);
         };
 
         var init = function () {

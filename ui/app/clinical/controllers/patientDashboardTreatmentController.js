@@ -16,7 +16,7 @@ angular.module('bahmni.clinical')
         };
 
         var getLastPrescribedDrugOrders = function() {
-            var numberOfVisits = $scope.section.options && $scope.section.options.numberOfVisitsForPastTreatments || 1;
+            var numberOfVisits = $scope.section.numberOfVisits || 1;
             return treatmentService.getPrescribedDrugOrders($stateParams.patientUuid, false, numberOfVisits).then(function (drugOrders) {
                 $scope.drugOrderSections.past.orders = drugOrders.sort(dateCompare);
             });
@@ -32,7 +32,7 @@ angular.module('bahmni.clinical')
                     return dateUtil.getDate(drugOrder.orderDate);
                 });
             });
-        }
+        };
 
         spinner.forPromise(init());
-    }])
+    }]);

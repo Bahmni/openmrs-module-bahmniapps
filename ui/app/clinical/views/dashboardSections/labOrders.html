@@ -2,8 +2,8 @@
 
     <h2 ng-dialog="views/dashboardSections/labSummary.html"
                ng-dialog-class="ngdialog-theme-flat ngdialog-theme-custom"
-               ng-dialog-controller="PatientDashboardLabSummaryController">{{section.description}}<button class="fr toggle btn-expand"><i class="icon-external-link"></i></button></h2>
-    <section class="block">
+               ng-dialog-controller="PatientDashboardLabSummaryController">{{section.title}}<button class="fr toggle btn-expand"><i class="icon-external-link"></i></button></h2>
+    <section class="block" ng-class="{'more': patientSummary.show}">
         <p class="placeholder-text" ng-if="!hasLabOrders()">{{ patientSummary.message }}</p>
 
         <div ng-if="hasLabOrders()">
