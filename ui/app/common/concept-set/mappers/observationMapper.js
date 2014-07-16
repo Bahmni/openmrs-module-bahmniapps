@@ -10,6 +10,15 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         return mapObservation(rootConcept, savedObs, conceptSetConfig || {});
     };
 
+
+    this.forView = function(bahmniObservations) {
+        var map = _.map(bahmniObservations, function (bahmniObservation) {
+            return { "value": bahmniObservation.value, "abnormal": bahmniObservation.abnormal, "duration": bahmniObservation.duration,
+                "provider": "default_provider_needs_fix", "observationDateTime": bahmniObservation.time, "concept": bahmniObservation.concept};
+        });
+        return  map;
+    };
+
     var findInSavedObservation = function (concept, observations) {
         return _.filter(observations, function (obs) {
             return obs && obs.concept && concept.uuid === obs.concept.uuid;

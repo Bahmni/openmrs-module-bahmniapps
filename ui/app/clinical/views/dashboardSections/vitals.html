@@ -7,7 +7,7 @@
 
             <div ng-repeat="observation in data.obs">
                 <fieldset>
-                    <div class="form-field" ng-class="{true: 'is-abnormal'}[observation.abnormal.value]">
+                    <div class="form-field" ng-class="{true: 'is-abnormal'}[observation.abnormal]">
                         <span class="field-attribute"><label>{{observation.concept.name}}</label></span>
                         <span class="value-text-only">{{observation.value}}</span>
                         <span class="label-add-on" ng-hide="!observation.concept.units"> {{observation.concept.units}}</span>
