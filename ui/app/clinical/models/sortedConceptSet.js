@@ -16,8 +16,15 @@ Bahmni.Clinical.SortedConceptSet = function(allTestAndPanelsConcept) {
     this.sortTestResults = function(labOrderResults) {
         if(!labOrderResults) return [];
         labOrderResults.forEach(function(labOrderResult){
-            var index = sortedNames.indexOf(labOrderResult.testName);
+            var index = sortedNames.indexOf(labOrderResult.orderName);
             labOrderResult.sortWeight = index === -1 ? 999 : index;
+            if(labOrderResult.isPanel) {
+                labOrderResult.tests.forEach(function(test) {
+                    var index = sortedNames.indexOf(test.testName);
+                    test.sortWeight = index === -1 ? 999 : index;
+                })
+                labOrderResult.tests = _.sortBy(labOrderResult.tests, 'sortWeight');
+            }
         });
         return _.sortBy(labOrderResults, 'sortWeight');
     };

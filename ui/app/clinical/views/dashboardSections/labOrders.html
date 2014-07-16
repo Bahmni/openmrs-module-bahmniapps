@@ -8,8 +8,31 @@
 
         <div ng-if="hasLabOrders()">
             <table ng-repeat="labOrderResults in labAccessions" bindonce="labAccessions">
-                <tbody>
-                    <tr ng-repeat="labOrderResult in labOrderResults">
+                <tbody ng-repeat="labOrderResult in labOrderResults">
+                    <tr ng-if="labOrderResult.isPanel" class="header">
+                        <td colspan="2"><strong>{{labOrderResult.orderName}}</strong></td>
+                    </tr>
+                    <tr ng-if="labOrderResult.isPanel" ng-repeat="test in labOrderResult.tests">
+                        <td class="testUnderPanel">
+                            <span bo-text="test.testName"></span>
+                            <span ng-show="test.hasRange" class="range">
+                                <span bo-text="'(' + test.minNormal + ' - ' + test.maxNormal + ')'"></span>
+                                <span ng-show="test.testUnitOfMeasurement" class="units" bo-text="test.testUnitOfMeasurement"></span>
+                            </span>
+                        </td>
+                        <td class="value has-toggle-btn">
+                            <span ng-class="{'referred-out': test.referredOut}">
+                                <span class="referred">R</span>
+                            </span>
+                            <span ng-show="test.result" ng-class="{'is-abnormal': test.abnormal}" class="value" bo-text="test.result"></span>
+                            <span class="fr date">
+                                <i class="icon-file-alt" ng-show="test.notes"></i>    
+                                <span>{{ test.accessionDateTime | date :'dd MMM yy'}}</span>
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr ng-if="!labOrderResult.isPanel">
                         <td>
                             <span bo-text="labOrderResult.testName"></span>
                             <span ng-show="labOrderResult.hasRange" class="range">
