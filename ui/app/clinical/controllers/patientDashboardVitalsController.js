@@ -33,28 +33,7 @@ angular.module('bahmni.clinical')
 
         var createPatientSummary = function () {
             if ($scope.activeVisit) {
-//                spinner.forPromise(encounterService.search($scope.activeVisit.uuid).then(function (encounterTransactionsResponse) {
-//                    var visitData = createObservationsObject(encounterTransactionsResponse.data);
-//
-//                    var vitalsObservations = visitData.filter(isObservationForVitals);
-//                    var registrationObservations = visitData.filter(isObservationForRegistration);
-//                    var mappedVitalsObservations = new Bahmni.ConceptSet.ObservationMapper().getObservationsForView(vitalsObservations);
-//                    var mappedRegistrationObservations = new Bahmni.ConceptSet.ObservationMapper().getObservationsForView(registrationObservations);
-//                    var sortedRegistrationObservations = _.sortBy(mappedRegistrationObservations, function(obs){
-//                        return obs.concept.name;
-//                    });
-//
-//                    var vitalsAndRegistrationObservations = mappedVitalsObservations.concat(sortedRegistrationObservations);
-//
-//                    $scope.patientSummary.data = new Bahmni.Clinical.ResultGrouper().group(vitalsAndRegistrationObservations, observationGroupingFunction, 'obs', 'date');
-//                    if ($scope.patientSummary.data.length == 0) {
-//                        $scope.patientSummary.message = Bahmni.Clinical.Constants.messageForNoObservation;
-//                    }
-//                }));
-
-                spinner.forPromise(observationsService.fetch("da679908-4b2f-4309-af74-6ae51d9c3b4b", ['Vitals', 'REGISTRATION_CONCEPTS']).then(function(observations) {
-                    console.log(observations.data);
-
+                spinner.forPromise(observationsService.fetch($scope.patientUuid, ['Vitals', 'REGISTRATION_CONCEPTS']).then(function(observations) {
                     var bahmniObservations = new Bahmni.ConceptSet.ObservationMapper().forView(observations.data);
 
                     $scope.patientSummary.data = new Bahmni.Clinical.ResultGrouper().group(bahmniObservations, observationGroupingFunction, 'obs', 'date');

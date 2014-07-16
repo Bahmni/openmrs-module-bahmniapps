@@ -14,7 +14,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
     this.forView = function(bahmniObservations) {
         var map = _.map(bahmniObservations, function (bahmniObservation) {
             return { "value": bahmniObservation.value, "abnormal": bahmniObservation.abnormal, "duration": bahmniObservation.duration,
-                "provider": "default_provider_needs_fix", "observationDateTime": bahmniObservation.time, "concept": bahmniObservation.concept};
+                "provider": "default_provider_needs_fix", "observationDateTime": bahmniObservation.obsDateTime, "concept": bahmniObservation.concept};
         });
         return  map;
     };
