@@ -21,9 +21,7 @@
             <div ng-include src="'../common/ui-helper/messages.html'"></div>
             <div class="opd-wrapper">
                 <p class="caution" ng-cloak ng-show="server_error"><i class="icon-exclamation-sign small"></i><span ng-bind="server_error"></span></p>
-                <h1 class="patient-details">
-                    <a href="#/patient/{{patient.uuid}}/dashboard" ng-click="changeContext($event)"><span><i class="icon-user"></i> {{patient.name}}</span></a>
-                </h1>
+
                 <div ui-view="content" id="view-content" class="opd-content-wrapper"></div>
             </div>
         </div>
