@@ -18,8 +18,9 @@ angular.module('bahmni.common.conceptSet')
 
         return {
             restrict: 'A',
+            require: 'ngModel',
             scope: {
-                url:"="
+                url:"=ngModel"
             },
             link: link
         }
