@@ -49,7 +49,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isImage: function () {
-        return this.getDataTypeName() === "Complex" && this.concept.handler == "ImageUrlHandler";
+        return this.concept.conceptClass == "Image";
     },
 
     getDataTypeName: function () {

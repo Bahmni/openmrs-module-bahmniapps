@@ -2,7 +2,7 @@ Bahmni.ConceptSet.ConceptMapper = function () {
     this.map = function (openMrsConcept) {
         return {
             uuid: openMrsConcept.uuid,
-            name: openMrsConcept.name.name || openMrsConcept.name,
+            name: openMrsConcept.name.name,
             set: openMrsConcept.set,
             dataType: getDataTypeOfConcept(openMrsConcept),
             hiAbsolute: openMrsConcept.hiAbsolute,
@@ -10,7 +10,7 @@ Bahmni.ConceptSet.ConceptMapper = function () {
             hiNormal: openMrsConcept.hiNormal,
             handler: openMrsConcept.handler,
             lowNormal: openMrsConcept.lowNormal,
-            conceptClass: openMrsConcept.conceptClass,
+            conceptClass: openMrsConcept.conceptClass.name,
             answers: openMrsConcept.answers,
             units: openMrsConcept.units
         }
