@@ -78,8 +78,9 @@
                             <td class="name">
                                 <span class="obs-value">{{observation.concept.name}}</span>
                             </td>
-                            <td class="value">
-                                <span class="obs-value"><pre class="chief-notes">{{observation | observationValue}} {{observation.concept.units}}</pre></span>
+                            <td class="value" data-ng-switch="observation.concept.conceptClass">
+                                <img data-ng-switch-when="Image" ng-src="{{observation.value|thumbnail}}" width="100">
+                                <span data-ng-switch-default class="obs-value"><pre class="chief-notes">{{observation | observationValue}} {{observation.concept.units}}</pre></span>
                             </td>
                             <td>
                                 <button class="toggle fr" ng-class="{'has-notes': observation.comment}">

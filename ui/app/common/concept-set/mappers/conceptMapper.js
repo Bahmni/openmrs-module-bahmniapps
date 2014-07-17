@@ -10,7 +10,7 @@ Bahmni.ConceptSet.ConceptMapper = function () {
             hiNormal: openMrsConcept.hiNormal,
             handler: openMrsConcept.handler,
             lowNormal: openMrsConcept.lowNormal,
-            conceptClass: openMrsConcept.conceptClass.name,
+            conceptClass: openMrsConcept.conceptClass.name || openMrsConcept.conceptClass,
             answers: openMrsConcept.answers,
             units: openMrsConcept.units
         }
