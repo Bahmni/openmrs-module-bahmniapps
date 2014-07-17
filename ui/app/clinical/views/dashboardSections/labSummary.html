@@ -81,9 +81,9 @@
                             <span ng-show="test.result" ng-class="{'is-abnormal': test.abnormal}" class="value" bo-text="test.result"></span>
                         </td>
                         <td class="toggle-btn">
-                            <button class="toggle fr">
-                                <i class="icon-plus-sign" ng-hide="test.show" ng-class="{'has-notes': test.notes}"></i>
-                                <i class="icon-minus-sign" ng-show="test.show" ng-class="{'has-notes': test.notes}"></i>
+                            <button class="toggle fr" ng-class="{'has-notes': test.notes}">
+                                <i class="icon-plus-sign" ng-hide="test.showNotes"></i>
+                                <i class="icon-minus-sign" ng-show="test.showNotes"></i>
                             </button>
                         </td>
                     </tr>
@@ -113,9 +113,9 @@
                             <span ng-show="labOrderResult.result" ng-class="{'is-abnormal': labOrderResult.abnormal}" class="value" bo-text="labOrderResult.result"></span>
                         </td>
                         <td class="toggle-btn">
-                            <button class="toggle fr">
-                                <i class="icon-plus-sign" ng-hide="labOrderResult.show" ng-class="{'has-notes': labOrderResult.notes}"></i>
-                                <i class="icon-minus-sign" ng-show="labOrderResult.show" ng-class="{'has-notes': labOrderResult.notes}"></i>
+                            <button class="toggle fr" ng-class="{'has-notes': labOrderResult.notes}">
+                                <i class="icon-plus-sign" ng-hide="labOrderResult.showNotes"></i>
+                                <i class="icon-minus-sign" ng-show="labOrderResult.showNotes"></i>
                             </button>
                         </td>
                     </tr>
