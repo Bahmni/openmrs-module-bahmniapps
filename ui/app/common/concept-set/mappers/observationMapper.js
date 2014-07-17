@@ -15,7 +15,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         return  _.map(bahmniObservations, function (bahmniObservation) {
             return { "value": bahmniObservation.value, "abnormal": bahmniObservation.isAbnormal, "duration": bahmniObservation.duration,
                 "provider": "default_provider_needs_fix", "observationDateTime": bahmniObservation.time,
-                "concept": bahmniObservation.concept, "unit": bahmniObservation.unit, "type": bahmniObservation.type};
+                "concept": bahmniObservation.concept, "unit": bahmniObservation.unit, "type": bahmniObservation.type, "rootConcept": bahmniObservation.rootConcept};
         });
     };
 
