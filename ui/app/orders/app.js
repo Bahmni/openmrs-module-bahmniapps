@@ -14,6 +14,6 @@ angular.module('orders').config(['$stateProvider', '$httpProvider', function ($s
        	});
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
 }]).run(['backlinkService', function (backlinkService) {
-    backlinkService.addUrl("Patient Search", "../clinical/#/patient/search");
+    backlinkService.addUrl({label: "Patient Search", url: "../clinical/#/patient/search"});
 }]);
 

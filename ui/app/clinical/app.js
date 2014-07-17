@@ -25,8 +25,9 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
                 url: '/patient/:patientUuid',
                 abstract: true,
                 data: {
-                    backLinks: [{label: "Patient Q", url: "#/patient/search"}]
+                    backLinks: [{label: "Patients", state: "patientsearch"}]
                 },
+
                 views: {
                     'additional-header': { template: '<div ui-view="additional-header"></div>' },
                     'content': { template: '<div ui-view="content"></div><patient-control-panel/>' }
@@ -48,6 +49,9 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
             })
             .state('patient.visit', {
                 url: '/dashboard/visit/:visitUuid',
+                data: {
+                    backLinks: [{label: "Dashboard", state: "patient.dashboard"}]
+                },
                 views: {
                     'additional-header': { templateUrl: 'views/dashboardHeader.html' },
                     'content': {
@@ -63,6 +67,9 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
             .state('patient.consultation', {
                 url: '',
                 abstract: true,
+                data: {
+                    backLinks: [{label: "Dashboard", state: "patient.dashboard"}]
+                },
                 views: {
                     'content': { template: '<ui-view/>' },
                     'additional-header': { templateUrl: 'views/includes/header.html' }

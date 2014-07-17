@@ -28,7 +28,8 @@ describe("TrendsController", function() {
             controller = $controller("TrendsController", {
                 $scope: scope,
                 $routeParams: {},
-                observationService: observationService
+                observationService: observationService,
+                backlinkService: jasmine.createSpyObj("backlinkService", ["addUrl"])
             });
         });
     });
