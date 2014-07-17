@@ -1,6 +1,6 @@
 'use strict';
 
-describe("bmi", function(){
+xdescribe("bmi", function(){
     var bmiModule = new Bahmni.Common.BMI();
     describe("calculateBmi", function(){
         it("should calculate bmi as weight by height square", function(){

@@ -33,55 +33,18 @@
                 </div>
                 </section>
 
-            <section class="form-field-inline">
-                <div class="form-field" ng-hide="isHiddenInConfig('Height')">
-                        <div class="field-attribute">
-                            <label class="control-label" for="height">Height (cm)</label>
-                        </div>
-
-                        <div class="field-value">
-                            <input id="height" type="number" step="0.01" ng-model="obs.HEIGHT" min="10" max="250" ng-change="calculateBMI()" placeholder="Height">
-                        </div>
-                </div>
-                <div class="form-field" ng-hide="isHiddenInConfig('Weight')">
-                        <div class="field-attribute">
-                            <label class="control-label" for="height">Weight (kg)</label>
-                        </div>
-
-                        <div class="field-value">
-                               <input id="weight" type="number" step="0.01" ng-model="obs.WEIGHT" min="0" max="200" ng-change="calculateBMI()" placeholder="Weight">
-                        </div>
-                </div>
-            </section>
-            <section class="form-field-inline" ng-hide="isHiddenInConfig('BMI')">
-                 <div class="form-field">
-                        <div class="field-attribute">
-                            <label class="control-label" for="bmi">BMI</label>
-                        </div>
-
-                        <div class="field-value">
-                              <input type="text" id="bmi" ng-model="obs.BMI" readonly tabindex="1000000">
-                        </div>
-                </div>
-                <div class="form-field" ng-hide="isHiddenInConfig('BMI_Status')">
-                        <div class="field-attribute">
-                         <label class="control-label" for="bmiStatus">BMI Status</label>
-                        </div>
-
-                        <div class="field-value">
-                             <input type="text" id="bmiStatus" ng-model="obs['BMI STATUS']" readonly
-                                    tabindex="1000001">
-                        </div>
-                </div>
-            </section>
-            <div class="alert alert-error text-error" ng-show="obs.bmi_error">
-               Invalid BMI. Please check the height and weight
-            </div>
-
             <!-- TODO: need to find a better way to render the directive again on context change or after all the calls are made.-->
             <section class="observation-section" ng-if="context">
-                <concept-set-group concept-set-group-extension-id="conceptSetGroupExtensionId" observations="observations" context="context"></concept-set-group>
+                <div ng-repeat="conceptSet in availableConceptSets" class="concept-set-group section-grid">
+                    <div class="concept-set-title">
+                        <legend class="mylegend">
+                            <strong>{{conceptSet.options.conceptName}}</strong>
+                        </legend>
+                    </div>
+                    <concept-set concept-set-name="conceptSet.options.conceptName" required="conceptSet.options.required" observations="observations" show-title="false"></concept-set>
+                </div>
             </section>
+
 
             <div class="submit-btn-container" ng-switch on="patient.isNew">
                 <div class="right" ng-switch-when="true">

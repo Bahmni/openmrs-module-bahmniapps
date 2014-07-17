@@ -3,10 +3,13 @@
 angular.module('bahmni.registration')
     .controller('VisitController', ['$scope', '$rootScope', '$location', 'patientService', 'encounterService', '$window', '$route', 'spinner', '$timeout', '$q', 'registrationCardPrinter', 'appService', 'openmrsPatientMapper','contextChangeHandler','MessagingService',
         function ($scope, $rootScope, $location, patientService, encounterService, $window, $route, spinner, $timeout, $q, registrationCardPrinter, appService, patientMapper,contextChangeHandler, messagingService) {
-            var bmiCalculator = new Bahmni.Common.BMI();
             var patientUuid = $route.current.params['patientUuid'];
             var isNewPatient = ($location.search()).newpatient;
             var encounterTypeUuid = $scope.regEncounterConfiguration.encounterTypes[Bahmni.Registration.Constants.encounterType.registration];
+
+            var extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.conceptSetGroup.observations", "config");
+            $scope.conceptSets = extensions.map(function(extension) { return new Bahmni.ConceptSet.ConceptSetSection(extension.extensionParams); });
+            $scope.availableConceptSets = $scope.conceptSets.filter(function(conceptSet){ return conceptSet.isAvailable($scope.context); });
 
             var getPatient = function () {
                 return patientService.get(patientUuid).success(function (openMRSPatient) {
@@ -30,11 +33,9 @@ angular.module('bahmni.registration')
                 $scope.obs = {};
                 $scope.registrationObservations = new Bahmni.Registration.RegistrationObservations($scope.observations, isNewPatient, $scope.regEncounterConfiguration);
                 $scope.registrationObservations.observations.forEach(function (observation) {
-                    $scope.obs[observation.concept.name] = observation.value
+                    $scope.obs[observation.concept.name] = observation.value;
                     observation.groupMembers = [];
                 });
-
-                $scope.calculateBMI();
             };
 
 
@@ -46,23 +47,24 @@ angular.module('bahmni.registration')
 
                 var toUpper = function (s){
                     return s.toUpperCase();
-                }
+                };
                 return $scope.hideFields.map(toUpper).indexOf(fieldname.toUpperCase()) > -1;
             };
 
-            $scope.calculateBMI = function () {
-                if ($scope.obs.HEIGHT && $scope.obs.WEIGHT) {
-                    var bmi = bmiCalculator.calculateBmi($scope.obs.HEIGHT, $scope.obs.WEIGHT);
-                    var valid = bmi.valid();
-                    $scope.obs.bmi_error = !valid;
-                    $scope.obs.BMI = bmi.value;
-                    $scope.obs[Bahmni.Common.Constants.bmiStatusConceptName] = valid ? bmi.status() : "Invalid";
-                } else {
-                    $scope.obs.bmi_error = false;
-                    $scope.obs.BMI = null;
-                    $scope.obs[Bahmni.Common.Constants.bmiStatusConceptName] = null;
-                }
-            };
+// TODO : shruthi : revove this when this logic moved to server side
+//            $scope.calculateBMI = function () {
+//                if ($scope.obs.HEIGHT && $scope.obs.WEIGHT) {
+//                    var bmi = bmiCalculator.calculateBmi($scope.obs.HEIGHT, $scope.obs.WEIGHT);
+//                    var valid = bmi.valid();
+//                    $scope.obs.bmi_error = !valid;
+//                    $scope.obs.BMI = bmi.value;
+//                    $scope.obs[Bahmni.Common.Constants.bmiStatusConceptName] = valid ? bmi.status() : "Invalid";
+//                } else {
+//                    $scope.obs.bmi_error = false;
+//                    $scope.obs.BMI = null;
+//                    $scope.obs[Bahmni.Common.Constants.bmiStatusConceptName] = null;
+//                }
+//            };
 
 
             $scope.back = function () {
@@ -85,9 +87,7 @@ angular.module('bahmni.registration')
 
             $scope.save = function () {
                 $scope.encounter = {encounterTypeUuid: encounterTypeUuid, patientUuid: $scope.patient.uuid};
-                var registrationObservations = $scope.registrationObservations.updateObservations($scope.obs);
                 $scope.encounter.observations = $scope.observations;
-                $scope.encounter.observations = $scope.encounter.observations.concat(registrationObservations);
                 $scope.encounter.observations = new Bahmni.Common.Domain.ObservationFilter().filter($scope.encounter.observations);
 
                 var createPromise = encounterService.create($scope.encounter);

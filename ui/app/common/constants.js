@@ -57,8 +57,8 @@ Bahmni.Common = Bahmni.Common || {};
         vitalsConceptName: "Vitals",
         heightConceptName: "HEIGHT",
         weightConceptName: "WEIGHT",
-        bmiConceptName: "BMI",
-        bmiStatusConceptName: "BMI STATUS",
+        bmiConceptName: "BMI", // TODO : shruthi : revove this when this logic moved to server side
+        bmiStatusConceptName: "BMI STATUS", // TODO : shruthi : revove this when this logic moved to server side
         abnormalObservationConceptName: "IS_ABNORMAL",
         documentsPath: '/document_images',
         documentsConceptName: 'Document',

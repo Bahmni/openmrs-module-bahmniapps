@@ -162,6 +162,7 @@
 
                 <p ng-switch-default class="field-value info icon-info-sign"> The concept data type '{{observation.dataTypeName}}' is not supported yet.</p>
             </div>
+            <small class="hint" ng-show="observation.concept.lowNormal || observation.concept.hiNormal" ng-bind="'(' + observation.concept.lowNormal + ' - ' + observation.concept.hiNormal + ')'"></small>
         </div>
     </fieldset>
 
