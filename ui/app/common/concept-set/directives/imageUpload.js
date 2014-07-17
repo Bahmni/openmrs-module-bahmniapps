@@ -7,8 +7,7 @@ angular.module('bahmni.common.conceptSet')
                 var reader = new FileReader();
                 reader.onload = function (event) {
                     var image = event.target.result;
-// TODO : bazooka
-                    spinner.forPromise(visitDocumentService.saveImage(image, $rootScope.patient.uuid, "OPD").then(function(response) {
+                    spinner.forPromise(visitDocumentService.saveImage(image, $rootScope.patient.uuid, Bahmni.Common.Constants.opdEncounterName).then(function(response) {
                         scope.url = Bahmni.Common.Constants.documentsPath + '/' + response.data;
                         element.val(null);
                     }));
