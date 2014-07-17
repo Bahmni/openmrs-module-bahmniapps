@@ -9,7 +9,7 @@ angular.module('bahmni.common.uiHelper')
             template:
                 '<div class="container slider">' +
                     '<div ng-repeat="photo in photos">' +
-                        '<img class="slide" ng-swipe-right="showPrev()" ng-swipe-left="showNext()" ng-show="isActive($index)" ng-src="{{photo.src}}" />' +
+                        '<img class="slide" hm-swipe-right="showPrev()" hm-swipe-left="showNext()" ng-show="isActive($index)" ng-src="{{photo.src}}" />' +
                         '<div ng-if="isActive($index)">{{photo.desc}}</div>' +
                         '<span ng-if="photos.length > 1 && isActive($index)">{{$index+1}} of {{photos.length}}</span>' +
                         '<span ng-if="isActive($index)">{{photo.date | date: "dd MMM yy"}}</span>' +
