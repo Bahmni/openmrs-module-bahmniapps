@@ -1,4 +1,4 @@
-<div ng-controller="PatientDashboardVitalsController">
+<div ng-controller="PatientDashboardObservationController">
     <h2>{{section.title}}</h2>
 
     <section class="block" ng-if="activeVisit" ng-class="{'more': patientSummary.show}">
@@ -7,7 +7,7 @@
 
             <div ng-repeat="observation in data.obs">
                 <fieldset>
-                    <div class="form-field" ng-class="{true: 'is-abnormal'}[observation.abnormal]">
+                    <div class="form-field" ng-class="{'is-abnormal': observation.abnormal, 'is-text': isText(observation)}">
                         <span class="field-attribute"><label>{{observation.concept}}</label></span>
                         <span class="value-text-only">{{observation.value}}</span>
                         <span class="label-add-on" ng-hide="!observation.unit"> {{observation.unit}}</span>
@@ -19,7 +19,7 @@
             </div>
         </div>
         <div ng-show="!patientSummary.data.length">
-            <div class="placeholder-text">No vitals for this patient.</div>
+            <div class="placeholder-text">No {{section.title}} for this patient.</div>
         </div>
         <button class="show-more" ng-if="patientSummary.data.length > 7" ng-click="toggle(patientSummary)">
             <span class="more-text">Show more</span><span class="less-text">Show less</span>
