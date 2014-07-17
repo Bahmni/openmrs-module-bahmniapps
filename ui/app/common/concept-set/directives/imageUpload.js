@@ -8,7 +8,7 @@ angular.module('bahmni.common.conceptSet')
                 reader.onload = function (event) {
                     var image = event.target.result;
                     spinner.forPromise(visitDocumentService.saveImage(image, $rootScope.patient.uuid, Bahmni.Common.Constants.opdEncounterName).then(function(response) {
-                        scope.url = Bahmni.Common.Constants.documentsPath + '/' + response.data;
+                        scope.url = response.data;
                         element.val(null);
                     }));
                 };
