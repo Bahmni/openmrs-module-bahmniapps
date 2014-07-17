@@ -3,10 +3,10 @@
 angular.module('bahmni.clinical')
     .factory('TreatmentService', ['$http', '$q', function ($http, $q) {
 
-        var orderDateFromStringToDate = function (drugOrder) {
+        var createDrugOrder = function (drugOrder) {
             drugOrder.orderDate = Bahmni.Common.Util.DateUtil.parse(drugOrder.orderDate);
             drugOrder.expireDate = Bahmni.Common.Util.DateUtil.parse(drugOrder.expireDate);
-            return drugOrder;
+            return Bahmni.Clinical.DrugOrder.create(drugOrder);
         };
 
         var getActiveDrugOrdersFromServer = function (patientUuid) {
@@ -20,7 +20,7 @@ angular.module('bahmni.clinical')
         var getActiveDrugOrders = function (patientUuid) {
             var deferred = $q.defer();
             getActiveDrugOrdersFromServer(patientUuid).success(function (response) {
-                var activeDrugOrders = response.map(orderDateFromStringToDate);
+                var activeDrugOrders = response.map(createDrugOrder);
                 deferred.resolve(activeDrugOrders);
             });
             return deferred.promise;
@@ -33,7 +33,7 @@ angular.module('bahmni.clinical')
                 params: { patientUuid: patientUuid, numberOfVisits: numberOfVisits, includeActiveVisit: includeActiveVisit},
                 withCredentials: true
             }).success(function (response) {
-                var activeDrugOrders = response.map(orderDateFromStringToDate);
+                var activeDrugOrders = response.map(createDrugOrder);
                 deferred.resolve(activeDrugOrders);
             });
             return deferred.promise;

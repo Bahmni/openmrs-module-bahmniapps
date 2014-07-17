@@ -3,7 +3,7 @@ angular.module('bahmni.clinical')
         $scope.drugOrderSections = {
             "active": {displayName: "Active Prescription", orders: null},
             "past": {displayName: "Last Prescription", orders: null},
-        }
+        };
 
         var dateCompare = function (drugOrder1, drugOrder2) {
             return drugOrder1.orderDate > drugOrder2.orderDate? -1: 1;
@@ -13,14 +13,14 @@ angular.module('bahmni.clinical')
             return treatmentService.getActiveDrugOrders($stateParams.patientUuid).then(function (drugOrders) {
                 $scope.drugOrderSections.active.orders = drugOrders.sort(dateCompare);
             });
-        }
+        };
 
         var getLastPrescribedDrugOrders = function() {
             var numberOfVisits = $scope.section.options && $scope.section.options.numberOfVisitsForPastTreatments || 1;
             return treatmentService.getPrescribedDrugOrders($stateParams.patientUuid, false, numberOfVisits).then(function (drugOrders) {
                 $scope.drugOrderSections.past.orders = drugOrders.sort(dateCompare);
             });
-        }
+        };
 
         spinner.forPromise($q.all([getActiveDrugOrders(), getLastPrescribedDrugOrders()]));
 

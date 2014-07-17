@@ -7,17 +7,9 @@ Bahmni.Clinical.DrugOrder = (function () {
 		angular.extend(this, drugOrderData);
     };
 
-    DrugOrder.createFromOpenMRSRest = function (drugOrder) {
-        return {name: drugOrder.drug.name,
-            orderDate: drugOrder.startDate,
-            dosage: drugOrder.drug.dosageForm.display,
-            dose: drugOrder.dose,
-            days: DateUtil.diffInDays(DateUtil.parse(drugOrder.startDate), DateUtil.parse(drugOrder.autoExpireDate))}
-    };
-
     DrugOrder.create = function(drugOrderData) {
 		return new DrugOrder(drugOrderData);
-	}
+	};
 
 	DrugOrder.prototype = {
 		isActiveOnDate: function(date) {
@@ -26,8 +18,12 @@ Bahmni.Clinical.DrugOrder = (function () {
 
 		isActive: function() {
 			return this.isActiveOnDate(DateUtil.today());
-		}
-	}
+		},
+
+        isFreeTextDosingType: function() {
+            return this.dosingType === 'FREE_TEXT';
+        }
+	};
 
 	return DrugOrder;
 })();
