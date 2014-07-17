@@ -109,9 +109,10 @@
                 </div>
                 <div ng-switch-when="image">
                         <input id="file-browse-{{observation.uniqueId}}" class="file-browse" type="file" name="image" accept="image/*" capture="camera" image-upload ng-model="observation.value" url="observation.value">
-                        <label class="placeholder btn" for="file-browse-{{observation.uniqueId}}"><i class="icon-plus needsclick"></i></label>
+                        <label class="placeholder btn" for="file-browse-{{observation.uniqueId}}" ng-hide="observation.value"><i class="icon-plus needsclick"></i></label>
+
                         <div class="file">
-                            <img ng-src="{{observation.value}}" width="100">
+                            <img ng-src="{{observation.value|thumbnail}}" width="100">
                         </div>
                 </div>
 
