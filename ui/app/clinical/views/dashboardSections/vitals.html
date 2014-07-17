@@ -10,7 +10,7 @@
                     <div class="form-field" ng-class="{true: 'is-abnormal'}[observation.abnormal]">
                         <span class="field-attribute"><label>{{observation.concept}}</label></span>
                         <span class="value-text-only">{{observation.value}}</span>
-                        <span class="label-add-on" ng-hide="!observation.concept.units"> {{observation.concept.units}}</span>
+                        <span class="label-add-on" ng-hide="!observation.unit"> {{observation.unit}}</span>
                         <div class="footer-note fr">
                             <span class="value-text-only time">{{observation.observationDateTime | date :'hh:mm a'}}</span>
                         </div>
