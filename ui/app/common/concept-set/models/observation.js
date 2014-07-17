@@ -161,6 +161,10 @@ Bahmni.ConceptSet.Observation.prototype = {
 
     markAsNonCoded: function() {
       this.markedAsNonCoded = !this.markedAsNonCoded;
+    },
+
+    toggleVoidingOfImage: function() {
+        this.voided = !this.voided;
     }
 
 };
