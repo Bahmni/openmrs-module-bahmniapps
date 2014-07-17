@@ -10,7 +10,7 @@ angular.module('bahmni.clinical')
         };
 
         var observationGroupingFunction = function (obs) {
-            return Bahmni.Common.Util.DateUtil.getDateWithoutHours(obs.time);
+            return Bahmni.Common.Util.DateUtil.getDateWithoutHours(obs.observationDateTime);
         };
 
         $scope.isText = function(obs){
