@@ -247,7 +247,7 @@
 
 <section class="block radiology-investigations" ng-show="visit.radiologyOrders.length">
     <h2>Radiology Investigations</h2>
-    <ul image-gallery image-gallery-target=".document-link">
+    <ul>
         <li ng-repeat="radiologyOrder in visit.radiologyOrders" class="radiology-doc-item">
             <a gallery-dialog="visit.radiologyOrders" image-index="$index" patient="patient" title="Radiology Documents" class="document-link temp-class">{{radiologyOrder.concept.name}}</a>
             <div class="footer-note">
