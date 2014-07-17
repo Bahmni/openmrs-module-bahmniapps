@@ -8,6 +8,7 @@ angular.module('bahmni.common.uiHelper')
 
         $scope.photos = photos;
         $scope.patient = $scope.$parent.patient;
+        $scope.title = $scope.$parent.title;
     }])
     .directive('galleryDialog', function(ngDialog) {
         var link = function($scope, element, attrs){
@@ -26,7 +27,8 @@ angular.module('bahmni.common.uiHelper')
             scope: {
                 imageIndex: "=",
                 records: "=galleryDialog",
-                patient: "="
+                patient: "=",
+                title: "@"
             }
         }
     });
