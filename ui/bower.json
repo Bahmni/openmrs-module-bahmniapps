@@ -16,6 +16,8 @@
         "angular-cookies": "1.2.18",
         "angular-bindonce": "0.3.1",
         "angular-route": "1.2.18",
+        "angular-touch": "1.2.18",
+        "angular-gestures":"0.2.3",
         "jquery": "1.9.1",
         "jquery-ui": "1.10.2",
         "jquery.cookie": "1.4.0",

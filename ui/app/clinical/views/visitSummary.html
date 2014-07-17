@@ -249,9 +249,7 @@
     <h2>Radiology Investigations</h2>
     <ul image-gallery image-gallery-target=".document-link">
         <li ng-repeat="radiologyOrder in visit.radiologyOrders" class="radiology-doc-item">
-            <a class="document-link temp-class" title="{{radiologyOrder.concept.name}}, {{radiologyOrder.dateTime | date:'dd MMM yy'}}"
-               ng-src="{{radiologyOrder.src}}" image-gallery-item><i class="icon-file"></i>{{radiologyOrder.concept.name}}</a>
-
+            <a gallery-dialog="visit.radiologyOrders" image-index="$index" patient="patient" class="document-link temp-class">{{radiologyOrder.concept.name}}</a>
             <div class="footer-note">
                 <span class="time-stamp">
                     <span class="date">{{radiologyOrder.dateTime | date:'dd MMM yy'}}</span>

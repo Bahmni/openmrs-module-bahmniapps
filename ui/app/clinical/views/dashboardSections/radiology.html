@@ -3,7 +3,7 @@
     <section class="block" ng-class="{'more': radiologyRecords.show}">
         <ul>
             <li ng-repeat="radiologyRecord in radiologyRecords" class="radiology-doc-item">
-                <a ng-href="" show-items records="radiologyRecord.records"><i class="icon-file"></i>{{radiologyRecord.name}}</a>
+                <a gallery-dialog="radiologyRecord.records" patient="patient">{{radiologyRecord.name}}</a>
                 <i ng-if="isRecordForCurrentVisit(radiologyRecord)" class="icon-star current-visit-icon fr"></i>
                 <span ng-if="radiologyRecord.records.length > 1">({{radiologyRecord.records.length}})</span>
             </li>
