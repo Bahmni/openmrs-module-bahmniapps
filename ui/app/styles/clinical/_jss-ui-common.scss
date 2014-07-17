@@ -551,6 +551,9 @@ aside{
         color: #bbb;
       }
     }
+    li a.log-out {
+        cursor: pointer;
+    }
     li:last-child a {
       border-bottom: 0;
     }
