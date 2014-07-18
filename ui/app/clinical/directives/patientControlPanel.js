@@ -16,11 +16,7 @@ angular.module('bahmni.common.patient')
         var DateUtil = Bahmni.Common.Util.DateUtil;
 
         $scope.getConsultationPadLink = function () {
-            if ($scope.activeVisit) {
-                return urlHelper.getVisitUrl($scope.activeVisit.uuid);
-            } else {
-                return urlHelper.getConsultationUrl();
-            }
+            return $rootScope.consultationBoardLink();
         };
 
         $scope.getDashboardLink = function() {

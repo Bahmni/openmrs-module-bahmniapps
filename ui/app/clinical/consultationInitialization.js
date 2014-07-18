@@ -2,8 +2,8 @@
 
 var timeout = 0;
 angular.module('bahmni.clinical').factory('consultationInitialization',
-    ['$rootScope', '$q', 'configurationService', 'visitService', 'patientService', 'authenticator', 'appService', 'encounterService', 'bedService', 'spinner', 'initialization', 'diagnosisService', 'patientVisitHistoryService',
-    function ($rootScope, $q, configurationService, visitService, patientService, authenticator, appService, encounterService, bedService, spinner, initialization, diagnosisService, patientVisitHistoryService) {
+    ['$rootScope', '$q', 'configurationService', 'visitService', 'patientService', 'authenticator', 'appService', 'encounterService', 'bedService', 'spinner', 'initialization', 'diagnosisService', 'patientVisitHistoryService', 'urlHelper',
+    function ($rootScope, $q, configurationService, visitService, patientService, authenticator, appService, encounterService, bedService, spinner, initialization, diagnosisService, patientVisitHistoryService, urlHelper) {
 
         var patientMapper = new Bahmni.PatientMapper($rootScope.patientConfig);
 
@@ -65,6 +65,15 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
             $rootScope.collapseControlPanel = function () {
                 $rootScope.showControlPanel = false;
             };
+
+            $rootScope.$on('event:appExtensions-loaded', function () {
+                var appExtensions = appService.getAppDescriptor().getExtensions("org.bahmni.clinical.consultation.board", "link");
+                var defaultBoard = _.find(appExtensions, 'default');
+                $rootScope.consultationBoardLink = function() {return urlHelper.getConsultationUrl()};
+                if(defaultBoard) {
+                    $rootScope.consultationBoardLink = function() {return urlHelper.getPatientUrl() + "/" + defaultBoard.url};
+                }
+            });
 
             return spinner.forPromise(
                 initialization.then(function(){
