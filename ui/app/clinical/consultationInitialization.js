@@ -57,6 +57,17 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                 });
             };
 
+            var findDefaultConsultationBoard = function() {
+                var appExtensions = appService.getAppDescriptor().getExtensions("org.bahmni.clinical.consultation.board", "link");
+                console.log("axx");
+                var defaultBoard = _.find(appExtensions, 'default');
+                $rootScope.consultationBoardLink = function() {return urlHelper.getConsultationUrl()};
+                if(defaultBoard) {
+                    $rootScope.consultationBoardLink = function() {return urlHelper.getPatientUrl() + "/" + defaultBoard.url};
+                }
+                return $q.when({});
+            };
+
             $rootScope.showControlPanel = false;
             $rootScope.toggleControlPanel = function () {
                 $rootScope.showControlPanel = !$rootScope.showControlPanel;
@@ -66,18 +77,10 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                 $rootScope.showControlPanel = false;
             };
 
-            $rootScope.$on('event:appExtensions-loaded', function () {
-                var appExtensions = appService.getAppDescriptor().getExtensions("org.bahmni.clinical.consultation.board", "link");
-                var defaultBoard = _.find(appExtensions, 'default');
-                $rootScope.consultationBoardLink = function() {return urlHelper.getConsultationUrl()};
-                if(defaultBoard) {
-                    $rootScope.consultationBoardLink = function() {return urlHelper.getPatientUrl() + "/" + defaultBoard.url};
-                }
-            });
-
+            
             return spinner.forPromise(
                 initialization.then(function(){
-                    return $q.all([getActiveEncounter().then(getPastDiagnoses),getPatient().then(getPatientBedDetails),getPatientVisitHistory()]);
+                    return $q.all([findDefaultConsultationBoard().then(getActiveEncounter).then(getPastDiagnoses),getPatient().then(getPatientBedDetails),getPatientVisitHistory()]);
                 })
             );
         }
