@@ -21,7 +21,7 @@
                 <tr ng-repeat="drugOrder in drugOrdersGroup.values" >
                     <td class="drug"><span bo-text="drugOrder.name"></span></td>
                     <td class="dosage" ng-if="drugOrder.isFreeTextDosingType()">
-                        <span bo-text="drugOrder.dosingInstructions"></span>
+                        <span bo-text="drugOrder.dosingInstructions|formatDecimalValues"></span>
                     </td>
                     <td class="dosage" ng-if="drugOrder.isSimpleDosingType()">
                         <span>Not yet implemented</span>
