@@ -35,7 +35,7 @@ Bahmni.Clinical.Visit = (function(){
             return obs.concept.name;
         };
         this.observationGroups.forEach(function (observationGroup) {
-            var observationSubGroups = resultGrouper.group(observationGroup.obs, observationSubGroupingFunction, 'obs', 'conceptName')
+            var observationSubGroups = resultGrouper.group(observationGroup.obs, observationSubGroupingFunction, 'obs', 'conceptName');
             observationSubGroups.forEach(function (observationSubGroup) {
                 observationSubGroup.obs = new Bahmni.ConceptSet.ObservationMapper().getObservationsForView(observationSubGroup.obs);
             });
@@ -125,7 +125,6 @@ Bahmni.Clinical.Visit = (function(){
         },
         hasIPDDrugOrdes: function () {
             return this.ipdDrugSchedule && this.ipdDrugSchedule.hasDrugOrders();
-            ;
         },
         _getEncounterWithDisposition: function (dispositionCode) {
             return this.encounters.filter(function (encounter) {
@@ -201,6 +200,22 @@ Bahmni.Clinical.Visit = (function(){
                 }
             })
             return atleastOneDrugForDay;
+        },
+        _addImageObservations: function(allObservations, imageObservations){
+            var self = this;
+            return allObservations.forEach(function(observation){
+                if(observation.concept.conceptClass === Bahmni.Common.Constants.imageClassName) {
+                    imageObservations.push(observation);
+                }
+                self._addImageObservations(observation.groupMembers, imageObservations);
+            });
+        },
+        getImageObservations: function(){
+            if(!this._imageObservations){
+                this._imageObservations = [];
+                this._addImageObservations(this.observations, this._imageObservations);
+            }
+            return this._imageObservations;
         }
     };
 

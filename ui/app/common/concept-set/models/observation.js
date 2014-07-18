@@ -49,7 +49,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isImage: function () {
-        return this.concept.conceptClass == "Image";
+        return this.concept.conceptClass == Bahmni.Common.Constants.imageClassName;
     },
 
     getDataTypeName: function () {

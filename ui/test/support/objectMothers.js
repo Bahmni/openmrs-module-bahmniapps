@@ -48,7 +48,8 @@ Bahmni.Tests.conceptMother = {
             name: "conceptName",
             dataType: "N/A",
             set: false,
-            voided: false
+            voided: false,
+            conceptClass: 'Misc'
         }
         return angular.extend(defaultConcept, conceptData);
     }
