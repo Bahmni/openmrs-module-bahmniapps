@@ -1,32 +1,14 @@
 Bahmni.Clinical.RadiologyRecordsMapper = function () {
-    var result = [];
+    var DateUtil = Bahmni.Common.Util.DateUtil;
 
-    var addRecordToResult = function (record) {
-        var matchRecordIndex = null;
-        result.some(function (resultRecord, index) {
-            if (resultRecord.concept == record.concept.uuid) {
-                return matchRecordIndex = index;
-            }
-            return false;
-        });
-        if (matchRecordIndex!=null) {
-            result[matchRecordIndex]["records"].push(record);
-        }
-        else {
-            result.push({"name": record.concept.name, "date": record.obsDatetime, "records": [record], "concept": record.concept.uuid, "visitUuid": record.visitUuid});
-        }
-        return record;
+    var sortByDateTimeOrId = function (record1, record2) {
+        return record2.imageObservation.observationDateTime !==  record1.imageObservation.observationDateTime ?
+            DateUtil.parse(record2.imageObservation.observationDateTime) -  DateUtil.parse(record1.imageObservation.observationDateTime):
+            record2.id - record1.id;
     };
 
-    this.mapToDisplayItems = function (records) {
-        var sortById = function (record1, record2) {
-            return Date.parse(record2.obsDatetime) !==  Date.parse(record1.obsDatetime)?
-                Date.parse(record2.obsDatetime) -  Date.parse(record1.obsDatetime):
-                record2.id - record1.id;
-        };
-        records = records.sort(sortById);
-        records.map(addRecordToResult);
-        return result;
+    this.map = function (records) {
+        records = records.sort(sortByDateTimeOrId);
+        return Bahmni.Common.Util.ArrayUtil.groupByPreservingOrder(records, function(record){ return record.concept.name; },'conceptName', 'records');
     };
-
 };

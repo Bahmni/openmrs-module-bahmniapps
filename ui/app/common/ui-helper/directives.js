@@ -178,34 +178,22 @@ angular.module('bahmni.common.util')
             }, 0);
         }
     })
-    .directive("popUp", function () {
+    .directive("popUp", function (galleryDialogControl) {
         var link = function (scope, elem) {
             var items = [];
-            scope.onClickHandler()().then(function (response) {
-                items = new Bahmni.Clinical.PatientFileObservationsMapper().mapToDisplayItems(response.data.results);
-                var inlineItems = [
-                    {
-                        src:'<div class="white-popup">No patient documents uploaded</div>',
-                        type:'inline'
-                    }
-                ];
-                items = items.length == 0 ? inlineItems : items;
-                var options = {
-                    gallery:{
-                        enabled:true,
-                        preload:[1, 1],
-                        navigateByImgClick: false
-                    },
-                    type:'image',
-                    items:items
-                };
-                elem.magnificPopup(options);
+            $(elem).click(function(){
+                scope.onClickHandler()().then(function (response) {
+                    scope.records = new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
+                    scope.title = "Patient Documents"
+                    galleryDialogControl.open(scope);
+                });
             });
         };
         return {
             link: link,
             scope: {
-                onClickHandler: "&"
+                onClickHandler: "&",
+                patient: "="
             }
         }
     })

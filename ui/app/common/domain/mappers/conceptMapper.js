@@ -1,5 +1,6 @@
-Bahmni.ConceptSet.ConceptMapper = function () {
+Bahmni.Common.Domain.ConceptMapper = function () {
     this.map = function (openMrsConcept) {
+        if(!openMrsConcept) return null;
         return {
             uuid: openMrsConcept.uuid,
             name: openMrsConcept.name.name || openMrsConcept.name,
@@ -10,7 +11,7 @@ Bahmni.ConceptSet.ConceptMapper = function () {
             hiNormal: openMrsConcept.hiNormal,
             handler: openMrsConcept.handler,
             lowNormal: openMrsConcept.lowNormal,
-            conceptClass: openMrsConcept.conceptClass.name || openMrsConcept.conceptClass,
+            conceptClass: openMrsConcept.conceptClass ? (openMrsConcept.conceptClass.name || openMrsConcept.conceptClass) : null,
             answers: openMrsConcept.answers,
             units: openMrsConcept.units
         }

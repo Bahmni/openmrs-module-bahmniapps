@@ -2,35 +2,34 @@ angular.module('bahmni.common.uiHelper')
     .controller('imageGalleryController', ['$scope' ,function ($scope) {
         var photos = [];
 
-        //WIP: TODO: Move to use observations everywhere
-        var observations = $scope.$parent.observations;
-        if($scope.$parent.records) {
-            angular.forEach($scope.$parent.records, function(data){
-                photos.push({src: data.src, desc: data.concept.name, date: data.obsDatetime || data.dateTime });
-            });
-        } else if(observations) {
-            angular.forEach(observations, function(observation){
-                photos.push({src: Bahmni.Common.Constants.documentsPath + '/' + observation.value, desc: observation.concept.name, date: observation.observationDateTime});
-            });
-            $scope.imageIndex = _.findIndex(observations,function(observation){
-                return observation.uuid === $scope.currentObservation.uuid;
-            });
-        }
+        angular.forEach($scope.$parent.records, function(record){
+            photos.push({src: Bahmni.Common.Constants.documentsPath + '/' + record.imageObservation.value, desc: record.concept.name, date: record.imageObservation.observationDateTime});
+        });
+        $scope.imageIndex = $scope.currentObservation ? _.findIndex($scope.$parent.records, function(record){
+            return record.imageObservation.uuid === $scope.currentObservation.uuid;
+        }) : 0;
 
 
         $scope.photos = photos;
         $scope.patient = $scope.$parent.patient;
         $scope.title = $scope.$parent.title;
     }])
-    .directive('galleryDialog', function(ngDialog) {
+    .factory('galleryDialogControl', function(ngDialog){
+        var open = function(scope) {
+            ngDialog.open({
+                template: 'views/gallery.html',
+                controller: 'imageGalleryController',
+                className: undefined,
+                scope: scope
+            });
+        }
+        return {open: open}
+    })
+    .directive('galleryDialog', function(galleryDialogControl) {
         var link = function($scope, element, attrs){
-            element.click(function(){
-                ngDialog.open({
-                    template: 'views/gallery.html',
-                    controller: 'imageGalleryController',
-                    className: undefined,
-                    scope: $scope
-                });
+            element.click(function(e){
+                e.stopPropagation();
+                galleryDialogControl.open($scope);
             });
         };
 
@@ -39,7 +38,6 @@ angular.module('bahmni.common.uiHelper')
             scope: {
                 imageIndex: "=",
                 records: "=galleryDialog",
-                observations: "=",
                 currentObservation: "=",
                 patient: "=",
                 title: "@"

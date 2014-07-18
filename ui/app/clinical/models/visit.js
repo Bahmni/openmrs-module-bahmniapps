@@ -216,7 +216,14 @@ Bahmni.Clinical.Visit = (function(){
                 this._addImageObservations(this.observations, this._imageObservations);
             }
             return this._imageObservations;
+        },
+        getImageObservationGalleryRecords: function() {
+            if(!this._imageObservationGalleryRecords){
+                this._imageObservationGalleryRecords = this.getImageObservations().map(function(observation){ return {concept: observation.concept, imageObservation: observation }});
+            }
+            return this._imageObservationGalleryRecords;
         }
+
     };
 
     var removeEncounters = function(encounters, encounterTransactions) {
@@ -258,7 +265,7 @@ Bahmni.Clinical.Visit = (function(){
                 encounterTransaction.observations.forEach(function (observation) {
                     observation.groupMembers.forEach(function (member) {
                         if (member.concept.name === Bahmni.Common.Constants.documentsConceptName) {
-                            radiologyOrders.push({concept: observation.concept, src: Bahmni.Common.Constants.documentsPath + '/' + member.value, dateTime: observation.observationDateTime, provider: encounterTransaction.providers[0]});
+                            radiologyOrders.push({imageObservation: member, concept: observation.concept, dateTime: observation.observationDateTime, provider: encounterTransaction.providers[0]});
                         }
                     });
                 });

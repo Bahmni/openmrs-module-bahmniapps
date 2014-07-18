@@ -1,5 +1,5 @@
 Bahmni.ConceptSet.ObservationMapper = function () {
-    var conceptMapper = new Bahmni.ConceptSet.ConceptMapper();
+    var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
 
     this.getObservationsForView = function (observations) {
         return internalMapForDisplay(observations);

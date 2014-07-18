@@ -3,7 +3,7 @@
 angular.module('bahmni.common.conceptSet')
     .directive('concept', [function () {
         var controller = function ($scope, $q, $filter) {
-            var conceptMapper = new Bahmni.ConceptSet.ConceptMapper();
+            var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
             $scope.showTitle = $scope.showTitle === undefined ? true : $scope.showTitle;
 
             $scope.selectOptions = function(codedConcept){

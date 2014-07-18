@@ -3,13 +3,11 @@ angular.module('bahmni.clinical')
         var encounterTypeUuid = $rootScope.encounterConfig.getRadiologyEncounterTypeUuid();
 
         spinner.forPromise(encounterService.getEncountersForEncounterType($stateParams.patientUuid, encounterTypeUuid).then(function (response) {
-            var radiologyDocuments = new Bahmni.Clinical.PatientFileObservationsMapper().mapToDisplayItems(response.data.results);
-            $scope.radiologyRecords = new Bahmni.Clinical.RadiologyRecordsMapper().mapToDisplayItems(radiologyDocuments);
+            $scope.radiologyRecords = new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
+            $scope.radiologyRecordGroups = new Bahmni.Clinical.RadiologyRecordsMapper().map($scope.radiologyRecords);
         }));
 
-        $scope.isRecordForCurrentVisit = function(record){
-            return _.some(record.records,function(innerRecord){
-                return innerRecord.visitUuid === $rootScope.activeVisit.uuid;
-            });
+        $scope.isRecordForCurrentVisit = function(records){
+            return _.some(records,function(record){ return record.visitUuid === $rootScope.activeVisit.uuid; });
         };
     }]);

@@ -1,16 +1,15 @@
 <div ng-controller="PatientDashboardRadiologyController" class="dashboard-radiology-section">
     <h2>{{section.title}}</h2>
-    <section class="block" ng-class="{'more': radiologyRecords.show}">
+    <section class="block">
         <ul>
-            <li ng-repeat="radiologyRecord in radiologyRecords" class="radiology-doc-item">
-                <a gallery-dialog="radiologyRecord.records" patient="patient" title="Radiology Documents">{{radiologyRecord.name}}</a>
-                <i ng-if="isRecordForCurrentVisit(radiologyRecord)" class="icon-star current-visit-icon fr"></i>
-                <span ng-if="radiologyRecord.records.length > 1">({{radiologyRecord.records.length}})</span>
+            <li ng-repeat="radiologyRecordGroup in radiologyRecordGroups" class="radiology-doc-item">
+                <a gallery-dialog="radiologyRecordGroup.records" patient="patient" title="Radiology Documents">{{radiologyRecordGroup.conceptName}}</a>
+                <i ng-if="isRecordForCurrentVisit(radiologyRecordGroup.records)" class="icon-star current-visit-icon fr"></i>
+                <span ng-if="radiologyRecordGroup.records.length > 1">({{radiologyRecordGroup.records.length}})</span>
             </li>
         </ul>
-      <div ng-show="!radiologyRecords.length">
+      <div ng-hide="radiologyRecordGroups.length">
           <div class="placeholder-text">No radiology documents for this patient.</div>
       </div>
     </section>
-
 </div>
