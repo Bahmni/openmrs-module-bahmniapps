@@ -59,7 +59,6 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
 
             var findDefaultConsultationBoard = function() {
                 var appExtensions = appService.getAppDescriptor().getExtensions("org.bahmni.clinical.consultation.board", "link");
-                console.log("axx");
                 var defaultBoard = _.find(appExtensions, 'default');
                 $rootScope.consultationBoardLink = function() {return urlHelper.getConsultationUrl()};
                 if(defaultBoard) {
