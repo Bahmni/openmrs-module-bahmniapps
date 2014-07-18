@@ -147,6 +147,6 @@ angular.module('bahmni.common.conceptSet')
                     return  shortName  ? shortName.name : answer.displayString;
                 };
             },
-            template:"<span ng-repeat='answer in observation.possibleAnswers'><button class='grid-row-element' ng-class='{active: observation.value.uuid == answer.uuid}' ng-click='select(answer)'><i class='icon-ok'></i>{{getAnswerDisplayName(answer)}}</button></span>"
+            template:"<span ng-repeat='answer in observation.possibleAnswers'><button type='button' class='grid-row-element' ng-class='{active: observation.value.uuid == answer.uuid}' ng-click='select(answer)'><i class='icon-ok'></i>{{getAnswerDisplayName(answer)}}</button></span>"
         };
     });;
