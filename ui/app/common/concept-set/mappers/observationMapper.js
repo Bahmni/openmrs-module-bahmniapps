@@ -100,7 +100,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
 
             return { "value": observationValue, "abnormal": observationTemp.abnormal, "duration": observationTemp.duration,
                 "provider": observationTemp.provider ? observationTemp.provider.name : "",
-                "observationDateTime": observationTemp.observationDateTime, "concept": obsConcept};
+                "observationDateTime": observationTemp.observationDateTime, "concept": obsConcept, comment: observationTemp.comment};
         };
 
 
