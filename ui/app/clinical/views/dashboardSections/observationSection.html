@@ -1,17 +1,15 @@
 <div ng-controller="PatientDashboardObservationController">
     <h2>{{section.title}}</h2>
 
-    <section class="block" ng-if="activeVisit" ng-class="{'more': patientSummary.show}">
-        <div ng-repeat="(datekey, data) in patientSummary.data">
-            <label class="date">{{datekey | date: 'dd MMM yy'}}</label>
+    <section class="block" ng-class="{'more': patientSummary.show}">
+        <div ng-repeat="obsGroup in patientSummary.data">
+            <label class="date">{{obsGroup.concept}} - {{obsGroup.date | date: 'dd MMM yy'}}</label>
 
-            <div ng-repeat="(conceptkey, obslist) in data">
-                <label class="date">{{conceptkey}}</label>
-
-                <div ng-repeat="observation in obslist">
+            <div ng-repeat="observation in obsGroup.value">
                     <fieldset>
                         <div class="form-field"
                              ng-class="{'is-abnormal': observation.abnormal, 'is-text': isText(observation)}">
+
                             <span class="field-attribute"><label>{{observation.concept}}</label></span>
                             <span class="value-text-only">{{observation.value}}</span>
                             <span class="label-add-on" ng-hide="!observation.unit"> {{observation.unit}}</span>
@@ -21,10 +19,9 @@
                             </div>
                         </div>
                     </fieldset>
-                </div>
             </div>
         </div>
-        <div ng-show="!patientSummary.data">
+        <div ng-show="patientSummary.message">
             <div class="placeholder-text">No {{section.title}} for this patient.</div>
         </div>
     </section>
