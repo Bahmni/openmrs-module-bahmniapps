@@ -544,6 +544,8 @@ legend.mylegend {background: #f6f6f6!important;}
     margin-right: 10px; 
     .prev-visit, .next-visit {
         color: #a1d030;
+        display: inline-block;
+        cursor: pointer;
         &:hover {
             text-decoration: none;
             color: #88af28;
