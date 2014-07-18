@@ -14,8 +14,8 @@
         	<span bo-text="patient.name"></span> 
         	<span bo-text="'(' + patient.identifier + ')'"></span>
        	</h1>        
-
+        
         <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}"></button>
-        <a class="confirm quick-links" ng-if="activeVisit" ng-click="collapseControlPanel()" href="#{{consultationBoardLink()}}"><i class="icon-vitals-2"></i> Consultation</a>
+        <a class="confirm quick-links" ng-if="activeVisit" ng-click="collapseControlPanel()" href="#{{consultationBoardLink()}}">Consultation</a>
     </div>
 </div>

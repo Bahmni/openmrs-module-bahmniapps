@@ -536,6 +536,52 @@ span.range {
 }
 legend.mylegend {background: #f6f6f6!important;}
 
+.visits-nav-bar {
+    text-align: center;
+    position: relative;
+    display: inline-block;
+    margin-top: 5px;
+    margin-right: 10px; 
+    .prev-visit, .next-visit {
+        color: #a1d030;
+        &:hover {
+            text-decoration: none;
+            color: #88af28;
+        }
+    }
+    .prev-visit.disabled, .next-visit.disabled {
+        color: #ccc;
+        &:hover {
+            cursor: default;
+        }
+    }
+    .visit-details {
+        display: inline-block;
+        margin: 0 20px;
+        background: #eee;
+        padding: 10px;
+        border: 1px solid #ccc;
+        color: #888;
+        .visit-date {
+            color: #333;
+            font-family: OpenSansBold;
+        }
+    }
+    i.icon-caret-right, i.icon-caret-left {
+        padding: 0;
+        position: absolute;
+        font-size: 50px;
+    }
+    i.icon-caret-right {
+        right: -5px;
+        top: -5px;
+    }    
+    i.icon-caret-left {
+        left: -5px;
+        top: -5px;
+    }
+}
+
 
 // Work in progresss - this _visit.scss needs cleaning!
 
