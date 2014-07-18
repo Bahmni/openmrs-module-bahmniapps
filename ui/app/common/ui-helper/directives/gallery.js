@@ -28,8 +28,8 @@ angular.module('bahmni.common.uiHelper')
                     '<div ng-repeat="photo in photos">' +
                         '<img class="slide" hm-swipe-right="showPrev()" hm-swipe-left="showNext()" ng-show="isActive($index)" ng-src="{{photo.src}}" />' +
                         '<div class="image-title" ng-if="isActive($index)">{{photo.desc}}</div>' +
-                        '<div class="bottom-bar"><span class="image-index" ng-if="isActive($index)">({{$index+1}} of {{photos.length}})</span>' +
-                        '<span class="image-date" ng-if="isActive($index)">{{photo.date | date: "dd MMM yy"}}</span></div>' +
+                        '<div class="image-bottom-bar" ng-if="isActive($index)"><span class="image-index">({{$index+1}} of {{photos.length}})</span>' +
+                        '<span class="image-date">{{photo.date | date: "dd MMM yy"}}</span></div>' +
                     '</div>'+
                     '<span ng-if="photos.length > 1" class="arrow prev"  ng-click="showPrev()"></span>' +
                     '<span ng-if="photos.length > 1" class="arrow next"  ng-click="showNext()"></span>' +
