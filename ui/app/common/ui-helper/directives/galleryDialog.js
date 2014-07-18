@@ -3,7 +3,7 @@ angular.module('bahmni.common.uiHelper')
         var photos = [];
 
         angular.forEach($scope.$parent.records, function(record){
-            photos.push({src: Bahmni.Common.Constants.documentsPath + '/' + record.imageObservation.value, desc: record.concept.name, date: record.imageObservation.observationDateTime});
+            photos.push({src: Bahmni.Common.Constants.documentsPath + '/' + record.imageObservation.value, title: record.concept.name, desc:record.imageObservation.comment, date: record.imageObservation.observationDateTime});
         });
         $scope.imageIndex = $scope.currentObservation ? _.findIndex($scope.$parent.records, function(record){
             return record.imageObservation.uuid === $scope.currentObservation.uuid;
