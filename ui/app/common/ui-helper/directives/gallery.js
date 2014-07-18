@@ -25,6 +25,9 @@ angular.module('bahmni.common.uiHelper')
             },
             template:
                 '<div class="container slider">' +
+                    '<div ng-if="!photos.length">' +
+                        '<span>No Images To Display</span>' +
+                    '</div>' +
                     '<div ng-repeat="photo in photos">' +
                         '<img class="slide" hm-swipe-right="showPrev()" hm-swipe-left="showNext()" ng-show="isActive($index)" ng-src="{{photo.src}}" />' +
                         '<div class="image-title" ng-if="isActive($index)">{{photo.title}}</div>' +
