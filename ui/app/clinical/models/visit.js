@@ -232,7 +232,7 @@ Bahmni.Clinical.Visit = (function(){
         });
     };
 
-    Visit.create = function (encounterTransactions, consultationNoteConcept, labOrderNoteConcept, encounterConfig, allTestAndPanelsConcept, obsIgnoteList, visitUuid) {
+    Visit.create = function (encounterTransactions, consultationNoteConcept, labOrderNoteConcept, encounterConfig, allTestAndPanelsConcept, obsIgnoreList, visitUuid) {
         var diagnosisMapper = new Bahmni.DiagnosisMapper(),
             ordersMapper = new Bahmni.Clinical.OrdersMapper(),
             isLabTests = function (order) {
@@ -275,7 +275,7 @@ Bahmni.Clinical.Visit = (function(){
         removeEncounters(radiologyEncounters, encounterTransactions);
 
         var removeUnwantedObs = function(observation) {
-            return !obsIgnoteList.some(function(ignoredObsName) {
+            return !obsIgnoreList.some(function(ignoredObsName) {
                 return ignoredObsName === observation.concept.name;
             });
         };
