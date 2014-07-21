@@ -66,40 +66,9 @@
                     <tr ng-if="labOrderResult.isPanel" class="header">
                         <td colspan="3"><strong>{{labOrderResult.orderName}}</strong></td>
                     </tr>
-                    <tr ng-if="labOrderResult.isPanel" ng-repeat="test in labOrderResult.tests" ng-click="toggle(test)">
-                        <td class="testUnderPanel">
-                            <span bo-text="test.testName"></span>
-                            <span ng-show="test.hasRange" class="range">
-                                <span bo-text="'(' + test.minNormal + ' - ' + test.maxNormal + ')'"></span>
-                                <span ng-show="test.testUnitOfMeasurement" class="units" bo-text="test.testUnitOfMeasurement"></span>
-                            </span>
-                        </td>
-                        <td class="value has-toggle-btn">
-                            <span ng-class="{'referred-out': test.referredOut}">
-                                <span class="referred">Referred Out</span>
-                            </span>
-                            <span ng-show="test.result" ng-class="{'is-abnormal': test.abnormal}" class="value" bo-text="test.result"></span>
-                        </td>
-                        <td class="toggle-btn">
-                            <button class="toggle fr" ng-class="{'has-notes': test.notes}">
-                                <i class="icon-plus-sign" ng-hide="test.showNotes"></i>
-                                <i class="icon-minus-sign" ng-show="test.showNotes"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr ng-show="test.showNotes">
-                        <td colspan="3" class="notes inline-notes">
-                            <strong class="left">Lab Tech Notes: </strong>
-                            <pre class="left">{{test.notes}}</pre>
-                            <div class="footer-note right">
-                                <span class="provider" bo-text="test.provider"></span>
-                            </div>
-                        </td>
-                    </tr>
-
 
                     <tr ng-if="!labOrderResult.isPanel" ng-click="toggle(labOrderResult)">
-                        <td>
+                        <td ng-class="{'testUnderPanel': labOrderResult.panelName != null}">
                             <span bo-text="labOrderResult.testName"></span>
                             <span ng-show="labOrderResult.hasRange" class="range">
                                 <span bo-text="'(' + labOrderResult.minNormal + ' - ' + labOrderResult.maxNormal + ')'"></span>
