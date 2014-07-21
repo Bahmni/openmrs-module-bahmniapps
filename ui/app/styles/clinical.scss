@@ -15,6 +15,7 @@ $fontPath: "../components/openmrs-uicommons/omod/src/main/webapp/resources/fonts
 @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fragments/notifications";
 
 // JSS css files
+@import "bahmni-helper/_variables.scss";
 @import "clinical/angular-fix";
 @import "clinical/jss-ui-common";
 @import "clinical/layout";
@@ -33,5 +34,4 @@ $fontPath: "../components/openmrs-uicommons/omod/src/main/webapp/resources/fonts
 @import "common/ui-helper";
 @import "clinical/ngDialog";
 @import "clinical/gallery";
-
-
+@import "bahmni-components/_buttons.scss";

@@ -1,0 +1,47 @@
+//backButton:
+.back-btn {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+  z-index: 1;
+  margin: 6px 5px 0 25px;
+  color: #fff;  
+  border-left: 0;
+  box-shadow: 0 0 5px #888;  
+  @include border-radius(3px);
+  &:hover {
+    text-decoration: none;
+    color: #fff;
+    cursor: pointer;
+    opacity: 0.8;
+  }
+  &:before {
+    content: "";
+    height: 25px;
+    width: 25px;
+    position: absolute;
+    left: -13px;
+    top: 5px;    
+    z-index: -1;
+    display: block;    
+    border:1px solid #4d8282;
+    border-top: 0;
+    border-right: 0;
+    @include rotate(45deg);
+    @include border-radius(3px);
+    @include background(linear-gradient(top, $bahmniSecondaryColor, #528484));
+    &:hover {
+        cursor: pointer;
+        opacity: 0.8;
+    }
+  }
+}
+
+ul li a.back-btn, ul li a.back-btn:hover, button.back-btn{
+  padding: 10px 10px 10px 5px;
+  border:1px solid #4d8282;
+  @include background(linear-gradient(top, $bahmniSecondaryColor, #528484));
+}
+button.back-btn {
+    box-shadow: none;
+}
