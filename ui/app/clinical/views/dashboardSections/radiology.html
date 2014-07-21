@@ -3,7 +3,7 @@
     <section class="block">
         <ul>
             <li ng-repeat="radiologyRecordGroup in radiologyRecordGroups" class="radiology-doc-item">
-                <a gallery-dialog="radiologyRecordGroup.records" patient="patient" title="Radiology Documents">{{radiologyRecordGroup.conceptName}}</a>
+                <a image-observation-gallery="radiologyRecordGroup.records" patient="patient" title="Radiology Documents">{{radiologyRecordGroup.conceptName}}</a>
                 <i ng-if="isRecordForCurrentVisit(radiologyRecordGroup.records)" class="icon-star current-visit-icon fr"></i>
                 <span ng-if="radiologyRecordGroup.records.length > 1">({{radiologyRecordGroup.records.length}})</span>
             </li>

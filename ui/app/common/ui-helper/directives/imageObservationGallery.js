@@ -14,10 +14,10 @@ angular.module('bahmni.common.uiHelper')
         $scope.patient = $scope.$parent.patient;
         $scope.title = $scope.$parent.title;
     }])
-    .factory('galleryDialogControl', function(ngDialog){
+    .factory('imageObservationGalleryControl', function(ngDialog){
         var open = function(scope) {
             ngDialog.open({
-                template: 'views/gallery.html',
+                template: 'views/imageObservationGallery.html',
                 controller: 'imageGalleryController',
                 className: undefined,
                 scope: scope
@@ -25,11 +25,11 @@ angular.module('bahmni.common.uiHelper')
         }
         return {open: open}
     })
-    .directive('galleryDialog', function(galleryDialogControl) {
+    .directive('imageObservationGallery', function(imageObservationGalleryControl) {
         var link = function($scope, element, attrs){
             element.click(function(e){
                 e.stopPropagation();
-                galleryDialogControl.open($scope);
+                imageObservationGalleryControl.open($scope);
             });
         };
 
@@ -37,7 +37,7 @@ angular.module('bahmni.common.uiHelper')
             link: link,
             scope: {
                 imageIndex: "=",
-                records: "=galleryDialog",
+                records: "=imageObservationGallery",
                 currentObservation: "=",
                 patient: "=",
                 title: "@"

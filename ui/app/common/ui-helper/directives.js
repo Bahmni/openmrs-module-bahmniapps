@@ -178,14 +178,14 @@ angular.module('bahmni.common.util')
             }, 0);
         }
     })
-    .directive("popUp", function (galleryDialogControl) {
+    .directive("popUp", function (imageObservationGalleryControl) {
         var link = function (scope, elem) {
             var items = [];
             $(elem).click(function(){
                 scope.onClickHandler()().then(function (response) {
                     scope.records = new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
                     scope.title = "Patient Documents"
-                    galleryDialogControl.open(scope);
+                    imageObservationGalleryControl.open(scope);
                 });
             });
         };
@@ -194,27 +194,6 @@ angular.module('bahmni.common.util')
             scope: {
                 onClickHandler: "&",
                 patient: "="
-            }
-        }
-    })
-    .directive("showItems", function () {
-        var link = function (scope, elem) {
-            var options = {
-                    gallery:{
-                        enabled:true,
-                        preload:[1, 1],
-                        navigateByImgClick: false
-                    },
-                    type:'image',
-                    items: scope.records
-                };
-                elem.magnificPopup(options);
-
-        };
-        return {
-            link: link,
-            scope: {
-                records: "="
             }
         }
     });
