@@ -12,10 +12,12 @@ Bahmni.ConceptSet.ObservationMapper = function () {
 
 
     this.forView = function (bahmniObservations) {
+        var sortWeight = 0;
         return  _.map(bahmniObservations, function (bahmniObservation) {
             return { "value": bahmniObservation.value, "abnormal": bahmniObservation.isAbnormal, "duration": bahmniObservation.duration,
                 "provider": "default_provider_needs_fix", "observationDateTime": bahmniObservation.time,
-                "concept": bahmniObservation.concept, "unit": bahmniObservation.unit, "type": bahmniObservation.type, "rootConcept": bahmniObservation.rootConcept};
+                "concept": bahmniObservation.concept, "unit": bahmniObservation.unit, "type": bahmniObservation.type,
+                "rootConcept": bahmniObservation.rootConcept, "sortWeight": bahmniObservation.conceptSortWeight };
         });
     };
 
