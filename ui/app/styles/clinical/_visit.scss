@@ -538,11 +538,11 @@ legend.mylegend {background: #f6f6f6!important;}
 
 .visits-nav-bar {
     text-align: center;
-    position: relative;
+    // position: relative;
     display: inline-block;
     margin-top: 5px;
-    margin-right: 10px; 
     .prev-visit, .next-visit {
+        @include button;
         color: #a1d030;
         display: inline-block;
         cursor: pointer;
@@ -554,16 +554,16 @@ legend.mylegend {background: #f6f6f6!important;}
     .prev-visit.disabled, .next-visit.disabled {
         color: #ccc;
         &:hover {
-            cursor: default;
+            cursor: not-allowed;
         }
     }
     .visit-details {
         display: inline-block;
-        margin: 0 20px;
         background: #eee;
         padding: 10px;
         border: 1px solid #ccc;
         color: #888;
+        min-width: 190px;
         .visit-date {
             color: #333;
             font-family: OpenSansBold;
@@ -571,17 +571,18 @@ legend.mylegend {background: #f6f6f6!important;}
     }
     i.icon-caret-right, i.icon-caret-left {
         padding: 0;
-        position: absolute;
-        font-size: 50px;
+        // font-size: 30px;
+        // position: absolute;
+        // font-size: 50px;
     }
-    i.icon-caret-right {
-        right: -5px;
-        top: -5px;
-    }    
-    i.icon-caret-left {
-        left: -5px;
-        top: -5px;
-    }
+    // i.icon-caret-right {
+    //     right: -5px;
+    //     top: -5px;
+    // }    
+    // i.icon-caret-left {
+    //     left: -5px;
+    //     top: -5px;
+    // }
 }
 
 
