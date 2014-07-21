@@ -25,6 +25,16 @@ angular.module('bahmni.clinical')
             var obsArray = [];
             bahmniObservations = _.groupBy(bahmniObservations, observationGroupingFunction);
 
+            var sortWithInAConceptDateCombination = function(anObs, challengerObs) {
+                if (anObs.observationDateTime < challengerObs.observationDateTime) return 1;
+                if (anObs.observationDateTime > challengerObs.observationDateTime) return -1;
+
+                if (anObs.sortWeight < challengerObs.sortWeight) return -1;
+                if (anObs.sortWeight > challengerObs.sortWeight) return 1;
+
+                return 0;
+            }
+
             for (obsKey in bahmniObservations){
                 var dateTime = obsKey.split('||')[0];
                 var rootConceptName = obsKey.split('||')[1];
@@ -32,7 +42,9 @@ angular.module('bahmni.clinical')
 
                 var anObs = {
                     "key" : obsKey,
-                    "value" : _.sortBy(bahmniObservations[obsKey], ['observationDateTime', 'sortWeight']),
+                    // lodash does not allow different order sorting on multiple columns
+                    //"value" : _.sortBy(bahmniObservations[obsKey], sortWithInAConceptDateCombination),
+                    "value" : bahmniObservations[obsKey].sort(sortWithInAConceptDateCombination),
                     "date" : dateTime,
                     "concept" : rootConceptName,
                     "rootConceptOrderInConfig" : rootConceptOrderInConfig
