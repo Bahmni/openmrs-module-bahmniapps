@@ -538,7 +538,6 @@ legend.mylegend {background: #f6f6f6!important;}
 
 .visits-nav-bar {
     text-align: center;
-    // position: relative;
     display: inline-block;
     margin-top: 5px;
     .prev-visit, .next-visit {
@@ -571,20 +570,8 @@ legend.mylegend {background: #f6f6f6!important;}
     }
     i.icon-caret-right, i.icon-caret-left {
         padding: 0;
-        // font-size: 30px;
-        // position: absolute;
-        // font-size: 50px;
     }
-    // i.icon-caret-right {
-    //     right: -5px;
-    //     top: -5px;
-    // }    
-    // i.icon-caret-left {
-    //     left: -5px;
-    //     top: -5px;
-    // }
 }
-
 
 // Work in progresss - this _visit.scss needs cleaning!
 
