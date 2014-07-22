@@ -69,7 +69,7 @@
             <div class="checkbox-inline" ng-if="observation.duration" ng-class="{'duration': observation.duration}">
                 <span>for</span><duration ng-model="observation.duration.value" disabled="!observation.primaryObs.hasValue()" illegal-value="observation.isDurationRequired() && !observation.hasDuration()"></duration>
             </div>
-            <button toggle="observation.showComment" class="obs-comment-toggle fr" ng-class="{'has-notes': observation.comment}">
+            <button type="button" toggle="observation.showComment" class="obs-comment-toggle fr" ng-class="{'has-notes': observation.comment}">
                 <i class="icon-file" ng-hide="observation.comment"></i>
                 <i class="icon-file-alt" ng-show="observation.comment"></i>
                 <i class="icon-arrow-down" ng-hide="observation.showComment"></i>
@@ -122,7 +122,7 @@
 
                         <div class="file">
                             <img ng-src="{{observation.value|thumbnail}}" width="100" ng-class="{'has-image': observation.value, 'voided': observation.voided}">                    
-                        <button toggle="observation.showComment" ng-show="observation.value" class="obs-comment-toggle fr" ng-class="{'has-notes': observation.comment}">
+                        <button type="button" toggle="observation.showComment" ng-show="observation.value" class="obs-comment-toggle fr" ng-class="{'has-notes': observation.comment}">
                             <i class="icon-file" ng-hide="observation.comment"></i>
                             <i class="icon-file-alt" ng-show="observation.comment"></i>
                             <i class="icon-arrow-down" ng-hide="observation.showComment"></i>
