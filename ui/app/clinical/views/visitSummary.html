@@ -387,7 +387,7 @@
         <li ng-repeat="disposition in visit.dispositions">
             <div class="expander-row row-click" ng-click="toggle(disposition)">
                 <span class="disposition-state">{{disposition.conceptName}} <span>on</span> {{disposition.dispositionDateTime | date:'dd MMM yy hh:mm a'}} <span>by</span> {{disposition.provider.name}}</span>
-                <button ng-repeat="note in disposition.additionalObs" class="toggle fr">
+                <button ng-repeat="note in disposition.additionalObs" class="toggle fr" ng-class="{'has-notes': note.value}">
                     <i class="icon-plus-sign" ng-hide="disposition.show"></i>
                     <i class="icon-minus-sign" ng-show="disposition.show"></i>
                 </button>
