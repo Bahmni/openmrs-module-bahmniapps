@@ -25,21 +25,23 @@ angular.module('bahmni.common.uiHelper')
             },
             template:
                 '<div class="container slider">' +
-                    '<div ng-if="!photos.length">' +
-                        '<span>No Images To Display</span>' +
+                    '<div class="no-image" ng-if="!photos.length">' +
+                        '<i class="icon-picture"></i>' +
+                        '<p class="no-image-msg">No images to display</p>' +
                     '</div>' +
                     '<div ng-repeat="photo in photos">' +
                         '<img class="slide" hm-swipe-right="showPrev()" hm-swipe-left="showNext()" ng-show="isActive($index)" ng-src="{{photo.src}}" />' +
-                        '<div class="image-title" ng-if="isActive($index)">{{photo.title}}</div>' +
-                        '<div class="image-bottom-bar" ng-if="isActive($index)">'+
-                            '<span class="image-index">({{$index+1}} of {{photos.length}})</span>' +
-                            '<span class="image-date">{{photo.date | date: "dd MMM yy"}}</span>' +
-                            '<div class="image-desc">{{photo.desc}}</div>' +
-                        '</div>' +
                     '</div>'+
                     '<span ng-if="photos.length > 1" class="arrow prev"  ng-click="showPrev()"></span>' +
                     '<span ng-if="photos.length > 1" class="arrow next"  ng-click="showNext()"></span>' +
-               '</div>',
+               '</div>'+
+               '<div ng-repeat="photo in photos">' +                      
+                 '<div class="image-bottom-bar" ng-if="isActive($index)">'+
+                    '<div class="fl"><span class="image-title">{{photo.title}}</span>, <span class="image-date">{{photo.date | date: "dd MMM yy"}}</span></div>' +
+                    '<span class="image-index fr">({{$index+1}} of {{photos.length}})</span>' +
+                  '</div>' +
+                  '<div class="image-desc" ng-if="isActive($index) && photo.desc"><strong>Comments:</strong> {{photo.desc}}</div>' +
+                '</div>',
             controller: ['$scope', '$http', function($scope, $http) {
 
                 $scope._Index = $scope.imageIndex || 0;

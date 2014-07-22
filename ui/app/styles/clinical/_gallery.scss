@@ -125,33 +125,44 @@
 .slide, .slide.ng-hide-remove.ng-hide-remove-active {
 	opacity:1;
 }
-.slider {
-    .image-title, .image-bottom-bar {
-        position: absolute;
-    }
-}
 .template-header {
     margin-bottom: 0;
 }
-.image-title {
-    top: 0;
-    background: #fff;
-    opacity: 0.8;
-    padding: 10px 0;
-    text-align: center;
+.slider.container {
+    background: #efefef;
+}
+.image-title, .image-bottom-bar {
     font-size: 16px;
     font-family: OpenSansBold;
-    left: 0; right: 0;
 }
-.image-bottom-bar {
-    bottom: 0;
-    left: 0; right: 0;
-    background: #fff;
-    opacity: 0.7;
-    padding: 10px 0;
+.image-bottom-bar, .image-desc {
+    width: 100%;
+    display: block;
+    overflow: auto;
+    padding: 10px 20px;
+    background: #e6e6e6;
+}
+.image-date, .image-index {
+    color: #777;
+}
+.image-index {
+    font-size: 14px;
+}
+.image-desc {
+    background: #fef7e3;
+    strong {
+        font-family: OpenSansBold;
+    }
+}
+.no-image {
+    height: 100%;
     text-align: center;
-    font-family: OpenSansBold;
-    .image-date {
-        margin-left: 10px;
+    padding: 35px 0;
+    i.icon-picture {
+        font-size: 10em;
+        color: #ccc;
+    }
+    .no-image-msg {
+        font-size: 16px;
     }
 }
