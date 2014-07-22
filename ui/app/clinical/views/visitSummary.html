@@ -78,11 +78,11 @@
                             <td class="name">
                                 <span class="obs-value">{{observation.concept.name}}</span>
                             </td>
-                            <td class="value" data-ng-switch="observation.concept.conceptClass">
+                            <td class="value has-toggle-btn" data-ng-switch="observation.concept.conceptClass">
                                 <img data-ng-switch-when="Image" image-observation-gallery="visit.getImageObservationGalleryRecords()" current-observation="observation" patient="patient" title="Images" ng-src="{{observation.value|thumbnail}}" width="100">
                                 <span data-ng-switch-default class="obs-value"><pre class="chief-notes">{{observation | observationValue}} {{observation.concept.units}}</pre></span>
                             </td>
-                            <td>
+                            <td class="toggle-btn">
                                 <button class="toggle fr" ng-class="{'has-notes': observation.comment}">
                                     <i class="icon-plus-sign" ng-hide="observation.showComment"></i>
                                     <i class="icon-minus-sign" ng-show="observation.showComment"></i>

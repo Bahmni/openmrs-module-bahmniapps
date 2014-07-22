@@ -573,6 +573,20 @@ legend.mylegend {background: #f6f6f6!important;}
     }
 }
 
+.observation table tr td.toggle-btn {
+    width: 50px;
+    padding: 0;
+}
+.observation table tr td.value img {
+    width: 30px;
+    height: 30px;
+    border: 3px solid #ccc;
+    cursor: pointer;
+    &:hover, &:active {
+        opacity: 0.8;
+    }
+}
+
 // Work in progresss - this _visit.scss needs cleaning!
 
 
