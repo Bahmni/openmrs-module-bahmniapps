@@ -255,29 +255,51 @@ concept-set {
 }
 
 .vitals {
-  .placeholder {
-    // border: 3px dashed #ddd;
-    width: 50px;
-    height: 50px;
-    // background: #fefefe;
-    padding: 2px;
-    float: left;
-    margin: 5px 20px 5px 2px;
-    text-align: center;
-    border: #dddddd 1px solid;
-    @include button;
-    i {
-      color: green;
-      font-size: 20px;
-      line-height: 55px;
-      width: 40px;
+    .consultation-image {
+        width: 780px;
+        background: #eee;
+        padding: 5px;
+        overflow: auto;
+        clear: both;
+        .placeholder.btn {
+            width: 50px;
+            height: 50px;
+            // background: #fefefe;
+            float: left;
+            margin: 0;
+            text-align: center;
+            border: #dddddd 1px solid;
+            @include button;
+            padding: 0;
+            i {
+              color: green;
+              font-size: 24px;
+              line-height: 55px;
+              width: 40px;
+            }
+        }
+        .file-browse {
+            position: absolute;
+            left: -9999px;
+            visibility: hidden;
+        }
+        .file img.has-image {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #ddd;
+        }
+        .file img.has-image.voided {
+            opacity: 0.1;
+        }
+        .obs-comment-toggle {
+            margin-right: 10px;
+            margin-bottom: 5px;
+        }
+        textarea.consultation-img-comments {
+            width: 47.3em!important;
+            margin-bottom: 0!important;
+        }
     }
-  }
-  .file-browse {
-    position: absolute;
-    left: -9999px;
-    visibility: hidden;
-  }
 }
 
 .leaf-observation-node {

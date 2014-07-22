@@ -109,7 +109,7 @@
                 <div ng-switch-when="buttonselect">
                     <button-select observation="observation" ></button-select>
                 </div>
-                <div ng-switch-when="image">
+                <div ng-switch-when="image" class="consultation-image">
                     <!--<div class="file-remove">-->
                         <!--<button type="button" ng-click="observation.deleteImage()" ng-show="observation.value"><span class="icon-remove"></span></button>-->
                     <!--</div>-->
@@ -121,15 +121,18 @@
                         <label class="placeholder btn" for="file-browse-{{observation.uniqueId}}" ng-hide="observation.value || observation.voided"><i class="icon-plus needsclick"></i></label>
 
                         <div class="file">
-                            <img ng-src="{{observation.value|thumbnail}}" width="100" ng-class="{true:'transparent', false:'opaque'}[observation.voided]">
+                            <img ng-src="{{observation.value|thumbnail}}" width="100" ng-class="{'has-image': observation.value, 'voided': observation.voided}">                    
+                        <button toggle="observation.showComment" ng-show="observation.value" class="obs-comment-toggle fr" ng-class="{'has-notes': observation.comment}">
+                            <i class="icon-file" ng-hide="observation.comment"></i>
+                            <i class="icon-file-alt" ng-show="observation.comment"></i>
+                            <i class="icon-arrow-down" ng-hide="observation.showComment"></i>
+                            <i class="icon-arrow-up" ng-show="observation.showComment"></i>
+                        </button>
                         </div>
-                    <textarea ng-show="observation.showComment" maxlength="255" ng-model="observation.comment">
-                    </textarea>
-                    <button toggle="observation.showComment" ng-show="observation.value" class="toggle fr" ng-class="{'has-notes': observation.comment}">
-                        <i class="icon-plus-sign" ng-hide="observation.showComment"></i>
-                        <i class="icon-minus-sign" ng-show="observation.showComment"></i>
-                    </button>
 
+
+                    <textarea class="consultation-img-comments" ng-show="observation.showComment" maxlength="255" ng-model="observation.comment">
+                    </textarea>
                 </div>
 
 
