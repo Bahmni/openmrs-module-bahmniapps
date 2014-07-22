@@ -84,6 +84,7 @@
       border-bottom: 1px solid #ccc;
       padding: 5px;
       font-size: 14px;
+      padding-left: 10px;
       .field-attribute {
         width: 50%;
         display: inline-block;
@@ -257,6 +258,21 @@
     i.icon-external-link {
         color: #007fff;
         padding-right: 0;
+    }
+}
+.dashboard-section section .form-field.is-text {
+    overflow: auto;
+    clear: both;
+    background: #fef7e3;
+    padding-left: 10px;
+    .field-attribute {
+        display: none;
+    }
+    .value-text-only {
+        line-height: 1.3em;
+    }
+    .footer-note {
+        margin-top: 5px;
     }
 }
 
