@@ -91,7 +91,7 @@ h2, .diagnosis h2 {
   margin-top: 15px;
   padding-top: 0;
 }
-.notes, .inline-notes.notes {
+.notes.print-notes, .inline-notes.notes.print-notes {
   display: block!important;
   border: 1px solid #ccc;
   page-break-inside: avoid;
@@ -100,10 +100,10 @@ h2, .diagnosis h2 {
 // tr.ng-hide {
 //   display: table-row!important;
 // }
-td.notes.inline-notes {
+td.inline-notes.notes.print-notes {
     display: table-cell!important;
 }
-div.notes.inline-notes {
+div.notes.inline-notes, div.notes.inline-notes.print-notes {
   width: 98%;
 }
 .notes p.left {width: 70%;}
@@ -203,4 +203,10 @@ strong {
     page-break-inside: avoid;
     display: inline-block!important;
     color: #333;
+}
+.lab-investigation {
+    display: block!important;
+}
+.treatment-section.block table {
+    display: table!important;
 }

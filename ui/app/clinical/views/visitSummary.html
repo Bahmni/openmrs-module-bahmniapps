@@ -89,8 +89,8 @@
                                 </button>
                             </td>
                         </tr>
-                        <tr ng-repeat-end ng-show="observation.showComment">
-                            <td class="notes inline-notes" colspan="3">
+                        <tr ng-repeat-end >
+                            <td class="notes inline-notes" colspan="3" ng-class="{'print-notes': observation.comment}" ng-show="observation.showComment">
                                 <pre class="left">{{observation.comment}}</pre>
                                 <div class="footer-note fr">
                                     <span class="time-stamp">
@@ -395,7 +395,7 @@
             </div>
             <div>
                 <div ng-repeat="note in disposition.additionalObs">
-                    <div ng-show="disposition.show" class="inline-notes notes">
+                    <div ng-show="disposition.show" class="inline-notes notes" ng-class="{'print-notes': note.value}">
                         <p class="left">
                             <strong>Disposition Notes: </strong>{{note.value}}
                         </p>
