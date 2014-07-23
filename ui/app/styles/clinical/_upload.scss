@@ -359,3 +359,20 @@ button.mfp-close:hover {
         color: #eee;
     }
 }
+
+@media screen and (max-width: 768px) {
+    .document-upload {
+        .doc-upload-accordion {
+            padding-top: 20px;
+        }
+        .patient-details {
+            top: 50px;
+            color: #555;
+            background: #fff;
+            padding: 5px;
+            width: 100%;
+            text-align: right;
+            right: 0;
+        }
+    }
+}
