@@ -18,7 +18,7 @@ angular.module('bahmni.clinical')
         };
 
         var observationGroupingFunction = function (obs) {
-            return Bahmni.Common.Util.DateUtil.getDateWithoutHours(obs.observationDateTime) + "||" + obs.rootConcept;
+            return Bahmni.Common.Util.DateUtil.getDateWithoutHours(obs.encounterDateTime) + "||" + obs.rootConcept;
         };
 
         var groupByDateAndConcept = function (bahmniObservations) {
@@ -26,8 +26,8 @@ angular.module('bahmni.clinical')
             bahmniObservations = _.groupBy(bahmniObservations, observationGroupingFunction);
 
             var sortWithInAConceptDateCombination = function(anObs, challengerObs) {
-                if (anObs.observationDateTime < challengerObs.observationDateTime) return 1;
-                if (anObs.observationDateTime > challengerObs.observationDateTime) return -1;
+                if (anObs.encounterDateTime < challengerObs.encounterDateTime) return 1;
+                if (anObs.encounterDateTime > challengerObs.encounterDateTime) return -1;
 
                 if (anObs.sortWeight < challengerObs.sortWeight) return -1;
                 if (anObs.sortWeight > challengerObs.sortWeight) return 1;
