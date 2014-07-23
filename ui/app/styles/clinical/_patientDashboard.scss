@@ -85,10 +85,15 @@
       padding: 5px;
       font-size: 14px;
       padding-left: 10px;
+      clear: both;
+      overflow: auto;
       .field-attribute {
-        width: 50%;
+        width: 45%;
         display: inline-block;
       }
+    .value-text-only {
+        display: inline-block;
+    }
       .time {
         font-size: 11px;
         color: #888;
