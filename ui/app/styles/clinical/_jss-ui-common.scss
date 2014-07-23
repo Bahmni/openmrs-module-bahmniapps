@@ -224,7 +224,7 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
               border:1px solid #cecece;
               border-bottom:none;
               outline:none;
-              padding-bottom: 13px;
+              padding-bottom: 14px;
         }
         &.tab-selected button{
               top:4px;
@@ -312,7 +312,7 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
 }
 .tabs ul li a {
   @media screen and (max-width: 959px) {
-      padding: 10px;
+      padding: 13px 10px;
       font-size: 14px;
   }
 }
@@ -478,6 +478,10 @@ button.save-consultation, .quick-links {
   float: right;
   margin: 6px 20px;
   padding: 8px 50px;
+  @media screen and (max-width: 959px) {
+    padding: 8px 20px;
+  }
+
 }
 
 a.quick-links {
