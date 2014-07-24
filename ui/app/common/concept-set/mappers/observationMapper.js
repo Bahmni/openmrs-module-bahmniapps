@@ -1,5 +1,6 @@
 Bahmni.ConceptSet.ObservationMapper = function () {
     var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
+    var dateUtil = Bahmni.Common.Util.DateUtil;
 
     this.getObservationsForView = function (observations) {
         return internalMapForDisplay(observations);
@@ -16,7 +17,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         return  _.map(bahmniObservations, function (bahmniObservation) {
             var observationValue = bahmniObservation.value;
             if (bahmniObservation.duration) {
-                var durationForDisplay = Bahmni.Common.Util.DateUtil.convertToUnits(bahmniObservation.duration);
+                var durationForDisplay = dateUtil.convertToUnits(bahmniObservation.duration);
                 if (durationForDisplay["value"] && durationForDisplay["unitName"]) {
                     observationValue = observationValue.concat(" since " + durationForDisplay["value"] + " " + durationForDisplay["unitName"]);
                 }

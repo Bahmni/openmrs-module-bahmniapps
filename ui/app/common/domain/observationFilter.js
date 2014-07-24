@@ -6,8 +6,19 @@
 			observations.forEach(function(observation){
 				voidExistingObservationWithOutValue(observation.groupMembers);
 				observation.voided = observation.voided || observation.canBeVoided();
+
+                if (observation.voided)
+                    voidAllChildren(observation);
 			});
 		}
+
+        var voidAllChildren = function(voidedObservation) {
+            voidedObservation.groupMembers.forEach(function(childWithVoidedParent) {
+                childWithVoidedParent.voided = true;
+
+                voidAllChildren(childWithVoidedParent);
+            })
+        }
 
 		var removeNewObservationsWithoutValue = function(observations) {
 			observations.forEach(function(observation){
