@@ -1,0 +1,15 @@
+<div class="opd-header-wrapper">
+    <div class="opd-header-top">
+        <header ng-controller="CommonHeaderController">
+             <ul>
+                <li ng-repeat="(label, goToUrl) in backLinks">
+                    <a ng-click="goToUrl()">
+                        <span class="arrow-btn-head"></span>
+                        <span class="arrow-btn-body">{{label}}</span>
+                    </a>
+                </li>
+            </ul>
+            <a class="header-logo" href="../home/"><img src="../images/jss_logo.png" alt="Bahmni" title="Bahmni"></a>
+        </header>
+    </div>
+</div>
