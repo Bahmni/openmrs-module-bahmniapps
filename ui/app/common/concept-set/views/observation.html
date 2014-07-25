@@ -122,7 +122,7 @@
 
                         <div class="file">
                             <img ng-src="{{observation.value|thumbnail}}" width="100" ng-class="{'has-image': observation.value, 'voided': observation.voided}">                    
-                        <button type="button" toggle="observation.showComment" ng-show="observation.value" class="obs-comment-toggle fr" ng-class="{'has-notes': observation.comment}">
+                            <button type="button" toggle="observation.showComment" ng-show="observation.value" class="obs-comment-toggle fr" ng-class="{'has-notes': observation.comment}">
                             <i class="icon-file" ng-hide="observation.comment"></i>
                             <i class="icon-file-alt" ng-show="observation.comment"></i>
                             <i class="icon-arrow-down" ng-hide="observation.showComment"></i>
@@ -166,7 +166,7 @@
         </div>
     </fieldset>
 
-    <fieldset ng-if="!observation.isObservationNode && !observation.isFormElement()" class="hasLegend">
+    <fieldset ng-if="!observation.isObservationNode && !observation.isFormElement() && !observation.isComputed()" class="hasLegend">
         <legend ng-if="showTitle" class="mylegend"><strong>{{observation.label}}</strong></legend>
         <div class="form-group">
             <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers">

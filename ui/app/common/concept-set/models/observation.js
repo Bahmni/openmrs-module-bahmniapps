@@ -36,6 +36,10 @@ Bahmni.ConceptSet.Observation.prototype = {
         return false;
     },
 
+    isComputed: function() {
+        return this.concept.conceptClass === "Computed";
+    },
+    
     isNumeric: function () {
         return this.getDataTypeName() === "Numeric";
     },
@@ -150,7 +154,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isFormElement: function() {
-        return this.groupMembers.length === 0 || this.isGrid();
+        return (this.groupMembers.length === 0 || this.isGrid()) && !this.isComputed();
     },
 
     _hasValidChildren: function (checkRequiredFields, conceptSetRequired) {

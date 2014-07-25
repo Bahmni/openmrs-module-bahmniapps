@@ -20,7 +20,7 @@ angular.module('bahmni.common.domain')
     };
 
     var stripExtraConceptInfo = function(obs) {
-        obs.concept = {uuid: obs.concept.uuid};
+        obs.concept = {uuid: obs.concept.uuid, name: obs.concept.name};
         obs.groupMembers = obs.groupMembers || [];
         obs.groupMembers.forEach(function(groupMember) {
             stripExtraConceptInfo(groupMember);
