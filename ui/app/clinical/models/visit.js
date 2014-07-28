@@ -280,7 +280,7 @@ Bahmni.Clinical.Visit = (function(){
             });
         };
         var allObs = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions).filter(removeUnwantedObs);
-        var drugOrders = ordersMapper.map(encounterTransactions, 'drugOrders');
+        var drugOrders = ordersMapper.map(encounterTransactions, 'drugOrders').filter(function(order) { return !order.voided });
         var testOrders = ordersMapper.map(encounterTransactions, 'testOrders', allTestAndPanelsConcept);
         var otherInvestigations = testOrders.filter(isNonLabTests);
         var labOrders = testOrders.filter(isLabTests).map(Bahmni.Clinical.LabOrder.create);
