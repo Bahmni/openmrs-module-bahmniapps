@@ -20,7 +20,7 @@ angular.module('bahmni.clinical')
                     return notes.trim().length < 2;
                 }
                 return true;
-            }
+            };
 
             $scope.testResultClass = function (line) {
                 var style = {};

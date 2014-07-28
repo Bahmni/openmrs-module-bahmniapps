@@ -2,14 +2,6 @@
 
 angular.module('bahmni.common.patient')
 .directive('patientControlPanel', ['$q', '$rootScope', '$location', '$stateParams', '$state', 'contextChangeHandler', 'encounterService', 'visitActionsService', 'urlHelper', 'spinner', function($q, $rootScope, $location, $stateParams, $state, contextChangeHandler, encounterService, visitActionsService, urlHelper, spinner) {
-    var controller = function($scope) {
-        $scope.getPatientDocuments = function () {
-            var encounterTypeUuid = $rootScope.encounterConfig.getPatientDocumentEncounterTypeUuid();
-            var promise = encounterService.getEncountersForEncounterType($rootScope.patient.uuid, encounterTypeUuid);
-            return spinner.forPromise(promise);
-        };
-    };
-
     var link = function($scope) {
         $scope.patient = $rootScope.patient;
         $scope.activeVisit = $rootScope.activeVisit;
@@ -21,7 +13,7 @@ angular.module('bahmni.common.patient')
 
         $scope.getDashboardLink = function() {
           return "#/patient/" + $scope.patient.uuid + "/dashboard";
-        }
+        };
 
         $scope.changeContext = function($event) {
             if(!contextChangeHandler.execute()) {
@@ -102,7 +94,6 @@ angular.module('bahmni.common.patient')
     return {
         restrict: 'E',
         templateUrl: 'views/controlPanel.html',
-        controller: controller,
         link: link,
         scope: {}
     }

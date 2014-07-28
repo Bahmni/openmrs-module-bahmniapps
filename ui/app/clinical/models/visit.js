@@ -3,7 +3,7 @@
 Bahmni.Clinical.Visit = (function(){
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
-    var Visit = function (encounters, drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, labOrders, encounterConfig, radiologyOrders, allTestsAndPanelsConceptSet, visitUuid) {
+    var Visit = function (encounters, drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, labOrders, encounterConfig, radiologyOrders, patientFileOrders, allTestsAndPanelsConceptSet, visitUuid) {
         this.uuid = visitUuid;
         this.encounters = encounters;
         this.drugOrders = drugOrders;
@@ -15,6 +15,7 @@ Bahmni.Clinical.Visit = (function(){
         this.labOrders = labOrders;
         this.encounterConfig = encounterConfig;
         this.radiologyOrders = radiologyOrders;
+        this.patientFileOrders = patientFileOrders.reverse();
 
         var orderGroup = new Bahmni.Clinical.OrdersMapper();
         this.ipdDrugSchedule = this.hasAdmissionEncounter() ? Bahmni.Clinical.DrugSchedule.create(this) : null;
@@ -71,6 +72,9 @@ Bahmni.Clinical.Visit = (function(){
         },
         hasRadiologyOrders: function(){
             return this.radiologyOrders && this.radiologyOrders.length > 0;
+        },
+        hasPatientFiles: function(){
+            return this.patientFileOrders && this.patientFileOrders.length > 0;
         },
         hasData: function () {
             return this.hasDrugOrders()
@@ -227,8 +231,23 @@ Bahmni.Clinical.Visit = (function(){
     };
 
     var removeEncounters = function(encounters, encounterTransactions) {
-        encounters.forEach(function (radiologyEncounter) {
-            _.pull(encounterTransactions, radiologyEncounter);
+        encounters.forEach(function (documentUploadEncounter) {
+            _.pull(encounterTransactions, documentUploadEncounter);
+        });
+    };
+
+    var getDocumentUploadEncounters = function (encounterTransactions, encounterTypeUuid, documentUploadEncounters, documentUploadOrders) {
+        encounterTransactions.forEach(function (encounterTransaction) {
+            if (encounterTransaction.encounterTypeUuid == encounterTypeUuid) {
+                documentUploadEncounters.push(encounterTransaction);
+                encounterTransaction.observations.forEach(function (observation) {
+                    observation.groupMembers.forEach(function (member) {
+                        if (member.concept.name === Bahmni.Common.Constants.documentsConceptName) {
+                            documentUploadOrders.push({imageObservation: member, concept: observation.concept, dateTime: observation.observationDateTime, provider: encounterTransaction.providers[0]});
+                        }
+                    });
+                });
+            }
         });
     };
 
@@ -259,20 +278,12 @@ Bahmni.Clinical.Visit = (function(){
 
         var radiologyOrders = [];
         var radiologyEncounters= [];
-        encounterTransactions.forEach(function (encounterTransaction) {
-            if (encounterTransaction.encounterTypeUuid == encounterConfig.getRadiologyEncounterTypeUuid()) {
-                radiologyEncounters.push(encounterTransaction);
-                encounterTransaction.observations.forEach(function (observation) {
-                    observation.groupMembers.forEach(function (member) {
-                        if (member.concept.name === Bahmni.Common.Constants.documentsConceptName) {
-                            radiologyOrders.push({imageObservation: member, concept: observation.concept, dateTime: observation.observationDateTime, provider: encounterTransaction.providers[0]});
-                        }
-                    });
-                });
-            }
-        });
-
+        var patientFileEncounters = [];
+        var patientFileOrders = [];
+        getDocumentUploadEncounters(encounterTransactions, encounterConfig.getRadiologyEncounterTypeUuid(), radiologyEncounters, radiologyOrders);
+        getDocumentUploadEncounters(encounterTransactions, encounterConfig.getPatientDocumentEncounterTypeUuid(), patientFileEncounters, patientFileOrders);
         removeEncounters(radiologyEncounters, encounterTransactions);
+        removeEncounters(patientFileEncounters, encounterTransactions);
 
         var removeUnwantedObs = function(observation) {
             return !obsIgnoreList.some(function(ignoredObsName) {
@@ -297,7 +308,7 @@ Bahmni.Clinical.Visit = (function(){
             }
         });
 
-        return new this(encounterTransactions, drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, labOrders, encounterConfig, radiologyOrders, allTestAndPanelsConcept, visitUuid);
+        return new this(encounterTransactions, drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, labOrders, encounterConfig, radiologyOrders, patientFileOrders, allTestAndPanelsConcept, visitUuid);
     };
 
     return Visit;

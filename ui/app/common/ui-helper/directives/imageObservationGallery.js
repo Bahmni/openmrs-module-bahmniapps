@@ -22,7 +22,7 @@ angular.module('bahmni.common.uiHelper')
                 className: undefined,
                 scope: scope
             });
-        }
+        };
         return {open: open}
     })
     .directive('imageObservationGallery', function(imageObservationGalleryControl) {

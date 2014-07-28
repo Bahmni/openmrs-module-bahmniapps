@@ -2,7 +2,7 @@ angular.module('bahmni.common.util')
     .directive('nonBlank', function () {
         return function ($scope, element, attrs) {
             var addNonBlankAttrs = function () {
-                if(!attrs.attrPattern) {
+                if (!attrs.attrPattern) {
                     element.attr({'required': 'required', "pattern": '^.*[^\\s]+.*'});
                 } else {
                     element.attr({'required': 'required', "pattern": $scope[attrs.attrPattern]});
@@ -36,7 +36,7 @@ angular.module('bahmni.common.util')
                     });
                 }
             });
-        }
+        };
 
         return {
             require: 'ngModel',
@@ -44,37 +44,37 @@ angular.module('bahmni.common.util')
         }
     })
     .directive('splitButton', function ($parse) {
-        var link = function($scope, element) {            
+        var link = function ($scope, element) {
             var toggleButton = element.find('.toggle-button');
 
-            var docClickHandler = function(e) {
+            var docClickHandler = function (e) {
                 var $clicked = $(e.target);
                 if ($clicked.closest(toggleButton).length === 0 || $clicked.closest(element.find('.options')).length !== 0) {
                     element.find('.secondaryOption').hide();
-                    toggleButton.removeClass('open'); 
-                    $(document).off('click', docClickHandler);
-                }
-            }
-
-            toggleButton.on('click', function(){
-                element.find('.secondaryOption').toggle();
-                element.find('.secondaryOption button')[0].focus();
-                if(toggleButton.hasClass('open')) {
                     toggleButton.removeClass('open');
                     $(document).off('click', docClickHandler);
-                } else {
-                    $(document).on('click', docClickHandler);
-                    toggleButton.addClass('open');
                 }
+            };
+
+            toggleButton.on('click', function () {
+                    element.find('.secondaryOption').toggle();
+                    element.find('.secondaryOption button')[0].focus();
+                    if (toggleButton.hasClass('open')) {
+                        toggleButton.removeClass('open');
+                        $(document).off('click', docClickHandler);
+                    } else {
+                        $(document).on('click', docClickHandler);
+                        toggleButton.addClass('open');
+                    }
                 }
             );
-            
+
         };
 
-        var controller = function($scope) {
-            $scope.sortedOptions = (function() {
+        var controller = function ($scope) {
+            $scope.sortedOptions = (function () {
                 var indexOfPrimaryOption = $scope.options.indexOf($scope.primaryOption)
-                if(indexOfPrimaryOption > 0){                    
+                if (indexOfPrimaryOption > 0) {
                     var clonedOptions = $scope.options.slice(0);
                     clonedOptions.splice(indexOfPrimaryOption, 1);
                     clonedOptions.splice(0, 0, $scope.primaryOption)
@@ -84,22 +84,22 @@ angular.module('bahmni.common.util')
                 }
             })();
 
-            $scope.hasMultipleOptions = function() {
+            $scope.hasMultipleOptions = function () {
                 return $scope.options.length > 1;
             }
-        }
+        };
 
         return {
             restrict: 'A',
-            template: '<div class="split-button">'+
-                            '<ul class="options">' +
-                            '<li ng-repeat="option in sortedOptions"' +
-                                'ng-class="{primaryOption: $index == 0, secondaryOption: $index > 0}"' +
-                             '>' +
-                                '<button ng-class="buttonClass" ng-click="optionClick()(option)">{{optionText()(option)}}</button>' +
-                            '</li>' +
-                        '</ul>' +
-                        '<button class="toggle-button icon-caret-down" ng-show="hasMultipleOptions()" type="button"></button></div>',
+            template: '<div class="split-button">' +
+                '<ul class="options">' +
+                '<li ng-repeat="option in sortedOptions"' +
+                'ng-class="{primaryOption: $index == 0, secondaryOption: $index > 0}"' +
+                '>' +
+                '<button ng-class="buttonClass" ng-click="optionClick()(option)">{{optionText()(option)}}</button>' +
+                '</li>' +
+                '</ul>' +
+                '<button class="toggle-button icon-caret-down" ng-show="hasMultipleOptions()" type="button"></button></div>',
             link: link,
             controller: controller,
             scope: {
@@ -135,7 +135,7 @@ angular.module('bahmni.common.util')
                 minLength: 2,
                 source: function (request, response) {
                     source(attrs.id, request.term, attrs.type).success(function (data) {
-                        var results = responseMap ? responseMap(data) : data ;
+                        var results = responseMap ? responseMap(data) : data;
                         response(results);
                     });
                 },
@@ -143,7 +143,7 @@ angular.module('bahmni.common.util')
                     scope.$apply(function (scope) {
                         ngModelCtrl.$setViewValue(ui.item.value);
                         scope.$eval(attrs.ngChange);
-                        if(onSelect != null) {
+                        if (onSelect != null) {
                             onSelect(ui.item);
                         }
                     });
@@ -156,7 +156,7 @@ angular.module('bahmni.common.util')
                     }
                 }
             });
-        }
+        };
         return {
             link: link,
             require: 'ngModel',
@@ -178,13 +178,14 @@ angular.module('bahmni.common.util')
             }, 0);
         }
     })
-    .directive("popUp", function (imageObservationGalleryControl) {
+    .directive("popUp", ['imageObservationGalleryControl', '$rootScope', 'encounterService', function (imageObservationGalleryControl, $rootScope, encounterService) {
         var link = function (scope, elem) {
-            var items = [];
-            $(elem).click(function(){
-                scope.onClickHandler()().then(function (response) {
+            $(elem).click(function () {
+                var encounterTypeUuid = $rootScope.encounterConfig.getPatientDocumentEncounterTypeUuid();
+                var promise = encounterService.getEncountersForEncounterType($rootScope.patient.uuid, encounterTypeUuid);
+                promise.then(function (response) {
                     scope.records = new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
-                    scope.title = "Patient Documents"
+                    scope.title = "Patient Documents";
                     imageObservationGalleryControl.open(scope);
                 });
             });
@@ -192,8 +193,8 @@ angular.module('bahmni.common.util')
         return {
             link: link,
             scope: {
-                onClickHandler: "&",
+                currentObservation: "=",
                 patient: "="
             }
         }
-    });
+    }]);
