@@ -1,0 +1,55 @@
+<section ng-show="visit.hasDiagnosis()" class="block diagnosis">
+    <h2>Diagnoses</h2>
+
+    <div class="table history-diagnosis">
+        <div class="row table-header" ng-if="!print">
+            <div class="col col1"><span class="table-head-title">Diagnosis</span></div>
+            <div class="col col2"><span class="table-head-title">Initial</span></div>
+            <div class="col col3"><span class="table-head-title">Current</span></div>
+            <div class="col col4"><span class="table-head-title">Revised</span></div>
+        </div>
+
+        <div class="table-body">
+            <div class="row diagnosis-row" ng-repeat="diagnosis in visit.getDiagnoses() | primaryDiagnosisFirst">
+                <div class="view-past">
+                    <div class="col col1">
+                            <span class="diagnosis-name" bo-text="diagnosis.getDisplayName()"
+                                  ng-class="{'ruled-out': diagnosis.diagnosisStatus}"></span>
+                    </div>
+                    <div class="col col2" ng-show="diagnosis.firstDiagnosis.revised" ng-if="!print">
+                        <div class="view">
+                            <span class="certainty">{{diagnosis.firstDiagnosis.certainty}}</span>
+                            <span class="order">{{diagnosis.firstDiagnosis.order}}</span>
+                            <span class="status">{{diagnosis.firstDiagnosis.diagnosisStatus}}</span>
+                        </div>
+                        <div>
+                            <span class="time-stamp date">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
+                            <span class="provider" bo-text="diagnosis.firstDiagnosis.providers[0].name"></span>
+                        </div>
+                    </div>
+
+                    <div ng-show="!diagnosis.firstDiagnosis.revised" class="col col2"></div>
+                    <div class="col col3">
+                        <div class="view">
+                            <span class="certainty">{{diagnosis.certainty}}</span>
+                            <span class="order">{{diagnosis.order}}</span>
+                            <span class="status">{{diagnosis.diagnosisStatus}}</span>
+                        </div>
+                        <div ng-if="!print">
+                            <span class="time-stamp date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
+                            <span class="provider" bo-text="diagnosis.providers[0].name"></span>
+                        </div>
+                    </div>
+                    <div class="col col4">
+                        <i ng-show="diagnosis.revised" class="icon-ok"></i>
+
+                        <div ng-if="print">
+                            <span class="time-stamp date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
+                            <span class="provider" bo-text="diagnosis.providers[0].name"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

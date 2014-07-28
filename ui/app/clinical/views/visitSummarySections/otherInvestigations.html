@@ -1,0 +1,18 @@
+<section class="block otherTestOrders" ng-show="visit.hasOtherInvestigations()">
+    <h2>Other Investigations</h2>
+    <ul>
+        <div ng-repeat="otherInvestigationGroup in visit.otherInvestigationGroups">
+            <li ng-repeat="investigation in otherInvestigationGroup.orders">
+                <span bo-text="investigation.concept.name" class="temp-class"></span>
+
+                <div class="footer-note">
+                  <span class="time-stamp">
+                    <span class="date">{{otherInvestigationGroup.date | date:'dd MMM yy'}}</span>
+                    <span class="time">{{otherInvestigationGroup.date | date :'hh:mm a'}}</span>
+                  </span>
+                    <span class="provider" bo-text="investigation.provider.name"></span>
+                </div>
+            </li>
+        </div>
+    </ul>
+</section>

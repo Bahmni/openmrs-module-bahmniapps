@@ -1,0 +1,17 @@
+<section class="block radiology-investigations" ng-show="visit.radiologyOrders.length">
+    <h2>Radiology Investigations</h2>
+    <ul>
+        <li ng-repeat="radiologyOrder in visit.radiologyOrders" class="radiology-doc-item">
+            <a image-observation-gallery="visit.radiologyOrders" current-observation="radiologyOrder.imageObservation"
+               patient="patient" title="Radiology Documents" class="document-link temp-class">{{radiologyOrder.concept.name}}</a>
+
+            <div class="footer-note">
+                <span class="time-stamp">
+                    <span class="date">{{radiologyOrder.dateTime | date:'dd MMM yy'}}</span>
+                    <span class="time">{{radiologyOrder.dateTime | date :'hh:mm a'}}</span>
+                </span>
+                <span class="provider" bo-text="radiologyOrder.provider.name"></span>
+            </div>
+        </li>
+    </ul>
+</section>

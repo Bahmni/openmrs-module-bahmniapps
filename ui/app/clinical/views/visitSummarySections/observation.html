@@ -1,0 +1,59 @@
+<section class="block observation" ng-show="visit.hasObservations()">
+    <h2>Observations</h2>
+    <ul>
+        <div ng-repeat="observationGroup in visit.observationGroups">
+            <table>
+                <thead>
+                <th colspan="3">
+                    <span class="date">{{observationGroup.date | date :'dd MMM yy'}}</span>
+                </th>
+                </thead>
+
+                <tbody ng-repeat="observationSubGroup in observationGroup.subGroups">
+
+                <tr>
+                    <td colspan="3" class="headerRow">
+                        <span class="obs-value">{{observationSubGroup.conceptName}}</span>
+                    </td>
+                </tr>
+
+
+                <tr toggle="observation.showComment" ng-repeat-start="observation in observationSubGroup.obs"
+                    ng-class="{true: 'is-abnormal'}[observation.abnormal.value]">
+                    <td class="name">
+                        <span class="obs-value">{{observation.concept.name}}</span>
+                    </td>
+                    <td class="value" data-ng-switch="observation.concept.conceptClass">
+                        <img data-ng-switch-when="Image"
+                             image-observation-gallery="visit.getImageObservationGalleryRecords()"
+                             current-observation="observation" patient="patient" title="Images"
+                             ng-src="{{observation.value|thumbnail}}" width="100">
+                        <span data-ng-switch-default class="obs-value"><pre class="chief-notes">{{observation | observationValue}} {{observation.concept.units}}</pre></span>
+                    </td>
+                    <td>
+                        <button class="toggle fr" ng-class="{'has-notes': observation.comment}">
+                            <i class="icon-plus-sign" ng-hide="observation.showComment"></i>
+                            <i class="icon-minus-sign" ng-show="observation.showComment"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr ng-repeat-end ng-show="observation.showComment">
+                    <td class="notes inline-notes" colspan="3">
+                        <pre class="left">{{observation.comment}}</pre>
+                        <div class="footer-note fr">
+                                    <span class="time-stamp">
+                                        <span class="time">{{observation.observationDateTime | date :'hh:mm a'}}</span>
+                                    </span>
+                            <span class="provider" bindonce="observation" bo-text="observation.provider"></span>
+                        </div>
+                    </td>
+                </tr>
+
+                <!--<observation-summary patient-uuid="patientUuid" observation="observation"-->
+                <!--show-trends="showTrends" full-date="true"-->
+                <!--obs-ignore-list="obsIgnoreList"></observation-summary>-->
+                </tbody>
+            </table>
+        </div>
+    </ul>
+</section>

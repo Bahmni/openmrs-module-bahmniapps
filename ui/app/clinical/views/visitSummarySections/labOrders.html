@@ -1,0 +1,139 @@
+<section class="block laborder-section" ng-show="visit.hasLabTests()">
+    <div ng-if="visit.admissionDate && !print">
+        <h2 class="ipd-investigation-title">Investigations Chart</h2>
+        <table class="ipd-investigation">
+            <thead>
+            <tr>
+                <th><span
+                        bo-text="(visit.admissionDate | date:'dd MMM yy') + ' - '+ (visit.visitEndDate | date:'dd MMM yy')"></span>
+                </th>
+                <th ng-repeat="orderable in visit.tabularResults.getOrderables()">
+                    <div ng-class="{'belongsToPanel': test.belongsToPanel}" ng-if="!orderable.concept.set"
+                         ng-init="test = orderable">
+                        <span>{{test.concept.name}}</span>
+                            <span class="range">
+                                <span ng-if="test.getMinNormal() && test.getMaxNormal()">
+                                    {{' (' + test.getMinNormal() + ' - ' + test.getMaxNormal() + ')'}}
+                                </span>
+                                <span class="units">{{test.getUnits()}}</span>
+                            </span>
+                    </div>
+                    <div ng-if="orderable.concept.set" class="header"
+                         rowspan="{{visit.tabularResults.getDays().length + 1}}">{{orderable.concept.name}}
+                    </div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="day in visit.tabularResults.getDays()" ng-if="visit.atleastOneResultPerDay(day)">
+                <td bo-text="'D'+ day.dayNumber + ' (' + displayDate(day.date) + ')'"></td>
+                <td ng-init="test = orderable" ng-repeat="orderable in visit.tabularResults.getOrderables()">
+                        <span ng-if="!orderable.concept.set" ng-repeat="result in test.results |
+                         orderBy:'orderDate':false"
+                              class="test-result">
+                            <span ng-if="result.isOnOrderDate(day.date)">
+                                <span ng-class="{'is-abnormal': result.isAbnormal, 'one-result': test.results.length==1}"
+                                      class="ipd-test-results">{{result.value}}</span>
+                            </span>
+                        </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <h2 ng-click="visit.toggleLabInvestigation()" class="has-toggle row-click" ng-if="visit.admissionDate">
+        <button class="section-toggle">
+            <i class="icon-caret-right"
+               ng-hide="visit.showLabInvestigations"></i>
+            <i class="icon-caret-down"
+               ng-show="visit.showLabInvestigations"></i>
+        </button>
+        Lab Investigations
+    </h2>
+    <h2 ng-if="!visit.admissionDate">Lab Investigations</h2>
+
+    <div ng-repeat="labOrders in visit.labTestOrderObsMap" ng-show="visit.showLabInvestigations"
+         class="lab-investigation">
+        <table>
+            <thead>
+            <tr ng-click="toggle(labOrders)" ng-class="{'row-click':labOrders.accessionNotes}">
+                <th colspan="3">
+                    <span>Accession at </span>
+                    <span bo-text="labOrders.encounterDateTime | date:'dd MMM yy hh:mm a'"></span>
+                    <button class="toggle-btn fr" ng-if="labOrders.accessionNotes">
+                        <i class="icon-envelope" ng-hide="labOrders.show"></i>
+                        <i class="icon-envelope-alt" ng-show="labOrders.show"></i>
+                        Notes
+                    </button>
+                </th>
+            </tr>
+            <tr ng-show="labOrders.show">
+                <th colspan="3" class="notes inline-notes" ng-if="labOrders.accessionNotes">
+                    <div ng-repeat="accessionNote in labOrders.accessionNotes" class="accession">
+                        <pre class="left">{{accessionNote.text}}</pre>
+                        <div class="footer-note fr">
+                            <span class="provider" bo-text="accessionNote.providerName"></span>
+                        </div>
+                    </div>
+                </th>
+            </tr>
+            </thead>
+            <tbody ng-repeat="line in labOrders.displayList">
+            <!-- HACKTAG: Apparently bo-if makes this go into an infinite loop-->
+            <tr ng-if="line.isSummary && !print" ng-class="testResultClass(line)">
+                <td colspan="3" ng-hide="!line.name">
+                    {{line.name}}
+                </td>
+            </tr>
+            <tr ng-if="!line.isSummary"
+                ng-class="{'is-abnormal': line.isAbnormal, 'referred-out': line.referredOut}" ng-click="toggle(line)"
+                class="row-click">
+                <td>
+                    <span>{{line.concept.name}}</span>
+                    <span class="range">
+                      <span ng-if="line.minNormal && line.maxNormal">
+                        {{' (' + line.minNormal + ' - ' + line.maxNormal + ') '}}
+                      </span>
+                      <span class="units">{{line.units}}</span>
+                    </span>
+                </td>
+                <td class="value has-toggle-btn">
+                    {{line.value}}
+                    <span class="referred">Referred Out</span>
+                </td>
+                <td class="toggle-btn">
+                    <button class="toggle fr">
+                        <i class="icon-plus-sign" ng-hide="line.show"
+                           ng-class="{'has-notes': !isEmpty(line.notes)}"></i>
+                        <i class="icon-minus-sign" ng-show="line.show"
+                           ng-class="{'has-notes': !isEmpty(line.notes)}"></i>
+                    </button>
+                </td>
+            </tr>
+            <tr ng-if="!print && !line.isSummary && line.show">
+                <td colspan="3" class="notes inline-notes">
+                    <strong class="left">Lab Tech Notes: </strong>
+                    <pre class="left">{{line.notes}}</pre>
+
+                    <div class="footer-note right">
+                        <span class="provider" bo-text="line.providerName"></span>
+                    </div>
+
+                </td>
+            </tr>
+
+            <tr ng-if="print && line.notes && line.notes.trim().length > 1 && !line.isSummary">
+                <td colspan="3" class="notes inline-notes">
+                    <strong class="left">Lab Tech Notes: </strong>
+                    <pre class="left">{{line.notes}}</pre>
+
+                    <div class="footer-note right">
+                        <span class="provider" bo-text="line.providerName"></span>
+                    </div>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>

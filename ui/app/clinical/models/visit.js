@@ -3,19 +3,19 @@
 Bahmni.Clinical.Visit = (function(){
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
-    var Visit = function (encounters, drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, labOrders, encounterConfig, radiologyOrders, patientFileOrders, allTestsAndPanelsConceptSet, visitUuid) {
+    var Visit = function (encounters, drugOrders, consultationNotes, otherInvestigations, observations, dispositions, labOrders, encounterConfig, radiologyOrders, patientFileOrders, allTestsAndPanelsConceptSet, visitUuid) {
         this.uuid = visitUuid;
         this.encounters = encounters;
         this.drugOrders = drugOrders;
         this.consultationNotes = consultationNotes;
         this.otherInvestigations = otherInvestigations;
         this.observations = observations;
-        this.diagnoses = diagnoses;
+        this.visitDiagnoses = Bahmni.Clinical.VisitDiagnosis.create(encounters);
         this.dispositions = dispositions;
         this.labOrders = labOrders;
         this.encounterConfig = encounterConfig;
         this.radiologyOrders = radiologyOrders;
-        this.patientFileOrders = patientFileOrders.reverse();
+        this.patientFileOrders = patientFileOrders? patientFileOrders.reverse() : [];
 
         var orderGroup = new Bahmni.Clinical.OrdersMapper();
         this.ipdDrugSchedule = this.hasAdmissionEncounter() ? Bahmni.Clinical.DrugSchedule.create(this) : null;
@@ -86,14 +86,14 @@ Bahmni.Clinical.Visit = (function(){
                 || this.hasDisposition()
                 || this.hasRadiologyOrders();
         },
-        isConfirmedDiagnosis: function (certainity) {
-            return certainity === 'CONFIRMED';
-        },
         isPrimaryOrder: function (order) {
             return order === 'PRIMARY';
         },
         hasDiagnosis: function () {
-            return this.diagnoses.length > 0;
+            return this.visitDiagnoses.diagnoses.length > 0;
+        },
+        getDiagnoses: function(){
+            return this.visitDiagnoses.diagnoses;
         },
         hasDisposition: function () {
             return this.dispositions.length > 0;
@@ -174,9 +174,6 @@ Bahmni.Clinical.Visit = (function(){
         toggleTreatmentSection : function () {
             this.showTreatmentSection = !this.showTreatmentSection;
         },
-        getLatestDiagnoses: function(){
-            return _.uniq(this.diagnoses, function(diagnosis){ return diagnosis.getDisplayName(); });
-        },
         getWeightAndBMIObservations: function(){
             var isObservationForRegistration = function (obs) {
                 return obs.concept && (obs.concept.name === Bahmni.Common.Constants.weightConceptName || obs.concept.name === Bahmni.Common.Constants.bmiConceptName || obs.concept.name === Bahmni.Common.Constants.bmiStatusConceptName) ? true : false;
@@ -202,7 +199,7 @@ Bahmni.Clinical.Visit = (function(){
                 if (drug.isActiveOnDate(day.date)) {
                     atleastOneDrugForDay = true;
                 }
-            })
+            });
             return atleastOneDrugForDay;
         },
         _addImageObservations: function(allObservations, imageObservations){
@@ -252,8 +249,7 @@ Bahmni.Clinical.Visit = (function(){
     };
 
     Visit.create = function (encounterTransactions, consultationNoteConcept, labOrderNoteConcept, encounterConfig, allTestAndPanelsConcept, obsIgnoreList, visitUuid) {
-        var diagnosisMapper = new Bahmni.DiagnosisMapper(),
-            ordersMapper = new Bahmni.Clinical.OrdersMapper(),
+            var ordersMapper = new Bahmni.Clinical.OrdersMapper(),
             isLabTests = function (order) {
                 var labTestOrderTypeUuid = encounterConfig.orderTypes[Bahmni.Clinical.Constants.labOrderType];
                 return order.orderTypeUuid === labTestOrderTypeUuid;
@@ -298,7 +294,6 @@ Bahmni.Clinical.Visit = (function(){
 
         var consultationNotes = allObs.filter(isConsultationNote);
         var observations = allObs.filter(isOtherObservation).filter(doesNotHaveOrder);
-        var diagnoses = _.flatten(encounterTransactions, 'bahmniDiagnoses').map(diagnosisMapper.mapDiagnosis);
 
         var dispositions = [];
         angular.forEach(encounterTransactions, function (encounterTransaction) {
@@ -308,7 +303,7 @@ Bahmni.Clinical.Visit = (function(){
             }
         });
 
-        return new this(encounterTransactions, drugOrders, consultationNotes, otherInvestigations, observations, diagnoses, dispositions, labOrders, encounterConfig, radiologyOrders, patientFileOrders, allTestAndPanelsConcept, visitUuid);
+        return new this(encounterTransactions, drugOrders, consultationNotes, otherInvestigations, observations, dispositions, labOrders, encounterConfig, radiologyOrders, patientFileOrders, allTestAndPanelsConcept, visitUuid);
     };
 
     return Visit;

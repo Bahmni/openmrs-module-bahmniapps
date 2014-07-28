@@ -1,0 +1,24 @@
+<section class="block disposition-section" ng-show="visit.hasDisposition()">
+    <h2>Disposition</h2>
+    <ul class="block-content">
+        <li ng-repeat="disposition in visit.dispositions">
+            <div class="expander-row row-click" ng-click="toggle(disposition)">
+                <span class="disposition-state">{{disposition.conceptName}} <span>on</span> {{disposition.dispositionDateTime | date:'dd MMM yy hh:mm a'}} <span>by</span> {{disposition.provider.name}}</span>
+                <button ng-repeat="note in disposition.additionalObs" class="toggle fr">
+                    <i class="icon-plus-sign" ng-hide="disposition.show"></i>
+                    <i class="icon-minus-sign" ng-show="disposition.show"></i>
+                </button>
+
+            </div>
+            <div>
+                <div ng-repeat="note in disposition.additionalObs">
+                    <div ng-show="disposition.show" class="inline-notes notes">
+                        <p class="left">
+                            <strong>Disposition Notes: </strong>{{note.value}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</section>

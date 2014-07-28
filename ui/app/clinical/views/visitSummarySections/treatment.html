@@ -1,0 +1,79 @@
+<section class="block treatment-section" ng-show="visit.hasDrugOrders()">
+    <h2 ng-click="visit.toggleTreatmentSection()" class="has-toggle" ng-if="visit.admissionDate">
+        <button class="section-toggle">
+            <i class="icon-caret-right"
+               ng-hide="visit.showTreatmentSection"></i>
+            <i class="icon-caret-down"
+               ng-show="visit.showTreatmentSection"></i>
+        </button>
+        Treatment
+    </h2>
+    <h2 ng-if="!visit.admissionDate">
+        Treatment
+    </h2>
+    <table ng-repeat="drugOrderGroup in visit.drugOrderGroups" ng-show="visit.showTreatmentSection">
+        <thead>
+        <tr>
+            <th class="drugorder-date" colspan="4"><strong><span class="table-head-title">{{(drugOrderGroup.date | date:'dd MMM yy')}}</span></strong>
+            </th>
+        </tr>
+        <tr class="title">
+            <th><span class="table-head-title">Drug Name</span></th>
+            <th><span class="table-head-title">Dosage per Day</span></th>
+            <th colspan="2"><span class="table-head-title">Duration</span></th>
+        </tr>
+        </thead>
+        <tbody ng-repeat="drugOrder in drugOrderGroup.orders">
+        <tr ng-click="toggle(drugOrder)" class="row-click">
+            <td class="drug-name" bo-text="drugOrder.drugName"></td>
+            <td class="dosage-form">
+                <span bo-show="drugOrder.dosingInstructions"
+                      bo-text="drugOrder.dosingInstructions|formatDecimalValues"></span>
+                <span bo-show="!drugOrder.dosingInstructions" bo-text="' - '"></span>
+            </td>
+            <td class="dosage-days has-toggle-btn">
+                <div class="dosage">
+                    <span><span class="copy">From </span>{{(drugOrder.startDate | date:'d MMM yy')}}<span
+                            class="copy"> for </span>{{visit.numberOfDosageDaysForDrugOrder(drugOrder)}} day(s)</span>
+                    <span bo-show="drugOrder.prn" class="prn">Take as required</span>
+                </div>
+
+            </td>
+            <td class="toggle-btn">
+                <button class="toggle fr">
+                    <i class="icon-plus-sign" ng-hide="drugOrder.show"></i>
+                    <i class="icon-minus-sign" ng-show="drugOrder.show"></i>
+                </button>
+            </td>
+        </tr>
+        <tr ng-if="!print && drugOrder.show">
+            <td colspan="4" class="inline-notes notes">
+                <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.notes}}</p>
+
+                <div class="footer-note right">
+                    <span class="time-stamp">
+                      <span class="date">{{drugOrder.startDate | date:'dd MMM yy'}}</span>
+                      <span class="time">{{drugOrder.startDate | date :'hh:mm a'}}</span>
+                    </span>
+                    <span class="provider" bo-text="drugOrder.provider.name"></span>
+                </div>
+            </td>
+        </tr>
+        <tr ng-if="print && drugOrder.notes && drugOrder.notes.length > 0 ">
+            <td colspan="4" class="inline-notes notes">
+                <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.notes}}</p>
+
+                <div class="footer-note right">
+                    <span class="time-stamp">
+                      <span class="date">{{drugOrder.startDate | date:'dd MMM yy'}}</span>
+                      <span class="time">{{drugOrder.startDate | date :'hh:mm a'}}</span>
+                    </span>
+                    <span class="provider" bo-text="drugOrder.provider.name"></span>
+                </div>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</section>
+
