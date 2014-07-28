@@ -1,7 +1,6 @@
 'use strict';
 
 Bahmni.Clinical.VisitDrugOrder = (function () {
-    var DateUtil = Bahmni.Common.Util.DateUtil;
 
     var VisitDrugOrder = function (orders, ipdOrders) {
         this.drugOrders = orders;
