@@ -21,7 +21,7 @@ describe("EncounterTransactionToObsMapper", function () {
             ]}
         ];
 
-        var observations = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions);
+        var observations = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions, []);
         expect(observations.length).toBe(3);
         expect(obsMatchingUuid(observations, "a61436b6-7813-42fd-8af2-eb5d23ed726c").length).toBe(1);
         expect(obsMatchingUuid(observations, "b61436b6-7813-42fd-8af2-eb5d23ed726c").length).toBe(1);
@@ -42,7 +42,7 @@ describe("EncounterTransactionToObsMapper", function () {
                 ]}
         ];
 
-        var observations = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions);
+        var observations = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions, []);
         expect(observations.length).toBe(2);
         expect(obsMatchingUuid(observations, "a61436b6-7813-42fd-8af2-eb5d23ed726c").length).toBe(0);
         expect(obsMatchingUuid(observations, "b61436b6-7813-42fd-8af2-eb5d23ed726c").length).toBe(1);
@@ -63,7 +63,7 @@ describe("EncounterTransactionToObsMapper", function () {
                 ]}
         ];
 
-        var observations = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions);
+        var observations = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions, []);
         expect(observations.length).toBe(3);
         expect(obsMatchingUuid(observations, "a61436b6-7813-42fd-8af2-eb5d23ed726c")[0].provider.uuid).toBe("provider1");
         expect(obsMatchingUuid(observations, "b61436b6-7813-42fd-8af2-eb5d23ed726c")[0].provider.uuid).toBe("provider1");
