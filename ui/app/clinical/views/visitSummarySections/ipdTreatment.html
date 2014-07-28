@@ -4,9 +4,9 @@
         <thead>
         <tr>
             <th>
-                <span bo-text="(visit.ipdDrugSchedule.fromDate | date:'dd MMM yy') + ' - '+ (visit.ipdDrugSchedule.toDate | date:'dd MMM yy')"></span>
+                <span bo-text="(visit.admissionDate | date:'dd MMM yy') + ' - '+ (visit.getToDate() | date:'dd MMM yy')"></span>
             </th>
-            <th ng-repeat="drug in visit.ipdDrugSchedule.drugs" bo-text="drug.name" class="drug"
+            <th ng-repeat="drug in visit.getIPDDrugs()" bo-text="drug.name" class="drug"
                 ng-class="{active: drug.isActive()}"></th>
 
         </tr>
@@ -15,7 +15,7 @@
         <tr ng-repeat="day in visit.ipdDrugSchedule.days" ng-if="visit.atleastOneDrugForDay(day)">
             <td bo-text="'D'+ day.dayNumber + ' (' + displayDate(day.date) + ')'"></td>
             <td ng-repeat="drug in visit.ipdDrugSchedule.drugs">
-                <span class="icon-ok" bo-if="drug.isActiveOnDate(day.date)"/>
+                <span class="icon-ok" bo-if="drug.isActiveOnDate(day.date)"></span>
             </td>
         </tr>
         </tbody>

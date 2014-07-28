@@ -1,4 +1,4 @@
-<section class="block laborder-section" ng-show="visit.hasLabTests()">
+<section class="block laborder-section" ng-if="visit.hasLabTests()">
     <div ng-if="visit.admissionDate && !print">
         <h2 class="ipd-investigation-title">Investigations Chart</h2>
         <table class="ipd-investigation">

@@ -1,4 +1,4 @@
-<section class="block consult-notes notes" ng-show="visit.hasConsultationNotes()">
+<section class="block consult-notes notes" ng-if="visit.hasConsultationNotes()">
     <ul>
         <div ng-repeat="notes in visit.consultationNoteGroups">
             <li ng-repeat="note in notes.obs" class="consult-notes-item">

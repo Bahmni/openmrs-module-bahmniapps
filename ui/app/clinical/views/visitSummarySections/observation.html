@@ -1,4 +1,4 @@
-<section class="block observation" ng-show="visit.hasObservations()">
+<section class="block observation" ng-if="visit.hasObservations()">
     <h2>Observations</h2>
     <ul>
         <div ng-repeat="observationGroup in visit.observationGroups">

@@ -3,6 +3,9 @@
 describe ("Visit ", function() {
     var buildConcept = Bahmni.Tests.conceptMother.build;
     var buildObs = Bahmni.Tests.observationMother.build;
+    var encounterConfig = jasmine.createSpyObj('encounterConfig', ['getRadiologyEncounterTypeUuid', 'getPatientDocumentEncounterTypeUuid']);
+    encounterConfig.getRadiologyEncounterTypeUuid.and.returnValue("Some");
+    encounterConfig.getPatientDocumentEncounterTypeUuid.and.returnValue("Some");
 
     describe("getImageObservations ", function(){
         it('should filter observations of class Image', function(){
@@ -10,7 +13,7 @@ describe ("Visit ", function() {
             var obs2 = buildObs({concept: buildConcept({conceptClass: 'Misc'})});
             var obs3 = buildObs({concept: buildConcept({conceptClass: 'Image'})});
             var observations = [obs1, obs2, obs3];
-            var visit = new Bahmni.Clinical.Visit([], [], [], [], observations,[], [], [], {}, [], null, null);
+            var visit = new Bahmni.Clinical.Visit([], [], [], observations, [],[], encounterConfig, [], {}, null, null);
 
             var imageObservations = visit.getImageObservations();
 
@@ -26,7 +29,7 @@ describe ("Visit ", function() {
             var obs2 = buildObs({concept: buildConcept({conceptClass: 'Misc'})});
             var obs3 = buildObs({concept: buildConcept({conceptClass: 'Image'})});
             var observations = [obs1, obs2, obs3];
-            var visit = new Bahmni.Clinical.Visit([], [], [], [], observations,[], [], [], {}, [], null, null);
+            var visit = new Bahmni.Clinical.Visit([], [], [], observations, [],[], encounterConfig, [], {}, null, null);
 
             var imageObservations = visit.getImageObservations();
 

@@ -1,4 +1,4 @@
-<section class="block otherTestOrders" ng-show="visit.hasOtherInvestigations()">
+<section class="block otherTestOrders" ng-if="visit.hasOtherInvestigations()">
     <h2>Other Investigations</h2>
     <ul>
         <div ng-repeat="otherInvestigationGroup in visit.otherInvestigationGroups">

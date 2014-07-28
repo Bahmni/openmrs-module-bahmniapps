@@ -1,4 +1,4 @@
-<section class="block radiology-investigations" ng-show="visit.patientFileOrders.length">
+<section class="block" ng-if="visit.hasPatientFiles()">
     <h2>Patient Files</h2>
-    <a href="" pop-up patient="patient" current-observation="visit.patientFileOrders[0].imageObservation"><i class="icon-file"></i>Patient Documents</a>
+    <a href="" pop-up patient="patient" current-observation="visit.getPatientFileOrder()"><i class="icon-file"></i>Patient Documents</a>
 </section>

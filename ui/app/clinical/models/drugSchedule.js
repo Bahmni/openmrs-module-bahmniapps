@@ -6,7 +6,7 @@
 		this.drugOrders = drugOrders;
 		this.days = this.getDays();
 		this.drugs = this.getDrugs();
-	}
+	};
 
 	Bahmni.Clinical.DrugSchedule.prototype = {
 		getDays: function() {
@@ -28,14 +28,12 @@
 		}
 	};
 
-	Bahmni.Clinical.DrugSchedule.create = function(visit) {
-		var fromDate = visit.getAdmissionDate();
-		var toDate = visit.getDischargeDispositionEncounterDate() || visit.getDischargeDate() || DateUtil.now();
-		var drugOrdersDuringIpd = visit.drugOrders.filter(function(drugOrder){
+	Bahmni.Clinical.DrugSchedule.create = function(fromDate, toDate, drugOrders) {
+		var drugOrdersDuringIpd = drugOrders.filter(function(drugOrder){
 			return DateUtil.parse(drugOrder.startDate) < toDate && DateUtil.parse(drugOrder.endDate) >= fromDate;
 		});
 		return new this(fromDate, toDate, drugOrdersDuringIpd);
-	}
+	};
 
 	var Drug = function(name, orders) {
 		this.name = name;

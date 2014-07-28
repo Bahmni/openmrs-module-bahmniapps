@@ -1,4 +1,4 @@
-<section class="block disposition-section" ng-show="visit.hasDisposition()">
+<section class="block disposition-section" ng-if="visit.hasDisposition()">
     <h2>Disposition</h2>
     <ul class="block-content">
         <li ng-repeat="disposition in visit.dispositions">
