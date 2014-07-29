@@ -2,6 +2,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
     var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
     var dateUtil = Bahmni.Common.Util.DateUtil;
 
+    // TODO : Shouldn't this be in clinical module. Don't see a reason for this to be in concept-set code - Shruthi
     this.getObservationsForView = function (observations) {
         return internalMapForDisplay(observations);
     };
@@ -12,6 +13,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
     };
 
 
+    // TODO : Shouldn't this be in clinical module. Don't see a reason for this to be in concept-set code - Shruthi
     this.forView = function (bahmniObservations) {
         var sortWeight = 0;
         return  _.map(bahmniObservations, function (bahmniObservation) {

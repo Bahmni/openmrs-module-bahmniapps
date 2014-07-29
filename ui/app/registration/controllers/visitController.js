@@ -51,22 +51,6 @@ angular.module('bahmni.registration')
                 return $scope.hideFields.map(toUpper).indexOf(fieldname.toUpperCase()) > -1;
             };
 
-// TODO : shruthi : revove this when this logic moved to server side
-//            $scope.calculateBMI = function () {
-//                if ($scope.obs.HEIGHT && $scope.obs.WEIGHT) {
-//                    var bmi = bmiCalculator.calculateBmi($scope.obs.HEIGHT, $scope.obs.WEIGHT);
-//                    var valid = bmi.valid();
-//                    $scope.obs.bmi_error = !valid;
-//                    $scope.obs.BMI = bmi.value;
-//                    $scope.obs[Bahmni.Common.Constants.bmiStatusConceptName] = valid ? bmi.status() : "Invalid";
-//                } else {
-//                    $scope.obs.bmi_error = false;
-//                    $scope.obs.BMI = null;
-//                    $scope.obs[Bahmni.Common.Constants.bmiStatusConceptName] = null;
-//                }
-//            };
-
-
             $scope.back = function () {
                 $window.history.back();
             };
