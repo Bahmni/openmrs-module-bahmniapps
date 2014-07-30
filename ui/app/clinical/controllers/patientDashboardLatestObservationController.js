@@ -24,9 +24,7 @@ angular.module('bahmni.clinical')
         var createObservationSectionView = function () {
             spinner.forPromise(observationsService.fetch($scope.patientUuid, $scope.section.conceptNames, $scope.section.scope, $scope.section.numberOfVisits).then(function (observations) {
                 var bahmniObservations = new Bahmni.ConceptSet.ObservationMapper().forView(observations.data);
-                console.log(bahmniObservations);
                 $scope.observations = _.sortBy(bahmniObservations, 'sortWeight');
-                console.log($scope.observations);
             }));
         };
 

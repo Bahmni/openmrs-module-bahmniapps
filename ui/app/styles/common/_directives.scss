@@ -1,0 +1,72 @@
+.obs-section {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin: 1%;
+  font-size: 14px;
+  position: relative;
+  // padding-bottom: 35px;
+  // min-height: 250px;
+  h2 {
+    padding: 10px;
+    font-family: OpenSansBold;
+    margin-bottom: 0;
+    // cursor: pointer;
+    &:active {
+        background: #e1f9fe;
+        color: #52957e;
+    }
+  }
+  .placeholder-message {
+    background: #ddd;
+    color: #666;
+    padding: 10px;
+    text-align: center;
+    display: none;
+  }
+  section.block {
+    padding: 0!important;
+    border-radius: 0 0 5px 5px;
+  }
+  section {
+    label.date {
+      font-family: OpenSansBold;
+      background: #eee;
+      padding: 10px;
+      display: block;
+    }
+    .form-field-group .form-field {
+      border: 0;
+    }
+    .form-field .form-field {
+      padding: 0;
+      border: 0;
+      .form-field {
+        padding: 0;
+        border: 0;}
+    }
+    .form-field {
+      border-bottom: 1px solid #ccc;
+      padding: 5px;
+      font-size: 14px;
+      padding-left: 10px;
+      clear: both;
+      overflow: auto;
+      .field-attribute {
+        width: 45%;
+        display: inline-block;
+      }
+    .value-text-only {
+        display: inline-block;
+    }
+      .time {
+        font-size: 11px;
+        color: #888;
+        float: right;
+        padding-right: 5px;
+      }
+    }
+    .is-abnormal .field-attribute {
+      color: red;
+    }
+  }
+}

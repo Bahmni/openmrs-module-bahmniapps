@@ -1,21 +1,5 @@
 <div ng-controller="PatientDashboardLatestObservationController">
     <h2>{{section.title}}</h2>
 
-    <section class="block">
-        <div ng-repeat="observation  in observations">
-            <fieldset>
-                <div class="form-field" ng-class="{'is-abnormal': observation.abnormal, 'is-text': isText(observation)}">
-                    <span class="field-attribute"><label>{{observation.concept}}</label></span>
-                    <span class="value-text-only">{{observation.value}}</span>
-                    <span class="label-add-on" ng-hide="!observation.unit"> {{observation.unit}}</span>
-                    <div class="footer-note fr">
-                        <span class="value-text-only time">{{observation.observationDateTime | date :'dd MMM yy hh:mm a'}}</span>
-                    </div>
-                </div>
-            </fieldset>
-        </div>
-        <div ng-show="observations.length == 0">
-            <div class="placeholder-text">No {{section.title}} for this patient.</div>
-        </div>
-    </section>
+    <latest-obs patient-uuid="patientUuid" concept-names="section.conceptNames">
 </div>
