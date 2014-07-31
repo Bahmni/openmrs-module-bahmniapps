@@ -41,7 +41,7 @@
                             <strong>{{conceptSet.options.conceptName}}</strong>
                         </legend>
                     </div>
-                    <div ng-show="conceptSet.options.showLatest">
+                    <div ng-if="conceptSet.options.showLatest">
                         <div class="obs-section right" style="width: 45%">
                             <latest-obs patient-uuid="patient.uuid" concept-names="conceptSet.options.conceptName"/>
                         </div>
@@ -50,7 +50,7 @@
                             observations="observations" obs-scope="conceptSet.options.scope" show-title="false"></concept-set>
                         </div>
                     </div>
-                    <div ng-hide="conceptSet.options.showLatest">
+                    <div ng-if="!conceptSet.options.showLatest">
                         <concept-set concept-set-name="conceptSet.options.conceptName" required="conceptSet.options.required" 
                         observations="observations" obs-scope="conceptSet.options.scope" show-title="false"></concept-set>
                     </div>
