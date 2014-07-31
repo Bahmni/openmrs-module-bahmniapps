@@ -3,7 +3,7 @@
 Bahmni.Clinical.Visit = (function () {
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
-    var Visit = function (encounters, consultationNotes, otherInvestigations, observations, labOrders, encounterConfig, radiologyOrders, patientFileOrders, allTestsAndPanelsConceptSet, visitUuid) {
+    var Visit = function (encounters, consultationNotes, otherInvestigations, observations, labOrders, encounterConfig, allTestsAndPanelsConceptSet, visitUuid) {
         this.uuid = visitUuid;
         this.encounters = encounters;
         this.consultationNotes = consultationNotes;

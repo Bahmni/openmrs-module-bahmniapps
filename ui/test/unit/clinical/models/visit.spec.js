@@ -13,7 +13,7 @@ describe("Visit ", function () {
             var obs2 = buildObs({concept: buildConcept({conceptClass: 'Misc'})});
             var obs3 = buildObs({concept: buildConcept({conceptClass: 'Image'})});
             var observations = [obs1, obs2, obs3];
-            var visit = new Bahmni.Clinical.Visit([], [], [], observations, [], encounterConfig, [], {}, null, null);
+            var visit = new Bahmni.Clinical.Visit([], [], [], observations, [], encounterConfig, null, null);
 
             var imageObservations = visit.getImageObservations();
 
@@ -29,7 +29,7 @@ describe("Visit ", function () {
             var obs2 = buildObs({concept: buildConcept({conceptClass: 'Misc'})});
             var obs3 = buildObs({concept: buildConcept({conceptClass: 'Image'})});
             var observations = [obs1, obs2, obs3];
-            var visit = new Bahmni.Clinical.Visit([], [], [], observations, [], encounterConfig, [], {}, null, null);
+            var visit = new Bahmni.Clinical.Visit([], [], [], observations, [], encounterConfig, null, null);
 
             var imageObservations = visit.getImageObservations();
 
@@ -38,4 +38,4 @@ describe("Visit ", function () {
             expect(imageObservations[1]).toBe(obs3);
         });
     });
-})
+});
