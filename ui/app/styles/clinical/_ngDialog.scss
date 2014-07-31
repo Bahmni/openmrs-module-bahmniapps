@@ -107,3 +107,14 @@
         cursor: pointer;
     }
 }
+
+.ngdialog {
+    position: absolute;
+    overflow: scroll!important;
+    background: #fff;
+    min-height: 2000px;
+}
+.ngdialog-content {
+    overflow: scroll!important;
+    background: #fff;
+}

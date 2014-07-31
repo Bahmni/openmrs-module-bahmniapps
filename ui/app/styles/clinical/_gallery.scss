@@ -59,7 +59,6 @@
 }
 
 .slider {
-	// border: 15px solid #FFFFFF;
 	border-radius: 5px;
 	height: 500px;
 	margin: 0 auto;
@@ -85,7 +84,7 @@
     left: 0;
     margin: auto;
     overflow: auto;
-    position: fixed;
+    position: absolute;
     right: 0;
     top: 0;
 }
