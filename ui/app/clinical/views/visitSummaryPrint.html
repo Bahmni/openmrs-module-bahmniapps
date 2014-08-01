@@ -48,7 +48,7 @@
             <section ng-show="visit.hasDiagnosis()" class="block diagnosis">
                 <h2>Diagnoses</h2>
                 <ul>
-                    <li ng-repeat="diagnosis in visit.getLatestDiagnoses() | primaryDiagnosisFirst" ng-if="!diagnosis.isRuledOut()">
+                    <li ng-repeat="diagnosis in visit.getDiagnoses() | primaryDiagnosisFirst" ng-if="!diagnosis.isRuledOut()">
                         <span>{{diagnosis.getDisplayName()}}</span>
                     </li>
                 </ul>            </section>
@@ -60,7 +60,7 @@
                         <th>Dosage per Day</th>
                         <th>Duration</th>
                     </tr>
-                    <tbody ng-repeat="drugOrder in visit.drugOrders">
+                    <tbody ng-repeat="drugOrder in visit.drugOrders.orders">
                     <tr>
                         <td class="drug-name" bo-text="drugOrder.drugName"></td>
                         <td class="dosage-form">

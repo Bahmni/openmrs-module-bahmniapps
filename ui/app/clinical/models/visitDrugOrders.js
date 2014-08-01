@@ -2,9 +2,10 @@
 
 Bahmni.Clinical.VisitDrugOrder = (function () {
 
-    var VisitDrugOrder = function (orders, ipdOrders) {
-        this.drugOrders = orders;
+    var VisitDrugOrder = function (orders, ipdOrders, orderGroup) {
+        this.orders = orders;
         this.ipdDrugSchedule = ipdOrders;
+        this.orderGroup = orderGroup;
     };
 
     VisitDrugOrder.prototype = {
@@ -12,7 +13,7 @@ Bahmni.Clinical.VisitDrugOrder = (function () {
             return this.ipdDrugSchedule && this.ipdDrugSchedule.hasDrugOrders();
         },
         getDrugOrderGroups: function () {
-            return new Bahmni.Clinical.OrdersMapper().group(this.drugOrders);
+            return this.orderGroup;
         },
         getIPDDrugs: function () {
             return this.ipdDrugSchedule.drugs;
@@ -27,7 +28,8 @@ Bahmni.Clinical.VisitDrugOrder = (function () {
         if (admissionDate) {
             ipdOrders = Bahmni.Clinical.DrugSchedule.create(admissionDate, dischargeDate, drugOrders);
         }
-        return new this(drugOrders, ipdOrders);
+        var orderGroup = new Bahmni.Clinical.OrdersMapper().group(drugOrders);
+        return new this(drugOrders, ipdOrders, orderGroup);
     };
 
 

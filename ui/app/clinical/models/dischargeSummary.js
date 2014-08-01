@@ -20,18 +20,18 @@ var dischargeSummary = function(){
 		},
 
 		getFinalDiagnoses: function() {
-			return this.visit.diagnoses.filter(function(diagnosis) { return !diagnosis.revised; });
+			return this.visit.visitDiagnoses.diagnoses.filter(function(diagnosis) { return !diagnosis.revised; });
 		},
 
 		getTreatmentRecieved: function() {
-			return this.visit.ipdDrugSchedule.drugOrders;
+			return this.visit.getIPDDrugs();
 		},
 		
 		getTreatmentAdviced: function() {
 			var DateUtil = Bahmni.Common.Util.DateUtil;
 			var dischargeDate = this.visit.getDischargeDispositionEncounterDate();
 			if(!dischargeDate) return [];
-			return this.visit.drugOrders.filter(function(drugOrder) {
+			return this.visit.drugOrders.orders.filter(function(drugOrder) {
 				return DateUtil.parse(drugOrder.startDate) >= dischargeDate;
 			});
 		},
@@ -41,7 +41,7 @@ var dischargeSummary = function(){
 		},
 
 		getLatestRadiologyOrders: function() {
-			return Bahmni.Clinical.OrdersUtil.latest(this.visit.radiologyOrders);
+			return Bahmni.Clinical.OrdersUtil.latest(this.visit.radiologyOrders.orders);
 		}
 	}
 };

@@ -52,7 +52,7 @@ Bahmni.Clinical.Visit = (function () {
 
     Visit.prototype = {
         hasDrugOrders: function () {
-            return this.drugOrders && this.drugOrders.groups && this.drugOrders.groups.length > 0;
+            return (this.drugOrders && this.drugOrders.orders && this.drugOrders.orders.length > 0);
         },
 
         hasOtherInvestigations: function () {

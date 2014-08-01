@@ -31,15 +31,16 @@ describe("DischgeSummary", function() {
 		it("should drug orders after discharge disposition encounter date", function() {
 		  	visit.getDischargeDispositionEncounterDate.and.returnValue(DateUtil.parse('2014-04-20T15:52:59.000+0530'));
 		  	var calpolBeforeDishcarge = createDrugOrder('Calpol', '2014-04-15T15:55:00.000+0530', '2014-04-18T15:52:59.000+0530');
-		  	var salbutamolDuringDichrageDisposition = createDrugOrder('Salbutamol', visit.getDischargeDispositionEncounterDate(), '2014-04-29T11:52:59.000+0530');
+		  	var salbutamolDuringDischargeDisposition = createDrugOrder('Salbutamol', visit.getDischargeDispositionEncounterDate(), '2014-04-29T11:52:59.000+0530');
 		  	var beclomateAfterDischarge = createDrugOrder('Beclomate', '2014-04-20T15:55:00.000+0530', '2014-04-26T15:52:59.000+0530');
-		  	visit.drugOrders = [calpolBeforeDishcarge, salbutamolDuringDichrageDisposition, beclomateAfterDischarge];
+		  	visit.drugOrders = {};
+            visit.drugOrders.orders = [calpolBeforeDishcarge, salbutamolDuringDischargeDisposition, beclomateAfterDischarge];
 			var dischargeSummary = new Bahmni.Clinical.DischargeSummary(null, visit);
 
 			var advicedDrugOrders = dischargeSummary.getTreatmentAdviced();
 			
 			expect(advicedDrugOrders.length).toBe(2);
-			expect(advicedDrugOrders[0]).toBe(salbutamolDuringDichrageDisposition);
+			expect(advicedDrugOrders[0]).toBe(salbutamolDuringDischargeDisposition);
 			expect(advicedDrugOrders[1]).toBe(beclomateAfterDischarge);
 		});
 
