@@ -65,7 +65,7 @@
                     <tr>
                         <td class="drug-name" bo-text="drugOrder.drugName"></td>
                         <td class="dosage-form">
-                            <span bo-show="drugOrder.dosingInstructions" bo-text="drugOrder.dosingInstructions"></span>
+                            <span bo-show="drugOrder.dosingInstructions" bo-text="drugOrder.dosingInstructions|formatDecimalValues"></span>
                             <span bo-show="!drugOrder.dosingInstructions" bo-text="' - '"></span>
                         </td>
                         <td class="dosage-days">
