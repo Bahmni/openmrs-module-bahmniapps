@@ -7,6 +7,7 @@
             <div class="col col2"><span class="table-head-title">Initial</span></div>
             <div class="col col3"><span class="table-head-title">Current</span></div>
             <div class="col col4"><span class="table-head-title">Revised</span></div>
+            <div class="col col5"><span class="table-head-title"></span></div>
         </div>
 
         <div class="table-body">
@@ -48,6 +49,17 @@
                             <span class="provider" bo-text="diagnosis.providers[0].name"></span>
                         </div>
                     </div>
+                    <div class="col col5">
+                        <button toggle="diagnosis.show" class="toggle fr" ng-class="{'has-notes': diagnosis.comments}">
+                            <i class="icon-plus-sign" ng-hide="diagnosis.show"></i>
+                            <i class="icon-minus-sign" ng-show="diagnosis.show"></i>
+                        </button>
+                    </div>
+                </div>
+                <div ng-show="diagnosis.show" class="inline-notes notes" ng-class="{'print-notes': diagnosis.comments}">
+                    <p class="left">
+                        <strong>Diagnosis Notes: </strong>{{diagnosis.comments}}
+                    </p>
                 </div>
             </div>
         </div>

@@ -125,7 +125,8 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                             existingObs: null,
                             diagnosisDateTime: null,
                             diagnosisStatusConcept: diagnosis.getDiagnosisStatusConcept(),
-                            voided: diagnosis.voided
+                            voided: diagnosis.voided,
+                            comments: diagnosis.comments
                         }
                     });
                 } else {

@@ -13,6 +13,7 @@ Bahmni.Clinical.Diagnosis = function (codedAnswer, order, certainty, existingObs
     }
     self.voided = voided;
     self.firstDiagnosis = null;
+    self.comments = "";
 
     self.getDisplayName = function () {
         if (self.freeTextAnswer) {

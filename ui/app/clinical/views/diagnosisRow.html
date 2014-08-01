@@ -32,13 +32,22 @@
       <span class="provider" ng-repeat="provider in diagnosis.providers">{{provider.name}}</span>
     </div>
   </div>
-  <span class="message">Changed!</span>   
-  <button class="toggle fr">
-    <i class="icon-edit"></i>
-  </button>
+    <span class="message">Changed!</span>
+    <button class="toggle fr">
+        <i class="icon-edit"></i>
+    </button>
+    <button class="toggle" toggle="diagnosis.showComments" ng-class="{'has-notes': diagnosis.comments}">
+        <i class="icon-plus-sign ng-hide" ng-hide="diagnosis.showComments"></i>
+        <i class="icon-minus-sign" ng-show="diagnosis.showComments"></i>
+    </button>
+</div>
+<div class="notes inline-notes" ng-show="diagnosis.comments && diagnosis.showComments">
+    <span ng-if="!diagnosis.inCurrentEncounter">{{diagnosis.comments}}</span>
+    <textarea ng-if="diagnosis.inCurrentEncounter" class="obs-comment-section"  maxlength="255" ng-model="diagnosis.comments">
+    </textarea>
 </div>
 
-<div class="edit-diagnosis row" ng-show="diagnosis.show">    
+<div class="edit-diagnosis row" ng-show="diagnosis.show">
 
   <div class="col col1"></div> 
   <div class="button-toggle col col2">
