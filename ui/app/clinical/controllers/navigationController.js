@@ -86,7 +86,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 $rootScope.consultation.pastDiagnoses && $rootScope.consultation.pastDiagnoses.forEach(function (diagnosis) {
                     if (diagnosis.isDirty) {
                         diagnosis.setDiagnosisStatusConcept();
-                        diagnosis.diagnosisDateTime = undefined;
+                        diagnosis.diagnosisDateTime = null;
                         diagnosisList.push(diagnosis);
                     }
                 });
@@ -94,7 +94,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                     if (diagnosis.isDirty) {
                         // TODO : shruthi : can avoid this using javascript property
                         diagnosis.setDiagnosisStatusConcept();
-                        diagnosis.diagnosisDateTime = undefined;
+                        diagnosis.diagnosisDateTime = null;
                         diagnosisList.push(diagnosis);
                     }
                 });
@@ -113,7 +113,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 var encounterData = {};
                 encounterData.patientUuid = $scope.patient.uuid;
                 encounterData.encounterTypeUuid = $rootScope.encounterConfig.getOpdConsultationEncounterTypeUuid();
-                encounterData.encounterDateTime = $rootScope.consultation.encounterDateTime || new Date();
+                encounterData.encounterDateTime = null;
 
                 if ($rootScope.consultation.newlyAddedDiagnoses && $rootScope.consultation.newlyAddedDiagnoses.length > 0) {
                     encounterData.bahmniDiagnoses = $rootScope.consultation.newlyAddedDiagnoses.map(function (diagnosis) {
