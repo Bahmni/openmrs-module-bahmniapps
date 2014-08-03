@@ -33,6 +33,7 @@ Bahmni.DiagnosisMapper = function () {
             if (diagnosis.encounterUuid !== currentEncounterUuid) {
                 diagnosis.previousObs = diagnosis.existingObs;
                 diagnosis.existingObs = null;
+                diagnosis.inCurrentEncounter = undefined;
                 pastDiagnosesResponse.push(diagnosis);
             }
         });
@@ -43,6 +44,7 @@ Bahmni.DiagnosisMapper = function () {
         var savedDiagnosesFromCurrentEncounter = [];
         diagnoses.forEach(function (diagnosis) {
             if (diagnosis.encounterUuid === currentEncounterUuid) {
+                diagnosis.inCurrentEncounter = true;
                 savedDiagnosesFromCurrentEncounter.push(diagnosis);
             }
         });

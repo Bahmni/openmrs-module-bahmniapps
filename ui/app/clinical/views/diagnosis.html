@@ -65,7 +65,7 @@
                     <h2>Current</h2>
                     <div ng-repeat="diagnosis in consultation.savedDiagnosesFromCurrentEncounter | primaryDiagnosisFirst" class="table-body">
                         <div class="row diagnosis-row">
-                            <ng-include src="'views/diagnosisRow.html'" onload="diagnosis.inCurrentEncounter=true"/>
+                            <ng-include src="'views/diagnosisRow.html'" />
                         </div>
                     </div>
                 </div>

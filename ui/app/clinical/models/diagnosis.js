@@ -100,4 +100,8 @@ Bahmni.Clinical.Diagnosis = function (codedAnswer, order, certainty, existingObs
     //        return this.
     //    }
 
+    self.isNoteEditable = function (){
+        return (self.encounterUuid === self.firstDiagnosis.encounterUuid )&& self.inCurrentEncounter;
+    }
+
 };
