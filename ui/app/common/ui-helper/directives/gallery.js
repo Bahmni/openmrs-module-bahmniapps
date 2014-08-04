@@ -120,7 +120,7 @@ angular.module('bahmni.common.uiHelper')
             require: '^bmGallery'
         };
     })
-    .directive("imageObservationList", function () {
+    .directive("bmImageObservationGalleryItems", function () {
         var link = function (scope, elem, attrs, imageGalleryController) {
             $(elem).click(function () {
                 angular.forEach(scope.list, function (record) {
