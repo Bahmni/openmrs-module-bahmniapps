@@ -6,4 +6,24 @@
     </h1>
     <h2>{{title}}</h2>
 </header>
-<gallery photos="photos" image-index="imageIndex"></gallery>
+<div class="container slider">
+    <div class="messages" ng-if="!photos.length">
+        <p class="messages null-data-message">No images to display</p>
+    </div>
+    <div ng-repeat="photo in photos">
+        <img class="slide" hm-swipe-right="showPrev()" hm-swipe-left="showNext()" 
+             ng-show="isActive($index)" ng-src="{{photo.src}}"/>
+    </div>
+    <span ng-if="photos.length > 1" class="arrow prev" ng-click="showPrev()"></span>
+    <span ng-if="photos.length > 1" class="arrow next" ng-click="showNext()"></span>
+</div>
+<div ng-repeat="photo in photos">
+    <div class="image-bottom-bar" ng-if="isActive($index)">
+        <div class="fl"><span class="image-title">{{photo.title}}</span>
+            <span class="image-date">{{photo.date | date: "dd MMM yy"}}</span>
+        </div>
+        <span class="image-index fr">({{$index+1}} of {{photos.length}})</span>
+    </div>
+    <div class="image-desc" ng-if="isActive($index) && photo.desc"><strong>Comments:</strong> {{photo.desc}}</div>
+</div>
+

@@ -36,12 +36,31 @@ angular.module('bahmni.common.uiHelper')
                     scope: $scope
                 })
             };
+
+
+            $scope._Index = $scope.imageIndex || 0;
+
+            $scope.isActive = function (index) {
+                return $scope._Index === index;
+            };
+
+            $scope.showPrev = function () {
+                $scope._Index = ($scope._Index > 0) ? --$scope._Index : $scope.photos.length - 1;
+            };
+
+            $scope.showNext = function () {
+                $scope._Index = ($scope._Index < $scope.photos.length - 1) ? ++$scope._Index : 0;
+            };
+
+            $scope.showPhoto = function (index) {
+                $scope._Index = index;
+            };
+
         };
 
         return {
             controller: controller,
             scope: {
-                imageIndex: "=?",
                 patient: "="
             }
         }
@@ -60,6 +79,23 @@ angular.module('bahmni.common.uiHelper')
                 imageGalleryController.setIndex($scope.image.obsUuid);
                 imageGalleryController.open();
             });
+
+
+            KeyboardJS.on('right', function() {
+                $scope.$apply(function(){
+                    $scope.showNext();
+                });
+            });
+            KeyboardJS.on('left', function() {
+                $scope.$apply(function(){
+                    $scope.showPrev();
+                });
+            });
+            $scope.$on('$destroy', function(){
+                KeyboardJS.clear('right');
+                KeyboardJS.clear('left');
+            });
+
         };
         return {
             link: link,
