@@ -1,6 +1,6 @@
 <section class="block observation" ng-if="visit.hasObservations()">
     <h2>Observations</h2>
-    <ul image-observation-gallery patient="patient" title="'Consultation Images'">
+    <ul bm-gallery patient="patient" title="'Consultation Images'">
         <div ng-repeat="observationGroup in visit.observationGroups">
             <table>
                 <thead>

@@ -2,7 +2,7 @@
     <h2>Radiology Investigations</h2>
     <ul>
         <li ng-repeat="radiologyOrder in visit.getRadiologyOrders()" class="radiology-doc-item"
-            image-observation-gallery patient="patient" title="'Radiology Documents'">
+            bm-gallery patient="patient" title="'Radiology Documents'">
             <a image-observation-observation observation="radiologyOrder"
                class="document-link temp-class">{{radiologyOrder.concept.name}}</a>
 

@@ -1,5 +1,5 @@
 angular.module('bahmni.common.uiHelper')
-    .directive('imageObservationGallery', ['ngDialog', function (ngDialog) {
+    .directive('bmGallery', ['ngDialog', function (ngDialog) {
 
         var controller = function ($scope) {
             $scope.photos = [];
@@ -31,7 +31,7 @@ angular.module('bahmni.common.uiHelper')
 
             this.open = function () {
                 ngDialog.open({
-                    template: '../common/ui-helper/views/imageObservationGallery.html',
+                    template: '../common/ui-helper/views/gallery.html',
                     className: undefined,
                     scope: $scope
                 })
@@ -65,7 +65,7 @@ angular.module('bahmni.common.uiHelper')
             }
         }
     }])
-    .directive('galleryItem', function () {
+    .directive('bmGalleryItem', function () {
         var link = function ($scope, element, attrs, imageGalleryController) {
             var image = {
                 src: $scope.image.encodedValue,
@@ -100,7 +100,7 @@ angular.module('bahmni.common.uiHelper')
         return {
             link: link,
             image: '=',
-            require: '^imageObservationGallery'
+            require: '^bmGallery'
         };
     })
     .directive('imageObservation', function () {
@@ -122,7 +122,7 @@ angular.module('bahmni.common.uiHelper')
         return {
             link: link,
             observation: '=',
-            require: '^imageObservationGallery'
+            require: '^bmGallery'
         };
     })
     .directive('imageObservationObservation', function () {
@@ -139,7 +139,7 @@ angular.module('bahmni.common.uiHelper')
             scope: {
                 observation: '='
             },
-            require: '^imageObservationGallery'
+            require: '^bmGallery'
         };
     })
     .directive("imageObservationList", function () {
@@ -156,7 +156,7 @@ angular.module('bahmni.common.uiHelper')
             scope: {
                 list: "="
             },
-            require: '^imageObservationGallery'
+            require: '^bmGallery'
         }
     })
     .directive("lazyImageList", ['$rootScope', 'encounterService', function ($rootScope, encounterService) {
@@ -181,6 +181,6 @@ angular.module('bahmni.common.uiHelper')
             scope: {
                 currentObservation: "=?index"
             },
-            require: '^imageObservationGallery'
+            require: '^bmGallery'
         }
     }]);
