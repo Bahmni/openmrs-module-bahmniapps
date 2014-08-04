@@ -103,29 +103,7 @@ angular.module('bahmni.common.uiHelper')
             require: '^bmGallery'
         };
     })
-    .directive('imageObservation', function () {
-        
-        var link = function ($scope, element, attrs, imageGalleryController) {
-            var mapImageObservation = function (observation) {
-                return {concept: observation.concept, imageObservation: observation };
-            };
-            var imageObservation = mapImageObservation($scope.observation);
-
-            imageGalleryController.addImageObservation(imageObservation);
-            element.click(function (e) {
-                e.stopPropagation();
-                imageGalleryController.setIndex(imageObservation.imageObservation.uuid);
-                imageGalleryController.open();
-            });
-        };
-
-        return {
-            link: link,
-            observation: '=',
-            require: '^bmGallery'
-        };
-    })
-    .directive('imageObservationObservation', function () {
+    .directive('bmImageObservationGalleryItem', function () {
         var link = function (scope, element, attrs, imageGalleryController) {
             imageGalleryController.addImageObservation(scope.observation);
             element.click(function (e) {
