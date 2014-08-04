@@ -8,6 +8,10 @@
         <link rel="stylesheet" href="../lib/magnific-popup/magnific-popup.css">
         <link rel="stylesheet" href="../components/jquery-ui/themes/smoothness/jquery-ui.min.css">
         <link rel="stylesheet" href="../styles/clinical.css"/>
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog.min.css"/>
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-default.min.css"/>
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-plain.min.css"/>
+
         <!-- endbuild -->
         <title>Document Upload</title>
     </head>
@@ -32,8 +36,10 @@
         <script src="../components/moment/moment.js"></script>
         <script src="../components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
         <script src="../components/purl/purl.js"></script>
-        <script src="../lib/magnific-popup/jquery.magnific-popup.js"></script>
         <script src="../components/fastclick/lib/fastclick.js"></script>
+        <script src="../components/ngDialog/js/ngDialog.min.js"></script>
+        <script src="../components/keyboardjs/keyboard.js"></script>
+
         <!-- build:js document-upload.min.js -->
         <script src="../common/util/httpErrorInterceptor.js"></script>
         <script src="../common/auth/authentication.js"></script>
@@ -71,9 +77,11 @@
         <script src="../common/ui-helper/directives/bahmniAutocomplete.js"></script>
         <script src="../common/ui-helper/directives/datePicker.js"></script>
         <script src="../common/util/dateUtil.js"></script>
-        <script src="../common/ui-helper/directives/imageGallery.js"></script>
+        <script src="../common/ui-helper/directives/gallery.js"></script>
+        <script src="../common/ui-helper/directives/imageObservationGallery.js"></script>
         <script src="../common/ui-helper/services/backlinkService.js"></script>
         <script src="../common/ui-helper/controllers/commonHeaderController.js"></script>
+        
 
         <script src="../common/models/documentImage.js"></script>
 
