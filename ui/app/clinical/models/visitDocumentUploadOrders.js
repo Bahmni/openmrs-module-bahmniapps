@@ -2,8 +2,6 @@
 
 Bahmni.Clinical.VisitDocumentUploadOrders = (function () {
 
-
-
     var VisitDocumentUploadOrders = function (orders) {
         this.orders = orders;
     };
@@ -11,28 +9,27 @@ Bahmni.Clinical.VisitDocumentUploadOrders = (function () {
     VisitDocumentUploadOrders.prototype = {
     };
 
-
-
-    var getDocumentUploadEncounters = function (encounterTransactions, encounterTypeUuid, documentUploadOrders) {
+    var getDocumentUploadOrders = function (encounterTransactions, encounterTypeUuid) {
+        var documentUploadObservations = [];
         encounterTransactions.forEach(function (encounterTransaction) {
             if (encounterTransaction.encounterTypeUuid == encounterTypeUuid) {
                 encounterTransaction.observations.forEach(function (observation) {
                     observation.groupMembers.forEach(function (member) {
                         if (member.concept.name === Bahmni.Common.Constants.documentsConceptName) {
-                            documentUploadOrders.push({imageObservation: member, concept: observation.concept, dateTime: observation.observationDateTime, provider: encounterTransaction.providers[0]});
+                            var imageObservation = new Bahmni.Clinical.ImageObservation(member, observation.concept, encounterTransaction.providers[0]);
+                            documentUploadObservations.push(imageObservation);
                         }
                     });
                 });
             }
         });
+        return documentUploadObservations;
     };
 
     VisitDocumentUploadOrders.create = function (encounterTransactions, encounterTypeUuid) {
-        var documentUploadOrders = [];
-        getDocumentUploadEncounters(encounterTransactions, encounterTypeUuid, documentUploadOrders);
+        var documentUploadOrders = getDocumentUploadOrders(encounterTransactions, encounterTypeUuid);
         return new this(documentUploadOrders);
     };
-
 
     return VisitDocumentUploadOrders;
 })();

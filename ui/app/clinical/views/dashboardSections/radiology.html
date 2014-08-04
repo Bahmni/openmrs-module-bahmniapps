@@ -2,8 +2,9 @@
     <h2>{{section.title}}</h2>
     <section class="block">
         <ul>
-            <li ng-repeat="radiologyRecordGroup in radiologyRecordGroups" class="radiology-doc-item">
-                <a image-observation-gallery="radiologyRecordGroup.records" patient="patient" title="Radiology Documents">{{radiologyRecordGroup.conceptName}}</a>
+            <li ng-repeat="radiologyRecordGroup in radiologyRecordGroups" class="radiology-doc-item"
+                image-observation-gallery patient="patient" title="'Radiology Documents'">
+                <a image-observation-list list=radiologyRecordGroup.records>{{radiologyRecordGroup.conceptName}}</a>
                 <i ng-if="isRecordForCurrentVisit(radiologyRecordGroup.records)" class="icon-star current-visit-icon fr"></i>
                 <span ng-if="radiologyRecordGroup.records.length > 1">({{radiologyRecordGroup.records.length}})</span>
             </li>

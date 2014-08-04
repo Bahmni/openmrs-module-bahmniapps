@@ -1,6 +1,6 @@
 <section class="block observation" ng-if="visit.hasObservations()">
     <h2>Observations</h2>
-    <ul>
+    <ul image-observation-gallery patient="patient" title="'Consultation Images'">
         <div ng-repeat="observationGroup in visit.observationGroups">
             <table>
                 <thead>
@@ -26,10 +26,9 @@
                     </td>
                     <td class="value has-toggle-btn" data-ng-switch="observation.concept.conceptClass">
                         <img data-ng-switch-when="Image"
-                             image-observation-gallery="visit.getImageObservationGalleryRecords()"
-                             current-observation="observation" patient="patient" title="Consultation Images"
+                             image-observation observation="visit.getImageObservation(observation)"
                              ng-src="{{observation.value|thumbnail}}" width="100">
-                        <span data-ng-switch-default class="obs-value"><pre class="chief-notes">{{observation | observationValue}} {{observation.concept.units}}</pre></span>
+                        <!--<span data-ng-switch-default class="obs-value"><pre class="chief-notes">{{observation | observationValue}} {{observation.concept.units}}</pre></span>-->
                     </td>
                     <td class="toggle-btn">
                         <button class="toggle fr" ng-class="{'has-notes': observation.comment}">

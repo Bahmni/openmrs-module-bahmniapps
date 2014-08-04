@@ -1,4 +1,4 @@
-<section class="block" ng-if="visit.hasPatientFiles()">
+<section class="block" ng-if="visit.hasPatientFiles()"  image-observation-gallery patient="patient" title="'Patient Documents'">
     <h2>Patient Files</h2>
-    <a href="" pop-up patient="patient" current-observation="visit.getPatientFileOrder()"><i class="icon-file"></i>Patient Documents</a>
+    <a href="" lazy-image-list index=visit.getPatientFileOrder()><i class="icon-file"></i>Patient Documents</a>
 </section>

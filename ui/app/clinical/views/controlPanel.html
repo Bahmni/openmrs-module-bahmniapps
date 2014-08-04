@@ -23,7 +23,11 @@
 
         <h2>Actions</h2>
         <ul>
-            <li class="btn-patient-doc"><a href="" pop-up patient="patient"><i class="icon-file"></i>Patient Documents</a></li>
+            <li class="btn-patient-doc">
+                <div image-observation-gallery patient="patient" title="'Patient Documents'">
+                    <a href="" lazy-image-list ><i class="icon-file"></i>Patient Documents</a>                        
+                </div>
+                
             <li class="{{link.icon}}" ng-click="changeContext($event)" ng-repeat="link in links">
                 <a href="{{link.href}}" ng-click="link.onClick($event)"><i class="icon-th-large"></i><i class="icon-bar-chart"></i><i class="icon-vitals-2"></i><i class="icon-print"></i>{{link.text}}</a>
             </li>

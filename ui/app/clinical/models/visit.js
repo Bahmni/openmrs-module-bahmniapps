@@ -108,7 +108,7 @@ Bahmni.Clinical.Visit = (function () {
             return this.radiologyOrders.orders;
         },
         getPatientFileOrder: function () {
-            return this.patientFileOrders.orders[0].imageObservation;
+            return this.patientFileOrders.orders[0];
         },
         _getAdmissionEncounter: function () {
             var self = this;
@@ -214,6 +214,7 @@ Bahmni.Clinical.Visit = (function () {
             });
             return atleastOneDrugForDay;
         },
+        // TODO : do we need all these methods - Shruthi
         _addImageObservations: function (allObservations, imageObservations) {
             var self = this;
             return allObservations.forEach(function (observation) {
@@ -230,6 +231,10 @@ Bahmni.Clinical.Visit = (function () {
             }
             return this._imageObservations;
         },
+        getImageObservation: function (observation) {                    
+            return {concept: observation.concept, imageObservation: observation }
+        },
+        // TODO : good to remove this - Shruthi
         getImageObservationGalleryRecords: function () {
             if (!this._imageObservationGalleryRecords) {
                 this._imageObservationGalleryRecords = this.getImageObservations().map(function (observation) {
