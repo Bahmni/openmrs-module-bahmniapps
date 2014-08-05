@@ -26,7 +26,7 @@ angular.module('bahmni.common.uiHelper')
             this.setIndex = function (uuid) {
                 $scope.imageIndex = _.findIndex($scope.photos, function (photo) {
                     return uuid === photo.uuid;
-                })
+                });
             };
 
             this.open = function () {
@@ -37,23 +37,16 @@ angular.module('bahmni.common.uiHelper')
                 })
             };
 
-
-            $scope._Index = $scope.imageIndex || 0;
-
             $scope.isActive = function (index) {
-                return $scope._Index === index;
+                return $scope.imageIndex === index;
             };
 
             $scope.showPrev = function () {
-                $scope._Index = ($scope._Index > 0) ? --$scope._Index : $scope.photos.length - 1;
+                $scope.imageIndex = ($scope.imageIndex > 0) ? --$scope.imageIndex : $scope.photos.length - 1;
             };
 
             $scope.showNext = function () {
-                $scope._Index = ($scope._Index < $scope.photos.length - 1) ? ++$scope._Index : 0;
-            };
-
-            $scope.showPhoto = function (index) {
-                $scope._Index = index;
+                $scope.imageIndex = ($scope.imageIndex < $scope.photos.length - 1) ? ++$scope.imageIndex : 0;
             };
 
         };
@@ -108,7 +101,7 @@ angular.module('bahmni.common.uiHelper')
             imageGalleryController.addImageObservation(scope.observation);
             element.click(function (e) {
                 e.stopPropagation();
-                imageGalleryController.setIndex(scope.observation.uuid);
+                imageGalleryController.setIndex(scope.observation.imageObservation.uuid);
                 imageGalleryController.open();
             });
         };
@@ -140,13 +133,11 @@ angular.module('bahmni.common.uiHelper')
     })
     .directive("bmLazyImageObservationGalleryItems", function () {
         var link = function (scope, elem, attrs, imageGalleryController) {
-            
-            console.log(scope.promise);
             scope.promise.then(function (response) {
                 angular.forEach(response, function (record) {
                     imageGalleryController.addImageObservation(record);
                 });
-                if (scope.current != null) {
+                if (scope.currentObservation != null) {
                     imageGalleryController.setIndex(scope.currentObservation.imageObservation.uuid);
                 }
                 $(elem).click(function () {
