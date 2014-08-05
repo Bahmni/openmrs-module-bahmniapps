@@ -45,7 +45,7 @@
                                         ng-show="diagnosis.codedAnswer.name">
                                     <span class="icon-remove"></span>
                                 </button>
-                                <button type="button" toggle="diagnosis.showComments" class="obs-comment-toggle fr" ng-class="{'has-notes': diagnosis.comments}">
+                                <button type="button" toggle="diagnosis.showComments" class="comment-toggle fr" ng-class="{'has-notes': diagnosis.comments}">
                                     <i class="icon-file" ng-hide="diagnosis.comments"></i>
                                     <i class="icon-file-alt" ng-show="diagnosis.comments"></i>
                                     <i class="icon-arrow-down" ng-hide="diagnosis.showComments"></i>
@@ -53,7 +53,7 @@
                                 </button>
                             </div>
                             <div class="row" ng-show="diagnosis.showComments">
-                                <textarea class="obs-comment-section"  maxlength="255" ng-model="diagnosis.comments">
+                                <textarea class="comment-section"  maxlength="255" ng-model="diagnosis.comments">
                                 </textarea>
                             </div>
                         </div>

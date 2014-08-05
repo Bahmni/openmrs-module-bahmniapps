@@ -33,17 +33,13 @@
     </div>
   </div>
     <span class="message">Changed!</span>
-    <button class="toggle fr">
+    <button class="toggle fr" toggle="diagnosis.showComments" ng-class="{'has-notes': diagnosis.comments}">
         <i class="icon-edit"></i>
-    </button>
-    <button class="toggle" toggle="diagnosis.showComments" ng-class="{'has-notes': diagnosis.comments}">
-        <i class="icon-plus-sign ng-hide" ng-hide="diagnosis.showComments"></i>
-        <i class="icon-minus-sign" ng-show="diagnosis.showComments"></i>
     </button>
 </div>
 <div class="notes inline-notes" ng-show="diagnosis.comments && diagnosis.showComments">
     <span ng-if="!diagnosis.isNoteEditable()">{{diagnosis.comments}}</span>
-    <textarea ng-if="diagnosis.isNoteEditable()" class="obs-comment-section"  maxlength="255" ng-model="diagnosis.comments">
+    <textarea ng-if="diagnosis.isNoteEditable()" class="comment-section"  maxlength="255" ng-model="diagnosis.comments">
     </textarea>
 </div>
 
