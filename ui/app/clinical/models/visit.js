@@ -214,35 +214,6 @@ Bahmni.Clinical.Visit = (function () {
             });
             return atleastOneDrugForDay;
         },
-        // TODO : do we need all these methods - Shruthi
-        _addImageObservations: function (allObservations, imageObservations) {
-            var self = this;
-            return allObservations.forEach(function (observation) {
-                if (observation.concept.conceptClass === Bahmni.Common.Constants.imageClassName) {
-                    imageObservations.push(observation);
-                }
-                self._addImageObservations(observation.groupMembers, imageObservations);
-            });
-        },
-        getImageObservations: function () {
-            if (!this._imageObservations) {
-                this._imageObservations = [];
-                this._addImageObservations(this.observations, this._imageObservations);
-            }
-            return this._imageObservations;
-        },
-        getImageObservation: function (observation) {                    
-            return {concept: observation.concept, imageObservation: observation }
-        },
-        // TODO : good to remove this - Shruthi
-        getImageObservationGalleryRecords: function () {
-            if (!this._imageObservationGalleryRecords) {
-                this._imageObservationGalleryRecords = this.getImageObservations().map(function (observation) {
-                    return {concept: observation.concept, imageObservation: observation }
-                });
-            }
-            return this._imageObservationGalleryRecords;
-        },
         getToDate: function () {
             return this.getDischargeDispositionEncounterDate() || this.getDischargeDate() || DateUtil.now();
         },

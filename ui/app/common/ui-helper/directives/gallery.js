@@ -113,6 +113,24 @@ angular.module('bahmni.common.uiHelper')
             require: '^bmGallery'
         };
     })
+    .directive('bmObservationGalleryItem', function () {
+        var link = function (scope, element, attrs, imageGalleryController) {
+            scope.imageObservation = new Bahmni.Clinical.ImageObservation(scope.observation, scope.observation.concept);
+            imageGalleryController.addImageObservation(scope.imageObservation);
+            element.click(function (e) {
+                e.stopPropagation();
+                imageGalleryController.setIndex(scope.imageObservation.imageObservation.uuid);
+                imageGalleryController.open();
+            });
+        };
+        return {
+            link: link,
+            scope: {
+                observation: '='
+            },
+            require: '^bmGallery'
+        };
+    })
     .directive("bmImageObservationGalleryItems", function () {
         var link = function (scope, elem, attrs, imageGalleryController) {
             angular.forEach(scope.list, function (record) {
