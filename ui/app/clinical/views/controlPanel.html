@@ -18,14 +18,12 @@
               <span ng-show="patient.address.countyDistrict"> / {{patient.address.countyDistrict}}</span></h5>
             <span class="ward" bo-text="bedDetails.wardName + ' ' + bedDetails.bedNumber"></span>
         </div>
-        
-
 
         <h2>Actions</h2>
         <ul>
             <li class="btn-patient-doc">
                 <div bm-gallery patient="patient" title="'Patient Documents'">
-                    <a href="" lazy-image-list ><i class="icon-file"></i>Patient Documents</a>                        
+                    <a href="" bm-lazy-image-observation-gallery-items promise="documentsPromise" ><i class="icon-file"></i>Patient Documents</a>                        
                 </div>
                 
             <li class="{{link.icon}}" ng-click="changeContext($event)" ng-repeat="link in links">

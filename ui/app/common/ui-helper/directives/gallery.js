@@ -74,24 +74,24 @@ angular.module('bahmni.common.uiHelper')
                 uuid: $scope.image.obsUuid
             };
             imageGalleryController.addImage(image);
+
             element.click(function (e) {
                 e.stopPropagation();
                 imageGalleryController.setIndex($scope.image.obsUuid);
                 imageGalleryController.open();
             });
 
-
-            KeyboardJS.on('right', function() {
-                $scope.$apply(function(){
+            KeyboardJS.on('right', function () {
+                $scope.$apply(function () {
                     $scope.showNext();
                 });
             });
-            KeyboardJS.on('left', function() {
-                $scope.$apply(function(){
+            KeyboardJS.on('left', function () {
+                $scope.$apply(function () {
                     $scope.showPrev();
                 });
             });
-            $scope.$on('$destroy', function(){
+            $scope.$on('$destroy', function () {
                 KeyboardJS.clear('right');
                 KeyboardJS.clear('left');
             });
@@ -122,10 +122,11 @@ angular.module('bahmni.common.uiHelper')
     })
     .directive("bmImageObservationGalleryItems", function () {
         var link = function (scope, elem, attrs, imageGalleryController) {
+            angular.forEach(scope.list, function (record) {
+                imageGalleryController.addImageObservation(record);
+            });
+
             $(elem).click(function () {
-                angular.forEach(scope.list, function (record) {
-                    imageGalleryController.addImageObservation(record);
-                });
                 imageGalleryController.open();
             });
         };
@@ -137,19 +138,18 @@ angular.module('bahmni.common.uiHelper')
             require: '^bmGallery'
         }
     })
-    .directive("lazyImageList", ['$rootScope', 'encounterService', function ($rootScope, encounterService) {
+    .directive("bmLazyImageObservationGalleryItems", function () {
         var link = function (scope, elem, attrs, imageGalleryController) {
-            $(elem).click(function () {
-                var encounterTypeUuid = $rootScope.encounterConfig.getPatientDocumentEncounterTypeUuid();
-                var promise = encounterService.getEncountersForEncounterType($rootScope.patient.uuid, encounterTypeUuid);
-                promise.then(function (response) {
-                    var records = new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
-                    angular.forEach(records, function (record) {
-                        imageGalleryController.addImageObservation(record);
-                    });
-                    if (scope.current != null) {
-                        imageGalleryController.setIndex(scope.currentObservation.imageObservation.uuid);
-                    }
+            
+            console.log(scope.promise);
+            scope.promise.then(function (response) {
+                angular.forEach(response, function (record) {
+                    imageGalleryController.addImageObservation(record);
+                });
+                if (scope.current != null) {
+                    imageGalleryController.setIndex(scope.currentObservation.imageObservation.uuid);
+                }
+                $(elem).click(function () {
                     imageGalleryController.open();
                 });
             });
@@ -157,8 +157,9 @@ angular.module('bahmni.common.uiHelper')
         return {
             link: link,
             scope: {
+                promise: "=",
                 currentObservation: "=?index"
             },
             require: '^bmGallery'
         }
-    }]);
+    });

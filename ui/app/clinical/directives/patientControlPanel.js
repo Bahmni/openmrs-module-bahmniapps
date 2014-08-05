@@ -5,6 +5,7 @@ angular.module('bahmni.common.patient')
     var link = function($scope) {
         $scope.patient = $rootScope.patient;
         $scope.activeVisit = $rootScope.activeVisit;
+        
         var DateUtil = Bahmni.Common.Util.DateUtil;
 
         $scope.getConsultationPadLink = function () {

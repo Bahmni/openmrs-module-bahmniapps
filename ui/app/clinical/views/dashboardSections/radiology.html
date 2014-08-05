@@ -5,8 +5,8 @@
             <li ng-repeat="radiologyRecordGroup in radiologyRecordGroups" class="radiology-doc-item"
                 bm-gallery patient="patient" title="'Radiology Documents'">
                 <a bm-image-observation-gallery-items list=radiologyRecordGroup.records>{{radiologyRecordGroup.conceptName}}</a>
-                <i ng-if="isRecordForCurrentVisit(radiologyRecordGroup.records)" class="icon-star current-visit-icon fr"></i>
-                <span ng-if="radiologyRecordGroup.records.length > 1">({{radiologyRecordGroup.records.length}})</span>
+                <i ng-show="isRecordForCurrentVisit(radiologyRecordGroup.records)" class="icon-star current-visit-icon fr"></i>
+                <span ng-show="radiologyRecordGroup.records.length > 1">({{radiologyRecordGroup.records.length}})</span>
             </li>
         </ul>
       <div ng-hide="radiologyRecordGroups.length">
