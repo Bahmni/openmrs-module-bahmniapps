@@ -287,8 +287,38 @@
     }
   }
 }
-.diagnosis-row button.toggle.has-notes i {
+
+.visit {
+    .history-diagnosis .diagnosis-row button.toggle {
+        color: #666;
+        padding: 0;    
+        &.has-notes {
+            i {
+                color: orange;
+            }
+        }
+        i {
+            padding: 0;
+            background: none;
+            border: none;
+            color: #666;
+            &:hover {
+                background: none;
+            }
+        }
+    }
+
+}
+
+.view-past label.diagnosis-name {
+    cursor: pointer;
+}
+
+.diagnosis-row button.toggle.has-notes i{
     color: orange;
+}
+.history-diagnosis .diagnosis-row .inline-notes.notes {
+    margin-bottom: 0;
 }
 .comment-toggle {
     padding: 5px;

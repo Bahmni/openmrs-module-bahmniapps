@@ -12,7 +12,7 @@
 
         <div class="table-body">
             <div class="row diagnosis-row" ng-repeat="diagnosis in visit.getDiagnoses() | primaryDiagnosisFirst">
-                <div class="view-past">
+                <div class="view-past row-click" toggle="diagnosis.show">
                     <div class="col col1">
                             <span class="diagnosis-name" bo-text="diagnosis.getDisplayName()"
                                   ng-class="{'ruled-out': diagnosis.diagnosisStatus}"></span>
@@ -42,15 +42,13 @@
                         </div>
                     </div>
                     <div class="col col4">
-                        <i ng-show="diagnosis.revised" class="icon-ok"></i>
+                        <i ng-show="diagnosis.revised" class="icon-ok fl"></i>
 
                         <div ng-if="print">
                             <span class="time-stamp date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
                             <span class="provider" bo-text="diagnosis.providers[0].name"></span>
-                        </div>
-                    </div>
-                    <div class="col col5">
-                        <button toggle="diagnosis.show" class="toggle fr" ng-class="{'has-notes': diagnosis.comments}">
+                        </div>                       
+                        <button ng-if="!print" toggle="diagnosis.show" class="toggle fr" ng-class="{'has-notes': diagnosis.comments}">
                             <i class="icon-plus-sign" ng-hide="diagnosis.show"></i>
                             <i class="icon-minus-sign" ng-show="diagnosis.show"></i>
                         </button>
