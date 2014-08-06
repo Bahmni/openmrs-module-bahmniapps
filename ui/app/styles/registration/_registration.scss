@@ -906,6 +906,25 @@ label.local-name-reg {
 	}
 }
 
+.reg-body-wrapper {
+  .obs-section.right {
+    section.block {
+      div fieldset {
+        padding: 0; margin: 0;
+        .form-field .field-attribute label {
+          margin: 0; text-align: left;
+        }
+        .form-field span.value-text-only {
+          float: left;
+        }
+        .form-field:last-child {
+          border-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
 
 
 //Observations

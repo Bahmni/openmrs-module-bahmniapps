@@ -7,7 +7,7 @@
                     <span class="value-text-only">{{observation.value}}</span>
                     <span class="label-add-on" ng-hide="!observation.unit"> {{observation.unit}}</span>
                     <div class="footer-note fr">
-                        <span class="value-text-only time">{{observation.observationDateTime | date :'dd MMM yy hh:mm a'}}</span>
+                        <span class="time">{{observation.observationDateTime | date :'dd MMM yy hh:mm a'}}</span>
                     </div>
                 </div>
             </fieldset>
@@ -16,7 +16,7 @@
 
     <section>
         <div ng-show="observations.length == 0">
-            <div class="placeholder-text">No Observation for this patient.</div>
+            <div class="placeholder-message">No Observation for this patient.</div>
         </div>
     </section>
 </div>
