@@ -4,16 +4,16 @@
             <input type="text" placeholder="A"/>
             <input type="text" placeholder="Drug Name" ng-model="treatment.drugName"/>
             <input type="text" placeholder="Dose" ng-model="treatment.dose"/>
+            <select ng-model="treatment.doseUnit"
+                    ng-options="item.name for item in treatmentConfig.doseUnits">
+            </select>
             <select ng-model="treatment.frequency"
-                    ng-options="item.name as item.name for item in treatmentConfig.frequencies">
+                    ng-options="item.name for item in treatmentConfig.frequencies">
             </select>
             or
             <input type="number" min="0" ng-model="treatment.morningDose"/>
             <input type="number" min="0" ng-model="treatment.afternoonDose"/>
             <input type="number" min="0" ng-model="treatment.eveningDose" />
-            <select ng-model="treatment.doseUnits"
-                    ng-options="item.name as item.name for item in treatmentConfig.doseUnits">
-            </select>
             <input type="checkbox"  ng-model="treatment.prn"/>
             SOS
             <select ng-model="treatment.instructions">
@@ -27,20 +27,28 @@
 
             <input type="text" placeholder="Duration" ng-model="treatment.duration"/>
             <select ng-model="treatment.durationUnit"
-                    ng-options="item.name as item.name for item in treatmentConfig.durationUnits">
+                    ng-options="item.name for item in treatmentConfig.durationUnits">
             </select>
             <select ng-model="treatment.route"
-                    ng-options="item.name as item.name for item in treatmentConfig.routes">
+                    ng-options="item.name for item in treatmentConfig.routes">
             </select>
 
             <input type="text" pattern="\d{2}-\d{2}-\d{4}" ng-model="treatment.scheduledDate" datepicker
                     placeholder="dd-mm-yyyy">
             <input type="number" min="0" ng-model="treatment.quantity" />
             <select ng-model="treatment.quantityUnit"
-                    ng-options="item.name as item.name for item in treatmentConfig.dispensingUnits">
+                    ng-options="item.name for item in treatmentConfig.dispensingUnits">
             </select>
 
-            <input type="submit" value="ADD"/>
+            <button type="button" ng-click="add()">ADD</button>
         </form>
+
+        <ul>
+            <li ng-repeat="newTreatment in treatments">
+                {{getText(newTreatment)}} from {{newTreatment.scheduledDate}}
+                <button type="button" ng-click="edit($index)">EDIT</button>
+                <button type="button" ng-click="delete($index)">DELETE</button>
+            </li>
+        </ul>
     </section>
 </div>
