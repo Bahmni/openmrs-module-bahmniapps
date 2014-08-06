@@ -1,6 +1,6 @@
 <div>
     <section class="block" ng-show="observations.length > 0">
-        <div ng-repeat="observation  in observations">
+        <div class="line-item" ng-repeat="observation  in observations">
             <fieldset>
                 <div class="form-field" ng-class="{'is-abnormal': observation.abnormal, 'is-text': isText(observation)}">
                     <span class="field-attribute"><label>{{observation.concept}}</label></span>
