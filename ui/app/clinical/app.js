@@ -102,7 +102,10 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
             .state('patient.consultation.treatment', {
                 url: '/treatment',
                 templateUrl: 'views/treatment.html',
-                controller: 'TreatmentController'
+                controller: 'TreatmentController',
+                resolve: {
+                    treatmentConfig: 'treatmentConfig'
+                }
             })
             .state('patient.consultation.disposition', {
                 url: '/disposition',

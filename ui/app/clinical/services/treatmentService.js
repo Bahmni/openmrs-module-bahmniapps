@@ -11,8 +11,13 @@ angular.module('bahmni.clinical')
 
         var getActiveDrugOrdersFromServer = function (patientUuid) {
             return $http.get(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/active", {
-                method: "GET",
                 params: { patientUuid: patientUuid  },
+                withCredentials: true
+            });
+        };
+
+        var getConfig = function () {
+            return $http.get(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/config", {
                 withCredentials: true
             });
         };
@@ -41,6 +46,7 @@ angular.module('bahmni.clinical')
 
         return {
             getActiveDrugOrders: getActiveDrugOrders,
+            getConfig: getConfig,
             getPrescribedDrugOrders: getPrescribedDrugOrders
         };
     }]);

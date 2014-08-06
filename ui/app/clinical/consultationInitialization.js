@@ -1,6 +1,5 @@
 'use strict';
 
-var timeout = 0;
 angular.module('bahmni.clinical').factory('consultationInitialization',
     ['$rootScope', '$q', 'configurationService', 'visitService', 'patientService', 'authenticator', 'appService', 'encounterService', 'bedService', 'spinner', 'initialization', 'diagnosisService', 'patientVisitHistoryService', 'urlHelper',
     function ($rootScope, $q, configurationService, visitService, patientService, authenticator, appService, encounterService, bedService, spinner, initialization, diagnosisService, patientVisitHistoryService, urlHelper) {

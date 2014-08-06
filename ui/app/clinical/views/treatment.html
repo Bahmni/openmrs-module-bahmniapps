@@ -1,71 +1,46 @@
-<div class="treatment">
-    <form name="treatmentForm" class="simple-form-ui">
-        <div class="table section-grid">
-            <div class="row table-header">
-                <div class="col col1">Drug Name</div>
-                <!-- <div class="col col2">Strength &amp; Form</div> -->
-                <div class="col col3"># per Dosage</div>
-                <div class="col col4">Dosage Frequency</div>
-                <div class="col col5">Dosage Instructions</div>
-                <!-- <div class="col col6">PRN</div> -->
-                <div class="col col7"># of Days</div>
-                <div class="col col8">Notes</div>
-            </div>
+<div class="treatment-page">
+    <section class="edit-drug-order">
+        <form>
+            <input type="text" placeholder="A"/>
+            <input type="text" placeholder="Drug Name" ng-model="treatment.drugName"/>
+            <input type="text" placeholder="Dose" ng-model="treatment.dose"/>
+            <select ng-model="treatment.frequency"
+                    ng-options="item.name as item.name for item in treatmentConfig.frequencies">
+            </select>
+            or
+            <input type="number" min="0" ng-model="treatment.morningDose"/>
+            <input type="number" min="0" ng-model="treatment.afternoonDose"/>
+            <input type="number" min="0" ng-model="treatment.eveningDose" />
+            <select ng-model="treatment.doseUnits"
+                    ng-options="item.name as item.name for item in treatmentConfig.doseUnits">
+            </select>
+            <input type="checkbox"  ng-model="treatment.prn"/>
+            SOS
+            <select ng-model="treatment.instructions">
+                <option value="Before meals">Before meals</option>
+                <option value="Empty stomach">Empty stomach</option>
+                <option value="After meals">After meals</option>
+                <option value="In the morning">In the morning</option>
+                <option value="In the evening">In the evening</option>
+                <option value="At bedtime">At bedtime</option>
+            </select>
 
-            <div ng-repeat="drug in selectedDrugs" class="table-body">
-                <div class="row">
-                    <div class="col col1">
-                        <input ng-model="drug.name" type="text" name="name" value="{{drug.name}}"
-                                my-autocomplete="{{ {'src': 'getDrugList', 'responseHandler': 'getDataResults', 'onSelect':'onDrugSelected', 'index' : $index} }}"
-                                ng-change="addNewRowIfNotExists($index)" ng-class="{'illegalValue': !isValidDrugName(drug)}" ng-disabled="drug.savedDrug">
-                    </div>
-<!--                     <div class="col col2">
-                        <span class="drug-strength"> {{drug.strength + ' ' + drug.dosageForm}} </span>
-                    </div> -->
-                    <div class="col col3">
-                        <input ng-model="drug.numberPerDosage" type="number" name="numberPerDosage" min="0"
-                                value="{{drug.numberPerDosage}}" ng-required="!drug.empty"
-                                ng-class="{'illegalValue': !isValidNumberPerDosage(drug)}" ng-disabled="drug.savedDrug">
-                    </div>
-                    <div class="col col4">
-                        <span class="select-arrow">
-                            <select ng-model="drug.dosageFrequency" ng-options="df.name for df in dosageFrequencyAnswers"
-                                    ng-class="{'illegalValue': !isValidDosageFrequency(drug)}" ng-required="!drug.empty" ng-disabled="drug.savedDrug">
-                                <option value=""></option>
-                            </select>
-                        </span>
-                    </div>
-                    <div class="col col5">
-                        <span class="select-arrow">
-                            <select ng-model="drug.dosageInstruction" ng-options="di.name for di in dosageInstructionAnswers" ng-disabled="drug.savedDrug">
-                                <option value=""></option>
-                            </select>
-                        </span>
-                    </div>
-<!--                     <div class="col col6">
-                        <input ng-model="drug.prn" name="prn" type="checkbox" value="{{drug.prn}}" ng-disabled="drug.savedDrug">
-                    </div> -->
-                    <div class="col col7">
-                        <input ng-model="drug.numberOfDosageDays" name="numberOfDosageDays"
-                               type="number" value="{{drug.numberOfDosageDays}}" min="0"
-                               ng-required="!drug.empty"
-                               ng-class="{'illegalValue': !isValidNumberOfDosageDays(drug)}" ng-disabled="drug.savedDrug">
-                    </div>
-                    <div class="col col8" >
-                        <button class="small-btn" type="button" ng-click="drug.notesVisible=!drug.notesVisible" ng-show="!drug.empty">
-                            <span ng-class="{'icon-pencil':!drug.notesVisible,'icon-arrow-up':drug.notesVisible}"></span>
-                        </button>
-                        <button type="button" ng-click="removeDrug($index)" ng-show="!drug.empty && !drug.savedDrug" class="small-btn">
-                            <span class="icon-remove"></span>
-                        </button>
-                    </div>
-                </div>
-                <div class="row" ng-show="drug.notesVisible">
-                    <div class="col">
-                        <textarea placeholder="enter notes" ng-model="drug.notes" name="notes" ng-disabled="drug.savedDrug"></textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
+            <input type="text" placeholder="Duration" ng-model="treatment.duration"/>
+            <select ng-model="treatment.durationUnit"
+                    ng-options="item.name as item.name for item in treatmentConfig.durationUnits">
+            </select>
+            <select ng-model="treatment.route"
+                    ng-options="item.name as item.name for item in treatmentConfig.routes">
+            </select>
+
+            <input type="text" pattern="\d{2}-\d{2}-\d{4}" ng-model="treatment.scheduledDate" datepicker
+                    placeholder="dd-mm-yyyy">
+            <input type="number" min="0" ng-model="treatment.quantity" />
+            <select ng-model="treatment.quantityUnit"
+                    ng-options="item.name as item.name for item in treatmentConfig.dispensingUnits">
+            </select>
+
+            <input type="submit" value="ADD"/>
+        </form>
+    </section>
 </div>
