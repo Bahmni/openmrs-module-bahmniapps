@@ -13,15 +13,16 @@
         <!-- endbuild -->
         <title>OPD</title>
     </head>
-    <body>
-        <div ng-app="consultation" ng-controller="ConsultationNavigationController">
-            <!-- <div ng-include src="'../common/ui-helper/header.html'"></div> -->
-            <div ui-view="additional-header"></div>
-            <div ng-include src="'../common/ui-helper/messages.html'"></div>
-            <div class="opd-wrapper">
-                <p class="caution" ng-cloak ng-show="server_error"><i class="icon-exclamation-sign small"></i><span ng-bind="server_error"></span></p>
-
-                <div ui-view="content" id="view-content" class="opd-content-wrapper"></div>
+    <body ng-app="consultation" >
+        <div id="content-supreme">
+            <div ng-controller="ConsultationNavigationController">
+                <!-- <div ng-include src="'../common/ui-helper/header.html'"></div> -->
+                <div ui-view="additional-header"></div>
+                <div ng-include src="'../common/ui-helper/messages.html'"></div>
+                <div class="opd-wrapper">
+                    <p class="caution" ng-cloak ng-show="server_error"><i class="icon-exclamation-sign small"></i><span ng-bind="server_error"></span></p>
+                    <div ui-view="content" id="view-content" class="opd-content-wrapper"></div>
+                </div>
             </div>
         </div>
         <script src="../components/lodash/dist/lodash.min.js"></script>
@@ -77,6 +78,9 @@
         <script src="../common/domain/mappers/observationMapper.js"></script>
 
         <script src="../common/domain/observationFilter.js"></script>
+
+        <script src="../common/gallery/init.js"></script>
+        <script src="../common/gallery/directives/galleryPane.js"></script>
 
         <script src="../common/ui-helper/init.js"></script>
         <script src="../common/ui-helper/spinner.js"></script>
