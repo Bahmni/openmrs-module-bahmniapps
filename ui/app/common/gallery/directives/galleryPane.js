@@ -3,6 +3,21 @@ angular.module('bahmni.common.gallery')
 
         var link = function ($scope, element) {
             $scope.galleryElement = element;
+            
+            KeyboardJS.on('right', function () {
+                $scope.$apply(function () {
+                    $scope.showNext();
+                });
+            });
+            KeyboardJS.on('left', function () {
+                $scope.$apply(function () {
+                    $scope.showPrev();
+                });
+            });
+            $scope.$on('$destroy', function () {
+                KeyboardJS.clear('right');
+                KeyboardJS.clear('left');
+            });
         };
 
         var controller = function ($scope) {

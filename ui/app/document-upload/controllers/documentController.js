@@ -232,18 +232,14 @@ angular.module('opd.documentupload')
                 visitDocument.documents = [];
 
                 visit.savedImages.forEach(function (image) {
-                    if (image.changed == true) {
-                        var imageUrl = image.encodedValue.replace(Bahmni.Common.Constants.documentsPath + "/", "");
+                    var imageUrl = image.encodedValue.replace(Bahmni.Common.Constants.documentsPath + "/", "");
+                    if(!visit.isSaved(image)) {
+                        visitDocument.documents.push({testUuid: image.concept.uuid, image: imageUrl, obsDateTime: getEncounterStartDateTime(visit)})        
+                    } else if (image.changed == true) {
                         visitDocument.documents.push({testUuid: image.concept.uuid, image: imageUrl, voided: image.voided, obsUuid: image.obsUuid});
                     }
                 });
 
-                visit.images.forEach(function (image) {
-                    var imageUrl = image.encodedValue.replace(Bahmni.Common.Constants.documentsPath + "/", "");
-                    visitDocument.documents.unshift({testUuid: image.concept.uuid, image: imageUrl, obsDateTime: getEncounterStartDateTime(visit)})
-                });
-
-                
                 return visitDocument;
             };
 

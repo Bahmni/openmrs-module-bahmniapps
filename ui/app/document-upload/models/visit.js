@@ -6,7 +6,6 @@ Bahmni.DocumentUpload.Visit = function () {
     this.uuid = null;
     this.changed = false;
     this.savedImages = [];
-    this.images = [];
     this.encounters = [];
     var androidDateFormat = "YYYY-MM-DD hh:mm:ss";
 
@@ -14,14 +13,13 @@ Bahmni.DocumentUpload.Visit = function () {
         var sortedSavedImages = [];
         var conceptUuids = [];
         savedImages.sort(function(image1,image2){
-            return image2.id - image1.id;
+            return image1.id - image2.id;
         });
         return savedImages;
     };
 
     this.initSavedImages = function () {
         this.savedImages = [];
-        this.images = [];
 
         var savedImages = this.savedImages;
         this.encounters.forEach(function (encounter) {
@@ -48,7 +46,7 @@ Bahmni.DocumentUpload.Visit = function () {
     };
 
     this.hasImages = function () {
-        return this.savedImages.length || this.images.length;
+        return this.savedImages.length;
     };
 
     this.startDate = function () {
@@ -68,25 +66,36 @@ Bahmni.DocumentUpload.Visit = function () {
 
     this.addImage = function (image) {
         var savedImage = null;
-        var alreadyPresent = this.images.filter(function (img) {
+        var alreadyPresent = this.savedImages.filter(function (img) {
             return img.encodedValue === image;
         });
         if (alreadyPresent.length == 0) {
             savedImage = new DocumentImage({"encodedValue": image, "new": true});
-            this.images.unshift(savedImage);
+            this.savedImages.push(savedImage);
         }
         this.markAsUpdated();
         return savedImage;
     };
 
     this.markAsUpdated = function () {
-        var savedImagesChanged = this.savedImages.some(function(image) { return image.changed; });
-        this.changed = savedImagesChanged || (this.images && this.images.length > 0);
+        this.changed = this.savedImages.some(function(image) { return image.changed || !image.obsUuid; });
+    };
+    
+    this.isSaved = function(image){
+        return image.obsUuid ? true : false;
+    };
+    
+    this.removeImage = function(image){
+       if(this.isSaved(image)){
+           this.toggleVoidingOfImage(image);
+       }else{
+           this.removeNewAddedImage(image);
+       }
     };
 
     this.removeNewAddedImage = function (image) {
-        var i = this.images.indexOf(image);
-        this.images.splice(i, 1);
+        var i = this.savedImages.indexOf(image);
+        this.savedImages.splice(i, 1);
         this.markAsUpdated();
     };
 

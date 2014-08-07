@@ -61,24 +61,8 @@ angular.module('bahmni.common.uiHelper')
                 e.stopPropagation();
                 console.log($scope.imageIndex);
                 imageGalleryController.setIndex($scope.imageIndex);
-                imageGalleryController.open();
+                imageGalleryController.open($scope.order);
             });
-
-            KeyboardJS.on('right', function () {
-                $scope.$apply(function () {
-                    $scope.showNext();
-                });
-            });
-            KeyboardJS.on('left', function () {
-                $scope.$apply(function () {
-                    $scope.showPrev();
-                });
-            });
-            $scope.$on('$destroy', function () {
-                KeyboardJS.clear('right');
-                KeyboardJS.clear('left');
-            });
-
         };
         return {
             link: link,
@@ -88,10 +72,10 @@ angular.module('bahmni.common.uiHelper')
     })
     .directive('bmImageObservationGalleryItem', function () {
         var link = function (scope, element, attrs, imageGalleryController) {
-            imageGalleryController.addImageObservation(scope.observation);
+            scope.imageIndex = imageGalleryController.addImageObservation(scope.observation);
             element.click(function (e) {
                 e.stopPropagation();
-                imageGalleryController.setIndex(scope.observation.imageObservation.uuid);
+                imageGalleryController.setIndex(scope.imageIndex);
                 imageGalleryController.open();
             });
         };
@@ -106,10 +90,10 @@ angular.module('bahmni.common.uiHelper')
     .directive('bmObservationGalleryItem', function () {
         var link = function (scope, element, attrs, imageGalleryController) {
             scope.imageObservation = new Bahmni.Clinical.ImageObservation(scope.observation, scope.observation.concept);
-            imageGalleryController.addImageObservation(scope.imageObservation);
+            scope.imageIndex = imageGalleryController.addImageObservation(scope.imageObservation);
             element.click(function (e) {
                 e.stopPropagation();
-                imageGalleryController.setIndex(scope.imageObservation.imageObservation.uuid);
+                imageGalleryController.setIndex(scope.imageIndex);
                 imageGalleryController.open();
             });
         };
@@ -143,11 +127,12 @@ angular.module('bahmni.common.uiHelper')
         var link = function (scope, elem, attrs, imageGalleryController) {
             scope.promise.then(function (response) {
                 angular.forEach(response, function (record) {
-                    imageGalleryController.addImageObservation(record);
+                    var index = imageGalleryController.addImageObservation(record);
+                    if (scope.currentObservation != null && scope.currentObservation.uuid == record.observation.uuid) {
+                        imageGalleryController.setIndex(index);
+                    }
                 });
-                if (scope.currentObservation != null) {
-                    imageGalleryController.setIndex(scope.currentObservation.imageObservation.uuid);
-                }
+                
                 $(elem).click(function () {
                     imageGalleryController.open();
                 });
