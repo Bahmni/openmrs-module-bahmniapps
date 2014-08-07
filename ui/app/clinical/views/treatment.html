@@ -1,46 +1,73 @@
 <div class="treatment-page">
-    <section class="edit-drug-order">
+    <section class="edit-drug-order section-grid">
         <form>
-            <input type="text" placeholder="A"/>
-            <input type="text" placeholder="Drug Name" ng-model="treatment.drugName"/>
-            <input type="text" placeholder="Dose" ng-model="treatment.dose"/>
-            <select ng-model="treatment.doseUnit"
-                    ng-options="item.name for item in treatmentConfig.doseUnits">
-            </select>
-            <select ng-model="treatment.frequency"
-                    ng-options="item.name for item in treatmentConfig.frequencies">
-            </select>
-            or
-            <input type="number" min="0" ng-model="treatment.morningDose"/>
-            <input type="number" min="0" ng-model="treatment.afternoonDose"/>
-            <input type="number" min="0" ng-model="treatment.eveningDose" />
-            <input type="checkbox"  ng-model="treatment.prn"/>
-            SOS
-            <select ng-model="treatment.instructions">
-                <option value="Before meals">Before meals</option>
-                <option value="Empty stomach">Empty stomach</option>
-                <option value="After meals">After meals</option>
-                <option value="In the morning">In the morning</option>
-                <option value="In the evening">In the evening</option>
-                <option value="At bedtime">At bedtime</option>
-            </select>
+            <fieldset>
+                <input class="form-field drug-name" type="text" placeholder="Drug Name" 
+                        ng-model="treatment.drugName" />
+                <input class="form-field dose" type="text" placeholder="Dose" ng-model="treatment.dose" />
 
-            <input type="text" placeholder="Duration" ng-model="treatment.duration"/>
-            <select ng-model="treatment.durationUnit"
-                    ng-options="item.name for item in treatmentConfig.durationUnits">
-            </select>
-            <select ng-model="treatment.route"
-                    ng-options="item.name for item in treatmentConfig.routes">
-            </select>
+                <div class="frequency-widget">
+                    <div>
+                        <select class="form-field frequency" ng-model="treatment.frequency"
+                                ng-options="item.name as item.name for item in treatmentConfig.frequencies">
+                        </select>
+                    </div>
+                    <span class="or-seperator">or</span>
+                    <div class="form-field dose-cell">
+                        <input type="number" min="0" ng-model="treatment.morningDose"/>
+                        <input type="number" min="0" ng-model="treatment.afternoonDose"/>
+                        <input type="number" min="0" ng-model="treatment.eveningDose" /> 
+                    </div>
 
-            <input type="text" pattern="\d{2}-\d{2}-\d{4}" ng-model="treatment.scheduledDate" datepicker
-                    placeholder="dd-mm-yyyy">
-            <input type="number" min="0" ng-model="treatment.quantity" />
-            <select ng-model="treatment.quantityUnit"
-                    ng-options="item.name for item in treatmentConfig.dispensingUnits">
-            </select>
+                    <select class="form-field freq-dose-units" ng-model="treatment.doseUnits"
+                            ng-options="item.name as item.name for item in treatmentConfig.doseUnits">
+                    </select>        
+                </div>
 
-            <button type="button" ng-click="add()">ADD</button>
+                <div class="form-field treatment-prn">
+                    <input id="treatmentPrn" type="checkbox" ng-model="treatment.prn"/>
+                    <label for="treatmentPrn">SOS</label>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <select class="form-field instruction" ng-model="treatment.instructions">
+                    <option value="Before meals">Before meals</option>
+                    <option value="Empty stomach">Empty stomach</option>
+                    <option value="After meals">After meals</option>
+                    <option value="In the morning">In the morning</option>
+                    <option value="In the evening">In the evening</option>
+                    <option value="At bedtime">At bedtime</option>
+                </select>
+
+                <div class="duration-widget">
+                    <input  class="form-field duration" type="text" placeholder="Duration" 
+                            ng-model="treatment.duration"/>
+                    <select class="form-field duration-unit" ng-model="treatment.durationUnit"
+                            ng-options="item.name as item.name for item in treatmentConfig.durationUnits">
+                    </select>
+                    <select class="form-field route" ng-model="treatment.route"
+                            ng-options="item.name as item.name for item in treatmentConfig.routes">
+                    </select>
+                </div>
+                
+
+                <input class="form-field start-date" type="text" pattern="\d{2}-\d{2}-\d{4}" 
+                        ng-model="treatment.scheduledDate" datepicker
+                        placeholder="dd-mm-yyyy">
+
+                <div class="quantity-widget">
+                    <input class="form-field quantity" type="number" min="0" ng-model="treatment.quantity" />
+                    <select class="form-field quantity-unit" ng-model="treatment.quantityUnit"
+                            ng-options="item.name as item.name for item in treatmentConfig.dispensingUnits">
+                    </select>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <textarea class="form-field drug-notes" placeholder="Notes"></textarea>
+                <button class="form-field add-drug-btn" type="button" ng-click="add()">ADD</button>
+            </fieldset>
         </form>
 
         <ul>

@@ -1,121 +1,76 @@
+.treatment-page {
+    .edit-drug-order {
+        background: #f9f9f9;
+        padding: 5px 10px 10px 10px;
+        margin: 35px 5px 20px 5px;
+        form fieldset {
+            overflow: auto;
+            clear: both;
+            .form-field {
+                float: left;
+            }
+            input[type="text"], input[type="number"], select {
+                min-width: 100px;
+                margin-right: 5px;
+            }
+            select {
+                height: 35px;
+            }
+            input[type="text"].drug-name {
+                margin-right: 20px;
+            }
 
-.treatment{
-	overflow:hidden;
-    margin-top:20px;
-    input[type=text],input[type=number],select{
-    width:80%;
-  }
-  
-  .simple-form-ui select{
-    min-width:90px;
-    width:100%;
-  }
-  .table-header{
-    .col{
-        @include font-size(0.8);
-        padding-left:5px;
-        padding-right:5px;
-        font-weight:bold;
-    }
-  }
-  .table-body{
-    .row{
-      border-bottom:none;
-    }
-    .col{
-      padding-left:5px;
-      padding-right:5px;
-    }
+            /*width*/
+            .drug-name {
+                width: 255px;
+            }
+            .dose, .duration, .quantity {
+                width: 50px;
+                min-width: 50px;
+            }
+            .route, .start-date {
+                width: 100px;
+            }
+            .treatment-prn {
+                width: 65px;
+                padding-top: 10px;
+                label {
+                    margin-top: 3px;
+                }
+            }
 
-  }
-  .col{
-    margin:0px 5px;
-  }
-  input[type=number]{
-    width:50px;
-  }
-  .col1{
-    @include column(2);
-    width:25%;
-    padding-top:8px;
-    padding-bottom:5px;
-  }
-  .col2{
-    @include column(1);
-    width:13%;
-  }
-  .col3{
-    @include column(1);
-    width:14%;
-  }
-  .col4{
-    @include column(2);
-    width:14%;
-  }
-  .col5{
-    @include column(2);
-    width:14%;
-  }
-  .col6{
-    @include column(1);
-    width:4%;
-    padding-left:10px !important;
-  }
-  .col7{
-    @include column(1);
-    width:14%;
-  }
-  .col8{
-    @include column(2);
-    float: right;
-    width:13%;
-    button:first-child{
-      margin-right:15%;
-    }
-    button:last-child{
-      margin-right:0px;
-    }
-  }
-}
+            .drug-notes {
+                width: 88%;
+                margin-right: 10px;
+            }
+            .or-seperator {
+                line-height: 2.5em;
+                display: inline-block;
+                float: left;
+                margin-right: 5px;
+            }
 
-@media only screen and (max-width: 768px) {
-  .treatment {
-        .col1{
-           width:20%;
+            /*Widget*/
+            .dose-cell input {
+                min-width: 30px;
+                width: 30px;
+                float: left;
+                padding-right: 0;
+                margin-right: 5px;
+            }            
+            .frequency-widget {
+                display: inline-flex;
+                float: left;
+                margin: 0 21px;
+            }
+            .duration-widget {
+                float: left;
+                margin: 0 21px;
+            }
+            .quantity-widget {
+                float: left;
+                margin-left: 21px;
+            }
         }
-        input[type=number]{
-          width:42px;
-        }
-        .simple-form-ui select{
-          min-width:78px;
-        }
-    }
-
-
- }
-
-.treatment {
-    .table {
-        margin: 15px 5px 20px 5px;
-        @media screen and (max-width: 768px) {
-            margin-top: 0;
-        }
-    }
-    .table-header {
-        background: #f6f6f6;
-        border-radius: 5px 5px 0 0;
-        div.col {
-            font-size: 14px;
-            white-space: nowrap;
-            color: #555;
-            font-family: OpenSansBold;
-            font-weight: normal;
-        }
-    }
-    .table-body {
-        border-radius: 0 0 5px 5px;
-    }
-    .table .row {
-        border-bottom: 1px solid #ccc;
     }
 }
