@@ -1,8 +1,8 @@
 <section class="block radiology-investigations" ng-if="visit.hasRadiologyOrders()">
     <h2>Radiology Investigations</h2>
-    <ul>
-        <li ng-repeat="radiologyOrder in visit.getRadiologyOrders()" class="radiology-doc-item"
-            bm-gallery patient="patient" title="'Radiology Documents'">
+    <ul bm-gallery patient="patient" title="'Radiology Documents'">
+        <li ng-repeat="radiologyOrder in visit.getRadiologyOrders()" class="radiology-doc-item">
+            
             <a bm-image-observation-gallery-item observation="radiologyOrder"
                class="document-link temp-class">{{radiologyOrder.concept.name}}</a>
 

@@ -1,9 +1,14 @@
 angular.module('bahmni.common.gallery')
-    .directive('bmGalleryPane', function () {
+    .directive('bmGalleryPane', ['$rootScope', function ($rootScope) {
+        
+        $rootScope.$on('$stateChangeStart', function () {
+            $('body #gallery-pane').hide();
+            $('body #content-supreme').show();
+        });
 
         var link = function ($scope, element) {
             $scope.galleryElement = element;
-            
+
             KeyboardJS.on('right', function () {
                 $scope.$apply(function () {
                     $scope.showNext();
@@ -21,8 +26,9 @@ angular.module('bahmni.common.gallery')
         };
 
         var controller = function ($scope) {
+            $scope.imageIndex = $scope.imageIndex ? $scope.imageIndex : 0;
             $scope.isActive = function (index) {
-                return $scope.imageIndex === index;
+                return $scope.imageIndex == index;
             };
 
             $scope.showPrev = function () {
@@ -45,4 +51,4 @@ angular.module('bahmni.common.gallery')
             controller: controller,
             templateUrl: '../common/gallery/views/gallery.html'
         }
-    });
+    }]);

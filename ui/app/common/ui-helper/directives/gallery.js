@@ -1,5 +1,5 @@
 angular.module('bahmni.common.uiHelper')
-    .directive('bmGallery', ['$location', '$rootScope', '$compile',function ($location, $rootScope, $compile) {
+    .directive('bmGallery', ['$location', '$rootScope', '$compile', function ($location, $rootScope, $compile) {
 
         var controller = function ($scope) {
             $scope.photos = [];
@@ -19,22 +19,21 @@ angular.module('bahmni.common.uiHelper')
                 return this.addImage(this.image(record));
             };
 
-            this.addImage = function (image) {
-                $scope.photos.push(image);
+            this.addImage = function (image, prepend) {
+                if (prepend) {
+                    $scope.photos.unshift(image);
+                } else {
+                    $scope.photos.push(image);
+                }
                 return $scope.photos.length - 1;
             };
 
             this.setIndex = function (index) {
                 $scope.imageIndex = index;
             };
-//            this.setIndex = function (uuid) {
-//                $scope.imageIndex = _.findIndex($scope.photos, function (photo) {
-//                    return uuid === photo.uuid;
-//                });
-//            };
 
             this.open = function () {
-                var galleryPane = $compile("<div bm-gallery-pane></div>")($scope);
+                var galleryPane = $compile("<div bm-gallery-pane id='gallery-pane'></div>")($scope);
                 $('body #content-supreme').hide();
                 $scope.element = $('body').append(galleryPane);
             };
@@ -55,18 +54,21 @@ angular.module('bahmni.common.uiHelper')
                 date: $scope.image.obsDatetime,
                 uuid: $scope.image.obsUuid
             };
-            $scope.imageIndex = imageGalleryController.addImage(image);
+            imageGalleryController.addImage(image, $scope.prepend);
 
             element.click(function (e) {
                 e.stopPropagation();
-                console.log($scope.imageIndex);
-                imageGalleryController.setIndex($scope.imageIndex);
-                imageGalleryController.open($scope.order);
+                imageGalleryController.setIndex($scope.index);
+                imageGalleryController.open();
             });
         };
         return {
             link: link,
-            image: '=',
+            scope: {
+                image: '=',
+                prepend: "=?",
+                index: "@"
+            },
             require: '^bmGallery'
         };
     })
@@ -127,12 +129,13 @@ angular.module('bahmni.common.uiHelper')
         var link = function (scope, elem, attrs, imageGalleryController) {
             scope.promise.then(function (response) {
                 angular.forEach(response, function (record) {
+                    console.log("record" + record);
                     var index = imageGalleryController.addImageObservation(record);
-                    if (scope.currentObservation != null && scope.currentObservation.uuid == record.observation.uuid) {
+                    if (scope.currentObservation && scope.currentObservation.imageObservation.uuid == record.imageObservation.uuid) {
                         imageGalleryController.setIndex(index);
                     }
                 });
-                
+
                 $(elem).click(function () {
                     imageGalleryController.open();
                 });
