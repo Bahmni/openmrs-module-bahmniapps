@@ -69,7 +69,8 @@
                 <button class="form-field add-drug-btn" type="button" ng-click="add()">ADD</button>
             </fieldset>
         </form>
-
+    </section>
+    <section class="new-drug-orders">
         <ul>
             <li ng-repeat="newTreatment in treatments">
                 {{getText(newTreatment)}} from {{newTreatment.scheduledDate}}
