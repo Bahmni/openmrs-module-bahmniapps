@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('opd.patientDashboard', [])
-    .controller('PatientDashboardController', ['$scope', '$rootScope', '$location', '$stateParams', 'patientVisitHistoryService', 'urlHelper', 'visitService', 'encounterService', 'appService', '$window', 'spinner',
-    function ($scope, $rootScope, $location, $stateParams, patientVisitHistoryService, urlHelper, visitService, encounterService, appService, $window, spinner) {
+    .controller('PatientDashboardController', ['$scope', '$rootScope', '$location', '$stateParams', 'patientVisitHistoryService', 'urlHelper', 'encounterService', 'appService',
+    function ($scope, $rootScope, $location, $stateParams, patientVisitHistoryService, urlHelper, encounterService, appService) {
         $scope.patientUuid = $stateParams.patientUuid;
         $scope.activeVisitData = {};
 

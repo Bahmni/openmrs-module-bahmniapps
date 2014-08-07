@@ -1,6 +1,6 @@
 angular.module('bahmni.clinical')
-    .controller('PatientDashboardLabSummaryController', ['$scope', '$rootScope', 'encounterService', 'LabOrderResultService', '$q', 'spinner',
-        function ($scope, $rootScope, encounterService, labOrderResultService, $q, spinner) {
+    .controller('PatientDashboardLabSummaryController', ['$scope', '$rootScope', 'LabOrderResultService', 'spinner',
+        function ($scope, $rootScope, labOrderResultService, spinner) {
             $scope.showInvestigationChart = false;
             $scope.toggleInvestigationChart = function() {
                 $scope.showInvestigationChart = !$scope.showInvestigationChart;

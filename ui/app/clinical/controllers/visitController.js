@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitController', ['$scope', 'encounterService', 'visitService', 'spinner', '$stateParams', '$rootScope',
-        function ($scope, encounterService, visitService, spinner, $stateParams, $rootScope) {
+    .controller('VisitController', ['$scope', 'spinner', '$stateParams', '$rootScope',
+        function ($scope, spinner, $stateParams, $rootScope) {
             $scope.patientUuid = $stateParams.patientUuid;
             $scope.showTrends = true;
             $scope.visit = $rootScope.visit;

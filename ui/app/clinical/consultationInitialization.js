@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical').factory('consultationInitialization',
-    ['$rootScope', '$q', 'configurationService', 'visitService', 'patientService', 'authenticator', 'appService', 'encounterService', 'bedService', 'spinner', 'initialization', 'diagnosisService', 'patientVisitHistoryService', 'urlHelper',
-    function ($rootScope, $q, configurationService, visitService, patientService, authenticator, appService, encounterService, bedService, spinner, initialization, diagnosisService, patientVisitHistoryService, urlHelper) {
+    ['$rootScope', '$q', 'configurationService', 'patientService', 'authenticator', 'appService', 'encounterService', 'bedService', 'spinner', 'initialization', 'diagnosisService', 'patientVisitHistoryService', 'urlHelper',
+    function ($rootScope, $q, configurationService, patientService, authenticator, appService, encounterService, bedService, spinner, initialization, diagnosisService, patientVisitHistoryService, urlHelper) {
 
         var patientMapper = new Bahmni.PatientMapper($rootScope.patientConfig);
 

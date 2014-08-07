@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-  .service('patientVisitHistoryService', ['visitService', '$q', '$rootScope', function (visitService, $q, $rootScope) {
+  .service('patientVisitHistoryService', ['visitService', '$q', function (visitService, $q) {
     var patientVisitsMap = {};
     
     this.getVisits = function(patientUuid) {    	

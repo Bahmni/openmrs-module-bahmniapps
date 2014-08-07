@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('ConsultationController', ['$scope', '$rootScope', 'encounterService', '$location', 'spinner', function ($scope, $rootScope) {
+    .controller('ConsultationController', ['$scope', '$rootScope', function ($scope, $rootScope) {
         var geEditedDiagnosesFromPastEncounters = function () {
             var editedDiagnosesFromPastEncounters = [];
             $rootScope.consultation.pastDiagnoses.forEach(function (pastDiagnosis) {
