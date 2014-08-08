@@ -11,6 +11,9 @@ angular.module('bahmni.clinical')
             callBacks.forEach(function(callback){
                 callback();
             });
-            callBacks = [];
         };
+
+        this.reset = function() {
+            callBacks = [];
+        }
     }]);

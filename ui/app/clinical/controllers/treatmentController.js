@@ -3,16 +3,19 @@
 angular.module('bahmni.clinical')
     .controller('TreatmentController', ['$scope', '$rootScope', 'DrugService', 'contextChangeHandler', 'RegisterTabService', 'treatmentConfig',
         function ($scope, $rootScope, treatmentService, contextChangeHandler, registerTabService, treatmentConfig) {
-            $scope.treatment = {};
-            $scope.treatments = [];
+
+            $scope.treatments = $rootScope.newlyAddedTreatments || [];
             $scope.treatmentConfig = treatmentConfig;
+            var extensionParams = $scope.currentBoard.extension.extensionParams;
+            var routes = $scope.treatmentConfig.routes;
+            $scope.treatment = new Bahmni.Clinical.DrugOrderViewModel(extensionParams, routes);
 
             $scope.add = function () {
                 $scope.treatments.push($scope.treatment);
                 $scope.treatment = {};
             };
 
-            $scope.delete = function (index) {
+            $scope.remove = function (index) {
                 $scope.treatments.splice(index, 1);
             };
 
@@ -21,28 +24,18 @@ angular.module('bahmni.clinical')
                 $scope.treatments.splice(index, 1);
             };
 
-            $scope.getText = function (treatment) {
-                return treatment.drugName + " - " +
-                    getDoseAndFrequency(treatment) + ", " +
-                    treatment.instructions.name + ", " +
-                    treatment.route.name + " - " +
-                    treatment.duration + " " +
-                    treatment.durationUnit.name + " (" +
-                    treatment.quantity + " " +
-                    treatment.quantityUnit.name + ")";
+            var allowContextChange = function () {
+                $rootScope.newlyAddedTreatments = $scope.treatments;
+                return true;
             };
 
-            var getDoseAndFrequency = function (treatment) {
-                return treatment.dose ? simpleDoseAndFrequency(treatment) : numberBasedDoseAndFrequency(treatment);
-            };
+            contextChangeHandler.add(allowContextChange);
 
-            var simpleDoseAndFrequency = function (treatment) {
-                return treatment.dose + " " +
-                    treatment.doseUnit.name + ", " +
-                    treatment.frequency.name;
+            var saveTreatment = function () {
+                $rootScope.consultation.drugOrders = [];
+                $rootScope.newlyAddedTreatments.forEach(function (treatment) {
+                    $rootScope.consultation.drugOrders.push(Bahmni.Clinical.DrugOrder.createFromUIObject(treatment));
+                });
             };
-
-            var numberBasedDoseAndFrequency = function (treatment) {
-                return treatment.morningDose + "-" + treatment.afternoonDose + "-" + treatment.eveningDose;
-            };
+            registerTabService.register(saveTreatment);
         }]);

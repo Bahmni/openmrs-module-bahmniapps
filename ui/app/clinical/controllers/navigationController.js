@@ -102,6 +102,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
 
             var clearRootScope = function(){
                 $rootScope.consultation.newlyAddedDiagnoses = [];
+                $rootScope.newlyAddedTreatments = [];
             };
 
             $scope.save = function () {
@@ -138,17 +139,18 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                     return { uuid: investigation.uuid, concept: {uuid: investigation.concept.uuid }, orderTypeUuid: investigation.orderTypeUuid, voided: investigation.voided || false};
                 });
 
-                var startDate = new Date();
-                var allTreatmentDrugs = $rootScope.consultation.treatmentDrugs || [];
-                var newlyAddedTreatmentDrugs = allTreatmentDrugs.filter(function (drug) {
-                    return !drug.savedDrug;
-                });
+//                var startDate = new Date();
+//                var allTreatmentDrugs = $rootScope.consultation.treatmentDrugs || [];
+//                var newlyAddedTreatmentDrugs = allTreatmentDrugs.filter(function (drug) {
+//                    return !drug.savedDrug;
+//                });
 
-                if (newlyAddedTreatmentDrugs) {
-                    encounterData.drugOrders = newlyAddedTreatmentDrugs.map(function (drug) {
-                        return drug.requestFormat(startDate);
-                    });
-                }
+//                if (newlyAddedTreatmentDrugs) {
+//                    encounterData.drugOrders = newlyAddedTreatmentDrugs.map(function (drug) {
+//                        return drug.requestFormat(startDate);
+//                    });
+//                }
+                encounterData.drugOrders = $rootScope.consultation.drugOrders;
 
                 encounterData.disposition = $rootScope.consultation.disposition;
 
@@ -170,6 +172,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 addObservationsToEncounter();
 
                 spinner.forPromise(encounterService.create(encounterData).then(function () {
+                    registerTabService.reset();
                     clearRootScope();
                     $state.transitionTo($state.current, $state.params, {
                         reload: true,

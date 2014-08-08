@@ -10,6 +10,7 @@
                     <div>
                         <select class="form-field frequency" ng-model="treatment.frequency"
                                 ng-options="item.name as item.name for item in treatmentConfig.frequencies">
+                            <option/>
                         </select>
                     </div>
                     <span class="or-seperator">or</span>
@@ -21,7 +22,7 @@
 
                     <select class="form-field freq-dose-units" ng-model="treatment.doseUnits"
                             ng-options="item.name as item.name for item in treatmentConfig.doseUnits">
-                    </select>        
+                    </select>
                 </div>
 
                 <div class="form-field treatment-prn">
@@ -39,7 +40,6 @@
                     <option value="In the evening">In the evening</option>
                     <option value="At bedtime">At bedtime</option>
                 </select>
-
                 <div class="duration-widget">
                     <input  class="form-field duration" type="text" placeholder="Duration" 
                             ng-model="treatment.duration"/>
@@ -52,8 +52,8 @@
                 </div>
                 
 
-                <input class="form-field start-date" type="text" pattern="\d{2}-\d{2}-\d{4}" 
-                        ng-model="treatment.scheduledDate" datepicker
+                <input class="form-field start-date" type="date" pattern="\d{2}-\d{2}-\d{4}"
+                        ng-model="treatment.scheduledDate"
                         placeholder="dd-mm-yyyy">
 
                 <div class="quantity-widget">
@@ -65,17 +65,19 @@
             </fieldset>
 
             <fieldset>
-                <textarea class="form-field drug-order-notes" placeholder="Notes"></textarea>
+                <textarea class="form-field drug-order-notes" placeholder="Notes" ng-model="treatment.notes"></textarea>
                 <button class="form-field add-drug-btn confirm" type="button" ng-click="add()">ADD</button>
+                <textarea class="form-field drug-notes" placeholder="Notes" ng-model="treatment.notes"></textarea>
+                <button class="form-field add-drug-btn" type="button" ng-click="add()">ADD</button>
             </fieldset>
         </form>
     </section>
     <section class="new-drug-orders">
         <ul>
             <li ng-repeat="newTreatment in treatments">
-                {{getText(newTreatment)}} from {{newTreatment.scheduledDate}}
+                {{newTreatment.getText()}} from {{newTreatment.scheduledDate}}
                 <button type="button" ng-click="edit($index)">EDIT</button>
-                <button type="button" ng-click="delete($index)">DELETE</button>
+                <button type="button" ng-click="remove($index)">DELETE</button>
             </li>
         </ul>
     </section>

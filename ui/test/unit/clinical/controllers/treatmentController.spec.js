@@ -7,12 +7,15 @@ describe("TreatmentController", function () {
     var scope;
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
+        scope.currentBoard = {extension: {}};
+        $rootScope.contextChangeHandler = {add: function () {
+        }};
 
         $controller('TreatmentController', {
             $scope: scope,
-            $rootScope: null,
+            $rootScope: $rootScope,
             treatmentService: null,
-            contextChangeHandler: null,
+            contextChangeHandler: $rootScope.contextChangeHandler,
             registerTabService: null,
             treatmentConfig: {}
         });
@@ -31,58 +34,4 @@ describe("TreatmentController", function () {
         scope.add();
         expect(scope.treatment.someObject).toBeFalsy();
     });
-
-    var sampleTreatment = function () {
-        return {drugName: "calpol 500mg(tablets)",
-            dose: "1",
-            doseUnit: {
-                "rootConcept": null,
-                "name": "Capsule"
-            },
-            frequency: {
-                "uuid": "bac2e9f1-170e-11e4-a196-0800271c1b75",
-                "frequencyPerDay": 1,
-                "name": "Once a day"
-            },
-            instructions: {
-                "rootConcept": null,
-                "name": "Before Meals"
-            },
-            morningDose: null,
-            afternoonDose: null,
-            eveningDose: null,
-            duration: "10",
-            durationUnit: {
-                "rootConcept": null,
-                "name": "Days"
-            },
-            route: {
-                "rootConcept": null,
-                "name": "Orally"
-            },
-            scheduledDate: "21/12/2014",
-            quantity: "12",
-            quantityUnit: {
-                "rootConcept": null,
-                "name": "Capsule"
-            }
-        };
-    };
-
-    it("should get the text to be displayed in the treatment list", function () {
-        var treatment = sampleTreatment();
-        var text = scope.getText(treatment);
-        expect(text).toBe("calpol 500mg(tablets) - 1 Capsule, Once a day, Before Meals, Orally - 10 Days (12 Capsule)");
-    });
-
-    it("should get the text to be displayed in the treatment list with dosage instructions", function () {
-        var treatment = sampleTreatment();
-        treatment.dose = null;
-        treatment.frequency = null;
-        treatment.morningDose = 1;
-        treatment.afternoonDose = 1;
-        treatment.eveningDose = 1;
-        var text = scope.getText(treatment);
-        expect(text).toBe("calpol 500mg(tablets) - 1-1-1, Before Meals, Orally - 10 Days (12 Capsule)")
-    })
 });
