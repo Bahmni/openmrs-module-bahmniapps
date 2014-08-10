@@ -1,0 +1,41 @@
+/*basic table*/
+table {
+	thead tr th{
+		background: $bahmniTableHeaderBg;
+	}
+	tbody tr:nth-child(odd), tr:nth-child(even) {
+		background: #fff;
+	}
+}
+
+/*table with no border*/
+table.no-borders {
+	thead tr th {
+		background: $white;
+	}
+	th, tr, td {
+		border: 0;
+	}
+}
+
+/*table with horzontal borders*/
+table.horizontal-only {
+	th, td {
+		border: 0;
+	}
+}
+
+/*list mimic table*/
+ul.table-mimic {
+	li {
+		width: 100%;
+		padding: 5px 10px;
+		border: 1px solid #ddd;
+		border-bottom: 0;
+		box-sizing: border-box;
+		@include clearfix();
+		&:last-child {
+			border-bottom: 1px solid #ddd;
+		}
+	}
+}

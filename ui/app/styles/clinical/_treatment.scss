@@ -1,4 +1,21 @@
 .treatment-page {
+    h2 {
+        color:#66b298;
+        border-bottom: 1px solid #66b298;
+        padding:5px 0px;
+        margin-bottom:10px;
+        font-size: 18px;
+        font-weight: normal;
+    }
+    .table-mimic {
+        font-size: 14px;
+        li {
+            padding: 0 0 0 10px;
+        }
+        strong {
+            font-family: "OpenSansBold";
+        }
+    }
     .edit-drug-order {
         background: #f9f9f9;
         padding: 5px 10px 10px 10px;
@@ -72,5 +89,41 @@
                 margin-left: 21px;
             }
         }
+    }
+    .drug-orders-history {
+        margin-top: 20px;
+    }
+
+
+    /*Elements*/
+    .drug-details {
+        float: left;
+        line-height: 2.5em;
+    }
+    div.start-date span {
+        line-height: 2.5em;
+        font-family: OpenSansItalic;
+        margin-right: 20px;
+        color: #888;
+    }
+    .button-group {
+        float: right;
+        button {
+            padding: 0; margin: 0;
+            float: right;
+            background: none;
+            border: 0;
+            i {
+                font-size: 1.7em;
+                color: #666;
+                padding: 0.2em;
+            }
+        }
+    }
+
+    .select-drug {
+        margin: 10px 8px;
+        padding: 5px;
+        float: left;
     }
 }
