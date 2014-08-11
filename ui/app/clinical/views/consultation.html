@@ -4,59 +4,86 @@
         <h2>Diagnosis</h2>
         <div class="block-content" ng-show="consultation.newlyAddedDiagnoses.length > 0">
             <h4 class="section">Newly added</h4>
-            <div class="diagnosis-row" ng-repeat="diagnosis in consultation.newlyAddedDiagnoses | primaryDiagnosisFirst">
-                <h4 class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">{{diagnosis.getDisplayName()}}</h4>
-                <div class="secondary">
-                    <div class="state">
-                        <span ng-show="diagnosis.isPrimary()" class="order">Primary</span>
-                        <span ng-hide="diagnosis.isPrimary()" class="order">Secondary</span>
-                        <span class="certainty">{{diagnosis.certainty}}</span>
+            <div ng-repeat="diagnosis in consultation.newlyAddedDiagnoses | primaryDiagnosisFirst">
+                <div class="diagnosis-row" >
+                    <h4 class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">{{diagnosis.getDisplayName()}}</h4>
+                    <div class="secondary">
+                        <div class="state">
+                            <span ng-show="diagnosis.isPrimary()" class="order">Primary</span>
+                            <span ng-hide="diagnosis.isPrimary()" class="order">Secondary</span>
+                            <span class="certainty">{{diagnosis.certainty}}</span>
+                            <button class="toggle fr" ng-if="diagnosis.comments" ng-click="diagnosis.showComment = !diagnosis.showComment">
+                                <i class="icon-plus-sign" ng-hide="diagnosis.showComment"></i>
+                                <i class="icon-minus-sign" ng-show="diagnosis.showComment"></i>
+                            </button>
+                        </div>
                     </div>
-
+                </div>
+                <div class="diagnosis-row notes inline-notes" ng-show="diagnosis.showComment">
+                    <span>{{diagnosis.comments}}</span>
                 </div>
             </div>
         </div>
         
         <div class="block-content" ng-show="consultation.savedDiagnosesFromCurrentEncounter.length > 0">
             <h4 class="section">Current</h4>
-            <div class="diagnosis-row" ng-repeat="diagnosis in consultation.savedDiagnosesFromCurrentEncounter | primaryDiagnosisFirst">
-                <h4 class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">{{diagnosis.getDisplayName()}}</h4>
-                <div class="secondary">
-                    <div ng-show="diagnosis.firstDiagnosis" class="current">
-                        <span class="time-stamp">
-                            <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
-                            <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
-                        </span>
-                        <span class="provider" ng-repeat="provider in diagnosis.firstDiagnosis.providers">{{provider.name}}</span>
+            <div ng-repeat="diagnosis in consultation.savedDiagnosesFromCurrentEncounter | primaryDiagnosisFirst">
+                <div class="diagnosis-row" >
+                    <h4 class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">{{diagnosis.getDisplayName()}}</h4>
+                    <div class="secondary">
+                        <div ng-show="diagnosis.firstDiagnosis" class="current">
+                            <span class="time-stamp">
+                                <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
+                                <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
+                            </span>
+                            <span class="provider" ng-repeat="provider in diagnosis.firstDiagnosis.providers">{{provider.name}}</span>
+                        </div>
+                        <div class="state">
+                            <span ng-show="diagnosis.isPrimary()" class="order">Primary</span>
+                            <span ng-hide="diagnosis.isPrimary()" class="order">Secondary</span>
+                            <span class="certainty">{{diagnosis.certainty}}</span>
+                            <!-- <span class="status">{{diagnosis.diagnosisStatus}}</span> -->
+                            <button class="toggle fr" ng-if="diagnosis.comments" ng-click="diagnosis.showComment = !diagnosis.showComment">
+                                <i class="icon-plus-sign" ng-hide="diagnosis.showComment"></i>
+                                <i class="icon-minus-sign" ng-show="diagnosis.showComment"></i>
+                            </button>
+                        </div>
+
                     </div>
-                    <div class="state">
-                        <span ng-show="diagnosis.isPrimary()" class="order">Primary</span>
-                        <span ng-hide="diagnosis.isPrimary()" class="order">Secondary</span>
-                        <span class="certainty">{{diagnosis.certainty}}</span>
-                        <!-- <span class="status">{{diagnosis.diagnosisStatus}}</span> -->
-                    </div>
+                </div>
+                <div class="diagnosis-row notes inline-notes" ng-show="diagnosis.showComment">
+                    <span>{{diagnosis.comments}}</span>
                 </div>
             </div>
         </div>
 
         <div class="block-content" ng-show="editedDiagnosesFromPastEncounters.length > 0">
             <h4 class="section">Past</h4>
-            <div class="diagnosis-row" ng-repeat="diagnosis in editedDiagnosesFromPastEncounters | primaryDiagnosisFirst">
-                <h4 class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">{{diagnosis.getDisplayName()}}</h4>
-                <div class="secondary">
-                    <div ng-show="diagnosis.firstDiagnosis" class="current">
-                        <span class="time-stamp">
-                            <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
-                            <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
-                        </span>
-                        <span class="provider" ng-repeat="provider in diagnosis.firstDiagnosis.providers">{{provider.name}}</span>
+            <div ng-repeat="diagnosis in editedDiagnosesFromPastEncounters | primaryDiagnosisFirst">
+                <div class="diagnosis-row" >
+                    <h4 class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">{{diagnosis.getDisplayName()}}</h4>
+                    <div class="secondary">
+                        <div ng-show="diagnosis.firstDiagnosis" class="current">
+                            <span class="time-stamp">
+                                <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
+                                <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
+                            </span>
+                            <span class="provider" ng-repeat="provider in diagnosis.firstDiagnosis.providers">{{provider.name}}</span>
+                        </div>
+                        <div class="state">
+                            <span ng-show="diagnosis.isPrimary()" class="order">Primary</span>
+                            <span ng-hide="diagnosis.isPrimary()" class="order">Secondary</span>
+                            <span class="certainty">{{diagnosis.certainty}}</span>
+                            <!-- <span class="status">{{diagnosis.diagnosisStatus}}</span> -->
+                            <button class="toggle fr" ng-if="diagnosis.comments" ng-click="diagnosis.showComment = !diagnosis.showComment">
+                                <i class="icon-plus-sign" ng-hide="diagnosis.showComment"></i>
+                                <i class="icon-minus-sign" ng-show="diagnosis.showComment"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div class="state">
-                        <span ng-show="diagnosis.isPrimary()" class="order">Primary</span>
-                        <span ng-hide="diagnosis.isPrimary()" class="order">Secondary</span>
-                        <span class="certainty">{{diagnosis.certainty}}</span>
-                        <!-- <span class="status">{{diagnosis.diagnosisStatus}}</span> -->
-                    </div>
+                </div>
+                <div class="diagnosis-row notes inline-notes" ng-show="diagnosis.showComment">
+                    <span>{{diagnosis.comments}}</span>
                 </div>
             </div>
         </div>
