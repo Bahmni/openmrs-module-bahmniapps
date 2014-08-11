@@ -48,7 +48,7 @@
                             <span class="time-stamp date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
                             <span class="provider" bo-text="diagnosis.providers[0].name"></span>
                         </div>                       
-                        <button ng-if="!print" toggle="diagnosis.show" class="toggle fr" ng-class="{'has-notes': diagnosis.comments}">
+                        <button ng-if="!print" class="toggle fr" ng-class="{'has-notes': diagnosis.comments}">
                             <i class="icon-plus-sign" ng-hide="diagnosis.show"></i>
                             <i class="icon-minus-sign" ng-show="diagnosis.show"></i>
                         </button>
