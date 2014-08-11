@@ -18,7 +18,7 @@
     }
     .edit-drug-order {
         background: #f9f9f9;
-        padding: 5px 10px 10px 10px;
+        padding: 3px 5px 7px 8px;
         margin: 35px 5px 20px 5px;
         form fieldset {
             overflow: auto;
@@ -49,6 +49,7 @@
                 width: 100px;
             }
             .treatment-prn {
+                float: right;
                 width: 65px;
                 padding-top: 10px;
                 label {
@@ -56,9 +57,10 @@
                 }
             }
 
-            .drug-notes {
+            .drug-order-notes {
                 width: 88%;
                 margin-right: 10px;
+                height: 26px;
             }
             .or-seperator {
                 line-height: 2.5em;
@@ -76,22 +78,30 @@
                 margin-right: 5px;
             }            
             .frequency-widget {
-                display: inline-flex;
                 float: left;
                 margin: 0 21px;
+                width: 455px;
             }
             .duration-widget {
                 float: left;
                 margin: 0 21px;
             }
             .quantity-widget {
-                float: left;
+                float: right;
                 margin-left: 21px;
+            }
+            .add-drug-btn {
+                float: right;
+                margin-top: 5px;
+                margin-right: 5px;
             }
         }
     }
     .drug-orders-history {
         margin-top: 20px;
+        .table-mimic li {
+            padding-left: 5px;
+        }
     }
 
 
@@ -108,11 +118,12 @@
     }
     .button-group {
         float: right;
-        button {
+        button, button:hover {
             padding: 0; margin: 0;
             float: right;
             background: none;
             border: 0;
+
             i {
                 font-size: 1.7em;
                 color: #666;
@@ -122,8 +133,11 @@
     }
 
     .select-drug {
-        margin: 10px 8px;
-        padding: 5px;
         float: left;
+        margin-top: 8px;
+    }
+    .select-all-drugs-widget {
+        @include clearfix();
+        padding: 0 0 5px 6px;
     }
 }
