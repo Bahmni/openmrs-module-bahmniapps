@@ -30,12 +30,13 @@ angular.module('bahmni.registration')
             };
 
             var mapRegistrationObservations = function () {
-                $scope.obs = {};
-                $scope.registrationObservations = new Bahmni.Registration.RegistrationObservations($scope.observations, isNewPatient, $scope.regEncounterConfiguration);
-                $scope.registrationObservations.observations.forEach(function (observation) {
-                    $scope.obs[observation.concept.name] = observation.value;
-                    observation.groupMembers = [];
-                });
+                var obs = {};
+                var getValue = function(observation) {
+                    obs[observation.concept.name] = observation.value;
+                    observation.groupMembers.forEach(getValue);
+                }
+                $scope.observations.forEach(getValue);
+                return obs;
             };
 
 
@@ -66,7 +67,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.printSupplemental = function() {
-                return registrationCardPrinter.printSupplementalPaper($scope.patient, $scope.obs);
+                return registrationCardPrinter.printSupplementalPaper($scope.patient, mapRegistrationObservations());
             }
 
             $scope.save = function () {

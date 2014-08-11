@@ -329,64 +329,6 @@ describe('VisitController', function () {
         })
     });
 
-    xdescribe("calculateBMI", function () {
-        beforeEach(function () {
-            $controller('VisitController', {
-                $scope: scope,
-                spinner: spinner,
-                encounterService: encounterService,
-                patientService: patientService,
-                $route: route,
-                appService:appService,
-                openmrsPatientMapper: patientMapper,
-                registrationCardPrinter: registrationCardPrinter
-            });
-            getPatientPromise.callSuccessCallBack(patient);
-            getEncounterPromise.callSuccessCallBack(sampleEncounter);
-        });
-
-        it("should set bmi, bmi_status and bmi_error when height and weight are present", function () {
-            scope.obs.HEIGHT = 50;
-            scope.obs.WEIGHT = 100;
-
-            scope.calculateBMI();
-
-            expect(scope.obs.BMI).toBe(400);
-            expect(scope.obs.bmi_error).toBe(true);
-            expect(scope.obs[Bahmni.Common.Constants.bmiStatusConceptName]).toBe("Invalid");
-
-        });
-
-        it("should clear the bmi, bmi_status when height is not present", function () {
-            scope.obs.BMI = 200;
-            scope.obs.bmi_status = "Invalid";
-            scope.obs.bmi_error = true;
-            scope.obs.HEIGHT = null;
-            scope.obs.WEIGHT = 100;
-
-            scope.calculateBMI();
-
-            expect(scope.obs.BMI).toBe(null);
-            expect(scope.obs.bmi_error).toBe(false);
-            expect(scope.obs[Bahmni.Common.Constants.bmiStatusConceptName]).toBe(null);
-        });
-
-        it("should clear the bmi, bmi_status when weight is not present", function () {
-            scope.obs.BMI = 200;
-            scope.obs.bmi_status = "Invalid";
-            scope.obs.bmi_error = true;
-            scope.obs.HEIGHT = 100;
-            scope.obs.WEIGHT = null;
-
-            scope.calculateBMI();
-
-            expect(scope.obs.BMI).toBe(null);
-            expect(scope.obs.bmi_error).toBe(false);
-            expect(scope.obs[Bahmni.Common.Constants.bmiStatusConceptName]).toBe(null);
-        });
-    });
-
-
     xdescribe("checkHiddenFieldsConfiguration", function () {
         beforeEach(function () {
             $controller('VisitController', {
