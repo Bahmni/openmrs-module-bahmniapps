@@ -13,7 +13,10 @@ angular.module('bahmni.clinical')
     conceptSetService.getConceptSetMembers({name:"All Observation Templates",v:"custom:"+customRepresentation}).success(function(response){
         var allTemplates = response.results[0].setMembers;
 	    var allConceptSections  = allTemplates.map(function(template){
-		    return new Bahmni.ConceptSet.ConceptSetSection(extensions, $scope.consultation.observations,template);
+		    var conceptSetConfig = _.find(extensions,function(extension){
+			    return extension.extensionParams.conceptName === template.name.name;
+		    }) || {};
+		    return new Bahmni.ConceptSet.ConceptSetSection(conceptSetConfig, $scope.consultation.observations,template);
 	    });
         $scope.selectedObsTemplate= allConceptSections.filter(function(conceptSet){ return conceptSet.isAvailable($scope.context); });
 	    if ($scope.selectedObsTemplate.length) { $scope.selectedObsTemplate[0].show(); };

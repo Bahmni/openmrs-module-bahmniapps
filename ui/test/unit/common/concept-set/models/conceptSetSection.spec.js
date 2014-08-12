@@ -6,25 +6,25 @@ describe("ConceptSetSection", function() {
 	var conceptSet = {name:{name:"vitals"}}
     describe("isAvailable", function() {
 		it("should be true if 'showIf' condition is not defined", function() {
-			expect(new ConceptSetSection([{extensionParams:{conceptName:"vitals"}}],[],conceptSet).isAvailable()).toBe(true);
-			expect(new ConceptSetSection([{extensionParams:{conceptName:"vitals", showIf: null }}],[],conceptSet).isAvailable()).toBe(true);
+			expect(new ConceptSetSection({extensionParams:{conceptName:"vitals"}},[],conceptSet).isAvailable()).toBe(true);
+			expect(new ConceptSetSection({extensionParams:{conceptName:"vitals", showIf: null }},[],conceptSet).isAvailable()).toBe(true);
 		});
 
 		it("should be false if 'showIf' condition returns false", function() {
-			var conceptSetSection = new ConceptSetSection([{extensionParams:{conceptName:"vitals", showIf: ["return false;"] }}],[],conceptSet);
+			var conceptSetSection = new ConceptSetSection({extensionParams:{conceptName:"vitals", showIf: ["return false;"] }},[],conceptSet);
 
 			expect(conceptSetSection.isAvailable()).toBe(false);
 		});
 
 		it("should be true if 'showIf' condition returns true", function() {
-			var conceptSetSection = new ConceptSetSection([{extensionParams:{conceptName:"vitals", showIf: ["return true;"] }}],[],conceptSet);
+			var conceptSetSection = new ConceptSetSection({extensionParams:{conceptName:"vitals", showIf: ["return true;"] }},[],conceptSet);
 
 			expect(conceptSetSection.isAvailable()).toBe(true);
 		});
 
 		it("should pass the context to the showIf function", function() {
 			var context = {visitTypeName: 'OPD', patient: {gender: 'M'} };
-			var extensionParams = [
+			var extensionParams =
 				{
 					extensionParams:{
 						showIf: ["if(context.visitTypeName === 'OPD' && context.patient.gender === 'M')",
@@ -34,23 +34,29 @@ describe("ConceptSetSection", function() {
 								],
 						conceptName:"vitals"
 					}
-				}
-			];
+				} ;
 			var conceptSetSection = new ConceptSetSection(extensionParams,[],conceptSet);
 
 			expect(conceptSetSection.isAvailable(context)).toBe(true);
 		});
     });
 
+	var config =
+	{
+		extensionParams:{
+			default:true,
+			conceptName:"vitals"
+		}
+	};
+
+	var noDefaultConfig =
+	{
+		extensionParams:{
+			conceptName:"vitals"
+		}
+	};
 	describe("isAdded",function(){
-		var config = [
-			{
-				extensionParams:{
-					default:true,
-					conceptName:"vitals"
-				}
-			}
-		];
+
 
 
 		it("should be true if concept set is configured to be default",function(){
@@ -60,7 +66,7 @@ describe("ConceptSetSection", function() {
 
 		it("should be true if concept set observation has at least one value set, even if its not default",function(){
 			var observations = [{concept:{name:"vitals"},value:"12"},{concept:{name:"second vitals"},value:""}];
-			var conceptSetSection = new ConceptSetSection({},observations,conceptSet);
+			var conceptSetSection = new ConceptSetSection(noDefaultConfig,observations,conceptSet);
 			expect(conceptSetSection.isAdded).toBe(true);
 		})
 
@@ -69,7 +75,7 @@ describe("ConceptSetSection", function() {
 			var conceptSetSection = new ConceptSetSection({},observations,conceptSet);
 			expect(conceptSetSection.isAdded).toBe(false);
 
-			var conceptSetSection = new ConceptSetSection({},[],conceptSet);
+			var conceptSetSection = new ConceptSetSection(noDefaultConfig,[],conceptSet);
 			expect(conceptSetSection.isAdded).toBe(false);
 		})
 	});
@@ -83,14 +89,13 @@ describe("ConceptSetSection", function() {
 	});
 
 	describe("toggleAdded",function(){
-		var config = [
+		var config =
 			{
 				extensionParams:{
 					default:true,
 					conceptName:"vitals"
 				}
-			}
-		];
+			};
 
 		it("should return false if conceptSet observations has value",function(){
 			var observations = [{concept:{name:"vitals"},value:"12"},{concept:{name:"second vitals"},value:""}];
@@ -104,6 +109,4 @@ describe("ConceptSetSection", function() {
 			expect(conceptSetSection.toggleAdded()).toBe(true);
 		})
 	})
-
-
 });

@@ -3,12 +3,8 @@ Bahmni.ConceptSet.ConceptSetSection = function(extensions,observations,conceptSe
 
 	var init= function(){
 		self.observations = observations;
-		var conceptSetConfig = _.find(extensions,function(extension){
-			return extension.extensionParams.conceptName === conceptSet.name.name;
-		}) || {};
-
-		self.options = conceptSetConfig.extensionParams || {};
-		self.conceptName=conceptSet.name.name;
+		self.options = extensions.extensionParams || {};
+		self.conceptName= conceptSet.name? conceptSet.name.name : self.options.conceptName;
 		self.isLoaded = self.isOpen;
 
 	}
