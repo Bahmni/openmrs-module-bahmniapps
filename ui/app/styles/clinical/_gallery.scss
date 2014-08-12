@@ -7,28 +7,26 @@ body.gallery-open > *:not(#gallery-pane) {
 	display: block;
 	height: 64px;
 	margin-top: -35px;
-	outline: medium none;
 	position: absolute;
 	top: 50%;
 	width: 64px;
-	z-index: 5;
+    opacity: 0.2;
 }
+
 .arrow.prev {
-	background-image: url("../images/prev.png");
+    background-image: url(../images/prev.png);
 	left: 20px;
 	opacity: 0.2;
-	transition: all 0.2s linear 0s;
 }
 .arrow.next {
-	background-image: url("../images/next.png");
+	background-image: url(../images/next.png);
 	opacity: 0.2;
 	right: 20px;
-	transition: all 0.2s linear 0s;
 }
-.arrow.prev:hover{
+.arrow.prev:active{
 	opacity:1;
 }
-.arrow.next:hover{
+.arrow.next:active{
 	opacity:1;
 }
 
@@ -43,7 +41,6 @@ body.gallery-open > *:not(#gallery-pane) {
 	right: 0;
 	text-align: center;
 	width: 100%;
-	z-index: 5;
 }
 .nav li {
 	border: 5px solid #AAAAAA;
