@@ -127,7 +127,6 @@ angular.module('bahmni.common.uiHelper')
         var link = function (scope, elem, attrs, imageGalleryController) {
             scope.promise.then(function (response) {
                 angular.forEach(response, function (record) {
-                    console.log("record" + record);
                     var index = imageGalleryController.addImageObservation(record);
                     if (scope.currentObservation && scope.currentObservation.imageObservation.uuid == record.imageObservation.uuid) {
                         imageGalleryController.setIndex(index);
