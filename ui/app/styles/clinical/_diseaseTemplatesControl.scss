@@ -1,0 +1,37 @@
+.template-control-header {
+	width: 100%;
+	position: fixed;
+	bottom: 0;
+	left: 0; right: 0;
+	height: 50px;
+	text-align: center;
+	background: rgba(255,255,255,0.8);
+	border-top: 1px solid #eee;
+	button {
+		width: 50px;
+		height: 50px;
+		border-radius: 50%;
+		padding: 0;
+		font-size: 1.3em;
+		color: #333;
+	}
+}
+
+.template-control-panel {
+	width: 300px;
+	background: #fff;
+	border: 1px solid #ccc;
+	@include clearfix();
+	position: fixed;
+	bottom: 52px;
+	left: 50%;
+	margin-left: -150px;
+	ul.template-icons li a {
+		width: 55px;
+		height: 55px;
+		background: #999;
+		display: inline-block;
+		float: left;
+		margin: 10px;
+	}
+}
