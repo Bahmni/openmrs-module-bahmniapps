@@ -37,8 +37,8 @@
         <i class="icon-edit"></i>
     </button>
 </div>
-<div class="notes inline-notes" ng-show="diagnosis.comments && diagnosis.showComments">
-    <span ng-if="!diagnosis.isNoteEditable()">{{diagnosis.comments}}</span>
+<div class="notes inline-notes" ng-show="diagnosis.showComments">
+    <span ng-if="!diagnosis.isNoteEditable() && diagnosis.comments ">{{diagnosis.comments}}</span>
     <textarea ng-if="diagnosis.isNoteEditable()" class="comment-section"  maxlength="255" ng-model="diagnosis.comments" ng-change="diagnosis.isDirty=true">
     </textarea>
 </div>
