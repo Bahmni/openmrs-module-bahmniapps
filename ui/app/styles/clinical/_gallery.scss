@@ -1,3 +1,7 @@
+body.gallery-open > *:not(#gallery-pane) {
+  display: none;
+}
+
 .arrow {
 	cursor: pointer;
 	display: block;

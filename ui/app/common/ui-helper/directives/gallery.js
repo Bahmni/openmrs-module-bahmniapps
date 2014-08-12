@@ -1,10 +1,10 @@
 angular.module('bahmni.common.uiHelper')
-    .directive('bmGallery', ['$location', '$rootScope', '$compile', function ($location, $rootScope, $compile) {
+    .directive('bmGallery', ['$location', '$rootScope', '$compile', '$document', function ($location, $rootScope, $compile, $document) {
 
         var controller = function ($scope) {
             $scope.photos = [];
             $scope.imageIndex = 0;
-
+            
             this.image = function (record) {
                 return {
                     src: Bahmni.Common.Constants.documentsPath + '/' + record.imageObservation.value,
@@ -33,9 +33,7 @@ angular.module('bahmni.common.uiHelper')
             };
 
             this.open = function () {
-                var galleryPane = $compile("<div bm-gallery-pane id='gallery-pane'></div>")($scope);
-                $('body #content-supreme').hide();
-                $scope.element = $('body').append(galleryPane);
+                $compile("<div bm-gallery-pane id='gallery-pane'></div>")($scope);
             };
         };
 
