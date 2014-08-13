@@ -231,7 +231,7 @@ angular.module('opd.documentupload')
                 visitDocument.visitUuid = visit.uuid;
                 visitDocument.documents = [];
 
-                visit.savedImages.forEach(function (image) {
+                visit.images.forEach(function (image) {
                     var imageUrl = image.encodedValue.replace(Bahmni.Common.Constants.documentsPath + "/", "");
                     if(!visit.isSaved(image)) {
                         visitDocument.documents.push({testUuid: image.concept.uuid, image: imageUrl, obsDateTime: getEncounterStartDateTime(visit)})        

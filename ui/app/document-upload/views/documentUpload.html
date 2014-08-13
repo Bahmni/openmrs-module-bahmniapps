@@ -46,7 +46,7 @@
           <div class="field-value">
             <input name="startDate" type="date" ng-model="newVisit.startDatetime"
                    dependent-model="newVisit.stopDatetime" date-validator ng-blur="setDefaultEndDate(newVisit)"
-                   ng-required="newVisit.savedImages.length >0" class="field-value" placeholder="dd-mm-yyyy"/>
+                   ng-required="newVisit.images.length >0" class="field-value" placeholder="dd-mm-yyyy"/>
           </div>
         </div>
         <div class="form-field">
@@ -60,13 +60,13 @@
         <div class="upload-inline-buttons">
           <input id="file-browse" type="file" name="image" accept="image/*" capture="camera" file-upload visit="newVisit" on-select="setConceptOnImage" default-concept="defaultConcept">
           <label for="file-browse" class="btn btn-primary" ng-click="resetCurrentVisit(newVisit)"><i class="icon-camera icon-white"></i> SCAN</label>
-          <button type="submit" ng-disabled="newVisit.savedImages.length == 0 || newVisitForm.$invalid" class="btn btn-primary">
+          <button type="submit" ng-disabled="newVisit.images.length == 0 || newVisitForm.$invalid" class="btn btn-primary">
             <i class="icon-save icon-white"></i> SAVE
           </button>
         </div>
 
         <ul class="files">
-          <li class="clear" ng-repeat="image in newVisit.savedImages | reverse">
+          <li class="clear" ng-repeat="image in newVisit.images | reverse">
             <div class="file">
               <img bm-gallery-item index="{{$index}}" prepend="!visit.isSaved(image)" image="image" ng-src="{{image.thumbnail}}" width="100">
               <input class="concept-name" ng-if="canDeleteImage(image)" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter a value" title="Select a value from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
@@ -109,7 +109,7 @@
                 <input id="file-browse-{{visit.uuid}}" type="file" name="image" accept="image/*" capture="camera" file-upload visit="visit" on-select="setConceptOnImage" default-concept="defaultConcept">
                 <label class="placeholder btn" for="file-browse-{{visit.uuid}}"><i class="icon-plus needsclick"></i></label>
               </li>
-              <li ng-repeat="image in visit.savedImages | reverse">
+              <li ng-repeat="image in visit.images | reverse">
                 <div class="file">
                   <img  bm-gallery-item prepend="!visit.isSaved(image)" index="{{$index}}" image="image" ng-src="{{image.thumbnail}}" width="100" ng-class="{true:'transparent', false:'opaque'}[image.voided]"/>
                   <input name="{{'image'+$index}}" ng-if="canDeleteImage(image)" class="concept-name" ng-class="{saved: visit.isSaved(image)}" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter a value" title="Select a value from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true" ng-change="visit.markAsUpdated()" ng-disabled="image.voided"/>

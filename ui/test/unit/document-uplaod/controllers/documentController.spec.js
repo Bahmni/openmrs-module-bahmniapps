@@ -19,7 +19,7 @@ describe("DocumentController", function () {
         visit.startDatetime = startDateTime;
         visit.stopDatetime = stopDateTime;
         visit.uuid = uuid;
-        visit.savedImages = [
+        visit.images = [
 
             {
                 "encodedValue": "/document_images/157100/157051-RADIOLOGY-5f5e8a60-eecf-40f9-b760-ed7c89f54f3e.jpeg",

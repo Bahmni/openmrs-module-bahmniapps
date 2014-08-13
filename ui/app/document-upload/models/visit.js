@@ -5,7 +5,7 @@ Bahmni.DocumentUpload.Visit = function () {
     this.visitType = null;
     this.uuid = null;
     this.changed = false;
-    this.savedImages = [];
+    this.images = [];
     this.encounters = [];
     var androidDateFormat = "YYYY-MM-DD hh:mm:ss";
 
@@ -19,9 +19,9 @@ Bahmni.DocumentUpload.Visit = function () {
     };
 
     this.initSavedImages = function () {
-        this.savedImages = [];
+        this.images = [];
 
-        var savedImages = this.savedImages;
+        var savedImages = this.images;
         this.encounters.forEach(function (encounter) {
             encounter.obs && encounter.obs.forEach(function (observation) {
                 observation.groupMembers && observation.groupMembers.forEach(function (member) {
@@ -38,7 +38,7 @@ Bahmni.DocumentUpload.Visit = function () {
                 });
             });
         });
-        this.savedImages = this._sortSavedImages(savedImages);
+        this.images = this._sortSavedImages(savedImages);
     };
 
     this.isNew = function () {
@@ -46,7 +46,7 @@ Bahmni.DocumentUpload.Visit = function () {
     };
 
     this.hasImages = function () {
-        return this.savedImages.length;
+        return this.images.length;
     };
 
     this.startDate = function () {
@@ -66,19 +66,19 @@ Bahmni.DocumentUpload.Visit = function () {
 
     this.addImage = function (image) {
         var savedImage = null;
-        var alreadyPresent = this.savedImages.filter(function (img) {
+        var alreadyPresent = this.images.filter(function (img) {
             return img.encodedValue === image;
         });
         if (alreadyPresent.length == 0) {
             savedImage = new DocumentImage({"encodedValue": image, "new": true});
-            this.savedImages.push(savedImage);
+            this.images.push(savedImage);
         }
         this.markAsUpdated();
         return savedImage;
     };
 
     this.markAsUpdated = function () {
-        this.changed = this.savedImages.some(function(image) { return image.changed || !image.obsUuid; });
+        this.changed = this.images.some(function(image) { return image.changed || !image.obsUuid; });
     };
     
     this.isSaved = function(image){
@@ -94,8 +94,8 @@ Bahmni.DocumentUpload.Visit = function () {
     };
 
     this.removeNewAddedImage = function (image) {
-        var i = this.savedImages.indexOf(image);
-        this.savedImages.splice(i, 1);
+        var i = this.images.indexOf(image);
+        this.images.splice(i, 1);
         this.markAsUpdated();
     };
 
