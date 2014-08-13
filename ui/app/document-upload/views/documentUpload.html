@@ -68,7 +68,7 @@
         <ul class="files">
           <li class="clear" ng-repeat="image in newVisit.savedImages | reverse">
             <div class="file">
-              <img bm-gallery-item image="image" ng-src="{{image.thumbnail}}" width="100">
+              <img bm-gallery-item index="{{$index}}" prepend="!visit.isSaved(image)" image="image" ng-src="{{image.thumbnail}}" width="100">
               <input class="concept-name" ng-if="canDeleteImage(image)" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter a value" title="Select a value from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
               <input class="concept-name" ng-if="!canDeleteImage(image)" readonly ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter a value" title="Select a value from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
             </div>
