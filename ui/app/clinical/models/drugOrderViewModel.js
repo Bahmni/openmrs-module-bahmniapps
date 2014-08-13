@@ -28,9 +28,8 @@
     var blankIfFalsy = function (value) {
         return value ? value : "";
     };
-    var getText = function () {
-        return blankIfFalsy(self.drugName) + " - " +
-            blankIfFalsy(getDoseAndFrequency()) + ", " +
+    var getDescription = function () {
+        return blankIfFalsy(getDoseAndFrequency()) + ", " +
             blankIfFalsy(self.instructions) + ", " +
             blankIfFalsy(asNeeded(self.asNeeded)) + ", " +
             blankIfFalsy(self.route) + " - " +
@@ -44,6 +43,6 @@
     };
     
     Bahmni.Clinical.DrugOrderViewModel.prototype = {
-        getText: getText
+        getDescription: getDescription
     };
 }());

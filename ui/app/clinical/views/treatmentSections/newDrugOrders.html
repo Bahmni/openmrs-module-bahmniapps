@@ -1,19 +1,19 @@
 <h2>New Prescription</h2>
 <ul class="table-mimic">
-	<li>
+	<li ng-repeat="newTreatment in treatments">
 		<div class="drug-details">
-			<strong class="drug-name">Calpol 500mg (tablets)</strong> - 1 tablet, 3 times a day, empty stomach, orally - 40 days (120 tablets)
+			<strong class="drug-name">{{newTreatment.drugName}}</strong>{{newTreatment.getDescription()}}
 		</div>
 		<div class="button-group">
 			<button class="toggle">
 				<i class="icon-plus-sign"></i>
 				<i class="icon-minus-sign" style="display:none;"></i>
 			</button>
-			<button><i class="icon-remove"></i></button>
-			<button><i class="icon-edit"></i></button>
+			<button ng-click="remove($index)"><i class="icon-remove"></i></button>
+			<button ng-click="edit($index)"><i class="icon-edit"></i></button>
 		</div>
 		<div class="start-date fr">
-			<span>from 31st Jul 2014</span>
+			<span>from {{newTreatment.scheduledDate}}</span>
 		</div>
 	</li>
 </ul>

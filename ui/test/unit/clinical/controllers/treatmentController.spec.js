@@ -3,7 +3,6 @@
 describe("TreatmentController", function () {
 
     beforeEach(module('bahmni.clinical'));
-
     var scope;
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();

@@ -10,12 +10,12 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 consultation: 'consultation'
             };
             $scope.availableBoards = [
-                { name: 'Visit', url: '', type: boardTypes.visit}
+                { label: 'Visit', url: '', type: boardTypes.visit}
             ];
             $scope.currentBoard = $scope.availableBoards[0];
-            $scope.showBoard = function (name) {
+            $scope.showBoard = function (label) {
                 $rootScope.collapseControlPanel();
-                var board = findBoardByname(name);
+                var board = findBoardByLabel(label);
                 return buttonClickAction(board);
             };
 
@@ -36,11 +36,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
             var initialize = function () {
                 $rootScope.$on('event:appExtensions-loaded', function () {
                     var appExtensions = appService.getAppDescriptor().getExtensions("org.bahmni.clinical.consultation.board", "link");
-                    var addlBoards = [];
-                    appExtensions.forEach(function (appExtn) {
-                        addlBoards.push({ name: appExtn.label, url: appExtn.url, type: boardTypes.consultation });
-                    });
-                    $scope.availableBoards = $scope.availableBoards.concat(addlBoards);
+                    $scope.availableBoards = $scope.availableBoards.concat(appExtensions);
                     setCurrentBoardBasedOnPath();
                 });
             };
@@ -49,9 +45,9 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 setCurrentBoardBasedOnPath();
             });
 
-            var findBoardByname = function (name) {
+            var findBoardByLabel = function (label) {
                 var boards = $scope.availableBoards.filter(function (board) {
-                    return board.name === name;
+                    return board.label === label;
                 });
                 return boards.length > 0 ? boards[0] : null;
             };

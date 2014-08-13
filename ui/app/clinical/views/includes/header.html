@@ -11,8 +11,8 @@
             </ul>
         </div>
         <ul class="header-tabs">
-            <li ng-repeat="board in availableBoards" ng-class="{'tab-selected':currentBoard.name==board.name}">
-                <a ng-click="showBoard(board.name)" class="button">{{board.name}}</a>
+            <li ng-repeat="board in availableBoards" ng-class="{'tab-selected':currentBoard.label==board.label}">
+                <a ng-click="showBoard(board.label)" class="button">{{board.label}}</a>
             </li>
         </ul>
 

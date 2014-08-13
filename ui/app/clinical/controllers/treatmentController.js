@@ -6,7 +6,7 @@ angular.module('bahmni.clinical')
 
             $scope.treatments = $rootScope.newlyAddedTreatments || [];
             $scope.treatmentConfig = treatmentConfig;
-            var extensionParams = $scope.currentBoard.extension.extensionParams;
+            var extensionParams = $scope.currentBoard.extensionParams;
             var routes = $scope.treatmentConfig.routes;
             $scope.treatment = new Bahmni.Clinical.DrugOrderViewModel(extensionParams, routes);
 
