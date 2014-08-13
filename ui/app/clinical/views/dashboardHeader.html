@@ -17,6 +17,6 @@
         
         <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}"></button>
         <a class="confirm quick-links" ng-if="activeVisit" ng-click="collapseControlPanel()" href="#{{consultationBoardLink()}}">Consultation</a>
-        <span visit-pagination-links visit="visit"></span>
+        <span visit-pagination-links next-fn="loadVisit" previous-fn="loadVisit" current-visit="visit" visits="visits"></span>
     </div>
 </div>
