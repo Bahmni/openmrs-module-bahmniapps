@@ -8,7 +8,7 @@ describe("Visit ", function () {
     encounterConfig.getPatientDocumentEncounterTypeUuid.and.returnValue("Some");
 
     describe("getImageObservations ", function () {
-        it('should filter observations of class Image', function () {
+        xit('should filter observations of class Image', function () {
             var obs1 = buildObs({concept: buildConcept({conceptClass: 'Image'})});
             var obs2 = buildObs({concept: buildConcept({conceptClass: 'Misc'})});
             var obs3 = buildObs({concept: buildConcept({conceptClass: 'Image'})});
@@ -22,7 +22,7 @@ describe("Visit ", function () {
             expect(imageObservations[1]).toBe(obs3);
         });
 
-        it('should get group members of the observations with Image class', function () {
+        xit('should get group members of the observations with Image class', function () {
             var obs11 = buildObs({concept: buildConcept({conceptClass: 'Image'})});
             var obs12 = buildObs({concept: buildConcept({conceptClass: 'Misc'})});
             var obs1 = buildObs({groupMembers: [obs11, obs12], concept: buildConcept({conceptClass: 'ConvSet'})});

@@ -14,41 +14,54 @@ describe("DocumentController", function () {
     var visit1, visit2;
     var visitDocument;
 
-    var createVisit = function(startDateTime, stopDateTime, uuid){
+    var createVisit = function (startDateTime, stopDateTime, uuid) {
         var visit = new Bahmni.DocumentUpload.Visit();
         visit.startDatetime = startDateTime;
         visit.stopDatetime = stopDateTime;
         visit.uuid = uuid;
         visit.savedImages = [
-                {
-                    "id": 642124,
-                    "obsUuid": "dd24732d-a4f9-49be-af7f-6fc2c2c39f0c",
-                    "encodedValue": "/document_images/157100/157051-RADIOLOGY-e9d1f0cc-9af9-431b-a178-a5d05d7f16b2.jpeg",
-                    "visitUuid": "c0eb6a75-a427-45ea-a911-06684bb45e30",
-                    "encounterUuid": "ef2386a7-8108-49cc-811e-0e2fc40eeaf4",
-                    "providerUuid": "8af2380e-21fb-45cb-8af5-5247b819291b",
-                    "changed": true,
-                    "concept": {
-                        "uuid": "4553bd77-9bcd-11e3-b8ce-43d3573b23fb",
-                        "editableName": "Foot - Left, 2 views (X-ray)",
-                        "name": "Foot - Left, 2 views (X-ray)"
-                    },
-                    "title": "Foot - Left, 2 views (X-ray)"
+
+            {
+                "encodedValue": "/document_images/157100/157051-RADIOLOGY-5f5e8a60-eecf-40f9-b760-ed7c89f54f3e.jpeg",
+                "new": true,
+                "title": "",
+                "concept": {
+                    "editableName": "LEG Foot AP",
+                    "uuid": "concept uuid"
                 },
-                {
-                    "id": 642122,
-                    "obsUuid": "c6cec9e3-a37a-4c62-99ec-8b523fd3c1d6",
-                    "visitUuid": "c0eb6a75-a427-45ea-a911-06684bb45e30",
-                    "encounterUuid": "ef2386a7-8108-49cc-811e-0e2fc40eeaf4",
-                    "providerUuid": "8af2380e-21fb-45cb-8af5-5247b819291b",
-                    "concept": {
-                        "uuid": "8207faff-9bcd-11e3-b8ce-43d3573b23fb",
-                        "editableName": "HEAD Skull PA",
-                        "name": "HEAD Skull PA"
-                    },
-                    "title": "HEAD Skull PA"
-                }
-            ];
+                "changed": true
+            }
+            ,
+            {
+                "id": 642124,
+                "obsUuid": "dd24732d-a4f9-49be-af7f-6fc2c2c39f0c",
+                "encodedValue": "/document_images/157100/157051-RADIOLOGY-e9d1f0cc-9af9-431b-a178-a5d05d7f16b2.jpeg",
+                "visitUuid": "c0eb6a75-a427-45ea-a911-06684bb45e30",
+                "encounterUuid": "ef2386a7-8108-49cc-811e-0e2fc40eeaf4",
+                "providerUuid": "8af2380e-21fb-45cb-8af5-5247b819291b",
+                "changed": true,
+                "concept": {
+                    "uuid": "4553bd77-9bcd-11e3-b8ce-43d3573b23fb",
+                    "editableName": "Foot - Left, 2 views (X-ray)",
+                    "name": "Foot - Left, 2 views (X-ray)"
+                },
+                "title": "Foot - Left, 2 views (X-ray)"
+            },
+            {
+                "id": 642122,
+                "obsUuid": "c6cec9e3-a37a-4c62-99ec-8b523fd3c1d6",
+                "encodedValue": "/document_images/157100/157051-RADIOLOGY-e9d1f0cc-9af9-431b-a178-a5d05d7f16b2.jpeg",
+                "visitUuid": "c0eb6a75-a427-45ea-a911-06684bb45e30",
+                "encounterUuid": "ef2386a7-8108-49cc-811e-0e2fc40eeaf4",
+                "providerUuid": "8af2380e-21fb-45cb-8af5-5247b819291b",
+                "concept": {
+                    "uuid": "8207faff-9bcd-11e3-b8ce-43d3573b23fb",
+                    "editableName": "HEAD Skull PA",
+                    "name": "HEAD Skull PA"
+                },
+                "title": "HEAD Skull PA"
+            }
+        ];
 
         visit.encounters = [
             {
@@ -101,19 +114,6 @@ describe("DocumentController", function () {
             }
         ];
 
-        visit.images = [
-            {
-                "encodedValue": "/document_images/157100/157051-RADIOLOGY-5f5e8a60-eecf-40f9-b760-ed7c89f54f3e.jpeg",
-                "new": true,
-                "title": "",
-                "concept": {
-                    "editableName": "LEG Foot AP",
-                    "uuid": "concept uuid"
-                },
-                "changed": true
-            }
-        ];
-
         visit.visitType = {
             uuid: "visitType uuid"
         };
@@ -128,7 +128,7 @@ describe("DocumentController", function () {
         encounterConfig = jasmine.createSpyObj('encounterConfig', ['getEncounterTypeUuid']);
         appConfig = jasmine.createSpyObj('encounterConfig', ['encounterType']);
         visitService = jasmine.createSpyObj('visitService', ['getVisitSummary']);
-        visitDocumentService =  jasmine.createSpyObj('visitDocumentService',['save']);
+        visitDocumentService = jasmine.createSpyObj('visitDocumentService', ['save']);
     }));
 
 
@@ -144,7 +144,7 @@ describe("DocumentController", function () {
             scope.patient = {
                 uuid: 'patient uuid'
             };
-            scope.currentProvider ={
+            scope.currentProvider = {
                 uuid: 'provider uuid'
             };
 
@@ -155,7 +155,7 @@ describe("DocumentController", function () {
                 $stateParams: stateParams,
                 visitDocumentService: visitDocumentService
             });
-            scope.visits = [visit1,visit2];
+            scope.visits = [visit1, visit2];
 
         });
     };
@@ -276,7 +276,7 @@ describe("DocumentController", function () {
 
     });
 
-    describe('patient document save', function(){
+    describe('patient document save', function () {
 
         var startDate = new Date("April 21, 2014");
         var stopDate = new Date("April 24, 2014 23:59:59");
@@ -304,9 +304,9 @@ describe("DocumentController", function () {
             }
         ];
 
-        it('should save the visit document', function(){
+        it('should save the visit document', function () {
             setUp();
-            var visitDocumentServiceSavePromise =  specUtil.createServicePromise('visitDocumentService');
+            var visitDocumentServiceSavePromise = specUtil.createServicePromise('visitDocumentService');
             visitDocumentService.save.and.returnValue(visitDocumentServiceSavePromise);
 
             scope.save(visit1);
