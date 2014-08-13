@@ -2,7 +2,7 @@
     <section class="edit-drug-order section-grid">
         <form>
             <fieldset>
-                <input class="form-field drug-name" type="text" placeholder="Drug Name" 
+                <input class="form-field drug-name" type="text" placeholder="Drug Name" bahmni-autocomplete source="getDrugs" response-map="getDataResults"
                         ng-model="treatment.drugName" />
                 <input class="form-field dose" type="text" placeholder="Dose" ng-model="treatment.dose" />
 

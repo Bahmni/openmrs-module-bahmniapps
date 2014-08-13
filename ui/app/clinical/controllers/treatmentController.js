@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('TreatmentController', ['$scope', '$rootScope', 'DrugService', 'contextChangeHandler', 'RegisterTabService', 'treatmentConfig',
-        function ($scope, $rootScope, treatmentService, contextChangeHandler, registerTabService, treatmentConfig) {
+    .controller('TreatmentController', ['$scope', '$rootScope', 'DrugService', 'contextChangeHandler', 'RegisterTabService', 'treatmentConfig', 'DrugService',
+        function ($scope, $rootScope, treatmentService, contextChangeHandler, registerTabService, treatmentConfig, drugService) {
 
             $scope.treatments = $rootScope.newlyAddedTreatments || [];
             $scope.treatmentConfig = treatmentConfig;
@@ -27,6 +27,16 @@ angular.module('bahmni.clinical')
             var allowContextChange = function () {
                 $rootScope.newlyAddedTreatments = $scope.treatments;
                 return true;
+            };
+
+            $scope.getDrugs = function(request){
+                return drugService.search(request.term);
+            };
+
+            $scope.getDataResults = function(data){
+                return data.results.map(function (drug) {
+                    return {'concept': {uuid: drug.concept.uuid, name: drug.concept.name.name, editableName: drug.concept.name.name}, 'value': drug.concept.name.name}
+                });
             };
 
             contextChangeHandler.add(allowContextChange);

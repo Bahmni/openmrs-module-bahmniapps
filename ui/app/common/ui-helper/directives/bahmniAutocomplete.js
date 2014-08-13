@@ -33,7 +33,7 @@ angular.module('bahmni.common.uiHelper')
                 }
             }
         });
-    }
+    };
     return {
         link: link,
         require: 'ngModel',
