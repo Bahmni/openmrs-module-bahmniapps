@@ -1,13 +1,11 @@
 <div class="clinical-observations">
-    <button ng-click="showTemplates=!showTemplates">
-        <i class="icon-th"></i>
-    </button>
-    <div ng-show="showTemplates">
-        <ul>
+    <div class="template-control-header">
+        <button ng-click="showTemplates=!showTemplates"><i class="icon-th"></i></button>
+    </div>
+    <div class="template-control-panel section-grid" ng-show="showTemplates">
+        <ul class="template-icons">
             <li ng-repeat="template in selectedObsTemplate" ng-class="{templateAdded:template.isAdded}">
-                <button ng-click="showOrHideTemplate(template)">
-                    {{template.conceptName}}
-                </button>
+                <button ng-click="showOrHideTemplate(template)">{{template.conceptName}}</button>
             </li>
         </ul>
     </div>
