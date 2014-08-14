@@ -4,8 +4,9 @@
         self = this;
         this.prn = false;
         this.route = getDefaultRoute(extensionParams, routes);
+        this.scheduledDate = new Date();
     };
-    
+
     var getDefaultRoute = function (extensionParams, routes) {
         var defaultRoute = extensionParams && extensionParams.defaultRoute;
         var selectedRoute = defaultRoute && _.find(routes, function (route) {

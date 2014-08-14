@@ -53,11 +53,9 @@
                             ng-options="item.name as item.name for item in treatmentConfig.routes">
                     </select>
                 </div>
-                
 
-                <input class="form-field start-date" type="date" pattern="\d{2}-\d{2}-\d{4}"
-                        ng-model="treatment.scheduledDate"
-                        placeholder="dd-mm-yyyy">
+                <input class="form-field start-date" type="date"
+                        ng-model="treatment.scheduledDate" placeholder="dd-mm-yyyy" min="{}">
 
                 <div class="quantity-widget">
                     <input class="form-field quantity" type="number" min="0" ng-model="treatment.quantity" />

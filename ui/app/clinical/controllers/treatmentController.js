@@ -1,14 +1,15 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('TreatmentController', ['$scope', '$rootScope', 'DrugService', 'contextChangeHandler', 'RegisterTabService', 'treatmentConfig', 'DrugService',
-        function ($scope, $rootScope, treatmentService, contextChangeHandler, registerTabService, treatmentConfig, drugService) {
+    .controller('TreatmentController', ['$scope', '$rootScope', 'DrugService', 'contextChangeHandler', 'RegisterTabService', 'treatmentConfig', 'DrugService', '$filter',
+        function ($scope, $rootScope, treatmentService, contextChangeHandler, registerTabService, treatmentConfig, drugService, $filter) {
 
             $scope.treatments = $rootScope.newlyAddedTreatments || [];
             $scope.treatmentConfig = treatmentConfig;
             var extensionParams = $scope.currentBoard.extensionParams;
             var routes = $scope.treatmentConfig.routes;
             $scope.treatment = new Bahmni.Clinical.DrugOrderViewModel(extensionParams, routes);
+            $scope.treatment.scheduledDate = $filter("date")($scope.treatment.scheduledDate, 'yyyy-MM-dd');
 
             $scope.add = function () {
                 $scope.treatments.push($scope.treatment);
