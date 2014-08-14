@@ -5,13 +5,13 @@
                 <input class="form-field drug-name" type="text" placeholder="Drug Name" bahmni-autocomplete source="getDrugs" response-map="getDataResults"
                         ng-model="treatment.drugName" />
                 <div class="frequency-widget uniform-frequency">
-                    <input class="form-field dose" type="text" placeholder="Dose" ng-model="treatment.dose" />
-                    <select class="form-field freq-dose-units" ng-model="treatment.doseUnits"
-                            ng-options="item.name as item.name for item in treatmentConfig.doseUnits">
+                    <input class="form-field dose" type="text" placeholder="Dose" ng-model="treatment.uniformDosingType.dose"  ng-change="treatment.setFrequencyType('uniform')"/>
+                    <select class="form-field freq-dose-units" ng-model="treatment.uniformDosingType.doseUnits"
+                            ng-options="item.name as item.name for item in treatmentConfig.doseUnits"  ng-change="treatment.setFrequencyType('uniform')">
                     </select>
                     <div>
-                        <select class="form-field frequency" ng-model="treatment.frequency"
-                                ng-options="item.name as item.name for item in treatmentConfig.frequencies">
+                        <select class="form-field frequency" ng-model="treatment.uniformDosingType.frequency"
+                                ng-options="item.name as item.name for item in treatmentConfig.frequencies" ng-change="treatment.setFrequencyType('uniform')">
                             <option/>
                         </select>
                     </div>
@@ -19,12 +19,12 @@
                 <span class="or-seperator">or</span>
                 <div class="frequency-widget variable-frequency">
                     <div class="form-field dose-cell">
-                        <input type="number" min="0" ng-model="treatment.morningDose"/>
-                        <input type="number" min="0" ng-model="treatment.afternoonDose"/>
-                        <input type="number" min="0" ng-model="treatment.eveningDose" /> 
+                        <input type="number" min="0" ng-model="treatment.variableDosingType.morningDose" ng-change="treatment.setFrequencyType('variable')"/>
+                        <input type="number" min="0" ng-model="treatment.variableDosingType.afternoonDose" ng-change="treatment.setFrequencyType('variable')"/>
+                        <input type="number" min="0" ng-model="treatment.variableDosingType.eveningDose"  ng-change="treatment.setFrequencyType('variable')"/>
                     </div>
-                    <select class="form-field freq-dose-units" ng-model="treatment.doseUnits"
-                            ng-options="item.name as item.name for item in treatmentConfig.doseUnits">
+                    <select class="form-field freq-dose-units" ng-model="treatment.variableDosingType.doseUnits"
+                            ng-options="item.name as item.name for item in treatmentConfig.doseUnits" ng-change="treatment.setFrequencyType('variable')">
                     </select>
                 </div>
 

@@ -14,20 +14,30 @@ Bahmni.Clinical.DrugOrder = (function () {
     DrugOrder.createFromUIObject = function (drugOrderData) {
         var dateUtil = Bahmni.Common.Util.DateUtil;
         var getAdministrationInstructions = function(drugOrderData) {
-            return JSON.stringify({
+            var instructions = {
                 instructions: drugOrderData.instructions,
                 notes: drugOrderData.notes || ""
-            });
+            };
+
+            if (drugOrderData.frequencyType === 'variable') {
+                instructions.morningDose = drugOrderData.variableDosingType.morningDose;
+                instructions.afternoonDose = drugOrderData.variableDosingType.afternoonDose;
+                instructions.eveningDose = drugOrderData.variableDosingType.eveningDose;
+            }
+            return JSON.stringify(instructions);
         }
+        var doseUnits = drugOrderData.frequencyType === "uniform" ? drugOrderData.uniformDosingType.doseUnits : drugOrderData.variableDosingType.doseUnits;
+
+
         var drugOrder = new DrugOrder({
                 careSetting: "Outpatient",
                 drug: {name:drugOrderData.drugName},
                 orderType: "Drug Order",
                 dosingInstructions: {
-                    dose: drugOrderData.dose,
-                    doseUnits: drugOrderData.doseUnits,
+                    dose: drugOrderData.uniformDosingType.dose,
+                    doseUnits: doseUnits,
                     route: drugOrderData.route,
-                    frequency: drugOrderData.frequency,
+                    frequency: drugOrderData.uniformDosingType.frequency,
                     asNeeded: drugOrderData.prn,
                     administrationInstructions: getAdministrationInstructions(drugOrderData),
                     quantity: drugOrderData.quantity,

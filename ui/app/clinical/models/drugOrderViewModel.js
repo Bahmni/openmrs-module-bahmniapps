@@ -5,6 +5,9 @@
         this.prn = false;
         this.route = getDefaultRoute(extensionParams, routes);
         this.scheduledDate = new Date();
+        this.frequencyType = "uniform";
+        this.uniformDosingType = {};
+        this.variableDosingType = {};
     };
 
     var getDefaultRoute = function (extensionParams, routes) {
@@ -42,8 +45,18 @@
     var getDoseAndFrequency = function () {
         return self.dose ? simpleDoseAndFrequency() : numberBasedDoseAndFrequency();
     };
+
+    var setFrequencyType = function(type){
+        self.frequencyType = type;
+        if (self.frequencyType === "uniform"){
+            self.variableDosingType = {};
+        }
+        else
+            self.uniformDosingType = {};
+    };
     
     Bahmni.Clinical.DrugOrderViewModel.prototype = {
-        getDescription: getDescription
+        getDescription: getDescription,
+        setFrequencyType: setFrequencyType
     };
 }());
