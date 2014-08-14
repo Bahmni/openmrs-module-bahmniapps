@@ -16,7 +16,7 @@ Bahmni.Clinical.VisitDrugOrder = (function () {
             return this.orderGroup;
         },
         getIPDDrugs: function () {
-            return this.ipdDrugSchedule.drugs;
+            return this.ipdDrugSchedule.drugOrders;
         }
     };
 
