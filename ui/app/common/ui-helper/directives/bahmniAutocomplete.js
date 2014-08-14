@@ -11,8 +11,7 @@ angular.module('bahmni.common.uiHelper')
             autofocus: true,
             minLength: minLength,
             source: function (request, response) {
-                source({elementId: attrs.id, term: request.term, elementType: attrs.type}).then(function (resp) {
-                    var data = resp.data;
+                source({elementId: attrs.id, term: request.term, elementType: attrs.type}).then(function (data) {
                     var results = responseMap ? responseMap(data) : data ;
                     response(results);
                 });

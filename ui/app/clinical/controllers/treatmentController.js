@@ -34,8 +34,11 @@ angular.module('bahmni.clinical')
             };
 
             $scope.getDataResults = function(data){
-                return data.results.map(function (drug) {
-                    return {'concept': {uuid: drug.concept.uuid, name: drug.concept.name.name, editableName: drug.concept.name.name}, 'value': drug.concept.name.name}
+                return data.map(function(drug) {
+                    return {
+                        label: drug.name + " (" + drug.dosageForm.display + ")",
+                        value: drug.name
+                    }
                 });
             };
 

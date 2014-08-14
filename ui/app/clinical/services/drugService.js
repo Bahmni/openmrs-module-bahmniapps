@@ -3,17 +3,19 @@
 angular.module('bahmni.clinical')
     .factory('DrugService', ['$http', function ($http) {
 
-    var search = function (drugName) {
-        return $http.get("/openmrs/ws/rest/v1/drug",
-         	{ 
-         		method:"GET",
-         		params: { v: 'custom:(uuid,name,doseStrength,units,dosageForm,concept:(uuid,name))', q: drugName },
-                withCredentials: true
-         	}
-        );
-    }
+        var search = function (drugName) {
+            return $http.get("/openmrs/ws/rest/v1/drug",
+                {
+                    method: "GET",
+                    params: { v: 'custom:(uuid,name,doseStrength,units,dosageForm,concept:(uuid,name))', q: drugName },
+                    withCredentials: true
+                }
+            ).then(function (response) {
+                    return response.data.results;
+                });
+        }
 
-    return {
-        search: search
-    };
-}]);
+        return {
+            search: search
+        };
+    }]);

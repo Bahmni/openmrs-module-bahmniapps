@@ -66,21 +66,10 @@
 
             <fieldset>
                 <textarea class="form-field drug-order-notes" placeholder="Notes" ng-model="treatment.notes"></textarea>
-                <button class="form-field add-drug-btn confirm" type="button" ng-click="add()">ADD</button>
-                <!--<textarea class="form-field drug-notes" placeholder="Notes" ng-model="treatment.notes"></textarea>-->
-                <!--<button class="form-field add-drug-btn" type="button" ng-click="add()">ADD</button>-->
+                <button class="form-field add-drug-btn confirm" type="button" ng-click="add()">Add</button>
             </fieldset>
         </form>
     </section>
-    <!--<section class="new-drug-orders">-->
-        <!--<ul>-->
-            <!--<li ng-repeat="newTreatment in treatments">-->
-                <!--{{newTreatment.getText()}} from {{newTreatment.scheduledDate}}-->
-                <!--<button type="button" ng-click="edit($index)">EDIT</button>-->
-                <!--<button type="button" ng-click="remove($index)">DELETE</button>-->
-            <!--</li>-->
-        <!--</ul>-->
-    <!--</section>-->
     <ng-include src="'views/treatmentSections/newDrugOrders.html'"></ng-include>
     <ng-include src="'views/treatmentSections/drugOrderHistory.html'"></ng-include>
 </div>

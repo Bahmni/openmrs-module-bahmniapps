@@ -181,11 +181,13 @@ angular.module('opd.documentupload')
             };
 
             $scope.getConcepts = function(request){
-                return $http.get(Bahmni.Common.Constants.conceptUrl, { params: {q: request.term, memberOf: topLevelConceptUuid, v: "custom:(uuid,name)"}});
+                return $http.get(Bahmni.Common.Constants.conceptUrl, { params: {q: request.term, memberOf: topLevelConceptUuid, v: "custom:(uuid,name)"}}).then(function(result) {
+                    return result.data.results;
+                });
             };
 
-            $scope.getDataResults = function(data){
-                return data.results.map(function (concept) {
+            $scope.getDataResults = function(results){
+                return results.map(function (concept) {
                     return {'concept': {uuid: concept.uuid, name: concept.name.name, editableName: concept.name.name}, 'value': concept.name.name}
                 });
             };
