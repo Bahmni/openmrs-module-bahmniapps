@@ -4,22 +4,25 @@
             <fieldset>
                 <input class="form-field drug-name" type="text" placeholder="Drug Name" bahmni-autocomplete source="getDrugs" response-map="getDataResults"
                         ng-model="treatment.drugName" />
-                <input class="form-field dose" type="text" placeholder="Dose" ng-model="treatment.dose" />
-
-                <div class="frequency-widget">
+                <div class="frequency-widget uniform-frequency">
+                    <input class="form-field dose" type="text" placeholder="Dose" ng-model="treatment.dose" />
+                    <select class="form-field freq-dose-units" ng-model="treatment.doseUnits"
+                            ng-options="item.name as item.name for item in treatmentConfig.doseUnits">
+                    </select>
                     <div>
                         <select class="form-field frequency" ng-model="treatment.frequency"
                                 ng-options="item.name as item.name for item in treatmentConfig.frequencies">
                             <option/>
                         </select>
                     </div>
-                    <span class="or-seperator">or</span>
+                </div>
+                <span class="or-seperator">or</span>
+                <div class="frequency-widget variable-frequency">
                     <div class="form-field dose-cell">
                         <input type="number" min="0" ng-model="treatment.morningDose"/>
                         <input type="number" min="0" ng-model="treatment.afternoonDose"/>
                         <input type="number" min="0" ng-model="treatment.eveningDose" /> 
                     </div>
-
                     <select class="form-field freq-dose-units" ng-model="treatment.doseUnits"
                             ng-options="item.name as item.name for item in treatmentConfig.doseUnits">
                     </select>

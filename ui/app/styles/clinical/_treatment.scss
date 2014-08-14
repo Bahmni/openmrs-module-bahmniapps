@@ -34,19 +34,21 @@
                 height: 35px;
             }
             input[type="text"].drug-name {
-                margin-right: 20px;
+                margin-right: 0;
             }
 
             /*width*/
             .drug-name {
-                width: 255px;
+                width: 230px;
             }
-            .dose, .duration, .quantity {
+            input[type="text"].dose, input[type="text"].duration, input[type="text"].quantity,
+            input[type="number"].dose, input[type="number"].duration, input[type="number"].quantity {
                 width: 50px;
                 min-width: 50px;
             }
             .route, .start-date {
                 width: 100px;
+                min-width: 155px;
             }
             .treatment-prn {
                 float: right;
@@ -76,11 +78,22 @@
                 float: left;
                 padding-right: 0;
                 margin-right: 5px;
-            }            
+            }
             .frequency-widget {
+                background: #eee;
+                padding: 5px 0 5px 5px;
+                input, select {
+                    margin-top: 0;
+                }
+            }
+            .frequency-widget.uniform-frequency {
                 float: left;
-                margin: 0 21px;
-                width: 455px;
+                margin: 0 5px;
+                width: 370px;
+            }
+            .frequency-widget.variable-frequency {
+                width: 270px;
+                float: left;
             }
             .duration-widget {
                 float: left;
