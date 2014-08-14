@@ -746,23 +746,3 @@ pre {
         font-size: 18px;
     }
 }
-
-//Back button
-.back-arrow-head {
-    background: url(../images/sprites.png) no-repeat;
-    background-position: 0 -108px;
-    padding-left: 20px;
-    margin: 2px;
-    cursor: pointer;
-    opacity: 0.6;
-}
-.back-arrow-body {
-    padding: 15px 10px 15px 0px!important;
-    background: url(../images/sprites.png) repeat-x 0 -181px!important;
-    display: inline-block!important;
-    border-radius: 5px!important;
-    border: 0!important;
-    border-right: 1px solid #A09F9F!important;
-    color: #fff!important;
-    text-decoration: none!important;
-}
