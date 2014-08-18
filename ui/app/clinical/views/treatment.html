@@ -3,16 +3,16 @@
         <form ng-submit="add()">
             <fieldset>
                 <input class="form-field drug-name" type="text" placeholder="Drug Name" bahmni-autocomplete source="getDrugs" response-map="getDataResults"
-                        ng-model="treatment.drugName" required  autofocus/>
+                        ng-model="treatment.drugNameDisplay" on-select="populateBackingFields" required  autofocus/>
                 <div class="frequency-widget uniform-frequency">
-                    <input class="form-field dose" only-number type="number" placeholder="Dose" ng-model="treatment.uniformDosingType.dose"  ng-change="treatment.setFrequencyType('uniform')"/>
+                    <input class="form-field dose" only-number type="number" placeholder="Dose" ng-model="treatment.uniformDosingType.dose"  ng-change="treatment.setFrequencyType('uniform')" ng-required="requiredFor('uniform')"/>
                     <select class="form-field freq-dose-units" ng-model="treatment.uniformDosingType.doseUnits"
-                            ng-options="item.name as item.name for item in treatmentConfig.doseUnits"  ng-change="treatment.setFrequencyType('uniform')">
+                            ng-options="item.name as item.name for item in treatmentConfig.doseUnits"  ng-change="treatment.setFrequencyType('uniform')" ng-required="requiredFor('uniform')">
                         <option/>
                     </select>
                     <div>
                         <select class="form-field frequency" ng-model="treatment.uniformDosingType.frequency"
-                                ng-options="item.name as item.name for item in treatmentConfig.frequencies" ng-change="treatment.setFrequencyType('uniform')">
+                                ng-options="item.name as item.name for item in treatmentConfig.frequencies" ng-change="treatment.setFrequencyType('uniform')" ng-required="requiredFor('uniform')">
                             <option/>
                         </select>
                     </div>
@@ -20,12 +20,12 @@
                 <span class="or-seperator">or</span>
                 <div class="frequency-widget variable-frequency">
                     <div class="form-field dose-cell">
-                        <input type="number" min="0" ng-model="treatment.variableDosingType.morningDose" ng-change="treatment.setFrequencyType('variable')" only-number/>
-                        <input type="number" min="0" ng-model="treatment.variableDosingType.afternoonDose" ng-change="treatment.setFrequencyType('variable')" only-number/>
-                        <input type="number" min="0" ng-model="treatment.variableDosingType.eveningDose"  ng-change="treatment.setFrequencyType('variable')" only-number/>
+                        <input type="number" min="0" ng-model="treatment.variableDosingType.morningDose" ng-change="treatment.setFrequencyType('variable')" only-number ng-required="requiredFor('variable')"/>
+                        <input type="number" min="0" ng-model="treatment.variableDosingType.afternoonDose" ng-change="treatment.setFrequencyType('variable')" only-number ng-required="requiredFor('variable')"/>
+                        <input type="number" min="0" ng-model="treatment.variableDosingType.eveningDose"  ng-change="treatment.setFrequencyType('variable')" only-number ng-required="requiredFor('variable')"/>
                     </div>
                     <select class="form-field freq-dose-units" ng-model="treatment.variableDosingType.doseUnits"
-                            ng-options="item.name as item.name for item in treatmentConfig.doseUnits" ng-change="treatment.setFrequencyType('variable')">
+                            ng-options="item.name as item.name for item in treatmentConfig.doseUnits" ng-change="treatment.setFrequencyType('variable')" ng-required="requiredFor('variable')">
                         <option/>
                     </select>
                 </div>
@@ -51,6 +51,7 @@
                             ng-model="treatment.duration" required only-number />
                     <select class="form-field duration-unit" ng-model="treatment.durationUnit"
                             ng-options="item.name as item.name for item in treatmentConfig.durationUnits" required>
+                        <option/>
                     </select>
                     <select class="form-field route" ng-model="treatment.route"
                             ng-options="item.name as item.name for item in treatmentConfig.routes">

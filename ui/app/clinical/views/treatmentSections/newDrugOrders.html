@@ -2,12 +2,12 @@
 <ul class="table-mimic">
 	<li ng-repeat="newTreatment in treatments">
 		<div class="drug-details">
-			<strong class="drug-name">{{newTreatment.drugName}}</strong>{{newTreatment.getDescription()}}
+			<strong class="drug-name">{{newTreatment.drugNameDisplay}}</strong>&nbsp;{{newTreatment.getDescription()}}
 		</div>
 		<div class="button-group">
 			<button class="toggle">
-				<i class="icon-plus-sign"></i>
-				<i class="icon-minus-sign" style="display:none;"></i>
+				<i class="icon-plus-sign" ng-click="toggle(newTreatment)" ng-hide="newTreatment.showNotes"></i>
+				<i class="icon-minus-sign" ng-click="toggle(newTreatment)" ng-show="newTreatment.showNotes"></i>
 			</button>
 			<button ng-click="remove($index)"><i class="icon-remove"></i></button>
 			<button ng-click="edit($index)"><i class="icon-edit"></i></button>
@@ -15,5 +15,8 @@
 		<div class="start-date fr">
 			<span>from {{newTreatment.scheduledDate}}</span>
 		</div>
+        <div ng-show="newTreatment.showNotes">
+            {{newTreatment.notes}}
+        </div>
 	</li>
 </ul>

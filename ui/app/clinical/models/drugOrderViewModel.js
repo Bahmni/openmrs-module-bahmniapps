@@ -1,22 +1,20 @@
-(function () {
-    var self;
-    Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, routes, durationUnits) {
-        self = this;
-        this.prn = false;
-        this.route = getDefaultValue(extensionParams && extensionParams.defaultRoute, routes);
-        this.durationUnit = getDefaultValue(extensionParams && extensionParams.defaultDurationUnit, durationUnits);
-        this.scheduledDate = new Date();
-        this.frequencyType = "uniform";
-        this.uniformDosingType = {};
-        this.variableDosingType = {};
-    };
-
+Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, routes, durationUnits) {
     var getDefaultValue = function (defaultValue, valueSet) {
         var selectedValue = defaultValue && _.find(valueSet, function (value) {
             return value.name === defaultValue;
         });
         return selectedValue && selectedValue.name;
     };
+
+    var self = this;
+    this.prn = false;
+    this.route = getDefaultValue(extensionParams && extensionParams.defaultRoute, routes);
+    this.durationUnit = getDefaultValue(extensionParams && extensionParams.defaultDurationUnit, durationUnits);
+    this.scheduledDate = new Date();
+    this.frequencyType = "uniform";
+    this.uniformDosingType = {};
+    this.variableDosingType = {};
+
 
     var simpleDoseAndFrequency = function () {
         var uniformDosingType = self.uniformDosingType;
@@ -34,7 +32,12 @@
     var blankIfFalsy = function (value) {
         return value ? value : "";
     };
-    var getDescription = function () {
+
+    var getDoseAndFrequency = function () {
+        return self.frequencyType === "uniform" ? simpleDoseAndFrequency() : numberBasedDoseAndFrequency();
+    };
+
+    this.getDescription = function () {
         return blankIfFalsy(getDoseAndFrequency()) + ", " +
             blankIfFalsy(self.instructions) + ", " +
             blankIfFalsy(asNeeded(self.asNeeded)) + ", " +
@@ -44,21 +47,13 @@
             blankIfFalsy(self.quantity) + " " +
             blankIfFalsy(self.quantityUnit) + ")";
     };
-    var getDoseAndFrequency = function () {
-        return self.frequencyType === "uniform" ? simpleDoseAndFrequency() : numberBasedDoseAndFrequency();
-    };
 
-    var setFrequencyType = function(type){
+    this.setFrequencyType = function (type) {
         self.frequencyType = type;
-        if (self.frequencyType === "uniform"){
+        if (self.frequencyType === "uniform") {
             self.variableDosingType = {};
         }
         else
             self.uniformDosingType = {};
     };
-    
-    Bahmni.Clinical.DrugOrderViewModel.prototype = {
-        getDescription: getDescription,
-        setFrequencyType: setFrequencyType
-    };
-}());
+};

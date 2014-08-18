@@ -6,22 +6,31 @@ angular.module('bahmni.clinical')
 
             $scope.treatments = $rootScope.newlyAddedTreatments || [];
             $scope.treatmentConfig = treatmentConfig;
-            var extensionParams = $scope.currentBoard.extensionParams;
-            var routes = $scope.treatmentConfig.routes;
-            var durationUnits = $scope.treatmentConfig.durationUnits;
 
-            $scope.treatment = new Bahmni.Clinical.DrugOrderViewModel(extensionParams, routes, durationUnits);
+            var newTreatment = function () {
+                return new Bahmni.Clinical.DrugOrderViewModel($scope.currentBoard.extensionParams,
+                    $scope.treatmentConfig.routes, $scope.treatmentConfig.durationUnits);
+            }
+
+            $scope.treatment = newTreatment();
             $scope.treatment.scheduledDate = $filter("date")($scope.treatment.scheduledDate, 'yyyy-MM-dd');
 
             $scope.add = function () {
                 $scope.treatments.push($scope.treatment);
-                $scope.treatment = {};
+                $scope.treatment = newTreatment();
             };
 
             $scope.remove = function (index) {
                 $scope.treatments.splice(index, 1);
             };
 
+            $scope.toggle = function (line) {
+                line.showNotes = !line.showNotes;
+            }
+            $scope.requiredFor = function (frequencyType) {
+                return $scope.treatment.frequencyType === frequencyType;
+
+            };
             $scope.edit = function (index) {
                 $scope.treatment = $scope.treatments[index];
                 $scope.treatments.splice(index, 1);
@@ -32,17 +41,22 @@ angular.module('bahmni.clinical')
                 return true;
             };
 
-            $scope.getDrugs = function(request){
+            $scope.getDrugs = function (request) {
                 return drugService.search(request.term);
             };
 
-            $scope.getDataResults = function(data){
-                return data.map(function(drug) {
+            $scope.getDataResults = function (data) {
+                return data.map(function (drug) {
                     return {
                         label: drug.name + " (" + drug.dosageForm.display + ")",
-                        value: drug.name
+                        value: drug.name + " (" + drug.dosageForm.display + ")",
+                        drug: drug
                     }
                 });
+            };
+
+            $scope.populateBackingFields = function(item) {
+                $scope.treatment.drugName = item.drug.name;
             };
 
             contextChangeHandler.add(allowContextChange);
