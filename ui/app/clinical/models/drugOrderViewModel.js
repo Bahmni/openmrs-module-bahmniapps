@@ -19,12 +19,14 @@
     };
 
     var simpleDoseAndFrequency = function () {
-        return self.dose + " " +
-            blankIfFalsy(self.doseUnit) + ", " +
-            blankIfFalsy(self.frequency);
+        var uniformDosingType = self.uniformDosingType;
+        return uniformDosingType.dose + " " +
+            blankIfFalsy(uniformDosingType.doseUnits) + ", " +
+            blankIfFalsy(uniformDosingType.frequency);
     };
     var numberBasedDoseAndFrequency = function () {
-        return self.morningDose + "-" + self.afternoonDose + "-" + self.eveningDose;
+        var variableDosingType = self.variableDosingType;
+        return variableDosingType.morningDose + "-" + variableDosingType.afternoonDose + "-" + variableDosingType.eveningDose;
     };
     var asNeeded = function (asNeeded) {
         return asNeeded ? "as needed" : "";
@@ -43,7 +45,7 @@
             blankIfFalsy(self.quantityUnit) + ")";
     };
     var getDoseAndFrequency = function () {
-        return self.dose ? simpleDoseAndFrequency() : numberBasedDoseAndFrequency();
+        return self.frequencyType === "uniform" ? simpleDoseAndFrequency() : numberBasedDoseAndFrequency();
     };
 
     var setFrequencyType = function(type){

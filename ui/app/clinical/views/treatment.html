@@ -1,13 +1,14 @@
-<div class="treatment-page">
+<div class="treatment-page" xmlns="http://www.w3.org/1999/html">
     <section class="edit-drug-order section-grid">
-        <form>
+        <form ng-submit="add()">
             <fieldset>
                 <input class="form-field drug-name" type="text" placeholder="Drug Name" bahmni-autocomplete source="getDrugs" response-map="getDataResults"
-                        ng-model="treatment.drugName" />
+                        ng-model="treatment.drugName" required autofocus/>
                 <div class="frequency-widget uniform-frequency">
                     <input class="form-field dose" type="text" placeholder="Dose" ng-model="treatment.uniformDosingType.dose"  ng-change="treatment.setFrequencyType('uniform')"/>
                     <select class="form-field freq-dose-units" ng-model="treatment.uniformDosingType.doseUnits"
                             ng-options="item.name as item.name for item in treatmentConfig.doseUnits"  ng-change="treatment.setFrequencyType('uniform')">
+                        <option/>
                     </select>
                     <div>
                         <select class="form-field frequency" ng-model="treatment.uniformDosingType.frequency"
@@ -25,6 +26,7 @@
                     </div>
                     <select class="form-field freq-dose-units" ng-model="treatment.variableDosingType.doseUnits"
                             ng-options="item.name as item.name for item in treatmentConfig.doseUnits" ng-change="treatment.setFrequencyType('variable')">
+                        <option/>
                     </select>
                 </div>
 
@@ -36,6 +38,7 @@
 
             <fieldset>
                 <select class="form-field instruction" ng-model="treatment.instructions">
+                    <option/>
                     <option value="Before meals">Before meals</option>
                     <option value="Empty stomach">Empty stomach</option>
                     <option value="After meals">After meals</option>
@@ -45,9 +48,9 @@
                 </select>
                 <div class="duration-widget">
                     <input  class="form-field duration" type="text" placeholder="Duration" 
-                            ng-model="treatment.duration"/>
+                            ng-model="treatment.duration" required/>
                     <select class="form-field duration-unit" ng-model="treatment.durationUnit"
-                            ng-options="item.name as item.name for item in treatmentConfig.durationUnits">
+                            ng-options="item.name as item.name for item in treatmentConfig.durationUnits" required>
                     </select>
                     <select class="form-field route" ng-model="treatment.route"
                             ng-options="item.name as item.name for item in treatmentConfig.routes">
@@ -58,16 +61,17 @@
                         ng-model="treatment.scheduledDate" placeholder="dd-mm-yyyy" min="{}">
 
                 <div class="quantity-widget">
-                    <input class="form-field quantity" type="number" min="0" ng-model="treatment.quantity" />
+                    <input class="form-field quantity" type="number" min="0" ng-model="treatment.quantity" required/>
                     <select class="form-field quantity-unit" ng-model="treatment.quantityUnit"
-                            ng-options="item.name as item.name for item in treatmentConfig.dispensingUnits">
+                            ng-options="item.name as item.name for item in treatmentConfig.dispensingUnits" required>
+                        <option/>
                     </select>
                 </div>
             </fieldset>
 
             <fieldset>
                 <textarea class="form-field drug-order-notes" placeholder="Notes" ng-model="treatment.notes"></textarea>
-                <button class="form-field add-drug-btn confirm" type="button" ng-click="add()">Add</button>
+                <input class="form-field add-drug-btn confirm" type="submit"value="Add"/>
             </fieldset>
         </form>
     </section>
