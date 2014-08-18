@@ -14,11 +14,11 @@ angular.module('opd.documentupload')
 
             var setOrientationWarning = function() {
                 $scope.orientation_warning = (window.orientation && (window.orientation < 0 || window.orientation > 90));
-            }
+            };
             setOrientationWarning();
             var onOrientationChange = function() {
                 $scope.$apply(setOrientationWarning);
-            }
+            };
             window.addEventListener('orientationchange', onOrientationChange);
             $scope.$on('$destroy', function(){
                 window.removeEventListener('orientationchange', onOrientationChange);
@@ -214,11 +214,7 @@ angular.module('opd.documentupload')
             };
 
             var getEncounterStartDateTime = function (visit) {
-                var currentDate = new Date();
-                if(visit.endDate()){
-                    return currentDate <= visit.endDate() ? currentDate : visit.startDate();
-                }
-                return currentDate;
+                return visit.endDate() ? visit.startDate() : null;
             };
 
             var createVisitDocument = function (visit) {
