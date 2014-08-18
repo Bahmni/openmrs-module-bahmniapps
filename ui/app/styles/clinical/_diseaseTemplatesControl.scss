@@ -41,5 +41,14 @@
 		font-size: 12px;
 		border: 1px solid #ccc;
 		padding: 5px;
+		background: #ddd;
+		i {
+			font-size: 1.5em;
+			display: block;
+			margin: 0 auto;
+		}
+	}
+	ul.template-icons li.templateAdded button {
+		@include background(linear-gradient(top, #fff, #ddd));
 	}
 }

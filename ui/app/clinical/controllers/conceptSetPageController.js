@@ -25,6 +25,10 @@ angular.module('bahmni.clinical')
     $scope.showOrHideTemplate = function(template){
         if(!template.toggleAdded()){
 	        messagingService.showMessage("error","Templates having data cannot be unselected. Please Clear the data and try again");
+        } else if(template.isAdded){
+    		messagingService.showMessage("info","Added successfully");
+        } else if(!template.isAdded){
+    		messagingService.showMessage("info","Removed successfully");
         };
         $scope.showTemplates = !$scope.showTemplates;
     }
