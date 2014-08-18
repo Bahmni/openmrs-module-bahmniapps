@@ -1,21 +1,21 @@
 (function () {
     var self;
-    Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, routes) {
+    Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, routes, durationUnits) {
         self = this;
         this.prn = false;
-        this.route = getDefaultRoute(extensionParams, routes);
+        this.route = getDefaultValue(extensionParams && extensionParams.defaultRoute, routes);
+        this.durationUnit = getDefaultValue(extensionParams && extensionParams.defaultDurationUnit, durationUnits);
         this.scheduledDate = new Date();
         this.frequencyType = "uniform";
         this.uniformDosingType = {};
         this.variableDosingType = {};
     };
 
-    var getDefaultRoute = function (extensionParams, routes) {
-        var defaultRoute = extensionParams && extensionParams.defaultRoute;
-        var selectedRoute = defaultRoute && _.find(routes, function (route) {
-            return route.name === defaultRoute;
+    var getDefaultValue = function (defaultValue, valueSet) {
+        var selectedValue = defaultValue && _.find(valueSet, function (value) {
+            return value.name === defaultValue;
         });
-        return selectedRoute && selectedRoute.name;
+        return selectedValue && selectedValue.name;
     };
 
     var simpleDoseAndFrequency = function () {

@@ -40,4 +40,9 @@ describe("drugOrderViewModel", function () {
         var treatment = sampleTreatment({defaultRoute: "Orally"}, [{name: "Intramuscular"}, {name: "Orally"}]);
         expect(treatment.route).toBe("Orally");
     });
+
+    it("should get default durationUnit from config if available", function() {
+        var treatment = sampleTreatment({defaultDurationUnit: "Days"}, [{name: "Days"}, {name: "Months"}]);
+        expect(treatment.durationUnit).toBe("Days");
+    });
 });

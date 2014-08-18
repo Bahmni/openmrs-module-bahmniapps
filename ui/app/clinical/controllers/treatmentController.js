@@ -8,7 +8,9 @@ angular.module('bahmni.clinical')
             $scope.treatmentConfig = treatmentConfig;
             var extensionParams = $scope.currentBoard.extensionParams;
             var routes = $scope.treatmentConfig.routes;
-            $scope.treatment = new Bahmni.Clinical.DrugOrderViewModel(extensionParams, routes);
+            var durationUnits = $scope.treatmentConfig.durationUnits;
+
+            $scope.treatment = new Bahmni.Clinical.DrugOrderViewModel(extensionParams, routes, durationUnits);
             $scope.treatment.scheduledDate = $filter("date")($scope.treatment.scheduledDate, 'yyyy-MM-dd');
 
             $scope.add = function () {
