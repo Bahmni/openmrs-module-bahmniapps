@@ -15,10 +15,13 @@ $fontPath: "../components/openmrs-uicommons/omod/src/main/webapp/resources/fonts
 @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fragments/notifications";
 
 // JSS css files
-@import "bahmni-helper/_variables.scss";
-@import "bahmni-components/_table.scss";
-@import "clinical/angular-fix";
-@import "clinical/jss-ui-common";
+@import "bahmni-helper/variables.scss";
+
+@import "common/bahmniGlobal";
+@import "common/notifications";
+@import "common/directives";
+@import "common/angularFix";
+
 @import "clinical/layout";
 @import "clinical/patientSearch";
 @import "clinical/visit";
@@ -27,15 +30,17 @@ $fontPath: "../components/openmrs-uicommons/omod/src/main/webapp/resources/fonts
 @import "clinical/diagnosis";
 @import "clinical/treatment";
 @import "clinical/trends";
-@import "bed-management/wardLayout";
 @import "clinical/observations";
 @import "clinical/patientDashboard";
-@import "clinical/upload";
-@import "clinical/adt";
-@import "common/_notifications";
-@import "common/directives";
-@import "clinical/ngDialog";
-@import "clinical/gallery";
-@import "clinical/_inPageTabs";
-@import "clinical/_diseaseTemplatesControl";
-@import "bahmni-components/_buttons.scss";
+
+@import "document-upload/upload";
+
+@import "adt/adt";
+@import "adt/wardLayout";
+
+@import "bahmni-components/table.scss";
+@import "bahmni-components/buttons.scss";
+@import "bahmni-components/inPageTabs";
+@import "bahmni-components/ngDialog";
+@import "bahmni-components/gallery";
+@import "bahmni-components/diseaseTemplatesControl";
