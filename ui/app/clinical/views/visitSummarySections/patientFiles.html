@@ -1,4 +1,4 @@
-<section class="block" ng-if="visit.hasPatientFiles()"  bm-gallery patient="patient" title="'Patient Documents'">
+<section class="block" ng-if="visit.hasPatientFiles() && !print"  bm-gallery patient="patient" title="'Patient Documents'">
     <h2>Patient Files</h2>
     <a href="" bm-lazy-image-observation-gallery-items promise="documentsPromise" index=visit.getPatientFileOrder()><i class="icon-file"></i>Patient Documents</a>
 </section>
