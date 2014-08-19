@@ -197,14 +197,12 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
   ul{
     li{
         float:left;
-        // margin-bottom: -2px;
         a,button{
           padding: 12px 15px;
           background:#447772;
           display:inline-block;
           color:#fff;
           border:1px solid #00463f;
-          // @include border-radius();
           border-bottom-right-radius:0px;
           border-bottom-left-radius:0px;
           text-decoration:none;
@@ -737,7 +735,7 @@ pre {
 .has-notes {
     color: orange;
 }
-//home
+/*home*/
 .bahmni-home {
     margin-bottom: 5px!important;
     .icon-home {

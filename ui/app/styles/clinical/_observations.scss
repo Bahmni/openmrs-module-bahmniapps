@@ -69,7 +69,6 @@
   }
   .info {
     color: #0099ff;
-    // width: 200px;
     font-size: 14px;
     line-height: 1.4em;
     margin-bottom: 0;
@@ -195,7 +194,7 @@ concept {
     }
   }
 }
-//custom changes: auto complete form field -> will be moved globally once finalized.
+/*custom changes: auto complete form field -> will be moved globally once finalized.*/
 .select2-container .select2-choice {
   padding: 5px;
   @media screen and (max-width: 595px) {
@@ -264,7 +263,6 @@ concept-set {
         .placeholder.btn {
             width: 50px;
             height: 50px;
-            // background: #fefefe;
             float: left;
             margin: 0;
             text-align: center;

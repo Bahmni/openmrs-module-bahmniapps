@@ -1,9 +1,9 @@
-
 @import "compass";
-// dependencies from openmrs ui commons
+
+/*dependencies from openmrs ui commons*/
 @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/vendor/normalize";
 @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/variables";
-$fontPath: "../components/openmrs-uicommons/omod/src/main/webapp/resources/fonts"; //overwritting the path of the fonts file to point to correct file location.
+$fontPath: "../components/openmrs-uicommons/omod/src/main/webapp/resources/fonts"; /*overwritting the path of the fonts file to point to correct file location.*/
 @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fragments/base";
 @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fragments/grid";
 @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fragments/header";
@@ -14,7 +14,7 @@ $fontPath: "../components/openmrs-uicommons/omod/src/main/webapp/resources/fonts
 @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fragments/form-navigator-ui";
 @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fragments/notifications";
 
-// JSS css files
+/*JSS css files*/
 @import "bahmni-helper/variables.scss";
 
 @import "common/bahmniGlobal";

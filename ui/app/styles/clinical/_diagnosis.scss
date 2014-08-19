@@ -172,11 +172,6 @@
     }
   }
 }
-// .history-diagnosis .table-header {
-//   .col2, .col3 {
-//     width: 27%;
-//   }
-// }
 .current-diagnosis, .history-diagnosis {
   .diagnosis-row {
     overflow: auto;
@@ -194,7 +189,6 @@
       .col2, .col3 {
         font-size: 12px;
         margin-top: 5px;
-        // width: 26%;
         
         .view {margin-bottom: 5px;}
         .date {
@@ -214,9 +208,6 @@
     button.toggle {
       font-size: 100%;
       i {
-        // -moz-box-shadow: 0 0 5px #888;
-        // -webkit-box-shadow: 0 0 5px#888;
-        // box-shadow: 0 0 5px #888;
         @include button();
         padding: 0 12px;
       }

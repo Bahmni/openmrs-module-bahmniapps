@@ -4,19 +4,7 @@
     .header-logo {
       position: static;
     }
-    ul:first-child {
-//      display: none;
-    }
   }
-  // p.success {
-  //   color: #f8f8ff;
-  //   padding: 5px;
-  //   background: #333;
-  //   margin-bottom: 10px;
-  //   @include transition-property(display);
-  //   @include transition-duration(0.15s);
-  //   @include transition-timing-function(ease-in-out);
-  // }
   .main {
     max-width: 960px;
     min-width: 320px;
@@ -137,10 +125,8 @@
             width: 200px;
           }
           .placeholder {
-            // border: 3px dashed #ddd;
             width: 50px;
             height: 50px;
-            // background: #fefefe;
             padding: 2px;
             float: left;
             margin: 5px 20px 5px 2px;

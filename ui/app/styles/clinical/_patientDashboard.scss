@@ -27,7 +27,6 @@
   height: 50px;
   background: #669999;
   h1 {
-    // float: left;
     margin: 15px 0;
     color: #eee;
     text-transform: capitalize;
@@ -40,13 +39,10 @@
   margin: 1%;
   font-size: 14px;
   position: relative;
-  // padding-bottom: 35px;
-  // min-height: 250px;
   h2 {
     padding: 10px;
     font-family: OpenSansBold;
     margin-bottom: 0;
-    // cursor: pointer;
     &:active {
         background: #e1f9fe;
         color: #52957e;

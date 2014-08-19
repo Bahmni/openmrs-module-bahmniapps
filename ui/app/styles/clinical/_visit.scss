@@ -166,7 +166,6 @@
 
 .expander-row, .laborder-section li {
   padding: 5px 10px;
-  // border-bottom: 1px solid #eee;
   clear: both;
   overflow: auto;
   padding-right: 0;
@@ -186,7 +185,6 @@
   border: none;
   padding: 0;
   color: #666;
-  // width: 26px; 
   &:hover {
     background: none;
     border: none;
@@ -371,7 +369,6 @@ table.ipd-investigation {
 }
 .dshbf .dshbf .dshbf {
   padding: 0!important;
-  // padding-bottom: 0!important;
 }
 .dshbf {
   padding-left: 0!important;
@@ -383,9 +380,6 @@ table.ipd-investigation {
 td.value {
   width: 500px;
 }
-// .concept-set {
-//   background: #ccc;
-// }
 
 .fl {float: left;}
 .fr {float: right;}
@@ -485,7 +479,7 @@ span.range {
   }
 }
 
-//disposition tab - temp placed here
+/*disposition tab - temp placed here*/
 .disposition-tab {
   padding: 15px 5px;
   textarea {
@@ -500,7 +494,7 @@ span.range {
     margin-bottom: 10px;
   }
 }
-//disposition tab - temp placed here
+/*disposition tab - temp placed here*/
  .no-visit {
   padding: 30px 10px;
   color: #666;

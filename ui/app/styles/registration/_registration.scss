@@ -738,13 +738,11 @@ video{
   color: #1EB642;
 }
 /**** overriding jquery styling end *****/
-//Observations
+/*Observations*/
 .observation-section {
   margin-top: 40px;
   fieldset {
     border: 0!important;
-    // padding-left: 20px;
-    // box-sizing: border-box;
   }
   fieldset.hasLegend {
     padding: 0;
@@ -785,7 +783,6 @@ video{
     }
     fieldset {
       .form-group {
-        // margin: 0 20%;
         label span {
           text-transform: capitalize;
         }
@@ -930,7 +927,4 @@ label.local-name-reg {
     }
   }
 }
-
-
-
-//Observations
+/*Observations*/
