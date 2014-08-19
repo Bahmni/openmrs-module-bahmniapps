@@ -31,17 +31,68 @@ angular.module('bahmni.common.gallery')
         }
 
         var controller = function ($scope) {
-            $scope.imageIndex = $scope.imageIndex ? $scope.imageIndex : 0;
-            $scope.isActive = function (index) {
-                return $scope.imageIndex == index;
+            $scope.imageIndex = $scope.imagePosition.index ? $scope.imagePosition.index : 0;
+            $scope.albumTag = $scope.imagePosition.tag ? $scope.imagePosition.tag : 'defaultTag';
+
+            $scope.isActive = function (index, tag) {
+                return $scope.imageIndex == index && $scope.albumTag == tag;
+            };
+
+            var getAlbumIndex = function () {
+                return _.findIndex($scope.albums, function (album) {
+                    return album.tag == $scope.albumTag;
+                });
             };
 
             $scope.showPrev = function () {
-                $scope.imageIndex = ($scope.imageIndex > 0) ? --$scope.imageIndex : $scope.photos.length - 1;
+                var albumIndex = getAlbumIndex();
+                if ($scope.imageIndex > 0) {
+                    --$scope.imageIndex;
+                }
+                else {
+                    if (albumIndex == 0) {
+                        albumIndex = $scope.albums.length;
+                    }
+                    var previousAlbum = $scope.albums[albumIndex - 1];
+                    if (previousAlbum.images.length == 0) {
+                        $scope.showPrev(albumIndex - 1);
+                    }
+                    $scope.albumTag = previousAlbum.tag;
+                    $scope.imageIndex = previousAlbum.images.length - 1;
+                }
             };
 
             $scope.showNext = function () {
-                $scope.imageIndex = ($scope.imageIndex < $scope.photos.length - 1) ? ++$scope.imageIndex : 0;
+                var albumIndex = getAlbumIndex();
+                if ($scope.imageIndex < $scope.albums[albumIndex].images.length - 1) {
+                    ++$scope.imageIndex;
+                } else {
+                    if (albumIndex == $scope.albums.length - 1) {
+                        albumIndex = -1;
+                    }
+                    var nextAlbum = $scope.albums[albumIndex + 1];
+                    if (nextAlbum.images.length == 0) {
+                        $scope.showNext(albumIndex + 1);
+                    }
+                    $scope.albumTag = nextAlbum.tag;
+                    $scope.imageIndex = 0;
+                }
+            };
+
+            $scope.getTotalLength = function () {
+                var totalLength = 0;
+                angular.forEach($scope.albums, function (album) {
+                    totalLength += album.images.length;
+                });
+                return totalLength;
+            };
+
+            $scope.getCurrentIndex = function () {
+                var currentIndex = 1;
+                for (var i = 0; i < getAlbumIndex(); i++) {
+                    currentIndex += $scope.albums[i].images.length;
+                }
+                return currentIndex + parseInt($scope.imageIndex);
             };
 
             $scope.close = function () {

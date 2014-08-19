@@ -4,26 +4,31 @@
         <i class="icon-user"></i>
         <span>{{patient.name}} {{'(' + patient.identifier + ')'}}</span>
     </h1>
+
     <h2>{{title}}</h2>
 </header>
 <div class="container slider">
-    <div class="messages" ng-if="!photos.length">
+    <div class="messages" ng-if="!albums.length">
         <p class="messages null-data-message">No images to display</p>
     </div>
-    <div ng-repeat="photo in photos">
-        <img class="slide" hm-swipe-right="showPrev()" hm-swipe-left="showNext()" 
-             ng-show="isActive($index)" ng-src="{{photo.src}}"/>
-    </div>
-    <span ng-if="photos.length > 1" class="arrow prev" ng-click="showPrev()"></span>
-    <span ng-if="photos.length > 1" class="arrow next" ng-click="showNext()"></span>
-</div>
-<div ng-repeat="photo in photos">
-    <div class="image-bottom-bar" ng-if="isActive($index)">
-        <div class="fl"><span class="image-title">{{photo.title}}</span>
-            <span class="image-date">{{photo.date | date: "dd MMM yy"}}</span>
+    <div ng-repeat="album in albums">
+        <div ng-repeat="image in album.images">
+            <img class="slide" hm-swipe-right="showPrev()" hm-swipe-left="showNext()"
+                 ng-show="isActive($index, album.tag)" ng-src="{{image.src}}"/>
         </div>
-        <span class="image-index fr">({{$index+1}} of {{photos.length}})</span>
+        <span ng-if="album.tag == albumTag" class="arrow prev" ng-click="showPrev()"></span>
+        <span ng-if="album.tag == albumTag" class="arrow next" ng-click="showNext()"></span>
     </div>
-    <div class="image-desc" ng-if="isActive($index) && photo.desc"><strong>Comments:</strong> {{photo.desc}}</div>
+</div>
+<div ng-repeat="album in albums">
+    <div ng-repeat="image in album.images">
+        <div class="image-bottom-bar" ng-if="isActive($index,album.tag)">
+            <div class="fl"><span class="image-title">{{image.title}}</span>
+                <span class="image-date">{{image.date | date: "dd MMM yy"}}</span>
+            </div>
+            <span class="image-index fr">({{getCurrentIndex()}} of {{getTotalLength()}})</span>
+        </div>
+        <div class="image-desc" ng-if="isActive($index, album.tag) && image.desc"><strong>Comments:</strong> {{image.desc}}</div>
+    </div>
 </div>
 

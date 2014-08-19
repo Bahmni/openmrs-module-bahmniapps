@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('opd.documentupload')
-    .controller('DocumentController', ['$scope', '$stateParams', 'visitService', 'patientService', 'encounterService', 'spinner', 'visitDocumentService', '$rootScope', '$http', '$q', '$timeout',
-        function ($scope, $stateParams, visitService, patientService, encounterService, spinner, visitDocumentService, $rootScope, $http, $q, $timeout) {
+    .controller('DocumentController', ['$scope', '$stateParams', 'visitService', 'patientService', 'encounterService', 'spinner', 'visitDocumentService', '$rootScope', '$http', '$q', '$timeout', '$window',
+        function ($scope, $stateParams, visitService, patientService, encounterService, spinner, visitDocumentService, $rootScope, $http, $q, $timeout, $window) {
             var encounterTypeUuid;
             var topLevelConceptUuid;
             var customVisitParams = Bahmni.DocumentUpload.Constants.visitRepresentation;
@@ -11,6 +11,7 @@ angular.module('opd.documentupload')
             var activeEncounter = {};
 
             $scope.visits = [];
+            $scope.toggleGallery = true;
 
             var setOrientationWarning = function() {
                 $scope.orientation_warning = (window.orientation && (window.orientation < 0 || window.orientation > 90));
@@ -274,6 +275,7 @@ angular.module('opd.documentupload')
             };
 
             $scope.save = function (existingVisit) {
+                $scope.toggleGallery=false;
                 var visitDocument;
                 if ($scope.isNewVisitDateValid()) {
                     visitDocument = createVisitDocument(existingVisit);
@@ -288,9 +290,11 @@ angular.module('opd.documentupload')
                                 existingVisit = $scope.visits.push(newVisit);
                                 initNewVisit();
                                 updateVisit(newVisit, encounterResponse.data.results);
+                                $scope.toggleGallery = true;
                             });
                         }else{
                             updateVisit(savedVisit, encounterResponse.data.results)
+                            $scope.toggleGallery = true;
                         }
                         getActiveEncounter();
                     });

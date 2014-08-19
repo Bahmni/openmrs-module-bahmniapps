@@ -2,9 +2,9 @@
   <div class="info-message" ng-show="success"><p>File(s) updated successfully</p></div>
   <div class="error-message" ng-show="orientation_warning"><p><i class="icon-exclamation-sign"></i>The device is not held upright. Please rotate the device before taking photo</p></div>
 </div>
-
-<ul class="doc-upload-accordion">
-  <li id="newVisit" bm-gallery patient="patient" title="'Consultation Images'">
+<div ng-if="toggleGallery">
+<ul class="doc-upload-accordion" bm-gallery patient="patient" title="'Images'">
+  <li id="newVisit">
     <h1 ng-click="resetCurrentVisit(newVisit)">
       <i ng-hide="isCurrentVisit(newVisit)" class="icon-plus-sign state"></i>
       <i ng-if="isCurrentVisit(newVisit)" class="icon-minus-sign state"></i>
@@ -68,7 +68,7 @@
         <ul class="files">
           <li class="clear" ng-repeat="image in newVisit.images | reverse">
             <div class="file">
-              <img bm-gallery-item index="{{$index}}" prepend="!visit.isSaved(image)" image="image" ng-src="{{image.thumbnail}}" width="100">
+              <img bm-gallery-item index="{{$index}}" visit-uuid="'new'" index="{{$index}}" prepend="!visit.isSaved(image)" image="image" ng-src="{{image.thumbnail}}" width="100">
               <input class="concept-name" ng-if="canDeleteImage(image)" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter a value" title="Select a value from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
               <input class="concept-name" ng-if="!canDeleteImage(image)" readonly ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter a value" title="Select a value from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
             </div>
@@ -81,7 +81,7 @@
     </div>
   </li>
 
-  <li ng-repeat="visit in visits" bm-gallery patient="patient" title="'Consultation Images'">
+  <li ng-repeat="visit in visits">
     <h1 ng-click="resetCurrentVisit(visit)">
       <i ng-hide="isCurrentVisit(visit)" class="icon-plus-sign state"></i>
       <i ng-if="isCurrentVisit(visit)" class="icon-minus-sign state"></i>
@@ -111,7 +111,7 @@
               </li>
               <li ng-repeat="image in visit.images | reverse">
                 <div class="file">
-                  <img  bm-gallery-item prepend="!visit.isSaved(image)" index="{{$index}}" image="image" ng-src="{{image.thumbnail}}" width="100" ng-class="{true:'transparent', false:'opaque'}[image.voided]"/>
+                  <img  bm-gallery-item prepend="!visit.isSaved(image)" index="{{$index}}" visit-uuid="visit.uuid" image="image" ng-src="{{image.thumbnail}}" width="100" ng-class="{true:'transparent', false:'opaque'}[image.voided]"/>
                   <input name="{{'image'+$index}}" ng-if="canDeleteImage(image)" class="concept-name" ng-class="{saved: visit.isSaved(image)}" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter a value" title="Select a value from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true" ng-change="visit.markAsUpdated()" ng-disabled="image.voided"/>
                   <input name="{{'image'+$index}}" ng-if="!canDeleteImage(image)" readonly class="concept-name saved" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter a value" title="Select a value from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true" ng-change="visit.markAsUpdated()" ng-disabled="image.voided"/>
                 </div>
@@ -126,3 +126,4 @@
     </div>
   </li>
 </ul>
+</div>
