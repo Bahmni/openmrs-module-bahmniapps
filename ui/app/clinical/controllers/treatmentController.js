@@ -21,6 +21,10 @@ angular.module('bahmni.clinical')
                 $scope.treatment.scheduledDate = $filter("date")($scope.treatment.scheduledDate, 'yyyy-MM-dd');
             };
 
+            $scope.isDisabled = function(frequencyType) {
+                return $scope.treatment.frequencyType !== frequencyType;
+            }
+
             $scope.remove = function (index) {
                 $scope.treatments.splice(index, 1);
             };
@@ -28,10 +32,7 @@ angular.module('bahmni.clinical')
             $scope.toggle = function (line) {
                 line.showNotes = !line.showNotes;
             }
-            $scope.requiredFor = function (frequencyType) {
-                return $scope.treatment.frequencyType === frequencyType;
 
-            };
             $scope.edit = function (index) {
                 $scope.treatment = $scope.treatments[index];
                 $scope.treatments.splice(index, 1);
