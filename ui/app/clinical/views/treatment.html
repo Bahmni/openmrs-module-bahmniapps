@@ -1,11 +1,11 @@
 <div class="treatment-page" xmlns="http://www.w3.org/1999/html">
     <section class="edit-drug-order section-grid">
-        <form ng-submit="add()">
+        <form name="addForm" ng-submit="add()">
             <fieldset>
                 <input class="form-field drug-name" type="text" placeholder="Drug Name" bahmni-autocomplete source="getDrugs" response-map="getDataResults"
                         ng-model="treatment.drugNameDisplay" on-select="populateBackingFields" required  autofocus/>
                 <div class="frequency-widget uniform-frequency">
-                    <input class="form-field dose" only-number type="number" placeholder="Dose" ng-model="treatment.uniformDosingType.dose"  ng-change="treatment.setFrequencyType('uniform')" ng-required="requiredFor('uniform')"/>
+                    <input class="form-field dose" only-number type="number" min="0" placeholder="Dose" ng-model="treatment.uniformDosingType.dose"  ng-change="treatment.setFrequencyType('uniform')" ng-required="requiredFor('uniform')"/>
                     <select class="form-field freq-dose-units" ng-model="treatment.uniformDosingType.doseUnits"
                             ng-options="item.name as item.name for item in treatmentConfig.doseUnits"  ng-change="treatment.setFrequencyType('uniform')" ng-required="requiredFor('uniform')">
                         <option/>
@@ -47,7 +47,7 @@
                     <option value="At bedtime">At bedtime</option>
                 </select>
                 <div class="duration-widget">
-                    <input  class="form-field duration" type="number" placeholder="Duration"
+                    <input  class="form-field duration" type="number" min="0" placeholder="Duration"
                             ng-model="treatment.duration" required only-number />
                     <select class="form-field duration-unit" ng-model="treatment.durationUnit"
                             ng-options="item.name as item.name for item in treatmentConfig.durationUnits" required>

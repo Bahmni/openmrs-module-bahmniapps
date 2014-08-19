@@ -143,7 +143,13 @@
                 padding: 0.2em;
             }
         }
-    }
+        button.has-notes, button.has-notes:hover {
+            i {
+              color: orange;
+            }
+        }
+
+      }
 
     .select-drug {
         float: left;

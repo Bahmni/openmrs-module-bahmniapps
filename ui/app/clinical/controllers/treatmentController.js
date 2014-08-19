@@ -18,6 +18,7 @@ angular.module('bahmni.clinical')
             $scope.add = function () {
                 $scope.treatments.push($scope.treatment);
                 $scope.treatment = newTreatment();
+                $scope.treatment.scheduledDate = $filter("date")($scope.treatment.scheduledDate, 'yyyy-MM-dd');
             };
 
             $scope.remove = function (index) {
