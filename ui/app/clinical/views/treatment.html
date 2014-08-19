@@ -2,30 +2,42 @@
     <section class="edit-drug-order section-grid">
         <form name="addForm" ng-submit="add()">
             <fieldset>
-                <input class="form-field drug-name" type="text" placeholder="Drug Name" bahmni-autocomplete source="getDrugs" response-map="getDataResults"
-                        ng-model="treatment.drugNameDisplay" on-select="populateBackingFields" required  autofocus />
+                <input class="form-field drug-name" type="text" placeholder="Drug Name" bahmni-autocomplete
+                       source="getDrugs" response-map="getDataResults"
+                       ng-model="treatment.drugNameDisplay" on-select="populateBackingFields" required autofocus/>
+
                 <div class="frequency-widget uniform-frequency" ng-click="treatment.setFrequencyType('uniform')">
-                    <input class="form-field dose" only-number type="number" min="0" placeholder="Dose" ng-model="treatment.uniformDosingType.dose" required ng-disabled="isDisabled('uniform')"/>
+                    <input class="form-field dose" only-number type="number" min="0" placeholder="Dose"
+                           ng-model="treatment.uniformDosingType.dose" required ng-disabled="isDisabled('uniform')"/>
                     <select class="form-field freq-dose-units" ng-model="treatment.uniformDosingType.doseUnits"
-                            ng-options="item.name as item.name for item in treatmentConfig.doseUnits" required ng-disabled="isDisabled('uniform')">
+                            ng-options="item.name as item.name for item in treatmentConfig.doseUnits" required
+                            ng-disabled="isDisabled('uniform')">
                         <option/>
                     </select>
+
                     <div>
                         <select class="form-field frequency" ng-model="treatment.uniformDosingType.frequency"
-                                ng-options="item.name as item.name for item in treatmentConfig.frequencies" required ng-disabled="isDisabled('uniform')">
+                                ng-options="item.name as item.name for item in treatmentConfig.frequencies" required
+                                ng-disabled="isDisabled('uniform')">
                             <option/>
                         </select>
                     </div>
                 </div>
                 <span class="or-seperator">or</span>
+
                 <div class="frequency-widget variable-frequency" ng-click="treatment.setFrequencyType('variable')">
                     <div class="form-field dose-cell">
-                        <input type="number" min="0" ng-model="treatment.variableDosingType.morningDose" only-number required ng-disabled="isDisabled('variable')"/>
-                        <input type="number" min="0" ng-model="treatment.variableDosingType.afternoonDose" only-number required ng-disabled="isDisabled('variable')"/>
-                        <input type="number" min="0" ng-model="treatment.variableDosingType.eveningDose"  only-number required ng-disabled="isDisabled('variable')"/>
+                        <input type="number" min="0" ng-model="treatment.variableDosingType.morningDose" only-number
+                               required ng-disabled="isDisabled('variable')"/>
+                        <input type="number" min="0" ng-model="treatment.variableDosingType.afternoonDose" only-number
+                               required ng-disabled="isDisabled('variable')"/>
+                        <input type="number" min="0" ng-model="treatment.variableDosingType.eveningDose" only-number
+                               required ng-disabled="isDisabled('variable')"/>
                     </div>
                     <select class="form-field freq-dose-units" ng-model="treatment.variableDosingType.doseUnits"
-                            ng-options="item.name as item.name for item in treatmentConfig.doseUnits" ng-change="treatment.setFrequencyType('variable')" required ng-disabled="isDisabled('variable')">
+                            ng-options="item.name as item.name for item in treatmentConfig.doseUnits"
+                            ng-change="treatment.setFrequencyType('variable')" required
+                            ng-disabled="isDisabled('variable')">
                         <option/>
                     </select>
                 </div>
@@ -46,9 +58,10 @@
                     <option value="In the evening">In the evening</option>
                     <option value="At bedtime">At bedtime</option>
                 </select>
+
                 <div class="duration-widget">
-                    <input  class="form-field duration" type="number" min="0" placeholder="Duration"
-                            ng-model="treatment.duration" required only-number />
+                    <input class="form-field duration" type="number" min="0" placeholder="Duration"
+                           ng-model="treatment.duration" required only-number/>
                     <select class="form-field duration-unit" ng-model="treatment.durationUnit"
                             ng-options="item.name as item.name for item in treatmentConfig.durationUnits" required>
                         <option/>
@@ -59,10 +72,11 @@
                 </div>
 
                 <input class="form-field start-date" type="date"
-                        ng-model="treatment.scheduledDate" placeholder="dd-mm-yyyy" min="{}">
+                       ng-model="treatment.scheduledDate" placeholder="dd-mm-yyyy" min="{}">
 
                 <div class="quantity-widget">
-                    <input class="form-field quantity" type="number" min="0" ng-model="treatment.quantity" required only-number/>
+                    <input class="form-field quantity" type="number" min="0" ng-model="treatment.quantity" required
+                           only-number/>
                     <select class="form-field quantity-unit" ng-model="treatment.quantityUnit"
                             ng-options="item.name as item.name for item in treatmentConfig.dispensingUnits" required>
                         <option/>
@@ -72,7 +86,7 @@
 
             <fieldset>
                 <textarea class="form-field drug-order-notes" placeholder="Notes" ng-model="treatment.notes"></textarea>
-                <input class="form-field add-drug-btn confirm" type="submit"value="Add"/>
+                <input class="form-field add-drug-btn confirm" type="submit" value="Add"/>
             </fieldset>
         </form>
     </section>
