@@ -9,6 +9,7 @@ describe("TreatmentController", function () {
         scope.currentBoard = {extension: {}};
         $rootScope.contextChangeHandler = {add: function () {
         }};
+        scope.addForm = {$invalid: false};
 
         $controller('TreatmentController', {
             $scope: scope,

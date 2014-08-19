@@ -16,15 +16,27 @@ angular.module('bahmni.clinical')
             $scope.treatment.scheduledDate = $filter("date")($scope.treatment.scheduledDate, 'yyyy-MM-dd');
 
             $scope.add = function () {
+                if ($scope.addForm.$invalid) {
+                    $scope.formInvalid = true;
+                    return;
+                }
                 $scope.treatments.push($scope.treatment);
                 $scope.treatment = newTreatment();
                 $scope.treatment.scheduledDate = $filter("date")($scope.treatment.scheduledDate, 'yyyy-MM-dd');
+                $scope.formInvalid = false;
             };
 
-            $scope.isDisabled = function(frequencyType) {
-                return $scope.treatment.frequencyType !== frequencyType;
-            }
+            $scope.isVariableDosingType = function() {
+                return $scope.isFrequencyType('variable');
+            };
 
+            $scope.isUniformDosingType = function() {
+                return isFrequencyType("uniform");
+            };
+
+            $scope.isFrequencyType = function(type) {
+                return $scope.treatment.frequencyType === type;
+            };
             $scope.remove = function (index) {
                 $scope.treatments.splice(index, 1);
             };
