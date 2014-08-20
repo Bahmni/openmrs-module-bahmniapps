@@ -73,3 +73,28 @@ ul.table-mimic {
 		}
 	}
 }
+
+/*inline scroll table*/
+table.h-scroll {
+    width: 100%; border-collapse: collapse; border-spacing: 0;
+    display: block; position: relative;
+    border-left: 1px solid #eee;
+    border-right: 1px solid #eee;
+    font-size: 14px;
+    margin-top: 0;
+    overflow: auto;
+    th, td { margin: 0; vertical-align: top; }
+    th { text-align: left; background: #eee;}
+    th.drug {font-family: "OpenSans", Arial, sans-serif;}
+
+    thead { display: block; float: left; }
+    tbody { display: block; width: auto; position: relative; overflow-x: auto; white-space: nowrap; }
+    thead tr { display: block; border: 0;}
+    th { display: block;}
+    tbody tr { display: table-cell; vertical-align: top; border-top: 0;}
+    td { display: block; min-height: 1.71em; text-align: left; }
+
+      /* sort out borders */
+    th { border-bottom: 0; border-left: 0; }
+    td { border-left: 0; border-right: 0; border-bottom: 0; }
+}

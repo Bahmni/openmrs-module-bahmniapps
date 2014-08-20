@@ -1,5 +1,5 @@
 <section class="block treatment-section" ng-if="visit.hasDrugOrders()">
-    <h2 ng-click="visit.toggleTreatmentSection()" class="has-toggle" ng-if="visit.admissionDate">
+    <h2 ng-click="visit.toggleTreatmentSection()" class="has-toggle section-title" ng-if="visit.admissionDate">
         <button class="section-toggle">
             <i class="icon-caret-right"
                ng-hide="visit.showTreatmentSection"></i>
@@ -8,7 +8,7 @@
         </button>
         Treatment
     </h2>
-    <h2 ng-if="!visit.admissionDate">
+    <h2 ng-if="!visit.admissionDate" class="section-title">
         Treatment
     </h2>
     <table ng-repeat="drugOrderGroup in visit.drugOrders.getDrugOrderGroups()" ng-show="visit.showTreatmentSection">

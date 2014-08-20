@@ -1,0 +1,20 @@
+.primary-section-grid {
+	border: 1px solid $primarySectionGridBorder;
+	@include border-radius($smallestSpacing);
+    box-shadow: 0px 0px 8px -1px #ccc;
+}
+
+.section-grid {
+	border: 1px solid $lightGray;
+	@include border-radius($smallestSpacing);
+}
+
+h2.section-title {
+	font-family: $primaryBoldFont;
+	padding: $defaultSpacing;
+	margin-bottom: 0;
+	color: $bahmniSectionHeaderColor;
+	font-size: 18px;
+	border-bottom: 1px solid $bahmniSectionHeaderColor;
+}
+

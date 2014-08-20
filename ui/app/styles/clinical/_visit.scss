@@ -1,16 +1,16 @@
+.visit-summary-page {
+    section.block {
+        @extend .section-grid;
+        margin-bottom: 10px;
+    }
+}
+
 .opd-wrapper {overflow-x: hidden;}
 #view-content .visit {padding: 10px;}
 .visit {
   table tr:nth-child(even), table tr:nth-child(odd) {
     background: #fff;
   }
-	h2{
-  	color:#66b298;
-    border-bottom: 1px solid #66b298;
-  	padding:5px 0px;
-    font-size: 18px;
-    font-weight: normal;
-	}
   table 
 	.info-message{
 			padding:10px;
@@ -33,7 +33,8 @@
 .visit {
   table tr th {
     background: #eee;
-    background-image: none; 
+    background-image: none;
+    color: #666; 
   }
   table tr th.notes {
     background: #fef7e3;
@@ -80,7 +81,7 @@
   }
 
 }
-.visit .diagnosis h2, .visit .diagnosis .history-diagnosis {margin-bottom:0;}
+.visit .diagnosis .history-diagnosis {margin-bottom:0;}
 .visit {
   .diagnosis .history-diagnosis .table-header {
     .col.col4 {
@@ -271,51 +272,8 @@ strong {
   border-left: 1px solid #DDD;
   border-right: 1px solid #DDD;
 }
-.visit .ipd-treatment-section {
-  table {
-    width: 100%; border-collapse: collapse; border-spacing: 0;
-    display: block; position: relative;
-    border-left: 1px solid #eee;
-    border-right: 1px solid #eee;
-    font-size: 14px;
-    margin-top: 0;
-    th, td { margin: 0; vertical-align: top; }
-    th { text-align: left; background: #eee;}
-    th.drug {font-family: "OpenSans", Arial, sans-serif;}
 
-    thead { display: block; float: left; }
-    tbody { display: block; width: auto; position: relative; overflow-x: auto; white-space: nowrap; }
-    thead tr { display: block; border: 0;}
-    th { display: block;}
-    tbody tr { display: table-cell; vertical-align: top; border-top: 0;}
-    td { display: block; min-height: 1.71em; text-align: left; }
-
-      /* sort out borders */
-    th { border-bottom: 0; border-left: 0; }
-    td { border-left: 0; border-right: 0; border-bottom: 0; }
-  }
-}
 table.ipd-investigation {
-  width: 100%; border-collapse: collapse; border-spacing: 0;
-  display: block; position: relative;
-  border-left: 1px solid #eee;
-  border-right: 1px solid #eee;
-  font-size: 14px;
-  margin-top: 0;
-  th, td { margin: 0; vertical-align: top; }
-  th { text-align: left; background: #eee;}
-  th.drug {font-family: "OpenSans", Arial, sans-serif;}
-
-  thead { display: block; float: left; }
-  tbody { display: block; width: auto; position: relative; overflow-x: auto; white-space: nowrap; }
-  thead tr { display: block; border: 0;}
-  th { display: block;}
-  tbody tr { display: table-cell; vertical-align: top; border-top: 0;}
-  td { display: block; min-height: 1.71em; text-align: left; }
-
-    /* sort out borders */
-  th { border-bottom: 0; border-left: 0; }
-  td { border-left: 0; border-right: 0; border-bottom: 0; }
   .belongsToPanel {padding-left: 25px; font-family: sans-serif;}
 }
 .ipd-test-results {
@@ -347,8 +305,8 @@ table.ipd-investigation {
   &.headerRow {
     background: #f6f6f6;
     font-family: OpenSansBold;
-    padding: 5px;
-    color: #666;
+    padding: 5px 5px 5px 10px;
+    color: #888;
   }
   &.name {
     padding-left: 20px;

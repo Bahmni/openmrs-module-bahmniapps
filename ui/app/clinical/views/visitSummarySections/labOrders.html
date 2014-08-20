@@ -1,7 +1,7 @@
 <section class="block laborder-section" ng-if="visit.hasLabTests()">
     <div ng-if="visit.admissionDate && !print">
-        <h2 class="ipd-investigation-title">Investigations Chart</h2>
-        <table class="ipd-investigation">
+        <h2 class="ipd-investigation-title section-title">Investigations Chart</h2>
+        <table class="ipd-investigation h-scroll">
             <thead>
             <tr>
                 <th><span
@@ -41,7 +41,7 @@
             </tbody>
         </table>
     </div>
-    <h2 ng-click="visit.toggleLabInvestigation()" class="has-toggle row-click" ng-if="visit.admissionDate">
+    <h2 ng-click="visit.toggleLabInvestigation()" class="has-toggle row-click section-title" ng-if="visit.admissionDate">
         <button class="section-toggle">
             <i class="icon-caret-right"
                ng-hide="visit.showLabInvestigations"></i>
@@ -50,7 +50,7 @@
         </button>
         Lab Investigations
     </h2>
-    <h2 ng-if="!visit.admissionDate">Lab Investigations</h2>
+    <h2 ng-if="!visit.admissionDate" class="section-title">Lab Investigations</h2>
 
     <div ng-repeat="labOrders in visit.labTestOrderObsMap" ng-show="visit.showLabInvestigations"
          class="lab-investigation">
