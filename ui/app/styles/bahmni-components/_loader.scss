@@ -1,0 +1,24 @@
+#loader {
+  z-index: 10000;
+  width: 100%;
+  height: 20px;
+  margin: 20px auto;
+  background-image: url('../images/loader.gif');
+  background-repeat:no-repeat;
+  background-position:center;
+}
+
+#overlay {
+  display: none;
+  z-index: 10000000;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  background: rgba(0,0,0,0.6) url('../images/spinner.gif') no-repeat center center;
+  div{
+    width:100%;
+    height: 100%;
+  }
+}

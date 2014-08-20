@@ -1,0 +1,190 @@
+/******** form element styling start********/
+form,.form{
+ fieldset{
+  border:none;
+  padding:0px;
+  width:100%;
+}
+ &.form-field-inline{
+   @include clearfix();
+   .form-field{
+     float: left;
+     margin-right:15px;
+   }
+ }
+.form-field{
+  @include clearfix();
+  .field-attribute{
+    float:left;
+    label{
+        width:13em;
+        float:left;
+        text-align:right;
+        margin:0.5em 0.8em 0em 0em;
+    }
+  }
+  .field-value {
+    float: left;
+    input[type="text"], input[type="password"] {
+      float: left;
+      width: 12.5em;
+    }
+
+    input[type="number"] {
+      width: 8em;
+    }
+    .value-text-only {
+      display: inline-block;
+      margin: 0.5em 0.8em 0em 0em;
+    }
+
+    .provider {
+      float: right;
+    }
+  }
+}
+.form-field-inline{
+  .form-field {
+    float: left;
+    display: inline;
+    float: left;
+    width: 50%;
+    margin: 0;
+    margin-bottom: 10px;
+  }
+  p{
+    float:left;
+    margin-left:20px;
+    margin-top:10px;
+  }
+}
+.input-prepend{
+  float:left;
+  input{
+      display: inline-block;
+      margin-bottom: 0;
+      vertical-align: middle;
+      float:left;
+      margin:0px !important;
+  }
+  .add-on{
+    @extend input;
+    @include border-radius();  
+    height: 21px;
+    min-width: 17px;
+    padding: 4px 5px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+  }
+
+}
+.input-prepend .add-on:first-child, .input-prepend .btn:first-child {
+  -webkit-border-radius: 4px 0 0 4px;
+  -moz-border-radius: 4px 0 0 4px;
+  border-radius: 4px 0 0 4px;
+}
+.input-prepend .add-on, .input-prepend .btn{
+  margin-right:-1px;
+}
+input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly], .select-arrow select[disabled]{
+  cursor: not-allowed;
+  background-color: #eee;
+  color:#868686;
+  &:focus{
+    cursor: not-allowed;
+    background-color: #eee;
+    outline:none;
+  }
+}
+.form-button-wrapper{
+  margin-top:10px;
+  padding-left:14em;
+}
+}
+button.small-btn{
+           padding:8px 12px;
+           &.cancel{
+            opacity:.5;
+            &:hover{
+              opacity:1;
+            }
+           }
+  }
+.input-mini{@include column(1);}
+.input-small{@include column(2);}
+.input-medium{@include column(4);}
+.input-large{@include column(6);}
+.input-xlarge{@include column(8);}
+.input-xxlarge{@include column(10);}
+textarea{
+  width:426.6px;
+  height: 84px;
+}
+
+.transparent {
+  opacity: 0.2;
+}
+
+.opaque {
+  opacity: 1;
+}
+
+.simple-form-ui select.illegalValue{
+  border: 2px solid;
+  border-color: #ff6666;
+  background: white;
+}
+.span1{
+  @include column(1);
+}
+.span2{
+  @include column(2);
+}
+.span3{
+  @include column(3);
+}
+.span4{
+  @include column(4);
+}
+.span5{
+  @include column(5);
+}
+.span6{
+  @include column(6);
+}
+.span7{
+  @include column(7);
+}
+.span8{
+  @include column(8);
+}
+.span9{
+  @include column(9);
+}
+.span10{
+  @include column(10);
+}
+.span11{
+  @include column(11);
+}
+.span12{
+  @include column(12);
+}
+form .select-arrow:after, .form .select-arrow:after{height:29px;}
+/********* form element styling end***********/
+
+/*vendor forms*/
+.ui-autocomplete {
+    .ui-menu-item{
+        border-bottom: 1px solid #bbb;
+    }
+    .ui-menu-item a{
+        padding: 10px 5px;
+        &:active, &:focus {
+            background: #fef9e2;
+            border: 1px solid #c77405;
+            color: #c77405;
+            font-weight: bold;
+        }
+    }
+}

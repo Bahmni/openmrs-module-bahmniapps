@@ -1,3 +1,37 @@
+/*old styles - visit - diagnosis, diagnosis tab*/
+.table{
+  border:1px solid #cecece;
+  @include font-size(1);
+  .row{
+    @include pie-clearfix();
+    border-bottom:1px solid #cecece;
+  }
+  .col{
+    padding:10px 0px;
+    @include font-size(0.9);
+    @include column(11);
+  }
+
+  .table-header{
+    background:#F0F0F0;
+    border-bottom:1px solid #cecece;
+    .col{
+      @include font-size(1);
+      font-weight: bold;
+    }
+  }
+  .table-body{
+    .row{
+      &:hover{
+        background:#FAF6F0;
+      }
+      &:nth-child(even) {
+          background: #f1f1f1;
+        }
+    }
+  }
+}
+
 /*basic table*/
 table {
 	thead tr th{

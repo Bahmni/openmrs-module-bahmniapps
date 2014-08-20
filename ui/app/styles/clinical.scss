@@ -15,12 +15,13 @@ $fontPath: "../components/openmrs-uicommons/omod/src/main/webapp/resources/fonts
 @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fragments/notifications";
 
 /*JSS css files*/
-@import "bahmni-helper/variables.scss";
+@import "bahmni-helper/variables";
 
 @import "common/bahmniGlobal";
 @import "common/notifications";
 @import "common/directives";
 @import "common/angularFix";
+@import "bahmni-components/table";
 
 @import "clinical/layout";
 @import "clinical/patientSearch";
@@ -38,9 +39,14 @@ $fontPath: "../components/openmrs-uicommons/omod/src/main/webapp/resources/fonts
 @import "adt/adt";
 @import "adt/wardLayout";
 
-@import "bahmni-components/table.scss";
-@import "bahmni-components/buttons.scss";
+@import "bahmni-components/uiHelper";
+@import "bahmni-components/loader";
+@import "bahmni-components/header";
+@import "bahmni-components/navigation";
+@import "bahmni-components/forms";
+@import "bahmni-components/buttons";
 @import "bahmni-components/inPageTabs";
 @import "bahmni-components/ngDialog";
 @import "bahmni-components/gallery";
-@import "bahmni-components/diseaseTemplatesControl";
+@import "bahmni-components/templateController";
+@import "bahmni-components/patientControlPanel";

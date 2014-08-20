@@ -1,0 +1,29 @@
+.patient-details {
+    display: inline-block;
+    position: absolute;
+    top: 56px;
+    right: 10px;
+    z-index: 1;
+}
+.patient-details a {
+    text-transform: capitalize;
+    width: 22%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: right;
+    background: #eee;
+    padding: 5px 10px;
+    border-radius: 0 0 5px 5px;
+    color: #007fff;
+    box-shadow: 0px 4px 5px -2px #ccc;
+    right: 5px;
+    border: 1px solid #ccc;
+    border-top: 0;
+    &:hover {
+        text-decoration: none;
+    }
+    @media screen and (max-width: 768px) {
+        display: none;
+    }
+}
