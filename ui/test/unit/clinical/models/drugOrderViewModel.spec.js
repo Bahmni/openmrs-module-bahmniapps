@@ -19,7 +19,7 @@ describe("drugOrderViewModel", function () {
         treatment.uniformDosingType.dose = "1";
         treatment.uniformDosingType.doseUnits = "Capsule";
         treatment.uniformDosingType.frequency = "Once a day";
-        expect(treatment.getDescription()).toBe("1 Capsule, Once a day, Before Meals, , Orally - 10 Days (12 Capsule)");
+        expect(treatment.getDescription()).toBe("1 Capsule, Once a day, Before Meals, Orally - 10 Days (12 Capsule)");
     });
 
     it("should get the text to be displayed in the treatment list with dosage instructions", function () {
@@ -34,7 +34,7 @@ describe("drugOrderViewModel", function () {
             eveningDose: 1
         };
 
-        expect(treatment.getDescription()).toBe("1-1-1, Before Meals, , Orally - 10 Days (12 Capsule)")
+        expect(treatment.getDescription()).toBe("1-1-1, Before Meals, Orally - 10 Days (12 Capsule)")
     });
 
     it("should get the default route from the config", function() {

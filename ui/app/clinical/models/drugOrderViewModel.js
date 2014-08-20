@@ -37,15 +37,19 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, routes, duration
         return self.frequencyType === "uniform" ? simpleDoseAndFrequency() : numberBasedDoseAndFrequency();
     };
 
+    var addDelimiter = function (item, delimiter) {
+        return item && item.length > 0 ? item + delimiter : item;
+    };
+
     this.getDescription = function () {
-        return blankIfFalsy(getDoseAndFrequency()) + ", " +
-            blankIfFalsy(self.instructions) + ", " +
-            blankIfFalsy(asNeeded(self.asNeeded)) + ", " +
-            blankIfFalsy(self.route) + " - " +
-            blankIfFalsy(self.duration) + " " +
-            blankIfFalsy(self.durationUnit) + " (" +
-            blankIfFalsy(self.quantity) + " " +
-            blankIfFalsy(self.quantityUnit) + ")";
+        return addDelimiter(blankIfFalsy(getDoseAndFrequency()), ', ') +
+            addDelimiter(blankIfFalsy(self.instructions), ", ") +
+            addDelimiter(blankIfFalsy(asNeeded(self.asNeeded)), ', ') +
+            addDelimiter(blankIfFalsy(self.route), " - ") +
+            addDelimiter(blankIfFalsy(self.duration), " ") +
+            addDelimiter(blankIfFalsy(self.durationUnit), " (") +
+            addDelimiter(blankIfFalsy(self.quantity), " ") +
+            addDelimiter(blankIfFalsy(self.quantityUnit), ")");
     };
 
     this.setFrequencyType = function (type) {
