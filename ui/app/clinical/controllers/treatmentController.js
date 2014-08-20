@@ -27,11 +27,11 @@ angular.module('bahmni.clinical')
             };
 
             $scope.isVariableDosingType = function() {
-                return $scope.isFrequencyType('variable');
+                return $scope.isFrequencyType("variable");
             };
 
             $scope.isUniformDosingType = function() {
-                return isFrequencyType("uniform");
+                return $scope.isFrequencyType("uniform");
             };
 
             $scope.isFrequencyType = function(type) {
