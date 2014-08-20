@@ -7,7 +7,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, routes, duration
     };
 
     var self = this;
-    this.prn = false;
+    this.asNeeded = false;
     this.route = getDefaultValue(extensionParams && extensionParams.defaultRoute, routes);
     this.durationUnit = getDefaultValue(extensionParams && extensionParams.defaultDurationUnit, durationUnits);
     this.scheduledDate = new Date();
@@ -27,7 +27,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, routes, duration
         return variableDosingType.morningDose + "-" + variableDosingType.afternoonDose + "-" + variableDosingType.eveningDose;
     };
     var asNeeded = function (asNeeded) {
-        return asNeeded ? "as needed" : "";
+        return asNeeded ? "as needed" : '';
     };
     var blankIfFalsy = function (value) {
         return value ? value : "";
