@@ -9,7 +9,8 @@ button:focus, a:focus, .btn:focus {outline:0;}
   margin: 6px 5px 0 25px;
   color: #fff;  
   border-left: 0;
-  box-shadow: 0 0 5px #888;  
+  box-shadow: 0 0 5px #888;
+  float: left; 
   @include border-radius(3px);
   &:hover {
     text-decoration: none;
