@@ -58,7 +58,7 @@
           </div>
         </div>
         <div class="upload-inline-buttons">
-          <input id="file-browse" type="file" name="image" accept="image/*" capture="camera" file-upload visit="newVisit" on-select="setConceptOnImage" default-concept="defaultConcept">
+          <input id="file-browse" type="file" name="image" accept="image/*" capture="camera" file-upload visit="newVisit" on-select="onSelect">
           <label for="file-browse" class="btn btn-primary" ng-click="resetCurrentVisit(newVisit)"><i class="icon-camera icon-white"></i> SCAN</label>
           <button type="submit" ng-disabled="newVisit.images.length == 0 || newVisitForm.$invalid" class="btn btn-primary">
             <i class="icon-save icon-white"></i> SAVE
@@ -68,7 +68,7 @@
         <ul class="files">
           <li class="clear" ng-repeat="image in newVisit.images | reverse">
             <div class="file">
-              <img bm-gallery-item index="{{$index}}" visit-uuid="'new'" index="{{$index}}" prepend="!visit.isSaved(image)" image="image" ng-src="{{image.thumbnail}}" width="100">
+              <img bm-gallery-item index="{{$index}}" visit-uuid="'new'" visit-order="0" image="image" ng-src="{{image.thumbnail}}" width="100">
               <input class="concept-name" ng-if="canDeleteImage(image)" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter a value" title="Select a value from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
               <input class="concept-name" ng-if="!canDeleteImage(image)" readonly ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter a value" title="Select a value from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true"/>
             </div>
@@ -106,12 +106,12 @@
               </li>
 
               <li>
-                <input id="file-browse-{{visit.uuid}}" type="file" name="image" accept="image/*" capture="camera" file-upload visit="visit" on-select="setConceptOnImage" default-concept="defaultConcept">
+                <input id="file-browse-{{visit.uuid}}" type="file" name="image" accept="image/*" capture="camera" file-upload visit="visit" on-select="onSelect">
                 <label class="placeholder btn" for="file-browse-{{visit.uuid}}"><i class="icon-plus needsclick"></i></label>
               </li>
               <li ng-repeat="image in visit.images | reverse">
                 <div class="file">
-                  <img  bm-gallery-item prepend="!visit.isSaved(image)" index="{{$index}}" visit-uuid="visit.uuid" image="image" ng-src="{{image.thumbnail}}" width="100" ng-class="{true:'transparent', false:'opaque'}[image.voided]"/>
+                  <img  bm-gallery-item index="{{$index}}" visit-uuid="visit.uuid" visit-order="{{$parent.$index+1}}" image="image" ng-src="{{image.thumbnail}}" width="100" ng-class="{true:'transparent', false:'opaque'}[image.voided]"/>
                   <input name="{{'image'+$index}}" ng-if="canDeleteImage(image)" class="concept-name" ng-class="{saved: visit.isSaved(image)}" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter a value" title="Select a value from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true" ng-change="visit.markAsUpdated()" ng-disabled="image.voided"/>
                   <input name="{{'image'+$index}}" ng-if="!canDeleteImage(image)" readonly class="concept-name saved" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" required placeholder="Enter a value" title="Select a value from autocomplete" pattern="{{escapeRegExp(image.concept.name)}}" blur-on-select="true" ng-change="visit.markAsUpdated()" ng-disabled="image.voided"/>
                 </div>

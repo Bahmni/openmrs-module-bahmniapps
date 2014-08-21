@@ -21,15 +21,15 @@ angular.module('bahmni.common.uiHelper')
                 return this.addImage(this.image(record), tag);
             };
 
-            this.addImage = function (image, tag, prepend) {
+            this.addImage = function (image, tag, tagOrder) {
                 var matchedAlbum = getMatchingAlbum(tag);
                 if (!matchedAlbum) {
                     var newAlbum = {};
                     newAlbum.tag = tag;
                     newAlbum.images = [image];
-                    $scope.albums.push(newAlbum);
+                    $scope.albums.splice(tagOrder, 0, newAlbum);
                 }else{
-                    prepend ? matchedAlbum.images.unshift(image) : matchedAlbum.images.push(image);
+                    matchedAlbum.images.push(image);
                 }
                 return $scope.albums[0].images.length - 1;
             };
@@ -74,7 +74,7 @@ angular.module('bahmni.common.uiHelper')
                 date: $scope.image.obsDatetime,
                 uuid: $scope.image.obsUuid
             };
-            imageGalleryController.addImage(image, $scope.visitUuid, $scope.prepend);
+            imageGalleryController.addImage(image, $scope.visitUuid, $scope.visitOrder);
 
             element.click(function (e) {
                 e.stopPropagation();
@@ -90,9 +90,9 @@ angular.module('bahmni.common.uiHelper')
             link: link,
             scope: {
                 image: '=',
-                prepend: "=?",
                 index: "@",
-                visitUuid: "="
+                visitUuid: "=",
+                visitOrder: "@"
             },
             require: '^bmGallery'
         };

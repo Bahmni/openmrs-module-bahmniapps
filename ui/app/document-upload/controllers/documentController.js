@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('opd.documentupload')
-    .controller('DocumentController', ['$scope', '$stateParams', 'visitService', 'patientService', 'encounterService', 'spinner', 'visitDocumentService', '$rootScope', '$http', '$q', '$timeout', '$window',
-        function ($scope, $stateParams, visitService, patientService, encounterService, spinner, visitDocumentService, $rootScope, $http, $q, $timeout, $window) {
+    .controller('DocumentController', ['$scope', '$stateParams', 'visitService', 'patientService', 'encounterService', 'spinner', 'visitDocumentService', '$rootScope', '$http', '$q', '$timeout',
+        function ($scope, $stateParams, visitService, patientService, encounterService, spinner, visitDocumentService, $rootScope, $http, $q, $timeout) {
             var encounterTypeUuid;
             var topLevelConceptUuid;
             var customVisitParams = Bahmni.DocumentUpload.Constants.visitRepresentation;
@@ -191,6 +191,16 @@ angular.module('opd.documentupload')
                 return results.map(function (concept) {
                     return {'concept': {uuid: concept.uuid, name: concept.name.name, editableName: concept.name.name}, 'value': concept.name.name}
                 });
+            };
+
+            $scope.onSelect = function(image, visit){
+                $scope.toggleGallery=false;
+                spinner.forPromise(visitDocumentService.saveImage(image, $rootScope.patient.uuid, $rootScope.appConfig.encounterType).then(function(response) {
+                    var imageUrl = Bahmni.Common.Constants.documentsPath + '/' + response.data;
+                    var savedImage = visit.addImage(imageUrl);
+                    $scope.setConceptOnImage(savedImage, $scope.defaultConcept);
+                    $scope.toggleGallery=true;
+                }));
             };
 
             $scope.setConceptOnImage = function (image, selectedItem) {
