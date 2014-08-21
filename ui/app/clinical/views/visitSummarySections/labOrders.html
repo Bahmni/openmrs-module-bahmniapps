@@ -85,7 +85,8 @@
                 ng-class="{'is-abnormal': line.isAbnormal, 'referred-out': line.referredOut}" ng-click="toggle(line)"
                 class="row-click">
                 <td>
-                    <span>{{line.concept.name}}</span>
+                    <span ng-if="!line.labReport">{{line.concept.name}}</span>
+                    <span ng-if="line.labReport"><a href="{{line.labReport}}" onclick="event.stopPropagation()" target="_blank">{{line.concept.name}}</a></span>
                     <span class="range">
                       <span ng-if="line.minNormal && line.maxNormal">
                         {{' (' + line.minNormal + ' - ' + line.maxNormal + ') '}}

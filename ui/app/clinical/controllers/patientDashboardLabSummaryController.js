@@ -4,11 +4,11 @@ angular.module('bahmni.clinical')
             $scope.showInvestigationChart = false;
             $scope.toggleInvestigationChart = function() {
                 $scope.showInvestigationChart = !$scope.showInvestigationChart;
-            }
+            };
 
             $scope.toggle = function(line) {
                 line.showNotes = !line.showNotes;
-            }
+            };
 
             var flattened = function(accessions) {
                 return accessions.map(function(results) {
@@ -16,7 +16,11 @@ angular.module('bahmni.clinical')
                         return result.isPanel == true ? [result, result.tests] : result;
                     });
                 });
-            }
+            };
+
+            $scope.getUploadedFileUrl = function(uploadedFileName){
+                return Bahmni.Common.Constants.labResultUploadedFileNameUrl + uploadedFileName;
+            };
 
             spinner.forPromise(labOrderResultService.getAllForPatient($rootScope.patient.uuid).then(function(results) {
                 var sortedConceptSet = new Bahmni.Clinical.SortedConceptSet($rootScope.allTestsAndPanelsConcept);

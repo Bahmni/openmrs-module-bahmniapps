@@ -13,6 +13,10 @@ angular.module('bahmni.clinical')
 
             init();
 
+            $scope.getUploadedFileUrl = function(uploadedFileName){
+                return Bahmni.Common.Constants.labResultUploadedFileNameUrl + uploadedFileName;
+            };
+
             $scope.hasLabOrders = function () {
                 return $scope.labAccessions && $scope.labAccessions.length > 0;
             };

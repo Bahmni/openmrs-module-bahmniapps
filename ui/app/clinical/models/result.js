@@ -25,7 +25,7 @@ Bahmni.Clinical.Result = (function () {
             return result[0] && result[0].value;
         },
         getRealObs = function (observations) {
-            var invalidConcepts = ["LAB_ABNORMAL", "LAB_MINNORMAL", "LAB_MAXNORMAL", "LAB_NOTES", "REFERRED_OUT"];
+            var invalidConcepts = ["LAB_ABNORMAL", "LAB_MINNORMAL", "LAB_MAXNORMAL", "LAB_NOTES", "REFERRED_OUT", "LAB_REPORT"];
             return observations.filter(function (observation) {
                 return invalidConcepts.indexOf(observation.concept.name) < 0;
             })[0];
@@ -34,6 +34,9 @@ Bahmni.Clinical.Result = (function () {
             var matchingObs = matchingObservations(observations, conceptName);
             var sortedObservations = _.sortBy(matchingObs, 'observationDateTime').reverse();
             return sortedObservations[0] && sortedObservations[0].value;
+        },
+        getLabReportUrl = function(observations){
+            return valueOf(observations, "LAB_REPORT") ? Bahmni.Common.Constants.labResultUploadedFileNameUrl + valueOf(observations, "LAB_REPORT") : null
         };
 
     Result.create = function (parentConcept, observations) {
@@ -45,7 +48,9 @@ Bahmni.Clinical.Result = (function () {
             maxNormal: valueOf(observations, "LAB_MAXNORMAL"),
             units: realObs && realObs.concept.units || null,
             notes: latestMatchingObservationValue(observations, "LAB_NOTES"),
-            referredOut: matchingObservations(observations, "REFERRED_OUT").length > 0
+            referredOut: matchingObservations(observations, "REFERRED_OUT").length > 0,
+            labReport: getLabReportUrl(observations)
+
         }
         if (realObs) {
             resultData.value = realObs.value;

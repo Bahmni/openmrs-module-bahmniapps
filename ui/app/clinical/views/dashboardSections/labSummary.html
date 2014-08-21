@@ -69,7 +69,8 @@
 
                     <tr ng-if="!labOrderResult.isPanel" ng-click="toggle(labOrderResult)">
                         <td ng-class="{'testUnderPanel': labOrderResult.panelName != null}">
-                            <span bo-text="labOrderResult.testName"></span>
+                            <span ng-if="!labOrderResult.uploadedFileName" bo-text="labOrderResult.testName"></span>
+                            <span ng-if="labOrderResult.uploadedFileName"><a href="{{getUploadedFileUrl(labOrderResult.uploadedFileName)}}" onclick="event.stopPropagation()" target="_blank" bo-text="labOrderResult.testName"></a></span>
                             <span ng-show="labOrderResult.hasRange" class="range">
                                 <span bo-text="'(' + labOrderResult.minNormal + ' - ' + labOrderResult.maxNormal + ')'"></span>
                                 <span ng-show="labOrderResult.testUnitOfMeasurement" class="units" bo-text="labOrderResult.testUnitOfMeasurement"></span>
