@@ -19,16 +19,10 @@
             </thead>
             <tbody>
                 <tr ng-repeat="drugOrder in drugOrdersGroup.values" >
-                    <td class="drug"><span bo-text="drugOrder.name"></span></td>
-                    <td class="dosage" ng-if="drugOrder.isFreeTextDosingType()">
-                        <span bo-text="drugOrder.dosingInstructions|formatDecimalValues"></span>
-                    </td>
-                    <td class="dosage" ng-if="drugOrder.isSimpleDosingType()">
-                        <span>Not yet implemented</span>
-                    </td>
-                    <td class="days"><span>From </span>{{drugOrder.orderDate | date:'dd MMM yy'}}<br /><span> for </span>{{drugOrder.days}}
-                        day(s)
-                    </td>
+                    <td class="drug"><span bo-text="drugOrder.drugName"></span></td>
+                    <td class="dosage"><h5>{{drugOrder.dose}} {{drugOrder.doseUnits}}</h5></td>
+                    <td class="days"><span>From </span>{{drugOrder.orderDate | date:'dd MMM yy'}}<br /><span> for </span>{{drugOrder.duration}} day(s)
+                    </td>`
                 </tr>
             </tbody>
         </table> 

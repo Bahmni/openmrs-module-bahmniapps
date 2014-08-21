@@ -61,11 +61,8 @@ Bahmni.Clinical.DrugOrder = (function () {
 
         isActive: function () {
             return this.isActiveOnDate(DateUtil.today());
-        },
-
-        isFreeTextDosingType: function () {
-            return this.dosingType === 'FreeTextDosingInstructions';
         }
+
     };
 
     return DrugOrder;
