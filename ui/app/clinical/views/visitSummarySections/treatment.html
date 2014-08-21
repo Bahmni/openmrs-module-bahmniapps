@@ -1,12 +1,8 @@
 <section class="block treatment-section" ng-if="visit.hasDrugOrders()">
     <h2 ng-click="visit.toggleTreatmentSection()" class="has-toggle section-title" ng-if="visit.admissionDate">
-        <button class="section-toggle">
-            <i class="icon-caret-right"
-               ng-hide="visit.showTreatmentSection"></i>
-            <i class="icon-caret-down"
-               ng-show="visit.showTreatmentSection"></i>
-        </button>
-        Treatment
+    <i class="icon-caret-right" ng-hide="visit.showTreatmentSection"></i>
+    <i class="icon-caret-down" ng-show="visit.showTreatmentSection"></i>
+    Treatment
     </h2>
     <h2 ng-if="!visit.admissionDate" class="section-title">
         Treatment

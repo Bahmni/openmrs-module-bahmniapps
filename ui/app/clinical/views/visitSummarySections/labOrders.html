@@ -42,13 +42,9 @@
         </table>
     </div>
     <h2 ng-click="visit.toggleLabInvestigation()" class="has-toggle row-click section-title" ng-if="visit.admissionDate">
-        <button class="section-toggle">
-            <i class="icon-caret-right"
-               ng-hide="visit.showLabInvestigations"></i>
-            <i class="icon-caret-down"
-               ng-show="visit.showLabInvestigations"></i>
-        </button>
-        Lab Investigations
+    <i class="icon-caret-right" ng-hide="visit.showLabInvestigations"></i>
+    <i class="icon-caret-down" ng-show="visit.showLabInvestigations"></i>
+    Lab Investigations
     </h2>
     <h2 ng-if="!visit.admissionDate" class="section-title">Lab Investigations</h2>
 
