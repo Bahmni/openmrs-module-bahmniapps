@@ -1,12 +1,5 @@
 .treatment-page {
-    h2 {
-        color:#66b298;
-        border-bottom: 1px solid #66b298;
-        padding:5px 0px;
-        margin-bottom:10px;
-        font-size: 18px;
-        font-weight: normal;
-    }
+    font-size: 14px;
     .inline-notes {
         margin: 0;
         clear: both;
@@ -21,7 +14,7 @@
         }
     }
     .show-invalid .ng-invalid:enabled {
-      border: 1px solid;
+      border: 2px solid;
       border-color: #ff6666;
       background: white;
     }
@@ -39,11 +32,14 @@
                 min-width: 100px;
                 margin-right: 3px;
             }
-            select {
-                height: 35px;
+            input[type="date"] {
+                height: 20px;
+            }
+            select, select.ng-invalid {
+                height: 31px;
             }
             input[type="text"].drug-name {
-                margin-right: 0;
+                margin-right: 20px;
             }
 
             /*width*/
@@ -51,9 +47,13 @@
                 width: 230px;
             }
             input[type="text"].dose, input[type="text"].duration, input[type="text"].quantity,
-            input[type="number"].dose, input[type="number"].duration, input[type="number"].quantity {
+            input[type="number"].dose, input[type="number"].quantity {
                 width: 50px;
                 min-width: 50px;
+            }
+            input[type="number"].duration {
+                width: 71px;
+                min-width: 71px;
             }
             .route, .start-date {
                 width: 100px;
@@ -98,15 +98,15 @@
             .frequency-widget.uniform-frequency {
                 float: left;
                 margin: 0 5px;
-                width: 370px;
+                width: 340px;
             }
             .frequency-widget.variable-frequency {
-                width: 270px;
+                width: 260px;
                 float: left;
             }
             .duration-widget {
                 float: left;
-                margin: 0 21px;
+                margin: 0 35px;
             }
             .quantity-widget {
                 float: right;

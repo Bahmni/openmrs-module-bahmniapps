@@ -35,7 +35,7 @@
                     <select class="form-field freq-dose-units" ng-model="treatment.variableDosingType.doseUnits"
                             ng-options="item.name as item.name for item in treatmentConfig.doseUnits"
                             ng-change="treatment.setFrequencyType('variable')">
-                        <option value="">Unit</option>
+                        <option value="">Units</option>
                     </select>
                 </div>
 
@@ -61,7 +61,7 @@
                            ng-model="treatment.duration" required only-number/>
                     <select class="form-field duration-unit" ng-model="treatment.durationUnit"
                             ng-options="item.name as item.name for item in treatmentConfig.durationUnits" required>
-                        <option value="">Duration</option>
+                        <option value="">Units</option>
                     </select>
                     <select class="form-field route" ng-model="treatment.route"
                             ng-options="item.name as item.name for item in treatmentConfig.routes">
@@ -76,7 +76,7 @@
                            only-number/>
                     <select class="form-field quantity-unit" ng-model="treatment.quantityUnit"
                             ng-options="item.name as item.name for item in treatmentConfig.dispensingUnits" required>
-                        <option value="">Quantity</option>
+                        <option value="">Units</option>
                     </select>
                 </div>
             </fieldset>
