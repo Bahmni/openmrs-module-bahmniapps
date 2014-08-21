@@ -61,7 +61,7 @@
 
                 </div>
 
-                <div class="table current-diagnosis" ng-if="consultation.savedDiagnosesFromCurrentEncounter.length > 0">
+                <div class="table current-diagnosis section-grid" ng-if="consultation.savedDiagnosesFromCurrentEncounter.length > 0">
                     <h2>Current</h2>
                     <div ng-repeat="diagnosis in consultation.savedDiagnosesFromCurrentEncounter | primaryDiagnosisFirst" class="table-body">
                         <div class="row diagnosis-row">
@@ -70,7 +70,7 @@
                     </div>
                 </div>
                 
-                <div class="table history-diagnosis" ng-if="consultation.pastDiagnoses.length > 0">
+                <div class="table history-diagnosis section-grid" ng-if="consultation.pastDiagnoses.length > 0">
                     <div class="row table-header">
                       <div class="col col1"><span>Past Diagnosis</span></div>
                       <div class="col col2"><span>Initial</span></div>
