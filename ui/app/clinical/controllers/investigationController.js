@@ -56,7 +56,8 @@ angular.module('bahmni.clinical')
 
     $scope.onNoteChanged = function() {
         if($scope.consultation.labOrderNote){
-            $scope.consultation.labOrderNote.observationDateTime = new Date();
+//        TODO: Mihir, D3 : Hacky fix to update the datetime to current datetime on the server side. Ideal would be void the previous observation and create a new one.
+            $scope.consultation.labOrderNote.observationDateTime = null;
         }
     }
 

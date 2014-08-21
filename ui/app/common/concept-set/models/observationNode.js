@@ -57,7 +57,6 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUICo
     this.conceptUIConfig = conceptUIConfig;
     this.isObservationNode = true;
     this.uniqueId = _.uniqueId('observation_');
-    this.observationDateTime = Bahmni.Common.Util.DateUtil.now();
     this.duration = this.getDuration();
     this.abnormal = this.getAbnormal();
 
@@ -113,6 +112,8 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
         if (this.primaryObs.isNumeric()) {
             this.setAbnormal();
         }
+//        TODO: Mihir, D3 : Hacky fix to update the datetime to current datetime on the server side. Ideal would be void the previous observation and create a new one.
+        this.primaryObs.observationDateTime = null;
     },
 
     setAbnormal: function () {

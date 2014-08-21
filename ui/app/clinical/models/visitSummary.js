@@ -110,7 +110,7 @@ Bahmni.Clinical.VisitSummary = (function(){
         if (encounterTransactions.length > 0) {
             var encountersInAscendingOrder = encounterTransactions.slice(0).sort(function (e1, e2) {
                 return e1.encounterDateTime > e2.encounterDateTime;
-            })
+            });
             var mostRecentEncounter = encountersInAscendingOrder[encountersInAscendingOrder.length - 1];
             var firstEncounter = encountersInAscendingOrder[0];
             visitStartDateTime = DateUtil.parse(firstEncounter.encounterDateTime);
@@ -135,7 +135,7 @@ Bahmni.Clinical.VisitSummary = (function(){
         }
 
         return new this(visitStartDateTime, mostRecentEncounterDateTime, diagnoses, dispositions, encounterTransactions, labTestOrderObsMap);
-    }
+    };
 
     return VisitSummary;
 })();

@@ -14,7 +14,8 @@ angular.module('bahmni.clinical')
         $scope.editedDiagnosesFromPastEncounters = geEditedDiagnosesFromPastEncounters();
 
         $scope.onNoteChanged = function () {
-            $scope.consultation.consultationNote.observationDateTime = new Date();
+//        TODO: Mihir, D3 : Hacky fix to update the datetime to current datetime on the server side. Ideal would be void the previous observation and create a new one.
+            $scope.consultation.consultationNote.observationDateTime = null;
         };
 
         var groupedObservations = function(){

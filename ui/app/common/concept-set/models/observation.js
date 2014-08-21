@@ -2,7 +2,6 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
     angular.extend(this, observation);
     this.isObservation = true;
     this.conceptUIConfig = conceptUIConfig;
-    this.observationDateTime = Bahmni.Common.Util.DateUtil.now();
     this.uniqueId = _.uniqueId('observation_');
 
     if (savedObs) {
@@ -107,7 +106,8 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     onValueChanged: function () {
-        this.observationDateTime = new Date();
+//        TODO: Mihir, D3 : Hacky fix to update the datetime to current datetime on the server side. Ideal would be void the previous observation and create a new one.
+        this.observationDateTime = null;
     },
 
     getInputType: function () {
