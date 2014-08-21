@@ -18,3 +18,14 @@ h2.section-title {
 	border-bottom: 1px solid $bahmniSectionHeaderColor;
 }
 
+a.document-link {
+	display: block;
+	padding: 5px;
+	font-size: 14px;
+	line-height: 1.3em;
+	&:hover {
+		background: $lightestGray;
+		border-right: 1px solid $lightGray;
+	}
+}
+

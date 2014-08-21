@@ -8,10 +8,19 @@ $total-width: 100%;
 }
 
 body{
-  max-width:1280px;
-  font-size: 100%;
-  line-height: 1.1em;
-  background:#fff;
+    max-width:1280px;
+    font-size: 100%;
+    line-height: 1.1em;
+    background:#fff;
+}
+
+a, a:link, a:visited, a:hover, a:active {
+    color: $bahmniLinkColor;
+    text-decoration: none;
+}
+
+a:hover {
+    cursor: pointer;
 }
 
 p.caution{
@@ -113,7 +122,6 @@ input[file-upload] {
   background: none;
   border: none;
   padding: 0;
-  margin-right: 10px;
 
   &:hover {
     background: none;

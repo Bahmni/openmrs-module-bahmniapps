@@ -1,7 +1,7 @@
 .visit-summary-page {
     section.block {
         @extend .section-grid;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }
 }
 
@@ -252,9 +252,6 @@ strong {
     tr td {
       font-size: 14px;
     }
-    .drug-name {
-      font-size: 16px;
-    }
     .drugorder-date {
       text-transform: uppercase;
     }
@@ -393,17 +390,8 @@ span.range {
     clear: both;
     border-bottom: 1px solid #eee;
     a {
-      display: block;
-      padding: 5px;
-      width: 85%;
+      width: 80%;
       float: left;
-      font-size: 14px;
-      &:hover {
-        text-decoration: none;
-        background: #eee;
-        cursor: pointer;
-        border-right: 1px solid #ccc;
-      }
       i {padding-left: 0;}
     }
   }

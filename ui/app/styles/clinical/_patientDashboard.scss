@@ -219,16 +219,9 @@
     clear: both;
     border-bottom: 1px solid #ccc;
     a {
-      display: block;
       padding: 5px 10px 7px 10px;
       width: 77%;
       float: left;
-      &:hover {
-        text-decoration: none;
-        background: #eee;
-        cursor: pointer;
-        border-right: 1px solid #ccc;
-      }
       i {padding-left: 0;}
     }
     span {
