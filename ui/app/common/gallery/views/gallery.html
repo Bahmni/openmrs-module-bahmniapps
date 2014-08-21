@@ -23,10 +23,9 @@
 <div ng-repeat="album in albums">
     <div ng-repeat="image in album.images">
         <div class="image-bottom-bar" ng-if="isActive($index,album.tag)">
-            <div class="fl"><span class="image-title">{{image.title}}</span>
-                <span class="image-date">{{image.date | date: "dd MMM yy"}}</span>
-            </div>
-            <span class="image-index fr">({{getCurrentIndex()}} of {{getTotalLength()}})</span>
+            <span class="image-title">{{image.title}}</span>
+            <span class="image-date">{{image.date | date: "dd MMM yy"}}</span>
+            <span class="image-index">({{getCurrentIndex()}} of {{getTotalLength()}})</span>
         </div>
         <div class="image-desc" ng-if="isActive($index, album.tag) && image.desc"><strong>Comments:</strong> {{image.desc}}</div>
     </div>

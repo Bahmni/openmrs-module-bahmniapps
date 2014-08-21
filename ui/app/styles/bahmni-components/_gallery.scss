@@ -125,6 +125,9 @@ body.gallery-open > *:not(#gallery-pane) {
 .slider.container {
     background: #efefef;
 }
+.image-bottom-bar {
+	text-align: center;
+}
 .image-title, .image-bottom-bar {
     font-size: 16px;
     font-family: OpenSansBold;
@@ -137,9 +140,11 @@ body.gallery-open > *:not(#gallery-pane) {
 }
 .image-date, .image-index {
     color: #777;
+    margin-left: 5px;
 }
 .image-index {
     font-size: 14px;
+    margin-left: 15px;
 }
 .image-desc {
     background: #fef7e3;
