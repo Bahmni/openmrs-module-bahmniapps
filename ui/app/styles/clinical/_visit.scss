@@ -454,9 +454,7 @@ span.range {
   cursor: pointer;
 }
 .concept-set-group {
-  padding: 10px;
   margin-bottom: 20px;
-  background: #f9f9f9;
   .checkbox-inline {
     input[type="checkbox"], label.add-new.checkbox-btn {
       width: auto!important;
@@ -467,7 +465,7 @@ span.range {
     }
   }
 }
-legend.mylegend {background: #f9f9f9!important;}
+legend.mylegend {background: #fff!important;}
 
 .visits-nav-bar {
     text-align: center;

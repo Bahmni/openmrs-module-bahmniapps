@@ -17,11 +17,11 @@ angular.module('bahmni.common.conceptSet')
         controller: 'ConceptSetGroupController',
         template: '<div ng-repeat="conceptSet in allTemplates" ng-if="conceptSet.isAvailable(context) && conceptSet.isAdded" class="concept-set-group section-grid">' +
                     '<div ng-click="conceptSet.toggle()" class="concept-set-title">' +
-                        '<legend class="mylegend">' + 
+                        '<h2 class="section-title">' + 
                             '<i class="icon-caret-right" ng-hide="conceptSet.isOpen"></i>' +
                             '<i class="icon-caret-down" ng-show="conceptSet.isOpen"></i>' + 
                             '<strong>{{conceptSet.conceptName}}</strong>' +
-                        '</legend>' +
+                        '</h2>' +
                     '</div>' +
                     '<concept-set ng-if="conceptSet.isLoaded" ng-show="conceptSet.isOpen" concept-set-name="conceptSet.conceptName" required="conceptSet.options.required" observations="observations" show-title="false" validation-handler="validationHandler"></concept-set>' +
                   '</div>'
