@@ -2,9 +2,9 @@
     <div class="template-control-header">
         <button ng-click="showTemplates=!showTemplates"><i class="icon-th"></i></button>
     </div>
-    <div class="template-control-panel primary-section-grid" ng-show="showTemplates">
+    <div class="template-control-panel primary-section-grid" ng-show="showTemplates" on-click-outside="closeTemplatesPopup" exclude-element=".template-control-header" >
         <ul class="template-icons">
-            <li ng-repeat="template in selectedObsTemplate" ng-class="{templateAdded:template.isAdded}">
+            <li ng-repeat="template in consultation.selectedObsTemplate" ng-class="{templateAdded:template.isAdded}">
                 <button ng-click="showOrHideTemplate(template)">
                     <i class="icon-check-empty" ng-hide="template.isAdded"></i>
                     <i class="icon-check" ng-show="template.isAdded"></i>
@@ -13,5 +13,5 @@
             </li>
         </ul>
     </div>
-    <concept-set-group observations="consultation.observations" all-templates="selectedObsTemplate" context="context"></concept-set-group>
+    <concept-set-group observations="consultation.observations" all-templates="consultation.selectedObsTemplate" context="context" auto-scroll-enabled="scrollingEnabled"></concept-set-group>
 </div>

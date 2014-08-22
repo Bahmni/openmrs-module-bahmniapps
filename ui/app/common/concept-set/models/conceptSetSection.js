@@ -55,7 +55,9 @@ Bahmni.ConceptSet.ConceptSetSection = function(extensions,observations,conceptSe
 			return false;
 		}
 		self.added = !self.added;
-		self.toggle();
+        if(self.added){
+            self.show();
+        }
 		return true;
 	}
 	Object.defineProperty(self,"isOpen",{
