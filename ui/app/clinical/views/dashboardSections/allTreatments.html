@@ -26,7 +26,9 @@
                     <td class="dosage" ng-if="drugOrder.isSimpleDosingType()">
                         <span>Not yet implemented</span>
                     </td>
-                    <td class="days"><span>for </span><span bo-text="drugOrder.days"></span> day(s)</td>
+                    <td class="days"><span>From </span>{{drugOrder.orderDate | date:'dd MMM yy'}}<br /><span> for </span>{{drugOrder.days}}
+                        day(s)
+                    </td>
                 </tr>
             </tbody>
         </table> 
