@@ -175,15 +175,29 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
 
 /*vendor forms*/
 .ui-autocomplete {
-    .ui-menu-item{
-        border-bottom: 1px solid #bbb;
+    background: $white;
+    font-family: $primaryFont;
+    border: 1px solid #efefef;
+    border-radius: 10px;
+    padding: 0 0 0 10px;
+    .ui-menu-item {
+        border-bottom: 1px solid #ccc;
+        &:last-child {
+            border-bottom: 0;
+        }
     }
     .ui-menu-item a{
-        padding: 10px 5px;
+        padding: 10px 10px 10px 0;
+        font-size: 14px;
+        &:hover {
+            background: #eee;
+            border: 1px solid $white;
+            color: #333;
+            border-radius: 0;
+        }
         &:active, &:focus {
-            background: #fef9e2;
-            border: 1px solid #c77405;
-            color: #c77405;
+            background: #ccc;
+            border: 0;
             font-weight: bold;
         }
     }
