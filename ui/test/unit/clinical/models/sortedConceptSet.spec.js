@@ -7,7 +7,8 @@ describe("SortedConceptSet", function () {
             {name: {name: "Test1"}},
             {name: {name: "Panel1"}},
             {name: {name: "Test2"}},
-            {name: {name: "TestBelongsToPanel1"}},
+            {name: {name: "Test1BelongsToPanel1"}},
+            {name: {name: "Test2BelongsToPanel1"}},
             {name: {name: "TestBelongsToPanel2"}}
         ]
     };
@@ -40,4 +41,34 @@ describe("SortedConceptSet", function () {
         expect(sortedOrders[2].concept.name).toBe("Test3");
     });
 
+    it("should sort test results by sortWeight of the test in AllTestsAndPanels", function () {
+        var sortedConceptSet = new Bahmni.Clinical.SortedConceptSet(allTestsAndPanels);
+        var testResults = [
+            {orderName: "Test2"},
+            {orderName: "Test1"}
+        ];
+
+        var sortedResults = sortedConceptSet.sortTestResults(testResults);
+
+        expect(sortedResults[0].orderName).toBe("Test1");
+        expect(sortedResults[1].orderName).toBe("Test2");
+    });
+
+    it("should sort test results in a panel by sortWeight of the test in AllTestsAndPanels", function () {
+        var sortedConceptSet = new Bahmni.Clinical.SortedConceptSet(allTestsAndPanels);
+        var testResults = [
+            {orderName: "Test2"},
+            {orderName: "Panel1", isPanel: true, tests: [
+                {testName: "Test2BelongsToPanel1"},
+                {testName: "Test1BelongsToPanel1"}
+            ]}
+        ];
+
+        var sortedResults = sortedConceptSet.sortTestResults(testResults);
+
+        expect(sortedResults[0].orderName).toBe("Panel1");
+        expect(sortedResults[0].tests[0].testName).toBe("Test1BelongsToPanel1");
+        expect(sortedResults[0].tests[1].testName).toBe("Test2BelongsToPanel1");
+        expect(sortedResults[1].orderName).toBe("Test2");
+    });
 });
