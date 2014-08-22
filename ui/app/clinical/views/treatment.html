@@ -34,26 +34,20 @@
                     </div>
                     <select class="form-field freq-dose-units" ng-model="treatment.variableDosingType.doseUnits"
                             ng-options="item.name as item.name for item in treatmentConfig.doseUnits"
-                            ng-change="treatment.setFrequencyType('variable')">
+                            ng-change="treatment.setFrequencyType('variable')" ng-disabled="isUniformDosingType()">
                         <option value="">Units</option>
                     </select>
                 </div>
 
                 <div class="form-field treatment-prn">
-                    <input id="treatmentPrn" type="checkbox" ng-model="treatment.asNeeded"/>
-                    <label for="treatmentPrn">SOS</label>
+                    <button type="button" class="grid-row-element" ng-class="{active: treatment.asNeeded}" ng-click="toggleAsNeeded(treatment)"><i class="icon-ok"></i>SOS</button>
                 </div>
             </fieldset>
 
             <fieldset>
-                <select class="form-field instruction" ng-model="treatment.instructions">
+                <select class="form-field instruction" ng-model="treatment.instructions"
+                        ng-options="item.name as item.name for item in treatmentConfig.dosingInstructions">
                     <option value="">Instruction</option>
-                    <option value="Before meals">Before meals</option>
-                    <option value="Empty stomach">Empty stomach</option>
-                    <option value="After meals">After meals</option>
-                    <option value="In the morning">In the morning</option>
-                    <option value="In the evening">In the evening</option>
-                    <option value="At bedtime">At bedtime</option>
                 </select>
 
                 <div class="duration-widget">
@@ -65,6 +59,7 @@
                     </select>
                     <select class="form-field route" ng-model="treatment.route"
                             ng-options="item.name as item.name for item in treatmentConfig.routes">
+                        <option value="">Route</option>
                     </select>
                 </div>
 
@@ -72,8 +67,8 @@
                        ng-model="treatment.scheduledDate" placeholder="dd-mm-yyyy" min="{}">
 
                 <div class="quantity-widget">
-                    <input class="form-field quantity" type="number" min="0" ng-model="treatment.quantity" required
-                           only-number/>
+                    <input class="form-field quantity" type="number" min="0" placeholder="Qty"
+                           ng-model="treatment.quantity" required only-number/>
                     <select class="form-field quantity-unit" ng-model="treatment.quantityUnit"
                             ng-options="item.name as item.name for item in treatmentConfig.dispensingUnits" required>
                         <option value="">Units</option>

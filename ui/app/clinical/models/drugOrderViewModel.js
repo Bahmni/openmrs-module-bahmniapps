@@ -18,19 +18,20 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, routes, duration
 
     var simpleDoseAndFrequency = function () {
         var uniformDosingType = self.uniformDosingType;
-        return uniformDosingType.dose + " " +
-            blankIfFalsy(uniformDosingType.doseUnits) + ", " +
-            blankIfFalsy(uniformDosingType.frequency);
+        var doseAndUnits = blankIfFalsy(uniformDosingType.dose) + " " + blankIfFalsy(uniformDosingType.doseUnits);
+        return addDelimiter(blankIfFalsy(doseAndUnits), ", ") +
+            addDelimiter(blankIfFalsy(uniformDosingType.frequency), ", ");
     };
     var numberBasedDoseAndFrequency = function () {
         var variableDosingType = self.variableDosingType;
-        return variableDosingType.morningDose + "-" + variableDosingType.afternoonDose + "-" + variableDosingType.eveningDose;
+        var variableDosingString = addDelimiter((variableDosingType.morningDose || 0) + "-" + (variableDosingType.afternoonDose || 0) + "-" + (variableDosingType.eveningDose || 0), " ");
+        return addDelimiter((variableDosingString + blankIfFalsy(variableDosingType.doseUnits)).trim(), ", ")
     };
     var asNeeded = function (asNeeded) {
-        return asNeeded ? "as needed" : '';
+        return asNeeded ? "SOS" : '';
     };
     var blankIfFalsy = function (value) {
-        return value ? value : "";
+        return value ? value.toString().trim() : "";
     };
 
     var getDoseAndFrequency = function () {
@@ -42,7 +43,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, routes, duration
     };
 
     this.getDescription = function () {
-        return addDelimiter(blankIfFalsy(getDoseAndFrequency()), ', ') +
+        return addDelimiter(blankIfFalsy(getDoseAndFrequency()), " ") +
             addDelimiter(blankIfFalsy(self.instructions), ", ") +
             addDelimiter(blankIfFalsy(asNeeded(self.asNeeded)), ', ') +
             addDelimiter(blankIfFalsy(self.route), " - ") +
