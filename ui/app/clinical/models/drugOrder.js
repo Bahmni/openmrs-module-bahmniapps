@@ -64,7 +64,7 @@ Bahmni.Clinical.DrugOrder = (function () {
         },
 
         isFreeTextDosingType: function () {
-            return this.dosingType === 'FREE_TEXT';
+            return this.dosingType === 'FreeTextDosingInstructions';
         }
     };
 
