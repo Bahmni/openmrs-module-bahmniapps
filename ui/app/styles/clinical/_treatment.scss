@@ -33,7 +33,9 @@
                 margin-right: 3px;
             }
             input[type="date"] {
-                height: 20px;
+                height: 31px;
+                box-sizing: border-box;
+                line-height: 31px;
             }
             select, select.ng-invalid {
                 height: 31px;
@@ -125,8 +127,8 @@
             content: '';
             width: 100%;
             height: 100%;
-            opacity: .3;
-            background: #ccc;
+            opacity: 0.3;
+            background: #eee;
             top: 0;
             left: 0;
           }
@@ -136,6 +138,9 @@
         margin-top: 20px;
         .table-mimic li {
             padding-left: 5px;
+        }
+        .drug-details {
+            padding-left: 0;
         }
     }
 
