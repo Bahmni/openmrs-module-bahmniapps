@@ -85,5 +85,6 @@ angular.module('bahmni.clinical')
                     $rootScope.consultation.drugOrders.push(Bahmni.Clinical.DrugOrder.createFromUIObject(treatment));
                 });
             };
-            registerTabService.register(saveTreatment);
+//            TODO: Uncomment below line to save the data.
+//            registerTabService.register(saveTreatment);
         }]);
