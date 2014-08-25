@@ -15,8 +15,8 @@
                     </select>
 
                     <div>
-                        <select class="form-field frequency" ng-model="treatment.uniformDosingType.frequency"
-                                ng-options="item.name as item.name for item in treatmentConfig.frequencies" ng-disabled="isVariableDosingType()">
+                        <select class="form-field frequency" ng-model="treatment.uniformDosingType.frequency" ng-change="treatment.calculateDurationUnit()"
+                                ng-options="item as item.name for item in treatmentConfig.frequencies" ng-disabled="isVariableDosingType()">
                             <option value="">Frequency</option>
                         </select>
                     </div>
@@ -52,13 +52,12 @@
 
                 <div class="duration-widget">
                     <input class="form-field duration" type="number" min="0" placeholder="Duration"
-                           ng-model="treatment.duration" required only-number/>
-                    <select class="form-field duration-unit" ng-model="treatment.durationUnit"
-                            ng-options="item.name as item.name for item in treatmentConfig.durationUnits" required>
-                        <option value="">Units</option>
+                           ng-model="treatment.duration" ng-change="treatment.calculateDurationInDays()" required only-number/>
+                    <select class="form-field duration-unit" ng-model="treatment.durationUnit" ng-change="treatment.calculateDurationInDays()"
+                            ng-options="item as item.name for item in treatmentConfig.durationUnits" required>
                     </select>
                     <select class="form-field route" ng-model="treatment.route"
-                            ng-options="item.name as item.name for item in treatmentConfig.routes">
+                            ng-options="item as item.name for item in treatmentConfig.routes">
                         <option value="">Route</option>
                     </select>
                 </div>
@@ -68,7 +67,7 @@
 
                 <div class="quantity-widget">
                     <input class="form-field quantity" type="number" min="0" placeholder="Qty"
-                           ng-model="treatment.quantity" required only-number/>
+                           ng-model="treatment.quantity" ng-change="treatment.setQuantityEnteredManually()" required only-number/>
                     <select class="form-field quantity-unit" ng-model="treatment.quantityUnit"
                             ng-options="item.name as item.name for item in treatmentConfig.dispensingUnits" required>
                         <option value="">Units</option>
