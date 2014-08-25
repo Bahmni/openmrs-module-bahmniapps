@@ -1,6 +1,6 @@
 // Tip from http://stackoverflow.com/a/20786262/69362
-var debugUiRouter = function() {
-	var $rootScope = angular.element(document.querySelectorAll("[ui-view]")[0]).injector().get('$rootScope');
+var debugUiRouter = function($rootScope) {
+//	var $rootScope = angular.element(document.getElementById("debug")).injector().get('$rootScope');
 
 	$rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams){
 	  console.log('$stateChangeStart to '+toState.to+'- fired when the transition begins. toState,toParams : \n',toState, toParams);

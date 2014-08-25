@@ -28,6 +28,7 @@ module.exports = function (config) {
             'app/document-upload/**/*.js',
             'app/orders/**/*.js',
             'app/home/**/*.js',
+            'app/admin/**/*.js',
             'app/registration/**/*.js',
             'app/trends/**/*.js',
             'test/support/**/*.js',

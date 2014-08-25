@@ -36,8 +36,11 @@ angular.module('bahmni.home', ['ngRoute', 'httpErrorInterceptor', 'bahmni.common
     });
     $routeProvider.when('/dashboard', 
     {
-        templateUrl: 'views/dashboard.html', 
-        controller: 'DashboardController'
+        templateUrl: '../common/ui-helper/views/dashboard.html',
+        controller: 'DashboardController',
+        resolve: {
+            initialize: 'initialization'
+        }
     });
     $routeProvider.otherwise({redirectTo: '/dashboard'});
     $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;

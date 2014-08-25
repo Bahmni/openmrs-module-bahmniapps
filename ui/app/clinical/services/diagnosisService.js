@@ -5,7 +5,6 @@ angular.module('bahmni.clinical')
     this.getAllFor = function (searchTerm) {
         var url = Bahmni.Common.Constants.emrapiConceptUrl;
         return $http.get(url, {
-            method:"GET",
             params:{term:searchTerm, limit:20}
         });
     };
@@ -13,7 +12,6 @@ angular.module('bahmni.clinical')
     this.getPastDiagnoses = function (patientUuid) {
         var url = Bahmni.Common.Constants.bahmniDiagnosisUrl;
         return $http.get(url, {
-            method:"GET",
             params:{patientUuid:patientUuid}
         });
     };

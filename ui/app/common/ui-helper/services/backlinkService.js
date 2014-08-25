@@ -22,13 +22,13 @@ angular.module('bahmni.common.uiHelper')
             return function() {
                 $window.location.href = url;
             };
-        }
+        };
 
         var goToStateFunction = function(state) {
             return function() {
                 $state.go(state);
             }
-        }
+        };
 
         self.addBackUrl = function(label) {
             var backLabel = label || "Back";
