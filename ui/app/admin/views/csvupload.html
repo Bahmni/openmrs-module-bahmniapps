@@ -1,12 +1,10 @@
-<div style="margin-top: 100px" nv-file-drop uploader="uploader" filters="queueLimit, customFilter">
+<div nv-file-drop uploader="uploader" filters="queueLimit, customFilter">
 
     <div>
         <div>
-            <div>
-                <h3>Select file</h3>
-                <input type="file" nv-file-select uploader="uploader"/>
-            </div>
-            <div>
+            <h3>Select files</h3>
+            <input type="file" nv-file-select uploader="uploader" multiple/>
+            <div ng-if="uploader.queue.length">
                 <h3>File to Upload</h3>
                 <table>
                     <thead>
@@ -44,14 +42,10 @@
                         </tr>
                     </tbody>
                 </table>
-
-                <div ng-if="uploader.queue.length">
-                    <span>Overall Upload progress:</span>
-                    <progress value="{{uploader.progress}}" max="100"></progress>
-                </div>
             </div>
             <div>
                 <h3>Uploaded files</h3>
+                <button ng-click="loadImportedItems()">Refresh</button>
                 <table>
                     <thead>
                         <tr>

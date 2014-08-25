@@ -12,11 +12,11 @@
         <link rel="stylesheet" href="../styles/home.css"/>
         <!-- endbuild -->
     </head>
-    <body>
-        <div class="reg-wrapper">
-            <div id="debug" ng-app="admin">
+    <body ng-app="admin">
+        <div ng-include src="'../common/ui-helper/header.html'"></div>
+        <div class="opd-wrapper">
+            <div>
                 <p class="caution" ng-cloak ng-show="server_error"><i class="icon-exclamation-sign small"></i>{{server_error}}</p>
-                <div ng-include src="'../common/ui-helper/header.html'"></div>
                 <div ui-view id="view-content" class="opd-content-wrapper"></div>
             </div>
         </div>

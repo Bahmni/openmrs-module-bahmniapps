@@ -7,13 +7,20 @@ angular.module('bahmni.admin')
             var patientMatchingAlgorithm = adminCSVExtension.extensionParams.patientMatchingAlgorithm || "";
             var fileUploaderOptions = {
                 url: Bahmni.Common.Constants.encounterImportUrl,
+                removeAfterUpload: true,
                 formData: [
                     {patientMatchingAlgorithm: patientMatchingAlgorithm}
                 ]
             };
-            $scope.uploader = new FileUploader(fileUploaderOptions);
 
-            spinner.forPromise(adminImportService.getAllStatus().then(function(response){
-                $scope.importedItems = response.data;
-            }));
+            $scope.loadImportedItems = function() {
+                spinner.forPromise(adminImportService.getAllStatus().then(function(response){
+                    $scope.importedItems = response.data;
+                }));
+            }
+
+            $scope.uploader = new FileUploader(fileUploaderOptions);
+            $scope.uploader.onCompleteAll = $scope.loadImportedItems;
+
+            $scope.loadImportedItems();
         }]);
