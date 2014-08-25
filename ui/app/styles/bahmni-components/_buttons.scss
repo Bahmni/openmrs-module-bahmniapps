@@ -10,7 +10,7 @@ button:focus, a:focus, .btn:focus {outline:0;}
   color: #fff;  
   border-left: 0;
   box-shadow: 0 0 5px #888;
-  float: left; 
+  float: left;
   @include border-radius(3px);
   &:hover {
     text-decoration: none;
@@ -48,4 +48,5 @@ ul li a.back-btn, ul li a.back-btn:hover, button.back-btn{
 button.back-btn {
     box-shadow: none;
     line-height: 1em;
+    float: none;
 }
