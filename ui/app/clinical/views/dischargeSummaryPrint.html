@@ -76,7 +76,11 @@
             <ul>
                 <li ng-repeat="diagnosis in visit.getDiagnoses() | primaryDiagnosisFirst" ng-if="!diagnosis.isRuledOut()">
                     <span>{{diagnosis.getDisplayName()}}</span>
-                    <div ng-if="diagnosis.comments">Notes: {{diagnosis.comments}}</div>
+                    <div ng-if="diagnosis.comments">
+                        <p class="fl">
+                            <strong class="diagnosis-notes-title">Diagnosis Notes: </strong><pre>{{diagnosis.comments}}</pre>
+                        </p>
+                    </div>
                 </li>
             </ul>
         </section>
