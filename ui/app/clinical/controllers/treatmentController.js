@@ -6,6 +6,12 @@ angular.module('bahmni.clinical')
 
             $scope.treatments = $rootScope.newlyAddedTreatments || [];
             $scope.treatmentConfig = treatmentConfig;
+            $scope.treatmentConfig.durationUnits = [
+                {name: "Hours", factor: 1/24},
+                {name: "Days", factor: 1},
+                {name: "Weeks", factor: 7},
+                {name: "Months", factor: 30},
+            ];
 
             var newTreatment = function () {
                 return new Bahmni.Clinical.DrugOrderViewModel($scope.currentBoard.extensionParams,
@@ -14,6 +20,21 @@ angular.module('bahmni.clinical')
 
             $scope.treatment = newTreatment();
             $scope.treatment.scheduledDate = $filter("date")($scope.treatment.scheduledDate, 'yyyy-MM-dd');
+
+
+            var watchFunctionForQuantity = function() {
+                var treatment = $scope.treatment;
+                return {
+                    uniformDosingType: treatment.uniformDosingType,
+                    variableDosingType: treatment.variableDosingType,
+                    duration: treatment.duration,
+                    durationUnit: treatment.durationUnit,
+                }
+            }
+
+            $scope.$watch(watchFunctionForQuantity, function() {
+                $scope.treatment.calculateQuantity();
+            }, true);
 
             $scope.add = function () {
                 if ($scope.addForm.$invalid) {
@@ -37,6 +58,7 @@ angular.module('bahmni.clinical')
             $scope.isFrequencyType = function(type) {
                 return $scope.treatment.frequencyType === type;
             };
+
             $scope.remove = function (index) {
                 $scope.treatments.splice(index, 1);
             };
