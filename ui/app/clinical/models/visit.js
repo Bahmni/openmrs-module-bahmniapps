@@ -133,8 +133,11 @@ Bahmni.Clinical.Visit = (function () {
             var dischargeEncounter = this._getDischargeEncounter();
             return dischargeEncounter ? DateUtil.parse(dischargeEncounter.encounterDateTime) : null;
         },
-        hasIPDDrugOrdes: function () {
+        hasIPDDrugOrders: function () {
             return this.drugOrders.hasIPDDrugSchedule();
+        },
+        getIPDDrugOrders: function () {
+            return this.drugOrders;
         },
         getIPDDrugs: function () {
             return this.drugOrders.getIPDDrugs();
