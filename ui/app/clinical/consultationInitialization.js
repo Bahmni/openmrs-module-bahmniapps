@@ -47,13 +47,16 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                     $rootScope.activeVisit = $rootScope.visits.filter(function (visit) {
                         return visit.isActive();
                     })[0];
-                    if($rootScope.activeVisit){
-                        encounterService.search($rootScope.activeVisit.uuid).then(function (encounterTransactionsResponse) {
-                            var obsIgnoreList = appService.getAppDescriptor().getConfig("obsIgnoreList").value || {};
-                            $rootScope.visit = Bahmni.Clinical.Visit.create(encounterTransactionsResponse.data, $rootScope.consultationNoteConcept, $rootScope.labOrderNotesConcept, $rootScope.encounterConfig, $rootScope.allTestsAndPanelsConcept, obsIgnoreList, $rootScope.activeVisit.uuid);
-                        });
-                    }
                 });
+            };
+
+            var getActiveVisitData = function(){
+                if($rootScope.activeVisit){
+                    return encounterService.search($rootScope.activeVisit.uuid).then(function (encounterTransactionsResponse) {
+                        var obsIgnoreList = appService.getAppDescriptor().getConfig("obsIgnoreList").value || {};
+                        $rootScope.visit = Bahmni.Clinical.Visit.create(encounterTransactionsResponse.data, $rootScope.consultationNoteConcept, $rootScope.labOrderNotesConcept, $rootScope.encounterConfig, $rootScope.allTestsAndPanelsConcept, obsIgnoreList, $rootScope.activeVisit.uuid);
+                    });
+                }
             };
 
             var findDefaultConsultationBoard = function() {
@@ -78,7 +81,7 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
             
             return spinner.forPromise(
                 initialization.then(function(){
-                    return $q.all([findDefaultConsultationBoard().then(getActiveEncounter).then(getPastDiagnoses),getPatient().then(getPatientBedDetails),getPatientVisitHistory()]);
+                    return $q.all([findDefaultConsultationBoard().then(getActiveEncounter).then(getPastDiagnoses),getPatient().then(getPatientBedDetails),getPatientVisitHistory().then(getActiveVisitData)]);
                 })
             );
         }

@@ -26,7 +26,8 @@ Bahmni.Clinical.Constants = (function () {
         messageForNoLabOrders: "No lab orders.",
         messageForNoObservation: "No observations captured for this visit.",
         messageForNoActiveVisit: "No active visit.",
-        diagnosisStatuses : {"RULED OUT" : "Ruled Out Diagnosis"}
+        diagnosisStatuses : {"RULED OUT" : "Ruled Out Diagnosis"},
+        dischargeSummaryConceptName: "Discharge Summary"
     };
 })();
 

@@ -21,7 +21,13 @@ angular.module('bahmni.clinical')
                 }) || {};
                 return new Bahmni.ConceptSet.ConceptSetSection(conceptSetConfig, $scope.consultation.observations,template);
             });
-            $rootScope.consultation.selectedObsTemplate= allConceptSections.filter(function(conceptSet){ return conceptSet.isAvailable($scope.context); });
+            $rootScope.consultation.selectedObsTemplate= allConceptSections.filter(function(conceptSet){
+                if(conceptSet.isAvailable($scope.context)){
+                    if(conceptSet.conceptName !== Bahmni.Clinical.Constants.dischargeSummaryConceptName || $rootScope.visit.hasAdmissionEncounter()){
+                        return true;
+                    }
+                }
+            });
             if ($rootScope.consultation.selectedObsTemplate.length) { $rootScope.consultation.selectedObsTemplate[0].show(); };
         });
     }
