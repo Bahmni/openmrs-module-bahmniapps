@@ -15,12 +15,11 @@ angular.module('bahmni.admin')
 
             $scope.loadImportedItems = function() {
                 spinner.forPromise(adminImportService.getAllStatus().then(function(response){
-                    $scope.importedItems = response.data;
+                    $scope.importedItems = response.data.map(function(item) { return new Bahmni.Admin.ImportedItem(item); });
                 }));
             }
 
             $scope.uploader = new FileUploader(fileUploaderOptions);
             $scope.uploader.onCompleteAll = $scope.loadImportedItems;
-
             $scope.loadImportedItems();
         }]);
