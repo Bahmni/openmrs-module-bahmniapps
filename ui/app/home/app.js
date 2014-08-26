@@ -40,7 +40,7 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
             initialize: 'initialization'
         }
     }).state('login',
-    {   url: '/csv',
+    {   url: '/login',
         templateUrl: 'views/login.html',
         controller: 'LoginController'
 
