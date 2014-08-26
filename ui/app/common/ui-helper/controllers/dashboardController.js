@@ -1,6 +1,6 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .controller('DashboardController', ['$scope', '$location', 'appService', function ($scope, $location, appService) {
-        $scope.appExtensions = appService.getAppDescriptor().getExtensions("org.bahmni.home.dashboard", "link") || [];
+    .controller('DashboardController', ['$scope', '$state', 'appService', function ($scope, $state, appService) {
+        $scope.appExtensions = appService.getAppDescriptor().getExtensions($state.current.data.extensionPointId, "link") || [];
     }]);

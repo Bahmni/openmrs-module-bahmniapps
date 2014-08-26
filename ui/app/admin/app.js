@@ -11,7 +11,8 @@ angular.module('admin', ['httpErrorInterceptor', 'bahmni.admin']).config(['$stat
     }).state('admin.dashboard',
         {   url: '/dashboard',
             templateUrl: '../common/ui-helper/views/dashboard.html',
-            controller: 'DashboardController'
+            controller: 'DashboardController',
+            data: {extensionPointId: 'org.bahmni.admin.dashboard'}
         }).state('admin.csv',
         {   url: '/csv',
             templateUrl: 'views/csvupload.html',
