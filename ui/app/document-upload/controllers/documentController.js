@@ -205,10 +205,11 @@ angular.module('opd.documentupload')
 
             $scope.setConceptOnImage = function (image, selectedItem) {
                 if (selectedItem) {
-                    $scope.$apply(function(){
-                        image.concept = Object.create(selectedItem.concept);
-                        image.changed = true;
-                    })
+                    image.concept = Object.create(selectedItem.concept);
+                    image.changed = true;
+                    if (!$scope.$$phase) {
+                        $scope.$apply();
+                    }
                 }
             };
 
