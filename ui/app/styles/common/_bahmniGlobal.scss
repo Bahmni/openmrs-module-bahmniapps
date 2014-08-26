@@ -14,19 +14,6 @@ body{
     background:#fff;
 }
 
-.fix-fixed {
-    .opd-wrapper {
-        padding-top: 0;
-    }
-    .opd-header-wrapper {
-        position: relative;
-        -webkit-backface-visibility: hidden;
-    }
-    .template-control-header {
-        position: absolute;
-    }
-}
-
 a, a:link, a:visited, a:hover, a:active {
     color: $bahmniLinkColor;
     text-decoration: none;
