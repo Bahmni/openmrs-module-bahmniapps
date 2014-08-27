@@ -47,7 +47,8 @@ angular.module('bahmni.common.conceptSet')
             scope: {
                 observation: "=",
                 atLeastOneValueIsSet : "=",
-                showTitle: "="
+                showTitle: "=",
+                conceptSetRequired: "="
             },
             template: '<ng-include src="\'../common/concept-set/views/observation.html\'" />'
         }
