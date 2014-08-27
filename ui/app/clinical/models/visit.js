@@ -17,6 +17,7 @@ Bahmni.Clinical.Visit = (function () {
         this.patientFileOrders = Bahmni.Clinical.VisitDocumentUploadOrders.create(encounters, encounterConfig.getPatientDocumentEncounterTypeUuid());
         this.patientFileOrders.orders = this.hasPatientFiles() ? this.patientFileOrders.orders.reverse() : [];
         this.drugOrders = Bahmni.Clinical.VisitDrugOrder.create(encounters, this.getAdmissionDate(), this.getToDate());
+        this.startDate = this.encounters.length ? _.last(this.encounters).encounterDateTime : null;
 
         var orderGroup = new Bahmni.Clinical.OrdersMapper();
         this.otherInvestigationGroups = orderGroup.group(otherInvestigations);
@@ -45,9 +46,10 @@ Bahmni.Clinical.Visit = (function () {
         this.labTestOrderObsMap = this.getLabOrdersGroupedByAccession();
         this.admissionDate = this.getAdmissionDate();
         this.visitEndDate = this.getDischargeDispositionEncounterDate() || this.getDischargeDate() || DateUtil.now();
-        this.tabularResults = Bahmni.Clinical.TabularLabResults.create(labOrders, this.admissionDate, this.visitEndDate, allTestsAndPanelsConceptSet);
+        this.tabularResults = Bahmni.Clinical.TabularLabResults.create(labOrders, this.startDate, this.visitEndDate, allTestsAndPanelsConceptSet);
         this.showLabInvestigations = this.admissionDate ? false : true;
         this.showTreatmentSection = this.admissionDate ? false : true;
+        this.showInvestigationsChart = this.admissionDate && this.tabularResults.hasOrderables();
     };
 
     Visit.prototype = {
