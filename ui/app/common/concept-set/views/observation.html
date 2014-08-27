@@ -148,8 +148,7 @@
 
                 <input id="{{observation.uniqueId}}" ng-switch-when="freeTextAutocomplete" class="concept-name" ng-model="observation.value" concept-autocomplete
                        ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}"
-                       coded-concept-uuid="observation.getConceptUIConfig().freeTextAutocomplete.codedConceptUuid"
-                       concept-set-uuid="observation.getConceptUIConfig().freeTextAutocomplete.conceptSetUuid"
+                       coded-concept-name="observation.getConceptUIConfig().answersConceptName"
                        blur-on-select="false"/>
 
                 <div ng-switch-when="autocomplete"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}" class="autocomplete">
