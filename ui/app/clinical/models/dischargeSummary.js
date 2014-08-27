@@ -24,7 +24,7 @@ var dischargeSummary = function(){
 		},
 
 		getTreatmentRecieved: function() {
-			return this.visit.getIPDDrugs();
+			return this.visit.getIPDDrugOrders().ipdDrugSchedule.drugOrders;
 		},
 		
 		getTreatmentAdviced: function() {
