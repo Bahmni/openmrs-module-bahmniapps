@@ -1,3 +1,17 @@
+/*doc
+---
+title: Buttons
+name: button
+category: Base CSS
+---
+
+Button styles can be applied to any element. Typically you'll want
+to use either a `<button>` or an `<a>` element:
+
+```html_example <button class="back-btn">Click</button>```
+
+*/
+
 button:focus, a:focus, .btn:focus {outline:0;}
 
 /*backButton:*/
@@ -49,4 +63,7 @@ button.back-btn {
     box-shadow: none;
     line-height: 1em;
     float: none;
+}
+button[disabled] {
+    background: #F7F7F7;
 }
