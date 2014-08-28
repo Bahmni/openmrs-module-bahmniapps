@@ -6,7 +6,7 @@
   margin-top: 0.5cm;
   margin-bottom: 0.5cm;
 }
-p, h1, h2, h3, table, tr, td, div, span, li {
+p, h1, h2, h3, table, tr, td, div, span, li, pre {
   margin: 0px;
   padding: 0px;
   font-size: 10pt!important;
@@ -79,14 +79,12 @@ header h2 {
   text-decoration: underline;
 }
 
-h2, .diagnosis h2 {
+h2.section-title {
+  font-family: arial;
   text-align: left;
   font-weight: bold;
-  color: #000;
+  color: #333;
   text-transform: uppercase;
-  margin-bottom: 10px;
-  text-decoration: underline;
-  border: 0;
   padding-left: 0;
   margin-top: 15px;
   padding-top: 0;
@@ -126,9 +124,6 @@ div.notes.inline-notes, div.notes.inline-notes.print-notes {
       }
     }
   }
-}
-section.block h2 {
-  margin: 5px 0 0 0!important;
 }
 .diagnosis .history-diagnosis {
   margin-bottom: 0;

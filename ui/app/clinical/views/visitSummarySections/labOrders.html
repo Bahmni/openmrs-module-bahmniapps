@@ -1,11 +1,11 @@
 <section class="block laborder-section" ng-if="visit.hasLabTests()">
-    <div ng-if="visit.admissionDate && !print">
+    <div ng-if="visit.showInvestigationsChart && !print">
         <h2 class="ipd-investigation-title section-title">Investigations Chart</h2>
         <table class="ipd-investigation h-scroll">
             <thead>
             <tr>
                 <th><span
-                        bo-text="(visit.admissionDate | date:'dd MMM yy') + ' - '+ (visit.visitEndDate | date:'dd MMM yy')"></span>
+                        bo-text="(visit.tabularResults.startDate | date:'dd MMM yy') + ' - '+ (visit.tabularResults.endDate | date:'dd MMM yy')"></span>
                 </th>
                 <th ng-repeat="orderable in visit.tabularResults.getOrderables()">
                     <div ng-class="{'belongsToPanel': test.belongsToPanel}" ng-if="!orderable.concept.set"
@@ -41,12 +41,12 @@
             </tbody>
         </table>
     </div>
-    <h2 ng-click="visit.toggleLabInvestigation()" class="has-toggle row-click section-title" ng-if="visit.admissionDate">
+    <h2 ng-click="visit.toggleLabInvestigation()" class="has-toggle row-click section-title" ng-if="visit.showInvestigationsChart">
     <i class="icon-caret-right" ng-hide="visit.showLabInvestigations"></i>
     <i class="icon-caret-down" ng-show="visit.showLabInvestigations"></i>
     Lab Investigations
     </h2>
-    <h2 ng-if="!visit.admissionDate" class="section-title">Lab Investigations</h2>
+    <h2 ng-if="!visit.showInvestigationsChart" class="section-title">Lab Investigations</h2>
 
     <div ng-repeat="labOrders in visit.labTestOrderObsMap" ng-show="visit.showLabInvestigations"
          class="lab-investigation">

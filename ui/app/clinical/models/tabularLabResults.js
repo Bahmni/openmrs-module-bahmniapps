@@ -2,7 +2,9 @@
 
 Bahmni.Clinical.TabularLabResults = (function () {
     var DateUtil = Bahmni.Common.Util.DateUtil;
-    var TabularLabResults = function (orderables, visitDays) {
+    var TabularLabResults = function (startDate, endDate, orderables, visitDays) {
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.visitDays = visitDays;
         this.orderables = orderables;
 
@@ -12,6 +14,10 @@ Bahmni.Clinical.TabularLabResults = (function () {
 
         this.getOrderables = function () {
             return this.orderables;
+        };
+
+        this.hasOrderables = function () {
+            return this.orderables.length > 0;
         };
     };
 
@@ -72,13 +78,13 @@ Bahmni.Clinical.TabularLabResults = (function () {
         return orderables;
     };
 
-    TabularLabResults.create = function (labOrders, visitStartDate, visitEndDate, allTestsAndPanelsConceptSet) {
+    TabularLabResults.create = function (labOrders, startDate, endDate, allTestsAndPanelsConceptSet) {
         var sortedConceptSet = new Bahmni.Clinical.SortedConceptSet(allTestsAndPanelsConceptSet);
         var orderables = getOrderables(labOrders, sortedConceptSet);
-        var visitDays = DateUtil.createDays(visitStartDate, visitEndDate);
+        var visitDays = DateUtil.createDays(startDate, endDate);
         var flatOrderables = flattenOrderables(orderables);
         var sortedOrderables = sortResultsInOrderables(flatOrderables);
-        return new TabularLabResults(sortedOrderables, visitDays);
+        return new TabularLabResults(startDate, endDate, sortedOrderables, visitDays);
     };
 
     return TabularLabResults;

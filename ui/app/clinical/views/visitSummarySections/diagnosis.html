@@ -55,8 +55,8 @@
                     </div>
                 </div>
                 <div ng-show="diagnosis.show" class="inline-notes notes" ng-class="{'print-notes': diagnosis.comments}">
-                    <p class="left">
-                        <strong>Diagnosis Notes: </strong>{{diagnosis.comments}}
+                    <p class="fl">
+                        <strong class="diagnosis-notes-title">Diagnosis Notes: </strong><pre>{{diagnosis.comments}}</pre>
                     </p>
                 </div>
             </div>
