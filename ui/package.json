@@ -28,7 +28,8 @@
     "matchdep": "^0.3.0",
     "phantomjs": "^1.9.7-9",
     "grunt-istanbul-coverage": "0.0.5",
-    "karma-coverage": "~0.2.4"
+    "karma-coverage": "~0.2.4",
+    "grunt-hologram": "0.0.4"
   },
   "scripts": {
     "test": "karma start test/config/karma.conf.js"

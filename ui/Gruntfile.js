@@ -230,6 +230,13 @@ module.exports = function (grunt) {
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['document-upload.min.*.css'], dest: '<%= yeoman.dist %>/document-upload/'}
                 ]
             }
+        },
+        hologram: {
+            generate: {
+                options: {
+                    config: 'hologram_config.yml'
+                }
+            }
         }
     });
 
