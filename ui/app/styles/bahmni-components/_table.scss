@@ -36,6 +36,7 @@
 table {
 	thead tr th{
 		background: $bahmniTableHeaderBg;
+        padding:10px  7px 10px 7px ;
 	}
 	tbody tr:nth-child(odd), tr:nth-child(even) {
 		background: #fff;

@@ -1,4 +1,5 @@
 /******** form element styling start********/
+
 form,.form{
  fieldset{
   border:none;
@@ -171,6 +172,12 @@ textarea{
   @include column(12);
 }
 form .select-arrow:after, .form .select-arrow:after{height:29px;}
+textarea{
+    width:96%;
+}
+form select, .form select {
+  min-width: 100px;
+}
 /********* form element styling end***********/
 
 /*vendor forms*/

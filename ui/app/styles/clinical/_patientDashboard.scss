@@ -232,13 +232,6 @@
     }
   }
 }
-.less-text {display: none;}
-.show-more {position: absolute; bottom: 0; font-size: 14px!important; height: 35px;}
-.dashboard-section section.block.more {
-  height: auto;
-  .less-text {display: inline-block;}
-  .more-text {display: none;}
-}
 
 .testUnderPanel{
   padding-left: 20px;
