@@ -23,6 +23,7 @@ button.toggle-patient.shift {
     top:0; bottom: 0;
     left:0; right:0;
     background: rgba(0,0,0,0.4);
+    z-index: 4;
   }
 }
 aside{
@@ -52,8 +53,9 @@ aside{
       margin-bottom: 20px;
     }
     ul.visit-history {
-      height: 816px;
+      height: 250px;
       overflow-y: auto;
+      border-top: 1px solid #222;
     }
     li a {
       display: block;
@@ -156,3 +158,19 @@ aside{
 .btn-trends {.icon-bar-chart {display: inline-block;}}
 .btn-summary {.icon-th-large {display: inline-block;}}
 .btn-print {.icon-print {display: inline-block;}}
+
+
+ul.visit-history::-webkit-scrollbar {
+    width: 1em;
+}
+ 
+ul.visit-history::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 15px;
+}
+ 
+ul.visit-history::-webkit-scrollbar-thumb {
+  background-color: #666;
+  // outline: 1px solid slategrey;
+  border-radius: 15px;
+}
