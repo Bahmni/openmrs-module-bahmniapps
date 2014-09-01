@@ -54,6 +54,19 @@ describe("SortedConceptSet", function () {
         expect(sortedResults[1].orderName).toBe("Test2");
     });
 
+    it("should sort tabular results by sortWeight", function () {
+        var sortedConceptSet = new Bahmni.Clinical.SortedConceptSet(allTestsAndPanels);
+        var testResults = [
+            {testName: "Test2"},
+            {testName: "Test1"}
+        ];
+
+        var sortedResults = sortedConceptSet.sortTestResults(testResults);
+
+        expect(sortedResults[0].testName).toBe("Test1");
+        expect(sortedResults[1].testName).toBe("Test2");
+    });
+
     it("should sort test results in a panel by sortWeight of the test in AllTestsAndPanels", function () {
         var sortedConceptSet = new Bahmni.Clinical.SortedConceptSet(allTestsAndPanels);
         var testResults = [

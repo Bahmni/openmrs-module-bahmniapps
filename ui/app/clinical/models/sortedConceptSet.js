@@ -16,7 +16,7 @@ Bahmni.Clinical.SortedConceptSet = function(allTestAndPanelsConcept) {
     this.sortTestResults = function(labOrderResults) {
         if(!labOrderResults) return [];
         labOrderResults.forEach(function(labOrderResult){
-            var index = sortedNames.indexOf(labOrderResult.orderName);
+            var index = sortedNames.indexOf(labOrderResult.orderName || labOrderResult.testName);
             labOrderResult.sortWeight = index === -1 ? 999 : index;
             if(labOrderResult.isPanel) {
                 labOrderResult.tests.forEach(function(test) {
