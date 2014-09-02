@@ -3,8 +3,8 @@
 
 $total-width: 100%;
 @mixin font-size($sizeValue: 1) {
-  font-size: ($sizeValue * 16) + px;
-  font-size: $sizeValue + rem;
+    font-size: ($sizeValue * 16) + px;
+    font-size: $sizeValue + rem;
 }
 
 body{
@@ -24,14 +24,16 @@ a:hover {
 }
 
 p.caution{
-  color:#f00;
-  padding: 5px;
+    color:#f00;
+    padding: 5px;
 }
 
-p.success{
-  color:#f8f8ff;
-  padding: 5px;
-  background: #000000;
+strong {
+    font-family: $primaryBoldFont;
+}
+
+pre {
+  background: none;
 }
 
 .asterick {
@@ -99,24 +101,6 @@ input[file-upload] {
   }
 }
 
-.notes {
-  .title {
-    text-transform: uppercase;
-    font-family: OpenSansBold;
-    margin-right: 10px;
-    display: inline;
-    float: left;
-  }
-  .content {
-    background: none;
-  }
-  font-size: 14px;
-  margin: 20px;
-  background: #fef7e3;
-  line-height: 1.4em;
-  padding: 10px;
-  overflow: auto;
-}
 .opd-wrapper .has-toggle {cursor: pointer;margin-bottom:0;}
 .section-toggle {
   background: none;
@@ -187,9 +171,7 @@ pre.chief-notes {
   float: left;
 }
 
-pre {
-  background: none;
-}
+
 
 
 
@@ -214,7 +196,7 @@ pre {
 }
 
 .current-visit-icon {
-	color: #E8A000;
+	color: $clinicalCurrentVist;
 }
 
 .has-notes {

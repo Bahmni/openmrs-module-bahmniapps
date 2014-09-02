@@ -37,49 +37,12 @@
     color: #666; 
   }
   table tr th.notes {
-    background: #fef7e3;
     .accession {
       clear: both;
       overflow: auto;
       margin-bottom: 10px;
     }
   }
-  table tbody {
-    tr.test td{
-      padding-top: 12px;
-      font-size: 14px;
-    }
-    tr.test.abnormal td{
-      color: red;
-    }
-    tr.test.abnormal td.lab-tech{
-      color: #333;
-    }
-    tr.test.referred td span{
-      background: #669999;
-      color: #fff;
-      display: inline-block;
-      padding: 5px;
-      border-radius: 5px;
-      float: right;
-    }
-    tr.notes td {
-      font-size: 13px;
-      padding-bottom: 12px; 
-    }
-  }
-  td {
-    .datetime {
-      background:url(../images/sprites.png) no-repeat;
-      padding-left:23px;
-      background-position: 0 -36px ;
-      font-size: 14px;
-      padding-bottom: 2px;
-      display: inline-block;
-      color: #333;
-    }
-  }
-
 }
 .visit .diagnosis .history-diagnosis {margin-bottom:0;}
 .visit {
@@ -230,13 +193,7 @@
   }
 }
 
-.inline-notes {
-  margin: 0 0 15px 0;
-}
 
-strong {
-  font-family: OpenSansBold;
-}
 
 .drug-name, .dosage-days {width: 340px;}
 
@@ -257,11 +214,6 @@ strong {
     }
     .dosage-form {
       white-space: nowrap;
-    }
-    .dosage-days {
-      .inline-notes {
-        margin-top: 10px;
-      }
     }
   }
 }
@@ -322,22 +274,13 @@ table.ipd-investigation {
   border: 1px solid #DDD;
   display: block;
 }
-.dshbf .dshbf .dshbf {
-  padding: 0!important;
-}
-.dshbf {
-  padding-left: 0!important;
-  padding-right: 0!important;
-}
+
 .obs-item .labresults-item {
   margin: 10px 0;
 }
 td.value {
   width: 500px;
 }
-
-.fl {float: left;}
-.fr {float: right;}
 
 td.header {
   background: #eee;
@@ -425,22 +368,6 @@ span.range {
   }
 }
 
-/*disposition tab - temp placed here*/
-.disposition-tab {
-  padding: 15px 5px;
-  textarea {
-    margin: 10px 0;
-    width: 97%;
-  }
-  label {
-    float: left;
-    margin-right: 10px;
-  }
-  label.disposition-notes {
-    margin-bottom: 10px;
-  }
-}
-/*disposition tab - temp placed here*/
  .no-visit {
   padding: 30px 10px;
   color: #666;

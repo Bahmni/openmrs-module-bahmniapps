@@ -29,6 +29,9 @@ use either a `<div>` or an `<section` element:
 
 */
 
+.fl {float: left;}
+.fr {float: right;}
+
 .primary-section-grid {
 	border: 1px solid $primarySectionGridBorder;
 	@include border-radius($smallestSpacing);
@@ -57,6 +60,28 @@ a.document-link {
 	&:hover {
 		background: $lightestGray;
 		border-right: 1px solid $lightGray;
+	}
+}
+
+.notes {
+	font-size: 14px;
+	background: #fef7e3;
+	line-height: 1.4em;
+	padding: 10px;
+	margin: 10px 0;
+	overflow: auto;
+	clear: both;
+	strong, .title {
+		float: left;
+		margin-right: $defaultSpacing;
+    	font-family: $primaryBoldFont;
+    	display: inline;
+	}
+	pre, .content {
+		background: none;
+	}
+	&.inline-notes {
+		margin: 0;
 	}
 }
 
