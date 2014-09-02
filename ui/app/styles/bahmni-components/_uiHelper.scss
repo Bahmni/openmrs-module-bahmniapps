@@ -1,3 +1,34 @@
+/*doc
+---
+title: Sections
+name: section
+category: Bahmni styleGuide
+---
+
+Section grid styles can be applied to any element. Typically you'll want to
+use either a `<div>` or an `<section` element:
+
+```html_example
+<div class="primary-section-grid">
+	<h2 class="section-title">Section Title</h2>
+	<p>This is a primary section grid</p>
+</div>
+```
+
+```html_example
+<div class="section-grid">
+	<h2 class="section-title">Section Title</h2>
+	<p>This is a secondary section grid</p>
+	<ul>
+		<li><a class="document-link">Document link</a></li>
+		<li><a class="document-link">Document link</a></li>
+		<li><a class="document-link">Document link</a></li>
+	</ul>
+</div>
+```
+
+*/
+
 .primary-section-grid {
 	border: 1px solid $primarySectionGridBorder;
 	@include border-radius($smallestSpacing);
