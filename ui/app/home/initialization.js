@@ -6,6 +6,8 @@ angular.module('bahmni.home').factory('initialization', ['$rootScope', '$q', 'ap
             return appService.initApp('home');
         };
 
-        return spinner.forPromise(initApp());
+        return function() {
+            return spinner.forPromise(initApp());
+        };
     }
 ]);

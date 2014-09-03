@@ -37,7 +37,9 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
         controller: 'DashboardController',
         data: {extensionPointId: 'org.bahmni.home.dashboard'},
         resolve: {
-            initialize: 'initialization'
+            initialize: function(initialization) {
+                return initialization();
+            }
         }
     }).state('login',
     {   url: '/login',
