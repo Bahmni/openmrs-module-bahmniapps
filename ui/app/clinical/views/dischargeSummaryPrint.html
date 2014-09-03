@@ -100,9 +100,9 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="drugOrder in dischargeSummary.getTreatmentRecieved()">
-                        <td>{{drugOrder.drugName}}</td>
-                        <td>{{drugOrder.dosingInstructions|formatDecimalValues}}</td>
-                        <td>From {{(drugOrder.startDate | date:'d MMM yy')}} for {{visit.numberOfDosageDaysForDrugOrder(drugOrder)}} day(s)</td>
+                        <td>{{drugOrder.drug.name}}</td>
+                        <td>{{drugOrder.dosingInstructions.administrationInstructions|formatDecimalValues}}</td>
+                        <td>From {{(drugOrder.effectiveStartDate | date:'d MMM yy')}} for {{visit.numberOfDosageDaysForDrugOrder(drugOrder)}} day(s)</td>
                     </tr>
                 </tbody>
             </table>

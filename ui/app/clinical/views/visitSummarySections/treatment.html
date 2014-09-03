@@ -21,15 +21,15 @@
         </thead>
         <tbody ng-repeat="drugOrder in drugOrderGroup.orders">
         <tr ng-click="toggle(drugOrder)" class="row-click">
-            <td class="drug-name" bo-text="drugOrder.drugName"></td>
+            <td class="drug-name" bo-text="drugOrder.drug.name"></td>
             <td class="dosage-form">
-                <span bo-show="drugOrder.dosingInstructions"
-                      bo-text="drugOrder.dosingInstructions|formatDecimalValues"></span>
-                <span bo-show="!drugOrder.dosingInstructions" bo-text="' - '"></span>
+                <span bo-show="drugOrder.dosingInstructions.administrationInstructions"
+                      bo-text="drugOrder.dosingInstructions.administrationInstructions|formatDecimalValues"></span>
+                <span bo-show="!drugOrder.dosingInstructions.administrationInstructions" bo-text="' - '"></span>
             </td>
             <td class="dosage-days has-toggle-btn">
                 <div class="dosage">
-                    <span><span class="copy">From </span>{{(drugOrder.startDate | date:'d MMM yy')}}<span
+                    <span><span class="copy">From </span>{{(drugOrder.effectiveStartDate | date:'d MMM yy')}}<span
                             class="copy"> for </span>{{visit.numberOfDosageDaysForDrugOrder(drugOrder)}} day(s)</span>
                     <span bo-show="drugOrder.prn" class="prn">Take as required</span>
                 </div>
@@ -44,12 +44,12 @@
         </tr>
         <tr ng-if="!print && drugOrder.show">
             <td colspan="4" class="inline-notes notes">
-                <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.notes}}</p>
+                <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.commentToFulfiller}}</p>
 
                 <div class="footer-note right">
                     <span class="time-stamp">
-                      <span class="date">{{drugOrder.startDate | date:'dd MMM yy'}}</span>
-                      <span class="time">{{drugOrder.startDate | date :'hh:mm a'}}</span>
+                      <span class="date">{{drugOrder.effectiveStartDate | date:'dd MMM yy'}}</span>
+                      <span class="time">{{drugOrder.effectiveStartDate | date :'hh:mm a'}}</span>
                     </span>
                     <span class="provider" bo-text="drugOrder.provider.name"></span>
                 </div>
@@ -61,8 +61,8 @@
 
                 <div class="footer-note right">
                     <span class="time-stamp">
-                      <span class="date">{{drugOrder.startDate | date:'dd MMM yy'}}</span>
-                      <span class="time">{{drugOrder.startDate | date :'hh:mm a'}}</span>
+                      <span class="date">{{drugOrder.effectiveStartDate | date:'dd MMM yy'}}</span>
+                      <span class="time">{{drugOrder.effectiveStartDate | date :'hh:mm a'}}</span>
                     </span>
                     <span class="provider" bo-text="drugOrder.provider.name"></span>
                 </div>

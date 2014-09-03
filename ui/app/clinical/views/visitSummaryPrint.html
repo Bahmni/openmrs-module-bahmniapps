@@ -68,14 +68,14 @@
                     </tr>
                     <tbody ng-repeat="drugOrder in visit.drugOrders.orders">
                     <tr>
-                        <td class="drug-name" bo-text="drugOrder.drugName"></td>
+                        <td class="drug-name" bo-text="drugOrder.drug.name"></td>
                         <td class="dosage-form">
-                            <span bo-show="drugOrder.dosingInstructions" bo-text="drugOrder.dosingInstructions|formatDecimalValues"></span>
-                            <span bo-show="!drugOrder.dosingInstructions" bo-text="' - '"></span>
+                            <span bo-show="drugOrder.dosingInstructions.administrationInstructions" bo-text="drugOrder.dosingInstructions.administrationInstructions|formatDecimalValues"></span>
+                            <span bo-show="!drugOrder.dosingInstructions.administrationInstructions" bo-text="' - '"></span>
                         </td>
                         <td class="dosage-days">
                             <div class="dosage">
-                                <span>From {{(drugOrder.startDate | date:'d MMM yy')}} for {{visit.numberOfDosageDaysForDrugOrder(drugOrder)}} day(s)</span>
+                                <span>From {{(drugOrder.effectiveStartDate | date:'d MMM yy')}} for {{visit.numberOfDosageDaysForDrugOrder(drugOrder)}} day(s)</span>
                             </div>
                             <button class="toggle fr">
                                 <i class="icon-plus-sign" ng-click="toggle(drugOrder)" ng-hide="drugOrder.show"></i>
@@ -83,9 +83,9 @@
                             </button>
                         </td>
                     </tr>
-                    <tr ng-show="drugOrder.show" ng-if="drugOrder.notes">
+                    <tr ng-show="drugOrder.show" ng-if="drugOrder.commentToFulfiller">
                         <td colspan="7" class="inline-notes notes">
-                            <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.notes}}</p>
+                            <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.commentToFulfiller}}</p>
                         </td>
                     </tr>
                     </tbody>

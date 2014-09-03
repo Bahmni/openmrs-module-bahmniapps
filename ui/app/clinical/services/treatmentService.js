@@ -4,8 +4,6 @@ angular.module('bahmni.clinical')
     .factory('TreatmentService', ['$http', '$q', function ($http, $q) {
 
         var createDrugOrder = function (drugOrder) {
-            drugOrder.orderDate = Bahmni.Common.Util.DateUtil.parse(drugOrder.effectiveStartDate);
-            drugOrder.expireDate = Bahmni.Common.Util.DateUtil.parse(drugOrder.effectiveStopDate);
             return Bahmni.Clinical.DrugOrder.create(drugOrder);
         };
 

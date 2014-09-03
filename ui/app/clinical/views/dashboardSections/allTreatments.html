@@ -15,13 +15,13 @@
     <div class="template-container" ng-show="allTreatments.length > 0">
         <table ng-repeat="drugOrdersGroup in allTreatments" bindonce="allTreatments">
             <thead>
-                <th colspan="3" bo-text="drugOrdersGroup.values[0].orderDate | date:'dd MMM, yyyy'"></th>
+                <th colspan="3" bo-text="drugOrdersGroup.values[0].effectiveStartDate | date:'dd MMM, yyyy'"></th>
             </thead>
             <tbody>
                 <tr ng-repeat="drugOrder in drugOrdersGroup.values" >
-                    <td class="drug"><span bo-text="drugOrder.drugName"></span></td>
-                    <td class="dosage"><h5>{{drugOrder.dose}} {{drugOrder.doseUnits}}</h5></td>
-                    <td class="days"><span>From </span>{{drugOrder.orderDate | date:'dd MMM yy'}}<br /><span> for </span>{{drugOrder.duration}} day(s)</td>
+                    <td class="drug"><span bo-text="drugOrder.drug.name"></span></td>
+                    <td class="dosage"><h5>{{drugOrder.dosingInstructions.dose}} {{drugOrder.dosingInstructions.doseUnits}}</h5></td>
+                    <td class="days"><span>From </span>{{drugOrder.effectiveStartDate | date:'dd MMM yy'}}<br /><span> for </span>{{drugOrder.duration}} day(s)</td>
                 </tr>
             </tbody>
         </table> 

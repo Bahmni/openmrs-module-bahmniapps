@@ -1,6 +1,8 @@
 'use strict';
 
-Bahmni.Clinical.OrdersMapper = function(){};
+Bahmni.Clinical.OrdersMapper = function(nameToSort){
+    this.nameToSort = nameToSort;
+};
 
 Bahmni.Clinical.OrdersMapper.prototype.group = function(orders, groupingParameter) {
     var getGroupingFunction = function (groupingParameter) {
@@ -58,7 +60,7 @@ Bahmni.Clinical.OrdersMapper.prototype.map = function (encounterTransactions, or
 
     var allObservations = _.flatten(encounterTransactions, 'observations');
     orderObservationsMapper.map(allObservations, ordersWithoutVoidedOrders);
-    var sortedOrders = allTestsPanelsConcept.sort(ordersWithoutVoidedOrders);
+    var sortedOrders = allTestsPanelsConcept.sort(ordersWithoutVoidedOrders, this.nameToSort);
     sortedOrders.forEach(function(order) {
         order.observations.forEach(function(obs){
             obs.groupMembers = allTestsPanelsConcept.sort(obs.groupMembers);

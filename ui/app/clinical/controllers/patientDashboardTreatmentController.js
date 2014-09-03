@@ -29,7 +29,7 @@ angular.module('bahmni.clinical')
             return treatmentService.getPrescribedDrugOrders($stateParams.patientUuid, true).then(function(results){
                 var dateUtil = Bahmni.Common.Util.DateUtil;
                 $scope.allTreatments = new Bahmni.Clinical.ResultGrouper().group(results, function(drugOrder){
-                    return dateUtil.getDate(drugOrder.orderDate);
+                    return dateUtil.getDate(drugOrder.effectiveStartDate);
                 });
             });
         };
