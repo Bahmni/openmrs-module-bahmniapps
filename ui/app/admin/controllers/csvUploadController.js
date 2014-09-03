@@ -5,8 +5,8 @@ angular.module('bahmni.admin')
         function ($scope, $rootScope, FileUploader, appService, adminImportService, spinner) {
             var adminCSVExtension = appService.getAppDescriptor().getExtensionById("bahmni.admin.csv");
             var patientMatchingAlgorithm = adminCSVExtension.extensionParams.patientMatchingAlgorithm || "";
+            var urlMap = {"program": Bahmni.Common.Constants.programImportUrl, "encounter": Bahmni.Common.Constants.encounterImportUrl}
             var fileUploaderOptions = {
-                url: Bahmni.Common.Constants.encounterImportUrl,
                 removeAfterUpload: true,
                 formData: [
                     {patientMatchingAlgorithm: patientMatchingAlgorithm}
@@ -19,7 +19,12 @@ angular.module('bahmni.admin')
                 }));
             }
 
+            $scope.option="encounter";
             $scope.uploader = new FileUploader(fileUploaderOptions);
+            $scope.uploader.onBeforeUploadItem = function(item){
+                item.url = urlMap[$scope.option];
+            };
             $scope.uploader.onCompleteAll = $scope.loadImportedItems;
+
             $scope.loadImportedItems();
         }]);

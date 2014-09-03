@@ -4,6 +4,10 @@
         <div>
             <h3>Select files</h3>
             <input type="file" nv-file-select uploader="uploader" multiple/>
+            <span>
+                <input type="radio" name="upload-type" ng-model="option" ng-value="'encounter'">Encounter
+                <input type="radio" name="upload-type" ng-model="option" ng-value="'program'" > Program
+            </span>
             <div ng-if="uploader.queue.length">
                 <h3>File to Upload</h3>
                 <table>
@@ -19,7 +23,7 @@
                     <tbody>
                         <tr ng-repeat="item in uploader.queue">
                             <td><strong>{{ item.file.name }}</strong></td>
-                            <td>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                            <td>{{ item.file.size/1024|number:2 }} KB</td>
                             <td>
                                 <progress value="{{item.progress}}" max="100"></progress>
                             </td>
