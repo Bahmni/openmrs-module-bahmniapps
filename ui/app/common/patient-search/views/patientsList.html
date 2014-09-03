@@ -1,50 +1,49 @@
-
-<!-- <a class="header-logo" href="../home/"><i class="icon-home"></i>Home</a> -->
 <div ng-include src="'../common/ui-helper/header.html'"></div>
 <div class="patient-search-wrapper">
     <div class="tabs">
         <ul>
-            <li class="tab-item" ng-repeat="sType in searchTypes" ng-class="{'tab-selected':searchCriteria.type==sType}">
-                <a href="" ng-click="switchSearchType(sType)"> <span>{{sType.display}}</span></a>
+            <li class="tab-item" ng-repeat="searchType in search.searchTypes" ng-class="{'tab-selected': search.isSelectedSearch(searchType)}">
+                <a href="" ng-click="search.switchSearchType(searchType)">
+                    <span>{{searchType.display}}</span>
+                    <span ng-if="search.showPatientCount(searchType)">({{search.searchResults.length}})</span>
+                </a>
             </li>
         </ul> 
     </div>
-    <div class="tab-content" ng-show="searchTypes.length > 0">
-        <span ng-if="searchCriteria.type && searchCriteria.type.handler">
+    <div class="tab-content" ng-if="search.searchTypes.length">
+        <span ng-if="search.isCurrentSearchLookUp()">
             <div class="search-wrapper">
-                <input type="text" id="patientIdentifierInList" ng-model="searchCriteria.searchParameter"  ng-change="searchPatients()"  placeholder="Search Name/ID  ..."/>
+                <input type="text" id="patientIdentifierInList" ng-model="search.searchParameter"  ng-change="search.filterPatients()"  placeholder="Search Name/ID  ..."/>
             </div>
         </span>
-        <span ng-if="searchCriteria.type && !searchCriteria.type.handler">    
+        <span ng-if="!search.isCurrentSearchLookUp()">    
             <form name="searchPatientForm" ng-submit="searchPatients()"> 
                 <div class="search-patient-id left">
-                    <input type="text" autofocus id="patientIdentifier" ng-model="searchCriteria.searchParameter"  placeholder="Search Name/ID  ..."/>
+                    <input type="text" autofocus id="patientIdentifier" ng-model="search.searchParameter"  placeholder="Search Name/ID  ..."/>
                 </div>
 
                 <div class="reg-srch-btn left">
-                    <button type="submit" ng-disabled="!searchCriteria.searchParameter">
+                    <button type="submit" ng-disabled="!search.searchParameter">
                         <i class="icon-search"></i>
                         Search
                     </button>
                 </div>
             </form>
         </span>        
-        <div resize class="active-visits">
-            <div infinite-scroll='loadMore()' >
-                <li ng-repeat="patient in visiblePatients" class="active-patient" ng-click="forwardPatient(patient)">
-                    <img class="smallImages" ng-src="{{patient.image}}"  onerror="this.onerror=null;this.src='../images/blank-user.png';" >
-                    <div class="patient-name">{{patient.name}}</div>
-                    <div class="patient-id">{{patient.identifier}}</div>
-                </li>
-                <div class="note-container" ng-show="noResultsMessage">
-                    <div class="note warning">
-                        <div class="text">
-                            <p class="ng-binding">{{noResultsMessage}}</p>
-                        </div>
+        <resize search-results="search.searchResults" visible-results="search.visiblePatients" class="active-visits">
+            <li ng-repeat="patient in search.visiblePatients" class="active-patient" ng-click="forwardPatient(patient)">
+                <img class="smallImages" ng-src="{{patient.image}}"  onerror="this.onerror=null;this.src='../images/blank-user.png';" >
+                <div class="patient-name">{{patient.name}}</div>
+                <div class="patient-id">{{patient.identifier}}</div>
+            </li>
+            <div class="note-container" ng-if="search.noResultsMessage">
+                <div class="note warning">
+                    <div class="text">
+                        <p class="ng-binding">{{search.noResultsMessage}}</p>
                     </div>
                 </div>
             </div>
-        </div>
+        </resize>
     </div>
 </div>
 
