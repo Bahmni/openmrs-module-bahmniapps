@@ -24,7 +24,7 @@
                         </span>
                         <span>
                         <input type="text" id="registrationNumber" ng-model="patient.registrationNumber"
-                               placeholder="Registration Number" non-blank="hasOldIdentifier"
+                               placeholder="Registration Number" non-blank="hasOldIdentifier" title="Enter patient's registration number"
                                ng-change="patient.generateIdentifier()" ng-show="hasOldIdentifier" focus-on="hasOldIdentifier" attr-pattern="identifierPattern" title="{{identifierPatternDescription}}">
                         </span>
                         <span class="input-label-inline">
