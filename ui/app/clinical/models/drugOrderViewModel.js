@@ -1,4 +1,4 @@
-Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, routes, durationUnits) {
+Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
     var getDefaultValue = function (defaultValue, valueSet) {
         var selectedValue = defaultValue && _.find(valueSet, function (value) {
             return value.name === defaultValue;
@@ -7,9 +7,12 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, routes, duration
     };
 
     var self = this;
+    var config = config || {};
+    var durationUnits = config.durationUnits || [];
     this.asNeeded = false;
-    this.route = getDefaultValue(extensionParams && extensionParams.defaultRoute, routes);
+    this.route = getDefaultValue(extensionParams && extensionParams.defaultRoute, config.routes || []);
     this.durationUnit = getDefaultValue(extensionParams && extensionParams.defaultDurationUnit, durationUnits);
+    this.instructions = getDefaultValue(extensionParams && extensionParams.defaultInstructions, config.dosingInstructions || []);
     this.scheduledDate = new Date();
     this.frequencyType = "uniform";
     this.uniformDosingType = {};
@@ -47,7 +50,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, routes, duration
 
     this.getDescription = function () {
         return addDelimiter(blankIfFalsy(getDoseAndFrequency()), " ") +
-            addDelimiter(blankIfFalsy(self.instructions), ", ") +
+            addDelimiter(blankIfFalsy(self.instructions && self.instructions.name), ", ") +
             addDelimiter(blankIfFalsy(asNeeded(self.asNeeded)), ', ') +
             addDelimiter(blankIfFalsy(self.route && self.route.name), " - ") +
             addDelimiter(blankIfFalsy(self.duration), " ") +

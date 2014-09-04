@@ -2,9 +2,9 @@
 
 describe("drugOrderViewModel", function () {
     var sampleTreatment = function (extensionParams, routes, durationUnits) {
-        var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel(extensionParams, routes, durationUnits);
+        var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel(extensionParams, {routes:routes, durationUnits: durationUnits});
         sampleTreatment.drugName = "calpol 500mg(tablets)";
-        sampleTreatment.instructions = "Before Meals";
+        sampleTreatment.instructions = {name: "Before Meals"};
         sampleTreatment.duration = "10";
         sampleTreatment.scheduledDate = "21/12/2014";
         sampleTreatment.quantity = "12";
@@ -50,7 +50,7 @@ describe("drugOrderViewModel", function () {
     });
 
     it("should reset dosingType when changing frequency type", function() {
-        var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel({}, []);
+        var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel({});
         sampleTreatment.uniformDosingType = {
             dose: 1,
             doseUnits: "Tablets",
@@ -61,7 +61,7 @@ describe("drugOrderViewModel", function () {
     });
 
     it("should change duration unit based on frequency factor", function() {
-        var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel({}, [], [{name: "Hours"}, {name: "Days"}, {name: "Weeks"}]);
+        var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel({}, {durationUnits: [{name: "Hours"}, {name: "Days"}, {name: "Weeks"}]});
         sampleTreatment.uniformDosingType.frequency = {name: "Every Hour", frequencyPerDay: 24};
         sampleTreatment.calculateDurationUnit();
         expect(sampleTreatment.durationUnit.name).toBe("Hours")
