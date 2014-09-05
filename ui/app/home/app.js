@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.common.uiHelper', 'bahmni.common.util', 'bahmni.common.appFramework', 'ngCookies'])
+angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.common.domain', 'bahmni.common.uiHelper', 'bahmni.common.util', 'bahmni.common.appFramework', 'ngCookies'])
 .provider('$cookieStore', [function(){
     var self = this;
     self.defaultOptions = {};
@@ -37,15 +37,17 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
         controller: 'DashboardController',
         data: {extensionPointId: 'org.bahmni.home.dashboard'},
         resolve: {
-            initialize: function(initialization) {
-                return initialization();
+            initialize: function(dashboardInitialization) {
+                return dashboardInitialization();
             }
         }
     }).state('login',
     {   url: '/login',
         templateUrl: 'views/login.html',
-        controller: 'LoginController'
-
+        controller: 'LoginController',
+        resolve: {
+            initialData: 'loginInitialization'
+        }
     });
     $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
 }]).run(function ($rootScope, $templateCache) {

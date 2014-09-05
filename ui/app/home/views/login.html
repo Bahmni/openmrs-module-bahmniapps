@@ -35,6 +35,19 @@
                 </div>
             </div>
 
+            <div class="form-field" ng-if="locations">
+                <div class="field-attribute">
+                    <label for="currentLocation">
+                        Location <span class="asterick">*</span>
+                    </label>
+                </div>
+                <div class="field-value">
+                    <select ng-model="currentLocation" ng-options="item as item.display for item in locations" required>
+                        <option value="">Select Location</option>
+                    </select>
+                </div>
+            </div>
+
             <div class="form-footer">
                 <button type="submit" class="confirm">Login</button>
             </div>

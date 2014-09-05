@@ -36,15 +36,20 @@ angular.module('authentication', ['ngCookies'])
 
         this.destroy = function(){
             return $http.delete(sessionResourcePath).success(function(data){
+                delete $.cookie("bahmni.user", null, {path: "/"});
+                delete $.cookie("bahmni.user.location", null, {path: "/"});
                 $rootScope.currentUser = null;
             });
         };
 
-        this.loginUser = function(username, password) {
+        this.loginUser = function(username, password, location) {
             var deferrable = $q.defer();
             createSession(username,password).success(function(data) {
                 if (data.authenticated) {
                     $cookieStore.put('bahmni.user', username, {path: '/', expires: 7});
+                    if(location != undefined) {
+                        $cookieStore.put('bahmni.user.location', {name: location.display, uuid: location.uuid}, {path: '/', expires: 7});
+                    }
                     deferrable.resolve();
                 } else {
                    deferrable.reject('Authentication failed. Please try again.');   
@@ -62,6 +67,13 @@ angular.module('authentication', ['ngCookies'])
         this.loadCredentials = function () {
             var deferrable = $q.defer();
             var currentUser = $cookieStore.get('bahmni.user');
+            if(!currentUser) {
+                this.destroy().then(function() {
+                    $rootScope.$broadcast('event:auth-loginRequired');
+                    deferrable.reject("No User in session. Please login again.")
+                });
+                return deferrable.promise;
+            }
             $http.get("/openmrs/ws/rest/v1/user", {
                 method: "GET",
                 params: {

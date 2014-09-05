@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'spinner', '$q', '$stateParams',
-     function ($rootScope, $scope, $window, $location, sessionService, spinner, $q, $stateParams) {
+    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams',
+     function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams) {
         var landingPagePath = "/dashboard";
         var loginPagePath = "/login";
+        $scope.locations = initialData.locations;
 
         if($stateParams.showLoginMessage) {
             $scope.errorMessage = "You are not authenticated right now. Please login.";
@@ -25,7 +26,7 @@ angular.module('bahmni.home')
         $scope.login = function () {
             $scope.errorMessage = null;
             var deferrable = $q.defer();
-            sessionService.loginUser($scope.username, $scope.password).then(
+            sessionService.loginUser($scope.username, $scope.password, $scope.currentLocation).then(
                 function() {
                     sessionService.loadCredentials().then(
                         function() {
