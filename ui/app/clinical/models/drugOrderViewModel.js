@@ -70,7 +70,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
                 this.durationUnit = _.find(durationUnits, {name: "Weeks"});
             }
         }
-    }
+    };
 
     this.setFrequencyType = function (type) {
         self.frequencyType = type;

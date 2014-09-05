@@ -90,7 +90,7 @@
         </section>
         <section class="treatment-print">
             <h3>Treatment received</h3>
-            <table ng-if="dischargeSummary.getTreatmentRecieved() && dischargeSummary.getTreatmentRecieved().length > 0">
+            <table ng-if="dischargeSummary.getTreatmentReceived() && dischargeSummary.getTreatmentReceived().length > 0">
                 <thead>
                     <tr>
                         <th>Drug Name</th>
@@ -99,10 +99,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="drugOrder in dischargeSummary.getTreatmentRecieved()">
+                    <tr ng-repeat="drugOrder in dischargeSummary.getTreatmentReceived()">
                         <td>{{drugOrder.drug.name}}</td>
                         <td>{{drugOrder.dosingInstructions.administrationInstructions|formatDecimalValues}}</td>
-                        <td>From {{(drugOrder.effectiveStartDate | date:'d MMM yy')}} for {{visit.numberOfDosageDaysForDrugOrder(drugOrder)}} day(s)</td>
+                        <td>From {{(drugOrder.effectiveStartDate | date:'d MMM yy')}} for {{drugOrder.duration}} {{drugOrder.durationUnits}}</td>
                     </tr>
                 </tbody>
             </table>

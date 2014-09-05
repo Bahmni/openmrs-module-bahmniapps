@@ -23,7 +23,7 @@ var dischargeSummary = function(){
 			return this.visit.visitDiagnoses.diagnoses.filter(function(diagnosis) { return !diagnosis.revised; });
 		},
 
-		getTreatmentRecieved: function() {
+		getTreatmentReceived: function() {
 			return this.visit.getIPDDrugOrders().ipdDrugSchedule.drugOrders;
 		},
 		

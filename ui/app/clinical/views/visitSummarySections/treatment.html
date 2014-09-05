@@ -30,7 +30,7 @@
             <td class="dosage-days has-toggle-btn">
                 <div class="dosage">
                     <span><span class="copy">From </span>{{(drugOrder.effectiveStartDate | date:'d MMM yy')}}<span
-                            class="copy"> for </span>{{visit.numberOfDosageDaysForDrugOrder(drugOrder)}} day(s)</span>
+                            class="copy"> for </span>{{drugOrder.duration}} {{drugOrder.durationUnits}}</span>
                     <span bo-show="drugOrder.prn" class="prn">Take as required</span>
                 </div>
 

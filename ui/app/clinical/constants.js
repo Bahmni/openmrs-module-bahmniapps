@@ -27,7 +27,8 @@ Bahmni.Clinical.Constants = (function () {
         messageForNoObservation: "No observations captured for this visit.",
         messageForNoActiveVisit: "No active visit.",
         diagnosisStatuses : {"RULED OUT" : "Ruled Out Diagnosis"},
-        dischargeSummaryConceptName: "Discharge Summary"
+        dischargeSummaryConceptName: "Discharge Summary",
+        noDosingInstructionsClass: "org.openmrs.module.bahmniemrapi.drugorder.dosinginstructions.NoDosingInstructions"
     };
 })();
 

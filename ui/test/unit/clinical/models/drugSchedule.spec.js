@@ -5,8 +5,8 @@ describe("DrugSchedule", function () {
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
     var createDrugOrder = function (name, startDate, endDate) {
-        return {drugName: name, startDate: startDate, endDate: endDate};
-    }
+        return {drugName: name, effectiveStartDate: startDate, effectiveStopDate: endDate};
+    };
 
     beforeEach(function () {
         visit = jasmine.createSpyObj('visit', ['getAdmissionDate', 'getDischargeDispositionEncounterDate', 'getDischargeDate']);
@@ -16,9 +16,9 @@ describe("DrugSchedule", function () {
         it("should initialize DrugSchedule with visit admission date, discharge disposition date and drug orders within these dates", function () {
             var admissionDate = DateUtil.parse('2014-04-10T15:52:59.000+0530');
             var dischargeDate = DateUtil.parse('2014-04-20T15:52:59.000+0530');
-            var beclomateAfterDischarge = createDrugOrder('Beclomate', '2014-04-21T12:55:00.000+0530', '2014-04-13T15:52:59.000+0530');
+            var beclomateAfterDischarge = createDrugOrder('Beclomate', '2014-04-21T12:55:00.000+0530', '2014-04-23T15:52:59.000+0530');
             var calpolAfterAdmissionBeforeDishcarge = createDrugOrder('Calpol', '2014-04-15T15:55:00.000+0530', '2014-04-18T15:52:59.000+0530');
-            var amoxyBeforeAdmissionAfterDishcarge = createDrugOrder('Amoxy', '2014-04-06T11:52:00.000+0530', '2014-04-22T11:52:59.000+0530');
+            var amoxyBeforeAdmissionAfterDishcarge = createDrugOrder('Amoxy', '2014-04-11T11:52:00.000+0530', '2014-04-20T11:52:59.000+0530');
             var paracetamolBeforeAdmission = createDrugOrder('Paracetamol', '2014-04-04T11:52:00.000+0530', '2014-04-09T11:52:59.000+0530');
             var salbutamolDuringDichrageDisposition = createDrugOrder('Salbutamol', dischargeDate, '2014-04-29T11:52:59.000+0530');
             visit.drugOrders = [beclomateAfterDischarge, calpolAfterAdmissionBeforeDishcarge, amoxyBeforeAdmissionAfterDishcarge, paracetamolBeforeAdmission, salbutamolDuringDichrageDisposition];
@@ -37,7 +37,7 @@ describe("DrugSchedule", function () {
             var dischargeDate = DateUtil.parse('2014-04-20T15:52:59.000+0530');
             var beclomateAfterDischarge = createDrugOrder('Beclomate', '2014-04-21T15:55:00.000+0530', '2014-04-26T15:52:59.000+0530');
             var calpolAfterAdmissionBeforeDishcarge = createDrugOrder('Calpol', '2014-04-15T15:55:00.000+0530', '2014-04-18T15:52:59.000+0530');
-            var amoxyBeforeAdmissionAfterDishcarge = createDrugOrder('Amoxy', '2014-04-06T11:52:00.000+0530', '2014-04-22T11:52:59.000+0530');
+            var amoxyBeforeAdmissionAfterDishcarge = createDrugOrder('Amoxy', '2014-04-11T11:52:00.000+0530', '2014-04-20T11:52:59.000+0530');
             var paracetamolBeforeAdmission = createDrugOrder('Paracetamol', '2014-04-04T11:52:00.000+0530', '2014-04-09T11:52:59.000+0530');
             visit.drugOrders = [beclomateAfterDischarge, calpolAfterAdmissionBeforeDishcarge, amoxyBeforeAdmissionAfterDishcarge, paracetamolBeforeAdmission];
 
@@ -50,12 +50,12 @@ describe("DrugSchedule", function () {
             expect(drugSchedule.drugOrders[1].drugName).toBe('Amoxy');
         });
 
-        it("should initialize end date to today when discharge disposition date and duscharge date is not provided", function () {
+        it("should initialize end date to today when discharge disposition date and discharge date is not provided", function () {
             var admissionDate = DateUtil.parse('2014-04-10T15:52:59.000+0530');
-            spyOn(DateUtil, 'now').and.returnValue(DateUtil.parse('2014-04-20T15:52:59.000+0530'))
+            spyOn(DateUtil, 'now').and.returnValue(DateUtil.parse('2014-04-20T15:52:59.000+0530'));
             var dischargeDate = DateUtil.now();
             var calpolAfterAdmission = createDrugOrder('Calpol', '2014-04-15T15:55:00.000+0530', '2014-04-18T15:52:59.000+0530');
-            var amoxyBeforeAdmissionBeforeToday = createDrugOrder('Amoxy', '2014-04-06T11:52:00.000+0530', '2014-04-22T11:52:59.000+0530');
+            var amoxyBeforeAdmissionBeforeToday = createDrugOrder('Amoxy', '2014-04-11T11:52:00.000+0530', '2014-04-20T11:52:59.000+0530');
             var paracetamolBeforeAdmission = createDrugOrder('Paracetamol', '2014-04-04T11:52:00.000+0530', '2014-04-09T11:52:59.000+0530');
             visit.drugOrders = [calpolAfterAdmission, amoxyBeforeAdmissionBeforeToday, paracetamolBeforeAdmission];
 

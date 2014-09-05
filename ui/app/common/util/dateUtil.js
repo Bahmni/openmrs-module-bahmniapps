@@ -121,6 +121,31 @@ Bahmni.Common.Util.DateUtil = {
             }
         }
         return durationRepresentation(undefined, undefined, undefined);
+    },
+
+    getEndDateFromDuration: function (dateFrom, value, unit){
+        dateFrom = this.parse(dateFrom);
+        var from = {
+            h: dateFrom.getHours(),
+            d: dateFrom.getDate(),
+            m: dateFrom.getMonth(),
+            y: dateFrom.getFullYear()
+        };
+        var to = new Date(from.y,from.m,from.d,from.h);
+
+        if(unit === "Months"){
+            to.setMonth(from.m + value);
+        }
+        else if(unit === "Weeks"){
+            to.setDate(from.d + (value * 7));
+        }
+        else if(unit === "Days"){
+            to.setDate(from.d + value);
+        }
+        else if(unit === "Hours"){
+            to.setHours(from.h + value);
+        }
+        return to;
     }
 
 };

@@ -13,42 +13,38 @@ Bahmni.Clinical.DrugOrder = (function () {
 
     DrugOrder.createFromUIObject = function (drugOrderData) {
         var dateUtil = Bahmni.Common.Util.DateUtil;
-        var getAdministrationInstructions = function(drugOrderData) {
-            var instructions = {
-                instructions: drugOrderData.instructions,
-                notes: drugOrderData.notes || ""
-            };
-
+        var getDosingInstructions = function(drugOrderData) {
             if (drugOrderData.frequencyType === 'variable') {
+                var instructions = {};
                 instructions.morningDose = drugOrderData.variableDosingType.morningDose;
                 instructions.afternoonDose = drugOrderData.variableDosingType.afternoonDose;
                 instructions.eveningDose = drugOrderData.variableDosingType.eveningDose;
+                return JSON.stringify(instructions);
             }
-            return JSON.stringify(instructions);
-        }
+        };
         var doseUnits = drugOrderData.frequencyType === "uniform" ? drugOrderData.uniformDosingType.doseUnits : drugOrderData.variableDosingType.doseUnits;
-
 
         var drugOrder = new DrugOrder({
                 careSetting: "Outpatient",
                 drug: {name:drugOrderData.drugName},
                 orderType: "Drug Order",
+                dosingInstructionType: drugOrderData.dosingInstructionType,
                 dosingInstructions: {
                     dose: drugOrderData.uniformDosingType.dose,
                     doseUnits: doseUnits,
                     route: drugOrderData.route,
                     frequency: drugOrderData.uniformDosingType.frequency,
-                    asNeeded: drugOrderData.prn,
-                    administrationInstructions: getAdministrationInstructions(drugOrderData),
+                    asNeeded: drugOrderData.asNeeded,
+                    administrationInstructions: getDosingInstructions(drugOrderData),
                     quantity: drugOrderData.quantity,
                     quantityUnits: drugOrderData.quantityUnit,
-                    numRefills: 0},
+                    numberOfRefills: 0},
                 duration: drugOrderData.duration,
-                durationUnits: drugOrderData.durationUnit,
+                durationUnits: drugOrderData.durationUnit.name,
                 scheduledDate: dateUtil.parse(drugOrderData.scheduledDate),
-                endDate: dateUtil.addDays(dateUtil.parse(drugOrderData.scheduledDate), drugOrderData.durationInDays),
-                provider: drugOrderData.provider,
-                action: drugOrderData.action
+                dateStopped: dateUtil.addDays(dateUtil.parse(drugOrderData.scheduledDate), drugOrderData.durationInDays),
+                action: drugOrderData.action,
+                instructions: drugOrderData.instructions
             }
         );
         return drugOrder;
@@ -56,7 +52,7 @@ Bahmni.Clinical.DrugOrder = (function () {
 
     DrugOrder.prototype = {
         isActiveOnDate: function (date) {
-            return date >= DateUtil.getDate(this.startDate) && date <= DateUtil.getDate(this.endDate);
+            return date >= DateUtil.getDate(this.effectiveStartDate) && date <= DateUtil.getDate(this.effectiveStopDate);
         },
 
         isActive: function () {

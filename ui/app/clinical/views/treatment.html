@@ -51,7 +51,7 @@
                 </select>
 
                 <div class="duration-widget">
-                    <input class="form-field duration" type="number" min="0" placeholder="Duration"
+                    <input class="form-field duration" type="number" min="1" placeholder="Duration"
                            ng-model="treatment.duration" ng-change="treatment.calculateDurationInDays()" required only-number/>
                     <select class="form-field duration-unit" ng-model="treatment.durationUnit" ng-change="treatment.calculateDurationInDays()"
                             ng-options="item as item.name for item in treatmentConfig.durationUnits" required>
@@ -66,7 +66,7 @@
                        ng-model="treatment.scheduledDate" placeholder="dd-mm-yyyy" min="{}">
 
                 <div class="quantity-widget">
-                    <input class="form-field quantity" type="number" min="0" placeholder="Qty"
+                    <input class="form-field quantity" type="number" min="1" placeholder="Qty"
                            ng-model="treatment.quantity" ng-change="treatment.setQuantityEnteredManually()" required only-number/>
                     <select class="form-field quantity-unit" ng-model="treatment.quantityUnit"
                             ng-options="item.name as item.name for item in treatmentConfig.dispensingUnits" required>

@@ -75,7 +75,7 @@
                         </td>
                         <td class="dosage-days">
                             <div class="dosage">
-                                <span>From {{(drugOrder.effectiveStartDate | date:'d MMM yy')}} for {{visit.numberOfDosageDaysForDrugOrder(drugOrder)}} day(s)</span>
+                                <span>From {{(drugOrder.effectiveStartDate | date:'d MMM yy')}} for {{drugOrder.duration}} {{drugOrder.durationUnits}}</span>
                             </div>
                             <button class="toggle fr">
                                 <i class="icon-plus-sign" ng-click="toggle(drugOrder)" ng-hide="drugOrder.show"></i>

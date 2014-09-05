@@ -30,7 +30,8 @@
 
 	Bahmni.Clinical.DrugSchedule.create = function(fromDate, toDate, drugOrders) {
 		var drugOrdersDuringIpd = drugOrders.filter(function(drugOrder){
-			return DateUtil.parse(drugOrder.effectiveStartDate) < toDate && DateUtil.parse(drugOrder.effectiveStopDate) >= fromDate;
+            var endDate = drugOrder.effectiveStopDate ? drugOrder.effectiveStopDate : DateUtil.getEndDateFromDuration(drugOrder.effectiveStartDate, drugOrder.duration, drugOrder.durationUnits);
+            return DateUtil.parse(endDate) < toDate && DateUtil.parse(drugOrder.effectiveStartDate) >= fromDate;
 		});
 		return new this(fromDate, toDate, drugOrdersDuringIpd);
 	};

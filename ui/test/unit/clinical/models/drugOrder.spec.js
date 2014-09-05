@@ -5,8 +5,8 @@ describe("DrugOrder", function() {
 	describe("isActiveOnDate", function() {
 		it("should be true when date is between start date and end date", function() {
 			var drugOrder = new DrugOrder({
-				startDate: '2014-04-10T15:52:59.000+0530',
-				endDate: '2014-04-11T15:52:59.000+0530'
+				effectiveStartDate: '2014-04-10T15:52:59.000+0530',
+				effectiveStopDate: '2014-04-11T15:52:59.000+0530'
 			});
 
 			expect(drugOrder.isActiveOnDate(DateUtil.parse('2014-04-09'))).toBe(false);
@@ -20,8 +20,8 @@ describe("DrugOrder", function() {
 		it("should be true if drug is consumed today", function() {
 			spyOn(DateUtil, 'today');
 			var drugOrder = new DrugOrder({
-				startDate: '2014-04-10T15:52:59.000+0530',
-				endDate: '2014-04-11T15:52:59.000+0530'
+				effectiveStartDate: '2014-04-10T15:52:59.000+0530',
+				effectiveStopDate: '2014-04-11T15:52:59.000+0530'
 			});
 
 			DateUtil.today.and.returnValue(DateUtil.parse('2014-04-09'));

@@ -21,7 +21,7 @@
                 <tr ng-repeat="drugOrder in drugOrdersGroup.values" >
                     <td class="drug"><span bo-text="drugOrder.drug.name"></span></td>
                     <td class="dosage"><h5>{{drugOrder.dosingInstructions.dose}} {{drugOrder.dosingInstructions.doseUnits}}</h5></td>
-                    <td class="days"><span>From </span>{{drugOrder.effectiveStartDate | date:'dd MMM yy'}}<br /><span> for </span>{{drugOrder.duration}} day(s)</td>
+                    <td class="days"><span>From </span>{{drugOrder.effectiveStartDate | date:'dd MMM yy'}}<br /><span> for </span>{{drugOrder.duration}} {{drugOrder.durationUnits}}</td>
                 </tr>
             </tbody>
         </table> 

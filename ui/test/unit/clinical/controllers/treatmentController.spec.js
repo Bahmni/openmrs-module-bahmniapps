@@ -22,7 +22,7 @@ describe("TreatmentController", function () {
     }));
 
     it("should copy over existing treatment into array of new treatments", function () {
-        var treatment = {someObject: true};
+        var treatment = {drugName: true};
         scope.treatment = treatment;
         scope.add();
         expect(scope.treatments.length).toBe(1);
@@ -30,8 +30,8 @@ describe("TreatmentController", function () {
     });
 
     it("should empty treatment on add", function () {
-        scope.treatment = {someObject: true};
+        scope.treatment = {drugName: true};
         scope.add();
-        expect(scope.treatment.someObject).toBeFalsy();
+        expect(scope.treatment.drugName).toBeFalsy();
     });
 });
