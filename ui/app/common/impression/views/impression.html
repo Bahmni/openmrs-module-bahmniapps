@@ -1,0 +1,8 @@
+<li ng-repeat="obs in sourceObs">
+    <span>
+        {{obs.value}}
+    </span>
+</li>
+<textarea placeholder="Enter Impression on Image" ng-model="newSourceObs.value">
+</textarea>
+<input type="button" ng-click="saveImpression()" value="Save">

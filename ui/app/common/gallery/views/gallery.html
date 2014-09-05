@@ -27,7 +27,11 @@
             <span class="image-date">{{image.date | date: "dd MMM yy"}}</span>
             <span class="image-index">({{getCurrentIndex()}} of {{getTotalLength()}})</span>
         </div>
-        <div class="image-desc" ng-if="isActive($index, album.tag) && image.desc"><strong>Comments:</strong> {{image.desc}}</div>
+        <div class="image-desc" ng-if="isActive($index, album.tag) && image.desc"><strong>Comments:</strong>
+            {{image.desc}}
+        </div>
+        <div impression target-obs="image" source-concept="impression" consultation-observations="visit.observations"
+             ng-show="isActive($index,album.tag)"></div>
     </div>
 </div>
 
