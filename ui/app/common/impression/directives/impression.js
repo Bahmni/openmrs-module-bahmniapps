@@ -1,23 +1,32 @@
 angular.module('bahmni.common.impression', [])
-    .directive('impression', ['$rootScope', 'observationsService', 'encounterService', function ($rootScope, observationsService, encounterService) {
+    .directive('impression', ['$rootScope', 'observationsService', 'encounterService', 'spinner', function ($rootScope, observationsService, encounterService, spinner) {
 
-        var link = function ($scope, element) {
-            $scope.newSourceObs = {
-                value:"",
-                concept:{
-                    uuid:$rootScope.radiologyImpressionConcept.uuid
-                },
-                targetObsRelation:{
-                    relationshipType:"qualified-by",
-                    targetObs:{
-                        uuid:$scope.targetObs.uuid
+        var link = function ($scope) {
+            var constructNewSourceObs = function() {
+                $scope.newSourceObs = {
+                    value: "",
+                    concept: {
+                        uuid: $rootScope.radiologyImpressionConcept.uuid
+                    },
+                    targetObsRelation: {
+                        relationshipType: "qualified-by",
+                        targetObs: {
+                            uuid: $scope.targetObs.uuid
+                        }
                     }
-                }
+                };
+            };
+
+            var init = function(){
+                return observationsService.getObsRelationship($scope.targetObs.uuid).then(function (response) {
+                    $scope.sourceObs = response.data;
+                    constructNewSourceObs();
+                });
             };
 
             $scope.saveImpression = function(){
                 var bahmniEncounterTransaction = mapBahmniEncounterTransaction();
-                encounterService.create(bahmniEncounterTransaction);
+                spinner.forPromise(encounterService.create(bahmniEncounterTransaction).then(init));
             };
 
             var mapBahmniEncounterTransaction = function(){
@@ -29,10 +38,7 @@ angular.module('bahmni.common.impression', [])
                 };
             };
 
-
-            observationsService.getObsRelationship($scope.targetObs.uuid).then(function (response) {
-                $scope.sourceObs = response.data;
-            });
+            spinner.forPromise(init());
         };
 
 
