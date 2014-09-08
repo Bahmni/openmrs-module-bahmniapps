@@ -22,7 +22,7 @@
                     ng-repeat-start="observation in observationSubGroup.obs"
                     ng-class="{true: 'is-abnormal'}[observation.abnormal.value]">
                     <td class="name">
-                        <span class="obs-value">{{observation.concept.name}}</span>
+                        <span class="obs-value">{{observation.concept.shortName || observation.concept.name}}</span>
                     </td>
                     <td class="value has-toggle-btn" data-ng-switch="observation.concept.conceptClass">
                         <img data-ng-switch-when="Image"

@@ -59,7 +59,7 @@ angular.module('bahmni.common.conceptSet')
             '</form>';
 
         var numberOfLevels = appService.getAppDescriptor().getConfigValue('maxConceptSetLevels') || 4;
-        var fields = ['uuid','name','set','hiNormal','lowNormal','units','conceptClass','datatype', 'handler', 'answers:(uuid,name,displayString,names)', 'descriptions'];
+        var fields = ['uuid','name', 'names', 'set','hiNormal','lowNormal','units','conceptClass','datatype', 'handler', 'answers:(uuid,name,displayString,names)', 'descriptions'];
         var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels);
 
         var controller = function ($scope, conceptSetService, conceptSetUiConfigService, spinner) {
