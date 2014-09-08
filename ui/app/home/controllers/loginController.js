@@ -6,6 +6,7 @@ angular.module('bahmni.home')
         var landingPagePath = "/dashboard";
         var loginPagePath = "/login";
         $scope.locations = initialData.locations;
+        $scope.loginInfo = {};
 
         if($stateParams.showLoginMessage) {
             $scope.errorMessage = "You are not authenticated right now. Please login.";
@@ -26,7 +27,7 @@ angular.module('bahmni.home')
         $scope.login = function () {
             $scope.errorMessage = null;
             var deferrable = $q.defer();
-            sessionService.loginUser($scope.username, $scope.password, $scope.currentLocation).then(
+            sessionService.loginUser($scope.loginInfo.username, $scope.loginInfo.password, $scope.loginInfo.currentLocation).then(
                 function() {
                     sessionService.loadCredentials().then(
                         function() {

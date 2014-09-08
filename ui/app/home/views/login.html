@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="field-value">
-                    <input type="text" name="username" id="username" ng-model="username" autofocus="autofocus" required placeholder="Enter your username">
+                    <input type="text" name="username" id="username" ng-model="loginInfo.username" autofocus="autofocus" required placeholder="Enter your username">
                 </div>
             </div>
             <div class="form-field">
@@ -31,7 +31,7 @@
                     </label>
                 </div>
                 <div class="field-value">
-                    <input type="password" id="password" name="password" ng-model="password" required placeholder="Enter your password">
+                    <input type="password" id="password" name="password" ng-model="loginInfo.password" required placeholder="Enter your password">
                 </div>
             </div>
 
@@ -42,7 +42,7 @@
                     </label>
                 </div>
                 <div class="field-value">
-                    <select ng-model="currentLocation" ng-options="item as item.display for item in locations" required>
+                    <select name="currentLocation" ng-model="loginInfo.currentLocation" ng-options="item as item.display for item in locations" required>
                         <option value="">Select Location</option>
                     </select>
                 </div>
