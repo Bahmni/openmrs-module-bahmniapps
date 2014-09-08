@@ -18,7 +18,7 @@ angular.module('bahmni.home')
                     $location.path(landingPagePath);
                 }
             });
-        }
+        };
 
         if($location.path() === loginPagePath) {
             redirectToLandingPageIfAlreadyAuthenticated();
