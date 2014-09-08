@@ -296,7 +296,7 @@ body{
   top: 0;
   margin: 80px auto;
   font-size:0.865em;
-  max-width: 600px;
+  max-width: 500px;
   form {
     border-radius: 0 0 10px 10px;    
     -webkit-box-shadow: 0 8px 6px -8px #888;
@@ -344,6 +344,9 @@ body{
           min-width: 10%;
           padding: 10px 4px 10px 10px;
         }
+        select {
+          width: 99%;
+        }
       }
     }
     .form-footer {
@@ -358,7 +361,7 @@ body{
     }
   }
   @media screen and (min-width: 1025px) {
-    width: 600px;
+    width: 500px;
     margin: auto;
     bottom: 0;
     .login-body {
@@ -384,6 +387,9 @@ body{
             margin: 2px;
             min-width: 80%;
             padding: 4px;
+          }
+          select {
+            width: 15.7em;
           }
         }
       }
