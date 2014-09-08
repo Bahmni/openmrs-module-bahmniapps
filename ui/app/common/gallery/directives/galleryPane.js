@@ -38,10 +38,6 @@ angular.module('bahmni.common.gallery')
                 return $scope.imageIndex == index && $scope.albumTag == tag;
             };
 
-            $scope.isPatientFile = function (image) {
-                return image.title === Bahmni.Common.Constants.patientFileConceptName;
-            };
-
             var getAlbumIndex = function () {
                 return _.findIndex($scope.albums, function (album) {
                     return album.tag == $scope.albumTag;

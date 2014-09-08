@@ -31,7 +31,7 @@ angular.module('bahmni.common.impression', [])
 
             var mapBahmniEncounterTransaction = function(){
                 return {
-                    visitUuid: $rootScope.visit.uuid,
+                    visitUuid: $rootScope.activeVisit.uuid,
                     patientUuid: $rootScope.patient.uuid,
                     encounterTypeUuid: $rootScope.encounterConfig.getOpdConsultationEncounterTypeUuid(),
                     observations: [$scope.newSourceObs]
