@@ -2,12 +2,9 @@ button.toggle-patient {
   float: right;
   margin: 3px 5px;
   height: 30px;
-  background: #669999 url("../images/bars.png") no-repeat center center;
+  background: $bahmniSecondaryColor url("../images/bars.png") no-repeat center center;
   border: 1px solid #4d8282;
   padding: 20px 25px;
-  -moz-box-shadow: 0 0 5px #888;
-  -webkit-box-shadow: 0 0 5px#888;
-  box-shadow: 0 0 5px #888;
 }
 button.toggle-patient:hover {
     opacity: 0.8;

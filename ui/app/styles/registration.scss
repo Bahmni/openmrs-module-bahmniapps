@@ -4,6 +4,8 @@
 $fontPath: "../components/openmrs-uicommons/omod/src/main/webapp/resources/fonts"; /*overwritting the path of the fonts file to point to correct file location.*/
 @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/reference";
 
+@import "bahmni-helper/variables";
+
 @import "common/angularFix";
 @import "common/notifications";
 @import "common/directives";

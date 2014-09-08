@@ -7,10 +7,10 @@
         margin-bottom: -1px;
         a,button{
             padding: 12px 15px;
-            background:#447772;
+            background: $bahmniSecondaryColor;
             display:inline-block;
             color:#fff;
-            border:1px solid #00463f;
+            border:1px solid $bahmniPrimaryColor;
             border-bottom-right-radius:0px;
             border-bottom-left-radius:0px;
             border-top-right-radius: 3px;
@@ -18,8 +18,8 @@
             text-decoration:none;
             line-height: 1.2em;
             &:hover{
-                background:#4D9B92;
-                border:1px solid #00463F;
+                opacity: 0.8;
+                border:1px solid $bahmniPrimaryColor;
             }
         }
         button{
@@ -29,11 +29,15 @@
         &.tab-selected a, &.tab-selected button{
             position:relative;
             background:#fff;
-            color:#00463f;
+            color:$bahmniPrimaryColor;
             border:1px solid #cecece;
             border-bottom:none;
             outline:none;
             padding-bottom: 14px;
+            &:hover {
+                opacity: 1;
+                cursor: default;
+            }
         }
         &.tab-selected button{
             top:4px;

@@ -24,7 +24,7 @@ body{
         right: 0px;
         z-index: 10;
         &#opd-tabs {
-          background: #669999;
+          background: $bahmniPrimaryColor;
         }
 
         header{
@@ -97,7 +97,7 @@ body{
                             padding:8px;
                             margin-top: 1px;
                             background:#447772;
-                            border:1px solid #00463F;
+                            border:1px solid $bahmniPrimaryColor;
                             &:hover{
                               background:#4D9B92;
                               color:#f0f0f0;
@@ -177,7 +177,7 @@ body{
             }
         }
         .opd-header-top,header{
-          background: #00463f;
+          background: $bahmniPrimaryColor;
         }
         .opd-header-bottom {
             border-radius:0px;
@@ -232,7 +232,7 @@ body{
                         &.patient-detail-pointer{
                             position: absolute;
                             bottom: -21px;
-                            color: #00463F;
+                            color: $bahmniPrimaryColor;
                             font-size: 26px;
                             z-index: 9999;
                             right: 6px;
