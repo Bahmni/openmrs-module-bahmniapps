@@ -1,6 +1,6 @@
 .template-header {
     height: 50px;
-    background: $bahmniPrimaryColor;
+    background: $bahmniSecondaryColor;
     border-radius: 0;
     margin-bottom: 15px;
     h1 {
@@ -15,6 +15,7 @@
         float: right;
         margin: 15px 20px;
         border-bottom: 0!important;
+        color: #fff;
     }
 }
 .template-container {
