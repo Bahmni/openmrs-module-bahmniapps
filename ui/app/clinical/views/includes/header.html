@@ -1,15 +1,7 @@
 <div class="opd-header-wrapper" id="opd-tabs">
 
     <div class="opd-header-bottom tabs">    
-        <div ng-controller="CommonHeaderController">
-            <ul>
-                <li ng-repeat="(label, goToUrl) in backLinks">
-                    <a class="back-btn" ng-click="goToUrl()">
-                        <span>{{label}}</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
+        <bm-back-links></bm-back-links>
         <ul class="header-tabs">
             <li class="tab-item" ng-repeat="board in availableBoards" ng-class="{'tab-selected':currentBoard.label==board.label}">
                 <a ng-click="showBoard(board.label)">{{board.label}}</a>

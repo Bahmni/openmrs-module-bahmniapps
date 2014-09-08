@@ -1,14 +1,6 @@
 <div bindonce class="dashboard-header opd-header-wrapper">
     <div class="opd-header-bottom">        
-        <span ng-controller="CommonHeaderController" class="fl">
-            <ul>
-                <li ng-repeat="(label, goToUrl) in backLinks">
-                    <a class="back-btn" ng-click="goToUrl()">
-                        <span>{{label}}</span>
-                    </a>
-                </li>
-            </ul>
-        </span>
+        <bm-back-links></bm-back-links>
         <h1>
         	<i class="icon-user"></i>
         	<span bo-text="patient.name"></span> 

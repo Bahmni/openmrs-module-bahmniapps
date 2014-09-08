@@ -2,9 +2,9 @@ angular.module('bahmni.common.uiHelper')
     .service('backlinkService', function ($window, $state) {
         var self = this;
         
-        var urls = {};
+        var urls = [];
         self.reset = function() {
-            urls = {};
+            urls = [];
         };
 
         self.setUrls = function(backLinks){
@@ -15,30 +15,18 @@ angular.module('bahmni.common.uiHelper')
         };
             
         self.addUrl = function(backLink){
-            urls[backLink.label] = backLink.state != null ? goToStateFunction(backLink.state) : goToUrlFunction(backLink.url);
-        };
-
-        var goToUrlFunction = function(url) {
-            return function() {
-                $window.location.href = url;
-            };
-        };
-
-        var goToStateFunction = function(state) {
-            return function() {
-                $state.go(state);
-            }
+            urls.push(backLink);
         };
 
         self.addBackUrl = function(label) {
             var backLabel = label || "Back";
-            urls[backLabel] =  function() {
-                $window.history.back();
-            } 
+            urls.push({label: backLabel, action: $window.history.back})
         };
 
         self.getUrlByLabel = function(label){
-            return urls[label];
+            return urls.filter(function(url){
+                return url.label === label;
+            });
         };
 
         self.getAllUrls= function(){

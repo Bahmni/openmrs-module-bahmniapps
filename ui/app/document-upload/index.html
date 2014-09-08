@@ -16,7 +16,6 @@
     </head>
     <body ng-app="documentupload">
         <div class="document-upload">
-            <div ng-include src="'views/header.html'"></div>
             <div ui-view="additional-header"></div>
             <div class="opd-wrapper">
                 <p class="caution" ng-cloak ng-show="server_error"><i class="icon-exclamation-sign small"></i><span ng-bind="server_error"></span></p>
@@ -83,7 +82,7 @@
         <script src="../common/util/dateUtil.js"></script>
         <script src="../common/ui-helper/directives/gallery.js"></script>
         <script src="../common/ui-helper/services/backlinkService.js"></script>
-        <script src="../common/ui-helper/controllers/commonHeaderController.js"></script>
+        <script src="../common/ui-helper/directives/backLinks.js"></script>
         
 
         <script src="../common/models/documentImage.js"></script>

@@ -17,7 +17,7 @@ use either a `<button>` or an `<a>` element:
 button:focus, a:focus, .btn:focus {outline:0;}
 
 /*backButton:*/
-.back-btn {
+a.back-btn, button.back-btn{
   position: relative;
   display: inline-block;
   text-decoration: none;
