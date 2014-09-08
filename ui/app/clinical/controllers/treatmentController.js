@@ -49,7 +49,7 @@ angular.module('bahmni.clinical')
                     $scope.formInvalid = true;
                     return;
                 }
-                $scope.treatment.dosingInstructionType = $scope.areDosingInstructionsPresent() ? Bahmni.Clinical.Constants.noDosingInstructionsClass : null;
+                $scope.treatment.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;
                 $scope.treatments.push($scope.treatment);
                 $scope.treatment = newTreatment();
                 $scope.treatment.scheduledDate = $filter("date")($scope.treatment.scheduledDate, 'yyyy-MM-dd');
