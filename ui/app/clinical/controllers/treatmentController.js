@@ -72,8 +72,8 @@ angular.module('bahmni.clinical')
                 $scope.treatments.splice(index, 1);
             };
 
-            $scope.toggleShowNotes = function (line) {
-                line.showNotes = !line.showNotes;
+            $scope.toggleShowAdditionalInstructions = function (line) {
+                line.showAdditionalInstructions = !line.showAdditionalInstructions;
             };
 
             $scope.toggleAsNeeded = function(treatment) {

@@ -14,13 +14,15 @@ Bahmni.Clinical.DrugOrder = (function () {
     DrugOrder.createFromUIObject = function (drugOrderData) {
         var dateUtil = Bahmni.Common.Util.DateUtil;
         var getDosingInstructions = function(drugOrderData) {
+            var dosingInstructions = {};
+            dosingInstructions.instructions = drugOrderData.instructions;
+            dosingInstructions.additionalInstructions = drugOrderData.additionalInstructions;
             if (drugOrderData.frequencyType === 'variable') {
-                var instructions = {};
-                instructions.morningDose = drugOrderData.variableDosingType.morningDose;
-                instructions.afternoonDose = drugOrderData.variableDosingType.afternoonDose;
-                instructions.eveningDose = drugOrderData.variableDosingType.eveningDose;
-                return JSON.stringify(instructions);
+                dosingInstructions.morningDose = drugOrderData.variableDosingType.morningDose;
+                dosingInstructions.afternoonDose = drugOrderData.variableDosingType.afternoonDose;
+                dosingInstructions.eveningDose = drugOrderData.variableDosingType.eveningDose;
             }
+            return JSON.stringify(dosingInstructions);
         };
         var doseUnits = drugOrderData.frequencyType === "uniform" ? drugOrderData.uniformDosingType.doseUnits : drugOrderData.variableDosingType.doseUnits;
 
@@ -43,8 +45,7 @@ Bahmni.Clinical.DrugOrder = (function () {
                 durationUnits: drugOrderData.durationUnit.name,
                 scheduledDate: dateUtil.parse(drugOrderData.scheduledDate),
                 dateStopped: dateUtil.addDays(dateUtil.parse(drugOrderData.scheduledDate), drugOrderData.durationInDays),
-                action: drugOrderData.action,
-                instructions: drugOrderData.instructions
+                action: drugOrderData.action
             }
         );
         return drugOrder;

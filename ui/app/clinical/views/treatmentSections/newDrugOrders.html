@@ -6,9 +6,9 @@
 				<strong class="drug-name">{{newTreatment.drugNameDisplay}}</strong>&nbsp;{{newTreatment.getDescription()}}
 			</div>
 			<div class="button-group" >
-				<button class="toggle" ng-class="{'has-notes': newTreatment.notes}">
-					<i class="icon-plus-sign" ng-click="toggleShowNotes(newTreatment)" ng-hide="newTreatment.showNotes"></i>
-					<i class="icon-minus-sign" ng-click="toggleShowNotes(newTreatment)" ng-show="newTreatment.showNotes"></i>
+				<button class="toggle" ng-class="{'has-notes': newTreatment.additionalInstructions}">
+					<i class="icon-plus-sign" ng-click="toggleShowAdditionalInstructions(newTreatment)" ng-hide="newTreatment.showAdditionalInstructions"></i>
+					<i class="icon-minus-sign" ng-click="toggleShowAdditionalInstructions(newTreatment)" ng-show="newTreatment.showAdditionalInstructions"></i>
 				</button>
 				<button ng-confirm-click="remove($index)" confirm-message="Are you sure you want to remove?"><i class="icon-remove"></i></button>
 				<button ng-click="edit($index)"><i class="icon-edit"></i></button>
@@ -16,8 +16,8 @@
 			<div class="start-date fr">
 				<span>from {{newTreatment.scheduledDate | date: 'dd/MM/yyyy'}}</span>
 			</div>
-	        <div ng-show="newTreatment.showNotes" class="notes inline-notes">
-	            {{newTreatment.notes}}
+	        <div ng-show="newTreatment.showAdditionalInstructions" class="notes inline-notes">
+	            {{newTreatment.additionalInstructions}}
 	        </div>
 		</li>
 	</ul>
