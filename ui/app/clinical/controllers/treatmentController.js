@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('TreatmentController', ['$scope', '$rootScope', 'DrugService', 'contextChangeHandler', 'RegisterTabService', 'treatmentConfig', 'DrugService', '$filter',
+    .controller('TreatmentController', ['$scope', '$rootScope', 'TreatmentService', 'contextChangeHandler', 'RegisterTabService', 'treatmentConfig', 'DrugService', '$filter',
         function ($scope, $rootScope, treatmentService, contextChangeHandler, registerTabService, treatmentConfig, drugService, $filter) {
 
             $scope.treatments = $rootScope.newlyAddedTreatments || [];
@@ -19,16 +19,6 @@ angular.module('bahmni.clinical')
 
             $scope.treatment = newTreatment();
             $scope.treatment.scheduledDate = $filter("date")($scope.treatment.scheduledDate, 'yyyy-MM-dd');
-
-            var isDosingEmpty = function(dosingType) {
-                return _.every(dosingType, function (element) {
-                    return element == null;
-                });
-            };
-
-            $scope.areDosingInstructionsPresent = function() {
-                return isDosingEmpty($scope.treatment.variableDosingType) && isDosingEmpty($scope.treatment.uniformDosingType);
-            };
 
             var watchFunctionForQuantity = function() {
                 var treatment = $scope.treatment;
@@ -56,20 +46,13 @@ angular.module('bahmni.clinical')
                 $scope.formInvalid = false;
             };
 
-            $scope.isVariableDosingType = function() {
-                return $scope.isFrequencyType("variable");
-            };
-
-            $scope.isUniformDosingType = function() {
-                return $scope.isFrequencyType("uniform");
-            };
-
-            $scope.isFrequencyType = function(type) {
-                return $scope.treatment.frequencyType === type;
-            };
-
             $scope.remove = function (index) {
                 $scope.treatments.splice(index, 1);
+            };
+
+            $scope.required = function(frequencyType) {
+                var treatment = $scope.treatment;
+                return treatment.frequencyType === frequencyType && !treatment.isCurrentDosingTypeEmpty();
             };
 
             $scope.toggleShowAdditionalInstructions = function (line) {
@@ -117,4 +100,6 @@ angular.module('bahmni.clinical')
                 });
             };
             registerTabService.register(saveTreatment);
+
+
         }]);

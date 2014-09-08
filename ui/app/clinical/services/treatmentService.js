@@ -40,7 +40,7 @@ angular.module('bahmni.clinical')
                 deferred.resolve(activeDrugOrders);
             });
             return deferred.promise;
-        }
+        };
 
         return {
             getActiveDrugOrders: getActiveDrugOrders,
