@@ -82,7 +82,7 @@ angular.module('bahmni.common.domain')
         configurationFunctions.radiologyImpressionConfig = function(){
             var radiologyImpressionConfig =  $http.get(Bahmni.Common.Constants.conceptUrl, {
                 method:"GET",
-                params: { v: 'custom:(uuid,name)', name: Bahmni.Common.Constants.radiologyImpressionConcept },
+                params: { v: 'custom:(uuid,name)', name: Bahmni.Common.Constants.impressionConcept },
                 withCredentials: true
             });
             return radiologyImpressionConfig;

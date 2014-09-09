@@ -10,7 +10,7 @@ angular.module('bahmni.clinical').factory('initialization',
                 $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig);
                 $rootScope.consultationNoteConcept = configurations.consultationNoteConfig.results[0];
                 $rootScope.labOrderNotesConcept = configurations.labOrderNotesConfig.results[0];
-                $rootScope.radiologyImpressionConcept = configurations.radiologyImpressionConfig.results[0];
+                $rootScope.impressionConcept = configurations.radiologyImpressionConfig.results[0];
                 $rootScope.allTestsAndPanelsConcept = configurations.allTestsAndPanelsConcept.results[0];
                 $rootScope.patientConfig = configurations.patientConfig;
                 $rootScope.dosageFrequencyConfig = configurations.dosageFrequencyConfig;

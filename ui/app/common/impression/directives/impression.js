@@ -6,10 +6,10 @@ angular.module('bahmni.common.impression', [])
                 $scope.newSourceObs = {
                     value: "",
                     concept: {
-                        uuid: $rootScope.radiologyImpressionConcept.uuid
+                        uuid: $rootScope.impressionConcept.uuid
                     },
                     targetObsRelation: {
-                        relationshipType: "qualified-by",
+                        relationshipType: Bahmni.Common.Constants.qualifiedByRelationshipType,
                         targetObs: {
                             uuid: $scope.targetObs.uuid
                         }
