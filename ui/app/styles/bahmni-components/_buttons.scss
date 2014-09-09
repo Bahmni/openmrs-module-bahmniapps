@@ -69,3 +69,12 @@ button.back-btn {
 button[disabled] {
     background: #F7F7F7;
 }
+
+button:hover {
+  opacity: 0.8;
+}
+
+.secondary-button, .secondary-button:hover {
+    @include background(linear-gradient(top, $bahmniSecondaryColor, #528484));
+    color: $white;
+}

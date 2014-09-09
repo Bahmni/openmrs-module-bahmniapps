@@ -33,6 +33,7 @@ angular.module('bahmni.common.gallery')
         var controller = function ($scope) {
             $scope.imageIndex = $scope.imagePosition.index ? $scope.imagePosition.index : 0;
             $scope.albumTag = $scope.imagePosition.tag ? $scope.imagePosition.tag : 'defaultTag';
+            $scope.showImpression = false;
 
             $scope.isActive = function (index, tag) {
                 return $scope.imageIndex == index && $scope.albumTag == tag;
@@ -98,6 +99,10 @@ angular.module('bahmni.common.gallery')
             $scope.close = function () {
                 close($scope);
             };
+
+            $scope.toggleImpression = function(){
+                $scope.showImpression = !$scope.showImpression;
+            }
         };
 
         return {

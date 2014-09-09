@@ -5,30 +5,48 @@
         <span>{{patient.name}} {{'(' + patient.identifier + ')'}}</span>
     </h1>
 
+    <button class="toggle-patient" ng-click="toggleImpression()"></button>
+
     <h2>{{title}}</h2>
 </header>
-<div class="container slider">
-    <div class="messages" ng-if="!albums.length">
-        <p class="messages null-data-message">No images to display</p>
+<div class="image-container" ng-class="{'shift': showImpression}">
+    <div class="container slider">
+        <div class="messages" ng-if="!albums.length">
+            <p class="messages null-data-message">No images to display</p>
+        </div>
+
+        <div ng-repeat="album in albums">
+            <div ng-repeat="image in album.images">
+                <img class="slide" hm-swipe-right="showPrev()" hm-swipe-left="showNext()"
+                     ng-show="isActive($index, album.tag)" ng-src="{{image.src}}"/>
+            </div>
+            <span ng-if="album.tag == albumTag" class="arrow prev" ng-click="showPrev()"></span>
+            <span ng-if="album.tag == albumTag" class="arrow next" ng-click="showNext()"></span>
+
+        </div>
     </div>
+
     <div ng-repeat="album in albums">
         <div ng-repeat="image in album.images">
-            <img class="slide" hm-swipe-right="showPrev()" hm-swipe-left="showNext()"
-                 ng-show="isActive($index, album.tag)" ng-src="{{image.src}}"/>
+
+            <div class="image-bottom-bar" ng-if="isActive($index,album.tag)">
+                <span class="image-date">{{image.date | date: "dd MMM yy"}}</span>
+                <span class="image-index">({{getCurrentIndex()}} of {{getTotalLength()}})</span>
+            </div>
+            <div class="image-desc" ng-if="isActive($index, album.tag) && image.desc"><strong>Comments:</strong>
+                {{image.desc}}
+            </div>
+            
         </div>
-        <span ng-if="album.tag == albumTag" class="arrow prev" ng-click="showPrev()"></span>
-        <span ng-if="album.tag == albumTag" class="arrow next" ng-click="showNext()"></span>
-    </div>
+    </div>    
 </div>
-<div ng-repeat="album in albums">
+
+<div class="image-impression-section" ng-repeat="album in albums" ng-show="showImpression" ng-class="{'shift': showImpression}">
     <div ng-repeat="image in album.images">
-        <div class="image-bottom-bar" ng-if="isActive($index,album.tag)">
+        <div class="image-actions" ng-if="isActive($index,album.tag)">
             <span class="image-title">{{image.title}}</span>
-            <span class="image-date">{{image.date | date: "dd MMM yy"}}</span>
-            <span class="image-index">({{getCurrentIndex()}} of {{getTotalLength()}})</span>
-        </div>
-        <div class="image-desc" ng-if="isActive($index, album.tag) && image.desc"><strong>Comments:</strong>
-            {{image.desc}}
+            <button class="secondary-button"><i class="icon-download"></i></button>
+            <button class="secondary-button"><i class="icon-share"></i></button>
         </div>
         <div impression target-obs="image" source-concept="impression" consultation-observations="visit.observations"
              ng-show="isActive($index,album.tag)"></div>

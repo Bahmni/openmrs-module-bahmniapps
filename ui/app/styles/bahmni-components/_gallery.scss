@@ -60,7 +60,6 @@ body.gallery-open > *:not(#gallery-pane) {
 }
 
 .slider {
-	border-radius: 5px;
 	height: 500px;
 	margin: 0 auto;
 	position: relative;
@@ -121,12 +120,21 @@ body.gallery-open > *:not(#gallery-pane) {
 }
 .template-header {
     margin-bottom: 0;
+    z-index: 1;
+    h2 {
+    	position: relative;
+		top: -50px;
+		right: 55px;
+    }
 }
 .slider.container {
     background: #efefef;
 }
+.image-title {
+	margin-right: 10px;
+}
 .image-bottom-bar {
-	text-align: center;
+	text-align: right;
 }
 .image-title, .image-bottom-bar {
     font-size: 16px;
@@ -136,7 +144,7 @@ body.gallery-open > *:not(#gallery-pane) {
     display: block;
     overflow: auto;
     padding: 10px 20px;
-    background: #e6e6e6;
+    background: #efefef;
 }
 .image-date, .image-index {
     color: #777;
@@ -163,4 +171,58 @@ body.gallery-open > *:not(#gallery-pane) {
     .no-image-msg {
         font-size: 16px;
     }
+}
+.image-actions {
+	text-align: center;
+	background: #efefef;
+	padding: 10px 0;
+	margin-bottom: 5px;
+}
+
+
+/*Impression*/
+.image-container {
+	width: 100%;
+}
+.image-container.shift {
+	float: left;
+	width: 70%;
+}
+.image-impression-section {
+	right: -30%;
+}
+.image-impression-section.shift {
+	float: right;
+	width: 30%;
+	background: #fefefe;
+	padding: 50px 10px 10px 10px;
+	@include box-sizing(border-box);
+	@include box-shadow(inset 0 0 5px #888);
+	position: absolute;
+	top: 0; bottom: 0; right: 0;
+	z-index: 0;
+
+	textarea {
+		width: 98%;
+		border: 1px solid #ddd;
+	}
+
+	.save-impression-btn {
+		margin: 5px 0;
+		width: 100%;
+		max-width: 100%!important;
+	}
+
+	.impression {
+		max-height: 400px;
+		overflow-y: auto; 
+		li pre {
+			padding: 5px;
+			margin-bottom: 3px;
+		}
+	}
+
+	.impression-control {
+		padding-top: 10px;
+	}
 }
