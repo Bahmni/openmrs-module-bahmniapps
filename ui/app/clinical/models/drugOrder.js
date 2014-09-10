@@ -24,9 +24,9 @@ Bahmni.Clinical.DrugOrder = (function () {
             }
             return JSON.stringify(dosingInstructions);
         };
-        var doseUnits = drugOrderData.frequencyType === "uniform" ? drugOrderData.uniformDosingType.doseUnits : drugOrderData.variableDosingType.doseUnits;
+        var doseUnits = drugOrderData.isUniformDosingType() && !drugOrderData.isCurrentDosingTypeEmpty() ? drugOrderData.uniformDosingType.doseUnits : drugOrderData.variableDosingType.doseUnits;
 
-        var frequency = drugOrderData.frequencyType === 'uniform' ? drugOrderData.uniformDosingType.frequency.name : null;
+        var frequency = drugOrderData.isUniformDosingType() && !drugOrderData.isCurrentDosingTypeEmpty() ? drugOrderData.uniformDosingType.frequency.name : null;
 
         var route = drugOrderData.route ? drugOrderData.route.name : null;
 

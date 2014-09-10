@@ -203,5 +203,68 @@ describe("drugOrderViewModel", function () {
             expect(treatment.quantity).toBe(100);
             expect(treatment.quantityUnit).toBe("not Capsule");
         })
-    })
+    });
+
+    describe("createFromContract", function(){
+        var drugOrder =   {
+                "uuid": null,
+                "action": "NEW",
+                "careSetting": "Outpatient",
+                "orderType": "Drug Order",
+                "autoExpireDate": null,
+                "scheduledDate": null,
+                "dateStopped": null,
+                "instructions": null,
+                "visit": {
+                    "startDateTime": 1397028261000,
+                    "uuid": "002efa33-4c4f-469f-968a-faedfe3a5e0c"
+                },
+                "drug": {
+                    "form": "Injection",
+                    "uuid": "8d7e3dc0-f4ad-400c-9468-5a9e2b1f4230",
+                    "strength": null,
+                    "name": "Methylprednisolone 2ml"
+                },
+                "dosingInstructions": {
+                    "quantity": 100,
+                    "route": "Intramuscular",
+                    "frequency": "Twice a day",
+                    "doseUnits": "Tablespoon",
+                    "asNeeded": false,
+                    "quantityUnits": "Tablet",
+                    "dose": 5,
+                    "administrationInstructions": "{\"instructions\":\"In the evening\",\"additionalInstructions\":\"helylo\"}",
+                    "numberOfRefills": null
+                },
+                "durationUnits": "Days",
+                "dateActivated": 1410322624000,
+                "commentToFulfiller": null,
+                "effectiveStartDate": 1410322624000,
+                "effectiveStopDate": null,
+                "orderReasonConcept": null,
+                "dosingInstructionType": "org.openmrs.module.bahmniemrapi.drugorder.dosinginstructions.FlexibleDosingInstructions",
+                "previousOrderUuid": null,
+                "orderReasonText": null,
+                "duration": 10
+            };
+
+        it("should map fields correctly from Drug Order", function(){
+            var drugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder);
+            expect(drugOrderViewModel.asNeeded).toBe(drugOrder.dosingInstructions.asNeeded);
+            expect(drugOrderViewModel.route).toBe(drugOrder.dosingInstructions.route);
+            expect(drugOrderViewModel.duration).toBe(drugOrder.duration);
+            expect(drugOrderViewModel.durationUnit.name).toBe(drugOrder.durationUnits);
+            expect(drugOrderViewModel.scheduledDate).toBe(drugOrder.effectiveStartDate);
+            expect(drugOrderViewModel.frequencyType).toBe("uniform");
+            expect(drugOrderViewModel.uniformDosingType.dose).toBe(drugOrder.dosingInstructions.dose);
+            expect(drugOrderViewModel.uniformDosingType.doseUnits).toBe(drugOrder.dosingInstructions.doseUnits);
+            expect(drugOrderViewModel.uniformDosingType.frequency.name).toBe(drugOrder.dosingInstructions.frequency);
+            expect(drugOrderViewModel.quantity).toBe(drugOrder.dosingInstructions.quantity);
+            expect(drugOrderViewModel.quantityUnit).toBe(drugOrder.dosingInstructions.quantityUnits);
+            expect(drugOrderViewModel.drugName).toBe(drugOrder.drug.name);
+            expect(drugOrderViewModel.effectiveStartDate).toBe(drugOrder.effectiveStartDate);
+            expect(drugOrderViewModel.effectiveStopDate).toBe(drugOrder.effectiveStopDate);
+        });
+
+    });
 });

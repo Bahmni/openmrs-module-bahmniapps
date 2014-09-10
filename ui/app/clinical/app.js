@@ -100,11 +100,28 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
                 controller: 'DiagnosisController'
             })
             .state('patient.consultation.treatment', {
-                url: '/treatment',
+                abstract: true,
                 templateUrl: 'views/treatment.html',
-                controller: 'TreatmentController',
                 resolve: {
-                    treatmentConfig: 'treatmentConfig'
+                    treatmentConfig: 'treatmentConfig',
+                    prescribedDrugOrders: function(TreatmentService, $stateParams) {
+                        return TreatmentService.getPrescribedDrugOrders($stateParams.patientUuid, true, 5).then(function(result){
+                            return result;
+                        });
+                    }
+                }
+            })
+            .state('patient.consultation.treatment.page', {
+                url: '/treatment',
+                views: {
+                    "addTreatment": {
+                        controller: 'TreatmentController',
+                        templateUrl: 'views/addTreatment.html'
+                    },
+                    "viewHistory": {
+                        controller: 'DrugOrderHistoryController',
+                        templateUrl: 'views/treatmentSections/drugOrderHistory.html'
+                    }
                 }
             })
             .state('patient.consultation.disposition', {

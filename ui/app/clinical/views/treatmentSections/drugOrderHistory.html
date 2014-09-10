@@ -1,11 +1,11 @@
 <section class="drug-orders-history section-grid">
-	<h2 class="section-title">Past Prescription</h2>
+	<h2 class="section-title">Existing Prescriptions</h2>
 	<div class="inpage">
 		<div class="tabs">
 
-			<div class="tab">
-				<input class="tab-radio" id="tab-1" name="tab-group-1" checked="" type="radio">
-				<label class="tab-label" for="tab-1">15th AUG 2014</label>
+			<div class="tab" ng-repeat="prescriptionDate in drugOrderGroupOrder">
+				<input class="tab-radio" id="{{prescriptionDate}}" name="tab-group-1" type="radio" ng-checked="$index == 0">
+				<label class="tab-label" for="{{prescriptionDate}}">{{prescriptionDate}}</label>
 
 				<div class="inpage-tab-panel">
 					<div class="inpage-tab-content">
@@ -18,31 +18,24 @@
 						</div>
 						
 						<ul class="table-mimic">
-							<li>
+							<li ng-repeat="drugOrder in drugOrderGroups[prescriptionDate]">
 								<form class="fl"><input class="select-drug" type="checkbox" /></form>
-								<div class="drug-details">
-									<strong class="drug-name">Calpol 500mg (tablets)</strong> - 1 tablet, 3 times a day, empty stomach, orally - 40 days (120 tablets)
-								</div>
+                                <div class="drug-details">
+                                    <strong class="drug-name">{{drugOrder.drugName}}</strong>&nbsp;{{drugOrder.getDescription()}}
+                                </div>
 								<div class="button-group">
-									<button class="toggle">
-										<i class="icon-plus-sign"></i>
-										<i class="icon-minus-sign" style="display:none;"></i>
-									</button>
+                                    <button class="toggle" ng-class="{'has-notes': drugOrder.additionalInstructions}">
+                                        <i class="icon-plus-sign" ng-click="toggleShowAdditionalInstructions(drugOrder)" ng-hide="drugOrder.showAdditionalInstructions"></i>
+                                        <i class="icon-minus-sign" ng-click="toggleShowAdditionalInstructions(drugOrder)" ng-show="drugOrder.showAdditionalInstructions"></i>
+                                    </button>
 									<button><i class="icon-stop"></i></button>
 									<button><i class="icon-edit"></i></button>
 								</div>
+                                <div ng-show="drugOrder.showAdditionalInstructions" class="notes inline-notes">
+                                    {{drugOrder.additionalInstructions}}
+                                </div>
 							</li>
 						</ul>
-					</div>
-				</div> 
-			</div>
-			<div class="tab">
-				<input class="tab-radio" id="tab-2" name="tab-group-1" type="radio">
-				<label class="tab-label" for="tab-2">11th AUG 2014</label>
-
-				<div class="inpage-tab-panel">
-					<div class="inpage-tab-content">
-						tab 2 details...
 					</div>
 				</div> 
 			</div>
