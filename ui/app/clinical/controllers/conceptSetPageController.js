@@ -9,7 +9,7 @@ angular.module('bahmni.clinical')
 	var visitType = $scope.encounterConfig.getVisitTypeByUuid($scope.consultation.visitTypeUuid);
 	$scope.context = {visitType:  visitType, patient: $scope.patient};
 	var numberOfLevels = 2;
-    var fields = ['uuid','name'];
+    var fields = ['uuid','name', 'names'];
     var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels);
 
     var showFirstTemplate = function () {
