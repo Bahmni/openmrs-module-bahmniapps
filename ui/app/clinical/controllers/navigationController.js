@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical').controller('ConsultationNavigationController',
-    ['$scope', '$rootScope', '$state', '$location', '$window', 'appService', 'urlHelper', 'contextChangeHandler', 'spinner', 'encounterService', 'RegisterTabService', 'MessagingService', '$cookieStore',
-        function ($scope, $rootScope, $state, $location, $window, appService, urlHelper, contextChangeHandler, spinner, encounterService, registerTabService, messagingService, $cookieStore) {
+    ['$scope', '$rootScope', '$state', '$location', '$window', 'appService', 'urlHelper', 'contextChangeHandler', 'spinner', 'encounterService', 'RegisterTabService', 'MessagingService', 'sessionService',
+        function ($scope, $rootScope, $state, $location, $window, appService, urlHelper, contextChangeHandler, spinner, encounterService, registerTabService, messagingService, sessionService) {
 
             $scope.loadVisit = function(visitUuid) {
                 $state.go('patient.visit', {visitUuid: visitUuid});
@@ -111,8 +111,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 }
                 registerTabService.fire();
                 var encounterData = {};
-                var location = $cookieStore.get('bahmni.user.location');
-                encounterData.locationUuid = location ? location.uuid : null;
+                encounterData.locationUuid = sessionService.getLoginLocationUuid();
                 encounterData.patientUuid = $scope.patient.uuid;
                 encounterData.encounterTypeUuid = $rootScope.encounterConfig.getOpdConsultationEncounterTypeUuid();
                 encounterData.encounterDateTime = null;

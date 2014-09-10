@@ -1,14 +1,15 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('CreatePatientController', ['$scope', '$rootScope','patientService', 'visitService','$location', 'Preferences', '$route', 'patient', '$window', 'spinner', 'registrationCardPrinter', 'appService', '$timeout',
-    function ($scope, $rootScope, patientService, visitService, $location, preferences, $route, patientModel, $window, spinner, registrationCardPrinter, appService, $timeout) {
+    .controller('CreatePatientController', ['$scope', '$rootScope','patientService', 'visitService','$location', 'Preferences', '$route', 'patient', '$window', 'spinner', 'registrationCardPrinter', 'appService', 'sessionService',
+    function ($scope, $rootScope, patientService, visitService, $location, preferences, $route, patientModel, $window, spinner, registrationCardPrinter, appService, sessionService) {
         var dateUtil = Bahmni.Common.Util.DateUtil;
         var createActionsConfig = [];
         var defaultActions = ["save", "print", "startVisit"];
         var constants = Bahmni.Registration.Constants;
         var regEncounterTypeUuid = $rootScope.regEncounterConfiguration.encounterTypes[constants.encounterType.registration];
         var defaultVisitType = appService.getAppDescriptor().getConfigValue('defaultVisitType');
+        var locationUuid = sessionService.getLoginLocationUuid();
         $scope.identifierPattern = appService.getAppDescriptor().getConfigValue('identifierPattern');
         $scope.identifierPatternDescription = appService.getAppDescriptor().getConfigValue('identifierPatternDescription') || "";
 
@@ -63,14 +64,15 @@ angular.module('bahmni.registration')
 
         var createEncounterObject = function() {
             var encounter = {
-                encounterTypeUuid:regEncounterTypeUuid
-            }
+                encounterTypeUuid:regEncounterTypeUuid,
+                locationUuid : locationUuid
+            };
             encounter.providers = encounter.providers || [];
             if ($rootScope.currentProvider && $rootScope.currentProvider.uuid) {
                 encounter.providers.push( { "uuid" : $rootScope.currentProvider.uuid } );
             }
             return encounter;
-        }
+        };
 
         var followUpAction = function(patientProfileData) {
             if($scope.submitSource === 'startVisit') {

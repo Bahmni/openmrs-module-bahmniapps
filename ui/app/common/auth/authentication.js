@@ -48,7 +48,7 @@ angular.module('authentication', ['ngCookies'])
                 if (data.authenticated) {
                     $cookieStore.put('bahmni.user', username, {path: '/', expires: 7});
                     if(location != undefined) {
-                        $cookieStore.put('bahmni.user.location', {name: location.display, uuid: location.uuid}, {path: '/', expires: 7});
+                        $cookieStore.put(Bahmni.Common.Constants.locationCookieName, {name: location.display, uuid: location.uuid}, {path: '/', expires: 7});
                     }
                     deferrable.resolve();
                 } else {
@@ -89,6 +89,10 @@ angular.module('authentication', ['ngCookies'])
                 deferrable.reject('Could not get roles for the current user.');
             });
             return deferrable.promise;
+        };
+
+        this.getLoginLocationUuid = function(){
+            return $cookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $cookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid : null;
         };
 
         this.loadProviders = function(userInfo) {

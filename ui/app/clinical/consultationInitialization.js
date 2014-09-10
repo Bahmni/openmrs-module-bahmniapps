@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical').factory('consultationInitialization',
-    ['$rootScope', '$q', 'configurationService', 'patientService', 'authenticator', 'appService', 'encounterService', 'bedService', 'spinner', 'initialization', 'diagnosisService', 'patientVisitHistoryService', 'urlHelper','$cookieStore',
-    function ($rootScope, $q, configurationService, patientService, authenticator, appService, encounterService, bedService, spinner, initialization, diagnosisService, patientVisitHistoryService, urlHelper, $cookieStore) {
+    ['$rootScope', '$q', 'configurationService', 'patientService', 'authenticator', 'appService', 'encounterService', 'bedService', 'spinner', 'initialization', 'diagnosisService', 'patientVisitHistoryService', 'urlHelper','sessionService',
+    function ($rootScope, $q, configurationService, patientService, authenticator, appService, encounterService, bedService, spinner, initialization, diagnosisService, patientVisitHistoryService, urlHelper, sessionService) {
 
         var patientMapper = new Bahmni.PatientMapper($rootScope.patientConfig);
 
@@ -20,13 +20,12 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
             var getActiveEncounter = function() {
                 var currentProviderUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
                 var consultationMapper = new Bahmni.ConsultationMapper($rootScope.dosageFrequencyConfig, $rootScope.dosageInstructionConfig, $rootScope.consultationNoteConcept, $rootScope.labOrderNotesConcept);
-                var locationUuid = $cookieStore.get('bahmni.user.location') ? $cookieStore.get('bahmni.user.location').uuid : null;
                 return encounterService.activeEncounter({
                     patientUuid : patientUuid,
                     encounterTypeUuid : $rootScope.encounterConfig.getOpdConsultationEncounterTypeUuid(),
                     providerUuid: currentProviderUuid,
                     includeAll :  Bahmni.Common.Constants.includeAllObservations,
-                    locationUuid: locationUuid
+                    locationUuid: sessionService.getLoginLocationUuid()
                 }).then(function (encounterTransactionResponse) {
                     $rootScope.consultation = consultationMapper.map(encounterTransactionResponse.data);
                 });

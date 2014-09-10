@@ -1,14 +1,15 @@
 'use strict';
 
 angular.module('opd.documentupload')
-    .controller('DocumentController', ['$scope', '$stateParams', 'visitService', 'patientService', 'encounterService', 'spinner', 'visitDocumentService', '$rootScope', '$http', '$q', '$timeout',
-        function ($scope, $stateParams, visitService, patientService, encounterService, spinner, visitDocumentService, $rootScope, $http, $q, $timeout) {
+    .controller('DocumentController', ['$scope', '$stateParams', 'visitService', 'patientService', 'encounterService', 'spinner', 'visitDocumentService', '$rootScope', '$http', '$q', '$timeout', 'sessionService',
+        function ($scope, $stateParams, visitService, patientService, encounterService, spinner, visitDocumentService, $rootScope, $http, $q, $timeout, sessionService) {
             var encounterTypeUuid;
             var topLevelConceptUuid;
             var customVisitParams = Bahmni.DocumentUpload.Constants.visitRepresentation;
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var patientMapper = new Bahmni.PatientMapper($rootScope.patientConfig);
             var activeEncounter = {};
+            var locationUuid = sessionService.getLoginLocationUuid();
 
             $scope.visits = [];
             $scope.toggleGallery = true;
@@ -155,7 +156,8 @@ angular.module('opd.documentupload')
                     patientUuid : $stateParams.patientUuid,
                     encounterTypeUuid : encounterTypeUuid,
                     providerUuid: currentProviderUuid,
-                    includeAll :  Bahmni.Common.Constants.includeAllObservations
+                    includeAll :  Bahmni.Common.Constants.includeAllObservations,
+                    locationUuid : locationUuid
                 }).then(function (encounterTransactionResponse) {
                     activeEncounter = encounterTransactionResponse.data;
                 });
@@ -241,12 +243,13 @@ angular.module('opd.documentupload')
                 visitDocument.encounterDateTime = getEncounterStartDateTime(visit);
                 visitDocument.providerUuid = $rootScope.currentProvider.uuid;
                 visitDocument.visitUuid = visit.uuid;
+                visitDocument.locationUuid = locationUuid;
                 visitDocument.documents = [];
 
                 visit.images.forEach(function (image) {
                     var imageUrl = image.encodedValue.replace(Bahmni.Common.Constants.documentsPath + "/", "");
                     if(!visit.isSaved(image)) {
-                        visitDocument.documents.push({testUuid: image.concept.uuid, image: imageUrl, obsDateTime: getEncounterStartDateTime(visit)})        
+                        visitDocument.documents.push({testUuid: image.concept.uuid, image: imageUrl, obsDateTime: getEncounterStartDateTime(visit)})
                     } else if (image.changed == true) {
                         visitDocument.documents.push({testUuid: image.concept.uuid, image: imageUrl, voided: image.voided, obsUuid: image.obsUuid});
                     }

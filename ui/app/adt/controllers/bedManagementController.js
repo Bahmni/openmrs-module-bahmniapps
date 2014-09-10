@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('bahmni.adt')
-    .controller('BedManagementController', ['$scope', '$rootScope', '$location', 'WardService', 'bedService', '$stateParams', 'encounterService', function ($scope, $rootScope, $location, wardService, bedService, $stateParams, encounterService) {
+    .controller('BedManagementController', ['$scope', '$rootScope', '$location', 'WardService', 'bedService', '$stateParams', 'encounterService', 'sessionService',
+        function ($scope, $rootScope, $location, wardService, bedService, $stateParams, encounterService, sessionService) {
         $scope.wards = null;
         $scope.currentView = "wards";
         $scope.layout = [];
@@ -13,6 +14,7 @@ angular.module('bahmni.adt')
         var minY = 1;
         var currentWardUuid = null;
         var encounterUuid = $stateParams.encounterUuid;
+        var locationUuid = sessionService.getLoginLocationUuid();
         
         var init = function () {
             $('.bed-info').hide();
@@ -74,6 +76,7 @@ angular.module('bahmni.adt')
         var createTransferEncounterAndAssignBed = function(bed) {
             var encounterData = {};
             encounterData.patientUuid = $scope.patient.uuid;
+            encounterData.locationUuid = locationUuid;
             encounterData.encounterTypeUuid = $rootScope.encounterConfig.encounterTypes['TRANSFER'];
             encounterService.create(encounterData).success(function(encounter) {
                 encounterUuid = encounter.encounterUuid;

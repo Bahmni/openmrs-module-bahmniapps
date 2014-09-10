@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration.emergency')
-    .controller('CreateEmergencyPatientController', [ '$rootScope', '$scope', '$location', 'patient', 'patientService', 'encounterService', 'Preferences', 'spinner', 'appService',
-    function ($rootScope, $scope, $location, patientModel, patientService, encounterService, preferences, spinner, appService) {
+    .controller('CreateEmergencyPatientController', [ '$rootScope', '$scope', '$location', 'patient', 'patientService', 'encounterService', 'Preferences', 'spinner', 'appService', 'sessionService',
+    function ($rootScope, $scope, $location, patientModel, patientService, encounterService, preferences, spinner, appService, sessionService) {
 
         var init = function(){
             $scope.patient = patientModel.create();
@@ -49,6 +49,7 @@ angular.module('bahmni.registration.emergency')
 
         var createVisit = function() {
             $scope.encounter.patientUuid = $scope.patient.uuid;
+            $scope.encounter.locationUuid = sessionService.getLoginLocationUuid();
             return encounterService.create($scope.encounter).success(function() {
                 $location.path("/summary");
             });

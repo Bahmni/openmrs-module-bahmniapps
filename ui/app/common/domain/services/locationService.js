@@ -10,7 +10,7 @@ angular.module('bahmni.common.domain')
         };
 
         return {
-            getAllByTag: getAllByTag,
+            getAllByTag: getAllByTag
         };
 
     }]);

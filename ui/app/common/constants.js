@@ -74,7 +74,8 @@ Bahmni.Common = Bahmni.Common || {};
         admissionEncounterTypeName: 'ADMISSION',
         dischargeEncounterTypeName: 'DISCHARGE',
         opdEncounterName: 'OPD',
-        imageClassName: 'Image'
+        imageClassName: 'Image',
+        locationCookieName: 'bahmni.user.location'
 };
     
 })();

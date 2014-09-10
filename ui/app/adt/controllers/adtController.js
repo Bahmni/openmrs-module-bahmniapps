@@ -1,10 +1,11 @@
 "use strict";
 
 angular.module('bahmni.adt')
-    .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService', 'encounterService', 'bedService', 'appService', 'visitService', '$location', '$window',
-        function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService, appService, visitService, $location, $window) {
+    .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService', 'encounterService', 'bedService', 'appService', 'visitService', '$location', '$window', 'sessionService',
+        function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService, appService, visitService, $location, $window, sessionService) {
             var actionConfigs = {};
             var encounterConfig = $rootScope.encounterConfig;
+            var locationUuid = sessionService.getLoginLocationUuid();
             $scope.adtObservations = [];
 
             var getActionCode = function (concept) {
@@ -156,6 +157,7 @@ angular.module('bahmni.adt')
                 encounterData.encounterTypeUuid = encounterTypeUuid;
                 encounterData.visitTypeUuid = visitTypeUuid;
                 encounterData.observations = $scope.adtObservations;
+                encounterData.locationUuid = locationUuid;
                 return encounterData;
             };
 
