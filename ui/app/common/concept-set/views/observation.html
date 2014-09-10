@@ -21,7 +21,7 @@
                            ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}" only-number="true"/>
                 </div>
 
-                <textarea id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}">
+                <textarea id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet), 'concise-text': observation.isConciseText()}">
 
                 </textarea>
 
@@ -98,7 +98,7 @@
                 </div>
 
                 <textarea id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value"
-                          ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}"></textarea>
+                          ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'concise-text': observation.isConciseText()}"></textarea>
 
                 <!--{{observation.groupMembers}}-->
                 <div ng-switch-when="grid">

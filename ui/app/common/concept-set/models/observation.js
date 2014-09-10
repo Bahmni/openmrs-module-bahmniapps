@@ -97,6 +97,10 @@ Bahmni.ConceptSet.Observation.prototype = {
         return "unknown";
     },
 
+    isConciseText: function(){
+        return this.getConceptUIConfig().conciseText == true;
+    },
+
     _getCodedControlType: function () {
         var conceptUIConfig = this.getConceptUIConfig();
         if (conceptUIConfig.multiselect) return "multiselect";
