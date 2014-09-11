@@ -3,8 +3,8 @@ Bahmni.ConceptSet.ObservationMapper = function () {
     var dateUtil = Bahmni.Common.Util.DateUtil;
 
     // TODO : Shouldn't this be in clinical module. Don't see a reason for this to be in concept-set code - Shruthi
-    this.getObservationsForView = function (observations) {
-        return internalMapForDisplay(observations);
+    this.getObservationsForView = function (observations, conceptSetConfig) {
+        return internalMapForDisplay(observations, conceptSetConfig);
     };
 
     this.map = function (observations, rootConcept, conceptSetConfig) {
@@ -18,12 +18,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         var sortWeight = 0;
         return  _.map(bahmniObservations, function (bahmniObservation) {
             var observationValue = bahmniObservation.value;
-            if (bahmniObservation.duration) {
-                var durationForDisplay = dateUtil.convertToUnits(bahmniObservation.duration);
-                if (durationForDisplay["value"] && durationForDisplay["unitName"]) {
-                    observationValue = observationValue.concat(" since " + durationForDisplay["value"] + " " + durationForDisplay["unitName"]);
-                }
-            }
+            observationValue = bahmniObservation.duration ? observationValue + " " + getDurationDisplayValue(bahmniObservation.duration) : observationValue;
 
             return { "value": observationValue, "abnormal": bahmniObservation.isAbnormal, "duration": bahmniObservation.duration, 
                 "provider": "default_provider_needs_fix", "observationDateTime": bahmniObservation.time, "encounterDateTime": bahmniObservation.encounterTime,
@@ -85,56 +80,56 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         return { concept: conceptMapper.map(concept), units: concept.units, label: displayLabel, possibleAnswers: concept.answers, groupMembers: mappedGroupMembers, comment: comment};
     }
 
-    var internalMapForDisplay = function (observations) {
+    var createObservationForDisplay = function (observation, concept) {
+        if (!observation.value) return;
+        var observationValue = getObservationDisplayValue(observation);
+        observationValue = observation.duration ? observationValue + " " + getDurationDisplayValue(observation.duration) : observationValue;
+        return { "value": observationValue, "abnormal": observation.abnormal, "duration": observation.duration,
+            "provider": observation.provider ? observation.provider.name : "",
+            "observationDateTime": observation.observationDateTime, "concept": concept,
+            "comment": observation.comment, "uuid": observation.uuid};
+    };
+
+    var getObservationDisplayValue = function(observation) {
+        return observation.value.shortName || observation.value.name || observation.value;
+    }
+
+    var getDurationDisplayValue = function(duration) {
+        var durationForDisplay = Bahmni.Common.Util.DateUtil.convertToUnits(duration.value);
+        if (durationForDisplay["value"] && durationForDisplay["unitName"]) {
+            return "since " + durationForDisplay["value"] + " " + durationForDisplay["unitName"];
+        }
+    }
+
+    var getGridObservationDisplayValue = function(observation) { 
+        var memberValues = _.map(observation.groupMembers, function(member){
+            return getObservationDisplayValue(member);
+        });
+        return memberValues.join(', ');
+    }
+
+
+    var internalMapForDisplay = function (observations, conceptSetConfig) {
         var observationsForDisplay = [];
-
-        var createObservationForDisplay = function (observationTemp, obsConcept) {
-            if (observationTemp.value === null || observationTemp.value === undefined || observationTemp === "") {
-                return;
-            }
-            var observationValue = null;
-
-            var shortName = _.first(_.filter(observationTemp.value.names, function (name) {
-                return name.conceptNameType === 'SHORT';
-            }));
-            if (shortName) { // for new observations - uses the webservices-rest contract!!!
-                observationValue = shortName.name;
-            } else if (observationTemp.value.shortName) { // for saved observations - uses the encountertransaction contract!!!
-                observationValue = observationTemp.value.shortName;
-            } else if (observationTemp.value.name) {
-                observationValue = observationTemp.value.name;
-            } else {
-                observationValue = observationTemp.value;
-            }
-
-            if (observationTemp.duration) {
-                var durationForDisplay = Bahmni.Common.Util.DateUtil.convertToUnits(observationTemp.duration.value);
-                if (durationForDisplay["value"] && durationForDisplay["unitName"]) {
-                    observationValue = observationValue.concat(" since " + durationForDisplay["value"] + " " + durationForDisplay["unitName"]);
-                }
-            }
-
-            return { "value": observationValue, "abnormal": observationTemp.abnormal, "duration": observationTemp.duration,
-                "provider": observationTemp.provider ? observationTemp.provider.name : "",
-                "observationDateTime": observationTemp.observationDateTime, "concept": obsConcept, comment: observationTemp.comment, uuid: observationTemp.uuid};
-        };
-
-
         _.forEach(observations, function (savedObs) {
             if (savedObs.concept.conceptClass && (savedObs.concept.conceptClass === Bahmni.Common.Constants.conceptDetailsClassName || savedObs.concept.conceptClass.name === Bahmni.Common.Constants.conceptDetailsClassName)) {
                 var observationNode = new Bahmni.ConceptSet.ObservationNode(savedObs, savedObs, []);
                 var obsToDisplay = createObservationForDisplay(observationNode, observationNode.primaryObs.concept);
-                if (obsToDisplay)
-                    observationsForDisplay.push(obsToDisplay);
+                if (obsToDisplay) observationsForDisplay.push(obsToDisplay);
             } else {
-                if (!savedObs.concept.set) {
-                    var observationTemp = newObservation(savedObs.concept, savedObs, []);
-                    var obsToDisplay = createObservationForDisplay(observationTemp, observationTemp.concept);
-                    if (obsToDisplay)
-                        observationsForDisplay.push(obsToDisplay);
+                if (savedObs.concept.set) {
+                    if(conceptSetConfig[savedObs.concept.name] && conceptSetConfig[savedObs.concept.name].grid) {
+                        savedObs.value = getGridObservationDisplayValue(savedObs);
+                        observationsForDisplay = observationsForDisplay.concat(createObservationForDisplay(savedObs, savedObs.concept))
+                    }
+                    else {
+                        var groupMemberObservationsForDisplay = internalMapForDisplay(savedObs.groupMembers, conceptSetConfig);
+                        observationsForDisplay = observationsForDisplay.concat(groupMemberObservationsForDisplay);
+                    }
                 } else {
-                    var groupMemberObservationsForDisplay = internalMapForDisplay(savedObs.groupMembers);
-                    observationsForDisplay = observationsForDisplay.concat(groupMemberObservationsForDisplay);
+                    var observation = newObservation(savedObs.concept, savedObs, []);
+                    var obsToDisplay = createObservationForDisplay(observation, observation.concept);
+                    if (obsToDisplay) observationsForDisplay.push(obsToDisplay);
                 }
             }
         });

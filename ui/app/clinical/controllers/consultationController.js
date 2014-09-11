@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('ConsultationController', ['$scope', '$rootScope', function ($scope, $rootScope) {
+    .controller('ConsultationController', ['$scope', '$rootScope', 'conceptSetUiConfigService', function ($scope, $rootScope, conceptSetUiConfigService) {
         var geEditedDiagnosesFromPastEncounters = function () {
             var editedDiagnosesFromPastEncounters = [];
             $rootScope.consultation.pastDiagnoses.forEach(function (pastDiagnosis) {
@@ -25,7 +25,7 @@ angular.module('bahmni.clinical')
                 temp[0]=observation;
                 var observationsByGroup={
                     "conceptSetName": observation.concept.name,
-                    "groupMembers": new Bahmni.ConceptSet.ObservationMapper().getObservationsForView(temp)
+                    "groupMembers": new Bahmni.ConceptSet.ObservationMapper().getObservationsForView(temp, conceptSetUiConfigService.getConfig())
                 };
                 if(observationsByGroup.groupMembers.length){
                     groupedObservationsArray.push(observationsByGroup);

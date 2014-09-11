@@ -70,7 +70,7 @@ angular.module('bahmni.common.conceptSet')
 
             spinner.forPromise(conceptSetService.getConceptSetMembers({name: conceptSetName, v: "custom:" + customRepresentation})).then(function (response) {
                 var conceptSet = response.data.results[0];
-                $scope.rootObservation = conceptSet ? observationMapper.map($scope.observations, conceptSet, conceptSetUIConfig.value || {}) : null;
+                $scope.rootObservation = conceptSet ? observationMapper.map($scope.observations, conceptSet, conceptSetUIConfig) : null;
                 updateObservationsOnRootScope();
             });
 

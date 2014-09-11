@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical').factory('consultationInitialization',
-    ['$rootScope', '$q', 'configurationService', 'patientService', 'authenticator', 'appService', 'encounterService', 'bedService', 'spinner', 'initialization', 'diagnosisService', 'patientVisitHistoryService', 'urlHelper','sessionService',
-    function ($rootScope, $q, configurationService, patientService, authenticator, appService, encounterService, bedService, spinner, initialization, diagnosisService, patientVisitHistoryService, urlHelper, sessionService) {
+    ['$rootScope', '$q', 'configurationService', 'patientService', 'authenticator', 'appService', 'encounterService', 'bedService', 'spinner', 'initialization', 'diagnosisService', 'patientVisitHistoryService', 'urlHelper','sessionService', 'conceptSetUiConfigService',
+    function ($rootScope, $q, configurationService, patientService, authenticator, appService, encounterService, bedService, spinner, initialization, diagnosisService, patientVisitHistoryService, urlHelper, sessionService, conceptSetUiConfigService) {
 
         var patientMapper = new Bahmni.PatientMapper($rootScope.patientConfig);
 
@@ -55,7 +55,7 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                 if($rootScope.activeVisit){
                     return encounterService.search($rootScope.activeVisit.uuid).then(function (encounterTransactionsResponse) {
                         var obsIgnoreList = appService.getAppDescriptor().getConfig("obsIgnoreList").value || {};
-                        $rootScope.visit = Bahmni.Clinical.Visit.create(encounterTransactionsResponse.data, $rootScope.consultationNoteConcept, $rootScope.labOrderNotesConcept, $rootScope.encounterConfig, $rootScope.allTestsAndPanelsConcept, obsIgnoreList, $rootScope.activeVisit.uuid);
+                        $rootScope.visit = Bahmni.Clinical.Visit.create(encounterTransactionsResponse.data, $rootScope.consultationNoteConcept, $rootScope.labOrderNotesConcept,$rootScope.encounterConfig, $rootScope.allTestsAndPanelsConcept, obsIgnoreList, $rootScope.activeVisit.uuid, conceptSetUiConfigService.getConfig());
                     });
                 }
             };
