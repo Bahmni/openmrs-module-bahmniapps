@@ -97,6 +97,10 @@ Bahmni.ConceptSet.Observation.prototype = {
         return "unknown";
     },
 
+    canHaveComment: function() {
+        return !this.isText() && !this.isImage();
+    },
+
     isConciseText: function(){
         return this.getConceptUIConfig().conciseText == true;
     },
