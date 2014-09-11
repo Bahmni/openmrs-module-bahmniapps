@@ -78,7 +78,7 @@ Bahmni.DocumentUpload.Visit = function () {
     };
 
     this.markAsUpdated = function () {
-        this.changed = this.images.some(function(image) { return image.changed || !image.obsUuid; });
+        this.changed = this.images.some(function(image) { return image.changed || !image.obsUuid || image.voided; });
     };
     
     this.isSaved = function(image){
@@ -101,7 +101,6 @@ Bahmni.DocumentUpload.Visit = function () {
 
     this.toggleVoidingOfImage = function (image) {
         image.voided = !image.voided;
-        image.changed = true;
         this.markAsUpdated();
     };
 };

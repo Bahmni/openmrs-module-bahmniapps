@@ -21,9 +21,10 @@
                            ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}" only-number="true"/>
                 </div>
 
-                <textarea id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}">
+                <textarea id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="!observation.primaryObs.isConciseText()" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}">
 
                 </textarea>
+                <input type="text" id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="observation.primaryObs.isConciseText()" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}">
 
 <!-- Dropdowns won't be supported in release - 3
                 <select ng-switch-when="dropdown" foo-bar ng-model="observation.value"
@@ -97,9 +98,10 @@
                            ng-model="observation.value" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}"/>
                 </div>
 
-                <textarea id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value"
+                <textarea id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="!observation.isConciseText()"
                           ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}"></textarea>
-
+                <input type="text" id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="observation.isConciseText()"
+                       ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}">
                 <!--{{observation.groupMembers}}-->
                 <div ng-switch-when="grid">
                     <div  ng-repeat="member in observation.groupMembers" class="grid-row">

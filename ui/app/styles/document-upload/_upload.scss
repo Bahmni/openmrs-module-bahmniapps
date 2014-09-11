@@ -1,8 +1,20 @@
 .document-upload {
   font-size: 14px;
+  .upload-header, .upload-header header {
+    background: $bahmniSecondaryColor;
+  }
   header {
+    ul li {
+      float: left;
+      .back-btn {
+        font-size: 16px;
+      }
+    }
     .header-logo {
       position: static;
+    }
+    h1.patient-details {
+      font-size: 16px;
     }
   }
   .main {
@@ -305,13 +317,18 @@ button.mfp-close:hover {
 
 .document-upload {
     .patient-details {
-        top: 17px;
+        top: 7px;
         color: #eee;
+        position: relative;
     }
 }
 
 @media screen and (max-width: 768px) {
     .document-upload {
+      header h1.patient-details {
+        font-size: 14px;
+        position: absolute;
+      }
 	    .doc-upload-accordion {
 		    padding-top: 20px;
 	    }

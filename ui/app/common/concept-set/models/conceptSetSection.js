@@ -5,6 +5,8 @@ Bahmni.ConceptSet.ConceptSetSection = function(extensions,observations,conceptSe
 		self.observations = observations;
 		self.options = extensions.extensionParams || {};
 		self.conceptName= conceptSet.name? conceptSet.name.name : self.options.conceptName;
+        var conceptName = _.find(conceptSet.names, {conceptNameType: "SHORT"}) || _.find(conceptSet.names, {conceptNameType: "FULLY_SPECIFIED"});
+        self.label= conceptName.name  || conceptSet.name || self.options.conceptName;
 		self.isLoaded = self.isOpen;
 
 	};

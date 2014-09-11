@@ -25,7 +25,7 @@ angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$ur
             .state('upload', {
                 url: '/patient/:patientUuid/document',
                 data: {
-                    backLinks: [{label: "Patient Q", url: "#/search"}]
+                    backLinks: [{label: "Patients", url: "#/search"}]
                 },
                 views: {
                     'content': {

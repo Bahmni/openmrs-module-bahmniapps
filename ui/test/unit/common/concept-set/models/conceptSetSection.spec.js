@@ -3,7 +3,7 @@
 describe("ConceptSetSection", function() {
 	var ConceptSetSection = Bahmni.ConceptSet.ConceptSetSection;
 
-	var conceptSet = {name:{name:"vitals"}}
+    var conceptSet = {name:{name:"vitals"}, names:[{name:"vitals", conceptNameType: "SHORT"}]};
     describe("isAvailable", function() {
 		it("should be true if 'showIf' condition is not defined", function() {
 			expect(new ConceptSetSection({extensionParams:{conceptName:"vitals"}},[],conceptSet).isAvailable()).toBe(true);

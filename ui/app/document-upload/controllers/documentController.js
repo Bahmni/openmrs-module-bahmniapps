@@ -250,7 +250,7 @@ angular.module('opd.documentupload')
                     var imageUrl = image.encodedValue.replace(Bahmni.Common.Constants.documentsPath + "/", "");
                     if(!visit.isSaved(image)) {
                         visitDocument.documents.push({testUuid: image.concept.uuid, image: imageUrl, obsDateTime: getEncounterStartDateTime(visit)})
-                    } else if (image.changed == true) {
+                    } else if (image.changed == true || image.voided == true) {
                         visitDocument.documents.push({testUuid: image.concept.uuid, image: imageUrl, voided: image.voided, obsUuid: image.obsUuid});
                     }
                 });
@@ -300,6 +300,7 @@ angular.module('opd.documentupload')
                 spinner.forPromise(visitDocumentService.save(visitDocument).then(function (response) {
                     return encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function(encounterResponse){
                         var savedVisit = $scope.visits[$scope.visits.indexOf(existingVisit)];
+                        savedVisit.changed = false;
                         if(!savedVisit){
                             visitService.getVisit(response.data.visitUuid, customVisitParams).then(function(visitResponse){
                                 var newVisit = createVisit(visitResponse.data);
