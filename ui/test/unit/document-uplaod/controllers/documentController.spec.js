@@ -13,6 +13,7 @@ describe("DocumentController", function () {
     var visitDocumentService;
     var visit1, visit2;
     var visitDocument;
+    var sessionService;
 
     var createVisit = function (startDateTime, stopDateTime, uuid) {
         var visit = new Bahmni.DocumentUpload.Visit();
@@ -129,6 +130,7 @@ describe("DocumentController", function () {
         appConfig = jasmine.createSpyObj('encounterConfig', ['encounterType']);
         visitService = jasmine.createSpyObj('visitService', ['getVisitSummary']);
         visitDocumentService = jasmine.createSpyObj('visitDocumentService', ['save']);
+        sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
     }));
 
 
@@ -153,7 +155,8 @@ describe("DocumentController", function () {
                 spinner: spinner,
                 $rootScope: scope,
                 $stateParams: stateParams,
-                visitDocumentService: visitDocumentService
+                visitDocumentService: visitDocumentService,
+                sessionService: sessionService
             });
             scope.visits = [visit1, visit2];
 
@@ -290,6 +293,7 @@ describe("DocumentController", function () {
         visitDocument.encounterDateTime = startDate;
         visitDocument.providerUuid = "provider uuid";
         visitDocument.visitUuid = "visit uuid";
+        visitDocument.locationUuid = undefined;
         visitDocument.documents = [
             {
                 testUuid: "concept uuid",

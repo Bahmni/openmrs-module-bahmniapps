@@ -20,20 +20,21 @@ describe('VisitController', function () {
     var q;
     var appService;
     var appDescriptor;
+    var sessionService;
     var stubAllPromise = function () {
         return {
             then: function () {
                 return stubAllPromise();
             }
         }
-    }
+    };
     var stubOnePromise = function () {
         return {
             then: function (callBack) {
                 return callBack();
             }
         }
-    }
+    };
 
     var sampleConfig = {
         "conceptData": {
@@ -96,6 +97,7 @@ describe('VisitController', function () {
         scope.regEncounterConfiguration = angular.extend(new Bahmni.Registration.RegistrationEncounterConfig(), sampleConfig);
         scope.encounterConfig = angular.extend(new EncounterConfig(), sampleConfig);
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
+        sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
         encounterService = jasmine.createSpyObj('encounterService', ['create', 'activeEncounter']);
         getEncounterPromise = specUtil.createServicePromise('activeEncounter');
         getPatientPromise = specUtil.createServicePromise('get');
@@ -118,7 +120,8 @@ describe('VisitController', function () {
                 $route: route,
                 openmrsPatientMapper: patientMapper,
                 appService:appService,
-                registrationCardPrinter: registrationCardPrinter
+                registrationCardPrinter: registrationCardPrinter,
+                sessionService: sessionService
             });
 
             getPatientPromise.callSuccessCallBack(patient);
@@ -140,7 +143,8 @@ describe('VisitController', function () {
                 $route: route,
                 appService:appService,
                 openmrsPatientMapper: patientMapper,
-                registrationCardPrinter: registrationCardPrinter
+                registrationCardPrinter: registrationCardPrinter,
+                sessionService: sessionService
             });
             getPatientPromise.callSuccessCallBack(patient);
             getEncounterPromise.callSuccessCallBack(sampleEncounter);
@@ -187,7 +191,8 @@ describe('VisitController', function () {
                 $route: route,
                 appService:appService,
                 openmrsPatientMapper: patientMapper,
-                registrationCardPrinter: registrationCardPrinter
+                registrationCardPrinter: registrationCardPrinter,
+                sessionService: sessionService
             });
             getPatientPromise.callSuccessCallBack(patient);
             getEncounterPromise.callSuccessCallBack(sampleEncounter);
@@ -228,7 +233,8 @@ describe('VisitController', function () {
                     $route: route,
                     appService:appService,
                     openmrsPatientMapper: patientMapper,
-                    registrationCardPrinter: registrationCardPrinter
+                    registrationCardPrinter: registrationCardPrinter,
+                    sessionService: sessionService
                 });
                 getPatientPromise.callSuccessCallBack(patient);
                 getEncounterPromise.callSuccessCallBack(sampleEncounter);
@@ -277,7 +283,8 @@ describe('VisitController', function () {
                 $route: route,
                 appService:appService,
                 openmrsPatientMapper: patientMapper,
-                registrationCardPrinter: registrationCardPrinter
+                registrationCardPrinter: registrationCardPrinter,
+                sessionService: sessionService
             });
             getPatientPromise.callSuccessCallBack(patient);
             getEncounterPromise.callSuccessCallBack(sampleEncounter);
@@ -339,7 +346,8 @@ describe('VisitController', function () {
                 $route: route,
                 appService:appService,
                 openmrsPatientMapper: patientMapper,
-                registrationCardPrinter: registrationCardPrinter
+                registrationCardPrinter: registrationCardPrinter,
+                sessionService: sessionService
             });
             getPatientPromise.callSuccessCallBack(patient);
             getEncounterPromise.callSuccessCallBack(sampleEncounter);

@@ -15,6 +15,7 @@ describe('CreatePatientController', function () {
     var appService;
     var route;
     var registrationCardPrinter;
+    var sessionService;
 
     beforeEach(module('bahmni.registration'));
     beforeEach(inject([function () {
@@ -50,11 +51,12 @@ describe('CreatePatientController', function () {
                 return "/patient/someUUID/visit"
             }
         };
-        appService = jasmine.createSpyObj('appService', ['getAppDescriptor'])
+        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         appService.getAppDescriptor.and.returnValue(appDescriptor);
         location.url.and.returnValue(location);
         //$route.current.params.visitType
         route = { "current" : { "params" : { "visitType" : "REG" } }};
+        sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
     }]));
 
     var setupController = function(preferenceObj){
@@ -72,7 +74,8 @@ describe('CreatePatientController', function () {
                 $rootScope: {regEncounterConfiguration: new Bahmni.Registration.RegistrationEncounterConfig({visitTypes: {}},{encounterTypes: {"REG" : "someUUID"}}), patientConfiguration: patientConfiguration },
                 appService: appService,
                 $route: route,
-                registrationCardPrinter: registrationCardPrinter
+                registrationCardPrinter: registrationCardPrinter,
+                sessionService: sessionService
 
         });
         });
