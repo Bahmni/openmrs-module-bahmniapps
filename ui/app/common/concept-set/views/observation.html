@@ -1,9 +1,9 @@
 
-<div class="observations-tab">
+<div class="observations-tab" >
 <div class="vitals form-horizontal">
     <fieldset class="leaf-observation-node" ng-if="observation.isObservationNode">
         <div class="form-group">
-            <label class="control-label" for="{{observation.uniqueId}}">
+            <label class="control-label" for="{{observation.uniqueId}}" >
                 <span ng-bind="observation.primaryObs.label"></span>
                 <span ng-show="observation.primaryObs.units" ng-bind="'(' + observation.primaryObs.units + ')'"></span>
                 <span ng-if="observation.isRequired()" class="asterick">*</span>
@@ -83,7 +83,7 @@
 
     <fieldset class="leaf-observation-node" ng-if="observation.isFormElement()">
         <div class="form-group">
-            <label class="control-label" for="{{observation.uniqueId}}">
+            <label class="control-label" for="{{observation.uniqueId}}" >
                 <span ng-bind="observation.label"></span>
                 <span ng-show="observation.units" ng-bind="'(' + observation.units + ')'"></span>
                 <span ng-if="observation.isRequired()" class="asterick">*</span>
@@ -182,8 +182,8 @@
         <legend ng-if="showTitle" class="mylegend"><strong>{{observation.label}}</strong></legend>
         <section ng-if="observation.showHelpText()" ng-bind-html="observation.concept.description"></section>
         <div class="form-group">
-            <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers">
-                <concept observation="member" at-least-one-value-is-set="atLeastOneValueIsSet" show-title="true" concept-set-required="conceptSetRequired"></concept>
+            <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers " ng-if="!member.hidden">
+                <concept observation="member" at-least-one-value-is-set="atLeastOneValueIsSet" show-title="true" concept-set-required="conceptSetRequired" ></concept>
             </div>
         </div>
     </fieldset>

@@ -70,8 +70,7 @@ button[disabled] {
 }
 
 .multi-select-widget {
-    width: 100%;
-    padding: 10px 0 0 10px;
+    width: 800px;
     overflow: auto;
     @include box-sizing(border-box);
     button {

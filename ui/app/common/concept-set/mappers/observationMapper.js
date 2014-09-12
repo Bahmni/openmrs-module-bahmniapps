@@ -34,14 +34,19 @@ Bahmni.ConceptSet.ObservationMapper = function () {
     };
 
     var mapObservation = function (concept, savedObs, conceptSetConfig) {
+        var obs = null;
         if (savedObs && (savedObs.isObservation || savedObs.isObservationNode))
             return savedObs;
         var mappedGroupMembers = concept.set ? mapObservationGroupMembers(savedObs ? savedObs.groupMembers : [], concept, conceptSetConfig) : [];
+
         if (concept.conceptClass.name === Bahmni.Common.Constants.conceptDetailsClassName) {
-            return newObservationNode(concept, savedObs, conceptSetConfig, mappedGroupMembers);
+            obs = newObservationNode(concept, savedObs, conceptSetConfig, mappedGroupMembers);
         } else {
-            return newObservation(concept, savedObs, conceptSetConfig, mappedGroupMembers);
+            obs = newObservation(concept, savedObs, conceptSetConfig, mappedGroupMembers);
         }
+
+        new Bahmni.ConceptSet.MultiSelectObservations(conceptSetConfig).map(mappedGroupMembers, obs);
+        return obs;
     };
 
     var mapObservationGroupMembers = function (observations, parentConcept, conceptSetConfig) {
@@ -58,8 +63,10 @@ Bahmni.ConceptSet.ObservationMapper = function () {
                 observationGroupMembers.push(mapObservation(memberConcept, null, conceptSetConfig))
             }
         });
+
         return observationGroupMembers;
     };
+
 
     // tODO : remove conceptUIConfig
     var newObservation = function (concept, savedObs, conceptSetConfig, mappedGroupMembers) {

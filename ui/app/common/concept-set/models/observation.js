@@ -88,6 +88,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     getControlType: function () {
+        if (this.hidden) return "hidden";
         if (this.getConceptUIConfig().freeTextAutocomplete) return "freeTextAutocomplete";
         if (this.isHtml5InputDataType()) return "html5InputDataType";
         if (this.isImage()) return "image";
@@ -107,7 +108,6 @@ Bahmni.ConceptSet.Observation.prototype = {
 
     _getCodedControlType: function () {
         var conceptUIConfig = this.getConceptUIConfig();
-        if (conceptUIConfig.multiselect) return "multiselect";
         if (conceptUIConfig.autocomplete) return "autocomplete";
         if (conceptUIConfig.buttonSelect) return "buttonselect";
         return "dropdown";
@@ -137,6 +137,19 @@ Bahmni.ConceptSet.Observation.prototype = {
         if (value === '' || value === null || value === undefined) return false;
         if (value instanceof Array) return value.length > 0;
         return true;
+    },
+
+    hasValueOf: function(value) {
+        if(!this.value || !value) return false;
+        return this.value == value || this.value.uuid == value.uuid;
+    },
+
+    toggleSelection: function(answer) {
+        if (this.value && this.value.uuid === answer.uuid) {
+            this.value = null;
+        } else {
+            this.value = answer;
+        }
     },
 
     isValidDate: function () {

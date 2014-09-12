@@ -55,7 +55,7 @@ angular.module('bahmni.common.conceptSet')
     }]).directive('conceptSet', ['contextChangeHandler', 'appService', function (contextChangeHandler, appService) {
         var template =
             '<form>' +
-                '<concept concept-set-required="conceptSetRequired" observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet" show-title="showTitleValue"></concept>' +
+                '<concept concept-set-required="conceptSetRequired" observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet" show-title="showTitleValue" ng-if="!rootObservation.hidden"></concept>' +
             '</form>';
 
         var numberOfLevels = appService.getAppDescriptor().getConfigValue('maxConceptSetLevels') || 4;
@@ -129,18 +129,19 @@ angular.module('bahmni.common.conceptSet')
         return {
             restrict:'E',
             scope:{ observation:'='},
+
             link:function(scope, element, attrs){
                 if(attrs.dirtyCheckFlag){
                     scope.hasDirtyFlag = true;
                 }
             },
             controller:function ($scope) {
+                $scope.isSet = function(answer) {
+                    return $scope.observation.hasValueOf(answer);
+                };
+
                 $scope.select = function (answer) {
-                    if ($scope.observation.value && $scope.observation.value.uuid === answer.uuid) {
-                        $scope.observation.value = null;
-                    } else {
-                        $scope.observation.value = answer;
-                    }
+                    $scope.observation.toggleSelection(answer);
                 };
 
                 $scope.getAnswerDisplayName = function(answer) {
@@ -148,6 +149,6 @@ angular.module('bahmni.common.conceptSet')
                     return  shortName  ? shortName.name : answer.displayString;
                 };
             },
-            template:"<span ng-repeat='answer in observation.possibleAnswers'><button type='button' class='grid-row-element' ng-class='{active: observation.value.uuid == answer.uuid}' ng-click='select(answer)'><i class='icon-ok'></i>{{getAnswerDisplayName(answer)}}</button></span>"
+            template:'<ng-include src="\'../common/concept-set/views/buttonselectObservation.html\'" />'
         };
-    });;
+    });
