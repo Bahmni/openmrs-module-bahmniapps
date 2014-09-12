@@ -68,3 +68,19 @@ button.back-btn {
 button[disabled] {
     background: #F7F7F7;
 }
+
+.multi-select-widget {
+    width: 100%;
+    padding: 10px 0 0 10px;
+    overflow: auto;
+    @include box-sizing(border-box);
+    button {
+        width: 200px;
+        float: left;
+        margin: 0 2px 2px 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: left;
+    }
+}
