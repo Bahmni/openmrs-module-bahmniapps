@@ -1,9 +1,11 @@
 Bahmni.Common.Domain.ConceptMapper = function () {
     this.map = function (openMrsConcept) {
         if(!openMrsConcept) return null;
+        var openMrsDescription = openMrsConcept.descriptions ? openMrsConcept.descriptions[0] : null;
         return {
             uuid: openMrsConcept.uuid,
             name: openMrsConcept.name.name || openMrsConcept.name,
+            description: openMrsDescription ? openMrsDescription.description : null,
             set: openMrsConcept.set,
             dataType: getDataTypeOfConcept(openMrsConcept),
             hiAbsolute: openMrsConcept.hiAbsolute,

@@ -180,6 +180,7 @@
 
     <fieldset ng-if="!observation.isObservationNode && !observation.isFormElement() && !observation.isComputed()" class="hasLegend">
         <legend ng-if="showTitle" class="mylegend"><strong>{{observation.label}}</strong></legend>
+        <section ng-if="observation.showHelpText()" ng-bind-html="observation.concept.description"></section>
         <div class="form-group">
             <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers">
                 <concept observation="member" at-least-one-value-is-set="atLeastOneValueIsSet" show-title="true" concept-set-required="conceptSetRequired"></concept>

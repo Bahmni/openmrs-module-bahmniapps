@@ -158,7 +158,11 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isRequired: function () {
-        return this.getConceptUIConfig().required || false;
+        return this.getConceptUIConfig().required;
+    },
+
+    showHelpText: function () {
+        return this.getConceptUIConfig().showHelpText;
     },
 
     isFormElement: function() {
