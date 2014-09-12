@@ -7,10 +7,14 @@ Bahmni.Common.PatientSearch.Search = function(searchTypes) {
     self.searchResults = [];
 
     self.switchSearchType = function (searchType) {
-        self.searchParameter = '';
-        self.searchType = searchType;
-        self.activePatients = [];
-        self.searchResults = [];
+        if (self.searchType != searchType)
+        {
+            self.searchParameter = '';
+            self.searchType = searchType;
+            self.activePatients = [];
+            self.searchResults = [];
+        }
+
     };
 
     self.updatePatientList = function (patientList) {
