@@ -122,6 +122,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
             }
         }
     };
+
+    this.isActive = function(){
+        return this.effectiveStartDate >= Bahmni.Common.Util.DateUtil.today();
+    }
 };
 
 Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrder) {
@@ -157,5 +161,6 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrder) {
     viewModel.drugName = drugOrder.drug.name;
     viewModel.effectiveStartDate = drugOrder.effectiveStartDate;
     viewModel.effectiveStopDate = drugOrder.effectiveStopDate;
+    viewModel.provider = drugOrder.provider.name;
     return viewModel;
 };

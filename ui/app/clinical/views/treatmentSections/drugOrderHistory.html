@@ -1,11 +1,13 @@
 <section class="drug-orders-history section-grid">
-	<h2 class="section-title">Existing Prescriptions</h2>
+	<h2 class="section-title">Recent Prescriptions</h2>
+    <div ng-if="drugOrderGroupsEmpty()">
+        <span>No Prescriptions available</span>
+    </div>
 	<div class="inpage">
 		<div class="tabs">
-
 			<div class="tab" ng-repeat="prescriptionDate in drugOrderGroupOrder">
-				<input class="tab-radio" id="{{prescriptionDate}}" name="tab-group-1" type="radio" ng-checked="$index == 0">
-				<label class="tab-label" for="{{prescriptionDate}}">{{prescriptionDate}}</label>
+				<input class="tab-radio" id="{{prescriptionDate}}" name="tab-group-1" type="radio" ng-checked="$index == 0" ng-class="{}">
+				<label class="tab-label" for="{{prescriptionDate}}">{{prescriptionDate}} <i class="icon-star current-visit-icon" title="Current Visit"></i></label>
 
 				<div class="inpage-tab-panel">
 					<div class="inpage-tab-content">
@@ -18,10 +20,13 @@
 						</div>
 						
 						<ul class="table-mimic">
-							<li ng-repeat="drugOrder in drugOrderGroups[prescriptionDate]">
+							<li ng-repeat="drugOrder in drugOrderGroups[prescriptionDate]" ng-class="{highlight : drugOrder.isActive()}">
 								<form class="fl"><input class="select-drug" type="checkbox" /></form>
                                 <div class="drug-details">
                                     <strong class="drug-name">{{drugOrder.drugName}}</strong>&nbsp;{{drugOrder.getDescription()}}
+                                    <div class="start-date fr">
+                                        <span ng-if="showEffectiveFromDate(prescriptionDate, drugOrder.effectiveStartDate)"> from {{drugOrder.effectiveStartDate | date: 'dd MMM yy'}}</span>
+                                    </div>
                                 </div>
 								<div class="button-group">
                                     <button class="toggle" ng-class="{'has-notes': drugOrder.additionalInstructions}">
@@ -33,6 +38,12 @@
 								</div>
                                 <div ng-show="drugOrder.showAdditionalInstructions" class="notes inline-notes">
                                     {{drugOrder.additionalInstructions}}
+                                    <div class="footer-note fr">
+                                        <span class="time-stamp">
+                                            <span class="time">{{drugOrder.effectiveStartDate | date: 'dd MMM yy'}}</span>
+                                        </span>
+                                        <span class="provider">{{drugOrder.provider}}</span>
+                                    </div>
                                 </div>
 							</li>
 						</ul>

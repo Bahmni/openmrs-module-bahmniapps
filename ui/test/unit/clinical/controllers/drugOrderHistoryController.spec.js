@@ -49,7 +49,8 @@ describe("DrugOrderHistoryController", function(){
                 "dosingInstructionType": "org.openmrs.module.bahmniemrapi.drugorder.dosinginstructions.FlexibleDosingInstructions",
                 "previousOrderUuid": null,
                 "orderReasonText": null,
-                "duration": 10
+                "duration": 10,
+                "provider": {name: "superman"}
             },
             {
                 "uuid": null,
@@ -90,9 +91,10 @@ describe("DrugOrderHistoryController", function(){
                 "dosingInstructionType": "org.openmrs.FreeTextDosingInstructions",
                 "previousOrderUuid": null,
                 "orderReasonText": null,
-                "duration": 10
+                "duration": 10,
+                "provider": {name: "superman"}
             }
-        ]
+        ];
 
         $controller('DrugOrderHistoryController', {
             $scope: scope,
@@ -103,8 +105,8 @@ describe("DrugOrderHistoryController", function(){
     describe("when initialized", function(){
         it("should setup scope variables", function() {
             expect(Object.keys(scope.drugOrderGroups).length).toBe(2);
-            expect(scope.drugOrderGroups['10-Sep-2014'].length).toBe(1);
-            var secondDrugOrder = scope.drugOrderGroups['10-Sep-2014'][0];
+            expect(scope.drugOrderGroups['10 Sep 14'].length).toBe(1);
+            var secondDrugOrder = scope.drugOrderGroups['10 Sep 14'][0];
             expect(secondDrugOrder.drugName).toBe(prescribedDrugOrders[1].drug.name);
         });
     });

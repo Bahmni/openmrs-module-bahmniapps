@@ -6,7 +6,7 @@
                    ng-model="treatment.drugNameDisplay" on-select="populateBackingFields" autofocus/>
 
             <div class="frequency-widget uniform-frequency" ng-click="treatment.setFrequencyType('uniform')" ng-class="{'disabled': treatment.isVariableDosingType()}">
-                <input class="form-field dose" only-number type="number" min="0" placeholder="Dose"
+                <input class="form-field dose" only-number="true" type="number" min="0" placeholder="Dose"
                        ng-model="treatment.uniformDosingType.dose" ng-disabled="treatment.isVariableDosingType()" ng-required="required('uniform')"/>
                 <select class="form-field freq-dose-units" ng-model="treatment.uniformDosingType.doseUnits"
                         ng-options="item.name as item.name for item in treatmentConfig.doseUnits" ng-disabled="treatment.isVariableDosingType()" ng-required="required('uniform')">
@@ -24,11 +24,11 @@
 
             <div class="frequency-widget variable-frequency" ng-click="treatment.setFrequencyType('variable')" ng-class="{'disabled': treatment.isUniformDosingType()}">
                 <div class="form-field dose-cell">
-                    <input type="number" min="0" ng-model="treatment.variableDosingType.morningDose" only-number
+                    <input type="number" min="0" ng-model="treatment.variableDosingType.morningDose" only-number="true"
                            ng-disabled="treatment.isUniformDosingType()" ng-required="required('variable')"/>
-                    <input type="number" min="0" ng-model="treatment.variableDosingType.afternoonDose" only-number
+                    <input type="number" min="0" ng-model="treatment.variableDosingType.afternoonDose" only-number="true"
                            ng-disabled="treatment.isUniformDosingType()" ng-required="required('variable')"/>
-                    <input type="number" min="0" ng-model="treatment.variableDosingType.eveningDose" only-number
+                    <input type="number" min="0" ng-model="treatment.variableDosingType.eveningDose" only-number="true"
                            ng-disabled="treatment.isUniformDosingType()" ng-required="required('variable')"/>
                 </div>
                 <select class="form-field freq-dose-units" ng-model="treatment.variableDosingType.doseUnits"
@@ -51,7 +51,7 @@
 
             <div class="duration-widget">
                 <input class="form-field duration" type="number" min="1" placeholder="Duration"
-                       ng-model="treatment.duration" ng-change="treatment.calculateDurationInDays()" required only-number/>
+                       ng-model="treatment.duration" ng-change="treatment.calculateDurationInDays()" required only-number="true"/>
                 <select class="form-field duration-unit" ng-model="treatment.durationUnit" ng-change="treatment.calculateDurationInDays()"
                         ng-options="item as item.name for item in treatmentConfig.durationUnits" required>
                 </select>
@@ -66,7 +66,7 @@
 
             <div class="quantity-widget">
                 <input class="form-field quantity" type="number" min="1" placeholder="Qty"
-                       ng-model="treatment.quantity" ng-change="treatment.setQuantityEnteredManually()" required only-number/>
+                       ng-model="treatment.quantity" ng-change="treatment.setQuantityEnteredManually()" required only-number="true"/>
                 <select class="form-field quantity-unit" ng-model="treatment.quantityUnit"
                         ng-options="item.name as item.name for item in treatmentConfig.dispensingUnits" required>
                     <option value="">Units</option>
