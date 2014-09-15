@@ -2,31 +2,31 @@ Bahmni.ConceptSet.MultiSelectObservations = function(conceptSetConfig) {
     var self = this;
     this.multiSelectObservationsMap = {};
 
-    this.map = function(mappedGroupMembers, obs) {
-        mappedGroupMembers.forEach(function(member) {
+    this.map = function(memberOfCollection) {
+        memberOfCollection.forEach(function(member) {
             if(isMultiSelectable(member.concept, conceptSetConfig)) {
-                add(member.concept, member, obs);
+                add(member.concept, member, memberOfCollection);
             }
         });
-        insertMultiSelectObsInExistingOrder(obs);
+        insertMultiSelectObsInExistingOrder(memberOfCollection);
     };
 
     var isMultiSelectable = function(concept, conceptSetConfig) {
-        return concept.answers && concept.answers.length > 0 && conceptSetConfig[concept.name] && conceptSetConfig[concept.name].multiSelect;
+        return conceptSetConfig[concept.name] && conceptSetConfig[concept.name].multiSelect;
     };
 
-    var insertMultiSelectObsInExistingOrder = function(obs) {
+    var insertMultiSelectObsInExistingOrder = function(memberOfCollection) {
         getAll().forEach(function(multiObs){
-            var index = _.findIndex(obs.groupMembers, function(member){
+            var index = _.findIndex(memberOfCollection, function(member){
                 return member.concept.name === multiObs.concept.name;
             });
-            obs.groupMembers.splice(index, 0, multiObs);
+            memberOfCollection.splice(index, 0, multiObs);
         });
     };
 
-    var add = function(concept, obs, parentObs) {
+    var add = function(concept, obs, memberOfCollection) {
         var concept_name = concept.name.name;
-        self.multiSelectObservationsMap[concept_name] = self.multiSelectObservationsMap[concept_name] ||  new Bahmni.ConceptSet.MultiSelectObservation(concept, parentObs, conceptSetConfig);
+        self.multiSelectObservationsMap[concept_name] = self.multiSelectObservationsMap[concept_name] ||  new Bahmni.ConceptSet.MultiSelectObservation(concept, memberOfCollection, conceptSetConfig);
         self.multiSelectObservationsMap[concept_name].add(obs);
     };
 
@@ -36,14 +36,16 @@ Bahmni.ConceptSet.MultiSelectObservations = function(conceptSetConfig) {
 };
 
 
-Bahmni.ConceptSet.MultiSelectObservation = function (concept, parentObs, conceptSetConfig) {
+Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection, conceptSetConfig) {
     var self = this;
     this.label = concept.name;
     this.isMultiSelect = true;
     this.selectedObs = {};
     this.concept = concept;
+    this.concept.answers = this.concept.answers || [];
+    this.groupMembers = [];
 
-    this.possibleAnswers = concept.answers.map(function(answer) {
+    this.possibleAnswers = self.concept.answers.map(function(answer) {
         var cloned = _.cloneDeep(answer);
         if(answer.name.name) cloned.name = answer.name.name;
         return cloned;
@@ -86,7 +88,7 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, parentObs, concept
 
     var createObsFrom = function(answer) {
         var obs = newObservation(concept, answer, conceptSetConfig)
-        parentObs.groupMembers.push(obs);
+        memberOfCollection.push(obs);
         return obs;
     };
 
@@ -118,6 +120,14 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, parentObs, concept
     var buildObservation = function(concept) {
         var conceptName = _.find(concept.names, {conceptNameType: "SHORT"}) || _.find(concept.names, {conceptNameType: "FULLY_SPECIFIED"});
         var displayLabel = conceptName ? conceptName.name : concept.shortName || concept.name.name;
-        return { concept: concept, units: concept.units, label: displayLabel, possibleAnswers: concept.answers, groupMembers: [], comment: null};
+        return { concept: concept, units: concept.units, label: displayLabel, possibleAnswers: self.concept.answers, groupMembers: [], comment: null};
+    }
+
+    this.getValues = function(){
+        var values = [];
+        _.values(self.selectedObs).forEach(function(obs){
+            values.push(obs.value.name);
+        });
+        return values.join(" | ");
     }
 };

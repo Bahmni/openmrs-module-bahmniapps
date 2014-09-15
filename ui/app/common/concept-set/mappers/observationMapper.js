@@ -45,7 +45,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
             obs = newObservation(concept, savedObs, conceptSetConfig, mappedGroupMembers);
         }
 
-        new Bahmni.ConceptSet.MultiSelectObservations(conceptSetConfig).map(mappedGroupMembers, obs);
+        new Bahmni.ConceptSet.MultiSelectObservations(conceptSetConfig).map(mappedGroupMembers);
         return obs;
     };
 
@@ -134,8 +134,14 @@ Bahmni.ConceptSet.ObservationMapper = function () {
                         observationsForDisplay = observationsForDisplay.concat(groupMemberObservationsForDisplay);
                     }
                 } else {
-                    var observation = newObservation(savedObs.concept, savedObs, []);
-                    var obsToDisplay = createObservationForDisplay(observation, observation.concept);
+                    var obsToDisplay = null;
+                    if(savedObs.isMultiSelect){
+                        obsToDisplay = savedObs;
+                    }
+                    else if(!savedObs.hidden){
+                        var observation = newObservation(savedObs.concept, savedObs, []);
+                        obsToDisplay = createObservationForDisplay(observation, observation.concept);
+                    }
                     if (obsToDisplay) observationsForDisplay.push(obsToDisplay);
                 }
             }

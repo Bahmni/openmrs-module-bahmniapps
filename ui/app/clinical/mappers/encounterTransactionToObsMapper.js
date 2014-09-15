@@ -2,7 +2,7 @@
 
 Bahmni.Clinical.EncounterTransactionToObsMapper = function () {
 
-    this.map = function (encounterTransactions, invalidEncounterTypes) {
+    this.map = function (encounterTransactions, invalidEncounterTypes,conceptSetUIConfig) {
         var allObs,
             validObservation = function (observation) {
                 if (observation.voided) return false;
@@ -22,9 +22,18 @@ Bahmni.Clinical.EncounterTransactionToObsMapper = function () {
                     setProviderFunction(observation);
                 });
             },
+            createMultiSelectObs = function(obsList){
+                if(conceptSetUIConfig){
+                    obsList.forEach(function(obs){
+                        createMultiSelectObs(obs.groupMembers);
+                    });
+                    new Bahmni.ConceptSet.MultiSelectObservations(conceptSetUIConfig).map(obsList);
+                }
+            },
             flatten = function (transactions, item) {
                 return transactions.reduce(function (result, transaction) {
                     setProviderToObservations(transaction[item], transaction.providers[0]);
+                    createMultiSelectObs(transaction.observations);
                     return result.concat(transaction[item]);
                 }, []);
             },
@@ -44,5 +53,6 @@ Bahmni.Clinical.EncounterTransactionToObsMapper = function () {
         allObs = flatten(encounterTransactions, 'observations').filter(validObservation);
         allObs.forEach(removeInvalidGroupMembers);
         return allObs;
+
     };
 };

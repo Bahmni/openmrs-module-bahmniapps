@@ -266,7 +266,7 @@ Bahmni.Clinical.Visit = (function () {
             });
         };
         var invalidEncounterTypeUuids = [encounterConfig.getPatientDocumentEncounterTypeUuid(), encounterConfig.getRadiologyEncounterTypeUuid()];
-        var allObs = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions, invalidEncounterTypeUuids).filter(removeUnwantedObs);
+        var allObs = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions, invalidEncounterTypeUuids,conceptSetUIConfig).filter(removeUnwantedObs);
         var testOrders = ordersMapper.map(encounterTransactions, 'testOrders', allTestAndPanelsConcept);
         var otherInvestigations = testOrders.filter(isNonLabTests);
         var labOrders = testOrders.filter(isLabTests).map(Bahmni.Clinical.LabOrder.create);
