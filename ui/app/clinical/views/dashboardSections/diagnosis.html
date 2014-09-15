@@ -7,9 +7,9 @@
                 <div ng-repeat="diagnosis in allDiagnoses | primaryDiagnosisFirst" class="row">
                     <div class="view-past">
                         <div class="col col1">
-                            <h4 class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">
+                            <label class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">
                                 {{diagnosis.getDisplayName()}}
-                            </h4>
+                            </label>
                         </div>
                         <div class="col col2">
                             <div class="view">

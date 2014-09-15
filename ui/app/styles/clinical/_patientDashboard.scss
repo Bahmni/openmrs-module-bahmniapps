@@ -26,11 +26,12 @@
   width: 100%;
   height: 50px;
   background: $bahmniSecondaryColor;
-  h1 {
+  h5 {
     margin: 15px 0;
     color: #eee;
     text-transform: capitalize;
     display: inline-block;
+    font-size: 16px;
   }
 }
 .dashboard-section {

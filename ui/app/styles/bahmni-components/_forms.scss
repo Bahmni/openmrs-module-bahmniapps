@@ -1,5 +1,8 @@
 /******** form element styling start********/
 
+fieldset {
+  margin: 0; padding: 0; border: 0;
+}
 form,.form{
  fieldset{
   border:none;

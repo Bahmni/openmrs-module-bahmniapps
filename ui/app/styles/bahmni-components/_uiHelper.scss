@@ -46,6 +46,7 @@ use either a `<div>` or an `<section` element:
 h2.section-title {
 	font-family: $primaryBoldFont;
 	padding: $defaultSpacing;
+	margin-top: 0;
 	margin-bottom: 0;
 	color: $bahmniSectionHeaderColor;
 	font-size: 18px;

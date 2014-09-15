@@ -1,4 +1,3 @@
-
 @import "compass";
 
 $total-width: 100%;
@@ -28,12 +27,11 @@ p.caution{
     padding: 5px;
 }
 
-strong {
-    font-family: $primaryBoldFont;
-}
-
-pre {
+body pre {
+  font-family: $primaryFont;
+  font-size: 14px;
   background: none;
+  margin: 0; padding: 0;
 }
 
 .asterick {
