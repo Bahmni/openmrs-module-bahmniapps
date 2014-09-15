@@ -3,19 +3,22 @@
     background: $bahmniSecondaryColor;
     border-radius: 0;
     margin-bottom: 15px;
-    h1 {
+    h5 {
         display: inline-block;
         color: #ddd;
         line-height: 50px;
         padding: 0 0 0 20px;
+        font-size: 16px;
+        margin: 0;
     }
-    h2 {
+    h6 {
         display: inline-block;
         width: auto;
         float: right;
         margin: 15px 20px;
         border-bottom: 0!important;
         color: #fff;
+        font-size: 16px;
     }
 }
 .template-container {

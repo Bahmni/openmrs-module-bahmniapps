@@ -120,7 +120,7 @@ form .vitals .form-field .field-value {
     border: 1px solid #aaa;
   }
   textarea {
-    width: 48em;
+    width: 50.3em;
     height: 100px;
     margin-bottom: 10px;
     @media screen and (max-width: 1015px) and (min-width: 851px) {
@@ -303,7 +303,7 @@ concept-set {
 .leaf-observation-node {
     .obs-comment-toggle {
         padding: 5px;
-        margin-right: 27px;
+        margin-right: 10px;
         .icon-arrow-down, .icon-arrow-up {
             font-size: 10px;
         }
