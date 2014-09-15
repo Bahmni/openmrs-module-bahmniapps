@@ -113,7 +113,6 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 var encounterData = {};
                 encounterData.locationUuid = sessionService.getLoginLocationUuid();
                 encounterData.patientUuid = $scope.patient.uuid;
-                encounterData.encounterTypeUuid = $rootScope.encounterConfig.getOpdConsultationEncounterTypeUuid();
                 encounterData.encounterDateTime = null;
 
                 if ($rootScope.consultation.newlyAddedDiagnoses && $rootScope.consultation.newlyAddedDiagnoses.length > 0) {

@@ -5,7 +5,6 @@ angular.module('bahmni.registration')
         function ($scope, $rootScope, $location, patientService, encounterService, $window, $route, spinner, $timeout, $q, registrationCardPrinter, appService, patientMapper,contextChangeHandler, messagingService, sessionService) {
             var patientUuid = $route.current.params['patientUuid'];
             var isNewPatient = ($location.search()).newpatient;
-            var encounterTypeUuid = $scope.regEncounterConfiguration.encounterTypes[Bahmni.Registration.Constants.encounterType.registration];
 
             var extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.conceptSetGroup.observations", "config");
             var locationUuid = sessionService.getLoginLocationUuid();
@@ -22,7 +21,7 @@ angular.module('bahmni.registration')
             };
 
             var getActiveEncounter = function () {
-                return encounterService.activeEncounter({"patientUuid": patientUuid, "encounterTypeUuid" : encounterTypeUuid, "providerUuid" : $scope.currentProvider.uuid, "includeAll" : false, locationUuid : locationUuid})
+                return encounterService.activeEncounter({"patientUuid": patientUuid, "providerUuid" : $scope.currentProvider.uuid, "includeAll" : false, locationUuid : locationUuid})
                     .success(function (data) {
                         $scope.visitTypeUuid = data.visitTypeUuid;
                         $scope.observations = data.observations;
@@ -72,7 +71,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.save = function () {
-                $scope.encounter = {encounterTypeUuid: encounterTypeUuid, patientUuid: $scope.patient.uuid, locationUuid : locationUuid};
+                $scope.encounter = {patientUuid: $scope.patient.uuid, locationUuid : locationUuid};
                 $scope.encounter.observations = $scope.observations;
                 $scope.encounter.observations = new Bahmni.Common.Domain.ObservationFilter().filter($scope.encounter.observations);
 
