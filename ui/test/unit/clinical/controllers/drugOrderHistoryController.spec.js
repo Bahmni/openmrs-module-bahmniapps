@@ -105,8 +105,8 @@ describe("DrugOrderHistoryController", function(){
     describe("when initialized", function(){
         it("should setup scope variables", function() {
             expect(Object.keys(scope.drugOrderGroups).length).toBe(2);
-            expect(scope.drugOrderGroups['10 Sep 14'].length).toBe(1);
-            var secondDrugOrder = scope.drugOrderGroups['10 Sep 14'][0];
+            expect(scope.drugOrderGroups['1410349317222'].length).toBe(1);
+            var secondDrugOrder = scope.drugOrderGroups['1410349317222'][0];
             expect(secondDrugOrder.drugName).toBe(prescribedDrugOrders[1].drug.name);
         });
     });

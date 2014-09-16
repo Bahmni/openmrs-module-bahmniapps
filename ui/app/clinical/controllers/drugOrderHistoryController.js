@@ -2,10 +2,9 @@
 
 angular.module('bahmni.clinical')
     .controller('DrugOrderHistoryController', ['$scope','$filter', 'prescribedDrugOrders', function ($scope, $filter, prescribedDrugOrders) {
-        var visitStartDateFormat = 'dd MMM yy';
         var groupedDrugOrders = function (drugOrders) {
             return _.groupBy(drugOrders, function (drugOrder) {
-                return $filter("date")(drugOrder.visit.startDateTime, visitStartDateFormat);
+                return drugOrder.visit.startDateTime;
             });
         };
 
@@ -28,7 +27,7 @@ angular.module('bahmni.clinical')
         };
 
         $scope.showEffectiveFromDate = function(visitStartDate, effectiveStartDate) {
-            return $filter("date")(effectiveStartDate, visitStartDateFormat) !== visitStartDate;
+            return $filter("date")(effectiveStartDate, 'dd MMM yy') !== visitStartDate;
         };
 
         init();

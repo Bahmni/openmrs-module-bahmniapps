@@ -143,7 +143,7 @@ describe("drugOrderViewModel", function () {
                 morningDose: morningDose,
                 afternoonDose: afternoonDose,
                 eveningDose: eveningDose,
-                doseUnits: doseUnits,
+                doseUnits: doseUnits
             };
             treatment.duration = duration;
             treatment.durationUnit = {name: durationUnit, factor: factor};
