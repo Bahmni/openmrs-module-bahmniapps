@@ -285,6 +285,7 @@ angular.module('opd.documentupload')
                     return visit.uuid === encounter.visit.uuid;
                 });
                 visit.initSavedImages();
+                visit.changed = false;
                 $scope.currentVisit = visit;
                 sortVisits();
                 flashSuccessMessage();
@@ -300,7 +301,6 @@ angular.module('opd.documentupload')
                 spinner.forPromise(visitDocumentService.save(visitDocument).then(function (response) {
                     return encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function(encounterResponse){
                         var savedVisit = $scope.visits[$scope.visits.indexOf(existingVisit)];
-                        savedVisit.changed = false;
                         if(!savedVisit){
                             visitService.getVisit(response.data.visitUuid, customVisitParams).then(function(visitResponse){
                                 var newVisit = createVisit(visitResponse.data);
