@@ -7,7 +7,7 @@
 		<div class="tabs">
 			<div class="tab" ng-repeat="prescriptionDate in drugOrderGroupOrder">
 				<input class="tab-radio" id="{{prescriptionDate}}" name="tab-group-1" type="radio" ng-checked="$index == 0" ng-class="{}">
-				<label class="tab-label" for="{{prescriptionDate}}">{{prescriptionDate}} <i class="icon-star current-visit-icon" title="Current Visit"></i></label>
+				<label class="tab-label" for="{{prescriptionDate}}">{{prescriptionDate | date: 'dd MMM yy'}} <i ng-if="$index == 0" class="icon-star current-visit-icon" title="Current Visit"></i></label>
 
 				<div class="inpage-tab-panel">
 					<div class="inpage-tab-content">

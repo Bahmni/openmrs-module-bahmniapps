@@ -17,6 +17,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
     this.frequencyType = "uniform";
     this.uniformDosingType = {};
     this.variableDosingType = {};
+    this.freeTextDosingType = {};
     this.durationInDays = 0;
 
     var simpleDoseAndFrequency = function () {
@@ -30,6 +31,12 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
         var variableDosingType = self.variableDosingType;
         var variableDosingString = addDelimiter((variableDosingType.morningDose || 0) + "-" + (variableDosingType.afternoonDose || 0) + "-" + (variableDosingType.eveningDose || 0), " ");
         return addDelimiter((variableDosingString + blankIfFalsy(variableDosingType.doseUnits)).trim(), ", ")
+    };
+
+    var freeTextDose = function () {
+        var uniformDosingType = self.freeTextDosingType;
+        var doseAndUnits = blankIfFalsy(uniformDosingType.dose) + " " + blankIfFalsy(uniformDosingType.doseUnits);
+        return addDelimiter(blankIfFalsy(doseAndUnits), " ");
     };
 
     var asNeeded = function (asNeeded) {
@@ -48,7 +55,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
         return item && item.length > 0 ? item + delimiter : item;
     };
 
-    this.getDescription = function () {
+    var getFlexibleDosingDescription = function() {
         return addDelimiter(blankIfFalsy(getDoseAndFrequency()), " ") +
             addDelimiter(blankIfFalsy(self.instructions && self.instructions.name), ", ") +
             addDelimiter(blankIfFalsy(asNeeded(self.asNeeded)), ', ') +
@@ -57,6 +64,16 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
             addDelimiter(blankIfFalsy(self.durationUnit && self.durationUnit.name), " (") +
             addDelimiter(blankIfFalsy(self.quantity), " ") +
             addDelimiter(blankIfFalsy(self.quantityUnit), ")");
+    };
+
+    var getFreeTextDosingDescription = function () {
+        return addDelimiter(blankIfFalsy(freeTextDose()), ",") +
+            addDelimiter(blankIfFalsy(self.duration), " ") +
+            addDelimiter(blankIfFalsy(self.durationUnit && self.durationUnit.name), "");
+    };
+
+    this.getDescription = function () {
+        return this.frequencyType === "freeText" ? getFreeTextDosingDescription() : getFlexibleDosingDescription();
     };
 
     this.calculateDurationUnit = function () {
@@ -153,6 +170,13 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrder) {
             afternoonDose: administrationInstructions.afternoonDose,
             eveningDose: administrationInstructions.eveningDose
         }
+    } else {
+        viewModel.frequencyType = "freeText";
+        viewModel.freeTextDosingType = {};
+        viewModel.freeTextDosingType = {
+            dose: drugOrder.dosingInstructions.dose,
+            doseUnits: drugOrder.dosingInstructions.doseUnits
+        };
     }
     viewModel.instructions = administrationInstructions.instructions;
     viewModel.additionalInstructions = administrationInstructions.additionalInstructions;
