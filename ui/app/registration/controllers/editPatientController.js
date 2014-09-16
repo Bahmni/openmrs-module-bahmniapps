@@ -47,7 +47,7 @@ angular.module('bahmni.registration')
                 spinner.forPromise($q.all([getPatientPromise, searchActiveVisitsPromise, isDigitized]));
             })();
 
-            $scope.visitControl = new Bahmni.Common.VisitControl($rootScope.regEncounterConfiguration.getVistTypesAsArray(), defaultVisitType, visitService);
+            $scope.visitControl = new Bahmni.Common.VisitControl($rootScope.regEncounterConfiguration.getVistTypesAsArray(), defaultVisitType, encounterService);
             $scope.visitControl.onStartVisit = function() {
                 $scope.setSubmitSource('startVisit');
             };

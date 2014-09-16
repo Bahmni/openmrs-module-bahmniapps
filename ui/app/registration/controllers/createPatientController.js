@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('CreatePatientController', ['$scope', '$rootScope','patientService', 'visitService','$location', 'Preferences', '$route', 'patient', '$window', 'spinner', 'registrationCardPrinter', 'appService', 'sessionService',
-    function ($scope, $rootScope, patientService, visitService, $location, preferences, $route, patientModel, $window, spinner, registrationCardPrinter, appService, sessionService) {
+    .controller('CreatePatientController', ['$scope', '$rootScope','patientService', 'encounterService','$location', 'Preferences', '$route', 'patient', '$window', 'spinner', 'registrationCardPrinter', 'appService', 'sessionService',
+    function ($scope, $rootScope, patientService, encounterService, $location, preferences, $route, patientModel, $window, spinner, registrationCardPrinter, appService, sessionService) {
         var dateUtil = Bahmni.Common.Util.DateUtil;
         var createActionsConfig = [];
         var defaultActions = ["save", "print", "startVisit"];
@@ -35,7 +35,7 @@ angular.module('bahmni.registration')
             identifyEditActions();
         })();
 
-        $scope.visitControl = new Bahmni.Common.VisitControl($rootScope.regEncounterConfiguration.getVistTypesAsArray(), defaultVisitType, visitService);
+        $scope.visitControl = new Bahmni.Common.VisitControl($rootScope.regEncounterConfiguration.getVistTypesAsArray(), defaultVisitType, encounterService);
         $scope.visitControl.onStartVisit = function() {
             $scope.setSubmitSource('startVisit');
         };

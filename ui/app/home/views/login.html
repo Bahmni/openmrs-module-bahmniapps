@@ -37,12 +37,12 @@
 
             <div class="form-field">
                 <div class="field-attribute">
-                    <label for="currentLocation">
+                    <label for="location">
                         Location <span class="asterick">*</span>
                     </label>
                 </div>
                 <div class="field-value">
-                    <select name="currentLocation" ng-model="loginInfo.currentLocation" ng-options="item as item.display for item in locations" required>
+                    <select id="location" ng-model="loginInfo.currentLocation" ng-options="item as item.display for item in locations" required>
                         <option value="">Select Location</option>
                     </select>
                 </div>
