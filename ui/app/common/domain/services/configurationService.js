@@ -79,6 +79,16 @@ angular.module('bahmni.common.domain')
             return labOrderNotesConfig;
         }
 
+        configurationFunctions.radiologyImpressionConfig = function(){
+            var radiologyImpressionConfig =  $http.get(Bahmni.Common.Constants.conceptUrl, {
+                method:"GET",
+                params: { v: 'custom:(uuid,name)', name: Bahmni.Common.Constants.impressionConcept },
+                withCredentials: true
+            });
+            return radiologyImpressionConfig;
+        }
+
+
         configurationFunctions.addressLevels = function () {
             return $http.get(Bahmni.Common.Constants.openmrsUrl + "/module/addresshierarchy/ajax/getOrderedAddressHierarchyLevels.form", {
                 withCredentials: true

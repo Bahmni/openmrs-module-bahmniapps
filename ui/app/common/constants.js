@@ -36,6 +36,7 @@ Bahmni.Common = Bahmni.Common || {};
         idgenConfigurationURL: RESTWS_V1 + "/idgen/identifiersources",
         bahmniRESTBaseURL: BAHMNI_CORE + "",
         observationsUrl: BAHMNI_CORE + "/observations",
+        obsRelationshipUrl: BAHMNI_CORE + "/obsrelationships",
         encounterImportUrl: BAHMNI_CORE + "/admin/upload/encounter",
         programImportUrl: BAHMNI_CORE + "/admin/upload/program",
         adminImportStatusUrl: BAHMNI_CORE + "/admin/upload/status",
@@ -48,6 +49,8 @@ Bahmni.Common = Bahmni.Common || {};
         investigationEncounterType:"INVESTIGATION",
         validationNotesEncounterType: "VALIDATION NOTES",
         labOrderNotesConcept: "Lab Order Notes",
+        impressionConcept: "Impression",
+        qualifiedByRelationshipType: "qualified-by",
         dispositionConcept : "Disposition",
         dispositionGroupConcept : "Disposition Set",
         dispositionNoteConcept : "Disposition Note",
@@ -75,7 +78,8 @@ Bahmni.Common = Bahmni.Common || {};
         dischargeEncounterTypeName: 'DISCHARGE',
         opdEncounterName: 'OPD',
         imageClassName: 'Image',
-        locationCookieName: 'bahmni.user.location'
+        locationCookieName: 'bahmni.user.location',
+        patientFileConceptName: 'Patient file'
 };
     
 })();

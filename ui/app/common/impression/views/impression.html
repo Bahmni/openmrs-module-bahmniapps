@@ -1,0 +1,13 @@
+<section>
+	<ul class="impression">
+		<li ng-repeat="obs in sourceObs">
+	        <pre class="notes inline-notes"><strong>Provider name:</strong>{{obs.value}}</pre>
+		</li>
+	</ul>
+	<div class="impression-control">
+		<textarea placeholder="Enter impression on image" ng-model="newSourceObs.value">
+		</textarea>
+		<input class="confirm save-impression-btn" type="button" ng-click="saveImpression()" value="Add">
+	</div>
+	
+</section>

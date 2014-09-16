@@ -83,3 +83,12 @@ button[disabled] {
         text-align: left;
     }
 }
+
+button:hover {
+  opacity: 0.8;
+}
+
+.secondary-button, .secondary-button:hover {
+    @include background(linear-gradient(top, $bahmniSecondaryColor, #528484));
+    color: $white;
+}
