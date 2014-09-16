@@ -141,6 +141,7 @@
         }
         .drug-details {
             padding-left: 0;
+            width: 82%;
         }
     }
 
@@ -154,7 +155,6 @@
     div.start-date span {
         line-height: 2.5em;
         font-family: OpenSansItalic;
-        margin-right: 20px;
         color: #888;
     }
     .button-group {
@@ -186,5 +186,10 @@
     .select-all-drugs-widget {
         @include clearfix();
         padding: 0 0 5px 6px;
+    }
+
+    .highlight {
+        background: #fefee4;
+        border-left: 5px solid orange;
     }
 }
