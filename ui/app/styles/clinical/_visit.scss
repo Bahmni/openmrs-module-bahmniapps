@@ -397,7 +397,7 @@ legend.mylegend {background: #fff!important;}
 .visits-nav-bar {
     text-align: center;
     display: inline-block;
-    margin-top: 5px;
+    margin-top: -5px;
     .prev-visit, .next-visit {
         @include button;
         color: #a1d030;
