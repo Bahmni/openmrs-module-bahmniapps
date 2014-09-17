@@ -8,7 +8,11 @@ Bahmni.Clinical.OrdersMapper.prototype.group = function(orders, groupingParamete
     var getGroupingFunction = function (groupingParameter) {
         if (groupingParameter == 'date') {
             return function (order) {
-                return Bahmni.Common.Util.DateUtil.getDate(order.startDate);
+                if(order.startDate){
+                    return Bahmni.Common.Util.DateUtil.getDate(order.startDate);
+                }else{
+                    return Bahmni.Common.Util.DateUtil.getDate(order.effectiveStartDate);
+                }
             };
         }
         return function (order) {

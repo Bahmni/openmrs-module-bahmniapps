@@ -4,7 +4,7 @@ describe("drugOrderViewModel", function () {
     var sampleTreatment = function (extensionParams, routes, durationUnits) {
         var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel(extensionParams, {routes:routes, durationUnits: durationUnits});
         sampleTreatment.drugName = "calpol 500mg(tablets)";
-        sampleTreatment.instructions = {name: "Before Meals"};
+        sampleTreatment.instructions = "Before Meals";
         sampleTreatment.duration = "10";
         sampleTreatment.scheduledDate = "21/12/2014";
         sampleTreatment.quantity = "12";

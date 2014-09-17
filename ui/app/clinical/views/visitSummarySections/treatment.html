@@ -15,28 +15,19 @@
         </tr>
         <tr class="title">
             <th><span class="table-head-title">Drug Name</span></th>
-            <th><span class="table-head-title">Dosage per Day</span></th>
-            <th colspan="2"><span class="table-head-title">Duration</span></th>
+            <th><span class="table-head-title">Dosage Instructions</span></th>
         </tr>
         </thead>
         <tbody ng-repeat="drugOrder in drugOrderGroup.orders">
         <tr ng-click="toggle(drugOrder)" class="row-click">
-            <td class="drug-name" bo-text="drugOrder.drug.name"></td>
+            <td class="drug-name" bo-text="drugOrder.drugName"></td>
             <td class="dosage-form">
-                <span bo-show="drugOrder.dosingInstructions.administrationInstructions"
-                      bo-text="drugOrder.dosingInstructions.administrationInstructions|formatDecimalValues"></span>
-                <span bo-show="!drugOrder.dosingInstructions.administrationInstructions" bo-text="' - '"></span>
-            </td>
-            <td class="dosage-days has-toggle-btn">
-                <div class="dosage">
-                    <span><span class="copy">From </span>{{(drugOrder.effectiveStartDate | date:'d MMM yy')}}<span
-                            class="copy"> for </span>{{drugOrder.duration}} {{drugOrder.durationUnits}}</span>
-                    <span bo-show="drugOrder.prn" class="prn">Take as required</span>
-                </div>
-
+                <span bo-show="drugOrder.getDescription()"
+                      bo-text="drugOrder.getDescription()"></span>
+                <span bo-show="!drugOrder.getDescription()" bo-text="' - '"></span>
             </td>
             <td class="toggle-btn">
-                <button class="toggle fr">
+                <button class="toggle fr" ng-class="{'has-notes': drugOrder.additionalInstructions}">
                     <i class="icon-plus-sign" ng-hide="drugOrder.show"></i>
                     <i class="icon-minus-sign" ng-show="drugOrder.show"></i>
                 </button>
@@ -44,7 +35,7 @@
         </tr>
         <tr ng-if="!print && drugOrder.show">
             <td colspan="4" class="inline-notes notes">
-                <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.commentToFulfiller}}</p>
+                <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.additionalInstructions}}</p>
 
                 <div class="footer-note right">
                     <span class="time-stamp">
@@ -55,9 +46,9 @@
                 </div>
             </td>
         </tr>
-        <tr ng-if="print && drugOrder.notes && drugOrder.notes.length > 0 ">
+        <tr ng-if="print && drugOrder.additionalInstructions && drugOrder.additionalInstructions.length > 0 ">
             <td colspan="4" class="inline-notes notes">
-                <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.notes}}</p>
+                <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.additionalInstructions}}</p>
 
                 <div class="footer-note right">
                     <span class="time-stamp">

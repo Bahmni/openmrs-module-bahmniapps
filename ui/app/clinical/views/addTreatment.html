@@ -45,7 +45,7 @@
 
         <fieldset>
             <select class="form-field instruction" ng-model="treatment.instructions"
-                    ng-options="item.name as item.name for item in treatmentConfig.dosingInstructions">
+                    ng-options="item as item.name for item in treatmentConfig.dosingInstructions">
                 <option value="">Instruction</option>
             </select>
 

@@ -15,7 +15,7 @@ Bahmni.Clinical.DrugOrder = (function () {
         var dateUtil = Bahmni.Common.Util.DateUtil;
         var getDosingInstructions = function(drugOrderData) {
             var dosingInstructions = {};
-            dosingInstructions.instructions = drugOrderData.instructions;
+            dosingInstructions.instructions = drugOrderData.instructions && drugOrderData.instructions.name;
             dosingInstructions.additionalInstructions = drugOrderData.additionalInstructions;
             if (drugOrderData.frequencyType === 'variable') {
                 dosingInstructions.morningDose = drugOrderData.variableDosingType.morningDose;
@@ -62,12 +62,7 @@ Bahmni.Clinical.DrugOrder = (function () {
 
         isActive: function () {
             return this.isActiveOnDate(DateUtil.today());
-        },
-
-        isFreeTextDosingType: function () {
-            return this.dosingType === 'FreeTextDosingInstructions';
         }
-
     };
 
     return DrugOrder;

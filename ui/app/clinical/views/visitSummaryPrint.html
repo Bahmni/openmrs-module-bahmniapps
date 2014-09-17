@@ -63,29 +63,21 @@
                 <table>
                     <tr>
                         <th>Drug Name</th>
-                        <th>Dosage per Day</th>
-                        <th>Duration</th>
+                        <th>Dosage Instructions</th>
+                        <th>Start Date</th>
                     </tr>
                     <tbody ng-repeat="drugOrder in visit.drugOrders.orders">
                     <tr>
-                        <td class="drug-name" bo-text="drugOrder.drug.name"></td>
+                        <td class="drug-name" bo-text="drugOrder.drugName"></td>
                         <td class="dosage-form">
-                            <span bo-show="drugOrder.dosingInstructions.administrationInstructions" bo-text="drugOrder.dosingInstructions.administrationInstructions|formatDecimalValues"></span>
-                            <span bo-show="!drugOrder.dosingInstructions.administrationInstructions" bo-text="' - '"></span>
+                            <span bo-show="drugOrder.getDescription()" bo-text="drugOrder.getDescription()"></span>
+                            <span bo-show="!drugOrder.getDescription()" bo-text="' - '"></span>
                         </td>
-                        <td class="dosage-days">
-                            <div class="dosage">
-                                <span>From {{(drugOrder.effectiveStartDate | date:'d MMM yy')}} for {{drugOrder.duration}} {{drugOrder.durationUnits}}</span>
-                            </div>
-                            <button class="toggle fr">
-                                <i class="icon-plus-sign" ng-click="toggle(drugOrder)" ng-hide="drugOrder.show"></i>
-                                <i class="icon-minus-sign" ng-click="toggle(drugOrder)" ng-show="drugOrder.show"></i>
-                            </button>
-                        </td>
+                        <td bo-text="(drugOrder.effectiveStartDate | date:'d MMM yy')"></td>
                     </tr>
-                    <tr ng-show="drugOrder.show" ng-if="drugOrder.commentToFulfiller">
+                    <tr ng-if="drugOrder.additionalInstructions">
                         <td colspan="7" class="inline-notes notes">
-                            <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.commentToFulfiller}}</p>
+                            <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.additionalInstructions}}</p>
                         </td>
                     </tr>
                     </tbody>

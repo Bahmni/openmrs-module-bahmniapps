@@ -94,15 +94,15 @@
                 <thead>
                     <tr>
                         <th>Drug Name</th>
-                        <th>Dosage per Day</th>
-                        <th>Duration</th>
+                        <th>Dosage Instructions</th>
+                        <th>Start Date</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="drugOrder in dischargeSummary.getTreatmentReceived()">
-                        <td>{{drugOrder.drug.name}}</td>
-                        <td>{{drugOrder.dosingInstructions.administrationInstructions|formatDecimalValues}}</td>
-                        <td>From {{(drugOrder.effectiveStartDate | date:'d MMM yy')}} for {{drugOrder.duration}} {{drugOrder.durationUnits}}</td>
+                        <td>{{drugOrder.drugName}}</td>
+                        <td>{{drugOrder.getDescription()}}</td>
+                        <td>{{(drugOrder.effectiveStartDate | date:'d MMM yy')}}</td>
                     </tr>
                 </tbody>
             </table>
