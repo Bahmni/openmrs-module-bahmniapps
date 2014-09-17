@@ -3,14 +3,8 @@ var EncounterConfig = (function () {
         this.encounterTypes = encounterTypes;
     }
     EncounterConfig.prototype = {
-        getOpdConsultationEncounterTypeUuid:function () {
-            return this.getEncounterTypeUuid("OPD");
-        },
         getAdmissionEncounterTypeUuid:function () {
             return this.getEncounterTypeUuid("ADMISSION");
-        },
-        getInvestigationEncounterTypeUuid:function () {
-            return this.getEncounterTypeUuid("INVESTIGATION");
         },
         getDischargeEncounterTypeUuid:function () {
             return this.getEncounterTypeUuid("DISCHARGE");

@@ -76,7 +76,7 @@ Bahmni.Common = Bahmni.Common || {};
         conceptDetailsClassName: 'Concept Details',
         admissionEncounterTypeName: 'ADMISSION',
         dischargeEncounterTypeName: 'DISCHARGE',
-        opdEncounterName: 'OPD',
+        consultationEncounterName: 'Consultation',
         imageClassName: 'Image',
         locationCookieName: 'bahmni.user.location',
         patientFileConceptName: 'Patient file'
