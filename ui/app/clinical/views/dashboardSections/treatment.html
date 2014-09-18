@@ -13,9 +13,9 @@
                     <td class="placeholder-text">No treatment for this patient.</td>
                 </tr>
                 <tr ng-repeat="drugOrder in drugOrderSection.orders" ng-show="drugOrderSection.orders.length">
-                    <td class="drug"><h5>{{drugOrder.drugName}} </h5></td>
-                    <td class="dosage"><h5>{{drugOrder.getDescription()}}</h5></td>
-                    <td class="days">{{drugOrder.effectiveStartDate | date:'dd MMM yy'}}</td>
+                    <td class="drug">{{drugOrder.drugName}}</td>
+                    <td class="dosage"><span>{{drugOrder.getDescription()}}</span></td>
+                    <td class="days"><span class="fr">{{drugOrder.effectiveStartDate | date:'dd MMM yy'}}</span></td>
                 </tr>
             </tbody>
         </table>

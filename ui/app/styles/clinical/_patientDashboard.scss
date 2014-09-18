@@ -115,9 +115,13 @@
         color: #ccc;
       }
     }
-    td.days, td.dosage {
+    td.dosage {
+      font-size: 12px;
+      width: 35%;
+    }
+    td.days {
       font-size: 11px;
-      width: 25%;
+      width: 15%;
       span {
         color: #888;
       }
