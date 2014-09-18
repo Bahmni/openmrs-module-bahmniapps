@@ -15,13 +15,13 @@
         </tr>
         <tr class="title">
             <th><span class="table-head-title">Drug Name</span></th>
-            <th><span class="table-head-title">Dosage Instructions</span></th>
+            <th colspan="2"><span class="table-head-title">Dosage Instructions</span></th>
         </tr>
         </thead>
         <tbody ng-repeat="drugOrder in drugOrderGroup.orders">
         <tr ng-click="toggle(drugOrder)" class="row-click">
             <td class="drug-name" bo-text="drugOrder.drugName"></td>
-            <td class="dosage-form">
+            <td class="dosage-form has-toggle-btn">
                 <span bo-show="drugOrder.getDescription()"
                       bo-text="drugOrder.getDescription()"></span>
                 <span bo-show="!drugOrder.getDescription()" bo-text="' - '"></span>
