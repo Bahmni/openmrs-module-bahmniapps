@@ -11,7 +11,7 @@ angular.module('bahmni.common.patientSearch')
 
         $scope.searchPatients = function () {
             return spinner.forPromise(patientService.search($scope.search.searchParameter)).then(function (response) {
-                $scope.search.updateSearchResults(response.data.results);
+                $scope.search.updateSearchResults(response.data.pageOfResults);
                 if ($scope.search.hasSingleActivePatient()) {
                     $scope.forwardPatient($scope.activePatients[0]);
                 }

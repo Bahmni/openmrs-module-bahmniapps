@@ -129,7 +129,7 @@ describe('SearchPatientController', function () {
                     {uuid: "8989-90909"}
                 ];
 
-                searchPromise.callSuccessCallBack({results: results});
+                searchPromise.callSuccessCallBack({pageOfResults: results});
 
                 expect(scope.results).toBe(results);
             });
@@ -139,7 +139,7 @@ describe('SearchPatientController', function () {
                     {uuid: "8989-90909"}
                 ];
 
-                searchPromise.callSuccessCallBack({results: results});
+                searchPromise.callSuccessCallBack({pageOfResults: results});
 
                 expect(scope.noResultsMessage).toBe(null);
             });
@@ -147,7 +147,7 @@ describe('SearchPatientController', function () {
             it("should show 'no results found message' when patient is not found", function () {
                 var results = [];
 
-                searchPromise.callSuccessCallBack({results: results});
+                searchPromise.callSuccessCallBack({pageOfResults: results});
 
                 expect(scope.noResultsMessage).toMatch("No results");
             });
@@ -240,7 +240,7 @@ describe('SearchPatientController', function () {
                 appDescriptor.getConfigValue.and.returnValue("/patient/patientUuid");
                 appDescriptor.formatUrl.and.returnValue("/patient/8989-90909");
 
-                searchPromise.callSuccessCallBack({results: [
+                searchPromise.callSuccessCallBack({pageOfResults: [
                     {uuid: "8989-90909"}
                 ]});
 
@@ -249,7 +249,7 @@ describe('SearchPatientController', function () {
             });
 
             it("should show 'no patient found message' when patient is not found", function () {
-                searchPromise.callSuccessCallBack({results: []});
+                searchPromise.callSuccessCallBack({pageOfResults: []});
 
                 expect(scope.noResultsMessage).toMatch("Could not find patient with identifier GAN20001");
             });

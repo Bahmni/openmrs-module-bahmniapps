@@ -25,9 +25,9 @@ angular.module('bahmni.registration')
 
         var search = function (query, village, localName, offset, localNameAttributes) {
             offset = offset || 0;
-            return $http.get(openmrsUrl + "/ws/rest/v1/patient", {
+            return $http.get(openmrsUrl + "/ws/rest/v1/bahmnicore/patient", {
                 method: "GET",
-                params: {q: query, s: "byIdOrNameOrVillage", 'city_village': village, 'local_name': localName, startIndex: offset, patientAttributes: localNameAttributes},
+                params: {q: query, s: "byIdOrNameOrVillage", 'city_village': village, 'local_name': localName, startIndex: offset, patientAttributes: localNameAttributes}     ,
                 withCredentials: true
             });
         };

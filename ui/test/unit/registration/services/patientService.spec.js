@@ -58,7 +58,7 @@ describe('Patient resource', function () {
         var results = patientService.search(query);
 
         expect(mockHttp.get).toHaveBeenCalled();
-        expect(mockHttp.get.calls.mostRecent().args[0]).toBe(openmrsUrl + '/ws/rest/v1/patient');
+        expect(mockHttp.get.calls.mostRecent().args[0]).toBe(openmrsUrl + '/ws/rest/v1/bahmnicore/patient');
         expect(mockHttp.get.calls.mostRecent().args[1].params.q).toBe(query);
         expect(results.name).toBe('john');
     });

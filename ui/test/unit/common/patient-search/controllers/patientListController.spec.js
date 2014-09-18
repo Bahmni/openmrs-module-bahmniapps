@@ -103,7 +103,7 @@ describe("PatientListController", function () {
                 
                 expect(_patientService.search).toHaveBeenCalled();
 
-                searchPatientsPromise.callThenCallBack({data: {results: patients}});
+                searchPatientsPromise.callThenCallBack({data: {pageOfResults: patients}});
 
                 expect(scope.search.activePatients.length).toBe(patients.length);
                 expect(scope.search.searchResults.length).toBe(patients.length);
