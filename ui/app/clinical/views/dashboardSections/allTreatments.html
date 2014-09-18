@@ -7,7 +7,7 @@
     <h6>All Prescriptions</h6>
 </header>
 
-<div ng-show="allTreatments != null">
+<div ng-show="allTreatments != null" class="all-treatments">
     <div ng-hide="allTreatments.length > 0" class="messages">
         <p class="null-data-message">No Prescription for this patient.</p>
     </div>
@@ -19,8 +19,8 @@
             </thead>
             <tbody>
                 <tr ng-repeat="drugOrder in drugOrdersGroup.values" >
-                    <td class="drug"><h5>{{drugOrder.drugName}} </h5></td>
-                    <td class="dosage"><h5>{{drugOrder.getDescription()}}</h5></td>
+                    <td class="drug">{{drugOrder.drugName}}</td>
+                    <td class="dosage">{{drugOrder.getDescription()}}</td>
                 </tr>
             </tbody>
         </table> 
