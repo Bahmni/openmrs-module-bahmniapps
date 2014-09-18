@@ -320,9 +320,17 @@ concept-set {
     }
 }
 
-.concept-set-description {
+.concept-set-description, .concept-description {
     margin: 0 10px;
     padding: 10px;
     background: #e8f3e8;
     font-size: 14px;
+}
+.concept-description {
+    margin-bottom: 5px;
+    background: #e8edf3;
+    border-radius: 5px;
+    p {
+        margin-bottom: 0;
+    }
 }
