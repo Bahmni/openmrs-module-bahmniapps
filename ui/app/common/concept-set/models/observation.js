@@ -109,8 +109,8 @@ Bahmni.ConceptSet.Observation.prototype = {
     _getCodedControlType: function () {
         var conceptUIConfig = this.getConceptUIConfig();
         if (conceptUIConfig.autocomplete) return "autocomplete";
-        if (conceptUIConfig.buttonSelect) return "buttonselect";
-        return "dropdown";
+        return "buttonselect";
+
     },
 
     onValueChanged: function () {
