@@ -62,8 +62,7 @@ angular.module('bahmni.registration')
         };
 
         var createEncounterObject = function() {
-            var encounter = { locationUuid : locationUuid };
-            encounter.providers = encounter.providers || [];
+            var encounter = { locationUuid : locationUuid, providers: []};
             if ($rootScope.currentProvider && $rootScope.currentProvider.uuid) {
                 encounter.providers.push( { "uuid" : $rootScope.currentProvider.uuid } );
             }

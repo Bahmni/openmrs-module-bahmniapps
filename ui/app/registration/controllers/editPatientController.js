@@ -1,13 +1,14 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('EditPatientController', ['$scope', '$rootScope', 'patientService', 'encounterService', 'visitService','$location', 'Preferences', '$route', 'openmrsPatientMapper', '$window', '$q','spinner', 'registrationCardPrinter', 'appService',
-        function ($scope, $rootScope, patientService, encounterService, visitService,$location, preferences, $route, patientMapper, $window, $q, spinner, registrationCardPrinter, appService) {
+    .controller('EditPatientController', ['$scope', '$rootScope', 'patientService', 'encounterService', 'visitService','$location', 'Preferences', '$route', 'openmrsPatientMapper', '$window', '$q','spinner', 'registrationCardPrinter', 'appService', 'sessionService',
+        function ($scope, $rootScope, patientService, encounterService, visitService,$location, preferences, $route, patientMapper, $window, $q, spinner, registrationCardPrinter, appService, sessionService) {
             var uuid;
             var editActionsConfig = [];
             var defaultActions = ["save", "print"];
             var constants = Bahmni.Registration.Constants;
             var defaultVisitType = appService.getAppDescriptor().getConfigValue('defaultVisitType');
+            var locationUuid = sessionService.getLoginLocationUuid();
 
             var identifyEditActions = function() {
                 editActionsConfig = appService.getAppDescriptor().getExtensions("org.bahmni.registration.patient.edit.action", "config");
@@ -68,7 +69,7 @@ angular.module('bahmni.registration')
             };
 
             var createEncounterObject = function() {
-                var encounter = { providers: [] }
+                var encounter = {locationUuid: locationUuid, providers: [] }
                 if ($rootScope.currentProvider && $rootScope.currentProvider.uuid) {
                     encounter.providers.push( { "uuid" : $rootScope.currentProvider.uuid } );
                 }
