@@ -33,7 +33,7 @@
 	</modules>
 	
 	<properties>
-		<openMRSVersion>1.9.4</openMRSVersion>
+		<openMRSVersion>1.10.0</openMRSVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
