@@ -63,6 +63,10 @@ Bahmni.ConceptSet.Observation.prototype = {
         return 'Date'.indexOf(this.getDataTypeName()) != -1;
     },
 
+    getPossibleAnswers: function() {
+        return this.possibleAnswers;
+    },
+
     getHighAbsolute: function () {
         return this.concept.hiAbsolute;
     },

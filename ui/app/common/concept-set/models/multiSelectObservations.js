@@ -51,6 +51,10 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
         return cloned;
     });
 
+    this.getPossibleAnswers = function() {
+        return this.possibleAnswers;
+    };
+
     this.add = function(obs){
         if(obs.value) {
             self.selectedObs[obs.value.name] = obs;

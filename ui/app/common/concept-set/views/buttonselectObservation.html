@@ -1,5 +1,5 @@
 <div ng-class="{'multi-select-widget': observation.isMultiSelect}">
     <button type="button" class="grid-row-element" ng-class="{active: isSet(answer)}"
-            ng-click="select(answer)" ng-repeat="answer in observation.possibleAnswers"><i class="icon-ok"></i>{{getAnswerDisplayName(answer)}}
+            ng-click="select(answer)" ng-repeat="answer in observation.getPossibleAnswers()"><i class="icon-ok"></i>{{getAnswerDisplayName(answer)}}
     </button>
 </div>

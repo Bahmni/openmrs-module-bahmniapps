@@ -17,7 +17,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
     this.forView = function (bahmniObservations) {
         var sortWeight = 0;
         return  _.map(bahmniObservations, function (bahmniObservation) {
-            var observationValue = bahmniObservation.value;
+            var observationValue = getObservationDisplayValue(bahmniObservation);
             observationValue = bahmniObservation.duration ? observationValue + " " + getDurationDisplayValue(bahmniObservation.duration) : observationValue;
 
             return { "value": observationValue, "abnormal": bahmniObservation.isAbnormal, "duration": bahmniObservation.duration, 
@@ -68,10 +68,21 @@ Bahmni.ConceptSet.ObservationMapper = function () {
     };
 
 
+    var getDatatype = function(concept) {
+        if(concept.dataType) {
+            return concept.dataType;
+        }
+        return concept.datatype && concept.datatype.name;
+    }
+
     // tODO : remove conceptUIConfig
     var newObservation = function (concept, savedObs, conceptSetConfig, mappedGroupMembers) {
         var observation = buildObservation(concept, savedObs, mappedGroupMembers);
-        return new Bahmni.ConceptSet.Observation(observation, savedObs, conceptSetConfig, mappedGroupMembers);
+        var obs = new Bahmni.ConceptSet.Observation(observation, savedObs, conceptSetConfig, mappedGroupMembers);
+        if(getDatatype(concept) == "Boolean") {
+            obs = new Bahmni.ConceptSet.BooleanObservation(obs);
+        }
+        return obs;
     };
 
     // TODO : remove conceptUIConfig
@@ -88,7 +99,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
     }
 
     var createObservationForDisplay = function (observation, concept) {
-        if (!observation.value) return;
+        if (observation.value == null) return;
         var observationValue = getObservationDisplayValue(observation);
         observationValue = observation.duration ? observationValue + " " + getDurationDisplayValue(observation.duration) : observationValue;
         return { "value": observationValue, "abnormal": observation.abnormal, "duration": observation.duration,
@@ -98,8 +109,11 @@ Bahmni.ConceptSet.ObservationMapper = function () {
     };
 
     var getObservationDisplayValue = function(observation) {
+        if(observation.isBoolean || observation.type === "Boolean"){
+            return observation.value === true ? "Yes" : "No";
+         }
         return observation.value.shortName || observation.value.name || observation.value;
-    }
+    };
 
     var getDurationDisplayValue = function(duration) {
         var durationForDisplay = Bahmni.Common.Util.DateUtil.convertToUnits(duration.value);
