@@ -1,7 +1,7 @@
 (function(){
 	var DateUtil = Bahmni.Common.Util.DateUtil;
 	Bahmni.Clinical.DrugSchedule = function(fromDate, toDate, drugOrders) {
-		this.fromDate = fromDate;
+        this.fromDate = fromDate;
 		this.toDate = toDate;
 		this.drugOrders = drugOrders;
 		this.days = this.getDays();
@@ -30,8 +30,9 @@
 
 	Bahmni.Clinical.DrugSchedule.create = function(fromDate, toDate, drugOrders) {
 		var drugOrdersDuringIpd = drugOrders.filter(function(drugOrder){
-            var endDate = drugOrder.effectiveStopDate ? drugOrder.effectiveStopDate : DateUtil.getEndDateFromDuration(drugOrder.effectiveStartDate, drugOrder.duration, drugOrder.durationUnits);
-            return DateUtil.parse(endDate) < toDate && DateUtil.parse(drugOrder.effectiveStartDate) >= fromDate;
+            var orderStartDate = DateUtil.parse(drugOrder.effectiveStartDate);
+            var orderStopDate = DateUtil.parse(drugOrder.effectiveStopDate);
+            return orderStartDate < toDate && orderStopDate >=fromDate;
 		});
 		return new this(fromDate, toDate, drugOrdersDuringIpd);
 	};
