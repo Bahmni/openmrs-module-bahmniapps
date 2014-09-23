@@ -1,13 +1,24 @@
 'use strict';
 
 angular.module('opd.patientDashboard', [])
-    .controller('PatientDashboardController', ['$scope', '$rootScope', '$location', '$stateParams', 'patientVisitHistoryService', 'urlHelper', 'encounterService', 'appService',
-    function ($scope, $rootScope, $location, $stateParams, patientVisitHistoryService, urlHelper, encounterService, appService) {
+    .controller('PatientDashboardController', ['$scope', '$rootScope', '$location', '$stateParams', 'patientVisitHistoryService', 'urlHelper', 'encounterService', 'appService','diseaseTemplates',
+    function ($scope, $rootScope, $location, $stateParams, patientVisitHistoryService, urlHelper, encounterService, appService,diseaseTemplates) {
         $scope.patientUuid = $stateParams.patientUuid;
         $scope.activeVisitData = {};
+        $scope.diseaseTemplatesList = diseaseTemplates;
 
         $scope.obsIgnoreList = appService.getAppDescriptor().getConfigValue("obsIgnoreList") || {};
         $scope.patientDashboardSections = appService.getAppDescriptor().getConfigValue("patientDashboardSections") || {};
+
+        var populateDiseaseTemplateSections = function () {
+            $scope.diseaseTemplatesList.forEach(function(diseaseTemplate){
+                $scope.patientDashboardSections.push({
+                    title:diseaseTemplate.name,
+                    name:'diseaseTemplate'
+                });
+            })
+        };
+        populateDiseaseTemplateSections();
 
         $scope.filterOdd = function(index) {
           return function(item) {
