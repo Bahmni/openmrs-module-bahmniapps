@@ -22,7 +22,7 @@ angular.module('opd.documentupload').factory('initialization',
                     $rootScope.error = errorMessage;
                     initializationPromise.reject();
                     deferrable.reject();
-                }
+                };
 
                 if($rootScope.appConfig.encounterType == null) {
                     throwValidationError("encounterType should be configured in config");
@@ -32,7 +32,7 @@ angular.module('opd.documentupload').factory('initialization',
 
                 deferrable.resolve();
                 return deferrable;
-            }
+            };
 
             var initApp = function() {
                 return appService.initApp('documentUpload', {'app': true, 'extension' : true}, $rootScope.appConfig.encounterType);
