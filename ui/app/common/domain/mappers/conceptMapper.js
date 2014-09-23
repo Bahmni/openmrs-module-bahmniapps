@@ -5,6 +5,7 @@ Bahmni.Common.Domain.ConceptMapper = function () {
         return {
             uuid: openMrsConcept.uuid,
             name: openMrsConcept.name.name || openMrsConcept.name,
+            shortName: openMrsConcept.shortName,
             description: openMrsDescription ? openMrsDescription.description : null,
             set: openMrsConcept.set,
             dataType: getDataTypeOfConcept(openMrsConcept),
