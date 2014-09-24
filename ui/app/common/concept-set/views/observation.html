@@ -1,4 +1,3 @@
-
 <div class="observations-tab" >
 <div class="vitals form-horizontal">
     <fieldset class="leaf-observation-node" ng-if="observation.isObservationNode">
@@ -7,8 +6,9 @@
                 <span ng-bind="observation.primaryObs.label"></span>
                 <span ng-show="observation.primaryObs.units" ng-bind="'(' + observation.primaryObs.units + ')'"></span>
                 <span ng-if="observation.isRequired()" class="asterick">*</span>
-
+                <section class="concept-set-description" style="float:left" ng-if="observation.showHelpText()" ng-bind-html="observation.primaryObs.concept.description"></section>
             </label>
+
             <div class="field-value" ng-switch="observation.getControlType()">
 
                 <div ng-switch-when="html5InputDataType">
@@ -88,6 +88,7 @@
                 <span ng-show="observation.units" ng-bind="'(' + observation.units + ')'"></span>
                 <span ng-if="observation.isRequired()" class="asterick">*</span>
             </label>
+            <section class="concept-set-description" ng-if="observation.showHelpText()" ng-bind-html="observation.concept.description"></section>
             <div class="field-value" ng-switch="observation.getControlType()">
                 <div ng-switch-when="html5InputDataType">
                     <input id="{{observation.uniqueId}}" obs-constraints obs="observation"
