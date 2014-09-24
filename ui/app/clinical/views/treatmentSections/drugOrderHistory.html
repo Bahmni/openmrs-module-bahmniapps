@@ -1,4 +1,4 @@
-<section class="drug-orders-history section-grid">
+<section class="drug-orders-history section-grid" xmlns="http://www.w3.org/1999/html">
 	<h2 class="section-title">Recent Prescriptions</h2>
     <div ng-if="drugOrderGroupsEmpty()">
         <span>No Prescriptions available</span>
@@ -7,7 +7,7 @@
 		<div class="tabs">
 			<div class="tab" ng-repeat="prescriptionDate in drugOrderGroupOrder">
 				<input class="tab-radio" id="{{prescriptionDate}}" name="tab-group-1" type="radio" ng-checked="$index == 0" ng-class="{}">
-				<label class="tab-label" for="{{prescriptionDate}}">{{prescriptionDate | date: 'dd MMM yy'}} <i ng-if="$index == 0" class="icon-star current-visit-icon" title="Current Visit"></i></label>
+				<label class="tab-label" for="{{prescriptionDate}}">{{prescriptionDate | date: 'dd MMM yy'}}</label>
 
 				<div class="inpage-tab-panel">
 					<div class="inpage-tab-content">
@@ -22,10 +22,12 @@
 						<ul class="table-mimic">
 							<li ng-repeat="drugOrder in drugOrderGroups[prescriptionDate]" ng-class="{highlight : drugOrder.isActive()}">
 								<form class="fl"><input class="select-drug" type="checkbox" /></form>
-                                <div class="drug-details">
-                                    <strong class="drug-name">{{drugOrder.drugName}}</strong>&nbsp;{{drugOrder.getDescription()}}
+                                <div class="drug-details" ng-class="{'strike-through': drugOrder.discontinued()}">
+                                    <strong class="drug-name">{{drugOrder.drugName}}</strong> - &nbsp;{{drugOrder.getDescription()}}
                                     <div class="start-date fr">
                                         <span ng-if="showEffectiveFromDate(prescriptionDate, drugOrder.effectiveStartDate)"> from {{drugOrder.effectiveStartDate | date: 'dd MMM yy'}}</span>
+                                        <br/>
+                                        <span ng-if="drugOrder.dateStopped">stopped {{drugOrder.dateStopped | date: 'dd MMM yy'}}</span>
                                     </div>
                                 </div>
 								<div class="button-group">
@@ -33,8 +35,9 @@
                                         <i class="icon-plus-sign" ng-click="toggleShowAdditionalInstructions(drugOrder)" ng-hide="drugOrder.showAdditionalInstructions"></i>
                                         <i class="icon-minus-sign" ng-click="toggleShowAdditionalInstructions(drugOrder)" ng-show="drugOrder.showAdditionalInstructions"></i>
                                     </button>
-									<button><i class="icon-stop"></i></button>
-									<button><i class="icon-edit"></i></button>
+									<button ng-if="drugOrder.isActive()"><i class="icon-stop" ng-click="remove(drugOrder)" ng-if="!drugOrder.discontinued()"></i></button>
+									<button ng-if="drugOrder.isActive()"><i class="icon-undo" ng-click="undoRemove(drugOrder)" ng-if="drugOrder.discontinued()"></i></button>
+									<button ng-if="drugOrder.isActive()"><i class="icon-edit"></i></button>
 								</div>
                                 <div ng-show="drugOrder.showAdditionalInstructions" class="notes inline-notes">
                                     {{drugOrder.additionalInstructions}}

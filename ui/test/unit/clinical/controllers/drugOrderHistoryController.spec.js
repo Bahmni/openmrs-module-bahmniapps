@@ -11,7 +11,7 @@ describe("DrugOrderHistoryController", function(){
 
         prescribedDrugOrders = [
             {
-                "uuid": null,
+                "uuid": "drugOrder1Uuid",
                 "action": "NEW",
                 "careSetting": "Outpatient",
                 "orderType": "Drug Order",
@@ -53,7 +53,7 @@ describe("DrugOrderHistoryController", function(){
                 "provider": {name: "superman"}
             },
             {
-                "uuid": null,
+                "uuid": "drugOrder2Uuid",
                 "action": "NEW",
                 "careSetting": "Outpatient",
                 "orderType": "Drug Order",
@@ -109,5 +109,58 @@ describe("DrugOrderHistoryController", function(){
             var secondDrugOrder = scope.drugOrderGroups['1410349317222'][0];
             expect(secondDrugOrder.drugName).toBe(prescribedDrugOrders[1].drug.name);
         });
+    });
+
+    describe("when removed", function(){
+        it("should change the action to discontinue", function(){
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+
+            scope.remove(drugOrder);
+
+            expect(Bahmni.Clinical.Constants.discontinueAction).toBe(drugOrder.action);
+        });
+
+        it("should add the drugOrder to removableDrugOrders", function(){
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+
+            scope.remove(drugOrder);
+
+            expect(scope.removableDrugs[0]).toBe(drugOrder);
+        });
+    });
+
+    describe("when undo removing", function(){
+        it("should change the action to new", function(){
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+
+            scope.remove(drugOrder);
+            scope.undoRemove(drugOrder);
+
+            expect(Bahmni.Clinical.Constants.newAction).toBe(drugOrder.action);
+        });
+
+        it("should remove the drugOrder from removableDrugOrders", function(){
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+
+            scope.remove(drugOrder);
+            scope.undoRemove(drugOrder);
+
+            expect(0).toBe(scope.removableDrugs.length);
+        });
+
+        it("should remove the proper drugOrder from removableDrugOrders", function(){
+            var drugOrder1 = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+            var drugOrder2 = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[1]);
+
+            scope.remove(drugOrder1);
+            scope.remove(drugOrder2);
+
+            expect(2).toBe(scope.removableDrugs.length);
+
+            scope.undoRemove(drugOrder2);
+
+            expect(1).toBe(scope.removableDrugs.length);
+            expect(drugOrder1).toBe(scope.removableDrugs[0]);
+        })
     });
 });
