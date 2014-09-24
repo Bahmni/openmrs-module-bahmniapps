@@ -2,7 +2,7 @@
 	<h2 class="section-title">New Prescription</h2>
 	<ul class="table-mimic">
 		<li ng-repeat="newTreatment in treatments">
-			<div class="drug-details">
+			<div class="drug-details" bindonce="newTreatment">
 				<strong class="drug-name">{{newTreatment.drugNameDisplay}}</strong>&nbsp;{{newTreatment.getDescription()}}
 			</div>
 			<div class="button-group" >
