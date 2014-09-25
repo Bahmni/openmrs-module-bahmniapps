@@ -20,7 +20,7 @@ angular.module('bahmni.common.conceptSet')
         },
         controller: 'ConceptSetGroupController',
         template: '<div id="{{getNormalized(conceptSet.conceptName)}}"  ng-repeat="conceptSet in allTemplates" ng-if="conceptSet.isAvailable(context) && conceptSet.isAdded" class="concept-set-group section-grid" auto-scroll="{{getNormalized(conceptSet.conceptName)}}" auto-scroll-enabled="autoScrollEnabled" >' +
-                    '<div ng-click="conceptSet.toggle()" class="concept-set-title" >' +
+                    '<div ng-click="conceptSet.toggleDisplay()" class="concept-set-title" >' +
                         '<h2 class="section-title">' +
                             '<i class="icon-caret-right" ng-hide="conceptSet.isOpen"></i>' +
                             '<i class="icon-caret-down" ng-show="conceptSet.isOpen"></i>' + 

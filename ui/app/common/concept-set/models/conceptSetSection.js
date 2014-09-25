@@ -34,14 +34,6 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, observations, concep
         return getShowIfFunction()(context || {});
     };
 
-    self.toggle = function () {
-        if (self.isOpen) {
-            self.hide();
-        } else {
-            self.show();
-        }
-    };
-
     self.show = function () {
         self.isOpen = true;
         self.isLoaded = true;
@@ -70,6 +62,14 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, observations, concep
         }
     };
 
+    self.toggleDisplay = function() {
+        if(self.isOpen) {
+            self.hide();
+        } else {
+            self.show();
+        }
+    };
+
     self.canToggle = function () {
         return !self.hasSomeValue();
     };
@@ -91,8 +91,7 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, observations, concep
             if (self.added === undefined) {
                 if (self.options.default) {
                     self.added = true;
-                }
-                else {
+                } else {
                     self.added = self.hasSomeValue();
                 }
             }

@@ -1,11 +1,14 @@
 'use strict';
 
 describe("ConceptSetSection", function () {
+
     var ConceptSetSection = Bahmni.ConceptSet.ConceptSetSection;
 
-    var conceptSet = {name: {name: "vitals"}, names: [
-        {name: "vitals", conceptNameType: "SHORT"}
-    ]};
+    var conceptSet = {
+        name: {name: "vitals"},
+        names: [ {name: "vitals", conceptNameType: "SHORT"} ]
+    };
+
     describe("isAvailable", function () {
         it("should be true if 'showIf' condition is not defined", function () {
             expect(new ConceptSetSection({extensionParams: {conceptName: "vitals"}}, [], conceptSet).isAvailable()).toBe(true);
@@ -87,47 +90,71 @@ describe("ConceptSetSection", function () {
             ];
             var conceptSetSection = new ConceptSetSection({}, observations, conceptSet);
             expect(conceptSetSection.isAdded).toBe(false);
+        });
 
-            var conceptSetSection = new ConceptSetSection(noDefaultConfig, [], conceptSet);
-            expect(conceptSetSection.isAdded).toBe(false);
-        })
-    });
+        describe("isOpen", function () {
+            it("should be true if conceptSet observations has value", function () {
+                var observations = [
+                    {concept: {name: "vitals"}, value: "12"},
+                    {concept: {name: "second vitals"}, value: ""}
+                ];
+                var conceptSetSection = new ConceptSetSection({}, observations, conceptSet);
+                expect(conceptSetSection.isOpen).toBe(true);
+            })
+        });
 
-    describe("isOpen", function () {
-        it("should be true if conceptSet observations has value", function () {
-            var observations = [
-                {concept: {name: "vitals"}, value: "12"},
-                {concept: {name: "second vitals"}, value: ""}
-            ];
-            var conceptSetSection = new ConceptSetSection({}, observations, conceptSet);
-            expect(conceptSetSection.isOpen).toBe(true);
-        })
-    });
+        describe("canToggle", function () {
+            var config =
+            {
+                extensionParams: {
+                    default: true,
+                    conceptName: "vitals"
+                }
+            };
 
-    describe("canToggle", function () {
-        var config =
-        {
-            extensionParams: {
-                default: true,
-                conceptName: "vitals"
-            }
-        };
+            it("should return false if conceptSet observations has value", function () {
+                var observations = [
+                    {concept: {name: "vitals"}, value: "12"},
+                    {concept: {name: "second vitals"}, value: ""}
+                ];
+                var conceptSetSection = new ConceptSetSection({}, observations, conceptSet);
+                expect(conceptSetSection.canToggle()).toBe(false);
+            });
 
-        it("should return false if conceptSet observations has value", function () {
-            var observations = [
-                {concept: {name: "vitals"}, value: "12"},
-                {concept: {name: "second vitals"}, value: ""}
-            ];
-            var conceptSetSection = new ConceptSetSection({}, observations, conceptSet);
-            expect(conceptSetSection.canToggle()).toBe(false);
-        })
+            it("should return true if conceptSet observations has no value", function () {
+                var observations = [
+                    {concept: {name: "vitals"}, value: ""}
+                ];
+                var conceptSetSection = new ConceptSetSection(config, observations, conceptSet);
+                expect(conceptSetSection.canToggle()).toBe(true);
+            })
+        });
 
-        it("should return true if conceptSet observations has no value", function () {
-            var observations = [
-                {concept: {name: "vitals"}, value: ""}
-            ];
-            var conceptSetSection = new ConceptSetSection(config, observations, conceptSet);
-            expect(conceptSetSection.canToggle()).toBe(true);
-        })
+        describe("toggleDisplay", function () {
+            var config =
+            {
+                extensionParams: {
+                    default: true,
+                    conceptName: "vitals"
+                }
+            };
+
+            it("should hide if open", function () {
+                var conceptSetSection = new ConceptSetSection(config, [], conceptSet);
+                conceptSetSection.show();
+                expect(conceptSetSection.isOpen).toBe(true);
+                conceptSetSection.toggleDisplay();
+                expect(conceptSetSection.isOpen).toBe(false);
+            });
+
+            it("should show if hidden", function () {
+                var conceptSetSection = new ConceptSetSection(config, [], conceptSet);
+                expect(conceptSetSection.isOpen).toBe(false);
+                conceptSetSection.toggleDisplay();
+                expect(conceptSetSection.isOpen).toBe(true);
+            });
+
+        });
+
     })
 });
