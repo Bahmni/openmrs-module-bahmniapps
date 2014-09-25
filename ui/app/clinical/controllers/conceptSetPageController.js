@@ -42,15 +42,18 @@ angular.module('bahmni.clinical')
         });
     }
 
+    $scope.toggleTemplate = function(template){
+        $scope.scrollingEnabled = true;
 
-    $scope.showOrHideTemplate = function(template){
-         $scope.scrollingEnabled = true;
-        if(!template.toggleAdded()){
+        if(!template.canToggle()){
 	        messagingService.showMessage("error","Templates having data cannot be unselected. Please Clear the data and try again");
-        } else if(template.isAdded){
-    		messagingService.showMessage("info",template.conceptName+" Added successfully");
-        } else if(!template.isAdded){
-    		messagingService.showMessage("info",template.conceptName+" Removed successfully");
+        } else {
+            template.toggle();
+            if(template.isAdded){
+                messagingService.showMessage("info",template.conceptName+" Added successfully");
+            } else if(!template.isAdded){
+                messagingService.showMessage("info",template.conceptName+" Removed successfully");
+            }
         }
 
         $scope.showTemplates = !$scope.showTemplates;

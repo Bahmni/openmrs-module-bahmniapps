@@ -182,13 +182,7 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     atLeastOneValueSet: function () {
-        if (this.isGroup()) {
-            return this.children.some(function (childNode) {
-                return childNode.atLeastOneValueSet();
-            })
-        } else {
-            return this.primaryObs.hasValue();
-        }
+        return this.primaryObs.hasValue();
     },
 
     hasDuration: function () {
