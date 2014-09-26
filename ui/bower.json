@@ -26,7 +26,7 @@
         "purl": "2.3.1",
         "keyboardjs": "RobertWHurst/KeyboardJS",
         "angularjs-nvd3-directives": "v0.0.4-beta",
-        "openmrs-uicommons": "1.0",
+        "openmrs-uicommons": "master",
         "angular-ui-select2": "0.0.5",
         "angular-ui-router": "0.2.7",
         "fastclick": "1.0.2",
