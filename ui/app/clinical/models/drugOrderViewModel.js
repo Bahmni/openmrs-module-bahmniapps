@@ -12,7 +12,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
     this.route = getDefaultValue(extensionParams && extensionParams.defaultRoute, config.routes || []);
     this.durationUnit = getDefaultValue(extensionParams && extensionParams.defaultDurationUnit, durationUnits);
     this.instructions = getDefaultValue(extensionParams && extensionParams.defaultInstructions, config.dosingInstructions || []);
-    this.scheduledDate = new Date();
+    this.scheduledDate = Bahmni.Common.Util.DateUtil.now();
     this.frequencyType = Bahmni.Clinical.Constants.dosingTypes.noFrequency;
     this.uniformDosingType = {};
     this.variableDosingType = {};
@@ -191,7 +191,6 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
             return route.name === self.route;
         });
 
-        revisableDrugOrder.scheduledDate = Bahmni.Common.Util.DateUtil.now();
         revisableDrugOrder.drugNameDisplay = constructDrugNameDisplay(this.drug, this.drug.form).value;
 
         return revisableDrugOrder;

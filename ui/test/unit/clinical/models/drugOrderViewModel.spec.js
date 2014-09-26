@@ -373,15 +373,14 @@ describe("drugOrderViewModel", function () {
 
     describe("revise", function() {
 
-        it ("should schedule drug order from today", function() {
+        it ("should not change scheduled date", function() {
             var treatment = sampleTreatment({}, []);
             var now = Bahmni.Common.Util.DateUtil.now();
             treatment.scheduledDate = Bahmni.Common.Util.DateUtil.subtractDays(now, 2);
             treatment.drug = { form: undefined };
 
             var revisedTreatment = treatment.revise({});
-            expect(Bahmni.Common.Util.DateUtil.isSameDate(revisedTreatment.scheduledDate, now)).toBe(true)
-            expect(Bahmni.Common.Util.DateUtil.isSameDate(treatment.scheduledDate, now)).not.toBe(true)
+            expect(revisedTreatment.scheduledDate).toBe(treatment.scheduledDate);
         });
 
         it ("should map uuid to previousOrderUuid", function() {
