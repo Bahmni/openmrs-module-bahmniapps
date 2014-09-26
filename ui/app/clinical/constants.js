@@ -6,6 +6,16 @@ Bahmni.Clinical.Constants = (function () {
         lab: "Lab Order",
         radiology: "Radiology Order"
     };
+    var dosingTypes = {
+        uniform: "uniform",
+        variable: "variable",
+        noFrequency: "noFrequency"
+    };
+    var orderActions = {
+        discontinue: 'DISCONTINUE',
+        new: 'NEW',
+        revise: 'REVISE'
+    };
     return {
         patientsListUrl: "/patient/search",
         diagnosisObservationConceptName: "Visit Diagnoses",
@@ -29,9 +39,10 @@ Bahmni.Clinical.Constants = (function () {
         diagnosisStatuses : {"RULED OUT" : "Ruled Out Diagnosis"},
         dischargeSummaryConceptName: "Discharge Summary",
         flexibleDosingInstructionsClass: "org.openmrs.module.bahmniemrapi.drugorder.dosinginstructions.FlexibleDosingInstructions",
-        discontinueAction: 'DISCONTINUE',
-        newAction: 'NEW',
-        asDirectedInstruction: 'As directed'
+        reviseAction: 'REVISE',
+        asDirectedInstruction: 'As directed',
+        dosingTypes: dosingTypes,
+        orderActions: orderActions
     };
 })();
 

@@ -19,6 +19,7 @@ describe("drugOrderViewModel", function () {
         treatment.uniformDosingType.dose = "1";
         treatment.uniformDosingType.doseUnits = "Capsule";
         treatment.uniformDosingType.frequency = {name: "Once a day"};
+        treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
         expect(treatment.getDescription()).toBe("1 Capsule, Once a day, Before Meals, Orally - 10 Days");
 
         treatment.uniformDosingType.frequency = null;
@@ -64,19 +65,49 @@ describe("drugOrderViewModel", function () {
         expect(treatment.durationUnit).toEqual({name: "Months"});
     });
 
-    it("should reset dosingType when changing frequency type", function() {
+    it("should reset uniformDosingType and noFrequencyDosingType when changing frequency type to variable", function() {
         var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel({});
         sampleTreatment.uniformDosingType = {
             dose: 1,
             doseUnits: "Tablets",
             frequency: "Once a Day"
         };
-        sampleTreatment.setFrequencyType("variable");
+        sampleTreatment.setFrequencyType(Bahmni.Clinical.Constants.dosingTypes.variable);
+        expect(sampleTreatment.uniformDosingType).toEqual({});
+        expect(sampleTreatment.noFrequencyDosingType).toEqual({});
+        expect(sampleTreatment.variableDosingType).not.toBe({});
+    });
+
+    it("should reset variableDosingType and noFrequencyDosingType when changing frequency type to uniform", function() {
+        var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel({});
+        sampleTreatment.variableDosingType = {
+            morningDose: 1,
+            afternoonDose: 1,
+            eveningDose: 1,
+            doseUnits: "Once a Day"
+        };
+        sampleTreatment.setFrequencyType(Bahmni.Clinical.Constants.dosingTypes.uniform);
+        expect(sampleTreatment.uniformDosingType).not.toBe({});
+        expect(sampleTreatment.variableDosingType).toEqual({});
+        expect(sampleTreatment.noFrequencyDosingType).toEqual({});
+    });
+
+    it("should reset variableDosingType and uniformDosingType when changing frequency type to noFrequency", function() {
+        var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel({});
+        sampleTreatment.noFrequencyDosingType = {
+            dose: 1,
+            doseUnits: "Once a Day"
+        };
+        sampleTreatment.setFrequencyType(Bahmni.Clinical.Constants.dosingTypes.noFrequency);
+        expect(sampleTreatment.noFrequencyDosingType).not.toBe({});
+        expect(sampleTreatment.variableDosingType).toEqual({});
         expect(sampleTreatment.uniformDosingType).toEqual({});
     });
 
     it("should change duration unit based on frequency factor", function() {
         var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel({}, {durationUnits: [{name: "Hours"}, {name: "Days"}, {name: "Weeks"}]});
+        sampleTreatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
+
         sampleTreatment.uniformDosingType.frequency = {name: "Every Hour", frequencyPerDay: 24};
         sampleTreatment.calculateDurationUnit();
         expect(sampleTreatment.durationUnit.name).toBe("Hours");
@@ -146,6 +177,7 @@ describe("drugOrderViewModel", function () {
             treatment.uniformDosingType.frequency = frequency;
             treatment.duration = duration;
             treatment.durationUnit = {name: durationUnit, factor: factor};
+            treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
             return treatment;
         };
 
@@ -153,7 +185,7 @@ describe("drugOrderViewModel", function () {
             var treatment = sampleTreatment({}, []);
             treatment.quantity = null;
             treatment.quantityUnit = null;
-            treatment.frequencyType = "variable";
+            treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.variable;
             treatment.variableDosingType = {
                 morningDose: morningDose,
                 afternoonDose: afternoonDose,
@@ -338,4 +370,39 @@ describe("drugOrderViewModel", function () {
         });
 
     });
+
+    describe("revise", function() {
+
+        it ("should schedule drug order from today", function() {
+            var treatment = sampleTreatment({}, []);
+            var now = Bahmni.Common.Util.DateUtil.now();
+            treatment.scheduledDate = Bahmni.Common.Util.DateUtil.subtractDays(now, 2);
+            treatment.drug = { form: undefined };
+
+            var revisedTreatment = treatment.revise({});
+            expect(Bahmni.Common.Util.DateUtil.isSameDate(revisedTreatment.scheduledDate, now)).toBe(true)
+            expect(Bahmni.Common.Util.DateUtil.isSameDate(treatment.scheduledDate, now)).not.toBe(true)
+        });
+
+        it ("should map uuid to previousOrderUuid", function() {
+            var treatment = sampleTreatment({}, []);
+            treatment.drug = {  form: undefined };
+            treatment.uuid = "previous-order-uuid";
+
+            var revisedTreatment = treatment.revise({});
+            expect(revisedTreatment.previousOrderUuid).toBe(treatment.uuid);
+            expect(treatment.previousOrderUuid).not.toBe(treatment.uuid);
+        });
+
+        it ("should set action as REVISE", function() {
+            var treatment = sampleTreatment({}, []);
+            treatment.drug = { form: undefined };
+
+            var revisedTreatment = treatment.revise({});
+            expect(revisedTreatment.action).toBe(Bahmni.Clinical.Constants.orderActions.revise);
+            expect(treatment.action).not.toBe(Bahmni.Clinical.Constants.orderActions.revise);
+        });
+
+    });
+
 });

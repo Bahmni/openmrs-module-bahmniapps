@@ -55,10 +55,10 @@ module.exports = function (grunt) {
         coverage: {
             options: {
                 thresholds: {
-                    'statements': 37.15,
-                    'branches': 29.25,
-                    'lines': 36.93,
-                    'functions': 29.74
+                    'statements': 37.52,
+                    'branches': 29.34,
+                    'functions': 29.89,
+                    'lines': 37.31
                 },
                 dir: 'coverage',
                 root: '.'
@@ -129,7 +129,7 @@ module.exports = function (grunt) {
                 '<%= yeoman.dist %>/home/**/*.html',
                 '<%= yeoman.dist %>/admin/**/*.html',
                 '<%= yeoman.dist %>/registration/**/*.html',
-                '<%= yeoman.dist %>/document-upload/**/*.html',
+                '<%= yeoman.dist %>/document-upload/**/*.html'
             ],
             css: '<%= yeoman.dist %>/styles/**/*.css',
             options: {

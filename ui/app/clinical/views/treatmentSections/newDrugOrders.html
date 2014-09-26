@@ -2,7 +2,7 @@
 	<h2 class="section-title">New Prescription</h2>
 	<ul class="table-mimic">
 		<li ng-repeat="newTreatment in treatments">
-			<div class="drug-details" bindonce="newTreatment">
+			<div class="drug-details">
 				<strong class="drug-name">{{newTreatment.drugNameDisplay}}</strong>&nbsp;{{newTreatment.getDescription()}}
 			</div>
 			<div class="button-group" >
@@ -14,7 +14,7 @@
 				<button ng-click="edit($index)"><i class="icon-edit"></i></button>
 			</div>
 			<div class="start-date fr">
-				<span>from {{newTreatment.scheduledDate | date: 'dd/MM/yyyy'}}</span>
+				<span>from {{newTreatment.scheduledDate | date: 'dd MMM yy'}}</span>
 			</div>
 	        <div ng-show="newTreatment.showAdditionalInstructions" class="notes inline-notes">
 	            {{newTreatment.additionalInstructions}}

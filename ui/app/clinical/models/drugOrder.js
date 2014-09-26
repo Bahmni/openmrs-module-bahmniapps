@@ -17,7 +17,7 @@ Bahmni.Clinical.DrugOrder = (function () {
             var dosingInstructions = {};
             dosingInstructions.instructions = drugOrderData.instructions && drugOrderData.instructions;
             dosingInstructions.additionalInstructions = drugOrderData.additionalInstructions;
-            if (drugOrderData.frequencyType === 'variable') {
+            if (drugOrderData.frequencyType === Bahmni.Clinical.Constants.dosingTypes.variable) {
                 dosingInstructions.morningDose = drugOrderData.variableDosingType.morningDose;
                 dosingInstructions.afternoonDose = drugOrderData.variableDosingType.afternoonDose;
                 dosingInstructions.eveningDose = drugOrderData.variableDosingType.eveningDose;
@@ -49,6 +49,7 @@ Bahmni.Clinical.DrugOrder = (function () {
                 durationUnits: drugOrderData.durationUnit.name,
                 scheduledDate: dateUtil.parse(drugOrderData.scheduledDate),
                 dateStopped: dateUtil.addDays(dateUtil.parse(drugOrderData.scheduledDate), drugOrderData.durationInDays),
+                previousOrderUuid: drugOrderData.previousOrderUuid,
                 action: drugOrderData.action
             }
         );

@@ -77,13 +77,17 @@ angular.module('bahmni.clinical')
                 return drugService.search(request.term);
             };
 
+            var constructDrugNameDisplay = function (drug, drugForm) {
+                return {
+                    label: drug.name + " (" + drugForm + ")",
+                    value: drug.name + " (" + drugForm + ")",
+                    drug: drug
+                };
+            };
+
             $scope.getDataResults = function (data) {
                 return data.map(function (drug) {
-                    return {
-                        label: drug.name + " (" + drug.dosageForm.display + ")",
-                        value: drug.name + " (" + drug.dosageForm.display + ")",
-                        drug: drug
-                    }
+                    return constructDrugNameDisplay(drug, drug.dosageForm.display)
                 });
             };
 
@@ -101,5 +105,8 @@ angular.module('bahmni.clinical')
             };
             registerTabService.register(saveTreatment);
 
-
+            $rootScope.$on("event:reviseDrugOrder", function(event, drugOrder){
+                $scope.treatment = drugOrder.revise(treatmentConfig);
+                $scope.treatment.scheduledDate = $filter("date")($scope.treatment.scheduledDate, 'yyyy-MM-dd');
+            });
         }]);

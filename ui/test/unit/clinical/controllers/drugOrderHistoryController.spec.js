@@ -117,7 +117,7 @@ describe("DrugOrderHistoryController", function(){
 
             scope.remove(drugOrder);
 
-            expect(Bahmni.Clinical.Constants.discontinueAction).toBe(drugOrder.action);
+            expect(Bahmni.Clinical.Constants.orderActions.discontinue).toBe(drugOrder.action);
         });
 
         it("should add the drugOrder to removableDrugOrders", function(){
@@ -136,7 +136,7 @@ describe("DrugOrderHistoryController", function(){
             scope.remove(drugOrder);
             scope.undoRemove(drugOrder);
 
-            expect(Bahmni.Clinical.Constants.newAction).toBe(drugOrder.action);
+            expect(Bahmni.Clinical.Constants.orderActions.new).toBe(drugOrder.action);
         });
 
         it("should remove the drugOrder from removableDrugOrders", function(){

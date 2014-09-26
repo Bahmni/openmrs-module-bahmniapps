@@ -21,6 +21,12 @@ Bahmni.Common.Util.DateUtil = {
 		return newDate;
 	},
 
+	subtractDays: function (date, days) {
+		var newDate = new Date(date);
+		newDate.setDate(date.getDate() - days);
+		return newDate;
+	},
+
     createDays: function (startDate, endDate) {
         var startDate = this.getDate(startDate);
         var endDate = this.getDate(endDate);
