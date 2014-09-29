@@ -1,7 +1,7 @@
 <section>
 	<ul class="impression">
 		<li ng-repeat="obs in sourceObs">
-	        <pre class="notes inline-notes"><strong>Provider name:</strong>{{obs.value}}</pre>
+	        <pre class="notes inline-notes"><strong>{{obs.providers[0].name}} ({{obs.observationDateTime | date: 'dd MMM yy'}}):</strong>{{obs.value}}</pre>
 		</li>
 	</ul>
 	<div class="impression-control">
