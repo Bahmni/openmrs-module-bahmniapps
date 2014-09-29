@@ -1,0 +1,11 @@
+<header class="template-header">
+    <button class="ngdialog-close back-btn">Back</button>
+    <h5>
+        <i class="icon-user"></i>
+        <span>{{patient.name}} {{'(' + patient.identifier + ')'}}</span>
+    </h5>
+    <h6>{{ngDialogData}}</h6>
+</header>
+<section class="dashboard-section">
+    <disease-template templates="diseaseTemplatesList" template-to-display="ngDialogData"></disease-template>
+</section>

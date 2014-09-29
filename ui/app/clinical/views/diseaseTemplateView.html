@@ -1,0 +1,23 @@
+<div>
+
+    <section class="block" ng-class="{'more': patientSummary.show}">
+        <div ng-repeat="observationSection in diseaseTemplate.sections">
+            <label class="date">{{observationSection.name}} - {{observationSection.visitStartDate | date: 'dd MMM yy'}}</label>
+
+            <div ng-repeat="observation in observationSection.observations">
+                <fieldset>
+                    <div class="form-field"
+                         ng-class="{'is-abnormal': observation.abnormal, 'is-text': isText(observation)}">
+                        <span class="field-attribute"><label>{{observation.conceptShortName || observation.concept}}</label></span>
+                        <span class="value-text-only">{{observation | observationValue}}</span>
+                        <span class="label-add-on" ng-hide="!observation.unit"> {{observation.unit}}</span>
+
+                        <div class="footer-note fr">
+                            <span class="value-text-only time">{{observation.observationDateTime | date :'hh:mm a'}}</span>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </section>
+</div>

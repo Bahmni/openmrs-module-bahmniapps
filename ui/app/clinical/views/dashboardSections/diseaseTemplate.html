@@ -1,0 +1,10 @@
+<div>
+    <h2 ng-dialog="views/dashboardSections/allDiseaseTemplate.html"
+        ng-dialog-class="ngdialog-theme-flat ngdialog-theme-custom"
+        ng-dialog-data="{{section.title}}"
+        class="section-title">{{section.title}}</h2>
+
+    <section>
+        <disease-template templates="diseaseTemplatesList" template-to-display="section.title"></disease-template>
+    </section>
+</div>
