@@ -3,7 +3,7 @@
 	<ul class="table-mimic">
 		<li ng-repeat="newTreatment in treatments">
 			<div class="drug-details">
-				<strong class="drug-name">{{newTreatment.drugNameDisplay}}</strong>&nbsp;{{newTreatment.getDescription()}}
+				<strong class="drug-name">{{newTreatment.drugNameDisplay}}</strong>&nbsp;{{newTreatment.getDescriptionWithQuantity()}}
 			</div>
 			<div class="button-group" >
 				<button class="toggle" ng-class="{'has-notes': newTreatment.additionalInstructions}">

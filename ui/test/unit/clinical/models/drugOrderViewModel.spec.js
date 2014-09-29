@@ -105,35 +105,35 @@ describe("drugOrderViewModel", function () {
     });
 
     it("should change duration unit based on frequency factor", function() {
-        var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel({}, {durationUnits: [{name: "Hours"}, {name: "Days"}, {name: "Weeks"}]});
+        var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel({}, {});
         sampleTreatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
 
         sampleTreatment.uniformDosingType.frequency = {name: "Every Hour", frequencyPerDay: 24};
-        sampleTreatment.calculateDurationUnit();
+        sampleTreatment.calculateDurationUnit([{name: "Hours"}, {name: "Days"}, {name: "Weeks"}]);
         expect(sampleTreatment.durationUnit.name).toBe("Hours");
 
         sampleTreatment.uniformDosingType.frequency = {name: "Every Two Hour", frequencyPerDay: 12};
-        sampleTreatment.calculateDurationUnit();
+        sampleTreatment.calculateDurationUnit([{name: "Hours"}, {name: "Days"}, {name: "Weeks"}]);
         expect(sampleTreatment.durationUnit.name).toBe("Hours");
 
         sampleTreatment.uniformDosingType.frequency = {name: "Every Five Hour", frequencyPerDay: 24/5};
-        sampleTreatment.calculateDurationUnit();
+        sampleTreatment.calculateDurationUnit([{name: "Hours"}, {name: "Days"}, {name: "Weeks"}]);
         expect(sampleTreatment.durationUnit.name).toBe("Hours");
 
         sampleTreatment.uniformDosingType.frequency = {name: "Every Six Hour", frequencyPerDay: 4};
-        sampleTreatment.calculateDurationUnit();
+        sampleTreatment.calculateDurationUnit([{name: "Hours"}, {name: "Days"}, {name: "Weeks"}]);
         expect(sampleTreatment.durationUnit.name).toBe("Days");
 
         sampleTreatment.uniformDosingType.frequency = {name: "Four times a Day", frequencyPerDay: 4};
-        sampleTreatment.calculateDurationUnit();
+        sampleTreatment.calculateDurationUnit([{name: "Hours"}, {name: "Days"}, {name: "Weeks"}]);
         expect(sampleTreatment.durationUnit.name).toBe("Days");
 
         sampleTreatment.uniformDosingType.frequency = {name: "Once a Day", frequencyPerDay: 1};
-        sampleTreatment.calculateDurationUnit();
+        sampleTreatment.calculateDurationUnit([{name: "Hours"}, {name: "Days"}, {name: "Weeks"}]);
         expect(sampleTreatment.durationUnit.name).toBe("Days");
 
         sampleTreatment.uniformDosingType.frequency = {name: "Once a Week", frequencyPerDay: 1/7};
-        sampleTreatment.calculateDurationUnit();
+        sampleTreatment.calculateDurationUnit([{name: "Hours"}, {name: "Days"}, {name: "Weeks"}]);
         expect(sampleTreatment.durationUnit.name).toBe("Weeks")
     });
 
@@ -380,7 +380,7 @@ describe("drugOrderViewModel", function () {
             treatment.drug = { form: undefined };
 
             var revisedTreatment = treatment.revise({});
-            expect(revisedTreatment.scheduledDate).toBe(treatment.scheduledDate);
+            expect(Bahmni.Common.Util.DateUtil.isSameDate(revisedTreatment.scheduledDate, treatment.scheduledDate)).toBe(true);
         });
 
         it ("should map uuid to previousOrderUuid", function() {
