@@ -10,15 +10,7 @@ angular.module('opd.patientDashboard', [])
         $scope.obsIgnoreList = appService.getAppDescriptor().getConfigValue("obsIgnoreList") || {};
         $scope.patientDashboardSections = appService.getAppDescriptor().getConfigValue("patientDashboardSections") || {};
 
-        var populateDiseaseTemplateSections = function () {
-            $scope.diseaseTemplatesList.forEach(function(diseaseTemplate){
-                $scope.patientDashboardSections.push({
-                    title:diseaseTemplate.name,
-                    name:'diseaseTemplate'
-                });
-            })
-        };
-        populateDiseaseTemplateSections();
+        Bahmni.Clinical.DiseaseTemplateSectionHelper.populateDiseaseTemplateSections($scope.patientDashboardSections,$scope.diseaseTemplatesList);
 
         $scope.filterOdd = function(index) {
           return function(item) {

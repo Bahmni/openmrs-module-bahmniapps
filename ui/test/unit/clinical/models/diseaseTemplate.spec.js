@@ -3,7 +3,7 @@ describe("DiseaseTemplate",function(){
 
         var diseaseTemplate = new Bahmni.Clinical.DiseaseTemplate(diseaseTemplateFromServer);
         expect(diseaseTemplate.name).toBe("Breast Cancer");
-        expect(diseaseTemplate.sections.length).toBe(2);
+        expect(diseaseTemplate.sections.length).toBe(1);
         expect(diseaseTemplate.sections[0].name).toBe("Breast Cancer Intake");
         expect(diseaseTemplate.sections[0].visitStartDate).toBe("1218997800000");
         expect(diseaseTemplate.sections[0].observations.length).toBe(4);

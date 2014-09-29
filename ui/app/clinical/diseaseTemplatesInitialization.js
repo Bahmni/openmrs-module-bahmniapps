@@ -2,13 +2,16 @@
 
 angular.module('bahmni.clinical').factory('diseaseTemplatesInitialization',
     ['diseaseTemplateService', '$q', function (diseaseTemplateService,$q) {
-        var diseaseTemplateDeferrable = $q.defer();
 
         return function(patientUuid){
+            var diseaseTemplateDeferrable = $q.defer();
             diseaseTemplateService.getDiseaseTemplates(patientUuid).success(function(data){
-                var diseaseTemplates = data.map(function(diseaseTemplate){
-                    return Bahmni.Clinical.DiseaseTemplate(diseaseTemplate);
-                })
+                var diseaseTemplates = [];
+                data.forEach(function(diseaseTemplate){
+                    if(diseaseTemplate.observations && diseaseTemplate.observations.length >0){
+                        diseaseTemplates.push(Bahmni.Clinical.DiseaseTemplate(diseaseTemplate));
+                    }
+                });
                 diseaseTemplateDeferrable.resolve(diseaseTemplates);
             });
             return diseaseTemplateDeferrable.promise;

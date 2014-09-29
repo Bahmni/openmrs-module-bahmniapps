@@ -7,14 +7,22 @@ Bahmni.Clinical.DiseaseTemplate = function (serverDiseaseTemplate){
     var getPropertyIfExists = function(propertyName,obj){
         return obj && obj[propertyName]? obj[propertyName]: null;
     };
-    diseaseTemplate.sections = serverDiseaseTemplate.observations.map(function(obsSection){
-        if(obsSection.length === 0) return;
-        return {
-            name: getPropertyIfExists("rootConcept", obsSection[0]),
-            visitStartDate: getPropertyIfExists("visitStartDate", obsSection[0]),
-            observations: obsSection
-        };
+    serverDiseaseTemplate.observations.forEach(function(obsSection){
+        if(obsSection.length > 0){
+            diseaseTemplate.sections.push({
+                name: getPropertyIfExists("rootConcept", obsSection[0]),
+                visitStartDate: getPropertyIfExists("visitStartDate", obsSection[0]),
+                observations: obsSection
+            })
+        }
     });
+
+    diseaseTemplate.toDashboardSection = function(){
+        return {
+            title:diseaseTemplate.name,
+            name:'diseaseTemplate'
+        }
+    };
 
     return diseaseTemplate;
 };
