@@ -3,6 +3,9 @@ var EncounterConfig = (function () {
         this.encounterTypes = encounterTypes;
     }
     EncounterConfig.prototype = {
+        getConsultationEncounterTypeUuid:function () {
+            return this.getEncounterTypeUuid("Consultation");
+        },
         getAdmissionEncounterTypeUuid:function () {
             return this.getEncounterTypeUuid("ADMISSION");
         },

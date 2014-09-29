@@ -33,7 +33,7 @@ angular.module('bahmni.common.impression', [])
                 return {
                     visitUuid: $rootScope.activeVisit.uuid,
                     patientUuid: $rootScope.patient.uuid,
-                    encounterTypeUuid: $rootScope.encounterConfig.getOpdConsultationEncounterTypeUuid(),
+                    encounterTypeUuid: $rootScope.encounterConfig.getConsultationEncounterTypeUuid(),
                     observations: [$scope.newSourceObs]
                 };
             };

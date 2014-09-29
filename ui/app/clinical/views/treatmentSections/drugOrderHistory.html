@@ -23,7 +23,6 @@
 							<li ng-repeat="drugOrder in drugOrderGroups[prescriptionDate]" ng-class="{highlight : drugOrder.isActive()}">
 								<form class="fl"><input class="select-drug" type="checkbox" /></form>
                                 <div class="drug-details" ng-class="{'strike-through': drugOrder.discontinued()}">
-                                    <span>{{drugOrder.action}}</span>
                                     <strong class="drug-name">{{drugOrder.drug.name}}</strong> - &nbsp;{{drugOrder.getDescription()}}
                                     <div class="start-date fr">
                                         <span ng-if="showEffectiveFromDate(prescriptionDate, drugOrder.effectiveStartDate)"> from {{drugOrder.effectiveStartDate | date: 'dd MMM yy'}}</span>
