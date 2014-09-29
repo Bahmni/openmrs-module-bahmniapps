@@ -44,6 +44,8 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
     this.concept = concept;
     this.concept.answers = this.concept.answers || [];
     this.groupMembers = [];
+    this.provider = "";
+    this.observationDateTime = "";
 
     this.possibleAnswers = self.concept.answers.map(function(answer) {
         var cloned = _.cloneDeep(answer);
@@ -58,6 +60,14 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
     this.add = function(obs){
         if(obs.value) {
             self.selectedObs[obs.value.name] = obs;
+
+            if (!this.provider && self.selectedObs[obs.value.name].provider) {
+                self.provider = self.selectedObs[obs.value.name].provider.name;
+            }
+            var currentObservationDateTime = self.selectedObs[obs.value.name].observationDateTime;
+            if (this.observationDateTime < currentObservationDateTime) {
+                self.observationDateTime = currentObservationDateTime;
+            }
         }
         obs.hidden = true;
     };
@@ -132,6 +142,6 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
         _.values(self.selectedObs).forEach(function(obs){
             values.push(obs.value.name);
         });
-        return values.join(" | ");
+        return values.join(" , ");
     }
 };
