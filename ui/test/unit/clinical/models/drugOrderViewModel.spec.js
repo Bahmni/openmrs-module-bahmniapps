@@ -167,7 +167,7 @@ describe("drugOrderViewModel", function () {
         });
     });
 
-    describe("calculateQuantity", function() {
+    describe("calculateQuantityAndUnit", function() {
         var sampleTreatmentWithUniformDosing = function(dose, doseUnits, frequency, duration, durationUnit, factor) {
             var treatment = sampleTreatment({}, []);
             treatment.quantity = null;
@@ -199,45 +199,45 @@ describe("drugOrderViewModel", function () {
 
         it("should calculate for uniform dose, frequency and duration", function() {
             var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
-            treatment.calculateQuantity();
+            treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(30);
         });
 
         it("should convert duration units to days for calulation", function() {
             var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Weeks", 7);
-            treatment.calculateQuantity();
+            treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(210);
         });
 
         it("should calculate for variable dose and duration", function() {
             var treatment = sampleTreatmentWithVariableDosing(1, 2, 1.5, "Capsule", 4, "Days");
-            treatment.calculateQuantity();
+            treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(18);
         });
 
         it("should result in 0 for uniform dose when dose is not available", function() {
             var treatment = sampleTreatmentWithUniformDosing(null, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
-            treatment.calculateQuantity();
+            treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(0);
 
             treatment = sampleTreatmentWithVariableDosing(0, 0, null, "Capsule", 4, "Days");
-            treatment.calculateQuantity();
+            treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(0);
         });
 
         it("should result in 0 for uniform dose when duration is not available", function() {
             var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, null, "Days");
-            treatment.calculateQuantity();
+            treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(0);
 
             treatment = sampleTreatmentWithVariableDosing(1, 0, 1, "Capsule", null, "Days");
-            treatment.calculateQuantity();
+            treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(0);
         });
 
         it("should result in 0 for uniform dose when frequency is not available", function() {
             var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", null, 5, "Days");
-            treatment.calculateQuantity();
+            treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(0);
         });
 
@@ -246,7 +246,7 @@ describe("drugOrderViewModel", function () {
             treatment.quantity = 100;
             treatment.quantityUnit = "not Capsule";
             treatment.setQuantityEnteredManually();
-            treatment.calculateQuantity();
+            treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(100);
             expect(treatment.quantityUnit).toBe("not Capsule");
         });

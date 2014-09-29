@@ -8,14 +8,16 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
     var self = this;
     var config = config || {};
     var durationUnits = config.durationUnits || [];
+    var defaultDoseUnit = getDefaultValue(extensionParams && extensionParams.defaultDoseUnit, config.doseUnits || []);
+    var defaultInstructions = getDefaultValue(extensionParams && extensionParams.defaultInstructions, config.dosingInstructions || []);
     this.asNeeded = false;
     this.route = getDefaultValue(extensionParams && extensionParams.defaultRoute, config.routes || []);
     this.durationUnit = getDefaultValue(extensionParams && extensionParams.defaultDurationUnit, durationUnits);
-    this.instructions = getDefaultValue(extensionParams && extensionParams.defaultInstructions, config.dosingInstructions || []);
+    this.instructions = defaultInstructions && defaultInstructions.name;
     this.scheduledDate = Bahmni.Common.Util.DateUtil.now();
     this.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
-    this.uniformDosingType = {};
-    this.variableDosingType = {};
+    this.uniformDosingType = {doseUnits: defaultDoseUnit && defaultDoseUnit.name};
+    this.variableDosingType = {doseUnits: defaultDoseUnit && defaultDoseUnit.name};
     this.noFrequencyDosingType = {};
     this.durationInDays = 0;
 
@@ -158,14 +160,16 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
         this.durationInDays = this.duration * (this.durationUnit && this.durationUnit.factor || 1);
     };
 
-    this.calculateQuantity = function () {
+    this.calculateQuantityAndUnit = function () {
         this.calculateDurationInDays();
         if (!this.quantityEnteredManually) {
             if (this.frequencyType == Bahmni.Clinical.Constants.dosingTypes.uniform) {
                 this.quantity = this.uniformDosingType.dose * (this.uniformDosingType.frequency ? this.uniformDosingType.frequency.frequencyPerDay : 0) * this.durationInDays;
+                this.quantityUnit = this.uniformDosingType.doseUnits;
             } else if (this.frequencyType == Bahmni.Clinical.Constants.dosingTypes.variable) {
                 var dose = this.variableDosingType;
                 this.quantity = (dose.morningDose + dose.afternoonDose + dose.eveningDose) * this.durationInDays;
+                this.quantityUnit = this.variableDosingType.doseUnits;
             }
         }
     };

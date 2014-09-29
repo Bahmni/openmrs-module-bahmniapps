@@ -31,7 +31,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.$watch(watchFunctionForQuantity, function() {
-                $scope.treatment.calculateQuantity();
+                $scope.treatment.calculateQuantityAndUnit();
             }, true);
 
             $scope.add = function () {
