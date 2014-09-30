@@ -105,15 +105,15 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
             var frequency = this.uniformDosingType.frequency;
             if (frequency.frequencyPerDay > 4) {
                 this.durationUnit = _.find(durationUnits, function(durationUnit){
-                    return durationUnit.name === "Hours";
+                    return durationUnit.name === "Hour(s)";
                 });
             } else if (frequency.frequencyPerDay >= 0.5) {
                 this.durationUnit = _.find(durationUnits, function(durationUnit){
-                    return durationUnit.name === "Days";
+                    return durationUnit.name === "Day(s)";
                 });
             } else {
                 this.durationUnit = _.find(durationUnits, function(durationUnit){
-                    return durationUnit.name === "Weeks";
+                    return durationUnit.name === "Week(s)";
                 });
             }
         }

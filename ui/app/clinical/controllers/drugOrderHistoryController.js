@@ -51,7 +51,6 @@ angular.module('bahmni.clinical')
         };
 
         var saveTreatment = function () {
-            console.log($rootScope.discontinuedDurgs);
             $rootScope.discontinuedDurgs.forEach(function (discontinuedDrug) {
                 var removableOrder = _.find(prescribedDrugOrders, function (prescribedOrder) {
                     return prescribedOrder.uuid === discontinuedDrug.uuid;

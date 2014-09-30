@@ -7,10 +7,10 @@ angular.module('bahmni.clinical')
             $scope.treatments = $rootScope.newlyAddedTreatments || [];
             $scope.treatmentConfig = treatmentConfig;
             $scope.treatmentConfig.durationUnits = [
-                {name: "Hours", factor: 1/24},
-                {name: "Days", factor: 1},
-                {name: "Weeks", factor: 7},
-                {name: "Months", factor: 30}
+                {name: "Hour(s)", factor: 1/24},
+                {name: "Day(s)", factor: 1},
+                {name: "Week(s)", factor: 7},
+                {name: "Month(s)", factor: 30}
             ];
 
             var newTreatment = function () {

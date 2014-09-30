@@ -69,7 +69,6 @@
                        ng-model="treatment.quantity" ng-change="treatment.setQuantityEnteredManually()" required only-number="true"/>
                 <select class="form-field quantity-unit" ng-model="treatment.quantityUnit"
                         ng-options="item.name as item.name for item in treatmentConfig.dispensingUnits" required>
-                    <option value="">Choose Unit</option>
                 </select>
             </div>
         </fieldset>
