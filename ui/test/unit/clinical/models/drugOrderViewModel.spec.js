@@ -106,35 +106,36 @@ describe("drugOrderViewModel", function () {
 
     it("should change duration unit based on frequency factor", function() {
         var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel({}, {});
+        var durationUnits = [{name: "Hour(s)"}, {name: "Day(s)"}, {name: "Week(s)"}];
         sampleTreatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
 
         sampleTreatment.uniformDosingType.frequency = {name: "Every Hour", frequencyPerDay: 24};
-        sampleTreatment.calculateDurationUnit([{name: "Hours"}, {name: "Days"}, {name: "Weeks"}]);
-        expect(sampleTreatment.durationUnit.name).toBe("Hours");
+        sampleTreatment.calculateDurationUnit(durationUnits);
+        expect(sampleTreatment.durationUnit.name).toBe("Hour(s)");
 
         sampleTreatment.uniformDosingType.frequency = {name: "Every Two Hour", frequencyPerDay: 12};
-        sampleTreatment.calculateDurationUnit([{name: "Hours"}, {name: "Days"}, {name: "Weeks"}]);
-        expect(sampleTreatment.durationUnit.name).toBe("Hours");
+        sampleTreatment.calculateDurationUnit(durationUnits);
+        expect(sampleTreatment.durationUnit.name).toBe("Hour(s)");
 
         sampleTreatment.uniformDosingType.frequency = {name: "Every Five Hour", frequencyPerDay: 24/5};
-        sampleTreatment.calculateDurationUnit([{name: "Hours"}, {name: "Days"}, {name: "Weeks"}]);
-        expect(sampleTreatment.durationUnit.name).toBe("Hours");
+        sampleTreatment.calculateDurationUnit(durationUnits);
+        expect(sampleTreatment.durationUnit.name).toBe("Hour(s)");
 
         sampleTreatment.uniformDosingType.frequency = {name: "Every Six Hour", frequencyPerDay: 4};
-        sampleTreatment.calculateDurationUnit([{name: "Hours"}, {name: "Days"}, {name: "Weeks"}]);
-        expect(sampleTreatment.durationUnit.name).toBe("Days");
+        sampleTreatment.calculateDurationUnit(durationUnits);
+        expect(sampleTreatment.durationUnit.name).toBe("Day(s)");
 
         sampleTreatment.uniformDosingType.frequency = {name: "Four times a Day", frequencyPerDay: 4};
-        sampleTreatment.calculateDurationUnit([{name: "Hours"}, {name: "Days"}, {name: "Weeks"}]);
-        expect(sampleTreatment.durationUnit.name).toBe("Days");
+        sampleTreatment.calculateDurationUnit(durationUnits);
+        expect(sampleTreatment.durationUnit.name).toBe("Day(s)");
 
         sampleTreatment.uniformDosingType.frequency = {name: "Once a Day", frequencyPerDay: 1};
-        sampleTreatment.calculateDurationUnit([{name: "Hours"}, {name: "Days"}, {name: "Weeks"}]);
-        expect(sampleTreatment.durationUnit.name).toBe("Days");
+        sampleTreatment.calculateDurationUnit(durationUnits);
+        expect(sampleTreatment.durationUnit.name).toBe("Day(s)");
 
         sampleTreatment.uniformDosingType.frequency = {name: "Once a Week", frequencyPerDay: 1/7};
-        sampleTreatment.calculateDurationUnit([{name: "Hours"}, {name: "Days"}, {name: "Weeks"}]);
-        expect(sampleTreatment.durationUnit.name).toBe("Weeks")
+        sampleTreatment.calculateDurationUnit(durationUnits);
+        expect(sampleTreatment.durationUnit.name).toBe("Week(s)")
     });
 
     describe("calculateDurationInDays", function() {
