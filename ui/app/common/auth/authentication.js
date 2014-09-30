@@ -37,7 +37,7 @@ angular.module('authentication', ['ngCookies'])
         this.destroy = function(){
             return $http.delete(sessionResourcePath).success(function(data){
                 delete $.cookie("bahmni.user", null, {path: "/"});
-                delete $.cookie("bahmni.user.location", null, {path: "/"});
+//                delete $.cookie("bahmni.user.location", null, {path: "/"});
                 $rootScope.currentUser = null;
             });
         };
