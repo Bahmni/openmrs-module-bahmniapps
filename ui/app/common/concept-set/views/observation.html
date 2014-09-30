@@ -6,7 +6,7 @@
                 <span ng-bind="observation.primaryObs.label"></span>
                 <span ng-show="observation.primaryObs.units" ng-bind="'(' + observation.primaryObs.units + ')'"></span>
                 <span ng-if="observation.isRequired()" class="asterick">*</span>
-                <section class="concept-description" style="float:left" ng-if="observation.showHelpText()" ng-bind-html="observation.primaryObs.concept.description"></section>
+                <section class="concept-description" style="float:left" ng-if="observation.primaryObs.concept.description && observation.showHelpText() !== false" ng-bind-html="observation.primaryObs.concept.description"></section>
             </label>
 
             <div class="field-value" ng-switch="observation.getControlType()">
@@ -88,7 +88,7 @@
                 <span ng-show="observation.units" ng-bind="'(' + observation.units + ')'"></span>
                 <span ng-if="observation.isRequired()" class="asterick">*</span>
             </label>
-            <section class="concept-description" ng-if="observation.showHelpText()" ng-bind-html="observation.concept.description"></section>
+            <section class="concept-description" ng-if="observation.concept.description && observation.showHelpText() !== false " ng-bind-html="observation.concept.description"></section>
             <div class="field-value" ng-switch="observation.getControlType()">
                 <div ng-switch-when="html5InputDataType">
                     <input id="{{observation.uniqueId}}" obs-constraints obs="observation"
@@ -181,7 +181,7 @@
 
     <fieldset ng-if="!observation.isObservationNode && !observation.isFormElement() && !observation.isComputed()" class="hasLegend">
         <legend ng-if="showTitle" class="mylegend"><strong>{{observation.label}}</strong></legend>
-        <section class="concept-set-description" ng-if="observation.showHelpText()" ng-bind-html="observation.concept.description"></section>
+        <section class="concept-set-description" ng-if="observation.concept.description && observation.showHelpText() !== false" ng-bind-html="observation.concept.description"></section>
         <div class="form-group">
             <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers " ng-if="!member.hidden">
                 <concept observation="member" at-least-one-value-is-set="atLeastOneValueIsSet" show-title="true" concept-set-required="conceptSetRequired" ></concept>
