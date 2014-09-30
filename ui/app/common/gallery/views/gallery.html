@@ -29,6 +29,7 @@
         <div ng-repeat="image in album.images">
 
             <div class="image-bottom-bar" ng-if="isActive($index,album.tag)">
+                <span class="image-provider">{{image.providerName}}</span>
                 <span class="image-date">{{image.date | date: "dd MMM yy"}}</span>
                 <span class="image-index">({{getCurrentIndex()}} of {{getTotalLength()}})</span>
             </div>

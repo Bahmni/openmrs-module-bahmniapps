@@ -6,9 +6,6 @@ Bahmni.Clinical.VisitDocumentUploadOrders = (function () {
         this.orders = orders;
     };
 
-    VisitDocumentUploadOrders.prototype = {
-    };
-
     var getDocumentUploadOrders = function (encounterTransactions, encounterTypeUuid) {
         var documentUploadObservations = [];
         encounterTransactions.forEach(function (encounterTransaction) {

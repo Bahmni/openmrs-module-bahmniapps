@@ -6,7 +6,6 @@ Bahmni.DocumentUpload.Visit = function () {
     this.uuid = null;
     this.changed = false;
     this.images = [];
-    this.encounters = [];
     var androidDateFormat = "YYYY-MM-DD hh:mm:ss";
 
     this._sortSavedImages = function(savedImages) {
@@ -18,11 +17,12 @@ Bahmni.DocumentUpload.Visit = function () {
         return savedImages;
     };
 
-    this.initSavedImages = function () {
+    this.initSavedImages = function (encounters) {
         this.images = [];
+        var providerMapper = new Bahmni.Common.Domain.ProviderMapper();
 
         var savedImages = this.images;
-        this.encounters.forEach(function (encounter) {
+        encounters.forEach(function (encounter) {
             encounter.obs && encounter.obs.forEach(function (observation) {
                 observation.groupMembers && observation.groupMembers.forEach(function (member) {
                         var conceptName = observation.concept.name.name;
@@ -33,7 +33,7 @@ Bahmni.DocumentUpload.Visit = function () {
                             obsDatetime: member.obsDatetime,
                             visitUuid: encounter.visit.uuid,
                             encounterUuid: encounter.uuid,
-                            providerUuid: encounter.provider.uuid,
+                            provider: providerMapper.map(encounter.provider),
                             concept: {uuid: observation.concept.uuid, editableName: conceptName, name: conceptName}}));
                 });
             });

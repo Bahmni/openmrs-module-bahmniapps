@@ -101,7 +101,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         var observationValue = getObservationDisplayValue(observation);
         observationValue = observation.duration ? observationValue + " " + getDurationDisplayValue(observation.duration) : observationValue;
         return { "value": observationValue, "abnormal": observation.abnormal, "duration": observation.duration,
-            "provider": observation.provider ? observation.provider.name : "",
+            "provider": observation.provider,
             "observationDateTime": observation.observationDateTime, "concept": concept,
             "comment": observation.comment, "uuid": observation.uuid};
     };

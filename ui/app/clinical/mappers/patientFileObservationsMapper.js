@@ -4,6 +4,7 @@ Bahmni.Clinical.PatientFileObservationsMapper = function () {
     this.map = function (encounters) {
         var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
         var observationMapper = new Bahmni.Common.Domain.ObservationMapper();
+        var providerMapper = new Bahmni.Common.Domain.ProviderMapper();
         var patientFileRecords = [];
         encounters.forEach(function (encounter) {
             var visitUuid = encounter.visit && encounter.visit.uuid;
@@ -13,7 +14,8 @@ Bahmni.Clinical.PatientFileObservationsMapper = function () {
                         id: member.id,
                         concept: conceptMapper.map(parentObservation.concept),
                         imageObservation: observationMapper.map(member),
-                        visitUuid: visitUuid
+                        visitUuid: visitUuid,
+                        provider: providerMapper.map(encounter.provider)
                     });
                 })
             })

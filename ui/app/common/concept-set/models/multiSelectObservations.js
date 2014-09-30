@@ -44,7 +44,7 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
     this.concept = concept;
     this.concept.answers = this.concept.answers || [];
     this.groupMembers = [];
-    this.provider = "";
+    this.provider = null;
     this.observationDateTime = "";
 
     this.possibleAnswers = self.concept.answers.map(function(answer) {
@@ -61,11 +61,11 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
         if(obs.value) {
             self.selectedObs[obs.value.name] = obs;
 
-            if (!this.provider && self.selectedObs[obs.value.name].provider) {
-                self.provider = self.selectedObs[obs.value.name].provider.name;
+            if (!self.provider) {
+                self.provider = self.selectedObs[obs.value.name].provider;
             }
             var currentObservationDateTime = self.selectedObs[obs.value.name].observationDateTime;
-            if (this.observationDateTime < currentObservationDateTime) {
+            if (self.observationDateTime < currentObservationDateTime) {
                 self.observationDateTime = currentObservationDateTime;
             }
         }

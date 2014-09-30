@@ -106,8 +106,8 @@ angular.module('opd.documentupload')
             var getEncountersForVisits = function () {
                 return encounterService.getEncountersForEncounterType($rootScope.patient.uuid, encounterTypeUuid).success(function (encounters) {
                     $scope.visits.forEach(function (visit) {
-                        visit.encounters = encounters.results.filter(function(a) {return(a.visit.uuid==visit.uuid)});
-                        visit.initSavedImages();
+                        var visitEncounters = encounters.results.filter(function(a) {return(a.visit.uuid==visit.uuid)});
+                        visit.initSavedImages(visitEncounters);
                     });
                 });
             };
@@ -273,7 +273,7 @@ angular.module('opd.documentupload')
             };
 
             var isObsByCurrentProvider = function (obs) {
-                return $rootScope.currentUser.person.uuid === obs.providerUuid;
+                return obs.provider && $rootScope.currentUser.person.uuid === obs.provider.Uuid;
             };
 
             $scope.canDeleteImage = function(obs){
@@ -281,10 +281,8 @@ angular.module('opd.documentupload')
             };
 
             var updateVisit = function(visit, encounters){
-                visit.encounters = encounters.filter(function(encounter){
-                    return visit.uuid === encounter.visit.uuid;
-                });
-                visit.initSavedImages();
+                var visitEncounters = encounters.filter(function(encounter){ return visit.uuid === encounter.visit.uuid; });
+                visit.initSavedImages(visitEncounters);
                 visit.changed = false;
                 $scope.currentVisit = visit;
                 sortVisits();

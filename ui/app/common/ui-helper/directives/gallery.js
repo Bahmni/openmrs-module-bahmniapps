@@ -8,12 +8,14 @@ angular.module('bahmni.common.uiHelper')
                 index: 0
             };
             this.image = function (record) {
+                var provider = record.provider;
                 return {
                     src: Bahmni.Common.Constants.documentsPath + '/' + record.imageObservation.value,
                     title: record.concept.name,
                     desc: record.imageObservation.comment,
                     date: record.imageObservation.observationDateTime,
-                    uuid: record.imageObservation.uuid
+                    uuid: record.imageObservation.uuid,
+                    providerName: provider ? provider.name : null
                 };
             };
 
@@ -72,7 +74,8 @@ angular.module('bahmni.common.uiHelper')
                 src: $scope.image.encodedValue,
                 title: $scope.image.concept ? $scope.image.concept.name : "",
                 date: $scope.image.obsDatetime,
-                uuid: $scope.image.obsUuid
+                uuid: $scope.image.obsUuid,
+                providerName: $scope.image.provider ? $scope.image.provider.name : ""
             };
             imageGalleryController.addImage(image, $scope.visitUuid, $scope.visitOrder);
 
@@ -116,7 +119,7 @@ angular.module('bahmni.common.uiHelper')
     })
     .directive('bmObservationGalleryItem', function () {
         var link = function (scope, element, attrs, imageGalleryController) {
-            scope.imageObservation = new Bahmni.Clinical.ImageObservation(scope.observation, scope.observation.concept);
+            scope.imageObservation = new Bahmni.Clinical.ImageObservation(scope.observation, scope.observation.concept, scope.observation.provider);
             scope.imageIndex = imageGalleryController.addImageObservation(scope.imageObservation, 'defaultTag');
             element.click(function (e) {
                 e.stopPropagation();
