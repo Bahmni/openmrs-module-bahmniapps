@@ -7,7 +7,7 @@
 	<div class="impression-control">
 		<textarea placeholder="Enter impression on image" ng-model="newSourceObs.value">
 		</textarea>
-		<input class="confirm save-impression-btn" type="button" ng-click="saveImpression()" value="Add">
+		<input class="confirm save-impression-btn" type="button" ng-click="saveImpression()" value="Add" ng-disabled="!newSourceObs.value">
 	</div>
 	
 </section>
