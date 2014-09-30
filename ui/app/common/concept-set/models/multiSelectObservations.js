@@ -25,7 +25,7 @@ Bahmni.ConceptSet.MultiSelectObservations = function(conceptSetConfig) {
     };
 
     var add = function(concept, obs, memberOfCollection) {
-        var concept_name = concept.name.name;
+        var concept_name = concept.name.name || concept.name;
         self.multiSelectObservationsMap[concept_name] = self.multiSelectObservationsMap[concept_name] ||  new Bahmni.ConceptSet.MultiSelectObservation(concept, memberOfCollection, conceptSetConfig);
         self.multiSelectObservationsMap[concept_name].add(obs);
     };
