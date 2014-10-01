@@ -60,7 +60,6 @@ angular.module('bahmni.registration')
             var goToVisitPage = function(patientData) {
                 $scope.patient.uuid = patientData.patient.uuid;
                 $scope.patient.name = patientData.patient.person.names[0].display;
-                patientService.rememberPatient($scope.patient);
                 $location.path("/patient/" + patientData.patient.uuid + "/visit");
             };
 
@@ -76,7 +75,6 @@ angular.module('bahmni.registration')
                 return $scope.visitControl.createVisit(patientProfileData.patient.uuid, createEncounterObject()).success(function() {
                     $scope.patient.uuid = patientProfileData.patient.uuid;
                     $scope.patient.name = patientProfileData.patient.person.names[0].display;
-                    patientService.rememberPatient($scope.patient);
                     goToActionUrl("startVisit", patientProfileData);
                 });
             };

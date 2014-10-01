@@ -109,14 +109,14 @@ angular.module('bahmni.registration')
                         return $scope.saveAndPrint();
                     }
                     else {
-                        return $scope.validate().then($scope.save).then(patientService.clearPatient).then($scope.moveToNextPage);
+                        return $scope.validate().then($scope.save).then($scope.moveToNextPage);
                     }
                 }
 
             };
 
             $scope.saveAndPrint = function () {
-                return $scope.validate().then($scope.save).then(patientService.clearPatient).then($scope.print).then($scope.moveToNextPage);
+                return $scope.validate().then($scope.save).then($scope.print).then($scope.moveToNextPage);
             };
 
 

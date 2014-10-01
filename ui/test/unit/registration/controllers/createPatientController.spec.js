@@ -23,7 +23,7 @@ describe('CreatePatientController', function () {
         location = jasmine.createSpyObj('$location', ['url','absUrl','search']);
         spinner = jasmine.createSpyObj('spinner', ['show', 'hide', 'forPromise'])
         location.absUrl = function(){return "/patient/new"};
-        patientService = jasmine.createSpyObj('patientService', ['create', 'getPatient', 'rememberPatient']);
+        patientService = jasmine.createSpyObj('patientService', ['create', 'getPatient']);
         createPromise = specUtil.createServicePromise('patientCreate');
         registrationCardPrinter = jasmine.createSpyObj('registrationCardPrinter', ['print']);
         patientService.create.and.returnValue(createPromise);

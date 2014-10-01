@@ -76,7 +76,7 @@ describe('VisitController', function () {
         };
         $controller = $injector.get('$controller');
         scope = { "$watch": jasmine.createSpy() }
-        patientService = jasmine.createSpyObj('patientService', ['getPatient', 'clearPatient', 'get']);
+        patientService = jasmine.createSpyObj('patientService', ['get']);
         appService = jasmine.createSpyObj('appService',['getDescription', 'getAppDescriptor']);
         appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue', 'getExtensions']);
         appService.getAppDescriptor.and.returnValue(appDescriptor);
@@ -87,7 +87,6 @@ describe('VisitController', function () {
         $location = location;
         $window = window;
         $timeout = timeout;
-        patientService.getPatient.and.returnValue(patient);
         success = jasmine.createSpy();
         scope.regEncounterConfiguration = angular.extend(new Bahmni.Registration.RegistrationEncounterConfig(), sampleConfig);
         scope.encounterConfig = angular.extend(new EncounterConfig(), sampleConfig);
@@ -192,7 +191,6 @@ describe('VisitController', function () {
             getPatientPromise.callSuccessCallBack(patient);
             getEncounterPromise.callSuccessCallBack(sampleEncounter);
             encounterService.create.and.callFake(stubOnePromise);
-            patientService.clearPatient.and.callFake(stubOnePromise);
             spyOn(scope, 'validate').and.callFake(stubOnePromise);
         });
 
@@ -259,12 +257,6 @@ describe('VisitController', function () {
                 $timeout.flush();
                 expect($location.path).toHaveBeenCalledWith("/search");
             });
-
-            it("should clear the stored patient on success", function () {
-                scope.saveAndPrint();
-
-                expect(patientService.clearPatient).toHaveBeenCalled();
-            });
         });
     });
 
@@ -285,7 +277,6 @@ describe('VisitController', function () {
             getEncounterPromise.callSuccessCallBack(sampleEncounter);
 
             encounterService.create.and.callFake(stubOnePromise);
-            patientService.clearPatient.and.callFake(stubOnePromise);
             scope.patient = {uuid: "21308498-2502-4495-b604-7b704a55522d"};
             spyOn(scope, 'print').and.callFake(stubOnePromise);
             spyOn($location, 'path');

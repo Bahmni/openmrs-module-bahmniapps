@@ -90,13 +90,4 @@ describe('Patient resource', function () {
         expect(mockHttp.post.calls.mostRecent().args[2].headers['Content-Type']).toBe('application/json');
         expect(mockHttp.post.calls.mostRecent().args[2].headers['Accept']).toBe('application/json');
     });
-
-    it('Should always set the patient image url if patient is remembered', function () {
-        patient.uuid = "uuid";
-        patientService.rememberPatient(patient);
-
-        var rememberedPatient = patientService.getPatient();
-
-        expect(rememberedPatient.image).toContain("/patient_images/" + patient.uuid + ".jpeg")
-    })
 });

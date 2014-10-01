@@ -7,22 +7,6 @@ angular.module('bahmni.registration')
         var baseOpenMRSRESTURL = Bahmni.Registration.Constants.baseOpenMRSRESTURL;
         var patientImageURL = Bahmni.Registration.Constants.patientImageURL;
 
-        var getPatient = function () {
-            if (patient !== undefined) {
-                patient.image = patientImageURL + patient.uuid + ".jpeg?q=" + new Date().toISOString();
-                return patient;
-            }
-            return {};
-        };
-
-        var rememberPatient = function (patientObj) {
-            patient = patientObj;
-        };
-
-        var clearPatient = function () {
-            patient = null;
-        };
-
         var search = function (query, village, localName, offset, localNameAttributes) {
             offset = offset || 0;
             return $http.get(openmrsUrl + "/ws/rest/v1/bahmnicore/patient", {
@@ -79,9 +63,6 @@ angular.module('bahmni.registration')
             search: search,
             create: create,
             generateIdentifier: generateIdentifier,
-            getPatient: getPatient,
-            rememberPatient: rememberPatient,
-            clearPatient: clearPatient,
             update: update,
             get: get,
             updateImage: updateImage

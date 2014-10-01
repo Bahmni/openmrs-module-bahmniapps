@@ -60,7 +60,7 @@ angular.module('bahmni.registration')
         var createEncounterObject = function() {
             var encounter = { locationUuid : locationUuid, providers: []};
             if ($rootScope.currentProvider && $rootScope.currentProvider.uuid) {
-                encounter.providers.push( { "uuid" : $rootScope.currentProvider.uuid, newpatient: true} );
+                encounter.providers.push( { "uuid" : $rootScope.currentProvider.uuid, newpatient: 'true'} );
             }
             return encounter;
         };
@@ -74,7 +74,6 @@ angular.module('bahmni.registration')
                 return $scope.visitControl.createVisit(patientProfileData.patient.uuid, createEncounterObject()).success(function(){
                     var patientUrl = $location.absUrl().replace("new", patientProfileData.patient.uuid);
                     $scope.patient.registrationDate = dateUtil.now();
-                    patientService.rememberPatient($scope.patient);
                     $window.history.pushState(null, null, patientUrl);
                     goToActionUrl($scope.submitSource, patientProfileData, {newpatient: 'true'});
                 }).error(onCreateVisitFailure);
