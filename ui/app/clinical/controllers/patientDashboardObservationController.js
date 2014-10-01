@@ -18,7 +18,7 @@ angular.module('bahmni.clinical')
         };
 
         var observationGroupingFunction = function (obs) {
-            return Bahmni.Common.Util.DateUtil.getDateWithoutHours(obs.encounterDateTime) + "||" + obs.rootConcept;
+            return Bahmni.Common.Util.DateUtil.getDateWithoutHours(obs.encounterDateTime) + "||" + obs.concept.name;
         };
 
         var groupByDateAndConcept = function (bahmniObservations) {
@@ -57,9 +57,10 @@ angular.module('bahmni.clinical')
 
         var createObservationSectionView = function () {
             spinner.forPromise(observationsService.fetch($scope.patientUuid, $scope.section.conceptNames, $scope.section.scope, $scope.section.numberOfVisits).then(function (observations) {
-                var bahmniObservations = new Bahmni.ConceptSet.ObservationMapper().forView(observations.data);
-
-                $scope.patientSummary.data = groupByDateAndConcept(bahmniObservations);
+                var dashboardObservations = _.map(observations.data, function (bahmniObservation) {
+                    return new Bahmni.Clinical.DashboardObservation(bahmniObservation);
+                });
+                $scope.patientSummary.data = groupByDateAndConcept(dashboardObservations);
                 if (_.isEmpty($scope.patientSummary.data)) {
                     $scope.patientSummary.message = Bahmni.Clinical.Constants.messageForNoObservation;
                 }

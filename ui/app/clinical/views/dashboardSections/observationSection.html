@@ -3,15 +3,16 @@
 
     <section class="block" ng-class="{'more': patientSummary.show}">
         <div ng-repeat="obsGroup in patientSummary.data">
+            
             <label class="date">{{obsGroup.concept}} - {{obsGroup.date | date: 'dd MMM yy'}}</label>
 
             <div ng-repeat="observation in obsGroup.value">
                 <fieldset>
                     <div class="form-field"
                          ng-class="{'is-abnormal': observation.abnormal, 'is-text': isText(observation)}">
-                        <span class="field-attribute"><label>{{observation.conceptShortName || observation.concept}}</label></span>
-                        <span class="value-text-only">{{observation | observationValue}}</span>
-                        <span class="label-add-on" ng-hide="!observation.unit"> {{observation.unit}}</span>
+                        <span class="field-attribute"><label>{{observation.concept.shortName || observation.concept.name}}</label></span>
+                        <span class="value-text-only">{{observation.getDisplayValue()}}</span>
+                        <span class="label-add-on" ng-hide="!observation.unit"> {{observation.concept.units}}</span>
 
                         <div class="footer-note fr">
                             <span class="value-text-only time">{{observation.observationDateTime | date :'hh:mm a'}}</span>

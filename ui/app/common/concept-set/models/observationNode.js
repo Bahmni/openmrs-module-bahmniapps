@@ -57,8 +57,8 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUICo
     this.conceptUIConfig = conceptUIConfig;
     this.isObservationNode = true;
     this.uniqueId = _.uniqueId('observation_');
-    this.duration = this.getDuration();
-    this.abnormal = this.getAbnormal();
+    this.durationObs = this.getDuration();
+    this.abnormalObs = this.getAbnormal();
 
     if (savedObs) {
         this.uuid = savedObs.uuid;
@@ -119,9 +119,9 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     setAbnormal: function () {
         if (this.primaryObs.hasValue()) {
             var valueInRange = this.value <= (this.primaryObs.concept.hiNormal || Infinity) && this.value >= (this.primaryObs.concept.lowNormal || 0);
-            this.abnormal.value = !valueInRange;
+            this.abnormalObs.value = !valueInRange;
         } else {
-            this.abnormal.value = undefined;
+            this.abnormalObs.value = undefined;
         }
     },
 
