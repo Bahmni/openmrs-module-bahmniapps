@@ -3,13 +3,6 @@ Bahmni.Registration = Bahmni.Registration || {};
 
 Bahmni.Registration.Constants = {
     patientIdentifierTypeName: "Bahmni Id",
-    encounterType: {
-        registration: "REG"
-    },
-    // should be picking this up from global properties.
-    visitType: {
-        emergency: "EMERGENCY"
-    },
     openmrsUrl: "/openmrs",
     baseOpenMRSRESTURL: "/openmrs/ws/rest/v1",
     patientImageURL: "/patient_images/",

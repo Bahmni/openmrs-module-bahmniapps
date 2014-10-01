@@ -216,7 +216,6 @@ module.exports = function (grunt) {
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['home.min.*.js'], dest: '<%= yeoman.dist %>/home/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['admin.min.*.js'], dest: '<%= yeoman.dist %>/admin/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['registration.min.*.js'], dest: '<%= yeoman.dist %>/registration/'},
-                    {expand: true, cwd: '<%= yeoman.dist %>/..', src: ['emergency.min.js'], dest: '<%= yeoman.dist %>/registration/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['document-upload.min.*.js'], dest: '<%= yeoman.dist %>/document-upload/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['patients.min.*.css'], dest: '<%= yeoman.dist %>/patients/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['clinical.min.*.css'], dest: '<%= yeoman.dist %>/clinical/'},
@@ -226,7 +225,6 @@ module.exports = function (grunt) {
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['home.min.*.css'], dest: '<%= yeoman.dist %>/home/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['admin.min.*.css'], dest: '<%= yeoman.dist %>/admin/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['registration.min.*.css'], dest: '<%= yeoman.dist %>/registration/'},
-                    {expand: true, cwd: '<%= yeoman.dist %>/..', src: ['emergency.min.css'], dest: '<%= yeoman.dist %>/registration/'},
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['document-upload.min.*.css'], dest: '<%= yeoman.dist %>/document-upload/'}
                 ]
             }
