@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('EditPatientController', ['$scope', '$rootScope', 'patientService', 'encounterService', 'visitService','$location', 'Preferences', '$route', 'openmrsPatientMapper', '$window', '$q','spinner', 'registrationCardPrinter', 'appService', 'sessionService',
-        function ($scope, $rootScope, patientService, encounterService, visitService,$location, preferences, $route, patientMapper, $window, $q, spinner, registrationCardPrinter, appService, sessionService) {
+    .controller('EditPatientController', ['$scope', '$rootScope', 'patientService', 'encounterService', 'visitService','$location', 'Preferences', '$stateParams', 'openmrsPatientMapper', '$window', '$q','spinner', 'registrationCardPrinter', 'appService', 'sessionService',
+        function ($scope, $rootScope, patientService, encounterService, visitService,$location, preferences, $stateParams, patientMapper, $window, $q, spinner, registrationCardPrinter, appService, sessionService) {
             var uuid;
             var editActionsConfig = [];
             var defaultActions = ["save", "print"];
@@ -24,11 +24,11 @@ angular.module('bahmni.registration')
 
             $scope.patient = {};
             (function () {
-                uuid = $route.current.params.patientUuid;
+                uuid = $stateParams.patientUuid;
                 var getPatientPromise = patientService.get(uuid).success(function (openmrsPatient) {
                     $scope.openMRSPatient = openmrsPatient;
                     $scope.patient = patientMapper.map(openmrsPatient);
-                    $scope.patient.isNew = ($location.search()).newpatient;
+                    $scope.patient.isNew = $stateParams.newpatient;
                 });
                 var searchActiveVisitsPromise = visitService.search({patient: uuid, includeInactive: false, v: "custom:(uuid)"}).success(function(data){
                     $scope.hasActiveVisit = data.results.length > 0;
@@ -51,10 +51,6 @@ angular.module('bahmni.registration')
             $scope.visitControl = new Bahmni.Common.VisitControl($rootScope.regEncounterConfiguration.getVistTypesAsArray(), defaultVisitType, encounterService);
             $scope.visitControl.onStartVisit = function() {
                 $scope.setSubmitSource('startVisit');
-            };
-
-            $scope.patientCommon = function () {
-                return $route.routes['/patientcommon'].templateUrl;
             };
 
             $scope.setSubmitSource = function (source) {
@@ -104,7 +100,6 @@ angular.module('bahmni.registration')
                 var patientUpdatePromise = patientService.update($scope.patient, $scope.openMRSPatient).success(function (patientProfileData) {
                     var submitSource = $scope.submitSource;
                     $scope.submitSource = null;
-                    $rootScope.server_error = null;
                     switch(submitSource) {
                         case 'print':
                             registrationCardPrinter.print($scope.patient);
@@ -122,7 +117,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.showBackButton = function () {
-                return !$location.search().newpatient;
+                return $stateParams.newpatient;
             };
 
             $scope.back = function () {

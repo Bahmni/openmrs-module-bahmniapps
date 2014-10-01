@@ -4,8 +4,7 @@ angular.module('httpErrorInterceptor',[])
     .config(function($httpProvider) {
         var interceptor = ['$rootScope', '$q', '$window', function($rootScope, $q, $window) {
             var showError = function(errorMessage){
-                $rootScope.server_error = errorMessage;
-                $window.scrollTo(0, 0);
+                $rootScope.$broadcast('event:serverError', errorMessage);
             };
 
             function stringAfter(value, searchString) {
@@ -13,8 +12,11 @@ angular.module('httpErrorInterceptor',[])
                 return value.substr(indexOfFirstColon + 1).trim()
             }
 
+            function getServerError(message) {
+                return "Server Error : " + stringAfter(message, ':');
+            }
+
             function success(response) {
-                $rootScope.server_error = null;
                 return response;
             }
 
@@ -29,19 +31,17 @@ angular.module('httpErrorInterceptor',[])
                 var data = response.data;
                 var unexpecetedError = "There was an unexpected issue on the server. Please try again";
                 if (response.status === 500) {
-                    var errorMessage = data.error && data.error.message ? stringAfter(data.error.message, ':') : unexpecetedError;
+                    var errorMessage = data.error && data.error.message ? getServerError(data.error.message) : unexpecetedError;
                     showError(errorMessage);
                 } else if (response.status === 409){
-                    var errorMessage = data.error && data.error.message ? stringAfter(data.error.message, ':') : "Duplicate entry error";
+                    var errorMessage = data.error && data.error.message ? getServerError(data.error.message) : "Duplicate entry error";
                     showError(errorMessage);
                 } else if(response.status === 0){
                     showError("Could not connect to the server. Please check your connection and try again");
                 } else if(response.status === 405){
                     showError(unexpecetedError);
                 } else if(response.status === 400){
-                    if($rootScope.server_error === null){
-                        showError("Could not connect to the server. Please check your connection and try again");
-                    }
+                    showError("Could not connect to the server. Please check your connection and try again");
                 } else if (response.status === 403) {
                     var errorMessage = data.error && data.error.message ? stringAfter(data.error.message, ':') : unexpecetedError;
                     showError(errorMessage);
@@ -60,10 +60,4 @@ angular.module('httpErrorInterceptor',[])
 
         }];
         $httpProvider.responseInterceptors.push(interceptor);
-    }).run(['$rootScope', '$location', function ($rootScope, $location) {
-        $rootScope.$watch(function(){
-            return $location.path();
-        }, function () {
-            $rootScope.server_error = null;
-        })
-    }]);
+    });

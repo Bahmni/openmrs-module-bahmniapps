@@ -17,8 +17,8 @@
     <body ng-app="documentupload">
         <div class="document-upload">
             <div ui-view="additional-header"></div>
+            <div ng-include src="'../common/ui-helper/messages.html'"></div>
             <div class="opd-wrapper">
-                <p class="caution" ng-cloak ng-show="server_error"><i class="icon-exclamation-sign small"></i><span ng-bind="server_error"></span></p>
                 <div ui-view="content" id="view-content" class="main opd-content-wrapper"></div>
             </div>
         </div>
@@ -85,6 +85,9 @@
         <script src="../common/ui-helper/directives/gallery.js"></script>
         <script src="../common/ui-helper/services/backlinkService.js"></script>
         <script src="../common/ui-helper/directives/backLinks.js"></script>
+        <script src="../common/ui-helper/controllers/messageController.js"></script>
+        <script src="../common/ui-helper/services/messagingService.js"></script>
+
         <script src="../common/logging/init.js"></script>
         <script src="../common/logging/errorLogFactory.js"></script>
 

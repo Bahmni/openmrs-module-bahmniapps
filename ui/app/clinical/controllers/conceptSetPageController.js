@@ -1,5 +1,5 @@
 angular.module('bahmni.clinical')
-.controller('ConceptSetPageController', ['$scope','$rootScope','$location', '$anchorScroll', '$stateParams', 'conceptSetService','appService','MessagingService',
+.controller('ConceptSetPageController', ['$scope','$rootScope','$location', '$anchorScroll', '$stateParams', 'conceptSetService','appService','messagingService',
         function($scope,$rootScope,$location, $anchorScroll, $stateParams, conceptSetService,appService,messagingService) {
 
 	$rootScope.consultation.selectedObsTemplate = $rootScope.consultation.selectedObsTemplate || [];

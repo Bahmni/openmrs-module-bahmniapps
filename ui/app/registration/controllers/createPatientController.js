@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('CreatePatientController', ['$scope', '$rootScope','patientService', 'encounterService','$location', 'Preferences', '$route', 'patient', '$window', 'spinner', 'registrationCardPrinter', 'appService', 'sessionService',
-    function ($scope, $rootScope, patientService, encounterService, $location, preferences, $route, patientModel, $window, spinner, registrationCardPrinter, appService, sessionService) {
+    .controller('CreatePatientController', ['$scope', '$rootScope', '$state', 'patientService', 'encounterService','$location', 'Preferences', 'patient', '$window', 'spinner', 'registrationCardPrinter', 'appService', 'sessionService',
+    function ($scope, $rootScope, $state, patientService, encounterService, $location, preferences, patientModel, $window, spinner, registrationCardPrinter, appService, sessionService) {
         var dateUtil = Bahmni.Common.Util.DateUtil;
         var createActionsConfig = [];
         var defaultActions = ["save", "print", "startVisit"];
@@ -40,10 +40,6 @@ angular.module('bahmni.registration')
             $scope.setSubmitSource('startVisit');
         };
 
-        $scope.patientCommon = function () {
-            return $route.routes['/patientcommon'].templateUrl;
-        };
-
         $scope.setSubmitSource = function (source) {
             $scope.submitSource = source;
         };
@@ -64,10 +60,14 @@ angular.module('bahmni.registration')
         var createEncounterObject = function() {
             var encounter = { locationUuid : locationUuid, providers: []};
             if ($rootScope.currentProvider && $rootScope.currentProvider.uuid) {
-                encounter.providers.push( { "uuid" : $rootScope.currentProvider.uuid } );
+                encounter.providers.push( { "uuid" : $rootScope.currentProvider.uuid, newpatient: true} );
             }
             return encounter;
         };
+
+        var onCreateVisitFailure = function() {
+            $state.go('patient.edit', {patientUuid: $scope.patient.uuid});
+        }
 
         var followUpAction = function(patientProfileData) {
             if($scope.submitSource === 'startVisit') {
@@ -77,7 +77,7 @@ angular.module('bahmni.registration')
                     patientService.rememberPatient($scope.patient);
                     $window.history.pushState(null, null, patientUrl);
                     goToActionUrl($scope.submitSource, patientProfileData, {newpatient: 'true'});
-                });
+                }).error(onCreateVisitFailure);
             } else if ($scope.submitSource === 'print') {
                 $timeout(function(){
                     registrationCardPrinter.print($scope.patient);

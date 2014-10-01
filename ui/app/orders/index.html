@@ -12,8 +12,8 @@
         <div ng-app="orders" >
             <div ng-include src="'../common/ui-helper/header.html'"></div>
             <div ng-include src="'../common/patient/header/views/header.html'"></div>
+            <div ng-include src="'../common/ui-helper/messages.html'"></div>
             <div class="pending-orders-wrapper">
-                <p ng-cloak class="caution" ng-show="server_error">{{server_error}}</p>
                 <div ui-view id="view-content" class="pending-orders-content-wrapper"></div>
             </div>           
         </div>
@@ -51,6 +51,8 @@
         <script src="../common/ui-helper/spinner.js"></script>
         <script src="../common/ui-helper/services/backlinkService.js"></script>
         <script src="../common/ui-helper/directives/backLinks.js"></script>
+        <script src="../common/ui-helper/controllers/messageController.js"></script>
+        <script src="../common/ui-helper/services/messagingService.js"></script>
 
         <script src="app.js"></script>
         <script src="init.js"></script>

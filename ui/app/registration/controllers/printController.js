@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('PrintController', ['$scope', '$routeParams', 'spinner', 'patientService', 'openmrsPatientMapper',
-     function ($scope, $routeParams, spinner, patientService, openmrsPatientMapper) {
-        var patientUuid = $routeParams.patientUuid;
+    .controller('PrintController', ['$scope', '$stateParams', 'spinner', 'patientService', 'openmrsPatientMapper',
+     function ($scope, $stateParams, spinner, patientService, openmrsPatientMapper) {
+        var patientUuid = $stateParams.patientUuid;
         $scope.patient = {};
         (function () {
             var getPatientPromise = patientService.get(patientUuid).success(function (openmrsPatient) {
                 $scope.patient = openmrsPatientMapper.map(openmrsPatient);
-                $scope.patient.isNew = $routeParams.newpatient;
+                $scope.patient.isNew = $stateParams.newpatient;
             });
             spinner.forPromise(getPatientPromise);
         })();

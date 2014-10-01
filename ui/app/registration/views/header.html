@@ -1,0 +1,20 @@
+<header class="reg-header" ng-controller="NavigationController">
+        <a class="header-logo" href="../home/"><img src="../images/jss_logo.png" alt="Bahmni" title="Bahmni"></a>
+        <button class="btn-user-info">
+            <i class="icon-user-md icon-white small"></i>
+            <i class="icon-caret-down icon-white mini"></i>
+        </button>
+        <ul>
+            <li>
+                <a><i class="icon-user icon-white small"></i><span ng-bind="currentUser.username"></span></a>
+            </li>                            
+            <li>
+                <a log-out><i class="icon-off icon-white small"></i><span class="nav-link">Logout</span></a>
+            </li>
+        </ul>
+        <ul class="top-nav">
+            <li ng-repeat="extension in extensions">
+                <a ng-click="goTo(extension.url)" accesskey="{{extension.shortcutKey}}"><i class="{{extension.icon}} icon-white small"></i><span class="nav-link" ng-bind-html="htmlLabel(extension.label)"></span></a>
+            </li>
+        </ul>
+</header>

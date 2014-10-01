@@ -14,9 +14,8 @@
     <body>
         <div class="reg-wrapper">
             <div ng-app="bahmni.home">
-                <p class="caution" ng-cloak ng-show="server_error"><i class="icon-exclamation-sign small"></i>{{server_error}}</p>
+                <div ng-include src="'../common/ui-helper/messages.html'"></div>
                 <div ui-view id="view-content"></div>
-                <div id="overlay"></div>
             </div>
         </div>
         <script src="../components/lodash/dist/lodash.min.js"></script>
@@ -48,6 +47,9 @@
         <script src="../common/ui-helper/init.js"></script>
         <script src="../common/ui-helper/spinner.js"></script>
         <script src="../common/ui-helper/directives.js"></script>
+        <script src="../common/ui-helper/controllers/messageController.js"></script>
+        <script src="../common/ui-helper/services/messagingService.js"></script>
+
         <script src="../common/logging/init.js"></script>
         <script src="../common/logging/errorLogFactory.js"></script>
 

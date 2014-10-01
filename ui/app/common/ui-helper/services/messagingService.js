@@ -1,24 +1,26 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .service('MessagingService', ['$timeout', function ($timeout) {
+    .service('messagingService', ['$timeout', '$rootScope', function ($timeout, $rootScope) {
         this.messages = {error: [], info: []};
-        var that = this;
+        var self = this;
+
+        $rootScope.$on('event:serverError', function(event, errorMessage) {
+            self.showMessage('error',  errorMessage);
+        });
 
         this.showMessage = function(level, message) {
             if (level === 'error') {
                 this.messages.error.push(message);
-                that = this;
                 $timeout(function(){
-                    that.messages.error = [];
+                    self.messages.error = [];
                 }, 6000, true);
             }
 
             if (level === 'info') {
                 this.messages.info.push(message);
-                that = this;
                 $timeout(function(){
-                    that.messages.info = [];
+                    self.messages.info = [];
                 }, 6000, true);
             }
         };

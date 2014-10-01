@@ -15,7 +15,7 @@ describe('VisitController', function () {
     var spinner;
     var getEncounterPromise;
     var getPatientPromise;
-    var route;
+    var stateParams;
     var patientMapper;
     var q;
     var appService;
@@ -62,14 +62,9 @@ describe('VisitController', function () {
     };
 
     beforeEach(module('bahmni.registration'));
-    beforeEach(inject(['$injector', '$location', '$window', '$timeout', '$route', '$q', function ($injector, location, window, timeout, $route, $q) {
+    beforeEach(inject(['$injector', '$location', '$window', '$timeout', '$q', function ($injector, location, window, timeout, $q) {
         q = $q;
-        route = $route;
-        route.current = {
-            params: {
-                patientUuid: '21308498-2502-4495-b604-7b704a55522d'
-            }
-        };
+        stateParams = { patientUuid: '21308498-2502-4495-b604-7b704a55522d' };
         patient = {
             uuid: "21308498-2502-4495-b604-7b704a55522d",
             isNew: "true",
@@ -117,7 +112,7 @@ describe('VisitController', function () {
                 spinner: spinner,
                 encounterService: encounterService,
                 patientService: patientService,
-                $route: route,
+                $stateParams: stateParams,
                 openmrsPatientMapper: patientMapper,
                 appService:appService,
                 registrationCardPrinter: registrationCardPrinter,
@@ -140,7 +135,7 @@ describe('VisitController', function () {
                 $location: $location,
                 spinner: spinner,
                 dateUtil: dateUtil,
-                $route: route,
+                $stateParams: stateParams,
                 appService:appService,
                 openmrsPatientMapper: patientMapper,
                 registrationCardPrinter: registrationCardPrinter,
@@ -188,7 +183,7 @@ describe('VisitController', function () {
                 $location: $location,
                 spinner: spinner,
                 dateUtil: dateUtil,
-                $route: route,
+                $stateParams: stateParams,
                 appService:appService,
                 openmrsPatientMapper: patientMapper,
                 registrationCardPrinter: registrationCardPrinter,
@@ -230,7 +225,7 @@ describe('VisitController', function () {
                     $location: $location,
                     spinner: spinner,
                     dateUtil: dateUtil,
-                    $route: route,
+                    $stateParams: stateParams,
                     appService:appService,
                     openmrsPatientMapper: patientMapper,
                     registrationCardPrinter: registrationCardPrinter,
@@ -280,7 +275,7 @@ describe('VisitController', function () {
                 encounterService: encounterService,
                 patientService: patientService,
                 spinner: spinner,
-                $route: route,
+                $stateParams: stateParams,
                 appService:appService,
                 openmrsPatientMapper: patientMapper,
                 registrationCardPrinter: registrationCardPrinter,
@@ -343,7 +338,7 @@ describe('VisitController', function () {
                 spinner: spinner,
                 encounterService: encounterService,
                 patientService: patientService,
-                $route: route,
+                $stateParams: stateParams,
                 appService:appService,
                 openmrsPatientMapper: patientMapper,
                 registrationCardPrinter: registrationCardPrinter,

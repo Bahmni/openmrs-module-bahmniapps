@@ -63,12 +63,11 @@ angular.module('bahmni.adt')
         };
 
         var showAssignmentError = function(errorMsg) {
-            $rootScope.server_error = errorMsg;
+            messagingService.showMessage('error', errorMsg);
             $('.bed-info').hide();
         };
 
         var clearAssignmentError = function() {
-            $rootScope.server_error = "";
             $('.bed-info').hide();
         };
 

@@ -14,11 +14,9 @@
     </head>
     <body ng-app="admin">
         <div ng-include src="'../common/ui-helper/header.html'"></div>
+        <div ng-include src="'../common/ui-helper/messages.html'"></div>
         <div class="opd-wrapper">
-            <div>
-                <p class="caution" ng-cloak ng-show="server_error"><i class="icon-exclamation-sign small"></i>{{server_error}}</p>
-                <div ui-view id="view-content" class="opd-content-wrapper"></div>
-            </div>
+            <div ui-view id="view-content" class="opd-content-wrapper"></div>
         </div>
         <script src="../components/lodash/dist/lodash.min.js"></script>
         <script src="../components/jquery/jquery.js"></script>
@@ -53,6 +51,9 @@
         <script src="../common/ui-helper/services/backlinkService.js"></script>
         <script src="../common/ui-helper/directives/backLinks.js"></script>
         <script src="../common/ui-helper/controllers/dashboardController.js"></script>
+        <script src="../common/ui-helper/controllers/messageController.js"></script>
+        <script src="../common/ui-helper/services/messagingService.js"></script>
+
         <script src="../common/logging/init.js"></script>
         <script src="../common/logging/errorLogFactory.js"></script>
 
