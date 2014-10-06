@@ -45,8 +45,6 @@
     <div ng-repeat="image in album.images">
         <div class="image-actions" ng-if="isActive($index,album.tag)">
             <span class="image-title">{{image.title}}</span>
-            <button class="secondary-button"><i class="icon-download"></i></button>
-            <button class="secondary-button"><i class="icon-share"></i></button>
         </div>
         <div impression target-obs="image" source-concept="impression" consultation-observations="visit.observations"
              ng-show="isActive($index,album.tag)"></div>
