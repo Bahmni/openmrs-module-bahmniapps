@@ -121,12 +121,7 @@ form .vitals .form-field .field-value {
   }
   textarea {
     width: 49em;
-    height: 25px;
     margin-bottom: 10px;
-    transition: height 0.1s ease;
-    &:focus {
-        height: 75px;
-    }
     @media screen and (max-width: 1015px) and (min-width: 851px) {
       width: 40em;
     }
@@ -337,5 +332,13 @@ concept-set {
     border-radius: 5px;
     p {
         margin-bottom: 0;
+    }
+}
+
+textarea {
+    height: 25px;
+    transition: height 0.1s ease;
+    &:focus {
+        height: 75px;
     }
 }
