@@ -21,12 +21,14 @@
     max-width: 960px;
     min-width: 320px;
     margin: 0 auto;
-    h1 {
+    h5 {
       height: 40px;
       line-height: 40px;
+      font-size: 14px;
       @include background(linear-gradient(top, #fff, #ddd));
       border: 1px solid #CCC;
       padding: 0 5px;
+      margin: 0;
       cursor: pointer;
       i.state {
         color: #999;
@@ -111,7 +113,6 @@
         .files > li {
           clear: both;
           overflow: auto;
-          padding: 10px 0;
           border-bottom: 1px solid #eee;
           &:last-child {
             border-bottom: 0;
@@ -317,7 +318,8 @@ button.mfp-close:hover {
 
 .document-upload {
     .patient-details {
-        top: 7px;
+        top: 17px;
+        right: 0;
         color: #eee;
         position: relative;
     }
@@ -333,13 +335,14 @@ button.mfp-close:hover {
 		    padding-top: 20px;
 	    }
 	    .patient-details {
-		    top: 50px;
+		    top: 7px;
 		    color: #555;
 		    background: #fff;
 		    padding: 5px;
 		    width: 100%;
 		    text-align: right;
-		    right: 0;
+		    right: 10px;
+            border-bottom: 1px solid #ccc;
 	    }
 	    .messages {
 		    .error-message, .info-message {
