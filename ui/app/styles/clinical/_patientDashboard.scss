@@ -192,7 +192,6 @@
     margin-top: 0;
     tr, td {
       border-left: 0;
-      border-right: 0;
     }
     td span.range {
       font-size: 11px;
@@ -232,7 +231,7 @@
     span {
       float: right;
       font-size: 11px;
-      padding: 10px;
+      padding-right: 10px;
       color: #888;
     }
   }
