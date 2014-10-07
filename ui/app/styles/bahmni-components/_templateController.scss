@@ -5,7 +5,7 @@
 	left: 0; right: 0;
 	height: 40px;
 	text-align: center;
-	background: #fff;
+	background: rgba(255,255,255,0.8);
 	z-index: 3;
 	box-shadow: 0 -3px 4px 0px #eee;
 	border-top: 1px solid #ddd;
@@ -33,22 +33,22 @@
 	z-index: 4;
 	padding: 5px;
 	ul.template-icons li button {
-		width: 90px;
-		height: 80px;
+		width: 290px;
 		display: inline-block;
 		float: left;
-		margin: 5px;
+		margin: 1px 5px;
 		font-size: 12px;
 		border: 1px solid #ccc;
 		padding: 5px;
-		background: #ddd;
+		color: #333;
+		text-align: left;
 		i {
 			font-size: 1.5em;
-			display: block;
 			margin: 0 auto;
 		}
 	}
 	ul.template-icons li.templateAdded button {
 		@include background(linear-gradient(top, #fff, #ddd));
+		color: #457FAC;
 	}
 }
