@@ -215,6 +215,11 @@ angular.module('opd.documentupload')
                 }
             };
 
+            $scope.onEditConcept = function(image){
+                image.concept.name = undefined;
+                image.concept.uuid = undefined;
+            };
+
             $scope.onConceptSelected = function(image){
                 return function(selectedItem){
                     $scope.setConceptOnImage(image, selectedItem);

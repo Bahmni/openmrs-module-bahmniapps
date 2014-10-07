@@ -25,7 +25,10 @@ angular.module('bahmni.common.uiHelper')
                 if(scope.blurOnSelect) element.blur();
                 return true;
             },
-            search: function (event) {
+            search: function (event, ui) {
+                if(scope.onEdit != null){
+                    scope.onEdit(ui.item);
+                }
                 var searchTerm = $.trim(element.val());
                 if (searchTerm.length < minLength) {
                     event.preventDefault();
@@ -40,6 +43,7 @@ angular.module('bahmni.common.uiHelper')
             source: '&',
             responseMap: '&',
             onSelect: '&',
+            onEdit: '&?',
             minLength: '=',
             blurOnSelect: '='
         }

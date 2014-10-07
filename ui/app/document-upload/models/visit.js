@@ -103,4 +103,12 @@ Bahmni.DocumentUpload.Visit = function () {
         image.voided = !image.voided;
         this.markAsUpdated();
     };
+
+    this.hasErrors = function(){
+        var imageHasError = _.find(this.images, function (image) {
+            return !image.concept || !image.concept.editableName || !image.concept.uuid;
+        });
+
+        return imageHasError ? true : false;
+    };
 };
