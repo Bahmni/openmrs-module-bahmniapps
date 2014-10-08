@@ -3,7 +3,7 @@
     <fieldset class="leaf-observation-node" ng-if="observation.isObservationNode">
         <div class="form-group">
             <section class="concept-description" ng-if="observation.primaryObs.concept.description && observation.showHelpText() !== false">
-                <span ng-bind-html="observation.primaryObs.concept.description"></span>
+                <span class="details" ng-bind-html="observation.primaryObs.concept.description"></span>
                 <i class="icon-caret-down"></i>
             </section>
             
