@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('bahmni.clinical').factory('diseaseTemplatesInitialization',
-    ['diseaseTemplateService', '$q', function (diseaseTemplateService,$q) {
+    ['diseaseTemplateService', '$q', function (diseaseTemplateService, $q) {
 
-        return function(patientUuid){
+        return function (patientUuid) {
             var diseaseTemplateDeferrable = $q.defer();
-            diseaseTemplateService.getDiseaseTemplates(patientUuid).success(function(data){
+            diseaseTemplateService.getDiseaseTemplates(patientUuid).success(function (data) {
                 var diseaseTemplates = [];
-                data.forEach(function(diseaseTemplate){
-                    if(diseaseTemplate.observations && diseaseTemplate.observations.length >0){
+                data.forEach(function (diseaseTemplate) {
+                    if (diseaseTemplate.observationTemplates && diseaseTemplate.observationTemplates.length > 0) {
                         diseaseTemplates.push(Bahmni.Clinical.DiseaseTemplate(diseaseTemplate));
                     }
                 });

@@ -1,26 +1,33 @@
-Bahmni.Clinical.DiseaseTemplate = function (serverDiseaseTemplate){
-    var diseaseTemplate  = {
-        name : serverDiseaseTemplate.name,
-        sections: []
+Bahmni.Clinical.DiseaseTemplate = function (diseaseTemplateResponse) {
+
+    var diseaseTemplate = {
+        name: diseaseTemplateResponse.name,
+        obsTemplates: []
     };
 
-    var getPropertyIfExists = function(propertyName,obj){
-        return obj && obj[propertyName]? obj[propertyName]: null;
+    var getPropertyIfExists = function (propertyName, obj) {
+        return obj && obj[propertyName] ? obj[propertyName] : null;
     };
-    serverDiseaseTemplate.observations.forEach(function(obsSection){
-        if(obsSection.length > 0){
-            diseaseTemplate.sections.push({
-                name: getPropertyIfExists("rootConcept", obsSection[0]),
-                visitStartDate: getPropertyIfExists("visitStartDate", obsSection[0]),
-                observations: obsSection
+
+    diseaseTemplateResponse.observationTemplates.forEach(function (obsTemplate) {
+        if (obsTemplate.bahmniObservations.length > 0) {
+            diseaseTemplate.obsTemplates.push({
+                name: obsTemplate.concept.name,
+                // TODO : Shruthi - implement visitStartDate on the server side
+//                visitStartDate: getPropertyIfExists("visitStartDate", obsTemplate[0]),
+                observations: obsTemplate.bahmniObservations
             })
         }
     });
 
-    diseaseTemplate.toDashboardSection = function(){
+    diseaseTemplate.notEmpty = function () {
+        return diseaseTemplate.obsTemplates && diseaseTemplate.obsTemplates.length > 0;
+    };
+
+    diseaseTemplate.toDashboardSection = function () {
         return {
-            title:diseaseTemplate.name,
-            name:'diseaseTemplate'
+            title: diseaseTemplate.name,
+            name: 'diseaseTemplate'
         }
     };
 
