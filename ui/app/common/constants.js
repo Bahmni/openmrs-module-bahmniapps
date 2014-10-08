@@ -40,6 +40,8 @@ Bahmni.Common = Bahmni.Common || {};
         obsRelationshipUrl: BAHMNI_CORE + "/obsrelationships",
         encounterImportUrl: BAHMNI_CORE + "/admin/upload/encounter",
         programImportUrl: BAHMNI_CORE + "/admin/upload/program",
+        conceptImportUrl: BAHMNI_CORE + "/admin/upload/concept",
+        conceptSetImportUrl: BAHMNI_CORE + "/admin/upload/conceptset",
         adminImportStatusUrl: BAHMNI_CORE + "/admin/upload/status",
         allTestsAndPanelsConceptName : 'All_Tests_and_Panels',
         dosageFrequencyConceptName : 'Dosage Frequency',

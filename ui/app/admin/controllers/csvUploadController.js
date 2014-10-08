@@ -5,7 +5,10 @@ angular.module('bahmni.admin')
         function ($scope, $rootScope, FileUploader, appService, adminImportService, spinner) {
             var adminCSVExtension = appService.getAppDescriptor().getExtensionById("bahmni.admin.csv");
             var patientMatchingAlgorithm = adminCSVExtension.extensionParams.patientMatchingAlgorithm || "";
-            var urlMap = {"program": Bahmni.Common.Constants.programImportUrl, "encounter": Bahmni.Common.Constants.encounterImportUrl}
+            var urlMap = {"program": Bahmni.Common.Constants.programImportUrl,
+                "encounter": Bahmni.Common.Constants.encounterImportUrl,
+                "concept": Bahmni.Common.Constants.conceptImportUrl,
+                "conceptset": Bahmni.Common.Constants.conceptSetImportUrl};
             var fileUploaderOptions = {
                 removeAfterUpload: true,
                 formData: [
@@ -13,15 +16,17 @@ angular.module('bahmni.admin')
                 ]
             };
 
-            $scope.loadImportedItems = function() {
-                spinner.forPromise(adminImportService.getAllStatus().then(function(response){
-                    $scope.importedItems = response.data.map(function(item) { return new Bahmni.Admin.ImportedItem(item); });
+            $scope.loadImportedItems = function () {
+                spinner.forPromise(adminImportService.getAllStatus().then(function (response) {
+                    $scope.importedItems = response.data.map(function (item) {
+                        return new Bahmni.Admin.ImportedItem(item);
+                    });
                 }));
-            }
+            };
 
-            $scope.option="encounter";
+            $scope.option = "encounter";
             $scope.uploader = new FileUploader(fileUploaderOptions);
-            $scope.uploader.onBeforeUploadItem = function(item){
+            $scope.uploader.onBeforeUploadItem = function (item) {
                 item.url = urlMap[$scope.option];
             };
             $scope.uploader.onCompleteAll = $scope.loadImportedItems;
