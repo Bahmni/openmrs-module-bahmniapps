@@ -17,7 +17,12 @@ angular.module('bahmni.clinical')
                 return new Bahmni.Clinical.DrugOrderViewModel($scope.currentBoard.extensionParams, $scope.treatmentConfig);
             };
 
-            $scope.treatment = newTreatment();
+            $scope.treatment = $rootScope.incompleteTreatment || newTreatment();
+            $scope.treatmentConfig.durationUnits.forEach(function(durationUnit){
+                if(_.isEqual(durationUnit, $scope.treatment.durationUnit)){
+                    $scope.treatment.durationUnit = durationUnit;
+                }
+            });
             $scope.treatment.scheduledDate = $filter("date")($scope.treatment.scheduledDate, 'yyyy-MM-dd');
 
             var watchFunctionForQuantity = function() {
@@ -70,6 +75,7 @@ angular.module('bahmni.clinical')
 
             var allowContextChange = function () {
                 $rootScope.newlyAddedTreatments = $scope.treatments;
+                $rootScope.incompleteTreatment = $scope.treatment;
                 return true;
             };
 
