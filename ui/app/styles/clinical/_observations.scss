@@ -224,10 +224,6 @@ concept-set {
   .concept-set-title {
     cursor: pointer;
   }
-
-  concept-set {
-    margin-top: 10px;
-  }
 }
 .grid-row {
     padding: 2px;
@@ -321,17 +317,46 @@ concept-set {
 
 .concept-set-description, .concept-description {
     margin: 0 10px;
-    padding: 10px;
-    background: #e8f3e8;
-    font-size: 14px;
     clear: both;
+    span.description {
+        font-size: 14px;
+        padding: 5px;
+        border-radius: 5px;
+        background: #e8f3e8;
+        display: inline-block;
+        margin-top: 7px;
+    }
+    span.details {
+        font-size: 12px;
+        padding: 5px;
+        border-radius: 5px;
+        background: #e8edf3;
+    }
+}
+.concept-set-description {
+    margin-bottom: 5px;
+    i {
+        position: absolute;
+        top: -11px;
+        left: 2%;
+        font-size: 20px;
+        color: #e8f3e8;
+    }
 }
 .concept-description {
+    position: relative;
+    margin-left: 10%;
+    margin-top: 5px;
     margin-bottom: 5px;
-    background: #e8edf3;
-    border-radius: 5px;
     p {
         margin-bottom: 0;
+    }
+    i {
+        position: absolute;
+        top: 10px;
+        left: 1%;
+        font-size: 20px;
+        color: #e8edf3;
     }
 }
 

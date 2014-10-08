@@ -2,7 +2,11 @@
 <div class="vitals form-horizontal">
     <fieldset class="leaf-observation-node" ng-if="observation.isObservationNode">
         <div class="form-group">
-            <section class="concept-description" ng-if="observation.primaryObs.concept.description && observation.showHelpText() !== false" ng-bind-html="observation.primaryObs.concept.description"></section>
+            <section class="concept-description" ng-if="observation.primaryObs.concept.description && observation.showHelpText() !== false">
+                <span ng-bind-html="observation.primaryObs.concept.description"></span>
+                <i class="icon-caret-down"></i>
+            </section>
+            
             <label class="control-label" for="{{observation.uniqueId}}" >
                 <span ng-bind="observation.primaryObs.label"></span>
                 <span ng-show="observation.primaryObs.units" ng-bind="'(' + observation.primaryObs.units + ')'"></span>
@@ -84,7 +88,10 @@
 
     <fieldset class="leaf-observation-node" ng-if="observation.isFormElement()">
         <div class="form-group">
-            <section class="concept-description" ng-if="observation.concept.description && observation.showHelpText() !== false " ng-bind-html="observation.concept.description"></section>
+            <section class="concept-description" ng-if="observation.concept.description && observation.showHelpText() !== false ">
+                <span class="details" ng-bind-html="observation.concept.description"></span>
+                <i class="icon-caret-down"></i>
+            </section>
             <label class="control-label" for="{{observation.uniqueId}}" >
                 <span ng-bind="observation.label"></span>
                 <span ng-show="observation.units" ng-bind="'(' + observation.units + ')'"></span>
@@ -182,7 +189,10 @@
     </fieldset>
 
     <fieldset ng-if="!observation.isObservationNode && !observation.isFormElement() && !observation.isComputed()" class="hasLegend">
-        <section class="concept-set-description" ng-if="observation.concept.description && observation.showHelpText() !== false" ng-bind-html="observation.concept.description"></section>
+        <section class="concept-set-description" ng-if="observation.concept.description && observation.showHelpText() !== false">
+            <span class="description" ng-bind-html="observation.concept.description"></span>
+            <i class="icon-caret-up"></i>
+        </section>
         <legend ng-if="showTitle" class="mylegend"><strong>{{observation.label}}</strong></legend>
         
         <div class="form-group">
