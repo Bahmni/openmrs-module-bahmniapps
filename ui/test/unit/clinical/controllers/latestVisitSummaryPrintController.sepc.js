@@ -25,14 +25,12 @@ describe("LatestVisitSummaryPrintController", function(){
         });
     }));
 
-    var loadController = function(consultationInitialization, visitInitialization, expectations) {
+    var loadController = function(visitInitialization, expectations) {
         controller('LatestVisitSummaryPrintController', {
             $scope: scope,
             $rootScope: rootScope,
             $stateParams: stateParams,
-            patientService: patientService,
             messagingService: jasmine.createSpyObj('messagingService', ['showMessage']),
-            consultationInitialization: consultationInitialization,
             visitInitialization: visitInitialization,
             spinner: spinner,
             visitActionsService: {printVisitSummary: expectations},
@@ -42,12 +40,9 @@ describe("LatestVisitSummaryPrintController", function(){
     // Weird way to test. visitActionsService as a spy was not working.
     describe("when loaded", function(){
         it("should print visit summary of active visit", function() {
-            var consultationInitialization = function(patientUuid) {
-                rootScope.patient = {uuid: "patientUuid"};
-                rootScope.visit = {uuid: "visitUuid", startDate: "2014-10-06"};
-                return specUtil.respondWith({});
-            };
-            var visitInitialization = function () {};
+            rootScope.patient = {uuid: "patientUuid"};
+            rootScope.visit = {uuid: "visitUuid", startDate: "2014-10-06"};
+
 
             var expectations = function(patient, visit, startDate) {
                 expect(patient.uuid).toBe("patientUuid");
@@ -55,16 +50,13 @@ describe("LatestVisitSummaryPrintController", function(){
                 expect(startDate).toBe("2014-10-06");
             };
 
-            loadController(consultationInitialization, visitInitialization, expectations);
+            loadController(null, expectations);
         });
 
         it("should print visit summary of latest visit if active visit is not available", function() {
-            var consultationInitialization = function(patientUuid) {
-                rootScope.patient = {uuid: "patientUuid"};
-                rootScope.visit = null;
-                rootScope.visits = [{uuid: "latestVisitUuid"}];
-                return specUtil.respondWith({});
-            };
+            rootScope.patient = {uuid: "patientUuid"};
+            rootScope.visit = null;
+            rootScope.visits = [{uuid: "latestVisitUuid"}];
 
             var visitInitialization = function(patientUuid, visitUuid) {
                 rootScope.visit = {uuid: "latestVisitUuid", startDate: "someStartDate"};
@@ -77,7 +69,7 @@ describe("LatestVisitSummaryPrintController", function(){
                 expect(startDate).toBe("someStartDate");
             };
 
-            loadController(consultationInitialization, visitInitialization, expectations);
+            loadController(visitInitialization, expectations);
         });
     });
 });

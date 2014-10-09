@@ -151,11 +151,11 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
                 url: '/new',
                 templateUrl: 'views/patientDashboard.html'
             })
-            .state('visitsummaryprint', {
-                url: '/latest-visit-summary-print/patient/:patientId',
-                views :{
-                    'content' : {
-                        controller: 'LatestVisitSummaryPrintController'
+            .state('patient.visitsummaryprint', {
+                url: '/latest-visit-summary-print',
+                views: {
+                    content: {
+                        controller: 'LatestVisitSummaryPrintController',
                     }
                 }
             });
