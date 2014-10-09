@@ -150,6 +150,14 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
             .state('patient.consultation.new', {
                 url: '/new',
                 templateUrl: 'views/patientDashboard.html'
+            })
+            .state('visitsummaryprint', {
+                url: '/latest-visit-summary-print/patient/:patientId',
+                views :{
+                    'content' : {
+                        controller: 'LatestVisitSummaryPrintController'
+                    }
+                }
             });
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
     }]).run(['$rootScope', '$state', '$window', function ($rootScope, $state, $window) {
