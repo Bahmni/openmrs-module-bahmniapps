@@ -189,13 +189,14 @@
     </fieldset>
 
     <fieldset ng-if="!observation.isObservationNode && !observation.isFormElement() && !observation.isComputed()" class="hasLegend">
-        <section class="concept-set-description" ng-if="observation.concept.description && observation.showHelpText() !== false">
-            <span class="description" ng-bind-html="observation.concept.description"></span>
-            <i class="icon-caret-up"></i>
-        </section>
+
         <legend ng-if="showTitle" class="mylegend"><strong>{{observation.label}}</strong></legend>
         
-        <div class="form-group">
+        <div class="form-group">        
+            <section class="concept-set-description" ng-if="observation.concept.description && observation.showHelpText() !== false">
+                <span class="description" ng-bind-html="observation.concept.description"></span>
+                <i class="icon-caret-up"></i>
+            </section>
             <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers " ng-if="!member.hidden">
                 <concept observation="member" at-least-one-value-is-set="atLeastOneValueIsSet" show-title="true" concept-set-required="conceptSetRequired" ></concept>
             </div>

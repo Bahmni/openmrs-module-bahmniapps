@@ -21,11 +21,13 @@
         }
       }
       legend + .form-group {
-        margin: 10px;
+        padding: 10px;
+        border-top: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
       }
       legend {
         position:absolute;
-        top:-2px;
+        top:-14px;
         left:20px;
         padding:5px 10px;
         font-family: OpenSansBold;
@@ -33,24 +35,6 @@
         color:#A8A5A5;
       }
       .form-field-group {
-        border-right:1px solid #eee;
-        border-left:1px solid #eee;
-        &:first-child {
-          border-top:1px solid #cecece;
-          border-right:1px solid #eee;
-          border-left:1px solid #eee;
-          border-top-left-radius: 5px;
-          border-top-right-radius: 5px;
-        }
-        &:last-child {
-          border-bottom:1px solid #cecece;
-          border-right:1px solid #eee;
-          border-left:1px solid #eee;
-          padding-bottom:9px;
-          border-bottom-left-radius: 5px;
-          border-bottom-right-radius: 5px;
-        }
-
         label.control-label {
             margin-left: 0;
         }
@@ -323,6 +307,7 @@ concept-set {
 }
 
 .concept-set-description, .concept-description {
+    position: relative;
     margin: 0 10px;
     clear: both;
     span.description {
@@ -334,6 +319,7 @@ concept-set {
         padding: 5px;
         border-radius: 5px;
         background: #e8edf3;
+        min-width: 30px;
     }
 }
 .concept-set-description {
@@ -347,7 +333,6 @@ concept-set {
     }
 }
 .concept-description {
-    position: relative;
     margin-left: 10%;
     margin-top: 5px;
     margin-bottom: 5px;
