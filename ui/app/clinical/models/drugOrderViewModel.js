@@ -208,6 +208,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
         });
 
         revisableDrugOrder.drugNameDisplay = constructDrugNameDisplay(this.drug, this.drug.form).value;
+        revisableDrugOrder.quantityEnteredManually = true;
 
         return revisableDrugOrder;
     }
