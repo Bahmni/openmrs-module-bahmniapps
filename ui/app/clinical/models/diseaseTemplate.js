@@ -10,25 +10,24 @@ Bahmni.Clinical.DiseaseTemplate = function (diseaseTemplateResponse) {
     };
 
     diseaseTemplateResponse.observationTemplates.forEach(function (obsTemplate) {
+        
         if (obsTemplate.bahmniObservations.length > 0) {
+            
+            var observations = _.map(obsTemplate.bahmniObservations, function (bahmniObservation) {
+                return new Bahmni.Clinical.DashboardObservation(bahmniObservation);
+            });
+            
             diseaseTemplate.obsTemplates.push({
                 name: obsTemplate.concept.name,
                 // TODO : Shruthi - implement visitStartDate on the server side
 //                visitStartDate: getPropertyIfExists("visitStartDate", obsTemplate[0]),
-                observations: obsTemplate.bahmniObservations
-            })
+                observations: observations
+            });
         }
     });
 
     diseaseTemplate.notEmpty = function () {
         return diseaseTemplate.obsTemplates && diseaseTemplate.obsTemplates.length > 0;
-    };
-
-    diseaseTemplate.toDashboardSection = function () {
-        return {
-            title: diseaseTemplate.name,
-            name: 'diseaseTemplate'
-        }
     };
 
     return diseaseTemplate;

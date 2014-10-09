@@ -1,83 +1,88 @@
-describe("DiseaseTemplate",function(){
-    it("should map the server model to view model for patient dashboard",function(){
+describe("DiseaseTemplate", function () {
+    it("should map the server model to view model for patient dashboard", function () {
 
         var diseaseTemplate = new Bahmni.Clinical.DiseaseTemplate(diseaseTemplateFromServer);
         expect(diseaseTemplate.name).toBe("Breast Cancer");
-        expect(diseaseTemplate.sections.length).toBe(1);
-        expect(diseaseTemplate.sections[0].name).toBe("Breast Cancer Intake");
-        expect(diseaseTemplate.sections[0].visitStartDate).toBe("1218997800000");
-        expect(diseaseTemplate.sections[0].observations.length).toBe(4);
+        expect(diseaseTemplate.obsTemplates.length).toBe(2);
+        expect(diseaseTemplate.obsTemplates[0].name).toBe("Breast Cancer - Intake");
+        expect(diseaseTemplate.obsTemplates[0].observations.length).toBe(1);
+// TODO : Shruthi
+//        expect(diseaseTemplate.sections[0].visitStartDate).toBe("1218997800000");
+
     })
 });
 
 var diseaseTemplateFromServer = {
-    "name": "Breast Cancer",
-    "observations": [
-    [
+    "observationTemplates": [
         {
-            "type": "text",
-            "time": "1219052345000",
-            "concept": "Receptor Status",
-            "links": {
-                "providerURIs": [],
-                "patientURI": "NEED-TO-CONFIGURE/ws/rest/v1/patient/86526ed5-3c11-11de-a0ba-001e378eb67a",
-                "visitURI": "NEED-TO-CONFIGURE/ws/rest/v1/visit/ad41fb41-a41a-4ad6-8835-2f59099acf5b",
-                "encounterURI": "NEED-TO-CONFIGURE/ws/rest/v1/encounter/f8ee31f6-1c8e-11e4-bb80-f18addb6f9bb"
-            },
-            "visitStartDate": "1218997800000",
-            "conceptSortWeight": "3",
-            "rootConcept": "Breast Cancer Intake",
-            "encounterTime": "1221762600000"
+            "bahmniObservations": [
+                {
+                    "encounterDateTime": 1412157286000,
+                    "abnormal": null,
+                    "isAbnormal": null,
+                    "conceptSortWeight": 6,
+                    "uuid": "0f4dc38f-4588-49d9-a62c-ac045ddafa59",
+                    "conceptUuid": "d1cbb048-d3e6-4da4-834f-7d97df21c171",
+                    "observationDateTime": "2014-10-01T15:30:59.000+0530",
+                    "value": "Paclitaxel",
+                    "type": null,
+                    "comment": null,
+                    "concept": {
+                        "shortName": null,
+                        "uuid": "d1cbb048-d3e6-4da4-834f-7d97df21c171",
+                        "name": "Chemotherapy",
+                        "set": true,
+                        "dataType": "N/A",
+                        "units": null,
+                        "conceptClass": "Misc"
+                    }
+                }
+            ],
+            "visitStartDate": 1218997800000,
+            "concept": {
+                "shortName": "Intake",
+                "uuid": "2032baaa-88c5-4bb5-8383-8c8923dc0fc6",
+                "name": "Breast Cancer - Intake",
+                "set": true,
+                "dataType": "N/A",
+                "units": null,
+                "conceptClass": "Misc"
+            }
         },
         {
-            "value": "",
-            "type": "numeric",
-            "time": "1219052345000",
-            "concept": "Histopathology",
-            "links": {
-                "providerURIs": [],
-                "patientURI": "NEED-TO-CONFIGURE/ws/rest/v1/patient/86526ed5-3c11-11de-a0ba-001e378eb67a",
-                "visitURI": "NEED-TO-CONFIGURE/ws/rest/v1/visit/ad41fb41-a41a-4ad6-8835-2f59099acf5b",
-                "encounterURI": "NEED-TO-CONFIGURE/ws/rest/v1/encounter/bb0af6767-707a-4629-9850-f15206e63ab0"
-            },
-            "visitStartDate": "1218997800000",
-            "conceptSortWeight": "1",
-            "rootConcept": "Breast Cancer Intake",
-            "encounterTime": "1219084200000"
-        },
-        {
-            "value": "",
-            "type": "numeric",
-            "time": "1219052345000",
-            "concept": "Problem Index",
-            "links": {
-                "providerURIs": [],
-                "patientURI": "NEED-TO-CONFIGURE/ws/rest/v1/patient/86526ed5-3c11-11de-a0ba-001e378eb67a",
-                "visitURI": "NEED-TO-CONFIGURE/ws/rest/v1/visit/ad41fb41-a41a-4ad6-8835-2f59099acf5b",
-                "encounterURI": "NEED-TO-CONFIGURE/ws/rest/v1/encounter/bb0af6767-707a-4629-9850-f15206e63ab0"
-            },
-            "visitStartDate": "1218997800000",
-            "conceptSortWeight": "4",
-            "rootConcept": "Breast Cancer Intake",
-            "encounterTime": "1219084200000"
-        },
-        {
-            "value": "175.0",
-            "type": "numeric",
-            "time": "1219052345000",
-            "concept": "Temperature",
-            "links": {
-                "providerURIs": [],
-                "patientURI": "NEED-TO-CONFIGURE/ws/rest/v1/patient/86526ed5-3c11-11de-a0ba-001e378eb67a",
-                "visitURI": "NEED-TO-CONFIGURE/ws/rest/v1/visit/ad41fb41-a41a-4ad6-8835-2f59099acf5b",
-                "encounterURI": "NEED-TO-CONFIGURE/ws/rest/v1/encounter/f8ee31f6-1c8e-11e4-bb80-f18addb6f9bb"
-            },
-            "visitStartDate": "1218997800000",
-            "conceptSortWeight": "2",
-            "rootConcept": "Breast Cancer Intake",
-            "encounterTime": "1221762600000"
+            "bahmniObservations": [
+                {
+                    "encounterDateTime": 1412157286000,
+                    "abnormal": null,
+                    "isAbnormal": null,
+                    "conceptSortWeight": 2,
+                    "uuid": "0f4dc38f-4588-49d9-a62c-ac045ddafa59",
+                    "conceptUuid": "d1cbb048-d3e6-4da4-834f-7d97df21c171",
+                    "observationDateTime": "2014-10-01T15:30:59.000+0530",
+                    "value": "Paclitaxel",
+                    "type": null,
+                    "concept": {
+                        "shortName": null,
+                        "uuid": "d1cbb048-d3e6-4da4-834f-7d97df21c171",
+                        "name": "Chemotherapy",
+                        "set": true,
+                        "dataType": "N/A",
+                        "units": null,
+                        "conceptClass": "Misc"
+                    }
+                }
+            ],
+            "visitStartDate": 1218997800000,
+            "concept": {
+                "shortName": "Progress",
+                "uuid": "b9d7d390-3ed3-4a1d-9e7c-2ccc579d55f9",
+                "name": "Breast Cancer - Progress",
+                "set": true,
+                "dataType": "N/A",
+                "units": null,
+                "conceptClass": "Misc"
+            }
         }
     ],
-    []
-]
-}
+    "name": "Breast Cancer"
+};

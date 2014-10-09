@@ -5,12 +5,12 @@ angular.module('opd.patientDashboard', [])
     function ($scope, $rootScope, $location, $stateParams, patientVisitHistoryService, urlHelper, encounterService, appService,diseaseTemplates) {
         $scope.patientUuid = $stateParams.patientUuid;
         $scope.activeVisitData = {};
-        $scope.diseaseTemplatesList = diseaseTemplates;
+        $scope.diseaseTemplates= diseaseTemplates;
 
         $scope.obsIgnoreList = appService.getAppDescriptor().getConfigValue("obsIgnoreList") || {};
+        
         $scope.patientDashboardSections = appService.getAppDescriptor().getConfigValue("patientDashboardSections") || {};
-
-        Bahmni.Clinical.DiseaseTemplateSectionHelper.populateDiseaseTemplateSections($scope.patientDashboardSections,$scope.diseaseTemplatesList);
+        Bahmni.Clinical.DiseaseTemplateSectionHelper.populateDiseaseTemplateSections($scope.patientDashboardSections, $scope.diseaseTemplates);
 
         $scope.filterOdd = function(index) {
           return function(item) {

@@ -18,7 +18,10 @@ Bahmni.Clinical.DiseaseTemplateSectionHelper = {
 
         diseaseTemplates.forEach(function (diseaseTemplate) {
             if (!templateExists(diseaseTemplate.name, patientDashboardSections) && diseaseTemplate.notEmpty()) {
-                patientDashboardSections.push(diseaseTemplate.toDashboardSection());
+                patientDashboardSections.push({
+                    title: diseaseTemplate.name,
+                    name: 'diseaseTemplateSection'
+                });
             }
         });
     }

@@ -1,0 +1,10 @@
+<div>
+    <section class="block" ng-class="{'more': patientSummary.show}">
+        <div ng-repeat="obsTemplate in diseaseTemplate.obsTemplates">
+            <label class="date">{{obsTemplate.name}} - {{obsTemplate.visitStartDate | date: 'dd MMM yy'}}</label>
+            <div ng-repeat="observation in obsTemplate.observations">
+                <observation observation="observation" level="level"></observation>
+            </div>
+        </div>
+    </section>
+</div>
