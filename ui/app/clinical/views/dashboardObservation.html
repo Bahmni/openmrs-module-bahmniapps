@@ -4,7 +4,7 @@
     <span class="label-add-on" ng-if="observation.concept.units"> {{observation.concept.units}}</span>
 
     <ul>
-        <observation ng-repeat="member in observation.groupMembers" observation="member" level="level + 1"></observation>
+        <dashboard-observation ng-repeat="member in observation.groupMembers" observation="member" level="level + 1"></dashboard-observation>
     </ul>
 </li>
 

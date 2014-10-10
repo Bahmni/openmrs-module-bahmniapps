@@ -1,5 +1,16 @@
-<div>
+<div ng-controller="PatientDashboardLatestObservationController">
     <h2 class="section-title">{{section.title}}</h2>
+    <div>
+        <section class="block hierarchy" ng-show="observations.length > 0">
+            <ul class="form-field">
+                <dashboard-observation observation="observation" ng-repeat="observation  in observations" level="1"></dashboard-observation>
+            </ul>
+        </section>
 
-    <latest-obs patient-uuid="patientUuid" concept-names="section.conceptNames">
+        <section>
+            <div ng-show="observations.length == 0">
+                <div class="placeholder-message">No observations made for this patient.</div>
+            </div>
+        </section>
+    </div>
 </div>

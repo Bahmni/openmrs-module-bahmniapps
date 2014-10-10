@@ -1,5 +1,5 @@
 angular.module('bahmni.clinical')
-    .directive('observation', function () {
+    .directive('dashboardObservation', function () {
         
         return {
             restrict: 'E',
@@ -7,6 +7,6 @@ angular.module('bahmni.clinical')
                 observation: "=",
                 level: "="
             },
-            template: '<ng-include src="\'views/observation.html\'" />'
+            template: '<ng-include src="\'views/dashboardObservation.html\'" />'
         };
     });

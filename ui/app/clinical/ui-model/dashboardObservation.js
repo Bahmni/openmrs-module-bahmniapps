@@ -8,15 +8,11 @@ Bahmni.Clinical.DashboardObservation = (function () {
     };
 
     DashboardObservation.prototype = {
-
         getDisplayValue: function () {
-            
             if (this.type === "Boolean") {
                 return this.value === true ? "Yes" : "No";
             }
-            
             var displayValue = this.value.shortName || this.value.name || this.value;
-            
             if (this.duration) {
                 displayValue = displayValue + " " + this.getDurationDisplayValue();
             }
