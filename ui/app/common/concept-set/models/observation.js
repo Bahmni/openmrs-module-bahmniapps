@@ -183,7 +183,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isFormElement: function() {
-        return (this.groupMembers.length === 0 || this.isGrid()) && !this.isComputed();
+        return (!this.concept.set || this.isGrid()) && !this.isComputed();
     },
 
     _hasValidChildren: function (checkRequiredFields, conceptSetRequired) {
