@@ -24,11 +24,7 @@
 								<form class="fl"><input class="select-drug" type="checkbox" /></form>
                                 <div class="drug-details" ng-class="{'strike-through': drugOrder.discontinued()}">
                                     <strong class="drug-name">{{drugOrder.drug.name}}</strong> - &nbsp;{{drugOrder.getDescription()}}
-                                    <div class="start-date fr">
-                                        <span ng-if="showEffectiveFromDate(prescriptionDate, drugOrder.effectiveStartDate)"> from {{drugOrder.effectiveStartDate | date: 'dd MMM yy'}}</span>
-                                        <br/>
-                                        <span ng-if="drugOrder.dateStopped">stopped {{drugOrder.dateStopped | date: 'dd MMM yy'}}</span>
-                                    </div>
+
                                 </div>
 								<div class="button-group">
                                     <button class="toggle" ng-class="{'has-notes': drugOrder.additionalInstructions}">
@@ -39,6 +35,11 @@
 									<button ng-if="drugOrder.isActive()"><i class="icon-undo" ng-click="undoRemove(drugOrder)" ng-if="drugOrder.discontinued()"></i></button>
 									<button ng-if="drugOrder.isActive()"><i class="icon-edit" ng-click="edit(drugOrder)"></i></button>
 								</div>
+                                <div class="start-date fr">
+                                    <span ng-if="showEffectiveFromDate(prescriptionDate, drugOrder.effectiveStartDate)"> from {{drugOrder.effectiveStartDate | date: 'dd MMM yy'}}</span>
+                                    <br/>
+                                    <span ng-if="drugOrder.dateStopped">stopped {{drugOrder.dateStopped | date: 'dd MMM yy'}}</span>
+                                </div>
                                 <div ng-show="drugOrder.showAdditionalInstructions" class="notes inline-notes">
                                     {{drugOrder.additionalInstructions}}
                                     <div class="footer-note fr">
