@@ -2,7 +2,6 @@ angular.module('bahmni.clinical')
     .directive('diseaseTemplate', function () {
 
         var controller = function ($scope) {
-            $scope.level = 0;
         };
 
         return {

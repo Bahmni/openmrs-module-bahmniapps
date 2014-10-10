@@ -3,8 +3,8 @@
 	.level-1 {font-size:16px; color: #333; background: #cfcfcf;}
 	.level-2 {font-size:14px; color: #444; background: #dfdfdf;}
 	.level-3 {font-size:12px; color: #555; background: #efefef;}
-	.level-4 {font-size:11px; color: #888; background: #f6f6f6;}
-	.level-5 {font-size:11px; color: #999; background: #ffffff; font-family:$primaryLightFont; }
+	.level-4 {font-size:12px; color: #888; background: #f6f6f6;}
+	.level-5 {font-size:12px; color: #999; background: #ffffff;font-family:$primaryLightFont;}
 
 	.level-1.indent, .level-2.indent, .level-3.indent, .level-4.indent, .level-5.indent {
 		padding-left: 20px;
@@ -65,4 +65,8 @@
             padding-left: 80px;
         }
     } 
+  
+    .form-field {
+        padding: 0;
+    }
 }
