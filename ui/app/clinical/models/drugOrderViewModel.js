@@ -63,10 +63,16 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
         return undefined;
     };
 
+    //Ugly code to handle the two contracts for drugOrder
+    var getRouteName = function() {
+        if(!self.route) return '';
+        return self.route.name || self.route;
+    }
+
     var getOtherDescription = function(){
         return addDelimiter(blankIfFalsy(getInstructions()), ", ") +
         addDelimiter(blankIfFalsy(asNeeded(self.asNeeded)), ', ') +
-        addDelimiter(blankIfFalsy(self.route && self.route.name), " - ") +
+        addDelimiter(blankIfFalsy(getRouteName()), " - ") +
         addDelimiter(blankIfFalsy(self.duration), " ") +
         blankIfFalsy(self.durationUnit && self.durationUnit.name);
     };
