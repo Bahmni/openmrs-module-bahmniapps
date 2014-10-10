@@ -106,26 +106,26 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
             })
             .state('patient.consultation.treatment', {
                 abstract: true,
-                templateUrl: 'views/treatment.html',
-                resolve: {
-                    treatmentConfig: 'treatmentConfig',
-                    prescribedDrugOrders: function(TreatmentService, $stateParams) {
-                        return TreatmentService.getPrescribedDrugOrders($stateParams.patientUuid, true, 5).then(function(result){
-                            return result;
-                        });
-                    }
-                }
+                templateUrl: 'views/treatment.html'
             })
             .state('patient.consultation.treatment.page', {
                 url: '/treatment',
                 views: {
                     "addTreatment": {
                         controller: 'TreatmentController',
-                        templateUrl: 'views/addTreatment.html'
+                        templateUrl: 'views/addTreatment.html',
+                        resolve: {
+                            treatmentConfig: 'treatmentConfig'
+                        }
                     },
                     "viewHistory": {
                         controller: 'DrugOrderHistoryController',
-                        templateUrl: 'views/treatmentSections/drugOrderHistory.html'
+                        templateUrl: 'views/treatmentSections/drugOrderHistory.html',
+                        resolve: {
+                            prescribedDrugOrders: function(TreatmentService, $stateParams) {
+                                return TreatmentService.getPrescribedDrugOrders($stateParams.patientUuid, true, 5);
+                            }
+                        }
                     }
                 }
             })
@@ -161,12 +161,5 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
             });
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
     }]).run(['$rootScope', '$state', '$window', function ($rootScope, $state, $window) {
-
             FastClick.attach(document.body);
-
-//        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-//            if (!$state.is('patientsearch')) return;
-//            event.preventDefault();
-//            $window.location.reload();
-//        })
     }]);

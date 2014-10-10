@@ -4,7 +4,7 @@ angular.module('bahmni.clinical')
     .controller('TreatmentController', ['$scope', '$rootScope', 'TreatmentService', 'contextChangeHandler', 'RegisterTabService', 'treatmentConfig', 'DrugService', '$filter',
         function ($scope, $rootScope, treatmentService, contextChangeHandler, registerTabService, treatmentConfig, drugService, $filter) {
 
-            $scope.treatments = $rootScope.newlyAddedTreatments || [];
+            $scope.treatments = $scope.consultation.newlyAddedTreatments || [];
             $scope.treatmentConfig = treatmentConfig;
             $scope.treatmentConfig.durationUnits = [
                 {name: "Hour(s)", factor: 1/24},
@@ -17,7 +17,7 @@ angular.module('bahmni.clinical')
                 return new Bahmni.Clinical.DrugOrderViewModel($scope.currentBoard.extensionParams, $scope.treatmentConfig);
             };
 
-            $scope.treatment = $rootScope.incompleteTreatment || newTreatment();
+            $scope.treatment = $scope.consultation.incompleteTreatment || newTreatment();
             $scope.treatmentConfig.durationUnits.forEach(function(durationUnit){
                 if(_.isEqual(durationUnit, $scope.treatment.durationUnit)){
                     $scope.treatment.durationUnit = durationUnit;
@@ -74,8 +74,8 @@ angular.module('bahmni.clinical')
             };
 
             var allowContextChange = function () {
-                $rootScope.newlyAddedTreatments = $scope.treatments;
-                $rootScope.incompleteTreatment = $scope.treatment;
+                $scope.consultation.newlyAddedTreatments = $scope.treatments;
+                $scope.consultation.incompleteTreatment = $scope.treatment;
                 return true;
             };
 
@@ -105,7 +105,7 @@ angular.module('bahmni.clinical')
 
             var saveTreatment = function () {
                 $rootScope.consultation.drugOrders = [];
-                $rootScope.newlyAddedTreatments.forEach(function (treatment) {
+                $scope.consultation.newlyAddedTreatments.forEach(function (treatment) {
                     $rootScope.consultation.drugOrders.push(Bahmni.Clinical.DrugOrder.createFromUIObject(treatment));
                 });
             };

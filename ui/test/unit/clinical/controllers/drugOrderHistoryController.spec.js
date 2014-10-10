@@ -8,7 +8,7 @@ describe("DrugOrderHistoryController", function(){
 
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
-
+        scope.consultation = {};
         prescribedDrugOrders = [
             {
                 "uuid": "drugOrder1Uuid",
@@ -104,9 +104,9 @@ describe("DrugOrderHistoryController", function(){
 
     describe("when initialized", function(){
         it("should setup scope variables", function() {
-            expect(Object.keys(scope.drugOrderGroups).length).toBe(2);
-            expect(scope.drugOrderGroups['1410349317222'].length).toBe(1);
-            var secondDrugOrder = scope.drugOrderGroups['1410349317222'][0];
+            expect(Object.keys(scope.consultation.drugOrderGroups).length).toBe(2);
+            expect(scope.consultation.drugOrderGroups['1410349317222'].length).toBe(1);
+            var secondDrugOrder = scope.consultation.drugOrderGroups['1410349317222'][0];
             expect(secondDrugOrder.drugName).toBe(prescribedDrugOrders[1].drug.name);
         });
     });
@@ -125,7 +125,7 @@ describe("DrugOrderHistoryController", function(){
 
             scope.remove(drugOrder);
 
-            expect(scope.removableDrugs[0]).toBe(drugOrder);
+            expect(scope.consultation.discontinuedDurgs[0]).toBe(drugOrder);
         });
     });
 
@@ -145,7 +145,7 @@ describe("DrugOrderHistoryController", function(){
             scope.remove(drugOrder);
             scope.undoRemove(drugOrder);
 
-            expect(0).toBe(scope.removableDrugs.length);
+            expect(0).toBe(scope.consultation.discontinuedDurgs.length);
         });
 
         it("should remove the proper drugOrder from removableDrugOrders", function(){
@@ -155,12 +155,12 @@ describe("DrugOrderHistoryController", function(){
             scope.remove(drugOrder1);
             scope.remove(drugOrder2);
 
-            expect(2).toBe(scope.removableDrugs.length);
+            expect(2).toBe(scope.consultation.discontinuedDurgs.length);
 
             scope.undoRemove(drugOrder2);
 
-            expect(1).toBe(scope.removableDrugs.length);
-            expect(drugOrder1).toBe(scope.removableDrugs[0]);
+            expect(1).toBe(scope.consultation.discontinuedDurgs.length);
+            expect(drugOrder1).toBe(scope.consultation.discontinuedDurgs[0]);
         })
     });
 });

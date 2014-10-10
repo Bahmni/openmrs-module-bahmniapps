@@ -6,6 +6,7 @@ describe("TreatmentController", function () {
     var scope;
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
+        scope.consultation = {};
         scope.currentBoard = {extension: {}};
         $rootScope.contextChangeHandler = {add: function () {
         }};

@@ -2,24 +2,20 @@
 
 angular.module('bahmni.clinical')
     .controller('DrugOrderHistoryController', ['$scope', '$rootScope', '$filter', 'prescribedDrugOrders', 'RegisterTabService', 'contextChangeHandler', function ($scope, $rootScope, $filter, prescribedDrugOrders, registerTabService, contextChangeHandler) {
-        $scope.removableDrugs = [];
-        var groupedDrugOrders = function (drugOrders) {
-            return _.groupBy(drugOrders, function (drugOrder) {
-                return drugOrder.visit.startDateTime;
+        var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
+
+        var createPrescribedDrugOrderGroups = function () {
+            var drugOrderGroups = _.groupBy(prescribedDrugOrders, function (drugOrder) { return drugOrder.visit.startDateTime; });
+            angular.forEach(drugOrderGroups,function(drugOrders, visitStartDate){
+                drugOrderGroups[visitStartDate] = drugOrders.map(DrugOrderViewModel.createFromContract);
             });
+            return drugOrderGroups;
         };
 
         var init = function () {
-            if(!$rootScope.drugOrderGroups){
-                var drugOrderGroups = groupedDrugOrders(prescribedDrugOrders);
-                angular.forEach(drugOrderGroups,function(drugOrders, key){
-                    drugOrderGroups[key] = drugOrders.map(function(drugOrder) {return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder)});
-                });
-                $scope.drugOrderGroups = drugOrderGroups;
-            }else{
-                $scope.drugOrderGroups = $rootScope.drugOrderGroups;
-            }
-            $scope.drugOrderGroupOrder = Object.keys($scope.drugOrderGroups).sort(function(a, b){return a < b});
+            $scope.consultation.discontinuedDurgs = $scope.consultation.discontinuedDurgs || [];
+            $scope.consultation.drugOrderGroups = $scope.consultation.drugOrderGroups || createPrescribedDrugOrderGroups();
+            $scope.drugOrderGroupOrder = Object.keys($scope.consultation.drugOrderGroups).sort(function(a, b){return a < b});
         };
 
         $scope.toggleShowAdditionalInstructions = function (line) {
@@ -40,18 +36,18 @@ angular.module('bahmni.clinical')
 
         $scope.remove = function(drugOrder){
             drugOrder.action = Bahmni.Clinical.Constants.orderActions.discontinue;
-            $scope.removableDrugs.push(drugOrder);
+            $scope.consultation.discontinuedDurgs.push(drugOrder);
         };
 
         $scope.undoRemove = function(drugOrder){
-            $scope.removableDrugs = _.reject($scope.removableDrugs, function(removableOrder){
+            $scope.consultation.discontinuedDurgs = _.reject($scope.consultation.discontinuedDurgs, function(removableOrder){
                 return removableOrder.uuid === drugOrder.uuid;
             });
             drugOrder.action = Bahmni.Clinical.Constants.orderActions.new;
         };
 
         var saveTreatment = function () {
-            $rootScope.discontinuedDurgs.forEach(function (discontinuedDrug) {
+            $scope.consultation.discontinuedDurgs.forEach(function (discontinuedDrug) {
                 var removableOrder = _.find(prescribedDrugOrders, function (prescribedOrder) {
                     return prescribedOrder.uuid === discontinuedDrug.uuid;
                 });
@@ -65,12 +61,4 @@ angular.module('bahmni.clinical')
         registerTabService.register(saveTreatment);
 
         init();
-
-        var allowContextChange = function () {
-            $rootScope.discontinuedDurgs = $scope.removableDrugs;
-            $rootScope.drugOrderGroups = $scope.drugOrderGroups;
-            return true;
-        };
-
-        contextChangeHandler.add(allowContextChange);
     }]);
