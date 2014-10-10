@@ -12,8 +12,8 @@
         <p class="messages null-data-message">No Lab Orders for this patient.</p>
     </div>
     <div class="template-container" ng-show="tabular.hasOrders()">
-        <section>
-            <h2 ng-click="toggleInvestigationChart()" class="ipd-investigation-title row-click">
+        <section class="section-grid">
+            <h2 ng-click="toggleInvestigationChart()" class="section-title row-click">
                 <i class="icon-caret-right" ng-hide="showInvestigationChart"></i>
                 <i class="icon-caret-down" ng-show="showInvestigationChart"></i>
                 Investigation Chart
@@ -50,8 +50,8 @@
             </table>
         </section>
 
-        <section>
-            <h2>Lab Investigations (without Accession Notes)</h2>
+        <section class="section-grid">
+            <h2 class="section-title">Lab Investigations (without Accession Notes)</h2>
 
             <table ng-repeat="labOrderResults in labAccessions" bindonce="labAccessions">
                 <thead>
