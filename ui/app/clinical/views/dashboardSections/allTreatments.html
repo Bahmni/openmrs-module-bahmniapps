@@ -17,10 +17,29 @@
             <thead>
                 <th colspan="3" bo-text="drugOrdersGroup.values[0].effectiveStartDate | date:'dd MMM, yyyy'"></th>
             </thead>
-            <tbody>
-                <tr ng-repeat="drugOrder in drugOrdersGroup.values" >
+            <tbody ng-repeat="drugOrder in drugOrdersGroup.values">
+                <tr toggle="drugOrder.showNotes">
                     <td class="drug">{{drugOrder.drugName}}</td>
                     <td class="dosage">{{drugOrder.getDescription()}}</td>
+                    <td class="toggle-btn">
+                        <button class="toggle fr" ng-class="{'has-notes': drugOrder.additionalInstructions}">
+                            <i class="icon-plus-sign" ng-hide="drugOrder.show"></i>
+                            <i class="icon-minus-sign" ng-show="drugOrder.show"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr ng-if="drugOrder.showNotes">
+                    <td colspan="3" class="inline-notes notes">
+                        <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.additionalInstructions}}</p>
+
+                        <div class="footer-note right">
+                            <span class="time-stamp">
+                              <span class="date">{{drugOrder.effectiveStartDate | date:'dd MMM yy'}}</span>
+                              <span class="time">{{drugOrder.effectiveStartDate | date :'hh:mm a'}}</span>
+                            </span>
+                            <span class="provider" bo-text="drugOrder.provider.name"></span>
+                        </div>
+                    </td>
                 </tr>
             </tbody>
         </table> 
