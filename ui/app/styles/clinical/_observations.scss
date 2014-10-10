@@ -310,6 +310,9 @@ concept-set {
     position: relative;
     margin: 0 10px;
     clear: both;
+    ul, ol {margin-left: 20px;}
+    ul li {list-style-type: disc;}
+    ol li {list-style-type: decimal;}
     span.description {
         display: inline-block;
         margin-top: 7px;
