@@ -74,7 +74,7 @@ button[disabled] {
     overflow: auto;
     @include box-sizing(border-box);
     button {
-        width: 200px;
+        /* width: 200px; temp changes - removed equal spacing */
         float: left;
         margin: 0 2px 2px 0;
         white-space: nowrap;
