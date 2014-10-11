@@ -38,7 +38,7 @@ Bahmni.ConceptSet.MultiSelectObservations = function(conceptSetConfig) {
 
 Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection, conceptSetConfig) {
     var self = this;
-    this.label = concept.name;
+    this.label = concept.displayLabel;
     this.isMultiSelect = true;
     this.selectedObs = {};
     this.concept = concept;
