@@ -29,6 +29,7 @@
         <div ng-repeat="image in album.images">
 
             <div class="image-bottom-bar" ng-if="isActive($index,album.tag)">
+                <span class="icon-file-alt has-notes" ng-if="hasObsRelationship(image)"></span>
                 <span class="image-provider">{{image.providerName}}</span>
                 <span class="image-date">{{image.date | date: "dd MMM yy"}}</span>
                 <span class="image-index">({{getCurrentIndex()}} of {{getTotalLength()}})</span>
@@ -46,8 +47,19 @@
         <div class="image-actions" ng-if="isActive($index,album.tag)">
             <span class="image-title">{{image.title}}</span>
         </div>
-        <div impression target-obs="image" source-concept="impression" consultation-observations="visit.observations"
-             ng-show="isActive($index,album.tag)"></div>
+        <section ng-show="isActive($index,album.tag)">
+            <ul class="impression">
+                <li ng-repeat="obs in image.sourceObs">
+                    <pre class="notes inline-notes"><strong>{{obs.providers[0].name}} ({{obs.observationDateTime | date: 'dd MMM yy'}}):</strong>{{obs.value}}</pre>
+                </li>
+            </ul>
+            <div class="impression-control">
+                <textarea placeholder="Enter impression on image" ng-model="image.newSourceObs.value">
+                </textarea>
+                <input class="confirm save-impression-btn" type="button" ng-click="saveImpression(image)" value="Add" ng-disabled="!image.newSourceObs.value">
+            </div>
+
+        </section>
     </div>
 </div>
 

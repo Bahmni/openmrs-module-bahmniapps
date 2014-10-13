@@ -1,5 +1,5 @@
 angular.module('bahmni.common.gallery')
-    .directive('bmGalleryPane', ['$rootScope', '$document', function ($rootScope, $document) {
+    .directive('bmGalleryPane', ['$rootScope', '$document', 'observationsService', 'encounterService', 'spinner', function ($rootScope, $document, observationsService, encounterService, spinner) {
 
         var $body = $document.find('body');
 
@@ -100,9 +100,62 @@ angular.module('bahmni.common.gallery')
                 close($scope);
             };
 
-            $scope.toggleImpression = function(){
+            $scope.toggleImpression = function () {
                 $scope.showImpression = !$scope.showImpression;
-            }
+            };
+
+            $scope.hasObsRelationship = function (image) {
+                return image.sourceObs && image.sourceObs.length > 0;
+            };
+
+            $scope.saveImpression = function (image) {
+                var bahmniEncounterTransaction = mapBahmniEncounterTransaction(image);
+                spinner.forPromise(encounterService.create(bahmniEncounterTransaction).then(function () {
+                    constructNewSourceObs(image);
+                    fetchObsRelationship(image);
+                }));
+            };
+
+            var init = function () {
+                $scope.albums.forEach(function (album) {
+                    album.images.forEach(function (image) {
+                        fetchObsRelationship(image);
+                        constructNewSourceObs(image);
+                    })
+                })
+            };
+
+            var fetchObsRelationship = function (image) {
+                observationsService.getObsRelationship(image.uuid).then(function (response) {
+                    image.sourceObs = response.data;
+                });
+            };
+
+            var constructNewSourceObs = function (image) {
+                image.newSourceObs = $scope.newSourceObs && $scope.newSourceObs.targetObsRelation.targetObs.uuid === image.uuid ? $scope.targetObs : {
+                    value: "",
+                    concept: {
+                        uuid: $rootScope.impressionConcept.uuid
+                    },
+                    targetObsRelation: {
+                        relationshipType: Bahmni.Common.Constants.qualifiedByRelationshipType,
+                        targetObs: {
+                            uuid: image.uuid
+                        }
+                    }
+                };
+            };
+
+            var mapBahmniEncounterTransaction = function (image) {
+                return {
+                    visitUuid: $rootScope.activeVisit.uuid,
+                    patientUuid: $rootScope.patient.uuid,
+                    encounterTypeUuid: $rootScope.encounterConfig.getConsultationEncounterTypeUuid(),
+                    observations: [image.newSourceObs]
+                };
+            };
+
+            init();
         };
 
         return {
