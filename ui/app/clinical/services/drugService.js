@@ -7,7 +7,7 @@ angular.module('bahmni.clinical')
             return $http.get("/openmrs/ws/rest/v1/drug",
                 {
                     method: "GET",
-                    params: { v: 'custom:(uuid,name,doseStrength,units,dosageForm,concept:(uuid,name))', q: drugName },
+                    params: { v: 'custom:(uuid,name,doseStrength,units,dosageForm,concept:(uuid,name))', q: drugName, s: "ordered" },
                     withCredentials: true
                 }
             ).then(function (response) {
