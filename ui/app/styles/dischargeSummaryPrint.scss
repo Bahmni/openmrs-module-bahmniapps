@@ -185,3 +185,7 @@ section h3 {
     float: right;
   }
 }
+
+section h3, .date {
+    white-space: nowrap;
+}
