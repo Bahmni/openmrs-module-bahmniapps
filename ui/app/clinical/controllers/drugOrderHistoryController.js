@@ -30,13 +30,22 @@ angular.module('bahmni.clinical')
             return $filter("date")(effectiveStartDate, 'dd MMM yy') !== $filter("date")(visitStartDate, 'dd MMM yy');
         };
 
-        $scope.edit = function(drugOrder){
-            $rootScope.$emit("event:reviseDrugOrder", drugOrder);
+        $scope.edit = function(drugOrder, drugOrders){
+            if(drugOrder.isEditAllowed){
+                drugOrders.forEach(function(drugOrder){
+                    drugOrder.isDiscontinuedAllowed = true;
+                });
+                drugOrder.isDiscontinuedAllowed = false;
+                $rootScope.$emit("event:reviseDrugOrder", drugOrder);
+            }
         };
 
         $scope.remove = function(drugOrder){
-            drugOrder.action = Bahmni.Clinical.Constants.orderActions.discontinue;
-            $scope.consultation.discontinuedDurgs.push(drugOrder);
+            if(drugOrder.isDiscontinuedAllowed){
+                drugOrder.action = Bahmni.Clinical.Constants.orderActions.discontinue;
+                drugOrder.isEditAllowed = false;
+                $scope.consultation.discontinuedDurgs.push(drugOrder);
+            }
         };
 
         $scope.undoRemove = function(drugOrder){
@@ -44,6 +53,7 @@ angular.module('bahmni.clinical')
                 return removableOrder.uuid === drugOrder.uuid;
             });
             drugOrder.action = Bahmni.Clinical.Constants.orderActions.new;
+            drugOrder.isEditAllowed = true;
         };
 
         var saveTreatment = function () {

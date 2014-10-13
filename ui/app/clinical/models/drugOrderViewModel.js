@@ -20,6 +20,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
     this.variableDosingType = {doseUnits: defaultDoseUnit && defaultDoseUnit.name};
     this.noFrequencyDosingType = {};
     this.durationInDays = 0;
+    this.isDiscontinuedAllowed = true;
+    this.isEditAllowed = true;
 
     var simpleDoseAndFrequency = function () {
         var uniformDosingType = self.uniformDosingType;
@@ -216,7 +218,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
         revisableDrugOrder.drugNameDisplay = constructDrugNameDisplay(this.drug, this.drug.form).value;
 
         return revisableDrugOrder;
-    }
+    };
 };
 
 Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderResponse) {

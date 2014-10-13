@@ -88,6 +88,11 @@ button:hover {
   opacity: 0.8;
 }
 
+button[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 .secondary-button, .secondary-button:hover {
     @include background(linear-gradient(top, $bahmniSecondaryColor, #528484));
     color: $white;
