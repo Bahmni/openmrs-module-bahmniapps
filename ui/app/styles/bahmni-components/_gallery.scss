@@ -135,6 +135,9 @@ body.gallery-open > *:not(#gallery-pane) {
 }
 .image-bottom-bar {
 	text-align: right;
+	.icon-file-alt {
+		font-size: 18px;
+	}
 }
 .image-title, .image-bottom-bar {
     font-size: 16px;
