@@ -22,6 +22,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
     this.durationInDays = 0;
     this.isDiscontinuedAllowed = true;
     this.isEditAllowed = true;
+    this.quantityEnteredViaEdit = false;
 
     var simpleDoseAndFrequency = function () {
         var uniformDosingType = self.uniformDosingType;
@@ -170,7 +171,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
 
     this.calculateQuantityAndUnit = function () {
         this.calculateDurationInDays();
-        if (!this.quantityEnteredManually) {
+        if (!this.quantityEnteredManually && !this.quantityEnteredViaEdit) {
             if (this.frequencyType == Bahmni.Clinical.Constants.dosingTypes.uniform) {
                 this.quantity = this.uniformDosingType.dose * (this.uniformDosingType.frequency ? this.uniformDosingType.frequency.frequencyPerDay : 0) * this.durationInDays;
                 this.quantityUnit = this.uniformDosingType.doseUnits;
@@ -180,6 +181,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
                 this.quantityUnit = this.variableDosingType.doseUnits;
             }
         }
+        this.quantityEnteredViaEdit = false;
     };
 
     this.isStopped = function () {
@@ -216,6 +218,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
         });
 
         revisableDrugOrder.drugNameDisplay = constructDrugNameDisplay(this.drug, this.drug.form).value;
+        revisableDrugOrder.quantityEnteredViaEdit = true;
 
         return revisableDrugOrder;
     };
