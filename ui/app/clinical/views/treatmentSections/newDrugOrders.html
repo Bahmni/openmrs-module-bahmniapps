@@ -1,7 +1,7 @@
 <section class="section-grid" ng-show="treatments.length > 0">
 	<h2 class="section-title">New Prescription</h2>
 	<ul class="table-mimic">
-		<li ng-repeat="newTreatment in treatments">
+		<li ng-repeat="newTreatment in treatments" ng-class="{highlight : newTreatment.isBeingEdited}">
 			<div class="drug-details">
 				<strong class="drug-name">{{newTreatment.drugNameDisplay}}</strong>&nbsp;{{newTreatment.getDescriptionWithQuantity()}}
 			</div>

@@ -405,4 +405,34 @@ describe("drugOrderViewModel", function () {
 
     });
 
+    describe("edit", function() {
+
+        it ("should not change scheduled date", function() {
+            var treatment = sampleTreatment({}, []);
+            var now = Bahmni.Common.Util.DateUtil.now();
+            treatment.scheduledDate = Bahmni.Common.Util.DateUtil.subtractDays(now, 2);
+
+            var editedTreatment = treatment.cloneForEdit(0, {});
+            expect(Bahmni.Common.Util.DateUtil.isSameDate(editedTreatment.scheduledDate, treatment.scheduledDate)).toBe(true);
+        });
+
+        it("should create a copy of the drug to be edited", function(){
+            var treatment = sampleTreatment({}, []);
+            var editedTreatment = treatment.cloneForEdit(0, {});
+            expect(editedTreatment.drugName).toBe(treatment.drugName);
+            expect(editedTreatment.instructions).toBe(treatment.instructions);
+            expect(editedTreatment.duration).toBe(treatment.duration);
+            expect(editedTreatment.scheduledDate).toBe(treatment.scheduledDate);
+            expect(editedTreatment.quantity).toBe(treatment.quantity);
+            expect(editedTreatment.quantityUnit).toBe(treatment.quantityUnit);
+        });
+
+        it("should set the flag isBeingEdited", function(){
+            var treatment = sampleTreatment({}, []);
+            var editedTreatment = treatment.cloneForEdit(0, {});
+            expect(editedTreatment.isBeingEdited).toBe(true);
+        });
+
+    });
+
 });

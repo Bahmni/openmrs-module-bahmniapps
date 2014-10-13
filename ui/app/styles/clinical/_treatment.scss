@@ -202,8 +202,10 @@
 
     .highlight {
         background: #fefee4;
-        border-left: 5px solid orange;
     }
+	.active-drug {
+		border-left: 5px solid orange;
+	}
 }
 
 .strike-through{

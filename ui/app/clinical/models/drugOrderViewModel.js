@@ -23,6 +23,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
     this.isDiscontinuedAllowed = true;
     this.isEditAllowed = true;
     this.quantityEnteredViaEdit = false;
+    this.isBeingEdited = false;
 
     var simpleDoseAndFrequency = function () {
         var uniformDosingType = self.uniformDosingType;
@@ -221,6 +222,27 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
         revisableDrugOrder.quantityEnteredViaEdit = true;
 
         return revisableDrugOrder;
+    };
+
+    this.cloneForEdit = function(index, treatmentConfig){
+        var editableDrugOrder = new Bahmni.Clinical.DrugOrderViewModel(null, [], []);
+        angular.copy(this, editableDrugOrder);
+
+        editableDrugOrder.uniformDosingType.frequency = this.isUniformDosingType() && _.find(treatmentConfig.frequencies, function(frequency){
+            return frequency.name === self.uniformDosingType.frequency.name;
+        });
+
+        editableDrugOrder.durationUnit = _.find(treatmentConfig.durationUnits, function(durationUnit){
+            return durationUnit.name === self.durationUnit.name;
+        });
+
+        editableDrugOrder.route = _.find(treatmentConfig.routes, function(route){
+            return route.name === self.route;
+        });
+
+        editableDrugOrder.currentIndex = index;
+        editableDrugOrder.isBeingEdited = true;
+        return editableDrugOrder;
     };
 };
 

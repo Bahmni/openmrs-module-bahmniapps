@@ -34,8 +34,10 @@ angular.module('bahmni.clinical')
             if(drugOrder.isEditAllowed){
                 drugOrders.forEach(function(drugOrder){
                     drugOrder.isDiscontinuedAllowed = true;
+                    drugOrder.isBeingEdited = false;
                 });
                 drugOrder.isDiscontinuedAllowed = false;
+                drugOrder.isBeingEdited = true;
                 $rootScope.$emit("event:reviseDrugOrder", drugOrder);
             }
         };

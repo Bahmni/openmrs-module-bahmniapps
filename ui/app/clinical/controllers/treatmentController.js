@@ -45,6 +45,10 @@ angular.module('bahmni.clinical')
                     return;
                 }
                 $scope.treatment.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;
+                if($scope.treatment.isBeingEdited){
+                    $scope.treatments.splice($scope.treatment.currentIndex,1);
+                    $scope.treatment.isBeingEdited = false;
+                }
                 $scope.treatments.push($scope.treatment);
                 $scope.treatment = newTreatment();
                 $scope.treatment.scheduledDate = $filter("date")($scope.treatment.scheduledDate, 'yyyy-MM-dd');
@@ -69,8 +73,8 @@ angular.module('bahmni.clinical')
             };
 
             $scope.edit = function (index) {
-                $scope.treatment = $scope.treatments[index];
-                $scope.treatments.splice(index, 1);
+                $scope.treatments[index].isBeingEdited = true;
+                $scope.treatment = $scope.treatments[index].cloneForEdit(index, treatmentConfig);
             };
 
             var allowContextChange = function () {
@@ -112,7 +116,11 @@ angular.module('bahmni.clinical')
             registerTabService.register(saveTreatment);
 
             $rootScope.$on("event:reviseDrugOrder", function(event, drugOrder){
+                $scope.treatments.forEach(function(treatment){
+                    treatment.isBeingEdited = false;
+                });
                 $scope.treatment = drugOrder.revise(treatmentConfig);
                 $scope.treatment.scheduledDate = $filter("date")($scope.treatment.scheduledDate, 'yyyy-MM-dd');
+                $scope.treatment.currentIndex = $scope.treatments.length + 1;
             });
         }]);
