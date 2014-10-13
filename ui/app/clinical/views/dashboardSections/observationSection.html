@@ -1,26 +1,20 @@
 <div ng-controller="PatientDashboardObservationController">
     <h2 class="section-title">{{section.title}}</h2>
 
-    <section class="block" ng-class="{'more': patientSummary.show}">
-        <div ng-repeat="obsGroup in patientSummary.data">
-            
-            <label class="date">{{obsGroup.concept}} - {{obsGroup.date | date: 'dd MMM yy'}}</label>
-
-            <div ng-repeat="observation in obsGroup.value">
-                <fieldset>
-                    <div class="form-field"
-                         ng-class="{'is-abnormal': observation.abnormal, 'is-text': isText(observation)}">
-                        <span class="field-attribute"><label>{{observation.concept.shortName || observation.concept.name}}</label></span>
-                        <span class="value-text-only">{{observation.getDisplayValue()}}</span>
-                        <span class="label-add-on" ng-hide="!observation.unit"> {{observation.concept.units}}</span>
-
-                        <div class="footer-note fr">
-                            <span class="value-text-only time">{{observation.observationDateTime | date :'hh:mm a'}}</span>
-                        </div>
-                    </div>
-                </fieldset>
-            </div>
-        </div>
+    <section class="block hierarchy">
+        <ul class="form-field">
+            <li ng-repeat="obsGroup in patientSummary.data" class="level-1 has-child">
+                <div>
+                    <span class="obs-date">
+                        {{obsGroup.date | date: 'dd MMM yy'}}
+                    </span>
+                </div>
+                <ul>
+                    <dashboard-observation observation="observation" ng-repeat="observation in obsGroup.value"
+                                           level="2"></dashboard-observation>
+                </ul>
+            </li>
+        </ul>
         <div ng-show="patientSummary.message">
             <div class="placeholder-text">No {{section.title}} for this patient.</div>
         </div>

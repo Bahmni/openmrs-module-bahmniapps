@@ -1,10 +1,17 @@
 <div>
-    <section class="block hierarchy" ng-class="{'more': patientSummary.show}">
+    <section class="block hierarchy">
         <ul class="form-field">
             <li ng-repeat="obsTemplate in diseaseTemplate.obsTemplates" class="level-1 has-child">
-                <span>{{obsTemplate.name}} - {{obsTemplate.visitStartDate | date: 'dd MMM yy'}}</span>
+                <span>
+                        {{obsTemplate.name}}
+                    <span class="fr">
+                        {{obsTemplate.visitStartDate | date: 'dd MMM yy'}}
+                    </span>
+                </span>
+
                 <ul>
-                    <dashboard-observation observation="observation" ng-repeat="observation in obsTemplate.observations" level="2"></dashboard-observation>
+                    <dashboard-observation observation="observation" ng-repeat="observation in obsTemplate.observations"
+                                           level="2"></dashboard-observation>
                 </ul>
             </li>
         </ul>

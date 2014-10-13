@@ -22,8 +22,11 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUICo
                 }
             }
             else {
-                this.getFreeTextObs().value = newValue;
-                this.getFreeTextObs().voided = false;
+                var freeTextObs = this.getFreeTextObs();
+                if(freeTextObs){
+                    freeTextObs.value = newValue;
+                    freeTextObs.voided = false;
+                }
                 if(this.getCodedObs()){
                     if(this.getCodedObs().uuid){
                         this.getCodedObs().voided = true;
