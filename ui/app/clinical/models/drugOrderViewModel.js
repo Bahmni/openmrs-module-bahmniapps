@@ -5,16 +5,32 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
         });
     };
 
+    var DateUtil = Bahmni.Common.Util.DateUtil;
     var self = this;
     var config = config || {};
     var durationUnits = config.durationUnits || [];
     var defaultDoseUnit = getDefaultValue(extensionParams && extensionParams.defaultDoseUnit, config.doseUnits || []);
     var defaultInstructions = getDefaultValue(extensionParams && extensionParams.defaultInstructions, config.dosingInstructions || []);
+
+    Object.defineProperty(this, 'effectiveStartDate', {
+        get: function () {
+            return this._effectiveStartDate;
+        },
+        set : function(value){
+            this._effectiveStartDate = value;
+            if(DateUtil.parse(value) >= DateUtil.addDays(DateUtil.today(), 1)){
+                this.scheduledDate = this._effectiveStartDate;
+            } else {
+                this.scheduledDate = null;
+            }
+        }
+    });
+
     this.asNeeded = false;
     this.route = getDefaultValue(extensionParams && extensionParams.defaultRoute, config.routes || []);
     this.durationUnit = getDefaultValue(extensionParams && extensionParams.defaultDurationUnit, durationUnits);
     this.instructions = defaultInstructions && defaultInstructions.name;
-    this.scheduledDate = Bahmni.Common.Util.DateUtil.now();
+    this.effectiveStartDate = DateUtil.now();
     this.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
     this.uniformDosingType = {doseUnits: defaultDoseUnit && defaultDoseUnit.name};
     this.variableDosingType = {doseUnits: defaultDoseUnit && defaultDoseUnit.name};

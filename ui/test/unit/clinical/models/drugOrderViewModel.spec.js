@@ -436,4 +436,33 @@ describe("drugOrderViewModel", function () {
 
     });
 
+    describe("set effectiveStartDate", function() {
+        var isoDateFormat = "YYYY-MM-DD";
+
+        it ("should set scheduledDate if date is in future", function() {
+            var treatment = sampleTreatment({}, []);
+            var now = Bahmni.Common.Util.DateUtil.now();
+
+            treatment.effectiveStartDate = moment(Bahmni.Common.Util.DateUtil.addDays(now, 2)).format(isoDateFormat);
+
+            expect(treatment.scheduledDate).toBe(treatment.effectiveStartDate);
+        });
+
+        it ("should clear scheduledDate if date is today", function() {
+            var treatment = sampleTreatment({}, []);
+
+            treatment.effectiveStartDate = moment(Bahmni.Common.Util.DateUtil.now()).format(isoDateFormat);
+
+            expect(treatment.scheduledDate).toBe(null);
+        });
+
+        it ("should clear scheduledDate if date is in the past", function() {
+            var treatment = sampleTreatment({}, []);
+            var now = Bahmni.Common.Util.DateUtil.now();
+
+            treatment.effectiveStartDate = moment(Bahmni.Common.Util.DateUtil.subtractDays(now, 2)).format(isoDateFormat);
+
+            expect(treatment.scheduledDate).toBe(null);
+        });
+    });
 });

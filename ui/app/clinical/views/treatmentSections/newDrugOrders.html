@@ -14,7 +14,7 @@
 				<button ng-click="edit($index)"><i class="icon-edit"></i></button>
 			</div>
 			<div class="start-date fr">
-				<span>from {{newTreatment.scheduledDate | date: 'dd MMM yy'}}</span>
+				<span>from {{newTreatment.effectiveStartDate | date: 'dd MMM yy'}}</span>
 			</div>
 	        <div ng-show="newTreatment.showAdditionalInstructions" class="notes inline-notes">
 	            {{newTreatment.additionalInstructions}}

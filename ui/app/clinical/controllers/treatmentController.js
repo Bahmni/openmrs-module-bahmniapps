@@ -17,13 +17,15 @@ angular.module('bahmni.clinical')
                 return new Bahmni.Clinical.DrugOrderViewModel($scope.currentBoard.extensionParams, $scope.treatmentConfig);
             };
 
+            $scope.today = new Date();
+
             $scope.treatment = $scope.consultation.incompleteTreatment || newTreatment();
             $scope.treatmentConfig.durationUnits.forEach(function(durationUnit){
                 if(_.isEqual(durationUnit, $scope.treatment.durationUnit)){
                     $scope.treatment.durationUnit = durationUnit;
                 }
             });
-            $scope.treatment.scheduledDate = $filter("date")($scope.treatment.scheduledDate, 'yyyy-MM-dd');
+            $scope.treatment.effectiveStartDate = $filter("date")($scope.treatment.effectiveStartDate, 'yyyy-MM-dd');
 
             var watchFunctionForQuantity = function() {
                 var treatment = $scope.treatment;
@@ -51,7 +53,7 @@ angular.module('bahmni.clinical')
                 }
                 $scope.treatments.push($scope.treatment);
                 $scope.treatment = newTreatment();
-                $scope.treatment.scheduledDate = $filter("date")($scope.treatment.scheduledDate, 'yyyy-MM-dd');
+                $scope.treatment.effectiveStartDate = $filter("date")($scope.treatment.effectiveStartDate, 'yyyy-MM-dd');
                 $scope.formInvalid = false;
             };
 
@@ -120,7 +122,7 @@ angular.module('bahmni.clinical')
                     treatment.isBeingEdited = false;
                 });
                 $scope.treatment = drugOrder.revise(treatmentConfig);
-                $scope.treatment.scheduledDate = $filter("date")($scope.treatment.scheduledDate, 'yyyy-MM-dd');
+                $scope.treatment.effectiveStartDate = $filter("date")($scope.treatment.effectiveStartDate, 'yyyy-MM-dd');
                 $scope.treatment.currentIndex = $scope.treatments.length + 1;
             });
         }]);
