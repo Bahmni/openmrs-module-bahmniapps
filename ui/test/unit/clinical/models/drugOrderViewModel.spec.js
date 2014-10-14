@@ -368,6 +368,7 @@ describe("drugOrderViewModel", function () {
             expect(drugOrderViewModel.effectiveStartDate).toBe(drugOrder.effectiveStartDate);
             expect(drugOrderViewModel.effectiveStopDate).toBe(drugOrder.effectiveStopDate);
             expect(drugOrderViewModel.provider).toBe(drugOrder.provider);
+            expect(drugOrderViewModel.dateActivated).toBe(drugOrder.dateActivated);
         });
 
     });

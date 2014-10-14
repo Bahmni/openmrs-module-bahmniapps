@@ -294,5 +294,6 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
     viewModel.action = drugOrderResponse.action;
     viewModel.dateStopped = drugOrderResponse.dateStopped;
     viewModel.uuid = drugOrderResponse.uuid;
+    viewModel.dateActivated = drugOrderResponse.dateActivated;
     return viewModel;
 };
