@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('bahmni.clinical').controller('ConsultationNavigationController',
-    ['$scope', '$rootScope', '$state', '$location', '$window', 'appService', 'urlHelper', 'contextChangeHandler', 'spinner', 'encounterService', 'RegisterTabService', 'messagingService', 'sessionService',
-        function ($scope, $rootScope, $state, $location, $window, appService, urlHelper, contextChangeHandler, spinner, encounterService, registerTabService, messagingService, sessionService) {
+    ['$scope', '$rootScope', '$state', '$location', '$window', 'clinicalConfigService', 'urlHelper', 'contextChangeHandler', 
+        'spinner', 'encounterService', 'RegisterTabService', 'messagingService', 'sessionService',
+        function ($scope, $rootScope, $state, $location, $window, clinicalConfigService, urlHelper, contextChangeHandler, 
+                  spinner, encounterService, registerTabService, messagingService, sessionService) {
 
             $scope.loadVisit = function(visitUuid) {
                 $state.go('patient.visit', {visitUuid: visitUuid});
@@ -38,7 +40,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
 
             var initialize = function () {
                 $rootScope.$on('event:appExtensions-loaded', function () {
-                    var appExtensions = appService.getAppDescriptor().getExtensions("org.bahmni.clinical.consultation.board", "link");
+                    var appExtensions = clinicalConfigService.getAllConsultationBoards();
                     $scope.availableBoards = $scope.availableBoards.concat(appExtensions);
                     setCurrentBoardBasedOnPath();
                 });

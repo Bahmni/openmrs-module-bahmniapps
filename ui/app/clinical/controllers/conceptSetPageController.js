@@ -1,11 +1,10 @@
 angular.module('bahmni.clinical')
-.controller('ConceptSetPageController', ['$scope','$rootScope','$location', '$anchorScroll', '$stateParams', 'conceptSetService','appService','messagingService',
-        function($scope,$rootScope,$location, $anchorScroll, $stateParams, conceptSetService,appService,messagingService) {
+    .controller('ConceptSetPageController', ['$scope', '$rootScope', '$location', '$anchorScroll', '$stateParams', 'conceptSetService', 'clinicalConfigService', 'messagingService',
+        function ($scope, $rootScope, $location, $anchorScroll, $stateParams, conceptSetService, clinicalConfigService, messagingService) {
 
-	$rootScope.consultation.selectedObsTemplate = $rootScope.consultation.selectedObsTemplate || [];
+            $rootScope.consultation.selectedObsTemplate = $rootScope.consultation.selectedObsTemplate || [];
     $scope.scrollingEnabled = false;
-	$scope.conceptSetGroupExtensionId = 'org.bahmni.clinical.conceptSetGroup.' + $stateParams.conceptSetGroupName;
-    var extensions = appService.getAppDescriptor().getExtensions($scope.conceptSetGroupExtensionId, "config");
+    var extensions = clinicalConfigService.getAllConceptSetExtensions($stateParams.conceptSetGroupName);
 	var visitType = $scope.encounterConfig.getVisitTypeByUuid($scope.consultation.visitTypeUuid);
 	$scope.context = {visitType:  visitType, patient: $scope.patient};
 	var numberOfLevels = 2;

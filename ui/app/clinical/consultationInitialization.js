@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('bahmni.clinical').factory('consultationInitialization',
-    ['$rootScope', '$q', 'configurationService', 'patientService', 'authenticator', 'appService', 'encounterService', 'bedService', 'spinner', 'initialization', 'diagnosisService', 'patientVisitHistoryService', 'urlHelper','sessionService', 'conceptSetUiConfigService',
-    function ($rootScope, $q, configurationService, patientService, authenticator, appService, encounterService, bedService, spinner, initialization, diagnosisService, patientVisitHistoryService, urlHelper, sessionService, conceptSetUiConfigService) {
+    ['$rootScope', '$q', 'configurationService', 'patientService', 'authenticator', 'clinicalConfigService', 'encounterService', 
+        'bedService', 'spinner', 'initialization', 'diagnosisService', 'patientVisitHistoryService', 'urlHelper','sessionService', 'conceptSetUiConfigService',
+    function ($rootScope, $q, configurationService, patientService, authenticator, clinicalConfigService, encounterService,
+              bedService, spinner, initialization, diagnosisService, patientVisitHistoryService, urlHelper, sessionService, conceptSetUiConfigService) {
 
         var patientMapper = new Bahmni.PatientMapper($rootScope.patientConfig);
 
@@ -53,14 +55,14 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
             var getActiveVisitData = function(){
                 if($rootScope.activeVisit){
                     return encounterService.search($rootScope.activeVisit.uuid).then(function (encounterTransactionsResponse) {
-                        var obsIgnoreList = appService.getAppDescriptor().getConfig("obsIgnoreList").value || {};
+                        var obsIgnoreList = clinicalConfigService.getObsIgnoreList();
                         $rootScope.visit = Bahmni.Clinical.Visit.create(encounterTransactionsResponse.data, $rootScope.consultationNoteConcept, $rootScope.labOrderNotesConcept,$rootScope.encounterConfig, $rootScope.allTestsAndPanelsConcept, obsIgnoreList, $rootScope.activeVisit.uuid, conceptSetUiConfigService.getConfig());
                     });
                 }
             };
 
             var findDefaultConsultationBoard = function() {
-                var appExtensions = appService.getAppDescriptor().getExtensions("org.bahmni.clinical.consultation.board", "link");
+                var appExtensions = clinicalConfigService.getAllConsultationBoards();
                 var defaultBoard = _.find(appExtensions, 'default');
                 $rootScope.consultationBoardLink = function() {return urlHelper.getConsultationUrl()};
                 if(defaultBoard) {

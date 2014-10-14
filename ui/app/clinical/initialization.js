@@ -4,8 +4,10 @@ angular.module('bahmni.clinical').factory('initialization',
     ['$rootScope', '$q', 'configurationService', 'authenticator', 'appService', 'spinner',
     function ($rootScope, $q, configurationService, authenticator, appService, spinner) {
         var getConfigs = function() {
-            var configNames = ['encounterConfig', 'patientConfig', 'dosageFrequencyConfig','dosageInstructionConfig', 'consultationNoteConfig','labOrderNotesConfig', 'ruledOutDiagnosisConfig', 'allTestsAndPanelsConcept', 'radiologyImpressionConfig'];
-//            var configNames = ['encounterConfig', 'consultationNoteConfig', 'labOrderNotesConfig', 'allTestsAndPanelsConcept', 'dosageFrequencyConfig', 'dosageInstructionConfig'];
+            var configNames = ['encounterConfig', 'patientConfig', 'dosageFrequencyConfig','dosageInstructionConfig', 
+                'consultationNoteConfig','labOrderNotesConfig', 'ruledOutDiagnosisConfig', 'allTestsAndPanelsConcept', 
+                'radiologyImpressionConfig'];
+
             return configurationService.getConfigurations(configNames).then(function (configurations) {
                 $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig);
                 $rootScope.consultationNoteConcept = configurations.consultationNoteConfig.results[0];

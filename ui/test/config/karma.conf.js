@@ -21,6 +21,7 @@ module.exports = function (config) {
             'app/components/angular-ui-select2/src/select2.js',
             'app/components/angular-bindonce/bindonce.js',
             'app/components/stacktrace-js/stacktrace.js',
+            'app/components/angular-cookies/angular-cookies.js',
             'app/common/constants.js',
             'app/**/init.js',
             'app/**/constants.js',

@@ -1,15 +1,18 @@
 'use strict';
 
 angular.module('opd.patientDashboard', [])
-    .controller('PatientDashboardController', ['$scope', '$rootScope', '$location', '$stateParams', 'patientVisitHistoryService', 'urlHelper', 'encounterService', 'appService','diseaseTemplates',
-    function ($scope, $rootScope, $location, $stateParams, patientVisitHistoryService, urlHelper, encounterService, appService,diseaseTemplates) {
+    .controller('PatientDashboardController', ['$scope', '$rootScope', '$location', '$stateParams', 'patientVisitHistoryService',
+        'urlHelper', 'encounterService', 'clinicalConfigService', 'diseaseTemplates',
+        function ($scope, $rootScope, $location, $stateParams, patientVisitHistoryService, 
+                  urlHelper, encounterService, clinicalConfigService, diseaseTemplates) {
         $scope.patientUuid = $stateParams.patientUuid;
         $scope.activeVisitData = {};
         $scope.diseaseTemplates= diseaseTemplates;
 
-        $scope.obsIgnoreList = appService.getAppDescriptor().getConfigValue("obsIgnoreList") || {};
-        
-        $scope.patientDashboardSections = appService.getAppDescriptor().getConfigValue("patientDashboardSections") || {};
+        $scope.obsIgnoreList = clinicalConfigService.getObsIgnoreList();
+        $scope.patientDashboardSections = clinicalConfigService.getAllPatientDashboardSections();
+            
+            
         Bahmni.Clinical.DiseaseTemplateSectionHelper.populateDiseaseTemplateSections($scope.patientDashboardSections, $scope.diseaseTemplates);
 
         $scope.filterOdd = function(index) {

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-  .service('otherTestsProvider', ['$q', 'conceptSetService', 'appService',function ($q, conceptSetService, appService) {
-    var orderTypesMapConfig = appService.getAppDescriptor().getConfig("otherInvestigationsMap");
+    .service('otherTestsProvider', ['$q', 'conceptSetService', 'clinicalConfigService', function ($q, conceptSetService, clinicalConfigService) {
+    var orderTypesMapConfig = clinicalConfigService.getOtherInvestigationsMap();
     var orderTypesMap = orderTypesMapConfig ? orderTypesMapConfig.value : {};
     var mapper = new Bahmni.OtherInvestigationsConceptsMapper(orderTypesMap);
 

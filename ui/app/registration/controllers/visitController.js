@@ -137,10 +137,9 @@ angular.module('bahmni.registration')
                 });
             };
 
-            var getConceptSet = function(){
-                $scope.conceptSetGroupExtensionId = 'org.bahmni.registration.conceptSetGroup.observations';
+            var getConceptSet = function () {
                 var visitType = $scope.encounterConfig.getVisitTypeByUuid($scope.visitTypeUuid);
-                $scope.context = {visitType:  visitType, patient: $scope.patient};
+                $scope.context = {visitType: visitType, patient: $scope.patient};
             };
 
             spinner.forPromise($q.all([getPatient(), getActiveEncounter()]).then(getConceptSet));
