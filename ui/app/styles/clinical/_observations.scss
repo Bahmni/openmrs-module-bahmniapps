@@ -314,7 +314,6 @@ concept-set {
     ul li {list-style-type: disc;}
     ol li {list-style-type: decimal;}
     span.description {
-        display: inline-block;
         margin-top: 7px;
     }
     span.details, span.description {
@@ -323,6 +322,8 @@ concept-set {
         border-radius: 5px;
         background: #e8edf3;
         min-width: 30px;
+        display: inline-block;
+        line-height: 1.5em;
     }
 }
 .concept-set-description {
@@ -344,7 +345,7 @@ concept-set {
     }
     i {
         position: absolute;
-        top: 10px;
+        bottom: -17px;
         left: 1%;
         font-size: 20px;
         color: #e8edf3;
