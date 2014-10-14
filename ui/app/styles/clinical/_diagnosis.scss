@@ -289,26 +289,6 @@
 .diagnosis-row button.toggle.has-notes i{
     color: orange;
 }
-.comment-toggle {
-    padding: 5px;
-    white-space: nowrap;
-    .icon-file-alt, .icon-file {
-        font-size: 14px;
-        color: #363463;
-    }
-    .icon-arrow-down, .icon-arrow-up {
-        font-size: 10px;
-        color: #363463;
-    }
-}
-.comment-toggle.has-notes {
-    .icon-file-alt {
-        color: orange;
-    }
-    .icon-arrow-down, .icon-arrow-up {
-        color: #363463;
-    }
-}
 textarea.comment-section {
     margin: 0 10px 10px 10px;
 }

@@ -38,7 +38,7 @@
         label.control-label {
             margin-left: 0;
         }
-        .obs-comment-toggle {
+        .comment-toggle {
             margin-right: 0;
         }
       }
@@ -275,7 +275,7 @@ concept-set {
         .file img.has-image.voided {
             opacity: 0.1;
         }
-        .obs-comment-toggle {
+        .comment-toggle {
             margin-right: 10px;
             margin-bottom: 5px;
         }
@@ -287,17 +287,8 @@ concept-set {
 }
 
 .leaf-observation-node {
-    .obs-comment-toggle {
-        padding: 5px;
+    .comment-toggle {
         margin-right: 10px;
-        .icon-arrow-down, .icon-arrow-up {
-            font-size: 10px;
-        }
-    }
-    .obs-comment-toggle.has-notes {
-        .icon-arrow-down, .icon-arrow-up {
-            color: #363463;
-        }
     }
     .obs-comment-section {
         margin-left: 16.5%;

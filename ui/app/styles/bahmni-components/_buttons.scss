@@ -97,3 +97,31 @@ button[disabled] {
     @include background(linear-gradient(top, $bahmniSecondaryColor, #528484));
     color: $white;
 }
+
+
+//icon buttons
+
+.comment-toggle {
+    padding: 5px;
+    .icon-file {
+        position: relative;
+        font-size: 21px;
+        color: #888;
+        .icon-plus-sign, .icon-ok-sign, .icon-plus {
+            position: absolute;
+            right: 1px;
+            bottom: 2px;
+            font-size: 14px;
+
+            color: green;
+            background: #fff;
+            border-radius: 8px;
+            padding: 0;
+        }
+
+    }        
+    .icon-file-alt {
+        font-size: 21px;
+        color: orange;
+    }
+}
