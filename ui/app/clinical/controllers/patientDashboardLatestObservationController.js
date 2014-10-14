@@ -7,18 +7,6 @@ angular.module('bahmni.clinical')
             createObservationSectionView();
         };
 
-        var observationGroupingFunction = function (obs) {
-            return Bahmni.Common.Util.DateUtil.getDateWithoutHours(obs.observationDateTime);
-        };
-
-        $scope.isText = function (obs) {
-            return isOfType(obs, 'Text');
-        };
-
-        var isOfType = function (obs, type) {
-            return obs.type === type;
-        };
-
         var createObservationSectionView = function () {
             spinner.forPromise(observationsService.fetch($scope.patientUuid, $scope.section.conceptNames, "latest").then(function (observations) {
                 var dashboardObservations = _.map(observations.data, function (bahmniObservation) {

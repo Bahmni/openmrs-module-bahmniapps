@@ -91,7 +91,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
             return concept.dataType;
         }
         return concept.datatype && concept.datatype.name;
-    }
+    };
 
     // tODO : remove conceptUIConfig
     var newObservation = function (concept, savedObs, conceptSetConfig, mappedGroupMembers) {
@@ -138,7 +138,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         if (durationForDisplay["value"] && durationForDisplay["unitName"]) {
             return "since " + durationForDisplay["value"] + " " + durationForDisplay["unitName"];
         }
-    }
+    };
 
     var getGridObservationDisplayValue = function (observation) {
         var memberValues = _.map(observation.groupMembers, function (member) {

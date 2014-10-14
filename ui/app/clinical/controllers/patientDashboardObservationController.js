@@ -3,14 +3,6 @@ angular.module('bahmni.clinical')
         $scope.patientSummary = {};
         $scope.patientUuid = $stateParams.patientUuid;
 
-        $scope.isText = function (obs) {
-            return isOfType(obs, 'Text');
-        };
-
-        var isOfType = function (obs, type) {
-            return obs.type === type;
-        };
-
         var init = function () {
             $scope.visits = $rootScope.visits;
             $scope.activeVisit = $rootScope.activeVisit;
@@ -35,7 +27,7 @@ angular.module('bahmni.clinical')
                 return 0;
             }
 
-            for (obsKey in bahmniObservations){
+            for (var obsKey in bahmniObservations){
                 var dateTime = obsKey.split('||')[0];
                 var rootConceptName = obsKey.split('||')[1];
                 var rootConceptOrderInConfig = $scope.section.conceptNames.indexOf(rootConceptName);

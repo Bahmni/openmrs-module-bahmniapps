@@ -1,18 +1,8 @@
 <div>
     <section class="block hierarchy" ng-show="observations.length > 0">
         <ul class="form-field">
-            <dashboard-observation observation="observation" ng-repeat="observation  in observations" level="1"></dashboard-observation>
-            <!--<fieldset>-->
-                <!--<div class="form-field" ng-class="{'is-abnormal': observation.abnormal, 'is-text': isText(observation)}">-->
-                    <!--<span class="field-attribute"><label>{{observation.conceptShortName || observation.concept}}</label></span>-->
-                    <!--<span class="value-text-only">{{observation.value}}</span>-->
-                    <!--<span class="label-add-on" ng-hide="!observation.unit"> {{observation.unit}}</span>-->
-                    <!--<div class="footer-note fr">-->
-                        <!--<span class="time">{{observation.observationDateTime | date :'dd MMM yy hh:mm a'}}</span>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</fieldset>-->
-
+            <dashboard-observation observation="observation" ng-repeat="observation  in observations"
+                                   level="1"></dashboard-observation>
         </ul>
     </section>
 
