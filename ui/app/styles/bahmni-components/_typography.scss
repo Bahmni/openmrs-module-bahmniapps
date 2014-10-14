@@ -26,8 +26,11 @@
 			margin-right: -10px;
 		}
 	}
-}
 
+}
+.dashboard-section section.hierarchy .form-field {
+	padding: 0;
+}
 .raftaar {
     ul {
         border-top: 1px solid #eee;
@@ -68,9 +71,4 @@
     .form-field {
         padding: 0;
     }
-
-.dashboard-section section.hierarchy .form-field {
-  padding: 0;
-}
-
 }
