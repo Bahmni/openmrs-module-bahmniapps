@@ -13,10 +13,17 @@ angular.module('admin', ['httpErrorInterceptor', 'bahmni.admin']).config(['$stat
             templateUrl: '../common/ui-helper/views/dashboard.html',
             controller: 'DashboardController',
             data: {extensionPointId: 'org.bahmni.admin.dashboard'}
-        }).state('admin.csv',
+        })
+        .state('admin.csv',
         {   url: '/csv',
             templateUrl: 'views/csvupload.html',
             controller: 'CSVUploadController'
+
+        })
+        .state('admin.csvExport',
+        {   url: '/csvExport',
+            templateUrl: 'views/csvexport.html',
+            controller: 'CSVExportController'
 
         });
     $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;

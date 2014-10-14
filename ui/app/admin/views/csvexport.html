@@ -1,0 +1,13 @@
+<div class="csv-export">
+    <div class="section-grid">
+        <h2 class="section-title">Concept CSV Export</h2>
+
+        <form>
+            <input class="enter-concept" type="text" name="conceptSet" ng-model="conceptSet" bahmni-autocomplete
+                   source="getConcepts" response-map="getDataResults" required placeholder="Enter a concept name"
+                   title="Select a value from autocomplete"/>
+            <input class="export-csv confirm" type="submit" ng-click="onConceptSelected()" class="row-remover"
+                   value="Export"></button>
+        </form>
+    </div>
+</div>
