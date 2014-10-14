@@ -25,8 +25,17 @@ Bahmni.Clinical.VisitDrugOrder = (function () {
             return drugOrder.drug.name;
         };
         var drugOrders = new Bahmni.Clinical.OrdersMapper(nameToSort).map(encounterTransactions, 'drugOrders').filter(function (order) {
-            return !order.voided
+            return !order.voided;
         });
+
+        angular.forEach(drugOrders, function(drugOrder){
+            if(drugOrder.action === "DISCONTINUE"){
+                drugOrders = _.filter(drugOrders, function(drug){
+                    return !(drug.uuid === drugOrder.previousOrderUuid);
+                });
+            }
+        });
+
         var prescribedDrugOrders = [];
         drugOrders.forEach(function(drugOrder){
             prescribedDrugOrders.push(Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder))

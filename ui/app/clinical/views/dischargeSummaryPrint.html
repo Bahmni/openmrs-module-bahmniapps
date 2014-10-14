@@ -101,7 +101,10 @@
                 <tbody>
                     <tr ng-repeat="drugOrder in dischargeSummary.getTreatmentReceived()">
                         <td>{{drugOrder.drugName}}</td>
-                        <td>{{drugOrder.getDescription()}}</td>
+                        <td>{{drugOrder.getDescription()}}
+                            <span ng-if="drugOrder.dateStopped" class="start-date fr">Stopped on {{drugOrder.dateStopped | date: 'dd MMM yy'}}</span>
+                            <span ng-if="drugOrder.action === 'DISCONTINUE'" class="start-date fr">Stopped on {{drugOrder.effectiveStartDate | date: 'dd MMM yy'}}</span>
+                        </td>
                         <td>{{(drugOrder.effectiveStartDate | date:'d MMM yy')}}</td>
                     </tr>
                 </tbody>

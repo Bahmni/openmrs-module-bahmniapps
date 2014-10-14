@@ -20,7 +20,10 @@
             <tbody ng-repeat="drugOrder in drugOrdersGroup.values">
                 <tr toggle="drugOrder.showNotes">
                     <td class="drug">{{drugOrder.drugName}}</td>
-                    <td class="dosage">{{drugOrder.getDescription()}}</td>
+                    <td class="dosage">{{drugOrder.getDescription()}}
+                        <span ng-if="drugOrder.dateStopped" class="start-date fr">Stopped on {{drugOrder.dateStopped | date: 'dd MMM yy'}}</span>
+                        <span ng-if="drugOrder.action === 'DISCONTINUE'" class="start-date fr">Stopped on {{drugOrder.effectiveStartDate | date: 'dd MMM yy'}}</span>
+                    </td>
                     <td class="toggle-btn">
                         <button class="toggle fr" ng-class="{'has-notes': drugOrder.additionalInstructions}">
                             <i class="icon-plus-sign" ng-hide="drugOrder.show"></i>
