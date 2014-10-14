@@ -182,6 +182,9 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
                 this.quantityUnit = this.variableDosingType.doseUnits;
             }
         }
+        if(this.quantity % 1 != 0){
+            this.quantity = this.quantity - ( this.quantity % 1 ) + 1;
+        }
         this.quantityEnteredViaEdit = false;
     };
 
