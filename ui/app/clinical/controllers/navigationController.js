@@ -142,17 +142,6 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                     return { uuid: investigation.uuid, concept: {uuid: investigation.concept.uuid }, orderTypeUuid: investigation.orderTypeUuid, voided: investigation.voided || false};
                 });
 
-//                var startDate = new Date();
-//                var allTreatmentDrugs = $rootScope.consultation.treatmentDrugs || [];
-//                var newlyAddedTreatmentDrugs = allTreatmentDrugs.filter(function (drug) {
-//                    return !drug.savedDrug;
-//                });
-
-//                if (newlyAddedTreatmentDrugs) {
-//                    encounterData.drugOrders = newlyAddedTreatmentDrugs.map(function (drug) {
-//                        return drug.requestFormat(startDate);
-//                    });
-//                }
                 encounterData.drugOrders = $rootScope.consultation.drugOrders;
 
                 encounterData.disposition = $rootScope.consultation.disposition;
@@ -184,12 +173,11 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                     }).then(function() {
                         messagingService.showMessage('info', 'Saved');
                     });
-                 }).catch(function (){
-                    messagingService.showMessage('error', 'An error has occurred on the server. Information not saved.');
+                 }).catch(function (error){
+                    var message = Bahmni.Clinical.Error.translate(error) || 'An error has occurred on the server. Information not saved.';
+                    messagingService.showMessage('error', message);
                 }));
             };
 
-
             initialize();
-
         }]);
