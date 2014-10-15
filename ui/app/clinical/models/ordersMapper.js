@@ -52,6 +52,7 @@ Bahmni.Clinical.OrdersMapper.prototype.map = function (encounterTransactions, or
         encounter[ordersName].forEach(function(order) {
             order.provider = encounter.providers[0];
             order.accessionUuid = encounter.encounterUuid;
+            order.encounterUuid = encounter.encounterUuid;
             order.visitUuid = encounter.visitUuid;
         });
     };

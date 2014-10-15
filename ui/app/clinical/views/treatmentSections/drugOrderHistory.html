@@ -38,7 +38,7 @@
                                 <div class="start-date fr">
                                     <span ng-if="showEffectiveFromDate(prescriptionDate, drugOrder.effectiveStartDate)"> from {{drugOrder.effectiveStartDate | date: 'dd MMM yy'}}</span>
                                     <br/>
-                                    <span ng-if="drugOrder.dateStopped">stopped {{drugOrder.dateStopped | date: 'dd MMM yy'}}</span>
+                                    <span ng-if="drugOrder.isDiscontinuedOrStopped()">stopped {{drugOrder.effectiveStopDate | date: 'dd MMM yy'}}</span>
                                 </div>
                                 <div ng-show="drugOrder.showAdditionalInstructions" class="notes inline-notes">
                                     {{drugOrder.additionalInstructions}}

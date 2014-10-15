@@ -28,12 +28,8 @@ Bahmni.Clinical.VisitDrugOrder = (function () {
             return !order.voided;
         });
 
-        angular.forEach(drugOrders, function(drugOrder){
-            if(drugOrder.action === "DISCONTINUE"){
-                drugOrders = _.filter(drugOrders, function(drug){
-                    return !(drug.uuid === drugOrder.previousOrderUuid);
-                });
-            }
+        drugOrders = _.filter(drugOrders, function(drugOrder){
+            return !_.some(drugOrders, function(otherDrugOrder){ return otherDrugOrder.encounterUuid === drugOrder.encounterUuid && otherDrugOrder.previousOrderUuid === drugOrder.uuid });
         });
 
         var prescribedDrugOrders = [];
