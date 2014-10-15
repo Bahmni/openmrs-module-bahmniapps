@@ -5,7 +5,7 @@
         </li>
     </ul>
     <ul>
-        <li ng-repeat="error in messages.error">
+        <li ng-repeat="error in messages.error track by $index">
             <div class="error-message">{{error}}</div>
         </li>
     </ul>
