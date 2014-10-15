@@ -205,7 +205,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
     };
 
     this.isStopped = function () {
-        return this.dateStopped;
+        return !!this.dateStopped;
     };
 
     this.isActive = function(){
@@ -214,6 +214,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
 
     this.discontinued = function(){
         return this.action === Bahmni.Clinical.Constants.orderActions.discontinue;
+    };
+
+    this.isDiscontinuedOrStopped = function(){
+        return this.isStopped() || this.discontinued();
     };
 
     this.revise = function(treatmentConfig){

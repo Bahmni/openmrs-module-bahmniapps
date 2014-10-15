@@ -99,11 +99,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="drugOrder in dischargeSummary.getTreatmentReceived() | orderBy:'dateActivated':true">
+                    <tr ng-repeat="drugOrder in dischargeSummary.getTreatmentReceived() | orderBy:'dateActivated':true" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
                         <td>{{drugOrder.drugName}}</td>
                         <td>{{drugOrder.getDescription()}}
-                            <span ng-if="drugOrder.dateStopped" class="start-date fr">Stopped on {{drugOrder.dateStopped | date: 'dd MMM yy'}}</span>
-                            <span ng-if="drugOrder.action === 'DISCONTINUE'" class="start-date fr">Stopped on {{drugOrder.effectiveStartDate | date: 'dd MMM yy'}}</span>
+                            <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">stopped {{drugOrder.effectiveStopDate | date: 'dd MMM yy'}}</span>
                         </td>
                         <td>{{(drugOrder.effectiveStartDate | date:'d MMM yy')}}</td>
                     </tr>

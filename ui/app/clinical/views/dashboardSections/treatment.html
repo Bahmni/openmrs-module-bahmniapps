@@ -12,7 +12,7 @@
                 <tr ng-show="!drugOrderSection.orders.length" >
                     <td class="placeholder-text">No treatment for this patient.</td>
                 </tr>
-                <tr ng-repeat="drugOrder in drugOrderSection.orders" ng-show="drugOrderSection.orders.length">
+                <tr ng-repeat="drugOrder in drugOrderSection.orders" ng-show="drugOrderSection.orders.length" ng-class="{'strike-through': drugOrder.dateStopped}">
                     <td class="drug">{{drugOrder.drugName}}</td>
                     <td class="dosage"><span>{{drugOrder.getDescription()}}</span></td>
                     <td class="days"><span class="fr">{{drugOrder.effectiveStartDate | date:'dd MMM yy'}}</span></td>

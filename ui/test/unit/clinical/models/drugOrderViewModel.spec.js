@@ -301,6 +301,32 @@ describe("drugOrderViewModel", function () {
         });
     });
 
+    describe("isDiscontinuedOrStopped", function(){
+        it("should return true if the action is discontinue", function(){
+            var treatment = sampleTreatment({}, []);
+            treatment.action = 'DISCONTINUE';
+            treatment.dateStopped = null;
+
+            expect(treatment.isDiscontinuedOrStopped()).toBe(true);
+        });
+
+        it("should return true if order has been stopped", function(){
+            var treatment = sampleTreatment({}, []);
+            treatment.action = 'NEW';
+            treatment.dateStopped = new Date();
+
+            expect(treatment.isDiscontinuedOrStopped()).toBe(true);
+        });
+
+        it("should return false if action is not discontinue and order is not stopped", function(){
+            var treatment = sampleTreatment({}, []);
+            treatment.action = 'REVISE';
+            treatment.dateStopped =  null;
+
+            expect(treatment.isDiscontinuedOrStopped()).toBe(false);
+        });
+    });
+
     function getFutureDate() {
         var today = new Date();
         today.setDate(today.getDate() + 7);

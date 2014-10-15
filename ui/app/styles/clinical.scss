@@ -17,6 +17,7 @@ $fontPath: "../components/openmrs-uicommons/omod/src/main/webapp/resources/fonts
 /*JSS css files*/
 @import "bahmni-helper/variables";
 
+@import "common/base";
 @import "common/bahmniGlobal";
 @import "common/notifications";
 @import "common/directives";
