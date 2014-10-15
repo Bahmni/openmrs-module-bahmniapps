@@ -321,49 +321,4 @@ describe('VisitController', function () {
             });
         })
     });
-
-    xdescribe("checkHiddenFieldsConfiguration", function () {
-        beforeEach(function () {
-            $controller('VisitController', {
-                $scope: scope,
-                spinner: spinner,
-                encounterService: encounterService,
-                patientService: patientService,
-                $stateParams: stateParams,
-                appService:appService,
-                openmrsPatientMapper: patientMapper,
-                registrationCardPrinter: registrationCardPrinter,
-                sessionService: sessionService
-            });
-            getPatientPromise.callSuccessCallBack(patient);
-            getEncounterPromise.callSuccessCallBack(sampleEncounter);
-        });
-
-        it("should not throw any error if hideFields config is not specified", function () {
-            expect(scope.isHiddenInConfig('Height')).toBe(false);
-        });
-
-        it("should not throw any error if hideFields is undefined", function () {
-            scope.hideFields = undefined;
-            expect(scope.isHiddenInConfig('Height')).toBe(false);
-        });
-
-        it("should not throw any error if hideFields is empty array", function () {
-            scope.hideFields = [];
-            expect(scope.isHiddenInConfig('Height')).toBe(false);
-        });
-
-        it("should hideField if value is specified in hideFields - case insensitive", function () {
-            scope.hideFields = ['HEIght'];
-            expect(scope.isHiddenInConfig('Height')).toBe(true);
-        });
-        it("should hideField if value is contained in hideFields - case insensitive", function () {
-            scope.hideFields = ['HEIght', 'Weight'];
-            expect(scope.isHiddenInConfig('WEIGHT')).toBe(true);
-        });
-        it("should not hideField if value is not contained in hideFields", function () {
-            scope.hideFields = ['HEIght', 'Weight'];
-            expect(scope.isHiddenInConfig('BMI')).toBe(false);
-        });
-    });
 });

@@ -43,15 +43,6 @@ angular.module('bahmni.registration')
             $scope.hideFields = appService.getAppDescriptor().getConfigValue("hideFields");
             $scope.allowPrintingSupplementalPaper = appService.getAppDescriptor().getConfigValue("supplementalPaperPrintLayout") != null;
 
-            $scope.isHiddenInConfig = function (fieldname) {
-                if (!$scope.hideFields) return false;
-
-                var toUpper = function (s){
-                    return s.toUpperCase();
-                };
-                return $scope.hideFields.map(toUpper).indexOf(fieldname.toUpperCase()) > -1;
-            };
-
             $scope.back = function () {
                 $window.history.back();
             };
