@@ -66,7 +66,7 @@
                         <th>Dosage Instructions</th>
                         <th>Start Date</th>
                     </tr>
-                    <tbody ng-repeat="drugOrder in visit.drugOrders.orders">
+                    <tbody ng-repeat="drugOrder in visit.drugOrders.orders | orderBy:'dateActivated':true">
                     <tr>
                         <td class="drug-name" bo-text="drugOrder.drugName"></td>
                         <td class="dosage-form">
