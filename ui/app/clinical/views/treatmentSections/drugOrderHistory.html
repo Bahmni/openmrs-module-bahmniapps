@@ -11,17 +11,9 @@
 
 				<div class="inpage-tab-panel">
 					<div class="inpage-tab-content">
-						<div class="select-all-drugs-widget">
-							<form class="fl">
-								<input id="select-all-drugs" class="select-drug" type="checkbox" />
-								<label class="fl" for="select-all-drugs">Select All</label>
-							</form>
-							<button class="confirm refill-drugs-btn fr">Refill</button>
-						</div>
-						
+                        <button class="confirm refill-drugs-btn fr">Refill All</button>
 						<ul class="table-mimic">
 							<li ng-repeat="drugOrder in consultation.drugOrderGroups[prescriptionDate]" ng-class="{'active-drug' : drugOrder.isActive(), 'highlight' : drugOrder.isBeingEdited}">
-								<form class="fl"><input class="select-drug" type="checkbox" /></form>
                                 <div class="drug-details" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
                                     <strong class="drug-name">{{drugOrder.drug.name}}</strong> - &nbsp;{{drugOrder.getDescription()}}
 
