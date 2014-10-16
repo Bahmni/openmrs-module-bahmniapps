@@ -18,7 +18,7 @@ angular.module('bahmni.admin')
 
         $scope.onConceptSelected = function(){
             if($scope.conceptSet){
-                window.open(Bahmni.Common.Constants.conceptSetExportUrl + "/" + $scope.conceptSet);
+                window.open(Bahmni.Common.Constants.conceptSetExportUrl.replace(":conceptName", $scope.conceptSet));
             }
         };
     }]);
