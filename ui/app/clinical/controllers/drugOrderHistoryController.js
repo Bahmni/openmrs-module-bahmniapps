@@ -44,7 +44,7 @@ angular.module('bahmni.clinical')
 
         $scope.remove = function(drugOrder){
             if(drugOrder.isDiscontinuedAllowed){
-                drugOrder.action = Bahmni.Clinical.Constants.orderActions.discontinue;
+                drugOrder.isMarkedForDiscontinue = true;
                 drugOrder.isEditAllowed = false;
                 $scope.consultation.discontinuedDurgs.push(drugOrder);
             }
@@ -54,7 +54,7 @@ angular.module('bahmni.clinical')
             $scope.consultation.discontinuedDurgs = _.reject($scope.consultation.discontinuedDurgs, function(removableOrder){
                 return removableOrder.uuid === drugOrder.uuid;
             });
-            drugOrder.action = Bahmni.Clinical.Constants.orderActions.new;
+            drugOrder.isMarkedForDiscontinue = false;
             drugOrder.isEditAllowed = true;
         };
 

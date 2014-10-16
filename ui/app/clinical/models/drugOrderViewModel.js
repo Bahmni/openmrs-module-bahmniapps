@@ -209,7 +209,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
     };
 
     this.isActive = function(){
-        return !this.isStopped() && (this.effectiveStopDate == null || this.effectiveStopDate >= Bahmni.Common.Util.DateUtil.today());
+        return !this.isDiscontinuedOrStopped() && (this.effectiveStopDate == null || this.effectiveStopDate >= Bahmni.Common.Util.DateUtil.today());
     };
 
     this.discontinued = function(){

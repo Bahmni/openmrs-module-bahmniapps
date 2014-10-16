@@ -112,12 +112,12 @@ describe("DrugOrderHistoryController", function(){
     });
 
     describe("when removed", function(){
-        it("should change the action to discontinue", function(){
+        it("should mark the drug order for discontinue", function(){
             var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
 
             scope.remove(drugOrder);
 
-            expect(Bahmni.Clinical.Constants.orderActions.discontinue).toBe(drugOrder.action);
+            expect(drugOrder.isMarkedForDiscontinue).toBe(true);
         });
 
         it("should add the drugOrder to removableDrugOrders", function(){
@@ -136,7 +136,7 @@ describe("DrugOrderHistoryController", function(){
             scope.remove(drugOrder);
             scope.undoRemove(drugOrder);
 
-            expect(Bahmni.Clinical.Constants.orderActions.new).toBe(drugOrder.action);
+            expect(drugOrder.isMarkedForDiscontinue).toBe(false);
         });
 
         it("should remove the drugOrder from removableDrugOrders", function(){
