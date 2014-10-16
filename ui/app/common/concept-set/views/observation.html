@@ -69,7 +69,7 @@
             <small class="hint" ng-show="observation.primaryObs.concept.lowNormal || observation.primaryObs.concept.hiNormal" ng-bind="'(' + observation.primaryObs.concept.lowNormal + ' - ' + observation.primaryObs.concept.hiNormal + ')'"></small>
             <div class="checkbox-inline" ng-if="observation.abnormalObs">
                 <input id="isAbnormal-{{observation.primaryObs.concept.name}}" type="checkbox"
-                       ng-model="observation.abnormal.value" ng-disabled="!observation.primaryObs.hasValue()" tabindex="-1" class="abnormal-vitals-checkbox" />
+                       ng-model="observation.abnormalObs.value" ng-disabled="!observation.primaryObs.hasValue()" tabindex="-1" class="abnormal-vitals-checkbox" />
                 <label for="isAbnormal-{{observation.primaryObs.concept.name}}" class="abnormal-vitals checkbox-btn">Abnormal</label>
             </div>
             <div class="checkbox-inline" ng-if="observation.durationObs" ng-class="{'duration': observation.durationObs}">

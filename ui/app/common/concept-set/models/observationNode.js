@@ -60,8 +60,8 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUICo
     this.conceptUIConfig = conceptUIConfig;
     this.isObservationNode = true;
     this.uniqueId = _.uniqueId('observation_');
-    this.durationObs = this.getDuration();
-    this.abnormalObs = this.getAbnormal();
+    this.durationObs = this.getDurationObs();
+    this.abnormalObs = this.getAbnormalObs();
 
     if (savedObs) {
         this.uuid = savedObs.uuid;
@@ -89,11 +89,11 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
         return groupMembers;
     },
 
-    getAbnormal: function () {
+    getAbnormalObs: function () {
         return this._getGroupMemberWithClass(Bahmni.Common.Constants.abnormalConceptClassName);
     },
 
-    getDuration: function () {
+    getDurationObs: function () {
         var groupMemberWithClass = this._getGroupMemberWithClass(Bahmni.Common.Constants.durationConceptClassName);
         return  groupMemberWithClass;
     },
@@ -109,8 +109,8 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     onValueChanged: function () {
-        if (!this.primaryObs.hasValue() && this.getAbnormal()) {
-            this.getAbnormal().value = undefined;
+        if (!this.primaryObs.hasValue() && this.getAbnormalObs()) {
+            this.getAbnormalObs().value = undefined;
         }
         if (this.primaryObs.isNumeric()) {
             this.setAbnormal();
@@ -189,14 +189,14 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     hasDuration: function () {
-        if (!this.getDuration() || !this.getConceptUIConfig().durationRequired){
+        if (!this.getDurationObs() || !this.getConceptUIConfig().durationRequired){
             return false;
         }
         else {
-            if (!this.getDuration().value) {
+            if (!this.getDurationObs().value) {
                 return true;
             }
-            else if (this.getDuration().value < 0){
+            else if (this.getDurationObs().value < 0){
                 return true;
             }
             else{

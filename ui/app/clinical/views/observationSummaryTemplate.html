@@ -1,7 +1,7 @@
 
 
     <div ng-if="observation.isObservationNode">
-        <tr ng-class="{true: 'is-abnormal'}[observation.abnormal.value]">
+        <tr ng-class="{true: 'is-abnormal'}[observation.abnormalObs.value]">
             <td class="name">
                 <span class="obs-value">{{observation.primaryObs.concept.name}}</span>
             </td>

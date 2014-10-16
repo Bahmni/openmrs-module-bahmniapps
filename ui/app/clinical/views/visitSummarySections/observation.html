@@ -20,7 +20,7 @@
 
                     <tr class="row-click" toggle="observation.showComment"
                         ng-repeat-start="observation in observationSubGroup.obs"
-                        ng-class="{true: 'is-abnormal'}[observation.abnormal.value]">
+                        ng-class="{true: 'is-abnormal'}[observation.abnormalObs.value]">
                         <td class="name">
                             <span class="obs-value">{{observation.concept.shortName || observation.concept.name}}</span>
                         </td>
