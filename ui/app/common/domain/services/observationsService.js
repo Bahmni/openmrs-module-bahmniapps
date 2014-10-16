@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('observationsService', ['$http', '$q', '$rootScope', function ($http, $q, $rootScope) {
+    .service('observationsService', ['$http', function ($http) {
 
         this.fetch = function (patientUuid, conceptNames, scope, numberOfVisits) {
             return $http.get(Bahmni.Common.Constants.observationsUrl,

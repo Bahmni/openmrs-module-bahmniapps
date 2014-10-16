@@ -9,8 +9,6 @@ Bahmni.DocumentUpload.Visit = function () {
     var androidDateFormat = "YYYY-MM-DD hh:mm:ss";
 
     this._sortSavedImages = function(savedImages) {
-        var sortedSavedImages = [];
-        var conceptUuids = [];
         savedImages.sort(function(image1,image2){
             return image1.id - image2.id;
         });

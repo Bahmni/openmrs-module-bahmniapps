@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .factory('spinner', ['$timeout', function ($timeout) {
+    .factory('spinner', ['$timeout', function () {
         var tokens = [];
 
         var show = function () {

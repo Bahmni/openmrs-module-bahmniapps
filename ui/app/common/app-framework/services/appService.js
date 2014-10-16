@@ -3,7 +3,6 @@
 angular.module('bahmni.common.appFramework')
     .service('appService', ['$http', '$q', 'sessionService','$rootScope', function ($http, $q, sessionService, $rootScope) {
         var currentUser = null;
-        var currentProvider = null;
         var baseUrl = "/bahmni_config/openmrs/apps/";
         var appDescriptor = null;
 
