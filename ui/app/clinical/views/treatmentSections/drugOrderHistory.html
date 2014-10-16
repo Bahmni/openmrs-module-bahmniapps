@@ -1,4 +1,5 @@
 <section class="drug-orders-history" xmlns="http://www.w3.org/1999/html">
+    <button class="confirm refill-drugs-btn fr" ng-click="refillAll(consultation.drugOrderGroups[prescriptionDate])" ng-if="!drugOrderGroupsEmpty()"><i class="icon-forward"></i> Refill All</button>
     <div ng-if="drugOrderGroupsEmpty()">
         <p class="placeholder-text">No Prescriptions available</p>
     </div>
@@ -10,7 +11,7 @@
 
 				<div class="inpage-tab-panel">
 					<div class="inpage-tab-content">
-                        <button class="confirm refill-drugs-btn fr" ng-click="refillAll(consultation.drugOrderGroups[prescriptionDate])">Refill All</button>
+                        
 						<ul class="table-mimic">
 							<li ng-repeat="drugOrder in consultation.drugOrderGroups[prescriptionDate]" ng-class="{'active-drug' : drugOrder.isActive(), 'highlight' : drugOrder.isBeingEdited}">
                                 <div class="drug-details" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
