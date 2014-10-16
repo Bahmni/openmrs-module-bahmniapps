@@ -152,10 +152,10 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
                 templateUrl: 'views/patientDashboard.html'
             })
             .state('patient.visitsummaryprint', {
-                url: '/latest-visit-summary-print',
+                url: '/latest-prescription-print',
                 views: {
                     content: {
-                        controller: 'LatestVisitSummaryPrintController',
+                        controller: 'LatestPrescriptionPrintController'
                     }
                 }
             });

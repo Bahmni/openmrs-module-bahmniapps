@@ -88,26 +88,9 @@
             <h3>History &amp; Examination</h3>
             <pre>{{dischargeSummary.getObservationValue('History and Examination Notes')}}</pre>
         </section>
-        <section class="treatment-print">
+        <section class="treatment-print" bindonce>
             <h3>Treatment received</h3>
-            <table ng-if="dischargeSummary.getTreatmentReceived() && dischargeSummary.getTreatmentReceived().length > 0">
-                <thead>
-                    <tr>
-                        <th>Drug Name</th>
-                        <th>Dosage Instructions</th>
-                        <th>Start Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="drugOrder in dischargeSummary.getTreatmentReceived() | orderBy:'dateActivated':true" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
-                        <td>{{drugOrder.drugName}}</td>
-                        <td>{{drugOrder.getDescription()}}
-                            <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">stopped {{drugOrder.effectiveStopDate | date: 'dd MMM yy'}}</span>
-                        </td>
-                        <td>{{(drugOrder.effectiveStartDate | date:'d MMM yy')}}</td>
-                    </tr>
-                </tbody>
-            </table>
+            <ng-include src="'views/treatmentTablePrint.html'" ng-init="drugOrders=dischargeSummary.getTreatmentReceived()" ng-if="dischargeSummary.getTreatmentReceived() && dischargeSummary.getTreatmentReceived().length > 0"></ng-include>
         </section>
         <section class="operative-print">
             <h3>Operative procedure</h3>

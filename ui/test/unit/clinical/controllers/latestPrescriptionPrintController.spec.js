@@ -1,6 +1,6 @@
 'use strict';
 
-describe("LatestVisitSummaryPrintController", function(){
+describe("LatestPrescriptionPrintController", function(){
 
     beforeEach(module('bahmni.clinical'));
 
@@ -26,14 +26,14 @@ describe("LatestVisitSummaryPrintController", function(){
     }));
 
     var loadController = function(visitInitialization, expectations) {
-        controller('LatestVisitSummaryPrintController', {
+        controller('LatestPrescriptionPrintController', {
             $scope: scope,
             $rootScope: rootScope,
             $stateParams: stateParams,
             messagingService: jasmine.createSpyObj('messagingService', ['showMessage']),
             visitInitialization: visitInitialization,
             spinner: spinner,
-            visitActionsService: {printVisitSummary: expectations},
+            visitActionsService: {printPrescription: expectations}
         });
     }
 

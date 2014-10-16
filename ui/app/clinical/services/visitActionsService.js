@@ -12,6 +12,9 @@ angular.module('bahmni.clinical')
             printVisitSummary: function (patient, visit, visitDate) {
                 var showLabInvestigations = visit.admissionDate ? false: true;
                 printer.print('views/visitSummaryPrint.html', {visit: visit, patient: patient, showLabInvestigations: showLabInvestigations, visitDate: visitDate});
+            },
+            printPrescription: function (patient, visit, visitDate) {
+                printer.print('views/prescriptionPrint.html', {visit: visit, patient: patient, visitDate: visitDate});
             }
         }
     }]);

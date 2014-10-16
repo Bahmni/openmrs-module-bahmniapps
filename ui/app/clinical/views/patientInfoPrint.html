@@ -1,0 +1,18 @@
+<div class="patient-info">
+    <table>
+        <tr>
+            <td>Name: <span class="value">{{patient.name}}</span></td>
+            <td>Age / Sex: <span class="value">{{patient.birthdate | dateToAge:visit.dateStarted}} / {{patient.gender}}</span>
+            </td>
+            <td>Registration No. <span class="value">{{patient.identifier}}</span></td>
+        </tr>
+        <tr>
+            <td>Village / Town: <span class="value">{{patient.address.cityVillage}}</span></td>
+            <td>P.O. <span class="value">{{patient.address.address2}}</span></td>
+            <td>District: <span class="value">{{patient.address.countyDistrict}}</span></td>
+        </tr>
+        <tr>
+            <td colspan="3">Visit Date: <span class="value">{{visitDate | date: 'd MMM yyyy'}}</span></td>
+        </tr>
+    </table>
+</div>

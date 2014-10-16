@@ -9,24 +9,7 @@
         <h2>Visit Summary</h2>
     </header>
     <main>
-        <div class="patient-info">
-            <table>
-                <tr>
-                    <td>Name: <span class="value">{{patient.name}}</span></td>
-                    <td>Age / Sex: <span class="value">{{patient.birthdate | dateToAge:visit.dateStarted}} / {{patient.gender}}</span>
-                    </td>
-                    <td>Registration No. <span class="value">{{patient.identifier}}</span></td>
-                </tr>
-                <tr>
-                    <td>Village / Town: <span class="value">{{patient.address.cityVillage}}</span></td>
-                    <td>P.O. <span class="value">{{patient.address.address2}}</span></td>
-                    <td>District: <span class="value">{{patient.address.countyDistrict}}</span></td>
-                </tr>
-                <tr>
-                    <td colspan="3">Visit Date: <span class="value">{{visitDate | date: 'd MMM yyyy'}}</span></td>
-                </tr>
-            </table>
-        </div>
+        <ng-include src="'views/patientInfoPrint.html'"></ng-include>
         <section bindonce="visit">
             <section class="block">
                 <h2>Observations</h2>
@@ -58,32 +41,7 @@
                     </li>
                 </ul>
             </section>
-            <section class="block treatment-section" ng-show="visit.hasDrugOrders()">
-                <h2>Treatment</h2>
-                <table>
-                    <tr>
-                        <th>Drug Name</th>
-                        <th>Dosage Instructions</th>
-                        <th>Start Date</th>
-                    </tr>
-                    <tbody ng-repeat="drugOrder in visit.drugOrders.orders | orderBy:'dateActivated':true">
-                    <tr>
-                        <td class="drug-name" bo-text="drugOrder.drugName"></td>
-                        <td class="dosage-form">
-                            <span bo-show="drugOrder.getDescription()" bo-text="drugOrder.getDescription()"></span>
-                            <span bo-show="!drugOrder.getDescription()" bo-text="' - '"></span>
-                            <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">stopped {{drugOrder.effectiveStopDate | date: 'dd MMM yy'}}</span>
-                        </td>
-                        <td bo-text="(drugOrder.effectiveStartDate | date:'d MMM yy')"></td>
-                    </tr>
-                    <tr ng-if="drugOrder.additionalInstructions">
-                        <td colspan="7" class="inline-notes notes">
-                            <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.additionalInstructions}}</p>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </section>
+            <ng-include src="'views/treatmentSectionPrint.html'"></ng-include>
             <section class="dispositions">
                 <h2>
                     Disposition
