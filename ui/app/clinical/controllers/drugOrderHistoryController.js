@@ -2,6 +2,7 @@
 
 angular.module('bahmni.clinical')
     .controller('DrugOrderHistoryController', ['$scope', '$rootScope', '$filter', 'prescribedDrugOrders', 'RegisterTabService', 'contextChangeHandler', function ($scope, $rootScope, $filter, prescribedDrugOrders, registerTabService, contextChangeHandler) {
+        
         var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
 
         var createPrescribedDrugOrderGroups = function () {
@@ -30,6 +31,14 @@ angular.module('bahmni.clinical')
             return $filter("date")(effectiveStartDate, 'dd MMM yy') !== $filter("date")(visitStartDate, 'dd MMM yy');
         };
 
+        $scope.refill = function(drugOrder) {
+            $rootScope.$emit("event:refillDrugOrder", drugOrder);
+        };
+        
+        $scope.refillAll = function(drugOrders) {
+            $rootScope.$emit("event:refillDrugOrders", drugOrders);
+        };
+        
         $scope.edit = function(drugOrder, drugOrders){
             if(drugOrder.isEditAllowed){
                 drugOrders.forEach(function(drugOrder){

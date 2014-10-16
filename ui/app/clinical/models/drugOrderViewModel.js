@@ -40,7 +40,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
     this.isEditAllowed = true;
     this.quantityEnteredViaEdit = false;
     this.isBeingEdited = false;
-
+    
     var simpleDoseAndFrequency = function () {
         var uniformDosingType = self.uniformDosingType;
         var doseAndUnits = blankIfFalsy(uniformDosingType.dose) + " " + blankIfFalsy(uniformDosingType.doseUnits);
@@ -218,6 +218,24 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
 
     this.isDiscontinuedOrStopped = function(){
         return this.isStopped() || this.discontinued();
+    };
+
+    this.refill = function (treatmentConfig) {
+        var newDrugOrder = new Bahmni.Clinical.DrugOrderViewModel(null, []);
+        angular.copy(this, newDrugOrder);
+        newDrugOrder.previousOrderUuid = undefined;
+        newDrugOrder.action = Bahmni.Clinical.Constants.orderActions.new;
+        newDrugOrder.uuid = undefined;
+        newDrugOrder.dateActivated = undefined;
+        var oldEffectiveStopDate = DateUtil.getDate(this.effectiveStopDate);
+        newDrugOrder.effectiveStartDate = oldEffectiveStopDate >= DateUtil.today() ? DateUtil.addDays(oldEffectiveStopDate, 1) : DateUtil.today();
+        newDrugOrder.drugNameDisplay = constructDrugNameDisplay(this.drug, this.drug.form).value;
+
+        newDrugOrder.durationUnit = _.find(treatmentConfig.durationUnits, function(durationUnit){
+            return durationUnit.name === self.durationUnit.name;
+        });
+
+        return newDrugOrder;
     };
 
     this.revise = function(treatmentConfig){

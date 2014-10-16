@@ -34,7 +34,7 @@ Bahmni.Clinical.DrugOrder = (function () {
                 careSetting: "Outpatient",
                 drug: {name:drugOrderData.drugName},
                 orderType: "Drug Order",
-                dosingInstructionType: drugOrderData.dosingInstructionType,
+                dosingInstructionType: Bahmni.Clinical.Constants.flexibleDosingInstructionsClass,
                 dosingInstructions: {
                     dose: drugOrderData.uniformDosingType.dose,
                     doseUnits: doseUnits,
@@ -53,6 +53,9 @@ Bahmni.Clinical.DrugOrder = (function () {
                 action: drugOrderData.action
             }
         );
+        if (!drugOrder.dosingInstructions.quantityUnits) {
+            drugOrder.dosingInstructions.quantityUnits = "Unit(s)";
+        } 
         return drugOrder;
     };
 

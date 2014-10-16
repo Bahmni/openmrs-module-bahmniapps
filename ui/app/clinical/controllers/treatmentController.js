@@ -7,7 +7,7 @@ angular.module('bahmni.clinical')
             $scope.treatments = $scope.consultation.newlyAddedTreatments || [];
             $scope.treatmentConfig = treatmentConfig;
             $scope.treatmentConfig.durationUnits = [
-                {name: "Hour(s)", factor: 1/24},
+                {name: "Hour(s)", factor: 1 / 24},
                 {name: "Day(s)", factor: 1},
                 {name: "Week(s)", factor: 7},
                 {name: "Month(s)", factor: 30}
@@ -20,14 +20,14 @@ angular.module('bahmni.clinical')
             $scope.today = new Date();
 
             $scope.treatment = $scope.consultation.incompleteTreatment || newTreatment();
-            $scope.treatmentConfig.durationUnits.forEach(function(durationUnit){
-                if(_.isEqual(durationUnit, $scope.treatment.durationUnit)){
+            $scope.treatmentConfig.durationUnits.forEach(function (durationUnit) {
+                if (_.isEqual(durationUnit, $scope.treatment.durationUnit)) {
                     $scope.treatment.durationUnit = durationUnit;
                 }
             });
             $scope.treatment.effectiveStartDate = $filter("date")($scope.treatment.effectiveStartDate, 'yyyy-MM-dd');
 
-            var watchFunctionForQuantity = function() {
+            var watchFunctionForQuantity = function () {
                 var treatment = $scope.treatment;
                 return {
                     uniformDosingType: treatment.uniformDosingType,
@@ -37,7 +37,7 @@ angular.module('bahmni.clinical')
                 }
             };
 
-            $scope.$watch(watchFunctionForQuantity, function() {
+            $scope.$watch(watchFunctionForQuantity, function () {
                 $scope.treatment.calculateQuantityAndUnit();
             }, true);
 
@@ -61,7 +61,7 @@ angular.module('bahmni.clinical')
                 $scope.treatments.splice(index, 1);
             };
 
-            $scope.required = function(frequencyType) {
+            $scope.required = function (frequencyType) {
                 var treatment = $scope.treatment;
                 return treatment.frequencyType === frequencyType && !treatment.isCurrentDosingTypeEmpty();
             };
@@ -70,7 +70,7 @@ angular.module('bahmni.clinical')
                 line.showAdditionalInstructions = !line.showAdditionalInstructions;
             };
 
-            $scope.toggleAsNeeded = function(treatment) {
+            $scope.toggleAsNeeded = function (treatment) {
                 treatment.asNeeded = !treatment.asNeeded;
             };
 
@@ -103,7 +103,7 @@ angular.module('bahmni.clinical')
                 });
             };
 
-            $scope.populateBackingFields = function(item) {
+            $scope.populateBackingFields = function (item) {
                 $scope.treatment.drugName = item.drug.name;
             };
 
@@ -117,8 +117,20 @@ angular.module('bahmni.clinical')
             };
             registerTabService.register(saveTreatment);
 
-            $rootScope.$on("event:reviseDrugOrder", function(event, drugOrder){
-                $scope.treatments.forEach(function(treatment){
+            $rootScope.$on("event:refillDrugOrder", function (event, drugOrder) {
+                var refill = drugOrder.refill(treatmentConfig);
+                $scope.treatments.push(refill);
+            });
+
+            $rootScope.$on("event:refillDrugOrders", function (event, drugOrders) {
+                drugOrders.forEach(function(drugOrder) {
+                    var refill = drugOrder.refill(treatmentConfig);
+                    $scope.treatments.push(refill);
+                })
+            });
+
+            $rootScope.$on("event:reviseDrugOrder", function (event, drugOrder) {
+                $scope.treatments.forEach(function (treatment) {
                     treatment.isBeingEdited = false;
                 });
                 $scope.treatment = drugOrder.revise(treatmentConfig);

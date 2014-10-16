@@ -9,6 +9,12 @@ describe("drugOrderViewModel", function () {
         sampleTreatment.scheduledDate = "21/12/2014";
         sampleTreatment.quantity = "12";
         sampleTreatment.quantityUnit = "Capsule";
+        sampleTreatment.drug = {
+            "form": "Tablet",
+            "uuid": "8d7e3dc0-f4ad-400c-9468-5a9e2b1f4230",
+            "strength": null,
+            "name": "calpol 500mg(tablets)"
+        };
         return sampleTreatment;
     };
 
@@ -428,6 +434,52 @@ describe("drugOrderViewModel", function () {
             var revisedTreatment = treatment.revise({});
             expect(revisedTreatment.action).toBe(Bahmni.Clinical.Constants.orderActions.revise);
             expect(treatment.action).not.toBe(Bahmni.Clinical.Constants.orderActions.revise);
+        });
+
+    });
+
+    describe("refill", function() {
+        xit ("should refill an inactive drug order", function() {
+            var treatment = sampleTreatment({}, []);
+            var today = Bahmni.Common.Util.DateUtil.today();
+            
+            treatment.previousOrderUuid = "prev-uuid";
+            treatment.effectiveStopDate = Bahmni.Common.Util.DateUtil.subtractDays(today, 30);
+            var refilledTreatment = treatment.refill({});
+            expect(refilledTreatment.uuid).toBe(undefined);
+            expect(refilledTreatment.dateActivated).toBe(undefined);
+            expect(refilledTreatment.previousOrderUuid).toBe(undefined);
+            expect(Bahmni.Common.Util.DateUtil.isSameDate(refilledTreatment.effectiveStartDate, today)).toBe(true);
+            expect(refilledTreatment.drugNameDisplay).toBe("calpol 500mg(tablets) (Tablet)");
+        });
+
+
+        xit ("should refill an active drug order", function() {
+            var treatment = sampleTreatment({}, []);
+            var today = Bahmni.Common.Util.DateUtil.today();
+            treatment.previousOrderUuid = "prev-uuid";
+            treatment.effectiveStopDate = Bahmni.Common.Util.DateUtil.addDays(today, 5);
+            var refilledTreatment = treatment.refill({});
+            expect(refilledTreatment.uuid).toBe(undefined);
+            expect(refilledTreatment.dateActivated).toBe(undefined);
+            expect(refilledTreatment.previousOrderUuid).toBe(undefined);
+            var startDateForRefilledTreatment = Bahmni.Common.Util.DateUtil.addDays(treatment.effectiveStopDate, 1);
+            expect(Bahmni.Common.Util.DateUtil.isSameDate(refilledTreatment.effectiveStartDate, startDateForRefilledTreatment)).toBe(true);
+            expect(refilledTreatment.drugNameDisplay).toBe("calpol 500mg(tablets) (Tablet)");
+        });
+
+        it ("should refill an active drug order ending today", function() {
+            var treatment = sampleTreatment({}, []);
+            var today = Bahmni.Common.Util.DateUtil.today();
+            treatment.previousOrderUuid = "prev-uuid";
+            treatment.effectiveStopDate = today;
+            var refilledTreatment = treatment.refill({});
+            expect(refilledTreatment.uuid).toBe(undefined);
+            expect(refilledTreatment.dateActivated).toBe(undefined);
+            expect(refilledTreatment.previousOrderUuid).toBe(undefined);
+            var startDateForRefilledTreatment = Bahmni.Common.Util.DateUtil.addDays(treatment.effectiveStopDate, 1);
+            expect(Bahmni.Common.Util.DateUtil.isSameDate(refilledTreatment.effectiveStartDate, startDateForRefilledTreatment)).toBe(true);
+            expect(refilledTreatment.drugNameDisplay).toBe("calpol 500mg(tablets) (Tablet)");
         });
 
     });

@@ -11,7 +11,7 @@
 
 				<div class="inpage-tab-panel">
 					<div class="inpage-tab-content">
-                        <button class="confirm refill-drugs-btn fr">Refill All</button>
+                        <button class="confirm refill-drugs-btn fr" ng-click="refillAll(consultation.drugOrderGroups[prescriptionDate])">Refill All</button>
 						<ul class="table-mimic">
 							<li ng-repeat="drugOrder in consultation.drugOrderGroups[prescriptionDate]" ng-class="{'active-drug' : drugOrder.isActive(), 'highlight' : drugOrder.isBeingEdited}">
                                 <div class="drug-details" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
@@ -23,8 +23,9 @@
                                         <i class="icon-plus-sign" ng-click="toggleShowAdditionalInstructions(drugOrder)" ng-hide="drugOrder.showAdditionalInstructions"></i>
                                         <i class="icon-minus-sign" ng-click="toggleShowAdditionalInstructions(drugOrder)" ng-show="drugOrder.showAdditionalInstructions"></i>
                                     </button>
-									<button ng-if="drugOrder.isActive()" ng-disabled="!drugOrder.isDiscontinuedAllowed"><i class="icon-stop" ng-click="remove(drugOrder)" ng-if="!drugOrder.isMarkedForDiscontinue"></i></button>
-									<button ng-if="drugOrder.isActive()" ng-disabled="!drugOrder.isDiscontinuedAllowed"><i class="icon-undo" ng-click="undoRemove(drugOrder)" ng-if="drugOrder.isMarkedForDiscontinue"></i></button>
+                                    <button><i class="icon-play" ng-click="refill(drugOrder)"></i></button>
+                                    <button ng-if="drugOrder.isActive()" ng-disabled="!drugOrder.isDiscontinuedAllowed"><i class="icon-stop" ng-click="remove(drugOrder)" ng-if="!drugOrder.isMarkedForDiscontinue()"></i></button>
+									<button ng-if="drugOrder.isActive()" ng-disabled="!drugOrder.isDiscontinuedAllowed"><i class="icon-undo" ng-click="undoRemove(drugOrder)" ng-if="drugOrder.isMarkedForDiscontinue()"></i></button>
 									<button ng-if="drugOrder.isActive()" ng-disabled="!drugOrder.isEditAllowed"><i class="icon-edit" ng-click="edit(drugOrder, consultation.drugOrderGroups[prescriptionDate])"></i></button>
 								</div>
                                 <div class="start-date fr">
