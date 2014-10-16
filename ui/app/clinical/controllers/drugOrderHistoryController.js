@@ -72,6 +72,9 @@ angular.module('bahmni.clinical')
                 var removableOrder = _.find(prescribedDrugOrders, function (prescribedOrder) {
                     return prescribedOrder.uuid === discontinuedDrug.uuid;
                 });
+                if (!removableOrder) {
+                    return;
+                }
                 removableOrder.action = Bahmni.Clinical.Constants.orderActions.discontinue;
                 removableOrder.previousOrderUuid = removableOrder.uuid;
                 removableOrder.uuid = undefined;
