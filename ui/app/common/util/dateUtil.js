@@ -21,7 +21,13 @@ Bahmni.Common.Util.DateUtil = {
 		return newDate;
 	},
 
-	subtractDays: function (date, days) {
+    addSeconds: function (date, seconds) {
+        var newDate = new Date(date);
+        newDate.setSeconds(date.getSeconds() + seconds);
+        return newDate;
+    },
+
+    subtractDays: function (date, days) {
         return this.addDays(date, -1 * days)
 	},
 

@@ -227,14 +227,17 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
         newDrugOrder.action = Bahmni.Clinical.Constants.orderActions.new;
         newDrugOrder.uuid = undefined;
         newDrugOrder.dateActivated = undefined;
-        var oldEffectiveStopDate = DateUtil.getDate(this.effectiveStopDate);
-        newDrugOrder.effectiveStartDate = oldEffectiveStopDate >= DateUtil.today() ? DateUtil.addDays(oldEffectiveStopDate, 1) : DateUtil.today();
-        newDrugOrder.drugNameDisplay = constructDrugNameDisplay(this.drug, this.drug.form).value;
-
+        var oldEffectiveStopDate = new Date(this.effectiveStopDate);
+        newDrugOrder.effectiveStartDate = oldEffectiveStopDate >= DateUtil.today() ? DateUtil.addSeconds(oldEffectiveStopDate, 1) : DateUtil.today();   
         newDrugOrder.durationUnit = _.find(treatmentConfig.durationUnits, function(durationUnit){
             return durationUnit.name === self.durationUnit.name;
         });
 
+        if (!newDrugOrder.quantityUnit) {
+            newDrugOrder.quantityUnit = "Unit(s)";
+        }
+
+        newDrugOrder.drugNameDisplay = constructDrugNameDisplay(this.drug, this.drug.form).value;
         return newDrugOrder;
     };
 
