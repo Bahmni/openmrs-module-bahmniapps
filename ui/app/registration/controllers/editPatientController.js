@@ -6,7 +6,6 @@ angular.module('bahmni.registration')
             var uuid;
             var editActionsConfig = [];
             var defaultActions = ["save", "print"];
-            var constants = Bahmni.Registration.Constants;
             var defaultVisitType = appService.getAppDescriptor().getConfigValue('defaultVisitType');
             var locationUuid = sessionService.getLoginLocationUuid();
 

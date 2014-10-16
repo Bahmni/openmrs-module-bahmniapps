@@ -29,14 +29,6 @@ Bahmni.LabResultsMapper = function () {
         return notes;
     };
 
-    var getResultValue = function (obs) {
-        obs.groupMembers = obs.groupMembers || [];
-        var resultObs = obs.groupMembers.filter(function (member) {
-            return member.concept.name == obs.concept.name;
-        });
-        return resultObs.length == 1 ? resultObs[0].value : null;
-    };
-
     var getLabResultObs = function (encounterTransaction) {
         var labResultObs;
         encounterTransaction.observations.forEach(function (observation) {

@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.common.util')
     .directive('nonBlank', function () {
         return function ($scope, element, attrs) {
@@ -20,7 +22,7 @@ angular.module('bahmni.common.util')
             });
         }
     })
-    .directive('datepicker', function ($parse) {
+    .directive('datepicker', function () {
         var link = function ($scope, element, attrs, ngModel) {
             var today = new Date();
             element.datepicker({
@@ -31,7 +33,7 @@ angular.module('bahmni.common.util')
                 yearRange: 'c-120:c',
                 dateFormat: 'dd-mm-yy',
                 onSelect: function (dateText) {
-                    $scope.$apply(function (scope) {
+                    $scope.$apply(function () {
                         ngModel.$setViewValue(dateText);
                     });
                 }
@@ -43,7 +45,7 @@ angular.module('bahmni.common.util')
             link: link
         }
     })
-    .directive('splitButton', function ($parse) {
+    .directive('splitButton', function () {
         var link = function ($scope, element) {
             var toggleButton = element.find('.toggle-button');
 

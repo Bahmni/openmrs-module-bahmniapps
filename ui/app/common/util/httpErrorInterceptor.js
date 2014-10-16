@@ -2,7 +2,7 @@
 
 angular.module('httpErrorInterceptor',[])
     .config(function($httpProvider) {
-        var interceptor = ['$rootScope', '$q', '$window', function($rootScope, $q, $window) {
+        var interceptor = ['$rootScope', '$q', function($rootScope, $q) {
             var showError = function(errorMessage){
                 $rootScope.$broadcast('event:serverError', errorMessage);
             };
@@ -29,9 +29,9 @@ angular.module('httpErrorInterceptor',[])
 
             function error(response) {
                 var data = response.data;
-                var unexpecetedError = "There was an unexpected issue on the server. Please try again";
+                var unexpectedError = "There was an unexpected issue on the server. Please try again";
                 if (response.status === 500) {
-                    var errorMessage = data.error && data.error.message ? getServerError(data.error.message) : unexpecetedError;
+                    var errorMessage = data.error && data.error.message ? getServerError(data.error.message) : unexpectedError;
                     showError(errorMessage);
                 } else if (response.status === 409){
                     var errorMessage = data.error && data.error.message ? getServerError(data.error.message) : "Duplicate entry error";
@@ -39,11 +39,11 @@ angular.module('httpErrorInterceptor',[])
                 } else if(response.status === 0){
                     showError("Could not connect to the server. Please check your connection and try again");
                 } else if(response.status === 405){
-                    showError(unexpecetedError);
+                    showError(unexpectedError);
                 } else if(response.status === 400){
                     showError("Could not connect to the server. Please check your connection and try again");
                 } else if (response.status === 403) {
-                    var errorMessage = data.error && data.error.message ? stringAfter(data.error.message, ':') : unexpecetedError;
+                    var errorMessage = data.error && data.error.message ? stringAfter(data.error.message, ':') : unexpectedError;
                     showError(errorMessage);
                     if(shouldRedirectToLogin(response)){
                             $rootScope.$broadcast('event:auth-loginRequired');

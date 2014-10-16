@@ -6,7 +6,6 @@ angular.module('bahmni.registration')
         var dateUtil = Bahmni.Common.Util.DateUtil;
         var createActionsConfig = [];
         var defaultActions = ["save", "print", "startVisit"];
-        var constants = Bahmni.Registration.Constants;
         var defaultVisitType = appService.getAppDescriptor().getConfigValue('defaultVisitType');
         var locationUuid = sessionService.getLoginLocationUuid();
         $scope.identifierPattern = appService.getAppDescriptor().getConfigValue('identifierPattern');

@@ -4,7 +4,6 @@ angular.module('bahmni.orders')
     .controller('PendingOrdersController', ['$scope','$rootScope', '$stateParams', 'PendingOrderService','$q', 'spinner', function ($scope, $rootScope, $stateParams, pendingOrderService, $q, spinner) {
 
     	$scope.getOrders = function (patientUuid, orderTypeUuid) {
-            var results =[];
     		pendingOrderService.getOrders(patientUuid, orderTypeUuid).success(function(response){
     			return response.results;
     		});
@@ -51,7 +50,6 @@ angular.module('bahmni.orders')
         
         var getResults = function() {
             var patientUuid = $stateParams.patientUuid;
-            var orderTypeUuid = $scope.orderTypes[Bahmni.Common.Constants[$stateParams.orderType]];
             $scope.resultsEntry = {};
             $rootScope.availableBoards = [
                 { name: 'Pending Orders', url: ''}

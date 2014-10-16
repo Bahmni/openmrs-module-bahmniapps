@@ -1,11 +1,9 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .factory('patientService', ['$http', '$rootScope', 'patient', function ($http, $rootScope) {
-        var patient;
+    .factory('patientService', ['$http', '$rootScope', function ($http, $rootScope) {
         var openmrsUrl = Bahmni.Registration.Constants.openmrsUrl;
         var baseOpenMRSRESTURL = Bahmni.Registration.Constants.baseOpenMRSRESTURL;
-        var patientImageURL = Bahmni.Registration.Constants.patientImageURL;
 
         var search = function (query, village, localName, offset, localNameAttributes) {
             offset = offset || 0;

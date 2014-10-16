@@ -16,13 +16,13 @@ angular.module('opd.patientDashboard', [])
         Bahmni.Clinical.DiseaseTemplateSectionHelper.populateDiseaseTemplateSections($scope.patientDashboardSections, $scope.diseaseTemplates);
 
         $scope.filterOdd = function(index) {
-          return function(item) {
+          return function() {
             return index++ % 2 == 0;
           };
         };
 
         $scope.filterEven = function(index) {
-          return function(item) {
+          return function() {
             return index++ % 2 == 1;
           };
         };

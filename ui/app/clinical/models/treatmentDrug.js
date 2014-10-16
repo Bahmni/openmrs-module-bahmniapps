@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.Clinical.TreatmentDrug = function () {
     this.uuid = "";
     this.name = "";

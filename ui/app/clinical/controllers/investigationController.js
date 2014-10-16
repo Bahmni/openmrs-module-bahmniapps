@@ -2,7 +2,6 @@
 
 angular.module('bahmni.clinical')
 .controller('InvestigationController', ['$scope', '$rootScope', 'spinner', 'labTestsProvider', 'otherTestsProvider', function ($scope, $rootScope, spinner, labTestsProvider, otherTestsProvider) {
-    var investigations = $rootScope.consultation && $rootScope.consultation.investigations;
 
     $scope.tabs = [
         {name: 'Laboratory', testsProvider: labTestsProvider, filterColumn: "sample", filterHeader: "Sample",categoryColumn: "department"},

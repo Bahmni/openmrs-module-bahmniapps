@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.patient')
-.directive('patientControlPanel', ['$q', '$rootScope', '$location', '$stateParams', '$state', 'contextChangeHandler', 'encounterService', 'visitActionsService', 'urlHelper', 'spinner', 
-        function($q, $rootScope, $location, $stateParams, $state, contextChangeHandler, encounterService, visitActionsService, urlHelper, spinner) {
+.directive('patientControlPanel', ['$q', '$rootScope', '$location', '$stateParams', '$state', 'contextChangeHandler', 'encounterService', 'visitActionsService',
+        function($q, $rootScope, $location, $stateParams, $state, contextChangeHandler, encounterService, visitActionsService) {
     var link = function($scope) {
         $scope.patient = $rootScope.patient;
         $scope.activeVisit = $rootScope.activeVisit;
