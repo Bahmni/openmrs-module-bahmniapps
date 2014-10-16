@@ -149,18 +149,12 @@
     }
     .drug-orders-history {
         margin-top: 20px;
-        .table-mimic li {
+        .table-mimic li .drug-details{
             padding-left: 10px;
         }
-        .table-mimic li.active-drug {
+        .table-mimic li.active-drug .drug-details{
             padding-left: 5px;
         }
-        .table-mimic li.highlight {
-            padding-left: 10px;
-        }
-        .drug-details {
-            padding-left: 0;
-        } 
     }
 
 
