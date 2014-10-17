@@ -37,9 +37,8 @@ Bahmni.Tests.openMRSConceptMother = {
             lowNormal: conceptData.lowNormal
         };
         return concept;
-    },
-
-}
+    }
+};
 
 Bahmni.Tests.conceptMother = {
     build: function(conceptData) {
@@ -53,7 +52,7 @@ Bahmni.Tests.conceptMother = {
         }
         return angular.extend(defaultConcept, conceptData);
     }
-}
+};
 
 Bahmni.Tests.observationMother = {
     build: function(observationData) {
@@ -65,7 +64,25 @@ Bahmni.Tests.observationMother = {
 
         return angular.extend(defaultObservation, observationData);
     }
-}
+};
 
+Bahmni.Tests.drugOrderViewModelMother = {
 
+    build: function(extensionParams, routes, durationUnits, drugOrderViewModelData) {
 
+        var defaultModel = new Bahmni.Clinical.DrugOrderViewModel(extensionParams, {routes:routes, durationUnits: durationUnits});
+        defaultModel.drugName = "calpol 500mg(tablets)";
+        defaultModel.instructions = "Before Meals";
+        defaultModel.duration = "10";
+        defaultModel.scheduledDate = "21/12/2014";
+        defaultModel.quantity = "12";
+        defaultModel.quantityUnit = "Capsule";
+        defaultModel.drug = {
+            "form": "Tablet",
+            "uuid": "8d7e3dc0-f4ad-400c-9468-5a9e2b1f4230",
+            "strength": null,
+            "name": "calpol 500mg(tablets)"
+        };
+        return angular.extend(defaultModel, drugOrderViewModelData);
+    }
+};

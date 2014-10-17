@@ -2,20 +2,7 @@
 
 describe("drugOrderViewModel", function () {
     var sampleTreatment = function (extensionParams, routes, durationUnits) {
-        var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel(extensionParams, {routes:routes, durationUnits: durationUnits});
-        sampleTreatment.drugName = "calpol 500mg(tablets)";
-        sampleTreatment.instructions = "Before Meals";
-        sampleTreatment.duration = "10";
-        sampleTreatment.scheduledDate = "21/12/2014";
-        sampleTreatment.quantity = "12";
-        sampleTreatment.quantityUnit = "Capsule";
-        sampleTreatment.drug = {
-            "form": "Tablet",
-            "uuid": "8d7e3dc0-f4ad-400c-9468-5a9e2b1f4230",
-            "strength": null,
-            "name": "calpol 500mg(tablets)"
-        };
-        return sampleTreatment;
+        return Bahmni.Tests.drugOrderViewModelMother.build(extensionParams, routes, durationUnits, defaults);
     };
 
     it("should get the text to be displayed in the treatment list", function () {
