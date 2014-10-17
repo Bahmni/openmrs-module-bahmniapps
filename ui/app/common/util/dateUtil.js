@@ -55,7 +55,7 @@ Bahmni.Common.Util.DateUtil = {
 	},
 
 	parse: function(dateString){
-		return moment(dateString).toDate();
+		return dateString ? moment(dateString).toDate() : null;
 	},
 
 	now: function(){

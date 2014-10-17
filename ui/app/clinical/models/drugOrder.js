@@ -48,7 +48,6 @@ Bahmni.Clinical.DrugOrder = (function () {
                 duration: drugOrderData.duration,
                 durationUnits: drugOrderData.durationUnit.name,
                 scheduledDate: dateUtil.parse(drugOrderData.scheduledDate),
-                dateStopped: dateUtil.addDays(dateUtil.parse(drugOrderData.scheduledDate), drugOrderData.durationInDays),
                 previousOrderUuid: drugOrderData.previousOrderUuid,
                 action: drugOrderData.action
             }
