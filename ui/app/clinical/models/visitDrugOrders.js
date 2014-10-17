@@ -25,11 +25,11 @@ Bahmni.Clinical.VisitDrugOrder = (function () {
             return drugOrder.drug.name;
         };
         var drugOrders = new Bahmni.Clinical.OrdersMapper(nameToSort).map(encounterTransactions, 'drugOrders').filter(function (order) {
-            return !order.voided;
+            return !order.voided && order.action != Bahmni.Clinical.Constants.orderActions.discontinue;
         });
 
         drugOrders = _.filter(drugOrders, function(drugOrder){
-            return !_.some(drugOrders, function(otherDrugOrder){ return otherDrugOrder.encounterUuid === drugOrder.encounterUuid && otherDrugOrder.previousOrderUuid === drugOrder.uuid });
+            return !_.some(drugOrders, function(otherDrugOrder){ return otherDrugOrder.action === Bahmni.Clinical.Constants.orderActions.revise && otherDrugOrder.encounterUuid === drugOrder.encounterUuid && otherDrugOrder.previousOrderUuid === drugOrder.uuid });
         });
 
         var prescribedDrugOrders = [];
