@@ -60,7 +60,7 @@
         <div class="upload-inline-buttons">
           <input id="file-browse" type="file" name="image" accept="image/*" capture="camera" file-upload visit="newVisit" on-select="onSelect">
           <label for="file-browse" class="btn btn-primary" ng-click="resetCurrentVisit(newVisit)"><i class="icon-camera icon-white"></i> SCAN</label>
-          <button type="submit" ng-disabled="newVisit.images.length == 0 || newVisitForm.$invalid || newVisit.hasErrors()" class="btn btn-primary">
+          <button type="submit" ng-disabled="!newVisit.hasImages() || !newVisit.hasVisitType() || newVisitForm.$invalid || newVisit.hasErrors()" class="btn btn-primary">
             <i class="icon-save icon-white"></i> SAVE
           </button>
         </div>

@@ -51,7 +51,7 @@ Bahmni.DocumentUpload.Visit = function () {
         if(!this.isNew()) return moment(this.startDatetime).toDate();
         return this.parseDate(this.startDatetime);
     };
-    
+
     this.endDate = function () {
        return this.stopDatetime ? this.parseDate(this.stopDatetime) : undefined;
     };
@@ -78,7 +78,7 @@ Bahmni.DocumentUpload.Visit = function () {
     this.markAsUpdated = function () {
         this.changed = this.images.some(function(image) { return image.changed || !image.obsUuid || image.voided; });
     };
-    
+
     this.isSaved = function(image){
         return image.obsUuid ? true : false;
     };
@@ -109,4 +109,8 @@ Bahmni.DocumentUpload.Visit = function () {
 
         return imageHasError ? true : false;
     };
+
+    this.hasVisitType = function(){
+        return this.visitType && this.visitType.uuid ? true : false;
+    }
 };

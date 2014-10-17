@@ -103,5 +103,32 @@ describe ("Visit ", function() {
 
             expect(documentUploadVisit.hasErrors()).toBe(true);
         });
-    })
+    });
+
+    describe("hasVisitType", function(){
+        it("should return true if it has visit type uuid.", function(){
+            var documentUploadVisit = new Bahmni.DocumentUpload.Visit;
+
+            documentUploadVisit.visitType = {
+                uuid: "uuid"
+            };
+
+            expect(documentUploadVisit.hasVisitType()).toBe(true);
+        });
+
+        it("should return false if it don't have visit type uuid.", function(){
+            var documentUploadVisit = new Bahmni.DocumentUpload.Visit;
+
+            documentUploadVisit.visitType = {
+            };
+
+            expect(documentUploadVisit.hasVisitType()).toBe(false);
+        });
+
+        it("should return false if it don't have visit type.", function(){
+            var documentUploadVisit = new Bahmni.DocumentUpload.Visit;
+
+            expect(documentUploadVisit.hasVisitType()).toBe(false);
+        });
+    });
 });
