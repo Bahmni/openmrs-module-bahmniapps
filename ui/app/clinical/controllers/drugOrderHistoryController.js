@@ -51,7 +51,7 @@ angular.module('bahmni.clinical')
             }
         };
 
-        $scope.remove = function(drugOrder){
+        $scope.discontinue = function(drugOrder){
             if(drugOrder.isDiscontinuedAllowed){
                 drugOrder.isMarkedForDiscontinue = true;
                 drugOrder.isEditAllowed = false;
@@ -59,7 +59,7 @@ angular.module('bahmni.clinical')
             }
         };
 
-        $scope.undoRemove = function(drugOrder){
+        $scope.undoDiscontinue = function(drugOrder){
             $scope.consultation.discontinuedDurgs = _.reject($scope.consultation.discontinuedDurgs, function(removableOrder){
                 return removableOrder.uuid === drugOrder.uuid;
             });

@@ -24,8 +24,8 @@
                                         <i class="icon-minus-sign" ng-click="toggleShowAdditionalInstructions(drugOrder)" ng-show="drugOrder.showAdditionalInstructions"></i>
                                     </button>
                                     <button><i class="icon-play" ng-click="refill(drugOrder)"></i></button>
-                                    <button ng-if="drugOrder.isActive()" ng-disabled="!drugOrder.isDiscontinuedAllowed"><i class="icon-stop" ng-click="remove(drugOrder)" ng-if="!drugOrder.isMarkedForDiscontinue"></i></button>
-									<button ng-if="drugOrder.isActive()" ng-disabled="!drugOrder.isDiscontinuedAllowed"><i class="icon-undo" ng-click="undoRemove(drugOrder)" ng-if="drugOrder.isMarkedForDiscontinue"></i></button>
+                                    <button ng-if="drugOrder.isActive()" ng-disabled="!drugOrder.isDiscontinuedAllowed"><i class="icon-stop" ng-click="discontinue(drugOrder)" ng-if="!drugOrder.isMarkedForDiscontinue"></i></button>
+									<button ng-if="drugOrder.isActive()" ng-disabled="!drugOrder.isDiscontinuedAllowed"><i class="icon-undo" ng-click="undoDiscontinue(drugOrder)" ng-if="drugOrder.isMarkedForDiscontinue"></i></button>
 									<button ng-if="drugOrder.isActive()" ng-disabled="!drugOrder.isEditAllowed"><i class="icon-edit" ng-click="edit(drugOrder, consultation.drugOrderGroups[prescriptionDate])"></i></button>
 								</div>
                                 <div class="start-date fr">
