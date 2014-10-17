@@ -1,46 +1,23 @@
-.hierarchy {
-	padding: 10px;
-	.level-1 {font-size:16px; color: #333; background: #dfdfdf;}
-	.level-2 {font-size:14px; color: #444; background: #efefef;}
-	.level-3 {font-size:12px; color: #555; background: #ffffff; padding-left: 20px;}
-	.level-4 {font-size:12px; color: #888; background: #ffffff; padding-left: 40px; margin-left: -20px;}
-	.level-5 {font-size:12px; color: #999; background: #ffffff; padding-left: 60px; margin-left: -20px; font-family:$primaryLightFont;}
-
-	.level-1.indent, .level-2.indent, .level-3.indent, .level-4.indent, .level-5.indent {
-		padding-left: 20px;
-	}
-	li.has-child {
-		padding-bottom: 0;
-		border-bottom: 0;
-		& > ul {
-			margin-top: 5px;
-		}
-	}
-	li {
-		padding: 5px 10px;
-		border-bottom: 1px solid #ccc;
-		border-left: 0;
-		border-right: 0;
-		& > ul {
-			margin-left: -10px;
-			margin-right: -10px;
-		}
-	}
-
-}
 .dashboard-section section.hierarchy .form-field {
 	padding: 0;
 }
-.raftaar {
+
+.hierarchy {
     ul {
         border-top: 1px solid #eee;
     }
     ul li {
         border-top: 1px solid #eee;
         font-size:16px; color: #333; background: #dfdfdf;
+	    clear: both;
         .tree-list-item {
-            padding: 3px 0;
-            display: inline-block;
+            padding-top: 3px;
+	        padding-bottom: 3px;
+	        padding-left: 10px;
+	        display: inherit;
+	        .visit-start-date {
+		        margin-right: 5px;
+	        }
         }
     }
     ul li ul li {

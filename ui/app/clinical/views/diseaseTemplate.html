@@ -1,17 +1,26 @@
 <div>
     <section class="block hierarchy">
         <ul class="form-field">
-            <li ng-repeat="obsTemplate in diseaseTemplate.obsTemplates" class="level-1 has-child">
-                <span>
+            <li ng-repeat="obsTemplate in diseaseTemplate.obsTemplates">
+                <span class="tree-list-item">
                         {{obsTemplate.name}}
-                    <span class="fr">
+                    <span class="fr visit-start-date">
                         {{obsTemplate.visitStartDate | date: 'dd MMM yy'}}
                     </span>
                 </span>
 
                 <ul>
-                    <dashboard-observation observation="observation" ng-repeat="observation in obsTemplate.observations"
-                                           level="2"></dashboard-observation>
+                    <li ng-repeat="encounter in obsTemplate.encounters">
+                        <span class="tree-list-item">
+                            <span>
+                                {{encounter.encounterDateTime | date: 'dd MMM yy'}}
+                            </span>
+                        </span>
+                        <ul>
+                            <dashboard-observation observation="observation"
+                                                   ng-repeat="observation in encounter.observations"></dashboard-observation>
+                        </ul>
+                    </li>
                 </ul>
             </li>
         </ul>

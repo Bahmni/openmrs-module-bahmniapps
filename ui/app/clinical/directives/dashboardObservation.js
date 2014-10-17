@@ -4,8 +4,7 @@ angular.module('bahmni.clinical')
         return {
             restrict: 'E',
             scope: {
-                observation: "=",
-                level: "="
+                observation: "="
             },
             template: '<ng-include src="\'views/dashboardObservation.html\'" />'
         };

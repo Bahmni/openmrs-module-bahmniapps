@@ -7,5 +7,12 @@ angular.module('bahmni.clinical')
             return $http.get(url, {
                 params:{patientUuid:patientUuid}
             });
+        };
+
+        this.getAllDiseaseTemplateObs = function(patientUuid, diseaseName) {
+            var url = Bahmni.Common.Constants.AllDiseaseTemplateUrl;
+            return $http.get(url, {
+                params:{patientUuid:patientUuid, diseaseName: diseaseName}
+            });
         }
     }]);

@@ -14,6 +14,7 @@ Bahmni.Common = Bahmni.Common || {};
         emrapiDiagnosisUrl : EMRAPI + "/diagnosis",
         bahmniDiagnosisUrl :BAHMNI_CORE + "/diagnosis/search",
         diseaseTemplateUrl :BAHMNI_CORE + "/diseaseTemplates",
+        AllDiseaseTemplateUrl : BAHMNI_CORE + "/diseaseTemplate",
         emrapiConceptUrl :EMRAPI + "/concept",
         encounterConfigurationUrl: BAHMNI_CORE + "/bahmniencounter/config",
         patientConfigurationUrl:BAHMNI_CORE + "/patient/config",
