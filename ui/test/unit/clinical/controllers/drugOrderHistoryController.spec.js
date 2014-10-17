@@ -125,7 +125,7 @@ describe("DrugOrderHistoryController", function(){
 
             scope.discontinue(drugOrder);
 
-            expect(scope.consultation.discontinuedDurgs[0]).toBe(drugOrder);
+            expect(scope.consultation.discontinuedDrugs[0]).toBe(drugOrder);
         });
     });
 
@@ -145,7 +145,7 @@ describe("DrugOrderHistoryController", function(){
             scope.discontinue(drugOrder);
             scope.undoDiscontinue(drugOrder);
 
-            expect(0).toBe(scope.consultation.discontinuedDurgs.length);
+            expect(0).toBe(scope.consultation.discontinuedDrugs.length);
         });
 
         it("should discontinue the proper drugOrder from removableDrugOrders", function(){
@@ -155,12 +155,12 @@ describe("DrugOrderHistoryController", function(){
             scope.discontinue(drugOrder1);
             scope.discontinue(drugOrder2);
 
-            expect(2).toBe(scope.consultation.discontinuedDurgs.length);
+            expect(2).toBe(scope.consultation.discontinuedDrugs.length);
 
             scope.undoDiscontinue(drugOrder2);
 
-            expect(1).toBe(scope.consultation.discontinuedDurgs.length);
-            expect(drugOrder1).toBe(scope.consultation.discontinuedDurgs[0]);
+            expect(1).toBe(scope.consultation.discontinuedDrugs.length);
+            expect(drugOrder1).toBe(scope.consultation.discontinuedDrugs[0]);
         })
     });
 });

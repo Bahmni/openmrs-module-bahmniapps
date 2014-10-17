@@ -14,7 +14,7 @@ angular.module('bahmni.clinical')
         };
 
         var init = function () {
-            $scope.consultation.discontinuedDurgs = $scope.consultation.discontinuedDurgs || [];
+            $scope.consultation.discontinuedDrugs = $scope.consultation.discontinuedDrugs || [];
             $scope.consultation.drugOrderGroups = $scope.consultation.drugOrderGroups || createPrescribedDrugOrderGroups();
             $scope.drugOrderGroupOrder = Object.keys($scope.consultation.drugOrderGroups).sort(function(a, b){return a < b});
         };
@@ -55,12 +55,12 @@ angular.module('bahmni.clinical')
             if(drugOrder.isDiscontinuedAllowed){
                 drugOrder.isMarkedForDiscontinue = true;
                 drugOrder.isEditAllowed = false;
-                $scope.consultation.discontinuedDurgs.push(drugOrder);
+                $scope.consultation.discontinuedDrugs.push(drugOrder);
             }
         };
 
         $scope.undoDiscontinue = function(drugOrder){
-            $scope.consultation.discontinuedDurgs = _.reject($scope.consultation.discontinuedDurgs, function(removableOrder){
+            $scope.consultation.discontinuedDrugs = _.reject($scope.consultation.discontinuedDrugs, function(removableOrder){
                 return removableOrder.uuid === drugOrder.uuid;
             });
             drugOrder.isMarkedForDiscontinue = false;
@@ -68,7 +68,7 @@ angular.module('bahmni.clinical')
         };
 
         var saveTreatment = function () {
-            $scope.consultation.discontinuedDurgs.forEach(function (discontinuedDrug) {
+            $scope.consultation.discontinuedDrugs.forEach(function (discontinuedDrug) {
                 var removableOrder = _.find(prescribedDrugOrders, function (prescribedOrder) {
                     return prescribedOrder.uuid === discontinuedDrug.uuid;
                 });
