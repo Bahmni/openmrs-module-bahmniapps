@@ -67,19 +67,22 @@ angular.module('bahmni.clinical')
             drugOrder.isEditAllowed = true;
         };
 
+        var removeOrder = function(removableOrder) {
+            removableOrder.action = Bahmni.Clinical.Constants.orderActions.discontinue;
+            removableOrder.previousOrderUuid = removableOrder.uuid;
+            removableOrder.uuid = undefined;
+            removableOrder.dateActivated = null;
+            $rootScope.consultation.drugOrders.push(removableOrder);
+        }
+
         var saveTreatment = function () {
             $scope.consultation.discontinuedDrugs.forEach(function (discontinuedDrug) {
                 var removableOrder = _.find(prescribedDrugOrders, function (prescribedOrder) {
                     return prescribedOrder.uuid === discontinuedDrug.uuid;
                 });
-                if (!removableOrder) {
-                    return;
+                if (removableOrder) {
+                    removeOrder(removableOrder);
                 }
-                removableOrder.action = Bahmni.Clinical.Constants.orderActions.discontinue;
-                removableOrder.previousOrderUuid = removableOrder.uuid;
-                removableOrder.uuid = undefined;
-                removableOrder.dateActivated = null;
-                $rootScope.consultation.drugOrders.push(removableOrder);
             });
         };
         registerTabService.register(saveTreatment);
