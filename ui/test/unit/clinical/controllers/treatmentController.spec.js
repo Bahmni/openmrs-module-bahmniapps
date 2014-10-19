@@ -10,7 +10,7 @@ describe("TreatmentController", function () {
         scope.currentBoard = {extension: {}};
         $rootScope.contextChangeHandler = {add: function () {
         }};
-        scope.addForm = {$invalid: false};
+        scope.addForm = {$invalid: false, $valid: true};
 
         $controller('TreatmentController', {
             $scope: scope,
@@ -34,5 +34,13 @@ describe("TreatmentController", function () {
         scope.treatment = {drugName: true};
         scope.add();
         expect(scope.treatment.drugName).toBeFalsy();
+    });
+
+    it("should check for any unsaved drug orders", function () {
+        expect(scope.unsavedDrugOrders()).toBeTruthy();
+
+        scope.addForm = {$invalid: true};
+        scope.treatment = {drugName: true};
+        expect(scope.unsavedDrugOrders()).toBeTruthy();
     });
 });

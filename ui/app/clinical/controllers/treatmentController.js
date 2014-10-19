@@ -79,7 +79,15 @@ angular.module('bahmni.clinical')
                 $scope.treatment = $scope.treatments[index].cloneForEdit(index, treatmentConfig);
             };
 
+            $scope.unsavedDrugOrders = function(){
+                var anyValuesFilled =  $scope.treatment.drugName || $scope.treatment.uniformDosingType.dose || $scope.treatment.uniformDosingType.frequency || $scope.treatment.variableDosingType.morningDose || $scope.treatment.variableDosingType.afternoonDose || $scope.treatment.variableDosingType.eveningDose || $scope.treatment.duration || $scope.treatment.quantity
+                return (anyValuesFilled && $scope.addForm.$invalid) || $scope.addForm.$valid;
+            };
             var allowContextChange = function () {
+                if($scope.unsavedDrugOrders() == true){
+                    $scope.formInvalid = true;
+                    return;
+                }
                 $scope.consultation.newlyAddedTreatments = $scope.treatments;
                 $scope.consultation.incompleteTreatment = $scope.treatment;
                 return true;
