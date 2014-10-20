@@ -1,5 +1,5 @@
 <section class="edit-drug-order primary-section-grid">
-    <form name="addForm" ng-submit="add()" ng-class="{ 'show-invalid': formInvalid}" novalidate>
+    <form name="addForm" ng-submit="add()" bm-form>
         <fieldset>
             <input class="form-field drug-name" type="text" placeholder="Drug Name" bahmni-autocomplete
                    source="getDrugs" response-map="getDataResults" required

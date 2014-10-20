@@ -169,14 +169,28 @@ angular.module('bahmni.common.util')
             }
         }
     })
-    .directive('autofillable', function () {
-        return function (scope, elem, attrs) {
+    .directive('bmForm', function () {
+        var link = function (scope, elem, attrs) {
             setTimeout(function () {
-                elem.unbind('submit').submit(function (e) {
+                $(elem).unbind('submit').submit(function (e) {
+                    var formScope = scope.$parent;
+                    var formName = attrs.name;
                     e.preventDefault();
-                    elem.find('input').trigger('change');
-                    scope.$apply(attrs.ngSubmit);
+                    if(scope.autofillable) $(elem).find('input').trigger('change');
+                    if(formScope[formName].$valid) {
+                        formScope.$apply(attrs.ngSubmit);
+                        $(elem).removeClass('submitted-with-error');
+                    } else {
+                        $(elem).addClass('submitted-with-error');
+                    }
                 });
             }, 0);
         }
+        return {
+            link: link,
+            require: 'form',
+            scope: {
+               autofillable: "=" 
+            }
+        };
     });

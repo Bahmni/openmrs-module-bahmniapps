@@ -42,10 +42,6 @@ angular.module('bahmni.clinical')
             }, true);
 
             $scope.add = function () {
-                if ($scope.addForm.$invalid) {
-                    $scope.formInvalid = true;
-                    return;
-                }
                 $scope.treatment.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;
                 if($scope.treatment.isBeingEdited){
                     $scope.treatments.splice($scope.treatment.currentIndex,1);
@@ -54,7 +50,6 @@ angular.module('bahmni.clinical')
                 $scope.treatments.push($scope.treatment);
                 $scope.treatment = newTreatment();
                 $scope.treatment.effectiveStartDate = $filter("date")($scope.treatment.effectiveStartDate, 'yyyy-MM-dd');
-                $scope.formInvalid = false;
             };
 
             $scope.remove = function (index) {

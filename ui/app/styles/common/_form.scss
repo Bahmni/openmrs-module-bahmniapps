@@ -1,0 +1,8 @@
+form.submitted-with-error {
+	.ng-invalid:enabled, .ng-invalid:focus {
+		outline: none !important;
+		border: 2px solid;
+		border-color: #ff6666;
+		background: white;
+	}
+}
