@@ -1,9 +1,8 @@
 <li ng-class="{'is-abnormal': observation.abnormal, 'is-text': observation.type == 'Text', 'has-child' : observation.groupMembers.length > 0}">
     <span class="tree-list-item">
         <span class="field-attribute"><label>{{observation.concept.shortName || observation.concept.name}}</label></span>
-        <span class="value-text-only" ng-if="!observation.groupMembers || observation.groupMembers.length == 0">{{observation.getDisplayValue()}}</span>
-        <span class="label-add-on" ng-if="observation.concept.units"> {{observation.concept.units}}</span>
-        <span class="value-text-only time fr" ng-if="!observation.groupMembers || observation.groupMembers.length == 0">{{observation.observationDateTime | date :'hh:mm a'}}</span>
+        <span class="value-text-only" ng-if="!observation.groupMembers || observation.groupMembers.length == 0">{{observation.getDisplayValue()}}<span class="label-add-on" ng-if="observation.concept.units">{{observation.concept.units}}</span></span>
+        <span class="time fr" ng-if="!observation.groupMembers || observation.groupMembers.length == 0">{{observation.observationDateTime | date :'hh:mm a'}}</span>
     </span>
 
 

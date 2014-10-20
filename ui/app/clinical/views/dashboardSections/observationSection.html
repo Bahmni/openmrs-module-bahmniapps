@@ -3,12 +3,12 @@
 
     <section class="block hierarchy">
         <ul class="form-field">
-            <li ng-repeat="obsGroup in patientSummary.data" class="level-1 has-child">
-                <div>
+            <li ng-repeat="obsGroup in patientSummary.data">
+                <span class="tree-list-item">
                     <span class="obs-date">
                         {{obsGroup.date | date: 'dd MMM yy'}}
                     </span>
-                </div>
+                </span>
                 <ul>
                     <dashboard-observation observation="observation" ng-repeat="observation in obsGroup.value"
                                            level="2"></dashboard-observation>
