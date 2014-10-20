@@ -7,8 +7,13 @@
   margin-bottom: 0.2cm;
 }
 
-body, pre {
-  font-family: "OpenSans", arial, sans-serif;
+body, body pre {
+  font-family: arial, sans-serif;
+  font-size: 10pt;
+}
+
+body pre {
+  white-space: pre-wrap;
 }
 
 p,h1,h2,h3,table,tr,td,div,span,li{

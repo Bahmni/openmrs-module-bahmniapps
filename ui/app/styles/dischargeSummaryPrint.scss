@@ -20,12 +20,10 @@ p, h1, h2, h3, table, tr, td, div, span, li {
 .diagnosis-notes-title {
   margin-right: 5px;
 }
-pre {
+body pre {
   word-wrap: break-word;
   background: none;
   border: 0;
-  white-space: pre-wrap;
-  font-family: arial, sans serif;
   margin: 0;
 }
 ul {
@@ -95,6 +93,10 @@ header h2 {
 section.diagnosis-print, section.treatment-print {
   table tr th {
     text-align: left!important;
+    white-space: nowrap;
+  }
+  table td {
+    white-space: nowrap;
   }
 }
 section {
