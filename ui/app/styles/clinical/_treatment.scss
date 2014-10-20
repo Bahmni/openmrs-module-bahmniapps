@@ -151,7 +151,8 @@
         }
     }
     .drug-orders-history {
-        margin-top: 20px;
+        margin: 20px 5px 0 5px;
+
         .table-mimic li .drug-details{
             padding-left: 10px;
         }
@@ -219,4 +220,9 @@
 	.active-drug {
 		border-left: 5px solid orange;
 	}
+
+    .refill-drugs-btn {
+        font-size: 14px;
+        margin-right: 0;
+    }
 }

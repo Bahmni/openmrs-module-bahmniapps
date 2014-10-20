@@ -6,7 +6,7 @@
 }
 
 .opd-wrapper {overflow-x: hidden;}
-#view-content .visit {padding: 10px;}
+#view-content .visit {padding: 10px 5px;}
 .visit {
   table tr:nth-child(even), table tr:nth-child(odd) {
     background: #fff;
@@ -44,7 +44,7 @@
     }
   }
 }
-.visit .diagnosis .history-diagnosis {margin-bottom:0;}
+.visit .diagnosis .history-diagnosis {margin:0;}
 .visit {
   .diagnosis .history-diagnosis .table-header {
     .col.col4 {

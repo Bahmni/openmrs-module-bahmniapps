@@ -60,7 +60,7 @@
                 </div>
 
                 <div class="table current-diagnosis section-grid" ng-if="consultation.savedDiagnosesFromCurrentEncounter.length > 0">
-                    <h2>Current</h2>
+                    <h2 class="section-title">Current</h2>
                     <div ng-repeat="diagnosis in consultation.savedDiagnosesFromCurrentEncounter | primaryDiagnosisFirst" class="table-body">
                         <div class="row diagnosis-row">
                             <ng-include src="'views/diagnosisRow.html'" />

@@ -12,7 +12,7 @@
   }
 	.block{
 		min-height:150px;
-		padding:10px;
+		padding:5px;
 		.block-content{
 			color:#5C5B5C;
 			@include font-size(1);
@@ -180,4 +180,7 @@
     color: #777;
     text-decoration: line-through;
   }
+}
+.consultationNote textarea {
+  width: 99.4%;
 }
