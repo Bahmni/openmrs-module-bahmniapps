@@ -47,6 +47,12 @@ angular.module('opd.patientDashboard', [])
             return new Bahmni.Clinical.PatientDashboardSection(section);
         };
 
+        $scope.getDiseaseTemplateSection = function(diseaseName){
+            return _.find($scope.diseaseTemplates, function(diseaseTemplate){
+                return diseaseTemplate.name === diseaseName;
+            });
+        };
+
         $scope.showSummary = function () {
             $scope.patientSummary = {};
             $scope.patientDashboardSections = _.map($scope.patientDashboardSections, createPatientDashboardSection);
