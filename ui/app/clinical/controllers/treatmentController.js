@@ -3,9 +3,9 @@
 angular.module('bahmni.clinical')
     .controller('TreatmentController', ['$scope', '$rootScope', 'TreatmentService', 'contextChangeHandler', 'RegisterTabService', 'treatmentConfig', 'DrugService', '$filter',
         function ($scope, $rootScope, treatmentService, contextChangeHandler, registerTabService, treatmentConfig, drugService, $filter) {
-
             $scope.treatments = $scope.consultation.newlyAddedTreatments || [];
             $scope.treatmentConfig = treatmentConfig;
+            var drugOrderHistory = null;
             $scope.treatmentConfig.durationUnits = [
                 {name: "Hour(s)", factor: 1 / 24},
                 {name: "Day(s)", factor: 1},
@@ -42,6 +42,7 @@ angular.module('bahmni.clinical')
             }, true);
 
             $scope.add = function () {
+                clearHighlights();
                 $scope.treatment.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;
                 if($scope.treatment.isBeingEdited){
                     $scope.treatments.splice($scope.treatment.currentIndex,1);
@@ -69,7 +70,14 @@ angular.module('bahmni.clinical')
                 treatment.asNeeded = !treatment.asNeeded;
             };
 
+            var clearHighlights = function(){
+                $scope.treatments.map(setIsNotBeingEdited);
+                drugOrderHistory ? drugOrderHistory.isBeingEdited = false : null;
+                drugOrderHistory ? drugOrderHistory.isDiscontinuedAllowed = true : null;
+            };
+
             $scope.edit = function (index) {
+                clearHighlights();
                 $scope.treatments[index].isBeingEdited = true;
                 $scope.treatment = $scope.treatments[index].cloneForEdit(index, treatmentConfig);
             };
@@ -92,6 +100,10 @@ angular.module('bahmni.clinical')
                 return drugService.search(request.term);
             };
 
+            var setIsNotBeingEdited = function (treatment) {
+                treatment.isBeingEdited = false;
+            };
+
             var constructDrugNameDisplay = function (drug, drugForm) {
                 return {
                     label: drug.name + " (" + drugForm + ")",
@@ -110,6 +122,11 @@ angular.module('bahmni.clinical')
                 $scope.treatment.drugName = item.drug.name;
             };
 
+            $scope.clearForm = function () {
+                $scope.treatment = newTreatment();
+                clearHighlights();
+            };
+
             contextChangeHandler.add(allowContextChange);
 
             var saveTreatment = function () {
@@ -122,20 +139,20 @@ angular.module('bahmni.clinical')
 
             $rootScope.$on("event:refillDrugOrder", function (event, drugOrder) {
                 var refill = drugOrder.refill(treatmentConfig);
+                drugOrderHistory = drugOrder;
                 $scope.treatments.push(refill);
             });
 
             $rootScope.$on("event:refillDrugOrders", function (event, drugOrders) {
-                drugOrders.forEach(function(drugOrder) {
+                drugOrders.forEach(function (drugOrder) {
                     var refill = drugOrder.refill(treatmentConfig);
                     $scope.treatments.push(refill);
                 })
             });
 
             $rootScope.$on("event:reviseDrugOrder", function (event, drugOrder) {
-                $scope.treatments.forEach(function (treatment) {
-                    treatment.isBeingEdited = false;
-                });
+                $scope.treatments.map(setIsNotBeingEdited);
+                drugOrderHistory = drugOrder;
                 $scope.treatment = drugOrder.revise(treatmentConfig);
                 $scope.treatment.effectiveStartDate = $filter("date")($scope.treatment.effectiveStartDate, 'yyyy-MM-dd');
                 $scope.treatment.currentIndex = $scope.treatments.length + 1;

@@ -221,7 +221,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
     };
 
     this.refill = function (treatmentConfig) {
-        var newDrugOrder = new Bahmni.Clinical.DrugOrderViewModel(null, []);
+        var newDrugOrder = new Bahmni.Clinical.DrugOrderViewModel({}, {});
         angular.copy(this, newDrugOrder);
         newDrugOrder.previousOrderUuid = undefined;
         newDrugOrder.action = Bahmni.Clinical.Constants.orderActions.new;
@@ -242,7 +242,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
     };
 
     this.revise = function(treatmentConfig){
-        var revisableDrugOrder = new Bahmni.Clinical.DrugOrderViewModel(null, [], []);
+        var revisableDrugOrder = new Bahmni.Clinical.DrugOrderViewModel({}, {});
         angular.copy(this, revisableDrugOrder);
 
         revisableDrugOrder.previousOrderUuid = this.uuid;
@@ -269,7 +269,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
     };
 
     this.cloneForEdit = function(index, treatmentConfig){
-        var editableDrugOrder = new Bahmni.Clinical.DrugOrderViewModel(null, [], []);
+        var editableDrugOrder = new Bahmni.Clinical.DrugOrderViewModel(null, null);
         angular.copy(this, editableDrugOrder);
 
         editableDrugOrder.uniformDosingType.frequency = this.isUniformDosingType() && _.find(treatmentConfig.frequencies, function(frequency){
@@ -277,7 +277,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
         });
 
         editableDrugOrder.durationUnit = _.find(treatmentConfig.durationUnits, function(durationUnit){
-            return durationUnit.name === self.durationUnit.name;
+            return durationUnit.name === self.durationUnit && self.durationUnit.name;
         });
 
         editableDrugOrder.route = _.find(treatmentConfig.routes, function(route){
@@ -292,7 +292,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
 
 Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderResponse) {
     var administrationInstructions = JSON.parse(drugOrderResponse.dosingInstructions.administrationInstructions) || {};
-    var viewModel = new Bahmni.Clinical.DrugOrderViewModel(null, [], []);
+    var viewModel = new Bahmni.Clinical.DrugOrderViewModel({}, {});
     viewModel.asNeeded = drugOrderResponse.dosingInstructions.asNeeded;
     viewModel.route = drugOrderResponse.dosingInstructions.route;
     viewModel.effectiveStartDate = drugOrderResponse.effectiveStartDate;
