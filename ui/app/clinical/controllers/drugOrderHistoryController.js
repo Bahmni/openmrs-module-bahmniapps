@@ -73,7 +73,7 @@ angular.module('bahmni.clinical')
             removableOrder.uuid = undefined;
             removableOrder.dateActivated = null;
             $rootScope.consultation.drugOrders.push(removableOrder);
-        }
+        };
 
         var saveTreatment = function () {
             $scope.consultation.discontinuedDrugs.forEach(function (discontinuedDrug) {

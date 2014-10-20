@@ -110,7 +110,8 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
 
             $scope.save = function () {
                 if (!allowContextChange()){
-                    messagingService.showMessage('error', 'Please correct errors in the form. Information not saved');
+                    var errorMessage = $scope.consultation.errorMessage || "Please correct errors in the form. Information not saved"
+                    messagingService.showMessage('error', errorMessage);
                     return;
                 }
                 registerTabService.fire();

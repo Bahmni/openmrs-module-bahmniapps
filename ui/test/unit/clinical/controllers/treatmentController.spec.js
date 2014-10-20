@@ -3,32 +3,31 @@
 describe("TreatmentController", function () {
 
     beforeEach(module('bahmni.clinical'));
-
-
-    var scope, newTreatment, editTreatment;
-
-    beforeEach(inject(function ($controller, $rootScope) {
+    var scope, registerTabService, rootScope, contextChangeHandler, newTreatment, editTreatment;
+    beforeEach(inject(function ($controller, $rootScope, RegisterTabService) {
+        scope = $rootScope.$new();
+        rootScope = $rootScope;
+        $rootScope.consultation = {};
+        scope.consultation = {};
         newTreatment = new Bahmni.Clinical.DrugOrderViewModel({}, {});
         editTreatment = new Bahmni.Clinical.DrugOrderViewModel(null, null);
-        scope = $rootScope.$new();
-        scope.consultation = {};
         scope.currentBoard = {extension: {}, extensionParams: {}};
-        $rootScope.contextChangeHandler = {add: function () {
-        }};
+        contextChangeHandler = jasmine.createSpyObj('contextChangeHandler', ['add']);
         scope.addForm = {$invalid: false, $valid: true};
+        registerTabService = RegisterTabService;
 
         $controller('TreatmentController', {
             $scope: scope,
-            $rootScope: $rootScope,
+            $rootScope: rootScope,
             treatmentService: null,
-            contextChangeHandler: $rootScope.contextChangeHandler,
-            registerTabService: null,
+            contextChangeHandler: contextChangeHandler,
+            registerTabService: RegisterTabService,
             treatmentConfig: {}
         });
     }));
 
-    describe("Add", function () {
-        it("should copy over existing treatment into array of new treatments", function () {
+    describe("add()", function () {
+        it("adds treatment object to list of treatments", function () {
             var treatment = {drugName: true};
             scope.treatment = treatment;
             scope.add();
@@ -41,6 +40,13 @@ describe("TreatmentController", function () {
             scope.add();
             expect(scope.treatment.drugName).toBeFalsy();
         });
+
+        it("clears existing treatment object", function () {
+            scope.treatment = {drugName: true};
+            scope.add();
+            expect(scope.treatment.drugName).toBeFalsy();
+        });
+
     });
 
     describe("Save", function () {
@@ -84,6 +90,48 @@ describe("TreatmentController", function () {
             expect(scope.treatments[0].isBeingEdited).toBeFalsy();
             expect(scope.treatments[0].isDiscontinuedAllowed).toBeTruthy();
         });
+
     });
 
+    describe("saveTreatment()", function () {
+        it("copies treatments object to rootScope", function () {
+            var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
+            drugOrder.durationUnit = {name: "Days"};
+            drugOrder.route = {name: "Orally"};
+            drugOrder.uniformDosingType.dose = "1";
+            drugOrder.uniformDosingType.doseUnits = "Capsule";
+            drugOrder.uniformDosingType.frequency = {name: "Once a day"};
+            drugOrder.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
+
+            scope.consultation.newlyAddedTreatments = [ drugOrder];
+            registerTabService.fire();
+            expect(rootScope.consultation.drugOrders.length).toBe(1);
+        });
+
+        it("should not save the treatment if a discontinued drug order is added at the same time", function() {
+            var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
+            drugOrder.durationUnit = {name: "Days"};
+            drugOrder.route = {name: "Orally"};
+            drugOrder.uniformDosingType.dose = "1";
+            drugOrder.uniformDosingType.doseUnits = "Capsule";
+            drugOrder.uniformDosingType.frequency = {name: "Once a day"};
+            drugOrder.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
+
+            scope.addForm = {};
+            scope.consultation.newlyAddedTreatments = [drugOrder];
+
+            var discontinuedDrug = drugOrder;
+            discontinuedDrug.isMarkedForDiscontinue = true;
+
+            scope.consultation.discontinuedDrugs = [discontinuedDrug];
+            scope.treatments = [discontinuedDrug];
+
+            var add = contextChangeHandler.add;
+            var contextChangeFunction = add.calls.mostRecent().args[0]
+
+            contextChangeFunction();
+
+            expect(scope.consultation.errorMessage).toBe("Discontinuing and ordering the same drug is not allowed. Instead, use edit.");
+        })
+    })
 });

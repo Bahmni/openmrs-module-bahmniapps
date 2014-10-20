@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('TreatmentController', ['$scope', '$rootScope', 'TreatmentService', 'contextChangeHandler', 'RegisterTabService', 'treatmentConfig', 'DrugService', '$filter',
-        function ($scope, $rootScope, treatmentService, contextChangeHandler, registerTabService, treatmentConfig, drugService, $filter) {
+    .controller('TreatmentController', ['$scope', '$rootScope', 'TreatmentService', 'contextChangeHandler', 'RegisterTabService', 'treatmentConfig', 'DrugService', '$filter','messagingService',
+        function ($scope, $rootScope, treatmentService, contextChangeHandler, registerTabService, treatmentConfig, drugService, $filter, messagingService) {
             $scope.treatments = $scope.consultation.newlyAddedTreatments || [];
             $scope.treatmentConfig = treatmentConfig;
             var drugOrderHistory = null;
@@ -35,6 +35,16 @@ angular.module('bahmni.clinical')
                     duration: treatment.duration,
                     durationUnit: treatment.durationUnit
                 }
+            };
+
+            var restrictDrugsBeingDiscontinued = function(){
+                var existingTreatment = false;
+                angular.forEach($scope.consultation.discontinuedDrugs, function(drugOrder){
+                    existingTreatment = _.some($scope.treatments, function (treatment) {
+                        return treatment.drugName === drugOrder.drugName && drugOrder.isMarkedForDiscontinue;
+                    });
+                });
+                return existingTreatment;
             };
 
             $scope.$watch(watchFunctionForQuantity, function () {
@@ -91,9 +101,14 @@ angular.module('bahmni.clinical')
                     $scope.formInvalid = true;
                     return;
                 }
-                $scope.consultation.newlyAddedTreatments = $scope.treatments;
-                $scope.consultation.incompleteTreatment = $scope.treatment;
-                return true;
+                if(!restrictDrugsBeingDiscontinued()) {
+                    $scope.consultation.newlyAddedTreatments = $scope.treatments;
+                    $scope.consultation.incompleteTreatment = $scope.treatment;
+                    return true;
+                }
+                $scope.consultation.errorMessage = "Discontinuing and ordering the same drug is not allowed. Instead, use edit.";
+                messagingService.showMessage('error', $scope.consultation.errorMessage);
+                return false;
             };
 
             $scope.getDrugs = function (request) {

@@ -49,7 +49,7 @@ Bahmni.Tests.conceptMother = {
             set: false,
             voided: false,
             conceptClass: 'Misc'
-        }
+        };
         return angular.extend(defaultConcept, conceptData);
     }
 };
@@ -60,16 +60,14 @@ Bahmni.Tests.observationMother = {
             uuid: Bahmni.Tests.genUUID(),
             groupMembers: [],
             concept: Bahmni.Tests.conceptMother.build()
-        }
+        };
 
         return angular.extend(defaultObservation, observationData);
     }
 };
 
 Bahmni.Tests.drugOrderViewModelMother = {
-
     build: function(extensionParams, routes, durationUnits, drugOrderViewModelData) {
-
         var defaultModel = new Bahmni.Clinical.DrugOrderViewModel(extensionParams, {routes:routes, durationUnits: durationUnits});
         defaultModel.drugName = "calpol 500mg(tablets)";
         defaultModel.instructions = "Before Meals";
