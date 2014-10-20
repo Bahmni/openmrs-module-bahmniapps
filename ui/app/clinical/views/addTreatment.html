@@ -13,12 +13,10 @@
                     <option value="">Choose Unit</option>
                 </select>
 
-                <div>
-                    <select class="form-field frequency" ng-model="treatment.uniformDosingType.frequency" ng-change="treatment.calculateDurationUnit(treatmentConfig.durationUnits)"
-                            ng-options="item as item.name for item in treatmentConfig.frequencies" ng-disabled="!treatment.isUniformDosingType()" ng-required="required('uniform')">
-                        <option value="">Choose frequency</option>
-                    </select>
-                </div>
+                <select class="form-field frequency" ng-model="treatment.uniformDosingType.frequency" ng-change="treatment.calculateDurationUnit(treatmentConfig.durationUnits)"
+                        ng-options="item as item.name for item in treatmentConfig.frequencies" ng-disabled="!treatment.isUniformDosingType()" ng-required="required('uniform')">
+                    <option value="">Choose frequency</option>
+                </select>
             </div>
             <span class="or-seperator">or</span>
 

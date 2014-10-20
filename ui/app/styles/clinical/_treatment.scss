@@ -106,7 +106,10 @@
             .frequency-widget.uniform-frequency {
                 float: left;
                 margin: 0 5px;
-                width: 350px;
+                width: 355px;
+                .form-field {
+                    float: left;
+                }
             }
             .frequency-widget.variable-frequency {
                 width: 295px;
