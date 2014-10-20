@@ -1,14 +1,9 @@
-Bahmni.Clinical.ObservationTemplate = function (observationTemplate) {
+Bahmni.Clinical.ObservationTemplate = function (name, visitStartDate, observations) {
     var obsTemplate = {
-        name: observationTemplate.concept.name,
-        label: observationTemplate.concept.shortName || observationTemplate.concept.name,
-        visitStartDate: observationTemplate.visitStartDate,
+        name: name,
+        visitStartDate: visitStartDate,
         encounters: []
     };
-
-    var observations = _.map(observationTemplate.bahmniObservations, function (bahmniObservation) {
-        return new Bahmni.Clinical.DashboardObservation(bahmniObservation);
-    });
 
     var groupedObservations = _.groupBy(observations, function (observation) {
         return observation.encounterDateTime;

@@ -82,7 +82,7 @@ describe('SearchPatientController', function () {
             });
             urlSearchChangeCallback();
 
-            expect(scope.identifierPrefix.prefix). toBe(preferences.identifierPrefix);
+            expect(scope.identifierPrefix.prefix).toBe(preferences.identifierPrefix);
         });
 
         it('should initialize scope with name search params from url and load the patients if a name search parameter is provided', function () {

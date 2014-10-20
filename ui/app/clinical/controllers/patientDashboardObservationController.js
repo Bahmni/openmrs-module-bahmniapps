@@ -1,5 +1,7 @@
 angular.module('bahmni.clinical')
-    .controller('PatientDashboardObservationController', ['$scope', '$stateParams', 'observationsService', '$q', 'spinner', '$rootScope', function ($scope, $stateParams, observationsService, $q, spinner, $rootScope) {
+    .controller('PatientDashboardObservationController', ['$scope', '$stateParams', 'observationsService', '$q', 
+        'spinner', '$rootScope', 'clinicalConfigService', 
+        function ($scope, $stateParams, observationsService, $q, spinner, $rootScope, clinicalConfigService) {
         $scope.patientSummary = {};
         $scope.patientUuid = $stateParams.patientUuid;
 
@@ -25,7 +27,7 @@ angular.module('bahmni.clinical')
                 if (anObs.sortWeight > challengerObs.sortWeight) return 1;
 
                 return 0;
-            }
+            };
 
             for (var obsKey in bahmniObservations){
                 var dateTime = obsKey.split('||')[0];
@@ -47,18 +49,20 @@ angular.module('bahmni.clinical')
             return _.sortBy(obsArray, [{'date' : 'desc'}]);
         };
 
-        var createObservationSectionView = function () {
-            spinner.forPromise(observationsService.fetch($scope.patientUuid, $scope.section.conceptNames, $scope.section.scope, $scope.section.numberOfVisits).then(function (observations) {
-                var dashboardObservations = _.map(observations.data, function (bahmniObservation) {
-                    return new Bahmni.Clinical.DashboardObservation(bahmniObservation);
-                });
-                $scope.patientSummary.data = groupByDateAndConcept(dashboardObservations);
-                if (_.isEmpty($scope.patientSummary.data)) {
-                    $scope.patientSummary.message = Bahmni.Clinical.Constants.messageForNoObservation;
-                }
-            }));
-        };
+            var createObservationSectionView = function () {
+                spinner.forPromise(observationsService.fetch($scope.patientUuid, $scope.section.conceptNames,
+                        $scope.section.scope, $scope.section.numberOfVisits).then(function (response) {
+                        var observations = new Bahmni.Common.Obs.ObservationMapper().map(response.data, clinicalConfigService.getAllConceptsConfig());
+                        var dashboardObservations = _.map(observations, function (observation) {
+                            return new Bahmni.Clinical.DashboardObservation(observation);
+                        });
+                        $scope.patientSummary.data = groupByDateAndConcept(dashboardObservations);
+                        if (_.isEmpty($scope.patientSummary.data)) {
+                            $scope.patientSummary.message = Bahmni.Clinical.Constants.messageForNoObservation;
+                        }
+                    }));
+            };
 
-        init();
+            init();
 
     }]);

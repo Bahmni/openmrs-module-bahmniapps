@@ -9,10 +9,18 @@ Bahmni.Clinical.DashboardObservation = (function () {
 
     DashboardObservation.prototype = {
         getDisplayValue: function () {
+            var displayValue = "";
             if (this.type === "Boolean") {
                 return this.value === true ? "Yes" : "No";
+            } else if (this.type === "multiSelect") {
+                var allValues = [];
+                this.memberObs.forEach(function (member) {
+                    allValues.push(member.value.shortName || member.value.name || member.value);
+                });
+                displayValue = allValues.join(); 
+                return displayValue;
             }
-            var displayValue = this.value.shortName || this.value.name || this.value;
+            displayValue = this.value.shortName || this.value.name || this.value;
             if (this.duration) {
                 displayValue = displayValue + " " + this.getDurationDisplayValue();
             }

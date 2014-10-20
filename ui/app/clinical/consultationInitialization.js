@@ -80,10 +80,9 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                 $rootScope.showControlPanel = false;
             };
 
-            
             return spinner.forPromise(
                 initialization.then(function(){
-                    return $q.all([findDefaultConsultationBoard().then(getActiveEncounter).then(getPastDiagnoses),getPatient().then(getPatientBedDetails),getPatientVisitHistory().then(getActiveVisitData)]);
+                    return $q.all([findDefaultConsultationBoard().then(getActiveEncounter).then(getPastDiagnoses), getPatient().then(getPatientBedDetails), getPatientVisitHistory().then(getActiveVisitData)]);
                 })
             );
         }

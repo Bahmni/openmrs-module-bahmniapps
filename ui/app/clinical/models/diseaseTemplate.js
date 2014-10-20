@@ -1,16 +1,9 @@
-Bahmni.Clinical.DiseaseTemplate = function (diseaseTemplateResponse) {
+Bahmni.Clinical.DiseaseTemplate = function (name, obsTemplates) {
 
     var diseaseTemplate = {
-        name: diseaseTemplateResponse.concept.name,
-        label: diseaseTemplateResponse.concept.shortName || diseaseTemplateResponse.concept.name,
-        obsTemplates: []
+        name: name,
+        obsTemplates: obsTemplates
     };
-
-    diseaseTemplateResponse.observationTemplates.forEach(function (obsTemplate) {
-        if (obsTemplate.bahmniObservations.length > 0) {
-            diseaseTemplate.obsTemplates.push(new Bahmni.Clinical.ObservationTemplate(obsTemplate));
-        }
-    });
 
     diseaseTemplate.notEmpty = function () {
         return diseaseTemplate.obsTemplates && diseaseTemplate.obsTemplates.length > 0;
@@ -18,4 +11,3 @@ Bahmni.Clinical.DiseaseTemplate = function (diseaseTemplateResponse) {
 
     return diseaseTemplate;
 };
-

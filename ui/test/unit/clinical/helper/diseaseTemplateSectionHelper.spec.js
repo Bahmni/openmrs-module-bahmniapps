@@ -2,8 +2,8 @@
 
 describe("disease template section helper", function () {
     it("should add disease template sections in dashboard sections", function () {
-        var diseaseTemplates = [new Bahmni.Clinical.DiseaseTemplate(breastCancerDiseaseTemplate), new Bahmni.Clinical.DiseaseTemplate(diabetesDiseaseTemplate)];
-
+        var diseaseTemplates = [new Bahmni.Clinical.DiseaseTemplate("Breast Cancer", breastCancerDiseaseTemplate.observationTemplates), 
+            new Bahmni.Clinical.DiseaseTemplate("Diabetes", diabetesDiseaseTemplate.observationTemplates)];
         expect(patientDashboardSections.length).toBe(2);
         Bahmni.Clinical.DiseaseTemplateSectionHelper.populateDiseaseTemplateSections(patientDashboardSections, diseaseTemplates);
         expect(patientDashboardSections.length).toBe(4);

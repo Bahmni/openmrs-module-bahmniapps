@@ -145,4 +145,4 @@ Bahmni.Common.AppFramework.AppDescriptor = function (context, inheritContext, re
         }
         return urlParams;
     };
-}
+};

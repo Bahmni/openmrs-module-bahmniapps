@@ -3,6 +3,7 @@
 angular.module('bahmni.clinical').factory('initialization',
     ['$rootScope', '$q', 'configurationService', 'authenticator', 'appService', 'spinner',
     function ($rootScope, $q, configurationService, authenticator, appService, spinner) {
+        
         var getConfigs = function() {
             var configNames = ['encounterConfig', 'patientConfig', 'dosageFrequencyConfig','dosageInstructionConfig', 
                 'consultationNoteConfig','labOrderNotesConfig', 'ruledOutDiagnosisConfig', 'allTestsAndPanelsConcept', 
@@ -26,5 +27,6 @@ angular.module('bahmni.clinical').factory('initialization',
         };
 
         return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(getConfigs));
+        
     }]
 );

@@ -3,7 +3,11 @@
 angular.module('bahmni.clinical')
     .service('clinicalConfigService', ['appService', function (appService) {
 
-        this.getConceptSetUIConfig = function (name) {
+        this.getAllConceptsConfig = function () {
+            return appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
+        };
+
+        this.getConceptConfig = function (name) {
             var config = appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
             return config[name];
         };

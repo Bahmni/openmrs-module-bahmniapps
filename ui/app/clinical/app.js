@@ -47,7 +47,7 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
                     }
                 },
                 resolve: {
-                    "diseaseTemplates": function(diseaseTemplatesInitialization,$stateParams){
+                    "diseaseTemplates": function (diseaseTemplatesInitialization, $stateParams) {
                         return diseaseTemplatesInitialization($stateParams.patientUuid);
                     }
                 }

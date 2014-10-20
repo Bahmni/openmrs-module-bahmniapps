@@ -91,17 +91,19 @@ describe("clinicalConfigService", function () {
                 return specUtil.respondWith(appJson)
             } else if (url.indexOf("extension.json") > -1) {
                 return specUtil.respondWith(extensionJson);
+            } else {
+                return specUtil.respondWith({});
             }
         });
 
         _sessionService = jasmine.createSpyObj('sessionService', ['loadCredentials', 'loadProviders']);
-        _sessionService.loadCredentials.and.callFake(function (promiseParam) {
+        _sessionService.loadCredentials.and.callFake(function () {
             return  specUtil.respondWith({"privileges": [
                 {"name": "app:clinical:observationTab"},
                 {"name": "app:clinical:history"}
             ]});
         });
-        _sessionService.loadProviders.and.callFake(function (promiseParam) {
+        _sessionService.loadProviders.and.callFake(function () {
             return  specUtil.respondWith({});
         });
 
@@ -122,15 +124,24 @@ describe("clinicalConfigService", function () {
 
 
     describe("should fetch app config", function () {
-        it('should fetch concept set up config', function (done) {
+        it('should fetch concept config', function (done) {
             appService.initApp('clinical', {'app': true}).then(function () {
-                var result1 = clinicalConfigService.getConceptSetUIConfig("Receptor Status");
+                var result1 = clinicalConfigService.getConceptConfig("Receptor Status");
                 expect(result1.grid).toBe(true);
-                var result2 = clinicalConfigService.getConceptSetUIConfig("Pathologic Diagnosis");
+                var result2 = clinicalConfigService.getConceptConfig("Pathologic Diagnosis");
                 expect(result2.multiSelect).toBe(true);
                 done();
             });
         });
+
+        it('should fetch all concepts config', function (done) {
+            appService.initApp('clinical', {'app': true}).then(function () {
+                var config = clinicalConfigService.getAllConceptsConfig();
+                expect(config).toEqual({ "Receptor Status": { "grid": true }, "Pathologic Diagnosis": { "multiSelect": true } });
+                done();
+            });
+        });
+
         it('should fetch obs ignore list', function (done) {
             appService.initApp('clinical', {'app': true}).then(function () {
                 var result = clinicalConfigService.getObsIgnoreList();
