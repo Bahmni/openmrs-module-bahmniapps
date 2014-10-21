@@ -2,7 +2,9 @@
 
 describe("TreatmentController", function () {
 
+    beforeEach(module('bahmni.common.uiHelper'));
     beforeEach(module('bahmni.clinical'));
+    
     var scope, registerTabService, rootScope, contextChangeHandler, newTreatment, editTreatment;
     beforeEach(inject(function ($controller, $rootScope, RegisterTabService) {
         scope = $rootScope.$new();

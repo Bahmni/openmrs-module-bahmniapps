@@ -1,28 +1,40 @@
 'use strict';
 
-angular.module('opd.patientDashboard', [])
-    .controller('PatientDashboardController', ['$scope', '$rootScope', '$location', '$stateParams', 'patientVisitHistoryService',
-        'urlHelper', 'encounterService', 'clinicalConfigService', 'diseaseTemplates',
-        function ($scope, $rootScope, $location, $stateParams, patientVisitHistoryService, urlHelper, encounterService, clinicalConfigService, diseaseTemplates) {
+angular.module('bahmni.clinical')
+    .controller('PatientDashboardController', ['$scope', '$rootScope', '$location', '$stateParams', 
+        'encounterService', 'clinicalConfigService', 'diseaseTemplateService',
+        function ($scope, $rootScope, $location, $stateParams, encounterService, 
+                  clinicalConfigService, diseaseTemplateService) {
+            
             $scope.patientUuid = $stateParams.patientUuid;
             $scope.patientSummary = {};
             $scope.activeVisitData = {};
             $scope.obsIgnoreList = clinicalConfigService.getObsIgnoreList();
             $scope.patientDashboardSections = clinicalConfigService.getAllPatientDashboardSections();
 
-            diseaseTemplates.forEach(function (diseaseTemplate) {
-                diseaseTemplate.obsTemplates.forEach(function (obsTemplate) {
-                    obsTemplate.observations = _.map(obsTemplate.encounters, function (encounter) {
-                        encounter.observations = _.map(encounter.observations, function(observation) {
-                            return new Bahmni.Clinical.DashboardObservation(observation);    
-                        })
-                    });
-                })
+            diseaseTemplateService.getLatestDiseaseTemplates($stateParams.patientUuid).then(function (diseaseTemplates) {
+                diseaseTemplates.forEach(function (diseaseTemplate) {
+                    diseaseTemplate.obsTemplates.forEach(function (obsTemplate) {
+                        obsTemplate.observations = _.map(obsTemplate.encounters, function (encounter) {
+                            encounter.observations = _.map(encounter.observations, function (observation) {
+                                return new Bahmni.Clinical.DashboardObservation(observation);
+                            })
+                        });
+                    })
+                });
+
+                $scope.diseaseTemplates = diseaseTemplates;
+                
+                $scope.diseaseTemplates.forEach(function (diseaseTemplate) {
+                    if (diseaseTemplate.notEmpty()) {
+                        $scope.patientDashboardSections.push(new Bahmni.Clinical.PatientDashboardSection({
+                            title: diseaseTemplate.name,
+                            name: 'diseaseTemplateSection'
+                        }));
+                    }
+                });
             });
 
-            $scope.diseaseTemplates = diseaseTemplates;
-            console.log($scope.diseaseTemplates);
-            Bahmni.Clinical.DiseaseTemplateSectionHelper.populateDiseaseTemplateSections($scope.patientDashboardSections, $scope.diseaseTemplates);
 
             $scope.filterOdd = function (index) {
                 return function () {

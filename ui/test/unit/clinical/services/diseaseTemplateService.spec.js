@@ -1,34 +1,34 @@
 'use strict';
 
-describe("DiseaseTemplateInitialization", function () {
-    var diseaseTemplatesInitialization, _initialization, _clinicalConfigService, _diseaseTemplateService;
-    _initialization = specUtil.respondWith({});
+describe("DiseaseTemplateService", function () {
+    var _clinicalConfigService, _$http;
+    var diseaseTemplateService;
 
     beforeEach(module('bahmni.clinical'));
     beforeEach(module('bahmni.common.appFramework'));
+
     beforeEach(module(function () {
         _clinicalConfigService = jasmine.createSpyObj('clinicalConfigService', ['getAllConceptsConfig']);
         _clinicalConfigService.getAllConceptsConfig.and.returnValue({});
-        _diseaseTemplateService = jasmine.createSpyObj('diseaseTemplateService', ['getDiseaseTemplates']);
-        _diseaseTemplateService.getDiseaseTemplates.and.callFake(function (patientUuid) {
+        _$http = jasmine.createSpyObj('$http', ['get']);
+        _$http.get.and.callFake(function () {
             return specUtil.respondWith({"data": diseaseTemplates});
         });
     }));
 
     beforeEach(module(function ($provide) {
-        $provide.value('initialization', _initialization);
-        $provide.value('diseaseTemplateService', _diseaseTemplateService);
         $provide.value('clinicalConfigService', _clinicalConfigService);
+        $provide.value('$http', _$http);
         $provide.value('$q', Q);
     }));
 
-    beforeEach(inject(['diseaseTemplatesInitialization', function (diseaseTemplatesInitialization) {
-        this.diseaseTemplatesInitialization = diseaseTemplatesInitialization;
+    beforeEach(inject(['diseaseTemplateService', function (diseaseTemplateService) {
+        this.diseaseTemplateService = diseaseTemplateService;
     }]));
 
-    describe("initialization", function () {
-        it('should initialize disease templates', function (done) {
-            this.diseaseTemplatesInitialization("patientuuid").then(function (response) {
+    describe("disease templates", function () {
+        it('should fetch latest disease templates for a patient', function (done) {
+            this.diseaseTemplateService.getLatestDiseaseTemplates("patientuuid").then(function (response) {
                 expect(response.length).toBe(1);
                 expect(response[0].name).toBe("Breast Cancer");
                 expect(response[0].obsTemplates.length).toBe(2);

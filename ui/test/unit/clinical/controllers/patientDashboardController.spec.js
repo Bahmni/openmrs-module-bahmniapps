@@ -1,29 +1,55 @@
 'use strict';
 
-describe("disease template section helper", function () {
-    it("should add disease template sections in dashboard sections", function () {
-        var diseaseTemplates = [new Bahmni.Clinical.DiseaseTemplate("Breast Cancer", breastCancerDiseaseTemplate.observationTemplates), 
+describe("patient dashboard controller", function () {
+
+    beforeEach(module('bahmni.clinical'));
+
+    var _diseaseTemplateService, scope, _clinicalConfigService;
+    var fetchDiseaseTemplatePromise;
+
+    var patientDashboardSections = [
+        {
+            "title": "Diagnosis",
+            "name": "diagnosis"
+        },
+        {
+            "title": "Lab Orders",
+            "name": "labOrders"
+        }
+    ];
+
+    beforeEach(module(function () {
+        _clinicalConfigService = jasmine.createSpyObj('clinicalConfigService', ['getObsIgnoreList', 'getAllPatientDashboardSections']);
+        _clinicalConfigService.getAllPatientDashboardSections.and.returnValue(patientDashboardSections);
+        _diseaseTemplateService = jasmine.createSpyObj('diseaseTemplateService', ['getLatestDiseaseTemplates']);
+        var diseaseTemplates = [new Bahmni.Clinical.DiseaseTemplate("Breast Cancer", breastCancerDiseaseTemplate.observationTemplates),
             new Bahmni.Clinical.DiseaseTemplate("Diabetes", diabetesDiseaseTemplate.observationTemplates)];
-        expect(patientDashboardSections.length).toBe(2);
-        Bahmni.Clinical.DiseaseTemplateSectionHelper.populateDiseaseTemplateSections(patientDashboardSections, diseaseTemplates);
-        expect(patientDashboardSections.length).toBe(4);
-        expect(patientDashboardSections[2].title).toBe("Breast Cancer");
-        expect(patientDashboardSections[3].title).toBe("Diabetes");
+        _diseaseTemplateService.getLatestDiseaseTemplates.and.callFake(function () {
+            fetchDiseaseTemplatePromise = specUtil.respondWith(diseaseTemplates);
+            return fetchDiseaseTemplatePromise;
+        });
+    }));
+
+    beforeEach(inject(function ($controller, $rootScope) {
+        scope = $rootScope.$new();
+        $controller('PatientDashboardController', {
+            $scope: scope,
+            diseaseTemplateService: _diseaseTemplateService,
+            $stateParams: jasmine.createSpy(),
+            encounterService: jasmine.createSpy(),
+            clinicalConfigService: _clinicalConfigService
+        });
+    }));
+
+    it("should add disease template sections in dashboard sections", function (done) {
+        fetchDiseaseTemplatePromise.then(function () {
+            expect(scope.patientDashboardSections.length).toBe(4);
+            expect(scope.patientDashboardSections[2].title).toBe("Breast Cancer");
+            expect(scope.patientDashboardSections[3].title).toBe("Diabetes");
+            done();
+        });
     });
 });
-
-var patientDashboardSections = [
-    {
-        "title": "Diagnosis",
-        "name": "diagnosis",
-        "data": {}
-    },
-    {
-        "title": "Lab Orders",
-        "name": "labOrders",
-        "data": {}
-    }
-];
 
 var breastCancerDiseaseTemplate =
 {

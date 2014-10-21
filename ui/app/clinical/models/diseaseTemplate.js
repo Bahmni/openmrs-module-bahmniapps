@@ -2,7 +2,7 @@ Bahmni.Clinical.DiseaseTemplate = function (name, obsTemplates) {
 
     var diseaseTemplate = {
         name: name,
-        obsTemplates: obsTemplates
+        obsTemplates: obsTemplates || []
     };
 
     diseaseTemplate.notEmpty = function () {

@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('LatestPrescriptionPrintController', ['$scope', '$rootScope', '$stateParams', 'visitActionsService', 'visitInitialization', 'messagingService',
+    .controller('LatestPrescriptionPrintController', ['$scope', '$rootScope', '$stateParams', 'visitActionsService', 
+        'visitInitialization', 'messagingService',
         function ($scope, $rootScope, $stateParams, visitActionsService, visitInitialization, messagingService) {
             var print = function(visit, startDate) {
                 visitActionsService.printPrescription($rootScope.patient, visit, visit.startDate);

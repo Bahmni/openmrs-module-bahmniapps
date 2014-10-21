@@ -51,7 +51,7 @@ angular.module('bahmni.clinical')
             deferred.resolve(transformGroupSort(results.data));
         });
         return deferred.promise;
-    }
+    };
 
     return {
         getAllForPatient: getAllForPatient

@@ -45,11 +45,6 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
                         templateUrl: 'views/dashboard.html',
                         controller: 'PatientDashboardController'
                     }
-                },
-                resolve: {
-                    "diseaseTemplates": function (diseaseTemplatesInitialization, $stateParams) {
-                        return diseaseTemplatesInitialization($stateParams.patientUuid);
-                    }
                 }
             })
             .state('patient.visit', {
