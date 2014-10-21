@@ -46,6 +46,14 @@ Bahmni.Common.Util.DateUtil = {
 		return this.diffInDays(this.getDate(referenceDate), this.getDate(date))  + 1;
 	},
 
+    getDateWithoutTime: function(datetime){
+        return moment(datetime).format("YYYY-MM-DD");
+    },
+
+    areDatesOnSameDay: function(date1, date2){
+        return this.diffInDays(this.getDateWithoutTime(date1), this.getDateWithoutTime(date2)) == 0;
+    },
+
 	getDate: function (dateTime) {
 		return moment(this.parse(dateTime)).startOf('day').toDate();
 	},

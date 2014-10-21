@@ -15,7 +15,6 @@ angular.module('bahmni.clinical')
 
             var newTreatment = function () {
                 var treatment = new Bahmni.Clinical.DrugOrderViewModel($scope.currentBoard.extensionParams, $scope.treatmentConfig);
-                treatment.effectiveStartDate = $filter("date")(treatment.effectiveStartDate, 'yyyy-MM-dd');
                 return treatment;
             };
 
@@ -169,7 +168,6 @@ angular.module('bahmni.clinical')
                 $scope.treatments.map(setIsNotBeingEdited);
                 drugOrderHistory = drugOrder;
                 $scope.treatment = drugOrder.revise(treatmentConfig);
-                $scope.treatment.effectiveStartDate = $filter("date")($scope.treatment.effectiveStartDate, 'yyyy-MM-dd');
                 $scope.treatment.currentIndex = $scope.treatments.length + 1;
             });
         }]);

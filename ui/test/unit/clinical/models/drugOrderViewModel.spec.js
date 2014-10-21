@@ -549,6 +549,16 @@ describe("drugOrderViewModel", function () {
 
             expect(treatment.scheduledDate).toBe(null);
         });
+
+        it("should set effective start date to effective stop date + 1 second for refill orders", function(){
+            var treatment = sampleTreatment({}, []);
+            treatment.effectiveStopDate = Bahmni.Common.Util.DateUtil.now();
+            treatment.uiStartDate =  Bahmni.Common.Util.DateUtil.now();
+            var expectedEffectiveStartDate = Bahmni.Common.Util.DateUtil.addSeconds(treatment.effectiveStopDate, 1);
+
+            expect(treatment.effectiveStartDate).toEqual(expectedEffectiveStartDate);
+        });
+
     });
 
     describe("Validate", function () {

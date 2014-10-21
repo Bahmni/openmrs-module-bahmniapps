@@ -26,6 +26,19 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
         }
     });
 
+    Object.defineProperty(this, 'uiStartDate', {
+        get: function () {
+            return moment(this.effectiveStartDate).format('YYYY-MM-DD');
+        },
+        set : function(value){
+            this.effectiveStartDate = value;
+            if(this.effectiveStopDate && DateUtil.areDatesOnSameDay(this.effectiveStartDate, this.effectiveStopDate)){
+                var oldEffectiveStopDate = new Date(this.effectiveStopDate);
+                this.effectiveStartDate = oldEffectiveStopDate >= DateUtil.today() ? DateUtil.addSeconds(oldEffectiveStopDate, 1) : DateUtil.today();
+            }
+        }
+    });
+
     this.asNeeded = false;
     this.route = getDefaultValue(extensionParams && extensionParams.defaultRoute, config.routes || []);
     this.durationUnit = getDefaultValue(extensionParams && extensionParams.defaultDurationUnit, durationUnits);
