@@ -101,7 +101,7 @@
                     <tr toggle="observation.showComment" ng-repeat-start="observation in observationGroup.groupMembers"
                         ng-class="{true: 'is-abnormal'}[observation.abnormalObs.value]">
                         <td class="name">
-                            <span class="obs-value">{{observation.concept.name}}</span>
+                            <span class="obs-value">{{observation.label}}</span>
                         </td>
                         <td class="value" data-ng-switch="observation.concept.conceptClass">
                             <img data-ng-switch-when="Image" ng-src="{{observation.value|thumbnail}}" width="100">

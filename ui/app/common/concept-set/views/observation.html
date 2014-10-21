@@ -8,7 +8,7 @@
             </section>
             
             <label class="control-label" for="{{observation.uniqueId}}" >
-                <span ng-bind="observation.primaryObs.label"></span>
+                <span ng-bind="observation.label"></span>
                 <span ng-show="observation.primaryObs.units" ng-bind="'(' + observation.primaryObs.units + ')'"></span>
                 <span ng-if="observation.isRequired()" class="asterick">*</span>
                 

@@ -110,10 +110,8 @@ Bahmni.ConceptSet.ObservationMapper = function () {
     };
 
     function buildObservation(concept, savedObs, mappedGroupMembers) {
-        var conceptName = _.find(concept.names, {conceptNameType: "SHORT"}) || _.find(concept.names, {conceptNameType: "FULLY_SPECIFIED"});
-        var displayLabel = conceptName ? conceptName.name : concept.shortName || concept.name.name; // TODO : concept is either from webservice or encounter transaction
         var comment = savedObs ? savedObs.comment : null;
-        return { concept: conceptMapper.map(concept), units: concept.units, label: displayLabel, possibleAnswers: concept.answers, groupMembers: mappedGroupMembers, comment: comment};
+        return { concept: conceptMapper.map(concept), units: concept.units, label: getLabel(concept), possibleAnswers: concept.answers, groupMembers: mappedGroupMembers, comment: comment};
     }
 
     var createObservationForDisplay = function (observation, concept) {
@@ -121,7 +119,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         var observationValue = getObservationDisplayValue(observation);
         observationValue = observation.durationObs ? observationValue + " " + getDurationDisplayValue(observation.durationObs) : observationValue;
         return { "value": observationValue, "abnormalObs": observation.abnormalObs, "duration": observation.durationObs,
-            "provider": observation.provider,
+            "provider": observation.provider, "label": observation.label || getLabel(observation.concept), foo: "bar", o: observation,
             "observationDateTime": observation.observationDateTime, "concept": concept,
             "comment": observation.comment, "uuid": observation.uuid};
     };
@@ -130,6 +128,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         if (observation.isBoolean || observation.type === "Boolean") {
             return observation.value === true ? "Yes" : "No";
         }
+        if(!observation.value) return "";
         return observation.value.shortName || observation.value.name || observation.value;
     };
 
@@ -138,6 +137,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         if (durationForDisplay["value"] && durationForDisplay["unitName"]) {
             return "since " + durationForDisplay["value"] + " " + durationForDisplay["unitName"];
         }
+        return "";
     };
 
     var getGridObservationDisplayValue = function (observation) {
@@ -145,6 +145,11 @@ Bahmni.ConceptSet.ObservationMapper = function () {
             return getObservationDisplayValue(member);
         });
         return memberValues.join(', ');
+    };
+
+    var getLabel = function(concept) {
+        var conceptName = _.find(concept.names, {conceptNameType: "SHORT"}) || _.find(concept.names, {conceptNameType: "FULLY_SPECIFIED"});
+        return conceptName ? conceptName.name : concept.shortName || concept.name.name || concept.name; // TODO : concept is either from webservice or encounter transaction
     }
 
 };
