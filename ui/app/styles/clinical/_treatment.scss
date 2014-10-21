@@ -224,5 +224,10 @@
     .refill-drugs-btn {
         font-size: 14px;
         margin-right: 0;
+        display: none;
+    }
+
+    .tabs .tab [type="radio"]:checked ~ .refill-drugs-btn {
+        display: inline-block;
     }
 }
