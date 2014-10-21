@@ -22,7 +22,6 @@
 }
 
 .template-control-panel {
-	width: 300px;
 	background: #fff;
 	border: 1px solid #ccc;
 	@include clearfix();
@@ -32,8 +31,14 @@
 	margin-left: -150px;
 	z-index: 4;
 	padding: 5px;
+	ul.template-icons {
+		max-height: 300px;
+		min-width: 310px;
+		overflow-y: auto;
+		overflow-x: hidden; 
+	}
 	ul.template-icons li button {
-		width: 290px;
+		width: 100%;
 		display: inline-block;
 		float: left;
 		margin: 1px 5px;
@@ -51,4 +56,19 @@
 		@include background(linear-gradient(top, #fff, #ddd));
 		color: #457FAC;
 	}
+}
+
+ul.template-icons::-webkit-scrollbar {
+    width: 10px;
+}
+ 
+ul.template-icons::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 7px;
+}
+ 
+ul.template-icons::-webkit-scrollbar-thumb {
+  background-color: #666;
+  // outline: 1px solid slategrey;
+  border-radius: 7px;
 }
