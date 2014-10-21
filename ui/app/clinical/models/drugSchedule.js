@@ -47,10 +47,20 @@
 			return this.orders.some(function(order) { return order.isActiveOnDate(date); });
 		},
 
+		getStatusOnDate: function(date) {
+			var activeDrugOrders = _.filter(this.orders, function(order) { return order.isActiveOnDate(date); });
+			if(activeDrugOrders.length == 0) return 'inactive';
+			if(_.all(activeDrugOrders, function(order) { return order.getStatusOnDate(date) === 'stopped'}))
+			 return 'stopped';
+			return 'active';
+		},
+
 		isActive: function() {
 			return this.orders.some(function(order) { return order.isActive(); });
 		}
 	}
+
+	Bahmni.Clinical.DrugSchedule.Drug = Drug;
 })();
 
 

@@ -14,8 +14,9 @@
         <tbody>
         <tr ng-repeat="day in visit.getIPDDrugOrders().ipdDrugSchedule.days" ng-if="visit.atleastOneDrugForDay(day)">
             <td bo-text="'D'+ day.dayNumber + ' (' + displayDate(day.date) + ')'"></td>
-            <td ng-repeat="drug in visit.getIPDDrugOrders().ipdDrugSchedule.drugs">
-                <span class="icon-ok" bo-if="drug.isActiveOnDate(day.date)"></span>
+            <td bo-switch="drug.getStatusOnDate(day.date)" ng-repeat="drug in visit.getIPDDrugOrders().ipdDrugSchedule.drugs">
+                <span class="icon-ok" bo-switch-when="active"></span>
+                <span class="icon-stop" bo-switch-when="stopped"></span>
             </td>
         </tr>
         </tbody>

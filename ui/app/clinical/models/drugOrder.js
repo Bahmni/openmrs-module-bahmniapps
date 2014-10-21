@@ -5,6 +5,7 @@ Bahmni.Clinical.DrugOrder = (function () {
 
     var DrugOrder = function (drugOrderData) {
         angular.extend(this, drugOrderData);
+        this.effectiveStartDate = drugOrderData.effectiveStartDate; // extend does not copy properties defined using Object.defineProperty
     };
 
     DrugOrder.create = function (drugOrderData) {
@@ -61,6 +62,12 @@ Bahmni.Clinical.DrugOrder = (function () {
     DrugOrder.prototype = {
         isActiveOnDate: function (date) {
             return date >= DateUtil.getDate(this.effectiveStartDate) && date <= DateUtil.getDate(this.effectiveStopDate);
+        },
+
+        getStatusOnDate: function (date) {
+            if(DateUtil.isSameDate(this.dateStopped, date))
+                return 'stopped';
+            return this.isActiveOnDate(date) ? 'active' : 'inactive';
         },
 
         isActive: function () {

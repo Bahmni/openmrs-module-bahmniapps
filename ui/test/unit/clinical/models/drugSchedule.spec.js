@@ -5,7 +5,13 @@ describe("DrugSchedule", function () {
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
     var createDrugOrder = function (name, startDate, endDate) {
-        return {drugName: name, effectiveStartDate: startDate, effectiveStopDate: endDate};
+        return DrugOrder.create({drugName: name, effectiveStartDate: startDate, effectiveStopDate: endDate});
+    };
+
+    var createStoppedDrugOrder = function (name, startDate, endDate) {
+        var drugOrder = createDrugOrder(name, startDate, endDate);
+        drugOrder.dateStopped = endDate;
+        return drugOrder;
     };
 
     beforeEach(function () {
@@ -119,6 +125,40 @@ describe("DrugSchedule", function () {
             expect(drugs[0].isActiveOnDate(DateUtil.parse('2014-04-14'))).toBe(true);
             expect(drugs[1].name).toBe('Amoxy');
             expect(drugs[1].orders.length).toBe(1);
+        });
+    });
+
+    describe("Drug", function() {
+        describe("getStatusOnDate", function () {
+            it("should be stopped if the drug was stopped on that day", function () {
+                var calpolOrderStopped = createStoppedDrugOrder('Calpol', '2014-04-14T15:52:59.000+0530', '2014-04-15T15:52:59.000+0530');
+  
+                var drug = new DrugSchedule.Drug('Calpol', [calpolOrderStopped])
+
+                expect(drug.getStatusOnDate(DateUtil.parse('2014-04-15'))).toBe('stopped');
+                expect(drug.getStatusOnDate(DateUtil.parse('2014-04-14'))).toBe('active');
+                expect(drug.getStatusOnDate(DateUtil.parse('2014-04-13'))).toBe('inactive');
+            });
+
+            it("should be stopped if the drug was revised and stopped on that day", function () {
+                var calpolOrderStopped = createStoppedDrugOrder('Calpol', '2014-04-14T15:52:59.000+0530', '2014-04-15T15:52:59.000+0530');
+                var calpolReOrderStopped = createStoppedDrugOrder('Calpol', '2014-04-15T15:52:59.000+0530', '2014-04-15T15:52:59.000+0530');
+  
+                var drug = new DrugSchedule.Drug('Calpol', [calpolOrderStopped, calpolReOrderStopped])
+
+                expect(drug.getStatusOnDate(DateUtil.parse('2014-04-15'))).toBe('stopped');
+            });
+
+            it("should be active if the drug was revised on that day", function () {
+                var calpolOrderStopped = createStoppedDrugOrder('Calpol', '2014-04-14T15:52:59.000+0530', '2014-04-15T15:52:59.000+0530');
+                var calpolReOrder = createDrugOrder('Calpol', '2014-04-15T15:52:59.000+0530', '2014-04-16T15:52:59.000+0530');
+  
+                var drug = new DrugSchedule.Drug('Calpol', [calpolOrderStopped, calpolReOrder])
+
+                expect(drug.getStatusOnDate(DateUtil.parse('2014-04-15'))).toBe('active');
+                expect(drug.getStatusOnDate(DateUtil.parse('2014-04-14'))).toBe('active');
+                expect(drug.getStatusOnDate(DateUtil.parse('2014-04-16'))).toBe('active');
+            });
         });
     });
 });
