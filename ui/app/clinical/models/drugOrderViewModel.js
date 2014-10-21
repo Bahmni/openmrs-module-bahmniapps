@@ -40,7 +40,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
     this.isEditAllowed = true;
     this.quantityEnteredViaEdit = false;
     this.isBeingEdited = false;
-    
+
     var simpleDoseAndFrequency = function () {
         var uniformDosingType = self.uniformDosingType;
         var doseAndUnits = blankIfFalsy(uniformDosingType.dose) + " " + blankIfFalsy(uniformDosingType.doseUnits);
@@ -228,7 +228,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
         newDrugOrder.uuid = undefined;
         newDrugOrder.dateActivated = undefined;
         var oldEffectiveStopDate = new Date(this.effectiveStopDate);
-        newDrugOrder.effectiveStartDate = oldEffectiveStopDate >= DateUtil.today() ? DateUtil.addSeconds(oldEffectiveStopDate, 1) : DateUtil.today();   
+        newDrugOrder.effectiveStartDate = oldEffectiveStopDate >= DateUtil.today() ? DateUtil.addSeconds(oldEffectiveStopDate, 1) : DateUtil.today();
         newDrugOrder.durationUnit = _.find(treatmentConfig.durationUnits, function(durationUnit){
             return durationUnit.name === self.durationUnit.name;
         });
@@ -289,14 +289,16 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
         return editableDrugOrder;
     };
 
-    var validateUniformDosingType = function(){
-        if(self.uniformDosingType.dose && self.uniformDosingType.doseUnits){
-            return true
-        }else if(!self.uniformDosingType.dose && !self.uniformDosingType.doseUnits && self.uniformDosingType.frequency){
-            return true;
-        }else{
-            return false;
+    var validateUniformDosingType = function () {
+        if (self.uniformDosingType.frequency) {
+            if (self.uniformDosingType.dose && self.uniformDosingType.doseUnits && self.uniformDosingType.dose > 0) {
+                return true;
+            } else if (self.uniformDosingType.dose == undefined && !self.uniformDosingType.doseUnits) {
+                return true;
+            }
+            return false
         }
+        return false;
     };
 
     var validateVariableDosingType = function(){

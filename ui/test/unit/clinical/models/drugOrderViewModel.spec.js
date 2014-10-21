@@ -553,6 +553,7 @@ describe("drugOrderViewModel", function () {
 
     describe("Validate", function () {
         describe("for uniform dosing type", function () {
+            var treatment = sampleTreatment({}, {});
 
             it("should fail validation if dose type is empty", function () {
                 var treatment = sampleTreatment({}, {});
@@ -560,8 +561,16 @@ describe("drugOrderViewModel", function () {
                 expect(treatment.validate()).toBeFalsy();
             });
 
-            it("should validate if dose and doseunits are empty but frequency is not.", function () {
-                var treatment = sampleTreatment({}, {});
+            it("should fail validation if all dose info is empty", function () {
+                treatment.uniformDosingType = {
+                    dose: undefined,
+                    doseUnits: undefined,
+                    frequency: undefined
+                };
+                expect(treatment.validate()).toBeFalsy();
+            });
+
+            it("should pass validation if dose and doseUnits are empty but frequency is not.", function () {
                 treatment.uniformDosingType = {
                     dose: undefined,
                     doseUnits: undefined,
@@ -571,8 +580,7 @@ describe("drugOrderViewModel", function () {
                 expect(treatment.validate()).toBeTruthy();
             });
 
-            it("should fail validation if dose is given but dose units is not and frequency is defined", function () {
-                var treatment = sampleTreatment({}, {});
+            it("should fail validation if dose and frequency is given but dose units is not", function () {
                 treatment.uniformDosingType = {
                     dose: 1,
                     doseUnits: undefined,
@@ -582,8 +590,7 @@ describe("drugOrderViewModel", function () {
                 expect(treatment.validate()).toBeFalsy();
             });
 
-            it("should fail validation if dose is given but dose units is not and frequency is undefined", function () {
-                var treatment = sampleTreatment({}, {});
+            it("should fail validation if dose is given but dose units and frequency is not", function () {
                 treatment.uniformDosingType = {
                     dose: 1,
                     doseUnits: undefined,
@@ -593,8 +600,7 @@ describe("drugOrderViewModel", function () {
                 expect(treatment.validate()).toBeFalsy();
             });
 
-            it("should fail validation if dose units are given and dose it not and frequency is undefined", function () {
-                var treatment = sampleTreatment({}, {});
+            it("should fail validation if dose units are given but dose and frequency is not", function () {
                 treatment.uniformDosingType = {
                     dose: undefined,
                     doseUnits: "Some",
@@ -604,8 +610,7 @@ describe("drugOrderViewModel", function () {
                 expect(treatment.validate()).toBeFalsy();
             });
 
-            it("should fail validation if dose units are given and dose it not and frequency is defined", function () {
-                var treatment = sampleTreatment({}, {});
+            it("should fail validation if dose units and frequency are given but dose is not", function () {
                 treatment.uniformDosingType = {
                     dose: undefined,
                     doseUnits: "Some",
@@ -615,8 +620,18 @@ describe("drugOrderViewModel", function () {
                 expect(treatment.validate()).toBeFalsy();
             });
 
-            it("should pass validation all are given", function () {
+            it("should fail validation dose and dose units are given and frequency is not", function () {
                 var treatment = sampleTreatment({}, {});
+                treatment.uniformDosingType = {
+                    dose: 1,
+                    doseUnits: "Some",
+                    frequency: undefined
+                };
+
+                expect(treatment.validate()).toBeFalsy();
+            });
+
+            it("should pass validation if all are given", function () {
                 treatment.uniformDosingType = {
                     dose: 1,
                     doseUnits: "Some",
@@ -626,15 +641,34 @@ describe("drugOrderViewModel", function () {
                 expect(treatment.validate()).toBeTruthy();
             });
 
-            it("should pass validation dose and dose units are given and frequency is not", function () {
-                var treatment = sampleTreatment({}, {});
+            it("should fail validation if all are given but dose is 0", function () {
                 treatment.uniformDosingType = {
-                    dose: 1,
+                    dose: 0,
+                    doseUnits: "Some",
+                    frequency: "Once a day"
+                };
+
+                expect(treatment.validate()).toBeFalsy();
+            });
+
+            it("should fail validation if dose is 0 and dose units is not given", function () {
+                treatment.uniformDosingType = {
+                    dose: 0,
+                    doseUnits: undefined,
+                    frequency: "Once a day"
+                };
+
+                expect(treatment.validate()).toBeFalsy();
+            });
+
+            it("should fail validation if dose is 0 and dose units is given but frequency is not", function () {
+                treatment.uniformDosingType = {
+                    dose: 0,
                     doseUnits: "Some",
                     frequency: undefined
                 };
 
-                expect(treatment.validate()).toBeTruthy();
+                expect(treatment.validate()).toBeFalsy();
             });
         });
 

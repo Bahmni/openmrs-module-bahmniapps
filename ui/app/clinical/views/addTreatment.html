@@ -6,7 +6,7 @@
                    ng-model="treatment.drugNameDisplay" on-select="populateBackingFields" autofocus ng-disabled="treatment.previousOrderUuid"/>
 
             <div class="frequency-widget uniform-frequency" ng-click="treatment.setFrequencyType('uniform')" ng-class="{'disabled': !treatment.isUniformDosingType()}">
-                <input class="form-field dose" only-number="true" ng-focus="treatment.setFrequencyType('uniform')" type="number" min="0" placeholder="Dose"
+                <input class="form-field dose" only-number="true" ng-focus="treatment.setFrequencyType('uniform')" type="number" min="1" placeholder="Dose"
                        ng-model="treatment.uniformDosingType.dose" ng-disabled="!treatment.isUniformDosingType()" ng-required="!treatment.validate()"/>
                 <select class="form-field freq-dose-units" ng-model="treatment.uniformDosingType.doseUnits"
                         ng-options="item.name as item.name for item in treatmentConfig.doseUnits" ng-disabled="!treatment.isUniformDosingType()" ng-required="!treatment.validate()">
