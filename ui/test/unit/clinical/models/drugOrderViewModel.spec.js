@@ -48,17 +48,23 @@ describe("drugOrderViewModel", function () {
         expect(treatment.getDescription()).toBe("1-1-1, Orally - 10 Days")
     });
 
-    it("should get the default route from the config", function() {
-        var treatment = sampleTreatment({defaultRoute: "Orally"}, [{name: "Intramuscular"}, {name: "Orally"}]);
+    it("should get the default route from the config", function () {
+        var treatment = sampleTreatment({defaultRoute: "Orally"}, [
+            {name: "Intramuscular"},
+            {name: "Orally"}
+        ]);
         expect(treatment.route).toEqual({name: "Orally"});
     });
 
-    it("should get default durationUnit from config if available", function() {
-        var treatment = sampleTreatment({defaultDurationUnit: "Months"}, [], [{name: "Days"}, {name: "Months"}]);
+    it("should get default durationUnit from config if available", function () {
+        var treatment = sampleTreatment({defaultDurationUnit: "Months"}, [], [
+            {name: "Days"},
+            {name: "Months"}
+        ]);
         expect(treatment.durationUnit).toEqual({name: "Months"});
     });
 
-    it("should reset uniformDosingType and noFrequencyDosingType when changing frequency type to variable", function() {
+    it("should reset uniformDosingType and noFrequencyDosingType when changing frequency type to variable", function () {
         var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel({});
         sampleTreatment.uniformDosingType = {
             dose: 1,
@@ -71,7 +77,7 @@ describe("drugOrderViewModel", function () {
         expect(sampleTreatment.variableDosingType).not.toBe({});
     });
 
-    it("should reset variableDosingType and noFrequencyDosingType when changing frequency type to uniform", function() {
+    it("should reset variableDosingType and noFrequencyDosingType when changing frequency type to uniform", function () {
         var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel({});
         sampleTreatment.variableDosingType = {
             morningDose: 1,
@@ -85,7 +91,7 @@ describe("drugOrderViewModel", function () {
         expect(sampleTreatment.noFrequencyDosingType).toEqual({});
     });
 
-    it("should reset variableDosingType and uniformDosingType when changing frequency type to noFrequency", function() {
+    it("should reset variableDosingType and uniformDosingType when changing frequency type to noFrequency", function () {
         var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel({});
         sampleTreatment.noFrequencyDosingType = {
             dose: 1,
@@ -97,9 +103,13 @@ describe("drugOrderViewModel", function () {
         expect(sampleTreatment.uniformDosingType).toEqual({});
     });
 
-    it("should change duration unit based on frequency factor", function() {
+    it("should change duration unit based on frequency factor", function () {
         var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel({}, {});
-        var durationUnits = [{name: "Hour(s)"}, {name: "Day(s)"}, {name: "Week(s)"}];
+        var durationUnits = [
+            {name: "Hour(s)"},
+            {name: "Day(s)"},
+            {name: "Week(s)"}
+        ];
         sampleTreatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
 
         sampleTreatment.uniformDosingType.frequency = {name: "Every Hour", frequencyPerDay: 24};
@@ -110,7 +120,7 @@ describe("drugOrderViewModel", function () {
         sampleTreatment.calculateDurationUnit(durationUnits);
         expect(sampleTreatment.durationUnit.name).toBe("Hour(s)");
 
-        sampleTreatment.uniformDosingType.frequency = {name: "Every Five Hour", frequencyPerDay: 24/5};
+        sampleTreatment.uniformDosingType.frequency = {name: "Every Five Hour", frequencyPerDay: 24 / 5};
         sampleTreatment.calculateDurationUnit(durationUnits);
         expect(sampleTreatment.durationUnit.name).toBe("Hour(s)");
 
@@ -126,13 +136,13 @@ describe("drugOrderViewModel", function () {
         sampleTreatment.calculateDurationUnit(durationUnits);
         expect(sampleTreatment.durationUnit.name).toBe("Day(s)");
 
-        sampleTreatment.uniformDosingType.frequency = {name: "Once a Week", frequencyPerDay: 1/7};
+        sampleTreatment.uniformDosingType.frequency = {name: "Once a Week", frequencyPerDay: 1 / 7};
         sampleTreatment.calculateDurationUnit(durationUnits);
         expect(sampleTreatment.durationUnit.name).toBe("Week(s)")
     });
 
-    describe("calculateDurationInDays", function() {
-        it("should convert duration to days", function() {
+    describe("calculateDurationInDays", function () {
+        it("should convert duration to days", function () {
             var treatment = sampleTreatment({}, []);
             treatment.duration = 6;
             treatment.durationUnit = {name: "Weeks", factor: 7};
@@ -147,12 +157,12 @@ describe("drugOrderViewModel", function () {
             treatment.calculateDurationInDays();
             expect(treatment.durationInDays).toBe(6);
 
-            treatment.durationUnit = {name: "Hours", factor: 1/24};
+            treatment.durationUnit = {name: "Hours", factor: 1 / 24};
             treatment.calculateDurationInDays();
             expect(treatment.durationInDays).toBe(0.25);
         });
 
-        it("should default units to days", function() {
+        it("should default units to days", function () {
             var treatment = sampleTreatment({}, []);
             treatment.duration = 6;
             treatment.durationUnit = "Random";
@@ -161,8 +171,8 @@ describe("drugOrderViewModel", function () {
         });
     });
 
-    describe("calculateQuantityAndUnit", function() {
-        var sampleTreatmentWithUniformDosing = function(dose, doseUnits, frequency, duration, durationUnit, factor) {
+    describe("calculateQuantityAndUnit", function () {
+        var sampleTreatmentWithUniformDosing = function (dose, doseUnits, frequency, duration, durationUnit, factor) {
             var treatment = sampleTreatment({}, []);
             treatment.quantity = null;
             treatment.quantityUnit = null;
@@ -175,7 +185,7 @@ describe("drugOrderViewModel", function () {
             return treatment;
         };
 
-        var sampleTreatmentWithVariableDosing = function(morningDose, afternoonDose, eveningDose, doseUnits, duration, durationUnit, factor) {
+        var sampleTreatmentWithVariableDosing = function (morningDose, afternoonDose, eveningDose, doseUnits, duration, durationUnit, factor) {
             var treatment = sampleTreatment({}, []);
             treatment.quantity = null;
             treatment.quantityUnit = null;
@@ -191,25 +201,25 @@ describe("drugOrderViewModel", function () {
             return treatment;
         };
 
-        it("should calculate for uniform dose, frequency and duration", function() {
+        it("should calculate for uniform dose, frequency and duration", function () {
             var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(30);
         });
 
-        it("should convert duration units to days for calulation", function() {
+        it("should convert duration units to days for calulation", function () {
             var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Weeks", 7);
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(210);
         });
 
-        it("should calculate for variable dose and duration", function() {
+        it("should calculate for variable dose and duration", function () {
             var treatment = sampleTreatmentWithVariableDosing(1, 2, 1.5, "Capsule", 4, "Days");
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(18);
         });
 
-        it("should result in 0 for uniform dose when dose is not available", function() {
+        it("should result in 0 for uniform dose when dose is not available", function () {
             var treatment = sampleTreatmentWithUniformDosing(null, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(0);
@@ -219,7 +229,7 @@ describe("drugOrderViewModel", function () {
             expect(treatment.quantity).toBe(0);
         });
 
-        it("should result in 0 for uniform dose when duration is not available", function() {
+        it("should result in 0 for uniform dose when duration is not available", function () {
             var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, null, "Days");
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(0);
@@ -229,13 +239,13 @@ describe("drugOrderViewModel", function () {
             expect(treatment.quantity).toBe(0);
         });
 
-        it("should result in 0 for uniform dose when frequency is not available", function() {
+        it("should result in 0 for uniform dose when frequency is not available", function () {
             var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", null, 5, "Days");
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(0);
         });
 
-        it("should not calculate quantity and quantityUnit if entered manually", function() {
+        it("should not calculate quantity and quantityUnit if entered manually", function () {
             var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
             treatment.quantity = 100;
             treatment.quantityUnit = "not Capsule";
@@ -245,25 +255,25 @@ describe("drugOrderViewModel", function () {
             expect(treatment.quantityUnit).toBe("not Capsule");
         });
 
-        it("should be active if the effective stop date is in future", function(){
+        it("should be active if the effective stop date is in future", function () {
             var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
             treatment.effectiveStopDate = getFutureDate();
             expect(treatment.isActive()).toBe(true);
         });
 
-        it("should be active if the effective stop date is null", function(){
+        it("should be active if the effective stop date is null", function () {
             var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
             treatment.effectiveStopDate = undefined;
             expect(treatment.isActive()).toBe(true);
         });
 
-        it("should be active if the effective stop date is today", function(){
+        it("should be active if the effective stop date is today", function () {
             var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
             treatment.effectiveStopDate = new Date();
             expect(treatment.isActive()).toBe(true);
         });
 
-        it("should be inActive if the date_stopped is set", function(){
+        it("should be inActive if the date_stopped is set", function () {
             var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
             treatment.dateStopped = new Date();
 
@@ -271,22 +281,22 @@ describe("drugOrderViewModel", function () {
         })
     });
 
-    describe("Discontinued", function(){
-        it("should return true if the action is discontinue", function(){
+    describe("Discontinued", function () {
+        it("should return true if the action is discontinue", function () {
             var treatment = sampleTreatment({}, []);
             treatment.action = 'DISCONTINUE';
 
             expect(treatment.discontinued()).toBe(true);
         });
 
-        it("should return false if the action is new", function(){
+        it("should return false if the action is new", function () {
             var treatment = sampleTreatment({}, []);
             treatment.action = 'NEW';
 
             expect(treatment.discontinued()).toBe(false);
         });
 
-        it("should return false if the action is Revise", function(){
+        it("should return false if the action is Revise", function () {
             var treatment = sampleTreatment({}, []);
             treatment.action = 'REVISE';
 
@@ -294,8 +304,8 @@ describe("drugOrderViewModel", function () {
         });
     });
 
-    describe("isDiscontinuedOrStopped", function(){
-        it("should return true if the action is discontinue", function(){
+    describe("isDiscontinuedOrStopped", function () {
+        it("should return true if the action is discontinue", function () {
             var treatment = sampleTreatment({}, []);
             treatment.action = 'DISCONTINUE';
             treatment.dateStopped = null;
@@ -303,7 +313,7 @@ describe("drugOrderViewModel", function () {
             expect(treatment.isDiscontinuedOrStopped()).toBe(true);
         });
 
-        it("should return true if order has been stopped", function(){
+        it("should return true if order has been stopped", function () {
             var treatment = sampleTreatment({}, []);
             treatment.action = 'NEW';
             treatment.dateStopped = new Date();
@@ -311,10 +321,10 @@ describe("drugOrderViewModel", function () {
             expect(treatment.isDiscontinuedOrStopped()).toBe(true);
         });
 
-        it("should return false if action is not discontinue and order is not stopped", function(){
+        it("should return false if action is not discontinue and order is not stopped", function () {
             var treatment = sampleTreatment({}, []);
             treatment.action = 'REVISE';
-            treatment.dateStopped =  null;
+            treatment.dateStopped = null;
 
             expect(treatment.isDiscontinuedOrStopped()).toBe(false);
         });
@@ -326,51 +336,51 @@ describe("drugOrderViewModel", function () {
         return today;
     }
 
-    describe("createFromContract", function(){
-        var drugOrder =   {
-                "uuid": null,
-                "action": "NEW",
-                "careSetting": "Outpatient",
-                "orderType": "Drug Order",
-                "autoExpireDate": null,
-                "scheduledDate": null,
-                "dateStopped": null,
-                "instructions": null,
-                "visit": {
-                    "startDateTime": 1397028261000,
-                    "uuid": "002efa33-4c4f-469f-968a-faedfe3a5e0c"
-                },
-                "drug": {
-                    "form": "Injection",
-                    "uuid": "8d7e3dc0-f4ad-400c-9468-5a9e2b1f4230",
-                    "strength": null,
-                    "name": "Methylprednisolone 2ml"
-                },
-                "dosingInstructions": {
-                    "quantity": 100,
-                    "route": "Intramuscular",
-                    "frequency": "Twice a day",
-                    "doseUnits": "Tablespoon",
-                    "asNeeded": false,
-                    "quantityUnits": "Tablet",
-                    "dose": 5,
-                    "administrationInstructions": "{\"instructions\":\"In the evening\",\"additionalInstructions\":\"helylo\"}",
-                    "numberOfRefills": null
-                },
-                "durationUnits": "Days",
-                "dateActivated": 1410322624000,
-                "commentToFulfiller": null,
-                "effectiveStartDate": 1410322624000,
-                "effectiveStopDate": null,
-                "orderReasonConcept": null,
-                "dosingInstructionType": "org.openmrs.module.bahmniemrapi.drugorder.dosinginstructions.FlexibleDosingInstructions",
-                "previousOrderUuid": null,
-                "orderReasonText": null,
-                "duration": 10,
-                "provider": {name: "superman"}
-            };
+    describe("createFromContract", function () {
+        var drugOrder = {
+            "uuid": null,
+            "action": "NEW",
+            "careSetting": "Outpatient",
+            "orderType": "Drug Order",
+            "autoExpireDate": null,
+            "scheduledDate": null,
+            "dateStopped": null,
+            "instructions": null,
+            "visit": {
+                "startDateTime": 1397028261000,
+                "uuid": "002efa33-4c4f-469f-968a-faedfe3a5e0c"
+            },
+            "drug": {
+                "form": "Injection",
+                "uuid": "8d7e3dc0-f4ad-400c-9468-5a9e2b1f4230",
+                "strength": null,
+                "name": "Methylprednisolone 2ml"
+            },
+            "dosingInstructions": {
+                "quantity": 100,
+                "route": "Intramuscular",
+                "frequency": "Twice a day",
+                "doseUnits": "Tablespoon",
+                "asNeeded": false,
+                "quantityUnits": "Tablet",
+                "dose": 5,
+                "administrationInstructions": "{\"instructions\":\"In the evening\",\"additionalInstructions\":\"helylo\"}",
+                "numberOfRefills": null
+            },
+            "durationUnits": "Days",
+            "dateActivated": 1410322624000,
+            "commentToFulfiller": null,
+            "effectiveStartDate": 1410322624000,
+            "effectiveStopDate": null,
+            "orderReasonConcept": null,
+            "dosingInstructionType": "org.openmrs.module.bahmniemrapi.drugorder.dosinginstructions.FlexibleDosingInstructions",
+            "previousOrderUuid": null,
+            "orderReasonText": null,
+            "duration": 10,
+            "provider": {name: "superman"}
+        };
 
-        it("should map fields correctly from Drug Order", function(){
+        it("should map fields correctly from Drug Order", function () {
             var drugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder);
             expect(drugOrderViewModel.asNeeded).toBe(drugOrder.dosingInstructions.asNeeded);
             expect(drugOrderViewModel.route).toBe(drugOrder.dosingInstructions.route);
@@ -392,9 +402,9 @@ describe("drugOrderViewModel", function () {
 
     });
 
-    describe("revise", function() {
+    describe("revise", function () {
 
-        it ("should not change scheduled date", function() {
+        it("should not change scheduled date", function () {
             var treatment = sampleTreatment({}, []);
             var now = Bahmni.Common.Util.DateUtil.now();
             treatment.scheduledDate = Bahmni.Common.Util.DateUtil.subtractDays(now, 2);
@@ -404,7 +414,7 @@ describe("drugOrderViewModel", function () {
             expect(Bahmni.Common.Util.DateUtil.isSameDate(revisedTreatment.scheduledDate, treatment.scheduledDate)).toBe(true);
         });
 
-        it ("should map uuid to previousOrderUuid", function() {
+        it("should map uuid to previousOrderUuid", function () {
             var treatment = sampleTreatment({}, []);
             treatment.drug = {  form: undefined };
             treatment.uuid = "previous-order-uuid";
@@ -414,7 +424,7 @@ describe("drugOrderViewModel", function () {
             expect(treatment.previousOrderUuid).not.toBe(treatment.uuid);
         });
 
-        it ("should set action as REVISE", function() {
+        it("should set action as REVISE", function () {
             var treatment = sampleTreatment({}, []);
             treatment.drug = { form: undefined };
 
@@ -425,11 +435,11 @@ describe("drugOrderViewModel", function () {
 
     });
 
-    describe("refill", function() {
-        it ("should refill an inactive drug order", function() {
+    describe("refill", function () {
+        it("should refill an inactive drug order", function () {
             var treatment = sampleTreatment({}, []);
             var today = Bahmni.Common.Util.DateUtil.today();
-            
+
             treatment.previousOrderUuid = "prev-uuid";
             treatment.effectiveStopDate = Bahmni.Common.Util.DateUtil.subtractDays(today, 30);
             var refilledTreatment = treatment.refill({});
@@ -441,7 +451,7 @@ describe("drugOrderViewModel", function () {
         });
 
 
-        it ("should refill an active drug order", function() {
+        it("should refill an active drug order", function () {
             var treatment = sampleTreatment({}, []);
             var today = Bahmni.Common.Util.DateUtil.today();
             treatment.previousOrderUuid = "prev-uuid";
@@ -455,7 +465,7 @@ describe("drugOrderViewModel", function () {
             expect(refilledTreatment.drugNameDisplay).toBe("calpol 500mg(tablets) (Tablet)");
         });
 
-        it ("should refill an active drug order ending today", function() {
+        it("should refill an active drug order ending today", function () {
             var treatment = sampleTreatment({}, []);
             var today = Bahmni.Common.Util.DateUtil.today();
             treatment.previousOrderUuid = "prev-uuid";
@@ -469,7 +479,7 @@ describe("drugOrderViewModel", function () {
             expect(refilledTreatment.drugNameDisplay).toBe("calpol 500mg(tablets) (Tablet)");
         });
 
-        it ("should set quantity units as Unit(s) for reverse synced drug orders", function() {
+        it("should set quantity units as Unit(s) for reverse synced drug orders", function () {
             var treatment = sampleTreatment({}, []);
             var today = Bahmni.Common.Util.DateUtil.today();
             treatment.previousOrderUuid = "prev-uuid";
@@ -481,9 +491,9 @@ describe("drugOrderViewModel", function () {
 
     });
 
-    describe("edit", function() {
+    describe("edit", function () {
 
-        it ("should not change scheduled date", function() {
+        it("should not change scheduled date", function () {
             var treatment = sampleTreatment({}, []);
             var now = Bahmni.Common.Util.DateUtil.now();
             treatment.scheduledDate = Bahmni.Common.Util.DateUtil.subtractDays(now, 2);
@@ -492,7 +502,7 @@ describe("drugOrderViewModel", function () {
             expect(Bahmni.Common.Util.DateUtil.isSameDate(editedTreatment.scheduledDate, treatment.scheduledDate)).toBe(true);
         });
 
-        it("should create a copy of the drug to be edited", function(){
+        it("should create a copy of the drug to be edited", function () {
             var treatment = sampleTreatment({}, []);
             var editedTreatment = treatment.cloneForEdit(0, {});
             expect(editedTreatment.drugName).toBe(treatment.drugName);
@@ -503,7 +513,7 @@ describe("drugOrderViewModel", function () {
             expect(editedTreatment.quantityUnit).toBe(treatment.quantityUnit);
         });
 
-        it("should set the flag isBeingEdited", function(){
+        it("should set the flag isBeingEdited", function () {
             var treatment = sampleTreatment({}, []);
             var editedTreatment = treatment.cloneForEdit(0, {});
             expect(editedTreatment.isBeingEdited).toBe(true);
@@ -511,10 +521,10 @@ describe("drugOrderViewModel", function () {
 
     });
 
-    describe("set effectiveStartDate", function() {
+    describe("set effectiveStartDate", function () {
         var isoDateFormat = "YYYY-MM-DD";
 
-        it ("should set scheduledDate if date is in future", function() {
+        it("should set scheduledDate if date is in future", function () {
             var treatment = sampleTreatment({}, []);
             var now = Bahmni.Common.Util.DateUtil.now();
 
@@ -523,7 +533,7 @@ describe("drugOrderViewModel", function () {
             expect(treatment.scheduledDate).toBe(treatment.effectiveStartDate);
         });
 
-        it ("should clear scheduledDate if date is today", function() {
+        it("should clear scheduledDate if date is today", function () {
             var treatment = sampleTreatment({}, []);
 
             treatment.effectiveStartDate = moment(Bahmni.Common.Util.DateUtil.now()).format(isoDateFormat);
@@ -531,7 +541,7 @@ describe("drugOrderViewModel", function () {
             expect(treatment.scheduledDate).toBe(null);
         });
 
-        it ("should clear scheduledDate if date is in the past", function() {
+        it("should clear scheduledDate if date is in the past", function () {
             var treatment = sampleTreatment({}, []);
             var now = Bahmni.Common.Util.DateUtil.now();
 
@@ -539,5 +549,163 @@ describe("drugOrderViewModel", function () {
 
             expect(treatment.scheduledDate).toBe(null);
         });
+    });
+
+    describe("Validate", function () {
+        describe("for uniform dosing type", function () {
+
+            it("should fail validation if dose type is empty", function () {
+                var treatment = sampleTreatment({}, {});
+                treatment.frequencyType = null;
+                expect(treatment.validate()).toBeFalsy();
+            });
+
+            it("should validate if dose and doseunits are empty but frequency is not.", function () {
+                var treatment = sampleTreatment({}, {});
+                treatment.uniformDosingType = {
+                    dose: undefined,
+                    doseUnits: undefined,
+                    frequency: "Once a day."
+                };
+
+                expect(treatment.validate()).toBeTruthy();
+            });
+
+            it("should fail validation if dose is given but dose units is not and frequency is defined", function () {
+                var treatment = sampleTreatment({}, {});
+                treatment.uniformDosingType = {
+                    dose: 1,
+                    doseUnits: undefined,
+                    frequency: "Once a day."
+                };
+
+                expect(treatment.validate()).toBeFalsy();
+            });
+
+            it("should fail validation if dose is given but dose units is not and frequency is undefined", function () {
+                var treatment = sampleTreatment({}, {});
+                treatment.uniformDosingType = {
+                    dose: 1,
+                    doseUnits: undefined,
+                    frequency: undefined
+                };
+
+                expect(treatment.validate()).toBeFalsy();
+            });
+
+            it("should fail validation if dose units are given and dose it not and frequency is undefined", function () {
+                var treatment = sampleTreatment({}, {});
+                treatment.uniformDosingType = {
+                    dose: undefined,
+                    doseUnits: "Some",
+                    frequency: undefined
+                };
+
+                expect(treatment.validate()).toBeFalsy();
+            });
+
+            it("should fail validation if dose units are given and dose it not and frequency is defined", function () {
+                var treatment = sampleTreatment({}, {});
+                treatment.uniformDosingType = {
+                    dose: undefined,
+                    doseUnits: "Some",
+                    frequency: "Once a day"
+                };
+
+                expect(treatment.validate()).toBeFalsy();
+            });
+
+            it("should pass validation all are given", function () {
+                var treatment = sampleTreatment({}, {});
+                treatment.uniformDosingType = {
+                    dose: 1,
+                    doseUnits: "Some",
+                    frequency: "Once a day"
+                };
+
+                expect(treatment.validate()).toBeTruthy();
+            });
+
+            it("should pass validation dose and dose units are given and frequency is not", function () {
+                var treatment = sampleTreatment({}, {});
+                treatment.uniformDosingType = {
+                    dose: 1,
+                    doseUnits: "Some",
+                    frequency: undefined
+                };
+
+                expect(treatment.validate()).toBeTruthy();
+            });
+        });
+
+        describe("for variable dosing type", function () {
+            var treatment = sampleTreatment({}, {});
+            treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.variable;
+            it("should fail validation if all the fields are empty", function () {
+                treatment.variableDosingType = {
+                    morningDose: undefined,
+                    afternoonDose: undefined,
+                    eveningDose: undefined,
+                    doseUnits: undefined
+                };
+
+                expect(treatment.validate()).toBeFalsy();
+            });
+
+            it("should fail validation if morning dose is set and all other fields are empty", function () {
+                treatment.variableDosingType = {
+                    morningDose: 1,
+                    afternoonDose: undefined,
+                    eveningDose: undefined,
+                    doseUnits: undefined
+                };
+
+                expect(treatment.validate()).toBeFalsy();
+            });
+
+            it("should fail validation if afternoon dose is set and all other fields are empty", function () {
+                treatment.variableDosingType = {
+                    morningDose: undefined,
+                    afternoonDose: 1,
+                    eveningDose: undefined,
+                    doseUnits: undefined
+                };
+
+                expect(treatment.validate()).toBeFalsy();
+            });
+
+            it("should fail validation if evening dose is set and all other fields are empty", function () {
+                treatment.variableDosingType = {
+                    morningDose: undefined,
+                    afternoonDose: undefined,
+                    eveningDose: 1,
+                    doseUnits: undefined
+                };
+
+                expect(treatment.validate()).toBeFalsy();
+            });
+
+            it("should fail validation if dose units is set and all other fields are empty", function () {
+                treatment.variableDosingType = {
+                    morningDose: undefined,
+                    afternoonDose: undefined,
+                    eveningDose: undefined,
+                    doseUnits: "Tablet(s)"
+                };
+
+                expect(treatment.validate()).toBeFalsy();
+            });
+
+            it("should pass validation if all the fields are set", function () {
+                treatment.variableDosingType = {
+                    morningDose: 1,
+                    afternoonDose: 0,
+                    eveningDose: 1,
+                    doseUnits: "Tablet(s)"
+                };
+
+                expect(treatment.validate()).toBeTruthy();
+            });
+        })
     });
 });

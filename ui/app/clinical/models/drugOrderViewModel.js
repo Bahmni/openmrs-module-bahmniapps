@@ -129,11 +129,11 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
     this.calculateDurationUnit = function (durationUnits) {
         if (this.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform) {
             var frequency = this.uniformDosingType.frequency;
-            if (frequency.frequencyPerDay > 4) {
+            if (frequency && frequency.frequencyPerDay > 4) {
                 this.durationUnit = _.find(durationUnits, function(durationUnit){
                     return durationUnit.name === "Hour(s)";
                 });
-            } else if (frequency.frequencyPerDay >= 0.5) {
+            } else if (frequency && frequency.frequencyPerDay >= 0.5) {
                 this.durationUnit = _.find(durationUnits, function(durationUnit){
                     return durationUnit.name === "Day(s)";
                 });
@@ -273,11 +273,11 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
         angular.copy(this, editableDrugOrder);
 
         editableDrugOrder.uniformDosingType.frequency = this.isUniformDosingType() && _.find(treatmentConfig.frequencies, function(frequency){
-            return frequency.name === self.uniformDosingType.frequency.name;
+            return self.uniformDosingType.frequency && frequency.name === self.uniformDosingType.frequency.name;
         });
 
         editableDrugOrder.durationUnit = _.find(treatmentConfig.durationUnits, function(durationUnit){
-            return durationUnit.name === self.durationUnit && self.durationUnit.name;
+            return self.durationUnit && durationUnit.name === self.durationUnit.name;
         });
 
         editableDrugOrder.route = _.find(treatmentConfig.routes, function(route){
@@ -288,6 +288,33 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
         editableDrugOrder.isBeingEdited = true;
         return editableDrugOrder;
     };
+
+    var validateUniformDosingType = function(){
+        if(self.uniformDosingType.dose && self.uniformDosingType.doseUnits){
+            return true
+        }else if(!self.uniformDosingType.dose && !self.uniformDosingType.doseUnits && self.uniformDosingType.frequency){
+            return true;
+        }else{
+            return false;
+        }
+    };
+
+    var validateVariableDosingType = function(){
+        return !(self.variableDosingType.morningDose == undefined ||
+            self.variableDosingType.afternoonDose == undefined ||
+            self.variableDosingType.eveningDose == undefined ||
+            self.variableDosingType.doseUnits == undefined);
+    };
+
+    this.validate = function(){
+        self = this;
+        if(this.isUniformDosingType()){
+            return validateUniformDosingType();
+        }else if(this.isVariableDosingType()){
+            return validateVariableDosingType();
+        }
+        return false;
+    }
 };
 
 Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderResponse) {
@@ -300,7 +327,7 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
     viewModel.durationUnit = {name: drugOrderResponse.durationUnits};
     viewModel.scheduledDate = drugOrderResponse.effectiveStartDate;
     viewModel.duration = drugOrderResponse.duration;
-    if (drugOrderResponse.dosingInstructions.frequency) {
+    if (drugOrderResponse.dosingInstructions.frequency || drugOrderResponse.dosingInstructions.dose) {
         viewModel.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
         viewModel.uniformDosingType = {};
         viewModel.uniformDosingType = {

@@ -14,7 +14,9 @@ angular.module('bahmni.clinical')
             ];
 
             var newTreatment = function () {
-                return new Bahmni.Clinical.DrugOrderViewModel($scope.currentBoard.extensionParams, $scope.treatmentConfig);
+                var treatment = new Bahmni.Clinical.DrugOrderViewModel($scope.currentBoard.extensionParams, $scope.treatmentConfig);
+                treatment.effectiveStartDate = $filter("date")(treatment.effectiveStartDate, 'yyyy-MM-dd');
+                return treatment;
             };
 
             $scope.today = new Date();
@@ -25,7 +27,6 @@ angular.module('bahmni.clinical')
                     $scope.treatment.durationUnit = durationUnit;
                 }
             });
-            $scope.treatment.effectiveStartDate = $filter("date")($scope.treatment.effectiveStartDate, 'yyyy-MM-dd');
 
             var watchFunctionForQuantity = function () {
                 var treatment = $scope.treatment;
@@ -60,16 +61,10 @@ angular.module('bahmni.clinical')
                 }
                 $scope.treatments.push($scope.treatment);
                 $scope.treatment = newTreatment();
-                $scope.treatment.effectiveStartDate = $filter("date")($scope.treatment.effectiveStartDate, 'yyyy-MM-dd');
             };
 
             $scope.remove = function (index) {
                 $scope.treatments.splice(index, 1);
-            };
-
-            $scope.required = function (frequencyType) {
-                var treatment = $scope.treatment;
-                return treatment.frequencyType === frequencyType && !treatment.isCurrentDosingTypeEmpty();
             };
 
             $scope.toggleShowAdditionalInstructions = function (line) {
