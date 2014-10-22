@@ -56,9 +56,6 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
     this.getPossibleAnswers = function() {
         return this.possibleAnswers;
     };
-    this.showHelpText = function() {
-        return conceptSetConfig[this.concept.name].showHelpText;
-    };
 
     this.add = function(obs){
         if(obs.value) {

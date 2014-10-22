@@ -24,9 +24,6 @@ Bahmni.ConceptSet.BooleanObservation = function(observation) {
             this.value = answer.value;
         }
     };
-    this.showHelpText = function(answer){
-        return this.conceptUIConfig[this.concept.name].showHelpText;
-    };
 
     this.isFormElement = function(){
         return true;

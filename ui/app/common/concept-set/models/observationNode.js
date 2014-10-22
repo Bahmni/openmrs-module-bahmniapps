@@ -261,10 +261,5 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
 
     markAsNonCoded: function() {
         this.markedAsNonCoded = !this.markedAsNonCoded;
-    },
-
-    showHelpText: function () {
-        return this.getConceptUIConfig().showHelpText;
     }
-
 };

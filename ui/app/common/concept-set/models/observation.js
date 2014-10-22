@@ -178,10 +178,6 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.getConceptUIConfig().required;
     },
 
-    showHelpText: function () {
-        return this.getConceptUIConfig().showHelpText;
-    },
-
     isFormElement: function() {
         return (!this.concept.set || this.isGrid()) && !this.isComputed();
     },

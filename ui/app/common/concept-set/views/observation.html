@@ -2,7 +2,7 @@
 <div class="vitals form-horizontal">
     <fieldset class="leaf-observation-node" ng-if="observation.isObservationNode">
         <div class="form-group">
-            <section class="concept-description" ng-if="observation.primaryObs.concept.description && observation.showHelpText() !== false">
+            <section class="concept-description" ng-if="observation.primaryObs.concept.description">
                 <span class="details" ng-bind-html="observation.primaryObs.concept.description"></span>
                 <i class="icon-caret-down"></i>
             </section>
@@ -87,7 +87,7 @@
 
     <fieldset class="leaf-observation-node" ng-if="observation.isFormElement()">
         <div class="form-group">
-            <section class="concept-description" ng-if="observation.concept.description && observation.showHelpText() !== false ">
+            <section class="concept-description" ng-if="observation.concept.description">
                 <span class="details" ng-bind-html="observation.concept.description"></span>
                 <i class="icon-caret-down"></i>
             </section>
@@ -188,7 +188,7 @@
         <legend ng-if="showTitle" class="mylegend"><strong>{{observation.label}}</strong></legend>
         
         <div class="form-group">        
-            <section class="concept-set-description" ng-if="observation.concept.description && observation.showHelpText() !== false">
+            <section class="concept-set-description" ng-if="observation.concept.description">
                 <span class="description" ng-bind-html="observation.concept.description"></span>
                 <i class="icon-caret-up"></i>
             </section>
