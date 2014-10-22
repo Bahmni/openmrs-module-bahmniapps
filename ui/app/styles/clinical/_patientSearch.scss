@@ -1,5 +1,5 @@
 .search-wrapper{
-	padding-bottom:10px;
+	padding-bottom:5px;
 	input{
 		height: 30px;
 		width:300px;
@@ -9,7 +9,7 @@
 
 .tab-content{
   overflow:hidden;
-  padding:14px;
+  padding:5px;
   background:#fff;
   border: 1px solid #cecece;
   li{
@@ -46,6 +46,9 @@
 }
 
 .patient-search-wrapper {
+  .tabs {
+    margin-top: 5px;
+  }
   @media screen and (min-width: 960px) {
       padding: 0 5px;
   }
@@ -54,14 +57,14 @@
   display: inline-block;
 }
 .smallImages{
-    height: 80px;
-    width: 80px;
+    height: 70px;
+    width: 70px;
 }
 
 /* revisit - active visits */
 .active-visits{
     li{
-        padding: 7px 0;
+        padding: 0 0 5px 0;
         border-radius: 10px;
         @media screen and (min-width: 1013px) {
           width: 14%;
@@ -114,7 +117,6 @@
           }
         }
         div{
-            margin:5px 0px;
             @include font-size(0.9);
             color:#4d4d4d;
         }
