@@ -16,11 +16,8 @@ angular.module('bahmni.clinical').directive('autoScroll', function ($location,$a
                 $timeout.cancel();
                 $('body').animate({
                     scrollTop: -1*heightOfNavigationBar
-                }, 500);
+                }, 0);
             })
         }
     }
 })
-
-
-
