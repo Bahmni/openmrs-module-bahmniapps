@@ -23,7 +23,7 @@
 
                     <input id="{{observation.uniqueId}}" obs-constraints obs="observation.primaryObs" ng-if="observation.primaryObs.isNumeric()"
                            ng-model="observation.value"
-                           ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}" only-number="true"/>
+                           ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}" integer="true"/>
                 </div>
 
                 <textarea id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="!observation.primaryObs.isConciseText()" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}">
@@ -101,7 +101,7 @@
                 <div ng-switch-when="html5InputDataType">
                     <input id="{{observation.uniqueId}}" obs-constraints obs="observation"
                            ng-model="observation.value" ng-if="observation.isNumeric()"
-                           ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}" only-number="true"/>
+                           ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}" integer="true"/>
 
                     <input id="{{observation.uniqueId}}" obs-constraints obs="observation" ng-if="!observation.isNumeric()"
                            ng-model="observation.value" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}"/>
