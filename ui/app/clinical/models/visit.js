@@ -32,9 +32,9 @@ Bahmni.Clinical.Visit = (function () {
 
         var observationSubGroupingFunction = function (obs) {
             if (!obs.concept.set) return "Others";
-
-            return obs.concept.name;
+            return obs.concept.shortName || obs.concept.name;
         };
+
         this.observationGroups.forEach(function (observationGroup) {
             observationGroup.subGroups = resultGrouper.group(observationGroup.obs, observationSubGroupingFunction, 'obs', 'conceptName');
             observationGroup.subGroups.forEach(function (subGroup) {

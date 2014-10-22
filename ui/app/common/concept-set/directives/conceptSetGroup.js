@@ -24,7 +24,7 @@ angular.module('bahmni.common.conceptSet')
                         '<h2 class="section-title">' +
                             '<i class="icon-caret-right" ng-hide="conceptSet.isOpen"></i>' +
                             '<i class="icon-caret-down" ng-show="conceptSet.isOpen"></i>' + 
-                            '<strong>{{conceptSet.conceptName}}</strong>' +
+                            '<strong>{{conceptSet.label}}</strong>' +
                         '</h2>' +
                     '</div>' +
                     '<concept-set ng-if="conceptSet.isLoaded" ng-show="conceptSet.isOpen" concept-set-name="conceptSet.conceptName" required="conceptSet.options.required" observations="observations" show-title="false" validation-handler="validationHandler"></concept-set>' +

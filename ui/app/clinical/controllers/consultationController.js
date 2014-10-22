@@ -24,7 +24,7 @@ angular.module('bahmni.clinical')
                 var temp =[];
                 temp[0]=observation;
                 var observationsByGroup={
-                    "conceptSetName": observation.concept.name,
+                    "conceptSetName": observation.concept.shortName || observation.concept.name,
                     "groupMembers": new Bahmni.ConceptSet.ObservationMapper().getObservationsForView(temp, conceptSetUiConfigService.getConfig())
                 };
                 if(observationsByGroup.groupMembers.length){

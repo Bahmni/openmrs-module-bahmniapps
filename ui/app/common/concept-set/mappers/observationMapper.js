@@ -119,7 +119,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         var observationValue = getObservationDisplayValue(observation);
         observationValue = observation.durationObs ? observationValue + " " + getDurationDisplayValue(observation.durationObs) : observationValue;
         return { "value": observationValue, "abnormalObs": observation.abnormalObs, "duration": observation.durationObs,
-            "provider": observation.provider, "label": observation.label || getLabel(observation.concept), foo: "bar", o: observation,
+            "provider": observation.provider, "label": getLabel(observation.concept), "foo": observation,
             "observationDateTime": observation.observationDateTime, "concept": concept,
             "comment": observation.comment, "uuid": observation.uuid};
     };
@@ -148,8 +148,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
     };
 
     var getLabel = function(concept) {
-        var conceptName = _.find(concept.names, {conceptNameType: "SHORT"}) || _.find(concept.names, {conceptNameType: "FULLY_SPECIFIED"});
-        return conceptName ? conceptName.name : concept.shortName || concept.name.name || concept.name; // TODO : concept is either from webservice or encounter transaction
+        var mappedConcept = conceptMapper.map(concept);
+        return mappedConcept.shortName || mappedConcept.name;
     }
-
 };

@@ -38,7 +38,7 @@ Bahmni.ConceptSet.MultiSelectObservations = function(conceptSetConfig) {
 
 Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection, conceptSetConfig) {
     var self = this;
-    this.label = concept.displayLabel;
+    this.label = concept.shortName || concept.name;
     this.isMultiSelect = true;
     this.selectedObs = {};
     this.concept = concept;
@@ -132,9 +132,7 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
     };
 
     var buildObservation = function(concept) {
-        var conceptName = _.find(concept.names, {conceptNameType: "SHORT"}) || _.find(concept.names, {conceptNameType: "FULLY_SPECIFIED"});
-        var displayLabel = conceptName ? conceptName.name : concept.shortName || concept.name.name;
-        return { concept: concept, units: concept.units, label: displayLabel, possibleAnswers: self.concept.answers, groupMembers: [], comment: null};
+        return { concept: concept, units: concept.units, label: concept.shortName || concept.name, possibleAnswers: self.concept.answers, groupMembers: [], comment: null};
     }
 
     this.getValues = function(){
