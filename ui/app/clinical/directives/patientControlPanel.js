@@ -18,9 +18,7 @@ angular.module('bahmni.common.patient')
         };
 
         $scope.changeContext = function($event) {
-            var allowContextChange = contextChangeHandler.execute()["allow"];
-
-            if(!allowContextChange) {
+            if(!contextChangeHandler.execute()) {
                 $event.preventDefault();
                 return;
             }

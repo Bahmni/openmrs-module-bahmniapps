@@ -19,11 +19,9 @@ angular.module('bahmni.common.uiHelper')
 
 	this.execute = function() {
 	    var allow = true;
-        var callBackReturn;
 	    callbacks.forEach(function(callback){
-            callBackReturn = callback();
-	        allow = allow && callBackReturn["allow"];
+	        allow = allow && callback();
 	    });
-	    return callBackReturn;
+	    return allow;
 	};
 }]);

@@ -86,28 +86,23 @@ angular.module('bahmni.clinical')
                 $scope.treatment = $scope.treatments[index].cloneForEdit(index, treatmentConfig);
             };
 
-            $scope.incompleteDrugOrders = function(){
+            $scope.unsavedDrugOrders = function(){
                 var anyValuesFilled =  $scope.treatment.drugName || $scope.treatment.uniformDosingType.dose || $scope.treatment.uniformDosingType.frequency || $scope.treatment.variableDosingType.morningDose || $scope.treatment.variableDosingType.afternoonDose || $scope.treatment.variableDosingType.eveningDose || $scope.treatment.duration || $scope.treatment.quantity
-                return (anyValuesFilled && $scope.addForm.$invalid);
+                return (anyValuesFilled && $scope.addForm.$invalid) || $scope.addForm.$valid;
             };
-            $scope.unaddedDrugOrders = function () {
-                return $scope.addForm.$valid;
-            }
-
-            var contextChange = function () {
-                if($scope.incompleteDrugOrders() == true){
+            var allowContextChange = function () {
+                if($scope.unsavedDrugOrders() == true){
                     $scope.formInvalid = true;
-                    return {allow: false};
+                    return;
                 }
-                if($scope.unaddedDrugOrders() == true){
-                    return {allow: false, errorMessage: "Please add the details of the drug form to New Prescription before clicking Save"};
+                if(!restrictDrugsBeingDiscontinued()) {
+                    $scope.consultation.newlyAddedTreatments = $scope.treatments;
+                    $scope.consultation.incompleteTreatment = $scope.treatment;
+                    return true;
                 }
-                if(restrictDrugsBeingDiscontinued()) {
-                    return {allow: false, errorMessage: "Discontinuing and ordering the same drug is not allowed. Instead, use edit."};
-                }
-                $scope.consultation.newlyAddedTreatments = $scope.treatments;
-                $scope.consultation.incompleteTreatment = $scope.treatment;
-                return {allow: true};
+                $scope.consultation.errorMessage = "Discontinuing and ordering the same drug is not allowed. Instead, use edit.";
+                messagingService.showMessage('error', $scope.consultation.errorMessage);
+                return false;
             };
 
             $scope.getDrugs = function (request) {
@@ -141,7 +136,7 @@ angular.module('bahmni.clinical')
                 clearHighlights();
             };
 
-            contextChangeHandler.add(contextChange);
+            contextChangeHandler.add(allowContextChange);
 
             var saveTreatment = function () {
                 $rootScope.consultation.drugOrders = [];

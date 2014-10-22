@@ -80,8 +80,7 @@ angular.module('bahmni.registration')
 
             $scope.validate = function () {
                 var deferred = $q.defer();
-                var allowContextChange = contextChangeHandler.execute()["allow"];
-                if(!allowContextChange){
+                if(!contextChangeHandler.execute()){
                     messagingService.showMessage('error', 'Please correct errors in the form. Information not saved');
                     deferred.reject("Some fields are not valid");
                     return deferred.promise;

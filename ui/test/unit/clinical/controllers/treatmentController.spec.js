@@ -50,21 +50,12 @@ describe("TreatmentController", function () {
     });
 
     describe("Save", function () {
-        it("should check for any incomplete drug orders", function () {
-            expect(scope.incompleteDrugOrders()).toBeFalsy();
+        it("should check for any unsaved drug orders", function () {
+            expect(scope.unsavedDrugOrders()).toBeTruthy();
 
-            var treatment = {drugName: true};
-            scope.treatment = treatment;
-            scope.addForm = {$invalid: true, $valid: false};
-
-            expect(scope.incompleteDrugOrders()).toBeTruthy();
-
-        });
-        it("should check for any unadded drug orders", function () {
-            scope.addForm = {$valid: true};
-            expect(scope.unaddedDrugOrders()).toBeTruthy();
-            scope.addForm = {$valid: false};
-            expect(scope.unaddedDrugOrders()).toBeFalsy();
+            scope.addForm = {$invalid: true};
+            scope.treatment = {drugName: true};
+            expect(scope.unsavedDrugOrders()).toBeTruthy();
         });
     });
 
@@ -140,7 +131,7 @@ describe("TreatmentController", function () {
 
             contextChangeFunction();
 
-            expect(contextChangeFunction()["errorMessage"]).toBe("Discontinuing and ordering the same drug is not allowed. Instead, use edit.");
+            expect(scope.consultation.errorMessage).toBe("Discontinuing and ordering the same drug is not allowed. Instead, use edit.");
         })
     })
 });

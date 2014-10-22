@@ -43,10 +43,10 @@ angular.module('bahmni.clinical')
             var init = function () {
                 $scope.newlyAddedDiagnoses = $rootScope.consultation.newlyAddedDiagnoses;
                 addPlaceHolderDiagnosis();
-                contextChangeHandler.add(contextChange);
+                contextChangeHandler.add(allowContextChange);
             };
 
-            var contextChange = function () {
+            var allowContextChange = function () {
                 var invalidnewlyAddedDiagnoses = $scope.newlyAddedDiagnoses.filter(function (diagnosis) {
                     return !$scope.isValid(diagnosis);
                 });
@@ -56,7 +56,7 @@ angular.module('bahmni.clinical')
                 var invalidPastDiagnoses = $rootScope.consultation.pastDiagnoses.filter(function (diagnosis) {
                     return !$scope.isValid(diagnosis);
                 });
-                return {allow: invalidnewlyAddedDiagnoses.length === 0 && invalidPastDiagnoses.length === 0 && invalidSavedDiagnosesFromCurrentEncounter.length === 0};
+                return invalidnewlyAddedDiagnoses.length === 0 && invalidPastDiagnoses.length === 0 && invalidSavedDiagnosesFromCurrentEncounter.length === 0;
             };
 
             $scope.cleanOutDiagnosisList = function (data) {
