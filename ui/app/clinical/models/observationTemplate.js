@@ -1,6 +1,7 @@
 Bahmni.Clinical.ObservationTemplate = function (observationTemplate) {
     var obsTemplate = {
         name: observationTemplate.concept.name,
+        label: observationTemplate.concept.shortName || observationTemplate.concept.name,
         visitStartDate: observationTemplate.visitStartDate,
         encounters: []
     };

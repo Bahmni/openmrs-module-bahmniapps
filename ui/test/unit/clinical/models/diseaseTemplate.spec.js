@@ -117,5 +117,5 @@ var diseaseTemplateFromServer = {
             }
         }
     ],
-    "name": "Breast Cancer"
+    "concept": {"name": "Breast Cancer"}
 };

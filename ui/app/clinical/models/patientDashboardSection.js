@@ -2,6 +2,7 @@
 
 Bahmni.Clinical.PatientDashboardSection = function (section) {
     this.title = section.title;
+    this.data = section.data || {};
     this.conceptNames = section.conceptNames || [];
     this.numberOfVisits = section.numberOfVisits;
     this.isObservation = section.isObservation || false;
@@ -15,3 +16,5 @@ Bahmni.Clinical.PatientDashboardSection = function (section) {
         this.viewName = "views/dashboardSections/" + section.name + ".html";
     }
 };
+
+Bahmni.Clinical.PatientDashboardSection.create = function(section) { return new Bahmni.Clinical.PatientDashboardSection(section); }

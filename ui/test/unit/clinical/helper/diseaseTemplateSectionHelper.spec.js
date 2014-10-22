@@ -15,17 +15,19 @@ describe("disease template section helper", function () {
 var patientDashboardSections = [
     {
         "title": "Diagnosis",
-        "name": "diagnosis"
+        "name": "diagnosis",
+        "data": {}
     },
     {
         "title": "Lab Orders",
-        "name": "labOrders"
+        "name": "labOrders",
+        "data": {}
     }
 ];
 
 var breastCancerDiseaseTemplate =
 {
-    "name": "Breast Cancer",
+    "concept": {"name": "Breast Cancer"},
     "observationTemplates": [
         {
             "concept": {
@@ -80,7 +82,7 @@ var breastCancerDiseaseTemplate =
 
 var diabetesDiseaseTemplate =
 {
-    "name": "Diabetes",
+    "concept": {"name": "Diabetes"},
     "observationTemplates": [
         {
             "concept": {

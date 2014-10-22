@@ -1,7 +1,8 @@
 Bahmni.Clinical.DiseaseTemplate = function (diseaseTemplateResponse) {
 
     var diseaseTemplate = {
-        name: diseaseTemplateResponse.name,
+        name: diseaseTemplateResponse.concept.name,
+        label: diseaseTemplateResponse.concept.shortName || diseaseTemplateResponse.concept.name,
         obsTemplates: []
     };
 

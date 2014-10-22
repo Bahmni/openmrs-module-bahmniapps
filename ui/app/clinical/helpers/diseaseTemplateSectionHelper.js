@@ -2,14 +2,14 @@ Bahmni.Clinical.DiseaseTemplateSectionHelper = {
     populateDiseaseTemplateSections: function (patientDashboardSections, diseaseTemplates) {
         var templateExists = function (diseaseTemplateName, patientDashboardSections) {
             return _.find(patientDashboardSections, function (section) {
-                return section.title === diseaseTemplateName;
+                return section.data.diseaseTemplateName === diseaseTemplateName;
             });
         };
 
         var cleanUpOldTemplates = function () {
             _.remove(patientDashboardSections, function (patientDashboardSection) {
                 return _.findIndex(diseaseTemplates, function (diseaseTemplate) {
-                    return diseaseTemplate.name === patientDashboardSection.title;
+                    return diseaseTemplate.name === patientDashboardSection.data.diseaseTemplateName;
                 }) > -1;
             })
         };
@@ -18,10 +18,11 @@ Bahmni.Clinical.DiseaseTemplateSectionHelper = {
 
         diseaseTemplates.forEach(function (diseaseTemplate) {
             if (!templateExists(diseaseTemplate.name, patientDashboardSections) && diseaseTemplate.notEmpty()) {
-                patientDashboardSections.push({
-                    title: diseaseTemplate.name,
+                patientDashboardSections.push(Bahmni.Clinical.PatientDashboardSection.create({
+                    data: {diseaseTemplateName: diseaseTemplate.name},
+                    title: diseaseTemplate.label,
                     name: 'diseaseTemplateSection'
-                });
+                }));
             }
         });
     }
