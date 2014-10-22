@@ -6,7 +6,7 @@
                    ng-model="treatment.drugNameDisplay" on-select="populateBackingFields" autofocus ng-disabled="treatment.previousOrderUuid"/>
 
             <div class="frequency-widget uniform-frequency" ng-click="treatment.setFrequencyType('uniform')" ng-class="{'disabled': !treatment.isUniformDosingType()}">
-                <input class="form-field dose" integer="true" ng-focus="treatment.setFrequencyType('uniform')" type="number" min="1" placeholder="Dose"
+                <input class="form-field dose" integer="true" ng-focus="treatment.setFrequencyType('uniform')" type="number" min="0" step="any" placeholder="Dose"
                        ng-model="treatment.uniformDosingType.dose" ng-disabled="!treatment.isUniformDosingType()" ng-required="!treatment.validate()"/>
                 <select class="form-field freq-dose-units" ng-model="treatment.uniformDosingType.doseUnits"
                         ng-options="item.name as item.name for item in treatmentConfig.doseUnits" ng-disabled="!treatment.isUniformDosingType()" ng-required="!treatment.validate()">
@@ -22,11 +22,11 @@
 
             <div class="frequency-widget variable-frequency" ng-click="treatment.setFrequencyType('variable')" ng-class="{'disabled': !treatment.isVariableDosingType()}">
                 <div class="form-field dose-cell">
-                    <input type="number" min="0" ng-model="treatment.variableDosingType.morningDose" integer="true" ng-focus="treatment.setFrequencyType('variable')"
+                    <input type="number" min="0" step="any" ng-model="treatment.variableDosingType.morningDose" integer="true" ng-focus="treatment.setFrequencyType('variable')"
                            ng-disabled="!treatment.isVariableDosingType()" ng-required="!treatment.validate()"/>
-                    <input type="number" min="0" ng-model="treatment.variableDosingType.afternoonDose" integer="true"
+                    <input type="number" min="0" step="any" ng-model="treatment.variableDosingType.afternoonDose" integer="true"
                            ng-disabled="!treatment.isVariableDosingType()" ng-required="!treatment.validate()"/>
-                    <input type="number" min="0" ng-model="treatment.variableDosingType.eveningDose" integer="true"
+                    <input type="number" min="0" step="any" ng-model="treatment.variableDosingType.eveningDose" integer="true"
                            ng-disabled="!treatment.isVariableDosingType()" ng-required="!treatment.validate()"/>
                 </div>
                 <select class="form-field freq-dose-units" ng-model="treatment.variableDosingType.doseUnits"
