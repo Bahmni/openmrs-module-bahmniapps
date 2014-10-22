@@ -70,14 +70,15 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 return $location.url(url);                    
             };
 
-            var allowContextChange = function() {
+            var contextChange = function() {
                 return contextChangeHandler.execute();
             };
 
             var buttonClickAction = function (board) {
                 if ($scope.currentBoard === board) return;
 
-                if (!allowContextChange()) return;
+                var allowContextChange = contextChange()["allow"];
+                if (!allowContextChange) return;
                 contextChangeHandler.reset();
                 $scope.currentBoard = board;
                 return getUrl(board);
@@ -109,11 +110,14 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
             };
 
             $scope.save = function () {
-                if (!allowContextChange()){
-                    var errorMessage = $scope.consultation.errorMessage || "Please correct errors in the form. Information not saved"
+                var contxChange = contextChange();
+                var allowContextChange = contxChange["allow"];
+                if(!allowContextChange){
+                    var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "Please correct errors in the form. Information not saved" ;
                     messagingService.showMessage('error', errorMessage);
                     return;
                 }
+
                 registerTabService.fire();
                 var encounterData = {};
                 encounterData.locationUuid = sessionService.getLoginLocationUuid();

@@ -14,6 +14,6 @@ Bahmni.ConceptSet.ConceptSetGroupValidationHandler = function(conceptSetSections
         if(!allconceptSetSectionsValid) {
             conceptSetSections.filter(_.property('isLoaded')).forEach(function(conceptSetSection){ conceptSetSection.show(); });
         }
-        return allconceptSetSectionsValid;
+        return {allow: allconceptSetSectionsValid};
     }
 }

@@ -90,23 +90,23 @@ angular.module('bahmni.common.conceptSet')
                 }
             };
 
-            var allowContextChange = function () {
+            var contextChange = function () {
                 $scope.atLeastOneValueIsSet = $scope.rootObservation && $scope.rootObservation.atLeastOneValueSet();
                 $scope.conceptSetRequired = $scope.required;
                 var invalidNodes = $scope.rootObservation && $scope.rootObservation.groupMembers.filter(function(childNode){
                     return !childNode.isValid($scope.atLeastOneValueIsSet, $scope.conceptSetRequired);
                 });
-                return !invalidNodes || invalidNodes.length === 0;
+                return {allow: !invalidNodes || invalidNodes.length === 0};
             };
             contextChangeHandler.reset();
-            contextChangeHandler.add(allowContextChange);
+            contextChangeHandler.add(contextChange);
             var validateObservationTree = function () {
                 if(!$scope.rootObservation) return true;
                 $scope.atLeastOneValueIsSet = $scope.rootObservation.atLeastOneValueSet();
                 var invalidNodes = $scope.rootObservation.groupMembers.filter(function(childNode){
                     return childNode.isObservationNode && !childNode.isValid($scope.atLeastOneValueIsSet);
                 });
-                return !invalidNodes || invalidNodes.length === 0;
+                return {allow: !invalidNodes || invalidNodes.length === 0};
             };
 
             validationHandler.add(validateObservationTree);

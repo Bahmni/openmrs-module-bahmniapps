@@ -17,11 +17,17 @@ angular.module('bahmni.common.uiHelper')
 	    callbacks.push(callback);
 	};
 
-	this.execute = function() {
-	    var allow = true;
-	    callbacks.forEach(function(callback){
-	        allow = allow && callback();
-	    });
-	    return allow;
-	};
-}]);
+    this.execute = function () {
+        var allow = true;
+        var callBackReturn = null;
+        callbacks.forEach(function (callback) {
+            callBackReturn = callback();
+            allow = allow && callBackReturn["allow"];
+        });
+        if (callBackReturn && callBackReturn["errorMessage"] != null) {
+            return {allow: allow, errorMessage: callBackReturn["errorMessage"]};
+        }
+        return {allow: allow};
+
+    };
+ }]);
