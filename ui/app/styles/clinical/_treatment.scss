@@ -55,8 +55,9 @@
             }
             input[type="text"].dose, input[type="text"].duration, input[type="text"].quantity,
             input[type="number"].dose, input[type="number"].quantity {
-                width: 50px;
+                width: 70px;
                 min-width: 50px;
+                box-sizing: border-box;
             }
             input[type="number"].duration {
                 width: 71px;
