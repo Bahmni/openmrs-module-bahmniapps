@@ -7,6 +7,7 @@ angular.module('bahmni.clinical')
         var DateUtil = Bahmni.Common.Util.DateUtil;
 
         var createPrescribedDrugOrderGroups = function () {
+            if(prescribedDrugOrders.length == 0) return [];
             var drugOrderGroupedByDate = _.groupBy(prescribedDrugOrders, function (drugOrder) { return DateUtil.parse(drugOrder.visit.startDateTime); });
             var drugOrderGroups = _.map(drugOrderGroupedByDate, function(drugOrders, visitStartDate){
                 return {
