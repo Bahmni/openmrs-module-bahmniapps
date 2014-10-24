@@ -179,10 +179,6 @@ angular.module('opd.documentupload')
             };
             spinner.forPromise(init());
 
-            $scope.escapeRegExp = function(str) {
-              return (str || "").replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-            };
-
             $scope.getConcepts = function(request){
                 return $http.get(Bahmni.Common.Constants.conceptUrl, { params: {q: request.term, memberOf: topLevelConceptUuid, v: "custom:(uuid,name)"}}).then(function(result) {
                     return result.data.results;
