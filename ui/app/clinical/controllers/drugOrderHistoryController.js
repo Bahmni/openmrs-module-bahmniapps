@@ -7,8 +7,18 @@ angular.module('bahmni.clinical')
 
         var createPrescribedDrugOrderGroups = function () {
             var drugOrderGroups = _.groupBy(prescribedDrugOrders, function (drugOrder) { return drugOrder.visit.startDateTime; });
-            angular.forEach(drugOrderGroups,function(drugOrders, visitStartDate){
-                drugOrderGroups[visitStartDate] = drugOrders.map(DrugOrderViewModel.createFromContract);
+            if(!_.isEmpty(drugOrderGroups)){
+                drugOrderGroups.Active = [];
+            }
+            angular.forEach(drugOrderGroups,function(drugOrders, groupingKey){
+                if(groupingKey != "Active") {
+                    drugOrderGroups[groupingKey] = drugOrders.map(DrugOrderViewModel.createFromContract);
+                    angular.forEach(drugOrderGroups[groupingKey], function (drugOrder) {
+                        if(drugOrder.isActive()){
+                            drugOrderGroups.Active.push(drugOrder);
+                        }
+                    });
+                }
             });
             return drugOrderGroups;
         };
@@ -25,6 +35,10 @@ angular.module('bahmni.clinical')
 
         $scope.drugOrderGroupsEmpty = function(){
             return _.isEmpty($scope.drugOrderGroupOrder);
+        };
+
+        $scope.isDrugOrderGroupEmpty = function(drugOrders){
+            return _.isEmpty(drugOrders);
         };
 
         $scope.showEffectiveFromDate = function(visitStartDate, effectiveStartDate) {

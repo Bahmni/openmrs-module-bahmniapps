@@ -5,14 +5,15 @@
     </div>
 	<div class="inpage">
 		<div class="tabs">
-			<div class="tab" ng-repeat="prescriptionDate in drugOrderGroupOrder">
-				<input class="tab-radio" id="{{prescriptionDate}}" name="tab-group-1" type="radio" ng-checked="$index == 0" ng-class="{}">
-				<label class="tab-label" for="{{prescriptionDate}}">{{prescriptionDate | date: 'dd MMM yy'}}</label>
-                <button class="confirm refill-drugs-btn fr" ng-click="refillAll(consultation.drugOrderGroups[prescriptionDate])" ng-if="!drugOrderGroupsEmpty()"><i class="icon-forward"></i> Refill All</button>
+			<div class="tab" ng-repeat="groupingKey in drugOrderGroupOrder">
+				<input class="tab-radio" id="{{groupingKey}}" name="tab-group-1" type="radio" ng-checked="$index == 1" ng-class="{}">
+				<label class="tab-label" for="{{groupingKey}}">{{groupingKey | date: 'dd MMM yy'}}</label>
+                <button class="confirm refill-drugs-btn fr" ng-click="refillAll(consultation.drugOrderGroups[groupingKey])" ng-if="!drugOrderGroupsEmpty()"><i class="icon-forward"></i> Refill All</button>
 				<div class="inpage-tab-panel">
 					<div class="inpage-tab-content">
+                        <span ng-if="$index == 0 && isDrugOrderGroupEmpty(consultation.drugOrderGroups[groupingKey])">No Active Treatments</span>
                         <ul class="table-mimic">
-							<li ng-repeat="drugOrder in consultation.drugOrderGroups[prescriptionDate]" ng-class="{'active-drug' : drugOrder.isActive(), 'highlight' : drugOrder.isBeingEdited}">
+							<li ng-repeat="drugOrder in consultation.drugOrderGroups[groupingKey]" ng-class="{'active-drug' : drugOrder.isActive(), 'highlight' : drugOrder.isBeingEdited}">
                                 <div class="drug-details" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
                                     <strong class="drug-name">{{drugOrder.drug.name}}</strong> - &nbsp;{{drugOrder.getDescription()}}
 
@@ -25,10 +26,10 @@
                                     <button><i class="icon-play" ng-click="refill(drugOrder)"></i></button>
                                     <button ng-if="drugOrder.isActive()" ng-disabled="!drugOrder.isDiscontinuedAllowed"><i class="icon-stop" ng-click="discontinue(drugOrder)" ng-if="!drugOrder.isMarkedForDiscontinue"></i></button>
 									<button ng-if="drugOrder.isActive()" ng-disabled="!drugOrder.isDiscontinuedAllowed"><i class="icon-undo" ng-click="undoDiscontinue(drugOrder)" ng-if="drugOrder.isMarkedForDiscontinue"></i></button>
-									<button ng-if="drugOrder.isActive()" ng-disabled="!drugOrder.isEditAllowed"><i class="icon-edit" ng-click="edit(drugOrder, consultation.drugOrderGroups[prescriptionDate])"></i></button>
+									<button ng-if="drugOrder.isActive()" ng-disabled="!drugOrder.isEditAllowed"><i class="icon-edit" ng-click="edit(drugOrder, consultation.drugOrderGroups[groupingKey])"></i></button>
 								</div>
                                 <div class="start-date fr">
-                                    <span ng-if="showEffectiveFromDate(prescriptionDate, drugOrder.effectiveStartDate)"> from {{drugOrder.effectiveStartDate | date: 'dd MMM yy'}}</span>
+                                    <span ng-if="showEffectiveFromDate(groupingKey, drugOrder.effectiveStartDate)"> from {{drugOrder.effectiveStartDate | date: 'dd MMM yy'}}</span>
                                     <br/>
                                     <span ng-if="drugOrder.isDiscontinuedOrStopped()">stopped {{drugOrder.effectiveStopDate | date: 'dd MMM yy'}}</span>
                                 </div>
