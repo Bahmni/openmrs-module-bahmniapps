@@ -130,6 +130,12 @@
             .quantity-widget {
                 float: right;
                 margin-left: 21px;
+                .quantity-unit {
+                    min-width: 100px;
+                    padding-left: 10px;
+                    display: inline-block;
+                    line-height: 2.5em;
+                }
             }
             .add-drug-btn {
                 float: right;
