@@ -64,9 +64,7 @@
             <div class="quantity-widget">
                 <input class="form-field quantity" type="number" min="1" placeholder="Qty"
                        ng-model="treatment.quantity" ng-change="treatment.setQuantityEnteredManually()" required ng-pattern="/^[0-9]+$/" />
-                <select class="form-field quantity-unit" ng-model="treatment.quantityUnit"
-                        ng-options="item.name as item.name for item in treatmentConfig.dispensingUnits" required>
-                </select>
+                <span class="form-field quantity-unit">{{treatment.quantityUnit}}</span>
             </div>
         </fieldset>
 

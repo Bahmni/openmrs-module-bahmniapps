@@ -1,4 +1,6 @@
 Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
+    var allowedQuantityUnits = ["Tablet(s)","Capsule(s)"];
+
     var getDefaultValue = function (defaultValue, valueSet) {
         return defaultValue && _.find(valueSet, function (value) {
             return value.name === defaultValue;
@@ -199,16 +201,24 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
         this.durationInDays = this.duration * (this.durationUnit && this.durationUnit.factor || 1);
     };
 
+    var inAllowedQuantityUnits = function(doseUnit){
+        return allowedQuantityUnits.indexOf(doseUnit) != -1;
+    };
+
+    var quantityUnitsFrom = function(doseUnit){
+        return inAllowedQuantityUnits(doseUnit) ? doseUnit: "Unit(s)"
+    };
+
     this.calculateQuantityAndUnit = function () {
         this.calculateDurationInDays();
         if (!this.quantityEnteredManually && !this.quantityEnteredViaEdit) {
             if (this.frequencyType == Bahmni.Clinical.Constants.dosingTypes.uniform) {
                 this.quantity = this.uniformDosingType.dose * (this.uniformDosingType.frequency ? this.uniformDosingType.frequency.frequencyPerDay : 0) * this.durationInDays;
-                this.quantityUnit = this.uniformDosingType.doseUnits;
+                this.quantityUnit = quantityUnitsFrom(this.uniformDosingType.doseUnits);
             } else if (this.frequencyType == Bahmni.Clinical.Constants.dosingTypes.variable) {
                 var dose = this.variableDosingType;
                 this.quantity = (dose.morningDose + dose.afternoonDose + dose.eveningDose) * this.durationInDays;
-                this.quantityUnit = this.variableDosingType.doseUnits;
+                this.quantityUnit = quantityUnitsFrom(this.variableDosingType.doseUnits);
             }
         }
         if(this.quantity % 1 != 0){
