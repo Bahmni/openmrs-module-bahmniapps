@@ -1,14 +1,29 @@
 describe('DateUtil',function(){
     var dateUtil = Bahmni.Common.Util.DateUtil;
 
-    it("should be true if two dates are same irrespective of time", function() {
-        expect(dateUtil.isSameDate("2014-01-20T11:12:13.000Z", "2014-01-20T00:00:00.000Z")).toBeTruthy();
-        expect(dateUtil.isSameDate("2014-01-20T11:12:13.000+0530", "2014-01-20T00:00:00.000+0530")).toBeTruthy();
-        expect(dateUtil.isSameDate("2014-01-21T11:12:13.000Z", "2014-01-20T00:00:00.000Z")).toBeFalsy();
-        expect(dateUtil.isSameDate(undefined, new Date().toString())).toBeFalsy();
-        expect(dateUtil.isSameDate(new Date().toString(), null)).toBeFalsy();
+
+    describe("isSameDateTime", function(){
+        it("should be true if two dates and times are same", function() {
+            expect(dateUtil.isSameDateTime("2014-01-20T11:12:13.000Z", "2014-01-20T11:12:13.000Z")).toBeTruthy();
+            expect(dateUtil.isSameDateTime("2014-01-20T11:12:13.000+0530", "2014-01-20T11:12:13.000+0530")).toBeTruthy();
+
+            expect(dateUtil.isSameDateTime("2014-01-20T11:12:13.000+0530", "2014-01-20T11:12:12.000+0530")).toBeFalsy();
+            expect(dateUtil.isSameDateTime("2014-01-20T11:12:13.000+0530", "2014-01-21T11:12:13.000+0530")).toBeFalsy();
+            expect(dateUtil.isSameDateTime(undefined, "2014-01-20T11:12:13.000Z")).toBeFalsy();
+            expect(dateUtil.isSameDateTime("2014-01-20T11:12:13.000Z", null)).toBeFalsy();
+        });
     });
-    
+
+    describe("isSameDateTime", function(){
+        it("should be true if two dates are same irrespective of time", function() {
+            expect(dateUtil.isSameDate("2014-01-20T11:12:13.000Z", "2014-01-20T00:00:00.000Z")).toBeTruthy();
+            expect(dateUtil.isSameDate("2014-01-20T11:12:13.000+0530", "2014-01-20T00:00:00.000+0530")).toBeTruthy();
+            expect(dateUtil.isSameDate("2014-01-21T11:12:13.000Z", "2014-01-20T00:00:00.000Z")).toBeFalsy();
+            expect(dateUtil.isSameDate(undefined, new Date().toString())).toBeFalsy();
+            expect(dateUtil.isSameDate(new Date().toString(), null)).toBeFalsy();
+        });
+    });
+
     describe('diffInYearsMonthsDays', function(){
         it("should calculate difference between dates when month and day are same", function(){
             var fromDate = new Date("2011-06-21");
@@ -102,5 +117,5 @@ describe('DateUtil',function(){
 			
 			expect(dateUtil.getDayNumber(refDate, date)).toBe(2);
 		});
-	});	
+	});
 });

@@ -50,10 +50,6 @@ Bahmni.Common.Util.DateUtil = {
         return moment(datetime).format("YYYY-MM-DD");
     },
 
-    areDatesOnSameDay: function(date1, date2){
-        return this.diffInDays(this.getDateWithoutTime(date1), this.getDateWithoutTime(date2)) == 0;
-    },
-
 	getDate: function (dateTime) {
 		return moment(this.parse(dateTime)).startOf('day').toDate();
 	},
@@ -77,6 +73,15 @@ Bahmni.Common.Util.DateUtil = {
 	getDateWithoutHours: function(dateString){
 	    return moment(dateString).toDate().setHours(0,0,0,0);
 	},
+
+    isSameDateTime: function(date1, date2) {
+    	if(date1 == null || date2 == null) {
+    		return false;
+    	}
+        var dateOne = this.parse(date1);
+        var dateTwo = this.parse(date2);
+        return dateOne.getTime() == dateTwo.getTime();
+    },
 
     isSameDate: function(date1, date2) {
     	if(date1 == null || date2 == null) {

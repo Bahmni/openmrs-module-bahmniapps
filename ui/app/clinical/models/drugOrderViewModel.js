@@ -32,7 +32,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
         },
         set : function(value){
             this.effectiveStartDate = value;
-            if(this.effectiveStopDate && DateUtil.areDatesOnSameDay(this.effectiveStartDate, this.effectiveStopDate)){
+            if(this.effectiveStopDate && DateUtil.isSameDate(this.effectiveStartDate, this.effectiveStopDate)){
                 var oldEffectiveStopDate = new Date(this.effectiveStopDate);
                 this.effectiveStartDate = oldEffectiveStopDate >= DateUtil.today() ? DateUtil.addSeconds(oldEffectiveStopDate, 1) : DateUtil.today();
             }

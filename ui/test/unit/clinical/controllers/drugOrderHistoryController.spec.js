@@ -7,6 +7,7 @@ describe("DrugOrderHistoryController", function(){
     var scope, prescribedDrugOrders;
 
     beforeEach(inject(function ($controller, $rootScope) {
+        $rootScope.visit = {startDate: 1410322624000};
         scope = $rootScope.$new();
         scope.consultation = {};
         prescribedDrugOrders = [
@@ -62,7 +63,7 @@ describe("DrugOrderHistoryController", function(){
                 "dateStopped": null,
                 "instructions": null,
                 "visit": {
-                    "startDateTime": 1410349317222,
+                    "startDateTime": 1410349317000,
                     "uuid": "002efa33-4c4f-469f-968a-faedfe3a5e0c"
                 },
                 "drug": {
@@ -104,10 +105,11 @@ describe("DrugOrderHistoryController", function(){
 
     describe("when initialized", function(){
         it("should setup scope variables", function() {
-            expect(Object.keys(scope.consultation.drugOrderGroups).length).toBe(3);
-            expect(scope.consultation.drugOrderGroups['1410349317222'].length).toBe(1);
-            expect(scope.consultation.drugOrderGroups['Active'].length).toBe(1);
-            var secondDrugOrder = scope.consultation.drugOrderGroups['1410349317222'][0];
+            expect(scope.consultation.drugOrderGroups.length).toBe(3);
+            expect(scope.consultation.drugOrderGroups[0].visitStartDate.getTime()).toEqual(1397028261000);
+            expect(scope.consultation.drugOrderGroups[1].visitStartDate.getTime()).toEqual(1410349317000);
+            expect(scope.consultation.drugOrderGroups[2].label).toEqual("Active");
+            var secondDrugOrder = scope.consultation.drugOrderGroups[1].drugOrders[0];
             expect(secondDrugOrder.drugName).toBe(prescribedDrugOrders[1].drug.name);
         });
     });
