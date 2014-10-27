@@ -35,5 +35,8 @@ angular.module('bahmni.clinical')
         };
         $scope.groupedObservations = groupedObservations();
         $scope.disposition = $rootScope.consultation.disposition;
+        $scope.toggle = function (item) {
+            item.show = !item.show
+        };
     }]);
 

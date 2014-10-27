@@ -1,25 +1,121 @@
+<div ng-show="consultation.newlyAddedTreatments.length > 0">
+    <h2 class="section">New Treatments</h2>
+    <table ng-show="consultation.newlyAddedTreatments.length > 0">
+        <thead>
+        <tr class="title">
+            <th><span class="table-head-title">Drug Name</span></th>
+            <th colspan="2"><span class="table-head-title">Dosage Instructions</span></th>
+        </tr>
+        </thead>
+        <tbody ng-repeat="drugOrder in consultation.newlyAddedTreatments" bindonce="drugOrder">
+        <tr ng-click="toggle(drugOrder)" class="row-click">
+            <td class="drug-name" bo-text="drugOrder.drugName"></td>
+            <td class="dosage-form has-toggle-btn">
+                <span bo-show="drugOrder.getDescription()"
+                      bo-text="drugOrder.getDescription()"></span>
+                <span bo-show="!drugOrder.getDescription()" bo-text="' - '"></span>
+                <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">stopped on {{drugOrder.effectiveStopDate | date: 'dd MMM yy'}}</span>
+            </td>
+            <td class="toggle-btn">
+                <button class="toggle fr" ng-class="{'has-notes': drugOrder.additionalInstructions}">
+                    <i class="icon-plus-sign" ng-hide="drugOrder.show"></i>
+                    <i class="icon-minus-sign" ng-show="drugOrder.show"></i>
+                </button>
+            </td>
+        </tr>
+        <tr ng-if="drugOrder.show">
+            <td colspan="4" class="inline-notes notes">
+                <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.additionalInstructions}}</p>
+
+                <div class="footer-note right">
+                    <span class="time-stamp">
+                      <span class="date">{{drugOrder.effectiveStartDate | date:'dd MMM yy'}}</span>
+                      <span class="time">{{drugOrder.effectiveStartDate | date :'hh:mm a'}}</span>
+                    </span>
+                    <span class="provider" bo-text="drugOrder.provider.name"></span>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div ng-show="consultation.discontinuedDrugs.length > 0">
+    <h2 class="section">Discontinued Treatments</h2>
+    <table ng-show="consultation.treatmentDrugs.length > 0">
+        <thead>
+        <tr class="title">
+            <th><span class="table-head-title">Drug Name</span></th>
+            <th colspan="2"><span class="table-head-title">Dosage Instructions</span></th>
+        </tr>
+        </thead>
+        <tbody ng-repeat="drugOrder in consultation.discontinuedDrugs" bindonce="drugOrder" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
+        <tr ng-click="toggle(drugOrder)" class="row-click">
+            <td class="drug-name" bo-text="drugOrder.drugName"></td>
+            <td class="dosage-form has-toggle-btn">
+                <span bo-show="drugOrder.getDescription()"
+                      bo-text="drugOrder.getDescription()"></span>
+                <span bo-show="!drugOrder.getDescription()" bo-text="' - '"></span>
+                <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">stopped on {{drugOrder.effectiveStopDate | date: 'dd MMM yy'}}</span>
+            </td>
+            <td class="toggle-btn">
+                <button class="toggle fr" ng-class="{'has-notes': drugOrder.additionalInstructions}">
+                    <i class="icon-plus-sign" ng-hide="drugOrder.show"></i>
+                    <i class="icon-minus-sign" ng-show="drugOrder.show"></i>
+                </button>
+            </td>
+        </tr>
+        <tr ng-if="drugOrder.show">
+            <td colspan="4" class="inline-notes notes">
+                <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.additionalInstructions}}</p>
+
+                <div class="footer-note right">
+                    <span class="time-stamp">
+                      <span class="date">{{drugOrder.effectiveStartDate | date:'dd MMM yy'}}</span>
+                      <span class="time">{{drugOrder.effectiveStartDate | date :'hh:mm a'}}</span>
+                    </span>
+                    <span class="provider" bo-text="drugOrder.provider.name"></span>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<h2>Treatments</h2>
 <table ng-show="consultation.treatmentDrugs.length > 0">
   <thead>
-    <tr>
-      <th>Drug Name</th>
-      <th>Strength &amp; Form</th>
-      <th># per Dosage</th>
-      <th>Dosage Frequency</th>
-      <th>Dosage Instructions</th>
-      <th># of Days</th>
-    </tr>
+  <tr class="title">
+      <th><span class="table-head-title">Drug Name</span></th>
+      <th colspan="2"><span class="table-head-title">Dosage Instructions</span></th>
+  </tr>
   </thead>
-  <tbody ng-repeat="drug in consultation.treatmentDrugs">
-    <tr>
-      <td>{{drug.name}}</td>
-      <td>{{drug.strength + ' ' + drug.dosageForm}}</td>
-      <td>{{drug.numberPerDosage}}</td>
-      <td ng-show="drug.dosageFrequency && drug.dosageFrequency!=''">{{drug.dosageFrequency.name}}</td>
-      <td ng-show="drug.dosageInstruction && drug.dosageInstruction!=''">{{drug.dosageInstruction.name}}</td>
-      <td>for {{drug.numberOfDosageDays}} day(s) <span ng-show="drug.prn">Take as required.</span></td>
+  <tbody ng-repeat="drugOrder in consultation.treatmentDrugs" bindonce="drugOrder" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
+    <tr ng-click="toggle(drugOrder)" class="row-click">
+        <td class="drug-name" bo-text="drugOrder.drugName"></td>
+        <td class="dosage-form has-toggle-btn">
+                <span bo-show="drugOrder.getDescription()"
+                      bo-text="drugOrder.getDescription()"></span>
+            <span bo-show="!drugOrder.getDescription()" bo-text="' - '"></span>
+            <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">stopped on {{drugOrder.effectiveStopDate | date: 'dd MMM yy'}}</span>
+        </td>
+        <td class="toggle-btn">
+            <button class="toggle fr" ng-class="{'has-notes': drugOrder.additionalInstructions}">
+                <i class="icon-plus-sign" ng-hide="drugOrder.show"></i>
+                <i class="icon-minus-sign" ng-show="drugOrder.show"></i>
+            </button>
+        </td>
     </tr>
-    <tr ng-show="drug.notes" class="notes inline-notes">
-      <td colspan="6" >{{drug.notes}}</td>
+    <tr ng-if="drugOrder.show">
+        <td colspan="4" class="inline-notes notes">
+            <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.additionalInstructions}}</p>
+
+            <div class="footer-note right">
+                    <span class="time-stamp">
+                      <span class="date">{{drugOrder.effectiveStartDate | date:'dd MMM yy'}}</span>
+                      <span class="time">{{drugOrder.effectiveStartDate | date :'hh:mm a'}}</span>
+                    </span>
+                <span class="provider" bo-text="drugOrder.provider.name"></span>
+            </div>
+        </td>
     </tr>
   </tbody>
 </table>

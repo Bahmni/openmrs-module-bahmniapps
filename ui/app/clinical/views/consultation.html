@@ -143,10 +143,6 @@
         </div>
         <ng-include src="'views/labResults.html'" ng-init="labResults=consultation.labResults"/>
     </section>
-    <section class="block treatment" style="display:none;"> <!--Hiding the section for release 4-->
-        <h2>Treatment</h2>
-         <div  class="block-content" ng-include src="'views/treatmentDrugs.html'"></div>
-    </section>
     <section class="block disposition">
         <h2>Disposition</h2>
             <ul ng-if="disposition.code && !disposition.voided">
@@ -157,6 +153,9 @@
                     </div>
                 </li>
             </ul>
+    </section>
+    <section class="block-content">
+        <div  class="block-content" ng-include src="'views/treatmentDrugs.html'"></div>
     </section>
     <section class="block consultationNote">
         <h2>Consultation Notes</h2>
