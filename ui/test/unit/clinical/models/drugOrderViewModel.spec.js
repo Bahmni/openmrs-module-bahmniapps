@@ -504,13 +504,21 @@ describe("drugOrderViewModel", function () {
 
         it("should create a copy of the drug to be edited", function () {
             var treatment = sampleTreatment({}, []);
-            var editedTreatment = treatment.cloneForEdit(0, {});
+            treatment.route = {name: "Orally"};
+            treatment.frequency = {name: "Once a day"}
+            var treatmentConfig = {};
+            treatmentConfig.routes = [{name: "Orally"}, {name: "intramuscular"}, {name: "intradermal"}];
+            treatmentConfig.frequencies = [{name: "Once a day"}, {name: "Twice a day"}];
+
+            var editedTreatment = treatment.cloneForEdit(0, treatmentConfig);
             expect(editedTreatment.drugName).toBe(treatment.drugName);
             expect(editedTreatment.instructions).toBe(treatment.instructions);
             expect(editedTreatment.duration).toBe(treatment.duration);
             expect(editedTreatment.scheduledDate).toBe(treatment.scheduledDate);
             expect(editedTreatment.quantity).toBe(treatment.quantity);
             expect(editedTreatment.quantityUnit).toBe(treatment.quantityUnit);
+            expect(editedTreatment.route).toEqual(treatment.route);
+            expect(editedTreatment.frequency).toEqual(treatment.frequency);
         });
 
         it("should set the flag isBeingEdited", function () {

@@ -294,7 +294,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
         });
 
         editableDrugOrder.route = _.find(treatmentConfig.routes, function(route){
-            return route.name === self.route;
+            return route.name === self.route.name || route.name === self.route;
         });
 
         editableDrugOrder.currentIndex = index;
