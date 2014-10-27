@@ -38,5 +38,15 @@ angular.module('bahmni.clinical')
         $scope.toggle = function (item) {
             item.show = !item.show
         };
+
+        $scope.isConsultationTabEmpty = function(){
+            if (!_.isEmpty($rootScope.consultation.newlyAddedDiagnoses) || !_.isEmpty(groupedObservations) 
+                || !_.isEmpty($rootScope.consultation.investigations) || !_.isEmpty($rootScope.consultation.disposition)
+                || !_.isEmpty($rootScope.consultation.treatmentDrugs) || !_.isEmpty($rootScope.consultation.newlyAddedTreatments)
+                || !_.isEmpty($rootScope.consultation.discontinuedDrugs)){
+                return false;
+            }
+            return true;
+        };
     }]);
 
