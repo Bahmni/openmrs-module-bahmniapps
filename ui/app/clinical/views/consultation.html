@@ -1,6 +1,9 @@
-<article class="consultation">
-    <section class="block diagnosis">
-        <h2>Diagnosis</h2>
+<article class="consultation visit">
+    <section class="messages">
+        <p class="null-data-message">Consultation pad is empty</p>
+    </section>
+    <section class="block diagnosis section-grid">
+        <h2 class="section-title">Diagnosis</h2>
         <div class="block-content" ng-show="consultation.newlyAddedDiagnoses.length > 0">
             <h4 class="section">Newly added</h4>
             <div ng-repeat="diagnosis in consultation.newlyAddedDiagnoses | primaryDiagnosisFirst">
@@ -87,8 +90,8 @@
             </div>
         </div>
     </section>
-    <section class="block observation">
-        <h2>Observations</h2>
+    <section class="block observation section-grid">
+        <h2 class="section-title">Observations</h2>
         <section class="block">
             <div ng-repeat="observationGroup in groupedObservations">
                 <table>
@@ -143,8 +146,8 @@
         </div>
         <ng-include src="'views/labResults.html'" ng-init="labResults=consultation.labResults"/>
     </section>
-    <section class="block disposition">
-        <h2>Disposition</h2>
+    <section class="block disposition section-grid">
+        <h2 class="section-title">Disposition</h2>
             <ul ng-if="disposition.code && !disposition.voided">
                 <li>
                     <span>{{disposition.conceptName}}</span><span class="disposition-time">{{disposition.dispositionDateTime | date :'dd-MM-yyyy hh:mm' }}</span>
@@ -157,8 +160,8 @@
     <section class="block-content">
         <div  class="block-content" ng-include src="'views/treatmentDrugs.html'"></div>
     </section>
-    <section class="block consultationNote">
-        <h2>Consultation Notes</h2>
+    <section class="block consultationNote section-grid">
+        <h2 class="section-title">Consultation Notes</h2>
         <textarea ng-model="consultation.consultationNote.value" ng-change="onNoteChanged()" placeholder="Notes: " rows="6"></textarea>
     </section>
 </article>
