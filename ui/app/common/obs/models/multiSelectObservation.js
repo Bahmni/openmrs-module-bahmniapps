@@ -1,9 +1,9 @@
 Bahmni.Common.Obs.MultiSelectObservation = (function () {
 
-    var MultiSelectObservation = function (memberObs, conceptConfig) {
+    var MultiSelectObservation = function (groupMembers, conceptConfig) {
         this.type = "multiSelect";
-        this.concept = memberObs[0].concept;
-        this.memberObs = memberObs;
+        this.concept = groupMembers[0].concept;
+        this.groupMembers = groupMembers;
         this.conceptConfig = conceptConfig;
     };
 
