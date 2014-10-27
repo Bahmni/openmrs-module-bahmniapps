@@ -1,9 +1,10 @@
 describe("DiseaseTemplate", function () {
     it("should map the server model to view model for patient dashboard", function () {
 
-        var diseaseTemplateJson = {"name": "Breast Cancer", "observationTemplates": observationTemplates};
+        var diseaseTemplateJson = {"concept": {"name": "Breast Cancer", "shortName" : "Breast Cancer -shortName"}, "observationTemplates": observationTemplates};
         var diseaseTemplate = new Bahmni.Clinical.DiseaseTemplateMapper(diseaseTemplateJson, {});
         expect(diseaseTemplate.name).toBe("Breast Cancer");
+        expect(diseaseTemplate.label).toBe("Breast Cancer -shortName");
         expect(diseaseTemplate.obsTemplates.length).toBe(2);
         expect(diseaseTemplate.obsTemplates[0].name).toBe("Breast Cancer - Intake");
         expect(diseaseTemplate.obsTemplates[0].visitStartDate).toBe(1218997800000);

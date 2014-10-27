@@ -56,7 +56,7 @@ module.exports = function (grunt) {
             options: {
                 thresholds: {
                     'statements': 42.29,
-                    'branches': 35.02,
+                    'branches': 35.08,
                     'functions': 34.38,
                     'lines': 42.26
                 },

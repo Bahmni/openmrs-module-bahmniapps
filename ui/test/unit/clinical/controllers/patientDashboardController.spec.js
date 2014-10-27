@@ -22,8 +22,8 @@ describe("patient dashboard controller", function () {
         _clinicalConfigService = jasmine.createSpyObj('clinicalConfigService', ['getObsIgnoreList', 'getAllPatientDashboardSections']);
         _clinicalConfigService.getAllPatientDashboardSections.and.returnValue(patientDashboardSections);
         _diseaseTemplateService = jasmine.createSpyObj('diseaseTemplateService', ['getLatestDiseaseTemplates']);
-        var diseaseTemplates = [new Bahmni.Clinical.DiseaseTemplate("Breast Cancer", breastCancerDiseaseTemplate.observationTemplates),
-            new Bahmni.Clinical.DiseaseTemplate("Diabetes", diabetesDiseaseTemplate.observationTemplates)];
+        var diseaseTemplates = [new Bahmni.Clinical.DiseaseTemplate({name: "Breast Cancer"}, breastCancerDiseaseTemplate.observationTemplates),
+            new Bahmni.Clinical.DiseaseTemplate({name: "Diabetes"}, diabetesDiseaseTemplate.observationTemplates)];
         _diseaseTemplateService.getLatestDiseaseTemplates.and.callFake(function () {
             fetchDiseaseTemplatePromise = specUtil.respondWith(diseaseTemplates);
             return fetchDiseaseTemplatePromise;

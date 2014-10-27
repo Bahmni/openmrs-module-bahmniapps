@@ -1,12 +1,13 @@
 describe("ObservationTemplate", function () {
     it("should group observations by encounterDateTime", function () {
-        var observationTemplate = new Bahmni.Clinical.ObservationTemplate("Breast Cancer - Intake", "1218997800000", bahmniObservations);
+        var observationTemplate = new Bahmni.Clinical.ObservationTemplate({name : "Breast Cancer - Intake", shortName : "Breast Cancer - Intake -shortName"}, "1218997800000", bahmniObservations);
         expect(observationTemplate.name).toBe("Breast Cancer - Intake");
+        expect(observationTemplate.label).toBe("Breast Cancer - Intake -shortName");
         expect(observationTemplate.encounters.length).toBe(2);
     });
 
     it("should sort encounters by encounterDateTime", function () {
-        var observationTemplate = new Bahmni.Clinical.ObservationTemplate("Breast Cancer - Intake", "1218997800000", bahmniObservations);
+        var observationTemplate = new Bahmni.Clinical.ObservationTemplate({name : "Breast Cancer - Intake", shortName : "Breast Cancer - Intake -shortName"}, "1218997800000", bahmniObservations);
 
         expect(observationTemplate.encounters[0].encounterDateTime).toBe('1412158286000');
         expect(observationTemplate.encounters[0].observations.length).toBe(1);

@@ -6,8 +6,8 @@ Bahmni.Clinical.DiseaseTemplateMapper = function (diseaseTemplateResponse, allCo
             if (obsTemplate.bahmniObservations.length > 0) {
                 observations = new Bahmni.Common.Obs.ObservationMapper().map(obsTemplate.bahmniObservations, allConceptsConfig);
             }
-            allObsTemplates.push(new Bahmni.Clinical.ObservationTemplate(obsTemplate.concept.name, obsTemplate.visitStartDate, observations));
+            allObsTemplates.push(new Bahmni.Clinical.ObservationTemplate(obsTemplate.concept, obsTemplate.visitStartDate, observations));
         });
     }
-    return Bahmni.Clinical.DiseaseTemplate(diseaseTemplateResponse.name, allObsTemplates);
+    return Bahmni.Clinical.DiseaseTemplate(diseaseTemplateResponse.concept, allObsTemplates);
 };

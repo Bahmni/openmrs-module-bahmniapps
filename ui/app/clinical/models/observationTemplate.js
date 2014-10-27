@@ -1,6 +1,7 @@
-Bahmni.Clinical.ObservationTemplate = function (name, visitStartDate, observations) {
+Bahmni.Clinical.ObservationTemplate = function (concept, visitStartDate, observations) {
     var obsTemplate = {
-        name: name,
+        name: concept.name,
+        label: concept.shortName || concept.name,
         visitStartDate: visitStartDate,
         encounters: []
     };
