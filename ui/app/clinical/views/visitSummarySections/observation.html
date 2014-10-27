@@ -4,15 +4,15 @@
         <div ng-repeat="observationGroup in visit.observationGroups">
             <table>
                 <thead>
-                <th colspan="3">
-                    <span class="date">{{observationGroup.date | date :'dd MMM yy'}}</span>
-                </th>
+                    <tr class="headerRow">
+                        <th colspan="3"><span class="date">{{observationGroup.date | date :'dd MMM yy'}}</span></th>
+                    </tr>
                 </thead>
 
                 <tbody ng-repeat="observationSubGroup in observationGroup.subGroups">
 
                     <tr>
-                        <td colspan="3" class="headerRow">
+                        <td >
                             <span class="obs-value">{{observationSubGroup.conceptName}}</span>
                         </td>
                     </tr>

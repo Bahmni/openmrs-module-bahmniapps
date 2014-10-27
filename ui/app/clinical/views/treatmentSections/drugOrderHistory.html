@@ -14,7 +14,7 @@
                 <button class="confirm refill-drugs-btn fr" ng-click="refillAll(drugOrderGroup.drugOrders)" ng-if="!drugOrderGroupsEmpty()"><i class="icon-forward"></i> Refill All</button>
 				<div class="inpage-tab-panel">
 					<div class="inpage-tab-content">
-                        <span ng-if="!drugOrderGroup.drugOrders.length">No Active Treatments</span>
+                        <p ng-if="!drugOrderGroup.drugOrders.length" class="placeholder-text">No Active Treatments</p>
                         <ul class="table-mimic">
 							<li ng-repeat="drugOrder in drugOrderGroup.drugOrders" ng-class="{'active-drug' : drugOrder.isActive(), 'highlight' : drugOrder.isBeingEdited}">
                                 <div class="drug-details" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
