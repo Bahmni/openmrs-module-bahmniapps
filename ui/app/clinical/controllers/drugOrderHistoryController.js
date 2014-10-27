@@ -5,6 +5,7 @@ angular.module('bahmni.clinical')
         
         var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
         var DateUtil = Bahmni.Common.Util.DateUtil;
+        var currentVisit = $rootScope.visit;
 
         var createPrescribedDrugOrderGroups = function () {
             if(prescribedDrugOrders.length == 0) return [];
@@ -14,9 +15,11 @@ angular.module('bahmni.clinical')
                     label: $filter("date")(DateUtil.parse(visitStartDate), 'dd MMM yy'),
                     visitStartDate: DateUtil.parse(visitStartDate),
                     drugOrders: drugOrders.map(DrugOrderViewModel.createFromContract),
-                    isCurrentVisit: DateUtil.isSameDateTime(visitStartDate, $rootScope.visit.startDate)
+                    isCurrentVisit: currentVisit && DateUtil.isSameDateTime(visitStartDate, currentVisit.startDate),
                 }
             });
+            var drugOrderGroupToSelect = _.find(drugOrderGroups, {isCurrentVisit: true}) || drugOrderGroups[0];
+            drugOrderGroupToSelect.selected = true;
             var activeDrugOrders = _.where(_.flatten(_.collect(drugOrderGroups, 'drugOrders')), function(order) { return order.isActive(); })
             drugOrderGroups.push({label: 'Active', drugOrders: activeDrugOrders});
             return drugOrderGroups;
