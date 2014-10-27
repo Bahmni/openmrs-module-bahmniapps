@@ -64,7 +64,8 @@ angular.module('bahmni.common.uiHelper')
             controller: controller,
             scope: {
                 patient: "=",
-                title: "="
+                title: "=",
+                accessImpression: "="
             }
         }
     }])

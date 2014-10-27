@@ -117,12 +117,14 @@ angular.module('bahmni.common.gallery')
             };
 
             var init = function () {
-                $scope.albums.forEach(function (album) {
-                    album.images.forEach(function (image) {
-                        fetchObsRelationship(image);
-                        constructNewSourceObs(image);
+                if ($scope.accessImpression) {
+                    $scope.albums.forEach(function (album) {
+                        album.images.forEach(function (image) {
+                            fetchObsRelationship(image);
+                            constructNewSourceObs(image);
+                        })
                     })
-                })
+                }
             };
 
             var fetchObsRelationship = function (image) {
