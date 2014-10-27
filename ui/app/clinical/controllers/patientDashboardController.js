@@ -15,21 +15,21 @@ angular.module('bahmni.clinical')
             diseaseTemplateService.getLatestDiseaseTemplates($stateParams.patientUuid).then(function (diseaseTemplates) {
                 diseaseTemplates.forEach(function (diseaseTemplate) {
                     diseaseTemplate.obsTemplates.forEach(function (obsTemplate) {
-                        obsTemplate.observations = _.map(obsTemplate.encounters, function (encounter) {
+                        obsTemplate.encounters.forEach(function (encounter) {
                             encounter.observations = _.map(encounter.observations, function (observation) {
                                 return new Bahmni.Clinical.DashboardObservation(observation);
                             })
                         });
+                        
                     })
                 });
-
                 $scope.diseaseTemplates = diseaseTemplates;
-                
                 $scope.diseaseTemplates.forEach(function (diseaseTemplate) {
                     if (diseaseTemplate.notEmpty()) {
                         $scope.patientDashboardSections.push(new Bahmni.Clinical.PatientDashboardSection({
                             title: diseaseTemplate.name,
-                            name: 'diseaseTemplateSection'
+                            name: 'diseaseTemplateSection',
+                            data: {diseaseTemplateName: diseaseTemplate.name}
                         }));
                     }
                 });

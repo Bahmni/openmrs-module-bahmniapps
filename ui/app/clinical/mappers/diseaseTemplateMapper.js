@@ -1,6 +1,6 @@
 Bahmni.Clinical.DiseaseTemplateMapper = function (diseaseTemplateResponse, allConceptsConfig) {
+    var allObsTemplates = [];
     if (diseaseTemplateResponse.observationTemplates && diseaseTemplateResponse.observationTemplates.length > 0) {
-        var allObsTemplates = [];
         diseaseTemplateResponse.observationTemplates.forEach(function (obsTemplate) {
             var observations = [];
             if (obsTemplate.bahmniObservations.length > 0) {

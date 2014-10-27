@@ -17,7 +17,7 @@ Bahmni.Clinical.DashboardObservation = (function () {
                 this.memberObs.forEach(function (member) {
                     allValues.push(member.value.shortName || member.value.name || member.value);
                 });
-                displayValue = allValues.join(); 
+                displayValue = allValues.join();
                 return displayValue;
             }
             displayValue = this.value.shortName || this.value.name || this.value;

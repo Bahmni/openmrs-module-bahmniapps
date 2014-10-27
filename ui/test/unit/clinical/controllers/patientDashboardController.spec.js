@@ -59,47 +59,52 @@ var breastCancerDiseaseTemplate =
             "concept": {
                 "name": "Breast Cancer Progress"
             },
-            "bahmniObservations": [
+            "encounters": [
+                {
+                    "observations": [
 
-                {
-                    "encounterDateTime": 1412157286000,
-                    "abnormal": null,
-                    "isAbnormal": null,
-                    "conceptSortWeight": 1,
-                    "uuid": "0f4dc38f-4588-49d9-a62c-ac045ddafa59",
-                    "conceptUuid": "d1cbb048-d3e6-4da4-834f-7d97df21c171",
-                    "observationDateTime": "2014-10-01T15:30:59.000+0530",
-                    "value": "Something",
-                    "type": null,
-                    "concept": {
-                        "shortName": null,
-                        "uuid": "d1cbb048-d3e6-4da4-834f-7d97df21c171",
-                        "name": "Chemotherapy",
-                        "set": true,
-                        "dataType": "N/A",
-                        "units": null,
-                        "conceptClass": "Misc"
-                    }
-                } ,
-                {
-                    "encounterDateTime": 1412157286000,
-                    "abnormal": null,
-                    "isAbnormal": null,
-                    "conceptSortWeight": 2,
-                    "uuid": "0f4dc38f-4588-49d9-a62c-ac045ddafa59",
-                    "conceptUuid": "d1cbb048-d3e6-4da4-834f-7d97df21c171",
-                    "observationDateTime": "2014-10-01T15:30:59.000+0530",
-                    "value": "Something else",
-                    "type": null,
-                    "concept": {
-                        "shortName": null,
-                        "uuid": "d1cbb048-d3e6-4da4-834f-7d97df21c171",
-                        "name": "Haematology",
-                        "set": true,
-                        "dataType": "N/A",
-                        "units": null,
-                        "conceptClass": "Misc"
-                    }
+                        {
+                            "encounterDateTime": 1412157286000,
+                            "abnormal": null,
+                            "isAbnormal": null,
+                            "conceptSortWeight": 1,
+                            "uuid": "0f4dc38f-4588-49d9-a62c-ac045ddafa59",
+                            "conceptUuid": "d1cbb048-d3e6-4da4-834f-7d97df21c171",
+                            "observationDateTime": "2014-10-01T15:30:59.000+0530",
+                            "value": "Something",
+                            "type": null,
+                            "concept": {
+                                "shortName": null,
+                                "uuid": "d1cbb048-d3e6-4da4-834f-7d97df21c171",
+                                "name": "Chemotherapy",
+                                "set": true,
+                                "dataType": "N/A",
+                                "units": null,
+                                "conceptClass": "Misc"
+                            }
+                        } ,
+                        {
+                            "encounterDateTime": 1412157286000,
+                            "abnormal": null,
+                            "isAbnormal": null,
+                            "conceptSortWeight": 2,
+                            "uuid": "0f4dc38f-4588-49d9-a62c-ac045ddafa59",
+                            "conceptUuid": "d1cbb048-d3e6-4da4-834f-7d97df21c171",
+                            "observationDateTime": "2014-10-01T15:30:59.000+0530",
+                            "value": "Something else",
+                            "type": null,
+                            "concept": {
+                                "shortName": null,
+                                "uuid": "d1cbb048-d3e6-4da4-834f-7d97df21c171",
+                                "name": "Haematology",
+                                "set": true,
+                                "dataType": "N/A",
+                                "units": null,
+                                "conceptClass": "Misc"
+                            }
+                        }
+                    ]
+
                 }
             ]
         }
@@ -114,47 +119,52 @@ var diabetesDiseaseTemplate =
             "concept": {
                 "name": "Diabetes - Intake"
             },
-            "bahmniObservations": [
+            "encounters": [
+                {
+                    "observations": [
 
-                {
-                    "encounterDateTime": 1412157286000,
-                    "abnormal": null,
-                    "isAbnormal": null,
-                    "conceptSortWeight": 1,
-                    "uuid": "0f4dc38f-4588-49d9-a62c-ac045ddafa59",
-                    "conceptUuid": "d1cbb048-d3e6-4da4-834f-7d97df21c171",
-                    "observationDateTime": "2014-10-01T15:30:59.000+0530",
-                    "value": "Something",
-                    "type": null,
-                    "concept": {
-                        "shortName": null,
-                        "uuid": "d1cbb048-d3e6-4da4-834f-7d97df21c171",
-                        "name": "Chemotherapy",
-                        "set": true,
-                        "dataType": "N/A",
-                        "units": null,
-                        "conceptClass": "Misc"
-                    }
-                } ,
-                {
-                    "encounterDateTime": 1412157286000,
-                    "abnormal": null,
-                    "isAbnormal": null,
-                    "conceptSortWeight": 2,
-                    "uuid": "0f4dc38f-4588-49d9-a62c-ac045ddafa59",
-                    "conceptUuid": "d1cbb048-d3e6-4da4-834f-7d97df21c171",
-                    "observationDateTime": "2014-10-01T15:30:59.000+0530",
-                    "value": "Something else",
-                    "type": null,
-                    "concept": {
-                        "shortName": null,
-                        "uuid": "d1cbb048-d3e6-4da4-834f-7d97df21c171",
-                        "name": "Haematology",
-                        "set": true,
-                        "dataType": "N/A",
-                        "units": null,
-                        "conceptClass": "Misc"
-                    }
+                        {
+                            "encounterDateTime": 1412157286000,
+                            "abnormal": null,
+                            "isAbnormal": null,
+                            "conceptSortWeight": 1,
+                            "uuid": "0f4dc38f-4588-49d9-a62c-ac045ddafa59",
+                            "conceptUuid": "d1cbb048-d3e6-4da4-834f-7d97df21c171",
+                            "observationDateTime": "2014-10-01T15:30:59.000+0530",
+                            "value": "Something",
+                            "type": null,
+                            "concept": {
+                                "shortName": null,
+                                "uuid": "d1cbb048-d3e6-4da4-834f-7d97df21c171",
+                                "name": "Chemotherapy",
+                                "set": true,
+                                "dataType": "N/A",
+                                "units": null,
+                                "conceptClass": "Misc"
+                            }
+                        } ,
+                        {
+                            "encounterDateTime": 1412157286000,
+                            "abnormal": null,
+                            "isAbnormal": null,
+                            "conceptSortWeight": 2,
+                            "uuid": "0f4dc38f-4588-49d9-a62c-ac045ddafa59",
+                            "conceptUuid": "d1cbb048-d3e6-4da4-834f-7d97df21c171",
+                            "observationDateTime": "2014-10-01T15:30:59.000+0530",
+                            "value": "Something else",
+                            "type": null,
+                            "concept": {
+                                "shortName": null,
+                                "uuid": "d1cbb048-d3e6-4da4-834f-7d97df21c171",
+                                "name": "Haematology",
+                                "set": true,
+                                "dataType": "N/A",
+                                "units": null,
+                                "conceptClass": "Misc"
+                            }
+                        }
+                    ]
+
                 }
             ]
         }
