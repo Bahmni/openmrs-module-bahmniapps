@@ -8,8 +8,16 @@ Bahmni.Common.Obs.GridObservation = (function () {
 
     GridObservation.prototype = {
 
+        isFormElement: function () {
+            return true;
+        },
+
+        getDisplayValue: function () {
+            return this.value;
+        }
+
     };
     
     return GridObservation;
-    
+
 })();

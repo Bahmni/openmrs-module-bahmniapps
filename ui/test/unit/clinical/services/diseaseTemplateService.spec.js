@@ -11,9 +11,7 @@ describe("DiseaseTemplateService", function () {
         _clinicalConfigService = jasmine.createSpyObj('clinicalConfigService', ['getAllConceptsConfig']);
         _clinicalConfigService.getAllConceptsConfig.and.returnValue({});
         _$http = jasmine.createSpyObj('$http', ['get']);
-        _$http.get.and.callFake(function () {
-            return specUtil.respondWith({"data": diseaseTemplates});
-        });
+        
     }));
 
     beforeEach(module(function ($provide) {
@@ -28,13 +26,30 @@ describe("DiseaseTemplateService", function () {
 
     describe("disease templates", function () {
         it('should fetch latest disease templates for a patient', function (done) {
+            _$http.get.and.callFake(function () {
+                return specUtil.respondWith({"data": diseaseTemplates});
+            });
+            
             this.diseaseTemplateService.getLatestDiseaseTemplates("patientuuid").then(function (response) {
                 expect(response.length).toBe(1);
                 expect(response[0].name).toBe("Breast Cancer");
                 expect(response[0].obsTemplates.length).toBe(2);
                 done();
             });
-        })
+        });
+
+        it('should fetch latest disease templates for a patient', function (done) {
+            _$http.get.and.callFake(function () {
+                return specUtil.respondWith({"data": diseaseTemplates[0]});
+            });
+            
+            this.diseaseTemplateService.getAllDiseaseTemplateObs("patientuuid", "Breast Cancer").then(function (response) {
+                expect(response.name).toBe("Breast Cancer");
+                expect(response.obsTemplates.length).toBe(2);
+                done();
+            });
+        });
+
     });
 
     var diseaseTemplates = [

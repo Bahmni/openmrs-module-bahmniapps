@@ -9,7 +9,7 @@ angular.module('bahmni.clinical')
             $http.get(url, {
                 params: {patientUuid: patientUuid}
             }).then(function (response) {
-                    var diseaseTemplates = mapDiseaseTemplates(response);
+                    var diseaseTemplates = mapDiseaseTemplates(response.data, clinicalConfigService.getAllConceptsConfig());
                     deferred.resolve(diseaseTemplates);
                 });
             return deferred.promise;
@@ -17,17 +17,22 @@ angular.module('bahmni.clinical')
 
         this.getAllDiseaseTemplateObs = function (patientUuid, diseaseName) {
             var url = Bahmni.Common.Constants.AllDiseaseTemplateUrl;
-            return $http.get(url, {
+
+            var deferred = $q.defer();
+            $http.get(url, {
                 params: {patientUuid: patientUuid, diseaseName: diseaseName}
-            });
+            }).then(function (diseaseTemplateResponse) {
+                    var diseaseTemplates = mapDiseaseTemplates([diseaseTemplateResponse.data], clinicalConfigService.getAllConceptsConfig());
+                    deferred.resolve(diseaseTemplates[0]);
+                });
+            return deferred.promise;
         };
 
-        var mapDiseaseTemplates = function (response) {
-            var allConceptsConfig = clinicalConfigService.getAllConceptsConfig();
-            var diseaseTemplates = [];
-            response.data.forEach(function (diseaseTemplate) {
-                diseaseTemplates.push(new Bahmni.Clinical.DiseaseTemplateMapper(diseaseTemplate, allConceptsConfig))
+        var mapDiseaseTemplates = function (diseaseTemplates, allConceptsConfig) {
+            var mappedDiseaseTemplates = [];
+            diseaseTemplates.forEach(function (diseaseTemplate) {
+                mappedDiseaseTemplates.push(new Bahmni.Clinical.DiseaseTemplateMapper(diseaseTemplate, allConceptsConfig))
             });
-            return diseaseTemplates;
+            return mappedDiseaseTemplates;
         };
     }]);

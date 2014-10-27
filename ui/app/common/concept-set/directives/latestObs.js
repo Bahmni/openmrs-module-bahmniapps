@@ -9,15 +9,12 @@ angular.module('bahmni.common.conceptSet')
 
             var createObservationSectionView = function () {
                 spinner.forPromise(observationsService.fetch($scope.patientUuid, $scope.conceptNames, "latest").then(function (observations) {
-                    var dashboardObservations = _.map(observations.data, function (bahmniObservation) {
-                        return new Bahmni.Clinical.DashboardObservation(bahmniObservation);
-                    });
-                    $scope.observations = _.sortBy(dashboardObservations, 'sortWeight');
+                    $scope.observations = _.sortBy(observations, 'sortWeight');
                 }));
             };
 
             init();
-        }
+        };
 
 
         return {

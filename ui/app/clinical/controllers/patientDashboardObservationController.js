@@ -53,10 +53,7 @@ angular.module('bahmni.clinical')
                 spinner.forPromise(observationsService.fetch($scope.patientUuid, $scope.section.conceptNames,
                         $scope.section.scope, $scope.section.numberOfVisits).then(function (response) {
                         var observations = new Bahmni.Common.Obs.ObservationMapper().map(response.data, clinicalConfigService.getAllConceptsConfig());
-                        var dashboardObservations = _.map(observations, function (observation) {
-                            return new Bahmni.Clinical.DashboardObservation(observation);
-                        });
-                        $scope.patientSummary.data = groupByDateAndConcept(dashboardObservations);
+                        $scope.patientSummary.data = groupByDateAndConcept(observations);
                         if (_.isEmpty($scope.patientSummary.data)) {
                             $scope.patientSummary.message = Bahmni.Clinical.Constants.messageForNoObservation;
                         }

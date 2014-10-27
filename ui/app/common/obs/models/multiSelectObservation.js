@@ -9,8 +9,20 @@ Bahmni.Common.Obs.MultiSelectObservation = (function () {
 
     MultiSelectObservation.prototype = {
 
+        isFormElement: function () {
+            return true;
+        },
+
+        getDisplayValue: function () {
+            var allValues = [];
+            this.groupMembers.forEach(function (member) {
+                allValues.push(member.value.shortName || member.value.name || member.value);
+            });
+            return allValues.join(", ");
+        }
+
     };
-    
+
     return MultiSelectObservation;
-    
+
 })();

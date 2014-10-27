@@ -13,16 +13,6 @@ angular.module('bahmni.clinical')
             $scope.patientDashboardSections = clinicalConfigService.getAllPatientDashboardSections();
 
             diseaseTemplateService.getLatestDiseaseTemplates($stateParams.patientUuid).then(function (diseaseTemplates) {
-                diseaseTemplates.forEach(function (diseaseTemplate) {
-                    diseaseTemplate.obsTemplates.forEach(function (obsTemplate) {
-                        obsTemplate.encounters.forEach(function (encounter) {
-                            encounter.observations = _.map(encounter.observations, function (observation) {
-                                return new Bahmni.Clinical.DashboardObservation(observation);
-                            })
-                        });
-                        
-                    })
-                });
                 $scope.diseaseTemplates = diseaseTemplates;
                 $scope.diseaseTemplates.forEach(function (diseaseTemplate) {
                     if (diseaseTemplate.notEmpty()) {

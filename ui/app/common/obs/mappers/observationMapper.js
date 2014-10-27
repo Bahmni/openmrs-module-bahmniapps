@@ -39,4 +39,5 @@ Bahmni.Common.Obs.ObservationMapper = function () {
         });
         return mappedObservations;
     };
+    
 };
