@@ -150,6 +150,12 @@ describe("DocumentController", function () {
                 uuid: 'provider uuid'
             };
 
+            scope.currentUser = {
+                person: {
+                    uuid: "provider1 uuid"
+                }
+            };
+
             documentController = $controller('DocumentController', {
                 $scope: scope,
                 spinner: spinner,
@@ -317,6 +323,39 @@ describe("DocumentController", function () {
 
             expect(visitDocumentService.save).toHaveBeenCalledWith(visitDocument);
 
+        })
+    });
+
+    describe('can delete image ', function () {
+        beforeEach(function(){
+            setUp();
+        });
+
+        it('Should return true if the provider is same as the user', function () {
+            var obs = {
+                provider: {
+                    uuid: 'provider1 uuid'
+                }
+            };
+            expect(scope.canDeleteImage(obs)).toBeTruthy();
+        });
+
+        it('Should return false if the provider is not same as the user', function () {
+            var obs = {
+                provider: {
+                    uuid: 'provider2 uuid'
+                }
+            };
+            scope.canDeleteImage(obs);
+            expect(scope.canDeleteImage(obs)).toBeFalsy();
+        });
+
+        it('Should return true if the obs is new', function () {
+            var obs = {
+                new: true
+            };
+            scope.canDeleteImage(obs);
+            expect(scope.canDeleteImage(obs)).toBeTruthy();
         })
     })
 });

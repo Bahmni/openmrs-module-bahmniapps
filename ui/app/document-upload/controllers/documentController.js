@@ -274,7 +274,7 @@ angular.module('opd.documentupload')
             };
 
             var isObsByCurrentProvider = function (obs) {
-                return obs.provider && $rootScope.currentUser.person.uuid === obs.provider.Uuid;
+                return obs.provider && $rootScope.currentUser.person.uuid === obs.provider.uuid;
             };
 
             $scope.canDeleteImage = function(obs){
