@@ -142,10 +142,10 @@ describe("clinicalConfigService", function () {
             });
         });
 
-        it('should fetch obs ignore list', function (done) {
+        it('should fetch obs ignore list and combine with default set of obs to ignore', function (done) {
             appService.initApp('clinical', {'app': true}).then(function () {
                 var result = clinicalConfigService.getObsIgnoreList();
-                expect(result).toEqual(["Fee Information", "Patient file"]);
+                expect(result).toEqual(["Impression", "Fee Information", "Patient file"]);
                 done();
             });
         });

@@ -13,7 +13,9 @@ angular.module('bahmni.clinical')
         };
 
         this.getObsIgnoreList = function () {
-            return appService.getAppDescriptor().getConfigValue("obsIgnoreList") || {};
+            var baseObsIgnoreList = [Bahmni.Common.Constants.impressionConcept]
+            var configuredObsIgnoreList = appService.getAppDescriptor().getConfigValue("obsIgnoreList") || [];
+            return baseObsIgnoreList.concat(configuredObsIgnoreList);
         };
 
         this.getAllConsultationBoards = function () {
