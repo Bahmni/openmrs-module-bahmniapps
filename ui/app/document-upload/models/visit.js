@@ -104,7 +104,7 @@ Bahmni.DocumentUpload.Visit = function () {
 
     this.hasErrors = function(){
         var imageHasError = _.find(this.images, function (image) {
-            return !image.concept || !image.concept.editableName || !image.concept.uuid;
+            return !image.voided && (!image.concept || !image.concept.editableName || !image.concept.uuid);
         });
 
         return imageHasError ? true : false;

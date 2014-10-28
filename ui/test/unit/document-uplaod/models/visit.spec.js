@@ -37,7 +37,7 @@ describe ("Visit ", function() {
                 }
             ];
 
-            expect(documentUploadVisit.hasErrors()).toBe(false);
+            expect(documentUploadVisit.hasErrors()).toBeFalsy();
         });
 
         it("should return true if the visit has newly added image and no concept associated with it.", function(){
@@ -49,7 +49,7 @@ describe ("Visit ", function() {
                 }
             ];
 
-            expect(documentUploadVisit.hasErrors()).toBe(true);
+            expect(documentUploadVisit.hasErrors()).toBeTruthy();
         });
 
         it("should return true if the visit has newly added image and editable name is undefined.", function(){
@@ -64,7 +64,7 @@ describe ("Visit ", function() {
                 }
             ];
 
-            expect(documentUploadVisit.hasErrors()).toBe(true);
+            expect(documentUploadVisit.hasErrors()).toBeTruthy();
         });
 
         it("should return true if the visit has newly added image and uuid is undefined.", function(){
@@ -79,7 +79,40 @@ describe ("Visit ", function() {
                 }
             ];
 
-            expect(documentUploadVisit.hasErrors()).toBe(true);
+            expect(documentUploadVisit.hasErrors()).toBeTruthy();
+        });
+
+        it("should return false if the image is voided and it has errors", function(){
+            var documentUploadVisit = new Bahmni.DocumentUpload.Visit;
+
+            documentUploadVisit.images = [
+                {
+                    "concept":{
+                        "name": "Arm Xray",
+                        "editableName": "Arm"
+                    },
+                    "voided": true
+                }
+            ];
+
+            expect(documentUploadVisit.hasErrors()).toBeFalsy();
+        });
+
+        it("should return false if the image is voided and it has no errors", function(){
+            var documentUploadVisit = new Bahmni.DocumentUpload.Visit;
+
+            documentUploadVisit.images = [
+                {
+                    "concept":{
+                        "name": "Arm Xray",
+                        "editableName": "Arm",
+                        "uuid": 111
+                    },
+                    "voided": true
+                }
+            ];
+
+            expect(documentUploadVisit.hasErrors()).toBeFalsy();
         });
 
         it("should return true if one of the newly added image has errors.", function(){
@@ -101,7 +134,7 @@ describe ("Visit ", function() {
                 }
             ];
 
-            expect(documentUploadVisit.hasErrors()).toBe(true);
+            expect(documentUploadVisit.hasErrors()).toBeTruthy();
         });
     });
 
@@ -113,7 +146,7 @@ describe ("Visit ", function() {
                 uuid: "uuid"
             };
 
-            expect(documentUploadVisit.hasVisitType()).toBe(true);
+            expect(documentUploadVisit.hasVisitType()).toBeTruthy();
         });
 
         it("should return false if it don't have visit type uuid.", function(){
@@ -122,13 +155,13 @@ describe ("Visit ", function() {
             documentUploadVisit.visitType = {
             };
 
-            expect(documentUploadVisit.hasVisitType()).toBe(false);
+            expect(documentUploadVisit.hasVisitType()).toBeFalsy();
         });
 
         it("should return false if it don't have visit type.", function(){
             var documentUploadVisit = new Bahmni.DocumentUpload.Visit;
 
-            expect(documentUploadVisit.hasVisitType()).toBe(false);
+            expect(documentUploadVisit.hasVisitType()).toBeFalsy();
         });
     });
 });
