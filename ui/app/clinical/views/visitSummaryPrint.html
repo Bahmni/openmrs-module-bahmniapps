@@ -109,7 +109,8 @@
                             <td class="value" ng-class="{'is-abnormal': line.isAbnormal, 'referred-out': line.referredOut}">
                                 {{line.value}}
                                 <span class="referred"> (Referred Out)</span>
-                            </td>
+                                <span ng-if="line.labReport"><img src="../images/icon-paper-clip.png" /></span>
+                            </td>`
                         </tr>
                         <tr ng-show="!line.isSummary && line.show">
                             <td colspan="2" class="notes inline-notes" ng-if="line.notes">

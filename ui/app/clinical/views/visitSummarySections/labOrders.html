@@ -34,6 +34,7 @@
                             <span ng-if="result.isOnOrderDate(day.date)">
                                 <span ng-class="{'is-abnormal': result.isAbnormal, 'one-result': test.results.length==1}"
                                       class="ipd-test-results">{{result.value}}</span>
+                            <span ng-if="result.labReport"><a href="{{result.labReport}}" target="_blank"><i class="icon-paper-clip"></i></a></span>
                             </span>
                         </span>
                 </td>
