@@ -21,12 +21,18 @@ Bahmni.Clinical.TabularLabOrderResults = (function () {
 
         this.hasOrders = function() {
             return this.tabularResult.orders.length > 0;
-        }
+        };
 
         this.getResult = function(dateLabel, testOrderLabel) {
             return this.tabularResult.values.filter(function(value) {
                 return value.dateIndex == dateLabel.index && value.testOrderIndex == testOrderLabel.index;
             })
+        };
+
+        this.hasUploadedFiles = function(dateLabel, testOrderLabel) {
+            return this.getResult(dateLabel, testOrderLabel).some(function(res) {
+                return res.uploadedFileName;
+            });
         };
     };
 
