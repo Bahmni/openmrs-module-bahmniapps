@@ -8,8 +8,8 @@ angular.module('bahmni.clinical')
         };
 
         var createObservationSectionView = function () {
-            spinner.forPromise(observationsService.fetch($scope.patientUuid, $scope.section.conceptNames, "latest").then(function (observations) {
-                $scope.observations = _.sortBy(observations, 'sortWeight');
+            spinner.forPromise(observationsService.fetch($scope.patientUuid, $scope.section.conceptNames, "latest").then(function (observationsResponse) {
+                $scope.observations = _.sortBy(observationsResponse.data, 'sortWeight');
             }));
         };
         init();
