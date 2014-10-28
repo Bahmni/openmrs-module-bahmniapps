@@ -255,6 +255,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
     };
 
     this.revise = function(treatmentConfig){
+        var self = this;
         var revisableDrugOrder = new Bahmni.Clinical.DrugOrderViewModel({}, {});
         angular.copy(this, revisableDrugOrder);
 
@@ -282,11 +283,12 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
     };
 
     this.cloneForEdit = function(index, treatmentConfig){
+        var self = this;
         var editableDrugOrder = new Bahmni.Clinical.DrugOrderViewModel(null, null);
         angular.copy(this, editableDrugOrder);
 
         editableDrugOrder.uniformDosingType.frequency = this.isUniformDosingType() && _.find(treatmentConfig.frequencies, function(frequency){
-            return self.uniformDosingType.frequency && frequency.name === self.uniformDosingType.frequency.name;
+            return self.uniformDosingType.frequency && (frequency.name === self.uniformDosingType.frequency.name);
         });
 
         editableDrugOrder.durationUnit = _.find(treatmentConfig.durationUnits, function(durationUnit){
@@ -294,7 +296,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
         });
 
         editableDrugOrder.route = _.find(treatmentConfig.routes, function(route){
-            return route.name === self.route.name || route.name === self.route;
+            return self.route && (route.name === self.route.name || route.name === self.route);
         });
 
         editableDrugOrder.currentIndex = index;
