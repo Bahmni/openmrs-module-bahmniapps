@@ -1,5 +1,5 @@
 <section class="edit-drug-order primary-section-grid">
-    <form name="addForm" ng-submit="add()" bm-form>
+    <form name="addForm" ng-class="{ 'show-invalid': formInvalid}"  ng-submit="add()" bm-form>
         <fieldset>
             <input class="form-field drug-name" type="text" placeholder="Drug Name" bahmni-autocomplete
                    source="getDrugs" response-map="getDataResults" required  strict-select="true" validation-message="Please select a drug from auto complete"
