@@ -35,14 +35,14 @@
                 <tbody>
                     <tr ng-repeat="dateLabel in tabular.getDateLabels()">
                         <td>{{dateLabel.date | date :'dd MMM yy'}}</td>
-                        <td ng-repeat="testOrderLabel in tabular.getTestOrderLabels()">
+                        <td ng-repeat="testOrderLabel in tabular.getTestOrderLabels()" ng-class="{'has-uploaded-file': tabular.hasUploadedFiles(dateLabel, testOrderLabel)}">
                             <span ng-init="results = tabular.getResult(dateLabel, testOrderLabel)">
                                 <span class="test-result"  ng-repeat="res in results">
                                     <span ng-class="{'referred-out': res.referredOut}">
                                         <span class="referred">R</span>
                                     </span>
                                     <span ng-show="res.result" ng-class="{'is-abnormal': res.abnormal, 'one-result': results.length==1}"class="ipd-test-results" bo-text="res.result"></span>
-                                    <span ng-show="res.uploadedFileName"><a href="{{getUploadedFileUrl(res.uploadedFileName)}}" onclick="event.stopPropagation()" target="_blank"><i class="icon-paper-clip"></i></a></span>
+                                    <span ng-show="res.uploadedFileName"><a class="uploaded-file" href="{{getUploadedFileUrl(res.uploadedFileName)}}" onclick="event.stopPropagation()" target="_blank"><i class="icon-paper-clip"></i></a></span>
                                 </span>
                             </span>
                         </td>
@@ -67,9 +67,9 @@
                     </tr>
 
                     <tr ng-if="!labOrderResult.isPanel" ng-click="toggle(labOrderResult)">
-                        <td ng-class="{'testUnderPanel': labOrderResult.panelName != null}">
+                        <td ng-class="{'testUnderPanel': labOrderResult.panelName != null, 'has-uploaded-file': labOrderResult.uploadedFileName}">
                             <span ng-if="!labOrderResult.uploadedFileName" bo-text="labOrderResult.testName"></span>
-                            <span ng-if="labOrderResult.uploadedFileName"><a href="{{getUploadedFileUrl(labOrderResult.uploadedFileName)}}" onclick="event.stopPropagation()" target="_blank" bo-text="labOrderResult.testName"></a></span>
+                            <span ng-if="labOrderResult.uploadedFileName"><a class="uploaded-file" href="{{getUploadedFileUrl(labOrderResult.uploadedFileName)}}" onclick="event.stopPropagation()" target="_blank" bo-text="labOrderResult.testName"></a></span>
                             <span ng-show="labOrderResult.hasRange" class="range">
                                 <span bo-text="'(' + labOrderResult.minNormal + ' - ' + labOrderResult.maxNormal + ')'"></span>
                                 <span ng-show="labOrderResult.testUnitOfMeasurement" class="units" bo-text="labOrderResult.testUnitOfMeasurement"></span>

@@ -86,3 +86,16 @@ a.document-link {
 	}
 }
 
+.has-uploaded-file {
+	&:hover {
+		background: $lightestGray;
+		cursor: pointer;
+	}
+	.uploaded-file {
+		display: inline-block;
+		width: 100%;
+		height: 100%;
+	}
+}
+
+
