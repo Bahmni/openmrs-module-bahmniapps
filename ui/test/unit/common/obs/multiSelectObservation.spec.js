@@ -11,7 +11,7 @@ describe("Observation", function () {
                 {"type": "Coded", "value": {"shortName": "Invasive Lobular Carcinoma", "name": "Invasive Lobular Carcinoma"}, "encounterDateTime": 1414486007000}
             ], {});
             expect(observation.getDisplayValue()).toBe("Invasive Ductal Carcinoma, Invasive Lobular Carcinoma");
-            expect(observation.encounterDatetime).toBe(1414486007000);
+            expect(observation.encounterDateTime).toBe(1414486007000);
         });
 
     })
