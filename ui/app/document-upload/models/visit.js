@@ -44,7 +44,7 @@ Bahmni.DocumentUpload.Visit = function () {
     };
 
     this.hasImages = function () {
-        return this.images.length;
+        return this.images.length > 0;
     };
 
     this.startDate = function () {
