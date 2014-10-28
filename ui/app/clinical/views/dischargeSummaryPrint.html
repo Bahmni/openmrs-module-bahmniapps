@@ -136,6 +136,7 @@
                             <span ng-class="{'is-abnormal': result.isAbnormal}">
                                 {{result.value}}
                             </span>
+                            <span ng-if="result.labReport"><img src="../images/icon-paper-clip.png" /></span>
                             <span class="date">({{result.orderDate | date :'d MMM yyyy'}})</span>
                         </span>
                     </td>
