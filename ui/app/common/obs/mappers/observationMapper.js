@@ -32,12 +32,13 @@ Bahmni.Common.Obs.ObservationMapper = function () {
             } else if (conceptConfig.grid) {
                 mappedObservations.push(new Bahmni.Common.Obs.GridObservation(obsGroup[0], conceptConfig));
             } else {
-                var observation = obsGroup[0];
-                observation.groupMembers = mapUIObservations(observation.groupMembers, allConceptsConfig);
-                mappedObservations.push(observation);
+                $.each(obsGroup, function (i, obs) {
+                    obs.groupMembers = mapUIObservations(obs.groupMembers, allConceptsConfig);
+                    mappedObservations.push(obs);
+                });
             }
         });
         return mappedObservations;
     };
-    
+
 };

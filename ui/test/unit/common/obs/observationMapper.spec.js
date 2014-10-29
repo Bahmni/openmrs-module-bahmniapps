@@ -13,6 +13,11 @@ describe("ObservationMapper", function () {
                             "conceptUuid": "31344a11-2157-49b9-8b66-a1df92a5ff2b", "groupMembers": [],
                             "value": {"shortName": null, "name": "Paclitaxel", "conceptClass": "Misc", "dataType": "N/A"}, "type": "Coded",
                             "concept": {"shortName": null, "name": "Regimen Type", "conceptClass": "Misc", "dataType": "Coded"}
+                        },
+                        {
+                            "conceptUuid": "31344a11-2157-49b9-8b66-a1df92a5ff2b", "groupMembers": [],
+                            "value": {"shortName": null, "name": "Another Paclitaxel", "conceptClass": "Misc", "dataType": "N/A"}, "type": "Coded",
+                            "concept": {"shortName": null, "name": "Regimen Type", "conceptClass": "Misc", "dataType": "Coded"}
                         }
                     ],
                     "concept": {"shortName": null, "name": "Chemotherapy", "set": true, "units": null, "conceptClass": "Misc", "dataType": "N/A"} }
@@ -20,9 +25,11 @@ describe("ObservationMapper", function () {
             var mappedObservation = new ObservationMapper().map(bahmniObservations, {});
             expect(mappedObservation.length).toBe(1);
             expect(mappedObservation[0] instanceof Bahmni.Common.Obs.Observation).toBe(true);
-            expect(mappedObservation[0].groupMembers.length).toBe(1);
+            expect(mappedObservation[0].groupMembers.length).toBe(2);
             expect(mappedObservation[0].groupMembers[0] instanceof Bahmni.Common.Obs.Observation).toBe(true);
             expect(mappedObservation[0].groupMembers[0].value.name).toBe("Paclitaxel");
+            expect(mappedObservation[0].groupMembers[1] instanceof Bahmni.Common.Obs.Observation).toBe(true);
+            expect(mappedObservation[0].groupMembers[1].value.name).toBe("Another Paclitaxel");
         });
 
         it("should map multiSelectObservations", function () {
