@@ -67,8 +67,8 @@ Bahmni.Tests.observationMother = {
 };
 
 Bahmni.Tests.drugOrderViewModelMother = {
-    build: function(extensionParams, routes, durationUnits, drugOrderViewModelData) {
-        var defaultModel = new Bahmni.Clinical.DrugOrderViewModel(extensionParams, {routes:routes, durationUnits: durationUnits});
+    build: function(extensionParams, treatmentConfig, drugOrderViewModelData) {
+        var defaultModel = new Bahmni.Clinical.DrugOrderViewModel(extensionParams, treatmentConfig, drugOrderViewModelData);
         defaultModel.drugName = "calpol 500mg(tablets)";
         defaultModel.instructions = "Before Meals";
         defaultModel.duration = "10";
@@ -81,6 +81,6 @@ Bahmni.Tests.drugOrderViewModelMother = {
             "strength": null,
             "name": "calpol 500mg(tablets)"
         };
-        return angular.extend(defaultModel, drugOrderViewModelData);
+        return defaultModel;
     }
 };

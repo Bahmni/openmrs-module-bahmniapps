@@ -89,9 +89,9 @@ Bahmni.Common.Util.DateUtil = {
     	}
         var dateOne = this.parse(date1);
         var dateTwo = this.parse(date2);
-        return dateOne.getFullYear() == dateTwo.getFullYear()
-            && dateOne.getMonth() == dateTwo.getMonth()
-            && dateOne.getDate() == dateTwo.getDate();
+        return dateOne.getFullYear() === dateTwo.getFullYear()
+            && dateOne.getMonth() === dateTwo.getMonth()
+            && dateOne.getDate() === dateTwo.getDate();
     },
 
 	diffInYearsMonthsDays: function (dateFrom, dateTo) {

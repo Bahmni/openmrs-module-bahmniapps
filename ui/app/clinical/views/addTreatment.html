@@ -14,7 +14,7 @@
                 </select>
 
                 <select class="form-field frequency" ng-model="treatment.uniformDosingType.frequency" ng-change="treatment.calculateDurationUnit(treatmentConfig.durationUnits)"
-                        ng-options="item as item.name for item in treatmentConfig.frequencies" ng-disabled="!treatment.isUniformDosingType()" ng-required="!treatment.validate()">
+                        ng-options="item.name as item.name for item in treatmentConfig.frequencies" ng-disabled="!treatment.isUniformDosingType()" ng-required="!treatment.validate()">
                     <option value="">Choose frequency</option>
                 </select>
             </div>
@@ -50,10 +50,10 @@
                 <input class="form-field duration" type="number" min="1" placeholder="Duration"
                       ng-model="treatment.duration" ng-change="treatment.calculateDurationInDays()" required ng-pattern="/^[0-9]+$/"/>
                 <select class="form-field duration-unit" ng-model="treatment.durationUnit" ng-change="treatment.calculateDurationInDays()"
-                        ng-options="item as item.name for item in treatmentConfig.durationUnits" required>
+                        ng-options="item.name as item.name for item in treatmentConfig.durationUnits" required>
                 </select>
                 <select class="form-field route" ng-model="treatment.route"
-                        ng-options="item as item.name for item in treatmentConfig.routes">
+                        ng-options="item.name as item.name for item in treatmentConfig.routes">
                     <option value="">Choose Route</option>
                 </select>
             </div>

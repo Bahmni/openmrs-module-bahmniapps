@@ -27,9 +27,9 @@ Bahmni.Clinical.DrugOrder = (function () {
         };
         var doseUnits = drugOrderData.isUniformDosingType() && !drugOrderData.isCurrentDosingTypeEmpty() ? drugOrderData.uniformDosingType.doseUnits : drugOrderData.variableDosingType.doseUnits;
 
-        var frequency = drugOrderData.isUniformDosingType() && !drugOrderData.isCurrentDosingTypeEmpty() && drugOrderData.uniformDosingType.frequency ? drugOrderData.uniformDosingType.frequency.name : null;
+        var frequency = drugOrderData.isUniformDosingType() && !drugOrderData.isCurrentDosingTypeEmpty() && drugOrderData.uniformDosingType.frequency;
 
-        var route = drugOrderData.route ? drugOrderData.route.name : null;
+        var route = drugOrderData.route;
 
         var drugOrder = new DrugOrder({
                 careSetting: "Outpatient",
@@ -47,7 +47,7 @@ Bahmni.Clinical.DrugOrder = (function () {
                     quantityUnits: drugOrderData.quantityUnit,
                     numberOfRefills: 0},
                 duration: drugOrderData.duration,
-                durationUnits: drugOrderData.durationUnit.name,
+                durationUnits: drugOrderData.durationUnit,
                 scheduledDate: dateUtil.parse(drugOrderData.scheduledDate),
                 previousOrderUuid: drugOrderData.previousOrderUuid,
                 action: drugOrderData.action

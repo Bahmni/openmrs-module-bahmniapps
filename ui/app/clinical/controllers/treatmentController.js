@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('TreatmentController', ['$scope', '$rootScope', 'TreatmentService', 'contextChangeHandler', 'RegisterTabService', 'treatmentConfig', 'DrugService', '$filter','messagingService',
-        function ($scope, $rootScope, treatmentService, contextChangeHandler, registerTabService, treatmentConfig, drugService, $filter, messagingService) {
+    .controller('TreatmentController', ['$scope', '$rootScope', 'TreatmentService', 'contextChangeHandler', 'RegisterTabService', 'treatmentConfig', 'DrugService',
+        function ($scope, $rootScope, treatmentService, contextChangeHandler, registerTabService, treatmentConfig, drugService) {
             $scope.treatments = $scope.consultation.newlyAddedTreatments || [];
             $scope.treatmentConfig = treatmentConfig;
             var drugOrderHistory = null;
@@ -14,8 +14,7 @@ angular.module('bahmni.clinical')
             ];
 
             var newTreatment = function () {
-                var treatment = new Bahmni.Clinical.DrugOrderViewModel($scope.currentBoard.extensionParams, $scope.treatmentConfig);
-                return treatment;
+                return new Bahmni.Clinical.DrugOrderViewModel($scope.currentBoard.extensionParams, $scope.treatmentConfig);
             };
 
             $scope.today = new Date();
@@ -83,7 +82,7 @@ angular.module('bahmni.clinical')
             $scope.edit = function (index) {
                 clearHighlights();
                 $scope.treatments[index].isBeingEdited = true;
-                $scope.treatment = $scope.treatments[index].cloneForEdit(index, treatmentConfig);
+                $scope.treatment = $scope.treatments[index].cloneForEdit(index, $scope.currentBoard.extensionParams, $scope.treatmentConfig);
             };
 
             $scope.incompleteDrugOrders = function(){
@@ -152,14 +151,14 @@ angular.module('bahmni.clinical')
             registerTabService.register(saveTreatment);
 
             $rootScope.$on("event:refillDrugOrder", function (event, drugOrder) {
-                var refill = drugOrder.refill(treatmentConfig);
+                var refill = drugOrder.refill();
                 drugOrderHistory = drugOrder;
                 $scope.treatments.push(refill);
             });
 
             $rootScope.$on("event:refillDrugOrders", function (event, drugOrders) {
                 drugOrders.forEach(function (drugOrder) {
-                    var refill = drugOrder.refill(treatmentConfig);
+                    var refill = drugOrder.refill();
                     $scope.treatments.push(refill);
                 })
             });
@@ -167,7 +166,7 @@ angular.module('bahmni.clinical')
             $rootScope.$on("event:reviseDrugOrder", function (event, drugOrder) {
                 $scope.treatments.map(setIsNotBeingEdited);
                 drugOrderHistory = drugOrder;
-                $scope.treatment = drugOrder.revise(treatmentConfig);
+                $scope.treatment = drugOrder.revise();
                 $scope.treatment.currentIndex = $scope.treatments.length + 1;
             });
         }]);

@@ -1,17 +1,62 @@
 'use strict';
 
 describe("drugOrderViewModel", function () {
-    var sampleTreatment = function (extensionParams, routes, durationUnits) {
-        return Bahmni.Tests.drugOrderViewModelMother.build(extensionParams, routes, durationUnits, defaults);
+    var sampleTreatment = function (extensionParams, treatmentConfig) {
+        return Bahmni.Tests.drugOrderViewModelMother.build(extensionParams, treatmentConfig, defaults);
+    };
+
+    var treatmentConfig = {
+        frequencies: [
+            {
+                name: "Every Hour",
+                frequencyPerDay: 24
+            },
+            {
+                name: "Every Two Hour",
+                frequencyPerDay: 12
+            },
+            {
+                name: "Every Five Hour",
+                frequencyPerDay: 5
+            },
+            {
+                name: "Every Six Hour",
+                frequencyPerDay: 4
+            },
+            {
+                name: "Four times a Day",
+                frequencyPerDay: 4
+            },
+            {
+                name: "Twice a Day",
+                frequencyPerDay: 2
+            },
+            {
+                name: "Once a Day",
+                frequencyPerDay: 1
+            },
+            {
+                name: "Once a Week",
+                frequencyPerDay: 1/7
+            }
+        ],
+        routes: [
+            {name: "Intramuscular"},
+            {name: "Orally"}
+        ],
+        durationUnits: [
+            {name: "Days"},
+            {name: "Months"}
+        ]
     };
 
     it("should get the text to be displayed in the treatment list", function () {
         var treatment = sampleTreatment({}, []);
-        treatment.durationUnit = {name: "Days"};
-        treatment.route = {name: "Orally"};
+        treatment.durationUnit = "Days";
+        treatment.route = "Orally";
         treatment.uniformDosingType.dose = "1";
         treatment.uniformDosingType.doseUnits = "Capsule";
-        treatment.uniformDosingType.frequency = {name: "Once a day"};
+        treatment.uniformDosingType.frequency = "Once a day";
         treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
         expect(treatment.getDescription()).toBe("1 Capsule, Once a day, Before Meals, Orally - 10 Days");
 
@@ -22,8 +67,8 @@ describe("drugOrderViewModel", function () {
     it("should get the text to be displayed in the treatment list with dosage instructions", function () {
         var treatment = sampleTreatment({}, []);
         treatment.frequencyType = "variable";
-        treatment.route = {name: "Orally"};
-        treatment.durationUnit = {name: "Days"};
+        treatment.route = "Orally";
+        treatment.durationUnit = "Days";
         treatment.variableDosingType = {
             morningDose: 1,
             afternoonDose: 1,
@@ -36,8 +81,8 @@ describe("drugOrderViewModel", function () {
     it("should get the text to be displayed in the treatment list without dosage instructions if the instruction is as directed", function () {
         var treatment = sampleTreatment({}, []);
         treatment.frequencyType = "variable";
-        treatment.route = {name: "Orally"};
-        treatment.durationUnit = {name: "Days"};
+        treatment.route = "Orally";
+        treatment.durationUnit = "Days";
         treatment.instructions = 'As directed';
         treatment.variableDosingType = {
             morningDose: 1,
@@ -49,18 +94,12 @@ describe("drugOrderViewModel", function () {
     });
 
     it("should get the default route from the config", function () {
-        var treatment = sampleTreatment({defaultRoute: "Orally"}, [
-            {name: "Intramuscular"},
-            {name: "Orally"}
-        ]);
+        var treatment = sampleTreatment({defaultRoute: "Orally"}, treatmentConfig);
         expect(treatment.route).toEqual({name: "Orally"});
     });
 
     it("should get default durationUnit from config if available", function () {
-        var treatment = sampleTreatment({defaultDurationUnit: "Months"}, [], [
-            {name: "Days"},
-            {name: "Months"}
-        ]);
+        var treatment = sampleTreatment({defaultDurationUnit: "Months"}, treatmentConfig);
         expect(treatment.durationUnit).toEqual({name: "Months"});
     });
 
@@ -104,41 +143,37 @@ describe("drugOrderViewModel", function () {
     });
 
     it("should change duration unit based on frequency factor", function () {
-        var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel({}, {});
-        var durationUnits = [
-            {name: "Hour(s)"},
-            {name: "Day(s)"},
-            {name: "Week(s)"}
-        ];
+        var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel({}, treatmentConfig);
+
         sampleTreatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
 
-        sampleTreatment.uniformDosingType.frequency = {name: "Every Hour", frequencyPerDay: 24};
-        sampleTreatment.calculateDurationUnit(durationUnits);
-        expect(sampleTreatment.durationUnit.name).toBe("Hour(s)");
+        sampleTreatment.uniformDosingType.frequency = "Every Hour";
+        sampleTreatment.calculateDurationUnit();
+        expect(sampleTreatment.durationUnit).toBe("Hour(s)");
 
-        sampleTreatment.uniformDosingType.frequency = {name: "Every Two Hour", frequencyPerDay: 12};
-        sampleTreatment.calculateDurationUnit(durationUnits);
-        expect(sampleTreatment.durationUnit.name).toBe("Hour(s)");
+        sampleTreatment.uniformDosingType.frequency = "Every Two Hour";
+        sampleTreatment.calculateDurationUnit();
+        expect(sampleTreatment.durationUnit).toBe("Hour(s)");
 
-        sampleTreatment.uniformDosingType.frequency = {name: "Every Five Hour", frequencyPerDay: 24 / 5};
-        sampleTreatment.calculateDurationUnit(durationUnits);
-        expect(sampleTreatment.durationUnit.name).toBe("Hour(s)");
+        sampleTreatment.uniformDosingType.frequency = "Every Five Hour";
+        sampleTreatment.calculateDurationUnit();
+        expect(sampleTreatment.durationUnit).toBe("Hour(s)");
 
-        sampleTreatment.uniformDosingType.frequency = {name: "Every Six Hour", frequencyPerDay: 4};
-        sampleTreatment.calculateDurationUnit(durationUnits);
-        expect(sampleTreatment.durationUnit.name).toBe("Day(s)");
+        sampleTreatment.uniformDosingType.frequency = "Every Six Hour";
+        sampleTreatment.calculateDurationUnit();
+        expect(sampleTreatment.durationUnit).toBe("Day(s)");
 
-        sampleTreatment.uniformDosingType.frequency = {name: "Four times a Day", frequencyPerDay: 4};
-        sampleTreatment.calculateDurationUnit(durationUnits);
-        expect(sampleTreatment.durationUnit.name).toBe("Day(s)");
+        sampleTreatment.uniformDosingType.frequency = "Four times a Day";
+        sampleTreatment.calculateDurationUnit();
+        expect(sampleTreatment.durationUnit).toBe("Day(s)");
 
-        sampleTreatment.uniformDosingType.frequency = {name: "Once a Day", frequencyPerDay: 1};
-        sampleTreatment.calculateDurationUnit(durationUnits);
-        expect(sampleTreatment.durationUnit.name).toBe("Day(s)");
+        sampleTreatment.uniformDosingType.frequency = "Once a Day";
+        sampleTreatment.calculateDurationUnit();
+        expect(sampleTreatment.durationUnit).toBe("Day(s)");
 
-        sampleTreatment.uniformDosingType.frequency = {name: "Once a Week", frequencyPerDay: 1 / 7};
-        sampleTreatment.calculateDurationUnit(durationUnits);
-        expect(sampleTreatment.durationUnit.name).toBe("Week(s)")
+        sampleTreatment.uniformDosingType.frequency = "Once a Week";
+        sampleTreatment.calculateDurationUnit();
+        expect(sampleTreatment.durationUnit).toBe("Week(s)")
     });
 
     describe("calculateDurationInDays", function () {
@@ -173,7 +208,7 @@ describe("drugOrderViewModel", function () {
 
     describe("calculateQuantityAndUnit", function () {
         var sampleTreatmentWithUniformDosing = function (dose, doseUnits, frequency, duration, durationUnit, factor) {
-            var treatment = sampleTreatment({}, []);
+            var treatment = sampleTreatment({}, treatmentConfig);
             treatment.quantity = null;
             treatment.quantityUnit = null;
             treatment.uniformDosingType.dose = dose;
@@ -186,7 +221,7 @@ describe("drugOrderViewModel", function () {
         };
 
         var sampleTreatmentWithVariableDosing = function (morningDose, afternoonDose, eveningDose, doseUnits, duration, durationUnit, factor) {
-            var treatment = sampleTreatment({}, []);
+            var treatment = sampleTreatment({}, treatmentConfig);
             treatment.quantity = null;
             treatment.quantityUnit = null;
             treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.variable;
@@ -202,13 +237,13 @@ describe("drugOrderViewModel", function () {
         };
 
         it("should calculate for uniform dose, frequency and duration", function () {
-            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", "Twice a Day", 5, "Days");
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(30);
         });
 
         it("should convert duration units to days for calulation", function () {
-            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Weeks", 7);
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", "Twice a Day", 5, "Weeks", 7);
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(210);
         });
@@ -220,7 +255,7 @@ describe("drugOrderViewModel", function () {
         });
 
         it("should result in 0 for uniform dose when dose is not available", function () {
-            var treatment = sampleTreatmentWithUniformDosing(null, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
+            var treatment = sampleTreatmentWithUniformDosing(null, "Capsule", "Twice a Day", 5, "Days");
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(0);
 
@@ -230,7 +265,7 @@ describe("drugOrderViewModel", function () {
         });
 
         it("should result in 0 for uniform dose when duration is not available", function () {
-            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, null, "Days");
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", "Twice a Day", null, "Days");
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(0);
 
@@ -385,12 +420,12 @@ describe("drugOrderViewModel", function () {
             expect(drugOrderViewModel.asNeeded).toBe(drugOrder.dosingInstructions.asNeeded);
             expect(drugOrderViewModel.route).toBe(drugOrder.dosingInstructions.route);
             expect(drugOrderViewModel.duration).toBe(drugOrder.duration);
-            expect(drugOrderViewModel.durationUnit.name).toBe(drugOrder.durationUnits);
+            expect(drugOrderViewModel.durationUnit).toBe(drugOrder.durationUnits);
             expect(drugOrderViewModel.scheduledDate).toBe(drugOrder.effectiveStartDate);
             expect(drugOrderViewModel.frequencyType).toBe("uniform");
             expect(drugOrderViewModel.uniformDosingType.dose).toBe(drugOrder.dosingInstructions.dose);
             expect(drugOrderViewModel.uniformDosingType.doseUnits).toBe(drugOrder.dosingInstructions.doseUnits);
-            expect(drugOrderViewModel.uniformDosingType.frequency.name).toBe(drugOrder.dosingInstructions.frequency);
+            expect(drugOrderViewModel.uniformDosingType.frequency).toBe(drugOrder.dosingInstructions.frequency);
             expect(drugOrderViewModel.quantity).toBe(drugOrder.dosingInstructions.quantity);
             expect(drugOrderViewModel.quantityUnit).toBe(drugOrder.dosingInstructions.quantityUnits);
             expect(drugOrderViewModel.drugName).toBe(drugOrder.drug.name);
@@ -404,13 +439,28 @@ describe("drugOrderViewModel", function () {
 
     describe("revise", function () {
 
-        it("should not change scheduled date", function () {
+        it("should create a new object that can be used for revision", function () {
             var treatment = sampleTreatment({}, []);
+            var route = treatment.route = 'Oral';
+            expect(treatment.route).toBe(route);
             var now = Bahmni.Common.Util.DateUtil.now();
             treatment.scheduledDate = Bahmni.Common.Util.DateUtil.subtractDays(now, 2);
             treatment.drug = { form: undefined };
 
-            var revisedTreatment = treatment.revise({});
+            var revisedTreatment = treatment.revise();
+
+            var newRoute = 'Transdermal';
+            revisedTreatment.route = newRoute;
+            expect(treatment.route).toBe(route);
+            expect(treatment.getDescription()).not.toBe(revisedTreatment.getDescription());
+        });
+
+        it("should not change scheduled date", function () {
+            var treatment = sampleTreatment({}, []);
+            var now = Bahmni.Common.Util.DateUtil.now();
+            treatment.effectiveStartDate = Bahmni.Common.Util.DateUtil.addDays(now, 2);
+            treatment.drug = { form: undefined };
+            var revisedTreatment = treatment.revise();
             expect(Bahmni.Common.Util.DateUtil.isSameDate(revisedTreatment.scheduledDate, treatment.scheduledDate)).toBe(true);
         });
 
@@ -419,7 +469,7 @@ describe("drugOrderViewModel", function () {
             treatment.drug = {  form: undefined };
             treatment.uuid = "previous-order-uuid";
 
-            var revisedTreatment = treatment.revise({});
+            var revisedTreatment = treatment.revise();
             expect(revisedTreatment.previousOrderUuid).toBe(treatment.uuid);
             expect(treatment.previousOrderUuid).not.toBe(treatment.uuid);
         });
@@ -428,7 +478,7 @@ describe("drugOrderViewModel", function () {
             var treatment = sampleTreatment({}, []);
             treatment.drug = { form: undefined };
 
-            var revisedTreatment = treatment.revise({});
+            var revisedTreatment = treatment.revise();
             expect(revisedTreatment.action).toBe(Bahmni.Clinical.Constants.orderActions.revise);
             expect(treatment.action).not.toBe(Bahmni.Clinical.Constants.orderActions.revise);
         });
@@ -442,7 +492,7 @@ describe("drugOrderViewModel", function () {
 
             treatment.previousOrderUuid = "prev-uuid";
             treatment.effectiveStopDate = Bahmni.Common.Util.DateUtil.subtractDays(today, 30);
-            var refilledTreatment = treatment.refill({});
+            var refilledTreatment = treatment.refill();
             expect(refilledTreatment.uuid).toBe(undefined);
             expect(refilledTreatment.dateActivated).toBe(undefined);
             expect(refilledTreatment.previousOrderUuid).toBe(undefined);
@@ -456,7 +506,7 @@ describe("drugOrderViewModel", function () {
             var today = Bahmni.Common.Util.DateUtil.today();
             treatment.previousOrderUuid = "prev-uuid";
             treatment.effectiveStopDate = Bahmni.Common.Util.DateUtil.addDays(today, 5);
-            var refilledTreatment = treatment.refill({});
+            var refilledTreatment = treatment.refill();
             expect(refilledTreatment.uuid).toBe(undefined);
             expect(refilledTreatment.dateActivated).toBe(undefined);
             expect(refilledTreatment.previousOrderUuid).toBe(undefined);
@@ -470,7 +520,7 @@ describe("drugOrderViewModel", function () {
             var today = Bahmni.Common.Util.DateUtil.today();
             treatment.previousOrderUuid = "prev-uuid";
             treatment.effectiveStopDate = today;
-            var refilledTreatment = treatment.refill({});
+            var refilledTreatment = treatment.refill();
             expect(refilledTreatment.uuid).toBe(undefined);
             expect(refilledTreatment.dateActivated).toBe(undefined);
             expect(refilledTreatment.previousOrderUuid).toBe(undefined);
@@ -485,7 +535,7 @@ describe("drugOrderViewModel", function () {
             treatment.previousOrderUuid = "prev-uuid";
             treatment.effectiveStopDate = today;
             treatment.quantityUnit = null;
-            var refilledTreatment = treatment.refill({});
+            var refilledTreatment = treatment.refill();
             expect(refilledTreatment.quantityUnit).toBe("Unit(s)");
         });
 
@@ -496,9 +546,9 @@ describe("drugOrderViewModel", function () {
         it("should not change scheduled date", function () {
             var treatment = sampleTreatment({}, []);
             var now = Bahmni.Common.Util.DateUtil.now();
-            treatment.scheduledDate = Bahmni.Common.Util.DateUtil.subtractDays(now, 2);
+            treatment.effectiveStartDate = Bahmni.Common.Util.DateUtil.addDays(now, 2);
 
-            var editedTreatment = treatment.cloneForEdit(0, {});
+            var editedTreatment = treatment.cloneForEdit(0);
             expect(Bahmni.Common.Util.DateUtil.isSameDate(editedTreatment.scheduledDate, treatment.scheduledDate)).toBe(true);
         });
 
@@ -510,11 +560,10 @@ describe("drugOrderViewModel", function () {
             treatmentConfig.routes = [{name: "Orally"}, {name: "intramuscular"}, {name: "intradermal"}];
             treatmentConfig.frequencies = [{name: "Once a day"}, {name: "Twice a day"}];
 
-            var editedTreatment = treatment.cloneForEdit(0, treatmentConfig);
+            var editedTreatment = treatment.cloneForEdit(0);
             expect(editedTreatment.drugName).toBe(treatment.drugName);
             expect(editedTreatment.instructions).toBe(treatment.instructions);
             expect(editedTreatment.duration).toBe(treatment.duration);
-            expect(editedTreatment.scheduledDate).toBe(treatment.scheduledDate);
             expect(editedTreatment.quantity).toBe(treatment.quantity);
             expect(editedTreatment.quantityUnit).toBe(treatment.quantityUnit);
             expect(editedTreatment.route).toEqual(treatment.route);
@@ -523,7 +572,7 @@ describe("drugOrderViewModel", function () {
 
         it("should set the flag isBeingEdited", function () {
             var treatment = sampleTreatment({}, []);
-            var editedTreatment = treatment.cloneForEdit(0, {});
+            var editedTreatment = treatment.cloneForEdit(0);
             expect(editedTreatment.isBeingEdited).toBe(true);
         });
 
