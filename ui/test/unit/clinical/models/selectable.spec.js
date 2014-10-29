@@ -189,7 +189,7 @@ describe("Selectable", function () {
 			expect(onSelectionChange.calls.count()).toBe(2);
 		});
 
-		it("should be triggered on selecting already selected one via diffrent sources", function() {
+		it("should be triggered on selecting already selected one via different sources", function() {
 			var child = new Selectable({}, [], onSelectionChange);
 			var parent1 = new Selectable({}, [child]);
 			var parent2 = new Selectable({}, [child]);
@@ -200,7 +200,7 @@ describe("Selectable", function () {
 			expect(onSelectionChange.calls.count()).toBe(2);
 		});
 
-		it("should be triggered on unselecting already unselected one via diffrent sources", function() {
+		it("should be triggered on unselecting already unselected one via different sources", function() {
 			var child = new Selectable({}, [], onSelectionChange);
 			var parent1 = new Selectable({}, [child]);
 			var parent2 = new Selectable({}, [child]);

@@ -1,8 +1,6 @@
 'use strict';
 
 Bahmni.Clinical.Panel = (function () {
-    var ArrayUtil = Bahmni.Common.Util.ArrayUtil;
-    
     var Panel = function (options) {
         angular.extend(this, options);
     };
@@ -20,7 +18,6 @@ Bahmni.Clinical.Panel = (function () {
             displayList.push({ name: "", isSummary: true, hasResults: false });
             return displayList;
         },
-
         hasResults: function() {
             return this.tests.length > 0;
         }
