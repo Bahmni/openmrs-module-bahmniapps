@@ -129,7 +129,11 @@ Bahmni.ConceptSet.ObservationMapper = function () {
             return observation.value === true ? "Yes" : "No";
         }
         if(!observation.value) return "";
-        return observation.value.shortName || observation.value.name || observation.value;
+        if(typeof observation.value.name === 'object') {
+            var valueConcept = conceptMapper.map(observation.value);
+            return valueConcept.shortName || valueConcept.name;
+        }
+        return observation.value.shortName || observation.value.name || observation.value ;
     };
 
     var getDurationDisplayValue = function (duration) {
@@ -141,9 +145,9 @@ Bahmni.ConceptSet.ObservationMapper = function () {
     };
 
     var getGridObservationDisplayValue = function (observation) {
-        var memberValues = _.map(observation.groupMembers, function (member) {
+        var memberValues = _.compact(_.map(observation.groupMembers, function (member) {
             return getObservationDisplayValue(member);
-        });
+        }));
         return memberValues.join(', ');
     };
 
