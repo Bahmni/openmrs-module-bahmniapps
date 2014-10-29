@@ -111,7 +111,7 @@ form .vitals .form-field .field-value {
     border: 1px solid #aaa;
   }
   textarea {
-    width: 50.3em;
+    width: 814px;
     margin-bottom: 10px;
     @media screen and (max-width: 1015px) and (min-width: 851px) {
       width: 40em;
@@ -241,7 +241,7 @@ concept-set {
 
 .vitals {
     .consultation-image {
-        width: 780px;
+        width: 824px;
         background: #eee;
         padding: 5px;
         overflow: auto;
@@ -318,7 +318,6 @@ concept-set {
     }
 }
 .concept-set-description {
-    margin-bottom: 5px;
     i {
         position: absolute;
         top: -11px;
@@ -329,7 +328,6 @@ concept-set {
 }
 .concept-description {
     margin-left: 10%;
-    margin-top: 5px;
     margin-bottom: 5px;
     p {
         margin-bottom: 0;
