@@ -27,14 +27,14 @@
             <tbody>
             <tr ng-repeat="day in visit.tabularResults.getDays()" ng-if="visit.atleastOneResultPerDay(day)">
                 <td bo-text="'D'+ day.dayNumber + ' (' + displayDate(day.date) + ')'"></td>
-                <td ng-init="test = orderable" ng-repeat="orderable in visit.tabularResults.getOrderables()">
+                <td class="has-uploaded-file" ng-init="test = orderable" ng-repeat="orderable in visit.tabularResults.getOrderables()">
                         <span ng-if="!orderable.concept.set" ng-repeat="result in test.results |
                          orderBy:'orderDate':false"
                               class="test-result">
                             <span ng-if="result.isOnOrderDate(day.date)">
                                 <span ng-class="{'is-abnormal': result.isAbnormal, 'one-result': test.results.length==1}"
                                       class="ipd-test-results">{{result.value}}</span>
-                            <span ng-if="result.labReport"><a href="{{result.labReport}}" target="_blank"><i class="icon-paper-clip"></i></a></span>
+                            <span ng-if="result.labReport"><a class="uploaded-file" href="{{result.labReport}}" target="_blank"><i class="icon-paper-clip"></i></a></span>
                             </span>
                         </span>
                 </td>
