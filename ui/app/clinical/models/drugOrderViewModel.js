@@ -124,6 +124,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config, proto) {
         };
     };
 
+    this.getDisplayName = function(){
+        return constructDrugNameDisplay(this.drug, this.drug.form).label;
+    };
+
     this.getDescription = function () {
         return self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.noFrequency ? getNoFrequencyDosingDescription() : getFlexibleDosingDescription();
     };

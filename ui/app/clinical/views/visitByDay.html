@@ -90,7 +90,7 @@
                     <li ng-repeat="drugOrder in visitDay.drugOrders">
                         <div class="expander-row">
                             <div class="treatment-details">
-                                <span bo-text="drugOrder.drugName"></span>
+                                <span bo-text="drugOrder.getDisplayName()"></span>
                                 <span bo-show="drugOrder.doseStrength" bo-text="' - ' + drugOrder.doseStrength"></span>
                                 <span bo-show="drugOrder.drugUnits" bo-text="' ' + drugOrder.drugUnits"></span>
                                 <span bo-show="drugOrder.dosageForm" bo-text="' ' + drugOrder.dosageForm"></span>

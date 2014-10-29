@@ -6,7 +6,7 @@
     </tr>
     <tbody ng-repeat="drugOrder in drugOrders| orderBy:'dateActivated':true" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
     <tr>
-        <td class="drug-name" bo-text="drugOrder.drugName"></td>
+        <td class="drug-name" bo-text="drugOrder.getDisplayName()"></td>
         <td class="dosage-form">
             <span bo-show="drugOrder.getDescription()" bo-text="drugOrder.getDescription()"></span>
             <span bo-show="!drugOrder.getDescription()" bo-text="' - '"></span>

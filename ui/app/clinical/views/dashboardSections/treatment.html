@@ -13,7 +13,7 @@
                     <td class="placeholder-text">No treatment for this patient.</td>
                 </tr>
                 <tr ng-repeat="drugOrder in drugOrderSection.orders" ng-show="drugOrderSection.orders.length" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
-                    <td class="drug">{{drugOrder.drugName}}</td>
+                    <td class="drug">{{drugOrder.getDisplayName()}}</td>
                     <td class="dosage"><span>{{drugOrder.getDescription()}}</span></td>
                     <td class="days"><span class="fr">{{drugOrder.effectiveStartDate | date:'dd MMM yy'}}</span></td>
                 </tr>

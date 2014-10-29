@@ -18,7 +18,7 @@
                         <ul class="table-mimic">
 							<li ng-repeat="drugOrder in drugOrderGroup.drugOrders" ng-class="{'active-drug' : drugOrder.isActive(), 'highlight' : drugOrder.isBeingEdited}">
                                 <div class="drug-details" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
-                                    <strong class="drug-name">{{drugOrder.drug.name}}</strong> - &nbsp;{{drugOrder.getDescription()}}
+                                    <strong class="drug-name">{{drugOrder.getDisplayName()}}</strong> - &nbsp;{{drugOrder.getDescription()}}
 
                                 </div>
 								<div class="button-group">
