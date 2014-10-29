@@ -40,13 +40,13 @@ angular.module('bahmni.clinical')
         };
 
         $scope.isConsultationTabEmpty = function(){
-            if (!_.isEmpty($rootScope.consultation.newlyAddedDiagnoses) || !_.isEmpty(groupedObservations()) 
-                || !_.isEmpty($rootScope.consultation.investigations) || !_.isEmpty($rootScope.consultation.disposition)
-                || !_.isEmpty($rootScope.consultation.treatmentDrugs) || !_.isEmpty($rootScope.consultation.newlyAddedTreatments)
-                || !_.isEmpty($rootScope.consultation.discontinuedDrugs)){
-                return false;
+            if (_.isEmpty($rootScope.consultation.newlyAddedDiagnoses) && _.isEmpty($scope.groupedObservations)
+                && _.isEmpty($rootScope.consultation.investigations) && _.isEmpty($rootScope.consultation.disposition)
+                && _.isEmpty($rootScope.consultation.treatmentDrugs) && _.isEmpty($rootScope.consultation.newlyAddedTreatments)
+                && _.isEmpty($rootScope.consultation.discontinuedDrugs)){
+                return true;
             }
-            return true;
+            return false;
         };
     }]);
 

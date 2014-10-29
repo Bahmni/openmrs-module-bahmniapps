@@ -30,9 +30,14 @@ describe("ConsultationController", function () {
         });
     }));
 
-    describe("when initialized", function(){
-        it("should setup scope variables", function() {
+    describe("IsConsultationTabEmpty", function(){
+        it("should return false when there is no data on consultation", function() {
             expect(scope.isConsultationTabEmpty()).toBe(true);
+        });
+
+        it("should return false when there are observations", function() {
+            scope.groupedObservations = [{conceptSetName: "Vitals", groupMembers: [{label: "Pulse Data"}]}];
+            expect(scope.isConsultationTabEmpty()).toBe(false);
         });
     });
 });
