@@ -85,9 +85,9 @@
             <tr ng-if="!line.isSummary"
                 ng-class="{'is-abnormal': line.isAbnormal, 'referred-out': line.referredOut}" ng-click="toggle(line)"
                 class="row-click">
-                <td>
+                <td ng-class="{'has-uploaded-file': line.labReport}">
                     <span ng-if="!line.labReport">{{line.concept.name}}</span>
-                    <span ng-if="line.labReport"><a href="{{line.labReport}}" onclick="event.stopPropagation()" target="_blank">{{line.concept.name}}</a></span>
+                    <span ng-if="line.labReport"><a class="uploaded-file" href="{{line.labReport}}" onclick="event.stopPropagation()" target="_blank">{{line.concept.name}}</a></span>
                     <span class="range">
                       <span ng-if="line.minNormal && line.maxNormal">
                         {{' (' + line.minNormal + ' - ' + line.maxNormal + ') '}}
