@@ -100,7 +100,7 @@ describe("drugOrderViewModel", function () {
 
     it("should get default durationUnit from config if available", function () {
         var treatment = sampleTreatment({defaultDurationUnit: "Months"}, treatmentConfig);
-        expect(treatment.durationUnit).toEqual({name: "Months"});
+        expect(treatment.durationUnit).toEqual("Months");
     });
 
     it("should reset uniformDosingType and noFrequencyDosingType when changing frequency type to variable", function () {
