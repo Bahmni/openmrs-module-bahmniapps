@@ -62,7 +62,7 @@ describe('VisitController', function () {
     };
 
     beforeEach(module('bahmni.registration'));
-    beforeEach(inject(['$injector', '$location', '$window', '$timeout', '$q', function ($injector, location, window, timeout, $q) {
+    beforeEach(inject(['$injector', '$location', '$window', '$timeout', '$q', '$rootScope', function ($injector, location, window, timeout, $q, $rootScope) {
         q = $q;
         stateParams = { patientUuid: '21308498-2502-4495-b604-7b704a55522d' };
         patient = {
@@ -88,6 +88,7 @@ describe('VisitController', function () {
         $window = window;
         $timeout = timeout;
         success = jasmine.createSpy();
+        $rootScope.regEncounterConfiguration = new Bahmni.Registration.RegistrationEncounterConfig({visitTypes: {}},{encounterTypes: {"REG" : "someUUID"}});
         scope.regEncounterConfiguration = angular.extend(new Bahmni.Registration.RegistrationEncounterConfig(), sampleConfig);
         scope.encounterConfig = angular.extend(new EncounterConfig(), sampleConfig);
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);

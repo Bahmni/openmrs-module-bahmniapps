@@ -10,6 +10,7 @@ angular.module('bahmni.registration')
             var locationUuid = sessionService.getLoginLocationUuid();
             $scope.conceptSets = extensions.map(function(extension) { return new Bahmni.ConceptSet.ConceptSetSection(extension,[],{}); });
             $scope.availableConceptSets = $scope.conceptSets.filter(function(conceptSet){ return conceptSet.isAvailable($scope.context); });
+            var regEncounterTypeUuid = $rootScope.regEncounterConfiguration.encounterTypes[Bahmni.Registration.Constants.registrationEncounterType];
 
             var getPatient = function () {
                 return patientService.get(patientUuid).success(function (openMRSPatient) {
@@ -21,7 +22,7 @@ angular.module('bahmni.registration')
             };
 
             var getActiveEncounter = function () {
-                return encounterService.activeEncounter({"patientUuid": patientUuid, "providerUuid" : $scope.currentProvider.uuid, "includeAll" : false, locationUuid : locationUuid})
+                return encounterService.activeEncounter({"patientUuid": patientUuid, "providerUuid" : $scope.currentProvider.uuid, "includeAll" : false, locationUuid : locationUuid, encounterTypeUuid: regEncounterTypeUuid})
                     .success(function (data) {
                         $scope.visitTypeUuid = data.visitTypeUuid;
                         $scope.observations = data.observations;
@@ -62,7 +63,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.save = function () {
-                $scope.encounter = {patientUuid: $scope.patient.uuid, locationUuid : locationUuid};
+                $scope.encounter = {patientUuid: $scope.patient.uuid, locationUuid : locationUuid, encounterTypeUuid: regEncounterTypeUuid};
                 $scope.encounter.observations = $scope.observations;
                 $scope.encounter.observations = new Bahmni.Common.Domain.ObservationFilter().filter($scope.encounter.observations);
 
