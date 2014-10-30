@@ -143,9 +143,9 @@
                 }
             }
             .add-drug-btn {
-                float: right;
+                float: left;
                 margin-top: 5px;
-                margin-right: 5px;
+                margin-left: 8px;
             }
           .frequency-widget.disabled {
             position: relative;
@@ -199,11 +199,10 @@
     .button-group {
         float: right;
         width: 200px;
+        padding: 3px 0;
         button, button:hover {
             padding: 0; margin: 0;
             float: right;
-            background: none;
-            border: 0;
 
             i {
                 font-size: 2em;

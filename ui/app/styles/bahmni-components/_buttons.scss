@@ -93,7 +93,10 @@ button[disabled] {
   cursor: not-allowed;
 }
 
-.secondary-button, .secondary-button:hover {
+.secondary-button, 
+.secondary-button:hover, 
+input[type="submit"].secondary-button, 
+input[type="submit"].secondary-button:hover  {
     @include background(linear-gradient(top, $bahmniSecondaryColor, #528484));
     color: $white;
 }
