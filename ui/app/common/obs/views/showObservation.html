@@ -7,7 +7,7 @@
         <span class="time fr" ng-if="!observation.groupMembers || observation.groupMembers.length === 0">{{observation.observationDateTime | date :'hh:mm a'}}</span>
     </span>
     <ul>
-        <dashboard-observation ng-if="!observation.isFormElement()" ng-repeat="member in observation.groupMembers" observation="member"></dashboard-observation>
+        <show-observation ng-if="!observation.isFormElement()" ng-repeat="member in observation.groupMembers" observation="member"></show-observation>
     </ul>
 </li>
 

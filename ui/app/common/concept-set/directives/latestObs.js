@@ -8,7 +8,8 @@ angular.module('bahmni.common.conceptSet')
             };
 
             var createObservationSectionView = function () {
-                spinner.forPromise(observationsService.fetch($scope.patientUuid, $scope.conceptNames, "latest").then(function (observations) {
+                spinner.forPromise(observationsService.fetch($scope.patientUuid, $scope.conceptNames, "latest").then(function (response) {
+                    var observations = new Bahmni.Common.Obs.ObservationMapper().map(response.data, []);
                     $scope.observations = _.sortBy(observations, 'sortWeight');
                 }));
             };
