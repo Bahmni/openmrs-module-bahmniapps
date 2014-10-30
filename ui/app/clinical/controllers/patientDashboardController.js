@@ -10,21 +10,20 @@ angular.module('bahmni.clinical')
             $scope.patientSummary = {};
             $scope.activeVisitData = {};
             $scope.obsIgnoreList = clinicalConfigService.getObsIgnoreList();
-            $scope.patientDashboardSections = clinicalConfigService.getAllPatientDashboardSections();
+            $scope.patientDashboardSections = _.map(clinicalConfigService.getAllPatientDashboardSections(), Bahmni.Clinical.PatientDashboardSection.create);
 
             diseaseTemplateService.getLatestDiseaseTemplates($stateParams.patientUuid).then(function (diseaseTemplates) {
                 $scope.diseaseTemplates = diseaseTemplates;
                 $scope.diseaseTemplates.forEach(function (diseaseTemplate) {
                     if (diseaseTemplate.notEmpty()) {
                         $scope.patientDashboardSections.push(new Bahmni.Clinical.PatientDashboardSection({
-                            title: diseaseTemplate.name,
+                            title: diseaseTemplate.label,
                             name: 'diseaseTemplateSection',
                             data: {diseaseTemplateName: diseaseTemplate.name}
                         }));
                     }
                 });
             });
-
 
             $scope.filterOdd = function (index) {
                 return function () {
@@ -54,24 +53,9 @@ angular.module('bahmni.clinical')
                 getEncountersForVisit($scope.selectedVisit.uuid);
             };
 
-            var createPatientDashboardSection = function (section) {
-                return new Bahmni.Clinical.PatientDashboardSection(section);
-            };
-
             $scope.getDiseaseTemplateSection = function (diseaseName) {
                 return _.find($scope.diseaseTemplates, function (diseaseTemplate) {
                     return diseaseTemplate.name === diseaseName;
                 });
             };
-
-            $scope.showSummary = function () {
-                $scope.patientSummary = {};
-                $scope.patientDashboardSections = _.map($scope.patientDashboardSections, createPatientDashboardSection);
-            };
-
-            var init = function () {
-                $scope.showSummary();
-            };
-            init();
-
         }]);
