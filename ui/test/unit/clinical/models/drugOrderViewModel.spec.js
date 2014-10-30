@@ -95,7 +95,7 @@ describe("drugOrderViewModel", function () {
 
     it("should get the default route from the config", function () {
         var treatment = sampleTreatment({defaultRoute: "Orally"}, treatmentConfig);
-        expect(treatment.route).toEqual({name: "Orally"});
+        expect(treatment.route).toEqual("Orally");
     });
 
     it("should get default durationUnit from config if available", function () {

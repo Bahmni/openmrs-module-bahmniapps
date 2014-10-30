@@ -42,7 +42,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config, proto) {
     });
 
     this.asNeeded = this.asNeeded || false;
-    this.route = this.route || getDefaultValue(extensionParams && extensionParams.defaultRoute, config.routes || []);
+    var defaultRoute = getDefaultValue(extensionParams && extensionParams.defaultRoute, config.routes || []);
+    this.route = this.route || defaultRoute && defaultRoute.name;
     this.durationUnit = this.durationUnit || getDefaultValue(extensionParams && extensionParams.defaultDurationUnit, durationUnits);
     this.instructions = this.instructions || defaultInstructions && defaultInstructions.name;
     this.effectiveStartDate = this.effectiveStartDate || DateUtil.now();
