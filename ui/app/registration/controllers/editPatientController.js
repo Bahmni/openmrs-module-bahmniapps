@@ -8,6 +8,7 @@ angular.module('bahmni.registration')
             var defaultActions = ["save", "print"];
             var defaultVisitType = appService.getAppDescriptor().getConfigValue('defaultVisitType');
             var locationUuid = sessionService.getLoginLocationUuid();
+            var regEncounterTypeUuid = $rootScope.regEncounterConfiguration.encounterTypes[Bahmni.Registration.Constants.registrationEncounterType];
 
             var identifyEditActions = function() {
                 editActionsConfig = appService.getAppDescriptor().getExtensions("org.bahmni.registration.patient.edit.action", "config");
@@ -63,7 +64,7 @@ angular.module('bahmni.registration')
             };
 
             var createEncounterObject = function() {
-                var encounter = {locationUuid: locationUuid, providers: [] }
+                var encounter = {locationUuid: locationUuid, providers: [], encounterTypeUuid: regEncounterTypeUuid}
                 if ($rootScope.currentProvider && $rootScope.currentProvider.uuid) {
                     encounter.providers.push( { "uuid" : $rootScope.currentProvider.uuid } );
                 }

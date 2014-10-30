@@ -4,6 +4,7 @@ Bahmni.Registration = Bahmni.Registration || {};
 Bahmni.Registration.Constants = {
     patientIdentifierTypeName: "Bahmni Id",
     openmrsUrl: "/openmrs",
+    registrationEncounterType: "REG",
     baseOpenMRSRESTURL: "/openmrs/ws/rest/v1",
     patientImageURL: "/patient_images/",
     bahmniRESTBaseURL: "/openmrs/ws/rest/v1/bahmnicore",
