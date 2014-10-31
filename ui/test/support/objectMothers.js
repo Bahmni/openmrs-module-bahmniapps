@@ -69,7 +69,7 @@ Bahmni.Tests.observationMother = {
 Bahmni.Tests.drugOrderViewModelMother = {
     build: function(extensionParams, treatmentConfig, drugOrderViewModelData) {
         var defaultModel = new Bahmni.Clinical.DrugOrderViewModel(extensionParams, treatmentConfig, drugOrderViewModelData);
-        defaultModel.drugName = "calpol 500mg(tablets)";
+        defaultModel.drugName = "calpol 500mg";
         defaultModel.instructions = "Before Meals";
         defaultModel.duration = "10";
         defaultModel.scheduledDate = "21/12/2014";
@@ -79,7 +79,7 @@ Bahmni.Tests.drugOrderViewModelMother = {
             "form": "Tablet",
             "uuid": "8d7e3dc0-f4ad-400c-9468-5a9e2b1f4230",
             "strength": null,
-            "name": "calpol 500mg(tablets)"
+            "name": "calpol 500mg"
         };
         return defaultModel;
     }

@@ -497,7 +497,7 @@ describe("drugOrderViewModel", function () {
             expect(refilledTreatment.dateActivated).toBe(undefined);
             expect(refilledTreatment.previousOrderUuid).toBe(undefined);
             expect(refilledTreatment.effectiveStartDate).toEqual(today);
-            expect(refilledTreatment.drugNameDisplay).toBe("calpol 500mg(tablets) (Tablet)");
+            expect(refilledTreatment.drugNameDisplay).toBe("calpol 500mg (Tablet)");
         });
 
 
@@ -512,7 +512,7 @@ describe("drugOrderViewModel", function () {
             expect(refilledTreatment.previousOrderUuid).toBe(undefined);
             var startDateForRefilledTreatment = Bahmni.Common.Util.DateUtil.addSeconds(treatment.effectiveStopDate, 1);
             expect(refilledTreatment.effectiveStartDate).toEqual(startDateForRefilledTreatment);
-            expect(refilledTreatment.drugNameDisplay).toBe("calpol 500mg(tablets) (Tablet)");
+            expect(refilledTreatment.drugNameDisplay).toBe("calpol 500mg (Tablet)");
         });
 
         it("should refill an active drug order ending today", function () {
@@ -526,7 +526,7 @@ describe("drugOrderViewModel", function () {
             expect(refilledTreatment.previousOrderUuid).toBe(undefined);
             var startDateForRefilledTreatment = Bahmni.Common.Util.DateUtil.addSeconds(treatment.effectiveStopDate, 1);
             expect(refilledTreatment.effectiveStartDate).toEqual(startDateForRefilledTreatment);
-            expect(refilledTreatment.drugNameDisplay).toBe("calpol 500mg(tablets) (Tablet)");
+            expect(refilledTreatment.drugNameDisplay).toBe("calpol 500mg (Tablet)");
         });
 
         it("should set quantity units as Unit(s) for reverse synced drug orders", function () {
@@ -807,6 +807,22 @@ describe("drugOrderViewModel", function () {
 
                 expect(treatment.validate()).toBeTruthy();
             });
-        })
+        });
+        describe("isFrequencyType", function(){
+            var treatment = sampleTreatment({}, {});
+            it("should return true if the frequency type is same.", function(){
+                expect(treatment.isFrequencyType(Bahmni.Clinical.Constants.dosingTypes.uniform)).toBeTruthy();
+            });
+
+            it("should return false if the frequency type is not same.", function(){
+                expect(treatment.isFrequencyType(Bahmni.Clinical.Constants.dosingTypes.variable)).toBeFalsy();
+            });
+        });
+        describe("getDisplayName", function(){
+            it("should return drug + form", function(){
+                var treatment = sampleTreatment({}, {});
+                expect(treatment.getDisplayName()).toBe("calpol 500mg (Tablet)");
+            })
+        });
     });
 });
