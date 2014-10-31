@@ -87,8 +87,15 @@
                 class="row-click">
                 <td ng-class="{'has-uploaded-file': line.labReport}">
                     <span ng-if="!line.labReport">{{line.concept.name}}</span>
-                    <span ng-if="line.labReport"><a class="uploaded-file" href="{{line.labReport}}" onclick="event.stopPropagation()" target="_blank">{{line.concept.name}}</a></span>
+                    <span ng-if="line.labReport"><a class="uploaded-file" href="{{line.labReport}}" onclick="event.stopPropagation()" target="_blank">{{line.concept.name}}
                     <span class="range">
+                      <span ng-if="line.minNormal && line.maxNormal">
+                        {{' (' + line.minNormal + ' - ' + line.maxNormal + ') '}}
+                      </span>
+                      <span class="units">{{line.units}}</span>
+                    </span>
+                    </a></span>
+                    <span class="range" ng-if="!line.labReport">
                       <span ng-if="line.minNormal && line.maxNormal">
                         {{' (' + line.minNormal + ' - ' + line.maxNormal + ') '}}
                       </span>
