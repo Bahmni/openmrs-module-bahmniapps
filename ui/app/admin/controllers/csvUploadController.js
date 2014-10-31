@@ -8,7 +8,8 @@ angular.module('bahmni.admin')
             var urlMap = {"program": Bahmni.Common.Constants.programImportUrl,
                 "encounter": Bahmni.Common.Constants.encounterImportUrl,
                 "concept": Bahmni.Common.Constants.conceptImportUrl,
-                "conceptset": Bahmni.Common.Constants.conceptSetImportUrl};
+                "conceptset": Bahmni.Common.Constants.conceptSetImportUrl,
+                "patient": Bahmni.Common.Constants.patientImportUrl};
             var fileUploaderOptions = {
                 removeAfterUpload: true,
                 formData: [

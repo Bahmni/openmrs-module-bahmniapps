@@ -5,10 +5,11 @@
             <h3>Select files</h3>
             <input type="file" nv-file-select uploader="uploader" multiple/>
             <span>
-                <input type="radio" name="upload-type" ng-model="option" ng-value="'encounter'">Encounter
-                <input type="radio" name="upload-type" ng-model="option" ng-value="'program'" > Program
                 <input type="radio" name="upload-type" ng-model="option" ng-value="'concept'" > Concept
                 <input type="radio" name="upload-type" ng-model="option" ng-value="'conceptset'" > ConceptSet
+                <input type="radio" name="upload-type" ng-model="option" ng-value="'program'" > Program
+                <input type="radio" name="upload-type" ng-model="option" ng-value="'patient'" > Patient
+                <input type="radio" name="upload-type" ng-model="option" ng-value="'encounter'">Encounter
             </span>
             <div ng-if="uploader.queue.length">
                 <h3>File to Upload</h3>
