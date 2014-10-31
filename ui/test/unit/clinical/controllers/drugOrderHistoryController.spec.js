@@ -10,6 +10,7 @@ describe("DrugOrderHistoryController", function(){
         $rootScope.visit = {startDate: 1410322624000};
         scope = $rootScope.$new();
         scope.consultation = {};
+        scope.currentBoard = {extensionParams: {}};
         prescribedDrugOrders = [
             {
                 "uuid": "drugOrder1Uuid",

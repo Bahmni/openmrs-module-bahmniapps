@@ -9,10 +9,11 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config, proto) {
     var allowedQuantityUnits = ["Tablet(s)","Capsule(s)"];
     var DateUtil = Bahmni.Common.Util.DateUtil;
     var self = this;
-    var config = config || {};
+    config = config || {};
+    extensionParams = extensionParams || {};
     var durationUnits = config.durationUnits || [];
-    var defaultDoseUnit = getDefaultValue(extensionParams && extensionParams.defaultDoseUnit, config.doseUnits || []);
-    var defaultInstructions = getDefaultValue(extensionParams && extensionParams.defaultInstructions, config.dosingInstructions || []);
+    var defaultDoseUnit = getDefaultValue(extensionParams.defaultDoseUnit, config.doseUnits || []);
+    var defaultInstructions = getDefaultValue(extensionParams.defaultInstructions, config.dosingInstructions || []);
 
     Object.defineProperty(this, 'effectiveStartDate', {
         get: function () {
@@ -42,9 +43,9 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config, proto) {
     });
 
     this.asNeeded = this.asNeeded || false;
-    var defaultRoute = getDefaultValue(extensionParams && extensionParams.defaultRoute, config.routes || []);
+    var defaultRoute = getDefaultValue(extensionParams.defaultRoute, config.routes || []);
     this.route = this.route || defaultRoute && defaultRoute.name;
-    var defaultDurationUnit = getDefaultValue(extensionParams && extensionParams.defaultDurationUnit, durationUnits);
+    var defaultDurationUnit = getDefaultValue(extensionParams.defaultDurationUnit, durationUnits);
     this.durationUnit = this.durationUnit || defaultDurationUnit && defaultDurationUnit.name;
     this.instructions = this.instructions || defaultInstructions && defaultInstructions.name;
     this.effectiveStartDate = this.effectiveStartDate || DateUtil.now();
@@ -310,9 +311,9 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config, proto) {
     }
 };
 
-Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderResponse) {
+Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderResponse, extensionParams, config) {
     var administrationInstructions = JSON.parse(drugOrderResponse.dosingInstructions.administrationInstructions) || {};
-    var viewModel = new Bahmni.Clinical.DrugOrderViewModel({}, {});
+    var viewModel = new Bahmni.Clinical.DrugOrderViewModel(extensionParams, config);
     viewModel.asNeeded = drugOrderResponse.dosingInstructions.asNeeded;
     viewModel.route = drugOrderResponse.dosingInstructions.route;
     viewModel.effectiveStartDate = drugOrderResponse.effectiveStartDate;

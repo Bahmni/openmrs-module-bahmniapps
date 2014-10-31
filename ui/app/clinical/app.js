@@ -119,7 +119,8 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
                         resolve: {
                             prescribedDrugOrders: function(TreatmentService, $stateParams) {
                                 return TreatmentService.getPrescribedDrugOrders($stateParams.patientUuid, true, 5);
-                            }
+                            },
+                            treatmentConfig: 'treatmentConfig'
                         }
                     }
                 }

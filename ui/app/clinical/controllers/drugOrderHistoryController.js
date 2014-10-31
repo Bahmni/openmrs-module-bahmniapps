@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DrugOrderHistoryController', ['$scope', '$rootScope', '$filter', 'prescribedDrugOrders', 'RegisterTabService', 'contextChangeHandler', function ($scope, $rootScope, $filter, prescribedDrugOrders, registerTabService, contextChangeHandler) {
+    .controller('DrugOrderHistoryController', ['$scope', '$rootScope', '$filter', 'prescribedDrugOrders', 'RegisterTabService', 'treatmentConfig', function ($scope, $rootScope, $filter, prescribedDrugOrders, registerTabService, treatmentConfig) {
         
         var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
         var DateUtil = Bahmni.Common.Util.DateUtil;
@@ -10,12 +10,15 @@ angular.module('bahmni.clinical')
         var createPrescribedDrugOrderGroups = function () {
             if(prescribedDrugOrders.length == 0) return [];
             var drugOrderGroupedByDate = _.groupBy(prescribedDrugOrders, function (drugOrder) { return DateUtil.parse(drugOrder.visit.startDateTime); });
+            var newDrugOrder = function(drugOrder) {
+                return DrugOrderViewModel.createFromContract(drugOrder, $scope.currentBoard.extensionParams, treatmentConfig);
+            };
             var drugOrderGroups = _.map(drugOrderGroupedByDate, function(drugOrders, visitStartDate){
                 return {
                     label: $filter("date")(DateUtil.parse(visitStartDate), 'dd MMM yy'),
                     visitStartDate: DateUtil.parse(visitStartDate),
-                    drugOrders: drugOrders.map(DrugOrderViewModel.createFromContract),
-                    isCurrentVisit: currentVisit && DateUtil.isSameDateTime(visitStartDate, currentVisit.startDate),
+                    drugOrders: drugOrders.map(newDrugOrder),
+                    isCurrentVisit: currentVisit && DateUtil.isSameDateTime(visitStartDate, currentVisit.startDate)
                 }
             });
             var drugOrderGroupToSelect = _.find(drugOrderGroups, {isCurrentVisit: true}) || drugOrderGroups[0];
