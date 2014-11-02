@@ -22,17 +22,30 @@
       }
       legend + .form-group {
         padding: 10px;
-        border-top: 1px solid #ccc;
-        border-bottom: 1px solid #ccc;
+        border: 1px solid #aaa;
+        margin-top: 20px;
+        border-radius: 5px;
+        legend {
+          color: #bbb;
+          top: 8px;
+          left: 30px;
+        }
+        legend + .form-group {
+          padding: 10px 0;
+          background: #efefef;
+        }
       }
       legend {
         position:absolute;
-        top:-14px;
+        top:5px;
         left:20px;
         padding:5px 10px;
         font-family: OpenSansBold;
         font-size: 14px;
-        color:#A8A5A5;
+        color:#666;
+        border: 1px solid #aaa;
+        border-radius: 20px;
+
       }
       .form-field-group {
         label.control-label {
@@ -111,26 +124,10 @@ form .vitals .form-field .field-value {
     border: 1px solid #aaa;
   }
   textarea {
-    width: 814px;
+    width: 352%;
     margin-bottom: 10px;
-    @media screen and (max-width: 1015px) and (min-width: 851px) {
-      width: 40em;
-    }
-    @media screen and (max-width: 850px) and (min-width: 701px) {
-      width: 25em;
-    }
-    @media screen and (max-width: 700px) {
-      width: 35em;
-      margin-left: 10px;
-    }
-    @media screen and (max-width: 640px) and (min-width: 596px) {
-      width: 30em;
-      margin-left: 10px;
-    }
-    @media screen and (max-width: 595px) {
-      margin-left: 0;
-      width: 18.5em;
-    }
+    box-sizing: border-box;
+    padding-bottom: 30px;
   }
 }
 
@@ -138,7 +135,7 @@ form .vitals .form-field .field-value {
   fieldset {
     label {
       float: left;
-      width: 135px;
+      // width: 135px;
       margin-left: 20px;
       margin-right: 20px;
       text-align: right;
@@ -241,7 +238,7 @@ concept-set {
 
 .vitals {
     .consultation-image {
-        width: 824px;
+        width: 758px;
         background: #eee;
         padding: 5px;
         overflow: auto;
@@ -291,9 +288,9 @@ concept-set {
         margin-right: 10px;
     }
     .obs-comment-section {
-        margin-left: 16.5%;
-        min-width: 78.2%;
-        width: 80.3%;
+      width: 100%;
+      box-sizing: border-box;
+      padding-bottom: 30px;
     }
 }
 

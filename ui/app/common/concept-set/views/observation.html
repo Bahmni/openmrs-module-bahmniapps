@@ -76,11 +76,14 @@
                 <span>for</span><duration ng-model="observation.durationObs.value" disabled="!observation.primaryObs.hasValue()" illegal-value="observation.isDurationRequired() && !observation.hasDuration()"></duration>
             </div>
             <button type="button" toggle="observation.showComment" class="comment-toggle fr" ng-class="{'has-notes': observation.comment}">
-                <i class="icon-file" ng-hide="observation.comment"><i class="icon-plus-sign"></i></i>
+                <i class="icon-file" ng-hide="observation.comment">
+                    <i class="icon-plus-sign" ng-hide="observation.showComment"></i>
+                    <i class="icon-minus-sign" ng-show="observation.showComment"></i>
+                </i>
                 <i class="icon-file-alt" ng-show="observation.comment"></i>
                 
             </button>
-            <textarea class="obs-comment-section" ng-show="observation.showComment" maxlength="255" ng-model="observation.comment">
+            <textarea class="obs-comment-section" ng-show="observation.showComment" maxlength="255" ng-model="observation.comment" placeholder="Notes">
             </textarea>
         </div>
     </fieldset>
@@ -134,7 +137,10 @@
                         <div class="file">
                             <img ng-src="{{observation.value|thumbnail}}" width="100" ng-class="{'has-image': observation.value, 'voided': observation.voided}">                    
                             <button type="button" toggle="observation.showComment" ng-show="observation.value" class="comment-toggle fr" ng-class="{'has-notes': observation.comment}">
-                                <i class="icon-file" ng-hide="observation.comment"><i class="icon-plus-sign"></i></i>
+                                <i class="icon-file" ng-hide="observation.comment">
+                                    <i class="icon-plus-sign" ng-hide="observation.showComment"></i>
+                                    <i class="icon-minus-sign" ng-show="observation.showComment"></i>
+                                </i>
                                 <i class="icon-file-alt" ng-show="observation.comment"></i>
                         </button>
                         </div>
@@ -174,10 +180,13 @@
 
             <span ng-if="observation.canHaveComment()">
                 <button type="button" toggle="observation.showComment" class="comment-toggle fr" ng-class="{'has-notes': observation.comment}">
-                    <i class="icon-file" ng-hide="observation.comment"><i class="icon-plus-sign"></i></i>
+                    <i class="icon-file" ng-hide="observation.comment">
+                        <i class="icon-plus-sign" ng-hide="observation.showComment"></i>
+                        <i class="icon-minus-sign" ng-show="observation.showComment"></i>
+                    </i>
                     <i class="icon-file-alt" ng-show="observation.comment"></i>
                 </button>
-                <textarea class="obs-comment-section" ng-show="observation.showComment" maxlength="255" ng-model="observation.comment">
+                <textarea class="obs-comment-section" ng-show="observation.showComment" maxlength="255" ng-model="observation.comment" placeholder="Notes">
                 </textarea>
             </span>
         </div>
