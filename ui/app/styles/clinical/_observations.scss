@@ -153,7 +153,7 @@ form .vitals .form-field .field-value {
   }
 }
 .checkbox-inline {
-  padding: 10px 0;
+  padding: 10px 0 0 0;
   float: left;
   @media screen and (max-width: 685px) and (min-width: 600px) {
     padding: 0;
@@ -291,6 +291,8 @@ concept-set {
       width: 100%;
       box-sizing: border-box;
       padding-bottom: 30px;
+      display: inline-block;
+      margin-top: 5px;
     }
 }
 
