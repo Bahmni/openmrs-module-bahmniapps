@@ -6,7 +6,7 @@
             <th>
                 <span bo-text="(visit.admissionDate | date:'dd MMM yy') + ' - '+ (visit.getToDate() | date:'dd MMM yy')"></span>
             </th>
-            <th ng-repeat="drug in visit.getIPDDrugs()" bo-text="drug.name" class="drug"
+            <th ng-repeat="drug in visit.getIPDDrugs()" bo-text="drug.orders[0].getDisplayName()" class="drug"
                 ng-class="{active: drug.isActive()}"></th>
 
         </tr>
