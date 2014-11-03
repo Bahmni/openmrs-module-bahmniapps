@@ -54,5 +54,11 @@ angular.module('bahmni.clinical')
             $scope.toggleShowFullValue = function(results){
                 $scope.showFullValue = !$scope.showFullValue;
                 $scope.showFullResults = results;
-            }
+            };
+
+            $scope.closeShowFullResults = function(){
+                $scope.showFullValue = false;
+                $scope.showFullResults = undefined;
+            };
+
         }]);

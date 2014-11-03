@@ -15,6 +15,11 @@ angular.module('bahmni.clinical')
                 $scope.showFullResults = results;
             };
 
+            $scope.closeShowFullResults = function(){
+                $scope.showFullValue = false;
+                $scope.showFullResults = undefined;
+            };
+
             var flattened = function(accessions) {
                 return accessions.map(function(results) {
                     return _.flatten(results, function(result) {
