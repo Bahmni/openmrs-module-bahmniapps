@@ -200,7 +200,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config, proto) {
     };
 
     this.calculateDurationInDays = function () {
-        self.durationInDays = self.duration * (self.durationUnit && self.durationUnit.factor || 1);
+        var durationUnitFromConfig = _.find(durationUnits, function(unit) {
+            return unit.name === self.durationUnit;
+        });
+        self.durationInDays = self.duration * (durationUnitFromConfig && durationUnitFromConfig.factor || 1);
     };
 
     var inAllowedQuantityUnits = function(doseUnit){

@@ -49,7 +49,7 @@
             <div class="duration-widget">
                 <input class="form-field duration" type="number" min="1" placeholder="Duration"
                       ng-model="treatment.duration" ng-change="treatment.calculateDurationInDays()" required ng-pattern="/^[0-9]+$/"/>
-                <select class="form-field duration-unit" ng-model="treatment.durationUnit" ng-change="treatment.calculateDurationInDays()"
+                <select class="form-field duration-unit" ng-model="treatment.durationUnit"
                         ng-options="item.name as item.name for item in treatmentConfig.durationUnits" required>
                 </select>
                 <select class="form-field route" ng-model="treatment.route"
