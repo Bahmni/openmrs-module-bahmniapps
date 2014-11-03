@@ -59,6 +59,7 @@
                             <th>Name</th>
                             <th>Date</th>
                             <th>Status</th>
+                            <th>Error Message</th>
                             <th>Download</th>
                         </tr>
                     </thead>                    
@@ -67,6 +68,7 @@
                             <td><strong>{{ item.originalFileName }}</strong></td>
                             <td>{{ item.startTime | date: 'd MMM yy h:mm a' }}</td>
                             <td>{{ item.status }}</td>
+                            <td>{{ item.errorMessage }}</td>
                             <td><a ng-if="item.hasError()" ng-href="{{item.errorFileUrl()}}">Error File</a></td>
                         </tr>
                     </tbody>
