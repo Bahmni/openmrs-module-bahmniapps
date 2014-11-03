@@ -6,7 +6,7 @@
 	<div class="inpage">
 		<div class="tabs">
 			<div class="tab" ng-repeat="drugOrderGroup in consultation.drugOrderGroups | orderBy:'visitStartDate':true">
-				<input class="tab-radio" id="{{'drug-orders-tab-' + $index}}" name="tab-group-1" type="radio" ng-checked="drugOrderGroup.selected" ng-class="{}">
+				<input class="tab-radio" id="{{'drug-orders-tab-' + $index}}" name="tab-group-1" type="radio" ng-checked="drugOrderGroup.selected" ng-class="{}" tabindex="-1">
 				<label class="tab-label" for="{{'drug-orders-tab-' + $index}}">
                     <span>{{drugOrderGroup.label | date: 'dd MMM yy'}}</span>
                     <i class="icon-star current-visit-icon" title="Current visit" ng-if="drugOrderGroup.isCurrentVisit"></i>

@@ -56,7 +56,7 @@
 
             /*width*/
             .drug-name {
-                width: 200px;
+                width: 185px;
             }
             input[type="text"].dose, input[type="text"].duration, input[type="text"].quantity,
             input[type="number"].dose, input[type="number"].quantity {
@@ -74,11 +74,12 @@
             }
             .treatment-prn {
                 float: right;
-                width: 70px;
-                margin-right: 4px;
+                width: 90px;
+                margin-right: 5px;
+                margin-top: 4px;
                 button {
-                  width: 70px;
-                  margin-top: 5px;
+                    width: 84px;
+                    margin: 2px;
                 }
             }
 
@@ -91,7 +92,7 @@
                 line-height: 2.5em;
                 display: inline-block;
                 float: left;
-                margin-right: 5px;
+                margin: 2px;
             }
 
             /*Widget*/
@@ -111,7 +112,6 @@
             }
             .frequency-widget.uniform-frequency {
                 float: left;
-                margin: 0 5px;
                 width: 355px;
                 .form-field {
                     float: left;
@@ -243,5 +243,12 @@
 
     .tabs .tab [type="radio"]:checked ~ .refill-drugs-btn {
         display: inline-block;
+    }
+}
+
+
+.treatment-page {
+    button:focus {
+        outline: 2px solid #007fff;
     }
 }
