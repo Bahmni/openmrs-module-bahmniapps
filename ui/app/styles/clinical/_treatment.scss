@@ -198,11 +198,12 @@
     }
     .button-group {
         float: right;
-        width: 200px;
+        /* width: 200px; will bring in width back after testing all scenarios*/
         padding: 3px 0;
         button, button:hover {
             padding: 0; margin: 0;
-            float: right;
+            float: left;
+            margin-right: 2px;
 
             i {
                 font-size: 2em;
