@@ -326,7 +326,6 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
     viewModel.duration = drugOrderResponse.duration;
     if (drugOrderResponse.dosingInstructions.frequency || drugOrderResponse.dosingInstructions.dose) {
         viewModel.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
-        viewModel.uniformDosingType = {};
         viewModel.uniformDosingType = {
             dose: drugOrderResponse.dosingInstructions.dose,
             doseUnits: drugOrderResponse.dosingInstructions.doseUnits,
@@ -334,7 +333,6 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
         }
     } else if(administrationInstructions.morningDose || administrationInstructions.afternoonDose || administrationInstructions.eveningDose){
         viewModel.frequencyType = Bahmni.Clinical.Constants.dosingTypes.variable;
-        viewModel.variableDosingType = {};
         viewModel.variableDosingType = {
             morningDose: administrationInstructions.morningDose,
             afternoonDose: administrationInstructions.afternoonDose,
@@ -343,7 +341,6 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
         }
     } else {
         viewModel.frequencyType = Bahmni.Clinical.Constants.dosingTypes.noFrequency;
-        viewModel.noFrequencyDosingType = {};
         viewModel.noFrequencyDosingType = {
             dose: administrationInstructions.dose,
             doseUnits: administrationInstructions.doseUnits
