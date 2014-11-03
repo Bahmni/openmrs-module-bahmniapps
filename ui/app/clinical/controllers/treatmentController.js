@@ -55,21 +55,21 @@ angular.module('bahmni.clinical')
                 return existingTreatment;
             };
 
-            var refillDrugOrderEvent = $scope.$on("event:refillDrugOrder", function (event, drugOrder) {
+            $scope.$on("event:refillDrugOrder", function (event, drugOrder) {
                 var refill = drugOrder.refill();
                 drugOrderHistory = drugOrder;
                 $scope.treatments.push(refill);
                 markStartingNewDrugEntry();
             });
 
-            var refillDrugOrdersEvent = $scope.$on("event:refillDrugOrders", function (event, drugOrders) {
+            $scope.$on("event:refillDrugOrders", function (event, drugOrders) {
                 drugOrders.forEach(function (drugOrder) {
                     var refill = drugOrder.refill();
                     $scope.treatments.push(refill);
                 })
             });
 
-            var reviseDrugOrderEvent = $scope.$on("event:reviseDrugOrder", function (event, drugOrder) {
+            $scope.$on("event:reviseDrugOrder", function (event, drugOrder) {
                 $scope.treatments.map(setIsNotBeingEdited);
                 drugOrderHistory = drugOrder;
                 $scope.treatment = drugOrder.revise();
