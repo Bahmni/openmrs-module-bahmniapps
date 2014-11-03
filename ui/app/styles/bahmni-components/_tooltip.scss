@@ -1,0 +1,23 @@
+.ipd-test-results {
+	max-width: 70px;
+	overflow: hidden;
+	white-space: nowrap;
+	display: inline-block;
+	text-overflow: ellipsis;
+}
+
+.tooltip {
+	position: absolute;
+	padding: 5px;
+	margin-left: 4px;
+	background: #e8edf3;
+	border-radius: 5px;
+	box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
+	i {
+		color: #e8edf3;
+		font-size: 20px;
+		position: absolute;
+		left: -10px;
+		top: 0px;
+	}
+}
