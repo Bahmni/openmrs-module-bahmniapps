@@ -34,7 +34,6 @@
                             <span ng-if="result.isOnOrderDate(day.date)">
                                 <span ng-class="{'is-abnormal': result.isAbnormal, 'one-result': test.results.length==1}"
                                       ng-click="toggleShowFullValue(test.results)"
-                                      on-click-outside="closeShowFullResults" exclude-element=".test-result"
                                       class="ipd-test-results">{{result.value}}</span>
                                 <span ng-if="result.labReport"><a class="uploaded-file" href="{{result.labReport}}"
                                                                   target="_blank"><i
