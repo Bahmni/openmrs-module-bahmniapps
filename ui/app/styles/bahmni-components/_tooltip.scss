@@ -21,5 +21,10 @@
 		top: 0px;
 	}
 
-	.ipd-test-results {padding: 0;}
+	.ipd-test-results {
+		padding: 0;
+		width: 100%;
+		max-width: 100%;
+		overflow: auto;
+	}
 }
