@@ -219,13 +219,10 @@ body{
     width: 100%;
     padding-top: 50px;
     padding-bottom: 30px;
-    @media screen and (min-width: 1024px) {
-        width: 1024px;
-        margin: 0px auto;
-    }
     .opd-content-wrapper {
         background:#ffffff;
         height:99%;
+
         nav.navbar {
             background: #F8F8F8;
             overflow: hidden;
@@ -235,6 +232,13 @@ body{
             .navbar-right {
                 float: right;
             }
+        }
+
+        & > div[ui-view="content"].ng-scope, & > div[ui-view="content"] {
+          @media screen and (min-width: 1024px) {
+              width: 1024px;
+              margin: 0px auto;
+          }
         }
     }
 }

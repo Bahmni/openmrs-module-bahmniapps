@@ -4,6 +4,10 @@
 		height: 30px;
 		width:300px;
 		padding-left:10px;
+    &:focus {
+      outline: 2px solid #007fff;
+      background: #fffdf7;
+    }
 	}
 }
 
@@ -46,6 +50,8 @@
 }
 
 .patient-search-wrapper {
+  width: 1024px;
+  margin: 0 auto;
   .tabs {
     margin-top: 5px;
   }
