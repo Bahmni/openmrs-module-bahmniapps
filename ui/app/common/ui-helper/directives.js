@@ -119,7 +119,7 @@ angular.module('bahmni.common.util')
         return function (scope, elem, attrs) {
             scope.$watch(attrs.focusOn, function (value) {
                 if (value) {
-                    elem[0].focus();
+                    $(elem).focus();
                 }
             });
         };

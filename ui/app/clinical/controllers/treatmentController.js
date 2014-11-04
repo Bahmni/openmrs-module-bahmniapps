@@ -79,6 +79,7 @@ angular.module('bahmni.clinical')
                 }
                 $scope.treatments.push($scope.treatment);
                 $scope.treatment = newTreatment();
+                $scope.startNewDrugEntry = true;
             };
 
             $scope.remove = function (index) {
