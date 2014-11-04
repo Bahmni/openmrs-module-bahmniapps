@@ -33,17 +33,16 @@
                               class="test-result">
                             <span ng-if="result.isOnOrderDate(day.date)">
                                 <span ng-class="{'is-abnormal': result.isAbnormal, 'one-result': test.results.length==1}"
-                                      ng-click="toggleShowFullValue(test.results)"
+                                      toggle="result.showAsToolTip"
                                       class="ipd-test-results">{{result.value}}</span>
                                 <span ng-if="result.labReport"><a class="uploaded-file" href="{{result.labReport}}"
                                                                   target="_blank"><i
                                         class="icon-paper-clip"></i></a></span>
-                            </span>
-                            <span class="tooltip" ng-if="showFullValue && showFullResults === test.results">
-                                <i class="icon-caret-left"></i>
-                                <span ng-class="{'is-abnormal': result.isAbnormal, 'one-result': test.results.length==1}"
-                                      ng-repeat="result in test.results | orderBy:'orderDate':false"
-                                      class="ipd-test-results">{{result.value}}</span>
+                                <span class="tooltip" ng-if="result.showAsToolTip">
+                                    <i class="icon-caret-left"></i>
+                                    <span ng-class="{'is-abnormal': result.isAbnormal}"
+                                          class="ipd-test-results">{{result.value}}</span>
+                                </span>
                             </span>
                         </span>
                 </td>
