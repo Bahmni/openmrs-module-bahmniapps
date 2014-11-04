@@ -1,10 +1,19 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('TreatmentController', ['$scope', '$rootScope', 'TreatmentService', 'contextChangeHandler', 'RegisterTabService', 'treatmentConfig', 'DrugService',
-        function ($scope, $rootScope, treatmentService, contextChangeHandler, registerTabService, treatmentConfig, drugService) {
+    .controller('TreatmentController', ['$scope', '$rootScope', 'TreatmentService', 'contextChangeHandler', 'RegisterTabService', 'treatmentConfig', 'DrugService', '$timeout',
+        function ($scope, $rootScope, treatmentService, contextChangeHandler, registerTabService, treatmentConfig, drugService, $timeout) {
             $scope.treatments = $scope.consultation.newlyAddedTreatments || [];
             $scope.treatmentConfig = treatmentConfig;
+            function markStartingNewDrugEntry() {
+                $scope.startNewDrugEntry = true;
+                $timeout(function () {
+                    $scope.startNewDrugEntry = false;
+                });
+            }
+
+            markStartingNewDrugEntry();
+
             var drugOrderHistory = null;
             $scope.treatmentConfig.durationUnits = [
                 {name: "Hour(s)", factor: 1 / 24},
@@ -50,6 +59,7 @@ angular.module('bahmni.clinical')
                 var refill = drugOrder.refill();
                 drugOrderHistory = drugOrder;
                 $scope.treatments.push(refill);
+                markStartingNewDrugEntry();
             });
 
             var refillDrugOrdersEvent = $rootScope.$on("event:refillDrugOrders", function (event, drugOrders) {
@@ -79,7 +89,7 @@ angular.module('bahmni.clinical')
                 }
                 $scope.treatments.push($scope.treatment);
                 $scope.treatment = newTreatment();
-                $scope.startNewDrugEntry = true;
+                markStartingNewDrugEntry();
             };
 
             $scope.remove = function (index) {
@@ -166,6 +176,7 @@ angular.module('bahmni.clinical')
             $scope.clearForm = function () {
                 $scope.treatment = newTreatment();
                 clearHighlights();
+                markStartingNewDrugEntry();
             };
 
             contextChangeHandler.add(contextChange);

@@ -115,11 +115,13 @@ angular.module('bahmni.common.util')
     })
 
 
-    .directive('focusOn', function () {
+    .directive('focusOn', function ($timeout) {
         return function (scope, elem, attrs) {
             scope.$watch(attrs.focusOn, function (value) {
                 if (value) {
-                    $(elem).focus();
+                    $timeout(function(){
+                        $(elem).focus();
+                    });
                 }
             });
         };
