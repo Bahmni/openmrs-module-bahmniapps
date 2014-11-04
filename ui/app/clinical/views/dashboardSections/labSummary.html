@@ -41,8 +41,23 @@
                                     <span ng-class="{'referred-out': res.referredOut}">
                                         <span class="referred">R</span>
                                     </span>
-                                    <span ng-show="res.result" ng-class="{'is-abnormal': res.abnormal, 'one-result': results.length==1}"class="ipd-test-results" bo-text="res.result"></span>
-                                    <span ng-show="res.uploadedFileName"><a class="uploaded-file" href="{{getUploadedFileUrl(res.uploadedFileName)}}" onclick="event.stopPropagation()" target="_blank"><i class="icon-paper-clip"></i></a></span>
+                                    <span ng-show="res.result" ng-click="toggleShowFullValue(results)"
+                                          on-click-outside="closeShowFullResults" exclude-element=".test-result"
+                                          ng-class="{'is-abnormal': res.abnormal, 'one-result': results.length==1}"
+                                          class="ipd-test-results" bo-text="res.result">
+                                    </span>
+                                    <span ng-show="res.uploadedFileName">
+                                        <a class="uploaded-file" href="{{getUploadedFileUrl(res.uploadedFileName)}}"
+                                           onclick="event.stopPropagation()" target="_blank">
+                                            <i class="icon-paper-clip"></i>
+                                        </a>
+                                    </span>
+                                    <span class="tooltip" ng-if="showFullValue && showFullResults === results && results.length > 0">
+                                        <i class="icon-caret-left"></i>
+                                        <span ng-class="{'is-abnormal': result.abnormal, 'one-result': results.length==1}"
+                                              ng-repeat="result in showFullResults | orderBy:'orderDate':false"
+                                              class="ipd-test-results">{{result.result}}</span>
+                                    </span>
                                 </span>
                             </span>
                         </td>

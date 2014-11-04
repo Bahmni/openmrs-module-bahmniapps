@@ -49,5 +49,16 @@ angular.module('bahmni.clinical')
 
             $scope.displayDate = function(date) {
                 return moment(date).format("DD-MMM-YY");
-            }
+            };
+
+            $scope.toggleShowFullValue = function(results){
+                $scope.showFullValue = !$scope.showFullValue;
+                $scope.showFullResults = results;
+            };
+
+            $scope.closeShowFullResults = function(){
+                $scope.showFullValue = false;
+                $scope.showFullResults = undefined;
+            };
+
         }]);

@@ -55,10 +55,14 @@ a.back-btn, button.back-btn{
   }
 }
 
-ul li a.back-btn, ul li a.back-btn:hover, button.back-btn{
+ul li a.back-btn, ul li a.back-btn:hover, button.back-btn, a.back-btn{
   padding: 10px 10px 10px 5px;
   border:1px solid #4d8282;
   @include background(linear-gradient(top, $bahmniSecondaryColor, #528484));
+
+  i {
+    padding: 0 5px 0 0;
+  }
 }
 button.back-btn {
     box-shadow: none;
