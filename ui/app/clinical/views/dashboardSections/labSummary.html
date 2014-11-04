@@ -41,8 +41,7 @@
                                     <span ng-class="{'referred-out': res.referredOut}">
                                         <span class="referred">R</span>
                                     </span>
-                                    <span ng-show="res.result" ng-click="toggleShowFullValue(results)"
-                                          on-click-outside="closeShowFullResults" exclude-element=".test-result"
+                                    <span ng-show="res.result" toggle="res.showAsToolTip"
                                           ng-class="{'is-abnormal': res.abnormal, 'one-result': results.length==1}"
                                           class="ipd-test-results" bo-text="res.result">
                                     </span>
@@ -52,11 +51,10 @@
                                             <i class="icon-paper-clip"></i>
                                         </a>
                                     </span>
-                                    <span class="tooltip" ng-if="showFullValue && showFullResults === results && results.length > 0">
+                                    <span class="tooltip" ng-if="res.showAsToolTip">
                                         <i class="icon-caret-left"></i>
-                                        <span ng-class="{'is-abnormal': result.abnormal, 'one-result': results.length==1}"
-                                              ng-repeat="result in showFullResults | orderBy:'orderDate':false"
-                                              class="ipd-test-results">{{result.result}}</span>
+                                        <span ng-class="{'is-abnormal': res.abnormal}"
+                                              class="ipd-test-results">{{res.result}}</span>
                                     </span>
                                 </span>
                             </span>

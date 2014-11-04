@@ -10,16 +10,6 @@ angular.module('bahmni.clinical')
                 line.showNotes = !line.showNotes;
             };
 
-            $scope.toggleShowFullValue = function(results){
-                $scope.showFullValue = !$scope.showFullValue;
-                $scope.showFullResults = results;
-            };
-
-            $scope.closeShowFullResults = function(){
-                $scope.showFullValue = false;
-                $scope.showFullResults = undefined;
-            };
-
             var flattened = function(accessions) {
                 return accessions.map(function(results) {
                     return _.flatten(results, function(result) {
