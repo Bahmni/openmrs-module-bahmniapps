@@ -9,6 +9,7 @@ module.exports = function (config) {
             'app/components/q/q.js',
             'app/components/angular/angular.js',
             'app/components/angular-route/angular-route.js',
+            'app/components/angular-sanitize/angular-sanitize.js',
             'app/components/jquery/jquery.js',
             'app/components/angular-mocks/angular-mocks.js',
             'app/components/ngInfiniteScroll/build/ng-infinite-scroll.js',
