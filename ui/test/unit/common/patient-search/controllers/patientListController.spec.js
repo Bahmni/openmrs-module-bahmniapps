@@ -34,14 +34,14 @@ describe("PatientListController", function () {
                 "requiredPrivilege": "app:clinical"
             }
         ];
-        
+
         var patients = [
             {identifier: 'GAN1234', name: 'Ram Singh', uuid: 'p-uuid-1', activeVisitUuid: 'v-uuid-1'},
             {identifier: 'BAM1234', name: 'Shyam Singh', uuid: 'p-uuid-2', activeVisitUuid: 'v-uuid-2'},
             {identifier: 'SEM1234', name: 'Ganesh Singh', uuid: 'p-uuid-3', activeVisitUuid: 'v-uuid-3'},
             {identifier: 'GAN1235', name: 'Gani Singh', uuid: 'p-uuid-4', activeVisitUuid: 'v-uuid-4'}
         ];
-        
+
         beforeEach(function () {
             _spinner = jasmine.createSpyObj('spinner', ['forPromise']);
             _spinner.forPromise.and.callFake(function (promiseParam) {
@@ -63,7 +63,7 @@ describe("PatientListController", function () {
         beforeEach(inject(function ($rootScope) {
             scope = $rootScope.$new();
             $rootScope.patientConfig = Bahmni.Registration.PatientConfig();
-            $rootScope.currentProvider = {uuid:"1111-2222"}
+            $rootScope.currentProvider = {uuid: "1111-2222"}
         }));
 
         var setUp = function () {
@@ -82,7 +82,7 @@ describe("PatientListController", function () {
             it('should initialize configurations and fetch patients', function () {
                 scope.$apply(setUp);
 
-                expect(scope.search.searchType).toEqual({ name: 'All active patients', display: 'All active patients', handler: 'emrapi.sqlSearch.activePatients', forwardUrl: undefined, id: 'bahmni.clinical.patients.allPatients',params:undefined });
+                expect(scope.search.searchType).toEqual({ name: 'All active patients', display: 'All active patients', handler: 'emrapi.sqlSearch.activePatients', forwardUrl: undefined, id: 'bahmni.clinical.patients.allPatients', params: undefined });
                 expect(_patientService.findPatients).toHaveBeenCalled();
 
                 findPatientsPromise.callThenCallBack({data: patients});
@@ -93,20 +93,31 @@ describe("PatientListController", function () {
         });
 
         describe("searchPatients", function () {
-            beforeEach(function() {
+            beforeEach(function () {
                 scope.$apply(setUp);
             });
 
             it('should search for patients with given search parameter', function () {
                 scope.search.searchParameter = "GAN111";
                 scope.searchPatients();
-                
+
                 expect(_patientService.search).toHaveBeenCalled();
 
                 searchPatientsPromise.callThenCallBack({data: {pageOfResults: patients}});
 
                 expect(scope.search.activePatients.length).toBe(patients.length);
                 expect(scope.search.searchResults.length).toBe(patients.length);
+            });
+
+            it('should navigate to patient dashboard when the filter yields a single patient', function () {
+                var ramSingh = {identifier: 'GAN1234', name: 'Ram Singh', uuid: 'p-uuid-1', activeVisitUuid: 'v-uuid-1'};
+                scope.search.searchResults = [ ramSingh ];
+                var result = undefined;
+                scope.forwardPatient = function (patient) {
+                    result = patient;
+                };
+                scope.filterPatientsAndSubmit();
+                expect(result).toEqual(ramSingh);
             });
         });
     }
