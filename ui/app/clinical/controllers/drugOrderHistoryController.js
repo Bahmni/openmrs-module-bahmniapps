@@ -24,7 +24,7 @@ angular.module('bahmni.clinical')
                         return new Date(activeDrugOrder.scheduledDate) <= DateUtil.now();
                     });
                     $scope.consultation.drugOrderGroups = [
-                        {label: 'Active', drugOrders: activeDrugOrders}
+                        {label: 'Active', drugOrders: activeDrugOrders, selected: true}
                     ];
                     createPrescribedDrugOrderGroups();
                 });
@@ -46,8 +46,6 @@ angular.module('bahmni.clinical')
                         isCurrentVisit: currentVisit && DateUtil.isSameDateTime(visitStartDate, currentVisit.startDate)
                     }
                 });
-                var drugOrderGroupToSelect = _.find(drugOrderGroups, {isCurrentVisit: true}) || drugOrderGroups[0];
-                drugOrderGroupToSelect.selected = true;
                 $scope.consultation.drugOrderGroups = $scope.consultation.drugOrderGroups.concat(drugOrderGroups);
             };
 
