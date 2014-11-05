@@ -50,11 +50,11 @@ angular.module('bahmni.clinical')
         };
 
         $scope.refill = function(drugOrder) {
-            $rootScope.$emit("event:refillDrugOrder", drugOrder);
+            $rootScope.$broadcast("event:refillDrugOrder", drugOrder);
         };
         
         $scope.refillAll = function(drugOrders) {
-            $rootScope.$emit("event:refillDrugOrders", drugOrders);
+            $rootScope.$broadcast("event:refillDrugOrders", drugOrders);
         };
         
         $scope.edit = function(drugOrder, drugOrders){
@@ -65,7 +65,7 @@ angular.module('bahmni.clinical')
                 });
                 drugOrder.isDiscontinuedAllowed = false;
                 drugOrder.isBeingEdited = true;
-                $rootScope.$emit("event:reviseDrugOrder", drugOrder);
+                $rootScope.$broadcast("event:reviseDrugOrder", drugOrder);
             }
         };
 

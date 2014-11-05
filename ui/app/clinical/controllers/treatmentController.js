@@ -55,21 +55,21 @@ angular.module('bahmni.clinical')
                 return existingTreatment;
             };
 
-            var refillDrugOrderEvent = $rootScope.$on("event:refillDrugOrder", function (event, drugOrder) {
+            var refillDrugOrderEvent = $scope.$on("event:refillDrugOrder", function (event, drugOrder) {
                 var refill = drugOrder.refill();
                 drugOrderHistory = drugOrder;
                 $scope.treatments.push(refill);
                 markStartingNewDrugEntry();
             });
 
-            var refillDrugOrdersEvent = $rootScope.$on("event:refillDrugOrders", function (event, drugOrders) {
+            var refillDrugOrdersEvent = $scope.$on("event:refillDrugOrders", function (event, drugOrders) {
                 drugOrders.forEach(function (drugOrder) {
                     var refill = drugOrder.refill();
                     $scope.treatments.push(refill);
                 })
             });
 
-            var reviseDrugOrderEvent = $rootScope.$on("event:reviseDrugOrder", function (event, drugOrder) {
+            var reviseDrugOrderEvent = $scope.$on("event:reviseDrugOrder", function (event, drugOrder) {
                 $scope.treatments.map(setIsNotBeingEdited);
                 drugOrderHistory = drugOrder;
                 $scope.treatment = drugOrder.revise();
@@ -124,12 +124,6 @@ angular.module('bahmni.clinical')
                 return $scope.addForm.$valid;
             };
 
-            var unregisterEvents = function() {
-                refillDrugOrderEvent();
-                reviseDrugOrderEvent();
-                refillDrugOrdersEvent();
-            };
-
             var contextChange = function () {
                 if(restrictDrugsBeingDiscontinued()) {
                     return {allow: false, errorMessage: "Discontinuing and ordering the same drug is not allowed. Instead, use edit."};
@@ -141,7 +135,6 @@ angular.module('bahmni.clinical')
                 if($scope.unaddedDrugOrders() == true){
                     return {allow: false, errorMessage: "Please add the details of the drug form to New Prescription before clicking Save"};
                 }
-                unregisterEvents();
                 $scope.consultation.newlyAddedTreatments = $scope.treatments;
                 $scope.consultation.incompleteTreatment = $scope.treatment;
                 return {allow: true};
