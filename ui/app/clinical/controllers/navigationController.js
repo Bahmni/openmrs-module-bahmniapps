@@ -2,9 +2,9 @@
 
 angular.module('bahmni.clinical').controller('ConsultationNavigationController',
     ['$scope', '$rootScope', '$state', '$location', '$window', 'clinicalConfigService', 'urlHelper', 'contextChangeHandler', 
-        'spinner', 'encounterService', 'RegisterTabService', 'messagingService', 'sessionService',
+        'spinner', 'encounterService', 'messagingService', 'sessionService',
         function ($scope, $rootScope, $state, $location, $window, clinicalConfigService, urlHelper, contextChangeHandler, 
-                  spinner, encounterService, registerTabService, messagingService, sessionService) {
+                  spinner, encounterService, messagingService, sessionService) {
 
             $scope.loadVisit = function(visitUuid) {
                 $state.go('patient.visit', {visitUuid: visitUuid});
@@ -118,7 +118,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                     return;
                 }
 
-                registerTabService.fire();
+                $rootScope.consultation.saveHandler.fire();
                 var encounterData = {};
                 encounterData.locationUuid = sessionService.getLoginLocationUuid();
                 encounterData.patientUuid = $scope.patient.uuid;
@@ -169,7 +169,6 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 addObservationsToEncounter();
 
                 spinner.forPromise(encounterService.create(encounterData).then(function () {
-                    registerTabService.reset();
                     clearRootScope();
                     $state.transitionTo($state.current, $state.params, {
                         reload: true,

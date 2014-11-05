@@ -71,6 +71,10 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                 return $q.when({});
             };
 
+            var addSaveHandlers = function() {
+                $rootScope.consultation.saveHandler = new Bahmni.Clinical.SaveHandler();
+            }
+
             $rootScope.showControlPanel = false;
             $rootScope.toggleControlPanel = function () {
                 $rootScope.showControlPanel = !$rootScope.showControlPanel;
@@ -82,7 +86,7 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
 
             return spinner.forPromise(
                 initialization.then(function(){
-                    return $q.all([findDefaultConsultationBoard().then(getActiveEncounter).then(getPastDiagnoses), getPatient().then(getPatientBedDetails), getPatientVisitHistory().then(getActiveVisitData)]);
+                    return $q.all([findDefaultConsultationBoard().then(getActiveEncounter).then(getPastDiagnoses), getPatient().then(getPatientBedDetails), getPatientVisitHistory().then(getActiveVisitData).then(addSaveHandlers)]);
                 })
             );
         }

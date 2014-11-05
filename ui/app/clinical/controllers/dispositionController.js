@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DispositionController', ['$scope', '$q', '$rootScope','dispositionService', 'spinner', 'RegisterTabService', function ($scope, $q, $rootScope,dispositionService, spinner, registerTabService) {
+    .controller('DispositionController', ['$scope', '$q', '$rootScope','dispositionService', 'spinner', function ($scope, $q, $rootScope,dispositionService, spinner) {
         var consultation = $rootScope.consultation;
 
 
@@ -70,7 +70,7 @@ angular.module('bahmni.clinical')
             }
         };
 
-        registerTabService.register(saveDispositions);
+        $scope.consultation.saveHandler.register(saveDispositions);
 
         $scope.$on('$destroy', saveDispositions);
     }]);

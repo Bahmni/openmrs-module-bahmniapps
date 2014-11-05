@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DiagnosisController', ['$scope', '$rootScope', '$stateParams', 'diagnosisService', 'contextChangeHandler', 'RegisterTabService',
-        function ($scope, $rootScope, $stateParams, diagnosisService, contextChangeHandler, registerTabService) {
+    .controller('DiagnosisController', ['$scope', '$rootScope', '$stateParams', 'diagnosisService', 'contextChangeHandler',
+        function ($scope, $rootScope, $stateParams, diagnosisService, contextChangeHandler) {
 
             $scope.placeholder = "Add Diagnosis";
             $scope.hasAnswers = false;
@@ -130,9 +130,8 @@ angular.module('bahmni.clinical')
                 $scope.newlyAddedDiagnoses = [];
             };
 
+            $scope.consultation.saveHandler.register(saveDiagnosis);
 
-            registerTabService.register(saveDiagnosis);
-            
             $scope.$on('$destroy', setDiagnosis);
 
             $scope.processDiagnoses = function (data) {

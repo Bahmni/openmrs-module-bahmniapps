@@ -22,7 +22,7 @@ describe("DrugOrderHistoryController", function () {
     beforeEach(inject(function ($controller, $rootScope) {
         $rootScope.visit = {startDate: 1410322624000};
         scope = $rootScope.$new();
-        scope.consultation = {};
+        scope.consultation = {saveHandler: new Bahmni.Clinical.SaveHandler()};
         scope.currentBoard = {extensionParams: {}};
 
         $controller('DrugOrderHistoryController', {

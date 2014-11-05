@@ -5,25 +5,23 @@ describe("TreatmentController", function () {
     beforeEach(module('bahmni.common.uiHelper'));
     beforeEach(module('bahmni.clinical'));
 
-    var scope, registerTabService, rootScope, contextChangeHandler, newTreatment, editTreatment;
-    beforeEach(inject(function ($controller, $rootScope, RegisterTabService) {
+    var scope, rootScope, contextChangeHandler, newTreatment, editTreatment;
+    beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
         rootScope = $rootScope;
         $rootScope.consultation = {};
-        scope.consultation = {};
+        scope.consultation = {saveHandler: new Bahmni.Clinical.SaveHandler()};
         newTreatment = new Bahmni.Clinical.DrugOrderViewModel({}, {});
         editTreatment = new Bahmni.Clinical.DrugOrderViewModel(null, null);
         scope.currentBoard = {extension: {}, extensionParams: {}};
         contextChangeHandler = jasmine.createSpyObj('contextChangeHandler', ['add']);
         scope.addForm = {$invalid: false, $valid: true};
-        registerTabService = RegisterTabService;
 
         $controller('TreatmentController', {
             $scope: scope,
             $rootScope: rootScope,
             treatmentService: null,
             contextChangeHandler: contextChangeHandler,
-            registerTabService: RegisterTabService,
             treatmentConfig: {}
         });
     }));
@@ -115,7 +113,7 @@ describe("TreatmentController", function () {
             drugOrder.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
 
             scope.consultation.newlyAddedTreatments = [ drugOrder];
-            registerTabService.fire();
+            scope.consultation.saveHandler.fire();
             expect(rootScope.consultation.drugOrders.length).toBe(1);
         });
 
@@ -147,7 +145,7 @@ describe("TreatmentController", function () {
 
         it("should not fail for empty treatments", function () {
             scope.consultation.newlyAddedTreatments = undefined;
-            registerTabService.fire();
+            scope.consultation.saveHandler.fire();
         });
     })
 });

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('TreatmentController', ['$scope', '$rootScope', 'TreatmentService', 'contextChangeHandler', 'RegisterTabService', 'treatmentConfig', 'DrugService', '$timeout',
-        function ($scope, $rootScope, treatmentService, contextChangeHandler, registerTabService, treatmentConfig, drugService, $timeout) {
+    .controller('TreatmentController', ['$scope', '$rootScope', 'TreatmentService', 'contextChangeHandler', 'treatmentConfig', 'DrugService', '$timeout',
+        function ($scope, $rootScope, treatmentService, contextChangeHandler, treatmentConfig, drugService, $timeout) {
             $scope.treatments = $scope.consultation.newlyAddedTreatments || [];
             $scope.treatmentConfig = treatmentConfig;
             function markStartingNewDrugEntry() {
@@ -164,6 +164,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.populateBackingFields = function (item) {
+                $scope.treatment.drug = item.drug;
                 $scope.treatment.drugName = item.drug.name;
             };
 
@@ -183,6 +184,6 @@ angular.module('bahmni.clinical')
                     $rootScope.consultation.drugOrders.push(Bahmni.Clinical.DrugOrder.createFromUIObject(treatment));
                 });
             };
-            registerTabService.register(saveTreatment);
+            $scope.consultation.saveHandler.register(saveTreatment)
 
         }]);
