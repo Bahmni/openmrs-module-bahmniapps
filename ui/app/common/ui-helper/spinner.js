@@ -28,6 +28,8 @@ angular.module('bahmni.common.uiHelper')
         };
 
         return {
-            forPromise: forPromise
+            forPromise: forPromise,
+            show: show,
+            hide: hide
         }
     }]);
