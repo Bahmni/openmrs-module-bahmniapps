@@ -37,11 +37,11 @@
                         <td>{{dateLabel.date | date :'dd MMM yy'}}</td>
                         <td ng-repeat="testOrderLabel in tabular.getTestOrderLabels()" ng-class="{'has-uploaded-file': tabular.hasUploadedFiles(dateLabel, testOrderLabel)}">
                             <span ng-init="results = tabular.getResult(dateLabel, testOrderLabel)">
-                                <span class="test-result"  ng-repeat="res in results">
+                                <span bm-pop-over class="test-result"  ng-repeat="res in results">
                                     <span ng-class="{'referred-out': res.referredOut}">
                                         <span class="referred">R</span>
                                     </span>
-                                    <span ng-show="res.result" toggle="res.showAsToolTip"
+                                    <span ng-show="res.result" bm-pop-over-trigger
                                           ng-class="{'is-abnormal': res.abnormal, 'one-result': results.length==1}"
                                           class="ipd-test-results" bo-text="res.result">
                                     </span>
@@ -51,7 +51,7 @@
                                             <i class="icon-paper-clip"></i>
                                         </a>
                                     </span>
-                                    <span class="tooltip" ng-if="res.showAsToolTip">
+                                    <span class="tooltip" bm-pop-over-target>
                                         <i class="icon-caret-left"></i>
                                         <span ng-class="{'is-abnormal': res.abnormal}"
                                               class="ipd-test-results">{{res.result}}</span>

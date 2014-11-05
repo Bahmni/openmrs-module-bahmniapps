@@ -1,67 +1,33 @@
 angular.module('bahmni.common.uiHelper')
     .directive('splitButton', function ($parse) {
-        var link = function($scope, element) {
-            var toggleButton = element.find('.toggle-button');
-            var docClickHandler = function(e) {
-                var $clicked = $(e.target);
-                if ($clicked.closest(toggleButton).length === 0 || $clicked.closest(element.find('.options')).length !== 0) {
-                    element.find('.secondaryOption').hide();
-                    toggleButton.removeClass('open');
-                    $(document).off('click', docClickHandler);
-                }
-            }
-
-            toggleButton.on('click', function(){
-                element.find('.secondaryOption').toggle();
-                element.find('.secondaryOption button')[0].focus();
-                if(toggleButton.hasClass('open')) {
-                    toggleButton.removeClass('open');
-                    $(document).off('click', docClickHandler);
-                } else {
-                    $(document).on('click', docClickHandler);
-                    toggleButton.addClass('open');
-                }
-                }
-            );
-        };
-
         var controller = function($scope) {
-            $scope.sortedOptions = (function() {
-                var indexOfPrimaryOption = $scope.options.indexOf($scope.primaryOption)
-                if(indexOfPrimaryOption > 0){
-                    var clonedOptions = $scope.options.slice(0);
-                    clonedOptions.splice(indexOfPrimaryOption, 1);
-                    clonedOptions.splice(0, 0, $scope.primaryOption)
-                    return clonedOptions;
-                } else {
-                    return $scope.options;
-                }
-            })();
+            $scope.primaryOption = $scope.primaryOption || $scope.options[0];
+            $scope.secondaryOptions = _.without($scope.options, $scope.primaryOption);
 
             $scope.hasMultipleOptions = function() {
-                return $scope.options.length > 1;
+                return $scope.secondaryOptions.length > 0;
             }
         }
 
         return {
             restrict: 'A',
-            template: '<div class="split-button">'+
-                            '<ul class="options">' +
-                            '<li ng-repeat="option in sortedOptions"' +
-                                'ng-class="{primaryOption: $index == 0, secondaryOption: $index > 0}"' +
-                             '>' +
-                                '<button ng-class="buttonClass" ng-click="optionClick()(option.uuid)">Start {{option.name}} Visit</a>' +
+            template: '<div class="split-button" bm-pop-over>'+
+                        '<ul class="options">' +
+                            '<li class="primaryOption">' +
+                                '<button ng-class="buttonClass" ng-click="optionClick()(primaryOption)">{{optionText()(primaryOption)}}</a>' +
+                            '</li>' +
+                            '<li bm-pop-over-target ng-repeat="option in secondaryOptions" class="secondaryOption">' +
+                                '<button ng-class="buttonClass" ng-click="optionClick()(option)">{{optionText()(option)}}</a>' +
                             '</li>' +
                         '</ul>' +
-                        '<button class="toggle-button icon-caret-down" ng-show="hasMultipleOptions()" type="button"></button></div>',
-            link: link,
+                        '<button bm-pop-over-trigger class="toggle-button icon-caret-down" ng-show="hasMultipleOptions()" type="button"></button>' +
+                      '</div>',
             controller: controller,
             scope: {
                 options: '=',
                 primaryOption: '=',
                 optionText: '&',
-                optionClick: '&',
-                buttonClass: '='
+                optionClick: '&'
             }
         };
     });

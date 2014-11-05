@@ -54,11 +54,6 @@ angular.module('bahmni.clinical')
                 messagingService.showMessage("info",template.conceptName+" Removed successfully");
             }
         }
-
-        $scope.showTemplates = !$scope.showTemplates;
     };
 
-    $scope.closeTemplatesPopup = function(){
-        $scope.showTemplates = false;
-    }
 }]);

@@ -31,14 +31,14 @@
                         <span ng-if="!orderable.concept.set" ng-repeat="result in test.results |
                          orderBy:'orderDate':false"
                               class="test-result">
-                            <span ng-if="result.isOnOrderDate(day.date)">
+                            <span bm-pop-over ng-if="result.isOnOrderDate(day.date)">
                                 <span ng-class="{'is-abnormal': result.isAbnormal, 'one-result': test.results.length==1}"
-                                      toggle="result.showAsToolTip"
+                                      bm-pop-over-trigger
                                       class="ipd-test-results">{{result.value}}</span>
                                 <span ng-if="result.labReport"><a class="uploaded-file" href="{{result.labReport}}"
                                                                   target="_blank"><i
                                         class="icon-paper-clip"></i></a></span>
-                                <span class="tooltip" ng-if="result.showAsToolTip">
+                                <span class="tooltip" bm-pop-over-target>
                                     <i class="icon-caret-left"></i>
                                     <span ng-class="{'is-abnormal': result.isAbnormal}"
                                           class="ipd-test-results">{{result.value}}</span>
