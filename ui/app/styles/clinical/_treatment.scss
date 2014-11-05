@@ -196,10 +196,11 @@
         text-align: left;
         float: left;
     }
-    .button-group {
+    .button-group-wrapper {
         float: right;
-        /* width: 200px; will bring in width back after testing all scenarios*/
+        width: 200px;
         padding: 3px 0;
+        .button-group {float: right;}
         button, button:hover {
             padding: 0; margin: 0;
             float: left;
