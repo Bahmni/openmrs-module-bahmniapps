@@ -135,7 +135,7 @@ angular.module('bahmni.clinical')
                 if($scope.unaddedDrugOrders() == true){
                     return {allow: false, errorMessage: "Please add the details of the drug form to New Prescription before clicking Save"};
                 }
-                $scope.consultation.newlyAddedTreatments = $scope.treatments;
+                $scope.consultation.newlyAddedTreatments = $scope.treatments || [];
                 $scope.consultation.incompleteTreatment = $scope.treatment;
                 return {allow: true};
             };
@@ -146,6 +146,7 @@ angular.module('bahmni.clinical')
 
             var setIsNotBeingEdited = function (treatment) {
                 treatment.isBeingEdited = false;
+                return treatment;
             };
 
             var constructDrugNameDisplay = function (drug, drugForm) {
@@ -176,7 +177,9 @@ angular.module('bahmni.clinical')
 
             var saveTreatment = function () {
                 $rootScope.consultation.drugOrders = [];
-                $scope.consultation.newlyAddedTreatments.forEach(function (treatment) {
+                var newlyAddedTreatments = $scope.consultation.newlyAddedTreatments;
+
+                newlyAddedTreatments && newlyAddedTreatments.forEach(function (treatment) {
                     $rootScope.consultation.drugOrders.push(Bahmni.Clinical.DrugOrder.createFromUIObject(treatment));
                 });
             };

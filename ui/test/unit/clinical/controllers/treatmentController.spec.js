@@ -4,7 +4,7 @@ describe("TreatmentController", function () {
 
     beforeEach(module('bahmni.common.uiHelper'));
     beforeEach(module('bahmni.clinical'));
-    
+
     var scope, registerTabService, rootScope, contextChangeHandler, newTreatment, editTreatment;
     beforeEach(inject(function ($controller, $rootScope, RegisterTabService) {
         scope = $rootScope.$new();
@@ -71,9 +71,9 @@ describe("TreatmentController", function () {
     });
 
     describe("Clear Form", function () {
-        var isSameAs = function(obj1, obj2){
-            for(var key in obj1){
-                if(key !== "_effectiveStartDate" && typeof obj1[key] !== 'function'){
+        var isSameAs = function (obj1, obj2) {
+            for (var key in obj1) {
+                if (key !== "_effectiveStartDate" && typeof obj1[key] !== 'function') {
                     if (!_.isEqual(obj1[key], obj2[key])) {
                         return false;
                     }
@@ -138,11 +138,16 @@ describe("TreatmentController", function () {
             scope.treatments = [discontinuedDrug];
 
             var add = contextChangeHandler.add;
-            var contextChangeFunction = add.calls.mostRecent().args[0]
+            var contextChangeFunction = add.calls.mostRecent().args[0];
 
             contextChangeFunction();
 
             expect(contextChangeFunction()["errorMessage"]).toBe("Discontinuing and ordering the same drug is not allowed. Instead, use edit.");
-        })
+        });
+
+        it("should not fail for empty treatments", function () {
+            scope.consultation.newlyAddedTreatments = undefined;
+            registerTabService.fire();
+        });
     })
 });
