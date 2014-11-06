@@ -50,13 +50,10 @@
             select, select.ng-invalid {
                 height: 31px;
             }
-            input[type="text"].drug-name {
-                margin-right: 10px;
-            }
 
             /*width*/
             .drug-name {
-                width: 185px;
+                width: 180px;
             }
             input[type="text"].dose, input[type="text"].duration, input[type="text"].quantity,
             input[type="number"].dose, input[type="number"].quantity {
@@ -74,11 +71,11 @@
             }
             .treatment-prn {
                 float: right;
-                width: 90px;
+                width: 85px;
                 margin-right: 5px;
                 margin-top: 4px;
                 button {
-                    width: 84px;
+                    width: 81px;
                     margin: 2px;
                 }
             }
@@ -112,7 +109,7 @@
             }
             .frequency-widget.uniform-frequency {
                 float: left;
-                width: 355px;
+                width: 375px;
                 .form-field {
                     float: left;
                 }
