@@ -128,11 +128,11 @@ angular.module('bahmni.clinical')
                 if(restrictDrugsBeingDiscontinued()) {
                     return {allow: false, errorMessage: "Discontinuing and ordering the same drug is not allowed. Instead, use edit."};
                 }
-                if($scope.incompleteDrugOrders() == true){
+                if($scope.incompleteDrugOrders()){
                     $scope.formInvalid = true;
                     return {allow: false};
                 }
-                if($scope.unaddedDrugOrders() == true){
+                if($scope.unaddedDrugOrders()){
                     return {allow: false, errorMessage: "Please add the details of the drug form to New Prescription before clicking Save"};
                 }
                 $scope.consultation.newlyAddedTreatments = $scope.treatments || [];

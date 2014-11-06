@@ -77,8 +77,13 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
             var buttonClickAction = function (board) {
                 if ($scope.currentBoard === board) return;
 
-                var allowContextChange = contextChange()["allow"];
-                if (!allowContextChange) return;
+                var contextChangeResponse = contextChange();
+                if (!contextChangeResponse["allow"]) {
+                    if(contextChangeResponse["errorMessage"]) {
+                        messagingService.showMessage('error', contextChangeResponse["errorMessage"]);
+                    }
+                    return;
+                }
                 contextChangeHandler.reset();
                 $scope.currentBoard = board;
                 return getUrl(board);
