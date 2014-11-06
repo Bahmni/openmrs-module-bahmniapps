@@ -1,8 +1,7 @@
 .search-wrapper{
 	padding-bottom:5px;
 	input{
-		height: 30px;
-		width:300px;
+		min-width:300px;
 		padding-left:10px;
     &:focus {
       outline: 2px solid #007fff;
