@@ -16,6 +16,7 @@
   padding:5px;
   background:#fff;
   border: 1px solid #cecece;
+  border-radius: 0 5px 5px 5px;
   li{
     text-align: center;
     cursor:pointer;
@@ -50,7 +51,7 @@
 }
 
 .patient-search-wrapper {
-  width: 1024px;
+  width: 1014px;
   margin: 0 auto;
   .tabs {
     margin-top: 5px;
