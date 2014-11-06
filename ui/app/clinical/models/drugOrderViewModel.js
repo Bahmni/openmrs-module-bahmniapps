@@ -52,7 +52,6 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config, proto) {
     this.frequencyType = this.frequencyType || Bahmni.Clinical.Constants.dosingTypes.uniform;
     this.uniformDosingType = this.uniformDosingType || {doseUnits: defaultDoseUnit && defaultDoseUnit.name};
     this.variableDosingType = this.variableDosingType || {doseUnits: defaultDoseUnit && defaultDoseUnit.name};
-    this.noFrequencyDosingType = this.noFrequencyDosingType || {};
     this.durationInDays = this.durationInDays || 0;
     this.isDiscontinuedAllowed = this.isDiscontinuedAllowed || true;
     this.isEditAllowed = this.isEditAllowed || true;
@@ -70,12 +69,6 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config, proto) {
         var variableDosingType = self.variableDosingType;
         var variableDosingString = addDelimiter((variableDosingType.morningDose || 0) + "-" + (variableDosingType.afternoonDose || 0) + "-" + (variableDosingType.eveningDose || 0), " ");
         return addDelimiter((variableDosingString + blankIfFalsy(variableDosingType.doseUnits)).trim(), ", ")
-    };
-
-    var noFrequencyDose = function () {
-        var noFrequencyDosingType = self.noFrequencyDosingType;
-        var doseAndUnits = blankIfFalsy(noFrequencyDosingType.dose) + " " + blankIfFalsy(noFrequencyDosingType.doseUnits);
-        return addDelimiter(blankIfFalsy(doseAndUnits), " ");
     };
 
     var asNeeded = function (asNeeded) {
@@ -109,16 +102,6 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config, proto) {
         blankIfFalsy(self.durationUnit);
     };
 
-    var getFlexibleDosingDescription = function() {
-        return addDelimiter(blankIfFalsy(getDoseAndFrequency()), " ") +
-            getOtherDescription();
-    };
-
-    var getNoFrequencyDosingDescription = function () {
-        return addDelimiter(blankIfFalsy(noFrequencyDose()), ",") +
-            getOtherDescription();
-    };
-
     var constructDrugNameDisplay = function (drug, drugForm) {
         return {
             label: drug.name + " (" + drugForm + ")",
@@ -132,7 +115,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config, proto) {
     };
 
     this.getDescription = function () {
-        return self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.noFrequency ? getNoFrequencyDosingDescription() : getFlexibleDosingDescription();
+        return addDelimiter(blankIfFalsy(getDoseAndFrequency()), " ") +
+            getOtherDescription();
     };
 
     this.getDescriptionWithQuantity = function(){
@@ -164,15 +148,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config, proto) {
 
     this.setFrequencyType = function (type) {
         self.frequencyType = type;
-        if (self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform) {
-            self.variableDosingType = {};
-            self.noFrequencyDosingType = {};
-        } else if(self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.variable){
+        if (self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.variable) {
             self.uniformDosingType = {};
-            self.noFrequencyDosingType = {};
         } else {
             self.variableDosingType = {};
-            self.uniformDosingType = {};
         }
     };
 
@@ -340,11 +319,11 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
             doseUnits: drugOrderResponse.dosingInstructions.doseUnits
         }
     } else {
-        viewModel.frequencyType = Bahmni.Clinical.Constants.dosingTypes.noFrequency;
-        viewModel.noFrequencyDosingType = {
-            dose: administrationInstructions.dose,
+        viewModel.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
+        viewModel.uniformDosingType = {
+            dose: parseFloat(administrationInstructions.dose),
             doseUnits: administrationInstructions.doseUnits
-        };
+        }
     }
     viewModel.instructions = administrationInstructions.instructions;
     viewModel.additionalInstructions = administrationInstructions.additionalInstructions;

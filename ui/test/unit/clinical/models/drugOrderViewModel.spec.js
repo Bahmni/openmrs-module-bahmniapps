@@ -105,7 +105,7 @@ describe("drugOrderViewModel", function () {
         expect(treatment.durationUnit).toEqual("Month(s)");
     });
 
-    it("should reset uniformDosingType and noFrequencyDosingType when changing frequency type to variable", function () {
+    it("should reset uniformDosingType when changing frequency type to variable", function () {
         var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel({});
         sampleTreatment.uniformDosingType = {
             dose: 1,
@@ -114,11 +114,10 @@ describe("drugOrderViewModel", function () {
         };
         sampleTreatment.setFrequencyType(Bahmni.Clinical.Constants.dosingTypes.variable);
         expect(sampleTreatment.uniformDosingType).toEqual({});
-        expect(sampleTreatment.noFrequencyDosingType).toEqual({});
         expect(sampleTreatment.variableDosingType).not.toBe({});
     });
 
-    it("should reset variableDosingType and noFrequencyDosingType when changing frequency type to uniform", function () {
+    it("should reset variableDosingType when changing frequency type to uniform", function () {
         var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel({});
         sampleTreatment.variableDosingType = {
             morningDose: 1,
@@ -129,19 +128,6 @@ describe("drugOrderViewModel", function () {
         sampleTreatment.setFrequencyType(Bahmni.Clinical.Constants.dosingTypes.uniform);
         expect(sampleTreatment.uniformDosingType).not.toBe({});
         expect(sampleTreatment.variableDosingType).toEqual({});
-        expect(sampleTreatment.noFrequencyDosingType).toEqual({});
-    });
-
-    it("should reset variableDosingType and uniformDosingType when changing frequency type to noFrequency", function () {
-        var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel({});
-        sampleTreatment.noFrequencyDosingType = {
-            dose: 1,
-            doseUnits: "Once a Day"
-        };
-        sampleTreatment.setFrequencyType(Bahmni.Clinical.Constants.dosingTypes.noFrequency);
-        expect(sampleTreatment.noFrequencyDosingType).not.toBe({});
-        expect(sampleTreatment.variableDosingType).toEqual({});
-        expect(sampleTreatment.uniformDosingType).toEqual({});
     });
 
     it("should change duration unit based on frequency factor", function () {

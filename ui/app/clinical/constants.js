@@ -8,8 +8,7 @@ Bahmni.Clinical.Constants = (function () {
     };
     var dosingTypes = {
         uniform: "uniform",
-        variable: "variable",
-        noFrequency: "noFrequency"
+        variable: "variable"
     };
     var orderActions = {
         discontinue: 'DISCONTINUE',
