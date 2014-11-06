@@ -43,7 +43,7 @@ describe("DrugOrderHistoryController", function () {
                 expect(scope.consultation.drugOrderGroups[1].visitStartDate.getTime()).toEqual(1397028261000);
                 expect(scope.consultation.drugOrderGroups[2].visitStartDate.getTime()).toEqual(1410349317000);
                 var secondDrugOrder = scope.consultation.drugOrderGroups[2].drugOrders[0];
-                expect(secondDrugOrder.drugName).toBe(prescribedDrugOrders[2].drug.name);
+                expect(secondDrugOrder.drug.name).toBe(prescribedDrugOrders[2].drug.name);
                 done();
             });
         });

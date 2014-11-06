@@ -28,7 +28,7 @@ describe("TreatmentController", function () {
 
     describe("add()", function () {
         it("adds treatment object to list of treatments", function () {
-            var treatment = {drugName: true};
+            var treatment = {drug: {name:true}};
             scope.treatment = treatment;
             scope.add();
             expect(scope.treatments.length).toBe(1);
@@ -36,25 +36,25 @@ describe("TreatmentController", function () {
         });
 
         it("should empty treatment", function () {
-            scope.treatment = {drugName: true};
+            scope.treatment = {drug: {name:true}};
             scope.add();
-            expect(scope.treatment.drugName).toBeFalsy();
+            expect(scope.treatment.drug).toBeFalsy();
         });
 
         it("clears existing treatment object", function () {
-            scope.treatment = {drugName: true};
+            scope.treatment = {drug: {name:true}};
             scope.add();
-            expect(scope.treatment.drugName).toBeFalsy();
+            expect(scope.treatment.drug).toBeFalsy();
         });
 
     });
 
     describe("Save", function () {
         it("should check for any incomplete drug orders", function () {
+            scope.treatment.drug = {name: "calpol"};
             expect(scope.incompleteDrugOrders()).toBeFalsy();
 
-            var treatment = {drugName: true};
-            scope.treatment = treatment;
+            scope.treatment = {drug: {name: "calpol"}};
             scope.addForm = {$invalid: true, $valid: false};
 
             expect(scope.incompleteDrugOrders()).toBeTruthy();
@@ -86,7 +86,7 @@ describe("TreatmentController", function () {
         });
 
         it("should clear treatment object", function () {
-            scope.treatment = {drugName: 'Calpol'};
+            scope.treatment = {drug: {name:'Calpol'}};
             scope.clearForm();
             expect(isSameAs(scope.treatment, newTreatment)).toBeTruthy();
         });

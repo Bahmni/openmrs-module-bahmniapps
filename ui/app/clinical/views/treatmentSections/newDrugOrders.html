@@ -3,7 +3,7 @@
 	<ul class="table-mimic">
 		<li ng-repeat="newTreatment in treatments" ng-class="{highlight : newTreatment.isBeingEdited}">
 			<div class="drug-details">
-				<strong class="drug-name">{{newTreatment.drugNameDisplay}}</strong>&nbsp;{{newTreatment.getDescriptionWithQuantity()}}
+				<strong class="drug-name">{{newTreatment.getDisplayName()}}</strong>&nbsp;{{newTreatment.getDescriptionWithQuantity()}}
 			</div>
 			<div class="button-group-wrapper" >
 				<div class="button-group">

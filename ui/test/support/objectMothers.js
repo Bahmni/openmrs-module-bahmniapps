@@ -69,7 +69,6 @@ Bahmni.Tests.observationMother = {
 Bahmni.Tests.drugOrderViewModelMother = {
     build: function(extensionParams, treatmentConfig, drugOrderViewModelData) {
         var defaultModel = new Bahmni.Clinical.DrugOrderViewModel(extensionParams, treatmentConfig, drugOrderViewModelData);
-        defaultModel.drugName = "calpol 500mg";
         defaultModel.instructions = "Before Meals";
         defaultModel.duration = "10";
         defaultModel.scheduledDate = "21/12/2014";

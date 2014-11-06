@@ -351,7 +351,6 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
     viewModel.quantity = drugOrderResponse.dosingInstructions.quantity;
     viewModel.quantityUnit = drugOrderResponse.dosingInstructions.quantityUnits;
     viewModel.drug = drugOrderResponse.drug;
-    viewModel.drugName = drugOrderResponse.drug.name;
     viewModel.provider = drugOrderResponse.provider;
     viewModel.action = drugOrderResponse.action;
     viewModel.dateStopped = drugOrderResponse.dateStopped;

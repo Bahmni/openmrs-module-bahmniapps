@@ -5,7 +5,7 @@ describe("DrugSchedule", function () {
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
     var createDrugOrder = function (name, startDate, endDate) {
-        return DrugOrder.create({drugName: name, effectiveStartDate: startDate, effectiveStopDate: endDate});
+        return DrugOrder.create({drug: {name: name}, effectiveStartDate: startDate, effectiveStopDate: endDate});
     };
 
     var createStoppedDrugOrder = function (name, startDate, endDate) {
@@ -34,8 +34,8 @@ describe("DrugSchedule", function () {
             expect(drugSchedule.fromDate).toBe(admissionDate);
             expect(drugSchedule.toDate).toBe(dischargeDate);
             expect(drugSchedule.drugOrders.length).toBe(2);
-            expect(drugSchedule.drugOrders[0].drugName).toBe('Calpol');
-            expect(drugSchedule.drugOrders[1].drugName).toBe('Amoxy');
+            expect(drugSchedule.drugOrders[0].drug.name).toBe('Calpol');
+            expect(drugSchedule.drugOrders[1].drug.name).toBe('Amoxy');
         });
 
         it("should initialize end date to today when discharge date is not provided", function () {
@@ -52,8 +52,8 @@ describe("DrugSchedule", function () {
             expect(drugSchedule.fromDate).toBe(admissionDate);
             expect(drugSchedule.toDate).toBe(dischargeDate);
             expect(drugSchedule.drugOrders.length).toBe(2);
-            expect(drugSchedule.drugOrders[0].drugName).toBe('Calpol');
-            expect(drugSchedule.drugOrders[1].drugName).toBe('Amoxy');
+            expect(drugSchedule.drugOrders[0].drug.name).toBe('Calpol');
+            expect(drugSchedule.drugOrders[1].drug.name).toBe('Amoxy');
         });
 
         it("should initialize end date to today when discharge disposition date and discharge date is not provided", function () {
@@ -70,8 +70,8 @@ describe("DrugSchedule", function () {
             expect(drugSchedule.fromDate).toBe(admissionDate);
             expect(drugSchedule.toDate).toBe(DateUtil.now() );
             expect(drugSchedule.drugOrders.length).toBe(2);
-            expect(drugSchedule.drugOrders[0].drugName).toBe('Calpol');
-            expect(drugSchedule.drugOrders[1].drugName).toBe('Amoxy');
+            expect(drugSchedule.drugOrders[0].drug.name).toBe('Calpol');
+            expect(drugSchedule.drugOrders[1].drug.name).toBe('Amoxy');
         });
     });
 

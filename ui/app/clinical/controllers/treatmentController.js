@@ -49,7 +49,7 @@ angular.module('bahmni.clinical')
                 var existingTreatment = false;
                 angular.forEach($scope.consultation.discontinuedDrugs, function(drugOrder){
                     existingTreatment = _.some($scope.treatments, function (treatment) {
-                        return treatment.drugName === drugOrder.drugName && drugOrder.isMarkedForDiscontinue;
+                        return treatment.drug.name === drugOrder.drug.name && drugOrder.isMarkedForDiscontinue;
                     });
                 });
                 return existingTreatment;
@@ -117,7 +117,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.incompleteDrugOrders = function(){
-                var anyValuesFilled =  $scope.treatment.drugName || $scope.treatment.uniformDosingType.dose || $scope.treatment.uniformDosingType.frequency || $scope.treatment.variableDosingType.morningDose || $scope.treatment.variableDosingType.afternoonDose || $scope.treatment.variableDosingType.eveningDose || $scope.treatment.duration || $scope.treatment.quantity
+                var anyValuesFilled =  $scope.treatment.drug || $scope.treatment.uniformDosingType.dose || $scope.treatment.uniformDosingType.frequency || $scope.treatment.variableDosingType.morningDose || $scope.treatment.variableDosingType.afternoonDose || $scope.treatment.variableDosingType.eveningDose || $scope.treatment.duration || $scope.treatment.quantity
                 return (anyValuesFilled && $scope.addForm.$invalid);
             };
             $scope.unaddedDrugOrders = function () {
@@ -164,8 +164,11 @@ angular.module('bahmni.clinical')
             };
 
             $scope.populateBackingFields = function (item) {
-                $scope.treatment.drug = item.drug;
-                $scope.treatment.drugName = item.drug.name;
+                $scope.treatment.drug = {
+                    name: item.drug.name,
+                    form: item.drug.dosageForm.display,
+                    uuid: item.drug.uuid
+                };
             };
 
             $scope.clearForm = function () {

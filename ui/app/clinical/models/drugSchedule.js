@@ -16,9 +16,9 @@
 		getDrugs: function() {
 			var drugOrders = this.drugOrders.map(Bahmni.Clinical.DrugOrder.create);
 			return drugOrders.reduce(function(drugs, drugOrder){
-						var drug = drugs.filter(function(drug) { return drug.name === drugOrder.drugName; } )[0];
+						var drug = drugs.filter(function(drug) { return drug.name === drugOrder.drug.name && drug.uuid === drugOrder.drug.uuid; } )[0];
 						if(drug) { drug.orders.push(drugOrder); }
-						else { drugs.push(new Drug(drugOrder.drugName, [drugOrder])); }
+						else { drugs.push(new Drug(drugOrder.drug.name, [drugOrder])); }
 						return drugs;
 					}, []);
 		},

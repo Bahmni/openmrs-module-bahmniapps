@@ -430,7 +430,7 @@ describe("drugOrderViewModel", function () {
             expect(drugOrderViewModel.uniformDosingType.frequency).toBe(drugOrder.dosingInstructions.frequency);
             expect(drugOrderViewModel.quantity).toBe(drugOrder.dosingInstructions.quantity);
             expect(drugOrderViewModel.quantityUnit).toBe(drugOrder.dosingInstructions.quantityUnits);
-            expect(drugOrderViewModel.drugName).toBe(drugOrder.drug.name);
+            expect(drugOrderViewModel.drug).toBe(drugOrder.drug);
             expect(drugOrderViewModel.effectiveStartDate).toBe(drugOrder.effectiveStartDate);
             expect(drugOrderViewModel.effectiveStopDate).toBe(drugOrder.effectiveStopDate);
             expect(drugOrderViewModel.provider).toBe(drugOrder.provider);
@@ -563,7 +563,7 @@ describe("drugOrderViewModel", function () {
             treatmentConfig.frequencies = [{name: "Once a day"}, {name: "Twice a day"}];
 
             var editedTreatment = treatment.cloneForEdit(0);
-            expect(editedTreatment.drugName).toBe(treatment.drugName);
+            expect(editedTreatment.drug.name).toBe(treatment.drug.name);
             expect(editedTreatment.instructions).toBe(treatment.instructions);
             expect(editedTreatment.duration).toBe(treatment.duration);
             expect(editedTreatment.quantity).toBe(treatment.quantity);

@@ -5,7 +5,9 @@ describe('OrdersMapper', function () {
             return {
                 "numberPerDosage": 1,
                 "prn": false,
-                "drugName": "Asprin 75mg",
+                "drug": {
+                    name: "Asprin 75mg"
+                },
                 "drugUnits": null,
                 "dosageInstruction": {
                     "uuid": "a29e8cdb-a2a1-11e3-af88-005056821db0",
@@ -62,7 +64,7 @@ describe('OrdersMapper', function () {
             var order = sampleOrder();
             order.dateCreated = createDate;
             order.startDate = startDate;
-            order.drugName = drugName;
+            order.drug = {name:drugName};
             return order;
         },
         createTestOrder = function (testName, date, voided) {

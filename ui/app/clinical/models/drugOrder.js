@@ -33,7 +33,7 @@ Bahmni.Clinical.DrugOrder = (function () {
 
         var drugOrder = new DrugOrder({
                 careSetting: "Outpatient",
-                drug: {name:drugOrderData.drugName},
+                drug: drugOrderData.drug,
                 orderType: "Drug Order",
                 dosingInstructionType: Bahmni.Clinical.Constants.flexibleDosingInstructionsClass,
                 dosingInstructions: {
