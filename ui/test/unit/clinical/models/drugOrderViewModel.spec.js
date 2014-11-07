@@ -360,50 +360,67 @@ describe("drugOrderViewModel", function () {
     }
 
     describe("createFromContract", function () {
-        var drugOrder = {
-            "uuid": null,
-            "action": "NEW",
-            "careSetting": "Outpatient",
-            "orderType": "Drug Order",
-            "autoExpireDate": null,
-            "scheduledDate": null,
-            "dateStopped": null,
-            "instructions": null,
-            "visit": {
-                "startDateTime": 1397028261000,
-                "uuid": "002efa33-4c4f-469f-968a-faedfe3a5e0c"
-            },
-            "drug": {
-                "form": "Injection",
-                "uuid": "8d7e3dc0-f4ad-400c-9468-5a9e2b1f4230",
-                "strength": null,
-                "name": "Methylprednisolone 2ml"
-            },
-            "dosingInstructions": {
-                "quantity": 100,
-                "route": "Intramuscular",
-                "frequency": "Twice a day",
-                "doseUnits": "Tablespoon",
-                "asNeeded": false,
-                "quantityUnits": "Tablet",
-                "dose": 5,
-                "administrationInstructions": "{\"instructions\":\"In the evening\",\"additionalInstructions\":\"helylo\"}",
-                "numberOfRefills": null
-            },
-            "durationUnits": "Days",
-            "dateActivated": 1410322624000,
-            "commentToFulfiller": null,
-            "effectiveStartDate": 1410322624000,
-            "effectiveStopDate": null,
-            "orderReasonConcept": null,
-            "dosingInstructionType": "org.openmrs.module.bahmniemrapi.drugorder.dosinginstructions.FlexibleDosingInstructions",
-            "previousOrderUuid": null,
-            "orderReasonText": null,
-            "duration": 10,
-            "provider": {name: "superman"}
+
+        var DrugOrderContractMother = function() {
+            var drugOrderContract =  {
+                "uuid": null,
+                "action": "NEW",
+                "careSetting": "Outpatient",
+                "orderType": "Drug Order",
+                "autoExpireDate": null,
+                "scheduledDate": null,
+                "dateStopped": null,
+                "instructions": null,
+                "visit": {
+                    "startDateTime": 1397028261000,
+                    "uuid": "002efa33-4c4f-469f-968a-faedfe3a5e0c"
+                },
+                "drug": {
+                    "form": "Injection",
+                    "uuid": "8d7e3dc0-f4ad-400c-9468-5a9e2b1f4230",
+                    "strength": null,
+                    "name": "Methylprednisolone 2ml"
+                },
+                "dosingInstructions": {
+                    "quantity": 100,
+                    "route": "Intramuscular",
+                    "frequency": "Twice a day",
+                    "doseUnits": "Tablespoon",
+                    "asNeeded": false,
+                    "quantityUnits": "Tablet",
+                    "dose": 5,
+                    "administrationInstructions": "{\"instructions\":\"In the evening\",\"additionalInstructions\":\"helylo\"}",
+                    "numberOfRefills": null
+                },
+                "durationUnits": "Days",
+                "dateActivated": 1410322624000,
+                "commentToFulfiller": null,
+                "effectiveStartDate": 1410322624000,
+                "effectiveStopDate": null,
+                "orderReasonConcept": null,
+                "dosingInstructionType": "org.openmrs.module.bahmniemrapi.drugorder.dosinginstructions.FlexibleDosingInstructions",
+                "previousOrderUuid": null,
+                "orderReasonText": null,
+                "duration": 10,
+                "provider": {name: "superman"}
+            };
+            this.create = function() {
+                return drugOrderContract;
+            };
+
+            this.forReverseSynced = function() {
+                drugOrderContract.dosingInstructions = {
+                    "administrationInstructions": "{\"dose\":\"1.0\",\"doseUnits\":\"Tablet(s)\"}",
+                    "quantityUnits": "Tablet",
+                    "quantity": 100
+                };
+                return this;
+            }
+
         };
 
         it("should map fields correctly from Drug Order", function () {
+            var drugOrder = new DrugOrderContractMother().create();
             var drugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder);
             expect(drugOrderViewModel.asNeeded).toBe(drugOrder.dosingInstructions.asNeeded);
             expect(drugOrderViewModel.route).toBe(drugOrder.dosingInstructions.route);
@@ -421,7 +438,18 @@ describe("drugOrderViewModel", function () {
             expect(drugOrderViewModel.effectiveStopDate).toBe(drugOrder.effectiveStopDate);
             expect(drugOrderViewModel.provider).toBe(drugOrder.provider);
             expect(drugOrderViewModel.dateActivated).toBe(drugOrder.dateActivated);
+            expect(drugOrderViewModel.reverseSynced).toBeFalsy();
         });
+
+        it("should map fields for reverse synced drug orders", function() {
+            var drugOrder = new DrugOrderContractMother().forReverseSynced().create();
+            var drugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder);
+
+            expect(drugOrderViewModel.uniformDosingType.dose).toBe(1);
+            expect(drugOrderViewModel.uniformDosingType.doseUnits).toBe("Tablet(s)");
+            expect(drugOrderViewModel.reverseSynced).toBe(true);
+        });
+
 
     });
 
@@ -469,6 +497,28 @@ describe("drugOrderViewModel", function () {
             var revisedTreatment = treatment.revise();
             expect(revisedTreatment.action).toBe(Bahmni.Clinical.Constants.orderActions.revise);
             expect(treatment.action).not.toBe(Bahmni.Clinical.Constants.orderActions.revise);
+        });
+
+        it("should clear dose, doseUnits, quantity and quantityUnits for reverse synced drug orders", function(){
+            var treatment = sampleTreatment({}, []);
+            treatment.reverseSynced = true;
+            treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
+            treatment.uniformDosingType = {
+                dose: 1,
+                doseUnits: "Tablet(s)",
+                frequency: "Once a day"
+            };
+            expect(treatment.quantity).toBeDefined();
+            expect(treatment.quantityUnit).toBeDefined();
+
+            var revisedTreatment = treatment.revise();
+
+            var dosingType = revisedTreatment.uniformDosingType;
+            expect(dosingType.dose).toBe(undefined);
+            expect(dosingType.doseUnits).toBe(undefined);
+            expect(dosingType.frequency).toBe(undefined);
+            expect(revisedTreatment.quantity).toBe(undefined);
+            expect(revisedTreatment.quantityUnit).toBe(undefined);
         });
 
     });
@@ -527,6 +577,27 @@ describe("drugOrderViewModel", function () {
             expect(refilledTreatment.quantityUnit).toBe("Unit(s)");
         });
 
+        it("should clear dose, doseUnits, quantity and quantityUnits for reverse synced drug orders", function(){
+            var treatment = sampleTreatment({}, []);
+            treatment.reverseSynced = true;
+            treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
+            treatment.uniformDosingType = {
+                dose: 1,
+                doseUnits: "Tablet(s)",
+                frequency: "Once a day"
+            };
+            expect(treatment.quantity).toBeDefined();
+            expect(treatment.quantityUnit).toBeDefined();
+
+            var refilledTreatment = treatment.refill();
+
+            var dosingType = refilledTreatment.uniformDosingType;
+            expect(dosingType.dose).toBe(undefined);
+            expect(dosingType.doseUnits).toBe(undefined);
+            expect(dosingType.frequency).toBe(undefined);
+            expect(refilledTreatment.quantity).toBe(undefined);
+            expect(refilledTreatment.quantityUnit).toBe(undefined);
+        });
     });
 
     describe("edit", function () {

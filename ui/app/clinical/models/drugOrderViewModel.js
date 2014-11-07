@@ -193,6 +193,14 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config, proto) {
         return inAllowedQuantityUnits(doseUnit) ? doseUnit: "Unit(s)"
     };
 
+    var modifyForReverseSyncIfRequired = function(drugOrder) {
+        if (drugOrder.reverseSynced) {
+            drugOrder.uniformDosingType = {};
+            drugOrder.quantity = undefined;
+            drugOrder.quantityUnit = undefined;
+        }
+    };
+
     this.calculateQuantityAndUnit = function () {
         self.calculateDurationInDays();
         if (!self.quantityEnteredManually && !self.quantityEnteredViaEdit) {
@@ -240,21 +248,25 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config, proto) {
             newDrugOrder.quantityUnit = "Unit(s)";
         }
 
+        modifyForReverseSyncIfRequired(newDrugOrder);
         newDrugOrder.drugNameDisplay = constructDrugNameDisplay(this.drug, this.drug.form).value;
+
         return newDrugOrder;
     };
 
     this.revise = function () {
-        var revisableDrugOrder = new Bahmni.Clinical.DrugOrderViewModel(extensionParams, config, this);
+        var newDrugOrder = new Bahmni.Clinical.DrugOrderViewModel(extensionParams, config, this);
 
-        revisableDrugOrder.previousOrderUuid = self.uuid;
-        revisableDrugOrder.action = Bahmni.Clinical.Constants.orderActions.revise;
-        revisableDrugOrder.uuid = undefined;
-        revisableDrugOrder.dateActivated = undefined;
-        revisableDrugOrder.drugNameDisplay = constructDrugNameDisplay(self.drug, self.drug.form).value;
-        revisableDrugOrder.quantityEnteredViaEdit = true;
+        newDrugOrder.previousOrderUuid = self.uuid;
+        newDrugOrder.action = Bahmni.Clinical.Constants.orderActions.revise;
+        newDrugOrder.uuid = undefined;
+        newDrugOrder.dateActivated = undefined;
+        newDrugOrder.drugNameDisplay = constructDrugNameDisplay(self.drug, self.drug.form).value;
+        newDrugOrder.quantityEnteredViaEdit = true;
 
-        return revisableDrugOrder;
+        modifyForReverseSyncIfRequired(newDrugOrder);
+
+        return newDrugOrder;
     };
 
     this.cloneForEdit = function (index, extensionParams, config) {
@@ -320,6 +332,7 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
         }
     } else {
         viewModel.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
+        viewModel.reverseSynced = true;
         viewModel.uniformDosingType = {
             dose: parseFloat(administrationInstructions.dose),
             doseUnits: administrationInstructions.doseUnits
