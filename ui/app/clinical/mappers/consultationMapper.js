@@ -11,10 +11,7 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
             return !_.some(nonVoidedDrugOrders, function(otherDrugOrder){ return otherDrugOrder.action === Bahmni.Clinical.Constants.orderActions.revise && otherDrugOrder.encounterUuid === drugOrder.encounterUuid && otherDrugOrder.previousOrderUuid === drugOrder.uuid });
         });
 
-        var treatmentDrugs = nonVoidedDrugOrders.map(function(drugOrder) {
-            var treatmentDrug = new Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder);
-            return treatmentDrug;
-        });
+        var treatmentDrugs = Bahmni.Clinical.DrugOrdersViewModel.createFromContract(nonVoidedDrugOrders);
         var consultationNote = mapSpecialObservation(encounterTransaction.observations, consultationNoteConcept);
 
         var labOrderNote = mapSpecialObservation(encounterTransaction.observations, labOrderNoteConcept);

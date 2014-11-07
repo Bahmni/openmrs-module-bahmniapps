@@ -15,6 +15,11 @@ Bahmni.Clinical.Constants = (function () {
         new: 'NEW',
         revise: 'REVISE'
     };
+    var errorMessages = {
+        discontinuingAndOrderingSameDrug: "Discontinuing and ordering the same drug is not allowed. Instead, use edit",
+        incompleteForm: "Please click on Add or Clear to continue",
+        invalidItems: "Highlighted items in New Prescription section are incomplete. Please edit or remove them to continue"
+    };
     return {
         patientsListUrl: "/patient/search",
         diagnosisObservationConceptName: "Visit Diagnoses",
@@ -41,7 +46,8 @@ Bahmni.Clinical.Constants = (function () {
         reviseAction: 'REVISE',
         asDirectedInstruction: 'As directed',
         dosingTypes: dosingTypes,
-        orderActions: orderActions
+        orderActions: orderActions,
+        errorMessages: errorMessages
     };
 })();
 

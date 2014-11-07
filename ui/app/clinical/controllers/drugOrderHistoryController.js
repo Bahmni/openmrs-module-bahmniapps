@@ -35,14 +35,11 @@ angular.module('bahmni.clinical')
                 var drugOrderGroupedByDate = _.groupBy(prescribedDrugOrders, function (drugOrder) {
                     return DateUtil.parse(drugOrder.visit.startDateTime);
                 });
-                var newDrugOrder = function (drugOrder) {
-                    return DrugOrderViewModel.createFromContract(drugOrder, $scope.currentBoard.extensionParams, treatmentConfig);
-                };
                 var drugOrderGroups = _.map(drugOrderGroupedByDate, function (drugOrders, visitStartDate) {
                     return {
                         label: $filter("date")(DateUtil.parse(visitStartDate), 'dd MMM yy'),
                         visitStartDate: DateUtil.parse(visitStartDate),
-                        drugOrders: drugOrders.map(newDrugOrder),
+                        drugOrders: Bahmni.Clinical.DrugOrdersViewModel.createFromContract(drugOrders, $scope.currentBoard.extensionParams, treatmentConfig),
                         isCurrentVisit: currentVisit && DateUtil.isSameDateTime(visitStartDate, currentVisit.startDate)
                     }
                 });
@@ -50,7 +47,7 @@ angular.module('bahmni.clinical')
             };
 
             var init = function () {
-                $scope.consultation.discontinuedDrugs = $scope.consultation.discontinuedDrugs || [];
+                $scope.consultation.discontinuedDrugs = $scope.consultation.discontinuedDrugs || new Bahmni.Clinical.DrugOrdersViewModel();
                 if (!$scope.consultation.drugOrderGroups) {
                     spinner.forPromise(createPrescriptionGroups());
                 }

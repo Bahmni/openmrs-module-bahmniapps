@@ -109,8 +109,8 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
 
             var clearRootScope = function(){
                 $rootScope.consultation.newlyAddedDiagnoses = [];
-                $rootScope.consultation.newlyAddedTreatments = [];
-                $rootScope.consultation.discontinuedDrugs = [];
+                $rootScope.consultation.newlyAddedTreatments = new Bahmni.Clinical.DrugOrdersViewModel();
+                $rootScope.consultation.discontinuedDrugs = new Bahmni.Clinical.DrugOrdersViewModel();
                 $rootScope.consultation.drugOrderGroups = undefined;
             };
 

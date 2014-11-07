@@ -3,7 +3,7 @@
 angular.module('bahmni.clinical')
     .controller('TreatmentController', ['$scope', '$rootScope', 'TreatmentService', 'contextChangeHandler', 'treatmentConfig', 'DrugService', '$timeout',
         function ($scope, $rootScope, treatmentService, contextChangeHandler, treatmentConfig, drugService, $timeout) {
-            $scope.treatments = $scope.consultation.newlyAddedTreatments || [];
+            $scope.treatments = $scope.consultation.newlyAddedTreatments || new Bahmni.Clinical.DrugOrdersViewModel();
             $scope.treatmentConfig = treatmentConfig;
             function markStartingNewDrugEntry() {
                 $scope.startNewDrugEntry = true;
@@ -42,15 +42,13 @@ angular.module('bahmni.clinical')
                     variableDosingType: treatment.variableDosingType,
                     duration: treatment.duration,
                     durationUnit: treatment.durationUnit
-                }
+                };
             };
 
-            var restrictDrugsBeingDiscontinued = function(){
+            var isSameDrugBeingDiscontinuedAndOrdered = function(){
                 var existingTreatment = false;
                 angular.forEach($scope.consultation.discontinuedDrugs, function(drugOrder){
-                    existingTreatment = _.some($scope.treatments, function (treatment) {
-                        return treatment.drug.name === drugOrder.drug.name && drugOrder.isMarkedForDiscontinue;
-                    });
+                    existingTreatment = $scope.treatments.contains(drugOrder) &&  drugOrder.isMarkedForDiscontinue;
                 });
                 return existingTreatment;
             };
@@ -66,7 +64,7 @@ angular.module('bahmni.clinical')
                 drugOrders.forEach(function (drugOrder) {
                     var refill = drugOrder.refill();
                     $scope.treatments.push(refill);
-                })
+                });
             });
 
             $scope.$on("event:reviseDrugOrder", function (event, drugOrder) {
@@ -90,10 +88,6 @@ angular.module('bahmni.clinical')
                 $scope.treatments.push($scope.treatment);
                 $scope.treatment = newTreatment();
                 markStartingNewDrugEntry();
-            };
-
-            $scope.remove = function (index) {
-                $scope.treatments.splice(index, 1);
             };
 
             $scope.toggleShowAdditionalInstructions = function (line) {
@@ -125,17 +119,22 @@ angular.module('bahmni.clinical')
             };
 
             var contextChange = function () {
-                if(restrictDrugsBeingDiscontinued()) {
-                    return {allow: false, errorMessage: "Discontinuing and ordering the same drug is not allowed. Instead, use edit."};
+                var errorMessages = Bahmni.Clinical.Constants.errorMessages;
+                if(isSameDrugBeingDiscontinuedAndOrdered()) {
+                    return {allow: false, errorMessage: errorMessages.discontinuingAndOrderingSameDrug};
                 }
                 if($scope.incompleteDrugOrders()){
                     $scope.formInvalid = true;
                     return {allow: false};
                 }
                 if($scope.unaddedDrugOrders()){
-                    return {allow: false, errorMessage: "Please add the details of the drug form to New Prescription before clicking Save"};
+                    return {allow: false, errorMessage: errorMessages.incompleteForm};
                 }
-                $scope.consultation.newlyAddedTreatments = $scope.treatments || [];
+                if(!$scope.treatments.valid()){
+                    return {allow: false, errorMessage: errorMessages.invalidItems};
+                }
+
+                $scope.consultation.newlyAddedTreatments = $scope.treatments || new Bahmni.Clinical.DrugOrdersViewModel();
                 $scope.consultation.incompleteTreatment = $scope.treatment;
                 return {allow: true};
             };

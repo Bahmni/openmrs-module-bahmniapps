@@ -230,6 +230,11 @@
         background: #cceffc;
         border: 1px solid #75d7fc;
     }
+
+    .invalid {
+        background: lightcoral;
+        border: 1px solid #ff0000;
+    }
 	.active-drug {
 		border-left: 5px solid orange;
 	}
