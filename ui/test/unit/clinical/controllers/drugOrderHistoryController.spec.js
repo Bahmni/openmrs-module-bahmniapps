@@ -41,13 +41,15 @@ describe("DrugOrderHistoryController", function () {
         it("should setup scope variables", function (done) {
             fetchActiveTreatmentsDeferred.promise.then(function () {
                 expect(scope.consultation.drugOrderGroups.length).toBe(3);
-                expect(scope.consultation.drugOrderGroups[0].label).toEqual("Active");
+                expect(scope.consultation.drugOrderGroups[0].label).toEqual("Recent");
+                expect(scope.consultation.drugOrderGroups[0].drugOrders.length).toBe(2);
                 expect(scope.consultation.drugOrderGroups[0].drugOrders[0].uuid).toBe(activeDrugOrder.uuid);
+                expect(scope.consultation.drugOrderGroups[0].drugOrders[1].uuid).toBe("drugOrder2Uuid");
 
-                expect(scope.consultation.drugOrderGroups[1].visitStartDate.getTime()).toEqual(1397028261000);
-                expect(scope.consultation.drugOrderGroups[2].visitStartDate.getTime()).toEqual(1410349317000);
+                expect(scope.consultation.drugOrderGroups[1].visitStartDate.getTime()).toEqual(1410349317000);
+                expect(scope.consultation.drugOrderGroups[2].visitStartDate.getTime()).toEqual(1397028261000);
                 var secondDrugOrder = scope.consultation.drugOrderGroups[2].drugOrders[0];
-                expect(secondDrugOrder.drug.name).toBe(prescribedDrugOrders[2].drug.name);
+                expect(secondDrugOrder.drug.name).toBe(prescribedDrugOrders[0].drug.name);
                 done();
             });
         });

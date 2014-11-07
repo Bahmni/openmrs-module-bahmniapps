@@ -5,7 +5,7 @@
     </div>
 	<div class="inpage">
 		<div class="tabs">
-			<div class="tab" ng-repeat="drugOrderGroup in consultation.drugOrderGroups | orderBy:'visitStartDate':true">
+			<div class="tab" ng-repeat="drugOrderGroup in consultation.drugOrderGroups">
 				<input class="tab-radio" id="{{'drug-orders-tab-' + $index}}" name="tab-group-1" type="radio" ng-checked="drugOrderGroup.selected" ng-class="{}" tabindex="-1">
 				<label class="tab-label" for="{{'drug-orders-tab-' + $index}}">
                     <span>{{drugOrderGroup.label | date: 'dd MMM yy'}}</span>
@@ -14,9 +14,10 @@
                 <button class="secondary-button refill-drugs-btn fr" ng-click="refillAll(drugOrderGroup.drugOrders)" ng-if="!drugOrderGroupsEmpty()"><i class="icon-forward"></i> Refill All</button>
 				<div class="inpage-tab-panel">
 					<div class="inpage-tab-content">
-                        <p ng-if="!drugOrderGroup.drugOrders.length" class="placeholder-text">No Active Treatments</p>
+                        <p ng-if="!drugOrderGroup.drugOrders.length && !drugOrderGroup.additionalDrugOrders.length" class="placeholder-text">No Recent Treatments</p>
                         <ul class="table-mimic">
 							<li ng-repeat="drugOrder in drugOrderGroup.drugOrders" ng-class="{'active-drug' : drugOrder.isActive(), 'highlight' : drugOrder.isBeingEdited}">
+                                <span ng-if="$index === drugOrderGroup.firstSectionLength">---------------------------------------------------------</span>
                                 <div class="drug-details" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
                                     <strong class="drug-name">{{drugOrder.getDisplayName()}}</strong> - &nbsp;{{drugOrder.getDescription()}}
 

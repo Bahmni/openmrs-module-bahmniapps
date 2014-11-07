@@ -24,10 +24,9 @@ angular.module('bahmni.clinical')
                     activeDrugOrders = _.filter(activeDrugOrders, function (activeDrugOrder) {
                         return new Date(activeDrugOrder.scheduledDate) <= DateUtil.now();
                     });
-                    $scope.consultation.drugOrderGroups = [
-                        {label: 'Active', drugOrders: activeDrugOrders, selected: true}
-                    ];
+                    $scope.consultation.drugOrderGroups = [];
                     createPrescribedDrugOrderGroups();
+                    createActiveAndLastVisitDrugOrderGroup(activeDrugOrders);
                 });
             };
 
@@ -50,6 +49,12 @@ angular.module('bahmni.clinical')
                     }
                 });
                 $scope.consultation.drugOrderGroups = $scope.consultation.drugOrderGroups.concat(drugOrderGroups);
+            };
+
+            var createActiveAndLastVisitDrugOrderGroup = function(activeDrugOrders) {
+                $scope.consultation.drugOrderGroups = _.sortBy($scope.consultation.drugOrderGroups, 'visitStartDate').reverse();
+                var recentDrugOrders = activeDrugOrders.concat($scope.consultation.drugOrderGroups[0].drugOrders);
+                $scope.consultation.drugOrderGroups.unshift({label: 'Recent', drugOrders: recentDrugOrders, selected: true, firstSectionLength: activeDrugOrders.length});
             };
 
             var init = function () {
