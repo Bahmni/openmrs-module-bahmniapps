@@ -77,8 +77,8 @@ form,.form{
     height: 21px;
     min-width: 17px;
     padding: 4px 5px;
-    background-color: #eee;
-    border: 1px solid #ccc;
+    background-color: $lightestGray;
+    border: 1px solid $lightGray;
   }
 
 }
@@ -92,11 +92,11 @@ form,.form{
 }
 input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly], .select-arrow select[disabled]{
   cursor: not-allowed;
-  background-color: #eee;
-  color:#868686;
+  background-color: $lightestGray;
+  color: $mediumGray;
   &:focus{
     cursor: not-allowed;
-    background-color: #eee;
+    background-color: $lightestGray;
     outline:none;
   }
 }
@@ -134,8 +134,8 @@ textarea{
 
 .simple-form-ui select.illegalValue{
   border: 2px solid;
-  border-color: #ff6666;
-  background: white;
+  border-color: $error;
+  background: $white;
 }
 .span1{
   @include column(1);
@@ -181,36 +181,6 @@ form select, .form select {
   min-width: 100px;
 }
 /********* form element styling end***********/
-
-/*vendor forms*/
-.ui-autocomplete {
-    background: $white;
-    font-family: $primaryFont;
-    border: 1px solid #efefef;
-    border-radius: 10px;
-    padding: 0 0 0 10px;
-    .ui-menu-item {
-        border-bottom: 1px solid #ccc;
-        &:last-child {
-            border-bottom: 0;
-        }
-    }
-    .ui-menu-item a{
-        padding: 10px 10px 10px 0;
-        font-size: 14px;
-        &:hover {
-            background: #eee;
-            border: 1px solid $white;
-            color: #333;
-            border-radius: 0;
-        }
-        &:active, &:focus {
-            background: #ccc;
-            border: 0;
-            font-weight: bold;
-        }
-    }
-}
 
 form p strong, .form p strong {
   display: inline;

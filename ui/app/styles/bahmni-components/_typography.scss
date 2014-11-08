@@ -4,8 +4,8 @@
 
 .hierarchy {
     ul li {
-        border-top: 1px solid #eee;
-        font-size:14px; color: #333; background: #dfdfdf;
+        border-top: 1px solid $lightestGray;
+        font-size:14px; color: $darkGray; background: #dfdfdf;
 	    clear: both;
         .tree-list-item {
             padding-top: 3px;
@@ -30,7 +30,7 @@
         }
     }
     ul li ul li ul li {
-        font-size:13px; color: #555; background: #fff;
+        font-size:13px; color: #555; background: $white;
         .tree-list-item {
             padding-left: 30px;
             .field-attribute {
@@ -39,7 +39,7 @@
         }
     }
     ul li ul li ul li ul li {
-        font-size:12px; color: #888; background: #fff;
+        font-size:12px; color: #888; background: $white;
        .tree-list-item {
             padding-left: 40px;
             .field-attribute {
@@ -48,7 +48,7 @@
         } 
     } 
     ul li ul li ul li ul li ul li {
-        font-size:11px; color: #999; background: #ffffff; font-family:$primaryLightFont;
+        font-size:11px; color: #999; background: $white; font-family:$primaryLightFont;
         .tree-list-item {
             padding-left: 50px;
             .field-attribute {

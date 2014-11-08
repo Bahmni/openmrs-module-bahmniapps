@@ -4,7 +4,7 @@
   @include font-size(1);
   .row{
     @include pie-clearfix();
-    border-bottom:1px solid #cecece;
+    border-bottom:1px solid $lightGray;
   }
   .col{
     padding:10px 0px;
@@ -13,8 +13,8 @@
   }
 
   .table-header{
-    background:#F0F0F0;
-    border-bottom:1px solid #cecece;
+    background: $lightestGray;
+    border-bottom:1px solid $lightGray;
     .col{
       @include font-size(1);
       font-weight: bold;
@@ -23,10 +23,10 @@
   .table-body{
     .row{
       &:hover{
-        background:#fff;
+        background: $white;
       }
       &:nth-child(even) {
-          background: #f1f1f1;
+          background: $lightestGray;
         }
     }
   }
@@ -39,7 +39,7 @@ table {
         padding:10px  7px 10px 7px ;
 	}
 	tbody tr:nth-child(odd), tr:nth-child(even) {
-		background: #fff;
+		background: $white;
 	}
 }
 
@@ -65,12 +65,12 @@ ul.table-mimic {
 	li {
 		width: 100%;
 		padding: 5px 10px;
-		border: 1px solid #ddd;
+		border: 1px solid darken($lightestGray, 5%);
 		border-bottom: 0;
 		box-sizing: border-box;
 		@include clearfix();
 		&:last-child {
-			border-bottom: 1px solid #ddd;
+			border-bottom: 1px solid darken($lightestGray, 5%);
 		}
 	}
 }
@@ -79,13 +79,13 @@ ul.table-mimic {
 table.h-scroll {
     width: 100%; border-collapse: collapse; border-spacing: 0;
     display: block; position: relative;
-    border-left: 1px solid #eee;
-    border-right: 1px solid #eee;
+    border-left: 1px solid $lightestGray;
+    border-right: 1px solid $lightestGray;
     font-size: 14px;
     margin-top: 0;
     overflow: auto;
     th, td { margin: 0; vertical-align: top; }
-    th { text-align: left; background: #eee;}
+    th { text-align: left; background: $lightestGray;}
     th.drug {font-family: "OpenSans", Arial, sans-serif;}
 
     thead { display: block; float: left; }

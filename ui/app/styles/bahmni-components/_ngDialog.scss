@@ -5,7 +5,7 @@
     margin-bottom: 15px;
     h5 {
         display: inline-block;
-        color: #ddd;
+        color: $lightGray;
         line-height: 50px;
         padding: 0 0 0 20px;
         font-size: 16px;
@@ -17,7 +17,7 @@
         float: right;
         margin: 15px 20px;
         border-bottom: 0!important;
-        color: #fff;
+        color: $white;
         font-size: 16px;
     }
 }
@@ -30,7 +30,7 @@
         margin-top: 5px;
     }
     .ipd-investigation tr th {
-        background: #eee;
+        background: $lightestGray;
     }
     td.value {
         width: 50%;
@@ -44,7 +44,7 @@
 
 .ngdialog-content {
     font-size: 14px!important;
-    color: #333;
+    color: $darkGray;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -61,17 +61,17 @@
     }
     table {
         th {
-            background: #eee;
+            background: $lightestGray;
             background-image: none;
-            color: #555;
+            color: $mediumGray;
             padding: 5px 10px;
         }      
         tr:nth-child(even), tr:nth-child(odd) {
-            background: #fff;
+            background: $white;
         }
         tr th, tr td {
             font-size: 14px;
-            color: #333;
+            color: $darkGray;
         }
         tr {
             td.days, td.dosage {

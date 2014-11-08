@@ -12,13 +12,12 @@
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: right;
-    background: #eee;
+    background: $lightestGray;
     padding: 5px 10px;
     border-radius: 0 0 5px 5px;
-    color: #007fff;
-    box-shadow: 0px 4px 5px -2px #ccc;
+    box-shadow: 0px 4px 5px -2px $lightGray;
     right: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid $lightGray;
     border-top: 0;
     &:hover {
         text-decoration: none;

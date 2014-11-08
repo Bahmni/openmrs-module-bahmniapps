@@ -3,14 +3,14 @@ button.toggle-patient {
   margin: 3px 0;
   height: 30px;
   background: $bahmniSecondaryColor url("../images/bars.png") no-repeat center center;
-  border: 1px solid #4d8282;
+  border: 1px solid darken($bahmniSecondaryColor, 10%);
   padding: 20px 25px;
 }
 button.toggle-patient:hover {
     opacity: 0.8;
 }
 button.toggle-patient.shift {
-  background: #4d8282 url("../images/bars.png") no-repeat center center;
+  background: darken($bahmniSecondaryColor, 10%) url("../images/bars.png") no-repeat center center;
 }
 
 .patient-control-panel {
@@ -24,25 +24,21 @@ button.toggle-patient.shift {
   }
 }
 aside{
-  h2{
-    background:none;
-    color: #000;
-  }
   a{
-    color:#fff;
+    color: $white;
   }
   &.visit-history{
     position:absolute;
     width:300px;
-    background:#333333;
+    background: $darkGray;
     bottom: 0;
     top: 50px;
-    box-shadow: -3px 5px 10px #777;
+    box-shadow: -3px 5px 10px $mediumGray;
     z-index: 5;
     h2 {
-      color: #666;
+      color: $mediumGray;
       font-size: 14px;
-      border-bottom-color: #555;
+      border-bottom-color: $mediumGray;
       padding-left: 10px;
       margin-bottom: 8px;
     }
@@ -52,19 +48,19 @@ aside{
     ul.visit-history {
       height: 250px;
       overflow-y: auto;
-      border-top: 1px solid #222;
+      border-top: 1px solid $darkGray;
     }
     li a {
       display: block;
-      padding: 12px 20px;
-      color: #aaa;
+      padding: 10px 20px;
+      color: darken($lightGray, 20%);
       font-size: 14px;
-      border-bottom: 1px solid #222;
-      border-top: 1px solid #444;
+      border-bottom: 1px solid darken($darkGray, 5%);
+      border-top: 1px solid lighten($darkGray, 5%);
       &:hover {
         text-decoration: none;
-        background: #2e2e2e;
-        color: #bbb;
+        background: $darkGray;
+        color: $lightGray;
       }
     }
     li a.log-out {
@@ -87,7 +83,7 @@ aside{
         width: 230px;
       }
       h4, h5, .ward {
-        color: #ddd;
+        color: $lightGray;
         display: block;
         padding-left: 10px;
         font-size: 14px;
@@ -95,10 +91,10 @@ aside{
       }
       h4.patient-name {
         text-transform: capitalize; font-size: 16px; 
-        a {color: #ddd;}
+        a {color: $lightGray;}
       }
-      h5, .ward {color: #888; margin-top: 5px;}
-      h5.patient-identifier {color: #ddd;}
+      h5, .ward {color: $mediumGray; margin-top: 5px;}
+      h5.patient-identifier {color: $lightGray;}
     }
   }
   
@@ -127,17 +123,17 @@ aside{
 
   .visit-history-entry, .summary {
     &.selected a, &.selected a:hover{
-      background :#555;
-      color: #fff;
+      background : $mediumGray;
+      color: $white;
       cursor: default;
     }
-    &.active {color: #fafafa;}
-    .icon-star {color: #E8A000; display: none;}
+    &.active {color: $lightestGray;}
+    .icon-star {color: $clinicalCurrentVist; display: none;}
     &.active .icon-star {display: inline-block;}
   }
 }
 .btn-patient-doc .icon-file {
-  color: #eee;
+  color: $lightestGray;
   margin-right: 5px;
   font-size: 18px;
 }
@@ -145,7 +141,7 @@ aside{
   [class^="icon-"],
   [class*=" icon-"] {
     display: none;
-    color: #eee;
+    color: $lightestGray;
     margin-right: 5px;
     font-size: 18px;
   }
@@ -166,7 +162,6 @@ ul.visit-history::-webkit-scrollbar-track {
 }
  
 ul.visit-history::-webkit-scrollbar-thumb {
-  background-color: #666;
-  // outline: 1px solid slategrey;
+  background-color: $mediumGray;
   border-radius: 15px;
 }

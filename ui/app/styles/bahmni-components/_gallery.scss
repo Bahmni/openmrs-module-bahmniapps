@@ -43,7 +43,7 @@ body.gallery-open > *:not(#gallery-pane) {
 	width: 100%;
 }
 .nav li {
-	border: 5px solid #AAAAAA;
+	border: 5px solid $lightGray;
 	border-radius: 5px;
 	cursor: pointer;
 	display: inline-block;
@@ -53,7 +53,7 @@ body.gallery-open > *:not(#gallery-pane) {
 	width: 50px;
 }
 .nav li.active {
-	border: 5px solid #FFFFFF;
+	border: 5px solid $white;
 }
 .nav li img {
 	width: 100%;
@@ -128,7 +128,7 @@ body.gallery-open > *:not(#gallery-pane) {
     }
 }
 .slider.container {
-    background: #efefef;
+    background: $lightestGray;
 }
 .image-title {
 	margin-right: 10px;
@@ -147,10 +147,10 @@ body.gallery-open > *:not(#gallery-pane) {
     display: block;
     overflow: auto;
     padding: 10px 20px;
-    background: #efefef;
+    background: $lightestGray;
 }
 .image-date, .image-index {
-    color: #777;
+    color: $mediumGray;
     margin-left: 5px;
 }
 .image-index {
@@ -158,7 +158,7 @@ body.gallery-open > *:not(#gallery-pane) {
     margin-left: 15px;
 }
 .image-desc {
-    background: #fef7e3;
+    background: $lightestGray;
     strong {
         font-family: OpenSansBold;
     }
@@ -169,7 +169,7 @@ body.gallery-open > *:not(#gallery-pane) {
     padding: 35px 0;
     i.icon-picture {
         font-size: 10em;
-        color: #ccc;
+        color: $lightGray;
     }
     .no-image-msg {
         font-size: 16px;
@@ -177,7 +177,7 @@ body.gallery-open > *:not(#gallery-pane) {
 }
 .image-actions {
 	text-align: center;
-	background: #efefef;
+	background: $lightestGray;
 	padding: 10px 0;
 	margin-bottom: 5px;
 }
@@ -197,17 +197,16 @@ body.gallery-open > *:not(#gallery-pane) {
 .image-impression-section.shift {
 	float: right;
 	width: 30%;
-	background: #fefefe;
 	padding: 50px 10px 10px 10px;
 	@include box-sizing(border-box);
-	@include box-shadow(inset 0 0 5px #888);
+	@include box-shadow(inset 0 0 5px $mediumGray);
 	position: absolute;
 	top: 0; bottom: 0; right: 0;
 	z-index: 0;
 
 	textarea {
 		width: 98%;
-		border: 1px solid #ddd;
+		border: 1px solid $lightGray;
 	}
 
 	.save-impression-btn {

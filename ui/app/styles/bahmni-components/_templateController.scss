@@ -7,8 +7,8 @@
 	text-align: center;
 	background: rgba(255,255,255,0.8);
 	z-index: 3;
-	box-shadow: 0 -3px 4px 0px #eee;
-	border-top: 1px solid #ddd;
+	box-shadow: 0 -3px 4px 0px $lightestGray;
+	border-top: 1px solid darken($lightestGray, 5%);
 	padding: 2px 0;
 	button {
 		width: 40px;
@@ -22,8 +22,8 @@
 }
 
 .template-control-panel {
-	background: #fff;
-	border: 1px solid #ccc;
+	background: $white;
+	border: 1px solid $lightGray;
 	@include clearfix();
 	position: fixed;
 	bottom: 52px;
@@ -43,9 +43,9 @@
 		float: left;
 		margin: 1px 5px;
 		font-size: 12px;
-		border: 1px solid #ccc;
+		border: 1px solid $lightGray;
 		padding: 5px;
-		color: #333;
+		color: $darkGray;
 		text-align: left;
 		i {
 			font-size: 1.5em;
@@ -53,8 +53,8 @@
 		}
 	}
 	ul.template-icons li.templateAdded button {
-		@include background(linear-gradient(top, #fff, #ddd));
-		color: #457FAC;
+		@include background(linear-gradient(top, $white, darken($lightestGray, 5%)));
+		color: $bahmniTertiaryColor;
 	}
 }
 
@@ -68,7 +68,6 @@ ul.template-icons::-webkit-scrollbar-track {
 }
  
 ul.template-icons::-webkit-scrollbar-thumb {
-  background-color: #666;
-  // outline: 1px solid slategrey;
+  background-color: $mediumGray;
   border-radius: 7px;
 }

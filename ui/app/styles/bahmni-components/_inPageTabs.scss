@@ -15,8 +15,8 @@
     }
 
     .tabs .tab-label {
-        background: #eee; 
-        border: 1px solid #ccc; 
+        background: $lightestGray; 
+        border: 1px solid $lightGray; 
         display: inline-block;
         font-size: 14px;
         left: 1px;
@@ -50,7 +50,7 @@
         display: block;
         background: white;
         padding: 5px 0;
-        border: 1px solid #ccc;
+        border: 1px solid $lightGray;
         float: left;
         font-size: 16px;
         font-size: 1rem;
@@ -69,8 +69,8 @@
     }
     @media only screen and (max-width: 50em) {
         .tabs .tab > label {
-            background: #BBB;
-            border-color: #999;
+            background: $lightGray;
+            border-color: darken($lightGray, 10%);
 
             -webkit-box-sizing: border-box;
             -moz-box-sizing: border-box;
@@ -78,9 +78,9 @@
             width: 100%;
         }
         .tabs .tab > [type="radio"]:checked + label {
-            background: #222;
-            border-color: #444;
-            color: #DDD;
+            background: $darkGray;
+            border-color: $mediumGray;
+            color: $lightGray;
         }
     }
 }

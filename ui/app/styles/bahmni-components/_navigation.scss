@@ -9,7 +9,7 @@
             padding: 12px 15px;
             background: darken($bahmniSecondaryColor, 10%);
             display:inline-block;
-            color:#fff;
+            color: $white;
             margin: 0 2px 0 0;
             border-bottom-right-radius:0px;
             border-bottom-left-radius:0px;
@@ -28,9 +28,9 @@
         }
         &.tab-selected a, &.tab-selected button{
             position:relative;
-            background:#fff;
+            background: $white;
             color: $bahmniPrimaryColor;
-            border:1px solid #cecece;
+            border:1px solid $lightGray;
             border-bottom:none;
             outline:none;
             &:hover {
