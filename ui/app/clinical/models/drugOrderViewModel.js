@@ -25,7 +25,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
             } else {
                 self.scheduledDate = null;
             }
-        }
+        },
+        enumerable: true
     });
 
     Object.defineProperty(this, 'uiStartDate', {
@@ -53,7 +54,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
                 this.doseUnits = defaults.doseUnits;
                 this.route = defaults.route;
             }
-        }
+        },
+        enumerable: true
     })
 
     Object.defineProperty(this, 'uniformDosingDoseUnits', {

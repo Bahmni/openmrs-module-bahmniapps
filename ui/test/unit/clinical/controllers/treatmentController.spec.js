@@ -74,7 +74,7 @@ describe("TreatmentController", function () {
     describe("Clear Form", function () {
         var isSameAs = function (obj1, obj2) {
             for (var key in obj1) {
-                if (key !== "_effectiveStartDate" && typeof obj1[key] !== 'function') {
+                if (key !== "_effectiveStartDate" && key !== "effectiveStartDate" && typeof obj1[key] !== 'function') {
                     if (!_.isEqual(obj1[key], obj2[key])) {
                         return false;
                     }

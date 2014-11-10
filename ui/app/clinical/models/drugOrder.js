@@ -5,7 +5,6 @@ Bahmni.Clinical.DrugOrder = (function () {
 
     var DrugOrder = function (drugOrderData) {
         angular.extend(this, drugOrderData);
-        this.effectiveStartDate = drugOrderData.effectiveStartDate; // extend does not copy properties defined using Object.defineProperty
     };
 
     DrugOrder.create = function (drugOrderData) {
