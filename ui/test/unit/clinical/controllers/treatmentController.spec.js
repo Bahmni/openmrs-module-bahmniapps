@@ -5,7 +5,7 @@ describe("TreatmentController", function () {
     beforeEach(module('bahmni.common.uiHelper'));
     beforeEach(module('bahmni.clinical'));
 
-    var scope, rootScope, contextChangeHandler, newTreatment, editTreatment;
+    var scope, rootScope, contextChangeHandler, newTreatment, editTreatment, appService, appDescriptor;
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
         rootScope = $rootScope;
@@ -16,12 +16,15 @@ describe("TreatmentController", function () {
         scope.currentBoard = {extension: {}, extensionParams: {}};
         contextChangeHandler = jasmine.createSpyObj('contextChangeHandler', ['add']);
         scope.addForm = {$invalid: false, $valid: true};
-
+        appDescriptor = jasmine.createSpyObj('appDescriptor', ['getExtensions', 'getConfigValue', 'formatUrl']);
+        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        appService.getAppDescriptor.and.returnValue(appDescriptor);
         $controller('TreatmentController', {
             $scope: scope,
             $rootScope: rootScope,
             treatmentService: null,
             contextChangeHandler: contextChangeHandler,
+            appService: appService,
             treatmentConfig: {}
         });
     }));
@@ -108,7 +111,7 @@ describe("TreatmentController", function () {
             drugOrder.durationUnit = {name: "Days"};
             drugOrder.route = {name: "Orally"};
             drugOrder.uniformDosingType.dose = "1";
-            drugOrder.uniformDosingType.doseUnits = "Capsule";
+            drugOrder.doseUnits = "Capsule";
             drugOrder.uniformDosingType.frequency = {name: "Once a day"};
             drugOrder.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
 
@@ -122,7 +125,7 @@ describe("TreatmentController", function () {
             drugOrder.durationUnit = {name: "Days"};
             drugOrder.route = {name: "Orally"};
             drugOrder.uniformDosingType.dose = "1";
-            drugOrder.uniformDosingType.doseUnits = "Capsule";
+            drugOrder.doseUnits = "Capsule";
             drugOrder.uniformDosingType.frequency = {name: "Once a day"};
             drugOrder.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
 

@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('TreatmentController', ['$scope', '$rootScope', 'TreatmentService', 'contextChangeHandler', 'treatmentConfig', 'DrugService', '$timeout',
-        function ($scope, $rootScope, treatmentService, contextChangeHandler, treatmentConfig, drugService, $timeout) {
+    .controller('TreatmentController', ['$scope', '$rootScope', 'TreatmentService', 'contextChangeHandler', 'treatmentConfig', 'DrugService', '$timeout', 'appService',
+        function ($scope, $rootScope, treatmentService, contextChangeHandler, treatmentConfig, drugService, $timeout, appService) {
             $scope.treatments = $scope.consultation.newlyAddedTreatments || [];
             $scope.treatmentConfig = treatmentConfig;
+            var drugOrderAppConfig = appService.getAppDescriptor().getConfigValue("drugOrder") || {};
+
             function markStartingNewDrugEntry() {
                 $scope.startNewDrugEntry = true;
                 $timeout(function () {
@@ -23,7 +25,7 @@ angular.module('bahmni.clinical')
             ];
 
             var newTreatment = function () {
-                return new Bahmni.Clinical.DrugOrderViewModel($scope.currentBoard.extensionParams, $scope.treatmentConfig);
+                return new Bahmni.Clinical.DrugOrderViewModel(drugOrderAppConfig, $scope.treatmentConfig);
             };
 
             $scope.today = new Date();

@@ -2,12 +2,13 @@
 
 angular.module('bahmni.clinical')
     .controller('DrugOrderHistoryController', ['$scope', '$rootScope', '$filter', '$stateParams', 'prescribedDrugOrders',
-        'treatmentConfig', 'TreatmentService', 'spinner',
-        function ($scope, $rootScope, $filter, $stateParams, prescribedDrugOrders, treatmentConfig, treatmentService, spinner) {
+        'treatmentConfig', 'TreatmentService', 'spinner', 'appService',
+        function ($scope, $rootScope, $filter, $stateParams, prescribedDrugOrders, treatmentConfig, treatmentService, spinner, appService) {
 
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var currentVisit = $rootScope.visit;
+            var drugOrderAppConfig = appService.getAppDescriptor().getConfigValue("drugOrder") || {};
 
             var dateCompare = function (drugOrder1, drugOrder2) {
                 return drugOrder1.effectiveStartDate > drugOrder2.effectiveStartDate ? -1 : 1;
@@ -35,9 +36,11 @@ angular.module('bahmni.clinical')
                 var drugOrderGroupedByDate = _.groupBy(prescribedDrugOrders, function (drugOrder) {
                     return DateUtil.parse(drugOrder.visit.startDateTime);
                 });
+
                 var createDrugOrder = function(drugOrder) {
-                    return DrugOrderViewModel.createFromContract(drugOrder, $scope.currentBoard.extensionParams, treatmentConfig);
+                    return DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, treatmentConfig);
                 }
+
                 var drugOrderGroups = _.map(drugOrderGroupedByDate, function (drugOrders, visitStartDate) {
                     return {
                         label: $filter("date")(DateUtil.parse(visitStartDate), 'dd MMM yy'),

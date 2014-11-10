@@ -25,7 +25,6 @@ Bahmni.Clinical.DrugOrder = (function () {
             }
             return JSON.stringify(dosingInstructions);
         };
-        var doseUnits = drugOrderData.isUniformDosingType() && !drugOrderData.isCurrentDosingTypeEmpty() ? drugOrderData.uniformDosingType.doseUnits : drugOrderData.variableDosingType.doseUnits;
 
         var frequency = drugOrderData.isUniformDosingType() && !drugOrderData.isCurrentDosingTypeEmpty() && drugOrderData.uniformDosingType.frequency;
 
@@ -38,7 +37,7 @@ Bahmni.Clinical.DrugOrder = (function () {
                 dosingInstructionType: Bahmni.Clinical.Constants.flexibleDosingInstructionsClass,
                 dosingInstructions: {
                     dose: drugOrderData.uniformDosingType.dose,
-                    doseUnits: doseUnits,
+                    doseUnits: drugOrderData.doseUnits,
                     route: route,
                     frequency: frequency,
                     asNeeded: drugOrderData.asNeeded,
