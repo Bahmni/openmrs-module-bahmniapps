@@ -13,6 +13,12 @@ angular.module('bahmni.clinical')
                     $scope.startNewDrugEntry = false;
                 });
             }
+            function markEditingDrugEntry() {
+                $scope.editDrugEntry = true;
+                $timeout(function () {
+                    $scope.editDrugEntry = false;
+                });
+            }
 
             markStartingNewDrugEntry();
 
@@ -75,6 +81,7 @@ angular.module('bahmni.clinical')
                 $scope.treatments.map(setIsNotBeingEdited);
                 drugOrderHistory = drugOrder;
                 $scope.treatment = drugOrder.revise();
+                markEditingDrugEntry();
                 $scope.treatment.currentIndex = $scope.treatments.length + 1;
             });
 
@@ -109,6 +116,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.edit = function (index) {
+                markEditingDrugEntry();
                 clearHighlights();
                 $scope.treatments[index].isBeingEdited = true;
                 $scope.treatment = $scope.treatments[index].cloneForEdit(index, $scope.currentBoard.extensionParams, $scope.treatmentConfig);

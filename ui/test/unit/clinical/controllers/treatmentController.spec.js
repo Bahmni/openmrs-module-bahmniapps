@@ -50,6 +50,11 @@ describe("TreatmentController", function () {
             expect(scope.treatment.drug).toBeFalsy();
         });
 
+        it("should set auto focus on drug name", function (){
+            scope.add();
+            expect(scope.startNewDrugEntry).toBeTruthy();
+        });
+
     });
 
     describe("Save", function () {
@@ -103,8 +108,31 @@ describe("TreatmentController", function () {
             expect(scope.treatments[0].isDiscontinuedAllowed).toBeTruthy();
         });
 
+        it("should set auto focus on drug name", function (){
+            scope.clearForm();
+            expect(scope.startNewDrugEntry).toBeTruthy();
+        });
+
     });
 
+
+    describe("Edit DrugOrder()", function () {
+        it("should set editDrugEntry to true on edit", function (){
+            var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
+            scope.treatments = [drugOrder];
+            scope.edit(0);
+            expect(scope.editDrugEntry).toBeTruthy();
+        });
+    });
+
+    describe("Revise DrugOrder()", function () {
+        it("should set editDrugEntry to true on revise", function (){
+            var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
+            rootScope.$broadcast("event:reviseDrugOrder", drugOrder);
+            expect(scope.editDrugEntry).toBeTruthy();
+        });
+    });
+    
     describe("saveTreatment()", function () {
         it("copies treatments object to rootScope", function () {
             var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
