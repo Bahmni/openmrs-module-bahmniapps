@@ -1,79 +1,68 @@
-
-.selectedDiagnosis {
-  background-color: #7DBF45;
-  color: WHITE;
-  padding: 5px;
-  margin-right: 10px;
-  font: 25px;
-  display: inline-block;
-  margin-bottom: 10px;
-}
-
 .diagnosis {
-  .table {
-    .row {
-      border-bottom: 1px solid #ccc;
+    .table {
+        .row {
+            border-bottom: 1px solid $lightGray;
+        }
+        .table-header.row {
+            border-bottom: 1px solid $lightGray;
+        }
     }
-    .table-header.row {
-      border-bottom: 1px solid #cecece;
+    .new-diagnosis, .current-diagnosis, .history-diagnosis {
+        margin-bottom: 25px;
+        margin-left: 5px;
+        margin-right: 5px;
     }
-  }
-  .new-diagnosis, .current-diagnosis, .history-diagnosis {
-    margin-bottom: 25px;
-    margin-left: 5px;
-    margin-right: 5px;
-  }
-  .new-diagnosis {
-    border: 1px solid #bbb;
-    margin: 35px 5px 20px 5px;
-    @media screen and (max-width: 768px) {
-        margin-top: 20px;
+    .new-diagnosis {
+        border: 1px solid darken($lightGray, 10%);
+        margin: 35px 5px 20px 5px;
+        @media screen and (max-width: 768px) {
+            margin-top: 20px;
+        }
+        .row-remover {
+            border: 1px solid $lightGray;
+            border-radius: 5px;
+            float: right;
+            padding: 5px 10px;
+            margin-bottom: 10px;
+            span {
+                font-size: 20px;
+                color: $clinicalRemoveBtn;
+                padding: 0;
+            }
+        }
     }
-    .row-remover {
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      float: right;
-      padding: 5px 10px;
-      margin-bottom: 10px;
-      span {
-        font-size: 20px;
-        color: #660000;
-        padding: 0;
-      }
+    .table-header {
+        background: $lightestGray;
+        border-radius: 5px 5px 0 0;
+        span {
+            font-size: 14px;
+            white-space: nowrap;
+            color: $mediumGray;
+            font-family: OpenSansBold;
+            font-weight: normal;
+            padding-left: 10px;
+        }
     }
-  }
-  .table-header {
-    background: #f6f6f6;
-    border-radius: 5px 5px 0 0;
-    span {
-      font-size: 14px;
-      white-space: nowrap;
-      color: #555;
-      font-family: OpenSansBold;
-      font-weight: normal;
-      padding-left: 10px;
+    input[type=number] {
+        width: 50px;
     }
-  }
-  input[type=number] {
-    width: 50px;
-  }
-  .col1 {
-    @include column(3);
-    input[type="text"] {
-      min-width: 160px;
-      margin-left: 10px;
-      margin-top: 0;
-      float: left;
+    .col1 {
+        @include column(3);
+        input[type="text"] {
+            min-width: 160px;
+            margin-left: 10px;
+            margin-top: 0;
+            float: left;
+        }
+        input[type="checkbox"] {
+            margin-top: 8px;
+        }
+        input[type="checkbox"].illegalValue {
+            border: 2px solid red;
+        }
+        label.add-new {margin-top: 10px; font-size: 12px;}
+        width: 39%;
     }
-    input[type="checkbox"] {
-      margin-top: 8px;
-    }
-    input[type="checkbox"].illegalValue {
-      border: 2px solid red;
-    }
-    label.add-new {margin-top: 10px; font-size: 12px;}
-    width: 39%;
-  }
   .col2 {
     @include column(3);
     button:first-child {
@@ -104,14 +93,14 @@
       -webkit-transition: display 1s ease;
       right: 66px;
       top: 10px;
-      color: #cc6600;
+      color: orange;
       margin-bottom: 5px;
       font-size: 14px;
       display: none;
     }
   }
   .view-past.edited {
-    background-color: #ffffcc;
+    background-color: $clinicalHighlight;
     .message {
       display: block;
     }
@@ -145,7 +134,7 @@
     outline: 0;
   }
   button.active {
-    color: #457FAC;
+    color: $bahmniTertiaryColor;
     padding-top: 7px;
     span:before {
       font-family: FontAwesome;
@@ -178,11 +167,11 @@
           margin-right: 5px;
         }
         .time {
-          color: #888;
+          color: $mediumGray;
           margin-left: 5px;
         }
         .provider {
-          color: #aaa;
+          color: $mediumGray;
           font-size: 12px;
           margin: 2px 0;
         }
@@ -201,12 +190,12 @@
 .diagnosis .history-diagnosis .table-body .row.edit-diagnosis {
   overflow: auto;
   clear: both;
-  background: #eee;
+  background: $lightestGray;
   border-bottom: 0;
 }
 
 .ruled-out label.diagnosis-name {
-  color: #777;
+  color: $mediumGray;
   text-decoration: line-through;
 }
 
@@ -215,14 +204,14 @@
   text-align: right;
   span {
     font-size: 12px;
-    color: #888;
+    color: $mediumGray;
   }
   .time-stamp {
     .date {
       text-transform: uppercase;
     }
     .time {
-      color: #aaa;
+      color: $mediumGray;
       margin-left: 5px;
     }
   }
@@ -264,7 +253,7 @@
 
 .visit {
     .history-diagnosis .diagnosis-row button.toggle {
-        color: #666;
+        color: $mediumGray;
         padding: 0;    
         &.has-notes {
             i {
@@ -275,7 +264,7 @@
             padding: 0;
             background: none;
             border: none;
-            color: #666;
+            color: $mediumGray;
             &:hover {
                 background: none;
             }
@@ -288,7 +277,7 @@
     cursor: pointer;
 }
 
-.diagnosis-row button.toggle.has-notes i{
+.diagnosis-row button.toggle.has-notes i {
     color: orange;
 }
 textarea.comment-section {

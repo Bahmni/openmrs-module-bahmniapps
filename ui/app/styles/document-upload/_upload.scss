@@ -22,22 +22,22 @@
       height: 40px;
       line-height: 40px;
       font-size: 14px;
-      @include background(linear-gradient(top, #fff, #ddd));
-      border: 1px solid #CCC;
+      @include background(linear-gradient(top, $white, $lightestGray));
+      border: 1px solid $lightGray;
       padding: 0 5px;
       margin: 0;
       cursor: pointer;
       i.state {
-        color: #999;
+        color: $mediumGray;
         font-size: 18px;
         padding: 0;
       }
       small {
         font-size: 90%;
-        color: #5A9993;
+        color: $bahmniSecondaryColor;
       }
       .currentVisitMarker {
-        color: #E8A000;
+        color: $clinicalCurrentVist;
         float: right;
       }
     }
@@ -48,51 +48,43 @@
       padding-right: 0;
     }
     .containsImageMarker {
-      color: #0099cc;
+      color: $bahmniLinkColor;
       float: right;
     }
     .visit-content {
         padding: 10px 10px 15px 10px;
         label.btn {
-          -webkit-border-radius: 3px;
-          -moz-border-radius: 3px;
-          -ms-border-radius: 3px;
-          -o-border-radius: 3px;
-          border-radius: 3px;
-          background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #dddddd));
-          background: -webkit-linear-gradient(top, #ffffff, #dddddd);
-          background: -moz-linear-gradient(top, #ffffff, #dddddd);
-          background: -o-linear-gradient(top, #ffffff, #dddddd);
-          background: linear-gradient(top, #ffffff, #dddddd);
-          background-color: #dddddd;
-          border: #dddddd 1px solid;
-          padding: 21px 30px;
-          display: inline-block;
-          line-height: 1.2em;
-          color: #363463;
-          cursor: pointer;
-          min-width: 0;
-          max-width: 300px;
-          text-decoration: none;
-          @media screen and (max-width: 480px) {
+            @include border-radius(3);
+            @include background(linear-gradient(top, $white, $lightestGray));
+            background-color: $lightestGray;
+            border: 1px solid $lightGray;
+            padding: 21px 30px;
+            display: inline-block;
+            line-height: 1.2em;
+            color: $darkGray;
+            cursor: pointer;
+            min-width: 0;
+            max-width: 300px;
+            text-decoration: none;
+            @media screen and (max-width: 480px) {
             width: 49%;
             padding-left: 0;
             padding-right: 0;
             text-align: center;
             padding: 20px 0;
             margin-top: 8px;
-          }
+            }
         }
         button[disabled] {
           position: relative;
           top: 1px;
-          color: #EEE;
+          color: $lightestGray;
         }
         .btn {
           padding: 20px 30px;
           &.btn-primary {
-            background: #447772;
-            color: #FFF;
+            background: $bahmniSecondaryColor;
+            color: $white;
 
             &[disabled] {
               background: grey;
@@ -110,7 +102,7 @@
         .files > li {
           clear: both;
           overflow: auto;
-          border-bottom: 1px solid #eee;
+          border-bottom: 1px solid $lightestGray;
           padding-top: 10px;
           &:last-child {
             border-bottom: 0;
@@ -122,7 +114,7 @@
             float: left;
             width: 50px;
             height: 50px;
-            background: #ccc;
+            background: $lightestGray;
             padding: 5px;
             margin-right: 10px;
           }
@@ -132,7 +124,7 @@
           }
           .concept-name.saved {
             font-family: OpenSansBold;
-            border: 1px solid #efefef;
+            border: 1px solid $lightGray;
             width: 200px;
           }
           .placeholder {
@@ -170,16 +162,16 @@
           .file-remove {
             float: right;
             .row-remover span.icon-undo {
-              color: #333;
+              color: $darkGray;
             }
           }
         }
     }
     input:invalid {
-      border: solid 2px #FF9494; 
+      border: solid 2px $clinicalFormInvalid; 
     }
     select:invalid {
-      border: solid 2px #FF9494;
+      border: solid 2px $clinicalFormInvalid;
     }
 
     @media screen and (max-width: 480px) {
@@ -214,28 +206,28 @@
       font-size: 16px;
       margin: 10px 0 0 0;
       padding: 10px 5px;
-      border-top: 1px solid #AAA;
-      border-bottom: 1px solid #CCC;
-      background: #F2F2F2;
+      border-top: 1px solid $lightGray;
+      border-bottom: 1px solid $lightGray;
+      background: $lightestGray;
     }
     .patients {
       li {
         display: block;
         position: relative;
-        border-bottom: 1px solid #CCC;
+        border-bottom: 1px solid $lightGray;
         height: 65px;
         &:hover, &:focus, &:active {
           cursor: pointer;
-          background: #f8f8f8;
+          background: $lightestGray;
           .icon-user, h3 {
-            color: #009384;
+            color: $bahmniSecondaryColor;
           }
         }
         i {
           position: absolute;
           left: 5px;
           top: 10px;
-          color: #999;
+          color: $mediumGray;
           & + div {
             position: absolute;
             left: 35px;
@@ -257,7 +249,7 @@
               font-size: 14px;
               display: inline-block;
               padding: 3px;
-              background: #EEE;
+              background: $lightestGray;
               @include border-radius(3);
               width: 20px;
               text-align: center;
@@ -279,7 +271,7 @@
 }
 button.mfp-close {
   font-size: 50px;
-  color: #fff;
+  color: $white;
   opacity: 1!important;
   &:before {
     content: "Close";
@@ -301,16 +293,6 @@ button.mfp-close:hover {
 .mfp-arrow {
   top: initial;
 }
-.mfp-arrow-left, .mfp-arrow-right {
-  bottom: 40%;
-  background: #4D9B92!important;
-  opacity: 1!important;
-}
-.mfp-title, .mfp-counter {
-  color: #fff;
-  opacity: 1!important;
-  font-size: 16px;
-}
 .visit-content form p {
   margin-bottom: 0;}
 
@@ -318,7 +300,7 @@ button.mfp-close:hover {
     .patient-details {
         top: 17px;
         right: 0;
-        color: #eee;
+        color: $lightestGray;
         position: relative;
     }
 }
@@ -334,13 +316,13 @@ button.mfp-close:hover {
 	    }
 	    .patient-details {
 		    top: 7px;
-		    color: #555;
-		    background: #fff;
+		    color: $mediumGray;
+		    background: $white;
 		    padding: 5px;
 		    width: 100%;
 		    text-align: right;
 		    right: 10px;
-            border-bottom: 1px solid #ccc;
+            border-bottom: 1px solid $lightGray;
 	    }
 	    .messages {
 		    .error-message, .info-message {

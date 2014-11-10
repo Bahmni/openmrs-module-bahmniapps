@@ -64,8 +64,8 @@ html,body{
     height: 21px;
     min-width: 17px;
     padding: 4px 5px;
-    background-color: #eee !important;
-    border: 1px solid #ccc;
+    background-color: $lightestGray !important;
+    border: 1px solid $lightGray;
   }
 
 }
@@ -79,10 +79,10 @@ html,body{
 }
 input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly]{
   cursor: not-allowed;
-  background-color: #eee;
+  background-color: $lightestGray;
   &:focus{
     cursor: not-allowed;
-    background-color: #eee;
+    background-color: $lightestGray;
     outline:none;
   }
 }
@@ -107,21 +107,21 @@ input[required],select[required]{
         font-size:.9em;
         &.secondaryOption{
           display: none;
-          border: 1px solid #ccc;
+          border: 1px solid $lightGray;
           border-top: 0;
           border-bottom: 0;
           &:last-child {
-            border-bottom: 1px solid #ccc;
+            border-bottom: 1px solid $lightGray;
             border-radius: 0 0 3px 3px;
           }
           button{
-              background:#fff;
-              color:#000;
+              background: $white;
+              color: $black;
               position:relative;
               z-index:99;
               border-radius: 3px 0 0 3px;
             &:hover {
-              background: #f5f5f5;
+              background: $lightestGray;
             }
           }
         }
@@ -152,18 +152,7 @@ input[required],select[required]{
 .submit-btn-container {
   .split-button {
     .primaryOption button, .toggle-button {
-      background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #a1d030), color-stop(100%, #88af28));
-      background: -webkit-linear-gradient(top, #a1d030, #88af28);
-      background: -moz-linear-gradient(top, #a1d030, #88af28);
-      background: -o-linear-gradient(top, #a1d030, #88af28);
-      background: linear-gradient(top, #a1d030, #88af28);
-      background-color: #88af28;
-      border: #88af28 1px solid;
-      color: white;
-      &:hover {
-        background: #8eb82a;
-        border-color: #779b23;
-      }
+        @extend .confirm;
     }
   }
 }
@@ -180,7 +169,7 @@ input[required],select[required]{
     .toggle-button {
       position: absolute;
       z-index: 1;
-      right: 0;
+      right: -10px;
     }
   }
 }
@@ -208,12 +197,12 @@ input[required],select[required]{
 /********************** overridding the common ui ***********************/
 .simple-form-ui{
   form{
-    background:#fff;
+    background: $white;
     section{
       display:block;
       padding:0px;
       border-left: none;
-      background: #fff;
+      background: $white;
       width: 100%;
     }
   } 
@@ -221,7 +210,7 @@ input[required],select[required]{
 p.caution {
   color: red;
   padding: 15px 5px 5px 5px;
-  background:#fff;
+  background: $white;
   text-align:center;
 }
 .button.confirm, button.confirm, input[type="submit"].confirm, input[type="button"].confirm, input[type="submit"].confirm, a.button.confirm{
@@ -233,9 +222,9 @@ p.caution {
 button[disabled], button[disabled]:hover, button.disabled, button.disabled:hover{
     opacity: .65;
     filter: alpha(opacity=65);
-    background:#e6e6e6;
-    border:1px solid #d0d0d0;
-    color:#363463;
+    background: $lightestGray;
+    border:1px solid $lightGray;
+    color: $darkGray;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
@@ -246,7 +235,7 @@ body{
   width:100%;
   max-width:100%;
   margin:0px auto;
-	background:#f5f5f6;
+	background: $lightestGray;
   font-size:14px;
   font-family: "OpenSans",Arial,sans-serif;
 }
@@ -272,8 +261,8 @@ body{
 .login-body{
     @include clearfix();
     padding-top:20px;
-    background:#ffffff;
-    border:1px solid #eaeaea;
+    background: $white;
+    border:1px solid $lightestGray;
     padding-bottom:10px;
     p.caution{
       padding:0px;
@@ -305,7 +294,7 @@ body{
   }
   header {
     position: relative;
-    color: #CCC;
+    color: $lightGray;
     border-radius: 0;
     .header-logo{
       display: block;
@@ -315,7 +304,7 @@ body{
         display: block;
         width: 35px;
         border-radius: 17px;
-        box-shadow: 0 8px 6px -7px #000;
+        box-shadow: 0 8px 6px -7px $black;
       }
     }
     .top-nav {
@@ -324,7 +313,7 @@ body{
       left: 0;
     }
     .btn-user-info {
-      background: #015B52;
+      background: lighten($bahmniPrimaryColor, 10%);
       padding: 15px;
       border: none;
       border-radius: 0;
@@ -332,7 +321,7 @@ body{
       position: absolute;
       top: 0;
       right: 0;
-      color: #fff;
+      color: $white;
       &:focus {outline:0;}
       i.mini {
         font-size: .9em;
@@ -340,7 +329,7 @@ body{
       & + ul {
         display: none;
         &.active {
-          background: #015B52;
+          background: lighten($bahmniPrimaryColor, 10%);
           display: block;
           position: absolute;
           right: 0;
@@ -352,13 +341,13 @@ body{
           clear: both;
           text-align: left;
           padding-left: 10px;
-          border-bottom: 1px solid #02675d;
+          border-bottom: 1px solid lighten($bahmniPrimaryColor, 10%);
           margin: 0;
           padding: 10px 10px 10px 5px;
           a.disabled {
-            color: #999;
+            color: $lightGray;
             .icon-user {
-                color: #999;
+                color: $lightGray;
             }
           }
         }
@@ -369,7 +358,7 @@ body{
         
         display:inline-block;
         a{
-          color:#f2f2f2;
+          color: $white;
           font-weight:bold;
           cursor:pointer;
           text-decoration:none;
@@ -379,7 +368,7 @@ body{
             padding-left:2px;
           }
         &:hover {
-          background: #015B52;
+          background: lighten($bahmniPrimaryColor, 10%);
         }
        }
       }
@@ -388,15 +377,15 @@ body{
 .reg-search-wrapper{
     padding:10px;
     margin-top:5px;
-    border:1px solid #cecece;
-    background:#fff;
+    border:1px solid $lightestGray;
+    background: $white;
     @include border-radius();  
     .reg-search{
         margin-bottom:10px;
         @include clearfix;
         .search-seperator-l{
           @include column(5);
-          border-right:2px dotted #9E9D9D;
+          border-right:2px dotted $lightGray;
             select{
               width:80px;
               min-width:80px;
@@ -432,7 +421,7 @@ table{
         text-align:left;
     }
     tr:hover{
-      background:#f1f1f1;
+      background: $lightestGray;
     }
   }
   .slno_col{
@@ -465,7 +454,7 @@ table{
  /****edit page css start ***/
  .reg-body-wrapper{
     padding:10px;
-    background:#ffffff;
+    background: $white;
  }
  .edit-patient,.new-patient,.visit-patient{
   position:relative;
@@ -477,7 +466,7 @@ table{
     position:absolute;
     top:31px;
     right:10px;
-    border:7px solid #f0f0f0;
+    border:7px solid $lightestGray;
   }
   .capture-photo-btn{
     position:absolute;
@@ -492,13 +481,13 @@ table{
 }
 
 .mylegend {
-    background:#e6e6e6;
+    background: $lightestGray;
     font-size: 14px;
     width:99.8%;
     line-height: 16px;
     margin-bottom:20px;
     @include border-radius();
-    border:1px solid #d4d4d4;
+    border:1px solid $lightGray;
     span{
         display:inline-block;
         padding:2px 10px;
@@ -532,7 +521,7 @@ table{
 .submit-btn-container{
   @include clearfix();
   padding:10px 20px 0px 20px;
-  border-top: 1px solid #efefef;
+  border-top: 1px solid $lightestGray;
   margin-top: 30px;
 }
 #overlay {
@@ -578,8 +567,8 @@ table{
 table{
     tr{ 
         th{
-            border:1px solid #d4d4d4;
-            background:#e6e6e6;
+            border:1px solid $lightGray;
+            background: $lightestGray;
      
         }
     }
@@ -608,7 +597,7 @@ video{
           width:25px;
           left:0px;
           top:6px;
-          background:#EEEEEE;
+          background: $lightestGray;
         }
         .photoCapture-right-overlay{
           position:absolute;
@@ -616,7 +605,7 @@ video{
           width:31px;
           right:0px;
           top:6px;
-          background:#EEEEEE;
+          background: $lightestGray;
         }
     }      
     .photo-canvas-container{
@@ -625,10 +614,10 @@ video{
       margin-top:6px;
       margin-left:30px !important;
       canvas{
-        border:2px solid #fff;
+        border:2px solid $white;
         height:167px;
         width:175px;
-        background:#f2f2f2;
+        background: $lightestGray;
       }
     } 
     .take-photo-btn{
@@ -712,7 +701,7 @@ video{
 }
 /*** overriding jquery styling start****/
 .ui-widget-header{
-  border:1px solid #104D05;
+  border:1px solid lighten($bahmniPrimaryColor, 10%);
   background:$bahmniPrimaryColor;
 }
 
@@ -772,13 +761,13 @@ video{
     position:relative;
     width: 100%;
     legend {
-      background: #e6e6e6;
+      background: $lightestGray;
       font-size: 14px;
       width: 100%;
       line-height: 16px;
       margin-bottom: 20px;
       border-radius: 5px;
-      border: 1px solid #d4d4d4;
+      border: 1px solid $lightGray;
       padding: 2px 8px 2px 12px;
     }
     fieldset {
@@ -794,11 +783,10 @@ video{
         position:absolute;
         top:-14px;
         left:20px;
-        background:#fff;
         padding:5px 10px;
         font-family: OpenSansBold;
-        color:#A8A5A5;
-        background: #fff;
+        color: $mediumGray;
+        background: $white;
         border: none;
         width: auto;
         margin-bottom: 5px;
@@ -806,14 +794,14 @@ video{
       }
       .form-field-group {
         &:first-child {
-          border-top:1px solid #cecece;
-          border-right:1px solid #cecece;
-          border-left:1px solid #cecece;
+          border-top:1px solid $lightGray;
+          border-right:1px solid $lightGray;
+          border-left:1px solid $lightGray;
         }
         &:last-child {
-          border-bottom:1px solid #cecece;
-          border-right:1px solid #cecece;
-          border-left:1px solid #cecece;
+          border-bottom:1px solid $lightGray;
+          border-right:1px solid $lightGray;
+          border-left:1px solid $lightGray;
           padding-bottom:9px;
         }
       }
@@ -825,12 +813,12 @@ video{
   .hint {
     font-size: 13px;
     display: inline-block;
-    color: #777;
+    color: $mediumGray;
     float: left;
     margin-top: 7px;
   }
   .info {
-    color: #0099ff;
+    color: $bahmniLinkColor;
     width: 200px;
     font-size: 14px;
     line-height: 1.4em;
@@ -844,7 +832,7 @@ form .vitals .form-field .field-value {
     border-radius: 5px;
   }
   .select2-drop-active, .select2-container-active .select2-choice, .select2-container-active .select2-choices, .select2-drop.select2-drop-above.select2-drop-active {
-    border: 1px solid #aaa;
+    border: 1px solid lighten($mediumGray, 20%);
   }
 }
 
@@ -881,17 +869,16 @@ form .vitals .form-field .field-value {
 }
 
 .illegalValue {
-  border: 2px solid;
-  border-color: #ff6666;
-  background: white;
+    border: 2px solid darken($clinicalFormInvalid, 30%);
+    background: $clinicalFormInvalid;
 }
 
 concept {
   input:invalid {
-    background-color: #ffcdcd;
-    outline: 2px solid #ff0000;
+    background-color: $clinicalFormInvalid;
+    outline: 2px solid darken($clinicalFormInvalid, 30%);
     &:focus {
-      outline: 2px solid #ff0000;
+      outline: 2px solid darken($clinicalFormInvalid, 30%);
     }
   }
 }
@@ -907,7 +894,7 @@ label.local-name-reg {
   .obs-section.right {
     section.block {
       div.line-item {
-        border-bottom: 1px solid #ccc;
+        border-bottom: 1px solid $lightGray;
         &:last-child {
           border-bottom: 0;
         } 
@@ -936,7 +923,7 @@ label.local-name-reg {
     .icon-file {
         position: relative;
         font-size: 21px;
-        color: #888;
+        color: $mediumGray;
         .icon-plus-sign, .icon-ok-sign, .icon-plus {
             position: absolute;
             right: 1px;
@@ -944,7 +931,7 @@ label.local-name-reg {
             font-size: 14px;
 
             color: green;
-            background: #fff;
+            background: $white;
             border-radius: 8px;
             padding: 0;
         }

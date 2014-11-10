@@ -10,7 +10,7 @@ body{
     max-width:1280px;
     font-size: 100%;
     line-height: 1.1em;
-    background:#fff;
+    background: $white;
 }
 
 a, a:link, a:visited, a:hover, a:active {
@@ -23,7 +23,7 @@ a:hover {
 }
 
 p.caution{
-    color:#f00;
+    color: red;
     padding: 5px;
 }
 
@@ -60,9 +60,8 @@ input[file-upload] {
 }
 
 .illegalValue {
-  border: 2px solid;
-  border-color: #ff6666;
-  background: white;
+    border: 2px solid darken($clinicalFormInvalid, 30%);
+    background: $clinicalFormInvalid;
 }
 
 
@@ -78,8 +77,8 @@ input[file-upload] {
   .referred {
     display: inline-block;
     font-size: 12px;
-    background: #619b9a;
-    color: #fff;
+    background: $bahmniSecondaryColor;
+    color: $white;
     padding: 1px 7px;
     border-radius: 5px;
     margin-right: 7px;
@@ -88,13 +87,13 @@ input[file-upload] {
 
 
 .row-remover {
-  border: 1px solid #ccc;
+  border: 1px solid $lightGray;
   border-radius: 5px;
   float: right;
   padding: 5px 10px;
   span {
     font-size: 20px;
-    color: #660000;
+    color: $clinicalRemoveBtn;
     padding: 0;
   }
 }
@@ -136,7 +135,7 @@ input[file-upload] {
 
 .view {
   .order {
-    color: #888;
+    color: $mediumGray;
     margin: 0 5px;
   }
 }
@@ -152,7 +151,7 @@ a.quick-links {
 
 
 td .status {
-  color: #cc6600;
+  color: orange;
   float: right;
 }
 
@@ -183,7 +182,7 @@ pre.chief-notes {
 }
 
 .accept-btn.active {
-  color: #457FAC;
+  color: $bahmniTertiaryColor;
   padding-top: 7px;
   span:before {
     font-family: FontAwesome;
@@ -204,7 +203,7 @@ pre.chief-notes {
 .bahmni-home {
     margin-bottom: 5px!important;
     .icon-home {
-        color: #eee;
+        color: $lightestGray;
         margin-right: 5px;
         font-size: 18px;
     }

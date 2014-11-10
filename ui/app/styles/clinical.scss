@@ -14,7 +14,7 @@ $fontPath: "../components/openmrs-uicommons/omod/src/main/webapp/resources/fonts
 @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fragments/form-navigator-ui";
 @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fragments/notifications";
 
-/*JSS css files*/
+/*BAHMNI css files*/
 @import "bahmni-helper/variables";
 
 @import "common/base";
@@ -31,11 +31,9 @@ $fontPath: "../components/openmrs-uicommons/omod/src/main/webapp/resources/fonts
 @import "clinical/patientSearch";
 @import "clinical/visit";
 @import "clinical/consultation";
-@import "clinical/investigation";
 @import "clinical/diagnosis";
 @import "clinical/disposition";
 @import "clinical/treatment";
-@import "clinical/trends";
 @import "clinical/observations";
 @import "clinical/patientDashboard";
 

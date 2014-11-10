@@ -1,5 +1,5 @@
 .obs-section {
-  border: 1px solid #ccc;
+  border: 1px solid $lightGray;
   border-radius: 5px;
   margin: 1%;
   font-size: 14px;
@@ -8,14 +8,10 @@
     padding: 10px;
     font-family: OpenSansBold;
     margin-bottom: 0;
-    &:active {
-        background: #e1f9fe;
-        color: #52957e;
-    }
   }
   .placeholder-message {
-    background: #ddd;
-    color: #666;
+    background: $lightGray;
+    color: $mediumGray;
     padding: 10px;
     text-align: center;
   }
@@ -26,10 +22,10 @@
   section {
     label.date {
       font-family: OpenSansBold;
-      background: #f6f6f6;
+      background: $lightestGray;
       padding: 10px;
       display: block;
-      color: #888;
+      color: $mediumGray;
     }
     .form-field-group .form-field {
       border: 0;
@@ -42,7 +38,7 @@
         border: 0;}
     }
     .form-field {
-      border-bottom: 1px solid #ccc;
+      border-bottom: 1px solid $lightGray;
       padding: 5px;
       font-size: 14px;
       padding-left: 10px;
@@ -57,7 +53,7 @@
     }
       .time {
         font-size: 11px;
-        color: #888;
+        color: $mediumGray;
         float: right;
         padding-right: 5px;
       }
