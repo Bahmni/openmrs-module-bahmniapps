@@ -82,8 +82,11 @@ angular.module('bahmni.registration')
             var initialize = function () {
                 $scope.searchParameters = {};
                 $scope.searchActions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.patient.search.result.action");
-
                 setLocalNameSearchAttributes();
+
+                if($rootScope.previousSearchParams) {
+                    $location.search($rootScope.previousSearchParams);
+                }
             };
 
             var identifyParams = function (querystring) {
@@ -144,6 +147,7 @@ angular.module('bahmni.registration')
                 if ($scope.searchParameters.localName && $scope.showLocalNameSearch) {
                     queryParams.localName = $scope.searchParameters.localName;
                 }
+                $rootScope.previousSearchParams = _.clone(queryParams);
                 $location.search(queryParams);
             };
 
