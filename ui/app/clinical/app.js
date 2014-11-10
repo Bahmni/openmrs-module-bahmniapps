@@ -5,6 +5,7 @@ angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.p
     'httpErrorInterceptor', 'pasvaz.bindonce', 'infinite-scroll', 'bahmni.common.util', 'ngAnimate','ngDialog','angular-gestures']);
 angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/patient/search');
+        var patientSearchBackLink = {label: "<u>P</u>atients", state:"patientsearch", accessKey: "p"};
         $stateProvider
             .state('patientsearch', {
                 url: '/patient/search',
@@ -25,7 +26,7 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
                 url: '/patient/:patientUuid',
                 abstract: true,
                 data: {
-                    backLinks: [{label: "Patients", state: "patientsearch"}]
+                    backLinks: [patientSearchBackLink]
                 },
 
                 views: {
@@ -68,7 +69,7 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
                 url: '',
                 abstract: true,
                 data: {
-                    backLinks: [{label: "Dashboard", state: "patient.dashboard"}]
+                    backLinks: [{label: "Dashboard", state: "patient.dashboard"}, patientSearchBackLink]
                 },
                 views: {
                     'content': { template: '<ui-view/>' },
