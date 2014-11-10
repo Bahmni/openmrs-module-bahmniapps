@@ -8,7 +8,7 @@
 			<div class="button-group-wrapper" >
 				<div class="button-group">
 				<button ng-click="edit($index)"><i class="icon-edit"></i></button>
-				<button ng-confirm-click="treatments.remove($index)" confirm-message="Are you sure you want to remove?"><i class="icon-remove"></i></button>
+				<button ng-confirm-click="remove($index)" confirm-message="Are you sure you want to remove?"><i class="icon-remove"></i></button>
 				<button class="toggle" ng-class="{'has-notes': newTreatment.additionalInstructions}" 
 				ng-click="toggleShowAdditionalInstructions(newTreatment)" ng-hide="newTreatment.showAdditionalInstructions"><i class="icon-plus-sign"></i></button>				
 				<button class="toggle" ng-class="{'has-notes': newTreatment.additionalInstructions}" 

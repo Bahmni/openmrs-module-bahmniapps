@@ -3,7 +3,7 @@
 angular.module('bahmni.clinical')
     .controller('TreatmentController', ['$scope', '$rootScope', 'TreatmentService', 'contextChangeHandler', 'treatmentConfig', 'DrugService', '$timeout',
         function ($scope, $rootScope, treatmentService, contextChangeHandler, treatmentConfig, drugService, $timeout) {
-            $scope.treatments = $scope.consultation.newlyAddedTreatments || new Bahmni.Clinical.DrugOrdersViewModel();
+            $scope.treatments = $scope.consultation.newlyAddedTreatments || [];
             $scope.treatmentConfig = treatmentConfig;
             function markStartingNewDrugEntry() {
                 $scope.startNewDrugEntry = true;
@@ -48,7 +48,9 @@ angular.module('bahmni.clinical')
             var isSameDrugBeingDiscontinuedAndOrdered = function(){
                 var existingTreatment = false;
                 angular.forEach($scope.consultation.discontinuedDrugs, function(drugOrder){
-                    existingTreatment = $scope.treatments.contains(drugOrder) &&  drugOrder.isMarkedForDiscontinue;
+                    existingTreatment = _.some($scope.treatments, function (treatment) {
+                        return treatment.drug.uuid === drugOrder.drug.uuid;
+                    }) && drugOrder.isMarkedForDiscontinue;
                 });
                 return existingTreatment;
             };
@@ -130,14 +132,20 @@ angular.module('bahmni.clinical')
                 if($scope.unaddedDrugOrders()){
                     return {allow: false, errorMessage: errorMessages.incompleteForm};
                 }
-                if(!$scope.treatments.valid()){
+                var valid = _.every($scope.treatments, function(drugOrder){
+                    return drugOrder.validate();
+                });
+                if (!valid) {
                     return {allow: false, errorMessage: errorMessages.invalidItems};
                 }
-
-                $scope.consultation.newlyAddedTreatments = $scope.treatments || new Bahmni.Clinical.DrugOrdersViewModel();
+                $scope.consultation.newlyAddedTreatments = $scope.treatments || [];
                 $scope.consultation.incompleteTreatment = $scope.treatment;
                 return {allow: true};
             };
+
+            $scope.remove = function (index) {
+                $scope.treatments.splice(index, 1);
+            }
 
             $scope.getDrugs = function (request) {
                 return drugService.search(request.term);

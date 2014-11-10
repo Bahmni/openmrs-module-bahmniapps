@@ -499,7 +499,7 @@ describe("drugOrderViewModel", function () {
             expect(treatment.action).not.toBe(Bahmni.Clinical.Constants.orderActions.revise);
         });
 
-        it("should clear dose, doseUnits, quantity and quantityUnits for reverse synced drug orders", function(){
+        it("should clear dose, doseUnits and quantity for reverse synced drug orders", function(){
             var treatment = sampleTreatment({}, []);
             treatment.reverseSynced = true;
             treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
@@ -518,7 +518,7 @@ describe("drugOrderViewModel", function () {
             expect(dosingType.doseUnits).toBe(undefined);
             expect(dosingType.frequency).toBe(undefined);
             expect(revisedTreatment.quantity).toBe(undefined);
-            expect(revisedTreatment.quantityUnit).toBe(undefined);
+            expect(revisedTreatment.quantityUnit).toBe("Unit(s)");
         });
 
     });
@@ -577,7 +577,7 @@ describe("drugOrderViewModel", function () {
             expect(refilledTreatment.quantityUnit).toBe("Unit(s)");
         });
 
-        it("should clear dose, doseUnits, quantity and quantityUnits for reverse synced drug orders", function(){
+        it("should clear dose, doseUnits and quantity for reverse synced drug orders", function(){
             var treatment = sampleTreatment({}, []);
             treatment.reverseSynced = true;
             treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
@@ -596,7 +596,7 @@ describe("drugOrderViewModel", function () {
             expect(dosingType.doseUnits).toBe(undefined);
             expect(dosingType.frequency).toBe(undefined);
             expect(refilledTreatment.quantity).toBe(undefined);
-            expect(refilledTreatment.quantityUnit).toBe(undefined);
+            expect(refilledTreatment.quantityUnit).toBe("Unit(s)");
         });
     });
 

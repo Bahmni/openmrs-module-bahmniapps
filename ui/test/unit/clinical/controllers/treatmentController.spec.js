@@ -127,16 +127,16 @@ describe("TreatmentController", function () {
             drugOrder.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
 
             scope.addForm = {};
-            scope.consultation.newlyAddedTreatments = new Bahmni.Clinical.DrugOrdersViewModel();
+            scope.consultation.newlyAddedTreatments = [];
             scope.consultation.newlyAddedTreatments.push(drugOrder);
 
 
             var discontinuedDrug = drugOrder;
             discontinuedDrug.isMarkedForDiscontinue = true;
 
-            scope.consultation.discontinuedDrugs = new Bahmni.Clinical.DrugOrdersViewModel();
+            scope.consultation.discontinuedDrugs = [];
             scope.consultation.discontinuedDrugs.push(discontinuedDrug);
-            scope.treatments = new Bahmni.Clinical.DrugOrdersViewModel();
+            scope.treatments = [];
             scope.treatments.push(discontinuedDrug);
 
             var add = contextChangeHandler.add;

@@ -9,8 +9,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config, proto) {
     var allowedQuantityUnits = ["Tablet(s)","Capsule(s)"];
     var DateUtil = Bahmni.Common.Util.DateUtil;
     var self = this;
-    config = config || {};
-    extensionParams = extensionParams || {};
+    var config = config || {};
+    var extensionParams = extensionParams || {};
     var durationUnits = config.durationUnits || [];
     var defaultDoseUnit = getDefaultValue(extensionParams.defaultDoseUnit, config.doseUnits || []);
     var defaultInstructions = getDefaultValue(extensionParams.defaultInstructions, config.dosingInstructions || []);
@@ -190,7 +190,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config, proto) {
     };
 
     var quantityUnitsFrom = function(doseUnit){
-        return inAllowedQuantityUnits(doseUnit) ? doseUnit: "Unit(s)"
+        return inAllowedQuantityUnits(doseUnit) ? doseUnit: "Unit(s)";
     };
 
     var modifyForReverseSyncIfRequired = function(drugOrder) {
@@ -235,6 +235,12 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config, proto) {
         return self.isStopped() || self.discontinued();
     };
 
+    var defaultQuantityUnit = function(drugOrder) {
+        if (!drugOrder.quantityUnit) {
+            drugOrder.quantityUnit = "Unit(s)";
+        }
+    }
+
     this.refill = function () {
         var newDrugOrder = new Bahmni.Clinical.DrugOrderViewModel(extensionParams, config, this);
         newDrugOrder.previousOrderUuid = undefined;
@@ -244,11 +250,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config, proto) {
         var oldEffectiveStopDate = new Date(self.effectiveStopDate);
         newDrugOrder.effectiveStartDate = oldEffectiveStopDate >= DateUtil.today() ? DateUtil.addSeconds(oldEffectiveStopDate, 1) : DateUtil.today();
 
-        if (!newDrugOrder.quantityUnit) {
-            newDrugOrder.quantityUnit = "Unit(s)";
-        }
-
         modifyForReverseSyncIfRequired(newDrugOrder);
+        defaultQuantityUnit(newDrugOrder);
         newDrugOrder.drugNameDisplay = constructDrugNameDisplay(this.drug, this.drug.form).value;
 
         return newDrugOrder;
@@ -265,6 +268,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config, proto) {
         newDrugOrder.quantityEnteredViaEdit = true;
 
         modifyForReverseSyncIfRequired(newDrugOrder);
+        defaultQuantityUnit(newDrugOrder);
 
         return newDrugOrder;
     };
@@ -273,6 +277,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config, proto) {
         var editableDrugOrder = new Bahmni.Clinical.DrugOrderViewModel(extensionParams, config, this);
         editableDrugOrder.currentIndex = index;
         editableDrugOrder.isBeingEdited = true;
+        defaultQuantityUnit(editableDrugOrder);
         return editableDrugOrder;
     };
 
