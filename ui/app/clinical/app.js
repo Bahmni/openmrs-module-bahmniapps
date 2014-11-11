@@ -69,7 +69,7 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
                 url: '',
                 abstract: true,
                 data: {
-                    backLinks: [{label: "Dashboard", state: "patient.dashboard"}, patientSearchBackLink]
+                    backLinks: [patientSearchBackLink]
                 },
                 views: {
                     'content': { template: '<ui-view/>' },

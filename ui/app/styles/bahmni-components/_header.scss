@@ -1,11 +1,13 @@
 .patient-details {
     display: inline-block;
-    position: absolute;
-    top: 54px;
+    position: fixed;
+    top: 53px;
     right: 5px;
     z-index: 1;
 }
 .patient-details a {
+    font-size: 16px;
+    font-family: $primaryBoldFont;
     text-transform: capitalize;
     width: 22%;
     white-space: nowrap;
@@ -13,7 +15,7 @@
     text-overflow: ellipsis;
     text-align: right;
     background: $lightestGray;
-    padding: 5px 10px;
+    padding: 10px 20px;
     border-radius: 0 0 5px 5px;
     box-shadow: 0px 4px 5px -2px $lightGray;
     right: 5px;
