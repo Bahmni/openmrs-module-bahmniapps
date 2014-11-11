@@ -119,7 +119,7 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
                         templateUrl: 'views/treatmentSections/drugOrderHistory.html',
                         resolve: {
                             prescribedDrugOrders: function(TreatmentService, $stateParams) {
-                                return TreatmentService.getPrescribedDrugOrders($stateParams.patientUuid, true, 5);
+                                return TreatmentService.getPrescribedDrugOrders($stateParams.patientUuid, true, 3);
                             },
                             treatmentConfig: 'treatmentConfig'
                         }

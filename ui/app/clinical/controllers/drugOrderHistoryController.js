@@ -10,24 +10,37 @@ angular.module('bahmni.clinical')
             var currentVisit = $rootScope.visit;
             var drugOrderAppConfig = appService.getAppDescriptor().getConfigValue("drugOrder") || {};
 
-            var dateCompare = function (drugOrder1, drugOrder2) {
-                return drugOrder1.effectiveStartDate > drugOrder2.effectiveStartDate ? -1 : 1;
+            var createPrescriptionGroups = function (activeAndScheduledDrugOrders) {
+                $scope.consultation.drugOrderGroups = [];
+
+                createPrescribedDrugOrderGroups();
+                createRecentDrugOrderGroup(activeAndScheduledDrugOrders);
             };
 
-            var createPrescriptionGroups = function () {
-                return treatmentService.getActiveDrugOrders($stateParams.patientUuid).then(function (drugOrders) {
-                    var activeDrugOrders = [];
-                    drugOrders.forEach(function (drugOrder) {
-                        activeDrugOrders.push(DrugOrderViewModel.createFromContract(drugOrder))
-                    });
-                    activeDrugOrders = activeDrugOrders.sort(dateCompare);
-                    activeDrugOrders = _.filter(activeDrugOrders, function (activeDrugOrder) {
-                        return new Date(activeDrugOrder.scheduledDate) <= DateUtil.now();
-                    });
-                    $scope.consultation.drugOrderGroups = [];
-                    createPrescribedDrugOrderGroups();
-                    createActiveAndLastVisitDrugOrderGroup(activeDrugOrders);
+            var getRefillableDrugOrders = function(activeAndScheduledDrugOrders) {
+                var refillableDrugOrders = activeAndScheduledDrugOrders.concat(getPreviousVisitDrugOrders());
+                refillableDrugOrders = _.sortBy(refillableDrugOrders, 'effectiveStartDate');
+                return refillableDrugOrders;
+            };
+
+            var getPreviousVisitDrugOrders = function(){
+                var currentVisitIndex = _.findIndex($scope.consultation.drugOrderGroups, function(group){
+                    return group.isCurrentVisit;
                 });
+
+                if($scope.consultation.drugOrderGroups[currentVisitIndex+1]) {
+                    return $scope.consultation.drugOrderGroups[currentVisitIndex+1].drugOrders;
+                }
+                return [];
+            };
+
+            var createRecentDrugOrderGroup = function(activeAndScheduledDrugOrders){
+                var refillableGroup = {
+                    label: 'Recent',
+                    selected: true,
+                    drugOrders: getRefillableDrugOrders(activeAndScheduledDrugOrders)
+                };
+                $scope.consultation.drugOrderGroups.unshift(refillableGroup);
             };
 
             var createPrescribedDrugOrderGroups = function () {
@@ -38,7 +51,7 @@ angular.module('bahmni.clinical')
 
                 var createDrugOrder = function(drugOrder) {
                     return DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, treatmentConfig);
-                }
+                };
 
                 var drugOrderGroups = _.map(drugOrderGroupedByDate, function (drugOrders, visitStartDate) {
                     return {
@@ -49,18 +62,27 @@ angular.module('bahmni.clinical')
                     }
                 });
                 $scope.consultation.drugOrderGroups = $scope.consultation.drugOrderGroups.concat(drugOrderGroups);
+                $scope.consultation.drugOrderGroups = _.sortBy($scope.consultation.drugOrderGroups, 'visitStartDate').reverse();
             };
 
-            var createActiveAndLastVisitDrugOrderGroup = function(activeDrugOrders) {
-                $scope.consultation.drugOrderGroups = _.sortBy($scope.consultation.drugOrderGroups, 'visitStartDate').reverse();
-                var recentDrugOrders = activeDrugOrders.concat($scope.consultation.drugOrderGroups[0].drugOrders);
-                $scope.consultation.drugOrderGroups.unshift({label: 'Recent', drugOrders: recentDrugOrders, selected: true, firstSectionLength: activeDrugOrders.length});
+            var getActiveDrugOrders = function() {
+                return treatmentService.getActiveDrugOrders($stateParams.patientUuid).then(function (drugOrders) {
+                    var activeDrugOrders = [];
+                    drugOrders.forEach(function (drugOrder) {
+                        activeDrugOrders.push(DrugOrderViewModel.createFromContract(drugOrder))
+                    });
+                    activeDrugOrders = _.sortBy(activeDrugOrders, "effectiveStartDate").reverse();
+
+                    return activeDrugOrders;
+                });
             };
 
             var init = function () {
                 $scope.consultation.discontinuedDrugs = $scope.consultation.discontinuedDrugs || [];
                 if (!$scope.consultation.drugOrderGroups) {
-                    spinner.forPromise(createPrescriptionGroups());
+                    spinner.forPromise(getActiveDrugOrders().then(function(data){
+                        createPrescriptionGroups(data)
+                    }));
                 }
             };
 

@@ -14,10 +14,9 @@
                 <button class="secondary-button refill-drugs-btn fr" ng-click="refillAll(drugOrderGroup.drugOrders)" ng-if="!drugOrderGroupsEmpty()"><i class="icon-forward"></i> Refill All</button>
 				<div class="inpage-tab-panel">
 					<div class="inpage-tab-content">
-                        <p ng-if="!drugOrderGroup.drugOrders.length && !drugOrderGroup.additionalDrugOrders.length" class="placeholder-text">No Recent Treatments</p>
+                        <p ng-if="!drugOrderGroup.drugOrders.length" class="placeholder-text">No Recent Treatments</p>
                         <ul class="table-mimic">
-							<li ng-repeat="drugOrder in drugOrderGroup.drugOrders" ng-class="{'active-drug' : drugOrder.isActive(), 'highlight' : drugOrder.isBeingEdited}">
-                                <span ng-if="$index === drugOrderGroup.firstSectionLength">---------------------------------------------------------</span>
+							<li ng-repeat="drugOrder in drugOrderGroup.drugOrders" ng-class="{'active-drug' : drugOrder.isActive(), 'highlight' : drugOrder.isBeingEdited, 'scheduled-drug': drugOrder.isScheduled()}">
                                 <div class="drug-details" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
                                     <strong class="drug-name">{{drugOrder.getDisplayName()}}</strong> - &nbsp;{{drugOrder.getDescription()}}
 
@@ -29,7 +28,7 @@
                                     </button>
                                     <button ng-if="drugOrder.isActive() && drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isDiscontinuedAllowed" ng-click="undoDiscontinue(drugOrder)">
                                         <i class="icon-undo"></i>
-                                    </button>                                    
+                                    </button>
                                     <button ng-if="drugOrder.isActive() && !drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isDiscontinuedAllowed" ng-click="discontinue(drugOrder)">
                                         <i class="icon-stop"></i>
                                     </button>
@@ -38,7 +37,7 @@
                                     </button>
                                     <button class="toggle" ng-class="{'has-notes': drugOrder.additionalInstructions}" ng-click="toggleShowAdditionalInstructions(drugOrder)" ng-hide="drugOrder.showAdditionalInstructions">
                                         <i class="icon-plus-sign"></i>
-                                    </button>                                    
+                                    </button>
                                     <button class="toggle" ng-class="{'has-notes': drugOrder.additionalInstructions}" ng-click="toggleShowAdditionalInstructions(drugOrder)" ng-show="drugOrder.showAdditionalInstructions">
                                         <i class="icon-minus-sign"></i>
                                     </button>
@@ -61,7 +60,7 @@
 							</li>
 						</ul>
 					</div>
-				</div> 
+				</div>
 			</div>
 		</div>
 	</div>

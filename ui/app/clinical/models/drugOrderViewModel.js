@@ -169,7 +169,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         });
 
         return frequency && frequency.frequencyPerDay;
-    }
+    };
 
     this.calculateDurationUnit = function () {
         if (self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform) {
@@ -259,6 +259,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         return !!self.dateStopped;
     };
 
+    this.isScheduled = function(){
+        return self.scheduledDate && self.scheduledDate > DateUtil.now();
+    };
+
     this.isActive = function(){
         return !self.isDiscontinuedOrStopped() && (self.effectiveStopDate == null || self.effectiveStopDate >= Bahmni.Common.Util.DateUtil.today());
     };
@@ -275,7 +279,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         if (!drugOrder.quantityUnit) {
             drugOrder.quantityUnit = "Unit(s)";
         }
-    }
+    };
 
     this.refill = function () {
         var newDrugOrder = new Bahmni.Clinical.DrugOrderViewModel(appConfig, config, this);

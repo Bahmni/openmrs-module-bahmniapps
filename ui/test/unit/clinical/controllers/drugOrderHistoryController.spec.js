@@ -15,7 +15,7 @@ describe("DrugOrderHistoryController", function () {
         _treatmentService = jasmine.createSpyObj('TreatmentService', ['getActiveDrugOrders']);
         _treatmentService.getActiveDrugOrders.and.callFake(function () {
             fetchActiveTreatmentsDeferred.resolve();
-            return specUtil.respondWith([activeDrugOrder]);
+            return specUtil.respondWith([activeDrugOrder, scheduledOrder]);
         });
     }));
 
@@ -39,17 +39,23 @@ describe("DrugOrderHistoryController", function () {
 
     describe("when initialized", function () {
         it("should setup scope variables", function (done) {
-            fetchActiveTreatmentsDeferred.promise.then(function () {
+            fetchActiveTreatmentsDeferred.promise.then().then(function(){
                 expect(scope.consultation.drugOrderGroups.length).toBe(3);
                 expect(scope.consultation.drugOrderGroups[0].label).toEqual("Recent");
-                expect(scope.consultation.drugOrderGroups[0].drugOrders.length).toBe(2);
-                expect(scope.consultation.drugOrderGroups[0].drugOrders[0].uuid).toBe(activeDrugOrder.uuid);
-                expect(scope.consultation.drugOrderGroups[0].drugOrders[1].uuid).toBe("drugOrder2Uuid");
+                expect(scope.consultation.drugOrderGroups[0].drugOrders.length).toBe(3);
+                expect(scope.consultation.drugOrderGroups[0].drugOrders[0].uuid).toBe('drugOrder2Uuid');
+                expect(scope.consultation.drugOrderGroups[0].drugOrders[1].uuid).toBe(activeDrugOrder.uuid);
+                expect(scope.consultation.drugOrderGroups[0].drugOrders[2].uuid).toBe(scheduledOrder.uuid);
+                expect(scope.consultation.drugOrderGroups[0].selected).toBeTruthy();
 
                 expect(scope.consultation.drugOrderGroups[1].visitStartDate.getTime()).toEqual(1410349317000);
+                expect(scope.consultation.drugOrderGroups[1].drugOrders.length).toBe(1);
+
                 expect(scope.consultation.drugOrderGroups[2].visitStartDate.getTime()).toEqual(1397028261000);
+
                 var secondDrugOrder = scope.consultation.drugOrderGroups[2].drugOrders[0];
                 expect(secondDrugOrder.drug.name).toBe(prescribedDrugOrders[0].drug.name);
+
                 done();
             });
         });
@@ -113,7 +119,7 @@ describe("DrugOrderHistoryController", function () {
     });
 
     activeDrugOrder = {
-        "uuid": "drugOrder1Uuid",
+        "uuid": "activeOrderUuid",
         "action": "NEW",
         "careSetting": "Outpatient",
         "orderType": "Drug Order",
