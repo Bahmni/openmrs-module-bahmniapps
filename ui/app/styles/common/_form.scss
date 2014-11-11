@@ -1,3 +1,4 @@
+/* form invalid error */
 form.submitted-with-error {
 	.ng-invalid:enabled, .ng-invalid:focus {
 		outline: none !important;
@@ -5,3 +6,10 @@ form.submitted-with-error {
 		background: $clinicalFormInvalid;
 	}
 }
+
+.illegalValue, buttons-radio.illegalValue button {
+    border: 2px solid darken($clinicalFormInvalid, 30%);
+    background: $clinicalFormInvalid;
+}
+
+buttons-radio.illegalValue { border: 0; background: none }

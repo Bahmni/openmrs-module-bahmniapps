@@ -59,12 +59,6 @@ input[file-upload] {
   }
 }
 
-.illegalValue {
-    border: 2px solid darken($clinicalFormInvalid, 30%);
-    background: $clinicalFormInvalid;
-}
-
-
 .is-abnormal {
   color: red!important;
 }

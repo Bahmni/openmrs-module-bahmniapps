@@ -57,9 +57,6 @@
         input[type="checkbox"] {
             margin-top: 8px;
         }
-        input[type="checkbox"].illegalValue {
-            border: 2px solid red;
-        }
         label.add-new {margin-top: 10px; font-size: 12px;}
         width: 39%;
     }
@@ -103,13 +100,6 @@
     background-color: $clinicalHighlight;
     .message {
       display: block;
-    }
-  }
-  buttons-radio.illegalValue {
-    border: 0;
-    background: none;
-    button {
-      border: 1px solid red;
     }
   }
   button:first-child {
