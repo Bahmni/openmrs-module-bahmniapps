@@ -88,31 +88,9 @@
   }
 }
 .visit {
-  .footer-note {
-    text-align: right;
-    padding: 0;
-    .provider {
-      float: none;
-    }  
-    .time-stamp {
-      display: block;
-    }
-  }
   .current {
     font-size: 14px;
     margin-top: 5px;
-    .date {
-      text-transform: uppercase;
-    }
-    .time {
-      color: $mediumGray;
-      margin-left: 5px;
-    }
-    .provider {
-      display: block;
-      font-size: 12px;
-      margin: 2px 0;
-    }
   }
 }
 .disposition-state {
@@ -331,7 +309,9 @@ span.range {
 .radiology-investigations {
   .radiology-doc-item {
     clear: both;
+    overflow: auto;
     border-bottom: 1px solid $lightestGray;
+    padding-right: 5px;
     a {
       width: 80%;
       float: left;

@@ -29,9 +29,12 @@ use either a `<div>` or an `<section` element:
 
 */
 
+
+/* helpers */
 .fl {float: left;}
 .fr {float: right;}
 
+/* grid sections */
 .primary-section-grid {
 	border: 1px solid $primarySectionGridBorder;
 	@include border-radius($smallestSpacing);
@@ -53,6 +56,7 @@ h2.section-title {
 	border-bottom: 1px solid $bahmniSectionHeaderColor;
 }
 
+/* document link */
 a.document-link {
 	display: block;
 	padding: 5px;
@@ -64,6 +68,7 @@ a.document-link {
 	}
 }
 
+/* notes */
 .notes {
 	font-size: 14px;
 	background: $clinicalNotesColor;
@@ -86,6 +91,7 @@ a.document-link {
 	}
 }
 
+/* file-attachment */
 .has-uploaded-file {
 	&:hover {
 		background: $lightestGray;
@@ -95,6 +101,28 @@ a.document-link {
 		display: inline-block;
 		width: 100%;
 		height: 100%;
+	}
+}
+
+/* footer note with date time provider */
+.footer-note {
+	text-align: right;
+	span {
+		font-size: 12px;
+		color: $mediumGray;
+	}
+	.time-stamp {
+		display: block;
+		.date {
+			text-transform: uppercase;
+		}
+		.time {
+			color: $mediumGray;
+			margin-left: 5px;
+		}
+	}
+	.provider {
+		float: right;
 	}
 }
 
