@@ -8,7 +8,8 @@ angular.module('bahmni.clinical')
             restrict: 'E',
             controller: controller,
             scope: {
-                diseaseTemplate: "=template"
+                diseaseTemplate: "=template",
+                patient:"="
             },
             templateUrl: "views/diseaseTemplate.html"
         };

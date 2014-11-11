@@ -26,6 +26,12 @@ describe("Observation", function () {
             expect(observation.getDisplayValue()).toBe("1 since 2 Hours");
         });
 
-    })
+    });
 
+    describe("is Image Concept", function(){
+        it("should return concept is image", function(){
+            var observation = new Observation({"type": "Text", "value": 'imageUrl1', concept: {conceptClass: 'Image'}});
+            expect(observation.isImageConcept()).toBeTruthy();
+        });
+    });
 });

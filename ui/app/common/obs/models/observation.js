@@ -13,6 +13,10 @@ Bahmni.Common.Obs.Observation = function () {
             return this.groupMembers && this.groupMembers.length <= 0;
         },
 
+        isImageConcept: function () {
+            return this.concept.conceptClass === "Image";
+        },
+
         getDisplayValue: function () {
             var displayValue = "";
             var allValues = [];
@@ -29,9 +33,7 @@ Bahmni.Common.Obs.Observation = function () {
         getDurationDisplayValue: function () {
             var durationForDisplay = Bahmni.Common.Util.DateUtil.convertToUnits(this.duration);
             return "since " + durationForDisplay["value"] + " " + durationForDisplay["unitName"];
-        }
-
-    };
+        }};
 
     return Observation;
     
