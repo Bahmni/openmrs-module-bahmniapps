@@ -181,11 +181,11 @@ angular.module('bahmni.clinical')
             };
 
             $scope.populateBackingFields = function (item) {
-                $scope.treatment.drug = {
+                $scope.treatment.changeDrug({
                     name: item.drug.name,
                     form: item.drug.dosageForm.display,
                     uuid: item.drug.uuid
-                };
+                });
             };
 
             $scope.clearForm = function () {

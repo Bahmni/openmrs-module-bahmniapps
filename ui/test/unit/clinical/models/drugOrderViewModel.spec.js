@@ -891,7 +891,7 @@ describe("drugOrderViewModel", function () {
             var appConfig = {"drugFormDefaults" : {"Ayurvedic" : {"doseUnits": "Teaspoon", "route": "Oral" }}};
             var treatment = sampleTreatment(appConfig, {});
 
-            treatment.drug = {form : "Ayurvedic"};
+            treatment.changeDrug({form : "Ayurvedic"});
 
             expect(treatment.doseUnits).toBe("Teaspoon");
             expect(treatment.route).toBe("Oral");
@@ -901,7 +901,7 @@ describe("drugOrderViewModel", function () {
             var appConfig = {"drugFormDefaults" : {"Ayurvedic" : {"doseUnits": "Teaspoon", "route": "Oral" }}};
             var treatment = sampleTreatment(appConfig, {});
 
-            treatment.drug = {form : "Capsule"};
+            treatment.changeDrug({form : "Capsule"});
 
             expect(treatment.doseUnits).toBe(undefined);
             expect(treatment.route).toBe(undefined);
@@ -910,7 +910,7 @@ describe("drugOrderViewModel", function () {
         it("should not fail when app config does not have drugFormDefaults", function(){
             var treatment = sampleTreatment({}, {});
 
-            treatment.drug = {form : "Ayurvedic"};
+            treatment.changeDrug({form : "Ayurvedic"});
 
             expect(treatment.doseUnits).toBe(undefined);
             expect(treatment.route).toBe(undefined);
@@ -919,7 +919,7 @@ describe("drugOrderViewModel", function () {
         it("should not fail when drug is cleared", function(){
             var treatment = sampleTreatment({}, {});
 
-            treatment.drug = null;
+            treatment.changeDrug(null);
 
             expect(treatment.drug).toBe(null);
         })

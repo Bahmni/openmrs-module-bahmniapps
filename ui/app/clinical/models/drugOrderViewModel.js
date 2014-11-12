@@ -42,22 +42,6 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         }
     });
 
-    Object.defineProperty(this, 'drug', {
-        get: function() {
-            return this._drug;
-        },
-        set: function(value) {
-            this._drug = value;
-            if(!value) return;
-            var defaults = drugFormDefaults[this._drug.form];
-            if(defaults) {
-                this.doseUnits = defaults.doseUnits;
-                this.route = defaults.route;
-            }
-        },
-        enumerable: true
-    })
-
     Object.defineProperty(this, 'uniformDosingDoseUnits', {
         get: function() {
             return this.isUniformDosingType() ? this.doseUnits : null;
@@ -170,6 +154,16 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
 
         return frequency && frequency.frequencyPerDay;
     };
+
+    this.changeDrug = function(drug) {
+        this.drug = drug;
+        if(!drug) return;
+        var defaults = drugFormDefaults[this.drug.form];
+        if(defaults) {
+            this.doseUnits = defaults.doseUnits;
+            this.route = defaults.route;
+        }
+    }
 
     this.calculateDurationUnit = function () {
         if (self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform) {
