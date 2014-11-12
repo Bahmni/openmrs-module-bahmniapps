@@ -69,7 +69,7 @@ angular.module('bahmni.clinical')
                 return treatmentService.getActiveDrugOrders($stateParams.patientUuid).then(function (drugOrders) {
                     var activeDrugOrders = [];
                     drugOrders.forEach(function (drugOrder) {
-                        activeDrugOrders.push(DrugOrderViewModel.createFromContract(drugOrder))
+                        activeDrugOrders.push(DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig,treatmentConfig))
                     });
                     activeDrugOrders = _.sortBy(activeDrugOrders, "effectiveStartDate").reverse();
 
