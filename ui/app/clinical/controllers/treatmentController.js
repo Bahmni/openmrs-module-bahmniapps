@@ -48,6 +48,7 @@ angular.module('bahmni.clinical')
                 return {
                     uniformDosingType: treatment.uniformDosingType,
                     variableDosingType: treatment.variableDosingType,
+                    doseUnits:treatment.doseUnits,
                     duration: treatment.duration,
                     durationUnit: treatment.durationUnit
                 };
