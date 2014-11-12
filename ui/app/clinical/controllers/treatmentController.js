@@ -119,7 +119,7 @@ angular.module('bahmni.clinical')
                 markEditingDrugEntry();
                 clearHighlights();
                 $scope.treatments[index].isBeingEdited = true;
-                $scope.treatment = $scope.treatments[index].cloneForEdit(index, $scope.currentBoard.extensionParams, $scope.treatmentConfig);
+                $scope.treatment = $scope.treatments[index].cloneForEdit(index, drugOrderAppConfig, $scope.treatmentConfig);
             };
 
             $scope.incompleteDrugOrders = function(){
