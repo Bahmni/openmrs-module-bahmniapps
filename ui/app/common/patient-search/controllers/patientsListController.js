@@ -5,7 +5,8 @@ angular.module('bahmni.common.patientSearch')
     function ($scope, $window, patientService, $rootScope, appService, spinner, $stateParams) {
         var initialize = function () {
             var searchTypes = appService.getAppDescriptor().getExtensions("org.bahmni.patient.search", "config").map(mapExtensionToSerachType);
-            $scope.search = new Bahmni.Common.PatientSearch.Search(searchTypes);                
+            $scope.search = new Bahmni.Common.PatientSearch.Search(searchTypes);
+            $scope.search.markPatientEntry();
             $scope.$watch('search.searchType', fetchPatients);
         };
 

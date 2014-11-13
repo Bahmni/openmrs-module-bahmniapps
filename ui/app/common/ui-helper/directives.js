@@ -45,17 +45,6 @@ angular.module('bahmni.common.util')
             link: link
         }
     })
-    .directive('focusOn', function ($timeout) {
-        return function (scope, elem, attrs) {
-            scope.$watch(attrs.focusOn, function (value) {
-                if (value) {
-                    $timeout(function(){
-                        $(elem).focus();
-                    });
-                }
-            });
-        };
-    })
     .directive('myAutocomplete', function ($parse) {
         var link = function (scope, element, attrs, ngModelCtrl) {
             var ngModel = $parse(attrs.ngModel);

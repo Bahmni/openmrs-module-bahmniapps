@@ -14,7 +14,14 @@ Bahmni.Common.PatientSearch.Search = function(searchTypes) {
             self.activePatients = [];
             self.searchResults = [];
         }
+        self.markPatientEntry();
+    };
 
+    self.markPatientEntry = function () {
+        self.startPatientSearch = true;
+        window.setTimeout(function () {
+            self.startPatientSearch = false;
+        });
     };
 
     self.updatePatientList = function (patientList) {
