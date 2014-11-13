@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('VisitController', ['$scope', '$rootScope', '$location', 'patientService', 'encounterService', '$window', '$stateParams', 'spinner', '$timeout', '$q', 'registrationCardPrinter', 'appService', 'openmrsPatientMapper','contextChangeHandler','messagingService', 'sessionService',
-        function ($scope, $rootScope, $location, patientService, encounterService, $window, $stateParams, spinner, $timeout, $q, registrationCardPrinter, appService, patientMapper,contextChangeHandler, messagingService, sessionService) {
+    .controller('VisitController', ['$scope', '$rootScope', '$state', 'patientService', 'encounterService', '$stateParams', 'spinner', '$timeout', '$q', 'registrationCardPrinter', 'appService', 'openmrsPatientMapper','contextChangeHandler','messagingService', 'sessionService',
+        function ($scope, $rootScope, $state, patientService, encounterService, $stateParams, spinner, $timeout, $q, registrationCardPrinter, appService, patientMapper,contextChangeHandler, messagingService, sessionService) {
             var patientUuid = $stateParams.patientUuid;
             var isNewPatient = $stateParams.newpatient;
 
@@ -45,7 +45,7 @@ angular.module('bahmni.registration')
             $scope.allowPrintingSupplementalPaper = appService.getAppDescriptor().getConfigValue("supplementalPaperPrintLayout") != null;
 
             $scope.back = function () {
-                $window.history.back();
+                $state.go("patient.edit");
             };
 
             $scope.updatePatientImage = function (image) {
@@ -74,8 +74,12 @@ angular.module('bahmni.registration')
 
             $scope.moveToNextPage = function () {
                 return $timeout(function () {
-                    var path = $scope.patient.isNew ? "/patient/new" : "/search";
-                    $location.path(path);
+                      if($scope.patient.isNew) {
+                          $state.go('newpatient')
+                      }
+                      else {
+                          $state.go('patient.visit',{},{reload : true})
+                      }
                 }, 100);
             };
 
