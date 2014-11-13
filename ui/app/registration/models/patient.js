@@ -9,7 +9,7 @@ angular.module('bahmni.registration')
                     this.age = age.fromBirthDate(birthDate);
                 }
                 else {
-                    this.age = { years: null };
+                    this.age = age.create(null, null, null);
                 }
             };
 

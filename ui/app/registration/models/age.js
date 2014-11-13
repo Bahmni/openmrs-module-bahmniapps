@@ -15,7 +15,6 @@ angular.module('bahmni.registration')
                 return !(this.years || this.months || this.days);
             }
 
-
             return {
                 years: years,
                 months: months,
@@ -29,4 +28,4 @@ angular.module('bahmni.registration')
             create: create
         }
     }]
-    );
+);
