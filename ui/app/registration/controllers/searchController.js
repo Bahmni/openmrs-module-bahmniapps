@@ -42,7 +42,7 @@ angular.module('bahmni.registration')
 
             var mapLocalName = function(data){
                 if($scope.localNameAttributes){
-                    data.results.map(function(result){
+                    data.pageOfResults.map(function(result){
                         if(result.localName){
                             result.localName.split(" ").forEach(
                                 function(name){
