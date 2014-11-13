@@ -249,3 +249,9 @@
         outline: 2px solid $clinicalFormFocus;
     }
 }
+
+.refill-icon {
+    background: url("../images/refill-icon.png") center center no-repeat;
+    width: 20px; height: 35px;
+    display: inline-block;
+}
