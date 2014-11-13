@@ -49,6 +49,10 @@ describe("drugOrderViewModel", function () {
             {name: "Day(s)", factor: 1},
             {name: "Week(s)", factor: 7},
             {name: "Month(s)", factor: 30}
+        ],
+        doseUnits: [
+            {name:"Tablet(s)"},
+            {name:"Teaspoon"}
         ]
     };
 
@@ -896,13 +900,21 @@ describe("drugOrderViewModel", function () {
     });
 
     describe("changeDrug", function(){
-        it("should set dose units and route", function(){
+        it("should set default dose units if units available in config", function(){
             var appConfig = {"drugFormDefaults" : {"Ayurvedic" : {"doseUnits": "Teaspoon", "route": "Oral" }}};
-            var treatment = sampleTreatment(appConfig, {});
-
+            var treatment = sampleTreatment(appConfig, treatmentConfig);
             treatment.changeDrug({form : "Ayurvedic"});
 
             expect(treatment.doseUnits).toBe("Teaspoon");
+            expect(treatment.route).toBe("Oral");
+        })
+
+        it("should not set dose units if units not available in config", function(){
+            var appConfig = {"drugFormDefaults" : {"Ayurvedic" : {"doseUnits": "ml", "route": "Oral" }}};
+            var treatment = sampleTreatment(appConfig, treatmentConfig);
+            treatment.changeDrug({form : "Ayurvedic"});
+
+            expect(treatment.doseUnits).toBe(undefined);
             expect(treatment.route).toBe("Oral");
         })
 

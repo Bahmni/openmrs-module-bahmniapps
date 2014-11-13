@@ -149,12 +149,21 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         return frequency && frequency.frequencyPerDay;
     };
 
+    var getDoseUnits = function (defaults){
+        if(_.find(config.doseUnits, {"name":defaults.doseUnits}) === undefined){
+            return undefined;
+        }
+        else {
+            return defaults.doseUnits;
+        }
+    };
+
     this.changeDrug = function(drug) {
         this.drug = drug;
         if(!drug) return;
         var defaults = drugFormDefaults[this.drug.form];
         if(defaults) {
-            this.doseUnits = defaults.doseUnits;
+            this.doseUnits = getDoseUnits(defaults);
             this.route = defaults.route;
         }
     };
