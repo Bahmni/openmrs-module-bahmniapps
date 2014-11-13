@@ -25,20 +25,23 @@ angular
                 url: '/patient/:patientUuid',
                 abstract: true,
                 views: {
-                    'content': { template: '<div ui-view="content"></div>' }
+                    'content': { template: '<div ui-view="content"></div>' },
+                    'headerExtension': { template: '<div ui-view="headerExtension"></div>' },
                 },
-                resolve: { initialization: 'initialization' }
+                resolve: {initialization: 'initialization'}
             })
             .state('patient.edit', {
                 url: '?serverError',
                 views: {
-                    'content': { templateUrl: 'views/editpatient.html', controller: 'EditPatientController'}
+                    'content': { templateUrl: 'views/editpatient.html', controller: 'EditPatientController'},
+                    'headerExtension': {template: '<div print-options></div>', controller: 'EditPatientController'}
                 }
             })
             .state('patient.visit', {
                 url: '/visit',
                 views: {
-                    'content': { templateUrl: 'views/visit.html', controller: 'VisitController'}
+                    'content': { templateUrl: 'views/visit.html', controller: 'VisitController'},
+                    'headerExtension': {template: '<div print-options></div>', controller: 'VisitController'}
                 }
             })
             .state('patient.print', {

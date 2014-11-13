@@ -14,7 +14,6 @@ describe('CreatePatientController', function () {
     var appDescriptor;
     var appService;
     var route;
-    var registrationCardPrinter;
     var sessionService;
 
     beforeEach(module('bahmni.registration'));
@@ -25,7 +24,6 @@ describe('CreatePatientController', function () {
         location.absUrl = function(){return "/patient/new"};
         patientService = jasmine.createSpyObj('patientService', ['create', 'getPatient']);
         createPromise = specUtil.createServicePromise('patientCreate');
-        registrationCardPrinter = jasmine.createSpyObj('registrationCardPrinter', ['print']);
         patientService.create.and.returnValue(createPromise);
         appDescriptor = {
             getExtensions : function(id) {
@@ -74,9 +72,7 @@ describe('CreatePatientController', function () {
                 $rootScope: {regEncounterConfiguration: new Bahmni.Registration.RegistrationEncounterConfig({visitTypes: {}},{encounterTypes: {"REG" : "someUUID"}}), patientConfiguration: patientConfiguration },
                 appService: appService,
                 $route: route,
-                registrationCardPrinter: registrationCardPrinter,
                 sessionService: sessionService
-
         });
         });
     };
