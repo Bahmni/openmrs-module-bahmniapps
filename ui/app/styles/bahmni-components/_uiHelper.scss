@@ -79,7 +79,7 @@ a.document-link {
 	clear: both;
 	strong, .title {
 		float: left;
-		margin-right: $defaultSpacing;
+		margin-right: $smallestSpacing;
     	font-family: $primaryBoldFont;
     	display: inline;
 	}

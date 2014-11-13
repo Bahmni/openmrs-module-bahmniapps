@@ -197,3 +197,8 @@ pre.chief-notes {
 .highlight {
 	border-left: 5px solid orange;
 }
+u, .add-drug-btninput[value]:first-letter {
+    text-decoration: none;
+    border-bottom: 1px solid;
+    font-family: openSansBold;
+}
