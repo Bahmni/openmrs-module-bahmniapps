@@ -43,9 +43,9 @@ describe("DrugOrderHistoryController", function () {
                 expect(scope.consultation.drugOrderGroups.length).toBe(3);
                 expect(scope.consultation.drugOrderGroups[0].label).toEqual("Recent");
                 expect(scope.consultation.drugOrderGroups[0].drugOrders.length).toBe(3);
-                expect(scope.consultation.drugOrderGroups[0].drugOrders[0].uuid).toBe('drugOrder2Uuid');
+                expect(scope.consultation.drugOrderGroups[0].drugOrders[0].uuid).toBe(scheduledOrder.uuid);
                 expect(scope.consultation.drugOrderGroups[0].drugOrders[1].uuid).toBe(activeDrugOrder.uuid);
-                expect(scope.consultation.drugOrderGroups[0].drugOrders[2].uuid).toBe(scheduledOrder.uuid);
+                expect(scope.consultation.drugOrderGroups[0].drugOrders[2].uuid).toBe('drugOrder2Uuid');
                 expect(scope.consultation.drugOrderGroups[0].selected).toBeTruthy();
 
                 expect(scope.consultation.drugOrderGroups[1].visitStartDate.getTime()).toEqual(1410349317000);
