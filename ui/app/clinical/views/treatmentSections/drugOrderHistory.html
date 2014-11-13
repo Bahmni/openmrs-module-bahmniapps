@@ -11,7 +11,7 @@
                     <span>{{drugOrderGroup.label | date: 'dd MMM yy'}}</span>
                     <i class="icon-star current-visit-icon" title="Current visit" ng-if="drugOrderGroup.isCurrentVisit"></i>
                 </label>
-                <button class="secondary-button refill-drugs-btn fr" ng-click="refillAll(drugOrderGroup.drugOrders)" ng-if="!drugOrderGroupsEmpty()"><i class="icon-forward"></i> Refill All</button>
+                <button class="secondary-button refill-drugs-btn fr" ng-click="refillAll(drugOrderGroup.drugOrders)" ng-if="!drugOrderGroupsEmpty()">Refill All</button>
 				<div class="inpage-tab-panel">
 					<div class="inpage-tab-content">
                         <p ng-if="!drugOrderGroup.drugOrders.length" class="placeholder-text">No Recent Treatments</p>
@@ -23,17 +23,17 @@
                                 </div>
 								<div class="button-group-wrapper">
                                     <div class="button-group">
-									<button ng-if="drugOrder.isActive()" ng-disabled="!drugOrder.isEditAllowed" ng-click="edit(drugOrder, drugOrderGroup.drugOrders)">
+									<button ng-disabled="!drugOrder.isActive()" ng-disabled="!drugOrder.isEditAllowed" ng-click="edit(drugOrder, drugOrderGroup.drugOrders)">
                                         <i class="icon-edit"></i>
                                     </button>
-                                    <button ng-if="drugOrder.isActive() && drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isDiscontinuedAllowed" ng-click="undoDiscontinue(drugOrder)">
+                                    <button ng-if="drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed" ng-click="undoDiscontinue(drugOrder)">
                                         <i class="icon-undo"></i>
                                     </button>
-                                    <button ng-if="drugOrder.isActive() && !drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isDiscontinuedAllowed" ng-click="discontinue(drugOrder)">
-                                        <i class="icon-stop"></i>
+                                    <button class="stop-drug-btn" ng-if="!drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed" ng-click="discontinue(drugOrder)">
+                                        Stop
                                     </button>
-                                    <button ng-click="refill(drugOrder)">
-                                        <i class="icon-play"></i>
+                                    <button class="refill-btn" ng-click="refill(drugOrder)">
+                                        Refill
                                     </button>
                                     <button class="toggle" ng-class="{'has-notes': drugOrder.additionalInstructions}" ng-click="toggleShowAdditionalInstructions(drugOrder)" ng-hide="drugOrder.showAdditionalInstructions">
                                         <i class="icon-plus-sign"></i>
