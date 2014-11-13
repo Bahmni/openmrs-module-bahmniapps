@@ -1,10 +1,5 @@
 Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
     angular.copy(proto, this);
-    var getDefaultValue = function (defaultValue, valueSet) {
-        return defaultValue && _.find(valueSet, function (value) {
-            return value.name === defaultValue;
-        });
-    };
 
     var allowedQuantityUnits = ["Tablet(s)","Capsule(s)"];
     var DateUtil = Bahmni.Common.Util.DateUtil;
@@ -49,7 +44,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         set: function(value) {
             this.doseUnits = value;
         }
-    })
+    });
 
     Object.defineProperty(this, 'variableDosingDoseUnits', {
         get: function() {
@@ -58,20 +53,19 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         set: function(value) {
             this.doseUnits = value;
         }
-    })
+    });
 
     var getDosingType = function() {
         return self.isUniformDosingType() ? self.uniformDosingType : self.variableDosingType;
-    }
+    };
 
     this.asNeeded = this.asNeeded || false;
-    var defaultRoute = getDefaultValue(appConfig.defaultRoute, config.routes || []);
-    this.route = this.route || defaultRoute && defaultRoute.name;
+    this.route = this.route || undefined;
     this.durationUnit = this.durationUnit || appConfig.defaultDurationUnit;
     this.instructions = this.instructions || appConfig.defaultInstructions;
     this.effectiveStartDate = this.effectiveStartDate || DateUtil.now();
     this.frequencyType = this.frequencyType || Bahmni.Clinical.Constants.dosingTypes.uniform;
-    this.doseUnits = this.doseUnits || appConfig.defaultDoseUnit;
+    this.doseUnits = this.doseUnits || undefined;
     this.uniformDosingType = this.uniformDosingType || {};
     this.variableDosingType = this.variableDosingType || {};
     this.durationInDays = this.durationInDays || 0;
@@ -163,7 +157,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
             this.doseUnits = defaults.doseUnits;
             this.route = defaults.route;
         }
-    }
+    };
 
     this.calculateDurationUnit = function () {
         if (self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform) {
@@ -237,17 +231,16 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         if (!self.quantityEnteredManually && !self.quantityEnteredViaEdit) {
             if (self.frequencyType == Bahmni.Clinical.Constants.dosingTypes.uniform) {
                 self.quantity = self.uniformDosingType.dose * (self.uniformDosingType.frequency ? getFrequencyPerDay() : 0) * self.durationInDays;
-                self.quantityUnit = quantityUnitsFrom(self.doseUnits);
             } else if (self.frequencyType == Bahmni.Clinical.Constants.dosingTypes.variable) {
                 var dose = self.variableDosingType;
                 self.quantity = (dose.morningDose + dose.afternoonDose + dose.eveningDose) * self.durationInDays;
-                self.quantityUnit = quantityUnitsFrom(self.doseUnits);
             }
         }
         if(self.quantity % 1 != 0){
             self.quantity = self.quantity - ( self.quantity % 1 ) + 1;
         }
         self.quantityEnteredViaEdit = false;
+        self.quantityUnit = quantityUnitsFrom(self.doseUnits);
     };
 
     this.isStopped = function () {

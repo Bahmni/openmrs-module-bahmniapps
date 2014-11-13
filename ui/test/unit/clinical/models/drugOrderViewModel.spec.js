@@ -95,11 +95,6 @@ describe("drugOrderViewModel", function () {
         expect(treatment.getDescription()).toBe("1-1-1, Orally - 10 Days")
     });
 
-    it("should get the default route from the config", function () {
-        var treatment = sampleTreatment({defaultRoute: "Orally"}, treatmentConfig);
-        expect(treatment.route).toEqual("Orally");
-    });
-
     it("should get default durationUnit from config if available", function () {
         var treatment = sampleTreatment({defaultDurationUnit: "Month(s)"}, treatmentConfig);
         expect(treatment.durationUnit).toEqual("Month(s)");
@@ -266,14 +261,28 @@ describe("drugOrderViewModel", function () {
             expect(treatment.quantity).toBe(0);
         });
 
-        it("should not calculate quantity and quantityUnit if entered manually", function () {
+        it("should not calculate quantity if entered manually", function () {
             var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
             treatment.quantity = 100;
-            treatment.quantityUnit = "not Capsule";
             treatment.setQuantityEnteredManually();
             treatment.calculateQuantityAndUnit();
             expect(treatment.quantity).toBe(100);
-            expect(treatment.quantityUnit).toBe("not Capsule");
+        });
+
+        it("should not calculate quantity if entered via edit", function () {
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
+            treatment.quantity = 100;
+            treatment.quantityEnteredViaEdit = true;
+            treatment.calculateQuantityAndUnit();
+            expect(treatment.quantity).toBe(100);
+        });
+
+        it("should calculate quantity units all the time", function () {
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
+            treatment.quantityUnit = "not Capsule";
+            treatment.setQuantityEnteredManually();
+            treatment.calculateQuantityAndUnit();
+            expect(treatment.quantityUnit).toBe("Unit(s)");
         });
 
         it("should be active if the effective stop date is in future", function () {
