@@ -13,7 +13,7 @@ angular.module('bahmni.common.patientSearch')
             return spinner.forPromise(patientService.search($scope.search.searchParameter)).then(function (response) {
                 $scope.search.updateSearchResults(response.data.pageOfResults);
                 if ($scope.search.hasSingleActivePatient()) {
-                    $scope.forwardPatient($scope.activePatients[0]);
+                    $scope.forwardPatient($scope.search.activePatients[0]);
                 }
             });
         };
