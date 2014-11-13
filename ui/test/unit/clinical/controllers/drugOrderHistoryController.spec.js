@@ -240,7 +240,7 @@ describe("DrugOrderHistoryController", function () {
             "durationUnits": null,
             "dateActivated": 1397028379000,
             "commentToFulfiller": null,
-            "effectiveStartDate": 1397028379000,
+            "effectiveStartDate": 1410322624001,
             "effectiveStopDate": 1397892379000,
             "orderReasonConcept": null,
             "dosingInstructionType": "org.openmrs.FreeTextDosingInstructions",
