@@ -54,10 +54,6 @@ Bahmni.Common.Util.DateUtil = {
 		return moment(this.parse(dateTime)).startOf('day').toDate();
 	},
 
-	getCurrentDate: function(){
-		return moment(Date.now()).format("YYYY-MM-DDTHH:mm:ss") + "Z";
-	},
-
 	parse: function(dateString){
 		return dateString ? moment(dateString).toDate() : null;
 	},

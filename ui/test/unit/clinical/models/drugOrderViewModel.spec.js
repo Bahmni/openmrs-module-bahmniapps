@@ -1,6 +1,7 @@
 'use strict';
 
 describe("drugOrderViewModel", function () {
+    var DateUtil = Bahmni.Common.Util.DateUtil;
     var sampleTreatment = function (extensionParams, treatmentConfig, defaults) {
         return Bahmni.Tests.drugOrderViewModelMother.build(extensionParams, treatmentConfig, defaults);
     };
@@ -469,8 +470,8 @@ describe("drugOrderViewModel", function () {
             var treatment = sampleTreatment({}, [], {doseUnits: 'Tablet(s)'});
             var route = treatment.route = 'Oral';
             expect(treatment.route).toBe(route);
-            var now = Bahmni.Common.Util.DateUtil.now();
-            treatment.scheduledDate = Bahmni.Common.Util.DateUtil.subtractDays(now, 2);
+            var now = DateUtil.now();
+            treatment.scheduledDate = DateUtil.subtractDays(now, 2);
             treatment.drug = { form: undefined };
 
             var revisedTreatment = treatment.revise();
@@ -484,11 +485,11 @@ describe("drugOrderViewModel", function () {
 
         it("should not change scheduled date", function () {
             var treatment = sampleTreatment({}, []);
-            var now = Bahmni.Common.Util.DateUtil.now();
-            treatment.effectiveStartDate = Bahmni.Common.Util.DateUtil.addDays(now, 2);
+            var now = DateUtil.now();
+            treatment.effectiveStartDate = DateUtil.addDays(now, 2);
             treatment.drug = { form: undefined };
             var revisedTreatment = treatment.revise();
-            expect(Bahmni.Common.Util.DateUtil.isSameDate(revisedTreatment.scheduledDate, treatment.scheduledDate)).toBe(true);
+            expect(DateUtil.isSameDate(revisedTreatment.scheduledDate, treatment.scheduledDate)).toBe(true);
         });
 
         it("should map uuid to previousOrderUuid", function () {
@@ -537,10 +538,10 @@ describe("drugOrderViewModel", function () {
     describe("refill", function () {
         it("should refill an inactive drug order", function () {
             var treatment = sampleTreatment({}, []);
-            var today = Bahmni.Common.Util.DateUtil.today();
+            var today = DateUtil.today();
 
             treatment.previousOrderUuid = "prev-uuid";
-            treatment.effectiveStopDate = Bahmni.Common.Util.DateUtil.subtractDays(today, 30);
+            treatment.effectiveStopDate = DateUtil.subtractDays(today, 30);
             var refilledTreatment = treatment.refill();
             expect(refilledTreatment.uuid).toBe(undefined);
             expect(refilledTreatment.dateActivated).toBe(undefined);
@@ -552,35 +553,35 @@ describe("drugOrderViewModel", function () {
 
         it("should refill an active drug order", function () {
             var treatment = sampleTreatment({}, []);
-            var today = Bahmni.Common.Util.DateUtil.today();
+            var today = DateUtil.today();
             treatment.previousOrderUuid = "prev-uuid";
-            treatment.effectiveStopDate = Bahmni.Common.Util.DateUtil.addDays(today, 5);
+            treatment.effectiveStopDate = DateUtil.addDays(today, 5);
             var refilledTreatment = treatment.refill();
             expect(refilledTreatment.uuid).toBe(undefined);
             expect(refilledTreatment.dateActivated).toBe(undefined);
             expect(refilledTreatment.previousOrderUuid).toBe(undefined);
-            var startDateForRefilledTreatment = Bahmni.Common.Util.DateUtil.addSeconds(treatment.effectiveStopDate, 1);
+            var startDateForRefilledTreatment = DateUtil.addSeconds(treatment.effectiveStopDate, 1);
             expect(refilledTreatment.effectiveStartDate).toEqual(startDateForRefilledTreatment);
             expect(refilledTreatment.drugNameDisplay).toBe("calpol 500mg (Tablet)");
         });
 
         it("should refill an active drug order ending today", function () {
             var treatment = sampleTreatment({}, []);
-            var today = Bahmni.Common.Util.DateUtil.today();
+            var today = DateUtil.today();
             treatment.previousOrderUuid = "prev-uuid";
             treatment.effectiveStopDate = today;
             var refilledTreatment = treatment.refill();
             expect(refilledTreatment.uuid).toBe(undefined);
             expect(refilledTreatment.dateActivated).toBe(undefined);
             expect(refilledTreatment.previousOrderUuid).toBe(undefined);
-            var startDateForRefilledTreatment = Bahmni.Common.Util.DateUtil.addSeconds(treatment.effectiveStopDate, 1);
+            var startDateForRefilledTreatment = DateUtil.addSeconds(treatment.effectiveStopDate, 1);
             expect(refilledTreatment.effectiveStartDate).toEqual(startDateForRefilledTreatment);
             expect(refilledTreatment.drugNameDisplay).toBe("calpol 500mg (Tablet)");
         });
 
         it("should set quantity units as Unit(s) for reverse synced drug orders", function () {
             var treatment = sampleTreatment({}, []);
-            var today = Bahmni.Common.Util.DateUtil.today();
+            var today = DateUtil.today();
             treatment.previousOrderUuid = "prev-uuid";
             treatment.effectiveStopDate = today;
             treatment.quantityUnit = null;
@@ -609,17 +610,27 @@ describe("drugOrderViewModel", function () {
             expect(refilledTreatment.quantity).toBe(undefined);
             expect(refilledTreatment.quantityUnit).toBe("Unit(s)");
         });
+
+
+        it("should set effective start date to effective stop date + 1 second for refill orders", function(){
+            var treatment = sampleTreatment({}, []);
+            treatment.effectiveStopDate = DateUtil.now();
+            treatment.uiStartDate =  DateUtil.now();
+            var expectedEffectiveStartDate = DateUtil.addSeconds(treatment.effectiveStopDate, 1);
+
+            expect(treatment.effectiveStartDate).toEqual(expectedEffectiveStartDate);
+        });
     });
 
     describe("edit", function () {
 
         it("should not change scheduled date", function () {
             var treatment = sampleTreatment({}, []);
-            var now = Bahmni.Common.Util.DateUtil.now();
-            treatment.effectiveStartDate = Bahmni.Common.Util.DateUtil.addDays(now, 2);
+            var now = DateUtil.now();
+            treatment.effectiveStartDate = DateUtil.addDays(now, 2);
 
             var editedTreatment = treatment.cloneForEdit(0);
-            expect(Bahmni.Common.Util.DateUtil.isSameDate(editedTreatment.scheduledDate, treatment.scheduledDate)).toBe(true);
+            expect(DateUtil.isSameDate(editedTreatment.scheduledDate, treatment.scheduledDate)).toBe(true);
         });
 
         it("should create a copy of the drug to be edited", function () {
@@ -649,43 +660,46 @@ describe("drugOrderViewModel", function () {
     });
 
     describe("set effectiveStartDate", function () {
-        var isoDateFormat = "YYYY-MM-DD";
+        var isoDateTimeFormat = "YYYY-MM-DD HH:mm:ss";
+
+        beforeEach(function(){
+            var now = DateUtil.now();
+            spyOn(DateUtil, 'now').and.returnValue(now);
+        });
 
         it("should set scheduledDate if date is in future", function () {
             var treatment = sampleTreatment({}, []);
-            var now = Bahmni.Common.Util.DateUtil.now();
+            var now = DateUtil.now();
 
-            treatment.effectiveStartDate = moment(Bahmni.Common.Util.DateUtil.addDays(now, 2)).format(isoDateFormat);
+            treatment.effectiveStartDate = moment(DateUtil.addSeconds(now, 1)).format(isoDateTimeFormat);
 
             expect(treatment.scheduledDate).toBe(treatment.effectiveStartDate);
         });
 
-        it("should clear scheduledDate if date is today", function () {
+        it("should clear scheduledDate if date is equals now", function () {
             var treatment = sampleTreatment({}, []);
 
-            treatment.effectiveStartDate = moment(Bahmni.Common.Util.DateUtil.now()).format(isoDateFormat);
+            treatment.effectiveStartDate = moment(DateUtil.now()).format(isoDateTimeFormat);
 
             expect(treatment.scheduledDate).toBe(null);
         });
 
-        it("should clear scheduledDate if date is in the past", function () {
+        it("should clear scheduledDate if date is today few seconds ago", function () {
             var treatment = sampleTreatment({}, []);
-            var now = Bahmni.Common.Util.DateUtil.now();
 
-            treatment.effectiveStartDate = moment(Bahmni.Common.Util.DateUtil.subtractDays(now, 2)).format(isoDateFormat);
+            treatment.effectiveStartDate = moment(DateUtil.addSeconds(DateUtil.now(), -1)).format(isoDateTimeFormat);
 
             expect(treatment.scheduledDate).toBe(null);
         });
 
-        it("should set effective start date to effective stop date + 1 second for refill orders", function(){
+        it("should clear scheduledDate if date is past date", function () {
             var treatment = sampleTreatment({}, []);
-            treatment.effectiveStopDate = Bahmni.Common.Util.DateUtil.now();
-            treatment.uiStartDate =  Bahmni.Common.Util.DateUtil.now();
-            var expectedEffectiveStartDate = Bahmni.Common.Util.DateUtil.addSeconds(treatment.effectiveStopDate, 1);
+            var now = DateUtil.now();
 
-            expect(treatment.effectiveStartDate).toEqual(expectedEffectiveStartDate);
+            treatment.effectiveStartDate = moment(DateUtil.subtractDays(now, 2)).format(isoDateTimeFormat);
+
+            expect(treatment.scheduledDate).toBe(null);
         });
-
     });
 
     describe("Validate", function () {

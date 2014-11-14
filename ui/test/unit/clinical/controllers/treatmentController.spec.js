@@ -11,6 +11,8 @@ describe("TreatmentController", function () {
         rootScope = $rootScope;
         $rootScope.consultation = {};
         scope.consultation = {saveHandler: new Bahmni.Clinical.SaveHandler()};
+        var now = Bahmni.Common.Util.DateUtil.now();
+        spyOn(Bahmni.Common.Util.DateUtil, 'now').and.returnValue(now);
         newTreatment = new Bahmni.Clinical.DrugOrderViewModel({}, {});
         editTreatment = new Bahmni.Clinical.DrugOrderViewModel(null, null);
         scope.currentBoard = {extension: {}, extensionParams: {}};
