@@ -9,7 +9,8 @@ describe('VisitController', function () {
     var patientService;
     var patient;
     var dateUtil;
-    var $state;
+    var $location;
+    var $window;
     var $timeout;
     var spinner;
     var getEncounterPromise;
@@ -61,7 +62,7 @@ describe('VisitController', function () {
     };
 
     beforeEach(module('bahmni.registration'));
-    beforeEach(inject(['$injector', '$timeout', '$q', '$rootScope', function ($injector, timeout, $q, $rootScope) {
+    beforeEach(inject(['$injector', '$location', '$window', '$timeout', '$q', '$rootScope', function ($injector, location, window, timeout, $q, $rootScope) {
         q = $q;
         stateParams = { patientUuid: '21308498-2502-4495-b604-7b704a55522d' };
         patient = {
@@ -83,7 +84,8 @@ describe('VisitController', function () {
         patientMapper = jasmine.createSpyObj('patientMapper', ['map']);
         registrationCardPrinter = jasmine.createSpyObj('registrationCardPrinter', ['print']);
         dateUtil = Bahmni.Common.Util.DateUtil;
-        $state = jasmine.createSpyObj('state', ['go']);;
+        $location = location;
+        $window = window;
         $timeout = timeout;
         success = jasmine.createSpy();
         $rootScope.regEncounterConfiguration = new Bahmni.Registration.RegistrationEncounterConfig({visitTypes: {}},{encounterTypes: {"REG" : "someUUID"}});
@@ -103,6 +105,8 @@ describe('VisitController', function () {
 
     describe('initialization', function () {
         it('should set the patient from patient data', function () {
+            $location.search("newpatient", true);
+
             $controller('VisitController', {
                 $scope: scope,
                 spinner: spinner,
@@ -128,6 +132,7 @@ describe('VisitController', function () {
                 $scope: scope,
                 patientService: patientService,
                 encounterService: encounterService,
+                $location: $location,
                 spinner: spinner,
                 dateUtil: dateUtil,
                 $stateParams: stateParams,
@@ -175,7 +180,7 @@ describe('VisitController', function () {
                 $scope: scope,
                 patientService: patientService,
                 encounterService: encounterService,
-                $state: $state,
+                $location: $location,
                 spinner: spinner,
                 dateUtil: dateUtil,
                 $stateParams: stateParams,
@@ -216,7 +221,7 @@ describe('VisitController', function () {
                     $scope: scope,
                     patientService: patientService,
                     encounterService: encounterService,
-                    $state: $state,
+                    $location: $location,
                     spinner: spinner,
                     dateUtil: dateUtil,
                     $stateParams: stateParams,
@@ -235,21 +240,23 @@ describe('VisitController', function () {
 
             it(" should print patient and go to create new page on creation of visit for new patient", function () {
                 scope.patient.isNew = true;
+                spyOn($location, 'path');
                 scope.saveAndPrint();
 
                 expect(scope.print).toHaveBeenCalled();
                 $timeout.flush();
-                expect($state.go).toHaveBeenCalledWith("newpatient");
+                expect($location.path).toHaveBeenCalledWith("/patient/new");
             });
 
-            it("should print patient and remain on visit page on creation of visit for edit of patient", function () {
+            it("should print patient and go to search on creation of visit for edit of patient", function () {
                 scope.patient.isNew = false;
+                spyOn($location, 'path');
 
                 scope.saveAndPrint();
 
                 expect(scope.print).toHaveBeenCalled();
                 $timeout.flush();
-                expect($state.go).toHaveBeenCalledWith("patient.visit", {}, {reload:true});
+                expect($location.path).toHaveBeenCalledWith("/search");
             });
         });
     });
@@ -258,7 +265,6 @@ describe('VisitController', function () {
         beforeEach(function () {
             $controller('VisitController', {
                 $scope: scope,
-                $state: $state,
                 encounterService: encounterService,
                 patientService: patientService,
                 spinner: spinner,
@@ -274,6 +280,7 @@ describe('VisitController', function () {
             encounterService.create.and.callFake(stubOnePromise);
             scope.patient = {uuid: "21308498-2502-4495-b604-7b704a55522d"};
             spyOn(scope, 'print').and.callFake(stubOnePromise);
+            spyOn($location, 'path');
             spyOn(scope, 'validate').and.callFake(stubOnePromise);
         });
 
@@ -292,7 +299,7 @@ describe('VisitController', function () {
                 scope.submit();
                 $timeout.flush();
 
-                expect($state.go).toHaveBeenCalledWith("newpatient");
+                expect($location.path).toHaveBeenCalledWith("/patient/new");
             });
         })
 
@@ -311,7 +318,7 @@ describe('VisitController', function () {
                 scope.submit();
                 $timeout.flush();
 
-                expect($state.go).toHaveBeenCalledWith("patient.visit", {}, {reload:true});
+                expect($location.path).toHaveBeenCalledWith("/search");
             });
         })
     });
