@@ -1,7 +1,6 @@
 'use strict';
 
-angular.module('bahmni.registration')
-.factory('initialization',
+angular.module('bahmni.registration').factory('initialization',
     ['$rootScope', '$q', 'configurationService', 'authenticator', 'appService', 'spinner', 'Preferences',
     function ($rootScope, $q, configurationService, authenticator, appService, spinner, preferences) {
         var getConfigs = function() {

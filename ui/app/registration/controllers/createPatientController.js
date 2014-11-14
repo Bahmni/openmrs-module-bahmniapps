@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('CreatePatientController', ['$scope', '$rootScope', '$state', 'patientService', 'encounterService','$location', 'Preferences', 'patient', '$window', 'spinner', 'appService', 'sessionService',
-    function ($scope, $rootScope, $state, patientService, encounterService, $location, preferences, patientModel, $window, spinner, appService, sessionService) {
+    .controller('CreatePatientController', ['$scope', '$rootScope', '$state', 'patientService', 'encounterService','$location', 'Preferences', 'patient', '$window', 'spinner', 'registrationCardPrinter', 'appService', 'sessionService',
+    function ($scope, $rootScope, $state, patientService, encounterService, $location, preferences, patientModel, $window, spinner, registrationCardPrinter, appService, sessionService) {
         var dateUtil = Bahmni.Common.Util.DateUtil;
         var createActionsConfig = [];
-        var defaultActions = ["save", "startVisit"];
+        var defaultActions = ["save", "print", "startVisit"];
         var defaultVisitType = appService.getAppDescriptor().getConfigValue('defaultVisitType');
         var locationUuid = sessionService.getLoginLocationUuid();
         var regEncounterTypeUuid = $rootScope.regEncounterConfiguration.encounterTypes[Bahmni.Registration.Constants.registrationEncounterType];
@@ -77,6 +77,11 @@ angular.module('bahmni.registration')
                     $window.history.pushState(null, null, patientUrl);
                     goToActionUrl($scope.submitSource, patientProfileData, {newpatient: 'true'});
                 }).error(onCreateVisitFailure);
+            } else if ($scope.submitSource === 'print') {
+                $timeout(function(){
+                    registrationCardPrinter.print($scope.patient);
+                    goToActionUrl('print', patientProfileData);
+                });
             } else {
                 goToActionUrl($scope.submitSource, patientProfileData);
             }
