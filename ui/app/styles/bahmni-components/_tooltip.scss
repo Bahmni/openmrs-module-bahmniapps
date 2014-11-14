@@ -9,7 +9,7 @@
 .tooltip {
 	position: absolute;
 	padding: 5px;
-	margin-left: 35px;
+	margin-left: 70px;
 	margin-top: -28px;
 	background: $clinicalInfoMessageBg;
 	border-radius: 5px;
@@ -20,12 +20,5 @@
 		position: absolute;
 		left: -10px;
 		top: 0px;
-	}
-
-	.ipd-test-results {
-		padding: 0;
-		width: 100%;
-		max-width: 100%;
-		overflow: auto;
 	}
 }
