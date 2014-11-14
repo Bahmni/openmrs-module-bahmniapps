@@ -149,13 +149,20 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         return frequency && frequency.frequencyPerDay;
     };
 
-    var getDoseUnits = function (defaults){
-        if(_.find(config.doseUnits, {"name":defaults.doseUnits}) === undefined){
-            return undefined;
-        }
-        else {
-            return defaults.doseUnits;
-        }
+    var findAnElement = function(array, element){
+        var found = _.find(array, function (arrayElement) {
+            return arrayElement.name === element;
+        });
+
+        return found ? element : undefined;
+    };
+
+    var getDoseUnits = function (doseUnit) {
+        return findAnElement(config.doseUnits, doseUnit);
+    };
+
+    var getRoute = function (route) {
+        return findAnElement(config.routes, route);
     };
 
     this.changeDrug = function(drug) {
@@ -163,8 +170,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         if(!drug) return;
         var defaults = drugFormDefaults[this.drug.form];
         if(defaults) {
-            this.doseUnits = getDoseUnits(defaults);
-            this.route = defaults.route;
+            this.doseUnits = getDoseUnits(defaults.doseUnits);
+            this.route = getRoute(defaults.route);
         }
     };
 

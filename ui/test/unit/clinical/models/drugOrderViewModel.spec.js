@@ -901,13 +901,13 @@ describe("drugOrderViewModel", function () {
 
     describe("changeDrug", function(){
         it("should set default dose units if units available in config", function(){
-            var appConfig = {"drugFormDefaults" : {"Ayurvedic" : {"doseUnits": "Teaspoon", "route": "Oral" }}};
+            var appConfig = {"drugFormDefaults" : {"Ayurvedic" : {"doseUnits": "Teaspoon", "route": "Orally" }}};
             var treatment = sampleTreatment(appConfig, treatmentConfig);
             treatment.changeDrug({form : "Ayurvedic"});
 
             expect(treatment.doseUnits).toBe("Teaspoon");
-            expect(treatment.route).toBe("Oral");
-        })
+            expect(treatment.route).toBe("Orally");
+        });
 
         it("should not set dose units if units not available in config", function(){
             var appConfig = {"drugFormDefaults" : {"Ayurvedic" : {"doseUnits": "ml", "route": "Oral" }}};
@@ -915,8 +915,8 @@ describe("drugOrderViewModel", function () {
             treatment.changeDrug({form : "Ayurvedic"});
 
             expect(treatment.doseUnits).toBe(undefined);
-            expect(treatment.route).toBe("Oral");
-        })
+            expect(treatment.route).toBeUndefined();
+        });
 
         it("should not fail when drugFormDefaults is not define for drug form", function(){
             var appConfig = {"drugFormDefaults" : {"Ayurvedic" : {"doseUnits": "Teaspoon", "route": "Oral" }}};
