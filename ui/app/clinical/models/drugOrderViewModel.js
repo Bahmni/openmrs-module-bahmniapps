@@ -239,6 +239,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
             drugOrder.quantity = undefined;
             drugOrder.quantityUnit = undefined;
             drugOrder.doseUnits = undefined;
+
+            drugOrder.changeDrug(drugOrder.drug);
         }
     };
 

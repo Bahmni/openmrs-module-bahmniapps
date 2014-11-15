@@ -43,7 +43,8 @@ describe("drugOrderViewModel", function () {
         ],
         routes: [
             {name: "Intramuscular"},
-            {name: "Orally"}
+            {name: "Orally"},
+            {name: "Oral"}
         ],
         durationUnits: [
             {name: "Hour(s)", factor: 1 / 24},
@@ -589,7 +590,7 @@ describe("drugOrderViewModel", function () {
             expect(refilledTreatment.quantityUnit).toBe("Unit(s)");
         });
 
-        it("should clear dose, doseUnits and quantity for reverse synced drug orders", function(){
+        it("should clear dose and quantity for reverse synced drug orders", function(){
             var treatment = sampleTreatment({}, []);
             treatment.reverseSynced = true;
             treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
@@ -611,6 +612,24 @@ describe("drugOrderViewModel", function () {
             expect(refilledTreatment.quantityUnit).toBe("Unit(s)");
         });
 
+        it("should set doseUnits and route based on drug form for reverse synced drug orders", function(){
+            var appConfig = {"drugFormDefaults" : {"Tablet": { "doseUnits": "Tablet(s)", "route": "Oral" }}};
+            var treatment = sampleTreatment(appConfig, treatmentConfig);
+            treatment.reverseSynced = true;
+            treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
+            treatment.uniformDosingType = {
+                dose: 1,
+                doseUnits: "Tablet(s)",
+                frequency: "Once a day"
+            };
+            expect(treatment.quantity).toBeDefined();
+            expect(treatment.quantityUnit).toBeDefined();
+
+            var refilledTreatment = treatment.refill();
+
+            expect(refilledTreatment.doseUnits).toBe("Tablet(s)");
+            expect(refilledTreatment.route).toBe("Oral");
+        });
 
         it("should set effective start date to effective stop date + 1 second for refill orders", function(){
             var treatment = sampleTreatment({}, []);
@@ -924,7 +943,7 @@ describe("drugOrderViewModel", function () {
         });
 
         it("should not set dose units if units not available in config", function(){
-            var appConfig = {"drugFormDefaults" : {"Ayurvedic" : {"doseUnits": "ml", "route": "Oral" }}};
+            var appConfig = {"drugFormDefaults" : {"Ayurvedic" : {"doseUnits": "ml", "route": "Mouth" }}};
             var treatment = sampleTreatment(appConfig, treatmentConfig);
             treatment.changeDrug({form : "Ayurvedic"});
 
@@ -933,7 +952,7 @@ describe("drugOrderViewModel", function () {
         });
 
         it("should not fail when drugFormDefaults is not define for drug form", function(){
-            var appConfig = {"drugFormDefaults" : {"Ayurvedic" : {"doseUnits": "Teaspoon", "route": "Oral" }}};
+            var appConfig = {"drugFormDefaults" : {"Ayurvedic" : {"doseUnits": "Teaspoon", "route": "Mouth" }}};
             var treatment = sampleTreatment(appConfig, {});
 
             treatment.changeDrug({form : "Capsule"});
