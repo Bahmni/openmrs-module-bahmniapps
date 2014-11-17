@@ -78,7 +78,7 @@ button.back-btn {
 
 /* multi select */
 .multi-select-widget {
-    width: 800px;
+    width: 600px;
     overflow: auto;
     @include box-sizing(border-box);
     button {
@@ -91,7 +91,7 @@ button.back-btn {
         text-align: left;
     }
 }
-
+.multi-select-button-group { width: 600px; }
 
 .secondary-button, 
 .secondary-button:hover, 
@@ -101,7 +101,6 @@ input[type="submit"].secondary-button:hover  {
     color: $white;
     border:1px solid darken($bahmniSecondaryColor, 15%);
 }
-
 
 /* icon button */
 .comment-toggle {
