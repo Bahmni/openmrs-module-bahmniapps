@@ -9,7 +9,7 @@ angular.module('bahmni.clinical')
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var currentVisit = $rootScope.visit;
             var drugOrderAppConfig = appService.getAppDescriptor().getConfigValue("drugOrder") || {};
-            var activeDrugOrdersList;
+            var activeDrugOrdersList = [];
 
             var createPrescriptionGroups = function (activeAndScheduledDrugOrders) {
                 $scope.consultation.drugOrderGroups = [];
@@ -78,7 +78,7 @@ angular.module('bahmni.clinical')
 
             var getActiveDrugOrders = function() {
                 return treatmentService.getActiveDrugOrders($stateParams.patientUuid).then(function (drugOrders) {
-                    activeDrugOrdersList = drugOrders;
+                    activeDrugOrdersList = drugOrders || [];
                     var activeDrugOrders = [];
                     drugOrders.forEach(function (drugOrder) {
                         activeDrugOrders.push(DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig,treatmentConfig))
