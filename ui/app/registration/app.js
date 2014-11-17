@@ -10,14 +10,16 @@ angular
                 url: '/search',
                 reloadOnSearch: false,
                 views: {
-                    'content': { templateUrl: 'views/search.html', controller: 'SearchPatientController'}
+                    'layout': { templateUrl: 'views/layout.html', controller: 'SearchPatientController'},
+                    'content@search': { templateUrl: 'views/search.html'}
                 },
                 resolve: { initialization: 'initialization' }
             })
             .state('newpatient', {
                 url: '/patient/new',
                 views: {
-                    'content': { templateUrl: 'views/newpatient.html', controller: 'CreatePatientController'}
+                    'layout': { templateUrl: 'views/layout.html', controller: 'CreatePatientController'},
+                    'content@newpatient': { templateUrl: 'views/newpatient.html'}
                 },
                 resolve: { initialization: 'initialization' }
             })
@@ -25,32 +27,38 @@ angular
                 url: '/patient/:patientUuid',
                 abstract: true,
                 views: {
-                    'content': { template: '<div ui-view="content"></div>' }
+                    'layout': { template: '<div ui-view="layout"></div>' }
                 },
-                resolve: { initialization: 'initialization' }
+                resolve: {initialization: 'initialization'}
             })
             .state('patient.edit', {
                 url: '?serverError',
                 views: {
-                    'content': { templateUrl: 'views/editpatient.html', controller: 'EditPatientController'}
+                    'layout': { templateUrl: 'views/layout.html', controller: 'EditPatientController'},
+                    'content@patient.edit': { templateUrl: 'views/editpatient.html'},
+                    'headerExtension@patient.edit': {template: '<div print-options></div>'}
                 }
             })
             .state('patient.visit', {
                 url: '/visit',
                 views: {
-                    'content': { templateUrl: 'views/visit.html', controller: 'VisitController'}
+                    'layout': { templateUrl: 'views/layout.html', controller: 'VisitController'},
+                    'content@patient.visit': { templateUrl: 'views/visit.html'},
+                    'headerExtension@patient.visit': {template: '<div print-options></div>'}
                 }
             })
             .state('patient.print', {
                 url: '/print',
                 views: {
-                    'content': { templateUrl: 'views/print.html', controller: 'PrintController'}
+                    'layout': { templateUrl: 'views/layout.html', controller: 'PrintController'},
+                    'content@patient.print': { templateUrl: 'views/print.html'}
                 }
             })
             .state('patient.printSticker', {
                 url: '/printSticker',
                 views: {
-                    'content': { templateUrl: 'views/notimplemented.html'}
+                    'layout': { templateUrl: 'views/layout.html'},
+                    'content@patient.printSticker': { templateUrl: 'views/notimplemented.html'}
                 }
             });
     }]).run(function ($rootScope, $templateCache) {
