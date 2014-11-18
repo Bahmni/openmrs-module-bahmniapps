@@ -1,6 +1,6 @@
 Bahmni.ConceptSet.ObservationMapper = function () {
     var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
-
+    var self = this;
     // TODO : Shouldn't this be in clinical module. Don't see a reason for this to be in concept-set code - Shruthi
     this.getObservationsForView = function (observations, conceptSetConfig) {
         return internalMapForDisplay(observations, conceptSetConfig);
@@ -16,7 +16,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
             } else {
                 if (savedObs.concept.set) {
                     if (conceptSetConfig[savedObs.concept.name] && conceptSetConfig[savedObs.concept.name].grid) {
-                        savedObs.value = getGridObservationDisplayValue(savedObs);
+                        savedObs.value = self.getGridObservationDisplayValue(savedObs);
                         observationsForDisplay = observationsForDisplay.concat(createObservationForDisplay(savedObs, savedObs.concept))
                     }
                     else {
@@ -144,7 +144,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         return "";
     };
 
-    var getGridObservationDisplayValue = function (observation) {
+    this.getGridObservationDisplayValue = function (observation) {
         var memberValues = _.compact(_.map(observation.groupMembers, function (member) {
             return getObservationDisplayValue(member);
         }));

@@ -13,11 +13,12 @@ Bahmni.Common.Obs.GridObservation = (function () {
         },
 
         getDisplayValue: function () {
-            return this.value;
+            var gridObservationDisplayValue = new Bahmni.ConceptSet.ObservationMapper().getGridObservationDisplayValue(this);
+            return gridObservationDisplayValue || this.value;
         }
 
     };
-    
+
     return GridObservation;
 
 })();
