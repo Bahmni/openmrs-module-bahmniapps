@@ -10,7 +10,8 @@ angular.module('bahmni.admin')
                 "concept": Bahmni.Common.Constants.conceptImportUrl,
                 "conceptset": Bahmni.Common.Constants.conceptSetImportUrl,
                 "patient": Bahmni.Common.Constants.patientImportUrl,
-                "drug": Bahmni.Common.Constants.drugImportUrl};
+                "drug": Bahmni.Common.Constants.drugImportUrl,
+                "labResults": Bahmni.Common.Constants.labResultsImportUrl};
             var fileUploaderOptions = {
                 removeAfterUpload: true,
                 formData: [
