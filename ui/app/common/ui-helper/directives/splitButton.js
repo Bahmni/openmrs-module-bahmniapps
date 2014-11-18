@@ -14,10 +14,10 @@ angular.module('bahmni.common.uiHelper')
             template: '<div class="split-button" bm-pop-over>'+
                         '<ul class="options">' +
                             '<li class="primaryOption">' +
-                                '<button ng-class="buttonClass" ng-click="optionClick()(primaryOption)">{{optionText()(primaryOption)}}</a>' +
+                                '<button ng-class="buttonClass" ng-click="optionClick()(primaryOption)" accesskey="{{primaryOption.shortcutKey}}" ng-bind-html="optionText()(primaryOption)"></button>' +
                             '</li>' +
                             '<li bm-pop-over-target ng-repeat="option in secondaryOptions" class="secondaryOption">' +
-                                '<button ng-class="buttonClass" ng-click="optionClick()(option)">{{optionText()(option)}}</a>' +
+                                '<button ng-class="buttonClass" ng-click="optionClick()(option)" accesskey="{{option.shortcutKey}}" ng-bind-html="optionText()(option)"></button>' +
                             '</li>' +
                         '</ul>' +
                         '<button bm-pop-over-trigger class="toggle-button icon-caret-down" ng-show="hasMultipleOptions()" type="button"></button>' +

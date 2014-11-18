@@ -33,8 +33,7 @@
                         <div ng-switch-when="startVisit" split-button options="visitControl.visitTypes"
                              primary-option="visitControl.defaultVisitType"
                              option-text="visitControl.startButtonText" option-click="visitControl.startVisit" class="right"></div>
-                        <button ng-switch-default type="submit" class="right" ng-click="setSubmitSource(extn.extensionParams.action)" ng-class="{'confirm':extn.order === 1}">
-                            {{extn.extensionParams.display}}
+                        <button ng-switch-default type="submit" class="right" ng-click="setSubmitSource(extn.extensionParams.action)" accesskey="{{extn.extensionParams.shortcutKey}}" ng-class="{'confirm':extn.order === 1}" ng-bind-html="extn.extensionParams.display">
                         </button>
                     </span>
                 </span>
