@@ -5,13 +5,14 @@
                     <label for="registrationNumber"><strong>Patient ID</strong></label>
 
                     <div class="search-patient-id left">
-                        <select id="identifierPrefix" ng-model="identifierPrefix" ng-options="identifierSource.prefix for identifierSource in identifierSources"> </select>
-                        <input type="text" id="registrationNumber" ng-model="registrationNumber" autofocus
+                        <select id="identifierPrefix" ng-model="searchParameters.identifierPrefix" ng-options="identifierSource.prefix for identifierSource in identifierSources"> </select>
+                        <input type="text" id="registrationNumber" 
+                        ng-model="searchParameters.registrationNumber" autofocus
                                placeholder="Enter ID">
                     </div>
                 
                 <div class="reg-srch-btn left">
-                    <button type="submit" ng-disabled="!registrationNumber" >Search</button>
+                    <button type="submit" ng-disabled="!searchParameters.registrationNumber" >Search</button>
                 </div>
             </form>
         </article>

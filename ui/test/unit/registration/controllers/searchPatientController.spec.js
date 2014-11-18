@@ -82,7 +82,7 @@ describe('SearchPatientController', function () {
             });
             urlSearchChangeCallback();
 
-            expect(scope.identifierPrefix.prefix).toBe(preferences.identifierPrefix);
+            expect(scope.searchParameters.identifierPrefix.prefix).toBe(preferences.identifierPrefix);
         });
 
         it('should initialize scope with name search params from url and load the patients if a name search parameter is provided', function () {
@@ -105,8 +105,8 @@ describe('SearchPatientController', function () {
 
             urlSearchChangeCallback();
 
-            expect(scope.identifierPrefix.prefix).toBe(searchParams.identifierPrefix);
-            expect(scope.registrationNumber).toBe(searchParams.registrationNumber);
+            expect(scope.searchParameters.identifierPrefix.prefix).toBe(searchParams.identifierPrefix);
+            expect(scope.searchParameters.registrationNumber).toBe(searchParams.registrationNumber);
             expect(patientResource.search).not.toHaveBeenCalled();
         });
 
@@ -186,9 +186,9 @@ describe('SearchPatientController', function () {
 
     describe("searchById", function () {
         it('should search by patient identifier when registrationNumber is present', function () {
-            scope.identifierPrefix = {};
-            scope.identifierPrefix.prefix = "GAN";
-            scope.registrationNumber = "20001";
+            scope.searchParameters.identifierPrefix = {};
+            scope.searchParameters.identifierPrefix.prefix = "GAN";
+            scope.searchParameters.registrationNumber = "20001";
 
             scope.searchById();
 
@@ -196,9 +196,9 @@ describe('SearchPatientController', function () {
         });
 
         it('should show the spinner while searching', function () {
-            scope.identifierPrefix = {};
-            scope.identifierPrefix.prefix = "GAN";
-            scope.registrationNumber = "20001";
+            scope.searchParameters.identifierPrefix = {};
+            scope.searchParameters.identifierPrefix.prefix = "GAN";
+            scope.searchParameters.registrationNumber = "20001";
 
             scope.searchById();
 
@@ -207,9 +207,9 @@ describe('SearchPatientController', function () {
 
         it('should change the search parameter to patient identifier', function () {
             spyOn(location, 'search');
-            scope.identifierPrefix = {};
-            scope.identifierPrefix.prefix = "GAN";
-            scope.registrationNumber = "20001";
+            scope.searchParameters.identifierPrefix = {};
+            scope.searchParameters.identifierPrefix.prefix = "GAN";
+            scope.searchParameters.registrationNumber = "20001";
 
             scope.searchById();
 
@@ -228,9 +228,9 @@ describe('SearchPatientController', function () {
 
         describe("on success", function () {
             beforeEach(function () {
-                scope.identifierPrefix = {};
-                scope.identifierPrefix.prefix = "GAN";
-                scope.registrationNumber = "20001";
+                scope.searchParameters.identifierPrefix = {};
+                scope.searchParameters.identifierPrefix.prefix = "GAN";
+                scope.searchParameters.registrationNumber = "20001";
                 scope.searchById();
             });
 

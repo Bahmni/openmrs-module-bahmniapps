@@ -23,12 +23,12 @@ angular.module('bahmni.registration')
                 }
                 $scope.identifierSources.forEach(function (identifierSource) {
                     if (identifierPrefix === identifierSource.prefix) {
-                        $scope.identifierPrefix = identifierSource;
+                        $scope.searchParameters.identifierPrefix = identifierSource;
                     }
                 });
-                $scope.identifierPrefix = $scope.identifierPrefix || $scope.identifierSources[0];
+                $scope.searchParameters.identifierPrefix = $scope.searchParameters.identifierPrefix || $scope.identifierSources[0];
 
-                $scope.registrationNumber = $location.search().registrationNumber || "";
+                $scope.searchParameters.registrationNumber = $location.search().registrationNumber || "";
                 if (hasSearchParameters()) {
                     var searchPromise = patientService.search(
                         $scope.searchParameters.name, $scope.searchParameters.village, $scope.searchParameters.localName, offset, $scope.localNameAttributes);
@@ -112,11 +112,11 @@ angular.module('bahmni.registration')
             });
 
             $scope.searchById = function () {
-                if (!$scope.registrationNumber) return;
+                if (!$scope.searchParameters.registrationNumber) return;
                 $scope.results = [];
-                var patientIdentifier = $scope.identifierPrefix.prefix + $scope.registrationNumber;
-                preferences.identifierPrefix = $scope.identifierPrefix.prefix;
-                $location.search({identifierPrefix: $scope.identifierPrefix.prefix, registrationNumber: $scope.registrationNumber});
+                var patientIdentifier = $scope.searchParameters.identifierPrefix.prefix + $scope.searchParameters.registrationNumber;
+                preferences.identifierPrefix = $scope.searchParameters.identifierPrefix.prefix;
+                $location.search({identifierPrefix: $scope.searchParameters.identifierPrefix.prefix, registrationNumber: $scope.searchParameters.registrationNumber});
                 var searchPromise = patientService.search(patientIdentifier).success(function (data) {
                     mapLocalName(data);
                     if (data.pageOfResults.length === 1) {
