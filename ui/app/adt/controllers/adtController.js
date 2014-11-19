@@ -33,6 +33,7 @@ angular.module('bahmni.adt')
                 var matchedEncounters = $scope.visit.encounters.filter(function (encounter) {
                     return encounter.encounterType.uuid && encounter.encounterType.uuid == encounterTypeUuid;
                 });
+
                 return matchedEncounters[0];
             };
 
@@ -52,6 +53,9 @@ angular.module('bahmni.adt')
                 return ($scope.visitExists() && $scope.visit.encounters && $scope.visit.encounters.filter(function (encounter) {
                     return encounter.encounterType.name === Bahmni.Common.Constants.admissionEncounterTypeName;
                 })).length > 0
+            };
+            $scope.isAdmitted = function(){
+                return $scope.hasAdmitEncounter() && !$scope.hasDischargeEncounter()
             };
 
             $scope.hasDischargeEncounter = function(){
@@ -115,7 +119,7 @@ angular.module('bahmni.adt')
 
             $scope.getDisplayForContinuingVisit = function(){
                 //return "Continue " + $scope.currentVisitType + " Visit";
-                return "Continue Visit";
+                return "Admit";
             };
 
             $scope.getDisplay = function(displayFunction, display){
@@ -172,8 +176,10 @@ angular.module('bahmni.adt')
                 }
             };
 
+
             $scope.admit = function (visitTypeUuid) {
-                var encounterData = getEncounterData($scope.encounterConfig.getAdmissionEncounterTypeUuid(), visitTypeUuid);
+                var ipdVisitType = $scope.visitControl.defaultVisitType;
+                var encounterData = getEncounterData($scope.encounterConfig.getAdmissionEncounterTypeUuid(), ipdVisitType.uuid);
                 encounterService.create(encounterData).success(function (response) {
                     forwardUrl(response, "onAdmissionForwardTo");
                 });
@@ -217,6 +223,7 @@ angular.module('bahmni.adt')
                     })
                 }))
             };
+
 
             spinner.forPromise(init());
         }

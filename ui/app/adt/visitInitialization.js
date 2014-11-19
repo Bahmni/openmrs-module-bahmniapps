@@ -10,6 +10,7 @@ angular.module('bahmni.adt').factory('visitInitialization',
                             $rootScope.visit = visit;
                         });
                     } else {
+                        $rootScope.visit = null;
                         return $q.when({ id: 1, status: "Returned from service.", promiseComplete: true });
                     }
                 };

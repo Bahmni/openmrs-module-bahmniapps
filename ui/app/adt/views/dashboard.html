@@ -1,6 +1,6 @@
 <div class="adt">
     <div class="patient-disposition-status fr">
-        <div ng-if="hasAdmitEncounter() && !hasDischargeEncounter()">
+        <div ng-if="isAdmitted()">
             <i class="icon-ok"></i>Admitted
         </div>
         <div ng-if="hasDischargeEncounter()">
@@ -27,7 +27,7 @@
         <div class="right">
     <span ng-repeat="extn in actions">
         <span ng-switch="extn.extensionParams.action">
-            <div ng-switch-when="startVisit" split-button options="visitControl.visitTypes"
+            <div ng-switchƒ-when="startVisit" split-button options="visitControl.visitTypes"
                  primary-option="visitControl.defaultVisitType" option-text="visitControl.startButtonText"
                  option-click="startNewVisit" class="right">
             </div>
