@@ -1,7 +1,6 @@
 angular.module('bahmni.common.uiHelper')
 .directive('bahmniAutocomplete', function ($parse) {
     var link = function (scope, element, attrs, ngModelCtrl) {
-        var ngModel = $parse(attrs.ngModel);
         var source = scope.source();
         var responseMap = scope.responseMap();
         var onSelect = scope.onSelect();
@@ -9,11 +8,16 @@ angular.module('bahmni.common.uiHelper')
         var formElement = element[0];
         var validationMessage = scope.validationMessage || 'Please select a value from auto complete';
 
+        function setValidity() {
+            ngModelCtrl.$setValidity('selection', !scope.isInvalid);
+            formElement.setCustomValidity(scope.isInvalid ? validationMessage : '');
+        }
+
         var validateIfNeeded = function(value){
            if(!scope.strictSelect) return;
-           var isValid = (value === scope.selectedValue);
-           ngModelCtrl.$setValidity('selection', isValid);
-           formElement.setCustomValidity(isValid ? '' : validationMessage);
+            scope.isInvalid = (value !== scope.selectedValue);
+            setValidity();
+            scope.$apply();
         }
 
         element.autocomplete({
@@ -31,9 +35,9 @@ angular.module('bahmni.common.uiHelper')
                     onSelect(ui.item);
                 }
                 ngModelCtrl.$setViewValue(ui.item.value);
-                scope.$apply();
                 validateIfNeeded(ui.item.value);
                 if(scope.blurOnSelect) element.blur();
+                scope.$apply();
                 return true;
             },
             search: function (event, ui) {
@@ -50,6 +54,7 @@ angular.module('bahmni.common.uiHelper')
 
         $(element).on('change', function() { validateIfNeeded($(element).val()); })
 
+        setValidity();
     };
     return {
         link: link,
@@ -62,7 +67,8 @@ angular.module('bahmni.common.uiHelper')
             minLength: '=',
             blurOnSelect: '=',
             strictSelect: '=',
-            validationMessage: '@'
+            validationMessage: '@',
+            isInvalid: "="
         }
     }
 });
