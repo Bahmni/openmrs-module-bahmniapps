@@ -39,7 +39,10 @@ describe("drugOrderViewModel", function () {
             {
                 name: "Once a Week",
                 frequencyPerDay: 1/7
-            }
+            },            {
+                name: "Once a Month",
+                frequencyPerDay: 0.033333333
+            },
         ],
         routes: [
             {name: "Intramuscular"},
@@ -160,7 +163,11 @@ describe("drugOrderViewModel", function () {
 
         sampleTreatment.uniformDosingType.frequency = "Once a Week";
         sampleTreatment.calculateDurationUnit();
-        expect(sampleTreatment.durationUnit).toBe("Week(s)")
+        expect(sampleTreatment.durationUnit).toBe("Week(s)");
+
+        sampleTreatment.uniformDosingType.frequency = "Once a Month";
+        sampleTreatment.calculateDurationUnit();
+        expect(sampleTreatment.durationUnit).toBe("Month(s)");
     });
 
     describe("calculateDurationInDays", function () {

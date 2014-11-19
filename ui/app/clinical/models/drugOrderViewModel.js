@@ -182,8 +182,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
                 self.durationUnit = "Hour(s)";
             } else if (frequency && (getFrequencyPerDay() >= 0.5)) {
                 self.durationUnit = "Day(s)";
-            } else {
+            } else if (frequency && (getFrequencyPerDay() > 0.034)) {
                 self.durationUnit = "Week(s)";
+            } else {
+                self.durationUnit = "Month(s)";
             }
         }
     };
