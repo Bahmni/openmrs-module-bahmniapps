@@ -8,16 +8,9 @@ angular.module('bahmni.common.uiHelper')
         var formElement = element[0];
         var validationMessage = scope.validationMessage || 'Please select a value from auto complete';
 
-        function setValidity() {
-            ngModelCtrl.$setValidity('selection', !scope.isInvalid);
-            formElement.setCustomValidity(scope.isInvalid ? validationMessage : '');
-        }
-
         var validateIfNeeded = function(value){
            if(!scope.strictSelect) return;
             scope.isInvalid = (value !== scope.selectedValue);
-            setValidity();
-            scope.$apply();
         }
 
         element.autocomplete({
@@ -54,8 +47,12 @@ angular.module('bahmni.common.uiHelper')
 
         $(element).on('change', function() { validateIfNeeded($(element).val()); })
 
-        setValidity();
+        scope.$watch('isInvalid', function(){
+            ngModelCtrl.$setValidity('selection', !scope.isInvalid);
+            formElement.setCustomValidity(scope.isInvalid ? validationMessage : '');
+        });
     };
+
     return {
         link: link,
         require: 'ngModel',
