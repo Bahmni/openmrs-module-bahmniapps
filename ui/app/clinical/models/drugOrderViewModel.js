@@ -297,7 +297,6 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         newDrugOrder.dateActivated = undefined;
         var oldEffectiveStopDate = new Date(self.effectiveStopDate);
         newDrugOrder.effectiveStartDate = oldEffectiveStopDate >= DateUtil.today() ? DateUtil.addSeconds(oldEffectiveStopDate, 1) : DateUtil.today();
-
         modifyForReverseSyncIfRequired(newDrugOrder);
         defaultQuantityUnit(newDrugOrder);
         newDrugOrder.drugNameDisplay = constructDrugNameDisplay(this.drug, this.drug.form).value;
@@ -314,6 +313,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         newDrugOrder.dateActivated = undefined;
         newDrugOrder.drugNameDisplay = constructDrugNameDisplay(self.drug, self.drug.form).value;
         newDrugOrder.quantityEnteredViaEdit = true;
+        newDrugOrder.uiStartDate = newDrugOrder.effectiveStartDate < Date.now() ? Date.now() : newDrugOrder.uiStartDate
 
         modifyForReverseSyncIfRequired(newDrugOrder);
         defaultQuantityUnit(newDrugOrder);
