@@ -4,7 +4,8 @@
         ng-dialog-controller="PatientDashboardAllTreatmentController" class="section-title">{{section.title}}</h2>
 
     <section class="block treatment-section" ng-class="{'more': drugOrders.show}">
-        <table ng-repeat="drugOrderSection in drugOrderSections">
+        <!-- class names 'active' and 'past' added to the <table> for automation tests -->
+        <table ng-repeat="(key,drugOrderSection) in drugOrderSections" class="{{key}}">
             <thead>
                 <th colspan="3">{{drugOrderSection.displayName}}</th>
             </thead>
