@@ -27,7 +27,7 @@
         <div class="right">
     <span ng-repeat="extn in actions">
         <span ng-switch="extn.extensionParams.action">
-            <div ng-switchƒ-when="startVisit" split-button options="visitControl.visitTypes"
+            <div ng-switch-when="startVisit" split-button options="visitControl.visitTypes"
                  primary-option="visitControl.defaultVisitType" option-text="visitControl.startButtonText"
                  option-click="startNewVisit" class="right">
             </div>
