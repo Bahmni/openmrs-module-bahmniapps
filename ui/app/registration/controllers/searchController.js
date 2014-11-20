@@ -171,10 +171,10 @@ angular.module('bahmni.registration')
                 var promise = searchBasedOnQueryParameters($scope.results.length);
                 if (promise) {
                     promise.success(function (data) {
-                        data.results.forEach(function (result) {
+                        data.pageOfResults.forEach(function (result) {
                             $scope.results.push(result)
                         });
-                        $scope.noMoreResultsPresent = (data.results.length === 0);
+                        $scope.noMoreResultsPresent = (data.pageOfResults.length === 0);
                         $scope.nextPageLoading = false;
                     });
                     promise.error(function () {
