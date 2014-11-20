@@ -91,6 +91,11 @@ input[required],select[required]{
     &:focus{
   }
 }
+.reg-wrapper {
+  form.form-horizontal {
+    overflow: scroll;
+  }
+}
 .reg-search-wrapper .split-button li{
   width:7.5em;
 }
@@ -101,14 +106,12 @@ input[required],select[required]{
   ul{
     border-radius: 3px 0 0 3px;
     border-right:none;
-    overflow:hidden;
     float:left;
     li{
         font-size:.9em;
         &.secondaryOption{
           display: none;
           border: 1px solid $lightGray;
-          border-top: 0;
           border-bottom: 0;
           &:last-child {
             border-bottom: 1px solid $lightGray;
@@ -127,29 +130,31 @@ input[required],select[required]{
         }
         button {
           width: 100%;
-          margin:0px;
+          margin: 2px;
           font-size: 14px;
           border-radius: 3px 0 0 3px;
           &:focus{
-            outline:none;
+            outline: 2px solid $clinicalFormFocus;
+            background: $clinicalFormFocusBg;
           }
         }
     }
   }
   .toggle-button{
     float:left;
-    margin:0px;
-    font-size:19px;
+    margin: 2px;
     border-radius:0px 3px 3px 0;
     border-left:none;
     padding: 5.5px 10px;
     &:focus{
-      outline:none;   
+      outline: 2px solid $clinicalFormFocus;
+      background: $clinicalFormFocusBg;
     }
   }
 }
 
 .submit-btn-container {
+  height: 180px;
   .split-button {
     .primaryOption button, .toggle-button {
         @extend .confirm;
@@ -164,12 +169,13 @@ input[required],select[required]{
       li button {
         text-align: left;
         border: 0;
+        width: 290px;
       }
     }
     .toggle-button {
       position: absolute;
       z-index: 1;
-      right: -10px;
+      right: 38px;
     }
   }
 }
@@ -519,7 +525,6 @@ table{
 
 
 .submit-btn-container{
-  @include clearfix();
   padding:10px 20px 0px 20px;
   border-top: 1px solid $lightestGray;
   margin-top: 30px;
