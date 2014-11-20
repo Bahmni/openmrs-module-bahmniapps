@@ -167,18 +167,17 @@ angular.module('bahmni.clinical')
                 return treatment;
             };
 
-            var constructDrugNameDisplay = function (drug, drugForm) {
+            var constructDrugNameDisplay = function (drug) {
+                var drugSearchResult = new Bahmni.Clinical.DrugSearchResult(drug, $scope.treatment.drugNameDisplay);
                 return {
-                    label: drug.name + " (" + drugForm + ")",
-                    value: drug.name + " (" + drugForm + ")",
+                    label: drugSearchResult.getLabel(),
+                    value: drugSearchResult.getValue(),
                     drug: drug
                 };
             };
 
             $scope.getDataResults = function (data) {
-                return data.map(function (drug) {
-                    return constructDrugNameDisplay(drug, drug.dosageForm.display)
-                });
+                return data.map(constructDrugNameDisplay);
             };
 
             $scope.populateBackingFields = function (item) {
