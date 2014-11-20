@@ -1,5 +1,5 @@
 angular.module('bahmni.common.uiHelper')
-    .service('backlinkService', function ($window, $state) {
+    .service('backlinkService', function ($window) {
         var self = this;
         
         var urls = [];
