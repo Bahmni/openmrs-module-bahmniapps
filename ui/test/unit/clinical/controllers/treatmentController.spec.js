@@ -119,19 +119,36 @@ describe("TreatmentController", function () {
 
 
     describe("Edit DrugOrder()", function () {
-        it("should set editDrugEntry to true on edit", function (){
+        it("should set editDrugEntryUniformFrequency to true on edit of uniform dosing type drug", function (){
             var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
+            drugOrder.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
             scope.treatments = [drugOrder];
             scope.edit(0);
-            expect(scope.editDrugEntry).toBeTruthy();
+            expect(scope.editDrugEntryUniformFrequency).toBeTruthy();
+        });
+
+        it("should set editDrugEntryVariableFrequency to true on edit of variable dosing type drug", function (){
+            var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
+            drugOrder.frequencyType = Bahmni.Clinical.Constants.dosingTypes.variable;
+            scope.treatments = [drugOrder];
+            scope.edit(0);
+            expect(scope.editDrugEntryVariableFrequency).toBeTruthy();
         });
     });
 
     describe("Revise DrugOrder()", function () {
-        it("should set editDrugEntry to true on revise", function (){
+        it("should set editDrugEntryUniformFrequency to true on revise of uniform dosing type drug", function (){
             var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
+            drugOrder.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
             rootScope.$broadcast("event:reviseDrugOrder", drugOrder);
-            expect(scope.editDrugEntry).toBeTruthy();
+            expect(scope.editDrugEntryUniformFrequency).toBeTruthy();
+        });
+
+        it("should set editDrugEntryVariableFrequency to true on revise of variable dosing type drug", function (){
+            var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
+            drugOrder.frequencyType = Bahmni.Clinical.Constants.dosingTypes.variable;
+            rootScope.$broadcast("event:reviseDrugOrder", drugOrder);
+            expect(scope.editDrugEntryVariableFrequency).toBeTruthy();
         });
     });
     
