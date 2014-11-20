@@ -12,6 +12,7 @@
     <body>
         <div class="reg-wrapper">
             <div ng-app="registration">
+                <div ng-include src="'../common/ui-helper/messages.html'"></div>
                 <div ui-view="layout" id="view-content"></div>
             </div>
         </div>
@@ -90,7 +91,7 @@
         <script src="../common/concept-set/services/conceptSetUiConfigService.js"></script>
         <script src="../common/ui-helper/filters/thumbnail.js"></script>
         <script src="../common/logging/init.js"></script>
-        <script src="../common/logging/errorLogFactory.js"></script>
+        <script src="../common/logging/exceptionHandler.js"></script>
 
         <script src="../common/obs/init.js"></script>
         <script src="../common/obs/models/observation.js"></script>

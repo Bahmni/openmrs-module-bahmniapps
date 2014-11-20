@@ -1,28 +1,11 @@
-angular.module('bahmni.common.logging').factory(
-    "stacktraceService",
-    function () {
-        return({
-            print: printStackTrace
-        });
-
-    }
-).provider(
-    "$exceptionHandler",
-    {
-        $get: function (errorLogService) {
-            return( errorLogService );
-        }
-    }
-).factory(
-    "errorLogService",
-    function ($log, $window, stacktraceService) {
-
-        function log(exception, cause) {
-            $log.error.apply($log, arguments);
+angular.module('bahmni.common.logging')
+.config(function($provide){
+    $provide.decorator("$exceptionHandler", function($delegate, $injector, $window, $log){
+        var logError = function(exception, cause) {
             try {
+                var messagingService = $injector.get('messagingService');
                 var errorMessage = exception.toString();
-                var stackTrace = stacktraceService.print({ e: exception });
-
+                var stackTrace = printStackTrace({ e: exception });
                 $.ajax({
                     type: "POST",
                     url: "/log",
@@ -36,16 +19,16 @@ angular.module('bahmni.common.logging').factory(
                         cause: ( cause || "" )
                     })
                 });
-
+                messagingService.showMessage('error', errorMessage);
             } catch (loggingError) {
                 $log.warn("Error logging failed");
                 $log.log(loggingError);
-
             }
+        };
 
-        }
-
-        return( log );
-
-    }
-);
+        return function(exception, cause){
+            $delegate(exception, cause);
+            logError(exception, cause);
+        };
+    });
+});
