@@ -8,6 +8,15 @@ angular.module('bahmni.adt')
             var locationUuid = sessionService.getLoginLocationUuid();
             $scope.adtObservations = [];
 
+            var getDefaultVisitTypeUuid = function(){
+                var defaultVisitTypeName = appService.getAppDescriptor().getConfigValue('defaultVisitType');
+                var visitTypes = encounterConfig.getVisitTypes();
+                var defaultVisitType = visitTypes.filter(function(visitType) { return visitType.name === defaultVisitTypeName})[0];
+                return defaultVisitType.uuid;
+            }
+
+            var defaultVisitTypeUuid = getDefaultVisitTypeUuid();
+
             var getActionCode = function (concept) {
                 var mappingCode = "";
                 if (concept.mappings) {
@@ -178,8 +187,7 @@ angular.module('bahmni.adt')
 
 
             $scope.admit = function (visitTypeUuid) {
-                var ipdVisitType = $scope.visitControl.defaultVisitType;
-                var encounterData = getEncounterData($scope.encounterConfig.getAdmissionEncounterTypeUuid(), ipdVisitType.uuid);
+                var encounterData = getEncounterData($scope.encounterConfig.getAdmissionEncounterTypeUuid(), defaultVisitTypeUuid);
                 encounterService.create(encounterData).success(function (response) {
                     forwardUrl(response, "onAdmissionForwardTo");
                 });
