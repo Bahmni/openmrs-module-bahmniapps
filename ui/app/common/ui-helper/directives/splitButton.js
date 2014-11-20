@@ -12,6 +12,7 @@ angular.module('bahmni.common.uiHelper')
         return {
             restrict: 'A',
             template: '<div class="split-button" bm-pop-over>'+
+                        '<button bm-pop-over-trigger class="toggle-button icon-caret-down" ng-show="hasMultipleOptions()" type="button"></button>' +
                         '<ul class="options">' +
                             '<li class="primaryOption">' +
                                 '<button ng-class="buttonClass" ng-click="optionClick()(primaryOption)" accesskey="{{primaryOption.shortcutKey}}" ng-bind-html="optionText()(primaryOption)"></button>' +
@@ -20,7 +21,6 @@ angular.module('bahmni.common.uiHelper')
                                 '<button ng-class="buttonClass" ng-click="optionClick()(option)" accesskey="{{option.shortcutKey}}" ng-bind-html="optionText()(option)"></button>' +
                             '</li>' +
                         '</ul>' +
-                        '<button bm-pop-over-trigger class="toggle-button icon-caret-down" ng-show="hasMultipleOptions()" type="button"></button>' +
                       '</div>',
             controller: controller,
             scope: {

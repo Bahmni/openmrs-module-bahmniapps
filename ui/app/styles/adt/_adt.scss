@@ -1,115 +1,128 @@
-.adt{
-  padding-top: 10px;
-  select.disposition-action {
-    color: #363463;
-    display: block;
-    padding: 5px 10px;
-    margin-bottom: 5px;
-    margin-top: 5px;
-    background-color: #FFF;
-    border: 1px solid #DDD;
-  }
-  .patient-disposition-status {
-    color: green;
+.adt {
     padding-top: 10px;
-  }
-  .form-horizontal fieldset label {
-    text-align: left;
-    margin-left: 0;
-    padding-bottom: 5px;
-  }
-  .form-group .field-value textarea {
-    width: 97.5%;
-    margin-bottom: 5px;
-  }
-  .split-button{
-  overflow:hidden;
-  margin: 2px;
-  border-radius: 3px;
-  ul{
-    border-radius: 3px 0 0 3px;
-    border-right:none;
-    overflow:hidden;
-    float:left;
-    li{
-        font-size:.9em;
-        &.secondaryOption{
-          display: none;
-          border: 1px solid #ccc;
-          border-top: 0;
-          border-bottom: 0;
-          &:last-child {
-            border-bottom: 1px solid #ccc;
-            border-radius: 0 0 3px 3px;
-          }
-          button{
-              background:#fff;
-              color:#000;
-              position:relative;
-              z-index:99;
-              border-radius: 3px 0 0 3px;
-            &:hover {
-              background: #f5f5f5;
-            }
-          }
-        }
-        button {
-          width: 100%;
-          margin:0px;
-          font-size: 14px;
-          border-radius: 3px 0 0 3px;
-          &:focus{
-            outline:none;
-          }
-        }
+    width: 1014px;
+    margin: 0 auto;
+    .adt-disposition-action {
+        margin: 5px 5px 0 0;
     }
-  }
-  .toggle-button{
-    float:left;
-    margin:0px;
-    font-size:19px;
-    border-radius:0px 3px 3px 0;
-    border-left:none;
-    padding: 5.5px 10px;
-    &:focus{
-      outline:none;   
+    select.disposition-action {
+        color: #363463;
+        display: block;
+        padding: 5px 10px;
+        margin-bottom: 5px;
+        margin-top: 5px;
+        background-color: #FFF;
+        border: 1px solid #DDD;
     }
-  }
-}
-.submit-btn-container {
-  .split-button {
-    .primaryOption button, .toggle-button {
-      background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #a1d030), color-stop(100%, #88af28));
-      background: -webkit-linear-gradient(top, #a1d030, #88af28);
-      background: -moz-linear-gradient(top, #a1d030, #88af28);
-      background: -o-linear-gradient(top, #a1d030, #88af28);
-      background: linear-gradient(top, #a1d030, #88af28);
-      background-color: #88af28;
-      border: #88af28 1px solid;
-      color: white;
-      &:hover {
-        background: #8eb82a;
-        border-color: #779b23;
-      }
+    .patient-disposition-status {
+        color: green;
+        padding-top: 10px;
     }
-  }
-}
-.submit-btn-container {
-  .split-button {
-    position: relative;
-    ul {
-      width: 300px;
-      li button {
+    .form-horizontal fieldset label {
         text-align: left;
-        border: 0;
-      }
+        margin-left: 0;
+        padding-bottom: 5px;
     }
-    .toggle-button {
-      position: absolute;
-      z-index: 1;
-      right: 0;
+    .form-group .field-value textarea {
+        width: 97.5%;
+        margin-bottom: 5px;
     }
-  }
+    .split-button {
+        overflow:hidden;
+        margin: 2px;
+        border-radius: 3px;
+        ul {
+            border-radius: 3px 0 0 3px;
+            border-right:none;
+            overflow:hidden;
+            float:left;
+            li {
+                font-size:.9em;
+                &.secondaryOption {
+                    display: none;
+                    border: 1px solid #ccc;
+                    border-top: 0;
+                    border-bottom: 0;
+                    &:last-child {
+                        border-bottom: 1px solid #ccc;
+                        border-radius: 0 0 3px 3px;
+                    }
+                    button {
+                        background:#fff;
+                        color:#000;
+                        position:relative;
+                        z-index:99;
+                        border-radius: 3px 0 0 3px;
+                        &:hover {
+                            background: #f5f5f5;
+                        }
+                    }
+                }
+                button {
+                    width: 100%;
+                    margin:0px;
+                    font-size: 14px;
+                    border-radius: 3px 0 0 3px;
+                    &:focus{
+                        outline:none;
+                    }
+                }
+            }
+        }
+        .toggle-button {
+            float:left;
+            margin:0px;
+            font-size:19px;
+            border-radius:0px 3px 3px 0;
+            border-left:none;
+            padding: 5.5px 10px;
+            &:focus{
+                outline:none;   
+            }
+        }
+    }
+    .submit-btn-container {
+        .split-button {
+            .primaryOption button, .toggle-button {
+                background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #a1d030), color-stop(100%, #88af28));
+                background: -webkit-linear-gradient(top, #a1d030, #88af28);
+                background: -moz-linear-gradient(top, #a1d030, #88af28);
+                background: -o-linear-gradient(top, #a1d030, #88af28);
+                background: linear-gradient(top, #a1d030, #88af28);
+                background-color: #88af28;
+                border: #88af28 1px solid;
+                color: white;
+                &:hover {
+                    background: #8eb82a;
+                    border-color: #779b23;
+                }
+            }
+        }
+    }
+    .submit-btn-container {
+        .split-button {
+            position: relative;
+            ul {
+                width: 300px;
+                li button {
+                    text-align: left;
+                    border: 0;
+                }
+            }
+            .toggle-button {
+                position: absolute;
+                z-index: 1;
+                right: 0;
+            }
+        }
+    }
+
 }
 
+div[ng-app="adt"] {
+    .patient-details {
+        top: 17px;
+        right: 20px;
+        color: $lightestGray;
+    }
 }

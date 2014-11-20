@@ -7,20 +7,22 @@ angular.module('bahmni.clinical')
             $scope.treatmentConfig = treatmentConfig;
             var drugOrderAppConfig = appService.getAppDescriptor().getConfigValue("drugOrder") || {};
 
-            function markStartingNewDrugEntry() {
-                $scope.startNewDrugEntry = true;
+            function markVariable(variable){
+                $scope[variable] = true;
                 $timeout(function () {
-                    $scope.startNewDrugEntry = false;
+                    $scope[variable] = false;
                 });
             }
-            function markEditingDrugEntry() {
-                $scope.editDrugEntry = true;
-                $timeout(function () {
-                    $scope.editDrugEntry = false;
-                });
+            function markEitherVariableDrugOrUniformDrug(drug){
+                if(drug.isVariableDosingType()){
+                    markVariable('editDrugEntryVariableFrequency');
+                }
+                else {
+                    markVariable('editDrugEntryUniformFrequency');
+                }
             }
 
-            markStartingNewDrugEntry();
+            markVariable("startNewDrugEntry");
 
             var drugOrderHistory = null;
             $scope.treatmentConfig.durationUnits = [
@@ -68,7 +70,7 @@ angular.module('bahmni.clinical')
                 var refill = drugOrder.refill();
                 drugOrderHistory = drugOrder;
                 $scope.treatments.push(refill);
-                markStartingNewDrugEntry();
+                markVariable("startNewDrugEntry");
             });
 
             $scope.$on("event:refillDrugOrders", function (event, drugOrders) {
@@ -82,7 +84,7 @@ angular.module('bahmni.clinical')
                 $scope.treatments.map(setIsNotBeingEdited);
                 drugOrderHistory = drugOrder;
                 $scope.treatment = drugOrder.revise();
-                markEditingDrugEntry();
+                markEitherVariableDrugOrUniformDrug($scope.treatment);
                 $scope.treatment.currentIndex = $scope.treatments.length + 1;
             });
 
@@ -99,7 +101,7 @@ angular.module('bahmni.clinical')
                 }
                 $scope.treatments.push($scope.treatment);
                 $scope.treatment = newTreatment();
-                markStartingNewDrugEntry();
+                markVariable("startNewDrugEntry");
             };
 
             $scope.toggleShowAdditionalInstructions = function (line) {
@@ -117,8 +119,8 @@ angular.module('bahmni.clinical')
             };
 
             $scope.edit = function (index) {
-                markEditingDrugEntry();
                 clearHighlights();
+                markEitherVariableDrugOrUniformDrug($scope.treatments[index]);
                 $scope.treatments[index].isBeingEdited = true;
                 $scope.treatment = $scope.treatments[index].cloneForEdit(index, drugOrderAppConfig, $scope.treatmentConfig);
             };
@@ -191,7 +193,7 @@ angular.module('bahmni.clinical')
             $scope.clearForm = function () {
                 $scope.treatment = newTreatment();
                 clearHighlights();
-                markStartingNewDrugEntry();
+                markVariable("startNewDrugEntry");
             };
 
             contextChangeHandler.add(contextChange);
