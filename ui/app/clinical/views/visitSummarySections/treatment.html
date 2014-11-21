@@ -18,7 +18,7 @@
             <th colspan="2"><span class="table-head-title">Dosage Instructions</span></th>
         </tr>
         </thead>
-        <tbody ng-repeat="drugOrder in drugOrderGroup.orders | orderBy:'dateActivated':true" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
+        <tbody ng-repeat="drugOrder in drugOrderGroup.orders" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
         <tr ng-click="toggle(drugOrder)" class="row-click">
             <td class="drug-name" bo-text="drugOrder.getDisplayName()"></td>
             <td class="dosage-form has-toggle-btn">

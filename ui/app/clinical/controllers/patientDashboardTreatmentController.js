@@ -12,10 +12,7 @@ angular.module('bahmni.clinical')
         };
         var getActiveDrugOrders = function () {
             return treatmentService.getActiveDrugOrders($stateParams.patientUuid).then(function (drugOrders) {
-                var prescribedDrugOrders = [];
-                drugOrders.forEach(function (drugOrder) {
-                    prescribedDrugOrders.push(Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder))
-                });
+                var prescribedDrugOrders = drugOrders.map(Bahmni.Clinical.DrugOrderViewModel.createFromContract);
                 $scope.drugOrderSections.active.orders = prescribedDrugOrders.sort(dateCompare);
             });
         };
@@ -23,10 +20,7 @@ angular.module('bahmni.clinical')
         var getLastPrescribedDrugOrders = function () {
             var numberOfVisits = $scope.section.numberOfVisits || 1;
             return treatmentService.getPrescribedDrugOrders($stateParams.patientUuid, false, numberOfVisits).then(function (drugOrders) {
-                var prescribedDrugOrders = [];
-                drugOrders.forEach(function (drugOrder) {
-                    prescribedDrugOrders.push(Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder))
-                });
+                var prescribedDrugOrders = drugOrders.map(Bahmni.Clinical.DrugOrderViewModel.createFromContract);
                 $scope.drugOrderSections.past.orders = prescribedDrugOrders.sort(dateCompare);
             });
         };
@@ -45,7 +39,6 @@ angular.module('bahmni.clinical')
         };
 
         spinner.forPromise($q.all(getPromises()));
-
     }]).controller('PatientDashboardAllTreatmentController', ['$scope', '$stateParams', 'TreatmentService', 'spinner', function ($scope, $stateParams, treatmentService, spinner) {
         var init = function () {
             return treatmentService.getPrescribedDrugOrders($stateParams.patientUuid, true).then(function (drugOrders) {

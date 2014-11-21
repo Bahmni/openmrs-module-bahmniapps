@@ -19,7 +19,6 @@ angular.module('bahmni.clinical')
             };
 
             var getRefillableDrugOrders = function(activeAndScheduledDrugOrders) {
-                activeAndScheduledDrugOrders = _.sortBy(activeAndScheduledDrugOrders, 'effectiveStartDate').reverse();
                 var refillableDrugOrders = activeAndScheduledDrugOrders;
 
                 var previousVisitDrugOrders = getPreviousVisitDrugOrders();
@@ -79,13 +78,9 @@ angular.module('bahmni.clinical')
             var getActiveDrugOrders = function() {
                 return treatmentService.getActiveDrugOrders($stateParams.patientUuid).then(function (drugOrders) {
                     activeDrugOrdersList = drugOrders || [];
-                    var activeDrugOrders = [];
-                    drugOrders.forEach(function (drugOrder) {
-                        activeDrugOrders.push(DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig,treatmentConfig))
+                    return activeDrugOrdersList.map(function (drugOrder) {
+                        return DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig,treatmentConfig);
                     });
-                    activeDrugOrders = _.sortBy(activeDrugOrders, "effectiveStartDate").reverse();
-
-                    return activeDrugOrders;
                 });
             };
 

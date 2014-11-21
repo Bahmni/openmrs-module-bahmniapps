@@ -19,7 +19,7 @@
                 <thead>
                     <th colspan="3" bo-text="drugOrdersGroup.values[0].effectiveStartDate | date:'dd MMM, yyyy'"></th>
                 </thead>
-                <tbody ng-repeat="drugOrder in drugOrdersGroup.values | orderBy:'dateActivated':true" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
+                <tbody ng-repeat="drugOrder in drugOrdersGroup.values" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
                     <tr toggle="drugOrder.showNotes">
                         <td class="drug">{{drugOrder.getDisplayName()}}</td>
                         <td class="dosage">{{drugOrder.getDescription()}}
