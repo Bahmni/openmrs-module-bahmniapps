@@ -1,5 +1,11 @@
 <div class="dashboard">
     <header class="reg-header">
+        <select ng-model="selectedLocationUuid" ng-change="onLocationChange()">
+            <option ng-repeat="location in locations" ng-selected="isCurrentLocation(location)" value="{{location.uuid}}">
+                {{location.display}}
+            </option>
+        </select>
+
         <a class="header-logo" href="../home/"><img src="../images/jss_logo.png" alt="Bahmni" title="Bahmni"></a>
         <button class="btn-user-info">
             <i class="icon-user-md icon-white small"></i>
@@ -10,6 +16,12 @@
                 <a class="disabled">
                     <i class="icon-user-md icon-white small"></i>
                     <span ng-bind="currentUser.username"></span>
+                </a>
+            </li>
+            <li ng-show=currentUser.currentLocation>
+                <a class="disabled">
+                    <i class="icon-map-marker icon-white small"></i>
+                    <span ng-bind="currentUser.currentLocation"></span>
                 </a>
             </li>
             <li>

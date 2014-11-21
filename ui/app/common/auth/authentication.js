@@ -47,6 +47,7 @@ angular.module('authentication', ['ngCookies'])
                 if (data.authenticated) {
                     $cookieStore.put('bahmni.user', username, {path: '/', expires: 7});
                     if(location != undefined) {
+                        $cookieStore.remove(Bahmni.Common.Constants.locationCookieName);
                         $cookieStore.put(Bahmni.Common.Constants.locationCookieName, {name: location.display, uuid: location.uuid}, {path: '/', expires: 7});
                     }
                     deferrable.resolve();
@@ -82,6 +83,7 @@ angular.module('authentication', ['ngCookies'])
                 cache: false
             }).success(function(data) {
                 $rootScope.currentUser = data.results[0];
+                $rootScope.currentUser.currentLocation = $cookieStore.get(Bahmni.Common.Constants.locationCookieName).name;
                 $rootScope.$broadcast('event:user-credentialsLoaded', data.results[0]);
                 deferrable.resolve(data.results[0]);
             }).error(function () {
