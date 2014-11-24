@@ -10,8 +10,8 @@ angular.module('admin', ['httpErrorInterceptor', 'bahmni.admin']).config(['$stat
         }
     }).state('admin.dashboard',
         {   url: '/dashboard',
-            templateUrl: '../common/ui-helper/views/dashboard.html',
-            controller: 'DashboardController',
+            templateUrl: 'views/adminDashboard.html',
+            controller: 'AdminDashboardController',
             data: {extensionPointId: 'org.bahmni.admin.dashboard'}
         })
         .state('admin.csv',

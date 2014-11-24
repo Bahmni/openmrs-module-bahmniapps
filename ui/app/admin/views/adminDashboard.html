@@ -1,0 +1,9 @@
+<div class="dashboard">
+    <div class="apps">
+        <ul>
+            <li ng-repeat="extn in appExtensions">
+                <a ng-href="{{extn.url}}" class="button app big"><i class="{{extn.icon}}"></i>{{extn.label}}</a>
+            </li>
+        </ul>
+    </div>
+</div>
