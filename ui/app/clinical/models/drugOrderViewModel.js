@@ -272,7 +272,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
     };
 
     this.isActive = function(){
-        return !self.isDiscontinuedOrStopped() && (self.effectiveStopDate == null || self.effectiveStopDate >= Bahmni.Common.Util.DateUtil.today());
+        return !self.isDiscontinuedOrStopped() && (self.effectiveStopDate == null || self.effectiveStopDate >= Bahmni.Common.Util.DateUtil.now());
     };
 
     this.discontinued = function(){
@@ -313,7 +313,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         newDrugOrder.dateActivated = undefined;
         newDrugOrder.drugNameDisplay = constructDrugNameDisplay(self.drug, self.drug.form).value;
         newDrugOrder.quantityEnteredViaEdit = true;
-        newDrugOrder.uiStartDate = newDrugOrder.effectiveStartDate < Date.now() ? Date.now() : newDrugOrder.uiStartDate
+        newDrugOrder.uiStartDate = newDrugOrder.effectiveStartDate < Date.now() ? Date.now() : newDrugOrder.uiStartDate;
 
         modifyForReverseSyncIfRequired(newDrugOrder);
         defaultQuantityUnit(newDrugOrder);

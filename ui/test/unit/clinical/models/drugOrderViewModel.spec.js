@@ -310,9 +310,15 @@ describe("drugOrderViewModel", function () {
             expect(treatment.isActive()).toBe(true);
         });
 
-        it("should be active if the effective stop date is today", function () {
+        it("should not be active if the effective stop date is less than current datetime", function () {
             var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
-            treatment.effectiveStopDate = new Date();
+            treatment.effectiveStopDate = DateUtil.subtractSeconds(DateUtil.now(), 600);
+            expect(treatment.isActive()).toBe(false);
+        });
+
+        it("should be active if the effective stop date is greater than current datetime", function () {
+            var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", {name: "Twice a Day", frequencyPerDay: 2}, 5, "Days");
+            treatment.effectiveStopDate = DateUtil.addSeconds(DateUtil.now(), 600);
             expect(treatment.isActive()).toBe(true);
         });
 
