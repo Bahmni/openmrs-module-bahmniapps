@@ -1,5 +1,5 @@
-if (navigator.userAgent.match(/iPhone|iPod|iPad/i)) {
-	$(function(){
+$(function(){
+	if (Modernizr.ios) {
 		//This fix is needed when we use fastclick.js on ipad
 		$(document).on("click", "label[for]", function(event) {
 			var $inputElement = $('input#' + $(this).attr('for'));
@@ -12,5 +12,5 @@ if (navigator.userAgent.match(/iPhone|iPod|iPad/i)) {
 				$inputElement.focus();
 			}
 		});
-	});
-}
+	}
+});

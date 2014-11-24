@@ -23,6 +23,7 @@ module.exports = function (config) {
             'app/components/angular-bindonce/bindonce.js',
             'app/components/stacktrace-js/stacktrace.js',
             'app/components/angular-cookies/angular-cookies.js',
+            'app/lib/modernizr.custom.78488.js',
             'app/common/constants.js',
             'app/**/init.js',
             'app/**/constants.js',

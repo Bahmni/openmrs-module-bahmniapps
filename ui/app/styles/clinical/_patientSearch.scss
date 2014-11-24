@@ -3,6 +3,7 @@
 	input{
 		min-width:300px;
 		padding-left:10px;
+        margin-bottom: 20px;
     &:focus {
       outline: 2px solid $clinicalFormFocus;
       background: $clinicalFormFocusBg;
