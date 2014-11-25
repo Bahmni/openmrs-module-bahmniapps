@@ -22,7 +22,7 @@
         <span ng-if="!search.isCurrentSearchLookUp()">    
             <form name="searchPatientForm" ng-submit="searchPatients()"> 
                 <div class="search-patient-id left">
-                    <input type="text" autofocus id="patientIdentifier" ng-model="search.searchParameter" focus-on="search.startPatientSearch" placeholder="Search Name/ID  ..."/>
+                    <input type="text" id="patientIdentifier" ng-model="search.searchParameter" focus-on="search.startPatientSearch" placeholder="Search Name/ID  ..."/>
                 </div>
 
                 <div class="reg-srch-btn left">
