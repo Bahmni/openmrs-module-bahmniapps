@@ -19,6 +19,10 @@
     }
   }
   .main {
+    &.opd-content-wrapper {
+      width: 1024px;
+      margin: 0 auto;
+    }
     h5 {
       height: 40px;
       line-height: 40px;
@@ -308,6 +312,10 @@ button.mfp-close:hover {
 
 @media screen and (max-width: 768px) {
     .document-upload {
+      .main.opd-content-wrapper {
+        width: 100%;
+        margin: 10px auto;
+      }
       header h1.patient-details {
         font-size: 14px;
         position: absolute;
