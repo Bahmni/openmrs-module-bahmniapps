@@ -1,0 +1,115 @@
+.split-button {
+    overflow:hidden;
+    margin: 2px;
+    border-radius: 3px;
+    ul {
+        border-radius: 3px 0 0 3px;
+        border-right:none;
+        float:left;
+        li {
+            font-size:.9em;
+            &.secondaryOption {
+                display: none;
+                border: 1px solid $lightGray;
+                border-bottom: 0;
+                background: $white;
+                &:last-child {
+                    border-bottom: 1px solid $lightGray;
+                    border-radius: 0 0 3px 3px;
+                }
+                button {
+                    background: $white;
+                    color: $black;
+                    position:relative;
+                    z-index:99;
+                    border-radius: 3px 0 0 3px;
+                    &:hover {
+                        background: $lightestGray;
+                    }
+                }                    
+                &:hover {
+                    background: $lightestGray;
+                }
+            }
+            button {
+                width: 100%;
+                margin: 2px;
+                font-size: 14px;
+                border-radius: 3px 0 0 3px;
+                &:focus {
+                    outline: 2px solid $clinicalFormFocus;
+                }
+            }
+        }
+    }
+    .toggle-button {
+        float:left;
+        margin: 2px;
+        border-radius:0px 3px 3px 0;
+        border-left:none;
+        padding: 5.5px 10px;
+        &:focus{
+            outline: 2px solid $clinicalFormFocus;
+        }
+    }
+}
+
+
+
+.reg-search-wrapper .split-button li{
+    width:7.5em;
+}
+
+
+.split-button {
+    .primaryOption button, .toggle-button {
+        @extend .confirm;
+    }
+}
+.split-button {
+    position: relative;
+    ul {
+        width: 300px;
+        li button {
+            text-align: left;
+            border: 0;
+            width: 99%;
+        }
+    }
+    .toggle-button {
+        position: absolute;
+        z-index: 1;
+        right: 38px;
+    }
+}
+
+.edit-col {
+    .split-button {
+        position: relative;
+        ul {
+            width: 100px;
+            li.secondaryOption button {
+                border: 0;
+                border-radius: 0;
+            }
+            li button {
+                text-align: left;
+            }
+        }
+        .toggle-button {
+            position: absolute;
+            z-index: 1;
+            right: 3px;
+        }
+    }
+}
+
+.print-action-items {
+    position: absolute;
+    top: 5px;
+    right: 25px;
+    .secondaryOption {
+        position: relative;
+        z-index: 99;
+    }
+}

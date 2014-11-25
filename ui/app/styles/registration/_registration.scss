@@ -96,110 +96,7 @@ input[required],select[required]{
     overflow: scroll;
   }
 }
-.reg-search-wrapper .split-button li{
-  width:7.5em;
-}
-.split-button{
-  overflow:hidden;
-  margin: 2px;
-  border-radius: 3px;
-  ul{
-    border-radius: 3px 0 0 3px;
-    border-right:none;
-    float:left;
-    li{
-        font-size:.9em;
-        &.secondaryOption{
-          display: none;
-          border: 1px solid $lightGray;
-          border-bottom: 0;
-          &:last-child {
-            border-bottom: 1px solid $lightGray;
-            border-radius: 0 0 3px 3px;
-          }
-          button{
-              background: $white;
-              color: $black;
-              position:relative;
-              z-index:99;
-              border-radius: 3px 0 0 3px;
-            &:hover {
-              background: $lightestGray;
-            }
-          }
-        }
-        button {
-          width: 100%;
-          margin: 2px;
-          font-size: 14px;
-          border-radius: 3px 0 0 3px;
-          &:focus{
-            outline: 2px solid $clinicalFormFocus;
-            background: $clinicalFormFocusBg;
-          }
-        }
-    }
-  }
-  .toggle-button{
-    float:left;
-    margin: 2px;
-    border-radius:0px 3px 3px 0;
-    border-left:none;
-    padding: 5.5px 10px;
-    &:focus{
-      outline: 2px solid $clinicalFormFocus;
-      background: $clinicalFormFocusBg;
-    }
-  }
-}
 
-.submit-btn-container {
-  height: 180px;
-  .split-button {
-    .primaryOption button, .toggle-button {
-        @extend .confirm;
-    }
-  }
-}
-.submit-btn-container {
-  .split-button {
-    position: relative;
-    ul {
-      width: 300px;
-      li button {
-        text-align: left;
-        border: 0;
-        width: 290px;
-      }
-    }
-    .toggle-button {
-      position: absolute;
-      z-index: 1;
-      right: 38px;
-    }
-  }
-}
-
-.edit-col {
-  .split-button {
-    position: relative;
-    ul {
-      width: 100px;
-      li.secondaryOption button {
-        border: 0;
-        border-radius: 0;
-      }
-      li button {
-        text-align: left;
-      }
-    }
-    .toggle-button {
-      position: absolute;
-      z-index: 1;
-      right: 3px;
-    }
-  }
-}
 /********************** overridding the common ui ***********************/
 .simple-form-ui{
   form{
@@ -436,16 +333,16 @@ table{
   .edit-col{
       width:160px;
       padding:2px 2px 2px 2px;
-      .split-button-wrapper{
-          @include legacy-pie-clearfix();
-          position: relative;
-          height: 37px;
-      }
-      .split-button{
-        position:absolute;
-        top:2px;
-        left:10px;
-      }
+      // .split-button-wrapper{
+      //     @include legacy-pie-clearfix();
+      //     position: relative;
+      //     height: 37px;
+      // }
+      // .split-button{
+      //   position:absolute;
+      //   top:2px;
+      //   left:10px;
+      // }
       a{
         background:image-url("edit.png") top left no-repeat;
         width:30px;
@@ -525,9 +422,10 @@ table{
 
 
 .submit-btn-container{
-  padding:10px 20px 0px 20px;
-  border-top: 1px solid $lightestGray;
-  margin-top: 30px;
+    padding:10px 20px 0px 20px;
+    border-top: 1px solid $lightestGray;
+    margin-top: 30px;
+    height: 180px;
 }
 
 .print-layout {
@@ -925,3 +823,9 @@ label.local-name-reg {
 .obs-section section.hierarchy .form-field {padding: 0;}
 
 .time.fr {float: right; margin-right: 5px;}
+
+button u, u {
+    text-decoration: none;
+    border-bottom: 1px solid;
+    font-family: openSansBold;
+}

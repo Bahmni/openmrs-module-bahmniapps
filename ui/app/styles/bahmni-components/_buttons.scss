@@ -128,5 +128,8 @@ input[type="submit"].secondary-button:hover  {
     }
 }
 
+/* split button - seperate scss file */
+
+
 .refill-btn, .stop-drug-btn { padding: 10px!important; font-family: $primaryBoldFont; color: #666; }
 .refill-btn .icon-play { font-size: 1em!important; }

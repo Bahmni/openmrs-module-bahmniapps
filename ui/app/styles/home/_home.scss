@@ -483,6 +483,12 @@ body{
 }
 
 .change-location {
-    float: left;
+    float: right;
     padding: 7px;
+    margin-right: 70px;
+    select, select:focus {
+        background: lighten($bahmniPrimaryColor, 10%);
+        color: $white;
+        border: 1px solid lighten($bahmniPrimaryColor, 5%)
+    }
 }

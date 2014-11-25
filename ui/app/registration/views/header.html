@@ -1,4 +1,5 @@
 <header class="reg-header" ng-controller="NavigationController">
+        
         <a class="header-logo" href="../home/"><img src="../images/jss_logo.png" alt="Bahmni" title="Bahmni"></a>
 
         <button class="btn-user-info">
@@ -20,8 +21,6 @@
             <li ng-repeat="extension in extensions">
                 <a ng-click="goTo(extension.url)" accesskey="{{extension.shortcutKey}}"><i class="{{extension.icon}} icon-white small"></i><span class="nav-link" ng-bind-html="htmlLabel(extension.label)"></span></a>
             </li>
-            <li>
-                <div ui-view="headerExtension"></div>
-            </li>
         </ul>
+        <div ui-view="headerExtension" class="print-action-items"></div>
 </header>
