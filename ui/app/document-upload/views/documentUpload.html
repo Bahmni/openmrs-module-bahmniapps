@@ -3,7 +3,7 @@
   <div class="error-message" ng-show="orientation_warning"><p><i class="icon-exclamation-sign"></i>The device is not held upright. Please rotate the device before taking photo</p></div>
 </div>
 <div ng-if="toggleGallery">
-<ul class="doc-upload-accordion" bm-gallery patient="patient" title="'Images'" access-impression="false">
+<ul class="doc-upload-accordion" bm-gallery patient="patient" access-impression="false">
   <li id="newVisit">
     <h5 ng-click="resetCurrentVisit(newVisit)">
       <i ng-hide="isCurrentVisit(newVisit)" class="icon-plus-sign state"></i>

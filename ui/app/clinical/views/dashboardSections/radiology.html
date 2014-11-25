@@ -3,7 +3,7 @@
     <section class="block">
         <ul>
             <li ng-repeat="radiologyRecordGroup in radiologyRecordGroups" class="radiology-doc-item"
-                bm-gallery patient="patient" title="'Radiology Documents'" access-impression="true">
+                bm-gallery patient="patient" access-impression="true">
                 <a class="document-link" bm-image-observation-gallery-items list=radiologyRecordGroup.records>{{radiologyRecordGroup.conceptName}}</a>
                 <i ng-show="isRecordForCurrentVisit(radiologyRecordGroup.records)" class="icon-star current-visit-icon fr"></i>
                 <span ng-show="radiologyRecordGroup.records.length > 1">({{radiologyRecordGroup.records.length}})</span>
