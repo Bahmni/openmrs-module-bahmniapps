@@ -991,4 +991,110 @@ describe("drugOrderViewModel", function () {
             expect(treatment.drug).toBe(null);
         })
     });
+    describe("checkOverlappingSchedule", function () {
+        it("should return true if self order and other order do not have effective stop date", function(){
+            var treatment = sampleTreatment({}, {});
+            var otherOrder = sampleTreatment({}, {});
+            treatment.effectiveStopDate = null;
+            otherOrder.effectiveStopDate = null;
+            expect(treatment.overlappingScheduledWith(otherOrder)).toBeTruthy();
+        })
+
+        it("should return true if self order and other order have same start date", function(){
+            var treatment = sampleTreatment({}, {});
+            var otherOrder = sampleTreatment({}, {});
+            treatment.effectiveStartDate = DateUtil.parse("11/1/2001");
+            treatment.effectiveStopDate = DateUtil.parse("11/7/2001");
+            otherOrder.effectiveStartDate = DateUtil.parse("11/1/2001");
+            otherOrder.effectiveStopDate = DateUtil.parse("11/7/2001");
+            expect(treatment.overlappingScheduledWith(otherOrder)).toBeTruthy();
+        })
+
+        it("should return false if self order ends before other order starts", function(){
+            var treatment = sampleTreatment({}, {});
+            var otherOrder = sampleTreatment({}, {});
+            treatment.effectiveStartDate = DateUtil.parse("11/7/2001");
+            treatment.effectiveStopDate = DateUtil.parse("11/9/2001");
+            otherOrder.effectiveStartDate = DateUtil.parse("11/11/2001");
+            expect(treatment.overlappingScheduledWith(otherOrder)).toBeFalsy();
+        })
+
+        it("should return false if self order starts after other Order", function(){
+            var treatment = sampleTreatment({}, {});
+            var otherOrder = sampleTreatment({}, {});
+            treatment.effectiveStartDate = DateUtil.parse("11/15/2001");
+            treatment.effectiveStopDate = DateUtil.parse("11/17/2001");
+            otherOrder.effectiveStopDate = DateUtil.parse("11/14/2001");
+            expect(treatment.overlappingScheduledWith(otherOrder)).toBeFalsy();
+        })
+
+        it("should return true if self order stops after the other order has already been activated", function(){
+            var treatment = sampleTreatment({}, {});
+            var otherOrder = sampleTreatment({}, {});
+            treatment.effectiveStartDate = DateUtil.parse("11/09/2001");
+            treatment.effectiveStopDate = DateUtil.parse("11/17/2001");
+            otherOrder.effectiveStartDate = DateUtil.parse("11/11/2001");
+            expect(treatment.overlappingScheduledWith(otherOrder)).toBeTruthy();
+        })
+
+        it("should return true if self order starts when the other order is active", function(){
+            var treatment = sampleTreatment({}, {});
+            var otherOrder = sampleTreatment({}, {});
+            treatment.effectiveStartDate = DateUtil.parse("11/12/2001");
+            otherOrder.effectiveStartDate = DateUtil.parse("11/10/2001");
+            otherOrder.effectiveStopDate = DateUtil.parse("11/14/2001");
+            expect(treatment.overlappingScheduledWith(otherOrder)).toBeTruthy();
+        })
+
+        it("should return true if self order starts before other order and ends after other order", function(){
+            var treatment = sampleTreatment({}, {});
+            var otherOrder = sampleTreatment({}, {});
+            treatment.effectiveStartDate = DateUtil.parse("11/09/2001");
+            treatment.effectiveStopDate = DateUtil.parse("11/17/2001");
+            otherOrder.effectiveStartDate = DateUtil.parse("11/10/2001");
+            otherOrder.effectiveStopDate = DateUtil.parse("11/14/2001");
+            expect(treatment.overlappingScheduledWith(otherOrder)).toBeTruthy();
+        })
+
+        it("should return true if self order starts on the stop date of other order", function(){
+            var treatment = sampleTreatment({}, {});
+            var otherOrder = sampleTreatment({}, {});
+            treatment.effectiveStartDate = DateUtil.parse("11/09/2001");
+            treatment.effectiveStopDate = DateUtil.parse("11/14/2001");
+            otherOrder.effectiveStartDate = DateUtil.parse("11/06/2001");
+            otherOrder.effectiveStopDate = DateUtil.parse("11/09/2001");
+            expect(treatment.overlappingScheduledWith(otherOrder)).toBeTruthy();
+        })
+
+        it("should return true if other order starts before self order and ends after self order", function(){
+            var treatment = sampleTreatment({}, {});
+            var otherOrder = sampleTreatment({}, {});
+            treatment.effectiveStartDate = DateUtil.parse("11/09/2001");
+            treatment.effectiveStopDate = DateUtil.parse("11/11/2001");
+            otherOrder.effectiveStartDate = DateUtil.parse("11/06/2001");
+            otherOrder.effectiveStopDate = DateUtil.parse("11/12/2001");
+            expect(treatment.overlappingScheduledWith(otherOrder)).toBeTruthy();
+        })
+
+        it("should return true if self order ends on the start date of other order", function(){
+            var treatment = sampleTreatment({}, {});
+            var otherOrder = sampleTreatment({}, {});
+            treatment.effectiveStartDate = DateUtil.parse("11/09/2001");
+            treatment.effectiveStopDate = DateUtil.parse("11/11/2001");
+            otherOrder.effectiveStartDate = DateUtil.parse("11/11/2001");
+            otherOrder.effectiveStopDate = DateUtil.parse("11/14/2001");
+            expect(treatment.overlappingScheduledWith(otherOrder)).toBeTruthy();
+        })
+
+        it("should return true if both orders start and end on same dates", function(){
+            var treatment = sampleTreatment({}, {});
+            var otherOrder = sampleTreatment({}, {});
+            treatment.effectiveStartDate = DateUtil.parse("11/09/2001");
+            treatment.effectiveStopDate = DateUtil.parse("11/11/2001");
+            otherOrder.effectiveStartDate = DateUtil.parse("11/09/2001");
+            otherOrder.effectiveStopDate = DateUtil.parse("11/11/2001");
+            expect(treatment.overlappingScheduledWith(otherOrder)).toBeTruthy();
+        })
+
+    });
 });

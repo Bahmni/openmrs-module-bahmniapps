@@ -5,7 +5,7 @@ describe("TreatmentController", function () {
     beforeEach(module('bahmni.common.uiHelper'));
     beforeEach(module('bahmni.clinical'));
 
-    var scope, rootScope, contextChangeHandler, newTreatment, editTreatment, appService, appDescriptor;
+    var scope, rootScope, contextChangeHandler, newTreatment, editTreatment, appService, appDescriptor, ngDialog;
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
         rootScope = $rootScope;
@@ -27,6 +27,7 @@ describe("TreatmentController", function () {
             treatmentService: null,
             contextChangeHandler: contextChangeHandler,
             appService: appService,
+            ngDialog: ngDialog,
             treatmentConfig: {}
         });
     }));
