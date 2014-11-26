@@ -33,7 +33,9 @@ angular.module('bahmni.clinical')
             ];
 
             var newTreatment = function () {
-                return new Bahmni.Clinical.DrugOrderViewModel(drugOrderAppConfig, $scope.treatmentConfig);
+                var newTreatment = new Bahmni.Clinical.DrugOrderViewModel(drugOrderAppConfig, $scope.treatmentConfig);
+                newTreatment.isEditAllowed = false;
+                return newTreatment
             };
 
             $scope.today = new Date();
@@ -94,14 +96,40 @@ angular.module('bahmni.clinical')
 
             $scope.add = function () {
                 clearHighlights();
+
                 $scope.treatment.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;
                 if($scope.treatment.isBeingEdited){
                     $scope.treatments.splice($scope.treatment.currentIndex,1);
                     $scope.treatment.isBeingEdited = false;
                 }
+                var newDrugOrder = $scope.treatment;
+
+                if(!(newDrugOrder.isEditAllowed)){
+                    var DateUtil = Bahmni.Common.Util.DateUtil;
+                    newDrugOrder.effectiveStopDate= DateUtil.addDays(DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
+                    var alreadyActiveSimilarOrders = $rootScope.activeAndScheduledDrugOrders.filter(function(drugOrder){
+                        return (drugOrder.drug.uuid==newDrugOrder.drug.uuid && drugOrder.overlappingScheduledWith(newDrugOrder));
+                    });
+                    if(alreadyActiveSimilarOrders.length > 0 ){
+                        $scope.alreadyActiveSimilarOrder = alreadyActiveSimilarOrders[0];
+                        ngDialog.open({ template: 'views/treatmentSections/reviseRefillDrugOrderModal.html', scope: $scope});
+                        return;
+                    }
+                }
                 $scope.treatments.push($scope.treatment);
                 $scope.treatment = newTreatment();
                 markVariable("startNewDrugEntry");
+            };
+
+            $scope.refill = function (alreadyActiveSimilarOrder) {
+                ngDialog.close();
+                $scope.clearForm();
+                $rootScope.$broadcast("event:refillDrugOrder", alreadyActiveSimilarOrder);
+            };
+
+            $scope.revise = function (treatment) {
+                ngDialog.close();
+                $rootScope.$broadcast("event:reviseDrugOrder", treatment);
             };
 
             $scope.toggleShowAdditionalInstructions = function (line) {

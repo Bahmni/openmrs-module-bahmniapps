@@ -9,6 +9,7 @@ describe("TreatmentController", function () {
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
         rootScope = $rootScope;
+        $rootScope.activeAndScheduledDrugOrders = [];
         $rootScope.consultation = {};
         scope.consultation = {saveHandler: new Bahmni.Clinical.SaveHandler()};
         var now = Bahmni.Common.Util.DateUtil.now();
@@ -34,7 +35,7 @@ describe("TreatmentController", function () {
 
     describe("add()", function () {
         it("adds treatment object to list of treatments", function () {
-            var treatment = {drug: {name:true}};
+            var treatment = {drug: {name:true}, isEditAllowed: true};
             scope.treatment = treatment;
             scope.add();
             expect(scope.treatments.length).toBe(1);
@@ -42,13 +43,13 @@ describe("TreatmentController", function () {
         });
 
         it("should empty treatment", function () {
-            scope.treatment = {drug: {name:true}};
+            scope.treatment = {drug: {name:true}, isEditAllowed: true};
             scope.add();
             expect(scope.treatment.drug).toBeFalsy();
         });
 
         it("clears existing treatment object", function () {
-            scope.treatment = {drug: {name:true}};
+            scope.treatment = {drug: {name:true}, isEditAllowed: true};
             scope.add();
             expect(scope.treatment.drug).toBeFalsy();
         });
@@ -57,6 +58,12 @@ describe("TreatmentController", function () {
             scope.add();
             expect(scope.startNewDrugEntry).toBeTruthy();
         });
+        it("should not allow to add if order new order(isEditAllowed is false) and there is already existing order", function(){
+            scope.treatment = Bahmni.Tests.drugOrderViewModelMother.build({drug: {name:"abc"}, isEditAllowed: false, effectiveStartDate: "26-11-2011", durationInDays: 2}, []);
+            rootScope.activeAndScheduledDrugOrders = [{drug: {name:true}}]
+            scope.add();
+            expect(scope.treatment.drug).toBeFalsy();
+        })
 
     });
 
@@ -91,18 +98,21 @@ describe("TreatmentController", function () {
             return true;
         };
         it("should do nothing if form is blank", function () {
+            newTreatment.isEditAllowed = false;
             scope.treatment = newTreatment;
             scope.clearForm();
             expect(isSameAs(scope.treatment, newTreatment)).toBeTruthy();
         });
 
         it("should clear treatment object", function () {
+            newTreatment.isEditAllowed = false;
             scope.treatment = {drug: {name:'Calpol'}};
             scope.clearForm();
             expect(isSameAs(scope.treatment, newTreatment)).toBeTruthy();
         });
 
         it("should reset the treatment being edited", function () {
+            newTreatment.isEditAllowed = false;
             scope.treatments = [editTreatment, newTreatment, newTreatment];
             scope.edit(0);
             scope.clearForm();
