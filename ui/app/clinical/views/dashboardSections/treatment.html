@@ -5,7 +5,7 @@
 
     <section class="block treatment-section" ng-class="{'more': drugOrders.show}">
         <!-- class names 'active' and 'past' added to the <table> for automation tests -->
-        <table ng-repeat="(key,drugOrderSection) in drugOrderSections" class="{{key}}">
+        <table ng-repeat="(key,drugOrderSection) in drugOrderSections" class="{{key}}" ng-show="isSectionNeeded(key)">
             <thead>
                 <th colspan="3">{{drugOrderSection.displayName}}</th>
             </thead>
