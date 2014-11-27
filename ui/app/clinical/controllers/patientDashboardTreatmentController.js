@@ -1,13 +1,25 @@
 angular.module('bahmni.clinical')
-    .controller('PatientDashboardTreatmentController', ['$q', '$scope', '$stateParams', 'TreatmentService', 'spinner','appService', function ($q, $scope, $stateParams, treatmentService, spinner, appService) {
-        $scope.drugOrderSections = appService.getAppDescriptor().getConfigValue("treatmentSection") || {};
-
+    .controller('PatientDashboardTreatmentController', ['$q', '$scope', '$stateParams', 'TreatmentService', 'spinner','clinicalConfigService', function ($q, $scope, $stateParams, treatmentService, spinner, clinicalConfigService) {
+        $scope.drugOrderSections = {
+            "active": {displayName: "Active Prescription", orders: null},
+            "past": {displayName: "Last Prescription", orders: null}
+        };
         var dateCompare = function (drugOrder1, drugOrder2) {
             return drugOrder1.effectiveStartDate > drugOrder2.effectiveStartDate? -1: 1;
         };
 
         $scope.isSectionNeeded = function (key){
-            return $scope.drugOrderSections[key].isNeeded != undefined ? $scope.drugOrderSections[key].isNeeded : true ;
+            var isActiveNeeded = true;
+            if(key == "active") {
+                var patientDashBoardSectionFromConfig = clinicalConfigService.getAllPatientDashboardSections();
+                patientDashBoardSectionFromConfig.forEach(function (section) {
+                    if (section.title == "Treatments") {
+                        isActiveNeeded = section.active || false;
+                        return ;
+                    }
+                });
+            }
+            return isActiveNeeded;
         }
 
 
