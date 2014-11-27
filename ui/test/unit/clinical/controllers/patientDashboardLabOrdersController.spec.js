@@ -7,6 +7,7 @@ describe("PatientDashboardLabOrdersController", function(){
     var scope;
     var labOrderResultService;
     var stateParams;
+    var _clinicalConfigService;
     var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
 
     var labOrderResults = {
@@ -20,11 +21,24 @@ describe("PatientDashboardLabOrdersController", function(){
         ]],
         "tabularResult": {}
     }
+    var patientDashboardSections = [
+        {
+            "title": "Diagnosis",
+            "name": "diagnosis"
+        },
+        {
+            "title": "Lab Results",
+            "name": "labOrders",
+            "showAll":true
+        }
+    ];
 
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
 
         spinner.forPromise.and.callFake(function(param) {return {}});
+        _clinicalConfigService = jasmine.createSpyObj('clinicalConfigService', ['getObsIgnoreList', 'getAllPatientDashboardSections']);
+        _clinicalConfigService.getAllPatientDashboardSections.and.returnValue(patientDashboardSections);
 
         labOrderResultService = jasmine.createSpyObj('LabOrderResultService', ['getAllForPatient']);
         labOrderResultService.getAllForPatient.and.callFake(function(param) {
@@ -40,7 +54,9 @@ describe("PatientDashboardLabOrdersController", function(){
             $rootScope: {'allTestsAndPanelsConcept': []},
             $stateParams: stateParams,
             LabOrderResultService: labOrderResultService,
-            spinner: spinner
+            spinner: spinner,
+            clinicalConfigService: _clinicalConfigService
+
         });
     }));
 
@@ -48,6 +64,12 @@ describe("PatientDashboardLabOrdersController", function(){
         it("should setup the scope", function() {
             expect(scope.patientUuid).toBe('some uuid');
             expect(labOrderResultService.getAllForPatient).toHaveBeenCalledWith("some uuid", 1);
+        });
+    });
+
+    describe("when showAll in config under labResults section is true ", function(){
+        it("should set showNormalLabResults to true", function() {
+            expect(scope.showNormalLabResults).toBe(true);
         });
     });
 });
