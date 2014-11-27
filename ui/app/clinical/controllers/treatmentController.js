@@ -113,6 +113,7 @@ angular.module('bahmni.clinical')
                     if(alreadyActiveSimilarOrders.length > 0 ){
                         $scope.alreadyActiveSimilarOrder = alreadyActiveSimilarOrders[0];
                         ngDialog.open({ template: 'views/treatmentSections/reviseRefillDrugOrderModal.html', scope: $scope});
+                        $scope.popupActive = true;
                         return;
                     }
                 }
@@ -122,12 +123,14 @@ angular.module('bahmni.clinical')
             };
 
             $scope.refill = function (alreadyActiveSimilarOrder) {
+                $scope.popupActive = false;
                 ngDialog.close();
                 $scope.clearForm();
                 $rootScope.$broadcast("event:refillDrugOrder", alreadyActiveSimilarOrder);
             };
 
             $scope.revise = function (treatment) {
+                $scope.popupActive = false;
                 ngDialog.close();
                 $rootScope.$broadcast("event:reviseDrugOrder", treatment);
             };
