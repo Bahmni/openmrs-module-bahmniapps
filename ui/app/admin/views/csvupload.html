@@ -1,29 +1,73 @@
 <div nv-file-drop uploader="uploader" filters="queueLimit, customFilter">
 
-    <div>
+    <div class="csv-upload-page">
         <div>
-            <h3>Select files</h3>
-            <input type="file" nv-file-select uploader="uploader" multiple/>
-            <span>
-                <input type="radio" name="upload-type" ng-model="option" ng-value="'concept'" > Concept
-                <input type="radio" name="upload-type" ng-model="option" ng-value="'conceptset'" > ConceptSet
-                <input type="radio" name="upload-type" ng-model="option" ng-value="'program'" > Program
-                <input type="radio" name="upload-type" ng-model="option" ng-value="'patient'" > Patient
-                <input type="radio" name="upload-type" ng-model="option" ng-value="'encounter'">Encounter
-                <input type="radio" name="upload-type" ng-model="option" ng-value="'drug'" > Drug
-                <input type="radio" name="upload-type" ng-model="option" ng-value="'labResults'" > Lab Results
-                <input type="radio" name="upload-type" ng-model="option" ng-value="'referenceterms'" > ReferenceTerms
-            </span>
-            <div ng-if="uploader.queue.length">
-                <h3>File to Upload</h3>
-                <table>
+            <section class="primary-section-grid">
+                <h2 class="section-title">Select files</h2>
+                <form class="select-file-form">
+                    <fieldset class="select-file-type">
+                        <ul>
+                            <li>
+                                <input type="radio" name="upload-type" ng-model="option" 
+                                id="concept" ng-value="'concept'" > 
+                                <label for="concept">Concept</label>
+                            </li>
+                            <li>
+                                <input type="radio" name="upload-type" ng-model="option" 
+                                id="conceptset" ng-value="'conceptset'" >
+                                <label for="conceptset">Concept Set</label>
+                            </li>
+                            <li>
+                                <input type="radio" name="upload-type" ng-model="option" 
+                                id="program" ng-value="'program'" > 
+                                <label for="program">Program</label>
+                            </li>
+                            <li>
+                                <input type="radio" name="upload-type" ng-model="option" 
+                                id="patient" ng-value="'patient'" > 
+                                <label for="patient">Patient</label>
+                            </li>
+                            <li>
+                                <input type="radio" name="upload-type" ng-model="option" 
+                                id="encounter" ng-value="'encounter'">
+                                <label for="encounter">Encounter</label>
+                            </li>
+                            <li>
+                                <input type="radio" name="upload-type" ng-model="option" 
+                                id="drug" ng-value="'drug'" > 
+                                <label for="drug">Drug</label>
+                            </li>
+                            <li>
+                                <input type="radio" name="upload-type" ng-model="option" 
+                                id="labResults" ng-value="'labResults'" > 
+                                <label for="labResults">Lab Results</label>
+                            </li>
+                            <li>
+                                <input type="radio" name="upload-type" ng-model="option" 
+                                id="referenceterms" ng-value="'referenceterms'" > 
+                                <label for="referenceterms">Reference Terms</label>
+                            </li>
+                        </ul>
+                    </fieldset>
+                    <fieldset class="upload-selected-file">
+                        <input id="inputFileUpload" class="input-file-upload" type="file" nv-file-select uploader="uploader" multiple />
+                        <label for="inputFileUpload" class="button confirm">
+                            <i class="icon-upload"></i> Upload
+                        </label>
+                    </fieldset>
+                </form>
+            </section>
+
+            <section ng-if="uploader.queue.length" class="section-grid">
+                <h2 class="section-title">File to Upload</h2>
+                <table class="file-to-upload">
                     <thead>
                         <tr>
                             <th>Name</th>
                             <th>Size</th>
                             <th>Upload Progress</th>
                             <th>Upload Status</th>
-                            <th>Actions</th>
+                            <th class="actions">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -52,10 +96,13 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
-            <div>
-                <h3>Uploaded files</h3>
-                <button ng-click="loadImportedItems()">Refresh</button>
+            </section>
+            <section class="section-grid">
+                <h2 class="section-title">Uploaded files
+                    <button class="refresh-btn fr" ng-click="loadImportedItems()">
+                        <i class="icon-refresh"></i> <span>Refresh</span>
+                    </button>
+                </h2>
                 <table>
                     <thead>
                         <tr>
@@ -76,7 +123,7 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
+            </section>
         </div>
     </div>
 </div>

@@ -1,13 +1,92 @@
-.csv-export {
-  padding: 20px;
+body { background: $white;  }
 
-  form {
-    padding: 20px;
-  }
+.admin-app {
+	background: $white;
 
-  input[type="text"] {
-    float: left;
-    margin-right: 10px;
-  }
+	input[type="radio"]:focus {
+		outline: none;
+	}
+
+	.opd-wrapper {
+		width: 1024px;
+		margin: 0 auto;
+		.opd-content-wrapper {
+			padding-top: 20px;
+		}
+	}
+
+	.select-file-form {
+		display: flex;
+	}
+
+	.select-file-type {
+		width: 80%; min-width: 80%;
+		box-sizing: border-box;
+		float: left;
+		margin: 0;
+		display: flex;
+		li { 
+			float: left;
+			width: 25%;
+			padding: 5px;
+			box-sizing: border-box;
+			label {
+				margin-top: 0;
+			}
+		}
+	}
+
+	.upload-selected-file {
+		width: 20%; min-width: 20%;
+		box-sizing: border-box;
+		float: left;
+		margin: 0;
+		display: flex;
+	}
+
+
+	/*upload btn*/
+	.input-file-upload {
+		position: absolute;
+		left: -9999px;
+		visibility: hidden;
+		& + label {
+			padding: 10px;
+			border-radius: 3px;
+			text-align: center;
+			margin: 0;
+		}
+	}
+
+	.csv-upload-page .section-grid {
+		margin-top: 20px;
+	}
+
+	.refresh-btn {
+		padding: 5px;
+		position: relative;
+		top: -7px;
+		font-size: 14px;
+		font-family: $primaryFont, Arial, sans-serif;
+	}
+
+	.file-to-upload .actions {
+		width: 200px;
+	}
+
+
+}
+
+.csv-export-page {
+	form { padding: 20px; }
+
+	input[type="text"] {
+		float: left;
+		margin-right: 10px;
+	}
+
+	button.export-csv {
+		margin-top: 5px;
+	}
 
 }
