@@ -261,5 +261,9 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
 
     markAsNonCoded: function() {
         this.markedAsNonCoded = !this.markedAsNonCoded;
+    },
+
+    markAbnormal: function() {
+        this.abnormalObs.value = !this.abnormalObs.value;
     }
 };
