@@ -27,7 +27,7 @@ Bahmni.Clinical.OrdersMapper.prototype.group = function(orders, groupingParamete
         return groupedOrders.map(function(order) {
             return {
                 date: Bahmni.Common.Util.DateUtil.parse(order.date),
-                orders: _.sortBy(order.orders, 'startDate')
+                orders: _.sortBy(order.orders, 'orderNumber')
             };
         }).sort(function(first, second) { return first.date < second.date ? 1: -1; });
     }

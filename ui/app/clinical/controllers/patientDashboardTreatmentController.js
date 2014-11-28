@@ -48,8 +48,9 @@ angular.module('bahmni.clinical')
                     prescribedDrugOrders.push(Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder))
                 });
                 $scope.allTreatments = new Bahmni.Clinical.ResultGrouper().group(prescribedDrugOrders, function (prescribedDrugOrder) {
-                    return dateUtil.getDate(prescribedDrugOrder.effectiveStartDate);
+                    return dateUtil.getDate(prescribedDrugOrder.effectiveStartDate).toISOString();
                 });
+                $scope.allTreatments = _.sortBy($scope.allTreatments, 'key').reverse();
             });
         };
 

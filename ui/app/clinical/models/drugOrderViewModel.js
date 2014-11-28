@@ -420,5 +420,6 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
     viewModel.previousOrderUuid = drugOrderResponse.previousOrderUuid;
     viewModel.dateActivated = drugOrderResponse.dateActivated;
     viewModel.encounterUuid = drugOrderResponse.encounterUuid;
+    viewModel.orderNumber = parseInt(drugOrderResponse.orderNumber.replace("ORD-", ""));
     return viewModel;
 };
