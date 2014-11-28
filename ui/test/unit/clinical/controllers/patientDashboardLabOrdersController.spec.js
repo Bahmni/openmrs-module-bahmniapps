@@ -21,24 +21,19 @@ describe("PatientDashboardLabOrdersController", function(){
         ]],
         "tabularResult": {}
     }
-    var patientDashboardSections = [
-        {
-            "title": "Diagnosis",
-            "name": "diagnosis"
-        },
-        {
+    var labResultSection = {
             "title": "Lab Results",
             "name": "labOrders",
-            "showAll":true
-        }
-    ];
+            "showNormalValues":false
+        };
+
 
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
 
         spinner.forPromise.and.callFake(function(param) {return {}});
-        _clinicalConfigService = jasmine.createSpyObj('clinicalConfigService', ['getObsIgnoreList', 'getAllPatientDashboardSections']);
-        _clinicalConfigService.getAllPatientDashboardSections.and.returnValue(patientDashboardSections);
+        _clinicalConfigService = jasmine.createSpyObj('clinicalConfigService', ['getPatientDashBoardSectionByName']);
+        _clinicalConfigService.getPatientDashBoardSectionByName.and.returnValue(labResultSection);
 
         labOrderResultService = jasmine.createSpyObj('LabOrderResultService', ['getAllForPatient']);
         labOrderResultService.getAllForPatient.and.callFake(function(param) {
@@ -67,9 +62,9 @@ describe("PatientDashboardLabOrdersController", function(){
         });
     });
 
-    describe("when showAll in config under labResults section is true ", function(){
-        it("should set showNormalLabResults to true", function() {
-            expect(scope.showNormalLabResults).toBe(true);
+    describe("when showNormalValues in config under labResults section is false ", function(){
+        it("should set showNormalLabResults to false", function() {
+            expect(scope.showNormalLabResults).toBe(false);
         });
     });
 });

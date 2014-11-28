@@ -3,7 +3,7 @@ angular.module('bahmni.clinical')
         function ($scope, $rootScope, $stateParams, labOrderResultService, $q, spinner, clinicalConfigService) {
             $scope.patientUuid = $stateParams.patientUuid;
             $scope.patientSummary = {message: "No Lab Orders for this patient."};
-            $scope.showNormalLabResults = false;
+            $scope.showNormalLabResults = true;
 
 
             var init = function () {
@@ -11,13 +11,8 @@ angular.module('bahmni.clinical')
                     var sortedConceptSet = new Bahmni.Clinical.SortedConceptSet($rootScope.allTestsAndPanelsConcept);
                     $scope.labAccessions = results.accessions.map(sortedConceptSet.sortTestResults);
                 }));
-                var patientDashBoardSectionFromConfig = clinicalConfigService.getAllPatientDashboardSections();
-                patientDashBoardSectionFromConfig.forEach(function (section) {
-                    if (section.title == "Lab Results") {
-                        $scope.showNormalLabResults = section.showAll || false;
-                        return;
-                    }
-                });
+                var labResultSection = clinicalConfigService.getPatientDashBoardSectionByName("labOrders");
+                $scope.showNormalLabResults = labResultSection.showNormalValues !== undefined ? labResultSection.showNormalValues : true;
             };
 
             init();
@@ -29,13 +24,12 @@ angular.module('bahmni.clinical')
             $scope.hasLabOrders = function () {
                 return $scope.labAccessions && $scope.labAccessions.length > 0;
             };
-            $scope.hasAbnormalTests= function (labOrderResult) {
-                if(labOrderResult.isPanel){
-                    var tests = labOrderResult.tests;
+            $scope.hasAbnormalTests = function (labOrderResult) {
+                if (labOrderResult.isPanel) {
                     var hasAbnormal = false;
-                    tests.forEach(function (test){
-                        if(test.abnormal){
-                           hasAbnormal = true;
+                    labOrderResult.tests.forEach(function (test) {
+                        if (test.abnormal) {
+                            hasAbnormal = true;
                             return;
                         }
                     });

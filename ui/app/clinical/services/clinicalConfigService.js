@@ -29,9 +29,14 @@ angular.module('bahmni.clinical')
         this.getAllPatientDashboardSections = function () {
             return appService.getAppDescriptor().getConfigValue("patientDashboardSections") || {};
         };
-        
+
         this.getOtherInvestigationsMap = function () {
-            return appService.getAppDescriptor().getConfig("otherInvestigationsMap");  
+            return appService.getAppDescriptor().getConfig("otherInvestigationsMap");
         };
 
+        this.getPatientDashBoardSectionByName = function (name) {
+            return _.find(this.getAllPatientDashboardSections(), function(section) {
+                return section.name === name;
+            });
+        };
     }]);
