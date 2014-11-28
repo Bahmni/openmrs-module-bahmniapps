@@ -69,7 +69,7 @@
             <small class="hint" ng-show="observation.primaryObs.concept.lowNormal || observation.primaryObs.concept.hiNormal" ng-bind="'(' + observation.primaryObs.concept.lowNormal + ' - ' + observation.primaryObs.concept.hiNormal + ')'"></small>
             <div ng-if="observation.abnormalObs" class="fl accept-btn-wrapper">
                 <button type="button" ng-model="observation.abnormalObs.value" class="small-btn accept-btn"
-                        ng-disabled="!observation.primaryObs.hasValue()" ng-class="{'active': observation.abnormalObs.value}" ng-click="observation.markAbnormal()"><span></span>Abnormal</button>
+                        ng-disabled="!observation.primaryObs.hasValue()" ng-class="{'active': observation.abnormalObs.value}" ng-click="observation.toggleAbnormal()"><span></span>Abnormal</button>
             </div>
             <div class="checkbox-inline" ng-if="observation.durationObs" ng-class="{'duration': observation.durationObs}">
                 <span>for</span><duration ng-model="observation.durationObs.value" disabled="!observation.primaryObs.hasValue()" illegal-value="observation.isDurationRequired() && !observation.hasDuration()"></duration>

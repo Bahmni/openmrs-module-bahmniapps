@@ -263,7 +263,7 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
         this.markedAsNonCoded = !this.markedAsNonCoded;
     },
 
-    markAbnormal: function() {
+    toggleAbnormal: function() {
         this.abnormalObs.value = !this.abnormalObs.value;
     }
 };
