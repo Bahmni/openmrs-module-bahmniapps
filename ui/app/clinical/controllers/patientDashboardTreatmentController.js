@@ -5,7 +5,7 @@ angular.module('bahmni.clinical')
             "past": {displayName: "Last Prescription", orders: null}
         };
 
-        var isActiveNeeded = false;
+        var isActiveNeeded = clinicalConfigService.getPatientDashBoardSectionByName("treatment").active;
 
         var dateCompare = function (drugOrder1, drugOrder2) {
             return drugOrder1.effectiveStartDate > drugOrder2.effectiveStartDate ? -1 : 1;
@@ -33,7 +33,6 @@ angular.module('bahmni.clinical')
 
         $scope.isSectionNeeded = function (key) {
             if (key !== "active") return true;
-            isActiveNeeded = clinicalConfigService.getPatientDashBoardSectionByName("treatment").active;
             return isActiveNeeded;
         };
 
@@ -43,7 +42,7 @@ angular.module('bahmni.clinical')
                 promises.push(getActiveDrugOrders());
             }
             return promises;
-        }
+        };
 
         spinner.forPromise($q.all(getPromises()));
 
