@@ -19,10 +19,10 @@ angular.module('bahmni.clinical')
             };
 
             var getRefillableDrugOrders = function(activeAndScheduledDrugOrders) {
-                activeAndScheduledDrugOrders = _.sortBy(activeAndScheduledDrugOrders, 'effectiveStartDate').reverse();
+                activeAndScheduledDrugOrders = _(activeAndScheduledDrugOrders).chain().sortBy('orderNumber').reverse().sortBy('effectiveStartDate').reverse().value();
                 var refillableDrugOrders = activeAndScheduledDrugOrders;
 
-                var previousVisitDrugOrders = getPreviousVisitDrugOrders();
+                var previousVisitDrugOrders = _(getPreviousVisitDrugOrders()).chain().sortBy('orderNumber').reverse().sortBy('effectiveStartDate').reverse().value();
                 _.each(previousVisitDrugOrders, function(previousVisitDrugOrder){
                     var isActiveOrScheduled = _.find(activeAndScheduledDrugOrders, function(activeOrScheduledDrugOrder){
                         return previousVisitDrugOrder.drug.uuid === activeOrScheduledDrugOrder.drug.uuid;
