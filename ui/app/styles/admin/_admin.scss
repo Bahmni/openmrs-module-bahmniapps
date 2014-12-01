@@ -65,7 +65,7 @@ body { background: $white;  }
 	.refresh-btn {
 		padding: 5px;
 		position: relative;
-		top: -7px;
+		top: -7px; right: -7px;
 		font-size: 14px;
 		font-family: $primaryFont, Arial, sans-serif;
 	}
