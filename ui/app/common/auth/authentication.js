@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('authentication', ['ngCookies'])
+angular.module('authentication', ['ngCookies', 'ui.router'])
     .config(function ($httpProvider) {
         var interceptor = ['$rootScope', '$q', function ($rootScope, $q) {
             function success(response) {
@@ -20,9 +20,9 @@ angular.module('authentication', ['ngCookies'])
 
         }];
         $httpProvider.responseInterceptors.push(interceptor);
-    }).run(['$rootScope', '$window', function ($rootScope, $window) {
+    }).run(['$rootScope', '$state', function ($rootScope, $state) {
         $rootScope.$on('event:auth-loginRequired', function () {
-            $window.location = "../home/#/login?showLoginMessage=true";
+            $state.go('login');
         });
     }]).service('sessionService', ['$rootScope', '$http', '$q', '$cookieStore', function ($rootScope, $http, $q, $cookieStore) {
         var sessionResourcePath = '/openmrs/ws/rest/v1/session';
