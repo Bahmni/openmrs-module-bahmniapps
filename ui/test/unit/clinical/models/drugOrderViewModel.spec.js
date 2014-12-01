@@ -393,6 +393,7 @@ describe("drugOrderViewModel", function () {
                 "action": "NEW",
                 "careSetting": "Outpatient",
                 "orderType": "Drug Order",
+                "orderNumber": "ORD-1234",
                 "autoExpireDate": null,
                 "scheduledDate": null,
                 "dateStopped": null,
