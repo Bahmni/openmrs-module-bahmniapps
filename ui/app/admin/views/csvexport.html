@@ -3,8 +3,8 @@
         <h2 class="section-title">Concept CSV Export</h2>
 
         <form ng-submit="onConceptSelected()">
-            <input class="enter-concept" type="text" name="conceptSet" ng-model="conceptSet" bahmni-autocomplete strict-select="true"
-                   source="getConcepts" response-map="getDataResults" required placeholder="Enter a concept name"/>
+            <input class="enter-concept" type="text" name="conceptSet" ng-model="conceptSet" bahmni-autocomplete  strict-select="true"
+                   is-invalid="conceptNameInvalid" source="getConcepts" response-map="getDataResults" required placeholder="Enter a concept name"/>
             <button class="export-csv confirm" type="submit" class="row-remover">Export</button>
         </form>
     </div>

@@ -3,6 +3,7 @@
 angular.module('bahmni.admin')
     .controller('CSVExportController', ['$scope', '$state', 'appService', '$http', function ($scope, $state, appService, $http) {
         $scope.appExtensions = appService.getAppDescriptor().getExtensions("bahmni.admin.csvExport", "link") || [];
+        $scope.conceptNameInvalid = false;
 
         $scope.getConcepts = function(request){
             return $http.get(Bahmni.Common.Constants.conceptUrl, { params: {q: request.term, v: "custom:(uuid,name)"}}).then(function(result) {

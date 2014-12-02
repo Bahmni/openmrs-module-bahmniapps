@@ -73,8 +73,7 @@
                              ng-src="{{image.thumbnail}}" width="100">
                         <input class="concept-name" ng-readonly="!canDeleteImage(image)"
                                ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts"
-                               response-map="getDataResults" on-select="onConceptSelected(image)"
-                               on-edit="onEditConcept(image)" required placeholder="Enter a value" strict-select="true"
+                               response-map="getDataResults" on-select="onConceptSelected(image)" is-invalid="conceptNameInvalid" on-edit="onEditConcept(image)" required placeholder="Enter a value" strict-select="true"
                                blur-on-select="true"/>
                     </div>
                     <div>
@@ -119,7 +118,7 @@
               <li ng-repeat="image in visit.images | reverse">
                 <div class="file">
                   <img  bm-gallery-item index="{{$index}}" visit-uuid="visit.uuid" visit-order="{{$parent.$index+1}}" image="image" ng-src="{{image.thumbnail}}" width="100" ng-class="{true:'transparent', false:'opaque'}[image.voided]"/>
-                  <input name="{{'image'+$index}}" ng-readonly="!canDeleteImage(image)" class="concept-name" ng-class="{saved: visit.isSaved(image)}" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" on-edit="onEditConcept(image)" required placeholder="Enter a value" strict-select="true" blur-on-select="true" ng-blur="visit.markAsUpdated()" ng-disabled="image.voided"/>
+                  <input name="{{'image'+$index}}" ng-readonly="!canDeleteImage(image)" class="concept-name" ng-class="{saved: visit.isSaved(image)}" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" is-invalid="conceptNameInvalid" on-edit="onEditConcept(image)" required placeholder="Enter a value" strict-select="true" blur-on-select="true" ng-blur="visit.markAsUpdated()" ng-disabled="image.voided"/>
                 </div>
                 <div class="file-remove">
                   <button type="button" ng-click="visit.removeImage(image)" ng-if="canDeleteImage(image)" class="row-remover"><span ng-class="{'icon-remove': !image.voided, 'icon-undo': image.voided }"></span></button>

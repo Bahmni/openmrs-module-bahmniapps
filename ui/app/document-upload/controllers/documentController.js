@@ -13,6 +13,7 @@ angular.module('opd.documentupload')
 
             $scope.visits = [];
             $scope.toggleGallery = true;
+            $scope.conceptNameInvalid = false;
 
             var setOrientationWarning = function() {
                 $scope.orientation_warning = (window.orientation && (window.orientation < 0 || window.orientation > 90));
