@@ -8,9 +8,10 @@ describe("DiseaseTemplateService", function () {
     beforeEach(module('bahmni.common.appFramework'));
 
     beforeEach(module(function () {
-        _clinicalConfigService = jasmine.createSpyObj('clinicalConfigService', ['getAllConceptsConfig']);
+        _clinicalConfigService = jasmine.createSpyObj('clinicalConfigService', ['getAllConceptsConfig', 'getDiseaseTemplateConfig']);
         _clinicalConfigService.getAllConceptsConfig.and.returnValue({});
-        _$http = jasmine.createSpyObj('$http', ['get']);
+        _clinicalConfigService.getDiseaseTemplateConfig.and.returnValue({});
+        _$http = jasmine.createSpyObj('$http', ['get', 'post']);
         
     }));
 
@@ -26,7 +27,7 @@ describe("DiseaseTemplateService", function () {
 
     describe("disease templates", function () {
         it('should fetch latest disease templates for a patient', function (done) {
-            _$http.get.and.callFake(function () {
+            _$http.post.and.callFake(function () {
                 return specUtil.respondWith({"data": diseaseTemplates});
             });
             
@@ -38,7 +39,7 @@ describe("DiseaseTemplateService", function () {
             });
         });
 
-        it('should fetch latest disease templates for a patient', function (done) {
+        it('should fetch all disease template for the patient', function (done) {
             _$http.get.and.callFake(function () {
                 return specUtil.respondWith({"data": diseaseTemplates[0]});
             });
