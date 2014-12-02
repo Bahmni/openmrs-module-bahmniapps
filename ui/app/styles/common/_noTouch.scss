@@ -31,6 +31,19 @@ html.no-touch {
 			font-size: 16px;
 			padding: 5px 10px;
 		}
+
+		.comment-toggle {
+		    .icon-file {
+		        font-size: 16px;
+		        .icon-plus-sign, .icon-ok-sign, .icon-plus, .icon-minus-sign {
+		            font-size: 10px;
+		        }
+
+		    }        
+		    .icon-file-alt {
+		        font-size: 16px;
+		    }
+		}
 	}
 
 }
