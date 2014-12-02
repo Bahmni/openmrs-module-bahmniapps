@@ -1,0 +1,36 @@
+html.no-touch {
+	@media screen and (min-width: 1024px) {
+		/*//all global no-touch styles goes here...
+		//i.e., 1024px and above desktop only styles 
+		//(this is to differentiate from 1024px touch devices)*/	
+
+
+
+		form input, form .input-prepend .add-on, form .form .input-prepend .add-on, 
+		.form .input-prepend form .add-on, form select, form textarea, form ul.select, 
+		.form input, form .input-prepend .form .add-on, .form .input-prepend .add-on, 
+		.form select, .form textarea, .form ul.select {
+			padding: 2px 10px;
+		}
+
+		.button, button, input[type="submit"], form .input-prepend [type="submit"].add-on, 
+		.form .input-prepend [type="submit"].add-on, input[type="button"], 
+		form .input-prepend [type="button"].add-on, .form .input-prepend [type="button"].add-on, 
+		input[type="submit"], form .input-prepend [type="submit"].add-on, 
+		.form .input-prepend [type="submit"].add-on, a.button {
+			line-height: 0.8em;
+		}
+
+		div.duration.checkbox-inline {
+			input.duration-value {
+				padding: 2px 10px;
+			}
+		}
+
+		h2.section-title {
+			font-size: 16px;
+			padding: 5px 10px;
+		}
+	}
+
+}

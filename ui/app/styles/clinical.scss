@@ -58,5 +58,7 @@ $fontPath: "../components/openmrs-uicommons/omod/src/main/webapp/resources/fonts
 
 @import "admin/admin";
 
-
+@import "common/noTouch";
+@import "clinical/observationsDesktop";
+@import "clinical/treatmentDesktop";
 

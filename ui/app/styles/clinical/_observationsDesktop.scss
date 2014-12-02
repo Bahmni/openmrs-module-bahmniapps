@@ -1,0 +1,22 @@
+html.no-touch {
+	@media screen and (min-width: 1024px) {
+
+		.vitals .form-field {
+			padding-top: 5px;
+		}
+
+		.vitals fieldset fieldset legend {
+			padding: 2px 5px;
+			font-size: 12px;
+		}
+
+		.concept-set-group {
+			margin-bottom: 10px;
+		}
+
+		.form-horizontal fieldset label {
+			font-size: 12px;
+		}
+	}
+
+}
