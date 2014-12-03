@@ -10,6 +10,19 @@ html.no-touch {
 					}
 				}
 			}
+			div.start-date span {
+				width: 110px;
+			}
+			.button-group-wrapper {
+				.refill-btn, .stop-drug-btn {
+					padding: 7px!important;
+				}
+				button, button:hover {
+					i {
+						font-size: 1.4em;
+					}
+				}
+			}
 		}
 	}
 
