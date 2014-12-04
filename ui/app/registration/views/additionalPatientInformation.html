@@ -1,0 +1,46 @@
+<legend class="mylegend additional-attribute" ng-show="patientConfiguration.additionalAttributes()" toggle="displayAdditionalInformation">
+        <span>
+            <i class="icon-caret-right" ng-hide="displayAdditionalInformation"></i>
+            <i class="icon-caret-down" ng-show="displayAdditionalInformation"></i>
+            <strong><a href accesskey="i">Additional Patient Information</a></strong>
+        </span>
+</legend>
+<section class="form-field-inline" ng-show="displayAdditionalInformation">
+    <article class="form-field" ng-repeat="attribute in patientConfiguration.additionalAttributes()">
+        <div class="field-attribute">
+            <label for="{{attribute.name}}">{{attribute.description}}</label>
+        </div>
+        <div class="field-value" data-ng-switch on="attribute.format">
+            <div data-ng-switch-when="java.lang.String">
+                <div data-ng-switch on="attribute.autocompleteConfig">
+                    <input data-ng-switch-when="null" type="text" id="{{attribute.name}}"
+                           placeholder="{{attribute.description}}"
+                           ng-model="patient[attribute.name]">
+
+                        <span data-ng-switch-default>
+                            <span data-ng-switch="isAutoComplete(attribute.name)">
+                                <input data-ng-switch-when="true"
+                                       type="text" id="{{$parent.attribute.name}}"
+                                       placeholder="{{$parent.attribute.description}}"
+                                       ng-model="$parent.patient[$parent.attribute.name]" data-type="personAttribute"
+                                       my-autocomplete source="getAutoCompleteList" response-map="getDataResults">
+
+                                <input data-ng-switch-default
+                                       type="text" id="{{attribute.name}}" placeholder="{{attribute.description}}"
+                                       ng-model="patient[attribute.name]" data-type="personAttribute">
+                            </span>
+                        </span>
+                </div>
+            </div>
+            <div class="left" data-ng-switch-when="org.openmrs.Concept">
+                <select id="{{attribute.name}}" ng-model="patient[attribute.name]"
+                        ng-options="a.conceptId as a.description for a in attribute.answers">
+                </select>
+            </div>
+            <div class="left" data-ng-switch-default>
+                <input type="text" id="{{attribute.name}}" placeholder="{{attribute.description}}"
+                       ng-model="patient[attribute.name]" data-type="personAttribute">
+            </div>
+        </div>
+    </article>
+</section>

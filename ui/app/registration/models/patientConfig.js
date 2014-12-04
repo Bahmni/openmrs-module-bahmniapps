@@ -19,8 +19,29 @@ Bahmni.Registration.PatientConfig = (function () {
         }
     }
 
-    function PatientConfig(personAttributeTypes) {
-        this.personAttributeTypes = personAttributeTypes;
+    function PatientConfig(patientAttributeTypes, identifierSources, additionalPatientInformation ) {
+        this.personAttributeTypes = patientAttributeTypes;
+        this.identifierSources = identifierSources;
+        var additionalAttributes = [];
+        //Avoiding multiple calls from angular code. Side effect of the way angular does dirty check. [Shruti/ Sush]
+        if ( !this.attributeRows && this.personAttributeTypes) {
+            var attributes = this.personAttributeTypes.filter(function (item) {
+                var find = _.find(additionalPatientInformation, function (attribute) {
+                        if(attribute.name === item.name){
+                            if(attribute.display){
+                                additionalAttributes.push(item);
+                            }
+                            return true;
+                        }
+                        return false;
+                    }
+                );
+                return item.name !== "healthCenter" && item.name !== "givenNameLocal" && item.name !== "middleNameLocal" && item.name !== "familyNameLocal" && (find ? false : true);
+            });
+            autocompleteConfig.configure(attributes);
+            this.attributeRows = this.splitAsRows(attributes);
+            this.additionalAttributesTypes = additionalAttributes;
+        }
     }
 
     PatientConfig.prototype = {
@@ -31,17 +52,11 @@ Bahmni.Registration.PatientConfig = (function () {
         },
 
         customAttributeRows: function () {
-            //Avoiding multiple calls from angular code. Side effect of the way angular does dirty check. [Shruti/ Sush]
-            if (this.attributeRows === undefined) {
-                var attributes = this.personAttributeTypes.filter(function (item) {
-                    return item.name !== "healthCenter" && item.name !== "givenNameLocal" && item.name !== "middleNameLocal" && item.name !== "familyNameLocal";
-                });
-
-                autocompleteConfig.configure(attributes);
-                this.attributeRows = this.splitAsRows(attributes);
-            }
             return this.attributeRows;
+        },
 
+        additionalAttributes : function(){
+            return this.additionalAttributesTypes;
         },
 
         splitAsRows: function (attributes) {

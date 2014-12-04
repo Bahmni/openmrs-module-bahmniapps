@@ -6,13 +6,11 @@ angular.module('bahmni.registration').factory('initialization',
         var getConfigs = function() {
             var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierSourceConfig', 'addressLevels'];
             return configurationService.getConfigurations(configNames).then(function (configurations) {
-                var patientConfig = new Bahmni.Registration.PatientConfig();
                 var patientAttributeTypes = new Bahmni.Registration.PatientAttributeTypeMapper().mapFromOpenmrsPatientAttributeTypes(configurations.patientAttributesConfig.results);
-
                 $rootScope.regEncounterConfiguration = angular.extend(new Bahmni.Registration.RegistrationEncounterConfig(), configurations.encounterConfig);
                 $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig);
-                $rootScope.patientConfiguration = angular.extend(patientConfig, patientAttributeTypes);
-                $rootScope.patientConfiguration = angular.extend(patientConfig, {identifierSources: configurations.identifierSourceConfig});            
+                $rootScope.patientConfiguration = new Bahmni.Registration.PatientConfig(patientAttributeTypes.personAttributeTypes, configurations.identifierSourceConfig, appService.getAppDescriptor().getConfigValue("additionalPatientInformation"));
+
                 $rootScope.addressLevels = configurations.addressLevels;
             });
         };

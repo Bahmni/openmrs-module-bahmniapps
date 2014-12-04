@@ -29,6 +29,17 @@ angular.module('bahmni.registration')
                     $scope.openMRSPatient = openmrsPatient;
                     $scope.patient = patientMapper.map(openmrsPatient);
                     $scope.patient.isNew = $stateParams.newpatient;
+
+                    var showOrHideAdditionalPatientInformation = function(){
+                        var additionalPatientInfoConfig = appService.getAppDescriptor().getConfigValue("additionalPatientInformation");
+                        angular.forEach(additionalPatientInfoConfig, function(attribute){
+                            if($scope.patient[attribute.name]){
+                                $scope.displayAdditionalInformation = true;
+                            }
+                        });
+                    };
+
+                    showOrHideAdditionalPatientInformation();
                 });
                 var searchActiveVisitsPromise = visitService.search({patient: uuid, includeInactive: false, v: "custom:(uuid)"}).success(function(data){
                     $scope.hasActiveVisit = data.results.length > 0;

@@ -91,11 +91,6 @@ input[required],select[required]{
     &:focus{
   }
 }
-.reg-wrapper {
-  form.form-horizontal {
-    overflow: scroll;
-  }
-}
 
 /********************** overridding the common ui ***********************/
 .simple-form-ui{
@@ -425,7 +420,6 @@ table{
     padding:10px 20px 0px 20px;
     border-top: 1px solid $lightestGray;
     margin-top: 30px;
-    height: 180px;
 }
 
 .print-layout {
@@ -828,4 +822,19 @@ button u, u {
     text-decoration: none;
     border-bottom: 1px solid;
     font-family: openSansBold;
+}
+
+.mylegend.additional-attribute {
+  margin-top: 10px;
+  span {
+    display: block;
+  }
+  a, a:hover {
+    color: $darkGray;
+    text-decoration: none;
+    width: 100%;
+    &:focus {
+      outline: 2px solid $clinicalFormFocus;
+    }
+  }
 }
