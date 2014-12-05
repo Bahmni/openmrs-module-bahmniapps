@@ -38,8 +38,9 @@ angular.module('bahmni.registration')
                             }
                         });
                     };
-
+                    $scope.backingObject = JSON.parse(JSON.stringify($scope.patient));
                     showOrHideAdditionalPatientInformation();
+
                 });
                 var searchActiveVisitsPromise = visitService.search({patient: uuid, includeInactive: false, v: "custom:(uuid)"}).success(function(data){
                     $scope.hasActiveVisit = data.results.length > 0;
@@ -129,4 +130,12 @@ angular.module('bahmni.registration')
             $scope.back = function () {
                 $window.history.back();
             };
+
+            $scope.backingObject = $scope.patient;
+            $scope.booleanToString = function(attributeName, attributeValue){
+                $scope.patient[attributeName] = attributeValue.toString()
+            }
+            $scope.booleanValueOf = function(attributeName, attributeValue){
+                $scope.backingObject[attributeName] = Boolean(attributeValue);
+            }
         }]);

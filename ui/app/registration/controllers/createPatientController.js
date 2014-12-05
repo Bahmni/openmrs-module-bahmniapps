@@ -111,4 +111,13 @@ angular.module('bahmni.registration')
                 spinner.forPromise(patientService.create($scope.patient).success(successCallback).success(followUpAction));
             }
         };
+
+        $scope.backingObject = $scope.patient;
+        $scope.booleanToString = function(attributeName, attributeValue){
+            $scope.patient[attributeName] = attributeValue.toString()
+        }
+
+        $scope.booleanValueOf = function(attributeName, attributeValue){
+            $scope.backingObject[attributeName] = Boolean(attributeValue);
+        }
     }]);

@@ -384,6 +384,7 @@ table{
     width:99.8%;
     line-height: 16px;
     margin-bottom:20px;
+    padding: 3px 0
     @include border-radius();
     border:1px solid $lightGray;
     span{
