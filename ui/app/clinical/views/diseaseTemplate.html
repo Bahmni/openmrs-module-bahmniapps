@@ -3,11 +3,20 @@
         <ul class="form-field">
             <li ng-repeat="obsTemplate in diseaseTemplate.obsTemplates">
                 <span class="tree-list-item">
-                        {{obsTemplate.label}}
+                        {{obsTemplate.label}} 
+
                     <span class="fr visit-start-date">
                         {{obsTemplate.visitStartDate | date: 'dd MMM yy'}}
                     </span>
                 </span>
+
+                <ul ng-if="obsTemplate.value != null">
+                    <li>
+                        <span class="tree-list-item">
+                            {{obsTemplate.value}}
+                        </span>
+                    </li>
+                </ul>   
 
                 <ul>
                     <li ng-repeat="encounter in obsTemplate.encounters">

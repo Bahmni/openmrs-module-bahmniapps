@@ -1,5 +1,5 @@
 Bahmni.Common.Obs.ObservationMapper = function () {
-
+    var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
     var self = this;
 
     this.map = function (bahmniObservations, allConceptsConfig) {
@@ -40,5 +40,25 @@ Bahmni.Common.Obs.ObservationMapper = function () {
         });
         return mappedObservations;
     };
+
+    this.getGridObservationDisplayValue = function (observationTemplate) {
+        var memberValues = _.compact(_.map(observationTemplate.bahmniObservations, function (observation) {
+            return getObservationDisplayValue(observation);
+        }));
+        return memberValues.join(', ');
+    };
+
+    var getObservationDisplayValue = function(observation) {
+        if (observation.isBoolean || observation.type === "Boolean") {
+            return observation.value === true ? "Yes" : "No";
+        }
+        if(!observation.value) return "";
+        if(typeof observation.value.name === 'object') {
+            var valueConcept = conceptMapper.map(observation.value);
+            return valueConcept.shortName || valueConcept.name;
+        }
+        return observation.value.shortName || observation.value.name || observation.value ;
+    }
+
 
 };

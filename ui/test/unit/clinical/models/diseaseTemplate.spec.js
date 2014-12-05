@@ -1,8 +1,8 @@
 describe("DiseaseTemplate", function () {
     it("should map the server model to view model for patient dashboard", function () {
-
         var diseaseTemplateJson = {"concept": {"name": "Breast Cancer", "shortName" : "Breast Cancer -shortName"}, "observationTemplates": observationTemplates};
         var diseaseTemplate = new Bahmni.Clinical.DiseaseTemplateMapper(diseaseTemplateJson, {});
+
         expect(diseaseTemplate.name).toBe("Breast Cancer");
         expect(diseaseTemplate.label).toBe("Breast Cancer -shortName");
         expect(diseaseTemplate.obsTemplates.length).toBe(2);
@@ -22,7 +22,16 @@ describe("DiseaseTemplate", function () {
         expect(diseaseTemplate.obsTemplates[1].encounters[0].observations.length).toBe(1);
         expect(diseaseTemplate.obsTemplates[1].encounters[0].observations[0].uuid).toBe('0f4dc38f-4588-49d9-a62c-ac045ddafa61');
     })
+
+    it("should map grid observations values as comma seperated values", function() {
+        var diseaseTemplateJson = {"concept": {"name": "Gynacology", "shortName" : "GYN"}, "observationTemplates": gridTypeDiseaseTemplate};
+        var diseaseTemplate = new Bahmni.Clinical.DiseaseTemplateMapper(diseaseTemplateJson, {"P/V (per vaginal) - Uterus": {grid: true}});
+
+        expect(diseaseTemplate.obsTemplates[0].name).toBe("P/V (per vaginal) - Uterus");
+        expect(diseaseTemplate.obsTemplates[0].value).toBe("Enlarged, Soft, A/V, Restricted Mobile");
+    });
 });
+
 
 var observationTemplates = [
     {
@@ -117,5 +126,18 @@ var observationTemplates = [
             "units": null,
             "conceptClass": "Misc"
         }
+    }
+];
+
+var gridTypeDiseaseTemplate = [
+    {
+        "name": "P/V (per vaginal) - Uterus",
+        "concept": {"name": "P/V (per vaginal) - Uterus"},
+        "bahmniObservations": [
+            {"value": "Enlarged", "concept": {"name": "Size"}},
+            {"value": "Soft", "concept": {"name": "Form"}},
+            {"value": "A/V", "concept": {"name": "Position"}},
+            {"value": "Restricted Mobile", "concept": {"name": "Mobility"}},
+        ]
     }
 ];
