@@ -425,3 +425,7 @@ legend.mylegend {background: $white!important;}
         opacity: 0.8;
     }
 }
+.h-scroll {
+    .icon-stop {color: lighten($clinicalRemoveBtn, 20%);}
+    .icon-ok {color: green;}
+}
