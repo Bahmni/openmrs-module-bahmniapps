@@ -17,6 +17,25 @@
 	.error-message {
 	    border: 1px solid darken($clinicalFormInvalid, 30%);
 	    background: $clinicalFormInvalid;
+		.copy-btn, .show-btn {
+			padding: 5px;
+			margin-left: 5px;
+		}
+
+		.msg {
+			clear: both;
+			width: 500px;
+			height: 30px;
+			padding: 10px;
+			border: 1px solid $clinicalFormInvalid;
+			box-sizing: border-box;
+			input[type="textarea"] {
+				width: 100%;
+				text-align: center;
+				background: $clinicalFormInvalid;
+				border: 0;
+			}
+		}
 	}
 	.info-message {
 		background: $clinicalSuccessMessageBg;

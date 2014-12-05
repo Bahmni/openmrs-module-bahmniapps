@@ -1,1 +1,1 @@
-angular.module('bahmni.common.uiHelper', [])
+angular.module('bahmni.common.uiHelper', ['ngClipboard']);

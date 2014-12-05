@@ -5,8 +5,16 @@
         </li>
     </ul>
     <ul>
-        <li ng-repeat="error in messages.error track by $index">
-            <div class="error-message">{{error}}</div>
+        <li >
+            <div class="error-message" ng-if="isErrorMessagePresent()">
+                <button type="button" clip-copy="messages.error.toString()" class="copy-btn">Copy</button>
+                <button type="button" ng-click="toggleShowError()" class="show-btn">
+                    <span ng-show="!showError">Show</span>
+                    <span ng-show="showError">Hide</span>
+                </button>
+                <div class="msg" ng-if="!showError">Error Occurred!!!</div>
+                <div class="msg" ng-if="showError" ng-repeat="error in messages.error track by $index">{{error}}</div>
+            </div>
         </li>
     </ul>
 </div>
