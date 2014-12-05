@@ -1,0 +1,21 @@
+<table>
+    <thead>
+    <tr>
+        <th>
+        </th>
+        <th ng-repeat="(visitDate,values) in result.tabularData " >
+            {{visitDate}}
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="conceptName in result.conceptNames" >
+            <td>
+                {{conceptName}}
+            </td>
+            <td ng-repeat="(visitDate,values) in result.tabularData " ng-class="{'is-abnormal': tabularData[visitDate][conceptName].abnormal}">
+                {{result.tabularData[visitDate][conceptName].value}}
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -49,6 +49,7 @@ Bahmni.Common = Bahmni.Common || {};
         conceptSetExportUrl: BAHMNI_CORE + "/admin/export/conceptset?conceptName=:conceptName",
         patientImportUrl: BAHMNI_CORE + "/admin/upload/patient",
         adminImportStatusUrl: BAHMNI_CORE + "/admin/upload/status",
+        diseaseSummaryPivotUrl: BAHMNI_CORE + "/diseaseSummaryData",
         allTestsAndPanelsConceptName : 'All_Tests_and_Panels',
         dosageFrequencyConceptName : 'Dosage Frequency',
         dosageInstructionConceptName : 'Dosage Instructions',

@@ -91,4 +91,7 @@ div.ngdialog-close {
     }
 }
 
-.dialog-button-group {margin-top: 10px; clear: both;}
+.dialog-button-group {
+    margin-top: 10px; clear: both;
+    button:focus {outline: 2px solid $clinicalFormFocus;}
+}
