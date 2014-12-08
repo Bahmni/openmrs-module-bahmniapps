@@ -130,4 +130,17 @@ a.document-link {
 	}
 }
 
-
+/* disable any (block) element aesthetically, form elements needs a wrapper. */
+.is-disabled {
+	position: relative;
+	&:before {
+	    position: absolute;
+	    content: '';
+	    width: 100%;
+	    height: 100%;
+	    opacity: 0.3;
+	    background: $lightestGray;
+	    top: 0;
+	    left: 0;
+	}
+}
