@@ -20,9 +20,9 @@ angular.module('authentication', ['ngCookies', 'ui.router'])
 
         }];
         $httpProvider.responseInterceptors.push(interceptor);
-    }).run(['$rootScope', '$state', function ($rootScope, $state) {
+    }).run(['$rootScope', '$window', function ($rootScope, $window) {
         $rootScope.$on('event:auth-loginRequired', function () {
-            $state.go('login');
+            $window.location = "../home/#/login?showLoginMessage=true";
         });
     }]).service('sessionService', ['$rootScope', '$http', '$q', '$cookieStore', function ($rootScope, $http, $q, $cookieStore) {
         var sessionResourcePath = '/openmrs/ws/rest/v1/session';

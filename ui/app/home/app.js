@@ -42,7 +42,7 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
             }
         }
     }).state('login',
-    {   url: '/login',
+    {   url: '/login?showLoginMessage',
         templateUrl: 'views/login.html',
         controller: 'LoginController',
         resolve: {

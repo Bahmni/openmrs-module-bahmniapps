@@ -20,7 +20,7 @@ angular.module('bahmni.home')
             $scope.loginInfo.currentLocation = getLastLoggedinLocation();
 
             if ($stateParams.showLoginMessage) {
-                $scope.errorMessage = "You are not authenticated right now. Please login.";
+                $scope.errorMessage = "You are not authenticated or your session expired. Please login.";
             }
 
             var redirectToLandingPageIfAlreadyAuthenticated = function () {
