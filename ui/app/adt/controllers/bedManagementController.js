@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.adt')
-    .controller('BedManagementController', ['$scope', '$rootScope', '$location', 'WardService', 'bedService', '$stateParams', 'encounterService', 'sessionService',
-        function ($scope, $rootScope, $location, wardService, bedService, $stateParams, encounterService, sessionService) {
+    .controller('BedManagementController', ['$scope', '$rootScope', '$location', 'WardService', 'bedService', '$stateParams', 'encounterService', 'sessionService', 'messagingService',
+        function ($scope, $rootScope, $location, wardService, bedService, $stateParams, encounterService, sessionService, messagingService) {
         $scope.wards = null;
         $scope.currentView = "wards";
         $scope.layout = [];

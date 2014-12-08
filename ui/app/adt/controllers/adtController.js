@@ -1,21 +1,27 @@
 "use strict";
 
 angular.module('bahmni.adt')
-    .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService', 'encounterService', 'bedService', 'appService', 'visitService', '$location', '$window', 'sessionService',
-        function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService, appService, visitService, $location, $window, sessionService) {
+    .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService', 'encounterService', 'bedService', 'appService', 'visitService', '$location', '$window', 'sessionService', 'messagingService',
+        function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService, appService, visitService, $location, $window, sessionService, messagingService) {
             var actionConfigs = {};
             var encounterConfig = $rootScope.encounterConfig;
             var locationUuid = sessionService.getLoginLocationUuid();
             $scope.adtObservations = [];
 
             var getDefaultVisitTypeUuid = function(){
+                if($scope.visit && $scope.visit.stopDatetime === null){
+                    return $scope.visit.visitType.uuid;
+                }
                 var defaultVisitTypeName = appService.getAppDescriptor().getConfigValue('defaultVisitType');
                 var visitTypes = encounterConfig.getVisitTypes();
                 var defaultVisitType = visitTypes.filter(function(visitType) { return visitType.name === defaultVisitTypeName})[0];
-                return defaultVisitType.uuid;
+                return defaultVisitType && defaultVisitType.uuid || null;
             }
 
             var defaultVisitTypeUuid = getDefaultVisitTypeUuid();
+            if(defaultVisitTypeUuid == null) {
+                messagingService.showMessage("error", "Please configure a default VisitType.");
+            }
 
             var getActionCode = function (concept) {
                 var mappingCode = "";
