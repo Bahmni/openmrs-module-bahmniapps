@@ -138,7 +138,7 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
     this.getValues = function(){
         var values = [];
         _.values(self.selectedObs).forEach(function(obs){
-            values.push(obs.value.name);
+            values.push(obs.value.shortName || obs.value.name);
         });
         return values.join(" , ");
     }
