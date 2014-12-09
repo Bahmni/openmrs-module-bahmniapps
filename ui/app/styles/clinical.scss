@@ -17,7 +17,6 @@ $fontPath: "../components/openmrs-uicommons/omod/src/main/webapp/resources/fonts
 /*BAHMNI css files*/
 @import "bahmni-helper/variables";
 
-@import "common/base";
 @import "common/form";
 @import "common/bahmniGlobal";
 @import "common/notifications";
@@ -27,7 +26,8 @@ $fontPath: "../components/openmrs-uicommons/omod/src/main/webapp/resources/fonts
 @import "bahmni-components/table";
 @import "bahmni-components/typography";
 
-@import "clinical/layout";
+@import "bahmni-layout/layout";
+
 @import "clinical/patientSearch";
 @import "clinical/visit";
 @import "clinical/consultation";

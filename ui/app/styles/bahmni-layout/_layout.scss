@@ -1,0 +1,191 @@
+@charset "UTF-8";
+
+$column-width: 100;
+$gutter-width: 0;
+$columns: 12;
+
+@import "compass";
+
+.icon-white {
+    color: $white;
+}
+
+body{
+    font-family: $primaryFont, Arial, sans-serif;
+    max-width:none;
+    height:100%;
+    padding: 0; margin: 0;
+}
+.opd-header-wrapper{
+        @include pie-clearfix;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        z-index: 10;
+        &#opd-tabs {
+          background: $bahmniSecondaryColor;
+        }
+
+        header{
+            position: relative;
+            color: $lightGray;
+            height: 50px;
+            border-radius: 0;
+            @media screen and (min-width: 1024px) {
+                width: 1024px;
+                margin: 0px auto;
+            }
+            .header-logo{
+              display: block;
+              width: 35px;
+              margin: 8px auto;
+              img {
+                display: block;
+                width: 35px;
+                border-radius: 17px;
+                box-shadow: 0 8px 6px -7px $black;
+              }
+            }
+            ul{
+                &.user-info{
+                    float:right;
+                }
+                li{
+                    @include font-size(0.9);
+                    display: inline-block;
+                    &.logoff{
+                        margin:2px 0px 2px 0px;
+                        button{
+                            padding:8px;
+                            margin-top: 1px;
+                            background: darken($bahmniSecondaryColor, 10%);
+                            border:1px solid $bahmniPrimaryColor;
+                            &:hover{
+                              background: darken($bahmniSecondaryColor, 5%);
+                              color: $white;
+                           }
+                        }
+                    }
+                a{
+                    padding-top:10px;
+                    cursor:pointer;
+                    &.user-name{
+                        color: $lightGray;
+                        &:hover{
+                            text-decoration: none;
+                            cursor:default;
+                        }
+                    }
+
+                 }
+                }
+            }
+            .btn-user-info {
+                background: lighten($bahmniPrimaryColor, 10%);
+                padding: 15px;
+                border: none;
+                border-radius: 0;
+                margin: 0;
+                position: absolute;
+                top: 0;
+                right: 0;
+              @media screen and (max-width: 959px) {
+                margin: 0;
+                padding: 15px;
+              }
+              &:focus {
+                outline: 0;
+              }
+              i.mini {
+                font-size: .9em;
+              }
+              & + ul {
+                display: none;
+                &.active {
+                  background: lighten($bahmniPrimaryColor, 10%);
+                  display: block;
+                  position: absolute;
+                  right: 0;
+                  top: 50px;
+                  z-index: 10000;
+                  @media screen and (max-width: 959px) {
+                    top: 49px;
+                    right: 0;
+                  }
+                }
+                li {
+                  float: left;
+                  clear: both;
+                  text-align: left;
+                  border-bottom: 1px solid lighten($bahmniPrimaryColor, 10%);
+                  margin: 0;
+                  a {
+                    padding: 10px 5px;
+                    display: inline-block;
+                    min-width: 190px;
+                    &:hover {
+                      text-decoration: none;
+                      background: lighten($bahmniPrimaryColor, 10%);
+                    }
+                  }
+                  a.disabled {
+                    color: $lightGray;
+                    .icon-user {
+                        color: $lightGray;
+                    }
+                  }
+                }
+              }
+            }
+        }
+        .opd-header-top,header{
+          background: $bahmniPrimaryColor;
+        }
+        .opd-header-bottom {
+            border-radius:0px;
+            position:relative;
+            margin: 0px;
+            @media screen and (min-width: 1024px) {
+                width: 1014px;
+                margin: 0px auto;
+            }
+            .header-tabs{
+              float:left;
+              margin-top: 5px;
+              margin-left: 30px;
+              list-style: none;
+            }
+        }
+    }
+.opd-wrapper {
+    position: relative;
+    margin: 0px;
+    min-height: 860px;
+    width: 100%;
+    padding-top: 50px;
+    padding-bottom: 30px;
+    .opd-content-wrapper {
+        background: $white;
+        height:99%;
+
+        nav.navbar {
+            background: #F8F8F8;
+            overflow: hidden;
+            padding: 5px 5px;
+            margin: 15px 0;
+            @include border-radius(3px);
+            .navbar-right {
+                float: right;
+            }
+        }
+
+        & > div[ui-view="content"].ng-scope, & > div[ui-view="content"] {
+          @media screen and (min-width: 1024px) {
+              width: 1024px;
+              margin: 0px auto;
+          }
+        }
+    }
+}
+
