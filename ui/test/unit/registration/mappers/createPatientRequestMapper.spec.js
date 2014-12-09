@@ -18,7 +18,8 @@ describe('patient mapper', function () {
                     {"description": "OBC", "conceptId": "10"}
                 ]
             },
-            {"uuid": "education-uuid", "sortWeight": 2.0, "name": "education", "description": "Caste", "format": "java.lang.String", "answers": []}
+            {"uuid": "education-uuid", "sortWeight": 2.0, "name": "education", "description": "Caste", "format": "java.lang.String", "answers": []},
+            {"uuid": "isUrban-uuid", "sortWeight": 2.0, "name": "isUrban", "description": "isUrban", "format": "java.lang.Boolean", "answers": []}
         ];
 
     });
@@ -57,7 +58,8 @@ describe('patient mapper', function () {
             "givenNameLocal": "fhindi",
             "familyNameLocal": "lhindi",
             "secondaryIdentifier": "sec id",
-            "isNew": "true"
+            "isNew": "true",
+            "isUrban":false
         });
 
         var openmrsPatient = new Bahmni.Registration.CreatePatientRequestMapper(new Date()).mapFromPatient(patientAttributeTypes, patient);
@@ -104,6 +106,11 @@ describe('patient mapper', function () {
         expect(openmrsPatient.patient.person.attributes).toContain({
             value: "10",
             attributeType: { uuid: 'class-uuid' }
+        });
+
+        expect(openmrsPatient.patient.person.attributes).toContain({
+            value: "false",
+            attributeType: { uuid: 'isUrban-uuid' }
         });
     });
 

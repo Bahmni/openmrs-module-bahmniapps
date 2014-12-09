@@ -111,4 +111,5 @@ angular.module('bahmni.registration')
                 spinner.forPromise(patientService.create($scope.patient).success(successCallback).success(followUpAction));
             }
         };
+
     }]);
