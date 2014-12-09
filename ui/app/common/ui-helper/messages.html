@@ -1,19 +1,23 @@
 <div ng-controller="MessageController" class="messages">
     <ul>
         <li ng-repeat="info in messages.info">
-            <div class="info-message "><p>{{info}}</p></div>
+            <div class="info-message"><p>{{info.value}}</p></div>
         </li>
     </ul>
     <ul>
         <li >
             <div class="error-message" ng-if="isErrorMessagePresent()">
-                <button type="button" clip-copy="messages.error.toString()" class="copy-btn">Copy</button>
+                <button type="button" clip-copy="getErrorMessageText()" class="copy-btn">Copy</button>
                 <button type="button" ng-click="toggleShowError()" class="show-btn">
                     <span ng-show="!showError">Show</span>
                     <span ng-show="showError">Hide</span>
                 </button>
                 <div class="msg" ng-if="!showError">Error Occurred!!!</div>
-                <div class="msg" ng-if="showError" ng-repeat="error in messages.error track by $index">{{error}}</div>
+
+                <div ng-if="showError" ng-repeat="error in messages.error track by $index">
+                    <div class="msg primary" ng-if="!error.isServerError">{{error.value}}</div>
+                    <div class="msg" ng-if="error.isServerError">{{error.value}}</div>
+                </div>
             </div>
         </li>
     </ul>

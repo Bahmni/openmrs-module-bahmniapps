@@ -15,8 +15,9 @@
 		z-index: 1;
 	}
 	.error-message {
-	    border: 1px solid darken($clinicalFormInvalid, 30%);
 	    background: $clinicalFormInvalid;
+	    border: 1px solid darken($clinicalFormInvalid, 30%);
+	    color: #333;
 		.copy-btn, .show-btn {
 			padding: 5px;
 			margin-left: 5px;
@@ -26,11 +27,9 @@
 			clear: both;
 			padding: 10px;
 			box-sizing: border-box;
-			input[type="textarea"] {
-				width: 100%;
-				text-align: center;
-				background: $clinicalFormInvalid;
-				border: 0;
+		    word-break:break-all;
+		    &.primary {
+			   color: darken($clinicalFormInvalid, 30%);
 			}
 		}
 	}
