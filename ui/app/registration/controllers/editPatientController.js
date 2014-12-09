@@ -38,7 +38,6 @@ angular.module('bahmni.registration')
                             }
                         });
                     };
-                    $scope.backingObject = JSON.parse(JSON.stringify($scope.patient));
                     showOrHideAdditionalPatientInformation();
 
                 });
@@ -131,11 +130,4 @@ angular.module('bahmni.registration')
                 $window.history.back();
             };
 
-            $scope.backingObject = $scope.patient;
-            $scope.booleanToString = function(attributeName, attributeValue){
-                $scope.patient[attributeName] = attributeValue.toString()
-            }
-            $scope.booleanValueOf = function(attributeName, attributeValue){
-                $scope.backingObject[attributeName] = Boolean(attributeValue);
-            }
         }]);

@@ -68,7 +68,7 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
         } else if(value === "" || value === null || value === undefined) {
             attr.voided = true;
         } else {
-            attr.value = value;
+            attr.value = value.toString();
         }
     };
 

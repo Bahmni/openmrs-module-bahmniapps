@@ -1,0 +1,41 @@
+<div class="field-attribute">
+    <label for="{{attribute.name}}">{{attribute.description}}</label>
+</div>
+<div class="field-value" data-ng-switch on="attribute.format">
+    <div data-ng-switch-when="java.lang.String">
+        <div data-ng-switch on="attribute.autocompleteConfig">
+            <input data-ng-switch-when="null" type="text" id="{{attribute.name}}"
+                   placeholder="{{attribute.description}}"
+                   ng-model="patient[attribute.name]">
+                <span data-ng-switch-default>
+                    <span data-ng-switch="isAutoComplete(attribute.name)">
+                        <input data-ng-switch-when="true"
+                               type="text" id="{{$parent.attribute.name}}"
+                               placeholder="{{$parent.attribute.description}}"
+                               ng-model="$parent.patient[$parent.attribute.name]" data-type="personAttribute"
+                               my-autocomplete source="getAutoCompleteList" response-map="getDataResults">
+
+                        <input data-ng-switch-default
+                               type="text" id="{{attribute.name}}" placeholder="{{attribute.description}}"
+                               ng-model="patient[attribute.name]" data-type="personAttribute">
+                    </span>
+                </span>
+        </div>
+    </div>
+    <div class="left" data-ng-switch-when="org.openmrs.Concept">
+        <select id="{{attribute.name}}" ng-model="patient[attribute.name]"
+                ng-options="a.conceptId as a.description for a in attribute.answers">
+        </select>
+    </div>
+    <div class="left" data-ng-switch-when="java.lang.Integer">
+        <input type="number" placeholder="{{attribute.description}}"
+               ng-model="patient[attribute.name]" data-type="personAttribute">
+    </div>
+    <div class="left" data-ng-switch-when="java.lang.Float">
+        <input type="number" id="{{attribute.name}}" placeholder="{{attribute.description}}"
+               ng-model="patient[attribute.name]" data-type="PersonAttribute">
+    </div>
+    <div class="left" data-ng-switch-when="java.lang.Boolean">
+        <input type="checkbox" ng-model="patient[attribute.name]"/>
+    </div>
+</div>
