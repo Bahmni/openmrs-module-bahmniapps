@@ -32,7 +32,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
             self.effectiveStartDate = value;
             if(self.effectiveStopDate && DateUtil.isSameDate(self.effectiveStartDate, self.effectiveStopDate)){
                 var oldEffectiveStopDate = new Date(self.effectiveStopDate);
-                self.effectiveStartDate = oldEffectiveStopDate >= DateUtil.today() ? DateUtil.addSeconds(oldEffectiveStopDate, 1) : DateUtil.today();
+                var oldEffectiveStartDate = new Date(self.effectiveStartDate);
+                self.effectiveStartDate = oldEffectiveStopDate >= DateUtil.today() ? DateUtil.addSeconds(oldEffectiveStartDate, 1) : DateUtil.today();
             }
         }
     });
