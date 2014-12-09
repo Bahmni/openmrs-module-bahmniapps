@@ -133,3 +133,7 @@ input[type="submit"].secondary-button:hover  {
 
 .refill-btn, .stop-drug-btn { padding: 10px!important; font-family: $primaryBoldFont; color: #666; }
 .refill-btn .icon-play { font-size: 1em!important; }
+
+.btn-small {
+    font-size: 14px; padding: 5px;
+}

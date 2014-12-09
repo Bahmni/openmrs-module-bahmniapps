@@ -5,6 +5,7 @@ angular.module('bahmni.clinical')
             $rootScope.consultation.selectedObsTemplate = $rootScope.consultation.selectedObsTemplate || [];
     $scope.scrollingEnabled = false;
     var extensions = clinicalConfigService.getAllConceptSetExtensions($stateParams.conceptSetGroupName);
+    var configs = clinicalConfigService.getAllConceptsConfig();
 	var visitType = $scope.encounterConfig.getVisitTypeByUuid($scope.consultation.visitTypeUuid);
 	$scope.context = {visitType:  visitType, patient: $scope.patient};
 	var numberOfLevels = 2;
@@ -25,10 +26,11 @@ angular.module('bahmni.clinical')
         conceptSetService.getConceptSetMembers({name:"All Observation Templates",v:"custom:"+customRepresentation}).success(function(response){
             var allTemplates = response.results[0].setMembers;
             var allConceptSections  = allTemplates.map(function(template){
-                var conceptSetConfig = _.find(extensions,function(extension){
+                var conceptSetExtension = _.find(extensions,function(extension){
                     return extension.extensionParams.conceptName === template.name.name;
                 }) || {};
-                return new Bahmni.ConceptSet.ConceptSetSection(conceptSetConfig, $scope.consultation.observations,template);
+                var conceptSetConfig = configs[template.name.name] || {};
+                return new Bahmni.ConceptSet.ConceptSetSection(conceptSetExtension, conceptSetConfig,  $scope.consultation.observations,template);
             });
             $rootScope.consultation.selectedObsTemplate= allConceptSections.filter(function(conceptSet){
                 if(conceptSet.isAvailable($scope.context)){

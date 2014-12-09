@@ -3,7 +3,7 @@
 angular.module('bahmni.common.domain')
     .service('encounterService', ['$http', '$q', '$rootScope', function ($http, $q, $rootScope) {
 
-    this.create = function (encounter) {
+    this.buildEncounter = function(encounter){
         encounter.observations = encounter.observations || [];
         encounter.observations.forEach(function(obs) {
             stripExtraConceptInfo(obs);
@@ -13,6 +13,11 @@ angular.module('bahmni.common.domain')
         if ($rootScope.currentProvider && $rootScope.currentProvider.uuid) {
             encounter.providers.push( { "uuid" : $rootScope.currentProvider.uuid } );
         }
+        return encounter;
+    };
+
+    this.create = function (encounter) {
+        encounter = this.buildEncounter(encounter);
 
         return $http.post(Bahmni.Common.Constants.bahmniEncounterUrl, encounter, {
             withCredentials:true
@@ -45,7 +50,7 @@ angular.module('bahmni.common.domain')
         		visitUuid : visitUuid,
                 encounterDate : encounterDate,
                 includeAll : Bahmni.Common.Constants.includeAllObservations
-        	},        	
+        	},
           withCredentials : true
         });
     };

@@ -2,7 +2,7 @@
 
 angular.module('bahmni.common.conceptSet')
     .directive('concept', [function () {
-        var controller = function ($scope, $q, $filter) {
+        var controller = function ($scope, $q, $filter, spinner, conceptSetService) {
             var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
             $scope.showTitle = $scope.showTitle === undefined ? true : $scope.showTitle;
 
@@ -38,7 +38,7 @@ angular.module('bahmni.common.conceptSet')
                     formatSelection: _.property('name'),
                     id: _.property('uuid')
                 };
-            }
+            };
         };
 
         return {
@@ -48,14 +48,15 @@ angular.module('bahmni.common.conceptSet')
                 observation: "=",
                 atLeastOneValueIsSet : "=",
                 showTitle: "=",
-                conceptSetRequired: "="
+                conceptSetRequired: "=",
+                rootObservation: "="
             },
             template: '<ng-include src="\'../common/concept-set/views/observation.html\'" />'
         }
     }]).directive('conceptSet', ['contextChangeHandler', 'appService', function (contextChangeHandler, appService) {
         var template =
             '<form>' +
-                '<concept concept-set-required="conceptSetRequired" observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet" show-title="showTitleValue" ng-if="!rootObservation.hidden"></concept>' +
+                '<concept concept-set-required="conceptSetRequired" root-observation="rootObservation" observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet" show-title="showTitleValue" ng-if="!rootObservation.hidden"></concept>' +
             '</form>';
 
         var numberOfLevels = appService.getAppDescriptor().getConfigValue('maxConceptSetLevels') || 4;
@@ -63,6 +64,7 @@ angular.module('bahmni.common.conceptSet')
         var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels);
 
         var controller = function ($scope, conceptSetService, conceptSetUiConfigService, spinner) {
+
             var conceptSetName = $scope.conceptSetName;
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
             var observationMapper = new Bahmni.ConceptSet.ObservationMapper();

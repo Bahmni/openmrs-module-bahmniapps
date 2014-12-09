@@ -89,23 +89,6 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 return getUrl(board);
             };
 
-            var addEditedDiagnoses = function (diagnosisList) {
-                $rootScope.consultation.pastDiagnoses && $rootScope.consultation.pastDiagnoses.forEach(function (diagnosis) {
-                    if (diagnosis.isDirty) {
-                        diagnosis.setDiagnosisStatusConcept();
-                        diagnosis.diagnosisDateTime = null;
-                        diagnosisList.push(diagnosis);
-                    }
-                });
-                $rootScope.consultation.savedDiagnosesFromCurrentEncounter && $rootScope.consultation.savedDiagnosesFromCurrentEncounter.forEach(function (diagnosis) {
-                    if (diagnosis.isDirty) {
-                        // TODO : shruthi : can avoid this using javascript property
-                        diagnosis.setDiagnosisStatusConcept();
-                        diagnosis.diagnosisDateTime = null;
-                        diagnosisList.push(diagnosis);
-                    }
-                });
-            };
 
             var clearRootScope = function(){
                 $rootScope.consultation.newlyAddedDiagnoses = [];
@@ -123,55 +106,12 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                     return;
                 }
 
-                $rootScope.consultation.saveHandler.fire();
-                var encounterData = {};
-                encounterData.locationUuid = sessionService.getLoginLocationUuid();
-                encounterData.patientUuid = $scope.patient.uuid;
-                encounterData.encounterDateTime = null;
-
-                if ($rootScope.consultation.newlyAddedDiagnoses && $rootScope.consultation.newlyAddedDiagnoses.length > 0) {
-                    encounterData.bahmniDiagnoses = $rootScope.consultation.newlyAddedDiagnoses.map(function (diagnosis) {
-                        return {
-                            codedAnswer: { uuid: !diagnosis.isNonCodedAnswer ? diagnosis.codedAnswer.uuid : undefined},
-                            freeTextAnswer: diagnosis.isNonCodedAnswer ? diagnosis.codedAnswer.name : undefined,
-                            order: diagnosis.order,
-                            certainty: diagnosis.certainty,
-                            existingObs: null,
-                            diagnosisDateTime: null,
-                            diagnosisStatusConcept: diagnosis.getDiagnosisStatusConcept(),
-                            voided: diagnosis.voided,
-                            comments: diagnosis.comments
-                        }
-                    });
-                } else {
-                    encounterData.bahmniDiagnoses = [];
-                }
-                addEditedDiagnoses(encounterData.bahmniDiagnoses);
-
-                encounterData.testOrders = $rootScope.consultation.investigations.map(function (investigation) {
-                    return { uuid: investigation.uuid, concept: {uuid: investigation.concept.uuid }, orderTypeUuid: investigation.orderTypeUuid, voided: investigation.voided || false};
-                });
-
-                encounterData.drugOrders = $rootScope.consultation.drugOrders;
-
-                encounterData.disposition = $rootScope.consultation.disposition;
-
-                var addObservationsToEncounter = function () {
-                    encounterData.observations = encounterData.observations || [];
-
-                    if ($scope.consultation.consultationNote) {
-                        encounterData.observations.push($scope.consultation.consultationNote);
-                    }
-                    if ($scope.consultation.labOrderNote) {
-                        encounterData.observations.push($scope.consultation.labOrderNote);
-                    }
-                    encounterData.observations = encounterData.observations.concat($rootScope.consultation.observations);
-                };
                 var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
                 $rootScope.consultation.observations = observationFilter.filter($rootScope.consultation.observations);
                 $rootScope.consultation.consultationNote = observationFilter.filter([$rootScope.consultation.consultationNote])[0];
                 $rootScope.consultation.labOrderNote = observationFilter.filter([$rootScope.consultation.labOrderNote])[0];
-                addObservationsToEncounter();
+
+                var encounterData =new Bahmni.Clinical.EncounterTransactionMapper().map($rootScope.consultation, $scope.patient, sessionService.getLoginLocationUuid());
 
                 spinner.forPromise(encounterService.create(encounterData).then(function () {
                     clearRootScope();

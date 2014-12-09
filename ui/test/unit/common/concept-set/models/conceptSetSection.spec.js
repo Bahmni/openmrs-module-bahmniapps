@@ -11,18 +11,18 @@ describe("ConceptSetSection", function () {
 
     describe("isAvailable", function () {
         it("should be true if 'showIf' condition is not defined", function () {
-            expect(new ConceptSetSection({extensionParams: {conceptName: "vitals"}}, [], conceptSet).isAvailable()).toBe(true);
-            expect(new ConceptSetSection({extensionParams: {conceptName: "vitals", showIf: null }}, [], conceptSet).isAvailable()).toBe(true);
+            expect(new ConceptSetSection({extensionParams: {conceptName: "vitals"}}, {}, [], conceptSet).isAvailable()).toBe(true);
+            expect(new ConceptSetSection({extensionParams: {conceptName: "vitals", showIf: null }}, {}, [], conceptSet).isAvailable()).toBe(true);
         });
 
         it("should be false if 'showIf' condition returns false", function () {
-            var conceptSetSection = new ConceptSetSection({extensionParams: {conceptName: "vitals", showIf: ["return false;"] }}, [], conceptSet);
+            var conceptSetSection = new ConceptSetSection({extensionParams: {conceptName: "vitals", showIf: ["return false;"] }}, {}, [], conceptSet);
 
             expect(conceptSetSection.isAvailable()).toBe(false);
         });
 
         it("should be true if 'showIf' condition returns true", function () {
-            var conceptSetSection = new ConceptSetSection({extensionParams: {conceptName: "vitals", showIf: ["return true;"] }}, [], conceptSet);
+            var conceptSetSection = new ConceptSetSection({extensionParams: {conceptName: "vitals", showIf: ["return true;"] }}, {}, [], conceptSet);
 
             expect(conceptSetSection.isAvailable()).toBe(true);
         });
@@ -40,7 +40,7 @@ describe("ConceptSetSection", function () {
                     conceptName: "vitals"
                 }
             };
-            var conceptSetSection = new ConceptSetSection(extensionParams, [], conceptSet);
+            var conceptSetSection = new ConceptSetSection(extensionParams, {}, [], conceptSet);
 
             expect(conceptSetSection.isAvailable(context)).toBe(true);
         });
@@ -63,7 +63,7 @@ describe("ConceptSetSection", function () {
     describe("isAdded", function () {
 
         it("should be true if concept set is configured to be default", function () {
-            var conceptSetSection = new ConceptSetSection(config, [], conceptSet);
+            var conceptSetSection = new ConceptSetSection(config, {}, [], conceptSet);
             expect(conceptSetSection.isAdded).toBe(true);
         });
 
@@ -72,7 +72,7 @@ describe("ConceptSetSection", function () {
                 {concept: {name: "vitals"}, value: "12"},
                 {concept: {name: "second vitals"}, value: ""}
             ];
-            var conceptSetSection = new ConceptSetSection(noDefaultConfig, observations, conceptSet);
+            var conceptSetSection = new ConceptSetSection(noDefaultConfig, {}, observations, conceptSet);
             expect(conceptSetSection.isAdded).toBe(true);
         });
 
@@ -80,7 +80,7 @@ describe("ConceptSetSection", function () {
             var observations = [
                 {concept: {name: "vitals"}, value: ""}
             ];
-            var conceptSetSection = new ConceptSetSection(noDefaultConfig, observations, conceptSet);
+            var conceptSetSection = new ConceptSetSection(noDefaultConfig, {}, observations, conceptSet);
             expect(conceptSetSection.isAdded).toBe(false);
         });
 
@@ -88,7 +88,7 @@ describe("ConceptSetSection", function () {
             var observations = [
                 {concept: {name: "vitals"}, value: ""}
             ];
-            var conceptSetSection = new ConceptSetSection({}, observations, conceptSet);
+            var conceptSetSection = new ConceptSetSection({}, {}, observations, conceptSet);
             expect(conceptSetSection.isAdded).toBe(false);
         });
 
@@ -98,13 +98,13 @@ describe("ConceptSetSection", function () {
                     {concept: {name: "vitals"}, value: "12"},
                     {concept: {name: "second vitals"}, value: ""}
                 ];
-                var conceptSetSection = new ConceptSetSection({}, observations, conceptSet);
+                var conceptSetSection = new ConceptSetSection({}, {}, observations, conceptSet);
                 expect(conceptSetSection.isOpen).toBe(true);
             })
         });
 
         describe("canToggle", function () {
-            var config =
+            var extensions =
             {
                 extensionParams: {
                     default: true,
@@ -117,7 +117,7 @@ describe("ConceptSetSection", function () {
                     {concept: {name: "vitals"}, value: "12"},
                     {concept: {name: "second vitals"}, value: ""}
                 ];
-                var conceptSetSection = new ConceptSetSection({}, observations, conceptSet);
+                var conceptSetSection = new ConceptSetSection({}, {}, observations, conceptSet);
                 expect(conceptSetSection.canToggle()).toBe(false);
             });
 
@@ -125,7 +125,7 @@ describe("ConceptSetSection", function () {
                 var observations = [
                     {concept: {name: "vitals"}, value: ""}
                 ];
-                var conceptSetSection = new ConceptSetSection(config, observations, conceptSet);
+                var conceptSetSection = new ConceptSetSection(extensions, {}, observations, conceptSet);
                 expect(conceptSetSection.canToggle()).toBe(true);
             })
         });
@@ -140,7 +140,7 @@ describe("ConceptSetSection", function () {
             };
 
             it("should hide if open", function () {
-                var conceptSetSection = new ConceptSetSection(config, [], conceptSet);
+                var conceptSetSection = new ConceptSetSection(config, {}, [], conceptSet);
                 conceptSetSection.show();
                 expect(conceptSetSection.isOpen).toBe(true);
                 conceptSetSection.toggleDisplay();
@@ -148,7 +148,7 @@ describe("ConceptSetSection", function () {
             });
 
             it("should show if hidden", function () {
-                var conceptSetSection = new ConceptSetSection(config, [], conceptSet);
+                var conceptSetSection = new ConceptSetSection(config, {}, [], conceptSet);
                 expect(conceptSetSection.isOpen).toBe(false);
                 conceptSetSection.toggleDisplay();
                 expect(conceptSetSection.isOpen).toBe(true);

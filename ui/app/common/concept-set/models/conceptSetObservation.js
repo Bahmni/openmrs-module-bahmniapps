@@ -38,7 +38,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     isComputed: function() {
         return this.concept.conceptClass === "Computed";
     },
-    
+
     isNumeric: function () {
         return this.getDataTypeName() === "Numeric";
     },

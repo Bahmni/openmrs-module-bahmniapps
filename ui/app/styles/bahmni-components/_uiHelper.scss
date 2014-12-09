@@ -54,6 +54,7 @@ h2.section-title {
 	color: $bahmniSectionHeaderColor;
 	font-size: 18px;
 	border-bottom: 1px solid $bahmniSectionHeaderColor;
+	clear: both; overflow: auto;
 }
 
 /* document link */

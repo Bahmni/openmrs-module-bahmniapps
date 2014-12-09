@@ -1,4 +1,4 @@
-Bahmni.ConceptSet.ConceptSetSection = function (extensions, observations, conceptSet) {
+Bahmni.ConceptSet.ConceptSetSection = function (extensions, config, observations, conceptSet) {
     var self = this;
 
     var init = function () {
@@ -9,7 +9,7 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, observations, concep
         conceptName = conceptName ? conceptName.name : conceptName;
         self.label = conceptName || conceptSet.name || self.options.conceptName;
         self.isLoaded = self.isOpen;
-
+        self.uuid = conceptSet.uuid;
     };
 
     var getShowIfFunction = function () {
@@ -53,6 +53,10 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, observations, concep
         return _.some(observations, function (observation) {
             return atLeastOneValueSet(observation);
         })
+    };
+
+    self.showComputeButton = function (){
+        return config.computeDrugs === true ? true : false;
     };
 
     self.toggle = function () {

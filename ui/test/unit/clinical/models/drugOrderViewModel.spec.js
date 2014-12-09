@@ -571,7 +571,6 @@ describe("drugOrderViewModel", function () {
             expect(refilledTreatment.dateActivated).toBe(undefined);
             expect(refilledTreatment.previousOrderUuid).toBe(undefined);
             expect(refilledTreatment.effectiveStartDate).toEqual(today);
-            expect(refilledTreatment.drugNameDisplay).toBe("calpol 500mg (Tablet)");
         });
 
 
@@ -586,7 +585,6 @@ describe("drugOrderViewModel", function () {
             expect(refilledTreatment.previousOrderUuid).toBe(undefined);
             var startDateForRefilledTreatment = DateUtil.addSeconds(treatment.effectiveStopDate, 1);
             expect(refilledTreatment.effectiveStartDate).toEqual(startDateForRefilledTreatment);
-            expect(refilledTreatment.drugNameDisplay).toBe("calpol 500mg (Tablet)");
         });
 
         it("should refill an active drug order ending today", function () {
@@ -600,7 +598,6 @@ describe("drugOrderViewModel", function () {
             expect(refilledTreatment.previousOrderUuid).toBe(undefined);
             var startDateForRefilledTreatment = DateUtil.addSeconds(treatment.effectiveStopDate, 1);
             expect(refilledTreatment.effectiveStartDate).toEqual(startDateForRefilledTreatment);
-            expect(refilledTreatment.drugNameDisplay).toBe("calpol 500mg (Tablet)");
         });
 
         it("should set quantity units as Unit(s) for reverse synced drug orders", function () {

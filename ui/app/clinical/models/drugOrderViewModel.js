@@ -323,7 +323,6 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         newDrugOrder.effectiveStartDate = oldEffectiveStopDate >= DateUtil.today() ? DateUtil.addSeconds(oldEffectiveStopDate, 1) : DateUtil.today();
         modifyForReverseSyncIfRequired(newDrugOrder);
         defaultQuantityUnit(newDrugOrder);
-        newDrugOrder.drugNameDisplay = constructDrugNameDisplay(this.drug, this.drug.form).value;
 
         return newDrugOrder;
     };
@@ -395,7 +394,7 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
     var viewModel = new Bahmni.Clinical.DrugOrderViewModel(appConfig, config);
     viewModel.asNeeded = drugOrderResponse.dosingInstructions.asNeeded;
     viewModel.route = drugOrderResponse.dosingInstructions.route;
-    viewModel.effectiveStartDate = drugOrderResponse.effectiveStartDate;
+    viewModel.effectiveStartDate = drugOrderResponse.effectiveStartDate ? drugOrderResponse.effectiveStartDate : viewModel.effectiveStartDate;
     viewModel.effectiveStopDate = drugOrderResponse.effectiveStopDate;
     viewModel.durationUnit = drugOrderResponse.durationUnits;
     viewModel.scheduledDate = drugOrderResponse.effectiveStartDate;
@@ -436,5 +435,6 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
     viewModel.dateActivated = drugOrderResponse.dateActivated;
     viewModel.encounterUuid = drugOrderResponse.encounterUuid;
     viewModel.orderNumber = drugOrderResponse.orderNumber && parseInt(drugOrderResponse.orderNumber.replace("ORD-", ""));
+    viewModel.drugNameDisplay = drugOrderResponse.drug.name + " (" + drugOrderResponse.drug.form + ")";
     return viewModel;
 };

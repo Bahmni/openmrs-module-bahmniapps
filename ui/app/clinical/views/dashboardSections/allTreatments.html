@@ -21,7 +21,7 @@
                 </thead>
                 <tbody ng-repeat="drugOrder in drugOrdersGroup.values" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
                     <tr toggle="drugOrder.showNotes">
-                        <td class="drug">{{drugOrder.getDisplayName()}}</td>
+                        <td class="drug">{{drugOrder.drugNameDisplay}}</td>
                         <td class="dosage">{{drugOrder.getDescription()}}
                             <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">Stopped {{drugOrder.effectiveStopDate | date: 'dd MMM yy'}}</span>
                         </td>

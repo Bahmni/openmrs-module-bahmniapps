@@ -109,10 +109,11 @@
                            ng-model="observation.value" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}"/>
                 </div>
 
-                <textarea id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="!observation.isConciseText()"
+                <textarea id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="!observation.isConciseText() && !observation.isComputedAndEditable()"
                           ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}"></textarea>
                 <input type="text" id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="observation.isConciseText()"
                        ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}">
+                <textarea id="{{observation.uniqueId}}" disabled ng-switch-when="text" ng-if="observation.isComputedAndEditable()" ng-model="observation.value" ng-class="{'disabled': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}"></textarea>
                 <!--{{observation.groupMembers}}-->
                 <div ng-switch-when="grid">
                     <div  ng-repeat="member in observation.groupMembers" class="grid-row">
@@ -201,7 +202,7 @@
                 <i class="icon-caret-up"></i>
             </section>
             <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers " ng-if="!member.hidden">
-                <concept observation="member" at-least-one-value-is-set="atLeastOneValueIsSet" show-title="true" concept-set-required="conceptSetRequired" ></concept>
+                <concept observation="member" root-observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet" show-title="true" concept-set-required="conceptSetRequired" ></concept>
             </div>
         </div>
     </fieldset>
