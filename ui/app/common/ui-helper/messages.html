@@ -15,10 +15,15 @@
                 <div class="msg" ng-if="!showError">Error Occurred!!!</div>
 
                 <div ng-if="showError" ng-repeat="error in messages.error track by $index">
-                    <div class="msg primary" ng-if="!error.isServerError">{{error.value}}</div>
-                    <div class="msg" ng-if="error.isServerError">{{error.value}}</div>
+                    <div class="msg" ng-if="!error.isServerError">{{error.value}}</div>
+                    <div class="msg primary" ng-if="error.isServerError">{{error.value}}</div>
                 </div>
             </div>
+        </li>
+    </ul>
+    <ul>
+        <li ng-repeat="error in messages.formError track by $index">
+            <div class="error-message"><p>{{error.value}}</p></div>
         </li>
     </ul>
 </div>

@@ -2,7 +2,7 @@
 
 angular.module('bahmni.common.uiHelper')
     .service('messagingService', ['$timeout', '$rootScope', function ($timeout, $rootScope) {
-        this.messages = {error: [], info: []};
+        this.messages = {error: [], info: [], formError: []};
         var self = this;
         var promise;
 
@@ -18,7 +18,7 @@ angular.module('bahmni.common.uiHelper')
             }
             this.messages[level].push(messageObject);
             if(this.messages[level].length === 1){
-                this.createTimeout(level, 6000);
+                this.createTimeout(level, 4000);
             }
         };
 

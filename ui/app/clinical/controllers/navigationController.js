@@ -80,7 +80,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 var contextChangeResponse = contextChange();
                 if (!contextChangeResponse["allow"]) {
                     if(contextChangeResponse["errorMessage"]) {
-                        messagingService.showMessage('error', contextChangeResponse["errorMessage"]);
+                        messagingService.showMessage('formError', contextChangeResponse["errorMessage"]);
                     }
                     return;
                 }
@@ -119,7 +119,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 var allowContextChange = contxChange["allow"];
                 if(!allowContextChange){
                     var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "Please correct errors in the form. Information not saved" ;
-                    messagingService.showMessage('error', errorMessage);
+                    messagingService.showMessage('formError', errorMessage);
                     return;
                 }
 
@@ -184,7 +184,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                     });
                  }).catch(function (error){
                     var message = Bahmni.Clinical.Error.translate(error) || 'An error has occurred on the server. Information not saved.';
-                    messagingService.showMessage('error', message);
+                    messagingService.showMessage('error', message, 'serverError');
                 }));
             };
 
