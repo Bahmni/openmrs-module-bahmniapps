@@ -9,7 +9,7 @@ angular.module('bahmni.adt')
             $scope.adtObservations = [];
 
             var getDefaultVisitTypeUuid = function(){
-                if($scope.visit && $scope.visit.stopDatetime === null){
+                if($scope.visit && $scope.visit.stopDatetime == null){
                     return $scope.visit.visitType.uuid;
                 }
                 var defaultVisitTypeName = appService.getAppDescriptor().getConfigValue('defaultVisitType');
