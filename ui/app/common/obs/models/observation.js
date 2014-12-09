@@ -35,6 +35,8 @@ Bahmni.Common.Obs.Observation = function () {
             return "since " + durationForDisplay["value"] + " " + durationForDisplay["unitName"];
         }};
 
+
+
     return Observation;
     
 }();

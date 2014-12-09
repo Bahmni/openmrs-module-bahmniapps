@@ -3,8 +3,7 @@
         <span class="field-attribute"><label>{{observation.concept.shortName || observation.concept.name}}</label></span>
         <span class="value-text-only" ng-if="observation.isFormElement() && !observation.isImageConcept()">{{observation.getDisplayValue()}}<span class="label-add-on" ng-if="observation.concept.units"> {{observation.concept.units}}</span></span>
         <a><img ng-if="observation.isImageConcept()" bm-observation-gallery-item observation="observation" ng-src="{{observation.value|thumbnail}}" width="30" height="30"></a>
-        
-        <span class="time fr" ng-if="!observation.groupMembers || observation.groupMembers.length === 0">{{observation.observationDateTime | date :'hh:mm a'}}</span>
+        <span class="time fr" ng-if="observation.isFormElement()">{{observation.observationDateTime | date :'hh:mm a'}}</span>
     </span>
     <ul>
         <show-observation ng-if="!observation.isFormElement()" ng-repeat="member in observation.groupMembers" observation="member" patient="patient"></show-observation>

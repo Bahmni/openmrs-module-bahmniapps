@@ -6,6 +6,14 @@ Bahmni.Common.Obs.MultiSelectObservation = (function () {
         this.encounterDateTime = groupMembers[0].encounterDateTime;
         this.groupMembers = groupMembers;
         this.conceptConfig = conceptConfig;
+        this.observationDateTime = getLatestObservationDateTime(this.groupMembers);
+    };
+    var getLatestObservationDateTime = function(groupMembers){
+        var latestObservationDateTime = groupMembers[0].observationDateTime;
+        groupMembers.forEach(function(member){
+            latestObservationDateTime = latestObservationDateTime < member.observationDateTime ? member.observationDateTime : latestObservationDateTime;
+        });
+        return latestObservationDateTime;
     };
 
     MultiSelectObservation.prototype = {
