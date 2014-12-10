@@ -184,7 +184,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                     });
                  }).catch(function (error){
                     var message = Bahmni.Clinical.Error.translate(error) || 'An error has occurred on the server. Information not saved.';
-                    messagingService.showMessage('error', message, 'serverError');
+                    messagingService.showMessage('formError', message);
                 }));
             };
 

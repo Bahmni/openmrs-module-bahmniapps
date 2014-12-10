@@ -7,6 +7,13 @@ Bahmni.Common = Bahmni.Common || {};
     var BAHMNI_CORE = RESTWS_V1 + "/bahmnicore";
     var EMRAPI = RESTWS + "/emrapi";
 
+    var serverErrorMessages = [
+        {
+            serverMessage: "Cannot have more than one active order for the same orderable and care setting at same time",
+            clientMessage: "One or more drugs you are trying to order are already active. Please change the start date of the conflicting drug or remove them from the new prescription."
+        }
+    ];
+
     Bahmni.Common.Constants = {
         dateFormat: "dd/mm/yyyy",
         dateDisplayFormat: "DD-MMM-YYYY",
@@ -89,7 +96,8 @@ Bahmni.Common = Bahmni.Common || {};
         consultationEncounterName: 'Consultation',
         imageClassName: 'Image',
         locationCookieName: 'bahmni.user.location',
-        patientFileConceptName: 'Patient file'
+        patientFileConceptName: 'Patient file',
+        serverErrorMessages: serverErrorMessages
 };
     
 })();

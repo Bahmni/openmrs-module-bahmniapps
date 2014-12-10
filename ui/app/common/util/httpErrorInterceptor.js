@@ -3,8 +3,15 @@
 angular.module('httpErrorInterceptor',[])
     .config(function($httpProvider) {
         var interceptor = ['$rootScope', '$q', function($rootScope, $q) {
+            var serverErrorMessages = Bahmni.Common.Constants.serverErrorMessages;
+
             var showError = function(errorMessage){
-                $rootScope.$broadcast('event:serverError', errorMessage);
+                var result = _.find(serverErrorMessages, function (listItem) {
+                    return listItem.serverMessage === errorMessage;
+                });
+                if(_.isEmpty(result)){
+                    $rootScope.$broadcast('event:serverError', "Server Error : " + errorMessage);
+                }
             };
 
             function stringAfter(value, searchString) {
@@ -13,7 +20,7 @@ angular.module('httpErrorInterceptor',[])
             }
 
             function getServerError(message) {
-                return "Server Error : " + stringAfter(message, ':');
+                return stringAfter(message, ':');
             }
 
             function success(response) {

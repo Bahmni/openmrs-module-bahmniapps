@@ -2,12 +2,7 @@
 
 Bahmni.Clinical.Error = function () {
 
-    var messages = [
-        {
-            serverMessage: "Cannot have more than one active order for the same orderable and care setting at same time",
-            clientMessage: "One or more drugs you are trying to order are already active. Please change the start date of the conflicting drug or remove them from the new prescription."
-        }
-    ];
+    var messages = Bahmni.Common.Constants.serverErrorMessages;
 
     var findClientMessage = function(message) {
         var result = _.find(messages, function (listItem) {
