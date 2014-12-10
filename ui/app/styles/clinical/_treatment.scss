@@ -243,3 +243,10 @@
     display: inline-block;
 }
 
+.revise-refill-modal-wrapper {
+    outline: 0;
+    .ngdialog-close {
+        outline: 2px solid $clinicalFormFocus;
+    }
+}
+

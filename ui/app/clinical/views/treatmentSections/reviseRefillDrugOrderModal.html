@@ -1,13 +1,18 @@
-<span class="ngdialog-close"></span>
-<!--<p><strong>{{alreadyActiveOrder.drug.name}}</strong> you are trying to order is conflicting.</p>-->
-<div class="drug-details">
-    <strong class="drug-name">{{alreadyActiveSimilarOrder.getDisplayName()}}</strong>
-    <p>from <strong>{{alreadyActiveSimilarOrder.effectiveStartDate | date: 'dd MMM yy'}}</strong> to <strong>{{alreadyActiveSimilarOrder.effectiveStopDate | date: 'dd MMM yy'}}</strong></p>
-    <p> is conflicting with prescription you are trying to add.</p>
+<div class="revise-refill-modal-wrapper" aria-labelledby="dialog-label" tabindex="0">
+	<span class="ngdialog-start"></span>
+
+	<span class="ngdialog-close" tabindex="3"></span>
+	<div class="drug-details">
+	    
+	    <p><strong class="drug-name">{{alreadyActiveSimilarOrder.getDisplayName()}}</strong> from <strong>{{alreadyActiveSimilarOrder.effectiveStartDate | date: 'dd MMM yy'}}</strong> to <strong>{{alreadyActiveSimilarOrder.effectiveStopDate | date: 'dd MMM yy'}}</strong> is conflicting with drug order you are trying to add. You can revise or refill instead.</p>
+	</div>
+
+	<div class="dialog-button-group">
+	    <button class="secondary-button" type="button" ng-click="refill(alreadyActiveSimilarOrder)" focus-on="popupActive" tabindex="1">Refill</button>
+	    <button class="secondary-button" ng-click="revise(alreadyActiveSimilarOrder)" tabindex="1">Revise</button>
+	</div>
+
+	<span class="ngdialog-end"></span>
 </div>
 
-<div class="dialog-button-group">
-    <button type="button" ng-click="refill(alreadyActiveSimilarOrder)" focus-on="popupActive">Refill</button>
-    <button ng-click="revise(alreadyActiveSimilarOrder)">Revise</button>
-</div>
 
