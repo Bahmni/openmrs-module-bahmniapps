@@ -7,7 +7,7 @@ angular.module('bahmni.clinical').directive('pivotTable', ['$http','appService',
             var diseaseSummaryConfig = appService.getAppDescriptor().getConfigValue("pivotTable")[scope.diseaseName];
             var patientUuid = $rootScope.patient.uuid;
             $http.get(Bahmni.Common.Constants.diseaseSummaryPivotUrl,{
-                params: { patientUuid: patientUuid, numberOfVisits: diseaseSummaryConfig["numberOfVisits"], obsConcepts: diseaseSummaryConfig["obsConcepts"], drugConcepts: "", labConcepts: ""}
+                params: { patientUuid: patientUuid, numberOfVisits: diseaseSummaryConfig["numberOfVisits"], obsConcepts: diseaseSummaryConfig["obsConcepts"], drugConcepts: diseaseSummaryConfig["drugConcepts"], labConcepts: diseaseSummaryConfig["labConcepts"]}
             }).success(function(data){
                 scope.result = data;
             })
