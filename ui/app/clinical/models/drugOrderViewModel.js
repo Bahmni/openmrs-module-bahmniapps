@@ -24,6 +24,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         enumerable: true
     });
 
+
     Object.defineProperty(this, 'uiStartDate', {
         get: function () {
             return moment(self.effectiveStartDate).format('YYYY-MM-DD');
@@ -37,6 +38,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
             }
         }
     });
+
 
     Object.defineProperty(this, 'uniformDosingDoseUnits', {
         get: function() {
@@ -59,6 +61,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
     var getDosingType = function() {
         return self.isUniformDosingType() ? self.uniformDosingType : self.variableDosingType;
     };
+
 
     this.asNeeded = this.asNeeded || false;
     this.route = this.route || undefined;
@@ -335,10 +338,15 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         //this field is just a flag that you turn on when revising the first time. It is turned off at the first
         //call of calculateQuantityAndUnit(). Bad code. Needs change.
         newDrugOrder.quantityEnteredViaEdit = true;
-        newDrugOrder.uiStartDate = newDrugOrder.effectiveStartDate < Date.now() ? Date.now() : newDrugOrder.uiStartDate;
+
+        if (newDrugOrder.effectiveStartDate < Date.now()) {
+            newDrugOrder.uiStartDate = Date.now();
+        }
+        //newDrugOrder.uiStartDate = newDrugOrder.effectiveStartDate < Date.now() ? Date.now() : newDrugOrder.uiStartDate;
 
         modifyForReverseSyncIfRequired(newDrugOrder);
         defaultQuantityUnit(newDrugOrder);
+
 
         return newDrugOrder;
     };

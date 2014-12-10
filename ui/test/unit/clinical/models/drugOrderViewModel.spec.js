@@ -504,7 +504,7 @@ describe("drugOrderViewModel", function () {
             treatment.effectiveStartDate = DateUtil.addDays(now, 2);
             treatment.drug = { form: undefined };
             var revisedTreatment = treatment.revise();
-            expect(DateUtil.isSameDate(revisedTreatment.scheduledDate, treatment.scheduledDate)).toBe(true);
+            expect(treatment.scheduledDate.getTime() === revisedTreatment.scheduledDate.getTime()).toBe(true);
         });
 
         it("should map uuid to previousOrderUuid", function () {
