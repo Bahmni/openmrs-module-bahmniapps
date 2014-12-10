@@ -120,7 +120,7 @@ angular.module('bahmni.clinical')
                 $rootScope.$broadcast("event:refillDrugOrders", drugOrders);
             };
 
-            $scope.edit = function (drugOrder, drugOrders) {
+            $scope.revise = function (drugOrder, drugOrders) {
                 if (drugOrder.isEditAllowed) {
                     drugOrders.forEach(function (drugOrder) {
                         drugOrder.isDiscontinuedAllowed = true;

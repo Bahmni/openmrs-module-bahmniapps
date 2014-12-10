@@ -62,8 +62,8 @@
                    ng-model="treatment.uiStartDate" min="{{today | date:'yyyy-MM-dd'}}">
 
             <div class="quantity-widget">
-                <input class="form-field quantity" type="number" min="1" placeholder="Qty"
-                       ng-model="treatment.quantity" ng-change="treatment.setQuantityEnteredManually()" required ng-pattern="/^[0-9]+$/" />
+                <input class="form-field quantity" type="number" min="0.1" placeholder="Qty" step="any"
+                       ng-model="treatment.quantity" ng-change="treatment.setQuantityEnteredManually()" required/>
                 <span class="form-field quantity-unit">{{treatment.quantityUnit}}</span>
             </div>
         </fieldset>

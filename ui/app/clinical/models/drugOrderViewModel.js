@@ -73,6 +73,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
     this.isDiscontinuedAllowed = this.isDiscontinuedAllowed || true;
     this.isEditAllowed = this.isEditAllowed || true;
     this.quantityEnteredViaEdit = this.quantityEnteredViaEdit || false;
+    this.quantityEnteredManually = this.quantityEnteredManually || false;
     this.isBeingEdited = this.isBeingEdited || false;
     this.overlappingScheduledWith = function(otherDrugOrder){
         var dateUtil = Bahmni.Common.Util.DateUtil;
@@ -267,15 +268,16 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
     this.calculateQuantityAndUnit = function () {
         self.calculateDurationInDays();
         if (!self.quantityEnteredManually && !self.quantityEnteredViaEdit) {
-            if (self.frequencyType == Bahmni.Clinical.Constants.dosingTypes.uniform) {
+            if (self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform) {
                 self.quantity = self.uniformDosingType.dose * (self.uniformDosingType.frequency ? getFrequencyPerDay() : 0) * self.durationInDays;
             } else if (self.frequencyType == Bahmni.Clinical.Constants.dosingTypes.variable) {
                 var dose = self.variableDosingType;
                 self.quantity = (dose.morningDose + dose.afternoonDose + dose.eveningDose) * self.durationInDays;
             }
-        }
-        if(self.quantity % 1 != 0){
-            self.quantity = self.quantity - ( self.quantity % 1 ) + 1;
+
+            if(self.quantity % 1 != 0){
+                self.quantity = self.quantity - ( self.quantity % 1 ) + 1;
+            }
         }
         self.quantityEnteredViaEdit = false;
         self.quantityUnit = quantityUnitsFrom(self.doseUnits);
@@ -330,6 +332,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         newDrugOrder.uuid = undefined;
         newDrugOrder.dateActivated = undefined;
         newDrugOrder.drugNameDisplay = constructDrugNameDisplay(self.drug, self.drug.form).value;
+        //this field is just a flag that you turn on when revising the first time. It is turned off at the first
+        //call of calculateQuantityAndUnit(). Bad code. Needs change.
         newDrugOrder.quantityEnteredViaEdit = true;
         newDrugOrder.uiStartDate = newDrugOrder.effectiveStartDate < Date.now() ? Date.now() : newDrugOrder.uiStartDate;
 
@@ -343,6 +347,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         var editableDrugOrder = new Bahmni.Clinical.DrugOrderViewModel(appConfig, config, this);
         editableDrugOrder.currentIndex = index;
         editableDrugOrder.isBeingEdited = true;
+        editableDrugOrder.quantityEnteredViaEdit = true;
         defaultQuantityUnit(editableDrugOrder);
         return editableDrugOrder;
     };
