@@ -17,7 +17,7 @@ describe("drugOrderViewModel", function () {
                 frequencyPerDay: 12
             },
             {
-                name: "Every Five Hour",
+                name: "Five times a Day",
                 frequencyPerDay: 5
             },
             {
@@ -39,9 +39,14 @@ describe("drugOrderViewModel", function () {
             {
                 name: "Once a Week",
                 frequencyPerDay: 1/7
-            },            {
+            },
+            {
+                name: "Twice a Week",
+                frequencyPerDay: 2/7
+            },
+            {
                 name: "Once a Month",
-                frequencyPerDay: 0.033333333
+                frequencyPerDay: 1/30
             },
         ],
         routes: [
@@ -145,9 +150,9 @@ describe("drugOrderViewModel", function () {
         sampleTreatment.calculateDurationUnit();
         expect(sampleTreatment.durationUnit).toBe("Hour(s)");
 
-        sampleTreatment.uniformDosingType.frequency = "Every Five Hour";
+        sampleTreatment.uniformDosingType.frequency = "Five times a Day";
         sampleTreatment.calculateDurationUnit();
-        expect(sampleTreatment.durationUnit).toBe("Hour(s)");
+        expect(sampleTreatment.durationUnit).toBe("Day(s)");
 
         sampleTreatment.uniformDosingType.frequency = "Every Six Hour";
         sampleTreatment.calculateDurationUnit();
@@ -158,6 +163,10 @@ describe("drugOrderViewModel", function () {
         expect(sampleTreatment.durationUnit).toBe("Day(s)");
 
         sampleTreatment.uniformDosingType.frequency = "Once a Day";
+        sampleTreatment.calculateDurationUnit();
+        expect(sampleTreatment.durationUnit).toBe("Day(s)");
+
+        sampleTreatment.uniformDosingType.frequency = "Twice a Week";
         sampleTreatment.calculateDurationUnit();
         expect(sampleTreatment.durationUnit).toBe("Day(s)");
 
