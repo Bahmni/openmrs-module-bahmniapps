@@ -1,7 +1,7 @@
 <div class="revise-refill-modal-wrapper" aria-labelledby="dialog-label" tabindex="0">
 	<span class="ngdialog-start"></span>
 
-	<span class="ngdialog-close" tabindex="3"></span>
+	<span class="ngdialog-close"></span>
 	<div class="drug-details">
 	    
 	    <p><strong class="drug-name">{{alreadyActiveSimilarOrder.getDisplayName()}}</strong> from <strong>{{alreadyActiveSimilarOrder.effectiveStartDate | date: 'dd MMM yy'}}</strong> to <strong>{{alreadyActiveSimilarOrder.effectiveStopDate | date: 'dd MMM yy'}}</strong> is conflicting with drug order you are trying to add. You can revise or refill instead.</p>
@@ -9,7 +9,7 @@
 
 	<div class="dialog-button-group">
 	    <button class="secondary-button" type="button" ng-click="refill(alreadyActiveSimilarOrder)" focus-on="popupActive" tabindex="1">Refill</button>
-	    <button class="secondary-button" ng-click="revise(alreadyActiveSimilarOrder)" tabindex="1">Revise</button>
+	    <button class="secondary-button" ng-click="revise(alreadyActiveSimilarOrder)" tabindex="2">Revise</button>
 	</div>
 
 	<span class="ngdialog-end"></span>
