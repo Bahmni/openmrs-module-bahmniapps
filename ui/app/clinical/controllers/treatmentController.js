@@ -106,7 +106,7 @@ angular.module('bahmni.clinical')
 
                 if(!(newDrugOrder.isEditAllowed)){
                     var DateUtil = Bahmni.Common.Util.DateUtil;
-                    newDrugOrder.effectiveStopDate= DateUtil.addDays(DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
+                    newDrugOrder.effectiveStopDate= DateUtil.addSeconds(DateUtil.addDays(DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays),-1);
                     var alreadyActiveSimilarOrders = $rootScope.activeAndScheduledDrugOrders.filter(function(drugOrder){
                         return (drugOrder.drug.uuid==newDrugOrder.drug.uuid && drugOrder.overlappingScheduledWith(newDrugOrder));
                     });

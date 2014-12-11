@@ -93,7 +93,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
             return (dateUtil.diffInDays(otherDrugOrder.effectiveStartDate, this.effectiveStartDate) >-1) && (dateUtil.diffInDays(otherDrugOrder.effectiveStopDate, this.effectiveStartDate) <1);
         }
 
-        return (dateUtil.diffInDays(otherDrugOrder.effectiveStopDate, this.effectiveStartDate) <1 && dateUtil.diffInDays(otherDrugOrder.effectiveStartDate, this.effectiveStopDate) >-1);
+        //return (dateUtil.diffInDays(otherDrugOrder.effectiveStopDate, this.effectiveStartDate) <1 && dateUtil.diffInDays(otherDrugOrder.effectiveStartDate, this.effectiveStopDate) >-1);
+        return (new Date(this.effectiveStartDate).getTime() <= otherDrugOrder.effectiveStopDate && this.effectiveStopDate >= new Date(otherDrugOrder.effectiveStartDate).getTime());
     };
 
     var simpleDoseAndFrequency = function () {
