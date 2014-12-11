@@ -23,10 +23,10 @@
                                 </div>
 								<div class="button-group-wrapper">
                                     <div class="button-group">
-									<button ng-disabled="!drugOrder.isActive()" ng-disabled="!drugOrder.isEditAllowed" ng-click="revise(drugOrder, drugOrderGroup.drugOrders)">
+									<button ng-disabled="!drugOrder.isActive() || !drugOrder.isEditAllowed" ng-click="revise(drugOrder, drugOrderGroup.drugOrders)">
                                         <i class="icon-edit"></i>
                                     </button>
-                                    <button ng-if="drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed" ng-click="undoDiscontinue(drugOrder)">
+                                    <button class="undo-btn" ng-if="drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed" ng-click="undoDiscontinue(drugOrder)">
                                         <i class="icon-undo"></i>
                                     </button>
                                     <button class="stop-drug-btn" ng-if="!drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed" ng-click="discontinue(drugOrder)">
