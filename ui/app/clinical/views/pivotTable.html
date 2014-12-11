@@ -1,22 +1,24 @@
-<table>
-    <caption>{{diseaseName}}</caption>
-    <thead>
-    <tr>
-        <th>
-        </th>
-        <th ng-repeat="(visitDate,values) in result.tabularData " >
-            {{visitDate}}
-        </th>
-    </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="conceptName in result.conceptNames" >
-            <td>
-                {{conceptName}}
-            </td>
-            <td ng-repeat="(visitDate,values) in result.tabularData " ng-class="{'is-abnormal': tabularData[visitDate][conceptName].abnormal}">
-                {{result.tabularData[visitDate][conceptName].value}}
-            </td>
+<section ng-if="hasData"class="dashboard-section">
+    <table>
+        <caption>{{diseaseName}}</caption>
+        <thead>
+        <tr>
+            <th>
+            </th>
+            <th ng-repeat="(visitDate,values) in result.tabularData " >
+                {{visitDate}}
+            </th>
         </tr>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            <tr ng-repeat="conceptName in result.conceptNames" class="tree-list-item">
+                <td>
+                    {{conceptName}}
+                </td>
+                <td ng-repeat="(visitDate,values) in result.tabularData " ng-class="{'is-abnormal': tabularData[visitDate][conceptName].abnormal}">
+                    {{result.tabularData[visitDate][conceptName].value}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>

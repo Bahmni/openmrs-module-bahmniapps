@@ -9,6 +9,6 @@
 <section class="dashboard-section">
     <disease-template template="diseaseTemplate" patient="patient"></disease-template>
 </section>
-<section ng-if="diseaseTemplate.name" class="dashboard-section">
+<div ng-if="diseaseTemplate.name" >
     <div pivot-table disease-name="diseaseTemplate.name"></div>
-</section>
+</div>
