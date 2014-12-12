@@ -1,11 +1,13 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('TreatmentController', ['$scope', '$rootScope', 'TreatmentService', 'contextChangeHandler', 'treatmentConfig', 'DrugService', '$timeout', 'appService','ngDialog',
-        function ($scope, $rootScope, treatmentService, contextChangeHandler, treatmentConfig, drugService, $timeout, appService, ngDialog) {
+    .controller('TreatmentController', ['$scope', '$rootScope', 'TreatmentService', 'contextChangeHandler', 'treatmentConfig', 'DrugService', '$timeout', 'appService','ngDialog', '$window',
+        function ($scope, $rootScope, treatmentService, contextChangeHandler, treatmentConfig, drugService, $timeout, appService, ngDialog, $window) {
             $scope.treatments = $scope.consultation.newlyAddedTreatments || [];
             $scope.treatmentConfig = treatmentConfig;
+            $scope.treatmentActionLinks = appService.getAppDescriptor().getExtensions("org.bahmni.clinical.treatment.links", "link") || [];
             var drugOrderAppConfig = appService.getAppDescriptor().getConfigValue("drugOrder") || {};
+
 
             function markVariable(variable){
                 $scope[variable] = true;
@@ -225,6 +227,11 @@ angular.module('bahmni.clinical')
                 $scope.treatment = newTreatment();
                 clearHighlights();
                 markVariable("startNewDrugEntry");
+            };
+
+            $scope.openActionLink = function (extension) {
+                var url = extension.url.replace("{{patient_ref}}", $scope.patient.identifier);
+                $window.open(url, "_blank");
             };
 
             contextChangeHandler.add(contextChange);

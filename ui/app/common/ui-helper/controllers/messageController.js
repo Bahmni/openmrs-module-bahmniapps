@@ -5,10 +5,6 @@ angular.module('bahmni.common.uiHelper')
         function ($scope, messagingService) {
             $scope.messages = messagingService.messages;
 
-            $scope.messages.error.forEach(function(errorMessage){
-                $scope.errorMessageText = $scope.errorMessageText.concat(errorMessage.value);
-            });
-
             $scope.getErrorMessageText = function(){
                 var string = "";
                 $scope.messages.error.forEach(function(errorMessage){

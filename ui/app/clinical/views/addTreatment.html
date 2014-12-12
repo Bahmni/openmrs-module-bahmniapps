@@ -73,6 +73,11 @@
             <button class="form-field add-drug-btn secondary-button" type="submit" accesskey="a"><u>A</u>dd</button>
             <button class="form-field add-drug-btn" type="button" ng-click="clearForm()" accesskey="c"><u>C</u>lear</button>
         </fieldset>
+        <fieldset>
+            <button ng-repeat="extension in treatmentActionLinks" class="form-field secondary-button" ng-click="openActionLink(extension)" accesskey="{{extension.shortcutKey}}" ng-bind-html="extension.label"></button>
+        </fieldset>
     </form>
+
+
 </section>
 <ng-include src="'views/treatmentSections/newDrugOrders.html'"></ng-include>
