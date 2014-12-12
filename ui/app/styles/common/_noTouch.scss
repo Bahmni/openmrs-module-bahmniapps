@@ -53,6 +53,9 @@ html.no-touch {
 				padding: 7px 5px 2px 5px;
 			}
 		}
+		div[ng-app="adt"] .patient-details {
+			top: 17px;
+		}
 
 		.disposition-tab {
 			padding-top: 0;
