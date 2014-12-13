@@ -199,17 +199,17 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
     };
 
     this.calculateDurationUnit = function () {
-        if (self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform) {
-            var frequency = self.uniformDosingType.frequency;
-            if (frequency && (getFrequencyPerDay() > 5)) {
-                self.durationUnit = "Hour(s)";
-            } else if (frequency && (getFrequencyPerDay() > 1/7)) {
-                self.durationUnit = "Day(s)";
-            } else if (frequency && (getFrequencyPerDay() > 1/30)) {
-                self.durationUnit = "Week(s)";
-            } else {
-                self.durationUnit = "Month(s)";
-            }
+        if (self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform && self.uniformDosingType.frequency != null) {
+            var defaultDurationUnitMap = appConfig.frequencyDefaultDurationUnitsMap || [];
+
+            defaultDurationUnitMap.forEach(function(range) {
+                var minFrequency = eval(range.minFrequency);
+                var maxFrequency = eval(range.maxFrequency);
+                if ((minFrequency == null || minFrequency < getFrequencyPerDay()) &&
+                    (maxFrequency == null || getFrequencyPerDay() <= maxFrequency)) {
+                    self.durationUnit = range.defaultDurationUnit;
+                }
+            });
         }
     };
 
