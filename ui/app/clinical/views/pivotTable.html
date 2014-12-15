@@ -1,12 +1,12 @@
 <section ng-if="hasData"class="dashboard-section">
     <table>
-        <caption>{{diseaseName}}</caption>
+        <caption class="table-header">{{displayName || diseaseName}}</caption>
         <thead>
         <tr>
             <th>
             </th>
             <th ng-repeat="(visitDate,values) in result.tabularData " >
-                {{visitDate}}
+                {{visitDate | date: 'dd MMM yy'}}
             </th>
         </tr>
         </thead>

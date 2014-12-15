@@ -3,7 +3,7 @@
 angular.module('bahmni.clinical')
     .service('pivotTableService', ['$http', function ($http) {
 
-        this.getPivotTableForDisease = function (patientUuid, diseaseSummaryConfig){
+        this.getPivotTableFor = function (patientUuid, diseaseSummaryConfig){
             return $http.get(Bahmni.Common.Constants.diseaseSummaryPivotUrl, {
                 params: {
                     patientUuid: patientUuid,

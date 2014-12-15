@@ -1,29 +1,31 @@
-angular.module('bahmni.clinical').directive('pivotTable', ['spinner', 'appService', '$rootScope','pivotTableService', function (spinner, appService, $rootScope,pivotTableService) {
-    return {
+angular.module('bahmni.clinical').directive('pivotTable', ['spinner', 'appService', '$rootScope','pivotTableService','clinicalConfigService',
+    function (spinner, appService, $rootScope,pivotTableService,clinicalConfigService) {
+
+        var pivotTableConfigFor = function(diseaseName){
+            var diseaseTemplateConfigs = clinicalConfigService.getDiseaseTemplateConfig();
+            var requiredTemplateConfig =_.find(diseaseTemplateConfigs,function(diseaseTemplateConfig){
+                return diseaseTemplateConfig.templateName === diseaseName;
+            });
+            return requiredTemplateConfig ? requiredTemplateConfig["pivotTable"]:null;
+        };
+        return {
         scope: {
-            diseaseName: "="
+            diseaseName: "=",
+            displayName:"="
         },
         link: function (scope, element, attrs) {
-            var diseaseSummaryConfig = appService.getAppDescriptor().getConfigValue("pivotTable")[scope.diseaseName];
-
+            var diseaseSummaryConfig =pivotTableConfigFor(scope.diseaseName);
             if(!diseaseSummaryConfig) return;
 
             var patientUuid = $rootScope.patient.uuid;
 
-            var pivotDataPromise = pivotTableService.getPivotTableForDisease(patientUuid,diseaseSummaryConfig)
+            var pivotDataPromise = pivotTableService.getPivotTableFor(patientUuid,diseaseSummaryConfig);
             spinner.forPromise(pivotDataPromise);
             pivotDataPromise.success(function (data) {
                 scope.result = data;
-                if (!_.isEmpty(scope.result.tabularData)) {
-                    scope.hasData = true;
-                }
-                else {
-                    scope.hasData = false;
-                }
+                scope.hasData = !_.isEmpty(scope.result.tabularData);
             })
-
         },
-
         templateUrl: 'views/pivotTable.html'
     }
 }]);
