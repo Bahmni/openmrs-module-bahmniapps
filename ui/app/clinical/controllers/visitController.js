@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitController', ['$scope', 'encounterService', 'visitService', 'spinner', '$stateParams', '$rootScope',
-        function ($scope, encounterService, visitService, spinner, $stateParams, $rootScope) {
+    .controller('VisitController', ['$scope', 'encounterService', 'visitService', 'spinner', '$stateParams', '$rootScope', 'clinicalConfigService',
+        function ($scope, encounterService, visitService, spinner, $stateParams, $rootScope, clinicalConfigService) {
 
             var encounterTypeUuid = $rootScope.encounterConfig.getPatientDocumentEncounterTypeUuid();
             $scope.documentsPromise = encounterService.getEncountersForEncounterType($rootScope.patient.uuid, encounterTypeUuid).then(function(response) {
@@ -12,6 +12,12 @@ angular.module('bahmni.clinical')
             $scope.patientUuid = $stateParams.patientUuid;
             $scope.showTrends = true;
             $scope.visit = $rootScope.visit;
+
+            $scope.investigationResultsParameters = clinicalConfigService
+                .getVisitPageConfig()
+                .investigationResultParams || {};
+            $scope.investigationResultsParameters.patientUuid = $scope.patientUuid;
+            $scope.investigationResultsParameters.visitUuids = [$stateParams.visitUuid];
 
             $scope.isNumeric = function (value) {
                 return $.isNumeric(value);

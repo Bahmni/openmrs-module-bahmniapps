@@ -1,8 +1,13 @@
+'use strict';
+
 describe("LabOrderResultService", function() {
-    var rootScope;
-    var mockHttp;
-    var LabOrderResultService;
+    var mockHttp, configurationService, LabOrderResultService;
+
     beforeEach(module('bahmni.clinical'));
+
+    var configurationServiceResponse = {
+        allTestsAndPanelsConcept: {results: []}
+    };
 
     var labOrderResults = {
         "results":[
@@ -27,8 +32,14 @@ describe("LabOrderResultService", function() {
         mockHttp.get.and.callFake(function(param) {
             return specUtil.respondWith({"data": labOrderResults});
         });
+        configurationService = jasmine.createSpyObj('configurationService', ['getConfigurations']);
+        configurationService.getConfigurations.and.callFake(function() {
+            return specUtil.respondWith(configurationServiceResponse);
+        });
+
         $provide.value('$http', mockHttp);
         $provide.value('$q', Q);
+        $provide.value('configurationService', configurationService);
     }));
 
     beforeEach(inject(['LabOrderResultService', function (LabOrderResultServiceInjected) {
@@ -37,34 +48,33 @@ describe("LabOrderResultService", function() {
 
     describe("getAllForPatient", function(){
         it("should fetch all Lab orders & results and group by accessions", function(done){
-            LabOrderResultService.getAllForPatient("123").then(function(results) {
+            LabOrderResultService.getAllForPatient("123", 1).then(function(results) {
                 expect(mockHttp.get.calls.mostRecent().args[1].params.patientUuid).toBe("123");
-                expect(results.accessions.length).toBe(2);
-                expect(results.accessions[0].length).toBe(1);
-                expect(results.accessions[1].length).toBe(3);
+                expect(results.labAccessions.length).toBe(2);
+                expect(results.labAccessions[0].length).toBe(1);
+                expect(results.labAccessions[1].length).toBe(5);
                 done();
             });
         });
-
         it("should sort by accession date and group by panel", function(done){
-            LabOrderResultService.getAllForPatient("123").then(function(results) {
+            LabOrderResultService.getAllForPatient("123", 1).then(function(results) {
                 expect(mockHttp.get.calls.mostRecent().args[1].params.patientUuid).toBe("123");
-                expect(results.accessions[0][0].accessionUuid).toBe("uuid2");
-                expect(results.accessions[1][0].accessionUuid).toBe("uuid1");
+                expect(results.labAccessions[0][0].accessionUuid).toBe("uuid2");
+                expect(results.labAccessions[1][0].accessionUuid).toBe("uuid1");
                 done();
             });
         });
 
         it("should group accessions by panel", function(done){
-            LabOrderResultService.getAllForPatient("123").then(function(results) {
+            LabOrderResultService.getAllForPatient("123", 1).then(function(results) {
                 expect(mockHttp.get.calls.mostRecent().args[1].params.patientUuid).toBe("123");
 
-                expect(results.accessions[1][0].isPanel).toBeFalsy();
-                expect(results.accessions[1][0].orderName).toBe("ZN Stain(Sputum)");
-                expect(results.accessions[1][1].orderName).toBe("Gram Stain(Sputum)");
-                expect(results.accessions[1][2].isPanel).toBeTruthy();
-                expect(results.accessions[1][2].orderName).toBe("Routine Blood");
-                expect(results.accessions[1][2].tests.length).toBe(2);
+                expect(results.labAccessions[1][0].isPanel).toBeFalsy();
+                expect(results.labAccessions[1][0].orderName).toBe("ZN Stain(Sputum)");
+                expect(results.labAccessions[1][1].orderName).toBe("Gram Stain(Sputum)");
+                expect(results.labAccessions[1][2].isPanel).toBeTruthy();
+                expect(results.labAccessions[1][2].orderName).toBe("Routine Blood");
+                expect(results.labAccessions[1][2].tests.length).toBe(2);
                 done();
             });
         });

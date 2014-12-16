@@ -1,6 +1,6 @@
 'use strict';
 
-Bahmni.Clinical.SortedConceptSet = function(allTestAndPanelsConcept) {
+Bahmni.Clinical.ConceptWeightBasedSorter = function(allTestAndPanelsConcept) {
 	var sortedConcepts = allTestAndPanelsConcept ? allTestAndPanelsConcept.setMembers : [];
     var sortedNames = sortedConcepts.map(function(concept) {return concept.name.name;});
 

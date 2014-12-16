@@ -1,0 +1,51 @@
+<section class="section-grid">
+    <h2 ng-click="toggleInvestigationChart()" class="section-title row-click">
+        <i class="icon-caret-right" ng-hide="showInvestigationChart"></i>
+        <i class="icon-caret-down" ng-show="showInvestigationChart"></i>
+        Investigation Chart
+    </h2>
+
+    <table class="ipd-investigation h-scroll" bindonce="accessions" ng-show="showInvestigationChart">
+        <thead>
+        <tr>
+            <th>&nbsp;</th>
+            <th class="normal" ng-repeat="testOrderLabel in accessions.getTestOrderLabels()">
+                <span bo-text="testOrderLabel.testName"></span>
+                            <span ng-show="accessions.hasRange(testOrderLabel)" class="range">
+                                <span bo-text="'(' + testOrderLabel.minNormal + ' - ' + testOrderLabel.maxNormal + ')'"></span>
+                                <span bo-text="testOrderLabel.testUnitOfMeasurement"></span>
+                            </span>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="dateLabel in accessions.getDateLabels()">
+            <td>{{dateLabel.date | date :'dd MMM yy'}}</td>
+            <td ng-repeat="testOrderLabel in accessions.getTestOrderLabels()"
+                ng-class="{'has-uploaded-file': accessions.hasUploadedFiles(dateLabel, testOrderLabel)}">
+                        <span ng-init="results = accessions.getResult(dateLabel, testOrderLabel)">
+                            <span bm-pop-over class="test-result" ng-repeat="res in results">
+                                <span ng-class="{'referred-out': res.referredOut}">
+                                    <span class="referred">R</span>
+                                </span>
+                                <span ng-show="res.result" bm-pop-over-trigger
+                                      ng-class="{'is-abnormal': res.abnormal, 'one-result': results.length==1}"
+                                      class="ipd-test-results" bo-text="res.result">
+                                </span>
+                                <span ng-show="res.uploadedFileName">
+                                    <a class="uploaded-file" href="{{getUploadedFileUrl(res.uploadedFileName)}}"
+                                       onclick="event.stopPropagation()" target="_blank">
+                                        <i class="icon-paper-clip"></i>
+                                    </a>
+                                </span>
+                                <span class="tooltip" bm-pop-over-target>
+                                    <i class="icon-caret-left"></i>
+                                    <span ng-class="{'is-abnormal': res.abnormal}">{{res.result}}</span>
+                                </span>
+                            </span>
+                        </span>
+            </td>
+        </tr>
+        <tbody>
+    </table>
+</section>

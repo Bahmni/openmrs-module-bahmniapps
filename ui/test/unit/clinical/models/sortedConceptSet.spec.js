@@ -1,6 +1,6 @@
 'use strict';
 
-describe("SortedConceptSet", function () {
+describe("ConceptWeightBasedSorter", function () {
 
     var allTestsAndPanels = {
         setMembers: [
@@ -14,7 +14,7 @@ describe("SortedConceptSet", function () {
     };
 
     it("should sort by sortWeight of the test/panel in AllTestsAndPanels", function () {
-        var sortedConceptSet = new Bahmni.Clinical.SortedConceptSet(allTestsAndPanels);
+        var sortedConceptSet = new Bahmni.Clinical.ConceptWeightBasedSorter(allTestsAndPanels);
         var orders = [
             {concept: {name: "Test2"}},
             {concept: { name: "Test1"}}
@@ -27,7 +27,7 @@ describe("SortedConceptSet", function () {
     });
 
     it("should add test/panel at the end if it is not there in allTestsAndPanels", function () {
-        var sortedConceptSet = new Bahmni.Clinical.SortedConceptSet(allTestsAndPanels);
+        var sortedConceptSet = new Bahmni.Clinical.ConceptWeightBasedSorter(allTestsAndPanels);
         var orders = [
             {concept: {name: "Test3"}},
             {concept: { name: "Test1"}},
@@ -42,7 +42,7 @@ describe("SortedConceptSet", function () {
     });
 
     it("should sort test results by sortWeight of the test in AllTestsAndPanels", function () {
-        var sortedConceptSet = new Bahmni.Clinical.SortedConceptSet(allTestsAndPanels);
+        var sortedConceptSet = new Bahmni.Clinical.ConceptWeightBasedSorter(allTestsAndPanels);
         var testResults = [
             {orderName: "Test2"},
             {orderName: "Test1"}
@@ -55,7 +55,7 @@ describe("SortedConceptSet", function () {
     });
 
     it("should sort tabular results by sortWeight", function () {
-        var sortedConceptSet = new Bahmni.Clinical.SortedConceptSet(allTestsAndPanels);
+        var sortedConceptSet = new Bahmni.Clinical.ConceptWeightBasedSorter(allTestsAndPanels);
         var testResults = [
             {testName: "Test2"},
             {testName: "Test1"}
@@ -68,7 +68,7 @@ describe("SortedConceptSet", function () {
     });
 
     it("should sort test results in a panel by sortWeight of the test in AllTestsAndPanels", function () {
-        var sortedConceptSet = new Bahmni.Clinical.SortedConceptSet(allTestsAndPanels);
+        var sortedConceptSet = new Bahmni.Clinical.ConceptWeightBasedSorter(allTestsAndPanels);
         var testResults = [
             {orderName: "Test2"},
             {orderName: "Panel1", isPanel: true, tests: [

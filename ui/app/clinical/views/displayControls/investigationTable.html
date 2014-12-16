@@ -1,0 +1,34 @@
+<section class="block section-grid">
+    <h2 ng-if="params.title" class="section-title">{{params.title}}</h2>
+    <p class="placeholder-text" ng-if="!hasLabOrders()">{{ params.noLabOrdersMessage }}</p>
+    <div ng-if="hasLabOrders()">
+        <table ng-repeat="labOrderResults in accessions" bindonce="accessions">
+            <thead>
+            <tr ng-click="toggle(labOrderResults)" ng-class="{'row-click':getAccessionDetailsFrom(labOrderResults)}">
+                <th colspan="3">
+                    <span>Accession at </span>
+                    <span bo-text="getAccessionDetailsFrom(labOrderResults).accessionDateTime | date:'dd MMM yy hh:mm a'"></span>
+                    <button class="toggle-btn fr" ng-if="getAccessionDetailsFrom(labOrderResults).accessionNotes">
+                        <i class="icon-envelope" ng-hide="!labOrders.show"></i>
+                        <i class="icon-envelope-alt" ng-show="!labOrders.show"></i>
+                        Notes
+                    </button>
+                </th>
+            </tr>
+            <tr ng-show="labOrderResults.show">
+                <th colspan="3" class="notes inline-notes" ng-if="getAccessionDetailsFrom(labOrderResults).accessionNotes">
+                    <div ng-repeat="accessionNote in getAccessionDetailsFrom(labOrderResults).accessionNotes" class="accession">
+                        <pre class="left">{{accessionNote.text}}</pre>
+                        <div class="footer-note fr">
+                            <span class="provider" bo-text="accessionNote.providerName"></span>
+                        </div>
+                    </div>
+                </th>
+            </tr>
+            </thead>
+            <tbody investigation-table-row test="labOrderResult" params="params" ng-repeat="labOrderResult in labOrderResults"
+                   ng-show="shouldShowResults(labOrderResult)">
+            </tbody>
+        </table>
+    </div>
+</section>

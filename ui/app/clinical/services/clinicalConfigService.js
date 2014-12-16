@@ -43,4 +43,8 @@ angular.module('bahmni.clinical')
         this.getDiseaseTemplateConfig = function () {
             return appService.getAppDescriptor().getConfigValue("templateSections") || [];
         };
+
+        this.getVisitPageConfig = function() {
+            return appService.getAppDescriptor().getConfigValue("visitPage") || {};
+        }
     }]);

@@ -3,7 +3,9 @@
 </section>
 <ng-include src="'views/visitSummarySections/diagnosis.html'"></ng-include>
 <ng-include src="'views/visitSummarySections/observation.html'"></ng-include>
-<ng-include src="'views/visitSummarySections/labOrders.html'"></ng-include>
+
+<investigation-results params="investigationResultsParameters"></investigation-results>
+
 <ng-include src="'views/visitSummarySections/radiologyInvestigations.html'"></ng-include>
 <ng-include src="'views/visitSummarySections/patientFiles.html'"></ng-include>
 <ng-include src="'views/visitSummarySections/otherInvestigations.html'"></ng-include>

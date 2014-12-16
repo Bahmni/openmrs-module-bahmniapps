@@ -153,7 +153,6 @@ Bahmni.Clinical.Visit = (function () {
             return dischargeDispositionEncounter ? DateUtil.parse(dischargeDispositionEncounter.encounterDateTime) : null;
         },
         getLabOrdersGroupedByAccession: function () {
-            var self = this;
             var orderGroup = new Bahmni.Clinical.OrdersMapper();
             var accessionNotesMapper = new Bahmni.Clinical.AccessionNotesMapper(this.encounterConfig);
             var accessions = orderGroup.group(this.labOrders, 'accessionUuid');

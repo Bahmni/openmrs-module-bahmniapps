@@ -4,13 +4,12 @@ angular.module('bahmni.common.uiHelper')
 		$scope.$watch("toggle", function(value) {
 			$(element).toggleClass('active', value)
 		});
-
-		$(element).click(function() {
-			$scope.$apply(function() {
-				$scope.toggle = !$scope.toggle
-			});
-		});
-	} 
+            $(element).click(function () {
+                $scope.$apply(function () {
+                    $scope.toggle = !$scope.toggle
+                });
+            });
+        };
 
 	return {
 		scope: {

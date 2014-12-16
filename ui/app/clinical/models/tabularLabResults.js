@@ -79,7 +79,7 @@ Bahmni.Clinical.TabularLabResults = (function () {
     };
 
     TabularLabResults.create = function (labOrders, startDate, endDate, allTestsAndPanelsConceptSet) {
-        var sortedConceptSet = new Bahmni.Clinical.SortedConceptSet(allTestsAndPanelsConceptSet);
+        var sortedConceptSet = new Bahmni.Clinical.ConceptWeightBasedSorter(allTestsAndPanelsConceptSet);
         var orderables = getOrderables(labOrders, sortedConceptSet);
         var visitDays = DateUtil.createDays(startDate, endDate);
         var flatOrderables = flattenOrderables(orderables);

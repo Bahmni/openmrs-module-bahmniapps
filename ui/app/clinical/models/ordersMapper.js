@@ -46,7 +46,7 @@ Bahmni.Clinical.OrdersMapper.prototype.create = function (encounterTransactions,
 };
 
 Bahmni.Clinical.OrdersMapper.prototype.map = function (encounterTransactions, ordersName, allTestAndPanels) {
-    var allTestsPanelsConcept = new Bahmni.Clinical.SortedConceptSet(allTestAndPanels);
+    var allTestsPanelsConcept = new Bahmni.Clinical.ConceptWeightBasedSorter(allTestAndPanels);
     var orderObservationsMapper = new Bahmni.Clinical.OrderObservationsMapper();
     var setOrderProvider = function (encounter) {
         encounter[ordersName].forEach(function(order) {

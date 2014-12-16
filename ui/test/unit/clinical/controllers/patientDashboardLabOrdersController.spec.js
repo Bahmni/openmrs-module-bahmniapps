@@ -1,70 +1,62 @@
 'use strict';
 
-describe("PatientDashboardLabOrdersController", function(){
+describe("PatientDashboardLabOrdersController", function () {
 
     beforeEach(module('bahmni.clinical'));
 
     var scope;
-    var labOrderResultService;
     var stateParams;
     var _clinicalConfigService;
-    var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
-
-    var labOrderResults = {
-        "accessions": [[
-            {"accessionUuid": "uuid1", "accessionDateTime":1401437955000, "testName": "ZN Stain(Sputum)"},
-            {"accessionUuid": "uuid1", "accessionDateTime":1401437955000, "testName": "ZN Stain(Sputum)"},
-            {"accessionUuid": "uuid1", "accessionDateTime":1401437955000, "testName": "Haemoglobin", "panelName": "Routine Blood"},
-            {"accessionUuid": "uuid1", "accessionDateTime":1401437955000, "testName": "ESR", "panelName": "Routine Blood"},
-        ], [
-            {"accessionUuid": "uuid2", "accessionDateTime":1401437956000, "testName": "ZN Stain(Sputum)"}
-        ]],
-        "tabularResult": {}
-    }
     var labResultSection = {
-            "title": "Lab Results",
-            "name": "labOrders",
-            "showNormalValues":false
-        };
-
+        "title": "Lab Results",
+        "name": "labOrders",
+        "dashboardParams": {
+            "title": null,
+            "showInvestigationChart": false,
+            "showInvestigationTable": true,
+            "showNormalValues": true,
+            "showCommentsExpanded": true,
+            "showLabManagerNotes": true
+        }
+    };
+    var controller;
 
     beforeEach(inject(function ($controller, $rootScope) {
+        controller = $controller;
         scope = $rootScope.$new();
-
-        spinner.forPromise.and.callFake(function(param) {return {}});
         _clinicalConfigService = jasmine.createSpyObj('clinicalConfigService', ['getPatientDashBoardSectionByName']);
-        _clinicalConfigService.getPatientDashBoardSectionByName.and.returnValue(labResultSection);
-
-        labOrderResultService = jasmine.createSpyObj('LabOrderResultService', ['getAllForPatient']);
-        labOrderResultService.getAllForPatient.and.callFake(function(param) {
-            return specUtil.respondWith(labOrderResults);
-        });
 
         stateParams = {
             patientUuid: "some uuid"
-        }
-
-        $controller('PatientDashboardLabOrdersController', {
-            $scope: scope,
-            $rootScope: {'allTestsAndPanelsConcept': []},
-            $stateParams: stateParams,
-            LabOrderResultService: labOrderResultService,
-            spinner: spinner,
-            clinicalConfigService: _clinicalConfigService
-
-        });
+        };
     }));
 
-    describe("The controller is loaded", function(){
-        it("should setup the scope", function() {
-            expect(scope.patientUuid).toBe('some uuid');
-            expect(labOrderResultService.getAllForPatient).toHaveBeenCalledWith("some uuid", 1);
-        });
-    });
+    describe("when initialized", function () {
+        it("creates configuration for displaying lab order display parameters", function () {
+            _clinicalConfigService.getPatientDashBoardSectionByName.and.returnValue(labResultSection);
+            controller('PatientDashboardLabOrdersController', {
+                $scope: scope,
+                $stateParams: stateParams,
+                clinicalConfigService: _clinicalConfigService
+            });
 
-    describe("when showNormalValues in config under labResults section is false ", function(){
-        it("should set showNormalLabResults to false", function() {
-            expect(scope.showNormalLabResults).toBe(false);
+
+            var params = scope.dashboardParams;
+            expect(params.patientUuid).toBe("some uuid");
+            expect(params.showNormalValues).toBe(labResultSection.dashboardParams.showNormalValues);
         });
+
+        it("passes in just the patient uuid when no parameters specified", function () {
+            _clinicalConfigService.getPatientDashBoardSectionByName.and.returnValue({});
+            controller('PatientDashboardLabOrdersController', {
+                $scope: scope,
+                $stateParams: stateParams,
+                clinicalConfigService: _clinicalConfigService
+            });
+
+            var params = scope.dashboardParams;
+            expect(params.patientUuid).toBe("some uuid");
+        });
+
     });
 });
