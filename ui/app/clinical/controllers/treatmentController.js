@@ -36,9 +36,7 @@ angular.module('bahmni.clinical')
             ];
 
             var newTreatment = function () {
-                var newTreatment = new Bahmni.Clinical.DrugOrderViewModel(drugOrderAppConfig, $scope.treatmentConfig);
-                newTreatment.isEditAllowed = false;
-                return newTreatment
+                return new Bahmni.Clinical.DrugOrderViewModel(drugOrderAppConfig, $scope.treatmentConfig);
             };
 
             $scope.today = new Date();
@@ -106,10 +104,9 @@ angular.module('bahmni.clinical')
                     $scope.treatment.isBeingEdited = false;
                 }
                 var newDrugOrder = $scope.treatment;
+                    setEffectiveDates(newDrugOrder, $rootScope.activeAndScheduledDrugOrders);
+                    //setEffectiveDates(newDrugOrder, $rootScope.activeAndScheduledDrugOrders + scope.treatments);
 
-                if(!(newDrugOrder.isEditAllowed)){
-                    var DateUtil = Bahmni.Common.Util.DateUtil;
-                    newDrugOrder.effectiveStopDate= DateUtil.addDays(DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
                     var alreadyActiveSimilarOrders = $rootScope.activeAndScheduledDrugOrders.filter(function(drugOrder){
                         return (drugOrder.drug.uuid==newDrugOrder.drug.uuid && drugOrder.overlappingScheduledWith(newDrugOrder));
                     });
@@ -121,10 +118,23 @@ angular.module('bahmni.clinical')
                         $scope.popupActive = true;
                         return;
                     }
-                }
                 $scope.treatments.push($scope.treatment);
                 $scope.treatment = newTreatment();
                 markVariable("startNewDrugEntry");
+            };
+            var setEffectiveDates = function(newDrugOrder, existingDrugOrders){
+                var DateUtil = Bahmni.Common.Util.DateUtil;
+                existingDrugOrders.forEach(function(existingDrugOrder){
+                    newDrugOrder.effectiveStopDate= DateUtil.addDays(DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
+                    if(existingDrugOrder.drug.uuid==newDrugOrder.drug.uuid){
+                        if(DateUtil.isSameDate(existingDrugOrder.effectiveStartDate, newDrugOrder.effectiveStopDate)){ //compare date part only of datetime
+                            newDrugOrder.effectiveStopDate = DateUtil.subtractSeconds(existingDrugOrder.effectiveStartDate, 1);
+                        }
+                        else if(DateUtil.isSameDate(existingDrugOrder.effectiveStopDate, newDrugOrder.effectiveStartDate)){ //compare date part only of datetime
+                            newDrugOrder.effectiveStartDate = DateUtil.addSeconds(existingDrugOrder.effectiveStopDate, 1) ;
+                        }
+                    }
+                });
             };
 
             $scope.refill = function (drugOrder) {

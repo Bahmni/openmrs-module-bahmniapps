@@ -81,5 +81,24 @@ Bahmni.Tests.drugOrderViewModelMother = {
             "name": "calpol 500mg"
         };
         return defaultModel;
+    },
+    buildWith: function(appConfig, treatmentConfig, drugOrderViewModelData) {
+        var defaultModel = new Bahmni.Clinical.DrugOrderViewModel(appConfig, treatmentConfig, drugOrderViewModelData);
+
+        defaultModel.instructions = drugOrderViewModelData.instructions || "Before Meals";
+        defaultModel.duration = drugOrderViewModelData.duration || "10";
+        defaultModel.scheduledDate = drugOrderViewModelData.scheduledDate || "21/12/2014";
+        defaultModel.quantity = drugOrderViewModelData.quantity || "12";
+        defaultModel.quantityUnit = drugOrderViewModelData.quantityUnit || "Capsule";
+        defaultModel.isEditAllowed = drugOrderViewModelData.isEditAllowed || false;
+        defaultModel.effectiveStartDate = drugOrderViewModelData.effectiveStartDate || "21-12-2014";
+        defaultModel.effectiveStopDate = drugOrderViewModelData.effectiveStopDate || "06-12-2014";
+        defaultModel.drug = {
+            "form": drugOrderViewModelData.drug.form ||"Tablet",
+            "uuid": drugOrderViewModelData.drug.uuid || "8d7e3dc0-f4ad-400c-9468-5a9e2b1f4230",
+            "strength": drugOrderViewModelData.drug.strength || null,
+            "name": drugOrderViewModelData.drug.name ||"calpol 500mg"
+        };
+        return defaultModel;
     }
 };

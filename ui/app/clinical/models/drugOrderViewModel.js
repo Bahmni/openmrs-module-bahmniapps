@@ -79,6 +79,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
     this.quantityEnteredManually = this.quantityEnteredManually || false;
     this.isBeingEdited = this.isBeingEdited || false;
     this.overlappingScheduledWith = function(otherDrugOrder){
+
         var dateUtil = Bahmni.Common.Util.DateUtil;
 
         if (otherDrugOrder.effectiveStopDate == null && this.effectiveStopDate == null) {
@@ -86,14 +87,14 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         }
 
         if (otherDrugOrder.effectiveStopDate == null) {
-            return dateUtil.diffInDays(otherDrugOrder.effectiveStartDate, this.effectiveStopDate) >-1;
+            return dateUtil.diffInSeconds(this.effectiveStopDate, otherDrugOrder.effectiveStartDate) >-1;
         }
 
         if (this.effectiveStopDate == null) {
-            return (dateUtil.diffInDays(otherDrugOrder.effectiveStartDate, this.effectiveStartDate) >-1) && (dateUtil.diffInDays(otherDrugOrder.effectiveStopDate, this.effectiveStartDate) <1);
+            return (dateUtil.diffInSeconds(this.effectiveStartDate, otherDrugOrder.effectiveStartDate) >-1) && (dateUtil.diffInSeconds(this.effectiveStartDate, otherDrugOrder.effectiveStopDate) <1);
         }
 
-        return (dateUtil.diffInDays(otherDrugOrder.effectiveStopDate, this.effectiveStartDate) <1 && dateUtil.diffInDays(otherDrugOrder.effectiveStartDate, this.effectiveStopDate) >-1);
+        return (dateUtil.diffInSeconds(this.effectiveStartDate, otherDrugOrder.effectiveStopDate) <= 0 && dateUtil.diffInSeconds(this.effectiveStopDate, otherDrugOrder.effectiveStartDate) > -1);
     };
 
     var simpleDoseAndFrequency = function () {

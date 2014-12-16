@@ -5,6 +5,7 @@ describe("TreatmentController", function () {
     beforeEach(module('bahmni.common.uiHelper'));
     beforeEach(module('bahmni.clinical'));
 
+    var DateUtil = Bahmni.Common.Util.DateUtil;
     var scope, rootScope, contextChangeHandler, newTreatment, editTreatment, appService, appDescriptor, ngDialog;
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
@@ -12,7 +13,7 @@ describe("TreatmentController", function () {
         $rootScope.activeAndScheduledDrugOrders = [];
         $rootScope.consultation = {};
         scope.consultation = {saveHandler: new Bahmni.Clinical.SaveHandler()};
-        var now = Bahmni.Common.Util.DateUtil.now();
+        var now = DateUtil.now();
         spyOn(Bahmni.Common.Util.DateUtil, 'now').and.returnValue(now);
         newTreatment = new Bahmni.Clinical.DrugOrderViewModel({}, {});
         editTreatment = new Bahmni.Clinical.DrugOrderViewModel(null, null);
@@ -35,7 +36,7 @@ describe("TreatmentController", function () {
 
     describe("add()", function () {
         it("adds treatment object to list of treatments", function () {
-            var treatment = {drug: {name:true}, isEditAllowed: true};
+            var treatment = {drug: {name:true}};
             scope.treatment = treatment;
             scope.add();
             expect(scope.treatments.length).toBe(1);
@@ -43,13 +44,13 @@ describe("TreatmentController", function () {
         });
 
         it("should empty treatment", function () {
-            scope.treatment = {drug: {name:true}, isEditAllowed: true};
+            scope.treatment = {drug: {name:true}};
             scope.add();
             expect(scope.treatment.drug).toBeFalsy();
         });
 
         it("clears existing treatment object", function () {
-            scope.treatment = {drug: {name:true}, isEditAllowed: true};
+            scope.treatment = {drug: {name:true}};
             scope.add();
             expect(scope.treatment.drug).toBeFalsy();
         });
@@ -59,11 +60,30 @@ describe("TreatmentController", function () {
             expect(scope.startNewDrugEntry).toBeTruthy();
         });
         it("should not allow to add if order new order(isEditAllowed is false) and there is already existing order", function(){
-            scope.treatment = Bahmni.Tests.drugOrderViewModelMother.build({drug: {name:"abc"}, isEditAllowed: false, effectiveStartDate: "26-11-2011", durationInDays: 2}, []);
+            scope.treatment = Bahmni.Tests.drugOrderViewModelMother.build({drug: {name:"abc"}, effectiveStartDate: "26-11-2011", durationInDays: 2}, []);
             rootScope.activeAndScheduledDrugOrders = [{drug: {name:true}}]
             scope.add();
             expect(scope.treatment.drug).toBeFalsy();
-        })
+        });
+        it("should allow to add new drug order if new order is scheduled to start on same day as stop date of already existing order", function(){
+            rootScope.activeAndScheduledDrugOrders = [Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [],{drug: {name:"abc", uuid: "123"}, effectiveStartDate: DateUtil.parse("2014-12-02"), effectiveStopDate: DateUtil.parse("2014-12-04"), durationInDays: 2})];
+            scope.treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [],{drug: {name:"abc", uuid: "123"}, effectiveStartDate: DateUtil.parse("2014-12-04"), effectiveStopDate: DateUtil.parse("2014-12-06"), durationInDays: 2});
+            expect(scope.treatments.length).toEqual(0);
+
+            scope.add();
+            expect(scope.treatments.length).toEqual(1);
+            expect(scope.treatments[0].effectiveStartDate.getTime() == DateUtil.addSeconds("2014-12-04", 1).getTime()).toBeTruthy();
+        });
+
+        it("should allow to add new drug order if new order is scheduled to end on same day as start date of already existing order", function(){
+            rootScope.activeAndScheduledDrugOrders = [Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [],{drug: {name:"abc", uuid: "123"}, effectiveStartDate: DateUtil.parse("2014-12-02"), effectiveStopDate: DateUtil.parse("2014-12-04"), durationInDays: 2})];
+            scope.treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [],{drug: {name:"abc", uuid: "123"}, effectiveStartDate: DateUtil.parse("2014-11-30"), effectiveStopDate: DateUtil.parse("2014-12-02"), durationInDays: 2});
+            expect(scope.treatments.length).toEqual(0);
+
+            scope.add();
+            expect(scope.treatments.length).toEqual(1);
+            expect(scope.treatments[0].effectiveStopDate.getTime() == DateUtil.subtractSeconds("2014-12-02", 1).getTime()).toBeTruthy();
+        });
 
     });
 
@@ -98,21 +118,18 @@ describe("TreatmentController", function () {
             return true;
         };
         it("should do nothing if form is blank", function () {
-            newTreatment.isEditAllowed = false;
             scope.treatment = newTreatment;
             scope.clearForm();
             expect(isSameAs(scope.treatment, newTreatment)).toBeTruthy();
         });
 
         it("should clear treatment object", function () {
-            newTreatment.isEditAllowed = false;
             scope.treatment = {drug: {name:'Calpol'}};
             scope.clearForm();
             expect(isSameAs(scope.treatment, newTreatment)).toBeTruthy();
         });
 
         it("should reset the treatment being edited", function () {
-            newTreatment.isEditAllowed = false;
             scope.treatments = [editTreatment, newTreatment, newTreatment];
             scope.edit(0);
             scope.clearForm();
