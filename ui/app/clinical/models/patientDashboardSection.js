@@ -7,6 +7,7 @@ Bahmni.Clinical.PatientDashboardSection = function (section) {
     this.numberOfVisits = section.numberOfVisits;
     this.isObservation = section.isObservation || false;
     this.scope = section.scope;
+    this.patientAttributes = section.patientAttributes || [];
     if (this.isObservation && section.scope == "latest") {
         this.viewName = "views/dashboardSections/latestObservationSection.html";
     } else if (this.isObservation) {

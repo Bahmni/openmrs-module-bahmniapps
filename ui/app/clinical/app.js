@@ -34,7 +34,8 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
                     'content': { template: '<div ui-view="content"></div><patient-control-panel/>' }
                 },
                 resolve: {
-                    consultationInitialization: function(consultationInitialization, $stateParams) {
+                    initialization: 'initialization',
+                    consultationInitialization: function(initialization, consultationInitialization, $stateParams) {
                     return consultationInitialization($stateParams.patientUuid);
                 }}
             })
