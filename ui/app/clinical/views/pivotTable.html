@@ -1,24 +1,21 @@
 <section ng-if="hasData"class="dashboard-section">
-    <table>
-        <caption class="table-header">{{displayName || diseaseName}}</caption>
+    <h2 class="section-title">{{displayName || diseaseName}}</h2>  
+    <table class="h-scroll">
         <thead>
         <tr>
-            <th>
-            </th>
-            <th ng-repeat="(visitDate,values) in result.tabularData " >
-                {{visitDate | date: 'dd MMM yy'}}
-            </th>
+            <th>Visits</th>
+            <th ng-repeat="conceptName in result.conceptNames">{{conceptName}}</th>
         </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="conceptName in result.conceptNames" class="tree-list-item">
+            <tr ng-repeat="(visitDate,values) in result.tabularData">
                 <td>
-                    {{conceptName}}
-                </td>
-                <td ng-repeat="(visitDate,values) in result.tabularData " ng-class="{'is-abnormal': tabularData[visitDate][conceptName].abnormal}">
+                    <strong>{{visitDate | date: 'dd MMM yy'}}</strong>
+                </td> 
+                <td ng-repeat="conceptName in result.conceptNames" ng-class="{'is-abnormal': tabularData[visitDate][conceptName].abnormal}">
                     {{result.tabularData[visitDate][conceptName].value}}
                 </td>
             </tr>
         </tbody>
-    </table>
+    </table>     
 </section>
