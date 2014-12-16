@@ -50,12 +50,18 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
             return { uuid: investigation.uuid, concept: {uuid: investigation.concept.uuid }, orderTypeUuid: investigation.orderTypeUuid, voided: investigation.voided || false};
         });
 
+        consultation.drugOrders = [];
+        var newlyAddedTreatments = consultation.newlyAddedTreatments;
+        newlyAddedTreatments && newlyAddedTreatments.forEach(function (treatment) {
+            consultation.drugOrders.push(Bahmni.Clinical.DrugOrder.createFromUIObject(treatment));
+        });
+
         encounterData.drugOrders = consultation.drugOrders;
 
         encounterData.disposition = consultation.disposition;
 
         var addObservationsToEncounter = function () {
-            encounterData.observations = encounterData.observations || [];
+            encounterData.observations = consultation.observations || [];
 
             if (consultation.consultationNote) {
                 encounterData.observations.push(consultation.consultationNote);
@@ -63,7 +69,6 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
             if (consultation.labOrderNote) {
                 encounterData.observations.push(consultation.labOrderNote);
             }
-            encounterData.observations = encounterData.observations.concat(consultation.observations);
         };
 
         addObservationsToEncounter();

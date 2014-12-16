@@ -164,19 +164,6 @@ describe("TreatmentController", function () {
     });
     
     describe("saveTreatment()", function () {
-        it("copies treatments object to rootScope", function () {
-            var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
-            drugOrder.durationUnit = {name: "Days"};
-            drugOrder.route = {name: "Orally"};
-            drugOrder.uniformDosingType.dose = "1";
-            drugOrder.doseUnits = "Capsule";
-            drugOrder.uniformDosingType.frequency = {name: "Once a day"};
-            drugOrder.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
-
-            scope.consultation.newlyAddedTreatments = [ drugOrder];
-            scope.consultation.saveHandler.fire();
-            expect(rootScope.consultation.drugOrders.length).toBe(1);
-        });
 
         it("should not save the treatment if a discontinued drug order is added at the same time", function() {
             var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);

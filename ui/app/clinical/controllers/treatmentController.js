@@ -236,14 +236,4 @@ angular.module('bahmni.clinical')
 
             contextChangeHandler.add(contextChange);
 
-            var saveTreatment = function () {
-                $rootScope.consultation.drugOrders = [];
-                var newlyAddedTreatments = $scope.consultation.newlyAddedTreatments;
-
-                newlyAddedTreatments && newlyAddedTreatments.forEach(function (treatment) {
-                    $rootScope.consultation.drugOrders.push(Bahmni.Clinical.DrugOrder.createFromUIObject(treatment));
-                });
-            };
-            $scope.consultation.saveHandler.register(saveTreatment)
-
         }]);

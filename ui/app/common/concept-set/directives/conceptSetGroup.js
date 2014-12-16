@@ -7,26 +7,18 @@ angular.module('bahmni.common.conceptSet')
     $scope.getNormalized = function(conceptName){
         return conceptName.replace(/['\.\s\(\)\/,\\]+/g,"_");
     };
-    $scope.recompile = false;
 
     $scope.computeField = function(conceptSet){
         event.stopPropagation();
 
-        var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
-        $rootScope.consultation.observations = observationFilter.filter($rootScope.consultation.observations);
-        $rootScope.consultation.consultationNote = observationFilter.filter([$rootScope.consultation.consultationNote])[0];
-        $rootScope.consultation.labOrderNote = observationFilter.filter([$rootScope.consultation.labOrderNote])[0];
-
-        var encounterData =new Bahmni.Clinical.EncounterTransactionMapper().map($rootScope.consultation, $rootScope.patient, sessionService.getLoginLocationUuid());
+        var encounterData =new Bahmni.Clinical.EncounterTransactionMapper().map(angular.copy($rootScope.consultation), $rootScope.patient, sessionService.getLoginLocationUuid());
         encounterData = encounterService.buildEncounter(encounterData);
 
         var conceptSetData = {name: conceptSet.conceptName, uuid: conceptSet.uuid};
         var data = {bahmniEncounterTransaction: encounterData, conceptSetData: conceptSetData};
 
         spinner.forPromise(conceptSetService.getComputedValue(data)).then(function (response) {
-            $rootScope.consultation.observations = response.observations;
-            $scope.recompile = $scope.recompile ? false : true;
-
+            copyValues($rootScope.consultation.observations, response.observations);
             var drugOrderAppConfig = appService.getAppDescriptor().getConfigValue("drugOrder") || {};
             $rootScope.consultation.newlyAddedTreatments = [];
             response.drugOrders.forEach(function(drugOrder){
@@ -34,6 +26,15 @@ angular.module('bahmni.common.conceptSet')
             });
         });
     };
+    var copyValues = function(existingObservations, modifiedObservations) {
+        existingObservations.forEach(function(observation, index) {
+            observation.value = modifiedObservations[index].value;
+            if(observation.groupMembers && observation.groupMembers.length > 0) {
+                copyValues(observation.groupMembers, modifiedObservations[index].groupMembers);
+            }
+        });
+    };
+
     contextChangeHandler.add($scope.validationHandler.validate);
 }])
 .directive('conceptSetGroup', function () {
@@ -57,8 +58,7 @@ angular.module('bahmni.common.conceptSet')
                             '<button type="button" ng-if="conceptSet.showComputeButton()" ng-click="computeField(conceptSet)" class="fr btn-small">Compute</button>' +
                         '</h2>' +
                     '</div>' +
-                    '<concept-set ng-if="conceptSet.isLoaded && !recompile" ng-show="conceptSet.isOpen" concept-set-name="conceptSet.conceptName" required="conceptSet.options.required" observations="observations" show-title="false" validation-handler="validationHandler"></concept-set>' +
-                    '<concept-set ng-if="conceptSet.isLoaded && recompile" ng-show="conceptSet.isOpen" concept-set-name="conceptSet.conceptName" required="conceptSet.options.required" observations="observations" show-title="false" validation-handler="validationHandler"></concept-set>' +
+                    '<concept-set ng-if="conceptSet.isLoaded" ng-show="conceptSet.isOpen" concept-set-name="conceptSet.conceptName" required="conceptSet.options.required" observations="observations" show-title="false" validation-handler="validationHandler"></concept-set>' +
                 '</div>'
 
     }
