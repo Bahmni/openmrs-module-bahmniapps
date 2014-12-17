@@ -111,7 +111,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 tempConsultation.observations = observationFilter.filter(tempConsultation.observations);
                 tempConsultation.consultationNote = observationFilter.filter([tempConsultation.consultationNote])[0];
                 tempConsultation.labOrderNote = observationFilter.filter([tempConsultation.labOrderNote])[0];
-
+                //TODO: Mihir : Keep the saveHandler fire here, confusing to have it in the mapper;
                 var encounterData = new Bahmni.Clinical.EncounterTransactionMapper().map(tempConsultation, $scope.patient, sessionService.getLoginLocationUuid());
 
                 spinner.forPromise(encounterService.create(encounterData).then(function () {
