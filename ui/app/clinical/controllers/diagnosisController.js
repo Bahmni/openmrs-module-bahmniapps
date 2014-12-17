@@ -127,7 +127,7 @@ angular.module('bahmni.clinical')
 
             var saveDiagnosis = function () {
                 setDiagnosis();
-                $scope.newlyAddedDiagnoses = [];
+                //$scope.newlyAddedDiagnoses = [];
             };
 
             $scope.consultation.saveHandler.register(saveDiagnosis);
