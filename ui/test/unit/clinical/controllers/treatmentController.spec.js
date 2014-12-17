@@ -84,6 +84,16 @@ describe("TreatmentController", function () {
             expect(scope.treatments.length).toEqual(1);
             expect(scope.treatments[0].effectiveStopDate.getTime() == DateUtil.subtractSeconds("2014-12-02", 1).getTime()).toBeTruthy();
         });
+        it("should allow to add new drug order if new order is scheduled to end on same day as start date of already existing order", function(){
+            scope.treatments = [Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [],{drug: {name:"abc", uuid: "123"}, effectiveStartDate: DateUtil.parse("2014-12-02"), effectiveStopDate: DateUtil.parse("2014-12-04"), durationInDays: 2})];
+            scope.treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [],{drug: {name:"abc", uuid: "123"}, effectiveStartDate: DateUtil.parse("2014-11-30"), effectiveStopDate: DateUtil.parse("2014-12-02"), durationInDays: 2});
+            expect(scope.treatments.length).toEqual(1);
+
+            scope.add();
+            expect(scope.treatments.length).toEqual(2);
+            var drugOrderToBeSaved = scope.treatments.filter(function(treatment) {return DateUtil.isSameDate(treatment.effectiveStartDate, "2014-11-30")})[0];
+            expect(DateUtil.isSameDateTime(drugOrderToBeSaved.effectiveStopDate,DateUtil.subtractSeconds("2014-12-02", 1))).toBeTruthy();
+        });
 
     });
 

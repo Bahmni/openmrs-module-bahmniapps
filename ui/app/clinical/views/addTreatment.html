@@ -59,7 +59,8 @@
             </div>
 
             <input class="form-field start-date" type="date"
-                   ng-model="treatment.uiStartDate" min="{{today | date:'yyyy-MM-dd'}}">
+                   ng-model="treatment.effectiveStartDate" min="{{today | date:'yyyy-MM-dd'}}">
+
 
             <div class="quantity-widget">
                 <input class="form-field quantity" type="number" min="0.1" placeholder="Qty" step="any"

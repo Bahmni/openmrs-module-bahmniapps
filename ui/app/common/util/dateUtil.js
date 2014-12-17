@@ -20,9 +20,7 @@ Bahmni.Common.Util.DateUtil = {
     },
 
 	addDays: function (date, days) {
-		var newDate = new Date(date);
-		newDate.setDate(date.getDate() + days);
-		return newDate;
+        return moment(date).add(days, 'day').toDate();
 	},
 
     addSeconds: function (date, seconds) {

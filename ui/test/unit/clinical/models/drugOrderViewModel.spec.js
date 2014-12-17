@@ -679,15 +679,6 @@ describe("drugOrderViewModel", function () {
             expect(refilledTreatment.doseUnits).toBe("Tablet(s)");
             expect(refilledTreatment.route).toBe("Oral");
         });
-
-        it("should set effective start date to effective stop date + 1 second for refill orders", function(){
-            var treatment = sampleTreatment({}, []);
-            treatment.effectiveStopDate = DateUtil.now();
-            treatment.uiStartDate =  DateUtil.now();
-            var expectedEffectiveStartDate = DateUtil.addSeconds(treatment.effectiveStopDate, 1);
-
-            expect(treatment.effectiveStartDate).toEqual(expectedEffectiveStartDate);
-        });
     });
 
     describe("edit", function () {

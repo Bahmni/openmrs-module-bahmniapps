@@ -24,22 +24,6 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         enumerable: true
     });
 
-
-    Object.defineProperty(this, 'uiStartDate', {
-        get: function () {
-            return moment(self.effectiveStartDate).format('YYYY-MM-DD');
-        },
-        set : function(value){
-            self.effectiveStartDate = value;
-            if(self.effectiveStopDate && DateUtil.isSameDate(self.effectiveStartDate, self.effectiveStopDate)){
-                var oldEffectiveStopDate = new Date(self.effectiveStopDate);
-                var oldEffectiveStartDate = new Date(self.effectiveStartDate);
-                self.effectiveStartDate = oldEffectiveStopDate >= DateUtil.today() ? DateUtil.addSeconds(oldEffectiveStartDate, 1) : DateUtil.today();
-            }
-        }
-    });
-
-
     Object.defineProperty(this, 'uniformDosingDoseUnits', {
         get: function() {
             return this.isUniformDosingType() ? this.doseUnits : null;
@@ -67,7 +51,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
     this.route = this.route || undefined;
     this.durationUnit = this.durationUnit || appConfig.defaultDurationUnit;
     this.instructions = this.instructions || appConfig.defaultInstructions;
-    this.effectiveStartDate = this.effectiveStartDate || DateUtil.now();
+    this.effectiveStartDate = this.effectiveStartDate || DateUtil.getDateWithoutTime(DateUtil.now());
     this.frequencyType = this.frequencyType || Bahmni.Clinical.Constants.dosingTypes.uniform;
     this.doseUnits = this.doseUnits || undefined;
     this.uniformDosingType = this.uniformDosingType || {};
@@ -338,11 +322,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         //this field is just a flag that you turn on when revising the first time. It is turned off at the first
         //call of calculateQuantityAndUnit(). Bad code. Needs change.
         newDrugOrder.quantityEnteredViaEdit = true;
-
-        if (newDrugOrder.effectiveStartDate < Date.now()) {
-            newDrugOrder.uiStartDate = Date.now();
-        }
-        //newDrugOrder.uiStartDate = newDrugOrder.effectiveStartDate < Date.now() ? Date.now() : newDrugOrder.uiStartDate;
+        newDrugOrder.effectiveStartDate = newDrugOrder.effectiveStartDate < Date.now()? Date.now() : newDrugOrder.effectiveStartDate;
 
         modifyForReverseSyncIfRequired(newDrugOrder);
         defaultQuantityUnit(newDrugOrder);

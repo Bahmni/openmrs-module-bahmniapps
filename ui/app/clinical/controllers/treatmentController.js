@@ -104,8 +104,7 @@ angular.module('bahmni.clinical')
                     $scope.treatment.isBeingEdited = false;
                 }
                 var newDrugOrder = $scope.treatment;
-                    setEffectiveDates(newDrugOrder, $rootScope.activeAndScheduledDrugOrders);
-                    //setEffectiveDates(newDrugOrder, $rootScope.activeAndScheduledDrugOrders + scope.treatments);
+                    setEffectiveDates(newDrugOrder, $rootScope.activeAndScheduledDrugOrders.concat($scope.treatments));
 
                     var alreadyActiveSimilarOrders = $rootScope.activeAndScheduledDrugOrders.filter(function(drugOrder){
                         return (drugOrder.drug.uuid==newDrugOrder.drug.uuid && drugOrder.overlappingScheduledWith(newDrugOrder));
@@ -132,6 +131,7 @@ angular.module('bahmni.clinical')
                         }
                         else if(DateUtil.isSameDate(existingDrugOrder.effectiveStopDate, newDrugOrder.effectiveStartDate)){ //compare date part only of datetime
                             newDrugOrder.effectiveStartDate = DateUtil.addSeconds(existingDrugOrder.effectiveStopDate, 1) ;
+                            newDrugOrder.effectiveStopDate= DateUtil.addDays(DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
                         }
                     }
                 });
