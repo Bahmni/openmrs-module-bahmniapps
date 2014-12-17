@@ -33,6 +33,10 @@ Bahmni.ConceptSet.BooleanObservation = function(observation) {
         return "buttonselect";
     };
 
+    this.isComputedAndEditable = function() {
+        return this.concept.conceptClass === "Computed/Editable";
+    };
+
     this.atLeastOneValueSet = function() {
         return true;
     };

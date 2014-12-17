@@ -107,3 +107,15 @@ form select, .form select { min-width: 100px; }
 /********* form element styling end***********/
 
 form p strong, .form p strong { display: inline; }
+
+.computed-field {
+    background: $lightestGray;
+    border: 2px solid darken($bahmniPrimaryBtnColor, 5%);
+    box-sizing: border-box;
+    outline: 0;
+    &:focus {
+        background: $white;
+    }
+}
+
+.compute-btn, .btn-small {color: darken($bahmniPrimaryBtnColor, 15%);}

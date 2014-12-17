@@ -184,6 +184,10 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
         return this.getDataTypeName();
     },
 
+    isComputedAndEditable: function() {
+        return this.concept.conceptClass === "Computed/Editable";
+    },
+
     atLeastOneValueSet: function () {
         return this.primaryObs.hasValue();
     },

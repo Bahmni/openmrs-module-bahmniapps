@@ -72,6 +72,10 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
         obs.hidden = true;
     };
 
+    this.isComputedAndEditable = function() {
+        return this.concept.conceptClass === "Computed/Editable";
+    };
+
     this.hasValueOf = function (answer) {
         return self.selectedObs[answer.name] && !self.selectedObs[answer.name].voided;
     };
@@ -133,7 +137,7 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
 
     var buildObservation = function(concept) {
         return { concept: concept, units: concept.units, label: concept.shortName || concept.name, possibleAnswers: self.concept.answers, groupMembers: [], comment: null};
-    }
+    };
 
     this.getValues = function(){
         var values = [];

@@ -19,17 +19,17 @@
                 <div ng-switch-when="html5InputDataType">
                     <input id="{{observation.uniqueId}}" obs-constraints obs="observation.primaryObs"
                            ng-if="!observation.primaryObs.isNumeric()"
-                           ng-model="observation.value" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}"/>
+                           ng-model="observation.value" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}"/>
 
                     <input id="{{observation.uniqueId}}" obs-constraints obs="observation.primaryObs" ng-if="observation.primaryObs.isNumeric()"
                            ng-model="observation.value"
                            ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}" integer="true"/>
                 </div>
 
-                <textarea id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="!observation.primaryObs.isConciseText()" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}">
+                <textarea id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="!observation.primaryObs.isConciseText()" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet), 'computed-field': observation.isComputedAndEditable()}">
 
                 </textarea>
-                <input type="text" id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="observation.primaryObs.isConciseText()" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}">
+                <input type="text" id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="observation.primaryObs.isConciseText()" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet), 'computed-field': observation.isComputedAndEditable()}">
 
 <!-- Dropdowns won't be supported in release - 3
                 <select ng-switch-when="dropdown" foo-bar ng-model="observation.value"
@@ -56,7 +56,7 @@
                     </div>
                 </div>
 
-                <div ng-switch-when="autocomplete"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}" class="autocomplete">
+                <div ng-switch-when="autocomplete"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet), 'computed-field': observation.isComputedAndEditable()}" class="autocomplete">
                     <input type="hidden" ui-select2="selectOptions(observation.primaryObs.concept)" ng-model="observation.primaryObs.value"/>
                 </div>
 
@@ -71,7 +71,7 @@
                 <button type="button" ng-model="observation.abnormalObs.value" class="small-btn accept-btn"
                         ng-disabled="!observation.primaryObs.hasValue()" ng-class="{'active': observation.abnormalObs.value}" ng-click="observation.toggleAbnormal()"><span></span>Abnormal</button>
             </div>
-            <div class="checkbox-inline" ng-if="observation.durationObs" ng-class="{'duration': observation.durationObs}">
+            <div class="checkbox-inline" ng-if="observation.durationObs" ng-class="{'duration': observation.durationObs, 'computed-field': observation.isComputedAndEditable()}">
                 <span>for</span><duration ng-model="observation.durationObs.value" disabled="!observation.primaryObs.hasValue()" illegal-value="observation.isDurationRequired() && !observation.hasDuration()"></duration>
             </div>
             <button type="button" toggle="observation.showComment" class="comment-toggle fr" ng-class="{'has-notes': observation.comment}">
@@ -103,17 +103,16 @@
                 <div ng-switch-when="html5InputDataType">
                     <input id="{{observation.uniqueId}}" obs-constraints obs="observation"
                            ng-model="observation.value" ng-if="observation.isNumeric()"
-                           ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}" integer="true"/>
+                           ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}" integer="true"/>
 
                     <input id="{{observation.uniqueId}}" obs-constraints obs="observation" ng-if="!observation.isNumeric()"
-                           ng-model="observation.value" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}"/>
+                           ng-model="observation.value" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}"/>
                 </div>
 
-                <textarea id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="!observation.isConciseText() && !observation.isComputedAndEditable()"
-                          ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}"></textarea>
+                <textarea id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="!observation.isConciseText()"
+                          ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}"></textarea>
                 <input type="text" id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="observation.isConciseText()"
-                       ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}">
-                <textarea id="{{observation.uniqueId}}" disabled ng-switch-when="text" ng-if="observation.isComputedAndEditable()" ng-model="observation.value" ng-class="{'disabled': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}"></textarea>
+                       ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}">
                 <!--{{observation.groupMembers}}-->
                 <div ng-switch-when="grid">
                     <div  ng-repeat="member in observation.groupMembers" class="grid-row">
@@ -162,11 +161,11 @@
 
 
                 <input id="{{observation.uniqueId}}" ng-switch-when="freeTextAutocomplete" class="concept-name" ng-model="observation.value" concept-autocomplete
-                       ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}"
+                       ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}"
                        coded-concept-name="observation.getConceptUIConfig().answersConceptName"
                        blur-on-select="false"/>
 
-                <div ng-switch-when="autocomplete"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}" class="autocomplete">
+                <div ng-switch-when="autocomplete"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}" class="autocomplete">
                     <input type="hidden" ui-select2="selectOptions(observation.concept)" ng-model="observation.value"/>
                 </div>
 

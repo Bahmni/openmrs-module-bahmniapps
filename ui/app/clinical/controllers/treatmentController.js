@@ -31,7 +31,8 @@ angular.module('bahmni.clinical')
                 {name: "Hour(s)", factor: 1 / 24},
                 {name: "Day(s)", factor: 1},
                 {name: "Week(s)", factor: 7},
-                {name: "Month(s)", factor: 30}
+                {name: "Month(s)", factor: 30},
+                {name: "Minute(s)", factor: 1/(24*60)}
             ];
 
             var newTreatment = function () {
