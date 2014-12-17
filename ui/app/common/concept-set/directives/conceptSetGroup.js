@@ -1,6 +1,6 @@
 angular.module('bahmni.common.conceptSet')
-.controller('ConceptSetGroupController', ['$scope', 'appService', 'contextChangeHandler', 'spinner', 'conceptSetService', '$rootScope', 'sessionService', 'encounterService', 'treatmentConfig',
-        function ($scope, appService, contextChangeHandler, spinner, conceptSetService, $rootScope, sessionService, encounterService, treatmentConfig) {
+.controller('ConceptSetGroupController', ['$scope', 'appService', 'contextChangeHandler', 'spinner', 'conceptSetService', '$rootScope', 'sessionService', 'encounterService', 'treatmentConfig', 'messagingService',
+        function ($scope, appService, contextChangeHandler, spinner, conceptSetService, $rootScope, sessionService, encounterService, treatmentConfig, messagingService) {
 
     $scope.validationHandler = new Bahmni.ConceptSet.ConceptSetGroupValidationHandler($scope.conceptSets);
 
@@ -18,6 +18,7 @@ angular.module('bahmni.common.conceptSet')
         var data = {bahmniEncounterTransaction: encounterData, conceptSetData: conceptSetData};
 
         spinner.forPromise(conceptSetService.getComputedValue(data)).then(function (response) {
+            response = response.data;
             copyValues($rootScope.consultation.observations, response.observations);
             var drugOrderAppConfig = appService.getAppDescriptor().getConfigValue("drugOrder") || {};
             $rootScope.consultation.newlyAddedTreatments = [];

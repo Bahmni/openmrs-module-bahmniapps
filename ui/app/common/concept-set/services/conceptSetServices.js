@@ -11,17 +11,12 @@ angular.module('bahmni.common.conceptSet')
             	});
         };
 
-        var getComputedValue = function(observations){
+        var getComputedValue = function(encounterData){
             var url = Bahmni.Common.Constants.encounterModifierUrl;
-            var deferred = $q.defer();
-            var data = observations;
-            $http.post(url, data, {
+            return $http.post(url, encounterData, {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
-            }).then(function (response) {
-                deferred.resolve(response.data);
             });
-            return deferred.promise;
         };
 
         return {
