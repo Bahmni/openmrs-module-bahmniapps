@@ -107,13 +107,15 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 }
 
                 var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
-                $rootScope.consultation.observations = observationFilter.filter($rootScope.consultation.observations);
-                $rootScope.consultation.consultationNote = observationFilter.filter([$rootScope.consultation.consultationNote])[0];
-                $rootScope.consultation.labOrderNote = observationFilter.filter([$rootScope.consultation.labOrderNote])[0];
+                var tempConsultation = angular.copy($rootScope.consultation);
+                tempConsultation.observations = observationFilter.filter(tempConsultation.observations);
+                tempConsultation.consultationNote = observationFilter.filter([tempConsultation.consultationNote])[0];
+                tempConsultation.labOrderNote = observationFilter.filter([tempConsultation.labOrderNote])[0];
 
-                var encounterData =new Bahmni.Clinical.EncounterTransactionMapper().map($rootScope.consultation, $scope.patient, sessionService.getLoginLocationUuid());
+                var encounterData = new Bahmni.Clinical.EncounterTransactionMapper().map(tempConsultation, $scope.patient, sessionService.getLoginLocationUuid());
 
                 spinner.forPromise(encounterService.create(encounterData).then(function () {
+                    $rootScope.consultation = tempConsultation;
                     clearRootScope();
                     $state.transitionTo($state.current, $state.params, {
                         reload: true,
