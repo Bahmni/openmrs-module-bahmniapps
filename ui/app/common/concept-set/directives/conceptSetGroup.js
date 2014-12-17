@@ -29,9 +29,10 @@ angular.module('bahmni.common.conceptSet')
     };
     var copyValues = function(existingObservations, modifiedObservations) {
         existingObservations.forEach(function(observation, index) {
-            observation.value = modifiedObservations[index].value;
             if(observation.groupMembers && observation.groupMembers.length > 0) {
                 copyValues(observation.groupMembers, modifiedObservations[index].groupMembers);
+            } else {
+                observation.value = modifiedObservations[index].value;
             }
         });
     };
