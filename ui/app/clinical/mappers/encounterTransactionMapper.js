@@ -21,7 +21,7 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
     };
 
     this.map = function (consultation, patient, locationUuid) {
-        consultation.saveHandler.fire();
+
         var encounterData = {};
         encounterData.locationUuid = locationUuid;
         encounterData.patientUuid = patient.uuid;
@@ -55,6 +55,9 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
         newlyAddedTreatments && newlyAddedTreatments.forEach(function (treatment) {
             consultation.drugOrders.push(Bahmni.Clinical.DrugOrder.createFromUIObject(treatment));
         });
+        if(consultation.removableDrugs) {
+            consultation.drugOrders = consultation.drugOrders.concat(consultation.removableDrugs);
+        }
 
         encounterData.drugOrders = consultation.drugOrders;
 

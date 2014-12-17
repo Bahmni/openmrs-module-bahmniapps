@@ -87,6 +87,7 @@ angular.module('bahmni.clinical')
             };
 
             var init = function () {
+                $scope.consultation.removableDrugs = $scope.consultation.removableDrugs || [];
                 $scope.consultation.discontinuedDrugs = $scope.consultation.discontinuedDrugs || [];
                 if (!$scope.consultation.drugOrderGroups) {
                     spinner.forPromise(getActiveDrugOrders().then(function(data){
@@ -153,7 +154,7 @@ angular.module('bahmni.clinical')
                 removableOrder.previousOrderUuid = removableOrder.uuid;
                 removableOrder.uuid = undefined;
                 removableOrder.dateActivated = null;
-                $rootScope.consultation.drugOrders.push(removableOrder);
+                $scope.consultation.removableDrugs.push(removableOrder);
             };
 
             var saveTreatment = function () {

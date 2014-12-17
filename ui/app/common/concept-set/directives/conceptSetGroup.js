@@ -10,7 +10,7 @@ angular.module('bahmni.common.conceptSet')
 
     $scope.computeField = function(conceptSet){
         event.stopPropagation();
-
+        $rootScope.consultation.saveHandler.fire();
         var encounterData =new Bahmni.Clinical.EncounterTransactionMapper().map(angular.copy($rootScope.consultation), $rootScope.patient, sessionService.getLoginLocationUuid());
         encounterData = encounterService.buildEncounter(encounterData);
 
