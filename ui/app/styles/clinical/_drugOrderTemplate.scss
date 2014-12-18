@@ -1,0 +1,20 @@
+.drug-order-template {
+	background: $clinicalInfoMessageBg;
+	margin-top: 10px;
+	clear: both;
+	overflow: auto;
+	text-align: center;
+	padding: 7px 5px 5px 5px;
+	form {
+		margin: 0 auto;
+		display: inline-block;
+		select {
+			width: 250px;
+			float: left;
+			margin: 0 5px;
+			height: 35px;
+			font-family: $primaryBoldFont;
+			color: $bahmniSectionHeaderColor;
+		}
+	}	
+}
