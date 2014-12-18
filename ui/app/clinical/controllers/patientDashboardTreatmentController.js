@@ -1,5 +1,8 @@
 angular.module('bahmni.clinical')
-    .controller('PatientDashboardTreatmentController', ['$q', '$scope', '$stateParams', 'TreatmentService', 'spinner', 'clinicalAppConfigService', function ($q, $scope, $stateParams, treatmentService, spinner, clinicalAppConfigService) {
+
+    .controller('PatientDashboardTreatmentController', ['$q', '$scope', '$stateParams', 'TreatmentService', 'spinner', 'clinicalAppConfigService', 'retrospectiveEntryService',
+     function ($q, $scope, $stateParams, treatmentService, spinner, clinicalAppConfigService, retrospectiveEntryService) {
+
         $scope.drugOrderSections = {
             "active": {displayName: "Active / Scheduled Prescription", orders: null},
             "past": {displayName: "Last Prescription", orders: null}
@@ -14,6 +17,7 @@ angular.module('bahmni.clinical')
         var dateCompare = function (drugOrder1, drugOrder2) {
             return drugOrder1.effectiveStartDate > drugOrder2.effectiveStartDate ? -1 : 1;
         };
+
         var getActiveDrugOrders = function () {
             return treatmentService.getActiveDrugOrders($scope.patientUuid).then(function (drugOrders) {
                     var prescribedDrugOrders = drugOrders.map(Bahmni.Clinical.DrugOrderViewModel.createFromContract);
@@ -23,6 +27,7 @@ angular.module('bahmni.clinical')
 
         var getLastPrescribedDrugOrders = function () {
             var numberOfVisits = $scope.section.numberOfVisits || 1;
+
             return treatmentService.getPrescribedDrugOrders($scope.patientUuid, false, numberOfVisits).then(function (drugOrders) {
                 var prescribedDrugOrders = drugOrders.map(Bahmni.Clinical.DrugOrderViewModel.createFromContract);
                 $scope.drugOrderSections.past.orders = prescribedDrugOrders.sort(dateCompare);
@@ -44,7 +49,8 @@ angular.module('bahmni.clinical')
         };
 
         spinner.forPromise($q.all(getPromises()));
-    }]).controller('PatientDashboardAllTreatmentController', ['$scope', '$stateParams', 'TreatmentService', 'spinner', function ($scope, $stateParams, treatmentService, spinner) {
+    }]).controller('PatientDashboardAllTreatmentController', ['$scope', '$stateParams', 'TreatmentService', 'spinner', 'retrospectiveEntryService',
+            function ($scope, $stateParams, treatmentService, spinner, retrospectiveEntryService) {
         var init = function () {
             return treatmentService.getPrescribedDrugOrders($stateParams.patientUuid, true).then(function (drugOrders) {
                 var dateUtil = Bahmni.Common.Util.DateUtil;

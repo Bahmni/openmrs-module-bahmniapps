@@ -4,7 +4,8 @@ describe("patient dashboard controller", function () {
 
     beforeEach(module('bahmni.clinical'));
 
-    var _diseaseTemplateService, scope, _clinicalAppConfigService;
+    var _diseaseTemplateService, scope, _clinicalAppConfigService, _retrospectiveEntryService;
+
     var fetchDiseaseTemplatePromise;
 
     var patientDashboardSections = [
@@ -28,6 +29,9 @@ describe("patient dashboard controller", function () {
             fetchDiseaseTemplatePromise = specUtil.respondWith(diseaseTemplates);
             return fetchDiseaseTemplatePromise;
         });
+        var retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(Date.now());
+        _retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['getRetrospectiveEntry']);
+        _retrospectiveEntryService.getRetrospectiveEntry.and.returnValue(retrospectiveEntry);
     }));
 
     beforeEach(inject(function ($controller, $rootScope) {
@@ -37,7 +41,8 @@ describe("patient dashboard controller", function () {
             diseaseTemplateService: _diseaseTemplateService,
             $stateParams: jasmine.createSpy(),
             encounterService: jasmine.createSpy(),
-            clinicalAppConfigService: _clinicalAppConfigService
+            clinicalAppConfigService: _clinicalAppConfigService,
+            retrospectiveEntryService: _retrospectiveEntryService
         });
     }));
 

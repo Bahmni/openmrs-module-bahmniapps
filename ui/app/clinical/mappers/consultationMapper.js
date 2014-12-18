@@ -12,7 +12,7 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
         });
 
         var treatmentDrugs = nonVoidedDrugOrders.map(function(drugOrder){
-            return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder)
+            return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder);
         });
         var consultationNote = mapSpecialObservation(encounterTransaction.observations, consultationNoteConcept);
 

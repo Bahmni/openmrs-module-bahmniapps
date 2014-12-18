@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('PatientDashboardController', ['$scope', '$rootScope', '$location', '$stateParams', 
-        'encounterService', 'clinicalAppConfigService', 'diseaseTemplateService', 'configurations',
+    .controller('PatientDashboardController', ['$scope', '$rootScope', '$location', '$stateParams',
+        'encounterService', 'clinicalAppConfigService', 'diseaseTemplateService', 'configurations', 'retrospectiveEntryService',
         function ($scope, $rootScope, $location, $stateParams, encounterService, 
-                  clinicalAppConfigService, diseaseTemplateService, configurations) {
-            
+                  clinicalAppConfigService, diseaseTemplateService, configurations, retrospectiveEntryService) {
+
+
             $scope.patientUuid = $stateParams.patientUuid;
             $scope.patientSummary = {};
             $scope.activeVisitData = {};
@@ -40,7 +41,8 @@ angular.module('bahmni.clinical')
             var getEncountersForVisit = function (visitUuid) {
                 encounterService.search(visitUuid).then(function (encounterTransactionsResponse) {
                     $scope.visit = Bahmni.Clinical.Visit.create(encounterTransactionsResponse.data, configurations.consultationNoteConcept(), $scope.labOrderNotesConcept, configurations.encounterConfig(),
-                        configurations.allTestsAndPanelsConcept(), $scope.obsIgnoreList, visitUuid, conceptSetUiConfigService.getConfig());
+                        configurations.allTestsAndPanelsConcept(), $scope.obsIgnoreList, visitUuid, conceptSetUiConfigService.getConfig(), retrospectiveEntryService.getRetrospectiveEntry().encounterDate);
+
                 });
             };
 

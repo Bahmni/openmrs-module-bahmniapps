@@ -29,6 +29,7 @@ module.exports = function (config) {
             'app/common/constants.js',
             'app/**/init.js',
             'app/**/constants.js',
+            'app/common/domain/services/retrospectiveEntryService.js',
             'app/common/**/*.js',
             'app/adt/**/*.js',
             'app/clinical/**/*.js',

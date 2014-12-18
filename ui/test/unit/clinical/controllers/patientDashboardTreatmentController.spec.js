@@ -7,6 +7,7 @@ describe("PatientDashboardTreatmentController", function () {
     var scope;
     var stateParams;
     var _clinicalAppConfigService;
+    var _retrospectiveEntryService;
 
     var treatmentSection = {
         "title": "Treatment",
@@ -23,10 +24,15 @@ describe("PatientDashboardTreatmentController", function () {
         _clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getPatientDashBoardSectionByName']);
         _clinicalAppConfigService.getPatientDashBoardSectionByName.and.returnValue(treatmentSection);
 
+        var retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(Date.now());
+        _retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['getRetrospectiveEntry']);
+        _retrospectiveEntryService.getRetrospectiveEntry.and.returnValue(retrospectiveEntry);
+
         $controller('PatientDashboardTreatmentController', {
             $scope: scope,
             $stateParams: stateParams,
-            clinicalAppConfigService: _clinicalAppConfigService
+            clinicalAppConfigService: _clinicalAppConfigService,
+            retrospectiveEntryService : _retrospectiveEntryService
 
         });
     }));

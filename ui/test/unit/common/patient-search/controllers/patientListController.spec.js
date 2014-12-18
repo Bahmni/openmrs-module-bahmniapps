@@ -2,7 +2,7 @@
 
 describe("PatientListController", function () {
         var _spinner, _patientService, _appService;
-        var controller, scope, findPatientsPromise, searchPatientsPromise;
+        var controller, scope, findPatientsPromise, searchPatientsPromise, retrospectiveEntryService;
         var stateParams = { location: "Ganiyari"};
 
         beforeEach(module('bahmni.common.patientSearch'));
@@ -64,6 +64,10 @@ describe("PatientListController", function () {
             scope = $rootScope.$new();
             $rootScope.patientConfig = Bahmni.Registration.PatientConfig();
             $rootScope.currentProvider = {uuid: "1111-2222"}
+
+            var retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(Date.now());
+            retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['getRetrospectiveEntry']);
+            retrospectiveEntryService.getRetrospectiveEntry.and.returnValue(retrospectiveEntry);
         }));
 
         var setUp = function () {
@@ -73,7 +77,8 @@ describe("PatientListController", function () {
                     patientService: _patientService,
                     appService: _appService,
                     spinner: _spinner,
-                    $stateParams: stateParams
+                    $stateParams: stateParams,
+                    retrospectiveEntryService: retrospectiveEntryService
                 });
             });
         };

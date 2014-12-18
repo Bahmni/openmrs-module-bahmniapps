@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('bahmni.clinical')
+
     .controller('TreatmentController', ['$scope', '$rootScope', 'TreatmentService', 'contextChangeHandler', 'treatmentConfig', 'DrugService', '$timeout', 
-        'clinicalAppConfigService','ngDialog', '$window',
+        'clinicalAppConfigService','ngDialog', '$window', 'retrospectiveEntryService',
         function ($scope, $rootScope, treatmentService, contextChangeHandler, treatmentConfig, drugService, $timeout, 
-                  clinicalAppConfigService, ngDialog, $window) {
+                  clinicalAppConfigService, ngDialog, $window, retrospectiveEntryService) {
+
             $scope.treatments = $scope.consultation.newlyAddedTreatments || [];
             $scope.treatmentConfig = treatmentConfig;
             $scope.treatmentActionLinks = clinicalAppConfigService.getTreatmentActionLink();
@@ -38,12 +40,20 @@ angular.module('bahmni.clinical')
             ];
 
             var newTreatment = function () {
-                return new Bahmni.Clinical.DrugOrderViewModel(drugOrderAppConfig, $scope.treatmentConfig);
+
+                var newTreatment = new Bahmni.Clinical.DrugOrderViewModel(drugOrderAppConfig, $scope.treatmentConfig, null, retrospectiveEntryService.getRetrospectiveEntry().encounterDate);
+                newTreatment.isEditAllowed = false;
+                return newTreatment;
             };
 
-            $scope.today = new Date();
+            //$scope.today = new Date();
+            $scope.today = retrospectiveEntryService.getRetrospectiveEntry().encounterDate;
+            $rootScope.$watch('retrospectiveEntry.encounterDate', function(){
+                $scope.today = $rootScope.retrospectiveEntry.encounterDate;
+            });
 
             $scope.treatment = $scope.consultation.incompleteTreatment || newTreatment();
+            $scope.treatment.effectiveStartDate = retrospectiveEntryService.getRetrospectiveEntry().encounterDate;
             $scope.treatmentConfig.durationUnits.forEach(function (durationUnit) {
                 if (_.isEqual(durationUnit, $scope.treatment.durationUnit)) {
                     $scope.treatment.durationUnit = durationUnit;

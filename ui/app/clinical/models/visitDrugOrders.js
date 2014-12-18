@@ -20,7 +20,7 @@ Bahmni.Clinical.VisitDrugOrder = (function () {
         }
     };
 
-    VisitDrugOrder.create = function (encounterTransactions, admissionDate, dischargeDate) {
+    VisitDrugOrder.create = function (encounterTransactions, admissionDate, dischargeDate, encounterDate) {
         var nameToSort = function(drugOrder) {
             return drugOrder.drug.name;
         };

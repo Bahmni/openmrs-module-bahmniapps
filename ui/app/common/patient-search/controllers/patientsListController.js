@@ -1,14 +1,17 @@
 'use strict';
 
 angular.module('bahmni.common.patientSearch')
-.controller('PatientsListController', ['$scope', '$window', 'patientService', '$rootScope', 'appService', 'spinner', '$stateParams',
-    function ($scope, $window, patientService, $rootScope, appService, spinner, $stateParams) {
+.controller('PatientsListController', ['$scope', '$window', 'patientService', '$rootScope', 'appService', 'spinner', '$stateParams', 'retrospectiveEntryService',
+    function ($scope, $window, patientService, $rootScope, appService, spinner, $stateParams, retrospectiveEntryService) {
         var initialize = function () {
             var searchTypes = appService.getAppDescriptor().getExtensions("org.bahmni.patient.search", "config").map(mapExtensionToSerachType);
             $scope.search = new Bahmni.Common.PatientSearch.Search(searchTypes);
             $scope.search.markPatientEntry();
             $scope.$watch('search.searchType', fetchPatients);
+
         };
+
+        $scope.today = Bahmni.Common.Util.DateUtil.getDateWithoutTime(Bahmni.Common.Util.DateUtil.now());
 
         $scope.searchPatients = function () {
             return spinner.forPromise(patientService.search($scope.search.searchParameter)).then(function (response) {
@@ -38,7 +41,7 @@ angular.module('bahmni.common.patientSearch')
         
         var fetchPatients = function () {
             if($scope.search.isCurrentSearchLookUp()) {
-                var params = { q: $scope.search.searchType.handler, v: "full", provider_uuid: $rootScope.currentProvider.uuid }
+                var params = { q: $scope.search.searchType.handler, v: "full", provider_uuid: $rootScope.currentProvider.uuid };
                 return spinner.forPromise(patientService.findPatients(params)).then(function (response) {
                     $scope.search.updatePatientList(response.data);
                 })

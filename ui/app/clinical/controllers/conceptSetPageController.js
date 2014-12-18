@@ -25,7 +25,7 @@ angular.module('bahmni.clinical')
             });
             $rootScope.consultation.selectedObsTemplate= allConceptSections.filter(function(conceptSet){
                 if(conceptSet.isAvailable($scope.context)){
-                    if(conceptSet.conceptName !== Bahmni.Clinical.Constants.dischargeSummaryConceptName || $rootScope.visit.hasAdmissionEncounter()){
+                    if(conceptSet.conceptName !== Bahmni.Clinical.Constants.dischargeSummaryConceptName || ($rootScope.visit && $rootScope.visit.hasAdmissionEncounter()) ){
                         return true;
                     }
                 }

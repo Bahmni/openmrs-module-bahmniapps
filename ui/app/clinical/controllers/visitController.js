@@ -3,7 +3,6 @@
 angular.module('bahmni.clinical')
     .controller('VisitController', ['$scope', 'encounterService', 'visitService', 'spinner', '$stateParams', '$rootScope', 'clinicalAppConfigService', 'configurations',
         function ($scope, encounterService, visitService, spinner, $stateParams, $rootScope, clinicalAppConfigService, configurations) {
-
             var encounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
             $scope.documentsPromise = encounterService.getEncountersForEncounterType($rootScope.patient.uuid, encounterTypeUuid).then(function(response) {
                 return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);

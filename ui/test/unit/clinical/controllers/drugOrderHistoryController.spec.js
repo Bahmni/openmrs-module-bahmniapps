@@ -4,7 +4,7 @@ describe("DrugOrderHistoryController", function () {
 
     beforeEach(module('bahmni.clinical'));
 
-    var scope, prescribedDrugOrders, activeDrugOrder, _treatmentService, clinicalAppConfigService, appDescriptor;
+    var scope, prescribedDrugOrders, activeDrugOrder, _treatmentService, clinicalAppConfigService, retrospectiveEntryService;
     var fetchActiveTreatmentsDeferred;
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
@@ -27,11 +27,16 @@ describe("DrugOrderHistoryController", function () {
         clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getDrugOrderConfig']);
         clinicalAppConfigService.getDrugOrderConfig.and.returnValue([]);
 
+        var retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(Date.now());
+        retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['getRetrospectiveEntry']);
+        retrospectiveEntryService.getRetrospectiveEntry.and.returnValue(retrospectiveEntry);
+
         $controller('DrugOrderHistoryController', {
             $scope: scope,
             prescribedDrugOrders: prescribedDrugOrders,
             TreatmentService: _treatmentService,
             clinicalAppConfigService: clinicalAppConfigService,
+            retrospectiveEntryService: retrospectiveEntryService,
             $stateParams: {patientUuid: "patientUuid"}
         });
     }));
@@ -46,10 +51,8 @@ describe("DrugOrderHistoryController", function () {
                 expect(scope.consultation.drugOrderGroups[0].drugOrders[1].uuid).toBe(activeDrugOrder.uuid);
                 expect(scope.consultation.drugOrderGroups[0].drugOrders[2].uuid).toBe('drugOrder2Uuid');
                 expect(scope.consultation.drugOrderGroups[0].selected).toBeTruthy();
-
                 expect(scope.consultation.drugOrderGroups[1].visitStartDate.getTime()).toEqual(1410349317000);
                 expect(scope.consultation.drugOrderGroups[1].drugOrders.length).toBe(1);
-
                 expect(scope.consultation.drugOrderGroups[2].visitStartDate.getTime()).toEqual(1397028261000);
 
                 var secondDrugOrder = scope.consultation.drugOrderGroups[2].drugOrders[0];
@@ -62,6 +65,7 @@ describe("DrugOrderHistoryController", function () {
 
     describe("when discontinued", function () {
         it("should mark the drug order for discontinue", function () {
+
             var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
 
             scope.discontinue(drugOrder);

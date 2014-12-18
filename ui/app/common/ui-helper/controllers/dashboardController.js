@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .controller('DashboardController', ['$scope', '$state', 'appService', 'locationService', 'spinner', '$cookieStore', '$window',
-        function ($scope, $state, appService, locationService, spinner, $cookieStore, $window) {
+    .controller('DashboardController', ['$rootScope', '$scope', '$state', 'appService', 'locationService', 'spinner', '$cookieStore', '$window',
+        function ($rootScope, $scope, $state, appService, locationService, spinner, $cookieStore, $window) {
             $scope.appExtensions = appService.getAppDescriptor().getExtensions($state.current.data.extensionPointId, "link") || [];
             $scope.selectedLocationUuid = {};
 

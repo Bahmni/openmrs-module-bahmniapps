@@ -158,7 +158,7 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
                 }
             });
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
-    }]).run(['stateChangeSpinner', function (stateChangeSpinner) {
+    }]).run(['stateChangeSpinner', '$rootScope', function (stateChangeSpinner, $rootScope) {
             FastClick.attach(document.body);
             stateChangeSpinner.activate();
     }]);

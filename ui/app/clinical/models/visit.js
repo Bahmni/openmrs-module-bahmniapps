@@ -3,7 +3,7 @@
 Bahmni.Clinical.Visit = (function () {
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
-    var Visit = function (encounters, consultationNotes, otherInvestigations, observations, labOrders, encounterConfig, allTestsAndPanelsConceptSet, visitUuid, conceptSetUIConfig) {
+    var Visit = function (encounters, consultationNotes, otherInvestigations, observations, labOrders, encounterConfig, allTestsAndPanelsConceptSet, visitUuid, conceptSetUIConfig, encounterDate) {
         this.uuid = visitUuid;
         this.encounters = encounters;
         this.consultationNotes = consultationNotes;
@@ -16,7 +16,7 @@ Bahmni.Clinical.Visit = (function () {
         this.radiologyOrders = Bahmni.Clinical.VisitDocumentUploadOrders.create(encounters, encounterConfig.getRadiologyEncounterTypeUuid());
         this.patientFileOrders = Bahmni.Clinical.VisitDocumentUploadOrders.create(encounters, encounterConfig.getPatientDocumentEncounterTypeUuid());
         this.patientFileOrders.orders = this.hasPatientFiles() ? this.patientFileOrders.orders.reverse() : [];
-        this.drugOrders = Bahmni.Clinical.VisitDrugOrder.create(encounters, this.getAdmissionDate(), this.getToDate());
+        this.drugOrders = Bahmni.Clinical.VisitDrugOrder.create(encounters, this.getAdmissionDate(), this.getToDate(), encounterDate);
         this.startDate = this.encounters.length ? _.last(this.encounters).encounterDateTime : null;
 
         var orderGroup = new Bahmni.Clinical.OrdersMapper();
@@ -234,7 +234,7 @@ Bahmni.Clinical.Visit = (function () {
     };
 
 
-    Visit.create = function (encounterTransactions, consultationNoteConcept, labOrderNoteConcept, encounterConfig, allTestAndPanelsConcept, obsIgnoreList, visitUuid, conceptSetUIConfig) {
+    Visit.create = function (encounterTransactions, consultationNoteConcept, labOrderNoteConcept, encounterConfig, allTestAndPanelsConcept, obsIgnoreList, visitUuid, conceptSetUIConfig, encounterDate) {
         var ordersMapper = new Bahmni.Clinical.OrdersMapper(),
             isLabTests = function (order) {
                 var labTestOrderTypeUuid = encounterConfig.orderTypes[Bahmni.Clinical.Constants.labOrderType];
@@ -274,7 +274,7 @@ Bahmni.Clinical.Visit = (function () {
         var observations = allObs.filter(isOtherObservation).filter(doesNotHaveOrder);
 
 
-        return new this(encounterTransactions, consultationNotes, otherInvestigations, observations, labOrders, encounterConfig, allTestAndPanelsConcept, visitUuid, conceptSetUIConfig);
+        return new this(encounterTransactions, consultationNotes, otherInvestigations, observations, labOrders, encounterConfig, allTestAndPanelsConcept, visitUuid, conceptSetUIConfig, encounterDate);
     };
 
     return Visit;

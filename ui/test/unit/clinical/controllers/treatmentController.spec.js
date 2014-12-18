@@ -6,12 +6,14 @@ describe("TreatmentController", function () {
     beforeEach(module('bahmni.clinical'));
 
     var DateUtil = Bahmni.Common.Util.DateUtil;
-    var scope, rootScope, contextChangeHandler, newTreatment, editTreatment, clinicalAppConfigService, ngDialog;
+    var scope, rootScope, contextChangeHandler, newTreatment, editTreatment, clinicalAppConfigService, ngDialog, retrospectiveEntryService;
+
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
         rootScope = $rootScope;
         $rootScope.activeAndScheduledDrugOrders = [];
         $rootScope.consultation = {};
+
         scope.consultation = {saveHandler: new Bahmni.Clinical.SaveHandler()};
         var now = DateUtil.now();
         ngDialog = jasmine.createSpyObj('ngDialog', ['open']);
@@ -21,9 +23,15 @@ describe("TreatmentController", function () {
         scope.currentBoard = {extension: {}, extensionParams: {}};
         contextChangeHandler = jasmine.createSpyObj('contextChangeHandler', ['add']);
         scope.addForm = {$invalid: false, $valid: true};
+
         clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getTreatmentActionLink', 'getDrugOrderConfig']);
         clinicalAppConfigService.getTreatmentActionLink.and.returnValue([]);
         clinicalAppConfigService.getDrugOrderConfig.and.returnValue({});
+
+        var retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(now);
+        retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['getRetrospectiveEntry']);
+        retrospectiveEntryService.getRetrospectiveEntry.and.returnValue(retrospectiveEntry);
+
         $controller('TreatmentController', {
             $scope: scope,
             $rootScope: rootScope,
@@ -31,7 +39,8 @@ describe("TreatmentController", function () {
             contextChangeHandler: contextChangeHandler,
             clinicalAppConfigService: clinicalAppConfigService,
             ngDialog: ngDialog,
-            treatmentConfig: {}
+            treatmentConfig: {},
+            retrospectiveEntryService: retrospectiveEntryService
         });
     }));
 
@@ -133,20 +142,20 @@ describe("TreatmentController", function () {
         it("should do nothing if form is blank", function () {
             scope.treatment = newTreatment;
             scope.clearForm();
-            expect(isSameAs(scope.treatment, newTreatment)).toBeTruthy();
+            expect(isSameAs(scope.treatment[0], newTreatment)).toBeTruthy();
         });
 
         it("should clear treatment object", function () {
             scope.treatment = {drug: {name:'Calpol'}};
             scope.clearForm();
-            expect(isSameAs(scope.treatment, newTreatment)).toBeTruthy();
+            expect(isSameAs(scope.treatment[0], newTreatment)).toBeTruthy();
         });
 
         it("should reset the treatment being edited", function () {
             scope.treatments = [editTreatment, newTreatment, newTreatment];
             scope.edit(0);
             scope.clearForm();
-            expect(isSameAs(scope.treatment, newTreatment)).toBeTruthy();
+            expect(isSameAs(scope.treatment[2], newTreatment)).toBeTruthy();
             expect(scope.treatments[0].isBeingEdited).toBeFalsy();
             expect(scope.treatments[0].isDiscontinuedAllowed).toBeTruthy();
         });
