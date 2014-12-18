@@ -6,6 +6,8 @@ $fontPath: "../components/openmrs-uicommons/omod/src/main/webapp/resources/fonts
 
 @import "bahmni-helper/variables";
 
+@import "bahmni-layout/retroMode";
+
 @import "common/angularFix";
 @import "common/form";
 @import "common/notifications";
@@ -15,6 +17,8 @@ $fontPath: "../components/openmrs-uicommons/omod/src/main/webapp/resources/fonts
 @import "bahmni-components/typography";
 @import "bahmni-components/loader";
 @import "bahmni-components/splitButton";
+
+
 
 
 

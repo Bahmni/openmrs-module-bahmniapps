@@ -1,0 +1,22 @@
+.retro-mode {
+	.reg-header, .opd-header-wrapper {
+		border-top: 4px solid orange;
+		box-sizing: border-box;
+	}
+	.retro-date-widget {
+		color: orange;
+	}
+}
+
+.retro-date-widget {
+	height: 25px;
+	padding: 0px 10px;
+}
+
+.reg-header .retro-date-widget, 
+.opd-header-wrapper .retro-date-widget {margin: 10px;}
+.opd-header-wrapper .retro-date-widget {float: right;}
+
+.patient-control-panel .retro-date-widget {
+	width: 250px; margin-left: 10px;
+}
