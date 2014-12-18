@@ -145,6 +145,10 @@ angular.module('bahmni.clinical')
                 $scope.consultation.discontinuedDrugs = _.reject($scope.consultation.discontinuedDrugs, function (removableOrder) {
                     return removableOrder.uuid === drugOrder.uuid;
                 });
+                $scope.consultation.removableDrugs = _.reject($scope.consultation.removableDrugs, function (removableOrder) {
+                    return removableOrder.previousOrderUuid === drugOrder.uuid;
+                });
+
                 drugOrder.isMarkedForDiscontinue = false;
                 drugOrder.isEditAllowed = true;
             };
