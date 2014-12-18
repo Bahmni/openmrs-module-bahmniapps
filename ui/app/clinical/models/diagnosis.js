@@ -57,37 +57,23 @@ Bahmni.Clinical.Diagnosis = function (codedAnswer, order, certainty, existingObs
         return  self.getDisplayName() === undefined || self.getDisplayName().length === 0;
     };
 
-    self.setDiagnosisStatus = function (statusConcept) {
-        if (statusConcept) {
-            for (var status in Bahmni.Clinical.Constants.diagnosisStatuses) {
-                if (Bahmni.Clinical.Constants.diagnosisStatuses[status] === statusConcept.name) {
-                    self.diagnosisStatus = status;
-                }
+    self.diagnosisStatusValue = null;
+    self.diagnosisStatusConcept = null;
+    Object.defineProperty(this, 'diagnosisStatus', {
+        get: function () {
+            return this.diagnosisStatusValue;
+        },
+        set: function (newStatus) {
+            if (newStatus) {
+                this.diagnosisStatusValue = newStatus;
+                this.diagnosisStatusConcept = { name: Bahmni.Clinical.Constants.diagnosisStatuses[newStatus]};
+            } else {
+                this.diagnosisStatusValue = null;
+                this.diagnosisStatusConcept = null;
             }
         }
-    };
+    });
 
-    self.setDiagnosisStatusConcept = function () {
-        if (self.diagnosisStatus) {
-            for (var status in Bahmni.Clinical.Constants.diagnosisStatuses) {
-                if (status === self.diagnosisStatus) {
-                    self.diagnosisStatusConcept = {
-                        "name": Bahmni.Clinical.Constants.diagnosisStatuses[status]
-                    }
-                }
-            }
-        } else {
-            self.diagnosisStatusConcept = undefined;
-        }
-    };
-
-    self.getDiagnosisStatusConcept = function () {
-        if (self.diagnosisStatus) {
-            return {
-                "name": Bahmni.Clinical.Constants.diagnosisStatuses[self.diagnosisStatus]
-            }
-        }
-    };
 
     self.clearCodedAnswerUuid = function(){
         self.codedAnswer.uuid = undefined;
@@ -96,10 +82,7 @@ Bahmni.Clinical.Diagnosis = function (codedAnswer, order, certainty, existingObs
     self.setAsNonCodedAnswer =  function() {
         self.isNonCodedAnswer = !self.isNonCodedAnswer;
     };
-    //    self.hasBeenRevised = function() {
-    //        return this.
-    //    }
-
+    
     self.isNoteEditable = function (){
         return (self.encounterUuid === self.firstDiagnosis.encounterUuid )&& self.inCurrentEncounter;
     }

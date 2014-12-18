@@ -5,15 +5,12 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
     var addEditedDiagnoses = function (consultation, diagnosisList) {
         consultation.pastDiagnoses && consultation.pastDiagnoses.forEach(function (diagnosis) {
             if (diagnosis.isDirty) {
-                diagnosis.setDiagnosisStatusConcept();
                 diagnosis.diagnosisDateTime = null;
                 diagnosisList.push(diagnosis);
             }
         });
         consultation.savedDiagnosesFromCurrentEncounter && consultation.savedDiagnosesFromCurrentEncounter.forEach(function (diagnosis) {
             if (diagnosis.isDirty) {
-                // TODO : shruthi : can avoid this using javascript property
-                diagnosis.setDiagnosisStatusConcept();
                 diagnosis.diagnosisDateTime = null;
                 diagnosisList.push(diagnosis);
             }
@@ -36,7 +33,7 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
                     certainty: diagnosis.certainty,
                     existingObs: null,
                     diagnosisDateTime: null,
-                    diagnosisStatusConcept: diagnosis.getDiagnosisStatusConcept(),
+                    diagnosisStatusConcept: diagnosis.diagnosisStatusConcept,
                     voided: diagnosis.voided,
                     comments: diagnosis.comments
                 }

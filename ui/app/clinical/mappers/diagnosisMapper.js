@@ -13,7 +13,15 @@ Bahmni.DiagnosisMapper = function () {
         if (mappedDiagnosis.firstDiagnosis) {
             mappedDiagnosis.firstDiagnosis = mapDiagnosis(mappedDiagnosis.firstDiagnosis);
         }
-        mappedDiagnosis.setDiagnosisStatus(diagnosis.diagnosisStatusConcept);
+
+        if (diagnosis.diagnosisStatusConcept) {
+            for (var status in Bahmni.Clinical.Constants.diagnosisStatuses) {
+                if (Bahmni.Clinical.Constants.diagnosisStatuses[status] === diagnosis.diagnosisStatusConcept.name) {
+                    mappedDiagnosis.diagnosisStatus  = status;
+                }
+            }
+        }
+        
         return mappedDiagnosis;
     };
 
