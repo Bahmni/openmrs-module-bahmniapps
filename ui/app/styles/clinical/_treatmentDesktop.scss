@@ -22,6 +22,11 @@ html.no-touch {
 						font-size: 1.4em;
 					}
 				}
+				button.dispense-btn, button:hover.dispense-btn {
+					i {
+						font-size: 1em;
+					}
+				}
 			}
 			
 			.undo-btn {

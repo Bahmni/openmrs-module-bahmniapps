@@ -175,6 +175,16 @@
         width: 215px;
         padding: 3px 0;
         .button-group {float: right;}
+        button.dispense-btn, button:hover.dispense-btn {
+            padding: 5px;
+            width: 90px;
+            text-align: right;
+            i {
+                display: inline;
+                color: $bahmniTertiaryColor;
+                font-size: 1em;
+            }
+        }
         button, button:hover {
             padding: 0; margin: 0;
             float: left;
@@ -225,9 +235,24 @@
         display: none;
     }
 
-    .tabs .tab [type="radio"]:checked ~ .refill-drugs-btn {
+    .dispense-all-btn {
+        font-size: 14px;
+        margin-right: 0;
+        font-family: $primaryBoldFont;
+        color: $bahmniTertiaryColor;
+        display: none;
+    }
+
+    .dispense-btn {
+        font-family: $primaryBoldFont;
+        color: $bahmniTertiaryColor; 
+    }
+
+    .tabs .tab [type="radio"]:checked ~ .refill-drugs-btn,
+    .tabs .tab [type="radio"]:checked ~ .dispense-all-btn {
         display: inline-block;
     }
+
 }
 
 

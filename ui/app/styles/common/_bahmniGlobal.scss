@@ -200,3 +200,8 @@ u, .add-drug-btninput[value]:first-letter {
     border-bottom: 1px solid;
     font-family: openSansBold;
 }
+
+.drug-dispensed {
+  color: $bahmniTertiaryColor;
+  font-family: $primaryBoldFont;
+}
