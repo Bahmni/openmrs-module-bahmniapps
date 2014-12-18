@@ -5,21 +5,25 @@ angular.module('bahmni.clinical')
             "past": {displayName: "Last Prescription", orders: null}
         };
 
-        var isActiveNeeded = clinicalConfigService.getPatientDashBoardSectionByName("treatment").active;
+        $scope.patientUuid = $stateParams.patientUuid;
+
+        $scope.section = clinicalConfigService.getPatientDashBoardSectionByName("treatment");
+
+        var isActiveNeeded = $scope.section.active;
 
         var dateCompare = function (drugOrder1, drugOrder2) {
             return drugOrder1.effectiveStartDate > drugOrder2.effectiveStartDate ? -1 : 1;
         };
         var getActiveDrugOrders = function () {
-            return treatmentService.getActiveDrugOrders($stateParams.patientUuid).then(function (drugOrders) {
-                var prescribedDrugOrders = drugOrders.map(Bahmni.Clinical.DrugOrderViewModel.createFromContract);
-                $scope.drugOrderSections.active.orders = prescribedDrugOrders.sort(dateCompare);
+            return treatmentService.getActiveDrugOrders($scope.patientUuid).then(function (drugOrders) {
+                    var prescribedDrugOrders = drugOrders.map(Bahmni.Clinical.DrugOrderViewModel.createFromContract);
+                    $scope.drugOrderSections.active.orders = prescribedDrugOrders.sort(dateCompare);
             });
         };
 
         var getLastPrescribedDrugOrders = function () {
             var numberOfVisits = $scope.section.numberOfVisits || 1;
-            return treatmentService.getPrescribedDrugOrders($stateParams.patientUuid, false, numberOfVisits).then(function (drugOrders) {
+            return treatmentService.getPrescribedDrugOrders($scope.patientUuid, false, numberOfVisits).then(function (drugOrders) {
                 var prescribedDrugOrders = drugOrders.map(Bahmni.Clinical.DrugOrderViewModel.createFromContract);
                 $scope.drugOrderSections.past.orders = prescribedDrugOrders.sort(dateCompare);
             });
@@ -27,6 +31,7 @@ angular.module('bahmni.clinical')
 
         $scope.isSectionNeeded = function (key) {
             if (key !== "active") return true;
+            isActiveNeeded = $scope.section.active;
             return isActiveNeeded;
         };
 
