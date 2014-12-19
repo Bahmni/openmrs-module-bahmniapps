@@ -260,3 +260,7 @@
     .field-attribute {vertical-align: top;}
     .value-text-only {width: 37%;}
 }
+
+table.pivot-table tr td, table.pivot-table tr th {
+    line-height: 1.2em;
+}
