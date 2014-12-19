@@ -12,16 +12,6 @@ angular.module('bahmni.clinical')
     var fields = ['uuid','name', 'names'];
     var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels);
 
-    var showFirstTemplate = function () {
-        for (var index in $rootScope.consultation.selectedObsTemplate) {
-            var template = $rootScope.consultation.selectedObsTemplate[index];
-            if (template.isAdded) {
-                template.show();
-                break;
-            }
-        }
-    };
-
     if($rootScope.consultation.selectedObsTemplate.length == 0){
         conceptSetService.getConceptSetMembers({name:"All Observation Templates",v:"custom:"+customRepresentation}).success(function(response){
             var allTemplates = response.results[0].setMembers;
@@ -39,7 +29,6 @@ angular.module('bahmni.clinical')
                     }
                 }
             });
-            showFirstTemplate();
         });
     }
 
