@@ -13,6 +13,7 @@ angular.module('bahmni.common.conceptSet')
         $rootScope.consultation.saveHandler.fire();
         var encounterData =new Bahmni.Clinical.EncounterTransactionMapper().map(angular.copy($rootScope.consultation), $rootScope.patient, sessionService.getLoginLocationUuid());
         encounterData = encounterService.buildEncounter(encounterData);
+        encounterData.drugOrders = [];
 
         var conceptSetData = {name: conceptSet.conceptName, uuid: conceptSet.uuid};
         var data = {bahmniEncounterTransaction: encounterData, conceptSetData: conceptSetData};
@@ -21,7 +22,7 @@ angular.module('bahmni.common.conceptSet')
             response = response.data;
             copyValues($rootScope.consultation.observations, response.observations);
             var drugOrderAppConfig = appService.getAppDescriptor().getConfigValue("drugOrder") || {};
-            $rootScope.consultation.newlyAddedTreatments = [];
+            $rootScope.consultation.newlyAddedTreatments = $rootScope.consultation.newlyAddedTreatments || [];
             response.drugOrders.forEach(function(drugOrder){
                 $rootScope.consultation.newlyAddedTreatments.push(Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, treatmentConfig));
             });

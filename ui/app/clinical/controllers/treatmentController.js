@@ -115,6 +115,7 @@ angular.module('bahmni.clinical')
                     });
                     if(alreadyActiveSimilarOrders.length > 0 ){
                         $scope.alreadyActiveSimilarOrder = alreadyActiveSimilarOrders[0];
+                        $scope.newDrugOrder = newDrugOrder;
                         ngDialog.open({ template: 'views/treatmentSections/reviseRefillDrugOrderModal.html', scope: $scope});
                         $scope.popupActive = true;
                         return;

@@ -95,6 +95,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 $rootScope.consultation.newlyAddedTreatments = [];
                 $rootScope.consultation.discontinuedDrugs = [];
                 $rootScope.consultation.drugOrderGroups = undefined;
+                $rootScope.consultation.removableDrugs = [];
             };
 
             $scope.save = function () {

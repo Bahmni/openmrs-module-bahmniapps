@@ -137,8 +137,15 @@ describe("drugOrderViewModel", function () {
         expect(sampleTreatment.variableDosingType).toEqual({});
     });
 
-    it("should change duration unit based on frequency factor", function () {
-        var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel({}, treatmentConfig);
+    it("should change duration unit based on frequency factor for uniform frequency type", function () {
+        var appConfig = {"frequencyDefaultDurationUnitsMap": [
+            {"minFrequency":5, "maxFrequency": null, "defaultDurationUnit": "Hour(s)"},
+            {"minFrequency":"1/7", "maxFrequency": 5, "defaultDurationUnit": "Day(s)"},
+            {"minFrequency":"1/30", "maxFrequency": "1/7", "defaultDurationUnit": "Week(s)"},
+            {"minFrequency":null, "maxFrequency": "1/30", "defaultDurationUnit": "Month(s)"}
+        ]};
+
+        var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel(appConfig, treatmentConfig);
 
         sampleTreatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
 
@@ -177,6 +184,28 @@ describe("drugOrderViewModel", function () {
         sampleTreatment.uniformDosingType.frequency = "Once a Month";
         sampleTreatment.calculateDurationUnit();
         expect(sampleTreatment.durationUnit).toBe("Month(s)");
+    });
+
+    it("should not change duration units for non-uniform frequency type", function() {
+        var appConfig = {"frequencyDefaultDurationUnitsMap": [
+            {"minFrequency":5, "maxFrequency": null, "defaultDurationUnit": "Hour(s)"},
+            {"minFrequency":null, "maxFrequency": "1/30", "defaultDurationUnit": "Month(s)"}
+        ]};
+        var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel(appConfig, treatmentConfig);
+        sampleTreatment.frequencyType = "some frequency type";
+        sampleTreatment.durationUnit = "someUnit";
+        sampleTreatment.calculateDurationUnit();
+        expect(sampleTreatment.durationUnit).toBe("someUnit");
+    });
+
+    it("should not change duration units if frequencyDefaultDurationUnitsMap is not configured", function() {
+        var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel({}, treatmentConfig);
+        sampleTreatment.durationUnit = "someUnit";
+        sampleTreatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
+
+        sampleTreatment.uniformDosingType.frequency = "Every Hour";
+        sampleTreatment.calculateDurationUnit();
+        expect(sampleTreatment.durationUnit).toBe("someUnit");
     });
 
     describe("calculateDurationInDays", function () {
