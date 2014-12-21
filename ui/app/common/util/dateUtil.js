@@ -4,9 +4,9 @@ Bahmni.Common.Util.DateUtil = {
 	diffInDays: function (dateFrom, dateTo) {
 		return Math.floor((this.parse(dateTo) - this.parse(dateFrom)) / (60 * 1000 * 60 * 24));
 	},
-
-    diffInSeconds: function (dateFrom, dateTo) {
-        return moment(dateFrom).diff(moment(dateTo), 'seconds');
+    
+    diffInMilliSeconds: function (dateFrom, dateTo) {
+        return moment(dateFrom).diff(moment(dateTo), 'milliseconds');
     },
 
     isInvalid: function(date){
@@ -27,8 +27,16 @@ Bahmni.Common.Util.DateUtil = {
         return moment(date).add(seconds, 'seconds').toDate();
     },
 
+    addMilliSeconds: function (date, milliSeconds) {
+        return moment(date).add(milliSeconds, 'milliseconds').toDate();
+    },
+
     subtractSeconds: function (date, seconds) {
         return moment(date).subtract(seconds, 'seconds').toDate();
+    },
+
+    subtractMilliSeconds: function (date, milliSeconds) {
+        return moment(date).subtract(milliSeconds, 'milliseconds').toDate();
     },
 
     subtractDays: function (date, days) {

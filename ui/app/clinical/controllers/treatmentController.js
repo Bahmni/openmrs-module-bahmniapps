@@ -128,10 +128,10 @@ angular.module('bahmni.clinical')
                 existingDrugOrders.forEach(function(existingDrugOrder){
                     if(existingDrugOrder.drug.uuid==newDrugOrder.drug.uuid){
                         if(DateUtil.isSameDate(existingDrugOrder.effectiveStartDate, newDrugOrder.effectiveStopDate)){ //compare date part only of datetime
-                            newDrugOrder.effectiveStopDate = DateUtil.subtractSeconds(existingDrugOrder.effectiveStartDate, 1);
+                            newDrugOrder.effectiveStopDate = DateUtil.subtractMilliSeconds(existingDrugOrder.effectiveStartDate, 1);
                         }
                         else if(DateUtil.isSameDate(existingDrugOrder.effectiveStopDate, newDrugOrder.effectiveStartDate)){ //compare date part only of datetime
-                            newDrugOrder.effectiveStartDate = DateUtil.addSeconds(existingDrugOrder.effectiveStopDate, 1) ;
+                            newDrugOrder.effectiveStartDate = DateUtil.addMilliSeconds(existingDrugOrder.effectiveStopDate, 1) ;
                             newDrugOrder.effectiveStopDate= DateUtil.addDays(DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
                         }
                     }
