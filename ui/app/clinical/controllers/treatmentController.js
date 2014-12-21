@@ -104,9 +104,11 @@ angular.module('bahmni.clinical')
                     $scope.treatment.isBeingEdited = false;
                 }
                 var newDrugOrder = $scope.treatment;
-                    setEffectiveDates(newDrugOrder, $rootScope.activeAndScheduledDrugOrders.concat($scope.treatments));
+                    newDrugOrder.effectiveStopDate= Bahmni.Common.Util.DateUtil.addDays(Bahmni.Common.Util.DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
+                    var existingDrugOrders = $rootScope.activeAndScheduledDrugOrders.concat($scope.treatments);
+                    setEffectiveDates(newDrugOrder, existingDrugOrders);
 
-                    var alreadyActiveSimilarOrders = $rootScope.activeAndScheduledDrugOrders.filter(function(drugOrder){
+                    var alreadyActiveSimilarOrders = existingDrugOrders.filter(function(drugOrder){
                         return (drugOrder.drug.uuid==newDrugOrder.drug.uuid && drugOrder.overlappingScheduledWith(newDrugOrder));
                     });
                     if(alreadyActiveSimilarOrders.length > 0 ){
@@ -124,7 +126,6 @@ angular.module('bahmni.clinical')
             var setEffectiveDates = function(newDrugOrder, existingDrugOrders){
                 var DateUtil = Bahmni.Common.Util.DateUtil;
                 existingDrugOrders.forEach(function(existingDrugOrder){
-                    newDrugOrder.effectiveStopDate= DateUtil.addDays(DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
                     if(existingDrugOrder.drug.uuid==newDrugOrder.drug.uuid){
                         if(DateUtil.isSameDate(existingDrugOrder.effectiveStartDate, newDrugOrder.effectiveStopDate)){ //compare date part only of datetime
                             newDrugOrder.effectiveStopDate = DateUtil.subtractSeconds(existingDrugOrder.effectiveStartDate, 1);
