@@ -114,7 +114,7 @@ angular.module('bahmni.clinical')
                         return (drugOrder.drug.uuid==newDrugOrder.drug.uuid && drugOrder.overlappingScheduledWith(newDrugOrder));
                     });
                     if(alreadyActiveSimilarOrders.length > 0 ){
-                        $scope.alreadyActiveSimilarOrder = alreadyActiveSimilarOrders[0];
+                        $scope.alreadyActiveSimilarOrder = _.sortBy(alreadyActiveSimilarOrders, 'effectiveStartDate').reverse()[0];;
                         $scope.newDrugOrder = newDrugOrder;
                         $scope.newDrugOrder.effectiveStopDate = $scope.alreadyActiveSimilarOrder.effectiveStopDate;
                         ngDialog.open({ template: 'views/treatmentSections/reviseRefillDrugOrderModal.html', scope: $scope});
