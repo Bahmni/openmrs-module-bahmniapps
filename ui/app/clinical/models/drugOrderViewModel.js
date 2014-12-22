@@ -94,7 +94,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         }
 
         //return (dateUtil.diffInDays(otherDrugOrder.effectiveStopDate, this.effectiveStartDate) <1 && dateUtil.diffInDays(otherDrugOrder.effectiveStartDate, this.effectiveStopDate) >-1);
-        return (new Date(this.effectiveStartDate).getTime() <= otherDrugOrder.effectiveStopDate && this.effectiveStopDate >= new Date(otherDrugOrder.effectiveStartDate).getTime());
+        return (DateUtil.parse(this.effectiveStartDate).getTime() <= otherDrugOrder.effectiveStopDate && this.effectiveStopDate >= DateUtil.parse(otherDrugOrder.effectiveStartDate).getTime());
     };
 
     var simpleDoseAndFrequency = function () {
@@ -319,7 +319,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         newDrugOrder.action = Bahmni.Clinical.Constants.orderActions.new;
         newDrugOrder.uuid = undefined;
         newDrugOrder.dateActivated = undefined;
-        var oldEffectiveStopDate = new Date(self.effectiveStopDate);
+        var oldEffectiveStopDate = DateUtil.parse(self.effectiveStopDate);
         newDrugOrder.effectiveStartDate = oldEffectiveStopDate >= DateUtil.today() ? DateUtil.addSeconds(oldEffectiveStopDate, 1) : DateUtil.today();
         modifyForReverseSyncIfRequired(newDrugOrder);
         defaultQuantityUnit(newDrugOrder);

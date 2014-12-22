@@ -109,13 +109,14 @@ angular.module('bahmni.clinical')
 
                 if(!(newDrugOrder.isEditAllowed)){
                     var DateUtil = Bahmni.Common.Util.DateUtil;
-                    newDrugOrder.effectiveStopDate= DateUtil.addSeconds(DateUtil.addDays(DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays),-1);
+                    newDrugOrder.effectiveStopDate = newDrugOrder.durationInDays < 1 ? DateUtil.parse(newDrugOrder.effectiveStartDate).getTime() : DateUtil.addSeconds(DateUtil.addDays(DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays),-1);
                     var alreadyActiveSimilarOrders = $rootScope.activeAndScheduledDrugOrders.filter(function(drugOrder){
                         return (drugOrder.drug.uuid==newDrugOrder.drug.uuid && drugOrder.overlappingScheduledWith(newDrugOrder));
                     });
                     if(alreadyActiveSimilarOrders.length > 0 ){
                         $scope.alreadyActiveSimilarOrder = alreadyActiveSimilarOrders[0];
                         $scope.newDrugOrder = newDrugOrder;
+                        $scope.newDrugOrder.effectiveStopDate = $scope.alreadyActiveSimilarOrder.effectiveStopDate;
                         ngDialog.open({ template: 'views/treatmentSections/reviseRefillDrugOrderModal.html', scope: $scope});
                         $scope.popupActive = true;
                         return;
@@ -126,11 +127,11 @@ angular.module('bahmni.clinical')
                 markVariable("startNewDrugEntry");
             };
 
-            $scope.refill = function (alreadyActiveSimilarOrder) {
+            $scope.refill = function (drugOrder) {
                 $scope.popupActive = false;
                 ngDialog.close();
                 $scope.clearForm();
-                $rootScope.$broadcast("event:refillDrugOrder", alreadyActiveSimilarOrder);
+                $rootScope.$broadcast("event:refillDrugOrder", drugOrder);
             };
 
             $scope.revise = function (treatment) {
