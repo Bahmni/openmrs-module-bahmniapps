@@ -3,7 +3,7 @@
 angular.module('bahmni.clinical')
     .controller('DiagnosisController', ['$scope', '$rootScope', '$stateParams', 'diagnosisService', 'contextChangeHandler',
         function ($scope, $rootScope, $stateParams, diagnosisService, contextChangeHandler) {
-
+            
             $scope.placeholder = "Add Diagnosis";
             $scope.hasAnswers = false;
 
@@ -42,7 +42,6 @@ angular.module('bahmni.clinical')
             var init = function () {
                 $scope.newlyAddedDiagnoses = $rootScope.consultation.newlyAddedDiagnoses;
                 addPlaceHolderDiagnosis();
-                contextChangeHandler.add(contextChange);
             };
 
             var contextChange = function () {
@@ -57,6 +56,7 @@ angular.module('bahmni.clinical')
                 });
                 return {allow: invalidnewlyAddedDiagnoses.length === 0 && invalidPastDiagnoses.length === 0 && invalidSavedDiagnosesFromCurrentEncounter.length === 0};
             };
+            contextChangeHandler.add(contextChange);
 
             $scope.cleanOutDiagnosisList = function (data) {
                 var mappedResponse = data.map(
@@ -126,10 +126,10 @@ angular.module('bahmni.clinical')
 
             var saveDiagnosis = function () {
                 setDiagnosis();
-                $scope.newlyAddedDiagnoses = [];
             };
 
             $scope.consultation.saveHandler.register(saveDiagnosis);
+            $scope.consultation.postSaveHandler.register(init);
 
             $scope.$on('$destroy', setDiagnosis);
 

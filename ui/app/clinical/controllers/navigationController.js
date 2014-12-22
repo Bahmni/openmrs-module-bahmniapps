@@ -118,6 +118,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 spinner.forPromise(encounterService.create(encounterData).then(function () {
                     $rootScope.consultation = tempConsultation;
                     clearRootScope();
+                    $rootScope.consultation.postSaveHandler.fire();
                     $state.transitionTo($state.current, $state.params, {
                         reload: true,
                         inherit: false,

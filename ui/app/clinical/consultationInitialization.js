@@ -72,7 +72,9 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
             };
 
             var addSaveHandlers = function() {
+                // TODO : rename this to preSaveHandler
                 $rootScope.consultation.saveHandler = new Bahmni.Clinical.SaveHandler();
+                $rootScope.consultation.postSaveHandler = new Bahmni.Clinical.SaveHandler();
             };
 
             $rootScope.showControlPanel = false;
