@@ -6,6 +6,7 @@ angular.module('bahmni.clinical')
             var defaultParams = {
                     noLabOrdersMessage: "No Lab Orders for this patient.",
                     showNormalLabResults: true,
+                    showLabManagerNotes: true,
                     title: "Lab Investigations"
                 },
                 hasAbnormalTests = function (labOrderResult) {
@@ -43,7 +44,11 @@ angular.module('bahmni.clinical')
                     accessionDateTime : labResultLine.accessionDateTime,
                     accessionNotes:labResultLine.accessionNotes
                 }
-            }
+            };
+
+            $scope.showLabManagerNotes = function(labOrderResults) {
+                return $scope.getAccessionDetailsFrom(labOrderResults).accessionNotes && $scope.params.showLabManagerNotes;
+            };
         };
         return {
             restrict: 'E',

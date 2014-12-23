@@ -8,7 +8,7 @@
                 <th colspan="3">
                     <span>Accession at </span>
                     <span bo-text="getAccessionDetailsFrom(labOrderResults).accessionDateTime | date:'dd MMM yy hh:mm a'"></span>
-                    <button class="toggle-btn fr" ng-if="getAccessionDetailsFrom(labOrderResults).accessionNotes">
+                    <button class="toggle-btn fr" ng-if="showLabManagerNotes(labOrderResults)">
                         <i class="icon-envelope" ng-hide="!labOrders.show"></i>
                         <i class="icon-envelope-alt" ng-show="!labOrders.show"></i>
                         Notes
