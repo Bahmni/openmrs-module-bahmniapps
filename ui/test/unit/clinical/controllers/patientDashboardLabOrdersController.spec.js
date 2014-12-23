@@ -12,11 +12,11 @@ describe("PatientDashboardLabOrdersController", function () {
         "name": "labOrders",
         "dashboardParams": {
             "title": null,
-            "showInvestigationChart": false,
-            "showInvestigationTable": true,
+            "showChart": false,
+            "showTable": true,
             "showNormalValues": true,
             "showCommentsExpanded": true,
-            "showLabManagerNotes": true
+            "showAccessionNotes": true
         }
     };
     var controller;

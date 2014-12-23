@@ -4,8 +4,9 @@ angular.module('bahmni.clinical')
     .directive('investigationResults', ['LabOrderResultService', 'spinner', function (labOrderResultService, spinner) {
         var controller = function ($scope) {
             var defaultParams = {
-                showInvestigationTable: true,
-                showInvestigationChart: true
+                showTable: true,
+                showChart: true,
+                numberOfVisits: 1
             };
             $scope.params = angular.extend(defaultParams, $scope.params);
 

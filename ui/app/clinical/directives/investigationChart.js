@@ -9,10 +9,10 @@ angular.module('bahmni.clinical')
 
             $scope.params = angular.extend(defaultParams, $scope.params);
 
-            $scope.showInvestigationChart = false;
+            $scope.showChart = false;
 
-            $scope.toggleInvestigationChart = function () {
-                $scope.showInvestigationChart = !$scope.showInvestigationChart;
+            $scope.toggleChart = function () {
+                $scope.showChart = !$scope.showChart;
             };
 
             $scope.getUploadedFileUrl = function (uploadedFileName) {

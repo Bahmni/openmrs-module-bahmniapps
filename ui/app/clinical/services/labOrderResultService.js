@@ -69,7 +69,9 @@ angular.module('bahmni.clinical')
             params.visitUuids = visitUuids;
         } else {
             params.patientUuid = patientUuid;
-            params.numberOfVisits = numberOfVisits;
+            if (numberOfVisits !== 0) {
+                params.numberOfVisits = numberOfVisits;
+            }
         };
 
         $http.get(Bahmni.Common.Constants.bahmniLabOrderResultsUrl, {

@@ -6,7 +6,7 @@ angular.module('bahmni.clinical')
             var defaultParams = {
                     noLabOrdersMessage: "No Lab Orders for this patient.",
                     showNormalLabResults: true,
-                    showLabManagerNotes: true,
+                    showAccessionNotes: true,
                     title: "Lab Investigations"
                 },
                 hasAbnormalTests = function (labOrderResult) {
@@ -46,8 +46,8 @@ angular.module('bahmni.clinical')
                 }
             };
 
-            $scope.showLabManagerNotes = function(labOrderResults) {
-                return $scope.getAccessionDetailsFrom(labOrderResults).accessionNotes && $scope.params.showLabManagerNotes;
+            $scope.showAccessionNotes = function(labOrderResults) {
+                return $scope.getAccessionDetailsFrom(labOrderResults).accessionNotes && $scope.params.showAccessionNotes;
             };
         };
         return {
