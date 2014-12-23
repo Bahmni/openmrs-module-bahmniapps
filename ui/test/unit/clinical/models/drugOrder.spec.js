@@ -21,7 +21,7 @@ describe("DrugOrder", function() {
 			var drugOrder = new DrugOrder({
 				effectiveStartDate: '2014-04-10T15:52:59.000+0530',
 				effectiveStopDate: '2014-04-11T15:52:59.000+0530',
-				dateStopped: '2014-04-11T15:52:59.000+0530',
+				dateStopped: '2014-04-11T15:52:59.000+0530'
 			});
 
 			expect(drugOrder.getStatusOnDate(DateUtil.parse('2014-04-11'))).toBe('stopped');
@@ -31,7 +31,7 @@ describe("DrugOrder", function() {
 			var drugOrder = new DrugOrder({
 				effectiveStartDate: '2014-04-10T15:52:59.000+0530',
 				effectiveStopDate: '2014-04-11T15:52:59.000+0530',
-				dateStopped: null,
+				dateStopped: null
 			});
 
 			expect(drugOrder.getStatusOnDate(DateUtil.parse('2014-04-11'))).not.toBe('stopped');
@@ -41,7 +41,7 @@ describe("DrugOrder", function() {
 			var drugOrder = new DrugOrder({
 				effectiveStartDate: '2014-04-10T15:52:59.000+0530',
 				effectiveStopDate: '2014-04-11T15:52:59.000+0530',
-				dateStopped: '2014-04-11T15:52:59.000+0530',
+				dateStopped: '2014-04-11T15:52:59.000+0530'
 			});
 
 			expect(drugOrder.getStatusOnDate(DateUtil.parse('2014-04-10'))).toBe('active');
@@ -51,7 +51,7 @@ describe("DrugOrder", function() {
 			var drugOrder = new DrugOrder({
 				effectiveStartDate: '2014-04-10T15:52:59.000+0530',
 				effectiveStopDate: '2014-04-11T15:52:59.000+0530',
-				dateStopped: '2014-04-11T15:52:59.000+0530',
+				dateStopped: '2014-04-11T15:52:59.000+0530'
 			});
 
 			expect(drugOrder.getStatusOnDate(DateUtil.parse('2014-04-09'))).toBe('inactive');

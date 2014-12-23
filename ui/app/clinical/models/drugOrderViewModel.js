@@ -65,7 +65,6 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
     this.overlappingScheduledWith = function(otherDrugOrder){
 
         var dateUtil = Bahmni.Common.Util.DateUtil;
-
         if (otherDrugOrder.effectiveStopDate == null && this.effectiveStopDate == null) {
             return true;
         }

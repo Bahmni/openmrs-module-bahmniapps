@@ -14,6 +14,7 @@ describe("TreatmentController", function () {
         $rootScope.consultation = {};
         scope.consultation = {saveHandler: new Bahmni.Clinical.SaveHandler()};
         var now = DateUtil.now();
+        ngDialog = jasmine.createSpyObj('ngDialog', ['open']);
         spyOn(Bahmni.Common.Util.DateUtil, 'now').and.returnValue(now);
         newTreatment = new Bahmni.Clinical.DrugOrderViewModel({}, {});
         editTreatment = new Bahmni.Clinical.DrugOrderViewModel(null, null);
@@ -59,11 +60,13 @@ describe("TreatmentController", function () {
             scope.add();
             expect(scope.startNewDrugEntry).toBeTruthy();
         });
-        it("should not allow to add if order new order(isEditAllowed is false) and there is already existing order", function(){
-            scope.treatment = Bahmni.Tests.drugOrderViewModelMother.build({drug: {name:"abc"}, effectiveStartDate: "26-11-2011", durationInDays: 2}, []);
-            rootScope.activeAndScheduledDrugOrders = [{drug: {name:true}}]
+        it("should not allow to add new order if there is already existing order", function(){
+            scope.treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {drug: {name:"abc"}, effectiveStartDate: "2011-11-26", durationInDays: 2});
+            rootScope.activeAndScheduledDrugOrders = [Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [],{drug: {name:"abc"}, effectiveStartDate: "2011-11-26", durationInDays: 2, effectiveStopDate: "2011-11-28"})];
+            expect(scope.treatments.length).toEqual(0);
             scope.add();
-            expect(scope.treatment.drug).toBeFalsy();
+            expect(scope.treatments.length).toEqual(0);
+            expect(ngDialog.open).toHaveBeenCalled();
         });
         it("should allow to add new drug order if new order is scheduled to start on same day as stop date of already existing order", function(){
             rootScope.activeAndScheduledDrugOrders = [Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [],{drug: {name:"abc", uuid: "123"}, effectiveStartDate: DateUtil.parse("2014-12-02"), effectiveStopDate: DateUtil.parse("2014-12-04"), durationInDays: 2})];
