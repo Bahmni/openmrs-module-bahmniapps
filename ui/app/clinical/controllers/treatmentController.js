@@ -252,6 +252,16 @@ angular.module('bahmni.clinical')
                 $window.open(url, "_blank");
             };
 
+            $scope.toggleTabIndexWithinModal = function(){
+                var buttonsToFocusOn = ["reviseButton", "refillButton"];
+                var focusedButton = event.target;
+                focusedButton.tabIndex = 1;
+
+                buttonsToFocusOn.splice(buttonsToFocusOn.indexOf(focusedButton.id),1);
+                var otherButton = buttonsToFocusOn[0];
+                $("#"+otherButton)[0].tabIndex = 2;
+            };
+
             contextChangeHandler.add(contextChange);
 
         }]);

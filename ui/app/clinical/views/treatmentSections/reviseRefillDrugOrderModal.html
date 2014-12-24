@@ -1,4 +1,4 @@
-<div class="revise-refill-modal-wrapper" aria-labelledby="dialog-label" tabindex="0">
+<div class="revise-refill-modal-wrapper" aria-labelledby="dialog-label">
 	<span class="ngdialog-start"></span>
 
 	<span class="ngdialog-close"></span>
@@ -8,8 +8,8 @@
 	</div>
 
 	<div class="dialog-button-group">
-	    <button class="secondary-button" type="button" ng-click="refill(newDrugOrder)" focus-on="popupActive" tabindex="1">Refill</button>
-	    <button class="secondary-button" ng-click="revise(alreadyActiveSimilarOrder)" tabindex="2">Revise</button>
+		<button id="refillButton" class="secondary-button" type="button" ng-click="refill(newDrugOrder)" focus-on="popupActive" ng-focus="toggleTabIndexWithinModal()">Refill</button>
+		<button id="reviseButton" class="secondary-button" ng-click="revise(alreadyActiveSimilarOrder)" ng-focus="toggleTabIndexWithinModal()">Revise</button>
 	</div>
 
 	<span class="ngdialog-end"></span>
