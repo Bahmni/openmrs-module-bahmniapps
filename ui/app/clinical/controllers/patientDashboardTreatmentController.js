@@ -1,5 +1,5 @@
 angular.module('bahmni.clinical')
-    .controller('PatientDashboardTreatmentController', ['$q', '$scope', '$stateParams', 'TreatmentService', 'spinner', 'clinicalConfigService', function ($q, $scope, $stateParams, treatmentService, spinner, clinicalConfigService) {
+    .controller('PatientDashboardTreatmentController', ['$q', '$scope', '$stateParams', 'TreatmentService', 'spinner', 'clinicalAppConfigService', function ($q, $scope, $stateParams, treatmentService, spinner, clinicalAppConfigService) {
         $scope.drugOrderSections = {
             "active": {displayName: "Active / Scheduled Prescription", orders: null},
             "past": {displayName: "Last Prescription", orders: null}
@@ -7,7 +7,7 @@ angular.module('bahmni.clinical')
 
         $scope.patientUuid = $stateParams.patientUuid;
 
-        $scope.section = clinicalConfigService.getPatientDashBoardSectionByName("treatment");
+        $scope.section = clinicalAppConfigService.getPatientDashBoardSectionByName("treatment");
 
         var isActiveNeeded = $scope.section.active;
 

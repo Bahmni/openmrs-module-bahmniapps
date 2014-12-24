@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('encounterService', ['$http', '$q', '$rootScope', function ($http, $q, $rootScope) {
+    .service('encounterService', ['$http', '$q', '$rootScope', 'configurations', 
+        function ($http, $q, $rootScope, configurations) {
 
     this.buildEncounter = function(encounter){
         encounter.observations = encounter.observations || [];
@@ -139,7 +140,7 @@ angular.module('bahmni.common.domain')
     };
 
     this.getDigitized = function(patientUuid) {
-    var patientDocumentEncounterTypeUuid = $rootScope.encounterConfig.getPatientDocumentEncounterTypeUuid();
+    var patientDocumentEncounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
         return $http.get(Bahmni.Common.Constants.encounterUrl, {
             params:{
                 patient: patientUuid,

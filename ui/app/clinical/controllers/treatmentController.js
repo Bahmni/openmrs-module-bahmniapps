@@ -1,12 +1,14 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('TreatmentController', ['$scope', '$rootScope', 'TreatmentService', 'contextChangeHandler', 'treatmentConfig', 'DrugService', '$timeout', 'appService','ngDialog', '$window',
-        function ($scope, $rootScope, treatmentService, contextChangeHandler, treatmentConfig, drugService, $timeout, appService, ngDialog, $window) {
+    .controller('TreatmentController', ['$scope', '$rootScope', 'TreatmentService', 'contextChangeHandler', 'treatmentConfig', 'DrugService', '$timeout', 
+        'clinicalAppConfigService','ngDialog', '$window',
+        function ($scope, $rootScope, treatmentService, contextChangeHandler, treatmentConfig, drugService, $timeout, 
+                  clinicalAppConfigService, ngDialog, $window) {
             $scope.treatments = $scope.consultation.newlyAddedTreatments || [];
             $scope.treatmentConfig = treatmentConfig;
-            $scope.treatmentActionLinks = appService.getAppDescriptor().getExtensions("org.bahmni.clinical.treatment.links", "link") || [];
-            var drugOrderAppConfig = appService.getAppDescriptor().getConfigValue("drugOrder") || {};
+            $scope.treatmentActionLinks = clinicalAppConfigService.getTreatmentActionLink();
+            var drugOrderAppConfig = clinicalAppConfigService.getDrugOrderConfig();
 
 
             function markVariable(variable){

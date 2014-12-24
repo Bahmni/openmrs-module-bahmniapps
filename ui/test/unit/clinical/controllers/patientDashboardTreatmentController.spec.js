@@ -6,7 +6,7 @@ describe("PatientDashboardTreatmentController", function () {
 
     var scope;
     var stateParams;
-    var _clinicalConfigService;
+    var _clinicalAppConfigService;
 
     var treatmentSection = {
         "title": "Treatment",
@@ -20,13 +20,13 @@ describe("PatientDashboardTreatmentController", function () {
             patientUuid: "some uuid"
         }
 
-        _clinicalConfigService = jasmine.createSpyObj('clinicalConfigService', ['getPatientDashBoardSectionByName']);
-        _clinicalConfigService.getPatientDashBoardSectionByName.and.returnValue(treatmentSection);
+        _clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getPatientDashBoardSectionByName']);
+        _clinicalAppConfigService.getPatientDashBoardSectionByName.and.returnValue(treatmentSection);
 
         $controller('PatientDashboardTreatmentController', {
             $scope: scope,
             $stateParams: stateParams,
-            clinicalConfigService: _clinicalConfigService
+            clinicalAppConfigService: _clinicalAppConfigService
 
         });
     }));

@@ -1,12 +1,12 @@
 'use strict';
 
-angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.patient', 'bahmni.common.uiHelper', 'bahmni.common.patientSearch', 'bahmni.common.obs',
+angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.config', 'bahmni.common.patient', 'bahmni.common.uiHelper', 'bahmni.common.patientSearch', 'bahmni.common.obs',
     'bahmni.common.domain', 'bahmni.common.conceptSet', 'authentication', 'bahmni.common.appFramework', 'bahmni.adt',
     'httpErrorInterceptor', 'pasvaz.bindonce', 'infinite-scroll', 'bahmni.common.util', 'ngAnimate','ngDialog','angular-gestures']);
 angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/patient/search');
         var patientSearchBackLink = {label: "<u>P</u>atients", state:"patientsearch", accessKey: "p"};
-        $stateProvider
+        $stateProvider     
             .state('patientsearch', {
                 url: '/patient/search',
                 views: {
@@ -158,7 +158,7 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
                 }
             });
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
-    }]).run(['$rootScope', '$state', '$window', 'stateChangeSpinner', function ($rootScope, $state, $window, stateChangeSpinner) {
+    }]).run(['stateChangeSpinner', function (stateChangeSpinner) {
             FastClick.attach(document.body);
             stateChangeSpinner.activate();
     }]);

@@ -1,7 +1,7 @@
 'use strict';
 
 describe("InvestigationsSelectorControllerTest", function () {
-    var scope, spinner, tests, getTestsPromise, testsProvider, tests;
+    var scope, spinner, tests, getTestsPromise, testsProvider, configurations;
 
     beforeEach(module('bahmni.clinical'));
 
@@ -19,17 +19,23 @@ describe("InvestigationsSelectorControllerTest", function () {
         var test5 = {uuid: "t5-t5", name: "S2P2D2T5", set: false, sample: sample2, panels: [panel2], department: department2};
         var test6 = {uuid: "t6-t6", name: "S2P0D0T6", set: false, sample: sample2, panels: [], department: null};
         tests = [test1, test2, test3, test4, test5, test6];
-        spinner = jasmine.createSpyObj('spinner', ['forPromise']);
+        
+        
+        configurations = jasmine.createSpyObj('configurations', ['encounterConfig']);
+        configurations.encounterConfig.and.returnValue({"orderTypes" : []});
+        
         testsProvider = jasmine.createSpyObj('testsProvider', ['getTests']);
         getTestsPromise = specUtil.createServicePromise('getTests');
         testsProvider.getTests.and.returnValue(getTestsPromise);
+
+        spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         spinner.forPromise.and.returnValue(getTestsPromise);
+        
         scope = $rootScope.$new();
         scope.testsProvider = testsProvider;
         scope.filterColumn = "sample";
         scope.categoryColumn = "department";
         scope.investigations = [];
-        $rootScope.encounterConfig = {orderTypes: {}};
     }));
 
     var setUpController = function () {
@@ -37,6 +43,7 @@ describe("InvestigationsSelectorControllerTest", function () {
             $controller('InvestigationsSelectorController', {
                 $scope: scope,
                 spinner: spinner,
+                configurations: configurations
             });
         });
     };

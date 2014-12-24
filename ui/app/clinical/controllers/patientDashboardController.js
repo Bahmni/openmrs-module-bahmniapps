@@ -2,15 +2,15 @@
 
 angular.module('bahmni.clinical')
     .controller('PatientDashboardController', ['$scope', '$rootScope', '$location', '$stateParams', 
-        'encounterService', 'clinicalConfigService', 'diseaseTemplateService',
+        'encounterService', 'clinicalAppConfigService', 'diseaseTemplateService', 'configurations',
         function ($scope, $rootScope, $location, $stateParams, encounterService, 
-                  clinicalConfigService, diseaseTemplateService) {
+                  clinicalAppConfigService, diseaseTemplateService, configurations) {
             
             $scope.patientUuid = $stateParams.patientUuid;
             $scope.patientSummary = {};
             $scope.activeVisitData = {};
-            $scope.obsIgnoreList = clinicalConfigService.getObsIgnoreList();
-            $scope.patientDashboardSections = _.map(clinicalConfigService.getAllPatientDashboardSections(), Bahmni.Clinical.PatientDashboardSection.create);
+            $scope.obsIgnoreList = clinicalAppConfigService.getObsIgnoreList();
+            $scope.patientDashboardSections = _.map(clinicalAppConfigService.getAllPatientDashboardSections(), Bahmni.Clinical.PatientDashboardSection.create);
 
             diseaseTemplateService.getLatestDiseaseTemplates($stateParams.patientUuid).then(function (diseaseTemplates) {
                 $scope.diseaseTemplates = diseaseTemplates;
@@ -39,7 +39,8 @@ angular.module('bahmni.clinical')
 
             var getEncountersForVisit = function (visitUuid) {
                 encounterService.search(visitUuid).then(function (encounterTransactionsResponse) {
-                    $scope.visit = Bahmni.Clinical.Visit.create(encounterTransactionsResponse.data, $scope.consultationNoteConcept, $scope.labOrderNotesConcept, $scope.encounterConfig, $rootScope.allTestsAndPanelsConcept, $scope.obsIgnoreList, visitUuid, conceptSetUiConfigService.getConfig());
+                    $scope.visit = Bahmni.Clinical.Visit.create(encounterTransactionsResponse.data, configurations.consultationNoteConcept(), $scope.labOrderNotesConcept, configurations.encounterConfig(),
+                        configurations.allTestsAndPanelsConcept(), $scope.obsIgnoreList, visitUuid, conceptSetUiConfigService.getConfig());
                 });
             };
 

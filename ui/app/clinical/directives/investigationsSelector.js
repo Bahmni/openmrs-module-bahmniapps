@@ -1,5 +1,5 @@
 angular.module('bahmni.clinical')
-.controller('InvestigationsSelectorController', function($scope, $rootScope, spinner) {
+.controller('InvestigationsSelectorController', function($scope, spinner, configurations) {
     var Selectable = Bahmni.Clinical.Selectable;
     var Category = Bahmni.Clinical.Category;
     $scope.selectablePanels = [];
@@ -62,7 +62,7 @@ angular.module('bahmni.clinical')
     var createInvestigationFromSelectable = function(selectable) {
         return {
             concept: {uuid: selectable.uuid, name: selectable.name, set: selectable.set },
-            orderTypeUuid: $rootScope.encounterConfig.orderTypes[selectable.orderTypeName],
+            orderTypeUuid:  configurations.encounterConfig().orderTypes[selectable.orderTypeName],
             voided: false
         };
     }

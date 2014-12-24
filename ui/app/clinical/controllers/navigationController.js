@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.clinical').controller('ConsultationNavigationController',
-    ['$scope', '$rootScope', '$state', '$location', '$window', 'clinicalConfigService', 'urlHelper', 'contextChangeHandler', 
+    ['$scope', '$rootScope', '$state', '$location', '$window', 'clinicalAppConfigService', 'urlHelper', 'contextChangeHandler', 
         'spinner', 'encounterService', 'messagingService', 'sessionService',
-        function ($scope, $rootScope, $state, $location, $window, clinicalConfigService, urlHelper, contextChangeHandler, 
+        function ($scope, $rootScope, $state, $location, $window, clinicalAppConfigService, urlHelper, contextChangeHandler, 
                   spinner, encounterService, messagingService, sessionService) {
 
             $scope.loadVisit = function(visitUuid) {
@@ -40,7 +40,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
 
             var initialize = function () {
                 $rootScope.$on('event:appExtensions-loaded', function () {
-                    var appExtensions = clinicalConfigService.getAllConsultationBoards();
+                    var appExtensions = clinicalAppConfigService.getAllConsultationBoards();
                     $scope.availableBoards = $scope.availableBoards.concat(appExtensions);
                     setCurrentBoardBasedOnPath();
                 });

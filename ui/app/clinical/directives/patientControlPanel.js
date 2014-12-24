@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.patient')
-.directive('patientControlPanel', ['$q', '$rootScope', '$location', '$stateParams', '$state', 'contextChangeHandler', 'encounterService', 'visitActionsService',
-        function($q, $rootScope, $location, $stateParams, $state, contextChangeHandler, encounterService, visitActionsService) {
+.directive('patientControlPanel', ['$q', '$rootScope', '$location', '$stateParams', '$state', 'contextChangeHandler', 'encounterService', 'visitActionsService', 'configurations',
+        function($q, $rootScope, $location, $stateParams, $state, contextChangeHandler, encounterService, visitActionsService, configurations) {
     var link = function($scope) {
         $scope.patient = $rootScope.patient;
         $scope.activeVisit = $rootScope.activeVisit;
@@ -96,7 +96,7 @@ angular.module('bahmni.common.patient')
     };
 
     var controller =function ($scope) {
-        var encounterTypeUuid = $rootScope.encounterConfig.getPatientDocumentEncounterTypeUuid();
+        var encounterTypeUuid =  configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
         $scope.documentsPromise = encounterService.getEncountersForEncounterType($rootScope.patient.uuid, encounterTypeUuid).then(function(response) {
             return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
         });

@@ -1,7 +1,15 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .service('clinicalConfigService', ['appService', function (appService) {
+    .service('clinicalAppConfigService', ['appService', function (appService) {
+
+        this.getTreatmentActionLink = function () {
+            return appService.getAppDescriptor().getExtensions("org.bahmni.clinical.treatment.links", "link") || [];
+        };
+
+        this.getDrugOrderConfig = function () {
+            return appService.getAppDescriptor().getConfigValue("drugOrder") || {};
+        };
 
         this.getAllConceptsConfig = function () {
             return appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};

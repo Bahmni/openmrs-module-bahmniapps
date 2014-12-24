@@ -1,8 +1,8 @@
-angular.module('bahmni.clinical').directive('pivotTable', ['spinner', 'appService', '$rootScope','pivotTableService','clinicalConfigService',
-    function (spinner, appService, $rootScope,pivotTableService,clinicalConfigService) {
+angular.module('bahmni.clinical').directive('pivotTable', ['spinner', '$rootScope','pivotTableService','clinicalAppConfigService',
+    function (spinner, $rootScope,pivotTableService,clinicalAppConfigService) {
 
         var pivotTableConfigFor = function(diseaseName){
-            var diseaseTemplateConfigs = clinicalConfigService.getDiseaseTemplateConfig();
+            var diseaseTemplateConfigs = clinicalAppConfigService.getDiseaseTemplateConfig();
             var requiredTemplateConfig =_.find(diseaseTemplateConfigs,function(diseaseTemplateConfig){
                 return diseaseTemplateConfig.templateName === diseaseName;
             });

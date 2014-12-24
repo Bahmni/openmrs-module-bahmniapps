@@ -1,5 +1,6 @@
 angular.module('bahmni.common.gallery')
-    .directive('bmGalleryPane', ['$rootScope', '$document', 'observationsService', 'encounterService', 'spinner', function ($rootScope, $document, observationsService, encounterService, spinner) {
+    .directive('bmGalleryPane', ['$rootScope', '$document', 'observationsService', 'encounterService', 'spinner', 'configurations',
+        function ($rootScope, $document, observationsService, encounterService, spinner, configurations) {
 
         var $body = $document.find('body');
 
@@ -137,7 +138,7 @@ angular.module('bahmni.common.gallery')
                 image.newSourceObs = $scope.newSourceObs && $scope.newSourceObs.targetObsRelation.targetObs.uuid === image.uuid ? $scope.targetObs : {
                     value: "",
                     concept: {
-                        uuid: $rootScope.impressionConcept.uuid
+                        uuid: configurations.impressionConcept().uuid
                     },
                     targetObsRelation: {
                         relationshipType: Bahmni.Common.Constants.qualifiedByRelationshipType,
@@ -152,7 +153,7 @@ angular.module('bahmni.common.gallery')
                 return {
                     visitUuid: $rootScope.activeVisit.uuid,
                     patientUuid: $rootScope.patient.uuid,
-                    encounterTypeUuid: $rootScope.encounterConfig.getConsultationEncounterTypeUuid(),
+                    encounterTypeUuid: configurations.encounterConfig().getConsultationEncounterTypeUuid(),
                     observations: [image.newSourceObs]
                 };
             };

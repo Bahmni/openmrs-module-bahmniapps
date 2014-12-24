@@ -4,7 +4,7 @@ describe("DrugOrderHistoryController", function () {
 
     beforeEach(module('bahmni.clinical'));
 
-    var scope, prescribedDrugOrders, activeDrugOrder, _treatmentService, appService, appDescriptor;
+    var scope, prescribedDrugOrders, activeDrugOrder, _treatmentService, clinicalAppConfigService, appDescriptor;
     var fetchActiveTreatmentsDeferred;
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
@@ -24,15 +24,14 @@ describe("DrugOrderHistoryController", function () {
         scope = $rootScope.$new();
         scope.consultation = {saveHandler: new Bahmni.Clinical.SaveHandler()};
         scope.currentBoard = {extensionParams: {}};
-        appDescriptor = jasmine.createSpyObj('appDescriptor', ['getExtensions', 'getConfigValue', 'formatUrl']);
-        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-        appService.getAppDescriptor.and.returnValue(appDescriptor);
+        clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getDrugOrderConfig']);
+        clinicalAppConfigService.getDrugOrderConfig.and.returnValue([]);
 
         $controller('DrugOrderHistoryController', {
             $scope: scope,
             prescribedDrugOrders: prescribedDrugOrders,
             TreatmentService: _treatmentService,
-            appService: appService,
+            clinicalAppConfigService: clinicalAppConfigService,
             $stateParams: {patientUuid: "patientUuid"}
         });
     }));

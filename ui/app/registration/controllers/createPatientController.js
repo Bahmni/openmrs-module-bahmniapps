@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('CreatePatientController', ['$scope', '$rootScope', '$state', 'patientService', 'encounterService','$location', 'Preferences', 'patient', '$window', 'spinner', 'appService', 'sessionService',
-    function ($scope, $rootScope, $state, patientService, encounterService, $location, preferences, patientModel, $window, spinner, appService, sessionService) {
+    .controller('CreatePatientController', ['$scope', '$rootScope', '$state', 'patientService', 
+        'encounterService','$location', 'Preferences', 'patient', '$window', 'spinner', 'appService', 'sessionService',
+    function ($scope, $rootScope, $state, patientService, encounterService, $location, preferences, patientModel,
+              $window, spinner, appService, sessionService) {
         var dateUtil = Bahmni.Common.Util.DateUtil;
         var createActionsConfig = [];
         var defaultActions = ["save", "startVisit"];

@@ -1,4 +1,4 @@
-describe("clinicalConfigService", function () {
+describe("clinicalAppConfigService", function () {
     var _$http;
     var _sessionService;
 
@@ -114,11 +114,11 @@ describe("clinicalConfigService", function () {
     }));
 
 
-    var clinicalConfigService;
+    var clinicalAppConfigService;
     var appService;
 
-    beforeEach(inject(['clinicalConfigService', 'appService', function (clinicalConfigServiceInjected, appServiceInjected) {
-        clinicalConfigService = clinicalConfigServiceInjected;
+    beforeEach(inject(['clinicalAppConfigService', 'appService', function (clinicalAppConfigServiceInjected, appServiceInjected) {
+        clinicalAppConfigService = clinicalAppConfigServiceInjected;
         appService = appServiceInjected;
     }]));
 
@@ -126,9 +126,9 @@ describe("clinicalConfigService", function () {
     describe("should fetch app config", function () {
         it('should fetch concept config', function (done) {
             appService.initApp('clinical', {'app': true}).then(function () {
-                var result1 = clinicalConfigService.getConceptConfig("Receptor Status");
+                var result1 = clinicalAppConfigService.getConceptConfig("Receptor Status");
                 expect(result1.grid).toBe(true);
-                var result2 = clinicalConfigService.getConceptConfig("Pathologic Diagnosis");
+                var result2 = clinicalAppConfigService.getConceptConfig("Pathologic Diagnosis");
                 expect(result2.multiSelect).toBe(true);
                 done();
             });
@@ -136,7 +136,7 @@ describe("clinicalConfigService", function () {
 
         it('should fetch all concepts config', function (done) {
             appService.initApp('clinical', {'app': true}).then(function () {
-                var config = clinicalConfigService.getAllConceptsConfig();
+                var config = clinicalAppConfigService.getAllConceptsConfig();
                 expect(config).toEqual({ "Receptor Status": { "grid": true }, "Pathologic Diagnosis": { "multiSelect": true } });
                 done();
             });
@@ -144,7 +144,7 @@ describe("clinicalConfigService", function () {
 
         it('should fetch obs ignore list and combine with default set of obs to ignore', function (done) {
             appService.initApp('clinical', {'app': true}).then(function () {
-                var result = clinicalConfigService.getObsIgnoreList();
+                var result = clinicalAppConfigService.getObsIgnoreList();
                 expect(result).toEqual(["Impression", "Fee Information", "Patient file"]);
                 done();
             });
@@ -152,7 +152,7 @@ describe("clinicalConfigService", function () {
 
         it('should fetch dashboard sections', function (done) {
             appService.initApp('clinical', {'app': true}).then(function () {
-                var results = clinicalConfigService.getAllPatientDashboardSections();
+                var results = clinicalAppConfigService.getAllPatientDashboardSections();
                 expect(results.length).toBe(2);
                 expect(results[0].name).toBe("diagnosis");
                 expect(results[1].name).toBe("labOrders");
@@ -162,7 +162,7 @@ describe("clinicalConfigService", function () {
 
         it('should fetch other investigations', function (done) {
             appService.initApp('clinical', {'app': true}).then(function () {
-                var results = clinicalConfigService.getOtherInvestigationsMap();
+                var results = clinicalAppConfigService.getOtherInvestigationsMap();
                 expect(results.value).toEqual({ Radiology : 'Radiology Order', Endoscopy : 'Endoscopy Order' });
                 done();
             });
@@ -172,7 +172,7 @@ describe("clinicalConfigService", function () {
     describe("should fetch extension config", function () {
         it('should fetch consultation boards', function (done) {
             appService.initApp('clinical', {'extension': true}).then(function () {
-                var result = clinicalConfigService.getAllConsultationBoards();
+                var result = clinicalAppConfigService.getAllConsultationBoards();
                 expect(result.length).toBe(1);
                 done();
             });
@@ -180,7 +180,7 @@ describe("clinicalConfigService", function () {
 
         it('should fetch concept set extensions', function (done) {
             appService.initApp('clinical', {'extension': true}).then(function () {
-                var result = clinicalConfigService.getAllConceptSetExtensions("observations");
+                var result = clinicalAppConfigService.getAllConceptSetExtensions("observations");
                 expect(result.length).toBe(2);
                 done();
             });

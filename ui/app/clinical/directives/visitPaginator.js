@@ -1,5 +1,5 @@
 angular.module('bahmni.clinical')
-    .directive('visitPaginationLinks', ['$rootScope', '$state', function ($rootScope, $state) {
+    .directive('visitPaginationLinks', ['$state', function ($state) {
         var link = function ($scope) {
 
             var visits = _.clone($scope.visits).reverse();

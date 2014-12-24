@@ -2,11 +2,11 @@
 
 describe('patientAttributeService', function () {
 
-    var resultList = {"results":["result1","result2","result3","result4"]};
+    var resultList = {"results": ["result1", "result2", "result3", "result4"]};
     var $http,
-        mockHttp = {defaults:{headers:{common:{'X-Requested-With':'present'}} },
-                    get:jasmine.createSpy('Http get').and.returnValue(resultList)
-                   };
+        mockHttp = {defaults: {headers: {common: {'X-Requested-With': 'present'}} },
+            get: jasmine.createSpy('Http get').and.returnValue(resultList)
+        };
 
     beforeEach(module('bahmni.registration'));
     beforeEach(module(function ($provide) {
@@ -21,7 +21,7 @@ describe('patientAttributeService', function () {
             var key = "familyName";
             var query = "res";
 
-            var results = patientAttributeService.search(key,query, 'personName');
+            var results = patientAttributeService.search(key, query, 'personName');
 
             expect(mockHttp.get).toHaveBeenCalled();
             expect(mockHttp.get.calls.mostRecent().args[0]).toBe(openmrsUrl + '/ws/rest/v1/bahmnicore/unique/personname');
@@ -30,11 +30,11 @@ describe('patientAttributeService', function () {
             expect(results).toBe(resultList);
         }]));
 
-        it('Should get unique list of caste',inject(['patientAttributeService', function (patientAttributeService){
+        it('Should get unique list of caste', inject(['patientAttributeService', function (patientAttributeService) {
             var key = "caste";
             var query = "res";
 
-            var results = patientAttributeService.search(key,query,'personAttribute');
+            var results = patientAttributeService.search(key, query, 'personAttribute');
 
             expect(mockHttp.get).toHaveBeenCalled();
             expect(mockHttp.get.calls.mostRecent().args[0]).toBe(openmrsUrl + "/ws/rest/v1/bahmnicore/unique/personattribute");
@@ -43,11 +43,11 @@ describe('patientAttributeService', function () {
             expect(results).toBe(resultList);
         }]))
 
-        it('Should trim leading whitespaces',inject(['patientAttributeService', function (patientAttributeService){
+        it('Should trim leading whitespaces', inject(['patientAttributeService', function (patientAttributeService) {
             var key = "caste";
             var query = "       res        ";
 
-            var results = patientAttributeService.search(key,query, 'personAttribute');
+            var results = patientAttributeService.search(key, query, 'personAttribute');
 
             expect(mockHttp.get).toHaveBeenCalled();
             expect(mockHttp.get.calls.mostRecent().args[0]).toBe(openmrsUrl + "/ws/rest/v1/bahmnicore/unique/personattribute");

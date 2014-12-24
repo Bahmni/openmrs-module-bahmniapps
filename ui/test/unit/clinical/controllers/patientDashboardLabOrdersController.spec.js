@@ -6,7 +6,8 @@ describe("PatientDashboardLabOrdersController", function () {
 
     var scope;
     var stateParams;
-    var _clinicalConfigService;
+    var _clinicalAppConfigService;
+    var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
     var labResultSection = {
         "title": "Lab Results",
         "name": "labOrders",
@@ -24,7 +25,11 @@ describe("PatientDashboardLabOrdersController", function () {
     beforeEach(inject(function ($controller, $rootScope) {
         controller = $controller;
         scope = $rootScope.$new();
-        _clinicalConfigService = jasmine.createSpyObj('clinicalConfigService', ['getPatientDashBoardSectionByName']);
+
+        spinner.forPromise.and.callFake(function(param) {return {}});
+        _clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getPatientDashBoardSectionByName']);
+        _clinicalAppConfigService.getPatientDashBoardSectionByName.and.returnValue(labResultSection);
+
 
         stateParams = {
             patientUuid: "some uuid"
@@ -33,12 +38,12 @@ describe("PatientDashboardLabOrdersController", function () {
 
     describe("when initialized", function () {
         it("creates configuration for displaying lab order display parameters", function () {
-            _clinicalConfigService.getPatientDashBoardSectionByName.and.returnValue(labResultSection);
-            controller('PatientDashboardLabOrdersController', {
-                $scope: scope,
-                $stateParams: stateParams,
-                clinicalConfigService: _clinicalConfigService
-            });
+        controller('PatientDashboardLabOrdersController', {
+            $scope: scope,
+            $stateParams: stateParams,
+            spinner: spinner,
+            clinicalAppConfigService: _clinicalAppConfigService
+        });
 
 
             var params = scope.dashboardParams;
@@ -47,11 +52,11 @@ describe("PatientDashboardLabOrdersController", function () {
         });
 
         it("passes in just the patient uuid when no parameters specified", function () {
-            _clinicalConfigService.getPatientDashBoardSectionByName.and.returnValue({});
+            _clinicalAppConfigService.getPatientDashBoardSectionByName.and.returnValue({});
             controller('PatientDashboardLabOrdersController', {
                 $scope: scope,
                 $stateParams: stateParams,
-                clinicalConfigService: _clinicalConfigService
+                clinicalAppConfigService: _clinicalAppConfigService
             });
 
             var params = scope.dashboardParams;

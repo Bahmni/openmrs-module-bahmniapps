@@ -4,7 +4,7 @@ describe("patient dashboard controller", function () {
 
     beforeEach(module('bahmni.clinical'));
 
-    var _diseaseTemplateService, scope, _clinicalConfigService;
+    var _diseaseTemplateService, scope, _clinicalAppConfigService;
     var fetchDiseaseTemplatePromise;
 
     var patientDashboardSections = [
@@ -19,8 +19,8 @@ describe("patient dashboard controller", function () {
     ];
 
     beforeEach(module(function () {
-        _clinicalConfigService = jasmine.createSpyObj('clinicalConfigService', ['getObsIgnoreList', 'getAllPatientDashboardSections']);
-        _clinicalConfigService.getAllPatientDashboardSections.and.returnValue(patientDashboardSections);
+        _clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getObsIgnoreList', 'getAllPatientDashboardSections']);
+        _clinicalAppConfigService.getAllPatientDashboardSections.and.returnValue(patientDashboardSections);
         _diseaseTemplateService = jasmine.createSpyObj('diseaseTemplateService', ['getLatestDiseaseTemplates']);
         var diseaseTemplates = [new Bahmni.Clinical.DiseaseTemplate({name: "Breast Cancer"}, breastCancerDiseaseTemplate.observationTemplates),
             new Bahmni.Clinical.DiseaseTemplate({name: "Diabetes"}, diabetesDiseaseTemplate.observationTemplates)];
@@ -37,7 +37,7 @@ describe("patient dashboard controller", function () {
             diseaseTemplateService: _diseaseTemplateService,
             $stateParams: jasmine.createSpy(),
             encounterService: jasmine.createSpy(),
-            clinicalConfigService: _clinicalConfigService
+            clinicalAppConfigService: _clinicalAppConfigService
         });
     }));
 

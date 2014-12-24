@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitController', ['$scope', 'encounterService', 'visitService', 'spinner', '$stateParams', '$rootScope', 'clinicalConfigService',
-        function ($scope, encounterService, visitService, spinner, $stateParams, $rootScope, clinicalConfigService) {
+    .controller('VisitController', ['$scope', 'encounterService', 'visitService', 'spinner', '$stateParams', '$rootScope', 'clinicalAppConfigService', 'configurations',
+        function ($scope, encounterService, visitService, spinner, $stateParams, $rootScope, clinicalAppConfigService, configurations) {
 
-            var encounterTypeUuid = $rootScope.encounterConfig.getPatientDocumentEncounterTypeUuid();
+            var encounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
             $scope.documentsPromise = encounterService.getEncountersForEncounterType($rootScope.patient.uuid, encounterTypeUuid).then(function(response) {
                 return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
             });
@@ -13,7 +13,7 @@ angular.module('bahmni.clinical')
             $scope.showTrends = true;
             $scope.visit = $rootScope.visit;
 
-            $scope.investigationResultsParameters = clinicalConfigService
+            $scope.investigationResultsParameters = clinicalAppConfigService
                 .getVisitPageConfig()
                 .investigationResultParams || {};
             $scope.investigationResultsParameters.patientUuid = $scope.patientUuid;

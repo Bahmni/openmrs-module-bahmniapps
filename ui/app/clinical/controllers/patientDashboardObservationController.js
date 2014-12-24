@@ -1,7 +1,7 @@
 angular.module('bahmni.clinical')
     .controller('PatientDashboardObservationController', ['$scope', '$stateParams', 'observationsService', '$q', 
-        'spinner', '$rootScope', 'clinicalConfigService', 
-        function ($scope, $stateParams, observationsService, $q, spinner, $rootScope, clinicalConfigService) {
+        'spinner', '$rootScope', 'clinicalAppConfigService', 
+        function ($scope, $stateParams, observationsService, $q, spinner, $rootScope, clinicalAppConfigService) {
         $scope.patientSummary = {};
         $scope.patientUuid = $stateParams.patientUuid;
 
@@ -52,7 +52,7 @@ angular.module('bahmni.clinical')
             var createObservationSectionView = function () {
                 spinner.forPromise(observationsService.fetch($scope.patientUuid, $scope.section.conceptNames,
                         $scope.section.scope, $scope.section.numberOfVisits).then(function (response) {
-                        var observations = new Bahmni.Common.Obs.ObservationMapper().map(response.data, clinicalConfigService.getAllConceptsConfig());
+                        var observations = new Bahmni.Common.Obs.ObservationMapper().map(response.data, clinicalAppConfigService.getAllConceptsConfig());
                         $scope.patientSummary.data = groupByDateAndConcept(observations);
                         if (_.isEmpty($scope.patientSummary.data)) {
                             $scope.patientSummary.message = Bahmni.Clinical.Constants.messageForNoObservation;

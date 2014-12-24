@@ -1,22 +1,22 @@
 'use strict';
 
 describe("DiseaseTemplateService", function () {
-    var _clinicalConfigService, _$http;
+    var _clinicalAppConfigService, _$http;
     var diseaseTemplateService;
 
     beforeEach(module('bahmni.clinical'));
     beforeEach(module('bahmni.common.appFramework'));
 
     beforeEach(module(function () {
-        _clinicalConfigService = jasmine.createSpyObj('clinicalConfigService', ['getAllConceptsConfig', 'getDiseaseTemplateConfig']);
-        _clinicalConfigService.getAllConceptsConfig.and.returnValue({});
-        _clinicalConfigService.getDiseaseTemplateConfig.and.returnValue({});
+        _clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getAllConceptsConfig', 'getDiseaseTemplateConfig']);
+        _clinicalAppConfigService.getAllConceptsConfig.and.returnValue({});
+        _clinicalAppConfigService.getDiseaseTemplateConfig.and.returnValue({});
         _$http = jasmine.createSpyObj('$http', ['get', 'post']);
         
     }));
 
     beforeEach(module(function ($provide) {
-        $provide.value('clinicalConfigService', _clinicalConfigService);
+        $provide.value('clinicalAppConfigService', _clinicalAppConfigService);
         $provide.value('$http', _$http);
         $provide.value('$q', Q);
     }));
