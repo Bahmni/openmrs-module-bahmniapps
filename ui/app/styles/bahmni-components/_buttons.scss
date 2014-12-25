@@ -17,7 +17,7 @@ use either a `<button>` or an `<a>` element:
 
 /* button states - lvha */
 button:hover { opacity: 0.8; }
-button:focus, a:focus, .btn:focus { outline:0; }
+button:focus, a:focus, .btn:focus { outline:2; }
 button[disabled] { opacity: 0.4; cursor: not-allowed; }
 
 
