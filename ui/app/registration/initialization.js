@@ -1,17 +1,17 @@
 'use strict';
 
 angular.module('bahmni.registration').factory('initialization',
-    ['$rootScope', '$q', 'configurationService', 'authenticator', 'appService', 'spinner', 'Preferences',
-    function ($rootScope, $q, configurationService, authenticator, appService, spinner, preferences) {
+    ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'Preferences',
+    function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences) {
         var getConfigs = function() {
             var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierSourceConfig', 'addressLevels'];
-            return configurationService.getConfigurations(configNames).then(function (configurations) {
-                var patientAttributeTypes = new Bahmni.Registration.PatientAttributeTypeMapper().mapFromOpenmrsPatientAttributeTypes(configurations.patientAttributesConfig.results);
-                $rootScope.regEncounterConfiguration = angular.extend(new Bahmni.Registration.RegistrationEncounterConfig(), configurations.encounterConfig);
-                $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig);
-                $rootScope.patientConfiguration = new Bahmni.Registration.PatientConfig(patientAttributeTypes.personAttributeTypes, configurations.identifierSourceConfig, appService.getAppDescriptor().getConfigValue("additionalPatientInformation"));
+            return configurations.load(configNames).then(function () {
+                var patientAttributeTypes = new Bahmni.Registration.PatientAttributeTypeMapper().mapFromOpenmrsPatientAttributeTypes(configurations.patientAttributesConfig());
+                $rootScope.regEncounterConfiguration = angular.extend(new Bahmni.Registration.RegistrationEncounterConfig(), configurations.encounterConfig());
+                $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig());
+                $rootScope.patientConfiguration = new Bahmni.Registration.PatientConfig(patientAttributeTypes.personAttributeTypes, configurations.identifierSourceConfig(), appService.getAppDescriptor().getConfigValue("additionalPatientInformation"));
 
-                $rootScope.addressLevels = configurations.addressLevels;
+                $rootScope.addressLevels = configurations.addressLevels();
             });
         };
 

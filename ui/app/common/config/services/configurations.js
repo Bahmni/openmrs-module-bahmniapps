@@ -44,4 +44,15 @@ angular.module('bahmni.common.config')
             return angular.extend(new EncounterConfig(), this.configs.encounterConfig || []);
         };
 
+        this.patientAttributesConfig = function() {
+            return this.configs.patientAttributesConfig.results;
+        };
+
+        this.identifierSourceConfig = function() {
+            return this.configs.identifierSourceConfig;
+        };
+
+        this.addressLevels = function() {
+            return this.configs.addressLevels;
+        }
     }]);
