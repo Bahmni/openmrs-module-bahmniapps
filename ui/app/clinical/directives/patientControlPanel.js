@@ -33,15 +33,6 @@ angular.module('bahmni.common.patient')
             return $stateParams.visitUuid == visit.uuid;
         };
 
-        $scope.calculateAge = function(birthDate){
-            var age = DateUtil.diffInYearsMonthsDays(birthDate, DateUtil.now());
-            var ageInString = "";
-            if(age.years) ageInString += age.years + " Years ";
-            if(age.months) ageInString += age.months + " Months ";
-            if(age.days) ageInString += age.days + " Days";
-            return ageInString;
-        };
-
         var getLinks = function () {
             var state = $state.current.name;
             if (state.match("patient.consultation")) {

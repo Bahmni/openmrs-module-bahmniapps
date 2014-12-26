@@ -17,6 +17,7 @@ Bahmni.PatientMapper = function (patientConfig) {
         patient.familyName = openmrsPatient.person.preferredName.familyName;
         patient.name = patient.givenName + ' ' + patient.familyName;
         patient.age = openmrsPatient.person.age;
+        patient.ageText = calculateAge(openmrsPatient.person.birthdate);
         patient.gender = openmrsPatient.person.gender;
         patient.genderText = mapGenderText(patient.gender);
         patient.address = mapAddress(openmrsPatient.person.preferredAddress);
@@ -55,6 +56,16 @@ Bahmni.PatientMapper = function (patientConfig) {
                 patient[x.name] = attribute.value;
             });
         }
+    };
+
+    var calculateAge = function(birthDate) {
+        var DateUtil = Bahmni.Common.Util.DateUtil;
+        var age = DateUtil.diffInYearsMonthsDays(birthDate, DateUtil.now());
+        var ageInString = "";
+        if(age.years) ageInString += age.years + " Years ";
+        if(age.months) ageInString += age.months + " Months ";
+        if(age.days) ageInString += age.days + " Days";
+        return ageInString;
     };
 
     var mapAddress = function (preferredAddress) {
