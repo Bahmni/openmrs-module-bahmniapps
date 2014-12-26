@@ -3,13 +3,16 @@
     <ul bm-gallery patient="patient" access-impression="true">
         <div ng-repeat="observationGroup in visit.observationGroups">
             <table>
-                <thead>
-                    <tr class="headerRow">
-                        <th colspan="3"><span class="date">{{observationGroup.date | date :'dd MMM yy'}}</span></th>
+                <thead ng-click="visit.expandOrCollapse(observationGroup)">
+                    <tr class="headerRow row-click">
+                        <th colspan="3">
+                            <i class="icon-caret-right" ng-hide="observationGroup.isOpen"></i>
+                            <i class="icon-caret-down" ng-show="observationGroup.isOpen"></i>
+                            <span class="date">{{observationGroup.date | date :'dd MMM yy'}}</span>
+                        </th>
                     </tr>
                 </thead>
-
-                <tbody ng-repeat="observationSubGroup in observationGroup.subGroups">
+                <tbody ng-repeat="observationSubGroup in observationGroup.subGroups" ng-show="observationGroup.isOpen">
 
                     <tr >
                         <td colspan="3">

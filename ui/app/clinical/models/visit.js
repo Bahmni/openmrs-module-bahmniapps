@@ -35,8 +35,9 @@ Bahmni.Clinical.Visit = (function () {
             return obs.concept.shortName || obs.concept.name;
         };
 
-        this.observationGroups.forEach(function (observationGroup) {
+        this.observationGroups.forEach(function (observationGroup, index) {
             observationGroup.subGroups = resultGrouper.group(observationGroup.obs, observationSubGroupingFunction, 'obs', 'conceptName');
+            if(index === 0) observationGroup.isOpen = true;
             observationGroup.subGroups.forEach(function (subGroup) {
                 subGroup.obs = new Bahmni.ConceptSet.ObservationMapper().getObservationsForView(subGroup.obs, conceptSetUIConfig);
             });
@@ -229,6 +230,9 @@ Bahmni.Clinical.Visit = (function () {
                 }
             });
             return dispositions;
+        },
+        expandOrCollapse: function(observationGroup){
+            observationGroup.isOpen = !observationGroup.isOpen;
         }
 
     };
