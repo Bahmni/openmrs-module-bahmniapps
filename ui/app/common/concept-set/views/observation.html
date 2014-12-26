@@ -115,7 +115,9 @@
                        ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}">
                 <!--{{observation.groupMembers}}-->
 
-                <datetimepicker ng-switch-when="datetime" model="observation.value" show-time="true"/>
+                <div ng-switch-when="datetime">
+                    <datetimepicker model="observation.value" show-time="true"></datetimepicker>
+                </div>
 
                 <div ng-switch-when="grid">
                     <div  ng-repeat="member in observation.groupMembers" class="grid-row">
