@@ -1,12 +1,12 @@
 'use strict';
 
-angular.module('bahmni.adt').factory('initialization', ['$rootScope', '$q', 'appService', 'configurationService', 'authenticator', 'spinner',
-    function($rootScope, $q, appService, configurationService, authenticator, spinner) {
+angular.module('bahmni.adt').factory('initialization', ['$rootScope', '$q', 'appService', 'configurations', 'authenticator', 'spinner',
+    function($rootScope, $q, appService, configurations, authenticator, spinner) {
         var getConfigs = function() {
             var configNames = ['encounterConfig', 'patientConfig'];
-            return configurationService.getConfigurations(configNames).then(function(configurations) {
-                $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig);
-                $rootScope.patientConfig = configurations.patientConfig;
+            return configurations.load(configNames).then(function() {
+                $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig());
+                $rootScope.patientConfig = configurations.patientConfig();
             });
         };
 
