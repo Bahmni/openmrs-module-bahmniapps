@@ -53,7 +53,7 @@ Bahmni.PatientMapper = function (patientConfig) {
         if (this.patientConfig) {
             attributes.forEach(function (attribute) {
                 var x = self.getPatientConfigByUuid(patientConfig, attribute.attributeType.uuid);
-                patient[x.name] = attribute.value;
+                patient[x.name] = {label: x.description, value: attribute.value};
             });
         }
     };

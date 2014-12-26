@@ -24,8 +24,8 @@
                     <td class="value">{{patient.address.cityVillage}}</td>
                 </tr>
                 <tr ng-repeat="attribute in section.patientAttributes" ng-if="patient[attribute]" ng-show="section.patientAttributes.length" ng-class="attribute">
-                    <td class="name">{{attribute.charAt(0).toUpperCase() + attribute.substr(1)}}</td>
-                    <td class="value">{{patient[attribute].display || patient[attribute]}}</td>
+                    <td class="name">{{patient[attribute].label}}</td>
+                    <td class="value">{{(patient[attribute].value.display || patient[attribute].value) | boolean}}</td>
                 </tr>
             </tbody>
         </table>
