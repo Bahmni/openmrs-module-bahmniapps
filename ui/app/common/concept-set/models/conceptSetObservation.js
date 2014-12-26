@@ -55,6 +55,10 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.getDataTypeName() === "Coded";
     },
 
+    isDatetime: function() {
+        return this.getDataTypeName() === "Datetime";
+    },
+
     isImage: function () {
         return this.concept.conceptClass == Bahmni.Common.Constants.imageClassName;
     },
@@ -103,6 +107,7 @@ Bahmni.ConceptSet.Observation.prototype = {
         if (this.isText()) return "text";
         if (this.isCoded()) return this._getCodedControlType();
         if (this.isGrid()) return "grid";
+        if (this.isDatetime()) return "datetime";
         return "unknown";
     },
 
