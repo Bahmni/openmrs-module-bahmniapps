@@ -1,33 +1,7 @@
 'use strict';
 
 angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.common.domain', 'bahmni.common.uiHelper', 'bahmni.common.util', 'bahmni.common.appFramework', 'bahmni.common.logging'])
-.provider('$bahmniCookieStore', [function(){
-    var self = this;
-    self.defaultOptions = {};
-
-    self.setDefaultOptions = function(options){
-        self.defaultOptions = options;
-    };
-
-    self.$get = function(){
-        return {
-            get: function(name){
-                var jsonCookie = $.cookie(name);
-                if(jsonCookie){
-                    return angular.fromJson(jsonCookie);
-                }
-            },
-            put: function(name, value, options){
-                options = $.extend({}, self.defaultOptions, options);
-                $.cookie(name, angular.toJson(value), options);
-            },
-            remove: function(name, options){
-                options = $.extend({}, self.defaultOptions, options);
-                $.removeCookie(name, options);
-            }
-        };
-    };
-}]).config(['$urlRouterProvider', '$stateProvider','$httpProvider', function ($urlRouterProvider, $stateProvider, $httpProvider) {
+.config(['$urlRouterProvider', '$stateProvider','$httpProvider', function ($urlRouterProvider, $stateProvider, $httpProvider) {
     $urlRouterProvider.otherwise('/dashboard');
     $stateProvider
     .state('dashboard',

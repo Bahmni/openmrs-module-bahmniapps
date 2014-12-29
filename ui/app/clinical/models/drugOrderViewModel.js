@@ -11,7 +11,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     var now = DateUtil.now();
 
     var today = function() {
-        return self.encounterDate;
+        return DateUtil.parse(self.encounterDate);
     }
 
     Object.defineProperty(this, 'effectiveStartDate', {
@@ -21,7 +21,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         set : function(value){
             self._effectiveStartDate = value;
 
-            if(DateUtil.parse(value) > DateUtil.parse(today())){
+            if(DateUtil.parse(value) > today()) {
                 self.scheduledDate = self._effectiveStartDate;
             } else {
                 self.scheduledDate = null;

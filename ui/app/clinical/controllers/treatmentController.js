@@ -48,7 +48,7 @@ angular.module('bahmni.clinical')
 
             //$scope.today = new Date();
             $scope.today = retrospectiveEntryService.getRetrospectiveEntry().encounterDate;
-            $rootScope.$watch('retrospectiveEntry.encounterDate', function(){
+            $rootScope.$watch(Bahmni.Common.Constants.rootScopeRetrospectiveEntry, function(){
                 $scope.today = retrospectiveEntryService.getRetrospectiveEntry().encounterDate;
             });
 
@@ -115,16 +115,17 @@ angular.module('bahmni.clinical')
                     $scope.treatments.splice($scope.treatment.currentIndex,1);
                     $scope.treatment.isBeingEdited = false;
                 }
-                var newDrugOrder = $scope.treatment;
-                    newDrugOrder.effectiveStopDate= Bahmni.Common.Util.DateUtil.addDays(Bahmni.Common.Util.DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
+                    var newDrugOrder = $scope.treatment;
+                    newDrugOrder.effectiveStopDate = Bahmni.Common.Util.DateUtil.addDays(Bahmni.Common.Util.DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
                     var existingDrugOrders = $rootScope.activeAndScheduledDrugOrders.concat($scope.treatments);
                     setEffectiveDates(newDrugOrder, existingDrugOrders);
 
-                    var alreadyActiveSimilarOrders = existingDrugOrders.filter(function(drugOrder){
-                        return (drugOrder.drug.uuid==newDrugOrder.drug.uuid && drugOrder.overlappingScheduledWith(newDrugOrder));
+                    var alreadyActiveSimilarOrders = existingDrugOrders.filter(function (drugOrder) {
+                        return (drugOrder.drug.uuid == newDrugOrder.drug.uuid && drugOrder.overlappingScheduledWith(newDrugOrder));
                     });
-                    if(alreadyActiveSimilarOrders.length > 0 ){
-                        $scope.alreadyActiveSimilarOrder = _.sortBy(alreadyActiveSimilarOrders, 'effectiveStartDate').reverse()[0];;
+                    if (alreadyActiveSimilarOrders.length > 0) {
+                        $scope.alreadyActiveSimilarOrder = _.sortBy(alreadyActiveSimilarOrders, 'effectiveStartDate').reverse()[0];
+                        ;
                         $scope.newDrugOrder = newDrugOrder;
                         $scope.newDrugOrder.effectiveStopDate = $scope.alreadyActiveSimilarOrder.effectiveStopDate;
                         ngDialog.open({ template: 'views/treatmentSections/reviseRefillDrugOrderModal.html', scope: $scope});

@@ -97,6 +97,8 @@ Bahmni.Common = Bahmni.Common || {};
         consultationEncounterName: 'Consultation',
         imageClassName: 'Image',
         locationCookieName: 'bahmni.user.location',
+        retrospectiveEntryEncounterDateCookieName: 'bahmni.clinical.retrospectiveEncounterDate',
+        rootScopeRetrospectiveEntry: 'retrospectiveEntry.encounterDate',
         patientFileConceptName: 'Patient file',
         serverErrorMessages: serverErrorMessages
 };

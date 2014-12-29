@@ -1,6 +1,6 @@
 'use strict';
 
-Bahmni.Common.Domain.RetrospectiveEntry = function () {
+Bahmni.Common.Domain.RetrospectiveEntry = function() {
     var _encounterDate;
     var _isRetrospective;
     var self = this;

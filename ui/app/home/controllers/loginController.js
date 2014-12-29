@@ -2,7 +2,7 @@
 
 angular.module('bahmni.home')
     .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams','$bahmniCookieStore',
-        function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams,$bahmniCookieStore) {
+        function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams, $bahmniCookieStore) {
             var landingPagePath = "/dashboard";
             var loginPagePath = "/login";
             $scope.locations = initialData.locations;
@@ -42,6 +42,7 @@ angular.module('bahmni.home')
                     function () {
                         sessionService.loadCredentials().then(
                             function () {
+                                $bahmniCookieStore.remove(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
                                 $rootScope.$broadcast('event:auth-loggedin');
                                 $scope.loginInfo.currentLocation = getLastLoggedinLocation();
                                 deferrable.resolve();
