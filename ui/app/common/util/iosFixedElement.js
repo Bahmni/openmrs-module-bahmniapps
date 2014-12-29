@@ -1,10 +1,10 @@
 var $body = jQuery('body');
 
 $(document)
-    .on('focus', 'input[type="text"], input[type="number"], textarea, select', function(e) {
+    .on('focus', 'input[type="text"], input[type="number"], textarea, select, .form-field button', function(e) {
         $body.addClass('fix-fixed');
     })
-    .on('blur', 'input[type="text"], input[type="number"], textarea, select', function(e) {
+    .on('blur', 'input[type="text"], input[type="number"], textarea, select, .form-field button', function(e) {
         $body.removeClass('fix-fixed');
 	})
 	.on('focus', 'textarea', function(e) {
