@@ -21,7 +21,11 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         set : function(value){
             self._effectiveStartDate = value;
 
-            if(DateUtil.parse(value) > today()){
+            console.log("Date1 is:");
+            console.log(DateUtil.parse(value));
+            console.log("Date2 is:");
+            console.log(DateUtil.getDate(today()));
+            if(DateUtil.parse(value) > DateUtil.parse(today())){
                 self.scheduledDate = self._effectiveStartDate;
             } else {
                 self.scheduledDate = null;
