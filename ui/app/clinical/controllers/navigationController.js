@@ -2,9 +2,9 @@
 
 angular.module('bahmni.clinical').controller('ConsultationNavigationController',
     ['$scope', '$rootScope', '$state', '$location', '$window', 'clinicalAppConfigService', 'urlHelper', 'contextChangeHandler', 
-        'spinner', 'encounterService', 'messagingService', 'sessionService',
+        'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService',
         function ($scope, $rootScope, $state, $location, $window, clinicalAppConfigService, urlHelper, contextChangeHandler, 
-                  spinner, encounterService, messagingService, sessionService) {
+                  spinner, encounterService, messagingService, sessionService, retrospectiveEntryService) {
 
             $scope.loadVisit = function(visitUuid) {
                 $state.go('patient.visit', {visitUuid: visitUuid});
@@ -114,7 +114,7 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 tempConsultation.consultationNote = observationFilter.filter([tempConsultation.consultationNote])[0];
                 tempConsultation.labOrderNote = observationFilter.filter([tempConsultation.labOrderNote])[0];
 
-                var encounterData = new Bahmni.Clinical.EncounterTransactionMapper().map(tempConsultation, $scope.patient, sessionService.getLoginLocationUuid(), $rootScope.retrospectiveEntry);
+                var encounterData = new Bahmni.Clinical.EncounterTransactionMapper().map(tempConsultation, $scope.patient, sessionService.getLoginLocationUuid(), retrospectiveEntryService.getRetrospectiveEntry());
 
                 spinner.forPromise(encounterService.create(encounterData).then(function () {
                     $rootScope.consultation = tempConsultation;
@@ -134,8 +134,8 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
             };
 
             $scope.retrospectiveClass = function(){
-                if($rootScope.retrospectiveEntry && $rootScope.retrospectiveEntry.encounterDate &&
-                    $rootScope.retrospectiveEntry.encounterDate < Bahmni.Common.Util.DateUtil.getDateWithoutTime(Bahmni.Common.Util.DateUtil.now())){
+                if(retrospectiveEntryService.getRetrospectiveEntry() && retrospectiveEntryService.getRetrospectiveEntry().encounterDate &&
+                    retrospectiveEntryService.getRetrospectiveEntry().encounterDate < Bahmni.Common.Util.DateUtil.getDateWithoutTime(Bahmni.Common.Util.DateUtil.now())){
                         return "retro-mode";
                 }
             }

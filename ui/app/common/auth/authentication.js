@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('authentication', ['ngCookies', 'ui.router'])
+angular.module('authentication', ['ui.router'])
     .config(function ($httpProvider) {
         var interceptor = ['$rootScope', '$q', function ($rootScope, $q) {
             function success(response) {
@@ -24,7 +24,7 @@ angular.module('authentication', ['ngCookies', 'ui.router'])
         $rootScope.$on('event:auth-loginRequired', function () {
             $window.location = "../home/#/login?showLoginMessage=true";
         });
-    }]).service('sessionService', ['$rootScope', '$http', '$q', '$cookieStore', function ($rootScope, $http, $q, $cookieStore) {
+    }]).service('sessionService', ['$rootScope', '$http', '$q', '$bahmniCookieStore', function ($rootScope, $http, $q, $bahmniCookieStore) {
         var sessionResourcePath = '/openmrs/ws/rest/v1/session';
 
         var createSession = function(username, password){
@@ -45,10 +45,10 @@ angular.module('authentication', ['ngCookies', 'ui.router'])
             var deferrable = $q.defer();
             createSession(username,password).success(function(data) {
                 if (data.authenticated) {
-                    $cookieStore.put('bahmni.user', username, {path: '/', expires: 7});
+                    $bahmniCookieStore.put('bahmni.user', username, {path: '/', expires: 7});
                     if(location != undefined) {
-                        $cookieStore.remove(Bahmni.Common.Constants.locationCookieName);
-                        $cookieStore.put(Bahmni.Common.Constants.locationCookieName, {name: location.display, uuid: location.uuid}, {path: '/', expires: 7});
+                        $bahmniCookieStore.remove(Bahmni.Common.Constants.locationCookieName);
+                        $bahmniCookieStore.put(Bahmni.Common.Constants.locationCookieName, {name: location.display, uuid: location.uuid}, {path: '/', expires: 7});
                     }
                     deferrable.resolve();
                 } else {
@@ -66,7 +66,7 @@ angular.module('authentication', ['ngCookies', 'ui.router'])
 
         this.loadCredentials = function () {
             var deferrable = $q.defer();
-            var currentUser = $cookieStore.get('bahmni.user');
+            var currentUser = $bahmniCookieStore.get('bahmni.user');
             if(!currentUser) {
                 this.destroy().then(function() {
                     $rootScope.$broadcast('event:auth-loginRequired');
@@ -83,7 +83,7 @@ angular.module('authentication', ['ngCookies', 'ui.router'])
                 cache: false
             }).success(function(data) {
                 $rootScope.currentUser = data.results[0];
-                $rootScope.currentUser.currentLocation = $cookieStore.get(Bahmni.Common.Constants.locationCookieName).name;
+                $rootScope.currentUser.currentLocation = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).name;
                 $rootScope.$broadcast('event:user-credentialsLoaded', data.results[0]);
                 deferrable.resolve(data.results[0]);
             }).error(function () {
@@ -93,7 +93,7 @@ angular.module('authentication', ['ngCookies', 'ui.router'])
         };
 
         this.getLoginLocationUuid = function(){
-            return $cookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $cookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid : null;
+            return $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid : null;
         };
 
         this.loadProviders = function(userInfo) {

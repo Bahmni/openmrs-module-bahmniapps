@@ -3,13 +3,13 @@
 describe('LocationService', function () {
     var locationUuids = ["location1", "location2"];
     var cookieStoreKey = 'bahmni.user.location';
-    var $http, mockCookieStore,
+    var $http, mockBahmniCookieStore,
         mockHttp = {defaults: {headers: {common: {'X-Requested-With': 'present'}} },
             get: jasmine.createSpy('Http get').and.returnValue(locationUuids)};
     beforeEach(module('bahmni.registration'));
     beforeEach(module(function ($provide) {
         $provide.value('$http', mockHttp);
-        $provide.value('$cookieStore', mockCookieStore);
+        $provide.value('$bahmniCookieStore', mockBahmniCookieStore);
     }));
 
     it('should get locations by tag', inject(['locationService', function(locationService){

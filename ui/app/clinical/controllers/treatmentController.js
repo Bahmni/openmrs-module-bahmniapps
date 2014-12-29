@@ -49,7 +49,7 @@ angular.module('bahmni.clinical')
             //$scope.today = new Date();
             $scope.today = retrospectiveEntryService.getRetrospectiveEntry().encounterDate;
             $rootScope.$watch('retrospectiveEntry.encounterDate', function(){
-                $scope.today = $rootScope.retrospectiveEntry.encounterDate;
+                $scope.today = retrospectiveEntryService.getRetrospectiveEntry().encounterDate;
             });
 
             $scope.treatment = $scope.consultation.incompleteTreatment || newTreatment();

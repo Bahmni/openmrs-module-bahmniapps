@@ -22,7 +22,6 @@ module.exports = function (config) {
             'app/components/angular-ui-select2/src/select2.js',
             'app/components/angular-bindonce/bindonce.js',
             'app/components/stacktrace-js/stacktrace.js',
-            'app/components/angular-cookies/angular-cookies.js',
             'app/components/ng-clip/src/ngClip.js',
             'app/components/zeroclipboard/dist/ZeroClipboard.js',
             'app/lib/modernizr.custom.80690.js',

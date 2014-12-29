@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .controller('DashboardController', ['$rootScope', '$scope', '$state', 'appService', 'locationService', 'spinner', '$cookieStore', '$window',
-        function ($rootScope, $scope, $state, appService, locationService, spinner, $cookieStore, $window) {
+    .controller('DashboardController', ['$rootScope', '$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window',
+        function ($rootScope, $scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window) {
             $scope.appExtensions = appService.getAppDescriptor().getExtensions($state.current.data.extensionPointId, "link") || [];
             $scope.selectedLocationUuid = {};
 
             var getCurrentLocation = function () {
-                return $cookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $cookieStore.get(Bahmni.Common.Constants.locationCookieName) : null;
+                return $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) : null;
             };
 
             var init = function () {
@@ -30,8 +30,8 @@ angular.module('bahmni.common.uiHelper')
 
             $scope.onLocationChange = function () {
                 var selectedLocation = getLocationFor($scope.selectedLocationUuid);
-                $cookieStore.remove(Bahmni.Common.Constants.locationCookieName);
-                $cookieStore.put(Bahmni.Common.Constants.locationCookieName, {name: selectedLocation.display, uuid: selectedLocation.uuid},{path: '/', expires: 7});
+                $bahmniCookieStore.remove(Bahmni.Common.Constants.locationCookieName);
+                $bahmniCookieStore.put(Bahmni.Common.Constants.locationCookieName, {name: selectedLocation.display, uuid: selectedLocation.uuid},{path: '/', expires: 7});
                 $window.location.reload();
             };
 

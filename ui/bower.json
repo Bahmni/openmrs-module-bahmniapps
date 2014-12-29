@@ -13,7 +13,6 @@
     "dependencies": {
         "angular": "1.2.18",
         "angular-animate": "1.2.18",
-        "angular-cookies": "1.2.18",
         "angular-bindonce": "0.3.1",
         "angular-route": "1.2.18",
         "angular-sanitize": "1.2.18",

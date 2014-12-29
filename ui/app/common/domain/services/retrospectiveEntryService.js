@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.domain', [])
-    .service('retrospectiveEntryService', ['$rootScope', '$cookieStore', function ($rootScope, $cookieStore) {
+    .service('retrospectiveEntryService', ['$rootScope', '$bahmniCookieStore', function ($rootScope, $bahmniCookieStore) {
 
         var self = this;
 
@@ -9,7 +9,7 @@ angular.module('bahmni.common.domain', [])
             if ($rootScope.retrospectiveEntry && $rootScope.retrospectiveEntry.encounterDate)
                 return $rootScope.retrospectiveEntry;
 
-            var retrospectiveEncounterDateCookie = $cookieStore.get('bahmni.clinical.retrospectiveEncounterDate');
+            var retrospectiveEncounterDateCookie = $bahmniCookieStore.get('bahmni.clinical.retrospectiveEncounterDate');
 
             if (retrospectiveEncounterDateCookie) {
                 $rootScope.retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(retrospectiveEncounterDateCookie);
@@ -24,8 +24,8 @@ angular.module('bahmni.common.domain', [])
 
         // Keep service in sync with encounter date changes on the UI.
         $rootScope.$watch('retrospectiveEntry.encounterDate', function () {
-            $cookieStore.remove('bahmni.clinical.retrospectiveEncounterDate');
-            $cookieStore.put('bahmni.clinical.retrospectiveEncounterDate', $rootScope.retrospectiveEntry.encounterDate, {path: '/', expires: 7});
+            $bahmniCookieStore.remove('bahmni.clinical.retrospectiveEncounterDate');
+            $bahmniCookieStore.put('bahmni.clinical.retrospectiveEncounterDate', $rootScope.retrospectiveEntry.encounterDate, {path: '/', expires: 7});
         });
 
     }]

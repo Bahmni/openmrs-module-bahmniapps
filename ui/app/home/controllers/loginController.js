@@ -1,15 +1,15 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams','$cookieStore',
-        function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams,$cookieStore) {
+    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams','$bahmniCookieStore',
+        function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams,$bahmniCookieStore) {
             var landingPagePath = "/dashboard";
             var loginPagePath = "/login";
             $scope.locations = initialData.locations;
             $scope.loginInfo = {};
 
             var getLoginLocationUuid = function(){
-                return $cookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $cookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid : null;
+                return $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid : null;
             };
             var getLastLoggedinLocation = function () {
                 return _.find(initialData.locations,function(location){

@@ -1,8 +1,7 @@
 'use strict';
 
-
-angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.common.domain', 'bahmni.common.uiHelper', 'bahmni.common.util', 'bahmni.common.appFramework', 'ngCookies', 'bahmni.common.logging'])
-.provider('$cookieStore', [function(){
+angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.common.domain', 'bahmni.common.uiHelper', 'bahmni.common.util', 'bahmni.common.appFramework', 'bahmni.common.logging'])
+.provider('$bahmniCookieStore', [function(){
     var self = this;
     self.defaultOptions = {};
 
