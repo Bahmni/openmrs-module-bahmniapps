@@ -133,6 +133,7 @@ angular.module('bahmni.clinical')
                     }
                 $scope.treatments.push($scope.treatment);
                 $scope.treatment = newTreatment();
+                $scope.formInvalid = false;
                 markVariable("startNewDrugEntry");
             };
             var setEffectiveDates = function(newDrugOrder, existingDrugOrders){
