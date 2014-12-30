@@ -33,6 +33,6 @@ angular.module('bahmni.clinical')
                 test: "=",
                 params: "="
             },
-            templateUrl: "displaycontrols/views/investigationTableRow.html"
+            templateUrl: "displaycontrols/investigationresults/views/investigationTableRow.html"
         };
     });

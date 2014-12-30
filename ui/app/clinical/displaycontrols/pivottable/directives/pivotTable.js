@@ -26,6 +26,6 @@ angular.module('bahmni.clinical').directive('pivotTable', ['spinner', '$rootScop
                 scope.hasData = !_.isEmpty(scope.result.tabularData);
             })
         },
-        templateUrl: 'pivottable/views/pivotTable.html'
+        templateUrl: 'displaycontrols/pivottable/views/pivotTable.html'
     }
 }]);

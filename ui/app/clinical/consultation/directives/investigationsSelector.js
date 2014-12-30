@@ -130,11 +130,10 @@ angular.module('bahmni.clinical')
         return $scope.allSelectables().filter(function(selectable){ return selectable.isSelectedFromSelf(); });
     }
 })
-.directive('' +
-    '',function(){
+.directive('investigationsSelector',function(){
     return {
         restrict: 'EA',
-        templateUrl: 'displaycontrols/views/investigationsSelector.html',
+        templateUrl: 'consultation/views/investigationsSelector.html',
         controller: 'InvestigationsSelectorController',
         require: 'ngModel',
         scope: {

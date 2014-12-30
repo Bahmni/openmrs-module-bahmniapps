@@ -21,6 +21,6 @@ angular.module('bahmni.clinical')
             scope: {
                 params: "="
             },
-            templateUrl: "displaycontrols/views/investigationResults.html"
+            templateUrl: "displaycontrols/investigationresults/views/investigationResults.html"
         };
     }]);

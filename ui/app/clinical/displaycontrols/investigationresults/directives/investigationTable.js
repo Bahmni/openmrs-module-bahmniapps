@@ -57,6 +57,6 @@ angular.module('bahmni.clinical')
                 accessions: "=",
                 params: "="
             },
-            templateUrl: "displaycontrols/views/investigationTable.html"
+            templateUrl: "displaycontrols/investigationresults/views/investigationTable.html"
         };
     });
