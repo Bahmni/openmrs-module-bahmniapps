@@ -24,3 +24,4 @@ omod/src/main/webapp/*
 ui/.idea/
 coverage
 ui/style-guide
+node_modules
