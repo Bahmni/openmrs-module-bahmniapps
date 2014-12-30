@@ -36,9 +36,10 @@ angular.module('consultation')
                 },
                 resolve: {
                     initialization: 'initialization',
-                    consultationInitialization: function(initialization, consultationInitialization, $stateParams) {
-                    return consultationInitialization($stateParams.patientUuid);
-                }}
+                    patientInitialization:  function(patientInitialization, $stateParams) {
+                        return patientInitialization($stateParams.patientUuid);
+                    }
+                }
             })
             .state('patient.dashboard', {
                 url: '/dashboard',
@@ -47,6 +48,11 @@ angular.module('consultation')
                     'content': {
                         templateUrl: 'dashboard/views/dashboard.html',
                         controller: 'PatientDashboardController'
+                    }
+                },
+                resolve: {
+                    dashboardInitialization:  function(dashboardInitialization, $stateParams) {
+                        return dashboardInitialization($stateParams.patientUuid);
                     }
                 }
             })
@@ -70,12 +76,17 @@ angular.module('consultation')
             .state('patient.consultation', {
                 url: '',
                 abstract: true,
-                data: {
+                data: { 
                     backLinks: [patientSearchBackLink]
                 },
                 views: {
                     'content': { template: '<ui-view/>' },
                     'additional-header': { templateUrl: 'common/views/header.html' }
+                },
+                resolve: {
+                    consultationInitialization: function(initialization, consultationInitialization, $stateParams) {
+                        return consultationInitialization($stateParams.patientUuid);
+                    }
                 }
             })
             .state('patient.consultation.visit', {
@@ -156,6 +167,8 @@ angular.module('consultation')
             });
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
     }]).run(['stateChangeSpinner', '$rootScope', function (stateChangeSpinner, $rootScope) {
-            FastClick.attach(document.body);
+//        debugUiRouter($rootScope);
+
+        FastClick.attach(document.body);
             stateChangeSpinner.activate();
     }]);
