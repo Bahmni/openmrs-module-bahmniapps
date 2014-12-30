@@ -163,6 +163,11 @@ angular.module('consultation')
                     content: {
                         controller: 'LatestPrescriptionPrintController'
                     }
+                },
+                resolve: {
+                    dashboardInitialization:  function(dashboardInitialization, $stateParams) {
+                        return dashboardInitialization($stateParams.patientUuid);
+                    }
                 }
             });
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
