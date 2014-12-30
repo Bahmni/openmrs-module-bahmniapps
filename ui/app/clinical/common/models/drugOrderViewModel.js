@@ -58,6 +58,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     this.durationUnit = this.durationUnit || appConfig.defaultDurationUnit;
     this.instructions = this.instructions || appConfig.defaultInstructions;
     this.effectiveStartDate = this.effectiveStartDate || this.encounterDate;
+    this.autoExpireDate = this.autoExpireDate || undefined;
     this.frequencyType = this.frequencyType || Bahmni.Clinical.Constants.dosingTypes.uniform;
     this.doseUnits = this.doseUnits || undefined;
     this.uniformDosingType = this.uniformDosingType || {};
@@ -68,7 +69,6 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     this.quantityEnteredViaEdit = this.quantityEnteredViaEdit || false;
     this.quantityEnteredManually = this.quantityEnteredManually || false;
     this.isBeingEdited = this.isBeingEdited || false;
-
 
     this.overlappingScheduledWith = function(otherDrugOrder){
 

@@ -53,7 +53,6 @@ angular.module('bahmni.clinical')
             });
 
             $scope.treatment = $scope.consultation.incompleteTreatment || newTreatment();
-            $scope.treatment.effectiveStartDate = retrospectiveEntryService.getRetrospectiveEntry().encounterDate;
             $scope.treatmentConfig.durationUnits.forEach(function (durationUnit) {
                 if (_.isEqual(durationUnit, $scope.treatment.durationUnit)) {
                     $scope.treatment.durationUnit = durationUnit;
@@ -118,16 +117,19 @@ angular.module('bahmni.clinical')
                     var newDrugOrder = $scope.treatment;
                     newDrugOrder.effectiveStopDate = Bahmni.Common.Util.DateUtil.addDays(Bahmni.Common.Util.DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
                     var existingDrugOrders = $rootScope.activeAndScheduledDrugOrders.concat($scope.treatments);
-                    setEffectiveDates(newDrugOrder, existingDrugOrders);
 
-                    var alreadyActiveSimilarOrders = existingDrugOrders.filter(function (drugOrder) {
-                        return (drugOrder.drug.uuid == newDrugOrder.drug.uuid && drugOrder.overlappingScheduledWith(newDrugOrder));
+                    var overlappingOrders = existingDrugOrders.filter(function(drugOrder){
+                        return (drugOrder.drug.uuid==newDrugOrder.drug.uuid && drugOrder.overlappingScheduledWith(newDrugOrder));
                     });
-                    if (alreadyActiveSimilarOrders.length > 0) {
-                        $scope.alreadyActiveSimilarOrder = _.sortBy(alreadyActiveSimilarOrders, 'effectiveStartDate').reverse()[0];
-                        ;
-                        $scope.newDrugOrder = newDrugOrder;
-                        $scope.newDrugOrder.effectiveStopDate = $scope.alreadyActiveSimilarOrder.effectiveStopDate;
+
+                    setEffectiveDates(newDrugOrder, overlappingOrders);
+
+                var alreadyActiveSimilarOrders = existingDrugOrders.filter(function(drugOrder){
+                    return (drugOrder.drug.uuid==newDrugOrder.drug.uuid && drugOrder.overlappingScheduledWith(newDrugOrder));
+                });
+
+                if(alreadyActiveSimilarOrders.length > 0 ){
+                        $scope.alreadyActiveSimilarOrder = _.sortBy(overlappingOrders, 'effectiveStartDate').reverse()[0];;
                         ngDialog.open({ template: 'consultation/views/treatmentSections/reviseRefillDrugOrderModal.html', scope: $scope});
                         $scope.popupActive = true;
                         return;
@@ -140,17 +142,13 @@ angular.module('bahmni.clinical')
             var setEffectiveDates = function(newDrugOrder, existingDrugOrders){
                 var DateUtil = Bahmni.Common.Util.DateUtil;
                 existingDrugOrders.forEach(function(existingDrugOrder){
-                    if(existingDrugOrder.drug.uuid==newDrugOrder.drug.uuid){
                         if(DateUtil.isSameDate(existingDrugOrder.effectiveStartDate, newDrugOrder.effectiveStopDate)){ //compare date part only of datetime
-                            newDrugOrder.effectiveStopDate = DateUtil.subtractMilliSeconds(existingDrugOrder.effectiveStartDate, 1);
-                            return true;
+                            newDrugOrder.effectiveStopDate  = DateUtil.subtractMilliSeconds(existingDrugOrder.effectiveStartDate, 1);
+                            newDrugOrder.autoExpireDate = newDrugOrder.effectiveStopDate;
                         }
-                        else if(DateUtil.isSameDate(existingDrugOrder.effectiveStopDate, newDrugOrder.effectiveStartDate)){ //compare date part only of datetime
+                        if(DateUtil.isSameDate(existingDrugOrder.effectiveStopDate, newDrugOrder.effectiveStartDate)){ //compare date part only of datetime
                             newDrugOrder.effectiveStartDate = DateUtil.addMilliSeconds(existingDrugOrder.effectiveStopDate, 1) ;
-                            newDrugOrder.effectiveStopDate= DateUtil.addDays(DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
-                            return true;
                         }
-                    }
                 });
             };
 
