@@ -54,5 +54,9 @@ angular.module('bahmni.clinical')
 
         this.getVisitPageConfig = function() {
             return appService.getAppDescriptor().getConfigValue("visitPage") || {};
+        };
+
+        this.getPrintConfig = function(){
+            return appService.getAppDescriptor().getConfigValue("printConfig") || {};
         }
     }]);

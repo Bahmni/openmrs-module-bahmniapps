@@ -59,69 +59,7 @@
                     </li>
                 </ul>
             </section>
-            <section ng-if="visit.labTestOrderObsMap">
-                <h2 ng-click="visit.toggleLabInvestigation()" class="has-toggle">
-                    <button class="section-toggle" ng-if="visit.admissionDate">
-                        <i class="icon-caret-right"
-                           ng-hide="visit.showLabInvestigations"></i>
-                        <i class="icon-caret-down"
-                           ng-show="visit.showLabInvestigations"></i>
-                    </button>
-                    Lab Investigations
-                </h2>
-
-                <div ng-repeat="labOrders in visit.labTestOrderObsMap"class="lab-investigation">
-                    <table>
-                        <thead>
-                        <tr>
-                            <th colspan="2" class="lab-report-title">
-                                <span>
-                                    <span>Accession at </span>
-                                    <span bo-text="labOrders.encounterDateTime | date:'d MMM yyyy hh:mm a'"></span>
-                                </span>
-                            </th>
-                        </tr>
-                        <tr ng-show="labOrders.show">
-                            <td colspan="2" class="notes inline-notes" ng-if="labOrders.accessionNotes">
-                                <div ng-repeat="accessionNote in labOrders.accessionNotes" class="accession">
-                                    <pre class="left">{{accessionNote.text}}</pre>
-                                </div>
-                            </td>
-                        </tr>
-                        </thead>
-                        <tbody ng-repeat="line in labOrders.displayList">
-                        <!-- HACKTAG: Apparently bo-if makes this go into an infinite loop-->
-                        <tr ng-if="line.isSummary" ng-class="testResultClass(line)">
-                            <td colspan="2" ng-hide="!line.name">
-                                {{line.name}}
-                            </td>
-                        </tr>
-                        <tr ng-if="!line.isSummary">
-                            <td>
-                                <span>{{line.concept.name}}</span>
-                                <span class="range">
-                                <span ng-if="line.minNormal && line.maxNormal">
-                                    {{' (' + line.minNormal + ' - ' + line.maxNormal + ') '}}
-                                </span>
-                                <span class="units">{{line.units}}</span>
-                                </span>
-                            </td>
-                            <td class="value" ng-class="{'is-abnormal': line.isAbnormal, 'referred-out': line.referredOut}">
-                                {{line.value}}
-                                <span class="referred"> (Referred Out)</span>
-                                <span ng-if="line.labReport"><img src="../images/icon-paper-clip.png" /></span>
-                            </td>`
-                        </tr>
-                        <tr ng-show="!line.isSummary && line.show">
-                            <td colspan="2" class="notes inline-notes" ng-if="line.notes">
-                                <strong class="left">Lab Tech Notes: </strong>
-                                <pre class="left">{{line.notes}}</pre>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+            <investigation-results params="investigationResultsParameters"></investigation-results>
         </section>
     </main>
     <footer>

@@ -60,19 +60,18 @@ angular.module('bahmni.clinical')
 
     var getAllForPatient = function (patientUuid, numberOfVisits, visitUuids) {
         var deferred = $q.defer();
-        if (!patientUuid) {
-            deferred.reject('patient uuid is mandatory');
-        };
-
         var params = {};
         if (visitUuids) {
             params.visitUuids = visitUuids;
         } else {
+            if (!patientUuid) {
+                deferred.reject('patient uuid is mandatory');
+            }
             params.patientUuid = patientUuid;
             if (numberOfVisits !== 0) {
                 params.numberOfVisits = numberOfVisits;
             }
-        };
+        }
 
         $http.get(Bahmni.Common.Constants.bahmniLabOrderResultsUrl, {
             method: "GET",
