@@ -1,13 +1,11 @@
 angular.module('bahmni.clinical')
     .controller('PatientDashboardObservationController', ['$scope', '$stateParams', 'observationsService', '$q', 
-        'spinner', '$rootScope', 'clinicalAppConfigService', 
-        function ($scope, $stateParams, observationsService, $q, spinner, $rootScope, clinicalAppConfigService) {
+        'spinner', 'clinicalAppConfigService', 
+        function ($scope, $stateParams, observationsService, $q, spinner, clinicalAppConfigService) {
         $scope.patientSummary = {};
         $scope.patientUuid = $stateParams.patientUuid;
 
         var init = function () {
-            $scope.visits = $rootScope.visits;
-            $scope.activeVisit = $rootScope.activeVisit;
             createObservationSectionView();
         };
 

@@ -28,9 +28,9 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                 var getPastDiagnoses = function () {
                     return diagnosisService.getPastDiagnoses(patientUuid).success(function (response) {
                         var diagnosisMapper = new Bahmni.DiagnosisMapper();
-                        $rootScope.allDiagnoses = diagnosisMapper.mapDiagnoses(response);
-                        $rootScope.consultation.pastDiagnoses = diagnosisMapper.mapPastDiagnosis($rootScope.allDiagnoses, $rootScope.consultation.encounterUuid);
-                        $rootScope.consultation.savedDiagnosesFromCurrentEncounter = diagnosisMapper.mapSavedDiagnosesFromCurrentEncounter($rootScope.allDiagnoses, $rootScope.consultation.encounterUuid);
+                        var allDiagnoses = diagnosisMapper.mapDiagnoses(response);
+                        $rootScope.consultation.pastDiagnoses = diagnosisMapper.mapPastDiagnosis(allDiagnoses, $rootScope.consultation.encounterUuid);
+                        $rootScope.consultation.savedDiagnosesFromCurrentEncounter = diagnosisMapper.mapSavedDiagnosesFromCurrentEncounter(allDiagnoses, $rootScope.consultation.encounterUuid);
                     });
                 };
 
