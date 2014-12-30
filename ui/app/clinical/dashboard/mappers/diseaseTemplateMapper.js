@@ -1,9 +1,11 @@
+'use strict';
+
 Bahmni.Clinical.DiseaseTemplateMapper = function (diseaseTemplateResponse, allConceptsConfig) {
     var allObsTemplates = [];
 
     var isGrid = function(obsTemplate) {
         return allConceptsConfig[obsTemplate.concept.name] && allConceptsConfig[obsTemplate.concept.name].grid;
-    }
+    };
 
     if (diseaseTemplateResponse.observationTemplates && diseaseTemplateResponse.observationTemplates.length > 0) {
         diseaseTemplateResponse.observationTemplates.forEach(function (obsTemplate) {

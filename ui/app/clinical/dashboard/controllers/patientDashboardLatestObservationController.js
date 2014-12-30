@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.clinical')
     .controller('PatientDashboardLatestObservationController', ['$scope', '$stateParams', 
         'observationsService', '$q', 'spinner', 'clinicalAppConfigService', 

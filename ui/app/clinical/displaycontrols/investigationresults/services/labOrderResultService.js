@@ -35,7 +35,7 @@ angular.module('bahmni.clinical')
             var panels = {};
             var accessionGroup = [];
             labOrders.forEach(function(labOrder) {
-                if(labOrder.panelName == null) {
+                if(!labOrder.panelName) {
                     labOrder.isPanel = false;
                     labOrder.orderName = labOrder.testName;
                     accessionGroup.push(labOrder);
@@ -53,7 +53,7 @@ angular.module('bahmni.clinical')
     var flattened = function (accessions) {
         return accessions.map(function (results) {
             return _.flatten(results, function (result) {
-                return result.isPanel == true ? [result, result.tests] : result;
+                return result.isPanel === true ? [result, result.tests] : result;
             });
         });
     };

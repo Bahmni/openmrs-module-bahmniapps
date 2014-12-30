@@ -1,11 +1,10 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('PatientDashboardController', ['$scope', '$location', '$stateParams',
-        'encounterService', 'clinicalAppConfigService', 'diseaseTemplateService', 'configurations', 'retrospectiveEntryService',
-        function ($scope, $location, $stateParams, encounterService, 
-                  clinicalAppConfigService, diseaseTemplateService, configurations, retrospectiveEntryService) {
-
+    .controller('PatientDashboardController', ['$scope', '$rootScope', '$location', '$stateParams',
+        'encounterService', 'clinicalAppConfigService', 'diseaseTemplateService',
+        function ($scope, $rootScope, $location, $stateParams, encounterService, 
+                  clinicalAppConfigService, diseaseTemplateService) {
 
             $scope.patientUuid = $stateParams.patientUuid;
             $scope.patientSummary = {};
@@ -28,32 +27,14 @@ angular.module('bahmni.clinical')
 
             $scope.filterOdd = function (index) {
                 return function () {
-                    return index++ % 2 == 0;
+                    return index++ % 2 === 0;
                 };
             };
 
             $scope.filterEven = function (index) {
                 return function () {
-                    return index++ % 2 == 1;
+                    return index++ % 2 === 1;
                 };
-            };
-
-            var getEncountersForVisit = function (visitUuid) {
-                encounterService.search(visitUuid).then(function (encounterTransactionsResponse) {
-                    $scope.visit = Bahmni.Clinical.Visit.create(encounterTransactionsResponse.data, configurations.consultationNoteConcept(), $scope.labOrderNotesConcept, configurations.encounterConfig(),
-                        configurations.allTestsAndPanelsConcept(), $scope.obsIgnoreList, visitUuid, conceptSetUiConfigService.getConfig(), retrospectiveEntryService.getRetrospectiveEntry().encounterDate);
-
-                });
-            };
-
-            var clearPatientSummary = function () {
-                $scope.patientSummary = undefined;
-            };
-
-            $scope.showVisitSummary = function (visit) {
-                clearPatientSummary();
-                $scope.selectedVisit = visit;
-                getEncountersForVisit($scope.selectedVisit.uuid);
             };
 
             $scope.getDiseaseTemplateSection = function (diseaseName) {

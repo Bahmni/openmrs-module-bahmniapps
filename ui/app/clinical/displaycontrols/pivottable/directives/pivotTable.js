@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.clinical').directive('pivotTable', ['spinner', '$rootScope','pivotTableService','clinicalAppConfigService',
     function (spinner, $rootScope,pivotTableService,clinicalAppConfigService) {
 
@@ -13,8 +15,8 @@ angular.module('bahmni.clinical').directive('pivotTable', ['spinner', '$rootScop
             diseaseName: "=",
             displayName:"="
         },
-        link: function (scope, element, attrs) {
-            var diseaseSummaryConfig =pivotTableConfigFor(scope.diseaseName);
+            link: function (scope) {
+                var diseaseSummaryConfig =pivotTableConfigFor(scope.diseaseName);
             if(!diseaseSummaryConfig) return;
 
             var patientUuid = $rootScope.patient.uuid;

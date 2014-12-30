@@ -8,7 +8,7 @@ Bahmni.Clinical.PatientDashboardSection = function (section) {
     this.isObservation = section.isObservation || false;
     this.scope = section.scope;
     this.patientAttributes = section.patientAttributes || [];
-    if (this.isObservation && section.scope == "latest") {
+    if (this.isObservation && section.scope === "latest") {
         this.viewName = "dashboard/views/dashboardSections/latestObservationSection.html";
     } else if (this.isObservation) {
         this.viewName = "dashboard/views/dashboardSections/observationSection.html";

@@ -1,7 +1,7 @@
 angular.module('bahmni.clinical')
 
-    .controller('PatientDashboardTreatmentController', ['$q', '$scope', '$stateParams', 'TreatmentService', 'spinner', 'clinicalAppConfigService', 'retrospectiveEntryService',
-     function ($q, $scope, $stateParams, treatmentService, spinner, clinicalAppConfigService, retrospectiveEntryService) {
+    .controller('PatientDashboardTreatmentController', ['$q', '$scope', '$stateParams', 'TreatmentService', 'spinner', 'clinicalAppConfigService',
+     function ($q, $scope, $stateParams, treatmentService, spinner, clinicalAppConfigService) {
 
         $scope.drugOrderSections = {
             "active": {displayName: "Active / Scheduled Prescription", orders: null},
@@ -35,7 +35,9 @@ angular.module('bahmni.clinical')
         };
 
         $scope.isSectionNeeded = function (key) {
-            if (key !== "active") return true;
+            if (key !== "active") {
+                return true;
+            }
             isActiveNeeded = $scope.section.active;
             return isActiveNeeded;
         };
@@ -49,8 +51,8 @@ angular.module('bahmni.clinical')
         };
 
         spinner.forPromise($q.all(getPromises()));
-    }]).controller('PatientDashboardAllTreatmentController', ['$scope', '$stateParams', 'TreatmentService', 'spinner', 'retrospectiveEntryService',
-            function ($scope, $stateParams, treatmentService, spinner, retrospectiveEntryService) {
+    }]).controller('PatientDashboardAllTreatmentController', ['$scope', '$stateParams', 'TreatmentService', 'spinner',
+            function ($scope, $stateParams, treatmentService, spinner) {
         var init = function () {
             return treatmentService.getPrescribedDrugOrders($stateParams.patientUuid, true).then(function (drugOrders) {
                 var dateUtil = Bahmni.Common.Util.DateUtil;

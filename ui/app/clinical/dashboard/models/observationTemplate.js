@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.Clinical.ObservationTemplate = function (concept, visitStartDate, observations) {
     var obsTemplate = {
         name: concept.name,

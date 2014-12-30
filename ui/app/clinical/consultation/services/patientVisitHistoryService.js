@@ -3,8 +3,8 @@
 angular.module('bahmni.clinical')
   .service('patientVisitHistoryService', ['visitService', '$q', function (visitService, $q) {
     var patientVisitsMap = {};
-    
-    this.getVisits = function(patientUuid) {    	
+
+this.getVisits = function(patientUuid) {
     	var deferred = $q.defer();
         if(patientVisitsMap[patientUuid]){
             deferred.resolve(patientVisitsMap[patientUuid]);

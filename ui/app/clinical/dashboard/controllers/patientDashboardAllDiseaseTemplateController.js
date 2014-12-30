@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.clinical')
     .controller('PatientDashboardAllDiseaseTemplateController', ['$scope', '$stateParams', 'diseaseTemplateService', 'spinner', 
         function ($scope, $stateParams, diseaseTemplateService, spinner) {

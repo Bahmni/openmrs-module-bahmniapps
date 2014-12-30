@@ -1,3 +1,5 @@
+'use strict';
+
 Bahmni.Clinical.RadiologyRecordsMapper = function () {
     var DateUtil = Bahmni.Common.Util.DateUtil;
 

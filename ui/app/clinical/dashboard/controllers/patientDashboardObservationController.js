@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.clinical')
     .controller('PatientDashboardObservationController', ['$scope', '$stateParams', 'observationsService', '$q', 
         'spinner', 'clinicalAppConfigService', 
@@ -18,11 +20,18 @@ angular.module('bahmni.clinical')
             bahmniObservations = _.groupBy(bahmniObservations, observationGroupingFunction);
 
             var sortWithInAConceptDateCombination = function(anObs, challengerObs) {
-                if (anObs.encounterDateTime < challengerObs.encounterDateTime) return 1;
-                if (anObs.encounterDateTime > challengerObs.encounterDateTime) return -1;
-
-                if (anObs.sortWeight < challengerObs.sortWeight) return -1;
-                if (anObs.sortWeight > challengerObs.sortWeight) return 1;
+                if (anObs.encounterDateTime < challengerObs.encounterDateTime) {
+                    return 1;
+                }
+                if (anObs.encounterDateTime > challengerObs.encounterDateTime) {
+                    return -1;
+                }
+                if (anObs.sortWeight < challengerObs.sortWeight) {
+                    return -1;
+                }
+                if (anObs.sortWeight > challengerObs.sortWeight) {
+                    return 1;
+                }
 
                 return 0;
             };

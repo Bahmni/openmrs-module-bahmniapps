@@ -30,7 +30,7 @@ angular.module('bahmni.common.patient')
         };
 
         $scope.isCurrentVisit = function (visit) {
-            return $stateParams.visitUuid == visit.uuid;
+            return $stateParams.visitUuid === visit.uuid;
         };
 
         var getLinks = function () {

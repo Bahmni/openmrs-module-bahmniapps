@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.clinical')
     .directive('diseaseTemplate', function () {
 
