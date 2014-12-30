@@ -1,0 +1,10 @@
+<link rel="stylesheet" href="../styles/clinical.css"/>
+<link rel="stylesheet" href="../styles/visitSummaryPrint.css"/>
+<div class="prescription-print">
+    <main>
+        <ng-include src="'common/views/patientInfoPrint.html'"></ng-include>
+        <section bindonce="visit">
+            <ng-include src="'common/views/treatmentSectionPrint.html'"></ng-include>
+        </section>
+    </main>
+</div>

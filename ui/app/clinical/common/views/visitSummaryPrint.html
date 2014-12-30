@@ -1,0 +1,130 @@
+<link rel="stylesheet" href="../styles/clinical.css"/>
+<link rel="stylesheet" href="../styles/visitSummaryPrint.css"/>
+<div class="visit-summary-print">
+    <header>
+        <img class="logo" src="../images/jss-icon.png" alt="logo">
+
+        <h1>Jan Swasthya Sahyog</h1>
+
+        <h2>Visit Summary</h2>
+    </header>
+    <main>
+        <ng-include src="'common/views/patientInfoPrint.html'"></ng-include>
+        <section bindonce="visit">
+            <section class="block">
+                <h2>Observations</h2>
+                <table class="observations">
+                    <tbody ng-repeat="observation in visit.getWeightAndBMIObservations()">
+                    <tr>
+                        <td>
+                            <span>{{observation.concept.name}}</span>
+                        </td>
+                        <td>
+                            <span>{{observation.value}}</span>
+                            <span>{{observation.concept.units}}</span>
+                            <span class="date">{{observation.observationDateTime | date :'d MMM yyyy'}}</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+            <section ng-show="visit.hasDiagnosis()" class="block diagnosis">
+                <h2>Diagnoses</h2>
+                <ul>
+                    <li ng-repeat="diagnosis in visit.getDiagnoses() | primaryDiagnosisFirst" ng-if="!diagnosis.isRuledOut()">
+                        <span>{{diagnosis.getDisplayName()}}</span>
+                        <div ng-if="diagnosis.comments">
+                            <p class="fl">
+                                <strong class="diagnosis-notes-title">Diagnosis Notes: </strong><pre>{{diagnosis.comments}}</pre>
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+            <ng-include src="'common/views/treatmentSectionPrint.html'"></ng-include>
+            <section class="dispositions">
+                <h2>
+                    Disposition
+                </h2>
+                <ul>
+                    <li ng-repeat="disposition in visit.dispositions">
+                        <span class="name">{{disposition.conceptName}}</span>
+                        <ul>
+                            <li ng-repeat="note in disposition.additionalObs">
+                                <span ng-if="note && note.value">
+                                    <span>Note: {{note.value}}</span>
+                                </span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+            <section ng-if="visit.labTestOrderObsMap">
+                <h2 ng-click="visit.toggleLabInvestigation()" class="has-toggle">
+                    <button class="section-toggle" ng-if="visit.admissionDate">
+                        <i class="icon-caret-right"
+                           ng-hide="visit.showLabInvestigations"></i>
+                        <i class="icon-caret-down"
+                           ng-show="visit.showLabInvestigations"></i>
+                    </button>
+                    Lab Investigations
+                </h2>
+
+                <div ng-repeat="labOrders in visit.labTestOrderObsMap"class="lab-investigation">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th colspan="2" class="lab-report-title">
+                                <span>
+                                    <span>Accession at </span>
+                                    <span bo-text="labOrders.encounterDateTime | date:'d MMM yyyy hh:mm a'"></span>
+                                </span>
+                            </th>
+                        </tr>
+                        <tr ng-show="labOrders.show">
+                            <td colspan="2" class="notes inline-notes" ng-if="labOrders.accessionNotes">
+                                <div ng-repeat="accessionNote in labOrders.accessionNotes" class="accession">
+                                    <pre class="left">{{accessionNote.text}}</pre>
+                                </div>
+                            </td>
+                        </tr>
+                        </thead>
+                        <tbody ng-repeat="line in labOrders.displayList">
+                        <!-- HACKTAG: Apparently bo-if makes this go into an infinite loop-->
+                        <tr ng-if="line.isSummary" ng-class="testResultClass(line)">
+                            <td colspan="2" ng-hide="!line.name">
+                                {{line.name}}
+                            </td>
+                        </tr>
+                        <tr ng-if="!line.isSummary">
+                            <td>
+                                <span>{{line.concept.name}}</span>
+                                <span class="range">
+                                <span ng-if="line.minNormal && line.maxNormal">
+                                    {{' (' + line.minNormal + ' - ' + line.maxNormal + ') '}}
+                                </span>
+                                <span class="units">{{line.units}}</span>
+                                </span>
+                            </td>
+                            <td class="value" ng-class="{'is-abnormal': line.isAbnormal, 'referred-out': line.referredOut}">
+                                {{line.value}}
+                                <span class="referred"> (Referred Out)</span>
+                                <span ng-if="line.labReport"><img src="../images/icon-paper-clip.png" /></span>
+                            </td>`
+                        </tr>
+                        <tr ng-show="!line.isSummary && line.show">
+                            <td colspan="2" class="notes inline-notes" ng-if="line.notes">
+                                <strong class="left">Lab Tech Notes: </strong>
+                                <pre class="left">{{line.notes}}</pre>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+    </main>
+    <footer>
+        <h1>This is a computer generated receipt and does not require a signature.</h1>
+    </footer>
+</div>

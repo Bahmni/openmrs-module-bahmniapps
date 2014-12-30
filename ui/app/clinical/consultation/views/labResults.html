@@ -1,0 +1,21 @@
+<div id="lab-results">
+    <div ng-repeat="result in labResults">
+        <div ng-show="result.isPanel()" class="row panel">
+            <div class="panel-name">{{result.name}}</div>
+            <ng-include src="'consultation/views/labResults.html'" ng-init="labResults=result.members"/>
+        </div>
+        <div ng-hide="result.isPanel()" class="row" ng-class="{abnormal:result.isAbnormal()}">
+            <div class="name">{{result.name}}</div>
+            <div class="value">
+                <div>
+                    <span>{{result.value}}</span>
+                    <span>{{result.unit}}</span>
+                    <span>{{result.range()}}</span>
+                </div>
+                <div ng-show="result.hasNotes()">
+                    <div ng-repeat="note in result.notes" class="comments">{{note}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -43,9 +43,9 @@ angular.module('consultation')
             .state('patient.dashboard', {
                 url: '/dashboard',
                 views: {
-                    'additional-header': { templateUrl: 'views/dashboardHeader.html' },
+                    'additional-header': { templateUrl: 'dashboard/views/dashboardHeader.html' },
                     'content': {
-                        templateUrl: 'views/dashboard.html',
+                        templateUrl: 'dashboard/views/dashboard.html',
                         controller: 'PatientDashboardController'
                     }
                 }
@@ -56,9 +56,9 @@ angular.module('consultation')
                     backLinks: [{label: "Dashboard", state: "patient.dashboard"}]
                 },
                 views: {
-                    'additional-header': { templateUrl: 'views/dashboardHeader.html' },
+                    'additional-header': { templateUrl: 'common/views/visitHeader.html' },
                     'content': {
-                        templateUrl: 'views/visit.html',
+                        templateUrl: 'common/views/visit.html',
                         controller: 'VisitController'
                     }
                 },
@@ -75,12 +75,12 @@ angular.module('consultation')
                 },
                 views: {
                     'content': { template: '<ui-view/>' },
-                    'additional-header': { templateUrl: 'views/includes/header.html' }
+                    'additional-header': { templateUrl: 'common/views/header.html' }
                 }
             })
             .state('patient.consultation.visit', {
                 url: '/visit/:visitUuid',
-                templateUrl: 'views/visit.html',
+                templateUrl: 'common/views/visit.html',
                 controller: 'VisitController',
                 resolve: {
                     visitInitialization: function(visitInitialization, $stateParams) {
@@ -89,36 +89,36 @@ angular.module('consultation')
             })
             .state('patient.consultation.summary', {
                 url: '/consultation',
-                templateUrl: 'views/consultation.html',
+                templateUrl: 'consultation/views/consultation.html',
                 controller: 'ConsultationController'
             })
             .state('patient.consultation.investigation', {
                 url: '/investigation',
-                templateUrl: 'views/investigations.html',
+                templateUrl: 'consultation/views/investigations.html',
                 controller: 'InvestigationController'
             })
             .state('patient.consultation.diagnosis', {
                 url: '/diagnosis',
-                templateUrl: 'views/diagnosis.html',
+                templateUrl: 'consultation/views/diagnosis.html',
                 controller: 'DiagnosisController'
             })
             .state('patient.consultation.treatment', {
                 abstract: true,
-                templateUrl: 'views/treatment.html'
+                templateUrl: 'consultation/views/treatment.html'
             })
             .state('patient.consultation.treatment.page', {
                 url: '/treatment',
                 views: {
                     "addTreatment": {
                         controller: 'TreatmentController',
-                        templateUrl: 'views/addTreatment.html',
+                        templateUrl: 'consultation/views/treatmentSections/addTreatment.html',
                         resolve: {
                             treatmentConfig: 'treatmentConfig'
                         }
                     },
                     "viewHistory": {
                         controller: 'DrugOrderHistoryController',
-                        templateUrl: 'views/treatmentSections/drugOrderHistory.html',
+                        templateUrl: 'consultation/views/treatmentSections/drugOrderHistory.html',
                         resolve: {
                             prescribedDrugOrders: function(TreatmentService, $stateParams) {
                                 return TreatmentService.getPrescribedDrugOrders($stateParams.patientUuid, true, 3);
@@ -130,25 +130,21 @@ angular.module('consultation')
             })
             .state('patient.consultation.disposition', {
                 url: '/disposition',
-                templateUrl: 'views/disposition.html',
+                templateUrl: 'consultation/views/disposition.html',
                 controller: 'DispositionController'
             })
             .state('patient.consultation.conceptSet', {
                 url: '/concept-set-group/:conceptSetGroupName',
-                templateUrl: 'views/conceptSet.html',
+                templateUrl: 'consultation/views/conceptSet.html',
                 controller: 'ConceptSetPageController'
             })
             .state('patient.consultation.notes', {
                 url: '/notes',
-                templateUrl: 'views/notes.html'
+                templateUrl: 'consultation/views/notes.html'
             })
             .state('patient.consultation.templates', {
                 url: '/templates',
                 templateUrl: 'views/comingSoon.html'
-            })
-            .state('patient.consultation.new', {
-                url: '/new',
-                templateUrl: 'views/patientDashboard.html'
             })
             .state('patient.visitsummaryprint', {
                 url: '/latest-prescription-print',
