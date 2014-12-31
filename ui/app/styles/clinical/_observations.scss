@@ -224,13 +224,13 @@ concept-set {
         display: none;
         padding-top: 0;
         padding-bottom: 0;
-        font-size: 18px;
+        font-size: 14px;
+        line-height: inherit;
     }
 }
 .grid-row-element.active {
     color: $bahmniTertiaryColor;
-    padding-top: 5px;
-    padding-bottom: 7px;
+    padding-left: 3px;
     .icon-ok {
         display: inline-block;
     }

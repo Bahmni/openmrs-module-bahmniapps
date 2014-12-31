@@ -49,10 +49,10 @@
                     <!--TODO : check if jss-config is meant to have uuid Mujir, Shruthi-->
 
                     <div>
-                        <button type="button" ng-model="observation.markedAsNonCoded" class="small-btn accept-btn"
+                        <button type="button" ng-model="observation.markedAsNonCoded" class="small-btn accept-btn grid-row-element"
                                    ng-click="observation.markAsNonCoded()"
                                ng-class="{'illegalValue': observation.primaryObs.value.length > 0 && !observation.markedAsNonCoded, active: observation.markedAsNonCoded}"
-                                ng-disabled="observation.primaryObs.isCoded() && observation.primaryObs.value"><span></span>Accept</button>
+                                ng-disabled="observation.primaryObs.isCoded() && observation.primaryObs.value"><i class="icon-ok"></i>Accept</button>
                     </div>
                 </div>
 
@@ -68,8 +68,8 @@
             </div>
             <small class="hint" ng-show="observation.primaryObs.concept.lowNormal || observation.primaryObs.concept.hiNormal" ng-bind="'(' + observation.primaryObs.concept.lowNormal + ' - ' + observation.primaryObs.concept.hiNormal + ')'"></small>
             <div ng-if="observation.abnormalObs" class="fl accept-btn-wrapper">
-                <button type="button" ng-model="observation.abnormalObs.value" class="small-btn accept-btn"
-                        ng-disabled="!observation.primaryObs.hasValue()" ng-class="{'active': observation.abnormalObs.value}" ng-click="observation.toggleAbnormal()"><span></span>Abnormal</button>
+                <button type="button" ng-model="observation.abnormalObs.value" class="small-btn accept-btn grid-row-element"
+                        ng-disabled="!observation.primaryObs.hasValue()" ng-class="{'active': observation.abnormalObs.value}" ng-click="observation.toggleAbnormal()"><i class="icon-ok"></i>Abnormal</button>
             </div>
             <div class="checkbox-inline" ng-if="observation.durationObs" ng-class="{'duration': observation.durationObs, 'computed-field': observation.isComputedAndEditable()}">
                 <span>for</span><duration ng-model="observation.durationObs.value" disabled="!observation.primaryObs.hasValue()" illegal-value="observation.isDurationRequired() && !observation.hasDuration()"></duration>
