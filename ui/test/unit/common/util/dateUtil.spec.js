@@ -97,7 +97,21 @@ describe('DateUtil',function(){
             });
         })
     });
-	
+
+    describe("diffInDaysRegardlessOfTime", function() {
+        it('should return 0 when dates are same',function(){
+            var fromDate = new Date('2013','12','05','10','30');
+            var toDate = new Date('2013','12','05','10','34');
+            expect(dateUtil.diffInDaysRegardlessOfTime(fromDate, toDate)).toBe(0);
+        });
+
+        it('should return 10 when dates are 10 days appart, regardless of time',function(){
+            var fromDate = new Date('2013','12','25','10','30');
+            var toDate = new Date('2014','01','04','10','34');
+            expect(dateUtil.diffInDaysRegardlessOfTime(fromDate, toDate)).toBe(10);
+        });
+    });
+
 	describe("getDayNumber", function(){
 		it('should return 1 when date and reference date are same',function(){
 			var refDate = new Date('2013','12','05','10','30');
