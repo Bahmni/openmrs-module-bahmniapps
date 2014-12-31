@@ -6,6 +6,12 @@ angular.module('bahmni.common.conceptSet')
             var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
             $scope.showTitle = $scope.showTitle === undefined ? true : $scope.showTitle;
 
+            $scope.cloneNew = function(observation, parentObservation) {
+                var newObs = observation.cloneNew();
+                var index = parentObservation.groupMembers.indexOf(observation);
+                parentObservation.groupMembers.splice(index+1, 0, newObs);
+            };
+
             $scope.selectOptions = function(codedConcept){
                 var limit = 1000;
                 return {

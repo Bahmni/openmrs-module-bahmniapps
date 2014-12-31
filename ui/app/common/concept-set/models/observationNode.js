@@ -1,6 +1,19 @@
 Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUIConfig) {
     angular.extend(this, observation);
+
+    this.cloneNew = function() {
+        var oldObs = angular.copy(observation);
+        oldObs.groupMembers = _.map(oldObs.groupMembers, function(member) {
+            return member.cloneNew();
+        });
+
+        var clone = new Bahmni.ConceptSet.ObservationNode(oldObs, null, conceptUIConfig);
+        clone.comment = undefined;
+        return clone;
+    };
+
     Object.defineProperty(this, 'value', {
+        enumerable: true,
         get: function () {
             if (this.primaryObs) {
                 return typeof this.getPrimaryObs().value==="object"  && this.getPrimaryObs().value!==null?
@@ -40,12 +53,14 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUICo
     });
 
     Object.defineProperty(this, 'primaryObs', {
+        enumerable: true,
         get: function () {
             return this.getPrimaryObs();
         }
     });
 
     Object.defineProperty(this, 'markedAsNonCoded', {
+        enumerable: true,
         get: function () {
             if(this.getPrimaryObs().nonCodedAnswer===undefined){
                 this.getPrimaryObs().nonCodedAnswer = Boolean(this.getPrimaryObs().concept.dataType!=="Coded" && this.getPrimaryObs().uuid);
@@ -72,6 +87,9 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUICo
 };
 
 Bahmni.ConceptSet.ObservationNode.prototype = {
+    canAddMore: function() {
+        return this.getConceptUIConfig().allowAddMore == true;
+    },
 
     getPossibleAnswers: function () {
         return this.primaryObs.concept.answers;

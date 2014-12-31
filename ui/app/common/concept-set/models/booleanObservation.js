@@ -1,8 +1,15 @@
-Bahmni.ConceptSet.BooleanObservation = function(observation) {
+Bahmni.ConceptSet.BooleanObservation = function(observation, conceptUIConfig) {
     var self = this;
     angular.extend(this, observation);
 
     this.isBoolean = true;
+    this.conceptUIConfig = conceptUIConfig;
+
+    this.cloneNew = function() {
+        var clone = new Bahmni.ConceptSet.BooleanObservation(angular.copy(observation), conceptUIConfig);
+        clone.comment = undefined;
+        return clone;
+    };
 
     var possibleAnswers = [
         {displayString: "Yes", value: true},
@@ -47,5 +54,13 @@ Bahmni.ConceptSet.BooleanObservation = function(observation) {
 
     this.canHaveComment = function() {
         return true;
+    };
+
+    this.getConceptUIConfig = function() {
+        return this.conceptUIConfig[this.concept.name] || {};
+    };
+
+    this.canAddMore = function() {
+        return this.getConceptUIConfig().allowAddMore == true;
     };
 };

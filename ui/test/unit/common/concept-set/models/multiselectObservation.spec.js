@@ -114,4 +114,20 @@ describe("Multiselect Observation", function() {
         expect(mappedObs.groupMembers[3].value.name).toEqual(hivConcept.name.name);
         expect(mappedObs.groupMembers[3].voided).toBeFalsy();
     });
+
+    it("should clone and create new empty value observation",function(){
+        var rootConcept = newObs()[0].concept;
+        var mapper = new Bahmni.ConceptSet.ObservationMapper();
+        var mappedObs = mapper.map(newObs(), rootConcept, {"Comorbidity": {multiSelect: true}});
+        var clonedObs = mappedObs.cloneNew();
+
+        expect(clonedObs).not.toBeNull();
+        expect(clonedObs.value).toBe(undefined);
+        expect(clonedObs.comment).toBe(undefined);
+
+        expect(clonedObs.groupMembers.length).toBe(3);
+        expect(clonedObs.groupMembers[1].label).toEqual("Comorbidity");
+        expect(clonedObs.groupMembers[1]).toEqual(jasmine.any(Bahmni.ConceptSet.MultiSelectObservation));
+        expect(clonedObs.groupMembers[1].voided).toBeFalsy();
+    });
 });

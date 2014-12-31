@@ -98,7 +98,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         var observation = buildObservation(concept, savedObs, mappedGroupMembers);
         var obs = new Bahmni.ConceptSet.Observation(observation, savedObs, conceptSetConfig, mappedGroupMembers);
         if (getDatatype(concept) == "Boolean") {
-            obs = new Bahmni.ConceptSet.BooleanObservation(obs);
+            obs = new Bahmni.ConceptSet.BooleanObservation(obs, conceptSetConfig);
         }
         return obs;
     };

@@ -12,10 +12,15 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
     } else {
         this.value = this.getConceptUIConfig().defaultValue;         
     }
+
+    this.cloneNew = function() {
+        var clone = new Bahmni.ConceptSet.Observation(angular.copy(observation), null, conceptUIConfig);
+        clone.comment = undefined;
+        return clone;
+    };
 };
 
 Bahmni.ConceptSet.Observation.prototype = {
-    
     displayValue: function () {
         if (this.possibleAnswers.length > 0) {
             for (var i = 0; i < this.possibleAnswers.length; i++) {
@@ -113,6 +118,10 @@ Bahmni.ConceptSet.Observation.prototype = {
 
     canHaveComment: function() {
         return !this.isText() && !this.isImage();
+    },
+
+    canAddMore: function() {
+        return this.getConceptUIConfig().allowAddMore == true;
     },
 
     isConciseText: function(){

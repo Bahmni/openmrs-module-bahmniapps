@@ -13,7 +13,7 @@
                 <span ng-if="observation.isRequired()" class="asterick">*</span>
                 
             </label>
-            
+
             <div class="field-value" ng-switch="observation.getControlType()">
 
                 <div ng-switch-when="html5InputDataType">
@@ -74,14 +74,20 @@
             <div class="checkbox-inline" ng-if="observation.durationObs" ng-class="{'duration': observation.durationObs, 'computed-field': observation.isComputedAndEditable()}">
                 <span>for</span><duration ng-model="observation.durationObs.value" disabled="!observation.primaryObs.hasValue()" illegal-value="observation.isDurationRequired() && !observation.hasDuration()"></duration>
             </div>
+
+            <span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
+                <button type="button" class="icon-plus" ng-click="cloneNew(observation, rootObservation)">Add More
+                </button>
+            </span>
+
             <button type="button" toggle="observation.showComment" class="comment-toggle fr"  tabindex="-1" ng-class="{'has-notes': observation.comment}">
                 <i class="icon-file" ng-hide="observation.comment">
                     <i class="icon-plus-sign" ng-hide="observation.showComment"></i>
                     <i class="icon-minus-sign" ng-show="observation.showComment"></i>
                 </i>
                 <i class="icon-file-alt" ng-show="observation.comment"></i>
-                
             </button>
+
             <textarea class="obs-comment-section" ng-show="observation.showComment" maxlength="255" ng-model="observation.comment" placeholder="Notes">
             </textarea>
         </div>
@@ -182,6 +188,11 @@
             </div>
             <small class="hint" ng-show="observation.concept.lowNormal || observation.concept.hiNormal" ng-bind="'(' + observation.concept.lowNormal + ' - ' + observation.concept.hiNormal + ')'"></small>
 
+            <span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
+                <button type="button" class="icon-plus" ng-click="cloneNew(observation, rootObservation)">Add More
+                </button>
+            </span>
+
             <span ng-if="observation.canHaveComment()">
                 <button type="button" toggle="observation.showComment" class="comment-toggle fr" tabindex="-1" ng-class="{'has-notes': observation.comment}">
                     <i class="icon-file" ng-hide="observation.comment">
@@ -206,7 +217,7 @@
                 <i class="icon-caret-up"></i>
             </section>
             <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers " ng-if="!member.hidden">
-                <concept observation="member" root-observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet" show-title="true" concept-set-required="conceptSetRequired" ></concept>
+                <concept observation="member" root-observation="observation" at-least-one-value-is-set="atLeastOneValueIsSet" show-title="true" concept-set-required="conceptSetRequired" ></concept>
             </div>
         </div>
     </fieldset>

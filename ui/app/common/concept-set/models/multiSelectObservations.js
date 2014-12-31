@@ -57,6 +57,10 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
         return this.possibleAnswers;
     };
 
+    this.cloneNew = function() {
+        return new Bahmni.ConceptSet.MultiSelectObservation(concept, memberOfCollection, conceptSetConfig);
+    };
+
     this.add = function(obs){
         if(obs.value) {
             self.selectedObs[obs.value.name] = obs;
@@ -104,6 +108,14 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
         return false;
     };
 
+    this.getConceptUIConfig = function() {
+        return conceptSetConfig[this.concept.name] || {};
+    };
+
+    this.canAddMore = function() {
+        return this.getConceptUIConfig().allowAddMore == true;
+    };
+
     var createObsFrom = function(answer) {
         var obs = newObservation(concept, answer, conceptSetConfig)
         memberOfCollection.push(obs);
@@ -128,7 +140,6 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
             obs.voided = true;
         }
     };
-
 
     var newObservation = function (concept, value, conceptSetConfig) {
         var observation = buildObservation(concept);
