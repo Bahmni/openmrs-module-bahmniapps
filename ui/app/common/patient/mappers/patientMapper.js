@@ -40,7 +40,7 @@ Bahmni.PatientMapper = function (patientConfig) {
 
 
     this.getPatientConfigByUuid = function (patientConfig, attributeUuid) {
-        if (this.patientConfig) {
+        if (this.patientConfig.personAttributeTypes) {
             return patientConfig.personAttributeTypes.filter(function (item) {
                 return item.uuid === attributeUuid
             })[0];

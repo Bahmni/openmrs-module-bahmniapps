@@ -14,6 +14,9 @@ angular.module('bahmni.common.domain')
             format: format,
             patientUuid: patientUuid,
             encounterTypeName: encounterTypeName
+        }, {
+            withCredentials: true,
+            headers: {"Accept": "text/plain", "Content-Type": "application/json"}
         });
     };
 }]);

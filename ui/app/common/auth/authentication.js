@@ -14,12 +14,12 @@ angular.module('authentication', ['ui.router'])
                 return $q.reject(response);
             }
 
-            return function (promise) {
-                return promise.then(success, error);
-            }
-
+            return {
+                response: success,
+                responseError: error
+            };
         }];
-        $httpProvider.responseInterceptors.push(interceptor);
+        $httpProvider.interceptors.push(interceptor);
     }).run(['$rootScope', '$window', function ($rootScope, $window) {
         $rootScope.$on('event:auth-loginRequired', function () {
             $window.location = "../home/#/login?showLoginMessage=true";

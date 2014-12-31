@@ -61,10 +61,11 @@ angular.module('httpErrorInterceptor',[])
                 return $q.reject(response);
             }
 
-            return function(promise) {
-                return promise.then(success, error);
-            }
+            return {
+                response: success,
+                responseError: error
+            };
 
         }];
-        $httpProvider.responseInterceptors.push(interceptor);
+        $httpProvider.interceptors.push(interceptor);
     });

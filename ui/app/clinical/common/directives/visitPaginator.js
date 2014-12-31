@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bahmni.clinical')
     .directive('visitPaginationLinks', ['$state', function ($state) {
         var link = function ($scope) {
@@ -5,7 +7,7 @@ angular.module('bahmni.clinical')
             var visits = _.clone($scope.visits).reverse();
             
             var visitIndex = _.findIndex(visits, function(visitHistoryEntry) {
-                return $scope.currentVisit != null && visitHistoryEntry.uuid == $scope.currentVisit.uuid;
+                return $scope.currentVisit != null && visitHistoryEntry.uuid === $scope.currentVisit.uuid;
             });
 
             $scope.visitHistoryEntry = visits[visitIndex];

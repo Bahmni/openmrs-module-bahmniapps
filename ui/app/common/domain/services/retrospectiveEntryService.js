@@ -6,17 +6,18 @@ angular.module('bahmni.common.domain', [])
         var self = this;
 
         this.getRetrospectiveEntry = function () {
+            var dateUtil = Bahmni.Common.Util.DateUtil;
             if ($rootScope.retrospectiveEntry && $rootScope.retrospectiveEntry.encounterDate)
                 return $rootScope.retrospectiveEntry;
 
             var retrospectiveEncounterDateCookie = $bahmniCookieStore.get(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
 
             if (retrospectiveEncounterDateCookie) {
-                $rootScope.retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(retrospectiveEncounterDateCookie);
+                $rootScope.retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(dateUtil.getDate(retrospectiveEncounterDateCookie));
                 return $rootScope.retrospectiveEntry;
             }
 
-            $rootScope.retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(Bahmni.Common.Util.DateUtil.getDateWithoutTime(Bahmni.Common.Util.DateUtil.now()));
+            $rootScope.retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(dateUtil.today());
             return $rootScope.retrospectiveEntry;
         };
 

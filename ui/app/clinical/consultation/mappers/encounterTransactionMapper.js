@@ -17,10 +17,6 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
         });
     };
 
-    var isRetrospectiveEntry = function(encounterDate) {
-        return encounterDate < Bahmni.Common.Util.DateUtil.getDateWithoutTime(Bahmni.Common.Util.DateUtil.now());
-    }
-
     this.map = function (consultation, patient, locationUuid, retrospectiveEntry) {
         var encounterData = {};
         encounterData.locationUuid = locationUuid;

@@ -37,7 +37,7 @@ angular.module('bahmni.common.config')
         };
 
         this.patientConfig = function () {
-            return this.configs.patientConfig || [];
+            return this.configs.patientConfig || {};
         };
 
         this.encounterConfig = function () {
