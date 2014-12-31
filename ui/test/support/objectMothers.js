@@ -83,8 +83,11 @@ Bahmni.Tests.drugOrderViewModelMother = {
         defaultModel.encounterDate = encounterDate;
         return defaultModel;
     },
-    buildWith: function(appConfig, treatmentConfig, drugOrderViewModelData) {
-        var defaultModel = new Bahmni.Clinical.DrugOrderViewModel(appConfig, treatmentConfig, drugOrderViewModelData);
+    buildWith: function(appConfig, treatmentConfig, drugOrderViewModelData) { // TODO : Mujir/Bharti - remove this, use the method with encounterDate
+        return buildWith(appConfig, treatmentConfig, drugOrderViewModelData, undefined);
+    },
+    buildWith: function(appConfig, treatmentConfig, drugOrderViewModelData, encounterDate) {
+        var defaultModel = new Bahmni.Clinical.DrugOrderViewModel(appConfig, treatmentConfig, drugOrderViewModelData, encounterDate);
 
         defaultModel.instructions = drugOrderViewModelData.instructions || "Before Meals";
         defaultModel.duration = drugOrderViewModelData.duration || "10";

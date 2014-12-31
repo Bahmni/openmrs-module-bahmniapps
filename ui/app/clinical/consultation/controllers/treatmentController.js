@@ -4,8 +4,10 @@ angular.module('bahmni.clinical')
 
     .controller('TreatmentController', ['$scope', '$rootScope', 'TreatmentService', 'contextChangeHandler', 'treatmentConfig', 'DrugService', '$timeout', 
         'clinicalAppConfigService','ngDialog', '$window', 'retrospectiveEntryService',
-        function ($scope, $rootScope, treatmentService, contextChangeHandler, treatmentConfig, drugService, $timeout, 
+        function ($scope, $rootScope, treatmentService, contextChangeHandler, treatmentConfig, drugService, $timeout,
                   clinicalAppConfigService, ngDialog, $window, retrospectiveEntryService) {
+
+            var DateUtil = Bahmni.Common.Util.DateUtil;
 
             $scope.treatments = $scope.consultation.newlyAddedTreatments || [];
             $scope.treatmentConfig = treatmentConfig;
@@ -110,41 +112,43 @@ angular.module('bahmni.clinical')
                 clearHighlights();
 
                 $scope.treatment.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;
-                if($scope.treatment.isBeingEdited){
-                    $scope.treatments.splice($scope.treatment.currentIndex,1);
+                var newDrugOrder = $scope.treatment;
+                newDrugOrder.effectiveStopDate = DateUtil.addDays(DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
+                var existingDrugOrders = $rootScope.activeAndScheduledDrugOrders.concat($scope.treatments);
+                if ($scope.treatment.isBeingEdited) {
+                    $scope.treatments.splice($scope.treatment.currentIndex, 1);
                     $scope.treatment.isBeingEdited = false;
                 }
-                    var newDrugOrder = $scope.treatment;
-                    newDrugOrder.effectiveStopDate = Bahmni.Common.Util.DateUtil.addDays(Bahmni.Common.Util.DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
-                    var existingDrugOrders = $rootScope.activeAndScheduledDrugOrders.concat($scope.treatments);
 
-                    var overlappingOrders = existingDrugOrders.filter(function(drugOrder){
-                        return (drugOrder.drug.uuid==newDrugOrder.drug.uuid && drugOrder.overlappingScheduledWith(newDrugOrder));
-                    });
-
-                    setEffectiveDates(newDrugOrder, overlappingOrders);
-
-                var alreadyActiveSimilarOrders = existingDrugOrders.filter(function(drugOrder){
-                    return (drugOrder.drug.uuid==newDrugOrder.drug.uuid && drugOrder.overlappingScheduledWith(newDrugOrder));
+                var potentiallyOverlappingOrders = existingDrugOrders.filter(function (drugOrder) {
+                    return (drugOrder.drug.uuid == newDrugOrder.drug.uuid && drugOrder.overlappingScheduledWith(newDrugOrder));
                 });
 
-                if(alreadyActiveSimilarOrders.length > 0 ){
-                        $scope.alreadyActiveSimilarOrder = _.sortBy(overlappingOrders, 'effectiveStartDate').reverse()[0];;
-                        ngDialog.open({ template: 'consultation/views/treatmentSections/reviseRefillDrugOrderModal.html', scope: $scope});
-                        $scope.popupActive = true;
-                        return;
-                    }
+                setEffectiveDates(newDrugOrder, potentiallyOverlappingOrders);
+
+
+                var alreadyActiveSimilarOrders = existingDrugOrders.filter(function (drugOrder) {
+                    return (drugOrder.drug.uuid == newDrugOrder.drug.uuid && drugOrder.overlappingScheduledWith(newDrugOrder));
+                });
+
+                if (alreadyActiveSimilarOrders.length > 0) {
+                    $scope.alreadyActiveSimilarOrder = _.sortBy(potentiallyOverlappingOrders, 'effectiveStartDate').reverse()[0];
+                    ngDialog.open({ template: 'consultation/views/treatmentSections/reviseRefillDrugOrderModal.html', scope: $scope});
+                    $scope.popupActive = true;
+                    return;
+                }
                 $scope.treatments.push($scope.treatment);
                 $scope.treatment = newTreatment();
                 $scope.formInvalid = false;
                 markVariable("startNewDrugEntry");
             };
             var setEffectiveDates = function(newDrugOrder, existingDrugOrders){
-                var DateUtil = Bahmni.Common.Util.DateUtil;
                 existingDrugOrders.forEach(function(existingDrugOrder){
                         if(DateUtil.isSameDate(existingDrugOrder.effectiveStartDate, newDrugOrder.effectiveStopDate)){ //compare date part only of datetime
                             newDrugOrder.effectiveStopDate  = DateUtil.subtractMilliSeconds(existingDrugOrder.effectiveStartDate, 1);
-                            newDrugOrder.autoExpireDate = newDrugOrder.effectiveStopDate;
+                            if (newDrugOrder.uuid){
+                                newDrugOrder.autoExpireDate = newDrugOrder.effectiveStopDate;
+                            }
                         }
                         if(DateUtil.isSameDate(existingDrugOrder.effectiveStopDate, newDrugOrder.effectiveStartDate)){ //compare date part only of datetime
                             newDrugOrder.effectiveStartDate = DateUtil.addMilliSeconds(existingDrugOrder.effectiveStopDate, 1) ;
