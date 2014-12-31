@@ -209,8 +209,14 @@
 
     <fieldset ng-if="!observation.isObservationNode && !observation.isFormElement() && !observation.isComputed()" class="hasLegend">
 
-        <legend ng-if="showTitle" class="mylegend"><strong>{{observation.label}}</strong></legend>
-        
+        <legend ng-if="showTitle" class="mylegend">
+            <strong>{{observation.label}}</strong>
+            <span>
+                <button type="button" class="icon-plus" ng-click="cloneNew(observation, rootObservation)">Add More
+                </button>
+            </span>
+        </legend>
+
         <div class="form-group">        
             <section class="concept-set-description" ng-if="observation.concept.description">
                 <span class="description" ng-bind-html="observation.concept.description"></span>

@@ -14,7 +14,13 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
     }
 
     this.cloneNew = function() {
-        var clone = new Bahmni.ConceptSet.Observation(angular.copy(observation), null, conceptUIConfig);
+        var oldObs = angular.copy(observation);
+        if(!this.isFormElement() && oldObs.groupMembers && oldObs.groupMembers.length > 0) {
+            oldObs.groupMembers = _.map(oldObs.groupMembers, function(member) {
+                return member.cloneNew();
+            });
+        }
+        var clone = new Bahmni.ConceptSet.Observation(oldObs, null, conceptUIConfig);
         clone.comment = undefined;
         return clone;
     };
