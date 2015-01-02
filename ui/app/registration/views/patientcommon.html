@@ -22,7 +22,7 @@
             <span data-ng-switch="isAutoComplete('givenName')">
                 <input data-ng-switch-when="true"
                        type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank
-                       my-autocomplete source="getAutoCompleteList" response-map="getDataResults" data-type="personName"
+                       my-autocomplete source="getAutoCompleteList" response-map="getDataResults" data-item-type="personName"
                        placeholder="First Name" title="Enter patient's first name.">
 
                 <input data-ng-switch-default
@@ -34,7 +34,7 @@
             <span ng-show="showMiddleName" data-ng-switch="isAutoComplete('middleName')">
                 <input data-ng-switch-when="true"
                        type="text" id="middleName" ng-model="$parent.patient.middleName"
-                       my-autocomplete source="getAutoCompleteList" response-map="getDataResults" data-type="personName"
+                       my-autocomplete source="getAutoCompleteList" response-map="getDataResults" data-item-type="personName"
                        placeholder="Middle Name" title="Enter patient's middle name.">
 
                 <input data-ng-switch-default
@@ -45,7 +45,7 @@
             <span data-ng-switch="isAutoComplete('familyName')">
                 <input data-ng-switch-when="true"
                        type="text" id="familyName" ng-model="$parent.patient.familyName" non-blank
-                       my-autocomplete source="getAutoCompleteList" response-map="getDataResults" data-type="personName"
+                       my-autocomplete source="getAutoCompleteList" response-map="getDataResults" data-item-type="personName"
                        placeholder="Last Name" title="Enter patient's last name.">
 
                 <input data-ng-switch-default

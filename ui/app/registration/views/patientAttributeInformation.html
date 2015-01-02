@@ -12,12 +12,12 @@
                         <input data-ng-switch-when="true"
                                type="text" id="{{$parent.attribute.name}}"
                                placeholder="{{$parent.attribute.description}}"
-                               ng-model="$parent.patient[$parent.attribute.name]" data-type="personAttribute"
+                               ng-model="$parent.patient[$parent.attribute.name]" data-item-type="personAttribute"
                                my-autocomplete source="getAutoCompleteList" response-map="getDataResults">
 
                         <input data-ng-switch-default
                                type="text" id="{{attribute.name}}" placeholder="{{attribute.description}}"
-                               ng-model="patient[attribute.name]" data-type="personAttribute">
+                               ng-model="patient[attribute.name]" data-item-type="personAttribute">
                     </span>
                 </span>
         </div>
@@ -29,11 +29,11 @@
     </div>
     <div class="left" data-ng-switch-when="java.lang.Integer">
         <input type="number" placeholder="{{attribute.description}}"
-               ng-model="patient[attribute.name]" data-type="personAttribute">
+               ng-model="patient[attribute.name]" data-item-type="personAttribute">
     </div>
     <div class="left" data-ng-switch-when="java.lang.Float">
         <input type="number" step="any" id="{{attribute.name}}" placeholder="{{attribute.description}}"
-               ng-model="patient[attribute.name]" data-type="PersonAttribute">
+               ng-model="patient[attribute.name]" data-item-type="personAttribute">
     </div>
     <div class="left" data-ng-switch-when="java.lang.Boolean">
         <input type="checkbox" ng-model="patient[attribute.name]"/>

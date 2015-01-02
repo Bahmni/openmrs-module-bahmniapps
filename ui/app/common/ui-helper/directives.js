@@ -56,7 +56,7 @@ angular.module('bahmni.common.util')
                 autofocus: true,
                 minLength: 2,
                 source: function (request, response) {
-                    source(attrs.id, request.term, attrs.type).success(function (data) {
+                    source(attrs.id, request.term, attrs.itemType).success(function (data) {
                         var results = responseMap ? responseMap(data) : data;
                         response(results);
                     });
