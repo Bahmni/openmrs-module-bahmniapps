@@ -2,12 +2,13 @@ angular.module('bahmni.common.uiHelper').directive('dateConverter', ['$filter', 
     return {
         require: 'ngModel',
         link: function(scope, element, attrs, ngModelController) {
+            var DateUtil = Bahmni.Common.Util.DateUtil;
             ngModelController.$parsers.push(function(date) {
-                return Bahmni.Common.Util.DateUtil.parse(date);
+                return DateUtil.parse(date);
             });
 
             ngModelController.$formatters.push(function(date) {
-                return Bahmni.Common.Util.DateUtil.getDateWithoutTime(date)
+                return DateUtil.parse(DateUtil.getDateWithoutTime(date));
             });
         }
     };
