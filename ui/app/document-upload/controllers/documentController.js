@@ -270,7 +270,7 @@ angular.module('opd.documentupload')
             $scope.setDefaultEndDate = function(newVisit) {
                 if(!newVisit.stopDatetime){
                     var date = newVisit.endDate() ? DateUtil.parse(newVisit.endDate()) : new Date();
-                    $scope.newVisit.stopDatetime = moment(date).format("YYYY-MM-DD");
+                    $scope.newVisit.stopDatetime = date;
                 }
             };
 
