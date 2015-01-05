@@ -23,24 +23,29 @@
                                 </div>
 								<div class="button-group-wrapper">
                                     <div class="button-group">
-									<button ng-disabled="!drugOrder.isActive() || !drugOrder.isEditAllowed" ng-click="revise(drugOrder, drugOrderGroup.drugOrders)">
-                                        <i class="icon-edit"></i>
-                                    </button>
-                                    <button class="undo-btn" ng-if="drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed" ng-click="undoDiscontinue(drugOrder)">
-                                        <i class="icon-undo"></i>
-                                    </button>
-                                    <button class="stop-drug-btn" ng-if="!drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed" ng-click="discontinue(drugOrder)">
-                                        Stop
-                                    </button>
-                                    <button class="refill-btn" ng-click="refill(drugOrder)">
-                                        Refill
-                                    </button>
-                                    <button class="toggle" ng-class="{'has-notes': drugOrder.additionalInstructions}" ng-click="toggleShowAdditionalInstructions(drugOrder)" ng-hide="drugOrder.showAdditionalInstructions">
-                                        <i class="icon-plus-sign"></i>
-                                    </button>
-                                    <button class="toggle" ng-class="{'has-notes': drugOrder.additionalInstructions}" ng-click="toggleShowAdditionalInstructions(drugOrder)" ng-show="drugOrder.showAdditionalInstructions">
-                                        <i class="icon-minus-sign"></i>
-                                    </button>
+
+                                        <button ng-repeat="orderAttribute in drugOrder.orderAttributes" class="dispense-btn" ng-disabled="!drugOrder.isActive()" ng-click="toggleDrugOrderAttribute(orderAttribute)">
+                                            <i class="icon-check" ng-show="orderAttribute.value"></i>
+                                            {{orderAttribute.name.substring(0,1)}}
+                                        </button>
+                                        <button ng-disabled="!drugOrder.isActive() || !drugOrder.isEditAllowed" ng-click="revise(drugOrder, drugOrderGroup.drugOrders)">
+                                            <i class="icon-edit"></i>
+                                        </button>
+                                        <button class="undo-btn" ng-if="drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed" ng-click="undoDiscontinue(drugOrder)">
+                                            <i class="icon-undo"></i>
+                                        </button>
+                                        <button class="stop-drug-btn" ng-if="!drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed" ng-click="discontinue(drugOrder)">
+                                            Stop
+                                        </button>
+                                        <button class="refill-btn" ng-click="refill(drugOrder)">
+                                            Refill
+                                        </button>
+                                        <button class="toggle" ng-class="{'has-notes': drugOrder.additionalInstructions}" ng-click="toggleShowAdditionalInstructions(drugOrder)" ng-hide="drugOrder.showAdditionalInstructions">
+                                            <i class="icon-plus-sign"></i>
+                                        </button>
+                                        <button class="toggle" ng-class="{'has-notes': drugOrder.additionalInstructions}" ng-click="toggleShowAdditionalInstructions(drugOrder)" ng-show="drugOrder.showAdditionalInstructions">
+                                            <i class="icon-minus-sign"></i>
+                                        </button>
                                     </div>
 								</div>
                                 <div class="start-date fr">

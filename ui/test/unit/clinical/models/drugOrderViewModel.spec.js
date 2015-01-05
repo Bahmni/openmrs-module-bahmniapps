@@ -467,7 +467,8 @@ describe("drugOrderViewModel", function () {
                 "previousOrderUuid": null,
                 "orderReasonText": null,
                 "duration": 10,
-                "provider": {name: "superman"}
+                "provider": {name: "superman"},
+                "orderAttributes":[{name:"dispensed",value:true},{name:"administered",value:false}]
             };
             this.create = function() {
                 return drugOrderContract;
@@ -484,9 +485,22 @@ describe("drugOrderViewModel", function () {
 
         };
 
+        var config ={
+            orderAttributes:[
+                {
+                    name:"dispensed",
+                    uuid:"dispensed-uuid"
+                },
+                {
+                    name:"administered",
+                    uuid:"administered-uuid"
+                }
+            ]
+        };
+
         it("should map fields correctly from Drug Order", function () {
             var drugOrder = new DrugOrderContractMother().create();
-            var drugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder);
+            var drugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder,null,config);
             expect(drugOrderViewModel.asNeeded).toBe(drugOrder.dosingInstructions.asNeeded);
             expect(drugOrderViewModel.route).toBe(drugOrder.dosingInstructions.route);
             expect(drugOrderViewModel.duration).toBe(drugOrder.duration);
@@ -504,6 +518,14 @@ describe("drugOrderViewModel", function () {
             expect(drugOrderViewModel.provider).toBe(drugOrder.provider);
             expect(drugOrderViewModel.dateActivated).toBe(drugOrder.dateActivated);
             expect(drugOrderViewModel.reverseSynced).toBeFalsy();
+
+            expect(drugOrderViewModel.orderAttributes.length).toBe(2);
+            expect(drugOrderViewModel.orderAttributes[0].name).toBeTruthy("dispensed");
+            expect(drugOrderViewModel.orderAttributes[0].value).toBeTruthy();
+
+            expect(drugOrderViewModel.orderAttributes[1].name).toBeTruthy("administered");
+            expect(drugOrderViewModel.orderAttributes[1].value).toBeFalsy();
+
         });
 
         it("should map fields for reverse synced drug orders", function() {
@@ -516,6 +538,69 @@ describe("drugOrderViewModel", function () {
         });
 
 
+    });
+
+    describe("OrderAttributes",function(){
+        var drugOrderContract =  {
+            "uuid": "order-uuid",
+            "orderType": "Drug Order",
+            "orderNumber": "ORD-1234",
+            "visit": {
+                "startDateTime": 1397028261000,
+                "uuid": "002efa33-4c4f-469f-968a-faedfe3a5e0c"
+            },
+            "drug": {
+                "form": "Injection",
+                "uuid": "8d7e3dc0-f4ad-400c-9468-5a9e2b1f4230",
+                "name": "Methylprednisolone 2ml"
+            },
+            "dosingInstructions": {
+                "quantity": 100,
+                "route": "Intramuscular",
+                "frequency": "Twice a day",
+                "doseUnits": "Tablespoon",
+                "asNeeded": false,
+                "quantityUnits": "Tablet",
+                "dose": 5,
+                "administrationInstructions": "{\"instructions\":\"In the evening\",\"additionalInstructions\":\"helylo\"}",
+                "numberOfRefills": null
+            },
+            "durationUnits": "Days",
+            "dateActivated": 1410322624000,
+            "effectiveStartDate": 1410322624000,
+            "duration": 10,
+            "provider": {name: "superman"},
+            "orderAttributes":[
+                {name:"dispensed",value:true,uuid:"dispensed-obs-uuid"},
+                {name:"administered",value:false,uuid:"administered-obs-uuid"}
+            ]
+        };
+
+        it("should be mapped to BahmniObservation",function(){
+            var config ={
+                orderAttributes:[
+                    {
+                        name:"dispensed",
+                        uuid:"dispensed-uuid"
+                    },
+                    {
+                        name:"administered",
+                        uuid:"administered-uuid"
+                    },
+                    {
+                        name:"someAction",
+                        uuid:"someAction-uuid"
+                    }
+                ]
+            };
+            var drugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrderContract,null,config);
+            var orderAttributesAsObs = drugOrderViewModel.getOrderAttributesAsObs();
+            expect(orderAttributesAsObs.length).toBe(2);
+            expect(orderAttributesAsObs[0].uuid).toBe("dispensed-obs-uuid");
+            expect(orderAttributesAsObs[0].value).toBeTruthy();
+            expect(orderAttributesAsObs[1].uuid).toBe("administered-obs-uuid");
+            expect(orderAttributesAsObs[1].value).toBeFalsy();
+        });
     });
 
     describe("revise", function () {

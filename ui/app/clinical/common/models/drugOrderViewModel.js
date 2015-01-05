@@ -69,6 +69,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     this.quantityEnteredViaEdit = this.quantityEnteredViaEdit || false;
     this.quantityEnteredManually = this.quantityEnteredManually || false;
     this.isBeingEdited = this.isBeingEdited || false;
+    this.orderAttributes = [];
 
     this.overlappingScheduledWith = function(otherDrugOrder){
 
@@ -377,7 +378,48 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
             return validateVariableDosingType();
         }
         return false;
-    }
+    };
+
+    this.loadOrderAttributes = function(drugOrderResponse){
+        if(config && config.orderAttributes){
+            var findOrderAttribute= function(drugOrder,orderAttribute) {
+                return _.find(drugOrder.orderAttributes, function (drugOrderAttribute) {
+                    return orderAttribute.name === drugOrderAttribute.name;
+                });
+            };
+
+            config.orderAttributes.forEach(function(orderAttributeInConfig){
+                var orderAttributeInDrugOrder = findOrderAttribute(drugOrderResponse,orderAttributeInConfig);
+                var existingOrderAttribute = findOrderAttribute(self,orderAttributeInConfig);
+                var orderAttribute = existingOrderAttribute || {};
+                orderAttribute.name= orderAttributeInConfig.name;
+                orderAttribute.shortName= orderAttributeInConfig.shortName;
+                orderAttribute.conceptUuid= orderAttributeInConfig.uuid;
+                orderAttribute.value= orderAttributeInDrugOrder ? orderAttributeInDrugOrder.value : false;
+                orderAttribute.obsUuid= orderAttributeInDrugOrder ? orderAttributeInDrugOrder.uuid : undefined;
+                if(!existingOrderAttribute){
+                    self.orderAttributes.push(orderAttribute);
+                }
+            });
+        }
+    };
+
+
+    this.getOrderAttributesAsObs = function(){
+        if(self.orderAttributes){
+            var orderAttributesWithValues = self.orderAttributes.filter(function(orderAttribute){ return orderAttribute.value || orderAttribute.obsUuid});
+            return orderAttributesWithValues.map(function(orderAttribute){
+                return {
+                    uuid : orderAttribute.obsUuid,
+                    value: orderAttribute.value ? true:false,
+                    orderUuid: self.uuid,
+                    concept: {uuid:orderAttribute.conceptUuid }
+                }
+            });
+        }
+    };
+
+    this.loadOrderAttributes({});
 };
 
 Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderResponse, appConfig, config) {
@@ -430,5 +472,7 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
     viewModel.encounterUuid = drugOrderResponse.encounterUuid;
     viewModel.orderNumber = drugOrderResponse.orderNumber && parseInt(drugOrderResponse.orderNumber.replace("ORD-", ""));
     viewModel.drugNameDisplay = drugOrderResponse.drug.name + " (" + drugOrderResponse.drug.form + ")";
+    viewModel.loadOrderAttributes(drugOrderResponse);
+
     return viewModel;
 };

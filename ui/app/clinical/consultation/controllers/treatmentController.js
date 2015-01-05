@@ -281,6 +281,9 @@ angular.module('bahmni.clinical')
                 $("#"+otherButton)[0].tabIndex = 2;
             };
 
+            $scope.toggleDrugOrderAttribute = function(orderAttribute){
+                orderAttribute.value = orderAttribute.value ? false : true;
+            };
             contextChangeHandler.add(contextChange);
 
         }]);

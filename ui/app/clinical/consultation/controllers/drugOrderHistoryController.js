@@ -154,6 +154,10 @@ angular.module('bahmni.clinical')
                 drugOrder.isEditAllowed = true;
             };
 
+            $scope.toggleDrugOrderAttribute = function(orderAttribute){
+                orderAttribute.value = orderAttribute.value ? false : true;
+            };
+
             var removeOrder = function (removableOrder) {
                 removableOrder.action = Bahmni.Clinical.Constants.orderActions.discontinue;
                 removableOrder.previousOrderUuid = removableOrder.uuid;

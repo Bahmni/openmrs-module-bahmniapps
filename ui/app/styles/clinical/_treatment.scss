@@ -175,9 +175,9 @@
         width: 215px;
         padding: 3px 0;
         .button-group {float: right;}
-        button.dispense-btn, button:hover.dispense-btn {
+        button.dispense-btn, button:hover.dispense-btn,button.dispense-btn.selected {
             padding: 5px;
-            width: 90px;
+            width: auto;
             text-align: right;
             i {
                 display: inline;
@@ -185,6 +185,12 @@
                 font-size: 1em;
             }
         }
+        button.dispense-btn.selected{
+          i {
+            color: lighten($bahmniTertiaryColor,20%);
+          }
+        }
+
         button, button:hover {
             padding: 0; margin: 0;
             float: left;
