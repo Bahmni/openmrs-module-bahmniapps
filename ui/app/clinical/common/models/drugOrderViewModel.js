@@ -12,7 +12,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
 
     var today = function() {
         return DateUtil.parse(self.encounterDate);
-    }
+    };
 
     Object.defineProperty(this, 'effectiveStartDate', {
         get: function () {
@@ -283,7 +283,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     };
 
     this.isScheduled = function(){
-        return self.scheduledDate && self.scheduledDate > today();
+        return !self.isDiscontinuedOrStopped() && self.scheduledDate && self.scheduledDate > today();
     };
 
     this.isActive = function(){
