@@ -27,7 +27,7 @@
     "angularjs-nvd3-directives": "v0.0.7",
     "openmrs-uicommons": "master",
     "angular-ui-select2": "0.0.5",
-    "angular-ui-router": "0.2.7",
+    "angular-ui-router": "0.2.13",
     "fastclick": "1.0.2",
     "lodash": "~2.4.1",
     "ngDialog": "0.1.8",

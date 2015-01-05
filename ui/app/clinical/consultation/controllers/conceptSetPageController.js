@@ -1,8 +1,9 @@
 angular.module('bahmni.clinical')
     .controller('ConceptSetPageController', ['$scope', '$rootScope', '$location', '$anchorScroll', '$stateParams', 'conceptSetService', 'clinicalAppConfigService', 'messagingService',
-        'configurations',
-        function ($scope, $rootScope, $location, $anchorScroll, $stateParams, conceptSetService, clinicalAppConfigService, messagingService, configurations) {
+        'configurations', 'patientContext', 
+        function ($scope, $rootScope, $location, $anchorScroll, $stateParams, conceptSetService, clinicalAppConfigService, messagingService, configurations, patientContext) {
 
+            $scope.patient = patientContext.patient;
             $rootScope.consultation.selectedObsTemplate = $rootScope.consultation.selectedObsTemplate || [];
     $scope.scrollingEnabled = false;
     var extensions = clinicalAppConfigService.getAllConceptSetExtensions($stateParams.conceptSetGroupName);
