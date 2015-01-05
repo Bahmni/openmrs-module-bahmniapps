@@ -12,7 +12,7 @@ Bahmni.Common.Domain.RetrospectiveEntry = function() {
         set: function (value) {
             if (value) {
                 self._encounterDate = value;
-                self._isRetrospective = value < Bahmni.Common.Util.DateUtil.getDateWithoutTime(Bahmni.Common.Util.DateUtil.now());
+                self._isRetrospective = value < Bahmni.Common.Util.DateUtil.getDate(Bahmni.Common.Util.DateUtil.now());
             }
         }
     });
