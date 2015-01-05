@@ -3,7 +3,7 @@ angular.module('bahmni.clinical')
         function ($q, $scope, $stateParams, treatmentService, spinner, diagnosisService) {
 
             var getAllDiagnosis = function () {
-                return diagnosisService.getPastDiagnoses($scope.patient.uuid).success(function (response) {
+                return diagnosisService.getPastDiagnoses($scope.patientUuid).success(function (response) {
                     var diagnosisMapper = new Bahmni.DiagnosisMapper();
                     $scope.allDiagnoses = diagnosisMapper.mapDiagnoses(response);
                 });

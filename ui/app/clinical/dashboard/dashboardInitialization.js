@@ -54,9 +54,9 @@ angular.module('bahmni.clinical').factory('dashboardInitialization',
                     $rootScope.showControlPanel = false;
                 };
 
-//                return spinner.forPromise(initialization.then(function () {
+                return spinner.forPromise(initialization.then(function () {
                     return $q.all([findDefaultConsultationBoard().then(getPatientVisitHistory().then(getActiveVisitData()))]);
-//                }));
+                }));
             }
         }]
 );

@@ -8,7 +8,7 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
             return function (patientUuid) {
 
                 var getPatientBedDetails = function () {
-                    return bedService.getBedDetailsForPatient(patientUuid);
+                    return bedService.getBedDetailsForPatient($rootScope.patient.uuid);
                 };
 
                 var getActiveEncounter = function () {

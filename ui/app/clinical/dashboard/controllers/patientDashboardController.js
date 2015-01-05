@@ -1,17 +1,18 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('PatientDashboardController', ['$scope', '$location',
-        'encounterService', 'clinicalAppConfigService', 'diseaseTemplateService', 'patientContext',
-        function ($scope, $location, encounterService, clinicalAppConfigService, diseaseTemplateService, patientContext) {
+    .controller('PatientDashboardController', ['$scope', '$rootScope', '$location', '$stateParams',
+        'encounterService', 'clinicalAppConfigService', 'diseaseTemplateService',
+        function ($scope, $rootScope, $location, $stateParams, encounterService, 
+                  clinicalAppConfigService, diseaseTemplateService) {
 
-            $scope.patient = patientContext.patient;
+            $scope.patientUuid = $stateParams.patientUuid;
             $scope.patientSummary = {};
             $scope.activeVisitData = {};
             $scope.obsIgnoreList = clinicalAppConfigService.getObsIgnoreList();
             $scope.patientDashboardSections = _.map(clinicalAppConfigService.getAllPatientDashboardSections(), Bahmni.Clinical.PatientDashboardSection.create);
 
-            diseaseTemplateService.getLatestDiseaseTemplates($scope.patient.uuid).then(function (diseaseTemplates) {
+            diseaseTemplateService.getLatestDiseaseTemplates($stateParams.patientUuid).then(function (diseaseTemplates) {
                 $scope.diseaseTemplates = diseaseTemplates;
                 $scope.diseaseTemplates.forEach(function (diseaseTemplate) {
                     if (diseaseTemplate.notEmpty()) {

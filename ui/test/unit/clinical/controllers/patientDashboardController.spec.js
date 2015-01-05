@@ -25,8 +25,8 @@ describe("patient dashboard controller", function () {
         _diseaseTemplateService = jasmine.createSpyObj('diseaseTemplateService', ['getLatestDiseaseTemplates']);
         var diseaseTemplates = [new Bahmni.Clinical.DiseaseTemplate({name: "Breast Cancer"}, breastCancerDiseaseTemplate.observationTemplates),
             new Bahmni.Clinical.DiseaseTemplate({name: "Diabetes"}, diabetesDiseaseTemplate.observationTemplates)];
-        fetchDiseaseTemplatePromise = specUtil.respondWith(diseaseTemplates);
         _diseaseTemplateService.getLatestDiseaseTemplates.and.callFake(function () {
+            fetchDiseaseTemplatePromise = specUtil.respondWith(diseaseTemplates);
             return fetchDiseaseTemplatePromise;
         });
         var retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(Date.now());
@@ -39,10 +39,10 @@ describe("patient dashboard controller", function () {
         $controller('PatientDashboardController', {
             $scope: scope,
             diseaseTemplateService: _diseaseTemplateService,
+            $stateParams: jasmine.createSpy(),
             encounterService: jasmine.createSpy(),
             clinicalAppConfigService: _clinicalAppConfigService,
-            retrospectiveEntryService: _retrospectiveEntryService,
-            patientContext: {"patient": {"uuid": "uuid"}}
+            retrospectiveEntryService: _retrospectiveEntryService
         });
     }));
 

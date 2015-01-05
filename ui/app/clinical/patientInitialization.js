@@ -1,19 +1,23 @@
 'use strict';
 
 angular.module('bahmni.clinical').factory('patientInitialization',
-    ['$rootScope', '$q', 'patientService', 'spinner', 'configurations',
-        function ($rootScope, $q, patientService, spinner, configurations) {
+    ['$rootScope', '$q', 'patientService', 'spinner', 'initialization', 'configurations',
+        function ($rootScope, $q, patientService, spinner, initialization, configurations) {
+
+            var patientMapper = new Bahmni.PatientMapper(configurations.patientConfig());
 
             return function (patientUuid) {
                 var getPatient = function () {
-                    var patientMapper = new Bahmni.PatientMapper(configurations.patientConfig());
                     return patientService.getPatient(patientUuid).then(function (openMRSPatientResponse) {
-                        var patient = patientMapper.map(openMRSPatientResponse.data);
-                        return {"patient": patient};
+                        $rootScope.patient = patientMapper.map(openMRSPatientResponse.data);
                     })
                 };
 
-                return getPatient();
+                return spinner.forPromise(
+                    initialization.then(function () {
+                        return $q.all([getPatient()]);
+                    })
+                );
             }
         }]
 );
