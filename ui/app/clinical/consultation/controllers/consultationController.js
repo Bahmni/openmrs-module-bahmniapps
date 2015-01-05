@@ -1,52 +1,141 @@
 'use strict';
 
-angular.module('bahmni.clinical')
-    .controller('ConsultationController', ['$scope', '$rootScope', 'conceptSetUiConfigService', function ($scope, $rootScope, conceptSetUiConfigService) {
-        var geEditedDiagnosesFromPastEncounters = function () {
-            var editedDiagnosesFromPastEncounters = [];
-            $rootScope.consultation.pastDiagnoses.forEach(function (pastDiagnosis) {
-                if (pastDiagnosis.isDirty && pastDiagnosis.encounterUuid !== $rootScope.consultation.encounterUuid) {
-                    editedDiagnosesFromPastEncounters.push(pastDiagnosis);
-                }
+angular.module('bahmni.clinical').controller('ConsultationController',
+    ['$scope', '$rootScope', '$state', '$location', '$window', 'clinicalAppConfigService', 'urlHelper', 'contextChangeHandler', 
+        'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext',
+        function ($scope, $rootScope, $state, $location, $window, clinicalAppConfigService, urlHelper, contextChangeHandler, 
+                  spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext) {
+
+            $scope.loadVisit = function(visitUuid) {
+                $state.go('patient.visit', {visitUuid: visitUuid});
+            };
+            
+            var boardTypes = {
+                visit: 'visit',
+                consultation: 'consultation'
+            };
+            $scope.availableBoards = [
+                { label: 'Visit', url: '', type: boardTypes.visit}
+            ];
+            $scope.currentBoard = $scope.availableBoards[0];
+            $scope.showBoard = function (label) {
+                $rootScope.collapseControlPanel();
+                var board = findBoardByLabel(label);
+                return buttonClickAction(board);
+            };
+
+            $scope.gotoPatientDashboard = function() {
+                $location.path("/patient/" + patientContext.patient.uuid + "/dashboard");
+            };
+
+            var setCurrentBoardBasedOnPath = function() {
+                var currentPath = $location.path();
+                var board = findBoardByUrl(currentPath);
+                $scope.currentBoard = board || $scope.availableBoards[0];
+            };
+
+            var stringContains = function (sourceString, pattern) {
+                return (sourceString.search(pattern) >= 0);
+            };
+
+            var initialize = function () {
+                    var appExtensions = clinicalAppConfigService.getAllConsultationBoards();
+                    $scope.availableBoards = $scope.availableBoards.concat(appExtensions);
+                    setCurrentBoardBasedOnPath();
+            };
+
+            $scope.$on('$stateChangeStart', function() { 
+                setCurrentBoardBasedOnPath();
             });
-            return editedDiagnosesFromPastEncounters;
-        };
-        $scope.editedDiagnosesFromPastEncounters = geEditedDiagnosesFromPastEncounters();
 
-        $scope.onNoteChanged = function () {
-//        TODO: Mihir, D3 : Hacky fix to update the datetime to current datetime on the server side. Ideal would be void the previous observation and create a new one.
-            $scope.consultation.consultationNote.observationDateTime = null;
-        };
+            var findBoardByLabel = function (label) {
+                var boards = $scope.availableBoards.filter(function (board) {
+                    return board.label === label;
+                });
+                return boards.length > 0 ? boards[0] : null;
+            };
 
-        var groupedObservations = function(){
-            var groupedObservationsArray = [];
-            $scope.consultation.observations.forEach(function(observation){
-                var temp =[];
-                temp[0]=observation;
-                var observationsByGroup={
-                    "conceptSetName": observation.concept.shortName || observation.concept.name,
-                    "groupMembers": new Bahmni.ConceptSet.ObservationMapper().getObservationsForView(temp, conceptSetUiConfigService.getConfig())
-                };
-                if(observationsByGroup.groupMembers.length){
-                    groupedObservationsArray.push(observationsByGroup);
+            var findBoardByUrl = function (url) {
+                var boards = $scope.availableBoards.filter(function (board) {
+                    return stringContains(url, board.url);
+                });
+                return boards.length > 0 ? boards[1] : null;
+            };
+
+            var getUrl = function (board) {
+                var urlPrefix = board.type === boardTypes.visit ? urlHelper.getVisitUrl($rootScope.consultation.visitUuid) : urlHelper.getPatientUrl();
+                var url = board.url ? urlPrefix + "/" + board.url : urlPrefix ; 
+                return $location.url(url);                    
+            };
+
+            var contextChange = function() {
+                return contextChangeHandler.execute();
+            };
+
+            var buttonClickAction = function (board) {
+                if ($scope.currentBoard === board) return;
+
+                var contextChangeResponse = contextChange();
+                if (!contextChangeResponse["allow"]) {
+                    if(contextChangeResponse["errorMessage"]) {
+                        messagingService.showMessage('formError', contextChangeResponse["errorMessage"]);
+                    }
+                    return;
                 }
-            });
-            return groupedObservationsArray;
-        };
-        $scope.groupedObservations = groupedObservations();
-        $scope.disposition = $rootScope.consultation.disposition;
-        $scope.toggle = function (item) {
-            item.show = !item.show
-        };
+                contextChangeHandler.reset();
+                $scope.currentBoard = board;
+                return getUrl(board);
+            };
 
-        $scope.isConsultationTabEmpty = function(){
-            if (_.isEmpty($rootScope.consultation.newlyAddedDiagnoses) && _.isEmpty($scope.groupedObservations)
-                && _.isEmpty($rootScope.consultation.investigations) && _.isEmpty($rootScope.consultation.disposition)
-                && _.isEmpty($rootScope.consultation.treatmentDrugs) && _.isEmpty($rootScope.consultation.newlyAddedTreatments)
-                && _.isEmpty($rootScope.consultation.discontinuedDrugs)){
-                return true;
+
+            var clearRootScope = function(){
+                $rootScope.consultation.newlyAddedDiagnoses = [];
+                $rootScope.consultation.newlyAddedTreatments = [];
+                $rootScope.consultation.discontinuedDrugs = [];
+                $rootScope.consultation.drugOrderGroups = undefined;
+                $rootScope.consultation.removableDrugs = [];
+            };
+
+            $scope.save = function () {
+                var contxChange = contextChange();
+                var allowContextChange = contxChange["allow"];
+                if(!allowContextChange){
+                    var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "Please correct errors in the form. Information not saved" ;
+                    messagingService.showMessage('formError', errorMessage);
+                    return;
+                }
+
+                var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
+                $rootScope.consultation.saveHandler.fire();
+                var tempConsultation = angular.copy($rootScope.consultation);
+                tempConsultation.observations = observationFilter.filter(tempConsultation.observations);
+                tempConsultation.consultationNote = observationFilter.filter([tempConsultation.consultationNote])[0];
+                tempConsultation.labOrderNote = observationFilter.filter([tempConsultation.labOrderNote])[0];
+
+                var encounterData = new Bahmni.Clinical.EncounterTransactionMapper().map(tempConsultation, patientContext.patient, sessionService.getLoginLocationUuid(), retrospectiveEntryService.getRetrospectiveEntry());
+
+                spinner.forPromise(encounterService.create(encounterData).then(function () {
+                    $rootScope.consultation = tempConsultation;
+                    clearRootScope();
+                    $rootScope.consultation.postSaveHandler.fire();
+                    $state.transitionTo($state.current, $state.params, {
+                        reload: true,
+                        inherit: false,
+                        notify: true
+                    }).then(function() {
+                        messagingService.showMessage('info', 'Saved');
+                    });
+                 }).catch(function (error){
+                    var message = Bahmni.Clinical.Error.translate(error) || 'An error has occurred on the server. Information not saved.';
+                    messagingService.showMessage('formError', message);
+                }));
+            };
+
+            $scope.retrospectiveClass = function(){
+                if(retrospectiveEntryService.getRetrospectiveEntry() && retrospectiveEntryService.getRetrospectiveEntry().encounterDate &&
+                    retrospectiveEntryService.getRetrospectiveEntry().encounterDate < Bahmni.Common.Util.DateUtil.getDateWithoutTime(Bahmni.Common.Util.DateUtil.now())){
+                        return "retro-mode";
+                }
             }
-            return false;
-        };
-    }]);
-
+            initialize();
+        }]);

@@ -11,7 +11,7 @@ angular.module('bahmni.common.conceptSet')
     $scope.computeField = function(conceptSet){
         event.stopPropagation();
         $rootScope.consultation.saveHandler.fire();
-        var encounterData =new Bahmni.Clinical.EncounterTransactionMapper().map(angular.copy($rootScope.consultation), $rootScope.patient, sessionService.getLoginLocationUuid());
+        var encounterData =new Bahmni.Clinical.EncounterTransactionMapper().map(angular.copy($rootScope.consultation), $scope.patient, sessionService.getLoginLocationUuid());
         encounterData = encounterService.buildEncounter(encounterData);
         encounterData.drugOrders = [];
 
@@ -48,7 +48,9 @@ angular.module('bahmni.common.conceptSet')
             observations: "=",
             allTemplates: "=",
             context: "=",
-            autoScrollEnabled:"="
+            autoScrollEnabled:"=",
+            patient: "="
+            
         },
         controller: 'ConceptSetGroupController',
         template:

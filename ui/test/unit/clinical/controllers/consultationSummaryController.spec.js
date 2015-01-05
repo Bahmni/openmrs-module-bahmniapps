@@ -1,6 +1,6 @@
 'use strict';
 
-describe("ConsultationController", function () {
+describe("ConsultationSummaryController", function () {
 
     var scope, conceptSetUiConfigService, rootScope;
 
@@ -23,7 +23,7 @@ describe("ConsultationController", function () {
         };
         conceptSetUiConfigService = jasmine.createSpyObj('conceptSetUiConfigService', ['getConfig']);
 
-        $controller('ConsultationController', {
+        $controller('ConsultationSummaryController', {
             $scope: scope,
             $rootScope: rootScope,
             conceptSetUiConfigService: conceptSetUiConfigService

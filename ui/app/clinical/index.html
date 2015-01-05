@@ -20,7 +20,7 @@
 
     </head>
     <body ng-app="consultation" >
-        <div ng-controller="ConsultationNavigationController" ng-class="retrospectiveClass()">
+        <div>
             <div ui-view="additional-header"></div>
             <div ng-include src="'../common/ui-helper/messages.html'"></div>
             <div class="opd-wrapper">
@@ -197,12 +197,12 @@
         <script src="dashboard/controllers/patientDashboardLabSummaryController.js"></script>
         <script src="dashboard/controllers/patientDashboardRadiologyController.js"></script>
         <script src="dashboard/controllers/patientDashboardAllDiseaseTemplateController.js"></script>
-        <script src="consultation/controllers/consultationController.js"></script>
+        <script src="consultation/controllers/consultationSummaryController.js"></script>
         <script src="consultation/controllers/diagnosisController.js"></script>
         <script src="consultation/controllers/investigationController.js"></script>
         <script src="consultation/controllers/treatmentController.js"></script>
         <script src="consultation/controllers/dispositionController.js"></script>
-        <script src="consultation/controllers/navigationController.js"></script>
+        <script src="consultation/controllers/consultationController.js"></script>
         <script src="consultation/controllers/conceptSetPageController.js"></script>
         <script src="consultation/controllers/drugOrderHistoryController.js"></script>
         <script src="consultation/controllers/latestPrescriptionPrintController.js"></script>

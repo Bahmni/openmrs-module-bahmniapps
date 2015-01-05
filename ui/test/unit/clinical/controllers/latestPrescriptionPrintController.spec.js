@@ -8,7 +8,6 @@ describe("LatestPrescriptionPrintController", function(){
     var patientService;
     var visitActionsService;
     var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
-    var stateParams = {patientId: "GAN111111"};
     var controller;
     var rootScope;
 
@@ -29,18 +28,17 @@ describe("LatestPrescriptionPrintController", function(){
         controller('LatestPrescriptionPrintController', {
             $scope: scope,
             $rootScope: rootScope,
-            $stateParams: stateParams,
             messagingService: jasmine.createSpyObj('messagingService', ['showMessage']),
             visitInitialization: visitInitialization,
             spinner: spinner,
-            visitActionsService: {printPrescription: expectations}
+            visitActionsService: {printPrescription: expectations},
+            patientContext: {"patient": {"uuid": "patientUuid"}}
         });
-    }
+    };
 
     // Weird way to test. visitActionsService as a spy was not working.
     describe("when loaded", function(){
         it("should print visit summary of active visit", function() {
-            rootScope.patient = {uuid: "patientUuid"};
             rootScope.visit = {uuid: "visitUuid", startDate: "2014-10-06"};
 
 
@@ -54,7 +52,6 @@ describe("LatestPrescriptionPrintController", function(){
         });
 
         it("should print visit summary of latest visit if active visit is not available", function() {
-            rootScope.patient = {uuid: "patientUuid"};
             rootScope.visit = null;
             rootScope.visits = [{uuid: "latestVisitUuid"}];
 
