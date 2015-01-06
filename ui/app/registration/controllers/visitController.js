@@ -21,6 +21,7 @@ angular.module('bahmni.registration')
             var getActiveEncounter = function () {
                 return encounterService.activeEncounter({"patientUuid": patientUuid, "providerUuid" : $scope.currentProvider.uuid, "includeAll" : false, locationUuid : locationUuid, encounterTypeUuid: regEncounterTypeUuid})
                     .success(function (data) {
+                        $scope.encounterDateTime = data.encounterDateTime;
                         $scope.visitTypeUuid = data.visitTypeUuid;
                         $scope.observations = data.observations;
                     });
