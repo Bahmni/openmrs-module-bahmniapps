@@ -378,6 +378,29 @@ table{
   }
 }
 
+.grid-row {
+    padding: 2px;
+}
+.grid-row-element {
+    font-size: 12px;
+    padding-left: 15px;
+    padding-right: 15px;
+    .icon-ok {
+        display: none;
+        padding-top: 0;
+        padding-bottom: 0;
+        font-size: 14px;
+        line-height: inherit;
+    }
+}
+.grid-row-element.active {
+    color: $bahmniTertiaryColor;
+    padding-left: 3px;
+    .icon-ok {
+        display: inline-block;
+    }
+}
+
 .mylegend {
     background: $lightestGray;
     font-size: 14px;
