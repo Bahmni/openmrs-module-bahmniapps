@@ -5,8 +5,9 @@ angular.module('bahmni.clinical')
         function ($scope, $stateParams, diseaseTemplateService, spinner) {
         var init = function () {
             $scope.diseaseName = $scope.ngDialogData;
+            $scope.patientUuid = $stateParams.patientUuid;
 
-            return diseaseTemplateService.getAllDiseaseTemplateObs($stateParams.patientUuid, $scope.diseaseName).then(function (diseaseTemplate) {
+            return diseaseTemplateService.getAllDiseaseTemplateObs($scope.patientUuid, $scope.diseaseName).then(function (diseaseTemplate) {
                 $scope.diseaseTemplate = diseaseTemplate;
             });
         };
