@@ -151,7 +151,7 @@ angular.module('bahmni.common.gallery')
 
             var mapBahmniEncounterTransaction = function (image) {
                 return {
-                    patientUuid: $rootScope.patient.uuid,
+                    patientUuid: $scope.patient.uuid,
                     encounterTypeUuid: configurations.encounterConfig().getConsultationEncounterTypeUuid(),
                     observations: [image.newSourceObs]
                 };
