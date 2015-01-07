@@ -397,6 +397,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
                 orderAttribute.conceptUuid= orderAttributeInConfig.uuid;
                 orderAttribute.value= !!(orderAttributeInDrugOrder && orderAttributeInDrugOrder.value === "true");
                 orderAttribute.obsUuid= orderAttributeInDrugOrder ? orderAttributeInDrugOrder.obsUuid : undefined;
+                orderAttribute.encounterUuid = orderAttributeInDrugOrder ? orderAttributeInDrugOrder.encounterUuid : undefined;
                 if(!existingOrderAttribute){
                     self.orderAttributes.push(orderAttribute);
                 }

@@ -468,7 +468,7 @@ describe("drugOrderViewModel", function () {
                 "orderReasonText": null,
                 "duration": 10,
                 "provider": {name: "superman"},
-                "orderAttributes":[{name:"dispensed",value:true},{name:"administered",value:false}]
+                "orderAttributes":[{name:"dispensed",value:"true"},{name:"administered",value:"false"}]
             };
             this.create = function() {
                 return drugOrderContract;
@@ -571,8 +571,8 @@ describe("drugOrderViewModel", function () {
             "duration": 10,
             "provider": {name: "superman"},
             "orderAttributes":[
-                {name:"dispensed",value:true,uuid:"dispensed-obs-uuid"},
-                {name:"administered",value:false,uuid:"administered-obs-uuid"}
+                {name:"dispensed",value:"true",obsUuid:"dispensed-obs-uuid"},
+                {name:"administered",value:"false",obsUuid:"administered-obs-uuid"}
             ]
         };
 
