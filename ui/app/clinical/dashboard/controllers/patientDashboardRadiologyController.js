@@ -1,5 +1,6 @@
 angular.module('bahmni.clinical')
-    .controller('PatientDashboardRadiologyController', ['$rootScope', '$scope', '$stateParams', 'encounterService', 'spinner', 'configurations', function ($rootScope, $scope, $stateParams, encounterService, spinner, configurations) {
+    .controller('PatientDashboardRadiologyController', ['$rootScope', '$scope', '$stateParams', 'encounterService', 'spinner', 'configurations', 
+        function ($rootScope, $scope, $stateParams, encounterService, spinner, configurations) {
         var encounterTypeUuid = configurations.encounterConfig().getRadiologyEncounterTypeUuid();
 
         spinner.forPromise(encounterService.getEncountersForEncounterType($stateParams.patientUuid, encounterTypeUuid).then(function (response) {
@@ -9,7 +10,7 @@ angular.module('bahmni.clinical')
 
         $scope.isRecordForCurrentVisit = function(records){
             return _.some(records,function(record){
-                return $rootScope.activeVisit && $rootScope.activeVisit.uuid === record.visitUuid;
+                return $scope.activeVisit && $scope.activeVisit.uuid === record.visitUuid;
             });
         };
     }]);

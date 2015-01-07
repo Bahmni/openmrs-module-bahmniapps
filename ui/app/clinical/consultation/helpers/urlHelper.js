@@ -8,7 +8,7 @@ angular.module('bahmni.clinical')
 
 	this.getConsultationUrl = function() {
 		return this.getPatientUrl() + '/consultation';
-	}
+	};
 
     this.getVisitUrl = function(visitUuid) {
     	return this.getPatientUrl() + '/visit/' + visitUuid;

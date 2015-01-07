@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('visitPaginationLinks', ['$state', function ($state) {
+    .directive('visitPaginator', ['$state', function ($state) {
         var link = function ($scope) {
 
             var visits = _.clone($scope.visits).reverse();

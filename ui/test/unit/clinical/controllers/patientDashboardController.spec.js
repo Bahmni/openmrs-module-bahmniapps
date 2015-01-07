@@ -42,7 +42,8 @@ describe("patient dashboard controller", function () {
             encounterService: jasmine.createSpy(),
             clinicalAppConfigService: _clinicalAppConfigService,
             retrospectiveEntryService: _retrospectiveEntryService,
-            patientContext: {"patient": {"uuid": "uuid"}}
+            patientContext: {"patient": {"uuid": "uuid"}},
+            visitHistory: {}
         });
     }));
 

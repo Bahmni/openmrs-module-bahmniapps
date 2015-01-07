@@ -40,15 +40,6 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                     $rootScope.consultation.postSaveHandler = new Bahmni.Clinical.SaveHandler();
                 };
 
-                $rootScope.showControlPanel = false;
-                $rootScope.toggleControlPanel = function () {
-                    $rootScope.showControlPanel = !$rootScope.showControlPanel;
-                };
-
-                $rootScope.collapseControlPanel = function () {
-                    $rootScope.showControlPanel = false;
-                };
-
                 return spinner.forPromise(
                     initialization.then(function () {
                         return $q.all([getActiveEncounter().then(getPastDiagnoses).then(addSaveHandlers), getPatientBedDetails]);

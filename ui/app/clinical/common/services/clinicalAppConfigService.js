@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .service('clinicalAppConfigService', ['appService', function (appService) {
+    .service('clinicalAppConfigService', ['appService', 'urlHelper', function (appService, urlHelper) {
 
         this.getTreatmentActionLink = function () {
             return appService.getAppDescriptor().getExtensions("org.bahmni.clinical.treatment.links", "link") || [];
@@ -52,11 +52,20 @@ angular.module('bahmni.clinical')
             return appService.getAppDescriptor().getConfigValue("templateSections") || [];
         };
 
-        this.getVisitPageConfig = function() {
+        this.getVisitPageConfig = function () {
             return appService.getAppDescriptor().getConfigValue("visitPage") || {};
         };
 
-        this.getPrintConfig = function(){
+        this.getPrintConfig = function () {
             return appService.getAppDescriptor().getConfigValue("printConfig") || {};
-        }
+        };
+
+        this.getConsultationBoardLink = function () {
+            var allBoards = this.getAllConsultationBoards();
+            var defaultBoard = _.find(allBoards, 'default');
+            if (defaultBoard) {
+                return urlHelper.getPatientUrl() + "/" + defaultBoard.url
+            }
+            return urlHelper.getConsultationUrl();
+        };
     }]);

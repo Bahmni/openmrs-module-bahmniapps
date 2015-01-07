@@ -1,7 +1,7 @@
 angular.module('bahmni.clinical')
     .controller('ConceptSetPageController', ['$scope', '$rootScope', '$location', '$anchorScroll', '$stateParams', 'conceptSetService', 'clinicalAppConfigService', 'messagingService',
-        'configurations', 'patientContext', 
-        function ($scope, $rootScope, $location, $anchorScroll, $stateParams, conceptSetService, clinicalAppConfigService, messagingService, configurations, patientContext) {
+        'configurations', 'patientContext', 'visitContext',
+        function ($scope, $rootScope, $location, $anchorScroll, $stateParams, conceptSetService, clinicalAppConfigService, messagingService, configurations, patientContext, visitContext) {
 
             $scope.patient = patientContext.patient;
             $rootScope.consultation.selectedObsTemplate = $rootScope.consultation.selectedObsTemplate || [];
@@ -26,7 +26,7 @@ angular.module('bahmni.clinical')
             });
             $rootScope.consultation.selectedObsTemplate= allConceptSections.filter(function(conceptSet){
                 if(conceptSet.isAvailable($scope.context)){
-                    if(conceptSet.conceptName !== Bahmni.Clinical.Constants.dischargeSummaryConceptName || ($rootScope.visit && $rootScope.visit.hasAdmissionEncounter()) ){
+                    if(conceptSet.conceptName !== Bahmni.Clinical.Constants.dischargeSummaryConceptName || (visitContext && visitContext.hasAdmissionEncounter()) ){
                         return true;
                     }
                 }

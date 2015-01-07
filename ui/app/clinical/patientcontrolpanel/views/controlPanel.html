@@ -56,7 +56,7 @@
         <ul class="visit-history">
             <li ng-click="changeContext($event)" class="visit-history-entry"
                 ng-class="{'selected': isCurrentVisit(visit), 'active': visit.isActive()}"
-                ng-repeat="visit in $parent.visits">
+                ng-repeat="visit in visitHistory.visits">
                 <a href="#/patient/{{patient.uuid}}/dashboard/visit/{{visit.uuid}}">
                     <span bo-text="visit.startDatetime | date: 'd MMM yy'"></span>
                     <span bo-text="'- ' + (visit.stopDatetime | date: 'd MMM yy')" bo-hide="visit.isActive()"></span>

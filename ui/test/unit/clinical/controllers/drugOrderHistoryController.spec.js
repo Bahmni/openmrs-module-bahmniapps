@@ -37,7 +37,8 @@ describe("DrugOrderHistoryController", function () {
             TreatmentService: _treatmentService,
             clinicalAppConfigService: clinicalAppConfigService,
             retrospectiveEntryService: retrospectiveEntryService,
-            $stateParams: {patientUuid: "patientUuid"}
+            $stateParams: {patientUuid: "patientUuid"},
+            visitContext: {}
         });
     }));
 

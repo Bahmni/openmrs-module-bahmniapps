@@ -1,22 +1,20 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitController', ['$scope', 'encounterService', 'visitService', 'spinner', '$stateParams', '$rootScope', 'clinicalAppConfigService', 'configurations', 'patientContext',
-        function ($scope, encounterService, visitService, spinner, $stateParams, $rootScope, clinicalAppConfigService, configurations, patientContext) {
+    .controller('VisitController', ['$scope', 'encounterService', 'visitService', 'spinner', '$stateParams', 'clinicalAppConfigService', 'configurations', 'patientContext', 'visitContext',
+        function ($scope, encounterService, visitService, spinner, $stateParams, clinicalAppConfigService, configurations, patientContext, visitContext) {
             var encounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
             $scope.documentsPromise = encounterService.getEncountersForEncounterType(patientContext.patient.uuid, encounterTypeUuid).then(function (response) {
                 return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
             });
 
-            $scope.patientUuid = $stateParams.patientUuid;
+            $scope.patient = patientContext.patient;
+            $scope.visit = visitContext;
             $scope.showTrends = true;
-            $scope.visit = $rootScope.visit;
 
-            $scope.investigationResultsParameters = clinicalAppConfigService
-                .getVisitPageConfig()
-                .investigationResultParams || {};
-            $scope.investigationResultsParameters.patientUuid = $scope.patientUuid;
-            $scope.investigationResultsParameters.visitUuids = [$stateParams.visitUuid];
+            $scope.investigationResultsParameters = clinicalAppConfigService.getVisitPageConfig().investigationResultParams || {};
+            $scope.investigationResultsParameters.patientUuid = $scope.patient.uuid;
+            $scope.investigationResultsParameters.visitUuids = [$scope.visit.uuid];
 
             $scope.isNumeric = function (value) {
                 return $.isNumeric(value);
@@ -46,13 +44,7 @@ angular.module('bahmni.clinical')
                 return line.isSummary && !line.hasResults && line.name !== "";
             };
 
-            $scope.getVisitDate = function(){
-                return $rootScope.visits.filter(function (visit) {
-                    return visit.uuid === $rootScope.visit.uuid;
-                })[0].startDatetime;
-            };
-
-            $scope.displayDate = function(date) {
+            $scope.displayDate = function (date) {
                 return moment(date).format("DD-MMM-YY");
             };
         }]);

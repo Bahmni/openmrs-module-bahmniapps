@@ -1,21 +1,19 @@
 'use strict';
 
 angular.module('bahmni.common.patient')
-.directive('patientControlPanel', ['$q', '$rootScope', '$location', '$stateParams', '$state', 'contextChangeHandler', 'encounterService', 'visitActionsService', 'configurations',
-        function($q, $rootScope, $location, $stateParams, $state, contextChangeHandler, encounterService, visitActionsService, configurations) {
-    var link = function($scope) {
-        $scope.activeVisit = $rootScope.activeVisit;
+.directive('patientControlPanel', ['$q', '$rootScope', '$location', '$stateParams', '$state', 'contextChangeHandler', 'encounterService', 'visitActionsService', 'configurations', 'clinicalAppConfigService',
+        function($q, $rootScope, $location, $stateParams, $state, contextChangeHandler, encounterService, visitActionsService, configurations, clinicalAppConfigService) {
+            
+    var controller = function ($scope) {
+
+        $scope.activeVisit = $scope.visitHistory.activeVisit;
 
         var DateUtil = Bahmni.Common.Util.DateUtil;
 
         $scope.today = DateUtil.getDateWithoutTime(DateUtil.now());
 
-        $scope.getConsultationPadLink = function () {
-            return $rootScope.consultationBoardLink();
-        };
-
         $scope.getDashboardLink = function() {
-          return "#/patient/" + $scope.patient.uuid + "/dashboard";
+            return "#/patient/" + $scope.patient.uuid + "/dashboard";
         };
 
         $scope.changeContext = function($event) {
@@ -27,7 +25,7 @@ angular.module('bahmni.common.patient')
             }
             $rootScope.toggleControlPanel();
         };
-
+        
         $scope.isCurrentVisit = function (visit) {
             return $stateParams.visitUuid === visit.uuid;
         };
@@ -41,7 +39,7 @@ angular.module('bahmni.common.patient')
             } else {
                 var links = [];
                 if ($scope.activeVisit) {
-                    links.push({text: "Consultation", icon: "btn-consultation dashboard-btn", href: "#" + $scope.getConsultationPadLink()});
+                    links.push({text: "Consultation", icon: "btn-consultation dashboard-btn", href: "#" + clinicalAppConfigService.getConsultationBoardLink()});
                 }
                 if (state.match("patient.dashboard")) {
                     links.push({text: "Trends", icon: "btn-trends dashboard-btn", href: "../trends/#/patients/" + $scope.patient.uuid});
@@ -54,26 +52,26 @@ angular.module('bahmni.common.patient')
         };
 
         var getStartDateTime = function () {
-            return $rootScope.visits.filter(function (visit) {
-                return visit.uuid === $rootScope.visit.uuid;
+            return $scope.visitHistory.visits.filter(function (visit) {
+                return visit.uuid === $scope.visit.uuid;
             })[0].startDatetime;
         };
 
         var appendPrintLinks = function(links) {
-            if ($rootScope.visit) {
+            if ($scope.visit) {
                 links.push({text: "Visit Summary", icon: "btn-print dashboard-btn", onClick: function($event) {
-                    visitActionsService.printVisitSummary($scope.patient, $rootScope.visit, getStartDateTime());
+                    visitActionsService.printVisitSummary($scope.patient, $scope.visit, getStartDateTime());
                     $event.preventDefault();
                 }});
 
                 links.push({text: "OPD Summary (For Admit)", icon: "btn-print dashboard-btn", onClick: function($event) {
-                    visitActionsService.printOpdSummary($scope.patient, $rootScope.visit, getStartDateTime());
+                    visitActionsService.printOpdSummary($scope.patient, $scope.visit, getStartDateTime());
                     $event.preventDefault();
                 }});
 
-                if($rootScope.visit.hasAdmissionEncounter()) {
+                if($scope.visit.hasAdmissionEncounter()) {
                     links.push({text: "Discharge Summary", icon: "btn-print dashboard-btn", onClick: function($event) {
-                        visitActionsService.printDischargeSummary($scope.patient, $rootScope.visit);
+                        visitActionsService.printDischargeSummary($scope.patient, $scope.visit);
                         $event.preventDefault();
                     }});
                 }
@@ -84,10 +82,8 @@ angular.module('bahmni.common.patient')
         $scope.links = getLinks();
         $rootScope.$on('$stateChangeSuccess', function() {
             $scope.links = getLinks($state.current.name);
-        })
-    };
+        });
 
-    var controller = function ($scope) {
         var encounterTypeUuid =  configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
         $scope.documentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function(response) {
             return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
@@ -98,9 +94,10 @@ angular.module('bahmni.common.patient')
         restrict: 'E',
         templateUrl: 'patientcontrolpanel/views/controlPanel.html',
         controller: controller,
-        link: link,
         scope: {
-            patient : "="
+            patient: "=",
+            visitHistory: "=",
+            visit: "="
         }
     }
 }]);

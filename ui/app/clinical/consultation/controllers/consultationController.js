@@ -5,10 +5,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
         'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext',
         function ($scope, $rootScope, $state, $location, $window, clinicalAppConfigService, urlHelper, contextChangeHandler, 
                   spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext) {
-
-            $scope.loadVisit = function(visitUuid) {
-                $state.go('patient.visit', {visitUuid: visitUuid});
-            };
+            $scope.patient = patientContext.patient;
             
             var boardTypes = {
                 visit: 'visit',

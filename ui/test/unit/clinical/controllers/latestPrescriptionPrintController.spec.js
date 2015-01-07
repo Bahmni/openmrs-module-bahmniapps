@@ -1,6 +1,6 @@
 'use strict';
 
-describe("LatestPrescriptionPrintController", function(){
+describe("LatestPrescriptionPrintController", function () {
 
     beforeEach(module('bahmni.clinical'));
 
@@ -15,16 +15,20 @@ describe("LatestPrescriptionPrintController", function(){
         controller = $controller;
         rootScope = $rootScope;
         scope = $rootScope.$new();
-        spinner.forPromise.and.callFake(function(param) {return {}});
+        spinner.forPromise.and.callFake(function (param) {
+            return {}
+        });
 
         patientService = jasmine.createSpyObj('patientService', ['search']);
 
-        patientService.search.and.callFake(function(param) {
-            return specUtil.respondWith({data: {pageOfResults: [{uuid: "patientUuid"}]}});
+        patientService.search.and.callFake(function (param) {
+            return specUtil.respondWith({data: {pageOfResults: [
+                {uuid: "patientUuid"}
+            ]}});
         });
     }));
 
-    var loadController = function(visitInitialization, expectations) {
+    var loadController = function (visitInitialization, expectations, visit, visits) {
         controller('LatestPrescriptionPrintController', {
             $scope: scope,
             $rootScope: rootScope,
@@ -32,41 +36,43 @@ describe("LatestPrescriptionPrintController", function(){
             visitInitialization: visitInitialization,
             spinner: spinner,
             visitActionsService: {printPrescription: expectations},
-            patientContext: {"patient": {"uuid": "patientUuid"}}
+            patientContext: {"patient": {"uuid": "patientUuid"}},
+            visitContext: visit,
+            visitHistory: {'visits': visits}
         });
     };
 
     // Weird way to test. visitActionsService as a spy was not working.
-    describe("when loaded", function(){
-        it("should print visit summary of active visit", function() {
-            rootScope.visit = {uuid: "visitUuid", startDate: "2014-10-06"};
-
-
-            var expectations = function(patient, visit, startDate) {
+    describe("when loaded", function () {
+        it("should print visit summary of active visit", function () {
+            var visit = {uuid: "visitUuid", startDate: "2014-10-06"};
+            var expectations = function (patient, visit, startDate) {
                 expect(patient.uuid).toBe("patientUuid");
                 expect(visit.uuid).toBe("visitUuid");
                 expect(startDate).toBe("2014-10-06");
             };
 
-            loadController(null, expectations);
+            loadController(null, expectations, visit, []);
         });
 
-        it("should print visit summary of latest visit if active visit is not available", function() {
-            rootScope.visit = null;
-            rootScope.visits = [{uuid: "latestVisitUuid"}];
+        it("should print visit summary of latest visit if active visit is not available", function () {
+            var visit = null;
+            var visits = [
+                {uuid: "latestVisitUuid"}
+            ];
 
-            var visitInitialization = function(patientUuid, visitUuid) {
+            var visitInitialization = function (patientUuid, visitUuid) {
                 rootScope.visit = {uuid: "latestVisitUuid", startDate: "someStartDate"};
                 return specUtil.respondWith({});
             };
 
-            var expectations = function(patient, visit, startDate) {
+            var expectations = function (patient, visit, startDate) {
                 expect(patient.uuid).toBe("patientUuid");
                 expect(visit.uuid).toBe("latestVisitUuid");
                 expect(startDate).toBe("someStartDate");
             };
 
-            loadController(visitInitialization, expectations);
+            loadController(visitInitialization, expectations, visit, visits);
         });
     });
 });

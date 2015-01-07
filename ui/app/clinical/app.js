@@ -35,9 +35,11 @@ angular.module('consultation')
                 views: {
                     'additional-header': { template: '<div ui-view="additional-header"></div>' },
                     'content': {
-                        template: '<div ui-view="content"></div><patient-control-panel patient="patient"/>',
-                        controller: function ($scope, patientContext) {
+                        template: '<div ui-view="content"></div><patient-control-panel patient="patient" visit-history="visitHistory" visit="visit" show="showControlPanel"/>',
+                        controller: function ($scope, patientContext, visitHistory, visitContext) {
                             $scope.patient = patientContext.patient;
+                            $scope.visitHistory = visitHistory;
+                            $scope.visit = visitContext;
                         }
                     }
                 },
@@ -45,6 +47,12 @@ angular.module('consultation')
                     initialization: 'initialization',
                     patientContext: function (patientInitialization, $stateParams) {
                         return patientInitialization($stateParams.patientUuid);
+                    },
+                    visitHistory: function (visitHistoryInitialization, $stateParams) {
+                        return visitHistoryInitialization($stateParams.patientUuid);
+                    },
+                    visitContext: function (visitInitialization, visitHistory) {
+                        return visitInitialization(visitHistory.activeVisit.uuid);
                     }
                 }
             })
@@ -53,9 +61,7 @@ angular.module('consultation')
                 views: {
                     'additional-header': {
                         templateUrl: 'dashboard/views/dashboardHeader.html',
-                        controller: function ($scope, patientContext) {
-                            $scope.patient = patientContext.patient;
-                        }
+                        controller: 'DashboardHeaderController'
                     },
                     'content': {
                         templateUrl: 'dashboard/views/dashboard.html',
@@ -63,9 +69,7 @@ angular.module('consultation')
                     }
                 },
                 resolve: {
-                    dashboardInitialization: function (dashboardInitialization, $stateParams, initialization, patientContext) {
-                        return dashboardInitialization(patientContext.patient.uuid);
-                    }
+                    dashboardInitialization: function (initialization, patientContext, visitHistory) { }
                 }
             })
             .state('patient.visit', {
@@ -76,15 +80,18 @@ angular.module('consultation')
                     ]
                 },
                 views: {
-                    'additional-header': { templateUrl: 'common/views/visitHeader.html' },
+                    'additional-header': {
+                        templateUrl: 'common/views/visitHeader.html',
+                        controller: 'VisitHeaderController'
+                    },
                     'content': {
                         templateUrl: 'common/views/visit.html',
                         controller: 'VisitController'
                     }
                 },
                 resolve: {
-                    visitInitialization: function (visitInitialization, $stateParams, initialization, patientContext) {
-                        return visitInitialization(patientContext.patient.uuid, $stateParams.visitUuid);
+                    visitContext: function (visitInitialization, $stateParams, initialization, patientContext) {
+                        return visitInitialization($stateParams.visitUuid);
                     }}
             })
             .state('patient.consultation', {
@@ -95,8 +102,8 @@ angular.module('consultation')
                 },
                 views: {
                     'content': { template: '<ui-view/>' },
-                    'additional-header': { 
-                        templateUrl: 'common/views/header.html',
+                    'additional-header': {
+                        templateUrl: 'consultation/views/header.html',
                         controller: 'ConsultationController'
                     }
                 },
@@ -112,7 +119,7 @@ angular.module('consultation')
                 controller: 'VisitController',
                 resolve: {
                     visitInitialization: function (visitInitialization, $stateParams) {
-                        return visitInitialization($stateParams.patientUuid, $stateParams.visitUuid);
+                        return visitInitialization($stateParams.visitUuid);
                     }}
             })
             .state('patient.consultation.summary', {
@@ -165,7 +172,7 @@ angular.module('consultation')
                 url: '/concept-set-group/:conceptSetGroupName',
                 templateUrl: 'consultation/views/conceptSet.html',
                 controller: 'ConceptSetPageController'
-                
+
             })
             .state('patient.consultation.notes', {
                 url: '/notes',

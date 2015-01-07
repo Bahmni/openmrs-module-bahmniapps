@@ -15,7 +15,7 @@ angular.module('bahmni.clinical').factory('initialization',
                     'dosageFrequencyConfig',
                     'dosageInstructionConfig'
                 ]);
-            }
+            };
 
             var initApp = function () {
                 return appService.initApp('clinical', {'app': true, 'extension': true });
