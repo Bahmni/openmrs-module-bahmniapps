@@ -147,17 +147,17 @@ angular.module('bahmni.clinical')
                 $scope.formInvalid = false;
                 markVariable("startNewDrugEntry");
             };
-            var setEffectiveDates = function(newDrugOrder, existingDrugOrders){
-                existingDrugOrders.forEach(function(existingDrugOrder){
-                        if(DateUtil.isSameDate(existingDrugOrder.effectiveStartDate, newDrugOrder.effectiveStopDate)){ //compare date part only of datetime
-                            newDrugOrder.effectiveStopDate  = DateUtil.subtractMilliSeconds(existingDrugOrder.effectiveStartDate, 1);
-                            if (newDrugOrder.uuid){
-                                newDrugOrder.autoExpireDate = newDrugOrder.effectiveStopDate;
-                            }
+            var setEffectiveDates = function (newDrugOrder, existingDrugOrders) {
+                existingDrugOrders.forEach(function (existingDrugOrder) {
+                    if (DateUtil.isSameDate(existingDrugOrder.effectiveStartDate, newDrugOrder.effectiveStopDate) && !DateUtil.isSameDate(existingDrugOrder.effectiveStopDate, newDrugOrder.effectiveStartDate)) {
+                        newDrugOrder.effectiveStopDate = DateUtil.subtractMilliSeconds(existingDrugOrder.effectiveStartDate, 1);
+                        if (newDrugOrder.uuid) {
+                            newDrugOrder.autoExpireDate = newDrugOrder.effectiveStopDate;
                         }
-                        if(DateUtil.isSameDate(existingDrugOrder.effectiveStopDate, newDrugOrder.effectiveStartDate)){ //compare date part only of datetime
-                            newDrugOrder.effectiveStartDate = DateUtil.addMilliSeconds(existingDrugOrder.effectiveStopDate, 1) ;
-                        }
+                    }
+                    if (DateUtil.isSameDate(existingDrugOrder.effectiveStopDate, newDrugOrder.effectiveStartDate)) { //compare date part only of datetime
+                        newDrugOrder.effectiveStartDate = DateUtil.addMilliSeconds(existingDrugOrder.effectiveStopDate, 1);
+                    }
                 });
             };
 
