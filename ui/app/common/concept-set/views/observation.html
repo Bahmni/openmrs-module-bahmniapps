@@ -211,7 +211,7 @@
 
         <legend ng-if="showTitle" class="mylegend">
             <strong>{{observation.label}}</strong>
-            <span>
+            <span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
                 <button type="button" class="icon-plus" ng-click="cloneNew(observation, rootObservation)">Add More
                 </button>
             </span>
