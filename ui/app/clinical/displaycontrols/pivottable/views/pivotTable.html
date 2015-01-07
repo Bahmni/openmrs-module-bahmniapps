@@ -19,7 +19,7 @@
                 <strong>{{visitDate | date: 'dd MMM yy'}}</strong>
             </td>
             <td ng-repeat="conceptDetail in result.conceptDetails"
-                ng-class="{'is-abnormal': tabularData[visitDate][conceptDetail.name].abnormal}">
+                ng-class="{'is-abnormal': result.tabularData[visitDate][conceptDetail.name].abnormal}">
                 {{result.tabularData[visitDate][conceptDetail.name].value}}
             </td>
         </tr>
