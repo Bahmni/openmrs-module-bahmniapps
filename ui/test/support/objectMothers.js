@@ -91,6 +91,7 @@ Bahmni.Tests.drugOrderViewModelMother = {
 
         defaultModel.instructions = drugOrderViewModelData.instructions || "Before Meals";
         defaultModel.duration = drugOrderViewModelData.duration || "10";
+        defaultModel.durationUnits = drugOrderViewModelData.durationUnits || "Day(s)";
         defaultModel.scheduledDate = drugOrderViewModelData.scheduledDate || "21/12/2014";
         defaultModel.quantity = drugOrderViewModelData.quantity || "12";
         defaultModel.quantityUnit = drugOrderViewModelData.quantityUnit || "Capsule";

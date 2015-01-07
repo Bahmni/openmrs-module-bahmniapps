@@ -113,7 +113,12 @@ angular.module('bahmni.clinical')
 
                 $scope.treatment.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;
                 var newDrugOrder = $scope.treatment;
-                newDrugOrder.effectiveStopDate = DateUtil.addDays(DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
+                if(newDrugOrder.durationInDays < 1){
+                    newDrugOrder.effectiveStopDate = DateUtil.addHours(DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays*24);
+                }
+                else{
+                    newDrugOrder.effectiveStopDate = DateUtil.addDays(DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
+                }
                 var existingDrugOrders = $rootScope.activeAndScheduledDrugOrders.concat($scope.treatments);
                 if ($scope.treatment.isBeingEdited) {
                     $scope.treatments.splice($scope.treatment.currentIndex, 1);

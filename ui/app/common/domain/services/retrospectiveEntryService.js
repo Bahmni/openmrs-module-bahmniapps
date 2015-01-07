@@ -17,7 +17,7 @@ angular.module('bahmni.common.domain', [])
                 return $rootScope.retrospectiveEntry;
             }
 
-            $rootScope.retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(dateUtil.today());
+            $rootScope.retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(dateUtil.now());
             return $rootScope.retrospectiveEntry;
         };
 

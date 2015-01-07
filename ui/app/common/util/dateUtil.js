@@ -27,6 +27,10 @@ Bahmni.Common.Util.DateUtil = {
         return moment(date).add(seconds, 'seconds').toDate();
     },
 
+    addHours: function (date, hours) {
+        return moment(date).add(hours, 'hours').toDate();
+    },
+
     addMilliSeconds: function (date, milliSeconds) {
         return moment(date).add(milliSeconds, 'milliseconds').toDate();
     },
