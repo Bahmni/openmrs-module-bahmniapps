@@ -24,7 +24,7 @@
 								<div class="button-group-wrapper">
                                     <div class="button-group">
 
-                                        <button ng-repeat="orderAttribute in drugOrder.orderAttributes" class="dispense-btn" ng-disabled="!drugOrder.isActive()" ng-click="toggleDrugOrderAttribute(orderAttribute)">
+                                        <button ng-repeat="orderAttribute in drugOrder.orderAttributes" class="dispense-btn" ng-disabled="!drugOrder.isActive()" ng-click="orderAttributeUpdated(drugOrder,orderAttribute)">
                                             <i class="icon-check" ng-show="orderAttribute.value"></i>
                                             {{orderAttribute.name.substring(0,1)}}
                                         </button>

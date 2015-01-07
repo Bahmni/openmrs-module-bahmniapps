@@ -51,14 +51,9 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
         });
 
         consultation.drugOrders = [];
-        var orderAttributes = [];
         var newlyAddedTreatments = consultation.newlyAddedTreatments;
         newlyAddedTreatments && newlyAddedTreatments.forEach(function (treatment) {
             consultation.drugOrders.push(Bahmni.Clinical.DrugOrder.createFromUIObject(treatment));
-            var orderAttributesAsObs = treatment.getOrderAttributesAsObs();
-            if(orderAttributesAsObs && orderAttributesAsObs.length > 0){
-                orderAttributes.concat(orderAttributesAsObs);
-            }
         });
         if(consultation.removableDrugs) {
             consultation.drugOrders = consultation.drugOrders.concat(consultation.removableDrugs);
@@ -77,8 +72,11 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
             if (consultation.labOrderNote) {
                 encounterData.observations.push(consultation.labOrderNote);
             }
-            if(orderAttributes.length > 0){
-                encounterData.observations.concat(orderAttributes);
+            if(!_.isEmpty(consultation.drugOrdersWithUpdatedOrderAttributes)){
+                var orderAttributes = _.values(consultation.drugOrdersWithUpdatedOrderAttributes).map(function(drugOrder){
+                    return drugOrder.getOrderAttributesAsObs();
+                });
+                encounterData.observations = encounterData.observations.concat(_.flatten(orderAttributes,true));
             }
         };
 

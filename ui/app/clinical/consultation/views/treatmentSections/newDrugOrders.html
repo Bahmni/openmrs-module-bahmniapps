@@ -7,10 +7,6 @@
 			</div>
 			<div class="button-group-wrapper" >
 				<div class="button-group">
-                    <button ng-repeat="orderAttribute in newTreatment.orderAttributes" class="dispense-btn" ng-click="toggleDrugOrderAttribute(orderAttribute)">
-                        <i class="icon-check" ng-show="orderAttribute.value"></i>
-                        {{orderAttribute.name.substring(0,1)}}
-                    </button>
                     <button ng-click="edit($index)"><i class="icon-edit"></i></button>
                     <button ng-confirm-click="remove($index)" confirm-message="Are you sure you want to remove?"><i class="icon-remove"></i></button>
                     <button class="toggle" ng-class="{'has-notes': newTreatment.additionalInstructions}"

@@ -11,6 +11,7 @@ angular.module('bahmni.clinical')
             var currentVisit = visitContext;
             var drugOrderAppConfig = clinicalAppConfigService.getDrugOrderConfig();
             var activeDrugOrdersList = [];
+            var drugOrderToOrderAttributesMap = {};
 
             var createPrescriptionGroups = function (activeAndScheduledDrugOrders) {
                 $scope.consultation.drugOrderGroups = [];
@@ -90,6 +91,7 @@ angular.module('bahmni.clinical')
             var init = function () {
                 $scope.consultation.removableDrugs = $scope.consultation.removableDrugs || [];
                 $scope.consultation.discontinuedDrugs = $scope.consultation.discontinuedDrugs || [];
+                $scope.consultation.drugOrdersWithUpdatedOrderAttributes = $scope.consultation.drugOrdersWithUpdatedOrderAttributes|| {};
                 if (!$scope.consultation.drugOrderGroups) {
                     spinner.forPromise(getActiveDrugOrders().then(function(data){
                         $rootScope.activeAndScheduledDrugOrders = data;
@@ -139,6 +141,14 @@ angular.module('bahmni.clinical')
                     drugOrder.isMarkedForDiscontinue = true;
                     drugOrder.isEditAllowed = false;
                     $scope.consultation.discontinuedDrugs.push(drugOrder);
+                }
+            };
+
+            $scope.orderAttributeUpdated = function(drugOrder,orderAttribute){
+                if (drugOrder.isActive() && drugOrder.uuid) {
+                    drugOrder.isEditAllowed = false;
+                    $scope.toggleDrugOrderAttribute(orderAttribute);
+                    $scope.consultation.drugOrdersWithUpdatedOrderAttributes[drugOrder.uuid] = drugOrder;
                 }
             };
 
