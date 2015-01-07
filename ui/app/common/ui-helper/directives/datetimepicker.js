@@ -1,9 +1,8 @@
 angular.module('bahmni.common.uiHelper')
     .directive('datetimepicker', function () {
         var link = function ($scope) {
-            $scope.selectedTime = moment("00:00", "HH:mm").toDate();
             var getSelectedDateStr = function() {
-                return moment($scope.selectedDate).format("YYYY-MM-DD");
+                return $scope.selectedDate != null ? moment($scope.selectedDate).format("YYYY-MM-DD"): "";
             }
 
             var getSelectedTimeStr = function() {
@@ -11,9 +10,11 @@ angular.module('bahmni.common.uiHelper')
             }
 
             $scope.updateModel = function() {
-                if($scope.selectedDate != null) {
-                    $scope.model =  getSelectedDateStr() + " " + getSelectedTimeStr();
-                }
+                $scope.model =  getSelectedDateStr() + " " + getSelectedTimeStr();
+            }
+
+            $scope.isValid = function() {
+                return ($scope.selectedDate == null && $scope.selectedTime == null) || ($scope.selectedDate != null && $scope.selectedTime != null);
             }
 
             if($scope.model != null) {
@@ -32,8 +33,8 @@ angular.module('bahmni.common.uiHelper')
                 showTime: '=',
             },
             template: "<span>" +
-                "<input type='date' ng-change='updateModel()' ng-model='selectedDate'>" +
-                "<input type='time' ng-change='updateModel()' ng-model='selectedTime'>" +
+                "<input type='date' ng-change='updateModel()' ng-model='selectedDate' ng-required='!isValid()'>" +
+                "<input type='time' ng-change='updateModel()' ng-model='selectedTime' ng-required='!isValid()'>" +
             "</span>"
         }
     });
