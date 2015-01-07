@@ -331,6 +331,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         //this field is just a flag that you turn on when revising the first time. It is turned off at the first
         //call of calculateQuantityAndUnit(). Bad code. Needs change.
         newDrugOrder.quantityEnteredViaEdit = true;
+        newDrugOrder.isBeingEdited = true;
 
         if (newDrugOrder.effectiveStartDate <= today()) {
             newDrugOrder.effectiveStartDate = today();
@@ -424,13 +425,14 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
 };
 
 Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderResponse, appConfig, config) {
+    var DateUtil = Bahmni.Common.Util.DateUtil;
     var administrationInstructions = JSON.parse(drugOrderResponse.dosingInstructions.administrationInstructions) || {};
     var viewModel = new Bahmni.Clinical.DrugOrderViewModel(appConfig, config);
     viewModel.asNeeded = drugOrderResponse.dosingInstructions.asNeeded;
     viewModel.route = drugOrderResponse.dosingInstructions.route;
 
     if (drugOrderResponse.effectiveStartDate) {
-        viewModel.effectiveStartDate = drugOrderResponse.effectiveStartDate;
+        viewModel.effectiveStartDate = DateUtil.parse(drugOrderResponse.effectiveStartDate);
     }
     viewModel.effectiveStopDate = drugOrderResponse.effectiveStopDate;
     viewModel.durationUnit = drugOrderResponse.durationUnits;

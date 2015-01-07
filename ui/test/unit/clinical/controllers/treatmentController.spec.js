@@ -79,7 +79,8 @@ describe("TreatmentController", function () {
                 drug: {name: "abc"},
                 effectiveStartDate: "2011-11-26",
                 durationInDays: 2,
-                effectiveStopDate: "2011-11-28"
+                effectiveStopDate: "2011-11-28",
+                uuid: "abcdef"
             })];
             expect(scope.treatments.length).toEqual(0);
             scope.add();
@@ -94,7 +95,8 @@ describe("TreatmentController", function () {
                 },
                 effectiveStartDate: DateUtil.parse("2014-12-02"),
                 effectiveStopDate: DateUtil.parse("2014-12-04"),
-                durationInDays: 2
+                durationInDays: 2,
+                uuid: "abcdef"
             })];
             scope.treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
                 drug: {name: "abc", uuid: "123"},
@@ -117,7 +119,8 @@ describe("TreatmentController", function () {
                 },
                 effectiveStartDate: DateUtil.parse("2014-12-02"),
                 effectiveStopDate: DateUtil.parse("2014-12-04"),
-                durationInDays: 2
+                durationInDays: 2,
+                uuid: "abcdef"
             })];
             scope.treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
                 drug: {name: "abc", uuid: "123"},

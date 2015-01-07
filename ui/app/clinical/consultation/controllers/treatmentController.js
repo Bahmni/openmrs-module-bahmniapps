@@ -120,7 +120,8 @@ angular.module('bahmni.clinical')
                     newDrugOrder.effectiveStopDate = DateUtil.addDays(DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
                 }
                 var unsavedNotBeingEditedOrders = $scope.treatments.filter(function(drugOrder) { return drugOrder.isBeingEdited == false});
-                var existingDrugOrders = $rootScope.activeAndScheduledDrugOrders.concat(unsavedNotBeingEditedOrders);
+
+                var existingDrugOrders = $rootScope.activeAndScheduledDrugOrders.filter(function(drugOrder) { return drugOrder.uuid != newDrugOrder.previousOrderUuid}).concat(unsavedNotBeingEditedOrders);
                 if ($scope.treatment.isBeingEdited) {
                     $scope.treatments.splice($scope.treatment.currentIndex, 1);
                     $scope.treatment.isBeingEdited = false;

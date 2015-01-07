@@ -513,7 +513,7 @@ describe("drugOrderViewModel", function () {
             expect(drugOrderViewModel.quantity).toBe(drugOrder.dosingInstructions.quantity);
             expect(drugOrderViewModel.quantityUnit).toBe(drugOrder.dosingInstructions.quantityUnits);
             expect(drugOrderViewModel.drug).toBe(drugOrder.drug);
-            expect(drugOrderViewModel.effectiveStartDate).toBe(drugOrder.effectiveStartDate);
+            expect(drugOrderViewModel.effectiveStartDate).toEqual(DateUtil.parse(drugOrder.effectiveStartDate));
             expect(drugOrderViewModel.effectiveStopDate).toBe(drugOrder.effectiveStopDate);
             expect(drugOrderViewModel.provider).toBe(drugOrder.provider);
             expect(drugOrderViewModel.dateActivated).toBe(drugOrder.dateActivated);
