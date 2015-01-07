@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.clinical').controller('ConsultationController',
-    ['$scope', '$rootScope', '$state', '$location', '$window', 'clinicalAppConfigService', 'urlHelper', 'contextChangeHandler', 
+    ['$scope', '$rootScope', '$state', '$location', 'clinicalAppConfigService', 'urlHelper', 'contextChangeHandler', 
         'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext',
-        function ($scope, $rootScope, $state, $location, $window, clinicalAppConfigService, urlHelper, contextChangeHandler, 
+        function ($scope, $rootScope, $state, $location, clinicalAppConfigService, urlHelper, contextChangeHandler, 
                   spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext) {
             $scope.patient = patientContext.patient;
             

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DiagnosisController', ['$scope', '$rootScope', '$stateParams', 'diagnosisService', 'contextChangeHandler',
-        function ($scope, $rootScope, $stateParams, diagnosisService, contextChangeHandler) {
+    .controller('DiagnosisController', ['$scope', '$rootScope', 'diagnosisService', 'contextChangeHandler',
+        function ($scope, $rootScope, diagnosisService, contextChangeHandler) {
             
             $scope.placeholder = "Add Diagnosis";
             $scope.hasAnswers = false;

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical').factory('visitInitialization',
-    ['$rootScope', '$q', 'encounterService', 'clinicalAppConfigService', 'spinner', 'conceptSetUiConfigService', 'retrospectiveEntryService', 'configurations',
-        function ($rootScope, $q, encounterService, clinicalAppConfigService, spinner, conceptSetUiConfigService, retrospectiveEntryService, configurations) {
+    ['encounterService', 'clinicalAppConfigService', 'conceptSetUiConfigService', 'retrospectiveEntryService', 'configurations',
+        function (encounterService, clinicalAppConfigService, conceptSetUiConfigService, retrospectiveEntryService, configurations) {
 
             return function (visitUuid) {
                 var getVisit = function () {

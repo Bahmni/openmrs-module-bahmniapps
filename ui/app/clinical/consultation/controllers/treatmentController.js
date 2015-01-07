@@ -2,9 +2,9 @@
 
 angular.module('bahmni.clinical')
 
-    .controller('TreatmentController', ['$scope', '$rootScope', 'TreatmentService', 'contextChangeHandler', 'treatmentConfig', 'DrugService', '$timeout', 
+    .controller('TreatmentController', ['$scope', '$rootScope', 'contextChangeHandler', 'treatmentConfig', 'DrugService', '$timeout', 
         'clinicalAppConfigService','ngDialog', '$window', 'retrospectiveEntryService',
-        function ($scope, $rootScope, treatmentService, contextChangeHandler, treatmentConfig, drugService, $timeout,
+        function ($scope, $rootScope, contextChangeHandler, treatmentConfig, drugService, $timeout,
                   clinicalAppConfigService, ngDialog, $window, retrospectiveEntryService) {
 
             var DateUtil = Bahmni.Common.Util.DateUtil;

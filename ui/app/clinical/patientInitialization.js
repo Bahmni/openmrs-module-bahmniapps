@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical').factory('patientInitialization',
-    ['$rootScope', '$q', 'patientService', 'spinner', 'configurations',
-        function ($rootScope, $q, patientService, spinner, configurations) {
+    ['$q', 'patientService', 'configurations',
+        function ($q, patientService, configurations) {
 
             return function (patientUuid) {
                 var getPatient = function () {

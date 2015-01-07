@@ -1,6 +1,6 @@
 angular.module('bahmni.clinical')
-    .controller('PatientDashboardRadiologyController', ['$rootScope', '$scope', '$stateParams', 'encounterService', 'spinner', 'configurations', 
-        function ($rootScope, $scope, $stateParams, encounterService, spinner, configurations) {
+    .controller('PatientDashboardRadiologyController', ['$scope', '$stateParams', 'encounterService', 'spinner', 'configurations', 
+        function ($scope, $stateParams, encounterService, spinner, configurations) {
         var encounterTypeUuid = configurations.encounterConfig().getRadiologyEncounterTypeUuid();
 
         spinner.forPromise(encounterService.getEncountersForEncounterType($stateParams.patientUuid, encounterTypeUuid).then(function (response) {

@@ -1,7 +1,7 @@
 angular.module('bahmni.clinical')
-    .controller('ConceptSetPageController', ['$scope', '$rootScope', '$location', '$anchorScroll', '$stateParams', 'conceptSetService', 'clinicalAppConfigService', 'messagingService',
+    .controller('ConceptSetPageController', ['$scope', '$rootScope', '$stateParams', 'conceptSetService', 'clinicalAppConfigService', 'messagingService',
         'configurations', 'patientContext', 'visitContext',
-        function ($scope, $rootScope, $location, $anchorScroll, $stateParams, conceptSetService, clinicalAppConfigService, messagingService, configurations, patientContext, visitContext) {
+        function ($scope, $rootScope, $stateParams, conceptSetService, clinicalAppConfigService, messagingService, configurations, patientContext, visitContext) {
 
             $scope.patient = patientContext.patient;
             $rootScope.consultation.selectedObsTemplate = $rootScope.consultation.selectedObsTemplate || [];
