@@ -52,7 +52,10 @@ angular.module('consultation')
                         return visitHistoryInitialization($stateParams.patientUuid);
                     },
                     visitContext: function (visitInitialization, visitHistory) {
-                        return visitInitialization(visitHistory.activeVisit.uuid);
+                        if (visitHistory.activeVisit) {
+                            return visitInitialization(visitHistory.activeVisit.uuid);
+                        }
+                        return null;
                     }
                 }
             })
@@ -69,7 +72,8 @@ angular.module('consultation')
                     }
                 },
                 resolve: {
-                    dashboardInitialization: function (initialization, patientContext, visitHistory) { }
+                    dashboardInitialization: function (initialization, patientContext, visitHistory) {
+                    }
                 }
             })
             .state('patient.visit', {
@@ -197,7 +201,7 @@ angular.module('consultation')
             });
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
     }]).run(['stateChangeSpinner', '$rootScope', function (stateChangeSpinner, $rootScope) {
-//        debugUiRouter($rootScope);
+        debugUiRouter($rootScope);
 
         FastClick.attach(document.body);
         stateChangeSpinner.activate();
