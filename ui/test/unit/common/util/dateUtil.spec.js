@@ -1,6 +1,10 @@
 describe('DateUtil',function(){
     var dateUtil = Bahmni.Common.Util.DateUtil;
 
+    it("should parse datetime string format", function() {
+        var parsed = dateUtil.parseDatetime("December 5, 2015 04:02:45 PM IST");
+        expect(parsed.toDate()).toEqual(moment("2015-12-05 16:02:45").toDate());
+    });
 
     describe("isSameDateTime", function(){
         it("should be true if two dates and times are same", function() {

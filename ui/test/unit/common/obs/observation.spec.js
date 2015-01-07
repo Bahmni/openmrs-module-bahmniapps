@@ -21,11 +21,20 @@ describe("Observation", function () {
             expect(observation.getDisplayValue()).toBe(1.0);
         });
 
-        it("should return duration is present for an observation", function () {
+        it("should return duration if present for an observation", function () {
             var observation = new Observation({"type": "Numeric", "value": 1.0, "duration": 120});
             expect(observation.getDisplayValue()).toBe("1 since 2 Hours");
         });
 
+        it("should return datetime in specific format", function () {
+            var observation = new Observation({"type": "Datetime", "value": "December 5, 2014 05:00:00 PM IST"});
+            expect(observation.getDisplayValue()).toBe("05 Dec 2014, 05:00 PM");
+        });
+
+        it("should return empty if value is null", function () {
+            var observation = new Observation({"type": "Datetime", "value": ""});
+            expect(observation.getDisplayValue()).toBe("");
+        });
     });
 
     describe("is Image Concept", function(){

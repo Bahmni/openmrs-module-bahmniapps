@@ -23,6 +23,10 @@ Bahmni.Common.Obs.Observation = function () {
             if (this.type === "Boolean") {
                 return this.value === true ? "Yes" : "No";
             }
+            if(this.type === "Datetime") {
+                var date = Bahmni.Common.Util.DateUtil.parseDatetime(this.value);
+                return date != null ? date.format('DD MMM YYYY, hh:mm A') : "";
+            }
             displayValue = this.value.shortName || this.value.name || this.value;
             if (this.duration) {
                 displayValue = displayValue + " " + this.getDurationDisplayValue();

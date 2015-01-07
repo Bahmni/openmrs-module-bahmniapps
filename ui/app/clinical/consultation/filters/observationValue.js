@@ -5,6 +5,10 @@ angular.module('bahmni.clinical')
         if(type === 'Date') {
             return $filter('date')(obs.value, 'd-MMM-yyyy');
         }
+        if(type === 'Datetime') {
+            var date = Bahmni.Common.Util.DateUtil.parseDatetime(obs.value);
+            return date != null ? date.format('DD MMM YYYY, hh:mm A') : "";
+        }
         if(obs.isMultiSelect){
             return obs.getValues();
         }

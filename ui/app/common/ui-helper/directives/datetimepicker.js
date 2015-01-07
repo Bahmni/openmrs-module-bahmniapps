@@ -17,7 +17,7 @@ angular.module('bahmni.common.uiHelper')
             }
 
             if($scope.model != null) {
-                var date = moment($scope.model, "MMMM DD, YYYY HH:mm:ss a");
+                var date = Bahmni.Common.Util.DateUtil.parseDatetime($scope.model);
                 $scope.selectedDate = date.toDate();
                 $scope.selectedTime = date.toDate();
                 $scope.updateModel();
