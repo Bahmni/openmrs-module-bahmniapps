@@ -121,7 +121,8 @@ angular.module('bahmni.clinical')
                 }
                 var unsavedNotBeingEditedOrders = $scope.treatments.filter(function(drugOrder) { return drugOrder.isBeingEdited == false});
 
-                var existingDrugOrders = $scope.consultation.activeAndScheduledDrugOrders.filter(function(drugOrder) { return drugOrder.uuid != newDrugOrder.previousOrderUuid}).concat(unsavedNotBeingEditedOrders);
+                var existingDrugOrders = newDrugOrder.isBeingEdited ? $scope.consultation.activeAndScheduledDrugOrders.filter(function(drugOrder) { return drugOrder.uuid != newDrugOrder.previousOrderUuid}).concat(unsavedNotBeingEditedOrders) : $scope.consultation.activeAndScheduledDrugOrders.concat(unsavedNotBeingEditedOrders);
+
                 if ($scope.treatment.isBeingEdited) {
                     $scope.treatments.splice($scope.treatment.currentIndex, 1);
                     $scope.treatment.isBeingEdited = false;
@@ -170,10 +171,15 @@ angular.module('bahmni.clinical')
                 $scope.$broadcast("event:refillDrugOrder", drugOrder);
             };
 
-            $scope.revise = function (treatment) {
+            $scope.revise = function (drugOrder) {
                 $scope.popupActive = false;
                 ngDialog.close();
-                $scope.$broadcast("event:reviseDrugOrder", treatment);
+                $rootScope.activeAndScheduledDrugOrders.forEach(function (drugOrder) {
+                    drugOrder.isDiscontinuedAllowed = true;
+                    drugOrder.isBeingEdited = false;
+                });
+                drugOrder.isBeingEdited = true;
+                $scope.$broadcast("event:reviseDrugOrder", drugOrder);
             };
 
             $scope.toggleShowAdditionalInstructions = function (line) {
