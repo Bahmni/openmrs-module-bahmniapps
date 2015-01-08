@@ -113,34 +113,49 @@ Bahmni.Common.Util.DateUtil = {
     diffInYearsMonthsDays: function (dateFrom, dateTo) {
         dateFrom = this.parse(dateFrom)
         dateTo = this.parse(dateTo)
+
         var from = {
             d: dateFrom.getDate(),
-            m: dateFrom.getMonth() + 1,
+            m: dateFrom.getMonth(),
             y: dateFrom.getFullYear()
         };
 
         var to = {
             d: dateTo.getDate(),
-            m: dateTo.getMonth() + 1,
+            m: dateTo.getMonth(),
             y: dateTo.getFullYear()
         };
+        
+        var age = {
+            d: 0,
+            m: 0,
+            y: 0
+        }
 
         var daysFebruary = to.y % 4 != 0 || (to.y % 100 == 0 && to.y % 400 != 0)? 28 : 29;
-        var daysInMonths = [0, 31, daysFebruary, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-        if (to.d < from.d) {
-            to.d   += daysInMonths[parseInt(to.m - 1)];
-            from.m += 1;
+        var daysInMonths = [31, daysFebruary, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        age.y = to.y - from.y;
+        age.m = to.m - from.m;
+        
+        if(from.m > to.m) {
+            age.y = age.y - 1;
+            age.m = to.m - from.m + 12;
         }
-        if (to.m < from.m) {
-            to.m   += 12;
-            from.y += 1;
-        }
+        age.d = to.d - from.d;
+        
+        if(from.d > to.d) {
+            age.m = age.m -1;
 
+            if(from.m == to.m) {
+                age.y = age.y - 1;
+                age.m = age.m + 12;
+            }
+            age.d = to.d - from.d + daysInMonths[parseInt(from.m)];
+        }
         return {
-            days:   to.d - from.d,
-            months: to.m - from.m,
-            years:  to.y - from.y
+            days:  age.d,
+            months: age.m,
+            years: age.y
         };
     },
 
