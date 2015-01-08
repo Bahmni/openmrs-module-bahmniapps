@@ -8,7 +8,7 @@ angular.module('bahmni.clinical')
                 return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
             });
 
-            $scope.visit = visitContext;
+            $scope.visit = visitContext; // required as this visit needs to be overridden when viewing past visits
             $scope.showTrends = true;
 
             $scope.investigationResultsParameters = clinicalAppConfigService.getVisitPageConfig().investigationResultParams || {};

@@ -2,13 +2,13 @@
 
 angular.module('bahmni.clinical')
     .controller('DrugOrderHistoryController', ['$scope', '$rootScope', '$filter', '$stateParams', 'prescribedDrugOrders',
-        'treatmentConfig', 'TreatmentService', 'spinner', 'clinicalAppConfigService', 'retrospectiveEntryService', 'visitContext',
+        'treatmentConfig', 'TreatmentService', 'spinner', 'clinicalAppConfigService',
         function ($scope, $rootScope, $filter, $stateParams, prescribedDrugOrders, treatmentConfig, treatmentService, spinner, 
-                  clinicalAppConfigService, retrospectiveEntryService, visitContext) {
+                  clinicalAppConfigService) {
             
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
             var DateUtil = Bahmni.Common.Util.DateUtil;
-            var currentVisit = visitContext;
+            var currentVisit = $scope.visit;
             var drugOrderAppConfig = clinicalAppConfigService.getDrugOrderConfig();
             var activeDrugOrdersList = [];
             var drugOrderToOrderAttributesMap = {};
