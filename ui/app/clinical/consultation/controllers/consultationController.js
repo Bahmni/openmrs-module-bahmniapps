@@ -85,15 +85,6 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 return getUrl(board);
             };
 
-
-            var clearRootScope = function () {
-                $scope.consultation.newlyAddedDiagnoses = [];
-                $scope.consultation.newlyAddedTreatments = [];
-                $scope.consultation.discontinuedDrugs = [];
-                $scope.consultation.drugOrderGroups = undefined;
-                $scope.consultation.removableDrugs = [];
-            };
-
             $scope.save = function () {
                 var contxChange = contextChange();
                 var allowContextChange = contxChange["allow"];
@@ -113,9 +104,6 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 var encounterData = new Bahmni.Clinical.EncounterTransactionMapper().map(tempConsultation, $scope.patient, sessionService.getLoginLocationUuid(), retrospectiveEntryService.getRetrospectiveEntry());
 
                 spinner.forPromise(encounterService.create(encounterData).then(function () {
-                    $scope.consultation = tempConsultation;
-                    clearRootScope();
-                    $scope.consultation.postSaveHandler.fire();
                     $state.transitionTo($state.current, $state.params, {
                         reload: true,
                         inherit: false,
