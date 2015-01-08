@@ -11,10 +11,7 @@ describe("TreatmentController", function () {
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
         rootScope = $rootScope;
-        $rootScope.activeAndScheduledDrugOrders = [];
-        scope.consultation = {};
-
-        scope.consultation = {saveHandler: new Bahmni.Clinical.SaveHandler()};
+        scope.consultation = {saveHandler: new Bahmni.Clinical.SaveHandler(), activeAndScheduledDrugOrders: []};
         var now = DateUtil.now();
         ngDialog = jasmine.createSpyObj('ngDialog', ['open']);
         spyOn(Bahmni.Common.Util.DateUtil, 'now').and.returnValue(now);
@@ -75,7 +72,7 @@ describe("TreatmentController", function () {
                 effectiveStartDate: "2011-11-26",
                 durationInDays: 2
             });
-            rootScope.activeAndScheduledDrugOrders = [Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
+            scope.consultation.activeAndScheduledDrugOrders = [Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
                 drug: {name: "abc"},
                 effectiveStartDate: "2011-11-26",
                 durationInDays: 2,
@@ -88,7 +85,7 @@ describe("TreatmentController", function () {
             expect(ngDialog.open).toHaveBeenCalled();
         });
         it("should allow to add new drug order if new order is scheduled to start on same day as stop date of already existing order", function () {
-            rootScope.activeAndScheduledDrugOrders = [Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
+            scope.consultation.activeAndScheduledDrugOrders = [Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
                 drug: {
                     name: "abc",
                     uuid: "123"
@@ -112,7 +109,7 @@ describe("TreatmentController", function () {
         });
 
         it("should allow to add new drug order if new order is scheduled to end on same day as start date of already existing order", function () {
-            rootScope.activeAndScheduledDrugOrders = [Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
+            scope.consultation.activeAndScheduledDrugOrders = [Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
                 drug: {
                     name: "abc",
                     uuid: "123"

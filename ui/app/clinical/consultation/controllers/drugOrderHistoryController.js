@@ -94,7 +94,7 @@ angular.module('bahmni.clinical')
                 $scope.consultation.drugOrdersWithUpdatedOrderAttributes = $scope.consultation.drugOrdersWithUpdatedOrderAttributes|| {};
                 if (!$scope.consultation.drugOrderGroups) {
                     spinner.forPromise(getActiveDrugOrders().then(function(data){
-                        $rootScope.activeAndScheduledDrugOrders = data;
+                        $scope.consultation.activeAndScheduledDrugOrders = data;
                         createPrescriptionGroups(data)
                     }));
                 }
