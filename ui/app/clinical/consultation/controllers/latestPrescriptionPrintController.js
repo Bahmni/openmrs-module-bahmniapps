@@ -10,8 +10,8 @@ angular.module('bahmni.clinical')
 
             if ($scope.visit) {
                 print($scope.visit);
-            } else if ($scope.visits.length > 0) {
-                visitInitialization($scope.patient.uuid, $scope.visits[0].uuid).then(function () {
+            } else if ($scope.visitHistory.visits.length > 0) {
+                visitInitialization($scope.patient.uuid, $scope.visitHistory.visits[0].uuid).then(function () {
                     print($scope.visit);
                 })
             } else {

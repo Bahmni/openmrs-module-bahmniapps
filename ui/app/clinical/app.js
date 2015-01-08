@@ -192,16 +192,11 @@ angular.module('consultation')
                     content: {
                         controller: 'LatestPrescriptionPrintController'
                     }
-                },
-                resolve: {
-                    dashboardInitialization: function (dashboardInitialization, $stateParams, patientContext) {
-                        return dashboardInitialization($stateParams.patientUuid);
-                    }
                 }
             });
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
     }]).run(['stateChangeSpinner', '$rootScope', function (stateChangeSpinner, $rootScope) {
-
+//        debugUiRouter($rootScope);
         FastClick.attach(document.body);
         stateChangeSpinner.activate();
     }]);

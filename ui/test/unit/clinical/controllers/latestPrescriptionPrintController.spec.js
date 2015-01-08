@@ -28,38 +28,39 @@ describe("LatestPrescriptionPrintController", function () {
         });
     }));
 
-    var loadController = function (visitInitialization, expectations, visit, visits) {
+    var loadController = function (visitInitialization, expectations) {
         controller('LatestPrescriptionPrintController', {
             $scope: scope,
             $rootScope: rootScope,
             messagingService: jasmine.createSpyObj('messagingService', ['showMessage']),
             visitInitialization: visitInitialization,
             spinner: spinner,
-            visitActionsService: {printPrescription: expectations},
-            patientContext: {"patient": {"uuid": "patientUuid"}},
-            visitContext: visit,
-            visitHistory: {'visits': visits}
+            visitActionsService: {printPrescription: expectations}
         });
     };
 
     // Weird way to test. visitActionsService as a spy was not working.
     describe("when loaded", function () {
         it("should print visit summary of active visit", function () {
-            var visit = {uuid: "visitUuid", startDate: "2014-10-06"};
             var expectations = function (patient, visit, startDate) {
                 expect(patient.uuid).toBe("patientUuid");
                 expect(visit.uuid).toBe("visitUuid");
                 expect(startDate).toBe("2014-10-06");
             };
 
-            loadController(null, expectations, visit, []);
+            scope.patient = {"uuid": "patientUuid"};
+            scope.visit = {uuid: "visitUuid", startDate: "2014-10-06"};
+            scope.visitHistory = {'visits': []};
+            
+            loadController(null, expectations);
         });
 
         it("should print visit summary of latest visit if active visit is not available", function () {
-            var visit = null;
-            var visits = [
+            scope.patient = {"uuid": "patientUuid"};
+            scope.visit = null;
+            scope.visitHistory = {'visits': [
                 {uuid: "latestVisitUuid"}
-            ];
+            ]};
 
             var visitInitialization = function (patientUuid, visitUuid) {
                 rootScope.visit = {uuid: "latestVisitUuid", startDate: "someStartDate"};
@@ -72,7 +73,7 @@ describe("LatestPrescriptionPrintController", function () {
                 expect(startDate).toBe("someStartDate");
             };
 
-            loadController(visitInitialization, expectations, visit, visits);
+            loadController(visitInitialization, expectations);
         });
     });
 });
