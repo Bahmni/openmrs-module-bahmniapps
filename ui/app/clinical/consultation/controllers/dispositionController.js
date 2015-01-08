@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DispositionController', ['$scope', '$q', '$rootScope','dispositionService', 'spinner', function ($scope, $q, $rootScope,dispositionService, spinner) {
+    .controller('DispositionController', ['$scope', '$q', 'dispositionService', 'spinner', function ($scope, $q, dispositionService, spinner) {
         var consultation = $scope.consultation;
 
 

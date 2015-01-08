@@ -190,7 +190,7 @@ angular.module('bahmni.clinical')
 
             $scope.shouldBeDisabled = function(drugOrder, orderAttribute){
                 var hasEncounterExpired = function(){
-                    return !($rootScope.consultation.encounterUuid === orderAttribute.encounterUuid);
+                    return !($scope.consultation.encounterUuid === orderAttribute.encounterUuid);
                 };
                 var isAlreadySaved = function(){
                     return orderAttribute.obsUuid

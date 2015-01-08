@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-.controller('InvestigationController', ['$scope', '$rootScope', 'labTestsProvider', 'otherTestsProvider', 
-        function ($scope, $rootScope, labTestsProvider, otherTestsProvider) {
+.controller('InvestigationController', ['$scope', 'labTestsProvider', 'otherTestsProvider', 
+        function ($scope, labTestsProvider, otherTestsProvider) {
 
     $scope.tabs = [
         {name: 'Laboratory', testsProvider: labTestsProvider, filterColumn: "sample", filterHeader: "Sample",categoryColumn: "department"},
