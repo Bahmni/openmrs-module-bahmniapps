@@ -1,14 +1,13 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitController', ['$scope', 'encounterService', 'visitService', 'spinner', '$stateParams', 'clinicalAppConfigService', 'configurations', 'patientContext', 'visitContext',
-        function ($scope, encounterService, visitService, spinner, $stateParams, clinicalAppConfigService, configurations, patientContext, visitContext) {
+    .controller('VisitController', ['$scope', 'encounterService', 'visitService', 'spinner', '$stateParams', 'clinicalAppConfigService', 'configurations', 'visitContext',
+        function ($scope, encounterService, visitService, spinner, $stateParams, clinicalAppConfigService, configurations, visitContext) {
             var encounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
-            $scope.documentsPromise = encounterService.getEncountersForEncounterType(patientContext.patient.uuid, encounterTypeUuid).then(function (response) {
+            $scope.documentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
                 return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
             });
 
-            $scope.patient = patientContext.patient;
             $scope.visit = visitContext;
             $scope.showTrends = true;
 

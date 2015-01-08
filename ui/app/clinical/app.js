@@ -105,15 +105,15 @@ angular.module('consultation')
                     backLinks: [patientSearchBackLink]
                 },
                 views: {
+                    'additional-header': {
+                        templateUrl: 'consultation/views/header.html',
+                        controller: 'ConsultationController'
+                    },
                     'content': { 
                         template: '<ui-view/>',
                         controller: function ($scope, consultationContext) {
                             $scope.consultation = consultationContext;
                         }
-                    },
-                    'additional-header': {
-                        templateUrl: 'consultation/views/header.html',
-                        controller: 'ConsultationController'
                     }
                 },
                 resolve: {
@@ -125,12 +125,7 @@ angular.module('consultation')
             .state('patient.consultation.visit', {
                 url: '/visit/:visitUuid',
                 templateUrl: 'common/views/visit.html',
-                controller: 'VisitController',
-                resolve: {
-                    visitInitialization: function (visitInitialization, $stateParams) {
-                        return visitInitialization($stateParams.visitUuid);
-                    }
-                }
+                controller: 'VisitController'
             })
             .state('patient.consultation.summary', {
                 url: '/consultation',

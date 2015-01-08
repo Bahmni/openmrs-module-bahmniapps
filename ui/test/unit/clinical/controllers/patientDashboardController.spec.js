@@ -36,14 +36,14 @@ describe("patient dashboard controller", function () {
 
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
+        scope.patient = {};
+        scope.visitHistory = {};
         $controller('PatientDashboardController', {
             $scope: scope,
             diseaseTemplateService: _diseaseTemplateService,
             encounterService: jasmine.createSpy(),
             clinicalAppConfigService: _clinicalAppConfigService,
-            retrospectiveEntryService: _retrospectiveEntryService,
-            patientContext: {"patient": {"uuid": "uuid"}},
-            visitHistory: {}
+            retrospectiveEntryService: _retrospectiveEntryService
         });
     }));
 

@@ -2,11 +2,10 @@
 
 angular.module('bahmni.clinical')
     .controller('PatientDashboardController', ['$scope', '$location',
-        'encounterService', 'clinicalAppConfigService', 'diseaseTemplateService', 'patientContext', 'visitHistory',
-        function ($scope, $location, encounterService, clinicalAppConfigService, diseaseTemplateService, patientContext, visitHistory) {
+        'encounterService', 'clinicalAppConfigService', 'diseaseTemplateService',
+        function ($scope, $location, encounterService, clinicalAppConfigService, diseaseTemplateService) {
 
-            $scope.patient = patientContext.patient;
-            $scope.activeVisit = visitHistory.activeVisit;
+            $scope.activeVisit = $scope.visitHistory.activeVisit;
             $scope.patientSummary = {};
             $scope.activeVisitData = {};
             $scope.obsIgnoreList = clinicalAppConfigService.getObsIgnoreList();
