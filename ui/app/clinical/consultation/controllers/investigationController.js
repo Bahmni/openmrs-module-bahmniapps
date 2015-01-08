@@ -16,16 +16,16 @@ angular.module('bahmni.clinical')
     }
 
     var findVoidedInvestigations = function() {
-        var filteredInvestigation = $rootScope.consultation.investigations.filter(function(investigation) {
+        var filteredInvestigation = $scope.consultation.investigations.filter(function(investigation) {
             if(investigation.voided === true){
                 return true;
             }
         })
-        if(filteredInvestigation.length === $rootScope.consultation.investigations.length) return true;
+        if(filteredInvestigation.length === $scope.consultation.investigations.length) return true;
         return false;
     }
     $scope.isValidInvestigation = function() {
-        if (!$rootScope.consultation.investigations.length > 0 || findVoidedInvestigations()) {
+        if (!$scope.consultation.investigations.length > 0 || findVoidedInvestigations()) {
             $scope.noteState = false;
             if($scope.consultation.labOrderNote.uuid){
                 $scope.consultation.labOrderNote.voided = true;
@@ -35,7 +35,7 @@ angular.module('bahmni.clinical')
             }
             return false;
         } else {
-            if ($rootScope.consultation.labOrderNote.uuid){
+            if ($scope.consultation.labOrderNote.uuid){
                 $scope.noteState = true;
                 $scope.consultation.labOrderNote.voided = false;
             }

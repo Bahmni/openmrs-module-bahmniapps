@@ -12,7 +12,7 @@ describe("TreatmentController", function () {
         scope = $rootScope.$new();
         rootScope = $rootScope;
         $rootScope.activeAndScheduledDrugOrders = [];
-        $rootScope.consultation = {};
+        scope.consultation = {};
 
         scope.consultation = {saveHandler: new Bahmni.Clinical.SaveHandler()};
         var now = DateUtil.now();

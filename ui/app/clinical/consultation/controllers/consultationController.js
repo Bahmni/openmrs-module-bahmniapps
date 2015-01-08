@@ -2,11 +2,12 @@
 
 angular.module('bahmni.clinical').controller('ConsultationController',
     ['$scope', '$rootScope', '$state', '$location', 'clinicalAppConfigService', 'urlHelper', 'contextChangeHandler', 
-        'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext',
+        'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext', 'consultationContext',
         function ($scope, $rootScope, $state, $location, clinicalAppConfigService, urlHelper, contextChangeHandler, 
-                  spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext) {
+                  spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, consultationContext) {
             $scope.patient = patientContext.patient;
-            
+            $scope.consultation = consultationContext;
+
             var boardTypes = {
                 visit: 'visit',
                 consultation: 'consultation'
@@ -21,11 +22,11 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 return buttonClickAction(board);
             };
 
-            $scope.gotoPatientDashboard = function() {
+            $scope.gotoPatientDashboard = function () {
                 $location.path("/patient/" + patientContext.patient.uuid + "/dashboard");
             };
 
-            var setCurrentBoardBasedOnPath = function() {
+            var setCurrentBoardBasedOnPath = function () {
                 var currentPath = $location.path();
                 var board = findBoardByUrl(currentPath);
                 $scope.currentBoard = board || $scope.availableBoards[0];
@@ -36,12 +37,12 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             };
 
             var initialize = function () {
-                    var appExtensions = clinicalAppConfigService.getAllConsultationBoards();
-                    $scope.availableBoards = $scope.availableBoards.concat(appExtensions);
-                    setCurrentBoardBasedOnPath();
+                var appExtensions = clinicalAppConfigService.getAllConsultationBoards();
+                $scope.availableBoards = $scope.availableBoards.concat(appExtensions);
+                setCurrentBoardBasedOnPath();
             };
 
-            $scope.$on('$stateChangeStart', function() { 
+            $scope.$on('$stateChangeStart', function () {
                 setCurrentBoardBasedOnPath();
             });
 
@@ -60,12 +61,12 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             };
 
             var getUrl = function (board) {
-                var urlPrefix = board.type === boardTypes.visit ? urlHelper.getVisitUrl($rootScope.consultation.visitUuid) : urlHelper.getPatientUrl();
-                var url = board.url ? urlPrefix + "/" + board.url : urlPrefix ; 
-                return $location.url(url);                    
+                var urlPrefix = board.type === boardTypes.visit ? urlHelper.getVisitUrl($scope.consultation.visitUuid) : urlHelper.getPatientUrl();
+                var url = board.url ? urlPrefix + "/" + board.url : urlPrefix;
+                return $location.url(url);
             };
 
-            var contextChange = function() {
+            var contextChange = function () {
                 return contextChangeHandler.execute();
             };
 
@@ -74,7 +75,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
                 var contextChangeResponse = contextChange();
                 if (!contextChangeResponse["allow"]) {
-                    if(contextChangeResponse["errorMessage"]) {
+                    if (contextChangeResponse["errorMessage"]) {
                         messagingService.showMessage('formError', contextChangeResponse["errorMessage"]);
                     }
                     return;
@@ -85,47 +86,47 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             };
 
 
-            var clearRootScope = function(){
-                $rootScope.consultation.newlyAddedDiagnoses = [];
-                $rootScope.consultation.newlyAddedTreatments = [];
-                $rootScope.consultation.discontinuedDrugs = [];
-                $rootScope.consultation.drugOrderGroups = undefined;
-                $rootScope.consultation.removableDrugs = [];
+            var clearRootScope = function () {
+                $scope.consultation.newlyAddedDiagnoses = [];
+                $scope.consultation.newlyAddedTreatments = [];
+                $scope.consultation.discontinuedDrugs = [];
+                $scope.consultation.drugOrderGroups = undefined;
+                $scope.consultation.removableDrugs = [];
             };
 
             $scope.save = function () {
                 var contxChange = contextChange();
                 var allowContextChange = contxChange["allow"];
-                if(!allowContextChange){
-                    var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "Please correct errors in the form. Information not saved" ;
+                if (!allowContextChange) {
+                    var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "Please correct errors in the form. Information not saved";
                     messagingService.showMessage('formError', errorMessage);
                     return;
                 }
 
                 var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
-                $rootScope.consultation.saveHandler.fire();
-                var tempConsultation = angular.copy($rootScope.consultation);
+                $scope.consultation.saveHandler.fire();
+                var tempConsultation = angular.copy($scope.consultation);
                 tempConsultation.observations = observationFilter.filter(tempConsultation.observations);
                 tempConsultation.consultationNote = observationFilter.filter([tempConsultation.consultationNote])[0];
                 tempConsultation.labOrderNote = observationFilter.filter([tempConsultation.labOrderNote])[0];
 
-                var encounterData = new Bahmni.Clinical.EncounterTransactionMapper().map(tempConsultation, patientContext.patient, sessionService.getLoginLocationUuid(), retrospectiveEntryService.getRetrospectiveEntry());
+                var encounterData = new Bahmni.Clinical.EncounterTransactionMapper().map(tempConsultation, $scope.patient, sessionService.getLoginLocationUuid(), retrospectiveEntryService.getRetrospectiveEntry());
 
                 spinner.forPromise(encounterService.create(encounterData).then(function () {
-                    $rootScope.consultation = tempConsultation;
+                    $scope.consultation = tempConsultation;
                     clearRootScope();
-                    $rootScope.consultation.postSaveHandler.fire();
+                    $scope.consultation.postSaveHandler.fire();
                     $state.transitionTo($state.current, $state.params, {
                         reload: true,
                         inherit: false,
                         notify: true
-                    }).then(function() {
-                        messagingService.showMessage('info', 'Saved');
-                    });
-                 }).catch(function (error){
-                    var message = Bahmni.Clinical.Error.translate(error) || 'An error has occurred on the server. Information not saved.';
-                    messagingService.showMessage('formError', message);
-                }));
+                    }).then(function () {
+                            messagingService.showMessage('info', 'Saved');
+                        });
+                }).catch(function (error) {
+                        var message = Bahmni.Clinical.Error.translate(error) || 'An error has occurred on the server. Information not saved.';
+                        messagingService.showMessage('formError', message);
+                    }));
             };
 
             initialize();

@@ -10,9 +10,7 @@ describe("ConsultationSummaryController", function () {
         scope = $rootScope.$new();
         rootScope = $rootScope;
         scope.consultation = {
-            observations: []
-        };
-        $rootScope.consultation = {
+            observations: [],
             investigations: [],
             newlyAddedDiagnoses: [],
             disposition: {},

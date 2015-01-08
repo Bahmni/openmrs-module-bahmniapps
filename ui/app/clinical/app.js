@@ -51,7 +51,7 @@ angular.module('consultation')
                     visitHistory: function (visitHistoryInitialization, $stateParams) {
                         return visitHistoryInitialization($stateParams.patientUuid);
                     },
-                    visitContext: function (visitInitialization, visitHistory) {
+                    visitContext: function (visitInitialization, visitHistory, initialization) {
                         if (visitHistory.activeVisit) {
                             return visitInitialization(visitHistory.activeVisit.uuid);
                         }
@@ -105,15 +105,20 @@ angular.module('consultation')
                     backLinks: [patientSearchBackLink]
                 },
                 views: {
-                    'content': { template: '<ui-view/>' },
+                    'content': { 
+                        template: '<ui-view/>',
+                        controller: function ($scope, consultationContext) {
+                            $scope.consultation = consultationContext;
+                        }
+                    },
                     'additional-header': {
                         templateUrl: 'consultation/views/header.html',
                         controller: 'ConsultationController'
                     }
                 },
                 resolve: {
-                    consultationInitialization: function (initialization, consultationInitialization, patientContext) {
-                        return consultationInitialization(patientContext.patient.uuid);
+                    consultationContext: function (consultationInitialization, initialization, visitContext, $stateParams) {
+                        return consultationInitialization($stateParams.patientUuid);
                     }
                 }
             })
@@ -124,7 +129,8 @@ angular.module('consultation')
                 resolve: {
                     visitInitialization: function (visitInitialization, $stateParams) {
                         return visitInitialization($stateParams.visitUuid);
-                    }}
+                    }
+                }
             })
             .state('patient.consultation.summary', {
                 url: '/consultation',
@@ -176,7 +182,6 @@ angular.module('consultation')
                 url: '/concept-set-group/:conceptSetGroupName',
                 templateUrl: 'consultation/views/conceptSet.html',
                 controller: 'ConceptSetPageController'
-
             })
             .state('patient.consultation.notes', {
                 url: '/notes',
@@ -201,7 +206,6 @@ angular.module('consultation')
             });
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
     }]).run(['stateChangeSpinner', '$rootScope', function (stateChangeSpinner, $rootScope) {
-        debugUiRouter($rootScope);
 
         FastClick.attach(document.body);
         stateChangeSpinner.activate();

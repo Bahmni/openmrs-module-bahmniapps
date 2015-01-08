@@ -10,8 +10,8 @@ angular.module('bahmni.common.conceptSet')
 
     $scope.computeField = function(conceptSet){
         event.stopPropagation();
-        $rootScope.consultation.saveHandler.fire();
-        var encounterData =new Bahmni.Clinical.EncounterTransactionMapper().map(angular.copy($rootScope.consultation), $scope.patient, sessionService.getLoginLocationUuid());
+        $scope.consultation.saveHandler.fire();
+        var encounterData =new Bahmni.Clinical.EncounterTransactionMapper().map(angular.copy($scope.consultation), $scope.patient, sessionService.getLoginLocationUuid());
         encounterData = encounterService.buildEncounter(encounterData);
         encounterData.drugOrders = [];
 
@@ -20,11 +20,11 @@ angular.module('bahmni.common.conceptSet')
 
         spinner.forPromise(conceptSetService.getComputedValue(data)).then(function (response) {
             response = response.data;
-            copyValues($rootScope.consultation.observations, response.observations);
+            copyValues($scope.consultation.observations, response.observations);
             var drugOrderAppConfig = appService.getAppDescriptor().getConfigValue("drugOrder") || {};
-            $rootScope.consultation.newlyAddedTreatments = $rootScope.consultation.newlyAddedTreatments || [];
+            $scope.consultation.newlyAddedTreatments = $scope.consultation.newlyAddedTreatments || [];
             response.drugOrders.forEach(function(drugOrder){
-                $rootScope.consultation.newlyAddedTreatments.push(Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, treatmentConfig));
+                $scope.consultation.newlyAddedTreatments.push(Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, treatmentConfig));
             });
         });
     };

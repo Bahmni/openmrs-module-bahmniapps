@@ -1,10 +1,7 @@
 angular.module('bahmni.clinical')
-    .controller('ConceptSetPageController', ['$scope', '$rootScope', '$stateParams', 'conceptSetService', 'clinicalAppConfigService', 'messagingService',
-        'configurations', 'patientContext', 'visitContext',
-        function ($scope, $rootScope, $stateParams, conceptSetService, clinicalAppConfigService, messagingService, configurations, patientContext, visitContext) {
-
-            $scope.patient = patientContext.patient;
-            $rootScope.consultation.selectedObsTemplate = $rootScope.consultation.selectedObsTemplate || [];
+    .controller('ConceptSetPageController', ['$scope', '$stateParams', 'conceptSetService', 'clinicalAppConfigService', 'messagingService', 'configurations',
+        function ($scope, $stateParams, conceptSetService, clinicalAppConfigService, messagingService, configurations) {
+            $scope.consultation.selectedObsTemplate = $scope.consultation.selectedObsTemplate || [];
     $scope.scrollingEnabled = false;
     var extensions = clinicalAppConfigService.getAllConceptSetExtensions($stateParams.conceptSetGroupName);
     var configs = clinicalAppConfigService.getAllConceptsConfig();
@@ -14,7 +11,7 @@ angular.module('bahmni.clinical')
     var fields = ['uuid','name', 'names'];
     var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels);
 
-    if($rootScope.consultation.selectedObsTemplate.length == 0){
+    if($scope.consultation.selectedObsTemplate.length == 0){
         conceptSetService.getConceptSetMembers({name:"All Observation Templates",v:"custom:"+customRepresentation}).success(function(response){
             var allTemplates = response.results[0].setMembers;
             var allConceptSections  = allTemplates.map(function(template){
@@ -24,9 +21,9 @@ angular.module('bahmni.clinical')
                 var conceptSetConfig = configs[template.name.name] || {};
                 return new Bahmni.ConceptSet.ConceptSetSection(conceptSetExtension, conceptSetConfig,  $scope.consultation.observations,template);
             });
-            $rootScope.consultation.selectedObsTemplate= allConceptSections.filter(function(conceptSet){
+            $scope.consultation.selectedObsTemplate= allConceptSections.filter(function(conceptSet){
                 if(conceptSet.isAvailable($scope.context)){
-                    if(conceptSet.conceptName !== Bahmni.Clinical.Constants.dischargeSummaryConceptName || (visitContext && visitContext.hasAdmissionEncounter()) ){
+                    if(conceptSet.conceptName !== Bahmni.Clinical.Constants.dischargeSummaryConceptName || ($scope.visitContext && $scope.visitContext.hasAdmissionEncounter()) ){
                         return true;
                     }
                 }

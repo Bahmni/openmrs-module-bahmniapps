@@ -10,7 +10,7 @@ angular.module('bahmni.clinical')
             $scope.orderOptions = ['PRIMARY', 'SECONDARY'];
             $scope.certaintyOptions = ['CONFIRMED', 'PRESUMED'];
             $scope.diagnosisStatuses = ['RULED OUT'];
-
+            
             $scope.getDiagnosis = function (searchTerm) {
                 return diagnosisService.getAllFor(searchTerm);
             };
@@ -40,7 +40,7 @@ angular.module('bahmni.clinical')
             };
 
             var init = function () {
-                $scope.newlyAddedDiagnoses = $rootScope.consultation.newlyAddedDiagnoses;
+                $scope.newlyAddedDiagnoses = $scope.consultation.newlyAddedDiagnoses;
                 addPlaceHolderDiagnosis();
             };
 
@@ -48,10 +48,10 @@ angular.module('bahmni.clinical')
                 var invalidnewlyAddedDiagnoses = $scope.newlyAddedDiagnoses.filter(function (diagnosis) {
                     return !$scope.isValid(diagnosis);
                 });
-                var invalidSavedDiagnosesFromCurrentEncounter = $rootScope.consultation.savedDiagnosesFromCurrentEncounter.filter(function (diagnosis) {
+                var invalidSavedDiagnosesFromCurrentEncounter = $scope.consultation.savedDiagnosesFromCurrentEncounter.filter(function (diagnosis) {
                     return !$scope.isValid(diagnosis);
                 });
-                var invalidPastDiagnoses = $rootScope.consultation.pastDiagnoses.filter(function (diagnosis) {
+                var invalidPastDiagnoses = $scope.consultation.pastDiagnoses.filter(function (diagnosis) {
                     return !$scope.isValid(diagnosis);
                 });
                 return {allow: invalidnewlyAddedDiagnoses.length === 0 && invalidPastDiagnoses.length === 0 && invalidSavedDiagnosesFromCurrentEncounter.length === 0};
@@ -119,7 +119,7 @@ angular.module('bahmni.clinical')
 
 
             var setDiagnosis = function () {
-                $rootScope.consultation.newlyAddedDiagnoses = $scope.newlyAddedDiagnoses.filter(function (diagnosis) {
+                $scope.consultation.newlyAddedDiagnoses = $scope.newlyAddedDiagnoses.filter(function (diagnosis) {
                     return !diagnosis.isEmpty();
                 });
             };

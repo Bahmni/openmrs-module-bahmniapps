@@ -2,7 +2,7 @@
 
 angular.module('bahmni.clinical')
     .controller('DispositionController', ['$scope', '$q', '$rootScope','dispositionService', 'spinner', function ($scope, $q, $rootScope,dispositionService, spinner) {
-        var consultation = $rootScope.consultation;
+        var consultation = $scope.consultation;
 
 
         var getDispositionActionsPromise = function() {

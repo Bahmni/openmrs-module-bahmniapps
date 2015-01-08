@@ -4,8 +4,8 @@ angular.module('bahmni.clinical')
     .controller('ConsultationSummaryController', ['$scope', '$rootScope', 'conceptSetUiConfigService', function ($scope, $rootScope, conceptSetUiConfigService) {
         var geEditedDiagnosesFromPastEncounters = function () {
             var editedDiagnosesFromPastEncounters = [];
-            $rootScope.consultation.pastDiagnoses.forEach(function (pastDiagnosis) {
-                if (pastDiagnosis.isDirty && pastDiagnosis.encounterUuid !== $rootScope.consultation.encounterUuid) {
+            $scope.consultation.pastDiagnoses.forEach(function (pastDiagnosis) {
+                if (pastDiagnosis.isDirty && pastDiagnosis.encounterUuid !== $scope.consultation.encounterUuid) {
                     editedDiagnosesFromPastEncounters.push(pastDiagnosis);
                 }
             });
@@ -34,16 +34,16 @@ angular.module('bahmni.clinical')
             return groupedObservationsArray;
         };
         $scope.groupedObservations = groupedObservations();
-        $scope.disposition = $rootScope.consultation.disposition;
+        $scope.disposition = $scope.consultation.disposition;
         $scope.toggle = function (item) {
             item.show = !item.show
         };
 
         $scope.isConsultationTabEmpty = function(){
-            if (_.isEmpty($rootScope.consultation.newlyAddedDiagnoses) && _.isEmpty($scope.groupedObservations)
-                && _.isEmpty($rootScope.consultation.investigations) && _.isEmpty($rootScope.consultation.disposition)
-                && _.isEmpty($rootScope.consultation.treatmentDrugs) && _.isEmpty($rootScope.consultation.newlyAddedTreatments)
-                && _.isEmpty($rootScope.consultation.discontinuedDrugs)){
+            if (_.isEmpty($scope.consultation.newlyAddedDiagnoses) && _.isEmpty($scope.groupedObservations)
+                && _.isEmpty($scope.consultation.investigations) && _.isEmpty($scope.consultation.disposition)
+                && _.isEmpty($scope.consultation.treatmentDrugs) && _.isEmpty($scope.consultation.newlyAddedTreatments)
+                && _.isEmpty($scope.consultation.discontinuedDrugs)){
                 return true;
             }
             return false;
