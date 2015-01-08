@@ -167,13 +167,13 @@ angular.module('bahmni.clinical')
                 $scope.popupActive = false;
                 ngDialog.close();
                 $scope.clearForm();
-                $rootScope.$broadcast("event:refillDrugOrder", drugOrder);
+                $scope.$broadcast("event:refillDrugOrder", drugOrder);
             };
 
             $scope.revise = function (treatment) {
                 $scope.popupActive = false;
                 ngDialog.close();
-                $rootScope.$broadcast("event:reviseDrugOrder", treatment);
+                $scope.$broadcast("event:reviseDrugOrder", treatment);
             };
 
             $scope.toggleShowAdditionalInstructions = function (line) {

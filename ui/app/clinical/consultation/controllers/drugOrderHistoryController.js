@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DrugOrderHistoryController', ['$scope', '$rootScope', '$filter', '$stateParams', 'prescribedDrugOrders',
+    .controller('DrugOrderHistoryController', ['$scope', '$filter', '$stateParams', 'prescribedDrugOrders',
         'treatmentConfig', 'TreatmentService', 'spinner', 'clinicalAppConfigService',
-        function ($scope, $rootScope, $filter, $stateParams, prescribedDrugOrders, treatmentConfig, treatmentService, spinner, 
+        function ($scope, $filter, $stateParams, prescribedDrugOrders, treatmentConfig, treatmentService, spinner, 
                   clinicalAppConfigService) {
             
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
@@ -117,11 +117,11 @@ angular.module('bahmni.clinical')
             };
 
             $scope.refill = function (drugOrder) {
-                $rootScope.$broadcast("event:refillDrugOrder", drugOrder);
+                $scope.$parent.$broadcast("event:refillDrugOrder", drugOrder);
             };
 
             $scope.refillAll = function (drugOrders) {
-                $rootScope.$broadcast("event:refillDrugOrders", drugOrders);
+                $scope.$parent.$broadcast("event:refillDrugOrders", drugOrders);
             };
 
             $scope.revise = function (drugOrder, drugOrders) {
@@ -132,7 +132,7 @@ angular.module('bahmni.clinical')
                     });
                     drugOrder.isDiscontinuedAllowed = false;
                     drugOrder.isBeingEdited = true;
-                    $rootScope.$broadcast("event:reviseDrugOrder", drugOrder);
+                    $scope.$parent.$broadcast("event:reviseDrugOrder", drugOrder);
                 }
             };
 
