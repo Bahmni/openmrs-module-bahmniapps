@@ -1,4 +1,5 @@
 Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig) {
+    var self = this;
     angular.extend(this, observation);
     this.isObservation = true;
     this.conceptUIConfig = conceptUIConfig;
@@ -11,6 +12,18 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
         this.provider = savedObs.provider;
     } else {
         this.value = this.getConceptUIConfig().defaultValue;         
+    }
+
+    if(this.getConceptUIConfig().autocomplete && this.getConceptUIConfig().answersConceptName) {
+        Object.defineProperty(this, 'autocompleteValue', {
+            enumerable: true,
+            get: function () {
+                return (this.value != null && (typeof this.value === "object")) ? this.value.name: this.value;
+            },
+            set: function (newValue) {
+                this.value = newValue;
+            }
+        });
     }
 
     this.cloneNew = function() {

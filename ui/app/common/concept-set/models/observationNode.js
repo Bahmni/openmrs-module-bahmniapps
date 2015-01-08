@@ -169,6 +169,7 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
 
     getControlType: function () {
         if (this.getConceptUIConfig().freeTextAutocomplete) return "freeTextAutocomplete";
+        if (this.getConceptUIConfig().autocomplete) return "autocomplete";
         if (this.isHtml5InputDataType()) return "html5InputDataType";
         if (this.primaryObs.isText()) return "text";
         if (this.primaryObs.isCoded()) return this._getCodedControlType();
