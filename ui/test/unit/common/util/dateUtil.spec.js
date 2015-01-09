@@ -40,7 +40,7 @@ describe('DateUtil',function(){
             expect(period.days).toBe(0);
         });
 
-        it("should calculate difference between dates when  month of fromDate is lesser than  month  of toDate`", function(){
+        it("should calculate difference between dates when month of fromDate is lesser than month of toDate", function(){
             var fromDate = new Date("2011-08-21");
             var toDate = new Date("2013-06-21");
 
@@ -49,6 +49,17 @@ describe('DateUtil',function(){
             expect(period.years).toBe(1);
             expect(period.months).toBe(10);
             expect(period.days).toBe(0);
+        });
+
+        it("should calculate difference between dates when date of fromDate is greater than date of toDate", function(){
+            var fromDate = new Date("2011-08-25");
+            var toDate = new Date("2013-08-15");
+
+            var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
+
+            expect(period.years).toBe(1);
+            expect(period.months).toBe(11);
+            expect(period.days).toBe(21);
         });
 
         describe('when fromDate is february', function(){
@@ -99,7 +110,7 @@ describe('DateUtil',function(){
                 expect(period.months).toBe(0);
                 expect(period.days).toBe(24);
             });
-        })
+        });
     });
 
     describe("diffInDaysRegardlessOfTime", function() {
@@ -136,4 +147,20 @@ describe('DateUtil',function(){
 			expect(dateUtil.getDayNumber(refDate, date)).toBe(2);
 		});
 	});
+
+    describe("getDateWithoutHours", function(){
+        it('should return date without hours', function(){
+            var dateString = new Date('2015','02','09','12','26');
+            var time = new Date('2015','02','09').getTime();
+            expect(dateUtil.getDateWithoutHours(dateString)).toBe(time);
+        });
+    });
+
+    describe("getEndDateFromDuration", function(){
+        it('should return date from a given duration', function(){
+            var dateFrom = new Date('2015', '7', '14', '12');
+            var endDate = new Date('2015', '9', '14', '12')
+            expect(dateUtil.getEndDateFromDuration(dateFrom, 2, "Months")).toEqual(endDate);
+        });
+    });
 });
