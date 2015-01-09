@@ -6,4 +6,9 @@ angular.module('bahmni.clinical')
                 .getPatientDashBoardSectionByName("labOrders")
                 .dashboardParams || {};
             $scope.dashboardParams.patientUuid = $stateParams.patientUuid;
+
+            $scope.dialogData = {
+                "patient": $scope.patient
+            };
+
         }]);

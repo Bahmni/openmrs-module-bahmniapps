@@ -1,5 +1,6 @@
 <div ng-controller="PatientDashboardLabOrdersController" class="dashboard-laborders-section">
     <h2 ng-dialog="dashboard/views/dashboardSections/labSummary.html"
+        ng-dialog-data="{{dialogData}}"
         ng-dialog-class="ngdialog-theme-flat ngdialog-theme-custom"
         ng-dialog-controller="PatientDashboardLabSummaryController" class="section-title">{{section.title}}</h2>
     <investigation-results params="dashboardParams"></investigation-results>

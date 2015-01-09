@@ -8,4 +8,7 @@ angular.module('bahmni.clinical')
                 .getPatientDashBoardSectionByName("labOrders")
                 .summaryPageParams || {};
             $scope.summaryPageParams.patientUuid = $stateParams.patientUuid
+
+            $scope.patient= $scope.ngDialogData.patient;
+
         }]);

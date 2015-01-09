@@ -1,15 +1,18 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('PatientDashboardAllDiseaseTemplateController', ['$scope', '$stateParams', 'diseaseTemplateService', 'spinner', 
-        function ($scope, $stateParams, diseaseTemplateService, spinner) {
+    .controller('PatientDashboardAllDiseaseTemplateController', ['$scope', 'diseaseTemplateService', 'spinner', 
+        function ($scope, diseaseTemplateService, spinner) {
         var init = function () {
-            $scope.diseaseName = $scope.ngDialogData;
-            $scope.patientUuid = $stateParams.patientUuid;
-
-            return diseaseTemplateService.getAllDiseaseTemplateObs($scope.patientUuid, $scope.diseaseName).then(function (diseaseTemplate) {
+            $scope.diseaseName = $scope.ngDialogData.diseaseTemplateName;
+            $scope.patient= $scope.ngDialogData.patient;
+            
+            
+            return diseaseTemplateService.getAllDiseaseTemplateObs($scope.patient.uuid, $scope.diseaseName).then(function (diseaseTemplate) {
                 $scope.diseaseTemplate = diseaseTemplate;
             });
         };
+            
+        
         spinner.forPromise(init());
     }]);

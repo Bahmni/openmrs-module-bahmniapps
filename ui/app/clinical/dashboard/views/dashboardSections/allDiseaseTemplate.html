@@ -4,11 +4,11 @@
         <i class="icon-user"></i>
         <span>{{patient.name}} {{'(' + patient.identifier + ')'}}</span>
     </h5>
-    <h6>{{ngDialogData}}</h6>
+    <h6>{{diseaseName}}</h6>
 </header>
 <section class="dashboard-section">
     <disease-template template="diseaseTemplate" patient="patient"></disease-template>
 </section>
 <div ng-if="diseaseTemplate.name" >
-    <div pivot-table patient-uuid="patientUuid" disease-name="diseaseTemplate.name" display-name="diseaseTemplate.label" ></div>
+    <div pivot-table patient-uuid="patient.uuid" disease-name="diseaseTemplate.name" display-name="diseaseTemplate.label" ></div>
 </div>
