@@ -11,7 +11,6 @@ angular.module('bahmni.clinical')
             var currentVisit = $scope.visit;
             var drugOrderAppConfig = clinicalAppConfigService.getDrugOrderConfig();
             var activeDrugOrdersList = [];
-            var drugOrderToOrderAttributesMap = {};
 
             var createPrescriptionGroups = function (activeAndScheduledDrugOrders) {
                 $scope.consultation.drugOrderGroups = [];
@@ -92,6 +91,7 @@ angular.module('bahmni.clinical')
                 $scope.consultation.removableDrugs = $scope.consultation.removableDrugs || [];
                 $scope.consultation.discontinuedDrugs = $scope.consultation.discontinuedDrugs || [];
                 $scope.consultation.drugOrdersWithUpdatedOrderAttributes = $scope.consultation.drugOrdersWithUpdatedOrderAttributes|| {};
+
                 if (!$scope.consultation.drugOrderGroups) {
                     spinner.forPromise(getActiveDrugOrders().then(function(data){
                         $scope.consultation.activeAndScheduledDrugOrders = data;
@@ -144,14 +144,6 @@ angular.module('bahmni.clinical')
                 }
             };
 
-            $scope.orderAttributeUpdated = function(drugOrder,orderAttribute){
-                if (drugOrder.isActive() && drugOrder.uuid) {
-                    drugOrder.isEditAllowed = false;
-                    $scope.toggleDrugOrderAttribute(orderAttribute);
-                    $scope.consultation.drugOrdersWithUpdatedOrderAttributes[drugOrder.uuid] = drugOrder;
-                }
-            };
-
             $scope.undoDiscontinue = function (drugOrder) {
                 $scope.consultation.discontinuedDrugs = _.reject($scope.consultation.discontinuedDrugs, function (removableOrder) {
                     return removableOrder.uuid === drugOrder.uuid;
@@ -164,9 +156,7 @@ angular.module('bahmni.clinical')
                 drugOrder.isEditAllowed = true;
             };
 
-            $scope.toggleDrugOrderAttribute = function(orderAttribute){
-                orderAttribute.value = orderAttribute.value ? false : true;
-            };
+
 
             var removeOrder = function (removableOrder) {
                 removableOrder.action = Bahmni.Clinical.Constants.orderActions.discontinue;
@@ -196,6 +186,56 @@ angular.module('bahmni.clinical')
                     return orderAttribute.obsUuid
                 };
                 return !drugOrder.isActive() || (isAlreadySaved() && hasEncounterExpired());
+            };
+
+            $scope.updateOrderAttribute = function(drugOrder,orderAttribute,valueToSet){
+                if (!$scope.shouldBeDisabled(drugOrder,orderAttribute)) {
+                    $scope.toggleDrugOrderAttribute(orderAttribute,valueToSet);
+                    $scope.consultation.drugOrdersWithUpdatedOrderAttributes[drugOrder.uuid] = drugOrder;
+                }
+            };
+
+            $scope.toggleDrugOrderAttribute = function(orderAttribute,valueToSet){
+                    orderAttribute.value = valueToSet !== undefined ? valueToSet : !orderAttribute.value;
+            };
+
+            $scope.getOrderAttributes = function(){
+                return treatmentConfig.orderAttributes;
+            };
+
+            $scope.updateAllOrderAttributesByName  = function(orderAttribute,drugOrderGroup){
+                drugOrderGroup[orderAttribute.name] = drugOrderGroup[orderAttribute.name] || {};
+                drugOrderGroup[orderAttribute.name].selected = drugOrderGroup[orderAttribute.name].selected? false:true;
+
+                drugOrderGroup.drugOrders.forEach(function(drugOrder){
+                    var selectedOrderAttribute = drugOrder.orderAttributes.filter(function(orderAttributeInDrugOrder){
+                        return orderAttribute.name === orderAttributeInDrugOrder.name;
+                    })[0];
+                    $scope.updateOrderAttribute(drugOrder,selectedOrderAttribute,drugOrderGroup[orderAttribute.name].selected);
+                });
+            };
+
+            $scope.allOrderAttributesOfNameSet = function(drugOrderGroup,orderAttributeName){
+                var allAttributesSelected = true;
+                drugOrderGroup.drugOrders.forEach(function(drugOrder){
+                        var orderAttributeOfName = drugOrder.orderAttributes.filter(function(orderAttribute){
+                            return orderAttributeName === orderAttribute.name;
+                        })[0];
+                        if(!$scope.shouldBeDisabled(drugOrder,orderAttributeOfName) && !orderAttributeOfName.value) allAttributesSelected = false;
+                });
+                drugOrderGroup[orderAttributeName] = drugOrderGroup[orderAttributeName] || {};
+                drugOrderGroup[orderAttributeName].selected = allAttributesSelected;
+            };
+
+            $scope.canUpdateAtLeastOneOrderAttributeOfName  =function(drugOrderGroup,orderAttributeName){
+                var canBeUpdated = false;
+                drugOrderGroup.drugOrders.forEach(function(drugOrder){
+                    var orderAttributeOfName = drugOrder.orderAttributes.filter(function(orderAttribute){
+                        return orderAttributeName === orderAttribute.name;
+                    })[0];
+                    if(!$scope.shouldBeDisabled(drugOrder,orderAttributeOfName)) canBeUpdated = true;
+                });
+                return canBeUpdated;
             };
 
             init();

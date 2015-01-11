@@ -244,8 +244,7 @@
     .dispense-all-btn {
         font-size: 14px;
         margin-right: 0;
-        font-family: $primaryBoldFont;
-        color: $bahmniTertiaryColor;
+//        font-family: $primaryBoldFont;
         display: none;
     }
 
@@ -257,6 +256,7 @@
     .tabs .tab [type="radio"]:checked ~ .refill-drugs-btn,
     .tabs .tab [type="radio"]:checked ~ .dispense-all-btn {
         display: inline-block;
+        line-height: 14px;
     }
 
 }
