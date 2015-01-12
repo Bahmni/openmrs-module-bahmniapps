@@ -10,7 +10,7 @@ this.getVisits = function(patientUuid) {
             deferred.resolve(patientVisitsMap[patientUuid]);
         }
         else {
-    	   visitService.search({patient: patientUuid, v: 'custom:(uuid,startDatetime,stopDatetime,encounters:(uuid))', includeInactive: true}).success(function(data){
+    	   visitService.search({patient: patientUuid, v: 'custom:(uuid,visitType,startDatetime,stopDatetime,encounters:(uuid))', includeInactive: true}).success(function(data){
                 patientVisitsMap[patientUuid] = data.results;
                 deferred.resolve(patientVisitsMap[patientUuid]);                
 	       }).error(deferred.reject);

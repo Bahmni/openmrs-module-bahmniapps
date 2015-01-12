@@ -51,18 +51,5 @@
                 <input class="form-field ng-pristine ng-valid retro-date-widget" ng-model="$parent.retrospectiveEntry.encounterDate" type="date" max="{{today}}">
             </li>
         </ul>
-
-        <h2>Visit History</h2>
-        <ul class="visit-history">
-            <li ng-click="changeContext($event)" class="visit-history-entry"
-                ng-class="{'selected': isCurrentVisit(visit), 'active': visit.isActive()}"
-                ng-repeat="visit in visitHistory.visits">
-                <a href="#/patient/{{patient.uuid}}/dashboard/visit/{{visit.uuid}}">
-                    <span bo-text="visit.startDatetime | date: 'd MMM yy'"></span>
-                    <span bo-text="'- ' + (visit.stopDatetime | date: 'd MMM yy')" bo-hide="visit.isActive()"></span>
-                    <i class="icon-star" title="Current Visit"></i>
-                </a>
-            </li>
-        </ul>
     </aside>
 </div>

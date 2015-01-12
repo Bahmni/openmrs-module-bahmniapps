@@ -1,0 +1,12 @@
+<header class="template-header">
+    <button class="ngdialog-close back-btn">Back</button>
+    <h5>
+        <i class="icon-user"></i> 
+        <span>{{patient.name}} {{'(' + patient.identifier + ')'}}</span>
+    </h5>
+    <h6>All Visits</h6>
+</header>
+
+<div class="template-container">
+       <all-visits params="params" visits="visits"></all-visits>
+</div>

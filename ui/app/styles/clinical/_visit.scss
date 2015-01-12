@@ -429,3 +429,10 @@ legend.mylegend {background: $white!important;}
     .icon-stop {color: lighten($clinicalRemoveBtn, 20%);}
     .icon-ok {color: green;}
 }
+
+a.visit:before {
+    content: "";
+    position: absolute;
+    height: 20px;
+    width: 140px;
+}
