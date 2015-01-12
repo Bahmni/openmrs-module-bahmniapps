@@ -63,7 +63,7 @@ angular.module('bahmni.common.conceptSet')
                             '<button type="button" ng-if="conceptSet.showComputeButton()" ng-click="computeField(conceptSet)" class="fr btn-small">Compute</button>' +
                         '</h2>' +
                     '</div>' +
-                    '<concept-set ng-if="conceptSet.isLoaded" ng-show="conceptSet.isOpen" concept-set-name="conceptSet.conceptName" required="conceptSet.options.required" observations="observations" show-title="false" validation-handler="validationHandler"></concept-set>' +
+                    '<concept-set ng-if="conceptSet.isLoaded" patient="patient" ng-show="conceptSet.isOpen" concept-set-name="conceptSet.conceptName" required="conceptSet.options.required" observations="observations" show-title="false" validation-handler="validationHandler"></concept-set>' +
                 '</div>'
 
     }

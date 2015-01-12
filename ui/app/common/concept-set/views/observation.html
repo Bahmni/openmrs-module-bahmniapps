@@ -142,7 +142,7 @@
                         <button type="button" ng-click="observation.toggleVoidingOfImage()" ng-if="observation.value" class="row-remover"><span ng-class="{'icon-remove': !image.voided, 'icon-undo': observation.voided }"></span></button>
                     </div>
 
-                        <input id="file-browse-{{observation.uniqueId}}" class="file-browse" type="file" name="image" accept="image/*" capture="camera" ng-model="observation.value" image-upload>
+                        <input id="file-browse-{{observation.uniqueId}}" class="file-browse" type="file" name="image" accept="image/*" capture="camera" ng-model="observation.value" image-upload patient-uuid="patient.uuid">
                         <label class="placeholder btn" for="file-browse-{{observation.uniqueId}}" ng-hide="observation.value || observation.voided"><i class="icon-plus needsclick"></i></label>
 
                         <div class="file">
@@ -225,7 +225,7 @@
                 <i class="icon-caret-up"></i>
             </section>
             <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers " ng-if="!member.hidden">
-                <concept observation="member" root-observation="observation" at-least-one-value-is-set="atLeastOneValueIsSet" show-title="true" concept-set-required="conceptSetRequired" ></concept>
+                <concept observation="member" root-observation="observation" at-least-one-value-is-set="atLeastOneValueIsSet" patient="patient" show-title="true" concept-set-required="conceptSetRequired" ></concept>
             </div>
         </div>
     </fieldset>

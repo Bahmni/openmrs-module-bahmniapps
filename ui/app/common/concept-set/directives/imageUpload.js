@@ -7,7 +7,7 @@ angular.module('bahmni.common.conceptSet')
                 var reader = new FileReader();
                 reader.onload = function (event) {
                     var image = event.target.result;
-                    spinner.forPromise(visitDocumentService.saveImage(image, $rootScope.patient.uuid, Bahmni.Common.Constants.consultationEncounterName).then(function(response) {
+                    spinner.forPromise(visitDocumentService.saveImage(image, scope.patientUuid, Bahmni.Common.Constants.consultationEncounterName).then(function(response) {
                         scope.url = response.data;
                         element.val(null);
                     }));
@@ -20,7 +20,8 @@ angular.module('bahmni.common.conceptSet')
             restrict: 'A',
             require: 'ngModel',
             scope: {
-                url:"=ngModel"
+                url:"=ngModel",
+                patientUuid: "="
             },
             link: link
         }
