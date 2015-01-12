@@ -1,6 +1,6 @@
 <section  bindonce="visits" class="block patientInformation" ng-class="{'more': patientSummary.show}"> 
-    <p class="placeholder-text" ng-if="!hasVisits()">{{ params.noVisitsMessage }}</p>   
-    <table class="visits">
+    <p class="placeholder-text" ng-if="!hasVisits()">{{ noVisitsMessage }}</p>   
+    <table class="visits" ng-if="hasVisits()">
         <tbody>
             <tr ng-repeat="visit in visits | limitTo: params.maximumNoOfVisits">
                 <td class="name" width="50%">
