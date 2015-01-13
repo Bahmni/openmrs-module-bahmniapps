@@ -1,16 +1,16 @@
-<section  bindonce="visits" class="block patientInformation" ng-class="{'more': patientSummary.show}"> 
-    <p class="placeholder-text" ng-if="!hasVisits()">{{ noVisitsMessage }}</p>   
-    <table class="visits" ng-if="hasVisits()">
+<section class="block patientInformation">
+    <p class="placeholder-text" ng-if="::!hasVisits()">{{::noVisitsMessage}}</p>
+    <table class="visits" ng-if="::hasVisits()">
         <tbody>
-            <tr ng-repeat="visit in visits | limitTo: params.maximumNoOfVisits">
+            <tr ng-repeat="visit in ::visits | limitTo: params.maximumNoOfVisits">
                 <td class="name" width="50%">
-                    <a class="ngdialog-close visit" href="#/patient/{{patientUuid}}/dashboard/visit/{{visit.uuid}}">
-                        <span bo-text="visit.startDatetime | date: 'd MMM yy'"></span>
-                        <span bo-text="'- ' + (visit.stopDatetime | date: 'd MMM yy')" bo-hide="visit.isActive() || isVisitActive(visit)"></span>
-                        <i class="icon-star" ng-if="visit.isActive() || isVisitActive(visit)" title="Current Visit"></i>
+                    <a class="ngdialog-close visit" ng-click="openVisit(visit)">
+                        <span>{{::visit.startDatetime | date: 'd MMM yy'}}</span>
+                        <span ng-if="::!visit.isActive()">- {{::visit.stopDatetime | date: 'd MMM yy'}}</span>
+                        <i class="icon-star" ng-if="::visit.isActive()" title="Current Visit"></i>
                     </a>
                 </td>
-                <td class="value">{{visit.visitType.name }}</td>
+                <td class="value">{{::visit.visitType.name}}</td>
             </tr>
         </tbody>
     </table>

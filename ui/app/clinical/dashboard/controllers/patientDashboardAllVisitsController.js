@@ -3,11 +3,11 @@
 angular.module('bahmni.clinical')
     .controller('PatientDashboardAllVisitsController', ['$scope', '$state', '$stateParams', 'clinicalAppConfigService',
         function ($scope, $state, $stateParams, clinicalAppConfigService) {
-            $scope.visits = $scope.ngDialogData.visits;
             $scope.patient = $scope.ngDialogData.patient;
+            $scope.noOfVisits = $scope.ngDialogData.noOfVisits;
 
             var defaultParams = {
-                maximumNoOfVisits: $scope.visits ? $scope.visits.length : 0
+                maximumNoOfVisits: $scope.noOfVisits ? $scope.noOfVisits : 0
             };
             $scope.params = angular.extend(defaultParams, $scope.params);
             
@@ -16,6 +16,6 @@ angular.module('bahmni.clinical')
                 .summaryPageParams || {};
 
             $scope.params = angular.extend(summaryPageParams, $scope.params);
-            $scope.params.patientUuid = $stateParams.patientUuid;
+            $scope.patientUuid = $stateParams.patientUuid;
             
         }]);

@@ -6,16 +6,17 @@ angular.module('bahmni.clinical')
             $scope.setVisitsHistory = function(visitHistory) {
                $scope.visitHistory = visitHistory;
             };
-            $scope.visits = $scope.visitHistory.visits;
+            $scope.noOfVisits = $scope.visitHistory.visits.length;
 
             $scope.setPatient = function(patient) {
                 $scope.patient = patient;
             };
-            $scope.visitsAndPatient = {"visits": $scope.visits, "patient": $scope.patient};
+            
+            $scope.visitsCountAndPatient = {"noOfVisits": $scope.noOfVisits, "patient": $scope.patient};
             
             $scope.dashboardParams = clinicalAppConfigService
                 .getPatientDashBoardSectionByName("visits")
                 .dashboardParams || {};
-            $scope.dashboardParams.patientUuid = $stateParams.patientUuid;
+            $scope.patientUuid = $stateParams.patientUuid;
 
         }]);
