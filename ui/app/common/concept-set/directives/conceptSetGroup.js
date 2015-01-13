@@ -1,6 +1,8 @@
 angular.module('bahmni.common.conceptSet')
-.controller('ConceptSetGroupController', ['$scope', 'appService', 'contextChangeHandler', 'spinner', 'conceptSetService', '$rootScope', 'sessionService', 'encounterService', 'treatmentConfig', 'messagingService', 'retrospectiveEntryService',
-        function ($scope, appService, contextChangeHandler, spinner, conceptSetService, $rootScope, sessionService, encounterService, treatmentConfig, messagingService, retrospectiveEntryService) {
+.controller('ConceptSetGroupController', ['$scope', 'appService', 'contextChangeHandler', 'spinner',
+        'conceptSetService', '$rootScope', 'sessionService', 'encounterService', 'treatmentConfig', 'messagingService', 'retrospectiveEntryService',
+        function ($scope, appService, contextChangeHandler, spinner, conceptSetService, $rootScope, sessionService,
+                  encounterService, treatmentConfig, messagingService, retrospectiveEntryService) {
 
     $scope.validationHandler = new Bahmni.ConceptSet.ConceptSetGroupValidationHandler($scope.conceptSets);
 
@@ -11,7 +13,8 @@ angular.module('bahmni.common.conceptSet')
     $scope.computeField = function(conceptSet){
         event.stopPropagation();
         $scope.consultation.saveHandler.fire();
-        var encounterData =new Bahmni.Clinical.EncounterTransactionMapper().map(angular.copy($scope.consultation), $scope.patient, sessionService.getLoginLocationUuid());
+        var encounterData =new Bahmni.Clinical.EncounterTransactionMapper().map(angular.copy($scope.consultation), $scope.patient, sessionService.getLoginLocationUuid(),
+            retrospectiveEntryService.getRetrospectiveEntry());
         encounterData = encounterService.buildEncounter(encounterData);
         encounterData.drugOrders = [];
 
@@ -30,8 +33,12 @@ angular.module('bahmni.common.conceptSet')
     };
     var copyValues = function(existingObservations, modifiedObservations) {
         existingObservations.forEach(function(observation, index) {
+            var correspondingModifiedObservation = _.find(modifiedObservations, function(modifiedObservation) {
+                return modifiedObservation.concept.uuid === observation.concept.uuid;
+
+            });
             if(observation.groupMembers && observation.groupMembers.length > 0) {
-                copyValues(observation.groupMembers, modifiedObservations[index].groupMembers);
+                copyValues(observation.groupMembers, correspondingModifiedObservation.groupMembers);
             } else {
                 observation.value = modifiedObservations[index].value;
             }
@@ -49,7 +56,8 @@ angular.module('bahmni.common.conceptSet')
             allTemplates: "=",
             context: "=",
             autoScrollEnabled:"=",
-            patient: "="
+            patient: "=",
+            consultation: "="
             
         },
         controller: 'ConceptSetGroupController',
