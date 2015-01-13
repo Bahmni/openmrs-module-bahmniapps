@@ -5,7 +5,8 @@
             <li class="tab-item" ng-repeat="searchType in search.searchTypes" ng-class="{'tab-selected': search.isSelectedSearch(searchType)}">
                 <a href="" ng-click="search.switchSearchType(searchType)">
                     <span>{{searchType.display}}</span>
-                    <span ng-if="search.showPatientCount(searchType)">({{search.searchResults.length}})</span>
+                    <span ng-if="search.showPatientCountOnSearchParameter(searchType)">({{search.searchResults.length}})</span>
+                    <span ng-if="searchType.handler && !search.showPatientCountOnSearchParameter(searchType)" scheduler watch-on="search.searchParameter" refresh-time="searchType.refreshTime" trigger-function="getPatientCount(searchType)">({{searchType.patientCount}})</span>
                 </a>
             </li>
         </ul> 

@@ -50,13 +50,14 @@ describe("Search", function() {
 	    });
 	});
 
-	describe("showPatientCount for searchType", function() {
+	describe("showPatientCountOnSearchParameter for searchType", function() {
 	    it('should be true when searchType is selected and is a look up and has search results', function () {
 	    	var searchType = {handler: "emrapi.sqlSearch.patientsToAdmit"};
 	    	search.switchSearchType(searchType);
 	    	search.updatePatientList(allActivePatients);
-            
-            expect(search.showPatientCount(searchType)).toBeTruthy();
+			search.searchParameter = "Gan";
+
+			expect(search.showPatientCountOnSearchParameter(searchType)).toBeTruthy();
 	    });
 
 	    it('should be false when searchType is not selected', function () {
@@ -64,24 +65,27 @@ describe("Search", function() {
 	    	var selectedSearchType = {handler: "emrapi.sqlSearch.patientsToDischarge"};
 	    	search.switchSearchType(selectedSearchType);
 	    	search.updatePatientList(allActivePatients);
+			search.searchParameter = "Gan";
             
-            expect(search.showPatientCount(searchType)).toBeFalsy();
+            expect(search.showPatientCountOnSearchParameter(searchType)).toBeFalsy();
 	    });
 
 	    it('should be false when searchType is a look up', function () {
 	    	var searchType = {handler: null};
 	    	search.switchSearchType(searchType);
 	    	search.updatePatientList(allActivePatients);
+			search.searchParameter = "Gan";
             
-            expect(search.showPatientCount(searchType)).toBeFalsy();
+            expect(search.showPatientCountOnSearchParameter(searchType)).toBeFalsy();
 	    });
 
-	    it('should be false when results are empty', function () {
-	    	var searchType = {handler: "emrapi.sqlSearch.patientsToAdmit"};
-	    	search.switchSearchType(searchType);
-	    	search.updatePatientList([]);
-            
-            expect(search.showPatientCount(searchType)).toBeFalsy();
-	    });
+		it('should be false when searchType is a look up', function () {
+			var searchType = {handler: "emrapi.sqlSearch.patientsToAdmit"};
+			search.switchSearchType(searchType);
+			search.updatePatientList(allActivePatients);
+
+			expect(search.showPatientCountOnSearchParameter(searchType)).toBeFalsy();
+		});
+
 	});
 });
