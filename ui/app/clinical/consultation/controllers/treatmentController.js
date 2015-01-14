@@ -174,7 +174,7 @@ angular.module('bahmni.clinical')
             $scope.revise = function (drugOrder) {
                 $scope.popupActive = false;
                 ngDialog.close();
-                $rootScope.activeAndScheduledDrugOrders.forEach(function (drugOrder) {
+                $scope.consultation.activeAndScheduledDrugOrders.forEach(function (drugOrder) {
                     drugOrder.isDiscontinuedAllowed = true;
                     drugOrder.isBeingEdited = false;
                 });
