@@ -2,7 +2,7 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
     var self = this;
     angular.extend(this, observation);
     this.isObservation = true;
-    this.conceptUIConfig = conceptUIConfig;
+    this.conceptUIConfig = conceptUIConfig[this.concept.name] || []
     this.uniqueId = _.uniqueId('observation_');
 
     if (savedObs) {
@@ -11,10 +11,10 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
         this.observationDateTime = savedObs.observationDateTime;
         this.provider = savedObs.provider;
     } else {
-        this.value = this.getConceptUIConfig().defaultValue;         
+        this.value = this.conceptUIConfig.defaultValue;         
     }
 
-    if(this.getConceptUIConfig().autocomplete && this.getConceptUIConfig().answersConceptName) {
+    if(this.conceptUIConfig.autocomplete && this.conceptUIConfig.answersConceptName) {
         Object.defineProperty(this, 'autocompleteValue', {
             enumerable: true,
             get: function () {
@@ -107,25 +107,21 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.concept.lowAbsolute;
     },
 
-    getConceptUIConfig: function () {
-        return this.conceptUIConfig[this.concept.name] || [];
-    },
-
     isHtml5InputDataType: function () {
         return ['Date', 'Numeric'].indexOf(this.getDataTypeName()) != -1;
     },
 
     isGrid: function () {
-        return this.getConceptUIConfig().grid;
+        return this.conceptUIConfig.grid;
     },
 
     isButtonRadio: function () {
-        return this.getConceptUIConfig().buttonRadio;
+        return this.conceptUIConfig.buttonRadio;
     },
 
     getControlType: function () {
         if (this.hidden) return "hidden";
-        if (this.getConceptUIConfig().freeTextAutocomplete) return "freeTextAutocomplete";
+        if (this.conceptUIConfig.freeTextAutocomplete) return "freeTextAutocomplete";
         if (this.isHtml5InputDataType()) return "html5InputDataType";
         if (this.isImage()) return "image";
         if (this.isText()) return "text";
@@ -140,15 +136,15 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     canAddMore: function() {
-        return this.getConceptUIConfig().allowAddMore == true;
+        return this.conceptUIConfig.allowAddMore == true;
     },
 
     isConciseText: function(){
-        return this.getConceptUIConfig().conciseText == true;
+        return this.conceptUIConfig.conciseText == true;
     },
 
     _getCodedControlType: function () {
-        var conceptUIConfig = this.getConceptUIConfig();
+        var conceptUIConfig = this.conceptUIConfig;
         if (conceptUIConfig.autocomplete) return "autocomplete";
         return "buttonselect";
 
@@ -212,7 +208,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isRequired: function () {
-        return this.getConceptUIConfig().required;
+        return this.conceptUIConfig.required;
     },
 
     isFormElement: function() {

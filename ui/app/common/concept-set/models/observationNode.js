@@ -59,6 +59,8 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUICo
         }
     });
 
+    this.conceptUIConfig= conceptUIConfig[this.primaryObs.concept.name] || [];
+
     Object.defineProperty(this, 'markedAsNonCoded', {
         enumerable: true,
         get: function () {
@@ -72,7 +74,6 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUICo
         }
     });
 
-    this.conceptUIConfig = conceptUIConfig;
     this.isObservationNode = true;
     this.uniqueId = _.uniqueId('observation_');
     this.durationObs = this.getDurationObs();
@@ -82,13 +83,13 @@ Bahmni.ConceptSet.ObservationNode = function (observation, savedObs, conceptUICo
         this.uuid = savedObs.uuid;
         this.observationDateTime = savedObs.observationDateTime;
     } else {
-        this.value = this.getConceptUIConfig().defaultValue;
+        this.value = this.conceptUIConfig.defaultValue;
     }
 };
 
 Bahmni.ConceptSet.ObservationNode.prototype = {
     canAddMore: function() {
-        return this.getConceptUIConfig().allowAddMore == true;
+        return this.conceptUIConfig.allowAddMore == true;
     },
 
     getPossibleAnswers: function () {
@@ -163,13 +164,9 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
         return false;
     },
 
-    getConceptUIConfig: function () {
-        return this.conceptUIConfig[this.primaryObs.concept.name] || [];
-    },
-
     getControlType: function () {
-        if (this.getConceptUIConfig().freeTextAutocomplete) return "freeTextAutocomplete";
-        if (this.getConceptUIConfig().autocomplete) return "autocomplete";
+        if (this.conceptUIConfig.freeTextAutocomplete) return "freeTextAutocomplete";
+        if (this.conceptUIConfig.autocomplete) return "autocomplete";
         if (this.isHtml5InputDataType()) return "html5InputDataType";
         if (this.primaryObs.isText()) return "text";
         if (this.primaryObs.isCoded()) return this._getCodedControlType();
@@ -177,7 +174,7 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     _getCodedControlType: function () {
-        var conceptUIConfig = this.getConceptUIConfig();
+        var conceptUIConfig = this.conceptUIConfig;
         if (conceptUIConfig.multiselect) return "multiselect";
         if (conceptUIConfig.autocomplete) return "autocomplete";
         return "dropdown";
@@ -212,7 +209,7 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     hasDuration: function () {
-        if (!this.getDurationObs() || !this.getConceptUIConfig().durationRequired){
+        if (!this.getDurationObs() || !this.conceptUIConfig.durationRequired){
             return false;
         }
         else {
@@ -247,11 +244,11 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     isRequired: function () {
-        return this.getConceptUIConfig().required || false;
+        return this.conceptUIConfig.required || false;
     },
 
     isDurationRequired: function () {
-        return this.getConceptUIConfig().durationRequired || false;
+        return this.conceptUIConfig.durationRequired || false;
     },
 
     _hasValidChildren: function (checkRequiredFields, conceptSetRequired) {

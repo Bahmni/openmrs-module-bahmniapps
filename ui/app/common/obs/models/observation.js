@@ -1,7 +1,6 @@
 Bahmni.Common.Obs.Observation = function () {
 
     var Observation = function (obs, conceptConfig) {
-
         angular.extend(this, obs);
         this.concept = obs.concept;
         this.conceptConfig = conceptConfig;
