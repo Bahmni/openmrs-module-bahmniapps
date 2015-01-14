@@ -42,10 +42,10 @@
 
                 <div ng-switch-when="freeTextAutocomplete"  class="autocomplete">
                     <input id="{{observation.uniqueId}}" class="concept-name" ng-model="observation.value" concept-autocomplete
-                           coded-concept-name="observation.getConceptUIConfig().answersConceptName"
+                           coded-concept-name="observation.conceptUIConfig.answersConceptName"
                            blur-on-select="false"
                     />
-                    <!--concept-set-uuid="observation.getConceptUIConfig().freeTextAutocomplete.conceptSetUuid"-->
+                    <!--concept-set-uuid="observation.conceptUIConfig.freeTextAutocomplete.conceptSetUuid"-->
                     <!--TODO : check if jss-config is meant to have uuid Mujir, Shruthi-->
 
                     <div>
@@ -57,8 +57,8 @@
                 </div>
 
                 <div ng-switch-when="autocomplete"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet), 'computed-field': observation.isComputedAndEditable()}" class="autocomplete">
-                    <input ng-if="!observation.getConceptUIConfig().answersConceptName" type="hidden" ui-select2="selectOptions(observation.primaryObs.concept)" ng-model="observation.primaryObs.value"/>
-                    <input ng-if="observation.getConceptUIConfig().answersConceptName" concept-autocomplete coded-concept-name="observation.getConceptUIConfig().answersConceptName" ng-model="observation.value"/>
+                    <input ng-if="!observation.conceptUIConfig.answersConceptName" type="hidden" ui-select2="selectOptions(observation.primaryObs.concept)" ng-model="observation.primaryObs.value"/>
+                    <input ng-if="observation.conceptUIConfig.answersConceptName" concept-autocomplete coded-concept-name="observation.conceptUIConfig.answersConceptName" ng-model="observation.value"/>
                 </div>
 
                 <!--div ng-switch-when="multiselect"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}" class="autocomplete">
@@ -174,12 +174,12 @@
 
                 <input id="{{observation.uniqueId}}" ng-switch-when="freeTextAutocomplete" class="concept-name" ng-model="observation.value" concept-autocomplete
                        ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}"
-                       coded-concept-name="observation.getConceptUIConfig().answersConceptName"
+                       coded-concept-name="observation.conceptUIConfig.answersConceptName"
                        blur-on-select="false"/>
 
                 <div ng-switch-when="autocomplete"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}" class="autocomplete">
-                    <input ng-if="!observation.getConceptUIConfig().answersConceptName" type="hidden" ui-select2="selectOptions(observation.concept)" ng-model="observation.value"/>
-                    <input ng-if="observation.getConceptUIConfig().answersConceptName" concept-autocomplete coded-concept-name="observation.getConceptUIConfig().answersConceptName" ng-model="observation.autocompleteValue"/>
+                    <input ng-if="!observation.conceptUIConfig.answersConceptName" type="hidden" ui-select2="selectOptions(observation.concept)" ng-model="observation.value"/>
+                    <input ng-if="observation.conceptUIConfig.answersConceptName" concept-autocomplete coded-concept-name="observation.conceptUIConfig.answersConceptName" ng-model="observation.autocompleteValue"/>
                 </div>
 
                 <!--div ng-switch-when="multiselect"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}" class="autocomplete">
