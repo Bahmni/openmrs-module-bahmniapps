@@ -35,7 +35,7 @@ angular.module('bahmni.clinical')
             return {
                 restrict:'E',
                 controller:controller,
-                templateUrl:"displaycontrols/observation/views/observationSection.html",
+                templateUrl:"displaycontrols/observation/views/observationDisplayControl.html",
                 scope:{
                     patientUuid:"=",
                     visitUuid : "@",
