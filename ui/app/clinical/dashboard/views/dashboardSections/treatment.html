@@ -3,23 +3,5 @@
         ng-dialog-data="{{dialogData}}"
         ng-dialog-class="ngdialog-theme-flat ngdialog-theme-custom"
         ng-dialog-controller="PatientDashboardAllTreatmentController" class="section-title">{{section.title}}</h2>
-
-    <section class="block treatment-section" ng-class="{'more': drugOrders.show}">
-        <!-- class names 'active' and 'past' added to the <table> for automation tests -->
-        <table ng-repeat="(key,drugOrderSection) in drugOrderSections" class="{{key}}" ng-show="isSectionNeeded(key)">
-            <thead>
-                <th colspan="3">{{drugOrderSection.displayName}}</th>
-            </thead>
-            <tbody>
-                <tr ng-show="!drugOrderSection.orders.length" >
-                    <td class="placeholder-text">No treatment for this patient.</td>
-                </tr>
-                <tr ng-repeat="drugOrder in drugOrderSection.orders" ng-show="drugOrderSection.orders.length" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
-                    <td class="drug">{{drugOrder.getDisplayName()}}</td>
-                    <td class="dosage"><span>{{drugOrder.getDescription()}}</span></td>
-                    <td class="days"><span class="fr">{{drugOrder.effectiveStartDate | date:'dd MMM yy'}}</span></td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
+        <treatment-data params="dashboardParams"></treatment-data>
 </div>

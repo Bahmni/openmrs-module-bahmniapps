@@ -1,0 +1,18 @@
+<section class="block treatment-section">
+    <table ng-repeat="(sectionHeader, drugOrders) in drugOrderSections">
+        <thead>
+            <th colspan="3">{{getDate(sectionHeader) | date: 'dd MMM yy'}}</th>
+        </thead>
+        <tbody>
+            <tr ng-show="!drugOrders.length">
+                <td class="placeholder-text">No treatment for this section.</td>
+            </tr>
+            <tr ng-repeat="drugOrder in drugOrders"
+                ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped}">
+                <td class="drug">{{drugOrder.drug.name + drugOrder.drug.form}}</td>
+                <td class="dosage"><span>{{drugOrder.getDescription()}}</span></td>
+                <td class="days"><span class="fr">{{drugOrder.effectiveStartDate | date:'dd MMM yy'}}</span></td>
+            </tr>
+        </tbody>
+    </table>
+</section>
