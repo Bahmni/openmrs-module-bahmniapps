@@ -146,9 +146,7 @@ angular.module('bahmni.clinical')
                     return;
                 }
                 $scope.treatments.push($scope.treatment);
-                $scope.treatment = newTreatment();
-                $scope.formInvalid = false;
-                markVariable("startNewDrugEntry");
+                $scope.clearForm();
             };
             var setEffectiveDates = function (newDrugOrder, existingDrugOrders) {
                 existingDrugOrders.forEach(function (existingDrugOrder) {
@@ -270,6 +268,7 @@ angular.module('bahmni.clinical')
 
             $scope.clearForm = function () {
                 $scope.treatment = newTreatment();
+                $scope.formInvalid = false;
                 clearHighlights();
                 markVariable("startNewDrugEntry");
             };
