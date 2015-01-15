@@ -8,8 +8,10 @@
                 <td class="placeholder-text">No treatment for this section.</td>
             </tr>
             <tr ng-repeat="drugOrder in drugOrders"
-                ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped}">
-                <td class="drug">{{drugOrder.drug.name + drugOrder.drug.form}}</td>
+                <!--ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped}">-->
+                <td class="drug">{{drugOrder.drug.name + drugOrder.drug.form}}
+                    <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">Stopped {{drugOrder.effectiveStopDate | date: 'dd MMM yy'}}</span>
+                </td>
                 <td class="dosage"><span>{{drugOrder.getDescription()}}</span></td>
                 <td class="days"><span class="fr">{{drugOrder.effectiveStartDate | date:'dd MMM yy'}}</span></td>
             </tr>

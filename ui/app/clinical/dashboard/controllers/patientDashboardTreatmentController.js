@@ -1,37 +1,25 @@
 angular.module('bahmni.clinical')
 
-    .controller('PatientDashboardTreatmentController', ['$q', '$scope', '$stateParams', 'TreatmentService', 'spinner', 'clinicalAppConfigService',
-        function ($q, $scope, $stateParams, treatmentService, spinner, clinicalAppConfigService) {
+    .controller('PatientDashboardTreatmentController', ['$q', '$scope', '$stateParams', 'TreatmentService', 'spinner', 'ngDialog', 'clinicalAppConfigService',
+        function ($q, $scope, $stateParams, treatmentService, spinner, ngDialog, clinicalAppConfigService) {
 
-            $scope.dashboardParams = clinicalAppConfigService
-                .getPatientDashBoardSectionByName("treatment")
-                .dashboardParams || {};
+            var treatmentConfigParams = clinicalAppConfigService
+                .getPatientDashBoardSectionByName("treatment") || {};
 
-            $scope.dashboardParams.patientUuid = $stateParams.patientUuid;
+            var patientUuidparams = {"patientUuid": $scope.patient.uuid};
+
+            $scope.dashboardParams = angular.extend(treatmentConfigParams.dashboardParams || {}, patientUuidparams);
+
+            $scope.summaryPageParams = angular.extend(treatmentConfigParams.summaryPageParams || {}, patientUuidparams)
 
 
-            $scope.dialogData = {
-                "patient": $scope.patient
+            $scope.openSummaryDialog = function(){
+                    ngDialog.open({
+                        template: 'dashboard/views/dashboardSections/treatmentSummary.html',
+                        params: $scope.summaryPageParams,
+                        className: "ngdialog-theme-flat ngdialog-theme-custom",
+                        scope: $scope
+                    });
             };
 
-        }]).controller('PatientDashboardAllTreatmentController', ['$scope', '$stateParams', 'TreatmentService', 'spinner',
-        function ($scope, $stateParams, treatmentService, spinner) {
-
-            $scope.patient= $scope.ngDialogData.patient;
-
-            var init = function () {
-                return treatmentService.getPrescribedDrugOrders($stateParams.patientUuid, true).then(function (drugOrders) {
-                    var dateUtil = Bahmni.Common.Util.DateUtil;
-                    var prescribedDrugOrders = [];
-                    drugOrders.forEach(function (drugOrder) {
-                        prescribedDrugOrders.push(Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder))
-                    });
-                    $scope.allTreatments = new Bahmni.Clinical.ResultGrouper().group(prescribedDrugOrders, function (prescribedDrugOrder) {
-                        return dateUtil.getDate(prescribedDrugOrder.effectiveStartDate).toISOString();
-                    });
-                    $scope.allTreatments = _.sortBy($scope.allTreatments, 'key').reverse();
-                });
-            };
-
-            spinner.forPromise(init());
         }]);

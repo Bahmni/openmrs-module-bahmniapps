@@ -1,7 +1,4 @@
 <div ng-controller="PatientDashboardTreatmentController" class="dashboard-treatment-section">
-    <h2 ng-dialog="dashboard/views/dashboardSections/allTreatments.html"
-        ng-dialog-data="{{dialogData}}"
-        ng-dialog-class="ngdialog-theme-flat ngdialog-theme-custom"
-        ng-dialog-controller="PatientDashboardAllTreatmentController" class="section-title">{{section.title}}</h2>
+    <h2 ng-click="openSummaryDialog()"class="section-title">{{section.title}}</h2>
         <treatment-data params="dashboardParams"></treatment-data>
 </div>
