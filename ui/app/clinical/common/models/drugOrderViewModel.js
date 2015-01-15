@@ -305,13 +305,13 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         }
     };
 
-    this.refill = function () {
+    this.refill = function (existingOrderStopDate) {
         var newDrugOrder = new Bahmni.Clinical.DrugOrderViewModel(appConfig, config, this);
         newDrugOrder.previousOrderUuid = undefined;
         newDrugOrder.action = Bahmni.Clinical.Constants.orderActions.new;
         newDrugOrder.uuid = undefined;
         newDrugOrder.dateActivated = undefined;
-        var oldEffectiveStopDate = new Date(self.effectiveStopDate);
+        var oldEffectiveStopDate = existingOrderStopDate ? new Date(existingOrderStopDate): new Date(self.effectiveStopDate);
         newDrugOrder.effectiveStartDate = oldEffectiveStopDate >= today() ? DateUtil.addSeconds(oldEffectiveStopDate, 1) : today();
 
         modifyForReverseSyncIfRequired(newDrugOrder);

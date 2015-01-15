@@ -82,8 +82,9 @@ angular.module('bahmni.clinical')
                 return existingTreatment;
             };
 
-            $scope.$on("event:refillDrugOrder", function (event, drugOrder) {
-                var refill = drugOrder.refill();
+            $scope.$on("event:refillDrugOrder", function (event, drugOrder, alreadyActiveSimilarOrder) {
+                var existingOrderStopDate = alreadyActiveSimilarOrder ? alreadyActiveSimilarOrder.effectiveStopDate : null;
+                var refill = drugOrder.refill(existingOrderStopDate);
                 drugOrderHistory = drugOrder;
                 $scope.treatments.push(refill);
                 markVariable("startNewDrugEntry");
@@ -162,11 +163,12 @@ angular.module('bahmni.clinical')
                 });
             };
 
-            $scope.refill = function (drugOrder) {
+            $scope.refill = function (drugOrder, alreadyActiveSimilarOrder) {
                 $scope.popupActive = false;
                 ngDialog.close();
                 $scope.clearForm();
-                $scope.$broadcast("event:refillDrugOrder", drugOrder);
+                //drugOrder.effectiveStopDate = alreadyActiveSimilarOrder.effectiveStopDate;
+                $scope.$broadcast("event:refillDrugOrder", drugOrder, alreadyActiveSimilarOrder);
             };
 
             $scope.revise = function (drugOrder) {
