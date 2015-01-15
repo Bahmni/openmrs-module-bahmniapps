@@ -58,7 +58,7 @@ module.exports = function (grunt) {
                     'statements': 45.71,
                     'branches': 38.23,
                     'functions': 36.84,
-                    'lines': 45.73
+                    'lines': 45.72
                 },
                 dir: 'coverage',
                 root: '.'
