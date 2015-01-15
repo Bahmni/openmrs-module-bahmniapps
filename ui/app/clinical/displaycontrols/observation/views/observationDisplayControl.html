@@ -1,0 +1,24 @@
+<div  class="block ">
+    <h2 class="section-title">{{title}}</h2>
+
+    <section class="block hierarchy">
+        <ul class="form-field">
+            <li ng-repeat="obsGroup in ::bahmniObservations">
+                <span class="tree-list-item row-click" ng-click="toggle(obsGroup)">
+                    <i class="icon-caret-right" ng-hide="obsGroup.isOpen"></i>
+                    <i class="icon-caret-down" ng-show="obsGroup.isOpen"></i>
+                    <span class="obs-date">
+                        {{obsGroup.date | date: 'dd MMM yy hh:mm a'}}
+                    </span>
+                </span>
+                <ul ng-show="obsGroup.isOpen">
+                    <show-observation show-comments="config.showComments" observation="observation" ng-repeat="observation in obsGroup.value"
+                                           level="2"></show-observation>
+                </ul>
+            </li>
+        </ul>
+        <div ng-show="noObsMessage">
+            <div class="placeholder-text">No {{title}} for this patient.</div>
+        </div>
+    </section>
+</div>

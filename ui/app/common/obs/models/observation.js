@@ -26,7 +26,9 @@ Bahmni.Common.Obs.Observation = function () {
                 var date = Bahmni.Common.Util.DateUtil.parseDatetime(this.value);
                 return date != null ? date.format('DD MMM YYYY, hh:mm A') : "";
             }
-            displayValue = this.value.shortName || this.value.name || this.value;
+            var shortName = this.value ? this.value.shortName : null;
+            var fullName = this.value ? this.value.name : null;
+            displayValue = shortName || fullName || this.value;
             if (this.duration) {
                 displayValue = displayValue + " " + this.getDurationDisplayValue();
             }

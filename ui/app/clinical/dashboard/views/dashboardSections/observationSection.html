@@ -1,22 +1,2 @@
-<div ng-controller="PatientDashboardObservationController">
-    <h2 class="section-title">{{section.title}}</h2>
+<bahmni-observation patient-uuid="patient.uuid" config="section" title="section.title"></bahmni-observation>
 
-    <section class="block hierarchy">
-        <ul class="form-field">
-            <li ng-repeat="obsGroup in patientSummary.data">
-                <span class="tree-list-item">
-                    <span class="obs-date">
-                        {{obsGroup.date | date: 'dd MMM yy'}}
-                    </span>
-                </span>
-                <ul>
-                    <show-observation observation="observation" ng-repeat="observation in obsGroup.value"
-                                           level="2"></show-observation>
-                </ul>
-            </li>
-        </ul>
-        <div ng-show="patientSummary.message">
-            <div class="placeholder-text">No {{section.title}} for this patient.</div>
-        </div>
-    </section>
-</div>

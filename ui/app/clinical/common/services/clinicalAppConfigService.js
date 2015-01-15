@@ -52,8 +52,9 @@ angular.module('bahmni.clinical')
             return appService.getAppDescriptor().getConfigValue("templateSections") || [];
         };
 
-        this.getVisitPageConfig = function () {
-            return appService.getAppDescriptor().getConfigValue("visitPage") || {};
+        this.getVisitPageConfig = function (configSection) {
+            var visitSection = appService.getAppDescriptor().getConfigValue("visitPage") || {};
+            return configSection? visitSection[configSection] : visitSection;
         };
 
         this.getPrintConfig = function () {

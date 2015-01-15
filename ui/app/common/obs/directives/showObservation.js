@@ -5,7 +5,8 @@ angular.module('bahmni.common.obs')
             restrict: 'E',
             scope: {
                 observation: "=",
-                patient: "="
+                patient: "=",
+                showComments:"="
             },
             template: '<ng-include src="\'../common/obs/views/showObservation.html\'" />'
         };
