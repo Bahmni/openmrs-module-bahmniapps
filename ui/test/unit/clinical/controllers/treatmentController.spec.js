@@ -428,6 +428,54 @@ describe("TreatmentController", function () {
 
         });
 
+        describe("should allow potentially overlapping order whose dates can be set and be resolved", function () {
+            var encounterDate = DateUtil.parse("2014-12-02");
+
+            it("existing drug orders for dates 2-3 and 3-4 and revised drug order for 2-3", function () {
+                var dec2_dec3order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
+                    drug: {
+                        name: "abc",
+                        uuid: "123"
+                    },
+                    effectiveStartDate: DateUtil.parse("2014-12-02 10:00:00"),
+                    effectiveStopDate: DateUtil.parse("2014-12-03 09:59:59"),
+                    durationInDays: 1,
+                    uuid: 123
+                }, encounterDate);
+                var dec3_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
+                    drug: {
+                        name: "abc",
+                        uuid: "123"
+                    },
+                    effectiveStartDate: DateUtil.parse("2014-12-03 10:00:00"),
+                    effectiveStopDate: DateUtil.parse("2014-12-04 09:59:59"),
+                    durationInDays: 1,
+                    uuid: 456
+                }, encounterDate);
+                scope.treatments = [dec2_dec3order, dec3_dec4order];
+
+                var revisedOverlappingOrder = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
+                    drug: {
+                        name: "abc",
+                        uuid: "123"
+                    },
+                    effectiveStartDate: DateUtil.parse("2014-12-02 11:00:00"),
+                    effectiveStopDate: DateUtil.parse("2014-12-03 09:59:59"),
+                    durationInDays: 1,
+                    previousOrderUuid: 123
+                }, encounterDate);
+                revisedOverlappingOrder.isBeingEdited = true;
+                revisedOverlappingOrder.currentIndex = scope.treatments.length + 1;
+                scope.treatment = revisedOverlappingOrder;
+
+                expect(scope.treatments.length).toEqual(2);
+                scope.add();
+                expect(scope.treatments.length).toEqual(2);
+
+                expect(DateUtil.isSameDateTime(scope.treatment.autoExpireDate, DateUtil.subtractMilliSeconds("2014-12-03 10:00:00", 1))).toBeTruthy();
+            });
+        });
+
         describe("should not allow overlapping order", function () {
             var encounterDate = DateUtil.parse("2014-12-02");
 

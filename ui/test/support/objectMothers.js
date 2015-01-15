@@ -104,6 +104,8 @@ Bahmni.Tests.drugOrderViewModelMother = {
             "strength": drugOrderViewModelData.drug.strength || null,
             "name": drugOrderViewModelData.drug.name ||"calpol 500mg"
         };
+        defaultModel.uuid = drugOrderViewModelData.uuid || null;
+        defaultModel.previousOrderUuid = drugOrderViewModelData.previousOrderUuid || null;
         return defaultModel;
     }
 };

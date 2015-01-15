@@ -2,7 +2,7 @@
 
 angular.module('bahmni.clinical')
 
-    .controller('TreatmentController', ['$scope', '$rootScope', 'contextChangeHandler', 'treatmentConfig', 'DrugService', '$timeout', 
+    .controller('TreatmentController', ['$scope', '$rootScope', 'contextChangeHandler', 'treatmentConfig', 'DrugService', '$timeout',
         'clinicalAppConfigService','ngDialog', '$window', 'retrospectiveEntryService',
         function ($scope, $rootScope, contextChangeHandler, treatmentConfig, drugService, $timeout,
                   clinicalAppConfigService, ngDialog, $window, retrospectiveEntryService) {
@@ -153,7 +153,7 @@ angular.module('bahmni.clinical')
                 existingDrugOrders.forEach(function (existingDrugOrder) {
                     if (DateUtil.isSameDate(existingDrugOrder.effectiveStartDate, newDrugOrder.effectiveStopDate) && !DateUtil.isSameDate(existingDrugOrder.effectiveStopDate, newDrugOrder.effectiveStartDate)) {
                         newDrugOrder.effectiveStopDate = DateUtil.subtractMilliSeconds(existingDrugOrder.effectiveStartDate, 1);
-                        if (newDrugOrder.uuid) {
+                        if(newDrugOrder.previousOrderUuid){
                             newDrugOrder.autoExpireDate = newDrugOrder.effectiveStopDate;
                         }
                     }
@@ -167,7 +167,6 @@ angular.module('bahmni.clinical')
                 $scope.popupActive = false;
                 ngDialog.close();
                 $scope.clearForm();
-                //drugOrder.effectiveStopDate = alreadyActiveSimilarOrder.effectiveStopDate;
                 $scope.$broadcast("event:refillDrugOrder", drugOrder, alreadyActiveSimilarOrder);
             };
 
