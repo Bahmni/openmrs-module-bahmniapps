@@ -9,6 +9,10 @@ Bahmni.Common.Util.DateUtil = {
         return moment(dateFrom).diff(moment(dateTo), 'milliseconds');
     },
 
+    diffInSeconds: function (dateFrom, dateTo) {
+        return moment(dateFrom).diff(moment(dateTo), 'seconds');
+    },
+
     isInvalid: function(date){
         return date == "Invalid Date";
     },
