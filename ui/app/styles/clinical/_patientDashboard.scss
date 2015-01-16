@@ -269,3 +269,11 @@ table.pivot-table tr td, table.pivot-table tr th {
   font-size: 11px;
 }
 
+.dashboard-section section .form-field.is-text {
+  overflow: auto;
+  clear: both;
+  padding-left: 10px;
+  .value-text-only {
+    line-height: 1.3em;
+  }
+}

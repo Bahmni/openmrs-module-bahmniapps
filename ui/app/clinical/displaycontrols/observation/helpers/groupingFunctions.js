@@ -27,8 +27,9 @@ Bahmni.Clinical.DisplayControl.GroupingFunctions = function(){
         };
 
         for (var obsKey in bahmniObservations){
-            var dateTime = obsKey.split('||')[0];
+            var dateTime = obsKey;
 
+//            console.log(JSON.stringify(bahmniObservations[dateTime]));
             var anObs = {
                 "key" : dateTime,
                 "value" : bahmniObservations[dateTime].sort(sortWithInAConceptDateCombination),

@@ -1,20 +1,30 @@
 'use strict';
 
 describe("observation Filter", function () {
-    var unwanterObservations = ["Vitals", "RBS"];
+    var unwanterObservations = ["LAB_MAXNORMAL","LAB_MINNORMAL", "Pulse Daa"];
 
     it("should return observations without orderUuid", function(){
         var observationFilter = new Bahmni.Clinical.ObservationFilters(unwanterObservations);
-        var filteredObservations = observationsList.filter(observationFilter.doesNotHaveOrder);
+        var filteredObservations = observationFilter.removeObsWithOrder(observationsList);
         expect(filteredObservations.length).toBe(1);
         expect(filteredObservations[0].concept.name).toBe("Vitals");
     });
 
     it("should return unwanted Observations", function(){
         var observationFilter = new Bahmni.Clinical.ObservationFilters(unwanterObservations);
-        var filteredObservations = observationsList.filter(observationFilter.removeUnwantedObs);
-        expect(filteredObservations.length).toBe(1);
-        expect(filteredObservations[0].concept.name).toBe("Dispensed");
+        var filteredObservations = observationFilter.removeUnwantedObs(observationsList);
+
+        expect(filteredObservations.length).toBe(3);
+
+        expect(filteredObservations[0].concept.name).toBe("RBS");
+        expect(filteredObservations[0].groupMembers.length).toBe(1);
+        var rbsAndAbnormalObs = filteredObservations[0].groupMembers[0].groupMembers;
+        expect(rbsAndAbnormalObs.length).toBe(2);
+        expect(rbsAndAbnormalObs[0].concept.name).toBe("LAB_ABNORMAL");
+        expect(rbsAndAbnormalObs[1].concept.name).toBe("RBS");
+
+        expect(filteredObservations[2].groupMembers.length).toBe(0);
+
     });
 });
 

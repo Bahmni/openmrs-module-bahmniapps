@@ -8,7 +8,7 @@ angular.module('bahmni.clinical')
 
                 var mapObservation = function(response,config){
                     var observationFilter = new Bahmni.Clinical.ObservationFilters(config.obsIgnoreList);
-                    var observations =response.data.filter(observationFilter.doesNotHaveOrder).filter(observationFilter.removeUnwantedObs);
+                    var observations = observationFilter.removeObsWithOrder(observationFilter.removeUnwantedObs(response.data));
                     observations = new Bahmni.Common.Obs.ObservationMapper().map(observations, clinicalAppConfigService.getAllConceptsConfig());
 
                     $scope.bahmniObservations = new Bahmni.Clinical.DisplayControl.GroupingFunctions().groupByEncounterDate(observations);
