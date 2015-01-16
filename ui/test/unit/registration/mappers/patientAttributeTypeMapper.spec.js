@@ -148,7 +148,9 @@ describe('PatientAttributeTypeMapper', function () {
             }
         ];
 
-        var patientConfigs = new Bahmni.Registration.PatientAttributeTypeMapper().mapFromOpenmrsPatientAttributeTypes(mrspatientAttributeTypes);
+        var mandatoryPersonAttributes = ["class"];
+
+        var patientConfigs = new Bahmni.Registration.PatientAttributeTypeMapper().mapFromOpenmrsPatientAttributeTypes(mrspatientAttributeTypes, mandatoryPersonAttributes);
 
         expect(patientConfigs).toEqual({ personAttributeTypes: [
             {
@@ -166,7 +168,8 @@ describe('PatientAttributeTypeMapper', function () {
                         description: "General",
                         conceptId: "0a843350-1481-11e3-937b-0800271c1b75"
                     }
-                ]
+                ],
+                required: true
             }
         ]});
     });
