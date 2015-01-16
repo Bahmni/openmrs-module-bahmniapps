@@ -1,0 +1,17 @@
+<h1>Past Report Runs</h1>
+<h3>
+    <table class="file-to-upload">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="task in tasks">
+            <td><strong>{{ task.dateCreated | bahmniDate }}</strong></td>
+            <td><strong>{{ task.status }}</strong></td>
+        </tr>
+        </tbody>
+    </table>
+</h3>
