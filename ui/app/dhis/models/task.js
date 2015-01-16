@@ -2,7 +2,7 @@
 
 Bahmni.Dhis.Task = (function () {
     var Task = function (task) {
-        this.dateCreated = new Date(task.date_created);
+        this.dateCreated = task.date_created;
         this.status = task.task_status;
     };
 
