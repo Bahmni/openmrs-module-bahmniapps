@@ -3,10 +3,10 @@
 angular.module('bahmni.clinical')
     .directive('investigationTableRow', function () {
         var controller = function ($scope) {
-            var urlFrom = function(fileName) {
+            var urlFrom = function (fileName) {
                 return Bahmni.Common.Constants.labResultUploadedFileNameUrl + fileName;
-                }, defaultParams = {
-                showCommentsExpanded: true
+            }, defaultParams = {
+                showDetailsButton: true
             };
             $scope.params = angular.extend(defaultParams, $scope.params);
 
@@ -18,8 +18,9 @@ angular.module('bahmni.clinical')
                 return $scope.hasNotes($scope.test);
             };
 
-            $scope.test.showNotes = $scope.hasNotes() && $scope.params.showCommentsExpanded;
-            $scope.test.labReportUrl = $scope.test.uploadedFileName? urlFrom($scope.test.uploadedFileName): null;
+            $scope.test.showNotes = $scope.hasNotes();
+            $scope.test.showDetailsButton = $scope.params.showDetailsButton;
+            $scope.test.labReportUrl = $scope.test.uploadedFileName ? urlFrom($scope.test.uploadedFileName) : null;
 
             $scope.toggle = function () {
                 $scope.test.showDetails = !$scope.test.showDetails;
