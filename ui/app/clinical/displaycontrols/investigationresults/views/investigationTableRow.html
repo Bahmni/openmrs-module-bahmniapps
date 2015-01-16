@@ -33,17 +33,23 @@
                                 <span>{{ test.accessionDateTime | date :'dd MMM yy'}}</span>
                             </span>
     </td>
-    <td class="toggle-btn" ng-click="toggle()">
-        <button class="toggle fr" ng-class="{'has-notes': test.notes}">
-            <i class="icon-plus-sign" ng-hide="test.showNotes"></i>
-            <i class="icon-minus-sign" ng-show="test.showNotes"></i>
+    <td class="toggle-btn" ng-click="toggle()" ng-if="!test.notes">
+        <button class="toggle fr">
+            <i class="icon-plus-sign" ng-hide="test.showDetails"></i>
+            <i class="icon-minus-sign" ng-show="test.showDetails"></i>
         </button>
     </td>
 </tr>
-<tr ng-show="test.showNotes">
+<tr ng-show="test.notes">
     <td colspan="3" class="notes inline-notes">
-        <strong class="left">Lab Tech Notes: </strong>
         <pre class="left">{{test.notes}}</pre>
+        <div class="footer-note right">
+            <span class="provider" bo-text="test.provider"></span>
+        </div>
+    </td>
+</tr>
+<tr ng-show="test.showDetails">
+    <td colspan="3" class="notes inline-notes">
         <div class="footer-note right">
             <span class="provider" bo-text="test.provider"></span>
         </div>

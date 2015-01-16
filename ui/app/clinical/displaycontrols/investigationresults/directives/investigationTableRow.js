@@ -22,7 +22,7 @@ angular.module('bahmni.clinical')
             $scope.test.labReportUrl = $scope.test.uploadedFileName? urlFrom($scope.test.uploadedFileName): null;
 
             $scope.toggle = function () {
-                $scope.test.showNotes = !$scope.test.showNotes;
+                $scope.test.showDetails = !$scope.test.showDetails;
             };
 
         };
