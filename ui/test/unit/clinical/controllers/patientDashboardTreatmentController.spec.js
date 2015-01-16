@@ -4,25 +4,42 @@ describe("PatientDashboardTreatmentController", function () {
 
     beforeEach(module('bahmni.clinical'));
 
-    var scope;
+    var scope, ngDialog;
     var stateParams;
     var _clinicalAppConfigService;
     var _retrospectiveEntryService;
 
-    var treatmentSection = {
-        "title": "Treatment",
-        "name": "treatment",
-        "numberOfVisits": 1
+    var treatmentConfigParams = {
+        title: "Treatments",
+        name: "treatment",
+        dashboardParams: {
+            title: null,
+            showChart: false,
+            showTable: true,
+            numberOfVisits: 2,
+            showOtherActive: true,
+            showCommentsExpanded: false
+        },
+        summaryPageParams: {
+            title: null,
+            showChart: false,
+            showTable: true,
+            numberOfVisits: 1,
+            showOtherActive: true,
+            showCommentsExpanded: false
+        }
     };
 
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
-        stateParams = {
-            patientUuid: "some uuid"
-        }
+        scope.patient = {
+            uuid: "patient uuid"
+        };
+
+        ngDialog = jasmine.createSpyObj('ngDialog', ['open']);
 
         _clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getPatientDashBoardSectionByName']);
-        _clinicalAppConfigService.getPatientDashBoardSectionByName.and.returnValue(treatmentSection);
+        _clinicalAppConfigService.getPatientDashBoardSectionByName.and.returnValue(treatmentConfigParams);
 
         var retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(Date.now());
         _retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['getRetrospectiveEntry']);
@@ -30,39 +47,30 @@ describe("PatientDashboardTreatmentController", function () {
 
         $controller('PatientDashboardTreatmentController', {
             $scope: scope,
-            $stateParams: stateParams,
+            ngDialog: ngDialog,
             clinicalAppConfigService: _clinicalAppConfigService,
-            retrospectiveEntryService : _retrospectiveEntryService
+            retrospectiveEntryService: _retrospectiveEntryService
 
         });
     }));
 
     describe("The controller is loaded", function () {
         it("should setup the scope", function () {
-            expect(scope.patientUuid).toBe('some uuid');
+            expect(scope.patient.uuid).toBe("patient uuid");
         });
     });
 
-    describe("When configuration doesn't have active attribute", function () {
-        it("should isSectionNeeded for active return false", function () {
-            expect(scope.isSectionNeeded("active")).toBeFalsy();
+    describe("Should fetch configuration", function () {
+        it("should fetch dashboard params", function () {
+            var expected = {};
+            _.extend(expected, treatmentConfigParams.dashboardParams || {}, {patientUuid: "patient uuid"});
+            expect(expected).toEqual(scope.dashboardParams);
         });
-        it("should isSectionNeeded for past return true", function () {
-            expect(scope.isSectionNeeded("past")).toBeTruthy();
-        });
-    });
 
-    describe("When configuration has active attribute under treatment section", function () {
-        it("should isSectionNeeded for active return false if config has active false", function () {
-            treatmentSection.active = false;
-            expect(scope.isSectionNeeded("active")).toBeFalsy();
-        });
-        it("should isSectionNeeded for active return true if config has active true", function () {
-            treatmentSection.active = true;
-            expect(scope.isSectionNeeded("active")).toBeTruthy();
-        });
-        it("should isSectionNeeded for past return true", function () {
-            expect(scope.isSectionNeeded("past")).toBeTruthy();
+        it("should fetch summary page params", function () {
+            var expected = {};
+            _.extend(expected, treatmentConfigParams.summaryPageParams || {}, {patientUuid: "patient uuid"});
+            expect(expected).toEqual(scope.summaryPageParams);
         });
     });
 });
