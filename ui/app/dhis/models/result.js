@@ -3,7 +3,7 @@
 Bahmni.Dhis.Result = (function () {
     var Result = function (result) {
         this.queryName = result.queryName;
-        this.queryGroup = result.queryGroupName;
+        this.queryGroup = result.queryGroupname;
         this.resultRows = result.result ? result.result : [];
         this.rowResults =  this.getRowResults();
         this.headers = this.getHeaders();

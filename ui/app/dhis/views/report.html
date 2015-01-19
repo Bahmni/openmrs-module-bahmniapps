@@ -1,22 +1,24 @@
 <div>
+    <div ng-repeat="(group, results) in ::task.groupedResults">
+        <h2>{{group}}</h2>
+        <div ng-repeat="result in ::results">
+            <h5>{{result.queryName}}</h5>
+            <table>
+                <thead>
+                <tr>
+                    <th ng-repeat="header in ::result.headers">{{::header}}</th>
+                </tr>
+                </thead>
 
-    <div ng-repeat="result in ::task.results">
-        <table>
-
-            <thead>
-            <tr>
-                <th ng-repeat="header in ::result.headers">{{::header}}</th>
-            </tr>
-            </thead>
-
-            <tbody>
+                <tbody>
                 <tr ng-repeat="resultRow in ::result.rowResults">
                     <td ng-repeat="colValue in ::resultRow track by $index">
                         {{::colValue}}
                     </td>
                 </tr>
-            </tbody>
+                </tbody>
 
-        </table>
+            </table>
+        </div>
     </div>
 </div>
