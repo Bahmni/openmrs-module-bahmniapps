@@ -313,7 +313,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         newDrugOrder.dateActivated = undefined;
         var oldEffectiveStopDate = existingOrderStopDate ? new Date(existingOrderStopDate): new Date(self.effectiveStopDate);
         newDrugOrder.effectiveStartDate = oldEffectiveStopDate >= today() ? DateUtil.addSeconds(oldEffectiveStopDate, 1) : today();
-
+        newDrugOrder.calculateDurationInDays();
+        newDrugOrder.effectiveStopDate = DateUtil.addDays(DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
         modifyForReverseSyncIfRequired(newDrugOrder);
         defaultQuantityUnit(newDrugOrder);
 
