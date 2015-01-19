@@ -23,4 +23,3 @@ Bahmni.Dhis.Task = (function () {
 
     return Task;
 })();
-
