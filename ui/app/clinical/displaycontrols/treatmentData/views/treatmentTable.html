@@ -1,9 +1,12 @@
 <section class="block treatment-section">
-    <table ng-repeat="(sectionHeader, drugOrders) in drugOrderSections">
+    <h2 class="has-toggle section-title" ng-if="params.title">
+        {{params.title}}
+    </h2>
+    <table ng-repeat="drugOrderSection in drugOrderSections | orderBy: drugOrderSection.visitDate">
         <thead>
-            <th colspan="4">{{getDate(sectionHeader) | date: 'dd MMM yy'}}</th>
+            <th colspan="4">{{drugOrderSection.visitDate | date: 'dd MMM yy'}}</th>
         </thead>
-        <tbody treatment-table-row drug-order="drugOrder" params="params" ng-repeat="drugOrder in drugOrders">
+        <tbody treatment-table-row drug-order="drugOrder" params="params" ng-repeat="drugOrder in drugOrderSection.drugOrders" ng-if="drugOrderSection.drugOrders.length > 0">
         </tbody>
     </table>
 </section>

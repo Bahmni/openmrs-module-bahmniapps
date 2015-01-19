@@ -18,9 +18,9 @@ angular.module('bahmni.clinical')
             });
         };
 
-        var getPrescribedAndActiveDrugOrdersFromServer = function (patientUuid, numberOfVisits, getOtherActive) {
+        var getPrescribedAndActiveDrugOrdersFromServer = function (patientUuid, numberOfVisits, getOtherActive, visitUuids) {
             return $http.get(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/prescribedAndActive", {
-                params: { patientUuid: patientUuid, numberOfVisits: numberOfVisits, getOtherActive: getOtherActive},
+                params: { patientUuid: patientUuid, numberOfVisits: numberOfVisits, getOtherActive: getOtherActive, visitUuids: visitUuids},
                 withCredentials: true
             }).success(function(response){
                 for(var key in response){

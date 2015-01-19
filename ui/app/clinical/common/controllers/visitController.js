@@ -11,9 +11,15 @@ angular.module('bahmni.clinical')
             $scope.visit = visitContext; // required as this visit needs to be overridden when viewing past visits
             $scope.showTrends = true;
 
-            $scope.investigationResultsParameters = clinicalAppConfigService.getVisitPageConfig().investigationResultParams || {};
+            var visitPageConfig = clinicalAppConfigService.getVisitPageConfig();
+
+            $scope.investigationResultsParameters = visitPageConfig.investigationResultParams || {};
             $scope.investigationResultsParameters.patientUuid = $scope.patient.uuid;
             $scope.investigationResultsParameters.visitUuids = [$scope.visit.uuid];
+
+            $scope.treatmentParameters = visitPageConfig.treatmentParams || {};
+            $scope.treatmentParameters.patientUuid = $scope.patient.uuid;
+            $scope.treatmentParameters.visitUuids = [$scope.visit.uuid];
 
             $scope.isNumeric = function (value) {
                 return $.isNumeric(value);

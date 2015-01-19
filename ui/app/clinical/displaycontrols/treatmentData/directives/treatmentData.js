@@ -4,15 +4,26 @@ angular.module('bahmni.clinical')
     .directive('treatmentData', ['TreatmentService', 'spinner', function (treatmentService, spinner) {
         var controller = function ($scope) {
             var defaultParams = {
-                showTable: true,
-                showChart: true,
+                showListView: true,
                 numberOfVisits: 1
             };
             $scope.params = angular.extend(defaultParams, $scope.params);
 
             var init = function () {
-                return treatmentService.getPrescribedAndActiveDrugOrdersFromServer($scope.params.patientUuid, $scope.params.numberOfVisits, $scope.params.showOtherActive).then(function (response) {
-                    $scope.treatmentData = response.data;
+                return treatmentService.getPrescribedAndActiveDrugOrdersFromServer($scope.params.patientUuid, $scope.params.numberOfVisits, $scope.params.showOtherActive, $scope.params.visitUuids || []).then(function (response) {
+                    var groupedByVisit = _.groupBy(response.data.visitDrugOrders, function (drugOrder) {
+                        return drugOrder.visit.startDateTime;
+                    });
+                    var treatmentSections = [];
+
+                    for(var key in groupedByVisit){
+                        treatmentSections.push({visitDate: key, drugOrders: groupedByVisit[key]});
+                    }
+
+                    if(response.data["Other Active DrugOrders"]){
+                        treatmentSections.push({visitDate: "Other Active DrugOrders", drugOrders: response.data["Other Active DrugOrders"]});
+                    }
+                    $scope.treatmentSections = treatmentSections;
                 });
             };
 
