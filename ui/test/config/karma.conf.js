@@ -37,6 +37,7 @@ module.exports = function (config) {
             'app/home/**/*.js',
             'app/admin/**/*.js',
             'app/registration/**/*.js',
+            'app/dhis/**/*.js',
             'app/trends/**/*.js',
             'test/support/**/*.js',
             'test/unit/**/*.js'

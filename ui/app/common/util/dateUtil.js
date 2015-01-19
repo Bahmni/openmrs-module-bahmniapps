@@ -83,7 +83,7 @@ Bahmni.Common.Util.DateUtil = {
     },
 
     parseLongDatetime: function(longDateTime){
-        return longDateTime ? moment(longDateTime).format("d MMM YY h:mm a") : null;
+        return longDateTime ? moment(longDateTime).format("DD MMM YY h:mm a") : null;
     },
 
     now: function(){
