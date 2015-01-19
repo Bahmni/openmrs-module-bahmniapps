@@ -4,7 +4,6 @@ angular.module('bahmni.clinical')
     .directive('treatmentTable', function () {
 
         var controller = function ($scope) {
-
             $scope.getDate = function (dateString) {
                 var date = Bahmni.Common.Util.DateUtil.parse(dateString);
                 return isNaN(date) ? dateString : date;

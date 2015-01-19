@@ -1,0 +1,32 @@
+<tr ng-class="{active: drugOrder.isActive()}">
+    <td class="drug">{{drugOrder.drug.name + drugOrder.drug.form}}
+        <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">Stopped {{drugOrder.effectiveStopDate | date: 'dd MMM yy'}}</span>
+    </td>
+    <td class="dosage"><span>{{drugOrder.getDescription()}}</span></td>
+    <td class="days"><span class="fr">{{drugOrder.effectiveStartDate | date:'dd MMM yy'}}</span></td>
+    <td class="toggle-btn" ng-click="toggle()" ng-if="params.showDetailsButton && !drugOrder.additionalInstructions">
+        <button class="toggle fr">
+            <i class="icon-plus-sign" ng-hide="test.showDetails"></i>
+            <i class="icon-minus-sign" ng-show="test.showDetails"></i>
+        </button>
+    </td>
+</tr>
+<tr ng-show="drugOrder.additionalInstructions">
+    <td colspan="3" class="notes inline-notes">
+        <pre class="left">{{drugOrder.additionalInstructions}}</pre>
+        <div class="footer-note right">
+            <span class="provider">
+                {{drugOrder.provider.name}}
+            </span>
+        </div>
+    </td>
+</tr>
+<tr ng-show="showDetails">
+    <td colspan="3" class="notes inline-notes">
+        <div class="footer-note right">
+            <span class="provider">
+                {{drugOrder.provider.name}}
+            </span>
+        </div>
+    </td>
+</tr>
