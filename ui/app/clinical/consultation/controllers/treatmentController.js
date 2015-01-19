@@ -82,6 +82,13 @@ angular.module('bahmni.clinical')
                 return existingTreatment;
             };
 
+            var clearOtherDrugOrderActions = function(drugOrders) {
+                drugOrders.forEach(function (drugOrder) {
+                    drugOrder.isDiscontinuedAllowed = true;
+                    drugOrder.isBeingEdited = false;
+                });
+            };
+
             $scope.$on("event:refillDrugOrder", function (event, drugOrder, alreadyActiveSimilarOrder) {
                 var existingOrderStopDate = alreadyActiveSimilarOrder ? alreadyActiveSimilarOrder.effectiveStopDate : null;
                 var refill = drugOrder.refill(existingOrderStopDate);
@@ -97,7 +104,11 @@ angular.module('bahmni.clinical')
                 });
             });
 
-            $scope.$on("event:reviseDrugOrder", function (event, drugOrder) {
+            $scope.$on("event:reviseDrugOrder", function (event, drugOrder, drugOrders) {
+                clearOtherDrugOrderActions(drugOrders);
+                drugOrder.isBeingEdited = true;
+                drugOrder.isDiscontinuedAllowed = false;
+
                 $scope.treatments.map(setIsNotBeingEdited);
                 drugOrderHistory = drugOrder;
                 $scope.treatment = drugOrder.revise();
@@ -140,6 +151,7 @@ angular.module('bahmni.clinical')
 
                 if (alreadyActiveSimilarOrders.length > 0) {
                     $scope.alreadyActiveSimilarOrder = _.sortBy(potentiallyOverlappingOrders, 'effectiveStartDate').reverse()[0];
+                    $scope.conflictingIndex = _.findIndex($scope.treatments, $scope.alreadyActiveSimilarOrder);
                     ngDialog.open({ template: 'consultation/views/treatmentSections/reviseRefillDrugOrderModal.html', scope: $scope});
                     $scope.popupActive = true;
                     return;
@@ -168,15 +180,15 @@ angular.module('bahmni.clinical')
                 $scope.$broadcast("event:refillDrugOrder", drugOrder, alreadyActiveSimilarOrder);
             };
 
-            $scope.revise = function (drugOrder) {
+            $scope.revise = function (drugOrder, index) {
                 $scope.popupActive = false;
                 ngDialog.close();
-                $scope.consultation.activeAndScheduledDrugOrders.forEach(function (drugOrder) {
-                    drugOrder.isDiscontinuedAllowed = true;
-                    drugOrder.isBeingEdited = false;
-                });
-                drugOrder.isBeingEdited = true;
-                $scope.$broadcast("event:reviseDrugOrder", drugOrder);
+                if (drugOrder.uuid) {
+                    $scope.$broadcast("event:reviseDrugOrder", drugOrder, $scope.consultation.activeAndScheduledDrugOrders);
+                }
+                else{
+                    $scope.edit(index);
+                }
             };
 
             $scope.toggleShowAdditionalInstructions = function (line) {

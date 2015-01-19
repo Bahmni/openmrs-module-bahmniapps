@@ -13,7 +13,7 @@ describe("TreatmentController", function () {
         rootScope = $rootScope;
         scope.consultation = {saveHandler: new Bahmni.Clinical.SaveHandler(), activeAndScheduledDrugOrders: []};
         var now = DateUtil.now();
-        ngDialog = jasmine.createSpyObj('ngDialog', ['open']);
+        ngDialog = jasmine.createSpyObj('ngDialog', ['open', 'close']);
         spyOn(Bahmni.Common.Util.DateUtil, 'now').and.returnValue(now);
         newTreatment = new Bahmni.Clinical.DrugOrderViewModel({}, {});
         editTreatment = new Bahmni.Clinical.DrugOrderViewModel(null, null);
@@ -984,6 +984,89 @@ describe("TreatmentController", function () {
         });
     });
 
+    describe("After selection from ng-dialog", function(){
+
+        it("should edit the drug order if conflicting order is unsaved when revise is selected", function(){
+            var encounterDate = DateUtil.parse("2014-12-02");
+
+            var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
+                drug: {
+                    name: "abc",
+                    uuid: "123"
+                },
+                effectiveStartDate: DateUtil.parse("2014-12-02"),
+                effectiveStopDate: DateUtil.parse("2014-12-04"),
+                durationInDays: 2
+            }, encounterDate);
+            scope.treatment = dec2_dec4order;
+            scope.add();
+            expect(scope.treatments.length).toEqual(1);
+
+            var new_dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
+                drug: {
+                    name: "abc",
+                    uuid: "123"
+                },
+                effectiveStartDate: DateUtil.parse("2014-12-02"),
+                effectiveStopDate: DateUtil.parse("2014-12-03"),
+                durationInDays: 1
+            }, encounterDate);
+            scope.treatment = new_dec2_dec4order;
+            scope.add();
+            expect(scope.treatments.length).toEqual(1);
+            expect(ngDialog.open).toHaveBeenCalled();
+
+            scope.revise(dec2_dec4order, 0);
+            expect(ngDialog.close).toHaveBeenCalled();
+            expect(dec2_dec4order.isBeingEdited).toBeTruthy();
+            expect(scope.treatment.isBeingEdited).toBeTruthy();
+            expect(scope.treatments.length).toBe(1);
+
+        });
+        it("should edit the drug order if conflicting order is a saved order when revise is selected", function(){
+            var encounterDate = DateUtil.parse("2014-12-02");
+
+            var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
+                drug: {
+                    name: "abc",
+                    uuid: "123"
+                },
+                effectiveStartDate: DateUtil.parse("2014-12-02"),
+                effectiveStopDate: DateUtil.parse("2014-12-04"),
+                durationInDays: 2,
+                uuid: "some-uuid"
+            }, encounterDate);
+            scope.consultation.activeAndScheduledDrugOrders = [dec2_dec4order];
+            expect(scope.treatments.length).toEqual(0);
+
+
+            var new_dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
+                drug: {
+                    name: "abc",
+                    uuid: "123"
+                },
+                effectiveStartDate: DateUtil.parse("2014-12-02"),
+                effectiveStopDate: DateUtil.parse("2014-12-03"),
+                durationInDays: 1
+            }, encounterDate);
+            scope.treatment = new_dec2_dec4order;
+            scope.add();
+            expect(scope.treatments.length).toEqual(0);
+            expect(scope.alreadyActiveSimilarOrder).toBe(dec2_dec4order);
+            expect(ngDialog.open).toHaveBeenCalled();
+
+            scope.revise(dec2_dec4order, 0);
+            expect(ngDialog.close).toHaveBeenCalled();
+            expect(dec2_dec4order.isBeingEdited).toBeTruthy();
+            expect(scope.treatment.isBeingEdited).toBeTruthy();
+            expect(scope.treatment.previousOrderUuid).toBe("some-uuid");
+            scope.add();
+            expect(scope.treatments.length).toEqual(1);
+
+        });
+
+    });
+
 
     describe("Save", function () {
         it("should check for any incomplete drug orders", function () {
@@ -1066,14 +1149,14 @@ describe("TreatmentController", function () {
         it("should set editDrugEntryUniformFrequency to true on revise of uniform dosing type drug", function () {
             var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
             drugOrder.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
-            rootScope.$broadcast("event:reviseDrugOrder", drugOrder);
+            rootScope.$broadcast("event:reviseDrugOrder", drugOrder, []);
             expect(scope.editDrugEntryUniformFrequency).toBeTruthy();
         });
 
         it("should set editDrugEntryVariableFrequency to true on revise of variable dosing type drug", function () {
             var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
             drugOrder.frequencyType = Bahmni.Clinical.Constants.dosingTypes.variable;
-            rootScope.$broadcast("event:reviseDrugOrder", drugOrder);
+            rootScope.$broadcast("event:reviseDrugOrder", drugOrder, []);
             expect(scope.editDrugEntryVariableFrequency).toBeTruthy();
         });
     });

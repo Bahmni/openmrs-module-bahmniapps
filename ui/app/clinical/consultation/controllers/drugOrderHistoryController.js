@@ -126,13 +126,7 @@ angular.module('bahmni.clinical')
 
             $scope.revise = function (drugOrder, drugOrders) {
                 if (drugOrder.isEditAllowed) {
-                    drugOrders.forEach(function (drugOrder) {
-                        drugOrder.isDiscontinuedAllowed = true;
-                        drugOrder.isBeingEdited = false;
-                    });
-                    drugOrder.isDiscontinuedAllowed = false;
-                    drugOrder.isBeingEdited = true;
-                    $scope.$parent.$broadcast("event:reviseDrugOrder", drugOrder);
+                    $scope.$parent.$broadcast("event:reviseDrugOrder", drugOrder, drugOrders);
                 }
             };
 
