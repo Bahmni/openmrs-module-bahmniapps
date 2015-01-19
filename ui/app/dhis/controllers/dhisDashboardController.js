@@ -5,7 +5,6 @@ angular.module('bahmni.dhis')
         function ($scope, $state, taskService) {
             $scope.report = new Bahmni.Dhis.ReportParams.default();
 
-
             taskService.getAllTasks().then(function (results) {
                 $scope.tasks = results ? results.data.map(Bahmni.Dhis.Task.create) : [];
                 $scope.tasks.isEmpty = function () {
@@ -20,6 +19,15 @@ angular.module('bahmni.dhis')
                         inherit: false,
                         notify: true
                     });
+                });
+            };
+
+            $scope.openReport = function(taskId){
+                $state.params.taskId = taskId;
+                $state.transitionTo("dhis.report", $state.params, {
+                    reload: false,
+                    inherit: false,
+                    notify: true
                 });
             };
         }]);

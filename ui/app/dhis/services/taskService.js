@@ -5,6 +5,11 @@ angular.module('bahmni.dhis')
         this.getAllTasks = function () {
             return $http.get(Bahmni.Common.Constants.dhisAllTasksUrl);
         };
+
+        this.getResultsById = function (taskId) {
+            return $http.get(Bahmni.Common.Constants.dhisTaskUrl + taskId.toString());
+        };
+
         //TODO: Mujir, Mihir : Make headers constant.
         this.fireQueries = function (reportParams) {
             return $http.post(Bahmni.Common.Constants.dhisFireQueriesUrl, reportParams.json(), {

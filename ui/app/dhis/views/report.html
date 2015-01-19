@@ -1,0 +1,22 @@
+<div>
+
+    <div ng-repeat="result in ::task.results">
+        <table>
+
+            <thead>
+            <tr>
+                <th ng-repeat="header in ::result.headers">{{::header}}</th>
+            </tr>
+            </thead>
+
+            <tbody>
+                <tr ng-repeat="resultRow in ::result.rowResults">
+                    <td ng-repeat="colValue in ::resultRow track by $index">
+                        {{::colValue}}
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+</div>

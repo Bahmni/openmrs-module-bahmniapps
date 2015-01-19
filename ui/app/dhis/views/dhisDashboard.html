@@ -10,12 +10,14 @@
             <tr>
                 <th>Date</th>
                 <th>Status</th>
+                <th>Results</th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="task in tasks">
                 <td><strong>{{ task.dateCreated | bahmniDate }}</strong></td>
                 <td><strong>{{ task.status }}</strong></td>
+                <td><a ng-if="task.isCompleted()" ng-click="openReport(task.id)">Results</a></td>
             </tr>
             </tbody>
         </table>

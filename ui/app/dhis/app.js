@@ -6,20 +6,26 @@ angular.module('dhis', ['httpErrorInterceptor', 'bahmni.dhis']).config(['$stateP
         abstract: true,
         template: '<ui-view/>',
         resolve: {
-            initialize: 'initialization'
-        }
-    }).state('dhis.dashboard',
+            initialize: 'initialization' }
+        })
+        .state('dhis.dashboard',
         {   url: '/dashboard',
             templateUrl: 'views/dhisDashboard.html',
             controller: 'DhisDashboardController',
             data: {extensionPointId: 'org.bahmni.dhis.dashboard'}
+        })
+        .state('dhis.report',
+        {   url: '/report/:taskId',
+            templateUrl: 'views/report.html',
+            controller: 'ReportController'
         });
+
     $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
 
 }]).run(function ($rootScope, $templateCache) {
-        //Disable caching view template partials
-        $rootScope.$on('$viewContentLoaded', function () {
-                $templateCache.removeAll();
-            }
-        )
-    });
+    //Disable caching view template partials
+    $rootScope.$on('$viewContentLoaded', function () {
+            $templateCache.removeAll();
+        }
+    )
+});
