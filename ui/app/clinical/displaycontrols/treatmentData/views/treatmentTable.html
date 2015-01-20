@@ -6,7 +6,7 @@
         <thead>
             <th colspan="4">{{drugOrderSection.visitDate | date: 'dd MMM yy'}}</th>
         </thead>
-        <tbody treatment-table-row drug-order="drugOrder" params="params" ng-repeat="drugOrder in drugOrderSection.drugOrders" ng-if="drugOrderSection.drugOrders.length > 0">
+        <tbody treatment-table-row drug-order="drugOrder" params="params" ng-repeat="drugOrder in drugOrderSection.drugOrders | orderBy: 'effectiveStartDate'" ng-if="drugOrderSection.drugOrders.length > 0">
         </tbody>
     </table>
 </section>

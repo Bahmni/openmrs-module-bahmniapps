@@ -9,7 +9,7 @@
 <ng-include src="'common/views/visitSummarySections/radiologyInvestigations.html'"></ng-include>
 <ng-include src="'common/views/visitSummarySections/patientFiles.html'"></ng-include>
 <ng-include src="'common/views/visitSummarySections/otherInvestigations.html'"></ng-include>
-<treatment-data params="treatmentParameters"></treatment-data>
-<ng-include src="'common/views/visitSummarySections/ipdTreatment.html'"></ng-include>
+<treatment-data id="visit-treatments" params="treatmentParameters"></treatment-data>
+<ng-include src="'common/views/visitSummarySections/ipdTreatment.html'" ng-if="treatmentParameters.showFlowSheet"></ng-include>
 <ng-include src="'common/views/visitSummarySections/disposition.html'"></ng-include>
 <ng-include src="'common/views/visitSummarySections/consultationNotes.html'"></ng-include>

@@ -17,9 +17,14 @@ angular.module('bahmni.clinical')
             $scope.investigationResultsParameters.patientUuid = $scope.patient.uuid;
             $scope.investigationResultsParameters.visitUuids = [$scope.visit.uuid];
 
-            $scope.treatmentParameters = visitPageConfig.treatmentParams || {};
-            $scope.treatmentParameters.patientUuid = $scope.patient.uuid;
-            $scope.treatmentParameters.visitUuids = [$scope.visit.uuid];
+            var defaultTreatmentParams = {
+                patientUuid: $scope.patient.uuid,
+                visitUuids: [$scope.visit.uuid],
+                showFlowSheet: true
+            };
+            $scope.treatmentParameters = angular.extend(defaultTreatmentParams, visitPageConfig.treatmentParams);
+            $scope.treatmentParameters.showOtherActive = false;
+            console.log($scope.treatmentParameters);
 
             $scope.isNumeric = function (value) {
                 return $.isNumeric(value);

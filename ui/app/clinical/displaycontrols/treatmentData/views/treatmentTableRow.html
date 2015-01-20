@@ -1,5 +1,5 @@
 <tr ng-class="{active: drugOrder.isActive()}">
-    <td class="drug">{{drugOrder.drug.name + drugOrder.drug.form}}
+    <td class="drug">{{drugOrder.getDisplayName()}}
         <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">Stopped {{drugOrder.effectiveStopDate | date: 'dd MMM yy'}}</span>
     </td>
     <td class="dosage"><span>{{drugOrder.getDescription()}}</span></td>
