@@ -34,11 +34,9 @@ angular.module('bahmni.clinical')
 
             var drugOrderHistory = null;
             $scope.treatmentConfig.durationUnits = [
-                {name: "Hour(s)", factor: 1 / 24},
                 {name: "Day(s)", factor: 1},
                 {name: "Week(s)", factor: 7},
-                {name: "Month(s)", factor: 30},
-                {name: "Minute(s)", factor: 1/(24*60)}
+                {name: "Month(s)", factor: 30}
             ];
 
             var newTreatment = function () {
@@ -123,12 +121,8 @@ angular.module('bahmni.clinical')
             $scope.add = function () {
                 $scope.treatment.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;
                 var newDrugOrder = $scope.treatment;
-                if(newDrugOrder.durationInDays < 1){
-                    newDrugOrder.effectiveStopDate = DateUtil.addHours(DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays*24);
-                }
-                else{
-                    newDrugOrder.effectiveStopDate = DateUtil.addDays(DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
-                }
+                newDrugOrder.effectiveStopDate = DateUtil.addDays(DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
+
                 var unsavedNotBeingEditedOrders = $scope.treatments.filter(function(drugOrder) { return drugOrder.isBeingEdited == false});
 
                 var existingDrugOrders = newDrugOrder.isBeingEdited ? $scope.consultation.activeAndScheduledDrugOrders.filter(function(drugOrder) { return drugOrder.uuid != newDrugOrder.previousOrderUuid}).concat(unsavedNotBeingEditedOrders) : $scope.consultation.activeAndScheduledDrugOrders.concat(unsavedNotBeingEditedOrders);

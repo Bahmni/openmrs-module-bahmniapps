@@ -131,7 +131,7 @@ describe("TreatmentController", function () {
             expect(scope.treatments.length).toEqual(1);
             expect(scope.treatments[0].effectiveStopDate.getTime() == DateUtil.subtractSeconds("2014-12-02", 1).getTime()).toBeTruthy();
         });
-        it("should allow to add new drug order if new order is scheduled to end on same day as start date of already existing order", function () {
+        it("should allow to add new drug order if new order is scheduled to end on same day as start date of unsaved order", function () {
             scope.treatments = [Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
                 drug: {
                     name: "abc",
@@ -156,67 +156,6 @@ describe("TreatmentController", function () {
             })[0];
             expect(DateUtil.isSameDateTime(drugOrderToBeSaved.effectiveStopDate, DateUtil.subtractSeconds("2014-12-02", 1))).toBeTruthy();
         });
-
-        it("should allow to add new drug order in hours duration", function () {
-            scope.treatments = [Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
-                drug: {
-                    name: "abc",
-                    uuid: "123"
-                },
-                effectiveStartDate: DateUtil.today(),
-                effectiveStopDate: DateUtil.addHours(DateUtil.today(),8)
-            })];
-
-            var drugOrderFirstSaved = scope.treatments[0];
-            var encounterDate = DateUtil.today();
-
-            var orderInHours = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [],
-                {
-                    drug: {name: "abc", uuid: "123"},
-                    effectiveStartDate: DateUtil.today(),
-                    durationInDays: 0.33
-                },
-                encounterDate);
-
-            scope.treatment = orderInHours;
-            scope.add();
-            expect(scope.treatments.length).toEqual(2);
-
-            var drugOrderLaterSaved = scope.treatments.filter(function (treatment) {
-                return treatment.scheduledDate != null;
-            })[0];
-
-            expect(DateUtil.isSameDateTime(drugOrderLaterSaved.scheduledDate, DateUtil.addSeconds(drugOrderFirstSaved.effectiveStopDate, 1))).toBeTruthy();
-
-        });
-        it("should not allow to add new drug order with overlapping duration in hours", function () {
-            scope.treatments = [Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
-                drug: {             //DrugOrder spans from Today at 10 am for 16 hours. Spans till tomorrow 2 am
-                    name: "abc",
-                    uuid: "123"
-                },
-                effectiveStartDate: DateUtil.addHours(DateUtil.today(),10),
-                durationInDays: 0.66,
-                effectiveStopDate: DateUtil.addHours(DateUtil.today(),26)
-            })];
-
-            var drugOrderFirstSaved = scope.treatments[0];
-            var encounterDate = DateUtil.today();
-
-            var orderInHours = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [],
-                {       //Can't repeat to place same order for 16 hours starting today at 10 am
-                    drug: {name: "abc", uuid: "123"},
-                    effectiveStartDate: DateUtil.addHours(DateUtil.today(),10),
-                    durationInDays: 0.66
-                },
-                encounterDate);
-
-            scope.treatment = orderInHours;
-            scope.add();
-            expect(scope.treatments.length).toEqual(1);
-
-        });
-
     });
     describe("Detect Overlapping orders amongst new orders on Save", function () {
 
