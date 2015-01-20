@@ -378,8 +378,9 @@ describe("TreatmentController", function () {
                     },
                     effectiveStartDate: DateUtil.parse("2014-12-02 10:00:00"),
                     effectiveStopDate: DateUtil.parse("2014-12-03 09:59:59"),
+                    encounterDate: encounterDate,
                     durationInDays: 1,
-                    uuid: 123
+                    uuid: 'some-uuid'
                 }, encounterDate);
                 var dec3_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
                     drug: {
@@ -387,32 +388,53 @@ describe("TreatmentController", function () {
                         uuid: "123"
                     },
                     effectiveStartDate: DateUtil.parse("2014-12-03 10:00:00"),
+                    encounterDate: encounterDate,
                     effectiveStopDate: DateUtil.parse("2014-12-04 09:59:59"),
-                    durationInDays: 1,
-                    uuid: 456
+                    durationInDays: 1
                 }, encounterDate);
-                scope.treatments = [dec2_dec3order, dec3_dec4order];
+                scope.consultation.activeAndScheduledDrugOrders = [dec2_dec3order, dec3_dec4order];
 
-                var revisedOverlappingOrder = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
+                expect(scope.treatments.length).toEqual(0);
+
+                scope.revise(dec2_dec3order, scope.consultation.activeAndScheduledDrugOrders);
+                expect(dec2_dec3order.isBeingEdited).toBeTruthy();
+                dec2_dec3order.effectiveStartDate = DateUtil.parse("2014-12-02 11:00:00");
+                scope.add();
+
+                expect(scope.treatments.length).toEqual(1);
+
+                expect(DateUtil.isSameDateTime(scope.treatments[0].autoExpireDate, DateUtil.subtractSeconds("2014-12-03 10:00:00", 1))).toBeTruthy();
+            });
+
+            it("existing drug orders 4-5 and new drug order 2-4(starting today)", function(){
+                var dec4_dec5order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
                     drug: {
                         name: "abc",
                         uuid: "123"
                     },
-                    effectiveStartDate: DateUtil.parse("2014-12-02 11:00:00"),
-                    effectiveStopDate: DateUtil.parse("2014-12-03 09:59:59"),
+                    effectiveStartDate: DateUtil.parse("2014-12-04 00:00:00"),
+                    effectiveStopDate: DateUtil.parse("2014-12-04 23:59:59"),
                     durationInDays: 1,
-                    previousOrderUuid: 123
+                    uuid: 123
                 }, encounterDate);
-                revisedOverlappingOrder.isBeingEdited = true;
-                revisedOverlappingOrder.currentIndex = scope.treatments.length + 1;
-                scope.treatment = revisedOverlappingOrder;
 
-                expect(scope.treatments.length).toEqual(2);
+                scope.consultation.activeAndScheduledDrugOrders = [dec4_dec5order];
+
+                var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
+                    drug: {
+                        name: "abc",
+                        uuid: "123"
+                    },
+                    effectiveStartDate: encounterDate,
+                    encounterDate: encounterDate,
+                    durationInDays: 2
+                }, encounterDate);
+                scope.treatment = dec2_dec4order;
                 scope.add();
-                expect(scope.treatments.length).toEqual(2);
+                expect(scope.treatments.length).toEqual(1);
+                expect(DateUtil.isSameDateTime(dec2_dec4order.autoExpireDate, DateUtil.subtractSeconds("2014-12-04 00:00:00", 1))).toBeTruthy();
 
-                expect(DateUtil.isSameDateTime(scope.treatment.autoExpireDate, DateUtil.subtractSeconds("2014-12-03 10:00:00", 1))).toBeTruthy();
-            });
+            })
         });
 
         describe("should not allow overlapping order", function () {
