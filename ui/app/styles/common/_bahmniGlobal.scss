@@ -130,7 +130,7 @@ button.save-consultation, .quick-links {
   padding: 8px 20px;
 }
 
-a.quick-links {
+a.quick-links, a.btn--success {
   @include button($success, darken($success, 8%), white);
 }
 

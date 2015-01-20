@@ -8,8 +8,9 @@
        	</h5>        
         
         <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}"></button>
-        <a class="confirm quick-links" ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective" ng-click="openConsultationInNewTab()"><i class="icon-play"></i></a>
-        <a class="confirm quick-links" ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective" ng-click="collapseControlPanel()" href="#{{consultationBoardLink}}">Consultation</a>
-        
+        <span class="grouped-buttons">
+            <a class=" btn--left btn--success" ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective" ng-click="collapseControlPanel()" href="#{{consultationBoardLink}}">Consultation</a>
+            <a class="btn--right btn--success" title="Open in new window" ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective" ng-click="openConsultationInNewTab()"><i class="icon-external-link"></i></a>
+       </span> 
     </div>
 </div>
