@@ -5,8 +5,14 @@
                 class="label-add-on" ng-if="observation.concept.units"> {{observation.concept.units}}</span></span>
         <a  ng-if="observation.isImageConcept()"> image concept<img bm-observation-gallery-item observation="observation"
                 ng-src="{{observation.value|thumbnail}}" width="30" height="30"></a>
-        <span class="time fr"
-              ng-if="observation.isFormElement()">{{observation.observationDateTime | date :'hh:mm a'}}</span>
+        <span ng-switch on="showDate">
+            <span class="time fr" ng-switch-when="DASHBOARD"
+                  ng-if="observation.isFormElement()"></span>
+             <span class="time fr" ng-switch-when="DIALOG"
+                   ng-if="observation.isFormElement()">{{observation.observationDateTime | date :'dd MMM yy hh:mm a'}}</span>
+             <span class="time fr" ng-switch-default
+                   ng-if="observation.isFormElement()">{{observation.observationDateTime | date :'hh:mm a'}}</span>
+        </span>
 
         <button class="toggle fr" ng-if="showComments" ng-show="observation.isFormElement()" ng-class="{'has-notes': observation.comment}"
                 ng-click="observation.showComment=!observation.showComment">
@@ -20,6 +26,7 @@
         <pre class="left">{{observation.comment}}</pre>
         <div class="footer-note fr">
         <span class="time-stamp">
+
             <span class="time">{{observation.observationDateTime | date :'hh:mm a'}}</span>
         </span>
             <span class="provider">{{observation.providers[0].name}}</span>
@@ -27,6 +34,6 @@
     </div>
     <ul>
         <show-observation  show-comments="showComments" ng-if="!observation.isFormElement()" ng-repeat="member in observation.groupMembers"
-                          observation="member" patient="patient"></show-observation>
+                          observation="member" patient="patient" show-date="{{showDate}}"></show-observation>
     </ul>
 </li>

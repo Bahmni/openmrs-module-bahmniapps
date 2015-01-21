@@ -20,14 +20,14 @@
 
                 <ul>
                     <li ng-repeat="encounter in obsTemplate.encounters">
-                        <span class="tree-list-item">
+                        <span class="tree-list-item" ng-if="!isIntakeTemplate(obsTemplate)">
                             <span>
                                 {{encounter.encounterDateTime | date: 'dd MMM yy'}}
                             </span>
                         </span>
                         <ul>
                             <show-observation observation="observation" patient="patient"
-                                                   ng-repeat="observation in encounter.observations"></show-observation>
+                                              show-date="{{isDateNeeded(obsTemplate)}}" ng-repeat="observation in encounter.observations"></show-observation>
                         </ul>
                     </li>
                 </ul>

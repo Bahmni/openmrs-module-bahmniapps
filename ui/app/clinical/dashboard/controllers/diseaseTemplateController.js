@@ -4,6 +4,7 @@ angular.module('bahmni.clinical')
         function ($scope) {
             var diseaseTemplateName = $scope.section.data.diseaseTemplateName;
             var patient = $scope.patient;
+            $scope.showDate = false;
             $scope.dialogData = {
                 "diseaseTemplateName": diseaseTemplateName,
                 "patient": patient

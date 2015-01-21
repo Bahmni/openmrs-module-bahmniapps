@@ -48,7 +48,11 @@ Bahmni.Clinical.Constants = (function () {
         asDirectedInstruction: 'As directed',
         dosingTypes: dosingTypes,
         orderActions: orderActions,
-        errorMessages: errorMessages
+        errorMessages: errorMessages,
+        caseIntakeConceptClass:'Case Intake',
+        dialog:'DIALOG',
+        dashboard:'DASHBOARD',
+        default:'DEFAULT'
     };
 })();
 
