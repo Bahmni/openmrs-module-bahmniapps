@@ -10,7 +10,8 @@ angular.module('bahmni.clinical')
                     numberOfVisits: diseaseSummaryConfig["numberOfVisits"],
                     obsConcepts: diseaseSummaryConfig["obsConcepts"],
                     drugConcepts: diseaseSummaryConfig["drugConcepts"],
-                    labConcepts: diseaseSummaryConfig["labConcepts"]
+                    labConcepts: diseaseSummaryConfig["labConcepts"],
+                    groupBy: diseaseSummaryConfig["groupBy"]
                 }
             });
         }

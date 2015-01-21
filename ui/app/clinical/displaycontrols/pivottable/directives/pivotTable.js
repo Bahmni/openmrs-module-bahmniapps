@@ -1,6 +1,6 @@
 'use strict';
-angular.module('bahmni.clinical').directive('pivotTable', ['spinner','pivotTableService','clinicalAppConfigService',
-    function (spinner,pivotTableService,clinicalAppConfigService) {
+angular.module('bahmni.clinical').directive('pivotTable', ['$filter','spinner','pivotTableService','clinicalAppConfigService',
+    function ($filter,spinner,pivotTableService,clinicalAppConfigService) {
 
         var pivotTableConfigFor = function(diseaseName){
             var diseaseTemplateConfigs = clinicalAppConfigService.getDiseaseTemplateConfig();
@@ -10,24 +10,30 @@ angular.module('bahmni.clinical').directive('pivotTable', ['spinner','pivotTable
             return requiredTemplateConfig ? requiredTemplateConfig["pivotTable"]:null;
         };
         return {
-        scope: {
-            patientUuid: "=",
-            diseaseName: "=",
-            displayName: "="
-        },
+            scope: {
+                patientUuid: "=",
+                diseaseName: "=",
+                displayName: "="
+            },
             link: function (scope) {
-                var diseaseSummaryConfig =pivotTableConfigFor(scope.diseaseName);
-            if(!diseaseSummaryConfig) return;
+                var diseaseSummaryConfig = pivotTableConfigFor(scope.diseaseName);
+                if(!diseaseSummaryConfig) return;
 
-            var patientUuid = scope.patientUuid;
+                var patientUuid = scope.patientUuid;
+                
+                scope.groupBy = diseaseSummaryConfig.groupBy || "visits";
+                scope.groupByEncounters = scope.groupBy === "encounters";
+                scope.convertDate = function(startdate) {
+                    return $filter('date')(new Date(startdate), "dd MMM yy HH:mm");
+                }
 
-            var pivotDataPromise = pivotTableService.getPivotTableFor(patientUuid,diseaseSummaryConfig);
-            spinner.forPromise(pivotDataPromise);
-            pivotDataPromise.success(function (data) {
-                scope.result = data;
-                scope.hasData = !_.isEmpty(scope.result.tabularData);
-            })
-        },
-        templateUrl: 'displaycontrols/pivottable/views/pivotTable.html'
-    }
+                var pivotDataPromise = pivotTableService.getPivotTableFor(patientUuid,diseaseSummaryConfig);
+                spinner.forPromise(pivotDataPromise);
+                pivotDataPromise.success(function (data) {
+                    scope.result = data;
+                    scope.hasData = !_.isEmpty(scope.result.tabularData);
+                })
+            },
+            templateUrl: 'displaycontrols/pivottable/views/pivotTable.html'
+        }
 }]);
