@@ -46,9 +46,7 @@ angular.module('bahmni.adt')
 
         $scope.showWardList = function () {
             $scope.currentView = "wards";
-            if (!$scope.wards) {
-                loadAllWards();
-            }
+            loadAllWards();
         };
 
         var assignBedToPatient = function(bed, encUuid) {
