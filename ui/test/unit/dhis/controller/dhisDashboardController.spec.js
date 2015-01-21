@@ -120,11 +120,6 @@ describe("DhisDashboardController", function () {
             });
         }));
 
-        it("When scope firequeries is called", function () {
-            scope.fireQueries();
-            expect(_taskService.fireQueries).toHaveBeenCalled();
-        });
-
         it("Firequeries is called with correct parameters", function () {
             scope.fireQueries();
             expect(_taskService.fireQueries).toHaveBeenCalledWith(scope.report);
@@ -136,7 +131,7 @@ describe("DhisDashboardController", function () {
         });
     });
 
-    describe("Fire queries test", function () {
+    describe("Open Report Test", function () {
         var now = new Date().getTime();
         var initialState;
         var state;
