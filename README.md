@@ -1,3 +1,5 @@
+DEPRECATED. FOR MORE UPTODATE AND MAINTAINED INFORMATION PLEASE SEE HERE - https://bahmni.atlassian.net/wiki/display/BAH/Working+on+Bahmni+OpenMRS+frontend
+
 Bhamni Apps
 ============
 
