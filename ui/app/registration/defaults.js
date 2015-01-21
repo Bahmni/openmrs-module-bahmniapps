@@ -2,4 +2,4 @@
 
 var defaults = {
     maxAutocompleteResults : 20
-}
+};

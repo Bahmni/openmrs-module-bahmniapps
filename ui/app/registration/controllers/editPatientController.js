@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('EditPatientController', ['$scope', '$rootScope', 'patientService', 'encounterService', 'visitService','$location', 'Preferences', '$stateParams', 'openmrsPatientMapper', '$window', '$q','spinner', 'appService', 'sessionService',
-        function ($scope, $rootScope, patientService, encounterService, visitService,$location, preferences, $stateParams, patientMapper, $window, $q, spinner, appService, sessionService) {
+    .controller('EditPatientController', ['$scope', '$rootScope', 'patientService', 'encounterService', 'visitService','$location', 'Preferences', '$stateParams', 'openmrsPatientMapper', '$window', '$q','spinner', 'appService', 'sessionService', 'messagingService',
+        function ($scope, $rootScope, patientService, encounterService, visitService,$location, preferences, $stateParams, patientMapper, $window, $q, spinner, appService, sessionService, messagingService) {
             var uuid;
             var editActionsConfig = [];
             var defaultActions = ["save", "print"];
@@ -114,7 +114,7 @@ angular.module('bahmni.registration')
                             return createVisit(patientProfileData);                        
                         case 'enterVisitDetails':
                             return goToVisitPage(patientProfileData);
-                        case 'save':
+                        case 'save': messagingService.showMessage("info", "Saved");
                         default:
                             return goToActionUrl(submitSource, patientProfileData);
                     }

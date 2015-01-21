@@ -1,13 +1,17 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('VisitController', ['$scope', '$rootScope', '$state', 'patientService', 'encounterService', '$stateParams', 'spinner', '$timeout', '$q', 'appService', 'openmrsPatientMapper','contextChangeHandler','messagingService', 'sessionService',
-        function ($scope, $rootScope, $state, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, patientMapper,contextChangeHandler, messagingService, sessionService) {
+    .controller('VisitController', ['$scope', '$rootScope', '$state', 'patientService', 'encounterService', '$stateParams', 'spinner', '$timeout', '$q', 'appService', 'openmrsPatientMapper', 'contextChangeHandler', 'messagingService', 'sessionService',
+        function ($scope, $rootScope, $state, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, patientMapper, contextChangeHandler, messagingService, sessionService) {
             var patientUuid = $stateParams.patientUuid;
             var extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.conceptSetGroup.observations", "config");
             var locationUuid = sessionService.getLoginLocationUuid();
-            $scope.conceptSets = extensions.map(function(extension) { return new Bahmni.ConceptSet.ConceptSetSection(extension,{},[],{}); });
-            $scope.availableConceptSets = $scope.conceptSets.filter(function(conceptSet){ return conceptSet.isAvailable($scope.context); });
+            $scope.conceptSets = extensions.map(function (extension) {
+                return new Bahmni.ConceptSet.ConceptSetSection(extension, {}, [], {});
+            });
+            $scope.availableConceptSets = $scope.conceptSets.filter(function (conceptSet) {
+                return conceptSet.isAvailable($scope.context);
+            });
             var regEncounterTypeUuid = $rootScope.regEncounterConfiguration.encounterTypes[Bahmni.Registration.Constants.registrationEncounterType];
 
             var getPatient = function () {
@@ -19,7 +23,13 @@ angular.module('bahmni.registration')
             };
 
             var getActiveEncounter = function () {
-                return encounterService.activeEncounter({"patientUuid": patientUuid, "providerUuid" : $scope.currentProvider.uuid, "includeAll" : false, locationUuid : locationUuid, encounterTypeUuid: regEncounterTypeUuid})
+                return encounterService.activeEncounter({
+                    "patientUuid": patientUuid,
+                    "providerUuid": $scope.currentProvider.uuid,
+                    "includeAll": false,
+                    locationUuid: locationUuid,
+                    encounterTypeUuid: regEncounterTypeUuid
+                })
                     .success(function (data) {
                         $scope.encounterDateTime = data.encounterDateTime;
                         $scope.visitTypeUuid = data.visitTypeUuid;
@@ -39,8 +49,13 @@ angular.module('bahmni.registration')
                 return updateImagePromise;
             };
 
-            $scope.save = function () {
-                $scope.encounter = {patientUuid: $scope.patient.uuid, locationUuid : locationUuid, encounterTypeUuid: regEncounterTypeUuid};
+            var save = function () {
+                $scope.encounter = {
+                    patientUuid: $scope.patient.uuid,
+                    locationUuid: locationUuid,
+                    encounterTypeUuid: regEncounterTypeUuid
+                };
+
                 $scope.encounter.observations = $scope.observations;
                 $scope.encounter.observations = new Bahmni.Common.Domain.ObservationFilter().filter($scope.encounter.observations);
 
@@ -49,10 +64,10 @@ angular.module('bahmni.registration')
                 return createPromise;
             };
 
-            $scope.validate = function () {
+            var validate = function () {
                 var deferred = $q.defer();
                 var allowContextChange = contextChangeHandler.execute()["allow"];
-                if(!allowContextChange){
+                if (!allowContextChange) {
                     messagingService.showMessage('formError', 'Please correct errors in the form. Information not saved');
                     deferred.reject("Some fields are not valid");
                     return deferred.promise;
@@ -63,12 +78,17 @@ angular.module('bahmni.registration')
                 }
             };
 
-            $scope.reload = function () {
-                $state.go($state.current, $stateParams, {reload : true});
+            var reload = function () {
+                $state.transitionTo($state.current, $state.params, {
+                    reload: true,
+                    inherit: false,
+                    notify: true
+                });
+                messagingService.showMessage('info', 'Saved');
             };
 
             $scope.submit = function () {
-                return $scope.validate().then($scope.save).then($scope.reload);
+                return validate().then(save).then(reload);
             };
 
             $scope.today = function () {

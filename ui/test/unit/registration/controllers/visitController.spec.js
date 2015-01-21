@@ -15,9 +15,11 @@ describe('VisitController', function () {
     var stateParams;
     var patientMapper;
     var q;
+    var state;
     var appService;
     var appDescriptor;
     var sessionService;
+    var messagingService;
     var stubAllPromise = function () {
         return {
             then: function () {
@@ -59,9 +61,11 @@ describe('VisitController', function () {
     };
 
     beforeEach(module('bahmni.registration'));
-    beforeEach(inject(['$injector', '$timeout', '$q', '$rootScope', function ($injector, timeout, $q, $rootScope) {
+    beforeEach(module('stateMock'));
+    beforeEach(inject(['$injector', '$timeout', '$q', '$rootScope', '$state', function ($injector, timeout, $q, $rootScope, $state) {
         q = $q;
-        stateParams = { patientUuid: '21308498-2502-4495-b604-7b704a55522d' };
+        messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
+        stateParams = {patientUuid: '21308498-2502-4495-b604-7b704a55522d'};
         patient = {
             uuid: "21308498-2502-4495-b604-7b704a55522d",
             isNew: "true",
@@ -71,10 +75,11 @@ describe('VisitController', function () {
                 ]
             }
         };
+        state = $state;
         $controller = $injector.get('$controller');
-        scope = { "$watch": jasmine.createSpy() }
+        scope = {"$watch": jasmine.createSpy()};
         patientService = jasmine.createSpyObj('patientService', ['get']);
-        appService = jasmine.createSpyObj('appService',['getDescription', 'getAppDescriptor']);
+        appService = jasmine.createSpyObj('appService', ['getDescription', 'getAppDescriptor']);
         appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue', 'getExtensions']);
         appService.getAppDescriptor.and.returnValue(appDescriptor);
         appDescriptor.getExtensions.and.returnValue([]);
@@ -82,10 +87,13 @@ describe('VisitController', function () {
         dateUtil = Bahmni.Common.Util.DateUtil;
         $timeout = timeout;
         success = jasmine.createSpy();
-        $rootScope.regEncounterConfiguration = new Bahmni.Registration.RegistrationEncounterConfig({visitTypes: {}},{encounterTypes: {"REG" : "someUUID"}});
+        $rootScope.regEncounterConfiguration = new Bahmni.Registration.RegistrationEncounterConfig({visitTypes: {}}, {encounterTypes: {"REG": "someUUID"}});
         scope.regEncounterConfiguration = angular.extend(new Bahmni.Registration.RegistrationEncounterConfig(), sampleConfig);
         scope.encounterConfig = angular.extend(new EncounterConfig(), sampleConfig);
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
+        spinner.forPromise.and.callFake(function () {
+            return;
+        });
         sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
         encounterService = jasmine.createSpyObj('encounterService', ['create', 'activeEncounter']);
         getEncounterPromise = specUtil.createServicePromise('activeEncounter');
@@ -106,7 +114,7 @@ describe('VisitController', function () {
                 patientService: patientService,
                 $stateParams: stateParams,
                 openmrsPatientMapper: patientMapper,
-                appService:appService,
+                appService: appService,
                 sessionService: sessionService
             });
 
@@ -119,33 +127,37 @@ describe('VisitController', function () {
 
 
     describe("submit", function () {
+
         beforeEach(function () {
             $controller('VisitController', {
                 $scope: scope,
+                $q: Q,
                 encounterService: encounterService,
                 patientService: patientService,
                 spinner: spinner,
+                $state: state,
                 $stateParams: stateParams,
-                appService:appService,
+                appService: appService,
                 openmrsPatientMapper: patientMapper,
-                sessionService: sessionService
+                sessionService: sessionService,
+                messagingService: messagingService
             });
             getPatientPromise.callSuccessCallBack(patient);
             getEncounterPromise.callSuccessCallBack(sampleEncounter);
 
             encounterService.create.and.callFake(stubOnePromise);
             scope.patient = {uuid: "21308498-2502-4495-b604-7b704a55522d"};
-            spyOn(scope, 'save').and.callFake(stubOnePromise);
-            spyOn(scope, 'reload').and.callFake(stubOnePromise);
-            spyOn(scope, 'validate').and.callFake(stubOnePromise);
         });
 
-        it("should validate save and reload current page", function () {
-            scope.submit();
-
-            expect(scope.save).toHaveBeenCalled();
-            expect(scope.reload).toHaveBeenCalled();
-            expect(scope.validate).toHaveBeenCalled();
+        it("should validate save and reload current page", function (done) {
+            state.expectTransitionTo(state.current);
+            var submit = scope.submit();
+            submit.then(function (response) {
+                expect(encounterService.create).toHaveBeenCalled();
+                expect(messagingService.showMessage).toHaveBeenCalledWith('info', 'Saved');
+                state.ensureAllTransitionsHappened();
+                done();
+            });
         });
     });
 });
