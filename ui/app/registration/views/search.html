@@ -7,7 +7,7 @@
                     <div class="search-patient-id left">
                         <select id="identifierPrefix" ng-model="searchParameters.identifierPrefix" ng-options="identifierSource.prefix for identifierSource in identifierSources"> </select>
                         <input type="text" id="registrationNumber" 
-                        ng-model="searchParameters.registrationNumber" autofocus
+                        ng-model="searchParameters.registrationNumber" focus-me="true"
                                placeholder="Enter ID">
                     </div>
                 

@@ -1,11 +1,11 @@
 <section ng-controller="PatientCommonController">
-    <article class="form-field" ng-show="patientConfiguration.local()['showNameField']">
+    <article class="form-field" ng-if="patientConfiguration.local()['showNameField']">
         <div class="field-attribute">
             <label for="patientName">{{patientConfiguration.local()['labelForNameField']}}</label>
         </div>
         <div class="field-value" id="patientNameLocal">
             <input type="text" id="givenNameLocal" ng-model="patient.givenNameLocal"
-                   placeholder="{{patientConfiguration.local()['placeholderForGivenName']}}" autofocus>
+                   placeholder="{{patientConfiguration.local()['placeholderForGivenName']}}" focus-me="true">
             <input ng-show="showMiddleName" type="text" id="middleNameLocal" ng-model="patient.middleNameLocal"
                    placeholder="{{patientConfiguration.local()['placeholderForMiddleName']}}">
             <input type="text" id="familyNameLocal" ng-model="patient.familyNameLocal"
@@ -19,7 +19,7 @@
 
         <div class="field-value" id="patientName">
 
-            <span data-ng-switch="isAutoComplete('givenName')">
+            <span data-ng-switch="isAutoComplete('givenName')" ng-if="patientConfiguration.local()['showNameField']">
                 <input data-ng-switch-when="true"
                        type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank
                        my-autocomplete source="getAutoCompleteList" response-map="getDataResults" data-item-type="personName"
@@ -30,6 +30,16 @@
                        placeholder="First Name" title="Enter patient's first name.">
             </span>
 
+            <span data-ng-switch="isAutoComplete('givenName')" ng-if="!patientConfiguration.local()['showNameField']">
+                <input data-ng-switch-when="true"
+                       type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank
+                       my-autocomplete source="getAutoCompleteList" response-map="getDataResults" data-item-type="personName"
+                       placeholder="First Name" title="Enter patient's first name." focus-me="true">
+
+                <input data-ng-switch-default
+                       type="text" id="givenName" ng-model="patient.givenName" non-blank
+                       placeholder="First Name" title="Enter patient's first name." focus-me="true">
+            </span>
 
             <span ng-show="showMiddleName" data-ng-switch="isAutoComplete('middleName')">
                 <input data-ng-switch-when="true"
