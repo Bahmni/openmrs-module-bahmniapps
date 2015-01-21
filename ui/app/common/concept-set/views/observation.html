@@ -6,6 +6,11 @@
                 <span class="details" ng-bind-html="observation.primaryObs.concept.description"></span>
                 <i class="icon-caret-down"></i>
             </section>
+            <section class="concept-description" ng-if="observation.recent">
+                <span class="details" ng-bind-html="observation.recent.value"></span>
+                <span class="details" ng-bind-html="observation.recent.date | date: 'd MMM yyyy' "></span>
+                <i class="icon-caret-down"></i>
+            </section>
             
             <label class="control-label" for="{{observation.uniqueId}}" >
                 <span ng-bind="observation.label"></span>
@@ -100,6 +105,12 @@
                 <span class="details" ng-bind-html="observation.concept.description"></span>
                 <i class="icon-caret-down"></i>
             </section>
+            <section class="concept-description" ng-if="observation.recent">
+                <span class="details" ng-bind-html="observation.recent.value"></span>
+                <span class="details" ng-bind-html="observation.recent.date | date: 'd MMM yyyy' "></span>
+                <i class="icon-caret-down"></i>
+            </section>
+
             <label class="control-label" for="{{observation.uniqueId}}" >
                 <span ng-bind="observation.label"></span>
                 <span ng-show="observation.units" ng-bind="'(' + observation.units + ')'"></span>
