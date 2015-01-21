@@ -24,7 +24,6 @@ angular.module('bahmni.clinical')
             };
             $scope.treatmentParameters = angular.extend(defaultTreatmentParams, visitPageConfig.treatmentParams);
             $scope.treatmentParameters.showOtherActive = false;
-            console.log($scope.treatmentParameters);
 
             $scope.isNumeric = function (value) {
                 return $.isNumeric(value);
