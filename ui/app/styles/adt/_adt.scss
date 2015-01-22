@@ -31,8 +31,11 @@
 
 div[ng-app="adt"] {
     .patient-details {
+        position: relative;
+        z-index: 1111;
         top: 17px;
-        right: 20px;
+        left: 50%;
+        transform: translateX(-50%);
         color: $lightestGray;
     }
 }
