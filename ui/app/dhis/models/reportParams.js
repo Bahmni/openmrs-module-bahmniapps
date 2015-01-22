@@ -9,8 +9,8 @@ Bahmni.Dhis.ReportParams = (function () {
     ReportParams.prototype = {
         json: function () {
             return {"params": [
-                {"name": "startDate", "value": this.startDate},
-                {"name": "endDate", "value": this.endDate}
+                {"name": "startDate", "value": Bahmni.Common.Util.DateUtil.getDateWithoutTime(this.startDate)},
+                {"name": "endDate", "value": Bahmni.Common.Util.DateUtil.getDateWithoutTime(this.endDate)}
             ]};
         }
     };
