@@ -46,13 +46,15 @@ html.no-touch {
 		    }
 		}
 
-		.patient-details {
+		[ng-app="consultation"] .patient-details {
 			top: 47px;
 			a {
 				font-size: 12px;
 				padding: 7px 5px 2px 5px;
 			}
 		}
+
+		.document-upload .patient-details,
 		div[ng-app="adt"] .patient-details {
 			top: 17px;
 		}
