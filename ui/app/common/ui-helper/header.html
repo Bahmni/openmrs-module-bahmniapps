@@ -1,7 +1,7 @@
 <div class="opd-header-wrapper">
     <div class="opd-header-top">
         <header>
-            <input class="retro-date-widget" type="date" ng-model="$parent.retrospectiveEntry.encounterDate" max="{{today}}"/>
+            <input show-if-privilege="{{retrospectivePrivilege}}" class="retro-date-widget" type="date" ng-model="$parent.retrospectiveEntry.encounterDate" max="{{today}}"/>
         	<a class="back-btn" href="../home/"><i class="icon-home"></i>Home</a>
         </header>
     </div>

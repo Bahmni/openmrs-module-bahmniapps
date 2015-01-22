@@ -42,7 +42,7 @@ angular.module('bahmni.home')
                     function () {
                         sessionService.loadCredentials().then(
                             function () {
-                                $bahmniCookieStore.remove(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
+                                $bahmniCookieStore.remove(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName, {path: '/', expires: 1});
                                 $rootScope.$broadcast('event:auth-loggedin');
                                 $scope.loginInfo.currentLocation = getLastLoggedinLocation();
                                 deferrable.resolve();

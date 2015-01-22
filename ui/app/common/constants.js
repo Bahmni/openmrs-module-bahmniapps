@@ -103,7 +103,8 @@ Bahmni.Common = Bahmni.Common || {};
         retrospectiveEntryEncounterDateCookieName: 'bahmni.clinical.retrospectiveEncounterDate',
         rootScopeRetrospectiveEntry: 'retrospectiveEntry.encounterDate',
         patientFileConceptName: 'Patient file',
-        serverErrorMessages: serverErrorMessages
+        serverErrorMessages: serverErrorMessages,
+        currentUser:'bahmni.user'
 };
     
 })();

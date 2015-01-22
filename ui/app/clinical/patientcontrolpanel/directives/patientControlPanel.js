@@ -9,6 +9,7 @@ angular.module('bahmni.common.patient')
         $scope.activeVisit = $scope.visitHistory.activeVisit;
 
         var DateUtil = Bahmni.Common.Util.DateUtil;
+        $scope.retrospectivePrivilege = Bahmni.Clinical.Constants.retrospectivePrivilege;
 
         $scope.today = DateUtil.getDateWithoutTime(DateUtil.now());
 

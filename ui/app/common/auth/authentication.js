@@ -36,8 +36,8 @@ angular.module('authentication', ['ui.router'])
 
         this.destroy = function(){
             return $http.delete(sessionResourcePath).success(function(data){
-                delete $.cookie("bahmni.user", null, {path: "/"});
-                delete $.cookie("bahmni.user", null, {path: "/"});
+                delete $.cookie(Bahmni.Common.Constants.currentUser, null, {path: "/"});
+                delete $.cookie(Bahmni.Common.Constants.currentUser, null, {path: "/"});
                 $rootScope.currentUser = null;
             });
         };
@@ -46,7 +46,7 @@ angular.module('authentication', ['ui.router'])
             var deferrable = $q.defer();
             createSession(username,password).success(function(data) {
                 if (data.authenticated) {
-                    $bahmniCookieStore.put('bahmni.user', username, {path: '/', expires: 7});
+                    $bahmniCookieStore.put(Bahmni.Common.Constants.currentUser, username, {path: '/', expires: 7});
                     if(location != undefined) {
                         $bahmniCookieStore.remove(Bahmni.Common.Constants.locationCookieName);
                         $bahmniCookieStore.put(Bahmni.Common.Constants.locationCookieName, {name: location.display, uuid: location.uuid}, {path: '/', expires: 7});
@@ -67,7 +67,7 @@ angular.module('authentication', ['ui.router'])
 
         this.loadCredentials = function () {
             var deferrable = $q.defer();
-            var currentUser = $bahmniCookieStore.get('bahmni.user');
+            var currentUser = $bahmniCookieStore.get(Bahmni.Common.Constants.currentUser);
             if(!currentUser) {
                 this.destroy().then(function() {
                     $rootScope.$broadcast('event:auth-loginRequired');

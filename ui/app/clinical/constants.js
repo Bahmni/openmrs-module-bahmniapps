@@ -52,7 +52,8 @@ Bahmni.Clinical.Constants = (function () {
         caseIntakeConceptClass:'Case Intake',
         dialog:'DIALOG',
         dashboard:'DASHBOARD',
-        default:'DEFAULT'
+        default:'DEFAULT',
+        retrospectivePrivilege:'app:clinical:retrospective'
     };
 })();
 
