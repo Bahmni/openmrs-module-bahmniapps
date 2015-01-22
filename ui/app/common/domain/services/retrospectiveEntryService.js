@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.domain', [])
+angular.module('bahmni.common.domain')
     .service('retrospectiveEntryService', ['$rootScope', '$bahmniCookieStore', function ($rootScope, $bahmniCookieStore) {
 
         var self = this;

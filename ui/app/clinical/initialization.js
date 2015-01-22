@@ -4,7 +4,7 @@ angular.module('bahmni.clinical').factory('initialization',
     ['authenticator', 'appService', 'spinner', 'configurations',
         function (authenticator, appService, spinner, configurations) {
 
-            var loadConfigPromise = function() {
+            var loadConfigPromise = function () {
                 return configurations.load([
                     'patientConfig',
                     'encounterConfig',

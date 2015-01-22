@@ -2,27 +2,14 @@
 
 angular.module('bahmni.clinical')
     .controller('PatientDashboardController', ['$scope', '$location',
-        'encounterService', 'clinicalAppConfigService', 'diseaseTemplateService',
-        function ($scope, $location, encounterService, clinicalAppConfigService, diseaseTemplateService) {
+        'encounterService', 'clinicalAppConfigService', 'diseaseTemplateService', 'dashboardConfig',
+        function ($scope, $location, encounterService, clinicalAppConfigService, diseaseTemplateService, dashboardConfig) {
 
             $scope.activeVisit = $scope.visitHistory.activeVisit;
             $scope.patientSummary = {};
             $scope.activeVisitData = {};
             $scope.obsIgnoreList = clinicalAppConfigService.getObsIgnoreList();
-            $scope.patientDashboardSections = _.map(clinicalAppConfigService.getAllPatientDashboardSections(), Bahmni.Clinical.PatientDashboardSection.create);
-
-            diseaseTemplateService.getLatestDiseaseTemplates($scope.patient.uuid).then(function (diseaseTemplates) {
-                $scope.diseaseTemplates = diseaseTemplates;
-                $scope.diseaseTemplates.forEach(function (diseaseTemplate) {
-                    if (diseaseTemplate.notEmpty()) {
-                        $scope.patientDashboardSections.push(new Bahmni.Clinical.PatientDashboardSection({
-                            title: diseaseTemplate.label,
-                            name: 'diseaseTemplateSection',
-                            data: {diseaseTemplateName: diseaseTemplate.name}
-                        }));
-                    }
-                });
-            });
+            $scope.dashboardConfig = dashboardConfig;
 
             $scope.filterOdd = function (index) {
                 return function () {
@@ -36,9 +23,18 @@ angular.module('bahmni.clinical')
                 };
             };
 
-            $scope.getDiseaseTemplateSection = function (diseaseName) {
-                return _.find($scope.diseaseTemplates, function (diseaseTemplate) {
-                    return diseaseTemplate.name === diseaseName;
-                });
+            $scope.$on("event:switchDashboard", function (event, dashboard) {
+                $scope.init(dashboard);
+            });
+
+            $scope.init = function (dashboard) {
+                dashboardConfig.switchDashboard(dashboard);
+                diseaseTemplateService.getLatestDiseaseTemplates($scope.patient.uuid, dashboardConfig.getDiseaseTemplateSections())
+                    .then(function (diseaseTemplates) {
+                        $scope.diseaseTemplates = diseaseTemplates;
+                        $scope.patientDashboardSections = dashboardConfig.getDashboardSections(diseaseTemplates);
+                    });
             };
+
+            $scope.init(dashboardConfig.getDefaultDashboard());
         }]);

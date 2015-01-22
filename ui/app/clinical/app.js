@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.config', 'bahmni.common.patient', 'bahmni.common.uiHelper', 'bahmni.common.patientSearch', 'bahmni.common.obs',
-    'bahmni.common.domain', 'bahmni.common.conceptSet', 'authentication', 'bahmni.common.appFramework', 'bahmni.adt',
+    'bahmni.common.domain', 'bahmni.common.conceptSet', 'authentication', 'bahmni.common.appFramework',
     'httpErrorInterceptor', 'pasvaz.bindonce', 'infinite-scroll', 'bahmni.common.util', 'ngAnimate', 'ngDialog', 'angular-gestures', 'bahmni.common.util']);
 angular.module('consultation')
     .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
@@ -72,7 +72,10 @@ angular.module('consultation')
                     }
                 },
                 resolve: {
-                    dashboardInitialization: function (initialization, patientContext, visitHistory) {
+                    dashboardConfig: function (initialization, patientContext, visitHistory, appService) {
+                        return appService.loadConfig('dashboard').then(function (response) {
+                            return  new Bahmni.Clinical.DashboardConfig(response.data);
+                        });
                     }
                 }
             })
@@ -109,7 +112,7 @@ angular.module('consultation')
                         templateUrl: 'consultation/views/header.html',
                         controller: 'ConsultationController'
                     },
-                    'content': { 
+                    'content': {
                         template: '<ui-view/>',
                         controller: function ($scope, consultationContext) {
                             $scope.consultation = consultationContext;

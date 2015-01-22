@@ -34,22 +34,8 @@ angular.module('bahmni.clinical')
             return appService.getAppDescriptor().getExtensions("org.bahmni.clinical.conceptSetGroup." + conceptSetGroupName, "config")
         };
 
-        this.getAllPatientDashboardSections = function () {
-            return appService.getAppDescriptor().getConfigValue("patientDashboardSections") || {};
-        };
-
         this.getOtherInvestigationsMap = function () {
             return appService.getAppDescriptor().getConfig("otherInvestigationsMap");
-        };
-
-        this.getPatientDashBoardSectionByName = function (name) {
-            return _.find(this.getAllPatientDashboardSections(), function (section) {
-                return section.name === name;
-            });
-        };
-
-        this.getDiseaseTemplateConfig = function () {
-            return appService.getAppDescriptor().getConfigValue("templateSections") || [];
         };
 
         this.getVisitPageConfig = function (configSection) {

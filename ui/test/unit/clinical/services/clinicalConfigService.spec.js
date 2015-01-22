@@ -21,17 +21,7 @@ describe("clinicalAppConfigService", function () {
                     "Pathologic Diagnosis": {
                         "multiSelect": true
                     }
-                },
-                "patientDashboardSections": [
-                    {
-                        "title": "Diagnosis",
-                        "name": "diagnosis"
-                    },
-                    {
-                        "title": "Lab Orders",
-                        "name": "labOrders"
-                    }
-                ]
+                }
             }
 
         }
@@ -146,16 +136,6 @@ describe("clinicalAppConfigService", function () {
             appService.initApp('clinical', {'app': true}).then(function () {
                 var result = clinicalAppConfigService.getObsIgnoreList();
                 expect(result).toEqual(["Impression", "Fee Information", "Patient file"]);
-                done();
-            });
-        });
-
-        it('should fetch dashboard sections', function (done) {
-            appService.initApp('clinical', {'app': true}).then(function () {
-                var results = clinicalAppConfigService.getAllPatientDashboardSections();
-                expect(results.length).toBe(2);
-                expect(results[0].name).toBe("diagnosis");
-                expect(results[1].name).toBe("labOrders");
                 done();
             });
         });

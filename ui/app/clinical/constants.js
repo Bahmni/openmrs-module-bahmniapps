@@ -1,6 +1,3 @@
-var Bahmni = Bahmni || {};
-Bahmni.Clinical = Bahmni.Clinical || {};
-Bahmni.Clinical.DisplayControl = Bahmni.Clinical.DisplayControl || {};
 
 Bahmni.Clinical.Constants = (function () {
     var orderTypes = {

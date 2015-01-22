@@ -1,6 +1,5 @@
 angular.module('bahmni.clinical')
-    .controller('PatientDashboardDiagnosisController', ['$scope', 'clinicalAppConfigService',
-        function ($scope, clinicalAppConfigService) {
-
-            $scope.diagnosisDashboardConfig = clinicalAppConfigService.getPatientDashBoardSectionByName("diagnosis");
+    .controller('PatientDashboardDiagnosisController', ['$scope',
+        function ($scope) {
+            $scope.diagnosisDashboardConfig = $scope.dashboardConfig.getSectionByName("diagnosis");
         }]);

@@ -6,7 +6,7 @@ describe("PatientDashboardTreatmentController", function () {
 
     var scope, ngDialog;
     var stateParams;
-    var _clinicalAppConfigService;
+    var dashboardConfig;
     var _retrospectiveEntryService;
 
     var treatmentConfigParams = {
@@ -38,19 +38,14 @@ describe("PatientDashboardTreatmentController", function () {
 
         ngDialog = jasmine.createSpyObj('ngDialog', ['open']);
 
-        _clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getPatientDashBoardSectionByName']);
-        _clinicalAppConfigService.getPatientDashBoardSectionByName.and.returnValue(treatmentConfigParams);
+        dashboardConfig = jasmine.createSpyObj('dashboardConfig', ['getSectionByName']);
+        dashboardConfig.getSectionByName.and.returnValue(treatmentConfigParams);
 
-        var retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(Date.now());
-        _retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['getRetrospectiveEntry']);
-        _retrospectiveEntryService.getRetrospectiveEntry.and.returnValue(retrospectiveEntry);
-
+        scope.dashboardConfig = dashboardConfig;
+        
         $controller('PatientDashboardTreatmentController', {
             $scope: scope,
-            ngDialog: ngDialog,
-            clinicalAppConfigService: _clinicalAppConfigService,
-            retrospectiveEntryService: _retrospectiveEntryService
-
+            ngDialog: ngDialog
         });
     }));
 

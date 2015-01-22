@@ -1,9 +1,10 @@
+'use strict';
+
 angular.module('bahmni.clinical')
+    .controller('PatientDashboardTreatmentController', ['$scope', 'ngDialog',
+        function ($scope, ngDialog) {
 
-    .controller('PatientDashboardTreatmentController', ['$scope', 'ngDialog', 'clinicalAppConfigService',
-        function ($scope, ngDialog, clinicalAppConfigService) {
-
-            var treatmentConfigParams = clinicalAppConfigService.getPatientDashBoardSectionByName("treatment") || {};
+            var treatmentConfigParams = $scope.dashboardConfig.getSectionByName("treatment") || {};
             var patientUuidparams = {"patientUuid": $scope.patient.uuid};
 
             $scope.dashboardParams = {};

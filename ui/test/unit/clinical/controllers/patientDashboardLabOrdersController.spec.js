@@ -6,7 +6,7 @@ describe("PatientDashboardLabOrdersController", function () {
 
     var scope;
     var stateParams;
-    var _clinicalAppConfigService;
+    var _dashboardConfig;
     var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
     var labResultSection = {
         "title": "Lab Results",
@@ -27,10 +27,10 @@ describe("PatientDashboardLabOrdersController", function () {
         scope = $rootScope.$new();
 
         spinner.forPromise.and.callFake(function(param) {return {}});
-        _clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getPatientDashBoardSectionByName']);
-        _clinicalAppConfigService.getPatientDashBoardSectionByName.and.returnValue(labResultSection);
-
-
+        _dashboardConfig = jasmine.createSpyObj('dashboardConfig', ['getSectionByName']);
+        _dashboardConfig.getSectionByName.and.returnValue(labResultSection);
+        
+        scope.dashboardConfig = _dashboardConfig;
         stateParams = {
             patientUuid: "some uuid"
         };
@@ -41,8 +41,7 @@ describe("PatientDashboardLabOrdersController", function () {
         controller('PatientDashboardLabOrdersController', {
             $scope: scope,
             $stateParams: stateParams,
-            spinner: spinner,
-            clinicalAppConfigService: _clinicalAppConfigService
+            spinner: spinner
         });
 
 
@@ -52,11 +51,10 @@ describe("PatientDashboardLabOrdersController", function () {
         });
 
         it("passes in just the patient uuid when no parameters specified", function () {
-            _clinicalAppConfigService.getPatientDashBoardSectionByName.and.returnValue({});
+            scope.dashboardConfig.getSectionByName.and.returnValue({});
             controller('PatientDashboardLabOrdersController', {
                 $scope: scope,
-                $stateParams: stateParams,
-                clinicalAppConfigService: _clinicalAppConfigService
+                $stateParams: stateParams
             });
 
             var params = scope.dashboardParams;

@@ -3,11 +3,10 @@
 angular.module('bahmni.clinical')
     .service('diseaseTemplateService', ['$http', '$q', 'clinicalAppConfigService', function ($http, $q, clinicalAppConfigService) {
 
-        this.getLatestDiseaseTemplates = function (patientUuid) {
-            var diseaseTemplateConfig = clinicalAppConfigService.getDiseaseTemplateConfig();
+        this.getLatestDiseaseTemplates = function (patientUuid, diseaseTemplates) {
             var url = Bahmni.Common.Constants.diseaseTemplateUrl;
             var deferred = $q.defer();
-            $http.post(url, {"patientUuid": patientUuid, "diseaseTemplateConfigList": diseaseTemplateConfig},  {
+            $http.post(url, {"patientUuid": patientUuid, "diseaseTemplateConfigList": diseaseTemplates},  {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
             }).then(function (response) {

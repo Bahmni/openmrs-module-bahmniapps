@@ -4,7 +4,7 @@ describe("patient dashboard controller", function () {
 
     beforeEach(module('bahmni.clinical'));
 
-    var _diseaseTemplateService, scope, _clinicalAppConfigService, _retrospectiveEntryService;
+    var _diseaseTemplateService, scope, _dashboardConfig, _clinicalAppConfigService;
 
     var fetchDiseaseTemplatePromise;
 
@@ -16,12 +16,25 @@ describe("patient dashboard controller", function () {
         {
             "title": "Lab Orders",
             "name": "labOrders"
+        },
+        {
+            "templateName": "Breast Cancer",
+            "title": "Breast Cancer Title",
+            "name": "diseaseTemplate"
+        },
+        {
+            "templateName": "Diabetes",
+            "title": "Diabetes Title",
+            "name": "diseaseTemplate"
         }
     ];
 
     beforeEach(module(function () {
-        _clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getObsIgnoreList', 'getAllPatientDashboardSections']);
-        _clinicalAppConfigService.getAllPatientDashboardSections.and.returnValue(patientDashboardSections);
+        _clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getObsIgnoreList']);
+
+        _dashboardConfig = new Bahmni.Clinical.DashboardConfig([
+            {name: "General", default: true, sections: patientDashboardSections}
+        ]);
         _diseaseTemplateService = jasmine.createSpyObj('diseaseTemplateService', ['getLatestDiseaseTemplates']);
         var diseaseTemplates = [new Bahmni.Clinical.DiseaseTemplate({name: "Breast Cancer"}, breastCancerDiseaseTemplate.observationTemplates),
             new Bahmni.Clinical.DiseaseTemplate({name: "Diabetes"}, diabetesDiseaseTemplate.observationTemplates)];
@@ -29,9 +42,6 @@ describe("patient dashboard controller", function () {
         _diseaseTemplateService.getLatestDiseaseTemplates.and.callFake(function () {
             return fetchDiseaseTemplatePromise;
         });
-        var retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(Date.now());
-        _retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['getRetrospectiveEntry']);
-        _retrospectiveEntryService.getRetrospectiveEntry.and.returnValue(retrospectiveEntry);
     }));
 
     beforeEach(inject(function ($controller, $rootScope) {
@@ -43,15 +53,15 @@ describe("patient dashboard controller", function () {
             diseaseTemplateService: _diseaseTemplateService,
             encounterService: jasmine.createSpy(),
             clinicalAppConfigService: _clinicalAppConfigService,
-            retrospectiveEntryService: _retrospectiveEntryService
+            dashboardConfig: _dashboardConfig
         });
     }));
 
-    it("should add disease template sections in dashboard sections", function (done) {
-        fetchDiseaseTemplatePromise.then(function () {
+    it("should init dashboard sections", function (done) {
+        fetchDiseaseTemplatePromise.then(function (data) {
             expect(scope.patientDashboardSections.length).toBe(4);
-            expect(scope.patientDashboardSections[2].title).toBe("Breast Cancer");
-            expect(scope.patientDashboardSections[3].title).toBe("Diabetes");
+            expect(scope.patientDashboardSections[2].title).toBe("Breast Cancer Title");
+            expect(scope.patientDashboardSections[3].title).toBe("Diabetes Title");
             done();
         });
     });

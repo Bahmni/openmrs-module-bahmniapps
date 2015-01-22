@@ -1,4 +1,4 @@
-angular.module('bahmni.clinical').directive('autoScroll', function ($location,$anchorScroll, $timeout) {
+angular.module('bahmni.common.uiHelper').directive('autoScroll', function ($location,$anchorScroll, $timeout) {
     const heightOfNavigationBar = 55;
     return {
         scope:{

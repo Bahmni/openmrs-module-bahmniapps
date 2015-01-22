@@ -7,7 +7,7 @@
     <h6>{{diseaseName}}</h6>
 </header>
 <div ng-if="diseaseTemplate.name" >
-    <div pivot-table patient-uuid="patient.uuid" disease-name="diseaseTemplate.name" display-name="diseaseTemplate.label" ></div>
+    <div pivot-table patient-uuid="patient.uuid" disease-name="diseaseTemplate.name" section="section" display-name="diseaseTemplate.label" ></div>
 </div>
 <section class="dashboard-section">
     <disease-template template="diseaseTemplate" patient="patient" date-flag="showDate"></disease-template>

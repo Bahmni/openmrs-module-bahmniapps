@@ -4,5 +4,6 @@
         ng-dialog-data="{{dialogData}}"
         ng-dialog-controller="PatientDashboardAllDiseaseTemplateController" class="section-title">{{section.title}}</h2>
 
-        <disease-template template="getDiseaseTemplateSection(section.data.diseaseTemplateName)" patient="patient" date-flag="showDate"></disease-template>
+    <disease-template template="getDiseaseTemplateSection(section.templateName)" patient="patient"
+                      date-flag="showDate"></disease-template>
 </div>

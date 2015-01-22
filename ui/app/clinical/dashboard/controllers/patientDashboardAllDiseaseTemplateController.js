@@ -6,6 +6,7 @@ angular.module('bahmni.clinical')
         var init = function () {
             $scope.diseaseName = $scope.ngDialogData.diseaseTemplateName;
             $scope.patient= $scope.ngDialogData.patient;
+            $scope.section= $scope.ngDialogData.section;
             $scope.showDate = true;
             
             return diseaseTemplateService.getAllDiseaseTemplateObs($scope.patient.uuid, $scope.diseaseName).then(function (diseaseTemplate) {

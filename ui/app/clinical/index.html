@@ -27,11 +27,12 @@
                 <div ui-view="content" id="view-content" class="opd-content-wrapper"></div>
             </div>
         </div>
-        <script src="../components/lodash/dist/lodash.min.js"></script>
         <script src="../components/jquery/jquery.js"></script>
         <script src="../lib/jquery/jquery-ui-1.10.4.custom.min.js"></script>
-        <script src="../components/jquery.cookie/jquery.cookie.js"></script>
         <script src="../lib/modernizr.custom.80690.js"></script>
+
+        <script src="../components/lodash/dist/lodash.min.js"></script>
+        <script src="../components/jquery.cookie/jquery.cookie.js"></script>
         <script src="../components/keyboardjs/keyboard.js"></script>
         <script src="../components/angular/angular.js"></script>
         <script src="../components/angular-sanitize/angular-sanitize.js"></script>
@@ -155,47 +156,65 @@
         <script src="../common/obs/models/gridObservation.js"></script>
         <script src="../common/obs/mappers/observationMapper.js"></script>
         <script src="../common/obs/directives/showObservation.js"></script>
+        <script src="../common/ui-helper/directives/autoScroll.js"></script>
 
         <script src="../common/models/documentImage.js"></script>
         <script src="../common/debugUiRouter.js"></script>
 
-        <script src="init.js"></script>
-        <script src="initialization.js"></script>
-        <script src="patientInitialization.js"></script>
-        <script src="visitHistoryInitialization.js"></script>
-        <script src="consultation/consultationInitialization.js"></script>
-        <script src="visitInitialization.js"></script>
-        <script src="constants.js"></script>
-        <script src="consultation/services/treatmentConfig.js"></script>
-
-
-        <script src="dashboard/controllers/patientDashboardController.js"></script>
-
-        <script src="consultation/uiError.js"></script>
-        <script src="common/models/imageObservation.js"></script>
-        <script src="common/utils/sortedConceptSet.js"></script>
-        <script src="dashboard/models/patientDashboardSection.js"></script>
-        <script src="consultation/models/labResult.js"></script>
-        <script src="dashboard/models/observationTemplate.js"></script>
+        <!--All clinical includes-->
         
-        <script src="consultation/mappers/dispostionActionMapper.js"></script>
-        <script src="consultation/mappers/labResultsMapper.js"></script>
-        <script src="consultation/mappers/consultationMapper.js"></script>
-        <script src="consultation/services/otherInvestigationsConceptsMapper.js"></script>
-        <script src="consultation/mappers/labConceptsMapper.js"></script>
+        <!--All common clinical includes-->
+
+        <script src="init.js"></script>
+        
+        <script src="common/models/imageObservation.js"></script>
+        <script src="common/models/result.js"></script>
+        <script src="common/models/test.js"></script>
+        <script src="common/models/panel.js"></script>
+        <script src="common/models/labOrder.js"></script>
+        <script src="common/models/diagnosis.js"></script>
+        <script src="common/models/resultGrouper.js"></script>
+        <script src="common/models/drugOrder.js"></script>
+        <script src="common/models/drugOrderViewModel.js"></script>
+        <script src="common/models/drugSchedule.js"></script>
+        <script src="common/models/visit.js"></script>
+        <script src="common/models/visitDiagnosis.js"></script>
+        <script src="common/models/visitDocumentUploadOrders.js"></script>
+        <script src="common/models/visitDrugOrders.js"></script>
+        <script src="common/models/dischargeSummary.js"></script>
+        <script src="common/models/tabularLabResults.js"></script>
+        <script src="common/utils/sortedConceptSet.js"></script>
+        <script src="common/utils/ordersUtil.js"></script>
+
         <script src="common/mappers/accessionNotesMapper.js"></script>
         <script src="common/mappers/encounterTransactionToObsMapper.js"></script>
         <script src="common/mappers/diagnosisMapper.js"></script>
         <script src="common/mappers/patientFileObservationsMapper.js"></script>
+        <script src="common/mappers/ordersMapper.js"></script>
+        <script src="common/mappers/orderObservationsMapper.js"></script>
+
+        <script src="common/filters/primaryDiagnosisFirst.js"></script>
+        <script src="common/filters/observationFilters.js"></script>
+        <script src="common/services/treatmentService.js"></script>
+        <script src="common/services/visitActionsService.js"></script>
+        <script src="common/services/clinicalAppConfigService.js"></script>
+        <script src="common/directives/visitPaginator.js"></script>
+
+        <script src="common/controllers/visitHeaderController.js"></script>
+        <script src="common/controllers/visitController.js"></script>
+
+        <!--All dashboard includes-->
+        <script src="dashboard/models/patientDashboardSection.js"></script>
+        <script src="dashboard/models/observationTemplate.js"></script>
+        <script src="dashboard/models/diseaseTemplate.js"></script>
+        <script src="dashboard/models/dashboardConfig.js"></script>
         <script src="dashboard/mappers/radiologyRecordsMapper.js"></script>
         <script src="dashboard/mappers/radiologyRecordsMapper.js"></script>
         <script src="dashboard/mappers/diseaseTemplateMapper.js"></script>
-        <script src="consultation/mappers/encounterTransactionMapper.js"></script>
-
-        <script src="consultation/controllers/clinicalController.js"></script>
+        <script src="dashboard/filters/booleanFilter.js"></script>
+        <script src="dashboard/services/diseaseTemplateService.js"></script>
+        <script src="dashboard/directives/diseaseTemplate.js"></script>
         <script src="dashboard/controllers/dashboardHeaderController.js"></script>
-        <script src="common/controllers/visitHeaderController.js"></script>
-        <script src="common/controllers/visitController.js"></script>
         <script src="dashboard/controllers/diseaseTemplateController.js"></script>
         <script src="dashboard/controllers/patientDashboardDiagnosisController.js"></script>
         <script src="dashboard/controllers/patientDashboardTreatmentController.js"></script>
@@ -203,8 +222,36 @@
         <script src="dashboard/controllers/patientDashboardLabSummaryController.js"></script>
         <script src="dashboard/controllers/patientDashboardRadiologyController.js"></script>
         <script src="dashboard/controllers/patientDashboardAllDiseaseTemplateController.js"></script>
+        <script src="dashboard/controllers/patientDashboardController.js"></script>
         <script src="dashboard/controllers/patientDashboardVisitsController.js"></script>
         <script src="dashboard/controllers/patientDashboardAllVisitsController.js"></script>
+
+        <!--All consultation includes-->
+        <script src="consultation/uiError.js"></script>
+        <script src="consultation/models/labResult.js"></script>
+        <script src="consultation/models/drugSearchResult.js"></script>
+        <script src="consultation/models/visitHistoryEntry.js"></script>
+        <script src="consultation/models/category.js"></script>
+        <script src="consultation/models/selectable.js"></script>
+        <script src="consultation/helpers/urlHelper.js"></script>
+        <script src="consultation/mappers/dispostionActionMapper.js"></script>
+        <script src="consultation/mappers/labResultsMapper.js"></script>
+        <script src="consultation/mappers/consultationMapper.js"></script>
+        <script src="consultation/mappers/labConceptsMapper.js"></script>
+        <script src="consultation/mappers/encounterTransactionMapper.js"></script>
+        <script src="consultation/services/otherInvestigationsConceptsMapper.js"></script>
+        <script src="consultation/services/diagnosisService.js"></script>
+        <script src="consultation/services/patientVisitHistoryService.js"></script>
+        <script src="consultation/services/labTestsProvider.js"></script>
+        <script src="consultation/services/otherTestsProvider.js"></script>
+        <script src="consultation/services/saveHandler.js"></script>
+        <script src="consultation/services/drugService.js"></script>
+        <script src="consultation/services/treatmentConfig.js"></script>
+        <script src="consultation/filters/observationValue.js"></script>
+        <script src="consultation/directives/buttonsRadio.js"></script>
+        <script src="consultation/directives/myAutocomplete.js"></script>
+        <script src="consultation/directives/investigationsSelector.js"></script>
+        <script src="consultation/controllers/clinicalController.js"></script>
         <script src="consultation/controllers/consultationSummaryController.js"></script>
         <script src="consultation/controllers/diagnosisController.js"></script>
         <script src="consultation/controllers/investigationController.js"></script>
@@ -214,70 +261,35 @@
         <script src="consultation/controllers/conceptSetPageController.js"></script>
         <script src="consultation/controllers/drugOrderHistoryController.js"></script>
         <script src="consultation/controllers/latestPrescriptionPrintController.js"></script>
-        <script src="common/services/treatmentService.js"></script>
-        <script src="consultation/services/drugService.js"></script>
-        <script src="displaycontrols/investigationresults/services/labOrderResultService.js"></script>
-        <script src="consultation/services/diagnosisService.js"></script>
-        <script src="consultation/services/patientVisitHistoryService.js"></script>
-        <script src="consultation/services/labTestsProvider.js"></script>
-        <script src="consultation/services/otherTestsProvider.js"></script>
-        <script src="consultation/services/saveHandler.js"></script>
-        <script src="common/services/visitActionsService.js"></script>
-        <script src="common/services/clinicalAppConfigService.js"></script>
-        <script src="dashboard/services/diseaseTemplateService.js"></script>
-        <script src="displaycontrols/pivottable/services/pivotTableService.js"></script>
-        <script src="dashboard/filters/booleanFilter.js"></script>
-        <script src="common/utils/ordersUtil.js"></script>
-        <script src="common/models/result.js"></script>
-        <script src="common/models/test.js"></script>
-        <script src="common/models/panel.js"></script>
-        <script src="common/models/labOrder.js"></script>
-        <script src="common/models/diagnosis.js"></script>
-        <script src="common/models/resultGrouper.js"></script>
-        <script src="common/mappers/ordersMapper.js"></script>
-        <script src="common/mappers/orderObservationsMapper.js"></script>
-        <script src="common/models/drugOrder.js"></script>
-        <script src="common/models/drugOrderViewModel.js"></script>
-        <script src="consultation/models/drugSearchResult.js"></script>
-        <script src="common/models/drugSchedule.js"></script>
-        <script src="common/models/visit.js"></script>
-        <script src="common/models/visitDiagnosis.js"></script>
-        <script src="common/models/visitDocumentUploadOrders.js"></script>
-        <script src="common/models/visitDrugOrders.js"></script>
-        <script src="consultation/models/visitHistoryEntry.js"></script>
-        <script src="consultation/models/category.js"></script>
-        <script src="consultation/models/selectable.js"></script>
-        <script src="common/models/dischargeSummary.js"></script>
-        <script src="common/models/tabularLabResults.js"></script>
+
+        <!--All displaycontrols includes-->
         <script src="displaycontrols/investigationresults/models/tabularLabOrderResults.js"></script>
-        <script src="displaycontrols/observation/directives/bahmniObservation.js"></script>
-        <script src="displaycontrols/diagnosis/directives/bahmniDiagnosis.js"></script>
-        <script src="displaycontrols/observation/helpers/groupingFunctions.js"></script>
-        <script src="dashboard/models/diseaseTemplate.js"></script>
-        <script src="consultation/filters/observationValue.js"></script>
-        <script src="common/filters/primaryDiagnosisFirst.js"></script>
-        <script src="common/filters/observationFilters.js"></script>
-        <script src="consultation/directives/buttonsRadio.js"></script>
-        <script src="consultation/directives/myAutocomplete.js"></script>
-        <script src="consultation/directives/investigationsSelector.js"></script>
-        <script src="common/directives/visitPaginator.js"></script>
-        <script src="patientcontrolpanel/directives/patientControlPanel.js"></script>
-        <script src="../common/ui-helper/directives/autoScroll.js"></script>
-        <script src="dashboard/directives/diseaseTemplate.js"></script>
-        <script src="displaycontrols/pivottable/directives/pivotTable.js"></script>
+        <script src="displaycontrols/investigationresults/services/labOrderResultService.js"></script>
         <script src="displaycontrols/investigationresults/directives/investigationTableRow.js"></script>
         <script src="displaycontrols/investigationresults/directives/investigationTable.js"></script>
         <script src="displaycontrols/investigationresults/directives/investigationChart.js"></script>
         <script src="displaycontrols/investigationresults/directives/investigationResults.js"></script>
+        <script src="displaycontrols/diagnosis/directives/bahmniDiagnosis.js"></script>
+        <script src="displaycontrols/observation/helpers/groupingFunctions.js"></script>
+        <script src="displaycontrols/observation/directives/bahmniObservation.js"></script>
+        <script src="displaycontrols/pivottable/services/pivotTableService.js"></script>
+        <script src="displaycontrols/pivottable/directives/pivotTable.js"></script>
         <script src="displaycontrols/treatmentData/directives/treatmentData.js"></script>
         <script src="displaycontrols/treatmentData/directives/treatmentTable.js"></script>
         <script src="displaycontrols/treatmentData/directives/treatmentTableRow.js"></script>
         <script src="displaycontrols/allvisits/directives/visitsTable.js"></script>
-        <script src="consultation/helpers/urlHelper.js"></script>
+        
+        <script src="patientcontrolpanel/directives/patientControlPanel.js"></script>
+
+        <script src="initialization.js"></script>
+        <script src="patientInitialization.js"></script>
+        <script src="visitHistoryInitialization.js"></script>
+        <script src="consultation/consultationInitialization.js"></script>
+        <script src="visitInitialization.js"></script>
+        <script src="constants.js"></script>
+
         <script src="app.js"></script>
 
-        <script src="../adt/init.js"></script>
-        <script src="../adt/services/bedService.js"></script>
         <!-- endbuild -->
     </body>
 </html>

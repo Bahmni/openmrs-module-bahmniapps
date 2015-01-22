@@ -2,11 +2,16 @@
 angular.module('bahmni.clinical')
     .controller('DiseaseTemplateController', ['$scope',
         function ($scope) {
-            var diseaseTemplateName = $scope.section.data.diseaseTemplateName;
             var patient = $scope.patient;
             $scope.showDate = false;
             $scope.dialogData = {
-                "diseaseTemplateName": diseaseTemplateName,
-                "patient": patient
+                "diseaseTemplateName": $scope.section.templateName,
+                "patient": patient,
+                "section": $scope.section
+            };
+            $scope.getDiseaseTemplateSection = function (diseaseName) {
+                return _.find($scope.diseaseTemplates, function (diseaseTemplate) {
+                    return diseaseTemplate.name === diseaseName;
+                });
             };
         }]);

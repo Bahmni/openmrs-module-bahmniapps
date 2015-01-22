@@ -3,6 +3,7 @@
 angular.module('bahmni.clinical')
     .directive('investigationTable', function () {
         var controller = function ($scope) {
+
             var defaultParams = {
                     noLabOrdersMessage: "No Lab Orders for this patient.",
                     showNormalLabResults: true,
@@ -49,6 +50,7 @@ angular.module('bahmni.clinical')
             $scope.showAccessionNotes = function(labOrderResults) {
                 return $scope.getAccessionDetailsFrom(labOrderResults).accessionNotes && $scope.params.showAccessionNotes;
             };
+            
         };
         return {
             restrict: 'E',

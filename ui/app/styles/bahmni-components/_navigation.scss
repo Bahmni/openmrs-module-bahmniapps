@@ -11,10 +11,7 @@
             display:inline-block;
             color: $white;
             margin: 0 2px 0 0;
-            border-bottom-right-radius:0px;
-            border-bottom-left-radius:0px;
-            border-top-right-radius: 3px;
-            border-top-left-radius: 3px;
+            border-radius: 5px 5px 0 0;
             text-decoration:none;
             line-height: 1.2em;
             &:hover{
@@ -22,7 +19,85 @@
                 margin: 0 2px 0 0;
             }
         }
-        button{
+        .close {
+          display: none;
+        }
+
+      &.new-tab {
+        a,button {
+          border-top-right-radius: 15px;
+        }
+      }
+
+      &.tab-removable {
+        position: relative;
+        a {
+          padding-left: 40px;
+        }
+        .close {
+          position: absolute;
+          z-index: 1;
+          left: 0px;
+          top: 0px;
+          padding: 10px;
+          display: inline-block;
+          cursor: pointer;
+          .close-icon {
+            padding: 0;
+            font-size: 12px;
+            border-radius: 100%;
+            width: 16px;
+            height: 16px;
+            line-height: 15px;
+            transition: all .3s ease;
+            text-align: center;
+            display: inline-block;
+            border: 1px solid $lightGray;
+            color: $lightGray;
+            font-family: Arial;
+            text-transform: lowercase;
+          }
+
+          &:hover .close-icon {
+            color: white;
+            background-color: $error;
+          }
+        }
+      }
+      .tab-submenu {
+        display: none;
+        width: 200px;
+        position: absolute;
+        top: 43px;
+        left: 0;
+        ul {
+          background: darken($bahmniSecondaryColor, 10%);
+          border: 1px solid darken($bahmniSecondaryColor, 10%);
+          border-bottom-left-radius: 5px;
+          border-bottom-right-radius: 5px;
+        }
+        .submenu-item {
+          display: block;
+          background: none;
+          border-radius: 0;
+          margin: 0;
+          color: white;
+          border-bottom: 1px solid darken($bahmniSecondaryColor, 10%);
+          &:hover {
+            color: white;
+          }
+        }
+        li:last-child .submenu-item {
+          border: 0;
+        }
+      }
+      &.tab-active {
+        position: relative;
+        .tab-submenu {
+          display: block;
+        }
+      }
+      button{
             @include border-radius();
             padding:8px 10px;
         }
@@ -45,6 +120,7 @@
         }
     }
   }
+
 }
 .tabs ul li a {
     @media screen and (max-width: 959px) {

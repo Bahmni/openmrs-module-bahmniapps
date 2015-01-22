@@ -2,21 +2,16 @@
 angular.module('bahmni.clinical').directive('pivotTable', ['$filter','spinner','pivotTableService','clinicalAppConfigService',
     function ($filter,spinner,pivotTableService,clinicalAppConfigService) {
 
-        var pivotTableConfigFor = function(diseaseName){
-            var diseaseTemplateConfigs = clinicalAppConfigService.getDiseaseTemplateConfig();
-            var requiredTemplateConfig =_.find(diseaseTemplateConfigs,function(diseaseTemplateConfig){
-                return diseaseTemplateConfig.templateName === diseaseName;
-            });
-            return requiredTemplateConfig ? requiredTemplateConfig["pivotTable"]:null;
-        };
         return {
             scope: {
                 patientUuid: "=",
                 diseaseName: "=",
-                displayName: "="
+                displayName: "=",
+                section: "="
             },
             link: function (scope) {
-                var diseaseSummaryConfig = pivotTableConfigFor(scope.diseaseName);
+                
+                var diseaseSummaryConfig = scope.section["pivotTable"];
                 if(!diseaseSummaryConfig) return;
 
                 var patientUuid = scope.patientUuid;
