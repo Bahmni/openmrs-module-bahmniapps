@@ -6,7 +6,9 @@ angular.module('bahmni.registration')
             $scope.identifierSources = $rootScope.patientConfiguration.identifierSources;
             $scope.results = [];
             var searching = false;
-
+            $scope.villageAttribute = _.find($rootScope.addressLevels, function(addressLevel){
+                return addressLevel.addressField === "cityVillage";
+            });
             var hasSearchParameters = function () {
                 return $scope.searchParameters.name.trim().length > 0
                     || $scope.searchParameters.village.trim().length > 0
