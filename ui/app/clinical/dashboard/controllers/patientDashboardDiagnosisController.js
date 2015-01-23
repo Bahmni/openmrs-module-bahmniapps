@@ -1,16 +1,6 @@
 angular.module('bahmni.clinical')
-    .controller('PatientDashboardDiagnosisController', ['$q', '$scope', '$stateParams', 'TreatmentService', 'spinner', 'diagnosisService',
-        function ($q, $scope, $stateParams, treatmentService, spinner, diagnosisService) {
+    .controller('PatientDashboardDiagnosisController', ['$scope', 'clinicalAppConfigService',
+        function ($scope, clinicalAppConfigService) {
 
-            var getAllDiagnosis = function () {
-                return diagnosisService.getPastDiagnoses($scope.patient.uuid).success(function (response) {
-                    var diagnosisMapper = new Bahmni.DiagnosisMapper();
-                    $scope.allDiagnoses = diagnosisMapper.mapDiagnoses(response);
-                });
-            };
-            var getPromises = function () {
-                return [getAllDiagnosis()];
-            };
-
-            spinner.forPromise($q.all(getPromises()));
+            $scope.diagnosisDashboardConfig = clinicalAppConfigService.getPatientDashBoardSectionByName("diagnosis");
         }]);
