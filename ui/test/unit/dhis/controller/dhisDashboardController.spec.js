@@ -91,23 +91,25 @@ describe("DhisDashboardController", function () {
     });
 
     describe("Refresh", function () {
+        var _state, initialState;
+
+        beforeEach(inject(function ($controller, $rootScope, $state) {
+            scope = $rootScope.$new();
+            initialState = $state.current;
+
+            _taskService = jasmine.createSpyObj('TaskService', ['fireQueries', 'getAllTasks']);
+            _taskService.getAllTasks.and.returnValue(specUtil.respondWith({"data": []}));
+
+            _state = jasmine.createSpyObj('$state', ['reload']);
+
+            $controller('DhisDashboardController', {
+                $scope: scope,
+                $state: _state,
+                TaskService: _taskService
+            });
+        }));
+
         it("should refresh the status of tasks", function () {
-            var _state, initialState;
-            beforeEach(inject(function ($controller, $rootScope, $state) {
-                scope = $rootScope.$new();
-                initialState = $state.current;
-
-                _taskService = jasmine.createSpyObj('TaskService', ['fireQueries', 'getAllTasks']);
-                _taskService.getAllTasks.and.returnValue(specUtil.respondWith({"data": []}));
-
-                _state = jasmine.createSpyObj('$state', ['reload']);
-
-                $controller('DhisDashboardController', {
-                    $scope: scope,
-                    $state: _state,
-                    TaskService: _taskService
-                });
-            }));
 
             scope.refresh();
 
