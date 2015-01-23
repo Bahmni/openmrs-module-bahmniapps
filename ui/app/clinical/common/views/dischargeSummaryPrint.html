@@ -57,7 +57,7 @@
         <section class="observations">
             <h3>Observations</h3>
             <table>
-                <tbody ng-repeat="observation in visit.getWeightAndBMIObservations()">
+                <tbody ng-repeat="observation in visit.getWeightForCurrentVisit()">
                 <tr>
                     <td>
                         <span>{{observation.concept.name}}</span>

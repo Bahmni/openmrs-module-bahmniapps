@@ -37,7 +37,7 @@ Bahmni.Clinical.Visit = (function () {
 
         this.observationGroups.forEach(function (observationGroup, index) {
             observationGroup.subGroups = resultGrouper.group(observationGroup.obs, observationSubGroupingFunction, 'obs', 'conceptName');
-            if(index === 0) observationGroup.isOpen = true;
+            if (index === 0) observationGroup.isOpen = true;
             observationGroup.subGroups.forEach(function (subGroup) {
                 subGroup.obs = new Bahmni.ConceptSet.ObservationMapper().getObservationsForView(subGroup.obs, conceptSetUIConfig);
             });
@@ -193,6 +193,17 @@ Bahmni.Clinical.Visit = (function () {
             };
             return this.observations.filter(isObservationForRegistration);
         },
+
+        getWeightForCurrentVisit: function () {
+            var isObservationForNutritionalValue = this.observations.filter(function (obs) {
+                return obs.concept && (obs.concept.name === Bahmni.Common.Constants.nutritionalConceptName);
+            });
+            var nutritionalGroupMembers = isObservationForNutritionalValue.length > 0 ? isObservationForNutritionalValue[0].groupMembers : [];
+            return nutritionalGroupMembers.filter(function (groupMember) {
+                return groupMember.concept.name === Bahmni.Common.Constants.weightConceptName;
+            });
+        },
+
         getDrugOrderGroups: function () {
             return this.drugOrders.getDrugOrderGroups();
         },
@@ -231,7 +242,7 @@ Bahmni.Clinical.Visit = (function () {
             });
             return dispositions;
         },
-        expandOrCollapse: function(observationGroup){
+        expandOrCollapse: function (observationGroup) {
             observationGroup.isOpen = !observationGroup.isOpen;
         }
 
@@ -269,7 +280,7 @@ Bahmni.Clinical.Visit = (function () {
             });
         };
         var invalidEncounterTypeUuids = [encounterConfig.getPatientDocumentEncounterTypeUuid(), encounterConfig.getRadiologyEncounterTypeUuid()];
-        var allObs = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions, invalidEncounterTypeUuids,conceptSetUIConfig).filter(removeUnwantedObs);
+        var allObs = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions, invalidEncounterTypeUuids, conceptSetUIConfig).filter(removeUnwantedObs);
         var testOrders = ordersMapper.map(encounterTransactions, 'testOrders', allTestAndPanelsConcept);
         var otherInvestigations = testOrders.filter(isNonLabTests);
         var labOrders = testOrders.filter(isLabTests).map(Bahmni.Clinical.LabOrder.create);

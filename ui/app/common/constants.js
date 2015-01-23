@@ -105,7 +105,8 @@ Bahmni.Common = Bahmni.Common || {};
         patientFileConceptName: 'Patient file',
         serverErrorMessages: serverErrorMessages,
         currentUser:'bahmni.user',
-        retrospectivePrivilege:'app:clinical:retrospective'
+        retrospectivePrivilege:'app:clinical:retrospective',
+        nutritionalConceptName:'Nutritional Values'
 };
     
 })();
