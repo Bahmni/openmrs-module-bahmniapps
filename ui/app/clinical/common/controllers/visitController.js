@@ -57,5 +57,5 @@ angular.module('bahmni.clinical')
                 return moment(date).format("DD-MMM-YY");
             };
 
-            $scope.observationConfig = clinicalAppConfigService.getVisitPageConfig("observationDisplayParams")
+            $scope.observationConfig = clinicalAppConfigService.getVisitPageConfig("observationDisplayParams") || {};
         }]);
