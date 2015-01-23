@@ -6,7 +6,7 @@ angular.module('bahmni.common.domain', [])
         var self = this;
         var hasRestrospectivePrivilege = function () {
             _.find($bahmniCookieStore.get(Bahmni.Common.Constants.currentUser).privileges, function (privilege) {
-                return Bahmni.Clinical.Constants.retrospectivePrivilege === privilege.name;
+                return Bahmni.Common.Constants.retrospectivePrivilege === privilege.name;
             });
         };
 

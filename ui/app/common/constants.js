@@ -104,7 +104,8 @@ Bahmni.Common = Bahmni.Common || {};
         rootScopeRetrospectiveEntry: 'retrospectiveEntry.encounterDate',
         patientFileConceptName: 'Patient file',
         serverErrorMessages: serverErrorMessages,
-        currentUser:'bahmni.user'
+        currentUser:'bahmni.user',
+        retrospectivePrivilege:'app:clinical:retrospective'
 };
     
 })();
