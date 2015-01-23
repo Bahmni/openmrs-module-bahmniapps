@@ -1,7 +1,7 @@
 <section>
     <p class="no-visit" ng-show="!visit.hasData()">No visit information for this patient</p>
 </section>
-<ng-include src="'common/views/visitSummarySections/diagnosis.html'"></ng-include>
+<bahmni-diagnosis patient-uuid="patient.uuid"  title="visitPageDiagnosisTitle"></bahmni-diagnosis>
 <ng-include src="'common/views/visitSummarySections/observation.html'"></ng-include>
 
 <investigation-results params="investigationResultsParameters"></investigation-results>

@@ -12,6 +12,7 @@ angular.module('bahmni.clinical')
             $scope.showTrends = true;
 
             var visitPageConfig = clinicalAppConfigService.getVisitPageConfig();
+            $scope.visitPageDiagnosisTitle = "Diagnoses";
 
             $scope.investigationResultsParameters = visitPageConfig.investigationResultParams || {};
             $scope.investigationResultsParameters.patientUuid = $scope.patient.uuid;
