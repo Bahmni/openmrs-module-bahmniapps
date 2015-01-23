@@ -1,23 +1,35 @@
 'use strict';
 
-angular.module('dhis', ['httpErrorInterceptor', 'bahmni.dhis']).config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
+angular.module('dhis', ['httpErrorInterceptor', 'bahmni.common.uiHelper', 'bahmni.dhis', 'ngSanitize']).config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/dashboard');
-    $stateProvider.state('dhis', {
-        abstract: true,
-        template: '<ui-view/>',
-        resolve: {
-            initialize: 'initialization' }
+    $stateProvider
+        .state('dhis', {
+            abstract: true,
+            template: '<ui-view/>',
+            resolve: {
+                initialize: 'initialization'
+            }
         })
-        .state('dhis.dashboard',
-        {   url: '/dashboard',
+        .state('dhis.dashboard', {
+            url: '/dashboard',
             templateUrl: 'views/dhisDashboard.html',
             controller: 'DhisDashboardController',
-            data: {extensionPointId: 'org.bahmni.dhis.dashboard'}
+            data: {
+                extensionPointId: 'org.bahmni.dhis.dashboard',
+                backLinks: [
+                    {label: "Home", url: "../home/"}
+                ]
+            }
         })
-        .state('dhis.report',
-        {   url: '/report/:taskId',
+        .state('dhis.report', {
+            url: '/report/:taskId',
             templateUrl: 'views/report.html',
-            controller: 'ReportController'
+            controller: 'ReportController',
+            data: {
+                backLinks: [
+                    {label: "DHIS Dashboard", state: "dhis.dashboard"}
+                ]
+            }
         });
 
     $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;

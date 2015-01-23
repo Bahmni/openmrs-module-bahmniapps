@@ -13,7 +13,7 @@
         <!-- endbuild -->
     </head>
     <body ng-app="dhis" class="dhis-app">
-        <div ng-include src="'../common/ui-helper/header.html'"></div>
+        <div ng-include src="'views/dhisHeader.html'"></div>
         <div ng-include src="'../common/ui-helper/messages.html'"></div>
         <div class="opd-wrapper">
             <div ui-view id="view-content" class="opd-content-wrapper"></div>
@@ -24,11 +24,13 @@
         <script src="../components/jquery.cookie/jquery.cookie.js"></script>
 
         <script src="../components/angular/angular.js"></script>
+        <script src="../components/angular-sanitize/angular-sanitize.js"></script>
         <script src="../components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
         <script src="../components/angular-ui-router/release/angular-ui-router.js"></script>
         <script src="../components/angular-file-upload/angular-file-upload.min.js"></script>
         <script src="../components/moment/moment.js"></script>
         <script src="../components/stacktrace-js/stacktrace.js"></script>
+        <script src="../components/fastclick/lib/fastclick.js"></script>
         <script src="../components/ng-clip/src/ngClip.js"></script>
         <script src="../components/zeroclipboard/dist/ZeroClipboard.js"></script>
 
@@ -66,7 +68,7 @@
         <script src="initialization.js"></script>
         <script src="app.js"></script>
         <script src="controllers/dashboardController.js"></script>
-        <script src="controllers/reportController.js"></script>
+        <script src="controllers/ReportController.js"></script>
         <script src="services/taskService.js"></script>
         <script src="models/task.js"></script>
         <script src="models/reportParams.js"></script>
