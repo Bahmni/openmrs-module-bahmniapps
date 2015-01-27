@@ -99,3 +99,7 @@ table.h-scroll {
     th { border-bottom: 0; border-left: 0; }
     td { border-left: 0; border-right: 0; border-bottom: 0; }
 }
+// add horizontal scroll to whole table.
+.table-scroll-x{
+  overflow-x: scroll;
+}

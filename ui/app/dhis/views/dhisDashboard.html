@@ -25,13 +25,26 @@
     </section>
 
 
-    <section class="section-grid">
+    <section class="primary-section-grid">
+        <h1>Run New Report</h1>
+
         <form ng-submit="fireQueries()">
-            <input date-converter class="form-field start-date" type="date" ng-model="report.startDate">
+            <div class="form-field">
+                <label class="checkbox-inline"><span>Start Date</span></label>
 
-            <input date-converter class="form-field end-date" type="date" ng-model="report.endDate">
+                <div class="field-value">
+                    <input date-converter class="form-field start-date" type="date" ng-model="report.startDate">
+                </div>
 
-            <button class="run-report confirm" type="submit">Run Report</button>
+                <label class="checkbox-inline col2"><span>End Date</span></label>
+
+                <div class="field-value">
+                    <input date-converter class="form-field end-date" type="date" ng-model="report.endDate">
+                </div>
+            </div>
+            <div>
+                <button class="run-report confirm" type="submit">Run Report</button>
+            </div>
         </form>
     </section>
 
