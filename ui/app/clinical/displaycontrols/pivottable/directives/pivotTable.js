@@ -23,8 +23,9 @@ angular.module('bahmni.clinical').directive('pivotTable', ['$filter','spinner','
                 
                 scope.groupBy = diseaseSummaryConfig.groupBy || "visits";
                 scope.groupByEncounters = scope.groupBy === "encounters";
+                
                 scope.convertDate = function(startdate) {
-                    return $filter('date')(new Date(startdate), "dd MMM yy HH:mm");
+                    return moment(startdate).format("DD MMM YY hh:mm A");
                 }
 
                 var pivotDataPromise = pivotTableService.getPivotTableFor(patientUuid,diseaseSummaryConfig);
