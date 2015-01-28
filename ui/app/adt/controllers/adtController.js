@@ -220,25 +220,6 @@ angular.module('bahmni.adt')
                 }));
             };
 
-            $scope.dischargeAndCloseVisit = function () {
-                var encounterData = getEncounterData($scope.encounterConfig.getDischargeEncounterTypeUuid());
-                spinner.forPromise(encounterService.create(encounterData).then(function (response) {
-                    return bedService.getBedDetailsForPatient($scope.patient.uuid).then(function (response) {
-                        if(response.data.results.length > 0) {
-                            return bedService.freeBed(response.data.results[0].bedId).success(function () {
-                                return visitService.endVisit($scope.visit.visitId).success(function () {
-                                    forwardUrl(response, "onDischargeForwardTo")
-                                })
-                            })
-                        }
-                        return visitService.endVisit($scope.visit.visitId).success(function () {
-                            forwardUrl(response, "onDischargeForwardTo")
-                        })
-                    })
-                }))
-            };
-
-
             spinner.forPromise(init());
         }
     ]);
