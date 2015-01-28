@@ -13,9 +13,13 @@ Bahmni.Clinical.DashboardConfig = function (config) {
         return self.currentDashboard;
     };
 
+    function findOpenDashboard(dashboard) {
+        return !_.findWhere(self.openDashboards, {'dashboardName': dashboard.dashboardName});
+    }
+
     this.getUnOpenedDashboards = function () {
         return _.filter(this.dashboards, function (dashboard) {
-            return !_.findWhere(self.openDashboards, {'name': dashboard.name});
+            return findOpenDashboard(dashboard);
         })
     };
 
@@ -25,13 +29,13 @@ Bahmni.Clinical.DashboardConfig = function (config) {
 
     this.switchDashboard = function (dashboard) {
         this.currentDashboard = dashboard;
-        if (!_.findWhere(this.openDashboards, {'name': dashboard.name})) {
+        if (findOpenDashboard(dashboard)) {
             this.openDashboards.push(dashboard);
         }
     };
 
     this.closeDashboard = function (dashboard) {
-        _.remove(this.openDashboards, {'name': dashboard.name});
+        _.remove(this.openDashboards, {'dashboardName': dashboard.dashboardName});
     };
 
     this.getSectionByName = function (name) {
@@ -41,7 +45,7 @@ Bahmni.Clinical.DashboardConfig = function (config) {
     };
 
     this.isCurrentDashboard = function (dashboard) {
-        return this.currentDashboard && this.currentDashboard.name === dashboard.name;
+        return this.currentDashboard && this.currentDashboard.dashboardName === dashboard.dashboardName;
     };
 
     this.getDiseaseTemplateSections = function () {

@@ -8,16 +8,16 @@
                 <span class="close" ng-click="closeDashboard(dashboard)">
                    <span class="close-icon">x</span>
                 </span>
-                <a ng-click="showDashboard(dashboard)">{{dashboard.name}}</a>
+                <a ng-click="showDashboard(dashboard)">{{dashboard.dashboardName}}</a>
 
             </li>
-            <li class="tab-item new-tab" ng-class="{'tab-active': true}" bm-pop-over>
+            <li class="tab-item new-tab" ng-class="{'tab-active': true}" bm-pop-over ng-show="dashboardConfig.getUnOpenedDashboards().length > 0">
                 <a bm-pop-over-trigger>+</a>
 
                 <div class="tab-submenu" bm-pop-over-target>
                     <ul>
                         <li ng-repeat="dashboard in dashboardConfig.getUnOpenedDashboards()">
-                            <a class="submenu-item" ng-click="showDashboard(dashboard);">{{dashboard.name}} </a>
+                            <a class="submenu-item" ng-click="showDashboard(dashboard);">{{dashboard.dashboardName}} </a>
                         </li>
                     </ul>
                 </div>
