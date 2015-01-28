@@ -73,15 +73,24 @@ angular.module('bahmni.common.conceptSet')
         var fields = ['uuid','name', 'names', 'set','hiNormal','lowNormal','units','conceptClass','datatype', 'handler', 'answers:(uuid,name,displayString,names)', 'descriptions'];
         var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels);
 
-        var controller = function ($scope, conceptSetService, conceptSetUiConfigService, spinner, $filter) {
+        var controller = function ($scope, conceptSetService, conceptSetUiConfigService, spinner) {
             var conceptSetName = $scope.conceptSetName;
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
             var observationMapper = new Bahmni.ConceptSet.ObservationMapper();
             var validationHandler = $scope.validationHandler() || contextChangeHandler;
+            var focusFirstObs = function() {
+                if($scope.conceptSetFocused && $scope.rootObservation.groupMembers && $scope.rootObservation.groupMembers.length > 0) {
+                    var firstObs = _.find($scope.rootObservation.groupMembers, function(obs){
+                        return obs.isFormElement && obs.isFormElement();
+                    });
+                    firstObs && (firstObs.isFocused = true);
+                }
+            }
 
             spinner.forPromise(conceptSetService.getConceptSetMembers({name: conceptSetName, v: "custom:" + customRepresentation})).then(function (response) {
                 $scope.conceptSet = response.data.results[0];
                 $scope.rootObservation = $scope.conceptSet ? observationMapper.map($scope.observations, $scope.conceptSet, conceptSetUIConfig) : null;
+                focusFirstObs();
                 updateObservationsOnRootScope();
             });
 
@@ -166,7 +175,8 @@ angular.module('bahmni.common.conceptSet')
                 required: "=",
                 showTitle: "&",
                 validationHandler: "&",
-                patient: "="
+                patient: "=",
+                conceptSetFocused: "="
             },
             template: template,
             controller: controller
