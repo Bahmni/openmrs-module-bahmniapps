@@ -200,7 +200,7 @@ Bahmni.Clinical.Visit = (function () {
             });
             var nutritionalGroupMembers = isObservationForNutritionalValue.length > 0 ? isObservationForNutritionalValue[0].groupMembers : [];
             return nutritionalGroupMembers.filter(function (groupMember) {
-                return groupMember.concept.name === Bahmni.Common.Constants.weightConceptName;
+                return groupMember.concept.name.toUpperCase() === Bahmni.Common.Constants.weightConceptName;
             });
         },
 
