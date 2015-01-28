@@ -37,7 +37,6 @@ angular.module('bahmni.common.conceptSet')
                             };
                         }
                     },
-                    width: '20em',
                     allowClear: true,
                     placeholder: 'Select',
                     formatResult: _.property('name'),
