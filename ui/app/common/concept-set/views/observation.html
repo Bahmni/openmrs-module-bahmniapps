@@ -63,7 +63,7 @@
 
                 <div ng-switch-when="autocomplete"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet), 'computed-field': observation.isComputedAndEditable()}" class="autocomplete">
                     <input ng-if="!observation.conceptUIConfig.answersConceptName" type="hidden" ui-select2="selectOptions(observation.primaryObs.concept)" ng-model="observation.primaryObs.value" style="width: 90%;"/>
-                    <input ng-if="observation.conceptUIConfig.answersConceptName" concept-autocomplete coded-concept-name="observation.conceptUIConfig.answersConceptName" ng-model="observation.value" style="width: 90%;"/>
+                    <input ng-if="observation.conceptUIConfig.answersConceptName" concept-autocomplete coded-concept-name="observation.conceptUIConfig.answersConceptName" ng-model="observation.value" />
                 </div>
 
                 <!--div ng-switch-when="multiselect"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}" class="autocomplete">
@@ -192,7 +192,7 @@
 
 
                     <input ng-if="!observation.conceptUIConfig.answersConceptName" type="hidden" ui-select2="selectOptions(observation.concept)" ng-model="observation.value" style="width: 90%;" autofocus/>
-                    <input ng-if="observation.conceptUIConfig.answersConceptName" concept-autocomplete coded-concept-name="observation.conceptUIConfig.answersConceptName" ng-model="observation.autocompleteValue" style="width: 90%;" autofocus/>
+                    <input ng-if="observation.conceptUIConfig.answersConceptName" concept-autocomplete coded-concept-name="observation.conceptUIConfig.answersConceptName" ng-model="observation.autocompleteValue"  autofocus/>
 
                 </div>
 
