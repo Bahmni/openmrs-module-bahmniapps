@@ -1,9 +1,9 @@
-<section ng-if="hasData" class="dashboard-section">
+<section ng-if="hasData" class="block dashboard-section">
     <h2 class="section-title">{{::displayName || diseaseName}}</h2>
     <table class="h-scroll pivot-table">
         <thead>
         <tr>
-            <th>{{::groupBy}}</th>
+            <th class="row-header-group">{{::groupBy}}</th>
             <th ng-repeat="conceptDetail in ::result.conceptDetails">
                 <span>{{::conceptDetail.name}}</span>
                 <span class="range" ng-if="::conceptDetail.lowNormal">
@@ -15,10 +15,10 @@
         </thead>
         <tbody>
         <tr ng-repeat="(startDate,values) in ::result.tabularData">
-            <td>
-                <strong ng-if="::!groupByEncounters">{{::startDate | date: 'dd MMM yy'}}</strong>
-                <strong ng-if="::groupByEncounters">{{::convertDate(startDate)}}</strong>
-            </td>
+            <th class="row-header-group">
+                <span class="date">{{getOnlyDate(startDate)}}</span>
+                <span ng-if="::groupByEncounters" class="time">{{getOnlyTime(startDate)}}</span>
+            </th>
             <td ng-repeat="conceptDetail in ::result.conceptDetails"
                 ng-class="{'is-abnormal': result.tabularData[startDate][conceptDetail.name].abnormal}">
                 {{::result.tabularData[startDate][conceptDetail.name].value}}

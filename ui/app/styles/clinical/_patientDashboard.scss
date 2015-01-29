@@ -271,14 +271,7 @@ table.dashboard-table {
     .value-text-only {width: 37%;}
 }
 
-table.pivot-table tr td, table.pivot-table tr th {
-    line-height: 1.2em;
-    text-transform: capitalize;
-}
 
-.pivot-table span.range {
-  font-size: 11px;
-}
 
 .dashboard-section section .form-field.is-text {
   overflow: auto;
@@ -295,5 +288,50 @@ table.pivot-table tr td, table.pivot-table tr th {
   }
   .date {
     font-size: 11px;
+  }
+}
+table.pivot-table {
+  span.range {
+    font-size: 11px;
+  }
+  .row-header-group {
+    min-height: 35px;
+    vertical-align: middle;
+    font-weight: bold;
+    font-family: "OpenSansBold";
+  }
+  tr {
+     td, th {
+       line-height: 1.2em;
+       text-transform: capitalize;
+       height: 24px;
+       max-height: 24px;
+       vertical-align: middle;
+       overflow: hidden;
+       text-overflow: ellipsis;
+       padding: 5px 10px;
+     }
+  }
+  tbody {
+    white-space: normal;
+    font-size: 12px;
+    tr {
+      th, td {
+        width: 70px;
+        padding: 5px;
+      }
+      th {
+        background: white;
+        font-weight: bold;
+
+        .time {
+          font-size: 12px;
+          color: darken($lightGray, 5%);
+          display: inline-block;
+          margin-top: 3px;
+          font-weight: normal;
+        }
+      }
+    }
   }
 }

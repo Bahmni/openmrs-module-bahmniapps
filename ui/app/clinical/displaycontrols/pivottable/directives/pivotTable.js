@@ -17,8 +17,12 @@ angular.module('bahmni.clinical').directive('pivotTable', ['$filter','spinner','
                 scope.groupBy = scope.config.groupBy || "visits";
                 scope.groupByEncounters = scope.groupBy === "encounters";
                 
-                scope.convertDate = function(startdate) {
-                    return moment(startdate).format("DD MMM YY hh:mm A");
+                scope.getOnlyDate = function(startdate) {
+                    return moment(startdate).format("DD MMM YY");
+                }
+
+                scope.getOnlyTime = function(startdate) {
+                    return moment(startdate).format("hh:mm A");
                 }
 
                 var pivotDataPromise = pivotTableService.getPivotTableFor(scope.patientUuid,scope.config, scope.visitUuid );
