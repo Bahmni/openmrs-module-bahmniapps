@@ -2,8 +2,8 @@
 
 angular.module('bahmni.clinical')
     .controller('PatientDashboardController', ['$scope', '$location',
-        'encounterService', 'clinicalAppConfigService', 'diseaseTemplateService', 'dashboardConfig',
-        function ($scope, $location, encounterService, clinicalAppConfigService, diseaseTemplateService, dashboardConfig) {
+        'encounterService', 'clinicalAppConfigService', 'diseaseTemplateService', 'dashboardConfig', 'spinner',
+        function ($scope, $location, encounterService, clinicalAppConfigService, diseaseTemplateService, dashboardConfig, spinner) {
 
             $scope.activeVisit = $scope.visitHistory.activeVisit;
             $scope.patientSummary = {};
@@ -29,12 +29,12 @@ angular.module('bahmni.clinical')
 
             $scope.init = function (dashboard) {
                 dashboardConfig.switchDashboard(dashboard);
-                diseaseTemplateService.getLatestDiseaseTemplates($scope.patient.uuid, dashboardConfig.getDiseaseTemplateSections())
+                return diseaseTemplateService.getLatestDiseaseTemplates($scope.patient.uuid, dashboardConfig.getDiseaseTemplateSections())
                     .then(function (diseaseTemplates) {
                         $scope.diseaseTemplates = diseaseTemplates;
                         $scope.patientDashboardSections = dashboardConfig.getDashboardSections(diseaseTemplates);
                     });
             };
 
-            $scope.init(dashboardConfig.getDefaultDashboard());
+            spinner.forPromise($scope.init(dashboardConfig.getDefaultDashboard()));
         }]);

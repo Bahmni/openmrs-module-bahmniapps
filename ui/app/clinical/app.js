@@ -72,10 +72,8 @@ angular.module('consultation')
                     }
                 },
                 resolve: {
-                    dashboardConfig: function (initialization, patientContext, visitHistory, appService) {
-                        return appService.loadConfig('dashboard').then(function (response) {
-                            return  new Bahmni.Clinical.DashboardConfig(response.data);
-                        });
+                    dashboardInitialization: function(initialization, dashboardConfig) {
+                        return dashboardConfig.load();
                     }
                 }
             })
