@@ -143,7 +143,7 @@
       clear: both;
       cursor: pointer;
       .col {padding-top: 0; padding-bottom: 5px;}
-      label.diagnosis-name {
+      .diagnosis-name {
         padding-left: 10px;
         font-size: 14px;
       }
@@ -175,7 +175,7 @@
   border-bottom: 0;
 }
 
-.ruled-out label.diagnosis-name {
+.ruled-out .diagnosis-name {
   color: $mediumGray;
   text-decoration: line-through;
 }
@@ -228,7 +228,7 @@
 
 }
 
-.view-past label.diagnosis-name {
+.view-past .diagnosis-name {
     cursor: pointer;
 }
 

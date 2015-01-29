@@ -2,6 +2,10 @@
     section.block {
         @extend .section-grid;
         margin: 0 0 15px;
+        section.block {
+          margin: 0;
+          border: 0;
+        }
     }
 }
 
