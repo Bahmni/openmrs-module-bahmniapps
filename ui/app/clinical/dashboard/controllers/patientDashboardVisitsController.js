@@ -12,7 +12,7 @@ angular.module('bahmni.clinical')
                 $scope.patient = patient;
             };
 
-            $scope.visitsCountAndPatient = {"noOfVisits": $scope.noOfVisits, "patient": $scope.patient, "summaryPageParams": $scope.dashboardConfig.getSectionByName("visits") || {}};
+            $scope.visitsCountAndPatient = {"noOfVisits": $scope.noOfVisits, "patient": $scope.patient};
 
             $scope.dashboardParams = $scope.dashboardConfig.getSectionByName("visits").dashboardParams || {};
             $scope.patientUuid = $stateParams.patientUuid;

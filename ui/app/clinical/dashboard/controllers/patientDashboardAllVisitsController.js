@@ -10,7 +10,7 @@ angular.module('bahmni.clinical')
                 maximumNoOfVisits: $scope.noOfVisits ? $scope.noOfVisits : 0
             };
             $scope.params = angular.extend(defaultParams, $scope.params);
-            var summaryPageParams = $scope.ngDialogData.summaryPageParams;
+            var summaryPageParams = $scope.dashboardConfig.getSectionByName("visits");
             $scope.params = angular.extend(summaryPageParams, $scope.params);
             $scope.patientUuid = $stateParams.patientUuid;
 
