@@ -1,7 +1,7 @@
-<div ng-repeat="(group, results) in ::task.groupedResults">
-    <h2>{{group}}</h2>
+<div ng-repeat="resultGroup in ::task.resultGroups.groups">
+    <h2>{{resultGroup.groupName}}</h2>
 
-    <div ng-repeat="result in ::results">
+    <div ng-repeat="result in ::resultGroup.results">
         <h5>{{result.queryName}}</h5>
 
         <div class="table-scroll-x">

@@ -6,8 +6,12 @@ Bahmni.Dhis.Task = (function () {
         this.dateCreated = task.dateCreated;
         this.status = task.taskStatus;
         this.results = task.results ? JSON.parse(JSON.parse(task.results)).map(Bahmni.Dhis.Result.create) : undefined;
-        this.groupedResults = _.groupBy(this.results, function (result) {
-            return result.queryGroup;
+
+        var self = this;
+
+        this.resultGroups = new Bahmni.Dhis.ResultGroups();
+        _.each(this.results, function (result) {
+            self.resultGroups.add( result.queryGroup, result );
         });
     };
 

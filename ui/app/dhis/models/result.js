@@ -12,12 +12,12 @@ Bahmni.Dhis.Result = (function () {
     Result.prototype = {
         getHeaders: function () {
             if (this.resultRows.length > 0) {
-                return _.keys(this.resultRows[0]);
+                return _.keys(this.resultRows[0]).reverse();
             }
         },
         getRowResults: function() {
             if (this.resultRows.length > 0) {
-                return this.resultRows.map(_.values);
+                return this.resultRows.map( function(resultRow) { return _.values(resultRow).reverse() } );
             }
         }
     };
