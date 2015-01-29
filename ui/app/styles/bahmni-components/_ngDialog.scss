@@ -73,13 +73,23 @@
             font-size: 14px;
             color: $darkGray;
         }
-        tr {
-            td.days, td.dosage {
+        // tr {
+        //     td.days, td.dosage {
+        //         width: 150px;
+        //     }
+        // }
+    }
+    .treatment-section {
+        table tr {
+            td.days {
                 width: 150px;
+            }
+            td.dosage {
+                width: 40%;
+                font-size: 14px;
             }
         }
     }
-
 }
 div.ngdialog-close {
     color: transparent;
