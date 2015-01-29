@@ -7,23 +7,21 @@ angular.module('bahmni.clinical').directive('pivotTable', ['$filter','spinner','
                 patientUuid: "=",
                 diseaseName: "=",
                 displayName: "=",
-                section: "="
+                config: "=",
+                visitUuid:"="
             },
             link: function (scope) {
-                
-                var diseaseSummaryConfig = scope.section["pivotTable"];
-                if(!diseaseSummaryConfig) return;
 
-                var patientUuid = scope.patientUuid;
-                
-                scope.groupBy = diseaseSummaryConfig.groupBy || "visits";
+                if(!scope.config) return;
+
+                scope.groupBy = scope.config.groupBy || "visits";
                 scope.groupByEncounters = scope.groupBy === "encounters";
                 
                 scope.convertDate = function(startdate) {
                     return moment(startdate).format("DD MMM YY hh:mm A");
                 }
 
-                var pivotDataPromise = pivotTableService.getPivotTableFor(patientUuid,diseaseSummaryConfig);
+                var pivotDataPromise = pivotTableService.getPivotTableFor(scope.patientUuid,scope.config, scope.visitUuid );
                 spinner.forPromise(pivotDataPromise);
                 pivotDataPromise.success(function (data) {
                     scope.result = data;

@@ -62,4 +62,5 @@ angular.module('bahmni.clinical')
             };
 
             $scope.observationConfig = clinicalAppConfigService.getVisitPageConfig("observationDisplayParams") || {};
+            $scope.pivotTableConfigs = clinicalAppConfigService.getVisitPageConfig("pivotTable") || [];
         }]);
