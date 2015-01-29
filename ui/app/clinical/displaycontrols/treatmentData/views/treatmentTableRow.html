@@ -3,8 +3,8 @@
     </td>
     <td class="dosage"><span>{{drugOrder.getDescription()}}</span></td>
     <td class="days">
-        <span class="fr">{{drugOrder.effectiveStartDate | date:'dd MMM yy'}}</span>
         <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">Stopped on {{drugOrder.effectiveStopDate | date: 'dd MMM yy'}}</span>
+        <span class="fr">{{drugOrder.effectiveStartDate | date:'dd MMM yy'}}</span>
     </td>
 
     <td class="toggle-btn" ng-click="toggle()" ng-if="params.showDetailsButton && !drugOrder.additionalInstructions">

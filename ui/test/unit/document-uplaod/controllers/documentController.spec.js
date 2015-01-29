@@ -4,7 +4,6 @@ describe("DocumentController", function () {
 
     var scope;
     var documentController;
-    var visitService;
     var encounterService;
     var stateParams = {patientUuid: 'pat-uuid', visitUuid: "abc"};
     var spinner;
@@ -128,7 +127,6 @@ describe("DocumentController", function () {
         encounterService = jasmine.createSpyObj('encounterService', ['search']);
         encounterConfig = jasmine.createSpyObj('encounterConfig', ['getEncounterTypeUuid']);
         appConfig = jasmine.createSpyObj('encounterConfig', ['encounterType']);
-        visitService = jasmine.createSpyObj('visitService', ['getVisitSummary']);
         visitDocumentService = jasmine.createSpyObj('visitDocumentService', ['save']);
         sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
     }));

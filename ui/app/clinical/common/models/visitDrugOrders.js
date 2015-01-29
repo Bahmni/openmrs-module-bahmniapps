@@ -20,30 +20,40 @@ Bahmni.Clinical.VisitDrugOrder = (function () {
         }
     };
 
-    VisitDrugOrder.create = function (encounterTransactions, admissionDate, dischargeDate, encounterDate) {
-        var nameToSort = function(drugOrder) {
+
+    VisitDrugOrder.create = function (encounterTransactions, admissionDate, dischargeDate) {
+        var nameToSort = function (drugOrder) {
             return drugOrder.drug.name;
         };
-        var drugOrders = new Bahmni.Clinical.OrdersMapper(nameToSort).map(encounterTransactions, 'drugOrders').filter(function (order) {
-            return !order.voided && order.action != Bahmni.Clinical.Constants.orderActions.discontinue;
-        });
 
-        drugOrders = _.filter(drugOrders, function(drugOrder){
-            return !_.some(drugOrders, function(otherDrugOrder){ return otherDrugOrder.action === Bahmni.Clinical.Constants.orderActions.revise && otherDrugOrder.encounterUuid === drugOrder.encounterUuid && otherDrugOrder.previousOrderUuid === drugOrder.uuid });
-        });
+        var drugOrders = new Bahmni.Clinical.OrdersMapper(nameToSort).map(encounterTransactions, 'drugOrders');
 
         var prescribedDrugOrders = [];
-        drugOrders.forEach(function(drugOrder){
+        drugOrders.forEach(function (drugOrder) {
             prescribedDrugOrders.push(Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder))
         });
-        var ipdOrders = null;
-        if (admissionDate) {
-            ipdOrders = Bahmni.Clinical.DrugSchedule.create(admissionDate, dischargeDate, prescribedDrugOrders);
-        }
-        var orderGroup = new Bahmni.Clinical.OrdersMapper().group(prescribedDrugOrders, 'date');
-        return new this(prescribedDrugOrders, ipdOrders, orderGroup);
+
+        return this.createFromDrugOrders(prescribedDrugOrders, admissionDate, dischargeDate);
     };
 
+    VisitDrugOrder.createFromDrugOrders = function (drugOrders, admissionDate, dischargeDate) {
+        drugOrders = _.filter(drugOrders, function (drugOrder) {
+            return !drugOrder.voided && drugOrder.action !== Bahmni.Clinical.Constants.orderActions.discontinue;
+        });
+
+        drugOrders = _.filter(drugOrders, function (drugOrder) {
+            return !_.some(drugOrders, function (otherDrugOrder) {
+                return otherDrugOrder.action === Bahmni.Clinical.Constants.orderActions.revise && otherDrugOrder.encounterUuid === drugOrder.encounterUuid && otherDrugOrder.previousOrderUuid === drugOrder.uuid
+            });
+        });
+
+        var ipdOrders = null;
+        if (admissionDate) {
+            ipdOrders = Bahmni.Clinical.DrugSchedule.create(admissionDate, dischargeDate, drugOrders);
+        }
+        var orderGroup = new Bahmni.Clinical.OrdersMapper().group(drugOrders, 'date');
+        return new this(drugOrders, ipdOrders, orderGroup);
+    };
 
     return VisitDrugOrder;
 })();

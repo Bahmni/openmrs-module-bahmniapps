@@ -478,5 +478,6 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
     viewModel.drugNameDisplay = drugOrderResponse.drug.name + " (" + drugOrderResponse.drug.form + ")";
     viewModel.loadOrderAttributes(drugOrderResponse);
     viewModel.visit = drugOrderResponse.visit;
+    viewModel.voided = drugOrderResponse.voided;
     return viewModel;
 };

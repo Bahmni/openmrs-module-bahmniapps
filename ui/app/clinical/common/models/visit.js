@@ -16,7 +16,7 @@ Bahmni.Clinical.Visit = (function () {
         this.radiologyOrders = Bahmni.Clinical.VisitDocumentUploadOrders.create(encounters, encounterConfig.getRadiologyEncounterTypeUuid());
         this.patientFileOrders = Bahmni.Clinical.VisitDocumentUploadOrders.create(encounters, encounterConfig.getPatientDocumentEncounterTypeUuid());
         this.patientFileOrders.orders = this.hasPatientFiles() ? this.patientFileOrders.orders.reverse() : [];
-        this.drugOrders = Bahmni.Clinical.VisitDrugOrder.create(encounters, this.getAdmissionDate(), this.getToDate(), encounterDate);
+        this.drugOrders = Bahmni.Clinical.VisitDrugOrder.create(encounters, this.getAdmissionDate(), this.getToDate());
         this.startDate = this.encounters.length ? _.last(this.encounters).encounterDateTime : null;
 
         var orderGroup = new Bahmni.Clinical.OrdersMapper();

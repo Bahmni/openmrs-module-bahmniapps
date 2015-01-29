@@ -1,0 +1,28 @@
+<section class="block ipd-treatment-section" ng-if="visitSummary.isIPD && !print">
+    <h2 class="section-title">Treatment Chart</h2>
+    <table class="h-scroll">
+        <thead>
+        <tr>
+            <th>
+                <span bo-text="(visitSummary.startDateTime | date:'dd MMM yy') + ' - '+ (getVisitStopDateTime() | date:'dd MMM yy')"></span>
+            </th>
+            <th ng-repeat="drug in ipdDrugOrders.getIPDDrugs()" bo-text="drug.orders[0].getDisplayName()" class="drug"
+                ng-class="{active: drug.isActive()}"></th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="day in ipdDrugOrders.ipdDrugSchedule.days" ng-if="atLeastOneDrugForDay(day)">
+            <td>
+                <span>
+                    D{{day.dayNumber}} ({{day.date | date:'dd MMM yy'}})
+                </span>
+            </td>
+            <td bo-switch="drug.getStatusOnDate(day.date)" ng-repeat="drug in ipdDrugOrders.ipdDrugSchedule.drugs">
+                <span class="icon-ok" bo-switch-when="active"></span>
+                <span class="icon-stop" bo-switch-when="stopped"></span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</section>

@@ -99,7 +99,11 @@ angular.module('consultation')
                 resolve: {
                     visitContext: function (visitInitialization, $stateParams, initialization, patientContext) {
                         return visitInitialization($stateParams.visitUuid);
-                    }}
+                    },
+                    visitSummary: function(visitSummaryInitialization, $stateParams){
+                        return visitSummaryInitialization($stateParams.visitUuid);
+                    }
+                }
             })
             .state('patient.consultation', {
                 url: '',
@@ -128,7 +132,11 @@ angular.module('consultation')
             .state('patient.consultation.visit', {
                 url: '/visit/:visitUuid',
                 templateUrl: 'common/views/visit.html',
-                controller: 'VisitController'
+                controller: 'VisitController',
+                resolve:{
+                visitSummary: function(visitSummaryInitialization, $stateParams) {
+                    return visitSummaryInitialization($stateParams.visitUuid);
+                }}
             })
             .state('patient.consultation.summary', {
                 url: '/consultation',
