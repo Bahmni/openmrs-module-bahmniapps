@@ -1,19 +1,20 @@
 'use strict';
 
-angular.module('bahmni.clinical')
-    .directive('bahmniObservation', ['observationsService', '$q','spinner', 'clinicalAppConfigService',
-        function (observationsService, $q, spinner, clinicalAppConfigService) {
+angular.module('bahmni.common.displaycontrol')
+    .directive('bahmniObservation', ['observationsService', 'appService', '$q','spinner',
+        function (observationsService, appService, $q, spinner) {
 
             var controller = function($scope){
 
                 var mapObservation = function(response,config){
-                    var observationFilter = new Bahmni.Clinical.ObservationFilters(config.obsIgnoreList);
+                    var observationFilter = new Bahmni.Common.DisplayControl.ObservationFilters(config.obsIgnoreList);
                     var observations = observationFilter.removeObsWithOrder(observationFilter.removeUnwantedObs(response.data));
-                    observations = new Bahmni.Common.Obs.ObservationMapper().map(observations, clinicalAppConfigService.getAllConceptsConfig());
+                    var conceptsConfig = appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
+                    observations = new Bahmni.Common.Obs.ObservationMapper().map(observations, conceptsConfig);
 
-                    $scope.bahmniObservations = new Bahmni.Clinical.DisplayControl.GroupingFunctions().groupByEncounterDate(observations);
+                    $scope.bahmniObservations = new Bahmni.Common.DisplayControl.GroupingFunctions().groupByEncounterDate(observations);
                     if (_.isEmpty($scope.bahmniObservations)) {
-                        $scope.noObsMessage = Bahmni.Clinical.Constants.messageForNoObservation;
+                        $scope.noObsMessage = Bahmni.Common.Constants.messageForNoObservation;
                     }
                     else{
                         $scope.bahmniObservations[0].isOpen = true;
@@ -35,7 +36,7 @@ angular.module('bahmni.clinical')
             return {
                 restrict:'E',
                 controller:controller,
-                templateUrl:"displaycontrols/observation/views/observationDisplayControl.html",
+                templateUrl:"../common/displaycontrols/observation/views/observationDisplayControl.html",
                 scope:{
                     patientUuid:"=",
                     visitUuid : "@",

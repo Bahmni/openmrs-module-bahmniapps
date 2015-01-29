@@ -3,7 +3,7 @@
 describe("grouping Observations", function () {
 
     it("should return observation grouped together", function(){
-        var groupedObservation = new Bahmni.Clinical.DisplayControl.GroupingFunctions().groupByEncounterDate(observationsList);
+        var groupedObservation = new Bahmni.Common.DisplayControl.GroupingFunctions().groupByEncounterDate(observationsList);
         expect(groupedObservation[0].value[0].concept.name).toBe("Dispensed");
         expect(groupedObservation[1].value[0].concept.name).toBe("Vitals");
         expect(groupedObservation[2].value[0].concept.name).toBe("RBS");

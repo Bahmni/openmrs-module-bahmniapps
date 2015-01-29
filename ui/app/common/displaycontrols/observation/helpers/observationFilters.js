@@ -1,6 +1,6 @@
 'use strict';
 
-Bahmni.Clinical.ObservationFilters = function(unwantedObsConcepts){
+Bahmni.Common.DisplayControl.ObservationFilters = function(unwantedObsConcepts){
     var self = this;
 
     var obsHasOrder = function(bahmniObservation){
