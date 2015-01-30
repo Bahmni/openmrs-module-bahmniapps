@@ -73,11 +73,6 @@
             font-size: 14px;
             color: $darkGray;
         }
-        // tr {
-        //     td.days, td.dosage {
-        //         width: 150px;
-        //     }
-        // }
     }
 
     .treatment-section {
@@ -88,18 +83,6 @@
             td.dosage {
                 width: 40%;
                 font-size: 14px;
-            }
-        }
-    }
-
-    table.pivot-table {
-        tbody {
-            tr {
-                  th, td {
-                    font-size: 12px;
-                    width: 70px;
-                    padding: 5px;
-                  }
             }
         }
     }
