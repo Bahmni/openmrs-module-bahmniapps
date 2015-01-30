@@ -62,7 +62,7 @@ angular.module('bahmni.common.conceptSet')
     }]).directive('conceptSet', ['contextChangeHandler', 'appService', 'observationsService', function (contextChangeHandler, appService, observationsService) {
         var template =
             '<form>' +
-                '<div>' +
+                '<div ng-if="showRecentButton">' +
                     '<button type="button" ng-click="showRecent()" class="fr btn-small">Recent</button>' +
                 '</div>' +
                 '<concept concept-set-required="conceptSetRequired" root-observation="rootObservation" patient="patient" observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet" show-title="showTitleValue" ng-if="!rootObservation.hidden"></concept>' +
@@ -77,6 +77,7 @@ angular.module('bahmni.common.conceptSet')
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
             var observationMapper = new Bahmni.ConceptSet.ObservationMapper();
             var validationHandler = $scope.validationHandler() || contextChangeHandler;
+
             var focusFirstObs = function() {
                 if($scope.conceptSetFocused && $scope.rootObservation.groupMembers && $scope.rootObservation.groupMembers.length > 0) {
                     var firstObs = _.find($scope.rootObservation.groupMembers, function(obs){
@@ -96,6 +97,7 @@ angular.module('bahmni.common.conceptSet')
             $scope.atLeastOneValueIsSet = false;
             $scope.conceptSetRequired = false;
             $scope.showTitleValue = $scope.showTitle();
+            $scope.showRecentButton = conceptSetUIConfig[conceptSetName] && conceptSetUIConfig[conceptSetName].showRecentButton;
 
             var updateObservationsOnRootScope = function () {
                 if($scope.rootObservation){
