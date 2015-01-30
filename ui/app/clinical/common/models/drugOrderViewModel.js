@@ -325,6 +325,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         var newDrugOrder = new Bahmni.Clinical.DrugOrderViewModel(appConfig, config, this);
 
         newDrugOrder.previousOrderUuid = self.uuid;
+        self.calculateDurationInDays();
+        newDrugOrder.previousOrderDurationInDays = self.durationInDays;
         newDrugOrder.action = Bahmni.Clinical.Constants.orderActions.revise;
         newDrugOrder.uuid = undefined;
         newDrugOrder.dateActivated = undefined;
