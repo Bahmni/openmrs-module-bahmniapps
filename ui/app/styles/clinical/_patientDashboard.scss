@@ -291,11 +291,16 @@ table.dashboard-table {
   }
 }
 table.pivot-table {
+  &, * {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+  }
   span.range {
     font-size: 11px;
   }
   .row-header-group {
-    min-height: 35px;
+    min-height: 40px;
     vertical-align: middle;
     font-weight: bold;
     font-family: "OpenSansBold";
@@ -304,8 +309,8 @@ table.pivot-table {
      td, th {
        line-height: 1.2em;
        text-transform: capitalize;
-       height: 24px;
-       max-height: 24px;
+       height: 36px;
+       max-height: 36px;
        vertical-align: middle;
        overflow: hidden;
        text-overflow: ellipsis;
