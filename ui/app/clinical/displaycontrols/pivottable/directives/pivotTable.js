@@ -1,6 +1,6 @@
 'use strict';
-angular.module('bahmni.clinical').directive('pivotTable', ['$filter','spinner','pivotTableService','clinicalAppConfigService',
-    function ($filter,spinner,pivotTableService,clinicalAppConfigService) {
+angular.module('bahmni.clinical').directive('pivotTable', ['$filter','spinner','pivotTableService',
+    function ($filter,spinner,pivotTableService) {
 
         return {
             scope: {
@@ -19,11 +19,19 @@ angular.module('bahmni.clinical').directive('pivotTable', ['$filter','spinner','
                 
                 scope.getOnlyDate = function(startdate) {
                     return moment(startdate).format("DD MMM YY");
-                }
+                };
 
-                scope.getOnlyTime = function(startdate) {
-                    return moment(startdate).format("hh:mm A");
-                }
+                scope.getOnlyTime = function(startDate) {
+                    return moment(startDate).format("hh:mm A");
+                };
+
+                scope.isLonger = function(value){
+                   return value ? value.length > 13 : false;
+                };
+
+                scope.getColumnValue = function(value){
+                    return scope.isLonger(value) ? value.substring(0,10)+"..." : value;
+                };
 
                 var pivotDataPromise = pivotTableService.getPivotTableFor(scope.patientUuid,scope.config, scope.visitUuid );
                 spinner.forPromise(pivotDataPromise);
