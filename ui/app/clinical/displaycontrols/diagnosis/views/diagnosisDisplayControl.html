@@ -17,7 +17,7 @@
                     <td class="date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}
                     </td>
                     <td class="toggle-btn">
-                        <button ng-show="!diagnosis.comments" class="toggle fr"
+                        <button ng-show="!diagnosis.comments && config.showDetailsButton" class="toggle fr"
                                 ng-class="{'has-notes': diagnosis.comments}">
                             <i class="icon-plus-sign" ng-hide="diagnosis.show"></i>
                             <i class="icon-minus-sign" ng-show="diagnosis.show"></i>

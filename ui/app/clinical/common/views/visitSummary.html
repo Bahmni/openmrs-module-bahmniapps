@@ -2,7 +2,7 @@
     <p class="no-visit" ng-show="!visit.hasData()">No visit information for this patient</p>
 </section>
 <section class="block dashboard-section">
-    <bahmni-diagnosis patient-uuid="patient.uuid"  title="visitPageDiagnosisTitle"></bahmni-diagnosis>
+    <bahmni-diagnosis patient-uuid="patient.uuid"  title="visitPageDiagnosisTitle" config="diagnosisConfig"></bahmni-diagnosis>
 </section>
 <ng-include src="'common/views/visitSummarySections/observation.html'"></ng-include>
 <section ng-repeat="pivotTable in pivotTableConfigs" pivot-table visit-uuid="visit.uuid" config="pivotTable" patient-uuid="patient.uuid" display-name="pivotTable.title"></section>
