@@ -13,6 +13,8 @@ angular.module('bahmni.registration')
         var regEncounterTypeUuid = $rootScope.regEncounterConfiguration.encounterTypes[Bahmni.Registration.Constants.registrationEncounterType];
         $scope.identifierPattern = appService.getAppDescriptor().getConfigValue('identifierPattern');
         $scope.identifierPatternDescription = appService.getAppDescriptor().getConfigValue('identifierPatternDescription') || "";
+        var configValueForEnterId = appService.getAppDescriptor().getConfigValue('showEnterID');
+        $scope.showEnterID = configValueForEnterId === null ? true : configValueForEnterId;
 
         var identifyEditActions = function() {
             createActionsConfig = appService.getAppDescriptor().getExtensions("org.bahmni.registration.patient.create.action", "config");

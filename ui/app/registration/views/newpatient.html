@@ -27,7 +27,7 @@
                                placeholder="Registration Number" non-blank="hasOldIdentifier" title="Enter patient's registration number"
                                ng-change="patient.generateIdentifier()" ng-show="hasOldIdentifier" focus-on="hasOldIdentifier" attr-pattern="identifierPattern" title="{{identifierPatternDescription}}">
                         </span>
-                        <span class="input-label-inline">
+                        <span class="input-label-inline" ng-show="showEnterID">
                             <input type="checkbox" id="hasOldIdentifier" ng-model="hasOldIdentifier"
                                ng-change="patient.clearRegistrationNumber()">
                             <label for="hasOldIdentifier" class="control-label">Enter ID</label>
