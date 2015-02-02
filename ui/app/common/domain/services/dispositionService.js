@@ -14,9 +14,26 @@ angular.module('bahmni.common.domain')
                 +"&v=custom:(uuid,name:(name))", {cache: true});
         };
 
+        var getDispositionByVisit = function(visitUuid){
+            return $http.get(Bahmni.Common.Constants.bahmniDispositionByVisitUrl, {
+                params: {visitUuid: visitUuid}
+            });
+        };
+
+        var getDispositionByPatient = function(patientUuid, numberOfVisits){
+            return $http.get(Bahmni.Common.Constants.bahmniDispositionByPatientUrl, {
+                params: {
+                    patientUuid: patientUuid,
+                    numberOfVisits: numberOfVisits
+                }
+            });
+        };
+
         return {
             getDispositionActions: getDispositionActions,
-            getDispositionNoteConcept:getDispositionNoteConcept
+            getDispositionNoteConcept:getDispositionNoteConcept,
+            getDispositionByVisit: getDispositionByVisit,
+            getDispositionByPatient: getDispositionByPatient
         };
 
     }]);

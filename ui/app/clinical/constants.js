@@ -36,6 +36,8 @@ Bahmni.Clinical.Constants = (function () {
         otherInvestigationCategoriesConceptSetName: "Other Investigations Categories",
         commentConceptName: "COMMENTS",
         messageForNoLabOrders: "No lab orders.",
+        messageForNoObservation: "No observations captured for this visit.",
+        messageForNoDisposition: "No dispositions available.",
         messageForNoActiveVisit: "No active visit.",
         diagnosisStatuses : {"RULED OUT" : "Ruled Out Diagnosis"},
         dischargeSummaryConceptName: "Discharge Summary",

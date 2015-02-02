@@ -29,6 +29,12 @@ angular.module('bahmni.clinical')
                 showDetailsButton : true
             };
 
+            $scope.dispositionParameters = {
+                patientUuid: $scope.patient.uuid,
+                visitUuid: $scope.visit.uuid,
+                numOfVisits: 1
+            };
+
             $scope.isNumeric = function (value) {
                 return $.isNumeric(value);
             };
