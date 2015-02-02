@@ -34,4 +34,32 @@ describe("Boolean Observation", function() {
         expect(new Bahmni.ConceptSet.BooleanObservation({concept: {name: "ABC"}}, {"ABC": {allowAddMore: false}}).canAddMore()).toBeFalsy();
         expect(new Bahmni.ConceptSet.BooleanObservation({concept: {name: "ABC"}}, {}).canAddMore()).toBeFalsy();
     });
+
+    it("isRequired should retrieve value from conceptSetUIConfig", function() {
+        expect(new Bahmni.ConceptSet.BooleanObservation({concept: {name: "ABC"}}, {"ABC": {required: true}}).isRequired()).toBeTruthy();
+        expect(new Bahmni.ConceptSet.BooleanObservation({concept: {name: "ABC"}}, {"ABC": {required: false}}).isRequired()).toBeFalsy();
+        expect(new Bahmni.ConceptSet.BooleanObservation({concept: {name: "ABC"}}, {}).isRequired()).toBeFalsy();
+        expect(new Bahmni.ConceptSet.BooleanObservation({concept: {name: "ABC"}}).isRequired()).toBeFalsy();
+    });
+
+    it("should be valid if it is required and present", function() {
+        var requiredObservation = new Bahmni.ConceptSet.BooleanObservation({concept: {name: "ABC"}}, {"ABC": {required: true}});
+        requiredObservation.value = {displayString: "Yes", value: true};
+        expect(requiredObservation.isValid(true, true)).toBeTruthy();
+
+        requiredObservation.value = {displayString: "No", value: false};
+        expect(requiredObservation.isValid(true, true)).toBeTruthy();
+
+        requiredObservation.value = undefined;
+        expect(requiredObservation.isValid(true, false)).toBeFalsy();
+    });
+
+    it("should always be valid when it is not required", function() {
+        var requiredObservation = new Bahmni.ConceptSet.BooleanObservation({concept: {name: "ABC"}}, {"ABC": {required: false}});
+
+        expect(requiredObservation.isValid(true, true)).toBeTruthy();
+        expect(requiredObservation.isValid(true, false)).toBeTruthy();
+        expect(requiredObservation.isValid(false, false)).toBeTruthy();
+        expect(requiredObservation.isValid(false, true)).toBeTruthy();
+    });
 });

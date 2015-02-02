@@ -1,9 +1,8 @@
 Bahmni.ConceptSet.BooleanObservation = function(observation, conceptUIConfig) {
-    var self = this;
     angular.extend(this, observation);
 
     this.isBoolean = true;
-    this.conceptUIConfig = conceptUIConfig;
+    this.conceptUIConfig = conceptUIConfig || {};
 
     this.cloneNew = function() {
         var clone = new Bahmni.ConceptSet.BooleanObservation(angular.copy(observation), conceptUIConfig);
@@ -40,6 +39,10 @@ Bahmni.ConceptSet.BooleanObservation = function(observation, conceptUIConfig) {
         return "buttonselect";
     };
 
+    this.isRequired = function () {
+        return this.getConceptUIConfig().required;
+    };
+
     this.isComputedAndEditable = function() {
         return this.concept.conceptClass === "Computed/Editable";
     };
@@ -48,7 +51,9 @@ Bahmni.ConceptSet.BooleanObservation = function(observation, conceptUIConfig) {
         return true;
     };
 
-    this.isValid = function(a,b) {
+    this.isValid = function(checkRequiredFields, conceptSetRequired) {
+        if (conceptSetRequired && this.isRequired() && !this.value) return false;
+        if (checkRequiredFields && this.isRequired() && !this.value) return false;
         return true;
     };
 
