@@ -129,7 +129,6 @@ angular.module('bahmni.clinical')
 
                 if ($scope.treatment.isBeingEdited) {
                     $scope.treatments.splice($scope.treatment.currentIndex, 1);
-                    $scope.treatment.isBeingEdited = false;
                 }
 
                 var potentiallyOverlappingOrders = existingDrugOrders.filter(function (drugOrder) {
@@ -149,6 +148,9 @@ angular.module('bahmni.clinical')
                     ngDialog.open({ template: 'consultation/views/treatmentSections/reviseRefillDrugOrderModal.html', scope: $scope});
                     $scope.popupActive = true;
                     return;
+                }
+                if ($scope.treatment.isBeingEdited) {
+                    $scope.treatment.isBeingEdited = false;
                 }
                 $scope.treatments.push($scope.treatment);
                 $scope.clearForm();
