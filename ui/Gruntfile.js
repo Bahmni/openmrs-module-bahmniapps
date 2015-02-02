@@ -165,6 +165,7 @@ module.exports = function (grunt) {
         htmlmin: {
             dist: {
                 options: {
+                    keepClosingSlash:true
                 },
                 files: [
                     {
