@@ -19,7 +19,7 @@
         <pre class="left">{{drugOrder.additionalInstructions}}</pre>
         <div class="footer-note right">
             <span class="provider">
-                {{drugOrder.provider.name}}
+                {{drugOrder.provider.name}} {{drugOrder.effectiveStartDate | date :'hh:mm a'}}
             </span>
         </div>
     </td>
@@ -28,7 +28,7 @@
     <td colspan="4" class="notes inline-notes">
         <div class="footer-note right">
             <span class="provider">
-                {{drugOrder.provider.name}}
+                {{drugOrder.provider.name}} {{drugOrder.effectiveStartDate | date :'hh:mm a'}}
             </span>
         </div>
     </td>

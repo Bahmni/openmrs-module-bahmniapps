@@ -29,8 +29,7 @@
                         <pre class="left">{{diagnosis.comments}}</pre>
                         <div class="footer-note right">
                             <span class="provider">
-                                {{providerName(diagnosis)}}
-                            <span class="time">{{diagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
+                                {{providerName(diagnosis)}} {{diagnosis.diagnosisDateTime | date :'hh:mm a'}}
                             </span>
                         </div>
                     </td>
@@ -39,8 +38,7 @@
                     <td colspan="4" class="notes inline-notes">
                         <div class="footer-note right">
                             <span class="provider">
-                                {{providerName(diagnosis)}}  {{diagnosis.show}}
-                            <span class="time">{{diagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
+                                {{providerName(diagnosis)}} {{diagnosis.diagnosisDateTime | date :'hh:mm a'}}
                             </span>
                         </div>
                     </td>
