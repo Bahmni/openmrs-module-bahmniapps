@@ -3,7 +3,7 @@
     <section class="block diagnosis" ng-class="{'more': allDiagnoses.show}">
         <table class="dashboard-table history-diagnosis">
             <tbody ng-repeat="diagnosis in allDiagnoses | primaryDiagnosisFirst" class="row">
-                <tr class="view-past" toggle="diagnosis.show">
+                <tr class="view-past">
                     <td >
                         <span class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">
                             {{diagnosis.getDisplayName()}}
@@ -17,10 +17,10 @@
                     <td class="date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}
                     </td>
                     <td class="toggle-btn">
-                        <button ng-show="!diagnosis.comments && config.showDetailsButton" class="toggle fr"
+                        <button ng-show="!diagnosis.comments && config.showDetailsButton" class="toggle fr" ng-click="toggle(diagnosis)"
                                 ng-class="{'has-notes': diagnosis.comments}">
-                            <i class="icon-plus-sign" ng-hide="diagnosis.show"></i>
-                            <i class="icon-minus-sign" ng-show="diagnosis.show"></i>
+                            <i class="icon-plus-sign" ng-hide="diagnosis.showDetails"></i>
+                            <i class="icon-minus-sign" ng-show="diagnosis.showDetails"></i>
                         </button>
                     </td>
                 </tr>
@@ -35,11 +35,11 @@
                         </div>
                     </td>
                 </tr>
-                <tr ng-show="!diagnosis.comments && diagnosis.show">
+                <tr ng-show="diagnosis.showDetails">
                     <td colspan="4" class="notes inline-notes">
                         <div class="footer-note right">
                             <span class="provider">
-                                {{providerName(diagnosis)}}
+                                {{providerName(diagnosis)}}  {{diagnosis.show}}
                             <span class="time">{{diagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
                             </span>
                         </div>

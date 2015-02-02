@@ -13,12 +13,12 @@ angular.module('bahmni.clinical')
                     });
                 };
 
-                $scope.toggle = function (item) {
-                    item.show = !item.show
+                $scope.toggle = function(diagnosis) {
+                    diagnosis.showDetails = !diagnosis.showDetails;
                 };
                 $scope.providerName = function (diagnosis) {
                     return diagnosis.providers[0] ? diagnosis.providers[0].name : "";
-                }
+                };
 
                 var getPromises = function () {
                     return [getAllDiagnosis()];
