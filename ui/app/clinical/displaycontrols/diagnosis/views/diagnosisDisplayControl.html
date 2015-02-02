@@ -28,9 +28,10 @@
                     <td colspan="4" class="notes inline-notes">
                         <pre class="left">{{diagnosis.comments}}</pre>
                         <div class="footer-note right">
-                        <span class="provider">
-                            {{providerName(diagnosis)}}
-                        </span>
+                            <span class="provider">
+                                {{providerName(diagnosis)}}
+                            <span class="time">{{diagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
+                            </span>
                         </div>
                     </td>
                 </tr>
@@ -38,7 +39,8 @@
                     <td colspan="4" class="notes inline-notes">
                         <div class="footer-note right">
                             <span class="provider">
-                             {{providerName(diagnosis)}}
+                                {{providerName(diagnosis)}}
+                            <span class="time">{{diagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
                             </span>
                         </div>
                     </td>
