@@ -3,7 +3,7 @@ Bahmni.ConceptSet.ConceptSetGroupValidationHandler = function(conceptSetSections
 
     this.add = function(validation) {
         validations.push(validation);
-    }
+    };
 
     this.validate = function() {
         var allconceptSetSectionsValid = true;
@@ -15,5 +15,5 @@ Bahmni.ConceptSet.ConceptSetGroupValidationHandler = function(conceptSetSections
             conceptSetSections.filter(_.property('isLoaded')).forEach(function(conceptSetSection){ conceptSetSection.show(); });
         }
         return {allow: allconceptSetSectionsValid};
-    }
-}
+    };
+};
