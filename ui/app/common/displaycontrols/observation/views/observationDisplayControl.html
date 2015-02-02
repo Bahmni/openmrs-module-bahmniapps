@@ -1,6 +1,11 @@
-<div  class="block ">
-    <h2 class="section-title">{{title}}</h2>
-
+<div class="block ">
+    <h2 ng-if="!isClickable()" class="section-title">{{title}}</h2>
+    <div ng-if="isClickable()" class="dashboard-observations-section">
+        <h2 ng-dialog="dashboard/views/dashboardSections/observationSectionSummary.html" 
+        ng-dialog-controller="PatientDashboardObservationSectionController"
+        ng-dialog-data="{{dialogData}}"
+        class="section-title">{{title}}</h2>
+    </div>
     <section class="block hierarchy">
         <ul class="form-field">
             <li ng-repeat="obsGroup in ::bahmniObservations">

@@ -1,0 +1,12 @@
+<header class="template-header">
+    <button class="ngdialog-close back-btn">Back</button>
+    <h5>
+        <i class="icon-user"></i> 
+        <span>{{patient.name}} {{'(' + patient.identifier + ')'}}</span>
+    </h5>
+    <h6>All {{section.title}}</h6>
+</header>
+<div class="template-container">
+	<div pivot-table patient-uuid="patient.uuid" config="section.pivotTable" display-name="section.title"></div>
+	<bahmni-observation patient="patient" config="section" title="section.title"></bahmni-observation>
+</div>

@@ -22,7 +22,7 @@ angular.module('bahmni.common.displaycontrol')
                 };
 
                 var fetchObservations = function () {
-                    spinner.forPromise(observationsService.fetch($scope.patientUuid,$scope.config.conceptNames,$scope.config.scope,$scope.config.numberOfVisits,$scope.visitUuid).then(function (response) {
+                    spinner.forPromise(observationsService.fetch($scope.patient.uuid,$scope.config.conceptNames,$scope.config.scope,$scope.config.numberOfVisits,$scope.visitUuid).then(function (response) {
                             mapObservation(response,$scope.config);
                         }));
                 };
@@ -31,14 +31,24 @@ angular.module('bahmni.common.displaycontrol')
                     element.isOpen = !element.isOpen;
                 };
 
+                $scope.isClickable= function(){
+                    return $scope.config.pivotTable && true;
+                };
+
                 fetchObservations();
+
+                $scope.dialogData = {
+                    "patient": $scope.patient,
+                    "section": $scope.config
+                };
+                
             };
             return {
                 restrict:'E',
                 controller:controller,
                 templateUrl:"../common/displaycontrols/observation/views/observationDisplayControl.html",
                 scope:{
-                    patientUuid:"=",
+                    patient:"=",
                     visitUuid : "@",
                     config : "=",
                     title:"="
