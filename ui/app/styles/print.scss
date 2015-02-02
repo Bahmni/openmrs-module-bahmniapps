@@ -93,3 +93,21 @@ h1,h2,h3{
 .hindi-text { 
   vertical-align:bottom; 
 }
+
+.pgContainer {
+  height: auto;
+  min-height: none;
+}
+.dashboard-section-wrapper .dashboard-sections {
+  width: 100%;
+  float: none;
+  .dashboard-section {
+    border: 0;
+  }
+  h2.section-title {
+    text-align: left;
+    color: #000;
+    font-size: 16px;
+    font-weight: bold;
+  }
+}

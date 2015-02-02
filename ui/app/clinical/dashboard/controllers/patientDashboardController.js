@@ -2,8 +2,8 @@
 
 angular.module('bahmni.clinical')
     .controller('PatientDashboardController', ['$scope', '$location',
-        'encounterService', 'clinicalAppConfigService', 'diseaseTemplateService', 'dashboardConfig', 'spinner',
-        function ($scope, $location, encounterService, clinicalAppConfigService, diseaseTemplateService, dashboardConfig, spinner) {
+        'encounterService', 'clinicalAppConfigService', 'diseaseTemplateService', 'dashboardConfig','printer','$state','spinner',
+        function ($scope, $location, encounterService, clinicalAppConfigService, diseaseTemplateService, dashboardConfig,printer,$state,spinner) {
 
             $scope.activeVisit = $scope.visitHistory.activeVisit;
             $scope.patientSummary = {};
@@ -27,12 +27,17 @@ angular.module('bahmni.clinical')
                 $scope.init(dashboard);
             });
 
+            $scope.$on("event:printDashboard", function (event) {
+                printer.printFromScope("dashboard/views/dashboardPrint.html",$scope);
+            });
+
             $scope.init = function (dashboard) {
                 dashboardConfig.switchDashboard(dashboard);
                 return diseaseTemplateService.getLatestDiseaseTemplates($scope.patient.uuid, dashboardConfig.getDiseaseTemplateSections())
                     .then(function (diseaseTemplates) {
                         $scope.diseaseTemplates = diseaseTemplates;
                         $scope.patientDashboardSections = dashboardConfig.getDashboardSections(diseaseTemplates);
+                        $scope.currentDashboardTemplateUrl = $state.current.views.content.templateUrl;
                     });
             };
 

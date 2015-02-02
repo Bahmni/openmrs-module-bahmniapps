@@ -20,6 +20,9 @@ angular.module('bahmni.clinical')
                 }
             };
 
+            $scope.printDashboard= function(){
+                $scope.$parent.$parent.$broadcast("event:printDashboard",dashboardConfig.getCurrentDashboard().printing);
+            };
             $scope.closeDashboard = function (dashboard) {
                 dashboardConfig.closeDashboard(dashboard);
                 $scope.$parent.$parent.$broadcast("event:switchDashboard", dashboardConfig.getDefaultDashboard());

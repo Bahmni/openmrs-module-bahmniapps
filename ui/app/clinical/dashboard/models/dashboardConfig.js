@@ -67,4 +67,11 @@ Bahmni.Clinical.DashboardConfig = function (config) {
         return self.dashboards.length > 1;
     };
 
+    this.showPrint = function () {
+        return !_.isEmpty(self.currentDashboard.printing);
+    };
+
+    this.getPrintConfigForCurrentDashboard = function(){
+        return self.currentDashboard.printing;
+    }
 };

@@ -2,6 +2,8 @@
     <div class="opd-header-bottom tabs">
         <bm-back-links></bm-back-links>
 
+        <button ng-if="dashboardConfig.showPrint()" class="dialog-button-group" ng-click="printDashboard()" accesskey="r">P<u>r</u>int</button>
+
         <ul class="header-tabs" ng-if="dashboardConfig.showTabs()">
             <li class="tab-item " ng-repeat="dashboard in dashboardConfig.openDashboards"
                 ng-class="{'tab-selected' : dashboardConfig.isCurrentDashboard(dashboard), 'tab-removable': dashboardConfig.isCurrentDashboard(dashboard) && !dashboard.default}">

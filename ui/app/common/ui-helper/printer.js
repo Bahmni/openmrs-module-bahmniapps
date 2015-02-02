@@ -39,12 +39,27 @@ angular.module('bahmni.common.uiHelper')
                         printHtml(element.html());
                         printScope.$destroy();
                     }
-                }
+                };
                 waitForRenderAndPrint();
             });
         };
 
+        var printFromScope = function (templateUrl, scope) {
+            $http.get(templateUrl).success(function(template){
+                var printScope = scope;
+                var element = $compile($('<div>' + template + '</div>'))(printScope);
+                var waitForRenderAndPrint = function() {
+                    if(printScope.$$phase || $http.pendingRequests.length) {
+                        $timeout(waitForRenderAndPrint);
+                    } else {
+                       printHtml(element.html());
+                    }
+                };
+                waitForRenderAndPrint();
+            });
+        };
         return {
-            print: print
+            print: print,
+            printFromScope:printFromScope
         }
 }]);

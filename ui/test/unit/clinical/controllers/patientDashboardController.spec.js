@@ -4,7 +4,7 @@ describe("patient dashboard controller", function () {
 
     beforeEach(module('bahmni.clinical'));
 
-    var _diseaseTemplateService, scope, _dashboardConfig, _clinicalAppConfigService;
+    var _diseaseTemplateService, scope, _dashboardConfig, _clinicalAppConfigService,_state;
 
     var fetchDiseaseTemplatePromise;
 
@@ -42,18 +42,29 @@ describe("patient dashboard controller", function () {
         _diseaseTemplateService.getLatestDiseaseTemplates.and.callFake(function () {
             return fetchDiseaseTemplatePromise;
         });
+        _state = {
+            current:{
+                views:{
+                    content:{
+                        templateUrl:"dashboard/views/dashboard.html"
+                    }
+                }
+            }
+        }
     }));
 
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
         scope.patient = {};
         scope.visitHistory = {};
+
         $controller('PatientDashboardController', {
             $scope: scope,
             diseaseTemplateService: _diseaseTemplateService,
             encounterService: jasmine.createSpy(),
             clinicalAppConfigService: _clinicalAppConfigService,
-            dashboardConfig: _dashboardConfig
+            dashboardConfig: _dashboardConfig,
+            $state : _state
         });
     }));
 

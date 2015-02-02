@@ -1,0 +1,11 @@
+<html>
+<head>
+    <link rel="stylesheet" href="../styles/clinicalPrint.css"/>
+</head>
+<body>
+    <img class="logo" src="{{dashboardConfig.getPrintConfigForCurrentDashboard().logo}}" alt="logo">
+    <h1>{{dashboardConfig.getPrintConfigForCurrentDashboard().title}}</h1>
+    <h2>{{dashboardConfig.getPrintConfigForCurrentDashboard().header}}</h2>
+    <div ng-include="currentDashboardTemplateUrl"></div>
+</body>
+</html>
