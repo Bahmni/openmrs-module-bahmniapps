@@ -7,9 +7,9 @@ Bahmni.Clinical.DashboardConfig = function (config) {
     this.openDashboards = [];
 
     this.getDefaultDashboard = function () {
-        self.currentDashboard = _.first(self.dashboards, function (dashboard) {
+        self.currentDashboard = _.find(self.dashboards, function (dashboard) {
             return dashboard.default;
-        })[0];
+        });
         return self.currentDashboard;
     };
 
