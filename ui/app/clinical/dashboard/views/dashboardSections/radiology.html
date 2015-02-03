@@ -1,4 +1,4 @@
-<div ng-controller="PatientDashboardRadiologyController" class="dashboard-radiology-section">
+<div ng-controller="PatientDashboardRadiologyController" class="dashboard-radiology-section" ng-class="{'hidden-print':!radiologyRecordGroups.length}">
     <h2 class="section-title">{{section.title}}</h2>
     <section class="block">
         <ul>

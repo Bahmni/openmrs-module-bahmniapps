@@ -2,7 +2,9 @@
     <div class="opd-header-bottom tabs">
         <bm-back-links></bm-back-links>
 
-        <button ng-if="dashboardConfig.showPrint()" class="dialog-button-group" ng-click="printDashboard()" accesskey="r">P<u>r</u>int</button>
+        <button ng-if="dashboardConfig.showPrint()" class="dialog-button-group" ng-click="printDashboard()" accesskey="r">
+            <i class="icon-print"></i>
+            P<u>r</u>int</button>
 
         <ul class="header-tabs" ng-if="dashboardConfig.showTabs()">
             <li class="tab-item dashboard" ng-repeat="dashboard in dashboardConfig.openDashboards"

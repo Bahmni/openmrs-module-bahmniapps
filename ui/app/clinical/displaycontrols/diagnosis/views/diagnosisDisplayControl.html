@@ -1,52 +1,50 @@
-<div class="block ">
+<section class="block diagnosis" ng-class="{'more': allDiagnoses.show, 'hidden-print':hasDiagnoses}">
     <h2 class="section-title">{{title}}</h2>
-    <section class="block diagnosis" ng-class="{'more': allDiagnoses.show}">
-        <table class="dashboard-table history-diagnosis">
-            <tbody ng-repeat="diagnosis in allDiagnoses | primaryDiagnosisFirst" class="row">
-                <tr class="view-past">
-                    <td >
-                        <span class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">
-                            {{diagnosis.getDisplayName()}}
+    <table class="dashboard-table history-diagnosis">
+        <tbody ng-repeat="diagnosis in allDiagnoses | primaryDiagnosisFirst" class="row">
+            <tr class="view-past">
+                <td >
+                    <span class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">
+                        {{diagnosis.getDisplayName()}}
+                    </span>
+                </td>
+                <td class="view">
+                        <span class="certainty">{{diagnosis.certainty}}</span>
+                        <span class="order">{{diagnosis.order}}</span>
+                        <span class="status">{{diagnosis.diagnosisStatus}}</span>
+                </td>
+                <td class="date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}
+                </td>
+                <td class="toggle-btn">
+                    <button ng-show="!diagnosis.comments && config.showDetailsButton" class="toggle fr" ng-click="toggle(diagnosis)"
+                            ng-class="{'has-notes': diagnosis.comments}">
+                        <i class="icon-plus-sign" ng-hide="diagnosis.showDetails"></i>
+                        <i class="icon-minus-sign" ng-show="diagnosis.showDetails"></i>
+                    </button>
+                </td>
+            </tr>
+            <tr ng-show="diagnosis.comments">
+                <td colspan="4" class="notes inline-notes">
+                    <pre class="left">{{diagnosis.comments}}</pre>
+                    <div class="footer-note right">
+                        <span class="provider">
+                            {{providerName(diagnosis)}} {{diagnosis.diagnosisDateTime | date :'hh:mm a'}}
                         </span>
-                    </td>
-                    <td class="view">
-                            <span class="certainty">{{diagnosis.certainty}}</span>
-                            <span class="order">{{diagnosis.order}}</span>
-                            <span class="status">{{diagnosis.diagnosisStatus}}</span>
-                    </td>
-                    <td class="date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}
-                    </td>
-                    <td class="toggle-btn">
-                        <button ng-show="!diagnosis.comments && config.showDetailsButton" class="toggle fr" ng-click="toggle(diagnosis)"
-                                ng-class="{'has-notes': diagnosis.comments}">
-                            <i class="icon-plus-sign" ng-hide="diagnosis.showDetails"></i>
-                            <i class="icon-minus-sign" ng-show="diagnosis.showDetails"></i>
-                        </button>
-                    </td>
-                </tr>
-                <tr ng-show="diagnosis.comments">
-                    <td colspan="4" class="notes inline-notes">
-                        <pre class="left">{{diagnosis.comments}}</pre>
-                        <div class="footer-note right">
-                            <span class="provider">
-                                {{providerName(diagnosis)}} {{diagnosis.diagnosisDateTime | date :'hh:mm a'}}
-                            </span>
-                        </div>
-                    </td>
-                </tr>
-                <tr ng-show="diagnosis.showDetails">
-                    <td colspan="4" class="notes inline-notes">
-                        <div class="footer-note right">
-                            <span class="provider">
-                                {{providerName(diagnosis)}} {{diagnosis.diagnosisDateTime | date :'hh:mm a'}}
-                            </span>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-            <div ng-show="hasDiagnoses">
-                <div class="placeholder-text">No {{title}} for this patient.</div>
-            </div>
-    </section>
-</div>
+                    </div>
+                </td>
+            </tr>
+            <tr ng-show="diagnosis.showDetails">
+                <td colspan="4" class="notes inline-notes">
+                    <div class="footer-note right">
+                        <span class="provider">
+                            {{providerName(diagnosis)}} {{diagnosis.diagnosisDateTime | date :'hh:mm a'}}
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+        <div ng-show="hasDiagnoses">
+            <div class="placeholder-text">No {{title}} for this patient.</div>
+        </div>
+</section>

@@ -6,7 +6,8 @@
             <thead>
             <tr ng-click="toggle(labOrderResults)" ng-class="{'row-click':getAccessionDetailsFrom(labOrderResults)}">
                 <th colspan="3">
-                    <span>Accession at </span>
+                    <span class="hidden-print">Accession at </span>
+                    <span class="visible-print">Sample at </span>
                     <span bo-text="getAccessionDetailsFrom(labOrderResults).accessionDateTime | date:'dd MMM yy hh:mm a'"></span>
                     <button class="toggle-btn fr" ng-if="showAccessionNotes(labOrderResults)">
                         <i class="icon-envelope" ng-hide="!labOrders.show"></i>

@@ -54,7 +54,7 @@
   }
   section {
     label.date {
-      font-family: OpenSansBold;
+      font-family: $OpenSansBoldFont;
       background: $lightestGray;
       padding: 10px;
       display: block;
@@ -94,6 +94,9 @@
       color: red;
     }
   }
+	.visible-print {
+		display: none;
+	}
 }
 
 .dashboard-treatment-section {
@@ -303,7 +306,7 @@ table.pivot-table {
     min-height: 40px;
     vertical-align: middle;
     font-weight: bold;
-    font-family: "OpenSansBold";
+    font-family: $OpenSansBoldFont;
   }
   tr {
      td, th {

@@ -1,4 +1,4 @@
-<div class="block ">
+<div class="block " ng-class="{'hidden-print': noObsMessage}">
     <h2 ng-if="!isClickable()" class="section-title">{{title}}</h2>
     <div ng-if="isClickable()" class="dashboard-observations-section">
         <h2 ng-dialog="dashboard/views/dashboardSections/observationSectionSummary.html" 

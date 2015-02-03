@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-@page{
+@page {
   margin-left: 0.2cm;
   margin-right: 0.2cm;
   margin-top: 0.2cm;
@@ -8,7 +8,7 @@
 }
 
 body, body pre {
-  font-family: arial, sans-serif;
+  font-family: Arial, sans-serif;
   font-size: 10pt;
 }
 
@@ -98,16 +98,196 @@ h1,h2,h3{
   height: auto;
   min-height: none;
 }
-.dashboard-section-wrapper .dashboard-sections {
-  width: 100%;
-  float: none;
-  .dashboard-section {
-    border: 0;
-  }
-  h2.section-title {
-    text-align: left;
-    color: #000;
-    font-size: 16px;
-    font-weight: bold;
-  }
+
+
+/** Print Style for dashboard **/
+
+.dashboard-print-wrapper {
+	font-family: Arial, sans-serif;
+	font-size: 12px;
+	padding-left: 10px;
+	padding-right: 10px;
+	.visible-print {
+		display: initial;
+	}
+	.hidden-print {
+		display: none;
+	}
+	.placeholder-text {
+		font-size: 12px;
+		padding: 2px 10px;
+		border: 1px solid #ccc;
+		border-top: 0;
+	}
+	.print-header {
+		padding-top: 10px;
+		text-align: center;
+		color: #000;
+		.logo {
+			width: 50px;
+			vertical-align: middle;
+			display: inline-block;
+		}
+		h1 {
+			font-size: 20px;
+			margin-bottom: 10px;
+			color: #000;
+			font-family: Arial, sans-serif;
+		}
+		h2 {
+			font-size: 16px;
+			margin-bottom: 5px;
+			color: #000;
+			text-transform: uppercase;
+			background: #ccc;
+			padding: 5px;
+			font-family: Arial, sans-serif;
+		}
+	}
+	.hierarchy ul li {
+		.tree-list-item {
+			padding-top: 1px;
+			padding-bottom: 1px;
+			i[class^="icon-"] {
+				display: none;
+			}
+			.obs-date {
+				font-weight: bold;
+				font-size: 12px;
+			}
+		}
+		.testUnderPanel {
+			padding-left: 0;
+		}
+	}
+	.dashboard-sections {
+		width: 100%;
+		float: none;
+	}
+	.dashboard-section {
+		border: 0;
+		margin: 0 0 15px;
+		font-size: 10px;
+		h2.section-title {
+			text-align: left;
+			color: #000;
+			font-size: 14px;
+			font-family: Arial, sans-serif;;
+			font-weight: bold;
+			line-height: normal;
+			border: 1px solid #ddd;
+			padding: 1px 10px;
+			margin: 0;
+		}
+		section.block {
+			border-radius: 0;
+			border: 0;
+			.form-field {
+				border: 1px solid #ddd;
+				.time {
+					display: none;
+				}
+			}
+			table {
+				border-collapse: separate;
+				border: 1px solid #ddd;
+				thead {
+					tr {
+						border: 0;
+						th {
+							border: 0;
+							border-bottom: 1px solid #EEE;
+							font-size: 12px;
+							font-weight: bold;
+							padding: 2px 10px;
+							color: #000;
+							background: none;
+							font-family: Arial, sans-serif;
+						}
+					}
+				}
+				tbody {
+					tr {
+						&, td, th {
+							border: 0;
+							font-size: 12px;
+							padding: 2px 10px;
+							font-family: Arial, sans-serif;
+						}
+						.notes {
+							padding: 0px 5px 2px 20px;
+							font-size: 10px;
+							background: none;
+							color: #aaa;
+							.footer-note .provider {
+								display: none;
+							}
+							&.test-notes i[class^=icon-] {
+								padding: 0;
+							}
+						}
+					}
+				}
+			}
+		}
+		.hierarchy ul li {
+			&, ul li {
+				border: 0;
+				background: none;
+				font-size: 12px;
+			}
+		}
+	}
+	.dashboard-patientInformation-section {
+		table {
+			.name {
+				width: 200px;
+			}
+			.value {
+				width: auto;
+			}
+		}
+	}
+	.dashboard-treatment-section table {
+		td.dosage {
+			width: 50%;
+		}
+		.drug-discontinued {
+			display: none;
+		}
+	}
+	.diagnosis-name.ruled-out {
+		text-decoration: line-through;
+	}
+	.dashboard-radiology-section, .disposition-section  {
+		ul {
+			border: 1px solid #ddd;
+		}
+		li {
+			border: 0;
+			a {
+				padding: 1px 10px;
+				font-size: 10px;
+			}
+		}
+	}
+	.disposition-state {
+		font-size: 10px;
+		.disposition-by {
+			display: none;
+		}
+	}
+	.dashboard-laborders-section table tr td {
+		.date {
+			display: none;
+		}
+		.value {
+			width: 60%;
+		}
+	}
+	.diagnosis table {
+		.date, .toggle-btn {
+			display: none;
+		}
+	}
 }

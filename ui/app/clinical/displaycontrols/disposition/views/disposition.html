@@ -1,10 +1,9 @@
-<div class="block">
-<section class="block disposition-section">
+<section class="block disposition-section" ng-class="{'hidden-print':noDispositionsMessage}">
     <h2 class="section-title">Disposition</h2>
     <ul class="block-content">
         <li ng-repeat="disposition in dispositions">
             <div class="expander-row row-click" ng-click="toggle(disposition)">
-                <span class="disposition-state">{{disposition.conceptName}} <span>on</span> {{disposition.dispositionDateTime | date:'dd MMM yy hh:mm a'}} <span>by</span> {{disposition.providers[0].name}}</span>
+                <span class="disposition-state">{{disposition.conceptName}} <span>on</span> {{disposition.dispositionDateTime | date:'dd MMM yy hh:mm a'}} <span class="disposition-by"><span>by</span> {{disposition.providers[0].name}}</span></span>
                 <button ng-repeat="note in disposition.additionalObs" class="toggle fr"
                         ng-class="{'has-notes': note.value}">
                     <i class="icon-plus-sign" ng-hide="disposition.show"></i>
@@ -27,5 +26,4 @@
         <div class="placeholder-text">{{noDispositionsMessage}}</div>
     </div>
 </section>
-</div>
 
