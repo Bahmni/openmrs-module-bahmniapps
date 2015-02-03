@@ -142,8 +142,8 @@
                         <button-select observation="member" ></button-select>
                     </div>
                 </div>
-                <div ng-switch-when="buttonselect">
-                    <button-select observation="observation" ></button-select>
+                <div ng-switch-when="buttonselect" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}" >
+                    <button-select observation="observation"></button-select>
                 </div>
                 <div ng-switch-when="image" class="consultation-image">
                     <!--<div class="file-remove">-->
