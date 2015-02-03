@@ -119,7 +119,6 @@ angular.module('bahmni.common.conceptSet')
                 });
                 return {allow: !invalidNodes || invalidNodes.length === 0};
             };
-            contextChangeHandler.reset();
             contextChangeHandler.add(contextChange);
             var validateObservationTree = function () {
                 if(!$scope.rootObservation) return true;
