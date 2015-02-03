@@ -1,13 +1,15 @@
 <div bindonce class="dashboard-header opd-header-wrapper">
     <div class="opd-header-bottom">        
         <bm-back-links></bm-back-links>
-        <h5>
-        	<i class="icon-user"></i>
-        	<span bo-text="patient.name"></span> 
-        	<span bo-text="'(' + patient.identifier + ')'"></span>
-       	</h5>        
-        
+
+        <ul class="header-tabs">
+            <li class="tab-item" ng-repeat="visitTab in visitConfig" ng-class="{'tab-selected':true}">
+                <a ng-click="tabSelect(visitTab)">{{visitTab.title}}</a>
+            </li>
+        </ul>
+
         <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}"></button>
+        <a class="confirm quick-links" ng-if="visitHistory.activeVisit" ng-click="print()">Print</a>
         <a class="confirm quick-links" ng-if="visitHistory.activeVisit" ng-click="collapseControlPanel()" href="#{{consultationBoardLink}}">Consultation</a>
         <span visit-paginator next-fn="loadVisit" previous-fn="loadVisit" current-visit="visit" visits="visitHistory.visits"></span>
     </div>

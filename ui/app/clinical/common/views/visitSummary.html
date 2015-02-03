@@ -1,17 +1,53 @@
 <section>
-    <p class="no-visit" ng-show="!visit.hasData()">No visit information for this patient</p>
-</section>
-<section class="block dashboard-section">
-    <bahmni-diagnosis patient-uuid="patient.uuid"  title="visitPageDiagnosisTitle" config="diagnosisConfig"></bahmni-diagnosis>
-</section>
-<ng-include src="'common/views/visitSummarySections/observation.html'"></ng-include>
-<section ng-repeat="pivotTable in pivotTableConfigs" pivot-table visit-uuid="visit.uuid" config="pivotTable" patient-uuid="patient.uuid" display-name="pivotTable.title"></section>
 
-<investigation-results params="investigationResultsParameters"></investigation-results>
+    <span>Visit : </span>
+    <span> {{visitSummary.startDateTime | date:'dd MMM yy'}}</span>
+    <span ng-show="visitSummary.stopDateTime"> - {{visitSummary.stopDateTime | date: 'dd MMM yy'}}</span>
+    <span ng-show="visitSummary.isIPD">IPD Visit</span>
+    <span ng-hide="visitSummary.isIPD">OPD Visit</span>
+</section>
+<div ng-if="!clearBoard">
+    <section>
+        <p class="no-visit" ng-show="!visit.hasData()">No visit information for this patient</p>
+    </section>
+    <section ng-if="!hide['diagnosis']" class="block dashboard-section">
+        <bahmni-diagnosis patient-uuid="patient.uuid" title="visitPageDiagnosisTitle"
+                          config="diagnosisConfig"></bahmni-diagnosis>
+    </section>
+    <div ng-if="!hide['observation']">
+        <ng-include src="'common/views/visitSummarySections/observation.html'"></ng-include>
+    </div>
 
-<ng-include src="'common/views/visitSummarySections/radiologyInvestigations.html'"></ng-include>
-<ng-include src="'common/views/visitSummarySections/patientFiles.html'"></ng-include>
-<ng-include src="'common/views/visitSummarySections/otherInvestigations.html'"></ng-include>
-<treatment-data id="visit-treatments" params="treatmentParameters" visit-summary="visitSummary"></treatment-data>
-<disposition id="disposition" params="dispositionParameters"></disposition>
-<ng-include src="'common/views/visitSummarySections/consultationNotes.html'"></ng-include>
+
+    <div ng-if="!hide['pivotTable']">
+        <section ng-repeat="pivotTable in pivotTableConfigs" pivot-table visit-uuid="visit.uuid" config="pivotTable"
+                 patient-uuid="patient.uuid" display-name="pivotTable.title"></section>
+    </div>
+
+    <div ng-if="!hide['investigationResults']">
+        <investigation-results params="investigationResultsParameters"></investigation-results>
+    </div>
+
+    <div ng-if="!hide['radiology']">
+        <ng-include src="'common/views/visitSummarySections/radiologyInvestigations.html'"></ng-include>
+    </div>
+
+    <div ng-if="!hide['patientFiles']">
+        <ng-include src="'common/views/visitSummarySections/patientFiles.html'"></ng-include>
+    </div>
+
+    <div ng-if="!hide['otherInvestigations']">
+        <ng-include src="'common/views/visitSummarySections/otherInvestigations.html'"></ng-include>
+    </div>
+
+    <div ng-if="!hide['treatment']">
+        <treatment-data id="visit-treatments" params="treatmentParameters" visit-summary="visitSummary"></treatment-data>
+    </div>
+
+    <div ng-if="!hide['disposition']">
+        <ng-include src="'common/views/visitSummarySections/disposition.html'"></ng-include>
+    </div>
+    <div ng-if="!hide['consultationNotes']">
+        <ng-include src="'common/views/visitSummarySections/consultationNotes.html'"></ng-include>
+    </div>
+</div>

@@ -145,4 +145,13 @@ Bahmni.Common.AppFramework.AppDescriptor = function (context, inheritContext, re
         }
         return urlParams;
     };
+
+    this.addConfigForPage = function(pageName,config){
+        self.pageConfigs= self.pageConfigs || {};
+        self.pageConfigs[pageName] = config;
+    };
+
+    this.getConfigForPage = function(pageName){
+        return self.pageConfigs[pageName];
+    }
 };
