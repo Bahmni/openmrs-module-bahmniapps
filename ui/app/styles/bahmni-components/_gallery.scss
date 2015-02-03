@@ -141,7 +141,7 @@ body.gallery-open > *:not(#gallery-pane) {
 }
 .image-title, .image-bottom-bar {
     font-size: 16px;
-    font-family: OpenSansBold;
+    font-family: $OpenSansBoldFont;
 }
 .image-bottom-bar, .image-desc {
     display: block;
@@ -160,7 +160,7 @@ body.gallery-open > *:not(#gallery-pane) {
 .image-desc {
     background: $lightestGray;
     strong {
-        font-family: OpenSansBold;
+        font-family: $OpenSansBoldFont;
     }
 }
 .no-image {

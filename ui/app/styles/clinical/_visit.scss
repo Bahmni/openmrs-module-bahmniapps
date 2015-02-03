@@ -29,7 +29,7 @@
 				color:#274b59;
 				float:left;
 				padding:0px 10px;
-				font-family: OpenSansBold;
+				font-family: $OpenSansBoldFont;
 			}
 		
 	}
@@ -84,7 +84,7 @@
 }
 .observation-section {
   h3 {
-    font-family: OpenSansBold;
+    font-family: $OpenSansBoldFont;
     margin-top: 10px;
   }
   .is-abnormal {
@@ -155,7 +155,7 @@
   padding: 10px!important;
   overflow: auto;
   h5 {
-    font-family: OpenSansBold;
+    font-family: $OpenSansBoldFont;
     float: left;
     margin-right: 10px;
   }
@@ -197,6 +197,11 @@
     .dosage-form {
       white-space: nowrap;
     }
+	  .drug-discontinued {
+		  td {
+			  text-decoration: line-through;
+		  }
+	  }
   }
 }
 .visit .treatment-section table tr td {
@@ -214,7 +219,7 @@ table.ipd-investigation {
 .one-result.ipd-test-results {border:0}
 .laborder-section, .observation {
   .temp-class {
-    font-family: OpenSansBold;
+    font-family: $OpenSansBoldFont;
   }
   table {
     margin-top: 0;
@@ -235,7 +240,7 @@ table.ipd-investigation {
   padding: 2px 10px;
   &.headerRow {
     background: $bahmniTableHeaderBg;
-    font-family: OpenSansBold;
+    font-family: $OpenSansBoldFont;
     padding: 5px 5px 5px 10px;
     color: $mediumGray;
   }
@@ -286,7 +291,7 @@ span.range {
     }
     tr.header td {
       background: $bahmniTableHeaderBg;
-      font-family: OpenSansBold;
+      font-family: $OpenSansBoldFont;
       color: $mediumGray;
     }
     tr.header.pending-result td{
@@ -408,7 +413,7 @@ legend.mylegend {background: $white!important;}
         min-width: 190px;
         .visit-date {
             color: $darkGray;
-            font-family: OpenSansBold;
+            font-family: $OpenSansBoldFont;
         }
     }
     i.icon-caret-right, i.icon-caret-left {

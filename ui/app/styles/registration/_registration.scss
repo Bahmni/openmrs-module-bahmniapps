@@ -681,7 +681,7 @@ video{
         top:-14px;
         left:20px;
         padding:5px 10px;
-        font-family: OpenSansBold;
+        font-family: $OpenSansBoldFont;
         color: $mediumGray;
         background: $white;
         border: none;
@@ -845,7 +845,7 @@ label.local-name-reg {
 button u, u {
     text-decoration: none;
     border-bottom: 1px solid;
-    font-family: openSansBold;
+    font-family: $OpenSansBoldFont;
 }
 
 .mylegend.additional-attribute {

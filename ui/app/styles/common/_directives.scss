@@ -6,7 +6,7 @@
   position: relative;
   h2 {
     padding: 10px;
-    font-family: OpenSansBold;
+    font-family: $OpenSansBoldFont;
     margin-bottom: 0;
   }
   .placeholder-message {
@@ -21,7 +21,7 @@
   }
   section {
     label.date {
-      font-family: OpenSansBold;
+      font-family: $OpenSansBoldFont;
       background: $lightestGray;
       padding: 10px;
       display: block;
