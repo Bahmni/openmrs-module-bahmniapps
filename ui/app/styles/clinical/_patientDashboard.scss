@@ -335,20 +335,21 @@ table.pivot-table {
     font-size: 12px;
     tr {
       th, td {
-        width: 70px;
+        width: 80px;
         padding: 5px;
         font-size: 12px;
       }
       th {
         background: white;
         font-weight: bold;
-
+        text-align: center;
         .time {
           font-size: 12px;
-          color: darken($lightGray, 5%);
+          color: darken($lightGray, 8%);
           display: inline-block;
           margin-top: 3px;
           font-weight: normal;
+          font-family: OpenSans, Arial, sans-serif;
         }
       }
     }
