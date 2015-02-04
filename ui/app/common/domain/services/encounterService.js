@@ -56,16 +56,6 @@ angular.module('bahmni.common.domain')
         });
     };
 
-    this.searchForVisits = function(visitUuids) {
-        return $http.get(Bahmni.Common.Constants.bahmniEncounterUrl, {
-            params:{
-                visitUuids : visitUuids,
-                includeAll : Bahmni.Common.Constants.includeAllObservations
-            },
-            withCredentials : true
-        });
-    }
-
     var getEncountersOfCurrentVisit = function(patientUuid) {
         var deferredEncounters = $q.defer();
         var options = {
@@ -122,7 +112,7 @@ angular.module('bahmni.common.domain')
     };
 
     this.activeEncounter = function (params) {
-        return $http.get(Bahmni.Common.Constants.recentEncounterUrl, {
+        return $http.get(Bahmni.Common.Constants.bahmniEncounterUrl + '/active', {
             params: params,
             withCredentials : true
         });
