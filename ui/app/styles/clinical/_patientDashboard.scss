@@ -292,6 +292,16 @@ table.dashboard-table {
   .date {
     font-size: 11px;
   }
+  .toggle-btn {
+    width: 24px;
+    .toggle {
+      padding: 0;
+      margin: 0;
+      i {
+        padding: 0;
+      }
+    }
+  }
 }
 table.pivot-table {
   &, * {
