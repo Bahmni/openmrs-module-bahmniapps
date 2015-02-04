@@ -208,4 +208,8 @@ angular.module('consultation')
 //        debugUiRouter($rootScope);
         FastClick.attach(document.body);
         stateChangeSpinner.activate();
+
+        $rootScope.$on('$stateChangeSuccess', function() {
+            window.scrollTo(0,0);
+        });
     }]);
