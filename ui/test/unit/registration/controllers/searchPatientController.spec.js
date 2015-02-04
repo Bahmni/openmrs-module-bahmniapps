@@ -15,6 +15,7 @@ describe('SearchPatientController', function () {
         appService;
 
     beforeEach(angular.mock.module('bahmni.registration'));
+    beforeEach(module('bahmni.common.routeErrorHandler'));
     beforeEach(angular.mock.inject(function ($injector) {
         $controller = $injector.get('$controller');
         rootScope = $injector.get('$rootScope');
