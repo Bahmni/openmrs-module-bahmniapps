@@ -7,7 +7,7 @@ angular.module('bahmni.registration')
             var extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.conceptSetGroup.observations", "config");
             var locationUuid = sessionService.getLoginLocationUuid();
             $scope.conceptSets = extensions.map(function (extension) {
-                return new Bahmni.ConceptSet.ConceptSetSection(extension, {}, [], {});
+                return new Bahmni.ConceptSet.ConceptSetSection(extension, $rootScope.currentUser, {}, [], {});
             });
             $scope.availableConceptSets = $scope.conceptSets.filter(function (conceptSet) {
                 return conceptSet.isAvailable($scope.context);
