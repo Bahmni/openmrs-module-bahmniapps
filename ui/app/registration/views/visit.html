@@ -35,7 +35,7 @@
 
             <!-- TODO: need to find a better way to render the directive again on context change or after all the calls are made.-->
             <section class="observation-section" ng-if="context">
-                <div ng-repeat="conceptSet in availableConceptSets" class="concept-set-group section-grid">
+                <div ng-repeat="conceptSet in availableConceptSets" class="concept-set-group">
                     <div class="concept-set-title">
                         <legend class="mylegend">
                             <strong>{{conceptSet.options.conceptName}}</strong>
@@ -50,10 +50,12 @@
                             observations="observations" obs-scope="conceptSet.options.scope" show-title="false" concept-set-focused="$index === 0" ></concept-set>
                         </div>
                     </div>
-                    <div ng-if="!conceptSet.options.showLatest">
+
+                    <div ng-if="!conceptSet.options.showLatest" >
                         <concept-set concept-set-name="conceptSet.options.conceptName" required="conceptSet.options.required" patient="patient"
                         observations="observations" obs-scope="conceptSet.options.scope" show-title="false" concept-set-focused="$index === 0"></concept-set>
                     </div>
+
                 </div>
             </section>
 
