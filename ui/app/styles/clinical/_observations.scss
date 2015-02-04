@@ -211,6 +211,12 @@ concept-set {
 .concept-set-group {
   .concept-set-title {
     cursor: pointer;
+    position: relative;
+    .favourite-concept-set {
+      position: absolute;
+      right: 5px;
+      top: 5px;
+    }
   }
 }
 .grid-row {

@@ -64,8 +64,11 @@ angular.module('bahmni.common.conceptSet')
             '<form>' +
                 '<div ng-if="showRecentButton">' +
                     '<button type="button" ng-click="showRecent()" class="fr btn-small">Recent</button>' +
-                '</div>' +
-                '<concept concept-set-required="conceptSetRequired" root-observation="rootObservation" patient="patient" observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet" show-title="showTitleValue" ng-if="!rootObservation.hidden"></concept>' +
+                    '</div>' +
+                '<concept concept-set-required="conceptSetRequired" root-observation="rootObservation" patient="patient" ' +
+                'observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet" ' +
+                'show-title="showTitleValue" ng-if="!rootObservation.hidden">' +
+                '</concept>' +
             '</form>';
 
         var numberOfLevels = appService.getAppDescriptor().getConfigValue('maxConceptSetLevels') || 4;

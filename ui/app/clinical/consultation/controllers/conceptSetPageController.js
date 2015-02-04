@@ -1,12 +1,12 @@
 angular.module('bahmni.clinical')
-    .controller('ConceptSetPageController', ['$scope', '$stateParams', 'conceptSetService', 'clinicalAppConfigService', 'messagingService', 'configurations',
-        function ($scope, $stateParams, conceptSetService, clinicalAppConfigService, messagingService, configurations) {
+    .controller('ConceptSetPageController', ['$scope', '$rootScope', '$stateParams', 'conceptSetService', 'clinicalAppConfigService', 'messagingService', 'configurations',
+        function ($scope, $rootScope, $stateParams, conceptSetService, clinicalAppConfigService, messagingService, configurations) {
             $scope.consultation.selectedObsTemplate = $scope.consultation.selectedObsTemplate || [];
     $scope.scrollingEnabled = false;
     var extensions = clinicalAppConfigService.getAllConceptSetExtensions($stateParams.conceptSetGroupName);
     var configs = clinicalAppConfigService.getAllConceptsConfig();
 	var visitType = configurations.encounterConfig().getVisitTypeByUuid($scope.consultation.visitTypeUuid);
-	$scope.context = {visitType:  visitType, patient: $scope.patient};
+            $scope.context = {visitType: visitType, patient: $scope.patient};
 	var numberOfLevels = 2;
     var fields = ['uuid','name', 'names'];
     var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels);
@@ -19,7 +19,7 @@ angular.module('bahmni.clinical')
                     return extension.extensionParams.conceptName === template.name.name;
                 }) || {};
                 var conceptSetConfig = configs[template.name.name] || {};
-                return new Bahmni.ConceptSet.ConceptSetSection(conceptSetExtension, conceptSetConfig,  $scope.consultation.observations,template);
+                return new Bahmni.ConceptSet.ConceptSetSection(conceptSetExtension, $rootScope.currentUser, conceptSetConfig, $scope.consultation.observations, template);
             });
             $scope.consultation.selectedObsTemplate= allConceptSections.filter(function(conceptSet){
                 if(conceptSet.isAvailable($scope.context)){

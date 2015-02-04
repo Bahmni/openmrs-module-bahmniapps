@@ -1,4 +1,5 @@
-Bahmni.ConceptSet.ConceptSetSection = function (extensions, config, observations, conceptSet) {
+Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observations, conceptSet) {
+    
     var self = this;
 
     var init = function () {
@@ -10,6 +11,7 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, config, observations
         self.label = conceptName || conceptSet.name || self.options.conceptName;
         self.isLoaded = self.isOpen;
         self.uuid = conceptSet.uuid;
+        self.alwaysShow = user.isFavouriteObsTemplate(self.conceptName);
     };
 
     var getShowIfFunction = function () {
@@ -29,7 +31,7 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, config, observations
             return observation.value;
         }
     };
-
+    
     self.isAvailable = function (context) {
         return getShowIfFunction()(context || {});
     };
