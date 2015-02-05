@@ -207,7 +207,7 @@ h1,h2,h3{
 							border: 0;
 							font-size: 12px;
 							font-weight: bold;
-							padding: 2px 10px;
+							padding: 1px 5px;
 							color: #000;
 							background: none;
 							font-family: Arial, sans-serif;
@@ -219,7 +219,7 @@ h1,h2,h3{
 						&, td, th {
 							border: 0;
 							font-size: 12px;
-							padding: 2px 10px;
+							padding: 0 5px;
 							font-family: Arial, sans-serif;
 						}
 						.notes {
@@ -233,6 +233,12 @@ h1,h2,h3{
 							&.test-notes i[class^=icon-] {
 								padding: 0;
 							}
+						}
+						.name, .drug {
+							width: 45%;
+						}
+						.value, .dosage {
+							width: auto;
 						}
 					}
 				}
@@ -248,18 +254,12 @@ h1,h2,h3{
 	}
 	.dashboard-patientInformation-section {
 		table {
-			.name {
-				width: 200px;
-			}
 			.value {
 				width: auto;
 			}
 		}
 	}
 	.dashboard-treatment-section table {
-		td.dosage {
-			width: 50%;
-		}
 		.drug-discontinued {
 			display: none;
 		}
