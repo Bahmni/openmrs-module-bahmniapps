@@ -270,8 +270,10 @@ table.dashboard-table {
 
 .dashboard-section section.block.hierarchy {
     .field-attribute {vertical-align: top;}
-    .testUnderPanel {width: 40%;display: inline-block;}
-    .value-text-only {width: 37%;}
+    .testUnderPanel {width: 35%; display: inline-block;}
+    .value-text-only {width: 35%; display: inline-block;}
+    .date-text-only {width: 15%; display: inline-block;}
+    .toggle i {padding: 0};
 }
 
 
