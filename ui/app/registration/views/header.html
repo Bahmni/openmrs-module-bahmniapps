@@ -1,7 +1,4 @@
 <header class="reg-header" ng-controller="NavigationController">
-        
-        <a class="header-logo" href="../home/"><img src="../images/jss_logo.png" alt="Bahmni" title="Bahmni"></a>
-
         <button class="btn-user-info">
             <i class="icon-user-md icon-white small"></i>
             <i class="icon-caret-down icon-white mini"></i>
@@ -18,6 +15,7 @@
             </li>
         </ul>
         <ul class="top-nav">
+            <a class="back-btn" href="../home/"><i class="icon-home"></i>Home</a>  
             <li ng-repeat="extension in extensions">
                 <a ng-click="goTo(extension.url)" accesskey="{{extension.shortcutKey}}"><i class="{{extension.icon}} icon-white small"></i><span class="nav-link" ng-bind-html="htmlLabel(extension.label)"></span></a>
             </li>
