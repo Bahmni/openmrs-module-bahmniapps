@@ -306,6 +306,21 @@ table.dashboard-table {
   }
 }
 table.pivot-table {
+  .tooltip {
+    margin-left: -50px;
+    margin-top: -42px;
+    background: $darkGray;
+    color: white;
+    box-shadow: none;
+    i {
+      top: 12px;
+      left: 49%;
+      color:$darkGray;
+    }
+    .details {
+      color: white !important;
+    }
+  }
   &, * {
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
@@ -328,7 +343,6 @@ table.pivot-table {
        max-height: 36px;
        vertical-align: middle;
        overflow: hidden;
-       text-overflow: ellipsis;
        padding: 5px 10px;
      }
   }
@@ -352,6 +366,12 @@ table.pivot-table {
           margin-top: 3px;
           font-weight: normal;
           font-family: OpenSans, Arial, sans-serif;
+        }
+      }
+      td {
+        .popover-trigger {
+          cursor: pointer;
+          color: $bahmniLinkColor;
         }
       }
     }
