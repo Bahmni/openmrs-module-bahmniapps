@@ -7,19 +7,19 @@ Bahmni.Clinical.DashboardConfig = function (config) {
     this.openDashboards = [];
 
     this.getDefaultDashboard = function () {
-        self.currentDashboard = _.find(self.dashboards, function (dashboard) {
+        this.currentDashboard = _.find(this.dashboards, function (dashboard) {
             return dashboard.default;
         });
-        return self.currentDashboard;
+        return this.currentDashboard;
     };
 
-    function findOpenDashboard(dashboard) {
-        return !_.findWhere(self.openDashboards, {'dashboardName': dashboard.dashboardName});
+    this.findOpenDashboard = function(dashboard) {
+        return !_.findWhere(this.openDashboards, {'dashboardName': dashboard.dashboardName});
     }
 
     this.getUnOpenedDashboards = function () {
         return _.filter(this.dashboards, function (dashboard) {
-            return findOpenDashboard(dashboard);
+            return self.findOpenDashboard(dashboard);
         })
     };
 
@@ -29,7 +29,8 @@ Bahmni.Clinical.DashboardConfig = function (config) {
 
     this.switchDashboard = function (dashboard) {
         this.currentDashboard = dashboard;
-        if (findOpenDashboard(dashboard)) {
+
+        if (this.findOpenDashboard(dashboard)) {
             this.openDashboards.push(dashboard);
         }
     };
@@ -64,14 +65,14 @@ Bahmni.Clinical.DashboardConfig = function (config) {
     };
 
     this.showTabs = function () {
-        return self.dashboards.length > 1;
+        return this.dashboards.length > 1;
     };
 
     this.showPrint = function () {
-        return !_.isEmpty(self.currentDashboard.printing);
+        return !_.isEmpty(this.currentDashboard.printing);
     };
 
     this.getPrintConfigForCurrentDashboard = function(){
-        return self.currentDashboard.printing;
+        return this.getCurrentDashboard().printing;
     }
 };
