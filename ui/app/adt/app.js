@@ -31,7 +31,7 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                     template: '<ui-view/>'
                 },
                 'additional-header': {
-                    templateUrl: '../common/patient/header/views/header.html'
+                    templateUrl: 'views/headerAdt.html'
                 }
             },
 
