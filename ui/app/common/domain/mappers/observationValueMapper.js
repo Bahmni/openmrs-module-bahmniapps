@@ -12,7 +12,7 @@ Bahmni.Common.Domain.ObservationValueMapper = function () {
             return obs.getValues();
         }
         if(type === 'Coded' || typeof obs.value === 'object') {
-            return obs.value ? (obs.value.shortName ? obs.value.shortName : obs.value) : "";
+            return obs.value ? (obs.value.shortName ? obs.value.shortName : (obs.value.name ? obs.value.name : obs.value)) : "";
         }
 
         return obs.value;
