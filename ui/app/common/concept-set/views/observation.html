@@ -81,7 +81,7 @@
             </div>
 
             <span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
-                <button type="button" class="icon-plus" ng-click="cloneNew(observation, rootObservation)">Add More
+                <button type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)"><i class="icon-plus-sign"></i> Add More
                 </button>
             </span>
 
@@ -206,7 +206,7 @@
             <small class="hint" ng-show="observation.concept.lowNormal || observation.concept.hiNormal" ng-bind="'(' + observation.concept.lowNormal + ' - ' + observation.concept.hiNormal + ')'"></small>
 
             <span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
-                <button type="button" class="icon-plus" ng-click="cloneNew(observation, rootObservation)">Add More
+                <button type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)"><i class="icon-plus-sign"></i> Add More
                 </button>
             </span>
 
@@ -229,7 +229,7 @@
         <legend ng-if="showTitle" class="mylegend">
             <strong>{{observation.label}}</strong>
             <span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
-                <button type="button" class="icon-plus" ng-click="cloneNew(observation, rootObservation)">Add More
+                <button type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)"><i class="icon-plus-sign"></i> Add More
                 </button>
             </span>
         </legend>
