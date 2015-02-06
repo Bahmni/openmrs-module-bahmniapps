@@ -3,7 +3,7 @@
 <div class="non-printable" xmlns="http://www.w3.org/1999/html">
     <div>
         <form name="myForm" ng-init="disableFormSubmitOnEnter()" class="visit-patient" ng-submit="submit()">
-                <legend class="mylegend"><span><strong>Summary</strong></span></legend>
+                <div class="mylegend"><span><strong>Summary</strong></span></div>
                     <div class="photo-container-wrapper">
                         <span class="pull-right photo-container">
                                 <img id="patient-image" ng-src="{{patient.image}}"
@@ -36,11 +36,9 @@
             <!-- TODO: need to find a better way to render the directive again on context change or after all the calls are made.-->
             <section class="observation-section" ng-if="context">
                 <div ng-repeat="conceptSet in availableConceptSets" class="concept-set-group">
-                    <div class="concept-set-title">
-                        <legend class="mylegend">
+                        <div class="mylegend">
                             <strong>{{conceptSet.options.conceptName}}</strong>
-                        </legend>
-                    </div>
+                        </div>
                     <div ng-if="conceptSet.options.showLatest">
                         <div class="obs-section right" style="width: 45%">
                             <bahmni-observation patient="patient" config="{conceptNames: conceptSet.options.conceptNames, scope: 'latest'}" title="'Latest'"></bahmni-observation>
