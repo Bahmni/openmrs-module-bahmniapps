@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('authentication', ['ui.router'])
+angular.module('authentication')
     .config(function ($httpProvider) {
         var interceptor = ['$rootScope', '$q', function ($rootScope, $q) {
             function success(response) {
@@ -24,7 +24,7 @@ angular.module('authentication', ['ui.router'])
         $rootScope.$on('event:auth-loginRequired', function () {
             $window.location = "../home/#/login?showLoginMessage=true";
         });
-    }]).service('sessionService', ['$rootScope', '$http', '$q', '$bahmniCookieStore', function ($rootScope, $http, $q, $bahmniCookieStore) {
+    }]).service('sessionService', ['$rootScope', '$http', '$q', '$bahmniCookieStore', 'userService', function ($rootScope, $http, $q, $bahmniCookieStore, userService) {
         var sessionResourcePath = '/openmrs/ws/rest/v1/session';
 
         var createSession = function(username, password){
@@ -75,15 +75,8 @@ angular.module('authentication', ['ui.router'])
                 });
                 return deferrable.promise;
             }
-            $http.get("/openmrs/ws/rest/v1/user", {
-                method: "GET",
-                params: {
-                    username: currentUser,
-                    v: "custom:(username,uuid,person:(uuid,),privileges:(name,retired))"
-                },
-                cache: false
-            }).success(function(data) {
-                $rootScope.currentUser = data.results[0];
+            userService.getUser(currentUser).success(function(data) {
+                $rootScope.currentUser = new Bahmni.Auth.User(data.results[0]);
                 $rootScope.currentUser.currentLocation = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).name;
                 $rootScope.$broadcast('event:user-credentialsLoaded', data.results[0]);
                 deferrable.resolve(data.results[0]);

@@ -143,7 +143,13 @@ body{
 .remove-margin{
   margin:0px !important; 
 }
-
+body pre {
+  font-family: "OpenSans";
+  font-size: 14px;
+  background: none;
+  margin: 0;
+  padding: 0;
+}
 /*** login specific css start ***/
 .login{
     bottom: 0px;
@@ -444,6 +450,13 @@ table{
     padding:10px 20px 0px 20px;
     border-top: 1px solid $lightestGray;
     margin-top: 30px;
+  clear: both;
+}
+
+.obs-section section.block.hierarchy {
+  .field-attribute {vertical-align: top;}
+  .testUnderPanel {width: 40%;display: inline-block;}
+  .value-text-only {width: 37%;}
 }
 
 .print-layout {

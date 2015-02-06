@@ -116,32 +116,33 @@ h1,h2,h3{
 	.placeholder-text {
 		font-size: 12px;
 		padding: 2px 10px;
-		border: 1px solid #ccc;
-		border-top: 0;
+		border: 0;
 	}
 	.print-header {
 		padding-top: 10px;
 		text-align: center;
 		color: #000;
 		.logo {
-			width: 50px;
+			width: 40px;
 			vertical-align: middle;
 			display: inline-block;
 		}
 		h1 {
-			font-size: 20px;
-			margin-bottom: 10px;
+			font-size: 18px;
+			margin-bottom: 0;
 			color: #000;
 			font-family: Arial, sans-serif;
 		}
 		h2 {
-			font-size: 16px;
+			font-size: 14px;
 			margin-bottom: 5px;
 			color: #000;
 			text-transform: uppercase;
-			background: #ccc;
-			padding: 5px;
+			padding: 0;
 			font-family: Arial, sans-serif;
+			text-decoration: underline;
+			font-weight: bold;
+			margin-top: -10px;
 		}
 	}
 	.hierarchy ul li {
@@ -164,6 +165,9 @@ h1,h2,h3{
 		width: 100%;
 		float: none;
 	}
+	.section-grid {
+		border: 0;
+	}
 	.dashboard-section {
 		border: 0;
 		margin: 0 0 15px;
@@ -171,35 +175,39 @@ h1,h2,h3{
 		h2.section-title {
 			text-align: left;
 			color: #000;
-			font-size: 14px;
+			font-size: 13px;
 			font-family: Arial, sans-serif;;
 			font-weight: bold;
 			line-height: normal;
-			border: 1px solid #ddd;
-			padding: 1px 10px;
+			padding: 0;
 			margin: 0;
+			border: 0;
+			text-transform: uppercase;
+			text-decoration: underline;
+			[class^="icon-"] {
+				display: none;
+			}
 		}
 		section.block {
 			border-radius: 0;
 			border: 0;
 			.form-field {
-				border: 1px solid #ddd;
+				border: 0;
 				.time {
 					display: none;
 				}
 			}
 			table {
 				border-collapse: separate;
-				border: 1px solid #ddd;
+				border: 0;
 				thead {
 					tr {
 						border: 0;
 						th {
 							border: 0;
-							border-bottom: 1px solid #EEE;
 							font-size: 12px;
 							font-weight: bold;
-							padding: 2px 10px;
+							padding: 1px 5px;
 							color: #000;
 							background: none;
 							font-family: Arial, sans-serif;
@@ -211,7 +219,7 @@ h1,h2,h3{
 						&, td, th {
 							border: 0;
 							font-size: 12px;
-							padding: 2px 10px;
+							padding: 0 5px;
 							font-family: Arial, sans-serif;
 						}
 						.notes {
@@ -225,6 +233,12 @@ h1,h2,h3{
 							&.test-notes i[class^=icon-] {
 								padding: 0;
 							}
+						}
+						.name, .drug {
+							width: 45%;
+						}
+						.value, .dosage {
+							width: auto;
 						}
 					}
 				}
@@ -240,18 +254,12 @@ h1,h2,h3{
 	}
 	.dashboard-patientInformation-section {
 		table {
-			.name {
-				width: 200px;
-			}
 			.value {
 				width: auto;
 			}
 		}
 	}
 	.dashboard-treatment-section table {
-		td.dosage {
-			width: 50%;
-		}
 		.drug-discontinued {
 			display: none;
 		}
@@ -261,7 +269,7 @@ h1,h2,h3{
 	}
 	.dashboard-radiology-section, .disposition-section  {
 		ul {
-			border: 1px solid #ddd;
+			border: 0;
 		}
 		li {
 			border: 0;

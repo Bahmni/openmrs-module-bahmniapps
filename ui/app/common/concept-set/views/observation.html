@@ -1,26 +1,25 @@
 <div class="observations-tab" >
 <div class="vitals form-horizontal">
     <fieldset class="leaf-observation-node" ng-if="observation.isObservationNode">
-        <div class="form-group">
-            <section class="concept-description" ng-if="observation.primaryObs.concept.description">
+        <div class="form-group bm-pop-over">
+            <div class=" concept-tooltip-description" bm-pop-over-target ng-if="observation.primaryObs.concept.description">
+                <i class="icon-caret-down"></i>
                 <span class="details" ng-bind-html="observation.primaryObs.concept.description"></span>
-                <i class="icon-caret-down"></i>
-            </section>
-            <section class="concept-description" ng-if="observation.recent">
-                <span class="details" ng-bind-html="observation.recent.value"></span>
-                <span class="details" ng-bind-html="observation.recent.date | date: 'd MMM yyyy' "></span>
-                <i class="icon-caret-down"></i>
-            </section>
+            </div>
+
             
             <label class="control-label" for="{{observation.uniqueId}}" >
                 <span ng-bind="observation.label"></span>
                 <span ng-show="observation.primaryObs.units" ng-bind="'(' + observation.primaryObs.units + ')'"></span>
                 <span ng-if="observation.isRequired()" class="asterick">*</span>
-                
+                <i class="icon-question-sign concept-tooltip-trigger" bm-pop-over-trigger ng-if="observation.primaryObs.concept.description"></i>
+
             </label>
 
             <div class="field-value" ng-switch="observation.getControlType()">
-
+                <div class="concept-description" ng-if="observation.recent">
+                    <span class="details" ng-bind-html="observation.recent.value"></span>
+                </div>
                 <div ng-switch-when="html5InputDataType">
                     <input id="{{observation.uniqueId}}" obs-constraints obs="observation.primaryObs"
                            ng-if="!observation.primaryObs.isNumeric()"
@@ -82,7 +81,7 @@
             </div>
 
             <span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
-                <button type="button" class="icon-plus" ng-click="cloneNew(observation, rootObservation)">Add More
+                <button type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)"><i class="icon-plus-sign"></i> Add More
                 </button>
             </span>
 
@@ -100,24 +99,26 @@
     </fieldset>
 
     <fieldset class="leaf-observation-node" ng-if="observation.isFormElement()">
-        <div class="form-group">
-            <section class="concept-description" ng-if="observation.concept.description">
+        <div class="form-group" bm-pop-over>
+
+            <div class=" concept-tooltip-description" bm-pop-over-target ng-if="observation.concept.description">
+                <i class="icon-caret-down"></i>
                 <span class="details" ng-bind-html="observation.concept.description"></span>
-                <i class="icon-caret-down"></i>
-            </section>
-            <section class="concept-description" ng-if="observation.recent">
-                <span class="details" ng-bind-html="observation.recent.value"></span>
-                <span class="details" ng-bind-html="observation.recent.date | date: 'd MMM yyyy' "></span>
-                <i class="icon-caret-down"></i>
-            </section>
+            </div>
 
             <label class="control-label" for="{{observation.uniqueId}}" >
                 <span ng-bind="observation.label"></span>
                 <span ng-show="observation.units" ng-bind="'(' + observation.units + ')'"></span>
                 <span ng-if="observation.isRequired()" class="asterick">*</span>
+                <i class="icon-question-sign concept-tooltip-trigger" bm-pop-over-trigger ng-if="observation.concept.description"></i>
+
             </label>
-            
+
             <div class="field-value" ng-switch="observation.getControlType()">
+                <div class="concept-description" ng-if="observation.recent">
+                    <span class="details" ng-bind-html="observation.recent.value"></span>
+                </div>
+
                 <div ng-switch-when="html5InputDataType">
                     <input id="{{observation.uniqueId}}" obs-constraints obs="observation"
                            ng-model="observation.value" ng-if="observation.isNumeric()"
@@ -205,7 +206,7 @@
             <small class="hint" ng-show="observation.concept.lowNormal || observation.concept.hiNormal" ng-bind="'(' + observation.concept.lowNormal + ' - ' + observation.concept.hiNormal + ')'"></small>
 
             <span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
-                <button type="button" class="icon-plus" ng-click="cloneNew(observation, rootObservation)">Add More
+                <button type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)"><i class="icon-plus-sign"></i> Add More
                 </button>
             </span>
 
@@ -228,16 +229,15 @@
         <legend ng-if="showTitle" class="mylegend">
             <strong>{{observation.label}}</strong>
             <span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
-                <button type="button" class="icon-plus" ng-click="cloneNew(observation, rootObservation)">Add More
+                <button type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)"><i class="icon-plus-sign"></i> Add More
                 </button>
             </span>
         </legend>
 
         <div class="form-group">        
-            <section class="concept-set-description" ng-if="observation.concept.description">
+            <div class="concept-set-description" ng-if="observation.concept.description">
                 <span class="description" ng-bind-html="observation.concept.description"></span>
-                <i class="icon-caret-up"></i>
-            </section>
+            </div>
             <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers " ng-if="!member.hidden">
                 <concept observation="member" root-observation="observation" at-least-one-value-is-set="atLeastOneValueIsSet" patient="patient" show-title="true" concept-set-required="conceptSetRequired" ></concept>
             </div>

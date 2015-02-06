@@ -8,5 +8,8 @@
 </header>
 <div class="template-container">
 	<div pivot-table patient-uuid="patient.uuid" config="section.pivotTable" display-name="section.title"></div>
-	<bahmni-observation patient="patient" config="section" title="section.title"></bahmni-observation>
+    <section class="block observation dashboard-section" >
+        <bahmni-observation patient="patient" config="section" title="section.title" is-on-dashboard="false"></bahmni-observation>
+    </section>
+
 </div>

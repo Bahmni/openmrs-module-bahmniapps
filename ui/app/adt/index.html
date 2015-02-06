@@ -11,7 +11,6 @@
     <body>
         <div ng-app="adt">
             <div ng-include src="'../common/ui-helper/header.html'"></div>
-            <div ui-view="additional-header"></div>
             <div ng-include src="'../common/ui-helper/messages.html'"></div>
             <div class="opd-wrapper">
                 <div ui-view="content" id="view-content" class="opd-content-wrapper"></div>
@@ -38,8 +37,15 @@
 
 
         <!-- build:js adt.min.js -->
+        <script src="../common/route-errorhandler/init.js"></script>
+
         <script src="../common/util/httpErrorInterceptor.js"></script>
+        
+        <script src="../common/auth/init.js"></script>
+        <script src="../common/auth/user.js"></script>
+        <script src="../common/auth/userService.js"></script>
         <script src="../common/auth/authentication.js"></script>
+
 
         <script src="../common/config/init.js"></script>
         <script src="../common/config/services/configurations.js"></script>

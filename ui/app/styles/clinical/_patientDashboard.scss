@@ -270,8 +270,10 @@ table.dashboard-table {
 
 .dashboard-section section.block.hierarchy {
     .field-attribute {vertical-align: top;}
-    .testUnderPanel {width: 40%;display: inline-block;}
-    .value-text-only {width: 37%;}
+    .testUnderPanel {width: 35%; display: inline-block;}
+    .value-text-only {width: 35%; display: inline-block;}
+    .date-text-only {width: 15%; display: inline-block;}
+    .toggle i {padding: 0};
 }
 
 
@@ -292,8 +294,33 @@ table.dashboard-table {
   .date {
     font-size: 11px;
   }
+  .toggle-btn {
+    width: 24px;
+    .toggle {
+      padding: 0;
+      margin: 0;
+      i {
+        padding: 0;
+      }
+    }
+  }
 }
 table.pivot-table {
+  .tooltip {
+    margin-left: -50px;
+    margin-top: -42px;
+    background: $darkGray;
+    color: white;
+    box-shadow: none;
+    i {
+      top: 12px;
+      left: 49%;
+      color:$darkGray;
+    }
+    .details {
+      color: white !important;
+    }
+  }
   &, * {
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
@@ -316,7 +343,6 @@ table.pivot-table {
        max-height: 36px;
        vertical-align: middle;
        overflow: hidden;
-       text-overflow: ellipsis;
        padding: 5px 10px;
      }
   }
@@ -325,20 +351,27 @@ table.pivot-table {
     font-size: 12px;
     tr {
       th, td {
-        width: 70px;
+        width: 80px;
         padding: 5px;
         font-size: 12px;
       }
       th {
         background: white;
         font-weight: bold;
-
+        text-align: center;
         .time {
           font-size: 12px;
-          color: darken($lightGray, 5%);
+          color: darken($lightGray, 8%);
           display: inline-block;
           margin-top: 3px;
           font-weight: normal;
+          font-family: OpenSans, Arial, sans-serif;
+        }
+      }
+      td {
+        .popover-trigger {
+          cursor: pointer;
+          color: $bahmniLinkColor;
         }
       }
     }

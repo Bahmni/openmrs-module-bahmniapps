@@ -1,7 +1,8 @@
 'use strict';
 
 
-angular.module('adt', ['bahmni.common.patient', 'bahmni.common.patientSearch', 'bahmni.common.uiHelper', 'bahmni.common.conceptSet', 'authentication', 'bahmni.common.appFramework', 'httpErrorInterceptor', 'bahmni.adt', 'bahmni.common.domain', 'bahmni.common.config', 'ui.router', 'bahmni.common.util']);
+angular.module('adt', ['bahmni.common.patient', 'bahmni.common.patientSearch', 'bahmni.common.uiHelper', 'bahmni.common.conceptSet', 'authentication', 'bahmni.common.appFramework',
+    'httpErrorInterceptor', 'bahmni.adt', 'bahmni.common.domain', 'bahmni.common.config', 'ui.router', 'bahmni.common.util', 'bahmni.common.routeErrorHandler']);
 angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function($stateProvider, $httpProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/patient/search');
         $stateProvider.state('patientsearch', {
@@ -30,7 +31,7 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                     template: '<ui-view/>'
                 },
                 'additional-header': {
-                    templateUrl: '../common/patient/header/views/header.html'
+                    templateUrl: 'views/headerAdt.html'
                 }
             },
 

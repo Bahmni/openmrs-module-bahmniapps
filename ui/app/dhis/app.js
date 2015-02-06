@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dhis', ['httpErrorInterceptor', 'bahmni.common.uiHelper', 'bahmni.dhis', 'ngSanitize']).config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
+angular.module('dhis', ['httpErrorInterceptor', 'bahmni.common.uiHelper', 'bahmni.dhis', 'ngSanitize', 'bahmni.common.routeErrorHandler']).config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/dashboard');
     $stateProvider
         .state('dhis', {

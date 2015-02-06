@@ -19,12 +19,12 @@
                 <span class="date">{{getOnlyDate(startDate)}}</span>
                 <span ng-if="::groupByEncounters" class="time">{{getOnlyTime(startDate)}}</span>
             </th>
-            <td ng-init="columnResult = result.tabularData[startDate][conceptDetail.name]" bm-pop-over-trigger bm-pop-over ng-repeat="conceptDetail in ::result.conceptDetails"
+            <td ng-init="columnResult = result.tabularData[startDate][conceptDetail.name]"  bm-pop-over ng-repeat="conceptDetail in ::result.conceptDetails"
                 ng-class="{'is-abnormal': columnResult.abnormal}">
-                {{getColumnValue(columnResult.value)}}
+                <span ng-class="{'popover-trigger': isLonger(columnResult.value), 'is-abnormal': columnResult.abnormal}" bm-pop-over-trigger>{{getColumnValue(columnResult.value)}}</span>
                  <span ng-if="isLonger(columnResult.value)" class="tooltip" bm-pop-over-target>
-                     <i class="icon-caret-left"></i>
-                     <span ng-class="{'is-abnormal': columnResult.abnormal}">{{::columnResult.value}}</span>
+                     <i class="icon-caret-down"></i>
+                     <span class="details">{{::columnResult.value}}</span>
                 </span>
             </td>
         </tr>

@@ -1,0 +1,25 @@
+<div ng-repeat="conceptSet in allTemplates track by $index"
+     ng-if="conceptSet.isAvailable(context) && (conceptSet.isAdded || conceptSet.alwaysShow)"
+     class="concept-set-group section-grid"
+     auto-scroll="{{getNormalized(conceptSet.conceptName)}}" auto-scroll-enabled="autoScrollEnabled">
+    <div class="concept-set-title">
+        <div id="{{getNormalized(conceptSet.conceptName)}}" ng-click="conceptSet.toggleDisplay()" >
+            <h2 class="section-title">
+                <i class="icon-caret-right" ng-hide="conceptSet.isOpen"></i>
+                <i class="icon-caret-down" ng-show="conceptSet.isOpen"></i>
+                <strong>{{conceptSet.label}}</strong>
+                <button type="button" ng-if="conceptSet.showComputeButton()" ng-click="computeField(conceptSet)"
+                        class="fr btn-small">Compute
+                </button>
+            </h2>
+        </div>
+        
+        <input type="checkbox" id="hasOldIdentifier" ng-model="conceptSet.alwaysShow" class="favourite-concept-set"
+               ng-change="togglePref(conceptSet, conceptSet.conceptName)"/>
+    </div>
+
+    <concept-set ng-if="conceptSet.isLoaded" patient="patient" ng-show="conceptSet.isOpen"
+                 concept-set-name="conceptSet.conceptName" required="conceptSet.options.required"
+                 observations="observations" show-title="false" validation-handler="validationHandler">
+    </concept-set>
+</div>

@@ -8,17 +8,32 @@ $fontPath: "../components/openmrs-uicommons/omod/src/main/webapp/resources/fonts
 
 @import "bahmni-layout/retroMode";
 
-@import "common/angularFix";
+
 @import "common/form";
+@import "common/bahmniGlobal";
 @import "common/notifications";
 @import "common/directives";
+@import "common/angularFix";
+@import "common/iosFixedElement";
+@import "bahmni-components/table";
+@import "bahmni-components/typography";
 
-@import "registration/registration";
+@import "bahmni-components/uiHelper";
+@import "bahmni-components/loader";
+@import "bahmni-components/header";
+@import "bahmni-components/navigation";
+@import "bahmni-components/forms";
+@import "bahmni-components/buttons";
 @import "bahmni-components/typography";
 @import "bahmni-components/loader";
 @import "bahmni-components/splitButton";
 
+@import "clinical/observations";
 
+@import "registration/registration";
+
+
+@import "common/noTouch";
 
 
 

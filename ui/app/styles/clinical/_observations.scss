@@ -22,7 +22,7 @@
       }
       legend + .form-group {
         padding: 10px;
-        border: 1px solid lighten($mediumGray, 20%);
+        border: 1px solid $lightGray;
         margin-top: 20px;
         border-radius: 5px;
         legend {
@@ -45,7 +45,15 @@
         color: $mediumGray;
         border: 1px solid lighten($mediumGray, 20%);
         border-radius: 20px;
-
+        .add-more {
+          padding-left: 10px;
+          margin-left: 10px;
+          border-left: 1px solid #ccc;
+        }
+        .add-more-btn {
+          font-size: 10px;
+          padding: 3px;
+        }
       }
       .form-field-group {
         label.control-label {
@@ -124,7 +132,7 @@ form .vitals .form-field .field-value {
     border: 1px solid lighten($mediumGray, 20%);
   }
   textarea {
-    width: 340%;
+    width: 600px;
     margin-bottom: 10px;
     box-sizing: border-box;
     padding-bottom: 30px;
@@ -211,6 +219,12 @@ concept-set {
 .concept-set-group {
   .concept-set-title {
     cursor: pointer;
+    position: relative;
+    .favourite-concept-set {
+      position: absolute;
+      right: 5px;
+      top: 5px;
+    }
   }
 }
 .grid-row {
@@ -237,6 +251,9 @@ concept-set {
 }
 
 .vitals {
+  &.form-horizontal {
+    padding: 5px;
+  }
     .consultation-image {
         width: 758px;
         background: $lightestGray;
@@ -296,10 +313,9 @@ concept-set {
     }
 }
 
-.concept-set-description, .concept-description {
-    position: relative;
-    margin: 0 10px;
-    clear: both;
+.field-value .concept-description {
+  margin: 0 10px 5px 0;
+  display: inline-block;
     ul, ol {margin-left: 20px;}
     ul li {list-style-type: disc;}
     ol li {list-style-type: decimal;}
@@ -307,37 +323,49 @@ concept-set {
         margin-top: 7px;
     }
     span.details, span.description {
-        font-size: 12px;
-        padding: 5px;
-        border-radius: 5px;
+        font-size: 10px;
+        padding: 2px 10px;
+        border-radius: 20px;
         background: $clinicalInfoMessageBg;
         min-width: 30px;
         display: inline-block;
         line-height: 1.5em;
     }
+  p {
+    margin-bottom: 0;
+  }
 }
 .concept-set-description {
-    i {
-        position: absolute;
-        top: -11px;
-        left: 2%;
-        font-size: 20px;
-        color: $clinicalInfoMessageBg;
-    }
+  font-size: 12px;
 }
-.concept-description {
-    margin-left: 10%;
+.concept-tooltip-trigger {
+  cursor: pointer;
+  color: $bahmniSecondaryColor;
+  font-size: 14px;
+}
+.concept-tooltip-description {
+  margin-bottom: 10px;
+  margin-left: 150px;
+  text-align: left;
+  position: relative;
+  .details {
+    display: inline-block;
+    font-size: 12px;
+    padding: 5px;
+    border-radius: 5px;
+    background: $clinicalInfoMessageBg;
+  }
+  i {
+   position: absolute;
+   bottom: -17px;
+   left: 1%;
+   font-size: 20px;
+   color: $clinicalInfoMessageBg;
+ }
+  p {
     margin-bottom: 5px;
-    p {
-        margin-bottom: 0;
-    }
-    i {
-        position: absolute;
-        bottom: -17px;
-        left: 1%;
-        font-size: 20px;
-        color: $clinicalInfoMessageBg;
-    }
+    line-height: 1.1;
+  }
 }
 
 textarea {

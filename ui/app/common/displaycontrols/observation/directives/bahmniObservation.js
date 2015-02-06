@@ -32,7 +32,7 @@ angular.module('bahmni.common.displaycontrol')
                 };
 
                 $scope.isClickable= function(){
-                    return $scope.config.pivotTable && true;
+                    return $scope.config.pivotTable && $scope.isOnDashboard;
                 };
 
                 fetchObservations();
@@ -49,9 +49,10 @@ angular.module('bahmni.common.displaycontrol')
                 templateUrl:"../common/displaycontrols/observation/views/observationDisplayControl.html",
                 scope:{
                     patient:"=",
-                    visitUuid : "@",
-                    config : "=",
-                    title:"="
+                    visitUuid:"@",
+                    config:"=",
+                    title:"=",
+                    isOnDashboard:"="
                 }
             }
     }]);
