@@ -1,4 +1,8 @@
-<div class=" adt-header">
-    <a class="icon-search icon-white small" href="#/patient/search"></i>Search</a>
-    <patient-summary patient="patient" bed-details="bedDetails" on-image-click-handler="gotoPatientDashboard()"/>
+<div class="opd-header-wrapper">
+    <div class="opd-header-top">
+        <header>
+            <input show-if-privilege="{{retrospectivePrivilege}}" class="retro-date-widget" type="date" ng-model="$parent.retrospectiveEntry.encounterDate" max="{{today}}"/>
+            <a class="back-btn" href="#/patient/search" accesskey="p"><u>P</u>atients</a>
+        </header>
+    </div>
 </div>
