@@ -3,7 +3,7 @@
         {{params.title}}
     </h2>
     <p class="placeholder-text" ng-if="drugOrderSections && drugOrderSections.length == 0">No treatments for this patient.</p>
-    <table ng-repeat="drugOrderSection in drugOrderSections | orderBy: drugOrderSection.visitDate">
+    <table ng-repeat="drugOrderSection in drugOrderSections | orderBy: drugOrderSection.visitDate" class="repeated-table">
         <thead>
             <th colspan="4">{{drugOrderSection.visitDate | date: 'dd MMM yy'}}</th>
         </thead>

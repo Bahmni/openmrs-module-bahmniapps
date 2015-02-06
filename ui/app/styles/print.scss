@@ -1,8 +1,8 @@
 @charset "UTF-8";
 
 @page {
-  margin-left: 0.2cm;
-  margin-right: 0.2cm;
+  margin-left: 0.5cm;
+  margin-right: 0.5cm;
   margin-top: 0.2cm;
   margin-bottom: 0.2cm;
 }
@@ -105,8 +105,8 @@ h1,h2,h3{
 .dashboard-print-wrapper {
 	font-family: Arial, sans-serif;
 	font-size: 12px;
-	padding-left: 10px;
-	padding-right: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
 	.visible-print {
 		display: initial;
 	}
@@ -198,6 +198,12 @@ h1,h2,h3{
 			table {
 				border-collapse: separate;
 				border: 0;
+				&.repeated-table {
+					margin-bottom: 5px;
+					&:last-child {
+						margin-bottom: 0;
+					}
+				}
 				thead {
 					tr {
 						border: 0;
@@ -209,6 +215,10 @@ h1,h2,h3{
 							color: #000;
 							background: none;
 							font-family: Arial, sans-serif;
+						}
+						.laborder-sub-heading {
+							font-size: 13px;
+							font-weight: bold;
 						}
 					}
 				}
@@ -241,6 +251,10 @@ h1,h2,h3{
 						.toggle-btn {
 							display: none;
 						}
+						.value .is-abnormal {
+							font-weight: bold;
+						}
+						
 					}
 				}
 			}
@@ -306,4 +320,5 @@ h1,h2,h3{
 			display: none;
 		}
 	}
+
 }
