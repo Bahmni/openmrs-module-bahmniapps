@@ -123,6 +123,22 @@ describe('VisitController', function () {
 
             expect(scope.patient).toBe(patient);
         });
+
+        it('should pick proper config for each section on visit page',function(){
+            $controller('VisitController', {
+                $scope: scope,
+                spinner: spinner,
+                encounterService: encounterService,
+                patientService: patientService,
+                $stateParams: stateParams,
+                openmrsPatientMapper: patientMapper,
+                appService: appService,
+                sessionService: sessionService
+            });
+
+
+            expect(scope.visitPageConfig.investigationResult)
+        })
     });
 
 

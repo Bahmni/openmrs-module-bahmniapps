@@ -10,46 +10,33 @@ angular.module('bahmni.clinical')
 
             $scope.currentVisitUrl = $state.current.views.content.templateUrl;
 
-            var setDefaultConfig = function(){
-                var defaultLabResultConfig = {
-                    "title": "Lab Investigations",
-                    "showChart": false,
-                    "showTable": true,
-                    "showNormalLabResults": true,
-                    "showCommentsExpanded": true,
-                    "showAccessionNotes": true,
-                    "numberOfVisits": 10
-                };
-                var defaultTreatmentConfig =  {
-                    title: "Treatments",
-                    showFlowSheet: true,
-                    showListView: true,
-                    showOtherActive: false,
-                    showDetailsButton : true
+            var setAppConfig = function(isDefault){
+                var defaultConfig=Bahmni.Clinical.VisitPageDefaultConfig;
+                defaultConfig.pivotTable = clinicalAppConfigService.getVisitConfig().filter(function(visitPageConfig){
+                    return visitPageConfig.default
+                })[0].pivotTable;
+
+                var getConfigFor = function(sectionName){
+                    var config = (isDefault || _.isEmpty($scope.visitPageConfig[sectionName])) ? defaultConfig[sectionName] : $scope.visitPageConfig[sectionName];
+                    config.patientUuid = $scope.patient.uuid;
+                    config.visitUuids = [$scope.visit.uuid]
+                    return config;
                 };
 
-                $scope.investigationResultsParameters = defaultLabResultConfig;
-                $scope.treatmentParameters = defaultTreatmentConfig;
-                $scope.observationConfig = {};
-                $scope.diagnosisConfig={};
-
+                $scope.investigationResultsParameters = getConfigFor("investigationResult");
+                $scope.observationConfig = getConfigFor("observationDisplay");
+                $scope.diagnosisConfig = getConfigFor("diagnosis");
+                $scope.treatmentParameters = getConfigFor("treatment");
+                $scope.dispositionParameters = getConfigFor("disposition");
+                $scope.pivotTableConfigs = $scope.visitPageConfig["pivotTable"] || [];
             };
-
-            var setFromAppConfig = function(){
-                $scope.investigationResultsParameters = $scope.visitPageConfig.investigationResultParams || {};
-                $scope.observationConfig = $scope.visitPageConfig.observationDisplayParams || {};
-                $scope.diagnosisConfig = $scope.visitPageConfig.diagnosisDisplayParams || {};
-                $scope.treatmentParameters = $scope.visitPageConfig.treatmentParams || {};
-            };
-
 
             $scope.visit = visitContext; // required as this visit needs to be overridden when viewing past visits
             $scope.visitSummary = visitSummary;
             $scope.showTrends = true;
 
-            $scope.visitPageConfig = clinicalAppConfigService.getVisitConfig().filter(function(visitPageConfig){
-                return visitPageConfig.default
-            })[0];
+            $scope.visitPageConfig = Bahmni.Clinical.VisitPageDefaultConfig;
+
             $scope.visitPageDiagnosisTitle = "Diagnoses";
 
             $scope.dispositionParameters = {
@@ -106,28 +93,39 @@ angular.module('bahmni.clinical')
                 $timeout(function(){
                     $scope.clearBoard = false;
                 });
-
-                if($scope.visitPageConfig.default){
-                    setDefaultConfig();
-                }else{
-                    setFromAppConfig();
-                }
-
-                $scope.investigationResultsParameters.patientUuid = $scope.patient.uuid;
-                $scope.investigationResultsParameters.visitUuids = [$scope.visit.uuid];
-
-                $scope.treatmentParameters.patientUuid = $scope.patient.uuid;
-                $scope.treatmentParameters.visitUuids = [$scope.visit.uuid];
-
-                $scope.pivotTableConfigs = clinicalAppConfigService.getVisitPageConfig("pivotTable") || [];
-
+                setAppConfig($scope.visitPageConfig.default);
                 $scope.hide = {};
                 if(!_.isEmpty($scope.visitPageConfig.hideSections)) {
                     $scope.visitPageConfig.hideSections.forEach(function(section){
-                        $scope.hide[section] = true && $scope.visitPageConfig.default !== true ;
+                        $scope.hide[section] = $scope.visitPageConfig.default !== true ;
                     })
                 }
-
             };
             init();
         }]);
+
+Bahmni.Clinical.VisitPageDefaultConfig ={
+    title:"visit",
+    investigationResult: {
+        title: "Lab Investigations",
+        showChart: false,
+        showTable: true,
+        showNormalLabResults: true,
+        showCommentsExpanded: true,
+        showAccessionNotes: true,
+        numberOfVisits: 10
+    },
+    treatment: {
+        title: "Treatments",
+        showFlowSheet: true,
+        showListView: true,
+        showOtherActive: false,
+        showDetailsButton : true
+    },
+    disposition :{
+        numOfVisits: 1
+    },
+    observationDisplay:{},
+    diagnosis :{},
+    pivotTable:{}
+};
