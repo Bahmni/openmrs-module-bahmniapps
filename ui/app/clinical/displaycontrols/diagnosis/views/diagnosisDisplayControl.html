@@ -3,7 +3,7 @@
     <table class="dashboard-table history-diagnosis">
         <tbody ng-repeat="diagnosis in allDiagnoses | primaryDiagnosisFirst" class="row">
             <tr class="view-past">
-                <td >
+                <td class="name">
                     <span class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">
                         {{diagnosis.getDisplayName()}}
                     </span>
