@@ -1,4 +1,7 @@
 <section class="block patientInformation">
+    <h2 class="section-title" ng-if="params.title">
+        {{params.title}}
+    </h2>
     <p class="placeholder-text" ng-if="::!hasVisits()">{{::noVisitsMessage}}</p>
     <table class="visits dashboard-table" ng-if="::hasVisits()">
         <tbody>

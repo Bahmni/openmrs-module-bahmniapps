@@ -14,7 +14,12 @@ angular.module('bahmni.clinical')
             $scope.hasVisits = function () {
                 return $scope.visits && $scope.visits.length > 0;
             };
-            $scope.params = angular.extend({ maximumNoOfVisits: 4 }, $scope.params);
+            $scope.params = angular.extend(
+                {
+                    maximumNoOfVisits: 4,
+                    title: "Visits"
+                }, $scope.params);
+
             $scope.noVisitsMessage = "No Visits for this patient.";
         };
         return {
