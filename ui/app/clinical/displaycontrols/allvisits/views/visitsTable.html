@@ -7,7 +7,7 @@
                     <a class="ngdialog-close visit" ng-click="openVisit(visit)">
                         <span>{{::visit.startDatetime | date: 'd MMM yy'}}</span>
                         <span ng-if="::!visit.isActive()">- {{::visit.stopDatetime | date: 'd MMM yy'}}</span>
-                        <i class="icon-star" ng-if="::visit.isActive()" title="Current Visit"></i>
+                        <i class="icon-star current-visit-icon" ng-if="::visit.isActive()" title="Current Visit"></i>
                     </a>
                 </td>
                 <td class="value">{{::visit.visitType.name}}</td>
