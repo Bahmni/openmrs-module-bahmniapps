@@ -82,6 +82,7 @@ angular.module('bahmni.clinical')
                 }
                 return style;
             };
+
             $scope.pendingResults = function (line) {
                 return line.isSummary && !line.hasResults && line.name !== "";
             };
@@ -95,9 +96,10 @@ angular.module('bahmni.clinical')
                 init();
             });
 
-            var isDefaultVisit = function(){
-
-            };
+            $scope.$on("event:printVisitTab", function (event,visitConfig) {
+                $scope.visitPageConfig = visitConfig;
+                printer.printFromScope("common/views/visitTabPrint.html",$scope);
+            });
 
             var init = function(){
                 $scope.clearBoard = true;
@@ -127,14 +129,5 @@ angular.module('bahmni.clinical')
                 }
 
             };
-
             init();
-
-            $scope.$on("event:printVisitTab", function (event,visitConfig) {
-                $scope.visitPageConfig = visitConfig;
-                printer.printFromScope("common/views/visitTabPrint.html",$scope);
-            });
-
-
-
         }]);

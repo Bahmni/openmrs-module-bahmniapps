@@ -7,8 +7,6 @@
                 <a ng-click="showBoard(board.label)">{{board.label}}</a>
             </li>
         </ul>
-
-
         <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}"></button>
         <button class="confirm save-consultation" ng-show="availableBoards" ng-click="save()" accesskey="s" class="confirm"><u>S</u>ave</button>
     </div>

@@ -9,13 +9,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             $scope.consultation = consultationContext;
 
             var boardTypes = {
-                visit: 'visit',
                 consultation: 'consultation'
             };
-            $scope.availableBoards = [
-                { label: 'Visit', url: '', type: boardTypes.visit}
-            ];
-            $scope.currentBoard = $scope.availableBoards[0];
+            $scope.availableBoards = [ ];
+
             $scope.showBoard = function (label) {
                 $rootScope.collapseControlPanel();
                 var board = findBoardByLabel(label);
@@ -57,11 +54,11 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 var boards = $scope.availableBoards.filter(function (board) {
                     return stringContains(url, board.url);
                 });
-                return boards.length > 0 ? boards[1] : null;
+                return boards.length > 0 ? boards[0] : null;
             };
 
             var getUrl = function (board) {
-                var urlPrefix = board.type === boardTypes.visit ? urlHelper.getVisitUrl($scope.consultation.visitUuid) : urlHelper.getPatientUrl();
+                var urlPrefix = urlHelper.getPatientUrl();
                 var url = board.url ? urlPrefix + "/" + board.url : urlPrefix;
                 return $location.url(url);
             };
@@ -82,6 +79,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 }
                 contextChangeHandler.reset();
                 $scope.currentBoard = board;
+                console.log($scope.currentBoard);
                 return getUrl(board);
             };
 
