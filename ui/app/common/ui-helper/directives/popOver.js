@@ -5,23 +5,23 @@ angular.module('bahmni.common.uiHelper')
 
             var hideTargetElements = function() {
                 $scope.targetElements.forEach(function(el) { el.hide(); } );
-            }
+            };
 
             var showTargetElements = function() {
                 $scope.targetElements.forEach(function(el) { el.show(); } );
-            }
+            };
 
             this.registerTriggerElement = function(triggerElement) {
                 $scope.triggerElement = triggerElement;
 
                 var docClickHandler = function(e) {
                     var $clicked = $(e.target);
-                    if ($clicked.closest($scope.triggerElement).length === 0 || $clicked.closest($scope.targetElements).length !== 0) {
+                    if ($clicked.closest($scope.targetElements).length !== 0) {
                         hideTargetElements();
                         $scope.isTargetOpen = false;
                         $(document).off('click', docClickHandler);
                     }
-                }
+                };
 
                 $scope.triggerElement.on('click', function() {
                     if($scope.isTargetOpen) {
@@ -34,13 +34,13 @@ angular.module('bahmni.common.uiHelper')
                         $(document).on('click', docClickHandler);
                     }
                 });
-            }
+            };
 
             this.registerTargetElement = function(targetElement) {
                 targetElement.hide();
                 $scope.targetElements.push(targetElement);
-            }
-        }
+            };
+        };
 
         return {
             restrict: 'A',
