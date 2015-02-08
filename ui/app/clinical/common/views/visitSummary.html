@@ -12,7 +12,7 @@
     </section>
     <section ng-if="!hide['diagnosis']" class="block dashboard-section">
         <bahmni-diagnosis patient-uuid="patient.uuid" title="visitPageDiagnosisTitle"
-                          config="diagnosisConfig"></bahmni-diagnosis>
+                          config="visitPageConfig.diagnosisConfig"></bahmni-diagnosis>
     </section>
     <div ng-if="!hide['observation']">
         <ng-include src="'common/views/visitSummarySections/observation.html'"></ng-include>
@@ -20,12 +20,12 @@
 
 
     <div ng-if="!hide['pivotTable']">
-        <section ng-repeat="pivotTable in pivotTableConfigs" pivot-table visit-uuid="visit.uuid" config="pivotTable"
+        <section ng-repeat="pivotTable in pivotTableConfigs" pivot-table visit-uuid="visit.uuid" config="visitPageConfig.pivotTable"
                  patient-uuid="patient.uuid" display-name="pivotTable.title"></section>
     </div>
 
     <div ng-if="!hide['investigationResults']">
-        <investigation-results params="investigationResultsParameters"></investigation-results>
+        <investigation-results params="visitPageConfig.investigationResult"></investigation-results>
     </div>
 
     <div ng-if="!hide['radiology']">
@@ -41,7 +41,7 @@
     </div>
 
     <div ng-if="!hide['treatment']">
-        <treatment-data id="visit-treatments" params="treatmentParameters" visit-summary="visitSummary"></treatment-data>
+        <treatment-data id="visit-treatments" params="visitPageConfig.treatment" visit-summary="visitSummary"></treatment-data>
     </div>
 
     <div ng-if="!hide['disposition']">
