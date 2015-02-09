@@ -6,6 +6,18 @@ $total-width: 100%;
     font-size: $sizeValue + rem;
 }
 
+@mixin clearfix() {
+  *zoom:1;
+  &:before,
+  &:after {
+      content:"";
+      display:table;
+  }
+  &:after {
+      clear:both;
+  }
+}
+
 body{
     max-width:1280px;
     font-size: 100%;
@@ -33,7 +45,9 @@ body pre {
   background: none;
   margin: 0; padding: 0;
 }
-
+.clearfix {
+  @include clearfix();
+}
 .asterick {
     color:red;
 }

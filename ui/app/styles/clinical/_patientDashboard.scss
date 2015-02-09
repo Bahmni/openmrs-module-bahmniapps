@@ -11,6 +11,7 @@
 }
 .dashboard-section-wrapper {
   padding-top: 10px;
+  @include clearfix();
   .dashboard-sections {
     width: 50%;
     float: left;  
@@ -346,7 +347,6 @@ table.pivot-table {
        height: 36px;
        max-height: 36px;
        vertical-align: middle;
-       // overflow: hidden;
        padding: 5px 10px;
      }
   }

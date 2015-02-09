@@ -36,10 +36,10 @@
             <!-- TODO: need to find a better way to render the directive again on context change or after all the calls are made.-->
             <section class="observation-section" ng-if="context">
                 <div ng-repeat="conceptSet in availableConceptSets" class="concept-set-group">
-                        <div class="mylegend">
-                            <strong>{{conceptSet.options.conceptName}}</strong>
-                        </div>
-                    <div ng-if="conceptSet.options.showLatest">
+                    <div class="mylegend">
+                        <strong>{{conceptSet.options.conceptName}}</strong>
+                    </div>
+                    <div ng-if="conceptSet.options.showLatest" class="clearfix">
                         <div class="obs-section right" style="width: 45%">
                             <bahmni-observation patient="patient" config="{conceptNames: conceptSet.options.conceptNames, scope: 'latest'}" title="'Latest'"></bahmni-observation>
                         </div>
