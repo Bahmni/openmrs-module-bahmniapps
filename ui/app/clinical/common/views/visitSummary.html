@@ -20,7 +20,7 @@
 
 
     <div ng-if="!hide['pivotTable']">
-        <section ng-repeat="pivotTable in pivotTableConfigs" pivot-table visit-uuid="visit.uuid" config="visitPageConfig.pivotTable"
+        <section ng-repeat="pivotTable in visitPageConfig.pivotTable" pivot-table visit-uuid="visit.uuid" config="pivotTable"
                  patient-uuid="patient.uuid" display-name="pivotTable.title"></section>
     </div>
 
