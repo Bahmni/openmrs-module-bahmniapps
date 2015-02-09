@@ -5,14 +5,7 @@
                 class="label-add-on" ng-if="observation.concept.units"> {{::observation.concept.units}}</span></span>
         <a  ng-if="observation.isImageConcept()"> image concept<img bm-observation-gallery-item observation="observation"
                 ng-src="{{observation.value|thumbnail}}" width="30" height="30"></a>
-        <span class="date-text-only" ng-switch on="showDate">
-            <span class="time fr" ng-switch-when="DASHBOARD"
-                  ng-if="observation.isFormElement()"></span>
-             <span class="time fr" ng-switch-when="DIALOG"
-                   ng-if="observation.isFormElement()">{{::observation.observationDateTime | date :'dd MMM yy hh:mm a'}}</span>
-             <span class="time fr" ng-switch-default
-                   ng-if="observation.isFormElement()">{{::observation.observationDateTime | date :'hh:mm a'}}</span>
-        </span>
+
 
         <button class="toggle fr" ng-if="observation.isFormElement() && showDetailsButton && !observation.comment" ng-class="{'has-notes': observation.comment}"
                 ng-click="toggle(observation)">
@@ -25,15 +18,28 @@
         <pre class="left">{{::observation.comment}}</pre>
         <div class="footer-note fr">
             <span class="provider">{{::observation.providers[0].name}}</span>
+                <span class="date-text-only">
+                <span class="time fr"
+                      ng-if="observation.isFormElement()">{{dateString(observation)}}</span>
+                 <!--<span class="time fr" ng-switch-when="DIALOG"-->
+                           <!--ng-if="observation.isFormElement()">{{::observation.observationDateTime | date :'dd MMM yy hh:mm a'}}</span>-->
+                 <!--<span class="time fr" ng-switch-default-->
+                       <!--ng-if="observation.isFormElement()">{{::observation.observationDateTime | date :'hh:mm a'}}</span>-->
+            </span>
         </div>
     </div>
     <div ng-if="observation.showDetails" class="notes inline-notes" ng-class="{'print-notes': observation.showDetails}">
         <div class="footer-note fr">
             <span class="provider">{{::observation.providers[0].name}}</span>
+                <span class="date-text-only">
+                <span class="time fr"
+                      ng-if="observation.isFormElement()">{{dateString(observation)}}</span>
+            </span>
+        </span>
         </div>
     </div>
     <ul>
         <show-observation  show-details-button="showDetailsButton" ng-if="!observation.isFormElement()" ng-repeat="member in observation.groupMembers"
-                          observation="member" patient="patient" show-date="{{showDate}}"></show-observation>
+                          observation="member" patient="patient" show-date="showDate" show-time="showTime"></show-observation>
     </ul>
 </li>

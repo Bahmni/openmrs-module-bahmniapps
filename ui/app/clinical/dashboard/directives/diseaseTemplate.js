@@ -4,14 +4,25 @@ angular.module('bahmni.clinical')
     .directive('diseaseTemplate', function () {
 
         var controller = function ($scope) {
-            $scope.isDateNeeded = function (obsTemplate) {
+
+            $scope.dateTimeDisplayConfig = function (obsTemplate) {
+                var showDate = false;
+                var showTime = false;
                 if (obsTemplate.conceptClass === Bahmni.Clinical.Constants.caseIntakeConceptClass) {
-                    if (!$scope.dateFlag) {
-                        return Bahmni.Clinical.Constants.dashboard;
+                    if ($scope.showDateTimeForIntake) {
+                        showDate = true;
+                        showTime = true;
                     }
-                    return Bahmni.Clinical.Constants.dialog;
+                } else {
+                    if ($scope.showTimeForProgress)
+                        showTime = true;
                 }
-                return Bahmni.Clinical.Constants.default;
+                console.log("date", showDate)
+                console.log("time", showTime)
+                return {
+                    showDate: showDate,
+                    showTime: showTime
+                }
             };
 
             $scope.isIntakeTemplate = function (obsTemplate) {
@@ -24,8 +35,10 @@ angular.module('bahmni.clinical')
             controller: controller,
             scope: {
                 diseaseTemplate: "=template",
+                section: "=section",
                 patient: "=",
-                dateFlag: "="
+                showDateTimeForIntake: "=",
+                showTimeForProgress: "="
             },
             templateUrl: "dashboard/views/diseaseTemplate.html"
         };

@@ -3,7 +3,8 @@ angular.module('bahmni.clinical')
     .controller('DiseaseTemplateController', ['$scope',
         function ($scope) {
             var patient = $scope.patient;
-            $scope.showDate = false;
+            $scope.showDateTimeForIntake = false;
+            $scope.showTimeForProgress = true;
             $scope.dialogData = {
                 "diseaseTemplateName": $scope.section.templateName,
                 "patient": patient,

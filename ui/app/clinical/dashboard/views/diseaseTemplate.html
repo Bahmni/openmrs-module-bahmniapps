@@ -29,8 +29,8 @@
                             </span>
                         </span>
                         <ul>
-                            <show-observation observation="observation" patient="patient"
-                                              show-date="{{isDateNeeded(obsTemplate)}}" ng-repeat="observation in encounter.observations"></show-observation>
+                            <show-observation observation="observation" patient="patient" show-details-button="section.showDetailsButton"
+                                              show-date="dateTimeDisplayConfig(obsTemplate).showDate" show-time="dateTimeDisplayConfig(obsTemplate).showTime" ng-repeat="observation in encounter.observations"></show-observation>
                         </ul>
                     </li>
                 </ul>
@@ -38,3 +38,4 @@
         </ul>
     </section>
 </div>
+
