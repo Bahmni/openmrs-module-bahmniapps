@@ -1,7 +1,8 @@
 <tr ng-class="{active: drugOrder.isActive()}">
-    <td class="drug">{{drugOrder.getDisplayName()}}
-    </td>
-    <td class="dosage"><span>{{drugOrder.getDescription()}}</span></td>
+    <td class="drug" ng-if="!params.showDrugForm">{{drugOrder.drug.name}}</td>
+    <td class="drug" ng-if="params.showDrugForm">{{drugOrder.getDisplayName()}}</td>
+    <td class="dosage" ng-if="params.showRoute"><span>{{drugOrder.getDescription()}}</span></td>
+    <td class="dosage" ng-if="!params.showRoute"><span>{{drugOrder.getDescriptionWithoutRoute()}}</span></td>
     <td class="days">
         <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">Stopped on {{drugOrder.effectiveStopDate | date: 'dd MMM yy'}}</span>
         <span class="fr">{{drugOrder.effectiveStartDate | date:'dd MMM yy'}}</span>

@@ -3,8 +3,11 @@
 angular.module('bahmni.clinical')
     .directive('treatmentData', ['TreatmentService', 'spinner', function (treatmentService, spinner) {
         var controller = function ($scope) {
+            var Constants = Bahmni.Clinical.Constants;
             var defaultParams = {
                 showListView: true,
+                showRoute: false,
+                showDrugForm: false,
                 numberOfVisits: 1
             };
             $scope.params = angular.extend(defaultParams, $scope.params);
@@ -26,10 +29,10 @@ angular.module('bahmni.clinical')
                         treatmentSections.push({visitDate: key, drugOrders: groupedByVisit[key]});
                     }
 
-                    if (response.data["Other Active DrugOrders"]) {
+                        if (response.data[Constants.otherActiveDrugOrders]) {
                         treatmentSections.push({
-                            visitDate: "Other Active DrugOrders",
-                            drugOrders: response.data["Other Active DrugOrders"]
+                            visitDate: Constants.otherActiveDrugOrders,
+                            drugOrders: response.data[Constants.otherActiveDrugOrders]
                         });
                     }
                     $scope.treatmentSections = treatmentSections;

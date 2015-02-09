@@ -25,6 +25,8 @@ angular.module('bahmni.clinical')
                 visitUuids: [$scope.visit.uuid],
                 showFlowSheet: true,
                 showListView: true,
+                showRoute: true,
+                showDrugForm: true,
                 showOtherActive: false,
                 showDetailsButton : true
             };

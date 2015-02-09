@@ -5,7 +5,8 @@
     <p class="placeholder-text" ng-if="drugOrderSections && drugOrderSections.length == 0">No treatments for this patient.</p>
     <table ng-repeat="drugOrderSection in drugOrderSections | orderBy: drugOrderSection.visitDate" class="repeated-table">
         <thead>
-            <th colspan="4">{{drugOrderSection.visitDate | date: 'dd MMM yy'}}</th>
+            <th colspan="4" ng-if="!isOtherActiveSection(drugOrderSection.visitDate)">Visit on {{drugOrderSection.visitDate | date: 'dd MMM yy'}}</th>
+            <th colspan="4" ng-if="isOtherActiveSection(drugOrderSection.visitDate)">{{drugOrderSection.visitDate}}</th>
         </thead>
         <tbody treatment-table-row drug-order="drugOrder" params="params" ng-repeat="drugOrder in drugOrderSection.drugOrders | orderBy: 'effectiveStartDate'"
                ng-class="{'drug-discontinued': drugOrder.isDiscontinuedOrStopped()}" ng-if="drugOrderSection.drugOrders.length > 0">

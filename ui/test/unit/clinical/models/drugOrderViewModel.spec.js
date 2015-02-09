@@ -109,6 +109,17 @@ describe("drugOrderViewModel", function () {
         expect(treatment.getDescription()).toBe("1-1-1, Orally - 10 Days")
     });
 
+    it("should get the text to be displayed in the treatment list without route", function () {
+        var treatment = sampleTreatment({}, [], null, Bahmni.Common.Util.DateUtil.now());
+        treatment.durationUnit = "Days";
+        treatment.route = "Orally";
+        treatment.uniformDosingType.dose = "1";
+        treatment.doseUnits = "Capsule";
+        treatment.uniformDosingType.frequency = "Once a day";
+        treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
+        expect(treatment.getDescriptionWithoutRoute()).toBe("1 Capsule, Once a day, Before Meals, 10 Days");
+    });
+
     it("should get default durationUnit from config if available", function () {
         var treatment = sampleTreatment({defaultDurationUnit: "Month(s)"}, treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
         expect(treatment.durationUnit).toEqual("Month(s)");

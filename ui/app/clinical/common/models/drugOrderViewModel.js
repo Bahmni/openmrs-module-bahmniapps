@@ -125,11 +125,13 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         return undefined;
     };
 
-    var getOtherDescription = function(){
-        return addDelimiter(blankIfFalsy(getInstructions()), ", ") +
-        addDelimiter(blankIfFalsy(asNeeded(self.asNeeded)), ', ') +
-        addDelimiter(blankIfFalsy(self.route), " - ") +
-        addDelimiter(blankIfFalsy(self.duration), " ") +
+    var getOtherDescription = function(withRoute){
+        var otherDescription = addDelimiter(blankIfFalsy(getInstructions()), ", ") +
+            addDelimiter(blankIfFalsy(asNeeded(self.asNeeded)), ', ');
+        if(withRoute){
+            otherDescription = otherDescription + addDelimiter(blankIfFalsy(self.route), " - ");
+        }
+        return otherDescription + addDelimiter(blankIfFalsy(self.duration), " ") +
         blankIfFalsy(self.durationUnit);
     };
 
@@ -147,7 +149,12 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
 
     this.getDescription = function () {
         return addDelimiter(blankIfFalsy(getDoseAndFrequency()), " ") +
-            getOtherDescription();
+            getOtherDescription(true);
+    };
+
+    this.getDescriptionWithoutRoute = function(){
+        return addDelimiter(blankIfFalsy(getDoseAndFrequency()), " ") +
+            getOtherDescription(false);
     };
 
     this.getDescriptionWithQuantity = function(){
