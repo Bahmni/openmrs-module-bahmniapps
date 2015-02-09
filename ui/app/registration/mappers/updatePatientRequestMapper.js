@@ -3,7 +3,7 @@
 Bahmni.Registration.UpdatePatientRequestMapper = (function () {
     var UpdatePatientRequestMapper = function (currentDate) {
         this.currentDate = currentDate;
-    }
+    };
 
     UpdatePatientRequestMapper.prototype.currentDate = undefined;
     

@@ -14,24 +14,24 @@ angular.module('bahmni.common.uiHelper')
             this.registerTriggerElement = function(triggerElement) {
                 $scope.triggerElement = triggerElement;
 
-                var docClickHandler = function(e) {
-                    var $clicked = $(e.target);
-                    if ($clicked.closest($scope.targetElements).length !== 0) {
-                        hideTargetElements();
-                        $scope.isTargetOpen = false;
-                        $(document).off('click', docClickHandler);
-                    }
+                var docClickHandler = function() {
+                    if (!$scope.autoclose) return;
+
+                    hideTargetElements();
+                    $scope.isTargetOpen = false;
+                    $(document).off('click', docClickHandler);
                 };
 
-                $scope.triggerElement.on('click', function() {
+                $scope.triggerElement.on('click', function(event) {
                     if($scope.isTargetOpen) {
                         $scope.isTargetOpen = false;
-                        hideTargetElements(0)
+                        hideTargetElements(0);
                         $(document).off('click', docClickHandler);
                     } else {
                         $scope.isTargetOpen = true;
                         showTargetElements();
                         $(document).on('click', docClickHandler);
+                        event.stopImmediatePropagation();
                     }
                 });
             };
@@ -44,8 +44,11 @@ angular.module('bahmni.common.uiHelper')
 
         return {
             restrict: 'A',
-            controller: controller
-        }
+            controller: controller,
+            scope: {
+                autoclose: "="
+            }
+        };
     })
     .directive('bmPopOverTarget', function(){
         var link = function($scope, element, attrs, popOverController) {
