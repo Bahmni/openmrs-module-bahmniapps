@@ -307,15 +307,19 @@ table.dashboard-table {
 }
 table.pivot-table {
   .tooltip {
-    margin-left: -50px;
-    margin-top: -42px;
+    margin-left: -5px;
+    margin-top: 0;
     background: $darkGray;
     color: white;
     box-shadow: none;
+    bottom: 36px;
+    top: auto;
+    z-index: 1;
     i {
-      top: 12px;
-      left: 49%;
-      color:$darkGray;
+      color: $darkGray;
+      bottom: -15px;
+      left: 20px;
+      top: auto;
     }
     .details {
       color: white !important;
@@ -342,7 +346,7 @@ table.pivot-table {
        height: 36px;
        max-height: 36px;
        vertical-align: middle;
-       overflow: hidden;
+       // overflow: hidden;
        padding: 5px 10px;
      }
   }
@@ -369,6 +373,7 @@ table.pivot-table {
         }
       }
       td {
+        position: relative;
         .popover-trigger {
           cursor: pointer;
           color: $bahmniLinkColor;
