@@ -35,7 +35,7 @@ angular.module('bahmni.clinical')
             controller: controller,
             scope: {
                 diseaseTemplate: "=template",
-                section: "=section",
+                config: "=",
                 patient: "=",
                 showDateTimeForIntake: "=",
                 showTimeForProgress: "="
