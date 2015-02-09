@@ -8,6 +8,6 @@ angular.module('bahmni.clinical')
 
             $scope.dialogData = {
                 "patient": $scope.patient,
-                "summaryPageParams": $scope.dashboardConfig.getSectionByName("labOrders").summaryPageParams || {}
+                "allLabDetails": $scope.dashboardConfig.getSectionByName("labOrders").allLabDetails || {}
             };
         }]);

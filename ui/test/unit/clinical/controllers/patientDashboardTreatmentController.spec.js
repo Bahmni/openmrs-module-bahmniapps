@@ -20,7 +20,7 @@ describe("PatientDashboardTreatmentController", function () {
             showOtherActive: true,
             showCommentsExpanded: false
         },
-        summaryPageParams: {
+        allTreatmentDetails: {
             title: null,
             showChart: false,
             showTable: true,
@@ -64,8 +64,8 @@ describe("PatientDashboardTreatmentController", function () {
 
         it("should fetch summary page params", function () {
             var expected = {};
-            _.extend(expected, treatmentConfigParams.summaryPageParams || {}, {patientUuid: "patient uuid"});
-            expect(expected).toEqual(scope.summaryPageParams);
+            _.extend(expected, treatmentConfigParams.allTreatmentDetails || {}, {patientUuid: "patient uuid"});
+            expect(expected).toEqual(scope.allTreatmentDetails);
         });
     });
 });

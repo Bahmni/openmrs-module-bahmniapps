@@ -8,15 +8,15 @@ angular.module('bahmni.clinical')
             var patientUuidparams = {"patientUuid": $scope.patient.uuid};
 
             $scope.dashboardParams = {};
-            $scope.summaryPageParams = {};
+            $scope.allTreatmentDetails = {};
 
             _.extend($scope.dashboardParams, treatmentConfigParams.dashboardParams || {}, patientUuidparams);
-            _.extend($scope.summaryPageParams, treatmentConfigParams.summaryPageParams || {}, patientUuidparams);
+            _.extend($scope.allTreatmentDetails, treatmentConfigParams.allTreatmentDetails || {}, patientUuidparams);
 
             $scope.openSummaryDialog = function () {
                 ngDialog.open({
                     template: 'dashboard/views/dashboardSections/treatmentSummary.html',
-                    params: $scope.summaryPageParams,
+                    params: $scope.allTreatmentDetails,
                     className: "ngdialog-theme-flat ngdialog-theme-custom",
                     scope: $scope
                 });
