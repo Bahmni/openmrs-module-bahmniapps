@@ -25,6 +25,12 @@ angular.module('bahmni.common.domain')
         });
     };
 
+    this.delete = function(encounterUuid, reason) {
+        return $http.delete(Bahmni.Common.Constants.encounterUrl + "/" + encounterUuid, {
+            params: {reason : reason}
+        });
+    }
+
     var stripExtraConceptInfo = function(obs) {
         obs.concept = {uuid: obs.concept.uuid, name: obs.concept.name, dataType: obs.concept.dataType };
         obs.groupMembers = obs.groupMembers || [];

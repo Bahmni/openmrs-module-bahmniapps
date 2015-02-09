@@ -56,27 +56,22 @@ angular.module('bahmni.adt')
                 var admitActions = appService.getAppDescriptor().getExtensions("org.bahmni.adt.admit.action", "config");
                 var transferActions = appService.getAppDescriptor().getExtensions("org.bahmni.adt.transfer.action", "config");
                 var dischargeActions = appService.getAppDescriptor().getExtensions("org.bahmni.adt.discharge.action", "config");
+                var undoDischargeActions = appService.getAppDescriptor().getExtensions("org.bahmni.adt.undo.discharge.action", "config");
                 if (encounterConfig) {
                     var Constants = Bahmni.Common.Constants;
                     actionConfigs[Constants.admissionCode] = {encounterTypeUuid: encounterConfig.getAdmissionEncounterTypeUuid(), allowedActions: admitActions};
                     actionConfigs[Constants.dischargeCode] = {encounterTypeUuid: encounterConfig.getDischargeEncounterTypeUuid(), allowedActions: dischargeActions};
                     actionConfigs[Constants.transferCode] = {encounterTypeUuid: encounterConfig.getTransferEncounterTypeUuid(), allowedActions: transferActions};
+                    actionConfigs[Constants.undoDischargeCode] = {encounterTypeUuid: encounterConfig.getDischargeEncounterTypeUuid(), allowedActions: undoDischargeActions};
                 }
             };
 
-            $scope.hasAdmitEncounter = function(){
-                return ($scope.visitExists() && $scope.visit.encounters && $scope.visit.encounters.filter(function (encounter) {
-                    return encounter.encounterType.name === Bahmni.Common.Constants.admissionEncounterTypeName;
-                })).length > 0
-            };
             $scope.isAdmitted = function(){
-                return $scope.hasAdmitEncounter() && !$scope.hasDischargeEncounter()
+                return $scope.visit && $scope.visit.isAdmitted();
             };
 
-            $scope.hasDischargeEncounter = function(){
-                return ($scope.visitExists() && $scope.visit.encounters && $scope.visit.encounters.filter(function (encounter) {
-                    return encounter.encounterType.name === Bahmni.Common.Constants.dischargeEncounterTypeName;
-                })).length > 0
+            $scope.isDischarged = function(){
+                return $scope.visit && $scope.visit.isDischarged();
             };
 
             var filterAction = function(actions, actionType){
@@ -86,10 +81,10 @@ angular.module('bahmni.adt')
             };
 
             var getDispositionActions = function (actions) {
-                if ($scope.hasDischargeEncounter()) {
-                    return [];
-                } else if ($scope.hasAdmitEncounter()) {
+                if ($scope.isAdmitted()) {
                     return filterAction(actions, 'Discharge Patient');
+                } else if($scope.isDischarged()) {
+                    return filterAction(actions, 'Undo Discharge');
                 } else {
                     return filterAction(actions, 'Admit Patient');
                 }
@@ -218,6 +213,13 @@ angular.module('bahmni.adt')
                         forwardUrl(response, "onDischargeForwardTo");
                     })
                 }));
+            };
+
+            $scope.undoDischarge = function () {
+                var encounterData = $scope.visit.getDischargeEncounter();
+                spinner.forPromise(encounterService.delete(encounterData.uuid, "Undo Discharge")).success(function (response) {
+                    forwardUrl(response, "onAdmissionForwardTo");
+                });
             };
 
             spinner.forPromise(init());

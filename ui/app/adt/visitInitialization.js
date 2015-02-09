@@ -7,7 +7,7 @@ angular.module('bahmni.adt').factory('visitInitialization',
                 var getVisit = function() {
                     if(visitUuid != 'null') {
                         return visitService.getVisit(visitUuid).success(function (visit) {
-                            $rootScope.visit = visit;
+                            $rootScope.visit = new Bahmni.ADT.Visit(visit);
                         });
                     } else {
                         $rootScope.visit = null;

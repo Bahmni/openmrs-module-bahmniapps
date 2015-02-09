@@ -10,7 +10,7 @@ Bahmni.ADT.DispositionDisplayUtil = {
         rankActions[encounterConfig.getDischargeEncounterTypeUuid()] = 3;
         var max = 0;
         var encounterWithHigestRank = null;
-        visit.encounters.forEach(function (encounter) {
+        visit.getEncounters().forEach(function (encounter) {
             if (rankActions[encounter.encounterType.uuid] && rankActions[encounter.encounterType.uuid] > max) {
                 max = rankActions[encounter.encounterType.uuid];
                 encounterWithHigestRank = encounter;
