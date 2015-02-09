@@ -10,6 +10,7 @@
 body, body pre {
   font-family: Arial, sans-serif;
   font-size: 10pt;
+  color: #000;
 }
 
 body pre {
@@ -38,7 +39,7 @@ h1,h2,h3{
 }
 .print-table-header{
   text-align: center; 
-  margin-top:10px;
+  margin-top: 7.5pt;
   text-align:center;
 }
 .print-table-left-body{
@@ -104,17 +105,20 @@ h1,h2,h3{
 
 .dashboard-print-wrapper {
 	font-family: Arial, sans-serif;
-	font-size: 12px;
+	font-size: 9pt;
 	padding-left: 20px;
 	padding-right: 20px;
-	.visible-print {
+	a {
+		color: #333;
+	}
+	.visible-print{
 		display: initial;
 	}
 	.hidden-print {
 		display: none;
 	}
 	.placeholder-text {
-		font-size: 12px;
+		font-size: 9pt;
 		padding: 2px 10px;
 		border: 0;
 	}
@@ -128,13 +132,13 @@ h1,h2,h3{
 			display: inline-block;
 		}
 		h1 {
-			font-size: 18px;
+			font-size: 13.5pt;
 			margin-bottom: 0;
 			color: #000;
 			font-family: Arial, sans-serif;
 		}
 		h2 {
-			font-size: 14px;
+			font-size: 10.5pt;
 			margin-bottom: 5px;
 			color: #000;
 			text-transform: uppercase;
@@ -153,7 +157,7 @@ h1,h2,h3{
 			}
 			.obs-date {
 				font-weight: bold;
-				font-size: 12px;
+				font-size: 12pt;
 			}
 		}
 
@@ -169,11 +173,11 @@ h1,h2,h3{
 	.dashboard-section {
 		border: 0;
 		margin: 0 0 5px;
-		font-size: 10px;
+		font-size: 7.5pt;
 		h2.section-title {
 			text-align: left;
 			color: #000;
-			font-size: 13px;
+			font-size: 10pt;
 			font-family: Arial, sans-serif;;
 			font-weight: bold;
 			line-height: normal;
@@ -209,7 +213,7 @@ h1,h2,h3{
 						border: 0;
 						th {
 							border: 0;
-							font-size: 12px;
+							font-size: 9pt;
 							font-weight: bold;
 							padding: 1px 5px;
 							color: #000;
@@ -217,7 +221,7 @@ h1,h2,h3{
 							font-family: Arial, sans-serif;
 						}
 						.laborder-sub-heading {
-							font-size: 13px;
+							font-size: 9.5pt;
 							font-weight: bold;
 						}
 					}
@@ -226,13 +230,13 @@ h1,h2,h3{
 					tr {
 						&, td, th {
 							border: 0;
-							font-size: 12px;
+							font-size: 9pt;
 							padding: 0 5px;
 							font-family: Arial, sans-serif;
 						}
 						.notes {
 							padding: 0px 5px 2px 20px;
-							font-size: 10px;
+							font-size: 7.5pt;
 							background: none;
 							color: #aaa;
 							.footer-note .provider {
@@ -248,13 +252,16 @@ h1,h2,h3{
 						.value, .dosage {
 							width: auto;
 						}
-						.toggle-btn {
-							display: none;
-						}
 						.value .is-abnormal {
 							font-weight: bold;
+							color: #333 !important;
 						}
 						
+					}
+				}
+				td, th {
+					.toggle-btn {
+						display: none;
 					}
 				}
 			}
@@ -263,7 +270,7 @@ h1,h2,h3{
 			&, ul li {
 				border: 0;
 				background: none;
-				font-size: 12px;
+				font-size: 9pt;
 			}
 			.testUnderPanel {
 				width: 45%;
@@ -297,7 +304,7 @@ h1,h2,h3{
 			border: 0;
 			a {
 				padding: 1px 5px;
-				font-size: 10px;
+				font-size: 7.5pt;
 			}
 		}
 	}
