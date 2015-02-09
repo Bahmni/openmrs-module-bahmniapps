@@ -32,14 +32,14 @@ angular.module('bahmni.common.displaycontrol')
                 };
 
                 $scope.isClickable= function(){
-                    return $scope.config.pivotTable && $scope.isOnDashboard;
+                    return $scope.isOnDashboard && $scope.section.allObservationDetails.pivotTable;
                 };
 
                 fetchObservations();
 
                 $scope.dialogData = {
                     "patient": $scope.patient,
-                    "section": $scope.config
+                    "section": $scope.section
                 };
                 
             };
@@ -50,6 +50,7 @@ angular.module('bahmni.common.displaycontrol')
                 scope:{
                     patient:"=",
                     visitUuid:"@",
+                    section:"=",
                     config:"=",
                     title:"=",
                     isOnDashboard:"="

@@ -7,9 +7,9 @@
     <h6>All {{section.title}}</h6>
 </header>
 <div class="template-container">
-	<div pivot-table patient-uuid="patient.uuid" config="section.pivotTable" display-name="section.title"></div>
+	<div pivot-table patient-uuid="patient.uuid" config="section.allObservationDetails.pivotTable" display-name="section.title"></div>
     <section class="block observation dashboard-section" >
-        <bahmni-observation patient="patient" config="section" title="section.title" is-on-dashboard="false"></bahmni-observation>
+        <bahmni-observation patient="patient" config="config" section="section" title="section.title" is-on-dashboard="false"></bahmni-observation>
     </section>
 
 </div>

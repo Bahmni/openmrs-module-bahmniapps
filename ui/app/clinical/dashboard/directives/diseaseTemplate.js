@@ -17,8 +17,6 @@ angular.module('bahmni.clinical')
                     if ($scope.showTimeForProgress)
                         showTime = true;
                 }
-                console.log("date", showDate)
-                console.log("time", showTime)
                 return {
                     showDate: showDate,
                     showTime: showTime

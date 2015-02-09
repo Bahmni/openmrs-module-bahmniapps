@@ -4,4 +4,5 @@ angular.module('bahmni.clinical')
         function ($scope) {
             $scope.patient = $scope.ngDialogData.patient;
             $scope.section = $scope.ngDialogData.section;
+            $scope.config = $scope.ngDialogData.section.allObservationDetails;
 }]);
