@@ -11,6 +11,45 @@ describe("Boolean Observation", function() {
         expect(obs.value).toBeFalsy();
     });
 
+    it("should clone the observation and remove the UUIDs once cloned", function() {
+        var originalObs = {
+            "concept": {
+                "uuid": "bc29348f-03e9-426c-a083-1b803f62fa28",
+                "name": "Delivery Note, Liveborn defects present",
+                "dataType": "Boolean"
+            },
+            "units": null,
+            "label": "Defects",
+            "possibleAnswers": [],
+            "groupMembers": [],
+            "comment": null,
+            "isObservation": true,
+            "conceptUIConfig": {
+                "Death Note, Secondary Cause of Death": {
+                    "answersConceptName": "Death Note, Cause, Answers",
+                    "autocomplete": true
+                },
+                "Death Note, Tertiary Cause of Death": {
+                    "answersConceptName": "Death Note, Cause, Answers",
+                    "autocomplete": true
+                }
+            },
+            "uniqueId": "observation_89",
+            "uuid": "ead2fb90-762e-4998-8e5d-9589a9574257",
+            "value": true,
+            "observationDateTime": "2015-02-09T11:58:34.000+0530",
+            "isBoolean": true,
+            "voided": false
+        };
+
+        var obs = new Bahmni.ConceptSet.BooleanObservation(originalObs, {allowAddMore: true});
+
+        var actualObs = obs.cloneNew();
+        expect(actualObs.uuid).toBeNull();
+        expect(actualObs.label).toEqual("Defects");
+        expect(actualObs.isObservation).toEqual(true);
+    });
+
     it("toggleSelection should set null value if toggled twice", function() {
         var obs = new Bahmni.ConceptSet.BooleanObservation({}, {allowAddMore: true});
         obs.toggleSelection({value: true});
