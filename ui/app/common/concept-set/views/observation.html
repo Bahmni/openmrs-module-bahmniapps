@@ -12,7 +12,7 @@
                 <span ng-bind="observation.label"></span>
                 <span ng-show="observation.primaryObs.units" ng-bind="'(' + observation.primaryObs.units + ')'"></span>
                 <span ng-if="observation.isRequired()" class="asterick">*</span>
-                <i class="icon-question-sign concept-tooltip-trigger" bm-pop-over-trigger ng-if="observation.primaryObs.concept.description"></i>
+                <i class="icon-question concept-tooltip-trigger" bm-pop-over-trigger ng-if="observation.primaryObs.concept.description"></i>
 
             </label>
 
@@ -110,7 +110,7 @@
                 <span ng-bind="observation.label"></span>
                 <span ng-show="observation.units" ng-bind="'(' + observation.units + ')'"></span>
                 <span ng-if="observation.isRequired()" class="asterick">*</span>
-                <i class="icon-question-sign concept-tooltip-trigger" bm-pop-over-trigger ng-if="observation.concept.description"></i>
+                <i class="icon-question concept-tooltip-trigger" bm-pop-over-trigger ng-if="observation.concept.description"></i>
 
             </label>
 

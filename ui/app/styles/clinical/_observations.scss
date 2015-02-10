@@ -340,8 +340,19 @@ concept-set {
 }
 .concept-tooltip-trigger {
   cursor: pointer;
-  color: $bahmniSecondaryColor;
-  font-size: 14px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  border-radius: 100%;
+  font-size: 18px;
+  background: $bahmniSecondaryColor;
+  box-shadow: 1px 1px 1px $lightGray;
+  color: #fff;
+  padding: 0;
+  margin-left: 5px;
+
 }
 .concept-tooltip-description {
   margin-bottom: 10px;
@@ -353,14 +364,15 @@ concept-set {
     font-size: 12px;
     padding: 5px;
     border-radius: 5px;
-    background: $clinicalInfoMessageBg;
+    background: #000; 
+    color: #fff;
   }
   i {
    position: absolute;
-   bottom: -17px;
+   bottom: -16px;
    left: 1%;
    font-size: 20px;
-   color: $clinicalInfoMessageBg;
+   color: #000;
  }
   p {
     margin-bottom: 5px;
