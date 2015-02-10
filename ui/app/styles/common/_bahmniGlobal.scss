@@ -51,7 +51,9 @@ body pre {
 .asterick {
     color:red;
 }
-
+.strike-text {
+  text-decoration: line-through;
+}
 input[file-upload] {
     position:absolute;
     left:-9999px;

@@ -1,10 +1,14 @@
 <tr ng-class="{active: drugOrder.isActive()}">
-    <td class="drug" ng-if="!params.showDrugForm">{{drugOrder.drug.name}}</td>
-    <td class="drug" ng-if="params.showDrugForm">{{drugOrder.getDisplayName()}}</td>
-    <td class="dosage" ng-if="params.showRoute"><span>{{drugOrder.getDescription()}}</span></td>
-    <td class="dosage" ng-if="!params.showRoute"><span>{{drugOrder.getDescriptionWithoutRoute()}}</span></td>
+    <td class="drug" ng-class="{'strike-text':drugOrder.isDiscontinuedOrStopped()}">
+        <span ng-if="!params.showDrugForm">{{drugOrder.drug.name}}</span>
+        <span ng-if="params.showDrugForm">{{drugOrder.getDisplayName()}}</span>
+    </td>
+    <td class="dosage" >
+        <span ng-if="params.showRoute" ng-class="{'strike-text':drugOrder.isDiscontinuedOrStopped()}">{{drugOrder.getDescription()}}</span>
+        <span ng-if="!params.showRoute" ng-class="{'strike-text':drugOrder.isDiscontinuedOrStopped()}">{{drugOrder.getDescriptionWithoutRoute()}}</span>
+        <span ng-if="drugOrder.isDiscontinuedOrStopped()" ng-class="{'discontinued-text':drugOrder.isDiscontinuedOrStopped()}">Stopped on {{drugOrder.effectiveStopDate | date: 'dd MMM yy'}}</span>
+    </td>
     <td class="days">
-        <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">Stopped on {{drugOrder.effectiveStopDate | date: 'dd MMM yy'}}</span>
         <span class="fr">{{drugOrder.effectiveStartDate | date:'dd MMM yy'}}</span>
     </td>
 

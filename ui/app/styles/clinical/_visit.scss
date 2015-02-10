@@ -190,6 +190,10 @@
     }
     tr td {
       font-size: 14px;
+      .discontinued-text {
+        display: block;
+        color: $mediumGray;
+      }
     }
     .drugorder-date {
       text-transform: uppercase;
@@ -197,11 +201,7 @@
     .dosage-form {
       white-space: nowrap;
     }
-	  .drug-discontinued {
-		  td {
-			  text-decoration: line-through;
-		  }
-	  }
+
   }
 }
 .visit .treatment-section table tr td {

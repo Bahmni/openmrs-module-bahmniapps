@@ -25,7 +25,11 @@
     padding: 5px 20px;
     section {
         margin-bottom: 15px;
+        section, table {
+            margin: 0;
+        }
     }
+
     table {
         margin-top: 5px;
     }
