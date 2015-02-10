@@ -33,7 +33,7 @@ angular.module('bahmni.clinical')
                 scope: {
                     patientUuid: "=",
                     config: "=",
-                    title: "="
+                    title: "=sectionTitle"
                 }
             }
         }]);

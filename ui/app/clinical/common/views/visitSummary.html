@@ -11,7 +11,7 @@
         <p class="no-visit" ng-show="!visit.hasData()">No visit information for this patient</p>
     </section>
     <section ng-if="!hide['diagnosis']" class="block dashboard-section">
-        <bahmni-diagnosis patient-uuid="patient.uuid" title="visitPageConfig.diagnosis['title']"
+        <bahmni-diagnosis patient-uuid="patient.uuid" section-title="visitPageConfig.diagnosis['title']"
                           config="visitPageConfig.diagnosis"></bahmni-diagnosis>
     </section>
     <div ng-if="!hide['observation']">

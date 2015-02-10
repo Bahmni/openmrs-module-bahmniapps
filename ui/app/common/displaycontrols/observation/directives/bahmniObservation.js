@@ -52,7 +52,7 @@ angular.module('bahmni.common.displaycontrol')
                     visitUuid:"@",
                     section:"=",
                     config:"=",
-                    title:"=",
+                    title:"=sectionTitle",
                     isOnDashboard:"="
                 }
             }
