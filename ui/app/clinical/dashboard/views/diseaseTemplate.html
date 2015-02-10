@@ -28,7 +28,7 @@
                                 {{encounter.encounterDateTime | date: 'dd MMM yy'}}
                             </span>
                         </span>
-                        <ul>
+                        <ul ng-class="{'is-intake-template':isIntakeTemplate(obsTemplate)}">
                             <show-observation observation="observation" patient="patient" show-details-button="config.showDetailsButton"
                                               show-date="dateTimeDisplayConfig(obsTemplate).showDate" show-time="dateTimeDisplayConfig(obsTemplate).showTime" ng-repeat="observation in encounter.observations"></show-observation>
                         </ul>

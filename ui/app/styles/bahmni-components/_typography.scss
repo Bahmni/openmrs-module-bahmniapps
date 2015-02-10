@@ -5,57 +5,89 @@
 .hierarchy {
     ul li {
         border-top: 1px solid $lightestGray;
-        font-size:14px; color: #000; background: #dfdfdf;
-	    clear: both;
+        font-size: 14px;
+        color: #000;
+        background: #dfdfdf;
+        clear: both;
         .tree-list-item {
             padding-top: 3px;
-	        padding-bottom: 3px;
-	        padding-left: 10px;
-	        display: inherit;
-	        .visit-start-date {
-		        margin-right: 5px;
-	        }
+            padding-bottom: 3px;
+            padding-left: 10px;
+            display: inherit;
+            .visit-start-date {
+                margin-right: 5px;
+            }
             .field-attribute {
                 width: 250px;
             }
         }
-    }
-    ul li ul li {
-        font-size:14px; color: #000; background: #f6f6f6;
-        .tree-list-item {
-            padding-left: 20px;
-            .field-attribute {
-                width: 240px;
+        ul li {
+            background: #f6f6f6;
+            .tree-list-item {
+                padding-left: 20px;
+                .field-attribute {
+                    width: 240px;
+                }
+            }
+            ul li {
+                font-size: 13px;
+                background: $white;
+                .tree-list-item {
+                    padding-left: 30px;
+                    .field-attribute {
+                        width: 230px;
+                    }
+                }
+                ul li {
+                    font-size: 12px;
+                    .tree-list-item {
+                        padding-left: 40px;
+                        .field-attribute {
+                            width: 220px;
+                        }
+                    }
+
+                    ul li {
+                        .tree-list-item {
+                            padding-left: 50px;
+                            .field-attribute {
+                                width: 210px;
+                            }
+                        }
+                    }
+                }
+            }
+            ul.is-intake-template li {
+                .tree-list-item {
+                    padding-left: 0px;
+                    font-size: 14px;
+                    background: #f6f6f6;
+                    .field-attribute {
+                        width: 260px;
+                    }
+                }
+                ul li {
+                    .tree-list-item {
+                        padding-left: 30px;
+                        font-size: 12px;
+                        background: $white;
+                        .field-attribute {
+                            width: 230px;
+                        }
+                    }
+
+                    ul li {
+                        .tree-list-item {
+                            padding-left: 40px;
+                            .field-attribute {
+                                width: 220px;
+                            }
+                        }
+                    }
+                }
             }
         }
     }
-    ul li ul li ul li {
-        font-size:13px; color: #000; background: $white;
-        .tree-list-item {
-            padding-left: 30px;
-            .field-attribute {
-                width: 230px;
-            }
-        }
-    }
-    ul li ul li ul li ul li {
-        font-size:12px; color: #000; background: $white;
-       .tree-list-item {
-            padding-left: 40px;
-            .field-attribute {
-                width: 220px;
-            }
-        } 
-    } 
-    ul li ul li ul li ul li ul li {
-        font-size:12px; color: #000; background: $white;
-        .tree-list-item {
-            padding-left: 50px;
-            .field-attribute {
-                width: 210px;
-            }
-        }
-    } 
   
     .form-field {
         padding: 0;
