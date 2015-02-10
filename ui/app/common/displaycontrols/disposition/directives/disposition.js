@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.clinical')
+angular.module('bahmni.common.displaycontrol.disposition')
     .directive('disposition', ['dispositionService','$q','spinner',
         function (dispositionService, $q ,spinner) {
 
@@ -37,7 +37,7 @@ angular.module('bahmni.clinical')
             return {
                 restrict:'E',
                 controller:controller,
-                templateUrl:"displaycontrols/disposition/views/disposition.html",
+                templateUrl:"../common/displaycontrols/disposition/views/disposition.html",
                 scope: {
                     params: "=",
                     patientUuid: "="

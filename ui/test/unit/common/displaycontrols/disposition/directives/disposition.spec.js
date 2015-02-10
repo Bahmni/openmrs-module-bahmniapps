@@ -47,7 +47,10 @@ describe('Disposition DisplayControl', function () {
         }
     ];
 
-    beforeEach(module('bahmni.clinical'), function($provide){
+    beforeEach(module('bahmni.common.uiHelper'), function(){});
+    beforeEach(module('bahmni.common.domain'), function(){});
+
+    beforeEach(module('bahmni.common.displaycontrol.disposition'), function($provide){
         var _spinner = jasmine.createSpyObj('spinner',['forPromise','then']);
         _spinner.forPromise.and.callFake(function(){
             deferred = q.defer();
@@ -74,7 +77,7 @@ describe('Disposition DisplayControl', function () {
             visitUuid: "1234"
         };
 
-        mockBackend.expectGET('displaycontrols/disposition/views/disposition.html').respond("<div>dummy</div>");
+        mockBackend.expectGET('../common/displaycontrols/disposition/views/disposition.html').respond("<div>dummy</div>");
         mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/disposition/visit?visitUuid=1234').respond(dispositions);
 
         var element = compile(simpleHtml)(scope);
@@ -97,7 +100,7 @@ describe('Disposition DisplayControl', function () {
         };
         scope.patientUuid="123456"
 
-        mockBackend.expectGET('displaycontrols/disposition/views/disposition.html').respond("<div>dummy</div>");
+        mockBackend.expectGET('../common/displaycontrols/disposition/views/disposition.html').respond("<div>dummy</div>");
         mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/disposition/patient?numberOfVisits=4&patientUuid=123456').respond(dispositions);
 
         var element = compile(simpleHtml)(scope);
@@ -121,7 +124,7 @@ describe('Disposition DisplayControl', function () {
         };
         scope.patientUuid="123456"
 
-        mockBackend.expectGET('displaycontrols/disposition/views/disposition.html').respond("<div>dummy</div>");
+        mockBackend.expectGET('../common/displaycontrols/disposition/views/disposition.html').respond("<div>dummy</div>");
         mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/disposition/patient?numberOfVisits=4&patientUuid=123456').respond([]);
 
         var element = compile(simpleHtml)(scope);
@@ -145,7 +148,7 @@ describe('Disposition DisplayControl', function () {
         };
         scope.patientUuid="123456"
 
-        mockBackend.expectGET('displaycontrols/disposition/views/disposition.html').respond("<div>dummy</div>");
+        mockBackend.expectGET('../common/displaycontrols/disposition/views/disposition.html').respond("<div>dummy</div>");
         mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/disposition/patient?numberOfVisits=4&patientUuid=123456').respond([]);
 
         var element = compile(simpleHtml)(scope);

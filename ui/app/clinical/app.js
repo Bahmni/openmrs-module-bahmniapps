@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.config', 'bahmni.common.patient', 'bahmni.common.uiHelper', 'bahmni.common.patientSearch', 'bahmni.common.obs',
-    'bahmni.common.domain', 'bahmni.common.conceptSet', 'authentication', 'bahmni.common.appFramework', 'bahmni.common.displaycontrol.observation', 'bahmni.common.displaycontrol.pivottable', 'bahmni.common.routeErrorHandler',
+    'bahmni.common.domain', 'bahmni.common.conceptSet', 'authentication', 'bahmni.common.appFramework', 'bahmni.common.displaycontrol.observation', 'bahmni.common.displaycontrol.pivottable', 'bahmni.common.displaycontrol.disposition', 'bahmni.common.routeErrorHandler',
     'httpErrorInterceptor', 'pasvaz.bindonce', 'infinite-scroll', 'bahmni.common.util', 'ngAnimate', 'ngDialog', 'angular-gestures', 'bahmni.common.util']);
 angular.module('consultation')
     .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
