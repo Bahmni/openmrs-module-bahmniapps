@@ -5,6 +5,7 @@ angular.module('bahmni.common.appFramework')
         var currentUser = null;
         var baseUrl = "/bahmni_config/openmrs/apps/";
         var appDescriptor = null;
+        var self = this;
 
         var loadConfig = function (url) {
             return $http.get(url, {withCredentials: true});
@@ -68,6 +69,25 @@ angular.module('bahmni.common.appFramework')
             return deferrable.promise;
         };
 
+        var loadPageConfig = function(pageName,appDescriptor){
+            var deferrable = $q.defer();
+            loadConfig(baseUrl + appDescriptor.contextPath + "/"+pageName+".json").then(
+                function (result) {
+                    if (result.data.length > 0) {
+                        appDescriptor.addConfigForPage(pageName,result.data);
+                    }
+                    deferrable.resolve(appDescriptor);
+                },
+                function (error) {
+                    if (error.status != 404) {
+                        deferrable.reject(error);
+                    } else {
+                        deferrable.resolve(appDescriptor);
+                    }
+                }
+            );
+            return deferrable.promise;
+        };
         this.getAppDescriptor = function () {
             return appDescriptor;
         };
@@ -76,7 +96,7 @@ angular.module('bahmni.common.appFramework')
             return loadConfig(baseUrl + appDescriptor.contextPath + "/" + name + ".json");
         };
 
-        this.initApp = function (appName, options, extensionFileSuffix) {
+        this.initApp = function (appName, options, extensionFileSuffix, configPages) {
             var appLoader = $q.defer();
             var extensionFileName = extensionFileSuffix ? "/extension-" + extensionFileSuffix + ".json" : "/extension.json";
             var promises = [];
@@ -101,6 +121,11 @@ angular.module('bahmni.common.appFramework')
             }
             if (opts.app) {
                 promises.push(loadDefinition(appDescriptor));
+            }
+            if(!_.isEmpty(configPages)){
+                configPages.forEach(function(configPage){
+                    promises.push(loadPageConfig(configPage,appDescriptor));
+                });
             }
             $q.all(promises).then(function (results) {
                 currentUser = results[0];

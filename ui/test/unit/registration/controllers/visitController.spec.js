@@ -20,6 +20,7 @@ describe('VisitController', function () {
     var appDescriptor;
     var sessionService;
     var messagingService;
+    var rootScope ;
     var stubAllPromise = function () {
         return {
             then: function () {
@@ -64,6 +65,7 @@ describe('VisitController', function () {
     beforeEach(module('stateMock'));
     beforeEach(inject(['$injector', '$timeout', '$q', '$rootScope', '$state', function ($injector, timeout, $q, $rootScope, $state) {
         q = $q;
+        rootScope = $rootScope;
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
         stateParams = {patientUuid: '21308498-2502-4495-b604-7b704a55522d'};
         patient = {
@@ -123,6 +125,7 @@ describe('VisitController', function () {
 
             expect(scope.patient).toBe(patient);
         });
+
     });
 
 

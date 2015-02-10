@@ -18,7 +18,7 @@ angular.module('bahmni.clinical').factory('initialization',
             };
 
             var initApp = function () {
-                return appService.initApp('clinical', {'app': true, 'extension': true });
+                return appService.initApp('clinical', {'app': true, 'extension': true },null,["dashboard","visit"]);
             };
 
             return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(loadConfigPromise));
