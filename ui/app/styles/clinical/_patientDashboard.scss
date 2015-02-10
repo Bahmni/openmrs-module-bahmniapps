@@ -340,6 +340,13 @@ table.pivot-table {
     font-weight: bold;
     font-family: $OpenSansBoldFont;
   }
+  thead th {
+      font-family: OpenSans, Arial, sans-serif;
+      font-weight: normal;
+    &.row-header-group {
+      text-align: right;
+    }
+  }
   tr {
      td, th {
        line-height: 1.2em;
