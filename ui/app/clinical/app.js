@@ -7,6 +7,7 @@ angular.module('consultation')
     .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/patient/search');
         var patientSearchBackLink = {label: "<u>P</u>atients", state: "patientsearch", accessKey: "p"};
+        var patientDashboardLink = {label: "<i class='icon-user'>", state: "patient.dashboard"};
         $stateProvider
             .state('patientsearch', {
                 url: '/patient/search',
@@ -107,7 +108,7 @@ angular.module('consultation')
                 url: '',
                 abstract: true,
                 data: {
-                    backLinks: [patientSearchBackLink]
+                    backLinks: [patientSearchBackLink,patientDashboardLink]
                 },
                 views: {
                     'additional-header': {
