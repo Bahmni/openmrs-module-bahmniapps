@@ -1,15 +1,22 @@
 'use strict';
-describe("PivotTableService", function() {
-	var diseaseSummaryConfig, _$http;
+
+describe("PivotTableService", function () {
+    var diseaseSummaryConfig, _$http;
     var pivotTableService;
 
-    beforeEach(module('bahmni.clinical'));
+    beforeEach(module('bahmni.common.displaycontrol.pivottable'));
     beforeEach(module('bahmni.common.appFramework'));
 
     beforeEach(module(function () {
-        diseaseSummaryConfig = {"numberOfVisits":1, "obsConcepts":[], "drugConcepts":[], "labConcepts":[], "groupBy": "encounters"};
+        diseaseSummaryConfig = {
+            "numberOfVisits": 1,
+            "obsConcepts": [],
+            "drugConcepts": [],
+            "labConcepts": [],
+            "groupBy": "encounters"
+        };
         _$http = jasmine.createSpyObj('$http', ['get', 'post']);
-        
+
     }));
 
     beforeEach(module(function ($provide) {
@@ -27,9 +34,9 @@ describe("PivotTableService", function() {
             _$http.get.and.callFake(function () {
                 return specUtil.respondWith(diseaseSummary);
             });
-            
+
             this.pivotTableService.getPivotTableFor("patientuuid", diseaseSummaryConfig).then(function (response) {
-               	expect(response).toBe(diseaseSummary);
+                expect(response).toBe(diseaseSummary);
                 done();
             });
         });

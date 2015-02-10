@@ -1,18 +1,18 @@
 'use strict';
 
-describe('PatientDashboardObservationSectionController', function () {
+describe('AllObservationDetailsController', function () {
    var $rootScope,
        $scope,
        controller;
    beforeEach(function () {
-       module('bahmni.clinical');
+       module('bahmni.common.displaycontrol.observation');
 
        inject(function ($rootScope,$controller) {
            $scope = $rootScope.$new();
            $scope.ngDialogData = { patient: {patientUuid: 1234},
                                    section: {title:"Vitals"}
            };
-           controller = $controller('PatientDashboardObservationSectionController', {$scope: $scope});
+           controller = $controller('AllObservationDetailsController', {$scope: $scope});
 
        });
    });

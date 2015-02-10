@@ -1,18 +1,18 @@
 'use strict';
 
-angular.module('bahmni.common.displaycontrol')
+angular.module('bahmni.common.displaycontrol.observation')
     .directive('bahmniObservation', ['observationsService', 'appService', '$q','spinner',
         function (observationsService, appService, $q, spinner) {
 
             var controller = function($scope){
 
                 var mapObservation = function(response,config){
-                    var observationFilter = new Bahmni.Common.DisplayControl.ObservationFilters(config.obsIgnoreList);
+                    var observationFilter = new Bahmni.Common.DisplayControl.Observation.Filters(config.obsIgnoreList);
                     var observations = observationFilter.removeObsWithOrder(observationFilter.removeUnwantedObs(response.data));
                     var conceptsConfig = appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
                     observations = new Bahmni.Common.Obs.ObservationMapper().map(observations, conceptsConfig);
 
-                    $scope.bahmniObservations = new Bahmni.Common.DisplayControl.GroupingFunctions().groupByEncounterDate(observations);
+                    $scope.bahmniObservations = new Bahmni.Common.DisplayControl.Observation.GroupingFunctions().groupByEncounterDate(observations);
                     if (_.isEmpty($scope.bahmniObservations)) {
                         $scope.noObsMessage = Bahmni.Common.Constants.messageForNoObservation;
                     }
@@ -41,7 +41,7 @@ angular.module('bahmni.common.displaycontrol')
                     "patient": $scope.patient,
                     "section": $scope.section
                 };
-                
+
             };
             return {
                 restrict:'E',

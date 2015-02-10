@@ -14,23 +14,38 @@ describe("ConceptSetSection", function () {
     describe("isAvailable", function () {
         it("should be true if 'showIf' condition is not defined", function () {
             expect(new ConceptSetSection({extensionParams: {conceptName: "vitals"}}, new Bahmni.Auth.User({}), {}, [], conceptSet).isAvailable()).toBe(true);
-            expect(new ConceptSetSection({extensionParams: {conceptName: "vitals", showIf: null }}, new Bahmni.Auth.User({}), {}, [], conceptSet).isAvailable()).toBe(true);
+            expect(new ConceptSetSection({
+                extensionParams: {
+                    conceptName: "vitals",
+                    showIf: null
+                }
+            }, new Bahmni.Auth.User({}), {}, [], conceptSet).isAvailable()).toBe(true);
         });
 
         it("should be false if 'showIf' condition returns false", function () {
-            var conceptSetSection = new ConceptSetSection({extensionParams: {conceptName: "vitals", showIf: ["return false;"] }}, new Bahmni.Auth.User({}), {}, [], conceptSet);
+            var conceptSetSection = new ConceptSetSection({
+                extensionParams: {
+                    conceptName: "vitals",
+                    showIf: ["return false;"]
+                }
+            }, new Bahmni.Auth.User({}), {}, [], conceptSet);
 
             expect(conceptSetSection.isAvailable()).toBe(false);
         });
 
         it("should be true if 'showIf' condition returns true", function () {
-            var conceptSetSection = new ConceptSetSection({extensionParams: {conceptName: "vitals", showIf: ["return true;"] }}, new Bahmni.Auth.User({}), {}, [], conceptSet);
+            var conceptSetSection = new ConceptSetSection({
+                extensionParams: {
+                    conceptName: "vitals",
+                    showIf: ["return true;"]
+                }
+            }, new Bahmni.Auth.User({}), {}, [], conceptSet);
 
             expect(conceptSetSection.isAvailable()).toBe(true);
         });
 
         it("should pass the context to the showIf function", function () {
-            var context = {visitTypeName: 'OPD', patient: {gender: 'M'} };
+            var context = {visitTypeName: 'OPD', patient: {gender: 'M'}};
             var extensionParams =
             {
                 extensionParams: {
@@ -59,7 +74,27 @@ describe("ConceptSetSection", function () {
     var noDefaultConfig =
     {
         extensionParams: {
-            conceptName: "vitals"
+            conceptName: "vitals",
+            "section": {
+                "title": "Vitals",
+                "name": "vitals",
+                "isObservation": true,
+                "dashboardParams": {
+                    "conceptNames": ["Vitals", "Second Vitals"],
+                    "numberOfVisits": 2
+                },
+                "allObservationDetails": {
+                    "conceptNames": ["Height", "Weight", "BMI", "BMI STATUS"],
+                    "numberOfVisits": 2,
+                    "pivotTable": {
+                        "numberOfVisits": "4",
+                        "groupBy": "encounters",
+                        "obsConcepts": ["Height", "Weight", "BMI", "BMI STATUS"],
+                        "drugConcepts": "",
+                        "labConcepts": ""
+                    }
+                }
+            }
         }
     };
     describe("isAdded", function () {
@@ -90,73 +125,73 @@ describe("ConceptSetSection", function () {
             var observations = [
                 {concept: {name: "vitals"}, value: ""}
             ];
-            var conceptSetSection = new ConceptSetSection({}, new Bahmni.Auth.User({}), {}, observations, conceptSet);
+            var conceptSetSection = new ConceptSetSection(noDefaultConfig, new Bahmni.Auth.User({}), {}, observations, conceptSet);
             expect(conceptSetSection.isAdded).toBe(false);
         });
-
-        describe("isOpen", function () {
-            it("should be true if conceptSet observations has value", function () {
-                var observations = [
-                    {concept: {name: "vitals"}, value: "12"},
-                    {concept: {name: "second vitals"}, value: ""}
-                ];
-                var conceptSetSection = new ConceptSetSection({}, new Bahmni.Auth.User({}), {}, observations, conceptSet);
-                expect(conceptSetSection.isOpen).toBe(true);
-            })
-        });
-
-        describe("canToggle", function () {
-            var extensions =
-            {
-                extensionParams: {
-                    default: true,
-                    conceptName: "vitals"
-                }
-            };
-
-            it("should return false if conceptSet observations has value", function () {
-                var observations = [
-                    {concept: {name: "vitals"}, value: "12"},
-                    {concept: {name: "second vitals"}, value: ""}
-                ];
-                var conceptSetSection = new ConceptSetSection({}, new Bahmni.Auth.User({}), {}, observations, conceptSet);
-                expect(conceptSetSection.canToggle()).toBe(false);
-            });
-
-            it("should return true if conceptSet observations has no value", function () {
-                var observations = [
-                    {concept: {name: "vitals"}, value: ""}
-                ];
-                var conceptSetSection = new ConceptSetSection(extensions, new Bahmni.Auth.User({}), {}, observations, conceptSet);
-                expect(conceptSetSection.canToggle()).toBe(true);
-            })
-        });
-
-        describe("toggleDisplay", function () {
-            var config =
-            {
-                extensionParams: {
-                    default: true,
-                    conceptName: "vitals"
-                }
-            };
-
-            it("should hide if open", function () {
-                var conceptSetSection = new ConceptSetSection(config, new Bahmni.Auth.User({}), {}, [], conceptSet);
-                conceptSetSection.show();
-                expect(conceptSetSection.isOpen).toBe(true);
-                conceptSetSection.toggleDisplay();
-                expect(conceptSetSection.isOpen).toBe(false);
-            });
-
-            it("should show if hidden", function () {
-                var conceptSetSection = new ConceptSetSection(config, new Bahmni.Auth.User({}), {}, [], conceptSet);
-                expect(conceptSetSection.isOpen).toBe(false);
-                conceptSetSection.toggleDisplay();
-                expect(conceptSetSection.isOpen).toBe(true);
-            });
-
-        });
-
     })
+
+
+    describe("isOpen", function () {
+        it("should be true if conceptSet observations has value", function () {
+            var observations = [
+                {concept: {name: "vitals"}, value: "12"},
+                {concept: {name: "second vitals"}, value: ""}
+            ];
+            var conceptSetSection = new ConceptSetSection(noDefaultConfig, new Bahmni.Auth.User({}), {}, observations, conceptSet);
+            expect(conceptSetSection.isOpen).toBe(true);
+        })
+    });
+
+    describe("canToggle", function () {
+        var extensions =
+        {
+            extensionParams: {
+                default: true,
+                conceptName: "vitals"
+            }
+        };
+
+        it("should return false if conceptSet observations has value", function () {
+            var observations = [
+                {concept: {name: "vitals"}, value: "12"},
+                {concept: {name: "second vitals"}, value: ""}
+            ];
+            var conceptSetSection = new ConceptSetSection(noDefaultConfig, new Bahmni.Auth.User({}), {}, observations, conceptSet);
+            expect(conceptSetSection.canToggle()).toBe(false);
+        });
+
+        it("should return true if conceptSet observations has no value", function () {
+            var observations = [
+                {concept: {name: "vitals"}, value: ""}
+            ];
+            var conceptSetSection = new ConceptSetSection(extensions, new Bahmni.Auth.User({}), {}, observations, conceptSet);
+            expect(conceptSetSection.canToggle()).toBe(true);
+        })
+    });
+
+    describe("toggleDisplay", function () {
+        var config =
+        {
+            extensionParams: {
+                default: true,
+                conceptName: "vitals"
+            }
+        };
+
+        it("should hide if open", function () {
+            var conceptSetSection = new ConceptSetSection(config, new Bahmni.Auth.User({}), {}, [], conceptSet);
+            conceptSetSection.show();
+            expect(conceptSetSection.isOpen).toBe(true);
+            conceptSetSection.toggleDisplay();
+            expect(conceptSetSection.isOpen).toBe(false);
+        });
+
+        it("should show if hidden", function () {
+            var conceptSetSection = new ConceptSetSection(config, new Bahmni.Auth.User({}), {}, [], conceptSet);
+            expect(conceptSetSection.isOpen).toBe(false);
+            conceptSetSection.toggleDisplay();
+            expect(conceptSetSection.isOpen).toBe(true);
+        });
+
+    });
 });

@@ -1,10 +1,12 @@
 <div class="block " ng-class="{'hidden-print': noObsMessage}">
     <h2 ng-if="!isClickable()" class="section-title">{{title}}</h2>
     <div ng-if="isClickable()" class="dashboard-observations-section">
-        <h2 ng-dialog="dashboard/views/dashboardSections/observationSectionSummary.html" 
-        ng-dialog-controller="PatientDashboardObservationSectionController"
+        <h2 ng-dialog="../common/displaycontrols/observation/views/allObservationDetails.html"
+        ng-dialog-controller="AllObservationDetailsController"
         ng-dialog-data="{{dialogData}}"
-        class="section-title">{{title}}</h2>
+        class="section-title">
+            <a>{{title}}</a>
+        </h2>
     </div>
     <section class="block hierarchy">
         <ul class="form-field">

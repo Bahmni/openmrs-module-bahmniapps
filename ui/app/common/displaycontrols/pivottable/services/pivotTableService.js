@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.clinical')
+angular.module('bahmni.common.displaycontrol.pivottable')
     .service('pivotTableService', ['$http', function ($http) {
 
         this.getPivotTableFor = function (patientUuid, diseaseSummaryConfig, visitUuid){

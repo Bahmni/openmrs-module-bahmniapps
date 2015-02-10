@@ -4,14 +4,14 @@ describe("observation Filter", function () {
     var unwanterObservations = ["LAB_MAXNORMAL","LAB_MINNORMAL", "Pulse Daa"];
 
     it("should return observations without orderUuid", function(){
-        var observationFilter = new Bahmni.Common.DisplayControl.ObservationFilters(unwanterObservations);
+        var observationFilter = new Bahmni.Common.DisplayControl.Observation.Filters(unwanterObservations);
         var filteredObservations = observationFilter.removeObsWithOrder(observationsList);
         expect(filteredObservations.length).toBe(1);
         expect(filteredObservations[0].concept.name).toBe("Vitals");
     });
 
     it("should return unwanted Observations", function(){
-        var observationFilter = new Bahmni.Common.DisplayControl.ObservationFilters(unwanterObservations);
+        var observationFilter = new Bahmni.Common.DisplayControl.Observation.Filters(unwanterObservations);
         var filteredObservations = observationFilter.removeUnwantedObs(observationsList);
 
         expect(filteredObservations.length).toBe(3);

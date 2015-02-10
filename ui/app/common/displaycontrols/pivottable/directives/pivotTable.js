@@ -1,5 +1,5 @@
 'use strict';
-angular.module('bahmni.clinical').directive('pivotTable', ['$filter','spinner','pivotTableService',
+angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable', ['$filter','spinner','pivotTableService',
     function ($filter,spinner,pivotTableService) {
 
         return {
@@ -40,6 +40,6 @@ angular.module('bahmni.clinical').directive('pivotTable', ['$filter','spinner','
                     scope.hasData = !_.isEmpty(scope.result.tabularData);
                 })
             },
-            templateUrl: 'displaycontrols/pivottable/views/pivotTable.html'
+            templateUrl: '../common/displaycontrols/pivottable/views/pivotTable.html'
         }
 }]);

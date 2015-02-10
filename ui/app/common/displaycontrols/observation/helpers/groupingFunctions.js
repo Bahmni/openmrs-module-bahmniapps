@@ -1,4 +1,4 @@
-Bahmni.Common.DisplayControl.GroupingFunctions = function(){
+Bahmni.Common.DisplayControl.Observation.GroupingFunctions = function(){
 
     var self = this;
     var observationGroupingFunction = function (obs) {
