@@ -9,13 +9,13 @@
         <thead>
         <tr>
             <th>&nbsp;</th>
-            <th class="normal" ng-repeat="testOrderLabel in accessions.getTestOrderLabels()">
+            <td class="normal" ng-repeat="testOrderLabel in accessions.getTestOrderLabels()">
                 <span bo-text="testOrderLabel.testName"></span>
                             <span ng-show="accessions.hasRange(testOrderLabel)" class="range">
                                 <span bo-text="'(' + testOrderLabel.minNormal + ' - ' + testOrderLabel.maxNormal + ')'"></span>
                                 <span bo-text="testOrderLabel.testUnitOfMeasurement"></span>
                             </span>
-            </th>
+            </td>
         </tr>
         </thead>
         <tbody>
