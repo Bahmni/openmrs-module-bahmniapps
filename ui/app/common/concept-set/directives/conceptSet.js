@@ -62,8 +62,8 @@ angular.module('bahmni.common.conceptSet')
     }]).directive('conceptSet', ['contextChangeHandler', 'appService', 'observationsService', function (contextChangeHandler, appService, observationsService) {
         var template =
             '<form>' +
-                '<div ng-if="showRecentButton">' +
-                    '<button type="button" ng-click="showRecent()" class="fr btn-small">Recent</button>' +
+                '<div ng-if="showPreviousButton">' +
+                    '<button type="button" ng-click="showPrevious()" class="fr btn-small">Previous</button>' +
                     '</div>' +
                 '<concept concept-set-required="conceptSetRequired" root-observation="rootObservation" patient="patient" ' +
                 'observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet" ' +
@@ -100,7 +100,7 @@ angular.module('bahmni.common.conceptSet')
             $scope.atLeastOneValueIsSet = false;
             $scope.conceptSetRequired = false;
             $scope.showTitleValue = $scope.showTitle();
-            $scope.showRecentButton = conceptSetUIConfig[conceptSetName] && conceptSetUIConfig[conceptSetName].showRecentButton;
+            $scope.showPreviousButton = conceptSetUIConfig[conceptSetName] && conceptSetUIConfig[conceptSetName].showPreviousButton;
 
             var updateObservationsOnRootScope = function () {
                 if($scope.rootObservation){
@@ -151,7 +151,7 @@ angular.module('bahmni.common.conceptSet')
                 return flattened;
             }
 
-            $scope.showRecent = function() {
+            $scope.showPrevious = function() {
                 spinner.forPromise(observationsService.fetch($scope.patient.uuid, getConceptNames(), "latest", null, null, true)).then(function(response) {
                     var recentObservations = flattenObs(response.data);
                     flattenObs($scope.observations).forEach(function(obs) {
@@ -160,7 +160,7 @@ angular.module('bahmni.common.conceptSet')
                         });
 
                         if(correspondingRecentObs != null) {
-                            obs.recent = {
+                            obs.previous = {
                                 value: new Bahmni.Common.Domain.ObservationValueMapper().map(correspondingRecentObs),
                                 date: correspondingRecentObs.observationDateTime
                             };
