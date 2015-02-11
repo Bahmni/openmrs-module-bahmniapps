@@ -34,4 +34,15 @@ describe("Observation Value Mapper", function () {
         var mapper = new Bahmni.Common.Domain.ObservationValueMapper();
         expect(mapper.map(obs)).toEqual("Bahmni");
     });
+
+    it("should return Yes when type is boolean and value is true", function() {
+        var obs = {type: "Boolean", value: true, concept: {}};
+        var mapper = new Bahmni.Common.Domain.ObservationValueMapper();
+        expect(mapper.map(obs)).toEqual("Yes");
+    });
+    it("should return No when type is boolean and value is false", function() {
+        var obs = {type: "Boolean", value: false, concept: {}};
+        var mapper = new Bahmni.Common.Domain.ObservationValueMapper();
+        expect(mapper.map(obs)).toEqual("No");
+    });
 });
