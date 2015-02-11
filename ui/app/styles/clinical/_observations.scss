@@ -220,10 +220,19 @@ concept-set {
   .concept-set-title {
     cursor: pointer;
     position: relative;
+    h2.section-title {
+      padding: 10px 32px 10px 10px;
+      button {
+        font-size: 12px;
+        font-family: Opensans, Arial, sans-serif;
+        padding: 4px 10px;
+        margin: -4px 5px 0 0;
+      }
+    }
     .favourite-concept-set {
       position: absolute;
-      right: 5px;
-      top: 5px;
+      right: 4px;
+      top: 4px;
     }
   }
 }
