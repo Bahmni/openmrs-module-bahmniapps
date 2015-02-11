@@ -237,21 +237,6 @@ h1,h2,h3{
 							padding: 0 5px;
 							font-family: Arial, sans-serif;
 						}
-						.notes {
-							padding: 0px 5px 2px 20px;
-							font-size: 7.5pt;
-							background: none;
-							color: #999;
-							.footer-note .provider {
-								display: none;
-							}
-							&.test-notes i[class^=icon-] {
-								padding: 0;
-							}
-							pre, .content {
-								color: #999;
-							}
-						}
 						.name, .drug, .testUnderPanel {
 							width: 45%;
 						}
@@ -314,7 +299,7 @@ h1,h2,h3{
 		}
 	}
 	.disposition-state {
-		font-size: 10px;
+		font-size: 10pt;
 		.disposition-by {
 			display: none;
 		}
@@ -332,5 +317,33 @@ h1,h2,h3{
 			display: none;
 		}
 	}
+	.notes {
+		padding: 0px 5px 2px 20px;
+		font-size: 8pt;
+		background: none;
+		color: #999;
+		&.test-notes i[class^=icon-] {
+			padding: 0;
+		}
 
+		&.print-notes {
+			display: block !important;
+		}
+		pre, .content {
+			color: #999;
+			font-size: 8pt;
+		}
+		.footer-note .provider {
+			display: none;
+		}
+	}
+	.expander-row, .laborder-section li {
+		padding: 0 5px;
+	}
+	.is-abnormal {
+		color: #000 !important;
+	}
+	button.toggle {
+		display: none;
+	}
 }
