@@ -350,18 +350,17 @@ concept-set {
 .concept-tooltip-trigger {
   cursor: pointer;
   display: inline-block;
-  width: 20px;
-  height: 20px;
-  line-height: 20px;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
   text-align: center;
   border-radius: 100%;
-  font-size: 18px;
-  background: $bahmniSecondaryColor;
+  font-size: 20px;
+  color: $bahmniSecondaryColor;
   box-shadow: 1px 1px 1px $lightGray;
-  color: #fff;
+  background: #fff;
   padding: 0;
   margin-left: 5px;
-
 }
 .concept-tooltip-description {
   margin-bottom: 10px;
