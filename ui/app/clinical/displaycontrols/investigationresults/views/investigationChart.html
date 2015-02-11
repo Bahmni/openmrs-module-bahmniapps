@@ -24,7 +24,7 @@
             <td ng-repeat="testOrderLabel in accessions.getTestOrderLabels()"
                 ng-class="{'has-uploaded-file': accessions.hasUploadedFiles(dateLabel, testOrderLabel)}">
                         <span ng-init="results = accessions.getResult(dateLabel, testOrderLabel)">
-                            <span bm-pop-over class="test-result" ng-repeat="res in results">
+                            <span bm-pop-over autoclose="true" class="test-result" ng-repeat="res in results">
                                 <span ng-class="{'referred-out': res.referredOut}">
                                     <span class="referred">R</span>
                                 </span>
