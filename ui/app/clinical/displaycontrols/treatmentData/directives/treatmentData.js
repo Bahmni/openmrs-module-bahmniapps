@@ -28,8 +28,7 @@ angular.module('bahmni.clinical')
                     for (var key in groupedByVisit) {
                         treatmentSections.push({visitDate: key, drugOrders: groupedByVisit[key]});
                     }
-
-                        if (response.data[Constants.otherActiveDrugOrders]) {
+                        if (!_.isEmpty(treatmentSections) && response.data[Constants.otherActiveDrugOrders]) {
                         treatmentSections.push({
                             visitDate: Constants.otherActiveDrugOrders,
                             drugOrders: response.data[Constants.otherActiveDrugOrders]
