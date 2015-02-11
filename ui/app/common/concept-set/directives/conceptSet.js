@@ -2,7 +2,7 @@
 
 angular.module('bahmni.common.conceptSet')
     .directive('concept', [function () {
-        var controller = function ($scope, $q, $filter, spinner, conceptSetService) {
+        var controller = function ($scope, spinner, conceptSetService, $filter) {
             var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
             $scope.showTitle = $scope.showTitle === undefined ? true : $scope.showTitle;
 
@@ -12,6 +12,11 @@ angular.module('bahmni.common.conceptSet')
                 parentObservation.groupMembers.splice(index+1, 0, newObs);
             };
 
+            $scope.getStringValue = function(observations) {
+                return observations.map(function(observation) {
+                    return observation.value + ' (' + $filter('date')(observation.date, 'dd MMM yy') + ")";
+                }).join(", ");
+            };
             $scope.selectOptions = function(codedConcept){
                 var limit = 1000;
                 return {
@@ -29,7 +34,7 @@ angular.module('bahmni.common.conceptSet')
                                 v: "custom:(uuid,name:(name))"
                             };
                         },
-                        results: function (data, page) {
+                        results: function (data) {
                             return {
                                 //Remove uniq logic after web service rest bug is fixed
                                 results: _.sortBy(_.uniq(data.results, _.property('uuid')).map(conceptMapper.map), 'name'),
@@ -88,7 +93,7 @@ angular.module('bahmni.common.conceptSet')
                     });
                     firstObs && (firstObs.isFocused = true);
                 }
-            }
+            };
 
             spinner.forPromise(conceptSetService.getConceptSetMembers({name: conceptSetName, v: "custom:" + customRepresentation})).then(function (response) {
                 $scope.conceptSet = response.data.results[0];
@@ -101,6 +106,7 @@ angular.module('bahmni.common.conceptSet')
             $scope.conceptSetRequired = false;
             $scope.showTitleValue = $scope.showTitle();
             $scope.showPreviousButton = conceptSetUIConfig[conceptSetName] && conceptSetUIConfig[conceptSetName].showPreviousButton;
+            $scope.numberOfVisits = $scope.showPreviousButton ? (conceptSetUIConfig[conceptSetName].numberOfVisits ? conceptSetUIConfig[conceptSetName].numberOfVisits : null) : null;
 
             var updateObservationsOnRootScope = function () {
                 if($scope.rootObservation){
@@ -138,10 +144,10 @@ angular.module('bahmni.common.conceptSet')
                 return $scope.conceptSet.setMembers.map(function(member) {
                     return member.name.name
                 });
-            }
+            };
 
             var flattenObs = function(observations) {
-                var flattened = []
+                var flattened = [];
                 flattened.push.apply(flattened, observations);
                 observations.forEach(function(obs) {
                     if(obs.groupMembers && obs.groupMembers.length > 0) {
@@ -149,21 +155,25 @@ angular.module('bahmni.common.conceptSet')
                     }
                 });
                 return flattened;
-            }
+            };
 
             $scope.showPrevious = function() {
-                spinner.forPromise(observationsService.fetch($scope.patient.uuid, getConceptNames(), "latest", null, null, true)).then(function(response) {
+                spinner.forPromise(observationsService.fetch($scope.patient.uuid, getConceptNames(), null, $scope.numberOfVisits, null, true)).then(function(response) {
                     var recentObservations = flattenObs(response.data);
                     flattenObs($scope.observations).forEach(function(obs) {
-                        var correspondingRecentObs = _.find(recentObservations, function(recentObs) {
-                            return obs.concept.uuid == recentObs.concept.uuid;
+                        var correspondingRecentObs = _.filter(recentObservations, function(recentObs) {
+                            return obs.concept.uuid === recentObs.concept.uuid;
                         });
-
-                        if(correspondingRecentObs != null) {
-                            obs.previous = {
-                                value: new Bahmni.Common.Domain.ObservationValueMapper().map(correspondingRecentObs),
-                                date: correspondingRecentObs.observationDateTime
-                            };
+                        if(correspondingRecentObs != null && correspondingRecentObs.length > 0) {
+                            correspondingRecentObs.sort(function(obs1, obs2){
+                                return new Date(obs2.encounterDateTime) - new Date(obs1.encounterDateTime);
+                            });
+                            obs.previous = correspondingRecentObs.map(function(previousObs) {
+                                return {
+                                    value: new Bahmni.Common.Domain.ObservationValueMapper().map(previousObs),
+                                    date: previousObs.observationDateTime
+                                };
+                            });
                         }
                     });
                 });

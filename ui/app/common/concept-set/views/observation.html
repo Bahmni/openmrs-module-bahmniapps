@@ -115,8 +115,8 @@
             </label>
 
             <div class="field-value" ng-switch="observation.getControlType()">
-                <div class="concept-description" ng-if="observation.recent">
-                    <span class="details" ng-bind-html="observation.recent.value"></span>
+                <div class="concept-description" ng-if="observation.previous">
+                    <span class="details" ng-bind-html="getStringValue(observation.previous)"></span>
                 </div>
 
                 <div ng-switch-when="html5InputDataType">
