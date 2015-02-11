@@ -3,7 +3,6 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
     var self = this;
 
     var init = function () {
-        self.section = extensions.extensionParams.section;
         self.observations = observations;
         self.options = extensions.extensionParams || {};
         self.conceptName = conceptSet.name ? conceptSet.name.name : self.options.conceptName;
