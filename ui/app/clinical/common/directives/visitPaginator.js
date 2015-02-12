@@ -3,7 +3,6 @@
 angular.module('bahmni.clinical')
     .directive('visitPaginator', ['$state', function ($state) {
         var link = function ($scope) {
-
             var visits = _.clone($scope.visits).reverse();
             
             var visitIndex = _.findIndex(visits, function(visitHistoryEntry) {
@@ -43,7 +42,8 @@ angular.module('bahmni.clinical')
                 currentVisit: "=",
                 visits: "=",
                 nextFn: "&",
-                previousFn: "&"
+                previousFn: "&",
+                visitSummary: "="
             },
             link: link,
             templateUrl: 'common/views/visitPagination.html'

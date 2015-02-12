@@ -384,18 +384,13 @@ span.range {
 }
 legend.mylegend {background: $white!important;}
 
-.visit-page-header {
-  position: relative;
-  .visits-nav-bar {
-    position: absolute;
-    right: 0;
-    top: -10px;
-  }
+.visits-navbar-section {
+  text-align: center;
 }
 .visits-nav-bar {
     text-align: center;
     display: inline-block;
-    margin-top: -5px;
+    margin: 0 auto 10px;
     .prev-visit, .next-visit {
         @include button;
         color: $success;

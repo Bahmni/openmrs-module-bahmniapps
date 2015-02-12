@@ -1,12 +1,6 @@
-<section class="visit-page-header">
-    <h1>
-        <span>Visit : </span>
-        <span> {{visitSummary.startDateTime | date:'dd MMM yy'}}</span>
-        <span ng-if="visitSummary.stopDateTime"> - {{visitSummary.stopDateTime | date: 'dd MMM yy'}}</span>
-        <span ng-if="visitSummary.isIPD">IPD Visit</span>
-        <span ng-if="!visitSummary.isIPD">OPD Visit</span>
-    </h1>
-    <div visit-paginator next-fn="loadVisit" previous-fn="loadVisit" current-visit="visit" visits="visitHistory.visits"></div>
+<section class="visits-navbar-section">
+
+    <div visit-paginator next-fn="loadVisit" previous-fn="loadVisit" current-visit="visit" visits="visitHistory.visits" visit-summary="visitSummary"></div>
 
 </section>
 

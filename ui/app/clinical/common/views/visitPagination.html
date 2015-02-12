@@ -5,7 +5,9 @@
         <span class="visit-date">
             <span>{{visitHistoryEntry.startDatetime | date: "d MMM yy"}}</span>
             <span ng-show="visitHistoryEntry.stopDatetime"> - {{visitHistoryEntry.stopDatetime | date: "d MMM yy"}}</span>
-            <span ng-show="visitHistoryEntry.isActive()"><i class="icon-star current-visit-icon"></i></span>
+            <span ng-if="visitSummary.isIPD">(IPD)</span>
+            <span ng-if="!visitSummary.isIPD">(OPD)</span>
+            <span ng-show="visitHistoryEntry.isActive()" title="Current Visit"><i class="icon-star current-visit-icon"></i></span>
         </span>
     </div>
     <a class="next-visit" ng-click="next()" ng-class="{'disabled': !hasNext()}"><span><i class="icon-caret-right"></i></span></a>
