@@ -29,9 +29,6 @@
         <span bo-show="test.result" bo-class="{'is-abnormal': test.abnormal}" class="value"
               bo-text="test.result"></span>
         <span ng-if="test.labReportUrl"><a class="uploaded-file" href="{{test.labReportUrl}}" target="_blank"><i class="icon-paper-clip"></i></a></span>
-                            <span class="fr date">
-                                <span>{{ test.accessionDateTime | date :'dd MMM yy'}}</span>
-                            </span>
     </td>
     <td class="toggle-btn" ng-click="toggle()" ng-if="test.showDetailsButton && !test.notes">
         <button class="toggle fr">
@@ -40,18 +37,20 @@
         </button>
     </td>
 </tr>
-<tr ng-show="test.notes">
+<tr ng-if="test.notes">
     <td colspan="3" class="notes test-notes">
         <i class="icon-comments left"></i>
         <pre class="left">{{test.notes}}</pre>
         <div class="footer-note right">
+            <span>{{ test.accessionDateTime | date :'dd MMM yy'}}&nbsp;</span>
             <span class="provider" ng-show="test.provider" bo-text="test.provider"></span>
         </div>
     </td>
 </tr>
-<tr ng-show="test.showDetails">
+<tr ng-if="test.showDetails">
     <td colspan="3" class="notes inline-notes">
         <div class="footer-note right">
+            <span>{{ test.accessionDateTime | date :'dd MMM yy'}}&nbsp;</span>
             <span class="provider" ng-show="test.provider" bo-text="test.provider"></span>
         </div>
     </td>
