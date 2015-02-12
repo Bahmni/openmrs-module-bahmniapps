@@ -17,7 +17,6 @@ angular.module('bahmni.common.conceptSet')
             };
 
             $scope.showPreviousButton = function(conceptSetName) {
-                console.log(conceptSetName);
                 return conceptSetUIConfig[conceptSetName] && conceptSetUIConfig[conceptSetName].showPreviousButton;
             };
 

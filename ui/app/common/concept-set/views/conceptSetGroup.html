@@ -8,10 +8,10 @@
                 <i class="icon-caret-right" ng-hide="conceptSet.isOpen"></i>
                 <i class="icon-caret-down" ng-show="conceptSet.isOpen"></i>
                 <strong>{{conceptSet.label}}</strong>
-                <button type="button" ng-if="conceptSet.showComputeButton()" ng-show="conceptSet.isOpen" ng-click="computeField(conceptSet)"
+                <button type="button" ng-if="conceptSet.showComputeButton() && conceptSet.isOpen" ng-click="computeField(conceptSet)"
                         class="fr btn-small">Compute
                 </button>
-                <button type="button" ng-show="showPreviousButton(conceptSet.conceptName) && conceptSet.isOpen" ng-click="showPrevious()"
+                <button type="button" ng-if="showPreviousButton(conceptSet.conceptName) && conceptSet.isOpen" ng-click="showPrevious()"
                         class="fr btn-small">Previous
                 </button>
             </h2>

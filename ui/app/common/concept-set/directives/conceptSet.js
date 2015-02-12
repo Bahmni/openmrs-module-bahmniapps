@@ -105,7 +105,7 @@ angular.module('bahmni.common.conceptSet')
             $scope.atLeastOneValueIsSet = false;
             $scope.conceptSetRequired = false;
             $scope.showTitleValue = $scope.showTitle();
-            $scope.numberOfVisits = conceptSetUIConfig[conceptSetName].numberOfVisits ? conceptSetUIConfig[conceptSetName].numberOfVisits : null
+            $scope.numberOfVisits = conceptSetUIConfig[conceptSetName] && conceptSetUIConfig[conceptSetName].numberOfVisits ? conceptSetUIConfig[conceptSetName].numberOfVisits : null
 
             var updateObservationsOnRootScope = function () {
                 if($scope.rootObservation){
