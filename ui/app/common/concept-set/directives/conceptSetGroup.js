@@ -20,10 +20,10 @@ angular.module('bahmni.common.conceptSet')
                 return conceptSetUIConfig[conceptSetName] && conceptSetUIConfig[conceptSetName].showPreviousButton;
             };
 
-            $scope.showPrevious = function(){
+            $scope.showPrevious = function(conceptSetName){
                 event.stopPropagation();
                 $timeout(function() {
-                    $scope.$broadcast('event:showPrevious');
+                    $scope.$broadcast('event:showPrevious' + conceptSetName);
                 });
             };
 

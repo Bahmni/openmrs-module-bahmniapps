@@ -150,14 +150,9 @@ angular.module('bahmni.common.conceptSet')
                 return flattened;
             };
 
-            $scope.$on("event:showPrevious", function (event) {
-                var getConceptNames = function () {
-                    return $scope.conceptSet.setMembers.map(function (member) {
-                        return member.name.name
-                    });
-                };
+            $scope.$on('event:showPrevious' + conceptSetName, function (event) {
 
-                return spinner.forPromise(observationsService.fetch($scope.patient.uuid, getConceptNames(), null, $scope.numberOfVisits, null, true)).then(function (response) {
+                return spinner.forPromise(observationsService.fetch($scope.patient.uuid, $scope.conceptSetName, null, $scope.numberOfVisits, null, true)).then(function (response) {
                     var recentObservations = flattenObs(response.data);
                     flattenObs($scope.observations).forEach(function (obs) {
                         var correspondingRecentObs = _.filter(recentObservations, function (recentObs) {
@@ -176,8 +171,6 @@ angular.module('bahmni.common.conceptSet')
                         }
                     });
                 });
-
-
             });
         };
 
