@@ -20,8 +20,12 @@
         <bahmni-diagnosis patient-uuid="visitTabConfig.currentTab.diagnosis.patientUuid" section-title="visitTabConfig.currentTab.diagnosis.title" config="visitTabConfig.currentTab.diagnosis"></bahmni-diagnosis>
     </section>
 
-    <div ng-if="visitTabConfig.currentTab.observation">
-        <ng-include src="'common/views/visitSummarySections/observation.html'"></ng-include>
+    <div ng-if="visitTabConfig.currentTab.observation" id="observation-section">
+        <section class="block observation dashboard-section" >
+            <ul bm-gallery access-impression="true">
+                <bahmni-observation patient="patient" visit-uuid="{{visit.uuid}}" config="visitTabConfig.currentTab.observation" section-title="'Observations'"></bahmni-observation>
+            </ul>
+        </section>
     </div>
 
     <div ng-if="visitTabConfig.currentTab.pivotTable">

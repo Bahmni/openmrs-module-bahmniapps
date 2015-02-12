@@ -26,9 +26,11 @@ angular.module('bahmni.clinical')
                 showDrugForm: true
             },
             disposition: {
-                numOfVisits: 1
+                numberOfVisits: 1
             },
-            observationDisplay: {},
+            observation: {
+                numberOfVisits: 1
+            },
             diagnosis: {
                 title: "Diagnoses"
             }
