@@ -103,11 +103,10 @@ h1,h2,h3{
 
 /** Print Style for dashboard **/
 
-.dashboard-print-wrapper {
+.print-wrapper {
 	font-family: Arial, sans-serif;
 	font-size: 9pt;
-	padding-left: 20px;
-	padding-right: 20px;
+	padding: 10px 20px 0;
 	a {
 		color: #333;
 	}
@@ -122,8 +121,7 @@ h1,h2,h3{
 		padding: 2px 10px;
 		border: 0;
 	}
-	.print-header {
-		padding-top: 10px;
+	.print-header {	
 		text-align: center;
 		color: #000;
 		.logo {
@@ -152,6 +150,7 @@ h1,h2,h3{
 	.hierarchy ul li {
 		.tree-list-item {
 			padding: 0 5px !important;
+			background: none;
 			i[class^="icon-"] {
 				display: none;
 			}
@@ -174,6 +173,11 @@ h1,h2,h3{
 		border: 0;
 		margin: 0 0 5px;
 		font-size: 7.5pt;
+	}
+		
+	section.block, .dashboard-section {
+		border-radius: 0;
+		border: 0;
 		h2.section-title {
 			text-align: left;
 			color: #000;
@@ -190,72 +194,73 @@ h1,h2,h3{
 				display: none;
 			}
 		}
-		section.block {
-			border-radius: 0;
+
+		.form-field {
 			border: 0;
-			.form-field {
-				border: 0;
-				.time {
-					display: none;
-				}
-			}
-			table {
-				border-collapse: separate;
-				border: 0;
-				&.repeated-table {
-					margin-bottom: 5px;
-					&:last-child {
-						margin-bottom: 0;
-					}
-				}
-				thead {
-					tr {
-						border: 0;
-						th {
-							border: 0;
-							font-size: 9pt;
-							font-weight: bold;
-							padding: 1px 5px;
-							color: #000;
-							background: none;
-							font-family: Arial, sans-serif;
-						}
-						.laborder-sub-heading {
-							font-size: 9pt;
-							font-weight: bold;
-						}
-						.toggle-btn {
-							display: none;
-						}
-					}
-				}
-				tbody {
-					tr {
-						&, td, th {
-							border: 0;
-							font-size: 9pt;
-							padding: 0 5px;
-							font-family: Arial, sans-serif;
-						}
-						.name, .drug, .testUnderPanel {
-							width: 45%;
-						}
-						.value, .dosage {
-							width: auto;
-						}
-						.value .is-abnormal {
-							font-weight: bold;
-							color: #333 !important;
-						}
-						.toggle-btn {
-							display: none;
-						}
-						
-					}
-				}
-				
+			.time {
+				display: none;
 			}
 		}
+		table {
+			border-collapse: separate;
+			border: 0;
+			&.repeated-table {
+				margin-bottom: 5px;
+				&:last-child {
+					margin-bottom: 0;
+				}
+			}
+			thead {
+				tr {
+					border: 0;
+					th {
+						border: 0;
+						font-size: 9pt;
+						font-weight: bold;
+						padding: 1px 5px;
+						color: #000;
+						background: none;
+						font-family: Arial, sans-serif;
+					}
+					.laborder-sub-heading {
+						font-size: 9pt;
+						font-weight: bold;
+					}
+					.toggle-btn {
+						display: none;
+					}
+				}
+			}
+			tbody {
+				tr {
+					&, td, th {
+						border: 0;
+						font-size: 9pt;
+						padding: 0 5px;
+						font-family: Arial, sans-serif;
+					}
+					.name, .drug, .testUnderPanel {
+						width: 45%;
+					}
+					.value, .dosage {
+						width: auto;
+					}
+					.value .is-abnormal {
+						font-weight: bold;
+						color: #333 !important;
+					}
+					.toggle-btn {
+						display: none;
+					}
+					
+				}
+			}
+
+			.drug-discontinued {
+				display: none;
+			}
+		}
+		
 		.hierarchy ul li {
 			&, ul li {
 				border: 0;
@@ -278,11 +283,7 @@ h1,h2,h3{
 			}
 		}
 	}
-	.dashboard-treatment-section table {
-		.drug-discontinued {
-			display: none;
-		}
-	}
+
 	.diagnosis-name.ruled-out {
 		text-decoration: line-through;
 	}
@@ -345,5 +346,17 @@ h1,h2,h3{
 	}
 	button.toggle {
 		display: none;
+	}
+	.visits-nav-bar {
+		.prev-visit, .next-visit {
+			display: none;
+		}
+		.visit-details {
+			background: none;
+			border: 0;
+		}
+	}
+	.ipd-treatment-section {
+		display: none; // Hide the flowsheet which cant fit the A4 paper.
 	}
 }

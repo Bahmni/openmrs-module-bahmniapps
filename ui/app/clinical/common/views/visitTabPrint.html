@@ -1,8 +1,10 @@
 <html>
 <head>
-    <link rel="stylesheet" href="../styles/clinicalPrint.css"/>
+    <link rel="stylesheet" href="../styles/clinicalPrint.css" media="all"/>
 </head>
 <body>
-<div ng-include="currentVisitUrl"></div>
+    <div class="print-wrapper">
+        <div ng-include="currentVisitUrl"></div>
+    </div>
 </body>
 </html>
