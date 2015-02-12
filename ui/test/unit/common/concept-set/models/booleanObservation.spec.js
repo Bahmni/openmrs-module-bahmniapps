@@ -83,13 +83,16 @@ describe("Boolean Observation", function() {
 
     it("should be valid if it is required and present", function() {
         var requiredObservation = new Bahmni.ConceptSet.BooleanObservation({concept: {name: "ABC"}}, {"ABC": {required: true}});
-        requiredObservation.value = {displayString: "Yes", value: true};
+        requiredObservation.value = true;
         expect(requiredObservation.isValid(true, true)).toBeTruthy();
 
-        requiredObservation.value = {displayString: "No", value: false};
+        requiredObservation.value = false;
         expect(requiredObservation.isValid(true, true)).toBeTruthy();
 
         requiredObservation.value = undefined;
+        expect(requiredObservation.isValid(true, false)).toBeFalsy();
+
+        requiredObservation.value = null;
         expect(requiredObservation.isValid(true, false)).toBeFalsy();
     });
 

@@ -51,10 +51,12 @@ Bahmni.ConceptSet.BooleanObservation = function(observation, conceptUIConfig) {
     this.atLeastOneValueSet = function() {
         return this.value;
     };
-
     this.isValid = function(checkRequiredFields, conceptSetRequired) {
-        if (conceptSetRequired && this.isRequired() && !this.value) return false;
-        if (checkRequiredFields && this.isRequired() && !this.value) return false;
+        var notYetSet = function(value) {
+            return (typeof value == 'undefined'  || value == null);
+        };
+        if (conceptSetRequired && this.isRequired() && notYetSet(this.value)) return false;
+        if (checkRequiredFields && this.isRequired() && notYetSet(this.value)) return false;
         return true;
     };
 
