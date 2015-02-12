@@ -348,12 +348,18 @@ h1,h2,h3{
 		display: none;
 	}
 	.visits-nav-bar {
+		display: none; // Temporarily hidden.
+		
 		.prev-visit, .next-visit {
 			display: none;
 		}
 		.visit-details {
 			background: none;
 			border: 0;
+			font-family: Arial, sans-serif;
+		}
+		.visit-date {
+			font-family: Arial, sans-serif;
 		}
 	}
 	.ipd-treatment-section {
