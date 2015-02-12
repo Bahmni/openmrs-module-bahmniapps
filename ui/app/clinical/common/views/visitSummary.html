@@ -45,7 +45,7 @@
     </div>
 
     <div ng-if="!hide['disposition']">
-        <ng-include src="'common/views/visitSummarySections/disposition.html'"></ng-include>
+        <disposition id="disposition" params="visitPageConfig.disposition" visit-uuid="visit.uuid"></disposition>
     </div>
     <div ng-if="!hide['consultationNotes']">
         <ng-include src="'common/views/visitSummarySections/consultationNotes.html'"></ng-include>

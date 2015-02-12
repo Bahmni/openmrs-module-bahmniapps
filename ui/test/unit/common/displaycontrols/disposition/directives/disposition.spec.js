@@ -7,7 +7,7 @@ describe('Disposition DisplayControl', function () {
         mockBackend,
         rootScope,
         deferred,
-        simpleHtml = '<disposition id="disposition" params="section" patient-uuid="patientUuid"></disposition>';
+        simpleHtml = '<disposition id="disposition" params="section" patient-uuid="patientUuid" visit-uuid="visitUuid"></disposition>';
 
     var dispositions = [
         {
@@ -74,8 +74,9 @@ describe('Disposition DisplayControl', function () {
         var scope = rootScope.$new();
 
         scope.section = {
-            visitUuid: "1234"
+            numberOfVisits:1
         };
+        scope.visitUuid= "1234";
 
         mockBackend.expectGET('../common/displaycontrols/disposition/views/disposition.html').respond("<div>dummy</div>");
         mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/disposition/visit?visitUuid=1234').respond(dispositions);
@@ -92,13 +93,38 @@ describe('Disposition DisplayControl', function () {
         expect(compiledElementScope.dispositions).toEqual(dispositions);
     });
 
+    it('should return notes when getNotes method is called', function(){
+        var scope = rootScope.$new();
+
+        scope.section = {
+            numberOfVisits:1
+        };
+        scope.visitUuid= "1234";
+
+        mockBackend.expectGET('../common/displaycontrols/disposition/views/disposition.html').respond("<div>dummy</div>");
+        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/disposition/visit?visitUuid=1234').respond(dispositions);
+
+        var element = compile(simpleHtml)(scope);
+
+        scope.$digest();
+        mockBackend.flush();
+
+        var compiledElementScope = element.isolateScope();
+        scope.$digest();
+        expect(compiledElementScope.getNotes(dispositions[0])).toEqual("notes");
+        expect(compiledElementScope.getNotes({additionalObs:[{}]})).toEqual("");
+        expect(compiledElementScope.getNotes({additionalObs:[{value:"abc"}]})).toEqual("abc");
+
+
+    });
+
     it('should call dispositions by patient when visitUuid is NOT passed', function () {
         var scope = rootScope.$new();
 
         scope.section = {
             numberOfVisits: 4
         };
-        scope.patientUuid="123456"
+        scope.patientUuid="123456";
 
         mockBackend.expectGET('../common/displaycontrols/disposition/views/disposition.html').respond("<div>dummy</div>");
         mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/disposition/patient?numberOfVisits=4&patientUuid=123456').respond(dispositions);
@@ -116,13 +142,61 @@ describe('Disposition DisplayControl', function () {
 
     });
 
+    it('should hide details button when the notes is available', function () {
+        var scope = rootScope.$new();
+
+        scope.section = {
+            numberOfVisits: 4,
+            showDetailsButton: true
+        };
+        scope.patientUuid="123456";
+
+        mockBackend.expectGET('../common/displaycontrols/disposition/views/disposition.html').respond("<div>dummy</div>");
+        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/disposition/patient?numberOfVisits=4&patientUuid=123456').respond(dispositions);
+
+        var element = compile(simpleHtml)(scope);
+
+        scope.$digest();
+        mockBackend.flush();
+
+        var compiledElementScope = element.isolateScope();
+        scope.$digest();
+
+        expect(compiledElementScope.showDetailsButton(dispositions[0])).toBeFalsy();
+        expect(compiledElementScope.showDetailsButton({additionalObs:[{}]})).toBeTruthy();//Should return the value of showDetailsButton when the notes is not available
+    });
+
+    it('should hide details button when the showDetailsButton is false', function () {
+        var scope = rootScope.$new();
+
+        scope.section = {
+            numberOfVisits: 4,
+            showDetailsButton: false
+        };
+        scope.patientUuid="123456";
+
+        mockBackend.expectGET('../common/displaycontrols/disposition/views/disposition.html').respond("<div>dummy</div>");
+        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/disposition/patient?numberOfVisits=4&patientUuid=123456').respond(dispositions);
+
+        var element = compile(simpleHtml)(scope);
+
+        scope.$digest();
+        mockBackend.flush();
+
+        var compiledElementScope = element.isolateScope();
+        scope.$digest();
+
+        expect(compiledElementScope.showDetailsButton(dispositions[0])).toBeFalsy();
+        expect(compiledElementScope.showDetailsButton({additionalObs:[{}]})).toBeFalsy();//Should return the value of showDetailsButton when the notes is not available
+    });
+
     it('should return noDispositions message when dispositions are not available', function () {
         var scope = rootScope.$new();
 
         scope.section = {
             numberOfVisits: 4
         };
-        scope.patientUuid="123456"
+        scope.patientUuid="123456";
 
         mockBackend.expectGET('../common/displaycontrols/disposition/views/disposition.html').respond("<div>dummy</div>");
         mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/disposition/patient?numberOfVisits=4&patientUuid=123456').respond([]);

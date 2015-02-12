@@ -2,24 +2,22 @@
     <h2 class="section-title">Disposition</h2>
     <ul class="block-content">
         <li ng-repeat="disposition in dispositions">
-            <div class="expander-row row-click" ng-click="toggle(disposition)">
-                <span class="disposition-state">{{disposition.conceptName}} <span>on</span> {{disposition.dispositionDateTime | date:'dd MMM yy hh:mm a'}} <span class="disposition-by"><span>by</span> {{disposition.providers[0].name}}</span></span>
-                <button ng-repeat="note in disposition.additionalObs" class="toggle fr"
-                        ng-class="{'has-notes': note.value}">
+            <div class="expander-row row-click">
+                <span class="disposition-state">{{disposition.conceptName}}</span>
+                <button class="toggle fr"
+                        ng-class="{'has-notes': note.value}" ng-if="showDetailsButton(disposition)" ng-click="toggle(disposition)">
                     <i class="icon-plus-sign" ng-hide="disposition.show"></i>
                     <i class="icon-minus-sign" ng-show="disposition.show"></i>
                 </button>
-
             </div>
-            <div>
-                <div ng-repeat="note in disposition.additionalObs">
-                    <div ng-show="disposition.show" class="inline-notes notes" ng-class="{'print-notes': note.value}">
-                        <p class="left">
-                            {{note.value}}
-                        </p>
+                <div ng-if="disposition.show || getNotes(disposition)" class="inline-notes notes" ng-class="{'print-notes': getNotes(disposition)}">
+                    <pre class="left ng-binding">{{getNotes(disposition)}}</pre>
+                    <div class="footer-note right">
+                            <span class="provider ng-binding">
+                                {{disposition.providers[0].name}} {{disposition.dispositionDateTime | date:'dd MMM yy'}}
+                            </span>
                     </div>
                 </div>
-            </div>
         </li>
     </ul>
     <div ng-show="noDispositionsMessage">

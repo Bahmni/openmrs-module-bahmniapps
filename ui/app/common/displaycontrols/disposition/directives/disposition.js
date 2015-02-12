@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 angular.module('bahmni.common.displaycontrol.disposition')
     .directive('disposition', ['dispositionService','$q','spinner',
@@ -23,12 +23,31 @@ angular.module('bahmni.common.displaycontrol.disposition')
                     spinner.forPromise(dispositionService.getDispositionByVisit(visitUuid)).then(handleDispositionResponse);
                 };
 
-                $scope.toggle= function(element){
-                    element.show = !element.show;
+                $scope.getNotes = function(disposition){
+                    if(disposition.additionalObs[0] && disposition.additionalObs[0].value){
+                        return disposition.additionalObs[0].value;
+                    }
+                    return "";
                 };
 
-                if($scope.params.visitUuid){
-                    fetchDispositionsByVisit($scope.params.visitUuid);
+                $scope.showDetailsButton = function(disposition){
+                    if($scope.getNotes(disposition)){
+                        return false;
+                    }
+                    return $scope.params.showDetailsButton;
+                };
+
+                $scope.toggle= function(element){
+                    if($scope.showDetailsButton(element)){
+                        element.show = !element.show;
+                    }else{
+                        element.show = true;
+                    }
+                    return false;
+                };
+
+                if($scope.visitUuid){
+                    fetchDispositionsByVisit($scope.visitUuid);
                 }else if($scope.params.numberOfVisits && $scope.patientUuid){
                     fetchDispositionByPatient($scope.patientUuid, $scope.params.numberOfVisits);
                 }
@@ -40,7 +59,8 @@ angular.module('bahmni.common.displaycontrol.disposition')
                 templateUrl:"../common/displaycontrols/disposition/views/disposition.html",
                 scope: {
                     params: "=",
-                    patientUuid: "="
+                    patientUuid: "=",
+                    visitUuid: "="
                 }
-            }
+            };
         }]);

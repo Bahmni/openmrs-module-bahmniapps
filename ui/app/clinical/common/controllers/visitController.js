@@ -30,6 +30,8 @@ angular.module('bahmni.clinical')
                 }
             };
 
+
+
             $scope.isNumeric = function (value) {
                 return $.isNumeric(value);
             };
@@ -109,7 +111,8 @@ Bahmni.Clinical.VisitPageDefaultConfig ={
         showDrugForm: true
     },
     disposition :{
-        numOfVisits: 1
+        numOfVisits: 1,
+        showDetailsButton : true
     },
     observationDisplay:{},
     diagnosis :{
