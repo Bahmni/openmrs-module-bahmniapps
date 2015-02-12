@@ -338,15 +338,19 @@ h1,h2,h3{
 			display: none;
 		}
 	}
+	
 	.expander-row, .laborder-section li {
 		padding: 0 5px;
 	}
+
 	.is-abnormal {
 		color: #000 !important;
 	}
+
 	button.toggle {
 		display: none;
 	}
+
 	.visits-nav-bar {
 		display: none; // Temporarily hidden.
 		
@@ -362,7 +366,12 @@ h1,h2,h3{
 			font-family: Arial, sans-serif;
 		}
 	}
+
 	.ipd-treatment-section {
 		display: none; // Hide the flowsheet which cant fit the A4 paper.
+	}
+
+	table.drug-order-table td.drug {
+	    border-left: 0 !important;
 	}
 }

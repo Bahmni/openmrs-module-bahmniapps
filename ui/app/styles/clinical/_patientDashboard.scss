@@ -129,6 +129,7 @@
     }
   }
 }
+
 table.dashboard-table {
       margin: 0;
       border-left: 0;
@@ -142,6 +143,16 @@ table.dashboard-table {
         border-right: 0!important;
       }
 }
+
+table.drug-order-table td.drug {
+  &.active-drug  {
+    border-left: 3px solid orange !important;
+  }  
+  &.scheduled-drug {
+    border-left: 3px solid green !important;;
+  }
+}
+
 .placeholder-text {
   font-size: 14px;
   padding: 10px;

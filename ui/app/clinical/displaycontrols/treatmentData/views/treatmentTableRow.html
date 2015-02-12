@@ -1,5 +1,5 @@
 <tr ng-class="{active: drugOrder.isActive()}">
-    <td class="drug" ng-class="{'strike-text':drugOrder.isDiscontinuedOrStopped()}">
+    <td class="drug" ng-class="{'strike-text':drugOrder.isDiscontinuedOrStopped(), 'active-drug': drugOrder.isActive(), 'scheduled-drug': drugOrder.isScheduled()}">
         <span ng-if="!params.showDrugForm">{{drugOrder.drug.name}}</span>
         <span ng-if="params.showDrugForm">{{drugOrder.getDisplayName()}}</span>
     </td>

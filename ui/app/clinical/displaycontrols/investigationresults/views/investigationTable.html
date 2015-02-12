@@ -2,7 +2,7 @@
     <h2 ng-if="params.title" class="section-title">{{params.title}}</h2>
     <p class="placeholder-text" ng-if="!hasLabOrders()">{{ params.noLabOrdersMessage }}</p>
     <div ng-if="hasLabOrders()">
-        <table ng-repeat="labOrderResults in accessions" bindonce="accessions" class="repeated-table">
+        <table ng-repeat="labOrderResults in accessions" bindonce="accessions" class="repeated-table drug-order-table">
             <thead>
             <tr ng-click="toggle(labOrderResults)" ng-class="{'row-click':getAccessionDetailsFrom(labOrderResults)}">
                 <th colspan="3" class="laborder-sub-heading">
