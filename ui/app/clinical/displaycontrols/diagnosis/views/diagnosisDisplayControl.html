@@ -9,8 +9,8 @@
                     </span>
                 </td>
                 <td class="view">
-                        <span class="certainty">{{diagnosis.certainty}}</span>
-                        <span class="order">{{diagnosis.order}}</span>
+                        <span ng-hide="config.showCertainty == false" class="certainty">{{diagnosis.certainty}}</span>
+                        <span ng-hide="config.showOrder == false" class="order">{{diagnosis.order}}</span>
                         <span class="status">{{diagnosis.diagnosisStatus}}</span>
                 </td>
                 <td class="date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}

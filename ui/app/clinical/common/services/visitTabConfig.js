@@ -32,7 +32,9 @@ angular.module('bahmni.clinical')
                 numberOfVisits: 1
             },
             diagnosis: {
-                title: "Diagnoses"
+                title: "Diagnoses",
+                showCertainty: true,
+                showOrder: true
             }
         };
 
