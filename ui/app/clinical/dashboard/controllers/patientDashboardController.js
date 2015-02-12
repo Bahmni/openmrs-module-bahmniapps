@@ -23,8 +23,6 @@ angular.module('bahmni.clinical')
                 };
             };
 
-            $scope.showPreviousButton = conceptSetUIConfig[conceptSetName] && conceptSetUIConfig[conceptSetName].showPreviousButton;
-
             $scope.$on("event:switchDashboard", function (event, dashboard) {
                 $scope.init(dashboard);
             });
