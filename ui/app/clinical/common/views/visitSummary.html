@@ -1,25 +1,28 @@
-<section>
-    <span>Visit : </span>
-    <span> {{visitSummary.startDateTime | date:'dd MMM yy'}}</span>
-    <span ng-if="visitSummary.stopDateTime"> - {{visitSummary.stopDateTime | date: 'dd MMM yy'}}</span>
-    <span ng-if="visitSummary.isIPD">IPD Visit</span>
-    <span ng-if="!visitSummary.isIPD">OPD Visit</span>
-    <span visit-paginator next-fn="loadVisit" previous-fn="loadVisit" current-visit="visit" visits="visitHistory.visits"></span>
+<section class="visit-page-header">
+    <h1>
+        <span>Visit : </span>
+        <span> {{visitSummary.startDateTime | date:'dd MMM yy'}}</span>
+        <span ng-if="visitSummary.stopDateTime"> - {{visitSummary.stopDateTime | date: 'dd MMM yy'}}</span>
+        <span ng-if="visitSummary.isIPD">IPD Visit</span>
+        <span ng-if="!visitSummary.isIPD">OPD Visit</span>
+    </h1>
+    <div visit-paginator next-fn="loadVisit" previous-fn="loadVisit" current-visit="visit" visits="visitHistory.visits"></div>
+
 </section>
 
 <div ng-if="!clearBoard">
 
-    <section>
-        <p class="no-visit" ng-show="!visit.hasData()">No visit information for this patient</p>
+    <section ng-show="!visit.hasData()">
+        <p class="no-visit" >No visit information for this patient</p>
     </section>
+
     <section ng-if="visitTabConfig.currentTab.diagnosis" class="block dashboard-section">
-        <bahmni-diagnosis patient-uuid="visitTabConfig.currentTab.diagnosis.patientUuid" section-title="visitTabConfig.currentTab.diagnosis.title"
-                          config="visitTabConfig.currentTab.diagnosis"></bahmni-diagnosis>
+        <bahmni-diagnosis patient-uuid="visitTabConfig.currentTab.diagnosis.patientUuid" section-title="visitTabConfig.currentTab.diagnosis.title" config="visitTabConfig.currentTab.diagnosis"></bahmni-diagnosis>
     </section>
+
     <div ng-if="visitTabConfig.currentTab.observation">
         <ng-include src="'common/views/visitSummarySections/observation.html'"></ng-include>
     </div>
-
 
     <div ng-if="visitTabConfig.currentTab.pivotTable">
         <section ng-repeat="pivotTable in visitTabConfig.currentTab.pivotTable" pivot-table visit-uuid="visitTabConfig.currentTab.pivotTable.visitUuids" config="pivotTable"

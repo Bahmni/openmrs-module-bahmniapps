@@ -384,6 +384,14 @@ span.range {
 }
 legend.mylegend {background: $white!important;}
 
+.visit-page-header {
+  position: relative;
+  .visits-nav-bar {
+    position: absolute;
+    right: 0;
+    top: -10px;
+  }
+}
 .visits-nav-bar {
     text-align: center;
     display: inline-block;
@@ -411,6 +419,7 @@ legend.mylegend {background: $white!important;}
         border: 1px solid $lightGray;
         color: $mediumGray;
         min-width: 190px;
+        margin: 0;
         .visit-date {
             color: $darkGray;
             font-family: $OpenSansBoldFont;

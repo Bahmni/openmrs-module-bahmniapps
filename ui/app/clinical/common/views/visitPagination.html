@@ -1,12 +1,12 @@
-<div  class="visits-nav-bar fr" ng-show="shouldBeShown()"> 
+<div  class="visits-nav-bar" ng-show="shouldBeShown()"> 
     <a class="prev-visit" ng-click="previous()" 
     ng-class="{'disabled': !hasPrevious()}"><span><i class="icon-caret-left"></i></span></a>
-    <h3 class="visit-details">
+    <div class="visit-details">
         <span class="visit-date">
             <span>{{visitHistoryEntry.startDatetime | date: "d MMM yy"}}</span>
             <span ng-show="visitHistoryEntry.stopDatetime"> - {{visitHistoryEntry.stopDatetime | date: "d MMM yy"}}</span>
             <span ng-show="visitHistoryEntry.isActive()"><i class="icon-star current-visit-icon"></i></span>
         </span>
-    </h3>
+    </div>
     <a class="next-visit" ng-click="next()" ng-class="{'disabled': !hasNext()}"><span><i class="icon-caret-right"></i></span></a>
 </div>

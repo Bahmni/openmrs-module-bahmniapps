@@ -1,6 +1,11 @@
 <div bindonce class="dashboard-header opd-header-wrapper" id="consultation-header">
     <div class="opd-header-bottom tabs">
         <bm-back-links></bm-back-links>
+        
+        <button class="dialog-button-group" ng-click="print()" accesskey="r">
+            <i class="icon-print"></i>
+            P<u>r</u>int</button>
+
 
         <ul class="header-tabs">
             <li class="tab-item dashboard" ng-repeat="tab in visitTabConfig.openTabs"
@@ -25,7 +30,11 @@
         </ul>
 
         <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}"></button>
-        <a class="confirm quick-links" ng-click="print()">Print</a>
-        <a class="confirm quick-links" ng-click="collapseControlPanel()" href="#{{consultationBoardLink}}">Consultation</a>
+        
+        <span class="grouped-buttons">
+            <a class=" btn--left btn--success "  ng-click="collapseControlPanel()" href="#{{consultationBoardLink}}">Consultation</a>
+            <a class="btn--right btn--success " title="Open in new window"ng-click="collapseControlPanel()" href="#{{consultationBoardLink}}" target="_blank"><i class="icon-external-link"></i></a>
+       </span>
+
     </div>
 </div>
