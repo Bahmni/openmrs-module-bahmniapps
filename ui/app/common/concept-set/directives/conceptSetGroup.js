@@ -22,6 +22,7 @@ angular.module('bahmni.common.conceptSet')
             };
 
             $scope.showPrevious = function(){
+                event.stopPropagation();
                 $timeout(function() {
                     $scope.$broadcast('event:showPrevious');
                 });

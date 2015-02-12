@@ -151,38 +151,32 @@ angular.module('bahmni.common.conceptSet')
             };
 
             $scope.$on("event:showPrevious", function (event) {
-                var retrieveValue = function () {
-                    var getConceptNames = function () {
-                        return $scope.conceptSet.setMembers.map(function (member) {
-                            return member.name.name
-                        });
-                    };
-
-                    return spinner.forPromise(observationsService.fetch($scope.patient.uuid, getConceptNames(), null, $scope.numberOfVisits, null, true)).then(function (response) {
-                        var recentObservations = flattenObs(response.data);
-                        flattenObs($scope.observations).forEach(function (obs) {
-                            var correspondingRecentObs = _.filter(recentObservations, function (recentObs) {
-                                return obs.concept.uuid === recentObs.concept.uuid;
-                            });
-                            if (correspondingRecentObs != null && correspondingRecentObs.length > 0) {
-                                correspondingRecentObs.sort(function (obs1, obs2) {
-                                    return new Date(obs2.encounterDateTime) - new Date(obs1.encounterDateTime);
-                                });
-                                obs.previous = correspondingRecentObs.map(function (previousObs) {
-                                    return {
-                                        value: new Bahmni.Common.Domain.ObservationValueMapper().map(previousObs),
-                                        date: previousObs.observationDateTime
-                                    };
-                                });
-                            }
-                        });
+                var getConceptNames = function () {
+                    return $scope.conceptSet.setMembers.map(function (member) {
+                        return member.name.name
                     });
                 };
-                if (!$scope.conceptSet) {
-                    spinner.forPromise(init()).then(retrieveValue);
-                }else{
-                    retrieveValue();
-                }
+
+                return spinner.forPromise(observationsService.fetch($scope.patient.uuid, getConceptNames(), null, $scope.numberOfVisits, null, true)).then(function (response) {
+                    var recentObservations = flattenObs(response.data);
+                    flattenObs($scope.observations).forEach(function (obs) {
+                        var correspondingRecentObs = _.filter(recentObservations, function (recentObs) {
+                            return obs.concept.uuid === recentObs.concept.uuid;
+                        });
+                        if (correspondingRecentObs != null && correspondingRecentObs.length > 0) {
+                            correspondingRecentObs.sort(function (obs1, obs2) {
+                                return new Date(obs2.encounterDateTime) - new Date(obs1.encounterDateTime);
+                            });
+                            obs.previous = correspondingRecentObs.map(function (previousObs) {
+                                return {
+                                    value: new Bahmni.Common.Domain.ObservationValueMapper().map(previousObs),
+                                    date: previousObs.observationDateTime
+                                };
+                            });
+                        }
+                    });
+                });
+
 
             });
         };
