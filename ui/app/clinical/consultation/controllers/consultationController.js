@@ -8,9 +8,6 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             $scope.patient = patientContext.patient;
             $scope.consultation = consultationContext;
 
-            var boardTypes = {
-                consultation: 'consultation'
-            };
             $scope.availableBoards = [ ];
 
             $scope.showBoard = function (label) {
@@ -79,7 +76,6 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 }
                 contextChangeHandler.reset();
                 $scope.currentBoard = board;
-                console.log($scope.currentBoard);
                 return getUrl(board);
             };
 
