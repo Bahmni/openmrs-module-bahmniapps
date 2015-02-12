@@ -11,6 +11,9 @@
                 <button type="button" ng-if="conceptSet.showComputeButton()" ng-click="computeField(conceptSet)"
                         class="fr btn-small">Compute
                 </button>
+                <button type="button" ng-show="showPreviousButton(conceptSet.conceptName)" ng-click="showPrevious()"
+                        class="fr btn-small">Previous
+                </button>
             </h2>
         </div>
         <span class="favourite-concept-set">

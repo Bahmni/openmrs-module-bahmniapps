@@ -67,9 +67,6 @@ angular.module('bahmni.common.conceptSet')
     }]).directive('conceptSet', ['contextChangeHandler', 'appService', 'observationsService', function (contextChangeHandler, appService, observationsService) {
         var template =
             '<form>' +
-                '<div ng-if="showPreviousButton">' +
-                    '<button type="button" ng-click="showPrevious()" class="fr btn-small">Previous</button>' +
-                    '</div>' +
                 '<concept concept-set-required="conceptSetRequired" root-observation="rootObservation" patient="patient" ' +
                 'observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet" ' +
                 'show-title="showTitleValue" ng-if="!rootObservation.hidden">' +
@@ -95,18 +92,20 @@ angular.module('bahmni.common.conceptSet')
                 }
             };
 
-            spinner.forPromise(conceptSetService.getConceptSetMembers({name: conceptSetName, v: "custom:" + customRepresentation})).then(function (response) {
-                $scope.conceptSet = response.data.results[0];
-                $scope.rootObservation = $scope.conceptSet ? observationMapper.map($scope.observations, $scope.conceptSet, conceptSetUIConfig) : null;
-                focusFirstObs();
-                updateObservationsOnRootScope();
-            });
+            var init = function(){
+                return conceptSetService.getConceptSetMembers({name: conceptSetName, v: "custom:" + customRepresentation}).then(function (response) {
+                    $scope.conceptSet = response.data.results[0];
+                    $scope.rootObservation = $scope.conceptSet ? observationMapper.map($scope.observations, $scope.conceptSet, conceptSetUIConfig) : null;
+                    focusFirstObs();
+                    updateObservationsOnRootScope();
+                });
+            };
+            spinner.forPromise(init());
 
             $scope.atLeastOneValueIsSet = false;
             $scope.conceptSetRequired = false;
             $scope.showTitleValue = $scope.showTitle();
-            $scope.showPreviousButton = conceptSetUIConfig[conceptSetName] && conceptSetUIConfig[conceptSetName].showPreviousButton;
-            $scope.numberOfVisits = $scope.showPreviousButton ? (conceptSetUIConfig[conceptSetName].numberOfVisits ? conceptSetUIConfig[conceptSetName].numberOfVisits : null) : null;
+            $scope.numberOfVisits = conceptSetUIConfig[conceptSetName].numberOfVisits ? conceptSetUIConfig[conceptSetName].numberOfVisits : null
 
             var updateObservationsOnRootScope = function () {
                 if($scope.rootObservation){
@@ -140,12 +139,6 @@ angular.module('bahmni.common.conceptSet')
 
             validationHandler.add(validateObservationTree);
 
-            var getConceptNames = function() {
-                return $scope.conceptSet.setMembers.map(function(member) {
-                    return member.name.name
-                });
-            };
-
             var flattenObs = function(observations) {
                 var flattened = [];
                 flattened.push.apply(flattened, observations);
@@ -157,27 +150,41 @@ angular.module('bahmni.common.conceptSet')
                 return flattened;
             };
 
-            $scope.showPrevious = function() {
-                spinner.forPromise(observationsService.fetch($scope.patient.uuid, getConceptNames(), null, $scope.numberOfVisits, null, true)).then(function(response) {
-                    var recentObservations = flattenObs(response.data);
-                    flattenObs($scope.observations).forEach(function(obs) {
-                        var correspondingRecentObs = _.filter(recentObservations, function(recentObs) {
-                            return obs.concept.uuid === recentObs.concept.uuid;
+            $scope.$on("event:showPrevious", function (event) {
+                var retrieveValue = function () {
+                    var getConceptNames = function () {
+                        return $scope.conceptSet.setMembers.map(function (member) {
+                            return member.name.name
                         });
-                        if(correspondingRecentObs != null && correspondingRecentObs.length > 0) {
-                            correspondingRecentObs.sort(function(obs1, obs2){
-                                return new Date(obs2.encounterDateTime) - new Date(obs1.encounterDateTime);
+                    };
+
+                    return spinner.forPromise(observationsService.fetch($scope.patient.uuid, getConceptNames(), null, $scope.numberOfVisits, null, true)).then(function (response) {
+                        var recentObservations = flattenObs(response.data);
+                        flattenObs($scope.observations).forEach(function (obs) {
+                            var correspondingRecentObs = _.filter(recentObservations, function (recentObs) {
+                                return obs.concept.uuid === recentObs.concept.uuid;
                             });
-                            obs.previous = correspondingRecentObs.map(function(previousObs) {
-                                return {
-                                    value: new Bahmni.Common.Domain.ObservationValueMapper().map(previousObs),
-                                    date: previousObs.observationDateTime
-                                };
-                            });
-                        }
+                            if (correspondingRecentObs != null && correspondingRecentObs.length > 0) {
+                                correspondingRecentObs.sort(function (obs1, obs2) {
+                                    return new Date(obs2.encounterDateTime) - new Date(obs1.encounterDateTime);
+                                });
+                                obs.previous = correspondingRecentObs.map(function (previousObs) {
+                                    return {
+                                        value: new Bahmni.Common.Domain.ObservationValueMapper().map(previousObs),
+                                        date: previousObs.observationDateTime
+                                    };
+                                });
+                            }
+                        });
                     });
-                });
-            };
+                };
+                if (!$scope.conceptSet) {
+                    spinner.forPromise(init()).then(retrieveValue);
+                }else{
+                    retrieveValue();
+                }
+
+            });
         };
 
         return {

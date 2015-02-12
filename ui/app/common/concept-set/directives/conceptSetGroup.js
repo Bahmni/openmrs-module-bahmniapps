@@ -1,9 +1,10 @@
 angular.module('bahmni.common.conceptSet')
     .controller('ConceptSetGroupController', ['$scope', 'appService', 'contextChangeHandler', 'spinner',
         'conceptSetService', '$rootScope', 'sessionService', 'encounterService', 'treatmentConfig', 'messagingService',
-        'retrospectiveEntryService', 'userService',
-        function ($scope, appService, contextChangeHandler, spinner, conceptSetService, $rootScope, sessionService, encounterService, treatmentConfig, messagingService, retrospectiveEntryService, userService) {
+        'retrospectiveEntryService', 'userService', 'conceptSetUiConfigService', '$timeout',
+        function ($scope, appService, contextChangeHandler, spinner, conceptSetService, $rootScope, sessionService, encounterService, treatmentConfig, messagingService, retrospectiveEntryService, userService, conceptSetUiConfigService, $timeout) {
 
+            var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
             $scope.togglePref = function (conceptSet, conceptName) {
                 $rootScope.currentUser.toggleFavoriteObsTemplate(conceptName);
                 spinner.forPromise(userService.savePreferences());
@@ -13,6 +14,17 @@ angular.module('bahmni.common.conceptSet')
 
             $scope.getNormalized = function (conceptName) {
                 return conceptName.replace(/['\.\s\(\)\/,\\]+/g, "_");
+            };
+
+            $scope.showPreviousButton = function(conceptSetName) {
+                console.log(conceptSetName);
+                return conceptSetUIConfig[conceptSetName] && conceptSetUIConfig[conceptSetName].showPreviousButton;
+            };
+
+            $scope.showPrevious = function(){
+                $timeout(function() {
+                    $scope.$broadcast('event:showPrevious');
+                });
             };
 
             $scope.computeField = function (conceptSet) {
