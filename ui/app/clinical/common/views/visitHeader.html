@@ -1,16 +1,31 @@
-<div bindonce class="dashboard-header opd-header-wrapper">
-    <div class="opd-header-bottom">        
+<div bindonce class="dashboard-header opd-header-wrapper" id="consultation-header">
+    <div class="opd-header-bottom tabs">
         <bm-back-links></bm-back-links>
 
         <ul class="header-tabs">
-            <li class="tab-item" ng-repeat="visitTab in visitConfig" ng-class="{'tab-selected':true}">
-                <a ng-click="tabSelect(visitTab)">{{visitTab.title}}</a>
+            <li class="tab-item dashboard" ng-repeat="tab in visitTabConfig.openTabs"
+                ng-class="{'tab-selected' : visitTabConfig.isCurrentTab(tab), 'tab-removable': visitTabConfig.isCurrentTab(tab) && !tab.default}">
+                <span class="close" ng-click="closeTab(tab)">
+                   <span class="close-icon">x</span>
+                </span>
+                <a ng-click="switchTab(tab)">{{tab.title}}</a>
+
+            </li>
+            <li class="tab-item new-tab tab-active" bm-pop-over ng-show="visitTabConfig.getUnOpenedTabs().length > 0">
+                <a id="addTabButton" bm-pop-over-trigger>+</a>
+
+                <div class="tab-submenu" bm-pop-over-target>
+                    <ul>
+                        <li ng-repeat="tab in visitTabConfig.getUnOpenedTabs()">
+                            <a class="submenu-item unOpenedDashboard" ng-click="switchTab(tab);">{{tab.title}} </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
         </ul>
 
         <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}"></button>
         <a class="confirm quick-links" ng-click="print()">Print</a>
         <a class="confirm quick-links" ng-click="collapseControlPanel()" href="#{{consultationBoardLink}}">Consultation</a>
-        <span visit-paginator next-fn="loadVisit" previous-fn="loadVisit" current-visit="visit" visits="visitHistory.visits"></span>
     </div>
 </div>

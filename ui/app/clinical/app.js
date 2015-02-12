@@ -101,6 +101,9 @@ angular.module('consultation')
                     },
                     visitSummary: function(visitSummaryInitialization, $stateParams){
                         return visitSummaryInitialization($stateParams.visitUuid);
+                    },
+                    visitConfigInitialization: function(initialization, visitTabConfig) {
+                        return visitTabConfig.load();
                     }
                 }
             })

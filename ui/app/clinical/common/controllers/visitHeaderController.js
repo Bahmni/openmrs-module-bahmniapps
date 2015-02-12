@@ -1,27 +1,24 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitHeaderController', ['$rootScope', '$scope', '$state', 'clinicalAppConfigService', 'patientContext', 'visitHistory', 'visitContext',
-        function ($rootScope, $scope, $state, clinicalAppConfigService, patientContext, visitHistory, visitContext) {
+    .controller('VisitHeaderController', ['$rootScope', '$scope', '$state', 'clinicalAppConfigService', 'patientContext', 'visitHistory', 'visitContext', 'visitTabConfig',
+        function ($rootScope, $scope, $state, clinicalAppConfigService, patientContext, visitHistory, visitContext, visitTabConfig) {
             $scope.patient = patientContext.patient;
             $scope.visitHistory = visitHistory;
             $scope.visit = visitContext;
             $scope.consultationBoardLink = clinicalAppConfigService.getConsultationBoardLink();
             $scope.showControlPanel = false;
-            $scope.currentVisitTab = $scope.currentVisitTab || {};
+            $scope.visitTabConfig = visitTabConfig;
 
-            $scope.visitConfig = clinicalAppConfigService.getVisitConfig();
-
-            $scope.loadVisit = function (visitUuid) {
-                $state.go('patient.visit', {visitUuid: visitUuid});
+            $scope.switchTab = function (tab) {
+                $scope.visitTabConfig.switchTab(tab);
             };
 
-            $scope.tabSelect = function(visitTab){
-                $scope.currentVisitTab = visitTab;
-                $rootScope.$broadcast("event:visitTabSwitch", visitTab);
+            $scope.closeTab = function (tab) {
+                $scope.visitTabConfig.closeTab(tab);
             };
 
-            $scope.print= function(){
-                $rootScope.$broadcast("event:printVisitTab", $scope.currentVisitTab);
+            $scope.print = function () {
+                $rootScope.$broadcast("event:printVisitTab", $scope.visitTabConfig.currentTab);
             };
         }]);

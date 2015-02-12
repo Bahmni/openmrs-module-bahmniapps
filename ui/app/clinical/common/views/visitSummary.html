@@ -1,53 +1,56 @@
 <section>
-
     <span>Visit : </span>
     <span> {{visitSummary.startDateTime | date:'dd MMM yy'}}</span>
-    <span ng-show="visitSummary.stopDateTime"> - {{visitSummary.stopDateTime | date: 'dd MMM yy'}}</span>
-    <span ng-show="visitSummary.isIPD">IPD Visit</span>
-    <span ng-hide="visitSummary.isIPD">OPD Visit</span>
+    <span ng-if="visitSummary.stopDateTime"> - {{visitSummary.stopDateTime | date: 'dd MMM yy'}}</span>
+    <span ng-if="visitSummary.isIPD">IPD Visit</span>
+    <span ng-if="!visitSummary.isIPD">OPD Visit</span>
+    <span visit-paginator next-fn="loadVisit" previous-fn="loadVisit" current-visit="visit" visits="visitHistory.visits"></span>
 </section>
+
 <div ng-if="!clearBoard">
+
     <section>
         <p class="no-visit" ng-show="!visit.hasData()">No visit information for this patient</p>
     </section>
-    <section ng-if="!hide['diagnosis']" class="block dashboard-section">
-        <bahmni-diagnosis patient-uuid="patient.uuid" section-title="visitPageConfig.diagnosis['title']"
-                          config="visitPageConfig.diagnosis"></bahmni-diagnosis>
+    <section ng-if="visitTabConfig.currentTab.diagnosis" class="block dashboard-section">
+        <bahmni-diagnosis patient-uuid="visitTabConfig.currentTab.diagnosis.patientUuid" section-title="visitTabConfig.currentTab.diagnosis.title"
+                          config="visitTabConfig.currentTab.diagnosis"></bahmni-diagnosis>
     </section>
-    <div ng-if="!hide['observation']">
+    <div ng-if="visitTabConfig.currentTab.observation">
         <ng-include src="'common/views/visitSummarySections/observation.html'"></ng-include>
     </div>
 
 
-    <div ng-if="!hide['pivotTable']">
-        <section ng-repeat="pivotTable in visitPageConfig.pivotTable" pivot-table visit-uuid="visit.uuid" config="pivotTable"
+    <div ng-if="visitTabConfig.currentTab.pivotTable">
+        <section ng-repeat="pivotTable in visitTabConfig.currentTab.pivotTable" pivot-table visit-uuid="visitTabConfig.currentTab.pivotTable.visitUuids" config="pivotTable"
                  patient-uuid="patient.uuid" display-name="pivotTable.title"></section>
     </div>
 
-    <div ng-if="!hide['investigationResults']">
-        <investigation-results params="visitPageConfig.investigationResult"></investigation-results>
+    <div ng-if="visitTabConfig.currentTab.investigationResult">
+        <investigation-results params="visitTabConfig.currentTab.investigationResult"></investigation-results>
     </div>
 
-    <div ng-if="!hide['radiology']">
+    <div ng-if="visitTabConfig.currentTab.radiology">
         <ng-include src="'common/views/visitSummarySections/radiologyInvestigations.html'"></ng-include>
     </div>
 
-    <div ng-if="!hide['patientFiles']">
+    <div ng-if="visitTabConfig.currentTab.patientFiles">
         <ng-include src="'common/views/visitSummarySections/patientFiles.html'"></ng-include>
     </div>
 
-    <div ng-if="!hide['otherInvestigations']">
+    <div ng-if="visitTabConfig.currentTab.otherInvestigations">
         <ng-include src="'common/views/visitSummarySections/otherInvestigations.html'"></ng-include>
     </div>
 
-    <div ng-if="!hide['treatment']">
-        <treatment-data id="visit-treatments" params="visitPageConfig.treatment" visit-summary="visitSummary"></treatment-data>
+    <div ng-if="visitTabConfig.currentTab.treatment">
+        <treatment-data id="visit-treatments" params="visitTabConfig.currentTab.treatment" visit-summary="visitSummary"></treatment-data>
     </div>
 
-    <div ng-if="!hide['disposition']">
-        <disposition id="disposition" params="visitPageConfig.disposition" visit-uuid="visit.uuid"></disposition>
+    <div ng-if="visitTabConfig.currentTab.disposition">
+        <disposition id="disposition" params="visitTabConfig.currentTab.disposition" visit-uuid="visitTabConfig.currentTab.disposition.visitUuids"></disposition>
     </div>
-    <div ng-if="!hide['consultationNotes']">
+
+    <div ng-if="visitTabConfig.currentTab.consultationNotes">
         <ng-include src="'common/views/visitSummarySections/consultationNotes.html'"></ng-include>
     </div>
 </div>
