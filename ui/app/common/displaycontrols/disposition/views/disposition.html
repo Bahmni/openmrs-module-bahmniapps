@@ -1,25 +1,34 @@
 <section class="block disposition-section" ng-class="{'hidden-print':noDispositionsMessage}">
     <h2 class="section-title">Disposition</h2>
-    <ul class="block-content">
-        <li ng-repeat="disposition in dispositions">
-            <div class="expander-row row-click">
-                <span class="disposition-state">{{disposition.conceptName}}</span>
+
+    <table class="dashboard-table history-diagnosis">
+        <tbody ng-repeat="disposition in dispositions" class="row">
+        <tr class="view-past">
+            <td class="name">
+                    <span class="disposition-state">{{disposition.conceptName}}</span>
+            </td>
+            <td class="date"><span class="fr">{{disposition.dispositionDateTime| date:'dd MMM yy'}}</span>
+            </td>
+            <td class="toggle-btn">
                 <button class="toggle fr"
-                        ng-class="{'has-notes': note.value}" ng-if="showDetailsButton(disposition)" ng-click="toggle(disposition)">
+                        ng-class="{'has-notes': getNotes(disposition)}" ng-if="showDetailsButton(disposition)" ng-click="toggle(disposition)">
                     <i class="icon-plus-sign" ng-hide="disposition.show"></i>
                     <i class="icon-minus-sign" ng-show="disposition.show"></i>
                 </button>
-            </div>
-                <div ng-if="disposition.show || getNotes(disposition)" class="inline-notes notes" ng-class="{'print-notes': getNotes(disposition)}">
-                    <pre class="left ng-binding">{{getNotes(disposition)}}</pre>
-                    <div class="footer-note right">
-                            <span class="provider ng-binding">
-                                {{disposition.providers[0].name}} {{disposition.dispositionDateTime | date:'dd MMM yy'}}
-                            </span>
-                    </div>
+            </td>
+        </tr>
+        <tr ng-if="disposition.show || getNotes(disposition)">
+            <td colspan="4" class="notes inline-notes">
+                <pre class="left ng-binding">{{getNotes(disposition)}}</pre>
+                <div class="footer-note right">
+                        <span class="provider">
+                            {{disposition.providers[0].name}} {{disposition.dispositionDateTime | date:'hh:mm a'}}
+                        </span>
                 </div>
-        </li>
-    </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
     <div ng-show="noDispositionsMessage">
         <div class="placeholder-text">{{noDispositionsMessage}}</div>
     </div>
