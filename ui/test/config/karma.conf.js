@@ -32,6 +32,7 @@ module.exports = function (config) {
             'app/admin/**/*.js',
             'app/adt/**/*.js',
             'app/clinical/**/*.js',
+            'app/clinical/**/*.html',
             'app/common/**/*.js',
             'app/dhis/**/*.js',
             'app/document-upload/**/*.js',
@@ -53,7 +54,8 @@ module.exports = function (config) {
             'app/home/**/*.js': ['coverage'],
             'app/orders/**/*.js': ['coverage'],
             'app/registration/**/*.js': ['coverage'],
-            'app/trends/**/*.js': ['coverage']
+            'app/trends/**/*.js': ['coverage'],
+            'app/clinical/displaycontrols/patientProfile/views/patientProfile.html':['ng-html2js']
         },
         coverageReporter: {
             reporters: [
@@ -65,6 +67,10 @@ module.exports = function (config) {
         junitReporter: {
             outputFile: 'output/unit.xml',
             suite: 'unit'
+        },
+        ngHtml2JsPreprocessor: {
+            stripPrefix: 'app/clinical/',
+            moduleName: 'foo'
         }
     });
 };

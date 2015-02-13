@@ -10,6 +10,11 @@
         <p class="no-visit" >No visit information for this patient</p>
     </section>
 
+
+    <section class="block dashboard-section">
+        <patient-profile patient="patient" config="visitTabConfig.currentTab.patientInformation"></patient-profile>
+    </section>
+
     <section ng-if="visitTabConfig.currentTab.diagnosis" class="block dashboard-section">
         <bahmni-diagnosis patient-uuid="visitTabConfig.currentTab.diagnosis.patientUuid" section-title="visitTabConfig.currentTab.diagnosis.title" config="visitTabConfig.currentTab.diagnosis"></bahmni-diagnosis>
     </section>

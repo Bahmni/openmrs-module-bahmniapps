@@ -58,13 +58,17 @@ describe("patient dashboard controller", function () {
         scope.patient = {};
         scope.visitHistory = {};
 
+        var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
+
         $controller('PatientDashboardController', {
             $scope: scope,
             diseaseTemplateService: _diseaseTemplateService,
             encounterService: jasmine.createSpy(),
             clinicalAppConfigService: _clinicalAppConfigService,
             dashboardConfig: _dashboardConfig,
-            $state : _state
+            printer:{},
+            $state : _state,
+            spinner: spinner
         });
     }));
 

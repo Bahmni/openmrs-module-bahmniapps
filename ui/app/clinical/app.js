@@ -46,7 +46,7 @@ angular.module('consultation')
                 },
                 resolve: {
                     initialization: 'initialization',
-                    patientContext: function (patientInitialization, $stateParams) {
+                    patientContext: function (initialization, patientInitialization, $stateParams) {
                         return patientInitialization($stateParams.patientUuid);
                     },
                     visitHistory: function (visitHistoryInitialization, $stateParams) {

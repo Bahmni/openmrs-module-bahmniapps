@@ -17,19 +17,20 @@
     "grunt-contrib-htmlmin": "^0.3.0",
     "grunt-contrib-imagemin": "~0.1.2",
     "grunt-filerev": "^0.2.1",
+    "grunt-hologram": "0.0.4",
+    "grunt-istanbul-coverage": "0.0.5",
     "grunt-karma": "^0.8.3",
     "grunt-regarde": "~0.1.1",
     "grunt-rename": "~0.1.3",
     "grunt-usemin": "~2.2.0",
     "karma": "^0.12.16",
+    "karma-coverage": "~0.2.4",
     "karma-jasmine": "~0.2.0",
     "karma-junit-reporter": "^0.2.2",
+    "karma-ng-html2js-preprocessor": "^0.1.2",
     "karma-phantomjs-launcher": "^0.1.4",
     "matchdep": "^0.3.0",
-    "phantomjs": "^1.9.7-9",
-    "grunt-istanbul-coverage": "0.0.5",
-    "karma-coverage": "~0.2.4",
-    "grunt-hologram": "0.0.4"
+    "phantomjs": "^1.9.7-9"
   },
   "scripts": {
     "test": "karma start test/config/karma.conf.js"

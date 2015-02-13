@@ -1,0 +1,19 @@
+<div class="dashboard-patientInformation-section">
+    <h2 class="section-title">{{patient.name | titleCase}}({{patient.identifier}})</h2>
+    <div>{{getPatientGenderAndAge()}}</div>
+    <section bindonce="patient" class="block patientInformation" ng-class="{'more': patientSummary.show}">
+        <table class="patient dashboard-table">
+            <tbody>
+            <tr>
+                <td class="name">Address</td>
+                <td class="value">{{getAddress()}}</td>
+            </tr>
+            <tr ng-repeat="attribute in config.patientAttributes" ng-if="patient[attribute]"
+                ng-show="config.patientAttributes.length" ng-class="attribute">
+                <td class="name">{{patient[attribute].label}}</td>
+                <td class="value">{{(patient[attribute].value.display || patient[attribute].value) | boolean}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</div>

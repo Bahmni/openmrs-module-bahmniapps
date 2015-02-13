@@ -30,6 +30,8 @@ describe("DrugOrderHistoryController", function () {
         var retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(Date.now());
         retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['getRetrospectiveEntry']);
         retrospectiveEntryService.getRetrospectiveEntry.and.returnValue(retrospectiveEntry);
+         var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
+
 
         $controller('DrugOrderHistoryController', {
             $scope: scope,
@@ -38,7 +40,8 @@ describe("DrugOrderHistoryController", function () {
             clinicalAppConfigService: clinicalAppConfigService,
             retrospectiveEntryService: retrospectiveEntryService,
             $stateParams: {patientUuid: "patientUuid"},
-            visitContext: {}
+            visitContext: {},
+            spinner : spinner
         });
     }));
 
