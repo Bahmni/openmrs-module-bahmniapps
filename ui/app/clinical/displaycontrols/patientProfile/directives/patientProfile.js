@@ -16,12 +16,11 @@ angular.module('bahmni.clinical')
                             address.push(patient.address[addressField]);
                         }
                     });
-                    if(!_.contains($scope.config,"cityVillage")) {
-                        address.push(patient.address["cityVillage"]);
-                    }
-                    return address.join(", ");
                 }
-                return patient.address.cityVillage;
+                else if(!_.contains($scope.config,"cityVillage")) {
+                        address.push(patient.address["cityVillage"]);
+                }
+                return address.join(", ");
             }
         };
         return {

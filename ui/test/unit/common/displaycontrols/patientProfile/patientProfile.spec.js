@@ -55,4 +55,19 @@ describe("Patient Profile display control", function() {
         expect(isoScope.getPatientGenderAndAge()).toBe("Female, 21 years");
     });
 
+    it("should get patient address in the order of config specified", function(){
+       scope.config = {
+           "title" :"Patient Information",
+           "name" : "patientInformation",
+           "addressFields" : ["address1","cityVillage", "state","zip"]
+       };
+        element = angular.element('<patient-profile patient="patient" config="config"></patient-profile>');
+        $compile(element)(scope);
+        scope.$digest();
+
+        var isoScope = element.isolateScope();
+
+        expect(isoScope.getAddress()).toBe("Address, Some village, State");
+    });
+
 });
