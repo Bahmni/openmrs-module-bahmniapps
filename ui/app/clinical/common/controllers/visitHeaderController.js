@@ -12,10 +12,12 @@ angular.module('bahmni.clinical')
 
             $scope.switchTab = function (tab) {
                 $scope.visitTabConfig.switchTab(tab);
+                $rootScope.$broadcast('event:clearVisitBoard', tab);
             };
 
             $scope.closeTab = function (tab) {
                 $scope.visitTabConfig.closeTab(tab);
+                $rootScope.$broadcast("event:clearVisitBoard", tab);
             };
 
             $scope.print = function () {

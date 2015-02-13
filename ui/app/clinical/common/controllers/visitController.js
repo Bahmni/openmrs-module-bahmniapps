@@ -15,8 +15,6 @@ angular.module('bahmni.clinical')
             $scope.visitTabConfig = visitTabConfig;
             $scope.showTrends = true;
 
-
-
             $scope.isNumeric = function (value) {
                 return $.isNumeric(value);
             };
@@ -52,6 +50,13 @@ angular.module('bahmni.clinical')
 
             $scope.$on("event:printVisitTab", function (event) {
                 printer.printFromScope("common/views/visitTabPrint.html",$scope);
+            });
+
+            $scope.$on("event:clearVisitBoard", function (event, tab) {
+                $scope.clearBoard = true;
+                $timeout(function(){
+                    $scope.clearBoard = false;
+                });
             });
 
             $scope.loadVisit = function (visitUuid) {
