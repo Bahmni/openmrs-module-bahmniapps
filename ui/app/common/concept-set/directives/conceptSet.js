@@ -96,6 +96,7 @@ angular.module('bahmni.common.conceptSet')
                 return conceptSetService.getConceptSetMembers({name: conceptSetName, v: "custom:" + customRepresentation}).then(function (response) {
                     $scope.conceptSet = response.data.results[0];
                     $scope.rootObservation = $scope.conceptSet ? observationMapper.map($scope.observations, $scope.conceptSet, conceptSetUIConfig) : null;
+                    $scope.rootObservation.conceptSetName = $scope.conceptSetName;
                     focusFirstObs();
                     updateObservationsOnRootScope();
                 });
@@ -105,7 +106,7 @@ angular.module('bahmni.common.conceptSet')
             $scope.atLeastOneValueIsSet = false;
             $scope.conceptSetRequired = false;
             $scope.showTitleValue = $scope.showTitle();
-            $scope.numberOfVisits = conceptSetUIConfig[conceptSetName] && conceptSetUIConfig[conceptSetName].numberOfVisits ? conceptSetUIConfig[conceptSetName].numberOfVisits : null
+            $scope.numberOfVisits = conceptSetUIConfig[conceptSetName] && conceptSetUIConfig[conceptSetName].numberOfVisits ? conceptSetUIConfig[conceptSetName].numberOfVisits : null;
 
             var updateObservationsOnRootScope = function () {
                 if($scope.rootObservation){
@@ -154,7 +155,10 @@ angular.module('bahmni.common.conceptSet')
 
                 return spinner.forPromise(observationsService.fetch($scope.patient.uuid, $scope.conceptSetName, null, $scope.numberOfVisits, null, true)).then(function (response) {
                     var recentObservations = flattenObs(response.data);
-                    flattenObs($scope.observations).forEach(function (obs) {
+                    var conceptSetObservation = $scope.observations.filter(function(observation){
+                        return observation.conceptSetName === $scope.conceptSetName;
+                    });
+                    flattenObs(conceptSetObservation).forEach(function (obs) {
                         var correspondingRecentObs = _.filter(recentObservations, function (recentObs) {
                             return obs.concept.uuid === recentObs.concept.uuid;
                         });
