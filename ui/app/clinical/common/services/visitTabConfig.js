@@ -26,16 +26,19 @@ angular.module('bahmni.clinical')
                 showDrugForm: true
             },
             disposition: {
-                numberOfVisits: 1
+                numberOfVisits: 1,
+                showDetailsButton: true
             },
             observation: {
                 numberOfVisits: 1,
-                obsIgnoreList: ["Patient file", "Radiology"]
+                obsIgnoreList: ["Patient file", "Radiology"],
+                showDetailsButton: true
             },
             diagnosis: {
                 title: "Diagnoses",
                 showCertainty: true,
-                showOrder: true
+                showOrder: true,
+                showDetailsButton: true
             },
             patientInformation: {
                 title: "PatientInformation",
