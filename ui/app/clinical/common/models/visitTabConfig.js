@@ -60,4 +60,11 @@ Bahmni.Clinical.VisitTabConfig = function (tabs) {
     this.isCurrentTab = function (tab) {
         return this.currentTab && this.currentTab.title === tab.title;
     };
+
+    this.showPrint = function () {
+        return !_.isEmpty(this.currentTab.printing);
+    };
+    this.getPrintConfigForCurrentVisit = function() {
+        return this.currentTab.printing;
+    }
 };

@@ -23,4 +23,8 @@ angular.module('bahmni.clinical')
             $scope.print = function () {
                 $rootScope.$broadcast("event:printVisitTab", $scope.visitTabConfig.currentTab);
             };
+
+            $scope.showPrint = function(){
+                return visitTabConfig.showPrint();
+            }
         }]);

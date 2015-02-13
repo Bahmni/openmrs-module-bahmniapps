@@ -2,7 +2,7 @@
     <div class="opd-header-bottom tabs">
         <bm-back-links></bm-back-links>
         
-        <button class="dialog-button-group" ng-click="print()" accesskey="r">
+        <button class="dialog-button-group" ng-if="showPrint()" ng-click="print()" accesskey="r">
             <i class="icon-print"></i>
             P<u>r</u>int</button>
 

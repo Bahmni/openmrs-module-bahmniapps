@@ -15,7 +15,7 @@ Bahmni.Clinical.DashboardConfig = function (config) {
 
     this.findOpenDashboard = function(dashboard) {
         return !_.findWhere(this.openDashboards, {'dashboardName': dashboard.dashboardName});
-    }
+    };
 
     this.getUnOpenedDashboards = function () {
         return _.filter(this.dashboards, function (dashboard) {

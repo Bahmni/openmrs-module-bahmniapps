@@ -6,9 +6,9 @@
     <div class="print-wrapper">
         <div class="print-header">
             <h1>
-                <img class="logo" src="../images/jss-icon.png" alt="logo">
-                Swasthya Sahyog Community Health Centre one </h1>
-            <h2>Patient summary</h2>
+                <img class="logo" src="{{visitTabConfig.getPrintConfigForCurrentVisit().logo}}" alt="logo">
+                {{visitTabConfig.getPrintConfigForCurrentVisit().title}}</h1>
+            <h2>{{visitTabConfig.getPrintConfigForCurrentVisit().header}}</h2>
         </div>
         <div ng-include="currentVisitUrl"></div>
     </div>
