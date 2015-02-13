@@ -9,7 +9,7 @@ Bahmni.Common.DisplayControl.Observation.Filters = function(unwantedObsConcepts)
     var isUnwantedObservation = function (observation) {
         if(!unwantedObsConcepts) return true;
         return !unwantedObsConcepts.some(function (ignoredObsName) {
-            return ignoredObsName === observation.concept.name;
+            return ignoredObsName === observation.concept.name || ignoredObsName === observation.concept.conceptClass;
         });
     };
 

@@ -29,12 +29,27 @@ angular.module('bahmni.clinical')
                 numberOfVisits: 1
             },
             observation: {
-                numberOfVisits: 1
+                numberOfVisits: 1,
+                obsIgnoreList: ["Patient file", "Radiology"]
             },
             diagnosis: {
                 title: "Diagnoses",
                 showCertainty: true,
                 showOrder: true
+            },
+            patientInformation: {
+                title: "PatientInformation",
+                patientAttributes : ["caste", "class", "education", "occupation"]
+            },
+            radiology: {
+                title: "Radiology"
+            },
+            patientFiles: {
+                title: "Patient Files"
+            },
+            otherInvestigations: {
+                Radiology: "Radiology Order",
+                Endoscopy: "Endoscopy Order"
             }
         };
 
