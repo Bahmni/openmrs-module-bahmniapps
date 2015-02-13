@@ -5,12 +5,6 @@
 </section>
 
 <div ng-if="!clearBoard">
-
-    <section ng-show="!visit.hasData()">
-        <p class="no-visit" >No visit information for this patient</p>
-    </section>
-
-
     <section class="block dashboard-section" ng-if="visitTabConfig.currentTab.patientInformation">
         <patient-profile patient="patient" config="visitTabConfig.currentTab.patientInformation"></patient-profile>
     </section>
