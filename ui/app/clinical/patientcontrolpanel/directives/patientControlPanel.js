@@ -5,8 +5,6 @@ angular.module('bahmni.common.patient')
         function($q, $rootScope, $stateParams, $state, contextChangeHandler, encounterService, configurations, clinicalAppConfigService) {
             
     var controller = function ($scope) {
-        console.log("In my directive");
-
         $scope.activeVisit = $scope.visitHistory.activeVisit;
 
         var DateUtil = Bahmni.Common.Util.DateUtil;
