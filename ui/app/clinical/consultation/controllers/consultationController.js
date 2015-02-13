@@ -17,7 +17,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             };
 
             $scope.gotoPatientDashboard = function () {
-                $location.path("/patient/" + patientContext.patient.uuid + "/dashboard");
+                if(contextChangeHandler.execute()["allow"]) {
+                    $location.path("/patient/" + patientContext.patient.uuid + "/dashboard");
+                }
             };
 
             var setCurrentBoardBasedOnPath = function () {
