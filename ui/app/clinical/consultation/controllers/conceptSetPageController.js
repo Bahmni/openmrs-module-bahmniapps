@@ -23,9 +23,7 @@ angular.module('bahmni.clinical')
             });
             $scope.consultation.selectedObsTemplate= allConceptSections.filter(function(conceptSet){
                 if(conceptSet.isAvailable($scope.context)){
-                    if(conceptSet.conceptName !== Bahmni.Clinical.Constants.dischargeSummaryConceptName || ($scope.visitContext && $scope.visitContext.hasAdmissionEncounter()) ){
-                        return true;
-                    }
+                    return true;
                 }
             });
         });
