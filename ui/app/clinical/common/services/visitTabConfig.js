@@ -31,7 +31,7 @@ angular.module('bahmni.clinical')
             },
             observation: {
                 numberOfVisits: 1,
-                obsIgnoreList: ["Patient file", "Radiology"],
+                obsIgnoreList: ["Patient file", "Radiology", "Lab Manager Notes", "Accession Uuid"],
                 showDetailsButton: true
             },
             diagnosis: {
