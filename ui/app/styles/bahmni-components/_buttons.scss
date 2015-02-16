@@ -22,7 +22,7 @@ button[disabled] { opacity: 0.4; cursor: not-allowed; }
 
 
 /*backButton:*/
-a.back-btn, button.back-btn{
+a.back-btn, button.back-btn {
     position: relative;
     display: inline-block;
     text-decoration: none;
@@ -59,19 +59,23 @@ a.back-btn, button.back-btn{
             opacity: 0.8;
         }
     }
-    img {
-      height: 15px;
-      width: 15px;
+    &.dashboard-link img {
+      height: 25px;
+      width: 25px;
+      border-radius: 100%;
     }
 }
 
-ul li a.back-btn, ul li a.back-btn:hover, button.back-btn, a.back-btn{
+ul li a.back-btn, ul li a.back-btn:hover, button.back-btn, a.back-btn { 
     padding: 10px 10px 10px 5px;
     border:1px solid darken($bahmniSecondaryColor, 15%);
     @include background(linear-gradient(top, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%)));
 
     i {
         padding: 0 5px 0 0;
+    }
+    &.dashboard-link {
+      padding: 5px 10px 4px 5px;
     }
 }
 button.back-btn {

@@ -2,13 +2,11 @@
 
     <div class="opd-header-bottom tabs">    
         <bm-back-links></bm-back-links>
-        <ul>
-            <li>
-                <a class="back-btn" id="dashboard-link" ng-click="gotoPatientDashboard()">
-                      <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
-                </a>
-            </li>
-        </ul>
+       
+        <a class="back-btn dashboard-link" id="dashboard-link" ng-click="gotoPatientDashboard()" title="Back to patient dashboard">
+              <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
+        </a>
+           
 
         <ul class="header-tabs">
             <li class="tab-item" ng-repeat="board in availableBoards" ng-class="{'tab-selected':currentBoard.label==board.label}">
