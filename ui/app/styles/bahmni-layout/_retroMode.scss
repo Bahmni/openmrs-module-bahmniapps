@@ -11,9 +11,13 @@
 .retro-date-widget {
 	height: 25px;
 	padding: 0px 10px;
+
+	&.disabled-date {
+	    background-color: lightgrey;
+	}
 }
 
-.reg-header .retro-date-widget, 
+.reg-header .retro-date-widget,
 .opd-header-wrapper .retro-date-widget {margin: 10px;}
 .opd-header-wrapper .retro-date-widget {float: right;}
 .reg-header .retro-date-widget {float: right;}

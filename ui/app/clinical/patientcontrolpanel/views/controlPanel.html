@@ -48,7 +48,8 @@
         </ul>
         <ul show-if-privilege="{{retrospectivePrivilege}}">
             <li>
-                <input class="form-field ng-pristine ng-valid retro-date-widget" ng-model="$parent.retrospectiveEntry.encounterDate" type="date" max="{{today}}">
+                <input class="retro-date-widget disabled-date" readonly
+                       ng-model="$parent.retrospectiveEntry.encounterDate" type="date" max="{{today}}">
             </li>
         </ul>
     </aside>
