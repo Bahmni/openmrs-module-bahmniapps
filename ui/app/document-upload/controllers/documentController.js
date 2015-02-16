@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('opd.documentupload')
-    .controller('DocumentController', ['$scope', '$stateParams', 'visitService', 'patientService', 'encounterService', 'spinner', 'visitDocumentService', '$rootScope', '$http', '$q', '$timeout', 'sessionService',
-        function ($scope, $stateParams, visitService, patientService, encounterService, spinner, visitDocumentService, $rootScope, $http, $q, $timeout, sessionService) {
+    .controller('DocumentController', ['$scope', '$stateParams', 'visitService', 'patientService', 'encounterService', 'spinner', 'visitDocumentService', '$rootScope', '$http', '$q', '$timeout', 'sessionService', '$anchorScroll',
+        function ($scope, $stateParams, visitService, patientService, encounterService, spinner, visitDocumentService, $rootScope, $http, $q, $timeout, sessionService, $anchorScroll) {
             var encounterTypeUuid;
             var topLevelConceptUuid;
             var customVisitParams = Bahmni.DocumentUpload.Constants.visitRepresentation;
@@ -317,4 +317,7 @@ angular.module('opd.documentupload')
                     });
                 }));
             };
-        }]);
+
+            $anchorScroll();
+        }
+    ]);

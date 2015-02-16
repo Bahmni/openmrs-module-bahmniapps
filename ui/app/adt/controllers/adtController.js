@@ -1,8 +1,8 @@
 "use strict";
 
 angular.module('bahmni.adt')
-    .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService', 'encounterService', 'bedService', 'appService', 'visitService', '$location', '$window', 'sessionService', 'messagingService',
-        function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService, appService, visitService, $location, $window, sessionService, messagingService) {
+    .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService', 'encounterService', 'bedService', 'appService', 'visitService', '$location', '$window', 'sessionService', 'messagingService', '$anchorScroll',
+        function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService, appService, visitService, $location, $window, sessionService, messagingService, $anchorScroll) {
             var actionConfigs = {};
             var encounterConfig = $rootScope.encounterConfig;
             var locationUuid = sessionService.getLoginLocationUuid();
@@ -225,5 +225,7 @@ angular.module('bahmni.adt')
             };
 
             spinner.forPromise(init());
+            $anchorScroll();
+
         }
     ]);
