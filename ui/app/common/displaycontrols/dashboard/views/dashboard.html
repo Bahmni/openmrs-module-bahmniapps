@@ -1,0 +1,21 @@
+<article class="patient-dashboard visit">
+    <div class="pgContainer">
+        <article>
+            <div class="dashboard-section-wrapper">
+                <div class="dashboard-sections">
+                    <section ng-repeat="section in dashboard.getSections() | filter:filterOdd(0)"
+                             class="dashboard-section">
+                        <ng-include src="section.viewName"></ng-include>
+                    </section>
+                </div>
+
+                <div class="dashboard-sections">
+                    <section ng-repeat="section in dashboard.getSections() | filter:filterEven(0)"
+                             class="dashboard-section">
+                        <ng-include src="section.viewName"></ng-include>
+                    </section>
+                </div>
+            </div>
+        </article>
+    </div>
+</article>

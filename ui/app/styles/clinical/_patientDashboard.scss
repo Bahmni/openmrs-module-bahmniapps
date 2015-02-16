@@ -14,7 +14,7 @@
   @include clearfix();
   .dashboard-sections {
     width: 50%;
-    float: left;  
+    float: left;
     @media screen and (max-width: 859px) {
       width: 100%;
       float: none;
@@ -22,7 +22,7 @@
   }
 
 }
-#view-content .patient-dashboard.visit {padding: 0;}
+.patient-dashboard.visit {padding: 0;}
 .dashboard-visit-summary {padding: 10px;}
 .dashboard-header {
   width: 100%;

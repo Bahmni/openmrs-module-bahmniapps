@@ -8,6 +8,8 @@ angular.module('bahmni.adt')
             var locationUuid = sessionService.getLoginLocationUuid();
             $scope.adtObservations = [];
 
+            $scope.dashboardConfig = appService.getAppDescriptor().getConfigValue('dashboard');
+
             var getDefaultVisitTypeUuid = function(){
                 if($scope.visit && $scope.visit.stopDatetime == null){
                     return $scope.visit.visitType.uuid;
@@ -16,7 +18,7 @@ angular.module('bahmni.adt')
                 var visitTypes = encounterConfig.getVisitTypes();
                 var defaultVisitType = visitTypes.filter(function(visitType) { return visitType.name === defaultVisitTypeName})[0];
                 return defaultVisitType && defaultVisitType.uuid || null;
-            }
+            };
 
             var defaultVisitTypeUuid = getDefaultVisitTypeUuid();
             if(defaultVisitTypeUuid == null) {

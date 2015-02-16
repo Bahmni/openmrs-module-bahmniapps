@@ -1,5 +1,2 @@
-<article class="patient-dashboard visit">
-    <div class="pgContainer">
-        <article bindonce="patientSummary" ng-include="'dashboard/views/patientSummary.html'"></article>
-    </div>
-</article>
+<dashboard patient="patient" config="clinicalDashboardConfig.currentDashboard"
+           diseases-templates="diseasesTemplates" visit-history="visitHistory"></dashboard>

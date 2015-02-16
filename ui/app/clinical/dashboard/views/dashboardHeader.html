@@ -2,25 +2,25 @@
     <div class="opd-header-bottom tabs">
         <bm-back-links></bm-back-links>
 
-        <button ng-if="dashboardConfig.showPrint()" class="dialog-button-group" ng-click="printDashboard()" accesskey="r">
+        <button ng-if="clinicalDashboardConfig.showPrint()" class="dialog-button-group" ng-click="printDashboard()" accesskey="r">
             <i class="icon-print"></i>
             P<u>r</u>int</button>
 
-        <ul class="header-tabs" ng-if="dashboardConfig.showTabs()">
-            <li class="tab-item dashboard" ng-repeat="dashboard in dashboardConfig.openDashboards"
-                ng-class="{'tab-selected' : dashboardConfig.isCurrentDashboard(dashboard), 'tab-removable': dashboardConfig.isCurrentDashboard(dashboard) && !dashboard.default}">
+        <ul class="header-tabs" ng-if="clinicalDashboardConfig.showTabs()">
+            <li class="tab-item dashboard" ng-repeat="dashboard in clinicalDashboardConfig.openDashboards"
+                ng-class="{'tab-selected' : clinicalDashboardConfig.isCurrentDashboard(dashboard), 'tab-removable': clinicalDashboardConfig.isCurrentDashboard(dashboard) && !dashboard.default}">
                 <span class="close" ng-click="closeDashboard(dashboard)">
                    <span class="close-icon">x</span>
                 </span>
                 <a ng-click="showDashboard(dashboard)">{{dashboard.dashboardName}}</a>
 
             </li>
-            <li class="tab-item new-tab tab-active" bm-pop-over ng-show="dashboardConfig.getUnOpenedDashboards().length > 0">
+            <li class="tab-item new-tab tab-active" bm-pop-over ng-show="clinicalDashboardConfig.getUnOpenedDashboards().length > 0">
                 <a id="addDashboardButton" bm-pop-over-trigger>+</a>
 
                 <div class="tab-submenu" bm-pop-over-target>
                     <ul>
-                        <li ng-repeat="dashboard in dashboardConfig.getUnOpenedDashboards()">
+                        <li ng-repeat="dashboard in clinicalDashboardConfig.getUnOpenedDashboards()">
                             <a class="submenu-item unOpenedDashboard" ng-click="showDashboard(dashboard);">{{dashboard.dashboardName}} </a>
                         </li>
                     </ul>

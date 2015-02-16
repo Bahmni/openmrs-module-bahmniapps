@@ -5,9 +5,7 @@ describe("PatientDashboardTreatmentController", function () {
     beforeEach(module('bahmni.clinical'));
 
     var scope, ngDialog;
-    var stateParams;
-    var dashboardConfig;
-    var _retrospectiveEntryService;
+    var dashboard;
 
     var treatmentConfigParams = {
         title: "Treatments",
@@ -38,16 +36,20 @@ describe("PatientDashboardTreatmentController", function () {
 
         ngDialog = jasmine.createSpyObj('ngDialog', ['open']);
 
-        dashboardConfig = jasmine.createSpyObj('dashboardConfig', ['getSectionByName']);
-        dashboardConfig.getSectionByName.and.returnValue(treatmentConfigParams);
+        var config = {
+            "dashboardName": "General",
+            "sections": [treatmentConfigParams]
+        };
 
-        scope.dashboardConfig = dashboardConfig;
-        
+        scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create(config);
+
         $controller('PatientDashboardTreatmentController', {
             $scope: scope,
             ngDialog: ngDialog
         });
-    }));
+    })
+    )
+    ;
 
     describe("The controller is loaded", function () {
         it("should setup the scope", function () {
@@ -68,4 +70,5 @@ describe("PatientDashboardTreatmentController", function () {
             expect(expected).toEqual(scope.allTreatmentDetails);
         });
     });
-});
+})
+;

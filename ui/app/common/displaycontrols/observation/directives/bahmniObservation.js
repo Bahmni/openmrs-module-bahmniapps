@@ -3,7 +3,7 @@
 angular.module('bahmni.common.displaycontrol.observation')
     .directive('bahmniObservation', ['observationsService', 'appService', '$q','spinner',
         function (observationsService, appService, $q, spinner) {
-
+            
             var controller = function($scope){
 
                 var mapObservation = function(response,config){
@@ -32,15 +32,17 @@ angular.module('bahmni.common.displaycontrol.observation')
                 };
 
                 $scope.isClickable= function(){
-                    return $scope.isOnDashboard && $scope.section.allObservationDetails.pivotTable;
+                    return $scope.isOnDashboard && $scope.section.allObservationDetails && $scope.section.allObservationDetails.pivotTable;
                 };
 
                 fetchObservations();
+
 
                 $scope.dialogData = {
                     "patient": $scope.patient,
                     "section": $scope.section
                 };
+                
 
             };
             return {

@@ -1,31 +1,33 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DashboardHeaderController', ['$window', '$scope', '$rootScope', 'clinicalAppConfigService', 'patientContext', 'visitHistory', 'dashboardConfig',
-        function ($window, $scope, $rootScope, clinicalAppConfigService, patientContext, visitHistory, dashboardConfig) {
+    .controller('DashboardHeaderController', ['$window', '$scope', 'clinicalAppConfigService', 'patientContext', 'visitHistory', 'clinicalDashboardConfig',
+        function ($window, $scope, clinicalAppConfigService, patientContext, visitHistory, clinicalDashboardConfig) {
+
             $scope.patient = patientContext.patient;
             $scope.visitHistory = visitHistory;
-            $scope.dashboardConfig = dashboardConfig;
 
             $scope.consultationBoardLink = clinicalAppConfigService.getConsultationBoardLink();
             $scope.showControlPanel = false;
+            $scope.clinicalDashboardConfig = clinicalDashboardConfig;
 
             $scope.openConsultationInNewTab = function () {
                 $window.open('#' + $scope.consultationBoardLink, '_blank');
             };
 
             $scope.showDashboard = function (dashboard) {
-                if (!dashboardConfig.isCurrentDashboard(dashboard)) {
+                if (!clinicalDashboardConfig.isCurrentDashboard(dashboard)) {
                     $scope.$parent.$parent.$broadcast("event:switchDashboard", dashboard);
                 }
             };
 
-            $scope.printDashboard= function(){
-                $scope.$parent.$parent.$broadcast("event:printDashboard",dashboardConfig.getCurrentDashboard().printing);
+            $scope.printDashboard = function () {
+                $scope.$parent.$parent.$broadcast("event:printDashboard", clinicalDashboardConfig.getCurrentDashboard().printing);
             };
+
             $scope.closeDashboard = function (dashboard) {
-                dashboardConfig.closeDashboard(dashboard);
-                $scope.$parent.$parent.$broadcast("event:switchDashboard", dashboardConfig.getDefaultDashboard());
+                clinicalDashboardConfig.closeDashboard(dashboard);
+                $scope.$parent.$parent.$broadcast("event:switchDashboard", clinicalDashboardConfig.getCurrentDashboard());
             };
 
         }]);

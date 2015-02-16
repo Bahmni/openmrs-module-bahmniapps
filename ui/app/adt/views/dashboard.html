@@ -13,8 +13,8 @@
             <span class="fl adt-disposition-action">Patient Movement:</span>
             <select ng-model="dispositionAction"
                     ng-options="d.name.display for d in dispositionActions" class="disposition-action">
-                    <option value="">Select</option>
-        </select>
+                <option value="">Select</option>
+            </select>
         </label>
     </div>
 
@@ -22,7 +22,7 @@
         <concept-set concept-set-name="'Adt Notes'" observations="adtObservations"></concept-set>
     </div>
 
-    
+
     <div class="submit-btn-container" ng-if="dispositionAction">
         <div class="right">
     <span ng-repeat="extn in actions">
@@ -39,5 +39,6 @@
     </span>
         </div>
     </div>
+    <dashboard patient="patient" config="dashboardConfig"></dashboard>
 </div>
 

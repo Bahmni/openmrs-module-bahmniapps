@@ -1,8 +1,8 @@
-<div ng-controller="PatientDashboardVisitsController" ng-setVisitsHistory="visitHistory" ng-setPatient="patient" class="dashboard-visits-section">
+<div ng-controller="PatientDashboardVisitsController" class="dashboard-visits-section">
     <h2 class="section-title"
         ng-dialog="dashboard/views/dashboardSections/allVisits.html"
         ng-dialog-class="ngdialog-theme-flat ngdialog-theme-custom"
-        ng-dialog-controller="PatientDashboardAllVisitsController" ng-dialog-data="{{visitsCountAndPatient}}">
+        ng-dialog-controller="PatientDashboardAllVisitsController" ng-dialog-data="{{dialogData}}">
         {{section.title}}
     </h2>
     <visits-table params="dashboardParams" patient-uuid="patientUuid"></visits-table>

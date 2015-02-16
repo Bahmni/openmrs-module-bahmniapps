@@ -4,7 +4,7 @@ describe("patient dashboard controller", function () {
 
     beforeEach(module('bahmni.clinical'));
 
-    var _diseaseTemplateService, scope, _dashboardConfig, _clinicalAppConfigService,_state;
+    var _diseaseTemplateService, scope, _clinicalDashboardConfig, _clinicalAppConfigService,_state;
 
     var fetchDiseaseTemplatePromise;
 
@@ -32,7 +32,7 @@ describe("patient dashboard controller", function () {
     beforeEach(module(function () {
         _clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getObsIgnoreList']);
 
-        _dashboardConfig = new Bahmni.Clinical.DashboardConfig([
+        _clinicalDashboardConfig = new Bahmni.Clinical.ClinicalDashboardConfig([
             {dashboardName: "General", default: true, sections: patientDashboardSections}
         ]);
         _diseaseTemplateService = jasmine.createSpyObj('diseaseTemplateService', ['getLatestDiseaseTemplates']);
@@ -65,21 +65,13 @@ describe("patient dashboard controller", function () {
             diseaseTemplateService: _diseaseTemplateService,
             encounterService: jasmine.createSpy(),
             clinicalAppConfigService: _clinicalAppConfigService,
-            dashboardConfig: _dashboardConfig,
+            clinicalDashboardConfig: _clinicalDashboardConfig,
             printer:{},
             $state : _state,
             spinner: spinner
         });
     }));
 
-    it("should init dashboard sections", function (done) {
-        fetchDiseaseTemplatePromise.then(function (data) {
-            expect(scope.patientDashboardSections.length).toBe(4);
-            expect(scope.patientDashboardSections[2].title).toBe("Breast Cancer Title");
-            expect(scope.patientDashboardSections[3].title).toBe("Diabetes Title");
-            done();
-        });
-    });
 });
 
 var breastCancerDiseaseTemplate =

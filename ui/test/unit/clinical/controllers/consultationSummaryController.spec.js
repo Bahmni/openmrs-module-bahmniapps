@@ -19,6 +19,7 @@ describe("ConsultationSummaryController", function () {
             discontinuedDrugs: [],
             pastDiagnoses: []
         };
+        
         conceptSetUiConfigService = jasmine.createSpyObj('conceptSetUiConfigService', ['getConfig']);
 
         $controller('ConsultationSummaryController', {

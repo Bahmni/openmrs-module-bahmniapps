@@ -4,7 +4,7 @@ angular.module('bahmni.clinical')
     .controller('PatientDashboardTreatmentController', ['$scope', 'ngDialog',
         function ($scope, ngDialog) {
 
-            var treatmentConfigParams = $scope.dashboardConfig.getSectionByName("treatment") || {};
+            var treatmentConfigParams = $scope.dashboard.getSectionByName("treatment") || {};
             var patientUuidparams = {"patientUuid": $scope.patient.uuid};
 
             $scope.dashboardParams = {};
