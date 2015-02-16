@@ -12,11 +12,11 @@ else
 fi
 
 run_in_vagrant -c "sudo rm -rf /var/www/bahmniapps"
-run_in_vagrant -c "sudo ln -s /openmrs-module-bahmniapps/ui/$FOLDER/ /var/www/bahmniapps"
+run_in_vagrant -c "sudo ln -s /bahmni/openmrs-module-bahmniapps/ui/$FOLDER/ /var/www/bahmniapps"
 run_in_vagrant -c "sudo chown -h ${USER}:${USER} /var/www/bahmniapps"
 
 run_in_vagrant -c "sudo rm -rf /var/www/style-guide"
-run_in_vagrant -c "sudo ln -s /openmrs-module-bahmniapps/ui/style-guide/ /var/www/style-guide"
+run_in_vagrant -c "sudo ln -s /bahmni/openmrs-module-bahmniapps/ui/style-guide/ /var/www/style-guide"
 run_in_vagrant -c "sudo chown -h ${USER}:${USER} /var/www/style-guide"
 
 
