@@ -210,7 +210,7 @@ describe('Disposition DisplayControl', function () {
         scope.$digest();
 
         expect(compiledElementScope.dispositions).not.toBeUndefined();
-        expect(compiledElementScope.noDispositionsMessage).toEqual(Bahmni.Clinical.Constants.messageForNoDisposition);
+        expect(compiledElementScope.noDispositionsMessage).toEqual(Bahmni.Common.Constants.messageForNoDisposition);
 
     });
 
@@ -234,7 +234,7 @@ describe('Disposition DisplayControl', function () {
         scope.$digest();
 
         expect(compiledElementScope.dispositions).not.toBeUndefined();
-        expect(compiledElementScope.noDispositionsMessage).toEqual(Bahmni.Clinical.Constants.messageForNoDisposition);
+        expect(compiledElementScope.noDispositionsMessage).toEqual(Bahmni.Common.Constants.messageForNoDisposition);
 
     });
 

@@ -16,7 +16,7 @@ angular.module('bahmni.common.displaycontrol.disposition')
                     $scope.dispositions = response.data;
 
                     if(_.isEmpty($scope.dispositions)){
-                        $scope.noDispositionsMessage = Bahmni.Clinical.Constants.messageForNoDisposition;
+                        $scope.noDispositionsMessage = Bahmni.Common.Constants.messageForNoDisposition;
                     }
                 };
 

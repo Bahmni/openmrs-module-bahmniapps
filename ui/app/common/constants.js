@@ -109,7 +109,8 @@ Bahmni.Common = Bahmni.Common || {};
         currentUser:'bahmni.user',
         retrospectivePrivilege:'app:clinical:retrospective',
         nutritionalConceptName:'Nutritional Values',
-        messageForNoObservation: "No observations captured for this visit."
-};
+        messageForNoObservation: "No observations captured for this visit.",
+        messageForNoDisposition: "No dispositions available."
+    };
     
 })();
