@@ -6,7 +6,7 @@ angular.module('bahmni.common.displaycontrol.dashboard')
         var controller = function ($scope) {
 
             var init = function () {
-                $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.config);
+                $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.config || {});
                 $scope.sections = $scope.dashboard.getSections($scope.diseaseTemplates);
             };
 
