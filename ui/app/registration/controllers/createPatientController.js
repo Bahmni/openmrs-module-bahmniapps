@@ -73,14 +73,18 @@ angular.module('bahmni.registration')
             $state.go('patient.edit', {patientUuid: $scope.patient.uuid});
         }
 
+        var createVisit = function (patientProfileData) {
+            return $scope.visitControl.createVisit(patientProfileData.patient.uuid, createEncounterObject()).success(function () {
+                var patientUrl = $location.absUrl().replace("new", patientProfileData.patient.uuid);
+                $scope.patient.registrationDate = dateUtil.now();
+                $window.history.pushState(null, null, patientUrl);
+                goToActionUrl($scope.submitSource, patientProfileData, {newpatient: 'true'});
+            }).error(onCreateVisitFailure);
+        }
+
         var followUpAction = function(patientProfileData) {
             if($scope.submitSource === 'startVisit') {
-                return $scope.visitControl.createVisit(patientProfileData.patient.uuid, createEncounterObject()).success(function(){
-                    var patientUrl = $location.absUrl().replace("new", patientProfileData.patient.uuid);
-                    $scope.patient.registrationDate = dateUtil.now();
-                    $window.history.pushState(null, null, patientUrl);
-                    goToActionUrl($scope.submitSource, patientProfileData, {newpatient: 'true'});
-                }).error(onCreateVisitFailure);
+                return spinner.forPromise(createVisit(patientProfileData));
             } else {
                 goToActionUrl($scope.submitSource, patientProfileData);
             }
