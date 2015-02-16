@@ -9,7 +9,7 @@ angular.module('bahmni.clinical')
             default: true,
             investigationResult: {
                 title: "Lab Investigations",
-                showChart: false,
+                showChart: true,
                 showTable: true,
                 showNormalLabResults: true,
                 showCommentsExpanded: true,
