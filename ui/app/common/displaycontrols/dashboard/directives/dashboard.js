@@ -31,7 +31,7 @@ angular.module('bahmni.common.displaycontrol.dashboard')
             scope: {
                 config: "=",
                 patient: "=",
-                diseasesTemplates: "=",
+                diseaseTemplates: "=",
                 visitHistory: "="
             }
         }
