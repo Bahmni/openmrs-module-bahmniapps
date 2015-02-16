@@ -1,12 +1,22 @@
 <div class="dashboard-patientInformation-section">
-    <h2 class="section-title">{{patient.name | titleCase}}({{patient.identifier}})</h2>
-    <div>{{getPatientGenderAndAge()}}</div>
     <section bindonce="patient" class="block patientInformation" ng-class="{'more': patientSummary.show}">
         <table class="patient dashboard-table">
             <tbody>
-            <tr>
-                <td class="name">Address</td>
-                <td class="value">{{getAddress()}}</td>
+            <tr class="patient-info">
+                <td colspan="2">
+                    <span class="patient-img">
+                        <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
+                    </span>
+                    <div class="patient-value">
+                         <span class="patient-name">
+                            {{patient.name | titleCase}} ({{patient.identifier}})</span> - 
+                         <span class="patient-gender-age">
+                            {{getPatientGenderAndAge()}} </span>
+                         <span class="patient-address">
+                             {{getAddress()}}
+                         </span>
+                     </div>
+                 </td>
             </tr>
             <tr ng-repeat="attribute in config.patientAttributes" ng-if="patient[attribute]"
                 ng-show="config.patientAttributes.length" ng-class="attribute">

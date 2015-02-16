@@ -150,7 +150,7 @@ h1,h2,h3{
 	.hierarchy ul li {
 		.tree-list-item {
 			padding: 0 5px !important;
-			background: none;
+			background: none !important;
 			i[class^="icon-"] {
 				display: none;
 			}
@@ -277,9 +277,37 @@ h1,h2,h3{
 		}
 	}
 	.dashboard-patientInformation-section {
-		table {
+		table.patient {
 			.value {
 				width: auto;
+			}
+			.patient-img {
+				display: none;
+			}
+			.patient-info td {
+				background: none;
+			}
+			.patient-value {
+				display: block;
+				width: auto;
+				float: left;
+				.patient-name {
+					font-size: 10pt;
+					// display: inline-block;
+				}
+				.patient-gender-age {
+					font-size: 9pt;
+					// display: inline-block;
+					// &:before {
+					// 	content: " - ";
+
+					// }
+				}
+			}
+			.address {
+				.name {
+					display: none;
+				}
 			}
 		}
 	}
