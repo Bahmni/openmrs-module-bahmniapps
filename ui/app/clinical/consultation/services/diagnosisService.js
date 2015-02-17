@@ -9,10 +9,10 @@ angular.module('bahmni.clinical')
             });
         };
 
-        this.getPastDiagnoses = function (patientUuid) {
+        this.getPastDiagnoses = function (patientUuid, visitUuid) {
             var url = Bahmni.Common.Constants.bahmniDiagnosisUrl;
             return $http.get(url, {
-                params: { patientUuid: patientUuid }
+                params: { patientUuid: patientUuid , visitUuid: visitUuid}
             });
         };
 

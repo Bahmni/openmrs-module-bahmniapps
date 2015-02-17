@@ -10,7 +10,7 @@
     </section>
 
     <section ng-if="visitTabConfig.currentTab.diagnosis" class="block dashboard-section">
-        <bahmni-diagnosis patient-uuid="visitTabConfig.currentTab.diagnosis.patientUuid" section-title="visitTabConfig.currentTab.diagnosis.title" config="visitTabConfig.currentTab.diagnosis"></bahmni-diagnosis>
+        <bahmni-diagnosis patient-uuid="visitTabConfig.currentTab.diagnosis.patientUuid" visit-uuid="visit.uuid" section-title="visitTabConfig.currentTab.diagnosis.title" config="visitTabConfig.currentTab.diagnosis"></bahmni-diagnosis>
     </section>
 
     <div ng-if="visitTabConfig.currentTab.observation" id="observation-section">

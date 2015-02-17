@@ -6,13 +6,12 @@ angular.module('bahmni.clinical')
 
             var controller = function ($scope) {
                 var getAllDiagnosis = function () {
-                    return diagnosisService.getPastDiagnoses($scope.patientUuid).success(function (response) {
+                    return diagnosisService.getPastDiagnoses($scope.patientUuid, $scope.visitUuid).success(function (response) {
                         var diagnosisMapper = new Bahmni.DiagnosisMapper();
                         $scope.allDiagnoses = diagnosisMapper.mapDiagnoses(response);
                         $scope.hasDiagnoses = _.isEmpty($scope.allDiagnoses) ? true : false;
                     });
                 };
-
                 $scope.toggle = function(diagnosis) {
                     diagnosis.showDetails = !diagnosis.showDetails;
                 };
@@ -33,7 +32,8 @@ angular.module('bahmni.clinical')
                 scope: {
                     patientUuid: "=",
                     config: "=",
-                    title: "=sectionTitle"
+                    title: "=sectionTitle",
+                    visitUuid: "="
                 }
             }
         }]);
