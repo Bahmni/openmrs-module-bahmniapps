@@ -18,8 +18,10 @@
                         {{obsGroup.date | date: 'dd MMM yy hh:mm a'}}
                     </span>
                 </span>
-                <ul ng-show="obsGroup.isOpen">
-                    <show-observation show-details-button="config.showDetailsButton" observation="observation" ng-repeat="observation in obsGroup.value" level="2"></show-observation>
+                <ul bm-show="obsGroup.isOpen">
+                    <show-observation show-details-button="config.showDetailsButton"
+                                      observation="observation" ng-repeat="observation in obsGroup.value"
+                                      level="2"></show-observation>
                 </ul>
             </li>
         </ul>
