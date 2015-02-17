@@ -6,9 +6,9 @@
     <div class="print-wrapper">
         <div class="print-header">
             <h1>
-                <img class="logo" src="{{dashboardConfig.getPrintConfigForCurrentDashboard().logo}}" alt="logo">
-                {{dashboardConfig.getPrintConfigForCurrentDashboard().title}}</h1>
-            <h2>{{dashboardConfig.getPrintConfigForCurrentDashboard().header}}</h2>
+                <img class="logo" src="{{clinicalDashboardConfig.getPrintConfigForCurrentDashboard().logo}}" alt="logo">
+                {{clinicalDashboardConfig.getPrintConfigForCurrentDashboard().title}}</h1>
+            <h2>{{clinicalDashboardConfig.getPrintConfigForCurrentDashboard().header}}</h2>
         </div>
         <div ng-include="currentDashboardTemplateUrl"></div>
     </div>
