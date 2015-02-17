@@ -22,7 +22,7 @@
     </div>
 
     <div ng-if="visitTabConfig.currentTab.pivotTable">
-        <section ng-repeat="pivotTable in visitTabConfig.currentTab.pivotTable" pivot-table visit-uuid="visitTabConfig.currentTab.pivotTable.visitUuids" config="pivotTable"
+        <section ng-repeat="pivotTable in visitTabConfig.currentTab.pivotTable" pivot-table visit-uuid="visit.uuid" config="pivotTable"
                  patient-uuid="patient.uuid" display-name="pivotTable.title"></section>
     </div>
 
