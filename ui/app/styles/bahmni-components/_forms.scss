@@ -1,6 +1,7 @@
 /******** form element styling start********/
 
 fieldset { margin: 0; padding: 0; border: 0; }
+
 form, .form {
     fieldset {
         border:none;
@@ -39,8 +40,28 @@ form, .form {
                 margin: 0.5em 0.8em 0em 0em;
             }
         }
+        .offset-label {
+            clear: both;
+            width: 100%;
+            box-sizing: border-box;
+            padding-left: 240px;
+        }
         .add-more {
             float: right;
+        }
+        textarea {
+            height: 25px;
+            width: 600px;
+            // width: 96%;
+            transition: height 0.1s ease;
+            box-sizing: border-box;
+            margin-top: 5px;
+            &:focus {
+                height: 75px;
+            }
+            &.consultation-img-comments {
+                width: 100%;
+            }
         }
     }
     .form-field-inline {
@@ -105,7 +126,7 @@ form, .form {
 .transparent { opacity: 0.2; }
 .opaque { opacity: 1; }
 
-textarea { width:96%; }
+
 form select, .form select { min-width: 100px; }
 /********* form element styling end***********/
 

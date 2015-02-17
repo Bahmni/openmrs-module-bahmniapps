@@ -1,4 +1,7 @@
-.clinical-observations {padding: 10px 5px;}
+.clinical-observations {
+  padding: 10px 5px;
+}
+
 .vitals {
 	.form-field {
         padding-top: 10px;
@@ -62,12 +65,17 @@
         .comment-toggle {
             margin-right: 0;
         }
+        .offset-label {
+          margin-left: -10px;
+        }
       }
     }
   }
+
   input[type="date"] + .hint {
     display: none;
   }
+
   .hint {
     font-size: 13px;
     display: inline-block;
@@ -79,6 +87,7 @@
       padding: 4px 10px;
     }
   }
+
   .info {
     color: $bahmniLinkColor;
     font-size: 14px;
@@ -86,6 +95,7 @@
     margin-bottom: 0;
   } 
 }
+
 div.duration.checkbox-inline {
   margin-top: -10px;
   margin-left: 15px;
@@ -107,6 +117,7 @@ div.duration.checkbox-inline {
     margin-left: 25px;
   }
 }
+
 form .vitals .form-field .field-value {
   @media screen and (max-width: 595px) {
     margin-left: 10px;
@@ -131,12 +142,6 @@ form .vitals .form-field .field-value {
   .select2-drop-active, .select2-container-active .select2-choice, .select2-container-active .select2-choices, .select2-drop.select2-drop-above.select2-drop-active {
     border: 1px solid lighten($mediumGray, 20%);
   }
-  textarea {
-    width: 600px;
-    margin-bottom: 10px;
-    box-sizing: border-box;
-    padding-bottom: 30px;
-  }
 }
 
 .form-horizontal {
@@ -153,11 +158,11 @@ form .vitals .form-field .field-value {
         text-align: left;
       }
     }
-    &.hasLegend {
-      label {
-        margin-left: 10px;
-      }
-    }
+    // &.hasLegend {
+    //   label {
+    //     margin-left: 10px;
+    //   }
+    // }
   }
 }
 .checkbox-inline {
@@ -180,6 +185,7 @@ form .vitals .form-field .field-value {
     margin-top: 2px;
   }
 }
+
 concept {
   input:invalid {
     background-color: $clinicalFormInvalid;
@@ -189,6 +195,7 @@ concept {
     }
   }
 }
+
 /*custom changes: auto complete form field -> will be moved globally once finalized.*/
 .select2-container .select2-choice {
   padding: 5px;
@@ -236,6 +243,7 @@ concept-set {
     }
   }
 }
+
 .grid-row {
     padding: 2px;
 }
@@ -264,14 +272,15 @@ concept-set {
     padding: 5px;
   }
     .consultation-image {
-        width: 758px;
+        width: 600px;
         background: $lightestGray;
         padding: 5px;
         overflow: auto;
         clear: both;
+        box-sizing: border-box;
         .placeholder.btn {
-            width: 50px;
-            height: 50px;
+            width: 30px;
+            height: 30px;
             float: left;
             margin: 0;
             text-align: center;
@@ -280,9 +289,9 @@ concept-set {
             padding: 0;
             i {
               color: green;
-              font-size: 24px;
-              line-height: 55px;
-              width: 40px;
+              font-size: 18px;
+              line-height: 30px;
+              width: 30px;
             }
         }
         .file-browse {
@@ -290,35 +299,27 @@ concept-set {
             left: -9999px;
             visibility: hidden;
         }
+
         .file img.has-image {
             width: 50px;
             height: 50px;
             border: 3px solid $lightGray;
+            &.voided {
+                opacity: 0.1;
+            }
         }
-        .file img.has-image.voided {
-            opacity: 0.1;
-        }
+
         .comment-toggle {
             margin-right: 10px;
             margin-bottom: 5px;
-        }
-        textarea.consultation-img-comments {
-            width: 47.3em!important;
-            margin-bottom: 0!important;
         }
     }
 }
 
 .leaf-observation-node {
-    .comment-toggle {
-        margin-right: 10px;
-    }
     .obs-comment-section {
-      width: 100%;
-      box-sizing: border-box;
       padding-bottom: 30px;
       display: inline-block;
-      margin-top: 5px;
     }
 }
 
@@ -388,13 +389,7 @@ concept-set {
   }
 }
 
-textarea {
-    height: 25px;
-    transition: height 0.1s ease;
-    &:focus {
-        height: 75px;
-    }
-}
+
 
 .accept-btn-wrapper {
     margin-top: 5px;
