@@ -100,7 +100,13 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
         return true;
     };
 
-    this.isValid = function(a,b) {
+    this.hasValue = function() {
+        return self.selectedObs.length > 0;
+    };
+
+    this.isValid = function (checkRequiredFields, conceptSetRequired) {
+        if (conceptSetRequired && this.isRequired() && !this.hasValue()) return false;
+        if (checkRequiredFields && this.isRequired() && !this.hasValue()) return false;
         return true;
     };
 
@@ -114,6 +120,10 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
 
     this.canAddMore = function() {
         return this.getConceptUIConfig().allowAddMore == true;
+    };
+
+    this.isRequired = function () {
+        return this.getConceptUIConfig().required;
     };
 
     var createObsFrom = function(answer) {

@@ -123,11 +123,11 @@
                 <!--{{observation.groupMembers}}-->
 
                 <div ng-switch-when="datetime">
-                    <datetimepicker model="observation.value" show-time="true"></datetimepicker>
+                    <datetimepicker model="observation.value" show-time="true" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}"></datetimepicker>
                 </div>
 
                 <div ng-switch-when="grid">
-                    <div  ng-repeat="member in observation.groupMembers" class="grid-row">
+                    <div  ng-repeat="member in observation.groupMembers" class="grid-row"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}">
                         <button-select observation="member" ></button-select>
                     </div>
                 </div>

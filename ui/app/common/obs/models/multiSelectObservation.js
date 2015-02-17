@@ -30,7 +30,6 @@ Bahmni.Common.Obs.MultiSelectObservation = (function () {
             });
             return allValues.join(", ");
         }
-
     };
 
     return MultiSelectObservation;
