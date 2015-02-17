@@ -29,10 +29,14 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
     this.cloneNew = function() {
         var oldObs = angular.copy(this);
         if(!this.isFormElement() && oldObs.groupMembers && oldObs.groupMembers.length > 0) {
+            oldObs.groupMembers = _.filter(oldObs.groupMembers, function(member) {
+                return !member.isMultiSelect;
+            });
             oldObs.groupMembers = _.map(oldObs.groupMembers, function(member) {
                 return member.cloneNew();
             });
         }
+        new Bahmni.ConceptSet.MultiSelectObservations(conceptUIConfig).map(oldObs.groupMembers);
         var clone = new Bahmni.ConceptSet.Observation(oldObs, null, conceptUIConfig);
         clone.comment = undefined;
         return clone;
