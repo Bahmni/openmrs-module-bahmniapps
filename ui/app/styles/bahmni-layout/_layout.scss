@@ -22,17 +22,18 @@ body{
         left: 0px;
         right: 0px;
         z-index: 10;
-        &#opd-tabs {
+        // &#opd-tabs {
           background: $bahmniSecondaryColor;
           height: 50px;
           width: 100%;
-        }
+        // }
 
         header{
             position: relative;
             color: $lightGray;
             height: 50px;
             border-radius: 0;
+            background: $bahmniSecondaryColor;
             @media screen and (min-width: 1024px) {
                 width: 1024px;
                 margin: 0px auto;
@@ -140,9 +141,9 @@ body{
               }
             }
         }
-        .opd-header-top,header{
-          background: $bahmniPrimaryColor;
-        }
+        // .opd-header-top, header{
+        //   background: $bahmniSecondaryColor;
+        // }
         .opd-header-bottom {
             border-radius:0px;
             position:relative;

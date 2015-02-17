@@ -42,6 +42,7 @@ Bahmni.Clinical.VisitTabConfig = function (tabs) {
     };
 
     this.closeTab = function (tab) {
+        event.stopPropagation();
         _.remove(this.openTabs, {'title': tab.title});
         this.switchTab(this.getDefaultTab());
     };

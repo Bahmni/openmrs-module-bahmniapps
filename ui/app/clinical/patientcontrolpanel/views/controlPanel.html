@@ -48,6 +48,7 @@
         </ul>
         <ul show-if-privilege="{{retrospectivePrivilege}}">
             <li>
+                <label for="retro-date-widget" class="retro-date-widget" >Entering data for</label>
                 <input class="retro-date-widget disabled-date" readonly
                        ng-model="$parent.retrospectiveEntry.encounterDate" type="date" max="{{today}}">
             </li>

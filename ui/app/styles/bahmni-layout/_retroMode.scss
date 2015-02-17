@@ -1,27 +1,69 @@
 .retro-mode {
 	.reg-header, .opd-header-wrapper {
 		border-top: 4px solid orange;
-		box-sizing: border-box;
+		&, header {
+			background: $mediumGray;
+		}
+		a.back-btn, button.back-btn, ul li a.back-btn {
+			&, &:before 
+			{ 
+				background: #888;
+				border-color: #999;
+				color: #fff;
+			}
+		}
+
+		button.toggle-patient {
+			background-color: #888;
+			border-color: #999;
+		}
+		.tabs ul li.tab-item {
+			a,  button {
+				background: grey;
+			}
+			&.tab-selected a, &.tab-selected button {
+				background: white;
+			}
+			.tab-submenu ul, .tab-submenu .submenu-item {
+				border-color: grey;
+				background: grey;
+			}
+		}
 	}
 	.retro-date-widget {
 		color: orange;
 	}
+
 }
-
-.retro-date-widget {
-	height: 25px;
-	padding: 0px 10px;
-
-	&.disabled-date {
-	    background-color: lightgrey;
+.reg-header, .opd-header-wrapper {
+	.retro-date-widget {
+		float: right;
+		padding: 0px 10px;
+	}
+	input.retro-date-widget {
+		height: 25px;
+		margin: 10px 0;
+		&.disabled-date {
+		    background-color: lightgrey;
+		}
+	}
+	label.retro-date-widget {
+		margin: 15px 0;
+		color: white;
 	}
 }
 
-.reg-header .retro-date-widget,
-.opd-header-wrapper .retro-date-widget {margin: 10px;}
-.opd-header-wrapper .retro-date-widget {float: right;}
-.reg-header .retro-date-widget {float: right;}
-
 .patient-control-panel .retro-date-widget {
 	margin-left: 28px;
+	color: white; 
+	.retro-mode & {
+		color: orange;
+	}
+}
+
+.reg-header, .opd-header-wrapper, .patient-control-panel {
+	input.retro-date-widget.disabled-date {
+	    background: none;
+	    border: 0;
+	}
 }

@@ -2,6 +2,7 @@
     <div class="opd-header-top">
         <header>
             <input show-if-privilege="{{retrospectivePrivilege}}" class="retro-date-widget" type="date" ng-model="$parent.retrospectiveEntry.encounterDate" max="{{today}}"/>
+            <label show-if-privilege="{{retrospectivePrivilege}}" for="retro-date-widget" class="retro-date-widget" >Enter data for</label>
             <a class="back-btn" href="#/patient/search" accesskey="p"><u>P</u>atients</a>
         </header>
     </div>
