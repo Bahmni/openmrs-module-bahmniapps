@@ -21,12 +21,12 @@
         </section>
     </div>
 
-    <div ng-if="visitTabConfig.currentTab.pivotTable">
+    <div ng-if="visitTabConfig.currentTab.pivotTable" class="hidden-print">
         <section ng-repeat="pivotTable in visitTabConfig.currentTab.pivotTable" pivot-table visit-uuid="visit.uuid" config="pivotTable"
                  patient-uuid="patient.uuid" display-name="pivotTable.title"></section>
     </div>
 
-    <div ng-if="visitTabConfig.currentTab.investigationResult">
+    <div ng-if="visitTabConfig.currentTab.investigationResult" class="hidden-print"> 
         <investigation-results params="visitTabConfig.currentTab.investigationResult"></investigation-results>
     </div>
 
