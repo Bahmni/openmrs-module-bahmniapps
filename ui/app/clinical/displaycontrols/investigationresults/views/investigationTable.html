@@ -16,9 +16,9 @@
                     </button>
                 </th>
             </tr>
-            <tr ng-show="labOrderResults.show">
+            <tr  bm-show="labOrderResults.show">
                 <th colspan="3" class="notes inline-notes" ng-if="getAccessionDetailsFrom(labOrderResults).accessionNotes">
-                    <div ng-repeat="accessionNote in getAccessionDetailsFrom(labOrderResults).accessionNotes" class="accession">
+                    <div  ng-repeat="accessionNote in getAccessionDetailsFrom(labOrderResults).accessionNotes" class="accession">
                         <pre class="left">{{accessionNote.text}}</pre>
                         <div class="footer-note fr">
                             <span class="provider" bo-text="accessionNote.providerName"></span>
