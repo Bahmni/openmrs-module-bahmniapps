@@ -20,6 +20,8 @@ angular.module('bahmni.common.uiHelper')
             $scope.updateModel = function() {
                 if (valueCompletelyFilled()) {
                     $scope.model =  getSelectedDateStr() + " " + getSelectedTimeStr();
+                }else{
+                    $scope.model = "Invalid DateTime";
                 }
             };
 
@@ -28,7 +30,7 @@ angular.module('bahmni.common.uiHelper')
             };
 
             if($scope.model != null) {
-                var date = new Date($scope.model);
+                var date = moment($scope.model, "MMMM DD, YYYY HH:mm:ss a").toDate();
                 $scope.selectedDate = date;
                 $scope.selectedTime = date;
                 $scope.updateModel();
@@ -40,11 +42,13 @@ angular.module('bahmni.common.uiHelper')
             link: link,
             scope: {
                 model: '=',
-                showTime: '='
+                showTime: '=',
+                illegalValue: '='
             },
-            template: "<span>" +
-                "<input type='date' ng-change='updateModel()' ng-model='selectedDate' ng-required='!isValid()'>" +
-                "<input type='time' ng-change='updateModel()' ng-model='selectedTime' ng-required='!isValid()'>" +
-            "</span>"
+            template:
+                "<span>" +
+                    "<input type='date' ng-change='updateModel()' ng-model='selectedDate' ng-required='!isValid() || illegalValue'>" +
+                    "<input type='time' ng-change='updateModel()' ng-model='selectedTime' ng-required='!isValid() || illegalValue'>" +
+                "</span>"
         }
     });

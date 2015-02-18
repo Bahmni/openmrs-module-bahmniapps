@@ -124,7 +124,7 @@
                 <!--{{observation.groupMembers}}-->
 
                 <div ng-switch-when="datetime">
-                    <datetimepicker model="observation.value" show-time="true" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}"></datetimepicker>
+                    <datetimepicker model="observation.value" show-time="true" illegal-value="!observation.isValid(atLeastOneValueIsSet, conceptSetRequired)"></datetimepicker>
                 </div>
 
                 <div ng-switch-when="grid">

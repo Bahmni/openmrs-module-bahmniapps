@@ -199,17 +199,26 @@ Bahmni.ConceptSet.Observation.prototype = {
         return date.getUTCFullYear() && date.getUTCFullYear().toString().length <= 4;
     },
 
+    hasValidDateTime: function () {
+        return this.value === "Invalid DateTime";
+    },
+
     isValid: function (checkRequiredFields, conceptSetRequired) {
         if (this.hidden) return true;
         if (this.isGroup()) return this._hasValidChildren(checkRequiredFields, conceptSetRequired);
         if (conceptSetRequired && this.isRequired() && !this.hasValue()) return false;
         if (checkRequiredFields && this.isRequired() && !this.hasValue()) return false;
         if (this._isDateDataType()) return this.isValidDate();
+        if (this._isDateTimeDataType()) return !this.hasValidDateTime();
         return true;
     },
 
     _isDateDataType: function () {
         return 'Date'.indexOf(this.getDataTypeName()) != -1;
+    },
+
+    _isDateTimeDataType: function () {
+        return 'Datetime'.indexOf(this.getDataTypeName()) != -1;
     },
 
     isRequired: function () {
