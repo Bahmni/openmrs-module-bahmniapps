@@ -135,7 +135,7 @@ angular.module('bahmni.common.conceptSet')
                 var invalidNodes = $scope.rootObservation.groupMembers.filter(function(childNode){
                     return childNode.isObservationNode && !childNode.isValid($scope.atLeastOneValueIsSet);
                 });
-                return {allow: !invalidNodes || invalidNodes.length === 0};
+                return {allow: (!invalidNodes || invalidNodes.length === 0)};
             };
 
             validationHandler.add(validateObservationTree);

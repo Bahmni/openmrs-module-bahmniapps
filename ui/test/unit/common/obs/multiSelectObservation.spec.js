@@ -45,7 +45,7 @@ describe("Observation", function () {
             expect(observation.cloneNew().label).toBe("M/C Days");
             expect(observation.isFormElement()).toBe(true);
             expect(observation.getControlType()).toBe("buttonselect");
-            expect(observation.atLeastOneValueSet()).toBe(true);
+            expect(observation.atLeastOneValueSet()).toBe(false);
             expect(observation.canHaveComment()).toBe(false);
         });
     });
