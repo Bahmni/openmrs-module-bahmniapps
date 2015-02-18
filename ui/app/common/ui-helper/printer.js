@@ -56,7 +56,7 @@ angular.module('bahmni.common.uiHelper')
                     if (printScope.$$phase || $http.pendingRequests.length) {
                         $timeout(waitForRenderAndPrint);
                     } else {
-                           openNewWindow(element.html()).then(function() {
+                       printHtml(element.html()).then(function() {
                            $rootScope.isBeingPrinted = false;
                        });
 

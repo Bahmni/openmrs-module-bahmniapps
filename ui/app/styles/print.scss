@@ -174,29 +174,26 @@ h1,h2,h3{
 		margin: 0 0 5px;
 		font-size: 7.5pt;
 	}
-	.visit-summary-page section.block {
-		margin: 0 0 5px;
-	}
-	h2.section-title {
-		text-align: left;
-		color: #000;
-		font-size: 9.5pt;
-		font-family: Arial, sans-serif;;
-		font-weight: bold;
-		line-height: normal;
-		padding: 0;
-		margin: 0;
-		border: 0;
-		text-transform: uppercase;
-		text-decoration: underline;
-		[class^="icon-"] {
-			display: none;
-		}
-	}	
+		
 	section.block, .dashboard-section {
 		border-radius: 0;
 		border: 0;
-		
+		h2.section-title {
+			text-align: left;
+			color: #000;
+			font-size: 9.5pt;
+			font-family: Arial, sans-serif;;
+			font-weight: bold;
+			line-height: normal;
+			padding: 0;
+			margin: 0;
+			border: 0;
+			text-transform: uppercase;
+			text-decoration: underline;
+			[class^="icon-"] {
+				display: none;
+			}
+		}
 
 		.form-field {
 			border: 0;
@@ -318,7 +315,7 @@ h1,h2,h3{
 	.diagnosis-name.ruled-out {
 		text-decoration: line-through;
 	}
-	.dashboard-radiology-section, .disposition-section, .radiology-investigations  {
+	.dashboard-radiology-section, .disposition-section  {
 		ul {
 			border: 0;
 		}
