@@ -27,7 +27,7 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
     }
 
     this.cloneNew = function() {
-        var oldObs = angular.copy(this);
+        var oldObs = angular.copy(observation);
         if(!this.isFormElement() && oldObs.groupMembers && oldObs.groupMembers.length > 0) {
             oldObs.groupMembers = _.filter(oldObs.groupMembers, function(member) {
                 return !member.isMultiSelect;
