@@ -16,7 +16,7 @@
                 <a ng-click="switchTab(tab)">{{tab.title}}</a>
 
             </li>
-            <li class="tab-item new-tab tab-active" bm-pop-over ng-show="visitTabConfig.getUnOpenedTabs().length > 0">
+            <li class="tab-item new-tab tab-active" bm-pop-over autoclose="true" ng-show="visitTabConfig.getUnOpenedTabs().length > 0">
                 <a id="addTabButton" bm-pop-over-trigger>+</a>
 
                 <div class="tab-submenu" bm-pop-over-target>

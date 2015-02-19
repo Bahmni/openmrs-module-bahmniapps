@@ -32,12 +32,12 @@
       &.tab-removable {
         position: relative;
         a {
-          padding-left: 40px;
+          padding-right: 40px;
         }
         .close {
           position: absolute;
           z-index: 1;
-          left: 0px;
+          right: 0px;
           top: 0px;
           padding: 10px;
           display: inline-block;
