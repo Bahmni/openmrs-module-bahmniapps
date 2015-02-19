@@ -36,11 +36,11 @@ angular.module('bahmni.common.conceptSet')
                 encounterData.drugOrders = [];
 
                 var conceptSetData = {name: conceptSet.conceptName, uuid: conceptSet.uuid};
-                var data = {bahmniEncounterTransaction: encounterData, conceptSetData: conceptSetData};
+                var data = {encounterModifierObservations: encounterData.observations, drugOrders: encounterData.drugOrders, conceptSetData: conceptSetData, patientUuid: encounterData.patientUuid, encounterDateTime: encounterData.encounterDateTime};
 
                 spinner.forPromise(conceptSetService.getComputedValue(data)).then(function (response) {
                     response = response.data;
-                    copyValues($scope.consultation.observations, response.observations);
+                    copyValues($scope.consultation.observations, response.encounterModifierObservations);
                     var drugOrderAppConfig = appService.getAppDescriptor().getConfigValue("drugOrder") || {};
                     $scope.consultation.newlyAddedTreatments = $scope.consultation.newlyAddedTreatments || [];
                     response.drugOrders.forEach(function (drugOrder) {
@@ -50,12 +50,8 @@ angular.module('bahmni.common.conceptSet')
             };
             var copyValues = function (existingObservations, modifiedObservations) {
                 existingObservations.forEach(function (observation, index) {
-                    var correspondingModifiedObservation = _.find(modifiedObservations, function (modifiedObservation) {
-                        return modifiedObservation.concept.uuid === observation.concept.uuid;
-
-                    });
                     if (observation.groupMembers && observation.groupMembers.length > 0) {
-                        copyValues(observation.groupMembers, correspondingModifiedObservation.groupMembers);
+                        copyValues(observation.groupMembers, modifiedObservations[index].groupMembers);
                     } else {
                         observation.value = modifiedObservations[index].value;
                     }
