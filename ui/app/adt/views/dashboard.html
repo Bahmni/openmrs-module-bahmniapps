@@ -11,14 +11,14 @@
     <div>
         <label>
             <span class="fl adt-disposition-action">Patient Movement:</span>
-            <select ng-model="dispositionAction"
+            <select id="dispositionAction" ng-model="dispositionAction"
                     ng-options="d.name.display for d in dispositionActions" class="disposition-action">
                 <option value="">Select</option>
             </select>
         </label>
     </div>
 
-    <div>
+    <div id="adtNotes">
         <concept-set concept-set-name="'Adt Notes'" observations="adtObservations"></concept-set>
     </div>
 
