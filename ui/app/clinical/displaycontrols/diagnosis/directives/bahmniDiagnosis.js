@@ -9,7 +9,10 @@ angular.module('bahmni.clinical')
                     return diagnosisService.getPastDiagnoses($scope.patientUuid, $scope.visitUuid).success(function (response) {
                         var diagnosisMapper = new Bahmni.DiagnosisMapper();
                         $scope.allDiagnoses = diagnosisMapper.mapDiagnoses(response);
-                        $scope.hasDiagnoses = _.isEmpty($scope.allDiagnoses) ? true : false;
+                        var found = _.find($scope.allDiagnoses, function(diagnoses){
+                            return diagnoses.diagnosisStatus !== "RULED OUT"
+                        });
+                        $scope.hasRuledOutDiagnoses = found ? true : false;
                     });
                 };
                 $scope.toggle = function(diagnosis) {

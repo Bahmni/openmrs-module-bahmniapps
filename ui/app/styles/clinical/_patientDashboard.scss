@@ -42,6 +42,12 @@
   font-size: 14px;
   position: relative;
   @extend .section-grid;
+
+  .ruled-out.diagnosis-name {
+    color: $mediumGray;
+    text-decoration: line-through;
+  }
+
   .placeholder-message {
     background: $lightGray;
     color: $mediumGray;

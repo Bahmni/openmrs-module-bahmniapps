@@ -146,6 +146,10 @@
       .diagnosis-name {
         padding-left: 10px;
         font-size: 14px;
+        &.ruled-out {
+          color: $mediumGray;
+          text-decoration: line-through;
+        }
       }
       .col2 {padding-left: 10px;}
       .col2, .col3 {
@@ -175,10 +179,7 @@
   border-bottom: 0;
 }
 
-.ruled-out .diagnosis-name {
-  color: $mediumGray;
-  text-decoration: line-through;
-}
+
 
 @media screen and (max-width: 930px) {
   .diagnosis .status button {
