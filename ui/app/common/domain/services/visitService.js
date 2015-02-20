@@ -14,6 +14,11 @@ angular.module('bahmni.common.domain')
             );
         };
 
+        this.getVisitForAdmissionDetails = function (uuid) {
+            var parameters = "custom:(uuid,visitId,visitType,patient,encounters:(uuid,encounterType,encounterDatetime,creator,voided,orders:(uuid,orderType,voided,concept:(uuid,set,name),),obs:(uuid,value,concept,obsDatetime,groupMembers:(uuid,concept:(uuid,name),obsDatetime,value:(uuid,name),groupMembers:(uuid,concept:(uuid,name),value:(uuid,name),groupMembers:(uuid,concept:(uuid,name),value:(uuid,name)))))))";
+            return this.getVisit(uuid, parameters);
+        };
+
         this.endVisit = function (visitId) {
             return $http.post(Bahmni.Common.Constants.endVisitUrl + '?visitId=' + visitId, {
                 withCredentials: true

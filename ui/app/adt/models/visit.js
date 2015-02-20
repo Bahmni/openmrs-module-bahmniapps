@@ -1,5 +1,5 @@
 'use strict';
-
+Bahmni.ADT = Bahmni.ADT || {}
 Bahmni.ADT.Visit = function (visit) {
     var self = this;
     angular.extend(this, visit);
@@ -23,6 +23,10 @@ Bahmni.ADT.Visit = function (visit) {
 
     this.getDischargeEncounter = function() {
         return allDischargeEncounters.length > 0 ? allDischargeEncounters[0] : null;
+    }
+
+    this.getAdmissionEncounter = function() {
+        return allAdmissionEncounters.length > 0 ? allAdmissionEncounters[0] : null;
     }
 
     this.getEncounters = function(includeVoided) {

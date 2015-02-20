@@ -8,7 +8,9 @@
     <section class="block dashboard-section" ng-if="visitTabConfig.currentTab.patientInformation">
         <patient-profile patient="patient" config="visitTabConfig.currentTab.patientInformation"></patient-profile>
     </section>
-
+    
+    <admission-details visit-uuid="visit.uuid"></admission-details>
+    
     <section ng-if="visitTabConfig.currentTab.diagnosis" class="block dashboard-section">
         <bahmni-diagnosis patient-uuid="visitTabConfig.currentTab.diagnosis.patientUuid" visit-uuid="visit.uuid" section-title="visitTabConfig.currentTab.diagnosis.title" config="visitTabConfig.currentTab.diagnosis"></bahmni-diagnosis>
     </section>

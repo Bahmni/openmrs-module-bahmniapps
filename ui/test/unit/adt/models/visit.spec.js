@@ -78,6 +78,30 @@ describe('Visit', function () {
             visit = new Bahmni.ADT.Visit(visit);
             expect(visit.getEncounters(false).length).toEqual(1);
             expect(visit.getEncounters(true).length).toEqual(2);
-    })
+    });
+
+    it("should return admission encounter", function() {
+            var visit = {
+                "encounters": [
+                    {encounterType: {name: "ADMISSION"}, voided: false},
+                    {encounterType: {name: "DISCHARGE"}, voided: false},
+                ]
+            };
+
+            visit = new Bahmni.ADT.Visit(visit);
+            expect(visit.getAdmissionEncounter().encounterType.name).toBe("ADMISSION");
+    });
+
+    it("should return discharge encounter", function() {
+            var visit = {
+                "encounters": [
+                    {encounterType: {name: "ADMISSION"}, voided: false},
+                    {encounterType: {name: "DISCHARGE"}, voided: false},
+                ]
+            };
+
+            visit = new Bahmni.ADT.Visit(visit);
+            expect(visit.getDischargeEncounter().encounterType.name).toBe("DISCHARGE");
+    });
 
 });

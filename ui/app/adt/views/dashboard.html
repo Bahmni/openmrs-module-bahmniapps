@@ -1,13 +1,4 @@
 <div class="adt">
-    <div class="patient-disposition-status fr">
-        <div ng-if="isAdmitted()">
-            <i class="icon-ok"></i>Admitted
-        </div>
-        <div ng-if="isDischarged()">
-            <i class="icon-ok"></i>Discharged
-        </div>
-    </div>
-
     <div>
         <label>
             <span class="fl adt-disposition-action">Patient Movement:</span>
@@ -17,6 +8,8 @@
             </select>
         </label>
     </div>
+    
+    <admission-details visit-uuid="visit.uuid"></admission-details>
 
     <div id="adtNotes">
         <concept-set concept-set-name="'Adt Notes'" observations="adtObservations"></concept-set>
