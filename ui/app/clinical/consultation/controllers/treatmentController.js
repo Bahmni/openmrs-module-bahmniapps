@@ -74,7 +74,7 @@ angular.module('bahmni.clinical')
                 var existingTreatment = false;
                 angular.forEach($scope.consultation.discontinuedDrugs, function(drugOrder){
                     existingTreatment = _.some($scope.treatments, function (treatment) {
-                        return treatment.drug.uuid === drugOrder.drug.uuid;
+                        return treatment.getDrugName() === drugOrder.getDrugName();
                     }) && drugOrder.isMarkedForDiscontinue;
                 });
                 return existingTreatment;
@@ -132,14 +132,14 @@ angular.module('bahmni.clinical')
                 }
 
                 var potentiallyOverlappingOrders = existingDrugOrders.filter(function (drugOrder) {
-                    return (drugOrder.drug.uuid == newDrugOrder.drug.uuid && drugOrder.overlappingScheduledWith(newDrugOrder));
+                    return (drugOrder.getDrugName() == newDrugOrder.getDrugName() && drugOrder.overlappingScheduledWith(newDrugOrder));
                 });
 
                 setEffectiveDates(newDrugOrder, potentiallyOverlappingOrders);
 
 
                 var alreadyActiveSimilarOrders = existingDrugOrders.filter(function (drugOrder) {
-                    return (drugOrder.drug.uuid == newDrugOrder.drug.uuid && drugOrder.overlappingScheduledWith(newDrugOrder));
+                    return (drugOrder.getDrugName() == newDrugOrder.getDrugName() && drugOrder.overlappingScheduledWith(newDrugOrder));
                 });
 
                 if (alreadyActiveSimilarOrders.length > 0) {

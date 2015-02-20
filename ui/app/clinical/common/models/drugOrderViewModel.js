@@ -147,6 +147,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         return constructDrugNameDisplay(this.drug, this.drug.form).label;
     };
 
+    this.getDrugName = function(){
+        return constructDrugNameDisplay(self.drug, self.drug.form).value
+    };
+
     this.getDescription = function () {
         return addDelimiter(blankIfFalsy(getDoseAndFrequency()), " ") +
             getOtherDescription(true);
