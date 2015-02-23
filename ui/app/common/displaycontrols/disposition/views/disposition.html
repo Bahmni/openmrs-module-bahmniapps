@@ -1,4 +1,4 @@
-<section class="block disposition-section" ng-class="{'hidden-print':noDispositionsMessage}">
+<section class="block dashboard-section" ng-class="{'hidden-print':noDispositionsMessage}">
     <h2 class="section-title">Disposition</h2>
 
     <table class="dashboard-table history-diagnosis">
@@ -7,7 +7,7 @@
             <td class="name">
                     <span class="disposition-state">{{disposition.conceptName}}</span>
             </td>
-            <td class="date"><span class="fr">{{disposition.dispositionDateTime| date:'dd MMM yy'}}</span>
+            <td class="value">{{disposition.dispositionDateTime| date:'dd MMM yy'}}
             </td>
             <td class="toggle-btn">
                 <button class="toggle fr"
