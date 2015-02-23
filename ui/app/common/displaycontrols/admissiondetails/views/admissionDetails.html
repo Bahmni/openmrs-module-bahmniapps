@@ -1,4 +1,4 @@
-<section class="block disposition-section">
+<section class="block disposition-section" ng-if="visit.isAdmitted()">
     <h2 class="section-title">Admission Details</h2>
 
     <table class="dashboard-table history-diagnosis">
@@ -12,17 +12,18 @@
 	            </td>
 	            <td class="toggle-btn">
 	                <button class="toggle fr"
-	                        ng-class="{'has-notes': getNotes(admissionEncounter)}" ng-click="toggle(admissionEncounter)">
+	                		
+	                        ng-click="toggle(admissionEncounter)" ng-if="showDetailsButton(admissionEncounter)">
 	                    <i class="icon-plus-sign" ng-hide="admissionEncounter.show"></i>
 	                    <i class="icon-minus-sign" ng-show="admissionEncounter.show"></i>
 	                </button>
 	            </td>
 	        </tr>
-	        <tr ng-if="admissionEncounter.show">
+	        <tr ng-if="admissionEncounter.show || (!showDetailsButton(admissionEncounter) && getProviderDetails(admissionEncounter))">
 	            <td colspan="4" class="notes inline-notes">
 	                <pre class="left ng-binding">{{getNotes(admissionEncounter)}}</pre>
 	                <div class="footer-note right">
-	                    <span class="provider">{{admissionEncounter.creator.display}} {{admissionEncounter.encounterDatetime  | date:'hh:mm a'}}</span>
+	                    <span class="provider">{{getProviderDetails(admissionEncounter)}} {{admissionEncounter.encounterDatetime  | date:'hh:mm a'}}</span>
 	                </div>
 	            </td>
 	        </tr>
@@ -35,17 +36,17 @@
 	            </td>
 	            <td class="toggle-btn">
 	                <button class="toggle fr"
-	                        ng-class="{'has-notes': getNotes(dischargeEncounter)}" ng-if="showDetailsButton(dischargeEncounter)" ng-click="toggle(dischargeEncounter)">
+	                        ng-if="showDetailsButton(dischargeEncounter)" ng-click="toggle(dischargeEncounter)">
 	                    <i class="icon-plus-sign" ng-hide="dischargeEncounter.show"></i>
 	                    <i class="icon-minus-sign" ng-show="dischargeEncounter.show"></i>
 	                </button>
 	            </td>
 	        </tr>
-	        <tr ng-if="dischargeEncounter.show">
+	        <tr ng-if="dischargeEncounter.show || (!showDetailsButton(dischargeEncounter) && getProviderDetails(dischargeEncounter))">
 	            <td colspan="4" class="notes inline-notes">
 	                <pre class="left ng-binding">{{getNotes(dischargeEncounter)}}</pre>
 	                <div class="footer-note right">
-	                    <span class="provider">{{dischargeEncounter.creator.display}} {{dischargeEncounter.encounterDatetime  | date:'hh:mm a'}}</span>
+	                    <span class="provider">{{getProviderDetails(dischargeEncounter)}} {{dischargeEncounter.encounterDatetime  | date:'hh:mm a'}}</span>
 	                </div>
 	            </td>
 	        </tr>

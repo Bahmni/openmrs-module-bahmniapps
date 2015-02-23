@@ -32,7 +32,8 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                 config: "=",
                 patient: "=",
                 diseaseTemplates: "=",
-                visitHistory: "="
+                visitHistory: "=",
+                activeVisitUuid: "="
             }
         }
     }]);

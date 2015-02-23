@@ -7,6 +7,9 @@ angular.module('bahmni.clinical')
         var defaultVisitTabConfig = {
             title: "General",
             default: true,
+            admissionDetails: {
+                showDetailsButton: true
+            },
             investigationResult: {
                 title: "Lab Investigations",
                 showChart: true,

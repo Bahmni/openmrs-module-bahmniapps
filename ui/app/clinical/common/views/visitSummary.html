@@ -9,8 +9,9 @@
         <patient-profile patient="patient" config="visitTabConfig.currentTab.patientInformation"></patient-profile>
     </section>
     
-    <admission-details visit-uuid="visit.uuid"></admission-details>
-    
+    <div ng-if="visitTabConfig.currentTab.admissionDetails">
+        <admission-details visit-uuid="visit.uuid" params="visitTabConfig.currentTab.admissionDetails"></admission-details>
+    </div>
     <section ng-if="visitTabConfig.currentTab.diagnosis" class="block dashboard-section">
         <bahmni-diagnosis patient-uuid="visitTabConfig.currentTab.diagnosis.patientUuid" visit-uuid="visit.uuid" section-title="visitTabConfig.currentTab.diagnosis.title" config="visitTabConfig.currentTab.diagnosis"></bahmni-diagnosis>
     </section>

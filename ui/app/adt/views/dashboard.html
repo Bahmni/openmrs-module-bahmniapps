@@ -9,8 +9,6 @@
         </label>
     </div>
     
-    <admission-details visit-uuid="visit.uuid"></admission-details>
-
     <div id="adtNotes">
         <concept-set concept-set-name="'Adt Notes'" observations="adtObservations"></concept-set>
     </div>
@@ -32,6 +30,6 @@
     </span>
         </div>
     </div>
-    <dashboard patient="patient" config="dashboardConfig"></dashboard>
+    <dashboard patient="patient" config="dashboardConfig" active-visit-uuid="visit.uuid"></dashboard>
 </div>
 

@@ -11,12 +11,12 @@ angular.module('bahmni.common.displaycontrol.admissiondetails')
                     $scope.dischargeEncounter = $scope.visit.getDischargeEncounter();
                 });
             }
-            $scope.isAdmitted = function(){
-                return $scope.visit && $scope.visit.isAdmitted();
-            };
-
-            $scope.isDischarged = function(){
-                return $scope.visit && $scope.visit.isDischarged();
+            
+            $scope.getProviderDetails = function(encounter){
+                if(encounter && encounter.creator && encounter.creator.display){
+                    return encounter.creator.display;
+                }
+                return "";
             };
 
             $scope.getNotes = function(encounter){
@@ -24,10 +24,7 @@ angular.module('bahmni.common.displaycontrol.admissiondetails')
             };
 
             $scope.showDetailsButton = function(encounter){
-                if($scope.getNotes(encounter)){
-                    return true;
-                }
-                return $scope.params.showDetailsButton;
+                return $scope.params && $scope.params.showDetailsButton;
             };
 
             $scope.toggle= function(element){
