@@ -82,9 +82,7 @@ angular.module('consultation')
             .state('patient.visit', {
                 url: '/dashboard/visit/:visitUuid',
                 data: {
-                    backLinks: [
-                        {label: "Dashboard", state: "patient.dashboard"}
-                    ]
+                    backLinks: [patientSearchBackLink]
                 },
                 views: {
                     'additional-header': {

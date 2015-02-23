@@ -1,6 +1,10 @@
 <div bindonce class="dashboard-header opd-header-wrapper" id="consultation-header">
     <div class="opd-header-bottom tabs">
         <bm-back-links></bm-back-links>
+
+        <a class="back-btn dashboard-link" id="dashboard-link" ng-click="gotoPatientDashboard()" title="Back to patient dashboard">
+            <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
+        </a>
         
         <button class="dialog-button-group" ng-if="showPrint()" ng-click="print()" accesskey="r">
             <i class="icon-print"></i>
