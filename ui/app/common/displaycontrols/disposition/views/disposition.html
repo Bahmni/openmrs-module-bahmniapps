@@ -7,7 +7,8 @@
             <td class="name">
                     <span class="disposition-state">{{disposition.conceptName}}</span>
             </td>
-            <td class="value">{{disposition.dispositionDateTime| date:'dd MMM yy'}}
+            <td class="value">
+                {{disposition.dispositionDateTime| date:'dd MMM yy'}}
             </td>
             <td class="toggle-btn">
                 <button class="toggle fr"
@@ -33,4 +34,3 @@
         <div class="placeholder-text">{{noDispositionsMessage}}</div>
     </div>
 </section>
-

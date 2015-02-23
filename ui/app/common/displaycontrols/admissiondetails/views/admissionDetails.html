@@ -1,4 +1,4 @@
-<section class="block disposition-section" ng-if="visit.isAdmitted()">
+<section class="block dashboard-section" ng-if="visit.isAdmitted()">
     <h2 class="section-title">Admission Details</h2>
 
     <table class="dashboard-table history-diagnosis">
@@ -7,7 +7,8 @@
 	            <td class="name">
 	                <span class="disposition-state">Admission Date</span>
 	            </td>
-	            <td class="value">{{admissionEncounter.encounterDatetime| date:'dd MMM yy'}}
+	            <td class="value">
+					{{admissionEncounter.encounterDatetime| date:'dd MMM yy'}}
 	            </td>
 	            <td class="toggle-btn">
 	                <button class="toggle fr"
@@ -30,7 +31,8 @@
 	            <td class="name">
 	                <span class="disposition-state">Discharge Date</span>
 	            </td>
-	            <td class="value">{{dischargeEncounter.encounterDatetime| date:'dd MMM yy'}}
+	            <td class="value">
+	            	{{dischargeEncounter.encounterDatetime| date:'dd MMM yy'}}
 	            </td>
 	            <td class="toggle-btn">
 	                <button class="toggle fr"
