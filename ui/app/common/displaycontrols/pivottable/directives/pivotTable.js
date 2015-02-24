@@ -16,6 +16,7 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
 
                 scope.groupBy = scope.config.groupBy || "visits";
                 scope.groupByEncounters = scope.groupBy === "encounters";
+                scope.groupByVisits = scope.groupBy === "visits";
                 
                 scope.getOnlyDate = function(startdate) {
                     return moment(startdate).format("DD MMM YY");

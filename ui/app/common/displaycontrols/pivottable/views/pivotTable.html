@@ -17,7 +17,7 @@
         <tr ng-repeat="(startDate,values) in ::result.tabularData">
             <th class="row-header-group">
                 <span class="date">{{getOnlyDate(startDate)}}</span>
-                <span ng-if="::groupByEncounters" class="time">{{getOnlyTime(startDate)}}</span>
+                <span ng-if="!groupByVisits" class="time">{{getOnlyTime(startDate)}}</span>
             </th>
             <td ng-init="columnResult = result.tabularData[startDate][conceptDetail.name]"  bm-pop-over autoclose="true" ng-repeat="conceptDetail in ::result.conceptDetails"
                 ng-class="{'is-abnormal': columnResult.abnormal}">
