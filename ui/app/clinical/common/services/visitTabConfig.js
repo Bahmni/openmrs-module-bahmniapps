@@ -10,6 +10,7 @@ angular.module('bahmni.clinical')
             "sections": [
                 {
                     "type": "patientInformation",
+                    "title": "Patient Information",
                     "config": {
                         "title": "PatientInformation",
                         "patientAttributes": ["caste", "class", "education", "occupation"]
@@ -17,6 +18,7 @@ angular.module('bahmni.clinical')
                 },
                 {
                     "type": "diagnosis",
+                    "title": "Diagnosis",
                     "config": {
                         "title": "Diagnoses",
                         "showCertainty": true,
@@ -26,6 +28,7 @@ angular.module('bahmni.clinical')
                 },
                 {
                     "type": "observation",
+                    "title": "Observations",
                     "config": {
                         "numberOfVisits": 1,
                         "obsIgnoreList": ["Patient file", "Radiology", "Lab Manager Notes", "Accession Uuid", "Impression"],
@@ -34,6 +37,7 @@ angular.module('bahmni.clinical')
                 },
                 {
                     "type": "disposition",
+                    "title": "Disposition",
                     "config": {
                         "numberOfVisits": 1,
                         "showDetailsButton": true
@@ -41,12 +45,14 @@ angular.module('bahmni.clinical')
                 },
                 {
                     "type": "admissionDetails",
+                    "title": "Admission Details",
                     "config": {
                         "showDetailsButton": true
                     }
                 },
                 {
                     "type": "investigationResult",
+                    "title": "Investigation Result",
                     "config": {
                         "title": "Lab Investigations",
                         "showChart": true,
@@ -59,6 +65,7 @@ angular.module('bahmni.clinical')
                 },
                 {
                     "type": "treatment",
+                    "title": "Treatments",
                     "config": {
                         "title": "Treatments",
                         "showFlowSheet": true,
