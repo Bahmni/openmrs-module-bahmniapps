@@ -11,6 +11,8 @@ Bahmni.Common.DisplayControl.Dashboard.Section = function (section) {
         this.viewName = "../common/displaycontrols/dashboard/views/sections/disposition.html";
     } else if (this.name == "admissionDetails") {
         this.viewName = "../common/displaycontrols/dashboard/views/sections/admissionDetails.html";
+    } else if (this.name == "patientInformation") {
+        this.viewName = "../common/displaycontrols/dashboard/views/sections/patientInformation.html";
     } else {
         this.viewName = "../clinical/dashboard/views/dashboardSections/" + section.name + ".html";
     }

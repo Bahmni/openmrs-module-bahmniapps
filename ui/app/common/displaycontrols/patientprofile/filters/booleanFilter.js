@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('bahmni.clinical')
-.filter('boolean', function() {
+angular.module('bahmni.common.displaycontrol.patientprofile')
+.filter('booleanFilter', function() {
     return function(value) {
         if(value === true) {
             return "Yes";

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.clinical')
+angular.module('bahmni.common.displaycontrol.patientprofile')
     .directive('patientProfile', function () {
         var controller = function ($scope) {
             var patient = $scope.patient;
@@ -30,6 +30,6 @@ angular.module('bahmni.clinical')
                 patient: "=",
                 config: "="
             },
-            templateUrl: "displaycontrols/patientProfile/views/patientProfile.html"
+            templateUrl: "../common/displaycontrols/patientprofile/views/patientProfile.html"
         };
     });

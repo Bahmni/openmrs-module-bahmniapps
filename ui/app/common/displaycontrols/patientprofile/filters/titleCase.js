@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.clinical', [])
+angular.module('bahmni.common.displaycontrol.patientprofile')
     .filter('titleCase', function () {
         return function (input) {
             input = input || '';

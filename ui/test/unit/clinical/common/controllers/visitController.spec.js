@@ -87,7 +87,7 @@ describe('VisitController', function () {
     var visitTabConfig = new Bahmni.Clinical.VisitTabConfig([defaultTab, pivotTableTab]);
 
     describe('initialization', function () {
-        xit('should pick default tab as current tab.', function () {
+        it('should pick default tab as current tab.', function () {
             $controller('VisitController', {
                 $scope: scope,
                 $state: state,

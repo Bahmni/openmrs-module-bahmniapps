@@ -3,7 +3,7 @@
 describe("Patient Profile display control", function() {
     var element, scope, $compile;
 
-    beforeEach(module('bahmni.clinical'));
+    beforeEach(module('bahmni.common.displaycontrol.patientprofile'));
     beforeEach(module('foo'));
 
     beforeEach(inject(function(_$compile_, $rootScope) {

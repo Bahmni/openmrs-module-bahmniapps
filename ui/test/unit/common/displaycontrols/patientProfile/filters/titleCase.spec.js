@@ -3,7 +3,7 @@
 describe('title case', function(){
 
     beforeEach(function () {
-        module('bahmni.clinical');
+        module('bahmni.common.displaycontrol.patientprofile');
     });
 
     it('has a titleCase filter', inject(function($filter) {

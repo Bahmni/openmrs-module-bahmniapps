@@ -32,7 +32,7 @@ module.exports = function (config) {
             'app/admin/**/*.js',
             'app/adt/**/*.js',
             'app/clinical/**/*.js',
-            'app/clinical/**/*.html',
+            'app/common/**/*.html',
             'app/common/**/*.js',
             'app/dhis/**/*.js',
             'app/document-upload/**/*.js',
@@ -55,7 +55,7 @@ module.exports = function (config) {
             'app/orders/**/*.js': ['coverage'],
             'app/registration/**/*.js': ['coverage'],
             'app/trends/**/*.js': ['coverage'],
-            'app/clinical/displaycontrols/patientProfile/views/patientProfile.html':['ng-html2js']
+            'app/common/displaycontrols/patientprofile/views/patientProfile.html':['ng-html2js']
         },
         coverageReporter: {
             reporters: [
@@ -69,7 +69,8 @@ module.exports = function (config) {
             suite: 'unit'
         },
         ngHtml2JsPreprocessor: {
-            stripPrefix: 'app/clinical/',
+            stripPrefix: 'app',
+            prependPrefix: '..',
             moduleName: 'foo'
         }
     });

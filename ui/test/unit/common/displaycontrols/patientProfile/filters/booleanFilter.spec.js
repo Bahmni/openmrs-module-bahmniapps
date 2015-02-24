@@ -1,11 +1,11 @@
 'use strict';
 
-describe("boolean Filter", function () {
+describe("my boolean spec", function () {
     var booleanFilter;
 
-    beforeEach(module('bahmni.clinical'));
+    beforeEach(module('bahmni.common.displaycontrol.patientprofile'));
     beforeEach(inject(function($filter) {
-      booleanFilter = $filter('boolean');
+      booleanFilter = $filter('booleanFilter');
     }));
 
     it("should return Yes when value is true", function() {
