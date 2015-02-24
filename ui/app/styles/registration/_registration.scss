@@ -818,6 +818,14 @@ label.local-name-reg {
       }
     }
   }
+  .concept-set-group .left {
+    fieldset.hasLegend .offset-label {
+      padding-left: 180px;
+      texarea {
+        width: 100%;
+      }
+    }
+  }
 }
 /*Observations*/
 
