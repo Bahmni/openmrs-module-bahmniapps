@@ -1,59 +1,83 @@
 <section class="visits-navbar-section">
-
-    <div visit-paginator next-fn="loadVisit" previous-fn="loadVisit" current-visit="visit" visits="visitHistory.visits" visit-summary="visitSummary"></div>
-
+    <div visit-paginator next-fn="loadVisit" previous-fn="loadVisit" current-visit="visit" visits="visitHistory.visits"
+         visit-summary="visitSummary"></div>
 </section>
 
 <div ng-if="!clearBoard">
-    <section class="block dashboard-section" ng-if="visitTabConfig.currentTab.patientInformation">
-        <patient-profile patient="patient" config="visitTabConfig.currentTab.patientInformation"></patient-profile>
-    </section>
-    
-    <div ng-if="visitTabConfig.currentTab.admissionDetails">
-        <admission-details visit-uuid="visit.uuid" params="visitTabConfig.currentTab.admissionDetails"></admission-details>
-    </div>
-    <section ng-if="visitTabConfig.currentTab.diagnosis" class="block dashboard-section">
-        <bahmni-diagnosis patient-uuid="visitTabConfig.currentTab.diagnosis.patientUuid" visit-uuid="visit.uuid" section-title="visitTabConfig.currentTab.diagnosis.title" config="visitTabConfig.currentTab.diagnosis"></bahmni-diagnosis>
-    </section>
-
-    <div ng-if="visitTabConfig.currentTab.observation" id="observation-section">
-        <section class="block observation dashboard-section" >
-            <ul bm-gallery access-impression="true">
-                <bahmni-observation patient="patient" visit-uuid="{{visit.uuid}}" config="visitTabConfig.currentTab.observation" section-title="'Observations'"></bahmni-observation>
-            </ul>
-        </section>
-    </div>
-
-    <div ng-if="visitTabConfig.currentTab.pivotTable" class="hidden-print">
-        <section ng-repeat="pivotTable in visitTabConfig.currentTab.pivotTable" pivot-table visit-uuid="visit.uuid" config="pivotTable"
-                 patient-uuid="patient.uuid" display-name="pivotTable.title"></section>
-    </div>
-
-    <div ng-if="visitTabConfig.currentTab.investigationResult" > 
-        <investigation-results params="visitTabConfig.currentTab.investigationResult"></investigation-results>
-    </div>
-
-    <div ng-if="visitTabConfig.currentTab.radiology">
-        <ng-include src="'common/views/visitSummarySections/radiologyInvestigations.html'"></ng-include>
-    </div>
-
-    <div ng-if="visitTabConfig.currentTab.patientFiles">
-        <ng-include src="'common/views/visitSummarySections/patientFiles.html'"></ng-include>
-    </div>
-
-    <div ng-if="visitTabConfig.currentTab.otherInvestigations">
-        <ng-include src="'common/views/visitSummarySections/otherInvestigations.html'"></ng-include>
-    </div>
-
-    <div ng-if="visitTabConfig.currentTab.treatment">
-        <treatment-data id="visit-treatments" params="visitTabConfig.currentTab.treatment" visit-summary="visitSummary"></treatment-data>
-    </div>
-
-    <div ng-if="visitTabConfig.currentTab.disposition">
-        <disposition id="disposition" params="visitTabConfig.currentTab.disposition" visit-uuid="visitTabConfig.currentTab.disposition.visitUuids"></disposition>
-    </div>
-
-    <div ng-if="visitTabConfig.currentTab.consultationNotes">
-        <ng-include src="'common/views/visitSummarySections/consultationNotes.html'"></ng-include>
+    <div ng-repeat="section in visitTabConfig.currentTab.sections">
+        <div ng-switch="section.type">
+            <div ng-switch-when="patientInformation">
+                <section class="block dashboard-section" ng-if="section.config">
+                    <patient-profile patient="patient"
+                                     config="section.config"></patient-profile>
+                </section>
+            </div>
+            <div ng-switch-when="observation">
+                <div ng-if="section.config" id="observation-section">
+                    <section class="block observation dashboard-section">
+                        <ul bm-gallery access-impression="true">
+                            <bahmni-observation patient="patient" visit-uuid="{{visit.uuid}}"
+                                                config="section.config"
+                                                section-title="section.title"></bahmni-observation>
+                        </ul>
+                    </section>
+                </div>
+            </div>
+            <div ng-switch-when="diagnosis">
+                <section ng-if="section.config" class="block dashboard-section">
+                    <bahmni-diagnosis patient-uuid="section.config.patientUuid"
+                                      section-title="section.config.title"
+                                      config="section.config"></bahmni-diagnosis>
+                </section>
+            </div>
+            <div ng-switch-when="pivotTable">
+                <div ng-if="section.config">
+                    <section pivot-table visit-uuid="visit.uuid" config="section.config" patient-uuid="patient.uuid" display-name="section.title"></section>
+                </div>
+            </div>
+            <div data-ng-switch-when="investigationResult">
+                <div ng-if="section.config">
+                    <investigation-results
+                            params="section.config"></investigation-results>
+                </div>
+            </div>
+            <div data-ng-switch-when="radiology">
+                <div ng-if="section.config">
+                    <ng-include src="'common/views/visitSummarySections/radiologyInvestigations.html'"></ng-include>
+                </div>
+            </div>
+            <div data-ng-switch-when="patientFiles">
+                <div ng-if="section.config">
+                    <ng-include src="'common/views/visitSummarySections/patientFiles.html'"></ng-include>
+                </div>
+            </div>
+            <div data-ng-switch-when="otherInvestigations">
+                <div ng-if="section.config">
+                    <ng-include src="'common/views/visitSummarySections/otherInvestigations.html'"></ng-include>
+                </div>
+            </div>
+            <div data-ng-switch-when="treatment">
+                <div ng-if="section.config">
+                    <treatment-data id="visit-treatments" params="section.config"
+                                    visit-summary="visitSummary"></treatment-data>
+                </div>
+            </div>
+            <div data-ng-switch-when="disposition">
+                <div ng-if="section.config">
+                    <disposition id="disposition" params="section.config"
+                                 visit-uuid="section.config.visitUuids"></disposition>
+                </div>
+            </div>
+            <div data-ng-switch-when="consultationNotes">
+                <div ng-if="section.config">
+                    <ng-include src="'common/views/visitSummarySections/consultationNotes.html'"></ng-include>
+                </div>
+            </div>
+            <div data-ng-switch-when="admissionDetails">
+                <div ng-if="section.config">
+                    <admission-details visit-uuid="visit.uuid" params="section.config"></admission-details>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

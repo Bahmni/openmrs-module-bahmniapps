@@ -23,12 +23,10 @@ Bahmni.Clinical.VisitTabConfig = function (tabs) {
 
     this.setVisitUuidsAndPatientUuidToTheSections = function (visitUuids, patientUuid) {
         _.each(this.tabs, function (tab) {
-            for (var key in  tab) {
-                if (_.isPlainObject(tab[key])) {
-                    tab[key].visitUuids = visitUuids;
-                    tab[key].patientUuid = patientUuid;
-                }
-            }
+            _.each(tab.sections, function(section){
+                section.config.visitUuids = visitUuids;
+                section.config.patientUuid = patientUuid;
+            });
         });
     };
 
