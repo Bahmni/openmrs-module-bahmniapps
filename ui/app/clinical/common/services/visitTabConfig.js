@@ -92,6 +92,7 @@ angular.module('bahmni.clinical')
         };
 
         this.load = function () {
+            var defaultVisitPageConfig = angular.extend({}, defaultVisitTabConfig);
             return appService.loadConfig('visit').then(function (response) {
                 var defaultTab = _.find(response.data, function (visitTabConfig) {
                     return visitTabConfig.default;
@@ -101,10 +102,10 @@ angular.module('bahmni.clinical')
                     var pivotTableSections = _.filter(defaultTab.sections, function (section) {
                         return section.type == "pivotTable";
                     });
-                    defaultVisitTabConfig.sections = defaultVisitTabConfig.sections.concat(pivotTableSections);
-                    angular.extend(defaultTab, defaultVisitTabConfig);
+                    defaultVisitPageConfig.sections = defaultVisitPageConfig.sections.concat(pivotTableSections);
+                    angular.extend(defaultTab, defaultVisitPageConfig);
                 } else {
-                    response.data.push(defaultVisitTabConfig);
+                    response.data.push(defaultVisitPageConfig);
                 }
 
                 angular.extend(self, new Bahmni.Clinical.VisitTabConfig(response.data));
