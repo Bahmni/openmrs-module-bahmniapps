@@ -33,7 +33,19 @@
 	.retro-date-widget {
 		color: orange;
 	}
-
+   .retro-date-text {
+	 color: black;
+	 display: inline-block;
+	 position: absolute;
+	 top: 0;
+	 background: orange;
+	 font-weight: bold;
+	 left: 50%;
+	 padding: 9px 10px;
+	 font-size: 14px;
+	 border-radius: 0 0 5px 5px;
+	 transform: translateX(-50%);
+   }
 }
 .reg-header, .opd-header-wrapper {
 	.retro-date-widget {
