@@ -38,7 +38,8 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             },
 
             resolve: {
-                patientInitialization: function($stateParams, patientInitialization) {
+                initialization: 'initialization',
+                patientInitialization: function(initialization,$stateParams, patientInitialization) {
                     return patientInitialization($stateParams.patientUuid);
                 }
             }
