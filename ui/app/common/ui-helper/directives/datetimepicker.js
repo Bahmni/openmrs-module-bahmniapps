@@ -30,7 +30,7 @@ angular.module('bahmni.common.uiHelper')
             };
 
             if($scope.model != null) {
-                var date = moment($scope.model, "MMMM DD, YYYY HH:mm:ss a").toDate();
+                var date = moment($scope.model).toDate();
                 $scope.selectedDate = date;
                 $scope.selectedTime = date;
                 $scope.updateModel();

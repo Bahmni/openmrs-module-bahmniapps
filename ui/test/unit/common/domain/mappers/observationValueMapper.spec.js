@@ -6,7 +6,7 @@ describe("Observation Value Mapper", function () {
     });
 
     it("should return datetime value", function() {
-        var obs = {type: "Datetime", value: "December 5, 2015 04:02:45 PM IST", concept: {}};
+        var obs = {type: "Datetime", value: "2015-12-05 16:02:00", concept: {}};
         var mapper = new Bahmni.Common.Domain.ObservationValueMapper();
         expect(mapper.map(obs)).toBe("05 Dec 2015, 04:02 PM");
     });

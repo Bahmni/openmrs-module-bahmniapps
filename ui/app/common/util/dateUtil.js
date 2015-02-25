@@ -79,7 +79,7 @@ Bahmni.Common.Util.DateUtil = {
     },
 
     parseDatetime: function(dateTimeString){
-        return dateTimeString ? moment(dateTimeString, "MMMM DD, YYYY HH:mm:ss a") : null;
+        return dateTimeString ? moment(dateTimeString) : null;
     },
 
     parseLongDatetime: function(longDateTime){
