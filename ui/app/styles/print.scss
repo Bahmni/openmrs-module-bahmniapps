@@ -3,8 +3,8 @@
 @page {
   margin-left: 0.5cm;
   margin-right: 0.5cm;
-  margin-top: 0.2cm;
-  margin-bottom: 0.2cm;
+  margin-top: 0.4cm;
+  margin-bottom: 0.3cm;
 }
 
 body, body pre {
@@ -97,7 +97,7 @@ h1,h2,h3{
 
 .pgContainer {
   height: auto;
-  min-height: none;
+  min-height: initial;
 }
 
 
@@ -164,8 +164,6 @@ h1,h2,h3{
 				font-size: 9pt;
 			}
 		}
-
-
 	}
 	.dashboard-sections {
 		width: 100%;
@@ -221,9 +219,12 @@ h1,h2,h3{
 				display: none;
 			}
 		}
+
 		table {
 			border-collapse: separate;
 			border: 0;
+		    height: auto;
+		    overflow: visible;
 			&.repeated-table {
 				margin-bottom: 5px;
 				&:last-child {
@@ -316,15 +317,9 @@ h1,h2,h3{
 				float: left;
 				.patient-name {
 					font-size: 10pt;
-					// display: inline-block;
 				}
 				.patient-gender-age {
 					font-size: 9pt;
-					// display: inline-block;
-					// &:before {
-					// 	content: " - ";
-
-					// }
 				}
 			}
 			.address {
