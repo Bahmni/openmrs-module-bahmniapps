@@ -13,10 +13,7 @@ angular.module('bahmni.common.displaycontrol.admissiondetails')
             }
             
             $scope.getProviderDetails = function(encounter){
-                if(encounter && encounter.creator && encounter.creator.display){
-                    return encounter.creator.display;
-                }
-                return "";
+                return encounter && encounter.provider && encounter.provider.display || "";
             };
 
             $scope.getNotes = function(encounter){
