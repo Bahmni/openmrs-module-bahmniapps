@@ -75,7 +75,7 @@
             </div>
             <div data-ng-switch-when="admissionDetails">
                 <div ng-if="section.config">
-                    <admission-details visit-uuid="visit.uuid" params="section.config"></admission-details>
+                    <admission-details patient-uuid="patient.uuid" visit-uuid="visit.uuid" params="section.config"></admission-details>
                 </div>
             </div>
         </div>

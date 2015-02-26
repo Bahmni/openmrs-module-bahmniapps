@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('bahmni.common.displaycontrol.admissiondetails')
-    .directive('admissionDetails', ['visitService','$q','spinner',function (visitService, $q ,spinner) {
+    .directive('admissionDetails', ['bedService', 'visitService','$q','spinner',function (bedService, visitService, $q ,spinner) {
 
         var controller = function($scope){
             if($scope.visitUuid) {
@@ -10,6 +10,12 @@ angular.module('bahmni.common.displaycontrol.admissiondetails')
                     $scope.admissionEncounter = $scope.visit.getAdmissionEncounter();
                     $scope.dischargeEncounter = $scope.visit.getDischargeEncounter();
                 });
+            }
+
+            if($scope.patientUuid) {
+                bedService.getAssignedBedForPatient($scope.patientUuid).then(function(bedDetails){
+                    $scope.bedDetails = bedDetails;
+                })
             }
             
             $scope.getProviderDetails = function(encounter){
@@ -20,17 +26,12 @@ angular.module('bahmni.common.displaycontrol.admissiondetails')
                 return " ";
             };
 
-            $scope.showDetailsButton = function(encounter){
+            $scope.showDetailsButton = function(){
                 return $scope.params && $scope.params.showDetailsButton;
             };
 
             $scope.toggle= function(element){
-                if($scope.showDetailsButton(element)){
-                    element.show = !element.show;
-                }else{
-                    element.show = true;
-                }
-                return false;
+                element.show = !element.show;
             };
         };
         return {
@@ -39,7 +40,8 @@ angular.module('bahmni.common.displaycontrol.admissiondetails')
             templateUrl: "../common/displaycontrols/admissiondetails/views/admissionDetails.html",
             scope: {
                 params: "=",
-                visitUuid: "="
+                visitUuid: "=",
+                patientUuid: "="
             }
         };
     }]);

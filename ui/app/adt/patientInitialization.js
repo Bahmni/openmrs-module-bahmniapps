@@ -12,7 +12,7 @@ angular.module('bahmni.adt').factory('patientInitialization', ['$rootScope', '$q
             };
             
             var bedDetailsForPatient = function() {
-                return bedService.getBedDetailsForPatient(patientUuid);
+                return bedService.setBedDetailsForPatientOnRootScope(patientUuid);
             };
             
             return spinner.forPromise(initialization.then(function(){

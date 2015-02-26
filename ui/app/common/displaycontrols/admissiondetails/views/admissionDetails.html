@@ -1,57 +1,63 @@
-<section class="block dashboard-section" ng-if="admissionEncounter || dischargeEncounter">
+<section class="block">
     <h2 class="section-title">Admission Details</h2>
-
-    <table class="dashboard-table history-diagnosis">
+    <div ng-if="!admissionEncounter && !dischargeEncounter">
+        <div class="placeholder-text">No Admission Details for this patient.</div>
+    </div>
+    <table class="dashboard-table history-diagnosis" ng-if="admissionEncounter || dischargeEncounter">
         <tbody class="row">
-	        <tr class="view-past">
-	            <td class="name">
-	                <span class="disposition-state">Admission Date</span>
-	            </td>
-	            <td class="value">
-					{{admissionEncounter.encounterDatetime| date:'dd MMM yy'}}
-	            </td>
-	            <td class="toggle-btn">
-	                <button class="toggle fr"
-	                		
-	                        ng-click="toggle(admissionEncounter)" ng-if="showDetailsButton(admissionEncounter)">
-	                    <i class="icon-plus-sign" ng-hide="admissionEncounter.show"></i>
-	                    <i class="icon-minus-sign" ng-show="admissionEncounter.show"></i>
-	                </button>
-	            </td>
-	        </tr>
-	        <tr ng-if="admissionEncounter.show || (!showDetailsButton(admissionEncounter) && getProviderDetails(admissionEncounter))">
-	            <td colspan="4" class="notes inline-notes">
-	                <pre class="left ng-binding">{{getNotes(admissionEncounter)}}</pre>
-	                <div class="footer-note right">
-	                    <span class="provider">{{getProviderDetails(admissionEncounter)}} {{admissionEncounter.encounterDatetime  | date:'hh:mm a'}}</span>
-	                </div>
-	            </td>
-	        </tr>
-	        <tr class="view-past" ng-if="dischargeEncounter">
-	            <td class="name">
-	                <span class="disposition-state">Discharge Date</span>
-	            </td>
-	            <td class="value">
-	            	{{dischargeEncounter.encounterDatetime| date:'dd MMM yy'}}
-	            </td>
-	            <td class="toggle-btn">
-	                <button class="toggle fr"
-	                        ng-if="showDetailsButton(dischargeEncounter)" ng-click="toggle(dischargeEncounter)">
-	                    <i class="icon-plus-sign" ng-hide="dischargeEncounter.show"></i>
-	                    <i class="icon-minus-sign" ng-show="dischargeEncounter.show"></i>
-	                </button>
-	            </td>
-	        </tr>
-	        <tr ng-if="dischargeEncounter.show || (!showDetailsButton(dischargeEncounter) && getProviderDetails(dischargeEncounter))">
-	            <td colspan="4" class="notes inline-notes">
-	                <pre class="left ng-binding">{{getNotes(dischargeEncounter)}}</pre>
-	                <div class="footer-note right">
-	                    <span class="provider">{{getProviderDetails(dischargeEncounter)}} {{dischargeEncounter.encounterDatetime  | date:'hh:mm a'}}</span>
-	                </div>
-	            </td>
-	        </tr>
+            <tr ng-if="bedDetails">
+                <td class="value">Ward Name</td>
+                <td class="value">{{bedDetails.wardName}}</td>
+                <td class="value">Bed Number</td>
+                <td class="value">{{bedDetails.bedNumber}}</td>
+            </tr>
+            <tr class="view-past">
+                <td class="name">
+                    <span class="disposition-state">Admission Date</span>
+                </td>
+                <td class="value">
+                    {{admissionEncounter.encounterDatetime| date:'dd MMM yy'}}
+                </td>
+                <td></td>
+                <td class="toggle-btn">
+                    <button class="toggle fr"
+                            ng-click="toggle(admissionEncounter)" ng-if="showDetailsButton()">
+                        <i class="icon-plus-sign" ng-hide="admissionEncounter.show"></i>
+                        <i class="icon-minus-sign" ng-show="admissionEncounter.show"></i>
+                    </button>
+                </td>
+            </tr>
+            <tr ng-if="admissionEncounter.show || (!showDetailsButton() && getProviderDetails(admissionEncounter))">
+                <td colspan="4" class="notes inline-notes">
+                    <pre class="left ng-binding">{{getNotes(admissionEncounter)}}</pre>
+                    <div class="footer-note right">
+                        <span class="provider">{{getProviderDetails(admissionEncounter)}} {{admissionEncounter.encounterDatetime  | date:'hh:mm a'}}</span>
+                    </div>
+                </td>
+            </tr>
+            <tr class="view-past" ng-if="dischargeEncounter">
+                <td class="name">
+                    <span class="disposition-state">Discharge Date</span>
+                </td>
+                <td class="value">
+                    {{dischargeEncounter.encounterDatetime| date:'dd MMM yy'}}
+                </td>
+                <td class="toggle-btn">
+                    <button class="toggle fr"
+                            ng-if="showDetailsButton()" ng-click="toggle(dischargeEncounter)">
+                        <i class="icon-plus-sign" ng-hide="dischargeEncounter.show"></i>
+                        <i class="icon-minus-sign" ng-show="dischargeEncounter.show"></i>
+                    </button>
+                </td>
+            </tr>
+            <tr ng-if="dischargeEncounter.show || (!showDetailsButton() && getProviderDetails(dischargeEncounter))">
+                <td colspan="4" class="notes inline-notes">
+                    <pre class="left ng-binding">{{getNotes(dischargeEncounter)}}</pre>
+                    <div class="footer-note right">
+                        <span class="provider">{{getProviderDetails(dischargeEncounter)}} {{dischargeEncounter.encounterDatetime  | date:'hh:mm a'}}</span>
+                    </div>
+                </td>
+            </tr>
         </tbody>
     </table>
 </section>
-
-

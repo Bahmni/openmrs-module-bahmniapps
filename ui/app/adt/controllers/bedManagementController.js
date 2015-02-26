@@ -53,7 +53,7 @@ angular.module('bahmni.adt')
             bedService.assignBed(bed.bed.bedId, $scope.patient.uuid, encUuid).success(function (result) {
                 $rootScope.bed = bed.bed;
                 $scope.layout = [];
-                bedService.getBedDetailsForPatient($scope.patient.uuid);
+                bedService.setBedDetailsForPatientOnRootScope($scope.patient.uuid);
                 getBedsForWard(currentWardUuid);
                 $scope.confirmationMessage = "Bed " + bed.bed.bedNumber + " is assigned successfully";
                 $('.bed-info').hide();
