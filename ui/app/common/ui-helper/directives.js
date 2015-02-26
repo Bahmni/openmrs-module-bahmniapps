@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.util')
+angular.module('bahmni.common.uiHelper')
     .directive('nonBlank', function () {
         return function ($scope, element, attrs) {
             var addNonBlankAttrs = function () {

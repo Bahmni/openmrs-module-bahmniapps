@@ -1,0 +1,31 @@
+<div class="dhis-page">
+
+    <section class="primary-section-grid">
+        <h1>Reports</h1>
+        <table class="file-to-upload" ng-if="!tasks.isEmpty()">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Title</th>
+                <th>Start Date</th>
+                <th>Stop Date</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="report in reports">
+                <td><strong>{{ report.name }}</strong></td>
+                <td><strong>{{ report.title }}</strong></td>
+                <td><strong> <input date-converter class="form-field start-date" type="date"
+                                    ng-model="report.startDate"></strong></td>
+                <td><strong><input date-converter class="form-field stop-date" type="date"
+                                   ng-model="report.stopDate"></strong></td>
+                <td>
+                    <button class="run-report confirm" ng-click="runReport(report)">Run Report</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+</div>

@@ -4,6 +4,7 @@ angular.module('bahmni.common.uiHelper')
     .controller('DashboardController', ['$rootScope', '$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window',
         function ($rootScope, $scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window) {
             $scope.appExtensions = appService.getAppDescriptor().getExtensions($state.current.data.extensionPointId, "link") || [];
+            console.log($scope.appExtensions);
             $scope.selectedLocationUuid = {};
 
             var getCurrentLocation = function () {

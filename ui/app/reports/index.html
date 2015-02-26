@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Reports</title>
+        <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.4.custom.min.css">
+        <link rel="stylesheet" href="../components/select2/select2.css"/>
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog.min.css"/>
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-default.min.css"/>
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-plain.min.css"/>
+        
+        <!-- build:css reports.min.css -->
+        <link rel="stylesheet" href="../styles/clinical.css"/>
+        <!-- endbuild -->
+    </head>
+    <body>
+        <div class="bahmni-reports">
+            <div ng-app="bahmni.reports">
+                <div ng-include src="'../common/ui-helper/messages.html'"></div>
+                <div ui-view="content"></div>
+            </div>
+        </div>
+        <script src="../components/lodash/dist/lodash.min.js"></script>
+        <script src="../components/jquery/jquery.js"></script>
+        <script src="../components/jquery.cookie/jquery.cookie.js"></script>
+        <script src="../lib/jquery/jquery-ui-1.10.4.custom.min.js"></script>
+        <script src="../lib/modernizr.custom.80690.js"></script>
+        <script src="../components/angular/angular.js"></script>
+        <script src="../components/angular-sanitize/angular-sanitize.js"></script>
+        <script src="../components/moment/moment.js"></script>
+        <script src="../components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
+        <script src="../components/angular-bindonce/bindonce.js"></script>
+        <script src="../components/select2/select2.js"></script>
+        <script src="../components/angular-ui-select2/src/select2.js"></script>
+        <script src="../components/angular-ui-router/release/angular-ui-router.js"></script>
+        <script src="../components/stacktrace-js/stacktrace.js"></script>
+        <script src="../components/ng-clip/src/ngClip.js"></script>
+        <script src="../components/zeroclipboard/dist/ZeroClipboard.js"></script>
+
+        <!-- build:js reports.min.js -->
+        <script src="../common/constants.js"></script>
+        <script src="../common/route-errorhandler/init.js"></script>
+        <script src="../common/util/init.js"></script>
+        <script src="../common/util/dateUtil.js"></script>
+        <script src="../common/util/arrayUtil.js"></script>
+        <script src="../common/util/httpErrorInterceptor.js"></script>
+        <script src="../common/util/iosFixedElement.js"></script>
+        <script src="../common/util/modernizr.tests.js"></script>
+        <script src="../common/util/iosLabelFix.js"></script>
+
+        <script src="../common/auth/init.js"></script>
+        <script src="../common/auth/user.js"></script>
+        <script src="../common/auth/userService.js"></script>
+        <script src="../common/auth/authentication.js"></script>
+
+        <script src="../common/app-framework/init.js"></script>
+        <script src="../common/app-framework/services/appService.js"></script>
+        <script src="../common/app-framework/directives/appExtensionList.js"></script>
+        <script src="../common/app-framework/models/appDescriptor.js"></script>
+
+        <script src="../common/config/init.js"></script>
+        <script src="../common/config/services/configurations.js"></script>
+        <script src="../common/config/directives/showIfPrivilege.js"></script>
+
+        <script src="../common/domain/init.js"></script>
+        <script src="../common/domain/models/retrospectiveEntry.js"></script>
+        <script src="../common/domain/services/retrospectiveEntryService.js"></script>
+        <script src="../common/domain/services/encounterService.js"></script>
+        <script src="../common/domain/services/observationsService.js"></script>
+        <script src="../common/domain/services/dispositionService.js"></script>
+        <script src="../common/domain/services/visitService.js"></script>
+        <script src="../common/domain/services/configurationService.js"></script>
+        <script src="../common/domain/services/visitDocumentService.js"></script>
+        <script src="../common/domain/mappers/providerMapper.js"></script>
+        <script src="../common/domain/mappers/conceptMapper.js"></script>
+        <script src="../common/domain/mappers/observationMapper.js"></script>
+        <script src="../common/domain/mappers/observationValueMapper.js"></script>
+
+        <script src="../common/domain/encounterConfig.js"></script>
+        <script src="../common/domain/observationFilter.js"></script>
+
+        <script src="../common/ui-helper/init.js"></script>
+        <script src="../common/ui-helper/spinner.js"></script>
+        <script src="../common/ui-helper/printer.js"></script>
+        <script src="../common/ui-helper/directives.js"></script>
+        <script src="../common/ui-helper/directives/bahmniAutocomplete.js"></script>
+        <script src="../common/ui-helper/directives/popOver.js"></script>
+        <script src="../common/ui-helper/directives/conceptAutocomplete.js"></script>
+        <script src="../common/ui-helper/directives/datetimepicker.js"></script>
+        <script src="../common/ui-helper/directives/toggle.js"></script>
+        <script src="../common/ui-helper/directives/gallery.js"></script>
+        <script src="../common/ui-helper/directives/ngConfirmClick.js"></script>
+        <script src="../common/ui-helper/filters/dateFilters.js"></script>
+        <script src="../common/ui-helper/filters/reverse.js"></script>
+        <script src="../common/ui-helper/filters/thumbnail.js"></script>
+        <script src="../common/ui-helper/filters/formatDecimalValues.js"></script>
+        <script src="../common/ui-helper/services/backlinkService.js"></script>
+        <script src="../common/ui-helper/services/contextChangeHandler.js"></script>
+        <script src="../common/ui-helper/services/stateChangeSpinner.js"></script>
+        <script src="../common/ui-helper/directives/backLinks.js"></script>
+        <script src="../common/ui-helper/directives/focusOn.js"></script>
+        <script src="../common/ui-helper/directives/dateConverter.js"></script>
+        <script src="../common/ui-helper/controllers/messageController.js"></script>
+        <script src="../common/ui-helper/services/messagingService.js"></script>
+
+        <script src="../common/util/init.js"></script>
+        <script src="../common/util/httpErrorInterceptor.js"></script>
+
+        <script src="../common/constants.js"></script>
+        <script src="../common/debugUiRouter.js"></script>
+
+        <script src="init.js"></script>
+        <script src="initialization.js"></script>
+        <script src="services/reportService.js"></script>
+        <script src="controllers/dashboardController.js"></script>
+        
+        <script src="app.js"></script>
+
+        <!-- endbuild -->
+    </body>
+</html>

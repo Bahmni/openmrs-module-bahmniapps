@@ -110,7 +110,7 @@ Bahmni.Common = Bahmni.Common || {};
         retrospectivePrivilege:'app:clinical:retrospective',
         nutritionalConceptName:'Nutritional Values',
         messageForNoObservation: "No observations captured for this visit.",
-        messageForNoDisposition: "No dispositions available."
+        messageForNoDisposition: "No dispositions available.",
+        reportsUrl: "/bahmnireports/report"
     };
-    
 })();
