@@ -1,81 +1,83 @@
-.retro-mode {
-	.reg-header, .opd-header-wrapper {
-		border-top: 4px solid orange;
-		&, header {
-			background: $mediumGray;
-		}
-		a.back-btn, button.back-btn, ul li a.back-btn {
-			&, &:before 
-			{ 
-				background: #888;
-				border-color: #999;
-				color: #fff;
-			}
-		}
+$retroModeColor:  #0E74AF;
 
-		button.toggle-patient {
-			background-color: #888;
-			border-color: #999;
-		}
-		.tabs ul li.tab-item {
-			a,  button {
-				background: grey;
-			}
-			&.tab-selected a, &.tab-selected button {
-				background: white;
-			}
-			.tab-submenu ul, .tab-submenu .submenu-item {
-				border-color: grey;
-				background: grey;
-			}
-		}
+.retro-mode {
+  .reg-header, .opd-header-wrapper {
+	border-top: 4px solid orange;
+	&, header {
+	  background: $retroModeColor;
 	}
-	.retro-date-widget {
-		color: orange;
+	a.back-btn, button.back-btn, ul li a.back-btn {
+	  &, &:before {
+		background: darken($retroModeColor, 10%);
+		border-color: darken($retroModeColor, 12%);
+		color: #fff;
+	  }
 	}
-   .retro-date-text {
-	 color: black;
-	 display: inline-block;
-	 position: absolute;
-	 top: 0;
-	 background: orange;
-	 font-weight: bold;
-	 left: 50%;
-	 padding: 9px 10px;
-	 font-size: 14px;
-	 border-radius: 0 0 5px 5px;
-	 transform: translateX(-50%);
-   }
+
+	button.toggle-patient {
+	  background-color: darken($retroModeColor, 10%);
+	  border-color: darken($retroModeColor, 15%);
+	}
+	.tabs ul li.tab-item {
+	  a,  button {
+		background: darken($retroModeColor, 6%);
+	  }
+	  &.tab-selected a, &.tab-selected button {
+		background: white;
+	  }
+	  .tab-submenu ul, .tab-submenu .submenu-item {
+		border-color: darken($retroModeColor, 6%);
+		background: darken($retroModeColor, 6%);
+	  }
+	}
+  }
+  .retro-date-widget {
+	color: orange;
+  }
+  .retro-date-text {
+	color: black;
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	background: orange;
+	font-weight: bold;
+	left: 50%;
+	padding: 9px 10px;
+	font-size: 14px;
+	border-radius: 0 0 5px 5px;
+	transform: translateX(-50%);
+  }
+
 }
 .reg-header, .opd-header-wrapper {
-	.retro-date-widget {
-		float: right;
-		padding: 0px 10px;
+  .retro-date-widget {
+	float: right;
+	padding: 0px 10px;
+  }
+  input.retro-date-widget {
+	height: 25px;
+	margin: 10px 0;
+	&.disabled-date {
+	  background-color: lightgrey;
 	}
-	input.retro-date-widget {
-		height: 25px;
-		margin: 10px 0;
-		&.disabled-date {
-		    background-color: lightgrey;
-		}
-	}
-	label.retro-date-widget {
-		margin: 15px 0;
-		color: white;
-	}
+  }
+  label.retro-date-widget {
+	margin: 15px 0;
+	color: white;
+  }
 }
 
 .patient-control-panel .retro-date-widget {
-	margin-left: 28px;
-	color: white; 
-	.retro-mode & {
-		color: orange;
-	}
+  margin-left: 28px;
+  color: white;
+  .retro-mode & {
+	color: orange;
+  }
 }
 
 .reg-header, .opd-header-wrapper, .patient-control-panel {
-	input.retro-date-widget.disabled-date {
-	    background: none;
-	    border: 0;
-	}
+  input.retro-date-widget.disabled-date {
+	background: none;
+	border: 0;
+  }
 }
