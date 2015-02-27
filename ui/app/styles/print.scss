@@ -167,6 +167,7 @@ h1,h2,h3{
 	}
 	.dashboard-sections {
 		width: 100%;
+		margin: 0;
 		float: none;
 	}
 	.section-grid {
@@ -223,6 +224,8 @@ h1,h2,h3{
 		table {
 			border-collapse: separate;
 			border: 0;
+			margin: 0;
+			padding: 0;
 		    height: auto;
 		    overflow: visible;
 			&.repeated-table {

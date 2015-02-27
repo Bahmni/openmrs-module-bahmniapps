@@ -13,10 +13,12 @@
   padding-top: 10px;
   @include clearfix();
   .dashboard-sections {
-    width: 50%;
+    width: 48%;
+    margin: 1%;
     float: left;
     @media screen and (max-width: 859px) {
-      width: 100%;
+      width: 98%;
+      margin: 0;
       float: none;
     }
   }
@@ -37,7 +39,7 @@
   }
 }
 .dashboard-section {
-  margin: 1%;
+  margin: 0;
   margin-bottom: 15px;
   font-size: 14px;
   position: relative;
@@ -57,7 +59,13 @@
   }
   section.block {
     padding: 0!important;
+    border: 0;
     border-radius: 0 0 5px 5px;
+  }
+  table {
+    margin: 0;
+    border-left: 0;
+    border-right: 0;
   }
   section {
     label.date {
@@ -112,7 +120,7 @@
       color: $mediumGray;
       background: $lightestGray;
     }
-    tr, td {
+    tr, td, th {
       border-left: 0!important;
       border-right: 0!important;
     }
