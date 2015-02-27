@@ -21,7 +21,16 @@
                 <td><strong><input date-converter class="form-field stop-date" type="date"
                                    ng-model="report.stopDate"></strong></td>
                 <td>
-                    <button class="run-report confirm" ng-click="runReport(report)">Run Report</button>
+                    <strong>
+                        <select ng-model="report.responseType" ng-init="report.responseType='application/vnd.ms-excel'">
+                            <option value="application/vnd.ms-excel" selected="selected">EXCEL</option>
+                            <option value="application/pdf">PDF</option>
+                            <option value="text/html">HTML</option>
+                        </select>
+                    </strong>
+                </td>
+                <td>
+                    <button type="submit" class="run-report confirm" ng-click="runReport(report)">Run Report</button>
                 </td>
             </tr>
             </tbody>

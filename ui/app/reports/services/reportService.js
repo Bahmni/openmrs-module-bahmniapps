@@ -1,32 +1,15 @@
 'use strict';
 
 angular.module('bahmni.reports')
-    .factory('reportService', ['$http', '$q', function ($http, $q) {
-        var fire = function (report) {
-            console.log(report);
-            var deferred = $q.defer();
-            $.ajax(
-                {
-                    url: Bahmni.Common.Constants.reportsUrl,
-                    data: JSON.stringify(report),
-                    type: 'post',
-                    headers: {
-                        "Content-Type": 'application/json',
-                        "Accept": "application/vnd.ms-excel"
-                    },
-                    success: function (retData) {
-                        $("body").append("<iframe src='" + retData.url + "' style='display: none;' ></iframe>");
-                        deferred.promise.resolve();
-                    }});
-            return deferred.promise;
-//            return $http.post(Bahmni.Common.Constants.reportsUrl, report, {
-//                withCredentials: true,
-//                headers: {"Accept": "application/vnd.ms-excel", "Content-Type": "application/json"}
-//            });
-        };
+    .service('reportService', function () {
+        var generateReport = function (report) {
+            var url = Bahmni.Common.Constants.reportsUrl;
+            url = (url + "?name={0}&startDate={1}&endDate={2}&responseType={3}").
+                    format(report.name, report.startDate, report.stopDate, report.responseType);
+            window.open(url);
+       };
 
         return {
-            fire: fire
+            generateReport: generateReport
         };
-
-    }]);
+    });

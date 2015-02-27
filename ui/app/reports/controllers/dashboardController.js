@@ -10,9 +10,6 @@ angular.module('bahmni.reports')
         $scope.runReport = function (report) {
             report.startDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(report.startDate).toString();
             report.stopDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(report.stopDate).toString();
-            reportService.fire(report).then(function (response) {
-                console.log(response);
-            })
-        };
-
-    }]);
+            reportService.generateReport(report);
+            };
+        }]);
