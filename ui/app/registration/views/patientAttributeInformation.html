@@ -37,6 +37,6 @@
                ng-model="patient[attribute.name]" data-item-type="personAttribute" ng-required="{{attribute.required}}">
     </div>
     <div class="left" data-ng-switch-when="java.lang.Boolean">
-        <input type="checkbox" ng-model="patient[attribute.name]" ng-required="{{attribute.required}}"/>
+        <input id="isUrban" type="checkbox" ng-model="patient[attribute.name]" ng-required="{{attribute.required}}"/>
     </div>
 </div>
