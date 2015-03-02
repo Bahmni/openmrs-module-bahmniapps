@@ -28,6 +28,9 @@
         section, table {
             margin: 0;
         }
+        &.treatment-section {
+            @extend .section-grid;
+        }
     }
 
     table {
