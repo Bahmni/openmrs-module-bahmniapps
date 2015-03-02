@@ -76,19 +76,19 @@ angular.module('bahmni.adt')
                 return $scope.visit && $scope.visit.isDischarged();
             };
 
-            var filterAction = function(actions, actionType){
+            var filterAction = function(actions, actionTypes){
                 return _.filter(actions, function (action) {
-                    return action.name.name === actionType;
+                    return actionTypes.indexOf(action.name.name) >= 0;
                 });
             };
 
             var getDispositionActions = function (actions) {
                 if ($scope.isAdmitted()) {
-                    return filterAction(actions, 'Discharge Patient');
+                    return filterAction(actions, ["Discharge Patient", "Transfer Patient"]);
                 } else if($scope.isDischarged()) {
-                    return filterAction(actions, 'Undo Discharge');
+                    return filterAction(actions, ["Undo Discharge"]);
                 } else {
-                    return filterAction(actions, 'Admit Patient');
+                    return filterAction(actions, ["Admit Patient"]);
                 }
             };
 
@@ -197,7 +197,7 @@ angular.module('bahmni.adt')
             };
 
             $scope.transfer = function () {
-                var encounterData = getEncounterData($scope.encounterConfig.getTransferEncounterTypeUuid());
+                var encounterData = getEncounterData($scope.encounterConfig.getTransferEncounterTypeUuid(), defaultVisitTypeUuid);
                 encounterService.create(encounterData).then(function (response) {
                     forwardUrl(response.data, "onTransferForwardTo");
                 });
