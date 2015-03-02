@@ -10,7 +10,7 @@
     </head>
     <body>
         <div ng-app="adt">
-            <div ng-include src="'views/headerAdt.html'"></div>
+            <div ui-view="header"></div>
             <div ui-view="additional-header"></div>
             <div ng-include src="'../common/ui-helper/messages.html'"></div>
             <div class="opd-wrapper">
@@ -164,6 +164,7 @@
         <script src="util/dispositionDisplayUtil.js"></script>
         <script src="controllers/adtController.js"></script>
         <script src="controllers/bedManagementController.js"></script>
+        <script src="controllers/headerAdtController.js"></script>
         <script src="services/wardService.js"></script>
         <!-- endbuild -->
     </body>

@@ -2,26 +2,26 @@
 
 
 angular.module('adt', ['bahmni.common.patient', 'bahmni.common.patientSearch', 'bahmni.common.uiHelper', 'bahmni.common.conceptSet', 'authentication', 'bahmni.common.appFramework',
-    'httpErrorInterceptor', 'bahmni.adt', 'bahmni.common.domain', 'bahmni.common.config', 'ui.router', 'bahmni.common.util', 'bahmni.common.routeErrorHandler', 
+    'httpErrorInterceptor', 'bahmni.adt', 'bahmni.common.domain', 'bahmni.common.config', 'ui.router', 'bahmni.common.util', 'bahmni.common.routeErrorHandler',
     'bahmni.common.displaycontrol.dashboard', 'bahmni.common.displaycontrol.observation', 'bahmni.common.displaycontrol.disposition', 'bahmni.common.displaycontrol.admissiondetails',
     'bahmni.common.obs', 'bahmni.common.displaycontrol.patientprofile']);
-angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function($stateProvider, $httpProvider, $urlRouterProvider) {
-        $urlRouterProvider.otherwise('/patient/search');
-        $stateProvider.state('patientsearch', {
-            url: '/patient/search',
-            data: {
-                backLinks: [{label: "Home", url: "../home/"}]
-            },
-            views: {
-                'content': {
-                    templateUrl: '../common/patient-search/views/patientsList.html',
-                    controller: 'PatientsListController'
-                }
-            },
-            resolve: {
-                initialization: 'initialization'
+angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise('/patient/search');
+    $stateProvider.state('patientsearch', {
+        url: '/patient/search',
+        data: {
+            backLinks: [{label: "Home", url: "../home/"}]
+        },
+        views: {
+            'content': {
+                templateUrl: '../common/patient-search/views/patientsList.html',
+                controller: 'PatientsListController'
             }
-        })
+        },
+        resolve: {
+            initialization: 'initialization'
+        }
+    })
         .state('patient', {
             url: '/patient/:patientUuid',
             data: {
@@ -29,6 +29,10 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             },
             abstract: true,
             views: {
+                'header': {
+                    templateUrl: 'views/headerAdt.html',
+                    controller: 'HeaderAdtController'
+                },
                 'content': {
                     template: '<ui-view/>'
                 },
@@ -39,7 +43,7 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
 
             resolve: {
                 initialization: 'initialization',
-                patientInitialization: function(initialization,$stateParams, patientInitialization) {
+                patientInitialization: function (initialization, $stateParams, patientInitialization) {
                     return patientInitialization($stateParams.patientUuid);
                 }
             }
@@ -49,7 +53,7 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             templateUrl: 'views/dashboard.html',
             controller: 'AdtController',
             resolve: {
-                visitInitialization: function($stateParams, visitInitialization) {
+                visitInitialization: function (initialization, $stateParams, patientInitialization, visitInitialization) {
                     return visitInitialization($stateParams.visitUuid);
                 }
             }
@@ -64,5 +68,5 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             templateUrl: 'views/bedManagement.html',
             controller: 'BedManagementController'
         });
-    }
+}
 ]);
