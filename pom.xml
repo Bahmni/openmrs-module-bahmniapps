@@ -4,7 +4,7 @@
 
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>bahmniapps</artifactId>
-	<version>5.3-SNAPSHOT</version>
+	<version>5.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Bahmni Apps Module</name>
 	<description>Apps for Bahmni</description>
