@@ -9,14 +9,14 @@ Bahmni.DiagnosisMapper = function () {
                 uuid: undefined
             }
         }
-        var mappedDiagnosis = angular.extend(new Bahmni.Clinical.Diagnosis(), diagnosis);
+        var mappedDiagnosis = angular.extend(new Bahmni.Common.Domain.Diagnosis(), diagnosis);
         if (mappedDiagnosis.firstDiagnosis) {
             mappedDiagnosis.firstDiagnosis = mapDiagnosis(mappedDiagnosis.firstDiagnosis);
         }
 
         if (diagnosis.diagnosisStatusConcept) {
-            for (var status in Bahmni.Clinical.Constants.diagnosisStatuses) {
-                if (Bahmni.Clinical.Constants.diagnosisStatuses[status] === diagnosis.diagnosisStatusConcept.name) {
+            for (var status in Bahmni.Common.Constants.diagnosisStatuses) {
+                if (Bahmni.Common.Constants.diagnosisStatuses[status] === diagnosis.diagnosisStatusConcept.name) {
                     mappedDiagnosis.diagnosisStatus  = status;
                 }
             }

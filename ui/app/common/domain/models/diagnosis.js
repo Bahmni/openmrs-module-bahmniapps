@@ -1,4 +1,6 @@
-Bahmni.Clinical.Diagnosis = function (codedAnswer, order, certainty, existingObsUuid, freeTextAnswer, diagnosisDateTime, voided) {
+'use strict';
+
+Bahmni.Common.Domain.Diagnosis = function (codedAnswer, order, certainty, existingObsUuid, freeTextAnswer, diagnosisDateTime, voided) {
     var self = this;
     self.codedAnswer = codedAnswer;
     self.order = order;
@@ -66,7 +68,7 @@ Bahmni.Clinical.Diagnosis = function (codedAnswer, order, certainty, existingObs
         set: function (newStatus) {
             if (newStatus) {
                 this.diagnosisStatusValue = newStatus;
-                this.diagnosisStatusConcept = { name: Bahmni.Clinical.Constants.diagnosisStatuses[newStatus]};
+                this.diagnosisStatusConcept = { name: Bahmni.Common.Constants.diagnosisStatuses[newStatus]};
             } else {
                 this.diagnosisStatusValue = null;
                 this.diagnosisStatusConcept = null;

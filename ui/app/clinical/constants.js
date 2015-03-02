@@ -38,7 +38,6 @@ Bahmni.Clinical.Constants = (function () {
         messageForNoLabOrders: "No lab orders.",
         messageForNoObservation: "No observations captured for this visit.",
         messageForNoActiveVisit: "No active visit.",
-        diagnosisStatuses : {"RULED OUT" : "Ruled Out Diagnosis"},
         dischargeSummaryConceptName: "Discharge Summary",
         flexibleDosingInstructionsClass: "org.openmrs.module.bahmniemrapi.drugorder.dosinginstructions.FlexibleDosingInstructions",
         reviseAction: 'REVISE',

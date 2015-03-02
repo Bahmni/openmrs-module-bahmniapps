@@ -27,7 +27,7 @@ angular.module('bahmni.clinical')
 
             $scope.addNewDiagnosis = function (index, concept) {
                 var diagnosisBeingEdited = $scope.newlyAddedDiagnoses[index];
-                var diagnosis = new Bahmni.Clinical.Diagnosis(concept, diagnosisBeingEdited.order,
+                var diagnosis = new Bahmni.Common.Domain.Diagnosis(concept, diagnosisBeingEdited.order,
                     diagnosisBeingEdited.certainty, diagnosisBeingEdited.existingObs);
                 if (_canAdd(diagnosis)) {
                     $scope.newlyAddedDiagnoses.splice(index, 1, diagnosis);
@@ -35,7 +35,7 @@ angular.module('bahmni.clinical')
             };
 
             var addPlaceHolderDiagnosis = function () {
-                var diagnosis = new Bahmni.Clinical.Diagnosis('');
+                var diagnosis = new Bahmni.Common.Domain.Diagnosis('');
                 $scope.newlyAddedDiagnoses.push(diagnosis);
             };
 

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.clinical')
+angular.module('bahmni.common.domain')
     .service('diagnosisService', ['$http', function ($http) {
         this.getAllFor = function (searchTerm) {
             var url = Bahmni.Common.Constants.emrapiConceptUrl;

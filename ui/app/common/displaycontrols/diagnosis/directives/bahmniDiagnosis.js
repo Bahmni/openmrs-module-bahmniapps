@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.clinical')
+angular.module('bahmni.common.displaycontrol.diagnosis')
     .directive('bahmniDiagnosis', ['diagnosisService', '$q', 'spinner',
         function (diagnosisService, $q, spinner) {
 
@@ -15,6 +15,7 @@ angular.module('bahmni.clinical')
                         $scope.hasRuledOutDiagnoses = found ? true : false;
                     });
                 };
+                $scope.title = $scope.config.title;
                 $scope.toggle = function(diagnosis) {
                     diagnosis.showDetails = !diagnosis.showDetails;
                 };
@@ -31,11 +32,10 @@ angular.module('bahmni.clinical')
             return {
                 restrict: 'E',
                 controller: controller,
-                templateUrl: "displaycontrols/diagnosis/views/diagnosisDisplayControl.html",
+                templateUrl: "../common/displaycontrols/diagnosis/views/diagnosisDisplayControl.html",
                 scope: {
                     patientUuid: "=",
                     config: "=",
-                    title: "=sectionTitle",
                     visitUuid: "="
                 }
             }
