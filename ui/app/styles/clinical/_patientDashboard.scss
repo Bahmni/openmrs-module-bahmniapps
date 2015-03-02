@@ -69,6 +69,9 @@
     margin: 0;
     border-left: 0;
     border-right: 0;
+    td, th {
+      vertical-align: top;
+    }
   }
   section {
     label.date {
@@ -301,6 +304,10 @@ table.drug-order-table td.drug {
     .testUnderPanel {padding:0;}
     .date-text-only {width: 15%;}
     .toggle i {padding: 0};
+    .img-concept img {
+      vertical-align: top;
+      margin: 0 3px;
+    }
 }
 
 
