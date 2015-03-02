@@ -13,12 +13,15 @@
   padding-top: 10px;
   @include clearfix();
   .dashboard-sections {
-    width: 48%;
-    margin: 1%;
+    width: 50%;
+    margin: 0;
+    padding: 10px;
+    box-sizing: border-box;
     float: left;
     @media screen and (max-width: 859px) {
       width: 98%;
-      margin: 0;
+      margin: 0 auto;
+      padding: 0;
       float: none;
     }
   }
