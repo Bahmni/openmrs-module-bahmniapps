@@ -42,8 +42,8 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             },
 
             resolve: {
-                initialization: 'initialization',
-                patientInitialization: function (initialization, $stateParams, patientInitialization) {
+                initResolution: 'initialization',
+                patientResolution: function (initResolution, $stateParams, patientInitialization) {
                     return patientInitialization($stateParams.patientUuid);
                 }
             }
@@ -53,7 +53,7 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             templateUrl: 'views/dashboard.html',
             controller: 'AdtController',
             resolve: {
-                visitInitialization: function (initialization, $stateParams, patientInitialization, visitInitialization) {
+                visitResolution: function (initResolution, $stateParams, patientResolution, visitInitialization) {
                     return visitInitialization($stateParams.visitUuid);
                 }
             }
