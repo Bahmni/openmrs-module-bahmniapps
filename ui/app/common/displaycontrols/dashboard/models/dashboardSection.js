@@ -5,18 +5,15 @@ Bahmni.Common.DisplayControl.Dashboard.Section = function (section) {
     this.data = section.data || {};
     this.isObservation = section.isObservation || false;
     this.patientAttributes = section.patientAttributes || [];
+    var commonDisplayControlNames = ["disposition", "admissionDetails", "patientInformation", "diagnosis"];
     if (this.isObservation === true) {
         this.viewName = "../common/displaycontrols/dashboard/views/sections/observationSection.html";
-    } else if (this.name == "disposition") {
-        this.viewName = "../common/displaycontrols/dashboard/views/sections/disposition.html";
-    } else if (this.name == "admissionDetails") {
-        this.viewName = "../common/displaycontrols/dashboard/views/sections/admissionDetails.html";
-    } else if (this.name == "patientInformation") {
-        this.viewName = "../common/displaycontrols/dashboard/views/sections/patientInformation.html";
-    } else if (this.name == "diagnosis") {
-        this.viewName = "../common/displaycontrols/dashboard/views/sections/diagnosis.html";
-    }else {
-        this.viewName = "../clinical/dashboard/views/dashboardSections/" + section.name + ".html";
+    }else if (commonDisplayControlNames.some(function (name) {
+            return name == section.name
+        })) {
+        this.viewName = "../common/displaycontrols/dashboard/views/sections/" + this.name + ".html";
+    } else {
+        this.viewName = "../clinical/dashboard/views/dashboardSections/" + this.name + ".html";
     }
 };
 

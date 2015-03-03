@@ -51,9 +51,6 @@ angular.module('consultation')
                     patientContext: function (initialization, patientInitialization, $stateParams) {
                         return patientInitialization($stateParams.patientUuid);
                     },
-                    visitHistory: function (visitHistoryInitialization, $stateParams) {
-                        return visitHistoryInitialization($stateParams.patientUuid);
-                    },
                     visitContext: function (visitInitialization, visitHistory, initialization) {
                         if (visitHistory.activeVisit) {
                             return visitInitialization(visitHistory.activeVisit.uuid);
