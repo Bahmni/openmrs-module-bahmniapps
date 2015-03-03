@@ -1,4 +1,4 @@
-var Bahmni = Bahmni || {};
+Bahmni = Bahmni || {};
 Bahmni.Tests = Bahmni.Tests || {};
 
 Bahmni.Tests.tehsilMother = {

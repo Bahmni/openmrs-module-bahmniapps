@@ -26,5 +26,4 @@ var specUtil = {
         deferred.resolve(data);
         return deferred.promise;
     }
-
 };

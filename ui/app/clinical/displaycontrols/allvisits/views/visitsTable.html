@@ -2,7 +2,7 @@
     <h2 class="section-title" ng-if="params.title">
         {{params.title}}
     </h2>
-    <p class="placeholder-text" ng-if="::!hasVisits()">{{::noVisitsMessage}}</p>
+    <p class="placeholder-text" ng-if="!hasVisits()">{{::noVisitsMessage}}</p>
     <table class="visits dashboard-table" ng-if="::hasVisits()">
         <tbody>
             <tr ng-repeat="visit in ::visits | limitTo: params.maximumNoOfVisits">

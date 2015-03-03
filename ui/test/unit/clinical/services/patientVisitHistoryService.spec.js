@@ -1,7 +1,5 @@
 describe("patientVisitHistoryService", function() {
-	var rootScope;
-	var patientVisitHistoryService;
-	var visitService;
+	var rootScope, patientVisitHistoryService, visitService, visits;
 
     beforeEach(module('bahmni.clinical'));
 
@@ -11,9 +9,9 @@ describe("patientVisitHistoryService", function() {
     }));
 
     beforeEach(inject(function ($rootScope) {
-        drugOrderPromise = specUtil.createServicePromise('visitSeacrh');
-        visitService.search.and.returnValue(drugOrderPromise);
-        rootScope = $rootScope
+        visits = specUtil.respondWith({data: Bahmni.Tests.OpenMRSVisit});
+        visitService.search.and.returnValue(visits);
+        rootScope = $rootScope;
     }));
 
 
@@ -22,31 +20,12 @@ describe("patientVisitHistoryService", function() {
     }]));
 
 	describe("getVisits", function(){
-		it("should fetch visits on the first call for a patient", function(){
-
-			patientVisitHistoryService.getVisits("1234")
-
-			expect(visitService.search).toHaveBeenCalled();
-			expect(visitService.search.calls.mostRecent().args[0].patient).toBe("1234");
-		});
-		
-		it("should return cached visits on the second and subsequent calls for same patient", function(){
-			var visits = [{uuid: "1-1-1"}, {uuid: '2-2-2'}];
-			var visitSearchData = { results: visits };
-			var vistHistoryReturnedByFirstCall;
-			var vistHistoryReturnedBySecondCall;
-			var vistHistoryReturnedByThirdCall;
-
-			patientVisitHistoryService.getVisits("1234").then(function(data){ vistHistoryReturnedByFirstCall = data });
-			drugOrderPromise.callSuccessCallBack(visitSearchData);
-			patientVisitHistoryService.getVisits("1234").then(function(data){ vistHistoryReturnedBySecondCall = data });
-			patientVisitHistoryService.getVisits("1234").then(function(data){ vistHistoryReturnedByThirdCall = data });
-			rootScope.$digest();
-
-			expect(visitService.search.calls.count()).toBe(1);
-			expect(vistHistoryReturnedByFirstCall).toBe(visits);
-			expect(vistHistoryReturnedBySecondCall).toBe(vistHistoryReturnedByFirstCall);
-			expect(vistHistoryReturnedByThirdCall).toBe(vistHistoryReturnedByFirstCall);
-		});
+		it("should fetch visits for a patient", function(){
+			patientVisitHistoryService.getVisitHistory("1234").then(function(result) {
+                expect(visitService.search).toHaveBeenCalled();
+                expect(visitService.search.calls.mostRecent().args[0].patient).toBe("1234");
+                expect(result.visits.length).toBe(2);
+            });
+        });
 	});
 });
