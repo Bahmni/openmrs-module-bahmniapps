@@ -23,11 +23,11 @@ angular.module('bahmni.common.displaycontrol.admissiondetails')
             };
 
             $scope.getNotes = function(encounter){
-                return " ";
+                return null;
             };
 
-            $scope.showDetailsButton = function(){
-                return $scope.params && $scope.params.showDetailsButton;
+            $scope.showDetailsButton = function(encounter){
+                return $scope.params && $scope.params.showDetailsButton && !$scope.getNotes(encounter);
             };
 
             $scope.toggle= function(element){

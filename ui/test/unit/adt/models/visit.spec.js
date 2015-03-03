@@ -92,6 +92,18 @@ describe('Visit', function () {
             expect(visit.getAdmissionEncounter().encounterType.name).toBe("ADMISSION");
     });
 
+    it("should return null if no admission encounter", function() {
+            var visit = {
+                "encounters": [
+                    {encounterType: {name: "XYZ"}, voided: false},
+                    {encounterType: {name: "IPD"}, voided: false},
+                ]
+            };
+
+            visit = new Bahmni.ADT.Visit(visit);
+            expect(visit.getAdmissionEncounter()).toBeNull();
+    });
+
     it("should return discharge encounter", function() {
             var visit = {
                 "encounters": [
@@ -102,6 +114,18 @@ describe('Visit', function () {
 
             visit = new Bahmni.ADT.Visit(visit);
             expect(visit.getDischargeEncounter().encounterType.name).toBe("DISCHARGE");
+    });
+
+    it("should return null if no discharge encounter", function() {
+            var visit = {
+                "encounters": [
+                    {encounterType: {name: "ADMISSION"}, voided: false},
+                    {encounterType: {name: "IPD"}, voided: false},
+                ]
+            };
+
+            visit = new Bahmni.ADT.Visit(visit);
+            expect(visit.getDischargeEncounter()).toBeNull();
     });
 
 });
