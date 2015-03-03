@@ -10,6 +10,8 @@ angular.module('bahmni.adt')
 
             $scope.dashboardConfig = appService.getAppDescriptor().getConfigValue('dashboard');
 
+            $scope.getAdtConceptConfig = $scope.dashboardConfig.conceptName;
+
             var getDefaultVisitTypeUuid = function(){
                 if($scope.visit && $scope.visit.stopDatetime == null){
                     return $scope.visit.visitType.uuid;

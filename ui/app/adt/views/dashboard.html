@@ -8,9 +8,8 @@
             </select>
         </label>
     </div>
-    
-    <div id="adtNotes">
-        <concept-set concept-set-name="'Adt Notes'" observations="adtObservations"></concept-set>
+    <div id="adtNotes" ng-if="getAdtConceptConfig">
+        <concept-set concept-set-name="getAdtConceptConfig" observations="adtObservations"></concept-set>
     </div>
 
 
