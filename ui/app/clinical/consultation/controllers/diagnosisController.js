@@ -1,16 +1,16 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DiagnosisController', ['$scope', 'diagnosisService', 'contextChangeHandler',
-        function ($scope, diagnosisService, contextChangeHandler) {
-            
+    .controller('DiagnosisController', ['$scope', 'diagnosisService', 'contextChangeHandler', 'spinner',
+        function ($scope, diagnosisService, contextChangeHandler, spinner) {
+
             $scope.placeholder = "Add Diagnosis";
             $scope.hasAnswers = false;
 
             $scope.orderOptions = ['PRIMARY', 'SECONDARY'];
             $scope.certaintyOptions = ['CONFIRMED', 'PRESUMED'];
             $scope.diagnosisStatuses = ['RULED OUT'];
-            
+
             $scope.getDiagnosis = function (searchTerm) {
                 return diagnosisService.getAllFor(searchTerm);
             };
@@ -105,18 +105,37 @@ angular.module('bahmni.clinical')
                 });
                 return isPresent;
             };
-            
+
             $scope.removeObservation = function (index) {
                 if (index >= 0) {
                     $scope.newlyAddedDiagnoses.splice(index, 1);
                 }
             };
 
-            $scope.clearDiagnosis = function(index) {
+            $scope.clearDiagnosis = function (index) {
                 var diagnosisBeingEdited = $scope.newlyAddedDiagnoses[index];
                 diagnosisBeingEdited.clearCodedAnswerUuid();
             };
 
+            var reloadDiagnosesSection = function (encounterUuid) {
+
+                diagnosisService.getPastAndCurrentDiagnoses($scope.patient.uuid, encounterUuid).then(function (response) {
+                    $scope.consultation.pastDiagnoses = response.pastDiagnoses;
+                    $scope.consultation.savedDiagnosesFromCurrentEncounter = response.savedDiagnosesFromCurrentEncounter;
+                });
+
+            };
+
+
+            $scope.deleteDiagnosis = function (diagnosis) {
+                var obsUUid = diagnosis.existingObs != null ? diagnosis.existingObs : diagnosis.previousObs
+
+                spinner.forPromise(
+                    diagnosisService.deleteDiagnosis(diagnosis.encounterUuid, obsUUid).then(function (result) {
+                        reloadDiagnosesSection(diagnosis.encounterUuid);
+                    }))
+                    .then(function () {});
+            };
 
             var setDiagnosis = function () {
                 $scope.consultation.newlyAddedDiagnoses = $scope.newlyAddedDiagnoses.filter(function (diagnosis) {
@@ -176,4 +195,6 @@ angular.module('bahmni.clinical')
 
             init();
 
-        }]);
+        }
+    ])
+;

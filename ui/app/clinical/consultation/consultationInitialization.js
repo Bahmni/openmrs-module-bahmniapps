@@ -19,22 +19,8 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                     });
             };
             
-
-            var getPastDiagnoses = function (encounterUuid) {
-                return diagnosisService.getPastDiagnoses(patientUuid).then(function (response) {
-                    var diagnosisMapper = new Bahmni.DiagnosisMapper();
-                    var allDiagnoses = diagnosisMapper.mapDiagnoses(response.data);
-                    var pastDiagnoses = diagnosisMapper.mapPastDiagnosis(allDiagnoses, encounterUuid);
-                    var savedDiagnosesFromCurrentEncounter = diagnosisMapper.mapSavedDiagnosesFromCurrentEncounter(allDiagnoses, encounterUuid);
-                    return {
-                        "pastDiagnoses": pastDiagnoses,
-                        "savedDiagnosesFromCurrentEncounter": savedDiagnosesFromCurrentEncounter
-                    }
-                });
-            };
-            
             return getActiveEncounter().then(function (consultation) {
-                return getPastDiagnoses(consultation.encounterUuid).then(function (diagnosis) {
+                return diagnosisService.getPastAndCurrentDiagnoses(patientUuid, consultation.encounterUuid).then(function (diagnosis) {
                     consultation.pastDiagnoses = diagnosis.pastDiagnoses;
                     consultation.savedDiagnosesFromCurrentEncounter = diagnosis.savedDiagnosesFromCurrentEncounter;
                     consultation.saveHandler = new Bahmni.Clinical.SaveHandler();
