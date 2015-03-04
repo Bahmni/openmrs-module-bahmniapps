@@ -199,8 +199,8 @@ Bahmni.ConceptSet.Observation.prototype = {
         return date.getUTCFullYear() && date.getUTCFullYear().toString().length <= 4;
     },
 
-    hasValidDateTime: function () {
-        return this.value === "Invalid DateTime";
+    hasInvalidDateTime: function () {
+        return this.value === "Invalid Datetime";
     },
 
     isValid: function (checkRequiredFields, conceptSetRequired) {
@@ -209,7 +209,7 @@ Bahmni.ConceptSet.Observation.prototype = {
         if (conceptSetRequired && this.isRequired() && !this.hasValue()) return false;
         if (checkRequiredFields && this.isRequired() && !this.hasValue()) return false;
         if (this._isDateDataType()) return this.isValidDate();
-        if (this._isDateTimeDataType()) return !this.hasValidDateTime();
+        if (this._isDateTimeDataType()) return !this.hasInvalidDateTime();
         return true;
     },
 

@@ -5,6 +5,7 @@ describe('Treatment Table DisplayControl', function () {
     var DEFAULT_DASHBOARD = {
         "dashboardName": "General",
         "default": true,
+        "printing": {"conig": "Printing Config"},
         "sections": [
             {
                 "title": "Nutritional Values",
@@ -49,6 +50,7 @@ describe('Treatment Table DisplayControl', function () {
             }
         ]
     };
+
     var DASHBOARD_CONFIG = [
         DEFAULT_DASHBOARD,
         ANOTHER_DASHBOARD
@@ -85,6 +87,20 @@ describe('Treatment Table DisplayControl', function () {
 
     it("should show dashboard tabs", function () {
         expect(dashboardConfig.showTabs()).toBe(true);
+    });
+
+    it("should return printing config for current dashboard", function () {
+        expect(dashboardConfig.getPrintConfigForCurrentDashboard()).toEqual({"conig": "Printing Config"});
+    });
+
+    it("should return true if printing config is present", function () {
+        expect(dashboardConfig.showPrint()).toBe(true);
+    });
+
+    it("should return true if current dashboard", function () {
+        dashboardConfig.switchDashboard(ANOTHER_DASHBOARD);
+        expect(dashboardConfig.isCurrentDashboard(ANOTHER_DASHBOARD)).toBe(true);
+        expect(dashboardConfig.getCurrentDashboard().dashboardName).toBe("General - 2");
     });
     
 });

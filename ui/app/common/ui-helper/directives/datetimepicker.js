@@ -20,8 +20,10 @@ angular.module('bahmni.common.uiHelper')
             $scope.updateModel = function() {
                 if (valueCompletelyFilled()) {
                     $scope.model =  getSelectedDateStr() + " " + getSelectedTimeStr();
-                }else{
-                    $scope.model = "Invalid DateTime";
+                } else if (!$scope.isValid()) {
+                    $scope.model = "Invalid Datetime";
+                } else {
+                    $scope.model = "";
                 }
             };
 
