@@ -7,6 +7,7 @@ angular.module('bahmni.common.domain')
             var params = {concept: conceptNames};
             if(visitUuid){
                 params.visitUuid = visitUuid;
+                params.scope = scope;
             }
             else{
                 params.patientUuid = patientUuid;
