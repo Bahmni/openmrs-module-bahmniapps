@@ -5,7 +5,6 @@ angular.module('bahmni.clinical').factory('visitHistoryInitialization',
         function (patientVisitHistoryService) {
             return function (patientUuid) {
                 var x = patientVisitHistoryService.getVisitHistory(patientUuid);
-                console.log(JSON.stringify(x));
                 return x;
             }
         }

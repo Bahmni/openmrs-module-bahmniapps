@@ -71,7 +71,7 @@ describe("drugOrderViewModel", function () {
         treatment.durationUnit = "Days";
         treatment.route = "Orally";
         treatment.uniformDosingType.dose = "1";
-        treatment.doseUnits = "Capsule";
+        treatment.uniformDosingType.doseUnits = "Capsule";
         treatment.uniformDosingType.frequency = "Once a day";
         treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
         expect(treatment.getDescription()).toBe("1 Capsule, Once a day, Before Meals, Orally - 10 Days");
@@ -114,7 +114,7 @@ describe("drugOrderViewModel", function () {
         treatment.durationUnit = "Days";
         treatment.route = "Orally";
         treatment.uniformDosingType.dose = "1";
-        treatment.doseUnits = "Capsule";
+        treatment.uniformDosingType.doseUnits = "Capsule";
         treatment.uniformDosingType.frequency = "Once a day";
         treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
         expect(treatment.getDescriptionWithoutRoute()).toBe("1 Capsule, Once a day, Before Meals, 10 Days");
@@ -255,7 +255,7 @@ describe("drugOrderViewModel", function () {
             treatment.quantity = null;
             treatment.quantityUnit = null;
             treatment.uniformDosingType.dose = dose;
-            treatment.doseUnits = doseUnits;
+            treatment.uniformDosingType.doseUnits = doseUnits;
             treatment.uniformDosingType.frequency = frequency;
             treatment.duration = duration;
             treatment.durationUnit = durationUnit;
@@ -267,12 +267,12 @@ describe("drugOrderViewModel", function () {
             var treatment = sampleTreatment({}, treatmentConfig, null, Bahmni.Common.Util.DateUtil.now());
             treatment.quantity = null;
             treatment.quantityUnit = null;
-            treatment.doseUnits = doseUnits;
             treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.variable;
             treatment.variableDosingType = {
                 morningDose: morningDose,
                 afternoonDose: afternoonDose,
-                eveningDose: eveningDose
+                eveningDose: eveningDose,
+                doseUnits: doseUnits
             };
             treatment.duration = duration;
             treatment.durationUnit = durationUnit;
@@ -616,7 +616,8 @@ describe("drugOrderViewModel", function () {
 
     describe("revise", function () {
         it("should create a new object that can be used for revision", function () {
-            var treatment = sampleTreatment({}, [], {doseUnits: 'Tablet(s)'}, Bahmni.Common.Util.DateUtil.now());
+            var treatment = sampleTreatment({}, [], {}, Bahmni.Common.Util.DateUtil.now());
+            treatment.uniformDosingType.doseUnits = 'Tablet(s)';
             var route = treatment.route = 'Oral';
             expect(treatment.route).toBe(route);
             var now = DateUtil.now();
@@ -903,30 +904,30 @@ describe("drugOrderViewModel", function () {
             });
 
             it("should fail validation if dose is given but dose units and frequency is not", function () {
-                treatment.doseUnits = undefined;
                 treatment.uniformDosingType = {
                     dose: 1,
-                    frequency: undefined
+                    frequency: undefined,
+                    doseUnits: undefined
                 };
 
                 expect(treatment.validate()).toBeFalsy();
             });
 
             it("should fail validation if dose units are given but dose and frequency is not", function () {
-                treatment.doseUnits = "Some";
                 treatment.uniformDosingType = {
                     dose: undefined,
-                    frequency: undefined
+                    frequency: undefined,
+                    doseUnits: "Some"
                 };
 
                 expect(treatment.validate()).toBeFalsy();
             });
 
             it("should fail validation if dose units and frequency are given but dose is not", function () {
-                treatment.doseUnits = "Some";
                 treatment.uniformDosingType = {
                     dose: undefined,
-                    frequency: "Once a day"
+                    frequency: "Once a day",
+                    doseUnits: "Some"
                 };
 
                 expect(treatment.validate()).toBeFalsy();
@@ -934,50 +935,50 @@ describe("drugOrderViewModel", function () {
 
             it("should fail validation dose and dose units are given and frequency is not", function () {
                 var treatment = sampleTreatment({}, {}, null, Bahmni.Common.Util.DateUtil.now());
-                treatment.doseUnits = "Some";
                 treatment.uniformDosingType = {
                     dose: 1,
-                    frequency: undefined
+                    frequency: undefined,
+                    doseUnits: "Some"
                 };
 
                 expect(treatment.validate()).toBeFalsy();
             });
 
             it("should pass validation if all are given", function () {
-                treatment.doseUnits = "Some";
                 treatment.uniformDosingType = {
                     dose: 1,
-                    frequency: "Once a day"
+                    frequency: "Once a day",
+                    doseUnits: "Some"
                 };
 
                 expect(treatment.validate()).toBeTruthy();
             });
 
             it("should fail validation if all are given but dose is 0", function () {
-                treatment.doseUnits = "Some";
                 treatment.uniformDosingType = {
                     dose: 0,
-                    frequency: "Once a day"
+                    frequency: "Once a day",
+                    doseUnits: "Some"
                 };
 
                 expect(treatment.validate()).toBeFalsy();
             });
 
             it("should fail validation if dose is 0 and dose units is not given", function () {
-                treatment.doseUnits = undefined;
                 treatment.uniformDosingType = {
                     dose: 0,
-                    frequency: "Once a day"
+                    frequency: "Once a day",
+                    doseUnits: undefined
                 };
 
                 expect(treatment.validate()).toBeFalsy();
             });
 
             it("should fail validation if dose is 0 and dose units is given but frequency is not", function () {
-                treatment.doseUnits = "Some";
                 treatment.uniformDosingType = {
                     dose: 0,
-                    frequency: undefined
+                    frequency: undefined,
+                    doseUnits: "Some"
                 };
 
                 expect(treatment.validate()).toBeFalsy();
@@ -988,66 +989,66 @@ describe("drugOrderViewModel", function () {
             var treatment = sampleTreatment({}, {});
             treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.variable;
             it("should fail validation if all the fields are empty", function () {
-                treatment.doseUnits = undefined;
                 treatment.variableDosingType = {
                     morningDose: undefined,
                     afternoonDose: undefined,
-                    eveningDose: undefined
+                    eveningDose: undefined,
+                    doseUnits: undefined
                 };
 
                 expect(treatment.validate()).toBeFalsy();
             });
 
             it("should fail validation if morning dose is set and all other fields are empty", function () {
-                treatment.doseUnits = undefined;
                 treatment.variableDosingType = {
                     morningDose: 1,
                     afternoonDose: undefined,
-                    eveningDose: undefined
+                    eveningDose: undefined,
+                    doseUnits: undefined
                 };
 
                 expect(treatment.validate()).toBeFalsy();
             });
 
             it("should fail validation if afternoon dose is set and all other fields are empty", function () {
-                treatment.doseUnits = undefined;
                 treatment.variableDosingType = {
                     morningDose: undefined,
                     afternoonDose: 1,
-                    eveningDose: undefined
+                    eveningDose: undefined,
+                    doseUnits: undefined
                 };
 
                 expect(treatment.validate()).toBeFalsy();
             });
 
             it("should fail validation if evening dose is set and all other fields are empty", function () {
-                treatment.doseUnits = undefined;
                 treatment.variableDosingType = {
                     morningDose: undefined,
                     afternoonDose: undefined,
-                    eveningDose: 1
+                    eveningDose: 1,
+                    doseUnits: undefined
                 };
 
                 expect(treatment.validate()).toBeFalsy();
             });
 
             it("should fail validation if dose units is set and all other fields are empty", function () {
-                treatment.doseUnits = "Tablet(s)";
                 treatment.variableDosingType = {
                     morningDose: undefined,
                     afternoonDose: undefined,
-                    eveningDose: undefined
+                    eveningDose: undefined,
+                    doseUnits: "Tablet(s)"
                 };
 
                 expect(treatment.validate()).toBeFalsy();
             });
 
             it("should pass validation if all the fields are set", function () {
-                treatment.doseUnits = "Tablet(s)";
                 treatment.variableDosingType = {
                     morningDose: 1,
                     afternoonDose: 0,
-                    eveningDose: 1
+                    eveningDose: 1,
+                    doseUnits: "Tablet(s)"
                 };
 
                 expect(treatment.validate()).toBeTruthy();
