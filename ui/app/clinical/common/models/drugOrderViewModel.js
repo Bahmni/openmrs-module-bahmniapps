@@ -31,6 +31,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
     });
 
     Object.defineProperty(this, 'doseUnits', {
+        enumerable: true,
         get: function() {
             if(this.isUniformDosingType()) {
                 return this.uniformDosingType.doseUnits;
