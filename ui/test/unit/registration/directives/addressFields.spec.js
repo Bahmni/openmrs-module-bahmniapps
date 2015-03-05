@@ -17,6 +17,7 @@ describe('AddressFieldsDirectiveController', function () {
         inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
             scope.address = {};
+            var autocompletedFields = ["cityVillage", "address3", "countyDistrict", "stateProvince"];
             scope.addressLevels = [
               {"name": "State", "addressField": "stateProvince", "required": false },
               {"name": "District", "addressField": "countyDistrict", "required": false },
@@ -59,37 +60,49 @@ describe('AddressFieldsDirectiveController', function () {
 
     describe("getAddressDataResults", function(){
        it("should map address field to value and label for fields with parent", function(){
-           var addresses = [{ name : "someVillage" , parent : { name : "someTehsil"}}];
+           var addresses ={data: [{ name : "someVillage" , parent : { name : "someTehsil"}}]};
 
            var addressDataResults = scope.getAddressDataResults(addresses);
 
            expect(addressDataResults.length).toBe(1);
            expect(addressDataResults[0].value).toBe("someVillage");
            expect(addressDataResults[0].label).toBe("someVillage, someTehsil");
-           expect(addressDataResults[0].addressField).toBe(addresses[0]);
+           expect(addressDataResults[0].addressField).toBe(addresses.data[0]);
        });
 
        it("should map address field to value and label for fields without parent", function(){
-           var addresses = [{ name : "someVillage"}];
+           var addresses = {data:[{ name : "someVillage"}]};
 
            var addressDataResults = scope.getAddressDataResults(addresses);
 
            expect(addressDataResults.length).toBe(1);
            expect(addressDataResults[0].value).toBe("someVillage");
            expect(addressDataResults[0].label).toBe("someVillage");
-           expect(addressDataResults[0].addressField).toBe(addresses[0]);
+           expect(addressDataResults[0].addressField).toBe(addresses.data[0]);
        });
 
        it("should map address field to value and label for fields with blank parent and grand parent", function(){
            var blankTehsil = {name: "", parent: {name: "someDistrict"}}
-           var addresses = [{ name : "someVillage", parent: blankTehsil}];
+           var addresses = {data:[{ name : "someVillage", parent: blankTehsil}]};
 
            var addressDataResults = scope.getAddressDataResults(addresses);
 
            expect(addressDataResults.length).toBe(1);
            expect(addressDataResults[0].value).toBe("someVillage");
            expect(addressDataResults[0].label).toBe("someVillage, someDistrict");
-           expect(addressDataResults[0].addressField).toBe(addresses[0]);
+           expect(addressDataResults[0].addressField).toBe(addresses.data[0]);
        });
+    });
+
+    describe("Editing any auto complete field", function(){
+        it("should clear all other auto completed fields", function(){
+            scope.address = {address3: "address", countyDistrict: "district", stateProvince: "state", cityVillage:"village"};
+
+            scope.clearFields("countyDistrict");
+
+            expect(scope.address.cityVillage).toBe("")
+            expect(scope.address.address3).toBe("")
+
+        });
     });
 });
