@@ -17,10 +17,10 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        this.deleteDiagnosis = function(encounterUuid, obsUuid){
+        this.deleteDiagnosis = function(obsUuid){
             var url = Bahmni.Common.Constants.bahmniDeleteDiagnosisUrl;
             return $http.get(url, {
-                params : {encounterUuid : encounterUuid, obsUuid : obsUuid}
+                params : {obsUuid : obsUuid}
             });
         };
 

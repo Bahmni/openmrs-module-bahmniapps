@@ -119,7 +119,7 @@ angular.module('bahmni.clinical')
 
             var reloadDiagnosesSection = function (encounterUuid) {
 
-                diagnosisService.getPastAndCurrentDiagnoses($scope.patient.uuid, encounterUuid).then(function (response) {
+                return diagnosisService.getPastAndCurrentDiagnoses($scope.patient.uuid, encounterUuid).then(function (response) {
                     $scope.consultation.pastDiagnoses = response.pastDiagnoses;
                     $scope.consultation.savedDiagnosesFromCurrentEncounter = response.savedDiagnosesFromCurrentEncounter;
                 });
@@ -131,7 +131,7 @@ angular.module('bahmni.clinical')
                 var obsUUid = diagnosis.existingObs != null ? diagnosis.existingObs : diagnosis.previousObs
 
                 spinner.forPromise(
-                    diagnosisService.deleteDiagnosis(diagnosis.encounterUuid, obsUUid).then(function (result) {
+                    diagnosisService.deleteDiagnosis(obsUUid).then(function (result) {
                         reloadDiagnosesSection(diagnosis.encounterUuid);
                     }))
                     .then(function () {});
