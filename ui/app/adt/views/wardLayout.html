@@ -1,7 +1,7 @@
 <div>
     <div class="back-btn-wrapper"><button ng-click="showWardList()"><span class="icon-arrow-left"></span>Ward List</button></div>
     <div class="bed-assigned-msg"><div class="confirmationMessage">{{ confirmationMessage}}</div></div>
-    <div class="bed-info">
+    <div class="bed-info" ng-show="selectedBed.bed.bedNumber">
 		<ul>
 			<li>Bed: {{selectedBed.bed.bedNumber}}</li>
 			<div ng-show="!selectedBed.available">

@@ -134,6 +134,7 @@ angular.module('bahmni.adt')
             wardService.getWardsList().success(function (wardsList) {
                 $scope.wards = wardsList.results;
             });
+            $scope.confirmationMessage = null;
         };
 
         var getBedsForWard = function (wardUuid) {
