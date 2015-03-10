@@ -36,7 +36,9 @@
 table {
 	thead tr th{
 		background: $lighterGray;
-    padding: 7px ;
+    padding: 7px;
+    font-weight: bold;
+    font-family: $OpenSansFont;
 	}
 	tbody tr:nth-child(odd), tr:nth-child(even) {
 		background: $white;
