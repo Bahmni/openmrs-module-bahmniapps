@@ -7,7 +7,7 @@
             <h2 class="section-title">
                 <i class="icon-caret-right" ng-hide="conceptSet.isOpen"></i>
                 <i class="icon-caret-down" ng-show="conceptSet.isOpen"></i>
-                <strong>{{conceptSet.label}}</strong>
+                {{conceptSet.label}}
                 <button type="button" ng-if="conceptSet.showComputeButton() && conceptSet.isOpen" ng-click="computeField(conceptSet)"
                         class="fr btn-small">Compute
                 </button>

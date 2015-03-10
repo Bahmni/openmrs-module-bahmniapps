@@ -2,7 +2,10 @@
     <h2 ng-dialog="dashboard/views/dashboardSections/allDiseaseTemplate.html"
         ng-dialog-class="ngdialog-theme-flat ngdialog-theme-custom"
         ng-dialog-data="{{dialogData}}"
-        ng-dialog-controller="PatientDashboardAllDiseaseTemplateController" class="section-title">{{section.title}}</h2>
+        ng-dialog-controller="PatientDashboardAllDiseaseTemplateController" class="section-title has-link">
+		<span class="title-link"> {{section.title}} </span>
+	    <i class="icon-external-link"></i>
+     </h2>
 
     <disease-template  config="section.dashboardParams" template="getDiseaseTemplateSection(section.templateName)" patient="patient"
                        show-date-time-for-intake="showDateTimeForIntake" show-time-for-progress="showTimeForProgress"></disease-template>

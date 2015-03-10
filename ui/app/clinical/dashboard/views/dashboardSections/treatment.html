@@ -1,4 +1,7 @@
 <div ng-controller="PatientDashboardTreatmentController" class="dashboard-treatment-section">
-    <h2 ng-click="openSummaryDialog()"class="section-title">{{section.title}}</h2>
+    <h2 ng-click="openSummaryDialog()"class="section-title has-link">
+    	<span class="title-link"> {{section.title}} </span>
+	    <i class="icon-external-link"></i>
+    </h2>
         <treatment-data id="dashboard-treatments" params="dashboardParams"></treatment-data>
 </div>
