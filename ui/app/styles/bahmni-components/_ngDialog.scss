@@ -74,6 +74,11 @@
             color: $darkGray;
             border: 0;
         }
+        &.h-scroll, &.pivot-table {
+            tr td, tr th {
+                border-bottom: 1px solid $lighterGray; 
+            }
+        }
     }
 
     .treatment-section {
