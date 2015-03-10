@@ -1,4 +1,4 @@
-<tr ng-class="{active: drugOrder.isActive()}">
+<tr ng-class="{active: drugOrder.isActive(), 'test-notes-parent': drugOrder.additionalInstructions, 'notes-open': showDetails}" >
     <td class="drug" ng-class="{'strike-text':drugOrder.isDiscontinuedOrStopped(), 'active-drug': drugOrder.isActive(), 'scheduled-drug': drugOrder.isScheduled()}">
         <span ng-if="!params.showDrugForm">{{drugOrder.drug.name}}</span>
         <span ng-if="params.showDrugForm">{{drugOrder.getDisplayName()}}</span>
@@ -19,8 +19,9 @@
         </button>
     </td>
 </tr>
-<tr ng-show="drugOrder.additionalInstructions">
-    <td colspan="4" class="notes inline-notes">
+<tr ng-show="drugOrder.additionalInstructions" ng-class="{'has-test-notes': drugOrder.additionalInstructions}">
+    <td colspan="4" class="notes test-notes">
+        <i class="icon-comments left"></i>
         <pre class="left">{{drugOrder.additionalInstructions}}</pre>
         <div class="footer-note right">
             <span class="provider">

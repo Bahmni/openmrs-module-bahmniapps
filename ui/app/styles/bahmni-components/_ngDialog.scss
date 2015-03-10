@@ -29,7 +29,7 @@
             margin: 0;
         }
         &.treatment-section {
-            @extend .section-grid;
+            @extend %section-grid;
         }
     }
 
@@ -59,13 +59,6 @@
     right: 0;
     overflow: auto;
     clear: both;
-    h2 {
-        color: $bahmniSectionHeaderColor;
-        border-bottom: 1px solid $bahmniSectionHeaderColor;
-        font-size: 18px;
-        font-weight: normal;
-        font-family: $OpenSansBoldFont;
-    }
     table {
         th {
             background: $lightestGray;
@@ -79,6 +72,7 @@
         tr th, tr td {
             font-size: 14px;
             color: $darkGray;
+            border: 0;
         }
     }
 
@@ -98,10 +92,7 @@ div.ngdialog-close {
     color: transparent;
 }
 .dashboard-treatment-section, .dashboard-laborders-section, .dashboard-visits-section, .dashboard-more-info {
-    h2 {
-        color: $bahmniLinkColor;
-        cursor: pointer;
-    }
+
 }
 
 .dialog-button-group {

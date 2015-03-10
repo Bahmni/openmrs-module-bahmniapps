@@ -2,7 +2,7 @@
     <h2 class="section-title">{{title}}</h2>
     <table class="dashboard-table history-diagnosis">
         <tbody ng-repeat="diagnosis in allDiagnoses | primaryDiagnosisFirst" class="row" ng-class="{'hidden-print': diagnosis.diagnosisStatus}">
-            <tr class="view-past" >
+            <tr class="view-past" ng-class="{'notes-open': diagnosis.showDetails, 'test-notes-parent': diagnosis.comments}">
                 <td class="name">
                     <span id="diagnosisName" class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">
                         {{diagnosis.getDisplayName()}}
@@ -23,8 +23,9 @@
                     </button>
                 </td>
             </tr>
-            <tr ng-show="diagnosis.comments">
-                <td colspan="4" class="notes inline-notes">
+            <tr ng-show="diagnosis.comments" ng-class="{'has-test-notes': diagnosis.comments}">
+                <td colspan="4" class="notes test-notes">
+                    <i class="icon-comments left"></i>
                     <pre id="diagnosisComments" class="left">{{diagnosis.comments}}</pre>
                     <div class="footer-note right">
                         <span class="provider">

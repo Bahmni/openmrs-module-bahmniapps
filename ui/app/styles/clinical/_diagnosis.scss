@@ -15,6 +15,7 @@
     .new-diagnosis {
         border: 1px solid darken($lightGray, 10%);
         margin: 35px 5px 20px 5px;
+        background: $white;
         @media screen and (max-width: 768px) {
             margin-top: 20px;
         }
@@ -164,6 +165,7 @@
     }
     button.toggle {
       font-size: 100%;
+      background: none;
       i {
         @include button();
         padding: 0 12px;

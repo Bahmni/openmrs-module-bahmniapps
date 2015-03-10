@@ -1,6 +1,6 @@
 .visit-summary-page {
     section.block {
-        @extend .section-grid;
+        @extend %section-grid;
         margin: 0 0 15px;
         section.block {
           margin: 0;
@@ -13,7 +13,7 @@
 }
 
 .opd-wrapper {overflow-x: hidden;}
-#view-content .visit {padding: 10px 5px;}
+#view-content .visit {padding: 5px;}
 .visit {
   table tr:nth-child(even), table tr:nth-child(odd) {
     background: $white;
@@ -462,10 +462,12 @@ a.visit:before {
       width: auto;
     }
     .patient-info {
+        border: 0;
       td {
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
         background: $bahmniTableHeaderBg;
+        border-top: 0;
       }
       .patient-img {
          // display: inline-block; 

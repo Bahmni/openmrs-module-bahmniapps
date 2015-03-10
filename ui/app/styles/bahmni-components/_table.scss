@@ -14,7 +14,7 @@
 
   .table-header{
     background: $lightestGray;
-    border-bottom:1px solid $lightGray;
+    border-bottom: 1px solid $lightGray;
     .col{
       @include font-size(1);
       font-weight: bold;
@@ -35,12 +35,16 @@
 /*basic table*/
 table {
 	thead tr th{
-		background: $bahmniTableHeaderBg;
-        padding:10px  7px 10px 7px ;
+		background: $lighterGray;
+    padding: 7px ;
 	}
 	tbody tr:nth-child(odd), tr:nth-child(even) {
 		background: $white;
 	}
+  tr {
+    border: 0; /* this overrites the external settings */
+    border-bottom: 1px solid $lighterGray;
+  }
 }
 
 /*table with no border*/
@@ -79,12 +83,13 @@ ul.table-mimic {
 table.h-scroll {
     width: 100%; border-collapse: collapse; border-spacing: 0;
     display: block; position: relative;
-    border-left: 1px solid $lightestGray;
-    border-right: 1px solid $lightestGray;
+    // border-left: 1px solid $lightestGray;
+    // border-right: 1px solid $lightestGray;
     font-size: 14px;
     margin-top: 0;
     overflow: auto;
-    th, td { margin: 0; vertical-align: top; }
+    tr { border: 1px solid $lighterGray; }
+    th, td { margin: 0; vertical-align: top; padding: 5px 10px; min-height: 26px;}
     th { text-align: left; background: $lightestGray;}
     th.drug {font-family: "OpenSans", Arial, sans-serif;}
 
@@ -93,7 +98,7 @@ table.h-scroll {
     thead tr { display: block; border: 0;}
     th { display: block;}
     tbody tr { display: table-cell; vertical-align: top; border-top: 0;}
-    td { display: block; min-height: 1.93em; text-align: left; }
+    td { display: block; text-align: left; }
 
       /* sort out borders */
     th { border-bottom: 0; border-left: 0; }

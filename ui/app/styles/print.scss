@@ -11,6 +11,7 @@ body, body pre {
   font-family: Arial, sans-serif;
   font-size: 10pt;
   color: #000;
+  background: #fff;
 }
 
 body pre {
@@ -191,8 +192,15 @@ h1,h2,h3{
 			border: 0;
 			text-transform: uppercase;
 			text-decoration: underline;
+			background: none;
 			[class^="icon-"] {
 				display: none;
+			}
+			&.has-link {
+			    .title-link {
+			        text-decoration: none;
+			        border-bottom: 0;
+			    }
 			}
 	}
 	section.block, .dashboard-section {

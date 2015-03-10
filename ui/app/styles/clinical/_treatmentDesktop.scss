@@ -2,7 +2,6 @@ html.no-touch {
 	@media screen and (min-width: 1024px) {
 		.treatment-page {
 			.edit-drug-order { 
-				padding: 2px;
 				form fieldset { 
 					input[type="date"], select, select.ng-invalid {
 						height: auto;

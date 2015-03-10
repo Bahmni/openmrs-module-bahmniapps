@@ -9,7 +9,7 @@
                 <td class="value">{{bedDetails.wardName}}</td>
                 <td class="value">{{bedDetails.bedNumber}}</td>
             </tr>
-            <tr class="view-past">
+            <tr class="view-past" ng-class="{'notes-open': admissionEncounter.show}">
                 <td class="name">
                     <span class="disposition-state">Admission Date</span>
                 </td>
@@ -33,7 +33,7 @@
                     </div>
                 </td>
             </tr>
-            <tr class="view-past" ng-if="dischargeEncounter">
+            <tr class="view-past" ng-if="dischargeEncounter" ng-class="{'notes-open': dischargeEncounter.show}"> 
                 <td class="name">
                     <span class="disposition-state">Discharge Date</span>
                 </td>
@@ -43,8 +43,8 @@
                 <td class="toggle-btn">
                     <button class="toggle fr"
                             ng-if="showDetailsButton(dischargeEncounter)" ng-click="toggle(dischargeEncounter)">
-                        <i class="icon-plus-sign" ng-hide="dischargeEncounter.show"></i>
-                        <i class="icon-minus-sign" ng-show="dischargeEncounter.show"></i>
+                        <i class="icon-angle-down" ng-hide="dischargeEncounter.show"></i>
+                        <i class="icon-angle-up" ng-show="dischargeEncounter.show"></i>
                     </button>
                 </td>
             </tr>

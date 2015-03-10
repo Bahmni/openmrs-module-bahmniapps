@@ -7,7 +7,7 @@
         border-top: 1px solid $lightestGray;
         font-size: 14px;
         color: #000;
-        background: #dfdfdf;
+        background: $lighterGray;
         clear: both;
         .tree-list-item {
             padding-top: 3px;
@@ -22,7 +22,7 @@
             }
         }
         ul li {
-            background: #f6f6f6;
+            background: $lightestGray;
             .tree-list-item {
                 padding-left: 20px;
                 .field-attribute {

@@ -41,20 +41,39 @@ use either a `<div>` or an `<section` element:
     box-shadow: 0px 0px 8px -1px $lightGray;
 }
 
-.section-grid {
-	border: 1px solid $lightGray;
-	@include border-radius($smallestSpacing);
+.section-grid,
+%section-grid {
+	border: 1px solid $bahmniSecondaryColor;
+	border-radius: 5px 5px 0 0;
+	background: $white;
 }
-
 h2.section-title {
-	font-family: $OpenSansBoldFont;
+	font-family: $OpenSansFont;
 	padding: $defaultSpacing;
 	margin-top: 0;
 	margin-bottom: 0;
-	color: $bahmniSectionHeaderColor;
-	font-size: 18px;
-	border-bottom: 1px solid $bahmniSectionHeaderColor;
-	clear: both; overflow: auto;
+	color: $white;
+	font-size: 16px;
+	clear: both; 
+	overflow: auto;
+	background: $bahmniSecondaryColor;
+	position: relative;
+	&.has-link {
+        cursor: pointer;
+    	&:hover {
+    		background: darken($bahmniSecondaryColor,5%);
+    	}
+	    .title-link {
+	        border-bottom: 1px solid white;
+	    }
+	    .icon-external-link {
+	        position: absolute;
+	        right: 0;
+	        top: 0;
+	        font-size: 26px;
+	        opacity: 0.5;
+	    }
+	}
 }
 
 /* document link */
@@ -64,20 +83,35 @@ a.document-link {
 	font-size: 14px;
 	line-height: 1.3em;
 	&:hover {
-		background: $lightestGray;
-		border-right: 1px solid $lightGray;
+		text-decoration: underline;
 	}
 }
 
 /* notes */
+table {
+    tr.test-notes-parent, tr.notes-open {
+      border-bottom: 0;
+      td {
+        border: 0;
+      }
+    }
+    tr.notes-open td {
+      background: $clinicalNotesColor;
+    }
+    tr.has-test-notes td {
+        border: 0;
+    }
+}
+
 .notes {
-	font-size: 14px;
+	font-size: 12px;
 	background: $clinicalNotesColor;
 	line-height: 1.4em;
-	padding: 10px;
+	padding: 3px 10px;
 	margin: 10px 0;
 	overflow: auto;
 	clear: both;
+	border: 0;
 	strong, .title {
 		float: left;
 		margin-right: $smallestSpacing;
@@ -90,21 +124,22 @@ a.document-link {
 	&.inline-notes {
 		margin: 0;
 	}
-	&.test-notes {
+	&.test-notes, &.inline-comments {
 		font-size: 12px;
-		// background: #f9f9f9;
-		background: lighten($lightestGray,3%); 
+		background: #fff;
 		color: $darkGray;
-		padding: 3px 10px 20px 20px;
-
+		margin: 0;
+		
 		i[class^=icon-] {
 			font-size: 14px;
 			margin-right: 5px;
 		}
 		pre.left {
-			width: 75%;
 			font-size: 12px;
 		}
+	}
+	&.test-notes {
+		padding: 3px 10px 3px 20px;
 	}
 }
 

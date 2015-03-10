@@ -79,7 +79,7 @@
                 line-height: 2.5em;
                 display: inline-block;
                 float: left;
-                margin: 2px;
+                margin: 0 4px;
             }
 
             /*Widget*/
@@ -91,7 +91,7 @@
                 margin-right: 5px;
             }
             .frequency-widget {
-                background: $lightestGray;
+                background: lighten($lightestGray, 3%);
                 padding: 5px 0 5px 5px;
                 input, select {
                     margin-top: 0;
@@ -99,20 +99,21 @@
             }
             .frequency-widget.uniform-frequency {
                 float: left;
-                width: 375px;
+                width: 350px;
                 .form-field {
                     float: left;
                 }
             }
             .frequency-widget.variable-frequency {
-                width: 295px;
+                width: 315px;
                 float: left;
 
                 input[type="number"] {
                     min-width: 45px;
                 }
                 select {
-                    width: 100px;
+                    width: 120px;
+                    margin: 0;
                 }
             }
             .duration-widget {
@@ -120,7 +121,7 @@
                 margin: 0 35px;
             }
             .quantity-widget {
-                float: right;
+                float: left;
                 margin-left: 21px;
                 .quantity-unit {
                     min-width: 100px;

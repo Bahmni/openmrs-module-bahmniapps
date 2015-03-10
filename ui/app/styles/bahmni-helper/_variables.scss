@@ -12,7 +12,7 @@ $bahmniSectionHeaderColor: #66b298;
 
 
 /*  _components - bahmniTheme: */
-$clinicalNotesColor: #fef7e3;
+$clinicalNotesColor: #EFF8FF;
 $clinicalCurrentVist: #E8A000;
 
 $clinicalSuccessMessageBg: #f9edbe;
@@ -32,11 +32,13 @@ $clinicalFormFocusBg: #fffdf7;
 $darkGray:     #333;
 $mediumGray:   #666;       /* any text will not be lighter than this */
 $lightGray:    #ccc;     /* any border will not be lighter than this */
+$lighterGray:  #ddd; 
 $lightestGray: #eee; /* any background will not be lighter than this */
 
 $primarySectionGridBorder: #bbb;
-$bahmniTableHeaderBg: #f3f3f3;
+$bahmniTableHeaderBg: #f1f1f1;
 
+$bahmniPageBg: #f5f5f5;
 
 /*  _spacing padding - margin:  */
 $smallestSpacing: 5px;
@@ -48,3 +50,4 @@ $largeSpacing: 20px;
 /* _fonts */
 
 $OpenSansBoldFont: OpenSansBold, Arial, sans-serif;
+$OpenSansFont: OpenSans, Arial, sans-serif;
