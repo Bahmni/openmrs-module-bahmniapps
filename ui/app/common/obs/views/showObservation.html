@@ -1,5 +1,5 @@
 <li ng-class="{'is-text': observation.type == 'Text', 'has-child' : observation.groupMembers.length > 0}">
-    <span ng-class="{'is-abnormal': observation.abnormal}" class="tree-list-item" bm-gallery patient="patient">
+    <div ng-class="{'is-abnormal': observation.abnormal}" class="tree-list-item" bm-gallery patient="patient">
         <span class="testUnderPanel"><label>{{::observation.concept.shortName || observation.concept.name}}</label></span>
         <span class="value-text-only" ng-if="observation.isFormElement() && !observation.isImageConcept()">{{::observation.getDisplayValue()}}<span
                 class="label-add-on" ng-if="observation.concept.units"> {{::observation.concept.units}}</span></span>
@@ -9,17 +9,19 @@
 
         <button class="toggle fr" ng-if="observation.isFormElement() && showDetailsButton && !observation.comment" ng-class="{'has-notes': observation.comment}"
                 ng-click="toggle(observation)">
-            <i class="icon-plus-sign" ng-hide="observation.showDetails"></i>
-            <i class="icon-minus-sign" ng-show="observation.showDetails"></i>
+            <i class="icon-angle-down" ng-hide="observation.showDetails"></i>
+            <i class="icon-angle-up" ng-show="observation.showDetails"></i>
         </button>
-    </span>
+    
 
-    <div ng-if="observation.comment" class="notes inline-notes" ng-class="{'print-notes': observation.comment}">
-        <pre class="left">{{::observation.comment}}</pre>
-        <div class="footer-note fr">
-            <span class="provider">
-                {{::observation.providers[0].name}} <span ng-if="observation.isFormElement()">{{dateString(observation)}}</span>
-            </span>
+        <div ng-if="observation.comment" class="notes inline-notes" ng-class="{'print-notes': observation.comment}">   
+            <i class="icon-comments left"></i>
+            <pre class="left">{{::observation.comment}}</pre>
+            <div class="footer-note fr">
+                <span class="provider">
+                    {{::observation.providers[0].name}} <span ng-if="observation.isFormElement()">{{dateString(observation)}}</span>
+                </span>
+            </div>
         </div>
     </div>
     <div ng-if="observation.showDetails" class="notes inline-notes" ng-class="{'print-notes': observation.showDetails}">

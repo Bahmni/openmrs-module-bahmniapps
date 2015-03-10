@@ -41,8 +41,8 @@
                             <div class="col col4" ng-if="!print">
                                 <i ng-show="diagnosis.revised" class="icon-ok fl"></i>
                                 <button class="toggle fr" ng-if="diagnosis.comments" ng-click="diagnosis.showComment = !diagnosis.showComment" ng-class="{'has-notes': diagnosis.comments}">
-                                    <i class="icon-plus-sign" ng-hide="diagnosis.showComment"></i>
-                                    <i class="icon-minus-sign" ng-show="diagnosis.showComment"></i>
+                                    <i class="icon-angle-down" ng-hide="diagnosis.showComment"></i>
+                                    <i class="icon-angle-up" ng-show="diagnosis.showComment"></i>
                                 </button>
                             </div>
                         </div>
