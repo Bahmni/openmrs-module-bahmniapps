@@ -184,7 +184,7 @@ angular.module('bahmni.adt')
                 var forwardLink = appDescriptor.getConfig(option);
                 forwardLink = forwardLink && forwardLink.value;
 
-                var options = {'patientUuid': $scope.patient.uuid, 'encounterUuid': response.encounterUuid};
+                var options = {'patientUuid': $scope.patient.uuid, 'encounterUuid': response.encounterUuid, 'visitUuid': response.visitUuid};
                 if (forwardLink) {
                     $window.location = appDescriptor.formatUrl(forwardLink, options);
                 }

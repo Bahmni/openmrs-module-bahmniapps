@@ -25,7 +25,7 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
         .state('patient', {
             url: '/patient/:patientUuid',
             data: {
-                backLinks: [{label: "Patient Q", url: "#/patient/search"}]
+                backLinks: [{label: "<u>P</u>atients", url: "#/patient/search", accessKey: 'p'}]
             },
             abstract: true,
             views: {
@@ -48,22 +48,28 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                 }
             }
         })
-        .state('patient.adt', {
-            url: '/visit/:visitUuid/:action',
-            templateUrl: 'views/dashboard.html',
-            controller: 'AdtController',
+        .state('patient.adt',{
+            url: '/visit/:visitUuid',
+            abstract: true,
+            template: '<ui-view/>',
             resolve: {
                 visitResolution: function (initResolution, $stateParams, patientResolution, visitInitialization) {
                     return visitInitialization($stateParams.visitUuid);
                 }
             }
+
         })
-        .state('patient.bedForExistingEncounter', {
+        .state('patient.adt.action', {
+            url: '/:action',
+            templateUrl: 'views/dashboard.html',
+            controller: 'AdtController'
+        })
+        .state('patient.adt.bedForExistingEncounter', {
             url: '/encounter/:encounterUuid/bed',
             templateUrl: 'views/bedManagement.html',
             controller: 'BedManagementController'
         })
-        .state('patient.bedForNewEncounter', {
+        .state('patient.adt.bedForNewEncounter', {
             url: '/bed',
             templateUrl: 'views/bedManagement.html',
             controller: 'BedManagementController'

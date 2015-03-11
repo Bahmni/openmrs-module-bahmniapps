@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.adt')
-    .controller('BedManagementController', ['$scope', '$rootScope', '$location', 'WardService', 'bedService', '$stateParams', 'encounterService', 'sessionService', 'messagingService',
-        function ($scope, $rootScope, $location, wardService, bedService, $stateParams, encounterService, sessionService, messagingService) {
+    .controller('BedManagementController', ['$scope', '$rootScope', '$location', 'WardService', 'bedService', '$stateParams', 'encounterService', 'sessionService', 'messagingService', 'backlinkService', '$timeout',
+        function ($scope, $rootScope, $location, wardService, bedService, $stateParams, encounterService, sessionService, messagingService, backlinkService, $timeout) {
         $scope.wards = null;
         $scope.currentView = "wards";
         $scope.layout = [];
@@ -15,7 +15,8 @@ angular.module('bahmni.adt')
         var currentWardUuid = null;
         var encounterUuid = $stateParams.encounterUuid;
         var locationUuid = sessionService.getLoginLocationUuid();
-        
+        var visitUuid = $stateParams.visitUuid;
+
         var init = function () {
             $('.bed-info').hide();
             if ($rootScope.bedDetails && $rootScope.bedDetails.wardUuid) {
@@ -25,7 +26,12 @@ angular.module('bahmni.adt')
             }
         };
 
-        $scope.showWardLayout = function (wardUuid) {
+
+            $scope.$on('$stateChangeSuccess', function (event, state, params, fromState, fromParams) {
+                backlinkService.addUrl({ image: $scope.patient.image, url: "#/patient/" + $scope.patient.uuid + "/visit/" + visitUuid + "/", title: "Back to patient dashboard"});
+            });
+
+            $scope.showWardLayout = function (wardUuid) {
             currentWardUuid = wardUuid;
             $scope.layout = [];
             $scope.bedLayouts = [];
@@ -93,7 +99,7 @@ angular.module('bahmni.adt')
                     } else if (assignmentType == 'TRANSFER') {
                         createTransferEncounterAndAssignBed(bed);
                     } else {
-                        showAssignmentError("There is no appropriate encounter for " + assignmentType);    
+                        showAssignmentError("There is no appropriate encounter for " + assignmentType);
                     }
                 },
                 function(errorMsg) {
