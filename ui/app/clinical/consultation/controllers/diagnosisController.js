@@ -128,11 +128,13 @@ angular.module('bahmni.clinical')
 
 
             $scope.deleteDiagnosis = function (diagnosis) {
-                var obsUUid = diagnosis.existingObs != null ? diagnosis.existingObs : diagnosis.previousObs
+                var obsUUid = diagnosis.existingObs != null ? diagnosis.existingObs : diagnosis.previousObs;
 
                 spinner.forPromise(
                     diagnosisService.deleteDiagnosis(obsUUid).then(function (result) {
-                        reloadDiagnosesSection(diagnosis.encounterUuid);
+                        var currentUuid = $scope.consultation.savedDiagnosesFromCurrentEncounter.length > 0 ?
+                            $scope.consultation.savedDiagnosesFromCurrentEncounter[0].encounterUuid : "";
+                        reloadDiagnosesSection(currentUuid);
                     }))
                     .then(function () {});
             };
