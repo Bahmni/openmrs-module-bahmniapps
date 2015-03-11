@@ -1,6 +1,6 @@
 .tabs{
   margin-top:20px;
-  @include pie-clearfix();
+  @include clearfix();
   ul{
     li.tab-item {
         float:left;
@@ -98,7 +98,7 @@
         }
       }
       button{
-            @include border-radius();
+            border-radius: 3px;
             padding:8px 10px;
         }
         &.tab-selected a, &.tab-selected button{

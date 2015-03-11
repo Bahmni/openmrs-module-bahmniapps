@@ -15,6 +15,184 @@ use either a `<button>` or an `<a>` element:
 */
 
 
+
+@mixin button($tcolor: #FFF, $bcolor: #DDD, $font: $text) {
+  border-radius: 3px;
+  background: linear-gradient(to bottom, $tcolor, $bcolor);
+  background-color: $bcolor;
+  border: $bcolor 1px solid;
+  padding: 8px 20px;
+  display: inline-block;
+  line-height: 1.2em;
+  color: $font;
+  cursor: pointer;
+  min-width: 0;
+  max-width: 300px;
+  text-decoration: none;
+
+  &:hover {
+    background: lighten($bcolor, 2%);
+    border-color: darken($bcolor, 5%);
+  }
+
+  &.active {
+    background: darken($bcolor, 2%);
+    border-color: darken($bcolor, 5%);
+  }
+
+  i {
+    font-size: 1.2em;
+    margin: 0;
+    padding: 0;
+    line-height: .5em;
+  }
+
+  &.big, &.medium {
+    i {
+      display: block;
+      font-size: 50px;
+      margin: 0 auto;
+      padding: 10px;
+    }
+  }
+
+  &.medium {
+    i {
+      font-size: 34px;
+    }
+  }
+
+  &.disabled, &:disabled {
+    background: #EEE;
+    border: #CCC 1px solid;
+    color: #CCC;
+    cursor: default;
+  }
+
+  &.print {
+    padding: 10px;
+
+    i {
+      font-size: 1.5em;
+    }
+  }
+
+  &.app {
+    padding: 20px 10px;
+    width: 150px;
+    min-height: 90px;
+    vertical-align: top;
+    line-height: 1.3em;
+    margin: 10px;
+    text-align: center;
+  }
+
+  &.arrow {
+    box-sizing: border-box;
+    position: relative;
+    padding: 9px 5px;
+    margin-left: -10px;
+    background: darken($success, 10%);
+    color: white;
+    border-color: #BBB;
+    height: 68px;
+
+    span {
+      display: block;
+      line-height: 1em;
+    }
+
+    i {
+      line-height: 1em;
+      font-size: 2em;
+    }
+
+    .arrow-button {
+      width: 0;
+      height: 0;
+      top: 0;
+      right: -17px;
+      border-bottom: 34px solid transparent;
+      border-top: 33px solid transparent;
+      border-left: 18px solid darken($success, 10%);
+      position: absolute;
+    }
+
+    .arrow-border-button {
+      width: 0;
+      height: 0;
+      top: 0;
+      right: -18px;
+      border-bottom: 34px solid transparent;
+      border-top: 33px solid transparent;
+      border-left: 18px solid #BBB;
+      position: absolute;
+    }
+
+    &.disabled {
+      background: #EEE;
+      border: #CCC 1px solid;
+      color: #CCC;
+      cursor: default;
+
+      .arrow-button {
+        border-left: 18px solid #eee;
+      }
+
+      .arrow-border-button {
+        border-left: 18px solid #ccc;
+      }
+    }
+  }
+}
+
+.button, button, input[type="submit"], input[type="button"], input[type="submit"], a.button {
+  @include button;
+
+  &.task {
+    @include button(lighten($text,20%), lighten($text, 20%), white);
+
+    padding: 5px 6px;
+    min-width: 221px;
+    font-size: 0.9em;
+
+    &:visited {
+      color: white;
+    }
+
+    i {
+      font-size: 1em;
+      margin: 0px 2px;
+    }
+  }
+
+  &.confirm {
+    @include button($success, darken($success, 8%), white);
+    max-width: 250px;
+    min-width: 0;
+    margin-right: 10px;
+  }
+
+  &.cancel {
+    @include button($error, darken($error, 8%), white);
+    max-width: 250px;
+    min-width: 0;
+    margin-right: 10px;
+  }
+
+  &.proceed {
+    @include button($error, darken($error, 8%), white);
+    max-width: 250px;
+    min-width: 0;
+    margin-right: 10px;
+  }
+
+  &.no-color {
+    @include button();
+  }
+}
+
+
 /* button states - lvha */
 button:hover { opacity: 0.8; }
 button:focus, a:focus, .btn:focus { outline:1px solid #007FFF; border-color: #007FFF; }
@@ -32,7 +210,7 @@ a.back-btn, button.back-btn {
     border-left: 0;
     float: left;
     font-size: 16px;
-    @include border-radius(3px);
+    border-radius: 3px;
     &:hover {
         text-decoration: none;
         color: $white;
@@ -51,9 +229,9 @@ a.back-btn, button.back-btn {
         border:1px solid darken($bahmniSecondaryColor, 15%);
         border-top: 0;
         border-right: 0;
-        @include rotate(45deg);
-        @include border-radius(3px);
-        @include background(linear-gradient(top, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%)));
+        transform: rotate(45deg);
+        border-radius: 3px;
+        background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
         &:hover {
             cursor: pointer;
             opacity: 0.8;
@@ -69,7 +247,7 @@ a.back-btn, button.back-btn {
 ul li a.back-btn, ul li a.back-btn:hover, button.back-btn, a.back-btn { 
     padding: 10px 10px 10px 5px;
     border:1px solid darken($bahmniSecondaryColor, 15%);
-    @include background(linear-gradient(top, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%)));
+    background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
 
     i {
         padding: 0 5px 0 0;
@@ -88,7 +266,7 @@ button.back-btn {
 .multi-select-button-group {
     width: 600px;
     overflow: auto;
-    @include box-sizing(border-box);
+    box-sizing: border-box;
     button {
         /* width: 200px; temp changes - removed equal spacing */
         float: left;
@@ -106,7 +284,7 @@ button.back-btn {
 .secondary-button:hover, 
 input[type="submit"].secondary-button, 
 input[type="submit"].secondary-button:hover  {
-    @include background(linear-gradient(top, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%)));
+    background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
     color: $white;
     border:1px solid darken($bahmniSecondaryColor, 15%);
 }
@@ -144,14 +322,14 @@ input[type="submit"].secondary-button:hover  {
   padding: 4px;
   cursor: pointer;
   border: 1px solid #ccc;
-  background: -webkit-linear-gradient( top,#fff, #ddd) #ddd;
+  background: linear-gradient(to bottom, #fff, #ddd) #ddd;
   position: relative;
   transition: all .5s ease;
   border-radius: 4px;
   box-shadow: inset 0 -1px 1px #eee;
   
   &:hover {
-    background: -webkit-linear-gradient(top, #fff, $lightGray) #ddd;
+    background: linear-gradient(to bottom, #fff, $lightGray) #ddd;
   }
 
   .icon-star-empty {

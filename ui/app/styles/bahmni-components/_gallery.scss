@@ -198,8 +198,8 @@ body.gallery-open > *:not(#gallery-pane) {
 	float: right;
 	width: 30%;
 	padding: 50px 10px 10px 10px;
-	@include box-sizing(border-box);
-	@include box-shadow(inset 0 0 5px $mediumGray);
+	box-sizing: border-box;
+	box-shadow: inset 0 0 5px $mediumGray;
 	position: absolute;
 	top: 0; bottom: 0; right: 0;
 	z-index: 0;

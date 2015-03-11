@@ -16,7 +16,7 @@ body{
     padding: 0; margin: 0;
 }
 .opd-header-wrapper{
-        @include pie-clearfix;
+        @include clearfix;
         position: fixed;
         top: 0px;
         left: 0px;
@@ -34,6 +34,7 @@ body{
             height: 50px;
             border-radius: 0;
             background: $bahmniSecondaryColor;
+            line-height: 1em;
             @media screen and (min-width: 1024px) {
                 width: 1024px;
                 margin: 0px auto;
@@ -192,7 +193,7 @@ body{
             overflow: hidden;
             padding: 5px 5px;
             margin: 15px 0;
-            @include border-radius(3px);
+            border-radius: 3px;
             .navbar-right {
                 float: right;
             }

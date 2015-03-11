@@ -195,10 +195,10 @@
     button:first-child {
       margin-left: 10px;
       border-right: 1;
-      @include border-radius(3px 3px 0 0);
+      border-radius: 3px 3px 0 0;
     }
     button:last-child {
-      @include border-radius(0 0 3px 3px);
+      border-radius: 0 0 3px 3px;
       border-left: 1;
       margin-left: 10px;
     }

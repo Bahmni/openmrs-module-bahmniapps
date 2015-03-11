@@ -53,7 +53,7 @@
 		}
 	}
 	ul.template-icons li.templateAdded button {
-		@include background(linear-gradient(top, $white, darken($lightestGray, 5%)));
+		background: linear-gradient(to bottom, $white, darken($lightestGray, 5%));
 		color: $bahmniTertiaryColor;
 	}
 }

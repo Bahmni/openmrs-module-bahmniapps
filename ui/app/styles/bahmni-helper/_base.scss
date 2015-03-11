@@ -1,0 +1,240 @@
+body {
+  font-family: $OpenSansFont, Arial, sans-serif;
+  -webkit-font-smoothing: subpixel-antialiased;
+  background: $bahmniPageBg;
+  color: $text;
+  font-size: 16px;
+  line-height: 1.1em;
+}
+
+body pre {
+  font-family: $OpenSansFont;
+  font-size: 14px;
+  background: none;
+  margin: 0; padding: 0;
+}
+
+ul, ol, li {
+  margin: 0;
+  padding: 0;
+}
+
+ol {
+  display: inline-block;
+}
+
+ul {
+  list-style: none;
+}
+
+ul.list {
+  margin-bottom: 10px;
+  li {
+    list-style: circle;
+    margin: 0 0 5px 30px;
+    ul li {
+      color: #666;
+    }
+  }
+}
+
+hr {
+  border: 0;
+  border-bottom: 1px solid $white;
+}
+
+a {
+
+  &, &:link, &:visited, &:hover, &:active {
+      color: $bahmniLinkColor;
+      text-decoration: none;
+  }
+}
+
+#body-wrapper {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: white;
+  border-radius: 5px;
+}
+
+pre {
+  font-size: 16px;
+  padding: 10px;
+  background: rgb(253, 252, 223);
+}
+
+table {
+  margin: 0 auto;
+}
+
+i {
+  &.link {
+    font-size: 0.7em;
+  }
+  
+  &.small {
+    font-size: 1.2em;
+  }
+  
+  &.medium {
+    font-size: 2em;
+  }
+}
+
+
+
+h1, h2, h3, h4, h5, h6 {
+  color: $highlight;
+  clear: both;
+  margin: 10px 0;
+  font-weight: normal;
+}
+
+h1 {
+  font-size: 1.5em;
+  margin: 10px 0 20px 0;
+}
+
+h2 {
+  font-size: 1.3em;
+  color: lighten($highlight, 15%);
+
+  em {
+    font-size: 0.7em;
+    color: lighten($highlight, 30%);
+    display: block;
+  }
+}
+
+h3 {
+  font-size: 1.2em;
+
+}
+
+h4 {
+  font-size: 1.2em;
+  color: lighten($highlight, 15%);
+}
+
+h5 {
+  font-size: 1.17em;
+}
+
+h6 {
+  font-size: 1.13em;
+  color: lighten($highlight, 15%);
+}
+
+p {
+  margin: 0;
+
+  &.spaced {
+    margin-bottom: 15px;
+  }
+}
+
+strong {
+  font-family: $primaryBoldFont;
+  font-weight: normal;
+}
+
+em {
+  font-family: $primaryItalicFont;
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+table {
+  width: 100%;
+
+  th, td {
+    padding: 5px 10px;
+    border: 1px solid #DDD;
+  }
+  
+  tr {
+    border: 1px solid $bodyBackground;
+  }
+  
+  tr:nth-child(even) {
+    background: $focus;
+  }
+  
+  tr:nth-child(odd) {
+    background: white;
+  }
+  
+  tr.hover{
+    background: lighten(desaturate($link, 20%), 20%);
+    color: white;
+    cursor: pointer;
+  }
+  
+  tr.selected{
+    background: $link;
+    color: white;
+
+    a {
+      color: white
+    }
+  }
+  
+  thead th {
+    border-bottom: 1px solid #DDD;
+    background: $lighterGrey;
+    width: auto;
+    text-align: left;
+    word-break: normal;
+    font-weight: normal;
+    font-family: $primaryBoldFont;
+  }
+}
+
+.title {
+  font-family: $primaryBoldFont;
+}
+
+.body {
+  font-weight: 400;
+}
+
+.small {
+  font-family: $primaryLightFont;
+}
+
+.clear {
+  &:before,
+  &:after {
+    content: " ";
+    display: table;
+  }
+
+  &:after {
+    clear: both;
+  }
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.align-center {
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+.highlighted {
+  background-color: $highlight;
+  color: $white; 
+  padding: 5px;
+  margin: 5px
+ }

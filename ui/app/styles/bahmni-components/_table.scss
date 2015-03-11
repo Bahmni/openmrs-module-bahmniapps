@@ -3,7 +3,7 @@
   border: 0;
   @include font-size(1);
   .row{
-    @include pie-clearfix();
+    @include clearfix();
     border-bottom:1px solid $lightGray;
   }
   .col{

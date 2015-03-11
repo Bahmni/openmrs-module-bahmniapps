@@ -27,7 +27,7 @@
       height: 40px;
       line-height: 40px;
       font-size: 14px;
-      @include background(linear-gradient(top, $white, $lightestGray));
+      background: linear-gradient(to bottom, $white, $lightestGray);
       border: 1px solid $lightGray;
       padding: 0 5px;
       margin: 0;
@@ -59,8 +59,8 @@
     .visit-content {
         padding: 10px 10px 15px 10px;
         label.btn {
-            @include border-radius(3);
-            @include background(linear-gradient(top, $white, $lightestGray));
+            border-radius: 3px;
+            background: linear-gradient(to bottom, $white, $lightestGray);
             background-color: $lightestGray;
             border: 1px solid $lightGray;
             padding: 21px 30px;
@@ -255,7 +255,7 @@
               display: inline-block;
               padding: 3px;
               background: $lightestGray;
-              @include border-radius(3);
+              border-radius: 3px;
               width: 20px;
               text-align: center;
             }

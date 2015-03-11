@@ -60,7 +60,7 @@ html,body{
   }
   .add-on{
     @extend input;
-    @include border-radius();  
+    border-radius: 3px;  
     height: 21px;
     min-width: 17px;
     padding: 4px 5px;
@@ -283,7 +283,7 @@ body pre {
     margin-top:5px;
     border:1px solid $lightestGray;
     background: $white;
-    @include border-radius();  
+    border-radius: 3px;  
     .reg-search{
         margin-bottom:10px;
         @include clearfix;
@@ -414,7 +414,7 @@ table{
     line-height: 16px;
     margin-bottom:20px;
     padding: 3px 0;
-    @include border-radius();
+    border-radius: 3px;
     border:1px solid $lightGray;
     span{
         display:inline-block;

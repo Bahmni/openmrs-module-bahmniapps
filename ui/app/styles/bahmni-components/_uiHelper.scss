@@ -37,7 +37,7 @@ use either a `<div>` or an `<section` element:
 /* grid sections */
 .primary-section-grid {
 	border: 1px solid $primarySectionGridBorder;
-	@include border-radius($smallestSpacing);
+	border-radius: $smallestSpacing;
     box-shadow: 0px 0px 8px -1px $lightGray;
 }
 
@@ -115,7 +115,7 @@ table {
 	strong, .title {
 		float: left;
 		margin-right: $smallestSpacing;
-    	font-family: $primaryBoldFont;
+    	font-family: $OpenSansBoldFont;
     	display: inline;
 	}
 	pre, .content {

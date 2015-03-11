@@ -4,6 +4,8 @@ fieldset { margin: 0; padding: 0; border: 0; }
 
 form, .form {
     fieldset {
+        display: inline-block;
+        min-width: 60%;
         border:none;
         padding:0px;
         width:100%;
@@ -92,7 +94,7 @@ form, .form {
 
         .add-on{
             @extend input;
-            @include border-radius();  
+            border-radius: 3px;  
             height: 21px;
             min-width: 17px;
             padding: 4px 5px;
@@ -101,7 +103,7 @@ form, .form {
         }
     }
     .input-prepend .add-on:first-child, .input-prepend .btn:first-child {
-        @include border-radius(4px 0 0 4px);
+        border-radius: 4px 0 0 4px;
     }
     .input-prepend .add-on, .input-prepend .btn {
       margin-right:-1px;
@@ -127,8 +129,171 @@ form, .form {
 .opaque { opacity: 1; }
 
 
-form select, .form select { min-width: 100px; }
 /********* form element styling end***********/
+
+
+
+form, .form {
+  overflow: hidden;
+
+  input, select, textarea, ul.select {
+    min-width: 80%;
+    color: $text;
+    display: block;
+    padding: 5px 10px;
+    margin: 0;
+    margin-top: 5px;
+    background-color: #FFF;
+    border: 1px solid #DDD;
+
+    &:focus {
+      outline: 2px solid $link;
+      background: $focus;
+    }
+  }
+
+  select {
+    min-width: 200px;
+  }
+
+  select[disabled] {
+    background: #EEE;
+    border: #CCC 1px solid;
+    color: #CCC;
+    font-style: normal;
+  }
+
+  .select-arrow {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+
+    &:after {
+      position: absolute;
+      display: inline-block;
+      right: 7px;
+      top: 0;
+      height: 34px;
+      content: "\f0d7";
+      font-weight: normal;
+      font-style: normal;
+      text-decoration: inherit;
+      font-family: "FontAwesome";
+      pointer-events: none;
+      margin-top: 5px;
+      padding-left: 5px;
+      line-height: 2.2em;
+      border-left: 1px solid #ccc;
+    }
+
+    select {
+      -webkit-appearance: none;
+      border-radius: 0;
+      background: white;
+      cursor: pointer;
+    }
+
+    select[disabled] {
+      background: #EEE;
+      border: #CCC 1px solid;
+      color: #CCC;
+      font-style: normal;
+      cursor: default;
+    }
+  }
+
+  ul.select {
+    margin-top: 0;
+  }
+
+  fieldset {
+
+
+    legend {
+      text-align: left;
+      padding: 0 10px;
+      font-weight: 300;
+      text-transform: uppercase;
+    }
+  }
+
+  label {
+    display: block;
+    text-align: left;
+    margin-bottom: 0px;
+    margin-top: 8px;
+  }
+
+  p {
+    text-align: left;
+    margin-bottom: 15px;
+
+    strong {
+      display: block;
+      text-align: left;
+      clear: both;
+    }
+
+    &.radio {
+      label {
+        margin-top: 0;
+      }
+    }
+
+    &.radio-btn {
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0 10px 20px 0;
+      input {
+        display: inline-block;
+      }
+      label {
+        display: inline-block;
+        margin: 0;
+      }
+    }
+  }
+
+  input[type="checkbox"], input[type="radio"] {
+    min-width: 0;
+    margin: 2px 5px;
+    float: left;
+  }
+
+  input[type="checkbox"] {
+    @include check-box;
+  }
+}
+
+ul.select {
+  text-align: left;
+  margin: 0 20px;
+  padding: 0;
+  font-size: 0.8em;
+
+  li {
+    margin: 0 10px;
+    text-align: left;
+    display: inline-block;
+    width: 250px;
+    padding: 5px;
+    color: $link;
+    background-color: #FFF;
+    border-bottom: 1px solid #EFEFEF;
+
+    &:hover {
+      background-color: $link;
+      color: white;
+      cursor: pointer;
+    }
+
+    &.selected {
+      background-color: $link;
+      color: white;
+      border-color: transparent;
+    }
+  }
+}
 
 form p strong, .form p strong { display: inline; }
 

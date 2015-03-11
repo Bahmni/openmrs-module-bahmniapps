@@ -64,7 +64,7 @@ $total-width: 100%;
   }
   .add-on{
     @extend input;
-    @include border-radius();
+    border-radius: 3px;
     height: 21px;
     min-width: 17px;
     padding: 4px 5px;
@@ -180,6 +180,8 @@ body{
     color: $lightGray;
     height: 50px;
     border-radius: 0;
+    line-height: 1em;
+    background: $bahmniSecondaryColor;
     .header-logo{
       display: block;
       width: 35px;
@@ -216,7 +218,7 @@ body{
     margin-top:5px;
     border:1px solid $lightGray;
     background: $white;
-    @include border-radius();
+    border-radius: 3px;
     .reg-search{
         margin-bottom:10px;
         @include clearfix;
