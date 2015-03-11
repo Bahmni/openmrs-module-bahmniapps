@@ -38,6 +38,7 @@ angular.module('authentication')
             return $http.delete(sessionResourcePath).success(function(data){
                 delete $.cookie(Bahmni.Common.Constants.currentUser, null, {path: "/"});
                 delete $.cookie(Bahmni.Common.Constants.currentUser, null, {path: "/"});
+                delete $.cookie(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName, null, {path: "/"});
                 $rootScope.currentUser = null;
             });
         };

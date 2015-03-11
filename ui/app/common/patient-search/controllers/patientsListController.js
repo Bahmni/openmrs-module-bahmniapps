@@ -9,8 +9,9 @@ angular.module('bahmni.common.patientSearch')
             $scope.search.markPatientEntry();
             $scope.$watch('search.searchType', fetchPatients);
         };
+        var DateUtil = Bahmni.Common.Util.DateUtil;
         $scope.retrospectivePrivilege = Bahmni.Common.Constants.retrospectivePrivilege;
-        $scope.today = Bahmni.Common.Util.DateUtil.getDateWithoutTime(Bahmni.Common.Util.DateUtil.now());
+        $scope.today = DateUtil.getDateWithoutTime(DateUtil.addDays(DateUtil.today(), 1));
 
         $scope.searchPatients = function () {
             return spinner.forPromise(patientService.search($scope.search.searchParameter)).then(function (response) {

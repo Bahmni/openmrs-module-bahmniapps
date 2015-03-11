@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('encounterService', ['$http', '$q', '$rootScope', 'configurations', 
+    .service('encounterService', ['$http', '$q', '$rootScope', 'configurations',
         function ($http, $q, $rootScope, configurations) {
 
     this.buildEncounter = function(encounter){
@@ -39,15 +39,14 @@ angular.module('bahmni.common.domain')
         });
     };
 
-    var searchWithoutEncounterDate = function (visitUuid) {
-        return $http.get(Bahmni.Common.Constants.bahmniEncounterUrl, {
-            params:{
-                visitUuids : visitUuid,
-                includeAll : Bahmni.Common.Constants.includeAllObservations
-            },          
-          withCredentials : true
-        });
-    };
+            var searchWithoutEncounterDate = function (visitUuid) {
+                return $http.post(Bahmni.Common.Constants.bahmniEncounterUrl + '/find', {
+                    visitUuids: [visitUuid],
+                    includeAll: Bahmni.Common.Constants.includeAllObservations
+                }, {
+                    withCredentials: true
+                });
+            };
 
     this.search = function (visitUuid,encounterDate) {
         if (!encounterDate) return searchWithoutEncounterDate(visitUuid);
@@ -68,9 +67,9 @@ angular.module('bahmni.common.domain')
             method:"GET",
             params:{
                 patient : patientUuid,
-                includeInactive : false, 
+                includeInactive : false,
                 v : "custom:(uuid,encounters:(uuid,encounterDatetime,encounterType:(uuid,name,retired)))"
-            },          
+            },
             withCredentials : true
         };
 
@@ -81,7 +80,7 @@ angular.module('bahmni.common.domain')
                 encounters.forEach(function(enc) {
                     if (typeof enc.encounterDatetime == 'string') {
                         enc.encounterDatetime = Bahmni.Common.Util.DateUtil.parse(enc.encounterDatetime);
-                    } 
+                    }
                     enc.encounterTypeUuid = enc.encounterType.uuid;
                 });
             }
@@ -109,7 +108,7 @@ angular.module('bahmni.common.domain')
                     break;
                 }
             }
-            searchable.resolve(selectedEnc);       
+            searchable.resolve(selectedEnc);
         },
         function(responseError) {
             searchable.reject("Couldn't identify prerequisite encounter for this operation.");
@@ -121,6 +120,12 @@ angular.module('bahmni.common.domain')
         return $http.get(Bahmni.Common.Constants.bahmniEncounterUrl + '/active', {
             params: params,
             withCredentials : true
+        });
+    };
+
+    this.find = function (params) {
+        return $http.post(Bahmni.Common.Constants.bahmniEncounterUrl + '/find', params, {
+            withCredentials: true
         });
     };
 

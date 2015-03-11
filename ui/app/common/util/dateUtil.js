@@ -212,6 +212,9 @@ Bahmni.Common.Util.DateUtil = {
             to.setHours(from.h + value);
         }
         return to;
-    }
+    },
 
+    parseLongDateToServerFormat: function(longDate){
+        return longDate ? moment(longDate).format("YYYY-MM-DDTHH:mm:ss.SSS") : null;
+    }
 };
