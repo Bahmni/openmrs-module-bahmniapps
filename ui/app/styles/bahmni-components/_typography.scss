@@ -22,7 +22,10 @@
             }
         }
         ul li {
-            background: $lightestGray;
+            background: $white;
+            &.has-child {
+                background: $lightestGray;
+            }
             .tree-list-item {
                 padding-left: 20px;
                 .field-attribute {

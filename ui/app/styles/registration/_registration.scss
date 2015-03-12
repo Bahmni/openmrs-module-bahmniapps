@@ -104,6 +104,13 @@ input[required],select[required]{
       width: 100%;
     }
   } 
+  input, select, textarea, ul.select {
+    min-width: 0;
+  }
+
+  select {
+    min-width: 200px;
+  }
 }
 p.caution {
   color: red;
@@ -200,6 +207,8 @@ body pre {
     position: relative;
     color: $lightGray;
     border-radius: 0;
+    line-height: 1em;
+    background: $bahmniSecondaryColor;
     .header-logo{
       display: block;
       width: 35px;
