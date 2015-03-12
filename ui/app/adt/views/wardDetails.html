@@ -8,12 +8,12 @@
             <th>Ward Details</th>
         </tr>
         <tbody ng-repeat="ward in wards">
-        <tr>
+        <tr ng-click="toggle(ward)">
             <td class="centered">{{ward.ward.name}}</td>
             <td class="centered">{{ward.totalBeds}}</td>
             <td class="centered">{{ward.totalBeds-ward.occupiedBeds}}</td>
             <td class="centered">
-                <button ng-if="showDetailsButton(ward)" ng-click="toggle(ward)" class="confirm"><span class="icon-plus-sign"></span></button>
+                <button ng-if="showDetailsButton(ward)" class="confirm"><span class="icon-plus-sign"></span></button>
             </td>
         </tr>
         <tr ng-if="ward.showDetails">

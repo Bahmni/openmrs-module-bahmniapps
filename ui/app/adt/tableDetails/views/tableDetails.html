@@ -4,7 +4,7 @@
             <th ng-repeat="heading in tableHeadings">{{heading}}</th>
         </tr>
         <tr ng-repeat="row in tableDetails">
-            <td ng-repeat="heading in tableHeadings">{{row[heading]}}</td>
+            <td ng-repeat="heading in tableHeadings">{{row[heading] | date:'dd MMM yy'}} </td>
         </tr>
     </table>
 </div>

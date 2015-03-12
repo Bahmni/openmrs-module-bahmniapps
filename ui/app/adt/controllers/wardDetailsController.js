@@ -19,7 +19,7 @@ angular.module('bahmni.adt')
             };
 
             $scope.toggle = function (ward) {
-                ward.showDetails = !ward.showDetails;
+                ward.showDetails = !ward.showDetails && $scope.showDetailsButton(ward);
             };
             $scope.showDetailsButton = function (ward) {
                 return ward.occupiedBeds > 0;
