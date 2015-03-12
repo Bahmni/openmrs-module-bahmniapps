@@ -14,5 +14,4 @@ angular.module('bahmni.adt')
         this.getWardsList = function () {
             return $http.get("/openmrs/ws/rest/v1/admissionLocation");
         };
-
     }]);

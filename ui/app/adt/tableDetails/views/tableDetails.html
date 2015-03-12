@@ -1,0 +1,10 @@
+<div>
+    <table>
+        <tr>
+            <th ng-repeat="heading in tableHeadings">{{heading}}</th>
+        </tr>
+        <tr ng-repeat="row in tableDetails">
+            <td ng-repeat="heading in tableHeadings">{{row[heading]}}</td>
+        </tr>
+    </table>
+</div>

@@ -16,6 +16,25 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             'content': {
                 templateUrl: '../common/patient-search/views/patientsList.html',
                 controller: 'PatientsListController'
+            },
+            'additional-header':{
+                templateUrl:'views/headerAdtHome.html'
+            }
+        },
+        resolve: {
+            initialization: 'initialization'
+        }
+    }).state('wardDetails', {
+        url: '/wardList',
+
+        views: {
+            'header': {
+                templateUrl: 'views/headerAdt.html',
+                controller: 'HeaderAdtController'
+            },
+            'content': {
+                templateUrl: 'views/wardDetails.html',
+                controller: 'WardDetailsController'
             }
         },
         resolve: {
