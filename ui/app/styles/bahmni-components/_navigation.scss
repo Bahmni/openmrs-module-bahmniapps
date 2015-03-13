@@ -5,16 +5,17 @@
     li.tab-item {
         float:left;
         margin-bottom: -1px;
-        a,button{
+        a,button {
             padding: 12px 15px;
             background: darken($bahmniSecondaryColor, 10%);
             display:inline-block;
             color: $white;
             margin: 0 2px 0 0;
             border-radius: 5px 5px 0 0;
-            text-decoration:none;
+            text-decoration: none;
             line-height: 1.2em;
-            &:hover{
+            cursor: pointer;
+            &:hover {
                 opacity: 0.8;
                 margin: 0 2px 0 0;
             }
@@ -24,8 +25,9 @@
         }
 
       &.new-tab {
-        a,button {
+        a, button {
           border-top-right-radius: 15px;
+          cursor: pointer;
         }
       }
 
@@ -102,12 +104,12 @@
             padding:8px 10px;
         }
         &.tab-selected a, &.tab-selected button{
-            position:relative;
+            position: relative;
             background: $bahmniPageBg;
             color: $bahmniPrimaryColor;
-            border:1px solid $lightGray;
-            border-bottom:none;
-            outline:none;
+            border: 1px solid $lightGray;
+            border-bottom: none;
+            outline: none;
             &:hover {
                 opacity: 1;
                 cursor: default;
