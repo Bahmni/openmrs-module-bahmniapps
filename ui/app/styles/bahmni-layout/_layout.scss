@@ -186,7 +186,7 @@ body{
     padding-bottom: 30px;
     .opd-content-wrapper {
         // background: $bahmniPageBg;
-        height:99%;
+        // height:99%;
 
         nav.navbar {
             background: #F8F8F8;
@@ -199,12 +199,12 @@ body{
             }
         }
 
-        & > div[ui-view="content"].ng-scope, & > div[ui-view="content"] {
+        // & > div[ui-view="content"].ng-scope, & > div[ui-view="content"] {
           @media screen and (min-width: 1024px) {
               width: 1024px;
               margin: 0px auto;
           }
-        }
+        // }
     }
 }
 
