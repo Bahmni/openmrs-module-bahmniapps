@@ -3,7 +3,7 @@
         <header>
             <input show-if-privilege="{{retrospectivePrivilege}}" class="retro-date-widget" type="date" ng-model="$parent.retrospectiveEntry.encounterDate" max="{{today}}"/>
             <label show-if-privilege="{{retrospectivePrivilege}}" for="retro-date-widget" class="retro-date-widget" >Enter data for</label>
-        	<a class="back-btn" href="../home/"><i class="icon-home"></i>Home</a>
+            <bm-back-links></bm-back-links>
             <div ui-view="additional-header"></div>
         </header>
     </div>

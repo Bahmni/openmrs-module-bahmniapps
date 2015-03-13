@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('admin', ['httpErrorInterceptor', 'bahmni.admin', 'bahmni.common.routeErrorHandler']).config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
+angular.module('admin', ['httpErrorInterceptor', 'bahmni.admin', 'bahmni.common.routeErrorHandler', 'ngSanitize']).config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/dashboard');
     $stateProvider.state('admin', {
         abstract: true,
@@ -12,7 +12,10 @@ angular.module('admin', ['httpErrorInterceptor', 'bahmni.admin', 'bahmni.common.
         {   url: '/dashboard',
             templateUrl: 'views/adminDashboard.html',
             controller: 'AdminDashboardController',
-            data: {extensionPointId: 'org.bahmni.admin.dashboard'}
+            data: {
+                backLinks: [{label: "Home", url: "../home/"}],
+                extensionPointId: 'org.bahmni.admin.dashboard'
+            }
         })
         .state('admin.csv',
         {   url: '/csv',

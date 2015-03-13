@@ -17,6 +17,9 @@ angular.module('consultation')
                     'content': {
                         templateUrl: '../common/patient-search/views/patientsList.html',
                         controller: 'PatientsListController'
+                    },
+                    'additional-header': {
+                        templateUrl: '../common/ui-helper/header.html'
                     }
                 },
                 data: {
