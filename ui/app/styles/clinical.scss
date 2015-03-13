@@ -1,18 +1,4 @@
-// @import "compass";
-
-/*dependencies from openmrs ui commons*/
-// @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/vendor/normalize";
-// @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/variables";
-// $fontPath: "../components/openmrs-uicommons/omod/src/main/webapp/resources/fonts"; /*overwritting the path of the fonts file to point to correct file location.*/
-// @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fragments/base";
-// @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fragments/grid";
-// @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fragments/header";
-// @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fragments/buttons";
-// @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fonts/fonts";
-// @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fonts/font-awesome";
-// @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fonts/icomoon";
-// @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fragments/form-navigator-ui";
-// @import "../components/openmrs-uicommons/scss/src/main/resources/sass/reference/fragments/notifications";
+@charset "UTF-8";
 
 /*BAHMNI css files*/
 @import "vendor/normalize";
