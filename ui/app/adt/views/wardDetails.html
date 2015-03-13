@@ -1,24 +1,28 @@
 <div>
     <h3>Ward List</h3>
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Total Beds</th>
-            <th>Available Beds</th>
-            <th>Ward Details</th>
-        </tr>
+    <table class="table ward-details">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Total Beds</th>
+                <th>Available Beds</th>
+                <th>Ward Details</th>
+            </tr>
+        </thead>
         <tbody ng-repeat="ward in wards">
-        <tr ng-click="toggle(ward)">
-            <td class="centered">{{ward.ward.name}}</td>
-            <td class="centered">{{ward.totalBeds}}</td>
-            <td class="centered">{{ward.totalBeds-ward.occupiedBeds}}</td>
-            <td class="centered">
-                <button ng-if="showDetailsButton(ward)" class="confirm"><span class="icon-plus-sign"></span></button>
-            </td>
-        </tr>
-        <tr ng-if="ward.showDetails">
-           <td><table-details params="getParams(ward)"></table-details></td>
-        </tr>
+            <tr ng-click="toggle(ward)">
+                <td class="centered">{{ward.ward.name}}</td>
+                <td class="centered">{{ward.totalBeds}}</td>
+                <td class="centered">{{ward.totalBeds-ward.occupiedBeds}}</td>
+                <td class="centered">
+                    <button ng-if="showDetailsButton(ward)" class="confirm"><span class="icon-plus-sign"></span></button>
+                </td>
+            </tr>
+            <tr ng-if="ward.showDetails">
+               <td colspan="4" class=" table-scroll-x">
+                 <table-details params="getParams(ward)"></table-details>
+               </td>
+            </tr>
         </tbody>
     </table>
 

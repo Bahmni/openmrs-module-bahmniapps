@@ -1,10 +1,14 @@
-<div>
-    <table>
-        <tr>
-            <th ng-repeat="heading in tableHeadings">{{heading}}</th>
-        </tr>
-        <tr ng-repeat="row in tableDetails">
-            <td ng-repeat="heading in tableHeadings">{{row[heading] | date:'dd MMM yy'}} </td>
-        </tr>
+<div class="ward-details-container" style="width: 100%; overflow-x: auto;">
+    <table class="table ward-details-content">
+	    <thead>
+	        <tr>
+	            <th ng-repeat="heading in tableHeadings">{{heading}}</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	        <tr ng-repeat="row in tableDetails">
+	            <td ng-repeat="heading in tableHeadings">{{row[heading] | date:'dd MMM yy'}} </td>
+	        </tr>
+        </tbody>
     </table>
 </div>
