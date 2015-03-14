@@ -10,7 +10,6 @@ ZIP_FILE_NAME=bahmniapps.zip
 mkdir -p $ROOT_DIR/target
 rm -rf $ROOT_DIR/target/$ZIP_FILE_NAME
 
-rvm use 1.9.3
 npm install
 bower install
 grunt build
