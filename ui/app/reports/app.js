@@ -24,5 +24,5 @@ angular
         $rootScope.$on('$viewContentLoaded', function () {
                 $templateCache.removeAll();
             }
-        )
+        );
     });
