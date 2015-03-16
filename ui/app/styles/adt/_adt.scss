@@ -38,4 +38,15 @@ div[ng-app="adt"] {
         transform: translateX(-50%);
         color: $lightestGray;
     }
+    .ward-details-cell {
+        padding: 0;
+    }
+    .ward-details-container {
+        width: 100%;
+        max-width: 1024px;
+        overflow-x: auto;
+        table {
+            font-size: 14px;
+        }
+    }
 }

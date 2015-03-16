@@ -1,6 +1,6 @@
 <div>
     <h3>Ward List</h3>
-    <table class="table ward-details">
+    <table class="table ward-list">
         <thead>
             <tr>
                 <th>Name</th>
@@ -11,15 +11,22 @@
         </thead>
         <tbody ng-repeat="ward in wards">
             <tr ng-click="toggle(ward)">
-                <td class="centered">{{ward.ward.name}}</td>
-                <td class="centered">{{ward.totalBeds}}</td>
-                <td class="centered">{{ward.totalBeds-ward.occupiedBeds}}</td>
-                <td class="centered">
-                    <button ng-if="showDetailsButton(ward)" class="confirm"><span class="icon-plus-sign"></span></button>
+                <td class="">{{ward.ward.name}}</td>
+                <td class="">{{ward.totalBeds}}</td>
+                <td class="">{{ward.totalBeds-ward.occupiedBeds}}</td>
+                <td class="">
+                    <button ng-if="showDetailsButton(ward)" class="confirm">
+                        <span ng-if="!ward.showDetails"> 
+                            <span class="icon-plus-sign"></span> Show ward details
+                        </span>
+                        <span ng-if="ward.showDetails"> 
+                            <span class="icon-minus-sign"></span> Hide ward details
+                        </span>
+                    </button>
                 </td>
             </tr>
             <tr ng-if="ward.showDetails">
-               <td colspan="4" class=" table-scroll-x">
+               <td colspan="4" class="ward-details-cell">
                  <table-details params="getParams(ward)"></table-details>
                </td>
             </tr>

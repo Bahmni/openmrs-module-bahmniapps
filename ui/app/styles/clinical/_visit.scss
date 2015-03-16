@@ -451,6 +451,9 @@ a.visit:before {
     width: 140px;
 }
 .dashboard-patientInformation-section {
+  section.block {
+    background: none;
+  }
   table {
     td.name {
        width: 75px;
