@@ -452,7 +452,7 @@ a.visit:before {
 }
 .dashboard-patientInformation-section {
   section.block {
-    background: none;
+    background: none !important;
   }
   table {
     td.name {

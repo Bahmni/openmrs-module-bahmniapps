@@ -14,12 +14,14 @@
 }
 .bed-assignment {
   position: relative;
-  width: 894px;
-  border: 1px solid #cecece;
+  width: 100%;
+  border: 1px solid #lightGray;
   margin: 0px auto;
   min-height: 200px;
   padding: 20px;
-  text-align:center;
+  text-align: center;
+  border-radius: 5px;
+  background: $white;
   .bed-assignment-inner-wrapper{
     display: inline-block;
   }

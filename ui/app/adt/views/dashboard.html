@@ -1,32 +1,34 @@
 <div class="adt">
-    <div>
-        <label>
-            <span class="fl adt-disposition-action">Patient Movement:</span>
-            <select id="dispositionAction" ng-model="dispositionAction"
-                    ng-options="d.name.display for d in dispositionActions" class="disposition-action">
-                <option value="">Select</option>
-            </select>
-        </label>
-    </div>
-    <div id="adtNotes" ng-if="getAdtConceptConfig">
-        <concept-set concept-set-name="getAdtConceptConfig" observations="adtObservations"></concept-set>
-    </div>
+    <div class="box">
+        <div>
+            <label>
+                <span class="fl adt-disposition-action">Patient Movement:</span>
+                <select id="dispositionAction" ng-model="dispositionAction"
+                        ng-options="d.name.display for d in dispositionActions" class="disposition-action">
+                    <option value="">Select</option>
+                </select>
+            </label>
+        </div>
+        <div id="adtNotes" ng-if="getAdtConceptConfig">
+            <concept-set concept-set-name="getAdtConceptConfig" observations="adtObservations"></concept-set>
+        </div>
 
 
-    <div class="submit-btn-container" ng-if="dispositionAction">
-        <div class="right">
-    <span ng-repeat="extn in actions">
-        <span ng-switch="extn.extensionParams.action">
-            <div ng-switch-when="startVisit" split-button options="visitControl.visitTypes"
-                 primary-option="visitControl.defaultVisitType" option-text="visitControl.startButtonText"
-                 option-click="startNewVisit" class="right">
+        <div class="submit-btn-container" ng-if="dispositionAction">
+            <div class="right">
+                <span ng-repeat="extn in actions">
+                    <span ng-switch="extn.extensionParams.action">
+                        <div ng-switch-when="startVisit" split-button options="visitControl.visitTypes"
+                             primary-option="visitControl.defaultVisitType" option-text="visitControl.startButtonText"
+                             option-click="startNewVisit" class="right">
+                        </div>
+                        <button ng-switch-default="" type="submit" class="right"
+                                ng-click="call(extn.extensionParams.action)" ng-show="call(extn.extensionParams.showCondition)">
+                            {{getDisplay(extn.extensionParams.displayFunction, extn.extensionParams.display)}}
+                        </button>
+                    </span>
+                </span>
             </div>
-        <button ng-switch-default="" type="submit" class="right"
-                ng-click="call(extn.extensionParams.action)" ng-show="call(extn.extensionParams.showCondition)">
-            {{getDisplay(extn.extensionParams.displayFunction, extn.extensionParams.display)}}
-        </button>
-        </span>
-    </span>
         </div>
     </div>
     <dashboard patient="patient" config="dashboardConfig" active-visit-uuid="visit.uuid"></dashboard>

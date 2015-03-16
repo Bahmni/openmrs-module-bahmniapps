@@ -192,3 +192,12 @@ u, .add-drug-btninput[value]:first-letter {
   color: $bahmniTertiaryColor;
   font-family: $primaryBoldFont;
 }
+
+.box {
+  padding: 10px;
+  border: 1px solid $lightGray;
+  background: $white;
+  border-radius: 5px;
+  overflow: hidden;
+  @include clearfix();
+}

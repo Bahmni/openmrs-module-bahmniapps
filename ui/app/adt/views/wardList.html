@@ -8,10 +8,10 @@
             <th>Assign</th>
         </tr>
         <tr ng-repeat="ward in wards">
-            <td class="centered">{{ward.ward.name}}</td>
-            <td class="centered">{{ward.totalBeds}}</td>
-            <td class="centered">{{ward.totalBeds-ward.occupiedBeds}}</td>
-            <td class="centered">
+            <td class="">{{ward.ward.name}}</td>
+            <td class="">{{ward.totalBeds}}</td>
+            <td class="">{{ward.totalBeds-ward.occupiedBeds}}</td>
+            <td class="">
                 <button ng-click="showWardLayout(ward.ward.uuid)" class="confirm"><span class="icon-th"></span></button>
             </td>
         </tr>
