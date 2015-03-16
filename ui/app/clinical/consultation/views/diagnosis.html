@@ -62,11 +62,13 @@
 
                 </div>
 
-                <div class="table current-diagnosis section-grid" ng-if="consultation.savedDiagnosesFromCurrentEncounter.length > 0">
+                <div class=" current-diagnosis section-grid" ng-if="consultation.savedDiagnosesFromCurrentEncounter.length > 0">
                     <h2 class="section-title">Current</h2>
-                    <div ng-repeat="diagnosis in consultation.savedDiagnosesFromCurrentEncounter | primaryDiagnosisFirst" class="table-body">
-                        <div class="row diagnosis-row" ng-if="!diagnosis.voided">
-                            <ng-include src="'consultation/views/diagnosisRow.html'" />
+                    <div class="table">
+                        <div ng-repeat="diagnosis in consultation.savedDiagnosesFromCurrentEncounter | primaryDiagnosisFirst" class="table-body">
+                            <div class="row diagnosis-row" ng-if="!diagnosis.voided">
+                                <ng-include src="'consultation/views/diagnosisRow.html'" />
+                            </div>
                         </div>
                     </div>
                 </div>
