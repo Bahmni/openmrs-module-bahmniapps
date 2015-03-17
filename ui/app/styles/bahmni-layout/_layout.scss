@@ -27,7 +27,13 @@ body{
           height: 50px;
           width: 100%;
         // }
-
+        .patient-info {
+          position: absolute;
+          top: 0;
+          right: 0;
+          font-size: 12px;
+          color: $white;
+        }
         header{
             position: relative;
             color: $lightGray;
