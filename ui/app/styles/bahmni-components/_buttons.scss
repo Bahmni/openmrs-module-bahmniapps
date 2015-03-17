@@ -229,6 +229,8 @@ a.back-btn, button.back-btn {
         border:1px solid darken($bahmniSecondaryColor, 15%);
         border-top: 0;
         border-right: 0;
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
         transform: rotate(45deg);
         border-radius: 3px;
         background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
@@ -343,11 +345,13 @@ input[type="submit"].secondary-button:hover  {
   input[type="checkbox"] { 
     position: absolute;
     opacity: 0;
-    &:checked + .icon-star-empty {
+    & + .icon-pushpin {
+      color: $mediumGray;
+      cursor: pointer;
+    }
+    &:checked + .icon-pushpin {
       color: orange;
-      &:before {
-        content: "\f005";
-      }
+      text-shadow: 1px 1px 1px white;
     }
   }
 }
