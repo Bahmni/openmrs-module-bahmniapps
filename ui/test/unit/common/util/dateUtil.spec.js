@@ -166,7 +166,7 @@ describe('DateUtil', function () {
 
     describe("parseLongToServerFormat", function () {
         it("should convert long date to server format", function () {
-            expect(dateUtil.parseLongDateToServerFormat(1425234600000)).toEqual("2015-03-02T00:00:00.000");
+            expect(dateUtil.parseLongDateToServerFormat(1425234600000)).toEqual("2015-03-02T00:15:00.000");
         })
     })
 });
