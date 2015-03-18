@@ -113,10 +113,22 @@ input[file-upload] {
 }
 button.save-consultation, .quick-links {
   float: right;
-  margin: 6px 18px;
-  padding: 8px 20px;
+  margin: 6px;
+  padding: 8px 15px;
 }
-
+button.save-consultation {
+  .text {
+    display: none;
+  }
+  @media screen and (min-width: 860px) {
+    .text {
+      display: inline-block;
+    }
+    .icon-save {
+      display: none;
+    }
+  }
+}
 a.quick-links, a.btn--success {
   @include button($success, darken($success, 8%), white);
 }

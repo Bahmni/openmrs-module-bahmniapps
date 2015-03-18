@@ -35,10 +35,10 @@ body {
             border-radius: 0;
             background: $bahmniSecondaryColor;
             line-height: 1em;
-            @media screen and (min-width: 1024px) {
-                width: 1024px;
-                margin: 0px auto;
-            }
+           
+            max-width: $max-page-width;
+            margin: 0px auto;
+
             .header-logo{
               display: block;
               width: 35px;
@@ -142,17 +142,12 @@ body {
               }
             }
         }
-        // .opd-header-top, header{
-        //   background: $bahmniSecondaryColor;
-        // }
         .opd-header-bottom {
-            border-radius:0px;
+            border-radius: 0px;
             position:relative;
             margin: 0px;
-            @media screen and (min-width: 1024px) {
-                width: 1014px;
-                margin: 0px auto;
-            }
+              max-width: $max-page-width;
+              margin: 0px auto;
             .header-tabs{
               float:left;
               margin-top: 18px;
@@ -184,10 +179,14 @@ body {
     width: 100%;
     padding-top: 50px;
     padding-bottom: 30px;
-    .opd-content-wrapper {
-        // background: $bahmniPageBg;
-        // height:99%;
 
+    .opd-content-wrapper {
+        max-width: $max-page-width;
+        margin: 0 auto;
+        box-sizing: border-box;
+        @media screen and (max-width: 1200px) {
+          padding: 0 10px;
+        }
         nav.navbar {
             background: #F8F8F8;
             overflow: hidden;
@@ -199,12 +198,7 @@ body {
             }
         }
 
-        // & > div[ui-view="content"].ng-scope, & > div[ui-view="content"] {
-          @media screen and (min-width: 1024px) {
-              width: 1024px;
-              margin: 0px auto;
-          }
-        // }
+
     }
 }
 

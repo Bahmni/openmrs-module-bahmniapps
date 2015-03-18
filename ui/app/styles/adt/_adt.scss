@@ -1,7 +1,5 @@
 .adt {
-    padding-top: 10px;
-    width: 1014px;
-    margin: 0 auto;
+
     .adt-disposition-action {
         margin: 5px 5px 0 0;
     }
@@ -50,7 +48,8 @@ div[ng-app="adt"] {
         }
     }
     .box {
-        margin-left: 15px;
-        margin-right: 15px;
+        @media screen and (max-width: 859px) {
+            margin-bottom: 15px;
+        }
     }
 }

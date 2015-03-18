@@ -226,12 +226,15 @@ a.back-btn, button.back-btn {
 }
 
 ul li a.back-btn, ul li a.back-btn:hover, button.back-btn, a.back-btn { 
-    padding: 7px 10px;
+    padding: 10px;
     border: 1px solid darken($bahmniSecondaryColor, 15%);
     background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
 
     i {
         padding: 0 5px 0 0;
+        &.icon-circle-arrow-left {
+          margin-left: -5px;
+        }
     }
     &.dashboard-link {
       padding: 5px 10px 4px 5px;
@@ -259,7 +262,7 @@ button.back-btn {
 }
 .back-btn-link {
     @include clearfix();
-    padding: 6px 8px;
+    padding: 5px 8px;
     border: 1px solid darken($bahmniSecondaryColor, 15%);
     background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
     margin-top: 6px;
@@ -288,6 +291,17 @@ button.back-btn {
           .patient-id {
             display: block;
             color: $lightGray;
+            font-size: 11px;
+          }
+          .patient-name {
+            width: 100px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+            @media screen and (max-width: 1024px) {
+              width: 75px;
+            }
           }
       }
 }

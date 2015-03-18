@@ -53,14 +53,8 @@
 }
 
 .patient-search-wrapper {
-  width: 100%;
   .tabs {
     margin-top: 5px;
-  }
-  @media screen and (min-width: 960px) {
-      padding: 0 5px;
-      width: 1014px;
-      margin: 0 auto;
   }
 }
 .active-patient {

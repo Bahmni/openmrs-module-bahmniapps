@@ -190,7 +190,7 @@ body pre {
 /*** search page css start ****/
 .reg-wrapper{
   .pg-container {
-    max-width:1200px;
+    max-width: $max-page-width;
     margin: 0px auto;
   }
 

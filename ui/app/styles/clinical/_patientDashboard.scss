@@ -17,13 +17,15 @@
     box-sizing: border-box;
     float: left;
     @media screen and (max-width: 859px) {
-      width: 98%;
+      width: 100%;
       margin: 0 auto;
       padding: 0;
       float: none;
     }
   }
-
+    @media screen and (min-width: 860px) {
+      margin: 5px -10px;
+    }
 }
 .patient-dashboard.visit {padding: 0;}
 .dashboard-visit-summary {padding: 10px;}
