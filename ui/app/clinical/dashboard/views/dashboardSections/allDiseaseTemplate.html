@@ -1,14 +1,18 @@
 <header class="template-header">
-    <button class="ngdialog-close back-btn">Back</button>
+    <button class="ngdialog-close back-btn">
+    	<i class="icon-circle-arrow-left"></i> Back
+    </button>
     <h5>
         <i class="icon-user"></i>
         <span>{{patient.name}} {{'(' + patient.identifier + ')'}}</span>
     </h5>
     <h6>{{diseaseName}}</h6>
 </header>
-<div ng-if="diseaseTemplate.name" >
-    <div pivot-table patient-uuid="patient.uuid" disease-name="diseaseTemplate.name" config="section.allDiseaseDetails.pivotTable" display-name="diseaseTemplate.label"></div>
+<div class="template-container">
+	<div ng-if="diseaseTemplate.name" >
+	    <div pivot-table patient-uuid="patient.uuid" disease-name="diseaseTemplate.name" config="section.allDiseaseDetails.pivotTable" display-name="diseaseTemplate.label"></div>
+	</div>
+	<section class="dashboard-section">
+	    <disease-template config="section.allDiseaseDetails" template="diseaseTemplate" patient="patient" show-date-time-for-intake="showDateTimeForIntake" show-time-for-progress="showTimeForProgress"></disease-template>
+	</section>
 </div>
-<section class="dashboard-section">
-    <disease-template config="section.allDiseaseDetails" template="diseaseTemplate" patient="patient" show-date-time-for-intake="showDateTimeForIntake" show-time-for-progress="showTimeForProgress"></disease-template>
-</section>

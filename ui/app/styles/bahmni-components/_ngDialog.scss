@@ -1,8 +1,15 @@
+.ngdialog-close:before {
+    display: none;
+    content: "";
+}
+
 .template-header {
     height: 50px;
     background: $bahmniSecondaryColor;
     border-radius: 0;
     margin-bottom: 15px;
+    padding: 0 15px;
+    box-sizing: border-box;
     h5 {
         display: inline-block;
         color: $lightestGray;
@@ -15,14 +22,15 @@
         display: inline-block;
         width: auto;
         float: right;
-        margin: 15px 20px;
+        margin: 15px 0px;
         border-bottom: 0!important;
         color: $white;
         font-size: 16px;
     }
 }
+
 .template-container {
-    padding: 5px 20px;
+    padding: 15px 20px;
     section {
         margin-bottom: 15px;
         section, table {
