@@ -294,13 +294,17 @@ body{
   max-width: 500px;
   form {
     border-radius: 0 0 10px 10px;    
-    -webkit-box-shadow: 0 8px 6px -8px $mediumGray;
-     -moz-box-shadow: 0 8px 6px -8px $mediumGray;
-        box-shadow: 0 8px 6px -8px $mediumGray;
+    box-shadow: 0 10px 10px -10px $mediumGray;
   }
   header {
     border-radius: 10px 10px 0 0;
+    color: $white;
+    font-size: 24px;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    font-weight: bold;
   }
+
   .login-body{
     background: $white;
     border:1px solid $lightGray;
