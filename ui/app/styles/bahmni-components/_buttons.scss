@@ -205,7 +205,7 @@ a.back-btn, button.back-btn {
     display: inline-block;
     text-decoration: none;
     z-index: 1;
-    margin: 6px 5px 0 17px;
+    margin: 6px 6px 0 0px;
     color: $white;  
     border-left: 0;
     float: left;
@@ -217,28 +217,7 @@ a.back-btn, button.back-btn {
         cursor: pointer;
         opacity: 0.8;
     }
-    &:before {
-        content: "";
-        height: 28px;
-        width: 28px;
-        position: absolute;
-        left: -13px;
-        top: 4px;    
-        z-index: -1;
-        display: block;    
-        border:1px solid darken($bahmniSecondaryColor, 15%);
-        border-top: 0;
-        border-right: 0;
-        -webkit-transform: rotate(45deg);
-        -moz-transform: rotate(45deg);
-        transform: rotate(45deg);
-        border-radius: 3px;
-        background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
-        &:hover {
-            cursor: pointer;
-            opacity: 0.8;
-        }
-    }
+
     &.dashboard-link img {
       height: 25px;
       width: 25px;
@@ -247,8 +226,8 @@ a.back-btn, button.back-btn {
 }
 
 ul li a.back-btn, ul li a.back-btn:hover, button.back-btn, a.back-btn { 
-    padding: 10px 10px 11px 5px;
-    border:1px solid darken($bahmniSecondaryColor, 15%);
+    padding: 7px 10px;
+    border: 1px solid darken($bahmniSecondaryColor, 15%);
     background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
 
     i {
@@ -257,13 +236,61 @@ ul li a.back-btn, ul li a.back-btn:hover, button.back-btn, a.back-btn {
     &.dashboard-link {
       padding: 5px 10px 4px 5px;
     }
+    &.back-icon {
+      padding-left: 30px;
+        &:before {
+          font-family: FontAwesome;
+          content: "\F0A8";
+          position: absolute;
+          left: 5px;
+          top: 11px;
+          font-size: 20px;
+          font-weight: normal;
+          &:hover {
+              cursor: pointer;
+          }
+      }
+    }
 }
 button.back-btn {
     box-shadow: none;
     line-height: 1.1em;
     float: none;
 }
-
+.back-btn-link {
+    @include clearfix();
+    padding: 6px 8px;
+    border: 1px solid darken($bahmniSecondaryColor, 15%);
+    background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
+    margin-top: 6px;
+    float: left;
+    display: inline-block;
+    border-radius: 2px;
+    &:hover {
+        text-decoration: none;
+        color: $white;
+        cursor: pointer;
+        opacity: 0.8;
+    }
+    img {
+        height: 26px;
+        width: 26px;
+        border-radius: 100%;
+        float: left;
+        margin-right: 5px;
+        
+    }
+     .patient-info {
+          float: left;
+          font-size: 12px;
+          color: $white;
+            line-height: 1.1;
+          .patient-id {
+            display: block;
+            color: $lightGray;
+          }
+      }
+}
 /* multi select */
 .multi-select-button-group {
     width: 600px;

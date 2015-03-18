@@ -1,0 +1,13 @@
+<div class="opd-header-wrapper">
+    <div class="opd-header-top">
+        <header>
+            <input show-if-privilege="{{retrospectivePrivilege}}" class="retro-date-widget" type="date" ng-model="$parent.retrospectiveEntry.encounterDate" max="{{today}}"/>
+            <label show-if-privilege="{{retrospectivePrivilege}}" for="retro-date-widget" class="retro-date-widget" >Enter data for</label>
+            <bm-back-links></bm-back-links>
+            <a class="quick-links" accesskey="W" id="" title="" href="#/wardList"> 
+				<u>W</u>ard List</span>
+			</a>
+        </header>
+    </div>
+</div>
+

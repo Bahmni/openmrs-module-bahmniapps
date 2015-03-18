@@ -10,7 +10,7 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
     $stateProvider.state('patientsearch', {
         url: '/patient/search',
         data: {
-            backLinks: [{label: "Home", url: "../home/"}, {label: "<u>W</u>ard List", url: "#/wardList", accessKey: "W"}]
+            backLinks: [{label: "Home", url: "../home/", icon: "icon-home"}]
         },
         views: {
             'content': {
@@ -18,7 +18,7 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                 controller: 'PatientsListController'
             },
             'additional-header':{
-                templateUrl:'../common/ui-helper/header.html'
+                templateUrl:'views/headerAdtHome.html'
             }
         },
         resolve: {
@@ -44,7 +44,7 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
         .state('patient', {
             url: '/patient/:patientUuid',
             data: {
-                backLinks: [{label: "<u>P</u>atients", url: "#/patient/search", accessKey: 'p'}]
+                backLinks: [{label: "<u>P</u>atients", url: "#/patient/search", accessKey: 'p', icon: "icon-circle-arrow-left"}]
             },
             abstract: true,
             views: {

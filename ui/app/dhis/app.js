@@ -17,7 +17,7 @@ angular.module('dhis', ['httpErrorInterceptor', 'bahmni.common.uiHelper', 'bahmn
             data: {
                 extensionPointId: 'org.bahmni.dhis.dashboard',
                 backLinks: [
-                    {label: "Home", url: "../home/"}
+                    {label: "Home", url: "../home/", icon: "icon-home"}
                 ]
             }
         })

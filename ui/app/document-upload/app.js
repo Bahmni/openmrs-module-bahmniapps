@@ -9,7 +9,7 @@ angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$ur
         $stateProvider.state('search', {
                 url:'/search',
                 data: {
-                    backLinks: [{label: "Home", url: "../home/"}]
+                    backLinks: [{label: "Home", url: "../home/", icon: "icon-home"}]
                 },
                 views: {
                     'content': {
@@ -27,7 +27,7 @@ angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$ur
             .state('upload', {
                 url: '/patient/:patientUuid/document',
                 data: {
-                    backLinks: [{label: "Patients", url: "#/search"}]
+                    backLinks: [{label: "Patients", url: "#/search", icon: "icon-circle-arrow-left"}]
                 },
                 views: {
                     'content': {

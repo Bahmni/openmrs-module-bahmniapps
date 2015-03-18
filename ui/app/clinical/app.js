@@ -9,7 +9,7 @@ angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.c
 angular.module('consultation')
     .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/patient/search');
-        var patientSearchBackLink = {label: "<u>P</u>atients", state: "patientsearch", accessKey: "p", id: "patients-link"};
+        var patientSearchBackLink = {label: "<u>P</u>atients", state: "patientsearch", accessKey: "p", id: "patients-link", icon: "icon-circle-arrow-left"};
         $stateProvider
             .state('patientsearch', {
                 url: '/patient/search',
@@ -24,7 +24,7 @@ angular.module('consultation')
                 },
                 data: {
                     backLinks: [
-                        {label: "Home", url: "../home/"}
+                        {label: "Home", url: "../home/", icon: "icon-home"}
                     ]
                 },
                 resolve: {
