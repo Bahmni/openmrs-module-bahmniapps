@@ -6,18 +6,18 @@
         float:left;
         margin-bottom: -1px;
         a,button {
-            padding: 12px 15px;
+            padding: 8px 15px;
             background: darken($bahmniSecondaryColor, 10%);
             display:inline-block;
             color: $white;
-            margin: 0 2px 0 0;
+            margin: 0 3px 0 0;
             border-radius: 5px 5px 0 0;
             text-decoration: none;
             line-height: 1.2em;
             cursor: pointer;
+            font-size: 14px;
             &:hover {
                 opacity: 0.8;
-                margin: 0 2px 0 0;
             }
         }
         .close {

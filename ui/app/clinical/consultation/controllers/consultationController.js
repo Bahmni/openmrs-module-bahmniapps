@@ -22,6 +22,14 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 }
             };
 
+            $scope.isLongerName = function (value) {
+                return value ? value.length > 18 : false;
+            };
+
+            $scope.getShorterName = function (value) {
+                return $scope.isLongerName(value) ? value.substring(0, 15) + "..." : value;
+            };
+            
             var setCurrentBoardBasedOnPath = function () {
                 var currentPath = $location.path();
                 var board = findBoardByUrl(currentPath);

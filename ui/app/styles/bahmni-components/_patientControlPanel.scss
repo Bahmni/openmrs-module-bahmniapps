@@ -7,17 +7,7 @@ button.toggle-patient {
   padding: 20px 25px;
   background-size: 50%;
 }
-.clinical-consultation {
-  button.toggle-patient {
-    padding: 12px 18px;
-    margin-top: 18px;
-  }
-  button.save-consultation {
-    margin: 18px 15px 0;
-    padding: 5px 15px;
-    font-size: 12px;
-  }
-}
+
 button.toggle-patient:hover {
     opacity: 0.8;
 }

@@ -3,8 +3,12 @@
     <div class="opd-header-bottom tabs">    
         <bm-back-links></bm-back-links>
        
-        <a class="back-btn dashboard-link" id="dashboard-link" ng-click="gotoPatientDashboard()" title="Back to patient dashboard">
+        <a class="back-btn-link" id="dashboard-link" ng-click="gotoPatientDashboard()" title="Back to {{patient.name}} Dashboard">
               <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
+              <span class="patient-info">
+                <span class="patient-name" >{{getShorterName(patient.name)}} </span>
+                <span class="patient-id">{{patient.identifier}}</span>
+            </span>
         </a>
            
 
@@ -13,9 +17,7 @@
                 <a ng-click="showBoard(board.label)">{{board.label}}</a>
             </li>
         </ul>
-        <span class="patient-info">
-            <i class="icon-user"></i> {{patient.name}} ({{patient.identifier}})
-        </span>
+
         <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}"></button>
         <button class="confirm save-consultation" ng-show="availableBoards" ng-click="save()" accesskey="s" class="confirm"><u>S</u>ave</button>
     </div>
