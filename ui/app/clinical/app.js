@@ -19,7 +19,10 @@ angular.module('consultation')
                         controller: 'PatientsListController'
                     },
                     'additional-header': {
-                        templateUrl: '../common/ui-helper/header.html'
+                        templateUrl: '../common/ui-helper/header.html',
+                        controller:function ($scope) {
+                            $scope.retrospectivePrivilege = Bahmni.Common.Constants.retrospectivePrivilege;
+                        }
                     }
                 },
                 data: {
