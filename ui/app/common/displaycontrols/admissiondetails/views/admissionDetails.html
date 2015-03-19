@@ -16,17 +16,16 @@
                 <td class="value">
                     {{admissionEncounter.encounterDatetime| date:'dd MMM yy'}}
                 </td>
-                <td></td>
-                <td class="toggle-btn">
+                <td class="toggle-btn" ng-if="showDetailsButton(admissionEncounter)" ng-if="showDetailsButton(admissionEncounter)">
                     <button class="toggle fr"
-                            ng-click="toggle(admissionEncounter)" ng-if="showDetailsButton(admissionEncounter)">
+                            ng-click="toggle(admissionEncounter)" >
                         <i class="icon-angle-down" ng-hide="admissionEncounter.show"></i>
                         <i class="icon-angle-up" ng-show="admissionEncounter.show"></i>
                     </button>
                 </td>
             </tr>
             <tr ng-if="admissionEncounter.show || getNotes(admissionEncounter)">
-                <td colspan="4" class="notes inline-notes">
+                <td colspan="3" class="notes inline-notes">
                     <pre class="left ng-binding">{{getNotes(admissionEncounter)}}</pre>
                     <div class="footer-note right">
                         <span class="provider">{{getProviderDetails(admissionEncounter)}} {{admissionEncounter.encounterDatetime  | date:'hh:mm a'}}</span>
@@ -40,16 +39,16 @@
                 <td class="value">
                     {{dischargeEncounter.encounterDatetime| date:'dd MMM yy'}}
                 </td>
-                <td class="toggle-btn">
+                <td class="toggle-btn" ng-if="showDetailsButton(dischargeEncounter)">
                     <button class="toggle fr"
-                            ng-if="showDetailsButton(dischargeEncounter)" ng-click="toggle(dischargeEncounter)">
+                             ng-click="toggle(dischargeEncounter)">
                         <i class="icon-angle-down" ng-hide="dischargeEncounter.show"></i>
                         <i class="icon-angle-up" ng-show="dischargeEncounter.show"></i>
                     </button>
                 </td>
             </tr>
             <tr ng-show="dischargeEncounter.show || getNotes(dischargeEncounter)">
-                <td colspan="4" class="notes inline-notes">
+                <td colspan="3" class="notes inline-notes">
                     <pre class="left ng-binding">{{getNotes(dischargeEncounter)}}</pre>
                     <div class="footer-note right">
                         <span class="provider">{{getProviderDetails(dischargeEncounter)}} {{dischargeEncounter.encounterDatetime  | date:'hh:mm a'}}</span>
