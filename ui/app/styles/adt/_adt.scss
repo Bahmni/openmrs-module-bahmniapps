@@ -36,6 +36,11 @@ div[ng-app="adt"] {
         transform: translateX(-50%);
         color: $lightestGray;
     }
+    .ward-list {
+        .section-grid {
+            margin-bottom: 10px;
+        }
+    }
     .ward-details-cell {
         padding: 0;
     }
