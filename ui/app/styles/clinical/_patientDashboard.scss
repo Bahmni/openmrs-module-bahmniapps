@@ -6,7 +6,11 @@
   min-height: 860px;
   right: 0;
   padding-bottom: 10px;
-
+    @media screen and (min-width: 860px) {
+      .patient-dashboard.visit & {
+        margin: 0 -10px;
+      }
+    }  
 }
 .dashboard-section-wrapper {
   @include clearfix();
@@ -24,7 +28,7 @@
     }
   }
     @media screen and (min-width: 860px) {
-      margin: 5px -10px;
+      margin: 5px 0;
     }
 }
 .patient-dashboard.visit {padding: 0;}

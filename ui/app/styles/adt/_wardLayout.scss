@@ -1,8 +1,8 @@
 $bed-available-color: #94e594;
-$bed-occupied-color: #cecece;
-$bed-empty-color: beige;
+$bed-occupied-color: beige;
+$bed-empty-color: $lightestGray;
 $bed-current-patient: #20C0C0;
-$bed-info-bgcolor:  #f9edbe;
+$bed-info-bgcolor:  #333;
 
 .back-btn-wrapper{
   button{
@@ -104,8 +104,8 @@ $bed-info-bgcolor:  #f9edbe;
   background: $bed-info-bgcolor;
   position: absolute;
   display: none;
-  border: 2px solid #cecece;
-  opacity: 0.90;
+  border: 2px solid $lightGray;
+  opacity: 0.95;
   z-index: 9999;
   &:before, &:after {
     content: "";
@@ -120,17 +120,17 @@ $bed-info-bgcolor:  #f9edbe;
     z-index: 2;
   }
   &:after {
-    border-left-color:  #cecece;
+    border-left-color:  $lightGray;
     right: -22px;
     z-index: 1;
   }
   li{
-    padding: 1px5px;
-    color: #000;
+    padding: 1px 5px;
+    color: #fff;
     text-align: center;
     font-size: 14px;
     &:first-child {
-      border-bottom: 1px solid #000;
+      border-bottom: 1px solid $lightGray;
       margin-bottom: 2px;
       font-weight: bold;
       font-family: Arial;
@@ -142,9 +142,9 @@ $bed-info-bgcolor:  #f9edbe;
       color: #fff;
       text-transform: capitalize ;
       display: inline-block;
-      border: #012C28;
+      border:  1px solid darken($bahmniSecondaryColor, 15%);;
       border-radius: 3px;
-      &:hover{
+      &:hover {
         cursor: pointer;
         opacity: 0.8;
         text-decoration: none;

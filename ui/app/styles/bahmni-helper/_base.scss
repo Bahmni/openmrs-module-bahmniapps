@@ -48,6 +48,7 @@ a {
   &, &:link, &:visited, &:hover, &:active {
       color: $bahmniLinkColor;
       text-decoration: none;
+      cursor: pointer;
   }
 }
 
