@@ -34,8 +34,7 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
         },
         views: {
             'header': {
-                templateUrl: 'views/headerAdt.html',
-                controller: 'HeaderAdtController'
+                templateUrl: 'views/headerAdt.html'
             },
             'content': {
                 templateUrl: 'views/wardDetails.html',
@@ -55,7 +54,9 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             views: {
                 'header': {
                     templateUrl: 'views/headerAdt.html',
-                    controller: 'HeaderAdtController'
+                    controller:function ($scope) {
+                        $scope.retrospectivePrivilege = Bahmni.Common.Constants.retrospectivePrivilege;
+                    }
                 },
                 'content': {
                     template: '<ui-view/>'
