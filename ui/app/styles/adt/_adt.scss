@@ -40,13 +40,19 @@ div[ng-app="adt"] {
         .section-grid {
             margin-bottom: 10px;
         }
+        .section-title {
+            cursor: pointer;
+            small {
+                color: beige;
+            }
+        }
     }
     .ward-details-cell {
         padding: 0;
     }
     .ward-details-container {
         width: 100%;
-        max-width: 1024px;
+        max-width: $max-page-width;
         overflow-x: auto;
         table {
             font-size: 14px;
