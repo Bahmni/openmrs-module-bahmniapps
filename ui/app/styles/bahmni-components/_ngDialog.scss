@@ -10,6 +10,8 @@
     margin-bottom: 15px;
     padding: 0 15px;
     box-sizing: border-box;
+    position: fixed;
+    width: 100%;
     h5 {
         display: inline-block;
         color: $lightestGray;
@@ -30,7 +32,7 @@
 }
 
 .template-container {
-    padding: 15px 20px;
+    padding: 65px 20px;
     section {
         margin-bottom: 15px;
         section, table {
