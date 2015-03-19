@@ -2,6 +2,7 @@ $bed-available-color: #94e594;
 $bed-occupied-color: #cecece;
 $bed-empty-color: beige;
 $bed-current-patient: #20C0C0;
+$bed-info-bgcolor:  #f9edbe;
 
 .back-btn-wrapper{
   button{
@@ -34,8 +35,8 @@ $bed-current-patient: #20C0C0;
   }
   .bed-type {
     position: relative;
-    top: 52px;
-    font-size: 12px;
+    top: 50px;
+    font-size: 10px;
     text-transform: capitalize;
     transition: all .3s ease;
   }
@@ -45,7 +46,7 @@ $bed-current-patient: #20C0C0;
       overflow: hidden;
       .col {
         float: left;
-        width: 75px;
+        width: 60px;
         height: 50px;
         margin: 19px;
         padding: 0 10px;
@@ -73,7 +74,10 @@ $bed-current-patient: #20C0C0;
           }
         }
         &.empty {
-          // background: $bed-empty-color;
+          background: $bed-empty-color;
+          &, &:hover {
+            box-shadow: none;
+          }
           // margin: 0px;
           // padding: 16px 25px;
         }
@@ -97,7 +101,7 @@ $bed-current-patient: #20C0C0;
 
 .bed-info {
   padding: 10px;
-  background: #f1f1f1;
+  background: $bed-info-bgcolor;
   position: absolute;
   display: none;
   border: 2px solid #cecece;
@@ -109,7 +113,7 @@ $bed-current-patient: #20C0C0;
     width: 0;
     display: block;
     border: 10px solid transparent;
-    border-left-color: #f1f1f1;
+    border-left-color: $bed-info-bgcolor;
     position: absolute;
     right: -19px;
     top: 7px;

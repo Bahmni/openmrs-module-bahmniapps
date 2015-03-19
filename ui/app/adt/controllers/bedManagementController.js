@@ -212,7 +212,7 @@ angular.module('bahmni.adt')
             link: function (scope, elem, attr) {
                 elem.bind('click', function (e) {
                     scope.setBedDetails(scope.cell);
-                    var leftpos = $(elem).position().left + 110;
+                    var leftpos = $(elem).position().left + 10;
                     var toppos = $(elem).offset().top;
                     $(".bed-info").css('left', leftpos);
                     $(".bed-info").css('top', toppos);

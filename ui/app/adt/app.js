@@ -26,7 +26,9 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
         }
     }).state('wardDetails', {
         url: '/wardList',
-
+        data: {
+                backLinks: [{label: "<u>P</u>atients", url: "#/patient/search", accessKey: 'p', icon: "icon-circle-arrow-left"}]
+        },
         views: {
             'header': {
                 templateUrl: 'views/headerAdt.html',
