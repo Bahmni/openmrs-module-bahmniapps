@@ -144,6 +144,9 @@
     padding: 0 10px;
     font-size: 18px;
   }
+  &.fr {
+    float: right;
+  }
 }
 .has-toggle-btn {
     border-right: 1px solid $white!important;
