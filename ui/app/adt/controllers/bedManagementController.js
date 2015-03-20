@@ -8,6 +8,7 @@ angular.module('bahmni.adt')
         $scope.layout = [];
         $scope.bedLayouts = [];
         $scope.selectedBed = null;
+        $scope.wardName = null;
         var maxX = 1;
         var maxY = 1;
         var minX = 1;
@@ -20,7 +21,7 @@ angular.module('bahmni.adt')
         var init = function () {
             $('.bed-info').hide();
             if ($rootScope.bedDetails && $rootScope.bedDetails.wardUuid) {
-                $scope.showWardLayout($rootScope.bedDetails.wardUuid);
+                $scope.showWardLayout($rootScope.bedDetails.wardUuid, $rootScope.bedDetails.wardName);
             } else {
                 $scope.showWardList();
             }
