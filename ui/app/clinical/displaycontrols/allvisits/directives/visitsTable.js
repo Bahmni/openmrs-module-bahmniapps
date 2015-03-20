@@ -8,6 +8,9 @@ angular.module('bahmni.clinical')
             }));
             
             $scope.openVisit = function(visit) {
+                if($scope.$parent.closeThisDialog){
+                    $scope.$parent.closeThisDialog("closing modal");
+                }
                 $state.go('patient.visit', {visitUuid: visit.uuid});
             };
 
