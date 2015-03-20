@@ -31,8 +31,9 @@ angular.module('bahmni.adt')
                 backlinkService.addUrl({ image: $scope.patient.image, url: "#/patient/" + $scope.patient.uuid + "/visit/" + visitUuid + "/", title: "Back to patient dashboard"});
             });
 
-            $scope.showWardLayout = function (wardUuid) {
+        $scope.showWardLayout = function (wardUuid, wardName) {
             currentWardUuid = wardUuid;
+            $scope.wardName = wardName
             $scope.layout = [];
             $scope.bedLayouts = [];
             $scope.selectedBed = null;
@@ -212,7 +213,7 @@ angular.module('bahmni.adt')
             link: function (scope, elem, attr) {
                 elem.bind('click', function (e) {
                     scope.setBedDetails(scope.cell);
-                    var leftpos = $(elem).position().left + 10;
+                    var leftpos = $(elem).position().left - 20;
                     var toppos = $(elem).offset().top;
                     $(".bed-info").css('left', leftpos);
                     $(".bed-info").css('top', toppos);

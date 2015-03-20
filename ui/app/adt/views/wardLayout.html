@@ -7,14 +7,14 @@
 			<div ng-show="!selectedBed.available">
                 <div></div>
                 <li>{{selectedBed.patientInfo.identifier}}</li>
-                <li>{{selectedBed.patientInfo.name}}</li>
-                <li>{{selectedBed.patientInfo.gender}}</li>
+                <li>{{selectedBed.patientInfo.name}} ({{selectedBed.patientInfo.gender}})</li>
             </div>
 			<li><a class="assign" ng-show="selectedBed.available && !$parent.bedDetails" ng-click="assignBed(selectedBed)">Assign</a></li>
 			<li><a class="transfer" ng-show="selectedBed.available && $parent.bedDetails" ng-click="assignBed(selectedBed)">Transfer</a></li>
 		</ul>
     </div>
     <div class="bed-assignment">
+        <h2> {{wardName}}</h2>
         <ul class="bed-assignment-inner-wrapper">
         <li class="row" ng-repeat="layoutRow in layout">
             <ul>
@@ -22,6 +22,7 @@
                     ng-class="{occupied: !cell.empty && !cell.available, available: !cell.empty && cell.available,
                     empty: cell.empty, currentPatient : getCurrentBed().bedId == cell.bed.bedId }"
                     ng-repeat="cell in layoutRow" bed-assignment-dialog>
+                    <span class="bed-number" ng-show="!cell.empty && cell.bed.bedNumber">{{cell.bed.bedNumber}}</span>
                     <span class="bed-type" ng-show="!cell.empty && cell.bed.bedType">{{cell.bed.bedType}}</span>
                 </li>
             </ul>
