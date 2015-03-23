@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('concept', [function () {
-        var controller = function ($scope, spinner, conceptSetService, $filter) {
+    .directive('concept', ['RecursionHelper','spinner', 'conceptSetService', '$filter',function (RecursionHelper,spinner, conceptSetService, $filter) {
+        var link = function ($scope, $element,$attr) {
             var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
             $scope.showTitle = $scope.showTitle === undefined ? true : $scope.showTitle;
 
@@ -51,9 +51,13 @@ angular.module('bahmni.common.conceptSet')
             };
         };
 
+        var compile = function(element) {
+            return RecursionHelper.compile(element, link);
+        };
+
         return {
             restrict: 'E',
-            controller: controller,
+            compile:compile,
             scope: {
                 observation: "=",
                 atLeastOneValueIsSet : "=",
@@ -62,7 +66,7 @@ angular.module('bahmni.common.conceptSet')
                 rootObservation: "=",
                 patient: "="
             },
-            template: '<ng-include src="\'../common/concept-set/views/observation.html\'" />'
+            templateUrl:'../common/concept-set/views/observation.html'
         }
     }]).directive('conceptSet', ['contextChangeHandler', 'appService', 'observationsService', function (contextChangeHandler, appService, observationsService) {
         var template =

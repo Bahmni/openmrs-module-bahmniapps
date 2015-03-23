@@ -4,6 +4,7 @@ angular.module('bahmni.common.conceptSet')
         restrict:'E',
         scope:{ observation:'='},
 
+
         link:function(scope, element, attrs){
             if(attrs.dirtyCheckFlag){
                 scope.hasDirtyFlag = true;
@@ -23,6 +24,10 @@ angular.module('bahmni.common.conceptSet')
                 return  shortName  ? shortName.name : answer.displayString;
             };
         },
-        template:'<ng-include src="\'../common/concept-set/views/buttonselectObservation.html\'" />'
+        template:'<div ng-class="{\'multi-select-widget\'' +
+        ': observation.isMultiSelect}" class="multi-select-button-group">' +
+        '<button type="button" class="grid-row-element" ng-class="{active: isSet(answer)}"'+
+        'ng-click="select(answer)" ng-repeat="answer in ::observation.getPossibleAnswers()"><i class="icon-ok"></i>{{::getAnswerDisplayName(answer)}}'+
+            '</button></div>'
     };
 });

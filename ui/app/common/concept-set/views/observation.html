@@ -1,44 +1,44 @@
 <div class="observations-tab" >
 <div class="vitals form-horizontal">
-    <fieldset class="leaf-observation-node" ng-if="observation.isObservationNode">
+    <fieldset class="leaf-observation-node" ng-if="::observation.isObservationNode">
         <div class="form-group bm-pop-over">
-            <div class=" concept-tooltip-description" bm-pop-over-target ng-if="observation.primaryObs.concept.description">
+            <div class=" concept-tooltip-description" bm-pop-over-target ng-if="::observation.primaryObs.concept.description">
                 <i class="icon-caret-down"></i>
-                <span class="details" ng-bind-html="observation.primaryObs.concept.description"></span>
+                <span class="details" ng-bind-html="::observation.primaryObs.concept.description"></span>
             </div>
 
             
-            <label class="control-label" for="{{observation.uniqueId}}" >
-                <span ng-bind="observation.label"></span>
-                <span ng-show="observation.primaryObs.units" ng-bind="'(' + observation.primaryObs.units + ')'"></span>
-                <span ng-if="observation.isRequired()" class="asterick">*</span>
-                <i class="icon-question-sign concept-tooltip-trigger" bm-pop-over-trigger ng-if="observation.primaryObs.concept.description"></i>
+            <label class="control-label" for="{{::observation.uniqueId}}" >
+                <span ng-bind="::observation.label"></span>
+                <span ng-show="::observation.primaryObs.units" ng-bind="::'(' + observation.primaryObs.units + ')'"></span>
+                <span ng-if="::observation.isRequired()" class="asterick">*</span>
+                <i class="icon-question-sign concept-tooltip-trigger" bm-pop-over-trigger ng-if="::observation.primaryObs.concept.description"></i>
 
             </label>
 
-            <div class="field-value" ng-switch="observation.getControlType()">
+            <div class="field-value" ng-switch="::observation.getControlType()">
                 <div class="concept-description" ng-if="observation.previous">
                     <span class="details" ng-bind-html="observation.previous.value"></span>
                 </div>
                 <div ng-switch-when="html5InputDataType">
-                    <input id="{{observation.uniqueId}}" obs-constraints obs="observation.primaryObs"
-                           ng-if="!observation.primaryObs.isNumeric()"
+                    <input id="{{::observation.uniqueId}}" obs-constraints obs="observation.primaryObs"
+                           ng-if="::!observation.primaryObs.isNumeric()"
                            ng-model="observation.value" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}" focus-me="observation.isFocused"/>
 
-                    <input id="{{observation.uniqueId}}" obs-constraints obs="observation.primaryObs" ng-if="observation.primaryObs.isNumeric()"
+                    <input id="{{::observation.uniqueId}}" obs-constraints obs="observation.primaryObs" ng-if="::observation.primaryObs.isNumeric()"
                            ng-model="observation.value"
                            ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}" integer="true" focus-me="observation.isFocused"/>
                 </div>
 
-                <textarea id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="!observation.primaryObs.isConciseText()" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet), 'computed-field': observation.isComputedAndEditable()}" focus-me="observation.isFocused">
+                <textarea id="{{::observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="::!observation.primaryObs.isConciseText()" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet), 'computed-field': observation.isComputedAndEditable()}" focus-me="observation.isFocused">
 
                 </textarea>
-                <input type="text" id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="observation.primaryObs.isConciseText()" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet), 'computed-field': observation.isComputedAndEditable()}" focus-me="observation.isFocused">
+                <input type="text" id="{{::observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="observation.primaryObs.isConciseText()" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet), 'computed-field': observation.isComputedAndEditable()}" focus-me="observation.isFocused">
 
                 <span ng-switch-when="dropdown" class="field-value info icon-info-sign"> Dropdowns are not supported. Change it to autocomplete</span>
 
                 <div ng-switch-when="freeTextAutocomplete"  class="autocomplete">
-                    <input id="{{observation.uniqueId}}" class="concept-name" ng-model="observation.value" concept-autocomplete
+                    <input id="{{::observation.uniqueId}}" class="concept-name" ng-model="observation.value" concept-autocomplete
                            coded-concept-name="observation.conceptUIConfig.answersConceptName"
                            blur-on-select="false" focus-me="observation.isFocused"
                     />
@@ -57,14 +57,14 @@
                     <input ng-if="observation.conceptUIConfig.answersConceptName" concept-autocomplete coded-concept-name="observation.conceptUIConfig.answersConceptName" ng-model="observation.value" />
                 </div>
 
-                <p ng-switch-default class="field-value info icon-info-sign"> The concept data type '{{observation.dataTypeName}}' is not supported yet.</p>
+                <p ng-switch-default class="field-value info icon-info-sign"> The concept data type '::{{observation.dataTypeName}}' is not supported yet.</p>
             </div>
             <small class="hint" ng-show="observation.primaryObs.concept.lowNormal || observation.primaryObs.concept.hiNormal" ng-bind="'(' + observation.primaryObs.concept.lowNormal + ' - ' + observation.primaryObs.concept.hiNormal + ')'"></small>
-            <div ng-if="observation.abnormalObs" class="fl accept-btn-wrapper">
+            <div ng-if="::observation.abnormalObs" class="fl accept-btn-wrapper">
                 <button type="button" ng-model="observation.abnormalObs.value" class="small-btn accept-btn grid-row-element"
                         ng-disabled="!observation.primaryObs.hasValue()" ng-class="{'active': observation.abnormalObs.value}" ng-click="observation.toggleAbnormal()"><i class="icon-ok"></i>Abnormal</button>
             </div>
-            <div class="checkbox-inline" ng-if="observation.durationObs" ng-class="{'duration': observation.durationObs, 'computed-field': observation.isComputedAndEditable()}">
+            <div class="checkbox-inline" ng-if="::observation.durationObs" ng-class="{'duration': observation.durationObs, 'computed-field': observation.isComputedAndEditable()}">
                 <span>for</span><duration ng-model="observation.durationObs.value" disabled="!observation.primaryObs.hasValue()" illegal-value="observation.isDurationRequired() && !observation.hasDuration()"></duration>
             </div>
 
@@ -90,36 +90,36 @@
     <fieldset class="leaf-observation-node" ng-if="observation.isFormElement()">
         <div class="form-group" bm-pop-over>
 
-            <div class=" concept-tooltip-description" bm-pop-over-target ng-if="observation.concept.description">
+            <div class=" concept-tooltip-description" bm-pop-over-target ng-if="::observation.concept.description">
                 <i class="icon-caret-down"></i>
-                <span class="details" ng-bind-html="observation.concept.description"></span>
+                <span class="details" ng-bind-html="::observation.concept.description"></span>
             </div>
 
-            <label class="control-label" for="{{observation.uniqueId}}" >
-                <span ng-bind="observation.label"></span>
-                <span ng-show="observation.units" ng-bind="'(' + observation.units + ')'"></span>
-                <span ng-if="observation.isRequired()" class="asterick">*</span>
-                <i class="icon-question-sign concept-tooltip-trigger" bm-pop-over-trigger ng-if="observation.concept.description"></i>
+            <label class="control-label" for="{{::observation.uniqueId}}" >
+                <span ng-bind="::observation.label"></span>
+                <span ng-show="::observation.units" ng-bind="::'(' + observation.units + ')'"></span>
+                <span ng-if="::observation.isRequired()" class="asterick">*</span>
+                <i class="icon-question-sign concept-tooltip-trigger" bm-pop-over-trigger ng-if="::observation.concept.description"></i>
 
             </label>
 
-            <div class="field-value" ng-switch="observation.getControlType()">
+            <div class="field-value" ng-switch="::observation.getControlType()">
                 <div class="concept-description" ng-if="observation.previous">
                     <span class="details" ng-bind-html="getStringValue(observation.previous)"></span>
                 </div>
 
                 <div ng-switch-when="html5InputDataType">
-                    <input id="{{observation.uniqueId}}" obs-constraints obs="observation"
-                           ng-model="observation.value" ng-if="observation.isNumeric()"
+                    <input id="{{::observation.uniqueId}}" obs-constraints obs="observation"
+                           ng-model="observation.value" ng-if="::observation.isNumeric()"
                            ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}" integer="true" focus-me="observation.isFocused"/> 
 
-                    <input id="{{observation.uniqueId}}" obs-constraints obs="observation" ng-if="!observation.isNumeric()"
+                    <input id="{{::observation.uniqueId}}" obs-constraints obs="observation" ng-if="!observation.isNumeric()"
                            ng-model="observation.value" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}" focus-me="observation.isFocused"/>
                 </div>
 
-                <textarea id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="!observation.isConciseText()"
+                <textarea id="{{::observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="::!observation.isConciseText()"
                           ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}" focus-me="observation.isFocused"></textarea>
-                <input type="text" id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="observation.isConciseText()"
+                <input type="text" id="{{::observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="::observation.isConciseText()"
                        ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}" focus-me="observation.isFocused">
                 <!--{{observation.groupMembers}}-->
 
@@ -128,19 +128,19 @@
                 </div>
 
                 <div ng-switch-when="grid">
-                    <div  ng-repeat="member in observation.groupMembers" class="grid-row"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}">
+                    <div  ng-repeat="member in ::observation.groupMembers" class="grid-row"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}">
                         <button-select observation="member" ></button-select>
                     </div>
                 </div>
                 <div ng-switch-when="buttonselect" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}" >
-                    <button-select observation="observation"></button-select>
+                    <button-select observation="::observation"></button-select>
                 </div>
                 <div ng-switch-when="image" class="consultation-image">
                     <div class="file-remove">
                         <button type="button" ng-click="observation.toggleVoidingOfImage()" ng-if="observation.value" class="row-remover"><span ng-class="{'icon-remove': !image.voided, 'icon-undo': observation.voided }"></span></button>
                     </div>
 
-                        <input id="file-browse-{{observation.uniqueId}}" class="file-browse" type="file" name="image" accept="image/*" capture="camera" ng-model="observation.value" image-upload patient-uuid="patient.uuid">
+                        <input id="file-browse-{{observation.uniqueId}}" class="file-browse" type="file" name="image" accept="image/*" capture="camera" ng-model="observation.value" image-upload patient-uuid="::patient.uuid">
                         <label class="placeholder btn" for="file-browse-{{observation.uniqueId}}" ng-hide="observation.value || observation.voided"><i class="icon-plus needsclick"></i></label>
 
                         <div class="file">
@@ -159,7 +159,7 @@
                     </textarea>
                 </div>
 
-                <input id="{{observation.uniqueId}}" ng-switch-when="freeTextAutocomplete" class="concept-name" ng-model="observation.value" concept-autocomplete
+                <input id="{{::observation.uniqueId}}" ng-switch-when="freeTextAutocomplete" class="concept-name" ng-model="observation.value" concept-autocomplete
                        ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}"
                        coded-concept-name="observation.conceptUIConfig.answersConceptName"
                        blur-on-select="false" focus-me="observation.isFocused"/>
@@ -167,21 +167,21 @@
                 <div ng-switch-when="autocomplete"  ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}" class="autocomplete">
 
 
-                    <input ng-if="!observation.conceptUIConfig.answersConceptName" type="hidden" ui-select2="selectOptions(observation.concept)" ng-model="observation.value" style="width: 90%;" autofocus/>
-                    <input ng-if="observation.conceptUIConfig.answersConceptName" concept-autocomplete coded-concept-name="observation.conceptUIConfig.answersConceptName" ng-model="observation.autocompleteValue"  autofocus/>
+                    <input ng-if="::!observation.conceptUIConfig.answersConceptName" type="hidden" ui-select2="selectOptions(observation.concept)" ng-model="observation.value" style="width: 90%;" autofocus/>
+                    <input ng-if="::observation.conceptUIConfig.answersConceptName" concept-autocomplete coded-concept-name="observation.conceptUIConfig.answersConceptName" ng-model="observation.autocompleteValue"  autofocus/>
 
                 </div>
 
                 <p ng-switch-default class="field-value info icon-info-sign"> The concept data type '{{observation.dataTypeName}}' is not supported yet.</p>
             </div>
-            <small class="hint" ng-show="observation.concept.lowNormal || observation.concept.hiNormal" ng-bind="'(' + observation.concept.lowNormal + ' - ' + observation.concept.hiNormal + ')'"></small>
+            <small class="hint" ng-show="::(observation.concept.lowNormal || observation.concept.hiNormal)" ng-bind="'(' + observation.concept.lowNormal + ' - ' + observation.concept.hiNormal + ')'"></small>
 
             <span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
                 <button type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)"><i class="icon-plus-sign"></i> Add More
                 </button>
             </span>
 
-            <button ng-if="observation.canHaveComment()" type="button" toggle="observation.showComment" class="comment-toggle fr" tabindex="-1" ng-class="{'has-notes': observation.comment}">
+            <button ng-if="::observation.canHaveComment()" type="button" toggle="observation.showComment" class="comment-toggle fr" tabindex="-1" ng-class="{'has-notes': observation.comment}">
                 <i class="icon-file" ng-hide="observation.comment">
                     <i class="icon-plus-sign" ng-hide="observation.showComment"></i>
                     <i class="icon-minus-sign" ng-show="observation.showComment"></i>
@@ -189,7 +189,7 @@
                 <i class="icon-file-alt" ng-show="observation.comment"></i>
             </button>
 
-            <div ng-if="observation.canHaveComment()" class="offset-label" ng-show="observation.showComment">
+            <div ng-if="::observation.canHaveComment()" class="offset-label" ng-show="observation.showComment">
                 <textarea class="obs-comment-section"  maxlength="255" ng-model="observation.comment" placeholder="Notes">
                 </textarea>
             </div>
@@ -199,7 +199,7 @@
     <fieldset ng-if="!observation.isObservationNode && !observation.isFormElement() && !observation.isComputed()" class="hasLegend">
 
         <legend ng-if="showTitle" class="mylegend">
-            <strong>{{observation.label}}</strong>
+            <strong>{{::observation.label}}</strong>
             <span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
                 <button type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)"><i class="icon-plus-sign"></i> Add More
                 </button>
@@ -207,7 +207,7 @@
         </legend>
 
         <div class="form-group">        
-            <div class="concept-set-description" ng-if="observation.concept.description">
+            <div class="concept-set-description" ng-if="::observation.concept.description">
                 <span class="description" ng-bind-html="observation.concept.description"></span>
             </div>
             <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers " ng-if="!member.hidden">
