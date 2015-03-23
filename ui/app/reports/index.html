@@ -16,6 +16,7 @@
     <body>
         <div class="bahmni-reports">
             <div ng-app="bahmni.reports">
+                <div ui-view="additional-header"></div>
                 <div ng-include src="'../common/ui-helper/messages.html'"></div>
                 <div ui-view="content"></div>
             </div>

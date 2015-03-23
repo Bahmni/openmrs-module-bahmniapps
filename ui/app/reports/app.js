@@ -9,10 +9,18 @@ angular
             .state('dashboard', {
                 url: '/dashboard',
                 views: {
+                    'additional-header': {
+                        templateUrl: 'views/dashboardHeader.html'
+                    },
                     'content': {
                         templateUrl: 'views/dashboard.html',
                         controller: 'DashboardController'
                     }
+                },
+                data: {
+                    backLinks: [
+                        {label: "Home", url: "../home/", icon: "icon-home"}
+                    ]
                 },
                 resolve: {
                     initialization: 'initialization'
