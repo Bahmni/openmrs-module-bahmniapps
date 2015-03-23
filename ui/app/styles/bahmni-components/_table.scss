@@ -15,7 +15,7 @@
   .table-header{
     background: $lightestGray;
     border-bottom: 1px solid $lightGray;
-    .col{
+    .col {
       @include font-size(1);
       font-weight: bold;
     }
@@ -59,6 +59,13 @@ table.no-borders {
 	}
 }
 
+table.alt-row {
+  tbody tr:nth-child(even) {
+     td, th {
+      background-color: lighten($lightestGray, 2%);
+    }
+  }
+}
 /*table with horzontal borders*/
 table.horizontal-only {
 	th, td {

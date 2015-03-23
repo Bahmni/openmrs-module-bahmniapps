@@ -1,18 +1,19 @@
-<div class="dhis-page">
-    <section class="primary-section-grid">
-        <table class="file-to-upload" ng-if="!tasks.isEmpty()">
+<div class="reports-page">
+    <section class="section-grid">
+    <h2 class="section-title">Reports</h2>
+        <table class="alt-row" ng-if="!tasks.isEmpty()">
             <thead>
             <tr>
                 <th>Name</th>
-                <th>Start Date
+                <th class="reports-start-date">Start Date
                     <input ng-model="default.startDate" date-converter class="form-field start-date" type="date"
                            ng-change="setDefault('startDate')">
                 </th>
-                <th>Stop Date
+                <th class="reports-stop-date">Stop Date
                     <input ng-model="default.stopDate" date-converter class="form-field start-date" type="date"
                            ng-change="setDefault('stopDate')">
                 </th>
-                <th>
+                <th class="reports-format">
                     Format
                     <select ng-model="default.responseType" ng-change="setDefault('responseType')"
                             ng-init="default.responseType='application/vnd.ms-excel'">
@@ -21,26 +22,26 @@
                         <option value="text/html">HTML</option>
                     </select>
                 </th>
-                <th>
+                <th class="reports-action">
                 </th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="report in reports">
                 <td>{{ report.name }}</td>
-                <td><input date-converter class="form-field start-date" type="date"
+                <td class="reports-start-date"><input date-converter class="form-field start-date" type="date"
                            ng-model="report.startDate"></td>
-                <td><input date-converter class="form-field stop-date" type="date"
+                <td class="reports-stop-date"><input date-converter class="form-field stop-date" type="date"
                            ng-model="report.stopDate"></td>
-                <td>
+                <td class="reports-format">
                     <select ng-model="report.responseType" ng-init="report.responseType='application/vnd.ms-excel'">
                         <option value="text/html" selected="selected">HTML</option>
                         <option value="application/vnd.ms-excel" >EXCEL</option>
                         <option value="application/pdf">PDF</option>
                     </select>
                 </td>
-                <td>
-                    <button type="submit" class="run-report confirm" ng-click="runReport(report)">Run Report</button>
+                <td class="reports-action">
+                    <button type="submit" class="run-report confirm" ng-click="runReport(report)"> Run Report</button>
                 </td>
             </tr>
             </tbody>
