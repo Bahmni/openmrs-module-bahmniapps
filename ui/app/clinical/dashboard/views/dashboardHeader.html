@@ -2,11 +2,14 @@
     <div class="opd-header-bottom tabs">
         <bm-back-links></bm-back-links>
 
-        <button ng-if="clinicalDashboardConfig.showPrint()" class="dialog-button-group" ng-click="printDashboard()" accesskey="r">
+        <button ng-if="clinicalDashboardConfig.showPrint()" class="dialog-button-group" ng-click="printDashboard()"
+                accesskey="r">
             <i class="icon-print"></i>
-            P<u>r</u>int</button>
+            P<u>r</u>int
+        </button>
 
-        <span class="retro-date-text" ng-if="$parent.retrospectiveEntry.isRetrospective" ng-bind="$parent.retrospectiveEntry.encounterDate | date:'dd/MM/yyyy'" />
+        <span class="retro-date-text" ng-if="$parent.retrospectiveEntry.isRetrospective"
+              ng-bind="$parent.retrospectiveEntry.encounterDate | date:'dd/MM/yyyy'"/>
 
         <ul class="header-tabs" ng-if="clinicalDashboardConfig.showTabs()">
             <li class="tab-item dashboard" ng-repeat="dashboard in clinicalDashboardConfig.openDashboards"
@@ -17,7 +20,8 @@
                 <a ng-click="showDashboard(dashboard)">{{dashboard.dashboardName}}</a>
 
             </li>
-            <li class="tab-item new-tab tab-active" bm-pop-over autoclose="true" ng-show="clinicalDashboardConfig.getUnOpenedDashboards().length > 0">
+            <li class="tab-item new-tab tab-active" bm-pop-over autoclose="true"
+                ng-show="clinicalDashboardConfig.getUnOpenedDashboards().length > 0">
                 <a id="addDashboardButton" bm-pop-over-trigger>+</a>
 
                 <div class="tab-submenu" bm-pop-over-target>
@@ -31,6 +35,12 @@
         </ul>
 
         <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}"></button>
+        <div class="dashboard-date-picker" ng-controller="PatientListHeaderController">
+            <input show-if-privilege="{{retrospectivePrivilege}}" class="retro-date-widget" type="date"
+                   ng-model="$parent.retrospectiveEntry.encounterDate" max="{{today}}"/>
+            <label show-if-privilege="{{retrospectivePrivilege}}" for="retro-date-widget" class="retro-date-widget">Enter
+                data for</label>
+        </div>
         <span class="grouped-buttons">
             <a class=" btn--left btn--success " ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective"
                ng-click="collapseControlPanel()" href="#{{consultationBoardLink}}">Consultation</a>

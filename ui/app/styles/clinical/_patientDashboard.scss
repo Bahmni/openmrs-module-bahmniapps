@@ -12,6 +12,9 @@
       }
     }  
 }
+.dashboard-date-picker {
+  float: left;
+}
 .dashboard-section-wrapper {
   @include clearfix();
   .dashboard-sections {

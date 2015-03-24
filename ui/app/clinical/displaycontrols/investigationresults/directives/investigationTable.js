@@ -57,7 +57,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.$watch('accessions', function(){
-                if($scope.accessions)
+                if($scope.accessions && $scope.accessions[0])
                     $scope.accessions[0].isOpen = true
             });
         };
