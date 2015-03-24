@@ -84,9 +84,4 @@ Bahmni.Common.Domain.Diagnosis = function (codedAnswer, order, certainty, existi
     self.setAsNonCodedAnswer =  function() {
         self.isNonCodedAnswer = !self.isNonCodedAnswer;
     };
-    
-    self.isNoteEditable = function (){
-        return (self.encounterUuid === self.firstDiagnosis.encounterUuid )&& self.inCurrentEncounter;
-    }
-
 };

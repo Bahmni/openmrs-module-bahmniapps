@@ -44,8 +44,7 @@
     </button>
 </div>
 <div class="notes inline-notes" ng-show="diagnosis.showComments">
-    <span ng-if="!diagnosis.isNoteEditable() && diagnosis.comments ">{{diagnosis.comments}}</span>
-    <textarea ng-if="diagnosis.isNoteEditable()" class="comment-section" maxlength="255" ng-model="diagnosis.comments"
+    <textarea class="comment-section" maxlength="255" ng-model="diagnosis.comments"
               ng-change="diagnosis.isDirty=true">
     </textarea>
 </div>
