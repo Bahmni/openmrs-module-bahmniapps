@@ -149,7 +149,7 @@
   }
 }
 .has-toggle-btn {
-    border-right: 1px solid $white!important;
+    border-right: 1px solid transparent !important;
 }
 .toggle-btn {
     padding: 0;
@@ -335,7 +335,6 @@ span.range {
   padding: 2px;
   font-family: arial;
   font-size: 14px;
-  width: 50px;
 }
 
 .dosage-days {
@@ -372,6 +371,18 @@ span.range {
 }
 .row-click {
   cursor: pointer;
+}
+.laborder-sub-heading {
+  @include clearfix();
+  font-size: 14px;
+  padding: 5px;
+  border-bottom: 1px solid $lightestGray;
+  background: $lighterGray;
+  color: $black;
+  .toggle-btn {
+    padding: 2px 5px;
+    font-size: 12px;
+  }
 }
 .concept-set-group {
   margin-bottom: 20px;

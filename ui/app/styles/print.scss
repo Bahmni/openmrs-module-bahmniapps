@@ -229,7 +229,16 @@ h1,h2,h3{
 				display: none;
 			}
 		}
-
+      .laborder-sub-heading {
+        font-size: 9pt;
+        font-weight: bold;
+        border: none;
+        padding: 0;
+        background: none;
+        .toggle-btn, [class^="icon-"], [class*=" icon-"] {
+          display: none;
+        }
+      }
 		table {
 			border-collapse: separate;
 			border: 0;
@@ -254,10 +263,6 @@ h1,h2,h3{
 						color: #000;
 						background: none;
 						font-family: Arial, sans-serif;
-					}
-					.laborder-sub-heading {
-						font-size: 9pt;
-						font-weight: bold;
 					}
 					.toggle-btn {
 						display: none;

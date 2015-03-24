@@ -35,7 +35,8 @@ angular.module('bahmni.clinical')
             };
 
             $scope.toggle = function (item) {
-                item.show = !item.show
+                event.stopPropagation();
+                item.show = !item.show;
             };
 
             $scope.getAccessionDetailsFrom = function(labOrderResults){
@@ -47,10 +48,18 @@ angular.module('bahmni.clinical')
                 }
             };
 
+            $scope.toggleAccession = function(labOrderResults) {
+                labOrderResults.isOpen = !labOrderResults.isOpen;
+            };
+
             $scope.showAccessionNotes = function(labOrderResults) {
                 return $scope.getAccessionDetailsFrom(labOrderResults).accessionNotes && $scope.params.showAccessionNotes;
             };
-            
+
+            $scope.$watch('accessions', function(){
+                if($scope.accessions)
+                    $scope.accessions[0].isOpen = true
+            });
         };
         return {
             restrict: 'E',
