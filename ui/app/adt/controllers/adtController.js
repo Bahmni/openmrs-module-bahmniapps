@@ -9,7 +9,6 @@ angular.module('bahmni.adt')
             $scope.adtObservations = [];
 
             $scope.dashboardConfig = appService.getAppDescriptor().getConfigValue('dashboard');
-
             $scope.getAdtConceptConfig = $scope.dashboardConfig.conceptName;
 
             var getDefaultVisitTypeUuid = function(){
@@ -106,7 +105,6 @@ angular.module('bahmni.adt')
                             $scope.currentVisitType = $scope.visit.visitType.display;
                             var encounterToDisplay = Bahmni.ADT.DispositionDisplayUtil.getEncounterToDisplay(encounterConfig, $scope.visit);
                             if (encounterToDisplay) {
-                                $scope.adtObservations = encounterToDisplay.obs;
                                 $scope.dispositionAction = getAdtActionForEncounterType(encounterToDisplay.encounterType.uuid);
                             }
                         }
@@ -118,15 +116,6 @@ angular.module('bahmni.adt')
                 var dispositionCode;
                 if ($scope.dispositionAction) {
                     dispositionCode = getActionCode($scope.dispositionAction);
-                    if($scope.visit){
-                        var selectedEncounterTypeUuid = actionConfigs[dispositionCode].encounterTypeUuid;
-                        var encounterForSelectedDisposition = getEncounterFromVisitFor(selectedEncounterTypeUuid);
-                        if(encounterForSelectedDisposition){
-                            $scope.adtObservations = encounterForSelectedDisposition.obs;
-                        }else{
-                            $scope.adtObservations = [];
-                        }
-                    }
                 }
                 $scope.actions = dispositionCode ? actionConfigs[dispositionCode].allowedActions : [];
             });
@@ -222,7 +211,7 @@ angular.module('bahmni.adt')
             $scope.undoDischarge = function () {
                 var encounterData = $scope.visit.getDischargeEncounter();
                 spinner.forPromise(encounterService.delete(encounterData.uuid, "Undo Discharge")).success(function (response) {
-                    forwardUrl(response, "onAdmissionForwardTo");
+                    forwardUrl(response, "onAdmissionForwardTo");//TODO this forward URL doesn't work
                 });
             };
 

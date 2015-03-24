@@ -23,6 +23,9 @@ angular.module('bahmni.common.displaycontrol.admissiondetails')
             };
 
             $scope.getNotes = function(encounter){
+                if(encounter && encounter.obs[0] && encounter.obs[0].value){
+                    return encounter.obs[0].value;
+                }
                 return null;
             };
 
