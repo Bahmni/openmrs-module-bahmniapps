@@ -1,14 +1,24 @@
 <div class="ward-details-container">
     <table class="table ward-details-content">
-	    <thead>
-	        <tr>
-	            <th ng-repeat="heading in tableHeadings">{{heading}}</th>
-	        </tr>
-	    </thead>
-	    <tbody>
-	        <tr ng-repeat="row in tableDetails">
-	            <td ng-repeat="heading in tableHeadings">{{row[heading]}} </td>
-	        </tr>
+        <thead>
+            <tr>
+                <th ng-repeat="heading in tableHeadings">{{heading}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="row in tableDetails">
+                <td ng-repeat="heading in tableHeadings">
+                    <span ng-if="heading != 'DiagnosisList'">{{row[heading]}}</span>
+                    <div ng-if="heading == 'DiagnosisList'">
+                        <div ng-repeat="diagnosis in row[heading]" ng-class="{'strike-text': diagnosis.ruledOut}">
+                            <span>{{diagnosis.Diagnosis}}</span>
+                            <span>{{diagnosis["Diagnosis Certainty"]}}</span>
+                            <span>{{diagnosis["Diagnosis Order"]}}</span>
+                            <span>{{diagnosis["Diagnosis Status"]}}</span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>

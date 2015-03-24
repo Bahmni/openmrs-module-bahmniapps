@@ -7,8 +7,8 @@ angular.module('bahmni.adt')
             var getTableDetails = function() {
                 var details = $q.defer();
                 queryService.getResponseFromQuery($scope.params).then(function (response) {
-                    $scope.tableDetails = response.data;
-                    $scope.tableHeadings = Object.keys(response.data[0]);
+                    $scope.tableDetails = Bahmni.ADT.WardDetails.create(response.data);
+                    $scope.tableHeadings = $scope.tableDetails.length > 0 ? Object.keys($scope.tableDetails[0]) : [];
                     details.resolve();
                 });
                 return details.promise;
