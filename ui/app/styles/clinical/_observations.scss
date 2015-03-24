@@ -1,6 +1,4 @@
-.clinical-observations {
-  padding: 10px 5px;
-}
+
 
 .vitals {
 	.form-field {
@@ -98,7 +96,6 @@
 
 div.duration.checkbox-inline {
   margin-top: -10px;
-  margin-left: 15px;
   @media screen and (max-width: 850px) and (min-width: 596px) {
     margin-top: 0;
     margin-left: 166px;
@@ -115,6 +112,7 @@ div.duration.checkbox-inline {
   }
   select.duration-unit {
     margin-left: 25px;
+    min-width: 180px;
   }
 }
 
@@ -128,12 +126,12 @@ form .vitals .form-field .field-value {
   }
   .autocomplete {
     border-radius: 5px;
-    width: 357px;
+    width: 310px;
     overflow: auto;
     input.concept-name.ui-autocomplete-input {
       float: left;
-      min-width: 200px;
-      margin-right: 27px;
+      min-width: 190px;
+      margin-right: 15px;
     }
     .accept-btn {
         margin-top: 6px;
@@ -183,6 +181,9 @@ form .vitals .form-field .field-value {
   span {
     display: inline-block;
     margin-top: 2px;
+    &.for-separator {
+      font-size: 12px;
+    }
   }
 }
 

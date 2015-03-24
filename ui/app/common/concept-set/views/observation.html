@@ -65,7 +65,7 @@
                         ng-disabled="!observation.primaryObs.hasValue()" ng-class="{'active': observation.abnormalObs.value}" ng-click="observation.toggleAbnormal()"><i class="icon-ok"></i>Abnormal</button>
             </div>
             <div class="checkbox-inline" ng-if="::observation.durationObs" ng-class="{'duration': observation.durationObs, 'computed-field': observation.isComputedAndEditable()}">
-                <span>for</span><duration ng-model="observation.durationObs.value" disabled="!observation.primaryObs.hasValue()" illegal-value="observation.isDurationRequired() && !observation.hasDuration()"></duration>
+                <span class="for-separator">for</span><duration ng-model="observation.durationObs.value" disabled="!observation.primaryObs.hasValue()" illegal-value="observation.isDurationRequired() && !observation.hasDuration()"></duration>
             </div>
 
             <span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
