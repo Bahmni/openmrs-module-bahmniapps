@@ -211,7 +211,8 @@ angular.module('bahmni.adt')
             $scope.undoDischarge = function () {
                 var encounterData = $scope.visit.getDischargeEncounter();
                 spinner.forPromise(encounterService.delete(encounterData.uuid, "Undo Discharge")).success(function (response) {
-                    forwardUrl(response, "onAdmissionForwardTo");//TODO this forward URL doesn't work
+                    var params = {'encounterUuid': $scope.visit.getAdmissionEncounter().uuid, 'visitUuid': $scope.visit.uuid};
+                    forwardUrl(params, "onAdmissionForwardTo");
                 });
             };
 
