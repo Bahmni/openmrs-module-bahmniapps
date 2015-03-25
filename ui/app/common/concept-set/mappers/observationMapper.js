@@ -81,8 +81,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
                 observationGroupMembers.push(mapObservation(memberConcept, null, conceptSetConfig))
             }
         });
-
-        return observationGroupMembers;
+        return Bahmni.Common.Obs.ObservationUtil.sortSameConceptsWithObsDateTime(observationGroupMembers);
     };
 
 

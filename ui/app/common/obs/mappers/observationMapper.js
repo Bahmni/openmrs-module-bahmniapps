@@ -9,6 +9,7 @@ Bahmni.Common.Obs.ObservationMapper = function () {
 
     var mapObservations = function (bahmniObservations, allConceptsConfig) {
         var mappedObservations = [];
+        bahmniObservations =  Bahmni.Common.Obs.ObservationUtil.sortSameConceptsWithObsDateTime(bahmniObservations);
         $.each(bahmniObservations, function (i, bahmniObservation) {
             var conceptConfig = allConceptsConfig[bahmniObservation.concept.name] || [];
             var observation = new Bahmni.Common.Obs.Observation(bahmniObservation, conceptConfig);
@@ -48,16 +49,16 @@ Bahmni.Common.Obs.ObservationMapper = function () {
         return memberValues.join(', ');
     };
 
-    var getObservationDisplayValue = function(observation) {
+    var getObservationDisplayValue = function (observation) {
         if (observation.isBoolean || observation.type === "Boolean") {
             return observation.value === true ? "Yes" : "No";
         }
-        if(!observation.value) return "";
-        if(typeof observation.value.name === 'object') {
+        if (!observation.value) return "";
+        if (typeof observation.value.name === 'object') {
             var valueConcept = conceptMapper.map(observation.value);
             return valueConcept.shortName || valueConcept.name;
         }
-        return observation.value.shortName || observation.value.name || observation.value ;
+        return observation.value.shortName || observation.value.name || observation.value;
     }
 
 
