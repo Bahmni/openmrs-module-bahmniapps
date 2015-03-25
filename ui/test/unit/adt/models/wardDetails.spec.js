@@ -2,53 +2,55 @@
 
 describe('WardDetails', function () {
     describe("create", function() {
-        it("should group all diagnosis for a patient", function() {
-            var details = [
-              {
-                "Bed": "Bed 11",
-                "Id": "GAN200013",
-                "Admission By": "Super",
-                "Diagnosis": "Head injury, NOS",
-                "Diagnosis Certainty": "Confirmed",
-                "Diagnosis Order": "Primary",
-                "Diagnosis Status": "",
-                "Diagnosis Provider": "Super",
-                "Diagnosis Datetime": "23 Mar 15 08:06 AM",
-                "Disposition By": "Super"
-              },
-              {
-                "Bed": "Bed 11",
-                "Id": "GAN200013",
-                "Admission By": "Super",
-                "Diagnosis": "Headache",
-                "Diagnosis Certainty": "Confirmed",
-                "Diagnosis Order": "Secondary",
-                "Diagnosis Status": "",
-                "Diagnosis Provider": "Super",
-                "Diagnosis Datetime": "23 Mar 15 08:06 AM",
-                "Disposition By": "Super"
-              },
-              {
-                "Bed": "Bed 12",
-                "Id": "GAN200014",
-                "Admission By": "Super",
-                "Diagnosis": "Headache",
-                "Diagnosis Certainty": "Confirmed",
-                "Diagnosis Order": "Secondary",
-                "Diagnosis Status": "",
-                "Diagnosis Provider": "Super",
-                "Diagnosis Datetime": "24 Mar 15 08:06 AM",
-                "Disposition By": "Super"
-              },
-              {
-                "Bed": "Bed 13",
-                "Id": "GAN200015",
-                "Admission By": "Super",
-                "Disposition By": "Super"
-              }
-            ]
+        var getDetails = function() {
+            return [
+                {
+                    "Bed": "Bed 11",
+                    "Id": "GAN200013",
+                    "Admission By": "Super",
+                    "Diagnosis": "Head injury, NOS",
+                    "Diagnosis Certainty": "Confirmed",
+                    "Diagnosis Order": "Primary",
+                    "Diagnosis Status": "",
+                    "Diagnosis Provider": "Super",
+                    "Diagnosis Datetime": "23 Mar 15 08:06 AM",
+                    "Disposition By": "Super"
+                },
+                {
+                    "Bed": "Bed 11",
+                    "Id": "GAN200013",
+                    "Admission By": "Super",
+                    "Diagnosis": "Headache",
+                    "Diagnosis Certainty": "Confirmed",
+                    "Diagnosis Order": "Secondary",
+                    "Diagnosis Status": "",
+                    "Diagnosis Provider": "Super",
+                    "Diagnosis Datetime": "23 Mar 15 08:06 AM",
+                    "Disposition By": "Super"
+                },
+                {
+                    "Bed": "Bed 12",
+                    "Id": "GAN200014",
+                    "Admission By": "Super",
+                    "Diagnosis": "Headache",
+                    "Diagnosis Certainty": "Confirmed",
+                    "Diagnosis Order": "Secondary",
+                    "Diagnosis Status": "",
+                    "Diagnosis Provider": "Super",
+                    "Diagnosis Datetime": "24 Mar 15 08:06 AM",
+                    "Disposition By": "Super"
+                },
+                {
+                    "Bed": "Bed 13",
+                    "Id": "GAN200015",
+                    "Admission By": "Super",
+                    "Disposition By": "Super"
+                }
+            ];
+        }
 
-            var wardDetails = Bahmni.ADT.WardDetails.create(details);
+        it("should group all diagnosis for a patient", function() {
+            var wardDetails = Bahmni.ADT.WardDetails.create(getDetails());
 
             expect(wardDetails.length).toBe(3);
             expect(wardDetails[0].Id).toBe("GAN200013");
@@ -64,6 +66,32 @@ describe('WardDetails', function () {
 
             expect(wardDetails[2].Id).toBe("GAN200015");
             expect(wardDetails[2].DiagnosisList.length).toBe(0);
-       });
+        });
+
+        it("should remove duplicate diagnosis if one of them is marked as ruled out", function() {
+            var details = getDetails();
+            details.push({
+                "Bed": "Bed 11",
+                "Id": "GAN200013",
+                "Admission By": "Super",
+                "Diagnosis": "Headache",
+                "Diagnosis Certainty": "Confirmed",
+                "Diagnosis Order": "Secondary",
+                "Diagnosis Status": "Ruled Out Diagnosis",
+                "Diagnosis Provider": "Super",
+                "Diagnosis Datetime": "25 Mar 15 08:06 AM",
+                "Disposition By": "Super"
+            });
+
+            var wardDetails = Bahmni.ADT.WardDetails.create(details);
+
+            expect(wardDetails.length).toBe(3);
+            expect(wardDetails[0].Id).toBe("GAN200013");
+            expect(wardDetails[0].DiagnosisList.length).toBe(2);
+            expect(wardDetails[0].DiagnosisList[0].Diagnosis).toBe("Head injury, NOS");
+            expect(wardDetails[0].DiagnosisList[0]["Diagnosis Order"]).toBe("Primary");
+            expect(wardDetails[0].DiagnosisList[1].Diagnosis).toBe("Headache");
+            expect(wardDetails[0].DiagnosisList[1].ruledOut).toBeTruthy();
+        });
     });
 });
