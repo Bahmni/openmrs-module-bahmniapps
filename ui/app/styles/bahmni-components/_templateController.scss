@@ -35,34 +35,52 @@
 	position: fixed;
 	bottom: 52px;
 	left: 50%;
-	margin-left: -150px;
 	z-index: 4;
 	padding: 5px;
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: $max-page-width;
+    @media screen and (max-width: 1200px) {
+      width: 96%;
+    }
 	ul.template-icons {
-		max-height: 300px;
-		min-width: 310px;
-		overflow-y: auto;
-		overflow-x: hidden; 
-	}
-	ul.template-icons li button {
-		width: 100%;
-		display: inline-block;
-		float: left;
-		margin: 1px 5px;
-		font-size: 12px;
-		border: 1px solid $lightGray;
-		padding: 5px;
-		color: $darkGray;
-		text-align: left;
-		i {
-			font-size: 1.5em;
-			margin: 0 auto;
-		}
-	}
-	ul.template-icons li.templateAdded button {
-		background: linear-gradient(to bottom, $white, darken($lightestGray, 5%));
-		color: $bahmniTertiaryColor;
-	}
+      max-height: 334px;
+      width: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      li {
+        padding: 2px;
+        float: left;
+        width: 25%;
+        box-sizing: border-box;
+
+         button {
+          width: 100%;
+          display: inline-block;
+          float: left;
+          margin: 1px 3px;
+          font-size: 12px;
+          border: 1px solid $lightGray;
+          padding: 5px;
+          color: $darkGray;
+          text-align: left;
+          line-height: .9;
+          box-sizing: border-box;
+          min-height: 50px;
+          i {
+            font-size: 1.5em;
+            margin: 0 auto;
+            vertical-align: middle;
+          }
+        }
+        &.templateAdded button {
+          background: linear-gradient(to bottom, $white, darken($lightestGray, 5%));
+          color: $bahmniTertiaryColor;
+        }
+      }
+    }
 }
 
 ul.template-icons::-webkit-scrollbar {
