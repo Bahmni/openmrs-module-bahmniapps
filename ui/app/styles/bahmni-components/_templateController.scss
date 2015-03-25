@@ -75,10 +75,6 @@
             vertical-align: middle;
           }
         }
-        &.templateAdded button {
-          background: linear-gradient(to bottom, $white, darken($lightestGray, 5%));
-          color: $bahmniTertiaryColor;
-        }
       }
     }
 }

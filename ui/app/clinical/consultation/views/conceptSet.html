@@ -4,7 +4,7 @@
     </div>
     <div class="template-control-panel primary-section-grid" bm-pop-over-target>
         <ul class="template-icons">
-            <li ng-repeat="template in consultation.selectedObsTemplate" ng-class="{templateAdded:template.isAdded}">
+            <li ng-repeat="template in consultation.selectedObsTemplate" ng-if="!template.isAdded && !template.alwaysShow">
                 <button ng-click="toggleTemplate(template)">
                     <i class="icon-check-empty" ng-hide="template.isAdded"></i>
                     <i class="icon-check" ng-show="template.isAdded"></i>
