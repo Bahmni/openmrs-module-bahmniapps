@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .factory('LabOrderResultService', ['$http', '$q','configurationService', function ($http, $q,configurationService) {
-
+    .factory('LabOrderResultService', ['$http', '$q','configurationService', 'visitTabConfig', function ($http, $q,configurationService, visitTabConfig) {
     var allTestsAndPanelsConcept = {};
     configurationService.getConfigurations(['allTestsAndPanelsConcept']).then(function (configurations) {
         allTestsAndPanelsConcept = configurations.allTestsAndPanelsConcept.results[0];
@@ -18,7 +17,11 @@ angular.module('bahmni.clinical')
         var labOrderResults = results.results;
         sanitizeData(labOrderResults);
 
-        var tabularResult = new Bahmni.Clinical.TabularLabOrderResults(results.tabularResult);
+        var investigationResultSection = _.find(visitTabConfig.currentTab ? visitTabConfig.currentTab.sections : {}, function (section) {
+            return section.type === "investigationResult"
+        });
+        var investigationResultConfig = investigationResultSection && investigationResultSection.config;
+        var tabularResult = new Bahmni.Clinical.TabularLabOrderResults(results.tabularResult, investigationResultConfig);
         var accessions = _.groupBy(labOrderResults, function(labOrderResult) {
             return labOrderResult.accessionUuid;
         });

@@ -1,7 +1,7 @@
 'use strict';
 
 describe("LabOrderResultService", function() {
-    var mockHttp, configurationService, LabOrderResultService;
+    var mockHttp, configurationService, LabOrderResultService, visitTabConfig;
 
     beforeEach(module('bahmni.clinical'));
 
@@ -25,7 +25,7 @@ describe("LabOrderResultService", function() {
                 {"index":0,"date":"30-May-2014"}
             ]
         }
-    }
+    };
 
     beforeEach(module(function ($provide) {
         mockHttp = jasmine.createSpyObj('$http', ['get']);
@@ -37,9 +37,14 @@ describe("LabOrderResultService", function() {
             return specUtil.respondWith(configurationServiceResponse);
         });
 
+        visitTabConfig = {currentTab: {
+            sections: {}
+        }};
+
         $provide.value('$http', mockHttp);
         $provide.value('$q', Q);
         $provide.value('configurationService', configurationService);
+        $provide.value('visitTabConfig', visitTabConfig);
     }));
 
     beforeEach(inject(['LabOrderResultService', function (LabOrderResultServiceInjected) {

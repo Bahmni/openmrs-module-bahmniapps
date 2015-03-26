@@ -1,9 +1,16 @@
 'use strict';
 
 Bahmni.Clinical.TabularLabOrderResults = (function () {
-    var TabularLabOrderResults = function (tabularResult) {
+    var TabularLabOrderResults = function (tabularResult, investigationResultConfig) {
         this.tabularResult = tabularResult;
         this.getDateLabels = function () {
+            if(investigationResultConfig && investigationResultConfig.initialAccessionCount && investigationResultConfig.latestAccessionCount){
+                var initial = _.first(this.tabularResult.dates, investigationResultConfig.initialAccessionCount);
+                var latest = _.last(this.tabularResult.dates, investigationResultConfig.latestAccessionCount);
+
+                this.tabularResult.dates = _.union(initial, latest);
+            }
+
             return this.tabularResult.dates.map(function(date) {
                 date.date = moment(date.date).toDate();
                 return date;  
