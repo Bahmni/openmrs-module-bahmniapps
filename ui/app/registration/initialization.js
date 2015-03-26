@@ -19,6 +19,8 @@ angular.module('bahmni.registration').factory('initialization',
 
         var appendFieldValidation = function(patientAttributeTypes) {
             var fieldValidation = appService.getAppDescriptor().getConfigValue("fieldValidation");
+            if(!fieldValidation) return;
+
             angular.forEach(patientAttributeTypes.personAttributeTypes, function(value){
                 if(fieldValidation[value.name]){
                     value.pattern = fieldValidation[value.name].pattern;
