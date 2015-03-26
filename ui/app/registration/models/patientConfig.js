@@ -1,23 +1,6 @@
 'use strict';
 
 Bahmni.Registration.PatientConfig = (function () {
-    var autocompleteConfig = {
-        map: {
-            'caste': {
-                'src': 'getAutoCompleteList',
-                'responseMap': 'getDataResults'
-            }
-        },
-
-        configure: function (attributes) {
-            var self = this;
-            attributes.forEach(function (attr) {
-                if (self.map[attr.name] !== null) {
-                    attr.autocompleteConfig = self.map[attr.name];
-                }
-            });
-        }
-    }
 
     function PatientConfig(patientAttributeTypes, identifierSources, additionalPatientInformation ) {
         this.personAttributeTypes = patientAttributeTypes;
@@ -38,7 +21,6 @@ Bahmni.Registration.PatientConfig = (function () {
                 );
                 return item.name !== "healthCenter" && item.name !== "givenNameLocal" && item.name !== "middleNameLocal" && item.name !== "familyNameLocal" && (find ? false : true);
             });
-            autocompleteConfig.configure(attributes);
             this.attributeRows = this.splitAsRows(attributes);
             this.additionalAttributesTypes = additionalAttributes;
         }

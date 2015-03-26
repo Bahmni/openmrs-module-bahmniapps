@@ -3,24 +3,17 @@
 </div>
 <div class="field-value" data-ng-switch on="attribute.format">
     <div data-ng-switch-when="java.lang.String">
-        <div data-ng-switch on="attribute.autocompleteConfig">
-            <input data-ng-switch-when="null" type="text" id="{{attribute.name}}"
-                   placeholder="{{attribute.description}}"
-                   ng-model="patient[attribute.name]" ng-required="{{attribute.required}}">
-                <span data-ng-switch-default>
-                    <span data-ng-switch="isAutoComplete(attribute.name)">
-                        <input data-ng-switch-when="true"
-                               type="text" id="{{$parent.attribute.name}}"
-                               placeholder="{{$parent.attribute.description}}"
-                               ng-model="$parent.patient[$parent.attribute.name]" data-item-type="personAttribute"
-                               my-autocomplete source="getAutoCompleteList" response-map="getDataResults" ng-required="{{attribute.required}}">
+        <span data-ng-switch="isAutoComplete(attribute.name)">
+            <input data-ng-switch-when="true"
+                   type="text" id="{{$parent.attribute.name}}"
+                   placeholder="{{$parent.attribute.description}}"
+                   ng-model="$parent.patient[$parent.attribute.name]" data-item-type="personAttribute"
+                   my-autocomplete source="getAutoCompleteList" response-map="getDataResults" ng-required="{{attribute.required}}">
 
-                        <input data-ng-switch-default
-                               type="text" id="{{attribute.name}}" placeholder="{{attribute.description}}"
-                               ng-model="patient[attribute.name]" data-item-type="personAttribute" ng-required="{{attribute.required}}">
-                    </span>
-                </span>
-        </div>
+            <input data-ng-switch-default
+                   type="text" pattern-validate id="{{attribute.name}}" placeholder="{{attribute.description}}"
+                   ng-model="patient[attribute.name]" data-item-type="personAttribute" ng-required="{{attribute.required}}">
+        </span>
     </div>
     <div class="left" data-ng-switch-when="org.openmrs.Concept">
         <select id="{{attribute.name}}" ng-model="patient[attribute.name]"
@@ -29,12 +22,12 @@
         </select>
     </div>
     <div class="left" data-ng-switch-when="java.lang.Integer">
-        <input type="number" placeholder="{{attribute.description}}"
-               ng-model="patient[attribute.name]" data-item-type="personAttribute" ng-required="{{attribute.required}}">
+        <input type="number" pattern-validate placeholder="{{attribute.description}}"
+               ng-model="patient[attribute.name]" data-item-type="personAttribute" ng-required="{{attribute.required}}"/>
     </div>
     <div class="left" data-ng-switch-when="java.lang.Float">
-        <input type="number" step="any" id="{{attribute.name}}" placeholder="{{attribute.description}}"
-               ng-model="patient[attribute.name]" data-item-type="personAttribute" ng-required="{{attribute.required}}">
+        <input type="number" pattern-validate step="any" id="{{attribute.name}}" placeholder="{{attribute.description}}"
+               ng-model="patient[attribute.name]" data-item-type="personAttribute" ng-required="{{attribute.required}}"/>
     </div>
     <div class="left" data-ng-switch-when="java.lang.Boolean">
         <input id="isUrban" type="checkbox" ng-model="patient[attribute.name]" ng-required="{{attribute.required}}"/>

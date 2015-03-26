@@ -8,6 +8,7 @@ angular.module('bahmni.registration').factory('initialization',
             return configurations.load(configNames).then(function () {
                 var mandatoryPersonAttributes = appService.getAppDescriptor().getConfigValue("mandatoryPersonAttributes");
                 var patientAttributeTypes = new Bahmni.Registration.PatientAttributeTypeMapper().mapFromOpenmrsPatientAttributeTypes(configurations.patientAttributesConfig(), mandatoryPersonAttributes);
+                appendFieldValidation(patientAttributeTypes);
                 $rootScope.regEncounterConfiguration = angular.extend(new Bahmni.Registration.RegistrationEncounterConfig(), configurations.encounterConfig());
                 $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig());
                 $rootScope.patientConfiguration = new Bahmni.Registration.PatientConfig(patientAttributeTypes.personAttributeTypes, configurations.identifierSourceConfig(), appService.getAppDescriptor().getConfigValue("additionalPatientInformation"));
@@ -16,6 +17,15 @@ angular.module('bahmni.registration').factory('initialization',
             });
         };
 
+        var appendFieldValidation = function(patientAttributeTypes) {
+            var fieldValidation = appService.getAppDescriptor().getConfigValue("fieldValidation");
+            angular.forEach(patientAttributeTypes.personAttributeTypes, function(value){
+                if(fieldValidation[value.name]){
+                    value.pattern = fieldValidation[value.name].pattern;
+                    value.patternErrorMessage = fieldValidation[value.name].errorMessage;
+                }
+            });
+        };
 
         var initApp = function() {
             return appService.initApp('registration', {'app': true, 'extension' : true });
