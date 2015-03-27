@@ -10,6 +10,7 @@ angular.module('consultation')
     .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/patient/search');
         var patientSearchBackLink = {label: "<u>P</u>atients", state: "patientsearch", accessKey: "p", id: "patients-link", icon: "icon-circle-arrow-left"};
+        var homeBackLink = {label: "Home", url: "../home/", icon: "icon-home"};
         $stateProvider
             .state('patientsearch', {
                 url: '/patient/search',
@@ -24,9 +25,7 @@ angular.module('consultation')
                     }
                 },
                 data: {
-                    backLinks: [
-                        {label: "Home", url: "../home/", icon: "icon-home"}
-                    ]
+                    backLinks: [homeBackLink]
                 },
                 resolve: {
                     initialization: 'initialization'
@@ -36,7 +35,7 @@ angular.module('consultation')
                 url: '/patient/:patientUuid',
                 abstract: true,
                 data: {
-                    backLinks: [patientSearchBackLink]
+                    backLinks: [homeBackLink, patientSearchBackLink]
                 },
 
                 views: {
@@ -87,7 +86,7 @@ angular.module('consultation')
             .state('patient.visit', {
                 url: '/dashboard/visit/:visitUuid',
                 data: {
-                    backLinks: [patientSearchBackLink]
+                    backLinks: [homeBackLink, patientSearchBackLink]
                 },
                 views: {
                     'additional-header': {
@@ -115,7 +114,7 @@ angular.module('consultation')
                 url: '',
                 abstract: true,
                 data: {
-                    backLinks: [patientSearchBackLink]
+                    backLinks: [homeBackLink, patientSearchBackLink]
                 },
                 views: {
                     'additional-header': {
