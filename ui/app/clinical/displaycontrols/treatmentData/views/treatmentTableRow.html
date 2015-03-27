@@ -2,6 +2,9 @@
     <td class="drug" ng-class="{'strike-text':drugOrder.isDiscontinuedOrStopped(), 'active-drug': drugOrder.isActive(), 'scheduled-drug': drugOrder.isScheduled()}">
         <span ng-if="!params.showDrugForm">{{drugOrder.drug.name}}</span>
         <span ng-if="params.showDrugForm">{{drugOrder.getDisplayName()}}</span>
+        <span ng-repeat="orderAttribute in drugOrder.orderAttributes" ng-show="orderAttribute.value == 'true'">
+            {{orderAttribute.name.substring(0,1)}}
+        </span>
     </td>
     <td class="dosage" >
         <span ng-if="params.showRoute" ng-class="{'strike-text':drugOrder.isDiscontinuedOrStopped()}">{{drugOrder.getDescriptionWithoutDuration()}}</span>

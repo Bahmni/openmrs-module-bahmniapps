@@ -11,6 +11,7 @@ angular.module('bahmni.clinical')
             var currentVisit = $scope.visit;
             var drugOrderAppConfig = clinicalAppConfigService.getDrugOrderConfig();
             var activeDrugOrdersList = [];
+            $scope.dispensePrivilege = Bahmni.Clinical.Constants.dispensePrivilege;
 
             var createPrescriptionGroups = function (activeAndScheduledDrugOrders) {
                 $scope.consultation.drugOrderGroups = [];

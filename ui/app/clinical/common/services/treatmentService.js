@@ -8,7 +8,7 @@ angular.module('bahmni.clinical')
         };
 
         var createDrugOrderViewModel = function (drugOrder) {
-            return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, {}, {});
+            return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, {}, undefined);
         };
 
         var getActiveDrugOrdersFromServer = function (patientUuid) {

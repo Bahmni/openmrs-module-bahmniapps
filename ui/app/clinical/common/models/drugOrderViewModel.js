@@ -439,7 +439,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
                 orderAttribute.name= orderAttributeInConfig.name;
                 orderAttribute.shortName= orderAttributeInConfig.shortName;
                 orderAttribute.conceptUuid= orderAttributeInConfig.uuid;
-                orderAttribute.value= !!(orderAttributeInDrugOrder && orderAttributeInDrugOrder.value === "true");
+                orderAttribute.value= orderAttributeInDrugOrder && orderAttributeInDrugOrder.value === "true";
                 orderAttribute.obsUuid= orderAttributeInDrugOrder ? orderAttributeInDrugOrder.obsUuid : undefined;
                 orderAttribute.encounterUuid = orderAttributeInDrugOrder ? orderAttributeInDrugOrder.encounterUuid : undefined;
                 if(!existingOrderAttribute){
@@ -494,7 +494,7 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
             morningDose: administrationInstructions.morningDose,
             afternoonDose: administrationInstructions.afternoonDose,
             eveningDose: administrationInstructions.eveningDose,
-            doseUnits: drugOrderResponse.dosingInstructions.doseUnits,
+            doseUnits: drugOrderResponse.dosingInstructions.doseUnits
         }
     } else {
         viewModel.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
@@ -518,7 +518,7 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
     viewModel.encounterUuid = drugOrderResponse.encounterUuid;
     viewModel.orderNumber = drugOrderResponse.orderNumber && parseInt(drugOrderResponse.orderNumber.replace("ORD-", ""));
     viewModel.drugNameDisplay = drugOrderResponse.drug.name + " (" + drugOrderResponse.drug.form + ")";
-    viewModel.loadOrderAttributes(drugOrderResponse);
+    config ? viewModel.loadOrderAttributes(drugOrderResponse) : viewModel.orderAttributes = drugOrderResponse.orderAttributes;
     viewModel.visit = drugOrderResponse.visit;
     viewModel.voided = drugOrderResponse.voided;
     return viewModel;
