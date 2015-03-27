@@ -4,8 +4,9 @@
         <span ng-if="params.showDrugForm">{{drugOrder.getDisplayName()}}</span>
     </td>
     <td class="dosage" >
-        <span ng-if="params.showRoute" ng-class="{'strike-text':drugOrder.isDiscontinuedOrStopped()}">{{drugOrder.getDescription()}}</span>
+        <span ng-if="params.showRoute" ng-class="{'strike-text':drugOrder.isDiscontinuedOrStopped()}">{{drugOrder.getDescriptionWithoutDuration()}}</span>
         <span ng-if="!params.showRoute" ng-class="{'strike-text':drugOrder.isDiscontinuedOrStopped()}">{{drugOrder.getDescriptionWithoutRoute()}}</span>
+        <span>- {{drugOrder.getSpanDetails()}}</span>
         <span ng-if="drugOrder.isDiscontinuedOrStopped()" ng-class="{'discontinued-text':drugOrder.isDiscontinuedOrStopped()}">Stopped on {{drugOrder.effectiveStopDate | date: 'dd MMM yy'}}</span>
     </td>
     <td class="days">

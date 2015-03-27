@@ -125,14 +125,20 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         return undefined;
     };
 
-    var getOtherDescription = function(withRoute){
+    var getOtherDescription = function(withRoute, withDuration){
         var otherDescription = addDelimiter(blankIfFalsy(getInstructions()), ", ") +
             addDelimiter(blankIfFalsy(asNeeded(self.asNeeded)), ', ');
         if(withRoute){
             otherDescription = otherDescription + addDelimiter(blankIfFalsy(self.route), " - ");
+        }else{
+            otherDescription = otherDescription.substring(0, otherDescription.length - 2);
+            otherDescription = addDelimiter(blankIfFalsy(otherDescription), " - ");
         }
-        return otherDescription + addDelimiter(blankIfFalsy(self.duration), " ") +
-        blankIfFalsy(self.durationUnit);
+        if(withDuration){
+            otherDescription = otherDescription + addDelimiter(blankIfFalsy(self.duration), " ") + addDelimiter(blankIfFalsy(self.durationUnit), ", ")
+        }
+        otherDescription = otherDescription.substring(0, otherDescription.length - 2);
+        return otherDescription;
     };
 
     var constructDrugNameDisplay = function (drug, drugForm) {
@@ -141,6 +147,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
             value: drug.name + " (" + drugForm + ")",
             drug: drug
         };
+    };
+
+    this.getDoseInformation = function(){
+        return getDoseAndFrequency();
     };
 
     this.getDisplayName = function(){
@@ -153,18 +163,24 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
 
     this.getDescription = function () {
         return addDelimiter(blankIfFalsy(getDoseAndFrequency()), " ") +
-            getOtherDescription(true);
+            getOtherDescription(true, true);
     };
 
     this.getDescriptionWithoutRoute = function(){
         return addDelimiter(blankIfFalsy(getDoseAndFrequency()), " ") +
-            getOtherDescription(false);
+            getOtherDescription(false, true);
+    };
+
+    this.getDescriptionWithoutDuration = function(){
+        var otherDescription = getOtherDescription(true, false);
+        var description = addDelimiter(blankIfFalsy(getDoseAndFrequency()), " ");
+        return otherDescription? description + otherDescription: description.substring(0, description.length - 2);
     };
 
     this.getDescriptionWithQuantity = function(){
         return addDelimiter(blankIfFalsy(self.getDescription()), "(") +
-            addDelimiter(blankIfFalsy(self.quantity), " ") +
-            addDelimiter(blankIfFalsy(self.quantityUnit), ")");
+        addDelimiter(blankIfFalsy(self.quantity), " ") +
+        addDelimiter(blankIfFalsy(self.quantityUnit), ")")
     };
 
     var getFrequencyPerDay = function(){
@@ -314,6 +330,19 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
         if (!drugOrder.quantityUnit) {
             drugOrder.quantityUnit = "Unit(s)";
         }
+    };
+
+    this.getSpanDetails = function () {
+        var valueString = '';
+        _.forEach(this.span, function (value, key, obj) {
+            valueString += value + " " + key + " + ";
+        });
+        return valueString.substring(0, valueString.length - 3);
+    };
+
+    this.getDurationAndDurationUnits = function () {
+        return addDelimiter(blankIfFalsy(self.duration), " ") +
+        blankIfFalsy(self.durationUnit)
     };
 
     this.refill = function (existingOrderStopDate) {
@@ -472,7 +501,7 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
         viewModel.reverseSynced = true;
         viewModel.uniformDosingType = {
             dose: parseFloat(administrationInstructions.dose),
-            doseUnits: administrationInstructions.doseUnits,
+            doseUnits: administrationInstructions.doseUnits
         }
     }
     viewModel.instructions = administrationInstructions.instructions;

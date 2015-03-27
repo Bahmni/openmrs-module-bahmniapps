@@ -117,7 +117,7 @@ describe("drugOrderViewModel", function () {
         treatment.uniformDosingType.doseUnits = "Capsule";
         treatment.uniformDosingType.frequency = "Once a day";
         treatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
-        expect(treatment.getDescriptionWithoutRoute()).toBe("1 Capsule, Once a day, Before Meals, 10 Days");
+        expect(treatment.getDescriptionWithoutRoute()).toBe("1 Capsule, Once a day, Before Meals - 10 Days");
     });
 
     it("should get default durationUnit from config if available", function () {
@@ -1227,4 +1227,29 @@ describe("drugOrderViewModel", function () {
         })
 
     });
+
+    describe("getSpanDetails", function(){
+        it("should concatenate all span details by (+) and return as string", function(){
+            var treatment = sampleTreatment({}, {}, null, Bahmni.Common.Util.DateUtil.now());
+            treatment.span = {
+                "Day(s)": 2,
+                "Week(s)": 3
+            };
+            expect(treatment.getSpanDetails()).toBe("2 Day(s) + 3 Week(s)");
+        });
+
+        it("should not concatenate if span details is only one.", function(){
+            var treatment = sampleTreatment({}, {}, null, Bahmni.Common.Util.DateUtil.now());
+            treatment.span = {
+                "Week(s)": 3
+            };
+            expect(treatment.getSpanDetails()).toBe("3 Week(s)");
+        });
+
+        it("should return empty string if there is no span for the drug", function(){
+            var treatment = sampleTreatment({}, {}, null, Bahmni.Common.Util.DateUtil.now());
+
+            expect(treatment.getSpanDetails()).toBe('');
+        })
+    })
 });

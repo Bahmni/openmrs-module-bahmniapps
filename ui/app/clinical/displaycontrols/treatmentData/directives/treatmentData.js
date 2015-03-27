@@ -26,12 +26,14 @@ angular.module('bahmni.clinical')
                         var treatmentSections = [];
 
                         for (var key in groupedByVisit) {
-                            treatmentSections.push({visitDate: key, drugOrders: groupedByVisit[key]});
+                            var values = Bahmni.Clinical.DrugOrder.Util.mergeContinuousTreatments(groupedByVisit[key]);
+                            treatmentSections.push({visitDate: key, drugOrders: values});
                         }
                         if (!_.isEmpty(response.data[Constants.otherActiveDrugOrders])) {
+                            var mergedOtherActiveDrugOrders = Bahmni.Clinical.DrugOrder.Util.mergeContinuousTreatments(response.data[Constants.otherActiveDrugOrders]);
                             treatmentSections.push({
                                 visitDate: Constants.otherActiveDrugOrders,
-                                drugOrders: response.data[Constants.otherActiveDrugOrders]
+                                drugOrders: mergedOtherActiveDrugOrders
                             });
                         }
                         $scope.treatmentSections = treatmentSections;
