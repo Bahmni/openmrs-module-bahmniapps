@@ -1,8 +1,12 @@
 "use strict";
 
 angular.module('bahmni.adt')
-    .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService', 'encounterService', 'bedService', 'appService', 'visitService', '$location', '$window', 'sessionService', 'messagingService', '$anchorScroll', 'visitInitialization', '$stateParams',
-        function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService, appService, visitService, $location, $window, sessionService, messagingService, $anchorScroll, visitInitialization, $stateParams) {
+    .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService',
+        'encounterService', 'bedService', 'appService', 'visitService', '$location', '$window', 'sessionService',
+        'messagingService', '$anchorScroll', '$stateParams',
+        function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService,
+                  appService, visitService, $location, $window, sessionService, messagingService, $anchorScroll,
+                  $stateParams) {
             var actionConfigs = {};
             var encounterConfig = $rootScope.encounterConfig;
             var locationUuid = sessionService.getLoginLocationUuid();
@@ -11,18 +15,20 @@ angular.module('bahmni.adt')
             $scope.dashboardConfig = appService.getAppDescriptor().getConfigValue('dashboard');
             $scope.getAdtConceptConfig = $scope.dashboardConfig.conceptName;
 
-            var getDefaultVisitTypeUuid = function(){
-                if($scope.visit && $scope.visit.stopDatetime == null){
+            var getDefaultVisitTypeUuid = function () {
+                if ($scope.visit && $scope.visit.stopDatetime == null) {
                     return $scope.visit.visitType.uuid;
                 }
                 var defaultVisitTypeName = appService.getAppDescriptor().getConfigValue('defaultVisitType');
                 var visitTypes = encounterConfig.getVisitTypes();
-                var defaultVisitType = visitTypes.filter(function(visitType) { return visitType.name === defaultVisitTypeName})[0];
+                var defaultVisitType = visitTypes.filter(function (visitType) {
+                    return visitType.name === defaultVisitTypeName
+                })[0];
                 return defaultVisitType && defaultVisitType.uuid || null;
             };
 
             var defaultVisitTypeUuid = getDefaultVisitTypeUuid();
-            if(defaultVisitTypeUuid == null) {
+            if (defaultVisitTypeUuid == null) {
                 messagingService.showMessage("error", "Please configure a default VisitType.");
             }
 
@@ -39,46 +45,49 @@ angular.module('bahmni.adt')
                 return mappingCode;
             };
 
-            var getAdtActionForEncounterType = function(encounterTypeUuid) {
-                var adtActionsForType =  $scope.dispositionActions.filter(function (dispositionAction) {
+            var getAdtActionForEncounterType = function (encounterTypeUuid) {
+                var adtActionsForType = $scope.dispositionActions.filter(function (dispositionAction) {
                     var actionConfig = actionConfigs[getActionCode(dispositionAction)];
                     return actionConfig ? actionConfig.encounterTypeUuid === encounterTypeUuid : false;
                 });
                 return adtActionsForType.length > 0 ? adtActionsForType[0] : null;
             };
 
-            var getEncounterFromVisitFor = function(encounterTypeUuid) {
-                var matchedEncounters = $scope.visit.encounters.filter(function (encounter) {
-                    return encounter.encounterType.uuid && encounter.encounterType.uuid == encounterTypeUuid;
-                });
-
-                return matchedEncounters[0];
-            };
-
-            var initializeActionConfig = function(){
+            var initializeActionConfig = function () {
                 var admitActions = appService.getAppDescriptor().getExtensions("org.bahmni.adt.admit.action", "config");
                 var transferActions = appService.getAppDescriptor().getExtensions("org.bahmni.adt.transfer.action", "config");
                 var dischargeActions = appService.getAppDescriptor().getExtensions("org.bahmni.adt.discharge.action", "config");
                 var undoDischargeActions = appService.getAppDescriptor().getExtensions("org.bahmni.adt.undo.discharge.action", "config");
                 if (encounterConfig) {
                     var Constants = Bahmni.Common.Constants;
-                    actionConfigs[Constants.admissionCode] = {encounterTypeUuid: encounterConfig.getAdmissionEncounterTypeUuid(), allowedActions: admitActions};
-                    actionConfigs[Constants.dischargeCode] = {encounterTypeUuid: encounterConfig.getDischargeEncounterTypeUuid(), allowedActions: dischargeActions};
-                    actionConfigs[Constants.transferCode] = {encounterTypeUuid: encounterConfig.getTransferEncounterTypeUuid(), allowedActions: transferActions};
-                    actionConfigs[Constants.undoDischargeCode] = {encounterTypeUuid: encounterConfig.getDischargeEncounterTypeUuid(), allowedActions: undoDischargeActions};
+                    actionConfigs[Constants.admissionCode] = {
+                        encounterTypeUuid: encounterConfig.getAdmissionEncounterTypeUuid(),
+                        allowedActions: admitActions
+                    };
+                    actionConfigs[Constants.dischargeCode] = {
+                        encounterTypeUuid: encounterConfig.getDischargeEncounterTypeUuid(),
+                        allowedActions: dischargeActions
+                    };
+                    actionConfigs[Constants.transferCode] = {
+                        encounterTypeUuid: encounterConfig.getTransferEncounterTypeUuid(),
+                        allowedActions: transferActions
+                    };
+                    actionConfigs[Constants.undoDischargeCode] = {
+                        encounterTypeUuid: encounterConfig.getDischargeEncounterTypeUuid(),
+                        allowedActions: undoDischargeActions
+                    };
                 }
             };
 
-            $scope.isAdmitted = function(){
-                console.log($rootScope.visit);
-                return $rootScope.visit && $scope.visit.isAdmitted();
+            $scope.isAdmitted = function () {
+                return $scope.visit && $scope.visit.isAdmitted();
             };
 
-            $scope.isDischarged = function(){
+            $scope.isDischarged = function () {
                 return $scope.visit && $scope.visit.isDischarged();
             };
 
-            var filterAction = function(actions, actionTypes){
+            var filterAction = function (actions, actionTypes) {
                 return _.filter(actions, function (action) {
                     return actionTypes.indexOf(action.name.name) >= 0;
                 });
@@ -87,14 +96,24 @@ angular.module('bahmni.adt')
             var getDispositionActions = function (actions) {
 
                 if ($scope.isAdmitted()) {
-                    console.log("admitted");
                     return filterAction(actions, ["Discharge Patient", "Transfer Patient"]);
-                } else if($scope.isDischarged()) {
-                    console.log("discha");
+                } else if ($scope.isDischarged()) {
                     return filterAction(actions, ["Undo Discharge"]);
                 } else {
-                    console.log("else");
                     return filterAction(actions, ["Admit Patient"]);
+                }
+            };
+
+            var getVisit = function () {
+                var visitUuid = $stateParams.visitUuid;
+                if (visitUuid != 'null') {
+                    return visitService.getVisit(visitUuid).then(function (response) {
+                        var visit = response.data;
+                        $scope.visit = new Bahmni.ADT.Visit(visit);
+                    });
+                } else {
+                    $scope.visit = null;
+                    return $q.when({id: 1, status: "Returned from service.", promiseComplete: true});
                 }
             };
 
@@ -103,10 +122,11 @@ angular.module('bahmni.adt')
                 var defaultVisitType = appService.getAppDescriptor().getConfigValue('defaultVisitType');
                 var visitTypes = encounterConfig.getVisitTypes();
                 $scope.visitControl = new Bahmni.Common.VisitControl(visitTypes, defaultVisitType, visitService);
-                return visitInitialization($stateParams.visitUuid).then(dispositionService.getDispositionActions).then(function (response) {
+
+                return getVisit().then(dispositionService.getDispositionActions).then(function (response) {
                     if (response.data && response.data.results && response.data.results.length) {
                         $scope.dispositionActions = getDispositionActions(response.data.results[0].answers);
-                        if($scope.visit){
+                        if ($scope.visit) {
                             $scope.currentVisitType = $scope.visit.visitType.display;
                             var encounterToDisplay = Bahmni.ADT.DispositionDisplayUtil.getEncounterToDisplay(encounterConfig, $scope.visit);
                             if (encounterToDisplay) {
@@ -117,7 +137,7 @@ angular.module('bahmni.adt')
                 });
             };
 
-            $scope.$watch('dispositionAction', function(){
+            $scope.$watch('dispositionAction', function () {
                 var dispositionCode;
                 if ($scope.dispositionAction) {
                     dispositionCode = getActionCode($scope.dispositionAction);
@@ -125,24 +145,24 @@ angular.module('bahmni.adt')
                 $scope.actions = dispositionCode ? actionConfigs[dispositionCode].allowedActions : [];
             });
 
-            $scope.getDisplayForContinuingVisit = function(){
+            $scope.getDisplayForContinuingVisit = function () {
                 //return "Continue " + $scope.currentVisitType + " Visit";
                 return "Admit";
             };
 
-            $scope.getDisplay = function(displayFunction, display){
-                if(displayFunction){
+            $scope.getDisplay = function (displayFunction, display) {
+                if (displayFunction) {
                     return $scope.call(displayFunction);
                 }
                 return display;
             };
 
-            $scope.startNewVisit = function(visitTypeUuid) {
-                if($scope.visit){
-                    visitService.endVisit($scope.visit.visitId).then(function(){
+            $scope.startNewVisit = function (visitTypeUuid) {
+                if ($scope.visit) {
+                    visitService.endVisit($scope.visit.visitId).then(function () {
                         $scope.admit(visitTypeUuid);
                     });
-                }else{
+                } else {
                     $scope.admit(visitTypeUuid);
                 }
             };
@@ -151,19 +171,19 @@ angular.module('bahmni.adt')
                 $location.url(Bahmni.ADT.Constants.patientsListUrl);
             };
 
-            $scope.call = function(functionName) {
-                if(functionName){
+            $scope.call = function (functionName) {
+                if (functionName) {
                     return $scope[functionName]();
-                }else{
+                } else {
                     return true;
                 }
             };
 
-            $scope.visitExists = function() {
+            $scope.visitExists = function () {
                 return $scope.visit ? true : false;
             };
 
-            var getEncounterData = function (encounterTypeUuid,  visitTypeUuid) {
+            var getEncounterData = function (encounterTypeUuid, visitTypeUuid) {
                 var encounterData = {};
                 encounterData.patientUuid = $scope.patient.uuid;
                 encounterData.encounterTypeUuid = encounterTypeUuid;
@@ -178,7 +198,11 @@ angular.module('bahmni.adt')
                 var forwardLink = appDescriptor.getConfig(option);
                 forwardLink = forwardLink && forwardLink.value;
 
-                var options = {'patientUuid': $scope.patient.uuid, 'encounterUuid': response.encounterUuid, 'visitUuid': response.visitUuid};
+                var options = {
+                    'patientUuid': $scope.patient.uuid,
+                    'encounterUuid': response.encounterUuid,
+                    'visitUuid': response.visitUuid
+                };
                 if (forwardLink) {
                     $window.location = appDescriptor.formatUrl(forwardLink, options);
                 }
@@ -203,7 +227,7 @@ angular.module('bahmni.adt')
                 var encounterData = getEncounterData($scope.encounterConfig.getDischargeEncounterTypeUuid());
                 spinner.forPromise(encounterService.create(encounterData).then(function (response) {
                     return bedService.getAssignedBedForPatient($scope.patient.uuid).then(function (bedDetails) {
-                        if(bedDetails) {
+                        if (bedDetails) {
                             return bedService.freeBed(bedDetails.bedId).success(function () {
                                 forwardUrl(response, "onDischargeForwardTo");
                             })
@@ -216,7 +240,10 @@ angular.module('bahmni.adt')
             $scope.undoDischarge = function () {
                 var encounterData = $scope.visit.getDischargeEncounter();
                 spinner.forPromise(encounterService.delete(encounterData.uuid, "Undo Discharge")).success(function (response) {
-                    var params = {'encounterUuid': $scope.visit.getAdmissionEncounter().uuid, 'visitUuid': $scope.visit.uuid};
+                    var params = {
+                        'encounterUuid': $scope.visit.getAdmissionEncounter().uuid,
+                        'visitUuid': $scope.visit.uuid
+                    };
                     forwardUrl(params, "onAdmissionForwardTo");
                 });
             };
