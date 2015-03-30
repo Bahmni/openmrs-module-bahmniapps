@@ -1,8 +1,8 @@
 "use strict";
 
 angular.module('bahmni.adt')
-    .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService', 'encounterService', 'bedService', 'appService', 'visitService', '$location', '$window', 'sessionService', 'messagingService', '$anchorScroll',
-        function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService, appService, visitService, $location, $window, sessionService, messagingService, $anchorScroll) {
+    .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService', 'encounterService', 'bedService', 'appService', 'visitService', '$location', '$window', 'sessionService', 'messagingService', '$anchorScroll', 'visitInitialization', '$stateParams',
+        function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService, appService, visitService, $location, $window, sessionService, messagingService, $anchorScroll, visitInitialization, $stateParams) {
             var actionConfigs = {};
             var encounterConfig = $rootScope.encounterConfig;
             var locationUuid = sessionService.getLoginLocationUuid();
@@ -70,7 +70,8 @@ angular.module('bahmni.adt')
             };
 
             $scope.isAdmitted = function(){
-                return $scope.visit && $scope.visit.isAdmitted();
+                console.log($rootScope.visit);
+                return $rootScope.visit && $scope.visit.isAdmitted();
             };
 
             $scope.isDischarged = function(){
@@ -84,11 +85,15 @@ angular.module('bahmni.adt')
             };
 
             var getDispositionActions = function (actions) {
+
                 if ($scope.isAdmitted()) {
+                    console.log("admitted");
                     return filterAction(actions, ["Discharge Patient", "Transfer Patient"]);
                 } else if($scope.isDischarged()) {
+                    console.log("discha");
                     return filterAction(actions, ["Undo Discharge"]);
                 } else {
+                    console.log("else");
                     return filterAction(actions, ["Admit Patient"]);
                 }
             };
@@ -98,7 +103,7 @@ angular.module('bahmni.adt')
                 var defaultVisitType = appService.getAppDescriptor().getConfigValue('defaultVisitType');
                 var visitTypes = encounterConfig.getVisitTypes();
                 $scope.visitControl = new Bahmni.Common.VisitControl(visitTypes, defaultVisitType, visitService);
-                return dispositionService.getDispositionActions().then(function (response) {
+                return visitInitialization($stateParams.visitUuid).then(dispositionService.getDispositionActions).then(function (response) {
                     if (response.data && response.data.results && response.data.results.length) {
                         $scope.dispositionActions = getDispositionActions(response.data.results[0].answers);
                         if($scope.visit){

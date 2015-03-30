@@ -72,13 +72,7 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
         .state('patient.adt',{
             url: '/visit/:visitUuid',
             abstract: true,
-            template: '<ui-view/>',
-            resolve: {
-                visitResolution: function (initResolution, $stateParams, patientResolution, visitInitialization) {
-                    return visitInitialization($stateParams.visitUuid);
-                }
-            }
-
+            template: '<ui-view/>'
         })
         .state('patient.adt.action', {
             url: '/:action',
