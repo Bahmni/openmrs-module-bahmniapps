@@ -46,7 +46,7 @@
           <div class="field-value">
             <input name="startDate" type="date" ng-model="newVisit.startDatetime"
                    dependent-model="newVisit.stopDatetime" date-validator ng-blur="setDefaultEndDate(newVisit)"
-                   ng-required="newVisit.images.length >0" class="field-value" placeholder="dd-mm-yyyy"/>
+                   ng-required="newVisit.images.length >0" class="field-value" placeholder="yyyy-mm-dd"/>
           </div>
         </div>
         <div class="form-field">
@@ -54,7 +54,7 @@
             <label class="form-attribute"><strong>End Date</strong></label>
           </div>
           <div class="field-value">
-              <input name="endDate" type="date" ng-model="newVisit.stopDatetime" dependent-model="newVisit.startDatetime" date-validator class="field-value" placeholder="dd-mm-yyyy">
+              <input name="endDate" type="date" ng-model="newVisit.stopDatetime" dependent-model="newVisit.startDatetime" date-validator class="field-value" placeholder="yyyy-mm-dd">
           </div>
         </div>
         <div class="upload-inline-buttons">
@@ -71,7 +71,7 @@
                     <div class="file">
                         <img bm-gallery-item index="{{$index}}" visit-uuid="'new'" visit-order="0" image="image"
                              ng-src="{{image.thumbnail}}" width="100">
-                        <input class="concept-name" ng-readonly="!canDeleteImage(image)"
+                        <input name="{{'image'+$index}}" class="concept-name" ng-readonly="!canDeleteImage(image)"
                                ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts"
                                response-map="getDataResults" on-select="onConceptSelected(image)" is-invalid="conceptNameInvalid" on-edit="onEditConcept(image)" required placeholder="Enter a value" strict-select="true"
                                blur-on-select="true"/>
@@ -112,7 +112,7 @@
               </li>
 
               <li>
-                <input id="file-browse-{{visit.uuid}}" type="file" name="image" accept="image/*" capture="camera" file-upload visit="visit" on-select="onSelect">
+                <input id="file-browse-{{visit.uuid}}" type="file" name="image-document-upload" accept="image/*" capture="camera" file-upload visit="visit" on-select="onSelect">
                 <label class="placeholder btn" for="file-browse-{{visit.uuid}}"><i class="icon-plus needsclick"></i></label>
               </li>
               <li ng-repeat="image in visit.images | reverse">
@@ -121,7 +121,7 @@
                   <input name="{{'image'+$index}}" ng-readonly="!canDeleteImage(image)" class="concept-name" ng-class="{saved: visit.isSaved(image)}" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" is-invalid="conceptNameInvalid" on-edit="onEditConcept(image)" required placeholder="Enter a value" strict-select="true" blur-on-select="true" ng-blur="visit.markAsUpdated()" ng-disabled="image.voided"/>
                 </div>
                 <div class="file-remove">
-                  <button type="button" ng-click="visit.removeImage(image)" ng-if="canDeleteImage(image)" class="row-remover"><span ng-class="{'icon-remove': !image.voided, 'icon-undo': image.voided }"></span></button>
+                  <button type="button" id="remove-image{{$index}}" ng-click="visit.removeImage(image)" ng-if="canDeleteImage(image)" class="row-remover"><span ng-class="{'icon-remove': !image.voided, 'icon-undo': image.voided }"></span></button>
                 </div>
               </li>
             </ul>
