@@ -20,8 +20,7 @@ p.caution{
 }
 input[file-upload] {
     position:absolute;
-    left:-9999px;
-    visibility: hidden;
+    z-index: -999;
 }
 
 .form-horizontal {
