@@ -13,6 +13,7 @@
 	    <div pivot-table patient-uuid="patient.uuid" disease-name="diseaseTemplate.name" config="section.allDiseaseDetails.pivotTable" display-name="diseaseTemplate.label"></div>
 	</div>
 	<section class="dashboard-section">
+        <h2 class="section-title">{{section.title}}</h2>
 	    <disease-template config="section.allDiseaseDetails" template="diseaseTemplate" patient="patient" show-date-time-for-intake="showDateTimeForIntake" show-time-for-progress="showTimeForProgress"></disease-template>
 	</section>
 </div>
