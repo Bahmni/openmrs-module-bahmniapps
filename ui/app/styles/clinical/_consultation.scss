@@ -2,7 +2,6 @@
     .section-grid {
         margin-bottom: 15px;
     }
-
     .consultation-notes {
         margin-top: 10px;
         textarea {
@@ -11,13 +10,22 @@
             width: 96%;
         }
     }
-
     .observation {
         .toggle {
             padding-right: 3px;
         }
     }
     .disposition {
-        .toggle i {padding-right: 5px;}
+        .toggle i {
+            padding-right: 5px;
+        }
+    }
+}
+
+.clinical-consultation {
+    .tabs {
+        .icon-home {
+            padding: 0;
+        }
     }
 }
