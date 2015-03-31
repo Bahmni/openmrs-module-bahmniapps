@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.adt')
-    .controller('BedManagementController', ['$scope', '$rootScope', '$location', 'WardService', 'bedService', '$stateParams', 'encounterService', 'sessionService', 'messagingService', 'backlinkService', '$timeout',
-        function ($scope, $rootScope, $location, wardService, bedService, $stateParams, encounterService, sessionService, messagingService, backlinkService, $timeout) {
+    .controller('BedManagementController', ['$scope', '$rootScope', '$location', 'WardService', 'bedService', '$stateParams', 'encounterService', 'sessionService', 'messagingService', 'backlinkService', '$timeout', '$document',
+        function ($scope, $rootScope, $location, wardService, bedService, $stateParams, encounterService, sessionService, messagingService, backlinkService, $timeout, $document) {
         $scope.wards = null;
         $scope.currentView = "wards";
         $scope.layout = [];
@@ -25,12 +25,21 @@ angular.module('bahmni.adt')
             } else {
                 $scope.showWardList();
             }
+
+            $document.bind('click', function () {
+                $scope.hideBedInfoPopUp();
+            });
         };
 
 
             $scope.$on('$stateChangeSuccess', function (event, state, params, fromState, fromParams) {
                 backlinkService.addUrl({ image: $scope.patient.image, url: "#/patient/" + $scope.patient.uuid + "/visit/" + visitUuid + "/", title: "Back to patient dashboard"});
             });
+
+        $scope.hideBedInfoPopUp = function () {
+            $scope.selectedBed = null;
+            $scope.$apply();
+        };
 
         $scope.showWardLayout = function (wardUuid, wardName) {
             currentWardUuid = wardUuid;
@@ -218,6 +227,7 @@ angular.module('bahmni.adt')
                     var toppos = $(elem).offset().top;
                     $(".bed-info").css('left', leftpos);
                     $(".bed-info").css('top', toppos);
+                    e.stopPropagation();
                 });
             }
         };
