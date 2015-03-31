@@ -6,24 +6,31 @@ angular.module('bahmni.common.logging')
                 var messagingService = $injector.get('messagingService');
                 var errorMessage = exception.toString();
                 var stackTrace = printStackTrace({ e: exception });
+                var errorDetails = {
+                    timestamp: new Date(),
+                    browser: $window.navigator.userAgent,
+                    errorUrl: $window.location.href,
+                    errorMessage: errorMessage,
+                    stackTrace: stackTrace,
+                    cause: ( cause || "" )
+                };
                 $.ajax({
                     type: "POST",
                     url: "/log",
                     contentType: "application/json",
-                    data: angular.toJson({
-                        timestamp: new Date(),
-                        browser: $window.navigator.userAgent,
-                        errorUrl: $window.location.href,
-                        errorMessage: errorMessage,
-                        stackTrace: stackTrace,
-                        cause: ( cause || "" )
-                    })
+                    data: angular.toJson(errorDetails)
                 });
                 messagingService.showMessage('error', errorMessage);
+                exposeException(errorDetails);
             } catch (loggingError) {
                 $log.warn("Error logging failed");
                 $log.log(loggingError);
             }
+        };
+
+        var exposeException = function(exceptionDetails) {
+            window.angular_exception = window.angular_exception || [];
+            window.angular_exception.push(exceptionDetails);
         };
 
         return function(exception, cause){
