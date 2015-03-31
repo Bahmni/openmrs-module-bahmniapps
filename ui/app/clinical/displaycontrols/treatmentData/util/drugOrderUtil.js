@@ -9,6 +9,8 @@ Bahmni.Clinical.DrugOrder.Util = {
                     && existingOrder.instructions == drugOrder.instructions
                     && existingOrder.getDoseInformation() == drugOrder.getDoseInformation()
                     && existingOrder.route == drugOrder.route
+                    && existingOrder.additionalInstructions == drugOrder.additionalInstructions
+                    && existingOrder.asNeeded == drugOrder.asNeeded
                     && existingOrder.isDiscontinuedOrStopped() == drugOrder.isDiscontinuedOrStopped()
                     && Bahmni.Common.Util.DateUtil.diffInDaysRegardlessOfTime(new Date(existingOrder.lastStopDate), new Date(drugOrder.scheduledDate)) <= 1
             });

@@ -1,7 +1,7 @@
 'use strict';
 
 describe("mergeContinuousTreatments", function () {
-    var sampleTreatment = function (uuid, instructions, dose, doseUnits, frequency, route, scheduledDate, effectiveStopDate, duration, durationUnits) {
+    var sampleTreatment = function (uuid, instructions, dose, doseUnits, frequency, route, scheduledDate, effectiveStopDate, duration, durationUnits,additionalInstructions,asNeeded) {
         var drugOrderViewModel = new Bahmni.Clinical.DrugOrderViewModel();
         drugOrderViewModel.drug = {
             uuid: uuid
@@ -15,6 +15,9 @@ describe("mergeContinuousTreatments", function () {
         drugOrderViewModel.effectiveStopDate = effectiveStopDate;
         drugOrderViewModel.duration = duration;
         drugOrderViewModel.durationUnit = durationUnits;
+        drugOrderViewModel.additionalInstructions = additionalInstructions;
+        drugOrderViewModel.asNeeded = asNeeded;
+
         return drugOrderViewModel;
     };
 
@@ -94,4 +97,18 @@ describe("mergeContinuousTreatments", function () {
         var continuousTreatments = Bahmni.Clinical.DrugOrder.Util.mergeContinuousTreatments([treatment1, treatment2]);
         expect(continuousTreatments.length).toBe(2);
     });
+    it("should not merge continuous drug's if SOS's are different", function () {
+            var treatment1 = sampleTreatment("drug.uuid", "instructions", 1, "doseUnits", "frequency", "route", 1420088400000, 1420261200000, 3, "Day(s)","addn1",true);
+            var treatment2 = sampleTreatment("drug.uuid", "instructions", 1, "doseUnits", "frequency", "route", 1420347600000, 1420520400000, 3, "Day(s)","addn1",false);
+
+            var continuousTreatments = Bahmni.Clinical.DrugOrder.Util.mergeContinuousTreatments([treatment1, treatment2]);
+            expect(continuousTreatments.length).toBe(2);
+    });
+     it("should not merge continuous drug's if addn Instrction's are different", function () {
+                var treatment1 = sampleTreatment("drug.uuid", "instructions", 1, "doseUnits", "frequency", "route", 1420088400000, 1420261200000, 3, "Day(s)","addn1",true);
+                var treatment2 = sampleTreatment("drug.uuid", "instructions", 1, "doseUnits", "frequency", "route", 1420347600000, 1420520400000, 3, "Day(s)","addn2",true);
+
+                var continuousTreatments = Bahmni.Clinical.DrugOrder.Util.mergeContinuousTreatments([treatment1, treatment2]);
+                expect(continuousTreatments.length).toBe(2);
+        });
 });
