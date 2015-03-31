@@ -171,6 +171,12 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
             getOtherDescription(false, true);
     };
 
+    this.getDescriptionWithoutRouteAndDuration = function(){
+        var otherDescription = getOtherDescription(false, false);
+        var description = addDelimiter(blankIfFalsy(getDoseAndFrequency()), " ");
+        return otherDescription? description + otherDescription: description.substring(0, description.length - 2);
+    };
+
     this.getDescriptionWithoutDuration = function(){
         var otherDescription = getOtherDescription(true, false);
         var description = addDelimiter(blankIfFalsy(getDoseAndFrequency()), " ");
