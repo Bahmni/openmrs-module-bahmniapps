@@ -289,7 +289,7 @@ angular.module('bahmni.clinical')
                 $window.open(url, "_blank");
             };
 
-            $scope.toggleTabIndexWithinModal = function(){
+            $scope.toggleTabIndexWithinModal = function(event){
                 var buttonsToFocusOn = ["modal-revise-button", "modal-refill-button"];
                 var focusedButton = event.target;
                 focusedButton.tabIndex = 1;
