@@ -4,14 +4,22 @@ Bahmni.Clinical.DrugOrder.Util = {
         var drugOrders = [];
         sortedDrugOrders.forEach(function (drugOrder) {
             drugOrder.span = {};
+
+            var areValuesEqual = function(value1, value2){
+                if(typeof value1 == "boolean" && typeof value2 == "boolean"){
+                    return value1 == value2;
+                }
+                return value1 == value2 || (_.isEmpty(value1) && _.isEmpty(value2));
+            };
+
             var foundDrugOrder = _.find(drugOrders, function (existingOrder) {
-                return existingOrder.drug.uuid == drugOrder.drug.uuid
-                    && existingOrder.instructions == drugOrder.instructions
-                    && existingOrder.getDoseInformation() == drugOrder.getDoseInformation()
-                    && existingOrder.route == drugOrder.route
-                    && existingOrder.additionalInstructions == drugOrder.additionalInstructions
-                    && existingOrder.asNeeded == drugOrder.asNeeded
-                    && existingOrder.isDiscontinuedOrStopped() == drugOrder.isDiscontinuedOrStopped()
+                return areValuesEqual(existingOrder.drug.uuid, drugOrder.drug.uuid)
+                    && areValuesEqual(existingOrder.instructions, drugOrder.instructions)
+                    && areValuesEqual(existingOrder.getDoseInformation(), drugOrder.getDoseInformation())
+                    && areValuesEqual(existingOrder.route, drugOrder.route)
+                    && areValuesEqual(existingOrder.additionalInstructions,drugOrder.additionalInstructions)
+                    && areValuesEqual(existingOrder.asNeeded, drugOrder.asNeeded)
+                    && areValuesEqual(existingOrder.isDiscontinuedOrStopped(), drugOrder.isDiscontinuedOrStopped())
                     && Bahmni.Common.Util.DateUtil.diffInDaysRegardlessOfTime(new Date(existingOrder.lastStopDate), new Date(drugOrder.scheduledDate)) <= 1
             });
 
