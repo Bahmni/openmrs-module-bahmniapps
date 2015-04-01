@@ -311,6 +311,7 @@ h3 {
                         font-size: 9pt;
                         padding: 0 5px;
                         font-family: Arial, sans-serif;
+	                    text-align: left;
                     }
                     .name,
                     .drug,
@@ -490,4 +491,15 @@ h3 {
     table.drug-order-table td.drug {
         border-left: 0 !important;
     }
+}
+
+.prescription-print {
+	table tr {
+		td, th {
+			font-size: 9pt;
+		}
+	}
+	.patient-info {
+		margin-bottom: 10px;
+	}
 }

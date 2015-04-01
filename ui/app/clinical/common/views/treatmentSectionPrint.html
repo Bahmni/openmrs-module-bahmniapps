@@ -1,4 +1,4 @@
 <section class="block treatment-section" ng-show="visit.hasDrugOrders()">
-    <h2>Treatment</h2>
+    <h2 class="section-title">Treatment</h2>
     <ng-include src="'common/views/treatmentTablePrint.html'" ng-init="drugOrders=visit.drugOrders.orders"></ng-include>
 </section>
