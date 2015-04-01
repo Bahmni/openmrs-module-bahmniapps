@@ -140,7 +140,7 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
 
     setAbnormal: function () {
         if (this.primaryObs.hasValue()) {
-            var erroneousValue = this.value >= (this.primaryObs.concept.hiAbsolute || Infinity) || this.value < (this.primaryObs.conceptUIConfig.lowAbsolute || 0);
+            var erroneousValue = this.value >= (this.primaryObs.concept.hiAbsolute || Infinity) || this.value < (this.primaryObs.concept.lowAbsolute || 0);
             var valueInRange = this.value <= (this.primaryObs.concept.hiNormal || Infinity) && this.value >= (this.primaryObs.concept.lowNormal || 0);
             this.abnormalObs.value = !valueInRange;
             this.abnormalObs.erroneousValue = erroneousValue;
@@ -236,6 +236,7 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
         if (this._isDateDataType()) return this.getPrimaryObs().isValidDate();
         if (this.getControlType() === "freeTextAutocomplete" ) { return this.isValidFreeTextAutocomplete()}
         if (this.getPrimaryObs().hasValue() && this.hasDuration()) return false;
+        if (this.abnormalObs && this.abnormalObs.erroneousValue) return false;
         return true;
     },
 

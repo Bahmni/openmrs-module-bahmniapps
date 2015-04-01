@@ -7,8 +7,11 @@ form.submitted-with-error {
 	}
 }
 
-.illegalValue, buttons-radio.illegalValue button {
-    border: 2px solid darken($clinicalFormInvalid, 30%);
-    background: $clinicalFormInvalid;
+.illegalValue, buttons-radio.illegalValue button, concept input:invalid.illegalValue {
+    &, &:focus {
+        border: 2px solid darken($clinicalFormInvalid, 30%);
+        background: $clinicalFormInvalid;
+        outline: 0;
+    }
 }
 buttons-radio.illegalValue { border: 0; background: none }

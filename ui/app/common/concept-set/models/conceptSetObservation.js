@@ -4,6 +4,7 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
     this.isObservation = true;
     this.conceptUIConfig = conceptUIConfig[this.concept.name] || []
     this.uniqueId = _.uniqueId('observation_');
+    this.erroneousValue = null;
 
     if (savedObs) {
         this.uuid = savedObs.uuid;
@@ -25,6 +26,18 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
             }
         });
     }
+
+
+    Object.defineProperty(this, 'value', {
+                enumerable: true,
+                get: function () {
+                    return self._value;
+                },
+                set: function (newValue) {
+                    self._value = newValue;
+                    self.onValueChanged();
+                }
+            });
 
     this.cloneNew = function() {
         var oldObs = angular.copy(observation);
@@ -155,9 +168,19 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     onValueChanged: function () {
-//        TODO: Mihir, D3 : Hacky fix to update the datetime to current datetime on the server side. Ideal would be void the previous observation and create a new one.
-        this.observationDateTime = null;
+        if (this.isNumeric()) {
+            this.setErroneousValue();
+        }
     },
+
+    setErroneousValue: function () {
+            if (this.hasValue()) {
+                var erroneousValue = this.value >= (this.concept.hiAbsolute || Infinity) || this.value < (this.concept.lowAbsolute || 0);
+                this.erroneousValue = erroneousValue;
+            } else {
+                this.erroneousValue = undefined;
+            }
+        },
 
     getInputType: function () {
         return this.getDataTypeName();
@@ -210,6 +233,7 @@ Bahmni.ConceptSet.Observation.prototype = {
         if (checkRequiredFields && this.isRequired() && !this.hasValue()) return false;
         if (this._isDateDataType()) return this.isValidDate();
         if (this._isDateTimeDataType()) return !this.hasInvalidDateTime();
+        if (this.erroneousValue) return false;
         return true;
     },
 

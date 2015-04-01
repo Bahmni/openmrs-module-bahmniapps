@@ -66,9 +66,11 @@ angular.module('bahmni.registration')
 
             var validate = function () {
                 var deferred = $q.defer();
-                var allowContextChange = contextChangeHandler.execute()["allow"];
+                var contxChange = contextChangeHandler.execute();
+                var allowContextChange = contxChange["allow"];
                 if (!allowContextChange) {
-                    messagingService.showMessage('formError', 'Please correct errors in the form. Information not saved');
+                    var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"]: "Please correct errors in the form. Information not saved";
+                    messagingService.showMessage('formError', errorMessage);
                     deferred.reject("Some fields are not valid");
                     return deferred.promise;
                 }

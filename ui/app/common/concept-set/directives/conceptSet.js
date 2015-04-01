@@ -127,10 +127,16 @@ angular.module('bahmni.common.conceptSet')
             var contextChange = function () {
                 $scope.atLeastOneValueIsSet = $scope.rootObservation && $scope.rootObservation.atLeastOneValueSet();
                 $scope.conceptSetRequired = $scope.required;
+                var errorMessage = null;
                 var invalidNodes = $scope.rootObservation && $scope.rootObservation.groupMembers.filter(function(childNode){
+                    console.log(childNode);
+                    if(childNode.erroneousValue || (childNode.isObservationNode && childNode.abnormalObs.erroneousValue)){
+                        errorMessage = "The value you entered (red field) is outside the range of allowable values for that record. Please check the value.";
+                        return true;
+                    }
                     return !childNode.isValid($scope.atLeastOneValueIsSet, $scope.conceptSetRequired);
                 });
-                return {allow: !invalidNodes || invalidNodes.length === 0};
+                return {allow: !invalidNodes || invalidNodes.length === 0, errorMessage: errorMessage};
             };
             contextChangeHandler.add(contextChange);
             var validateObservationTree = function () {
