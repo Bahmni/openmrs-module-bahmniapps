@@ -31,7 +31,7 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
     Object.defineProperty(this, 'value', {
                 enumerable: true,
                 get: function () {
-                    return self._value;
+                    return savedObs ? savedObs.value : self._value;
                 },
                 set: function (newValue) {
                     self._value = newValue;
