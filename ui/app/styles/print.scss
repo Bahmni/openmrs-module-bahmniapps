@@ -379,23 +379,45 @@ h3 {
         table.ipd-investigation-print {
             border-collapse: collapse;
             border-bottom: 1px solid #ddd;
+
+            table-layout: fixed;
+            font-size: 8pt;
             tbody tr, thead tr {
                 th, td {
                     border: 1px solid #ddd;
                     border-width: 1px 1px 0 0;
                     display: table-cell;
+                    font-weight: normal;
+                    background: #fff;
+                    height: 15px;
+                }
+                td {
+                    padding: 0;
                 }
             }
-            tbody tr th,thead tr th:first-child{
+            tbody tr th,thead tr th:first-child {
                 border-left: 1px solid #ddd;
-                width: 10cm;
-            }   
-            span.range{
-                font-size: 9pt;
-            }         
+                width: 38%;
+            }
+            span {
+                &.range{
+                    font-size: 8pt;
+                }
+                &.is-abnormal{
+                    font-weight: bold;
+                }
+                &.ipd-test-results{
+                    white-space: normal;
+                    text-overflow: initial;
+                    padding: 0px 5px;
+                    border-right-color: #ddd;
+                    display: inline-block;
+                    float: left;
+                }
+            }       
         }
-
     }
+    
     .dashboard-patientInformation-section {
         table.patient {
             .value {
