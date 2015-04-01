@@ -141,6 +141,7 @@ h3 {
     padding: 10px 20px 0;
     max-width: 21cm; // A4 size width
     margin: 0 auto;
+	box-sizing: border-box;
     a {
         color: #333;
     }
@@ -497,9 +498,26 @@ h3 {
 	table tr {
 		td, th {
 			font-size: 9pt;
+			min-width: 1.75cm;
 		}
+
 	}
 	.patient-info {
 		margin-bottom: 10px;
+		td {
+			font-weight: bold;
+			.value {
+				font-weight: normal;
+			}
+		}
+	}
+	.treatment-section {
+		.drug-name, .dosage-days {
+			width: 7cm;
+		}
+		.dosage-form span {
+			float: left;
+			margin-right: 5px;
+		}
 	}
 }
