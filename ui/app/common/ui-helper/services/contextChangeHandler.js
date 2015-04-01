@@ -20,12 +20,16 @@ angular.module('bahmni.common.uiHelper')
     this.execute = function () {
         var allow = true;
         var callBackReturn = null;
+        var errorMessage = null;
         callbacks.forEach(function (callback) {
             callBackReturn = callback();
             allow = allow && callBackReturn["allow"];
+            if(_.isEmpty(errorMessage)){
+                errorMessage = callBackReturn["errorMessage"];
+            }
         });
-        if (callBackReturn && callBackReturn["errorMessage"] != null) {
-            return {allow: allow, errorMessage: callBackReturn["errorMessage"]};
+        if (callBackReturn && errorMessage) {
+            return {allow: allow, errorMessage: errorMessage};
         }
         return {allow: allow};
 

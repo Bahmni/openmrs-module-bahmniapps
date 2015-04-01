@@ -79,9 +79,8 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
                 var contextChangeResponse = contextChange();
                 if (!contextChangeResponse["allow"]) {
-                    if (contextChangeResponse["errorMessage"]) {
-                        messagingService.showMessage('formError', contextChangeResponse["errorMessage"]);
-                    }
+                    var errorMessage = contextChangeResponse["errorMessage"] ? contextChangeResponse["errorMessage"]: "Please correct errors in the form. Information not saved";
+                    messagingService.showMessage('formError', errorMessage);
                     return;
                 }
                 contextChangeHandler.reset();
