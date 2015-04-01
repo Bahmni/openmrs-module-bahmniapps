@@ -53,9 +53,13 @@ Bahmni.Clinical.TabularLabOrderResults = (function () {
         };
 
         this.getResult = function(dateLabel, testOrderLabel) {
-            return this.tabularResult.values.filter(function(value) {
+            var filteredResultValue = this.tabularResult.values.filter(function(value) {
                 return value.dateIndex === dateLabel.index && value.testOrderIndex === testOrderLabel.index;
             });
+            if(filteredResultValue.length == 0){
+                filteredResultValue = [{"result" : " "}];
+            }
+            return filteredResultValue;
         };
 
         this.hasUploadedFiles = function(dateLabel, testOrderLabel) {

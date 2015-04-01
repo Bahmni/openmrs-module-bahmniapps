@@ -376,6 +376,25 @@ h3 {
                 }
             }
         }
+        table.ipd-investigation-print {
+            border-collapse: collapse;
+            border-bottom: 1px solid #ddd;
+            tbody tr, thead tr {
+                th, td {
+                    border: 1px solid #ddd;
+                    border-width: 1px 1px 0 0;
+                    display: table-cell;
+                }
+            }
+            tbody tr th,thead tr th:first-child{
+                border-left: 1px solid #ddd;
+                width: 10cm;
+            }   
+            span.range{
+                font-size: 9pt;
+            }         
+        }
+
     }
     .dashboard-patientInformation-section {
         table.patient {
