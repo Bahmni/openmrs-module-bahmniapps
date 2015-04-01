@@ -1,13 +1,15 @@
-.fix-fixed {
-    .opd-wrapper {
-        padding-top: 0;
-    }
-    .opd-header-wrapper {
-        position: relative;
-        -webkit-backface-visibility: hidden;
-        margin-bottom: 2px;
-    }
-    .template-control-header {
-        position: absolute;
+.touch {
+    .fix-fixed {
+        .opd-wrapper {
+            padding-top: 0;
+        }
+        .opd-header-wrapper {
+            position: relative;
+            -webkit-backface-visibility: hidden;
+            margin-bottom: 2px;
+        }
+        .template-control-header {
+            position: absolute;
+        }
     }
 }
