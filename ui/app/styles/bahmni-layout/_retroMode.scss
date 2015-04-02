@@ -6,7 +6,7 @@ $retroModeColor:  #0E74AF;
 	&, header {
 	  background: $retroModeColor;
 	}
-	a.back-btn, button.back-btn, ul li a.back-btn {
+	a.back-btn, button.back-btn, ul li a.back-btn, .back-btn-link {
 	  &, &:before {
 		background: darken($retroModeColor, 10%);
 		border-color: darken($retroModeColor, 12%);
@@ -21,6 +21,7 @@ $retroModeColor:  #0E74AF;
 	.tabs ul li.tab-item {
 	  a,  button {
 		background: darken($retroModeColor, 6%);
+		padding: 12px 15px;
 	  }
 	  &.tab-selected a, &.tab-selected button {
 		background: white;
