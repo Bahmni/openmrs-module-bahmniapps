@@ -3,9 +3,23 @@
 Bahmni.Clinical.VisitTabConfig = function (tabs) {
     var self = this;
     this.tabs = tabs;
-    this.openTabs = [_.find(this.tabs, function (tab) {
-        return tab.default;
-    })];
+
+    var addDefaultDashboard = function (){
+        self.openTabs = [_.find(self.tabs, function (tab) {
+            return tab.default;
+        })];
+    };
+
+    var addDisplayByDefaultDashboards = function(){
+        self.openTabs = self.openTabs.concat( _.filter(self.tabs, function (tab) {
+            return tab.displayByDefault
+        }));
+    };
+
+    var init = function(){
+        addDefaultDashboard();
+        addDisplayByDefaultDashboards();
+    }();
 
     this.getDefaultTab = function () {
         return _.find(this.tabs, function (tab) {

@@ -34,8 +34,15 @@ Bahmni.Clinical.ClinicalDashboardConfig = function (config) {
         }
     };
 
+    var addDisplayByDefaultDashboards = function(){
+        self.openDashboards = self.openDashboards.concat( _.filter(self.dashboards, function (tab) {
+            return tab.displayByDefault
+        }));
+    };
+
     this.init = function () {
         self.switchDashboard(self._getDefaultDashboard());
+        addDisplayByDefaultDashboards();
     }();
 
     this.getDiseaseTemplateSections = function () {
