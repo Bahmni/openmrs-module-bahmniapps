@@ -1,16 +1,39 @@
 'use strict';
 
 Bahmni.Clinical.TabularLabOrderResults = (function () {
-    var TabularLabOrderResults = function (tabularResult, investigationResultConfig) {
+    var TabularLabOrderResults = function (tabularResult, accessionConfig) {
+        var self = this;
         this.tabularResult = tabularResult;
-        this.getDateLabels = function () {
-            if(investigationResultConfig && investigationResultConfig.initialAccessionCount && investigationResultConfig.latestAccessionCount){
-                var initial = _.first(this.tabularResult.dates, investigationResultConfig.initialAccessionCount);
-                var latest = _.last(this.tabularResult.dates, investigationResultConfig.latestAccessionCount);
 
-                this.tabularResult.dates = _.union(initial, latest);
+        var filterData = function(list, filteredOn) {
+            var indices = _.uniq(_.pluck(self.tabularResult.values, filteredOn));
+            return _.filter(list, function (element) {
+                return _.contains(indices, element.index)
+            });
+        };
+
+        var init = function(){
+            if(accessionConfig && (accessionConfig.initialAccessionCount || accessionConfig.latestAccessionCount)){
+                var tabularValues = _.groupBy(self.tabularResult.values, function(value) {
+                    return new Date(value.accessionDateTime);
+                });
+
+                tabularValues = _.sortBy(tabularValues, function(value) {
+                    return value[0].accessionDateTime;
+                });
+
+                var initial = _.first(tabularValues, accessionConfig.initialAccessionCount || 0);
+                var latest = _.last(tabularValues, accessionConfig.latestAccessionCount || 0);
+
+                self.tabularResult.values = _.flatten(_.union(initial, latest));
+                self.tabularResult.dates = filterData(self.tabularResult.dates, 'dateIndex');
+                self.tabularResult.orders = filterData(self.tabularResult.orders, 'testOrderIndex');
             }
+        };
 
+        init();
+
+        this.getDateLabels = function () {
             return this.tabularResult.dates.map(function(date) {
                 date.date = moment(date.date).toDate();
                 return date;  
@@ -41,6 +64,5 @@ Bahmni.Clinical.TabularLabOrderResults = (function () {
             });
         };
     };
-
     return TabularLabOrderResults;
 })();

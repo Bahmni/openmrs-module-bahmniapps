@@ -10,10 +10,17 @@ angular.module('bahmni.clinical')
             };
             $scope.params = angular.extend(defaultParams, $scope.params);
 
-            spinner.forPromise(labOrderResultService.getAllForPatient($scope.params.patientUuid, $scope.params.numberOfVisits, $scope.params.visitUuids)
+            var params = {
+                patientUuid: $scope.params.patientUuid,
+                numberOfVisits: $scope.params.numberOfVisits,
+                visitUuids: $scope.params.visitUuids,
+                initialAccessionCount: $scope.params.initialAccessionCount,
+                latestAccessionCount: $scope.params.latestAccessionCount
+            };
+            spinner.forPromise(labOrderResultService.getAllForPatient(params)
                 .then(function (results) {
-                $scope.investigationResults = results;
-            }));
+                    $scope.investigationResults = results;
+                }));
         };
         return {
             restrict: 'E',

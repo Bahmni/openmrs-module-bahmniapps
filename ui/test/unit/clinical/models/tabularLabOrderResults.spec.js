@@ -32,8 +32,8 @@ describe("TabularLabOrderResults", function() {
 					{"index":2,"date":"02-Jun-2014"}
 				]
 			};
-			var investigationResultConfig = {initialAccessionCount : 1, latestAccessionCount : 1};
-			var tabularLabOrderResults = new Bahmni.Clinical.TabularLabOrderResults(labOrderResults, investigationResultConfig);
+			var accessionConfig = {initialAccessionCount : 1, latestAccessionCount : 1};
+			var tabularLabOrderResults = new Bahmni.Clinical.TabularLabOrderResults(labOrderResults, accessionConfig);
 			var dateLabels = tabularLabOrderResults.getDateLabels();
             expect(dateLabels.length).toBe(2);
 			expect(dateLabels[0]).toEqual({"index":0,"date":moment("30-May-2014").toDate()});
@@ -52,8 +52,8 @@ describe("TabularLabOrderResults", function() {
 					{"index":2,"date":"01-Jun-2014"}
 				]
 			};
-			var investigationResultConfig = {initialAccessionCount : 3, latestAccessionCount : 3};
-			var tabularLabOrderResults = new Bahmni.Clinical.TabularLabOrderResults(labOrderResults, investigationResultConfig);
+			var accessionConfig = {initialAccessionCount : 3, latestAccessionCount : 3};
+			var tabularLabOrderResults = new Bahmni.Clinical.TabularLabOrderResults(labOrderResults, accessionConfig);
 			var dateLabels = tabularLabOrderResults.getDateLabels();
             expect(dateLabels.length).toBe(2);
 			expect(dateLabels[0]).toEqual({"index":0,"date":moment("30-May-2014").toDate()});
@@ -72,8 +72,8 @@ describe("TabularLabOrderResults", function() {
 					{"index":2,"date":"01-Jun-2014"}
 				]
 			};
-			var investigationResultConfig = {};
-			var tabularLabOrderResults = new Bahmni.Clinical.TabularLabOrderResults(labOrderResults, investigationResultConfig);
+			var accessionConfig = {};
+			var tabularLabOrderResults = new Bahmni.Clinical.TabularLabOrderResults(labOrderResults, accessionConfig);
 			var dateLabels = tabularLabOrderResults.getDateLabels();
             expect(dateLabels.length).toBe(2);
 			expect(dateLabels[0]).toEqual({"index":0,"date":moment("30-May-2014").toDate()});

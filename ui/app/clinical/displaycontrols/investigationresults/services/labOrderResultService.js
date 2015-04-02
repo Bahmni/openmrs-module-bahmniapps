@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .factory('LabOrderResultService', ['$http', '$q','configurationService', 'visitTabConfig', function ($http, $q,configurationService, visitTabConfig) {
+    .factory('LabOrderResultService', ['$http', '$q','configurationService', function ($http, $q,configurationService) {
     var allTestsAndPanelsConcept = {};
     configurationService.getConfigurations(['allTestsAndPanelsConcept']).then(function (configurations) {
         allTestsAndPanelsConcept = configurations.allTestsAndPanelsConcept.results[0];
@@ -13,22 +13,30 @@ angular.module('bahmni.clinical')
         });
     };
 
-    var transformGroupSort = function(results) {
+    var transformGroupSort = function(results, initialAccessionCount, latestAccessionCount) {
         var labOrderResults = results.results;
         sanitizeData(labOrderResults);
 
-        var investigationResultSection = _.find(visitTabConfig.currentTab ? visitTabConfig.currentTab.sections : {}, function (section) {
-            return section.type === "investigationResult"
-        });
-        var investigationResultConfig = investigationResultSection && investigationResultSection.config;
-        var tabularResult = new Bahmni.Clinical.TabularLabOrderResults(results.tabularResult, investigationResultConfig);
+        var accessionConfig = {
+            initialAccessionCount: initialAccessionCount,
+            latestAccessionCount: latestAccessionCount
+        };
+
+        var tabularResult = new Bahmni.Clinical.TabularLabOrderResults(results.tabularResult, accessionConfig);
         var accessions = _.groupBy(labOrderResults, function(labOrderResult) {
             return labOrderResult.accessionUuid;
         });
         accessions = _.sortBy(accessions, function(accession) {
             return accession[0].accessionDateTime;
-        }).reverse();
+        });
 
+        if(accessionConfig.initialAccessionCount || accessionConfig.latestAccessionCount){
+            var initial = _.first(accessions, accessionConfig.initialAccessionCount || 0);
+            var latest = _.last(accessions, accessionConfig.latestAccessionCount || 0);
+
+            accessions = _.union(initial, latest);
+        }
+        accessions.reverse();
         return {accessions: groupByPanel(accessions), tabularResult: tabularResult};
     };
 
@@ -61,27 +69,27 @@ angular.module('bahmni.clinical')
         });
     };
 
-    var getAllForPatient = function (patientUuid, numberOfVisits, visitUuids) {
+    var getAllForPatient = function (params) {
         var deferred = $q.defer();
-        var params = {};
-        if (visitUuids) {
-            params.visitUuids = visitUuids;
+        var paramsToBeSent = {};
+        if (params.visitUuids) {
+            paramsToBeSent.visitUuids = params.visitUuids;
         } else {
-            if (!patientUuid) {
+            if (!params.patientUuid) {
                 deferred.reject('patient uuid is mandatory');
             }
-            params.patientUuid = patientUuid;
-            if (numberOfVisits !== 0) {
-                params.numberOfVisits = numberOfVisits;
+            paramsToBeSent.patientUuid = params.patientUuid;
+            if (params.numberOfVisits !== 0) {
+                paramsToBeSent.numberOfVisits = params.numberOfVisits;
             }
         }
 
         $http.get(Bahmni.Common.Constants.bahmniLabOrderResultsUrl, {
             method: "GET",
-            params: params,
+            params: paramsToBeSent,
             withCredentials: true
         }).then(function (response) {
-            var results = transformGroupSort(response.data);
+            var results = transformGroupSort(response.data, params.initialAccessionCount, params.latestAccessionCount);
             var sortedConceptSet = new Bahmni.Clinical.ConceptWeightBasedSorter(allTestsAndPanelsConcept);
             var resultObject = {
                 labAccessions: flattened(results.accessions.map(sortedConceptSet.sortTestResults)),
