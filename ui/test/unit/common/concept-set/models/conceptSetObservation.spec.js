@@ -34,4 +34,12 @@ describe("ConceptSetObservation", function() {
         expect(new Bahmni.ConceptSet.Observation({concept: {name: "someConcept", dataType: "Numeric"}}, null, {}).isNumeric()).toBeTruthy();
         expect(new Bahmni.ConceptSet.Observation({concept: {name: "someConcept", dataType: "text"}}, null, {}).isNumeric()).toBeFalsy();
     });
+
+    it("should be numeric if concept datatype is numeric", function() {
+             var obs = new Bahmni.ConceptSet.Observation({
+                        concept: {name: "someConcept",dataType: "Numeric",hiAbsolute: 100, lowAbsolute: 90, value:101}
+                    }, null, {});
+                    obs.value = 102;
+                    expect(obs.isValid(false,false)).toBeFalsy();
+     });
 });
