@@ -2,14 +2,17 @@
     <table class="table ward-details-content">
         <thead>
             <tr>
-                <th ng-repeat="heading in tableHeadings">{{heading}}</th>
+                <th ng-repeat="heading in tableHeadings" ng-if="heading != 'hiddenAttributes'">{{heading}}</th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="row in tableDetails">
-                <td ng-repeat="heading in tableHeadings">
-                    <span ng-if="heading != 'DiagnosisList'">{{row[heading]}}</span>
-                    <div ng-if="heading == 'DiagnosisList'">
+                <td ng-repeat="heading in tableHeadings" ng-if="heading != 'hiddenAttributes'">
+                    <span ng-if="heading != 'Diagnosis' && heading != 'Id'">{{row[heading]}}</span>
+                    <a ng-if="heading =='Id'" ng-click="gotoPatientDashboard(row['hiddenAttributes'].patientUuid, row['hiddenAttributes'].visitUuid)">
+                        {{row[heading]}}
+                    </a>
+                    <div ng-if="heading == 'Diagnosis'">
                         <div ng-repeat="diagnosis in row[heading]" ng-class="{'strike-text': diagnosis.ruledOut}">
                             <span>{{diagnosis.Diagnosis}}</span>
                             <span>{{diagnosis["Diagnosis Certainty"]}}</span>
