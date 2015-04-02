@@ -1,8 +1,15 @@
 <section id="diagnosisSection" class="block diagnosis" ng-class="{'more': allDiagnoses.show, 'hidden-print':!hasRuledOutDiagnoses}">
     <h2 class="section-title">{{title}}</h2>
     <table class="dashboard-table history-diagnosis">
+        <tr ng-if="showLatestDiagnosis ==  'true'" class="table-header">
+            <th>&nbsp;</th>
+            <th colspan="3"><span>Current</span></th>
+            <th colspan="4"><span>Latest</span></th>
+        </tr>
+        
         <tbody ng-repeat="diagnosis in allDiagnoses | primaryDiagnosisFirst" class="row" ng-class="{'hidden-print': diagnosis.diagnosisStatus}">
-            <tr class="view-past" ng-class="{'notes-open': diagnosis.showDetails, 'test-notes-parent': diagnosis.comments}">
+            
+            <tr class="view-past" ng-class="{'notes-open': diagnosis.showDetails || diagnosis.showLatestDetails, 'test-notes-parent': diagnosis.comments}">
                 <td class="name">
                     <span id="diagnosisName" class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">
                         {{diagnosis.getDisplayName()}}
@@ -12,14 +19,31 @@
                         <span id="certainty" ng-hide="config.showCertainty == false" class="certainty">{{diagnosis.certainty}}</span>
                         <span id="order" ng-hide="config.showOrder == false" class="order">{{diagnosis.order}}</span>
                         <span id="status" class="status">{{diagnosis.diagnosisStatus}}</span>
-                </td>
+                </td>                
                 <td id="diagnosisDate" class="date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}
                 </td>
+
                 <td class="toggle-btn" ng-show="!diagnosis.comments && config.showDetailsButton">
-                    <button  class="toggle fr" ng-click="toggle(diagnosis)"
+                    <button  class="toggle fr" ng-click="toggle(diagnosis,false)"
                             ng-class="{'has-notes': diagnosis.comments}">
                         <i class="icon-angle-down" ng-hide="diagnosis.showDetails"></i>
                         <i class="icon-angle-up" ng-show="diagnosis.showDetails"></i>
+                    </button>
+                </td>
+                <td class="view" ng-if="showLatestDiagnosis ==  'true'" >
+                        <span id="certainty" ng-hide="config.showCertainty == false" class="certainty">
+                            {{diagnosis.latestDiagnosis.certainty}}</span>
+                        <span id="order" ng-hide="config.showOrder == false" class="order">{{diagnosis.latestDiagnosis.order}}</span>
+                        <span id="status" class="status">{{diagnosis.latestDiagnosis.diagnosisStatus}}</span>
+                </td>
+
+                <td id="diagnosisDate" class="date" ng-if="showLatestDiagnosis ==  'true'" >{{diagnosis.latestDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}
+                </td>
+                <td class="toggle-btn" ng-show="!diagnosis.comments && config.showDetailsButton" ng-if="showLatestDiagnosis ==  'true'" >
+                    <button  class="toggle fr" ng-click="toggle(diagnosis,true)"
+                            ng-class="{'has-notes': diagnosis.comments}">
+                        <i class="icon-angle-down" ng-hide="diagnosis.showLatestDetails"></i>
+                        <i class="icon-angle-up" ng-show="diagnosis.showLatestDetails"></i>
                     </button>
                 </td>
             </tr>
@@ -34,8 +58,18 @@
                     </div>
                 </td>
             </tr>
+
             <tr ng-show="diagnosis.showDetails">
                 <td colspan="4" class="notes inline-notes">
+                    <div class="footer-note right">
+                        <span class="provider">
+                            {{providerName(diagnosis)}} {{diagnosis.diagnosisDateTime | date :'hh:mm a'}}
+                        </span>
+                    </div>
+                </td>
+            </tr>
+            <tr ng-show="diagnosis.showLatestDetails" ng-if="showLatestDiagnosis ==  'true'">
+                <td colspan="7" class="notes inline-notes">
                     <div class="footer-note right">
                         <span class="provider">
                             {{providerName(diagnosis)}} {{diagnosis.diagnosisDateTime | date :'hh:mm a'}}

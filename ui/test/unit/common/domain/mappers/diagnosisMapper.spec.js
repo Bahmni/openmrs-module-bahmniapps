@@ -27,5 +27,9 @@ describe("Diagnosis Mapper", function () {
         expect(mappedDiagnoses[1]).toEqual(jasmine.any(Bahmni.Common.Domain.Diagnosis));
     });
 
+    it("should map latest diagnosis", function() {
+        var mappedDiagnosis = new Bahmni.DiagnosisMapper().mapDiagnosis({latestDiagnosis: {}});
+        expect(mappedDiagnosis.latestDiagnosis).toEqual(jasmine.any(Bahmni.Common.Domain.Diagnosis));
+    });
 
 });

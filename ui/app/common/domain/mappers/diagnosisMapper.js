@@ -13,6 +13,9 @@ Bahmni.DiagnosisMapper = function () {
         if (mappedDiagnosis.firstDiagnosis) {
             mappedDiagnosis.firstDiagnosis = mapDiagnosis(mappedDiagnosis.firstDiagnosis);
         }
+        if (mappedDiagnosis.latestDiagnosis) {
+            mappedDiagnosis.latestDiagnosis = mapDiagnosis(mappedDiagnosis.latestDiagnosis);
+        }
 
         if (diagnosis.diagnosisStatusConcept) {
             for (var status in Bahmni.Common.Constants.diagnosisStatuses) {

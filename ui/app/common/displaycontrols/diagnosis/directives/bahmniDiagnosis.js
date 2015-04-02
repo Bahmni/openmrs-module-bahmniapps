@@ -8,16 +8,23 @@ angular.module('bahmni.common.displaycontrol.diagnosis')
                 var getAllDiagnosis = function () {
                     return diagnosisService.getPastDiagnoses($scope.patientUuid, $scope.visitUuid).success(function (response) {
                         var diagnosisMapper = new Bahmni.DiagnosisMapper();
+
                         $scope.allDiagnoses = diagnosisMapper.mapDiagnoses(response);
                         var found = _.find($scope.allDiagnoses, function(diagnoses){
                             return diagnoses.diagnosisStatus !== "RULED OUT"
                         });
-                        $scope.hasRuledOutDiagnoses = found ? true : false;
+                        
                     });
                 };
                 $scope.title = $scope.config.title;
-                $scope.toggle = function(diagnosis) {
-                    diagnosis.showDetails = !diagnosis.showDetails;
+                $scope.toggle = function(diagnosis, toggleLatest) {
+                    if(toggleLatest){
+                        diagnosis.showDetails = false;
+                        diagnosis.showLatestDetails = !diagnosis.showLatestDetails;
+                    } else {
+                        diagnosis.showLatestDetails = false;
+                        diagnosis.showDetails = !diagnosis.showDetails;
+                    }
                 };
                 $scope.providerName = function (diagnosis) {
                     return diagnosis.providers[0] ? diagnosis.providers[0].name : "";
@@ -36,7 +43,8 @@ angular.module('bahmni.common.displaycontrol.diagnosis')
                 scope: {
                     patientUuid: "=",
                     config: "=",
-                    visitUuid: "="
+                    visitUuid: "=",
+                    showLatestDiagnosis: "@showLatestDiagnosis"
                 }
             }
         }]);
