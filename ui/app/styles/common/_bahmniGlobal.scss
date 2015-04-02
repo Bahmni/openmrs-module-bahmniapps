@@ -21,6 +21,8 @@ p.caution{
 input[file-upload] {
     position:absolute;
     z-index: -999;
+    min-width: 1px;
+    width: 1px;
 }
 
 .form-horizontal {

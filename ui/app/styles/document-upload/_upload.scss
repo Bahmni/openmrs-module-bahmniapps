@@ -303,7 +303,7 @@ button.mfp-close:hover {
 
 .document-upload {
     .patient-details {
-        top: 17px;
+        top: -14px;
         right: 0;
         color: $lightestGray;
         position: relative;
@@ -323,14 +323,15 @@ button.mfp-close:hover {
 		    padding-top: 20px;
 	    }
 	    .patient-details {
-		    top: 7px;
+		    top: 3px;
 		    color: $mediumGray;
 		    background: $white;
 		    padding: 5px;
 		    width: 100%;
-		    text-align: right;
-		    right: 10px;
-            border-bottom: 1px solid $lightGray;
+		    text-align: left;
+        left: 0;
+        border-bottom: 1px solid $lightGray;
+        font-size: 12px;
 	    }
 	    .messages {
 		    .error-message, .info-message {
@@ -338,4 +339,16 @@ button.mfp-close:hover {
 		    }
 	    }
     }
+}
+
+@media screen and (max-width: 760px) {
+  .document-upload .main .visit-content .files > li {
+    .life {
+      width: 100%;
+    }
+    .concept-name.saved {
+      width: 170px;
+      min-width: 100px;
+    }
+  }
 }
