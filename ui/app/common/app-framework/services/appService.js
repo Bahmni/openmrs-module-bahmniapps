@@ -96,6 +96,10 @@ angular.module('bahmni.common.appFramework')
             return loadConfig(baseUrl + appDescriptor.contextPath + "/" + name + ".json");
         };
 
+        this.loadMandatoryConfig = function(path) {
+            return $http.get(path);
+        };
+
         this.initApp = function (appName, options, extensionFileSuffix, configPages) {
             var appLoader = $q.defer();
             var extensionFileName = extensionFileSuffix ? "/extension-" + extensionFileSuffix + ".json" : "/extension.json";

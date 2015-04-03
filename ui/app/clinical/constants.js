@@ -50,7 +50,8 @@ Bahmni.Clinical.Constants = (function () {
         dashboard:'DASHBOARD',
         default:'DEFAULT',
         otherActiveDrugOrders: "Other Active DrugOrders",
-        dispensePrivilege: "bahmni:clinical:dispense"
+        dispensePrivilege: "bahmni:clinical:dispense",
+        mandatoryVisitConfigUrl: "config/visit.json"
     };
 })();
 
