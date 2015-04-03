@@ -136,6 +136,7 @@ angular.module('bahmni.registration')
 
             $scope.searchByVillageAndNameAndLocalName = function () {
                 var queryParams = {};
+                 $scope.results = [];
                 if ($scope.searchParameters.name) {
                     queryParams.name = $scope.searchParameters.name;
                 }
