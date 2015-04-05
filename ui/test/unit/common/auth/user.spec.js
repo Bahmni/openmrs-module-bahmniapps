@@ -5,14 +5,16 @@ describe("User", function () {
     var User = Bahmni.Auth.User;
 
     describe("contract", function () {
-        it("should save favourite obs templates as a string separated by '###'", function () {
+        it("should save favourite obs templates as a string separated by '###' and recently viewed patients as  json", function () {
             var user = new User({});
             user.toggleFavoriteObsTemplate("Gynaecology");
             user.toggleFavoriteObsTemplate("Diabetes");
             user.toggleFavoriteObsTemplate("Tuberculosis");
+            user.addToRecentlyViewed({uuid: 'abc', name: 'patient'}, 5);
             
             var contract = user.toContract();
             expect(contract.userProperties.favouriteObsTemplates).toBe("Gynaecology###Diabetes###Tuberculosis");
+            expect(contract.userProperties.recentlyViewedPatients).toBe('[{"uuid":"abc","name":"patient"}]');
         });
 
     });
@@ -37,6 +39,26 @@ describe("User", function () {
             expect(user2.isFavouriteObsTemplate("Gynaecology")).toBe(false);
 
         });
+    });
+
+    describe("recently viewed patients", function(){
+       it("should add patient to recently viewed list", function(){
+           var user = new User({"userProperties": { "recentlyViewedPatients": '[{"uuid": "1234", "name": "patient1"}]'}});
+           user.addToRecentlyViewed({uuid: '5678', name: 'patient2'}, 5);
+           expect(user.recentlyViewedPatients).toEqual([{uuid: '5678', name: 'patient2'}, {uuid: '1234', name: 'patient1'}]);
+       });
+
+       it("should not add patient if patient is already in recently viewed list", function(){
+           var user = new User({"userProperties": { "recentlyViewedPatients": '[{"uuid": "1234", "name": "patient1"}]'}});
+           user.addToRecentlyViewed({uuid: '1234', name: 'patient1'}, 5);
+           expect(user.recentlyViewedPatients).toEqual([{uuid: '1234', name: 'patient1'}]);
+       });
+
+       it("should replace existing patient in recently viewed list if it has reached max limit", function(){
+           var user = new User({"userProperties": { "recentlyViewedPatients": '[{"uuid": "5678", "name": "patient2"},{"uuid": "1234", "name": "patient1"}]'}});
+           user.addToRecentlyViewed({uuid: '9999', name: 'patient3'}, 1);
+           expect(user.recentlyViewedPatients).toEqual([{uuid: '9999', name: 'patient3'},{uuid: '5678', name: 'patient2'}]);
+       });
     });
 
 });

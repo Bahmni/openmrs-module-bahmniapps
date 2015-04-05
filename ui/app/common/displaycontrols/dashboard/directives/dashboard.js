@@ -21,7 +21,9 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                     return index++ % 2 === 1;
                 };
             };
-            $scope.$watch('config', init);
+
+            var unbindWatch = $scope.$watch('config', init);
+            $scope.$on("$stateChangeStart", unbindWatch);
         };
 
         return {

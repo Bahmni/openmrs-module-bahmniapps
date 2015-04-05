@@ -34,6 +34,8 @@
             </li>
         </ul>
 
+        <recent-patients></recent-patients>
+
         <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}"></button>
         <div class="dashboard-date-picker" ng-controller="PatientListHeaderController">
             <input show-if-privilege="{{retrospectivePrivilege}}" class="retro-date-widget" type="date"

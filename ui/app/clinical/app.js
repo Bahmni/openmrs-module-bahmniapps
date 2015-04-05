@@ -80,6 +80,10 @@ angular.module('consultation')
                 resolve: {
                     dashboardInitialization: function(initialization, clinicalDashboardConfig) {
                         return clinicalDashboardConfig.load();
+                    },
+                    addToRecentlyViewedQueue: function($rootScope, patientContext, clinicalDashboardConfig, userService) {
+                        $rootScope.currentUser.addToRecentlyViewed(patientContext.patient, clinicalDashboardConfig.currentDashboard.maxRecentlyViewedPatients || 10);
+                        return userService.savePreferences();
                     }
                 }
             })

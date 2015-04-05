@@ -10,7 +10,7 @@
       .patient-dashboard.visit & {
         margin: 0 -10px;
       }
-    }  
+    }
 }
 .dashboard-date-picker {
   float: left;
@@ -54,7 +54,7 @@
   font-size: 14px;
   position: relative;
   @extend %section-grid;
-  
+
   .ruled-out.diagnosis-name {
     color: $mediumGray;
     text-decoration: line-through;
@@ -187,7 +187,7 @@ table.dashboard-table {
 table.drug-order-table td.drug {
   &.active-drug  {
     border-left: 3px solid orange !important;
-  }  
+  }
   &.scheduled-drug {
     border-left: 3px solid green !important;
     span.drug-attr-highlight{
@@ -483,3 +483,47 @@ table.pivot-table {
   }
 }
 
+.recent-patients {
+  width: 22%;
+  display: inline-block;
+  padding-top: 7px;
+  .recent-patients-header {
+    text-align: center;
+
+    .prev-patient, .next-patient {
+      @include button;
+      color: $success;
+      display: inline-block;
+      cursor: pointer;
+      padding: 8px 15px;
+      &:hover {
+        text-decoration: none;
+        color: darken($success, 5%);
+      }
+    }
+    .prev-patient.disabled, .next-patient.disabled {
+      color: $lightGray;
+      &:hover {
+        cursor: not-allowed;
+      }
+    }
+    button{
+      padding: 8px;
+    }
+
+  }
+
+  .recent-patients-panel {
+    position: absolute;
+    z-index: 1;
+    background: $white;
+    border: 1px solid $lightGray;
+    width: 22%;
+    max-height: 255px;
+    overflow-y: scroll;;
+
+    div {
+      height: 30px;
+    }
+  }
+}
