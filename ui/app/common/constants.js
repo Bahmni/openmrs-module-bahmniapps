@@ -113,6 +113,7 @@ Bahmni.Common = Bahmni.Common || {};
         messageForNoObservation: "No observations captured for this visit.",
         messageForNoDisposition: "No dispositions available.",
         reportsUrl: "/bahmnireports/report",
-        diagnosisStatuses : {"RULED OUT" : "Ruled Out Diagnosis"}
+        diagnosisStatuses : {"RULED OUT" : "Ruled Out Diagnosis"},
+        registartionConsultationPrivilege:'app:common:registration_consultation_link'
     };
 })();

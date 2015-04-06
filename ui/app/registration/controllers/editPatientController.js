@@ -9,6 +9,7 @@ angular.module('bahmni.registration')
             var defaultVisitType = appService.getAppDescriptor().getConfigValue('defaultVisitType');
             var locationUuid = sessionService.getLoginLocationUuid();
             var regEncounterTypeUuid = $rootScope.regEncounterConfiguration.encounterTypes[Bahmni.Registration.Constants.registrationEncounterType];
+            var registration_Consultation_Privilege = Bahmni.Common.Constants.registartionConsultationPrivilege;
 
             var identifyEditActions = function() {
                 editActionsConfig = appService.getAppDescriptor().getExtensions("org.bahmni.registration.patient.edit.action", "config");
@@ -41,9 +42,13 @@ angular.module('bahmni.registration')
                     showOrHideAdditionalPatientInformation();
 
                 });
+
+                var isRegistrationConsultationPrivilege = _.find($rootScope.currentUser.privileges, function (privilege) {
+                    return registration_Consultation_Privilege === privilege.name;
+                });
                 var searchActiveVisitsPromise = visitService.search({patient: uuid, includeInactive: false, v: "custom:(uuid)"}).success(function(data){
                     $scope.hasActiveVisit = data.results.length > 0;
-                    var actionName = $scope.hasActiveVisit ? "enterVisitDetails" : "startVisit"
+                    var actionName = isRegistrationConsultationPrivilege ? "enterConsultation" : ($scope.hasActiveVisit ? "enterVisitDetails" : "startVisit");
                     defaultActions.push(actionName);
                     identifyEditActions();
                 });
@@ -74,13 +79,19 @@ angular.module('bahmni.registration')
                 $location.path("/patient/" + patientData.patient.uuid + "/visit");
             };
 
+            var goToConsultationPage = function(patientData) {
+                $scope.patient.uuid = patientData.patient.uuid;
+                $scope.patient.name = patientData.patient.person.names[0].display;
+                $window.location.href = "../clinical/#/patient/" + patientData.patient.uuid + "/concept-set-group/observations";
+            };
+
             var createEncounterObject = function() {
-                var encounter = {locationUuid: locationUuid, providers: [], encounterTypeUuid: regEncounterTypeUuid}
+                var encounter = {locationUuid: locationUuid, providers: [], encounterTypeUuid: regEncounterTypeUuid};
                 if ($rootScope.currentProvider && $rootScope.currentProvider.uuid) {
                     encounter.providers.push( { "uuid" : $rootScope.currentProvider.uuid } );
                 }
                 return encounter;
-            }
+            };
 
             var createVisit = function(patientProfileData){
                 return $scope.visitControl.createVisit(patientProfileData.patient.uuid, createEncounterObject()).success(function() {
@@ -114,6 +125,8 @@ angular.module('bahmni.registration')
                             return createVisit(patientProfileData);                        
                         case 'enterVisitDetails':
                             return goToVisitPage(patientProfileData);
+                        case 'enterConsultation':
+                            return goToConsultationPage(patientProfileData);
                         case 'save': messagingService.showMessage("info", "Saved");
                         default:
                             return goToActionUrl(submitSource, patientProfileData);
