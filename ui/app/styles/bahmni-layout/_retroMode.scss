@@ -3,6 +3,9 @@ $retroModeColor:  #0E74AF;
 .retro-mode {
   .reg-header, .opd-header-wrapper {
 	border-top: 4px solid orange;
+	header{
+		height: 46px;
+	}
 	&, header {
 	  background: $retroModeColor;
 	}
