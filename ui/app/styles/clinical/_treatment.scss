@@ -98,6 +98,9 @@
             .frequency-widget.uniform-frequency {
                 float: left;
                 width: 350px;
+                @media screen and (max-width: 1024px) {
+                    width: 360px;
+                }
                 .form-field {
                     float: left;
                 }

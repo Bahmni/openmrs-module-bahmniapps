@@ -32,6 +32,17 @@ html.no-touch {
 			    min-width: 43px;
 			}
 		}
+		&.windowos{
+			.treatment-page {
+				.frequency-widget.uniform-frequency
+				{
+					width: 375px;
+				}
+				.edit-drug-order form fieldset .duration-widget{
+					margin: 0 4.8% 0 27px;
+				}
+			}
+		}
 	}
 
 }
