@@ -3,17 +3,16 @@
 angular.module('bahmni.clinical')
     .controller('LatestPrescriptionPrintController', ['$scope', 'visitActionsService', 'visitInitialization', 'messagingService',
         function ($scope, visitActionsService, visitInitialization, messagingService) {
-            var print = function (visit, startDate) {
+            var print = function (visit) {
                 visitActionsService.printPrescription($scope.patient, visit, visit.startDate);
                 messagingService.showMessage("info", "Please close this tab.");
             };
 
-            if ($scope.visit) {
-                print($scope.visit);
-            } else if ($scope.visitHistory.visits.length > 0) {
-                visitInitialization($scope.patient.uuid, $scope.visitHistory.visits[0].uuid).then(function () {
+            if ($scope.visitHistory.activeVisit) {
+                visitInitialization($scope.visitHistory.activeVisit.uuid).then(function (visit) {
+                    $scope.visit = visit;
                     print($scope.visit);
-                })
+                });
             } else {
                 messagingService.showMessage("error", "No Active visit found for this patient.");
             }

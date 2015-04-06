@@ -42,10 +42,9 @@ angular.module('consultation')
                     'additional-header': { template: '<div ui-view="additional-header"></div>' },
                     'content': {
                         template: '<div ui-view="content"></div><patient-control-panel patient="patient" visit-history="visitHistory" visit="visit" show="showControlPanel"/>',
-                        controller: function ($scope, patientContext, visitHistory, visitContext) {
+                        controller: function ($scope, patientContext, visitHistory) {
                             $scope.patient = patientContext.patient;
                             $scope.visitHistory = visitHistory;
-                            $scope.visit = visitContext;
                         }
                     }
                 },
@@ -56,12 +55,6 @@ angular.module('consultation')
                     },
                     visitHistory: function (visitHistoryInitialization, $stateParams) {
                         return visitHistoryInitialization($stateParams.patientUuid);
-                    },
-                    visitContext: function (visitInitialization, visitHistory, initialization) {
-                        if (visitHistory.activeVisit) {
-                            return visitInitialization(visitHistory.activeVisit.uuid);
-                        }
-                        return null;
                     }
                 }
             })
@@ -103,9 +96,6 @@ angular.module('consultation')
                     }
                 },
                 resolve: {
-                    visitContext: function (visitInitialization, $stateParams, initialization, patientContext) {
-                        return visitInitialization($stateParams.visitUuid);
-                    },
                     visitSummary: function(visitSummaryInitialization, $stateParams){
                         return visitSummaryInitialization($stateParams.visitUuid);
                     },
@@ -133,7 +123,7 @@ angular.module('consultation')
                     }
                 },
                 resolve: {
-                    consultationContext: function (consultationInitialization, initialization, visitContext, $stateParams) {
+                    consultationContext: function (consultationInitialization, initialization, $stateParams) {
                         return consultationInitialization($stateParams.patientUuid);
                     }
                 }

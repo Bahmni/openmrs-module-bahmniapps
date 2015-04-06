@@ -1,11 +1,10 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitHeaderController', ['$rootScope', '$scope', '$state', 'clinicalAppConfigService', 'patientContext', 'visitHistory', 'visitContext', 'visitTabConfig', 'contextChangeHandler', '$location',
-        function ($rootScope, $scope, $state, clinicalAppConfigService, patientContext, visitHistory, visitContext, visitTabConfig, contextChangeHandler, $location) {
+    .controller('VisitHeaderController', ['$rootScope', '$scope', '$state', 'clinicalAppConfigService', 'patientContext', 'visitHistory', 'visitTabConfig', 'contextChangeHandler', '$location',
+        function ($rootScope, $scope, $state, clinicalAppConfigService, patientContext, visitHistory, visitTabConfig, contextChangeHandler, $location) {
             $scope.patient = patientContext.patient;
             $scope.visitHistory = visitHistory;
-            $scope.visit = visitContext;
             $scope.consultationBoardLink = clinicalAppConfigService.getConsultationBoardLink();
             $scope.showControlPanel = false;
             $scope.visitTabConfig = visitTabConfig;

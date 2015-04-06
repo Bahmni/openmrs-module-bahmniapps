@@ -94,12 +94,12 @@ describe('VisitController', function () {
                 encounterService: encounterService,
                 clinicalAppConfigService: clinicalAppConfigService,
                 visitSummary: {},
-                visitContext: {},
                 configurations: configurations,
                 $timeout: $timeout,
                 printer: {},
                 visitTabConfig: visitTabConfig,
-                visitHistory:[]
+                visitHistory:[],
+                $stateParams: {}
             });
 
             expect(scope.visitTabConfig.currentTab).toBe(defaultTab);
