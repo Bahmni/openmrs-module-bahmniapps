@@ -21,5 +21,8 @@ angular.module('bahmni.clinical')
                     scope: $scope
                 });
             };
+            $scope.$on('ngDialog.closing', function (e, $dialog) {
+                $("body").removeClass('ngdialog-open');
+            });
 
         }]);

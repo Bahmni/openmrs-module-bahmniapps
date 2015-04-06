@@ -1,8 +1,14 @@
-// .ngdialog{
-//     position: absolute !important;
-//     height: 100% !important;
-//     box-sizing : border-box;
-// }
+.touch {
+    body.ngdialog-open {
+       #ClinicalController {
+            display: none !important;
+        } 
+        .ngdialog{
+            position: absolute !important;
+        }
+    }
+    
+}
 
 .ngdialog-close:before {
     display: none;
