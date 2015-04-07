@@ -31,7 +31,10 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
     Object.defineProperty(this, 'value', {
                 enumerable: true,
                 get: function () {
-                    return savedObs ? savedObs.value : self._value;
+                    if(self._value!=null){
+                        return self._value;
+                    }
+                    return savedObs ? savedObs.value : undefined;
                 },
                 set: function (newValue) {
                     self._value = newValue;
@@ -156,6 +159,12 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.conceptUIConfig.allowAddMore == true;
     },
 
+    isStepperControl: function() {
+        if(this.isNumeric()){
+            return this.conceptUIConfig.stepper;
+        }
+    },
+
     isConciseText: function(){
         return this.conceptUIConfig.conciseText == true;
     },
@@ -198,7 +207,9 @@ Bahmni.ConceptSet.Observation.prototype = {
 
     hasValue: function () {
         var value = this.value;
-        if (value === '' || value === null || value === undefined) return false;
+        if (value === false) return true;
+        if (value === 0) return true; //!value ignores 0
+        if (value === '' || !value) return false;
         if (value instanceof Array) return value.length > 0;
         return true;
     },
