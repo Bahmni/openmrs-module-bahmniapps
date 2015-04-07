@@ -10,7 +10,7 @@ angular.module('bahmni.clinical')
 
         $scope.isRecordForCurrentVisit = function(records){
             return _.some(records,function(record){
-                return $scope.activeVisit && $scope.activeVisit.uuid === record.visitUuid;
+                return $scope.visitHistory.activeVisit && $scope.visitHistory.activeVisit.uuid === record.visitUuid;
             });
         };
     }]);
