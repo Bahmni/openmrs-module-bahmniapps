@@ -129,7 +129,7 @@ angular.module('bahmni.common.conceptSet')
                 $scope.conceptSetRequired = $scope.required;
                 var errorMessage = null;
                 var invalidNodes = $scope.rootObservation && $scope.rootObservation.groupMembers.filter(function(childNode){
-                    if(childNode.erroneousValue || (childNode.isObservationNode && childNode.abnormalObs.erroneousValue)){
+                    if(childNode.erroneousValue || (childNode.isObservationNode && childNode.abnormalObs!=null &&childNode.abnormalObs.erroneousValue)){
                         errorMessage = "The value you entered (red field) is outside the range of allowable values for that record. Please check the value.";
                         return true;
                     }
