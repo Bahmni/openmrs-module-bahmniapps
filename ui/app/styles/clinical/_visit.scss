@@ -521,3 +521,10 @@ a.visit:before {
     }
   }
 }
+
+//Negating the global td.value width in clinical module
+.c3 {
+  td.value {
+    width: auto;
+  }
+}

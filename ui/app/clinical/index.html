@@ -9,6 +9,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes" />
 
         <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.4.custom.min.css">
+        <link rel="stylesheet" href="../lib/chart/c3-0.4.10.min.css">
         <link rel="stylesheet" href="../components/select2/select2.css"/>
         <link rel="stylesheet" href="../components/ngDialog/css/ngDialog.min.css"/>
         <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-default.min.css"/>
@@ -30,6 +31,8 @@
         <script src="../components/jquery/jquery.js"></script>
         <script src="../lib/jquery/jquery-ui-1.10.4.custom.min.js"></script>
         <script src="../lib/modernizr.custom.80690.js"></script>
+        <script src="../lib/chart/d3-3.5.5.min.js"></script>
+        <script src="../lib/chart/c3-0.4.10.min.js"></script>
 
         <script src="../components/lodash/dist/lodash.min.js"></script>
         <script src="../components/jquery.cookie/jquery.cookie.js"></script>
@@ -250,6 +253,8 @@
         <script src="common/controllers/visitController.js"></script>
         <script src="common/controllers/patientListHeaderController.js"></script>
 
+        <script src="config/c3Chart.js"></script>
+
         <!--All dashboard includes-->
         <script src="dashboard/models/observationTemplate.js"></script>
         <script src="dashboard/models/diseaseTemplate.js"></script>
@@ -320,6 +325,7 @@
         <script src="displaycontrols/treatmentData/directives/treatmentTableRow.js"></script>
         <script src="displaycontrols/treatmentData/util/drugOrderUtil.js"></script>
         <script src="displaycontrols/allvisits/directives/visitsTable.js"></script>
+        <script src="displaycontrols/graph/directives/observationGraph.js"></script>
 
         <script src="../common/displaycontrols/admissiondetails/init.js"></script>
         <script src="../common/displaycontrols/admissiondetails/directives/admissionDetails.js"></script>

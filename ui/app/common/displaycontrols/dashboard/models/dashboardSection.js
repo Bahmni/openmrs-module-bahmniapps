@@ -5,7 +5,7 @@ Bahmni.Common.DisplayControl.Dashboard.Section = function (section) {
     this.data = section.data || {};
     this.isObservation = section.isObservation || false;
     this.patientAttributes = section.patientAttributes || [];
-    var commonDisplayControlNames = ["disposition", "admissionDetails", "patientInformation", "diagnosis"];
+    var commonDisplayControlNames = ["disposition", "admissionDetails", "patientInformation", "diagnosis", "observationGraph"];
     if (this.isObservation === true) {
         this.viewName = "../common/displaycontrols/dashboard/views/sections/observationSection.html";
     } else if (commonDisplayControlNames.some(function (name) {

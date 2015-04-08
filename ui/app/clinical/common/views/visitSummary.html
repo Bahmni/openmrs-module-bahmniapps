@@ -78,6 +78,13 @@
                     <admission-details patient-uuid="patient.uuid" visit-uuid="visit.uuid" params="section.config"></admission-details>
                 </div>
             </div>
+            <div data-ng-switch-when="observationGraph">
+                <section class="dashboard-section">
+                    <div ng-if="section.config">
+                        <observation-graph visit-uuid="visit.uuid" params="section" patient-uuid="patient.uuid"></observation-graph>
+                    </div>
+                </section>
+            </div>
         </div>
     </div>
 </div>
