@@ -11,12 +11,11 @@ Bahmni.Graph = Bahmni.Graph || {};
         return {
             bindto: bindTo,
             size: {
-                width: graphWidth,
-                height: 500
+                width: graphWidth
             },
             padding: {
                 top: 20,
-                right: 20
+                right: 30
             },
             data: {
                 json: data,
@@ -27,7 +26,7 @@ Bahmni.Graph = Bahmni.Graph || {};
             },
             point: {
                 show: true,
-                r: 6
+                r: 5
             },
             line: {
                 connectNull: true
@@ -35,7 +34,7 @@ Bahmni.Graph = Bahmni.Graph || {};
             axis: {
                 x: {
                     label: {
-                        text: 'Observation Date',
+                        text: 'Date',
                         position: 'outer-right'
                     },
                     type: 'timeseries',
@@ -44,7 +43,7 @@ Bahmni.Graph = Bahmni.Graph || {};
                             max: 3
                         },
                         format: function (x) {
-                            return dateUtil.getDateWithoutTime(x);
+                            return dateUtil.formatDateAsDDMMMYY(x);
                         }
                     }
                 },
@@ -58,7 +57,7 @@ Bahmni.Graph = Bahmni.Graph || {};
                             max: 3
                         },
                         format: function (y) {
-                            return y.toFixed(2);
+                            return d3.round(y, 2);
                         }
                     }
                 }
