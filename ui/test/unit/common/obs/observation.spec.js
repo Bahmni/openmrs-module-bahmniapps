@@ -34,6 +34,13 @@ describe("Observation", function () {
         it("should return empty if value is null", function () {
             var observation = new Observation({"type": "Datetime", "value": ""});
             expect(observation.getDisplayValue()).toBe("");
+            observation = new Observation({"type": "Date", "value": ""});
+            expect(observation.getDisplayValue()).toBe("");
+        });
+
+        it("should format date as DD MMM YY  if value is of type date", function () {
+            var observation = new Observation({"type": "Date", "value": "2012-12-10"});
+            expect(observation.getDisplayValue()).toBe("10 Dec 12");
         });
     });
 
