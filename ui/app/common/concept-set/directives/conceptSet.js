@@ -70,7 +70,7 @@ angular.module('bahmni.common.conceptSet')
         }
     }]).directive('conceptSet', ['contextChangeHandler', 'appService', 'observationsService', function (contextChangeHandler, appService, observationsService) {
         var template =
-            '<form>' +
+            '<form novalidate>' +
                 '<concept concept-set-required="conceptSetRequired" root-observation="rootObservation" patient="patient" ' +
                 'observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet" ' +
                 'show-title="showTitleValue" ng-if="!rootObservation.hidden">' +

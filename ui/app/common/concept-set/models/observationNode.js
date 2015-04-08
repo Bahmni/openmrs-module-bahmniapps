@@ -92,6 +92,13 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
         return this.conceptUIConfig.allowAddMore == true;
     },
 
+    isStepperControl: function() {
+        if(this.isNumeric()){
+            return this.conceptUIConfig.stepper == true;
+        }
+        return false;
+    },
+
     getPossibleAnswers: function () {
         return this.primaryObs.concept.answers;
     },
@@ -131,7 +138,7 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
         if (!this.primaryObs.hasValue() && this.getAbnormalObs()) {
             this.getAbnormalObs().value = undefined;
         }
-        if (this.primaryObs.isNumeric()) {
+        if (this.primaryObs.isNumeric() && this.primaryObs.hasValue()) {
             this.setAbnormal();
         }
 //        TODO: Mihir, D3 : Hacky fix to update the datetime to current datetime on the server side. Ideal would be void the previous observation and create a new one.

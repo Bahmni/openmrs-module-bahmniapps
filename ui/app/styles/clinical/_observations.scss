@@ -392,5 +392,66 @@ concept-set {
 
 
 .accept-btn-wrapper {
-    margin-top: 5px;
+  margin-top: 5px;
+}
+
+$control-height: 27px;
+$stepper-width: 150px; //including buttons.
+$stepper-btn-width: 40px;
+$border-color: #ddd;
+.stepper {
+  &, * {
+    /*box-sizing: border-box;*/
+  }
+  position: relative;
+  //padding-right: 2 * $stepper-btn-width;
+  //width: $stepper-width;
+   margin-top:5px;
+  &__field, &__btn {
+    display: inline-block;
+    /*height: $control-height;*/
+    margin: 0;
+    border: 1px solid $border-color;
+    vertical-align: middle;
+     &:focus {
+      outline: 1px solid #007FFF;
+    }
+  }
+  &__field {
+    width: 100%;
+    padding: 2px 10px;
+  }
+  &__btn {
+  height: $control-height;
+    -webkit-appearance: none;
+    position: absolute;
+    width: $stepper-btn-width;
+    padding: 0 15px;
+    text-align: center;
+    font-family: Arial;
+    font-size: 16px;
+    line-height: $control-height;
+    background: linear-gradient(to bottom, #ffffff, #dddddd);
+    cursor: pointer;
+    border-radius:0;
+    top: 0px;
+    &.illegalValue{
+     height:25px;
+     top:2px;
+     border-color:#d0d0d0;
+    }
+    &:hover, &:focus {
+      background: #e2e2e2;
+    }
+  }
+  &__minus {
+    right: $stepper-btn-width;
+
+  }
+  &__plus {
+    right: 0;
+    &.illegalValue{
+        right:2px;
+    }
+  }
 }
