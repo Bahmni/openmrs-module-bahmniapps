@@ -16,10 +16,13 @@ $retroModeColor:  #0E74AF;
 		color: #fff;
 	  }
 	}
-
+	a.back-btn, button.back-btn{
+		margin: 4px 6px 0 0px;
+	}
 	button.toggle-patient {
 	  background-color: darken($retroModeColor, 10%);
 	  border-color: darken($retroModeColor, 15%);
+	  margin: 3px 0;
 	}
 	.tabs ul li.tab-item {
 	  a,  button {
@@ -51,12 +54,15 @@ $retroModeColor:  #0E74AF;
 	border-radius: 0 0 5px 5px;
 	transform: translateX(-50%);
   }
+  .recent-patients{
+  	padding-top: 4px;
+  }
 
 }
 .reg-header, .opd-header-wrapper {
   .retro-date-widget {
 	float: right;
-	padding: 0px 10px;
+	padding: 1px 10px;
   }
   input.retro-date-widget {
 	height: 25px;
@@ -66,7 +72,7 @@ $retroModeColor:  #0E74AF;
 	}
   }
   label.retro-date-widget {
-	margin: 15px 0;
+	margin: 17px 0 15px;
 	color: white;
   }
 }

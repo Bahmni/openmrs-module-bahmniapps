@@ -25,7 +25,7 @@ body {
         padding: 0 15px;
         box-sizing: border-box;
         background: $bahmniSecondaryColor;
-        height: 50px;
+        height: 52px;
         width: 100%;
 
         header {
@@ -146,8 +146,11 @@ body {
             border-radius: 0px;
             position:relative;
             margin: 0px;
-              max-width: $max-page-width;
-              margin: 0px auto;
+            max-width: $max-page-width;
+            margin: 0px auto;
+            .dashboard-header-right-wrapper{
+              float: right;
+            }
             .header-tabs{
               float:left;
               margin-top: 6px;
@@ -155,12 +158,16 @@ body {
               list-style: none;
             }
             .grouped-buttons {
-              position: absolute;
-              top: 5px;
-              right: 65px;
+              // position: absolute;
+              // top: 5px;
+              // right: 65px;
+              float: left;
+              padding-top: 6px;
+              margin: 0 10px;
               .btn--left {
                 padding-left: 10px;
                 padding-right: 10px;
+                margin-right: 10px;
               }
             }
 	        .dialog-button-group {

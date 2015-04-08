@@ -1,11 +1,11 @@
 <div bm-pop-over autoclose="true" class='recent-patients' ng-if="currentUser.recentlyViewedPatients.length > 1">
     <div class="recent-patients-header">
         <a class="prev-patient" ng-click="previous()" ng-class="{'disabled': !hasPrevious()}"><span><i class="icon-caret-left"></i></span></a>
-        <button bm-pop-over-trigger>JUMP TO</button>
+        <button bm-pop-over-trigger>Switch To ...</button>
         <a class="next-patient" ng-click="next()" ng-class="{'disabled': !hasNext()}"><span><i class="icon-caret-right"></i></span></a>
     </div>
     <div class="recent-patients-panel" bm-pop-over-target>
-        <div ng-repeat="recent in currentUser.recentlyViewedPatients track by $index">
+        <div ng-repeat="recent in currentUser.recentlyViewedPatients track by $index" ng-class ="{'currentPatient': recent.uuid == patient.uuid}">
             <a ng-href="#/patient/{{recent.uuid}}/dashboard"> {{recent.name}}</a>
         </div>
     </div>

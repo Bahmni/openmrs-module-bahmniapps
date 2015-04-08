@@ -143,7 +143,7 @@ body{
   font-family: "OpenSans",Arial,sans-serif;
 }
 .reg-header{
-	height:50px;
+	height:52px;
 }
 .remove-margin{
   margin:0px !important; 
@@ -225,7 +225,7 @@ body pre {
     }
     .btn-user-info {
       background: lighten($bahmniPrimaryColor, 10%);
-      padding: 15px;
+      padding: 17px 16px;
       border: none;
       border-radius: 0;
       margin: 0;
@@ -274,7 +274,7 @@ body pre {
           cursor:pointer;
           text-decoration:none;
           display: block;
-          padding:11px 15px 15px 0px;
+          padding:14px 15px 15px 0px;
           .nav-link{
             padding-left:2px;
           }

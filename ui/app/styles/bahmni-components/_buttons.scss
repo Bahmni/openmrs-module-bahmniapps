@@ -226,15 +226,19 @@ a.back-btn, button.back-btn {
 }
 
 ul li a.back-btn, ul li a.back-btn:hover, button.back-btn, a.back-btn { 
-    padding: 10px;
+    padding: 5px 10px 4px 10px;
     border: 1px solid darken($bahmniSecondaryColor, 15%);
     background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
 
     i {
-        padding: 0 5px 0 0;
-        &.icon-circle-arrow-left {
-          margin-left: -5px;
-        }
+        // padding: 0 5px 0 0;
+        // &.icon-circle-arrow-left {
+        //   margin-left: -5px;
+        // }
+      font-size: 30px;
+      line-height: 1;
+      margin: 0;
+      padding: 0;
     }
     &.dashboard-link {
       padding: 5px 10px 4px 5px;
@@ -262,7 +266,7 @@ button.back-btn {
 }
 .back-btn-link {
     @include clearfix();
-    padding: 5px 8px;
+    padding: 6px 8px 5px;
     border: 1px solid darken($bahmniSecondaryColor, 15%);
     background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
     margin-top: 6px;

@@ -36,19 +36,22 @@
 
         <recent-patients></recent-patients>
 
-        <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}"></button>
-        <div class="dashboard-date-picker" ng-controller="PatientListHeaderController">
-            <input show-if-privilege="{{retrospectivePrivilege}}" class="retro-date-widget" type="date"
-                   ng-model="$parent.retrospectiveEntry.encounterDate" max="{{today}}"/>
-            <label show-if-privilege="{{retrospectivePrivilege}}" for="retro-date-widget" class="retro-date-widget">Enter
-                data for</label>
+
+        <div class="dashboard-header-right-wrapper">
+            <div class="dashboard-date-picker" ng-controller="PatientListHeaderController">
+                <input show-if-privilege="{{retrospectivePrivilege}}" class="retro-date-widget" type="date"
+                       ng-model="$parent.retrospectiveEntry.encounterDate" max="{{today}}"/>
+                <label show-if-privilege="{{retrospectivePrivilege}}" for="retro-date-widget" class="retro-date-widget">Enter
+                    data for</label>
+            </div>
+            <span class="grouped-buttons">
+                <a class=" btn--left btn--success " ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective"
+                   ng-click="collapseControlPanel()" href="#{{consultationBoardLink}}">Consultation</a>
+                <a class="btn--right btn--success " title="Open in new window"
+                   ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective"
+                   ng-click="openConsultationInNewTab()"><i class="icon-external-link"></i></a>
+           </span>
+            <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}"></button>
         </div>
-        <span class="grouped-buttons">
-            <a class=" btn--left btn--success " ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective"
-               ng-click="collapseControlPanel()" href="#{{consultationBoardLink}}">Consultation</a>
-            <a class="btn--right btn--success " title="Open in new window"
-               ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective"
-               ng-click="openConsultationInNewTab()"><i class="icon-external-link"></i></a>
-       </span>
     </div>
 </div>

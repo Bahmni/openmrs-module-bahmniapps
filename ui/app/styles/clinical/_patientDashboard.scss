@@ -38,7 +38,7 @@
 .dashboard-visit-summary {padding: 10px;}
 .dashboard-header {
   width: 100%;
-  height: 50px;
+  height: 52px;
   background: $bahmniSecondaryColor;
   h5 {
     margin: 15px 0;
@@ -484,18 +484,20 @@ table.pivot-table {
 }
 
 .recent-patients {
-  width: 22%;
+  width: 15%;
   display: inline-block;
   padding-top: 7px;
+  position: relative;
+  float: left;
   .recent-patients-header {
-    text-align: center;
-
     .prev-patient, .next-patient {
       @include button;
       color: $success;
       display: inline-block;
       cursor: pointer;
-      padding: 8px 15px;
+      padding: 10px 15px 6px 15px;
+      float: left;
+      display: none; // As discussed with Vivek, hidden 
       &:hover {
         text-decoration: none;
         color: darken($success, 5%);
@@ -508,22 +510,41 @@ table.pivot-table {
       }
     }
     button{
-      padding: 8px;
+      padding: 10px 12px 9px;
+      float: left;
+      color: $white;
+      border: 1px solid darken($bahmniSecondaryColor, 15%);
+      background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
     }
 
   }
 
   .recent-patients-panel {
-    position: absolute;
-    z-index: 1;
-    background: $white;
-    border: 1px solid $lightGray;
-    width: 22%;
-    max-height: 255px;
-    overflow-y: scroll;;
-
-    div {
-      height: 30px;
-    }
+      position: absolute;
+      z-index: 1;
+      left: 0px;
+      top: 47px;
+      background: $white;
+      border: 1px solid #ccc;
+      width: 97%;
+      max-height: 250px;
+      overflow-y: auto;
+      font-size: 14px;
+      color: $text;
+      a{
+        color: $black;
+        font-size: 14px;
+        border-bottom: 1px solid #ccc;
+        padding: 10px 5px 10px 10px;
+        display: block;
+        &:hover{
+          text-decoration: underline;
+        }
+      }
+      .currentPatient{
+        a{
+          background: #ddd;
+        }
+      }
   }
 }

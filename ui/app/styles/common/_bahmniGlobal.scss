@@ -115,7 +115,7 @@ input[file-upload] {
 button.save-consultation, .quick-links {
   float: right;
   margin: 6px;
-  padding: 8px 15px;
+  padding: 10px 15px 9px;
 }
 button.save-consultation {
   .text {
@@ -132,6 +132,7 @@ button.save-consultation {
 }
 a.quick-links, a.btn--success {
   @include button($success, darken($success, 8%), white);
+  padding: 10px 20px;
 }
 
 

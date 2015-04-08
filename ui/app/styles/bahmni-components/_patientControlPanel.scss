@@ -1,10 +1,10 @@
 button.toggle-patient {
   float: right;
-  margin: 3px 0;
+  margin: 5px 0;
   height: 30px;
   background: $bahmniSecondaryColor url("../images/bars.png") no-repeat center center;
   border: 1px solid darken($bahmniSecondaryColor, 10%);
-  padding: 20px 25px;
+  padding: 20px 25px 19px;
   background-size: 50%;
 }
 

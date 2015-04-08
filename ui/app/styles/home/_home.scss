@@ -136,7 +136,7 @@ body{
   font-family: "OpenSans",Arial,sans-serif;
 }
 .reg-header{
-	height:50px;
+	height:52px;
 }
 .remove-margin{
   margin:0px !important;
@@ -171,12 +171,12 @@ body{
       margin:2px;
   }
   select{
-        height:30px;
+        height:35px;
   }
   header {
     position: relative;
     color: $lightGray;
-    height: 50px;
+    height: 52px;
     border-radius: 0;
     line-height: 1em;
     background: $bahmniSecondaryColor;
@@ -414,7 +414,7 @@ body{
   header {
     .btn-user-info {
       background: lighten($bahmniPrimaryColor, 10%);
-      padding: 15px;
+      padding: 17px 16px;
       border: none;
       border-radius: 0;
       margin: 0;
