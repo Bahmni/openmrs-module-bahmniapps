@@ -104,9 +104,19 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
         return !_.isEmpty(this.selectedObs);
     };
 
+    this.hasNonVoidedValue = function() {
+        var hasNonVoidedValue = false;
+        if(this.hasValue()) {
+            angular.forEach(this.selectedObs, function (obs) {
+                if(!obs.voided) hasNonVoidedValue = true;
+            });
+        }
+        return hasNonVoidedValue;
+    }
+
     this.isValid = function (checkRequiredFields, conceptSetRequired) {
-        if (conceptSetRequired && this.isRequired() && !this.hasValue()) return false;
-        if (checkRequiredFields && this.isRequired() && !this.hasValue()) return false;
+        if (conceptSetRequired && this.isRequired() && !this.hasNonVoidedValue()) return false;
+        if (checkRequiredFields && this.isRequired() && !this.hasNonVoidedValue()) return false;
         return true;
     };
 

@@ -13,6 +13,10 @@ describe("Observation", function () {
         },
         "LMP": {
             "allowAddMore": true
+        },
+        "Tuberculosis" : {
+            "multiSelect" : true,
+            "required" : true
         }
     };
 
@@ -50,6 +54,25 @@ describe("Observation", function () {
         });
     });
 
+    describe("Concept Set MultiSelectObservation", function () {
+        it("should test MultiSelectObservation has value", function () {
+            var observation = observationFactory(groupMembers[3]["concept"],selectedObs);
+            expect(observation.label).toBe("Tuberculosis");
+            expect(observation.hasValue()).toBe(true);            
+        });
+        it("should test MultiSelectObservation has non voided value", function () {
+            var observation = observationFactory(groupMembers[3]["concept"],selectedObs);
+            expect(observation.label).toBe("Tuberculosis");
+            expect(observation.hasNonVoidedValue()).toBe(false);
+        });
+        it("should test MultiSelectObservation is valid", function () {
+           var observation = observationFactory(groupMembers[3]["concept"],selectedObs);
+            expect(observation.label).toBe("Tuberculosis");
+            expect(observation.isValid(true, true)).toBe(false);
+            expect(observation.isValid(false, true)).toBe(false);
+        });
+    });
+
     var groupMembers = [ 
         {
             "concept": {
@@ -78,7 +101,43 @@ describe("Observation", function () {
             "isObservation": true,
             "uniqueId": "observation_56",
             "conceptUIConfig": {"multiSelect": true}
+        },
+        {
+            "concept": {
+              "name": "Tuberculosis",
+              "shortName": null,
+              "conceptClass": "Any",
+              "answers": []
+            },
+            "label": "Tuberculosis",
+            "possibleAnswers": [],
+            "groupMembers": [],
+            "isObservation": true,
+            "uniqueId": "observation_57",
+            "conceptUIConfig": {"multiSelect": true, "required":true}            
         }
-    ]
+    ],
+    selectedObs = [
+        {   
+            "concept": {
+              "name": "Sputum Culture Result",
+              "shortName": null,
+              "conceptClass": "Any",
+              "answers": []
+            },
+            "possibleAnswers": [],
+            "groupMembers": [],
+            "isObservation": true,
+            "uniqueId": "observation_58",
+            "label": "Sputum Culture Result",
+            "voided": true
+        }
+    ];
+
+    function observationFactory(concept, obs) {
+         var observation = new ConceptSetMultiSelectObservation(concept,groupMembers,conceptSetUI);
+         observation.selectedObs = obs;
+         return observation;
+    }
 
 });
