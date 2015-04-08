@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.adt')
-    .controller('BedManagementController', ['$scope', '$rootScope', '$location', 'WardService', 'bedService', '$stateParams', 'encounterService', 'sessionService', 'messagingService', 'backlinkService', '$timeout', '$document',
-        function ($scope, $rootScope, $location, wardService, bedService, $stateParams, encounterService, sessionService, messagingService, backlinkService, $timeout, $document) {
+    .controller('BedManagementController', ['$scope', '$rootScope', '$location', 'WardService', 'BedManagementService', 'bedService', '$stateParams', 'encounterService', 'sessionService', 'messagingService', 'backlinkService', '$timeout', '$document',
+        function ($scope, $rootScope, $location, wardService, bedManagementService, bedService, $stateParams, encounterService, sessionService, messagingService, backlinkService, $timeout, $document) {
         $scope.wards = null;
         $scope.currentView = "wards";
         $scope.layout = [];
@@ -41,14 +41,12 @@ angular.module('bahmni.adt')
             $scope.$apply();
         };
 
-        $scope.showWardLayout = function (wardUuid, wardName) {
-            currentWardUuid = wardUuid;
-            $scope.wardName = wardName
+        $scope.showWardLayout = function(wardUuid, wardName) {
+            $scope.currentView = "wardLayout";
             $scope.layout = [];
             $scope.bedLayouts = [];
             $scope.selectedBed = null;
-            maxX = maxY = minX = minY = 1;
-            $scope.currentView = "wardLayout";
+            maxX = maxY = minX = minY = 1; 
             getBedsForWard(wardUuid);
         };
 
@@ -157,62 +155,8 @@ angular.module('bahmni.adt')
         var getBedsForWard = function (wardUuid) {
             wardService.bedsForWard(wardUuid).success(function (result) {
                 $scope.bedLayouts = result.bedLayouts;
-                createLayoutGrid();
+                $scope.layout = bedManagementService.createLayoutGrid($scope.bedLayouts);  
             });
-        };
-
-        var createLayoutGrid = function () {
-            findMaxYMaxX();
-            var bedLayout;
-            var rowLayout = [];
-            for (var i = minX; i <= maxX; i++) {
-                rowLayout = [];
-                for (var j = minY; j <= maxY; j++) {
-                    bedLayout = getBedLayoutWithCoordinates(i, j);
-                    rowLayout.push({
-                        empty: isEmpty(bedLayout),
-                        available: isAvailable(bedLayout),
-                        bed: {
-                            bedId: bedLayout != null && bedLayout.bedId,
-                            bedNumber: bedLayout != null && bedLayout.bedNumber,
-                            bedType: bedLayout != null && bedLayout.bedType != null && bedLayout.bedType.displayName,
-                        }
-                    })
-                }
-                $scope.layout.push(rowLayout);
-            }
-        };
-
-        var isEmpty = function (bedLayout) {
-            return bedLayout == null || bedLayout.bedId == null;
-        };
-
-        var isAvailable = function (bedLayout) {
-            if (bedLayout == null) {
-                return false;
-            }
-            return bedLayout.status === "AVAILABLE";
-        };
-
-        var getBedLayoutWithCoordinates = function (rowNumber, columnNumber) {
-            for (var i = 0, len = $scope.bedLayouts.length; i < len; i++) {
-                if ($scope.bedLayouts[i].rowNumber === rowNumber && $scope.bedLayouts[i].columnNumber === columnNumber) {
-                    return $scope.bedLayouts[i];
-                }
-            }
-            return null;
-        };
-
-        var findMaxYMaxX = function () {
-            for (var i = 0; i < $scope.bedLayouts.length; i++) {
-                var bedLayout = $scope.bedLayouts[i];
-                if (bedLayout.rowNumber > maxX) {
-                    maxX = bedLayout.rowNumber;
-                }
-                if (bedLayout.columnNumber > maxY) {
-                    maxY = bedLayout.columnNumber;
-                }
-            }
         };
 
         init();

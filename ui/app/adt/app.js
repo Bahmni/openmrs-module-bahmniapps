@@ -89,5 +89,4 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             templateUrl: 'views/bedManagement.html',
             controller: 'BedManagementController'
         });
-}
-]);
+}]);

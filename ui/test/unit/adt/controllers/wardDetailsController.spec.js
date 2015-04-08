@@ -2,6 +2,7 @@
 
 describe("Store Controller", function() {
     var  wardService, createController, scope;
+    var bedService;
     var wardsList = [{
         occupiedBeds: 3,
         totalBeds: 5,
@@ -34,12 +35,18 @@ describe("Store Controller", function() {
             });
             return null;
         });
+
+        module(function($provide) {
+            $provide.value('bedService', {});
+        });
+
     });
 
     beforeEach(function() {
-        inject(function($controller, $rootScope, _WardService_) {
+        inject(function($controller, $rootScope, _WardService_, bedService) {
             scope = $rootScope.$new();
             wardService = _WardService_;
+            bedService = bedService;
             createController = function() {
                 return $controller("WardDetailsController", {
                     $scope: scope
