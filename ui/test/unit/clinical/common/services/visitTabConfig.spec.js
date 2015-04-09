@@ -29,9 +29,10 @@ describe("VisitTabConfigService", function () {
     }]));
 
     it("should load the visit config", function (done) {
-        visitTabConfigService.load().then(function() {
-            expect(visitTabConfigService.tabs.length).toEqual(2);
-            expect(visitTabConfigService.tabs).toEqual([mandatoryConfig[0], config[0]]);
+        var load = visitTabConfigService.load();
+        load.then(function(response) {
+            expect(response.tabs.length).toEqual(2);
+            expect(response.tabs).toEqual([mandatoryConfig[0], config[0]]);
             done();
         });
     });

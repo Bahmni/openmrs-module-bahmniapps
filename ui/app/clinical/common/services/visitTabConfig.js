@@ -15,7 +15,7 @@ angular.module('bahmni.clinical')
         this.load = function () {
             return $q.all([mandatoryConfigPromise(), configPromise()]).then(function(results) {
                 var configs = _.flatten(_.map(results, function(result) {return result.data}));
-                angular.extend(self, new Bahmni.Clinical.VisitTabConfig(configs));
+                return  new Bahmni.Clinical.VisitTabConfig(configs);
             });
         }
     }]);

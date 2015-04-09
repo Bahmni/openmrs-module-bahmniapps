@@ -97,7 +97,7 @@ describe('VisitController', function () {
                 configurations: configurations,
                 $timeout: $timeout,
                 printer: {},
-                visitTabConfig: visitTabConfig,
+                visitConfig: visitTabConfig,
                 visitHistory:[],
                 $stateParams: {}
             });
