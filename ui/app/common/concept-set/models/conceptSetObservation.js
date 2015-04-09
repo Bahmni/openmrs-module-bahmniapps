@@ -184,7 +184,7 @@ Bahmni.ConceptSet.Observation.prototype = {
 
     setErroneousValue: function () {
             if (this.hasValue()) {
-                var erroneousValue = this.value >= (this.concept.hiAbsolute || Infinity) || this.value < (this.concept.lowAbsolute || 0);
+                var erroneousValue = this.value > (this.concept.hiAbsolute || Infinity) || this.value < (this.concept.lowAbsolute || 0);
                 this.erroneousValue = erroneousValue;
             } else {
                 this.erroneousValue = undefined;

@@ -147,7 +147,7 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
 
     setAbnormal: function () {
         if (this.primaryObs.hasValue()) {
-            var erroneousValue = this.value >= (this.primaryObs.concept.hiAbsolute || Infinity) || this.value < (this.primaryObs.concept.lowAbsolute || 0);
+            var erroneousValue = this.value > (this.primaryObs.concept.hiAbsolute || Infinity) || this.value < (this.primaryObs.concept.lowAbsolute || 0);
             var valueInRange = this.value <= (this.primaryObs.concept.hiNormal || Infinity) && this.value >= (this.primaryObs.concept.lowNormal || 0);
             this.abnormalObs.value = !valueInRange;
             this.abnormalObs.erroneousValue = erroneousValue;
