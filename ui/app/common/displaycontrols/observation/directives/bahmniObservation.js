@@ -32,7 +32,8 @@ angular.module('bahmni.common.displaycontrol.observation')
                 };
 
                 $scope.isClickable= function(){
-                    return $scope.isOnDashboard && $scope.section.allObservationDetails && $scope.section.allObservationDetails.pivotTable;
+                    return $scope.isOnDashboard && $scope.section.allObservationDetails &&
+                        ($scope.section.allObservationDetails.pivotTable || $scope.section.allObservationDetails.observationGraph);
                 };
 
                 fetchObservations();

@@ -10,8 +10,8 @@
 </header>
 <div class="template-container">
 	<div pivot-table patient-uuid="patient.uuid" config="section.allObservationDetails.pivotTable" display-name="section.title"></div>
+    <observation-graph visit-uuid="visit.uuid" params="section.allObservationDetails.observationGraph" patient-uuid="patient.uuid"></observation-graph>
     <section class="block observation dashboard-section" >
         <bahmni-observation patient="patient" config="config" section="section" section-title="section.title" is-on-dashboard="false"></bahmni-observation>
     </section>
-
 </div>
