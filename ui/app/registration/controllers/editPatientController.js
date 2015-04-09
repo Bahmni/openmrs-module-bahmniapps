@@ -48,7 +48,7 @@ angular.module('bahmni.registration')
                 });
                 var searchActiveVisitsPromise = visitService.search({patient: uuid, includeInactive: false, v: "custom:(uuid)"}).success(function(data){
                     $scope.hasActiveVisit = data.results.length > 0;
-                    var actionName = isRegistrationConsultationPrivilege ? "enterConsultation" : ($scope.hasActiveVisit ? "enterVisitDetails" : "startVisit");
+                    var actionName = isRegistrationConsultationPrivilege && $scope.hasActiveVisit ? "enterConsultation" : ($scope.hasActiveVisit ? "enterVisitDetails" : "startVisit");
                     defaultActions.push(actionName);
                     identifyEditActions();
                 });
