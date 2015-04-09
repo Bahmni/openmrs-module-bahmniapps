@@ -278,7 +278,8 @@ Bahmni.ConceptSet.Observation.prototype = {
 
     _areChildNodesInAbsoluteRange: function () {
         return this.groupMembers.every(function (member) {
-            return member.isValueInAbsoluteRange();
+            //Other than Bahmni.ConceptSet.Observation  and Bahmni.ConceptSet.ObservationNode, other concepts does not have isValueInAbsoluteRange fn
+            return (typeof member.isValueInAbsoluteRange == 'function')? member.isValueInAbsoluteRange():true;
         });
     },
 
