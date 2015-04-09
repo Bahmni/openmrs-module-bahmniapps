@@ -126,7 +126,7 @@ angular.module('bahmni.common.conceptSet')
 
             var contextChange = function () {
                 $scope.atLeastOneValueIsSet = $scope.rootObservation && $scope.rootObservation.atLeastOneValueSet();
-                $scope.conceptSetRequired = $scope.required;
+                $scope.conceptSetRequired = $scope.required? $scope.required: true;
                 var errorMessage = null;
                 var invalidNodes = $scope.rootObservation && $scope.rootObservation.groupMembers.filter(function(childNode){
                     if(childNode.erroneousValue || (childNode.isObservationNode && childNode.abnormalObs!=null &&childNode.abnormalObs.erroneousValue)){
