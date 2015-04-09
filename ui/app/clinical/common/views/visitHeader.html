@@ -33,12 +33,13 @@
             </li>
         </ul>
 
-        <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}"></button>
-        
-        <span class="grouped-buttons" ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective">
-            <a class=" btn--left btn--success "  ng-click="collapseControlPanel()" href="#{{consultationBoardLink}}">Consultation</a>
-            <a class="btn--right btn--success " title="Open in new window"ng-click="collapseControlPanel()" href="#{{consultationBoardLink}}" target="_blank"><i class="icon-external-link"></i></a>
-       </span>
+        <div class="dashboard-header-right-wrapper">
+            <span class="grouped-buttons" ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective">
+                <a class=" btn--left btn--success "  ng-click="collapseControlPanel()" href="#{{consultationBoardLink}}">Consultation</a>
+                <a class="btn--right btn--success " title="Open in new window"ng-click="collapseControlPanel()" href="#{{consultationBoardLink}}" target="_blank"><i class="icon-external-link"></i></a>
+           </span>
+           <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}"></button>
+        </div>
 
     </div>
 </div>
