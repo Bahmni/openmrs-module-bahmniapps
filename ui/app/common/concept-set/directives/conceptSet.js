@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('concept', ['RecursionHelper','spinner', 'conceptSetService', '$filter',function (RecursionHelper,spinner, conceptSetService, $filter) {
+    .directive('concept', ['RecursionHelper','spinner', 'conceptSetService', '$filter', '$location', 'scrollToService',function (RecursionHelper,spinner, conceptSetService, $filter, $location, scrollToService) {
         var link = function ($scope, $element,$attr) {
             var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
             $scope.showTitle = $scope.showTitle === undefined ? true : $scope.showTitle;
@@ -10,6 +10,8 @@ angular.module('bahmni.common.conceptSet')
                 var newObs = observation.cloneNew();
                 var index = parentObservation.groupMembers.indexOf(observation);
                 parentObservation.groupMembers.splice(index+1, 0, newObs);
+                var elementToScroll = event.currentTarget.parentNode.parentNode.parentNode.parentNode;
+                scrollToService.scrollTo(elementToScroll);
             };
 
             $scope.getStringValue = function(observations) {
