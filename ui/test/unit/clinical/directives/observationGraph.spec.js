@@ -44,6 +44,16 @@ describe("Observation Graph", function() {
         httpBackend.expectGET('displaycontrols/graph/views/observationGraph.html').respond('<div id="{{graphId}}"></div>')
     });
 
+    it("should not call observationsService fetch for no config", function () {
+        scope.section = undefined;
+
+        compile(element)(scope);
+        scope.$digest();
+        httpBackend.flush();
+
+        expect(observationsService.fetch).not.toHaveBeenCalled();
+    });
+
     it("should not render the graph for no observations", function () {
         mockObservationService([]);
 

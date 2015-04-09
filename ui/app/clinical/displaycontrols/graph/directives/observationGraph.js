@@ -1,11 +1,12 @@
 "use strict";
 
-angular.module('bahmni.clinical').directive('observationGraph', ['observationsService', '$q', 'spinner',
-    function (observationsService, $q, spinner) {
+angular.module('bahmni.clinical').directive('observationGraph', ['observationsService',
+    function (observationsService) {
 
         var link = function ($scope, element, attrs) {
             $scope.graphId = 'graph' + $scope.$id;
 
+            if (!$scope.params) return;
             var config = $scope.params.config;
             observationsService.fetch($scope.patientUuid, config.yAxisConcepts, false, config.numberOfVisits, $scope.visitUuid)
                 .then(function (results) {
