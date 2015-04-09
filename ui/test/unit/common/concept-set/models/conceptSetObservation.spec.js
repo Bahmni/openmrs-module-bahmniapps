@@ -35,11 +35,24 @@ describe("ConceptSetObservation", function() {
         expect(new Bahmni.ConceptSet.Observation({concept: {name: "someConcept", dataType: "text"}}, null, {}).isNumeric()).toBeFalsy();
     });
 
-    it("should be numeric if concept datatype is numeric", function() {
+    it("should not be valid if observation value goes beyond absolute range", function() {
              var obs = new Bahmni.ConceptSet.Observation({
                         concept: {name: "someConcept",dataType: "Numeric",hiAbsolute: 100, lowAbsolute: 90, value:101}
                     }, null, {});
                     obs.value = 102;
                     expect(obs.isValid(false,false)).toBeFalsy();
      });
+
+    it("should not be valid if observations child node value goes beyond absolute range", function() {
+        var grpMem = new Bahmni.ConceptSet.Observation({concept: {name: "someConcept",dataType: "Numeric",hiAbsolute: 100,
+            lowAbsolute: 90, value:101}}, null, {});
+        grpMem.value = 102;
+        var obs = new Bahmni.ConceptSet.Observation({
+            concept: {name: "Blood Pressure",dataType: "N/A",hiAbsolute: null, lowAbsolute: null},
+            groupMembers: [grpMem]
+        }, null, {});
+
+        expect(obs.isValueInAbsoluteRange()).toBeFalsy();
+    });
+
 });

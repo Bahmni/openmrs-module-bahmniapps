@@ -247,6 +247,11 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
         return true;
     },
 
+    isValueInAbsoluteRange: function () {
+        if(this.abnormalObs!=null && this.abnormalObs.erroneousValue) return false;
+        return true;
+    },
+
     isValidFreeTextAutocomplete : function(){
         if (this.getPrimaryObs().concept.dataType!=="Coded" && !this.markedAsNonCoded && this.getPrimaryObs().value) {
            return false;

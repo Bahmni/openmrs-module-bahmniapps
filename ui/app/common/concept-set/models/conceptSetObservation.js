@@ -248,6 +248,12 @@ Bahmni.ConceptSet.Observation.prototype = {
         return true;
     },
 
+    isValueInAbsoluteRange: function () {
+        if (this.erroneousValue) return false;
+        if (this.isGroup()) return this._areChildNodesInAbsoluteRange();
+        return true;
+    },
+
     _isDateDataType: function () {
         return 'Date'.indexOf(this.getDataTypeName()) != -1;
     },
@@ -267,6 +273,12 @@ Bahmni.ConceptSet.Observation.prototype = {
     _hasValidChildren: function (checkRequiredFields, conceptSetRequired) {
         return this.groupMembers.every(function (member) {
             return member.isValid(checkRequiredFields, conceptSetRequired)
+        });
+    },
+
+    _areChildNodesInAbsoluteRange: function () {
+        return this.groupMembers.every(function (member) {
+            return member.isValueInAbsoluteRange();
         });
     },
 
