@@ -32,7 +32,7 @@
             </div>
             <div ng-switch-when="pivotTable">
                 <div ng-if="section.config">
-                    <section pivot-table visit-uuid="visit.uuid" config="section.config" patient-uuid="patient.uuid" display-name="section.title"></section>
+                    <section pivot-table visit-uuid="visitUuid" config="section.config" patient-uuid="patient.uuid" display-name="section.title"></section>
                 </div>
             </div>
             <div data-ng-switch-when="investigationResult">
@@ -75,13 +75,13 @@
             </div>
             <div data-ng-switch-when="admissionDetails">
                 <div ng-if="section.config">
-                    <admission-details patient-uuid="patient.uuid" visit-uuid="visit.uuid" params="section.config"></admission-details>
+                    <admission-details patient-uuid="patient.uuid" visit-uuid="visitUuid" params="section.config"></admission-details>
                 </div>
             </div>
             <div data-ng-switch-when="observationGraph">
                 <section class="dashboard-section">
                     <div ng-if="section.config">
-                        <observation-graph visit-uuid="visit.uuid" params="section" patient-uuid="patient.uuid"></observation-graph>
+                        <observation-graph visit-uuid="visitUuid" params="section" patient-uuid="patient.uuid"></observation-graph>
                     </div>
                 </section>
             </div>
