@@ -8,6 +8,7 @@ Bahmni.Common.PatientSearch.Search = function(searchTypes) {
     self.activePatients = [];
 
     self.switchSearchType = function (searchType) {
+        self.noResultsMessage = null;
         if (self.searchType != searchType)
         {
             self.searchParameter = '';
