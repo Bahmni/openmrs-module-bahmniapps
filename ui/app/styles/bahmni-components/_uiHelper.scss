@@ -84,6 +84,9 @@ a.document-link {
 	line-height: 1.3em;
 	&:hover {
 		text-decoration: underline;
+		.icon-star{
+		  text-decoration: none;
+		}
 	}
 }
 

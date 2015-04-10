@@ -16,6 +16,15 @@
 .visit {
   table tr:nth-child(even), table tr:nth-child(odd) {
     background: $white;
+    a{
+
+      &:hover{
+        text-decoration: underline;
+        .icon-star{
+          text-decoration: none;
+        }
+      }
+    }
   }
   table 
 	.info-message{

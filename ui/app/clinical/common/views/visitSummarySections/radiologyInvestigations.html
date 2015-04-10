@@ -1,18 +1,1 @@
-<section class="block radiology-investigations" ng-if="visit.hasRadiologyOrders()">
-    <h2 class="section-title">Radiology Investigations</h2>
-    <ul bm-gallery patient="patient" access-impression="true">
-        <li ng-repeat="radiologyOrder in visit.getRadiologyOrders()" class="radiology-doc-item">
-            
-            <a bm-image-observation-gallery-item observation="radiologyOrder"
-               class="document-link temp-class">{{radiologyOrder.concept.name}}</a>
-
-            <div class="footer-note">
-                <span class="time-stamp">
-                    <span class="date">{{radiologyOrder.dateTime | date:'dd MMM yy'}}</span>
-                    <span class="time">{{radiologyOrder.dateTime | date :'hh:mm a'}}</span>
-                </span>
-                <span class="provider" bo-text="radiologyOrder.provider.name"></span>
-            </div>
-        </li>
-    </ul>
-</section>
+<bm-radiology patient="patient" config="section.config"></bm-radiology>

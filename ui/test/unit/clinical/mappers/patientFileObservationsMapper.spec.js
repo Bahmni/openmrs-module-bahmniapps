@@ -27,7 +27,11 @@ describe("PatientFileObservationsMapper", function () {
                             }
                         ]
                     }
-                ]
+                ],
+                "visit": {
+                    "startDatetime": "2014-11-08T15:43:08.000+0530",
+                    "stopDatetime": null
+                }
             },
             {
                 "uuid": "634dd30c-8074-451f-95e2-801a16a66a91",
@@ -50,7 +54,11 @@ describe("PatientFileObservationsMapper", function () {
                             }
                         ]
                     }
-                ]
+                ],
+                "visit": {
+                    "startDatetime": "2014-10-01T00:00:00.000+0530",
+                    "stopDatetime": "2014-10-02T16:10:11.000+0530"
+                }
             }
         ];
 
