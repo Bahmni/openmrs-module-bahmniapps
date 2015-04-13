@@ -19,11 +19,11 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                 scope.groupByVisits = scope.groupBy === "visits";
                 
                 scope.getOnlyDate = function(startdate) {
-                    return moment(startdate).format("DD MMM YY");
+                    return Bahmni.Common.Util.DateUtil.formatDateWithoutTime(startdate);
                 };
 
                 scope.getOnlyTime = function(startDate) {
-                    return moment(startDate).format("hh:mm A");
+                    return Bahmni.Common.Util.DateUtil.formatTime(startDate);
                 };
 
                 scope.isLonger = function(value){

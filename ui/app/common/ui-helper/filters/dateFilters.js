@@ -5,8 +5,16 @@ angular.module('bahmni.common.uiHelper')
     return function(startDate, endDate) {
     	return Bahmni.Common.Util.DateUtil.diffInDays(startDate, endDate);
     }
+}).filter('bahmniDateTime', function() {
+    return function (date) {
+        return Bahmni.Common.Util.DateUtil.formatDateWithTime(date);
+    }
 }).filter('bahmniDate', function() {
-    return function (longDate) {
-        return Bahmni.Common.Util.DateUtil.parseLongDatetime(longDate);
+    return function (date) {
+        return Bahmni.Common.Util.DateUtil.formatDateWithoutTime(date);
+    }
+}).filter('bahmniTime', function() {
+    return function (date) {
+        return Bahmni.Common.Util.DateUtil.formatTime(date);
     }
 });

@@ -12,7 +12,7 @@
             <td>District: <span class="value">{{patient.address.countyDistrict}}</span></td>
         </tr>
         <tr>
-            <td colspan="3">Visit Date: <span class="value">{{visitDate | date: 'd MMM yyyy'}}</span></td>
+            <td colspan="3">Visit Date: <span class="value">{{visitDate | bahmniDate}}</span></td>
         </tr>
     </table>
 </div>

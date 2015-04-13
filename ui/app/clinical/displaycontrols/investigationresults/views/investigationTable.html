@@ -8,7 +8,7 @@
                 <i class="icon-caret-down" ng-show="labOrderResults.isOpen"></i>
                 <span class="hidden-print">Accession at </span>
                 <span class="visible-print">Sample at </span>
-                <span bo-text="getAccessionDetailsFrom(labOrderResults).accessionDateTime | date:'dd MMM yy hh:mm a'"></span>
+                <span bo-text="getAccessionDetailsFrom(labOrderResults).accessionDateTime | bahmniDateTime"></span>
                 <button class="toggle-btn fr" ng-if="showAccessionNotes(labOrderResults)" ng-click="toggle(labOrderResults)">
                     <i class="icon-envelope" ng-hide="!labOrders.show"></i>
                     <i class="icon-envelope-alt" ng-show="!labOrders.show"></i>

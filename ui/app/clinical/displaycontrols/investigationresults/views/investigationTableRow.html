@@ -40,7 +40,7 @@
         <i class="icon-comments left"></i>
         <pre class="left">{{test.notes}}</pre>
         <div class="footer-note right">
-            <span>{{ test.accessionDateTime | date :'dd MMM yy'}}&nbsp;</span>
+            <span>{{ test.accessionDateTime | bahmniDate}}&nbsp;</span>
             <span class="provider" ng-show="test.provider" bo-text="test.provider"></span>
         </div>
     </td>
@@ -48,7 +48,7 @@
 <tr ng-if="test.showDetails">
     <td colspan="3" class="notes inline-notes">
         <div class="footer-note right">
-            <span>{{ test.accessionDateTime | date :'dd MMM yy'}}&nbsp;</span>
+            <span>{{ test.accessionDateTime | bahmniDate}}&nbsp;</span>
             <span class="provider" ng-show="test.provider" bo-text="test.provider"></span>
         </div>
     </td>

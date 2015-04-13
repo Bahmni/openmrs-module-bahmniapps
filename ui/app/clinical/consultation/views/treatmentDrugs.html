@@ -13,7 +13,7 @@
                 <span bo-show="drugOrder.getDescription()"
                       bo-text="drugOrder.getDescription()"></span>
             <span bo-show="!drugOrder.getDescription()" bo-text="' - '"></span>
-            <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">stopped on {{drugOrder.effectiveStopDate | date: 'dd MMM yy'}}</span>
+            <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">stopped on {{drugOrder.effectiveStopDate | bahmniDate}}</span>
         </td>
         <td class="toggle-btn">
             <button class="toggle fr" ng-class="{'has-notes': drugOrder.additionalInstructions}">
@@ -28,8 +28,8 @@
 
             <div class="footer-note right">
                     <span class="time-stamp">
-                      <span class="date">{{drugOrder.effectiveStartDate | date:'dd MMM yy'}}</span>
-                      <span class="time">{{drugOrder.effectiveStartDate | date :'hh:mm a'}}</span>
+                      <span class="date">{{drugOrder.effectiveStartDate | bahmniDate}}</span>
+                      <span class="time">{{drugOrder.effectiveStartDate | bahmniTime}}</span>
                     </span>
                 <span class="provider" bo-text="drugOrder.provider.name"></span>
             </div>
@@ -55,7 +55,7 @@
                 <span bo-show="drugOrder.getDescription()"
                       bo-text="drugOrder.getDescription()"></span>
                 <span bo-show="!drugOrder.getDescription()" bo-text="' - '"></span>
-                <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">stopped on {{drugOrder.effectiveStopDate | date: 'dd MMM yy'}}</span>
+                <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">stopped on {{drugOrder.effectiveStopDate | bahmniDate}}</span>
             </td>
             <td class="toggle-btn">
                 <button class="toggle fr" ng-class="{'has-notes': drugOrder.additionalInstructions}">
@@ -70,8 +70,8 @@
 
                 <div class="footer-note right">
                     <span class="time-stamp">
-                      <span class="date">{{drugOrder.effectiveStartDate | date:'dd MMM yy'}}</span>
-                      <span class="time">{{drugOrder.effectiveStartDate | date :'hh:mm a'}}</span>
+                      <span class="date">{{drugOrder.effectiveStartDate | bahmniDate}}</span>
+                      <span class="time">{{drugOrder.effectiveStartDate | bahmniTime}}</span>
                     </span>
                     <span class="provider" bo-text="drugOrder.provider.name"></span>
                 </div>
@@ -98,7 +98,7 @@
                 <span bo-show="drugOrder.getDescription()"
                       bo-text="drugOrder.getDescription()"></span>
                 <span bo-show="!drugOrder.getDescription()" bo-text="' - '"></span>
-                <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">stopped on {{drugOrder.effectiveStopDate | date: 'dd MMM yy'}}</span>
+                <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">stopped on {{drugOrder.effectiveStopDate | bahmniDate}}</span>
             </td>
             <td class="toggle-btn">
                 <button class="toggle fr" ng-class="{'has-notes': drugOrder.additionalInstructions}">
@@ -113,8 +113,8 @@
 
                 <div class="footer-note right">
                     <span class="time-stamp">
-                      <span class="date">{{drugOrder.effectiveStartDate | date:'dd MMM yy'}}</span>
-                      <span class="time">{{drugOrder.effectiveStartDate | date :'hh:mm a'}}</span>
+                      <span class="date">{{drugOrder.effectiveStartDate | bahmniDate}}</span>
+                      <span class="time">{{drugOrder.effectiveStartDate | bahmniTime}}</span>
                     </span>
                     <span class="provider" bo-text="drugOrder.provider.name"></span>
                 </div>

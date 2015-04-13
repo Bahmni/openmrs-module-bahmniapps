@@ -9,7 +9,7 @@
                         {{obsTemplate.label}} 
 
                     <span class="fr visit-start-date">
-                        {{obsTemplate.visitStartDate | date: 'dd MMM yy'}}
+                        {{obsTemplate.visitStartDate | bahmniDate}}
                     </span>
                 </span>
 
@@ -25,7 +25,7 @@
                     <li ng-repeat="encounter in obsTemplate.encounters">
                         <span class="tree-list-item" ng-if="!isIntakeTemplate(obsTemplate)">
                             <span>
-                                {{encounter.encounterDateTime | date: 'dd MMM yy'}}
+                                {{encounter.encounterDateTime | bahmniDate}}
                             </span>
                         </span>
                         <ul ng-class="{'is-intake-template':isIntakeTemplate(obsTemplate)}">

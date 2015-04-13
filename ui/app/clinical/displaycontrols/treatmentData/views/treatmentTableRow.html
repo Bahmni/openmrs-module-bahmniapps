@@ -10,10 +10,10 @@
         <span ng-if="params.showRoute" ng-class="{'strike-text':drugOrder.isDiscontinuedOrStopped()}">{{drugOrder.getDescriptionWithoutDuration()}}</span>
         <span ng-if="!params.showRoute" ng-class="{'strike-text':drugOrder.isDiscontinuedOrStopped()}">{{drugOrder.getDescriptionWithoutRouteAndDuration()}}</span>
         <span>- {{drugOrder.getSpanDetails()}}</span>
-        <span ng-if="drugOrder.isDiscontinuedOrStopped()" ng-class="{'discontinued-text':drugOrder.isDiscontinuedOrStopped()}">Stopped on {{drugOrder.effectiveStopDate | date: 'dd MMM yy'}}</span>
+        <span ng-if="drugOrder.isDiscontinuedOrStopped()" ng-class="{'discontinued-text':drugOrder.isDiscontinuedOrStopped()}">Stopped on {{drugOrder.effectiveStopDate | bahmniDate}}</span>
     </td>
     <td class="days">
-        <span class="fr">{{drugOrder.effectiveStartDate | date:'dd MMM yy'}}</span>
+        <span class="fr">{{drugOrder.effectiveStartDate | bahmniDate}}</span>
     </td>
 
     <td class="toggle-btn" ng-click="toggle()" ng-if="params.showDetailsButton && !drugOrder.additionalInstructions">
@@ -29,7 +29,7 @@
         <pre class="left">{{drugOrder.additionalInstructions}}</pre>
         <div class="footer-note right">
             <span class="provider">
-                {{drugOrder.provider.name}} {{drugOrder.effectiveStartDate | date :'hh:mm a'}}
+                {{drugOrder.provider.name}} {{drugOrder.effectiveStartDate | bahmniTime}}
             </span>
         </div>
     </td>
@@ -38,7 +38,7 @@
     <td colspan="4" class="notes inline-notes">
         <div class="footer-note right">
             <span class="provider">
-                {{drugOrder.provider.name}} {{drugOrder.effectiveStartDate | date :'hh:mm a'}}
+                {{drugOrder.provider.name}} {{drugOrder.effectiveStartDate | bahmniTime}}
             </span>
         </div>
     </td>

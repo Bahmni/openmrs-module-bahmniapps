@@ -14,7 +14,7 @@
                     <span class="disposition-state">Admission Date</span>
                 </td>
                 <td class="value">
-                    {{admissionEncounter.encounterDatetime| date:'dd MMM yy'}}
+                    {{admissionEncounter.encounterDatetime| bahmniDate}}
                 </td>
                 <td class="toggle-btn" ng-if="showDetailsButton(admissionEncounter)" ng-if="showDetailsButton(admissionEncounter)">
                     <button class="toggle fr"
@@ -28,7 +28,7 @@
                 <td colspan="3" class="notes inline-notes">
                     <pre class="left ng-binding">{{getNotes(admissionEncounter)}}</pre>
                     <div class="footer-note right">
-                        <span class="provider">{{getProviderDetails(admissionEncounter)}} {{admissionEncounter.encounterDatetime  | date:'hh:mm a'}}</span>
+                        <span class="provider">{{getProviderDetails(admissionEncounter)}} {{admissionEncounter.encounterDatetime  | bahmniTime}}</span>
                     </div>
                 </td>
             </tr>
@@ -37,7 +37,7 @@
                     <span class="disposition-state">Discharge Date</span>
                 </td>
                 <td class="value">
-                    {{dischargeEncounter.encounterDatetime| date:'dd MMM yy'}}
+                    {{dischargeEncounter.encounterDatetime| bahmniDate}}
                 </td>
                 <td class="toggle-btn" ng-if="showDetailsButton(dischargeEncounter)">
                     <button class="toggle fr"
@@ -51,7 +51,7 @@
                 <td colspan="3" class="notes inline-notes">
                     <pre class="left ng-binding">{{getNotes(dischargeEncounter)}}</pre>
                     <div class="footer-note right">
-                        <span class="provider">{{getProviderDetails(dischargeEncounter)}} {{dischargeEncounter.encounterDatetime  | date:'hh:mm a'}}</span>
+                        <span class="provider">{{getProviderDetails(dischargeEncounter)}} {{dischargeEncounter.encounterDatetime  | bahmniTime}}</span>
                     </div>
                 </td>
             </tr>

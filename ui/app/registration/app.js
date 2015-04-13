@@ -3,7 +3,7 @@
 angular
     .module('registration', ['ui.router', 'bahmni.registration', 'authentication', 'bahmni.common.config', 'bahmni.common.appFramework', 
         'httpErrorInterceptor', 'bahmni.common.photoCapture', 'bahmni.common.obs', 'bahmni.common.displaycontrol.observation', 
-        'bahmni.common.routeErrorHandler', 'bahmni.common.displaycontrol.pivottable','RecursionHelper','ngSanitize'])
+        'bahmni.common.routeErrorHandler', 'bahmni.common.displaycontrol.pivottable','RecursionHelper','ngSanitize', 'bahmni.common.uiHelper'])
     .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function ($urlRouterProvider, $stateProvider, $httpProvider) {
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
         $urlRouterProvider.otherwise('/search');

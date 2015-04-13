@@ -24,10 +24,10 @@ Bahmni.Common.Obs.Observation = function () {
             }
             if(this.type === "Datetime") {
                 var date = Bahmni.Common.Util.DateUtil.parseDatetime(this.value);
-                return date != null ? date.format('DD MMM YYYY, hh:mm A') : "";
+                return date != null ? Bahmni.Common.Util.DateUtil.formatDateWithTime(date) : "";
             }
             if(this.type === "Date") {
-                return this.value ? Bahmni.Common.Util.DateUtil.formatDateAsDDMMMYY(this.value) : "";
+                return this.value ? Bahmni.Common.Util.DateUtil.formatDateWithoutTime(this.value) : "";
             }
             var shortName = this.value ? this.value.shortName : null;
             var fullName = this.value ? this.value.name : null;

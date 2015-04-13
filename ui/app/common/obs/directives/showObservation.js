@@ -7,16 +7,17 @@ angular.module('bahmni.common.obs')
 
             $scope.dateString = function (observation) {
                 var dateFormat = "";
+                var filterName;
                 if ($scope.showDate && $scope.showTime) {
-                    dateFormat = 'dd MMM yy hh:mm a';
+                    filterName = 'bahmniDateTime';
                 }
                 else if (!$scope.showDate && ($scope.showTime || $scope.showTime === undefined)) {
-                    dateFormat = "hh:mm a";
+                    filterName = 'bahmniTime';
                 }
                 else{
                     return null;
                 }
-                return $filter('date')(observation.observationDateTime, dateFormat);
+                return $filter(filterName)(observation.observationDateTime);
             };
         };
         return {

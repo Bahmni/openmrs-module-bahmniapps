@@ -33,7 +33,7 @@
             <div class="image-bottom-bar" ng-if="isActive($index,album.tag)">
                 <i class="icon-file-alt has-notes" title="has impression" ng-if="hasObsRelationship(image)"></i>
                 <span class="image-provider">{{image.providerName}}</span>
-                <span class="image-date">{{image.date | date: "dd MMM yy hh:mm a"}}</span>
+                <span class="image-date">{{image.date | bahmniDateTime}}</span>
                 <span class="image-index">({{getCurrentIndex()}} of {{getTotalLength()}})</span>
             </div>
             <div class="image-desc" ng-if="isActive($index, album.tag) && image.desc"><strong>Comments:</strong>
@@ -52,7 +52,7 @@
         <section ng-show="isActive($index,album.tag)">
             <ul class="impression">
                 <li ng-repeat="obs in image.sourceObs">
-                    <pre class="notes inline-notes"><strong>{{obs.providers[0].name}} ({{obs.observationDateTime | date: 'dd MMM yy'}}):</strong>{{obs.value}}</pre>
+                    <pre class="notes inline-notes"><strong>{{obs.providers[0].name}} ({{obs.observationDateTime | bahmniDate}}):</strong>{{obs.value}}</pre>
                 </li>
             </ul>
             <div class="impression-control">

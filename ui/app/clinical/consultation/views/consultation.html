@@ -31,8 +31,8 @@
                                 </div>
                                 <div ng-show="diagnosis.firstDiagnosis">
                                     <span class="time-stamp">
-                                        <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
-                                        <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
+                                        <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniDate}}</span>
+                                        <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniTime}}</span>
                                     </span>
                                     <span class="provider" ng-repeat="provider in diagnosis.firstDiagnosis.providers">{{provider.name}}</span>
                                 </div>
@@ -82,8 +82,8 @@
                                 </div>
                                 <div ng-show="diagnosis.firstDiagnosis">
                                     <span class="time-stamp">
-                                        <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
-                                        <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
+                                        <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniDate}}</span>
+                                        <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniTime}}</span>
                                     </span>
                                     <span class="provider" ng-repeat="provider in diagnosis.firstDiagnosis.providers">{{provider.name}}</span>
                                 </div>
@@ -133,8 +133,8 @@
                                 </div>                            
                                 <div ng-show="diagnosis.firstDiagnosis">
                                     <span class="time-stamp">
-                                        <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
-                                        <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'hh:mm a'}}</span>
+                                        <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniDate}}</span>
+                                        <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniTime}}</span>
                                     </span>
                                     <span class="provider" ng-repeat="provider in diagnosis.firstDiagnosis.providers">{{provider.name}}</span>
                                 </div>
@@ -179,7 +179,7 @@
 
                                 <div class="footer-note">
                                     <span class="time-stamp">
-                                        <span class="time">{{observation.observationDateTime | date :'hh:mm a'}}</span>
+                                        <span class="time">{{observation.observationDateTime | bahmniTime}}</span>
                                     </span>
                                     <span class="provider" bindonce="observation" bo-text="observation.provider.name"></span>
                                 </div>                            
@@ -217,7 +217,7 @@
                 <ul class="block-content">
                     <li ng-click="toggle(disposition)">
                         <div class="expander-row row-click">
-                            <span class="disposition-state">{{disposition.conceptName}} <span>on</span> {{disposition.dispositionDateTime | date :'dd MMM yy hh:mm a' }}</span>
+                            <span class="disposition-state">{{disposition.conceptName}} <span>on</span> {{disposition.dispositionDateTime | bahmniDateTime }}</span>
                             <button class="toggle fr" ng-class="{'has-notes': disposition.additionalObs[0].value}">
                                 <i class="icon-plus-sign" ng-hide="disposition.show"></i>
                                 <i class="icon-minus-sign" ng-show="disposition.show"></i>

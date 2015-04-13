@@ -71,11 +71,18 @@ Bahmni.Common.Util.DateUtil = {
     },
 
     formatDateWithTime: function(datetime) {
-        return moment(datetime).format("DD MMM YYYY h:mm A");
+        var dateRepresentation = isNaN(Number(datetime)) ? datetime : Number(datetime);
+        return dateRepresentation ? moment(dateRepresentation).format("DD MMM YY h:mm a") : null;
     },
 
-    formatDateAsDDMMMYY: function(date) {
-        return moment(date).format("DD MMM YY");
+    formatDateWithoutTime: function(date) {
+        var dateRepresentation = isNaN(Number(date)) ? date : Number(date);
+        return dateRepresentation ? moment(dateRepresentation).format("DD MMM YY") : null;
+    },
+
+    formatTime: function(date) {
+        var dateRepresentation = isNaN(Number(date)) ? date : Number(date);
+        return dateRepresentation ? moment(dateRepresentation).format("h:mm a") : null;
     },
 
     getDate: function (dateTime) {
@@ -88,10 +95,6 @@ Bahmni.Common.Util.DateUtil = {
 
     parseDatetime: function(dateTimeString){
         return dateTimeString ? moment(dateTimeString) : null;
-    },
-
-    parseLongDatetime: function(longDateTime){
-        return longDateTime ? moment(longDateTime).format("DD MMM YY h:mm a") : null;
     },
 
     now: function(){

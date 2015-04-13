@@ -6,7 +6,7 @@ Bahmni.Common.Domain.ObservationValueMapper = function () {
         }
         if(type === 'Datetime') {
             var date = Bahmni.Common.Util.DateUtil.parseDatetime(obs.value);
-            return date != null ? date.format('DD MMM YYYY, hh:mm A') : "";
+            return date != null ? Bahmni.Common.Util.DateUtil.formatDateWithTime(date) : "";
         }
         if(obs.isMultiSelect){
             return obs.getValues();

@@ -116,7 +116,7 @@
                     <tbody>
                         <tr ng-repeat="item in importedItems">
                             <td><strong>{{ item.originalFileName }}</strong></td>
-                            <td>{{ item.startTime | date: 'd MMM yy h:mm a' }}</td>
+                            <td>{{ item.startTime | bahmniDateTime }}</td>
                             <td>{{ item.status }}</td>
                             <td>{{ item.errorMessage }}</td>
                             <td><a ng-if="item.hasError()" ng-href="{{item.errorFileUrl()}}">Error File</a></td>

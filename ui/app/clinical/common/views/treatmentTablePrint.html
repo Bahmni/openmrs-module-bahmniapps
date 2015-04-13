@@ -10,9 +10,9 @@
         <td class="dosage-form">
             <span bo-show="drugOrder.getDescription()" bo-text="drugOrder.getDescription()"></span>
             <span bo-show="!drugOrder.getDescription()" bo-text="' - '"></span>
-            <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">stopped {{drugOrder.effectiveStopDate | date: 'dd MMM yy'}}</span>
+            <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">stopped {{drugOrder.effectiveStopDate | bahmniDate}}</span>
         </td>
-        <td bo-text="(drugOrder.effectiveStartDate | date:'d MMM yy')"></td>
+        <td bo-text="(drugOrder.effectiveStartDate | bahmniDate)"></td>
     </tr>
     <tr ng-if="drugOrder.additionalInstructions">
         <td colspan="7" class="inline-notes notes">

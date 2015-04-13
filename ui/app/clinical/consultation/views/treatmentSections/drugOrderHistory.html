@@ -8,7 +8,7 @@
 			<div class="tab" ng-repeat="drugOrderGroup in consultation.drugOrderGroups">
 				<input class="tab-radio" id="{{'drug-orders-tab-' + $index}}" name="tab-group-1" type="radio" ng-checked="drugOrderGroup.selected" ng-class="{}" tabindex="-1">
 				<label class="tab-label" for="{{'drug-orders-tab-' + $index}}">
-                    <span>{{drugOrderGroup.label | date: 'dd MMM yy'}}</span>
+                    <span>{{drugOrderGroup.label | bahmniDate}}</span>
                     <i class="icon-star current-visit-icon" title="Current visit" ng-if="drugOrderGroup.isCurrentVisit"></i>
                 </label>
                 <button class="secondary-button refill-drugs-btn fr" ng-click="refillAll(drugOrderGroup.drugOrders)" ng-if="!drugOrderGroupsEmpty()">Refill All</button>
@@ -54,15 +54,15 @@
                                     </div>
 								</div>
                                 <div class="start-date fr">
-                                    <span ng-if="showEffectiveFromDate(drugOrderGroup.visitStartDate, drugOrder.effectiveStartDate)"> from {{drugOrder.effectiveStartDate | date: 'dd MMM yy'}}</span>
+                                    <span ng-if="showEffectiveFromDate(drugOrderGroup.visitStartDate, drugOrder.effectiveStartDate)"> from {{drugOrder.effectiveStartDate | bahmniDate}}</span>
                                     <br/>
-                                    <span ng-if="drugOrder.isDiscontinuedOrStopped()">stopped {{drugOrder.effectiveStopDate | date: 'dd MMM yy'}}</span>
+                                    <span ng-if="drugOrder.isDiscontinuedOrStopped()">stopped {{drugOrder.effectiveStopDate | bahmniDate}}</span>
                                 </div>
                                 <div ng-show="drugOrder.showAdditionalInstructions" class="notes inline-notes">
                                     {{drugOrder.additionalInstructions}}
                                     <div class="footer-note fr">
                                         <span class="time-stamp">
-                                            <span class="time">{{drugOrder.dateActivated | date: 'dd MMM yy'}}</span>
+                                            <span class="time">{{drugOrder.dateActivated | bahmniDate}}</span>
                                         </span>
                                         <span class="provider">{{drugOrder.provider.name}}</span>
                                     </div>

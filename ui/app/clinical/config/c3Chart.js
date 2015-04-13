@@ -43,7 +43,7 @@ Bahmni.Graph = Bahmni.Graph || {};
                             max: 3
                         },
                         format: function (x) {
-                            return dateUtil.formatDateAsDDMMMYY(x);
+                            return dateUtil.formatDateWithoutTime(x);
                         }
                     }
                 },

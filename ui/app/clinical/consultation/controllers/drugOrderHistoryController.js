@@ -69,7 +69,7 @@ angular.module('bahmni.clinical')
 
                 var drugOrderGroups = _.map(drugOrderGroupedByDate, function (drugOrders, visitStartDate) {
                     return {
-                        label: $filter("date")(DateUtil.parse(visitStartDate), 'dd MMM yy'),
+                        label: $filter("bahmniDate")(visitStartDate),
                         visitStartDate: DateUtil.parse(visitStartDate),
                             drugOrders: drugOrders.map(createDrugOrder),
                         isCurrentVisit: currentVisit && DateUtil.isSameDateTime(visitStartDate, currentVisit.startDate)
@@ -114,7 +114,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.showEffectiveFromDate = function (visitStartDate, effectiveStartDate) {
-                return $filter("date")(effectiveStartDate, 'dd MMM yy') !== $filter("date")(visitStartDate, 'dd MMM yy');
+                return $filter("bahmniDate")(effectiveStartDate) !== $filter("bahmniDate")(visitStartDate);
             };
 
             $scope.refill = function (drugOrder) {

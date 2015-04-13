@@ -17,7 +17,7 @@
                     <i class="icon-caret-right" ng-hide="obsGroup.isOpen"></i>
                     <i class="icon-caret-down" ng-show="obsGroup.isOpen"></i>
                     <span class="obs-date">
-                        {{obsGroup.date | date: 'dd MMM yy hh:mm a'}}
+                        {{obsGroup.date | bahmniDateTime}}
                     </span>
                 </span>
                 <ul bm-show="obsGroup.isOpen">

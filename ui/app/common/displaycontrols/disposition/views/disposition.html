@@ -8,7 +8,7 @@
                     <span class="disposition-state">{{disposition.conceptName}}</span>
             </td>
             <td class="value">
-                {{disposition.dispositionDateTime| date:'dd MMM yy'}}
+                {{disposition.dispositionDateTime| bahmniDate}}
             </td>
             <td class="toggle-btn" ng-if="showDetailsButton(disposition)" >
                 <button class="toggle fr"
@@ -24,7 +24,7 @@
                 <pre class="left ng-binding">{{getNotes(disposition)}}</pre>
                 <div class="footer-note right">
                         <span class="provider">
-                            {{disposition.providers[0].name}} {{disposition.dispositionDateTime | date:'hh:mm a'}}
+                            {{disposition.providers[0].name}} {{disposition.dispositionDateTime | bahmniTime}}
                         </span>
                 </div>
             </td>

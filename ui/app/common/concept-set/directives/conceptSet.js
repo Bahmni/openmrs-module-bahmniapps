@@ -16,7 +16,7 @@ angular.module('bahmni.common.conceptSet')
 
             $scope.getStringValue = function(observations) {
                 return observations.map(function(observation) {
-                    return observation.value + ' (' + $filter('date')(observation.date, 'dd MMM yy') + ")";
+                    return observation.value + ' (' + $filter('bahmniDate')(observation.date) + ")";
                 }).join(", ");
             };
             $scope.selectOptions = function(codedConcept){

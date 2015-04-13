@@ -3,8 +3,8 @@
     ng-class="{'disabled': !hasPrevious()}"><span><i class="icon-caret-left"></i></span></a>
     <div class="visit-details">
         <span class="visit-date">
-            <span>{{visitHistoryEntry.startDatetime | date: "d MMM yy"}}</span>
-            <span ng-show="visitHistoryEntry.stopDatetime"> - {{visitHistoryEntry.stopDatetime | date: "d MMM yy"}}</span>
+            <span>{{visitHistoryEntry.startDatetime | bahmniDate}}</span>
+            <span ng-show="visitHistoryEntry.stopDatetime"> - {{visitHistoryEntry.stopDatetime | bahmniDate}}</span>
             <span ng-if="visitSummary.visitType">({{visitSummary.visitType}})</span>
             <span ng-show="visitHistoryEntry.isActive()" title="Current Visit"><i class="icon-star current-visit-icon"></i></span>
         </span>

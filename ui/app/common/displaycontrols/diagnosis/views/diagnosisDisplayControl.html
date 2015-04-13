@@ -20,7 +20,7 @@
                         <span id="order" ng-hide="config.showOrder == false" class="order">{{diagnosis.order}}</span>
                         <span id="status" class="status">{{diagnosis.diagnosisStatus}}</span>
                 </td>                
-                <td id="diagnosisDate" class="date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}
+                <td id="diagnosisDate" class="date">{{diagnosis.diagnosisDateTime | bahmniDate}}
                 </td>
 
                 <td class="toggle-btn" ng-show="!diagnosis.comments && config.showDetailsButton">
@@ -37,7 +37,7 @@
                         <span id="status" class="status">{{diagnosis.latestDiagnosis.diagnosisStatus}}</span>
                 </td>
 
-                <td id="diagnosisDate" class="date" ng-if="showLatestDiagnosis ==  'true'" >{{diagnosis.latestDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}
+                <td id="diagnosisDate" class="date" ng-if="showLatestDiagnosis ==  'true'" >{{diagnosis.latestDiagnosis.diagnosisDateTime | bahmniDate}}
                 </td>
                 <td class="toggle-btn" ng-show="!diagnosis.comments && config.showDetailsButton" ng-if="showLatestDiagnosis ==  'true'" >
                     <button  class="toggle fr" ng-click="toggle(diagnosis,true)"
@@ -53,7 +53,7 @@
                     <pre id="diagnosisComments" class="left">{{diagnosis.comments}}</pre>
                     <div class="footer-note right">
                         <span class="provider">
-                            {{providerName(diagnosis)}} {{diagnosis.diagnosisDateTime | date :'hh:mm a'}}
+                            {{providerName(diagnosis)}} {{diagnosis.diagnosisDateTime | bahmniTime}}
                         </span>
                     </div>
                 </td>
@@ -63,7 +63,7 @@
                 <td colspan="4" class="notes inline-notes">
                     <div class="footer-note right">
                         <span class="provider">
-                            {{providerName(diagnosis)}} {{diagnosis.diagnosisDateTime | date :'hh:mm a'}}
+                            {{providerName(diagnosis)}} {{diagnosis.diagnosisDateTime | bahmniTime}}
                         </span>
                     </div>
                 </td>
@@ -72,7 +72,7 @@
                 <td colspan="7" class="notes inline-notes">
                     <div class="footer-note right">
                         <span class="provider">
-                            {{providerName(diagnosis)}} {{diagnosis.diagnosisDateTime | date :'hh:mm a'}}
+                            {{providerName(diagnosis)}} {{diagnosis.diagnosisDateTime | bahmniTime}}
                         </span>
                     </div>
                 </td>

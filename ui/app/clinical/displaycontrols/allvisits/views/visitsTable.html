@@ -8,8 +8,8 @@
             <tr ng-repeat="visit in ::visits | limitTo: params.maximumNoOfVisits">
                 <td class="name" width="50%">
                     <a class="ngdialog-close visit" ng-click="openVisit(visit)">
-                        <span>{{::visit.startDatetime | date: 'd MMM yy'}}</span>
-                        <span ng-if="::!visit.isActive()">- {{::visit.stopDatetime | date: 'd MMM yy'}}</span>
+                        <span>{{::visit.startDatetime | bahmniDate}}</span>
+                        <span ng-if="::!visit.isActive()">- {{::visit.stopDatetime | bahmniDate }}</span>
                         <i class="icon-star current-visit-icon" ng-if="::visit.isActive()" title="Current Visit"></i>
                     </a>
                 </td>

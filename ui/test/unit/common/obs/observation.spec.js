@@ -28,7 +28,7 @@ describe("Observation", function () {
 
         it("should return datetime in specific format", function () {
             var observation = new Observation({"type": "Datetime", "value": "2014-12-05 17:00:00"});
-            expect(observation.getDisplayValue()).toBe("05 Dec 2014, 05:00 PM");
+            expect(observation.getDisplayValue()).toBe("05 Dec 14 5:00 pm");
         });
 
         it("should return empty if value is null", function () {
@@ -38,7 +38,7 @@ describe("Observation", function () {
             expect(observation.getDisplayValue()).toBe("");
         });
 
-        it("should format date as DD MMM YY  if value is of type date", function () {
+        it("should format date to bahmniDate  if value is of type date", function () {
             var observation = new Observation({"type": "Date", "value": "2012-12-10"});
             expect(observation.getDisplayValue()).toBe("10 Dec 12");
         });

@@ -168,5 +168,48 @@ describe('DateUtil', function () {
         xit("should convert long date to server format", function () {
             expect(dateUtil.parseLongDateToServerFormat(1425234600000)).toEqual("2015-03-02T00:15:00.000");
         })
-    })
+    });
+
+    describe("formatDateWithTime", function () {
+        it("should take a long representation of date and format", function () {
+            expect(dateUtil.formatDateWithTime("1427803080000")).toEqual("31 Mar 15 5:28 pm");
+        });
+
+        it("should take a string representation of date and format", function () {
+            expect(dateUtil.formatDateWithTime("2015-03-02T00:15:00.000")).toEqual("02 Mar 15 12:15 am");
+        });
+
+        it("should not break for undefined and return null", function () {
+            expect(dateUtil.formatDateWithTime(undefined)).toBeNull();
+        });
+    });
+
+    describe("formatDateWithoutTime", function () {
+        it("should take a long representation of date and format", function () {
+            expect(dateUtil.formatDateWithoutTime("1427803080000")).toEqual("31 Mar 15");
+        });
+
+        it("should take a string representation of date and format", function () {
+            expect(dateUtil.formatDateWithoutTime("2015-03-02T00:15:00.000")).toEqual("02 Mar 15");
+        });
+
+        it("should not break for undefined and return null", function () {
+            expect(dateUtil.formatDateWithoutTime(undefined)).toBeNull();
+        });
+    });
+
+    describe("formatTime", function () {
+        it("should take a long representation of date and format", function () {
+            expect(dateUtil.formatTime("1427803080000")).toEqual("5:28 pm");
+        });
+
+        it("should take a string representation of date and format", function () {
+            expect(dateUtil.formatTime("2015-03-02T00:15:00.000")).toEqual("12:15 am");
+        });
+
+        it("should not break for undefined and return null", function () {
+            expect(dateUtil.formatTime(undefined)).toBeNull();
+        });
+    });
+
 });

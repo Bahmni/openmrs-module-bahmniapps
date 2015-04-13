@@ -8,7 +8,7 @@ describe("Observation Value Mapper", function () {
     it("should return datetime value", function() {
         var obs = {type: "Datetime", value: "2015-12-05 16:02:00", concept: {}};
         var mapper = new Bahmni.Common.Domain.ObservationValueMapper();
-        expect(mapper.map(obs)).toBe("05 Dec 2015, 04:02 PM");
+        expect(mapper.map(obs)).toBe("05 Dec 15 4:02 pm");
     });
 
     it("should return multiselect values", function() {

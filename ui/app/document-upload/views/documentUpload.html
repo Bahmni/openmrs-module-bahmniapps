@@ -92,9 +92,9 @@
       <i ng-hide="isCurrentVisit(visit)" class="icon-plus-sign state"></i>
       <i ng-if="isCurrentVisit(visit)" class="icon-minus-sign state"></i>
       Visit: <small>From: </small>
-      <span>{{visit.startDatetime | date:'dd-MMM-yy'}}</span>
+      <span>{{visit.startDatetime | bahmniDate}}</span>
       <small ng-if="visit.stopDatetime">To: </small>
-      <span ng-if="visit.stopDatetime">{{visit.stopDatetime | date:'dd-MMM-yy'}}</span>
+      <span ng-if="visit.stopDatetime">{{visit.stopDatetime | bahmniDate}}</span>
       <span ng-if="visit.hasImages()" class="containsImageMarker" title="Visit has images"><i class="icon-picture"></i></span>
       <span ng-if="!visit.stopDatetime" class="currentVisitMarker" title="Current Visit"><i class="icon-star"></i></span>
     </h5>

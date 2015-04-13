@@ -14,7 +14,7 @@
         </div>
         <div>
       <span class="time-stamp">
-        <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span> 
+        <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniDate}}</span>
       </span>
             <span class="provider" ng-repeat="provider in diagnosis.firstDiagnosis.providers">{{provider.name}}</span>
         </div>
@@ -29,7 +29,7 @@
         </div>
         <div>
       <span class="time-stamp">
-        <span class="date">{{diagnosis.diagnosisDateTime | date :'dd MMM yy'}}</span>
+        <span class="date">{{diagnosis.diagnosisDateTime | bahmniDate}}</span>
       </span>
             <span class="provider" ng-repeat="provider in diagnosis.providers">{{provider.name}}</span>
         </div>
