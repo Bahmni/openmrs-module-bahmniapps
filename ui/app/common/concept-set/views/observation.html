@@ -199,20 +199,26 @@
                 <textarea class="obs-comment-section"  maxlength="255" ng-model="observation.comment" placeholder="Notes">
                 </textarea>
             </div>
+
         </div>
     </fieldset>
 
-    <fieldset ng-if="!observation.isObservationNode && !observation.isFormElement() && !observation.isComputed()" class="hasLegend">
-
-        <legend ng-if="showTitle" class="mylegend">
+    <fieldset ng-if="!observation.isObservationNode && !observation.isFormElement()" class="hasLegend">
+        <legend ng-if="showTitle && !observation.isComputed()" class="mylegend">
             <strong>{{::observation.label}}</strong>
             <span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
                 <button type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)"><i class="icon-plus-sign"></i> Add More
                 </button>
             </span>
         </legend>
-
-        <div class="form-group">        
+        <div ng-if="observation.isComputed()">
+            <label class="control-label" for="{{::observation.uniqueId}}" >
+                <span ng-bind="::observation.label"></span>
+                <i class="icon-question-sign concept-tooltip-trigger" bm-pop-over-trigger ng-if="::observation.primaryObs.concept.description"></i>
+            </label>
+            <span>{{observation.value}}</span>
+        </div>
+        <div class="form-group" ng-if="!observation.isComputed()">
             <div class="concept-set-description" ng-if="::observation.concept.description">
                 <span class="description" ng-bind-html="observation.concept.description"></span>
             </div>
