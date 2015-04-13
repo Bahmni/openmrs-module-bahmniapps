@@ -6,7 +6,7 @@
         <section class="block diagnosis section-grid" ng-show="consultation.newlyAddedDiagnoses.length > 0 || consultation.savedDiagnosesFromCurrentEncounter.length > 0 || editedDiagnosesFromPastEncounters.length > 0">
             <h2 class="section-title">Diagnoses</h2>
             <div class="table history-diagnosis" ng-show="consultation.newlyAddedDiagnoses.length > 0">
-                <div class="row table-header" ng-if="!print">
+                <div class="row table-header">
                     <div class="col col1"><span class="table-head-title">Newly Added</span></div>
                     <div class="col col2"><span class="table-head-title">Status</span></div>
                     <div class="col col3"><span class="table-head-title"></span></div>
@@ -38,7 +38,7 @@
                                 </div>
                             </div>
                             <div class="col col3"></div>
-                            <div class="col col4" ng-if="!print">
+                            <div class="col col4">
                                 <i ng-show="diagnosis.revised" class="icon-ok fl"></i>
                                 <button class="toggle fr" ng-if="diagnosis.comments" ng-click="diagnosis.showComment = !diagnosis.showComment" ng-class="{'has-notes': diagnosis.comments}">
                                     <i class="icon-angle-down" ng-hide="diagnosis.showComment"></i>
@@ -57,7 +57,7 @@
             </div>
             
             <div class="table history-diagnosis" ng-show="consultation.savedDiagnosesFromCurrentEncounter.length > 0">
-                <div class="row table-header" ng-if="!print">
+                <div class="row table-header">
                     <div class="col col1"><span class="table-head-title">Current</span></div>
                     <div class="col col2"><span class="table-head-title">Status</span></div>
                     <div class="col col3"><span class="table-head-title"></span></div>
@@ -108,7 +108,7 @@
             </div>
 
             <div class="table history-diagnosis" ng-show="editedDiagnosesFromPastEncounters.length > 0">
-                <div class="row table-header" ng-if="!print">
+                <div class="row table-header">
                     <div class="col col1"><span class="table-head-title">Past</span></div>
                     <div class="col col2"><span class="table-head-title">Status</span></div>
                     <div class="col col3"><span class="table-head-title"></span></div>
