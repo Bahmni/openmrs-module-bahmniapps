@@ -43,12 +43,12 @@
             </div>
             <div data-ng-switch-when="radiology">
                 <div ng-if="section.config">
-                    <bm-radiology-documents patient="patient" config="section.config"></bm-radiology-documents>
+                    <bm-documents patient="patient" config="section.config" encounter-type="'RADIOLOGY'"></bm-documents>
                 </div>
             </div>
             <div data-ng-switch-when="patientFiles">
-                <div ng-if="section.config">
-                    <ng-include src="'common/views/visitSummarySections/patientFiles.html'"></ng-include>
+                <div ng-if="section.config && !isBeingPrinted">
+                    <bm-documents patient="patient" config="section.config" encounter-type="'Patient Document'"></bm-documents>
                 </div>
             </div>
             <div data-ng-switch-when="otherInvestigations">

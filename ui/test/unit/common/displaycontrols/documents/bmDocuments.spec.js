@@ -1,23 +1,26 @@
 'use strict';
 
 describe("Radiology Display Control", function () {
-    var scope, element, $compile, encounterService, spinner, configurations;
-    beforeEach(module('bahmni.common.displaycontrol.radiology'));
+    var scope, element, $compile, encounterService, spinner, configurations, params;
+    beforeEach(module('bahmni.common.displaycontrol.documents'));
     beforeEach(module('foo'));
 
     beforeEach(module(function ($provide) {
-        configurations = {
-            encounterConfig: function () {
+        var encounterConfig = {
+            getEncounterTypeUuid: function (type) {
             }
         };
-        spyOn(configurations, 'encounterConfig').and.returnValue({
-            getRadiologyEncounterTypeUuid: function () {
-                return "asdf";
+        configurations = {
+            encounterConfig: function(){
+                return encounterConfig;
             }
+        };
+        params = {"RADIOLOGY": "radiology-uuid", "radiology-uuid": specUtil.respondWith([])};
+        spyOn(encounterConfig, 'getEncounterTypeUuid').and.callFake(function(myParam) {
+            return params[myParam]
         });
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         encounterService = {getEncountersForEncounterType: {}};
-        spyOn(encounterService, 'getEncountersForEncounterType').and.returnValue(specUtil.respondWith([]));
 
         $provide.value('configurations', configurations);
         $provide.value('spinner', spinner);
@@ -36,8 +39,11 @@ describe("Radiology Display Control", function () {
     }));
 
     beforeEach(function(){
-        element = angular.element('<bm-radiology-documents patient="patient" config="config"></bm-radiology-documents>');
+        element = angular.element('<bm-documents patient="patient" config="config" encounter-type="\'RADIOLOGY\'"></bm-documents>');
         $compile(element)(scope);
+        spyOn(encounterService, 'getEncountersForEncounterType').and.callFake(function(param1, param2){
+            return params[param2];
+        });
     });
 
     it("should show active visit star if visit stop date is not present", function () {

@@ -1,6 +1,6 @@
 'use strict';
 
-Bahmni.Clinical.RadiologyRecordsMapper = function () {
+Bahmni.Clinical.RecordsMapper = function () {
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
     var sortByDateTimeOrId = function (record1, record2) {

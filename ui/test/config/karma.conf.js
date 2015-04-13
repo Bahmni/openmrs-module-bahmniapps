@@ -55,7 +55,7 @@ module.exports = function (config) {
             'app/orders/**/*.js': ['coverage'],
             'app/registration/**/*.js': ['coverage'],
             'app/trends/**/*.js': ['coverage'],
-            'app/common/displaycontrols/radiology-documents/views/bmRadiologyDocuments.html':['ng-html2js'],
+            'app/common/displaycontrols/documents/views/bmDocuments.html':['ng-html2js'],
             'app/common/displaycontrols/patientprofile/views/patientProfile.html':['ng-html2js']
         },
         coverageReporter: {

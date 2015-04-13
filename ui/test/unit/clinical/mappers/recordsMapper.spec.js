@@ -1,6 +1,6 @@
 'use strict';
 
-describe("RadiologyRecordsMapper", function () {
+describe("RecordsMapper", function () {
     var encounters = [
         {
             "id": 66796,
@@ -240,7 +240,7 @@ describe("RadiologyRecordsMapper", function () {
     ];
 
     it("should map radiology record observations", function () {
-        var recordGroups = new Bahmni.Clinical.RadiologyRecordsMapper().map(encounters);
+        var recordGroups = new Bahmni.Clinical.RecordsMapper().map(encounters);
 
         var recordsForChest2Views = recordGroups.filter(function (group) { return group.conceptName =="Chest, 2 views (X-ray)" })[0];
         var headSkullAP = recordGroups.filter(function (group) { return group.conceptName =="HEAD Skull AP" })[0];

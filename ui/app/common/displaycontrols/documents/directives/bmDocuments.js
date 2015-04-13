@@ -1,18 +1,17 @@
 'use strict';
 
-angular.module('bahmni.common.displaycontrol.radiology')
-    .directive('bmRadiologyDocuments', ['encounterService', 'spinner', 'configurations', function (encounterService, spinner, configurations) {
+angular.module('bahmni.common.displaycontrol.documents')
+    .directive('bmDocuments', ['encounterService', 'spinner', 'configurations', function (encounterService, spinner, configurations) {
         var controller = function ($scope) {
-            var encounterTypeUuid = configurations.encounterConfig().getRadiologyEncounterTypeUuid();
-
+            var encounterTypeUuid = configurations.encounterConfig().getEncounterTypeUuid($scope.encounterType);
             spinner.forPromise(encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
-                $scope.radiologyRecords = new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
+                $scope.records = new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
                 if ($scope.config.visitUuids) {
-                    $scope.radiologyRecords = _.filter($scope.radiologyRecords, function(record) {
+                    $scope.records = _.filter($scope.records, function(record) {
                         return $scope.config.visitUuids.indexOf(record.visitUuid) != -1;
                     });
                 }
-                $scope.radiologyRecordGroups = new Bahmni.Clinical.RadiologyRecordsMapper().map($scope.radiologyRecords);
+                $scope.recordGroups = new Bahmni.Clinical.RecordsMapper().map($scope.records);
 
             }));
 
@@ -32,8 +31,9 @@ angular.module('bahmni.common.displaycontrol.radiology')
             controller: controller,
             scope: {
                 patient: "=",
-                config: "="
+                config: "=",
+                encounterType: "="
             },
-            templateUrl: "../common/displaycontrols/radiology-documents/views/bmRadiologyDocuments.html"
+            templateUrl: "../common/displaycontrols/documents/views/bmDocuments.html"
         };
     }]);
