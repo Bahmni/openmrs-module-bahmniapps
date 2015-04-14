@@ -23,6 +23,13 @@ angular.module('bahmni.registration')
                 $scope.editActions = editActions;
             };
 
+            var findPrivilege = function(privilegeName) {
+                var find = _.find($rootScope.currentUser.privileges, function(privilege) {
+                        return privilegeName === privilege.name;
+                    });
+                return find;
+            };
+        
             $scope.patient = {};
             (function () {
                 uuid = $stateParams.patientUuid;
@@ -42,14 +49,13 @@ angular.module('bahmni.registration')
                     showOrHideAdditionalPatientInformation();
 
                 });
-
-                var isRegistrationConsultationPrivilege = _.find($rootScope.currentUser.privileges, function (privilege) {
-                    return registration_Consultation_Privilege === privilege.name;
-                });
                 var searchActiveVisitsPromise = visitService.search({patient: uuid, includeInactive: false, v: "custom:(uuid)"}).success(function(data){
+                    $scope.visitUuid = data.results.length > 0 ? data.results[0].uuid : "";
                     $scope.hasActiveVisit = data.results.length > 0;
-                    var actionName = isRegistrationConsultationPrivilege && $scope.hasActiveVisit ? "enterConsultation" : ($scope.hasActiveVisit ? "enterVisitDetails" : "startVisit");
+                    var actionName = findPrivilege(registration_Consultation_Privilege) && $scope.hasActiveVisit ? "enterConsultation" : ($scope.hasActiveVisit ? "enterVisitDetails" : "startVisit");
                     defaultActions.push(actionName);
+                    var closeVisitPrivilege = Bahmni.Common.Constants.closeVisitPrivilege;
+                    $scope.canCloseVisit = findPrivilege(closeVisitPrivilege) && $scope.hasActiveVisit;
                     identifyEditActions();
                 });
 
@@ -71,6 +77,10 @@ angular.module('bahmni.registration')
 
             $scope.setSubmitSource = function (source) {
                 $scope.submitSource = source;
+            };
+
+            $scope.closeVisit = function () {
+                visitService.endVisit($scope.visitUuid).then(function () {});
             };
 
             var goToVisitPage = function(patientData) {

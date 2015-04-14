@@ -35,8 +35,10 @@
                              option-text="visitControl.startButtonText" option-click="visitControl.startVisit" class="right"></div>
                         <button ng-switch-default type="submit" class="right" ng-click="setSubmitSource(extn.extensionParams.action)" accesskey="{{extn.extensionParams.shortcutKey}}" ng-class="{'confirm':extn.order === 1}" ng-bind-html="extn.extensionParams.display">
                         </button>
+                        <div>
+                            <button style="background-color:#D75A5A" ng-show="{{canCloseVisit}}" type="submit" class="right" ng-confirm-click="closeVisit()" confirm-message="Are you sure you want to close this visit?"><u>C</u>lose Visit</button>
+                        </div>
                     </span>
-                </span>
                 <button type="button" class="right" ng-click="back()" ng-show="showBackButton()">Back to Search Results</button>
             </div>
         </div>

@@ -114,6 +114,7 @@ Bahmni.Common = Bahmni.Common || {};
         messageForNoDisposition: "No dispositions available.",
         reportsUrl: "/bahmnireports/report",
         diagnosisStatuses : {"RULED OUT" : "Ruled Out Diagnosis"},
-        registartionConsultationPrivilege:'app:common:registration_consultation_link'
+        registartionConsultationPrivilege:'app:common:registration_consultation_link',
+        closeVisitPrivilege:'app:common:closeVisit'
     };
 })();
