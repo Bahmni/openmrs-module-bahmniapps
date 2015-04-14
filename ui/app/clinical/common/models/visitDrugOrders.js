@@ -33,6 +33,8 @@ Bahmni.Clinical.VisitDrugOrder = (function () {
             prescribedDrugOrders.push(Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder))
         });
 
+//        console.log(drugOrders);
+//        console.log(prescribedDrugOrders);
         return this.createFromDrugOrders(prescribedDrugOrders, admissionDate, dischargeDate);
     };
 

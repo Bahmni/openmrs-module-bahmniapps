@@ -9,6 +9,7 @@ describe("LatestPrescriptionPrintController", function () {
     var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
     var controller;
     var rootScope;
+    var treatmentService, drugOrderPromise, messagingService, visitActionService;
 
     beforeEach(inject(function ($controller, $rootScope) {
         controller = $controller;
@@ -31,48 +32,65 @@ describe("LatestPrescriptionPrintController", function () {
         });
     }));
 
-    var loadController = function (visitInitialization, expectations) {
+    var loadController = function (visitActionServiceExpectation, messageServiceExpectation) {
+        treatmentService = jasmine.createSpyObj('TreatmentService', ['getPrescribedAndActiveDrugOrders']);
+        drugOrderPromise = specUtil.createServicePromise('getPrescribedAndActiveDrugOrders');
+        treatmentService.getPrescribedAndActiveDrugOrders.and.returnValue(drugOrderPromise);
+
+        visitActionService = jasmine.createSpyObj('visitActionService', ['printPrescription']);
+        visitActionService.printPrescription.and.callFake(visitActionServiceExpectation);
+
+        messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
+        messagingService.showMessage.and.callFake(messageServiceExpectation);
+
         controller('LatestPrescriptionPrintController', {
             $scope: scope,
             $rootScope: rootScope,
-            messagingService: jasmine.createSpyObj('messagingService', ['showMessage']),
-            visitInitialization: visitInitialization,
+            messagingService: messagingService,
+            TreatmentService: treatmentService,
             spinner: spinner,
-            visitActionsService: {printPrescription: expectations}
+            visitActionsService: visitActionService
         });
     };
 
     describe("when loaded", function () {
         it("should print visit summary of latest visit", function () {
             scope.patient = {"uuid": "patientUuid"};
-            scope.visit = null;
             scope.visitHistory = {
-                activeVisit: {uuid: "latestVisitUuid"}
+                activeVisit: {uuid: "latestVisitUuid", startDatetime: "someStartDate"}
             };
 
-            var visitInitialization = function () {
-                return specUtil.respondWith({uuid: "latestVisitUuid", startDate: "someStartDate"});
-            };
-
-            var expectations = function (patient, visit, startDate) {
+            var visitActionServiceExpectation = function (patient, drugOrders, startDate) {
                 expect(patient.uuid).toBe("patientUuid");
-                expect(visit.uuid).toBe("latestVisitUuid");
+                expect(drugOrders.length).toBe(0);
                 expect(startDate).toBe("someStartDate");
             };
+            var messageServiceExpectation = function (type, message){
+                expect(type).toBe("info");
+                expect(message).toBe("Please close this tab.");
+            };
 
-            loadController(visitInitialization, expectations);
+            loadController(visitActionServiceExpectation, messageServiceExpectation);
+
+            drugOrderPromise.callThenCallBack({data: {visitDrugOrders: []}});
+            expect(messagingService.showMessage).toHaveBeenCalled();
+            expect(visitActionService.printPrescription).toHaveBeenCalled();
+
         });
 
         it("should show message when no active visit found", function () {
             scope.patient = {"uuid": "patientUuid"};
-            scope.visit = null;
             scope.visitHistory = {};
 
-            var expectations = function () {
-                expect(messagingService.showMessage).toHaveBeenCalled();
+            var messageServiceExpectation = function (type, message){
+                expect(type).toBe("error");
+                expect(message).toBe("No Active visit found for this patient.");
             };
 
-            loadController(null, expectations);
+            loadController(null, messageServiceExpectation);
+
+            expect(messagingService.showMessage).toHaveBeenCalled();
+            expect(visitActionService.printPrescription).not.toHaveBeenCalled();
         });
     });
 });
