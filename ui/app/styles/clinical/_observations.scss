@@ -125,7 +125,7 @@ form .vitals .form-field .field-value {
     width: 10em;
   }
   .autocomplete {
-    width: 310px;
+    width: 220px;
     overflow: auto;
     input.concept-name.ui-autocomplete-input {
       float: left;
@@ -199,6 +199,9 @@ concept {
 /*custom changes: auto complete form field -> will be moved globally once finalized.*/
 .select2-container .select2-choice {
   padding: 5px;
+  height: 16px;
+  line-height: 16px;
+  margin-top: 4px;
   @media screen and (max-width: 595px) {
     margin-top: 5px;
   }
