@@ -56,7 +56,7 @@ describe("User", function () {
 
        it("should replace existing patient in recently viewed list if it has reached max limit", function(){
            var user = new User({"userProperties": { "recentlyViewedPatients": '[{"uuid": "5678", "name": "patient2"},{"uuid": "1234", "name": "patient1"}]'}});
-           user.addToRecentlyViewed({uuid: '9999', name: 'patient3'}, 1);
+           user.addToRecentlyViewed({uuid: '9999', name: 'patient3'}, 2);
            expect(user.recentlyViewedPatients).toEqual([{uuid: '9999', name: 'patient3'},{uuid: '5678', name: 'patient2'}]);
        });
     });

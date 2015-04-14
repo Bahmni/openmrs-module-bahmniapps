@@ -17,10 +17,10 @@ Bahmni.Auth.User = function (user) {
 
     this.addToRecentlyViewed = function(patient, maxPatients) {
         if(!_.any(this.recentlyViewedPatients, {'uuid': patient.uuid})) {
-            if(_.size(this.recentlyViewedPatients)> maxPatients){
+            this.recentlyViewedPatients.unshift({uuid: patient.uuid, name: patient.name});
+            if(_.size(this.recentlyViewedPatients)>= maxPatients){
                 this.recentlyViewedPatients = _.first(this.recentlyViewedPatients, maxPatients);
             }
-            this.recentlyViewedPatients.unshift({uuid: patient.uuid, name: patient.name});
         }
     };
 
