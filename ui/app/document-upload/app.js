@@ -6,10 +6,12 @@ angular.module('documentupload', ['ui.router', 'bahmni.common.config', 'opd.docu
 angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', 
         function ($stateProvider, $httpProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/search');
+        var patientSearchBackLink = {label: "", state: "patientsearch", accessKey: "p", id: "patients-link", icon: "icon-users"};
+        var homeBackLink = {label: "", url: "../home/", icon: "icon-home"};
         $stateProvider.state('search', {
                 url:'/search',
                 data: {
-                    backLinks: [{label: "Home", url: "../home/", icon: "icon-home"}]
+                    backLinks: [homeBackLink]
                 },
                 views: {
                     'content': {
@@ -27,7 +29,7 @@ angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$ur
             .state('upload', {
                 url: '/patient/:patientUuid/document',
                 data: {
-                    backLinks: [{label: "Patients", url: "#/search", icon: "icon-circle-arrow-left"}]
+                    backLinks: [homeBackLink,patientSearchBackLink]
                 },
                 views: {
                     'content': {
