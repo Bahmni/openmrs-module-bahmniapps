@@ -1,57 +1,57 @@
 <section id="admissionDetails" class="block">
     <h2 class="section-title">Admission Details</h2>
-    <div ng-if="!admissionEncounter && !dischargeEncounter">
+    <div ng-if="!visitSummary.admissionDetails && !visitSummary.dischargeDetails">
         <div class="placeholder-text">No Admission Details for this patient.</div>
     </div>
-    <table class="dashboard-table history-diagnosis" ng-if="admissionEncounter || dischargeEncounter">
+    <table class="dashboard-table history-diagnosis" ng-if="visitSummary.admissionDetails || visitSummary.dischargeDetails">
         <tbody class="row">
             <tr ng-if="bedDetails">
                 <td class="value">{{bedDetails.wardName}}</td>
                 <td class="value">{{bedDetails.bedNumber}}</td>
             </tr>
-            <tr class="view-past" ng-class="{'notes-open': admissionEncounter.show}">
+            <tr class="view-past" ng-class="{'notes-open': visitSummary.admissionDetails.show}">
                 <td class="name">
                     <span class="disposition-state">Admission Date</span>
                 </td>
-                <td class="value">
-                    {{admissionEncounter.encounterDatetime| bahmniDate}}
+                <td class="value" ng-if="visitSummary.admissionDetails">
+                    {{visitSummary.admissionDetails.date | bahmniDate}}
                 </td>
-                <td class="toggle-btn" ng-if="showDetailsButton(admissionEncounter)" ng-if="showDetailsButton(admissionEncounter)">
+                <td class="toggle-btn" ng-if="showDetailsButton(visitSummary.admissionDetails)">
                     <button class="toggle fr"
-                            ng-click="toggle(admissionEncounter)" >
-                        <i class="icon-angle-down" ng-hide="admissionEncounter.show"></i>
-                        <i class="icon-angle-up" ng-show="admissionEncounter.show"></i>
+                            ng-click="toggle(visitSummary.admissionDetails)" >
+                        <i class="icon-angle-down" ng-hide="visitSummary.admissionDetails.show"></i>
+                        <i class="icon-angle-up" ng-show="visitSummary.admissionDetails.show"></i>
                     </button>
                 </td>
             </tr>
-            <tr ng-if="admissionEncounter.show || getNotes(admissionEncounter)">
+            <tr ng-if="visitSummary.admissionDetails.show || visitSummary.admissionDetails.notes">
                 <td colspan="3" class="notes inline-notes">
-                    <pre class="left ng-binding">{{getNotes(admissionEncounter)}}</pre>
+                    <pre class="left ng-binding">{{visitSummary.admissionDetails.notes}}</pre>
                     <div class="footer-note right">
-                        <span class="provider">{{getProviderDetails(admissionEncounter)}} {{admissionEncounter.encounterDatetime  | bahmniTime}}</span>
+                        <span class="provider">{{visitSummary.admissionDetails.provider}} {{visitSummary.admissionDetails.date | bahmniTime}}</span>
                     </div>
                 </td>
             </tr>
-            <tr class="view-past" ng-if="dischargeEncounter" ng-class="{'notes-open': dischargeEncounter.show}"> 
+            <tr class="view-past" ng-if="visitSummary.dischargeDetails" ng-class="{'notes-open': visitSummary.dischargeDetails.show}">
                 <td class="name">
                     <span class="disposition-state">Discharge Date</span>
                 </td>
                 <td class="value">
-                    {{dischargeEncounter.encounterDatetime| bahmniDate}}
+                    {{visitSummary.dischargeDetails.date| bahmniDate}}
                 </td>
-                <td class="toggle-btn" ng-if="showDetailsButton(dischargeEncounter)">
+                <td class="toggle-btn" ng-if="showDetailsButton(visitSummary.dischargeDetails)">
                     <button class="toggle fr"
-                             ng-click="toggle(dischargeEncounter)">
-                        <i class="icon-angle-down" ng-hide="dischargeEncounter.show"></i>
-                        <i class="icon-angle-up" ng-show="dischargeEncounter.show"></i>
+                             ng-click="toggle(visitSummary.dischargeDetails)">
+                        <i class="icon-angle-down" ng-hide="visitSummary.dischargeDetails.show"></i>
+                        <i class="icon-angle-up" ng-show="visitSummary.dischargeDetails.show"></i>
                     </button>
                 </td>
             </tr>
-            <tr ng-show="dischargeEncounter.show || getNotes(dischargeEncounter)">
+            <tr ng-show="visitSummary.dischargeDetails.show || visitSummary.dischargeDetails.notes">
                 <td colspan="3" class="notes inline-notes">
-                    <pre class="left ng-binding">{{getNotes(dischargeEncounter)}}</pre>
+                    <pre class="left ng-binding">{{visitSummary.dischargeDetails.notes}}</pre>
                     <div class="footer-note right">
-                        <span class="provider">{{getProviderDetails(dischargeEncounter)}} {{dischargeEncounter.encounterDatetime  | bahmniTime}}</span>
+                        <span class="provider">{{visitSummary.dischargeDetails.provider}} {{visitSummary.dischargeDetails.date  | bahmniTime}}</span>
                     </div>
                 </td>
             </tr>

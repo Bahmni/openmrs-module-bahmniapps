@@ -19,8 +19,8 @@ angular.module('bahmni.common.domain')
             return this.getVisit(uuid, parameters);
         };
 
-        this.endVisit = function (visitId) {
-            return $http.post(Bahmni.Common.Constants.endVisitUrl + '?visitId=' + visitId, {
+        this.endVisit = function (visitUuid) {
+            return $http.post(Bahmni.Common.Constants.endVisitUrl + '?visitUuid=' + visitUuid, {
                 withCredentials: true
             });
         };

@@ -5,11 +5,17 @@ angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.c
     'bahmni.common.displaycontrol.pivottable', 'bahmni.common.displaycontrol.dashboard', 'bahmni.common.gallery',
     'bahmni.common.displaycontrol.disposition', 'bahmni.common.displaycontrol.admissiondetails', 'bahmni.common.routeErrorHandler', 'bahmni.common.displaycontrol.disposition',
     'httpErrorInterceptor', 'pasvaz.bindonce', 'infinite-scroll', 'bahmni.common.util', 'ngAnimate', 'ngDialog', 'angular-gestures',
-    'bahmni.common.displaycontrol.patientprofile', 'bahmni.common.displaycontrol.diagnosis','RecursionHelper','ngSanitize']);
+    'bahmni.common.displaycontrol.patientprofile', 'bahmni.common.displaycontrol.diagnosis', 'RecursionHelper', 'ngSanitize']);
 angular.module('consultation')
     .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/patient/search');
-        var patientSearchBackLink = {label: "<u>P</u>atients", state: "patientsearch", accessKey: "p", id: "patients-link", icon: "icon-circle-arrow-left"};
+        var patientSearchBackLink = {
+            label: "<u>P</u>atients",
+            state: "patientsearch",
+            accessKey: "p",
+            id: "patients-link",
+            icon: "icon-circle-arrow-left"
+        };
         var homeBackLink = {label: "", url: "../home/", icon: "icon-home"};
         $stateProvider
             .state('patientsearch', {
@@ -39,7 +45,7 @@ angular.module('consultation')
                 },
 
                 views: {
-                    'additional-header': { template: '<div ui-view="additional-header"></div>' },
+                    'additional-header': {template: '<div ui-view="additional-header"></div>'},
                     'content': {
                         template: '<div ui-view="content"></div><patient-control-panel patient="patient" visit-history="visitHistory" visit="visit" show="showControlPanel"/>',
                         controller: function ($scope, patientContext, visitHistory) {
@@ -71,11 +77,14 @@ angular.module('consultation')
                     }
                 },
                 resolve: {
-                    dashboardInitialization: function($rootScope, initialization, patientContext, clinicalDashboardConfig, userService) {
-                        return clinicalDashboardConfig.load(). then (function (data) {
+                    dashboardInitialization: function ($rootScope, initialization, patientContext, clinicalDashboardConfig, userService) {
+                        return clinicalDashboardConfig.load().then(function (data) {
                             $rootScope.currentUser.addToRecentlyViewed(patientContext.patient, clinicalDashboardConfig.currentDashboard.maxRecentlyViewedPatients || 10);
                             return userService.savePreferences();
                         });
+                    },
+                    visitSummary: function (visitSummaryInitialization, initialization, visitHistory) {
+                        return visitSummaryInitialization(visitHistory.activeVisit.uuid);
                     }
                 }
             })
@@ -95,10 +104,10 @@ angular.module('consultation')
                     }
                 },
                 resolve: {
-                    visitSummary: function(visitSummaryInitialization, $stateParams){
+                    visitSummary: function (visitSummaryInitialization, $stateParams) {
                         return visitSummaryInitialization($stateParams.visitUuid);
                     },
-                    visitConfig: function(initialization, visitTabConfig) {
+                    visitConfig: function (initialization, visitTabConfig) {
                         return visitTabConfig.load();
                     }
                 }
@@ -131,10 +140,11 @@ angular.module('consultation')
                 url: '/visit/:visitUuid',
                 templateUrl: 'common/views/visit.html',
                 controller: 'VisitController',
-                resolve:{
-                visitSummary: function(visitSummaryInitialization, $stateParams) {
-                    return visitSummaryInitialization($stateParams.visitUuid);
-                }}
+                resolve: {
+                    visitSummary: function (visitSummaryInitialization, $stateParams) {
+                        return visitSummaryInitialization($stateParams.visitUuid);
+                    }
+                }
             })
             .state('patient.consultation.summary', {
                 url: '/consultation',
@@ -209,7 +219,7 @@ angular.module('consultation')
         FastClick.attach(document.body);
         stateChangeSpinner.activate();
 
-        $rootScope.$on('$stateChangeSuccess', function() {
-            window.scrollTo(0,0);
+        $rootScope.$on('$stateChangeSuccess', function () {
+            window.scrollTo(0, 0);
         });
     }]);

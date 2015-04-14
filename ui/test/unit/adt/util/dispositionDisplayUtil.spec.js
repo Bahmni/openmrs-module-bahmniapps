@@ -1,57 +1,57 @@
 describe('DispositionDisplayUtil', function () {
-    describe("getEncounterToDisplay", function() {
+    describe("getEncounterToDisplay", function () {
         var encounterConfig = {
-            getAdmissionEncounterTypeUuid: function() {return "AdmissionEncounterTypeUuid"},
-            getTransferEncounterTypeUuid: function() {return "TransferEncounterTypeUuid"},
-            getDischargeEncounterTypeUuid: function() {return "DischargeEncounterTypeUuid"},
-        }
-
-        it("should return admission encounter if no discharge or transfer ecnounters present", function() {
-            var visit = {
-                getEncounters: function() {
-                    return [
-                        {encounterType: {uuid: "IPDUuid"}, uuid: "ENC1"},
-                        {encounterType: {uuid: "AdmissionEncounterTypeUuid"}, uuid: "ENC2"},
-                        {encounterType: {uuid: "OPDUuid"}, uuid: "ENC3"},
-                    ]
-                }
+            getAdmissionEncounterTypeUuid: function () {
+                return "AdmissionEncounterTypeUuid"
+            },
+            getTransferEncounterTypeUuid: function () {
+                return "TransferEncounterTypeUuid"
+            },
+            getDischargeEncounterTypeUuid: function () {
+                return "DischargeEncounterTypeUuid"
             }
+        };
 
-            var enc = Bahmni.ADT.DispositionDisplayUtil.getEncounterToDisplay(encounterConfig, visit);
-            expect(enc.uuid).toEqual("ENC2")
+        it("should return transfer encounter type uuid if the visit has admission details and no discharge details.", function () {
+            var visit = {
+                isAdmitted: function () {
+                    return true;
+                },
+                isDischarged: function () {
+                    return false;
+                }
+            };
+
+            var encounterTypeUuid = Bahmni.ADT.DispositionDisplayUtil.getEncounterToDisplay(encounterConfig, visit);
+            expect(encounterTypeUuid).toEqual("TransferEncounterTypeUuid")
         });
 
-        it("should return transfer encounter if no discharge ecnounters present", function() {
+        it("should return admission encounter type if visit has no admission details.", function () {
             var visit = {
-                getEncounters: function() {
-                    return [
-                        {encounterType: {uuid: "IPDUuid"}, uuid: "ENC1"},
-                        {encounterType: {uuid: "AdmissionEncounterTypeUuid"}, uuid: "ENC2"},
-                        {encounterType: {uuid: "TransferEncounterTypeUuid"}, uuid: "ENC4"},
-                        {encounterType: {uuid: "OPDUuid"}, uuid: "ENC3"},
-                    ]
+                isAdmitted: function () {
+                    return false;
+                },
+                isDischarged: function () {
+                    return false;
                 }
-            }
+            };
 
-            var enc = Bahmni.ADT.DispositionDisplayUtil.getEncounterToDisplay(encounterConfig, visit);
-            expect(enc.uuid).toEqual("ENC4")
+            var encounterTypeUuid = Bahmni.ADT.DispositionDisplayUtil.getEncounterToDisplay(encounterConfig, visit);
+            expect(encounterTypeUuid).toEqual("AdmissionEncounterTypeUuid")
         });
 
-        it("should return discharge encounter if present", function() {
+        it("should return discharge encounter type if the visit has dischargeDetails", function () {
             var visit = {
-                getEncounters: function() {
-                    return [
-                        {encounterType: {uuid: "IPDUuid"}, uuid: "ENC1"},
-                        {encounterType: {uuid: "AdmissionEncounterTypeUuid"}, uuid: "ENC2"},
-                        {encounterType: {uuid: "DischargeEncounterTypeUuid"}, uuid: "ENC5"},
-                        {encounterType: {uuid: "TransferEncounterTypeUuid"}, uuid: "ENC4"},
-                        {encounterType: {uuid: "OPDUuid"}, uuid: "ENC3"},
-                    ]
+                isAdmitted: function () {
+                    return false;
+                },
+                isDischarged: function () {
+                    return true;
                 }
-            }
+            };
 
-            var enc = Bahmni.ADT.DispositionDisplayUtil.getEncounterToDisplay(encounterConfig, visit);
-            expect(enc.uuid).toEqual("ENC5")
+            var encounterTypeUuid = Bahmni.ADT.DispositionDisplayUtil.getEncounterToDisplay(encounterConfig, visit);
+            expect(encounterTypeUuid).toEqual("DischargeEncounterTypeUuid")
         });
     });
 });

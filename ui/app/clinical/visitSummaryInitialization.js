@@ -7,7 +7,7 @@ angular.module('bahmni.clinical').factory('visitSummaryInitialization',
             return function (visitUuid) {
                 var getVisit = function () {
                     return visitService.getVisitSummary(visitUuid).then(function (visitSummaryResponse) {
-                        return visitSummaryResponse.data;
+                        return new Bahmni.Common.VisitSummary(visitSummaryResponse.data);
                     });
                 };
                 return getVisit();

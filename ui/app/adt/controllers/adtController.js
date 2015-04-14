@@ -16,8 +16,8 @@ angular.module('bahmni.adt')
             $scope.getAdtConceptConfig = $scope.dashboardConfig.conceptName;
 
             var getDefaultVisitTypeUuid = function () {
-                if ($scope.visit && $scope.visit.stopDatetime == null) {
-                    return $scope.visit.visitType.uuid;
+                if ($scope.visitSummary && $scope.visitSummary.stopDatetime == null) {
+                    return $scope.visitSummary.visitType;
                 }
                 var defaultVisitTypeName = appService.getAppDescriptor().getConfigValue('defaultVisitType');
                 var visitTypes = encounterConfig.getVisitTypes();
@@ -79,14 +79,6 @@ angular.module('bahmni.adt')
                 }
             };
 
-            $scope.isAdmitted = function () {
-                return $scope.visit && $scope.visit.isAdmitted();
-            };
-
-            $scope.isDischarged = function () {
-                return $scope.visit && $scope.visit.isDischarged();
-            };
-
             var filterAction = function (actions, actionTypes) {
                 return _.filter(actions, function (action) {
                     return actionTypes.indexOf(action.name.name) >= 0;
@@ -95,10 +87,10 @@ angular.module('bahmni.adt')
 
             var getDispositionActions = function (actions) {
 
-                if ($scope.isAdmitted()) {
-                    return filterAction(actions, ["Discharge Patient", "Transfer Patient"]);
-                } else if ($scope.isDischarged()) {
+                if ($scope.visitSummary.isDischarged()) {
                     return filterAction(actions, ["Undo Discharge"]);
+                } else if ($scope.visitSummary.isAdmitted()) {
+                    return filterAction(actions, ["Transfer Patient", "Discharge Patient"]);
                 } else {
                     return filterAction(actions, ["Admit Patient"]);
                 }
@@ -107,12 +99,11 @@ angular.module('bahmni.adt')
             var getVisit = function () {
                 var visitUuid = $stateParams.visitUuid;
                 if (visitUuid != 'null') {
-                    return visitService.getVisit(visitUuid).then(function (response) {
-                        var visit = response.data;
-                        $scope.visit = new Bahmni.ADT.Visit(visit);
+                    return visitService.getVisitSummary(visitUuid).then(function (response) {
+                        $scope.visitSummary = new Bahmni.Common.VisitSummary(response.data);
                     });
                 } else {
-                    $scope.visit = null;
+                    $scope.visitSummary = null;
                     return $q.when({id: 1, status: "Returned from service.", promiseComplete: true});
                 }
             };
@@ -126,11 +117,11 @@ angular.module('bahmni.adt')
                 return getVisit().then(dispositionService.getDispositionActions).then(function (response) {
                     if (response.data && response.data.results && response.data.results.length) {
                         $scope.dispositionActions = getDispositionActions(response.data.results[0].answers);
-                        if ($scope.visit) {
-                            $scope.currentVisitType = $scope.visit.visitType.display;
-                            var encounterToDisplay = Bahmni.ADT.DispositionDisplayUtil.getEncounterToDisplay(encounterConfig, $scope.visit);
-                            if (encounterToDisplay) {
-                                $scope.dispositionAction = getAdtActionForEncounterType(encounterToDisplay.encounterType.uuid);
+                        if ($scope.visitSummary) {
+                            $scope.currentVisitType = $scope.visitSummary.visitType;
+                            var encounterTypeUuid = Bahmni.ADT.DispositionDisplayUtil.getEncounterToDisplay(encounterConfig, $scope.visitSummary);
+                            if (encounterTypeUuid) {
+                                $scope.dispositionAction = getAdtActionForEncounterType(encounterTypeUuid);
                             }
                         }
                     }
@@ -146,7 +137,6 @@ angular.module('bahmni.adt')
             });
 
             $scope.getDisplayForContinuingVisit = function () {
-                //return "Continue " + $scope.currentVisitType + " Visit";
                 return "Admit";
             };
 
@@ -158,8 +148,8 @@ angular.module('bahmni.adt')
             };
 
             $scope.startNewVisit = function (visitTypeUuid) {
-                if ($scope.visit) {
-                    visitService.endVisit($scope.visit.visitId).then(function () {
+                if ($scope.visitSummary) {
+                    visitService.endVisit($scope.visitSummary.uuid).then(function () {
                         $scope.admit(visitTypeUuid);
                     });
                 } else {
@@ -180,7 +170,7 @@ angular.module('bahmni.adt')
             };
 
             $scope.visitExists = function () {
-                return $scope.visit ? true : false;
+                return $scope.visitSummary ? true : false;
             };
 
             var getEncounterData = function (encounterTypeUuid, visitTypeUuid) {
@@ -238,11 +228,10 @@ angular.module('bahmni.adt')
             };
 
             $scope.undoDischarge = function () {
-                var encounterData = $scope.visit.getDischargeEncounter();
-                spinner.forPromise(encounterService.delete(encounterData.uuid, "Undo Discharge")).success(function (response) {
+                spinner.forPromise(encounterService.delete($scope.visitSummary.getDischargeEncounterUuid(), "Undo Discharge")).success(function (response) {
                     var params = {
-                        'encounterUuid': $scope.visit.getAdmissionEncounter().uuid,
-                        'visitUuid': $scope.visit.uuid
+                        'encounterUuid': $scope.visitSummary.getAdmissionEncounterUuid(),
+                        'visitUuid': $scope.visitSummary.uuid
                     };
                     forwardUrl(params, "onAdmissionForwardTo");
                 });

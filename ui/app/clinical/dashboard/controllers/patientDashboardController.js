@@ -1,13 +1,14 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('PatientDashboardController', ['$scope', 'clinicalAppConfigService', 'diseaseTemplateService', 'clinicalDashboardConfig', 'printer', '$state', 'spinner',
-        function ($scope, clinicalAppConfigService, diseaseTemplateService, clinicalDashboardConfig, printer, $state, spinner) {
+    .controller('PatientDashboardController', ['$scope', 'clinicalAppConfigService', 'diseaseTemplateService', 'clinicalDashboardConfig', 'printer', '$state', 'spinner', 'visitSummary',
+        function ($scope, clinicalAppConfigService, diseaseTemplateService, clinicalDashboardConfig, printer, $state, spinner, visitSummary) {
 
             $scope.activeVisit = $scope.visitHistory.activeVisit;
             $scope.activeVisitData = {};
             $scope.obsIgnoreList = clinicalAppConfigService.getObsIgnoreList();
             $scope.clinicalDashboardConfig = clinicalDashboardConfig;
+            $scope.visitSummary = visitSummary;
 
             $scope.$on("event:switchDashboard", function (event, dashboard) {
                 $scope.init(dashboard);

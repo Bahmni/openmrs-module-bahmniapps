@@ -1,4 +1,4 @@
-<section class="block ipd-treatment-section" ng-if="visitSummary.hasBeenAdmitted">
+<section class="block ipd-treatment-section" ng-if="visitSummary.isAdmitted() && !print">
     <h2 class="section-title">Treatment Chart</h2>
     <table class="h-scroll">
         <thead>
