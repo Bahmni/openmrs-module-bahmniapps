@@ -16,7 +16,7 @@
 }
 
 .template-header {
-    height: 52px;
+    height: 50px;
     background: $bahmniSecondaryColor;
     border-radius: 0;
     margin-bottom: 15px;
@@ -28,7 +28,7 @@
         display: inline-block;
         color: $lightestGray;
         line-height: 50px;
-        padding: 0 0 0 10px;
+        padding: 0 0 0 20px;
         font-size: 16px;
         margin: 0;
     }
@@ -36,11 +36,10 @@
         display: inline-block;
         width: auto;
         float: right;
-        margin: 17px 0px 13px; 
+        margin: 15px 0px;
         border-bottom: 0!important;
         color: $white;
         font-size: 16px;
-        clear: right;
     }
 }
 
