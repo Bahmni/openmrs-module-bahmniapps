@@ -51,11 +51,6 @@
                     <bm-documents patient="patient" config="section.config" encounter-type="'Patient Document'"></bm-documents>
                 </div>
             </div>
-            <div data-ng-switch-when="otherInvestigations">
-                <div ng-if="section.config">
-                    <ng-include src="'common/views/visitSummarySections/otherInvestigations.html'"></ng-include>
-                </div>
-            </div>
             <div data-ng-switch-when="treatment">
                 <div ng-if="section.config">
                     <treatment-data id="visit-treatments" params="section.config"
@@ -66,11 +61,6 @@
                 <div ng-if="section.config">
                     <disposition id="disposition" params="section.config"
                                  visit-uuid="section.config.visitUuids"></disposition>
-                </div>
-            </div>
-            <div data-ng-switch-when="consultationNotes">
-                <div ng-if="section.config">
-                    <ng-include src="'common/views/visitSummarySections/consultationNotes.html'"></ng-include>
                 </div>
             </div>
             <div data-ng-switch-when="admissionDetails">

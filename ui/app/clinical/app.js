@@ -100,14 +100,6 @@ angular.module('consultation')
                     },
                     visitConfig: function(initialization, visitTabConfig) {
                         return visitTabConfig.load();
-                    },
-                    visitContext: function (visitInitialization, visitHistory, initialization, $rootScope) {
-                        if (visitHistory.activeVisit) {
-                            return visitInitialization(visitHistory.activeVisit.uuid).then(function(visit) {
-                                $rootScope.visit = visit;
-                            });
-                        }
-                        return null;
                     }
                 }
             })

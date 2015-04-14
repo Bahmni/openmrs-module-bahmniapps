@@ -37,7 +37,6 @@ angular.module('bahmni.clinical')
         return {
             restrict: 'E',
             controller: controller,
-            replacet: true,
             templateUrl: "dashboard/views/recentPatients.html"
         };
     });
