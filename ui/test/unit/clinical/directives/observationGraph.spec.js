@@ -1,13 +1,15 @@
 'use strict';
 
 describe("Observation Graph", function() {
-    var element, scope, compile, httpBackend, observationsService;
+    var element, scope, compile, httpBackend, observationsService, patientService;
 
     beforeEach(module('bahmni.clinical'));
 
     beforeEach(module(function($provide ) {
         observationsService = jasmine.createSpyObj('observationsService', ['fetch']);
+        patientService = jasmine.createSpyObj('patientService', ['getPatient']);
         $provide.value('observationsService', observationsService);
+        $provide.value('patientService', patientService);
 
         window.c3 = jasmine.createSpyObj('c3',['generate']);
     }));
@@ -21,6 +23,7 @@ describe("Observation Graph", function() {
             "title": "Temperature",
             "config": {
                 "yAxisConcepts": ["Temperature"],
+                "xAxisConcept": ["observationDateTime"],
                 "numberOfVisits": 3
             }
         };
@@ -75,7 +78,8 @@ describe("Observation Graph", function() {
         expect(scope.graphId).not.toBeNull();
         var graphModel = [{observationDateTime: new Date("2015-01-01"), superConcept: 45}];
         var anyElement = null;
-        expect(Bahmni.Graph.observationGraphConfig).toHaveBeenCalledWith(anyElement, jasmine.any(Number), scope.section.config.yAxisConcepts, graphModel);
+        expect(Bahmni.Graph.observationGraphConfig).toHaveBeenCalledWith(anyElement, jasmine.any(Number), scope.section.config.yAxisConcepts,
+            scope.section.config.xAxisConcept, graphModel);
         expect(window.c3.generate).toHaveBeenCalled();
     });
 

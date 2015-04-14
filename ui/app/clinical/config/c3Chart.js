@@ -7,7 +7,14 @@ Bahmni.Graph = Bahmni.Graph || {};
 
     var dateUtil = Bahmni.Common.Util.DateUtil;
 
-    Bahmni.Graph.observationGraphConfig = function (bindTo, graphWidth, yAxisConcepts, data) {
+    Bahmni.Graph.observationGraphConfig = function (bindTo, graphWidth, yAxisConcepts, xAxisConcept, data) {
+        var type;
+        if (xAxisConcept == "observationDateTime") {
+            type = 'timeseries'
+        } else {
+            type = 'indexed'
+        }
+
         return {
             bindto: bindTo,
             size: {
@@ -20,7 +27,7 @@ Bahmni.Graph = Bahmni.Graph || {};
             data: {
                 json: data,
                 keys: {
-                    x: 'observationDateTime',
+                    x: xAxisConcept,
                     value: yAxisConcepts
                 }
             },
@@ -34,16 +41,20 @@ Bahmni.Graph = Bahmni.Graph || {};
             axis: {
                 x: {
                     label: {
-                        text: 'Date',
+                        text: xAxisConcept,
                         position: 'outer-right'
                     },
-                    type: 'timeseries',
+                    type: type,
                     tick: {
                         culling: {
                             max: 3
                         },
                         format: function (x) {
-                            return dateUtil.formatDateWithoutTime(x);
+                            if (xAxisConcept == "observationDateTime") {
+                                return dateUtil.formatDateWithoutTime(x);
+                            } else {
+                                return x;
+                            }
                         }
                     }
                 },
