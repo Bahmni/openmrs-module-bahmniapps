@@ -182,6 +182,10 @@ describe('DateUtil', function () {
         it("should not break for undefined and return null", function () {
             expect(dateUtil.formatDateWithTime(undefined)).toBeNull();
         });
+
+        it("should return the original string if it cannot be formatted", function () {
+            expect(dateUtil.formatDateWithTime("Recent")).toBe("Recent");
+        });
     });
 
     describe("formatDateWithoutTime", function () {
@@ -195,6 +199,10 @@ describe('DateUtil', function () {
 
         it("should not break for undefined and return null", function () {
             expect(dateUtil.formatDateWithoutTime(undefined)).toBeNull();
+        });
+
+        it("should return the original string if it cannot be formatted", function () {
+            expect(dateUtil.formatDateWithoutTime("Recent")).toBe("Recent");
         });
     });
 
@@ -210,6 +218,9 @@ describe('DateUtil', function () {
         it("should not break for undefined and return null", function () {
             expect(dateUtil.formatTime(undefined)).toBeNull();
         });
+        it("should return the original string if it cannot be formatted", function () {
+            expect(dateUtil.formatTime("Recent")).toBe("Recent");
+        })
     });
 
 });

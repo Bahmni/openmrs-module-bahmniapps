@@ -70,18 +70,21 @@ Bahmni.Common.Util.DateUtil = {
         return moment(datetime).format("YYYY-MM-DD");
     },
 
-    formatDateWithTime: function(datetime) {
+    formatDateWithTime: function (datetime) {
         var dateRepresentation = isNaN(Number(datetime)) ? datetime : Number(datetime);
+        if(!moment(dateRepresentation).isValid()) return datetime;
         return dateRepresentation ? moment(dateRepresentation).format("DD MMM YY h:mm a") : null;
     },
 
     formatDateWithoutTime: function(date) {
         var dateRepresentation = isNaN(Number(date)) ? date : Number(date);
+        if(!moment(dateRepresentation).isValid()) return date;
         return dateRepresentation ? moment(dateRepresentation).format("DD MMM YY") : null;
     },
 
     formatTime: function(date) {
         var dateRepresentation = isNaN(Number(date)) ? date : Number(date);
+        if(!moment(dateRepresentation).isValid()) return date;
         return dateRepresentation ? moment(dateRepresentation).format("h:mm a") : null;
     },
 
