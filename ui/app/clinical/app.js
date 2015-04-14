@@ -78,7 +78,7 @@ angular.module('consultation')
                         });
                     },
                     visitSummary: function (visitSummaryInitialization, initialization, visitHistory) {
-                        return visitSummaryInitialization(visitHistory.activeVisit.uuid);
+                        return visitHistory.activeVisit ? visitSummaryInitialization(visitHistory.activeVisit.uuid) : null;
                     }
                 }
             })
