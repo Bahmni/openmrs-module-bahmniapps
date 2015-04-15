@@ -3,13 +3,12 @@ describe("VisitTabConfigService", function () {
     var appService;
     var visitTabConfigService;
 
-    var config = [{
-        b: "ball"
-    }];
+    var config = [
+        {a: "apple", defaultSections: true},
+        {b: "ball"}
+    ];
 
-    var mandatoryConfig = [{
-        a: "apple"
-    }];
+    var mandatoryConfig = { c: "cat" };
 
     beforeEach(module('bahmni.clinical'));
 
@@ -32,7 +31,7 @@ describe("VisitTabConfigService", function () {
         var load = visitTabConfigService.load();
         load.then(function(response) {
             expect(response.tabs.length).toEqual(2);
-            expect(response.tabs).toEqual([mandatoryConfig[0], config[0]]);
+            expect(response.tabs).toEqual([{a: "apple", defaultSections: true, c: "cat"}, {b: "ball"}]);
             done();
         });
     });
