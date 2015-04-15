@@ -219,10 +219,33 @@ a.back-btn, button.back-btn {
     }
 
     &.dashboard-link img {
-      height: 25px;
-      width: 25px;
-      border-radius: 100%;
+        height: 26px;
+        width: 26px;
+        border-radius: 100%;
+        float: left;
+        margin-right: 5px;
     }
+    .patient-info {
+          float: left;
+          font-size: 12px;
+          color: $white;
+            line-height: 1.1;
+          .patient-id {
+            display: block;
+            color: $lightGray;
+            font-size: 11px;
+          }
+          .patient-name {
+            width: 100px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+            @media screen and (max-width: 1024px) {
+              width: 75px;
+            }
+          }
+      }
 }
 
 ul li a.back-btn, ul li a.back-btn:hover, button.back-btn, a.back-btn { 
