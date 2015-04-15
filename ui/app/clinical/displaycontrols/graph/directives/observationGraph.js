@@ -6,8 +6,7 @@ angular.module('bahmni.clinical').directive('observationGraph', ['observationsSe
         function generateGraph($scope, element, config, observationGraphModel) {
             var bindToElement = document.getElementById($scope.graphId);
             var graphWidth = $(element).width();
-            var graphConfig = Bahmni.Graph.observationGraphConfig(bindToElement, graphWidth, config.yAxisConcepts,
-                config.xAxisConcept, observationGraphModel);
+            var graphConfig = Bahmni.Graph.observationGraphConfig(bindToElement, graphWidth, config, observationGraphModel);
             c3.generate(graphConfig);
         }
 
@@ -22,15 +21,17 @@ angular.module('bahmni.clinical').directive('observationGraph', ['observationsSe
             $scope.graphId = 'graph' + $scope.$id;
 
             if (!$scope.params) return;
+
             var config = $scope.params.config;
             var concepts = config.yAxisConcepts;
-            if (config.xAxisConcept != "observationDateTime" && config.xAxisConcept != "Age") {
+            if (config.xAxisConcept != "observationDateTime" && config.xAxisConcept != "age") {
                 concepts.push(config.xAxisConcept);
             }
             observationsService.fetch($scope.patientUuid, concepts, false, config.numberOfVisits, $scope.visitUuid)
                 .then(function (results) {
 
                     if(results.data.length == 0) return;
+
                     var yAxisObservations = _.filter(results.data, function (obs) {
                         return obs.concept.name != config.xAxisConcept;
                     });
@@ -45,15 +46,16 @@ angular.module('bahmni.clinical').directive('observationGraph', ['observationsSe
                             buildObservationGraphModel(config, obs, observationGraphModel, new Date(obs.observationDateTime));
                         });
                         generateGraph($scope, element, config, observationGraphModel);
-                    } else if (config.xAxisConcept == "Age") {
+                    } else if (config.xAxisConcept == "age") {
                         patientService.getPatient($scope.patientUuid).then(function(results) {
                             var dateUtil = Bahmni.Common.Util.DateUtil;
 
-                            var birthdate = dateUtil.formatDateAsDDMMMYY(results.data.person.birthdate);
+                            var birthdate = dateUtil.formatDateWithoutTime(results.data.person.birthdate);
                             _.map(yAxisObservations, function (obs) {
-                                var ageValues = Bahmni.Common.Util.AgeUtil.fromBirthDateTillReferenceDate(birthdate,
-                                    dateUtil.formatDateAsDDMMMYY(obs.observationDateTime)).months;
-                                buildObservationGraphModel(config, obs, observationGraphModel, ageValues);
+                                var age = Bahmni.Common.Util.AgeUtil.fromBirthDateTillReferenceDate(birthdate,
+                                    dateUtil.formatDateWithoutTime(obs.observationDateTime));
+                                var ageValue = age.years + "." + age.months;
+                                buildObservationGraphModel(config, obs, observationGraphModel, ageValue);
                             })
                             generateGraph($scope, element, config, observationGraphModel);
 

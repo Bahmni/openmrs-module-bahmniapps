@@ -7,12 +7,14 @@ Bahmni.Graph = Bahmni.Graph || {};
 
     var dateUtil = Bahmni.Common.Util.DateUtil;
 
-    Bahmni.Graph.observationGraphConfig = function (bindTo, graphWidth, yAxisConcepts, xAxisConcept, data) {
-        var type;
-        if (xAxisConcept == "observationDateTime") {
-            type = 'timeseries'
-        } else {
-            type = 'indexed'
+    Bahmni.Graph.observationGraphConfig = function (bindTo, graphWidth, config, data) {
+        var type = 'indexed', unit = "";
+        if (config.xAxisConcept == "observationDateTime") {
+            type = 'timeseries';
+        }
+
+        if (config.xAxisConcept == "age") {
+            unit = " (years)";
         }
 
         return {
@@ -27,8 +29,8 @@ Bahmni.Graph = Bahmni.Graph || {};
             data: {
                 json: data,
                 keys: {
-                    x: xAxisConcept,
-                    value: yAxisConcepts
+                    x: config.xAxisConcept,
+                    value: config.yAxisConcepts
                 }
             },
             point: {
@@ -41,22 +43,25 @@ Bahmni.Graph = Bahmni.Graph || {};
             axis: {
                 x: {
                     label: {
-                        text: xAxisConcept,
+                        text: config.xAxisConcept + unit,
                         position: 'outer-right'
                     },
                     type: type,
                     tick: {
+                        fit : true,
                         culling: {
-                            max: 3
+                            max: 1
                         },
                         format: function (x) {
-                            if (xAxisConcept == "observationDateTime") {
+                            if (config.xAxisConcept == "observationDateTime") {
                                 return dateUtil.formatDateWithoutTime(x);
                             } else {
                                 return x;
                             }
                         }
-                    }
+                    },
+                    min: config.minXAxis,
+                    max: config.maxXAxis
                 },
                 y: {
                     label: {
@@ -77,7 +82,11 @@ Bahmni.Graph = Bahmni.Graph || {};
                 grouped: false,
                 format: {
                     title: function (x) {
-                        return dateUtil.formatDateWithTime(x);
+                        if (config.xAxisConcept == "observationDateTime") {
+                            return dateUtil.formatDateAsDDMMMYY(x);
+                        } else {
+                            return x;
+                        }
                     }
                 }
             }
