@@ -49,13 +49,6 @@ angular
                     'headerExtension@patient.visit': {template: '<div print-options></div>'}
                 }
             })
-            .state('patient.print', {
-                url: '/print',
-                views: {
-                    'layout': { templateUrl: 'views/layout.html', controller: 'PrintController'},
-                    'content@patient.print': { templateUrl: 'views/print.html'}
-                }
-            })
             .state('patient.printSticker', {
                 url: '/printSticker',
                 views: {
