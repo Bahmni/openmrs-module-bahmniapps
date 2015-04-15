@@ -9,8 +9,11 @@ Bahmni.Graph = Bahmni.Graph || {};
 
     Bahmni.Graph.observationGraphConfig = function (bindTo, graphWidth, config, data) {
         var type = 'indexed', unit = "";
+
         if (config.xAxisConcept == "observationDateTime") {
             type = 'timeseries';
+            config.minXAxisRange = new Date(config.minXAxisRange)
+            config.maxXAxisRange = new Date(config.maxXAxisRange)
         }
 
         if (config.xAxisConcept == "age") {
@@ -70,12 +73,14 @@ Bahmni.Graph = Bahmni.Graph || {};
                     },
                     tick: {
                         culling: {
-                            max: 3
+                            max: 1
                         },
                         format: function (y) {
                             return d3.round(y, 2);
                         }
-                    }
+                    },
+                    min: config.minYAxisRange,
+                    max: config.maxYAxisRange
                 }
             },
             tooltip: {
@@ -83,7 +88,7 @@ Bahmni.Graph = Bahmni.Graph || {};
                 format: {
                     title: function (x) {
                         if (config.xAxisConcept == "observationDateTime") {
-                            return dateUtil.formatDateAsDDMMMYY(x);
+                            return dateUtil.formatDateWithoutTime(x);
                         } else {
                             return x;
                         }

@@ -41,34 +41,38 @@ angular.module('bahmni.clinical').directive('observationGraph', ['observationsSe
                     });
                     var observationGraphModel = [];
 
-                    if (config.xAxisConcept == "observationDateTime") {
-                        _.map(yAxisObservations, function (obs) {
-                            buildObservationGraphModel(config, obs, observationGraphModel, new Date(obs.observationDateTime));
-                        });
-                        generateGraph($scope, element, config, observationGraphModel);
-                    } else if (config.xAxisConcept == "age") {
-                        patientService.getPatient($scope.patientUuid).then(function(results) {
-                            var dateUtil = Bahmni.Common.Util.DateUtil;
-
-                            var birthdate = dateUtil.formatDateWithoutTime(results.data.person.birthdate);
+                    switch(config.xAxisConcept) {
+                        case "observationDateTime":
                             _.map(yAxisObservations, function (obs) {
-                                var age = Bahmni.Common.Util.AgeUtil.fromBirthDateTillReferenceDate(birthdate,
-                                    dateUtil.formatDateWithoutTime(obs.observationDateTime));
-                                var ageValue = age.years + "." + age.months;
-                                buildObservationGraphModel(config, obs, observationGraphModel, ageValue);
+                                buildObservationGraphModel(config, obs, observationGraphModel, new Date(obs.observationDateTime));
+                            });
+                            generateGraph($scope, element, config, observationGraphModel);
+                            break;
+
+                        case "age":
+                            patientService.getPatient($scope.patientUuid).then(function(results) {
+                                var dateUtil = Bahmni.Common.Util.DateUtil;
+
+                                var birthdate = dateUtil.formatDateWithoutTime(results.data.person.birthdate);
+                                _.map(yAxisObservations, function (obs) {
+                                    var age = Bahmni.Common.Util.AgeUtil.fromBirthDateTillReferenceDate(birthdate,
+                                        dateUtil.formatDateWithoutTime(obs.observationDateTime));
+                                    var ageValue = age.years + "." + age.months;
+                                    buildObservationGraphModel(config, obs, observationGraphModel, ageValue);
+                                })
+                                generateGraph($scope, element, config, observationGraphModel);
+                            })
+                            break;
+
+                        default :
+                            _.each(yAxisObservations, function (yAxisObs) {
+                                _.each(xAxisObservations, function (xAxisObs) {
+                                    if (yAxisObs.observationDateTime == xAxisObs.observationDateTime) {
+                                        buildObservationGraphModel(config, yAxisObs, observationGraphModel, xAxisObs.value);
+                                    }
+                                })
                             })
                             generateGraph($scope, element, config, observationGraphModel);
-
-                        })
-                    } else {
-                        _.each(yAxisObservations, function (yAxisObs) {
-                            _.each(xAxisObservations, function (xAxisObs) {
-                                if (yAxisObs.observationDateTime == xAxisObs.observationDateTime) {
-                                    buildObservationGraphModel(config, yAxisObs, observationGraphModel, xAxisObs.value);
-                                }
-                            })
-                        })
-                        generateGraph($scope, element, config, observationGraphModel);
                     }
                 });
         };

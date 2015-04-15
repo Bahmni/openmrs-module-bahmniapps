@@ -82,7 +82,7 @@ describe("Observation Graph", function() {
             "title": "Temperature",
             "config": {
                 "yAxisConcepts": ["Temperature"],
-                "xAxisConcept": ["observationDateTime"],
+                "xAxisConcept": "observationDateTime",
                 "numberOfVisits": 3
             }
         };
@@ -106,7 +106,7 @@ describe("Observation Graph", function() {
             "title": "Height",
             "config": {
                 "yAxisConcepts": ["Height"],
-                "xAxisConcept": ["age"],
+                "xAxisConcept": "age",
                 "numberOfVisits": 3
             }
         };
@@ -131,7 +131,7 @@ describe("Observation Graph", function() {
             "title": "Height",
             "config": {
                 "yAxisConcepts": ["Height"],
-                "xAxisConcept": ["Weight"],
+                "xAxisConcept": "Weight",
                 "numberOfVisits": 3
             }
         };
