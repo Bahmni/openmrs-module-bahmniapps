@@ -7,8 +7,8 @@ describe("Patient Profile display control", function() {
     beforeEach(module(function($provide){
         provide = $provide;
         provide.value('$state', {});
-        provide.value('clinicalDashboardConfig', {getCurrentDashboard: function(){
-            return { maxRecentlyViewedPatients: 3}
+        provide.value('clinicalDashboardConfig', {getMaxRecentlyViewedPatients: function(){
+            return 3;
         }});
     }));
 

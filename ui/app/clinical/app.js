@@ -73,7 +73,7 @@ angular.module('consultation')
                 resolve: {
                     dashboardInitialization: function ($rootScope, initialization, patientContext, clinicalDashboardConfig, userService) {
                         return clinicalDashboardConfig.load().then(function (data) {
-                            $rootScope.currentUser.addToRecentlyViewed(patientContext.patient, clinicalDashboardConfig.currentDashboard.maxRecentlyViewedPatients || 10);
+                            $rootScope.currentUser.addToRecentlyViewed(patientContext.patient, clinicalDashboardConfig.getMaxRecentlyViewedPatients());
                             return userService.savePreferences();
                         });
                     },

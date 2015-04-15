@@ -71,4 +71,8 @@ Bahmni.Clinical.ClinicalDashboardConfig = function (config) {
     this.getPrintConfigForCurrentDashboard = function () {
         return this.getCurrentDashboard().printing;
     }
+
+    this.getMaxRecentlyViewedPatients = function(){
+        return this.currentDashboard.maxRecentlyViewedPatients || 10;
+    }
 };
