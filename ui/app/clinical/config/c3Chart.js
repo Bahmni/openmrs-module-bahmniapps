@@ -60,8 +60,8 @@ Bahmni.Graph = Bahmni.Graph || {};
                             }
                         }
                     },
-                    min: config.minXAxis,
-                    max: config.maxXAxis
+                    min: config.minXAxisRange,
+                    max: config.maxXAxisRange
                 },
                 y: {
                     label: {
