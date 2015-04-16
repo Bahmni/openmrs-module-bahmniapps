@@ -12,8 +12,6 @@ Bahmni.Graph = Bahmni.Graph || {};
 
         if (config.xAxisConcept == "observationDateTime") {
             type = 'timeseries';
-            config.minXAxisRange = new Date(config.minXAxisRange)
-            config.maxXAxisRange = new Date(config.maxXAxisRange)
         }
 
         if (config.xAxisConcept == "age") {
@@ -53,7 +51,7 @@ Bahmni.Graph = Bahmni.Graph || {};
                     tick: {
                         fit : true,
                         culling: {
-                            max: 1
+                            max: 3
                         },
                         format: function (x) {
                             if (config.xAxisConcept == "observationDateTime") {
@@ -73,7 +71,7 @@ Bahmni.Graph = Bahmni.Graph || {};
                     },
                     tick: {
                         culling: {
-                            max: 1
+                            max: 3
                         },
                         format: function (y) {
                             return d3.round(y, 2);
@@ -94,6 +92,9 @@ Bahmni.Graph = Bahmni.Graph || {};
                         }
                     }
                 }
+            },
+            zoom: {
+                enabled: true
             }
         }
     }
