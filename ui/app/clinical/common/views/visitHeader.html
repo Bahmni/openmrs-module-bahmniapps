@@ -16,8 +16,8 @@
 
 
         <ul class="header-tabs">
-            <li class="tab-item dashboard" ng-repeat="tab in visitTabConfig.openTabs"
-                ng-class="{'tab-selected' : visitTabConfig.isCurrentTab(tab), 'tab-removable': visitTabConfig.isCurrentTab(tab) && !tab.default}">
+            <li class="tab-item dashboard" ng-repeat="tab in visitTabConfig.visibleTabs"
+                ng-class="{'tab-selected' : visitTabConfig.isCurrentTab(tab), 'tab-removable': visitTabConfig.isCurrentTab(tab) && !tab.displayByDefault}">
                 <span class="close" ng-click="closeTab(tab)">
                    <span class="close-icon">x</span>
                 </span>

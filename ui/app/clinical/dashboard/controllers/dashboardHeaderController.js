@@ -16,18 +16,18 @@ angular.module('bahmni.clinical')
             };
 
             $scope.showDashboard = function (dashboard) {
-                if (!clinicalDashboardConfig.isCurrentDashboard(dashboard)) {
+                if (!clinicalDashboardConfig.isCurrentTab(dashboard)) {
                     $scope.$parent.$parent.$broadcast("event:switchDashboard", dashboard);
                 }
             };
 
             $scope.printDashboard = function () {
-                $scope.$parent.$parent.$broadcast("event:printDashboard", clinicalDashboardConfig.getCurrentDashboard().printing);
+                $scope.$parent.$parent.$broadcast("event:printDashboard", clinicalDashboardConfig.currentTab.printing);
             };
 
             $scope.closeDashboard = function (dashboard) {
-                clinicalDashboardConfig.closeDashboard(dashboard);
-                $scope.$parent.$parent.$broadcast("event:switchDashboard", clinicalDashboardConfig.getCurrentDashboard());
+                clinicalDashboardConfig.closeTab(dashboard);
+                $scope.$parent.$parent.$broadcast("event:switchDashboard", clinicalDashboardConfig.currentTab);
             };
 
         }]);

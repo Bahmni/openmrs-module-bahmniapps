@@ -12,8 +12,8 @@
               ng-bind="$parent.retrospectiveEntry.encounterDate | date:'dd/MM/yyyy'"/>
 
         <ul class="header-tabs" ng-if="clinicalDashboardConfig.showTabs()">
-            <li class="tab-item dashboard" ng-repeat="dashboard in clinicalDashboardConfig.openDashboards"
-                ng-class="{'tab-selected' : clinicalDashboardConfig.isCurrentDashboard(dashboard), 'tab-removable': clinicalDashboardConfig.isCurrentDashboard(dashboard) && !dashboard.default}">
+            <li class="tab-item dashboard" ng-repeat="dashboard in clinicalDashboardConfig.visibleTabs"
+                ng-class="{'tab-selected' : clinicalDashboardConfig.isCurrentTab(dashboard), 'tab-removable': clinicalDashboardConfig.isCurrentTab(dashboard) && !dashboard.displayByDefault}">
                 <span class="close" ng-click="closeDashboard(dashboard)">
                    <span class="close-icon">x</span>
                 </span>
@@ -21,12 +21,12 @@
 
             </li>
             <li class="tab-item new-tab tab-active" bm-pop-over autoclose="true"
-                ng-show="clinicalDashboardConfig.getUnOpenedDashboards().length > 0">
+                ng-show="clinicalDashboardConfig.getUnOpenedTabs().length > 0">
                 <a id="addDashboardButton" bm-pop-over-trigger>+</a>
 
                 <div class="tab-submenu" bm-pop-over-target>
                     <ul>
-                        <li ng-repeat="dashboard in clinicalDashboardConfig.getUnOpenedDashboards()">
+                        <li ng-repeat="dashboard in clinicalDashboardConfig.getUnOpenedTabs()">
                             <a class="submenu-item unOpenedDashboard" ng-click="showDashboard(dashboard);">{{dashboard.dashboardName}} </a>
                         </li>
                     </ul>

@@ -64,7 +64,7 @@ describe('VisitController', function () {
 
     var defaultTab = {
         title: "visit",
-        default: true,
+        displayByDefault: true,
         investigationResult: {
             title: "Lab Investigations",
             showChart: false,

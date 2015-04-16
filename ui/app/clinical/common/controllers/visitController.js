@@ -66,7 +66,7 @@ angular.module('bahmni.clinical')
             
             var init = function(){
                 $scope.visitTabConfig.setVisitUuidsAndPatientUuidToTheSections([$scope.visitUuid], $scope.patientUuid);
-                $scope.visitTabConfig.switchTab($scope.visitTabConfig.getDefaultTab());
+                $scope.visitTabConfig.switchTab($scope.visitTabConfig.getFirstTab());
             };
             init();
         }]);

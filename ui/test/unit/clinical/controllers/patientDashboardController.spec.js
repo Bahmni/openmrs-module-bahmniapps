@@ -33,7 +33,7 @@ describe("patient dashboard controller", function () {
         _clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getObsIgnoreList']);
 
         _clinicalDashboardConfig = new Bahmni.Clinical.ClinicalDashboardConfig([
-            {dashboardName: "General", default: true, sections: patientDashboardSections}
+            {dashboardName: "General", displayByDefault: true, sections: patientDashboardSections}
         ]);
         _diseaseTemplateService = jasmine.createSpyObj('diseaseTemplateService', ['getLatestDiseaseTemplates']);
         var diseaseTemplates = [new Bahmni.Clinical.DiseaseTemplate({name: "Breast Cancer"}, breastCancerDiseaseTemplate.observationTemplates),

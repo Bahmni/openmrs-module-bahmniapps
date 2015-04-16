@@ -4,22 +4,11 @@ describe('Treatment Table DisplayControl', function () {
 
     var DEFAULT_DASHBOARD = {
         "dashboardName": "General",
-        "default": true,
-        "printing": {"conig": "Printing Config"},
+        "maxRecentlyViewedPatients": 8,
+        "displayByDefault": true,
         "sections": [
             {
-                "title": "Nutritional Values",
-                "name": "vitals",
-                "conceptNames": ["Height", "Weight", "BMI", "BMI STATUS"],
-                "scope": "latest",
-                "isObservation": true,
-                "pivotTable": {
-                    "numberOfVisits": "4",
-                    "groupBy": "encounters",
-                    "obsConcepts": ["Vitals", "Height", "Weight", "Pathology"],
-                    "drugConcepts": "",
-                    "labConcepts": ""
-                }
+                "name": "vitals"
             },
             {
                 "title": "Diagnosis",
@@ -27,26 +16,17 @@ describe('Treatment Table DisplayControl', function () {
             },
             {
                 "title": "Diabetes",
-                "templateName": "Diabetes Template",
-                "name": "diseaseTemplate",
-                "showOnly": [],
-                "pivotTable": {
-                    "numberOfVisits": "15",
-                    "groupBy": "encounters",
-                    "obsConcepts": ["Weight", "Height", "Systolic", "Diastolic", "Diabetes, Foot Exam", "Diabetes, Eye Exam"],
-                    "drugConcepts": ["Ipratropium Pressurised", "Garbhpal Rasa"],
-                    "labConcepts": ["RBS", "FBS", "PP2BS", "Hb1AC", "Creatinine", "Albumin", "Polymorph"]
-                }
+                "name": "diseaseTemplate"
             }
         ]
     };
     var ANOTHER_DASHBOARD = {
         "dashboardName": "General - 2",
+        "displayByDefault": true,
         "sections": [
             {
                 "title": "Patient Information",
-                "name": "patientInformation",
-                "patientAttributes": ["caste", "class", "education", "occupation"]
+                "name": "patientInformation"
             }
         ]
     };
@@ -60,47 +40,18 @@ describe('Treatment Table DisplayControl', function () {
 
     beforeEach(module('bahmni.clinical'));
 
-    it("should set default dashboardConfig", function () {
-        expect(dashboardConfig.getCurrentDashboard().dashboardName).toBe("General");
-    });
-
     it("should get disease template sections for the current dashboard", function () {
         expect(dashboardConfig.getDiseaseTemplateSections().length).toBe(1);
         expect(dashboardConfig.getDiseaseTemplateSections()[0].title).toBe("Diabetes");
     });
 
-    it("should returned unopened dashboards", function () {
-        expect(dashboardConfig.getUnOpenedDashboards().length).toBe(1);
+    it("should get max recently viewed patients", function () {
+        expect(dashboardConfig.getMaxRecentlyViewedPatients()).toBe(8);
     });
 
-    it("should switch dashboard", function () {
-        dashboardConfig.switchDashboard(ANOTHER_DASHBOARD);
-        expect(dashboardConfig.getUnOpenedDashboards().length).toBe(0);
-        expect(dashboardConfig.getCurrentDashboard().dashboardName).toBe("General - 2");
+    it("should get default number of maximum recently viewed patients if not specified", function () {
+        var anotherDashboardConfig = new Bahmni.Clinical.ClinicalDashboardConfig([ANOTHER_DASHBOARD]);
+        expect(anotherDashboardConfig.getMaxRecentlyViewedPatients()).toBe(10);
     });
 
-    it("should close dashboard", function () {
-        dashboardConfig.closeDashboard(ANOTHER_DASHBOARD);
-        expect(dashboardConfig.getCurrentDashboard().dashboardName).toBe("General");
-        expect(dashboardConfig.getUnOpenedDashboards().length).toBe(1);
-    });
-
-    it("should show dashboard tabs", function () {
-        expect(dashboardConfig.showTabs()).toBe(true);
-    });
-
-    it("should return printing config for current dashboard", function () {
-        expect(dashboardConfig.getPrintConfigForCurrentDashboard()).toEqual({"conig": "Printing Config"});
-    });
-
-    it("should return true if printing config is present", function () {
-        expect(dashboardConfig.showPrint()).toBe(true);
-    });
-
-    it("should return true if current dashboard", function () {
-        dashboardConfig.switchDashboard(ANOTHER_DASHBOARD);
-        expect(dashboardConfig.isCurrentDashboard(ANOTHER_DASHBOARD)).toBe(true);
-        expect(dashboardConfig.getCurrentDashboard().dashboardName).toBe("General - 2");
-    });
-    
 });

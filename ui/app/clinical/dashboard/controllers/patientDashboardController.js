@@ -19,7 +19,7 @@ angular.module('bahmni.clinical')
             });
 
             $scope.init = function (dashboard) {
-                clinicalDashboardConfig.switchDashboard(dashboard);
+                clinicalDashboardConfig.switchTab(dashboard);
                 return diseaseTemplateService.getLatestDiseaseTemplates($scope.patient.uuid, clinicalDashboardConfig.getDiseaseTemplateSections())
                     .then(function (diseaseTemplates) {
                         $scope.diseaseTemplates = diseaseTemplates;
@@ -27,5 +27,5 @@ angular.module('bahmni.clinical')
                     });
             };
 
-            spinner.forPromise($scope.init(clinicalDashboardConfig.getCurrentDashboard()));
+            spinner.forPromise($scope.init(clinicalDashboardConfig.currentTab));
         }]);
