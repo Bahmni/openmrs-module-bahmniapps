@@ -22,7 +22,7 @@
         </select>
     </div>
     <div class="left" data-ng-switch-when="java.lang.Integer">
-        <input type="number" pattern-validate placeholder="{{attribute.description}}"
+        <input id="{{attribute.name}}" type="number" pattern-validate placeholder="{{attribute.description}}"
                ng-model="patient[attribute.name]" data-item-type="personAttribute" ng-required="{{attribute.required}}"/>
     </div>
     <div class="left" data-ng-switch-when="java.lang.Float">

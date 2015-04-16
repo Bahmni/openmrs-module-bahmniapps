@@ -12,7 +12,7 @@ angular.module('bahmni.common.uiHelper')
             };
 
             var removeNonBlankAttrs = function () {
-                element.removeAttr('required').removeAttr('pattern');
+                element.removeAttr('required');
             };
 
             if (!attrs.nonBlank) return addNonBlankAttrs(element);
@@ -113,4 +113,17 @@ angular.module('bahmni.common.uiHelper')
                autofillable: "=" 
             }
         };
+    })
+    .directive('patternValidate', function () {
+        return function ($scope, element, attrs) {
+            var addPatternToElement = function () {
+                if($scope.fieldValidation[attrs.id]){
+                    element.attr({"pattern": $scope.fieldValidation[attrs.id].pattern, "title": $scope.fieldValidation[attrs.id].errorMessage, "type": "text"});
+                }
+            };
+
+            $scope.$watch(attrs.patternValidate, function () {
+                addPatternToElement();
+            });
+        }
     });

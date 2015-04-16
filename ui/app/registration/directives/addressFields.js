@@ -8,7 +8,7 @@ angular.module('bahmni.registration')
             '<label for="{{addressLevel.addressField}}">{{addressLevel.name}}<span class="asterick" ng-show="addressLevel.required">*</span></label>' +
             '</div>' +
             '<div class="field-value">' +
-            '<input type="text" id="{{addressLevel.addressField}}" non-blank="addressLevel.required" ng-model="address[addressLevel.addressField]" placeholder="{{addressLevel.name}}"' +
+            '<input type="text" id="{{addressLevel.addressField}}"  pattern-validate non-blank="addressLevel.required" ng-model="address[addressLevel.addressField]" placeholder="{{addressLevel.name}}"' +
             'bahmni-autocomplete source="getAddressEntryList(addressLevel.addressField)" response-map="getAddressDataResults" on-select="addressFieldSelected(addressLevel.addressField)" ng-change="clearFields(addressLevel.addressField)"' +
             '>' +
             '</div>' +
@@ -20,7 +20,8 @@ angular.module('bahmni.registration')
             controller: 'AddressFieldsDirectiveController',
             scope: {
                 address: '=',
-                addressLevels: '='
+                addressLevels: '=',
+                fieldValidation: '='
             }
         };
     })

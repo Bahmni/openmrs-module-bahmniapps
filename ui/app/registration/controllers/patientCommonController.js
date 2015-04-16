@@ -42,5 +42,5 @@ angular.module('bahmni.registration')
                     $scope.patient.sameAsLastName = false;
                 }
             });
-        }])
+        }]);
 

@@ -58,7 +58,7 @@
 		isActive: function() {
 			return this.orders.some(function(order) { return order.isActive(); });
 		}
-	}
+	};
 
 	Bahmni.Clinical.DrugSchedule.Drug = Drug;
 })();
