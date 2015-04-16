@@ -35,6 +35,20 @@ angular.module('bahmni.common.patientSearch')
             });
         };
 
+        $scope.getHeadings = function(patients){
+            if(patients && patients.length > 0){
+                var headings = _.chain(patients[0])
+                    .keys()
+                    .filter(function(heading){
+                        return _.indexOf(Bahmni.Common.PatientSearch.Constants.tabularViewIgnoreHeadingsList,heading) === -1;
+                    })
+                    .value();
+
+                return headings;
+            }
+            return [];
+        };
+
         var mapExtensionToSearchType = function(appExtn) {
             return {
                     name: appExtn.label,
@@ -43,7 +57,8 @@ angular.module('bahmni.common.patientSearch')
                     forwardUrl: appExtn.extensionParams.forwardUrl,
                     id: appExtn.id,
                     params:appExtn.extensionParams.searchParams,
-                    refreshTime: appExtn.extensionParams.refreshTime || 0
+                    refreshTime: appExtn.extensionParams.refreshTime || 0,
+                    view: appExtn.extensionParams.view || Bahmni.Common.PatientSearch.Constants.searchExtensionTileViewType
             }
         };
 

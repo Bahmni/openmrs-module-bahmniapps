@@ -32,21 +32,46 @@
                     </button>
                 </div>
             </form>
-        </span>        
-        <resize search-results="search.searchResults" visible-results="search.visiblePatients" class="active-visits">
+        </span>
+        <resize ng-if="search.isTabularView()" search-results="search.searchResults" visible-results="search.visiblePatients" class="active-visits">
+            <div class="ward-details-container">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th><strong>ID</strong></th>
+                        <th ng-repeat="heading in getHeadings(search.visiblePatients)"><strong>{{heading}}</strong></th>
+                        <th class="edit-col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="row in search.visiblePatients">
+                        <td>{{$index + 1}}</td>
+                        <td ng-repeat="heading in getHeadings(search.visiblePatients)">
+                            {{row[heading]}}
+                        </td>
+                        <td class="edit-col">
+                            <button class="btn-small" ng-click="forwardPatient(row)">Forward</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </resize>
+        <resize ng-if="search.isTileView()" search-results="search.searchResults" visible-results="search.visiblePatients" class="active-visits">
             <li ng-repeat="patient in search.visiblePatients" class="active-patient" ng-click="forwardPatient(patient)">
                 <img class="smallImages" ng-src="{{patient.image}}"  onerror="this.onerror=null;this.src='../images/blank-user.png';" >
                 <div class="patient-name">{{patient.name}}</div>
                 <div class="patient-id">{{patient.identifier}}</div>
             </li>
-            <div class="note-container" ng-if="search.noResultsMessage">
-                <div class="note warning">
-                    <div class="text">
-                        <p class="ng-binding">{{search.noResultsMessage}}</p>
-                    </div>
+        </resize>
+        <div class="note-container" ng-if="search.noResultsMessage">
+            <div class="note warning">
+                <div class="text">
+                    <p class="ng-binding">{{search.noResultsMessage}}</p>
                 </div>
             </div>
-        </resize>
+        </div>
+
     </div>
 </div>
 

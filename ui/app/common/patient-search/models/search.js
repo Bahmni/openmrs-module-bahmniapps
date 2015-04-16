@@ -60,6 +60,14 @@ Bahmni.Common.PatientSearch.Search = function(searchTypes) {
         return self.searchType && self.searchType.handler;
     };
 
+    self.isTileView = function(){
+      return self.searchType.view === Bahmni.Common.PatientSearch.Constants.searchExtensionTileViewType;
+    };
+
+    self.isTabularView = function(){
+        return self.searchType.view === Bahmni.Common.PatientSearch.Constants.searchExtensionTabularViewType;
+    };
+
     self.showPatientCountOnSearchParameter = function(searchType){
         return showPatientCount(searchType) && self.searchParameter;
     };
