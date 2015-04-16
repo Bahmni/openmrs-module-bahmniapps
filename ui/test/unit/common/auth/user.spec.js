@@ -43,21 +43,21 @@ describe("User", function () {
 
     describe("recently viewed patients", function(){
        it("should add patient to recently viewed list", function(){
-           var user = new User({"userProperties": { "recentlyViewedPatients": '[{"uuid": "1234", "name": "patient1"}]'}});
-           user.addToRecentlyViewed({uuid: '5678', name: 'patient2'}, 5);
-           expect(user.recentlyViewedPatients).toEqual([{uuid: '5678', name: 'patient2'}, {uuid: '1234', name: 'patient1'}]);
+           var user = new User({"userProperties": { "recentlyViewedPatients": '[{"uuid": "1234", "name": "patient1", "identifier": "GAN2001"}]'}});
+           user.addToRecentlyViewed({uuid: '5678', name: 'patient2', identifier: 'GAN2002'}, 5);
+           expect(user.recentlyViewedPatients).toEqual([{uuid: '5678', name: 'patient2', identifier: 'GAN2002'}, {uuid: '1234', name: 'patient1', identifier: 'GAN2001'}]);
        });
 
        it("should not add patient if patient is already in recently viewed list", function(){
-           var user = new User({"userProperties": { "recentlyViewedPatients": '[{"uuid": "1234", "name": "patient1"}]'}});
-           user.addToRecentlyViewed({uuid: '1234', name: 'patient1'}, 5);
-           expect(user.recentlyViewedPatients).toEqual([{uuid: '1234', name: 'patient1'}]);
+           var user = new User({"userProperties": { "recentlyViewedPatients": '[{"uuid": "1234", "name": "patient1", "identifier": "GAN2001"}]'}});
+           user.addToRecentlyViewed({uuid: '1234', name: 'patient1' , identifier: 'GAN2001'}, 5);
+           expect(user.recentlyViewedPatients).toEqual([{uuid: '1234', name: 'patient1', identifier: 'GAN2001'}]);
        });
 
        it("should replace existing patient in recently viewed list if it has reached max limit", function(){
-           var user = new User({"userProperties": { "recentlyViewedPatients": '[{"uuid": "5678", "name": "patient2"},{"uuid": "1234", "name": "patient1"}]'}});
-           user.addToRecentlyViewed({uuid: '9999', name: 'patient3'}, 2);
-           expect(user.recentlyViewedPatients).toEqual([{uuid: '9999', name: 'patient3'},{uuid: '5678', name: 'patient2'}]);
+           var user = new User({"userProperties": { "recentlyViewedPatients": '[{"uuid": "5678", "name": "patient2", "identifier": "GAN2002"},{"uuid": "1234", "name": "patient1", "identifier": "GAN2001"}]'}});
+           user.addToRecentlyViewed({uuid: '9999', name: 'patient3', identifier: 'GAN2003'}, 2);
+           expect(user.recentlyViewedPatients).toEqual([{uuid: '9999', name: 'patient3', identifier: 'GAN2003'},{uuid: '5678', name: 'patient2',identifier: 'GAN2002'}]);
        });
     });
 

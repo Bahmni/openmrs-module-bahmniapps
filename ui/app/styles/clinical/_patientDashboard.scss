@@ -526,11 +526,13 @@ table.pivot-table {
       top: 47px;
       background: $white;
       border: 1px solid #ccc;
-      width: 97%;
+      width: 330px;
       max-height: 250px;
       overflow-y: auto;
       font-size: 14px;
       color: $text;
+      border-radius: 0px 5px 5px 5px;
+      box-shadow: 2px 2px 20px rgba(0, 0, 0, .50);
       &::-webkit-scrollbar {
         -webkit-appearance: none;
           width: 2px;
@@ -546,10 +548,19 @@ table.pivot-table {
         color: $black;
         font-size: 14px;
         border-bottom: 1px solid #ccc;
-        padding: 10px 5px 10px 10px;
+        padding: 13px 5px 12px 10px;
         display: block;
         &:hover{
           text-decoration: underline;
+        }
+        span{
+          max-width: 220px;
+          display: inline-block;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          padding-right: 5px;
+          float: left;
         }
       }
       .currentPatient{
