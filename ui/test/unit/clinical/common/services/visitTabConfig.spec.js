@@ -3,19 +3,20 @@ describe("VisitTabConfigService", function () {
     var appService;
     var visitTabConfigService;
 
+    var section1 = {type: "extra section 1"};
+    var section2 = {type: "mandatory section 2"};
+    var section3 = {type: "mandatory section 3"};
     var config = [
-        {a: "apple", defaultSections: true},
+        {a: "apple", defaultSections: true, sections: [section1]},
         {b: "ball"}
     ];
-
-    var mandatoryConfig = { c: "cat" };
+    var mandatoryConfig = { sections: [section2, section3] };
 
     beforeEach(module('bahmni.clinical'));
 
     beforeEach(module(function () {
         appService = jasmine.createSpyObj('appService', ['loadConfig', 'loadMandatoryConfig']);
         appService.loadMandatoryConfig.and.returnValue(specUtil.respondWith({data: mandatoryConfig}));
-        appService.loadConfig.and.returnValue(specUtil.respondWith({data: config}));
     }));
 
     beforeEach(module(function ($provide) {
@@ -27,11 +28,21 @@ describe("VisitTabConfigService", function () {
         visitTabConfigService = visitTabConfig;
     }]));
 
-    it("should load the visit config", function (done) {
+    it("should concat mandatory sections if defaultSections flag is present", function (done) {
+        appService.loadConfig.and.returnValue(specUtil.respondWith({data: config}));
         var load = visitTabConfigService.load();
         load.then(function(response) {
-            expect(response.tabs.length).toEqual(2);
-            expect(response.tabs).toEqual([{a: "apple", defaultSections: true, c: "cat"}, {b: "ball"}]);
+            expect(response.tabs).toEqual([{a: "apple", defaultSections: true, sections: [section2, section3, section1]}, {b: "ball"}]);
+            done();
+        });
+    });
+
+    it("should concat mandatory sections even if there are no other sections defined", function (done) {
+        delete config[0].sections;
+        appService.loadConfig.and.returnValue(specUtil.respondWith({data: config}));
+        var load = visitTabConfigService.load();
+        load.then(function(response) {
+            expect(response.tabs).toEqual([{a: "apple", defaultSections: true, sections: [section2, section3]}, {b: "ball"}]);
             done();
         });
     });
