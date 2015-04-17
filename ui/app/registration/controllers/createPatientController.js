@@ -11,8 +11,6 @@ angular.module('bahmni.registration')
         var defaultVisitType = appService.getAppDescriptor().getConfigValue('defaultVisitType');
         var locationUuid = sessionService.getLoginLocationUuid();
         var regEncounterTypeUuid = $rootScope.regEncounterConfiguration.encounterTypes[Bahmni.Registration.Constants.registrationEncounterType];
-        $scope.identifierPattern = appService.getAppDescriptor().getConfigValue('identifierPattern');
-        $scope.identifierPatternDescription = appService.getAppDescriptor().getConfigValue('identifierPatternDescription') || "";
         var configValueForEnterId = appService.getAppDescriptor().getConfigValue('showEnterID');
         $scope.showEnterID = configValueForEnterId === null ? true : configValueForEnterId;
 
