@@ -87,9 +87,9 @@ angular.module('bahmni.adt')
 
             var getDispositionActions = function (actions) {
 
-                if ($scope.visitSummary.isDischarged()) {
+                if ($scope.visitSummary && $scope.visitSummary.isDischarged()) {
                     return filterAction(actions, ["Undo Discharge"]);
-                } else if ($scope.visitSummary.isAdmitted()) {
+                } else if ($scope.visitSummary && $scope.visitSummary.isAdmitted()) {
                     return filterAction(actions, ["Transfer Patient", "Discharge Patient"]);
                 } else {
                     return filterAction(actions, ["Admit Patient"]);
