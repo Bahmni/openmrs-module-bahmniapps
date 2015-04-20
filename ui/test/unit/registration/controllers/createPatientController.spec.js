@@ -6,7 +6,7 @@ describe('CreatePatientController', function () {
     var controller;
     var patient = {givenName: "some", familyName: "name"};
     var createPatientResponse = {patient: {identifier: "someIdentifier", uuid: "someUUID", name: "some name"}};
-    var location;
+    var $window;
     var preferences;
     var createPromise;
     var dateUtil;
@@ -19,9 +19,8 @@ describe('CreatePatientController', function () {
     beforeEach(module('bahmni.registration'));
     beforeEach(inject([function () {
         dateUtil = Bahmni.Common.Util.DateUtil;
-        location = jasmine.createSpyObj('$location', ['url','absUrl','search']);
+        $window = {location: {href: {}}};
         spinner = jasmine.createSpyObj('spinner', ['show', 'hide', 'forPromise'])
-        location.absUrl = function(){return "/patient/new"};
         patientService = jasmine.createSpyObj('patientService', ['create', 'getPatient']);
         createPromise = specUtil.createServicePromise('patientCreate');
         patientService.create.and.returnValue(createPromise);
@@ -51,8 +50,6 @@ describe('CreatePatientController', function () {
         };
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         appService.getAppDescriptor.and.returnValue(appDescriptor);
-        location.url.and.returnValue(location);
-        //$route.current.params.visitType
         route = { "current" : { "params" : { "visitType" : "REG" } }};
         sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
     }]));
@@ -66,7 +63,7 @@ describe('CreatePatientController', function () {
             controller = $controller('CreatePatientController', {
                 $scope: scope,
                 patientService: patientService,
-                $location: location,
+                $window: $window,
                 Preferences: preferences,
                 spinner: spinner,
                 $rootScope: {regEncounterConfiguration: new Bahmni.Registration.RegistrationEncounterConfig({visitTypes: {}},{encounterTypes: {"REG" : "someUUID"}}), patientConfiguration: patientConfiguration },
@@ -121,8 +118,7 @@ describe('CreatePatientController', function () {
 
                     it('should redirect to new visit page', function () {
                         createVisitPromise.callSuccessCallBack();
-                        expect(location.url).toHaveBeenCalledWith("/patient/someUUID/visit");
-                        expect(location.search).toHaveBeenCalledWith({newpatient: 'true'});
+                        expect($window.location.href).toEqual("/patient/someUUID/visit");
                     });
 
                     it('should set registration date to today', function () {

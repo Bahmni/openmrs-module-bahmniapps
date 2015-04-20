@@ -69,16 +69,14 @@ angular.module('bahmni.registration')
 
         var onCreateVisitFailure = function() {
             $state.go('patient.edit', {patientUuid: $scope.patient.uuid});
-        }
+        };
 
         var createVisit = function (patientProfileData) {
             return $scope.visitControl.createVisit(patientProfileData.patient.uuid, createEncounterObject()).success(function () {
-                var patientUrl = $location.absUrl().replace("new", patientProfileData.patient.uuid);
                 $scope.patient.registrationDate = dateUtil.now();
-                $window.history.pushState(null, null, patientUrl);
                 goToActionUrl($scope.submitSource, patientProfileData, {newpatient: 'true'});
             }).error(onCreateVisitFailure);
-        }
+        };
 
         var followUpAction = function(patientProfileData) {
             if($scope.submitSource === 'startVisit') {
@@ -97,10 +95,7 @@ angular.module('bahmni.registration')
                     var extensionParams = matchedExtensions[0].extensionParams;
                     if (extensionParams && extensionParams.forwardUrl) {
                         var fwdUrl = appService.getAppDescriptor().formatUrl(extensionParams.forwardUrl, {'patientUuid' : patientProfileData.patient.uuid} );
-                        if(!queryParams) {
-                            $location.url(fwdUrl);
-                        }
-                        $location.url(fwdUrl).search(queryParams);
+                        $window.location.href = fwdUrl;
                     }
                 }
             }

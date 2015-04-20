@@ -120,7 +120,7 @@ angular.module('bahmni.registration')
                         var extensionParams = matchedExtensions[0].extensionParams;
                         if (extensionParams && extensionParams.forwardUrl) {
                             var fwdUrl = appService.getAppDescriptor().formatUrl(extensionParams.forwardUrl, {'patientUuid' : patientProfileData.patient.uuid} );
-                            $location.url(fwdUrl);
+                            $window.location.href = fwdUrl;
                         }
                     }
                 }
