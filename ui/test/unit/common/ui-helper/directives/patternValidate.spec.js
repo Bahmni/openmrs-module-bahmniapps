@@ -30,4 +30,12 @@ describe("Pattern Validate", function() {
         expect(element.attr('title')).not.toBe("Should contain 3 numbers");
     });
 
+    it("should not apply the pattern and title to the element if field validation is not present in scope", function () {
+        compile(element)(scope);
+        scope.$digest();
+
+        expect(element.attr('pattern')).not.toBe("[0-9]{3}");
+        expect(element.attr('title')).not.toBe("Should contain 3 numbers");
+    });
+
 });
