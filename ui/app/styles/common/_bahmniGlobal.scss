@@ -112,7 +112,10 @@ input[file-upload] {
     margin: 0 5px;
   }
 }
-button.save-consultation, .quick-links {
+.quick-links{
+  float: right;
+}
+button.save-consultation {
   float: right;
   margin: 6px;
   padding: 10px 15px 9px;

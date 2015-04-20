@@ -2,7 +2,7 @@
     <table class="table ward-details-content">
         <thead>
             <tr>
-                <th ng-repeat="heading in tableHeadings" ng-if="heading != 'hiddenAttributes'">{{heading}}</th>
+                <th ng-repeat="heading in tableHeadings" ng-if="heading != 'hiddenAttributes'" ng-class="{'bed-detail-column' : $index == 0}">{{heading}}</th>
             </tr>
         </thead>
         <tbody>

@@ -56,6 +56,18 @@ div[ng-app="adt"] {
         overflow-x: auto;
         table {
             font-size: 14px;
+            thead tr th{
+                border: 1px solid #bebebe;
+                color:$black;
+                background: rgba(232, 232, 232, 1);
+                padding: 7px 10px;
+                &.bed-detail-column{
+                    width: 60px;
+                }
+            }
+            tbody tr:nth-child(even) {
+              background: #FFFDF7;
+            }
         }
     }
     .box {

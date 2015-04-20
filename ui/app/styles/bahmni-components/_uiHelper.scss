@@ -58,6 +58,10 @@ h2.section-title {
 	overflow: auto;
 	background: $bahmniSecondaryColor;
 	position: relative;
+	.section-title-text{
+		padding-top: 8px;
+		display: inline-block;
+	}
 	&.has-link {
         cursor: pointer;
     	&:hover {
