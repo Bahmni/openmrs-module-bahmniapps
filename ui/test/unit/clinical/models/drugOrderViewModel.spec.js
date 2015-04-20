@@ -1086,6 +1086,21 @@ describe("drugOrderViewModel", function () {
         })
     });
 
+    describe("getDescriptionWithQuantity", function(){
+        it("should return drug form as quantity unit if drug form is tablet", function(){
+            var treatment = sampleTreatment({}, {}, null, Bahmni.Common.Util.DateUtil.now());
+            expect(treatment.getDescriptionWithQuantity()).toBe("Before Meals, 1(12 Tablet(s))");
+        })
+    });
+
+    describe("getDescriptionWithQuantity", function(){
+        it("should return 'Units' as quantity unit if drug form is not a tablet or a capsule", function(){
+            var treatment = sampleTreatment({}, {}, null, Bahmni.Common.Util.DateUtil.now());
+            treatment.drug.form = "Inhaler";
+            expect(treatment.getDescriptionWithQuantity()).toBe("Before Meals, 1(12 Unit(s))");
+        })
+    });
+
     describe("changeDrug", function(){
         it("should set default dose units if units available in config", function(){
             var appConfig = {"drugFormDefaults" : {"Ayurvedic" : {"doseUnits": "Teaspoon", "route": "Orally" }}};
