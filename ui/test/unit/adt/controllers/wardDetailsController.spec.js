@@ -1,6 +1,6 @@
 'use strict';
 
-describe("Store Controller", function() {
+describe("WardDetailsController", function() {
     var  wardService, createController, scope;
     var bedService;
     var wardsList = [{
