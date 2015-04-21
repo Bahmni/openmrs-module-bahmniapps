@@ -7,9 +7,9 @@
             <i class="icon-print"></i>
             P<u>r</u>int
         </button>
-
-        <span class="retro-date-text" ng-if="$parent.retrospectiveEntry.isRetrospective"
-              ng-bind="$parent.retrospectiveEntry.encounterDate | date:'dd/MM/yyyy'"/>
+ 
+        <!--<span class="retro-date-text" ng-if="$parent.retrospectiveEntry.isRetrospective"
+              ng-bind="$parent.retrospectiveEntry.encounterDate | date:'dd/MM/yyyy'"/> -->
 
         <ul class="header-tabs" ng-if="clinicalDashboardConfig.showTabs()">
             <li class="tab-item dashboard" ng-repeat="dashboard in clinicalDashboardConfig.visibleTabs"
