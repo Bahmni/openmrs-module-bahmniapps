@@ -43,6 +43,7 @@ angular.module('bahmni.adt')
 
         $scope.showWardLayout = function(wardUuid, wardName) {
             $scope.currentView = "wardLayout";
+            $scope.wardName = wardName;
             $scope.layout = [];
             $scope.bedLayouts = [];
             $scope.selectedBed = null;
