@@ -239,8 +239,9 @@ h3 {
         }
     }
     .dashboard-section section.block.hierarchy .value-text-only{
-        width: 61%;
-        word-break:break-all
+        width: 100%;
+        word-break:break-all;
+        display: auto;
     }
     section.block,
     .dashboard-section {
@@ -374,6 +375,7 @@ h3 {
             }
             .testUnderPanel {
                 width: 37%;
+                font-weight: bold;
                 padding-left: 0;
                 .visit-start-date {
                     margin-right: 0;
@@ -415,7 +417,7 @@ h3 {
                     text-overflow: initial;
                     padding: 0px 5px;
                     border-right-color: #ddd;
-
+                    display: inline-block;
                     float: left;
                 }
             }       
