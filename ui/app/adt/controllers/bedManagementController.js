@@ -15,7 +15,6 @@ angular.module('bahmni.adt')
         var minY = 1;
         var currentWardUuid = null;
         var encounterUuid = $stateParams.encounterUuid;
-        var locationUuid = sessionService.getLoginLocationUuid();
         var visitUuid = $stateParams.visitUuid;
 
         var init = function () {
@@ -70,6 +69,7 @@ angular.module('bahmni.adt')
                 $rootScope.bed = bed.bed;
                 $scope.layout = [];
                 bedService.setBedDetailsForPatientOnRootScope($scope.patient.uuid);
+                currentWardUuid = $rootScope.bedDetails.wardUuid
                 getBedsForWard(currentWardUuid);
                 $scope.confirmationMessage = "Bed " + bed.bed.bedNumber + " is assigned successfully";
                 $('.bed-info').hide();
@@ -89,7 +89,7 @@ angular.module('bahmni.adt')
         var createTransferEncounterAndAssignBed = function(bed) {
             var encounterData = {};
             encounterData.patientUuid = $scope.patient.uuid;
-            encounterData.locationUuid = locationUuid;
+            encounterData.locationUuid = sessionService.getLoginLocationUuid();
             encounterData.encounterTypeUuid = $rootScope.encounterConfig.encounterTypes['TRANSFER'];
             encounterService.create(encounterData).success(function(encounter) {
                 encounterUuid = encounter.encounterUuid;
