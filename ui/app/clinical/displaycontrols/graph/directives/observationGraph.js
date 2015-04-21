@@ -14,10 +14,11 @@ angular.module('bahmni.clinical').directive('observationGraph', ['observationsSe
             var observation = {};
             observation[config.xAxisConcept] = xAxisValues;
             observation[obs.concept.name] = obs.value;
+            observation["units"] = obs.concept.units;
             observationGraphModel.push(observation);
         }
 
-        var link = function ($scope, element, attrs) {
+        var link = function ($scope, element) {
             $scope.graphId = 'graph' + $scope.$id;
 
             if (!$scope.params) return;
@@ -39,12 +40,22 @@ angular.module('bahmni.clinical').directive('observationGraph', ['observationsSe
                     var xAxisObservations = _.filter(results.data, function (obs) {
                         return obs.concept.name == config.xAxisConcept;
                     });
-                    var observationGraphModel = [];
+                    var observationGraphModel = _(results.data).uniq(function(item){
+                        return item.concept.name + item.concept.units;
+                    }).map(function(item) {
+                        return {name: item.concept.name, units: item.concept.units, values: []}
+                    }).value();
+
+                    var entryMatchingConcept = function(graphModel, obs) {
+                        return _(graphModel).find(function(item) {
+                            return item.name === obs.concept.name;
+                        }).values;
+                    };
 
                     switch(config.xAxisConcept) {
                         case "observationDateTime":
                             _.map(yAxisObservations, function (obs) {
-                                buildObservationGraphModel(config, obs, observationGraphModel, new Date(obs.observationDateTime));
+                                buildObservationGraphModel(config, obs, entryMatchingConcept(observationGraphModel, obs), new Date(obs.observationDateTime));
                             });
                             generateGraph($scope, element, config, observationGraphModel);
                             break;
@@ -58,20 +69,20 @@ angular.module('bahmni.clinical').directive('observationGraph', ['observationsSe
                                     var age = Bahmni.Common.Util.AgeUtil.fromBirthDateTillReferenceDate(birthdate,
                                         dateUtil.formatDateWithoutTime(obs.observationDateTime));
                                     var ageValue = age.years + "." + age.months;
-                                    buildObservationGraphModel(config, obs, observationGraphModel, ageValue);
-                                })
+                                    buildObservationGraphModel(config, obs, entryMatchingConcept(observationGraphModel, obs), ageValue);
+                                });
                                 generateGraph($scope, element, config, observationGraphModel);
-                            })
+                            });
                             break;
 
                         default :
                             _.each(yAxisObservations, function (yAxisObs) {
                                 _.each(xAxisObservations, function (xAxisObs) {
                                     if (yAxisObs.observationDateTime == xAxisObs.observationDateTime) {
-                                        buildObservationGraphModel(config, yAxisObs, observationGraphModel, xAxisObs.value);
+                                        buildObservationGraphModel(config, yAxisObs, entryMatchingConcept(observationGraphModel, yAxisObs), xAxisObs.value);
                                     }
                                 })
-                            })
+                            });
                             generateGraph($scope, element, config, observationGraphModel);
                     }
                 });

@@ -1,20 +1,20 @@
 'use strict';
 
-describe("Observation Graph", function() {
+describe("Observation Graph", function () {
     var element, scope, compile, httpBackend, observationsService, patientService;
 
     beforeEach(module('bahmni.clinical'));
 
-    beforeEach(module(function($provide ) {
+    beforeEach(module(function ($provide) {
         observationsService = jasmine.createSpyObj('observationsService', ['fetch']);
         patientService = jasmine.createSpyObj('patientService', ['getPatient']);
         $provide.value('observationsService', observationsService);
         $provide.value('patientService', patientService);
 
-        window.c3 = jasmine.createSpyObj('c3',['generate']);
+        window.c3 = jasmine.createSpyObj('c3', ['generate']);
     }));
 
-    beforeEach(inject(function($compile, $rootScope, $httpBackend) {
+    beforeEach(inject(function ($compile, $rootScope, $httpBackend) {
         scope = $rootScope.$new();
         compile = $compile;
         httpBackend = $httpBackend;
@@ -22,27 +22,27 @@ describe("Observation Graph", function() {
         scope.patient = {uuid: "patientUuid"};
     }));
 
-    var mockObservationService = function(data) {
-        observationsService.fetch.and.callFake(function() {
+    var mockObservationService = function (data) {
+        observationsService.fetch.and.callFake(function () {
             return {
-                then: function(callback) {
+                then: function (callback) {
                     return callback({data: data})
                 }
             }
         });
     };
 
-    var mockPatientService = function(data) {
-        patientService.getPatient.and.callFake(function() {
+    var mockPatientService = function (data) {
+        patientService.getPatient.and.callFake(function () {
             return {
-                then: function(callback) {
+                then: function (callback) {
                     return callback({data: data})
                 }
             }
         });
     };
 
-    beforeEach(function() {
+    beforeEach(function () {
         element = angular.element('<observation-graph visit-uuid="visit.uuid" params="section" patient-uuid="patient.uuid"></observation-graph>');
         httpBackend.expectGET('displaycontrols/graph/views/observationGraph.html').respond('<div id="{{graphId}}"></div>')
     });
@@ -86,7 +86,11 @@ describe("Observation Graph", function() {
                 "numberOfVisits": 3
             }
         };
-        mockObservationService([{observationDateTime: "2015-01-01", value: 45, concept: { name: "Temperature"}}]);
+        mockObservationService([{
+            observationDateTime: "2015-01-01",
+            value: 45,
+            concept: {name: "Temperature", units: "Celcius"}
+        }]);
         spyOn(Bahmni.Graph, 'observationGraphConfig');
 
         compile(element)(scope);
@@ -94,7 +98,11 @@ describe("Observation Graph", function() {
         httpBackend.flush();
 
         expect(scope.graphId).not.toBeNull();
-        var graphModel = [{observationDateTime: new Date("2015-01-01"), Temperature: 45}];
+        var graphModel = [{
+            name: "Temperature",
+            units: "Celcius",
+            values: [{observationDateTime: new Date("2015-01-01"), Temperature: 45, units: "Celcius"}]
+        }];
         var anyElement = null;
         expect(Bahmni.Graph.observationGraphConfig).toHaveBeenCalledWith(anyElement, jasmine.any(Number), scope.section.config, graphModel);
         expect(window.c3.generate).toHaveBeenCalled();
@@ -110,7 +118,11 @@ describe("Observation Graph", function() {
                 "numberOfVisits": 3
             }
         };
-        mockObservationService([{observationDateTime: "2015-01-01", value: 45, concept: { name: "Height"}}]);
+        mockObservationService([{
+            observationDateTime: "2015-01-01",
+            value: 45,
+            concept: {name: "Height", units: "cm"}
+        }]);
         spyOn(Bahmni.Graph, 'observationGraphConfig');
         mockPatientService({person: {birthdate: "2000-02-02"}});
 
@@ -119,7 +131,7 @@ describe("Observation Graph", function() {
         httpBackend.flush();
 
         expect(scope.graphId).not.toBeNull();
-        var graphModel = [{age: "14.10", Height: 45}];
+        var graphModel = [{name: 'Height', units: "cm", values: [{age: '14.10', Height: 45, units: "cm"}]}];
         var anyElement = null;
         expect(Bahmni.Graph.observationGraphConfig).toHaveBeenCalledWith(anyElement, jasmine.any(Number), scope.section.config, graphModel);
         expect(window.c3.generate).toHaveBeenCalled();
@@ -135,8 +147,9 @@ describe("Observation Graph", function() {
                 "numberOfVisits": 3
             }
         };
-        mockObservationService([{observationDateTime: "2015-01-01", value: 155, concept: { name: "Height"}},
-            {observationDateTime: "2015-01-01", value: 45, concept: { name: "Weight"}},
+        mockObservationService([
+            {observationDateTime: "2015-01-01", value: 155, concept: {name: "Height", units: "cm"}},
+            {observationDateTime: "2015-01-01", value: 45, concept: {name: "Weight", units: "kg"}}
         ]);
         spyOn(Bahmni.Graph, 'observationGraphConfig');
 
@@ -145,10 +158,54 @@ describe("Observation Graph", function() {
         httpBackend.flush();
 
         expect(scope.graphId).not.toBeNull();
-        var graphModel = [{Height: 155, Weight: 45}];
+        var graphModel = [{
+            name: 'Height',
+            units: 'cm',
+            values: [{Weight: 45, Height: 155, units: 'cm'}]
+        }, {name: 'Weight', units: 'kg', values: []}];
         var anyElement = null;
         expect(Bahmni.Graph.observationGraphConfig).toHaveBeenCalledWith(anyElement, jasmine.any(Number), scope.section.config, graphModel);
         expect(window.c3.generate).toHaveBeenCalled();
     });
 
-});
+    it("should call c3 render for multiple observations on the yAxis", function () {
+        scope.section = {
+            "type": "observationGraph",
+            "title": "Height and weight vs time",
+            "config": {
+                "yAxisConcepts": ["Height", "Weight"],
+                "xAxisConcept": "observationDateTime",
+                "numberOfVisits": 3
+            }
+        };
+        mockObservationService([{observationDateTime: "2015-01-01", value: 155, concept: {name: "Height", units: "cm"}},
+            {observationDateTime: "2015-01-01", value: 40, concept: {name: "Weight", units: "kg"}},
+            {observationDateTime: "2015-02-01", value: 155, concept: {name: "Height", units: "cm"}},
+            {observationDateTime: "2015-02-01", value: 45, concept: {name: "Weight", units: "kg"}}
+        ]);
+
+        spyOn(Bahmni.Graph, 'observationGraphConfig');
+
+        compile(element)(scope);
+        scope.$digest();
+        httpBackend.flush();
+
+        expect(scope.graphId).not.toBeNull();
+        var graphModel = [
+            {
+                name: "Height", units: "cm", values: [
+                {observationDateTime: new Date("2015-01-01"), "Height": 155, "units": "cm"},
+                {observationDateTime: new Date("2015-02-01"), "Height": 155, "units": "cm"}]
+            },
+            {
+                name: "Weight", units: "kg", values: [
+                {observationDateTime: new Date("2015-01-01"), "Weight": 40, "units": "kg"},
+                {observationDateTime: new Date("2015-02-01"), "Weight": 45, "units": "kg"}]
+            }];
+        var anyElement = null;
+
+        expect(Bahmni.Graph.observationGraphConfig).toHaveBeenCalledWith(anyElement, jasmine.any(Number), scope.section.config, graphModel);
+        expect(window.c3.generate).toHaveBeenCalled();
+    });
+})
+;
