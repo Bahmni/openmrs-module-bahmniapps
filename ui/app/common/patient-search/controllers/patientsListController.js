@@ -55,6 +55,7 @@ angular.module('bahmni.common.patientSearch')
                     display: appExtn.extensionParams.display,
                     handler: appExtn.extensionParams.searchHandler,
                     forwardUrl: appExtn.extensionParams.forwardUrl,
+                    forwardButtonTitle:appExtn.extensionParams.forwardButtonTitle || "View",
                     id: appExtn.id,
                     params:appExtn.extensionParams.searchParams,
                     refreshTime: appExtn.extensionParams.refreshTime || 0,
