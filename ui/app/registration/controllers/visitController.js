@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('VisitController', ['$scope', '$rootScope', '$state', 'patientService', 'encounterService', '$stateParams', 'spinner', '$timeout', '$q', 'appService', 'openmrsPatientMapper', 'contextChangeHandler', 'messagingService', 'sessionService',
-        function ($scope, $rootScope, $state, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, patientMapper, contextChangeHandler, messagingService, sessionService) {
+    .controller('VisitController', ['$scope', '$rootScope', '$state', 'patientService', 'encounterService', '$stateParams', 'spinner', '$timeout', '$q', 'appService', 'openmrsPatientMapper', 'contextChangeHandler', 'messagingService', 'sessionService', 'visitService',
+        function ($scope, $rootScope, $state, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, patientMapper, contextChangeHandler, messagingService, sessionService, visitService) {
+            var self = this;
             var patientUuid = $stateParams.patientUuid;
             var extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.conceptSetGroup.observations", "config");
             var locationUuid = sessionService.getLoginLocationUuid();
@@ -31,8 +32,6 @@ angular.module('bahmni.registration')
                     encounterTypeUuid: regEncounterTypeUuid
                 })
                     .success(function (data) {
-                        $scope.encounterDateTime = data.encounterDateTime;
-                        $scope.visitTypeUuid = data.visitTypeUuid;
                         $scope.observations = data.observations;
                     });
             };
@@ -62,6 +61,30 @@ angular.module('bahmni.registration')
                 var createPromise = encounterService.create($scope.encounter);
                 spinner.forPromise(createPromise);
                 return createPromise;
+            };
+
+            var findPrivilege = function(privilegeName) {
+                return _.find($rootScope.currentUser.privileges, function(privilege) {
+                    return privilegeName === privilege.name;
+                });
+            };
+
+            var searchActiveVisitsPromise = function () {
+                return visitService.search({
+                    patient: patientUuid, includeInactive: false, v: "custom:(uuid)"
+                }).success(function (data) {
+                    var hasActiveVisit = data.results.length > 0;
+                    self.visitUuid = hasActiveVisit ? data.results[0].uuid : "";
+                    $scope.canCloseVisit = findPrivilege(Bahmni.Common.Constants.closeVisitPrivilege) && hasActiveVisit;
+                });
+            };
+
+
+            $scope.closeVisit = function () {
+                visitService.endVisit(self.visitUuid).then(function () {
+                    $scope.canCloseVisit = false;
+                    messagingService.showMessage('info', 'Visit closed');
+                });
             };
 
             var validate = function () {
@@ -111,5 +134,5 @@ angular.module('bahmni.registration')
                 $scope.context = {visitType: visitType, patient: $scope.patient};
             };
 
-            spinner.forPromise($q.all([getPatient(), getActiveEncounter()]).then(getConceptSet));
+            spinner.forPromise($q.all([getPatient(), getActiveEncounter(), searchActiveVisitsPromise()]).then(getConceptSet));
         }]);

@@ -20,7 +20,9 @@ describe('VisitController', function () {
     var appDescriptor;
     var sessionService;
     var messagingService;
-    var rootScope ;
+    var rootScope;
+    var visitService;
+    var visitController;
     var stubAllPromise = function () {
         return {
             then: function () {
@@ -35,6 +37,14 @@ describe('VisitController', function () {
             }
         }
     };
+
+    var searchActiveVisits = function (data) {
+        return {
+            success: function (successFn) {
+                successFn({results: data});
+            }
+        };
+    }
 
     var sampleConfig = {
         "conceptData": {
@@ -81,6 +91,7 @@ describe('VisitController', function () {
         $controller = $injector.get('$controller');
         scope = {"$watch": jasmine.createSpy()};
         patientService = jasmine.createSpyObj('patientService', ['get']);
+        visitService = jasmine.createSpyObj('visitService', ['search']);
         appService = jasmine.createSpyObj('appService', ['getDescription', 'getAppDescriptor']);
         appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue', 'getExtensions']);
         appService.getAppDescriptor.and.returnValue(appDescriptor);
@@ -105,21 +116,31 @@ describe('VisitController', function () {
         scope.currentProvider = {uuid: ''};
         patientMapper.map.and.returnValue(patient);
 
+        rootScope.currentUser = { privileges: []};
+        visitService.search.and.returnValue(searchActiveVisits([]));
+
     }]));
+
+    function createController() {
+        visitController = $controller('VisitController', {
+            $scope: scope,
+            $q: Q,
+            encounterService: encounterService,
+            patientService: patientService,
+            spinner: spinner,
+            $state: state,
+            $stateParams: stateParams,
+            appService: appService,
+            openmrsPatientMapper: patientMapper,
+            sessionService: sessionService,
+            messagingService: messagingService,
+            visitService: visitService
+        });
+    }
 
     describe('initialization', function () {
         it('should set the patient from patient data', function () {
-            $controller('VisitController', {
-                $scope: scope,
-                spinner: spinner,
-                encounterService: encounterService,
-                patientService: patientService,
-                $stateParams: stateParams,
-                openmrsPatientMapper: patientMapper,
-                appService: appService,
-                sessionService: sessionService
-            });
-
+            createController();
             getPatientPromise.callSuccessCallBack(patient);
             getEncounterPromise.callSuccessCallBack(sampleEncounter);
 
@@ -128,23 +149,9 @@ describe('VisitController', function () {
 
     });
 
-
     describe("submit", function () {
-
         beforeEach(function () {
-            $controller('VisitController', {
-                $scope: scope,
-                $q: Q,
-                encounterService: encounterService,
-                patientService: patientService,
-                spinner: spinner,
-                $state: state,
-                $stateParams: stateParams,
-                appService: appService,
-                openmrsPatientMapper: patientMapper,
-                sessionService: sessionService,
-                messagingService: messagingService
-            });
+            createController();
             getPatientPromise.callSuccessCallBack(patient);
             getEncounterPromise.callSuccessCallBack(sampleEncounter);
 
@@ -162,5 +169,28 @@ describe('VisitController', function () {
                 done();
             });
         });
+    });
+
+    describe("close active visit", function () {
+
+        it("should set the visitUuid and canCloseVisit if there is an active visit for the patient", function () {
+            var patientUuid = 'uuid';
+            rootScope.currentUser = {privileges: [{name: Bahmni.Common.Constants.closeVisitPrivilege}]};
+            visitService.search.and.returnValue(searchActiveVisits([{uuid: patientUuid}]));
+            createController();
+
+            expect(visitController.visitUuid).toBe(patientUuid);
+            expect(scope.canCloseVisit).toBeTruthy();
+        });
+
+        it("should NOT set the visitUuid and canCloseVisit if there is no active visit for the patient", function () {
+            rootScope.currentUser = {privileges: [{name: Bahmni.Common.Constants.closeVisitPrivilege}]};
+            visitService.search.and.returnValue(searchActiveVisits([]));
+            createController();
+
+            expect(visitController.visitUuid).toEqual("");
+            expect(scope.canCloseVisit).toBeFalsy();
+        });
+
     });
 });

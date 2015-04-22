@@ -23,13 +23,12 @@ angular.module('bahmni.registration')
                 $scope.editActions = editActions;
             };
 
-            var findPrivilege = function(privilegeName) {
-                var find = _.find($rootScope.currentUser.privileges, function(privilege) {
-                        return privilegeName === privilege.name;
-                    });
-                return find;
+            var findPrivilege = function (privilegeName) {
+                return _.find($rootScope.currentUser.privileges, function (privilege) {
+                    return privilegeName === privilege.name;
+                });
             };
-        
+
             $scope.patient = {};
             (function () {
                 uuid = $stateParams.patientUuid;
@@ -50,14 +49,11 @@ angular.module('bahmni.registration')
 
                 });
                 var searchActiveVisitsPromise = visitService.search({patient: uuid, includeInactive: false, v: "custom:(uuid)"}).success(function(data){
-                    $scope.visitUuid = data.results.length > 0 ? data.results[0].uuid : "";
-                    $scope.hasActiveVisit = data.results.length > 0;
-                    var actionName = findPrivilege(registration_Consultation_Privilege) && $scope.hasActiveVisit ? "enterConsultation" : ($scope.hasActiveVisit ? "enterVisitDetails" : "startVisit");
-                    defaultActions.push(actionName);
-                    var closeVisitPrivilege = Bahmni.Common.Constants.closeVisitPrivilege;
-                    $scope.canCloseVisit = findPrivilege(closeVisitPrivilege) && $scope.hasActiveVisit;
-                    identifyEditActions();
-                });
+                        var hasActiveVisit = data.results.length > 0;
+                        var actionName = findPrivilege(registration_Consultation_Privilege) && hasActiveVisit ? "enterConsultation" : (hasActiveVisit ? "enterVisitDetails" : "startVisit");
+                        defaultActions.push(actionName);
+                        identifyEditActions();
+                    });
 
                 var isDigitized = encounterService.getDigitized(uuid);
                 isDigitized.success(function(data) {
@@ -79,9 +75,6 @@ angular.module('bahmni.registration')
                 $scope.submitSource = source;
             };
 
-            $scope.closeVisit = function () {
-                visitService.endVisit($scope.visitUuid).then(function () {});
-            };
 
             var goToVisitPage = function(patientData) {
                 $scope.patient.uuid = patientData.patient.uuid;
