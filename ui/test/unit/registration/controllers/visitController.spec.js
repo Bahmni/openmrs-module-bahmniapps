@@ -23,6 +23,7 @@ describe('VisitController', function () {
     var rootScope;
     var visitService;
     var visitController;
+    var location;
     var stubAllPromise = function () {
         return {
             then: function () {
@@ -75,6 +76,7 @@ describe('VisitController', function () {
     beforeEach(module('stateMock'));
     beforeEach(inject(['$injector', '$timeout', '$q', '$rootScope', '$state', function ($injector, timeout, $q, $rootScope, $state) {
         q = $q;
+        location = jasmine.createSpyObj('$location', ['url']);
         rootScope = $rootScope;
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
         stateParams = {patientUuid: '21308498-2502-4495-b604-7b704a55522d'};
@@ -134,7 +136,8 @@ describe('VisitController', function () {
             openmrsPatientMapper: patientMapper,
             sessionService: sessionService,
             messagingService: messagingService,
-            visitService: visitService
+            visitService: visitService,
+            $location : location
         });
     }
 
@@ -201,8 +204,7 @@ describe('VisitController', function () {
             createController();
             scope.closeVisit();
 
-            expect(scope.canCloseVisit).toBeFalsy();
-            expect(messagingService.showMessage).toHaveBeenCalledWith('info', 'Visit closed');
+            expect(location.url).toHaveBeenCalledWith(Bahmni.Registration.Constants.patientSearchURL);
         })
 
     });
