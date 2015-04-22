@@ -37,7 +37,7 @@
             <section class="observation-section" ng-if="context">
                 <div ng-repeat="conceptSet in availableConceptSets" class="concept-set-group">
                     <div class="mylegend">
-                        <strong>{{conceptSet.options.conceptName}}</strong>
+                        <span><strong>{{conceptSet.options.conceptName}}</strong></span>
                     </div>
                     <div ng-if="conceptSet.options.showLatest" class="clearfix">
                         <div class="left" style="width: 50%">
