@@ -26,9 +26,9 @@ angular.module('bahmni.registration')
             };
 
             var fullNameLocal = function () {
-                var givenNameLocal = this.givenNameLocal || "";
-                var middleNameLocal = this.middleNameLocal || "";
-                var familyNameLocal = this.familyNameLocal || "";
+                var givenNameLocal = this.givenNameLocal || this.givenName || "";
+                var middleNameLocal = this.middleNameLocal || this.middleName|| "";
+                var familyNameLocal = this.familyNameLocal || this.familyName || "";
                 return (givenNameLocal.trim() + " " + (middleNameLocal ? middleNameLocal + " " : "" ) + familyNameLocal.trim()).trim();
             };
 
