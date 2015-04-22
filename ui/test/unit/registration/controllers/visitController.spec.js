@@ -91,7 +91,7 @@ describe('VisitController', function () {
         $controller = $injector.get('$controller');
         scope = {"$watch": jasmine.createSpy()};
         patientService = jasmine.createSpyObj('patientService', ['get']);
-        visitService = jasmine.createSpyObj('visitService', ['search']);
+        visitService = jasmine.createSpyObj('visitService', ['search', 'endVisit']);
         appService = jasmine.createSpyObj('appService', ['getDescription', 'getAppDescriptor']);
         appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue', 'getExtensions']);
         appService.getAppDescriptor.and.returnValue(appDescriptor);
@@ -116,7 +116,7 @@ describe('VisitController', function () {
         scope.currentProvider = {uuid: ''};
         patientMapper.map.and.returnValue(patient);
 
-        rootScope.currentUser = { privileges: []};
+        rootScope.currentUser = {privileges: []};
         visitService.search.and.returnValue(searchActiveVisits([]));
 
     }]));
@@ -191,6 +191,19 @@ describe('VisitController', function () {
             expect(visitController.visitUuid).toEqual("");
             expect(scope.canCloseVisit).toBeFalsy();
         });
+
+        it("should close the open active visit on click of close", function () {
+            visitService.endVisit.and.returnValue({
+                then: function (successFn) {
+                    successFn();
+                }
+            });
+            createController();
+            scope.closeVisit();
+
+            expect(scope.canCloseVisit).toBeFalsy();
+            expect(messagingService.showMessage).toHaveBeenCalledWith('info', 'Visit closed');
+        })
 
     });
 });
