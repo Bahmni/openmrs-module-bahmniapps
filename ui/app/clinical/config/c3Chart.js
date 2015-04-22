@@ -33,9 +33,7 @@ Bahmni.Graph.observationGraphConfig = function (bindTo, graphWidth, config, data
                         return x;
                     }
                 }
-            },
-            min: config.minXAxisRange,
-            max: config.maxXAxisRange
+            }
         }
     }, axes = {};
 
@@ -53,8 +51,6 @@ Bahmni.Graph.observationGraphConfig = function (bindTo, graphWidth, config, data
                     return d3.round(y, 2);
                 }
             },
-            min: config.minYAxisRange,
-            max: config.maxYAxisRange,
             show: true
         }
     };
