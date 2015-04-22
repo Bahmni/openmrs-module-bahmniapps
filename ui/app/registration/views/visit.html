@@ -40,6 +40,9 @@
                         <span><strong>{{conceptSet.options.conceptName}}</strong></span>
                     </div>
                     <div ng-if="conceptSet.options.showLatest" class="clearfix">
+                        <div class="obs-section right" style="width: 45%">
+                            <bahmni-observation patient="patient" config="{conceptNames: conceptSet.options.conceptNames, scope: 'latest'}" section-title="'Latest'"></bahmni-observation>
+                        </div>
                         <div class="left" style="width: 50%">
                             <concept-set concept-set-name="conceptSet.options.conceptName" required="conceptSet.options.required" patient="patient"
                             observations="observations" obs-scope="conceptSet.options.scope" show-title="false" concept-set-focused="$index === 0" ></concept-set>
