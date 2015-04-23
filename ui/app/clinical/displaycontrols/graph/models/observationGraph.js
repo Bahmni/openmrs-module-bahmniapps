@@ -40,7 +40,8 @@
 
         if (config.displayForObservationDateTime()) {
             _.map(yAxisObservations, function (obs) {
-                buildObservationGraphModel(config, obs, entryMatchingConcept(observationGraphModel, obs), new Date(obs.observationDateTime));
+                buildObservationGraphModel(config, obs, entryMatchingConcept(observationGraphModel, obs),
+                    Bahmni.Common.Util.DateUtil.parseDatetime(obs.observationDateTime).toDate());
             });
         } else if (config.displayForAge()) {
             var dateUtil = Bahmni.Common.Util.DateUtil;

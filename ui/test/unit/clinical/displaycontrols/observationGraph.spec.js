@@ -101,7 +101,7 @@ describe("Observation Graph", function () {
         var graphModel = [{
             name: "Temperature",
             units: "Celcius",
-            values: [{observationDateTime: new Date("2015-01-01"), Temperature: 45, units: "Celcius"}]
+            values: [{observationDateTime: Bahmni.Common.Util.DateUtil.parseDatetime("2015-01-01").toDate(), Temperature: 45, units: "Celcius"}]
         }];
         var anyElement = null;
         expect(Bahmni.Graph.observationGraphConfig).toHaveBeenCalledWith(anyElement, jasmine.any(Number), new Bahmni.Clinical.ObservationGraphConfig(scope.section.config), new Bahmni.Clinical.ObservationGraph(graphModel));
@@ -197,17 +197,21 @@ describe("Observation Graph", function () {
         scope.$digest();
         httpBackend.flush();
 
+        var toDate = function(str) {
+            return Bahmni.Common.Util.DateUtil.parseDatetime(str).toDate();
+        };
+
         expect(scope.graphId).not.toBeNull();
         var graphModel = [
             {
                 name: "Height", units: "cm", values: [
-                {observationDateTime: new Date("2015-01-01"), "Height": 155, "units": "cm"},
-                {observationDateTime: new Date("2015-02-01"), "Height": 155, "units": "cm"}]
+                {observationDateTime: toDate("2015-01-01"), "Height": 155, "units": "cm"},
+                {observationDateTime: toDate("2015-02-01"), "Height": 155, "units": "cm"}]
             },
             {
                 name: "Weight", units: "kg", values: [
-                {observationDateTime: new Date("2015-01-01"), "Weight": 40, "units": "kg"},
-                {observationDateTime: new Date("2015-02-01"), "Weight": 45, "units": "kg"}]
+                {observationDateTime: toDate("2015-01-01"), "Weight": 40, "units": "kg"},
+                {observationDateTime: toDate("2015-02-01"), "Weight": 45, "units": "kg"}]
             }];
         var anyElement = null;
 
