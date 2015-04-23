@@ -6,11 +6,16 @@ Bahmni.Graph = Bahmni.Graph || {};
 Bahmni.Graph.observationGraphConfig = function (bindTo, graphWidth, config, data) {
     var dateUtil = Bahmni.Common.Util.DateUtil;
     var type = 'indexed', unit = "";
-    if (config.xAxisConcept == "observationDateTime") {
+    var xAxisFormat = function(xAxisConcept) {
+        return config.xAxisConcept.toLowerCase() === "observationdatetime" ? dateUtil.formatDateWithoutTime(xAxisConcept) : xAxisConcept;
+
+    };
+
+    if (config.xAxisConcept.toLowerCase() === "observationdatetime") {
         type = 'timeseries';
     }
 
-    if (config.xAxisConcept == "age") {
+    if (config.xAxisConcept.toLowerCase() === "age") {
         unit = " (years)";
     }
 
@@ -26,13 +31,7 @@ Bahmni.Graph.observationGraphConfig = function (bindTo, graphWidth, config, data
                 culling: {
                     max: 3
                 },
-                format: function (x) {
-                    if (config.xAxisConcept == "observationDateTime") {
-                        return dateUtil.formatDateWithoutTime(x);
-                    } else {
-                        return x;
-                    }
-                }
+                format: xAxisFormat
             }
         }
     }, axes = {};
@@ -85,13 +84,6 @@ Bahmni.Graph.observationGraphConfig = function (bindTo, graphWidth, config, data
         });
     }
 
-    var title = function (x) {
-        if (config.xAxisConcept == "observationDateTime") {
-            return dateUtil.formatDateWithoutTime(x);
-        } else {
-            return x;
-        }
-    };
     return {
         bindto: bindTo,
         size: {
@@ -119,15 +111,7 @@ Bahmni.Graph.observationGraphConfig = function (bindTo, graphWidth, config, data
         axis: axis,
         tooltip: {
             grouped: false,
-            format: {
-                title: function (x) {
-                    if (config.xAxisConcept == "observationDateTime") {
-                        return dateUtil.formatDateWithoutTime(x);
-                    } else {
-                        return x;
-                    }
-                }
-            }
+            format: xAxisFormat
         },
         zoom: {
             enabled: true

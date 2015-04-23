@@ -63,7 +63,7 @@ describe("Observation Graph", function () {
             "title": "Temperature",
             "config": {
                 "yAxisConcepts": ["Temperature"],
-                "xAxisConcept": ["observationDateTime"],
+                "xAxisConcept": "observationDateTime",
                 "numberOfVisits": 3
             }
         };
@@ -104,7 +104,7 @@ describe("Observation Graph", function () {
             values: [{observationDateTime: new Date("2015-01-01"), Temperature: 45, units: "Celcius"}]
         }];
         var anyElement = null;
-        expect(Bahmni.Graph.observationGraphConfig).toHaveBeenCalledWith(anyElement, jasmine.any(Number), scope.section.config, graphModel);
+        expect(Bahmni.Graph.observationGraphConfig).toHaveBeenCalledWith(anyElement, jasmine.any(Number), new Bahmni.Clinical.ObservationGraphConfig(scope.section.config), new Bahmni.Clinical.ObservationGraph(graphModel));
         expect(window.c3.generate).toHaveBeenCalled();
     });
 
@@ -133,7 +133,11 @@ describe("Observation Graph", function () {
         expect(scope.graphId).not.toBeNull();
         var graphModel = [{name: 'Height', units: "cm", values: [{age: '14.10', Height: 45, units: "cm"}]}];
         var anyElement = null;
-        expect(Bahmni.Graph.observationGraphConfig).toHaveBeenCalledWith(anyElement, jasmine.any(Number), scope.section.config, graphModel);
+        expect(Bahmni.Graph.observationGraphConfig).toHaveBeenCalledWith(
+            anyElement
+            , jasmine.any(Number)
+            , new Bahmni.Clinical.ObservationGraphConfig(scope.section.config)
+            , new Bahmni.Clinical.ObservationGraph(graphModel));
         expect(window.c3.generate).toHaveBeenCalled();
     });
 
@@ -164,7 +168,10 @@ describe("Observation Graph", function () {
             values: [{Weight: 45, Height: 155, units: 'cm'}]
         }, {name: 'Weight', units: 'kg', values: []}];
         var anyElement = null;
-        expect(Bahmni.Graph.observationGraphConfig).toHaveBeenCalledWith(anyElement, jasmine.any(Number), scope.section.config, graphModel);
+        expect(Bahmni.Graph.observationGraphConfig).toHaveBeenCalledWith(anyElement
+            , jasmine.any(Number)
+            , new Bahmni.Clinical.ObservationGraphConfig(scope.section.config)
+            , new Bahmni.Clinical.ObservationGraph(graphModel));
         expect(window.c3.generate).toHaveBeenCalled();
     });
 
@@ -204,7 +211,10 @@ describe("Observation Graph", function () {
             }];
         var anyElement = null;
 
-        expect(Bahmni.Graph.observationGraphConfig).toHaveBeenCalledWith(anyElement, jasmine.any(Number), scope.section.config, graphModel);
+        expect(Bahmni.Graph.observationGraphConfig).toHaveBeenCalledWith(anyElement
+            , jasmine.any(Number)
+            , new Bahmni.Clinical.ObservationGraphConfig(scope.section.config)
+            , new Bahmni.Clinical.ObservationGraph(graphModel));
         expect(window.c3.generate).toHaveBeenCalled();
     });
 })
