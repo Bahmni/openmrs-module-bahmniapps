@@ -48,6 +48,7 @@ angular.module('bahmni.adt')
             $scope.selectedBed = null;
             maxX = maxY = minX = minY = 1; 
             getBedsForWard(wardUuid);
+            currentWardUuid = wardUuid;
         };
 
         $scope.setBedDetails = function (cell) {
@@ -69,7 +70,6 @@ angular.module('bahmni.adt')
                 $rootScope.bed = bed.bed;
                 $scope.layout = [];
                 bedService.setBedDetailsForPatientOnRootScope($scope.patient.uuid);
-                currentWardUuid = $rootScope.bedDetails.wardUuid
                 getBedsForWard(currentWardUuid);
                 $scope.confirmationMessage = "Bed " + bed.bed.bedNumber + " is assigned successfully";
                 $('.bed-info').hide();
