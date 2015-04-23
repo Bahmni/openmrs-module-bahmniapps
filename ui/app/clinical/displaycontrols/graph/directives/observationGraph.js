@@ -3,16 +3,15 @@
 angular.module('bahmni.clinical').directive('observationGraph', ['observationsService', 'patientService', '$q',
     function (observationsService, patientService, $q) {
 
-        function generateGraph($scope, element, config, observationGraphModel) {
+        var generateGraph = function ($scope, element, config, observationGraphModel) {
             var bindToElement = document.getElementById($scope.graphId);
             var graphWidth = $(element).width();
             var graphConfig = Bahmni.Graph.observationGraphConfig(bindToElement, graphWidth, config, observationGraphModel);
             c3.generate(graphConfig);
-        }
+        };
 
         var link = function ($scope, element) {
             $scope.graphId = 'graph' + $scope.$id;
-
 
             if (!$scope.params) return;
 
@@ -30,14 +29,12 @@ angular.module('bahmni.clinical').directive('observationGraph', ['observationsSe
                 promises.push(patientService.getPatient($scope.patientUuid));
             }
 
-
             $q.all(promises).then(function(results) {
                 if(results[0].data.length == 0) return;
 
                 var model = Bahmni.Clinical.ObservationGraph.create(results[0].data, results[1] && results[1].data.person, config);
 
                 generateGraph($scope, element, config, model);
-
             });
         };
 

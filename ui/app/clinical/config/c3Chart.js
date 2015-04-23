@@ -5,27 +5,17 @@ Bahmni.Graph = Bahmni.Graph || {};
 
 Bahmni.Graph.observationGraphConfig = function (bindTo, graphWidth, config, data) {
     var dateUtil = Bahmni.Common.Util.DateUtil;
-    var type = 'indexed', unit = "";
-    var xAxisFormat = function(xAxisConcept) {
-        return config.xAxisConcept.toLowerCase() === "observationdatetime" ? dateUtil.formatDateWithoutTime(xAxisConcept) : xAxisConcept;
-
+    var xAxisFormat = function (xAxisConcept) {
+        return config.displayForObservationDateTime() ? dateUtil.formatDateWithoutTime(xAxisConcept) : xAxisConcept;
     };
-
-    if (config.xAxisConcept.toLowerCase() === "observationdatetime") {
-        type = 'timeseries';
-    }
-
-    if (config.xAxisConcept.toLowerCase() === "age") {
-        unit = " (years)";
-    }
 
     var axis = {
         x: {
             label: {
-                text: config.xAxisConcept + unit,
+                text: config.xAxisConcept + (config.unit || ''),
                 position: 'outer-right'
             },
-            type: type,
+            type: config.type,
             tick: {
                 fit: true,
                 culling: {
@@ -57,32 +47,24 @@ Bahmni.Graph.observationGraphConfig = function (bindTo, graphWidth, config, data
     var values = _(data).reduce(function (accumulator, item) {
         return accumulator.concat(item.values);
     }, []);
-    var distinctUnits = _(data).unique(function (item) {
-        return item.units;
-    }).pluck(function (item) {
-        return item.units;
-    }).value();
+    var distinctUnits = _.uniq(_.pluck(data, 'units'));
+
     if (distinctUnits.length > 2) {
         throw new Error("Cannot display line graphs with concepts that have more than 2 units");
     }
 
-    if (distinctUnits[0]) {
-        axis.y = createYAxis(distinctUnits[0]);
-        data.forEach(function (item) {
-            if (item.units === distinctUnits[0]) {
-                axes[item.name] = 'y';
+    var createAxisAndPopulateAxes = function (axisY, unit) {
+        if (!unit) return;
+        axis[axisY] = createYAxis(unit);
+        _.each(data, function (item) {
+            if (item.units === unit) {
+                axes[item.name] = axisY;
             }
         });
-    }
+    };
 
-    if (distinctUnits[1]) {
-        axis.y2 = createYAxis(distinctUnits[1]);
-        data.forEach(function (item) {
-            if (item.units === distinctUnits[1]) {
-                axes[item.name] = 'y2';
-            }
-        });
-    }
+    createAxisAndPopulateAxes('y', distinctUnits[0]);
+    createAxisAndPopulateAxes('y2', distinctUnits[1]);
 
     return {
         bindto: bindTo,
@@ -91,7 +73,7 @@ Bahmni.Graph.observationGraphConfig = function (bindTo, graphWidth, config, data
         },
         padding: {
             top: 20,
-            right: 50
+            right: 70
         },
         data: {
             json: values,

@@ -83,7 +83,8 @@ describe("Observation Graph", function () {
             "config": {
                 "yAxisConcepts": ["Temperature"],
                 "xAxisConcept": "observationDateTime",
-                "numberOfVisits": 3
+                "numberOfVisits": 3,
+                "type": "timeseries"
             }
         };
         mockObservationService([{
@@ -104,7 +105,9 @@ describe("Observation Graph", function () {
             values: [{observationDateTime: Bahmni.Common.Util.DateUtil.parseDatetime("2015-01-01").toDate(), Temperature: 45, units: "Celcius"}]
         }];
         var anyElement = null;
-        expect(Bahmni.Graph.observationGraphConfig).toHaveBeenCalledWith(anyElement, jasmine.any(Number), new Bahmni.Clinical.ObservationGraphConfig(scope.section.config), new Bahmni.Clinical.ObservationGraph(graphModel));
+        expect(Bahmni.Graph.observationGraphConfig).toHaveBeenCalledWith(anyElement, jasmine.any(Number),
+            new Bahmni.Clinical.ObservationGraphConfig(scope.section.config),
+            new Bahmni.Clinical.ObservationGraph(graphModel));
         expect(window.c3.generate).toHaveBeenCalled();
     });
 
@@ -115,7 +118,8 @@ describe("Observation Graph", function () {
             "config": {
                 "yAxisConcepts": ["Height"],
                 "xAxisConcept": "age",
-                "numberOfVisits": 3
+                "numberOfVisits": 3,
+                "unit": " (years)"
             }
         };
         mockObservationService([{
@@ -148,7 +152,8 @@ describe("Observation Graph", function () {
             "config": {
                 "yAxisConcepts": ["Height"],
                 "xAxisConcept": "Weight",
-                "numberOfVisits": 3
+                "numberOfVisits": 3,
+                "type": "indexed"
             }
         };
         mockObservationService([
@@ -182,7 +187,8 @@ describe("Observation Graph", function () {
             "config": {
                 "yAxisConcepts": ["Height", "Weight"],
                 "xAxisConcept": "observationDateTime",
-                "numberOfVisits": 3
+                "numberOfVisits": 3,
+                "type": "timeseries"
             }
         };
         mockObservationService([{observationDateTime: "2015-01-01", value: 155, concept: {name: "Height", units: "cm"}},
@@ -221,5 +227,4 @@ describe("Observation Graph", function () {
             , new Bahmni.Clinical.ObservationGraph(graphModel));
         expect(window.c3.generate).toHaveBeenCalled();
     });
-})
-;
+});
