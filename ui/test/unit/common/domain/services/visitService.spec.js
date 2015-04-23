@@ -2,10 +2,10 @@
 
 describe('Registration Visit Service', function () {
     var visitService;
-    var openmrsUrl = "http://searchVisit";
-    var endVisitUrl = "http://endVisit";
+    var openmrsUrl = "/openmrs/ws/rest/v1/visit";
+    var endVisitUrl = "/openmrs/ws/rest/v1/endVisit";
     var uuid = "9e23a1bb-0615-4066-97b6-db309c9c6447";
-   
+
     var mockHttp = {
         get: jasmine.createSpy('Http get').and.returnValue({'results': [{'uuid': uuid}]}),
         post: jasmine.createSpy('Http post').and.returnValue({
@@ -22,10 +22,10 @@ describe('Registration Visit Service', function () {
     };
 
     beforeEach(function () {
-        module('bahmni.registration');
+        module('bahmni.common.domain');
         module(function ($provide) {
             Bahmni.Common.Constants.endVisitUrl = endVisitUrl;
-            Bahmni.Registration.Constants.webServiceRestBaseURL = openmrsUrl;
+            Bahmni.Common.Constants.visitUrl = openmrsUrl;
             $provide.value('$http', mockHttp);
         });
 
@@ -38,7 +38,7 @@ describe('Registration Visit Service', function () {
         var parameters = {patient: uuid, includeInactive: false, v: "custom:(uuid)"}
         var results = visitService.search(parameters);
         expect(mockHttp.get).toHaveBeenCalled();
-        expect(mockHttp.get.calls.mostRecent().args[0]).toBe(openmrsUrl + '/visit');
+        expect(mockHttp.get.calls.mostRecent().args[0]).toBe(openmrsUrl);
         expect(mockHttp.get.calls.mostRecent().args[1].params.patient).toBe(uuid);
         expect(mockHttp.get.calls.mostRecent().args[1].params.includeInactive).toBeFalsy();
     });
@@ -49,4 +49,5 @@ describe('Registration Visit Service', function () {
         expect(mockHttp.post.calls.mostRecent().args[0]).toBe(endVisitUrl + '?visitUuid=' + uuid);
         expect(mockHttp.post.calls.mostRecent().args[1].withCredentials).toBeTruthy();
     });
+
 });

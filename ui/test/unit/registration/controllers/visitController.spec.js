@@ -45,7 +45,16 @@ describe('VisitController', function () {
                 successFn({results: data});
             }
         };
+    };
+    var summaryData = {admissionDetails:{},dischargeDetails:null};
+    var getVisitSummaryForUuid = function () {
+        return {
+            then: function (successFn) {
+                successFn({data: summaryData});
+            }
+        };
     }
+
 
     var sampleConfig = {
         "conceptData": {
@@ -93,7 +102,7 @@ describe('VisitController', function () {
         $controller = $injector.get('$controller');
         scope = {"$watch": jasmine.createSpy()};
         patientService = jasmine.createSpyObj('patientService', ['get']);
-        visitService = jasmine.createSpyObj('visitService', ['search', 'endVisit']);
+        visitService = jasmine.createSpyObj('visitService', ['search', 'endVisit','getVisitSummary']);
         appService = jasmine.createSpyObj('appService', ['getDescription', 'getAppDescriptor']);
         appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue', 'getExtensions']);
         appService.getAppDescriptor.and.returnValue(appDescriptor);
@@ -208,4 +217,40 @@ describe('VisitController', function () {
         })
 
     });
+    describe('getMessage', function () {
+        it('should return message', function () {
+            scope.message = "message"
+            createController();
+            expect(scope.getMessage()).toBe(scope.message);
+        });
+    });
+    describe('is click enable', function(){
+        it("should return false if the patient is not discharged", function () {
+            visitService.getVisitSummary.and.returnValue(getVisitSummaryForUuid([]));
+            createController();
+            var value = scope.isClickEnable();
+            expect(visitService.getVisitSummary).toHaveBeenCalled();
+            expect(value).toBe(false);
+        });
+        it("should  return true if the patient is discharged", function () {
+            summaryData.dischargeDetails = {};
+            visitService.getVisitSummary.and.returnValue(getVisitSummaryForUuid([]));
+            createController();
+            var value = scope.isClickEnable();
+            expect(visitService.getVisitSummary).toHaveBeenCalled();
+            expect(value).toBe(true);
+        });
+
+        it("should  return true if the patient is not admitted yet", function () {
+            summaryData.admissionDetails = null;
+            summaryData.dischargeDetails = null;
+            visitService.getVisitSummary.and.returnValue(getVisitSummaryForUuid([]));
+            createController();
+            var value = scope.isClickEnable();
+            expect(visitService.getVisitSummary).toHaveBeenCalled();
+            expect(value).toBe(true);
+        });
+
+    });
+
 });

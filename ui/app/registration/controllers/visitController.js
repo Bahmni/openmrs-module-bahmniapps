@@ -86,6 +86,20 @@ angular.module('bahmni.registration')
                 });
             };
 
+            $scope.isClickEnable = function(){
+                visitService.getVisitSummary(self.visitUuid).then(function (response) {
+                    $scope.visitSummary = response.data;
+                });
+                if($scope.visitSummary.admissionDetails != null && $scope.visitSummary.dischargeDetails === null){
+                    $scope.message = "You can't close visit unless you discharge the patient";
+                    return false;
+                }
+                return true;
+            };
+
+            $scope.getMessage = function(){
+                return $scope.message;
+            }
             var validate = function () {
                 var deferred = $q.defer();
                 var contxChange = contextChangeHandler.execute();
