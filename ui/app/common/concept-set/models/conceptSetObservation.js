@@ -38,6 +38,9 @@ Bahmni.ConceptSet.Observation = function (observation, savedObs, conceptUIConfig
                 },
                 set: function (newValue) {
                     self._value = newValue;
+                    if (!newValue) {
+                        savedObs = null;
+                    }
                     self.onValueChanged();
                 }
             });
