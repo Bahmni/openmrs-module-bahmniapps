@@ -11,22 +11,25 @@
     <body>
         <div ng-app="orders" >
             <div ng-include src="'../common/ui-helper/header.html'"></div>
-            <div ng-include src="'../common/patient/header/views/header.html'"></div>
             <div ng-include src="'../common/ui-helper/messages.html'"></div>
-            <div class="pending-orders-wrapper">
-                <div ui-view id="view-content" class="pending-orders-content-wrapper"></div>
-            </div>           
+            <div class="opd-wrapper">
+                <div ui-view="layout" id="view-content" class="opd-content-wrapper"></div>
+            </div>
         </div>
         <script src="../components/lodash/dist/lodash.min.js"></script>
         <script src="../components/jquery/jquery.js"></script>
         <script src="../lib/jquery/jquery-ui-1.10.4.custom.min.js"></script>
+
         <script src="../components/jquery.cookie/jquery.cookie.js"></script>
         <script src="../components/keyboardjs/keyboard.js"></script>
         <script src="../components/angular/angular.js"></script>
         <script src="../components/angular-ui-router/release/angular-ui-router.js"></script>
+
+        <script src="../components/moment/moment.js"></script>
+
         <script src="../components/ng-clip/src/ngClip.js"></script>
         <script src="../components/zeroclipboard/dist/ZeroClipboard.js"></script>
-
+        <script src="../components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
         <!-- build:js orders.min.js -->
         <script src="../common/constants.js"></script>
         <script src="../common/util/init.js"></script>
@@ -46,6 +49,12 @@
 
         <script src="../common/domain/init.js"></script>
         <script src="../common/domain/services/configurationService.js"></script>
+        <script src="../common/domain/models/retrospectiveEntry.js"></script>
+        <script src="../common/domain/services/retrospectiveEntryService.js"></script>
+        <script src="../common/domain/encounterConfig.js"></script>
+
+        <script src="../common/config/init.js"></script>
+        <script src="../common/config/services/configurations.js"></script>
 
         <script src="../common/patient/init.js"></script>
         <script src="../common/patient/mappers/patientMapper.js"></script>
@@ -60,10 +69,26 @@
         <script src="../common/ui-helper/controllers/messageController.js"></script>
         <script src="../common/ui-helper/services/messagingService.js"></script>
 
+        <script src="../common/route-errorhandler/init.js"></script>
+        <script src="../common/util/dateUtil.js"></script>
+
+        <script src="../common/ui-helper/filters/thumbnail.js"></script>
+        <script src="../common/ui-helper/filters/dateFilters.js"></script>
+        <script src="../common/logging/init.js"></script>
+        <script src="../common/logging/exceptionHandler.js"></script>
+
+        <script src="../common/patient-search/init.js"></script>
+        <script src="../common/patient-search/constants.js"></script>
+        <script src="../common/patient-search/models/search.js"></script>
+        <script src="../common/patient-search/directives/resize.js"></script>
+        <script src="../common/patient-search/directives/scheduler.js"></script>
+        <script src="../common/patient-search/controllers/patientsListController.js"></script>
+
         <script src="app.js"></script>
         <script src="init.js"></script>
         <script src="initialization.js"></script>
         <script src="services/pendingOrdersService.js"></script>
         <script src="controllers/pendingOrdersController.js"></script>
+
         <!-- endbuild -->
     </body>

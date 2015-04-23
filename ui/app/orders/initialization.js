@@ -1,41 +1,24 @@
 'use strict';
 
-angular.module('bahmni.orders').factory('initialization', ['$rootScope', '$q', 'configurationService', 'authenticator', 'patientService', 'spinner',
-    function ($rootScope, $q, configurationService, authenticator, patientService, spinner) {
-        return function(appContext, patientUuid) {
+angular.module('bahmni.orders')
+.factory('initialization', ['$rootScope', '$q', 'appService', 'spinner', 'configurations',
+    function ($rootScope, $q, appService, spinner, configurations) {
 
-            var patientMapper = new Bahmni.PatientMapper($rootScope.patientConfig);
-
-            var initializationPromise = $q.defer();
-            var getConfigs = function () {
-                var configurationsPromises = $q.defer();
-                configurationService.getConfigurations(['radiologyObservationConfig','encounterConfig']).then(function (configurations) {
-                    $rootScope.encounterTypes = configurations.encounterConfig.encounterTypes;
-                    $rootScope.orderTypes = configurations.encounterConfig.orderTypes;
-                    $rootScope.radiologyObservationConcept = configurations.radiologyObservationConfig.results[0];
-                    configurationsPromises.resolve();
-                });
-                return configurationsPromises.promise;
-            };
-
-            var getPatient = function(patientUuid) {
-                var patientDeferrable = $q.defer();
-                patientService.getPatient(patientUuid).then(function (openMRSPatientResponse) {
-                    $rootScope.patient = patientMapper.map(openMRSPatientResponse.data);
-                    patientDeferrable.resolve();
-                });
-                return patientDeferrable.promise;
-            };
-
-            authenticator.authenticateUser().then(function () {
-                getConfigs().then(function () {
-                     getPatient(patientUuid).then(function(){
-                         initializationPromise.resolve();
-                     })
-                });
+        var getConfigs = function () {
+            var config = $q.defer();
+            var configNames = ['encounterConfig', 'patientConfig'];
+            configurations.load(configNames).then(function () {
+                $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig());
+                $rootScope.patientConfig = configurations.patientConfig();
+                config.resolve();
             });
-
-            return spinner.forPromise(initializationPromise.promise);
+            return config.promise;
         };
-    }]
-);    
+
+        var initApp = function () {
+            return appService.initApp('orders', {'app': true, 'extension' : true });
+        };
+
+        return spinner.forPromise(initApp()).then(getConfigs());
+    }
+]);
