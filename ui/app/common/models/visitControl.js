@@ -16,7 +16,8 @@ Bahmni.Common.VisitControl = function(visitTypes, defaultVisitTypeName, encounte
     };
 
     self.createVisit = function(patientUuid, encounter) {
-        var encounterTransaction = {patientUuid: patientUuid, visitTypeUuid: self.selectedVisitType.uuid, locationUuid : encounter.locationUuid};
+        var visitType = self.selectedVisitType || self.defaultVisitType;
+        var encounterTransaction = {patientUuid: patientUuid, visitTypeUuid: visitType.uuid, locationUuid : encounter.locationUuid};
         if(encounter && encounter.encounterTypeUuid){
             encounterTransaction.encounterTypeUuid = encounter.encounterTypeUuid;
         }

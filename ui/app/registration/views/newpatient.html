@@ -36,22 +36,7 @@
                 </article>
             </section>
             <div ng-include="'views/patientcommon.html'"></div>
-            <div class="submit-btn-container">
-                <div class="right">
-                    <span ng-repeat="extn in createActions">
-                        <span ng-switch="extn.extensionParams.action">
-                            <div ng-switch-when="startVisit" split-button="" options="visitControl.visitTypes"
-                                primary-option="visitControl.defaultVisitType" option-text="visitControl.startButtonText"
-                                option-click="visitControl.startVisit" class="right">
-                            </div>
-                            <button ng-switch-default="" type="submit" class="right" ng-click="setSubmitSource(extn.extensionParams.action)"
-                                ng-class="{'confirm':extn.extensionParams.action == 'save'}">
-                                {{extn.extensionParams.display}}
-                            </button>
-                        </span>
-                    </span>
-                </div>
-            </div>
+            <div ng-include="'views/patientAction.html'"></div>
         </form>
         <br>
     </div>
