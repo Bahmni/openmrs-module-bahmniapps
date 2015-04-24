@@ -301,6 +301,10 @@ body pre {
         @include clearfix;
         .search-seperator-l{
           @include column(5);
+          input[type="text"]{
+            margin-right:5px;
+            padding: 5px 10px;
+          }
           border-right:2px dotted $lightGray;
             select{
               width:80px;
@@ -309,8 +313,12 @@ body pre {
         }
         .search-seperator-r{
           padding:0px 0px 10px 20px;
-          input{
+          input[type="text"]{
             margin-right:5px;
+            padding: 5px 10px;
+          }
+          button{
+            margin: 0px 2px 2px 2px;
           }
           .reg-srch-btn{
             margin-top:25px;
