@@ -142,8 +142,13 @@ body{
   font-size:14px;
   font-family: "OpenSans",Arial,sans-serif;
 }
+.reg-header-wrapper{
+  background: $bahmniSecondaryColor;
+}
 .reg-header{
 	height:52px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 .remove-margin{
   margin:0px !important; 
@@ -221,7 +226,7 @@ body pre {
     .top-nav {
       position: absolute;
       top: 0;
-      left: 15px;
+      left: 0px;
     }
     .btn-user-info {
       background: lighten($bahmniPrimaryColor, 10%);
