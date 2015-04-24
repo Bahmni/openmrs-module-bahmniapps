@@ -57,7 +57,7 @@
 
 
 .reg-search-wrapper .split-button li{
-    width:7.5em;
+    width:auto;
 }
 
 
@@ -88,12 +88,14 @@
         position: relative;
         ul {
             width: 100px;
+            float:none;
+            margin: 0 auto;
             li.secondaryOption button {
                 border: 0;
                 border-radius: 0;
             }
             li button {
-                text-align: left;
+                text-align: center;
             }
         }
         .toggle-button {
