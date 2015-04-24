@@ -190,17 +190,17 @@ table.drug-order-table td.drug {
   }
   &.scheduled-drug {
     border-left: 3px solid green !important;
-    span.drug-attr-highlight{
-    		    background: #457FAC;
-                color: #fff;
-                border-radius: 4px;
-                width: 20px;
-                height: 20px;
-                display: inline-block;
-                text-align: center;
-                padding-top: 2px;
-                margin-right: 5px;
-    		}
+  }
+  span.drug-attr-highlight{
+      background: #457FAC;
+      color: #fff;
+      border-radius: 4px;
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      text-align: center;
+      padding-top: 2px;
+      margin-right: 5px;
   }
 }
 
