@@ -34,8 +34,12 @@ angular.module('bahmni.common.displaycontrol.diagnosis')
                     return [getAllDiagnosis()];
                 };
 
+                $scope.isLatestDiagnosis = function(diagnosis){
+                    return diagnosis.latestDiagnosis ? diagnosis.existingObs == diagnosis.latestDiagnosis.existingObs: false;
+                };
+
                 spinner.forPromise($q.all(getPromises()));
-            }
+            };
             return {
                 restrict: 'E',
                 controller: controller,

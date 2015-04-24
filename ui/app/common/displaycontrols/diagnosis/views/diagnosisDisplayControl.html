@@ -1,85 +1,96 @@
-<section id="diagnosisSection" class="block diagnosis" ng-class="{'more': allDiagnoses.show, 'hidden-print':!hasRuledOutDiagnoses}">
+<section id="diagnosisSection" class="block diagnosis"
+         ng-class="{'more': allDiagnoses.show, 'hidden-print':!hasRuledOutDiagnoses}">
     <h2 class="section-title">{{title}}</h2>
     <table class="dashboard-table history-diagnosis">
         <tr ng-if="showLatestDiagnosis ==  'true'" class="table-header">
             <th>&nbsp;</th>
-            <th colspan="3"><span>Current</span></th>
-            <th colspan="4"><span>Latest</span></th>
+            <th><span>Initial</span></th>
+            <th><span>Current</span></th>
         </tr>
-        
-        <tbody ng-repeat="diagnosis in allDiagnoses | primaryDiagnosisFirst" class="row" ng-class="{'hidden-print': diagnosis.diagnosisStatus}">
-            
-            <tr class="view-past" ng-class="{'notes-open': diagnosis.showDetails || diagnosis.showLatestDetails, 'test-notes-parent': diagnosis.comments}">
-                <td class="name">
+
+        <tbody ng-repeat="diagnosis in allDiagnoses | primaryDiagnosisFirst" class="row"
+               ng-class="{'hidden-print': diagnosis.diagnosisStatus}">
+
+        <tr class="view-past"
+            ng-class="{'notes-open': diagnosis.showDetails || diagnosis.showLatestDetails, 'test-notes-parent': diagnosis.comments}">
+            <td class="name">
                     <span id="diagnosisName" class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">
                         {{diagnosis.getDisplayName()}}
                     </span>
-                </td>
-                <td class="view">
-                        <span id="certainty" ng-hide="config.showCertainty == false" class="certainty">{{diagnosis.certainty}}</span>
-                        <span id="order" ng-hide="config.showOrder == false" class="order">{{diagnosis.order}}</span>
-                        <span id="status" class="status">{{diagnosis.diagnosisStatus}}</span>
-                </td>                
-                <td id="diagnosisDate" class="date">{{diagnosis.diagnosisDateTime | bahmniDate}}
-                </td>
+            </td>
 
-                <td class="toggle-btn" ng-show="!diagnosis.comments && config.showDetailsButton">
-                    <button  class="toggle fr" ng-click="toggle(diagnosis,false)"
+            <td ng-if="!isLatestDiagnosis(diagnosis)" class="view">
+                <span id="certainty" ng-hide="config.showCertainty == false"
+                      class="certainty">{{diagnosis.certainty}}</span>
+                             <span id="order" ng-hide="config.showOrder == false"
+                                   class="order">{{diagnosis.order}}</span>
+                <span id="status" class="status">{{diagnosis.diagnosisStatus}}</span>
+                <span class="toggle-btn-date-wrapper">
+                <span id="diagnosisDate" class="date">{{diagnosis.diagnosisDateTime | bahmniDate}}</span>
+                <span class="toggle-btn" ng-show="!diagnosis.comments && config.showDetailsButton">
+                    <button class="toggle fr" ng-click="toggle(diagnosis,false)"
                             ng-class="{'has-notes': diagnosis.comments}">
                         <i class="icon-angle-down" ng-hide="diagnosis.showDetails"></i>
                         <i class="icon-angle-up" ng-show="diagnosis.showDetails"></i>
                     </button>
-                </td>
-                <td class="view" ng-if="showLatestDiagnosis ==  'true'" >
+                </span>
+                    </span>
+            </td>
+            <td ng-if="isLatestDiagnosis(diagnosis)" class="view"></td>
+
+
+            <td class="view" ng-if="showLatestDiagnosis ==  'true'">
                         <span id="certainty" ng-hide="config.showCertainty == false" class="certainty">
                             {{diagnosis.latestDiagnosis.certainty}}</span>
-                        <span id="order" ng-hide="config.showOrder == false" class="order">{{diagnosis.latestDiagnosis.order}}</span>
-                        <span id="status" class="status">{{diagnosis.latestDiagnosis.diagnosisStatus}}</span>
-                </td>
-
-                <td id="diagnosisDate" class="date" ng-if="showLatestDiagnosis ==  'true'" >{{diagnosis.latestDiagnosis.diagnosisDateTime | bahmniDate}}
-                </td>
-                <td class="toggle-btn" ng-show="!diagnosis.comments && config.showDetailsButton" ng-if="showLatestDiagnosis ==  'true'" >
-                    <button  class="toggle fr" ng-click="toggle(diagnosis,true)"
+                <span id="order" ng-hide="config.showOrder == false"
+                      class="order">{{diagnosis.latestDiagnosis.order}}</span>
+                <span id="status" class="status">{{diagnosis.latestDiagnosis.diagnosisStatus}}</span>
+                <span class="toggle-btn-date-wrapper">
+                    <span id="diagnosisDate"
+                          class="date">{{diagnosis.latestDiagnosis.diagnosisDateTime | bahmniDate}}</span>
+                    <span class="toggle-btn" ng-show="!diagnosis.comments && config.showDetailsButton">
+                    <button class="toggle fr" ng-click="toggle(diagnosis,true)"
                             ng-class="{'has-notes': diagnosis.comments}">
                         <i class="icon-angle-down" ng-hide="diagnosis.showLatestDetails"></i>
                         <i class="icon-angle-up" ng-show="diagnosis.showLatestDetails"></i>
                     </button>
-                </td>
-            </tr>
-            <tr ng-show="diagnosis.comments" ng-class="{'has-test-notes': diagnosis.comments}">
-                <td colspan="4" class="notes test-notes">
-                    <i class="icon-comments left"></i>
-                    <pre id="diagnosisComments" class="left">{{diagnosis.comments}}</pre>
-                    <div class="footer-note right">
+                    </span>
+                </span>
+            </td>
+        </tr>
+        <tr ng-show="diagnosis.comments" ng-class="{'has-test-notes': diagnosis.comments}">
+            <td class="notes test-notes">
+                <i class="icon-comments left"></i>
+                <pre id="diagnosisComments" class="left">{{diagnosis.comments}}</pre>
+                <div class="footer-note right">
                         <span class="provider">
                             {{providerName(diagnosis)}} {{diagnosis.diagnosisDateTime | bahmniTime}}
                         </span>
-                    </div>
-                </td>
-            </tr>
+                </div>
+            </td>
+        </tr>
 
-            <tr ng-show="diagnosis.showDetails">
-                <td colspan="4" class="notes inline-notes">
-                    <div class="footer-note right">
+        <tr ng-show="diagnosis.showDetails">
+            <td colspan="2" class="notes inline-notes">
+                <div class="footer-note right">
                         <span class="provider">
                             {{providerName(diagnosis)}} {{diagnosis.diagnosisDateTime | bahmniTime}}
                         </span>
-                    </div>
-                </td>
-            </tr>
-            <tr ng-show="diagnosis.showLatestDetails" ng-if="showLatestDiagnosis ==  'true'">
-                <td colspan="7" class="notes inline-notes">
-                    <div class="footer-note right">
+                </div>
+            </td>
+        </tr>
+        <tr ng-show="diagnosis.showLatestDetails" ng-if="showLatestDiagnosis ==  'true'">
+            <td colspan="3" class="notes inline-notes">
+                <div class="footer-note right">
                         <span class="provider">
                             {{providerName(diagnosis)}} {{diagnosis.diagnosisDateTime | bahmniTime}}
                         </span>
-                    </div>
-                </td>
-            </tr>
+                </div>
+            </td>
+        </tr>
         </tbody>
     </table>
-        <div ng-show="allDiagnoses && allDiagnoses.length == 0">
-            <div class="placeholder-text">No {{title}} for this patient.</div>
-        </div>
+    <div ng-show="allDiagnoses && allDiagnoses.length == 0">
+        <div class="placeholder-text">No {{title}} for this patient.</div>
+    </div>
 </section>

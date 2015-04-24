@@ -59,7 +59,26 @@
     }
   }
 }
-.visit .diagnosis .history-diagnosis {margin:0;}
+.visit .diagnosis .history-diagnosis {margin:0; table-layout:fixed;
+  .view{
+    font-size: 11px;
+  }
+  .toggle-btn-date-wrapper{
+    float: right;
+    height: 15px;
+    .toggle-btn{
+      display: inline-block;
+      margin-top:-2px;
+    }
+    .date{
+      float:left;
+    }
+  }
+  .status{
+    float:none;
+    padding-left: 20px;
+  }
+}
 .visit {
   .diagnosis .history-diagnosis .table-header {
     .col.col4 {
