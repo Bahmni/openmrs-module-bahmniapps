@@ -30,6 +30,10 @@ angular.module('bahmni.common.displaycontrol.diagnosis')
                     return diagnosis.providers[0] ? diagnosis.providers[0].name : "";
                 };
 
+                $scope.latestProviderName = function (diagnosis) {
+                    return diagnosis.latestDiagnosis.providers[0] ? diagnosis.latestDiagnosis.providers[0].name : "";
+               };
+
                 var getPromises = function () {
                     return [getAllDiagnosis()];
                 };

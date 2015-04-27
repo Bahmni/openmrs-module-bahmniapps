@@ -83,7 +83,7 @@
             <td colspan="3" class="notes inline-notes">
                 <div class="footer-note right">
                         <span class="provider">
-                            {{providerName(diagnosis)}} {{diagnosis.diagnosisDateTime | bahmniTime}}
+                            {{latestProviderName(diagnosis)}} {{diagnosis.latestDiagnosis.diagnosisDateTime | bahmniTime}}
                         </span>
                 </div>
             </td>
