@@ -97,7 +97,10 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
     };
 
     this.atLeastOneValueSet = function() {
-        return !_.isEmpty(this.selectedObs);
+        var obsValue = _.filter(this.selectedObs, function(obs){
+            return obs.value;
+        });
+        return !_.isEmpty(obsValue);
     };
 
     this.hasValue = function() {
@@ -137,9 +140,19 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
     };
 
     var createObsFrom = function(answer) {
-        var obs = newObservation(concept, answer, conceptSetConfig)
+        var obs = newObservation(concept, answer, conceptSetConfig);
         memberOfCollection.push(obs);
         return obs;
+    };
+
+    var removeObsFrom = function(answer) {
+        var obs = newObservation(concept, answer, conceptSetConfig);
+        _.remove(memberOfCollection, function(member) {
+            if(member.value){
+                return obs.value.displayString == member.value.displayString;
+            }
+            return false;
+        });
     };
 
     var selectAnswer =  function(answer) {
@@ -158,8 +171,10 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
         if(obs && obs.uuid) {
             obs.value = null;
             obs.voided = true;
-        } else{
+        } else {
+            removeObsFrom(answer);
             delete self.selectedObs[answer.name];
+
         }
 
     };

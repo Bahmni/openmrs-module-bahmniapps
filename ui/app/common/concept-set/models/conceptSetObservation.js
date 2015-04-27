@@ -242,9 +242,11 @@ Bahmni.ConceptSet.Observation.prototype = {
 
     isValid: function (checkRequiredFields, conceptSetRequired) {
         if (this.hidden) return true;
-        if (this.isGroup()) return this._hasValidChildren(checkRequiredFields, conceptSetRequired);
-        if (conceptSetRequired && this.isRequired() && !this.hasValue()) return false;
-        if (checkRequiredFields && this.isRequired() && !this.hasValue()) return false;
+        if (checkRequiredFields) {
+            if (this.isGroup()) return this._hasValidChildren(checkRequiredFields, conceptSetRequired);
+            if (conceptSetRequired && this.isRequired() && !this.hasValue()) return false;
+            if (this.isRequired() && !this.hasValue()) return false;
+        }
         if (this._isDateDataType()) return this.isValidDate();
         if (this._isDateTimeDataType()) return !this.hasInvalidDateTime();
         if (this.erroneousValue) return false;

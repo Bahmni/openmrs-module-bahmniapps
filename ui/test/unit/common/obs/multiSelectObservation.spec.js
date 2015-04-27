@@ -70,6 +70,7 @@ describe("Observation", function () {
             expect(observation.label).toBe("Tuberculosis");
             expect(observation.isValid(true, true)).toBe(false);
             expect(observation.isValid(false, true)).toBe(false);
+            expect(observation.atLeastOneValueSet()).toBe(false);
         });
     });
 

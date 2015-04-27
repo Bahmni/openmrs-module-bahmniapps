@@ -238,10 +238,12 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
 
     isValid: function (checkRequiredFields, conceptSetRequired) {
         if (this.isGroup()) return this._hasValidChildren(checkRequiredFields, conceptSetRequired);
-        if (conceptSetRequired && this.isRequired() && !this.getPrimaryObs().hasValue()) return false;
-        if (checkRequiredFields && this.isRequired() && !this.getPrimaryObs().hasValue()) return false;
+        if(checkRequiredFields){
+            if (conceptSetRequired && this.isRequired() && !this.getPrimaryObs().hasValue()) return false;
+            if (this.isRequired() && !this.getPrimaryObs().hasValue()) return false;
+            if (this.getControlType() === "freeTextAutocomplete" ) { return this.isValidFreeTextAutocomplete()}
+        }
         if (this._isDateDataType()) return this.getPrimaryObs().isValidDate();
-        if (this.getControlType() === "freeTextAutocomplete" ) { return this.isValidFreeTextAutocomplete()}
         if (this.getPrimaryObs().hasValue() && this.hasDuration()) return false;
         if (this.abnormalObs && this.abnormalObs.erroneousValue) return false;
         return true;
