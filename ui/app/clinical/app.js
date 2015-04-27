@@ -150,6 +150,11 @@ angular.module('consultation')
                 templateUrl: 'consultation/views/investigations.html',
                 controller: 'InvestigationController'
             })
+            .state('patient.consultation.orders', {
+                url: '/orders',
+                templateUrl: 'consultation/views/orders.html',
+                controller: 'OrderController'
+            })
             .state('patient.consultation.diagnosis', {
                 url: '/diagnosis',
                 templateUrl: 'consultation/views/diagnosis.html',

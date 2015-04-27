@@ -45,10 +45,15 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
             encounterData.bahmniDiagnoses = [];
         }
         addEditedDiagnoses(consultation, encounterData.bahmniDiagnoses);
-
-        encounterData.testOrders = consultation.investigations.map(function (investigation) {
-            return { uuid: investigation.uuid, concept: {uuid: investigation.concept.uuid }, orderTypeUuid: investigation.orderTypeUuid, voided: investigation.voided || false};
-        });
+        encounterData.testOrders = [];
+        
+        var addOrdersToEncounter = function () {
+            var tempOrders = consultation.testOrders.map(function (order) {
+                return { uuid: order.uuid, concept: {name: order.concept.name, uuid: order.concept.uuid }, voided: order.voided || false};
+            });
+            encounterData.testOrders = encounterData.testOrders.concat(tempOrders);
+        }
+        addOrdersToEncounter();
 
         consultation.drugOrders = [];
         var newlyAddedTreatments = consultation.newlyAddedTreatments;

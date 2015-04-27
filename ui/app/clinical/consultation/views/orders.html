@@ -1,0 +1,17 @@
+<!--TODO change the class-->
+<div class="box disposition-tab">
+	<div id="selected-orders" class="block dashboard-section multi-select-button-group">
+		<h2 class="section-title ng-binding">Selected Orders</h2>
+		<button type="button" class="grid-row-element" ng-class="{active: !order.voided}" ng-click="diSelect(order)" ng-repeat="order in consultation.testOrders">
+			<i class="icon-ok"></i>{{::order.concept.name}}
+        </button>
+	</div>
+    <div id="tabButtonRow">
+        <button ng-repeat="tab in tabs" class="{{tab.klass}}" ng-click="activateTab(tab)">{{tab.name}} </button>
+    </div>
+    <div ng-switch="activeTab" class="block dashboard-section">
+        <div ng-switch-default class="dashboard-section-wrapper">
+            <div ng-include="getTabInclude()"></div>
+        </div>
+    </div>
+</div>

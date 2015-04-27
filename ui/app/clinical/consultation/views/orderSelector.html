@@ -1,0 +1,12 @@
+<section class="dashboard-section template-control-panel  section-grid">
+	<h2 class="section-title">{{title}}</h2>
+	<ul class="template-icons" ng-show="hasOrders()">
+		<li ng-repeat="test in (rootConcept.setMembers | filter:filterByConceptClass)">
+			<button class="ng-binding" ng-click="onSelectionChange(test)">
+                    <i class="icon-check-empty" ng-hide="test.isSelected"></i>
+                    <i class="icon-check ng-hide" ng-show="test.isSelected"></i>
+                    {{test.name.display}}
+            </button>
+        </li>
+	</ul>
+</section>

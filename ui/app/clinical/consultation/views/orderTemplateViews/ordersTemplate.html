@@ -1,0 +1,13 @@
+<div class="dashboard-sections leftSampleTypesPanel">
+	<section class="dashboard-section section-grid">
+		<h2 class="section-title">{{activeTab.topLevelConcept}}</h2>
+	    <div ng-repeat="labSample in getOrderTemplate(activeTab.topLevelConcept).setMembers">
+	    	<button ng-click="showLabSampleTests(labSample)" class="{{labSample.klass}}">{{labSample.name.display}}</button>
+	    </div>
+	</section>
+</div>
+<div class="dashboard-sections rightLabOrdersPanel">
+    <div ng-repeat="test in activeTab.tests" ng-if="labSample">
+        <order-selector orders="consultation.testOrders" root-concept="labSample" concept-class="test.type" consultation="consultation" title="test.title"></order-selector>
+    </div>
+</div>

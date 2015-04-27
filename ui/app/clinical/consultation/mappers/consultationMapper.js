@@ -21,6 +21,11 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
         var observations = encounterTransaction.observations.filter(function(observation){
             return !observation.voided && specialObservationConceptUuids.indexOf(observation.concept.uuid) === -1;
         });
+
+        var testOrders = encounterTransaction.testOrders.filter(function(order){
+            return !order.voided;
+        });
+
         return {
             visitUuid: encounterTransaction.visitUuid,
             visitTypeUuid: encounterTransaction.visitTypeUuid,
@@ -33,7 +38,8 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
             labOrderNote: labOrderNote || emptyObservation(labOrderNoteConcept),
             observations: observations,
             disposition: encounterTransaction.disposition,
-            encounterDateTime: encounterTransaction.encounterDateTime
+            encounterDateTime: encounterTransaction.encounterDateTime,
+            testOrders: testOrders
         };
     };
 
