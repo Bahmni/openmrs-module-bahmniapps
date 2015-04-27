@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('VisitController', ['$scope', '$rootScope', '$state', 'patientService', 'encounterService', '$stateParams', 'spinner', '$timeout', '$q', 'appService', 'openmrsPatientMapper', 'contextChangeHandler', 'messagingService', 'sessionService', 'visitService', '$location',
-        function ($scope, $rootScope, $state, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, patientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location) {
+    .controller('VisitController', ['$window', '$scope', '$rootScope', '$state', 'patientService', 'encounterService', '$stateParams', 'spinner', '$timeout', '$q', 'appService', 'openmrsPatientMapper', 'contextChangeHandler', 'messagingService', 'sessionService', 'visitService', '$location',
+        function ($window, $scope, $rootScope, $state, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, patientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location) {
             var self = this;
             var patientUuid = $stateParams.patientUuid;
             var extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.conceptSetGroup.observations", "config");
@@ -80,21 +80,24 @@ angular.module('bahmni.registration')
             };
 
 
-            $scope.closeVisit = function () {
-                visitService.endVisit(self.visitUuid).then(function () {
-                    $location.url(Bahmni.Registration.Constants.patientSearchURL);
+            $scope.closeVisitIfDischarged = function () {
+                visitService.getVisitSummary(self.visitUuid).then(function (response) {
+                    var visitSummary = response.data;
+                    if(visitSummary.admissionDetails != null && visitSummary.dischargeDetails === null) {
+                        messagingService.showMessage("formError", "Admitted patient's visit cannot be closed. Discharge the patient and try again");
+                    } else {
+                        closeVisit();
+                    }
                 });
             };
 
-            $scope.isClickEnable = function(){
-                visitService.getVisitSummary(self.visitUuid).then(function (response) {
-                    $scope.visitSummary = response.data;
-                });
-                if($scope.visitSummary.admissionDetails != null && $scope.visitSummary.dischargeDetails === null){
-                    $scope.message = "You can't close visit unless you discharge the patient";
-                    return false;
+            var closeVisit = function () {
+                var confirmed = $window.confirm("Are you sure you want to close this visit?");
+                if(confirmed) {
+                    visitService.endVisit(self.visitUuid).then(function () {
+                        $location.url(Bahmni.Registration.Constants.patientSearchURL);
+                    });
                 }
-                return true;
             };
 
             $scope.getMessage = function(){

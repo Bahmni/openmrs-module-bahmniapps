@@ -59,7 +59,7 @@
 
 
             <div class="submit-btn-container">
-                <button type="button" class="cancel" tabindex="-1" ng-show="canCloseVisit" ng-condition="isClickEnable()" condition-message="getMessage()" ng-confirm-click="closeVisit()" confirm-message="Are you sure you want to close this visit?">Close Visit</button>
+                <button type="button" class="cancel" tabindex="-1" ng-show="canCloseVisit" ng-click="closeVisitIfDischarged()">Close Visit</button>
                 <div class="right">
                     <button type="button" ng-click="back()" accesskey="b"><u>B</u>ack</button>
                     <button type="submit" class="confirm" accesskey="s"><u>S</u>ave</button>
