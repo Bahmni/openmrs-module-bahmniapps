@@ -65,6 +65,10 @@ Bahmni.Graph.observationGraphConfig = function (bindTo, graphWidth, config, data
 
     createAxisAndPopulateAxes('y', distinctUnits[0]);
     createAxisAndPopulateAxes('y2', distinctUnits[1]);
+    var xs = {};
+    config.yAxisConcepts.forEach(function(yAxisConcept){
+        xs[yAxisConcept] = config.xAxisConcept;
+    });
 
     return {
         bindto: bindTo,
@@ -81,11 +85,12 @@ Bahmni.Graph.observationGraphConfig = function (bindTo, graphWidth, config, data
                 x: config.xAxisConcept,
                 value: config.yAxisConcepts
             },
-            axes: axes
+            axes: axes,
+            xs : xs
         },
         point: {
             show: true,
-            r: 5
+            r: 7
         },
         line: {
             connectNull: true
@@ -96,7 +101,8 @@ Bahmni.Graph.observationGraphConfig = function (bindTo, graphWidth, config, data
             format: xAxisFormat
         },
         zoom: {
-            enabled: true
+            enabled: true,
+            rescale: true
         }
     }
 };
