@@ -21,6 +21,10 @@ angular.module('bahmni.adt')
                 v: "full"
             };
             var init = function () {
+                $('.bed-info').hide();
+                $document.bind('click', function () {
+                    $scope.hideBedInfoPopUp();
+                });
                 loadAllWards();
             };
 
@@ -44,6 +48,11 @@ angular.module('bahmni.adt')
                 return params;
             };
 
+            $scope.hideBedInfoPopUp = function () {
+                $scope.selectedBed = null;
+                $scope.$apply();
+            };
+
             $scope.showWardLayout = function(wardUuid, wardName) {
                 $scope.disableBedAssignment = true;
                 currentWardUuid = wardUuid;
@@ -64,11 +73,6 @@ angular.module('bahmni.adt')
                 });
             };
 
-            $scope.showWardList = function () {
-                $scope.currentView = "wards";
-                loadAllWards();
-            };
-
             $scope.setBedDetails = function (cell) {
                 $('.bed-info').hide();
                 $scope.selectedBed = cell;
@@ -76,6 +80,11 @@ angular.module('bahmni.adt')
                 if (!cell.empty) {
                     $('.bed-info').show();
                 }
+            };
+
+            $scope.showWardList = function () {
+                $scope.currentView = "wards";
+                loadAllWards();
             };
 
             $scope.fetchBedInfo = function (cell, rowIndex, columnIndex) {
@@ -91,11 +100,19 @@ angular.module('bahmni.adt')
                 return null;
             };
 
-            $scope.hideBedInfoPopUp = function () {
-                $scope.selectedBed = null;
-                $scope.$apply();
-            };
-
         init();
 
-}]);
+}]).directive('bedAssignmentDialog', function () {
+        return {
+            restrict: 'A',
+            link: function (scope, elem, attr) {
+                elem.bind('click', function (e) {
+                    var leftpos = $(elem).offset().left - 132;
+                    var toppos = $(elem).offset().top;
+                    $(".bed-info").css('left', leftpos);
+                    $(".bed-info").css('top', toppos);
+                    e.stopPropagation();
+                });
+            }
+        };
+    });
