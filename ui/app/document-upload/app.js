@@ -6,7 +6,7 @@ angular.module('documentupload', ['ui.router', 'bahmni.common.config', 'opd.docu
 angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', 
         function ($stateProvider, $httpProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/search');
-        var patientSearchBackLink = {label: "", state: "patientsearch", accessKey: "p", id: "patients-link", icon: "icon-users"};
+        var patientSearchBackLink = {label: "", state: "search", accessKey: "p", id: "patients-link", icon: "icon-users"};
         var homeBackLink = {label: "", url: "../home/", icon: "icon-home"};
         $stateProvider.state('search', {
                 url:'/search',
