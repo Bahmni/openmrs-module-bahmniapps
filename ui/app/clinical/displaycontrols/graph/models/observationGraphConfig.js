@@ -37,7 +37,7 @@
     };
 
     configPrototype.getAllConcepts = function() {
-        var concepts = angular.extend([],this.yAxisConcepts);
+        var concepts = this.yAxisConcepts.slice(0);
 
         if (this.displayForConcept()) {
             concepts.push(this.xAxisConcept);

@@ -55,12 +55,8 @@
             });
         } else if (config.displayForAge()) {
             config.unit = " (years)";
-            var dateUtil = Bahmni.Common.Util.DateUtil;
-
-            var birthDate = dateUtil.formatDateWithoutTime(person.birthdate);
             _.map(yAxisObservations, function (obs) {
-                var age = Bahmni.Common.Util.AgeUtil.fromBirthDateTillReferenceDate(birthDate,
-                    dateUtil.formatDateWithoutTime(obs.observationDateTime));
+                var age = Bahmni.Common.Util.AgeUtil.fromBirthDateTillReferenceDate(person.birthdate, obs.observationDateTime);
                 var ageValue = age.years + "." + age.months;
                 buildObservationGraphModel(config, obs, entryMatchingConcept(sortedObsGraphModel, obs), ageValue);
             });

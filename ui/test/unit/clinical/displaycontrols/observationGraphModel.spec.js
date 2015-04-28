@@ -65,7 +65,7 @@ describe("Observation Graph Model", function () {
         }];
 
         var config = new Bahmni.Clinical.ObservationGraphConfig({
-            "yAxisConcepts": ["Temperature","Height"],
+            "yAxisConcepts": ["Temperature","Weight"],
             "xAxisConcept": "observationDateTime",
             "numberOfVisits": 3
         });

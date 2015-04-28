@@ -92,7 +92,7 @@ describe("Observation Graph", function () {
             value: 45,
             concept: {name: "Temperature", units: "Celcius"}
         }]);
-        spyOn(Bahmni.Graph, 'observationGraphConfig');
+        spyOn(Bahmni.Graph, 'c3ChartConfig');
 
         compile(element)(scope);
         scope.$digest();
@@ -105,7 +105,7 @@ describe("Observation Graph", function () {
             values: [{observationDateTime: Bahmni.Common.Util.DateUtil.parseDatetime("2015-01-01").toDate(), Temperature: 45, units: "Celcius"}]
         }];
         var anyElement = null;
-        expect(Bahmni.Graph.observationGraphConfig).toHaveBeenCalledWith(anyElement, jasmine.any(Number),
+        expect(Bahmni.Graph.c3ChartConfig).toHaveBeenCalledWith(anyElement, jasmine.any(Number),
             new Bahmni.Clinical.ObservationGraphConfig(scope.section.config),
             new Bahmni.Clinical.ObservationGraph(graphModel));
         expect(window.c3.generate).toHaveBeenCalled();
@@ -127,7 +127,7 @@ describe("Observation Graph", function () {
             value: 45,
             concept: {name: "Height", units: "cm"}
         }]);
-        spyOn(Bahmni.Graph, 'observationGraphConfig');
+        spyOn(Bahmni.Graph, 'c3ChartConfig');
         mockPatientService({person: {birthdate: "2000-02-02"}});
 
         compile(element)(scope);
@@ -137,7 +137,7 @@ describe("Observation Graph", function () {
         expect(scope.graphId).not.toBeNull();
         var graphModel = [{name: 'Height', units: "cm", values: [{age: '14.10', Height: 45, units: "cm"}]}];
         var anyElement = null;
-        expect(Bahmni.Graph.observationGraphConfig).toHaveBeenCalledWith(
+        expect(Bahmni.Graph.c3ChartConfig).toHaveBeenCalledWith(
             anyElement
             , jasmine.any(Number)
             , new Bahmni.Clinical.ObservationGraphConfig(scope.section.config)
@@ -160,7 +160,7 @@ describe("Observation Graph", function () {
             {observationDateTime: "2015-01-01", value: 155, concept: {name: "Height", units: "cm"}},
             {observationDateTime: "2015-01-01", value: 45, concept: {name: "Weight", units: "kg"}}
         ]);
-        spyOn(Bahmni.Graph, 'observationGraphConfig');
+        spyOn(Bahmni.Graph, 'c3ChartConfig');
 
         compile(element)(scope);
         scope.$digest();
@@ -171,9 +171,9 @@ describe("Observation Graph", function () {
             name: 'Height',
             units: 'cm',
             values: [{Weight: 45, Height: 155, units: 'cm'}]
-        }, {name: 'Weight', units: 'kg', values: []}];
+        }];
         var anyElement = null;
-        expect(Bahmni.Graph.observationGraphConfig).toHaveBeenCalledWith(anyElement
+        expect(Bahmni.Graph.c3ChartConfig).toHaveBeenCalledWith(anyElement
             , jasmine.any(Number)
             , new Bahmni.Clinical.ObservationGraphConfig(scope.section.config)
             , new Bahmni.Clinical.ObservationGraph(graphModel));
@@ -197,7 +197,7 @@ describe("Observation Graph", function () {
             {observationDateTime: "2015-02-01", value: 45, concept: {name: "Weight", units: "kg"}}
         ]);
 
-        spyOn(Bahmni.Graph, 'observationGraphConfig');
+        spyOn(Bahmni.Graph, 'c3ChartConfig');
 
         compile(element)(scope);
         scope.$digest();
@@ -221,7 +221,7 @@ describe("Observation Graph", function () {
             }];
         var anyElement = null;
 
-        expect(Bahmni.Graph.observationGraphConfig).toHaveBeenCalledWith(anyElement
+        expect(Bahmni.Graph.c3ChartConfig).toHaveBeenCalledWith(anyElement
             , jasmine.any(Number)
             , new Bahmni.Clinical.ObservationGraphConfig(scope.section.config)
             , new Bahmni.Clinical.ObservationGraph(graphModel));

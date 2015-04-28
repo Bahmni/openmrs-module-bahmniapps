@@ -3,11 +3,8 @@
 var Bahmni = Bahmni || {};
 Bahmni.Graph = Bahmni.Graph || {};
 
-Bahmni.Graph.observationGraphConfig = function (bindTo, graphWidth, config, data) {
+Bahmni.Graph.c3ChartConfig = function (bindTo, graphWidth, config, data) {
     var dateUtil = Bahmni.Common.Util.DateUtil;
-    var xAxisFormat = function (xAxisConcept) {
-        return config.displayForObservationDateTime() ? dateUtil.formatDateWithoutTime(xAxisConcept) : xAxisConcept;
-    };
     var axis = {
         x: {
             label: {
@@ -20,10 +17,12 @@ Bahmni.Graph.observationGraphConfig = function (bindTo, graphWidth, config, data
                 culling: {
                     max: 3
                 },
-                format: xAxisFormat
+                format: function(xAxisConcept) {
+                    return config.displayForObservationDateTime() ? dateUtil.formatDateWithoutTime(xAxisConcept) : xAxisConcept;
+                }
             }
         }
-    }, axes = {};
+    };
 
     var createYAxis = function (unit) {
         return {
@@ -52,6 +51,7 @@ Bahmni.Graph.observationGraphConfig = function (bindTo, graphWidth, config, data
         throw new Error("Cannot display line graphs with concepts that have more than 2 units");
     }
 
+    var axes = {};
     var createAxisAndPopulateAxes = function (axisY, unit) {
         if (!unit) return;
         axis[axisY] = createYAxis(unit);
@@ -61,13 +61,8 @@ Bahmni.Graph.observationGraphConfig = function (bindTo, graphWidth, config, data
             }
         });
     };
-
     createAxisAndPopulateAxes('y', distinctUnits[0]);
     createAxisAndPopulateAxes('y2', distinctUnits[1]);
-    var xs = {};
-    config.yAxisConcepts.forEach(function(yAxisConcept){
-        xs[yAxisConcept] = config.xAxisConcept;
-    });
 
     var xs = {};
     config.yAxisConcepts.forEach(function(yAxisConcept){
@@ -102,11 +97,15 @@ Bahmni.Graph.observationGraphConfig = function (bindTo, graphWidth, config, data
         axis: axis,
         tooltip: {
             grouped: true,
-            format: xAxisFormat
+            format: {
+                title: function (xAxisConcept) {
+                    return config.displayForObservationDateTime() ?
+                        dateUtil.formatDateWithTime(xAxisConcept) : (config.xAxisConcept + " " + xAxisConcept);
+                }
+            }
         },
         zoom: {
-            enabled: true,
-            rescale: true
+            enabled: true
         }
     }
 };
