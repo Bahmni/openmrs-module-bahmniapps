@@ -38,10 +38,19 @@
             return {name: item.concept.name, units: item.concept.units, values: []}
         }).value();
 
+        var sortedObsGraphModel = [];
+        _.each(config.yAxisConcepts, function(concept){
+            _.each(observationGraphModel, function(item){
+                if(concept === item.name){
+                    sortedObsGraphModel.push(item);
+                }
+            })
+        });
+
         if (config.displayForObservationDateTime()) {
             config.type = "timeseries";
             _.map(yAxisObservations, function (obs) {
-                buildObservationGraphModel(config, obs, entryMatchingConcept(observationGraphModel, obs),
+                buildObservationGraphModel(config, obs, entryMatchingConcept(sortedObsGraphModel, obs),
                     Bahmni.Common.Util.DateUtil.parseDatetime(obs.observationDateTime).toDate());
             });
         } else if (config.displayForAge()) {
@@ -53,20 +62,20 @@
                 var age = Bahmni.Common.Util.AgeUtil.fromBirthDateTillReferenceDate(birthDate,
                     dateUtil.formatDateWithoutTime(obs.observationDateTime));
                 var ageValue = age.years + "." + age.months;
-                buildObservationGraphModel(config, obs, entryMatchingConcept(observationGraphModel, obs), ageValue);
+                buildObservationGraphModel(config, obs, entryMatchingConcept(sortedObsGraphModel, obs), ageValue);
             });
         } else {
             config.type = "indexed";
             _.each(yAxisObservations, function (yAxisObs) {
                 _.each(xAxisObservations, function (xAxisObs) {
                     if (yAxisObs.observationDateTime === xAxisObs.observationDateTime) {
-                        buildObservationGraphModel(config, yAxisObs, entryMatchingConcept(observationGraphModel, yAxisObs), xAxisObs.value);
+                        buildObservationGraphModel(config, yAxisObs, entryMatchingConcept(sortedObsGraphModel, yAxisObs), xAxisObs.value);
                     }
                 })
             });
         }
 
-        return new Bahmni.Clinical.ObservationGraph(observationGraphModel);
+        return new Bahmni.Clinical.ObservationGraph(sortedObsGraphModel);
     };
 })();
 

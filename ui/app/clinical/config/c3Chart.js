@@ -8,7 +8,6 @@ Bahmni.Graph.observationGraphConfig = function (bindTo, graphWidth, config, data
     var xAxisFormat = function (xAxisConcept) {
         return config.displayForObservationDateTime() ? dateUtil.formatDateWithoutTime(xAxisConcept) : xAxisConcept;
     };
-
     var axis = {
         x: {
             label: {
@@ -70,6 +69,11 @@ Bahmni.Graph.observationGraphConfig = function (bindTo, graphWidth, config, data
         xs[yAxisConcept] = config.xAxisConcept;
     });
 
+    var xs = {};
+    config.yAxisConcepts.forEach(function(yAxisConcept){
+        xs[yAxisConcept] = config.xAxisConcept;
+    });
+
     return {
         bindto: bindTo,
         size: {
@@ -97,7 +101,7 @@ Bahmni.Graph.observationGraphConfig = function (bindTo, graphWidth, config, data
         },
         axis: axis,
         tooltip: {
-            grouped: false,
+            grouped: true,
             format: xAxisFormat
         },
         zoom: {
