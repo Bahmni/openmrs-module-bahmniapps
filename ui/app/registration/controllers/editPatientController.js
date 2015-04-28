@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('EditPatientController', ['$scope', 'patientService', 'encounterService', '$stateParams', 'openmrsPatientMapper', '$window', '$q','spinner', 'appService',
-        function ($scope, patientService, encounterService, $stateParams, patientMapper, $window, $q, spinner, appService) {
+    .controller('EditPatientController', ['$scope', 'patientService', 'encounterService', '$stateParams', 'openmrsPatientMapper', '$window', '$q','spinner', 'appService', 'messagingService',
+        function ($scope, patientService, encounterService, $stateParams, patientMapper, $window, $q, spinner, appService, messagingService) {
             var uuid = $stateParams.patientUuid;
             $scope.patient = {};
             $scope.actions = {};
@@ -40,5 +40,9 @@ angular.module('bahmni.registration')
                 });
                 spinner.forPromise(patientUpdatePromise);
             };
+
+            $scope.afterSave = function() {
+                messagingService.showMessage("info", "Saved");
+            }
 
         }]);

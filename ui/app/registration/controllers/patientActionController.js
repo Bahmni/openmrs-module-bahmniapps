@@ -51,7 +51,7 @@ angular.module('bahmni.registration')
                     case 'configAction':
                         return handleConfigAction(patientProfileData);
                     case 'save':
-                        messagingService.showMessage("info", "Saved");
+                        $scope.afterSave();
                 }
             };
 
