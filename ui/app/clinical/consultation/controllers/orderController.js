@@ -43,7 +43,6 @@ angular.module('bahmni.clinical')
                 $scope.activeTab && ($scope.activeTab.klass="");
                 $scope.activeTab = tab;
                 $scope.activeTab.klass="active";
-                $scope.labSample = undefined;
             };
 
             $scope.showLabSampleTests = function(labSample) {
