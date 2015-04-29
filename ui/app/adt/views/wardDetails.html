@@ -1,22 +1,28 @@
 <div class="ward-list">
     <h3 ng-hide="currentView=='wardLayout'">Ward List</h3>
+
     <div ng-hide="currentView=='wardLayout'" ng-repeat="ward in wards">
         <div class="section-grid">
-            <h2 class="section-title" ng-click="toggle(ward)">
-                <i class="icon-caret-right" ng-show="!ward.showDetails"></i>
-                <i class="icon-caret-down"  ng-show="ward.showDetails"></i>
-                <span class="section-title-text">
-                    {{ward.ward.name}} -
-                    <small>(Total Beds: {{ward.totalBeds}} | Available Beds: {{ward.totalBeds-ward.occupiedBeds}})</small>
+            <h2 class="section-title">
+                <span ng-click="toggle(ward)" class="ward-header">
+                    <i class="icon-caret-right" ng-show="!shouldBeShown(ward)"></i>
+                    <i class="icon-caret-down" ng-show="shouldBeShown(ward)"></i>
+                    <span class="section-title-text">
+                        {{ward.ward.name}} -
+                        <small>(Total Beds: {{ward.totalBeds}} | Available Beds: {{ward.totalBeds-ward.occupiedBeds}})
+                        </small>
+                    </span>
                 </span>
-            <span class="quick-links">
-                <button ng-click="showWardLayout(ward.ward.uuid, ward.ward.name)" class="confirm"><span class="icon-th"></span></button>
-            </span>
+                <span class="quick-links">
+                    <button ng-click="showWardLayout(ward.ward.uuid, ward.ward.name)" class="confirm"><span
+                            class="icon-th"></span></button>
+                </span>
             </h2>
-            <div class="section-content" ng-if="ward.showDetails">
-                <table-details params="getParams(ward)"></table-details>
+            <div class="section-content" ng-if="shouldBeShown(ward)">
+                <table-details ward="ward"></table-details>
             </div>
         </div>
     </div>
-    <div ng-show="currentView=='wardLayout' && disableBedAssignment" ng-include src="'views/wardLayout.html'"></div>
+</div>
+<div ng-show="currentView=='wardLayout' && disableBedAssignment" ng-include src="'views/wardLayout.html'"></div>
 </div>

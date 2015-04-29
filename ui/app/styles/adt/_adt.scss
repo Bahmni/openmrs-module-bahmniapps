@@ -42,10 +42,20 @@ div[ng-app="adt"] {
         }
         .section-title {
             cursor: pointer;
+            padding: 0;
             small {
                 color: beige;
             }
+            span.ward-header{
+              display: inline-block;
+              width:90%;
+              height: 37px;
+              padding: 10px;
+            }
         }
+      .quick-links{
+        padding: 10px 0;
+      }
     }
     .ward-details-cell {
         padding: 0;
@@ -68,6 +78,13 @@ div[ng-app="adt"] {
             tbody tr:nth-child(even) {
               background: #FFFDF7;
             }
+        }
+        .no-data-info{
+            font-family: openSansBold;
+            padding: 10px 0;
+            display: inline-block;
+            text-align: center;
+            width: 100%;
         }
     }
     .box {

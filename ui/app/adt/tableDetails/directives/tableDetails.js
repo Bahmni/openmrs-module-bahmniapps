@@ -11,13 +11,16 @@ angular.module('bahmni.adt')
             };
 
             var getTableDetails = function() {
-                var details = $q.defer();
-                queryService.getResponseFromQuery($scope.params).then(function (response) {
+                var params = {
+                    q: "emrapi.sqlGet.wardsListDetails",
+                    v: "full",
+                    location_name: $scope.ward.ward.childLocations[0].display
+                };
+
+                return queryService.getResponseFromQuery(params).then(function (response) {
                     $scope.tableDetails = Bahmni.ADT.WardDetails.create(response.data);
                     $scope.tableHeadings = $scope.tableDetails.length > 0 ? Object.keys($scope.tableDetails[0]) : [];
-                    details.resolve();
                 });
-                return details.promise;
             };
             spinner.forPromise(getTableDetails());
         };
@@ -25,7 +28,7 @@ angular.module('bahmni.adt')
             restrict: 'E',
             controller: controller,
             scope: {
-               params:"="
+               ward:"="
             },
             templateUrl: "tableDetails/views/tableDetails.html"
         };

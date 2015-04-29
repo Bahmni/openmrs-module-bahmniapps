@@ -41,6 +41,26 @@ describe("User", function () {
         });
     });
 
+    describe("favorite wards", function(){
+        it("should return true when ward is marked as a favorite", function(){
+            expect(new User({"userProperties": { "favouriteWards": "General Ward"}}).isFavouriteWard("General Ward")).toBe(true);
+            expect(new User({}).isFavouriteWard("General Ward")).toBe(false);
+            expect(new User({"userProperties": { "favouriteWards": "General Ward"}}).isFavouriteWard("Emergency Ward")).toBe(false);
+        });
+
+        it("should toggle ward as favourite", function () {
+            var user = new User({"userProperties": { "favouriteWards": "General Ward"}});
+            user.toggleFavoriteWard("General Ward");
+            expect(user.isFavouriteWard("General Ward")).toBe(false);
+
+            var user2 = new User({});
+            user2.toggleFavoriteWard("General Ward");
+            expect(user2.isFavouriteWard("General Ward")).toBe(true);
+            user2.toggleFavoriteWard("General Ward");
+            expect(user2.isFavouriteWard("General Ward")).toBe(false);
+        });
+    });
+
     describe("recently viewed patients", function(){
        it("should add patient to recently viewed list", function(){
            var user = new User({"userProperties": { "recentlyViewedPatients": '[{"uuid": "1234", "name": "patient1", "identifier": "GAN2001"}]'}});
