@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>bahmniapps</artifactId>
-		<version>5.5-SNAPSHOT</version>
+		<version>5.6-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>bahmniapps-omod</artifactId>
