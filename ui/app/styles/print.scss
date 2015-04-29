@@ -239,9 +239,12 @@ h3 {
         }
     }
     .dashboard-section section.block.hierarchy .value-text-only{
-        word-break:break-all;
-        display: auto;
         padding: 2px 5px;
+    }
+    .dashboard-section section.block.hierarchy .text-only{
+        width: 100%;
+        word-wrap: break-word;
+        display: auto;
     }
     section.block,
     .dashboard-section {
