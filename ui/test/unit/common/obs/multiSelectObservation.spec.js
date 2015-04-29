@@ -69,7 +69,7 @@ describe("Observation", function () {
            var observation = observationFactory(groupMembers[3]["concept"],selectedObs);
             expect(observation.label).toBe("Tuberculosis");
             expect(observation.isValid(true, true)).toBe(false);
-            expect(observation.isValid(false, true)).toBe(false);
+            expect(observation.isValid(false, true)).toBe(true);
             expect(observation.atLeastOneValueSet()).toBe(false);
         });
     });
@@ -115,7 +115,7 @@ describe("Observation", function () {
             "groupMembers": [],
             "isObservation": true,
             "uniqueId": "observation_57",
-            "conceptUIConfig": {"multiSelect": true, "required":true}            
+            "conceptUIConfig": {"multiSelect": true, "required":true}
         }
     ],
     selectedObs = [

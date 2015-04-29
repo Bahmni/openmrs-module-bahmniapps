@@ -63,8 +63,8 @@ angular.module('bahmni.registration')
                 return createPromise;
             };
 
-            var findPrivilege = function(privilegeName) {
-                return _.find($rootScope.currentUser.privileges, function(privilege) {
+            var findPrivilege = function (privilegeName) {
+                return _.find($rootScope.currentUser.privileges, function (privilege) {
                     return privilegeName === privilege.name;
                 });
             };
@@ -83,7 +83,7 @@ angular.module('bahmni.registration')
             $scope.closeVisitIfDischarged = function () {
                 visitService.getVisitSummary(self.visitUuid).then(function (response) {
                     var visitSummary = response.data;
-                    if(visitSummary.admissionDetails != null && visitSummary.dischargeDetails === null) {
+                    if (visitSummary.admissionDetails != null && visitSummary.dischargeDetails === null) {
                         messagingService.showMessage("formError", "Admitted patient's visit cannot be closed. Discharge the patient and try again");
                     } else {
                         closeVisit();
@@ -93,31 +93,67 @@ angular.module('bahmni.registration')
 
             var closeVisit = function () {
                 var confirmed = $window.confirm("Are you sure you want to close this visit?");
-                if(confirmed) {
+                if (confirmed) {
                     visitService.endVisit(self.visitUuid).then(function () {
                         $location.url(Bahmni.Registration.Constants.patientSearchURL);
                     });
                 }
             };
 
-            $scope.getMessage = function(){
+            $scope.getMessage = function () {
                 return $scope.message;
-            }
+            };
             var validate = function () {
+                mandatoryValidate();
                 var deferred = $q.defer();
                 var contxChange = contextChangeHandler.execute();
                 var allowContextChange = contxChange["allow"];
                 if (!allowContextChange) {
-                    var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"]: "Please correct errors in the form. Information not saved";
+                    var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "Please correct errors in the form. Information not saved";
                     messagingService.showMessage('formError', errorMessage);
                     deferred.reject("Some fields are not valid");
                     return deferred.promise;
-                }
-                else {
+                }else if(!mandatoryValidate()){ // This ELSE IF condition is to be deleted later.
+                    var errorMessage =  "Please enter data into mandatory field(s).";
+                    messagingService.showMessage('formError', errorMessage);
+                    deferred.reject("Some fields are not valid");
+                    return deferred.promise;
+                } else {
                     deferred.resolve();
                     return deferred.promise;
                 }
             };
+
+            //Start :: Registration Page validation
+            //To be deleted later - Hacky fix only for Registration Page
+            var mandatoryConceptGroup = [];
+            var mandatoryValidate = function () {
+                conceptGroupValidation($scope.observations);
+                return isValid(mandatoryConceptGroup);
+            };
+
+            var conceptGroupValidation = function(observations){
+                var concepts = _.filter(observations, function(observationNode){
+                    return isMandatoryConcept(observationNode);
+                });
+                if(!_.isEmpty(concepts)){
+                    mandatoryConceptGroup = _.union(mandatoryConceptGroup, concepts);
+                }
+            };
+            var isMandatoryConcept = function (observation) {
+                if (!_.isEmpty(observation.groupMembers)) {
+                    conceptGroupValidation(observation.groupMembers);
+                } else {
+                    return observation.conceptUIConfig && observation.conceptUIConfig.required;
+                }
+            };
+            var isValid = function (mandatoryConcepts){
+                var concept = mandatoryConcepts.filter(function(mandatoryConcept){
+                    return !mandatoryConcept.value;
+                });
+                return _.isEmpty(concept);
+            };
+            //End :: Registration Page validation
 
             var reload = function () {
                 $state.transitionTo($state.current, $state.params, {

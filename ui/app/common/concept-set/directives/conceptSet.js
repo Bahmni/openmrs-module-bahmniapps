@@ -136,9 +136,6 @@ angular.module('bahmni.common.conceptSet')
                        errorMessage = "The value you entered (red field) is outside the range of allowable values for that record. Please check the value.";
                        return true;
                     }
-                    if(childNode.isMultiSelect && childNode.isRequired()){
-                        $scope.atLeastOneValueIsSet = true;
-                    }
                     return !childNode.isValid($scope.atLeastOneValueIsSet, $scope.conceptSetRequired);
                 });
                 return {allow: !invalidNodes || invalidNodes.length === 0, errorMessage: errorMessage};

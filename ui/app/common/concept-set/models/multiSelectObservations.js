@@ -118,8 +118,10 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
     }
 
     this.isValid = function (checkRequiredFields, conceptSetRequired) {
-        if (conceptSetRequired && this.isRequired() && !this.hasNonVoidedValue()) return false;
-        if (checkRequiredFields && this.isRequired() && !this.hasNonVoidedValue()) return false;
+        if(checkRequiredFields) {
+            if (conceptSetRequired && this.isRequired() && !this.hasNonVoidedValue()) return false;
+            if (this.isRequired() && !this.hasNonVoidedValue()) return false;
+        }
         return true;
     };
 
