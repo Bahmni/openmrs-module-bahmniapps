@@ -3,7 +3,7 @@
 var Bahmni = Bahmni || {};
 Bahmni.Graph = Bahmni.Graph || {};
 
-Bahmni.Graph.c3ChartConfig = function (bindTo, graphWidth, config, data) {
+Bahmni.Graph.c3Chart = function (bindTo, graphWidth, config, data) {
     var dateUtil = Bahmni.Common.Util.DateUtil;
     var axis = {
         x: {
@@ -69,14 +69,15 @@ Bahmni.Graph.c3ChartConfig = function (bindTo, graphWidth, config, data) {
         xs[yAxisConcept] = config.xAxisConcept;
     });
 
-    return {
+    var c3Chart;
+    var c3Config = {
         bindto: bindTo,
         size: {
             width: graphWidth
         },
         padding: {
             top: 20,
-            right: 70
+            right: 50
         },
         data: {
             json: values,
@@ -85,11 +86,14 @@ Bahmni.Graph.c3ChartConfig = function (bindTo, graphWidth, config, data) {
                 value: config.yAxisConcepts
             },
             axes: axes,
-            xs : xs
+            xs : xs,
+            onclick: function (d) {
+                c3Chart.tooltip.show({data: d});
+            }
         },
         point: {
             show: true,
-            r: 7
+            r: 9
         },
         line: {
             connectNull: true
@@ -107,5 +111,7 @@ Bahmni.Graph.c3ChartConfig = function (bindTo, graphWidth, config, data) {
         zoom: {
             enabled: true
         }
-    }
+    };
+    c3Chart = c3.generate(c3Config);
+    return c3Chart;
 };
