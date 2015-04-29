@@ -1,3 +1,6 @@
+<legend class="mylegend registraion_legend registraion_Basic_info">
+    <span><srtong>Basic Informantion</srtong></span>
+  </legend>
 <section ng-controller="PatientCommonController">
     <article class="form-field" ng-if="patientConfiguration.local()['showNameField']">
         <div class="field-attribute">
@@ -111,7 +114,7 @@
 
             </div>
     </article>
-    <article class="form-field">
+    <article class="form-field right-form-field">
         <div class="field-attribute">
             <label for="birthdate">Date of Birth</label>
         </div>
@@ -121,10 +124,18 @@
         </div>
     </article>
 </section>
+
+<legend class="mylegend registraion_legend">
+    <span><srtong>Address Informantion</srtong></span>
+  </legend>
 <section address-fields data-address-levels="addressLevels" data-address="patient.address" field-validation="fieldValidation"></section>
 
+<legend class="mylegend registraion_legend">
+    <span><srtong>Other Informantion</srtong></span>
+  </legend>
+
 <section class="form-field-inline" ng-repeat="attributeRow in patientConfiguration.customAttributeRows()">
-    <article class="form-field" ng-repeat="attribute in attributeRow">
+    <article class="form-field" ng-repeat="attribute in attributeRow" ng-class="{'right-form-field' : $index%2 != 0}">
         <ng-include src="'views/patientAttributeInformation.html'"></ng-include>
     </article>
 </section>
@@ -138,7 +149,7 @@
         </span>
 </legend>
 <section class="form-field-inline" ng-show="displayAdditionalInformation">
-    <article class="form-field" ng-repeat="attribute in patientConfiguration.additionalAttributes()">
+    <article class="form-field" ng-repeat="attribute in patientConfiguration.additionalAttributes()" ng-class="{'right-form-field' : $index%2 != 0}">
         <ng-include src="'views/patientAttributeInformation.html'"></ng-include>
     </article>
 </section>

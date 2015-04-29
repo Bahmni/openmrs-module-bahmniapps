@@ -5,13 +5,12 @@
     <div data-ng-switch-when="java.lang.String">
         <span data-ng-switch="isAutoComplete(attribute.name)">
             <input data-ng-switch-when="true"
-                   type="text" id="{{$parent.attribute.name}}"
-                   placeholder="{{$parent.attribute.description}}"
+                   type="text" id="{{$parent.attribute.name}}"                   
                    ng-model="$parent.patient[$parent.attribute.name]" data-item-type="personAttribute"
                    my-autocomplete source="getAutoCompleteList" response-map="getDataResults" ng-required="{{attribute.required}}">
 
             <input data-ng-switch-default
-                   type="text" pattern-validate id="{{attribute.name}}" placeholder="{{attribute.description}}"
+                   type="text" pattern-validate id="{{attribute.name}}"
                    ng-model="patient[attribute.name]" data-item-type="personAttribute" ng-required="{{attribute.required}}">
         </span>
     </div>
@@ -22,11 +21,11 @@
         </select>
     </div>
     <div class="left" data-ng-switch-when="java.lang.Integer">
-        <input id="{{attribute.name}}" type="number" pattern-validate placeholder="{{attribute.description}}"
+        <input id="{{attribute.name}}" type="number" pattern-validate 
                ng-model="patient[attribute.name]" data-item-type="personAttribute" ng-required="{{attribute.required}}"/>
     </div>
     <div class="left" data-ng-switch-when="java.lang.Float">
-        <input type="number" pattern-validate step="any" id="{{attribute.name}}" placeholder="{{attribute.description}}"
+        <input type="number" pattern-validate step="any" id="{{attribute.name}}" 
                ng-model="patient[attribute.name]" data-item-type="personAttribute" ng-required="{{attribute.required}}"/>
     </div>
     <div class="left" data-ng-switch-when="java.lang.Boolean">

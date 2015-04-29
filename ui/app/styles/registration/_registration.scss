@@ -15,28 +15,36 @@ html,body{
   .form-field{
       float:left;
       @include column(6);
-      margin-bottom:10px;
+      margin-bottom:0px;
   }
   @include clearfix();
 }
 .form-field{
-  margin-bottom:10px;
+  margin-bottom:0px;
   @include clearfix();
   .field-attribute{
     float:left;
     label{
-        width:13em;
+        width:15em;
         line-height:20px;
         float:left;
         text-align:right;
         margin:8px 0.8em 8px 0px;
     }
   }
+  &.right-form-field{
+      .field-attribute label{
+        width: 18em;
+      }
+    }
   .field-value{
     float:left;
-     input[type="text"],input[type="password"],select,label{
+     input[type="text"],input[type="number"],input[type="password"],select,label{
         float:left;
-        width:12.5em;
+        width:12.7em !important;
+    }
+    input#isUrban{
+      margin-top: 7px;
     }
     input[type="number"]{
         width:8em;
@@ -204,7 +212,7 @@ body pre {
       margin:2px;
   }
   select{
-        height:30px;
+        height:27px;
   }
   header {
     position: relative;
@@ -441,6 +449,13 @@ table{
         padding:2px 10px;
         font-weight:bold;
     }
+    &.registraion_legend{
+      margin: 15px 0 15px 25px;
+      width:96%;
+    }
+    &.registraion_Basic_info{
+      width: 84%;
+    }
 }
 .asterick{
     color:red;
@@ -581,7 +596,7 @@ video{
     }
     .form-field-inline {
       &:last-child{
-        margin-bottom:10px;
+        margin-bottom:0px;
       }
       .form-field{
         margin-bottom:0px;
@@ -609,11 +624,11 @@ video{
   }
 
   #ageYears {
-    width: 30px;
+    width: 30px !important;
   }
 
   #ageMonths, #ageDays {
-    width: 20px;
+    width: 20px !important;
   }
 
   input {
@@ -887,7 +902,7 @@ button u, u {
 }
 
 .mylegend.additional-attribute {
-  margin-top: 10px;
+  margin-top: 15px;
   span {
     display: block;
   }
@@ -899,4 +914,8 @@ button u, u {
       outline: 2px solid $clinicalFormFocus;
     }
   }
+}
+
+.paddingBottom-15{
+  padding-bottom: 15px !important;
 }
