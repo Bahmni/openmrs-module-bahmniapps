@@ -140,7 +140,11 @@ form .vitals .form-field .field-value {
     border: 1px solid lighten($mediumGray, 20%);
   }
 }
-
+form .observations-tab .vitals .form-field .field-value {
+  .autocomplete {
+    width: 305px;
+  }
+}
 .form-horizontal {
   fieldset {
     label {
