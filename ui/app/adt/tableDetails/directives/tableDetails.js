@@ -14,7 +14,7 @@ angular.module('bahmni.adt')
                 var params = {
                     q: "emrapi.sqlGet.wardsListDetails",
                     v: "full",
-                    location_name: $scope.ward.ward.childLocations[0].display
+                    location_name: $scope.ward.ward.name
                 };
 
                 return queryService.getResponseFromQuery(params).then(function (response) {

@@ -5,10 +5,7 @@ angular.module('bahmni.adt')
         function ($scope, $rootScope, $window, $document, spinner, wardService, bedService, bedManagementService, userService) {
             $scope.wards = null;
             $scope.currentView = "wards";
-            $scope.layout = [];
-            $scope.bedLayouts = [];
             $scope.selectedBed = null;
-            $scope.wardName = null;
             var maxX = 1;
             var maxY = 1;
             var minX = 1;
@@ -33,8 +30,15 @@ angular.module('bahmni.adt')
 
             var getBedsForWard = function (wardUuid) {
                 return wardService.bedsForWard(wardUuid).success(function (result) {
-                    $scope.bedLayouts = result.bedLayouts;
-                    $scope.layout = bedManagementService.createLayoutGrid($scope.bedLayouts);
+                    var groupedLayoutsByLocation = _.groupBy(result.bedLayouts, 'location');
+                    $scope.layouts = [];
+                    _.map(groupedLayoutsByLocation, function (value, key) {
+                        var layout = {
+                            name: key,
+                            beds: bedManagementService.createLayoutGrid(value)
+                        };
+                        $scope.layouts.push(layout);
+                    });
                 });
             };
 
@@ -52,13 +56,10 @@ angular.module('bahmni.adt')
                 $scope.$apply();
             };
 
-            $scope.showWardLayout = function (wardUuid, wardName) {
+            $scope.showWardLayout = function (wardUuid) {
                 $scope.disableBedAssignment = true;
                 currentWardUuid = wardUuid;
-                $scope.wardName = wardName;
                 $scope.currentView = "wardLayout";
-                $scope.layout = [];
-                $scope.bedLayouts = [];
                 $scope.selectedBed = null;
                 maxX = maxY = minX = minY = 1;
                 spinner.forPromise(getBedsForWard(wardUuid));
@@ -79,9 +80,9 @@ angular.module('bahmni.adt')
             };
 
             $scope.fetchBedInfo = function (cell, rowIndex, columnIndex) {
-                if (!cell.available && !cell.empty) {
+                if (!cell.available && !cell.empty && !cell.patientInfo) {
                     spinner.forPromise(bedService.getBedInfo(cell.bed.bedId).success(function (data) {
-                        $scope.layout[rowIndex][columnIndex].patientInfo = {
+                        cell.patientInfo = {
                             "name": data.patient.person.personName.givenName + " " + data.patient.person.personName.familyName,
                             "identifier": data.patient.identifiers[0].identifier,
                             "gender": data.patient.person.gender

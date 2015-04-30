@@ -67,7 +67,6 @@ describe("BedManagementController", function() {
     describe('showWardLayout : Selecting bed from the ward layout', function () {
         it("should set the value of current ward name and current view to wardLayout", function () {
             scope.showWardLayout("uuid", "name");
-            expect(scope.wardName).toBe("name");
             expect(scope.currentView).toBe("wardLayout");
         });
     });
