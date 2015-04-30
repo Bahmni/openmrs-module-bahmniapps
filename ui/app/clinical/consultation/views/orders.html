@@ -1,0 +1,29 @@
+<section class="block consultation-notes section-grid">
+    <h2 class="section-title">Selected Orders</h2>
+    <div id="selected-orders" class="selected-orders">
+        <p class="null-data-message" ng-hide="consultation.testOrders.length">Selected orders is empty</p>
+        <ul class="selected-items">
+            <li ng-repeat="order in consultation.testOrders">
+                <button type="button" class="grid-row-element" ng-class="{active: !order.voided}" ng-click="diSelect(order)">
+                    <i class="icon-ok"></i>{{::order.concept.name}}
+                </button>
+            </li>
+        </ul>
+    </div>
+</section>
+<div class="order-list">
+    <div ng-repeat="tab in tabs" class="{{tab.klass}}" ng-click="activateTab(tab)">
+        <div class="order-grid">
+            <h2 class="order-title">
+                <i class="icon-caret-right" ng-show="activeTab != tab"></i>
+                <i class="icon-caret-down ng-hide" ng-show="activeTab == tab"></i>
+                {{tab.name}}
+            </h2>
+        </div>
+        <div ng-if="activeTab == tab" ng-show="activeTab == tab" class="dashboard-section">
+            <div class="dashboard-section-wrapper">
+                <div ng-include="getTabInclude()"></div>
+            </div>
+        </div>
+    </div>
+</div>

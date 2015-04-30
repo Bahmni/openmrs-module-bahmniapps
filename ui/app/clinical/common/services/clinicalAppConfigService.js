@@ -34,6 +34,29 @@ angular.module('bahmni.clinical')
             return appService.getAppDescriptor().getExtensions("org.bahmni.clinical.conceptSetGroup." + conceptSetGroupName, "config")
         };
 
+        this.getOrders = function(){
+          return appService.getAppDescriptor().getConfigValue("orders");
+        };
+
+        this.getOrderTypes = function(){
+            var orders = appService.getAppDescriptor().getConfigValue("orders");
+            var types = [];
+
+            _.forEach(_.keys(orders), function(item){
+                types.push({name: item});
+            });
+
+            return types;
+        };
+
+        this.getOrderAttributes = function(orderName, attribute){
+          var orders = appService.getAppDescriptor().getConfigValue("orders") || {};
+          if(orderName && orders[orderName] && orders[orderName][attribute]){
+              return orders[orderName][attribute];
+          }
+          return {};
+        };
+
         this.getOtherInvestigationsMap = function () {
             return appService.getAppDescriptor().getConfig("otherInvestigationsMap");
         };
