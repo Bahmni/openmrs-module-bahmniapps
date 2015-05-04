@@ -69,8 +69,29 @@ Bahmni.Graph.c3Chart = function (bindTo, graphWidth, config, data) {
         xs[yAxisConcept] = config.xAxisConcept;
     });
 
+    var grid = {
+        y: {
+            lines: []
+        }
+    };
+
+    var plotRange = function(){
+        if(config.lowNormal != undefined){
+            grid.y.lines.push({value: config.lowNormal, text: "low", class: "lowNormal"});
+        }if(config.hiNormal != undefined){
+            grid.y.lines.push({value: config.hiNormal, text: "high", class: "hiNormal"});
+        }
+    };
+
+    var getRange = function(){
+        if(config.yAxisConcepts.length == 1) plotRange();
+        return grid;
+    };
+
+
     var c3Chart;
     var c3Config = {
+
         bindto: bindTo,
         size: {
             width: graphWidth
@@ -110,7 +131,8 @@ Bahmni.Graph.c3Chart = function (bindTo, graphWidth, config, data) {
         },
         zoom: {
             enabled: true
-        }
+        },
+        grid: getRange()
     };
     c3Chart = c3.generate(c3Config);
     return c3Chart;

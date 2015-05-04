@@ -1,15 +1,17 @@
 'use strict';
 
 describe("Observation Graph", function () {
-    var element, scope, compile, httpBackend, observationsService, patientService;
+    var element, scope, compile, httpBackend, observationsService, patientService, conceptSetService;
 
     beforeEach(module('bahmni.clinical'));
 
     beforeEach(module(function ($provide) {
         observationsService = jasmine.createSpyObj('observationsService', ['fetch']);
         patientService = jasmine.createSpyObj('patientService', ['getPatient']);
+        conceptSetService= jasmine.createSpyObj('conceptSetService', ['getConceptSetMembers']);
         $provide.value('observationsService', observationsService);
         $provide.value('patientService', patientService);
+        $provide.value('conceptSetService', conceptSetService);
 
         window.c3 = jasmine.createSpyObj('c3', ['generate']);
     }));
@@ -21,6 +23,16 @@ describe("Observation Graph", function () {
         scope.visit = {uuid: "visitUuid"};
         scope.patient = {uuid: "patientUuid"};
     }));
+
+    var mockConceptSetService = function (data) {
+        conceptSetService.getConceptSetMembers.and.callFake(function () {
+            return {
+                then: function (callback) {
+                    return callback({data: data})
+                }
+            }
+        });
+    };
 
     var mockObservationService = function (data) {
         observationsService.fetch.and.callFake(function () {
@@ -68,6 +80,7 @@ describe("Observation Graph", function () {
             }
         };
         mockObservationService([]);
+        mockConceptSetService([]);
         spyOn(Bahmni.Graph, 'c3Chart');
 
         compile(element)(scope);
@@ -93,6 +106,7 @@ describe("Observation Graph", function () {
             value: 45,
             concept: {name: "Temperature", units: "Celcius"}
         }]);
+        mockConceptSetService([]);
         spyOn(Bahmni.Graph, 'c3Chart');
 
         compile(element)(scope);
@@ -128,6 +142,7 @@ describe("Observation Graph", function () {
             value: 45,
             concept: {name: "Height", units: "cm"}
         }]);
+        mockConceptSetService([]);
         spyOn(Bahmni.Graph, 'c3Chart');
         mockPatientService({person: {birthdate: "2000-02-02"}});
 
@@ -161,6 +176,7 @@ describe("Observation Graph", function () {
             {observationDateTime: "2015-01-01", value: 155, concept: {name: "Height", units: "cm"}},
             {observationDateTime: "2015-01-01", value: 45, concept: {name: "Weight", units: "kg"}}
         ]);
+        mockConceptSetService([]);
         spyOn(Bahmni.Graph, 'c3Chart');
 
         compile(element)(scope);
@@ -197,6 +213,7 @@ describe("Observation Graph", function () {
             {observationDateTime: "2015-02-01", value: 155, concept: {name: "Height", units: "cm"}},
             {observationDateTime: "2015-02-01", value: 45, concept: {name: "Weight", units: "kg"}}
         ]);
+        mockConceptSetService([]);
 
         spyOn(Bahmni.Graph, 'c3Chart');
 

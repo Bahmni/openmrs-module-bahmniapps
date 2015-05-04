@@ -49,13 +49,13 @@
 
         if (config.displayForObservationDateTime()) {
             config.type = "timeseries";
-            _.map(yAxisObservations, function (obs) {
+            _.forEach(yAxisObservations, function (obs) {
                 buildObservationGraphModel(config, obs, entryMatchingConcept(sortedObsGraphModel, obs),
                     Bahmni.Common.Util.DateUtil.parseDatetime(obs.observationDateTime).toDate());
             });
         } else if (config.displayForAge()) {
             config.unit = " (years)";
-            _.map(yAxisObservations, function (obs) {
+            _.forEach(yAxisObservations, function (obs) {
                 var age = Bahmni.Common.Util.AgeUtil.fromBirthDateTillReferenceDate(person.birthdate, obs.observationDateTime);
                 var ageValue = age.years + "." + age.months;
                 buildObservationGraphModel(config, obs, entryMatchingConcept(sortedObsGraphModel, obs), ageValue);

@@ -5,3 +5,18 @@ svg {
 .c3-line {
   stroke-width: 3px;
 }
+.c3-ygrid-line{
+  text{
+    fill: #333;
+  }
+  &.lowNormal line {
+    stroke: green;
+    opacity: .25 !important;
+  }
+  &.hiNormal line {
+    stroke: red;
+    opacity: .25 !important;
+  }
+}
+
+

@@ -1,7 +1,7 @@
 "use strict";
 
-angular.module('bahmni.clinical').directive('observationGraph', ['observationsService', 'patientService', '$q',
-    function (observationsService, patientService, $q) {
+angular.module('bahmni.clinical').directive('observationGraph', ['observationsService', 'patientService', 'conceptSetService', '$q',
+    function (observationsService, patientService, conceptSetService, $q) {
 
         var generateGraph = function ($scope, element, config, observationGraphModel) {
             var bindToElement = document.getElementById($scope.graphId);
@@ -22,16 +22,29 @@ angular.module('bahmni.clinical').directive('observationGraph', ['observationsSe
             }
 
             var promises = [];
+
+            var numberOfLevels = 1;
+            var fields = ['uuid', 'name', 'names', 'hiNormal', 'lowNormal'];
+            var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels);
+            var conceptValue = conceptSetService.getConceptSetMembers({name:config.getAllConcepts() ,v:"custom:"+customRepresentation});
+            promises.push(conceptValue);
+
             var observationsPromise = observationsService.fetch($scope.patientUuid, config.getAllConcepts(), false, config.numberOfVisits, $scope.visitUuid);
             promises.push(observationsPromise);
+
             if (config.displayForAge()) {
                 promises.push(patientService.getPatient($scope.patientUuid));
             }
 
             $q.all(promises).then(function(results) {
-                if(results[0].data.length == 0) return;
+                if(results[0].data.results && results[0].data.results.length > 0) {
+                    config.lowNormal = results[0].data.results[0].lowNormal;
+                    config.hiNormal = results[0].data.results[0].hiNormal;
+                }
 
-                var model = Bahmni.Clinical.ObservationGraph.create(results[0].data, results[1] && results[1].data.person, config);
+                if(results[1].data.length == 0) return;
+
+                var model = Bahmni.Clinical.ObservationGraph.create(results[1].data, results[2] && results[2].data.person, config);
 
                 generateGraph($scope, element, config, model);
             });
