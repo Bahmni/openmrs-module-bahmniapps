@@ -114,7 +114,8 @@ Bahmni.Graph.c3Chart = function (bindTo, graphWidth, config, data) {
         },
         point: {
             show: true,
-            r: 9
+            r: 5,
+            sensitivity: 20
         },
         line: {
             connectNull: true
