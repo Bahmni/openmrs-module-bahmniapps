@@ -18,7 +18,7 @@
 
         <div ng-repeat="album in albums">
             <div ng-repeat="image in album.images">
-                <img class="slide" hm-swipe-right="showPrev()" hm-swipe-left="showNext()"
+                <img class="slide"
                      ng-show="isActive($index, album.tag)" ng-src="{{image.src}}"/>
             </div>
             <span ng-if="album.tag == albumTag" class="arrow prev" ng-click="showPrev()"></span>
