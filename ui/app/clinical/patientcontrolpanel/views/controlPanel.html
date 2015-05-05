@@ -14,7 +14,7 @@
                 </div>
             </div>
             <h5><span bo-text="patient.ageText"></span></h5>
-            <h5><span bo-text="patient.address.cityVillage"></span>
+            <h5><span ng-show="patient.address.cityVillage" bo-text="patient.address.cityVillage"></span>
               <span ng-show="patient.address.countyDistrict"> / {{patient.address.countyDistrict}}</span></h5>
             <span class="ward" bo-text="bedDetails.wardName + ' ' + bedDetails.bedNumber"></span>
         </div>
