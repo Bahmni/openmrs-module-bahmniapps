@@ -31,7 +31,7 @@ angular.module('bahmni.common.uiHelper')
                 return valueNotFilled() || valueCompletelyFilled();
             };
 
-            if($scope.model != null) {
+            if($scope.model) {
                 var date = moment($scope.model).toDate();
                 $scope.selectedDate = date;
                 $scope.selectedTime = date;
