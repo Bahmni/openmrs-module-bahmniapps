@@ -142,6 +142,15 @@ h3 {
     max-width: 21cm; // A4 size width
     margin: 0 auto;
 	box-sizing: border-box;
+    .has-uploaded-file{
+        .uploaded-file{
+            display: inherit;
+            .icon-paper-clip{
+                margin-top:0;
+                display: none;
+            }
+        }
+    }
     a {
         color: #333;
     }
