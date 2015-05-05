@@ -8,7 +8,7 @@
   padding-bottom: 10px;
     @media screen and (min-width: 860px) {
       .patient-dashboard.visit & {
-        margin: 0 -10px;
+        //margin: 0 -10px;
       }
     }
 }
@@ -28,6 +28,12 @@
       margin: 0 auto;
       padding: 0;
       float: none;
+    }
+    &.dashboard-sections-left{
+      padding: 10px 10px 10px 0px;
+    }
+    &.dashboard-sections-right{
+      padding: 10px 0px 10px 5px;
     }
   }
     @media screen and (min-width: 860px) {

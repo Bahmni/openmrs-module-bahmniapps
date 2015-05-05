@@ -22,8 +22,13 @@
         padding-bottom: 5px;
     }
     .form-group .field-value textarea {
-        width: 97.5%;
-        margin-bottom: 5px;
+        width: 98%;
+        margin:0 0 5px 0;
+    }
+    .submit-btn-container{
+        .admit_btn{
+            margin:0 5px; 
+        }
     }
 }
 
@@ -34,6 +39,7 @@ div[ng-app="adt"] {
         top: 17px;
         left: 50%;
         transform: translateX(-50%);
+        -webkit-transform: translateX(-50%);
         color: $lightestGray;
     }
     .ward-list {
