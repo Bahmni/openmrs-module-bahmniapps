@@ -1,9 +1,11 @@
 angular.module('bahmni.common.obs')
     .directive('showObservation', function () {
-        var controller = function ($scope, $filter) {
+        var controller = function ($scope, $rootScope , $filter) {
             $scope.toggle = function (observation) {
                 observation.showDetails = !observation.showDetails
             };
+
+            $scope.print = $rootScope.isBeingPrinted || false;
 
             $scope.dateString = function (observation) {
                 var dateFormat = "";

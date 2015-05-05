@@ -1,7 +1,7 @@
 <li ng-class="{'is-text': observation.type == 'Text', 'has-child' : observation.groupMembers.length > 0}">
     <div ng-class="{'is-abnormal': observation.abnormal}" class="tree-list-item" bm-gallery patient="patient">
         <span class="testUnderPanel"><label>{{::observation.concept.shortName || observation.concept.name}}</label></span>
-        <pre ng-class="{'text-only': observation.concept.dataType ==='Text', 'value-text-only': !(observation.concept.dataType ==='Text')}" ng-if="observation.isFormElement() && !observation.isImageConcept()">{{::observation.getDisplayValue()}}<span
+        <pre ng-class="{'text-only': (observation.concept.dataType ==='Text' && print), 'value-text-only': !(observation.concept.dataType ==='Text' && print)}" ng-if="observation.isFormElement() && !observation.isImageConcept()">{{::observation.getDisplayValue()}}<span
                 class="label-add-on" ng-if="observation.concept.units"> {{::observation.concept.units}}</span></pre>
         <button class="toggle fr" ng-if="observation.isFormElement() && showDetailsButton && !observation.comment" ng-class="{'has-notes': observation.comment}"
                 ng-click="toggle(observation)">
