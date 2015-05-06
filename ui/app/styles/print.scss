@@ -10,7 +10,7 @@
 body,
 body pre {
     font-family: Arial, sans-serif;
-    font-size: 10pt;
+    font-size: 9pt;
     color: #000;
     background: #fff;
 }
@@ -203,8 +203,13 @@ h3 {
                 display: none;
             }
             .obs-date {
-                font-weight: bold;
-                font-size: 9pt;
+              -webkit-print-color-adjust: exact;
+              font-weight: bold;
+              font-size: 9pt;
+              background: #C3C3C3 !important;
+              padding: 2px 5px;
+              display: block;
+              margin: 2px 0;
             }
         }
     }
@@ -254,6 +259,10 @@ h3 {
         width: 100%;
         word-wrap: break-word;
         display: auto;
+        padding-bottom: 5px;
+    }
+    table.history-diagnosis tbody .notes.inline-notes .left{
+         display: none !important;
     }
     section.block,
     .dashboard-section {
@@ -304,6 +313,9 @@ h3 {
                 &:last-child {
                     margin-bottom: 0;
                 }
+            }
+            &.history-diagnosis .table-header {
+                display: none;
             }
             thead {
                 tr {
@@ -393,6 +405,9 @@ h3 {
                     margin-right: 0;
                 }
             }
+        }
+        .hierarchy ul ul ul {
+            padding-left: 10px;
         }
         table.ipd-investigation-print {
             border-collapse: collapse;
@@ -508,6 +523,7 @@ h3 {
         color: #999;
         &.test-notes i[class^=icon-] {
             padding: 0;
+            display: none;
         }
         &.print-notes {
             display: block !important;
