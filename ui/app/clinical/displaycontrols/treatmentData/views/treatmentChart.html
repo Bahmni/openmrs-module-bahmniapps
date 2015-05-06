@@ -4,23 +4,23 @@
         <thead>
         <tr>
             <th>
-                <span bo-text="(visitSummary.startDateTime | bahmniDate) + ' - '+ (getVisitStopDateTime() | bahmniDate)"></span>
+                <span>{{::(visitSummary.startDateTime | bahmniDate) + ' - '+ (getVisitStopDateTime() | bahmniDate)}}</span>
             </th>
-            <th ng-repeat="drug in ipdDrugOrders.getIPDDrugs()" bo-text="drug.orders[0].getDisplayName()" class="drug"
-                ng-class="{active: drug.isActive()}"></th>
+            <th ng-repeat="drug in ::ipdDrugOrders.getIPDDrugs()" class="drug"
+                ng-class="{active: drug.isActive()}">{{drug.orders[0].getDisplayName()}}</th>
 
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="day in ipdDrugOrders.ipdDrugSchedule.days" ng-if="atLeastOneDrugForDay(day)">
+        <tr ng-repeat="day in ::ipdDrugOrders.ipdDrugSchedule.days" ng-if="atLeastOneDrugForDay(day)">
             <td>
                 <span>
                     D{{day.dayNumber}} ({{day.date | bahmniDate}})
                 </span>
             </td>
-            <td bo-switch="drug.getStatusOnDate(day.date)" ng-repeat="drug in ipdDrugOrders.ipdDrugSchedule.drugs">
-                <span class="icon-ok" bo-switch-when="active"></span>
-                <span class="icon-stop" bo-switch-when="stopped"></span>
+            <td ng-switch="drug.getStatusOnDate(day.date)" ng-repeat="drug in ::ipdDrugOrders.ipdDrugSchedule.drugs">
+                <span class="icon-ok" ng-switch-when="active"></span>
+                <span class="icon-stop" ng-switch-when="stopped"></span>
             </td>
         </tr>
         </tbody>
