@@ -59,7 +59,7 @@
             </td>
         </tr>
         <tr ng-show="diagnosis.comments" ng-class="{'has-test-notes': diagnosis.comments}">
-            <td class="notes test-notes" colspan="2">
+            <td class="notes test-notes" colspan="{{showLatestDiagnosis ==  'true' ? 3 : 2}}">
                 <i class="icon-comments left"></i>
                 <pre id="diagnosisComments" class="left">{{diagnosis.comments}}</pre>
                 <div class="footer-note right">
