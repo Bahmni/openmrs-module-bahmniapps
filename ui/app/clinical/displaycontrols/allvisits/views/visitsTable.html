@@ -3,17 +3,17 @@
         {{params.title}}
     </h2>
     <p class="placeholder-text" ng-if="!hasVisits()">{{::noVisitsMessage}}</p>
-    <table class="visits dashboard-table" ng-if="::hasVisits()">
+    <table class="visits dashboard-table" id="visitDisplayTable" ng-if="::hasVisits()">
         <tbody>
-            <tr ng-repeat="visit in ::visits | limitTo: params.maximumNoOfVisits">
+            <tr id="eachVisit" ng-repeat="visit in ::visits | limitTo: params.maximumNoOfVisits">
                 <td class="name" width="50%">
                     <a class="ngdialog-close visit" ng-click="openVisit(visit)">
                         <span>{{::visit.startDatetime | bahmniDate}}</span>
                         <span ng-if="::!visit.isActive()">- {{::visit.stopDatetime | bahmniDate }}</span>
-                        <i class="icon-star current-visit-icon" ng-if="::visit.isActive()" title="Current Visit"></i>
+                        <i class="icon-star current-visit-icon" id="currentVisitIcon" ng-if="::visit.isActive()" title="Current Visit"></i>
                     </a>
                 </td>
-                <td class="value">{{::visit.visitType.name}}</td>
+                <td class="value" id="visitType">{{::visit.visitType.name}}</td>
             </tr>
         </tbody>
     </table>
