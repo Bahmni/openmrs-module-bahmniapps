@@ -86,7 +86,7 @@ body.gallery-open > *:not(#gallery-pane) {
     overflow: auto;
     position: absolute;
     right: 0;
-    top: 0;
+    top: 10px;
 }
 
 .slide.ng-hide-add {
@@ -186,6 +186,8 @@ body.gallery-open > *:not(#gallery-pane) {
 /*Impression*/
 .image-container {
 	width: 100%;
+	position: relative;
+	padding-top: 52px;
 }
 .image-container.shift {
 	float: left;
