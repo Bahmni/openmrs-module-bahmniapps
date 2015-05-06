@@ -115,6 +115,14 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
         return groupMembers;
     },
 
+    _getGroupMembersWithoutClass: function(classNames) {
+         var groupMembers = this.groupMembers.filter(function (member) {
+            return !(_.include(classNames, member.concept.conceptClass.name) || _.include(classNames, member.concept.conceptClass));
+        });
+
+        return groupMembers;
+    },
+
     getAbnormalObs: function () {
         return this._getGroupMemberWithClass(Bahmni.Common.Constants.abnormalConceptClassName);
     },
@@ -125,7 +133,7 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
     },
 
     getPrimaryObs: function () {
-        var observations = this._getGroupMembersWithClass(Bahmni.Common.Constants.miscConceptClassName);
+        var observations = this._getGroupMembersWithoutClass([Bahmni.Common.Constants.abnormalConceptClassName, Bahmni.Common.Constants.durationConceptClassName]);
         //todo : add migration to set correct sort orders for the concepts
         //this is needed when you have freetext autocomplete
         var primaryObs = observations[1] && observations[1].uuid && !observations[1].voided? observations[1]:observations[0];
@@ -208,6 +216,10 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
 
     getInputType: function () {
         return this.getDataTypeName();
+    },
+
+    isComputed: function() {
+        return this.primaryObs.isComputed();
     },
 
     isComputedAndEditable: function() {
