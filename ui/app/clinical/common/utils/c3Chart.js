@@ -133,6 +133,7 @@ Bahmni.Graph.c3Chart = function (bindTo, graphWidth, config, data) {
         zoom: {
             enabled: true
         },
+        transition_duration: 0,
         grid: getRange()
     };
     c3Chart = c3.generate(c3Config);

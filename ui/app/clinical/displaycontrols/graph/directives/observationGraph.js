@@ -5,7 +5,7 @@ angular.module('bahmni.clinical').directive('observationGraph', ['observationsSe
 
         var generateGraph = function ($scope, element, config, observationGraphModel) {
             var bindToElement = document.getElementById($scope.graphId);
-            var graphWidth = $(element).width();
+            var graphWidth = $(element).parent().width();
             Bahmni.Graph.c3Chart(bindToElement, graphWidth, config, observationGraphModel);
         };
 

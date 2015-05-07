@@ -4,15 +4,13 @@
             <div class="dashboard-section-wrapper">
                 <div class="dashboard-sections dashboard-sections-left">
                     <section ng-repeat="section in dashboard.getSections(diseaseTemplates) | filter:filterOdd(0)"
-                             class="dashboard-section">
-                        <ng-include src="section.viewName"></ng-include>
+                             class="dashboard-section" ng-include="section.viewName">
                     </section>
                 </div>
 
                 <div class="dashboard-sections dashboard-sections-right">
                     <section ng-repeat="section in dashboard.getSections(diseaseTemplates) | filter:filterEven(0)"
-                             class="dashboard-section">
-                        <ng-include src="section.viewName"></ng-include>
+                             class="dashboard-section" ng-include="section.viewName">
                     </section>
                 </div>
             </div>
