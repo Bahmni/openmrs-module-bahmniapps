@@ -55,7 +55,7 @@ describe("Observation Graph", function () {
     };
 
     beforeEach(function () {
-        element = angular.element('<observation-graph visit-uuid="visit.uuid" params="section" patient-uuid="patient.uuid"></observation-graph>');
+        element = angular.element('<div><observation-graph visit-uuid="visit.uuid" params="section" patient-uuid="patient.uuid"></observation-graph></div>');
         httpBackend.expectGET('displaycontrols/graph/views/observationGraph.html').respond('<div id="{{graphId}}"></div>')
     });
 
