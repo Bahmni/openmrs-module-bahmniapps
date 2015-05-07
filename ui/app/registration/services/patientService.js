@@ -5,11 +5,11 @@ angular.module('bahmni.registration')
         var openmrsUrl = Bahmni.Registration.Constants.openmrsUrl;
         var baseOpenMRSRESTURL = Bahmni.Registration.Constants.baseOpenMRSRESTURL;
 
-        var search = function (query, village, localName, offset, localNameAttributes) {
+        var search = function (query, addressFieldName, addressFieldValue, localName, offset, localNameAttributes) {
             offset = offset || 0;
             return $http.get(openmrsUrl + "/ws/rest/v1/bahmnicore/patient", {
                 method: "GET",
-                params: {q: query, s: "byIdOrNameOrVillage", 'city_village': village, 'local_name': localName, startIndex: offset, patientAttributes: localNameAttributes}     ,
+                params: {q: query, s: "byIdOrNameOrVillage",'address_field_name': addressFieldName , 'address_field_value': addressFieldValue, 'local_name': localName, startIndex: offset, patientAttributes: localNameAttributes}     ,
                 withCredentials: true
             });
         };

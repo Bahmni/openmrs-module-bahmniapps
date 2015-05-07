@@ -87,16 +87,18 @@ describe('SearchPatientController', function () {
         });
 
         it('should initialize scope with name search params from url and load the patients if a name search parameter is provided', function () {
-            var searchParams = {"name": 'john', village: 'Kanpur'};
+            var searchParams = {"name": 'john', addressFieldValue: 'Kanpur'};
+            scope.searchConfig = {field: 'city_village', name:'village'}
             spyOn(location, 'search').and.returnValue(searchParams);
 
             urlSearchChangeCallback();
 
             expect(scope.searchParameters.name).toBe(searchParams.name);
-            expect(scope.searchParameters.village).toBe(searchParams.village);
+            expect(scope.searchParameters.addressFieldValue).toBe(searchParams.addressFieldValue);
             expect(patientResource.search).toHaveBeenCalled();
             expect(patientResource.search.calls.mostRecent().args[0]).toBe(searchParams.name);
-            expect(patientResource.search.calls.mostRecent().args[1]).toBe(searchParams.village);
+            expect(patientResource.search.calls.mostRecent().args[1]).toBe(scope.searchConfig.field);
+            expect(patientResource.search.calls.mostRecent().args[2]).toBe(searchParams.addressFieldValue);
             expect(searchPromise.success).toHaveBeenCalled();
         });
 
@@ -160,18 +162,18 @@ describe('SearchPatientController', function () {
             scope.searchParameters.name = "Ram Singh";
             spyOn(location, 'search');
 
-            scope.searchByVillageAndNameAndLocalName();
+            scope.searchByAddressFieldAndNameAndLocalName();
 
             expect(location.search).toHaveBeenCalledWith({'name': "Ram Singh"});
         });
 
         it("should go to search page with village", function () {
-            scope.searchParameters.village = "Bilaspur";
+            scope.searchParameters.addressFieldValue = "Bilaspur";
             spyOn(location, 'search');
 
-            scope.searchByVillageAndNameAndLocalName();
+            scope.searchByAddressFieldAndNameAndLocalName();
 
-            expect(location.search).toHaveBeenCalledWith({'village': "Bilaspur"});
+            expect(location.search).toHaveBeenCalledWith({'addressFieldValue': "Bilaspur"});
         });
 
         it("should go to search page with localName if showLocalNameSearch has been set", function () {
@@ -179,7 +181,7 @@ describe('SearchPatientController', function () {
             scope.showLocalNameSearch = true;
             spyOn(location, 'search');
 
-            scope.searchByVillageAndNameAndLocalName();
+            scope.searchByAddressFieldAndNameAndLocalName();
 
             expect(location.search).toHaveBeenCalledWith({'localName': "localName"});
         });
@@ -190,10 +192,10 @@ describe('SearchPatientController', function () {
             scope.searchParameters.identifierPrefix = {};
             scope.searchParameters.identifierPrefix.prefix = "GAN";
             scope.searchParameters.registrationNumber = "20001";
-
+            var defaultSearchAddressField = "city_village";
             scope.searchById();
 
-            expect(patientResource.search).toHaveBeenCalledWith("GAN20001");
+            expect(patientResource.search).toHaveBeenCalledWith("GAN20001", defaultSearchAddressField);
         });
 
         it('should show the spinner while searching', function () {

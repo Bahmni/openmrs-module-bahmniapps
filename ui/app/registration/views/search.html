@@ -17,7 +17,7 @@
             </form>
         </article>
         <article class="search-seperator-r left">
-            <form name="searchByNameForm" ng-submit="searchByVillageAndNameAndLocalName()" class="simple-form-ui" >
+            <form name="searchByNameForm" ng-submit="searchByAddressFieldAndNameAndLocalName()" class="simple-form-ui" >
 
                 <article class="left">
                     <label for="name"><strong>Name</strong></label>
@@ -28,8 +28,8 @@
                     <input type="text" id="localName" ng-model="searchParameters.localName" placeholder="{{localNameSearchPlaceholder}}">
                 </article>
                 <article class="left">
-                    <label for="name"><strong>{{villageAttribute.name}}</strong></label>
-                    <input type="text" id="village" ng-model="searchParameters.village" placeholder="Enter {{villageAttribute.name}} name">
+                    <label for="name"><strong>{{searchConfig.name}}</strong></label>
+                    <input type="text" id="addressFieldValue" ng-model="searchParameters.addressFieldValue" placeholder="Enter {{searchConfig.name}} name">
                 </article>
                 <article class="left">
                     <div class="reg-srch-btn">
@@ -59,7 +59,7 @@
                 <th ng-if="localNameAttributes"><strong>{{localNameSearchLabel}}</strong></th>
                 <th><strong>Gender</strong></th>
                 <th><strong>Age</strong></th>
-                <th><strong>Village</strong></th>
+                <th><strong>{{searchConfig.name}}</strong></th>
                 <th><strong>Registration Date</strong></th>
                 <th class="edit-col"></th>
             </tr>
@@ -72,7 +72,7 @@
                 <td ng-if="localNameAttributes">{{result.localNameDisplay}}</td>
                 <td>{{result.gender}}</td>
                 <td>{{result.age}}</td>
-                <td>{{result.cityVillage}}</td>
+                <td>{{result.addressFieldValue}}</td>
                 <td>{{result.dateCreated | bahmniDate}}</td>
                 <td class="edit-col">
                     <div split-button options="searchActions"

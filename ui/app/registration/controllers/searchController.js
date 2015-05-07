@@ -6,17 +6,25 @@ angular.module('bahmni.registration')
             $scope.identifierSources = $rootScope.patientConfiguration.identifierSources;
             $scope.results = [];
             var searching = false;
-            $scope.villageAttribute = _.find($rootScope.addressLevels, function(addressLevel){
-                return addressLevel.addressField === "cityVillage";
-            });
+            var defaultSearchConfig= {
+                name: "Village",
+                field: "city_village"
+            };
+            $scope.searchConfig = appService.getAppDescriptor().getConfigValue("search") || defaultSearchConfig;
+
+            if(!$scope.searchConfig.name) throw "Search Config name is not present!";
+
+            if(!$scope.searchConfig.field) throw "Search Config field is not present!";
+
+
             var hasSearchParameters = function () {
                 return $scope.searchParameters.name.trim().length > 0
-                    || $scope.searchParameters.village.trim().length > 0
+                    || $scope.searchParameters.addressFieldValue.trim().length > 0
                     || $scope.searchParameters.localName.trim().length > 0;
             };
 
             var searchBasedOnQueryParameters = function (offset) {
-                $scope.searchParameters.village = $location.search().village || '';
+                $scope.searchParameters.addressFieldValue = $location.search().addressFieldValue || '';
                 $scope.searchParameters.name = $location.search().name || '';
                 $scope.searchParameters.localName = $location.search().localName || '';
                 var identifierPrefix = $location.search().identifierPrefix;
@@ -33,7 +41,7 @@ angular.module('bahmni.registration')
                 $scope.searchParameters.registrationNumber = $location.search().registrationNumber || "";
                 if (hasSearchParameters()) {
                     var searchPromise = patientService.search(
-                        $scope.searchParameters.name, $scope.searchParameters.village, $scope.searchParameters.localName, offset, $scope.localNameAttributes);
+                        $scope.searchParameters.name, $scope.searchConfig.field, $scope.searchParameters.addressFieldValue, $scope.searchParameters.localName, offset, $scope.localNameAttributes);
                     searching = true;
                     searchPromise['finally'](function () {
                         searching = false;
@@ -100,7 +108,7 @@ angular.module('bahmni.registration')
             initialize();
 
             $scope.disableSearchButton = function () {
-                return !$scope.searchParameters.name && !$scope.searchParameters.village && !$scope.searchParameters.localName;
+                return !$scope.searchParameters.name && !$scope.searchParameters.addressFieldValue && !$scope.searchParameters.localName;
             };
 
             $scope.$watch(function () {
@@ -115,7 +123,7 @@ angular.module('bahmni.registration')
                 var patientIdentifier = $scope.searchParameters.identifierPrefix.prefix + $scope.searchParameters.registrationNumber;
                 preferences.identifierPrefix = $scope.searchParameters.identifierPrefix.prefix;
                 $location.search({identifierPrefix: $scope.searchParameters.identifierPrefix.prefix, registrationNumber: $scope.searchParameters.registrationNumber});
-                var searchPromise = patientService.search(patientIdentifier).success(function (data) {
+                var searchPromise = patientService.search(patientIdentifier, $scope.searchConfig.field).success(function (data) {
                     mapLocalName(data);
                     if (data.pageOfResults.length === 1) {
                         var patient = data.pageOfResults[0];
@@ -134,14 +142,14 @@ angular.module('bahmni.registration')
                 return searching && !$scope.noMoreResultsPresent;
             };
 
-            $scope.searchByVillageAndNameAndLocalName = function () {
+            $scope.searchByAddressFieldAndNameAndLocalName = function () {
                 var queryParams = {};
                  $scope.results = [];
                 if ($scope.searchParameters.name) {
                     queryParams.name = $scope.searchParameters.name;
                 }
-                if ($scope.searchParameters.village) {
-                    queryParams.village = $scope.searchParameters.village;
+                if ($scope.searchParameters.addressFieldValue) {
+                    queryParams.addressFieldValue = $scope.searchParameters.addressFieldValue;
                 }
                 if ($scope.searchParameters.localName && $scope.showLocalNameSearch) {
                     queryParams.localName = $scope.searchParameters.localName;
