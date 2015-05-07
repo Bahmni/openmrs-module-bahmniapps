@@ -72,7 +72,7 @@ angular.module('bahmni.registration')
 
 
             var createVisit = function(patientProfileData, forwardUrl) {
-                $scope.visitControl.createVisit(patientProfileData.patient.uuid, createEncounterObject()).success(function() {
+                spinner.forPromise($scope.visitControl.createVisit(patientProfileData.patient.uuid, createEncounterObject()).success(function() {
                     if(forwardUrl) {
                         $window.location.href = forwardUrl;
                     } else {
@@ -80,7 +80,7 @@ angular.module('bahmni.registration')
                     }
                 }).error(function() {
                     $state.go('patient.edit', {patientUuid: $scope.patient.uuid});
-                });
+                }));
             };
 
             var createEncounterObject = function() {
