@@ -7,6 +7,15 @@ angular.module('bahmni.common.obs')
 
             $scope.print = $rootScope.isBeingPrinted || false;
 
+            $scope.showConceptName = function(obs) {
+                if (obs.isImageConcept()) {
+                    if ($scope.print) {
+                        return false;
+                    }
+                }
+                return true;
+            };
+
             $scope.dateString = function (observation) {
                 var dateFormat = "";
                 var filterName;
