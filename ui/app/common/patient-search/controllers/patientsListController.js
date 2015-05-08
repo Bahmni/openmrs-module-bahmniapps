@@ -52,13 +52,17 @@ angular.module('bahmni.common.patientSearch')
             return [];
         };
 
+        $scope.isHeadingOfIdentifier = function(heading){
+            return _.contains(Bahmni.Common.PatientSearch.Constants.identifierHeading,heading);
+
+        };
+
         var mapExtensionToSearchType = function(appExtn) {
             return {
                     name: appExtn.label,
                     display: appExtn.extensionParams.display,
                     handler: appExtn.extensionParams.searchHandler,
                     forwardUrl: appExtn.extensionParams.forwardUrl,
-                    forwardButtonTitle:appExtn.extensionParams.forwardButtonTitle || "View",
                     id: appExtn.id,
                     params:appExtn.extensionParams.searchParams,
                     refreshTime: appExtn.extensionParams.refreshTime || 0,
