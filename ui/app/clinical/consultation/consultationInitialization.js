@@ -1,17 +1,18 @@
 'use strict';
 
 angular.module('bahmni.clinical').factory('consultationInitialization',
-    ['diagnosisService', '$rootScope', 'encounterService', 'sessionService', 'configurations',
-        function (diagnosisService, $rootScope, encounterService, sessionService, configurations) {
+    ['diagnosisService', '$rootScope', 'encounterService', 'sessionService', 'configurations', '$bahmniCookieStore',
+        function (diagnosisService, $rootScope, encounterService, sessionService, configurations, $bahmniCookieStore) {
             return function (patientUuid) {
 
                 var getActiveEncounter = function () {
                     var currentProviderUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
+                    var providerData = $bahmniCookieStore.get(Bahmni.Common.Constants.grantProviderAccessDataCookieName);
                     var consultationMapper = new Bahmni.ConsultationMapper(configurations.dosageFrequencyConfig(), configurations.dosageInstructionConfig(),
                         configurations.consultationNoteConcept(), configurations.labOrderNotesConcept());
                     return encounterService.activeEncounter({
                         patientUuid: patientUuid,
-                        providerUuid: currentProviderUuid,
+                        providerUuid: providerData ? providerData.uuid : currentProviderUuid,
                         includeAll: Bahmni.Common.Constants.includeAllObservations,
                         locationUuid: sessionService.getLoginLocationUuid()
                     }).then(function (encounterTransactionResponse) {

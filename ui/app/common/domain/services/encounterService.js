@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('encounterService', ['$http', '$q', '$rootScope', 'configurations',
-        function ($http, $q, $rootScope, configurations) {
+    .service('encounterService', ['$http', '$q', '$rootScope', 'configurations', '$bahmniCookieStore',
+        function ($http, $q, $rootScope, configurations, $bahmniCookieStore) {
 
     this.buildEncounter = function(encounter){
         encounter.observations = encounter.observations || [];
@@ -10,9 +10,13 @@ angular.module('bahmni.common.domain')
             stripExtraConceptInfo(obs);
         });
 
+        var providerData = $bahmniCookieStore.get(Bahmni.Common.Constants.grantProviderAccessDataCookieName);
         encounter.providers = encounter.providers || [];
-        if ($rootScope.currentProvider && $rootScope.currentProvider.uuid) {
-            encounter.providers.push( { "uuid" : $rootScope.currentProvider.uuid } );
+
+        if(providerData && providerData.uuid){
+            encounter.providers.push( {"uuid" : providerData.uuid});
+        }else if ($rootScope.currentProvider && $rootScope.currentProvider.uuid) {
+            encounter.providers.push( {"uuid" : $rootScope.currentProvider.uuid });
         }
         return encounter;
     };

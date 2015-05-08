@@ -53,5 +53,12 @@
                 <label class="retro-date-widget disabled-date">{{$parent.retrospectiveEntry.encounterDate| bahmniDate}}</label>
             </li>
         </ul>
+        <ul show-if-privilege="{{encounterProviderPrivilege}}" ng-if="isValidProvider()">
+            <li>
+                <label class="retro-date-widget disabled-date">- On behalf of</label>
+                <br>
+                <label class="retro-date-widget disabled-date">{{encounterProvider.value}}</label>
+            </li>
+        </ul>
     </aside>
 </div>

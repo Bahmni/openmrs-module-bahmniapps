@@ -1,9 +1,28 @@
 <div class="opd-header-wrapper">
     <div class="opd-header-top">
         <header>
-            <input show-if-privilege="{{retrospectivePrivilege}}" class="retro-date-widget" type="date" ng-model="$parent.retrospectiveEntry.encounterDate" max="{{today}}"/>
-            <label show-if-privilege="{{retrospectivePrivilege}}" for="retro-date-widget" class="retro-date-widget" >Enter data for</label>
             <bm-back-links></bm-back-links>
+            <div bm-pop-over >
+                <div class="retro-date-widget-header">
+                    <button bm-pop-over-trigger>Test ...</button>
+                </div>
+                <div class="retro-date-widget-panel" bm-pop-over-target>
+                    <input show-if-privilege="{{retrospectivePrivilege}}" class="retro-date-widget" type="date" ng-model="date" max="{{today}}"/>
+                    <label show-if-privilege="{{retrospectivePrivilege}}" for="retro-date-widget" class="retro-date-widget" >Enter data for</label>
+                    <div show-if-privilege="{{grantProviderAccess}}">
+                        <input type="text" class="retro-date-widget" ng-model="encounterProvider.value"
+                               bahmni-autocomplete source="getProviderList()" response-map="getProviderDataResults" on-select="providerSelected()" ng-change="clearProvider(encounterProvider.value)"/>
+                        <label class="retro-date-widget">Enter on behalf</label>
+                    </div>
+                    <select ng-model="selectedLocationUuid">
+                        <option ng-repeat="location in locations" ng-selected="isCurrentLocation(location)" value="{{location.uuid}}">
+                            {{location.display}}
+                        </option>
+                    </select>
+                    <button id="retro-widget-button" ng-click="windowReload()">Ok</button>
+                </div>
+            </div>
+
             <div ui-view="additional-header"></div>
         </header>
     </div>

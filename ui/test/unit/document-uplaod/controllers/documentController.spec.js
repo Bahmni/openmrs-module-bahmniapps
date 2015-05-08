@@ -124,15 +124,26 @@ describe("DocumentController", function () {
 
     beforeEach(inject(function ($rootScope) {
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
-        encounterService = jasmine.createSpyObj('encounterService', ['search']);
         encounterConfig = jasmine.createSpyObj('encounterConfig', ['getEncounterTypeUuid']);
         appConfig = jasmine.createSpyObj('encounterConfig', ['encounterType']);
         visitDocumentService = jasmine.createSpyObj('visitDocumentService', ['save']);
         sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
+        encounterService = jasmine.createSpyObj('encounterService',['activeEncounter']);
+
     }));
 
+    var mockEncounterService = function (data) {
+        encounterService.activeEncounter.and.callFake(function () {
+            return {
+                then: function (callback) {
+                    return callback({data: data})
+                }
+            }
+        });
+    };
 
     var setUp = function () {
+        mockEncounterService([]);
         inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
 
@@ -153,13 +164,13 @@ describe("DocumentController", function () {
                     uuid: "provider1 uuid"
                 }
             };
-
             documentController = $controller('DocumentController', {
                 $scope: scope,
                 spinner: spinner,
                 $rootScope: scope,
                 $stateParams: stateParams,
                 visitDocumentService: visitDocumentService,
+                encounterService: encounterService,
                 sessionService: sessionService
             });
             scope.visits = [visit1, visit2];

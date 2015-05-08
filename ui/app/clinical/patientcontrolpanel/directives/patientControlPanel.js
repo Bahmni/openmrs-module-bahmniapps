@@ -1,14 +1,26 @@
 'use strict';
 
 angular.module('bahmni.common.patient')
-.directive('patientControlPanel', ['$q', '$rootScope', '$stateParams', '$state', 'contextChangeHandler', 'encounterService', 'configurations', 'clinicalAppConfigService',
-        function($q, $rootScope, $stateParams, $state, contextChangeHandler, encounterService, configurations, clinicalAppConfigService) {
+.directive('patientControlPanel', ['$q', '$rootScope', '$stateParams', '$state', 'contextChangeHandler', 'encounterService', 'configurations', 'clinicalAppConfigService', '$bahmniCookieStore',
+        function($q, $rootScope, $stateParams, $state, contextChangeHandler, encounterService, configurations, clinicalAppConfigService, $bahmniCookieStore) {
             
     var controller = function ($scope) {
         $scope.activeVisit = $scope.visitHistory.activeVisit;
 
         var DateUtil = Bahmni.Common.Util.DateUtil;
+        var retrieveProviderCookieData = function() {
+            return $bahmniCookieStore.get(Bahmni.Common.Constants.grantProviderAccessDataCookieName);
+        };
+
+        $scope.encounterProvider = retrieveProviderCookieData();
+
+        $scope.isValidProvider = function() {
+            if(retrieveProviderCookieData())
+                return true;
+        };
+
         $scope.retrospectivePrivilege = Bahmni.Common.Constants.retrospectivePrivilege;
+        $scope.encounterProviderPrivilege = Bahmni.Common.Constants.grantProviderAccess;
 
         $scope.today = DateUtil.getDateWithoutTime(DateUtil.now());
 

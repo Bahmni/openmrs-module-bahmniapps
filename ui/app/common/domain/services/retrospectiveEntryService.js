@@ -30,16 +30,5 @@ angular.module('bahmni.common.domain')
 
         self.getRetrospectiveEntry();
 
-        // Keep service in sync with encounter date changes on the UI.
-        $rootScope.$watch(Bahmni.Common.Constants.rootScopeRetrospectiveEntry, function () {
-            $bahmniCookieStore.remove(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
-            $bahmniCookieStore.put(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName, $rootScope.retrospectiveEntry.encounterDate, {path: '/', expires: 1});
-        });
-
-        // on fresh login remove the encounter date cookie. User will need to choose a past encounter date again for retrospective entry after fresh login.
-//        $rootScope.$on('event:auth-loggedin', function() {
-//            $bahmniCookieStore.remove(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
-//        });
-
     }]
 );

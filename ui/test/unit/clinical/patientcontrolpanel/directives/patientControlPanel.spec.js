@@ -11,6 +11,7 @@ describe('patientControlPanelTest', function () {
         _encounterService,
         deferred,
         _provide,
+        $bahmniCookieStore,
         simpleHtml = '<patient-control-panel patient="patient" visit-history="visitHistory" visit="visit" show="showControlPanel"/>';
 
     beforeEach(module('bahmni.common.patient','bahmni.clinical','bahmni.common.appFramework','bahmni.common.util','bahmni.common.uiHelper'));
@@ -30,9 +31,12 @@ describe('patientControlPanelTest', function () {
             return deferred.promise;
         });
 
+        $bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore',['get']);
+
         _encounterService.then.and.returnValue({data: {results: []}});
         $provide.value('configurations',_configurations);
         $provide.value('encounterService',_encounterService);
+        $provide.value('$bahmniCookieStore', $bahmniCookieStore);
     }));
 
     beforeEach(inject(function ($compile, $httpBackend, $rootScope,$q) {
