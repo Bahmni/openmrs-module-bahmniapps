@@ -133,6 +133,13 @@ describe('Lab Order', function () {
         expect(labOrder.orderable instanceof Bahmni.Clinical.Panel).toBe(true);
     });
 
+    it("should be panel if concept is a set", function () {
+        var order = newOrder();
+        var labOrder = Bahmni.Clinical.LabOrder.create(order);
+        expect(labOrder.concept.name).toBe('Asitic Fluid');
+        expect(labOrder.isPanel()).toBeTruthy();
+    });
+
     it("should create a Result from a list of observations", function() {
         var order = newOrder();
         var observations = order.observations[0].groupMembers[0].groupMembers[0].groupMembers;
