@@ -28,7 +28,7 @@
                                ng-change="patient.generateIdentifier()" ng-show="hasOldIdentifier" focus-on="hasOldIdentifier">
                         </span>
                         <span class="input-label-inline" ng-show="showEnterID">
-                            <input type="checkbox" id="hasOldIdentifier" ng-model="hasOldIdentifier"
+                            <input type="checkbox" id="hasOldIdentifier" ng-model="$parent.hasOldIdentifier"
                                ng-change="patient.clearRegistrationNumber()">
                             <label for="hasOldIdentifier" class="control-label">Enter ID</label>
                         </span>

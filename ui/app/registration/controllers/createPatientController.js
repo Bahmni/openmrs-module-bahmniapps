@@ -20,11 +20,16 @@ angular.module('bahmni.registration')
 
             $scope.create = function () {
                 setPreferences();
-                spinner.forPromise(patientService.generateIdentifier($scope.patient)
-                    .then(function (response) {
-                        $scope.patient.identifier = response.data;
-                        patientService.create($scope.patient).success(successCallback);
-                    }));
+                if (!$scope.hasOldIdentifier) {
+                    spinner.forPromise(patientService.generateIdentifier($scope.patient)
+                        .then(function (response) {
+                            $scope.patient.identifier = response.data;
+                            patientService.create($scope.patient).success(successCallback);
+                        }));
+                }
+                else{
+                    patientService.create($scope.patient).success(successCallback);
+                }
             };
 
             var setPreferences = function () {
@@ -40,7 +45,7 @@ angular.module('bahmni.registration')
                 $scope.actions.followUpAction(patientProfileData);
             };
 
-            $scope.afterSave = function() {
+            $scope.afterSave = function () {
                 messagingService.showMessage("info", "Saved");
                 $state.go("patient.edit", {patientUuid: $scope.patient.uuid});
             };
