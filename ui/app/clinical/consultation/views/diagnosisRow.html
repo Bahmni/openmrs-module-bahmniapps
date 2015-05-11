@@ -37,7 +37,7 @@
 
     <span class="message">Changed!</span>
 
-    <button id="deleteDiagnosis-{{$index}}" ng-confirm-click="deleteDiagnosis(diagnosis)" class="small-btn row-remover remove-diagnosis" confirm-message="Are you sure you want to remove this diagnosis?"><span class="icon-remove"></span></button>
+    <button id="deleteDiagnosis-{{$index}}" ng-confirm-click="deleteDiagnosis(diagnosis)" ng-if="canDeleteDiagnosis" class="small-btn row-remover remove-diagnosis" confirm-message="Are you sure you want to remove this diagnosis?"><span class="icon-remove"></span></button>
 
     <button class="toggle fr" toggle="diagnosis.showComments" ng-class="{'has-notes': diagnosis.comments}">
         <i class="icon-edit"></i>

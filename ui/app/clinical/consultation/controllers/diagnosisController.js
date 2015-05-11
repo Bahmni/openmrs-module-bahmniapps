@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DiagnosisController', ['$scope', 'diagnosisService', 'contextChangeHandler', 'spinner',
-        function ($scope, diagnosisService, contextChangeHandler, spinner) {
+    .controller('DiagnosisController', ['$scope', '$rootScope', 'diagnosisService', 'contextChangeHandler', 'spinner',
+        function ($scope, $rootScope, diagnosisService, contextChangeHandler, spinner) {
 
             $scope.placeholder = "Add Diagnosis";
             $scope.hasAnswers = false;
@@ -39,8 +39,15 @@ angular.module('bahmni.clinical')
                 $scope.newlyAddedDiagnoses.push(diagnosis);
             };
 
+             var findPrivilege = function(privilegeName) {
+                return _.find($rootScope.currentUser.privileges, function(privilege) {
+                    return privilegeName === privilege.name;
+                });
+            };
+
             var init = function () {
                 $scope.newlyAddedDiagnoses = $scope.consultation.newlyAddedDiagnoses;
+                $scope.canDeleteDiagnosis = findPrivilege(Bahmni.Common.Constants.deleteDiagnosisPrivilege);
                 addPlaceHolderDiagnosis();
             };
 
@@ -125,7 +132,6 @@ angular.module('bahmni.clinical')
                 });
 
             };
-
 
             $scope.deleteDiagnosis = function (diagnosis) {
                 var obsUUid = diagnosis.existingObs != null ? diagnosis.existingObs : diagnosis.previousObs;

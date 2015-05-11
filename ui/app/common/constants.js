@@ -115,6 +115,7 @@ Bahmni.Common = Bahmni.Common || {};
         reportsUrl: "/bahmnireports/report",
         diagnosisStatuses : {"RULED OUT" : "Ruled Out Diagnosis"},
         registartionConsultationPrivilege:'app:common:registration_consultation_link',
-        closeVisitPrivilege:'app:common:closeVisit'
+        closeVisitPrivilege:'app:common:closeVisit',
+        deleteDiagnosisPrivilege:'app:clinical:deleteDiagnosis'
     };
 })();
