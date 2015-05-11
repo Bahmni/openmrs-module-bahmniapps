@@ -2,23 +2,30 @@
     <div class="opd-header-top">
         <header>
             <bm-back-links></bm-back-links>
-            <div bm-pop-over >
+            <div class="retro-date-widget-wrapper" bm-pop-over>
                 <div class="retro-date-widget-header">
                     <button bm-pop-over-trigger>Test ...</button>
                 </div>
                 <div class="retro-date-widget-panel" bm-pop-over-target>
-                    <input show-if-privilege="{{retrospectivePrivilege}}" class="retro-date-widget" type="date" ng-model="date" max="{{today}}"/>
-                    <label show-if-privilege="{{retrospectivePrivilege}}" for="retro-date-widget" class="retro-date-widget" >Enter data for</label>
-                    <div show-if-privilege="{{grantProviderAccess}}">
-                        <input type="text" class="retro-date-widget" ng-model="encounterProvider.value"
-                               bahmni-autocomplete source="getProviderList()" response-map="getProviderDataResults" on-select="providerSelected()" ng-change="clearProvider(encounterProvider.value)"/>
-                        <label class="retro-date-widget">Enter on behalf</label>
-                    </div>
-                    <select ng-model="selectedLocationUuid">
+                    <div class="input-container">
+                    <label class="retro-date-label">Location</label>
+                        <select ng-model="selectedLocationUuid">
                         <option ng-repeat="location in locations" ng-selected="isCurrentLocation(location)" value="{{location.uuid}}">
                             {{location.display}}
                         </option>
                     </select>
+                    </div>
+                    <div show-if-privilege="{{grantProviderAccess}}" style="display:block !important" class="input-container">
+                        <label class="retro-date-label">Enter on behalf</label>
+                        <input type="text" class="retro-date-widget" ng-model="encounterProvider.value"
+                               bahmni-autocomplete source="getProviderList()" response-map="getProviderDataResults" on-select="providerSelected()" ng-change="clearProvider(encounterProvider.value)"/>
+                    </div>
+                    <div class="input-container">
+                        <label show-if-privilege="{{retrospectivePrivilege}}" for="retro-date-label" class="retro-date-label" >Enter data for</label>
+                        <input show-if-privilege="{{retrospectivePrivilege}}" class="retro-date-widget" type="date" ng-model="date" max="{{today}}"/>
+                    </div>
+                    
+                    
                     <button id="retro-widget-button" ng-click="windowReload()">Ok</button>
                 </div>
             </div>

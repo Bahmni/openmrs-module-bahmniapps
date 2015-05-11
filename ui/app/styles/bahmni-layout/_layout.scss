@@ -52,6 +52,7 @@ body {
             }
             ul {
                 display: inline-block;
+                float: left;
                 &.user-info{
                     float:right;
                 }
