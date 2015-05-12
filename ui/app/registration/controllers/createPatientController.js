@@ -34,7 +34,6 @@ angular.module('bahmni.registration')
 
             var setPreferences = function () {
                 preferences.identifierPrefix = $scope.patient.identifierPrefix.prefix;
-                preferences.hasOldIdentifier = $scope.hasOldIdentifier;
             };
 
             var successCallback = function (patientProfileData) {
