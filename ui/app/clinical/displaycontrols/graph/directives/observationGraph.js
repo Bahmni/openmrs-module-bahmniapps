@@ -37,15 +37,17 @@ angular.module('bahmni.clinical').directive('observationGraph', ['observationsSe
             }
 
             $q.all(promises).then(function(results) {
-                if(results[0].data.results && results[0].data.results.length > 0) {
-                    config.lowNormal = results[0].data.results[0].lowNormal;
-                    config.hiNormal = results[0].data.results[0].hiNormal;
+                var conceptData = results[0].data;
+                var observations = results[1];
+                var patient = results[2];
+
+                if(observations.data.length == 0) return;
+
+                if(conceptData.results && conceptData.results.length > 0) {
+                    config.lowNormal = conceptData.results[0].lowNormal;
+                    config.hiNormal = conceptData.results[0].hiNormal;
                 }
-
-                if(results[1].data.length == 0) return;
-
-                var model = Bahmni.Clinical.ObservationGraph.create(results[1].data, results[2] && results[2].data.person, config);
-
+                var model = Bahmni.Clinical.ObservationGraph.create(observations.data, patient && patient.data.person, config);
                 generateGraph($scope, element, config, model);
             });
         };

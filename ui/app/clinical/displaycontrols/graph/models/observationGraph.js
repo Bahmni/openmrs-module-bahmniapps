@@ -7,31 +7,26 @@
         angular.extend(this, model);
     };
 
-    var buildObservationGraphModel = function (config, obs, observationGraphModel, xAxisValues) {
+    var createObservationPoint = function(config, obs, xAxisValues) {
         var observation = {};
         observation[config.xAxisConcept] = xAxisValues;
         observation[obs.concept.name] = obs.value;
-        observation["units"] = obs.concept.units;
-        observationGraphModel.push(observation);
+        return observation;
     };
 
-    var entryMatchingConcept = function (graphModel, obs) {
+    var filterConcept = function (graphModel, obs) {
         return _(graphModel).find(function (item) {
             return item.name === obs.concept.name;
-        }).values;
+        });
     };
 
     Bahmni.Clinical.ObservationGraph.create = function (observations, person, config) {
-        if (observations.length == 0) return;
-
         var yAxisObservations = _.filter(observations, function (obs) {
             return obs.concept.name !== config.xAxisConcept;
         });
-
         var xAxisObservations = _.filter(observations, function (obs) {
             return obs.concept.name === config.xAxisConcept;
         });
-
         var observationGraphModel = _(observations).uniq(function (item) {
             return item.concept.name + item.concept.units;
         }).map(function (item) {
@@ -47,30 +42,25 @@
             })
         });
 
-        if (config.displayForObservationDateTime()) {
-            config.type = "timeseries";
-            _.forEach(yAxisObservations, function (obs) {
-                buildObservationGraphModel(config, obs, entryMatchingConcept(sortedObsGraphModel, obs),
-                    Bahmni.Common.Util.DateUtil.parseDatetime(obs.observationDateTime).toDate());
-            });
-        } else if (config.displayForAge()) {
-            config.unit = " (years)";
-            _.forEach(yAxisObservations, function (obs) {
-                var age = Bahmni.Common.Util.AgeUtil.fromBirthDateTillReferenceDate(person.birthdate, obs.observationDateTime);
-                var ageValue = age.years + "." + age.months;
-                buildObservationGraphModel(config, obs, entryMatchingConcept(sortedObsGraphModel, obs), ageValue);
-            });
-        } else {
-            config.type = "indexed";
-            _.each(yAxisObservations, function (yAxisObs) {
-                _.each(xAxisObservations, function (xAxisObs) {
-                    if (yAxisObs.observationDateTime === xAxisObs.observationDateTime) {
-                        buildObservationGraphModel(config, yAxisObs, entryMatchingConcept(sortedObsGraphModel, yAxisObs), xAxisObs.value);
-                    }
-                })
-            });
-        }
-
+        _.forEach(yAxisObservations, function(yAxisObs) {
+            var xValue;
+            if(config.displayForObservationDateTime()) {
+                config.type = "timeseries";
+                xValue = Bahmni.Common.Util.DateUtil.parseDatetime(yAxisObs.observationDateTime).toDate();
+            } else if(config.displayForAge()) {
+                config.unit = " (years)";
+                var age = Bahmni.Common.Util.AgeUtil.fromBirthDateTillReferenceDate(person.birthdate, yAxisObs.observationDateTime);
+                xValue = age.years + "." + age.months;
+            } else {
+                config.type = "indexed";
+                xValue = _.find(xAxisObservations, function(xObs) {
+                    return yAxisObs.observationDateTime === xObs.observationDateTime;
+                }).value;
+            }
+            var concept = filterConcept(sortedObsGraphModel, yAxisObs);
+            var observationPoint = createObservationPoint(config, yAxisObs, xValue);
+            concept.values.push(observationPoint);
+        });
         return new Bahmni.Clinical.ObservationGraph(sortedObsGraphModel);
     };
 })();

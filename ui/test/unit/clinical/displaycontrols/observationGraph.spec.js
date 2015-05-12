@@ -117,7 +117,7 @@ describe("Observation Graph", function () {
         var graphModel = [{
             name: "Temperature",
             units: "Celcius",
-            values: [{observationDateTime: Bahmni.Common.Util.DateUtil.parseDatetime("2015-01-01").toDate(), Temperature: 45, units: "Celcius"}]
+            values: [{observationDateTime: Bahmni.Common.Util.DateUtil.parseDatetime("2015-01-01").toDate(), Temperature: 45}]
         }];
         var anyElement = null;
         expect(Bahmni.Graph.c3Chart).toHaveBeenCalledWith(anyElement, jasmine.any(Number),
@@ -151,7 +151,7 @@ describe("Observation Graph", function () {
         httpBackend.flush();
 
         expect(scope.graphId).not.toBeNull();
-        var graphModel = [{name: 'Height', units: "cm", values: [{age: '14.10', Height: 45, units: "cm"}]}];
+        var graphModel = [{name: 'Height', units: "cm", values: [{age: '14.10', Height: 45}]}];
         var anyElement = null;
         expect(Bahmni.Graph.c3Chart).toHaveBeenCalledWith(
             anyElement
@@ -187,7 +187,7 @@ describe("Observation Graph", function () {
         var graphModel = [{
             name: 'Height',
             units: 'cm',
-            values: [{Weight: 45, Height: 155, units: 'cm'}]
+            values: [{Weight: 45, Height: 155}]
         }];
         var anyElement = null;
         expect(Bahmni.Graph.c3Chart).toHaveBeenCalledWith(anyElement
@@ -229,13 +229,13 @@ describe("Observation Graph", function () {
         var graphModel = [
             {
                 name: "Height", units: "cm", values: [
-                {observationDateTime: toDate("2015-01-01"), "Height": 155, "units": "cm"},
-                {observationDateTime: toDate("2015-02-01"), "Height": 155, "units": "cm"}]
+                {observationDateTime: toDate("2015-01-01"), "Height": 155},
+                {observationDateTime: toDate("2015-02-01"), "Height": 155}]
             },
             {
                 name: "Weight", units: "kg", values: [
-                {observationDateTime: toDate("2015-01-01"), "Weight": 40, "units": "kg"},
-                {observationDateTime: toDate("2015-02-01"), "Weight": 45, "units": "kg"}]
+                {observationDateTime: toDate("2015-01-01"), "Weight": 40},
+                {observationDateTime: toDate("2015-02-01"), "Weight": 45}]
             }];
         var anyElement = null;
 

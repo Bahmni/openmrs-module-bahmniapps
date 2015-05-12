@@ -22,7 +22,6 @@ describe("Observation Graph Model", function () {
         expect(observationGraph[0].values.length).toBe(1);
         expect(observationGraph[0].values[0].observationDateTime).toBeDefined();
         expect(observationGraph[0].values[0].Temperature).toBe(45);
-        expect(observationGraph[0].values[0].units).toBe("Celsius");
 
         expect(observationGraph[0].values[0].age).toBeUndefined();
     });
@@ -48,7 +47,6 @@ describe("Observation Graph Model", function () {
         expect(observationGraph[0].values.length).toBe(1);
         expect(observationGraph[0].values[0].age).toBe('15.0');
         expect(observationGraph[0].values[0].Temperature).toBe(45);
-        expect(observationGraph[0].values[0].units).toBe("Celsius");
 
         expect(observationGraph[0].values[0].observationDateTime).toBeUndefined();
     });
@@ -78,7 +76,6 @@ describe("Observation Graph Model", function () {
 
         expect(observationGraph[0].values[0].observationDateTime).toBeDefined();
         expect(observationGraph[0].values[0].Temperature).toBe(45);
-        expect(observationGraph[0].values[0].units).toBe("Celsius");
         expect(observationGraph[0].values[0].age).toBeUndefined();
 
         expect(observationGraph[1].name).toBe("Weight");
@@ -87,12 +84,6 @@ describe("Observation Graph Model", function () {
 
         expect(observationGraph[1].values[0].observationDateTime).toBeDefined();
         expect(observationGraph[1].values[0].Weight).toBe(80);
-        expect(observationGraph[1].values[0].units).toBe("kg");
         expect(observationGraph[1].values[0].age).toBeUndefined();
-    });
-
-    it("the model should be undefined if the observationsValues is empty", function(){
-        var observationGraph = Bahmni.Clinical.ObservationGraph.create([], null, null);
-        expect(observationGraph).toBeUndefined();
     });
 });
