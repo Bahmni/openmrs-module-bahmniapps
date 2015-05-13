@@ -7,15 +7,15 @@
         ng-dialog-class="ngdialog-theme-flat ngdialog-theme-custom"
         class="section-title has-link">
             <span class="title-link"> {{title}} </span>
-            <i class="icon-external-link"></i>
+            <i class="fa fa-external-link"></i>
         </h2>
     </div>
     <section class="block hierarchy">
         <ul class="form-field">
             <li ng-repeat="obsGroup in ::bahmniObservations">
                 <span class="tree-list-item row-click" ng-click="toggle(obsGroup)">
-                    <i class="icon-caret-right" ng-hide="obsGroup.isOpen"></i>
-                    <i class="icon-caret-down" ng-show="obsGroup.isOpen"></i>
+                    <i class="fa fa-caret-right" ng-hide="obsGroup.isOpen"></i>
+                    <i class="fa fa-caret-down" ng-show="obsGroup.isOpen"></i>
                     <span class="obs-date">
                         {{obsGroup.date | bahmniDateTime}}
                     </span>

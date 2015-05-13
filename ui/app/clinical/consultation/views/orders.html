@@ -5,7 +5,7 @@
         <ul class="selected-items">
             <li ng-repeat="order in consultation.testOrders">
                 <button type="button" class="grid-row-element" ng-class="{active: !order.voided}" ng-click="diSelect(order)">
-                    <i class="icon-ok"></i>{{::order.concept.name}}
+                    <i class="fa fa-ok"></i>{{::order.concept.name}}
                 </button>
             </li>
         </ul>
@@ -15,8 +15,8 @@
     <div ng-repeat="tab in tabs" class="{{tab.klass}}" ng-click="activateTab(tab)">
         <div class="order-grid">
             <h2 class="order-title">
-                <i class="icon-caret-right" ng-show="activeTab != tab"></i>
-                <i class="icon-caret-down ng-hide" ng-show="activeTab == tab"></i>
+                <i class="fa fa-caret-right" ng-show="activeTab != tab"></i>
+                <i class="fa fa-caret-down ng-hide" ng-show="activeTab == tab"></i>
                 {{tab.name}}
             </h2>
         </div>

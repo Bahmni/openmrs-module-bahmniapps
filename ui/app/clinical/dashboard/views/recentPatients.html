@@ -1,8 +1,8 @@
 <div bm-pop-over autoclose="true" class='recent-patients' ng-if="recentlyViewedPatients.length > 1">
     <div class="recent-patients-header">
-        <a class="prev-patient" ng-click="previous()" ng-class="{'disabled': !hasPrevious()}"><span><i class="icon-caret-left"></i></span></a>
+        <a class="prev-patient" ng-click="previous()" ng-class="{'disabled': !hasPrevious()}"><span><i class="fa fa-caret-left"></i></span></a>
         <button bm-pop-over-trigger>Switch To ...</button>
-        <a class="next-patient" ng-click="next()" ng-class="{'disabled': !hasNext()}"><span><i class="icon-caret-right"></i></span></a>
+        <a class="next-patient" ng-click="next()" ng-class="{'disabled': !hasNext()}"><span><i class="fa fa-caret-right"></i></span></a>
     </div>
     <div class="recent-patients-panel" bm-pop-over-target>
         <div ng-repeat="recent in recentlyViewedPatients track by $index" ng-class ="{'currentPatient': recent.uuid == patient.uuid}">

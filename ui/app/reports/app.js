@@ -19,7 +19,7 @@ angular
                 },
                 data: {
                     backLinks: [
-                        {label: "Home", url: "../home/", icon: "icon-home"}
+                        {label: "Home", url: "../home/", icon: "fa-home"}
                     ]
                 },
                 resolve: {

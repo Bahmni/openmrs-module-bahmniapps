@@ -249,13 +249,13 @@ a.back-btn, button.back-btn {
 }
 
 ul li a.back-btn, ul li a.back-btn:hover, button.back-btn, a.back-btn { 
-    padding: 5px 10px 4px 10px;
+    padding: 4px 10px 5px 10px;
     border: 1px solid darken($bahmniSecondaryColor, 15%);
     background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
 
     i {
         // padding: 0 5px 0 0;
-        // &.icon-circle-arrow-left {
+        // &.fa-circle-arrow-left {
         //   margin-left: -5px;
         // }
       font-size: 30px;
@@ -264,7 +264,7 @@ ul li a.back-btn, ul li a.back-btn:hover, button.back-btn, a.back-btn {
       padding: 0;
     }
     &.dashboard-link {
-      padding: 5px 10px 4px 5px;
+      padding: 4px 10px 5px 5px;
     }
     &.back-icon {
       padding-left: 30px;
@@ -362,15 +362,15 @@ input[type="submit"].secondary-button:hover  {
 /* icon button */
 .comment-toggle {
     padding: 5px;
-    .icon-file {
+    .fa-file-o {
         position: relative;
-        font-size: 21px;
+        font-size: 16px;
         color: $mediumGray;
-        .icon-plus-sign, .icon-ok-sign, .icon-plus, .icon-minus-sign {
+        .fa-plus-circle, .fa-ok-sign, .fa-plus, .fa-minus-circle {
             position: absolute;
-            right: 1px;
+            right: 2px;
             bottom: 2px;
-            font-size: 14px;
+            font-size: 10px;
 
             color: green;
             background: $white;
@@ -379,7 +379,7 @@ input[type="submit"].secondary-button:hover  {
         }
 
     }        
-    .icon-file-alt {
+    .fa-file-alt {
         font-size: 21px;
         color: orange;
     }
@@ -402,7 +402,7 @@ input[type="submit"].secondary-button:hover  {
     background: linear-gradient(to bottom, #fff, $lightGray) #ddd;
   }
 
-  .icon-star-empty {
+  .fa-star-empty {
     font-size: 20px;
     color: $mediumGray;
     position: relative;
@@ -413,11 +413,11 @@ input[type="submit"].secondary-button:hover  {
   input[type="checkbox"] { 
     position: absolute;
     opacity: 0;
-    & + .icon-pushpin {
+    & + .fa-pushpin {
       color: $mediumGray;
       cursor: pointer;
     }
-    &:checked + .icon-pushpin {
+    &:checked + .fa-pushpin {
       color: orange;
       text-shadow: 1px 1px 1px white;
     }
@@ -428,7 +428,7 @@ input[type="submit"].secondary-button:hover  {
 
 
 .refill-btn, .stop-drug-btn { padding: 10px!important; font-family: $primaryBoldFont; color: #666; }
-.refill-btn .icon-play { font-size: 1em!important; }
+.refill-btn .fa-play { font-size: 1em!important; }
 
 .btn-small {
     font-size: 14px; padding: 5px;

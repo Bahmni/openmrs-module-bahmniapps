@@ -145,7 +145,7 @@ h3 {
     .has-uploaded-file{
         .uploaded-file{
             display: inherit;
-            .icon-paper-clip{
+            .fa-paper-clip{
                 margin-top:0;
                 display: none;
             }
@@ -199,7 +199,7 @@ h3 {
         .tree-list-item {
             padding: 0 5px !important;
             background: none !important;
-            i[class^="icon-"] {
+            i[class^="fa-"] {
                 display: none;
             }
             .obs-date {
@@ -242,7 +242,7 @@ h3 {
         text-transform: uppercase;
         text-decoration: underline;
         background: none;
-        [class^="icon-"] {
+        [class^="fa-"] {
             display: none;
         }
         &.has-link {
@@ -281,7 +281,7 @@ h3 {
             border: 0;
             text-transform: uppercase;
             text-decoration: underline;
-            [class^="icon-"] {
+            [class^="fa-"] {
                 display: none;
             }
         }
@@ -297,7 +297,7 @@ h3 {
             border: none;
             padding: 0;
             background: none;
-            .toggle-btn, [class^="icon-"], [class*=" icon-"] {
+            .toggle-btn, [class^="fa-"], [class*=" fa-"] {
                 display: none;
             }
         }
@@ -521,7 +521,7 @@ h3 {
         font-size: 8pt;
         background: none;
         color: #999;
-        &.test-notes i[class^=icon-] {
+        &.test-notes i[class^=fa-] {
             padding: 0;
             display: none;
         }

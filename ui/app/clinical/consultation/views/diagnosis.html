@@ -43,13 +43,13 @@
                             <div class="col col5">
                                 <button type="button" class="small-btn row-remover" ng-click="removeObservation($index)"
                                         ng-show="diagnosis.codedAnswer.name">
-                                    <span class="icon-remove"></span>
+                                    <span class="fa fa-remove"></span>
                                 </button>
                                 <button type="button" toggle="diagnosis.showComments" class="comment-toggle fr" ng-class="{'has-notes': diagnosis.comments}">
-                                    <i class="icon-file" ng-hide="diagnosis.comments">
-                                        <i class="icon-plus-sign" ng-hide="diagnosis.showComments"></i><i class="icon-minus-sign" ng-show="diagnosis.showComments"></i>
+                                    <i class="fa fa-file-o" ng-hide="diagnosis.comments">
+                                        <i class="fa fa-plus-circle" ng-hide="diagnosis.showComments"></i><i class="fa fa-minus-sign" ng-show="diagnosis.showComments"></i>
                                     </i>
-                                    <i class="icon-file-alt" ng-show="diagnosis.comments"></i>
+                                    <i class="fa fa-file-alt" ng-show="diagnosis.comments"></i>
                                 </button>
                             </div>
 

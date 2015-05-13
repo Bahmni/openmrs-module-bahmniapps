@@ -19,7 +19,7 @@
 		            <span ng-repeat="selectable in selctedSelectables()" class="selectedNode"
 		                ng-class="{panel: selectable.set}">
 		                <span class="test-name">{{selectable.name}}</span>
-		                <button class="icon-remove icon-white" ng-click="selectable.unselect()"></button>
+		                <button class="fa fa-remove fa fa-white" ng-click="selectable.unselect()"></button>
 		            </span>
 		        </div>
 		    </fieldset>
@@ -31,7 +31,7 @@
 		<header>Panels</header>
 		<ul class="panels" >
 			<li ng-repeat="panel in filteredPanels | orderBy:'name'" ng-click="panel.toggle()" ng-class="{selected: panel.isSelected()}">
-				<span class="icon-ok"></span>
+				<span class="fa fa-ok"></span>
 				{{panel.name}}
 			</li>
 		</ul>
@@ -41,7 +41,7 @@
 			<header>{{category.name}}</header>
 			<ul class="tests">
 				<li ng-repeat="test in category.filteredTests | orderBy:'name'" ng-click="test.toggle()" ng-class="{'selected-via-panel': test.isSelectedFromOtherSource(), selected: test.isSelected()}">
-					<span class="icon-ok"></span>
+					<span class="fa fa-ok"></span>
 					{{test.name}}
 				</li>
 			</ul>

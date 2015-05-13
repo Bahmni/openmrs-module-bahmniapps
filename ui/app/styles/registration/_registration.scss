@@ -270,7 +270,7 @@ body pre {
           padding: 10px 10px 10px 5px;
           a.disabled {
             color: $lightGray;
-            .icon-user {
+            .fa-user {
                 color: $lightGray;
             }
           }
@@ -419,7 +419,7 @@ table{
     font-size: 12px;
     padding-left: 15px;
     padding-right: 15px;
-    .icon-ok {
+    .fa-ok {
         display: none;
         padding-top: 0;
         padding-bottom: 0;
@@ -430,7 +430,7 @@ table{
 .grid-row-element.active {
     color: $bahmniTertiaryColor;
     padding-left: 3px;
-    .icon-ok {
+    .fa-ok {
         display: inline-block;
     }
 }
@@ -865,11 +865,11 @@ label.local-name-reg {
 
 .comment-toggle {
     padding: 5px;
-    .icon-file {
+    .fa-file {
         position: relative;
         font-size: 21px;
         color: $mediumGray;
-        .icon-plus-sign, .icon-ok-sign, .icon-plus {
+        .fa-plus-sign, .fa-ok-sign, .fa-plus {
             position: absolute;
             right: 1px;
             bottom: 2px;
@@ -882,7 +882,7 @@ label.local-name-reg {
         }
 
     }        
-    .icon-file-alt {
+    .fa-file-alt {
         font-size: 21px;
         color: orange;
     }

@@ -73,6 +73,8 @@ input[file-upload] {
   border-radius: 5px;
   float: right;
   padding: 5px 10px;
+  margin-top: 7px;
+  margin-right: 6px;
   span {
     font-size: 20px;
     color: $clinicalRemoveBtn;
@@ -128,7 +130,7 @@ button.save-consultation {
     .text {
       display: inline-block;
     }
-    .icon-save {
+    .fa-save {
       display: none;
     }
   }
@@ -189,7 +191,7 @@ pre.chief-notes {
 /*home*/
 .bahmni-home {
     margin-bottom: 5px!important;
-    .icon-home {
+    .fa-home {
         color: $lightestGray;
         margin-right: 5px;
         font-size: 18px;

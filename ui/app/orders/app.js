@@ -11,7 +11,7 @@ angular
                 data: {
                     extensionPointId: 'org.bahmni.orders.search',
                     backLinks: [
-                        {label: "Home", url: "../home/", icon: "icon-home"}
+                        {label: "Home", url: "../home/", icon: "fa-home"}
                     ]
                 },
                 views: {

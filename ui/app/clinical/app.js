@@ -9,8 +9,8 @@ angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.c
 angular.module('consultation')
     .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/patient/search');
-        var patientSearchBackLink = {label: "", state: "patientsearch", accessKey: "p", id: "patients-link", icon: "icon-users"};
-        var homeBackLink = {label: "", url: "../home/", icon: "icon-home"};
+        var patientSearchBackLink = {label: "", state: "patientsearch", accessKey: "p", id: "patients-link", icon: "fa-users"};
+        var homeBackLink = {label: "", url: "../home/", icon: "fa-home"};
         $stateProvider
             .state('patientsearch', {
                 url: '/patient/search',

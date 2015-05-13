@@ -1,11 +1,13 @@
 button.toggle-patient {
   float: right;
   margin: 5px 0;
-  height: 30px;
-  background: $bahmniSecondaryColor url("../images/bars.png") no-repeat center center;
+  background: $bahmniSecondaryColor;
   border: 1px solid darken($bahmniSecondaryColor, 10%);
-  padding: 20px 25px 19px;
-  background-size: 50%;
+  padding: 7px 14px;
+  i{
+    padding: 0;
+    font-size: 20px;
+  }
 }
 
 button.toggle-patient:hover {
@@ -130,28 +132,28 @@ aside{
       cursor: default;
     }
     &.active {color: $lightestGray;}
-    .icon-star {color: $clinicalCurrentVist; display: none;}
-    &.active .icon-star {display: inline-block;}
+    .fa-star {color: $clinicalCurrentVist; display: none;}
+    &.active .fa-star {display: inline-block;}
   }
 }
-.btn-patient-doc .icon-file {
+.btn-patient-doc .fa-file-o {
   color: $lightestGray;
   margin-right: 5px;
   font-size: 18px;
 }
 .dashboard-btn {
-  [class^="icon-"],
-  [class*=" icon-"] {
+  [class^="fa-"],
+  [class*=" fa-"] {
     display: none;
     color: $lightestGray;
     margin-right: 5px;
     font-size: 18px;
   }
 }
-.btn-consultation {.icon-vitals-2 {display: inline-block;}}
-.btn-trends {.icon-bar-chart {display: inline-block;}}
-.btn-summary {.icon-th-large {display: inline-block;}}
-.btn-print {.icon-print {display: inline-block;}}
+.btn-consultation {.fa-vitals-2 {display: inline-block;}}
+.btn-trends {.fa-bar-chart {display: inline-block;}}
+.btn-summary {.fa-th-large {display: inline-block;}}
+.btn-print {.fa-print {display: inline-block;}}
 
 
 ul.visit-history::-webkit-scrollbar {

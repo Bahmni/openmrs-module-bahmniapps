@@ -30,8 +30,8 @@
                 <span class="toggle-btn" ng-show="!diagnosis.comments && config.showDetailsButton">
                     <button class="toggle fr" ng-click="toggle(diagnosis,false)"
                             ng-class="{'has-notes': diagnosis.comments}">
-                        <i class="icon-angle-down" ng-hide="diagnosis.showDetails"></i>
-                        <i class="icon-angle-up" ng-show="diagnosis.showDetails"></i>
+                        <i class="fa fa-angle-down" ng-hide="diagnosis.showDetails"></i>
+                        <i class="fa fa-angle-up" ng-show="diagnosis.showDetails"></i>
                     </button>
                 </span>
                     </span>
@@ -51,8 +51,8 @@
                     <span class="toggle-btn" ng-show="!diagnosis.comments && config.showDetailsButton">
                     <button class="toggle fr" ng-click="toggle(diagnosis,true)"
                             ng-class="{'has-notes': diagnosis.comments}">
-                        <i class="icon-angle-down" ng-hide="diagnosis.showLatestDetails"></i>
-                        <i class="icon-angle-up" ng-show="diagnosis.showLatestDetails"></i>
+                        <i class="fa fa-angle-down" ng-hide="diagnosis.showLatestDetails"></i>
+                        <i class="fa fa-angle-up" ng-show="diagnosis.showLatestDetails"></i>
                     </button>
                     </span>
                 </span>
@@ -60,7 +60,7 @@
         </tr>
         <tr ng-show="diagnosis.comments" ng-class="{'has-test-notes': diagnosis.comments}">
             <td class="notes test-notes" colspan="{{showLatestDiagnosis ==  'true' ? 3 : 2}}">
-                <i class="icon-comments left"></i>
+                <i class="fa fa-comments left"></i>
                 <pre id="diagnosisComments" class="left">{{diagnosis.comments}}</pre>
                 <div class="footer-note right">
                         <span class="provider">

@@ -18,14 +18,14 @@
 
     <td class="toggle-btn" ng-click="toggle()" ng-if="params.showDetailsButton && !drugOrder.additionalInstructions">
         <button class="toggle fr">
-            <i class="icon-angle-down" ng-hide="showDetails"></i>
-            <i class="icon-angle-up" ng-show="showDetails"></i>
+            <i class="fa fa-angle-down" ng-hide="showDetails"></i>
+            <i class="fa fa-angle-up" ng-show="showDetails"></i>
         </button>
     </td>
 </tr>
 <tr ng-show="drugOrder.additionalInstructions" ng-class="{'has-test-notes': drugOrder.additionalInstructions}">
     <td colspan="4" class="notes test-notes">
-        <i class="icon-comments left"></i>
+        <i class="fa fa-comments left"></i>
         <pre class="left">{{drugOrder.additionalInstructions}}</pre>
         <div class="footer-note right">
             <span class="provider">

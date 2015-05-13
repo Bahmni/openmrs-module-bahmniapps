@@ -23,7 +23,7 @@
                 ng-class="{'is-abnormal': columnResult.abnormal}">
                 <span ng-class="{'popover-trigger': isLonger(columnResult.value), 'is-abnormal': columnResult.abnormal}" bm-pop-over-trigger>{{getColumnValue(columnResult.value)}}</span>
                  <span ng-if="isLonger(columnResult.value)" class="tooltip" bm-pop-over-target>
-                     <i class="icon-caret-down"></i>
+                     <i class="fa fa-caret-down"></i>
                      <span class="details">{{::columnResult.value}}</span>
                 </span>
             </td>

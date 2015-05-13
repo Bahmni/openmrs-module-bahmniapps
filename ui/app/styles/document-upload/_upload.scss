@@ -165,7 +165,7 @@
           }
           .file-remove {
             float: right;
-            .row-remover span.icon-undo {
+            .row-remover span.fa-undo {
               color: $darkGray;
             }
           }
@@ -223,7 +223,7 @@
         &:hover, &:focus, &:active {
           cursor: pointer;
           background: $lightestGray;
-          .icon-user, h3 {
+          .fa-user, h3 {
             color: $bahmniSecondaryColor;
           }
         }

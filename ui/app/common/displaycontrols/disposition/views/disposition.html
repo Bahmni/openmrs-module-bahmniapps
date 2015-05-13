@@ -13,14 +13,14 @@
             <td class="toggle-btn" ng-if="showDetailsButton(disposition)" >
                 <button class="toggle fr"
                         ng-class="{'has-notes': getNotes(disposition)}" ng-click="toggle(disposition)">
-                    <i class="icon-angle-down" ng-hide="disposition.show"></i>
-                    <i class="icon-angle-up" ng-show="disposition.show"></i>
+                    <i class="fa fa-angle-down" ng-hide="disposition.show"></i>
+                    <i class="fa fa-angle-up" ng-show="disposition.show"></i>
                 </button>
             </td>
         </tr>
         <tr ng-if="disposition.show || getNotes(disposition)" ng-class="{'has-test-notes': getNotes(disposition)}">
             <td colspan="3" class="notes inline-notes" ng-class="{'test-notes': getNotes(disposition)}">
-                <i class="icon-comments left" ng-if="getNotes(disposition)"></i>
+                <i class="fa fa-comments left" ng-if="getNotes(disposition)"></i>
                 <pre class="left ng-binding">{{getNotes(disposition)}}</pre>
                 <div class="footer-note right">
                         <span class="provider">

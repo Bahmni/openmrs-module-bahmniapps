@@ -258,7 +258,7 @@ concept-set {
     font-size: 12px;
     padding-left: 15px;
     padding-right: 15px;
-    .icon-ok {
+    .fa-ok {
         display: none;
         padding-top: 0;
         padding-bottom: 0;
@@ -269,7 +269,7 @@ concept-set {
 .grid-row-element.active {
     color: $bahmniTertiaryColor;
     padding-left: 3px;
-    .icon-ok {
+    .fa-ok {
         display: inline-block;
     }
 }
@@ -285,6 +285,13 @@ concept-set {
         overflow: auto;
         clear: both;
         box-sizing: border-box;
+        .file{
+          .comment-toggle {
+              margin-right: 10px;
+              margin-bottom: 5px;
+              margin-top: 9px;
+          }
+        }
         .placeholder.btn {
             width: 30px;
             height: 30px;

@@ -27,7 +27,7 @@ angular.module('bahmni.common.conceptSet')
         template:'<div ng-class="{\'multi-select-widget\'' +
         ': observation.isMultiSelect}" class="multi-select-button-group">' +
         '<button type="button" class="grid-row-element" ng-class="{active: isSet(answer)}"'+
-        'ng-click="select(answer)" ng-repeat="answer in ::observation.getPossibleAnswers()"><i class="icon-ok"></i>{{::getAnswerDisplayName(answer)}}'+
+        'ng-click="select(answer)" ng-repeat="answer in ::observation.getPossibleAnswers()"><i class="fa fa-ok"></i>{{::getAnswerDisplayName(answer)}}'+
             '</button></div>'
     };
 });

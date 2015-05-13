@@ -1,27 +1,27 @@
 <div id="messages" class="messages">
   <div class="info-message" ng-show="success"><p>File(s) updated successfully</p></div>
-  <div class="error-message" ng-show="orientation_warning"><p><i class="icon-exclamation-sign"></i>The device is not held upright. Please rotate the device before taking photo</p></div>
+  <div class="error-message" ng-show="orientation_warning"><p><i class="fa fa-exclamation-sign"></i>The device is not held upright. Please rotate the device before taking photo</p></div>
 </div>
 <div ng-if="toggleGallery">
 <ul class="doc-upload-accordion" bm-gallery patient="patient" access-impression="false">
   <li id="newVisit">
     <h5 ng-click="resetCurrentVisit(newVisit)">
-      <i ng-hide="isCurrentVisit(newVisit)" class="icon-plus-sign state"></i>
-      <i ng-if="isCurrentVisit(newVisit)" class="icon-minus-sign state"></i>
+      <i ng-hide="isCurrentVisit(newVisit)" class="fa fa-plus-circle state"></i>
+      <i ng-if="isCurrentVisit(newVisit)" class="fa fa-minus-circle state"></i>
       Visit: New
     </h5>
     <div ng-show="isCurrentVisit(newVisit)" class="visit-content">
       <form name="newVisitForm" ng-submit="save(newVisit)">
           <p class="caution" ng-show="newVisitForm.startDate.$error.overlap">
-              <i class="icon-exclamation-sign small"></i>
+              <i class="fa fa-exclamation-sign small"></i>
               <span>There is already a visit that exists within the entered dates. Please upload documents against appropriate visit.</span>
           </p>
           <p class="caution" ng-show="newVisitForm.startDate.$error.future">
-              <i class="icon-exclamation-sign small"></i>
+              <i class="fa fa-exclamation-sign small"></i>
               <span >Visit date should not be in the future.</span>
           </p>
           <p class="caution" ng-show="newVisitForm.startDate.$error.dateSequence">
-              <i class="icon-exclamation-sign small"></i>
+              <i class="fa fa-exclamation-sign small"></i>
               <span >Start Date should not be greater than End Date.</span>
           </p>
 
@@ -59,9 +59,9 @@
         </div>
         <div class="upload-inline-buttons">
           <input id="file-browse" type="file" name="image" accept="image/*" capture="camera" file-upload visit="newVisit" on-select="onSelect">
-          <label for="file-browse" class="btn btn-primary" ng-click="resetCurrentVisit(newVisit)"><i class="icon-camera icon-white"></i> SCAN</label>
+          <label for="file-browse" class="btn btn-primary" ng-click="resetCurrentVisit(newVisit)"><i class="fa fa-camera fa fa-white"></i> SCAN</label>
           <button type="submit" ng-disabled="!newVisit.hasImages() || newVisitForm.$invalid || newVisit.hasErrors()" class="btn btn-primary">
-            <i class="icon-save icon-white"></i> SAVE
+            <i class="fa fa-save fa fa-white"></i> SAVE
           </button>
         </div>
       </form>
@@ -78,7 +78,7 @@
                     </div>
                     <div>
                         <button type="button" ng-click="newVisit.removeNewAddedImage(image)" class="row-remover"><span
-                                class="icon-remove"></span></button>
+                                class="fa fa-remove"></span></button>
                     </div>
                 </li>
             </ul>
@@ -89,14 +89,14 @@
 
   <li ng-repeat="visit in visits">
     <h5 ng-click="resetCurrentVisit(visit)">
-      <i ng-hide="isCurrentVisit(visit)" class="icon-plus-sign state"></i>
-      <i ng-if="isCurrentVisit(visit)" class="icon-minus-sign state"></i>
+      <i ng-hide="isCurrentVisit(visit)" class="fa fa-plus-circle state"></i>
+      <i ng-if="isCurrentVisit(visit)" class="fa fa-minus-circle state"></i>
       Visit: <small>From: </small>
       <span>{{visit.startDatetime | bahmniDate}}</span>
       <small ng-if="visit.stopDatetime">To: </small>
       <span ng-if="visit.stopDatetime">{{visit.stopDatetime | bahmniDate}}</span>
-      <span ng-if="visit.hasImages()" class="containsImageMarker" title="Visit has images"><i class="icon-picture"></i></span>
-      <span ng-if="!visit.stopDatetime" class="currentVisitMarker" title="Current Visit"><i class="icon-star"></i></span>
+      <span ng-if="visit.hasImages()" class="containsImageMarker" title="Visit has images"><i class="fa fa-picture"></i></span>
+      <span ng-if="!visit.stopDatetime" class="currentVisitMarker" title="Current Visit"><i class="fa fa-star"></i></span>
     </h5>
     <div class="visit-content" ng-show="isCurrentVisit(visit)">
       <form name="{{'visit' + $index}}" ng-submit="save(visit)" ng-disabled="!visit.changed">
@@ -106,14 +106,14 @@
               <li>
                 <div class="file-actions">
                   <button type="submit" ng-disabled="!visit.changed || visit.hasErrors()" class="btn btn-primary">
-                    <i class="icon-save icon-white"></i> SAVE
+                    <i class="fa fa-save fa fa-white"></i> SAVE
                   </button>
                 </div>
               </li>
 
               <li>
                 <input id="file-browse-{{visit.uuid}}" type="file" name="image-document-upload" accept="image/*" capture="camera" file-upload visit="visit" on-select="onSelect">
-                <label class="placeholder btn" for="file-browse-{{visit.uuid}}"><i class="icon-plus needsclick"></i></label>
+                <label class="placeholder btn" for="file-browse-{{visit.uuid}}"><i class="fa fa-plus needsclick"></i></label>
               </li>
               <li ng-repeat="image in visit.images | reverse">
                 <div class="file">
@@ -121,7 +121,7 @@
                   <input name="{{'image'+$index}}" ng-readonly="!canDeleteImage(image)" class="concept-name" ng-class="{saved: visit.isSaved(image)}" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" is-invalid="conceptNameInvalid" on-edit="onEditConcept(image)" required placeholder="Enter a value" strict-select="true" blur-on-select="true" ng-blur="visit.markAsUpdated()" ng-disabled="image.voided"/>
                 </div>
                 <div class="file-remove">
-                  <button type="button" id="remove-image{{$index}}" ng-click="visit.removeImage(image)" ng-if="canDeleteImage(image)" class="row-remover"><span ng-class="{'icon-remove': !image.voided, 'icon-undo': image.voided }"></span></button>
+                  <button type="button" id="remove-image{{$index}}" ng-click="visit.removeImage(image)" ng-if="canDeleteImage(image)" class="row-remover"><span ng-class="{'fa fa-remove': !image.voided, 'fa fa-undo': image.voided }"></span></button>
                 </div>
               </li>
             </ul>

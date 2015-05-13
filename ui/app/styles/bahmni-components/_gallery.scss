@@ -135,7 +135,7 @@ body.gallery-open > *:not(#gallery-pane) {
 }
 .image-bottom-bar {
 	text-align: right;
-	.icon-file-alt {
+	.fa-file-alt {
 		font-size: 18px;
 	}
 }
@@ -167,7 +167,7 @@ body.gallery-open > *:not(#gallery-pane) {
     height: 100%;
     text-align: center;
     padding: 35px 0;
-    i.icon-picture {
+    i.fa-picture {
         font-size: 10em;
         color: $lightGray;
     }

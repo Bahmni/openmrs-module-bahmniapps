@@ -7,13 +7,13 @@
                                                                            ng-src="{{observation.value|thumbnail}}" width="40" height="40" alt="{{observation.concept.name}}" /> </a>
         <button class="toggle fr" ng-if="observation.isFormElement() && showDetailsButton && !observation.comment" ng-class="{'has-notes': observation.comment}"
                 ng-click="toggle(observation)">
-            <i class="icon-angle-down" ng-hide="observation.showDetails"></i>
-            <i class="icon-angle-up" ng-show="observation.showDetails"></i>
+            <i class="fa fa-angle-down" ng-hide="observation.showDetails"></i>
+            <i class="fa fa-angle-up" ng-show="observation.showDetails"></i>
         </button>
     
 
         <div ng-if="observation.comment" class="notes inline-comments" ng-class="{'print-notes': observation.comment}">   
-            <i class="icon-comments left"></i>
+            <i class="fa fa-comments left"></i>
             <pre class="left">{{::observation.comment}}</pre>
             <div class="footer-note fr">
                 <span class="provider">

@@ -3,7 +3,7 @@
     <fieldset class="leaf-observation-node" ng-if="::observation.isObservationNode">
         <div class="form-group bm-pop-over">
             <div class=" concept-tooltip-description" bm-pop-over-target ng-if="::observation.primaryObs.concept.description">
-                <i class="icon-caret-down"></i>
+                <i class="fa fa-caret-down"></i>
                 <span class="details" ng-bind-html="::observation.primaryObs.concept.description"></span>
             </div>
 
@@ -12,7 +12,7 @@
                 <span ng-bind="::observation.label"></span>
                 <span ng-show="::observation.primaryObs.units" ng-bind="::'(' + observation.primaryObs.units + ')'"></span>
                 <span ng-if="::observation.isRequired()" class="asterick">*</span>
-                <i class="icon-question-sign concept-tooltip-trigger" bm-pop-over-trigger ng-if="::observation.primaryObs.concept.description"></i>
+                <i class="fa fa-question-circle concept-tooltip-trigger" bm-pop-over-trigger ng-if="::observation.primaryObs.concept.description"></i>
 
             </label>
 
@@ -42,7 +42,7 @@
                 </textarea>
                 <input type="text" id="{{::observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="observation.primaryObs.isConciseText()" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet), 'computed-field': observation.isComputedAndEditable()}" focus-me="observation.isFocused">
 
-                <span ng-switch-when="dropdown" class="field-value info icon-info-sign"> Dropdowns are not supported. Change it to autocomplete</span>
+                <span ng-switch-when="dropdown" class="field-value info fa fa-info-sign"> Dropdowns are not supported. Change it to autocomplete</span>
 
                 <div ng-switch-when="freeTextAutocomplete"  class="autocomplete">
                     <input id="{{::observation.uniqueId}}" class="concept-name" ng-model="observation.value" concept-autocomplete
@@ -55,7 +55,7 @@
                         <button type="button" ng-model="observation.markedAsNonCoded" class="small-btn accept-btn grid-row-element"
                                    ng-click="observation.markAsNonCoded()"
                                ng-class="{'illegalValue': observation.primaryObs.value.length > 0 && !observation.markedAsNonCoded, active: observation.markedAsNonCoded}"
-                                ng-disabled="observation.primaryObs.isCoded() && observation.primaryObs.value"><i class="icon-ok"></i>Accept</button>
+                                ng-disabled="observation.primaryObs.isCoded() && observation.primaryObs.value"><i class="fa fa-ok"></i>Accept</button>
                     </div>
                 </div>
 
@@ -64,28 +64,28 @@
                     <input ng-if="observation.conceptUIConfig.answersConceptName" concept-autocomplete coded-concept-name="observation.conceptUIConfig.answersConceptName" ng-model="observation.value" />
                 </div>
 
-                <p ng-switch-default class="field-value info icon-info-sign"> The concept data type '::{{observation.dataTypeName}}' is not supported yet.</p>
+                <p ng-switch-default class="field-value info fa fa-info-sign"> The concept data type '::{{observation.dataTypeName}}' is not supported yet.</p>
             </div>
             <small class="hint" ng-show="observation.primaryObs.concept.lowNormal || observation.primaryObs.concept.hiNormal" ng-bind="'(' + observation.primaryObs.concept.lowNormal + ' - ' + observation.primaryObs.concept.hiNormal + ')'"></small>
             <div ng-if="::observation.abnormalObs" class="fl accept-btn-wrapper">
                 <button type="button" ng-model="observation.abnormalObs.value" class="small-btn accept-btn grid-row-element"
-                        ng-disabled="!observation.primaryObs.hasValue() || observation.isComputed()" ng-class="{'active': observation.abnormalObs.value}" ng-click="observation.toggleAbnormal()"><i class="icon-ok"></i>Abnormal</button>
+                        ng-disabled="!observation.primaryObs.hasValue() || observation.isComputed()" ng-class="{'active': observation.abnormalObs.value}" ng-click="observation.toggleAbnormal()"><i class="fa fa-ok"></i>Abnormal</button>
             </div>
             <div class="checkbox-inline" ng-if="::observation.durationObs" ng-class="{'duration': observation.durationObs, 'computed-field': observation.isComputedAndEditable()}">
                 <span class="for-separator">for</span><duration ng-model="observation.durationObs.value" disabled="!observation.primaryObs.hasValue()" illegal-value="observation.isDurationRequired() && !observation.hasDuration()"></duration>
             </div>
 
             <span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
-                <button type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)"><i class="icon-plus-sign"></i> Add More
+                <button type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)"><i class="fa fa-plus-circle"></i> Add More
                 </button>
             </span>
 
             <button type="button" toggle="observation.showComment" class="comment-toggle fr"  tabindex="-1" ng-class="{'has-notes': observation.comment}">
-                <i class="icon-file" ng-hide="observation.comment">
-                    <i class="icon-plus-sign" ng-hide="observation.showComment"></i>
-                    <i class="icon-minus-sign" ng-show="observation.showComment"></i>
+                <i class="fa fa-file-o" ng-hide="observation.comment">
+                    <i class="fa fa-plus-circle" ng-hide="observation.showComment"></i>
+                    <i class="fa fa-minus-circle" ng-show="observation.showComment"></i>
                 </i>
-                <i class="icon-file-alt" ng-show="observation.comment"></i>
+                <i class="fa fa-file-alt" ng-show="observation.comment"></i>
             </button>
             <div class="offset-label"  ng-show="observation.showComment">
                 <textarea class="obs-comment-section"  maxlength="255" ng-model="observation.comment" placeholder="Notes">
@@ -98,7 +98,7 @@
         <div class="form-group" bm-pop-over>
 
             <div class=" concept-tooltip-description" bm-pop-over-target ng-if="::observation.concept.description">
-                <i class="icon-caret-down"></i>
+                <i class="fa fa-caret-down"></i>
                 <span class="details" ng-bind-html="::observation.concept.description"></span>
             </div>
 
@@ -106,7 +106,7 @@
                 <span ng-bind="::observation.label"></span>
                 <span ng-show="::observation.units" ng-bind="::'(' + observation.units + ')'"></span>
                 <span ng-if="::observation.isRequired()" class="asterick">*</span>
-                <i class="icon-question-sign concept-tooltip-trigger" bm-pop-over-trigger ng-if="::observation.concept.description"></i>
+                <i class="fa fa-question-circle concept-tooltip-trigger" bm-pop-over-trigger ng-if="::observation.concept.description"></i>
 
             </label>
 
@@ -147,20 +147,20 @@
                 </div>
                 <div ng-switch-when="image" class="consultation-image">
                     <div class="file-remove">
-                        <button type="button" ng-click="observation.toggleVoidingOfImage()" ng-if="observation.value" class="row-remover"><span ng-class="{'icon-remove': !image.voided, 'icon-undo': observation.voided }"></span></button>
+                        <button type="button" ng-click="observation.toggleVoidingOfImage()" ng-if="observation.value" class="row-remover"><span ng-class="{'fa fa-remove': !image.voided, 'fa fa-undo': observation.voided }"></span></button>
                     </div>
 
                         <input id="file-browse-{{observation.uniqueId}}" class="file-browse" type="file" name="image" accept="image/*" capture="camera" ng-model="observation.value" image-upload patient-uuid="::patient.uuid">
-                        <label class="placeholder btn" for="file-browse-{{observation.uniqueId}}" ng-hide="observation.value || observation.voided"><i class="icon-plus needsclick"></i></label>
+                        <label class="placeholder btn" for="file-browse-{{observation.uniqueId}}" ng-hide="observation.value || observation.voided"><i class="fa fa-plus needsclick"></i></label>
 
                         <div class="file">
                             <img ng-src="{{observation.value|thumbnail}}" width="100" ng-class="{'has-image': observation.value, 'voided': observation.voided}">                    
                             <button type="button" toggle="observation.showComment" ng-show="observation.value" class="comment-toggle fr" tabindex="-1" ng-class="{'has-notes': observation.comment}">
-                                <i class="icon-file" ng-hide="observation.comment">
-                                    <i class="icon-plus-sign" ng-hide="observation.showComment"></i>
-                                    <i class="icon-minus-sign" ng-show="observation.showComment"></i>
+                                <i class="fa fa-file-o" ng-hide="observation.comment">
+                                    <i class="fa fa-plus-circle" ng-hide="observation.showComment"></i>
+                                    <i class="fa fa-minus-circle" ng-show="observation.showComment"></i>
                                 </i>
-                                <i class="icon-file-alt" ng-show="observation.comment"></i>
+                                <i class="fa fa-file-alt" ng-show="observation.comment"></i>
                         </button>
                         </div>
 
@@ -182,21 +182,21 @@
 
                 </div>
 
-                <p ng-switch-default class="field-value info icon-info-sign"> The concept data type '{{observation.dataTypeName}}' is not supported yet.</p>
+                <p ng-switch-default class="field-value info fa fa-info-sign"> The concept data type '{{observation.dataTypeName}}' is not supported yet.</p>
             </div>
             <small class="hint" ng-show="::(observation.concept.lowNormal || observation.concept.hiNormal)" ng-bind="'(' + observation.concept.lowNormal + ' - ' + observation.concept.hiNormal + ')'"></small>
 
             <span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
-                <button type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)"><i class="icon-plus-sign"></i> Add More
+                <button type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)"><i class="fa fa-plus-circle"></i> Add More
                 </button>
             </span>
 
             <button ng-if="::observation.canHaveComment()" type="button" toggle="observation.showComment" class="comment-toggle fr" tabindex="-1" ng-class="{'has-notes': observation.comment}">
-                <i class="icon-file" ng-hide="observation.comment">
-                    <i class="icon-plus-sign" ng-hide="observation.showComment"></i>
-                    <i class="icon-minus-sign" ng-show="observation.showComment"></i>
+                <i class="fa fa-file-o" ng-hide="observation.comment">
+                    <i class="fa fa-plus-circle" ng-hide="observation.showComment"></i>
+                    <i class="fa fa-minus-circle" ng-show="observation.showComment"></i>
                 </i>
-                <i class="icon-file-alt" ng-show="observation.comment"></i>
+                <i class="fa fa-file-alt" ng-show="observation.comment"></i>
             </button>
 
             <div ng-if="::observation.canHaveComment()" class="offset-label" ng-show="observation.showComment">
@@ -211,14 +211,14 @@
         <legend ng-if="showTitle && !observation.isComputed()" class="mylegend">
             <strong>{{::observation.label}}</strong>
             <span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
-                <button type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)"><i class="icon-plus-sign"></i> Add More
+                <button type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)"><i class="fa fa-plus-circle"></i> Add More
                 </button>
             </span>
         </legend>
         <div ng-if="observation.isComputed()">
             <label class="control-label" for="{{::observation.uniqueId}}" >
                 <span ng-bind="::observation.label"></span>
-                <i class="icon-question-sign concept-tooltip-trigger" bm-pop-over-trigger ng-if="::observation.primaryObs.concept.description"></i>
+                <i class="fa fa-question-circle concept-tooltip-trigger" bm-pop-over-trigger ng-if="::observation.primaryObs.concept.description"></i>
             </label>
             <span>{{observation.value}}</span>
         </div>

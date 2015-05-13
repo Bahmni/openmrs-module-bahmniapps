@@ -5,7 +5,7 @@ $gutter-width: 0;
 $columns: 12;
 
 
-.icon-white {
+.fa-white {
     color: $white;
 }
 
@@ -134,7 +134,7 @@ body {
                   }
                   a.disabled {
                     color: $lightGray;
-                    .icon-user {
+                    .fa-user {
                         color: $lightGray;
                     }
                   }

@@ -4,7 +4,7 @@
 
         <button ng-if="clinicalDashboardConfig.showPrint()" class="dialog-button-group" ng-click="printDashboard()"
                 accesskey="r">
-            <i class="icon-print"></i>
+            <i class="fa fa-print"></i>
             P<u>r</u>int
         </button>
  
@@ -49,9 +49,11 @@
                    ng-click="collapseControlPanel()" href="#{{consultationBoardLink}}">Consultation</a>
                 <a class="btn--right btn--success " title="Open in new window"
                    ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective"
-                   ng-click="openConsultationInNewTab()"><i class="icon-external-link"></i></a>
+                   ng-click="openConsultationInNewTab()"><i class="fa fa-external-link"></i></a>
            </span>
-            <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}"></button>
+            <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}">
+                <i class="fa fa-bars fa-white fa-large"></i>
+            </button>
         </div>
     </div>
 </div>

@@ -20,7 +20,7 @@
 
       &:hover{
         text-decoration: underline;
-        .icon-star{
+        .fa-star{
           text-decoration: none;
         }
       }
@@ -463,7 +463,7 @@ legend.mylegend {background: $white!important;}
             font-family: $OpenSansBoldFont;
         }
     }
-    i.icon-caret-right, i.icon-caret-left {
+    i.fa-caret-right, i.fa-caret-left {
         padding: 0;
     }
 }
@@ -482,8 +482,8 @@ legend.mylegend {background: $white!important;}
     }
 }
 .h-scroll {
-    .icon-stop {color: lighten($clinicalRemoveBtn, 20%);}
-    .icon-ok {color: green;}
+    .fa-stop {color: lighten($clinicalRemoveBtn, 20%);}
+    .fa-ok {color: green;}
 }
 
 a.visit:before {

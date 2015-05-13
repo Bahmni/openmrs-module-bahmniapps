@@ -14,7 +14,7 @@ angular.module('admin', ['httpErrorInterceptor', 'bahmni.admin', 'bahmni.common.
             templateUrl: 'views/adminDashboard.html',
             controller: 'AdminDashboardController',
             data: {
-                backLinks: [{label: "Home", url: "../home/", icon: "icon-home"}],
+                backLinks: [{label: "Home", url: "../home/", icon: "fa-home"}],
                 extensionPointId: 'org.bahmni.admin.dashboard'
             }
         })

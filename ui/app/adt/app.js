@@ -7,8 +7,8 @@ angular.module('adt', ['bahmni.common.patient', 'bahmni.common.patientSearch', '
     'bahmni.common.obs', 'bahmni.common.displaycontrol.patientprofile', 'bahmni.common.displaycontrol.diagnosis','RecursionHelper','ngSanitize', 'bahmni.common.uiHelper']);
 angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/patient/search');
-    var homeBackLink = {label: "", url: "../home/", icon: "icon-home"};
-    var patientSearchBackLink = {label: "", url: "#/patient/search", accessKey: 'p', icon: "icon-users"};
+    var homeBackLink = {label: "", url: "../home/", icon: "fa-home"};
+    var patientSearchBackLink = {label: "", url: "#/patient/search", accessKey: 'p', icon: "fa-users"};
     $stateProvider.state('patientsearch', {
         url: '/patient/search',
         data: {

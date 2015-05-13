@@ -39,10 +39,10 @@
                             </div>
                             <div class="col col3"></div>
                             <div class="col col4">
-                                <i ng-show="diagnosis.revised" class="icon-ok fl"></i>
+                                <i ng-show="diagnosis.revised" class="fa fa-ok fl"></i>
                                 <button class="toggle fr" ng-if="diagnosis.comments" ng-click="diagnosis.showComment = !diagnosis.showComment" ng-class="{'has-notes': diagnosis.comments}">
-                                    <i class="icon-angle-down" ng-hide="diagnosis.showComment"></i>
-                                    <i class="icon-angle-up" ng-show="diagnosis.showComment"></i>
+                                    <i class="fa fa-angle-down" ng-hide="diagnosis.showComment"></i>
+                                    <i class="fa fa-angle-up" ng-show="diagnosis.showComment"></i>
                                 </button>
                             </div>
                         </div>
@@ -90,10 +90,10 @@
                             </div>
                             <div class="col col3"></div>
                             <div class="col col4">
-                                <i ng-show="diagnosis.revised" class="icon-ok fl"></i>
+                                <i ng-show="diagnosis.revised" class="fa fa-ok fl"></i>
                                 <button class="toggle fr" ng-if="diagnosis.comments" ng-click="diagnosis.showComment = !diagnosis.showComment" ng-class="{'has-notes': diagnosis.comments}">
-                                    <i class="icon-plus-sign" ng-hide="diagnosis.showComment"></i>
-                                    <i class="icon-minus-sign" ng-show="diagnosis.showComment"></i>
+                                    <i class="fa fa-plus-circle" ng-hide="diagnosis.showComment"></i>
+                                    <i class="fa fa-minus-sign" ng-show="diagnosis.showComment"></i>
                                 </button>
                             </div>
                         </div>
@@ -141,10 +141,10 @@
                             </div>
                             <div class="col col3"></div>
                             <div class="col col4">
-                               <i ng-show="diagnosis.revised" class="icon-ok fl"></i>
+                               <i ng-show="diagnosis.revised" class="fa fa-ok fl"></i>
                                 <button class="toggle fr" ng-if="diagnosis.comments" ng-click="diagnosis.showComment = !diagnosis.showComment" ng-class="{'has-notes': diagnosis.comments}">
-                                    <i class="icon-plus-sign" ng-hide="diagnosis.showComment"></i>
-                                    <i class="icon-minus-sign" ng-show="diagnosis.showComment"></i>
+                                    <i class="fa fa-plus-circle" ng-hide="diagnosis.showComment"></i>
+                                    <i class="fa fa-minus-sign" ng-show="diagnosis.showComment"></i>
                                 </button>                            
                             </div>
                         </div>
@@ -186,8 +186,8 @@
                             </td>
                             <td class="toggle-btn">
                                 <button class="toggle fr" ng-if="observation.comment" ng-class="{'has-notes': observation.comment}">
-                                    <i class="icon-plus-sign" ng-hide="observation.showComment"></i>
-                                    <i class="icon-minus-sign" ng-show="observation.showComment"></i>
+                                    <i class="fa fa-plus-circle" ng-hide="observation.showComment"></i>
+                                    <i class="fa fa-minus-sign" ng-show="observation.showComment"></i>
                                 </button>
                             </td>
                         </tr>
@@ -219,8 +219,8 @@
                         <div class="expander-row row-click">
                             <span class="disposition-state">{{disposition.conceptName}} <span>on</span> {{disposition.dispositionDateTime | bahmniDateTime }}</span>
                             <button class="toggle fr" ng-class="{'has-notes': disposition.additionalObs[0].value}">
-                                <i class="icon-plus-sign" ng-hide="disposition.show"></i>
-                                <i class="icon-minus-sign" ng-show="disposition.show"></i>
+                                <i class="fa fa-plus-circle" ng-hide="disposition.show"></i>
+                                <i class="fa fa-minus-sign" ng-show="disposition.show"></i>
                             </button>
                         </div>
                         <div>

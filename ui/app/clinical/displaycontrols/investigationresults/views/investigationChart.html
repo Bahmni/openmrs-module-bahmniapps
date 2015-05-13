@@ -1,7 +1,7 @@
 <section class="block section-grid">
     <h2 ng-click="toggleChart()" class="section-title row-click">
-        <i class="icon-caret-right" ng-hide="showChart"></i>
-        <i class="icon-caret-down" ng-show="showChart"></i>
+        <i class="fa fa-caret-right" ng-hide="showChart"></i>
+        <i class="fa fa-caret-down" ng-show="showChart"></i>
         Investigation Chart
     </h2>
     <div class="hidden-print">
@@ -36,11 +36,11 @@
                                 <span ng-show="res.uploadedFileName">
                                     <a class="uploaded-file" href="{{getUploadedFileUrl(res.uploadedFileName)}}"
                                        onclick="event.stopPropagation()" target="_blank">
-                                        <i class="icon-paper-clip"></i>
+                                        <i class="fa fa-paper-clip"></i>
                                     </a>
                                 </span>
                                 <span class="tooltip" bm-pop-over-target>
-                                    <i class="icon-caret-left"></i>
+                                    <i class="fa fa-caret-left"></i>
                                     <span ng-class="{'is-abnormal': res.abnormal}">{{res.result}}</span>
                                 </span>
                             </span>
@@ -85,11 +85,11 @@
                                 <span ng-show="res.uploadedFileName">
                                     <a class="uploaded-file" href="{{getUploadedFileUrl(res.uploadedFileName)}}"
                                        onclick="event.stopPropagation()" target="_blank">
-                                        <i class="icon-paper-clip"></i>
+                                        <i class="fa fa-paper-clip"></i>
                                     </a>
                                 </span>
                                 <span class="tooltip" bm-pop-over-target>
-                                    <i class="icon-caret-left"></i>
+                                    <i class="fa fa-caret-left"></i>
                                     <span ng-class="{'is-abnormal': res.abnormal}">{{res.result}}</span>
                                 </span>
                             </span>

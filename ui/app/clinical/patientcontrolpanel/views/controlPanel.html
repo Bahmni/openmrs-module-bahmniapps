@@ -23,21 +23,21 @@
         <ul>
             <li class="btn-patient-doc">
                 <div bm-gallery patient="patient" access-impression="true">
-                    <a href="" bm-lazy-image-observation-gallery-items promise="documentsPromise" ><i class="icon-file"></i>Patient Documents</a>                        
+                    <a href="" bm-lazy-image-observation-gallery-items promise="documentsPromise" ><i class="fa fa-file-o fa-white"></i>Patient Documents</a>                        
                 </div>
                 
             <li class="{{link.icon}}" ng-click="changeContext($event)" ng-repeat="link in links">
-                <a href="{{link.href}}" ng-click="link.onClick($event)"><i class="icon-th-large"></i><i class="icon-bar-chart"></i><i class="icon-vitals-2"></i><i class="icon-print"></i>{{link.text}}</a>
+                <a href="{{link.href}}" ng-click="link.onClick($event)"><i class="fa fa-th-large"></i><i class="fa fa-bar-chart"></i><i class="fa fa-vitals-2"></i><i class="fa fa-print"></i>{{link.text}}</a>
             </li>
         </ul>
 
         <h2>Other Actions</h2>        
         <ul class="bahmni-home">
-            <li><a class="header-logo" href="../home/"><i class="icon-home"></i>Bahmni Home</a></li>
+            <li><a class="header-logo" href="../home/"><i class="fa fa-home"></i>Bahmni Home</a></li>
         </ul>
         <ul>
             <li>
-                <a class="log-out" log-out><i class="icon-off icon-white small"></i> Logout
+                <a class="log-out" log-out><i class="fa fa-power-off fa-white small"></i> Logout
                 <span ng-show="$parent.currentUser.username">
                     ({{$parent.currentUser.username}}-
                 </span>

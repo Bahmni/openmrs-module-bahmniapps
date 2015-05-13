@@ -89,7 +89,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
   }
 }
 
-.icon-white {
+.fa-white {
   color: $white;
 }
 
@@ -444,7 +444,7 @@ body{
           padding: 10px 10px 10px 5px;
           a.disabled {
             color: $lightGray;
-            .icon-user {
+            .fa-user {
                 color: $lightGray;
             }
           }
