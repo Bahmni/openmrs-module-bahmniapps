@@ -1,18 +1,8 @@
-<div class="sample-type" ng-show="hasOrders()">
-    <fieldset>
-        <legend><strong>{{title}}</strong></legend>
-        <div class="form-group">
-            <div class="multi-select-button-group multi-select-lab-tests">
-                <ul class="template-icons" ng-show="hasOrders()">
-                    <li ng-repeat="test in (rootConcept.setMembers | filter:filterByConceptClass)">
-                        <button class="ng-binding" ng-click="onSelectionChange(test)">
-                            <i class="fa fa-check-empty" ng-hide="test.isSelected"></i>
-                            <i class="fa fa-check ng-hide" ng-show="test.isSelected"></i>
-                            {{test.name.display}}
-                        </button>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </fieldset>
+<div ng-show="hasOrders()">
+    <strong style="float: left;">{{title}}</strong>
+    <button class="grid-row-element ng-binding ng-scope"
+         ng-repeat="test in (rootConcept.setMembers | filter:filterByConceptClass)"
+         ng-click="onSelectionChange(test)" style="width: 33.33%;float: left;" ng-class="{active:test.isSelected}">
+        {{test.name.display}}
+    </button>
 </div>

@@ -1,15 +1,17 @@
-<div class="sample-type">
-    <fieldset>
-        <legend><strong>{{activeTab.topLevelConcept}}</strong></legend>
-            <div class="form-group">
-                <div class="multi-select-button-group multi-select-lab-tests">
-                    <button ng-repeat="labSample in getOrderTemplate(activeTab.topLevelConcept).setMembers" ng-click="showLabSampleTests(labSample)" class="{{labSample.klass}} grid-row-element">{{labSample.name.display}}</button>
-                </div>
+<section class="dashboard-sections dashboard-sections-left" xmlns="http://www.w3.org/1999/html">
+        <strong>{{activeTab.topLevelConcept}}</strong>
+        <div class="dashboard-sections dashboard-sections-left">
+            <div class="multi-select-button-group multi-select-lab-tests">
+                <ul>
+                    <li ng-repeat="labSample in getOrderTemplate(activeTab.topLevelConcept).setMembers">
+                        <a ng-click="showLabSampleTests(labSample)">
+                            {{labSample.name.display}}
+                        </a>
+                    </li>
+                </ul>
             </div>
-    </fieldset>
-</div>
-<div class="rightLabOrdersPanel">
-    <div ng-repeat="test in activeTab.tests" ng-if="labSample">
+        </div>
+</section>
+    <section class="dashboard-sections dashboard-sections-right" ng-repeat="test in activeTab.tests" ng-if="labSample">
         <order-selector orders="consultation.testOrders" root-concept="labSample" concept-class="test.type" consultation="consultation" title="test.title"></order-selector>
-    </div>
-</div>
+    </section>
