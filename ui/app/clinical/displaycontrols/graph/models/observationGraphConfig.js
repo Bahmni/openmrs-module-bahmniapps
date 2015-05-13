@@ -6,6 +6,10 @@
 
     Bahmni.Clinical.ObservationGraphConfig = function (config) {
         angular.extend(this, config);
+        if(this.isGrowthChart()) {
+            this.xAxisConcept = "AGE";
+            this.yAxisConcepts = ["WEIGHT"];
+        }
     };
 
     var AGE = "age", 
@@ -45,4 +49,15 @@
 
         return concepts;
     };
+
+    configPrototype.isGrowthChart = function() {
+      return this.growthChart != undefined;
+    };
+
+    configPrototype.getGrowthChartReferenceFileName = function() {
+        if(this.isGrowthChart()) {
+            return this.growthChart.referenceData;
+        }
+    };
+
 })();

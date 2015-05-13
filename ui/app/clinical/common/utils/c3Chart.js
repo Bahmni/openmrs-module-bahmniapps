@@ -42,11 +42,21 @@ Bahmni.Graph.c3Chart = function (bindTo, graphWidth, config, data) {
         }
     };
 
-    var values = _(data).reduce(function (accumulator, item) {
+    var createReferenceClasses = function() {
+        var classes = {};
+        _.each(data, function(datum) {
+            if(datum.reference) {
+                classes[datum.name] = 'reference-line';
+            }
+        });
+        return classes;
+    };
+
+    var allPoints = _(data).reduce(function (accumulator, item) {
         return accumulator.concat(item.values);
     }, []);
-    var distinctUnits = _.uniq(_.pluck(data, 'units'));
 
+    var distinctUnits = _.uniq(_.pluck(data, 'units'));
     if (distinctUnits.length > 2) {
         throw new Error("Cannot display line graphs with concepts that have more than 2 units");
     }
@@ -101,7 +111,7 @@ Bahmni.Graph.c3Chart = function (bindTo, graphWidth, config, data) {
             right: 50
         },
         data: {
-            json: values,
+            json: allPoints,
             keys: {
                 x: config.xAxisConcept,
                 value: config.yAxisConcepts
@@ -110,7 +120,8 @@ Bahmni.Graph.c3Chart = function (bindTo, graphWidth, config, data) {
             xs : xs,
             onclick: function (d) {
                 c3Chart.tooltip.show({data: d});
-            }
+            },
+            classes: createReferenceClasses()
         },
         point: {
             show: true,

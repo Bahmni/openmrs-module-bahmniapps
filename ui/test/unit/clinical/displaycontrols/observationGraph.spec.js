@@ -1,7 +1,7 @@
 'use strict';
 
 describe("Observation Graph", function () {
-    var element, scope, compile, httpBackend, observationsService, patientService, conceptSetService;
+    var element, scope, compile, httpBackend, observationsService, patientService, conceptSetService, appService;
 
     beforeEach(module('bahmni.clinical'));
 
@@ -12,6 +12,7 @@ describe("Observation Graph", function () {
         $provide.value('observationsService', observationsService);
         $provide.value('patientService', patientService);
         $provide.value('conceptSetService', conceptSetService);
+        $provide.value('appService', appService);
 
         window.c3 = jasmine.createSpyObj('c3', ['generate']);
     }));

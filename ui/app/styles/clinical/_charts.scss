@@ -5,6 +5,7 @@ svg {
 .c3-line {
   stroke-width: 3px;
 }
+
 .c3-ygrid-line{
   text{
     fill: #333;
@@ -19,4 +20,13 @@ svg {
   }
 }
 
+.c3-target-reference-line {
+  circle {
+    visibility: hidden;
+  }
+
+  .c3-line {
+    stroke-width: 1px;
+  }
+}
 

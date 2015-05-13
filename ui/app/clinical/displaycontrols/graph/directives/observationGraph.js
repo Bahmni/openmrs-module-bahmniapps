@@ -1,7 +1,7 @@
 "use strict";
 
-angular.module('bahmni.clinical').directive('observationGraph', ['observationsService', 'patientService', 'conceptSetService', '$q',
-    function (observationsService, patientService, conceptSetService, $q) {
+angular.module('bahmni.clinical').directive('observationGraph', ['appService', 'observationsService', 'patientService', 'conceptSetService', '$q',
+    function (appService, observationsService, patientService, conceptSetService, $q) {
 
         var generateGraph = function ($scope, element, config, observationGraphModel) {
             var bindToElement = document.getElementById($scope.graphId);
@@ -36,18 +36,26 @@ angular.module('bahmni.clinical').directive('observationGraph', ['observationsSe
                 promises.push(patientService.getPatient($scope.patientUuid));
             }
 
+            if(config.isGrowthChart()) {
+                promises.push(appService.loadConfig(config.getGrowthChartReferenceFileName()));
+            }
+
             $q.all(promises).then(function(results) {
                 var conceptData = results[0].data;
-                var observations = results[1];
-                var patient = results[2];
+                var observations = results[1].data;
+                var patient = results[2] && results[2].data.person;
+                var growthChartReference;
+                if(config.isGrowthChart()) {
+                    growthChartReference = Bahmni.Clinical.GrowthChartReference.create(patient.gender, results[3].data);
+                }
 
-                if(observations.data.length == 0) return;
+                if(observations.length == 0) return;
 
                 if(conceptData.results && conceptData.results.length > 0) {
                     config.lowNormal = conceptData.results[0].lowNormal;
                     config.hiNormal = conceptData.results[0].hiNormal;
                 }
-                var model = Bahmni.Clinical.ObservationGraph.create(observations.data, patient && patient.data.person, config);
+                var model = Bahmni.Clinical.ObservationGraph.create(observations, patient, config, growthChartReference);
                 generateGraph($scope, element, config, model);
             });
         };
