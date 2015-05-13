@@ -18,5 +18,9 @@ Bahmni.Common.VisitSummary = function (visitSummary) {
     this.getDischargeEncounterUuid = function () {
         return this.isDischarged() ? this.dischargeDetails.uuid : undefined;
     };
+
+    this.hasBeenAdmitted = function () {
+        return this.isAdmitted() && !this.isDischarged();
+    }
 };
 

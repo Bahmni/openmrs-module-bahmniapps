@@ -41,6 +41,7 @@
                         <th><strong>ID</strong></th>
                         <th ng-repeat="heading in getHeadings(search.visiblePatients)"><strong>{{heading}}</strong></th>
                         <th class="edit-col"></th>
+                        <th class="edit-col"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -49,6 +50,9 @@
                         <td ng-repeat="heading in getHeadings(search.visiblePatients)">
                             <a ng-if="isHeadingOfIdentifier(heading)" ng-click="forwardPatient(row)">{{row[heading]}}</a>
                             <span ng-if="!isHeadingOfIdentifier(heading)">{{row[heading]}}</span>
+                        </td>
+                        <td class="ipd-indication" ng-if="patient.hasBeenAdmitted == 'true'">
+
                         </td>
                     </tr>
                     </tbody>
@@ -60,6 +64,7 @@
                 <img class="smallImages" ng-src="{{patient.image}}"  onerror="this.onerror=null;this.src='../images/blank-user.png';" >
                 <div class="patient-name">{{patient.name}}</div>
                 <div class="patient-id">{{patient.identifier}}</div>
+                <div class="ipd-indication" ng-if="patient.hasBeenAdmitted == 'true'"></div>
             </li>
         </resize>
         <div class="note-container" ng-if="search.noResultsMessage">

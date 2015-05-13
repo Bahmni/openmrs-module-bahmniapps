@@ -28,7 +28,8 @@ angular.module('bahmni.common.displaycontrol.patientprofile')
             controller: controller,
             scope: {
                 patient: "=",
-                config: "="
+                config: "=",
+                visitSummary: "="
             },
             templateUrl: "../common/displaycontrols/patientprofile/views/patientProfile.html"
         };
