@@ -17,7 +17,7 @@ $retroModeColor:  #0E74AF;
 	  }
 	}
 	a.back-btn, button.back-btn{
-		margin: 4px 6px 0 0px;
+		margin: 4px 6px 0px 0px;
 	}
 	button.toggle-patient {
 	  background-color: darken($retroModeColor, 10%);
@@ -66,53 +66,15 @@ $retroModeColor:  #0E74AF;
     // position: relative;
     .retro-date-widget-header button{
       cursor: pointer;
-      padding: 10px 12px 9px;
+      width: auto;
+      max-width: 100%;
+      padding: 10px 12px 10px;
       float: left;
       color: $white;
       border: 1px solid darken($bahmniSecondaryColor, 15%);
       background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
    }
-   .retro-date-widget-panel{
-      position: absolute;
-      top: 47px;
-      right: 0;
-      background: $white;
-      border: 1px solid #ccc;
-      font-size: 14px;
-      color: $black;
-      border-radius: 0px 0px 5px 5px;
-      box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, .50);
-      -webkit-box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, .50);
-      -moz-box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, .50);  
-      z-index: 1;
-      padding:20px 20px 20px 0;
-      div.input-container{
-        float: left;
-        width: 200px;
-        padding-left: 20px;
-        select{
-          width: 100%;
-          -webkit-appearance: menulist-button;
-          height: 31px;
-        }
-        label.retro-date-label{
-          font-size: 14px;
-          padding: 4px 0;
-          display: inline-block;
-          font-weight: bold;
-        }
-        input.retro-date-widget {
-          height: 25px;
-          width: 97%;
-          padding: 1px;
-        }
-      }
-      button#retro-widget-button{
-        float: right;
-        clear: both;
-        margin-top:15px; 
-      }
-   }
+
   }
   input.retro-date-widget {
 	&.disabled-date {
@@ -137,4 +99,50 @@ $retroModeColor:  #0E74AF;
 	background: none;
 	border: 0;
   }
+}
+
+.retro-date-widget-panel{
+  float: left;
+  margin: 6px 0;
+  div.input-container{
+    float: left;
+    width: 210px;
+    padding-left: 10px;
+    &.date-widget-container{
+      padding-top: 8px;
+    }
+    select{
+      width: 100%;
+      -webkit-appearance: menulist-button;
+      height: 31px;
+    }
+    label.retro-date-label{
+      font-size: 14px;
+      line-height: 1;
+      display: inline-block;
+      font-weight: bold;
+    }
+    input.retro-date-widget {
+      height: 30px;
+      width: 97%;
+      padding: 1px;
+    }
+  }
+  .retro-widget-button-wrapper{
+    float: right;
+    margin-right: 7px;
+    margin-top: 15px;
+    button.retro-widget-button{
+      float: right;
+      width:93px;
+      color: $black;
+      &.ok_btn{
+        margin-left: 10px;
+      }
+    }
+  }
+
+}
+.ui-autocomplete{
+  z-index: 10001;
 }

@@ -1,0 +1,25 @@
+<div class="retro-date-widget-panel" xmlns="http://www.w3.org/1999/html">
+    <div class="input-container">
+        <label class="retro-date-label">Location</label>
+        <select ng-model="selectedLocationUuid">
+            <option ng-repeat="location in locations" ng-selected="isCurrentLocation(location)" value="{{location.uuid}}">
+                {{location.display}}
+            </option>
+        </select>
+    </div>
+    <div style="display:block !important" class="input-container">
+        <div show-if-privilege="{{grantProviderAccess}}">
+        <label class="retro-date-label">Enter on behalf</label>
+        <input type="text" class="retro-date-widget" ng-model="encounterProvider.value"
+               bahmni-autocomplete source="getProviderList()" response-map="getProviderDataResults" on-select="providerSelected()" ng-change="clearProvider(encounterProvider.value)"/>
+        </div>
+    </div>
+    <div class="input-container date-widget-container">
+        <label show-if-privilege="{{retrospectivePrivilege}}" for="retro-date-label" class="retro-date-label" >Enter data for</label>
+        <input show-if-privilege="{{retrospectivePrivilege}}" class="retro-date-widget" type="date" ng-model="date" max="{{today}}"/>
+    </div>
+    <div class="retro-widget-button-wrapper">
+        <button class="retro-widget-button ok_btn" ng-click="windowReload()">Ok</button>
+        <button class="retro-widget-button" ng-click="closePopUp()">Cancel</button>
+    </div>
+</div>

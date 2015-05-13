@@ -15,8 +15,7 @@ angular.module('bahmni.common.patient')
         $scope.encounterProvider = retrieveProviderCookieData();
 
         $scope.isValidProvider = function() {
-            if(retrieveProviderCookieData())
-                return true;
+            return retrieveProviderCookieData() && retrieveProviderCookieData().value;
         };
 
         $scope.retrospectivePrivilege = Bahmni.Common.Constants.retrospectivePrivilege;

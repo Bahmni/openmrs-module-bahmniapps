@@ -1,14 +1,15 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('PatientListHeaderController', ['$scope', '$rootScope', '$bahmniCookieStore', 'providerService', 'spinner', 'locationService',
-        function ($scope, $rootScope, $bahmniCookieStore, providerService, spinner, locationService) {
+    .controller('PatientListHeaderController', ['$scope', '$rootScope', '$bahmniCookieStore', 'providerService', 'spinner', 'locationService', '$window', 'ngDialog',
+        function ($scope, $rootScope, $bahmniCookieStore, providerService, spinner, locationService, $window, ngDialog) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
-            var selectedProviderData = {};
-            $scope.today = DateUtil.getDateWithoutTime(DateUtil.addDays(DateUtil.today(), 1));
+            var selectedProvider = {};
+            $scope.today = DateUtil.getDateWithoutTime(DateUtil.addDays(DateUtil.today(),1));
             $scope.retrospectivePrivilege = Bahmni.Common.Constants.retrospectivePrivilege;
             $scope.grantProviderAccess = Bahmni.Common.Constants.grantProviderAccess;
             $scope.selectedLocationUuid = {};
+
 
             $scope.getProviderList = function() {
                 return function (searchAttrs) {
@@ -19,38 +20,63 @@ angular.module('bahmni.clinical')
             $scope.getProviderDataResults = function(data) {
                 return data.data.results.map(function (providerDetails) {
                     return {
-                        'value': providerDetails.display,
+                        'value': providerDetails.person.display,
                         'uuid': providerDetails.uuid
                     }
                 });
             };
 
-            $scope.providerSelected = function(data) {
+            $scope.providerSelected = function() {
                 return function(providerData){
-                    selectedProviderData = providerData;
+                    selectedProvider = providerData;
                 }
             };
 
             $scope.clearProvider = function(data) {
-                if(!_.isEmpty(selectedProviderData) && data !== selectedProviderData.value){
+                if(!_.isEmpty(selectedProvider) && data !== selectedProvider.value){
                     $scope.encounterProvider = '';
-                    selectedProviderData = {};
+                    selectedProvider = {};
                 }
             };
 
             $scope.windowReload = function() {
                 changeCookieData();
-                window.location.reload(false);
+                $window.location.reload(false);
             };
 
             $scope.isCurrentLocation = function (location) {
                 return getCurrentLocation().uuid === location.uuid;
             };
 
+            $scope.popUpHandler = function() {
+                $scope.dialog = ngDialog.open({ template: 'consultation/views/defaultDataPopUp.html', className: 'test ngdialog-theme-default', controller: 'PatientListHeaderController'});
+
+            };
+
+            $scope.closePopUp = function() {
+                ngDialog.close();
+            };
+
             var getCurrentLocation = function () {
                 return $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) : null;
             };
 
+            var getCurrentProvider = function () {
+                return $bahmniCookieStore.get(Bahmni.Common.Constants.grantProviderAccessDataCookieName);
+            };
+
+            var getCurrentDate = function () {
+                return $bahmniCookieStore.get(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
+            };
+
+            $scope.getTitle = function(){
+
+                var title = [];
+                if(getCurrentLocation()) title.push(getCurrentLocation().name);
+                if(getCurrentProvider() && getCurrentProvider().value) title.push(getCurrentProvider().value);
+                if(getCurrentDate()) title.push(DateUtil.formatDateWithoutTime(getCurrentDate()));
+                return title.join(',');
+            };
             var getLocationFor = function(uuid){
                 return _.find($scope.locations, function(location){
                     return location.uuid == uuid;
@@ -58,26 +84,29 @@ angular.module('bahmni.clinical')
             };
 
             var changeCookieData = function() {
+                $rootScope.retrospectiveEntry.encounterDate = $scope.date;
                 $bahmniCookieStore.remove(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
-                $bahmniCookieStore.put(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName, $scope.date, {path: '/', expires: 1});
+                $bahmniCookieStore.put(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName,  $scope.date, {path: '/', expires: 1});
 
                 $bahmniCookieStore.remove(Bahmni.Common.Constants.grantProviderAccessDataCookieName);
-                $bahmniCookieStore.put(Bahmni.Common.Constants.grantProviderAccessDataCookieName, selectedProviderData, {path: '/', expires: 1});
+                $bahmniCookieStore.put(Bahmni.Common.Constants.grantProviderAccessDataCookieName, selectedProvider, {path: '/', expires: 1});
 
                 var selectedLocation = getLocationFor($scope.selectedLocationUuid);
                 $bahmniCookieStore.remove(Bahmni.Common.Constants.locationCookieName);
                 $bahmniCookieStore.put(Bahmni.Common.Constants.locationCookieName, {name: selectedLocation.display, uuid: selectedLocation.uuid},{path: '/', expires: 7});
             };
 
-
             var init = function () {
-                var retrospectiveDate = $bahmniCookieStore.get(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
-                $scope.date =  retrospectiveDate ? new Date(retrospectiveDate) : new Date($scope.today);
-                $scope.encounterProvider = $bahmniCookieStore.get(Bahmni.Common.Constants.grantProviderAccessDataCookieName);
-                selectedProviderData = $scope.encounterProvider;
+                var retrospectiveDate = getCurrentDate();
+                $scope.date = $rootScope.retrospectiveEntry.encounterDate = retrospectiveDate ? new Date(retrospectiveDate) : new Date($scope.today);
+
+                $scope.encounterProvider = getCurrentProvider();
+                selectedProvider = getCurrentProvider();
+
                 return locationService.getAllByTag("Login Location").then(function (response) {
                         $scope.locations = response.data.results;
                         $scope.selectedLocationUuid = getCurrentLocation().uuid;
+
                     }
                 );
             };
@@ -85,4 +114,3 @@ angular.module('bahmni.clinical')
             return spinner.forPromise(init());
 
         }]);
-
