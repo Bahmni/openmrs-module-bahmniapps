@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.adt')
-    .controller('WardDetailsController', ['$scope', '$rootScope', '$window', '$document', 'spinner', 'WardService', 'bedService', 'BedManagementService', 'userService',
-        function ($scope, $rootScope, $window, $document, spinner, wardService, bedService, bedManagementService, userService) {
+    .controller('WardDetailsController', ['$scope', '$rootScope', '$window', '$document', '$anchorScroll', 'spinner', 'WardService', 'bedService', 'BedManagementService', 'userService',
+        function ($scope, $rootScope, $window, $document, $anchorScroll, spinner, wardService, bedService, bedManagementService, userService) {
             $scope.wards = null;
             $scope.currentView = "wards";
             $scope.selectedBed = null;
@@ -57,6 +57,7 @@ angular.module('bahmni.adt')
             };
 
             $scope.showWardLayout = function (wardUuid) {
+                $anchorScroll();
                 $scope.disableBedAssignment = true;
                 currentWardUuid = wardUuid;
                 $scope.currentView = "wardLayout";
