@@ -1,13 +1,7 @@
 "use strict";
 
 angular.module('bahmni.orders')
-    .controller('PendingOrdersController', ['$scope','$rootScope', '$stateParams', 'PendingOrderService','$q', 'spinner', function ($scope, $rootScope, $stateParams, pendingOrderService, $q, spinner) {
-
-    	$scope.getOrders = function (patientUuid, orderTypeUuid) {
-    		pendingOrderService.getOrders(patientUuid, orderTypeUuid).success(function(response){
-    			return response.results;
-    		});
-    	};
+    .controller('PendingOrdersController', ['$scope','$rootScope', '$stateParams', 'orderService','$q', 'spinner', function ($scope, $rootScope, $stateParams, orderService, $q, spinner) {
 
         var constructEncounterTransactionObject = function(order){
             var orderUuid = order.uuid;
@@ -41,11 +35,9 @@ angular.module('bahmni.orders')
 
         $scope.saveResult = function(order){
             var encounterTransactionObj = constructEncounterTransactionObject(order);
-            pendingOrderService.saveOrderResult(encounterTransactionObj).success(function() {
+            orderService.saveOrderResult(encounterTransactionObj).success(function() {
                 init();
             });
-
-
         };
         
         var getResults = function() {
@@ -63,7 +55,7 @@ angular.module('bahmni.orders')
             });
             var getOrdersPromises ={};
             for(var key in nonLabOrderTypes) {
-                getOrdersPromises[key] = pendingOrderService.getOrders(patientUuid, nonLabOrderTypes[key])
+                getOrdersPromises[key] = orderService.getPendingOrders(patientUuid, nonLabOrderTypes[key])
             }
             return $q.all(getOrdersPromises);
         };

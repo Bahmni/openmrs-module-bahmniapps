@@ -21,6 +21,27 @@ angular
                     }
                 },
                 resolve: { initialization: 'initialization' }
+            })
+            .state('orderFulfillment', {
+                url: '/patient/:patientUuid/fulfillment/:orderType',
+                data: {
+                    backLinks: [
+                        {label: "Home", url: "../home/", icon: "fa-home"},
+                        {label: "Search", state: "search", icon: "fa-users"}
+                    ]
+                },
+                views: {
+                    'layout': {
+                        templateUrl: 'views/orderFulfillment.html',
+                        controller: 'OrderFulfillmentController'
+                    }
+                },
+                resolve: {
+                    initialization: 'initialization',
+                    patientContext: function(initialization, patientInitialization, $stateParams) {
+                        return patientInitialization($stateParams.patientUuid);
+                    }
+                }
             });
 }]).run(['backlinkService', function (backlinkService) {
     backlinkService.addUrl({label: "Patient Search", url: "../home/"});

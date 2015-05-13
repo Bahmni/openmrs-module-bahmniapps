@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.orders')
-.factory('initialization', ['$rootScope', '$q', 'appService', 'spinner', 'configurations',
-    function ($rootScope, $q, appService, spinner, configurations) {
+.factory('initialization', ['$rootScope', '$q', 'appService', 'spinner', 'configurations', 'orderTypeService',
+    function ($rootScope, $q, appService, spinner, configurations, orderTypeService) {
 
         var getConfigs = function () {
             var config = $q.defer();
@@ -19,6 +19,6 @@ angular.module('bahmni.orders')
             return appService.initApp('orders', {'app': true, 'extension' : true });
         };
 
-        return spinner.forPromise(initApp()).then(getConfigs());
+        return spinner.forPromise(initApp().then(getConfigs()).then(orderTypeService.loadAll()));
     }
 ]);
