@@ -82,5 +82,15 @@ describe("ensure that the directive order-selector works properly", function () 
         expect(compiledScope.orders.length).toBe(2);
         compiledScope.onSelectionChange(concept.setMembers[0]);
         expect(compiledScope.orders.length).toBe(1);
+        compiledScope.onSelectionChange(
+            {"conceptClass": "LabSet",
+            "uuid": "3b5ea063-b6e5-48cd-b39d-dce69f00f26a",
+            "name": "Biochemistry",
+            "set": true,
+            "isSelected" : true
+            }
+        );
+        expect(compiledScope.orders.length).toBe(1);
+        expect(compiledScope.orders[0].voided).toBe(true);
     });
 });

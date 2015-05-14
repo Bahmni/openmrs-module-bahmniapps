@@ -1,29 +1,35 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('OrderController', ['$scope','spinner', 'clinicalAppConfigService', 'conceptSetService',
-        function ($scope,spinner, clinicalAppConfigService, conceptSetService) {
+    .controller('OrderController', ['$scope','spinner', 'conceptSetService', 'orderTypes',
+        function ($scope,spinner, conceptSetService, orderTypes) {
             $scope.consultation.allOrdersTemplates = $scope.consultation.allOrdersTemplates || {};
             $scope.consultation.testOrders = $scope.consultation.testOrders || [];
+            $scope.orderTypeConceptClassMap = orderTypes;
 
             var init = function(){
-                var ordersConfig = clinicalAppConfigService.getOrders();
-                $scope.tabs = [];
+                spinner.forPromise(conceptSetService.getConceptSetMembers({name:"All Orderables",v:"custom:(uuid,name,conceptClass,setMembers:(uuid,name,conceptClass))"})).then(function(response){
+                    var orderables = response.data.results[0].setMembers;
 
-                _.forEach(ordersConfig, function(item){
-                    $scope.tabs.push({name: item.name, tests: item.tests, topLevelConcept: item.conceptSet});
+                    $scope.tabs = [];
+
+                    _.forEach(orderables, function(item){
+                        $scope.tabs.push({name: item.name.name, tests: $scope.orderTypeConceptClassMap['\''+item.name.name+'\''].conceptClasses, topLevelConcept: item.name.name});
+                    });
+
+                    if($scope.tabs) {
+                        $scope.activateTab($scope.tabs[0]);
+                    }
+
+                    $scope.getAllOrderTemplates();
                 });
 
-                if($scope.tabs) {
-                    $scope.activateTab($scope.tabs[0]);
-                }
 
-                $scope.getAllOrderTemplates();
             };
 
             $scope.getTabInclude = function(){
                 return 'consultation/views/orderTemplateViews/ordersTemplate.html';
-            }
+            };
 
             $scope.getAllOrderTemplates = function() {
                 $scope.tabs.forEach(function(tab){
@@ -32,7 +38,7 @@ angular.module('bahmni.clinical')
                         $scope.consultation.allOrdersTemplates['\''+tab.topLevelConcept+'\''] = response.data.results[0];
                     });
                 });
-            }
+            };
 
             $scope.getOrderTemplate = function(templateName) {
                 var key = '\''+templateName+'\'';               
@@ -45,10 +51,10 @@ angular.module('bahmni.clinical')
                 $scope.activeTab.klass="active";
             };
 
-            $scope.showLabSampleTests = function(labSample) {
-                $scope.labSample && ($scope.labSample.klass="");
-                $scope.labSample = labSample;
-                $scope.labSample.klass = "active";
+            $scope.showleftCategoryTests = function(leftCategory) {
+                $scope.leftCategory && ($scope.leftCategory.klass="");
+                $scope.leftCategory = leftCategory;
+                $scope.leftCategory.klass = "active";
             };
 
             $scope.diSelect = function(selectedOrder) {

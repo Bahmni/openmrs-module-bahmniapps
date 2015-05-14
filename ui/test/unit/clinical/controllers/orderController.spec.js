@@ -2,7 +2,7 @@
 
 describe("OrderController", function () {
 
-    var scope, spinner, deferred, rootScope, clinicalAppConfigService, conceptSetService, fetchAllOrderTemplatesdeferred;
+    var scope, spinner, deferred, rootScope, conceptSetService, fetchDeferred;
 
     beforeEach(module('bahmni.common.conceptSet'));
     beforeEach(module('bahmni.clinical'));
@@ -12,89 +12,97 @@ describe("OrderController", function () {
         rootScope = $rootScope;
         scope.consultation = {testOrders: []};
 
-        clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getOrders']);
-        clinicalAppConfigService.getOrders.and.returnValue(ordersConfig);
-
         conceptSetService = jasmine.createSpyObj('conceptSetService', ['getConceptSetMembers']);
-        conceptSetService.getConceptSetMembers.and.callFake(function () {
-             fetchAllOrderTemplatesdeferred = $q.defer();
-             fetchAllOrderTemplatesdeferred.resolve(orderTemplate);
-             return fetchAllOrderTemplatesdeferred.promise;//specUtil.respondWith([orderTemplate]);
+        conceptSetService.getConceptSetMembers.and.callFake(function (param) {
+            fetchDeferred = $q.defer();
+            if(param.name === "All Orderables") {
+                fetchDeferred.resolve(allOrderables);
+            }
+            else {
+                fetchDeferred.resolve(orderTemplate);
+            }
+            return fetchDeferred.promise;
         });
 
         var _spinner = jasmine.createSpyObj('spinner',['forPromise','then']);
-        _spinner.forPromise.and.callFake(function(){
+        _spinner.forPromise.and.callFake(function(promiseToResolve){
             deferred = $q.defer();
-            deferred.resolve({data: orderTemplate});
+            deferred.resolve({data: promiseToResolve.$$state.value});
             return deferred.promise;
         });
 
-        _spinner.then.and.callThrough({data: orderTemplate});
+        _spinner.then.and.callThrough(function(param){
+            deferred = $q.defer();
+            deferred.resolve({data: param.value});
+            return deferred.promise;
+        });
 
         $controller('OrderController', {
             $scope: scope,
             $rootScope: rootScope,
-            clinicalAppConfigService: clinicalAppConfigService,
             conceptSetService: conceptSetService,
-            spinner: _spinner
+            spinner: _spinner,
+            orderTypes: orderTypeConceptClassMap
         });
     }));
 
-    it("should fetch ordersConfig and set in tabs", function () {
-        expect(scope.tabs.length).toBe(1);
-        expect(scope.tabs[0].name).toBe("Lab Orders");
-        expect(scope.tabs[0].tests.length).toBe(2);
-        expect(scope.tabs[0].topLevelConcept).toBe("Lab Samples");
-        expect(scope.tabs[0]).toBe(scope.activeTab);
+    describe('test the OrderController', function () {
+        it("should fetch ordersConfig and set in tabs", function () {
+            scope.$digest();
+            expect(scope.tabs.length).toBe(1);
+            expect(scope.tabs[0].name).toBe("Lab Order");
+            expect(scope.tabs[0].tests.length).toBe(2);
+            expect(scope.tabs[0].topLevelConcept).toBe("Lab Order");
+            expect(scope.tabs[0]).toBe(scope.activeTab);
 
+        });
+
+        it("should fetch all orders templates", function () {
+            scope.$digest();
+            expect(scope.consultation.allOrdersTemplates['\'Lab Order\''].name.name).toBe("Lab Order");
+            expect(scope.consultation.allOrdersTemplates['\'Lab Order\''].conceptClass.name).toBe("ConvSet");
+        });
+
+        it("diSelect() should unselect order", function () {
+            scope.consultation = tempConsultation;
+            scope.diSelect({"concept": {"uuid": "3b5ea063-b6e5-48cd-b39d-dce69f00f26a"}});
+            expect(scope.consultation.testOrders[0].voided).toBe(true);
+            scope.diSelect({"concept": {"uuid": "3c5ea063-b6e5-48cd-b39d-dce69f00f26a"}});
+            expect(scope.consultation.testOrders.length).toBe(1);
+        });
+
+        it("showLabSampleTests() should set the particular LabOrder to be active", function () {
+            scope.showleftCategoryTests({"name": "Blood"});
+            expect(scope.leftCategory.klass).toBe("active");
+            expect(scope.leftCategory.name).toBe("Blood");
+        });
+
+        it("getOrderTemplate :should return the Order template", function () {
+            scope.$digest();
+            expect(scope.getOrderTemplate("Lab Order").name.name).toBe("Lab Order");
+            expect(scope.getTabInclude()).toBe('consultation/views/orderTemplateViews/ordersTemplate.html');
+        });
     });
 
-    it("should fetch all orders templates", function () {
-        scope.$digest();
-        expect(scope.consultation.allOrdersTemplates['\'Lab Samples\''].name.name).toBe("Lab Samples");
-        expect(scope.consultation.allOrdersTemplates['\'Lab Samples\''].conceptClass.name).toBe("ConvSet");
-    });
-
-    it("diSelect() should unselect order", function () {
-        scope.consultation = tempConsultation;
-        scope.diSelect({"concept" : {"uuid" : "3b5ea063-b6e5-48cd-b39d-dce69f00f26a"}});
-        expect(scope.consultation.testOrders[0].voided).toBe(true);
-        scope.diSelect({"concept" : {"uuid" : "3c5ea063-b6e5-48cd-b39d-dce69f00f26a"}});
-        expect(scope.consultation.testOrders.length).toBe(1);
-    });
-
-    it("showLabSampleTests() should set the particular labsample to be active", function () {
-        scope.showLabSampleTests({"name" : "Blood"});
-        expect(scope.labSample.klass).toBe("active");
-        expect(scope.labSample.name).toBe("Blood");
-    });
-
-    it("getOrderTemplate :should return the Order template", function () {
-        scope.$digest();
-        expect(scope.getOrderTemplate("Lab Samples").name.name).toBe("Lab Samples");
-    });
-
-    var ordersConfig = [
-        {
-            "name":"Lab Orders",
-            "conceptSet":"Lab Samples",
-            "tests":[
+    var orderTypeConceptClassMap = {
+        "\'Lab Order\'" : {
+            "conceptClasses" : [
                 {
-                    "type": "LabSet",
-                    "title":"Panel"
+                    "title": "LabSet",
+                    "type": "LabSet"
                 },
                 {
-                    "type": "LabTest",
-                    "title":"Tests"
+                    "title": "LabTest",
+                    "type": "LabTest"
                 }
             ]
-        }              
-    ],
+        }
+    },
     orderTemplate = {
         "results" : [
         {
             "conceptClass" : {"name" : "ConvSet"},
-            "name" : {"name" : "Lab Samples"},
+            "name" : {"name" : "Lab Order"},
             "uuid" : "00517b93-aff1-11e3-be87-005056821db0",
             "setMembers" : [
                 {
@@ -106,6 +114,24 @@ describe("OrderController", function () {
 
         }
     ]
+    },
+
+    allOrderables = {
+        "results" : [
+            {
+                "conceptClass" : {"name" : "ConvSet"},
+                "name" : {"name" : "All Orderables"},
+                "uuid" : "00517b93-aff1-11e3-be87-005056821db0",
+                "setMembers" : [
+                    {
+                        "conceptClass" : {"name" : "ConvSet"},
+                        "name" : {"name" : "Lab Order"},
+                        "uuid" : "10517b93-aff1-11e3-be87-005056821db0"
+                    }
+                ]
+
+            }
+        ]
     },
 
     tempConsultation = {

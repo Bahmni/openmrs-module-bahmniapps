@@ -3,15 +3,15 @@
         <div class="dashboard-sections dashboard-sections-left">
             <div class="multi-select-button-group multi-select-lab-tests">
                 <ul>
-                    <li ng-repeat="labSample in getOrderTemplate(activeTab.topLevelConcept).setMembers">
-                        <a ng-click="showLabSampleTests(labSample)">
-                            {{labSample.name.display}}
+                    <li ng-repeat="leftCategory in getOrderTemplate(activeTab.topLevelConcept).setMembers">
+                        <a ng-click="showleftCategoryTests(leftCategory)">
+                            {{leftCategory.name.display}}
                         </a>
                     </li>
                 </ul>
             </div>
         </div>
 </section>
-    <section class="dashboard-sections dashboard-sections-right" ng-repeat="test in activeTab.tests" ng-if="labSample">
-        <order-selector orders="consultation.testOrders" root-concept="labSample" concept-class="test.type" consultation="consultation" title="test.title"></order-selector>
-    </section>
+<section class="dashboard-sections dashboard-sections-right" ng-repeat="test in activeTab.tests" ng-if="leftCategory">
+    <order-selector orders="consultation.testOrders" root-concept="leftCategory" concept-class="test.name" consultation="consultation" title="test.display"></order-selector>
+</section>

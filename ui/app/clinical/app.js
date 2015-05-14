@@ -153,7 +153,12 @@ angular.module('consultation')
             .state('patient.consultation.orders', {
                 url: '/orders',
                 templateUrl: 'consultation/views/orders.html',
-                controller: 'OrderController'
+                controller: 'OrderController',
+                resolve: {
+                    orderTypes: function (initialization, orderTypesInitialization) {
+                        return orderTypesInitialization();
+                    }
+                }
             })
             .state('patient.consultation.diagnosis', {
                 url: '/diagnosis',
