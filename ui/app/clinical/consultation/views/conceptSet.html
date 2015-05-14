@@ -1,11 +1,11 @@
 <div bm-pop-over autoclose="true" class="clinical-observations">
     <div class="template-control-header">
-        <button bm-pop-over-trigger><i class="fa fa-th"></i></button>
+        <button id="template-control-panel-button" bm-pop-over-trigger><i class="fa fa-th"></i></button>
     </div>
     <div class="template-control-panel primary-section-grid" bm-pop-over-target>
         <ul class="template-icons">
             <li ng-repeat="template in consultation.selectedObsTemplate" ng-if="!template.isAdded && !template.alwaysShow">
-                <button ng-click="toggleTemplate(template)">
+                <button id="{{getNormalized(template.label)}}" ng-click="toggleTemplate(template)">
                     <i class="fa fa-square-o" ng-hide="template.isAdded"></i>
                     <i class="fa fa-check" ng-show="template.isAdded"></i>
                     {{template.label}}

@@ -44,4 +44,8 @@ angular.module('bahmni.clinical')
         }
     };
 
+    $scope.getNormalized = function (conceptName) {
+        return conceptName.replace(/['\.\s\(\)\/,\\]+/g, "_");
+    };
+
 }]);
