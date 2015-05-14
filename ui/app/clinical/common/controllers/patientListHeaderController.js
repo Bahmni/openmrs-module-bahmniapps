@@ -98,7 +98,8 @@ angular.module('bahmni.clinical')
 
             var init = function () {
                 var retrospectiveDate = getCurrentDate();
-                $scope.date = $rootScope.retrospectiveEntry.encounterDate = retrospectiveDate ? new Date(retrospectiveDate) : new Date($scope.today);
+                $scope.date = retrospectiveDate ? new Date(retrospectiveDate) : new Date($scope.today);
+                $rootScope.retrospectiveEntry.encounterDate = retrospectiveDate ? retrospectiveDate : DateUtil.today();
 
                 $scope.encounterProvider = getCurrentProvider();
                 selectedProvider = getCurrentProvider();
