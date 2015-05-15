@@ -8,7 +8,8 @@ describe("Observation Graph", function () {
     beforeEach(module(function ($provide) {
         observationsService = jasmine.createSpyObj('observationsService', ['fetch']);
         patientService = jasmine.createSpyObj('patientService', ['getPatient']);
-        conceptSetService= jasmine.createSpyObj('conceptSetService', ['getConceptSetMembers']);
+        conceptSetService = jasmine.createSpyObj('conceptSetService', ['getConceptSetMembers']);
+        appService = jasmine.createSpyObj('appService', ['loadConfig']);
         $provide.value('observationsService', observationsService);
         $provide.value('patientService', patientService);
         $provide.value('conceptSetService', conceptSetService);
@@ -118,7 +119,10 @@ describe("Observation Graph", function () {
         var graphModel = [{
             name: "Temperature",
             units: "Celcius",
-            values: [{observationDateTime: Bahmni.Common.Util.DateUtil.parseDatetime("2015-01-01").toDate(), Temperature: 45}]
+            values: [{
+                observationDateTime: Bahmni.Common.Util.DateUtil.parseDatetime("2015-01-01").toDate(),
+                Temperature: 45
+            }]
         }];
         var anyElement = null;
         expect(Bahmni.Graph.c3Chart).toHaveBeenCalledWith(anyElement, jasmine.any(Number),
@@ -160,6 +164,50 @@ describe("Observation Graph", function () {
             , new Bahmni.Clinical.ObservationGraphConfig(scope.section.config)
             , new Bahmni.Clinical.ObservationGraph(graphModel));
         expect(Bahmni.Graph.c3Chart).toHaveBeenCalled();
+    });
+
+    it("should render growth chart", function () {
+        scope.section = {
+            "type": "observationGraph",
+            "name": "observationGraph",
+            "title": "Growth Chart",
+            "config": {
+                "growthChart": {
+                    "referenceData": "growthChartReference",
+                    "maxNumberOfMonths": 24
+                },
+                "numberOfVisits": 20
+            }
+        };
+        mockPatientService({person: {birthdate: "2014-02-02"}});
+        mockObservationService([{
+            observationDateTime: "2015-01-01",
+            value: 45,
+            concept: {name: "Weight", units: "Kg"}
+        }]);
+        mockConceptSetService([]);
+        appService.loadConfig.and.callFake(function () {
+            return {
+                then: function (callback) {
+                    callback({
+                        data: [
+                            ["Gender", "Age", "3rd", "10th", "50th", "75th", "97th"],
+                            ["M", 0, 2.3, 2.7, 3.5, 3.8, 4.4]
+                        ]
+                    });
+                }
+            }
+        })
+        spyOn(Bahmni.Graph, 'c3Chart');
+        var mockGrowthChartReferenceModel = jasmine.createSpyObj('GrowthChartReference',['']);
+        spyOn(Bahmni.Clinical.ObservationGraph, 'create').and.returnValue(mockGrowthChartReferenceModel);
+        mockPatientService({person: {birthdate: "2000-02-02"}});
+
+        compile(element)(scope);
+        scope.$digest();
+        httpBackend.flush();
+
+        expect(Bahmni.Graph.c3Chart).toHaveBeenCalledWith(null, 0, jasmine.any(Object), mockGrowthChartReferenceModel);
     });
 
     it("should call c3 render for observations with xaxis as another concept", function () {
@@ -222,7 +270,7 @@ describe("Observation Graph", function () {
         scope.$digest();
         httpBackend.flush();
 
-        var toDate = function(str) {
+        var toDate = function (str) {
             return Bahmni.Common.Util.DateUtil.parseDatetime(str).toDate();
         };
 

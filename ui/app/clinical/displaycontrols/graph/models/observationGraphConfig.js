@@ -60,4 +60,10 @@
         }
     };
 
+    configPrototype.getGrowthChartMaxNoOfMonths = function() {
+        if(this.isGrowthChart()) {
+            return this.growthChart.maxNumberOfMonths;
+        }
+    }
+
 })();

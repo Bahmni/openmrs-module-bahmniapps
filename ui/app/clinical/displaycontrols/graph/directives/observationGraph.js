@@ -46,9 +46,8 @@ angular.module('bahmni.clinical').directive('observationGraph', ['appService', '
                 var patient = results[2] && results[2].data.person;
                 var growthChartReference;
                 if(config.isGrowthChart()) {
-                    growthChartReference = Bahmni.Clinical.GrowthChartReference.create(patient.gender, results[3].data);
+                    growthChartReference = Bahmni.Clinical.GrowthChartReference.create(patient.gender, results[3].data, config.getGrowthChartMaxNoOfMonths());
                 }
-
                 if(observations.length == 0) return;
 
                 if(conceptData.results && conceptData.results.length > 0) {

@@ -16,13 +16,13 @@
         };
     };
 
-    Bahmni.Clinical.GrowthChartReference.create = function (gender, referenceChartValues) {
+    Bahmni.Clinical.GrowthChartReference.create = function (gender, referenceChartValues, maxNoOfMonths) {
         var genderColumn = 0;
         var ageColumn = 1;
         var headerRow = 0;
 
-        var valuesByGender = _.filter(referenceChartValues, function (value) {
-            return value[genderColumn] === gender;
+        var valuesFilteredByGenderAndMaxMonths = _.filter(referenceChartValues, function (value) {
+            return (value[genderColumn] === gender) && (maxNoOfMonths === undefined || value[ageColumn] <= maxNoOfMonths);
         });
 
         var observationModels = [];
@@ -33,12 +33,11 @@
                 'reference' : true,
                 'values' : []
             };
-            for(var row = 0; row < valuesByGender.length; row++) {
+            for(var row = 0; row < valuesFilteredByGenderAndMaxMonths.length; row++) {
                 var point = {};
-                point[referenceChartValues[headerRow][col]] = valuesByGender[row][col];
-                point["AGE"] = valuesByGender[row][ageColumn];
+                point[referenceChartValues[headerRow][col]] = valuesFilteredByGenderAndMaxMonths[row][col];
+                point["AGE"] = valuesFilteredByGenderAndMaxMonths[row][ageColumn];
                 observationModel.values.push(point);
-                //observationModel.values.push({WEIGHT: valuesByGender[row][col], AGE: valuesByGender[row][ageColumn]});
             }
             observationModels.push(observationModel);
         }
