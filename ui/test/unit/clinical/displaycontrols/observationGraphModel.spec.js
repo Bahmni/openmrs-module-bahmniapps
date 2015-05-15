@@ -86,4 +86,24 @@ describe("Observation Graph Model", function () {
         expect(observationGraph[1].values[0].Weight).toBe(80);
         expect(observationGraph[1].values[0].age).toBeUndefined();
     });
+
+    it("should create model without taking concept name text case (Uppercase/Lowercase) into account", function() {
+        var obsServiceValues = [{
+            observationDateTime: "2015-02-03",
+            value: 80,
+            concept: {name: "WEIGHT", units: "kg"}
+        }];
+
+        var config = new Bahmni.Clinical.ObservationGraphConfig({
+            "yAxisConcepts": ["Weight"],
+            "xAxisConcept": "observationDateTime",
+            "numberOfVisits": 3
+        });
+
+        var observationGraph = Bahmni.Clinical.ObservationGraph.create(obsServiceValues, null, config);
+
+        expect(observationGraph[0].name).toBe("Weight");
+        expect(observationGraph[0].units).toBe("kg");
+        expect(observationGraph[0].values.length).toBe(1);
+    });
 });

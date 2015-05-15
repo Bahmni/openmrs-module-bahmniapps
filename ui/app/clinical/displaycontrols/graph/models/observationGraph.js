@@ -7,6 +7,16 @@
         angular.extend(this, model);
     };
 
+    var normalizeObservationsConceptName = function(config, observations) {
+        var conceptNamesFromConfig = config.yAxisConcepts.slice(0);
+        conceptNamesFromConfig.push(config.xAxisConcept);
+        _.each(observations, function(obs) {
+            obs.concept.name = _.find(conceptNamesFromConfig, function(configConceptName) {
+                return configConceptName.toLowerCase() === obs.concept.name.toLowerCase();
+            })
+        })
+    }
+
     var createObservationPoint = function (config, obs, xAxisValues) {
         var observation = {};
         observation[config.xAxisConcept] = xAxisValues;
@@ -21,6 +31,7 @@
     };
 
     Bahmni.Clinical.ObservationGraph.create = function (observations, person, config, growthChartReference) {
+        normalizeObservationsConceptName(config, observations);
         var yAxisObservations = _.filter(observations, function (obs) {
             return obs.concept.name !== config.xAxisConcept;
         });
