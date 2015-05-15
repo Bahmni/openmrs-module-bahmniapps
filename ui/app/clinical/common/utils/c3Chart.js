@@ -3,10 +3,21 @@
 var Bahmni = Bahmni || {};
 Bahmni.Graph = Bahmni.Graph || {};
 
-Bahmni.Graph.c3Chart = function (bindTo, graphWidth, config, data) {
+Bahmni.Graph.c3Chart = function () {
     var dateUtil = Bahmni.Common.Util.DateUtil;
-    var axis = {
-        x: {
+
+    var createReferenceClasses = function (data) {
+        var classes = {};
+        _.each(data, function (datum) {
+            if (datum.reference) {
+                classes[datum.name] = 'reference-line';
+            }
+        });
+        return classes;
+    };
+
+    var createXAxisConfig = function (config) {
+        return {
             label: {
                 text: config.xAxisConcept + (config.unit || ''),
                 position: 'outer-right'
@@ -17,14 +28,14 @@ Bahmni.Graph.c3Chart = function (bindTo, graphWidth, config, data) {
                 culling: {
                     max: 3
                 },
-                format: function(xAxisConcept) {
+                format: function (xAxisConcept) {
                     return config.displayForObservationDateTime() ? dateUtil.formatDateWithoutTime(xAxisConcept) : xAxisConcept;
                 }
             }
         }
     };
 
-    var createYAxis = function (unit) {
+    var createYAxisConfig = function (unit) {
         return {
             label: {
                 text: unit,
@@ -42,111 +53,120 @@ Bahmni.Graph.c3Chart = function (bindTo, graphWidth, config, data) {
         }
     };
 
-    var createReferenceClasses = function() {
-        var classes = {};
-        _.each(data, function(datum) {
-            if(datum.reference) {
-                classes[datum.name] = 'reference-line';
-            }
-        });
-        return classes;
-    };
-
-    var allPoints = _(data).reduce(function (accumulator, item) {
-        return accumulator.concat(item.values);
-    }, []);
-
-    var distinctUnits = _.uniq(_.pluck(data, 'units'));
-    if (distinctUnits.length > 2) {
-        throw new Error("Cannot display line graphs with concepts that have more than 2 units");
+    var createAxisConfig = function(config, units) {
+        var axis = {
+            x: createXAxisConfig(config),
+            y: createYAxisConfig(units[0])
+        };
+        if(units[1] != undefined) {
+            axis['y2'] = createYAxisConfig(units[1]);
+        }
+        return axis;
     }
 
-    var axes = {};
-    var createAxisAndPopulateAxes = function (axisY, unit) {
+    var createGridConfig = function(config) {
+        var grid = {
+            y: {
+                lines: []
+            }
+        };
+        if (config.yAxisConcepts.length == 1) {
+            if (config.lowNormal != undefined) {
+                grid.y.lines.push({value: config.lowNormal, text: "low", class: "lowNormal"});
+            }
+            if (config.hiNormal != undefined) {
+                grid.y.lines.push({value: config.hiNormal, text: "high", class: "hiNormal"});
+            }
+        }
+        return grid;
+    };
+
+    var createConfigForToolTipGroupingFix = function(config) {
+        var xs = {};
+        config.yAxisConcepts.forEach(function (yAxisConcept) {
+            xs[yAxisConcept] = config.xAxisConcept;
+        });
+        return xs;
+    };
+
+    var createConfigForAxes = function (data, units) {
+        var axes = {};
+        createAxisAndPopulateAxes(axes, data, 'y', units[0]);
+        createAxisAndPopulateAxes(axes, data, 'y2', units[1]);
+        return axes;
+    };
+
+    var createAxisAndPopulateAxes = function (axes, data, axisY, unit) {
         if (!unit) return;
-        axis[axisY] = createYAxis(unit);
         _.each(data, function (item) {
             if (item.units === unit) {
                 axes[item.name] = axisY;
             }
         });
     };
-    createAxisAndPopulateAxes('y', distinctUnits[0]);
-    createAxisAndPopulateAxes('y2', distinctUnits[1]);
 
-    var xs = {};
-    config.yAxisConcepts.forEach(function(yAxisConcept){
-        xs[yAxisConcept] = config.xAxisConcept;
-    });
-
-    var grid = {
-        y: {
-            lines: []
+    this.render = function (bindTo, graphWidth, config, data) {
+        var distinctUnits = _.uniq(_.pluck(data, 'units'));
+        if (distinctUnits.length > 2) {
+            throw new Error("Cannot display line graphs with concepts that have more than 2 units");
         }
-    };
 
-    var plotRange = function(){
-        if(config.lowNormal != undefined){
-            grid.y.lines.push({value: config.lowNormal, text: "low", class: "lowNormal"});
-        }if(config.hiNormal != undefined){
-            grid.y.lines.push({value: config.hiNormal, text: "high", class: "hiNormal"});
-        }
-    };
+        var allPoints = _(data).reduce(function (accumulator, item) {
+            return accumulator.concat(item.values);
+        }, []);
 
-    var getRange = function(){
-        if(config.yAxisConcepts.length == 1) plotRange();
-        return grid;
-    };
-
-
-    var c3Chart;
-    var c3Config = {
-
-        bindto: bindTo,
-        size: {
-            width: graphWidth
-        },
-        padding: {
-            top: 20,
-            right: 50
-        },
-        data: {
-            json: allPoints,
-            keys: {
-                x: config.xAxisConcept,
-                value: config.yAxisConcepts
+        var c3Chart;
+        var c3Config = {
+            bindto: bindTo,
+            size: {
+                width: graphWidth
             },
-            axes: axes,
-            xs : xs,
-            onclick: function (d) {
-                c3Chart.tooltip.show({data: d});
+            padding: {
+                top: 20,
+                right: 50
             },
-            classes: createReferenceClasses()
-        },
-        point: {
-            show: true,
-            r: 5,
-            sensitivity: 20
-        },
-        line: {
-            connectNull: true
-        },
-        axis: axis,
-        tooltip: {
-            grouped: true,
-            format: {
-                title: function (xAxisConcept) {
-                    return config.displayForObservationDateTime() ?
-                        dateUtil.formatDateWithTime(xAxisConcept) : (config.xAxisConcept + " " + xAxisConcept);
+            data: {
+                json: allPoints,
+                keys: {
+                    x: config.xAxisConcept,
+                    value: config.yAxisConcepts
+                },
+                axes: createConfigForAxes(data, distinctUnits),
+                xs: createConfigForToolTipGroupingFix(config),
+                onclick: function (d) {
+                    c3Chart.tooltip.show({data: d});
+                },
+                classes: createReferenceClasses(data)
+            },
+            point: {
+                show: true,
+                r: 5,
+                sensitivity: 20
+            },
+            line: {
+                connectNull: true
+            },
+            axis: createAxisConfig(config, distinctUnits),
+            tooltip: {
+                grouped: true,
+                format: {
+                    title: function (xAxisConcept) {
+                        return config.displayForObservationDateTime() ?
+                            dateUtil.formatDateWithTime(xAxisConcept) : (config.xAxisConcept + " " + xAxisConcept);
+                    }
                 }
-            }
-        },
-        zoom: {
-            enabled: true
-        },
-        transition_duration: 0,
-        grid: getRange()
+            },
+            zoom: {
+                enabled: true
+            },
+            transition_duration: 0,
+            grid: createGridConfig(config)
+        };
+        c3Chart = c3.generate(c3Config);
+        return c3Chart;
     };
-    c3Chart = c3.generate(c3Config);
-    return c3Chart;
 };
+
+Bahmni.Graph.c3Chart.create = function() {
+    return new Bahmni.Graph.c3Chart();
+}

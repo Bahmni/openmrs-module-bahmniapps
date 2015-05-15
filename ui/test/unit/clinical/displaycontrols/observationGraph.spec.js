@@ -1,7 +1,7 @@
 'use strict';
 
 describe("Observation Graph", function () {
-    var element, scope, compile, httpBackend, observationsService, patientService, conceptSetService, appService;
+    var element, scope, compile, httpBackend, observationsService, patientService, conceptSetService, appService, c3ChartSpy;
 
     beforeEach(module('bahmni.clinical'));
 
@@ -15,7 +15,10 @@ describe("Observation Graph", function () {
         $provide.value('conceptSetService', conceptSetService);
         $provide.value('appService', appService);
 
-        window.c3 = jasmine.createSpyObj('c3', ['generate']);
+        c3ChartSpy = jasmine.createSpyObj('c3Chart', ['render']);
+        Bahmni.Graph.c3Chart.create = function() {
+            return c3ChartSpy;
+        };
     }));
 
     beforeEach(inject(function ($compile, $rootScope, $httpBackend) {
@@ -83,13 +86,12 @@ describe("Observation Graph", function () {
         };
         mockObservationService([]);
         mockConceptSetService([]);
-        spyOn(Bahmni.Graph, 'c3Chart');
 
         compile(element)(scope);
         scope.$digest();
         httpBackend.flush();
 
-        expect(Bahmni.Graph.c3Chart).not.toHaveBeenCalled();
+        expect(c3ChartSpy.render).not.toHaveBeenCalled();
     });
 
     it("should call c3 render for observations with xaxis as observationDatetime", function () {
@@ -109,7 +111,6 @@ describe("Observation Graph", function () {
             concept: {name: "Temperature", units: "Celcius"}
         }]);
         mockConceptSetService([]);
-        spyOn(Bahmni.Graph, 'c3Chart');
 
         compile(element)(scope);
         scope.$digest();
@@ -125,10 +126,9 @@ describe("Observation Graph", function () {
             }]
         }];
         var anyElement = null;
-        expect(Bahmni.Graph.c3Chart).toHaveBeenCalledWith(anyElement, jasmine.any(Number),
+        expect(c3ChartSpy.render).toHaveBeenCalledWith(anyElement, jasmine.any(Number),
             new Bahmni.Clinical.ObservationGraphConfig(scope.section.config),
             new Bahmni.Clinical.ObservationGraph(graphModel));
-        expect(Bahmni.Graph.c3Chart).toHaveBeenCalled();
     });
 
     it("should call c3 render for observations with xaxis as age", function () {
@@ -148,7 +148,6 @@ describe("Observation Graph", function () {
             concept: {name: "Height", units: "cm"}
         }]);
         mockConceptSetService([]);
-        spyOn(Bahmni.Graph, 'c3Chart');
         mockPatientService({person: {birthdate: "2000-02-02"}});
 
         compile(element)(scope);
@@ -158,12 +157,11 @@ describe("Observation Graph", function () {
         expect(scope.graphId).not.toBeNull();
         var graphModel = [{name: 'Height', units: "cm", values: [{age: '14.10', Height: 45}]}];
         var anyElement = null;
-        expect(Bahmni.Graph.c3Chart).toHaveBeenCalledWith(
+        expect(c3ChartSpy.render).toHaveBeenCalledWith(
             anyElement
             , jasmine.any(Number)
             , new Bahmni.Clinical.ObservationGraphConfig(scope.section.config)
             , new Bahmni.Clinical.ObservationGraph(graphModel));
-        expect(Bahmni.Graph.c3Chart).toHaveBeenCalled();
     });
 
     it("should render growth chart", function () {
@@ -198,7 +196,6 @@ describe("Observation Graph", function () {
                 }
             }
         })
-        spyOn(Bahmni.Graph, 'c3Chart');
         var mockGrowthChartReferenceModel = jasmine.createSpyObj('GrowthChartReference',['']);
         spyOn(Bahmni.Clinical.ObservationGraph, 'create').and.returnValue(mockGrowthChartReferenceModel);
         mockPatientService({person: {birthdate: "2000-02-02"}});
@@ -207,7 +204,7 @@ describe("Observation Graph", function () {
         scope.$digest();
         httpBackend.flush();
 
-        expect(Bahmni.Graph.c3Chart).toHaveBeenCalledWith(null, 0, jasmine.any(Object), mockGrowthChartReferenceModel);
+        expect(c3ChartSpy.render).toHaveBeenCalledWith(null, 0, jasmine.any(Object), mockGrowthChartReferenceModel);
     });
 
     it("should call c3 render for observations with xaxis as another concept", function () {
@@ -226,7 +223,6 @@ describe("Observation Graph", function () {
             {observationDateTime: "2015-01-01", value: 45, concept: {name: "Weight", units: "kg"}}
         ]);
         mockConceptSetService([]);
-        spyOn(Bahmni.Graph, 'c3Chart');
 
         compile(element)(scope);
         scope.$digest();
@@ -239,11 +235,10 @@ describe("Observation Graph", function () {
             values: [{Weight: 45, Height: 155}]
         }];
         var anyElement = null;
-        expect(Bahmni.Graph.c3Chart).toHaveBeenCalledWith(anyElement
+        expect(c3ChartSpy.render).toHaveBeenCalledWith(anyElement
             , jasmine.any(Number)
             , new Bahmni.Clinical.ObservationGraphConfig(scope.section.config)
             , new Bahmni.Clinical.ObservationGraph(graphModel));
-        expect(Bahmni.Graph.c3Chart).toHaveBeenCalled();
     });
 
     it("should call c3 render for multiple observations on the yAxis", function () {
@@ -264,7 +259,6 @@ describe("Observation Graph", function () {
         ]);
         mockConceptSetService([]);
 
-        spyOn(Bahmni.Graph, 'c3Chart');
 
         compile(element)(scope);
         scope.$digest();
@@ -288,10 +282,9 @@ describe("Observation Graph", function () {
             }];
         var anyElement = null;
 
-        expect(Bahmni.Graph.c3Chart).toHaveBeenCalledWith(anyElement
+        expect(c3ChartSpy.render).toHaveBeenCalledWith(anyElement
             , jasmine.any(Number)
             , new Bahmni.Clinical.ObservationGraphConfig(scope.section.config)
             , new Bahmni.Clinical.ObservationGraph(graphModel));
-        expect(Bahmni.Graph.c3Chart).toHaveBeenCalled();
     });
 });

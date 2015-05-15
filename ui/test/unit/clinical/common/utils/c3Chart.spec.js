@@ -9,7 +9,8 @@ describe('c3Chart', function () {
         var config  = {yAxisConcepts: ['height'], xAxisConcepts: ['weight']};
         var data = [];
 
-        Bahmni.Graph.c3Chart(bindToElement, graphWidth, config, data);
+        var c3Chart = Bahmni.Graph.c3Chart.create();
+        c3Chart.render(bindToElement, graphWidth, config, data);
 
         expect(c3.generate).toHaveBeenCalled();
     });
