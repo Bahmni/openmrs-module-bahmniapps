@@ -9,20 +9,21 @@
         </div>
         <div ng-if="activeTab == tab" ng-show="activeTab == tab" class="dashboard-section">
             <div class="dashboard-section-wrapper">
-                <div ng-include="getTabInclude()"></div>
-                <div class="block consultation-notes section-grid">
+                <div class="block consultation-notes">
                     <h2 class="section-title">Selected Orders</h2>
                     <div id="selected-orders" class="selected-orders">
                         <p class="null-data-message" ng-hide="consultation.testOrders.length">Selected orders is empty</p>
                         <ul class="selected-items">
                             <li ng-repeat="order in consultation.testOrders">
                                 <div class="grid-row-element" ng-class="{active: !order.voided}" ng-click="diSelect(order)">
-                                    <i class="icon-ok"></i>{{::order.concept.name}}
+                                    <span>{{::order.concept.name}}</span>
+                                    <i class="fa fa-remove"></i>
                                 </div>
                             </li>
                         </ul>
                     </div>
                 </div>
+                <div ng-include="getTabInclude()"></div>
             </div>
         </div>
     </div>

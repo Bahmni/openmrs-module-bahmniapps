@@ -1,8 +1,8 @@
 <div ng-show="hasOrders()">
-    <strong style="float: left;">{{title}}</strong>
-    <button class="grid-row-element ng-binding ng-scope"
-         ng-repeat="test in (rootConcept.setMembers | filter:filterByConceptClass)"
-         ng-click="onSelectionChange(test)" style="width: 33.33%;float: left;" ng-class="{active:test.isSelected}">
-        {{test.name.display}}
-    </button>
+    <span class="order-title">{{title}}</span>
+    <div class="orderBtnContainer">
+        <button class="grid-row-element orderBtn ng-binding ng-scope" ng-repeat="test in (rootConcept.setMembers | filter:filterByConceptClass)" ng-click="onSelectionChange(test)" ng-class="{active:test.isSelected}">
+            <i class="fa fa-ok"></i> {{test.name.display}}
+        </button>
+    </div>
 </div>

@@ -1,10 +1,10 @@
-<section class="dashboard-sections dashboard-sections-left" xmlns="http://www.w3.org/1999/html">
-        <strong>{{activeTab.topLevelConcept}}</strong>
-        <div class="dashboard-sections dashboard-sections-left">
-            <div class="multi-select-button-group multi-select-lab-tests">
+<section class="orders-section-left" xmlns="http://www.w3.org/1999/html">
+        <div class="order-section-container">
+            <span class="order-title">{{activeTab.topLevelConcept}}</span>
+            <div class="multi-select-lab-tests">
                 <ul>
                     <li ng-repeat="leftCategory in getOrderTemplate(activeTab.topLevelConcept).setMembers">
-                        <a ng-click="showleftCategoryTests(leftCategory)">
+                        <a ng-click="showleftCategoryTests(leftCategory)" ng-class='labSample.klass'>
                             {{leftCategory.name.display}}
                         </a>
                     </li>
@@ -12,6 +12,9 @@
             </div>
         </div>
 </section>
-<section class="dashboard-sections dashboard-sections-right" ng-repeat="test in activeTab.tests" ng-if="leftCategory">
-    <order-selector orders="consultation.testOrders" root-concept="leftCategory" concept-class="test.name" consultation="consultation" title="test.display"></order-selector>
+
+<section class="orders-section-right">
+     <section class="order-section-container" ng-repeat="test in activeTab.tests" ng-if="leftCategory">
+        <order-selector orders="consultation.testOrders" root-concept="leftCategory" concept-class="test.name" consultation="consultation" title="test.display"></order-selector>
+    </section>    
 </section>
