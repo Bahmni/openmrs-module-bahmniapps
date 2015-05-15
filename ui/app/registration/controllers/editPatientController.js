@@ -6,12 +6,23 @@ angular.module('bahmni.registration')
             var uuid = $stateParams.patientUuid;
             $scope.patient = {};
             $scope.actions = {};
+            $scope.readOnlyFields = {};
+
+            var setReadOnlyFields = function () {
+                var readOnlyFields = appService.getAppDescriptor().getConfigValue("readOnlyFields");
+                angular.forEach(readOnlyFields, function (readOnlyField) {
+                    if ($scope.patient[readOnlyField]) {
+                        $scope.readOnlyFields[readOnlyField] = true;
+
+                    }
+                });
+            };
 
             (function () {
                 var getPatientPromise = patientService.get(uuid).success(function (openmrsPatient) {
                     $scope.openMRSPatient = openmrsPatient;
                     $scope.patient = patientMapper.map(openmrsPatient);
-
+                    setReadOnlyFields();
                     var showOrHideAdditionalPatientInformation = function(){
                         var additionalPatientInfoConfig = appService.getAppDescriptor().getConfigValue("additionalPatientInformation");
                         angular.forEach(additionalPatientInfoConfig, function(attribute){
@@ -41,7 +52,12 @@ angular.module('bahmni.registration')
                 spinner.forPromise(patientUpdatePromise);
             };
 
+            $scope.isReadOnly = function(field){
+                return $scope.readOnlyFields[field];
+            }
+
             $scope.afterSave = function() {
+                setReadOnlyFields();
                 messagingService.showMessage("info", "Saved");
             }
 
