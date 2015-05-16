@@ -2,7 +2,7 @@
 
 describe("OrderController", function () {
 
-    var scope, spinner, deferred, rootScope, conceptSetService, fetchDeferred;
+    var scope, rootScope;
 
     beforeEach(module('bahmni.common.conceptSet'));
     beforeEach(module('bahmni.clinical'));
@@ -12,37 +12,11 @@ describe("OrderController", function () {
         rootScope = $rootScope;
         scope.consultation = {testOrders: []};
 
-        conceptSetService = jasmine.createSpyObj('conceptSetService', ['getConceptSetMembers']);
-        conceptSetService.getConceptSetMembers.and.callFake(function (param) {
-            fetchDeferred = $q.defer();
-            if(param.name === "All Orderables") {
-                fetchDeferred.resolve(allOrderables);
-            }
-            else {
-                fetchDeferred.resolve(orderTemplate);
-            }
-            return fetchDeferred.promise;
-        });
-
-        var _spinner = jasmine.createSpyObj('spinner',['forPromise','then']);
-        _spinner.forPromise.and.callFake(function(promiseToResolve){
-            deferred = $q.defer();
-            deferred.resolve({data: promiseToResolve.$$state.value});
-            return deferred.promise;
-        });
-
-        _spinner.then.and.callThrough(function(param){
-            deferred = $q.defer();
-            deferred.resolve({data: param.value});
-            return deferred.promise;
-        });
 
         $controller('OrderController', {
             $scope: scope,
             $rootScope: rootScope,
-            conceptSetService: conceptSetService,
-            spinner: _spinner,
-            orderTypes: orderTypeConceptClassMap
+            allOrderables: allOrderables
         });
     }));
 
@@ -50,17 +24,16 @@ describe("OrderController", function () {
         it("should fetch ordersConfig and set in tabs", function () {
             scope.$digest();
             expect(scope.tabs.length).toBe(1);
-            expect(scope.tabs[0].name).toBe("Lab Order");
-            expect(scope.tabs[0].tests.length).toBe(2);
-            expect(scope.tabs[0].topLevelConcept).toBe("Lab Order");
+            expect(scope.tabs[0].name).toBe("Lab Samples");
+            expect(scope.tabs[0].topLevelConcept).toBe("Lab Samples");
             expect(scope.tabs[0]).toBe(scope.activeTab);
 
         });
 
         it("should fetch all orders templates", function () {
             scope.$digest();
-            expect(scope.consultation.allOrdersTemplates['\'Lab Order\''].name.name).toBe("Lab Order");
-            expect(scope.consultation.allOrdersTemplates['\'Lab Order\''].conceptClass.name).toBe("ConvSet");
+            expect(scope.consultation.allOrdersTemplates['\'Lab Samples\''].name.name).toBe("Lab Samples");
+            expect(scope.consultation.allOrdersTemplates['\'Lab Samples\''].conceptClass.name).toBe("ConvSet");
         });
 
         it("diSelect() should unselect order", function () {
@@ -72,69 +45,41 @@ describe("OrderController", function () {
         });
 
         it("showLabSampleTests() should set the particular LabOrder to be active", function () {
-            scope.showleftCategoryTests({"name": "Blood"});
-            expect(scope.leftCategory.klass).toBe("active");
-            expect(scope.leftCategory.name).toBe("Blood");
+            scope.showLeftCategoryTests({"name": "Blood"});
+            expect(scope.activeTab.leftCategory.klass).toBe("active");
+            expect(scope.activeTab.leftCategory.name).toBe("Blood");
         });
 
         it("getOrderTemplate :should return the Order template", function () {
             scope.$digest();
-            expect(scope.getOrderTemplate("Lab Order").name.name).toBe("Lab Order");
+            expect(scope.getOrderTemplate("Lab Samples").name.name).toBe("Lab Samples");
             expect(scope.getTabInclude()).toBe('consultation/views/orderTemplateViews/ordersTemplate.html');
         });
     });
 
-    var orderTypeConceptClassMap = {
-        "\'Lab Order\'" : {
-            "conceptClasses" : [
-                {
-                    "title": "LabSet",
-                    "type": "LabSet"
-                },
-                {
-                    "title": "LabTest",
-                    "type": "LabTest"
-                }
-            ]
-        }
-    },
-    orderTemplate = {
-        "results" : [
-        {
+    var allOrderables ={
+        "\'Lab Samples\'" : {
             "conceptClass" : {"name" : "ConvSet"},
-            "name" : {"name" : "Lab Order"},
-            "uuid" : "00517b93-aff1-11e3-be87-005056821db0",
+            "name" : {"name" : "Lab Samples", "display" : "Lab Samples"},
+            "uuid" : "10517b93-aff1-11e3-be87-005056821db0",
             "setMembers" : [
                 {
-                    "conceptClass" : {"name" : "Test"},
-                    "name" : {"name" : "ESR"},
-                    "uuid" : "10517b93-aff1-11e3-be87-005056821db0"
+                    "conceptClass" : {"name" : "ConvSet"},
+                    "name" : {"name" : "Blood", "display" : "Blood"},
+                    "uuid" : "20517b93-aff1-11e3-be87-005056821db0",
+                    "setMembers" : [
+                        {
+                            "conceptClass" : {"name" : "Test", "display" : "Test"},
+                            "name" : {"name" : "ESR", "display" : "ESR"},
+                            "uuid" : "10517b93-aff1-11e3-be87-005056821db0"
+                        }
+                    ]
                 }
             ]
-
         }
-    ]
     },
 
-    allOrderables = {
-        "results" : [
-            {
-                "conceptClass" : {"name" : "ConvSet"},
-                "name" : {"name" : "All Orderables"},
-                "uuid" : "00517b93-aff1-11e3-be87-005056821db0",
-                "setMembers" : [
-                    {
-                        "conceptClass" : {"name" : "ConvSet"},
-                        "name" : {"name" : "Lab Order"},
-                        "uuid" : "10517b93-aff1-11e3-be87-005056821db0"
-                    }
-                ]
-
-            }
-        ]
-    },
-
-    tempConsultation = {
+     tempConsultation = {
         "testOrders" : [
             {
                 "dateCreated": "2015-04-22T19:16:13.000+0530",

@@ -1,11 +1,11 @@
 <section class="orders-section-left" xmlns="http://www.w3.org/1999/html">
         <div class="order-section-container">
-            <span class="order-title">{{activeTab.topLevelConcept}}</span>
+            <span class="order-title">{{tab.topLevelConcept}}</span>
             <div class="multi-select-lab-tests">
                 <ul>
-                    <li ng-repeat="leftCategory in getOrderTemplate(activeTab.topLevelConcept).setMembers">
-                        <a ng-click="showleftCategoryTests(leftCategory)" ng-class='labSample.klass'>
-                            {{leftCategory.name.display}}
+                    <li ng-repeat="sample in getOrderTemplate(activeTab.name).setMembers">
+                        <a ng-click="showLeftCategoryTests(sample)" ng-class='sample.klass'>
+                            {{sample.name.name}}
                         </a>
                     </li>
                 </ul>
@@ -14,7 +14,7 @@
 </section>
 
 <section class="orders-section-right">
-     <section class="order-section-container" ng-repeat="test in activeTab.tests" ng-if="leftCategory">
-        <order-selector orders="consultation.testOrders" root-concept="leftCategory" concept-class="test.name" consultation="consultation" title="test.display"></order-selector>
+     <section class="order-section-container" ng-repeat="group in tab.leftCategory.groups" ng-if="tab.leftCategory">
+        <order-selector orders="consultation.testOrders" root-concept="tab.leftCategory" concept-class="group.name" consultation="consultation" title="group.name"></order-selector>
     </section>    
 </section>

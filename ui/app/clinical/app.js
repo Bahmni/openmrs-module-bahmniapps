@@ -155,8 +155,8 @@ angular.module('consultation')
                 templateUrl: 'consultation/views/orders.html',
                 controller: 'OrderController',
                 resolve: {
-                    orderTypes: function (initialization, orderTypesInitialization) {
-                        return orderTypesInitialization();
+                    allOrderables: function (ordersTabInitialization){
+                        return ordersTabInitialization();
                     }
                 }
             })

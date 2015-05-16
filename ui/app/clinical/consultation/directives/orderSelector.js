@@ -21,15 +21,19 @@ angular.module('bahmni.clinical')
 
                 $scope.onSelectionChange = function(test){
                     test.isSelected = !test.isSelected;
+                    var order = _.find($scope.orders, function(order) {
+                        return order.concept.uuid === test.uuid;
+                    });
                     if(test.isSelected) {
-                        var order = Bahmni.Clinical.Order.create(test);
-                        $scope.orders.push(order);
+                        if(order && order.voided) {
+                            order.voided = false;
+                        }
+                        else{
+                            var newOrder = Bahmni.Clinical.Order.create(test);
+                            $scope.orders.push(newOrder);
+                        }
                     }
                     else {
-                        var order = _.find($scope.orders, function(order) {
-                            return order.concept.uuid === test.uuid;
-                        });
-    
                         if (order.uuid) {
                             order.voided = true;
                         }

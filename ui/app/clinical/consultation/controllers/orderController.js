@@ -1,43 +1,38 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('OrderController', ['$scope','spinner', 'conceptSetService', 'orderTypes',
-        function ($scope,spinner, conceptSetService, orderTypes) {
+    .controller('OrderController', ['$scope', 'conceptSetService', 'allOrderables',
+        function ($scope, conceptSetService, allOrderables) {
             $scope.consultation.allOrdersTemplates = $scope.consultation.allOrdersTemplates || {};
             $scope.consultation.testOrders = $scope.consultation.testOrders || [];
-            $scope.orderTypeConceptClassMap = orderTypes;
+            $scope.consultation.allOrdersTemplates = allOrderables;
 
             var init = function(){
-                spinner.forPromise(conceptSetService.getConceptSetMembers({name:"All Orderables",v:"custom:(uuid,name,conceptClass,setMembers:(uuid,name,conceptClass))"})).then(function(response){
-                    var orderables = response.data.results[0].setMembers;
 
-                    $scope.tabs = [];
+                $scope.tabs = [];
 
-                    _.forEach(orderables, function(item){
-                        $scope.tabs.push({name: item.name.name, tests: $scope.orderTypeConceptClassMap['\''+item.name.name+'\''].conceptClasses, topLevelConcept: item.name.name});
-                    });
-
-                    if($scope.tabs) {
-                        $scope.activateTab($scope.tabs[0]);
-                    }
-
-                    $scope.getAllOrderTemplates();
+                _.forEach($scope.consultation.allOrdersTemplates, function(item){
+                    var conceptName = _.find(item.names, {conceptNameType: "SHORT"}) || _.find(item.names, {conceptNameType: "FULLY_SPECIFIED"});
+                    conceptName = conceptName ? conceptName.name : conceptName;
+                    $scope.tabs.push({name: conceptName ? conceptName : item.name.name, topLevelConcept: item.name.name});
                 });
 
-
+                if($scope.tabs) {
+                    $scope.activateTab($scope.tabs[0]);
+                }
             };
 
             $scope.getTabInclude = function(){
                 return 'consultation/views/orderTemplateViews/ordersTemplate.html';
             };
 
-            $scope.getAllOrderTemplates = function() {
-                $scope.tabs.forEach(function(tab){
-                    spinner.forPromise(conceptSetService.getConceptSetMembers({name:tab.topLevelConcept,v:"custom:(uuid,name,conceptClass,setMembers:(uuid,name,conceptClass,setMembers:(uuid,name,conceptClass)))"})
-                    ).then(function(response){
-                        $scope.consultation.allOrdersTemplates['\''+tab.topLevelConcept+'\''] = response.data.results[0];
-                    });
+            $scope.getConceptClassesInSet = function(conceptSet) {
+                var conceptsWithUniqueClass = _.uniq(conceptSet? conceptSet.setMembers:[],function(concept){return concept.conceptClass.uuid;});
+                var conceptClasses = [];
+                _.forEach(conceptsWithUniqueClass, function(concept){
+                    conceptClasses.push({name:concept.conceptClass.name, display:concept.conceptClass.display});
                 });
+                return conceptClasses;
             };
 
             $scope.getOrderTemplate = function(templateName) {
@@ -51,10 +46,12 @@ angular.module('bahmni.clinical')
                 $scope.activeTab.klass="active";
             };
 
-            $scope.showleftCategoryTests = function(leftCategory) {
-                $scope.leftCategory && ($scope.leftCategory.klass="");
-                $scope.leftCategory = leftCategory;
-                $scope.leftCategory.klass = "active";
+            $scope.showLeftCategoryTests = function(leftCategory) {
+                $scope.activeTab.leftCategory && ($scope.activeTab.leftCategory.klass="");
+                $scope.activeTab.leftCategory = leftCategory;
+                $scope.activeTab.leftCategory.klass = "active";
+
+                $scope.activeTab.leftCategory.groups = $scope.getConceptClassesInSet(leftCategory);
             };
 
             $scope.diSelect = function(selectedOrder) {
@@ -63,7 +60,7 @@ angular.module('bahmni.clinical')
                 });
 
                 if (order.uuid) {
-                    order.voided = true;
+                    order.voided = !order.voided;
                 }
                 else {
                     removeOrder(order);
