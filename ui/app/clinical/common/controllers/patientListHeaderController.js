@@ -84,7 +84,7 @@ angular.module('bahmni.clinical')
             };
 
             var changeCookieData = function() {
-                $rootScope.retrospectiveEntry.encounterDate = $scope.date;
+                $rootScope.retrospectiveEntry = $scope.date ? Bahmni.Common.Domain.RetrospectiveEntry.createFrom(DateUtil.getDate($scope.date)) : Bahmni.Common.Domain.RetrospectiveEntry.createFrom(DateUtil.getDate(DateUtil.today()));
                 $bahmniCookieStore.remove(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
                 $bahmniCookieStore.put(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName,  $scope.date, {path: '/', expires: 1});
 
@@ -99,7 +99,7 @@ angular.module('bahmni.clinical')
             var init = function () {
                 var retrospectiveDate = getCurrentDate();
                 $scope.date = retrospectiveDate ? new Date(retrospectiveDate) : new Date($scope.today);
-                $rootScope.retrospectiveEntry.encounterDate = retrospectiveDate ? retrospectiveDate : DateUtil.today();
+                $rootScope.retrospectiveEntry = retrospectiveDate ? Bahmni.Common.Domain.RetrospectiveEntry.createFrom(DateUtil.getDate(retrospectiveDate)) : Bahmni.Common.Domain.RetrospectiveEntry.createFrom(DateUtil.getDate(DateUtil.today()));
 
                 $scope.encounterProvider = getCurrentProvider();
                 selectedProvider = getCurrentProvider();

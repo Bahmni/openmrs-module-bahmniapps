@@ -13,16 +13,15 @@ angular.module('bahmni.common.domain')
 
         this.getRetrospectiveEntry = function () {
             var dateUtil = Bahmni.Common.Util.DateUtil;
-            if ($rootScope.retrospectiveEntry && $rootScope.retrospectiveEntry.encounterDate)
-                return $rootScope.retrospectiveEntry;
-
             var retrospectiveEncounterDateCookie = $bahmniCookieStore.get(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
 
-
-            if (retrospectiveEncounterDateCookie && hasRestrospectivePrivilege()) {
+            if (retrospectiveEncounterDateCookie) {
                 $rootScope.retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(dateUtil.getDate(retrospectiveEncounterDateCookie));
                 return $rootScope.retrospectiveEntry;
             }
+
+            if ($rootScope.retrospectiveEntry && $rootScope.retrospectiveEntry.encounterDate)
+                return $rootScope.retrospectiveEntry;
 
             $rootScope.retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(dateUtil.now());
             return $rootScope.retrospectiveEntry;
