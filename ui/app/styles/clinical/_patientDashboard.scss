@@ -375,7 +375,11 @@ table.drug-order-table td.drug {
   }
 }
 
-
+.template-container .dashboard-section section.block.hierarchy{
+  .testUnderPanel,.value-text-only {
+    width: 34.5% !important;
+  }
+}
 
 .dashboard-section section .form-field.is-text {
   overflow: auto;
