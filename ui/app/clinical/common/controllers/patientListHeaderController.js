@@ -20,7 +20,7 @@ angular.module('bahmni.clinical')
             $scope.getProviderDataResults = function(data) {
                 return data.data.results.map(function (providerDetails) {
                     return {
-                        'value': providerDetails.person.display,
+                        'value': providerDetails.person ? providerDetails.person.display : providerDetails.display,
                         'uuid': providerDetails.uuid
                     }
                 });
