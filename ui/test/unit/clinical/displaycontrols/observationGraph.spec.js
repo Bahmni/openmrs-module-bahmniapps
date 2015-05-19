@@ -188,10 +188,7 @@ describe("Observation Graph", function () {
             return {
                 then: function (callback) {
                     callback({
-                        data: [
-                            ["Gender", "Age", "3rd", "10th", "50th", "75th", "97th"],
-                            ["M", 0, 2.3, 2.7, 3.5, 3.8, 4.4]
-                        ]
+                        data: 'Gender,Age,3rd,10th,50th,75th,97th\nM,0,2.3,2.7,3.5,3.8,4.4'
                     });
                 }
             }

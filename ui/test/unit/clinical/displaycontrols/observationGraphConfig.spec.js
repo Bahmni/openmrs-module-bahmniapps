@@ -18,8 +18,8 @@ describe("observationGraphConfig", function () {
             "numberOfVisits": 20
         }
         var graphConfig = new Bahmni.Clinical.ObservationGraphConfig(config);
-        expect(graphConfig.yAxisConcepts).toEqual(["WEIGHT"]);
-        expect(graphConfig.xAxisConcept).toEqual("AGE");
+        expect(graphConfig.yAxisConcepts).toEqual(["Weight"]);
+        expect(graphConfig.xAxisConcept).toEqual("Age");
     });
 
 });

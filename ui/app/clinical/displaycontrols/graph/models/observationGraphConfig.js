@@ -7,13 +7,12 @@
     Bahmni.Clinical.ObservationGraphConfig = function (config) {
         angular.extend(this, config);
         if(this.isGrowthChart()) {
-            this.xAxisConcept = "AGE";
-            this.yAxisConcepts = ["WEIGHT"];
+            this.xAxisConcept = Bahmni.Clinical.Constants.concepts.age;
+            this.yAxisConcepts = [Bahmni.Clinical.Constants.concepts.weight];
         }
     };
 
-    var AGE = "age", 
-        OBSERVATION_DATETIME = "observationdatetime", 
+    var OBSERVATION_DATETIME = "observationdatetime",
         configPrototype = Bahmni.Clinical.ObservationGraphConfig.prototype;
 
     configPrototype.isValid = function() {
@@ -33,7 +32,7 @@
     };
 
     configPrototype.displayForAge = function() {
-        return this.xAxisConcept.toLowerCase() === AGE;
+        return this.xAxisConcept.toLowerCase() === Bahmni.Clinical.Constants.concepts.age.toLowerCase();
     };
 
     configPrototype.displayForObservationDateTime = function() {
@@ -59,11 +58,5 @@
             return this.growthChart.referenceData;
         }
     };
-
-    configPrototype.getGrowthChartMaxNoOfMonths = function() {
-        if(this.isGrowthChart()) {
-            return this.growthChart.maxNumberOfMonths;
-        }
-    }
 
 })();

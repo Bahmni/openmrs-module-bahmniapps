@@ -13,6 +13,10 @@ Bahmni.Clinical.Constants = (function () {
         new: 'NEW',
         revise: 'REVISE'
     };
+    var concepts = {
+        age: "Age",
+        weight: "Weight"
+    };
     var errorMessages = {
         discontinuingAndOrderingSameDrug: "Discontinuing and ordering the same drug is not allowed. Instead, use edit",
         incompleteForm: "Please click on Add or Clear to continue",
@@ -49,6 +53,7 @@ Bahmni.Clinical.Constants = (function () {
         dialog:'DIALOG',
         dashboard:'DASHBOARD',
         default:'DEFAULT',
+        concepts: concepts,
         otherActiveDrugOrders: "Other Active DrugOrders",
         dispensePrivilege: "bahmni:clinical:dispense",
         mandatoryVisitConfigUrl: "config/visitMandatoryTab.json"

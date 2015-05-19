@@ -29,7 +29,7 @@ Bahmni.Graph.c3Chart = function () {
                     max: 3
                 },
                 format: function (xAxisConcept) {
-                    return config.displayForObservationDateTime() ? dateUtil.formatDateWithoutTime(xAxisConcept) : xAxisConcept;
+                    return config.displayForObservationDateTime() ? dateUtil.formatDateWithoutTime(xAxisConcept) : d3.round(xAxisConcept, 2);
                 }
             }
         }
@@ -152,7 +152,7 @@ Bahmni.Graph.c3Chart = function () {
                 format: {
                     title: function (xAxisConcept) {
                         return config.displayForObservationDateTime() ?
-                            dateUtil.formatDateWithTime(xAxisConcept) : (config.xAxisConcept + " " + xAxisConcept);
+                            dateUtil.formatDateWithTime(xAxisConcept) : (config.xAxisConcept + " " + d3.round(xAxisConcept,2));
                     }
                 }
             },

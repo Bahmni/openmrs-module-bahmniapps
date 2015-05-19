@@ -9,7 +9,7 @@ angular.module('bahmni.clinical')
         };
 
         var configPromise = function() {
-            return appService.loadConfig('visit');
+            return appService.loadConfig('visit.json');
         };
 
         this.load = function () {

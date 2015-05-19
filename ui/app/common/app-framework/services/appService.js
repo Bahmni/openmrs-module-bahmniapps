@@ -93,7 +93,7 @@ angular.module('bahmni.common.appFramework')
         };
 
         this.loadConfig = function (name) {
-            return loadConfig(baseUrl + appDescriptor.contextPath + "/" + name + ".json");
+            return loadConfig(baseUrl + appDescriptor.contextPath + "/" + name);
         };
 
         this.loadMandatoryConfig = function(path) {

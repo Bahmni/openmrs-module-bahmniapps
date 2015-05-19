@@ -87,6 +87,49 @@ describe("Observation Graph Model", function () {
         expect(observationGraph[1].values[0].age).toBeUndefined();
     });
 
+    it("should create model for growth chart", function() {
+        var obsServiceValues = [{
+            observationDateTime: "2015-01-01",
+            value: 3.4,
+            concept: {name: "Weight", units: "Kg"}
+        }];
+        var config = new Bahmni.Clinical.ObservationGraphConfig({
+            "xAxisConcept": "Age",
+            "yAxisConcepts": ["Weight"],
+            "growthChart": {
+                "referenceData": "growthChartReference.csv"
+            },
+            "numberOfVisits": 20
+        });
+        var person = {birthdate: new Date()};
+        var growthChartReferenceObsModel = [
+            {
+                name: "3rd",
+                units: "Kg",
+                values: [{"3rd": 3.3, Age: 4}]
+            }
+        ];
+        var growthChartReference = {getAsObsGraphModel: function(){}, getReferenceKeys: function(){}};
+        spyOn(growthChartReference, 'getAsObsGraphModel').and.returnValue(growthChartReferenceObsModel);
+        spyOn(growthChartReference, 'getReferenceKeys').and.returnValue(['3rd']);
+
+        var observationGraph = Bahmni.Clinical.ObservationGraph.create(obsServiceValues, person, config, growthChartReference);
+
+        expect(observationGraph[0].name).toBe("Weight");
+        expect(observationGraph[0].units).toBe("Kg");
+        expect(observationGraph[0].values.length).toBe(1);
+        expect(observationGraph[0].values[0].Weight).toBe(3.4);
+        expect(observationGraph[0].values[0].Age).toBeDefined();
+
+        expect(observationGraph[1].name).toBe("3rd");
+        expect(observationGraph[1].units).toBe("Kg");
+        expect(observationGraph[1].values.length).toBe(1);
+        expect(observationGraph[1].values[0]['3rd']).toBe(3.3);
+        expect(observationGraph[1].values[0].Age).toBeDefined();
+
+        expect(config.unit).toBe(" (months)");
+    });
+
     it("should create model without taking concept name text case (Uppercase/Lowercase) into account", function() {
         var obsServiceValues = [{
             observationDateTime: "2015-02-03",

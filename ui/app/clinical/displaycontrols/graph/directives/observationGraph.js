@@ -47,7 +47,8 @@ angular.module('bahmni.clinical').directive('observationGraph', ['appService', '
                 var patient = results[2] && results[2].data.person;
                 var growthChartReference;
                 if(config.isGrowthChart()) {
-                    growthChartReference = Bahmni.Clinical.GrowthChartReference.create(patient.gender, results[3].data, config.getGrowthChartMaxNoOfMonths());
+                    var ageInMonths = Bahmni.Common.Util.AgeUtil.differenceInMonths(patient.birthdate);
+                    growthChartReference = Bahmni.Clinical.GrowthChartReference.create(patient.gender, ageInMonths, results[3].data);
                 }
                 if(observations.length == 0) return;
 

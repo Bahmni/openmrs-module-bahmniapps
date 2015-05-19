@@ -6,5 +6,10 @@ Bahmni.Common.Util.AgeUtil = {
         var referenceDate = referenceDate || DateUtil.now();
         var period = DateUtil.diffInYearsMonthsDays(birthDate, referenceDate)
         return {years: period.years, months: period.months, days: period.days};
+    },
+
+    differenceInMonths: function(date, anotherDate) {
+        var age = Bahmni.Common.Util.AgeUtil.fromBirthDateTillReferenceDate(date, anotherDate);
+        return parseFloat(((age.years * 12) + age.months + (age.days/30)).toFixed(2));
     }
 };

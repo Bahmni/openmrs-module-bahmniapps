@@ -3,7 +3,7 @@
 angular.module('bahmni.reports')
     .controller('DashboardController', ['$scope', 'appService', 'reportService', function ($scope, appService, reportService) {
 
-        appService.loadConfig('reports').then(function (response) {
+        appService.loadConfig('reports.json').then(function (response) {
             $scope.reports = response.data;
         });
 
