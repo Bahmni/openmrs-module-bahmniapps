@@ -8,7 +8,6 @@ angular.module('bahmni.common.obs')
             $scope.print = $rootScope.isBeingPrinted || false;
 
             $scope.dateString = function (observation) {
-                var dateFormat = "";
                 var filterName;
                 if ($scope.showDate && $scope.showTime) {
                     filterName = 'bahmniDateTime';

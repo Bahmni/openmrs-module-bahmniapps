@@ -2,8 +2,7 @@
 
 describe("ensure that the directive show-observation works properly", function () {
 
-    var scope, rootScope, filter,httpBackend,compile, q, bahmniDateTimeFilter;
-
+    var scope, rootScope, filter, httpBackend, compile, q;
     var html = '<show-observation  show-details-button="showDetailsButton" patient="patient" observation="observation" show-date="showDate" show-time="showTime"></show-observation>';
 
     var observation = {
@@ -18,13 +17,12 @@ describe("ensure that the directive show-observation works properly", function (
     beforeEach(module('bahmni.common.obs'));
     beforeEach(module('bahmni.common.uiHelper'));
 
-    beforeEach(inject(function($filter, $compile, $httpBackend, $rootScope, $q, bahmniDateTimeFilter){
+    beforeEach(inject(function($filter, $compile, $httpBackend, $rootScope, $q){
         filter = $filter;
         compile = $compile;
         httpBackend = $httpBackend;
         rootScope = $rootScope;
         q = $q;
-        bahmniDateTimeFilter = bahmniDateTimeFilter;
     }));
 
     it("should test print, toggle", function () {
