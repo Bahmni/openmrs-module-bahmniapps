@@ -44,13 +44,14 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="row in search.visiblePatients">
-                        <td>{{$index + 1}}</td>
+                        <td>
+                        {{$index + 1}}
                         <td ng-repeat="heading in getHeadings(search.visiblePatients)">
                             <a ng-if="isHeadingOfIdentifier(heading)" ng-click="forwardPatient(row)">{{row[heading]}}</a>
-                            <span ng-if="!isHeadingOfIdentifier(heading)">{{row[heading]}}</span>
-                        </td>
-                        <td class="ipd-indication" ng-if="patient.hasBeenAdmitted == 'true'">
-
+                            <span ng-if="!isHeadingOfIdentifier(heading)">
+                            {{row[heading]}}
+                                <i class="ipd-indication fa fa-bed" ng-if="patient.hasBeenAdmitted == 'true'"></i>
+                            </span>
                         </td>
                     </tr>
                     </tbody>
@@ -62,7 +63,7 @@
                 <img class="smallImages" ng-src="{{patient.image}}"  onerror="this.onerror=null;this.src='../images/blank-user.png';" >
                 <div class="patient-name">{{patient.name}}</div>
                 <div class="patient-id">{{patient.identifier}}</div>
-                <div class="ipd-indication" ng-if="patient.hasBeenAdmitted == 'true'"></div>
+                <i class="ipd-indication fa fa-bed" ng-if="patient.hasBeenAdmitted == 'true'"></i>
             </li>
         </resize>
         <div class="note-container" ng-if="search.noResultsMessage">

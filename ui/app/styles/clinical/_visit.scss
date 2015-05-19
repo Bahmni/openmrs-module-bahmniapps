@@ -510,6 +510,17 @@ a.visit:before {
         border-top-right-radius: 5px;
         background: $bahmniTableHeaderBg;
         border-top: 0;
+        position: relative;
+        .ipd-indication{
+          position: absolute;   
+          right: 0;   
+          top: 0;   
+          background: #88af28;   
+          color: white;   
+          padding: 4px 11px;   
+          border-radius: 0 2px 0 0;
+          font-size: 20px;
+        }
       }
       .patient-img {
          // display: inline-block; 
