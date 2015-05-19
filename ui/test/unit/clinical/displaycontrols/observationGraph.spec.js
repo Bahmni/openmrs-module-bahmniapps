@@ -138,8 +138,7 @@ describe("Observation Graph", function () {
             "config": {
                 "yAxisConcepts": ["Height"],
                 "xAxisConcept": "age",
-                "numberOfVisits": 3,
-                "unit": " (years)"
+                "numberOfVisits": 3
             }
         };
         mockObservationService([{
@@ -155,7 +154,7 @@ describe("Observation Graph", function () {
         httpBackend.flush();
 
         expect(scope.graphId).not.toBeNull();
-        var graphModel = [{name: 'Height', units: "cm", values: [{age: '14.10', Height: 45}]}];
+        var graphModel = [{name: 'Height', units: "cm", values: [{age: 178.9, Height: 45}]}];
         var anyElement = null;
         expect(c3ChartSpy.render).toHaveBeenCalledWith(
             anyElement

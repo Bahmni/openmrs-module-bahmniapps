@@ -8,10 +8,10 @@ describe('AgeUtil', function () {
             expect(ageUtil.differenceInMonths(fromDate, toDate)).toEqual(16.5);
         });
 
-        it("should round months to 2 decimals", function() {
+        it("should round months to 2 decimals", function () {
             var fromDate = new Date("2015-01-01");
             var toDate = new Date("2015-01-11");
-            expect(ageUtil.differenceInMonths(fromDate, toDate)).toEqual(0.33);
+            expect(ageUtil.differenceInMonths(fromDate, toDate)).toEqual(0.333);
         });
 
         it("should take the current date if end date is not given", function () {
@@ -21,5 +21,12 @@ describe('AgeUtil', function () {
             var fromDate = new Date("2015-05-01");
             expect(ageUtil.differenceInMonths(fromDate)).toEqual(1);
         });
-    })
+    });
+
+    describe("monthsToAge", function () {
+        it("should convert given months to age", function () {
+            expect(ageUtil.monthsToAgeString(133.33)).toEqual("11y 1m 10d");
+        });
+    });
+
 });

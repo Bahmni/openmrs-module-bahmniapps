@@ -45,7 +45,7 @@ describe("Observation Graph Model", function () {
         expect(observationGraph[0].units).toBe("Celsius");
 
         expect(observationGraph[0].values.length).toBe(1);
-        expect(observationGraph[0].values[0].age).toBe('15.0');
+        expect(observationGraph[0].values[0].age).toBe(180);
         expect(observationGraph[0].values[0].Temperature).toBe(45);
 
         expect(observationGraph[0].values[0].observationDateTime).toBeUndefined();
@@ -126,8 +126,6 @@ describe("Observation Graph Model", function () {
         expect(observationGraph[1].values.length).toBe(1);
         expect(observationGraph[1].values[0]['3rd']).toBe(3.3);
         expect(observationGraph[1].values[0].Age).toBeDefined();
-
-        expect(config.unit).toBe(" (months)");
     });
 
     it("should create model without taking concept name text case (Uppercase/Lowercase) into account", function() {

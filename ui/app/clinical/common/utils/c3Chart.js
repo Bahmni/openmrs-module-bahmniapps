@@ -28,10 +28,20 @@ Bahmni.Graph.c3Chart = function () {
                 culling: {
                     max: 3
                 },
-                format: function (xAxisConcept) {
-                    return config.displayForObservationDateTime() ? dateUtil.formatDateWithoutTime(xAxisConcept) : d3.round(xAxisConcept, 2);
+                format: function(xAxisValue){
+                    return formatValueForDisplay(xAxisValue, config);
                 }
             }
+        }
+    };
+
+    var formatValueForDisplay= function(value, config){
+        if(config.displayForAge()){
+            return Bahmni.Common.Util.AgeUtil.monthsToAgeString(value);
+        } else if(config.displayForObservationDateTime()) {
+            return dateUtil.formatDateWithoutTime(value);
+        } else {
+            return d3.round(value, 2);
         }
     };
 
@@ -150,9 +160,8 @@ Bahmni.Graph.c3Chart = function () {
             tooltip: {
                 grouped: true,
                 format: {
-                    title: function (xAxisConcept) {
-                        return config.displayForObservationDateTime() ?
-                            dateUtil.formatDateWithTime(xAxisConcept) : (config.xAxisConcept + " " + d3.round(xAxisConcept,2));
+                    title: function(xAxisValue) {
+                        return formatValueForDisplay(xAxisValue, config);
                     }
                 }
             },

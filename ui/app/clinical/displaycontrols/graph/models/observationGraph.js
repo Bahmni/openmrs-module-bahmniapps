@@ -58,13 +58,8 @@
             if (config.displayForObservationDateTime()) {
                 config.type = "timeseries";
                 xValue = Bahmni.Common.Util.DateUtil.parseDatetime(yAxisObs.observationDateTime).toDate();
-            } else if(config.isGrowthChart()) {
-                config.unit = " (months)";
+            } else if(config.displayForAge()) {
                 xValue = Bahmni.Common.Util.AgeUtil.differenceInMonths(person.birthdate, yAxisObs.observationDateTime);
-            } else if (config.displayForAge()) {
-                config.unit = " (years)";
-                var age = Bahmni.Common.Util.AgeUtil.fromBirthDateTillReferenceDate(person.birthdate, yAxisObs.observationDateTime);
-                xValue = age.years + "." + age.months;
             } else {
                 config.type = "indexed";
                 xValue = _.find(xAxisObservations, function (xObs) {
