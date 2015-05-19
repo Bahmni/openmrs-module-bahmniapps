@@ -7,8 +7,9 @@ angular.module('bahmni.common.displaycontrol.observation')
             var controller = function($scope){
 
                 var mapObservation = function(response,config){
-                    var observationFilter = new Bahmni.Common.DisplayControl.Observation.Filters(config.obsIgnoreList);
-                    var observations = observationFilter.removeObsWithOrder(observationFilter.removeUnwantedObs(response.data));
+
+                    var observations = response.data;
+
                     var conceptsConfig = appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
                     observations = new Bahmni.Common.Obs.ObservationMapper().map(observations, conceptsConfig);
 
@@ -21,8 +22,8 @@ angular.module('bahmni.common.displaycontrol.observation')
                     }
                 };
 
-                var fetchObservations = function () {
-                    spinner.forPromise(observationsService.fetch($scope.patient.uuid,$scope.config.conceptNames,$scope.config.scope,$scope.config.numberOfVisits,$scope.visitUuid).then(function (response) {
+                var fetchObservations = function (removeObsWithOrder) {
+                    spinner.forPromise(observationsService.fetch($scope.patient.uuid,$scope.config.conceptNames,$scope.config.scope,$scope.config.numberOfVisits,$scope.visitUuid, $scope.config.obsIgnoreList, removeObsWithOrder).then(function (response) {
                             mapObservation(response,$scope.config);
                         }));
                 };
@@ -36,8 +37,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                         ($scope.section.allObservationDetails.pivotTable || $scope.section.allObservationDetails.observationGraph);
                 };
 
-                fetchObservations();
-
+                fetchObservations(true);
 
                 $scope.dialogData = {
                     "patient": $scope.patient,

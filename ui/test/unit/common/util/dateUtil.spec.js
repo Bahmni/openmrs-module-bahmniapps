@@ -223,4 +223,35 @@ describe('DateUtil', function () {
         })
     });
 
+    describe("diffInDays", function () {
+        it("should return 0 for difference of same date", function () {
+            var date = new Date('2015', '7', '14', '12');
+            expect(dateUtil.diffInDays(date, date)).toEqual(0);
+        });
+
+        it("should return 1 for difference of one day", function () {
+            var date = new Date('2015', '7', '14', '12');
+            var nextDate = new Date('2015', '7', '15', '12');
+            expect(dateUtil.diffInDays(date, nextDate)).toEqual(1);
+        });
+
+        it("should return 365 for difference of one year", function () {
+            var date = new Date('2014', '7', '15', '12');
+            var nextYear = new Date('2015', '7', '15', '12');
+            expect(dateUtil.diffInDays(date, nextYear)).toEqual(365);
+        });
+    });
+
+    describe("diffInMilliSeconds", function () {
+        it("should return 0 for difference of same date", function () {
+            var date = new Date('2014', '7', '15', '12');
+            expect(dateUtil.diffInMilliSeconds(date, date)).toEqual(0);
+        });
+        it("should return 5000 for 5000ms added to date", function () {
+            var date = new Date('2014', '7', '15', '12').setMilliseconds(0);
+            var dataNextMilli = new Date('2014', '7', '15', '12').setMilliseconds(5000);;
+            expect(dateUtil.diffInMilliSeconds(dataNextMilli, date)).toEqual(5000);
+        });
+    });
+
 });

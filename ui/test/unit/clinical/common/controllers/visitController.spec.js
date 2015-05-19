@@ -20,6 +20,7 @@ describe('VisitController', function () {
     var q;
     var state;
     var rootScope;
+    var controller;
     var stubAllPromise = function () {
         return {
             then: function () {
@@ -60,6 +61,19 @@ describe('VisitController', function () {
             }
         });
         scope.currentProvider = {uuid: ''};
+        controller =   $controller('VisitController', {
+                $scope: scope,
+                $state: state,
+                encounterService: encounterService,
+                clinicalAppConfigService: clinicalAppConfigService,
+                visitSummary: {},
+                configurations: configurations,
+                $timeout: $timeout,
+                printer: {},
+                visitConfig: visitTabConfig,
+                visitHistory:[],
+                $stateParams: {}
+            });
     }]));
 
     var defaultTab = {
@@ -88,21 +102,27 @@ describe('VisitController', function () {
 
     describe('initialization', function () {
         it('should pick default tab as current tab.', function () {
-            $controller('VisitController', {
-                $scope: scope,
-                $state: state,
-                encounterService: encounterService,
-                clinicalAppConfigService: clinicalAppConfigService,
-                visitSummary: {},
-                configurations: configurations,
-                $timeout: $timeout,
-                printer: {},
-                visitConfig: visitTabConfig,
-                visitHistory:[],
-                $stateParams: {}
-            });
-
             expect(scope.visitTabConfig.currentTab).toBe(defaultTab);
+        });
+
+        it('should check is numeric.', function () {
+            expect(scope.isNumeric(5)).toBeTruthy();
+            expect(scope.isNumeric('string')).toBeFalsy();
+        });
+
+        it('should check is empty', function () {
+            expect(scope.isEmpty('Some content')).toBeFalsy();
+            expect(scope.isEmpty('')).toBeTruthy();
+        });
+
+        it('should check data format', function () {
+            expect(scope.displayDate(new Date('2014', '7', '15', '12'))).toBe('15-Aug-14');
+        });
+
+        it('should check test result class for expected style', function () {
+            var inputLine = {isSummary: true};
+            var expectedStyle =  {"pending-result": true, "header": true};
+            expect(scope.testResultClass(inputLine)).toEqual(expectedStyle);
         });
     });
 
