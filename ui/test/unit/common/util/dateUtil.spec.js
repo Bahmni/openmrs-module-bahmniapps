@@ -241,17 +241,4 @@ describe('DateUtil', function () {
             expect(dateUtil.diffInDays(date, nextYear)).toEqual(365);
         });
     });
-
-    describe("diffInMilliSeconds", function () {
-        it("should return 0 for difference of same date", function () {
-            var date = new Date('2014', '7', '15', '12');
-            expect(dateUtil.diffInMilliSeconds(date, date)).toEqual(0);
-        });
-        it("should return 5000 for 5000ms added to date", function () {
-            var date = new Date('2014', '7', '15', '12').setMilliseconds(0);
-            var dataNextMilli = new Date('2014', '7', '15', '12').setMilliseconds(5000);;
-            expect(dateUtil.diffInMilliSeconds(dataNextMilli, date)).toEqual(5000);
-        });
-    });
-
 });
