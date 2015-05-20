@@ -8,7 +8,7 @@
         <div ng-switch="section.type">
             <div ng-switch-when="patientInformation">
                 <section class="block dashboard-section" ng-if="section.config">
-                    <patient-profile patient="patient"
+                    <patient-profile patient="patient" visit-summary="visitSummary"
                                      config="section.config"></patient-profile>
                 </section>
             </div>
