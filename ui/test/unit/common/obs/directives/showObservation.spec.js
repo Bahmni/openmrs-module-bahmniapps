@@ -5,11 +5,13 @@ describe("ensure that the directive show-observation works properly", function (
     var scope, rootScope, filter, httpBackend, compile, q;
     var html = '<show-observation  show-details-button="showDetailsButton" patient="patient" observation="observation" show-date="showDate" show-time="showTime"></show-observation>';
 
+    var obsDate = new Date();
+
     var observation = {
         "value": 1,
         "concept": {"shortName": null, "name": "Other", "set": true, "units": null, "conceptClass": "Misc", "dataType": "N/A"},
         "conceptUuid" : "otherUuid",
-        "observationDateTime" : "2014-10-21T11:30:47.000+0530"
+        "observationDateTime" : obsDate
     };
 
     var patient = {identifier: 'GAN1234', name: 'Ram Singh', uuid: 'p-uuid-1', activeVisitUuid: 'v-uuid-1'};
@@ -71,7 +73,7 @@ describe("ensure that the directive show-observation works properly", function (
         scope.$digest();
 
         expect(compiledScope).not.toBeUndefined();
-        expect(compiledScope.dateString(observation)).toBe('11:30 am');
+        expect(compiledScope.dateString(observation)).toBe(moment(obsDate).format("h:mm a"));
     });
 
     it("dateString() should return datetime", function () {
@@ -94,6 +96,6 @@ describe("ensure that the directive show-observation works properly", function (
         scope.$digest();
 
         expect(compiledScope).not.toBeUndefined();
-        expect(compiledScope.dateString(observation)).toBe('21 Oct 14 11:30 am');
+        expect(compiledScope.dateString(observation)).toBe(moment(obsDate).format("DD MMM YY h:mm a"));
     });
 });

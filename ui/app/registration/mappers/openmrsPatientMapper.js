@@ -25,7 +25,7 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 return number > 9 ? number.toString() : "0" + number.toString();
             },
             parseDate = function (dateStr) {
-                return dateStr ? new Date(dateStr.substr(0, 10)) : dateStr;
+                return dateStr ? new Date(dateStr) : dateStr;
             },
             getDateStr = function (date) {
                 return date ? pad(date.getDate()) + "-" + pad(date.getMonth() + 1) + "-" + date.getFullYear() : "";
@@ -40,7 +40,7 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 patient.middleName = openmrsPatient.person.preferredName.middleName;
                 patient.familyName = openmrsPatient.person.preferredName.familyName;
                 patient.birthdate = openmrsPatient.person.birthdateEstimated || !birthdate ? "" : getDateStr(birthdate);
-                patient.age = birthdate ? age.fromBirthDate(parseDate(openmrsPatient.person.birthdate)) : null;
+                patient.age = birthdate ? age.fromBirthDate(openmrsPatient.person.birthdate) : null;
                 patient.gender = openmrsPatient.person.gender;
                 patient.address = mapAddress(openmrsPatient.person.preferredAddress);
                 patient.identifier = openmrsPatient.identifiers[0].identifier;

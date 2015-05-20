@@ -2,7 +2,7 @@
 
 describe('patientMapper', function () {
 
-    var mapper, openmrsPatient, ageModule, patientConfiguration;
+    var mapper, openmrsPatient, ageModule, patientConfiguration, date = new Date();
 
     beforeEach(function () {
         module('bahmni.registration');
@@ -24,7 +24,7 @@ describe('patientMapper', function () {
         openmrsPatient = {
             "uuid": "1a202b45-ffa3-42a1-9177-c718e6119cfd",
             "auditInfo": {
-                dateCreated: "2013-04-17T09:58:47.000+0530"
+                dateCreated: moment(date).format()
             },
             "identifiers": [
                 {
@@ -34,7 +34,7 @@ describe('patientMapper', function () {
             "person": {
                 "gender": "F",
                 "age": 0,
-                "birthdate": "2013-04-01T00:00:00.000+0530",
+                "birthdate": moment(date).format(),
                 "birthdateEstimated": false,
                 "preferredName": {
                     "uuid": "72573d85-7793-49c1-8c29-7647c0a6a425",
@@ -73,7 +73,7 @@ describe('patientMapper', function () {
                     }
                 ],
                 "auditInfo": {
-                    dateCreated: "2013-04-17T09:58:47.000+0530"
+                    dateCreated: moment(date).format()
                 }
             }
         }
@@ -108,9 +108,11 @@ describe('patientMapper', function () {
     });
 
     it('should map birth date in dd-mm-yyyy format', function () {
-        openmrsPatient.person.birthdate = "2013-04-01T00:00:00.000+0530";
+        var date1 = new Date();
+        date1.setHours(0,0,0,0);
+        openmrsPatient.person.birthdate = moment(date1).format();
         var patient = mapper.map(openmrsPatient);
-        expect(patient.birthdate).toBe('01-04-2013');
+        expect(patient.birthdate).toBe(moment(date1).format("DD-MM-YYYY"));
     });
 
     it("should not fail when birthdate is null", function () {
@@ -120,25 +122,34 @@ describe('patientMapper', function () {
     });
 
     it('should map registration date', function () {
-        openmrsPatient.person.personDateCreated = "2013-04-17T09:58:47.000+0530";
+        var date1 = new Date();
+        openmrsPatient.person.personDateCreated = moment(date1).format();
         var patient = mapper.map(openmrsPatient);
-        expect(patient.registrationDate).toEqual(new Date("2013-04-17"));
+        expect(patient.registrationDate).toEqual(new Date(moment(date).format()));
     });
 
     it("should populate birthdate and age if birthdate is not estimated", function () {
-        openmrsPatient.person.birthdate = "2013-04-01T00:00:00.000+0530";
+        var dob = date;
+        dob.setFullYear(dob.getFullYear()-2);
+        dob.setMonth(dob.getMonth()-3);
+        dob.setDate(dob.getDate()-25);
+        openmrsPatient.person.birthdate = moment(dob).format();
         openmrsPatient.person.birthdateEstimated = false;
         var age = {years: 2, months: 3, days: 25};
         spyOn(ageModule, 'fromBirthDate').and.returnValue(age);
 
         var patient = mapper.map(openmrsPatient);
 
-        expect(patient.birthdate).toBe('01-04-2013');
+        expect(patient.birthdate).toBe(moment(dob).format("DD-MM-YYYY"));
         expect(patient.age).toBe(age);
     });
 
     it("should populate age and empty birthdate if birthdate is estimated", function () {
-        openmrsPatient.person.birthdate = "2013-04-01T00:00:00.000+0530";
+        var dob = date;
+        dob.setFullYear(dob.getFullYear()-2);
+        dob.setMonth(dob.getMonth()-3);
+        dob.setDate(dob.getDate()-25);
+        openmrsPatient.person.birthdate = moment(dob).format();
         openmrsPatient.person.birthdateEstimated = true;
         var age = {years: 2, months: 3, days: 25};
         spyOn(ageModule, 'fromBirthDate').and.returnValue(age);
