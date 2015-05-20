@@ -62,13 +62,16 @@
                 xValue = Bahmni.Common.Util.AgeUtil.differenceInMonths(person.birthdate, yAxisObs.observationDateTime);
             } else {
                 config.type = "indexed";
-                xValue = _.find(xAxisObservations, function (xObs) {
+                var matchingObservation = _.find(xAxisObservations, function (xObs) {
                     return yAxisObs.observationDateTime === xObs.observationDateTime;
-                }).value;
+                });
+                xValue = matchingObservation ? matchingObservation.value : undefined;
             }
-            var concept = filterConcept(sortedObsGraphModel, yAxisObs);
-            var observationPoint = createObservationPoint(config, yAxisObs, xValue);
-            concept.values.push(observationPoint);
+            if(xValue != undefined) {
+                var concept = filterConcept(sortedObsGraphModel, yAxisObs);
+                var observationPoint = createObservationPoint(config, yAxisObs, xValue);
+                concept.values.push(observationPoint);
+            }
         });
 
         if (growthChartReference != undefined) {

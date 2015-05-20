@@ -24,10 +24,10 @@ Bahmni.Graph.c3Chart = function () {
             },
             type: config.type,
             tick: {
-                fit: true,
                 culling: {
                     max: 3
                 },
+                count: 10,
                 format: function(xAxisValue){
                     return formatValueForDisplay(xAxisValue, config);
                 }
