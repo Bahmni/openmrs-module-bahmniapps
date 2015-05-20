@@ -22,8 +22,9 @@ angular.module('bahmni.common.displaycontrol.observation')
                     }
                 };
 
-                var fetchObservations = function (removeObsWithOrder) {
-                    spinner.forPromise(observationsService.fetch($scope.patient.uuid,$scope.config.conceptNames,$scope.config.scope,$scope.config.numberOfVisits,$scope.visitUuid, $scope.config.obsIgnoreList, removeObsWithOrder).then(function (response) {
+                var fetchObservations = function () {
+                    $scope.removeObsWithNoOrderId = angular.isDefined($scope.removeObsWithNoOrderId) ? $scope.removeObsWithNoOrderId : true;
+                    spinner.forPromise(observationsService.fetch($scope.patient.uuid,$scope.config.conceptNames,$scope.config.scope,$scope.config.numberOfVisits,$scope.visitUuid, $scope.config.obsIgnoreList, $scope.removeObsWithNoOrderId).then(function (response) {
                             mapObservation(response,$scope.config);
                         }));
                 };
@@ -37,7 +38,8 @@ angular.module('bahmni.common.displaycontrol.observation')
                         ($scope.section.allObservationDetails.pivotTable || $scope.section.allObservationDetails.observationGraph);
                 };
 
-                fetchObservations(true);
+                
+                fetchObservations();
 
                 $scope.dialogData = {
                     "patient": $scope.patient,
@@ -56,7 +58,8 @@ angular.module('bahmni.common.displaycontrol.observation')
                     section:"=",
                     config:"=",
                     title:"=sectionTitle",
-                    isOnDashboard:"="
+                    isOnDashboard:"=",
+                    removeObsWithNoOrderId:"=?"
                 }
             }
     }]);

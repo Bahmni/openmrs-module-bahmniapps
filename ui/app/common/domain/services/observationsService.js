@@ -8,10 +8,8 @@ angular.module('bahmni.common.domain')
             if(unwantedObsConcepts) {
                 params.unwantedObsConcepts = unwantedObsConcepts
             }
-            
-            if(removeObsWithOrder) {
-                params.removeObsWithOrder = removeObsWithOrder
-            }
+
+            params.removeObsWithOrder = removeObsWithOrder
 
             if(visitUuid){
                 params.visitUuid = visitUuid;
