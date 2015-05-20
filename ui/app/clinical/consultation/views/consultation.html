@@ -1,10 +1,12 @@
-<article class="consultation-page visit" >
+<article class="consultation-page visit">
     <section class="messages" ng-if="isConsultationTabEmpty()">
         <p class="null-data-message">Consultation pad is empty</p>
     </section>
     <div ng-if="!isConsultationTabEmpty()">
-        <section class="block diagnosis section-grid" ng-show="consultation.newlyAddedDiagnoses.length > 0 || consultation.savedDiagnosesFromCurrentEncounter.length > 0 || editedDiagnosesFromPastEncounters.length > 0">
+        <section class="block diagnosis section-grid"
+                 ng-show="consultation.newlyAddedDiagnoses.length > 0 || consultation.savedDiagnosesFromCurrentEncounter.length > 0 || editedDiagnosesFromPastEncounters.length > 0">
             <h2 class="section-title">Diagnoses</h2>
+
             <div class="table history-diagnosis" ng-show="consultation.newlyAddedDiagnoses.length > 0">
                 <div class="row table-header">
                     <div class="col col1"><span class="table-head-title">Newly Added</span></div>
@@ -14,7 +16,8 @@
                     <div class="col col5"><span class="table-head-title"></span></div>
                 </div>
                 <div class="table-body">
-                    <div class="row diagnosis-row" ng-repeat="diagnosis in consultation.newlyAddedDiagnoses | primaryDiagnosisFirst">
+                    <div class="row diagnosis-row"
+                         ng-repeat="diagnosis in consultation.newlyAddedDiagnoses | primaryDiagnosisFirst">
                         <div class="view-past row-click" toggle="diagnosis.showComment">
                             <div class="col col1">
                                 <span class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">{{diagnosis.getDisplayName()}}</span>
@@ -34,13 +37,18 @@
                                         <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniDate}}</span>
                                         <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniTime}}</span>
                                     </span>
-                                    <span class="provider" ng-repeat="provider in diagnosis.firstDiagnosis.providers">{{provider.name}}</span>
+                                    <span class="provider" ng-repeat="provider in diagnosis.firstDiagnosis.providers">
+                                        <span ng-if="diagnosis.personName == provider.name">{{provider.name}}</span>
+                                        <span ng-if="diagnosis.personName != provider.name"> {{diagnosis.personName}} on behalf of {{provider.name}}</span>
+                                    </span>
                                 </div>
                             </div>
                             <div class="col col3"></div>
                             <div class="col col4">
                                 <i ng-show="diagnosis.revised" class="fa fa-ok fl"></i>
-                                <button class="toggle fr" ng-if="diagnosis.comments" ng-click="diagnosis.showComment = !diagnosis.showComment" ng-class="{'has-notes': diagnosis.comments}">
+                                <button class="toggle fr" ng-if="diagnosis.comments"
+                                        ng-click="diagnosis.showComment = !diagnosis.showComment"
+                                        ng-class="{'has-notes': diagnosis.comments}">
                                     <i class="fa fa-angle-down" ng-hide="diagnosis.showComment"></i>
                                     <i class="fa fa-angle-up" ng-show="diagnosis.showComment"></i>
                                 </button>
@@ -48,14 +56,15 @@
                         </div>
                         <div class="diagnosis-row notes inline-notes" ng-show="diagnosis.showComment">
                             <p>
-                                <strong class="diagnosis-notes-title">Diagnosis Notes: </strong><pre>{{diagnosis.comments}}</pre>
+                                <strong class="diagnosis-notes-title">Diagnosis Notes: </strong>
+                            <pre>{{diagnosis.comments}}</pre>
                             </p>
                         </div>
                     </div>
                 </div>
 
             </div>
-            
+
             <div class="table history-diagnosis" ng-show="consultation.savedDiagnosesFromCurrentEncounter.length > 0">
                 <div class="row table-header">
                     <div class="col col1"><span class="table-head-title">Current</span></div>
@@ -66,7 +75,8 @@
                 </div>
 
                 <div class="table-body">
-                    <div class="row diagnosis-row" ng-repeat="diagnosis in consultation.savedDiagnosesFromCurrentEncounter | primaryDiagnosisFirst">
+                    <div class="row diagnosis-row"
+                         ng-repeat="diagnosis in consultation.savedDiagnosesFromCurrentEncounter | primaryDiagnosisFirst">
                         <div class="view-past row-click" toggle="diagnosis.showComment">
                             <div class="col col1">
                                 <span class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">{{diagnosis.getDisplayName()}}</span>
@@ -85,13 +95,18 @@
                                         <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniDate}}</span>
                                         <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniTime}}</span>
                                     </span>
-                                    <span class="provider" ng-repeat="provider in diagnosis.firstDiagnosis.providers">{{provider.name}}</span>
+                                    <span class="provider" ng-repeat="provider in diagnosis.firstDiagnosis.providers">
+                                    <span ng-if="diagnosis.personName == provider.name">{{provider.name}}</span>
+                                        <span ng-if="diagnosis.personName != provider.name"> {{diagnosis.personName}} on behalf of {{provider.name}}</span>
+                                    </span>
                                 </div>
                             </div>
                             <div class="col col3"></div>
                             <div class="col col4">
                                 <i ng-show="diagnosis.revised" class="fa fa-ok fl"></i>
-                                <button class="toggle fr" ng-if="diagnosis.comments" ng-click="diagnosis.showComment = !diagnosis.showComment" ng-class="{'has-notes': diagnosis.comments}">
+                                <button class="toggle fr" ng-if="diagnosis.comments"
+                                        ng-click="diagnosis.showComment = !diagnosis.showComment"
+                                        ng-class="{'has-notes': diagnosis.comments}">
                                     <i class="fa fa-plus-circle" ng-hide="diagnosis.showComment"></i>
                                     <i class="fa fa-minus-sign" ng-show="diagnosis.showComment"></i>
                                 </button>
@@ -99,10 +114,11 @@
                         </div>
                         <div class="diagnosis-row notes inline-notes" ng-show="diagnosis.showComment">
                             <p>
-                                <strong class="diagnosis-notes-title">Diagnosis Notes: </strong><pre>{{diagnosis.comments}}</pre>
+                                <strong class="diagnosis-notes-title">Diagnosis Notes: </strong>
+                            <pre>{{diagnosis.comments}}</pre>
                             </p>
                         </div>
-                    </div>  
+                    </div>
                 </div>
 
             </div>
@@ -117,10 +133,11 @@
                 </div>
 
                 <div class="table-body">
-                    <div class="row diagnosis-row" ng-repeat="diagnosis in editedDiagnosesFromPastEncounters | primaryDiagnosisFirst">
+                    <div class="row diagnosis-row"
+                         ng-repeat="diagnosis in editedDiagnosesFromPastEncounters | primaryDiagnosisFirst">
                         <div class="view-past row-click" toggle="diagnosis.showComment">
                             <div class="col col1">
-                                <span class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">{{diagnosis.getDisplayName()}}</span>                            
+                                <span class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">{{diagnosis.getDisplayName()}}</span>
                             </div>
                             <div class="col col2">
                                 <div class="view">
@@ -130,70 +147,81 @@
                                         <span ng-hide="diagnosis.isPrimary()" class="order">Secondary</span>
                                     </span>
                                     <span class="status"></span>
-                                </div>                            
+                                </div>
                                 <div ng-show="diagnosis.firstDiagnosis">
                                     <span class="time-stamp">
                                         <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniDate}}</span>
                                         <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniTime}}</span>
                                     </span>
-                                    <span class="provider" ng-repeat="provider in diagnosis.firstDiagnosis.providers">{{provider.name}}</span>
+                                    <span class="provider" ng-repeat="provider in diagnosis.firstDiagnosis.providers">
+                                    <span ng-if="diagnosis.personName == provider.name">{{provider.name}}</span>
+                                        <span ng-if="diagnosis.personName != provider.name"> {{diagnosis.personName}} on behalf of {{provider.name}}</span>
+                                    </span>
                                 </div>
                             </div>
                             <div class="col col3"></div>
                             <div class="col col4">
-                               <i ng-show="diagnosis.revised" class="fa fa-ok fl"></i>
-                                <button class="toggle fr" ng-if="diagnosis.comments" ng-click="diagnosis.showComment = !diagnosis.showComment" ng-class="{'has-notes': diagnosis.comments}">
+                                <i ng-show="diagnosis.revised" class="fa fa-ok fl"></i>
+                                <button class="toggle fr" ng-if="diagnosis.comments"
+                                        ng-click="diagnosis.showComment = !diagnosis.showComment"
+                                        ng-class="{'has-notes': diagnosis.comments}">
                                     <i class="fa fa-plus-circle" ng-hide="diagnosis.showComment"></i>
                                     <i class="fa fa-minus-sign" ng-show="diagnosis.showComment"></i>
-                                </button>                            
+                                </button>
                             </div>
                         </div>
                         <div class="diagnosis-row notes inline-notes" ng-show="diagnosis.showComment">
                             <p>
-                                <strong class="diagnosis-notes-title">Diagnosis Notes: </strong><pre>{{diagnosis.comments}}</pre>
+                                <strong class="diagnosis-notes-title">Diagnosis Notes: </strong>
+                            <pre>{{diagnosis.comments}}</pre>
                             </p>
                         </div>
-                    </div>   
+                    </div>
                 </div>
 
             </div>
         </section>
         <section class="block observation section-grid" ng-show="groupedObservations.length > 0">
             <h2 class="section-title">Observations</h2>
+
             <div ng-repeat="observationGroup in groupedObservations">
                 <table>
                     <thead>
-                        <tr class="headerRow">
-                            <th colspan="3"><span class="obs-value">{{observationGroup.conceptSetName}}</span></th>
-                        </tr>                    
+                    <tr class="headerRow">
+                        <th colspan="3"><span class="obs-value">{{observationGroup.conceptSetName}}</span></th>
+                    </tr>
                     </thead>
 
                     <tbody>
-                        <tr class="row-click" toggle="observation.showComment" ng-repeat-start="observation in observationGroup.groupMembers" ng-class="{true: 'is-abnormal'}[observation.abnormalObs.value]">
-                            <td class="name">
-                                <span class="obs-value">{{observation.label}}</span>
-                            </td>
-                            <td class="value has-toggle-btn" data-ng-switch="observation.concept.conceptClass">
-                                <img data-ng-switch-when="Image" ng-src="{{observation.value|thumbnail}}" width="100">
-                                <span data-ng-switch-default class="obs-value"><pre class="chief-notes">{{observation | observationValue}} {{observation.concept.units}}</pre></span>
+                    <tr class="row-click" toggle="observation.showComment"
+                        ng-repeat-start="observation in observationGroup.groupMembers"
+                        ng-class="{true: 'is-abnormal'}[observation.abnormalObs.value]">
+                        <td class="name">
+                            <span class="obs-value">{{observation.label}}</span>
+                        </td>
+                        <td class="value has-toggle-btn" data-ng-switch="observation.concept.conceptClass">
+                            <img data-ng-switch-when="Image" ng-src="{{observation.value|thumbnail}}" width="100">
+                            <span data-ng-switch-default class="obs-value"><pre class="chief-notes">{{observation | observationValue}} {{observation.concept.units}}</pre></span>
 
-                                <div class="footer-note">
+                            <div class="footer-note">
                                     <span class="time-stamp">
                                         <span class="time">{{observation.observationDateTime | bahmniTime}}</span>
                                     </span>
-                                    <span class="provider" bindonce="observation" bo-text="observation.provider.name"></span>
-                                </div>                            
-                            </td>
-                            <td class="toggle-btn">
-                                <button class="toggle fr" ng-if="observation.comment" ng-class="{'has-notes': observation.comment}">
-                                    <i class="fa fa-plus-circle" ng-hide="observation.showComment"></i>
-                                    <i class="fa fa-minus-sign" ng-show="observation.showComment"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr ng-repeat-end ng-if="observation.comment" ng-show="observation.showComment">
-                            <td class="notes inline-notes" colspan="3">{{observation.comment}}</td>
-                        </tr>                    
+                                <span class="provider" bindonce="observation"
+                                      bo-text="observation.provider.name"></span>
+                            </div>
+                        </td>
+                        <td class="toggle-btn">
+                            <button class="toggle fr" ng-if="observation.comment"
+                                    ng-class="{'has-notes': observation.comment}">
+                                <i class="fa fa-plus-circle" ng-hide="observation.showComment"></i>
+                                <i class="fa fa-minus-sign" ng-show="observation.showComment"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr ng-repeat-end ng-if="observation.comment" ng-show="observation.showComment">
+                        <td class="notes inline-notes" colspan="3">{{observation.comment}}</td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -201,46 +229,50 @@
         <section class="block investigation" style="display:none;"> <!--Hiding the section for release 4-->
             <h2>Investigation</h2>
             <ul>
-                <li ng-repeat="investigation in consultation.investigations" ng-class="{panel: investigation.concept.set, voided: investigation.voided}">
+                <li ng-repeat="investigation in consultation.investigations"
+                    ng-class="{panel: investigation.concept.set, voided: investigation.voided}">
                     <span>{{investigation.concept.name}}</span>
                     <span ng-show="investigation.concept.set" class="panel">P</span>
                 </li>
             </ul>
             <div ng-show="consultation.labOrderNote.value" class="notes">
-              <h5 class="title">Notes:</h5>
-              <p class="content">{{consultation.labOrderNote.value}}</p>
+                <h5 class="title">Notes:</h5>
+
+                <p class="content">{{consultation.labOrderNote.value}}</p>
             </div>
             <ng-include src="'consultation/views/labResults.html'" ng-init="labResults=consultation.labResults"/>
         </section>
         <section class="block disposition section-grid" ng-if="disposition.code && !disposition.voided">
             <h2 class="section-title">Disposition</h2>
-                <ul class="block-content">
-                    <li ng-click="toggle(disposition)">
-                        <div class="expander-row row-click">
-                            <span class="disposition-state">{{disposition.conceptName}} <span>on</span> {{disposition.dispositionDateTime | bahmniDateTime }}</span>
-                            <button class="toggle fr" ng-class="{'has-notes': disposition.additionalObs[0].value}">
-                                <i class="fa fa-plus-circle" ng-hide="disposition.show"></i>
-                                <i class="fa fa-minus-sign" ng-show="disposition.show"></i>
-                            </button>
+            <ul class="block-content">
+                <li ng-click="toggle(disposition)">
+                    <div class="expander-row row-click">
+                        <span class="disposition-state">{{disposition.conceptName}} <span>on</span> {{disposition.dispositionDateTime | bahmniDateTime }}</span>
+                        <button class="toggle fr" ng-class="{'has-notes': disposition.additionalObs[0].value}">
+                            <i class="fa fa-plus-circle" ng-hide="disposition.show"></i>
+                            <i class="fa fa-minus-sign" ng-show="disposition.show"></i>
+                        </button>
+                    </div>
+                    <div>
+                        <div ng-if="disposition.show" class="inline-notes notes" ng-class="{'print-notes': note.value}">
+                            <p class="left">
+                                <strong>Disposition Notes: </strong>{{disposition.additionalObs[0].value}}
+                            </p>
                         </div>
-                        <div>
-                            <div ng-if="disposition.show" class="inline-notes notes" ng-class="{'print-notes': note.value}">
-                                <p class="left">
-                                    <strong>Disposition Notes: </strong>{{disposition.additionalObs[0].value}}
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </ul>            
+                    </div>
+                </li>
+            </ul>
         </section>
-        <section class="block treatment-section section-grid" ng-show="consultation.treatmentDrugs.length > 0 || consultation.newlyAddedTreatments.length > 0 || consultation.discontinuedDrugs.length > 0">
+        <section class="block treatment-section section-grid"
+                 ng-show="consultation.treatmentDrugs.length > 0 || consultation.newlyAddedTreatments.length > 0 || consultation.discontinuedDrugs.length > 0">
             <div ng-include src="'consultation/views/treatmentDrugs.html'"></div>
         </section>
     </div>
     <section class="block consultation-notes section-grid">
         <h2 class="section-title">Consultation Notes</h2>
-        <textarea ng-model="consultation.consultationNote.value" ng-change="onNoteChanged()" placeholder="Enter Notes here " rows="6"></textarea>
+        <textarea ng-model="consultation.consultationNote.value" ng-change="onNoteChanged()"
+                  placeholder="Enter Notes here " rows="6"></textarea>
     </section>
-    
+
 </article>
 

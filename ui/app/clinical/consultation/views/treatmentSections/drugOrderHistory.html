@@ -64,7 +64,8 @@
                                         <span class="time-stamp">
                                             <span class="time">{{drugOrder.dateActivated | bahmniDate}}</span>
                                         </span>
-                                        <span class="provider">{{drugOrder.provider.name}}</span>
+                                        <span class="provider" ng-if="drugOrder.personName == drugOrder.provider.name">{{drugOrder.provider.name}}</span>
+                                        <span class="provider" ng-if="drugOrder.personName != drugOrder.provider.name">{{drugOrder.personName}} on behalf of {{drugOrder.provider.name}}</span>
                                     </div>
                                 </div>
 							</li>

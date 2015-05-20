@@ -37,8 +37,11 @@
 <tr ng-show="showDetails">
     <td colspan="4" class="notes inline-notes">
         <div class="footer-note right">
-            <span class="provider">
+            <span class="provider" ng-if="drugOrder.personName == drugOrder.provider.name">
                 {{drugOrder.provider.name}} {{drugOrder.effectiveStartDate | bahmniTime}}
+            </span>
+            <span class="provider" ng-if="drugOrder.personName != drugOrder.provider.name">
+                {{drugOrder.personName}} on behalf of {{drugOrder.provider.name}} {{drugOrder.effectiveStartDate | bahmniTime}}
             </span>
         </div>
     </td>

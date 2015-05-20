@@ -5,12 +5,12 @@
         <tbody ng-repeat="disposition in dispositions" class="row">
         <tr class="view-past" ng-class="{'test-notes-parent': getNotes(disposition), 'notes-open': disposition.show}">
             <td class="name">
-                    <span class="disposition-state">{{disposition.conceptName}}</span>
+                <span class="disposition-state">{{disposition.conceptName}}</span>
             </td>
             <td class="value">
                 {{disposition.dispositionDateTime| bahmniDate}}
             </td>
-            <td class="toggle-btn" ng-if="showDetailsButton(disposition)" >
+            <td class="toggle-btn" ng-if="showDetailsButton(disposition)">
                 <button class="toggle fr"
                         ng-class="{'has-notes': getNotes(disposition)}" ng-click="toggle(disposition)">
                     <i class="fa fa-angle-down" ng-hide="disposition.show"></i>
@@ -23,9 +23,12 @@
                 <i class="fa fa-comments left" ng-if="getNotes(disposition)"></i>
                 <pre class="left ng-binding">{{getNotes(disposition)}}</pre>
                 <div class="footer-note right">
-                        <span class="provider">
-                            {{disposition.providers[0].name}} {{disposition.dispositionDateTime | bahmniTime}}
-                        </span>
+                    <span class="provider" ng-if="disposition.personName == disposition.providers[0].name">
+                        {{disposition.providers[0].name}} {{disposition.dispositionDateTime | bahmniTime}}
+                    </span>
+                    <span class="provider" ng-if="disposition.personName != disposition.providers[0].name">
+                        {{disposition.personName}} on behalf of {{disposition.providers[0].name}} {{disposition.dispositionDateTime | bahmniTime}}
+                    </span>
                 </div>
             </td>
         </tr>
