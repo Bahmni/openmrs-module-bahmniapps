@@ -27,13 +27,13 @@
                 <div ng-switch-when="html5InputDataType">
                     <input id="{{::observation.uniqueId}}" obs-constraints obs="observation.primaryObs"
                            ng-if="::!observation.primaryObs.isNumeric()"
-                           ng-model="observation.value" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}" focus-me="observation.isFocused"/>
+                           ng-model="observation.value" ng-class="{'is-abnormal': observation.abnormalObs.value, 'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}" focus-me="observation.isFocused"/>
 
                     <input id="{{::observation.uniqueId}}" obs-constraints obs="observation.primaryObs" ng-if="::(observation.primaryObs.isNumeric() && !observation.primaryObs.isStepperControl())"
                            ng-model="observation.value"
-                           ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}" integer="true" focus-me="observation.isFocused"/>
+                           ng-class="{'is-abnormal': observation.abnormalObs.value, 'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}" integer="true" focus-me="observation.isFocused"/>
                     <stepper id="{{::observation.uniqueId}}" ng-model="observation.value" obs="observation.primaryObs"
-                             ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}" focus-me="observation.isFocused"  ng-if="::(observation.primaryObs.isNumeric() && observation.primaryObs.isStepperControl())" > </stepper>
+                             ng-class="{'is-abnormal': observation.abnormalObs.value, 'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}" focus-me="observation.isFocused"  ng-if="::(observation.primaryObs.isNumeric() && observation.primaryObs.isStepperControl())" > </stepper>
 
                 </div>
 
