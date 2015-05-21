@@ -1,9 +1,26 @@
 <div>
+    <div>
+        <button ng-click="save()">Save</button>
+    </div>
+    <div>
+        <patient-profile patient="patient" config='{"addressFields" : ["address1","cityVillage", "state","zip"]}'></patient-profile>
+    </div>
     <ul>
-        <li ng-repeat="order in orders">
-            {{order.concept.name.display}}
-            {{order.encounter.provider.display}}
-            {{order.dateCreated}}
+        <li ng-repeat="order in orders" class="concept-set-group">
+            <div class="concept-set-title" ng-click="showOrderForm(order)">
+                <h2 class="section-title">
+                    <i class="fa fa-caret-right" ng-hide="order.showForm"></i>
+                    <i class="fa fa-caret-down" ng-show="order.showForm"></i>
+                    <span>{{order.concept.name.display}}</span>
+                    <span>{{order.dateCreated}}</span>
+                </h2>
+            </div>
+            <div ng-if="order.showForm">
+                <concept-set patient="patient" ng-if="order.showForm"
+                    concept-set-name="formName"
+                    observations="order.observations" show-title="false">
+                </concept-set>
+            </div>
         </li>
     </ul>
 </div>

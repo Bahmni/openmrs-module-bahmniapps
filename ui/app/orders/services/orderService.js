@@ -4,6 +4,7 @@ angular.module('bahmni.orders')
     .factory('orderService', ['$http', function ($http) {
 
     var getOrders = function (patientUuid, orderTypeUuid, scope) {
+        scope = scope || "byOrderType";
         return $http.get(Bahmni.Common.Constants.orderUrl, {
             params:{
                 patientUuid: patientUuid,

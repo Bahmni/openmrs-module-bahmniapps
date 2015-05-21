@@ -110,7 +110,8 @@ Bahmni.ConceptSet.ObservationMapper = function () {
 
     function buildObservation(concept, savedObs, mappedGroupMembers) {
         var comment = savedObs ? savedObs.comment : null;
-        return { concept: conceptMapper.map(concept), units: concept.units, label: getLabel(concept), possibleAnswers: concept.answers, groupMembers: mappedGroupMembers, comment: comment};
+        var belongsToPreviousEncounter = savedObs ? savedObs.belongsToPreviousEncounter : null;
+        return { concept: conceptMapper.map(concept), units: concept.units, label: getLabel(concept), possibleAnswers: concept.answers, groupMembers: mappedGroupMembers, comment: comment, belongsToPreviousEncounter: belongsToPreviousEncounter };
     }
 
     var createObservationForDisplay = function (observation, concept) {

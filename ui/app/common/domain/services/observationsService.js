@@ -34,4 +34,13 @@ angular.module('bahmni.common.domain')
                 withCredentials: true
             });
         };
+
+        this.getObsForOrder = function(orderUuid){
+            return $http.get(Bahmni.Common.Constants.observationsUrl,{
+               params:{
+                   orderUuid: orderUuid
+               },
+                withCredentials:true
+            });
+        }
     }]);

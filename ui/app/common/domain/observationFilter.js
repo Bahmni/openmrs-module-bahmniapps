@@ -29,10 +29,21 @@
 			});
 		};
 
+		var removeObsFromPreviousEncounter = function(observations) {
+			observations.forEach(function(observation){
+				observation.groupMembers = removeObsFromPreviousEncounter(observation.groupMembers);
+			});
+			return observations.filter(function(observation) {
+				return observation.belongsToPreviousEncounter != true;
+			});
+		};
+
 		self.filter = function(observations) {
 			var wrappedObservations = observations.map(Observation.wrap);
-            var filteredObservations = removeNewObservationsWithoutValue(wrappedObservations);
+			var editedObservations = removeObsFromPreviousEncounter(wrappedObservations);
+            var filteredObservations = removeNewObservationsWithoutValue(editedObservations);
 			voidExistingObservationWithOutValue(filteredObservations);
+
 			return filteredObservations;
 		}
 	};
