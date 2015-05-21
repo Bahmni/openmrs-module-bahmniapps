@@ -45,7 +45,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.isCurrentLocation = function (location) {
-                return getCurrentLocation().uuid === location.uuid;
+                return getCurrentCookieLocation().uuid === location.uuid;
             };
 
             $scope.popUpHandler = function() {
@@ -57,7 +57,16 @@ angular.module('bahmni.clinical')
                 ngDialog.close();
             };
 
-            var getCurrentLocation = function () {
+            $scope.getTitle = function(){
+                var title = [];
+                if(getCurrentCookieLocation()) title.push(getCurrentCookieLocation().name);
+                console.log(getCurrentProvider());
+                if(getCurrentProvider() && getCurrentProvider().value) title.push(getCurrentProvider().value);
+                if(getCurrentDate()) title.push(DateUtil.formatDateWithoutTime(getCurrentDate()));
+                return title.join(',');
+            };
+
+            var getCurrentCookieLocation = function () {
                 return $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) : null;
             };
 
@@ -69,14 +78,6 @@ angular.module('bahmni.clinical')
                 return $bahmniCookieStore.get(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
             };
 
-            $scope.getTitle = function(){
-
-                var title = [];
-                if(getCurrentLocation()) title.push(getCurrentLocation().name);
-                if(getCurrentProvider() && getCurrentProvider().value) title.push(getCurrentProvider().value);
-                if(getCurrentDate()) title.push(DateUtil.formatDateWithoutTime(getCurrentDate()));
-                return title.join(',');
-            };
             var getLocationFor = function(uuid){
                 return _.find($scope.locations, function(location){
                     return location.uuid == uuid;
@@ -106,7 +107,7 @@ angular.module('bahmni.clinical')
 
                 return locationService.getAllByTag("Login Location").then(function (response) {
                         $scope.locations = response.data.results;
-                        $scope.selectedLocationUuid = getCurrentLocation().uuid;
+                        $scope.selectedLocationUuid = getCurrentCookieLocation().uuid;
 
                     }
                 );

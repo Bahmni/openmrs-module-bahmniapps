@@ -17,8 +17,8 @@
         <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniDate}}</span>
       </span>
             <span class="provider" ng-repeat="provider in diagnosis.firstDiagnosis.providers">
-                <span ng-if="diagnosis.firstDiagnosis.personName == provider.name">{{provider.name}}</span>
-                <span ng-if="diagnosis.firstDiagnosis.personName != provider.name">{{diagnosis.firstDiagnosis.personName}} on behalf of {{provider.name}}</span>
+                <span ng-if="diagnosis.firstDiagnosis.creatorName != provider.name">{{diagnosis.firstDiagnosis.creatorName}} on behalf of </span>
+                {{provider.name}}
             </span>
         </div>
 
@@ -35,8 +35,8 @@
         <span class="date">{{diagnosis.diagnosisDateTime | bahmniDate}}</span>
       </span>
             <span class="provider" ng-repeat="provider in diagnosis.providers">
-                <span ng-if="diagnosis.personName == provider.name">{{provider.name}}</span>
-                <span ng-if="diagnosis.personName != provider.name">{{diagnosis.personName}} on behalf of {{provider.name}}</span>
+                <span ng-if="diagnosis.creatorName != provider.name">{{diagnosis.creatorName}} on behalf of </span>
+                {{provider.name}}
             </span>
         </div>
     </div>

@@ -16,24 +16,24 @@
             <i class="fa fa-comments left"></i>
             <pre class="left">{{::observation.comment}}</pre>
             <div class="footer-note fr">
-                <span class="provider" ng-if="observation.personName == observation.providers[0].name">
-                    {{::observation.providers[0].name}} <span ng-if="observation.isFormElement()">{{dateString(observation)}}</span>
-                </span>
-                <span class="provider" ng-if="observation.personName != observation.providers[0].name">
-                    {{::observation.personName}} on behalf of {{::observation.providers[0].name}} <span ng-if="observation.isFormElement()">{{dateString(observation)}}</span>
+                <span class="provider">
+                    <span ng-if="observation.creatorName != observation.providers[0].name">
+                        {{::observation.creatorName}} on behalf of
+                    </span>
+                    {{::observation.providers[0].name}} <span ng-if="observation.isFormElement()">{{dateString(observation)}} </span>
                 </span>
             </div>
         </div>
     </div>
     <div ng-if="observation.showDetails" class="notes inline-notes" ng-class="{'print-notes': observation.showDetails}">
         <div class="footer-note fr">
-            <span class="provider" ng-if="observation.personName == observation.providers[0].name">
+            <span>
+                <span class="provider" ng-if="observation.creatorName != observation.providers[0].name">
+                    {{::observation.creatorName}} on behalf of
+                </span>
                 {{::observation.providers[0].name}} <span ng-if="observation.isFormElement()">{{dateString(observation)}}</span>
             </span>
-            <span class="provider" ng-if="observation.personName != observation.providers[0].name">
-                {{::observation.personName}} on behalf of {{::observation.providers[0].name}} <span ng-if="observation.isFormElement()">{{dateString(observation)}}</span>
-            </span>
-        </span>
+
         </div>
     </div>
     <ul>

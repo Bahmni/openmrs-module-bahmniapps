@@ -22,13 +22,14 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
 
                 var getRetrospectiveEncounter = function () {
                     var currentProviderUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
+                    var providerData = $bahmniCookieStore.get(Bahmni.Common.Constants.grantProviderAccessDataCookieName);
                     var consultationMapper = new Bahmni.ConsultationMapper(configurations.dosageFrequencyConfig(), configurations.dosageInstructionConfig(),
                         configurations.consultationNoteConcept(), configurations.labOrderNotesConcept());
                     var dateUtil = Bahmni.Common.Util.DateUtil;
                     var encounterDate = dateUtil.parseLongDateToServerFormat(dateUtil.getDateWithoutHours($rootScope.retrospectiveEntry.encounterDate));
                     return encounterService.find({
                         patientUuid: patientUuid,
-                        providerUuid: currentProviderUuid,
+                        providerUuids: providerData ? [providerData.uuid] : [currentProviderUuid],
                         includeAll: Bahmni.Common.Constants.includeAllObservations,
                         encounterDateTimeFrom: encounterDate,
                         encounterDateTimeTo: encounterDate

@@ -23,11 +23,11 @@
                 <i class="fa fa-comments left" ng-if="getNotes(disposition)"></i>
                 <pre class="left ng-binding">{{getNotes(disposition)}}</pre>
                 <div class="footer-note right">
-                    <span class="provider" ng-if="disposition.personName == disposition.providers[0].name">
+                    <span class="provider">
+                        <span ng-if="disposition.creatorName != disposition.providers[0].name">
+                            {{disposition.creatorName}} on behalf of
+                        </span>
                         {{disposition.providers[0].name}} {{disposition.dispositionDateTime | bahmniTime}}
-                    </span>
-                    <span class="provider" ng-if="disposition.personName != disposition.providers[0].name">
-                        {{disposition.personName}} on behalf of {{disposition.providers[0].name}} {{disposition.dispositionDateTime | bahmniTime}}
                     </span>
                 </div>
             </td>

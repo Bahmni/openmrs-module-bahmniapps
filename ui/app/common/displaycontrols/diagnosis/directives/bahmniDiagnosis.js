@@ -27,10 +27,10 @@ angular.module('bahmni.common.displaycontrol.diagnosis')
                 };
                 $scope.providerName = function (diagnosis) {
                     if (diagnosis.providers[0]) {
-                        if (diagnosis.personName == diagnosis.providers[0].name) {
+                        if (diagnosis.creatorName == diagnosis.providers[0].name) {
                             return diagnosis.providers[0] ? diagnosis.providers[0].name : "";
                         }
-                        return diagnosis.personName + " on behalf of " + diagnosis.providers[0].name;
+                        return diagnosis.creatorName + " on behalf of " + diagnosis.providers[0].name;
                     }
                     return "";
 
@@ -38,10 +38,10 @@ angular.module('bahmni.common.displaycontrol.diagnosis')
 
                 $scope.latestProviderName = function (diagnosis) {
                     if (diagnosis.latestDiagnosis.providers[0]) {
-                        if (diagnosis.personName == diagnosis.latestDiagnosis.providers[0].name) {
+                        if (diagnosis.creatorName == diagnosis.latestDiagnosis.providers[0].name) {
                             return diagnosis.latestDiagnosis.providers[0].name;
                         }
-                        return diagnosis.personName + " on behalf of " + diagnosis.latestDiagnosis.providers[0].name;
+                        return diagnosis.creatorName + " on behalf of " + diagnosis.latestDiagnosis.providers[0].name;
                     }
                     return "";
                 };
