@@ -46,12 +46,7 @@ angular.module('bahmni.clinical')
                 return newTreatment;
             };
 
-            //$scope.today = new Date();
             $scope.today = retrospectiveEntryService.getRetrospectiveEntry().encounterDate;
-            $rootScope.$watch(Bahmni.Common.Constants.rootScopeRetrospectiveEntry, function(){
-                $scope.today = retrospectiveEntryService.getRetrospectiveEntry().encounterDate;
-            });
-
             $scope.treatment = $scope.consultation.incompleteTreatment || newTreatment();
             $scope.treatmentConfig.durationUnits.forEach(function (durationUnit) {
                 if (_.isEqual(durationUnit, $scope.treatment.durationUnit)) {

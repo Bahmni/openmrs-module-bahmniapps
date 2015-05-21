@@ -71,9 +71,9 @@ describe('Diagnosis DisplayControl', function () {
 
     it('should display diagnosis provider name', function(){
         init();
-        diagnosis.personName = "Super Woman";
+        diagnosis.creatorName = "Super Woman";
         expect(compiledElementScope.providerName(diagnosis)).toBe("Super Woman");
-        diagnosis.personName = "Super Person";
+        diagnosis.creatorName = "Super Person";
         expect(compiledElementScope.providerName(diagnosis)).toBe("Super Person on behalf of Super Woman");
     });
 
