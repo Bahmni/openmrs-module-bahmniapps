@@ -1,8 +1,8 @@
 "use strict";
 
 var app = angular.module('bahmni.orders');
-app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$stateParams', '$state', '$q', 'patientContext', 'orderService', 'orderTypeService', 'sessionService', 'encounterService', 'spinner', 'observationsService', 'conceptSetService', 'messagingService',
-    function ($scope, $rootScope, $stateParams, $state, $q, patientContext, orderService, orderTypeService, sessionService, encounterService, spinner, observationsService, conceptSetService, messagingService) {
+app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$stateParams', '$state', '$q', 'patientContext', 'orderService', 'orderObservationService', 'orderTypeService', 'sessionService', 'encounterService', 'spinner', 'messagingService',
+    function ($scope, $rootScope, $stateParams, $state, $q, patientContext, orderService, orderObservationService, orderTypeService, sessionService, encounterService, spinner, messagingService) {
 
     $scope.patient = patientContext.patient;
     $scope.formName = $stateParams.orderType + " Fulfillment Form";
@@ -22,63 +22,29 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
     var getOrders = function() {
         var patientUuid = patientContext.patient.uuid;
         var orderTypeUuid = orderTypeService.getOrderTypeUuid($stateParams.orderType);
-        return orderService.getOrders(patientUuid, orderTypeUuid).success(function(response) {
-            $scope.orders = response.results;
+        return orderService.getOrders(patientUuid, orderTypeUuid).then(function(response) {
+            $scope.orders = response.data.results;
         });
     };
 
-    var getConcept = function() {
-        var fields = ['uuid', 'name', 'names', 'set', 'hiNormal', 'lowNormal', 'hiAbsolute', 'lowAbsolute', 'units', 'conceptClass', 'datatype', 'handler', 'answers:(uuid,name,displayString,names)', 'descriptions'];
-        var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', 1);
-        return conceptSetService.getConceptSetMembers({name: $scope.formName, v: "custom:" + customRepresentation}).then(function(response) {
-            $scope.conceptSet = response.data.results[0];
-        })
-    }
-
     var init = function() {
-        return $q.all([getActiveEncounter(), getOrders(), getConcept()]);
+        return $q.all([getActiveEncounter(), getOrders()]);
     };
 
     spinner.forPromise(init());
 
-
     $scope.showOrderForm = function(order) {
         if(order.observations == null) {
-            spinner.forPromise(observationsService.getObsForOrder(order.uuid).then(function(response) {
-                order.observations = new Bahmni.Orders.OrderObservationsMapper().map(order, $scope.conceptSet, $scope.encounter, response.data);
-                order.showForm = !order.showForm;
-            }));
-        } else {
-            order.showForm = !order.showForm;
+            order.observations = _.filter($scope.encounter.observations, function (observation) {
+                return observation.orderUuid === order.uuid;
+            });
         }
-
+        order.showForm = !order.showForm;
     };
 
     $scope.save = function() {
-        var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
-        var observations = []
-
-        $scope.orders.forEach(function(order){
-            if(order.observations) {
-                order.observations.forEach(function(obs){
-                    obs.orderUuid = order.uuid;
-                });
-
-                var orderObs = angular.copy(order.observations);
-                observations.push.apply(observations, observationFilter.filter(orderObs));
-            }
-        });
-
-
-        var encounterData = {
-            locationUuid: sessionService.getLoginLocationUuid(),
-            patientUuid: $scope.patient.uuid,
-            observations: observations,
-            testOrders: [],
-            drugOrders: []
-        };
-
-        spinner.forPromise(encounterService.create(encounterData).then(function () {
+        var savePromise = orderObservationService.save($scope.orders, $scope.patient, sessionService.getLoginLocationUuid());
+        spinner.forPromise(savePromise.then(function () {
             $state.transitionTo($state.current, $state.params, {
                 reload: true,
                 inherit: false,
