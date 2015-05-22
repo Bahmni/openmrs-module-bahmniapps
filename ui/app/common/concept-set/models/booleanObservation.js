@@ -37,7 +37,6 @@ Bahmni.ConceptSet.BooleanObservation = function(observation, conceptUIConfig) {
     };
 
     this.getControlType = function(){
-        if (this.isComputed()) return "readOnly";
         return "buttonselect";
     };
 
@@ -47,10 +46,6 @@ Bahmni.ConceptSet.BooleanObservation = function(observation, conceptUIConfig) {
 
     this.isComputedAndEditable = function() {
         return this.concept.conceptClass === "Computed/Editable";
-    };
-
-    this.isComputed = function() {
-        return this.concept.conceptClass === "Computed";
     };
 
     this.atLeastOneValueSet = function() {

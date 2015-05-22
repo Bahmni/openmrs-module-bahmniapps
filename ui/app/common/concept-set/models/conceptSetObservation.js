@@ -144,7 +144,6 @@ Bahmni.ConceptSet.Observation.prototype = {
 
     getControlType: function () {
         if (this.hidden) return "hidden";
-        if (this.isComputed()) return "readOnly";
         if (this.conceptUIConfig.freeTextAutocomplete) return "freeTextAutocomplete";
         if (this.isHtml5InputDataType()) return "html5InputDataType";
         if (this.isImage()) return "image";
@@ -273,7 +272,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isFormElement: function() {
-        return (!this.concept.set || this.isGrid());
+        return (!this.concept.set || this.isGrid()) && !this.isComputed();
     },
 
     _hasValidChildren: function (checkRequiredFields, conceptSetRequired) {

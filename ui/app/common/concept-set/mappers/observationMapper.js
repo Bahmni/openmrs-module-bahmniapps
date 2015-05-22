@@ -63,11 +63,6 @@ Bahmni.ConceptSet.ObservationMapper = function () {
             obs = newObservation(concept, savedObs, conceptSetConfig, mappedGroupMembers);
         }
 
-
-        if(obs.belongsToPreviousEncounter) {
-            obs = new Bahmni.ConceptSet.PreviousEncounterObservation(obs, conceptSetConfig);
-        }
-
         new Bahmni.ConceptSet.MultiSelectObservations(conceptSetConfig).map(mappedGroupMembers);
         return obs;
     };

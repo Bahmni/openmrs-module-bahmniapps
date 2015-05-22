@@ -80,10 +80,6 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
         return this.concept.conceptClass === "Computed/Editable";
     };
 
-    this.isComputed = function() {
-        return this.concept.conceptClass === "Computed";
-    };
-
     this.hasValueOf = function (answer) {
         return self.selectedObs[answer.name] && !self.selectedObs[answer.name].voided;
     };
@@ -97,7 +93,6 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
     };
 
     this.getControlType = function(){
-        if (this.isComputed()) return "readOnly";
         return "buttonselect";
     };
 
