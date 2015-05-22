@@ -21,4 +21,14 @@ angular.module('authentication')
                 });
         };
 
+        this.getProviderForUser = function (uuid) {
+            return $http.get("/openmrs/ws/rest/v1/provider", {
+                method: "GET",
+                params: {
+                    user: uuid
+                },
+                cache: false
+            });
+        };
+
     }]);

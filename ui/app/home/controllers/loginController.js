@@ -48,6 +48,7 @@ angular.module('bahmni.home')
                                 deferrable.resolve();
                             },
                             function (error) {
+                                $scope.errorMessage = error;
                                 deferrable.reject(error);
                             }
                         )

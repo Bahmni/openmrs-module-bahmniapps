@@ -34,6 +34,14 @@ angular.module('authentication')
             });
         };
 
+        var hasAnyActiveProvider = function (providers) {
+            return _.filter(providers, function (provider) {
+                    return (provider.retired == undefined || provider.retired == "false")
+                }).length > 0;
+        };
+
+        var self = this;
+
         this.destroy = function(){
             return $http.delete(sessionResourcePath).success(function(data){
                 delete $.cookie(Bahmni.Common.Constants.currentUser, null, {path: "/"});
@@ -78,11 +86,23 @@ angular.module('authentication')
                 return deferrable.promise;
             }
             userService.getUser(currentUser).success(function(data) {
-                $rootScope.currentUser = new Bahmni.Auth.User(data.results[0]);
-                $rootScope.currentUser.currentLocation = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).name;
-                $rootScope.$broadcast('event:user-credentialsLoaded', data.results[0]);
-                deferrable.resolve(data.results[0]);
+                userService.getProviderForUser(data.results[0].uuid).success(function(providers){
+                        if(!_.isEmpty(providers.results) && hasAnyActiveProvider(providers.results)){
+                            $rootScope.currentUser = new Bahmni.Auth.User(data.results[0]);
+                            $rootScope.currentUser.currentLocation = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).name;
+                            $rootScope.$broadcast('event:user-credentialsLoaded', data.results[0]);
+                            deferrable.resolve(data.results[0]);
+                        }else{
+                            self.destroy();
+                            deferrable.reject('You have not been setup as a Provider, please contact administrator.');
+                        }
+                    }
+                ).error(function(){
+                        self.destroy();
+                        deferrable.reject('Could not get provider for the current user.');
+                    });
             }).error(function () {
+                self.destroy();
                 deferrable.reject('Could not get roles for the current user.');
             });
             return deferrable.promise;
