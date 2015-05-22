@@ -60,7 +60,6 @@ angular.module('bahmni.clinical')
             $scope.getTitle = function(){
                 var title = [];
                 if(getCurrentCookieLocation()) title.push(getCurrentCookieLocation().name);
-                console.log(getCurrentProvider());
                 if(getCurrentProvider() && getCurrentProvider().value) title.push(getCurrentProvider().value);
                 if(getCurrentDate()) title.push(DateUtil.formatDateWithoutTime(getCurrentDate()));
                 return title.join(',');

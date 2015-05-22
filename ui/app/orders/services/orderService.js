@@ -15,19 +15,7 @@ angular.module('bahmni.orders')
         });
     };
 
-    var getPendingOrders = function(patientUuid, orderTypeUuid){
-        return getOrders(patientUuid,orderTypeUuid, 'pendingOrders');
-    }
-
-    var saveOrderResult = function(encounterTransaction){
-        return $http.post(Bahmni.Common.Constants.emrEncounterUrl, encounterTransaction, {
-            withCredentials:true
-        });
-    };
-
     return {
-        getOrders:getOrders,
-        getPendingOrders: getPendingOrders,
-        saveOrderResult:saveOrderResult
+        getOrders:getOrders
     };
 }]);
