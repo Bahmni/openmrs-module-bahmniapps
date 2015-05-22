@@ -6,6 +6,7 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
 
     $scope.patient = patientContext.patient;
     $scope.formName = $stateParams.orderType + " Fulfillment Form";
+    $scope.orderType = $stateParams.orderType;
 
     var getActiveEncounter = function () {
         var currentProviderUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
@@ -42,7 +43,7 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
         order.showForm = !order.showForm;
     };
 
-    $scope.save = function() {
+    $rootScope.$on("event:saveOrderObservations", function() {
         var savePromise = orderObservationService.save($scope.orders, $scope.patient, sessionService.getLoginLocationUuid());
         spinner.forPromise(savePromise.then(function () {
             $state.transitionTo($state.current, $state.params, {
@@ -56,5 +57,5 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
             var message = 'An error has occurred on the server. Information not saved.';
             messagingService.showMessage('formError', message);
         }));
-    };
+    })
 }]);

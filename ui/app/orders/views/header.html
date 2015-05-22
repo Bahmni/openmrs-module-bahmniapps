@@ -1,0 +1,12 @@
+<div class="back-btn-link">
+    <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
+      <span class="patient-info">
+        <span class="patient-name" >{{patient.name}} </span>
+        <span class="patient-id">{{patient.identifier}}</span>
+    </span>
+</div>
+
+<button class="confirm save-consultation" ng-click="save()" accesskey="s" class="confirm">
+    <i class="fa fa-save"></i>
+    <span class="text"><u>S</u>ave</span>
+</button>

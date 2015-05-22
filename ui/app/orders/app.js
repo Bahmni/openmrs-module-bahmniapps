@@ -16,7 +16,7 @@ angular
                     ]
                 },
                 views: {
-                    'layout': {
+                    'content': {
                         templateUrl: '../common/patient-search/views/patientsList.html',
                         controller: 'PatientsListController' 
                     }
@@ -32,7 +32,16 @@ angular
                     ]
                 },
                 views: {
-                    'layout': {
+                    'additional-header': {
+                        templateUrl: 'views/header.html',
+                        controller: function($scope, $rootScope, patientContext) {
+                            $scope.patient = patientContext.patient;
+                            $scope.save = function() {
+                                $rootScope.$broadcast("event:saveOrderObservations");
+                            }
+                        }
+                    },
+                    'content': {
                         templateUrl: 'views/orderFulfillment.html',
                         controller: 'OrderFulfillmentController'
                     }
