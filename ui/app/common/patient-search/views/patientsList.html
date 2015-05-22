@@ -1,28 +1,33 @@
 <div class="patient-search-wrapper">
     <div class="tabs">
         <ul>
-            <li class="tab-item" ng-repeat="searchType in search.searchTypes" ng-class="{'tab-selected': search.isSelectedSearch(searchType)}">
+            <li class="tab-item" ng-repeat="searchType in search.searchTypes"
+                ng-class="{'tab-selected': search.isSelectedSearch(searchType)}">
                 <a href="" ng-click="search.switchSearchType(searchType)">
                     <span>{{searchType.display}}</span>
                     <span ng-if="search.showPatientCountOnSearchParameter(searchType)">({{search.searchResults.length}})</span>
-                    <span ng-if="searchType.handler && !search.showPatientCountOnSearchParameter(searchType)" scheduler watch-on="search.searchParameter" refresh-time="searchType.refreshTime" trigger-function="getPatientCount(searchType)">({{searchType.patientCount}})</span>
+                    <span ng-if="searchType.handler && !search.showPatientCountOnSearchParameter(searchType)" scheduler
+                          watch-on="search.searchParameter" refresh-time="searchType.refreshTime"
+                          trigger-function="getPatientCount(searchType)">({{searchType.patientCount}})</span>
                 </a>
             </li>
-        </ul> 
+        </ul>
     </div>
     <div class="tab-content" ng-if="search.searchTypes.length">
         <span ng-if="search.isCurrentSearchLookUp()">
             <form name="filterPatients" ng-submit="filterPatientsAndSubmit()">
                 <div class="search-wrapper">
-                    <input type="text" id="patientIdentifier" ng-model="search.searchParameter" focus-on="search.startPatientSearch"
+                    <input type="text" id="patientIdentifier" ng-model="search.searchParameter"
+                           focus-on="search.startPatientSearch"
                            ng-change="search.filterPatients()"/>
                 </div>
             </form>
         </span>
         <span ng-if="!search.isCurrentSearchLookUp()">    
-            <form name="searchPatientForm" ng-submit="searchPatients()"> 
+            <form name="searchPatientForm" ng-submit="searchPatients()">
                 <div class="search-patient-id left">
-                    <input type="text" id="patientIdentifier" ng-model="search.searchParameter" focus-on="search.startPatientSearch" placeholder="Search Name/ID  ..."/>
+                    <input type="text" id="patientIdentifier" ng-model="search.searchParameter"
+                           focus-on="search.startPatientSearch" placeholder="Search Name/ID  ..."/>
                 </div>
 
                 <div class="reg-srch-btn left">
@@ -33,7 +38,8 @@
                 </div>
             </form>
         </span>
-        <resize ng-if="search.isTabularView()" search-results="search.searchResults" visible-results="search.visiblePatients" class="active-visits">
+        <resize ng-if="search.isTabularView()" search-results="search.searchResults"
+                visible-results="search.visiblePatients" class="active-visits">
             <div class="ward-details-container">
                 <table class="table">
                     <thead>
@@ -45,12 +51,16 @@
                     <tbody>
                     <tr ng-repeat="row in search.visiblePatients">
                         <td>
-                        {{$index + 1}}
+                            {{$index + 1}}
+                        </td>
                         <td ng-repeat="heading in getHeadings(search.visiblePatients)">
-                            <a ng-if="isHeadingOfIdentifier(heading)" ng-click="forwardPatient(row)">{{row[heading]}}</a>
-                            <span ng-if="!isHeadingOfIdentifier(heading)">
+                            <a ng-if="isHeadingOfIdentifier(heading)"
+                               ng-click="forwardPatient(row)">{{row[heading]}}</a>
+                            <span ng-if="isHeadingOfName(heading)" ng-click="forwardPatient(row)">{{row[heading]}}
+                                <i class="ipd-indication fa fa-bed" ng-if="row['hasBeenAdmitted'] == 'true'"></i>
+                            </span>
+                            <span ng-if="!isHeadingOfIdentifier(heading) && !isHeadingOfName(heading)">
                             {{row[heading]}}
-                                <i class="ipd-indication fa fa-bed" ng-if="patient.hasBeenAdmitted == 'true'"></i>
                             </span>
                         </td>
                     </tr>
@@ -58,9 +68,12 @@
                 </table>
             </div>
         </resize>
-        <resize ng-if="search.isTileView()" search-results="search.searchResults" visible-results="search.visiblePatients" class="active-visits">
+        <resize ng-if="search.isTileView()" search-results="search.searchResults"
+                visible-results="search.visiblePatients" class="active-visits">
             <li ng-repeat="patient in search.visiblePatients" class="active-patient" ng-click="forwardPatient(patient)">
-                <img class="smallImages" ng-src="{{patient.image}}"  onerror="this.onerror=null;this.src='../images/blank-user.png';" >
+                <img class="smallImages" ng-src="{{patient.image}}"
+                     onerror="this.onerror=null;this.src='../images/blank-user.png';">
+
                 <div class="patient-name">{{patient.name}}</div>
                 <div class="patient-id">{{patient.identifier}}</div>
                 <i class="ipd-indication fa fa-bed" ng-if="patient.hasBeenAdmitted == 'true'"></i>

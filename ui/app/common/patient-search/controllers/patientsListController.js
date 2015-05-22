@@ -57,6 +57,11 @@ angular.module('bahmni.common.patientSearch')
 
         };
 
+        $scope.isHeadingOfName = function(heading){
+            return _.contains(Bahmni.Common.PatientSearch.Constants.nameHeading,heading);
+
+        };
+
         var mapExtensionToSearchType = function(appExtn) {
             return {
                     name: appExtn.label,
