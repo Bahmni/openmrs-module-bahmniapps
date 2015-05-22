@@ -73,6 +73,7 @@ angular.module('bahmni.common.conceptSet')
     }]).directive('conceptSet', ['contextChangeHandler', 'appService', 'observationsService', function (contextChangeHandler, appService, observationsService) {
         var template =
             '<form novalidate>' +
+                '<div ng-show="showEmptyConceptSetMessage" class="placeholder-text">{{conceptSetName}} concept not found.</div>' +
                 '<concept concept-set-required="conceptSetRequired" root-observation="rootObservation" patient="patient" ' +
                 'observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet" ' +
                 'show-title="showTitleValue" ng-if="!rootObservation.hidden">' +
@@ -102,9 +103,13 @@ angular.module('bahmni.common.conceptSet')
                 return conceptSetService.getConceptSetMembers({name: conceptSetName, v: "custom:" + customRepresentation}).then(function (response) {
                     $scope.conceptSet = response.data.results[0];
                     $scope.rootObservation = $scope.conceptSet ? observationMapper.map($scope.observations, $scope.conceptSet, conceptSetUIConfig) : null;
-                    $scope.rootObservation.conceptSetName = $scope.conceptSetName;
-                    focusFirstObs();
-                    updateObservationsOnRootScope();
+                    if($scope.rootObservation) {
+                        $scope.rootObservation.conceptSetName = $scope.conceptSetName;
+                        focusFirstObs();
+                        updateObservationsOnRootScope();
+                    } else {
+                        $scope.showEmptyConceptSetMessage = true;
+                    }
                 });
             };
             spinner.forPromise(init());
