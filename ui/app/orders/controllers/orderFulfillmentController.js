@@ -29,17 +29,21 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
     };
 
     var init = function() {
-        return $q.all([getActiveEncounter(), getOrders()]);
+        return $q.all([getActiveEncounter(), getOrders()]).then(function(){
+            $scope.orders.forEach(function (order) {
+                order.observations = _.filter($scope.encounter.observations, function (observation) {
+                    return observation.orderUuid === order.uuid;
+                });
+                if (order.observations.length > 0) {
+                    $scope.showOrderForm(order);
+                }
+            })
+        });
     };
 
     spinner.forPromise(init());
 
     $scope.showOrderForm = function(order) {
-        if(order.observations == null) {
-            order.observations = _.filter($scope.encounter.observations, function (observation) {
-                return observation.orderUuid === order.uuid;
-            });
-        }
         order.showForm = !order.showForm;
     };
 
