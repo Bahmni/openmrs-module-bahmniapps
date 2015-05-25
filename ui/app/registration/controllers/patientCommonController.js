@@ -7,6 +7,7 @@ angular.module('bahmni.registration')
             var autoCompleteFields = appService.getAppDescriptor().getConfigValue("autoCompleteFields", []);
             var showCasteSameAsLastNameCheckbox = appService.getAppDescriptor().getConfigValue("showCasteSameAsLastNameCheckbox");
             $scope.showMiddleName = appService.getAppDescriptor().getConfigValue("showMiddleName");
+            $scope.genderCodes = Object.keys($rootScope.genderMap);
 
             $scope.isAutoComplete = function (fieldName) {
                 return autoCompleteFields.indexOf(fieldName) > -1;

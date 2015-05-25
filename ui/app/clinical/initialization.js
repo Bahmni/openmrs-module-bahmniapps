@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical').factory('initialization',
-    ['authenticator', 'appService', 'spinner', 'configurations',
-        function (authenticator, appService, spinner, configurations) {
+    ['$rootScope','authenticator', 'appService', 'spinner', 'configurations',
+        function ($rootScope, authenticator, appService, spinner, configurations) {
 
             var loadConfigPromise = function () {
                 return configurations.load([
@@ -13,8 +13,11 @@ angular.module('bahmni.clinical').factory('initialization',
                     'radiologyImpressionConfig',
                     'allTestsAndPanelsConcept',
                     'dosageFrequencyConfig',
-                    'dosageInstructionConfig'
-                ]);
+                    'dosageInstructionConfig',
+                    'genderMap'
+                ]).then(function () {
+                    $rootScope.genderMap = configurations.genderMap();
+                });
             };
 
             var initApp = function () {

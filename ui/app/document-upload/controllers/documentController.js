@@ -7,7 +7,7 @@ angular.module('opd.documentupload')
             var topLevelConceptUuid;
             var customVisitParams = Bahmni.DocumentUpload.Constants.visitRepresentation;
             var DateUtil = Bahmni.Common.Util.DateUtil;
-            var patientMapper = new Bahmni.PatientMapper($rootScope.patientConfig);
+            var patientMapper = new Bahmni.PatientMapper($rootScope.patientConfig, $rootScope);
             var activeEncounter = {};
             var locationUuid = sessionService.getLoginLocationUuid();
 

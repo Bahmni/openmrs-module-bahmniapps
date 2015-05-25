@@ -104,6 +104,16 @@ angular.module('bahmni.common.domain')
             });
         };
 
+        configurationFunctions.genderMap = function() {
+            return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
+                method: "GET",
+                params: {
+                    property: 'mrs.genders'
+                },
+                withCredentials: true
+            });
+        };
+
         var existingPromises = {};
         var configurations = {};
 

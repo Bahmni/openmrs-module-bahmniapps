@@ -118,6 +118,7 @@ Bahmni.Common = Bahmni.Common || {};
         closeVisitPrivilege:'app:common:closeVisit',
         deleteDiagnosisPrivilege:'app:clinical:deleteDiagnosis',
         grantProviderAccess: "app:clinical:grantProviderAccess",
-        grantProviderAccessDataCookieName: "app:clinical:grantProviderAccessData"
+        grantProviderAccessDataCookieName: "app:clinical:grantProviderAccessData",
+        globalPropertyUrl: BAHMNI_CORE + "/sql/globalproperty"
     };
 })();

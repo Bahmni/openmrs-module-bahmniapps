@@ -4,10 +4,11 @@ angular.module('bahmni.adt').factory('initialization', ['$rootScope', '$q', 'app
     function ($rootScope, $q, appService, configurations, authenticator, spinner) {
         var getConfigs = function () {
             var config = $q.defer();
-            var configNames = ['encounterConfig', 'patientConfig'];
+            var configNames = ['encounterConfig', 'patientConfig', 'genderMap'];
             configurations.load(configNames).then(function () {
                 $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig());
                 $rootScope.patientConfig = configurations.patientConfig();
+                $rootScope.genderMap = configurations.genderMap();
                 config.resolve();
             });
             return config.promise;

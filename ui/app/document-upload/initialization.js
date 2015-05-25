@@ -1,13 +1,19 @@
 'use strict';
 
 angular.module('opd.documentupload').factory('initialization',
-    ['$rootScope', '$q', '$window', '$location', 'configurationService', 'authenticator', 'appService','spinner',
-        function ($rootScope, $q, $window, $location, configurationService, authenticator, appService, spinner) {
+    ['$rootScope', '$q', '$window', '$location', 'configurationService', 'configurations', 'authenticator', 'appService','spinner',
+        function ($rootScope, $q, $window, $location, configurationService, configurations, authenticator, appService, spinner) {
 
             var initializationPromise = $q.defer();
             var url = purl(decodeURIComponent($window.location));
             $rootScope.appConfig = url.param();
 
+            var getConfigs = function() {
+                var configNames = ['genderMap'];
+                return configurations.load(configNames).then(function () {
+                    $rootScope.genderMap = configurations.genderMap();
+                });
+            };
 
             var getConsultationConfigs = function () {
                 var configNames = ['encounterConfig'];
@@ -47,6 +53,6 @@ angular.module('opd.documentupload').factory('initialization',
             });
 
 
-            return spinner.forPromise(initializationPromise.promise);
+            return spinner.forPromise(initializationPromise.promise).then(getConfigs);
         }] 
 );

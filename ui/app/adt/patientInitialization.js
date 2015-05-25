@@ -5,7 +5,7 @@ angular.module('bahmni.adt').factory('patientInitialization', ['$rootScope', '$q
         return function (patientUuid) {
 
             var getPatient = function () {
-                var patientMapper = new Bahmni.PatientMapper($rootScope.patientConfig);
+                var patientMapper = new Bahmni.PatientMapper($rootScope.patientConfig, $rootScope);
                 var patientPromise = $q.defer();
                 patientService.getPatient(patientUuid).then(function (response) {
                     $rootScope.patient = patientMapper.map(response.data);

@@ -1,6 +1,6 @@
 'use strict';
 
-Bahmni.PatientMapper = function (patientConfig) {
+Bahmni.PatientMapper = function (patientConfig, $rootScope) {
 
     this.patientConfig = patientConfig;
 
@@ -88,13 +88,8 @@ Bahmni.PatientMapper = function (patientConfig) {
     var mapGenderText = function (genderChar) {
         if (genderChar == null) {
             return null;
-        } else if (genderChar == 'M' || genderChar == 'm') {
-            return "Male";
-        } else if (genderChar == 'F' || genderChar == 'f') {
-            return "Female";
-        } else {
-            return "Other";
         }
+        return $rootScope.genderMap[angular.uppercase(genderChar)];
     };
 
 };

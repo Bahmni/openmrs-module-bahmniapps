@@ -73,7 +73,7 @@
         </div>
     </article>
 </section>
-<section class="form-field-inline form-field-gender">
+<section class="form-field-inline form-field-gender" ng-controller="PatientCommonController">
     <article class="form-field">
         <div class="field-attribute">
             <label for="gender">Gender <span class="asterick">*</span></label>
@@ -82,9 +82,7 @@
         <div class="field-value">
             <select id="gender" ng-model="patient.gender" required="required" title="Select Gender" required="required">
                 <option value="">Select Gender</option>
-                <option value="M">Male</option>
-                <option value="F">Female</option>
-                <option value="O">Other</option>
+                <option ng-repeat="genderCode in genderCodes" value="{{genderCode}}">{{genderMap[genderCode]}}</option>
             </select>
         </div>
     </article>

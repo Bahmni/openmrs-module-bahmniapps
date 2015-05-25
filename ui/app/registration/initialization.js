@@ -4,7 +4,7 @@ angular.module('bahmni.registration').factory('initialization',
     ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'Preferences',
     function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences) {
         var getConfigs = function() {
-            var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierSourceConfig', 'addressLevels'];
+            var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierSourceConfig', 'addressLevels', 'genderMap'];
             return configurations.load(configNames).then(function () {
                 var mandatoryPersonAttributes = appService.getAppDescriptor().getConfigValue("mandatoryPersonAttributes");
                 var patientAttributeTypes = new Bahmni.Registration.PatientAttributeTypeMapper().mapFromOpenmrsPatientAttributeTypes(configurations.patientAttributesConfig(), mandatoryPersonAttributes);
@@ -14,6 +14,9 @@ angular.module('bahmni.registration').factory('initialization',
 
                 $rootScope.addressLevels = configurations.addressLevels();
                 $rootScope.fieldValidation = appService.getAppDescriptor().getConfigValue("fieldValidation");
+
+                $rootScope.genderMap = configurations.genderMap();
+
             });
         };
 

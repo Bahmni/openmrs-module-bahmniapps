@@ -1,7 +1,9 @@
 angular.module('bahmni.common.patient')
-.filter('gender', function() {
-	return function(text) {
-		if(!text) return "Unknown";
-		return text === 'M' ? 'Male' : 'Female';
+.filter('gender', function($rootScope) {
+	return function(genderChar) {
+        if (genderChar == null) {
+            return "Unknown";
+        }
+        return $rootScope.genderMap[angular.uppercase(genderChar)];
 	};
 });
