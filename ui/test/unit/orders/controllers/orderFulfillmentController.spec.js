@@ -91,9 +91,13 @@ describe("OrderFulfillmentController", function () {
         scope.$digest();
         expect(scope.orders[0].observations.length).toBe(1);
         expect(scope.orders[0].observations[0].uuid).toEqual("obs1Uuid");
-        expect(scope.orders[0].showForm).toBeTruthy();
         expect(scope.orders[1].observations.length).toBe(0);
-        expect(scope.orders[1].showForm).toBeFalsy();
 
+    });
+
+    it('should auto open the order section with observations ', function(){
+        scope.$digest();
+        expect(scope.orders[0].showForm).toBeTruthy();
+        expect(scope.orders[1].showForm).toBeFalsy();
     });
 });
