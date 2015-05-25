@@ -5,7 +5,7 @@
                 <ul>
                     <li ng-repeat="sample in getOrderTemplate(activeTab.name).setMembers">
                         <a ng-click="showLeftCategoryTests(sample)" ng-class='sample.klass'>
-                            {{sample.name.name}}
+                            {{getName(sample)}}
                         </a>
                     </li>
                 </ul>

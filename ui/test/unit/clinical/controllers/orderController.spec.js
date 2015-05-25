@@ -53,66 +53,100 @@ describe("OrderController", function () {
         it("getOrderTemplate :should return the Order template", function () {
             scope.$digest();
             expect(scope.getOrderTemplate("Lab Samples").name.name).toBe("Lab Samples");
-            expect(scope.getTabInclude()).toBe('consultation/views/orderTemplateViews/ordersTemplate.html');
         });
+
+        it("getName: should get short name if exists", function () {
+            var sample = {
+                "names": [
+                    {
+                        "name": "Other",
+                        "conceptNameType": "SHORT"
+                    },
+                    {
+                        "name": "Other Samples",
+                        "conceptNameType": "FULLY_SPECIFIED"
+                    }
+                ]
+            };
+            expect(scope.getName(sample)).toBe("Other");
+        });
+
+        it("getName: should get fully specified name if short name doesn't exist", function () {
+            var sample = {
+                "names": [
+                    {
+                        "name": "Other Samples",
+                        "conceptNameType": "FULLY_SPECIFIED"
+                    }
+                ]
+            };
+            expect(scope.getName(sample)).toBe("Other Samples");
+        });
+
+        it("getName: should get undefined if both fully specified name and short name don't exist", function () {
+            var sample = {
+                "names": []
+            };
+            expect(scope.getName(sample)).toBe(undefined);
+        });
+
     });
 
-    var allOrderables ={
-        "\'Lab Samples\'" : {
-            "conceptClass" : {"name" : "ConvSet"},
-            "name" : {"name" : "Lab Samples", "display" : "Lab Samples"},
-            "uuid" : "10517b93-aff1-11e3-be87-005056821db0",
-            "setMembers" : [
+    var allOrderables = {
+            "\'Lab Samples\'": {
+                "conceptClass": {"name": "ConvSet"},
+                "name": {"name": "Lab Samples", "display": "Lab Samples"},
+                "uuid": "10517b93-aff1-11e3-be87-005056821db0",
+                "setMembers": [
+                    {
+                        "conceptClass": {"name": "ConvSet"},
+                        "name": {"name": "Blood", "display": "Blood"},
+                        "uuid": "20517b93-aff1-11e3-be87-005056821db0",
+                        "setMembers": [
+                            {
+                                "conceptClass": {"name": "Test", "display": "Test"},
+                                "name": {"name": "ESR", "display": "ESR"},
+                                "uuid": "10517b93-aff1-11e3-be87-005056821db0"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+
+        tempConsultation = {
+            "testOrders": [
                 {
-                    "conceptClass" : {"name" : "ConvSet"},
-                    "name" : {"name" : "Blood", "display" : "Blood"},
-                    "uuid" : "20517b93-aff1-11e3-be87-005056821db0",
-                    "setMembers" : [
-                        {
-                            "conceptClass" : {"name" : "Test", "display" : "Test"},
-                            "name" : {"name" : "ESR", "display" : "ESR"},
-                            "uuid" : "10517b93-aff1-11e3-be87-005056821db0"
-                        }
-                    ]
+                    "dateCreated": "2015-04-22T19:16:13.000+0530",
+                    "instructions": null,
+                    "concept": {
+                        "conceptClass": "LabSet",
+                        "uuid": "3b5ea063-b6e5-48cd-b39d-dce69f00f26a",
+                        "name": "Biochemistry",
+                        "set": true
+                    },
+                    "voided": false,
+                    "dateChanged": null,
+                    "orderNumber": "ORD-1013",
+                    "uuid": "5e5b4484-7435-4600-a71d-e288c965d1db",
+                    "voidReason": null,
+                    "orderTypeUuid": "a28516de-a2a1-11e3-af88-005056821db0"
+                },
+                {
+                    "dateCreated": "2015-04-22T19:16:13.000+0530",
+                    "instructions": null,
+                    "concept": {
+                        "conceptClass": "LabSet",
+                        "uuid": "3c5ea063-b6e5-48cd-b39d-dce69f00f26a",
+                        "name": "Biochemistry1",
+                        "set": true
+                    },
+                    "voided": false,
+                    "dateChanged": null,
+                    "orderNumber": "ORD-1013",
+                    "voidReason": null,
+                    "orderTypeUuid": "a28516de-a2a1-11e3-af88-005056821db0"
                 }
             ]
-        }
-    },
-
-     tempConsultation = {
-        "testOrders" : [
-            {
-                "dateCreated": "2015-04-22T19:16:13.000+0530",
-                "instructions": null,
-                "concept": {
-                    "conceptClass": "LabSet",
-                    "uuid": "3b5ea063-b6e5-48cd-b39d-dce69f00f26a",
-                    "name": "Biochemistry",
-                    "set": true
-                },
-                "voided": false,
-                "dateChanged": null,
-                "orderNumber": "ORD-1013",
-                "uuid": "5e5b4484-7435-4600-a71d-e288c965d1db",
-                "voidReason": null,
-                "orderTypeUuid": "a28516de-a2a1-11e3-af88-005056821db0"
-            },
-            {
-                "dateCreated": "2015-04-22T19:16:13.000+0530",
-                "instructions": null,
-                "concept": {
-                    "conceptClass": "LabSet",
-                    "uuid": "3c5ea063-b6e5-48cd-b39d-dce69f00f26a",
-                    "name": "Biochemistry1",
-                    "set": true
-                },
-                "voided": false,
-                "dateChanged": null,
-                "orderNumber": "ORD-1013",
-                "voidReason": null,
-                "orderTypeUuid": "a28516de-a2a1-11e3-af88-005056821db0"
-            }
-        ]
-    };
-
+        };
 });

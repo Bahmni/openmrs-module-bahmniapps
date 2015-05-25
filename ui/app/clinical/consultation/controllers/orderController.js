@@ -12,18 +12,13 @@ angular.module('bahmni.clinical')
                 $scope.tabs = [];
 
                 _.forEach($scope.consultation.allOrdersTemplates, function(item){
-                    var conceptName = _.find(item.names, {conceptNameType: "SHORT"}) || _.find(item.names, {conceptNameType: "FULLY_SPECIFIED"});
-                    conceptName = conceptName ? conceptName.name : conceptName;
+                    var conceptName = $scope.getName(item);
                     $scope.tabs.push({name: conceptName ? conceptName : item.name.name, topLevelConcept: item.name.name});
                 });
 
                 if($scope.tabs) {
                     $scope.activateTab($scope.tabs[0]);
                 }
-            };
-
-            $scope.getTabInclude = function(){
-                return 'consultation/views/orderTemplateViews/ordersTemplate.html';
             };
 
             $scope.getConceptClassesInSet = function(conceptSet) {
@@ -65,6 +60,11 @@ angular.module('bahmni.clinical')
                 else {
                     removeOrder(order);
                 }
+            };
+
+            $scope.getName = function (sample) {
+                var name = _.find(sample.names, {conceptNameType: "SHORT"}) || _.find(sample.names, {conceptNameType: "FULLY_SPECIFIED"});
+                return name ? name.name : undefined;
             };
 
             var removeOrder = function(order){
