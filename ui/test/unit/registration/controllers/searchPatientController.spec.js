@@ -88,7 +88,7 @@ describe('SearchPatientController', function () {
 
         it('should initialize scope with name search params from url and load the patients if a name search parameter is provided', function () {
             var searchParams = {"name": 'john', addressFieldValue: 'Kanpur'};
-            scope.addressSearchConfig = {field: 'city_village', name:'village'}
+            scope.addressSearchConfig = {field: 'city_village', label:'village', placeholder: 'Enter village'};
             spyOn(location, 'search').and.returnValue(searchParams);
 
             urlSearchChangeCallback();

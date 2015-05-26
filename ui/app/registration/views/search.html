@@ -24,12 +24,12 @@
                     <input type="text" id="name" ng-model="searchParameters.name" placeholder="Enter name">
                 </article>
                 <article class="left" ng-if="customAttributesSearchConfig.show">
-                    <label for="name" class="local-name-reg"><strong>{{customAttributesSearchConfig.label}}</strong></label>
+                    <label for="name"><strong>{{customAttributesSearchConfig.label}}</strong></label>
                     <input type="text" id="customAttribute" ng-model="searchParameters.customAttribute" placeholder="{{customAttributesSearchConfig.placeholder}}">
                 </article>
                 <article class="left">
-                    <label for="name"><strong>{{addressSearchConfig.name}}</strong></label>
-                    <input type="text" id="addressFieldValue" ng-model="searchParameters.addressFieldValue" placeholder="Enter {{searchConfig.name}}">
+                    <label for="name"><strong>{{addressSearchConfig.label}}</strong></label>
+                    <input type="text" id="addressFieldValue" ng-model="searchParameters.addressFieldValue" placeholder="{{addressSearchConfig.placeholder}}">
                 </article>
                 <article class="left">
                     <div class="reg-srch-btn">
@@ -59,7 +59,7 @@
                 <th ng-if="customAttributesSearchConfig.fields"><strong>{{customAttributesSearchConfig.label}}</strong></th>
                 <th><strong>Gender</strong></th>
                 <th><strong>Age</strong></th>
-                <th><strong>{{addressSearchConfig.name}}</strong></th>
+                <th><strong>{{addressSearchConfig.label}}</strong></th>
                 <th><strong>Registration Date</strong></th>
                 <th class="edit-col"></th>
             </tr>

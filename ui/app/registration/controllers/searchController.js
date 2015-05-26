@@ -73,11 +73,12 @@ angular.module('bahmni.registration')
 
             var setAddressSearchConfig = function(){
                 var defaultSearchConfig= {
-                    name: "Village",
+                    label: "Village",
+                    placeholder: "Enter village",
                     field: "city_village"
                 };
                 $scope.addressSearchConfig = allSearchConfigs.address || defaultSearchConfig;
-                if(!$scope.addressSearchConfig.name) throw "Search Config name is not present!";
+                if(!$scope.addressSearchConfig.label) throw "Search Config label is not present!";
                 if(!$scope.addressSearchConfig.field) throw "Search Config field is not present!";
             };
 
