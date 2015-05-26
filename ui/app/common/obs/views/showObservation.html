@@ -27,8 +27,8 @@
     </div>
     <div ng-if="observation.showDetails" class="notes inline-notes" ng-class="{'print-notes': observation.showDetails}">
         <div class="footer-note fr">
-            <span>
-                <span class="provider" ng-if="observation.creatorName != observation.providers[0].name">
+            <span class="provider">
+                <span ng-if="observation.creatorName != observation.providers[0].name">
                     {{::observation.creatorName}} on behalf of
                 </span>
                 {{::observation.providers[0].name}} <span ng-if="observation.isFormElement()">{{dateString(observation)}}</span>
