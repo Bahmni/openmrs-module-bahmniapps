@@ -116,11 +116,19 @@ angular.module('bahmni.clinical')
             $scope.add = function () {
                 $scope.treatment.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;
                 var newDrugOrder = $scope.treatment;
-                newDrugOrder.effectiveStopDate = DateUtil.addDays(DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
+                newDrugOrder.effectiveStopDate = DateUtil
+                    .addDays(
+                    DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
 
-                var unsavedNotBeingEditedOrders = $scope.treatments.filter(function(drugOrder) { return drugOrder.isBeingEdited == false});
+                var unsavedNotBeingEditedOrders = $scope.treatments
+                    .filter(function(drugOrder) { return drugOrder.isBeingEdited == false});
 
-                var existingDrugOrders = newDrugOrder.isBeingEdited ? $scope.consultation.activeAndScheduledDrugOrders.filter(function(drugOrder) { return drugOrder.uuid != newDrugOrder.previousOrderUuid}).concat(unsavedNotBeingEditedOrders) : $scope.consultation.activeAndScheduledDrugOrders.concat(unsavedNotBeingEditedOrders);
+                var existingDrugOrders = newDrugOrder.isBeingEdited ?
+                    $scope.consultation.activeAndScheduledDrugOrders
+                        .filter(function (drugOrder) {
+                            return drugOrder.uuid != newDrugOrder.previousOrderUuid
+                        }).concat(unsavedNotBeingEditedOrders)
+                    : $scope.consultation.activeAndScheduledDrugOrders.concat(unsavedNotBeingEditedOrders);
 
                 if ($scope.treatment.isBeingEdited) {
                     $scope.treatments.splice($scope.treatment.currentIndex, 1);
@@ -144,10 +152,14 @@ angular.module('bahmni.clinical')
                     $scope.popupActive = true;
                     return;
                 }
+
                 if ($scope.treatment.isBeingEdited) {
+                    $scope.treatments.splice($scope.treatment.currentIndex, 0, $scope.treatment);
                     $scope.treatment.isBeingEdited = false;
+                } else {
+                    $scope.treatments.push($scope.treatment);
                 }
-                $scope.treatments.push($scope.treatment);
+
                 $scope.clearForm();
             };
             var setEffectiveDates = function (newDrugOrder, existingDrugOrders) {

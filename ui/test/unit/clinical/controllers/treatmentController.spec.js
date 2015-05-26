@@ -156,6 +156,39 @@ describe("TreatmentController", function () {
             })[0];
             expect(DateUtil.isSameDateTime(drugOrderToBeSaved.effectiveStopDate, DateUtil.subtractSeconds("2014-12-02", 1))).toBeTruthy();
         });
+
+        it("should replace a drug order being edited in the same index it was originally in", function () {
+            scope.treatments = [Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
+                drug: {
+                    name: "abc",
+                    uuid: "123"
+                }
+            }),
+                Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
+                    drug: {
+                        name: "def",
+                        uuid: "1234"
+                    }
+                }),
+                Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
+                    drug: {
+                        name: "ghi",
+                        uuid: "12345"
+                    }
+                })
+            ];
+            scope.treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [], {
+                drug: {name: "abc", uuid: "123"},
+                isBeingEdited: true
+            });
+            expect(scope.treatments.length).toEqual(3);
+
+            scope.add();
+            expect(scope.treatments.length).toEqual(3);
+            expect(scope.treatments[0].drug.name).toEqual("abc");
+            expect(scope.treatments[1].drug.name).toEqual("def");
+            expect(scope.treatments[2].drug.name).toEqual("ghi");
+        });
     });
     describe("Detect Overlapping orders amongst new orders on Save", function () {
 
