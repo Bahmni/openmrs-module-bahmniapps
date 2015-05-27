@@ -41,21 +41,16 @@ angular.module('bahmni.registration')
                     return searchPromise;
                 }
             };
+            $scope.convertToTableHeader = function(camelCasedText){
+                return camelCasedText.replace(/[A-Z]|^[a-z]/g,function (str, group1, group2) {
+                    return " " + str.toUpperCase() + "";
+                }).trim();
+            };
 
             var mapCustomAttributesSearchResults = function(data){
                 if($scope.customAttributesSearchConfig.fields){
                     data.pageOfResults.map(function(result){
-                        if(result.customAttribute){
-                            result.customAttribute.split(" ").forEach(
-                                function(name){
-                                    var parts = name.split(":");
-                                    result[parts[0]] = parts[1];
-                                });
-                            $scope.customAttributesSearchConfig.fields.forEach(function(attribute){
-                                result.customAttributeDisplay = result.customAttributeDisplay
-                                    ? result.customAttributeDisplay + " " + (result[attribute] || "") : result[attribute];
-                            });
-                        }
+                        result.customAttribute = result.customAttribute && JSON.parse(result.customAttribute);
                     });
                 }
             };
@@ -85,7 +80,7 @@ angular.module('bahmni.registration')
             var setCustomAttributesSearchConfig = function () {
                 var customAttributesSearchConfig = allSearchConfigs.customAttributes;
                 $scope.customAttributesSearchConfig = customAttributesSearchConfig || {};
-                $scope.customAttributesSearchConfig.show = !_.isEmpty(customAttributesSearchConfig) && customAttributesSearchConfig.fields;
+                $scope.customAttributesSearchConfig.show = !_.isEmpty(customAttributesSearchConfig) && !_.isEmpty(customAttributesSearchConfig.fields);
             };
 
             var initialize = function () {

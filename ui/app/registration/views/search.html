@@ -56,7 +56,7 @@
                 <th class="slno_col"><strong>Sl.No</strong></th>
                 <th><strong>ID</strong></th>
                 <th><strong>Name</strong></th>
-                <th ng-if="customAttributesSearchConfig.fields"><strong>{{customAttributesSearchConfig.label}}</strong></th>
+                <th ng-repeat = "field in customAttributesSearchConfig.fields"><strong>{{convertToTableHeader(field)}}</strong></th>
                 <th><strong>Gender</strong></th>
                 <th><strong>Age</strong></th>
                 <th><strong>{{addressSearchConfig.label}}</strong></th>
@@ -69,7 +69,7 @@
                 <td>{{$index + 1}}</td>
                 <td>{{result.identifier}}</td>
                 <td>{{result.givenName}} {{result.middleName}} {{result.familyName}}</td>
-                <td ng-if="customAttributesSearchConfig.fields">{{result.customAttributeDisplay}}</td>
+                <td ng-repeat = "field in customAttributesSearchConfig.fields">{{result.customAttribute[field]}}</td>
                 <td>{{result.gender}}</td>
                 <td>{{result.age}}</td>
                 <td>{{result.addressFieldValue}}</td>
