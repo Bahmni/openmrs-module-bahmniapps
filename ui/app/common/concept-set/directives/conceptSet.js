@@ -62,10 +62,6 @@ angular.module('bahmni.common.conceptSet')
                 '</concept>' +
             '</form>';
 
-        var numberOfLevels = appService.getAppDescriptor().getConfigValue('maxConceptSetLevels') || 4;
-        var fields = ['uuid', 'name', 'names', 'set', 'hiNormal', 'lowNormal', 'hiAbsolute', 'lowAbsolute', 'units', 'conceptClass', 'datatype', 'handler', 'answers:(uuid,name,displayString,names)', 'descriptions'];
-        var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels);
-
         var controller = function ($scope, conceptSetService, conceptSetUiConfigService, spinner) {
             var conceptSetName = $scope.conceptSetName;
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
@@ -82,7 +78,7 @@ angular.module('bahmni.common.conceptSet')
             };
 
             var init = function(){
-                return conceptSetService.getConceptSetMembers({name: conceptSetName, v: "custom:" + customRepresentation}).then(function (response) {
+                return conceptSetService.getConceptSetMembers({name: conceptSetName, v: "bahmni"}).then(function (response) {
                     $scope.conceptSet = response.data.results[0];
                     $scope.rootObservation = $scope.conceptSet ? observationMapper.map($scope.observations, $scope.conceptSet, conceptSetUIConfig) : null;
                     if($scope.rootObservation) {
