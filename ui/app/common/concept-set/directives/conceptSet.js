@@ -19,30 +19,12 @@ angular.module('bahmni.common.conceptSet')
                     return observation.value + ' (' + $filter('bahmniDate')(observation.date) + ")";
                 }).join(", ");
             };
-            $scope.selectOptions = function(codedConcept){
-                var limit = 1000;
-                return {
-                    ajax: {
-                        url: Bahmni.Common.Constants.conceptUrl,
-                        dataType: 'json',
-                        quietMillis: 100,
-                        cache: true,
-                        data: function (term, page) {
-                            return {
-                                q: term,
-                                limit: limit,
-                                startIndex: (page - 1) * limit,
-                                answerTo: codedConcept.uuid,
-                                v: "custom:(uuid,name:(name))"
-                            };
-                        },
-                        results: function (data) {
-                            return {
-                                //Remove uniq logic after web service rest bug is fixed
-                                results: _.sortBy(_.uniq(data.results, _.property('uuid')).map(conceptMapper.map), 'name'),
-                                more: !!_.find(data.links, function(link) { return link.rel === "next"; })
-                            };
-                        }
+            $scope.selectOptions = function (codedConcept) {
+                var answers = _.sortBy(_.uniq(codedConcept.answers, _.property('uuid')).map(conceptMapper.map), 'name');
+                return  {
+                    data: answers,
+                    query: function (options) {
+                        return options.callback({results: $filter('filter')(answers, {name: options.term})});
                     },
                     allowClear: true,
                     placeholder: 'Select',
