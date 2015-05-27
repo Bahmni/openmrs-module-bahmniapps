@@ -47,7 +47,7 @@ describe("OrderFulfillmentController", function () {
         scope = $rootScope.$new();
         rootScope = $rootScope;
         rootScope.currentProvider = {uuid: "someProviderUuid"};
-        q =$q;
+        q = $q;
         $controller('OrderFulfillmentController', {
             $scope: scope,
             $rootScope: rootScope,
@@ -77,6 +77,7 @@ describe("OrderFulfillmentController", function () {
         expect(mockOrderService.getOrders).toHaveBeenCalled();
         expect(mockOrderService.getOrders.calls.mostRecent().args[0]).toEqual("somePatientUuid");
         expect(mockOrderService.getOrders.calls.mostRecent().args[1]).toEqual("someOrderTypeUuid");
+        expect(mockOrderService.getOrders.calls.mostRecent().args[3]).toEqual(0);
         done();
     });
 
