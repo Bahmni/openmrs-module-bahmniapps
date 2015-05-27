@@ -18,6 +18,9 @@ angular.module('bahmni.clinical')
 
                 if($scope.tabs) {
                     $scope.activateTab($scope.tabs[0]);
+                    var allCategories = $scope.getOrderTemplate($scope.activeTab.name).setMembers;
+                    if(allCategories.length > 0)$scope.showLeftCategoryTests(allCategories[0]);
+                    
                 }
             };
 
@@ -35,10 +38,16 @@ angular.module('bahmni.clinical')
                 return $scope.consultation.allOrdersTemplates[key];
             };
 
-            $scope.activateTab = function(tab){
-                $scope.activeTab && ($scope.activeTab.klass="");
-                $scope.activeTab = tab;
-                $scope.activeTab.klass="active";
+             $scope.activateTab = function(tab){
+                if(tab.klass=="active"){
+                    tab.klass="";
+                    $scope.activeTab = undefined;
+                }
+                else{
+                    $scope.activeTab && ($scope.activeTab.klass="");
+                    $scope.activeTab = tab;
+                    $scope.activeTab.klass="active";
+                }
             };
 
             $scope.showLeftCategoryTests = function(leftCategory) {

@@ -1,7 +1,10 @@
 .selected-orders {
-    padding: 10px;
-    margin: 10px;
-    width: 97%;
+    // padding: 10px;
+    margin: 5px .5%;
+    width: 99%;
+    .null-data-message {
+        padding-left: 5px;
+    }
     ul.selected-items {
         max-height: 334px;
         width: 100%;
@@ -23,19 +26,27 @@
                 text-align: left;
                 line-height: .9;
                 box-sizing: border-box;
+                cursor: default;
                 &.active {
                     background: linear-gradient(to bottom, #FFF, #DDD);
                     background-color: #DDD;
                     border: #DDD 1px solid;
-                    &:hover{
-                      background: #e2e2e2;
-                      border-color: #d0d0d0;
+                    &:hover {
+                        background: #e2e2e2;
+                        border-color: #d0d0d0;
                     }
                 }
                 span {
                     display: inline-block;
                     padding: 8px 15px;
                     float: left;
+                    width: 175px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    @media (max-width: 1024px) {
+                        width: 132px;
+                    }
                 }
                 i {
                     font-size: 1.5em;
@@ -44,8 +55,7 @@
                     padding: 9px 3px 0;
                     border-left: 1px #D3CFCF solid;
                     color: #9D0101;
-                    /* float: right; */
-                    
+                    cursor: pointer;
                     height: 17px;
                 }
             }
@@ -60,6 +70,10 @@
         border-radius: 5px 5px 0 0;
         background: #FFFFFF;
         margin-bottom: 10px;
+    }
+    .dashboard-section {
+        margin-top: -10px;
+        border-radius: 0;
     }
     h2.order-title {
         cursor: pointer;
@@ -77,25 +91,24 @@
     .dashboard-section-wrapper {
         margin: 0;
         .orders-section-left {
-            width: 23.5%;
+            width: 22%;
             float: left;
-            margin: 2% 0 2% 1.5%;
+            margin: 3% 0 2% 10px;
             .multi-select-lab-tests {
                 width: 93%;
-                margin-top: 6.5%;
                 ul {
                     li {
                         a {
                             color: $white;
-                            background: #4a7eb0;
+                            background: #669999;
                             display: block;
                             padding: 8px 12px;
                             border-bottom: 1px $white solid;
                             &:hover {
-                                opacity: .6;
+                                background: #3D7474;
                             }
                             &.active {
-                                opacity: .7;
+                                background: #3D7474;
                             }
                         }
                     }
@@ -103,38 +116,71 @@
             }
         }
         .orders-section-right {
-            width: 75%;
+            width: 77%;
             float: right;
             margin-top: 2%;
         }
         .order-section-container {
             float: left;
             width: 100%;
+            fieldset {
+                position: relative;
+                margin-top: 13px;
+            }
             .order-title {
-                font-family: openSansBold;
-                display: block;
-                background: #ccc;
-                color: #333;
-                padding: 10px;
-                margin-right: 18px;
-                border-radius: 5px;
+                &.mylegend {
+                    position: absolute;
+                    top: -15px;
+                    left: 20px;
+                    padding: 5px 10px;
+                    font-family: "OpenSansBold";
+                    font-size: 12px;
+                    color: #666;
+                    border: 1px solid #999999;
+                    border-radius: 20px;
+                    text-transform: uppercase;
+                }
             }
             .orderBtnContainer {
                 float: left;
                 display: block;
-                margin: 2% 0% 1% 2%;
-                width: 96%;
+                margin: 0 0 2.4% 0;
+                width: 97.6%;
+                border: 1px solid #c0c0c0;
+                padding: 20px 0 0 10px;
+                border-radius: 5px;
+                ul {
+                    li {
+                        a {
+                            padding: 8px 20px !important;
+                        }
+                    }
+                }
             }
             .orderBtn {
                 float: left;
-                width: 32%;
                 margin-bottom: 10px;
                 margin-right: 1%;
+                text-align: center;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                width: 249px;
+                white-space: nowrap;
+                @media (max-width: 1024px) {
+                    width: 200px;
+                }
             }
         }
         .block.consultation-notes {
-            border-bottom: 1px solid #669999;
-            width: 100%;
+            border: 1px solid #669999;
+            width: 93%;
+            margin-top: 20px;
+            border-radius: 5px 5px 0 0;
+            border-top: 0;
+            h2.section-title {
+                background: #3D7474;
+                border-radius: 5px 5px 0 0;
+            }
         }
     }
 }

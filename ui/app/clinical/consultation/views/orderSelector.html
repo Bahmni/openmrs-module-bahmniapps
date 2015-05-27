@@ -1,8 +1,14 @@
-<div ng-show="hasOrders()">
-    <span class="order-title">{{title}}</span>
-    <div class="orderBtnContainer">
-        <button class="grid-row-element orderBtn ng-binding ng-scope" ng-repeat="test in (rootConcept.setMembers | filter:filterByConceptClass)" ng-click="onSelectionChange(test)" ng-class="{active:test.isSelected}">
-            <i class="fa fa-ok"></i> {{test.name.display}}
-        </button>
+<fieldset>
+    <div ng-show="hasOrders()">
+        <legend class="order-title mylegend">{{title}}</legend>
+        <div class="orderBtnContainer">
+            <ul>
+                <li ng-repeat="test in (rootConcept.setMembers | filter:filterByConceptClass)">
+                    <a class="grid-row-element button orderBtn ng-binding ng-scope" ng-click="onSelectionChange(test)" ng-class="{active:test.isSelected}">
+                        <i class="fa fa-ok" ng-show="test.isSelected"></i> {{test.name.display}}
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
-</div>
+</fieldset>
