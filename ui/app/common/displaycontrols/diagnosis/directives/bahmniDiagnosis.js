@@ -25,26 +25,6 @@ angular.module('bahmni.common.displaycontrol.diagnosis')
                         diagnosis.showDetails = !diagnosis.showDetails;
                     }
                 };
-                $scope.providerName = function (diagnosis) {
-                    if (diagnosis.providers[0]) {
-                        if (diagnosis.creatorName == diagnosis.providers[0].name) {
-                            return diagnosis.providers[0] ? diagnosis.providers[0].name : "";
-                        }
-                        return diagnosis.creatorName + " on behalf of " + diagnosis.providers[0].name;
-                    }
-                    return "";
-
-                };
-
-                $scope.latestProviderName = function (diagnosis) {
-                    if (diagnosis.latestDiagnosis.providers[0]) {
-                        if (diagnosis.creatorName == diagnosis.latestDiagnosis.providers[0].name) {
-                            return diagnosis.latestDiagnosis.providers[0].name;
-                        }
-                        return diagnosis.creatorName + " on behalf of " + diagnosis.latestDiagnosis.providers[0].name;
-                    }
-                    return "";
-                };
 
                 var getPromises = function () {
                     return [getAllDiagnosis()];

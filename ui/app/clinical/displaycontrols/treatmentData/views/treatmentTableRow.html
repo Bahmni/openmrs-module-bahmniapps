@@ -29,7 +29,7 @@
         <pre class="left">{{drugOrder.additionalInstructions}}</pre>
         <div class="footer-note right">
             <span class="provider">
-                {{drugOrder.provider.name}} {{drugOrder.effectiveStartDate | bahmniTime}}
+                <provider-directive creator-name="{{drugOrder.creatorName}}" provider-name="{{drugOrder.provider.name}}" provider-date="drugOrder.effectiveStartDate"></provider-directive>
             </span>
         </div>
     </td>
@@ -38,10 +38,7 @@
     <td colspan="4" class="notes inline-notes">
         <div class="footer-note right">
             <span class="provider">
-                <span ng-if="drugOrder.creatorName != drugOrder.provider.name">
-                    {{drugOrder.creatorName}} on behalf of
-                </span>
-                {{drugOrder.provider.name}} {{drugOrder.effectiveStartDate | bahmniTime}}
+                <provider-directive creator-name="{{drugOrder.creatorName}}" provider-name="{{drugOrder.provider.name}}" provider-date="drugOrder.effectiveStartDate"></provider-directive>
             </span>
         </div>
     </td>
