@@ -3,12 +3,18 @@
 angular.module('bahmni.common.appFramework')
     .service('appService', ['$http', '$q', 'sessionService', '$rootScope', function ($http, $q, sessionService, $rootScope) {
         var currentUser = null;
-        var baseUrl = "/bahmni_config/openmrs/apps/";
+        var baseUrl = "/openmrs/ws/rest/v1/bahmni/config/";
         var appDescriptor = null;
         var self = this;
 
         var loadConfig = function (url) {
-            return $http.get(url, {withCredentials: true});
+            return $http.get(url, {
+                withCredentials: true,
+                transformResponse: function (value) {
+                    value = value.slice(1, (value.length - 1));
+                    return JSON.parse(value);
+                }
+            });
         };
 
         var loadTemplate = function (appDescriptor) {
@@ -69,12 +75,12 @@ angular.module('bahmni.common.appFramework')
             return deferrable.promise;
         };
 
-        var loadPageConfig = function(pageName,appDescriptor){
+        var loadPageConfig = function (pageName, appDescriptor) {
             var deferrable = $q.defer();
-            loadConfig(baseUrl + appDescriptor.contextPath + "/"+pageName+".json").then(
+            loadConfig(baseUrl + appDescriptor.contextPath + "/" + pageName + ".json").then(
                 function (result) {
                     if (result.data.length > 0) {
-                        appDescriptor.addConfigForPage(pageName,result.data);
+                        appDescriptor.addConfigForPage(pageName, result.data);
                     }
                     deferrable.resolve(appDescriptor);
                 },
@@ -96,7 +102,7 @@ angular.module('bahmni.common.appFramework')
             return loadConfig(baseUrl + appDescriptor.contextPath + "/" + name);
         };
 
-        this.loadMandatoryConfig = function(path) {
+        this.loadMandatoryConfig = function (path) {
             return $http.get(path);
         };
 
@@ -126,9 +132,9 @@ angular.module('bahmni.common.appFramework')
             if (opts.app) {
                 promises.push(loadDefinition(appDescriptor));
             }
-            if(!_.isEmpty(configPages)){
-                configPages.forEach(function(configPage){
-                    promises.push(loadPageConfig(configPage,appDescriptor));
+            if (!_.isEmpty(configPages)) {
+                configPages.forEach(function (configPage) {
+                    promises.push(loadPageConfig(configPage, appDescriptor));
                 });
             }
             $q.all(promises).then(function (results) {
