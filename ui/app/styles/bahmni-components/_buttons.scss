@@ -33,6 +33,10 @@ use either a `<button>` or an `<a>` element:
   &:hover {
     background: lighten($bcolor, 2%);
     border-color: darken($bcolor, 5%);
+      @media screen and (max-width: 1024px) {
+        background: linear-gradient(to bottom, $tcolor, $bcolor);
+        border: $bcolor 1px solid;
+      }
   }
 
   &.active {
