@@ -17,7 +17,7 @@
                         <ul class="selected-items">
                             <li ng-repeat="order in consultation.testOrders">
                                 <div class="grid-row-element">
-                                    <span>{{::order.concept.name}}</span>
+                                    <span>{{::order.concept.displayName || order.concept.shortName || order.concept.name}}</span>
                                     <i class="fa fa-remove" ng-if="!order.voided" ng-click="diSelect(order)"></i>
                                 </div>
                             </li>
