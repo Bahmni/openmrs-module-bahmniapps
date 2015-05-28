@@ -25,8 +25,10 @@ angular.module('bahmni.registration')
             }
         };
     })
-    .controller('AddressFieldsDirectiveController', function ($scope, addressAttributeService) {
-        var addressLevelsCloneInDescendingOrder = $scope.addressLevels.slice(0).reverse()
+    .controller('AddressFieldsDirectiveController', function ($scope, addressAttributeService, appService) {
+        var showAddressFieldsTopDown = appService.getAppDescriptor().getConfigValue("showAddressFieldsTopDown");
+
+        var addressLevelsCloneInDescendingOrder = showAddressFieldsTopDown ? $scope.addressLevels : $scope.addressLevels.slice(0).reverse();
         $scope.addressLevelsChunks = Bahmni.Common.Util.ArrayUtil.chunk(addressLevelsCloneInDescendingOrder, 2)
         var addressLevelsNamesInDescendingOrder = addressLevelsCloneInDescendingOrder.map(function (addressLevel) {
             return addressLevel.addressField;
