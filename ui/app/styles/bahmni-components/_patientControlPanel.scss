@@ -8,6 +8,11 @@ button.toggle-patient {
     padding: 0;
     font-size: 20px;
   }
+  @media screen and (max-width: 1024px){
+    &.hide-ipad{
+      display: none;
+    }
+  }
 }
 
 button.toggle-patient:hover {

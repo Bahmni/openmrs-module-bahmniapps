@@ -18,7 +18,8 @@
             </li>
         </ul>
 
-        <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}">
+        <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel, 'hide-ipad': availableBoards }">
+
             <i class="fa fa-bars fa-white fa-large"></i>
         </button>
         <button class="confirm save-consultation" ng-show="availableBoards" ng-click="save()" accesskey="s" class="confirm">
