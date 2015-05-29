@@ -20,6 +20,11 @@ angular.module('bahmni.registration')
 
             $scope.create = function () {
                 setPreferences();
+                var errMsg = Bahmni.Common.Util.ValidationUtil.validate($scope.patient,$scope.patientConfiguration.personAttributeTypes);
+                if(errMsg){
+                    messagingService.showMessage('formError', errMsg);
+                    return;
+                }
                 if (!$scope.hasOldIdentifier) {
                     spinner.forPromise(patientService.generateIdentifier($scope.patient)
                         .then(function (response) {

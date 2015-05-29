@@ -35,6 +35,7 @@ describe('CreatePatientController', function () {
                 spinner: spinnerMock,
                 appService: appServiceMock
             });
+            scopeMock.patientConfiguration = { identifierSources: [] };
             scopeMock.patient = {identifierPrefix: {}};
             scopeMock.actions = {followUpAction: function() { scopeMock.afterSave() } };
             patientServiceMock.generateIdentifier = function() {

@@ -92,6 +92,10 @@ angular.module('bahmni.common.appFramework')
             return appDescriptor;
         };
 
+        this.configBaseUrl =  function () {
+            return baseUrl;
+        };
+
         this.loadConfig = function (name) {
             return loadConfig(baseUrl + appDescriptor.contextPath + "/" + name);
         };

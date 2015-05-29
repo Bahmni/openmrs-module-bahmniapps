@@ -20,6 +20,10 @@ angular.module('bahmni.registration').factory('initialization',
             });
         };
 
+        var loadValidators = function (baseUrl,contextPath) {
+                Bahmni.Common.Util.DynamicResourceLoader.includeJs(baseUrl + contextPath + '/fieldValidation.js');
+        };
+
         var initApp = function() {
             return appService.initApp('registration', {'app': true, 'extension' : true });
         };
@@ -32,6 +36,9 @@ angular.module('bahmni.registration').factory('initialization',
             $rootScope.registration = $rootScope.registration ||{};
             getIdentifierPrefix();
         };
-        return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(getConfigs).then(initAppConfigs));
+        return spinner.forPromise(authenticator.authenticateUser()
+            .then(initApp).then(getConfigs).then(initAppConfigs).
+                then(loadValidators(appService.configBaseUrl(), "registration"))
+            );
     }]
 );
