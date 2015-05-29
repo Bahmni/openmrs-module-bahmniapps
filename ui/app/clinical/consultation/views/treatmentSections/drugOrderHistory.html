@@ -49,7 +49,7 @@
                                             <i class="fa fa-plus-circle"></i>
                                         </button>
                                         <button class="toggle" ng-class="{'has-notes': drugOrder.additionalInstructions}" ng-click="toggleShowAdditionalInstructions(drugOrder)" ng-show="drugOrder.showAdditionalInstructions">
-                                            <i class="fa fa-minus-sign"></i>
+                                            <i class="fa fa-minus-circel"></i>
                                         </button>
                                     </div>
 								</div>
@@ -64,8 +64,9 @@
                                         <span class="time-stamp">
                                             <span class="time">{{drugOrder.dateActivated | bahmniDate}}</span>
                                         </span>
-                                        <span class="provider" ng-if="drugOrder.creatorName != drugOrder.provider.name">{{drugOrder.creatorName}} on behalf of </span>
-                                        {{drugOrder.provider.name}}
+                                        <span class="provider">
+                                            <provider-directive creator-name="{{drugOrder.creatorName}}" provider-name="{{drugOrder.provider.name}}"></provider-directive>
+                                        </span>
                                     </div>
                                 </div>
 							</li>

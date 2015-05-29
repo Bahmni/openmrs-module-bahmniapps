@@ -8,6 +8,7 @@ Bahmni.Common.Obs.MultiSelectObservation = (function () {
         this.conceptConfig = conceptConfig;
         this.observationDateTime = getLatestObservationDateTime(this.groupMembers);
         this.providers = groupMembers[0].providers;
+        this.creatorName = groupMembers[0].creatorName;
     };
     var getLatestObservationDateTime = function(groupMembers){
         var latestObservationDateTime = groupMembers[0].observationDateTime;

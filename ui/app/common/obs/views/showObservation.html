@@ -17,21 +17,17 @@
             <pre class="left">{{::observation.comment}}</pre>
             <div class="footer-note fr">
                 <span class="provider">
-                    <span ng-if="observation.creatorName != observation.providers[0].name">
-                        {{::observation.creatorName}} on behalf of
-                    </span>
-                    {{::observation.providers[0].name}} <span ng-if="observation.isFormElement()">{{dateString(observation)}} </span>
+                    <provider-directive creator-name="{{::observation.creatorName}}" provider-name="{{::observation.providers[0].name}}"></provider-directive>
+                    <span ng-if="observation.isFormElement()">{{dateString(observation)}} </span>
                 </span>
             </div>
         </div>
     </div>
     <div ng-if="observation.showDetails" class="notes inline-notes" ng-class="{'print-notes': observation.showDetails}">
         <div class="footer-note fr">
-            <span>
-                <span class="provider" ng-if="observation.creatorName != observation.providers[0].name">
-                    {{::observation.creatorName}} on behalf of
-                </span>
-                {{::observation.providers[0].name}} <span ng-if="observation.isFormElement()">{{dateString(observation)}}</span>
+            <span class="provider">
+                <provider-directive creator-name="{{::observation.creatorName}}" provider-name="{{::observation.providers[0].name}}"></provider-directive>
+                <span ng-if="observation.isFormElement()">{{dateString(observation)}}</span>
             </span>
 
         </div>

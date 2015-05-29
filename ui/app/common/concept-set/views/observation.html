@@ -36,7 +36,6 @@
                              ng-class="{'is-abnormal': observation.abnormalObs.value, 'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}" focus-me="observation.isFocused"  ng-if="::(observation.primaryObs.isNumeric() && observation.primaryObs.isStepperControl())" > </stepper>
 
                 </div>
-
                 <textarea id="{{::observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="::!observation.primaryObs.isConciseText()" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet), 'computed-field': observation.isComputedAndEditable()}" focus-me="observation.isFocused">
 
                 </textarea>

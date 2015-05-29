@@ -88,7 +88,7 @@ describe('SearchPatientController', function () {
 
         it('should initialize scope with name search params from url and load the patients if a name search parameter is provided', function () {
             var searchParams = {"name": 'john', addressFieldValue: 'Kanpur'};
-            scope.searchConfig = {field: 'city_village', name:'village'}
+            scope.addressSearchConfig = {field: 'city_village', label:'village', placeholder: 'Enter village'};
             spyOn(location, 'search').and.returnValue(searchParams);
 
             urlSearchChangeCallback();
@@ -97,7 +97,7 @@ describe('SearchPatientController', function () {
             expect(scope.searchParameters.addressFieldValue).toBe(searchParams.addressFieldValue);
             expect(patientResource.search).toHaveBeenCalled();
             expect(patientResource.search.calls.mostRecent().args[0]).toBe(searchParams.name);
-            expect(patientResource.search.calls.mostRecent().args[1]).toBe(scope.searchConfig.field);
+            expect(patientResource.search.calls.mostRecent().args[1]).toBe(scope.addressSearchConfig.field);
             expect(patientResource.search.calls.mostRecent().args[2]).toBe(searchParams.addressFieldValue);
             expect(searchPromise.success).toHaveBeenCalled();
         });
@@ -162,7 +162,7 @@ describe('SearchPatientController', function () {
             scope.searchParameters.name = "Ram Singh";
             spyOn(location, 'search');
 
-            scope.searchByAddressFieldAndNameAndLocalName();
+            scope.searchPatients();
 
             expect(location.search).toHaveBeenCalledWith({'name': "Ram Singh"});
         });
@@ -171,19 +171,19 @@ describe('SearchPatientController', function () {
             scope.searchParameters.addressFieldValue = "Bilaspur";
             spyOn(location, 'search');
 
-            scope.searchByAddressFieldAndNameAndLocalName();
+            scope.searchPatients();
 
             expect(location.search).toHaveBeenCalledWith({'addressFieldValue': "Bilaspur"});
         });
 
         it("should go to search page with localName if showLocalNameSearch has been set", function () {
-            scope.searchParameters.localName = "localName";
-            scope.showLocalNameSearch = true;
+            scope.searchParameters.customAttribute = "localName";
+            scope.customAttributesSearchConfig.show = true;
             spyOn(location, 'search');
 
-            scope.searchByAddressFieldAndNameAndLocalName();
+            scope.searchPatients();
 
-            expect(location.search).toHaveBeenCalledWith({'localName': "localName"});
+            expect(location.search).toHaveBeenCalledWith({'customAttribute': "localName"});
         });
     });
 

@@ -6,12 +6,17 @@ Bahmni.Clinical.Order = (function () {
         this.dateCreated = data.dateCreated;
     };
 
+    var getName = function (test) {
+        var name = _.find(test.names, {conceptNameType: "SHORT"}) || _.find(test.names, {conceptNameType: "FULLY_SPECIFIED"});
+        return name ? name.name : undefined;
+    };
+
     Order.create = function (test) {
         var order = new Order({
         		uuid: undefined,
 			    concept: {
-                    uuid : test.uuid,
-                    name : test.name.name
+                    uuid: test.uuid,
+                    displayName: getName(test)
                 },
 			    voided: false,
             }

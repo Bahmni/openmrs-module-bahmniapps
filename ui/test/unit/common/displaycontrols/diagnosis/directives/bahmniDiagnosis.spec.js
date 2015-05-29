@@ -69,12 +69,4 @@ describe('Diagnosis DisplayControl', function () {
         expect(diagnosis.showDetails).toBeTruthy();
     });
 
-    it('should display diagnosis provider name', function(){
-        init();
-        diagnosis.creatorName = "Super Woman";
-        expect(compiledElementScope.providerName(diagnosis)).toBe("Super Woman");
-        diagnosis.creatorName = "Super Person";
-        expect(compiledElementScope.providerName(diagnosis)).toBe("Super Person on behalf of Super Woman");
-    });
-
 });

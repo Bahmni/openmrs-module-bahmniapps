@@ -43,6 +43,11 @@ angular.module('bahmni.clinical')
                     }
                 };
 
+                $scope.getName = function (test) {
+                    var name = _.find(test.names, {conceptNameType: "SHORT"}) || _.find(test.names, {conceptNameType: "FULLY_SPECIFIED"});
+                    return name ? name.name : undefined;
+                };
+
                 var removeOrder = function(order){
                     _.remove($scope.orders, function(o){
                         return o.concept.uuid == order.concept.uuid;

@@ -33,6 +33,10 @@ use either a `<button>` or an `<a>` element:
   &:hover {
     background: lighten($bcolor, 2%);
     border-color: darken($bcolor, 5%);
+      @media screen and (max-width: 1024px) {
+        background: linear-gradient(to bottom, $tcolor, $bcolor);
+        border: $bcolor 1px solid;
+      }
   }
 
   &.active {
@@ -413,11 +417,11 @@ input[type="submit"].secondary-button:hover  {
   input[type="checkbox"] { 
     position: absolute;
     opacity: 0;
-    & + .fa-pushpin {
+    & + .fa-thumb-tack {
       color: $mediumGray;
       cursor: pointer;
     }
-    &:checked + .fa-pushpin {
+    &:checked + .fa-thumb-tack {
       color: orange;
       text-shadow: 1px 1px 1px white;
     }

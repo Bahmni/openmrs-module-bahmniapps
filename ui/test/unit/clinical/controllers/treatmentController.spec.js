@@ -1193,4 +1193,50 @@ describe("TreatmentController", function () {
             scope.consultation.saveHandler.fire();
         });
     })
+
+    describe("selectAllCheckbox()", function() {
+        it("should add additional attribute with the name as durationUpdateFlag", function() {
+            var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
+            drugOrder.durationUnit = {name: "Days"};
+            drugOrder.route = {name: "Orally"};
+            drugOrder.uniformDosingType.dose = "1";
+            drugOrder.doseUnits = "Capsule";
+            drugOrder.uniformDosingType.frequency = {name: "Once a day"};
+            drugOrder.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
+            drugOrder.durationInDays = 1;
+
+            scope.treatments = [];
+            scope.treatments.push(drugOrder);
+            scope.showBulkChangeToggle = true;
+
+            scope.selectAllCheckbox();
+            expect(scope.treatments.length).toBe(1);
+            expect(scope.treatments[0].durationUpdateFlag).toBeTruthy();
+        });
+    });
+
+    describe("bulkDurationChangeDone()", function() {
+        it("should modify durationInDays and amount of drug units as per the new input", function() {
+            var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
+            drugOrder.durationUnit = {name: "Days"};
+            drugOrder.route = {name: "Orally"};
+            drugOrder.uniformDosingType.dose = "1";
+            drugOrder.doseUnits = "Capsule";
+            drugOrder.uniformDosingType.frequency = {name: "Once a day"};
+            drugOrder.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
+            drugOrder.durationInDays = 1;
+            drugOrder.durationUpdateFlag = true;
+
+            scope.treatments = [];
+            scope.treatments.push(drugOrder);
+            scope.showBulkChangeToggle = true;
+
+            scope.bulkDurationData.bulkDuration = 2;
+            scope.bulkDurationData.bulkDurationUnit = "Day(s)";
+
+            scope.bulkDurationChangeDone();
+
+            expect(drugOrder.durationInDays).toBe(2);
+        });
+    });
 });

@@ -24,10 +24,7 @@
                 <pre class="left ng-binding">{{getNotes(disposition)}}</pre>
                 <div class="footer-note right">
                     <span class="provider">
-                        <span ng-if="disposition.creatorName != disposition.providers[0].name">
-                            {{disposition.creatorName}} on behalf of
-                        </span>
-                        {{disposition.providers[0].name}} {{disposition.dispositionDateTime | bahmniTime}}
+                        <provider-directive creator-name="{{disposition.creatorName}}" provider-name="{{disposition.providers[0].name}}" provider-date="disposition.dispositionDateTime"></provider-directive>
                     </span>
                 </div>
             </td>

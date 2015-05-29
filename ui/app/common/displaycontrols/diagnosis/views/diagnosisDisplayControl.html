@@ -64,7 +64,7 @@
                 <pre id="diagnosisComments" class="left">{{diagnosis.comments}}</pre>
                 <div class="footer-note right">
                         <span class="provider">
-                            {{providerName(diagnosis)}} {{diagnosis.diagnosisDateTime | bahmniTime}}
+                            <provider-directive creator-name="{{diagnosis.creatorName}}" provider-name="{{diagnosis.providers[0].name}}" provider-date="diagnosis.diagnosisDateTime"></provider-directive>
                         </span>
                 </div>
             </td>
@@ -74,7 +74,7 @@
             <td colspan="2" class="notes inline-notes">
                 <div class="footer-note right">
                         <span class="provider">
-                            {{providerName(diagnosis)}} {{diagnosis.diagnosisDateTime | bahmniTime}}
+                            <provider-directive creator-name="{{diagnosis.creatorName}}" provider-name="{{diagnosis.providers[0].name}}" provider-date="diagnosis.diagnosisDateTime"></provider-directive>
                         </span>
                 </div>
             </td>
@@ -83,7 +83,7 @@
             <td colspan="3" class="notes inline-notes">
                 <div class="footer-note right">
                         <span class="provider">
-                            {{latestProviderName(diagnosis)}} {{diagnosis.latestDiagnosis.diagnosisDateTime | bahmniTime}}
+                            <provider-directive creator-name="{{diagnosis.creatorName}}" provider-name="{{diagnosis.latestDiagnosis.providers[0].name}}" provider-date="diagnosis.latestDiagnosis.diagnosisDateTime"></provider-directive>
                         </span>
                 </div>
             </td>

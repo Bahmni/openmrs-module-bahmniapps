@@ -260,6 +260,49 @@
         display: inline-block;
         line-height: 14px;
     }
+    .subheading-wrapper {
+        background: #669999;
+        height: 40px;
+        .bulk-toggle-btn{
+            margin-top: 5px;
+            margin-right: 5px;
+        }
+    }
+
+    .bulk-edit-options-container{
+        padding: 13px 10px 12px 10px;
+        background-color: #EEEEEE;
+        border-bottom: 1px #bbb solid;
+        margin-bottom: 4px;
+        box-shadow: 1px 2px 7px #ccc;
+        .bulk-btn-container{
+            .stepper__btn{
+                height: 29px;
+                margin-top: 1px;
+            }
+        }
+        .select-all-chkBox{
+            top: 6px;
+        }
+        .duration.bulkDuration{
+            min-width: 80px;
+            display: inline-block;
+            width: 80px;
+            height: 22px;
+            margin-top: 0;
+        }
+        select.bulk-duration-unit {
+            min-width: 110px;
+            display: inline-block;
+            height: 30px;
+            margin-top: 0;
+            margin-left: 10px;
+            margin-right: 20px;
+        }
+        .bulk-update-btn{
+            margin-right: 5px;
+        }
+    }
 
 }
 
@@ -279,3 +322,5 @@
 .revise-refill-modal-wrapper {
     outline: 0;
 }
+
+

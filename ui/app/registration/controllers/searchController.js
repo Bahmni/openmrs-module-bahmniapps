@@ -6,27 +6,19 @@ angular.module('bahmni.registration')
             $scope.identifierSources = $rootScope.patientConfiguration.identifierSources;
             $scope.results = [];
             var searching = false;
-            var defaultSearchConfig= {
-                name: "Village",
-                field: "city_village"
-            };
-            $scope.searchConfig = appService.getAppDescriptor().getConfigValue("search") || defaultSearchConfig;
 
-            if(!$scope.searchConfig.name) throw "Search Config name is not present!";
-
-            if(!$scope.searchConfig.field) throw "Search Config field is not present!";
-
+            var allSearchConfigs = appService.getAppDescriptor().getConfigValue("patientSearch") || {};
 
             var hasSearchParameters = function () {
                 return $scope.searchParameters.name.trim().length > 0
                     || $scope.searchParameters.addressFieldValue.trim().length > 0
-                    || $scope.searchParameters.localName.trim().length > 0;
+                    || $scope.searchParameters.customAttribute.trim().length > 0;
             };
 
             var searchBasedOnQueryParameters = function (offset) {
                 $scope.searchParameters.addressFieldValue = $location.search().addressFieldValue || '';
                 $scope.searchParameters.name = $location.search().name || '';
-                $scope.searchParameters.localName = $location.search().localName || '';
+                $scope.searchParameters.customAttribute = $location.search().customAttribute || '';
                 var identifierPrefix = $location.search().identifierPrefix;
                 if (!identifierPrefix || identifierPrefix.length === 0) {
                     identifierPrefix = preferences.identifierPrefix;
@@ -41,7 +33,7 @@ angular.module('bahmni.registration')
                 $scope.searchParameters.registrationNumber = $location.search().registrationNumber || "";
                 if (hasSearchParameters()) {
                     var searchPromise = patientService.search(
-                        $scope.searchParameters.name, $scope.searchConfig.field, $scope.searchParameters.addressFieldValue, $scope.searchParameters.localName, offset, $scope.localNameAttributes);
+                        $scope.searchParameters.name, $scope.addressSearchConfig.field, $scope.searchParameters.addressFieldValue, $scope.searchParameters.customAttribute, offset, $scope.customAttributesSearchConfig.fields);
                     searching = true;
                     searchPromise['finally'](function () {
                         searching = false;
@@ -49,21 +41,16 @@ angular.module('bahmni.registration')
                     return searchPromise;
                 }
             };
+            $scope.convertToTableHeader = function(camelCasedText){
+                return camelCasedText.replace(/[A-Z]|^[a-z]/g,function (str, group1, group2) {
+                    return " " + str.toUpperCase() + "";
+                }).trim();
+            };
 
-            var mapLocalName = function(data){
-                if($scope.localNameAttributes){
+            var mapCustomAttributesSearchResults = function(data){
+                if($scope.customAttributesSearchConfig.fields){
                     data.pageOfResults.map(function(result){
-                        if(result.localName){
-                            result.localName.split(" ").forEach(
-                                function(name){
-                                    var parts = name.split(":");
-                                    result[parts[0]] = parts[1];
-                                });
-                            $scope.localNameAttributes.forEach(function(attribute){
-                                result.localNameDisplay = result.localNameDisplay
-                                    ? result.localNameDisplay + " " + (result[attribute] || "") : result[attribute];
-                            });
-                        }
+                        result.customAttribute = result.customAttribute && JSON.parse(result.customAttribute);
                     });
                 }
             };
@@ -72,27 +59,35 @@ angular.module('bahmni.registration')
                 $scope.noMoreResultsPresent = false;
                 if (searchPromise) {
                     searchPromise.success(function (data) {
-                        mapLocalName(data);
+                        mapCustomAttributesSearchResults(data);
                         $scope.results = data.pageOfResults;
                         $scope.noResultsMessage = $scope.results.length === 0 ? "No results found" : null;
                     });
                 }
             };
 
-            var setLocalNameSearchAttributes = function () {
-                $scope.localNameAttributes = appService.getAppDescriptor().getConfigValue("localNameAttributesToDisplay");
-                $scope.showLocalNameSearch = appService.getAppDescriptor().getConfigValue("localNameSearch") || false;
-                $scope.localNameSearchLabel = appService.getAppDescriptor().getConfigValue("localNameLabel") || false;
-                $scope.localNameSearchPlaceholder = appService.getAppDescriptor().getConfigValue("localNamePlaceholder") || false;
-                if (!$scope.localNameAttributes) {
-                    $scope.showLocalNameSearch = false;
-                }
+            var setAddressSearchConfig = function(){
+                var defaultSearchConfig= {
+                    label: "Village",
+                    placeholder: "Enter village",
+                    field: "city_village"
+                };
+                $scope.addressSearchConfig = allSearchConfigs.address || defaultSearchConfig;
+                if(!$scope.addressSearchConfig.label) throw "Search Config label is not present!";
+                if(!$scope.addressSearchConfig.field) throw "Search Config field is not present!";
+            };
+
+            var setCustomAttributesSearchConfig = function () {
+                var customAttributesSearchConfig = allSearchConfigs.customAttributes;
+                $scope.customAttributesSearchConfig = customAttributesSearchConfig || {};
+                $scope.customAttributesSearchConfig.show = !_.isEmpty(customAttributesSearchConfig) && !_.isEmpty(customAttributesSearchConfig.fields);
             };
 
             var initialize = function () {
                 $scope.searchParameters = {};
                 $scope.searchActions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.patient.search.result.action");
-                setLocalNameSearchAttributes();
+                setAddressSearchConfig();
+                setCustomAttributesSearchConfig();
             };
 
             var identifyParams = function (querystring) {
@@ -108,7 +103,7 @@ angular.module('bahmni.registration')
             initialize();
 
             $scope.disableSearchButton = function () {
-                return !$scope.searchParameters.name && !$scope.searchParameters.addressFieldValue && !$scope.searchParameters.localName;
+                return !$scope.searchParameters.name && !$scope.searchParameters.addressFieldValue && !$scope.searchParameters.customAttribute;
             };
 
             $scope.$watch(function () {
@@ -123,8 +118,8 @@ angular.module('bahmni.registration')
                 var patientIdentifier = $scope.searchParameters.identifierPrefix.prefix + $scope.searchParameters.registrationNumber;
                 preferences.identifierPrefix = $scope.searchParameters.identifierPrefix.prefix;
                 $location.search({identifierPrefix: $scope.searchParameters.identifierPrefix.prefix, registrationNumber: $scope.searchParameters.registrationNumber});
-                var searchPromise = patientService.search(patientIdentifier, $scope.searchConfig.field).success(function (data) {
-                    mapLocalName(data);
+                var searchPromise = patientService.search(patientIdentifier, $scope.addressSearchConfig.field).success(function (data) {
+                    mapCustomAttributesSearchResults(data);
                     if (data.pageOfResults.length === 1) {
                         var patient = data.pageOfResults[0];
                         var forwardUrl = appService.getAppDescriptor().getConfigValue("searchByIdForwardUrl") || "/patient/{{patientUuid}}";
@@ -142,7 +137,7 @@ angular.module('bahmni.registration')
                 return searching && !$scope.noMoreResultsPresent;
             };
 
-            $scope.searchByAddressFieldAndNameAndLocalName = function () {
+            $scope.searchPatients = function () {
                 var queryParams = {};
                  $scope.results = [];
                 if ($scope.searchParameters.name) {
@@ -151,8 +146,8 @@ angular.module('bahmni.registration')
                 if ($scope.searchParameters.addressFieldValue) {
                     queryParams.addressFieldValue = $scope.searchParameters.addressFieldValue;
                 }
-                if ($scope.searchParameters.localName && $scope.showLocalNameSearch) {
-                    queryParams.localName = $scope.searchParameters.localName;
+                if ($scope.searchParameters.customAttribute && $scope.customAttributesSearchConfig.show) {
+                    queryParams.customAttribute = $scope.searchParameters.customAttribute;
                 }
                 $location.search(queryParams);
             };
