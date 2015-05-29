@@ -13,9 +13,9 @@ Bahmni.Common.AppFramework.AppDescriptor = function (context, inheritContext, re
 
     var self = this;
 
-    this.setExtensions = function(extensions) {
-        extensions.forEach(function(extn) {
-            var existing = self.extensionPoints.filter(function(ep) {
+    this.setExtensions = function (extensions) {
+        extensions.forEach(function (extn) {
+            var existing = self.extensionPoints.filter(function (ep) {
                 return ep.id == extn.extensionPointId;
             });
 
@@ -29,13 +29,13 @@ Bahmni.Common.AppFramework.AppDescriptor = function (context, inheritContext, re
         self.extensions = extensions;
     };
 
-    this.setTemplate = function(template) {
+    this.setTemplate = function (template) {
         self.instanceOf = template.id;
         self.description = self.description || template.description;
         self.contextModel = self.contextModel || template.contextModel;
         if (template.configOptions) {
-            template.configOptions.forEach(function(opt) {
-                var existing = self.configs.filter(function(cfg) {
+            template.configOptions.forEach(function (opt) {
+                var existing = self.configs.filter(function (cfg) {
                     return cfg.name == opt.name;
                 });
                 if (existing.length > 0) {
@@ -51,14 +51,14 @@ Bahmni.Common.AppFramework.AppDescriptor = function (context, inheritContext, re
         }
     };
 
-    this.setDefinition = function(instance) {
+    this.setDefinition = function (instance) {
         self.instanceOf = instance.instanceOf;
         self.id = instance.id;
         self.description = instance.description;
         self.contextModel = instance.contextModel;
         if (instance.extensionPoints) {
-            instance.extensionPoints.forEach(function(iep) {
-                var existing = self.extensionPoints.filter(function(ep) {
+            instance.extensionPoints.forEach(function (iep) {
+                var existing = self.extensionPoints.filter(function (ep) {
                     return ep.id == iep.id;
                 });
                 if (existing.length === 0) {
@@ -73,7 +73,7 @@ Bahmni.Common.AppFramework.AppDescriptor = function (context, inheritContext, re
                 if (existingConfig) {
                     existingConfig.value = instance.config[configName];
                 } else {
-                    self.configs.push({ name: configName, value: instance.config[configName] });
+                    self.configs.push({name: configName, value: instance.config[configName]});
                 }
             }
         }
@@ -87,42 +87,44 @@ Bahmni.Common.AppFramework.AppDescriptor = function (context, inheritContext, re
                 return priv.retired ? "" : priv.name;
             });
             var appsExtns = self.extensions.filter(function (extn) {
-                return ((extnType==='all') || (extn.type===extnType)) && (extn.extensionPointId === extPointId) && (!extn.requiredPrivilege || (userPrivileges.indexOf(extn.requiredPrivilege) >= 0));
+                return ((extnType === 'all') || (extn.type === extnType)) && (extn.extensionPointId === extPointId) && (!extn.requiredPrivilege || (userPrivileges.indexOf(extn.requiredPrivilege) >= 0));
             });
-            appsExtns.sort(function(extn1, extn2) {
+            appsExtns.sort(function (extn1, extn2) {
                 return extn1.order - extn2.order;
             });
             return appsExtns;
         }
     };
 
-    this.getExtensionById = function (id){
-        return self.extensions.filter(function (extn) { return extn.id === id })[0];
+    this.getExtensionById = function (id) {
+        return self.extensions.filter(function (extn) {
+            return extn.id === id
+        })[0];
     };
 
-    this.getConfig = function(configName) {
-        var cfgList = self.configs.filter(function(cfg) {
+    this.getConfig = function (configName) {
+        var cfgList = self.configs.filter(function (cfg) {
             return cfg.name == configName;
         });
         return (cfgList.length > 0) ? cfgList[0] : null;
     };
 
-    this.getConfigValue = function(configName) {
+    this.getConfigValue = function (configName) {
         var config = this.getConfig(configName);
         return config ? config.value : null;
     };
 
-    this.formatUrl =  function (url, options, useQueryParams) {
+    this.formatUrl = function (url, options, useQueryParams) {
         var pattern = /{{([^}]*)}}/g,
             matches = url.match(pattern),
             replacedString = url,
             checkQueryParams = useQueryParams || false,
             queryParameters = this.parseQueryParams();
         if (matches) {
-            matches.forEach(function(el) {
-                var key = el.replace("{{",'').replace("}}",'');
+            matches.forEach(function (el) {
+                var key = el.replace("{{", '').replace("}}", '');
                 var value = options[key];
-                if (!value && (checkQueryParams===true)) {
+                if (!value && (checkQueryParams === true)) {
                     value = queryParameters[key] || null;
                 }
                 replacedString = replacedString.replace(el, value);
@@ -131,27 +133,29 @@ Bahmni.Common.AppFramework.AppDescriptor = function (context, inheritContext, re
         return replacedString.trim();
     };
 
-    this.parseQueryParams = function(locationSearchString) {
+    this.parseQueryParams = function (locationSearchString) {
         var urlParams;
         var match,
-            pl     = /\+/g,  // Regex for replacing addition symbol with a space
+            pl = /\+/g,  // Regex for replacing addition symbol with a space
             search = /([^&=]+)=?([^&]*)/g,
-            decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
-            queryString  = locationSearchString || window.location.search.substring(1);
+            decode = function (s) {
+                return decodeURIComponent(s.replace(pl, " "));
+            },
+            queryString = locationSearchString || window.location.search.substring(1);
 
         urlParams = {};
         while (match = search.exec(queryString)) {
-           urlParams[decode(match[1])] = decode(match[2]);
+            urlParams[decode(match[1])] = decode(match[2]);
         }
         return urlParams;
     };
 
-    this.addConfigForPage = function(pageName,config){
-        self.pageConfigs= self.pageConfigs || {};
+    this.addConfigForPage = function (pageName, config) {
+        self.pageConfigs = self.pageConfigs || {};
         self.pageConfigs[pageName] = config;
     };
 
-    this.getConfigForPage = function(pageName){
+    this.getConfigForPage = function (pageName) {
         return self.pageConfigs[pageName];
     }
 };
