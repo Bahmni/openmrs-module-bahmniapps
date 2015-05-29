@@ -49,13 +49,13 @@ describe('DateUtil', function () {
 
         it("should calculate difference between dates when month of fromDate is lesser than month of toDate", function () {
             var fromDate = new Date();
-            fromDate.setFullYear(2011);
-            fromDate.setMonth(7);
             fromDate.setDate(21);
+            fromDate.setMonth(7);
+            fromDate.setFullYear(2011);
             var toDate = new Date();
-            toDate.setFullYear(2013);
-            toDate.setMonth(5);
             toDate.setDate(21);
+            toDate.setMonth(5);
+            toDate.setFullYear(2013);
 
             var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
 
@@ -66,13 +66,13 @@ describe('DateUtil', function () {
 
         it("should calculate difference between dates when date of fromDate is greater than date of toDate", function () {
             var fromDate = new Date();
-            fromDate.setFullYear(2011);
-            fromDate.setMonth(7);
             fromDate.setDate(25);
+            fromDate.setMonth(7);
+            fromDate.setFullYear(2011);
             var toDate = new Date();
-            toDate.setFullYear(2013);
-            toDate.setMonth(7);
             toDate.setDate(15);
+            toDate.setMonth(7);
+            toDate.setFullYear(2013);
 
             var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
 
@@ -84,13 +84,13 @@ describe('DateUtil', function () {
         describe('when fromDate is february', function () {
             it("should calculate difference between dates when fromDate is non-leap year", function () {
                 var fromDate = new Date();
-                fromDate.setFullYear(2011);
-                fromDate.setMonth(1);
                 fromDate.setDate(26);
+                fromDate.setMonth(1);
+                fromDate.setFullYear(2011);
                 var toDate = new Date();
-                toDate.setFullYear(2011);
-                toDate.setMonth(2);
                 toDate.setDate(15);
+                toDate.setMonth(2);
+                toDate.setFullYear(2011);
                 var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
 
                 expect(period.years).toBe(0);
@@ -100,13 +100,13 @@ describe('DateUtil', function () {
 
             it("should calculate difference between dates when fromDate is leap year", function () {
                 var fromDate = new Date();
-                fromDate.setFullYear(2012);
-                fromDate.setMonth(1);
                 fromDate.setDate(26);
+                fromDate.setMonth(1);
+                fromDate.setFullYear(2012);
                 var toDate = new Date();
-                toDate.setFullYear(2012);
-                toDate.setMonth(2);
                 toDate.setDate(15);
+                toDate.setMonth(2);
+                toDate.setFullYear(2012);
                 var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
 
                 expect(period.years).toBe(0);
@@ -119,13 +119,13 @@ describe('DateUtil', function () {
         describe("when day of fromDate is lesser than day of toDate", function () {
             it("should calculate difference between dates when month previous to toDate has 30 days", function () {
                 var fromDate = new Date();
-                fromDate.setFullYear(2013);
-                fromDate.setMonth(6);
                 fromDate.setDate(21);
+                fromDate.setMonth(6);
+                fromDate.setFullYear(2013);
                 var toDate = new Date();
-                toDate.setFullYear(2013);
-                toDate.setMonth(7);
                 toDate.setDate(15);
+                toDate.setMonth(7);
+                toDate.setFullYear(2013);
 
                 var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
 
@@ -137,13 +137,13 @@ describe('DateUtil', function () {
 
             it("should calculate difference between dates when month previous to toDate has 30 days", function () {
                 var fromDate = new Date();
-                fromDate.setFullYear(2013);
-                fromDate.setMonth(8);
                 fromDate.setDate(21);
+                fromDate.setMonth(8);
+                fromDate.setFullYear(2013);
                 var toDate = new Date();
-                toDate.setFullYear(2013);
-                toDate.setMonth(9);
                 toDate.setDate(15);
+                toDate.setMonth(9);
+                toDate.setFullYear(2013);
 
                 var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
 
