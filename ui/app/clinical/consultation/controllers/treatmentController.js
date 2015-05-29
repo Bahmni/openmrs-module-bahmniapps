@@ -252,7 +252,7 @@ angular.module('bahmni.clinical')
 
             $scope.remove = function (index) {
                 $scope.treatments.splice(index, 1);
-            }
+            };
 
             $scope.getDrugs = function (request) {
                 return drugService.search(request.term);
@@ -310,5 +310,53 @@ angular.module('bahmni.clinical')
                 orderAttribute.value = orderAttribute.value ? false : true;
             };
             contextChangeHandler.add(contextChange);
+
+            var defaultBulkDuration = function() {
+                return {
+                    bulkDurationUnit : treatmentConfig.durationUnits ? treatmentConfig.durationUnits[0].name : ""
+                };
+            };
+
+            var clearBulkDurationChange = function() {
+                $scope.bulkDurationData = defaultBulkDuration();
+                $scope.bulkSelectCheckbox = false;
+            };
+
+            $scope.bulkDurationData = defaultBulkDuration();
+
+            $scope.bulkChangeDuration = function() {
+                $scope.showBulkChangeToggle = !$scope.showBulkChangeToggle;
+                clearBulkDurationChange();
+                $scope.selectAllCheckbox();
+            };
+
+            $scope.selectAllCheckbox = function(){
+                $scope.bulkSelectCheckbox = !$scope.bulkSelectCheckbox;
+                $scope.treatments.forEach(function (treatment) {
+                    treatment.durationUpdateFlag = $scope.bulkSelectCheckbox;
+                });
+            };
+
+            $scope.bulkDurationChangeDone = function() {
+                if($scope.bulkDurationData.bulkDuration && $scope.bulkDurationData.bulkDurationUnit){
+                    $scope.treatments.forEach(function (treatment) {
+                        if(treatment.durationUpdateFlag){
+                            treatment.duration = $scope.bulkDurationData.bulkDuration;
+                            treatment.durationUnit = $scope.bulkDurationData.bulkDurationUnit;
+                            treatment.calculateDurationInDays();
+                            treatment.calculateQuantityAndUnit();
+                        }
+                    });
+                }
+                clearBulkDurationChange();
+                $scope.bulkChangeDuration();
+            };
+
+            $scope.updateDuration = function(stepperValue) {
+                if(!$scope.bulkDurationData.bulkDuration && isNaN($scope.bulkDurationData.bulkDuration)){
+                    $scope.bulkDurationData.bulkDuration = 0
+                }
+                $scope.bulkDurationData.bulkDuration += stepperValue;
+            };
 
         }]);
