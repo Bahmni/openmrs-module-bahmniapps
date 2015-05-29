@@ -24,6 +24,7 @@ module.exports = function (config) {
             'app/components/stacktrace-js/stacktrace.js',
             'app/components/ng-clip/src/ngClip.js',
             'app/components/zeroclipboard/dist/ZeroClipboard.js',
+            'app/components/angular-file-upload/angular-file-upload.min.js',
             'app/lib/modernizr.custom.80690.js',
             'app/common/constants.js',
             'app/**/init.js',
