@@ -23,10 +23,13 @@ describe("OrderController", function () {
     describe('test the OrderController', function () {
         it("should fetch ordersConfig and set in tabs", function () {
             scope.$digest();
-            expect(scope.tabs.length).toBe(1);
+            expect(scope.tabs.length).toBe(2);
             expect(scope.tabs[0].name).toBe("Lab Samples");
             expect(scope.tabs[0].topLevelConcept).toBe("Lab Samples");
             expect(scope.tabs[0]).toBe(scope.activeTab);
+
+            expect(scope.tabs[1].name).toBe("Radiology Orders");
+            expect(scope.tabs[1].topLevelConcept).toBe("Radiology Orders");
 
         });
 
@@ -37,11 +40,21 @@ describe("OrderController", function () {
         });
 
         it("diSelect() should unselect order", function () {
-            scope.consultation = tempConsultation;
+            scope.consultation.testOrders.push(testOrders[0]);
+            scope.consultation.testOrders.push(testOrders[1]);
+            scope.$digest();
+
+            //diselect already saved order
             scope.diSelect({"concept": {"uuid": "3b5ea063-b6e5-48cd-b39d-dce69f00f26a"}});
+            scope.$digest();
             expect(scope.consultation.testOrders[0].voided).toBe(true);
+            expect(scope.selectedOrders.length).toBe(2);
+
+            //diselect newly added order
             scope.diSelect({"concept": {"uuid": "3c5ea063-b6e5-48cd-b39d-dce69f00f26a"}});
+            scope.$digest();
             expect(scope.consultation.testOrders.length).toBe(1);
+            expect(scope.selectedOrders.length).toBe(1);
         });
 
         it("showLabSampleTests() should set the particular LabOrder to be active", function () {
@@ -90,6 +103,23 @@ describe("OrderController", function () {
             expect(scope.getName(sample)).toBe(undefined);
         });
 
+        it("should update the selectedOrders when some other tab is activated", function(){
+            scope.consultation.testOrders.push({
+                    "uuid": undefined,
+                    "concept": {
+                        "uuid": "ab137c0f-5a23-4314-ab8d-29b8ff91fbfb",
+                        "name": "ESR"
+                    },
+                    "voided": false
+                }
+            );
+            var radiologyOrderTab = _.find(scope.tabs, function (tab) {
+               return tab.name == 'Radiology Orders'
+            });
+            scope.activateTab(radiologyOrderTab);
+            expect(scope.selectedOrders.length).toBe(1);
+        });
+
     });
 
     var allOrderables = {
@@ -101,21 +131,45 @@ describe("OrderController", function () {
                     {
                         "conceptClass": {"name": "ConvSet"},
                         "name": {"name": "Blood", "display": "Blood"},
+                        "uuid": "88024166-9bcd-11e3-927e-8840ab96f0f1",
+                        "setMembers": [
+                            {
+                                "conceptClass": {"name": "Test", "display": "Test"},
+                                "name": {"name": "Biochemistry", "display": "Biochemistry"},
+                                "uuid": "3b5ea063-b6e5-48cd-b39d-dce69f00f26a"
+                            },
+                            {
+                                "conceptClass": {"name": "Test", "display": "Test"},
+                                "name": {"name": "Biochemistry1", "display": "Biochemistry1"},
+                                "uuid": "3c5ea063-b6e5-48cd-b39d-dce69f00f26a"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "\'Radiology Orders\'": {
+                "conceptClass": {"name": "ConvSet"},
+                "name": {"name": "Radiology Orders", "display": "Radiology Orders"},
+                "uuid": "93b9c6fd-9bc6-11e3-927e-8840ab96f0f1",
+                "setMembers": [
+                    {
+                        "conceptClass": {"name": "ConvSet"},
+                        "name": {"name": "Special X Rays", "display": "Special X Rays"},
                         "uuid": "20517b93-aff1-11e3-be87-005056821db0",
                         "setMembers": [
                             {
                                 "conceptClass": {"name": "Test", "display": "Test"},
                                 "name": {"name": "ESR", "display": "ESR"},
-                                "uuid": "10517b93-aff1-11e3-be87-005056821db0"
+                                "uuid": "ab137c0f-5a23-4314-ab8d-29b8ff91fbfb"
                             }
                         ]
                     }
                 ]
+
             }
         },
 
-        tempConsultation = {
-            "testOrders": [
+        testOrders =  [
                 {
                     "dateCreated": "2015-04-22T19:16:13.000+0530",
                     "instructions": null,
@@ -133,20 +187,11 @@ describe("OrderController", function () {
                     "orderTypeUuid": "a28516de-a2a1-11e3-af88-005056821db0"
                 },
                 {
-                    "dateCreated": "2015-04-22T19:16:13.000+0530",
-                    "instructions": null,
                     "concept": {
-                        "conceptClass": "LabSet",
                         "uuid": "3c5ea063-b6e5-48cd-b39d-dce69f00f26a",
-                        "name": "Biochemistry1",
-                        "set": true
+                        "name": "Biochemistry1"
                     },
-                    "voided": false,
-                    "dateChanged": null,
-                    "orderNumber": "ORD-1013",
-                    "voidReason": null,
-                    "orderTypeUuid": "a28516de-a2a1-11e3-af88-005056821db0"
+                    "voided": false
                 }
-            ]
-        };
+            ];
 });

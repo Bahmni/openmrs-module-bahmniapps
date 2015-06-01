@@ -34,9 +34,18 @@ angular.module('bahmni.clinical')
             };
 
             $scope.getOrderTemplate = function(templateName) {
-                var key = '\''+templateName+'\'';               
+                var key = '\''+templateName+'\'';
                 return $scope.consultation.allOrdersTemplates[key];
             };
+
+            $scope.updateSelectedOrdersForActiveTab = function(){
+                var activeTabTestConcepts = _.pluck(_.flatten(_.pluck($scope.getOrderTemplate($scope.activeTab.name).setMembers, 'setMembers')), 'uuid');
+                $scope.selectedOrders =  _.filter($scope.consultation.testOrders,function(testOrder){
+                       return _.indexOf(activeTabTestConcepts, testOrder.concept.uuid) != -1;
+                });
+            };
+
+            $scope.$watchCollection('consultation.testOrders', $scope.updateSelectedOrdersForActiveTab);
 
              $scope.activateTab = function(tab){
                 if(tab.klass=="active"){
@@ -47,6 +56,7 @@ angular.module('bahmni.clinical')
                     $scope.activeTab && ($scope.activeTab.klass="");
                     $scope.activeTab = tab;
                     $scope.activeTab.klass="active";
+                    $scope.updateSelectedOrdersForActiveTab();
                 }
             };
 
