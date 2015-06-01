@@ -38,15 +38,18 @@ angular.module('bahmni.common.conceptSet')
                 var conceptSetData = {name: conceptSet.conceptName, uuid: conceptSet.uuid};
                 var data = {encounterModifierObservations: encounterData.observations, drugOrders: encounterData.drugOrders, conceptSetData: conceptSetData, patientUuid: encounterData.patientUuid, encounterDateTime: encounterData.encounterDateTime};
 
-                spinner.forPromise(conceptSetService.getComputedValue(data)).then(function (response) {
+                spinner.forPromise(treatmentConfig.then(function(treatmentConfig) {
+                    $scope.treatmentConfiguration = treatmentConfig;
+                    return conceptSetService.getComputedValue(data);
+                }).then(function (response) {
                     response = response.data;
                     copyValues($scope.consultation.observations, response.encounterModifierObservations);
                     var drugOrderAppConfig = appService.getAppDescriptor().getConfigValue("drugOrder") || {};
                     $scope.consultation.newlyAddedTreatments = $scope.consultation.newlyAddedTreatments || [];
                     response.drugOrders.forEach(function (drugOrder) {
-                        $scope.consultation.newlyAddedTreatments.push(Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, treatmentConfig));
+                        $scope.consultation.newlyAddedTreatments.push(Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, $scope.treatmentConfiguration));
                     });
-                });
+                }));
             };
             var copyValues = function (existingObservations, modifiedObservations) {
                 existingObservations.forEach(function (observation, index) {

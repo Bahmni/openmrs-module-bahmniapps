@@ -13,7 +13,7 @@ angular.module('bahmni.clinical')
             ).then(function (response) {
                     return response.data.results;
                 });
-        }
+        };
 
         return {
             search: search
