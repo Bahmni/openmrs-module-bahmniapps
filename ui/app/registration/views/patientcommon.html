@@ -118,7 +118,7 @@
         </div>
         <div class="field-value">
             <input id="birthdate" type="text" pattern="\d{2}-\d{2}-\d{4}" ng-model="patient.birthdate" datepicker
-                   ng-change="patient.calculateAge()" placeholder="dd-mm-yyyy" class="datepicker">
+                   max-date="0" ng-change="patient.calculateAge()" placeholder="dd-mm-yyyy" class="datepicker">
         </div>
     </article>
 </section>
