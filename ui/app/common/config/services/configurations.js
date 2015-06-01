@@ -58,5 +58,9 @@ angular.module('bahmni.common.config')
 
         this.addressLevels = function() {
             return this.configs.addressLevels;
-        }
+        };
+
+        this.relationshipTypes = function() {
+            return this.configs.relationshipTypeConfig.results || [];
+        };
     }]);

@@ -4,7 +4,7 @@ angular.module('bahmni.registration').factory('initialization',
     ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'Preferences',
     function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences) {
         var getConfigs = function() {
-            var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierSourceConfig', 'addressLevels', 'genderMap'];
+            var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierSourceConfig', 'addressLevels', 'genderMap', 'relationshipTypeConfig'];
             return configurations.load(configNames).then(function () {
                 var mandatoryPersonAttributes = appService.getAppDescriptor().getConfigValue("mandatoryPersonAttributes");
                 var patientAttributeTypes = new Bahmni.Registration.PatientAttributeTypeMapper().mapFromOpenmrsPatientAttributeTypes(configurations.patientAttributesConfig(), mandatoryPersonAttributes);
@@ -14,9 +14,8 @@ angular.module('bahmni.registration').factory('initialization',
 
                 $rootScope.addressLevels = configurations.addressLevels();
                 $rootScope.fieldValidation = appService.getAppDescriptor().getConfigValue("fieldValidation");
-
                 $rootScope.genderMap = configurations.genderMap();
-
+                $rootScope.relationshipTypes = configurations.relationshipTypes();
             });
         };
 
@@ -36,9 +35,16 @@ angular.module('bahmni.registration').factory('initialization',
             $rootScope.registration = $rootScope.registration ||{};
             getIdentifierPrefix();
         };
-        return spinner.forPromise(authenticator.authenticateUser()
-            .then(initApp).then(getConfigs).then(initAppConfigs).
-                then(loadValidators(appService.configBaseUrl(), "registration"))
-            );
+
+        var mapRelationsTypeWithSearch = function() {
+            var relationshipTypeMap = appService.getAppDescriptor().getConfigValue("relationshipTypeMap") || {};
+            $rootScope.relationshipTypes.forEach(function(relationshipType) {
+                relationshipType.searchType = relationshipTypeMap[relationshipType.aIsToB] || "patient";
+            });
+        };
+
+        return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(getConfigs).then(initAppConfigs)
+            .then(mapRelationsTypeWithSearch)
+            .then(loadValidators(appService.configBaseUrl(), "registration")));
     }]
 );

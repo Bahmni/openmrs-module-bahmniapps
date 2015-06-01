@@ -20,7 +20,8 @@ angular.module('bahmni.common.domain')
         };
 
         configurationFunctions.patientAttributesConfig = function () {
-            return $http.get(Bahmni.Common.Constants.openmrsUrl + "/ws/rest/v1/personattributetype?v=full", {
+            return $http.get(Bahmni.Common.Constants.personAttributeTypeUrl, {
+                params: {v: "full"},
                 withCredentials: true
             });
         };
@@ -111,6 +112,13 @@ angular.module('bahmni.common.domain')
                     property: 'mrs.genders'
                 },
                 withCredentials: true
+            });
+        };
+
+        configurationFunctions.relationshipTypeConfig = function() {
+            return $http.get(Bahmni.Common.Constants.relationshipTypesUrl, {
+                withCredentials: true,
+                params: {v: "custom:(aIsToB,uuid)"}
             });
         };
 

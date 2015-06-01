@@ -62,6 +62,8 @@ Bahmni.Common = Bahmni.Common || {};
         dhisAllTasksUrl: RESTWS_V1 + "/dhis/tasks",
         dhisTaskUrl: RESTWS_V1 + "/dhis/task/",
         dhisFireQueriesUrl: RESTWS_V1 + "/dhis/fireQueries",
+        relationshipTypesUrl: RESTWS_V1 + "/relationshiptype",
+        personAttributeTypeUrl: RESTWS_V1 + "/personattributetype",
         diseaseSummaryPivotUrl: BAHMNI_CORE + "/diseaseSummaryData",
         allTestsAndPanelsConceptName : 'All_Tests_and_Panels',
         dosageFrequencyConceptName : 'Dosage Frequency',
