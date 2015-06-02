@@ -1,7 +1,7 @@
 .selected-orders {
     // padding: 10px;
-    margin: 5px .5%;
-    width: 99%;
+    margin: 5px 0;
+    width: 99.5%;
     .null-data-message {
         padding-left: 5px;
     }
@@ -10,8 +10,18 @@
         width: 100%;
         overflow-y: auto;
         overflow-x: hidden;
+        &::-webkit-scrollbar-thumb {
+            border-radius: 4px;
+            background-color: rgba(0, 0, 0, .5);
+            -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+        }
+        &::-webkit-scrollbar {
+            -webkit-appearance: none;
+            width: 2px;
+            height: 2px;
+        }
         li {
-            padding: 4px 3px;
+            padding: 4px 1px 4px 3px;
             float: left;
             box-sizing: border-box;
             div {
@@ -40,7 +50,7 @@
                     display: inline-block;
                     padding: 8px 15px;
                     float: left;
-                    width: 175px;
+                    width: 176px;
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
