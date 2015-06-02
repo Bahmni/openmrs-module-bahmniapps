@@ -1,9 +1,11 @@
 <div class="back-btn-link">
+    <a ng-href="../clinical/#/patient/{{patient.uuid}}/dashboard" title="Back to {{patient.name}}'s Clinical Dashboard">
     <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
       <span class="patient-info">
         <span class="patient-name" >{{patient.name}} </span>
         <span class="patient-id">{{patient.identifier}}</span>
     </span>
+    </a>
 </div>
 
 <button class="confirm save-consultation" ng-click="save()" accesskey="s" class="confirm">
