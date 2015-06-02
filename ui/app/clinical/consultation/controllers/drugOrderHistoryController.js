@@ -21,10 +21,10 @@ angular.module('bahmni.clinical')
             };
 
             var getRefillableDrugOrders = function(activeAndScheduledDrugOrders) {
-                activeAndScheduledDrugOrders = _(activeAndScheduledDrugOrders).chain().sortBy('orderNumber').reverse().sortBy('effectiveStartDate').reverse().value();
+                activeAndScheduledDrugOrders = sortByDateAndOrderNumber(activeAndScheduledDrugOrders);
                 var refillableDrugOrders = activeAndScheduledDrugOrders;
 
-                var previousVisitDrugOrders = _(getPreviousVisitDrugOrders()).chain().sortBy('orderNumber').reverse().sortBy('effectiveStartDate').reverse().value();
+                var previousVisitDrugOrders = sortByDateAndOrderNumber(getPreviousVisitDrugOrders());
                 _.each(previousVisitDrugOrders, function(previousVisitDrugOrder){
                     var isActiveOrScheduled = _.find(activeAndScheduledDrugOrders, function(activeOrScheduledDrugOrder){
                         return previousVisitDrugOrder.drug.uuid === activeOrScheduledDrugOrder.drug.uuid;
@@ -34,6 +34,16 @@ angular.module('bahmni.clinical')
                     }
                 });
                 return refillableDrugOrders;
+            };
+
+            var sortByDateAndOrderNumber = function(activeAndScheduledDrugOrders){
+                return activeAndScheduledDrugOrders.sort(function(drug1, drug2) {
+                    if (DateUtil.isSameDateTime(drug1.effectiveStartDate, drug2.effectiveStartDate)) {
+                        return drug1.orderNumber > drug2.orderNumber ? 1 : -1;
+                    } else {
+                        return DateUtil.diffInDays(drug1.effectiveStartDate, drug2.effectiveStartDate);
+                    }
+                });
             };
 
             var getPreviousVisitDrugOrders = function(){
