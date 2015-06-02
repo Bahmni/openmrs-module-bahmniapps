@@ -63,6 +63,12 @@ describe("OrderController", function () {
             expect(scope.activeTab.leftCategory.name).toBe("Blood");
         });
 
+        it("getConceptClassesInSet() should get concept classes sorted by name", function () {
+            var bloodSample = allOrderables['\'Lab Samples\''].setMembers[0];
+            var conceptClassesInSet = scope.getConceptClassesInSet(bloodSample);
+            expect(conceptClassesInSet).toEqual([ { name : 'LabSet', description : 'Panel' }, { name : 'LabTest', description : 'Lab tests' } ]);
+        });
+
         it("getOrderTemplate :should return the Order template", function () {
             scope.$digest();
             expect(scope.getOrderTemplate("Lab Samples").name.name).toBe("Lab Samples");
@@ -134,12 +140,12 @@ describe("OrderController", function () {
                         "uuid": "88024166-9bcd-11e3-927e-8840ab96f0f1",
                         "setMembers": [
                             {
-                                "conceptClass": {"name": "Test", "display": "Test"},
+                                "conceptClass": {"name": "LabTest", "description": "Lab tests", "uuid": "7bba17a2-6c1d-11e4-a1f2-ba526e30a5ad"},
                                 "name": {"name": "Biochemistry", "display": "Biochemistry"},
                                 "uuid": "3b5ea063-b6e5-48cd-b39d-dce69f00f26a"
                             },
                             {
-                                "conceptClass": {"name": "Test", "display": "Test"},
+                                "conceptClass": {"name": "LabSet",  "description": "Panel", "uuid": "8d492026-c2cc-11de-8d13-0010c6dffd0f"},
                                 "name": {"name": "Biochemistry1", "display": "Biochemistry1"},
                                 "uuid": "3c5ea063-b6e5-48cd-b39d-dce69f00f26a"
                             }
@@ -158,7 +164,7 @@ describe("OrderController", function () {
                         "uuid": "20517b93-aff1-11e3-be87-005056821db0",
                         "setMembers": [
                             {
-                                "conceptClass": {"name": "Test", "display": "Test"},
+                                "conceptClass": {"name": "LabTest", "description": "Lab tests", "uuid": "7bba17a2-6c1d-11e4-a1f2-ba526e30a5ad"},
                                 "name": {"name": "ESR", "display": "ESR"},
                                 "uuid": "ab137c0f-5a23-4314-ab8d-29b8ff91fbfb"
                             }

@@ -28,8 +28,9 @@ angular.module('bahmni.clinical')
                 var conceptsWithUniqueClass = _.uniq(conceptSet? conceptSet.setMembers:[],function(concept){return concept.conceptClass.uuid;});
                 var conceptClasses = [];
                 _.forEach(conceptsWithUniqueClass, function(concept){
-                    conceptClasses.push({name:concept.conceptClass.name, display:concept.conceptClass.display});
+                    conceptClasses.push({name:concept.conceptClass.name, description: concept.conceptClass.description});
                 });
+                conceptClasses = _.sortBy(conceptClasses, 'name');
                 return conceptClasses;
             };
 
