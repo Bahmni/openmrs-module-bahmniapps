@@ -201,6 +201,19 @@
     }
 }
 
+.new-order-highlight {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #8DB529;
+    padding: 5px 10px;
+}
+
+.order-created-date{
+    margin-right: 30px;
+    margin-top: 4px;
+}
+
 // .sample-type {
 //     margin-left: 10px;
 //     button {
