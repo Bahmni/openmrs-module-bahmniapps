@@ -12,7 +12,6 @@ describe("OrderController", function () {
         rootScope = $rootScope;
         scope.consultation = {testOrders: []};
 
-
         $controller('OrderController', {
             $scope: scope,
             $rootScope: rootScope,
@@ -124,6 +123,16 @@ describe("OrderController", function () {
             });
             scope.activateTab(radiologyOrderTab);
             expect(scope.selectedOrders.length).toBe(1);
+        });
+
+        it("should open the first left category by default on activating a tab", function(){
+
+            var radiologyOrderTab = _.find(scope.tabs, function (tab) {
+                return tab.name == 'Radiology Orders'
+            });
+            scope.activateTab(radiologyOrderTab);
+
+            expect(scope.activeTab.leftCategory).toEqual(allOrderables["'Radiology Orders'"].setMembers[0]);
         });
 
     });

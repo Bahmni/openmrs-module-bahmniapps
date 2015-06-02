@@ -18,9 +18,6 @@ angular.module('bahmni.clinical')
 
                 if($scope.tabs) {
                     $scope.activateTab($scope.tabs[0]);
-                    var allCategories = $scope.getOrderTemplate($scope.activeTab.name).setMembers;
-                    if(allCategories.length > 0)$scope.showLeftCategoryTests(allCategories[0]);
-                    
                 }
             };
 
@@ -48,21 +45,33 @@ angular.module('bahmni.clinical')
 
             $scope.$watchCollection('consultation.testOrders', $scope.updateSelectedOrdersForActiveTab);
 
-             $scope.activateTab = function(tab){
+            var collapseExistingActiveSection = function(section){
+                section && (section.klass="");
+            };
+
+            $scope.activateTab = function(tab){
                 if(tab.klass=="active"){
                     tab.klass="";
                     $scope.activeTab = undefined;
                 }
                 else{
-                    $scope.activeTab && ($scope.activeTab.klass="");
+                    collapseExistingActiveSection($scope.activeTab);
                     $scope.activeTab = tab;
                     $scope.activeTab.klass="active";
                     $scope.updateSelectedOrdersForActiveTab();
+                    showFirstLeftCategoryByDefault();
+                }
+            };
+
+            var showFirstLeftCategoryByDefault = function(){
+                if(!$scope.activeTab.leftCategory) {
+                    var allCategories = $scope.getOrderTemplate($scope.activeTab.name).setMembers;
+                    if (allCategories.length > 0)$scope.showLeftCategoryTests(allCategories[0]);
                 }
             };
 
             $scope.showLeftCategoryTests = function(leftCategory) {
-                $scope.activeTab.leftCategory && ($scope.activeTab.leftCategory.klass="");
+                collapseExistingActiveSection($scope.activeTab.leftCategory);
                 $scope.activeTab.leftCategory = leftCategory;
                 $scope.activeTab.leftCategory.klass = "active";
 
