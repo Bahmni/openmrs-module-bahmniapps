@@ -50,12 +50,15 @@
                     display: inline-block;
                     padding: 8px 15px;
                     float: left;
-                    width: 176px;
+                    width: 169px;
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
                     @media (max-width: 1024px) {
                         width: 132px;
+                    }
+                    &.voided{
+                      text-decoration: line-through;
                     }
                 }
                 i {
@@ -64,7 +67,10 @@
                     vertical-align: middle;
                     padding: 9px 3px 0;
                     border-left: 1px #D3CFCF solid;
+                    width: 29px;
+                   &.fa-remove{
                     color: #9D0101;
+                   }
                     cursor: pointer;
                     height: 17px;
                 }
