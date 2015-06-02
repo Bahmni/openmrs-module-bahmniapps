@@ -84,7 +84,7 @@
                     <i class="fa fa-plus-circle" ng-hide="observation.showComment"></i>
                     <i class="fa fa-minus-circle" ng-show="observation.showComment"></i>
                 </i>
-                <i class="fa fa-file-alt" ng-show="observation.comment"></i>
+                <i class="fa fa-file-text-o" ng-show="observation.comment"></i>
             </button>
             <div class="offset-label"  ng-show="observation.showComment">
                 <textarea class="obs-comment-section"  maxlength="255" ng-model="observation.comment" placeholder="Notes">
@@ -159,7 +159,7 @@
                                     <i class="fa fa-plus-circle" ng-hide="observation.showComment"></i>
                                     <i class="fa fa-minus-circle" ng-show="observation.showComment"></i>
                                 </i>
-                                <i class="fa fa-file-alt" ng-show="observation.comment"></i>
+                                <i class="fa fa-file-text-o" ng-show="observation.comment"></i>
                         </button>
                         </div>
 
@@ -195,7 +195,7 @@
                     <i class="fa fa-plus-circle" ng-hide="observation.showComment"></i>
                     <i class="fa fa-minus-circle" ng-show="observation.showComment"></i>
                 </i>
-                <i class="fa fa-file-alt" ng-show="observation.comment"></i>
+                <i class="fa fa-file-text-o" ng-show="observation.comment"></i>
             </button>
 
             <div ng-if="::observation.canHaveComment()" class="offset-label" ng-show="observation.showComment">

@@ -31,7 +31,7 @@
         <div ng-repeat="image in album.images">
 
             <div class="image-bottom-bar" ng-if="isActive($index,album.tag)">
-                <i class="fa fa-file-alt has-notes" title="has impression" ng-if="hasObsRelationship(image)"></i>
+                <i class="fa fa-file-text-o has-notes" title="has impression" ng-if="hasObsRelationship(image)"></i>
                 <span class="image-provider">{{image.providerName}}</span>
                 <span class="image-date">{{image.date | bahmniDateTime}}</span>
                 <span class="image-index">({{getCurrentIndex()}} of {{getTotalLength()}})</span>
