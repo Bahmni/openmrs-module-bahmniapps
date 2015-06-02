@@ -1,8 +1,8 @@
 "use strict";
 
 var app = angular.module('bahmni.orders');
-app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$stateParams', '$state', '$q', 'patientContext', 'orderService', 'orderObservationService', 'orderTypeService', 'sessionService', 'encounterService', 'spinner', 'messagingService',
-    function ($scope, $rootScope, $stateParams, $state, $q, patientContext, orderService, orderObservationService, orderTypeService, sessionService, encounterService, spinner, messagingService) {
+app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$stateParams', '$state', '$q', 'patientContext', 'orderService', 'orderObservationService', 'orderTypeService', 'sessionService', 'encounterService', 'spinner', 'messagingService','$anchorScroll',
+    function ($scope, $rootScope, $stateParams, $state, $q, patientContext, orderService, orderObservationService, orderTypeService, sessionService, encounterService, spinner, messagingService, $anchorScroll) {
 
     var limit = 10;
     $scope.patient = patientContext.patient;
@@ -60,6 +60,7 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
     };
 
     spinner.forPromise(init());
+    $anchorScroll();
 
     $scope.showOrderForm = function(order) {
         order.showForm = !order.showForm;
