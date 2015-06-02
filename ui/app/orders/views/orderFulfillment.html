@@ -7,7 +7,7 @@
                         <i class="fa fa-caret-right" ng-hide="order.showForm"></i>
                         <i class="fa fa-caret-down" ng-show="order.showForm"></i>
                         <span>{{order.concept.name.display}}</span>
-                        <span>{{order.dateCreated | bahmniDateTime}}</span>
+                        <span class="fr">{{order.dateCreated | bahmniDateTime}}</span>
                     </h2>
                 </div>
                 <div ng-if="order.showForm">
