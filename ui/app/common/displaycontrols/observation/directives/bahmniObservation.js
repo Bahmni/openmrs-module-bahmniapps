@@ -24,8 +24,9 @@ angular.module('bahmni.common.displaycontrol.observation')
 
                 var fetchObservations = function () {
                     //$scope.removeObsWithNoOrderId = angular.isDefined($scope.removeObsWithNoOrderId) ? $scope.filterObsWithOrders : false;
-                    spinner.forPromise(observationsService.fetch($scope.patient.uuid,$scope.config.conceptNames,$scope.config.scope,$scope.config.numberOfVisits,$scope.visitUuid, $scope.config.obsIgnoreList, $scope.filterObsWithOrders).then(function (response) {
-                            mapObservation(response,$scope.config);
+                    spinner.forPromise(observationsService.fetch($scope.patient.uuid, $scope.config.conceptNames,
+                        $scope.config.scope, $scope.config.numberOfVisits, $scope.visitUuid, $scope.config.obsIgnoreList).then(function (response) {
+                            mapObservation(response, $scope.config);
                         }));
                 };
 
@@ -58,8 +59,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                     section:"=",
                     config:"=",
                     title:"=sectionTitle",
-                    isOnDashboard:"=",
-                    filterObsWithOrders:"=?"
+                    isOnDashboard:"="
                 }
             }
     }]);

@@ -3,13 +3,11 @@
 angular.module('bahmni.common.domain')
     .service('observationsService', ['$http', function ($http) {
 
-        this.fetch = function (patientUuid, conceptNames, scope, numberOfVisits, visitUuid, obsIgnoreList, filterObsWithOrders) {
+        this.fetch = function (patientUuid, conceptNames, scope, numberOfVisits, visitUuid, obsIgnoreList) {
             var params = {concept: conceptNames};
             if(obsIgnoreList) {
                 params.obsIgnoreList = obsIgnoreList
             }
-
-            params.filterObsWithOrders = filterObsWithOrders
 
             if(visitUuid){
                 params.visitUuid = visitUuid;
