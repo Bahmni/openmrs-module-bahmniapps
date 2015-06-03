@@ -12,11 +12,9 @@ describe("observationGraphConfig", function () {
 
     it("should create the config object for growth chart", function () {
         var config = {
-            "growthChart": {
-                "referenceData": "growthChartReference.csv"
-            },
+            "referenceData": "growthChartReference.csv",
             "numberOfVisits": 20
-        }
+        };
         var graphConfig = new Bahmni.Clinical.ObservationGraphConfig(config);
         expect(graphConfig.yAxisConcepts).toEqual(["Weight"]);
         expect(graphConfig.xAxisConcept).toEqual("Age");

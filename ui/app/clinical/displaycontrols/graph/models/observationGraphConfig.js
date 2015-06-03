@@ -50,13 +50,11 @@
     };
 
     configPrototype.isGrowthChart = function() {
-      return this.growthChart != undefined;
+      return this.referenceData != undefined;
     };
 
     configPrototype.getGrowthChartReferenceFileName = function() {
-        if(this.isGrowthChart()) {
-            return this.growthChart.referenceData;
-        }
+        return this.referenceData;
     };
 
 })();
