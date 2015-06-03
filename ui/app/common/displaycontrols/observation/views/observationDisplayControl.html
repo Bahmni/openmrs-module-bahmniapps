@@ -1,7 +1,8 @@
 <div class="block " ng-class="{'hidden-print': noObsMessage}">
-    <h2 ng-if="!isClickable()" class="section-title">{{title}}</h2>
+    <h2 ng-if="!isClickable()" ng-class="{'section-title': !isFulfilmentDisplayControl, 'form-field': isFulfilmentDisplayControl}">{{title}}</h2>
+
     <div ng-if="isClickable()" class="dashboard-observations-section">
-        <h2 ng-dialog="../common/displaycontrols/observation/views/allObservationDetails.html"
+    <h2 ng-dialog="../common/displaycontrols/observation/views/allObservationDetails.html"
         ng-dialog-controller="AllObservationDetailsController"
         ng-dialog-data="{{dialogData}}"
         ng-dialog-class="ngdialog-theme-flat ngdialog-theme-custom"
@@ -28,7 +29,8 @@
             </li>
         </ul>
         <div ng-show="noObsMessage">
-            <div class="placeholder-text">No {{title}} for this patient.</div>
+            <div class="placeholder-text" ng-if="!message">No {{title}} for this patient.</div>
+            <div class="placeholder-text" ng-if="message">{{message}}</div>
         </div>
     </section>
 </div>

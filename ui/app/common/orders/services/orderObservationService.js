@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.orders')
+angular.module('bahmni.common.orders')
     .factory('orderObservationService', ['encounterService', function (encounterService) {
 
         var save = function(orders, patient, locationUuid) {
@@ -10,13 +10,14 @@ angular.module('bahmni.orders')
             orders.forEach(function(order){
                 if(order.observations) {
                     order.observations.forEach(function(obs){
-                        obs.orderUuid = order.uuid;
+                        addOrderUuidToObservation(obs, order.uuid);
                     });
 
                     var orderObs = angular.copy(order.observations);
                     observations.push.apply(observations, observationFilter.filter(orderObs));
                 }
             });
+
 
             var encounterData = {
                 locationUuid: locationUuid,
@@ -29,7 +30,16 @@ angular.module('bahmni.orders')
             return encounterService.create(encounterData);
         };
 
+        var addOrderUuidToObservation = function(observation, orderUuid){
+            observation.orderUuid = orderUuid;
+            if(observation.groupMembers && observation.groupMembers.length > 0){
+                observation.groupMembers.forEach(function(member){
+                    addOrderUuidToObservation(member, orderUuid)
+                });
+            }
+        };
         return {
-            save: save
+            save: save,
+            addOrderUuidToObservation: addOrderUuidToObservation
         };
     }]);

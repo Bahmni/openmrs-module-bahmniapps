@@ -8,7 +8,7 @@ describe('Order Type Service', function () {
     });
 
     beforeEach(function () {
-        module('bahmni.orders');
+        module('bahmni.common.orders');
         module(function ($provide) {
             $provide.value('$http', mockHttp);
         });

@@ -2,7 +2,7 @@
     <div infinite-scroll="nextOrders()" infinite-scroll-immediate-check="false" infinite-scroll-disabled="noMoreResultsPresent">
         <ul>
             <li ng-repeat="order in orders" class="concept-set-group">
-                <div class="concept-set-title" ng-click="showOrderForm(order)">
+                <div class="concept-set-title" ng-click="toggleShowOrderForm(order)">
                     <h2 class="section-title">
                         <i class="fa fa-caret-right" ng-hide="order.showForm"></i>
                         <i class="fa fa-caret-down" ng-show="order.showForm"></i>
@@ -11,6 +11,7 @@
                     </h2>
                 </div>
                 <div ng-if="order.showForm">
+                    <orders-control patient="patient" order-uuid="order.uuid" config="config" section="config" message="message"></orders-control>
                     <concept-set patient="patient" ng-if="order.showForm"
                         concept-set-name="formName"
                         observations="order.observations" show-title="false">
@@ -19,7 +20,6 @@
             </li>
         </ul>
     </div>
-
     <div ng-show="orders && orders.length == 0">
         <div class="placeholder-text">No order of type {{orderType}} for this patient.</div>
     </div>

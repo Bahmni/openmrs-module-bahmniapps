@@ -6,9 +6,7 @@ angular.module('bahmni.common.displaycontrol.observation')
             
             var controller = function($scope){
 
-                var mapObservation = function(response,config){
-
-                    var observations = response.data;
+                var mapObservation = function(observations,config){
 
                     var conceptsConfig = appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
                     observations = new Bahmni.Common.Obs.ObservationMapper().map(observations, conceptsConfig);
@@ -24,10 +22,16 @@ angular.module('bahmni.common.displaycontrol.observation')
 
                 var fetchObservations = function () {
                     //$scope.removeObsWithNoOrderId = angular.isDefined($scope.removeObsWithNoOrderId) ? $scope.filterObsWithOrders : false;
-                    spinner.forPromise(observationsService.fetch($scope.patient.uuid, $scope.config.conceptNames,
-                        $scope.config.scope, $scope.config.numberOfVisits, $scope.visitUuid, $scope.config.obsIgnoreList).then(function (response) {
-                            mapObservation(response, $scope.config);
-                        }));
+                    if($scope.observations){
+                        mapObservation($scope.observations, $scope.config);
+                        $scope.isFulfilmentDisplayControl = true;
+                    }
+                    else {
+                        spinner.forPromise(observationsService.fetch($scope.patient.uuid, $scope.config.conceptNames,
+                            $scope.config.scope, $scope.config.numberOfVisits, $scope.visitUuid, $scope.config.obsIgnoreList).then(function (response) {
+                                mapObservation(response, $scope.config);
+                            }));
+                    }
                 };
 
                 $scope.toggle= function(element){
@@ -59,7 +63,9 @@ angular.module('bahmni.common.displaycontrol.observation')
                     section:"=",
                     config:"=",
                     title:"=sectionTitle",
-                    isOnDashboard:"="
+                    isOnDashboard:"=",
+                    observations: "=",
+                    message:"="
                 }
             }
     }]);
