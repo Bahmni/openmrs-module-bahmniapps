@@ -21,7 +21,7 @@ describe('Order Service', function () {
     var locationUuid = "locationUuid"
 
     beforeEach(function () {
-        module('bahmni.orders');
+        module('bahmni.common.orders');
         module(function ($provide) {
             $provide.value('encounterService', mockEncounterService);
         });

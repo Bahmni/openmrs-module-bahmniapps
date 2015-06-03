@@ -2,22 +2,23 @@
 
 describe("OrderFulfillmentController", function () {
 
-    var scope, rootScope, deferred, q;
+    var scope, rootScope, deferred, deferred1, q;
     var mockEncounterService = jasmine.createSpyObj('encounterService', ['activeEncounter']);
     var mockOrderObservationService = jasmine.createSpyObj('orderObservationService', ['save']);
     var mockOrderTypeService = jasmine.createSpyObj('orderTypeService', ['getOrderTypeUuid']);
     var mockOrderService = jasmine.createSpyObj('orderService', ['getOrders', 'then']);
+    var mockAppService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
 
     mockEncounterService.activeEncounter.and.callFake(function(param) {
-        deferred = q.defer();
-        deferred.resolve({
+        deferred1 = q.defer();
+        deferred1.resolve({
             data: {
                 observations: [
                     {uuid: "obs1Uuid", orderUuid: "orderOneUuid"},
                     {uuid: "obs2Uuid", orderUuid: "someOrderUuid"}]
             }
         });
-        return deferred.promise;
+        return deferred1.promise;
     });
 
     mockOrderService.getOrders.and.callFake(function(){
@@ -48,6 +49,9 @@ describe("OrderFulfillmentController", function () {
         rootScope = $rootScope;
         rootScope.currentProvider = {uuid: "someProviderUuid"};
         q = $q;
+        mockAppService.getAppDescriptor = function () {
+            return { getConfigValue: function () {} }
+        };
         $controller('OrderFulfillmentController', {
             $scope: scope,
             $rootScope: rootScope,
@@ -58,7 +62,8 @@ describe("OrderFulfillmentController", function () {
             orderTypeService: mockOrderTypeService,
             $stateParams: mockStateParams,
             orderService: mockOrderService,
-            $q :q
+            $q :q,
+            appService:mockAppService
 
         });
     }));
@@ -72,9 +77,18 @@ describe("OrderFulfillmentController", function () {
     });
 
     it('should get orders for given order type ', function (done) {
+        deferred1.resolve({
+            data: {
+                observations: [
+                    {uuid: "obs1Uuid", orderUuid: "orderOneUuid"},
+                    {uuid: "obs2Uuid", orderUuid: "someOrderUuid"}]
+            }
+        });
+        scope.$apply();
+        expect(mockOrderService.getOrders).toHaveBeenCalled();
         expect(mockOrderTypeService.getOrderTypeUuid).toHaveBeenCalled();
         expect(mockOrderTypeService.getOrderTypeUuid.calls.mostRecent().args[0]).toEqual("someOrderType");
-        expect(mockOrderService.getOrders).toHaveBeenCalled();
+
         expect(mockOrderService.getOrders.calls.mostRecent().args[0]).toEqual("somePatientUuid");
         expect(mockOrderService.getOrders.calls.mostRecent().args[1]).toEqual("someOrderTypeUuid");
         expect(mockOrderService.getOrders.calls.mostRecent().args[3]).toEqual(0);
@@ -84,7 +98,7 @@ describe("OrderFulfillmentController", function () {
     it('should toggle showForm value', function(){
         var order = {observations: []};
         expect(order.showForm).toBeFalsy();
-        scope.showOrderForm(order);
+        scope.toggleShowOrderForm(order);
         expect(order.showForm).toBeTruthy();
     });
 

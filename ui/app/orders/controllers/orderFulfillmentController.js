@@ -1,8 +1,10 @@
 "use strict";
 
 var app = angular.module('bahmni.orders');
-app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$stateParams', '$state', '$q', 'patientContext', 'orderService', 'orderObservationService', 'orderTypeService', 'sessionService', 'encounterService', 'spinner', 'messagingService','$anchorScroll',
-    function ($scope, $rootScope, $stateParams, $state, $q, patientContext, orderService, orderObservationService, orderTypeService, sessionService, encounterService, spinner, messagingService, $anchorScroll) {
+app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$stateParams', '$state', '$q', 'patientContext', 'orderService', 'orderObservationService',
+    'orderTypeService', 'sessionService', 'encounterService', 'spinner', 'messagingService', 'appService', '$anchorScroll',
+    function ($scope, $rootScope, $stateParams, $state, $q, patientContext, orderService, orderObservationService,
+              orderTypeService, sessionService, encounterService, spinner, messagingService, appService, $anchorScroll) {
 
     var limit = 10;
     $scope.patient = patientContext.patient;
@@ -10,6 +12,8 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
     $scope.orderType = $stateParams.orderType;
     $scope.nextPageLoading = false;
     $scope.orders = [];
+
+    $scope.config = appService.getAppDescriptor().getConfigValue("sections");
 
     var getActiveEncounter = function () {
         var currentProviderUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
@@ -25,46 +29,42 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
 
     var getOrders = function(offset) {
         var patientUuid = patientContext.patient.uuid;
-        var orderTypeUuid = orderTypeService.getOrderTypeUuid($stateParams.orderType);
-        return orderService.getOrders(patientUuid, orderTypeUuid, null, offset, limit);
-    };
-
-    $scope.nextOrders = function () {
-        if ($scope.nextPageLoading) {
-            return;
-        }
-        $scope.nextPageLoading = true;
-        var promise = getOrders($scope.orders.length);
-        promise.then(function (response) {
+        $scope.orderTypeUuid = orderTypeService.getOrderTypeUuid($stateParams.orderType);
+        return orderService.getOrders(patientUuid, $scope.orderTypeUuid, null, offset, limit).then(function (response) {
             var data = response.data;
             $scope.orders.push.apply($scope.orders, data.results);
             $scope.noMoreResultsPresent = (data.results.length === 0);
-            $scope.nextPageLoading = false;
-        }, function() {
-            $scope.nextPageLoading = false;
-        });
-        return promise;
-    };
-
-    var init = function() {
-        return $q.all([getActiveEncounter(), $scope.nextOrders()]).then(function(){
             $scope.orders.forEach(function (order) {
                 order.observations = _.filter($scope.encounter.observations, function (observation) {
                     return observation.orderUuid === order.uuid;
                 });
                 if (order.observations.length > 0) {
-                    $scope.showOrderForm(order);
+                    order.showForm = true;
                 }
-            })
+            });
         });
+    };
+    $scope.toggleShowOrderForm = function(order) {
+        order.showForm = !order.showForm;
+    };
+
+    $scope.nextOrders = function () {
+        if ($scope.nextPageLoading || $scope.encounter == null) {
+            return;
+        }
+        $scope.nextPageLoading = true;
+        return getOrders($scope.orders.length).then(function() {
+            $scope.nextPageLoading = false;
+        });
+    };
+
+    var init = function() {
+        return getActiveEncounter().then($scope.nextOrders);
     };
 
     spinner.forPromise(init());
     $anchorScroll();
 
-    $scope.showOrderForm = function(order) {
-        order.showForm = !order.showForm;
-    };
 
     $rootScope.$on("event:saveOrderObservations", function() {
         var savePromise = orderObservationService.save($scope.orders, $scope.patient, sessionService.getLoginLocationUuid());

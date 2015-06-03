@@ -1,0 +1,9 @@
+<section class="dashboard-section ng-scope">
+    <h2 class="section-title">{{orderType}}</h2>
+
+    <div ng-repeat="bahmniOrder in bahmniOrders">
+        <bahmni-observation patient="patient" visitUuid="visitUuid" section="section" config="config"
+                            section-title="getTitle(bahmniOrder)"
+                            observations="bahmniOrder.bahmniObservations" message="message"></bahmni-observation>
+    </div>
+</section>

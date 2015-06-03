@@ -8,7 +8,7 @@ describe('Order Service', function () {
     });
 
     beforeEach(function () {
-        module('bahmni.orders');
+        module('bahmni.common.orders');
         module(function ($provide) {
             $provide.value('$http', mockHttp);
         });
@@ -66,5 +66,31 @@ describe('Order Service', function () {
         expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.orderUrl);
         expect(mockHttp.get.calls.mostRecent().args[1].params.startIndex).toEqual(0);
         expect(mockHttp.get.calls.mostRecent().args[1].params.limit).toEqual(10);
+    });
+
+    it('getOrderwithObservations should return orders and observations based on orderType if specified', function (done) {
+        orderService.getOrderWithObservations("somePatientUuid", "someOrderTypeUuid", null, null, 10, null, null).then(function(response) {
+            expect(response).toEqual("success");
+            done();
+        });
+
+        expect(mockHttp.get).toHaveBeenCalled();
+        expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.orderObservationsUrl);
+        expect(mockHttp.get.calls.mostRecent().args[1].params.orderTypeUuid).toEqual("someOrderTypeUuid");
+        expect(mockHttp.get.calls.mostRecent().args[1].params.patientUuid).toEqual("somePatientUuid");
+        expect(mockHttp.get.calls.mostRecent().args[1].params.orderUuid).toEqual(undefined);
+    });
+
+    it('getOrderwithObservations should return orders and observations based on orderUuid if specified', function (done) {
+        orderService.getOrderWithObservations("somePatientUuid", null, 1, null, 10, null, "someOrderUuid").then(function(response) {
+            expect(response).toEqual("success");
+            done();
+        });
+
+        expect(mockHttp.get).toHaveBeenCalled();
+        expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.orderObservationsUrl);
+        expect(mockHttp.get.calls.mostRecent().args[1].params.orderUuid).toEqual("someOrderUuid");
+        expect(mockHttp.get.calls.mostRecent().args[1].params.patientUuid).toEqual("somePatientUuid");
+        expect(mockHttp.get.calls.mostRecent().args[1].params.orderTypeUuid).toEqual(undefined);
     });
 });

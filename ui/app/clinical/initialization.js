@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical').factory('initialization',
-    ['$rootScope','authenticator', 'appService', 'spinner', 'configurations',
-        function ($rootScope, authenticator, appService, spinner, configurations) {
+    ['$rootScope','authenticator', 'appService', 'spinner', 'configurations', 'orderTypeService',
+        function ($rootScope, authenticator, appService, spinner, configurations, orderTypeService) {
 
             var loadConfigPromise = function () {
                 return configurations.load([
@@ -24,7 +24,7 @@ angular.module('bahmni.clinical').factory('initialization',
                 return appService.initApp('clinical', {'app': true, 'extension': true },null,["dashboard","visit"]);
             };
 
-            return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(loadConfigPromise));
+            return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(loadConfigPromise).then(orderTypeService.loadAll()));
         }
     ]
 );
