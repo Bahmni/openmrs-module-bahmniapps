@@ -169,10 +169,7 @@ describe("Observation Graph", function () {
             "name": "observationGraph",
             "title": "Growth Chart",
             "config": {
-                "growthChart": {
-                    "referenceData": "growthChartReference",
-                    "maxNumberOfMonths": 24
-                },
+                "referenceData": "growthChartReference",
                 "numberOfVisits": 20
             }
         };
