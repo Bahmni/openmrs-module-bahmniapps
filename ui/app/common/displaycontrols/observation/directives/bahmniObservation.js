@@ -29,7 +29,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                     else {
                         spinner.forPromise(observationsService.fetch($scope.patient.uuid, $scope.config.conceptNames,
                             $scope.config.scope, $scope.config.numberOfVisits, $scope.visitUuid, $scope.config.obsIgnoreList).then(function (response) {
-                                mapObservation(response, $scope.config);
+                                mapObservation(response.data, $scope.config);
                             }));
                     }
                 };
