@@ -30,7 +30,7 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
     var getOrders = function(offset) {
         var patientUuid = patientContext.patient.uuid;
         $scope.orderTypeUuid = orderTypeService.getOrderTypeUuid($stateParams.orderType);
-        return orderService.getOrders(patientUuid, $scope.orderTypeUuid, null, offset, limit).then(function (response) {
+        return orderService.getOrders(patientUuid, $scope.orderTypeUuid, null, null, null).then(function (response) {
             var data = response.data;
             $scope.orders.push.apply($scope.orders, data.results);
             $scope.noMoreResultsPresent = (data.results.length === 0);
@@ -66,7 +66,7 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
     $anchorScroll();
 
 
-    $rootScope.$on("event:saveOrderObservations", function() {
+    $scope.$on("event:saveOrderObservations", function() {
         var savePromise = orderObservationService.save($scope.orders, $scope.patient, sessionService.getLoginLocationUuid());
         spinner.forPromise(savePromise.then(function () {
             $state.transitionTo($state.current, $state.params, {

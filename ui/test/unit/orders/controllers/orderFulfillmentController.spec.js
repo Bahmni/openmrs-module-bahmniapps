@@ -91,7 +91,6 @@ describe("OrderFulfillmentController", function () {
 
         expect(mockOrderService.getOrders.calls.mostRecent().args[0]).toEqual("somePatientUuid");
         expect(mockOrderService.getOrders.calls.mostRecent().args[1]).toEqual("someOrderTypeUuid");
-        expect(mockOrderService.getOrders.calls.mostRecent().args[3]).toEqual(0);
         done();
     });
 
