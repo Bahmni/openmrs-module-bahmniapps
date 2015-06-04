@@ -5,18 +5,21 @@ angular.module('bahmni.common.displaycontrol.orders')
         function (orderService, orderTypeService, $q, spinner, $filter) {
             var controller = function($scope){
                 $scope.orderTypeUuid = orderTypeService.getOrderTypeUuid($scope.orderType);
+                var includeAllObs = true;
                 var getOrders = function() {
-                    return orderService.getOrderWithObservations($scope.patient.uuid, $scope.orderTypeUuid, $scope.config.numberOfVisits, $scope.config.conceptNames,
+                    return orderService.getOrders($scope.patient.uuid, $scope.orderTypeUuid, $scope.config.conceptNames, includeAllObs,  $scope.config.numberOfVisits,
                        $scope.config.obsIgnoreList, $scope.visitUuid, $scope.orderUuid).then(function(response) {
                        $scope.bahmniOrders = response.data;
                     });
                 };
                 var init = function() {
-                    return $q.all([getOrders()]).then(function(){
+                    return getOrders().then(function(){
                     });
                 };
                 $scope.getTitle = function(order){
-                    return order.conceptName + " on " +  $filter('bahmniDateTime')(order.orderDate) +" by "+ order.provider;
+                    if($scope.showTitle) {
+                        return order.conceptName + " on " + $filter('bahmniDateTime')(order.orderDate) + " by " + order.provider;
+                    }
                 }
 
                 $scope.message = "No Fulfillment for this order.";
@@ -33,6 +36,7 @@ angular.module('bahmni.common.displaycontrol.orders')
                     section:"=",
                     orderType:"=",
                     orderUuid:"=",
+                    showTitle: "=",
                     config:"="
                 }
             }

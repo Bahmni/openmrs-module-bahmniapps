@@ -8,12 +8,12 @@ angular.module('bahmni.common.orders')
             var observations = []
 
             orders.forEach(function(order){
-                if(order.observations) {
-                    order.observations.forEach(function(obs){
-                        addOrderUuidToObservation(obs, order.uuid);
+                if(order.bahmniObservations) {
+                    order.bahmniObservations.forEach(function(obs){
+                        addOrderUuidToObservation(obs, order.orderUuid);
                     });
 
-                    var orderObs = angular.copy(order.observations);
+                    var orderObs = angular.copy(order.bahmniObservations);
                     observations.push.apply(observations, observationFilter.filter(orderObs));
                 }
             });

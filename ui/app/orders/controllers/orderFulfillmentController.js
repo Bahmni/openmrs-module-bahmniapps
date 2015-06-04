@@ -6,7 +6,7 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
     function ($scope, $rootScope, $stateParams, $state, $q, patientContext, orderService, orderObservationService,
               orderTypeService, sessionService, encounterService, spinner, messagingService, appService, $anchorScroll) {
 
-    var limit = 10;
+
     $scope.patient = patientContext.patient;
     $scope.formName = $stateParams.orderType + " Fulfillment Form";
     $scope.orderType = $stateParams.orderType;
@@ -27,18 +27,18 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
         });
     };
 
-    var getOrders = function(offset) {
+    $scope.getOrders = function () {
         var patientUuid = patientContext.patient.uuid;
         $scope.orderTypeUuid = orderTypeService.getOrderTypeUuid($stateParams.orderType);
-        return orderService.getOrders(patientUuid, $scope.orderTypeUuid, null, null, null).then(function (response) {
+        var includeObs = false;
+        return orderService.getOrders(patientUuid, $scope.orderTypeUuid, $scope.config.conceptNames, includeObs).then(function (response) {
             var data = response.data;
-            $scope.orders.push.apply($scope.orders, data.results);
-            $scope.noMoreResultsPresent = (data.results.length === 0);
+            $scope.orders.push.apply($scope.orders, data);
             $scope.orders.forEach(function (order) {
-                order.observations = _.filter($scope.encounter.observations, function (observation) {
-                    return observation.orderUuid === order.uuid;
+                order.bahmniObservations = _.filter($scope.encounter.observations, function (observation) {
+                    return observation.orderUuid === order.orderUuid;
                 });
-                if (order.observations.length > 0) {
+                if (order.bahmniObservations.length > 0) {
                     order.showForm = true;
                 }
             });
@@ -48,18 +48,8 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
         order.showForm = !order.showForm;
     };
 
-    $scope.nextOrders = function () {
-        if ($scope.nextPageLoading || $scope.encounter == null) {
-            return;
-        }
-        $scope.nextPageLoading = true;
-        return getOrders($scope.orders.length).then(function() {
-            $scope.nextPageLoading = false;
-        });
-    };
-
     var init = function() {
-        return getActiveEncounter().then($scope.nextOrders);
+        return getActiveEncounter().then($scope.getOrders);
     };
 
     spinner.forPromise(init());
