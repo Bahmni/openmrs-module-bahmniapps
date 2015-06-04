@@ -1,5 +1,5 @@
 <div class="block " ng-class="{'hidden-print': noObsMessage}">
-    <h2 ng-if="!isClickable()" ng-class="{'section-title': !isFulfilmentDisplayControl, 'form-field': isFulfilmentDisplayControl}">{{title}}</h2>
+    <h2 ng-if="!isClickable() && title" ng-class="{'section-title': !isFulfilmentDisplayControl, 'form-field': isFulfilmentDisplayControl}">{{title}}</h2>
 
     <div ng-if="isClickable()" class="dashboard-observations-section">
     <h2 ng-dialog="../common/displaycontrols/observation/views/allObservationDetails.html"

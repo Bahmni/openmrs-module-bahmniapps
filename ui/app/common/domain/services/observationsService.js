@@ -33,25 +33,4 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        this.getOrderWithObservations = function (patientUuid, conceptNames, scope, numberOfVisits, visitUuid, obsIgnoreList, orderTypeUuid) {
-                var params = {concept: conceptNames, scope: scope};
-                if(obsIgnoreList) {
-                    params.obsIgnoreList = obsIgnoreList
-                }
-                if(visitUuid){
-                    params.visitUuid = visitUuid;
-                }
-                else{
-                    params.patientUuid = patientUuid;
-                    params.numberOfVisits = numberOfVisits;
-                }
-                if(orderTypeUuid){
-                    params.orderTypeUuid = orderTypeUuid;
-                }
-                return $http.get(Bahmni.Common.Constants.observationsUrl, {
-                    params: params,
-                    withCredentials: true
-                });
-        };
-
     }]);

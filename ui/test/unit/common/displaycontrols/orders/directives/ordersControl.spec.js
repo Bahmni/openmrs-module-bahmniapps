@@ -6,7 +6,7 @@ describe('Orders DisplayControl', function () {
         mockBackend,
         rootScope,
         deferred, controller,
-        simpleHtml = '<orders-control  config="section" patient="patient" order-uuid="orderUuid"></orders-control>';
+        simpleHtml = '<orders-control  config="section" patient="patient" order-uuid="orderUuid" show-title="true"></orders-control>';
     var _orderService;
     var orders = [
         {
@@ -23,7 +23,7 @@ describe('Orders DisplayControl', function () {
 
     beforeEach(module('bahmni.common.displaycontrol.orders'), function($provide){
         var _spinner = jasmine.createSpyObj('spinner',['forPromise','then']);
-        _orderService = jasmine.createSpyObj('orderService',['getOrderWithObservations','then']);
+        _orderService = jasmine.createSpyObj('orderService',['getOrders','then']);
         _spinner.forPromise.and.callFake(function(){
             deferred = q.defer();
             deferred.resolve({data: orders});
@@ -49,10 +49,10 @@ describe('Orders DisplayControl', function () {
             numberOfVisits:1
         };
         scope.patient = {uuid : "patientUuid"};
-        scope.orderUuid= "someOrderUuid"
+        scope.orderUuid= "someOrderUuid";
 
         mockBackend.expectGET('../common/displaycontrols/orders/views/ordersControl.html').respond("<div>dummy</div>");
-        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/orderObs?numberOfVisits=1&orderUuid=someOrderUuid&patientUuid=patientUuid').respond(orders);
+        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/orders?includeObs=true&numberOfVisits=1&orderUuid=someOrderUuid&patientUuid=patientUuid').respond(orders);
 
         var element = compile(simpleHtml)(scope);
 
@@ -65,4 +65,51 @@ describe('Orders DisplayControl', function () {
         expect(compiledElementScope.bahmniOrders).not.toBeUndefined();
         expect(compiledElementScope.bahmniOrders).toEqual(orders);
     });
+
+    it('should return title when show-title flag is true', function(){
+        var scope = rootScope.$new();
+        scope.section = {
+            numberOfVisits:1
+        };
+        scope.patient = {uuid : "patientUuid"};
+        scope.orderUuid= "someOrderUuid";
+
+        mockBackend.expectGET('../common/displaycontrols/orders/views/ordersControl.html').respond("<div>dummy</div>");
+        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/orders?includeObs=true&numberOfVisits=1&orderUuid=someOrderUuid&patientUuid=patientUuid').respond(orders);
+
+        var element = compile(simpleHtml)(scope);
+
+        scope.$digest();
+        mockBackend.flush();
+
+        var compiledElementScope = element.isolateScope();
+        scope.$digest();
+
+        expect(compiledElementScope.showTitle).toBeTruthy();
+        expect(compiledElementScope.getTitle(orders[0])).toBe("Absconding on 16 Dec 14 4:06 pm by Surajkumar Surajkumar Surajkumar")
+    })
+
+    it('should return title when show-title flag is true', function(){
+        var scope = rootScope.$new();
+        scope.section = {
+            numberOfVisits:1
+        };
+        scope.patient = {uuid : "patientUuid"};
+        scope.orderUuid= "someOrderUuid";
+
+        mockBackend.expectGET('../common/displaycontrols/orders/views/ordersControl.html').respond("<div>dummy</div>");
+        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/orders?includeObs=true&numberOfVisits=1&orderUuid=someOrderUuid&patientUuid=patientUuid').respond(orders);
+
+        var simpleHtml = '<orders-control  config="section" patient="patient" order-uuid="orderUuid" show-title="false"></orders-control>';
+        var element = compile(simpleHtml)(scope);
+
+        scope.$digest();
+        mockBackend.flush();
+
+        var compiledElementScope = element.isolateScope();
+        scope.$digest();
+
+        expect(compiledElementScope.showTitle).toBeFalsy();
+        expect(compiledElementScope.getTitle(orders[0])).toBe(undefined)
+    })
 });

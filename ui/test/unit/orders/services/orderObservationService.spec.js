@@ -8,13 +8,13 @@ describe('Order Service', function () {
     });
 
     var orders = [{
-        observations : [
+        bahmniObservations : [
             {uuid : "observation1 uuuid", value: "33.0", valueAsString: "33.0"},
             {uuid : "observation2 uuuid", value: "100.0", valueAsString: "100.0"},
             {uuid : "observation3 uuuid", value: null, valueAsString: null},
             {value: null, valueAsString: null}
         ],
-        uuid : "orderUuid"
+        orderUuid : "orderUuid"
     }];
 
     var patient = {uuid:"patientUuid"};
@@ -32,7 +32,7 @@ describe('Order Service', function () {
 
     it('should add order uuid to observations', function (done) {
         orderObservationService.save(orders, patient, locationUuid);
-        expect(orders[0].observations[0].orderUuid).toBe("orderUuid");
+        expect(orders[0].bahmniObservations[0].orderUuid).toBe("orderUuid");
         done();
     });
 
