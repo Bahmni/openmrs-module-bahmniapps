@@ -50,7 +50,9 @@ describe("OrderFulfillmentController", function () {
         mockAppService.getAppDescriptor = function () {
             return { getConfigValue: function () {
                 return {
-                  conceptNames: ["Blood Pressure"]
+                    someOrderType: {
+                        conceptNames: ["Blood Pressure"]
+                    }
                 }
             } }
         };
