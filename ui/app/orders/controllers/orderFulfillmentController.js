@@ -8,12 +8,12 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
 
 
     $scope.patient = patientContext.patient;
-    $scope.formName = $stateParams.orderType + " Fulfillment Form";
+    $scope.formName = $stateParams.orderType + Bahmni.Common.Constants.fulfillmentFormSuffix;
     $scope.orderType = $stateParams.orderType;
     $scope.nextPageLoading = false;
     $scope.orders = [];
 
-    $scope.config = appService.getAppDescriptor().getConfigValue("sections");
+    $scope.fulfillmentConfig = appService.getAppDescriptor().getConfigValue(Bahmni.Common.Constants.fulfillmentConfiguration);
 
     var getActiveEncounter = function () {
         var currentProviderUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
@@ -53,6 +53,7 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
     };
 
     spinner.forPromise(init());
+    $scope.config = $scope.fulfillmentConfig && $scope.fulfillmentConfig[$scope.orderType] || {};
     $anchorScroll();
 
 
