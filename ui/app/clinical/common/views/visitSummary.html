@@ -75,6 +75,12 @@
                     </div>
                 </section>
             </div>
+	    <div data-ng-switch-when="custom">
+	      <div ng-if="section.config">
+		<custom patient="patient" visit-uuid="{{visitUuid}}"
+                      config="section.config" templateurl="{{section.templateURL}}"></custom>
+	      </div>
+	    </div>
         </div>
     </div>
 </div>
