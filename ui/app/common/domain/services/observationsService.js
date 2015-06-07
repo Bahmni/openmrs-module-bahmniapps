@@ -53,5 +53,16 @@ angular.module('bahmni.common.domain')
                     withCredentials: true
                 });
         };
+	
+	/**
+	   Returns: 
+	 */
+	this.getObservations = function(patientUuid, conceptNames, scope, visitUuid) {
+	    var params = {concept: conceptNames, patientUuid: patientUuid, scope: scope, visitUuid: visitUuid};
+	    return $http.get(Bahmni.Common.Constants.observationsUrl, {
+                params: params,
+                withCredentials: true
+            });
+	}
 
     }]);
