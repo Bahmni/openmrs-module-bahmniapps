@@ -48,7 +48,7 @@ angular.module('bahmni.clinical')
                     if (DateUtil.isSameDate(drug1.effectiveStartDate, drug2.effectiveStartDate)) {
                         return sortByAndGroupByTime(drug1, drug2);
                     } else {
-                        return DateUtil.diffInDays(drug1.effectiveStartDate, drug2.effectiveStartDate);
+                        return DateUtil.diffInDaysRegardlessOfTime(drug1.effectiveStartDate, drug2.effectiveStartDate);
                     }
                 });
             };
