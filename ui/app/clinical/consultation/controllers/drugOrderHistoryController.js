@@ -8,6 +8,7 @@ angular.module('bahmni.clinical')
 
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
             var DateUtil = Bahmni.Common.Util.DateUtil;
+            var drugOrderUtil = Bahmni.Clinical.DrugOrder.Util;
             var currentVisit = $scope.visit;
             var drugOrderAppConfig = clinicalAppConfigService.getDrugOrderConfig();
             var activeDrugOrdersList = [];
@@ -21,10 +22,10 @@ angular.module('bahmni.clinical')
             };
 
             var getRefillableDrugOrders = function (activeAndScheduledDrugOrders) {
-                activeAndScheduledDrugOrders = sortByDateAndTimeAndOrderNumber(activeAndScheduledDrugOrders);
+                activeAndScheduledDrugOrders = drugOrderUtil.sortByDateAndTimeAndOrderNumber(activeAndScheduledDrugOrders);
                 var refillableDrugOrders = activeAndScheduledDrugOrders;
 
-                var previousVisitDrugOrders = sortByDateAndTimeAndOrderNumber(getPreviousVisitDrugOrders());
+                var previousVisitDrugOrders = drugOrderUtil.sortByDateAndTimeAndOrderNumber(getPreviousVisitDrugOrders());
                 _.each(previousVisitDrugOrders, function (previousVisitDrugOrder) {
                     var isActiveOrScheduled = _.find(activeAndScheduledDrugOrders, function (activeOrScheduledDrugOrder) {
                         return previousVisitDrugOrder.drug.uuid === activeOrScheduledDrugOrder.drug.uuid;
@@ -36,22 +37,6 @@ angular.module('bahmni.clinical')
                 return refillableDrugOrders;
             };
 
-            var sortByDateAndTimeAndOrderNumber = function (activeAndScheduledDrugOrders) {
-                var sortByAndGroupByTime = function (drug1, drug2) {
-                    if (DateUtil.isSameDateTime(drug1.effectiveStartDate, drug2.effectiveStartDate)) {
-                        return drug1.orderNumber > drug2.orderNumber ? 1 : -1;
-                    } else {
-                        return DateUtil.diffInSeconds(drug1.effectiveStartDate, drug2.effectiveStartDate);
-                    }
-                };
-                return activeAndScheduledDrugOrders.sort(function (drug1, drug2) {
-                    if (DateUtil.isSameDate(drug1.effectiveStartDate, drug2.effectiveStartDate)) {
-                        return sortByAndGroupByTime(drug1, drug2);
-                    } else {
-                        return DateUtil.diffInDaysRegardlessOfTime(drug1.effectiveStartDate, drug2.effectiveStartDate);
-                    }
-                });
-            };
 
             var getPreviousVisitDrugOrders = function () {
                 var currentVisitIndex = _.findIndex($scope.consultation.drugOrderGroups, function (group) {

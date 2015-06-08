@@ -37,5 +37,22 @@ Bahmni.Clinical.DrugOrder.Util = {
             }
         });
         return drugOrders;
+    },
+    sortByDateAndTimeAndOrderNumber : function (activeAndScheduledDrugOrders) {
+        var DateUtil = Bahmni.Common.Util.DateUtil;
+        var sortByAndGroupByTime = function (drug1, drug2) {
+            if (DateUtil.isSameDateTime(drug1.effectiveStartDate, drug2.effectiveStartDate)) {
+                return drug1.orderNumber > drug2.orderNumber ? 1 : -1;
+            } else {
+                return DateUtil.diffInSeconds(drug1.effectiveStartDate, drug2.effectiveStartDate);
+            }
+        };
+        return activeAndScheduledDrugOrders.sort(function (drug1, drug2) {
+            if (DateUtil.isSameDate(drug1.effectiveStartDate, drug2.effectiveStartDate)) {
+                return sortByAndGroupByTime(drug1, drug2);
+            } else {
+                return DateUtil.diffInDaysRegardlessOfTime(drug1.effectiveStartDate, drug2.effectiveStartDate);
+            }
+        });
     }
 };

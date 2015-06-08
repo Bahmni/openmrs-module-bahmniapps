@@ -14,11 +14,12 @@ Bahmni.Common.Util.DateUtil = {
     },
 
     diffInDaysRegardlessOfTime: function(dateFrom, dateTo) {
-        dateFrom.setHours(0,0,0,0);
-        dateTo.setHours(0,0,0,0);
-        return Math.floor((dateTo - dateFrom) / (60 * 1000 * 60 * 24));
+        var from = new Date(dateFrom);
+        var to = new Date(dateTo);
+        from.setHours(0,0,0,0);
+        to.setHours(0,0,0,0);
+        return Math.floor((to - from) / (60 * 1000 * 60 * 24));
     },
-
     addDays: function (date, days) {
         return moment(date).add(days, 'day').toDate();
     },
