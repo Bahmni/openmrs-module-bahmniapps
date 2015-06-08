@@ -308,6 +308,31 @@ h3 {
             padding: 0;
             height: auto;
             overflow: visible;
+            &.printPrescription{
+                padding-top: 10px;
+                width:100%;
+                table-layout: fixed;
+                tr{
+                    strong{
+                        padding-left: 20px;
+                    }
+                }
+                th{
+                    padding-bottom: 10px;
+                    &.sl-no-heading{
+                        width: 8%;
+                    }
+                    &.start-date-heading{
+                        width: 10%;
+                    }
+                }
+               td{
+                 padding-bottom: 5px;
+                   &:first-child{
+                       padding-left: 14px;
+                   }
+               }
+            }
             &.repeated-table {
                 margin-bottom: 5px;
                 &:last-child {
@@ -596,3 +621,4 @@ h3 {
 		}
 	}
 }
+
