@@ -140,7 +140,7 @@ angular.module('bahmni.clinical')
                     diagnosisService.deleteDiagnosis(obsUUid).then(function (result) {
                         var currentUuid = $scope.consultation.savedDiagnosesFromCurrentEncounter.length > 0 ?
                             $scope.consultation.savedDiagnosesFromCurrentEncounter[0].encounterUuid : "";
-                        reloadDiagnosesSection(currentUuid);
+                        return reloadDiagnosesSection(currentUuid);
                     }))
                     .then(function () {});
             };
