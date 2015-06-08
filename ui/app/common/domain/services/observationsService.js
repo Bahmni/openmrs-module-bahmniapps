@@ -55,7 +55,7 @@ angular.module('bahmni.common.domain')
         };
 	
 	/**
-	   Returns: 
+	 * getObservations takes a patientUuid, an array of conceptNames, the scope, and a visitUuid and returns a promise with the observations matching those criteria
 	 */
 	this.getObservations = function(patientUuid, conceptNames, scope, visitUuid) {
 	    var params = {concept: conceptNames, patientUuid: patientUuid, scope: scope, visitUuid: visitUuid};
