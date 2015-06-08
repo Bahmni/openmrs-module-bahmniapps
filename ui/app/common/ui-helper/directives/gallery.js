@@ -119,7 +119,7 @@ angular.module('bahmni.common.uiHelper')
     })
     .directive('bmObservationGalleryItem', function () {
         var link = function (scope, element, attrs, imageGalleryController) {
-            scope.imageObservation = new Bahmni.Clinical.ImageObservation(scope.observation, scope.observation.concept, scope.observation.provider);
+            scope.imageObservation = new Bahmni.Common.Obs.ImageObservation(scope.observation, scope.observation.concept, scope.observation.provider);
             scope.imageIndex = imageGalleryController.addImageObservation(scope.imageObservation, 'defaultTag');
             element.click(function (e) {
                 e.stopPropagation();
