@@ -60,7 +60,6 @@ angular.module('bahmni.registration')
 
                 if(null != service) {
                     return spinner.forPromise(service.search(relationship.personName)).then(function (response) {
-                        console.log(response);
                         if(angular.isUndefined(response)) {
                             return;
                         }
