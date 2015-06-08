@@ -1,5 +1,5 @@
 <legend class="mylegend registraion_legend registraion_Basic_info">
-    <span><srtong>Basic Informantion</srtong></span>
+    <span><strong>Basic Information</strong></span>
   </legend>
 <section ng-controller="PatientCommonController">
     <article class="form-field" ng-if="patientConfiguration.local()['showNameField']">
@@ -124,12 +124,12 @@
 </section>
 
 <legend class="mylegend registraion_legend">
-    <span><srtong>Address Informantion</srtong></span>
+    <span><strong>Address Information</strong></span>
   </legend>
 <section address-fields data-address-levels="addressLevels" data-address="patient.address" field-validation="fieldValidation"></section>
 
 <legend class="mylegend registraion_legend">
-    <span><srtong>Other Informantion</srtong></span>
+    <span><strong>Other Information</strong></span>
   </legend>
 
 <section class="form-field-inline" ng-repeat="attributeRow in patientConfiguration.customAttributeRows()">
@@ -151,3 +151,18 @@
         <ng-include src="'views/patientAttributeInformation.html'"></ng-include>
     </article>
 </section>
+<div ng-show="displayRelationships()" ng-controller="PatientRelationshipController">
+    <legend class="mylegend additional-attribute" toggle="displayRelationshipInformation">
+        <span>
+            <i class="fa fa-caret-right" ng-hide="displayRelationshipInformation"></i>
+            <i class="fa fa-caret-down" ng-show="displayRelationshipInformation"></i>
+            <strong><a href accesskey="l">Re<u>L</u>ationships</a></strong>
+        </span>
+    </legend>
+    <section class="form-field-inline"  ng-show="displayRelationshipInformation">
+        <ng-include src="'views/patientRelationships.html'"></ng-include>
+    </section>
+</div>
+
+
+
