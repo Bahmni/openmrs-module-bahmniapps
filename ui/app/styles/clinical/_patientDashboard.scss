@@ -64,7 +64,12 @@
   font-size: 14px;
   position: relative;
   @extend %section-grid;
-
+  .dashboard-section {
+    border:none;
+    section .form-field{
+      border-bottom: none;
+    } 
+  }
   .ruled-out.diagnosis-name {
     color: $mediumGray;
     text-decoration: line-through;
