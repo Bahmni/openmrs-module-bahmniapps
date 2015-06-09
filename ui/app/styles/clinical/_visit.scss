@@ -521,6 +521,10 @@ a.visit:before {
           padding: 4px 11px;   
           border-radius: 0 2px 0 0;
           font-size: 20px;
+          @media screen and (max-width: 1024px) {
+            bottom: -1px;
+            border-radius: 0;
+          }
         }
       }
       .patient-img {
