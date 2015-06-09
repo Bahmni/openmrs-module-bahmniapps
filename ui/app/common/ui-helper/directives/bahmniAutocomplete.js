@@ -31,6 +31,8 @@ angular.module('bahmni.common.uiHelper')
                 validateIfNeeded(ui.item.value);
                 if(scope.blurOnSelect) element.blur();
                 scope.$apply();
+                scope.$eval(attrs.ngDisabled);
+                scope.$apply();
                 return true;
             },
             search: function (event, ui) {

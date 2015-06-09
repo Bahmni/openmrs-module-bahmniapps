@@ -6,6 +6,7 @@ angular.module('bahmni.registration')
             var dateUtil = Bahmni.Common.Util.DateUtil;
             $scope.actions = {};
             var configValueForEnterId = appService.getAppDescriptor().getConfigValue('showEnterID');
+            $scope.addressHierarchyConfigs = appService.getAppDescriptor().getConfigValue("addressHierarchy");
             $scope.showEnterID = configValueForEnterId === null ? true : configValueForEnterId;
 
             (function () {
