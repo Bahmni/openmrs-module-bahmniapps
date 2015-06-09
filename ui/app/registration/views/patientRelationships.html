@@ -17,6 +17,7 @@
                     <div class="col col2">
                         <input type="text" ng-model="relationship.personName" ng-blur="searchByType(relationship)" class="ng-valid ng-touched ng-dirty ng-valid-parse">
                         <span class="asterick">*</span>
+                        <span ng-show="isPatientRelationship(relationship) && $index !== 0"><a ng-click="openPatientDashboardInNewTab(relationship)"><i class="fa fa-external-link"></i></a></span>
                         <span style="display:block" ng-show="showPersonNotFound(relationship)">Person not found</span>
                         <input type="hidden" ng-model="relationship.personB.personUuid"/>
                     </div>

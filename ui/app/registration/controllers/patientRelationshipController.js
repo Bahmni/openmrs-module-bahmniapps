@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('PatientRelationshipController', ['$scope', '$rootScope', 'spinner', 'patientService', 'providerService',
-        function ($scope, $rootScope, spinner, patientService, providerService) {
+    .controller('PatientRelationshipController', ['$window','$scope', '$rootScope', 'spinner', 'patientService', 'providerService',
+        function ($window, $scope, $rootScope, spinner, patientService, providerService) {
             $rootScope.newlyAddedRelationships = [{voided:false}];
 
             $scope.displayRelationships = function () {
@@ -41,13 +41,26 @@ angular.module('bahmni.registration')
                 return !$scope.showAddButton(index);
             };
 
-            var getServiceForType = function (uuid) {
+            $scope.isPatientRelationship = function(relationship) {
+                if(angular.isUndefined(relationship['relationshipType'])) {
+                    return false;
+                }
+                return $scope.getRelationshipType(relationship['relationshipType']['uuid']) == "patient";
+            }
+
+            $scope.getRelationshipType = function(uuid) {
                 var searchType;
                 $rootScope.relationshipTypes.forEach(function(relationshipType) {
                     if(relationshipType['uuid'] === uuid) {
                         searchType = relationshipType.searchType;
                     }
                 });
+                return searchType;
+            }
+
+            var getServiceForType = function (uuid) {
+                var searchType = $scope.getRelationshipType(uuid);
+
                 switch(searchType){
                     case "patient": return patientService;
                     case "provider": return providerService;
@@ -113,6 +126,14 @@ angular.module('bahmni.registration')
                         && !angular.isUndefined(relationship.relationshipType)
                         && (relationship['relationshipType']['uuid'] === existingRelationship['relationshipType']['uuid'] );
                 });
+            };
+
+            $scope.openPatientDashboardInNewTab = function (relationship) {
+                $window.open($scope.getPatientDashboardUrl(relationship['personB']['uuid']), '_blank');
+            };
+
+            $scope.getPatientDashboardUrl = function (patientUuid) {
+                return '/bahmni/clinical/#/patient/' + patientUuid + '/dashboard';
             };
 
         }]);
