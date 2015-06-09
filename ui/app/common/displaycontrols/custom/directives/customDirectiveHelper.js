@@ -12,6 +12,21 @@ function CustomDirectiveHelper(scope,$http,observationsService,$compile,elem){
     self.$compile=$compile;
     self.elem=elem;
 
+    var dataMap = {}; //key,value pairs to be passed to the html file
+    var needsToBeEnteredMap = {}; // data elements that the user will need to enter. true if needs to be entered
+	
+    //initiate dataMap to null and needsToBeEntered to false for each concept name
+    self.scope.config.conceptNames.forEach(function(element,index,array){
+	    needsToBeEnteredMap[element] = false;
+	    dataMap[element] = null;
+	});
+
+    //Initiate expected user inputs
+    self.scope.config.userInputs.forEach(function(element,index,array){
+	    dataMap[element] = null;
+	    needsToBeEnteredMap[element] = true;
+	});
+
     /**
      * getObservationsAndCompileTemplate waits for the observations promise to succeed and then compiles the template using those observations
      */
@@ -24,8 +39,13 @@ function CustomDirectiveHelper(scope,$http,observationsService,$compile,elem){
      * obs successFunction and failureFunction for the observationsPromise
      */
     var obsSuccessFunction = function (data){
-	var observations=data.data;
-	self.scope.observations = observations;
+	var observationsArray=data.data;
+	observationsArray.forEach(function(element,index,array){
+		dataMap[element.concept.name] = element.valueAsString;
+		needsToBeEnteredMap[element.concept.name]=false;
+	});
+	self.scope.dataMap = dataMap;
+	self.scope.needsToBeEnteredMap=needsToBeEnteredMap;
 	compileTemplate();
     };
     var obsFailureFunction = function(data){
