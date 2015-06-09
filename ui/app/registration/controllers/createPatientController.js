@@ -25,6 +25,11 @@ angular.module('bahmni.registration')
                     messagingService.showMessage('formError', errMsg);
                     return;
                 }
+                if($rootScope.newlyAddedRelationships && $rootScope.newlyAddedRelationships.length > 1) {
+                    $rootScope.newlyAddedRelationships.shift();
+                    $scope.patient.relationships = $rootScope.newlyAddedRelationships;
+                }
+
                 if (!$scope.hasOldIdentifier) {
                     spinner.forPromise(patientService.generateIdentifier($scope.patient)
                         .then(function (response) {

@@ -10,24 +10,25 @@
             <div class="table-body">
                 <div class="row" ng-repeat="relationship in newlyAddedRelationships">
                     <div class="col col1">
-                        <select ng-model="relationship.typeUuid" ng-options="type.uuid as type.aIsToB for type in relationshipTypes" ng-change="searchByType(relationship)" ></select>
+                        <select ng-model="relationship.relationshipType.uuid" ng-options="type.uuid as type.aIsToB for type in relationshipTypes" ng-hide="relationship.voided" ng-change="searchByType(relationship)" ></select>
                         <span class="asterick">*</span>
+                        <span style="display:block" ng-show="checkDuplicateRelationship(relationship)">Duplicate relationship found</span>
                     </div>
                     <div class="col col2">
                         <input type="text" ng-model="relationship.personName" ng-blur="searchByType(relationship)" class="ng-valid ng-touched ng-dirty ng-valid-parse">
                         <span class="asterick">*</span>
                         <span style="display:block" ng-show="showPersonNotFound(relationship)">Person not found</span>
-                        <input type="hidden" ng-model="relationship.personUuid"/>
+                        <input type="hidden" ng-model="relationship.personB.personUuid"/>
                     </div>
                     <div class="col col3">
                         <input type="text" pattern="\d{2}-\d{2}-\d{4}" ng-model="relationship.endDate" datepicker
                                placeholder="dd-mm-yyyy" class="datepicker">
                     </div>
                     <div class="col col4">
-                        <button type="button" class="small-btn" ng-show="hideAddButton($index)" ng-click="addRelationship(relationship)" id="relationAddBtn-{{$index}}">
+                        <button type="button" class="small-btn" ng-show="showAddButton($index)" ng-click="addRelationship(relationship)" id="relationAddBtn-{{$index}}">
                             Add
                         </button>
-                        <button type="button" class="small-btn" ng-show="hideRemoveButton($index)" ng-click="removeRelationship(relationship)" id="relationRemoveBtn-{{$index}}">
+                        <button type="button" class="small-btn" ng-show="hideRemoveButton($index)" ng-confirm-click="removeRelationship(relationship)" id="relationRemoveBtn-{{$index}}">
                             <span class="fa fa-remove"></span>
                         </button>
                     </div>

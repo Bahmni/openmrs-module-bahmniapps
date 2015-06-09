@@ -3,32 +3,42 @@
 angular.module('bahmni.registration')
     .controller('PatientRelationshipController', ['$scope', '$rootScope', 'spinner', 'patientService', 'providerService',
         function ($scope, $rootScope, spinner, patientService, providerService) {
-            $scope.newlyAddedRelationships = [{voided:false}];
+            $rootScope.newlyAddedRelationships = [{voided:false}];
 
             $scope.displayRelationships = function () {
                 return !angular.isUndefined($rootScope.relationshipTypes) && $rootScope.relationshipTypes.length > 0;
             };
 
             $scope.addRelationship = function (relationship) {
-                if(angular.isUndefined(relationship.personName) || angular.isUndefined(relationship.type)) {
+                if(!checkMandatoryFieldsPresent(relationship) || $scope.showPersonNotFound(relationship)) {
                     return;
                 }
-                $scope.newlyAddedRelationships.push({voided:false});
+
+                if($scope.checkDuplicateRelationship(relationship)){
+                    return;
+                }
+                $rootScope.newlyAddedRelationships.unshift({voided:false});
             };
 
             $scope.removeRelationship = function (relationship) {
-                var elementIndex = $scope.newlyAddedRelationships.indexOf(relationship);
+                var elementIndex = $rootScope.newlyAddedRelationships.indexOf(relationship);
                 if (elementIndex > -1) {
-                    $scope.newlyAddedRelationships.splice(elementIndex, 1);
+                    var relationshipToBeRemoved = $rootScope.newlyAddedRelationships[elementIndex],
+                        isRelationshipExistingInDB = !angular.isUndefined(relationshipToBeRemoved.uuid);
+                    if(isRelationshipExistingInDB) {
+                        relationshipToBeRemoved.voided = true;
+                    } else {
+                        $rootScope.newlyAddedRelationships.splice(elementIndex, 1);
+                    }
                 }
             };
 
-            $scope.hideAddButton = function(index) {
-                return $scope.newlyAddedRelationships.length == index+1;
+            $scope.showAddButton = function(index) {
+                return index === 0;
             };
 
             $scope.hideRemoveButton = function(index) {
-                return !$scope.hideAddButton(index);
+                return !$scope.showAddButton(index);
             };
 
             var getServiceForType = function (uuid) {
@@ -51,12 +61,12 @@ angular.module('bahmni.registration')
                     return;
                 }
 
-                var elementIndex = $scope.newlyAddedRelationships.indexOf(relationship);
-                if($scope.newlyAddedRelationships[elementIndex].hasOwnProperty('personUuid')) {
-                    $scope.newlyAddedRelationships[elementIndex].personUuid = null;
+                var elementIndex = $rootScope.newlyAddedRelationships.indexOf(relationship);
+                if($rootScope.newlyAddedRelationships[elementIndex].hasOwnProperty('personB')) {
+                    $rootScope.newlyAddedRelationships[elementIndex].personB = null;
                 }
 
-                var service = getServiceForType(relationship.typeUuid);
+                var service = getServiceForType(relationship.relationshipType.uuid);
 
                 if(null != service) {
                     return spinner.forPromise(service.search(relationship.personName)).then(function (response) {
@@ -77,7 +87,7 @@ angular.module('bahmni.registration')
                             personUuid = response.data['results'][0]['uuid'];
                         }
 
-                        $scope.newlyAddedRelationships[elementIndex].personUuid = personUuid;
+                        $rootScope.newlyAddedRelationships[elementIndex].personB = {'uuid':personUuid};
                     });
                 }
             };
@@ -87,7 +97,22 @@ angular.module('bahmni.registration')
                     return false;
                 }
 
-                return (relationship.personName != null && angular.isUndefined(relationship.personUuid));
+                return (relationship.personName != null &&
+                            (angular.isUndefined(relationship.personB)
+                                || relationship.personB == null));
+            };
+
+            var checkMandatoryFieldsPresent = function(relationship) {
+                return !angular.isUndefined(relationship.personName)
+                    && !angular.isUndefined(relationship.personB);
+            };
+
+            $scope.checkDuplicateRelationship = function(relationship){
+                return $rootScope.newlyAddedRelationships.some(function(existingRelationship) {
+                    return relationship != existingRelationship && !angular.isUndefined(existingRelationship.relationshipType)
+                        && !angular.isUndefined(relationship.relationshipType)
+                        && (relationship['relationshipType']['uuid'] === existingRelationship['relationshipType']['uuid'] );
+                });
             };
 
         }]);
