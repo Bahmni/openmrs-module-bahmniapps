@@ -7,8 +7,8 @@ angular.module('bahmni.common.displaycontrol.orders')
                 $scope.orderTypeUuid = orderTypeService.getOrderTypeUuid($scope.orderType);
                 var includeAllObs = true;
                 var getOrders = function() {
-                    return orderService.getOrders($scope.patient.uuid, $scope.orderTypeUuid, $scope.config.conceptNames, includeAllObs,  $scope.config.numberOfVisits,
-                       $scope.config.obsIgnoreList, $scope.visitUuid, $scope.orderUuid).then(function(response) {
+                    return orderService.getOrders($scope.patient.uuid, $scope.orderTypeUuid, $scope.config.conceptNames, includeAllObs, $scope.config.numberOfVisits,
+                       $scope.config.obsIgnoreList, $scope.visitUuid, $scope.orderUuid, $scope.config.scope).then(function(response) {
                        $scope.bahmniOrders = response.data;
                     });
                 };

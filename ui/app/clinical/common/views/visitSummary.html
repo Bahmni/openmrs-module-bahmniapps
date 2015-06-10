@@ -75,6 +75,13 @@
                     </div>
                 </section>
             </div>
+            <div data-ng-switch-when="order">
+                <section class="dashboard-section">
+                    <div ng-if="section.config">
+                        <orders-control patient="patient" order-type="section.config.orderType" config="section.config" show-title="true"></orders-control>
+                    </div>
+                </section>
+            </div>
         </div>
     </div>
 </div>
