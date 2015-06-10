@@ -8,12 +8,16 @@ describe('PatientRelationshipController', function () {
     var scope;
 
     var patientServiceSearchPromise = specUtil.respondWith({data:{results:[{uuid:"123"}]}});
-    providerServiceMock.search.and.returnValue(patientServiceSearchPromise);
+    patientServiceMock.search.and.returnValue(patientServiceSearchPromise);
 
     var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
     spinner.forPromise.and.returnValue(patientServiceSearchPromise);
 
     patientServiceMock.search.and.callFake(function() {
+        return specUtil.respondWith({data:{pageOfResults:[{uuid:"123"}]}});
+    });
+
+    providerServiceMock.search.and.callFake(function() {
         return specUtil.respondWith({data:{pageOfResults:[{uuid:"123"}]}});
     });
 
@@ -51,41 +55,46 @@ describe('PatientRelationshipController', function () {
         expect(scope.displayRelationships()).toBeTruthy();
     });
 
-    it("should add relationship to newlyAddedRelationships", function() {
+    it("should add provider relationship to newlyAddedRelationships", function() {
         expect(rootScope.newlyAddedRelationships).toEqual([{voided:false}]);
-        scope.addRelationship({personName:"Doctor",relationshipType : {"uuid":"8d919b58-c2cc-11de-8d13-0010c6dffd0f"}, voided:false, personB : { "uuid":"uuid"}});
+        scope.addRelationship({providerName:"Doctor",relationshipType : {"uuid":"8d919b58-c2cc-11de-8d13-0010c6dffd0f"}, voided:false, personB : { "uuid":"uuid"}});
+        expect(rootScope.newlyAddedRelationships.length).toBe(2);
+    });
+
+    it("should add patient relationship to newlyAddedRelationships", function() {
+        expect(rootScope.newlyAddedRelationships).toEqual([{voided:false}]);
+        scope.addRelationship({patientName:"Patient",relationshipType : {"uuid":"8d91a01c-c2cc-11de-8d13-0010c6dffd0f"}, voided:false, personB : { "uuid":"uuid"}});
         expect(rootScope.newlyAddedRelationships.length).toBe(2);
     });
 
     it("should remove relationship from newlyAddedRelationships", function() {
         expect(rootScope.newlyAddedRelationships).toEqual([{voided:false}]);
-        var relationship = {personName:"Doctor"};
+        var relationship = {patientName:"Doctor"};
         scope.addRelationship(relationship);
         scope.removeRelationship(relationship);
         expect(rootScope.newlyAddedRelationships.length).toBe(1);
     });
 
     it("should have called providerService for Doctor", function(done) {
-        var relationship = {personName:"Doctor",relationshipType : {"uuid":"8d919b58-c2cc-11de-8d13-0010c6dffd0f"},personB : { "uuid":"uuid"}};
+        var relationship = {patientName:"Patient",relationshipType : {"uuid":"8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},personB : { "uuid":"uuid"}};
         rootScope.newlyAddedRelationships = [relationship];
-        scope.searchByType(relationship);
-        expect(providerServiceMock.search).toHaveBeenCalled();
-        //expect(rootScope.newlyAddedRelationships[0].personUuid).toBe("123");
+        scope.searchByPatientName(relationship);
+        expect(patientServiceMock.search).toHaveBeenCalled();
         done();
     });
 
     it("should check duplicate relationship type to be true", function() {
-        var relationship = {personName:"Doctor",relationshipType : {"uuid":"8d919b58-c2cc-11de-8d13-0010c6dffd0f"},personB : { "uuid":"uuid"}};
+        var relationship = {patientName:"Doctor",relationshipType : {"uuid":"8d919b58-c2cc-11de-8d13-0010c6dffd0f"},personB : { "uuid":"uuid"}};
         rootScope.newlyAddedRelationships = [relationship];
-        var duplicateRelationship = {personName:"Doctor1",relationshipType : {"uuid":"8d919b58-c2cc-11de-8d13-0010c6dffd0f"},personB : { "uuid":"uuid2"}};
+        var duplicateRelationship = {patientName:"Doctor1",relationshipType : {"uuid":"8d919b58-c2cc-11de-8d13-0010c6dffd0f"},personB : { "uuid":"uuid2"}};
         scope.addRelationship(duplicateRelationship);
         expect(scope.checkDuplicateRelationship(duplicateRelationship)).toBeTruthy();
     });
 
     it("should check non-duplicate relationship type to be false", function() {
-        var relationship = {personName:"Doctor",relationshipType : {"uuid":"8d919b58-c2cc-11de-8d13-0010c6dffd0f"},personB : { "uuid":"uuid"}};
+        var relationship = {patientName:"Doctor",relationshipType : {"uuid":"8d919b58-c2cc-11de-8d13-0010c6dffd0f"},personB : { "uuid":"uuid"}};
         rootScope.newlyAddedRelationships = [relationship];
-        var duplicateRelationship = {personName:"Doctor1",relationshipType : {"uuid":"another-uuid"},personB : { "uuid":"uuid2"}};
+        var duplicateRelationship = {patientName:"Doctor1",relationshipType : {"uuid":"another-uuid"},personB : { "uuid":"uuid2"}};
         scope.addRelationship(duplicateRelationship);
         expect(scope.checkDuplicateRelationship(duplicateRelationship)).toBeFalsy();
     });
@@ -99,12 +108,39 @@ describe('PatientRelationshipController', function () {
     });
 
     it("should check if relationship type is patient", function() {
-        var relationship = {personName:"Patient",relationshipType : {"uuid":"8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},personB : { "uuid":"uuid"}};
+        var relationship = {patientName:"Patient",relationshipType : {"uuid":"8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},personB : { "uuid":"uuid"}};
         expect(scope.isPatientRelationship(relationship)).toBeTruthy();
     });
 
     it("should check if relationship type is not patient", function() {
-        var relationship = {personName:"Doctor",relationshipType : {"uuid":"8d919b58-c2cc-11de-8d13-0010c6dffd0f"},personB : { "uuid":"uuid"}};
+        var relationship = {patientName:"Doctor",relationshipType : {"uuid":"8d919b58-c2cc-11de-8d13-0010c6dffd0f"},personB : { "uuid":"uuid"}};
         expect(scope.isPatientRelationship(relationship)).toBeFalsy();
+    });
+
+    it("should check if relationship type is provider", function() {
+        var relationship = {patientName:"Doctor",relationshipType : {"uuid":"8d919b58-c2cc-11de-8d13-0010c6dffd0f"},personB : { "uuid":"uuid"}};
+        expect(scope.isProviderRelationship(relationship)).toBeTruthy();
+    });
+
+    it("should check if relationship type is not patient", function() {
+        var relationship = {patientName:"Doctor",relationshipType : {"uuid":"8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},personB : { "uuid":"uuid"}};
+        expect(scope.isProviderRelationship(relationship)).toBeFalsy();
+    });
+
+    it("should clear the relationship data", function() {
+        var patientRelationship = {patientName:"Doctor",relationshipType : {"uuid":"8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},personB : { "uuid":"uuid"}};
+        expect(patientRelationship.patientName).toBeDefined();
+        scope.clearRelationshipRow(patientRelationship);
+        expect(patientRelationship.patientName).toBeUndefined();
+        var providerRelationship = {patientName:"Doctor",relationshipType : {"uuid":"8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},personB : { "uuid":"uuid"}};
+        expect(providerRelationship.patientName).toBeDefined();
+        scope.clearRelationshipRow(providerRelationship);
+        expect(providerRelationship.providerName).toBeUndefined();
+    });
+
+    it("should have called providerService when get provider list is called", function() {
+        var searchAttrs = {'term' : 'search this'};
+        (scope.getProviderList())(searchAttrs);
+        expect(providerServiceMock.search).toHaveBeenCalled();
     });
 });

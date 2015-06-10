@@ -10,10 +10,9 @@ angular.module('bahmni.registration')
             };
 
             $scope.addRelationship = function (relationship) {
-                if(!checkMandatoryFieldsPresent(relationship) || $scope.showPersonNotFound(relationship)) {
+                if(!checkMandatoryFieldsPresent(relationship)) {
                     return;
                 }
-
                 if($scope.checkDuplicateRelationship(relationship)){
                     return;
                 }
@@ -41,11 +40,25 @@ angular.module('bahmni.registration')
                 return !$scope.showAddButton(index);
             };
 
+            $scope.hasNoRelationship = function(relationship) {
+                if(angular.isUndefined(relationship['relationshipType'])) {
+                    return true;
+                }
+                return false;
+            }
+
             $scope.isPatientRelationship = function(relationship) {
                 if(angular.isUndefined(relationship['relationshipType'])) {
                     return false;
                 }
                 return $scope.getRelationshipType(relationship['relationshipType']['uuid']) == "patient";
+            }
+
+            $scope.isProviderRelationship = function(relationship) {
+                if(angular.isUndefined(relationship['relationshipType'])) {
+                    return false;
+                }
+                return $scope.getRelationshipType(relationship['relationshipType']['uuid']) == "provider";
             }
 
             $scope.getRelationshipType = function(uuid) {
@@ -58,19 +71,9 @@ angular.module('bahmni.registration')
                 return searchType;
             }
 
-            var getServiceForType = function (uuid) {
-                var searchType = $scope.getRelationshipType(uuid);
+            $scope.searchByPatientName = function (relationship) {
 
-                switch(searchType){
-                    case "patient": return patientService;
-                    case "provider": return providerService;
-                    default: return null;
-                }
-            };
-
-            $scope.searchByType = function (relationship) {
-
-                if(null == relationship.personName){
+                if(null == relationship.patientName){
                     return;
                 }
 
@@ -79,45 +82,40 @@ angular.module('bahmni.registration')
                     $rootScope.newlyAddedRelationships[elementIndex].personB = null;
                 }
 
-                var service = getServiceForType(relationship.relationshipType.uuid);
+                return spinner.forPromise(patientService.search(relationship.patientName)).then(function (response) {
+                    if(angular.isUndefined(response)) {
+                        return;
+                    }
 
-                if(null != service) {
-                    return spinner.forPromise(service.search(relationship.personName)).then(function (response) {
-                        if(angular.isUndefined(response)) {
-                            return;
-                        }
+                    if(response.data.pageOfResults.length == 0) {
+                        return;
+                    }
+                    var personUuid = response.data['pageOfResults'][0]['uuid'];
 
-                        var personUuid;
-                        if(service == patientService) {
-                            if(response.data.pageOfResults.length == 0) {
-                                return;
-                            }
-                            personUuid = response.data['pageOfResults'][0]['uuid'];
-                        } else {
-                            if(response.data.results.length == 0) {
-                                return;
-                            }
-                            personUuid = response.data['results'][0]['uuid'];
-                        }
-
-                        $rootScope.newlyAddedRelationships[elementIndex].personB = {'uuid':personUuid};
-                    });
-                }
+                    $rootScope.newlyAddedRelationships[elementIndex].personB = {'uuid':personUuid};
+                });
             };
 
             $scope.showPersonNotFound = function(relationship) {
-                if(angular.isUndefined(relationship.personName)){
+                if(angular.isUndefined(relationship.patientName)){
                     return false;
                 }
 
-                return (relationship.personName != null &&
+                return (relationship.patientName != null &&
                             (angular.isUndefined(relationship.personB)
                                 || relationship.personB == null));
             };
 
             var checkMandatoryFieldsPresent = function(relationship) {
-                return !angular.isUndefined(relationship.personName)
-                    && !angular.isUndefined(relationship.personB);
+
+                if($scope.isPatientRelationship(relationship) && angular.isUndefined(relationship.patientName)) {
+                    return false;
+                }
+                if($scope.isProviderRelationship(relationship) && angular.isUndefined(relationship.providerName)) {
+                    return false;
+                }
+
+                return !angular.isUndefined(relationship.personB);
             };
 
             $scope.checkDuplicateRelationship = function(relationship){
@@ -135,5 +133,35 @@ angular.module('bahmni.registration')
             $scope.getPatientDashboardUrl = function (patientUuid) {
                 return '/bahmni/clinical/#/patient/' + patientUuid + '/dashboard';
             };
+
+            $scope.getProviderList = function() {
+                return function (searchAttrs) {
+                    return providerService.search(searchAttrs.term);
+                };
+            };
+
+            $scope.providerSelected = function(relationship) {
+                return function(providerData){
+                    relationship.providerName = providerData.identifier;
+                    relationship.personB = { 'uuid' : providerData.uuid};
+                }
+            };
+
+            $scope.getProviderDataResults = function(data) {
+                return data.data.results.map(function (providerDetails) {
+                    return {
+                        'value': providerDetails.display,
+                        'uuid': providerDetails.uuid,
+                        'identifier' : providerDetails.identifier
+                    }
+                });
+            };
+
+            $scope.clearRelationshipRow = function(relationship) {
+                delete relationship.personB;
+                delete relationship.patientName;
+                delete relationship.providerName;
+                delete relationship.endDate;
+            }
 
         }]);
