@@ -93,5 +93,33 @@ describe("ensure that the directive order-selector works properly", function () 
         );
         expect(compiledScope.orders.length).toBe(1);
         expect(compiledScope.orders[0].voided).toBe(true);
+        expect(compiledScope.getName({
+            "conceptClass": "LabSet",
+            "uuid": "3b5ea063-b6e5-48cd-b39d-dce69f00f26a",
+            "names": [
+                {
+                    "name": "Biochemistry",
+                    "conceptNameType": "FULLY_SPECIFIED"
+                }
+            ],
+            "set": true,
+            "isSelected" : true
+        })).toBe("Biochemistry");
+        compiledScope.onSelectionChange(
+            {
+                "conceptClass": "LabSet",
+                "uuid": "3b5ea063-b6e5-48cd-b39d-dce69f00f26a",
+                "names": [
+                    {
+                        "name": "Biochemistry",
+                        "conceptNameType": "FULLY_SPECIFIED"
+                    }
+                ],
+                "set": true,
+                "isSelected" : false
+            }
+        );
+        expect(compiledScope.orders.length).toBe(1);
+        expect(compiledScope.orders[0].voided).toBe(false);
     });
 });
