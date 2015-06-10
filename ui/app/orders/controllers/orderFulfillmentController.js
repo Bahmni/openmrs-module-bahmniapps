@@ -2,18 +2,33 @@
 
 var app = angular.module('bahmni.orders');
 app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$stateParams', '$state', '$q', 'patientContext', 'orderService', 'orderObservationService',
-    'orderTypeService', 'sessionService', 'encounterService', 'spinner', 'messagingService', 'appService', '$anchorScroll',
+    'orderTypeService', 'sessionService', 'encounterService', 'spinner', 'messagingService', 'appService', '$anchorScroll', 'orderFulfillmentConfig',
     function ($scope, $rootScope, $stateParams, $state, $q, patientContext, orderService, orderObservationService,
-              orderTypeService, sessionService, encounterService, spinner, messagingService, appService, $anchorScroll) {
+              orderTypeService, sessionService, encounterService, spinner, messagingService, appService, $anchorScroll, orderFulfillmentConfig) {
 
 
     $scope.patient = patientContext.patient;
     $scope.formName = $stateParams.orderType + Bahmni.Common.Constants.fulfillmentFormSuffix;
+    $scope.fulfillmentConfig = orderFulfillmentConfig;
     $scope.orderType = $stateParams.orderType;
     $scope.nextPageLoading = false;
     $scope.orders = [];
 
-    $scope.fulfillmentConfig = appService.getAppDescriptor().getConfigValue(Bahmni.Common.Constants.fulfillmentConfiguration);
+
+//    var prepareFulfillmentConfig = function() {
+//        spinner.forPromise(conceptSetService.getConceptSetMembers({name:$scope.formName,v:"custom:(uuid,name,names,conceptClass,setMembers:(uuid,name,names,conceptClass,setMembers:(uuid,name,names,conceptClass,setMembers:(uuid,name,names,conceptClass))))"})).then(function (response) {
+//            var config = {};
+//            var obsConcepts = [];
+//            _.forEach(response.data.results[0].setMembers, function(obsConcept){
+//                obsConcepts.push(obsConcept.name.name);
+//            });
+//            config.conceptNames = obsConcepts;
+//            return config;
+//        });
+//    };
+
+//    $scope.fulfillmentConfig = $scope.fulfillmentConfig? $scope.fulfillmentConfig : prepareFulfillmentConfig();
+        //appService.getAppDescriptor().getConfigValue(Bahmni.Common.Constants.fulfillmentConfiguration);
 
     var getActiveEncounter = function () {
         var currentProviderUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
@@ -53,7 +68,7 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
     };
 
     spinner.forPromise(init());
-    $scope.config = $scope.fulfillmentConfig && $scope.fulfillmentConfig[$scope.orderType] || {};
+    $scope.config = $scope.fulfillmentConfig && $scope.fulfillmentConfig || {};
     $anchorScroll();
 
 

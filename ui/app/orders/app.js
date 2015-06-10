@@ -44,7 +44,13 @@ angular
                     },
                     'content': {
                         templateUrl: 'views/orderFulfillment.html',
-                        controller: 'OrderFulfillmentController'
+                        controller: 'OrderFulfillmentController',
+                        resolve: {
+                            orderFulfillmentConfig: function(orderFulfillmentConfig, $stateParams) {
+                                var formName = $stateParams.orderType + Bahmni.Common.Constants.fulfillmentFormSuffix;
+                                return orderFulfillmentConfig(formName);
+                            }
+                        }
                     }
                 },
                 resolve: {
