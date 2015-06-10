@@ -228,6 +228,17 @@ h3 {
         margin: 0 0 5px;
         font-size: 7.5pt;
     }
+    .visit-summary-page{
+        .hierarchy ul li ul li.has-child{
+           font-family:Arial, sans-serif;
+           ul li{
+             font-family:Arial, sans-serif;
+             &.has-child{
+                font-family:Arial, sans-serif;
+             }             
+          }
+        }    
+    }
     h2.section-title {
         text-align: left;
         color: #000;
