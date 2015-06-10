@@ -17,15 +17,17 @@ angular.module('bahmni.common.displaycontrol.orders')
                     });
                 };
                 $scope.getTitle = function(order){
-                    if($scope.showTitle) {
                         return order.conceptName + " on " + $filter('bahmniDateTime')(order.orderDate) + " by " + order.provider;
-                    }
-                }
+                };
+
+                $scope.toggle= function(element){
+                    element.isOpen = !element.isOpen;
+                };
 
                 $scope.message = "No Fulfillment for this order.";
 
                 spinner.forPromise(init());
-            }
+            };
             return {
                 restrict:'E',
                 controller: controller,
@@ -36,7 +38,6 @@ angular.module('bahmni.common.displaycontrol.orders')
                     section:"=",
                     orderType:"=",
                     orderUuid:"=",
-                    showTitle: "=",
                     config:"="
                 }
             }
