@@ -17,7 +17,7 @@
             </label>
 
             <div class="field-value" ng-if="observation.isComputed()">
-                <div>{{observation.value}}</div>
+                <div class="compuptedValue">{{observation.value}}</div>
             </div>
 
             <div class="field-value" ng-if="!observation.isComputed()" ng-switch="::observation.getControlType()">
