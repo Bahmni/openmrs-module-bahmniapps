@@ -21,6 +21,7 @@
                         <span class="asterick">*</span>
                         <span ng-show="isPatientRelationship(relationship) && $index !== 0"><a ng-click="openPatientDashboardInNewTab(relationship)"><i class="fa fa-external-link"></i></a></span>
                         <span style="display:block" ng-show="showPersonNotFound(relationship)">Person not found</span>
+                        <span style="display:block" ng-show="!showPersonNotFound(relationship)">{{relationship.content}}</span>
                         <input type="hidden" ng-model="relationship.personB.uuid"/>
                     </div>
                     <div class="col col3">

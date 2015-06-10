@@ -41,25 +41,22 @@ angular.module('bahmni.registration')
             };
 
             $scope.hasNoRelationship = function(relationship) {
-                if(angular.isUndefined(relationship['relationshipType'])) {
-                    return true;
-                }
-                return false;
-            }
+                return angular.isUndefined(relationship['relationshipType']);
+            };
 
             $scope.isPatientRelationship = function(relationship) {
                 if(angular.isUndefined(relationship['relationshipType'])) {
                     return false;
                 }
                 return $scope.getRelationshipType(relationship['relationshipType']['uuid']) == "patient";
-            }
+            };
 
             $scope.isProviderRelationship = function(relationship) {
                 if(angular.isUndefined(relationship['relationshipType'])) {
                     return false;
                 }
                 return $scope.getRelationshipType(relationship['relationshipType']['uuid']) == "provider";
-            }
+            };
 
             $scope.getRelationshipType = function(uuid) {
                 var searchType;
@@ -69,7 +66,7 @@ angular.module('bahmni.registration')
                     }
                 });
                 return searchType;
-            }
+            };
 
             $scope.searchByPatientName = function (relationship) {
 
@@ -90,6 +87,9 @@ angular.module('bahmni.registration')
                     if(response.data.pageOfResults.length == 0) {
                         return;
                     }
+
+                    console.log(response.data['pageOfResults'][0])
+                    relationship.content = getPatientGenderAndAge(response.data['pageOfResults'][0]);
                     var personUuid = response.data['pageOfResults'][0]['uuid'];
 
                     $rootScope.newlyAddedRelationships[elementIndex].personB = {'uuid':personUuid};
@@ -162,6 +162,11 @@ angular.module('bahmni.registration')
                 delete relationship.patientName;
                 delete relationship.providerName;
                 delete relationship.endDate;
-            }
+            };
+
+            var getPatientGenderAndAge = function (patient) {
+                var patientGenderAndAge = [patient.givenName, patient.age, $rootScope.genderMap[angular.uppercase(patient.gender)]];
+                return patientGenderAndAge.join(", ");
+            };
 
         }]);
