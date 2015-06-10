@@ -24,10 +24,7 @@
         ul li {
             background: $white;
             &.has-child {
-                background: $white;
-                ul li{
-                    background: $white;
-                }
+                background: $lightestGray;
             }
             .tree-list-item {
                 padding-left: 20px;
