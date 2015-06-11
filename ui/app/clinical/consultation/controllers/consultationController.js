@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('bahmni.clinical').controller('ConsultationController',
-    ['$scope', '$rootScope', '$state', '$location', 'clinicalAppConfigService', 'urlHelper', 'contextChangeHandler', 
-        'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext', 'consultationContext',
-        function ($scope, $rootScope, $state, $location, clinicalAppConfigService, urlHelper, contextChangeHandler, 
-                  spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, consultationContext) {
+    ['$scope', '$rootScope', '$state', '$location', 'clinicalAppConfigService', 'urlHelper', 'contextChangeHandler',
+        'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext', 'consultationContext', '$q',
+        function ($scope, $rootScope, $state, $location, clinicalAppConfigService, urlHelper, contextChangeHandler,
+                  spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, consultationContext, $q) {
             $scope.patient = patientContext.patient;
             $scope.consultation = consultationContext;
 
-            $scope.availableBoards = [ ];
+            $scope.availableBoards = [];
 
             $scope.showBoard = function (label) {
                 $rootScope.collapseControlPanel();
@@ -17,7 +17,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             };
 
             $scope.gotoPatientDashboard = function () {
-                if(contextChangeHandler.execute()["allow"]) {
+                if (contextChangeHandler.execute()["allow"]) {
                     $location.path("/patient/" + patientContext.patient.uuid + "/dashboard");
                 }
             };
@@ -29,7 +29,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             $scope.getShorterName = function (value) {
                 return $scope.isLongerName(value) ? value.substring(0, 15) + "..." : value;
             };
-            
+
             var setCurrentBoardBasedOnPath = function () {
                 var currentPath = $location.path();
                 var board = findBoardByUrl(currentPath);
@@ -79,7 +79,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
                 var contextChangeResponse = contextChange();
                 if (!contextChangeResponse["allow"]) {
-                    var errorMessage = contextChangeResponse["errorMessage"] ? contextChangeResponse["errorMessage"]: "Please correct errors in the form. Information not saved";
+                    var errorMessage = contextChangeResponse["errorMessage"] ? contextChangeResponse["errorMessage"] : "Please correct errors in the form. Information not saved";
                     messagingService.showMessage('formError', errorMessage);
                     return;
                 }
@@ -88,7 +88,8 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 return getUrl(board);
             };
 
-            $scope.save = function () {
+            var preSavePromise = function () {
+                var deferred = $q.defer();
                 var contxChange = contextChange();
                 var allowContextChange = contxChange["allow"];
                 if (!allowContextChange) {
@@ -105,19 +106,25 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 tempConsultation.labOrderNote = observationFilter.filter([tempConsultation.labOrderNote])[0];
 
                 var encounterData = new Bahmni.Clinical.EncounterTransactionMapper().map(tempConsultation, $scope.patient, sessionService.getLoginLocationUuid(), retrospectiveEntryService.getRetrospectiveEntry());
+                deferred.resolve(encounterData);
+                return deferred.promise;
+            };
 
-                spinner.forPromise(encounterService.create(encounterData).then(function () {
-                    $state.transitionTo($state.current, $state.params, {
-                        reload: true,
-                        inherit: false,
-                        notify: true
-                    }).then(function () {
+            $scope.save = function () {
+                spinner.forPromise(preSavePromise().then(function (encounterData) {
+                    return encounterService.create(encounterData).then(function () {
+                        return $state.transitionTo($state.current, $state.params, {
+                            reload: true,
+                            inherit: false,
+                            notify: true
+                        }).then(function () {
                             messagingService.showMessage('info', 'Saved');
                         });
-                }).catch(function (error) {
+                    }).catch(function (error) {
                         var message = Bahmni.Clinical.Error.translate(error) || 'An error has occurred on the server. Information not saved.';
                         messagingService.showMessage('formError', message);
-                    }));
+                    })
+                }));
             };
 
             initialize();
