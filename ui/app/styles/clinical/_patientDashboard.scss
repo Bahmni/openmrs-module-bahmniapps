@@ -66,6 +66,7 @@
   @extend %section-grid;
   .dashboard-section {
     border:none;
+    margin-bottom: 0;
     section .form-field{
       border-bottom: none;
     } 
@@ -222,7 +223,7 @@ table.drug-order-table td.drug {
 .placeholder-text {
   font-size: 14px;
   padding: 10px;
-  border-bottom: 1px solid $lightGray;
+  // border-bottom: 1px solid $lightGray;
 }
 .white-popup {
   position: relative;

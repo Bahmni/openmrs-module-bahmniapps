@@ -220,6 +220,24 @@
 .order-fullfilment-contianer{
     .dashboard-section{
         border-right: 0;
+        border-radius: 0;
+        .hierarchy ul li{
+            border-top: 0;
+        }
+    }
+}
+.order-sub-heading-container{
+    .order-sub-heading{
+        font-size: 12px;
+        color: #666;
+        //padding-right: 27px;
+    }
+    .fa-tasks{
+        color: #E8A000;
+        visibility: hidden;
+        &.visible-true{
+            visibility: visible;
+        }
     }
 }
 
