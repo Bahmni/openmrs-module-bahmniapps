@@ -1,4 +1,13 @@
 @font-face {
+    font-family: 'OpenSansSemiBold';
+    src: url($fontPath + '/opensans-semibold-webfont.eot');
+    src: url($fontPath + '/opensans-semibold-webfont.eot?#iefix') format('embedded-opentype'),
+         url($fontPath + '/opensans-semibold-webfont.ttf') format('truetype'),
+         url($fontPath + '/opensans-semibold-webfont.svg#open_sans_lightregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
     font-family: 'OpenSansBold';
     src: url($fontPath + '/opensans-bold-webfont.eot');
     src: url($fontPath + '/opensans-bold-webfont.eot?#iefix') format('embedded-opentype'),

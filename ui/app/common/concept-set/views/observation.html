@@ -17,7 +17,7 @@
             </label>
 
             <div class="field-value" ng-if="observation.isComputed()">
-                <div>{{observation.value}}</div>
+                <div class="compuptedValue" ng-class="{'is-abnormal': observation.abnormalObs.value}">{{observation.value}}</div>
             </div>
 
             <div class="field-value" ng-if="!observation.isComputed()" ng-switch="::observation.getControlType()">
@@ -66,9 +66,9 @@
                 <p ng-switch-default class="field-value info fa fa-info-sign"> The concept data type '::{{observation.dataTypeName}}' is not supported yet.</p>
             </div>
             <small class="hint" ng-show="observation.primaryObs.concept.lowNormal || observation.primaryObs.concept.hiNormal" ng-bind="'(' + observation.primaryObs.concept.lowNormal + ' - ' + observation.primaryObs.concept.hiNormal + ')'"></small>
-            <div ng-if="::observation.abnormalObs" class="fl accept-btn-wrapper">
+            <div ng-if="::observation.abnormalObs && !observation.isComputed()" class="fl accept-btn-wrapper">
                 <button type="button" ng-model="observation.abnormalObs.value" class="small-btn accept-btn grid-row-element"
-                        ng-disabled="!observation.primaryObs.hasValue() || observation.isComputed()" ng-class="{'active': observation.abnormalObs.value}" ng-click="observation.toggleAbnormal()"><i class="fa fa-ok"></i>Abnormal</button>
+                        ng-disabled="!observation.primaryObs.hasValue()" ng-class="{'active': observation.abnormalObs.value}" ng-click="observation.toggleAbnormal()"><i class="fa fa-ok"></i>Abnormal</button>
             </div>
             <div class="checkbox-inline" ng-if="::observation.durationObs" ng-class="{'duration': observation.durationObs, 'computed-field': observation.isComputedAndEditable()}">
                 <span class="for-separator">for</span><duration ng-model="observation.durationObs.value" disabled="!observation.primaryObs.hasValue()" illegal-value="observation.isDurationRequired() && !observation.hasDuration()"></duration>

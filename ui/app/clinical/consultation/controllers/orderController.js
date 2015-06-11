@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('OrderController', ['$scope', 'conceptSetService', 'allOrderables',
-        function ($scope, conceptSetService, allOrderables) {
+    .controller('OrderController', ['$scope', 'allOrderables',
+        function ($scope, allOrderables) {
             $scope.consultation.allOrdersTemplates = $scope.consultation.allOrdersTemplates || {};
             $scope.consultation.testOrders = $scope.consultation.testOrders || [];
             $scope.consultation.allOrdersTemplates = allOrderables;

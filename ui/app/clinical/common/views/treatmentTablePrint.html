@@ -1,11 +1,13 @@
-<table>
+<table class="printPrescription">
     <tr>
+        <th class="sl-no-heading">S. No.</th>
         <th>Drug Name</th>
         <th>Dosage Instructions</th>
-        <th>Start Date</th>
+        <th class="start-date-heading">Start Date</th>
     </tr>
     <tbody ng-repeat="drugOrder in drugOrders| orderBy:'dateActivated':true" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
     <tr>
+        <td>{{$index + 1}}.</td>
         <td class="drug-name" bo-text="drugOrder.getDisplayName()"></td>
         <td class="dosage-form">
             <span bo-show="drugOrder.getDescription()" bo-text="drugOrder.getDescription()"></span>
@@ -15,7 +17,8 @@
         <td bo-text="(drugOrder.effectiveStartDate | bahmniDate)"></td>
     </tr>
     <tr ng-if="drugOrder.additionalInstructions">
-        <td colspan="7" class="inline-notes notes">
+        <td></td>
+        <td colspan="3" class="inline-notes notes">
             <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.additionalInstructions}}</p>
         </td>
     </tr>

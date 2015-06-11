@@ -163,6 +163,18 @@ describe('DateUtil', function () {
             expect(dateUtil.diffInDaysRegardlessOfTime(fromDate, toDate)).toBe(0);
         });
 
+        it('should not change the date time', function () {
+            var fromDate = new Date("10/10/2015");
+            fromDate.setHours(0, 0, 0, 0, 0);
+            var cpOfFromDate = new Date(fromDate);
+            var toDate = new Date("10/10/2015");
+            toDate.setHours(23, 59, 0, 0, 0);
+            var cpOfToDate = new Date(toDate);
+            expect(dateUtil.diffInDaysRegardlessOfTime(fromDate, toDate)).toBe(0);
+            expect(fromDate).toEqual(cpOfFromDate);
+            expect(toDate).toEqual(cpOfToDate);
+        });
+
         it('should return 10 when dates are 10 days apart, regardless of time', function () {
             var fromDate = new Date();
             fromDate.setHours(0, 0, 0, 0, 0);

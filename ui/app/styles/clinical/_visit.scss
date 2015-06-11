@@ -10,6 +10,22 @@
           font-size: 14px;
         }
     }
+      .hierarchy ul li ul li.has-child{
+       font-family:OpenSansSemiBold;
+       background:#eee; 
+       ul li{
+         font-family:OpenSans;
+         background: #fff;
+         &.has-child{
+            font-family:OpenSans;
+             background: #fff;
+         }
+         ul li .tree-list-item .testUnderPanel{
+           width:34.4% !important
+        }
+      }
+    }    
+
 }
 
 .opd-wrapper {overflow-x: hidden;}
@@ -411,6 +427,7 @@ span.range {
   .toggle-btn {
     padding: 2px 5px;
     font-size: 12px;
+    border: 1px #d0d0d0 solid;
   }
 }
 .concept-set-group {
@@ -520,6 +537,10 @@ a.visit:before {
           padding: 4px 11px;   
           border-radius: 0 2px 0 0;
           font-size: 20px;
+          @media screen and (max-width: 1024px) {
+            bottom: -1px;
+            border-radius: 0;
+          }
         }
       }
       .patient-img {

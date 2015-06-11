@@ -2,18 +2,33 @@
 
 var app = angular.module('bahmni.orders');
 app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$stateParams', '$state', '$q', 'patientContext', 'orderService', 'orderObservationService',
-    'orderTypeService', 'sessionService', 'encounterService', 'spinner', 'messagingService', 'appService', '$anchorScroll',
+    'orderTypeService', 'sessionService', 'encounterService', 'spinner', 'messagingService', 'appService', '$anchorScroll', 'orderFulfillmentConfig',
     function ($scope, $rootScope, $stateParams, $state, $q, patientContext, orderService, orderObservationService,
-              orderTypeService, sessionService, encounterService, spinner, messagingService, appService, $anchorScroll) {
+              orderTypeService, sessionService, encounterService, spinner, messagingService, appService, $anchorScroll, orderFulfillmentConfig) {
 
-    var limit = 10;
+
     $scope.patient = patientContext.patient;
-    $scope.formName = $stateParams.orderType + " Fulfillment Form";
+    $scope.formName = $stateParams.orderType + Bahmni.Common.Constants.fulfillmentFormSuffix;
+    $scope.fulfillmentConfig = orderFulfillmentConfig;
     $scope.orderType = $stateParams.orderType;
     $scope.nextPageLoading = false;
     $scope.orders = [];
 
-    $scope.config = appService.getAppDescriptor().getConfigValue("sections");
+
+//    var prepareFulfillmentConfig = function() {
+//        spinner.forPromise(conceptSetService.getConceptSetMembers({name:$scope.formName,v:"custom:(uuid,name,names,conceptClass,setMembers:(uuid,name,names,conceptClass,setMembers:(uuid,name,names,conceptClass,setMembers:(uuid,name,names,conceptClass))))"})).then(function (response) {
+//            var config = {};
+//            var obsConcepts = [];
+//            _.forEach(response.data.results[0].setMembers, function(obsConcept){
+//                obsConcepts.push(obsConcept.name.name);
+//            });
+//            config.conceptNames = obsConcepts;
+//            return config;
+//        });
+//    };
+
+//    $scope.fulfillmentConfig = $scope.fulfillmentConfig? $scope.fulfillmentConfig : prepareFulfillmentConfig();
+        //appService.getAppDescriptor().getConfigValue(Bahmni.Common.Constants.fulfillmentConfiguration);
 
     var getActiveEncounter = function () {
         var currentProviderUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
@@ -27,18 +42,18 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
         });
     };
 
-    var getOrders = function(offset) {
+    $scope.getOrders = function () {
         var patientUuid = patientContext.patient.uuid;
         $scope.orderTypeUuid = orderTypeService.getOrderTypeUuid($stateParams.orderType);
-        return orderService.getOrders(patientUuid, $scope.orderTypeUuid, null, null, null).then(function (response) {
+        var includeObs = false;
+        return orderService.getOrders(patientUuid, $scope.orderTypeUuid, $scope.config.conceptNames, includeObs).then(function (response) {
             var data = response.data;
-            $scope.orders.push.apply($scope.orders, data.results);
-            $scope.noMoreResultsPresent = (data.results.length === 0);
+            $scope.orders.push.apply($scope.orders, data);
             $scope.orders.forEach(function (order) {
-                order.observations = _.filter($scope.encounter.observations, function (observation) {
-                    return observation.orderUuid === order.uuid;
+                order.bahmniObservations = _.filter($scope.encounter.observations, function (observation) {
+                    return observation.orderUuid === order.orderUuid;
                 });
-                if (order.observations.length > 0) {
+                if (order.bahmniObservations.length > 0) {
                     order.showForm = true;
                 }
             });
@@ -48,21 +63,12 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
         order.showForm = !order.showForm;
     };
 
-    $scope.nextOrders = function () {
-        if ($scope.nextPageLoading || $scope.encounter == null) {
-            return;
-        }
-        $scope.nextPageLoading = true;
-        return getOrders($scope.orders.length).then(function() {
-            $scope.nextPageLoading = false;
-        });
-    };
-
     var init = function() {
-        return getActiveEncounter().then($scope.nextOrders);
+        return getActiveEncounter().then($scope.getOrders);
     };
 
     spinner.forPromise(init());
+    $scope.config = $scope.fulfillmentConfig && $scope.fulfillmentConfig || {};
     $anchorScroll();
 
 

@@ -32,6 +32,10 @@
     &.dashboard-sections-left{
       padding: 10px 10px 10px 0px;
     }
+    .disease-date{
+        font-family: OpenSansSemiBold;
+        text-decoration: underline;
+    }
     &.dashboard-sections-right{
       padding: 10px 0px 10px 5px;
     }
@@ -60,7 +64,13 @@
   font-size: 14px;
   position: relative;
   @extend %section-grid;
-
+  .dashboard-section {
+    border:none;
+    margin-bottom: 0;
+    section .form-field{
+      border-bottom: none;
+    } 
+  }
   .ruled-out.diagnosis-name {
     color: $mediumGray;
     text-decoration: line-through;
@@ -213,7 +223,7 @@ table.drug-order-table td.drug {
 .placeholder-text {
   font-size: 14px;
   padding: 10px;
-  border-bottom: 1px solid $lightGray;
+  // border-bottom: 1px solid $lightGray;
 }
 .white-popup {
   position: relative;

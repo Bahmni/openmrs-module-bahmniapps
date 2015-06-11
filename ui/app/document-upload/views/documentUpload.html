@@ -95,7 +95,7 @@
       <span>{{visit.startDatetime | bahmniDate}}</span>
       <small ng-if="visit.stopDatetime">To: </small>
       <span ng-if="visit.stopDatetime">{{visit.stopDatetime | bahmniDate}}</span>
-      <span ng-if="visit.hasImages()" class="containsImageMarker" title="Visit has images"><i class="fa fa-picture"></i></span>
+      <span ng-if="visit.hasImages()" class="containsImageMarker" title="Visit has images"><i class="fa fa-picture-o"></i></span>
       <span ng-if="!visit.stopDatetime" class="currentVisitMarker" title="Current Visit"><i class="fa fa-star"></i></span>
     </h5>
     <div class="visit-content" ng-show="isCurrentVisit(visit)">

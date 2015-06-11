@@ -7,7 +7,6 @@ describe("OrderFulfillmentController", function () {
     var mockOrderObservationService = jasmine.createSpyObj('orderObservationService', ['save']);
     var mockOrderTypeService = jasmine.createSpyObj('orderTypeService', ['getOrderTypeUuid']);
     var mockOrderService = jasmine.createSpyObj('orderService', ['getOrders', 'then']);
-    var mockAppService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
 
     mockEncounterService.activeEncounter.and.callFake(function(param) {
         deferred1 = q.defer();
@@ -24,9 +23,7 @@ describe("OrderFulfillmentController", function () {
     mockOrderService.getOrders.and.callFake(function(){
         deferred = q.defer();
         deferred.resolve({
-            data: {
-                results: [{uuid: "orderOneUuid"}, {uuid: "orderTwoUuid"}]
-            }
+            data:[ {orderUuid: "orderOneUuid"}, {orderUuid: "orderTwoUuid"}]
         });
         return deferred.promise;
     });
@@ -40,7 +37,7 @@ describe("OrderFulfillmentController", function () {
             return "someLocationUuid";
         }
     };
-    var mockStateParams = {orderType: "someOrderType"}
+    var mockStateParams = {orderType: "someOrderType"};
 
     beforeEach(module('bahmni.orders'));
 
@@ -49,9 +46,6 @@ describe("OrderFulfillmentController", function () {
         rootScope = $rootScope;
         rootScope.currentProvider = {uuid: "someProviderUuid"};
         q = $q;
-        mockAppService.getAppDescriptor = function () {
-            return { getConfigValue: function () {} }
-        };
         $controller('OrderFulfillmentController', {
             $scope: scope,
             $rootScope: rootScope,
@@ -63,12 +57,11 @@ describe("OrderFulfillmentController", function () {
             $stateParams: mockStateParams,
             orderService: mockOrderService,
             $q :q,
-            appService:mockAppService
-
+            orderFulfillmentConfig: { conceptNames: ["Blood Pressure"]}
         });
     }));
 
-    it('should get active encounter', function (done) {
+        it('should get active encounter', function (done) {
         expect(mockEncounterService.activeEncounter).toHaveBeenCalled();
         expect(mockEncounterService.activeEncounter.calls.mostRecent().args[0].patientUuid).toEqual("somePatientUuid");
         expect(mockEncounterService.activeEncounter.calls.mostRecent().args[0].locationUuid).toEqual("someLocationUuid");
@@ -91,11 +84,13 @@ describe("OrderFulfillmentController", function () {
 
         expect(mockOrderService.getOrders.calls.mostRecent().args[0]).toEqual("somePatientUuid");
         expect(mockOrderService.getOrders.calls.mostRecent().args[1]).toEqual("someOrderTypeUuid");
+        expect(mockOrderService.getOrders.calls.mostRecent().args[2]).toEqual(["Blood Pressure"]);
+        expect(mockOrderService.getOrders.calls.mostRecent().args[3]).toEqual(false);
         done();
     });
 
     it('should toggle showForm value', function(){
-        var order = {observations: []};
+        var order = {bahmniObservations: []};
         expect(order.showForm).toBeFalsy();
         scope.toggleShowOrderForm(order);
         expect(order.showForm).toBeTruthy();
@@ -103,10 +98,11 @@ describe("OrderFulfillmentController", function () {
 
     it('should filter active encounter observations for order', function(){
         scope.$digest();
-        expect(scope.orders[0].observations.length).toBe(1);
-        expect(scope.orders[0].observations[0].uuid).toEqual("obs1Uuid");
-        expect(scope.orders[1].observations.length).toBe(0);
-
+        expect(scope.orders[0].bahmniObservations.length).toBe(1);
+        expect(scope.orders[0].bahmniObservations[0].uuid).toEqual("obs1Uuid");
+        expect(scope.orders[0].showForm).toBeTruthy();
+        expect(scope.orders[1].bahmniObservations.length).toBe(0);
+        expect(scope.orders[1].showForm).toBeFalsy();
     });
 
     it('should auto open the order section with observations ', function(){

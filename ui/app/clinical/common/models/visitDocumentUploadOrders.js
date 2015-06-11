@@ -13,7 +13,7 @@ Bahmni.Clinical.VisitDocumentUploadOrders = (function () {
                 encounterTransaction.observations.forEach(function (observation) {
                     observation.groupMembers.forEach(function (member) {
                         if (member.concept.name === Bahmni.Common.Constants.documentsConceptName) {
-                            var imageObservation = new Bahmni.Clinical.ImageObservation(member, observation.concept, encounterTransaction.providers[0]);
+                            var imageObservation = new Bahmni.Common.Obs.ImageObservation(member, observation.concept, encounterTransaction.providers[0]);
                             documentUploadObservations.push(imageObservation);
                         }
                     });

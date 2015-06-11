@@ -20,13 +20,14 @@ angular.module('bahmni.common.uiHelper')
     })
     .directive('datepicker', function () {
         var link = function ($scope, element, attrs, ngModel) {
-            var today = new Date();
+            var maxDate = attrs.maxDate;
+            var minDate = attrs.minDate || "-120y";
             element.datepicker({
                 changeYear: true,
                 changeMonth: true,
-                maxDate: today,
-                minDate: "-120y",
-                yearRange: 'c-120:c',
+                maxDate: maxDate,
+                minDate: minDate,
+                yearRange: 'c-120:c+120',
                 dateFormat: 'dd-mm-yy',
                 onSelect: function (dateText) {
                     $scope.$apply(function () {

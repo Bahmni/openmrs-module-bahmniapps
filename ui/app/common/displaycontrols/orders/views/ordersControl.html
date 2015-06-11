@@ -1,9 +1,26 @@
 <section class="dashboard-section ng-scope">
-    <h2 class="section-title">{{orderType}}</h2>
+    <h2 ng-if="orderType" class="section-title">{{orderType}}</h2>
 
-    <div ng-repeat="bahmniOrder in bahmniOrders">
-        <bahmni-observation patient="patient" visitUuid="visitUuid" section="section" config="config"
-                            section-title="getTitle(bahmniOrder)"
-                            observations="bahmniOrder.bahmniObservations" message="message"></bahmni-observation>
-    </div>
+    <section class="block hierarchy">
+        <ul class="form-field">
+            <li ng-repeat="bahmniOrder in ::bahmniOrders">
+                <span class="tree-list-item row-click" ng-click="toggle(bahmniOrder)">
+                    <i class="fa fa-caret-right" ng-hide="bahmniOrder.isOpen"></i>
+                    <i class="fa fa-caret-down" ng-show="bahmniOrder.isOpen"></i>
+                    <span class="obs-date">{{bahmniOrder.conceptName}}</span>
+                    <span class="fr order-sub-heading-container">
+                        <span class="order-sub-heading">
+                              {{bahmniOrder.provider}} {{ bahmniOrder.orderDate | bahmniDateTime }}
+                          </span>
+                        <i ng-class="{'visible-true':bahmniOrder.hasObservations}" class="fa fa-tasks"></i>
+                    </span>
+                </span>
+                <ul bm-show="bahmniOrder.isOpen">
+                    <bahmni-observation patient="patient" visitUuid="visitUuid" section="section" config="config"
+                                        section-title=""
+                                        observations="bahmniOrder.bahmniObservations" message="message"></bahmni-observation>
+                </ul>
+            </li>
+        </ul>
+    </section>
 </section>

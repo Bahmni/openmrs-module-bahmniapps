@@ -55,7 +55,7 @@
                     overflow: hidden;
                     text-overflow: ellipsis;
                     @media (max-width: 1024px) {
-                        width: 132px;
+                        width: 130px;
                     }
                     &.voided{
                       text-decoration: line-through;
@@ -206,12 +206,39 @@
     top: 0;
     right: 0;
     background-color: #8DB529;
-    padding: 5px 10px;
+    padding: 2px 6px;
+    font-size: 13px;
 }
 
 .order-created-date{
-    margin-right: 30px;
+    margin-right: 35px;
     margin-top: 4px;
+}
+.order-provider-nane{
+  margin-right: 10px;
+}
+.order-fullfilment-contianer{
+    .dashboard-section{
+        border-right: 0;
+        border-radius: 0;
+        .hierarchy ul li{
+            border-top: 0;
+        }
+    }
+}
+.order-sub-heading-container{
+    .order-sub-heading{
+        font-size: 12px;
+        color: #666;
+        //padding-right: 27px;
+    }
+    .fa-tasks{
+        color: #E8A000;
+        visibility: hidden;
+        &.visible-true{
+            visibility: visible;
+        }
+    }
 }
 
 // .sample-type {

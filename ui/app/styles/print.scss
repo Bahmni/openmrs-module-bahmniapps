@@ -228,6 +228,17 @@ h3 {
         margin: 0 0 5px;
         font-size: 7.5pt;
     }
+    .visit-summary-page{
+        .hierarchy ul li ul li.has-child{
+           font-family:Arial, sans-serif;
+           ul li{
+             font-family:Arial, sans-serif;
+             &.has-child{
+                font-family:Arial, sans-serif;
+             }             
+          }
+        }    
+    }
     h2.section-title {
         text-align: left;
         color: #000;
@@ -308,6 +319,31 @@ h3 {
             padding: 0;
             height: auto;
             overflow: visible;
+            &.printPrescription{
+                padding-top: 10px;
+                width:100%;
+                table-layout: fixed;
+                tr{
+                    strong{
+                        padding-left: 20px;
+                    }
+                }
+                th{
+                    padding-bottom: 10px;
+                    &.sl-no-heading{
+                        width: 8%;
+                    }
+                    &.start-date-heading{
+                        width: 10%;
+                    }
+                }
+               td{
+                 padding-bottom: 5px;
+                   &:first-child{
+                       padding-left: 14px;
+                   }
+               }
+            }
             &.repeated-table {
                 margin-bottom: 5px;
                 &:last-child {
@@ -567,6 +603,9 @@ h3 {
     table.drug-order-table td.drug {
         border-left: 0 !important;
     }
+    .fa{
+        display: none !important;
+    }
 }
 
 .prescription-print {
@@ -593,6 +632,8 @@ h3 {
 		.dosage-form span {
 			float: left;
 			margin-right: 5px;
+            white-space: normal;
 		}
 	}
 }
+

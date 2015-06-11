@@ -7,7 +7,9 @@
         <span>{{patient.name}} {{'(' + patient.identifier + ')'}}</span>
     </h5>
 
-    <button class="toggle-patient" ng-click="toggleImpression()" ng-if="accessImpression"></button>
+    <button class="toggle-patient" ng-click="toggleImpression()" ng-if="accessImpression">        
+        <i class="fa fa-bars fa-white fa-large"></i>
+    </button>
 
 </header>
 <div class="image-container" ng-class="{'shift': showImpression}">
