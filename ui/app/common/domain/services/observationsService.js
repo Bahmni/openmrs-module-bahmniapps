@@ -5,15 +5,15 @@ angular.module('bahmni.common.domain')
 
         this.fetch = function (patientUuid, conceptNames, scope, numberOfVisits, visitUuid, obsIgnoreList) {
             var params = {concept: conceptNames};
-            if(obsIgnoreList) {
+            if (obsIgnoreList) {
                 params.obsIgnoreList = obsIgnoreList
             }
 
-            if(visitUuid){
+            if (visitUuid) {
                 params.visitUuid = visitUuid;
                 params.scope = scope;
             }
-            else{
+            else {
                 params.patientUuid = patientUuid;
                 params.numberOfVisits = numberOfVisits;
                 params.scope = scope;
@@ -24,7 +24,7 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        this.getObsRelationship = function(targetObsUuid){
+        this.getObsRelationship = function (targetObsUuid) {
             return $http.get(Bahmni.Common.Constants.obsRelationshipUrl, {
                 params: {
                     targetObsUuid: targetObsUuid
@@ -34,35 +34,23 @@ angular.module('bahmni.common.domain')
         };
 
         this.getOrderWithObservations = function (patientUuid, conceptNames, scope, numberOfVisits, visitUuid, obsIgnoreList, orderTypeUuid) {
-                var params = {concept: conceptNames, scope: scope};
-                if(obsIgnoreList) {
-                    params.obsIgnoreList = obsIgnoreList
-                }
-                if(visitUuid){
-                    params.visitUuid = visitUuid;
-                }
-                else{
-                    params.patientUuid = patientUuid;
-                    params.numberOfVisits = numberOfVisits;
-                }
-                if(orderTypeUuid){
-                    params.orderTypeUuid = orderTypeUuid;
-                }
-                return $http.get(Bahmni.Common.Constants.observationsUrl, {
-                    params: params,
-                    withCredentials: true
-                });
-        };
-	
-	/**
-	 * getObservations takes a patientUuid, an array of conceptNames, the scope, and a visitUuid and returns a promise with the observations matching those criteria
-	 */
-	this.getObservations = function(patientUuid, conceptNames, scope, visitUuid) {
-	    var params = {concept: conceptNames, patientUuid: patientUuid, scope: scope, visitUuid: visitUuid};
-	    return $http.get(Bahmni.Common.Constants.observationsUrl, {
+            var params = {concept: conceptNames, scope: scope};
+            if (obsIgnoreList) {
+                params.obsIgnoreList = obsIgnoreList
+            }
+            if (visitUuid) {
+                params.visitUuid = visitUuid;
+            }
+            else {
+                params.patientUuid = patientUuid;
+                params.numberOfVisits = numberOfVisits;
+            }
+            if (orderTypeUuid) {
+                params.orderTypeUuid = orderTypeUuid;
+            }
+            return $http.get(Bahmni.Common.Constants.observationsUrl, {
                 params: params,
                 withCredentials: true
             });
-	}
-
+        };
     }]);

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitController', ['$scope', '$state', 'encounterService', 'clinicalAppConfigService', 'configurations', 'visitSummary','$timeout', 'printer','visitConfig', 'visitHistory', '$stateParams',
+    .controller('VisitController', ['$scope', '$state', 'encounterService', 'clinicalAppConfigService', 'configurations', 'visitSummary', '$timeout', 'printer', 'visitConfig', 'visitHistory', '$stateParams',
         function ($scope, $state, encounterService, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams) {
             var encounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
             $scope.documentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
@@ -50,12 +50,12 @@ angular.module('bahmni.clinical')
             };
 
             $scope.$on("event:printVisitTab", function (event) {
-                printer.printFromScope("common/views/visitTabPrint.html",$scope);
+                printer.printFromScope("common/views/visitTabPrint.html", $scope);
             });
 
             $scope.$on("event:clearVisitBoard", function (event, tab) {
                 $scope.clearBoard = true;
-                $timeout(function(){
+                $timeout(function () {
                     $scope.clearBoard = false;
                 });
             });
@@ -63,8 +63,8 @@ angular.module('bahmni.clinical')
             $scope.loadVisit = function (visitUuid) {
                 $state.go('patient.visit', {visitUuid: visitUuid});
             };
-            
-            var init = function(){
+
+            var init = function () {
                 $scope.visitTabConfig.setVisitUuidsAndPatientUuidToTheSections([$scope.visitUuid], $scope.patientUuid);
                 $scope.visitTabConfig.switchTab($scope.visitTabConfig.getFirstTab());
             };

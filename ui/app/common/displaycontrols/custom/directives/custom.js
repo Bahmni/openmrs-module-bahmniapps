@@ -1,27 +1,37 @@
 'use strict';
 
-angular.module('bahmni.common.displaycontrol.custom',[])
-    .directive('custom',['observationsService','$compile','$http',function(observationsService,$compile,$http){
-	    
-	    var controller = function($scope){
+angular.module('bahmni.common.displaycontrol.custom', [])
+    .directive('custom', ['observationsService', '$compile', '$http', 'spinner', function (observationsService, $compile, $http, spinner) {
 
-	    };
+        var controller = function ($scope) {
 
-	    var linkFunction = function(scope,elem,attr) {
-		var customDirectiveHelper = new CustomDirectiveHelper(scope,$http,observationsService,$compile,elem);
-		customDirectiveHelper.loadScopeAndCompileTemplate();
-	    };
+            $scope.getValue = function (conceptName) {
+                var matchingObs = _.find($scope.birthCertificateObs, function (obs) {
+                        return obs.concept.name == conceptName;
+                    });
+                return matchingObs && matchingObs.valueAsString;
+            };
 
-	    return {
-		restrict: 'E',
-		controller: controller,
-		link: linkFunction,
-		scope: {
-		    patient:"=",
-                    visitUuid:"@",
-                    section:"=",
-		    config:"=",
-		    templateurl:"@"
-                }
-	    }
-     }]);
+            var init = function () {
+                return observationsService.fetch($scope.patient.uuid, $scope.config.conceptNames, "latest", undefined, $scope.visitUuid, undefined).then(function (response) {
+                    $scope.birthCertificateObs = response.data;
+                    $scope.contentUrl = $scope.templateurl;
+                })
+            };
+
+            spinner.forPromise(init());
+        };
+
+        return {
+            restrict: 'E',
+            controller: controller,
+            template: '<ng-include src="contentUrl"/>',
+            scope: {
+                patient: "=",
+                visitUuid: "@",
+                section: "=",
+                config: "=",
+                templateurl: "@"
+            }
+        }
+    }]);
