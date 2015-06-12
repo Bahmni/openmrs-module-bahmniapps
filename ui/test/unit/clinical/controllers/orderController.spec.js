@@ -34,8 +34,8 @@ describe("OrderController", function () {
 
         it("should fetch all orders templates", function () {
             scope.$digest();
-            expect(scope.consultation.allOrdersTemplates['\'Lab Samples\''].name.name).toBe("Lab Samples");
-            expect(scope.consultation.allOrdersTemplates['\'Lab Samples\''].conceptClass.name).toBe("ConvSet");
+            expect(scope.allOrdersTemplates['\'Lab Samples\''].name.name).toBe("Lab Samples");
+            expect(scope.allOrdersTemplates['\'Lab Samples\''].conceptClass.name).toBe("ConvSet");
         });
 
         it("diSelect() should unselect order", function () {

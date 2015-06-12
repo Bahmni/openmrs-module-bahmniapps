@@ -3,15 +3,14 @@
 angular.module('bahmni.clinical')
     .controller('OrderController', ['$scope', 'allOrderables',
         function ($scope, allOrderables) {
-            $scope.consultation.allOrdersTemplates = $scope.consultation.allOrdersTemplates || {};
             $scope.consultation.testOrders = $scope.consultation.testOrders || [];
-            $scope.consultation.allOrdersTemplates = allOrderables;
+            $scope.allOrdersTemplates = allOrderables;
 
             var init = function(){
 
                 $scope.tabs = [];
 
-                _.forEach($scope.consultation.allOrdersTemplates, function(item){
+                _.forEach($scope.allOrdersTemplates, function(item){
                     var conceptName = $scope.getName(item);
                     $scope.tabs.push({name: conceptName ? conceptName : item.name.name, topLevelConcept: item.name.name});
                 });
@@ -33,7 +32,7 @@ angular.module('bahmni.clinical')
 
             $scope.getOrderTemplate = function(templateName) {
                 var key = '\''+templateName+'\'';
-                return $scope.consultation.allOrdersTemplates[key];
+                return $scope.allOrdersTemplates[key];
             };
 
             $scope.updateSelectedOrdersForActiveTab = function(){
