@@ -2,9 +2,9 @@
 
 angular.module('bahmni.clinical')
     .controller('DrugOrderHistoryController', ['$scope', '$filter', '$stateParams', 'prescribedDrugOrders',
-        'treatmentConfig', 'TreatmentService', 'spinner', 'clinicalAppConfigService',
+        'treatmentConfig', 'TreatmentService', 'spinner', 'clinicalAppConfigService','drugOrderHistoryHelper',
         function ($scope, $filter, $stateParams, prescribedDrugOrders, treatmentConfig, treatmentService, spinner,
-                  clinicalAppConfigService) {
+                  clinicalAppConfigService, drugOrderHistoryHelper) {
 
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
             var DateUtil = Bahmni.Common.Util.DateUtil;
@@ -21,23 +21,6 @@ angular.module('bahmni.clinical')
                 createRecentDrugOrderGroup(activeAndScheduledDrugOrders);
             };
 
-            var getRefillableDrugOrders = function (activeAndScheduledDrugOrders) {
-                activeAndScheduledDrugOrders = drugOrderUtil.sortByDateAndTimeAndOrderNumber(activeAndScheduledDrugOrders);
-                var refillableDrugOrders = activeAndScheduledDrugOrders;
-
-                var previousVisitDrugOrders = drugOrderUtil.sortByDateAndTimeAndOrderNumber(getPreviousVisitDrugOrders());
-                _.each(previousVisitDrugOrders, function (previousVisitDrugOrder) {
-                    var isActiveOrScheduled = _.find(activeAndScheduledDrugOrders, function (activeOrScheduledDrugOrder) {
-                        return previousVisitDrugOrder.drug.uuid === activeOrScheduledDrugOrder.drug.uuid;
-                    });
-                    if (!isActiveOrScheduled) {
-                        refillableDrugOrders.push(previousVisitDrugOrder);
-                    }
-                });
-                return refillableDrugOrders;
-            };
-
-
             var getPreviousVisitDrugOrders = function () {
                 var currentVisitIndex = _.findIndex($scope.consultation.drugOrderGroups, function (group) {
                     return group.isCurrentVisit;
@@ -53,7 +36,8 @@ angular.module('bahmni.clinical')
                 var refillableGroup = {
                     label: 'Recent',
                     selected: true,
-                    drugOrders: getRefillableDrugOrders(activeAndScheduledDrugOrders)
+                    drugOrders: drugOrderHistoryHelper.getRefillableDrugOrders(activeAndScheduledDrugOrders,
+                        getPreviousVisitDrugOrders())
                 };
                 $scope.consultation.drugOrderGroups.unshift(refillableGroup);
             };

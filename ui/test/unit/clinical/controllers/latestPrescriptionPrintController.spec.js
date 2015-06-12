@@ -33,9 +33,9 @@ describe("LatestPrescriptionPrintController", function () {
     }));
 
     var loadController = function (visitActionServiceExpectation, messageServiceExpectation) {
-        treatmentService = jasmine.createSpyObj('TreatmentService', ['getPrescribedAndActiveDrugOrders']);
-        drugOrderPromise = specUtil.createServicePromise('getPrescribedAndActiveDrugOrders');
-        treatmentService.getPrescribedAndActiveDrugOrders.and.returnValue(drugOrderPromise);
+        treatmentService = jasmine.createSpyObj('TreatmentService', ['getActiveDrugOrders']);
+        drugOrderPromise = specUtil.createServicePromise('getActiveDrugOrders');
+        treatmentService.getActiveDrugOrders.and.returnValue(drugOrderPromise);
 
         visitActionService = jasmine.createSpyObj('visitActionService', ['printPrescription']);
         visitActionService.printPrescription.and.callFake(visitActionServiceExpectation);
@@ -72,7 +72,7 @@ describe("LatestPrescriptionPrintController", function () {
 
             loadController(visitActionServiceExpectation, messageServiceExpectation);
 
-            drugOrderPromise.callThenCallBack({data: {visitDrugOrders: []}});
+            drugOrderPromise.callThenCallBack([]);
             expect(messagingService.showMessage).toHaveBeenCalled();
             expect(visitActionService.printPrescription).toHaveBeenCalled();
 
