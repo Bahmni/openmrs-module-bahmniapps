@@ -5,7 +5,7 @@
         <th>Dosage Instructions</th>
         <th class="start-date-heading">Start Date</th>
     </tr>
-    <tbody ng-repeat="drugOrder in drugOrders| orderBy:'dateActivated':true" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
+    <tbody ng-repeat="drugOrder in drugOrders" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
     <tr>
         <td>{{$index + 1}}.</td>
         <td class="drug-name" bo-text="drugOrder.getDisplayName()"></td>

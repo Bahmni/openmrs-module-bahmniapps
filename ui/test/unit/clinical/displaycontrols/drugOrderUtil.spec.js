@@ -114,70 +114,33 @@ describe("DrugOrderUtil", function () {
 
     });
 
-    describe("sortByDateAndTimeAndOrderNumber", function () {
-        it("should sort by date in descending order if dates are different", function () {
-            var treatment1 = sampleTreatment("drug.uuid1", "instructions", 1, "doseUnits", "frequency", "route", 1420088400000, 1420261200000, 3, "Day(s)", "addn1", true);
-            treatment1.effectiveStartDate = new Date(1433788200000);
-            var treatment2 = sampleTreatment("drug.uuid2", "instructions", 1, "doseUnits", "frequency", "route", 1420347600000, 1420520400000, 3, "Day(s)", "addn2", true);
-            treatment2.effectiveStartDate = new Date(1433874600000);
+    describe("sortDrugs", function () {
+        it("should sort drugs by date desc and time asc", function () {
+            var treatment1 = sampleTreatment("drug.uuid1", "instructions", 1, "doseUnits", "frequency", "route", undefined, new Date(), 3, "Day(s)", "addn2", true);
+            var treatment2 = sampleTreatment("drug.uuid2", "instructions", 1, "doseUnits", "frequency", "route", undefined, new Date(), 3, "Day(s)", "addn2", true);
+            var treatment3 = sampleTreatment("drug.uuid3", "instructions", 1, "doseUnits", "frequency", "route", undefined, new Date(), 3, "Day(s)", "addn2", true);
+            var treatment4 = sampleTreatment("drug.uuid4", "instructions", 1, "doseUnits", "frequency", "route", undefined, new Date(), 3, "Day(s)", "addn2", true);
+            treatment1.effectiveStartDate = new Date(2015, 0, 1, 10, 0, 0);
+            treatment2.effectiveStartDate = new Date(2015, 0, 1, 15, 30, 0);
+            treatment3.effectiveStartDate = new Date(2015, 1, 1, 13, 30, 0);
+            treatment4.effectiveStartDate = new Date(2015, 1, 1, 13, 0, 0);
+            var sortedArray = Bahmni.Clinical.DrugOrder.Util.sortDrugs([treatment1, treatment2, treatment3, treatment4]);
 
-            var continuousTreatments = Bahmni.Clinical.DrugOrder.Util.sortByDateAndTimeAndOrderNumber([treatment1, treatment2]);
-            expect(continuousTreatments.length).toBe(2);
-            expect(continuousTreatments[0].drug.uuid).toBe("drug.uuid2");
-            expect(continuousTreatments[1].drug.uuid).toBe("drug.uuid1");
+            expect(sortedArray).toEqual([treatment4, treatment3, treatment1, treatment2]);
         });
 
-        it("should sort by date in ascending order if dates are same with different time", function () {
-            var treatment1 = sampleTreatment("drug.uuid1", "instructions", 1, "doseUnits", "frequency", "route", 1420088400000, 1420261200000, 3, "Day(s)", "addn1", true);
-            treatment1.effectiveStartDate = new Date(1433824820000);
-            var treatment2 = sampleTreatment("drug.uuid2", "instructions", 1, "doseUnits", "frequency", "route", 1420347600000, 1420520400000, 3, "Day(s)", "addn2", true);
-            treatment2.effectiveStartDate = new Date(1433749220000);
-
-            var continuousTreatments = Bahmni.Clinical.DrugOrder.Util.sortByDateAndTimeAndOrderNumber([treatment1, treatment2]);
-            expect(continuousTreatments.length).toBe(2);
-            expect(continuousTreatments[0].drug.uuid).toBe("drug.uuid1");
-            expect(continuousTreatments[1].drug.uuid).toBe("drug.uuid2");
-        });
-
-        it("should sort by order Number in ascending order if date and time are same", function () {
-            var treatment3 = sampleTreatment("drug.uuid3", "instructions", 1, "doseUnits", "frequency", "route", 1420347600000, 1420520400000, 3, "Day(s)", "addn2", true);
-            treatment3.effectiveStartDate = new Date(1433749220000);
-            treatment3.orderNumber = 3;
-            var treatment2 = sampleTreatment("drug.uuid2", "instructions", 1, "doseUnits", "frequency", "route", 1420347600000, 1420520400000, 3, "Day(s)", "addn2", true);
-            treatment2.effectiveStartDate = new Date(1433749220000);
-            treatment2.orderNumber = 2;
-            var treatment1 = sampleTreatment("drug.uuid1", "instructions", 1, "doseUnits", "frequency", "route", 1420088400000, 1420261200000, 3, "Day(s)", "addn1", true);
-            treatment1.effectiveStartDate = new Date(1433749220000);
+        it("Same date and time objects should be ordered by order number", function () {
+            var date = new Date();
+            var treatment1 = sampleTreatment("drug.uuid1", "instructions", 1, "doseUnits", "frequency", "route", undefined, new Date(), 3, "Day(s)", "addn2", true);
+            var treatment2 = sampleTreatment("drug.uuid2", "instructions", 1, "doseUnits", "frequency", "route", undefined, new Date(), 3, "Day(s)", "addn2", true);
+            var treatment3 = sampleTreatment("drug.uuid3", "instructions", 1, "doseUnits", "frequency", "route", undefined, new Date(), 3, "Day(s)", "addn2", true);
             treatment1.orderNumber = 1;
-
-
-            var continuousTreatments = Bahmni.Clinical.DrugOrder.Util.sortByDateAndTimeAndOrderNumber([treatment1, treatment2, treatment3]);
-            expect(continuousTreatments.length).toBe(3);
-            expect(continuousTreatments[0].drug.uuid).toBe("drug.uuid1");
-            expect(continuousTreatments[1].drug.uuid).toBe("drug.uuid2");
-            expect(continuousTreatments[2].drug.uuid).toBe("drug.uuid3");
-        });
-
-        it("should 1) sort by date in descending order AND " +
-        "2) sort by ascending order with same date and different time AND " +
-        "3) sort by order number in ascending order if date and time are same", function () {
-            var treatment1 = sampleTreatment("drug.uuid1", "instructions", 1, "doseUnits", "frequency", "route", 1420347600000, 1420520400000, 3, "Day(s)", "addn2", true);
-            treatment1.effectiveStartDate = new Date(1439264420000);
-            var treatment2 = sampleTreatment("drug.uuid2", "instructions", 1, "doseUnits", "frequency", "route", 1420088400000, 1420261200000, 3, "Day(s)", "addn1", true);
-            treatment2.effectiveStartDate = new Date(1433738420000);
-            var treatment3 = sampleTreatment("drug.uuid3", "instructions", 1, "doseUnits", "frequency", "route", 1420347600000, 1420520400000, 3, "Day(s)", "addn2", true);
-            treatment3.effectiveStartDate = new Date(1433749220000);
+            treatment2.orderNumber = 2;
             treatment3.orderNumber = 3;
-            var treatment4 = sampleTreatment("drug.uuid4", "instructions", 1, "doseUnits", "frequency", "route", 1420347600000, 1420520400000, 3, "Day(s)", "addn2", true);
-            treatment4.effectiveStartDate = new Date(1433749220000);
-            treatment4.orderNumber = 4;
-
-            var continuousTreatments = Bahmni.Clinical.DrugOrder.Util.sortByDateAndTimeAndOrderNumber([treatment4, treatment2, treatment1, treatment3]);
-            expect(continuousTreatments.length).toBe(4);
-            expect(continuousTreatments[0].drug.uuid).toBe("drug.uuid1");
-            expect(continuousTreatments[1].drug.uuid).toBe("drug.uuid2");
-            expect(continuousTreatments[2].drug.uuid).toBe("drug.uuid3");
-            expect(continuousTreatments[3].drug.uuid).toBe("drug.uuid4");
+            var sortedArray = Bahmni.Clinical.DrugOrder.Util.sortDrugs([treatment3, treatment1, treatment2]);
+            expect(sortedArray).toEqual([treatment1, treatment2, treatment3]);
         });
+
     });
+
 });
