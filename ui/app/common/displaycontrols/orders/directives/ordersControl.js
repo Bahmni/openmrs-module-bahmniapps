@@ -8,7 +8,7 @@ angular.module('bahmni.common.displaycontrol.orders')
                 var includeAllObs = true;
                 var getOrders = function() {
                     return orderService.getOrders($scope.patient.uuid, $scope.orderTypeUuid, $scope.config.conceptNames, includeAllObs, $scope.config.numberOfVisits,
-                       $scope.config.obsIgnoreList, $scope.visitUuid, $scope.orderUuid, $scope.config.scope).then(function(response) {
+                       $scope.config.obsIgnoreList, $scope.visitUuid, $scope.orderUuid).then(function(response) {
                        $scope.bahmniOrders = response.data;
                     });
                 };
@@ -24,7 +24,7 @@ angular.module('bahmni.common.displaycontrol.orders')
                     element.isOpen = !element.isOpen;
                 };
 
-                $scope.message = "No Fulfillment for this order.";
+                $scope.message = Bahmni.Common.Constants.messageForNoFulfillment;
 
                 spinner.forPromise(init());
             };

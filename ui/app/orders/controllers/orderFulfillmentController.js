@@ -14,22 +14,6 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
     $scope.nextPageLoading = false;
     $scope.orders = [];
 
-
-//    var prepareFulfillmentConfig = function() {
-//        spinner.forPromise(conceptSetService.getConceptSetMembers({name:$scope.formName,v:"custom:(uuid,name,names,conceptClass,setMembers:(uuid,name,names,conceptClass,setMembers:(uuid,name,names,conceptClass,setMembers:(uuid,name,names,conceptClass))))"})).then(function (response) {
-//            var config = {};
-//            var obsConcepts = [];
-//            _.forEach(response.data.results[0].setMembers, function(obsConcept){
-//                obsConcepts.push(obsConcept.name.name);
-//            });
-//            config.conceptNames = obsConcepts;
-//            return config;
-//        });
-//    };
-
-//    $scope.fulfillmentConfig = $scope.fulfillmentConfig? $scope.fulfillmentConfig : prepareFulfillmentConfig();
-        //appService.getAppDescriptor().getConfigValue(Bahmni.Common.Constants.fulfillmentConfiguration);
-
     var getActiveEncounter = function () {
         var currentProviderUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
         return encounterService.activeEncounter({
@@ -46,7 +30,7 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
         var patientUuid = patientContext.patient.uuid;
         $scope.orderTypeUuid = orderTypeService.getOrderTypeUuid($stateParams.orderType);
         var includeObs = false;
-        return orderService.getOrders(patientUuid, $scope.orderTypeUuid, $scope.config.conceptNames, includeObs, $scope.config.numberOfVisits, $scope.config.obsIgnoreList, null, $scope.orderUuid, $scope.config.scope).then(function (response) {
+        return orderService.getOrders(patientUuid, $scope.orderTypeUuid, $scope.config.conceptNames, includeObs, $scope.config.numberOfVisits, $scope.config.obsIgnoreList, null, $scope.orderUuid).then(function (response) {
             var data = response.data;
             $scope.orders.push.apply($scope.orders, data);
             $scope.orders.forEach(function (order) {
@@ -68,7 +52,7 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
     };
 
     spinner.forPromise(init());
-    $scope.config = $scope.fulfillmentConfig && $scope.fulfillmentConfig || {};
+    $scope.config = $scope.fulfillmentConfig || {};
     $anchorScroll();
 
 
