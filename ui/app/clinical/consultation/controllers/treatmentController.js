@@ -33,11 +33,6 @@ angular.module('bahmni.clinical')
             markVariable("startNewDrugEntry");
 
             var drugOrderHistory = null;
-            $scope.treatmentConfig.durationUnits = [
-                {name: "Day(s)", factor: 1},
-                {name: "Week(s)", factor: 7},
-                {name: "Month(s)", factor: 30}
-            ];
 
             var newTreatment = function () {
 
