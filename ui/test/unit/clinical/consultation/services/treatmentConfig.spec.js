@@ -5,12 +5,11 @@ describe('treatmentConfig', function() {
     beforeEach(module('bahmni.clinical'));
     beforeEach(module('bahmni.common.appFramework'));
 
-    var _treatmentService;
     beforeEach(module(function ($provide) {
-        _treatmentService = jasmine.createSpyObj('treatmentService', ['getConfig']);
+        var treatmentService = jasmine.createSpyObj('treatmentService', ['getConfig']);
         var config = specUtil.respondWith({data: {}});
-        _treatmentService.getConfig.and.returnValue(config);
-        $provide.value('TreatmentService', _treatmentService);
+        treatmentService.getConfig.and.returnValue(config);
+        $provide.value('TreatmentService', treatmentService);
     }));
 
     beforeEach(inject(['treatmentConfig', function (treatmentConfig) {
