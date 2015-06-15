@@ -2,13 +2,9 @@
     <div class="opd-header-top">
         <header>
             <bm-back-links></bm-back-links>
-            <a class="back-btn-link" id="dashboard-link" ng-href="../clinical/#/patient/{{patient.uuid}}/dashboard"
-               title="Back to {{patient.name}} Dashboard">
-                <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
-              <span class="patient-info">
-                <span class="patient-name" >{{patient.name}} </span>
-                <span class="patient-id">{{patient.identifier}}</span>
-            </span>
+            <a class="back-btn" id="dashboard-link" ng-href="../clinical/#/patient/{{patient.uuid}}/dashboard" target="_blank"
+               title="Go to Clinical Dashboard">
+                <i class="fa fa-stethoscope fa-white"></i>
             </a>
 
         </header>

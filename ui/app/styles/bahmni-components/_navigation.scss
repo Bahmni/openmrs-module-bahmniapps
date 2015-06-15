@@ -2,6 +2,16 @@
   margin-top:20px;
   @include clearfix();
   ul{
+    @media screen and (max-width: 1024px){
+      &.consultation-tabs{
+        li.tab-item{
+          a{
+            padding: 16px 15px 16px;
+            font-size: 12px;
+          }
+        }
+      }
+    }
     li.tab-item {
         float:left;
         margin-bottom: -1px;

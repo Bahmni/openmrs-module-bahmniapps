@@ -2,8 +2,9 @@
 
     <div class="opd-header-bottom tabs">    
         <bm-back-links></bm-back-links>
-        <a class="back-btn-link" id="dashboard-link" ng-href="../adt/#/patient/{{patient.uuid}}/visit/{{consultation.visitUuid}}/">
-            <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
+        <a class="back-btn" id="dashboard-link" ng-href="../adt/#/patient/{{patient.uuid}}/visit/{{consultation.visitUuid}}/"
+           target="_blank" title="Go to IPD dashboard">
+            <i class="fa fa-bed fa-white"></i>
         </a>
         <a class="back-btn-link" id="dashboard-link" ng-click="gotoPatientDashboard()" title="Back to {{patient.name}} Dashboard">
               <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
@@ -14,7 +15,7 @@
         </a>
            
 
-        <ul class="header-tabs">
+        <ul class="header-tabs consultation-tabs">
             <li class="tab-item" ng-repeat="board in availableBoards" ng-class="{'tab-selected':currentBoard.label==board.label}">
                 <a ng-click="showBoard(board.label)">{{board.label}}</a>
             </li>
