@@ -7,7 +7,6 @@ describe("OrderFulfillmentController", function () {
     var mockOrderObservationService = jasmine.createSpyObj('orderObservationService', ['save']);
     var mockOrderTypeService = jasmine.createSpyObj('orderTypeService', ['getOrderTypeUuid']);
     var mockOrderService = jasmine.createSpyObj('orderService', ['getOrders', 'then']);
-    var mockAppService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
 
     mockEncounterService.activeEncounter.and.callFake(function(param) {
         deferred1 = q.defer();
@@ -47,15 +46,6 @@ describe("OrderFulfillmentController", function () {
         rootScope = $rootScope;
         rootScope.currentProvider = {uuid: "someProviderUuid"};
         q = $q;
-        mockAppService.getAppDescriptor = function () {
-            return { getConfigValue: function () {
-                return {
-                    someOrderType: {
-                        conceptNames: ["Blood Pressure"]
-                    }
-                }
-            } }
-        };
         $controller('OrderFulfillmentController', {
             $scope: scope,
             $rootScope: rootScope,
@@ -67,8 +57,7 @@ describe("OrderFulfillmentController", function () {
             $stateParams: mockStateParams,
             orderService: mockOrderService,
             $q :q,
-            appService:mockAppService
-
+            orderFulfillmentConfig: { conceptNames: ["Blood Pressure"]}
         });
     }));
 
