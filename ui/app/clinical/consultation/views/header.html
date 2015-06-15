@@ -2,7 +2,9 @@
 
     <div class="opd-header-bottom tabs">    
         <bm-back-links></bm-back-links>
-       
+        <a class="back-btn-link" id="dashboard-link" ng-href="../adt/#/patient/{{patient.uuid}}/visit/{{consultation.visitUuid}}/">
+            <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
+        </a>
         <a class="back-btn-link" id="dashboard-link" ng-click="gotoPatientDashboard()" title="Back to {{patient.name}} Dashboard">
               <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
               <span class="patient-info">
