@@ -52,7 +52,10 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             abstract: true,
             views: {
                 'header': {
-                    templateUrl: 'views/headerAdt.html'
+                    templateUrl: 'views/headerAdt.html',
+                    controller: function ($scope){
+                        $scope.showClinicalDashboardLink = true;
+                    }
                 },
                 'content': {
                     template: '<ui-view/>'

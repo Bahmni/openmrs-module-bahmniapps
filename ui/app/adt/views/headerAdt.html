@@ -2,7 +2,7 @@
     <div class="opd-header-top">
         <header>
             <bm-back-links></bm-back-links>
-            <a class="back-btn" id="dashboard-link" ng-href="../clinical/#/patient/{{patient.uuid}}/dashboard" target="_blank"
+            <a class="back-btn" ng-if="showClinicalDashboardLink" ng-href="../clinical/#/patient/{{patient.uuid}}/dashboard" target="_blank"
                title="Go to Clinical Dashboard">
                 <i class="fa fa-stethoscope fa-white"></i>
             </a>
