@@ -32,6 +32,10 @@ $bed-info-bgcolor:  $mediumGray;
   
   .bed-assignment-inner-wrapper{
     display: inline-block;
+    li{
+      background: $white;
+      border:none;
+    }
   }
    .bed-type, .bed-number {
       position: absolute;
@@ -150,6 +154,13 @@ $bed-info-bgcolor:  $mediumGray;
     color: #fff;
     text-align: center;
     font-size: 12px;
+    border: none;
+    background: none;
+    cursor: default;
+    &:hover {
+      border: none;
+      background: none;
+    }
     &:first-child {
       border-bottom: 1px solid $lightGray;
       margin-bottom: 2px;

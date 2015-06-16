@@ -23,7 +23,7 @@
                 </div>
             </form>
         </span>
-        <span ng-if="!search.isCurrentSearchLookUp()">    
+        <span ng-if="search.searchType && !search.isCurrentSearchLookUp()">
             <form name="searchPatientForm" ng-submit="searchPatients()">
                 <div class="search-patient-id left">
                     <input type="text" id="patientIdentifier" ng-model="search.searchParameter"
