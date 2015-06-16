@@ -4,50 +4,42 @@
 angular.module('adt', ['bahmni.common.patient', 'bahmni.common.patientSearch', 'bahmni.common.uiHelper', 'bahmni.common.conceptSet', 'authentication', 'bahmni.common.appFramework',
     'httpErrorInterceptor', 'bahmni.adt', 'bahmni.common.domain', 'bahmni.common.config', 'ui.router', 'bahmni.common.util', 'bahmni.common.routeErrorHandler',
     'bahmni.common.displaycontrol.dashboard', 'bahmni.common.displaycontrol.observation', 'bahmni.common.displaycontrol.disposition', 'bahmni.common.displaycontrol.admissiondetails',
-    'bahmni.common.obs', 'bahmni.common.displaycontrol.patientprofile', 'bahmni.common.displaycontrol.diagnosis','RecursionHelper','ngSanitize', 'bahmni.common.uiHelper']);
+    'bahmni.common.obs', 'bahmni.common.displaycontrol.patientprofile', 'bahmni.common.displaycontrol.diagnosis', 'RecursionHelper', 'ngSanitize', 'bahmni.common.uiHelper']);
 angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise('/patient/search');
+
+    $urlRouterProvider.otherwise('/home');
     var homeBackLink = {label: "", url: "../home/", icon: "fa-home"};
-    var patientSearchBackLink = {label: "", url: "#/patient/search", accessKey: 'p', icon: "fa-users"};
-    $stateProvider.state('patientsearch', {
-        url: '/patient/search',
-        data: {
-            backLinks: [homeBackLink]
-        },
-        views: {
-            'content': {
-                templateUrl: '../common/patient-search/views/patientsList.html',
-                controller: 'PatientsListController'
+    var adtHomeBackLink = {label: "", url: "#/home", accessKey: 'p', icon: "fa-users"};
+
+    $stateProvider
+        .state('home', {
+            url: '/home',
+            data: {
+                backLinks: [homeBackLink]
             },
-            'additional-header':{
-                templateUrl:'views/headerAdtHome.html'
-            }
-        },
-        resolve: {
-            initialization: 'initialization'
-        }
-    }).state('wardDetails', {
-        url: '/wardList',
-        data: {
-                backLinks: [homeBackLink, patientSearchBackLink]
-        },
-        views: {
-            'header': {
-                templateUrl: 'views/headerAdt.html'
+            views: {
+                'content': {
+                    templateUrl: 'views/home.html',
+                    controller: function ($scope, appService) {
+                        $scope.isBedManagementEnabled = appService.getAppDescriptor().getConfig("isBedManagementEnabled").value;
+                    }
+                },
+                'ward-list@home': {
+                    templateUrl: 'views/wardDetails.html',
+                    controller: 'WardDetailsController'
+                },
+                'additional-header': {
+                    templateUrl: 'views/headerAdt.html'
+                }
             },
-            'content': {
-                templateUrl: 'views/wardDetails.html',
-                controller: 'WardDetailsController'
+            resolve: {
+                initialization: 'initialization'
             }
-        },
-        resolve: {
-            initialization: 'initialization'
-        }
-    })
+        })
         .state('patient', {
             url: '/patient/:patientUuid',
             data: {
-                backLinks: [homeBackLink, patientSearchBackLink]
+                backLinks: [homeBackLink, adtHomeBackLink]
             },
             abstract: true,
             views: {
@@ -72,7 +64,7 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                 }
             }
         })
-        .state('patient.adt',{
+        .state('patient.adt', {
             url: '/visit/:visitUuid',
             abstract: true,
             template: '<ui-view/>'
