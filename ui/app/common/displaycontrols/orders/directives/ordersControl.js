@@ -34,11 +34,11 @@ angular.module('bahmni.common.displaycontrol.orders')
                 templateUrl:"../common/displaycontrols/orders/views/ordersControl.html",
                 scope:{
                     patient:"=",
-                    visitUuid:"@",
                     section:"=",
                     orderType:"=",
                     orderUuid:"=",
-                    config:"="
+                    config:"=",
+                    visitUuid:"="
                 }
             }
         }]);

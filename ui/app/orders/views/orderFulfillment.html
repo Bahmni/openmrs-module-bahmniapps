@@ -1,26 +1,26 @@
 <div>
     <div>
-            <div ng-repeat="order in orders" class="concept-set-group section-grid order-fullfilment-contianer">
-                <div class="concept-set-title" ng-click="toggleShowOrderForm(order)">
-                    <h2 class="section-title">
-                        <i class="fa fa-caret-right" ng-hide="order.showForm"></i>
-                        <i class="fa fa-caret-down" ng-show="order.showForm"></i>
-                        <span>{{order.conceptName}}</span>
-                        <span class="fr">
-                            <span class="order-provider-nane">{{order.provider}}</span>
-                            <span class="order-created-date">{{order.orderDate | bahmniDateTime}}</span>
-                        </span>
-                        <span ng-if="!order.hasObservations" class="new-order-highlight">New</span>
-                    </h2>
-                </div>
-                <div ng-if="order.showForm">
-                    <orders-control patient="patient" order-uuid="order.orderUuid" config="config" section="config" message="message" show-title="false"></orders-control>
-                    <concept-set patient="patient" ng-if="order.showForm"
-                        concept-set-name="formName"
-                        observations="order.bahmniObservations" show-title="false">
-                    </concept-set>
-                </div>
+        <div ng-repeat="order in orders" class="concept-set-group section-grid order-fullfilment-contianer">
+            <div class="concept-set-title" ng-click="toggleShowOrderForm(order)">
+                <h2 class="section-title">
+                    <i class="fa fa-caret-right" ng-hide="order.showForm"></i>
+                    <i class="fa fa-caret-down" ng-show="order.showForm"></i>
+                    <span>{{order.conceptName}}</span>
+                    <span class="fr">
+                        <span class="order-provider-nane">{{order.provider}}</span>
+                        <span class="order-created-date">{{order.orderDate | bahmniDateTime}}</span>
+                    </span>
+                    <span ng-if="!order.hasObservations" class="new-order-highlight">New</span>
+                </h2>
             </div>
+            <div ng-if="order.showForm">
+                <orders-control patient="patient" order-uuid="order.orderUuid" config="config" section="config" message="message" show-title="false"></orders-control>
+                <concept-set patient="patient" ng-if="order.showForm"
+                    concept-set-name="formName"
+                    observations="order.bahmniObservations" show-title="false">
+                </concept-set>
+            </div>
+        </div>
 
     </div>
     <div ng-show="orders && orders.length == 0">

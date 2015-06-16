@@ -6,7 +6,7 @@
 <div ng-if="!clearBoard">
     <div ng-repeat="section in visitTabConfig.currentTab.sections">
         <div ng-switch="section.type">
-            <div ng-switch-when="patientInformation">
+            <div ng-switch-when="patintInformation">
                 <section class="block dashboard-section" ng-if="section.config">
                     <patient-profile patient="patient" visit-summary="visitSummary"
                                      config="section.config"></patient-profile>
@@ -72,6 +72,13 @@
                 <section class="dashboard-section">
                     <div ng-if="section.config">
                         <observation-graph visit-uuid="visitUuid" params="section" patient-uuid="patient.uuid"></observation-graph>
+                    </div>
+                </section>
+            </div>
+            <div data-ng-switch-when="order">
+                <section class="dashboard-section">
+                    <div ng-if="section.config">
+                        <orders-control visit-uuid="visitUuid" patient="patient" order-type="section.config.orderType" config="section.config" show-title="true"></orders-control>
                     </div>
                 </section>
             </div>
