@@ -42,4 +42,17 @@ describe('Order Service', function () {
         expect(mockHttp.get.calls.mostRecent().args[1].params.patientUuid).toEqual("somePatientUuid");
         expect(mockHttp.get.calls.mostRecent().args[1].params.orderTypeUuid).toEqual(undefined);
     });
+
+    it('getOrders should return orders and observations based on visitUuid if specified', function (done) {
+        orderService.getOrders("somePatientUuid", null, null, true, 1, 10, "someVisitUuid", "someOrderUuid").then(function(response) {
+            expect(response).toEqual("success");
+            done();
+        });
+        expect(mockHttp.get).toHaveBeenCalled();
+        expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.bahmniOrderUrl);
+        expect(mockHttp.get.calls.mostRecent().args[1].params.orderUuid).toEqual("someOrderUuid");
+        expect(mockHttp.get.calls.mostRecent().args[1].params.patientUuid).toEqual("somePatientUuid");
+        expect(mockHttp.get.calls.mostRecent().args[1].params.orderTypeUuid).toEqual(undefined);
+        expect(mockHttp.get.calls.mostRecent().args[1].params.visitUuid).toEqual("someVisitUuid");
+    });
 });

@@ -30,7 +30,7 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
         var patientUuid = patientContext.patient.uuid;
         $scope.orderTypeUuid = orderTypeService.getOrderTypeUuid($stateParams.orderType);
         var includeObs = false;
-        return orderService.getOrders(patientUuid, $scope.orderTypeUuid, $scope.config.conceptNames, includeObs, $scope.config.numberOfVisits, $scope.config.obsIgnoreList, null, $scope.orderUuid).then(function (response) {
+        return orderService.getOrders(patientUuid, $scope.orderTypeUuid, $scope.config.conceptNames, includeObs, $scope.config.numberOfVisits, $scope.config.obsIgnoreList, $scope.visitUuid, $scope.orderUuid).then(function (response) {
             var data = response.data;
             $scope.orders.push.apply($scope.orders, data);
             $scope.orders.forEach(function (order) {

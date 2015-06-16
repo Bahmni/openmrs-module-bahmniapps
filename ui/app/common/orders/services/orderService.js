@@ -4,9 +4,12 @@ angular.module('bahmni.common.orders')
     .factory('orderService', ['$http', function ($http) {
 
     var getOrders = function (patientUuid, orderTypeUuid, conceptNames, includeObs, numberOfVisits, obsIgnoreList, visitUuid, orderUuid) {
+
             var params = {
                 concept: conceptNames,
-                includeObs: includeObs
+                includeObs: includeObs,
+                patientUuid: patientUuid,
+                numberOfVisits: numberOfVisits
             };
             
             if(obsIgnoreList) {
@@ -21,10 +24,7 @@ angular.module('bahmni.common.orders')
             if(visitUuid){
                 params.visitUuid = visitUuid;
             }
-            else{
-                params.patientUuid = patientUuid;
-                params.numberOfVisits = numberOfVisits;
-            }
+
             return $http.get(Bahmni.Common.Constants.bahmniOrderUrl, {
                 params: params,
                 withCredentials: true
