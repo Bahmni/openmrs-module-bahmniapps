@@ -127,9 +127,9 @@ describe('patient mapper', function () {
 
         var openmrsPatient = new Bahmni.Registration.CreatePatientRequestMapper(date).mapFromPatient(patientAttributeTypes, patient);
         var dob = date;
-        dob.setDate(dob.getDate()-17);
-        dob.setMonth(dob.getMonth()-1);
         dob.setFullYear(dob.getFullYear()-1);
+        dob.setMonth(dob.getMonth()-1);
+        dob.setDate(dob.getDate()-17);
         expect(openmrsPatient.patient.person.birthdate).toBe(moment(dob).format("YYYY-MM-DD"));
         expect(openmrsPatient.patient.person.birthdateEstimated).toBeTruthy();
     });
