@@ -1,27 +1,5 @@
 <div class="ward-list">
-
-    <div ng-hide="currentView=='wardLayout'" ng-repeat="ward in wards">
-        <div class="section-grid">
-            <h2 class="section-title">
-                <span ng-click="toggle(ward)" class="ward-header">
-                    <i class="fa fa-caret-right" ng-show="!shouldBeShown(ward)"></i>
-                    <i class="fa fa-caret-down" ng-show="shouldBeShown(ward)"></i>
-                    <span class="section-title-text">
-                        {{ward.ward.name}} -
-                        <small>(Total Beds: {{ward.totalBeds}} | Available Beds: {{ward.totalBeds-ward.occupiedBeds}})
-                        </small>
-                    </span>
-                </span>
-                <span class="quick-links">
-                    <button ng-click="showWardLayout(ward.ward.uuid)" class="confirm"><span
-                            class="fa fa-th"></span></button>
-                </span>
-            </h2>
-            <div class="section-content" ng-if="shouldBeShown(ward)">
-                <table-details ward="ward"></table-details>
-            </div>
-        </div>
+    <div ng-repeat="ward in wards">
+        <ward ward="ward" bed-assignable="false"></ward>
     </div>
-</div>
-<div ng-show="currentView=='wardLayout' && disableBedAssignment" ng-include src="'views/wardLayout.html'"></div>
 </div>

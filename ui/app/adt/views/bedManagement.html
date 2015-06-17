@@ -1,2 +1,6 @@
-<div ng-show="currentView=='wards'" ng-include src="'views/wardList.html'"> </div>
-<div ng-show="currentView=='wardLayout'" ng-include src="'views/wardLayout.html'"> </div>
+<div class="ward-list">
+    <div ng-repeat="ward in wards">
+        <ward ward="ward" bed-assignable="true" encounter-uuid="encounterUuid" visit-uuid="visitUuid"
+                patient-uuid="patient.uuid"></ward>
+    </div>
+</div>
