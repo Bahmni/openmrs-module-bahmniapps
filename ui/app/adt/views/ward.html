@@ -1,0 +1,21 @@
+<div class="section-grid ward">
+    <h2 class="section-title">
+        <span ng-click="toggleExpandState()" class="ward-header">
+            <i class="fa fa-caret-right" ng-show="!expanded"></i>
+            <i class="fa fa-caret-down" ng-show="expanded"></i>
+            <span class="section-title-text">
+                {{ward.ward.name}} -
+                <small>(Total Beds: {{ward.totalBeds}} | Available Beds: {{ward.totalBeds-ward.occupiedBeds}})</small>
+            </span>
+        </span>
+        <span class="quick-links" ng-if="!bedAssignable">
+            <button ng-click="toggleWardView()" class="confirm"><span
+                    class="fa {{currentView == 'wards' ? 'fa-th' : 'fa-list'}}"></span></button>
+        </span>
+    </h2>
+    <div class="section-content" ng-if="expanded">
+        <table-details ward="ward" ng-show="currentView === 'wards'" ng-if="!bed_assignable"></table-details>
+        <!--todo - when ward layout is made directive, ng-if=!bed_assignable should be removed and all ng-shows to be converted to ng-if-->
+        <div ng-show="currentView === 'wardLayout'" ng-include src="'views/wardLayout.html'"></div>
+    </div>
+</div>

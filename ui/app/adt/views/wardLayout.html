@@ -1,5 +1,4 @@
 <div>
-    <div class="back-btn-wrapper"><button ng-click="showWardList()"><span class="fa fa-arrow-left"></span>Ward List</button></div>
     <div class="bed-assigned-msg"><div class="confirmationMessage">{{ confirmationMessage}}</div></div>
     <div class="bed-info" ng-show="selectedBed.bed.bedNumber">
 		<ul>
@@ -8,18 +7,18 @@
                 <li>{{selectedBed.patientInfo.identifier}}</li>
                 <li>{{selectedBed.patientInfo.name}} ({{selectedBed.patientInfo.gender}})</li>
             </div>
-			<li ng-hide="disableBedAssignment"><a class="assign" ng-show="selectedBed.available && !$parent.bedDetails"
+			<li ng-show="bedAssignable"><a class="assign" ng-show="selectedBed.available && !$parent.bedDetails"
                 ng-click="assignBed(selectedBed)">Assign</a></li>
-			<li ng-hide="disableBedAssignment"><a class="transfer" ng-show="selectedBed.available && $parent.bedDetails"
+			<li ng-show="bedAssignable"><a class="transfer" ng-show="selectedBed.available && $parent.bedDetails"
                 ng-click="assignBed(selectedBed)">Transfer</a></li>
 		</ul>
     </div>
-    <div class="bed-assignment" ng-repeat="layout in layouts">
+    <div class="bed-assignment" ng-repeat="layout in ward.layouts">
         <h2> {{layout.name}}</h2>
         <ul class="bed-assignment-inner-wrapper">
         <li class="row" ng-repeat="bed in layout.beds">
             <ul>
-                <li class="col" ng-click="fetchBedInfo(cell,$parent.$index,$index)"
+                <li class="col" ng-click="fetchBedInfo(cell, $parent.$index, $index)"
                     ng-class="{occupied: !cell.empty && !cell.available, available: !cell.empty && cell.available,
                     empty: cell.empty, currentPatient : getCurrentBed().bedId == cell.bed.bedId }"
                     ng-repeat="cell in bed" bed-assignment-dialog>
