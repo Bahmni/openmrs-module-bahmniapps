@@ -1,8 +1,8 @@
 <table class="printPrescription">
     <tr>
         <th class="sl-no-heading">S. No.</th>
-        <th>Drug Name</th>
-        <th>Dosage Instructions</th>
+        <th class="drug-name-heading">Drug Name</th>
+        <th class="dosage-instructions-heading">Dosage Instructions</th>
         <th class="start-date-heading">Start Date</th>
     </tr>
     <tbody ng-repeat="drugOrder in drugOrders" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">

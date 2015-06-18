@@ -141,12 +141,12 @@ h3 {
     padding: 10px 20px 0;
     max-width: 21cm; // A4 size width
     margin: 0 auto;
-	box-sizing: border-box;
-    .has-uploaded-file{
-        .uploaded-file{
+    box-sizing: border-box;
+    .has-uploaded-file {
+        .uploaded-file {
             display: inherit;
-            .fa-paper-clip{
-                margin-top:0;
+            .fa-paper-clip {
+                margin-top: 0;
                 display: none;
             }
         }
@@ -203,13 +203,13 @@ h3 {
                 display: none;
             }
             .obs-date {
-              -webkit-print-color-adjust: exact;
-              font-weight: bold;
-              font-size: 9pt;
-              background: #C3C3C3 !important;
-              padding: 2px 5px;
-              display: block;
-              margin: 2px 0;
+                -webkit-print-color-adjust: exact;
+                font-weight: bold;
+                font-size: 9pt;
+                background: #C3C3C3 !important;
+                padding: 2px 5px;
+                display: block;
+                margin: 2px 0;
             }
         }
     }
@@ -228,16 +228,16 @@ h3 {
         margin: 0 0 5px;
         font-size: 7.5pt;
     }
-    .visit-summary-page{
-        .hierarchy ul li ul li.has-child{
-           font-family:Arial, sans-serif;
-           ul li{
-             font-family:Arial, sans-serif;
-             &.has-child{
-                font-family:Arial, sans-serif;
-             }             
-          }
-        }    
+    .visit-summary-page {
+        .hierarchy ul li ul li.has-child {
+            font-family: Arial, sans-serif;
+            ul li {
+                font-family: Arial, sans-serif;
+                &.has-child {
+                    font-family: Arial, sans-serif;
+                }
+            }
+        }
     }
     h2.section-title {
         text-align: left;
@@ -263,17 +263,17 @@ h3 {
             }
         }
     }
-    .dashboard-section section.block.hierarchy .value-text-only{
+    .dashboard-section section.block.hierarchy .value-text-only {
         padding: 2px 5px;
     }
-    .dashboard-section section.block.hierarchy .text-only{
+    .dashboard-section section.block.hierarchy .text-only {
         width: 100%;
         word-wrap: break-word;
         display: auto;
         padding-bottom: 5px;
     }
-    table.history-diagnosis tbody .notes.inline-notes .left{
-         display: none !important;
+    table.history-diagnosis tbody .notes.inline-notes .left {
+        display: none !important;
     }
     section.block,
     .dashboard-section {
@@ -319,31 +319,51 @@ h3 {
             padding: 0;
             height: auto;
             overflow: visible;
-            &.printPrescription{
-                padding-top: 10px;
-                width:100%;
+            &.printPrescription {
+                margin-top: 10px;
+                width: 100%;
                 table-layout: fixed;
-                tr{
-                    strong{
-                        padding-left: 20px;
-                        padding-bottom:3px;
+                border-collapse: collapse;
+                -webkit-print-color-adjust: exact;
+                tbody:nth-child(odd){
+                    tr{
+                        background:#EDEDED;
                     }
                 }
-                th{
-                    padding-bottom: 10px;
-                    &.sl-no-heading{
+                tr {
+                    strong {
+                        padding-left: 20px;
+                        padding-bottom: 3px;
+                    }
+                }
+                th {
+                    padding-top: 6px;
+                    padding-bottom: 4px;
+                    &.sl-no-heading {
                         width: 8%;
                     }
-                    &.start-date-heading{
+                    &.drug-name-heading{
+                        width: 35%;
+                    }
+                    &.dosage-instructions-heading{
+                        width: 47%;
+                    }
+                    &.start-date-heading {
                         width: 10%;
                     }
+
                 }
-               td{
-                 padding-bottom: 3px;
-                   &:first-child{
-                       padding-left: 14px;
-                   }
-               }
+                td {
+                    padding-top: 4px;
+                    vertical-align: top;
+                    &.inline-notes.notes {
+                        padding-top: 0;
+                    }
+                    padding-bottom: 3px;
+                    &:first-child {
+                        padding-left: 14px;
+                    }
+                }
             }
             &.repeated-table {
                 margin-bottom: 5px;
@@ -378,7 +398,7 @@ h3 {
                         font-size: 9pt;
                         padding: 0 5px;
                         font-family: Arial, sans-serif;
-	                    text-align: left;
+                        text-align: left;
                     }
                     .name,
                     .drug,
@@ -449,7 +469,6 @@ h3 {
         table.ipd-investigation-print {
             border-collapse: collapse;
             border-bottom: 1px solid #ddd;
-
             table-layout: fixed;
             font-size: 8pt;
             tbody tr, thead tr {
@@ -465,18 +484,19 @@ h3 {
                     padding: 0;
                 }
             }
-            tbody tr th,thead tr th:first-child {
+            tbody tr th,
+            thead tr th:first-child {
                 border-left: 1px solid #ddd;
                 width: 38%;
             }
             span {
-                &.range{
+                &.range {
                     font-size: 8pt;
                 }
-                &.is-abnormal{
+                &.is-abnormal {
                     font-weight: bold;
                 }
-                &.ipd-test-results{
+                &.ipd-test-results {
                     white-space: normal;
                     text-overflow: initial;
                     padding: 0px 5px;
@@ -484,10 +504,9 @@ h3 {
                     display: inline-block;
                     float: left;
                 }
-            }       
+            }
         }
     }
-    
     .dashboard-patientInformation-section {
         table.patient {
             .value {
@@ -604,37 +623,35 @@ h3 {
     table.drug-order-table td.drug {
         border-left: 0 !important;
     }
-    .fa{
+    .fa {
         display: none !important;
     }
 }
 
 .prescription-print {
-	table tr {
-		td, th {
-			font-size: 9pt;
-			min-width: 1.75cm;
-		}
-
-	}
-	.patient-info {
-		margin-bottom: 10px;
-		td {
-			font-weight: bold;
-			.value {
-				font-weight: normal;
-			}
-		}
-	}
-	.treatment-section {
-		.drug-name, .dosage-days {
-			width: 7cm;
-		}
-		.dosage-form span {
-			float: left;
-			margin-right: 5px;
+    table tr {
+        td, th {
+            font-size: 9pt;
+            min-width: 1.75cm;
+        }
+    }
+    .patient-info {
+        margin-bottom: 10px;
+        td {
+            font-weight: bold;
+            .value {
+                font-weight: normal;
+            }
+        }
+    }
+    .treatment-section {
+        .drug-name, .dosage-days {
+            width: 7cm;
+        }
+        .dosage-form span {
+            float: left;
+            margin-right: 5px;
             white-space: normal;
-		}
-	}
+        }
+    }
 }
-
