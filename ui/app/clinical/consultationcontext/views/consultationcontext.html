@@ -1,0 +1,57 @@
+<div>
+    <section class="block dashboard-section">
+        <div class="dashboard-patientInformation-section" id="patient_information">
+            <section bindonce="patient" class="block patientInformation" ng-class="{'more': patientSummary.show}">
+                <table class="patient dashboard-table">
+                    <tbody>
+                    <tr class="patient-info">
+                        <td colspan="2">
+                    <span class="patient-img">
+                        <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
+                    </span>
+                            <div class="patient-value">
+                         <span class="patient-name">
+                            {{patient.name | titleCase}} ({{patient.identifier}})</span> -
+                         <span class="patient-gender-age">
+                            {{patient.genderText}}, {{patient.ageText}} </span>
+                         <span class="patient-address">
+                             {{patient.address.cityVillage}}
+                         </span>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </section>
+</div>
+<div>
+    <section class="block dashboard-section">
+        <h2 class="section-title ng-binding">Program Management</h2>
+        <!--<table>-->
+            <!--<thead>-->
+                <!--<tr>-->
+                    <!--<th>Sr</th>-->
+                    <!--<th>Program Name</th>-->
+                <!--</tr>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+                <!--<tr>-->
+                    <!--<td>1</td>-->
+                    <!--<td>STI Program</td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td>2</td>-->
+                    <!--<td>Program</td>-->
+                <!--</tr>-->
+            <!--</tbody>-->
+        <!--</table>-->
+    </section>
+</div>
+<div>
+    <a class="back-btn" ng-href="#/patient/{{patient.uuid}}/dashboard"
+       title="Go to Clinical Dashboard">
+        General Consultation
+    </a>
+</div>

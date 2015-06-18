@@ -59,6 +59,21 @@ angular.module('consultation')
                     }
                 }
             })
+            .state('patient.consultationContext',{
+                url:'/consultationcontext',
+                views: {
+                    'content': {
+                        templateUrl: 'consultationcontext/views/consultationcontext.html',
+                        controller: function ($scope, patientContext){
+                            $scope.patient = patientContext.patient;
+                        }
+                    },
+                    'additional-header': {
+                        templateUrl: '../common/ui-helper/header.html',
+                        controller: 'PatientListHeaderController'
+                    }
+                }
+            })
             .state('patient.dashboard', {
                 url: '/dashboard',
                 views: {
@@ -83,6 +98,7 @@ angular.module('consultation')
                     }
                 }
             })
+
             .state('patient.visit', {
                 url: '/dashboard/visit/:visitUuid',
                 data: {
