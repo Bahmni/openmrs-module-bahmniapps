@@ -14,8 +14,9 @@
         </span>
     </h2>
     <div class="section-content" ng-if="expanded">
-        <table-details ward="ward" ng-show="currentView === 'wards'" ng-if="!bed_assignable"></table-details>
-        <!--todo - when ward layout is made directive, ng-if=!bed_assignable should be removed and all ng-shows to be converted to ng-if-->
-        <div ng-show="currentView === 'wardLayout'" ng-include src="'views/wardLayout.html'"></div>
+        <table-details ward="ward" ng-if="currentView === 'wards'"></table-details>
+        <ward-layout ng-if="currentView === 'wardLayout'"  ward="ward" bed-assignable="bedAssignable" encounter-uuid="encounterUuid" visit-uuid="visitUuid"
+                     patient-uuid="patientUuid"></ward-layout>
+
     </div>
 </div>
