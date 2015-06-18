@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.adt')
-    .controller('WardDetailsController', ['$scope', '$rootScope', '$window', '$document', '$anchorScroll', 'spinner', 'WardService', 'bedService', 'BedManagementService', 'userService',
-        function ($scope, $rootScope, $window, $document, $anchorScroll, spinner, wardService, bedService, bedManagementService, userService) {
+    .controller('WardDetailsController', ['$scope', '$rootScope', '$window', '$document', '$anchorScroll', 'spinner', 'WardService',
+        function ($scope, $rootScope, $window, $document, $anchorScroll, spinner, wardService) {
             $scope.wards = null;
 
             var init = function () {
