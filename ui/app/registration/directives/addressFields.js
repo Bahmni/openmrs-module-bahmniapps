@@ -2,21 +2,9 @@
 
 angular.module('bahmni.registration')
     .directive('addressFields', function () {
-        var template = '<section class="form-field-inline" ng-repeat="addressLevels in addressLevelsChunks">' +
-            '<article class="form-field" ng-repeat="addressLevel in addressLevels" ng-class="{\'right-form-field\': $index % 2 != 0 }">' +
-            '<div class="field-attribute">' +
-            '<label for="{{addressLevel.addressField}}">{{addressLevel.name}}<span class="asterick" ng-show="addressLevel.required">*</span></label>' +
-            '</div>' +
-            '<div class="field-value">' +
-            '<input type="text" id="{{addressLevel.addressField}}"  pattern-validate non-blank="addressLevel.required" ng-model="address[addressLevel.addressField]"' +
-            'bahmni-autocomplete source="getAddressEntryList(addressLevel.addressField)" response-map="getAddressDataResults" on-select="addressFieldSelected(addressLevel.addressField)" ng-change="clearFields(addressLevel.addressField)"' +
-            '>' +
-            '</div>' +
-            '</article>' +
-            '</section>';
         return {
             restrict: 'AE',
-            template: template,
+            templateUrl: ' views/addressFields.html',
             controller: 'AddressFieldsDirectiveController',
             scope: {
                 address: '=',
@@ -26,8 +14,8 @@ angular.module('bahmni.registration')
         };
     })
     .controller('AddressFieldsDirectiveController', function ($scope, addressAttributeService) {
-        var addressLevelsCloneInDescendingOrder = $scope.addressLevels.slice(0).reverse()
-        $scope.addressLevelsChunks = Bahmni.Common.Util.ArrayUtil.chunk(addressLevelsCloneInDescendingOrder, 2)
+        var addressLevelsCloneInDescendingOrder = $scope.addressLevels.slice(0).reverse();
+        $scope.addressLevelsChunks = Bahmni.Common.Util.ArrayUtil.chunk(addressLevelsCloneInDescendingOrder, 2);
         var addressLevelsNamesInDescendingOrder = addressLevelsCloneInDescendingOrder.map(function (addressLevel) {
             return addressLevel.addressField;
         });

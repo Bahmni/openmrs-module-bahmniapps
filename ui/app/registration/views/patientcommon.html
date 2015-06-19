@@ -1,6 +1,6 @@
 <legend class="mylegend registraion_legend registraion_Basic_info">
     <span><strong>Basic Information</strong></span>
-  </legend>
+</legend>
 <section ng-controller="PatientCommonController">
     <article class="form-field" ng-if="patientConfiguration.local()['showNameField']">
         <div class="field-attribute">
@@ -9,7 +9,8 @@
         <div class="field-value" id="patientNameLocal">
             <input type="text" id="givenNameLocal" ng-model="patient.givenNameLocal" pattern-validate
                    placeholder="{{patientConfiguration.local()['placeholderForGivenName']}}" focus-me="true">
-            <input ng-show="showMiddleName" type="text" id="middleNameLocal" ng-model="patient.middleNameLocal" pattern-validate
+            <input ng-show="showMiddleName" type="text" id="middleNameLocal" ng-model="patient.middleNameLocal"
+                   pattern-validate
                    placeholder="{{patientConfiguration.local()['placeholderForMiddleName']}}">
             <input type="text" id="familyNameLocal" ng-model="patient.familyNameLocal" pattern-validate
                    placeholder="{{patientConfiguration.local()['placeholderForFamilyName']}}">
@@ -25,7 +26,8 @@
             <span data-ng-switch="isAutoComplete('givenName')" ng-if="patientConfiguration.local()['showNameField']">
                 <input data-ng-switch-when="true"
                        type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank pattern-validate
-                       my-autocomplete source="getAutoCompleteList" response-map="getDataResults" data-item-type="personName"
+                       my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
+                       data-item-type="personName"
                        placeholder="First Name" title="Enter patient's first name.">
 
                 <input data-ng-switch-default
@@ -36,7 +38,8 @@
             <span data-ng-switch="isAutoComplete('givenName')" ng-if="!patientConfiguration.local()['showNameField']">
                 <input data-ng-switch-when="true"
                        type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank pattern-validate
-                       my-autocomplete source="getAutoCompleteList" response-map="getDataResults" data-item-type="personName"
+                       my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
+                       data-item-type="personName"
                        placeholder="First Name" title="Enter patient's first name." focus-me="true">
 
                 <input data-ng-switch-default
@@ -47,7 +50,8 @@
             <span ng-show="showMiddleName" data-ng-switch="isAutoComplete('middleName')">
                 <input data-ng-switch-when="true"
                        type="text" id="middleName" ng-model="$parent.patient.middleName" pattern-validate
-                       my-autocomplete source="getAutoCompleteList" response-map="getDataResults" data-item-type="personName"
+                       my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
+                       data-item-type="personName"
                        placeholder="Middle Name" title="Enter patient's middle name.">
 
                 <input data-ng-switch-default
@@ -58,7 +62,8 @@
             <span data-ng-switch="isAutoComplete('familyName')">
                 <input data-ng-switch-when="true"
                        type="text" id="familyName" ng-model="$parent.patient.familyName" non-blank pattern-validate
-                       my-autocomplete source="getAutoCompleteList" response-map="getDataResults" data-item-type="personName"
+                       my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
+                       data-item-type="personName"
                        placeholder="Last Name" title="Enter patient's last name.">
 
                 <input data-ng-switch-default
@@ -67,7 +72,8 @@
             </span>
 
             <span class="input-label-inline caste-lastname" ng-show="showCasteSameAsLastName()">
-                <input type="checkbox" id="casteSameAsLastNameCheck" ng-model="patient.sameAsLastName" ng-change="setCasteAsLastName()">
+                <input type="checkbox" id="casteSameAsLastNameCheck" ng-model="patient.sameAsLastName"
+                       ng-change="setCasteAsLastName()">
                 <label id="casteSameAsLastNameCheckLabel" for="casteSameAsLastNameCheck">Caste same as Last Name</label>
             </span>
         </div>
@@ -89,28 +95,28 @@
 </section>
 <section class="form-field-inline">
     <article class="form-field">
-            <div class="field-attribute">
-                <label for="ageYears">Age<span class="asterick">*</span></label>
+        <div class="field-attribute">
+            <label for="ageYears">Age<span class="asterick">*</span></label>
+        </div>
+
+        <div class="field-value age-field">
+            <div class="input-prepend">
+                <span class="add-on">Years</span>
+                <input type="number" id="ageYears" name="ageYear" max="120" ng-model="patient.age.years" min="0"
+                       ng-required="patient.age.isEmpty()" title="Enter a numeric value for Years.">
+            </div>
+            <div class="input-prepend">
+                <span class="add-on">Months</span>
+                <input type="number" id="ageMonths" name="ageMonths" max="12" ng-model="patient.age.months" min="0"
+                       title="Enter a numeric value between 0 to 12">
+            </div>
+            <div class="input-prepend">
+                <span class="add-on">Days</span>
+                <input type="number" id="ageDays" name="ageDays" max="31" ng-model="patient.age.days" min="0"
+                       title="Enter a numeric value between 0 to 31">
             </div>
 
-            <div class="field-value age-field">
-                <div class="input-prepend">
-                    <span class="add-on">Years</span>
-                    <input type="number" id="ageYears" name="ageYear" max="120" ng-model="patient.age.years" min="0"
-                           ng-required="patient.age.isEmpty()" title="Enter a numeric value for Years.">
-                </div>
-                <div class="input-prepend">
-                    <span class="add-on">Months</span>
-                    <input type="number" id="ageMonths" name="ageMonths" max="12" ng-model="patient.age.months" min="0"
-                           title="Enter a numeric value between 0 to 12">
-                </div>
-                <div class="input-prepend">
-                    <span class="add-on">Days</span>
-                    <input type="number" id="ageDays" name="ageDays" max="31" ng-model="patient.age.days" min="0"
-                           title="Enter a numeric value between 0 to 31">
-                </div>
-
-            </div>
+        </div>
     </article>
     <article class="form-field right-form-field">
         <div class="field-attribute">
@@ -124,13 +130,21 @@
 </section>
 
 <legend class="mylegend registraion_legend">
-    <span><strong>Address Information</strong></span>
-  </legend>
-<section address-fields data-address-levels="addressLevels" data-address="patient.address" field-validation="fieldValidation"></section>
+    <span>
+        <srtong>Address Information</srtong>
+    </span>
+</legend>
+
+<section address-fields data-address-levels="addressLevels" data-address="patient.address"
+         field-validation="fieldValidation" ng-if="!addressHierarchyConfigs.showAddressFieldsTopDown"></section>
+
+<section top-down-address-fields data-address-levels="addressLevels" data-address="patient.address"
+         field-validation="fieldValidation" ng-if="addressHierarchyConfigs.showAddressFieldsTopDown"
+         free-text-address-fields="addressHierarchyConfigs.freeTextAddressFields"></section>
 
 <legend class="mylegend registraion_legend">
-    <span><strong>Other Information</strong></span>
-  </legend>
+    <span><srtong>Other Information</srtong></span>
+</legend>
 
 <section class="form-field-inline" ng-repeat="attributeRow in patientConfiguration.customAttributeRows()">
     <article class="form-field" ng-repeat="attribute in attributeRow" ng-class="{'right-form-field' : $index%2 != 0}">
@@ -139,7 +153,8 @@
 </section>
 
 
-<legend class="mylegend additional-attribute" ng-show="patientConfiguration.additionalAttributes()" toggle="displayAdditionalInformation">
+<legend class="mylegend additional-attribute" ng-show="patientConfiguration.additionalAttributes()"
+        toggle="displayAdditionalInformation">
         <span>
             <i class="fa fa-caret-right" ng-hide="displayAdditionalInformation"></i>
             <i class="fa fa-caret-down" ng-show="displayAdditionalInformation"></i>
@@ -147,7 +162,8 @@
         </span>
 </legend>
 <section class="form-field-inline" ng-show="displayAdditionalInformation">
-    <article class="form-field" ng-repeat="attribute in patientConfiguration.additionalAttributes()" ng-class="{'right-form-field' : $index%2 != 0}">
+    <article class="form-field" ng-repeat="attribute in patientConfiguration.additionalAttributes()"
+             ng-class="{'right-form-field' : $index%2 != 0}">
         <ng-include src="'views/patientAttributeInformation.html'"></ng-include>
     </article>
 </section>
@@ -159,7 +175,7 @@
             <strong><a href accesskey="l">Re<u>l</u>ationships</a></strong>
         </span>
     </legend>
-    <section class="form-field-inline"  ng-show="displayRelationshipInformation">
+    <section class="form-field-inline" ng-show="displayRelationshipInformation">
         <ng-include src="'views/patientRelationships.html'"></ng-include>
     </section>
 </div>

@@ -7,6 +7,7 @@ angular.module('bahmni.registration')
             $scope.patient = {};
             $scope.actions = {};
             $scope.readOnlyFields = {};
+            $scope.addressHierarchyConfigs = appService.getAppDescriptor().getConfigValue("addressHierarchy");
 
             var setReadOnlyFields = function () {
                 var readOnlyFields = appService.getAppDescriptor().getConfigValue("readOnlyFields");
