@@ -12,21 +12,14 @@ $bed-info-bgcolor:  $mediumGray;
     }
   }
 }
-.bed-assigned-msg{
-  text-align:center;
-  color:#EB8313;
-  height:30px;
-  font-weight:bold;
-}
+
 .bed-assignment {
   position: relative;
   width: 100%;
-  border: 1px solid $lightGray;
   margin: 0px auto;
   min-height: 200px;
   padding: 10px;
   text-align: center;
-  border-radius: 5px;
   background: $white;
   box-sizing: border-box;
   

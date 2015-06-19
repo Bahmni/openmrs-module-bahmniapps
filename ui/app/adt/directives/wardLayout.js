@@ -7,7 +7,7 @@ angular.module('bahmni.adt')
             controller: "WardLayoutController",
             scope: {
                 ward:"=",
-                bedAssignable:"=",
+                readOnly:"=",
                 encounterUuid: "=",
                 patientUuid: "=",
                 visitUuid: "="

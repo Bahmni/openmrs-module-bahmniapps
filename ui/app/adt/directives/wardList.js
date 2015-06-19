@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.adt')
-    .directive('tableDetails',['QueryService','spinner','$q','$window','$stateParams','appService', function (queryService, spinner, $q, $window, $stateParams, appService) {
+    .directive('wardList',['QueryService','spinner','$q','$window','$stateParams','appService', function (queryService, spinner, $q, $window, $stateParams, appService) {
         var controller = function ($scope) {
 
             $scope.gotoPatientDashboard = function(patientUuid, visitUuid){
@@ -30,6 +30,6 @@ angular.module('bahmni.adt')
             scope: {
                ward:"="
             },
-            templateUrl: "tableDetails/views/tableDetails.html"
+            templateUrl: "../adt/views/wardList.html"
         };
     }]);

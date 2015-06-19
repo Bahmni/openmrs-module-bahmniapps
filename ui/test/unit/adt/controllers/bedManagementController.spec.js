@@ -58,9 +58,9 @@ describe("BedManagementController", function() {
     });
 
     describe('showWardList', function () {
-        it("should set the value of current view to wards", function () {
-            scope.showWardList()
-            expect(scope.currentView).toBe("wards");
+        it("should set the value of current view to ward list", function () {
+            scope.showWardList();
+            expect(scope.currentView).toBe("wardList");
         });
     });
 

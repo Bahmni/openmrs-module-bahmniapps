@@ -18,7 +18,6 @@ angular.module('bahmni.adt')
                 spinner.forPromise(wardService.getWardsList().success(function (wardsList) {
                     $scope.wards = wardsList.results;
                 }));
-                $scope.confirmationMessage = null;
             };
 
             $scope.$on('$stateChangeSuccess', function () {
