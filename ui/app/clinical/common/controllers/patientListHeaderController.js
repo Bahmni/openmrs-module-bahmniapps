@@ -5,7 +5,7 @@ angular.module('bahmni.clinical')
         function ($scope, $rootScope, $bahmniCookieStore, providerService, spinner, locationService, $window, ngDialog) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var selectedProvider = {};
-            $scope.today = DateUtil.getDateWithoutTime(DateUtil.today());
+            $scope.today = DateUtil.endOfToday();
             $scope.retrospectivePrivilege = Bahmni.Common.Constants.retrospectivePrivilege;
             $scope.grantProviderAccess = Bahmni.Common.Constants.grantProviderAccess;
             $scope.selectedLocationUuid = {};

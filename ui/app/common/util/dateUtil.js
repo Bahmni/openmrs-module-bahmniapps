@@ -92,6 +92,9 @@ Bahmni.Common.Util.DateUtil = {
     today: function(){
         return this.getDate(this.now());
     },
+    endOfToday: function(){
+        return moment(this.parse(this.now())).endOf('day').toDate();
+    },
 
     getDateWithoutHours: function(dateString){
         return moment(dateString).toDate().setHours(0,0,0,0);
