@@ -2,8 +2,8 @@
 
     <div class="opd-header-bottom tabs">    
         <bm-back-links></bm-back-links>
-        <a class="back-btn" ng-href="../adt/#/patient/{{patient.uuid}}/visit/{{consultation.visitUuid}}/"
-           target="_blank" title="Go to IPD dashboard">
+        <a show-if-privilege="app:adt" class="back-btn" ng-href="../adt/#/patient/{{patient.uuid}}/visit/{{consultation.visitUuid}}/"
+           title="Go to IPD dashboard">
             <i class="fa fa-bed fa-white"></i>
         </a>
         <a class="back-btn-link" id="dashboard-link" ng-click="gotoPatientDashboard()" title="Back to {{patient.name}} Dashboard">

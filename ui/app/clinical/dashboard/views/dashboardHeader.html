@@ -1,8 +1,8 @@
 <div bindonce class="dashboard-header opd-header-wrapper">
     <div class="opd-header-bottom tabs">
         <bm-back-links></bm-back-links>
-        <a class="back-btn" title="ADT Dashboard" ng-href="../adt/#/patient/{{patient.uuid}}/visit/{{visitHistory.activeVisit.uuid}}/"
-           target="_blank" title="Go to IPD Dashboard">
+        <a show-if-privilege="app:adt" class="back-btn" title="ADT Dashboard" ng-href="../adt/#/patient/{{patient.uuid}}/visit/{{visitHistory.activeVisit.uuid}}/"
+           title="Go to IPD Dashboard">
             <i class="fa fa-bed fa-white"></i>
         </a>
         <button ng-if="clinicalDashboardConfig.showPrint()" class="dialog-button-group" ng-click="printDashboard()"
