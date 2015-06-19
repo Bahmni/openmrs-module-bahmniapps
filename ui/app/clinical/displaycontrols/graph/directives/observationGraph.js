@@ -30,7 +30,7 @@ angular.module('bahmni.clinical').directive('observationGraph', ['appService', '
             var conceptValue = conceptSetService.getConceptSetMembers({name:config.getAllConcepts() ,v:"custom:"+customRepresentation});
             promises.push(conceptValue);
 
-            var observationsPromise = observationsService.fetch($scope.patientUuid, config.getAllConcepts(), false, config.numberOfVisits, $scope.visitUuid);
+            var observationsPromise = observationsService.fetch($scope.patientUuid, config.getAllConcepts(), null, config.numberOfVisits, $scope.visitUuid, null, false);
             promises.push(observationsPromise);
 
             if (config.displayForAge()) {
