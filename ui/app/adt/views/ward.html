@@ -4,19 +4,19 @@
             <i class="fa fa-caret-right" ng-show="!expanded"></i>
             <i class="fa fa-caret-down" ng-show="expanded"></i>
             <span class="section-title-text">
-                {{ward.ward.name}} -
+                <span>{{ward.ward.name}} -  </span>
                 <small>(Total Beds: {{ward.totalBeds}} | Available Beds: {{ward.totalBeds-ward.occupiedBeds}})</small>
             </span>
         </span>
-        <span class="quick-links" ng-if="!bedAssignable">
+        <span class="quick-links" ng-if="readOnly">
             <button ng-click="toggleWardView()" class="confirm"><span
-                    class="fa {{currentView == 'wards' ? 'fa-th' : 'fa-list'}}"></span></button>
+                    class="fa {{currentView == 'wardList' ? 'fa-th' : 'fa-list'}}"></span></button>
         </span>
     </h2>
     <div class="section-content" ng-if="expanded">
-        <table-details ward="ward" ng-if="currentView === 'wards'"></table-details>
-        <ward-layout ng-if="currentView === 'wardLayout'"  ward="ward" bed-assignable="bedAssignable" encounter-uuid="encounterUuid" visit-uuid="visitUuid"
+        <ward-list ward="ward" ng-if="currentView === 'wardList'"></ward-list>
+        <ward-layout ng-if="currentView === 'wardLayout'" ward="ward" read-only="readOnly"
+                     encounter-uuid="encounterUuid" visit-uuid="visitUuid"
                      patient-uuid="patientUuid"></ward-layout>
-
     </div>
 </div>

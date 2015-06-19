@@ -54,7 +54,7 @@ angular.module('bahmni.adt')
                 spinner.forPromise(bedService.assignBed(bed.bed.bedId, $scope.patientUuid, encUuid).success(function () {
                     $rootScope.bed = bed.bed;
                     bedService.setBedDetailsForPatientOnRootScope($scope.patientUuid);
-                    $scope.confirmationMessage = "Bed " + bed.bed.bedNumber + " is assigned successfully";
+                    messagingService.showMessage('info', "Bed " + bed.bed.bedNumber + " is assigned successfully");
                     $element.find('.bed-info').hide();
                 }));
             };
@@ -125,6 +125,10 @@ angular.module('bahmni.adt')
                 if (!cell.empty) {
                     $element.find('.bed-info').show();
                 }
+            };
+
+            $scope.highlightCurrentPatient = function (cell) {
+                return !$scope.readOnly && ($scope.getCurrentBed().bedId == cell.bed.bedId);
             };
 
             init();

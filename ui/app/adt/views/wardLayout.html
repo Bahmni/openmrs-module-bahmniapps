@@ -1,5 +1,4 @@
 <div>
-    <div class="bed-assigned-msg"><div class="confirmationMessage">{{ confirmationMessage}}</div></div>
     <div class="bed-info" ng-show="selectedBed.bed.bedNumber">
 		<ul>
 			<li>Bed: {{selectedBed.bed.bedNumber}}</li>
@@ -7,9 +6,9 @@
                 <li>{{selectedBed.patientInfo.identifier}}</li>
                 <li>{{selectedBed.patientInfo.name}} ({{selectedBed.patientInfo.gender}})</li>
             </div>
-			<li ng-show="bedAssignable"><a class="assign" ng-show="selectedBed.available && !$parent.bedDetails"
+			<li ng-show="!readOnly"><a class="assign" ng-show="selectedBed.available && !$parent.bedDetails"
                 ng-click="assignBed(selectedBed)">Assign</a></li>
-			<li ng-show="bedAssignable"><a class="transfer" ng-show="selectedBed.available && $parent.bedDetails"
+			<li ng-show="!readOnly"><a class="transfer" ng-show="selectedBed.available && $parent.bedDetails"
                 ng-click="assignBed(selectedBed)">Transfer</a></li>
 		</ul>
     </div>
@@ -20,7 +19,7 @@
             <ul>
                 <li class="col" ng-click="fetchBedInfo(cell, $parent.$index, $index)"
                     ng-class="{occupied: !cell.empty && !cell.available, available: !cell.empty && cell.available,
-                    empty: cell.empty, currentPatient : getCurrentBed().bedId == cell.bed.bedId }"
+                    empty: cell.empty, currentPatient : highlightCurrentPatient(cell) }"
                     ng-repeat="cell in bed" bed-assignment-dialog>
                     <span class="bed-number" ng-show="!cell.empty && cell.bed.bedNumber">{{cell.bed.bedNumber}}</span>
                     <span class="bed-type" ng-show="!cell.empty && cell.bed.bedType">{{cell.bed.bedType}}</span>

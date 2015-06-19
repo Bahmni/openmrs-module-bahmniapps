@@ -1,6 +1,6 @@
 'use strict';
 
-describe("WardDetailsController", function () {
+describe("WardsController", function () {
     var wardService, createController, scope, bedService, userService, rootScope;
     var wardsList = [{
         occupiedBeds: 3,
@@ -64,7 +64,7 @@ describe("WardDetailsController", function () {
             bedService = bedService;
             userService = userService;
             createController = function () {
-                return $controller("WardDetailsController", {
+                return $controller("WardsController", {
                     $scope: scope,
                     $rootScope: rootScope
                 });

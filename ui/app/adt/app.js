@@ -24,9 +24,9 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                         $scope.isBedManagementEnabled = appService.getAppDescriptor().getConfig("isBedManagementEnabled").value;
                     }
                 },
-                'ward-list@home': {
-                    templateUrl: 'views/wardDetails.html',
-                    controller: 'WardDetailsController'
+                'wards@home': {
+                    templateUrl: 'views/wards.html',
+                    controller: 'WardsController'
                 },
                 'additional-header': {
                     templateUrl: 'views/headerAdt.html'
