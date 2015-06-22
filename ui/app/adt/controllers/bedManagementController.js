@@ -107,7 +107,7 @@ angular.module('bahmni.adt')
             $scope.$on('$stateChangeSuccess', function (event, state, params, fromState, fromParams) {
                 backlinkService.addUrl({
                     url: "#/patient/" + $scope.patient.uuid + "/visit/" + visitUuid + "/",
-                    title: "Back to patient dashboard",
+                    title: "Back to IPD dashboard",
                     icon: "fa-medkit fa-bed fa-white"
                 });
             });
