@@ -18,7 +18,7 @@ angular.module('bahmni.adt').factory('patientInitialization', ['$rootScope', '$q
                 return bedService.setBedDetailsForPatientOnRootScope(patientUuid);
             };
 
-            return spinner.forPromise(initialization.then(getPatient).then(bedDetailsForPatient()));
+            return spinner.forPromise(initialization.then(getPatient).then(bedDetailsForPatient));
         }
     }
 ]);

@@ -6,9 +6,9 @@
                 <li>{{selectedBed.patientInfo.identifier}}</li>
                 <li>{{selectedBed.patientInfo.name}} ({{selectedBed.patientInfo.gender}})</li>
             </div>
-			<li ng-show="!readOnly"><a class="assign" ng-show="selectedBed.available && !$parent.bedDetails"
+			<li ng-show="!readOnly"><a class="assign" ng-show="selectedBed.available && !getCurrentBed()"
                 ng-click="assignBed(selectedBed)">Assign</a></li>
-			<li ng-show="!readOnly"><a class="transfer" ng-show="selectedBed.available && $parent.bedDetails"
+			<li ng-show="!readOnly"><a class="transfer" ng-show="selectedBed.available && getCurrentBed()"
                 ng-click="assignBed(selectedBed)">Transfer</a></li>
 		</ul>
     </div>
