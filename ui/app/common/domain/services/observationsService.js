@@ -8,7 +8,7 @@ angular.module('bahmni.common.domain')
             if(obsIgnoreList) {
                 params.obsIgnoreList = obsIgnoreList
             }
-            if(filterObsWithOrders) {
+            if(filterObsWithOrders != null) {
                 params.filterObsWithOrders = filterObsWithOrders;
             }
 
