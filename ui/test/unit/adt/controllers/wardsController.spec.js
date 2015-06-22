@@ -78,17 +78,6 @@ describe("WardsController", function () {
         expect(wardService.getWardsList).toHaveBeenCalled();
     });
 
-    it("should be shown if the ward is user favorite", function () {
-        var ward = {ward: {name: "General Ward"}};
-        createController();
-        expect(scope.shouldBeShown(ward)).toBe(true);
-    });
-
-    it("should not be shown if the ward is not user favorite", function () {
-        var ward = {ward: {name: "Emergency Ward"}};
-        createController();
-        expect(scope.shouldBeShown(ward)).toBe(false);
-    });
 });
 
 

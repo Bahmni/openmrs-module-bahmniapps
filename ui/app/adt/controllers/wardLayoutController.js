@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.adt')
-    .controller('WardLayoutController', ['$scope', '$rootScope', '$window', '$anchorScroll', 'spinner', 'WardService', 'BedManagementService','bedService', 'encounterService', 'messagingService','$document', '$element',
-        function ($scope, $rootScope, $window, $anchorScroll, spinner, wardService, bedManagementService, bedService, encounterService, messagingService, $document, $element) {
+    .controller('WardLayoutController', ['$scope', '$rootScope', '$window', '$anchorScroll', 'spinner', 'WardService', 'BedManagementService', 'bedService', 'messagingService', '$document', '$element',
+        function ($scope, $rootScope, $window, $anchorScroll, spinner, wardService, bedManagementService, bedService, messagingService, $document, $element) {
             $scope.selectedBed = null;
 
             var init = function () {
@@ -16,7 +16,7 @@ angular.module('bahmni.adt')
                 $scope.$watch(function () {
                     return $rootScope.bedDetails;
                 }, function (newValue, oldValue) {
-                    if (oldValue != newValue && oldValue != undefined && (oldValue.wardUuid === $scope.ward.ward.uuid || newValue.wardUuid === $scope.ward.ward.uuid)) {
+                    if (oldValue != newValue && ((oldValue && oldValue.wardUuid === $scope.ward.ward.uuid) || newValue.wardUuid === $scope.ward.ward.uuid)) {
                         getBeds();
                     }
                 });
@@ -38,12 +38,7 @@ angular.module('bahmni.adt')
 
             $scope.assignBed = function (bed) {
                 clearAssignmentError();
-                var assignmentType = $rootScope.bedDetails ? 'TRANSFER' : 'ADMISSION';
-                if ($scope.encounterUuid) {
-                    assignBedToPatient(bed, $scope.encounterUuid);
-                } else {
-                    checkEncounterBeforeBedAssignment(bed, assignmentType);
-                }
+                assignBedToPatient(bed, $scope.encounterUuid);
             };
 
             var clearAssignmentError = function () {
@@ -57,44 +52,6 @@ angular.module('bahmni.adt')
                     messagingService.showMessage('info', "Bed " + bed.bed.bedNumber + " is assigned successfully");
                     $element.find('.bed-info').hide();
                 }));
-            };
-
-            var checkEncounterBeforeBedAssignment = function (bed, assignmentType) {
-                var encounterTypeUuid = $rootScope.encounterConfig.encounterTypes[assignmentType];
-                spinner.forPromise(encounterService.identifyEncounterForType($scope.patientUuid, encounterTypeUuid).then(
-                    function (encounter) {
-                        if (encounter) {
-                            $scope.encounterUuid = encounter.uuid;
-                            assignBedToPatient(bed, $scope.encounterUuid);
-                        } else if (assignmentType == 'TRANSFER') {
-                            createTransferEncounterAndAssignBed(bed);
-                        } else {
-                            showAssignmentError("There is no appropriate encounter for " + assignmentType);
-                        }
-                    },
-                    function (errorMsg) {
-                        showAssignmentError(errorMsg);
-                    }
-                ));
-            };
-
-            var createTransferEncounterAndAssignBed = function (bed) {
-                var encounterData = {};
-                encounterData.patientUuid = $scope.patientUuid;
-                encounterData.locationUuid = sessionService.getLoginLocationUuid();
-                encounterData.encounterTypeUuid = $rootScope.encounterConfig.encounterTypes['TRANSFER'];
-                spinner.forPromise(encounterService.create(encounterData).success(function (encounter) {
-                    $scope.encounterUuid = encounter.encounterUuid;
-                    assignBedToPatient(bed, $scope.encounterUuid);
-                }).error(function (error) {
-                    showAssignmentError("An error occurred while tranferring the patient.");
-                }));
-            };
-
-
-            var showAssignmentError = function (errorMsg) {
-                messagingService.showMessage('error', errorMsg);
-                $element.find('.bed-info').hide();
             };
 
             $scope.getCurrentBed = function () {
@@ -128,7 +85,8 @@ angular.module('bahmni.adt')
             };
 
             $scope.highlightCurrentPatient = function (cell) {
-                return !$scope.readOnly && ($scope.getCurrentBed().bedId == cell.bed.bedId);
+                var currentBed = $scope.getCurrentBed();
+                return !$scope.readOnly && (currentBed && currentBed.bedId == cell.bed.bedId);
             };
 
             init();
