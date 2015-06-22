@@ -65,7 +65,7 @@ describe("drug order history helper", function () {
         };
 
         var drugOrders = drugOrderHistoryHelper.getRefillableDrugOrders(activeDrugs, inactiveDrugs);
-        expect(drugOrders).toEqual([drug7, drug6, drug4, drug5, drug2, drug3, drug1, inactiveDrug1, inactiveDrug2]);
+        expect(drugOrders).toEqual([drug7, drug6, drug5, drug4, drug2, drug3, drug1, inactiveDrug1, inactiveDrug2]);
     });
 
 });
