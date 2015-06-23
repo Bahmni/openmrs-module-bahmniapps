@@ -440,9 +440,6 @@ $border-color: #ddd;
     margin: 0;
     border: 1px solid $border-color;
     vertical-align: middle;
-     &:focus {
-      outline: 1px solid #007FFF;
-    }
   }
   .stepper__field {
     width: 100%;
@@ -467,7 +464,7 @@ $border-color: #ddd;
      top:2px;
      border-color:#d0d0d0;
     }
-    &:hover, &:focus {
+    &:hover{
       background: #e2e2e2;
     }
   }
