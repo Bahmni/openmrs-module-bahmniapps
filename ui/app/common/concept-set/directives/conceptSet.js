@@ -33,6 +33,19 @@ angular.module('bahmni.common.conceptSet')
                     id: _.property('uuid')
                 };
             };
+
+            $scope.toggleSection = function () {
+                $scope.collapse = !$scope.collapse;
+            };
+
+            $scope.isCollapsibleSet = function(){
+                return $scope.showTitle;
+            };
+
+            $scope.$watch('collapseInnerSections', function(){
+                $scope.collapse = $scope.collapseInnerSections;
+            });
+
         };
 
         var compile = function(element) {
@@ -48,7 +61,8 @@ angular.module('bahmni.common.conceptSet')
                 showTitle: "=",
                 conceptSetRequired: "=",
                 rootObservation: "=",
-                patient: "="
+                patient: "=",
+                collapseInnerSections: "="
             },
             templateUrl:'../common/concept-set/views/observation.html'
         }
@@ -58,7 +72,7 @@ angular.module('bahmni.common.conceptSet')
                 '<div ng-show="showEmptyConceptSetMessage" class="placeholder-text">{{conceptSetName}} concept not found.</div>' +
                 '<concept concept-set-required="conceptSetRequired" root-observation="rootObservation" patient="patient" ' +
                 'observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet" ' +
-                'show-title="showTitleValue" ng-if="!rootObservation.hidden">' +
+                'show-title="showTitleValue" collapse-inner-sections="collapseInnerSections" ng-if="!rootObservation.hidden">' +
                 '</concept>' +
             '</form>';
 
@@ -182,7 +196,8 @@ angular.module('bahmni.common.conceptSet')
                 showTitle: "&",
                 validationHandler: "&",
                 patient: "=",
-                conceptSetFocused: "="
+                conceptSetFocused: "=",
+                collapseInnerSections: "="
             },
             template: template,
             controller: controller

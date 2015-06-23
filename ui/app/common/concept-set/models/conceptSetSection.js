@@ -10,6 +10,7 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
         conceptName = conceptName ? conceptName.name : conceptName;
         self.label = conceptName || conceptSet.name || self.options.conceptName;
         self.isLoaded = self.isOpen;
+        self.collapseInnerSections = false;
         self.uuid = conceptSet.uuid;
         self.alwaysShow = user.isFavouriteObsTemplate(self.conceptName);
     };
@@ -66,6 +67,10 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
         if (self.added) {
             self.show();
         }
+    };
+    self.toggleInnerSections = function(){
+        event.stopPropagation();
+        self.collapseInnerSections = !self.collapseInnerSections;
     };
 
     self.toggleDisplay = function() {
