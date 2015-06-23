@@ -72,13 +72,16 @@
       }
     }
     &.collapsible-set{
-        legend + .form-group {
+        &.collapsed legend + .form-group {
           border: none;
           border-top: 1px solid #ccc;
           border-radius:0 ;
         }
-        legend{
+        &.collapsed legend{
           background-color: #DCDCDC !important
+        }
+        legend{
+          cursor: pointer;
         }
     }
   }
