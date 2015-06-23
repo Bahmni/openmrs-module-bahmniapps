@@ -14,6 +14,11 @@
                 <button type="button" ng-if="showPreviousButton(conceptSet.conceptName) && conceptSet.isOpen" ng-click="showPrevious(conceptSet.conceptName)"
                         class="fr btn-small">Previous
                 </button>
+                <button type="button" ng-show="conceptSet.isOpen" ng-click="conceptSet.toggleInnerSections()"
+                        class="fr btn-small">
+                     <span ng-show="conceptSet.collapseInnerSections">Expand All</span>
+                     <span ng-hide="conceptSet.collapseInnerSections">Collapse All</span>
+                </button>
             </h2>
         </div>
         <span class="favourite-concept-set">
@@ -24,7 +29,7 @@
         </span>
     </div>
 
-    <concept-set ng-if="conceptSet.isLoaded" patient="patient" ng-show="conceptSet.isOpen"
+    <concept-set ng-if="conceptSet.isLoaded" patient="patient" ng-show="conceptSet.isOpen" collapse-inner-sections="conceptSet.collapseInnerSections"
                  concept-set-name="conceptSet.conceptName" required="conceptSet.options.required"
                  observations="observations" show-title="false" validation-handler="validationHandler">
     </concept-set>

@@ -41,7 +41,7 @@
       }
       legend {
         position:absolute;
-        top:5px;
+        top:7px;
         left:20px;
         padding:5px 10px;
         font-family: $OpenSansBoldFont;
@@ -70,6 +70,16 @@
           margin-left: -10px;
         }
       }
+    }
+    &.collapsible-set{
+        legend + .form-group {
+          border: none;
+          border-top: 1px solid #ccc;
+          border-radius:0 ;
+        }
+        legend{
+          background-color: #DCDCDC !important
+        }
     }
   }
 

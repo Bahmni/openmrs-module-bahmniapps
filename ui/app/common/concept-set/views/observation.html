@@ -206,8 +206,10 @@
         </div>
     </fieldset>
 
-    <fieldset ng-if="!observation.isObservationNode && !observation.isFormElement()" class="hasLegend">
-        <legend ng-if="showTitle && !observation.isComputed()" class="mylegend">
+    <fieldset ng-if="!observation.isObservationNode && !observation.isFormElement()" class="hasLegend" ng-class="{'collapsible-set': isCollapsibleSet() && collapse}">
+        <legend ng-if="showTitle && !observation.isComputed()" class="mylegend" ng-click="toggleSection()">
+            <i ng-if="isCollapsibleSet() && collapse" class="fa fa-caret-right"></i>
+            <i ng-if="!(isCollapsibleSet() && collapse)" class="fa fa-caret-down"></i>
             <strong>{{::observation.label}}</strong>
             <span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
                 <button type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)"><i class="fa fa-plus-circle"></i> Add More
@@ -222,11 +224,13 @@
             <span>{{observation.value}}</span>
         </div>
         <div class="form-group" ng-if="!observation.isComputed()">
-            <div class="concept-set-description" ng-if="::observation.concept.description">
-                <span class="description" ng-bind-html="observation.concept.description"></span>
-            </div>
-            <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers " ng-if="!member.hidden">
-                <concept observation="member" root-observation="observation" at-least-one-value-is-set="atLeastOneValueIsSet" patient="patient" show-title="true" concept-set-required="conceptSetRequired" ></concept>
+            <div ng-hide="isCollapsibleSet() && collapse">
+                <div class="concept-set-description" ng-if="::observation.concept.description">
+                    <span class="description" ng-bind-html="observation.concept.description"></span>
+                </div>
+                <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers " ng-if="!member.hidden">
+                    <concept collapse-inner-sections="collapseInnerSections" observation="member" root-observation="observation" at-least-one-value-is-set="atLeastOneValueIsSet" patient="patient" show-title="true" concept-set-required="conceptSetRequired"></concept>
+                </div>
             </div>
         </div>
     </fieldset>
