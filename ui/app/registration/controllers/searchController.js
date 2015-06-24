@@ -33,7 +33,16 @@ angular.module('bahmni.registration')
                 $scope.searchParameters.registrationNumber = $location.search().registrationNumber || "";
                 if (hasSearchParameters()) {
                     var searchPromise = patientService.search(
-                        $scope.searchParameters.name, $scope.addressSearchConfig.field, $scope.searchParameters.addressFieldValue, $scope.searchParameters.customAttribute, offset, $scope.customAttributesSearchConfig.fields);
+                        $scope.searchParameters.name,
+                        $scope.addressSearchConfig.field,
+                        $scope.searchParameters.addressFieldValue,
+                        $scope.searchParameters.customAttribute,
+                        offset,
+                        $scope.customAttributesSearchConfig.fields
+                    ).then(function(response) {
+                         mapCustomAttributesSearchResults(response.data);
+                         return response;
+                    });
                     searching = true;
                     searchPromise['finally'](function () {
                         searching = false;
@@ -58,8 +67,7 @@ angular.module('bahmni.registration')
             var showSearchResults = function (searchPromise) {
                 $scope.noMoreResultsPresent = false;
                 if (searchPromise) {
-                    searchPromise.success(function (data) {
-                        mapCustomAttributesSearchResults(data);
+                    searchPromise.then(function (data) {
                         $scope.results = data.pageOfResults;
                         $scope.noResultsMessage = $scope.results.length === 0 ? "No results found" : null;
                     });
@@ -171,14 +179,13 @@ angular.module('bahmni.registration')
                 $scope.nextPageLoading = true;
                 var promise = searchBasedOnQueryParameters($scope.results.length);
                 if (promise) {
-                    promise.success(function (data) {
+                    promise.then(function (data) {
                         data.pageOfResults.forEach(function (result) {
                             $scope.results.push(result)
                         });
                         $scope.noMoreResultsPresent = (data.pageOfResults.length === 0);
                         $scope.nextPageLoading = false;
-                    });
-                    promise.error(function () {
+                    }, function () {
                         $scope.nextPageLoading = false;
                     });
                 }

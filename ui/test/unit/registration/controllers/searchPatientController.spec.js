@@ -99,7 +99,7 @@ describe('SearchPatientController', function () {
             expect(patientResource.search.calls.mostRecent().args[0]).toBe(searchParams.name);
             expect(patientResource.search.calls.mostRecent().args[1]).toBe(scope.addressSearchConfig.field);
             expect(patientResource.search.calls.mostRecent().args[2]).toBe(searchParams.addressFieldValue);
-            expect(searchPromise.success).toHaveBeenCalled();
+            expect(searchPromise.then).toHaveBeenCalled();
         });
 
         it('should initialize scope with id search params from url but do not search for patient', function () {
@@ -121,7 +121,7 @@ describe('SearchPatientController', function () {
             expect(patientResource.search).not.toHaveBeenCalled();
         });
 
-        describe("on success", function () {
+        describe("on then", function () {
             beforeEach(function () {
                 spyOn(location, 'search').and.returnValue({"name": "foo"});
                 urlSearchChangeCallback();
@@ -132,7 +132,7 @@ describe('SearchPatientController', function () {
                     {uuid: "8989-90909"}
                 ];
 
-                searchPromise.callSuccessCallBack({pageOfResults: results});
+                searchPromise.callThenCallBack({"pageOfResults": results});
 
                 expect(scope.results).toBe(results);
             });
@@ -142,7 +142,7 @@ describe('SearchPatientController', function () {
                     {uuid: "8989-90909"}
                 ];
 
-                searchPromise.callSuccessCallBack({pageOfResults: results});
+                searchPromise.callThenCallBack({pageOfResults: results});
 
                 expect(scope.noResultsMessage).toBe(null);
             });
@@ -150,7 +150,7 @@ describe('SearchPatientController', function () {
             it("should show 'no results found message' when patient is not found", function () {
                 var results = [];
 
-                searchPromise.callSuccessCallBack({pageOfResults: results});
+                searchPromise.callThenCallBack({pageOfResults: results});
 
                 expect(scope.noResultsMessage).toMatch("No results");
             });
