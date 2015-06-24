@@ -34,13 +34,12 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
                         "preferred": true,
                         "voided": false
                     }
-                ],
-                relationships: patient.relationships
-
+                ]
             }
         };
 
         this.setImage(patient, openMRSPatient);
+        openMRSPatient.relationships = patient.relationships;
         return  openMRSPatient;
     };
 

@@ -88,7 +88,6 @@ angular.module('bahmni.registration')
                         return;
                     }
 
-                    console.log(response.data['pageOfResults'][0])
                     relationship.content = getPatientGenderAndAge(response.data['pageOfResults'][0]);
                     var personUuid = response.data['pageOfResults'][0]['uuid'];
 
