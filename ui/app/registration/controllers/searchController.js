@@ -41,7 +41,7 @@ angular.module('bahmni.registration')
                         $scope.customAttributesSearchConfig.fields
                     ).then(function(response) {
                          mapCustomAttributesSearchResults(response.data);
-                         return response;
+                         return response.data;
                     });
                     searching = true;
                     searchPromise['finally'](function () {
