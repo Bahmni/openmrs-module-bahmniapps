@@ -2,7 +2,7 @@
 
 describe("OrderController", function () {
 
-    var scope, rootScope;
+    var scope, rootScope, ngDialog;
 
     beforeEach(module('bahmni.common.conceptSet'));
     beforeEach(module('bahmni.clinical'));
@@ -10,12 +10,15 @@ describe("OrderController", function () {
     beforeEach(inject(function ($controller, $rootScope, $q) {
         scope = $rootScope.$new();
         rootScope = $rootScope;
+        ngDialog = jasmine.createSpyObj('ngDialog', ['open', 'close']);
+
         scope.consultation = {testOrders: []};
 
         $controller('OrderController', {
             $scope: scope,
             $rootScope: rootScope,
-            allOrderables: allOrderables
+            allOrderables: allOrderables,
+            ngDialog:ngDialog
         });
     }));
 
@@ -133,6 +136,32 @@ describe("OrderController", function () {
             scope.activateTab(radiologyOrderTab);
 
             expect(scope.activeTab.leftCategory).toEqual(allOrderables["'Radiology Orders'"].setMembers[0]);
+        });
+
+        it("should open notes popup", function(){
+            var order = { commentToFulfiller : "comment" }
+
+            scope.openNotesPopup(order);
+
+            expect(ngDialog.open).toHaveBeenCalledWith({ template: 'consultation/views/orderNotes.html', data: order, scope: scope})
+        });
+
+        it("should set edited flag when the commentToFulfiller is not same as previous note and close the popup", function(){
+            var order = { commentToFulfiller : "comment" , uuid: "uuid", previousNote: "older comment"};
+
+            scope.setEditedFlag(order);
+
+            expect(order.hasBeenModified).toBe(true);
+            expect(ngDialog.close).toHaveBeenCalled();
+        });
+
+        it("should not set edited flag when the commentToFulfiller is same as previous note and close the popup", function(){
+            var order = { commentToFulfiller : "comment" , uuid: "uuid", previousNote: "comment"};
+
+            scope.setEditedFlag(order);
+
+            expect(order.hasBeenModified).toBe(undefined);
+            expect(ngDialog.close).toHaveBeenCalled();
         });
 
     });

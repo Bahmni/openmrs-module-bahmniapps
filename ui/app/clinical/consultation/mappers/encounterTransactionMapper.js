@@ -47,13 +47,17 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
         addEditedDiagnoses(consultation, encounterData.bahmniDiagnoses);
         encounterData.testOrders = [];
         
-        var addOrdersToEncounter = function () {
+        var addTestOrdersToEncounter = function () {
             var tempOrders = consultation.testOrders.map(function (order) {
-                return { uuid: order.uuid, concept: {name: order.concept.name, uuid: order.concept.uuid }, voided: order.voided || false};
+                if(order.hasBeenModified){
+                    return Bahmni.Clinical.Order.revise(order);
+                }
+                return { uuid: order.uuid, concept: {name: order.concept.name, uuid: order.concept.uuid }, voided: order.voided || false,
+                    commentToFulfiller: order.commentToFulfiller};
             });
             encounterData.testOrders = encounterData.testOrders.concat(tempOrders);
-        }
-        addOrdersToEncounter();
+        };
+        addTestOrdersToEncounter();
 
         consultation.drugOrders = [];
         var newlyAddedTreatments = consultation.newlyAddedTreatments;

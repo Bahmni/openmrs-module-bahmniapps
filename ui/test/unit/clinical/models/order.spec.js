@@ -22,4 +22,18 @@ describe('Order', function () {
         expect(order.uuid).toBe(undefined);
     });
 
+    it("should create a revised order", function () {
+        var originalOrder = {
+            concept : {},
+            uuid:'uuid',
+            commentToFulfiller:'notes'
+        };
+        var revisedOrder = Bahmni.Clinical.Order.revise(originalOrder);
+        expect(revisedOrder.concept).toBe(originalOrder.concept);
+        expect(revisedOrder.action).toBe(Bahmni.Clinical.Constants.orderActions.revise);
+        expect(revisedOrder.previousOrderUuid).toBe(originalOrder.uuid);
+        expect(revisedOrder.voided).toBe(false);
+        expect(revisedOrder.commentToFulfiller).toBe(originalOrder.commentToFulfiller);
+    });
+
 });

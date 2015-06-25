@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('OrderController', ['$scope', 'allOrderables',
-        function ($scope, allOrderables) {
+    .controller('OrderController', ['$scope', 'allOrderables','ngDialog',
+        function ($scope, allOrderables, ngDialog) {
             $scope.consultation.testOrders = $scope.consultation.testOrders || [];
             $scope.allOrdersTemplates = allOrderables;
 
@@ -88,6 +88,18 @@ angular.module('bahmni.clinical')
                 else {
                     removeOrder(order);
                 }
+            };
+
+            $scope.openNotesPopup = function(order) {
+                order.previousNote = order.commentToFulfiller;
+                $scope.dialog = ngDialog.open({ template: 'consultation/views/orderNotes.html', data: order, scope: $scope});
+            };
+
+            $scope.setEditedFlag = function(order){
+               if(order.uuid && order.previousNote != order.commentToFulfiller){
+                   order.hasBeenModified = true;
+               }
+                ngDialog.close();
             };
 
             $scope.getName = function (sample) {

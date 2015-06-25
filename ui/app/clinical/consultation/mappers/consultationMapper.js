@@ -1,4 +1,13 @@
 Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, consultationNoteConcept, labOrderNoteConcept) {
+
+   var filterPreviousOrderOfRevisedOrders=  function (orders) {
+        return _.filter(orders, function (drugOrder) {
+            return !_.some(orders, function (otherDrugOrder) {
+                return otherDrugOrder.action === Bahmni.Clinical.Constants.orderActions.revise && otherDrugOrder.encounterUuid === drugOrder.encounterUuid && otherDrugOrder.previousOrderUuid === drugOrder.uuid
+            });
+        });
+    };
+
     this.map = function (encounterTransaction) {
         var encounterUuid = encounterTransaction.encounterUuid;
         var specialObservationConceptUuids = [consultationNoteConcept.uuid, labOrderNoteConcept.uuid];
@@ -7,9 +16,7 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
         var nonVoidedDrugOrders = encounterTransaction.drugOrders.filter(function (order) {
             return !order.voided && order.action != Bahmni.Clinical.Constants.orderActions.discontinue;
         });
-        nonVoidedDrugOrders = _.filter(nonVoidedDrugOrders, function(drugOrder){
-            return !_.some(nonVoidedDrugOrders, function(otherDrugOrder){ return otherDrugOrder.action === Bahmni.Clinical.Constants.orderActions.revise && otherDrugOrder.encounterUuid === drugOrder.encounterUuid && otherDrugOrder.previousOrderUuid === drugOrder.uuid });
-        });
+        nonVoidedDrugOrders = filterPreviousOrderOfRevisedOrders(nonVoidedDrugOrders);
 
         var treatmentDrugs = nonVoidedDrugOrders.map(function(drugOrder){
             return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder);
@@ -25,6 +32,7 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
         var testOrders = encounterTransaction.testOrders.filter(function(order){
             return !order.voided;
         });
+        testOrders = filterPreviousOrderOfRevisedOrders(testOrders);
 
         return {
             visitUuid: encounterTransaction.visitUuid,

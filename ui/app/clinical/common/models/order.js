@@ -24,5 +24,16 @@ Bahmni.Clinical.Order = (function () {
         return order;
     };
 
+    Order.revise = function(order){
+      var revisedOrder = new Order({
+          concept: order.concept,
+          action: Bahmni.Clinical.Constants.orderActions.revise,
+          previousOrderUuid: order.uuid,
+          voided: false,
+          commentToFulfiller: order.commentToFulfiller
+      });
+        return revisedOrder;
+    };
+
     return Order;
 })();
