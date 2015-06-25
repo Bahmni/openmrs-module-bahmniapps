@@ -11,6 +11,9 @@ angular.module('bahmni.common.uiHelper')
         var validateIfNeeded = function(value){
            if(!scope.strictSelect) return;
             scope.isInvalid = (value !== scope.selectedValue);
+            if (_.isEmpty(value)){
+                scope.isInvalid = false;
+            }
         }
 
         element.autocomplete({
