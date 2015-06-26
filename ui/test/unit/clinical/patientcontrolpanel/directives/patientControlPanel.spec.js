@@ -143,7 +143,6 @@ describe('patientControlPanelTest', function () {
         scope.$digest();
 
         expect(compiledElementScope.links).not.toBeUndefined();
-        expect(compiledElementScope.links).toEqual([{text: "Trends", icon: "btn-trends dashboard-btn", href: "../trends/#/patients/patientUuid"}]);
     });
 
     it('ensure links are correctly populated for an active visit', function () {
@@ -180,6 +179,6 @@ describe('patientControlPanelTest', function () {
         scope.$digest();
 
         expect(compiledElementScope.links).not.toBeUndefined();
-        expect(compiledElementScope.links).toEqual([{text: "Consultation", icon: "btn-consultation dashboard-btn", href: "#test"},{text: "Trends", icon: "btn-trends dashboard-btn", href: "../trends/#/patients/patientUuid"}]);
+        expect(compiledElementScope.links).toEqual([{text: "Consultation", icon: "btn-consultation dashboard-btn", href: "#test"}]);
     });
 });

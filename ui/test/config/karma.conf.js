@@ -39,7 +39,6 @@ module.exports = function (config) {
             'app/home/**/*.js',
             'app/orders/**/*.js',
             'app/registration/**/*.js',
-            'app/trends/**/*.js',
             'test/support/**/*.js',
             'test/unit/**/*.js'
         ],
@@ -54,7 +53,6 @@ module.exports = function (config) {
             'app/home/**/*.js': ['coverage'],
             'app/orders/**/*.js': ['coverage'],
             'app/registration/**/*.js': ['coverage'],
-            'app/trends/**/*.js': ['coverage'],
             'app/common/displaycontrols/documents/views/bmDocuments.html':['ng-html2js'],
             'app/common/displaycontrols/patientprofile/views/patientProfile.html':['ng-html2js']
         },
