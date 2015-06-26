@@ -6,7 +6,9 @@ body {
   font-size: 16px;
   line-height: 1.1em;
 }
-
+body.ngdialog-open {
+  overflow: auto !important;
+}
 body pre {
   font-family: $OpenSansFont;
   font-size: 14px;
