@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.adt')
-    .controller('WardController', ['$scope', '$rootScope', '$window', '$anchorScroll', 'spinner', 'WardService', 'BedManagementService', 'userService',
-        function ($scope, $rootScope, $window, $anchorScroll, spinner, wardService, bedManagementService, userService) {
+    .controller('WardController', ['$scope', '$rootScope', '$window', 'spinner', 'WardService', 'BedManagementService', 'userService',
+        function ($scope, $rootScope, $window, spinner, wardService, bedManagementService, userService) {
 
             var init = function () {
                 if ($scope.readOnly) {
@@ -28,7 +28,6 @@ angular.module('bahmni.adt')
             };
 
             $scope.showWardLayout = function () {
-                $anchorScroll();
                 $scope.currentView = "wardLayout";
             };
 
