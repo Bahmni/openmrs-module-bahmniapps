@@ -50,7 +50,12 @@ angular.module('bahmni.common.uiHelper')
             }
         });
 
-        $(element).on('change', function() { validateIfNeeded($(element).val()); })
+        $(element).on('change', function() { validateIfNeeded($(element).val()); });
+
+        $(element).keyup(function() {
+            validateIfNeeded($(element).val());
+            scope.$apply();
+        });
 
         scope.$watch('isInvalid', function(){
             ngModelCtrl.$setValidity('selection', !scope.isInvalid);
