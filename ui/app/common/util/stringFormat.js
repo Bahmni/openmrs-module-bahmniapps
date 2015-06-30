@@ -8,3 +8,8 @@ String.prototype.format = function() {
     }
     return content;
 };
+
+String.prototype.toValidId = function() {
+    var content = this;
+    return content.replace(/\s/g, '-');
+};
