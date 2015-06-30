@@ -14,14 +14,6 @@ angular.module('bahmni.adt')
                 $document.bind('click', function () {
                     $scope.hideBedInfoPopUp();
                 });
-
-                $scope.$watch(function () {
-                    return $rootScope.bedDetails;
-                }, function (newValue, oldValue) {
-                    if (oldValue != newValue && ((oldValue && oldValue.wardUuid === $scope.ward.ward.uuid) || newValue.wardUuid === $scope.ward.ward.uuid)) {
-                        getBeds();
-                    }
-                });
             };
 
             var getBeds = function () {

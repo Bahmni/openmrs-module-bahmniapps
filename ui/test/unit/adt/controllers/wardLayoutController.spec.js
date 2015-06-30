@@ -16,7 +16,8 @@ describe('WardLayoutController', function () {
 
         element = {
             find: function() { return this; },
-            hide: function() { return this; }
+            hide: function() { return this; },
+            show: function() { return this; }
         };
     });
 
@@ -71,40 +72,6 @@ describe('WardLayoutController', function () {
 
     });
 
-    describe('bedDetails watch', function() {
-        beforeEach(function() {
-            scope.ward = {ward: {name: 'ward1', uuid: 'warduuid1'}};
-            wardService = jasmine.createSpyObj('WardService', ['bedsForWard']); //To reset the calls count
-            wardService.bedsForWard.and.returnValue(specUtil.createServicePromise('bedsForWard'));
-        });
-
-        it("should reload if the assigned bed IS present in this ward layout", function() {
-            rootScope.bedDetails = {wardUuid: 'something'};
-
-            createController();
-            scope.$digest();
-            rootScope.bedDetails = {wardUuid: 'warduuid1'};
-            scope.$digest();
-
-            expect(wardService.bedsForWard.calls.count()).toBe(2);
-        });
-
-        it("should reload if the assigned bed WAS present in this ward layout", function() {
-            rootScope.bedDetails = {wardUuid: 'warduuid1'};
-
-            createController();
-            scope.$digest();
-            rootScope.bedDetails = {wardUuid: 'something'};
-            scope.$digest();
-
-            expect(wardService.bedsForWard.calls.count()).toBe(2);
-        });
-
-        it("should not reload otherwise", function() {
-
-        });
-    });
-
     describe('highlightCurrentPatient', function() {
         var cell;
         beforeEach(function() {
@@ -134,6 +101,18 @@ describe('WardLayoutController', function () {
             createController();
             expect(scope.highlightCurrentPatient(cell)).toBe(false);
         })
+    });
+
+    describe('setBedDetails', function() {
+       it('should set the bed details in scope', function() {
+           var cell = {id: 1};
+           scope.ward = {ward: {name: 'ward1'}};
+
+           createController();
+           scope.setBedDetails(cell);
+
+           expect(scope.selectedBed).toEqual(cell);
+       });
     });
 
 });

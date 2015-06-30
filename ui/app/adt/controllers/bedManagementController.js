@@ -2,16 +2,21 @@
 
 angular.module('bahmni.adt')
     .controller('BedManagementController', [
-        '$scope', '$rootScope', '$location', '$timeout', '$document', '$stateParams', 'spinner', 'WardService',
-        'BedManagementService', 'bedService', 'encounterService', 'sessionService', 'messagingService', 'backlinkService',
-        function ($scope, $rootScope, $location, $timeout, $document, $stateParams, spinner, wardService,
-                  bedManagementService, bedService, encounterService, sessionService, messagingService, backlinkService) {
+        '$scope', '$rootScope', '$stateParams', 'spinner', 'WardService', 'backlinkService',
+        function ($scope, $rootScope, $stateParams, spinner, wardService, backlinkService) {
             $scope.wards = null;
             $scope.encounterUuid = $stateParams.encounterUuid;
             $scope.visitUuid = $stateParams.visitUuid;
 
             var init = function(){
                 loadAllWards();
+                $scope.$watch(function () {
+                    return $rootScope.bedDetails;
+                }, function (newValue, oldValue) {
+                    if(newValue !== oldValue) {
+                        loadAllWards();
+                    }
+                });
             };
 
             var loadAllWards = function () {
