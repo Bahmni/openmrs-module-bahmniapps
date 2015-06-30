@@ -9,8 +9,7 @@ describe("LatestPrescriptionPrintController", function () {
     var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
     var controller;
     var rootScope;
-    var treatmentService, drugOrderPromise, messagingService, visitActionService;
-
+    var messagingService, visitActionService;
     beforeEach(inject(function ($controller, $rootScope) {
         controller = $controller;
         rootScope = $rootScope;
@@ -33,10 +32,6 @@ describe("LatestPrescriptionPrintController", function () {
     }));
 
     var loadController = function (visitActionServiceExpectation, messageServiceExpectation) {
-        treatmentService = jasmine.createSpyObj('TreatmentService', ['getActiveDrugOrders']);
-        drugOrderPromise = specUtil.createServicePromise('getActiveDrugOrders');
-        treatmentService.getActiveDrugOrders.and.returnValue(drugOrderPromise);
-
         visitActionService = jasmine.createSpyObj('visitActionService', ['printPrescription']);
         visitActionService.printPrescription.and.callFake(visitActionServiceExpectation);
 
@@ -47,7 +42,6 @@ describe("LatestPrescriptionPrintController", function () {
             $scope: scope,
             $rootScope: rootScope,
             messagingService: messagingService,
-            TreatmentService: treatmentService,
             spinner: spinner,
             visitActionsService: visitActionService
         });
@@ -60,10 +54,10 @@ describe("LatestPrescriptionPrintController", function () {
                 activeVisit: {uuid: "latestVisitUuid", startDatetime: "someStartDate"}
             };
 
-            var visitActionServiceExpectation = function (patient, drugOrders, startDate) {
+            var visitActionServiceExpectation = function (patient, startDate, visitUuid) {
                 expect(patient.uuid).toBe("patientUuid");
-                expect(drugOrders.length).toBe(0);
                 expect(startDate).toBe("someStartDate");
+                expect(visitUuid).toBe("latestVisitUuid");
             };
             var messageServiceExpectation = function (type, message){
                 expect(type).toBe("info");
@@ -72,7 +66,6 @@ describe("LatestPrescriptionPrintController", function () {
 
             loadController(visitActionServiceExpectation, messageServiceExpectation);
 
-            drugOrderPromise.callThenCallBack([]);
             expect(messagingService.showMessage).toHaveBeenCalled();
             expect(visitActionService.printPrescription).toHaveBeenCalled();
 
