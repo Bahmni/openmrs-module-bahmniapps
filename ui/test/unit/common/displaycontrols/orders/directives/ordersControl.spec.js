@@ -85,6 +85,7 @@ describe('Orders DisplayControl', function () {
         var compiledElementScope = element.isolateScope();
         scope.$digest();
 
-        expect(compiledElementScope.getTitle(orders[0])).toBe("Absconding on 16 Dec 14 4:06 pm by Surajkumar Surajkumar Surajkumar")
+        var expectedDate = moment(orders[0].orderDate).format("DD MMM YY h:mm a");
+        expect(compiledElementScope.getTitle(orders[0])).toBe("Absconding on "+expectedDate+" by Surajkumar Surajkumar Surajkumar")
     });
 });
