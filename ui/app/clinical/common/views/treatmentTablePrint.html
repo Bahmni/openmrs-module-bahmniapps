@@ -8,9 +8,9 @@
     <tbody ng-repeat="drugOrder in drugOrders" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
     <tr>
         <td>{{$index + 1}}.</td>
-        <td class="drug-name" bo-text="drugOrder.getDisplayName()"></td>
+        <td class="drug-name" bo-text="drugOrder.getDisplayName()" ng-class="{'strike-text':drugOrder.isDiscontinuedOrStopped()}"></td>
         <td class="dosage-form">
-            <span bo-show="drugOrder.getDescription()" bo-text="drugOrder.getDescription()"></span>
+            <span bo-show="drugOrder.getDescription()" bo-text="drugOrder.getDescription()" ng-class="{'strike-text':drugOrder.isDiscontinuedOrStopped()}"></span>
             <span bo-show="!drugOrder.getDescription()" bo-text="' - '"></span>
             <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">stopped {{drugOrder.effectiveStopDate | bahmniDate}}</span>
         </td>
