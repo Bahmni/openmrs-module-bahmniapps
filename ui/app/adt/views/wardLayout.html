@@ -2,13 +2,13 @@
     <div class="bed-info" ng-show="selectedBed.bed.bedNumber">
 		<ul>
 			<li>Bed: {{selectedBed.bed.bedNumber}}</li>
-			<div ng-show="!selectedBed.available">
-                <li>{{selectedBed.patientInfo.identifier}}</li>
-                <li>{{selectedBed.patientInfo.name}} ({{selectedBed.patientInfo.gender}})</li>
+			<div class="patient-info" ng-repeat="patientInfo in selectedBed.patientInfo">
+                <li>{{patientInfo.identifier}}</li>
+                <li>{{patientInfo.name}} ({{patientInfo.gender}})</li>
             </div>
-			<li ng-show="!readOnly"><a class="assign" ng-show="selectedBed.available && !getCurrentBed()"
+			<li ng-show="!readOnly"><a class="assign" ng-show="!getCurrentBed()"
                 ng-click="assignBed(selectedBed)">Assign</a></li>
-			<li ng-show="!readOnly"><a class="transfer" ng-show="selectedBed.available && getCurrentBed()"
+			<li ng-show="!readOnly"><a class="transfer" ng-show="getCurrentBed() && selectedBed.bed.bedId != getCurrentBed().bedId"
                 ng-click="assignBed(selectedBed)">Transfer</a></li>
 		</ul>
     </div>

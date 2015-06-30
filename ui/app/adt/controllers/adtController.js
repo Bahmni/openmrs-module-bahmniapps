@@ -221,7 +221,7 @@ angular.module('bahmni.adt')
                 spinner.forPromise(encounterService.create(encounterData).then(function (response) {
                     return bedService.getAssignedBedForPatient($scope.patient.uuid).then(function (bedDetails) {
                         if (bedDetails) {
-                            return bedService.freeBed(bedDetails.bedId).success(function () {
+                            return bedService.freeBed(bedDetails.bedId, $scope.patient.uuid).success(function () {
                                 forwardUrl(response, "onDischargeForwardTo");
                             })
                         }

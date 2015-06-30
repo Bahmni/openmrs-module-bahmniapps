@@ -23,7 +23,7 @@ angular.module('bahmni.adt')
                         bed: {
                             bedId: bedLayout != null && bedLayout.bedId,
                             bedNumber: bedLayout != null && bedLayout.bedNumber,
-                            bedType: bedLayout != null && bedLayout.bedType != null && bedLayout.bedType.displayName,
+                            bedType: bedLayout != null && bedLayout.bedType != null && bedLayout.bedType.displayName
                         }
                     })
                 }

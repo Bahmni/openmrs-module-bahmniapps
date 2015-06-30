@@ -1,9 +1,11 @@
 'use strict';
 
 angular.module('bahmni.adt')
-    .controller('WardLayoutController', ['$scope', '$rootScope', '$window', 'spinner', 'WardService', 'BedManagementService', 'bedService', 'messagingService', '$document', '$element',
-        function ($scope, $rootScope, $window, spinner, wardService, bedManagementService, bedService, messagingService, $document, $element) {
+    .controller('WardLayoutController', ['$scope', '$rootScope', '$window', 'spinner', 'WardService', 'BedManagementService', 'bedService', 'messagingService', 'appService', '$document', '$element',
+        function ($scope, $rootScope, $window, spinner, wardService, bedManagementService, bedService, messagingService, appService, $document, $element) {
             $scope.selectedBed = null;
+            var maxPatientsConfig = appService.getAppDescriptor().getConfig("maxPatientsPerBed");
+            var maxPatientsPerBed =  maxPatientsConfig ? maxPatientsConfig.value : 3;
 
             var init = function () {
                 $element.find('.bed-info').hide();
@@ -37,8 +39,22 @@ angular.module('bahmni.adt')
             };
 
             $scope.assignBed = function (bed) {
-                clearAssignmentError();
-                assignBedToPatient(bed, $scope.encounterUuid);
+                if(bed.patientInfo && bed.patientInfo.length >= maxPatientsPerBed){
+                    alert( "A max of " +maxPatientsPerBed+ " patients are allowed per bed. Please select other bed.");
+                    return;
+                }
+                if(shouldTransfer(bed)){
+                    clearAssignmentError();
+                    assignBedToPatient(bed, $scope.encounterUuid);
+                }
+            };
+
+            var shouldTransfer= function(bed){
+                if(bed.patientInfo){
+                    return confirm("This bed is already occupied. Do you want to assign another patient to the same bed?");
+                }
+                return true;
+
             };
 
             var clearAssignmentError = function () {
@@ -61,11 +77,14 @@ angular.module('bahmni.adt')
             $scope.fetchBedInfo = function (cell, rowIndex, columnIndex) {
                 if (!cell.available && !cell.empty && !cell.patientInfo) {
                     spinner.forPromise(bedService.getBedInfo(cell.bed.bedId).success(function (data) {
-                        cell.patientInfo = {
-                            "name": data.patient.person.personName.givenName + " " + data.patient.person.personName.familyName,
-                            "identifier": data.patient.identifiers[0].identifier,
-                            "gender": data.patient.person.gender
-                        }
+                        cell.patientInfo = [];
+                        _.each(data.patients, function(patient){
+                           cell.patientInfo.push( {
+                                "name": patient.person.personName.givenName + " " + patient.person.personName.familyName,
+                                "identifier": patient.identifiers[0].identifier,
+                                "gender": patient.person.gender
+                            });
+                        })
                     }));
                 }
             };

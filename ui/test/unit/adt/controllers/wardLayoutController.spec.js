@@ -4,6 +4,7 @@ describe('WardLayoutController', function () {
 
     var bedService = jasmine.createSpyObj('bedService', ['assignBed', 'setBedDetailsForPatientOnRootScope']);
     var wardService = jasmine.createSpyObj('WardService', ['bedsForWard']);
+    var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
     var messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
     var controller;
     var rootScope;
@@ -25,6 +26,11 @@ describe('WardLayoutController', function () {
             rootScope = $rootScope;
             scope = $rootScope.$new();
         });
+        appService.getAppDescriptor.and.returnValue({getConfig: function(){
+            return {
+                maxPatientsPerBed: 2
+            }
+        }})
     });
 
     function createController() {
@@ -34,6 +40,7 @@ describe('WardLayoutController', function () {
             bedManagementService: {},
             bedService: bedService,
             messagingService: messagingService,
+            appService: appService,
             $element: element
         });
     }

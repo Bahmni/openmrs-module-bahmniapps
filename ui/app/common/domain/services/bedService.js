@@ -36,8 +36,8 @@ angular.module('bahmni.common.domain')
             return deffered.promise;
         };
 
-        this.freeBed = function (bedId) {
-            return $http.delete("/openmrs/ws/rest/v1/beds/" + bedId, {}, {
+        this.freeBed = function (bedId, patientUuid) {
+            return $http.delete("/openmrs/ws/rest/v1/beds/" + bedId, {params:{patientUuid: patientUuid}}, {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
             });
@@ -52,7 +52,7 @@ angular.module('bahmni.common.domain')
         };
 
         this.getBedInfo = function (bedId) {
-            return $http.get("/openmrs/ws/rest/v1/beds/" + bedId + "?v=custom:(bedId,bedNumber,patient:(uuid,person:(age,personName:(givenName,familyName),gender),identifiers:(uuid,identifier),),physicalLocation:(name))", {
+            return $http.get("/openmrs/ws/rest/v1/beds/" + bedId + "?v=custom:(bedId,bedNumber,patients:(uuid,person:(age,personName:(givenName,familyName),gender),identifiers:(uuid,identifier),),physicalLocation:(name))", {
                 withCredentials: true
             });
         };

@@ -113,7 +113,7 @@ $bed-info-bgcolor:  $mediumGray;
 
 
 .bed-info {
-  padding: 10px;
+  padding: 6px;
   background: $bed-info-bgcolor;
   position: absolute;
   display: none;
@@ -142,6 +142,12 @@ $bed-info-bgcolor:  $mediumGray;
     right: -9px;
     z-index: 1;
   }
+  .patient-info {
+      border-top: 1px solid $lightGray;
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+
   li {
     padding: 0;
     color: #fff;
@@ -155,7 +161,6 @@ $bed-info-bgcolor:  $mediumGray;
       background: none;
     }
     &:first-child {
-      border-bottom: 1px solid $lightGray;
       margin-bottom: 2px;
       font-weight: bold;
       font-family: Arial;
