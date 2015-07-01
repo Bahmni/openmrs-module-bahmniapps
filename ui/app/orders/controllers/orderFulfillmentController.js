@@ -68,6 +68,14 @@ app.controller('OrderFulfillmentController', ['$scope', '$rootScope', '$statePar
             });
         }).catch(function (error) {
             var message = 'An error has occurred on the server. Information not saved.';
+            try {
+                /*This is a dirty fix to do, the real reason of failure is because of there is no visit type assosiated with
+                 save request to create a new visit in mrs.
+                  */
+                if(error.data.error.message.indexOf("Visit Type is required") >= 0){
+                    message = "Visit already closed, create new visit to fulfill the order";
+                }
+            } catch(e) { /* ignore the error */}
             messagingService.showMessage('formError', message);
         }));
     });
