@@ -185,8 +185,11 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto, encount
 
     this.getDescriptionWithQuantity = function(){
         return addDelimiter(blankIfFalsy(self.getDescription()), "(") +
-        addDelimiter(blankIfFalsy(self.quantity), " ") +
-        addDelimiter(blankIfFalsy(quantityUnitsFrom(self.drug.form + "(s)")), ")")
+        addDelimiter(self.getQuantityWithUnit(), ")")
+    };
+
+    this.getQuantityWithUnit = function () {
+        return addDelimiter(blankIfFalsy(self.quantity), " ") + blankIfFalsy(quantityUnitsFrom(self.drug.form + "(s)"));
     };
 
     var getFrequencyPerDay = function(){

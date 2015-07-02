@@ -3,6 +3,7 @@
         <th class="sl-no-heading">S. No.</th>
         <th class="drug-name-heading">Drug Name</th>
         <th class="dosage-instructions-heading">Dosage Instructions</th>
+        <th class="quantity-heading">Quantity</th>
         <th class="start-date-heading">Start Date</th>
     </tr>
     <tbody ng-repeat="drugOrder in drugOrders" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
@@ -14,11 +15,12 @@
             <span bo-show="!drugOrder.getDescription()" bo-text="' - '"></span>
             <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">stopped {{drugOrder.effectiveStopDate | bahmniDate}}</span>
         </td>
+        <td bo-text="(drugOrder.getQuantityWithUnit)"></td>
         <td bo-text="(drugOrder.effectiveStartDate | bahmniDate)"></td>
     </tr>
     <tr ng-if="drugOrder.additionalInstructions">
         <td></td>
-        <td colspan="3" class="inline-notes notes">
+        <td colspan="4" class="inline-notes notes">
             <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.additionalInstructions}}</p>
         </td>
     </tr>
