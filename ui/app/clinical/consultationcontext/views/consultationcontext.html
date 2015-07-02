@@ -28,25 +28,42 @@
 </div>
 <div>
     <section class="block dashboard-section">
-        <h2 class="section-title ng-binding">Program Management</h2>
-        <!--<table>-->
-            <!--<thead>-->
-                <!--<tr>-->
-                    <!--<th>Sr</th>-->
-                    <!--<th>Program Name</th>-->
-                <!--</tr>-->
-            <!--</thead>-->
-            <!--<tbody>-->
-                <!--<tr>-->
-                    <!--<td>1</td>-->
-                    <!--<td>STI Program</td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                    <!--<td>2</td>-->
-                    <!--<td>Program</td>-->
-                <!--</tr>-->
-            <!--</tbody>-->
-        <!--</table>-->
+        <h2 class="section-title ng-binding">Select Program</h2>
+        <select ng-model="programSelected" ng-options="program.display for program in allPrograms" ng-required="1==1">
+            <option value="">Choose program</option>
+        </select>
+        <input type="date" ng-model="programEnrollmentDate"/>
+        <button type="submit" ng-click="enrollPatient()">Enroll</button>
+    </section>
+</div>
+<div>
+    <section class="block dashboard-section">
+        <h2 class="section-title ng-binding">Active Programs</h2>
+        <table ng-show="hasPatientEnrolledToSomePrograms()">
+            <thead>
+            <tr>
+                <th class="slno_col"><strong>Sl.No</strong></th>
+                <th><strong>Program</strong></th>
+                <th><strong>Date Enrolled</strong></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="program in activePrograms">
+                <td>{{$index + 1}}</td>
+                <td>
+                    <a ng-href="#/patient/{{patient.uuid}}/dashboard">{{program.display}}</a>
+                </td>
+                <td>{{program.dateEnrolled | bahmniDate}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="note-container" ng-show="!hasPatientEnrolledToSomePrograms()">
+            <div class="note warning">
+                <div class="text">
+                    <p>The Patient has not enrolled to any programs</p>
+                </div>
+            </div>
+        </div>
     </section>
 </div>
 <div>

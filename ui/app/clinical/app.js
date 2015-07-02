@@ -60,13 +60,14 @@ angular.module('consultation')
                 }
             })
             .state('patient.consultationContext',{
-                url:'/consultationcontext',
+                url:'/consultationContext',
                 views: {
                     'content': {
-                        templateUrl: 'consultationcontext/views/consultationcontext.html',
-                        controller: function ($scope, patientContext){
-                            $scope.patient = patientContext.patient;
-                        }
+                        templateUrl: 'consultationcontext/views/consultationContext.html',
+                        controller: 'ConsultationContextController'
+                        //
+                        //controller: function ($scope, patientContext){
+                        //    $scope.patient = patientContext.patient;
                     },
                     'additional-header': {
                         templateUrl: '../common/ui-helper/header.html',

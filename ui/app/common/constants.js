@@ -59,6 +59,8 @@ Bahmni.Common = Bahmni.Common || {};
         patientImportUrl: BAHMNI_CORE + "/admin/upload/patient",
         adminImportStatusUrl: BAHMNI_CORE + "/admin/upload/status",
         dhisAllTasksUrl: RESTWS_V1 + "/dhis/tasks",
+        programUrl: RESTWS_V1 + "/program",
+        programEnrollPatientUrl: RESTWS_V1 + "/programenrollment",
         dhisTaskUrl: RESTWS_V1 + "/dhis/task/",
         dhisFireQueriesUrl: RESTWS_V1 + "/dhis/fireQueries",
         relationshipTypesUrl: RESTWS_V1 + "/relationshiptype",
