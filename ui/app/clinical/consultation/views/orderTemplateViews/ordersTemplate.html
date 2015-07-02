@@ -18,8 +18,8 @@
                             <li ng-repeat="order in selectedOrders" >
                                 <div class="grid-row-element">
                                     <span ng-class="{'voided': order.voided}">{{::order.concept.displayName || order.concept.shortName || order.concept.name}}</span>
-                                            <i ng-class="{'fa fa-remove': !order.voided, 'fa fa-undo': order.voided }" ng-click="diSelect(order)"></i>
                                             <i class="fa fa-file-text-o" ng-click="openNotesPopup(order)"></i>
+                                            <i ng-class="{'fa fa-remove': !order.voided, 'fa fa-undo': order.voided }" ng-click="diSelect(order)"></i>
                                 </div>
                             </li>
                         </ul>

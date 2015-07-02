@@ -1,5 +1,8 @@
-<div>
-    <label>{{ngDialogData.concept.displayName || ngDialogData.concept.shortName || ngDialogData.concept.name}}</label>
-    <textarea ng-model="ngDialogData.commentToFulfiller">{{ngDialogData.commentToFulfiller}}</textarea>
-    <button ng-click="setEditedFlag(ngDialogData)">Ok</button>
+<div class="selectedOrderNoteContainer">
+    <span>{{ngDialogData.concept.displayName || ngDialogData.concept.shortName || ngDialogData.concept.name}}</span>
+    <textarea ng-model="orderNoteText" focus-on="true" rows="4" placeholder="Enter Notes Here">{{ngDialogData.previousNote}}</textarea>
+    <div class="btn-group fr">
+        <button ng-click="setEditedFlag(ngDialogData, orderNoteText)">Ok</button>
+        <button ng-click="closePopup()">Cancel</button>
+    </div>
 </div>

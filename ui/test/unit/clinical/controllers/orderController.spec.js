@@ -143,25 +143,28 @@ describe("OrderController", function () {
 
             scope.openNotesPopup(order);
 
-            expect(ngDialog.open).toHaveBeenCalledWith({ template: 'consultation/views/orderNotes.html', data: order, scope: scope})
+            expect(scope.orderNoteText).toBe("comment");
+            expect(ngDialog.open).toHaveBeenCalledWith({ template: 'consultation/views/orderNotes.html',className: 'selectedOrderNoteContainer-dialog ngdialog-theme-default', data: order, scope: scope})
         });
 
         it("should set edited flag when the commentToFulfiller is not same as previous note and close the popup", function(){
-            var order = { commentToFulfiller : "comment" , uuid: "uuid", previousNote: "older comment"};
+            var order = { uuid: "uuid", previousNote: "older comment"};
 
-            scope.setEditedFlag(order);
+            scope.setEditedFlag(order, "comment");
 
             expect(order.hasBeenModified).toBe(true);
             expect(ngDialog.close).toHaveBeenCalled();
+            expect(order.commentToFulfiller).toBe("comment")
         });
 
         it("should not set edited flag when the commentToFulfiller is same as previous note and close the popup", function(){
-            var order = { commentToFulfiller : "comment" , uuid: "uuid", previousNote: "comment"};
+            var order = { uuid: "uuid", previousNote: "comment", commentToFulfiller: "comment"};
 
-            scope.setEditedFlag(order);
+            scope.setEditedFlag(order, "comment");
 
             expect(order.hasBeenModified).toBe(undefined);
             expect(ngDialog.close).toHaveBeenCalled();
+            expect(order.commentToFulfiller).toBe(order.previousNote)
         });
 
     });

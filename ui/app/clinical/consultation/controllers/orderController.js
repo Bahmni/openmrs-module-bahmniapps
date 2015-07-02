@@ -92,13 +92,19 @@ angular.module('bahmni.clinical')
 
             $scope.openNotesPopup = function(order) {
                 order.previousNote = order.commentToFulfiller;
-                $scope.dialog = ngDialog.open({ template: 'consultation/views/orderNotes.html', data: order, scope: $scope});
+                $scope.orderNoteText = order.previousNote;
+                $scope.dialog = ngDialog.open({ template: 'consultation/views/orderNotes.html', className: 'selectedOrderNoteContainer-dialog ngdialog-theme-default', data: order, scope: $scope});
             };
 
-            $scope.setEditedFlag = function(order){
-               if(order.uuid && order.previousNote != order.commentToFulfiller){
+            $scope.setEditedFlag = function(order, orderNoteText){
+               if(order.previousNote != orderNoteText){
+                   order.commentToFulfiller = orderNoteText;
                    order.hasBeenModified = true;
                }
+                $scope.closePopup();
+            };
+
+            $scope.closePopup = function(){
                 ngDialog.close();
             };
 
