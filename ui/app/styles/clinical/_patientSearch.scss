@@ -64,10 +64,20 @@
     font-size: 18px;
   }
   .ward-details-container{
-    table tr td{
-      position: relative;
-      i.ipd-indication{
-        border-radius: 0;
+    table{
+      &.patient-list-table{
+        th{
+          text-transform: capitalize;
+        }
+      }
+      tr td{
+        position: relative;
+        i.ipd-indication{
+          border-radius: 0;
+        }
+        @media screen and (max-width: 1024px){
+          padding: 10px;
+        }
       }
     }
   }
