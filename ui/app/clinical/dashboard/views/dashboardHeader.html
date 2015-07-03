@@ -5,11 +5,7 @@
            title="Go to IPD Dashboard">
             <i class="fa fa-bed fa-white"></i>
         </a>
-        <button ng-if="clinicalDashboardConfig.showPrint()" class="dialog-button-group" ng-click="printDashboard()"
-                accesskey="r">
-            <i class="fa fa-print"></i>
-            P<u>r</u>int
-        </button>
+
 
         <!--<span class="retro-date-text" ng-if="$parent.retrospectiveEntry.isRetrospective"
               ng-bind="$parent.retrospectiveEntry.encounterDate | date:'dd/MM/yyyy'"/> -->
@@ -41,8 +37,11 @@
 
 
         <div class="dashboard-header-right-wrapper">
-
-
+            <button ng-if="clinicalDashboardConfig.showPrint()" class="dialog-button-group" ng-click="printDashboard()"
+                    accesskey="r">
+                <i class="fa fa-print"></i>
+                P<u>r</u>int
+            </button>
             <div class="dashboard-date-picker" ng-controller="PatientListHeaderController">
                 <div class="retro-date-widget-wrapper">
                     <div class="retro-date-widget-header">
@@ -58,6 +57,7 @@
                    ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective"
                    ng-click="openConsultationInNewTab()"><i class="fa fa-external-link"></i></a>
            </span>
+
             <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}">
                 <i class="fa fa-bars fa-white fa-large"></i>
             </button>
