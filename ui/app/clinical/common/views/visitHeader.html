@@ -9,11 +9,6 @@
                 <span class="patient-id">{{patient.identifier}}</span>
             </span>
         </a>
-        
-        <button class="dialog-button-group" ng-if="showPrint()" ng-click="print()" accesskey="r">
-            <i class="fa fa-print"></i>
-            P<u>r</u>int</button>
-
 
         <ul class="header-tabs">
             <li class="tab-item dashboard" ng-repeat="tab in visitTabConfig.visibleTabs"
@@ -38,6 +33,10 @@
         </ul>
 
         <div class="dashboard-header-right-wrapper">
+            <button class="dialog-button-group" ng-if="showPrint()" ng-click="print()" accesskey="r">
+                <i class="fa fa-print"></i>
+                P<u>r</u>int
+            </button>
             <span class="grouped-buttons" ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective">
                 <a class=" btn--left btn--success "  ng-click="collapseControlPanel()" href="#{{consultationBoardLink}}">Consultation</a>
                 <a class="btn--right btn--success " title="Open in new window"ng-click="collapseControlPanel()" href="#{{consultationBoardLink}}" target="_blank"><i class="fa fa-external-link"></i></a>

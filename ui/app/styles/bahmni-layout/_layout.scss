@@ -172,12 +172,11 @@ body {
               }
             }
 	        .dialog-button-group {
-		        margin-top: 6px;
-		        position: absolute;
-		        right: 260px;
-		        padding: 5px 10px;
-		        font-size: 14px;
-                height: 40px;
+              margin-top: 6px;
+              float: left;
+              padding: 5px 10px;
+              font-size: 14px;
+              height: 40px;
 	        }
         }
     }
