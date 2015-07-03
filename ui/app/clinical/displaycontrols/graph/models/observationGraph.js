@@ -7,8 +7,6 @@
         angular.extend(this, model);
     };
 
-
-
     var fixCaseMismatchIssues = function (config, observations) {
         var conceptNamesFromConfig = config.yAxisConcepts.slice(0);
         conceptNamesFromConfig.push(config.xAxisConcept);
