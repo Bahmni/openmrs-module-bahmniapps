@@ -1,0 +1,71 @@
+.program-enrollment-container{
+  .placholder-text{
+    padding: 10px;
+  }
+  .select-program-container{
+    input,select{
+      min-width: 0;
+      width:200px;
+      display: inline-block;
+      margin-top: 0;
+      margin-right: 10px;
+    }
+    input{
+      padding: 5px 10px !important;
+    }
+    select{
+      height: 33px;
+    }
+    .select-program-option{
+      padding: 10px 15px;
+    }
+  }
+}
+
+
+.ngdialog.ngdialog-theme-default{
+  &.end-program-dialog{
+    .ngdialog-content{
+      padding: 30px 20px;
+    }
+    .end-program-wrapper{
+      overflow: hidden;
+      input{
+        min-width: 0;
+        padding: 5px 10px;
+        width:200px;
+      }
+      select{
+        height: 31px;
+        min-width: 0;
+        width: 200px;
+      }
+      .end-program-container{
+        overflow: hidden;
+        margin-bottom: 5px;
+        padding: 0 6%;
+        label.middle-align{
+          padding-top: 10px;
+        }
+        .left-container{
+          float: left;
+          width: 43%;
+          label{
+            margin-top: 0;
+          }
+        }
+        .right-container{
+          float: right;
+          width: 56%;
+         label{
+           margin-top: 0;
+         }
+        }
+      }
+      .btn-grp{
+        margin-top: 10px;
+        margin-right: 29px;
+      }
+    }
+  }
+}

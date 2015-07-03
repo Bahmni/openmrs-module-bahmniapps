@@ -63,11 +63,7 @@ angular.module('consultation')
                 url:'/consultationContext',
                 views: {
                     'content': {
-                        templateUrl: 'consultationcontext/views/consultationContext.html',
-                        controller: 'ConsultationContextController'
-                        //
-                        //controller: function ($scope, patientContext){
-                        //    $scope.patient = patientContext.patient;
+                        templateUrl: 'consultationcontext/views/consultationContext.html'
                     },
                     'additional-header': {
                         templateUrl: '../common/ui-helper/header.html',

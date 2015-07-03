@@ -1,0 +1,40 @@
+<div class="end-program-wrapper form-group form">
+    <div class="end-program-container">
+        <div class="left-container">
+            <label>Program Name </label>
+        </div>
+        <div class="right-container">
+            <label>{{popUpData.programName}}</label>
+        </div>
+    </div>
+    <div class="end-program-container">
+        <div class="left-container">
+            <label>Date Enrolled </label>
+        </div>
+        <div class="right-container">
+            <label>{{popUpData.enrollmentDate | bahmniDate}}</label>
+        </div>
+    </div>
+    <div class="end-program-container">
+        <div class="left-container">
+            <label class="middle-align">Date of Completion</label>
+        </div>
+        <div class="right-container">
+            <input type="date" ng-model = "popUpData.endEnrollmentDate" min="{{popUpData.enrollmentDate | date:'yyyy-MM-dd'}}"/>
+        </div>
+    </div>
+    <div class="end-program-container">
+        <div class="left-container">
+            <label class="middle-align">Outcomes</label>
+        </div>
+        <div class="right-container">
+            <select  ng-model="popUpData.outcomeData" ng-options="outcomeSelected.display for outcomeSelected in popUpData.outcome">
+                <option value="">Choose OutCome</option>
+            </select>
+        </div>
+    </div>
+    <div class="btn-grp fr">
+        <button class="retro-widget-button" ng-click="closePopUp()">Cancel</button>
+        <button class="retro-widget-button ok_btn" ng-click="savePopUpData()">Save</button>
+    </div>
+</div>

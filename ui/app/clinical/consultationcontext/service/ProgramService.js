@@ -34,10 +34,23 @@ angular.module('bahmni.clinical')
             return $http.get(req.url, {params: req.params});
         };
 
+        var endPatientProgram = function (patientProgramUuid, dateCompleted, outcomeUuid){
+            var req = {
+                url: Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid,
+                content: {
+                    dateCompleted: dateCompleted,
+                    outcome: outcomeUuid
+                },
+                headers: {"Content-Type": "application/json"}
+            };
+            return $http.post(req.url, req.content, req.headers);
+        };
+
         return {
             getAllPrograms: getAllPrograms,
             enrollPatientToAProgram: enrollPatientToAProgram,
-            getActiveProgramsForAPatient: getActiveProgramsForAPatient
+            getActiveProgramsForAPatient: getActiveProgramsForAPatient,
+            endPatientProgram: endPatientProgram
         };
 
     }]);
