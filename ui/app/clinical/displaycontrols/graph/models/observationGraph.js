@@ -7,15 +7,25 @@
         angular.extend(this, model);
     };
 
-    var normalizeObservationsConceptName = function(config, observations) {
+    Bahmni.Clinical.ObservationGraph.Line = function (proto) {
+        angular.extend(this, proto);
+    };
+
+    Bahmni.Clinical.ObservationGraph.Line.prototype.addPoint = function (point) {
+        if (point[this.name]) {
+            this.values.push(point);
+        }
+    };
+
+    var fixCaseMismatchIssues = function (config, observations) {
         var conceptNamesFromConfig = config.yAxisConcepts.slice(0);
         conceptNamesFromConfig.push(config.xAxisConcept);
-        _.each(observations, function(obs) {
-            obs.concept.name = _.find(conceptNamesFromConfig, function(configConceptName) {
+        _.each(observations, function (obs) {
+            obs.concept.name = _.find(conceptNamesFromConfig, function (configConceptName) {
                 return configConceptName.toLowerCase() === obs.concept.name.toLowerCase();
             })
         })
-    }
+    };
 
     var createObservationPoint = function (config, obs, xAxisValues) {
         var observation = {};
@@ -24,41 +34,39 @@
         return observation;
     };
 
-    var filterConcept = function (graphModel, obs) {
-        return _(graphModel).find(function (item) {
-            return item.name === obs.concept.name;
+    var findMatchingLine = function (lines, obs) {
+        return _(lines).find(function (line) {
+            return line.name === obs.concept.name;
         });
     };
 
-    Bahmni.Clinical.ObservationGraph.create = function (observations, person, config, growthChartReference) {
-        normalizeObservationsConceptName(config, observations);
-        var yAxisObservations = _.filter(observations, function (obs) {
+    Bahmni.Clinical.ObservationGraph.create = function (allObservations, person, config, growthChartReference) {
+        fixCaseMismatchIssues(config, allObservations);
+
+        var yAxisObservations = _.filter(allObservations, function (obs) {
             return obs.concept.name !== config.xAxisConcept;
         });
-        var xAxisObservations = _.filter(observations, function (obs) {
+
+        var xAxisObservations = _.filter(allObservations, function (obs) {
             return obs.concept.name === config.xAxisConcept;
         });
-        var observationGraphModel = _(observations).uniq(function (item) {
+
+        var lines = _(yAxisObservations).uniq(function (item) {
             return item.concept.name + item.concept.units;
         }).map(function (item) {
-            return {name: item.concept.name, units: item.concept.units, values: []}
+            return new Bahmni.Clinical.ObservationGraph.Line({
+                name: item.concept.name,
+                units: item.concept.units,
+                values: []
+            });
         }).value();
-
-        var sortedObsGraphModel = [];
-        _.each(config.yAxisConcepts, function (concept) {
-            _.each(observationGraphModel, function (item) {
-                if (concept === item.name) {
-                    sortedObsGraphModel.push(item);
-                }
-            })
-        });
 
         _.forEach(yAxisObservations, function (yAxisObs) {
             var xValue;
             if (config.displayForObservationDateTime()) {
                 config.type = "timeseries";
                 xValue = Bahmni.Common.Util.DateUtil.parseDatetime(yAxisObs.observationDateTime).toDate();
-            } else if(config.displayForAge()) {
+            } else if (config.displayForAge()) {
                 xValue = Bahmni.Common.Util.AgeUtil.differenceInMonths(person.birthdate, yAxisObs.observationDateTime);
             } else {
                 config.type = "indexed";
@@ -67,19 +75,20 @@
                 });
                 xValue = matchingObservation ? matchingObservation.value : undefined;
             }
-            if(xValue != undefined) {
-                var concept = filterConcept(sortedObsGraphModel, yAxisObs);
+
+            if (xValue != undefined) {
+                var line = findMatchingLine(lines, yAxisObs);
                 var observationPoint = createObservationPoint(config, yAxisObs, xValue);
-                concept.values.push(observationPoint);
+                line.addPoint(observationPoint);
             }
         });
 
         if (growthChartReference != undefined) {
-            sortedObsGraphModel = sortedObsGraphModel.concat(growthChartReference.getAsObsGraphModel());
+            lines = lines.concat(growthChartReference.getAsObsGraphModel());
             config.yAxisConcepts = config.yAxisConcepts.concat(growthChartReference.getReferenceKeys());
         }
 
-        return new Bahmni.Clinical.ObservationGraph(sortedObsGraphModel);
+        return new Bahmni.Clinical.ObservationGraph(lines);
     };
 })();
 

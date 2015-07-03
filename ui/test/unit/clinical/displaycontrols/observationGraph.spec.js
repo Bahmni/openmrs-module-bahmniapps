@@ -117,14 +117,14 @@ describe("Observation Graph", function () {
         httpBackend.flush();
 
         expect(scope.graphId).not.toBeNull();
-        var graphModel = [{
+        var graphModel = [new Bahmni.Clinical.ObservationGraph.Line({
             name: "Temperature",
             units: "Celcius",
             values: [{
                 observationDateTime: Bahmni.Common.Util.DateUtil.parseDatetime("2015-01-01").toDate(),
                 Temperature: 45
             }]
-        }];
+        })];
         var anyElement = null;
         expect(c3ChartSpy.render).toHaveBeenCalledWith(anyElement, jasmine.any(Number),
             new Bahmni.Clinical.ObservationGraphConfig(scope.section.config),
@@ -154,7 +154,7 @@ describe("Observation Graph", function () {
         httpBackend.flush();
 
         expect(scope.graphId).not.toBeNull();
-        var graphModel = [{name: 'Height', units: "cm", values: [{age: 178.9, Height: 45}]}];
+        var graphModel = [new Bahmni.Clinical.ObservationGraph.Line({name: 'Height', units: "cm", values: [{age: 178.9, Height: 45}]})];
         var anyElement = null;
         expect(c3ChartSpy.render).toHaveBeenCalledWith(
             anyElement
@@ -188,7 +188,7 @@ describe("Observation Graph", function () {
                     });
                 }
             }
-        })
+        });
         var mockGrowthChartReferenceModel = jasmine.createSpyObj('GrowthChartReference',['']);
         spyOn(Bahmni.Clinical.ObservationGraph, 'create').and.returnValue(mockGrowthChartReferenceModel);
         mockPatientService({person: {birthdate: "2000-02-02"}});
@@ -198,6 +198,7 @@ describe("Observation Graph", function () {
         httpBackend.flush();
 
         expect(c3ChartSpy.render).toHaveBeenCalledWith(null, 0, jasmine.any(Object), mockGrowthChartReferenceModel);
+        expect(appService.loadConfig).toHaveBeenCalledWith("growthChartReference");
     });
 
     it("should call c3 render for observations with xaxis as another concept", function () {
@@ -222,11 +223,11 @@ describe("Observation Graph", function () {
         httpBackend.flush();
 
         expect(scope.graphId).not.toBeNull();
-        var graphModel = [{
+        var graphModel = [new Bahmni.Clinical.ObservationGraph.Line({
             name: 'Height',
             units: 'cm',
             values: [{Weight: 45, Height: 155}]
-        }];
+        })];
         var anyElement = null;
         expect(c3ChartSpy.render).toHaveBeenCalledWith(anyElement
             , jasmine.any(Number)
@@ -263,16 +264,16 @@ describe("Observation Graph", function () {
 
         expect(scope.graphId).not.toBeNull();
         var graphModel = [
-            {
+            new Bahmni.Clinical.ObservationGraph.Line({
                 name: "Height", units: "cm", values: [
                 {observationDateTime: toDate("2015-01-01"), "Height": 155},
                 {observationDateTime: toDate("2015-02-01"), "Height": 155}]
-            },
-            {
+            }),
+            new Bahmni.Clinical.ObservationGraph.Line({
                 name: "Weight", units: "kg", values: [
                 {observationDateTime: toDate("2015-01-01"), "Weight": 40},
                 {observationDateTime: toDate("2015-02-01"), "Weight": 45}]
-            }];
+            })];
         var anyElement = null;
 
         expect(c3ChartSpy.render).toHaveBeenCalledWith(anyElement
