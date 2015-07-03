@@ -48,14 +48,14 @@
                 }
                 span {
                     display: inline-block;
-                    padding: 8px 15px;
+                    padding: 8px 10px;
                     float: left;
-                    width: 174px;
+                    width: 179px;
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
                     @media (max-width: 1024px) {
-                        width: 127px;
+                        width: 133px;
                     }
                     &.voided{
                       text-decoration: line-through;
@@ -107,11 +107,11 @@
     .dashboard-section-wrapper {
         margin: 0;
         .orders-section-left {
-            width: 22%;
+            width: 25%;
             float: left;
             margin: 3% 0 2% 10px;
             .multi-select-lab-tests {
-                width: 93%;
+                width: 96%;
                 ul {
                     li {
                         a {
@@ -132,7 +132,7 @@
             }
         }
         .orders-section-right {
-            width: 77%;
+            width: 74%;
             float: right;
             margin-top: 2%;
         }
@@ -180,16 +180,16 @@
                 text-align: center;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                width: 249px;
+                width: 237px;
                 white-space: nowrap;
                 @media (max-width: 1024px) {
-                    width: 200px;
+                    width: 191px;
                 }
             }
         }
         .block.consultation-notes {
             border: 1px solid #669999;
-            width: 93%;
+            width: 95%;
             margin-top: 20px;
             border-radius: 5px 5px 0 0;
             border-top: 0;
@@ -239,6 +239,35 @@
             visibility: visible;
         }
     }
+}
+
+.ngdialog.ngdialog-theme-default{
+    &.selectedOrderNoteContainer-dialog{
+        .ngdialog-content{
+            width:600px;
+            padding:30px;
+            .selectedOrderNoteContainer{
+                span{
+                    display: block;
+                    font-size: 25px;
+                    line-height: 1;
+                    padding-bottom: 15px;
+                    float: left;
+                    width: 100%;
+                }
+                textarea{
+                    float: left;
+                    width: 100%;
+                    padding: 10px;
+                    height: 120px;
+                }
+                .btn-group{
+                    margin-top: 10px;
+                }
+            }
+        }
+    }
+
 }
 
 // .sample-type {
