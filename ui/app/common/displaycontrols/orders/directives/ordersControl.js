@@ -14,11 +14,15 @@ angular.module('bahmni.common.displaycontrol.orders')
                     return orderService.getOrders($scope.patient.uuid, $scope.orderTypeUuid, $scope.config.conceptNames, includeAllObs, $scope.config.numberOfVisits,
                         $scope.config.obsIgnoreList, $scope.visitUuid, $scope.orderUuid).then(function (response) {
                             $scope.bahmniOrders = response.data;
-                            $scope.config.hideIfEmpty = $scope.bahmniOrders.length == 0;
                         });
                 };
                 var init = function() {
                     return getOrders().then(function(){
+                        _.forEach($scope.bahmniOrders, function(order){
+                            if(order.bahmniObservations.length === 0){
+                                order.hideIfEmpty = true
+                            }
+                        })
                     });
                 };
                 $scope.getTitle = function(order){

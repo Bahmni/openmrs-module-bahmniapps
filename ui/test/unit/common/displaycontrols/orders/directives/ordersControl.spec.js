@@ -62,8 +62,18 @@ describe('Orders DisplayControl', function () {
         var compiledElementScope = element.isolateScope();
         scope.$digest();
 
+        var expectedOrders = [
+            {
+                "conceptName": "Absconding",
+                "orderDate": "2014-12-16T16:06:49.000+0530",
+                "provider": "Surajkumar Surajkumar Surajkumar",
+                "bahmniObservations": [],
+                "hideIfEmpty": true
+            }
+        ];
+
         expect(compiledElementScope.bahmniOrders).not.toBeUndefined();
-        expect(compiledElementScope.bahmniOrders).toEqual(orders);
+        expect(compiledElementScope.bahmniOrders).toEqual(expectedOrders);
     });
 
     it('should return title when show-title flag is true', function(){
@@ -89,7 +99,7 @@ describe('Orders DisplayControl', function () {
         expect(compiledElementScope.getTitle(orders[0])).toBe("Absconding on "+expectedDate+" by Surajkumar Surajkumar Surajkumar")
     });
 
-    it('should set hideIfEmpty flag if the orders are empty', function(){
+    it('should set hideIfEmpty flag if the orders observations are empty', function(){
         var scope = rootScope.$new();
         scope.section = {
             numberOfVisits:1
@@ -98,7 +108,7 @@ describe('Orders DisplayControl', function () {
         scope.orderUuid= "someOrderUuid";
 
         mockBackend.expectGET('../common/displaycontrols/orders/views/ordersControl.html').respond("<div>dummy</div>");
-        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/orders?includeObs=true&numberOfVisits=1&orderUuid=someOrderUuid&patientUuid=patientUuid').respond([]);
+        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/orders?includeObs=true&numberOfVisits=1&orderUuid=someOrderUuid&patientUuid=patientUuid').respond(orders);
 
         var element = compile(simpleHtml)(scope);
 
@@ -108,7 +118,7 @@ describe('Orders DisplayControl', function () {
         var compiledElementScope = element.isolateScope();
         scope.$digest();
 
-        expect(compiledElementScope.config.hideIfEmpty).toBe(true)
+        expect(compiledElementScope.bahmniOrders[0].hideIfEmpty).toBe(true)
     });
 
     it('should set showHeader flag if the its not already set', function(){

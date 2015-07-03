@@ -23,9 +23,9 @@
         </ul>
     </section>
     <section class="block hierarchy"  ng-if="!config.showHeader">
-        <ul class="form-field" ng-if="config.hideIfEmpty">
+        <ul class="form-field">
             <li ng-repeat="bahmniOrder in ::bahmniOrders">
-                <ul>
+                <ul ng-if="!bahmniOrder.hideIfEmpty">
                     <bahmni-observation patient="patient" visitUuid="visitUuid" section="section" config="config"
                                         section-title=""
                                         observations="bahmniOrder.bahmniObservations" message="message"></bahmni-observation>
