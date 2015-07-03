@@ -6,7 +6,7 @@ describe('Orders DisplayControl', function () {
         mockBackend,
         rootScope,
         deferred, controller,
-        simpleHtml = '<orders-control  config="section" patient="patient" order-uuid="orderUuid"></orders-control>';
+        simpleHtml = '<orders-control config="section" patient="patient" order-uuid="orderUuid"></orders-control>';
     var _orderService;
     var orders = [
         {
@@ -87,5 +87,75 @@ describe('Orders DisplayControl', function () {
 
         var expectedDate = moment(orders[0].orderDate).format("DD MMM YY h:mm a");
         expect(compiledElementScope.getTitle(orders[0])).toBe("Absconding on "+expectedDate+" by Surajkumar Surajkumar Surajkumar")
+    });
+
+    it('should set hideIfEmpty flag if the orders are empty', function(){
+        var scope = rootScope.$new();
+        scope.section = {
+            numberOfVisits:1
+        };
+        scope.patient = {uuid : "patientUuid"};
+        scope.orderUuid= "someOrderUuid";
+
+        mockBackend.expectGET('../common/displaycontrols/orders/views/ordersControl.html').respond("<div>dummy</div>");
+        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/orders?includeObs=true&numberOfVisits=1&orderUuid=someOrderUuid&patientUuid=patientUuid').respond([]);
+
+        var element = compile(simpleHtml)(scope);
+
+        scope.$digest();
+        mockBackend.flush();
+
+        var compiledElementScope = element.isolateScope();
+        scope.$digest();
+
+        expect(compiledElementScope.config.hideIfEmpty).toBe(true)
+    });
+
+    it('should set showHeader flag if the its not already set', function(){
+        var scope = rootScope.$new();
+        scope.section = {
+            numberOfVisits:1
+        };
+        scope.patient = {uuid : "patientUuid"};
+        scope.orderUuid= "someOrderUuid";
+
+        mockBackend.expectGET('../common/displaycontrols/orders/views/ordersControl.html').respond("<div>dummy</div>");
+        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/orders?includeObs=true&numberOfVisits=1&orderUuid=someOrderUuid&patientUuid=patientUuid').respond([]);
+
+        var element = compile(simpleHtml)(scope);
+
+        scope.$digest();
+        mockBackend.flush();
+
+        var compiledElementScope = element.isolateScope();
+        scope.$digest();
+
+        expect(compiledElementScope.config.showHeader).toBe(true);
+    });
+
+    it('should not set showHeader flag if the its already set', function(){
+        var scope = rootScope.$new();
+        scope.section = {
+            numberOfVisits:1,
+            showHeader: false
+        };
+        scope.config = {
+            showHeader : false
+        };
+        scope.patient = {uuid : "patientUuid"};
+        scope.orderUuid= "someOrderUuid";
+
+        mockBackend.expectGET('../common/displaycontrols/orders/views/ordersControl.html').respond("<div>dummy</div>");
+        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/orders?includeObs=true&numberOfVisits=1&orderUuid=someOrderUuid&patientUuid=patientUuid').respond([]);
+
+        var element = compile(simpleHtml)(scope);
+
+        scope.$digest();
+        mockBackend.flush();
+
+        var compiledElementScope = element.isolateScope();
+        scope.$digest();
+
+        expect(compiledElementScope.config.showHeader).toBe(false);
     });
 });

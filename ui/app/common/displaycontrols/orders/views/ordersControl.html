@@ -1,6 +1,6 @@
 <section class="dashboard-section ng-scope">
     <h2 ng-if="orderType" class="section-title">{{config.title}}</h2>
-    <section class="block hierarchy">
+    <section class="block hierarchy"  ng-if="config.showHeader">
         <ul class="form-field">
             <li ng-repeat="bahmniOrder in ::bahmniOrders">
                 <span class="tree-list-item row-click" ng-click="toggle(bahmniOrder)">
@@ -15,6 +15,17 @@
                     </span>
                 </span>
                 <ul bm-show="bahmniOrder.isOpen">
+                    <bahmni-observation patient="patient" visitUuid="visitUuid" section="section" config="config"
+                                        section-title=""
+                                        observations="bahmniOrder.bahmniObservations" message="message"></bahmni-observation>
+                </ul>
+            </li>
+        </ul>
+    </section>
+    <section class="block hierarchy"  ng-if="!config.showHeader">
+        <ul class="form-field" ng-if="config.hideIfEmpty">
+            <li ng-repeat="bahmniOrder in ::bahmniOrders">
+                <ul>
                     <bahmni-observation patient="patient" visitUuid="visitUuid" section="section" config="config"
                                         section-title=""
                                         observations="bahmniOrder.bahmniObservations" message="message"></bahmni-observation>

@@ -14,7 +14,11 @@
                 </h2>
             </div>
             <div ng-if="order.showForm">
-                <orders-control patient="patient" order-uuid="order.orderUuid" config="config" section="config" message="message" show-title="false"></orders-control>
+                <orders-control patient="patient" order-uuid="order.orderUuid" config="config" message="message" show-title="false"></orders-control>
+                <div>
+                    <i ng-if="::order.commentToFulfiller" class="fa fa-comments" ></i>
+                    <span>{{order.commentToFulfiller}}</span>
+                </div>
                 <concept-set patient="patient" ng-if="order.showForm"
                     concept-set-name="formName"
                     observations="order.bahmniObservations" show-title="false">

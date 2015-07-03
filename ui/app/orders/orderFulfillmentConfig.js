@@ -12,6 +12,8 @@ angular.module('bahmni.orders').factory('orderFulfillmentConfig',
                 config.isObservation = true;
                 config.numberOfVisits = 2;
                 config.showDetailsButton = true;
+                config.hideIfEmpty = false;
+                config.showHeader = false;
                 config.scope = "latest";
                 return config;
             });

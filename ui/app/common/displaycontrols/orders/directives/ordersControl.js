@@ -5,12 +5,17 @@ angular.module('bahmni.common.displaycontrol.orders')
         function (orderService, orderTypeService, $q, spinner, $filter) {
             var controller = function($scope){
                 $scope.orderTypeUuid = orderTypeService.getOrderTypeUuid($scope.orderType);
+                if ($scope.config.showHeader === null || $scope.config.showHeader === undefined) {
+                    $scope.config.showHeader = true;
+                }
+
                 var includeAllObs = true;
-                var getOrders = function() {
+                var getOrders = function () {
                     return orderService.getOrders($scope.patient.uuid, $scope.orderTypeUuid, $scope.config.conceptNames, includeAllObs, $scope.config.numberOfVisits,
-                       $scope.config.obsIgnoreList, $scope.visitUuid, $scope.orderUuid).then(function(response) {
-                       $scope.bahmniOrders = response.data;
-                    });
+                        $scope.config.obsIgnoreList, $scope.visitUuid, $scope.orderUuid).then(function (response) {
+                            $scope.bahmniOrders = response.data;
+                            $scope.config.hideIfEmpty = $scope.bahmniOrders.length == 0;
+                        });
                 };
                 var init = function() {
                     return getOrders().then(function(){
