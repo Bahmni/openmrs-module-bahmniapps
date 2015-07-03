@@ -7,15 +7,7 @@
         angular.extend(this, model);
     };
 
-    Bahmni.Clinical.ObservationGraph.Line = function (proto) {
-        angular.extend(this, proto);
-    };
 
-    Bahmni.Clinical.ObservationGraph.Line.prototype.addPoint = function (point) {
-        if (point[this.name]) {
-            this.values.push(point);
-        }
-    };
 
     var fixCaseMismatchIssues = function (config, observations) {
         var conceptNamesFromConfig = config.yAxisConcepts.slice(0);
@@ -54,7 +46,7 @@
         var lines = _(yAxisObservations).uniq(function (item) {
             return item.concept.name + item.concept.units;
         }).map(function (item) {
-            return new Bahmni.Clinical.ObservationGraph.Line({
+            return new Bahmni.Clinical.ObservationGraphLine({
                 name: item.concept.name,
                 units: item.concept.units,
                 values: []

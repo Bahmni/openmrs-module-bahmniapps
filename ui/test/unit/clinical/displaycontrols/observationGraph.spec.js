@@ -117,7 +117,7 @@ describe("Observation Graph", function () {
         httpBackend.flush();
 
         expect(scope.graphId).not.toBeNull();
-        var graphModel = [new Bahmni.Clinical.ObservationGraph.Line({
+        var graphModel = [new Bahmni.Clinical.ObservationGraphLine({
             name: "Temperature",
             units: "Celcius",
             values: [{
@@ -154,7 +154,7 @@ describe("Observation Graph", function () {
         httpBackend.flush();
 
         expect(scope.graphId).not.toBeNull();
-        var graphModel = [new Bahmni.Clinical.ObservationGraph.Line({name: 'Height', units: "cm", values: [{age: 178.9, Height: 45}]})];
+        var graphModel = [new Bahmni.Clinical.ObservationGraphLine({name: 'Height', units: "cm", values: [{age: 178.9, Height: 45}]})];
         var anyElement = null;
         expect(c3ChartSpy.render).toHaveBeenCalledWith(
             anyElement
@@ -223,7 +223,7 @@ describe("Observation Graph", function () {
         httpBackend.flush();
 
         expect(scope.graphId).not.toBeNull();
-        var graphModel = [new Bahmni.Clinical.ObservationGraph.Line({
+        var graphModel = [new Bahmni.Clinical.ObservationGraphLine({
             name: 'Height',
             units: 'cm',
             values: [{Weight: 45, Height: 155}]
@@ -264,12 +264,12 @@ describe("Observation Graph", function () {
 
         expect(scope.graphId).not.toBeNull();
         var graphModel = [
-            new Bahmni.Clinical.ObservationGraph.Line({
+            new Bahmni.Clinical.ObservationGraphLine({
                 name: "Height", units: "cm", values: [
                 {observationDateTime: toDate("2015-01-01"), "Height": 155},
                 {observationDateTime: toDate("2015-02-01"), "Height": 155}]
             }),
-            new Bahmni.Clinical.ObservationGraph.Line({
+            new Bahmni.Clinical.ObservationGraphLine({
                 name: "Weight", units: "kg", values: [
                 {observationDateTime: toDate("2015-01-01"), "Weight": 40},
                 {observationDateTime: toDate("2015-02-01"), "Weight": 45}]
