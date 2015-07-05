@@ -59,6 +59,26 @@ describe("OrderController", function () {
             expect(scope.selectedOrders.length).toBe(1);
         });
 
+        it("diSelect() should unselect order and its child orders", function () {
+            scope.consultation.testOrders.push(testOrders[0]);
+            scope.consultation.testOrders.push(testOrders[1]);
+            scope.consultation.childOrders.push({"uuid" : "123456"});
+            scope.$digest();
+
+            //diselect already saved order
+            scope.diSelect({"concept": {"uuid": "3b5ea063-b6e5-48cd-b39d-dce69f00f26a"}});
+            scope.$digest();
+            expect(scope.consultation.testOrders[0].voided).toBe(true);
+            expect(scope.selectedOrders.length).toBe(2);
+
+            //diselect newly added order
+            scope.diSelect({"concept": {"uuid": "3c5ea063-b6e5-48cd-b39d-dce69f00f26a"}});
+            scope.$digest();
+            expect(scope.consultation.testOrders.length).toBe(1);
+            expect(scope.selectedOrders.length).toBe(1);
+            expect(scope.consultation.childOrders.length).toBe(0);
+        });
+
         it("showLabSampleTests() should set the particular LabOrder to be active", function () {
             scope.showLeftCategoryTests({"name": "Blood"});
             expect(scope.activeTab.leftCategory.klass).toBe("active");
@@ -183,7 +203,10 @@ describe("OrderController", function () {
                             {
                                 "conceptClass": {"name": "LabTest", "description": "Lab tests", "uuid": "7bba17a2-6c1d-11e4-a1f2-ba526e30a5ad"},
                                 "name": {"name": "Biochemistry", "display": "Biochemistry"},
-                                "uuid": "3b5ea063-b6e5-48cd-b39d-dce69f00f26a"
+                                "uuid": "3b5ea063-b6e5-48cd-b39d-dce69f00f26a",
+                                "setMembers": [{
+                                    "uuid": "123456"
+                                }]
                             },
                             {
                                 "conceptClass": {"name": "LabSet",  "description": "Panel", "uuid": "8d492026-c2cc-11de-8d13-0010c6dffd0f"},

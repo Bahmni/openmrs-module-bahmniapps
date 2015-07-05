@@ -17,6 +17,10 @@ angular.module('bahmni.clinical')
                     test.isSelected = $scope.orders.some(function(order) {
                         return !order.voided && order.concept.uuid == test.uuid;
                     });
+
+                    if (test.isSelected) {
+                        selectChildTests(test);
+                    }
                 };
 
                 $scope.onSelectionChange = function(test){
@@ -40,6 +44,7 @@ angular.module('bahmni.clinical')
                         else {
                             removeOrder(order);
                         }
+                        removeChildTests(test);
                     }
                 };
 
@@ -53,6 +58,32 @@ angular.module('bahmni.clinical')
                         return o.concept.uuid == order.concept.uuid;
                     });
                 };
+
+                var selectChildTests = function (test) {
+                    if (test.setMembers) {
+                        _.forEach(test.setMembers, function (child) {
+                            $scope.childOrders.push(child);
+                        });
+                    }
+                };
+
+                $scope.isChildTest = function (test) {
+                    var result = $scope.childOrders.some(function (o) {
+                        return o.uuid == test.uuid;
+                    });
+
+                    return result;
+                };
+
+                var removeChildTests = function (test) {
+                    if (test.setMembers) {
+                        _.forEach(test.setMembers, function (child) {
+                            _.remove($scope.childOrders, function (o) {
+                                return o.uuid === child.uuid;
+                            });
+                        });
+                    }
+                };
             };
 
             return {
@@ -63,6 +94,7 @@ angular.module('bahmni.clinical')
                 scope: {
                     consultation: "=",
                     orders: "=",
+                    childOrders: "=",
                     conceptClass: "=",
                     rootConcept: "=",
                     title: "="

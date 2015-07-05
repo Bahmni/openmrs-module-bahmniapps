@@ -4,6 +4,7 @@ angular.module('bahmni.clinical')
     .controller('OrderController', ['$scope', 'allOrderables','ngDialog',
         function ($scope, allOrderables, ngDialog) {
             $scope.consultation.testOrders = $scope.consultation.testOrders || [];
+            $scope.consultation.childOrders = $scope.consultation.childOrders || [];
             $scope.allOrdersTemplates = allOrderables;
 
             var init = function(){
@@ -88,6 +89,7 @@ angular.module('bahmni.clinical')
                 else {
                     removeOrder(order);
                 }
+                removeChildOrders(order);
             };
 
             $scope.openNotesPopup = function(order) {
@@ -117,6 +119,24 @@ angular.module('bahmni.clinical')
                 _.remove($scope.consultation.testOrders, function(o){
                     return o.concept.uuid == order.concept.uuid;
                 });
+            };
+
+            var removeChildOrders = function (order) {
+                if ($scope.activeTab.leftCategory.setMembers) {
+
+                    var testAssociatedToOrder = _.find($scope.activeTab.leftCategory.setMembers, function(child){
+                        return child.uuid == order.concept.uuid;
+                    });
+
+                    if(!testAssociatedToOrder || !testAssociatedToOrder.setMembers)
+                        return;
+
+                    _.forEach(testAssociatedToOrder.setMembers, function (test) {
+                        _.remove($scope.consultation.childOrders, function (o) {
+                            return o.uuid === test.uuid;
+                        });
+                    });
+                }
             };
 
             init();

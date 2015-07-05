@@ -4,7 +4,7 @@ describe("ensure that the directive order-selector works properly", function () 
 
     var element, scope, conceptClass, title,httpBackend,rootScope,compile,q;
 
-    var html = '<order-selector orders="consultation.testOrders" root-concept="concept" concept-class="conceptClass" consultation="consultation" title="title"></order-selector>';
+    var html = '<order-selector orders="consultation.testOrders" root-concept="concept" child-orders="childOrders" concept-class="conceptClass" consultation="consultation" title="title"></order-selector>';
 
     var concept = {
     	"conceptClass": "LabSet",
@@ -24,6 +24,13 @@ describe("ensure that the directive order-selector works properly", function () 
 	    	}
 		]
     };
+
+    var childTest = {
+        "conceptClass": {"name" : "LabTest"},
+        "uuid": "3a5ea063-b6e5-48cd-b39d-dce69f00f26a",
+        "name": "ESR"
+    };
+
     var consultation = {
     	"testOrders" : [
 	    	{
@@ -63,6 +70,7 @@ describe("ensure that the directive order-selector works properly", function () 
         scope.concept = concept;
         scope.conceptClass = conceptClass;
         scope.title = title;
+        scope.childOrders=[childTest];
 
         httpBackend.expectGET("./consultation/views/orderSelector.html").respond("<div>dummy</div>");
 
@@ -121,5 +129,8 @@ describe("ensure that the directive order-selector works properly", function () 
         );
         expect(compiledScope.orders.length).toBe(1);
         expect(compiledScope.orders[0].voided).toBe(false);
+
+        expect(compiledScope.isChildTest(childTest)).toBeTruthy();
+        expect(compiledScope.isChildTest({})).toBeFalsy();
     });
 });

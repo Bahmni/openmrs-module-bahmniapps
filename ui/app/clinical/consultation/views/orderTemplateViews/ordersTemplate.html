@@ -30,6 +30,6 @@
 
 <section class="orders-section-right">     
      <section class="order-section-container" ng-repeat="group in tab.leftCategory.groups" ng-if="tab.leftCategory">
-        <order-selector orders="consultation.testOrders" root-concept="tab.leftCategory" concept-class="group.name" consultation="consultation" title="group.description"></order-selector>
+        <order-selector orders="consultation.testOrders" root-concept="tab.leftCategory" child-orders="consultation.childOrders" concept-class="group.name" consultation="consultation" title="group.description"></order-selector>
     </section>    
 </section>

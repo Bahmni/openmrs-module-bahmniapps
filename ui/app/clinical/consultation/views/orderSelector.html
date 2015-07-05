@@ -4,7 +4,7 @@
         <div class="orderBtnContainer">
             <ul>
                 <li ng-repeat="test in (rootConcept.setMembers | filter:filterByConceptClass)">
-                    <a class="grid-row-element button orderBtn ng-binding ng-scope" ng-click="onSelectionChange(test)" ng-class="{active:test.isSelected}">
+                    <a class="grid-row-element button orderBtn ng-binding ng-scope" ng-click="onSelectionChange(test)" ng-class="{active:test.isSelected || isChildTest(test)}">
                         <i class="fa fa-ok" ng-show="test.isSelected"></i>{{getName(test)}}
                     </a>
                 </li>
