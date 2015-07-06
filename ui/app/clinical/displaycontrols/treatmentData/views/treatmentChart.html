@@ -15,7 +15,8 @@
         <tr ng-repeat="day in ::ipdDrugOrders.ipdDrugSchedule.days" ng-if="atLeastOneDrugForDay(day)">
             <td>
                 <span>
-                    D{{day.dayNumber}} ({{day.date | bahmniDate}})
+                    <!-- D{{day.dayNumber}} ({{day.date | bahmniDate}}) -->
+                    {{day.date | bahmniDate}}
                 </span>
             </td>
             <td ng-switch="drug.getStatusOnDate(day.date)" ng-repeat="drug in ::ipdDrugOrders.ipdDrugSchedule.drugs">
