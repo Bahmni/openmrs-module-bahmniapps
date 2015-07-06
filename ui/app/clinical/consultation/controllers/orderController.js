@@ -82,7 +82,6 @@ angular.module('bahmni.clinical')
                 var order = _.find($scope.consultation.testOrders, function(order) {
                     return order.concept.uuid === selectedOrder.concept.uuid;
                 });
-
                 if (order.uuid) {
                     order.voided = !order.voided;
                 }
