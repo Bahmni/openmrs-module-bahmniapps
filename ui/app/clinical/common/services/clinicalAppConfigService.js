@@ -59,4 +59,8 @@ angular.module('bahmni.clinical')
             }
             return urlHelper.getConsultationUrl();
         };
+
+        this.getVisitTypeForRetrospectiveEntries = function (){
+            return appService.getAppDescriptor().getConfigValue("visitTypeForRetrospectiveEntries");
+        }
     }]);
