@@ -68,7 +68,8 @@ describe('Orders DisplayControl', function () {
                 "orderDate": "2014-12-16T16:06:49.000+0530",
                 "provider": "Surajkumar Surajkumar Surajkumar",
                 "bahmniObservations": [],
-                "hideIfEmpty": true
+                "hideIfEmpty": true,
+                "isOpen" :true
             }
         ];
 
@@ -167,5 +168,62 @@ describe('Orders DisplayControl', function () {
         scope.$digest();
 
         expect(compiledElementScope.config.showHeader).toBe(false);
+    });
+
+    it('should set isOpen flag for the first order', function () {
+        var scope = rootScope.$new();
+
+        scope.section = {
+            numberOfVisits: 1
+        };
+        scope.patient = {uuid: "patientUuid"};
+        scope.orderUuid = "someOrderUuid";
+        var orders = [
+            {
+                "conceptName": "Absconding",
+                "orderDate": "2014-12-16T16:06:49.000+0530",
+                "provider": "Surajkumar Surajkumar Surajkumar",
+                "bahmniObservations": []
+            },
+            {
+                "conceptName": "Pulse",
+                "orderDate": "2014-12-16T16:06:49.000+0530",
+                "provider": "Surajkumar Surajkumar Surajkumar",
+                "bahmniObservations": []
+            }
+        ];
+
+        mockBackend.expectGET('../common/displaycontrols/orders/views/ordersControl.html').respond("<div>dummy</div>");
+        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/orders?includeObs=true&numberOfVisits=1&orderUuid=someOrderUuid&patientUuid=patientUuid').respond(orders);
+
+        var element = compile(simpleHtml)(scope);
+
+        scope.$digest();
+        mockBackend.flush();
+
+        var compiledElementScope = element.isolateScope();
+        scope.$digest();
+
+        var expectedOrders = [
+            {
+                "conceptName": "Absconding",
+                "orderDate": "2014-12-16T16:06:49.000+0530",
+                "provider": "Surajkumar Surajkumar Surajkumar",
+                "bahmniObservations": [],
+                "hideIfEmpty": true,
+                "isOpen": true
+            },
+            {
+                "conceptName": "Pulse",
+                "orderDate": "2014-12-16T16:06:49.000+0530",
+                "provider": "Surajkumar Surajkumar Surajkumar",
+                "bahmniObservations": [],
+                "hideIfEmpty": true
+            }
+        ];
+
+        expect(compiledElementScope.bahmniOrders).not.toBeUndefined();
+        expect(compiledElementScope.bahmniOrders).toEqual(expectedOrders);
+        expect(compiledElementScope.bahmniOrders[1].isOpen).toEqual(undefined);
     });
 });

@@ -22,7 +22,13 @@ angular.module('bahmni.common.displaycontrol.orders')
                             if(order.bahmniObservations.length === 0){
                                 order.hideIfEmpty = true
                             }
-                        })
+                        });
+                        if (_.isEmpty($scope.bahmniOrders)) {
+                            $scope.noOrdersMessage = "No "+$scope.orderType+" for this patient";
+                        }
+                        else{
+                            $scope.bahmniOrders[0].isOpen = true;
+                        }
                     });
                 };
                 $scope.getTitle = function(order){
