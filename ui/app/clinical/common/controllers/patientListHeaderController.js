@@ -112,6 +112,6 @@ angular.module('bahmni.clinical')
                 );
             };
 
-            return spinner.forPromise(init());
+            return init();
 
         }]);
