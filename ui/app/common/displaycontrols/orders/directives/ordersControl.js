@@ -33,6 +33,15 @@ angular.module('bahmni.common.displaycontrol.orders')
                     element.isOpen = !element.isOpen;
                 };
 
+                $scope.dialogData = {
+                    "patient": $scope.patient,
+                    "section": $scope.section
+                };
+
+                $scope.isClickable= function(){
+                    return $scope.isOnDashboard && $scope.section.allOrdersDetails;
+                };
+
                 $scope.message = Bahmni.Common.Constants.messageForNoFulfillment;
 
                 spinner.forPromise(init());
@@ -47,6 +56,7 @@ angular.module('bahmni.common.displaycontrol.orders')
                     orderType:"=",
                     orderUuid:"=",
                     config:"=",
+                    isOnDashboard:"=",
                     visitUuid:"="
                 }
             }

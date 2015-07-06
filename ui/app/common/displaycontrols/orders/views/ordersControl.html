@@ -1,5 +1,17 @@
 <section class="dashboard-section ng-scope">
-    <h2 ng-if="orderType" class="section-title">{{config.title}}</h2>
+    <h2 ng-if="!isClickable()" ng-class="{'section-title': !isFulfilmentDisplayControl, 'form-field': isFulfilmentDisplayControl}">{{section.title}}</h2>
+
+    <div ng-if="isClickable()" class="dashboard-observations-section">
+        <h2 ng-dialog="../common/displaycontrols/orders/views/allOrdersDetails.html"
+            ng-dialog-controller="AllOrdersDetailsController"
+            ng-dialog-data="{{dialogData}}"
+            ng-dialog-class="ngdialog-theme-flat ngdialog-theme-custom"
+            class="section-title has-link">
+            <span class="title-link"> {{section.title}} </span>
+            <i class="fa fa-external-link"></i>
+        </h2>
+    </div>
+
     <section class="block hierarchy"  ng-if="config.showHeader">
         <ul class="form-field">
             <li ng-repeat="bahmniOrder in ::bahmniOrders">
