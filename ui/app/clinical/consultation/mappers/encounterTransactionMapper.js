@@ -17,14 +17,14 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
         });
     };
 
-    this.map = function (consultation, patient, locationUuid, retrospectiveEntry) {
+    this.map = function (consultation, patient, locationUuid, retrospectiveEntry, defaultRetrospectiveVisitType) {
         var encounterData = {};
         encounterData.locationUuid = locationUuid;
         encounterData.patientUuid = patient.uuid;
 
         if (retrospectiveEntry.isRetrospective) {
             encounterData.encounterDateTime = Bahmni.Common.Util.DateUtil.getDateWithoutHours(retrospectiveEntry.encounterDate);
-            encounterData.visitType = "OPD";
+            encounterData.visitType = defaultRetrospectiveVisitType || "OPD";
         }
 
         if (consultation.newlyAddedDiagnoses && consultation.newlyAddedDiagnoses.length > 0) {

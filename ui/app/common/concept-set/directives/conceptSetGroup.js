@@ -1,8 +1,8 @@
 angular.module('bahmni.common.conceptSet')
     .controller('ConceptSetGroupController', ['$scope', 'appService', 'contextChangeHandler', 'spinner',
         'conceptSetService', '$rootScope', 'sessionService', 'encounterService', 'treatmentConfig', 'messagingService',
-        'retrospectiveEntryService', 'userService', 'conceptSetUiConfigService', '$timeout',
-        function ($scope, appService, contextChangeHandler, spinner, conceptSetService, $rootScope, sessionService, encounterService, treatmentConfig, messagingService, retrospectiveEntryService, userService, conceptSetUiConfigService, $timeout) {
+        'retrospectiveEntryService', 'userService', 'conceptSetUiConfigService', '$timeout', 'clinicalAppConfigService',
+        function ($scope, appService, contextChangeHandler, spinner, conceptSetService, $rootScope, sessionService, encounterService, treatmentConfig, messagingService, retrospectiveEntryService, userService, conceptSetUiConfigService, $timeout, clinicalAppConfigService) {
 
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
             $scope.togglePref = function (conceptSet, conceptName) {
@@ -30,8 +30,10 @@ angular.module('bahmni.common.conceptSet')
             $scope.computeField = function (conceptSet) {
                 event.stopPropagation();
                 $scope.consultation.saveHandler.fire();
+                var defaultRetrospectiveVisitType = clinicalAppConfigService.getVisitTypeForRetrospectiveEntries();
+
                 var encounterData = new Bahmni.Clinical.EncounterTransactionMapper().map(angular.copy($scope.consultation), $scope.patient, sessionService.getLoginLocationUuid(),
-                    retrospectiveEntryService.getRetrospectiveEntry());
+                    retrospectiveEntryService.getRetrospectiveEntry(), defaultRetrospectiveVisitType);
                 encounterData = encounterService.buildEncounter(encounterData);
                 encounterData.drugOrders = [];
 
