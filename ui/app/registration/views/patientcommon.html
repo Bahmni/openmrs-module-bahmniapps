@@ -86,9 +86,9 @@
         </div>
 
         <div class="field-value">
-            <select id="gender" ng-model="patient.gender" required="required" title="Select Gender" required="required">
+            <select id="gender" ng-model="patient.gender" required="required" title="Select Gender" required="required"
+                    ng-options="genderMap[genderCode] for genderCode in genderCodes track by genderCode">
                 <option value="">Select Gender</option>
-                <option ng-repeat="genderCode in genderCodes" value="{{genderCode}}">{{genderMap[genderCode]}}</option>
             </select>
         </div>
     </article>
