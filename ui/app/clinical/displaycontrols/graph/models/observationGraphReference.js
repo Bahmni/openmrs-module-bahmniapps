@@ -12,8 +12,12 @@
         this.yAxisUnit = yAxisUnit;
         this.referenceChartValues = asMatrix(this.csvString);
         this.header = this.referenceChartValues.shift();
-        this.ageColumnIndex = this.header.indexOf(Bahmni.Clinical.Constants.concepts.age);
-        this.genderColumnIndex = this.header.indexOf("Gender");
+        this.ageColumnIndex = _.findIndex(this.header, function(columnName){
+            return columnName.toLowerCase() == Bahmni.Clinical.Constants.concepts.age.toLowerCase();
+        });
+        this.genderColumnIndex = _.findIndex(this.header, function(columnName){
+            return columnName.toLowerCase() == Bahmni.Clinical.Constants.gender.toLowerCase();
+        });
 
         var maxNoOfMonths = ageInMonths + monthBuffer;
         this.referenceChartValues = _.filter(this.referenceChartValues, function (value) {
@@ -59,4 +63,12 @@
             .value();
     };
 
+    Bahmni.Clinical.ObservationGraphReference.prototype.validate = function () {
+        if(this.ageColumnIndex == -1){
+            throw new Error("Age column is not defined in reference lines csv: "+ this.config.getReferenceDataFileName())
+        }
+        if(this.genderColumnIndex == -1){
+            throw new Error("Gender column is not defined in reference lines csv: "+ this.config.getReferenceDataFileName())
+        }
+    };
 })();

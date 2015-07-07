@@ -17,10 +17,7 @@ angular.module('bahmni.clinical').directive('observationGraph', ['appService', '
 
             var config = new Bahmni.Clinical.ObservationGraphConfig($scope.params.config);
 
-            if (!config.isValid()) {
-                console.error("Invalid config. Will not render graph with configuration" + JSON.stringify(config));
-                return;
-            }
+            config.validate($scope.params.title);
 
             var promises = [];
 
@@ -37,7 +34,7 @@ angular.module('bahmni.clinical').directive('observationGraph', ['appService', '
                 promises.push(patientService.getPatient($scope.patientUuid));
             }
 
-            if(config.hasReferenceData()) {
+            if(config.shouldDrawReferenceLines()) {
                 promises.push(appService.loadConfig(config.getReferenceDataFileName()));
             }
 
@@ -46,14 +43,13 @@ angular.module('bahmni.clinical').directive('observationGraph', ['appService', '
                 var observations = results[1].data;
                 var patient = results[2] && results[2].data.person;
                 var referenceLines;
-                if(config.hasReferenceData()) {
-                    if (config.yAxisConcepts.length !== 1) {
-                        throw new Error($scope.params.title + " Graph Source requires exactly one y-axis concept");
-                    }
+                if(config.shouldDrawReferenceLines()) {
                     var referenceData = results[3].data;
                     var ageInMonths = Bahmni.Common.Util.AgeUtil.differenceInMonths(patient.birthdate);
                     var yAxisUnit = conceptData.results[0].units;
-                    referenceLines = new Bahmni.Clinical.ObservationGraphReference(referenceData, config, patient.gender, ageInMonths, yAxisUnit).createObservationGraphReferenceLines();
+                    var observationGraphReferenceModel = new Bahmni.Clinical.ObservationGraphReference(referenceData, config, patient.gender, ageInMonths, yAxisUnit);
+                    observationGraphReferenceModel.validate();
+                    referenceLines = observationGraphReferenceModel.createObservationGraphReferenceLines();
                 }
                 if(observations.length == 0) return;
 

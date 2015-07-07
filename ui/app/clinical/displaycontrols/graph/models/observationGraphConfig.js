@@ -6,7 +6,7 @@
 
     Bahmni.Clinical.ObservationGraphConfig = function (config) {
         angular.extend(this, config);
-        if(this.hasReferenceData()) {
+        if(this.shouldDrawReferenceLines()) {
             this.xAxisConcept = Bahmni.Clinical.Constants.concepts.age;
         }
     };
@@ -14,16 +14,13 @@
     var OBSERVATION_DATETIME = "observationdatetime",
         configPrototype = Bahmni.Clinical.ObservationGraphConfig.prototype;
 
-    configPrototype.isValid = function() {
-        if (!this.xAxisConcept) {
-            console.error("x axis not defined for graph");
-            return false;
-        }
+    configPrototype.validate = function(title) {
         if (!this.yAxisConcepts || this.yAxisConcepts.length === 0) {
-            console.error ("y axis not defined for graph");
-            return false;
+             throw new Error ("y axis not defined for graph: "+title);
         }
-        return true;
+        if (!this.xAxisConcept && !this.shouldDrawReferenceLines()) {
+            throw new Error("x axis not defined for graph: "+title);
+        }
     };
 
     configPrototype.displayForConcept = function() {
@@ -48,8 +45,8 @@
         return concepts;
     };
 
-    configPrototype.hasReferenceData = function() {
-      return this.referenceData != undefined;
+    configPrototype.shouldDrawReferenceLines = function(){
+        return this.referenceData != undefined && this.yAxisConcepts && this.yAxisConcepts.length == 1;
     };
 
     configPrototype.getReferenceDataFileName = function() {

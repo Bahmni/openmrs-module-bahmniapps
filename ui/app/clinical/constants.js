@@ -53,6 +53,7 @@ Bahmni.Clinical.Constants = (function () {
         dialog:'DIALOG',
         dashboard:'DASHBOARD',
         default:'DEFAULT',
+        gender: 'Gender',
         concepts: concepts,
         otherActiveDrugOrders: "Other Active DrugOrders",
         dispensePrivilege: "bahmni:clinical:dispense",

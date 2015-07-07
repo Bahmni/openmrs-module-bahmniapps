@@ -16,7 +16,7 @@ describe("Observation Graph", function () {
         $provide.value('appService', appService);
 
         c3ChartSpy = jasmine.createSpyObj('c3Chart', ['render']);
-        Bahmni.Graph.c3Chart.create = function() {
+        Bahmni.Graph.c3Chart.create = function () {
             return c3ChartSpy;
         };
     }));
@@ -28,6 +28,10 @@ describe("Observation Graph", function () {
         scope.visit = {uuid: "visitUuid"};
         scope.patient = {uuid: "patientUuid"};
     }));
+
+    var toDate = function (str) {
+        return Bahmni.Common.Util.DateUtil.parseDatetime(str).toDate();
+    };
 
     var mockConceptSetService = function (data) {
         conceptSetService.getConceptSetMembers.and.callFake(function () {
@@ -154,7 +158,11 @@ describe("Observation Graph", function () {
         httpBackend.flush();
 
         expect(scope.graphId).not.toBeNull();
-        var graphModel = [new Bahmni.Clinical.ObservationGraphLine({name: 'Height', units: "cm", values: [{age: 178.9, Height: 45}]})];
+        var graphModel = [new Bahmni.Clinical.ObservationGraphLine({
+            name: 'Height',
+            units: "cm",
+            values: [{age: 178.9, Height: 45}]
+        })];
         var anyElement = null;
         expect(c3ChartSpy.render).toHaveBeenCalledWith(
             anyElement
@@ -169,7 +177,7 @@ describe("Observation Graph", function () {
             "name": "observationGraph",
             "title": "Growth Chart",
             "config": {
-                "yAxisConcepts":["Weight"],
+                "yAxisConcepts": ["Weight"],
                 "referenceData": "growthChartReference.csv",
                 "numberOfVisits": 20
             }
@@ -180,7 +188,7 @@ describe("Observation Graph", function () {
             value: 45,
             concept: {name: "Weight", units: "Kg"}
         }]);
-        mockConceptSetService({results:[{name: "Weight", units: "Kg"}]});
+        mockConceptSetService({results: [{name: "Weight", units: "Kg"}]});
         appService.loadConfig.and.callFake(function () {
             return {
                 then: function (callback) {
@@ -190,7 +198,6 @@ describe("Observation Graph", function () {
                 }
             }
         });
-        var referenceLines = {}
         var mockObservationGraphModel = {};
         spyOn(Bahmni.Clinical.ObservationGraph, 'create').and.returnValue(mockObservationGraphModel);
         mockPatientService({person: {birthdate: "2000-02-02"}});
@@ -260,21 +267,17 @@ describe("Observation Graph", function () {
         scope.$digest();
         httpBackend.flush();
 
-        var toDate = function (str) {
-            return Bahmni.Common.Util.DateUtil.parseDatetime(str).toDate();
-        };
-
         expect(scope.graphId).not.toBeNull();
         var graphModel = [
             new Bahmni.Clinical.ObservationGraphLine({
                 name: "Height", units: "cm", values: [
-                {observationDateTime: toDate("2015-01-01"), "Height": 155},
-                {observationDateTime: toDate("2015-02-01"), "Height": 155}]
+                    {observationDateTime: toDate("2015-01-01"), "Height": 155},
+                    {observationDateTime: toDate("2015-02-01"), "Height": 155}]
             }),
             new Bahmni.Clinical.ObservationGraphLine({
                 name: "Weight", units: "kg", values: [
-                {observationDateTime: toDate("2015-01-01"), "Weight": 40},
-                {observationDateTime: toDate("2015-02-01"), "Weight": 45}]
+                    {observationDateTime: toDate("2015-01-01"), "Weight": 40},
+                    {observationDateTime: toDate("2015-02-01"), "Weight": 45}]
             })];
         var anyElement = null;
 
@@ -284,27 +287,37 @@ describe("Observation Graph", function () {
             , new Bahmni.Clinical.ObservationGraph(graphModel));
     });
 
-    it("fails if there are multiple y axis concepts for graph with reference lines", function () {
+    it("should ignore reference lines if there are multiple y axis concepts for graph", function () {
         scope.section = {
             "type": "observationGraph",
             "title": "Height and weight",
             "config": {
                 "yAxisConcepts": ["Height", "Weight"],
+                "xAxisConcept": "observationDateTime",
                 "referenceData": "growthChartReference.csv",
                 "numberOfVisits": 3
             }
         };
 
-        mockObservationService([]);
+        mockObservationService([
+            {observationDateTime: "2015-02-01", value: 155, concept: {name: "Height", units: "cm"}}
+        ]);
         mockConceptSetService([]);
 
-        function errorFunctionWrapper() {
-            compile(element)(scope);
-            scope.$digest();
-            httpBackend.flush();
-        }
+        compile(element)(scope);
+        scope.$digest();
+        httpBackend.flush();
 
-        expect(errorFunctionWrapper).toThrow(new Error("Height and weight Graph Source requires exactly one y-axis concept"));
+        var graphModel = [
+            new Bahmni.Clinical.ObservationGraphLine({
+                name: "Height", units: "cm", values: [
+                    {observationDateTime: toDate("2015-02-01"), "Height": 155}]
+            })
+        ];
+
+        expect(c3ChartSpy.render).toHaveBeenCalledWith(null
+            , jasmine.any(Number)
+            , jasmine.any(Object)
+            , new Bahmni.Clinical.ObservationGraph(graphModel));
     });
-
 });
