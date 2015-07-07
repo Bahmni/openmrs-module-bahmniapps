@@ -2,13 +2,23 @@
     body.ngdialog-open {
        #ClinicalController {
             display: none !important;
-        } 
+        }
         .ngdialog{
             position: absolute !important;
         }
+        &.show-controller-back{
+            overflow: hidden !important;
+            #ClinicalController {
+                display: block !important;
+            }
+            .ngdialog{
+                position: fixed !important;
+            }
+        }
     }
-    
+
 }
+
 
 .ngdialog-close:before {
     display: none;

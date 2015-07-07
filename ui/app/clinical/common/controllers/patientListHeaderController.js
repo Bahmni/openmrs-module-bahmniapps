@@ -49,8 +49,13 @@ angular.module('bahmni.clinical')
             };
 
             $scope.popUpHandler = function() {
-                $scope.dialog = ngDialog.open({ template: 'consultation/views/defaultDataPopUp.html', className: 'test ngdialog-theme-default', controller: 'PatientListHeaderController'});
-
+                $scope.dialog = ngDialog.open({ template: 'consultation/views/defaultDataPopUp.html', className: 'test ngdialog-theme-default',
+                    controller: 'PatientListHeaderController',
+                    preCloseCallback: function() {
+                        $('body').removeClass('show-controller-back');
+                    }
+                });
+                $('body').addClass('show-controller-back');
             };
 
             $scope.closePopUp = function() {
@@ -113,5 +118,9 @@ angular.module('bahmni.clinical')
             };
 
             return init();
+
+            $rootScope.$on('ngDialog.opened', function (e, $dialog) {
+                console.log('ngDialog opened: ' + $dialog.attr('id'));
+            });
 
         }]);

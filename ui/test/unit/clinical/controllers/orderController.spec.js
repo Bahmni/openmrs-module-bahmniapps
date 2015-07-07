@@ -168,7 +168,9 @@ describe("OrderController", function () {
             scope.openNotesPopup(order);
 
             expect(scope.orderNoteText).toBe("comment");
-            expect(ngDialog.open).toHaveBeenCalledWith({ template: 'consultation/views/orderNotes.html',className: 'selectedOrderNoteContainer-dialog ngdialog-theme-default', data: order, scope: scope})
+            expect(ngDialog.open).toHaveBeenCalledWith({ template: 'consultation/views/orderNotes.html',
+                className: 'selectedOrderNoteContainer-dialog ngdialog-theme-default', data: order, scope:scope , preCloseCallback: jasmine.any(Function)
+            });
         });
 
         it("should set edited flag when the commentToFulfiller is not same as previous note and close the popup", function(){
