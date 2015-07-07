@@ -9,9 +9,11 @@ angular.module('bahmni.common.conceptSet')
         ngClass: '=',
         focusMe: '='
         },
-        template: '<div class="stepper"><input id="{{::obs.uniqueId}}" obs-constraints ng-model="ngModel" obs="obs" ng-class="ngClass" focus-me="focusMe" integer="true" type="text" class="stepper__field"  />'+
-                             '<button ng-click="decrement()" ng-class="ngClass" class="stepper__btn stepper__minus">-</button>'+
-                             '<button ng-click="increment()" ng-class="ngClass" class="stepper__btn stepper__plus">+</button></div> ',
+        template: '<div class="stepper clearfix">' +
+                        '<button ng-click="decrement()" ng-class="ngClass" class="stepper__btn stepper__minus">-</button>'+
+                        '<input id="{{::obs.uniqueId}}" obs-constraints ng-model="ngModel" obs="obs" ng-class="ngClass" focus-me="focusMe" integer="true" type="text" class="stepper__field"  />'+
+                        '<button ng-click="increment()" ng-class="ngClass" class="stepper__btn stepper__plus">+</button>' +
+                  '</div> ',
 
     link:function(scope, element, attrs, ngModelController){
 

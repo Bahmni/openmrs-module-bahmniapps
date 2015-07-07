@@ -426,60 +426,26 @@ concept-set {
   margin-top: 5px;
 }
 
-$control-height: 27px;
-$stepper-width: 150px; //including buttons.
-$stepper-btn-width: 40px;
-$border-color: #ddd;
 .stepper {
-  &, * {
-    /*box-sizing: border-box;*/
-  }
-  position: relative;
-  //padding-right: 2 * $stepper-btn-width;
-  //width: $stepper-width;
-   margin-top:5px;
-  .stepper__field, .stepper__btn {
-    display: inline-block;
-    /*height: $control-height;*/
-    margin: 0;
-    border: 1px solid $border-color;
+  .stepper__btn{
+    padding: 7px 20px 7px !important;
     vertical-align: middle;
-  }
-  .stepper__field {
-    width: 100%;
-    padding: 2px 10px;
-  }
-  .stepper__btn {
-  height: $control-height;
-    -webkit-appearance: none;
-    position: absolute;
-    width: $stepper-btn-width;
-    padding: 0 15px;
-    text-align: center;
-    font-family: Arial;
-    font-size: 16px;
-    line-height: $control-height;
-    background: linear-gradient(to bottom, #ffffff, #dddddd);
-    cursor: pointer;
-    border-radius:0;
-    top: 0px;
-    &.illegalValue{
-     height:25px;
-     top:2px;
-     border-color:#d0d0d0;
+    &.stepper__minus{
+      float: left;
+      margin-right: 1px;
     }
-    &:hover{
-      background: #e2e2e2;
+    &.stepper__plus{
+      float: right;
+      margin-left: 1px;
     }
   }
-  .stepper__minus {
-    right: $stepper-btn-width;
 
+  .stepper__field{
+    float: left;
+    min-width: 10% !important;
+    width: 4.4em !important;
+    display: inline-block;
+    margin: 0
   }
-  .stepper__plus {
-    right: 0;
-    &.illegalValue{
-        right:2px;
-    }
-  }
+
 }
