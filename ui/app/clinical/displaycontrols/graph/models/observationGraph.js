@@ -30,7 +30,7 @@
         });
     };
 
-    Bahmni.Clinical.ObservationGraph.create = function (allObservations, person, config, growthChartReference) {
+    Bahmni.Clinical.ObservationGraph.create = function (allObservations, person, config, referenceLines) {
         fixCaseMismatchIssues(config, allObservations);
 
         var yAxisObservations = _.filter(allObservations, function (obs) {
@@ -73,9 +73,10 @@
             }
         });
 
-        if (growthChartReference != undefined) {
-            lines = lines.concat(growthChartReference.getAsObsGraphModel());
-            config.yAxisConcepts = config.yAxisConcepts.concat(growthChartReference.getReferenceKeys());
+        if (referenceLines != undefined) {
+            lines = lines.concat(referenceLines);
+            var referenceLinesYAxisConcepts = _.pluck(referenceLines,'name');
+            config.yAxisConcepts = config.yAxisConcepts.concat(referenceLinesYAxisConcepts);
         }
 
         return new Bahmni.Clinical.ObservationGraph(lines);

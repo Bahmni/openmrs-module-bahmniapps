@@ -6,9 +6,8 @@
 
     Bahmni.Clinical.ObservationGraphConfig = function (config) {
         angular.extend(this, config);
-        if(this.isGrowthChart()) {
+        if(this.hasReferenceData()) {
             this.xAxisConcept = Bahmni.Clinical.Constants.concepts.age;
-            this.yAxisConcepts = [Bahmni.Clinical.Constants.concepts.weight];
         }
     };
 
@@ -49,11 +48,11 @@
         return concepts;
     };
 
-    configPrototype.isGrowthChart = function() {
+    configPrototype.hasReferenceData = function() {
       return this.referenceData != undefined;
     };
 
-    configPrototype.getGrowthChartReferenceFileName = function() {
+    configPrototype.getReferenceDataFileName = function() {
         return this.referenceData;
     };
 

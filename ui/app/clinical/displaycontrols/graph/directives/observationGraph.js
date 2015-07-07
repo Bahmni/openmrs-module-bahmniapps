@@ -25,7 +25,7 @@ angular.module('bahmni.clinical').directive('observationGraph', ['appService', '
             var promises = [];
 
             var numberOfLevels = 1;
-            var fields = ['uuid', 'name', 'names', 'hiNormal', 'lowNormal'];
+            var fields = ['uuid', 'name', 'names', 'hiNormal', 'lowNormal', 'units'];
             var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels);
             var conceptValue = conceptSetService.getConceptSetMembers({name:config.getAllConcepts() ,v:"custom:"+customRepresentation});
             promises.push(conceptValue);
@@ -37,18 +37,23 @@ angular.module('bahmni.clinical').directive('observationGraph', ['appService', '
                 promises.push(patientService.getPatient($scope.patientUuid));
             }
 
-            if(config.isGrowthChart()) {
-                promises.push(appService.loadConfig(config.getGrowthChartReferenceFileName()));
+            if(config.hasReferenceData()) {
+                promises.push(appService.loadConfig(config.getReferenceDataFileName()));
             }
 
             $q.all(promises).then(function(results) {
                 var conceptData = results[0].data;
                 var observations = results[1].data;
                 var patient = results[2] && results[2].data.person;
-                var growthChartReference;
-                if(config.isGrowthChart()) {
+                var referenceLines;
+                if(config.hasReferenceData()) {
+                    if (config.yAxisConcepts.length !== 1) {
+                        throw new Error($scope.params.title + " Graph Source requires exactly one y-axis concept");
+                    }
+                    var referenceData = results[3].data;
                     var ageInMonths = Bahmni.Common.Util.AgeUtil.differenceInMonths(patient.birthdate);
-                    growthChartReference = Bahmni.Clinical.GrowthChartReference.create(patient.gender, ageInMonths, results[3].data);
+                    var yAxisUnit = conceptData.results[0].units;
+                    referenceLines = new Bahmni.Clinical.ObservationGraphReference(referenceData, config, patient.gender, ageInMonths, yAxisUnit).createObservationGraphReferenceLines();
                 }
                 if(observations.length == 0) return;
 
@@ -56,7 +61,7 @@ angular.module('bahmni.clinical').directive('observationGraph', ['appService', '
                     config.lowNormal = conceptData.results[0].lowNormal;
                     config.hiNormal = conceptData.results[0].hiNormal;
                 }
-                var model = Bahmni.Clinical.ObservationGraph.create(observations, patient, config, growthChartReference);
+                var model = Bahmni.Clinical.ObservationGraph.create(observations, patient, config, referenceLines);
                 generateGraph($scope, element, config, model);
             });
         };

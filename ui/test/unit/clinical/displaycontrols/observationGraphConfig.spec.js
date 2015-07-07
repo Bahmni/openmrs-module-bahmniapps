@@ -10,8 +10,9 @@ describe("observationGraphConfig", function () {
         expect(new Bahmni.Clinical.ObservationGraphConfig(config).yAxisConcepts).toEqual(["Systolic", "Diastolic"])
     });
 
-    it("should create the config object for growth chart", function () {
+    it("should create the config object for growth chart with given y-axis concept", function () {
         var config = {
+            "yAxisConcepts":["Weight"],
             "referenceData": "growthChartReference.csv",
             "numberOfVisits": 20
         };

@@ -102,18 +102,14 @@ describe("Observation Graph Model", function () {
             "numberOfVisits": 20
         });
         var person = {birthdate: new Date()};
-        var growthChartReferenceObsModel = [
+        var observationGraphReferenceObsModel = [
             {
                 name: "3rd",
                 units: "Kg",
                 values: [{"3rd": 3.3, Age: 4}]
             }
         ];
-        var referenceData = {getAsObsGraphModel: function(){}, getReferenceKeys: function(){}};
-        spyOn(referenceData, 'getAsObsGraphModel').and.returnValue(growthChartReferenceObsModel);
-        spyOn(referenceData, 'getReferenceKeys').and.returnValue(['3rd']);
-
-        var observationGraph = Bahmni.Clinical.ObservationGraph.create(obsServiceValues, person, config, referenceData);
+        var observationGraph = Bahmni.Clinical.ObservationGraph.create(obsServiceValues, person, config, observationGraphReferenceObsModel);
 
         expect(observationGraph[0].name).toBe("Weight");
         expect(observationGraph[0].units).toBe("Kg");
