@@ -320,4 +320,41 @@ describe("Observation Graph", function () {
             , jasmine.any(Object)
             , new Bahmni.Clinical.ObservationGraph(graphModel));
     });
+
+    it("should render with lowNormal and hiNormal values when they are available in the concept", function () {
+        scope.section = {
+            "type": "observationGraph",
+            "title": "Height and weight",
+            "config": {
+                "yAxisConcepts": ["Height", "Weight"],
+                "xAxisConcept": "observationDateTime",
+                "numberOfVisits": 3
+            }
+        };
+
+        mockObservationService([
+            {observationDateTime: "2015-02-01", value: 155, concept: {name: "Height", units: "cm"}}
+        ]);
+        mockConceptSetService(
+            {results:[{lowNormal:20,hiNormal:30}]}
+        );
+
+        var expectedConfig = {
+            yAxisConcepts: ['Height', 'Weight'],
+            xAxisConcept: 'observationDateTime',
+            numberOfVisits: 3,
+            lowNormal: 20,
+            hiNormal: 30,
+            type: 'timeseries'
+        };
+
+        compile(element)(scope);
+        scope.$digest();
+        httpBackend.flush();
+
+        expect(c3ChartSpy.render).toHaveBeenCalledWith(null
+            , jasmine.any(Number)
+            , new Bahmni.Clinical.ObservationGraphConfig(expectedConfig)
+            , jasmine.any(Object));
+    });
 });
