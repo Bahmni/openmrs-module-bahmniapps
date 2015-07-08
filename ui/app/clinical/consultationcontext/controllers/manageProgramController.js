@@ -23,7 +23,8 @@ angular.module('bahmni.clinical')
 
             var setCurrentDate = function() {
                 var currentDate = $bahmniCookieStore.get(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
-                $scope.programEnrollmentDate = DateUtil.endOfToday(currentDate || DateUtil.endOfToday());
+                $scope.programEnrollmentDate = DateUtil.parse(currentDate || DateUtil.endOfToday());
+
             };
 
             var init = function () {
@@ -79,8 +80,8 @@ angular.module('bahmni.clinical')
             $scope.popupHandler = function(program) {
                 $scope.popUpData = {"programName" : program.display,
                     "patientProgramUuid" : program.uuid,
-                    "enrollmentDate" : DateUtil.endOfToday(program.dateEnrolled),
-                    "endEnrollmentDate" : DateUtil.endOfToday(program.dateEnrolled),
+                    "enrollmentDate" : DateUtil.parse(program.dateEnrolled),
+                    "endEnrollmentDate" : DateUtil.parse(program.dateEnrolled),
                     "outcome" : program.program.outcomesConcept ? program.program.outcomesConcept.setMembers : ''};
 
                 $scope.dialog = ngDialog.open({ template: 'consultationcontext/views/endPatientProgramPopUp.html', className: 'test ngdialog-theme-default end-program-dialog', scope: $scope});
