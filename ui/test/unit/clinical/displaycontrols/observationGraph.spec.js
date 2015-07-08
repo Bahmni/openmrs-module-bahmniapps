@@ -63,6 +63,10 @@ describe("Observation Graph", function () {
         });
     };
 
+    var mockAppServiceLoadConfigToReturn = function (data) {
+        appService.loadConfig.and.returnValue(data);
+    };
+
     beforeEach(function () {
         element = angular.element('<div><observation-graph visit-uuid="visit.uuid" params="section" patient-uuid="patient.uuid"></observation-graph></div>');
         httpBackend.expectGET('displaycontrols/graph/views/observationGraph.html').respond('<div id="{{graphId}}"></div>')
@@ -188,7 +192,7 @@ describe("Observation Graph", function () {
             value: 45,
             concept: {name: "Weight", units: "Kg"}
         }]);
-        mockConceptSetService({results: [{name: "Weight", units: "Kg"}]});
+        mockConceptSetService({results: [{name: "Weight", units: "Kg",datatype:{name:"Numeric"}}]});
         appService.loadConfig.and.callFake(function () {
             return {
                 then: function (callback) {
@@ -335,9 +339,9 @@ describe("Observation Graph", function () {
         mockObservationService([
             {observationDateTime: "2015-02-01", value: 155, concept: {name: "Height", units: "cm"}}
         ]);
-        mockConceptSetService(
-            {results:[{lowNormal:20,hiNormal:30}]}
-        );
+        mockConceptSetService({results:[
+                {lowNormal:20,hiNormal:30,datatype:{name:"Numeric"}}
+        ]});
 
         var expectedConfig = {
             yAxisConcepts: ['Height', 'Weight'],
@@ -356,5 +360,88 @@ describe("Observation Graph", function () {
             , jasmine.any(Number)
             , new Bahmni.Clinical.ObservationGraphConfig(expectedConfig)
             , jasmine.any(Object));
+    });
+
+    it("should throw error when gender column is not present in the reference csv file",function(){
+        scope.section = {
+            "type": "observationGraph",
+            "name": "observationGraph",
+            "title": "Growth Chart",
+            "config": {
+                "yAxisConcepts": ["Height"],
+                "referenceData": "growthChartReference.csv",
+                "numberOfVisits": 20
+            }
+        };
+
+        mockObservationService([]);
+        mockConceptSetService({results:[
+            {lowNormal:20,hiNormal:30,datatype:{name:"Numeric"}}
+        ]});
+        mockPatientService({person: {birthdate: "2000-02-02"}});
+        mockAppServiceLoadConfigToReturn({data:",Age,P20,P50,P80"});
+
+        compile(element)(scope);
+        scope.$digest();
+        expect(httpBackend.flush).toThrow(
+            new Error("Gender column is not defined in reference lines csv: growthChartReference.csv")
+        );
+
+    });
+
+    it("should throw error when age column is not present in the reference csv file",function(){
+        scope.section = {
+            "type": "observationGraph",
+            "name": "observationGraph",
+            "title": "Growth Chart",
+            "config": {
+                "yAxisConcepts": ["Height"],
+                "referenceData": "growthChartReference.csv",
+                "numberOfVisits": 20
+            }
+        };
+
+        mockObservationService([]);
+        mockConceptSetService({results:[
+            {lowNormal:20,hiNormal:30,datatype:{name:"Numeric"}}
+        ]});
+        mockPatientService({person: {birthdate: "2000-02-02"}});
+        mockAppServiceLoadConfigToReturn({data:",Gender,P20,P50,P80"});
+
+        compile(element)(scope);
+        scope.$digest();
+        expect(httpBackend.flush).toThrow(
+            new Error("Age column is not defined in reference lines csv: growthChartReference.csv")
+        );
+
+    });
+
+    it("should throw error when non numeric column is given as y-axis concept in the config for reference chart",function(){
+        scope.section = {
+            "type": "observationGraph",
+            "name": "observationGraph",
+            "title": "Growth Chart",
+            "config": {
+                "yAxisConcepts": ["Fever"],
+                "referenceData": "growthChartReference.csv",
+                "numberOfVisits": 20
+            }
+        };
+
+        mockObservationService([]);
+        mockConceptSetService({results:[{
+            name:{name:"Fever"},
+            lowNormal: 20,
+            hiNormal: 30,
+            datatype: {name: "N/A"}
+        }]});
+
+        compile(element)(scope);
+        scope.$digest();
+        var errorMsg = Bahmni.Clinical.Constants.errorMessages.conceptNotNumeric
+            .replace(":conceptName","Fever")
+            .replace(":placeErrorAccurred","Growth Chart config in growthChartReference.csv");
+        expect(httpBackend.flush).toThrow(new Error(errorMsg));
+
     });
 });

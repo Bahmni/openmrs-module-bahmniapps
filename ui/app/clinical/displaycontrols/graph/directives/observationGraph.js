@@ -22,9 +22,12 @@ angular.module('bahmni.clinical').directive('observationGraph', ['appService', '
             var promises = [];
 
             var numberOfLevels = 1;
-            var fields = ['uuid', 'name', 'names', 'hiNormal', 'lowNormal', 'units'];
+            var fields = ['uuid', 'name', 'names', 'hiNormal', 'lowNormal', 'units', 'datatype'];
             var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels);
-            var conceptValue = conceptSetService.getConceptSetMembers({name:config.getAllConcepts() ,v:"custom:"+customRepresentation});
+            var conceptValue = conceptSetService.getConceptSetMembers({
+                name: config.getAllConcepts(),
+                v: "custom:" + customRepresentation
+            });
             promises.push(conceptValue);
 
             var observationsPromise = observationsService.fetch($scope.patientUuid, config.getAllConcepts(), null, config.numberOfVisits, $scope.visitUuid, null, false);
@@ -34,28 +37,39 @@ angular.module('bahmni.clinical').directive('observationGraph', ['appService', '
                 promises.push(patientService.getPatient($scope.patientUuid));
             }
 
-            if(config.shouldDrawReferenceLines()) {
+            if (config.shouldDrawReferenceLines()) {
                 promises.push(appService.loadConfig(config.getReferenceDataFileName()));
             }
 
-            $q.all(promises).then(function(results) {
-                var conceptData = results[0].data;
+            var checkWhetherYAxisIsNumericDataType = function (yAxisConceptDetails) {
+                if (yAxisConceptDetails.datatype.name != "Numeric") {
+                    var errorMsg = Bahmni.Clinical.Constants.errorMessages.conceptNotNumeric
+                        .replace(":conceptName",yAxisConceptDetails.name.name)
+                        .replace(":placeErrorAccurred",$scope.params.title+" config in growthChartReference.csv");
+                    throw new Error(errorMsg);
+                }
+            };
+
+            $q.all(promises).then(function (results) {
+                var yAxisConceptDetails = results[0].data && results[0].data.results && results[0].data.results[0];
                 var observations = results[1].data;
                 var patient = results[2] && results[2].data.person;
                 var referenceLines;
-                if(config.shouldDrawReferenceLines()) {
+
+                if (config.shouldDrawReferenceLines()) {
+                    checkWhetherYAxisIsNumericDataType(yAxisConceptDetails);
                     var referenceData = results[3].data;
                     var ageInMonths = Bahmni.Common.Util.AgeUtil.differenceInMonths(patient.birthdate);
-                    var yAxisUnit = conceptData.results[0].units;
+                    var yAxisUnit = yAxisConceptDetails.units;
                     var observationGraphReferenceModel = new Bahmni.Clinical.ObservationGraphReference(referenceData, config, patient.gender, ageInMonths, yAxisUnit);
                     observationGraphReferenceModel.validate();
                     referenceLines = observationGraphReferenceModel.createObservationGraphReferenceLines();
                 }
-                if(observations.length == 0) return;
+                if (observations.length == 0) return;
 
-                if(conceptData.results && conceptData.results.length > 0) {
-                    config.lowNormal = conceptData.results[0].lowNormal;
-                    config.hiNormal = conceptData.results[0].hiNormal;
+                if (yAxisConceptDetails != undefined) {
+                    config.lowNormal = yAxisConceptDetails.lowNormal;
+                    config.hiNormal = yAxisConceptDetails.hiNormal;
                 }
                 var model = Bahmni.Clinical.ObservationGraph.create(observations, patient, config, referenceLines);
                 generateGraph($scope, element, config, model);
