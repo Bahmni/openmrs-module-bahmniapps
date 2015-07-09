@@ -124,6 +124,7 @@ Bahmni.Common = Bahmni.Common || {};
         grantProviderAccessDataCookieName: "app:clinical:grantProviderAccessData",
         globalPropertyUrl: BAHMNI_CORE + "/sql/globalproperty",
         fulfillmentConfiguration: "fulfillment",
-        fulfillmentFormSuffix:" Fulfillment Form"
+        fulfillmentFormSuffix:" Fulfillment Form",
+        noNavigationLinksMessage: "No navigation links available."
     };
 })();

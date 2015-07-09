@@ -1,0 +1,9 @@
+<section>
+    <h2 class="section-title">{{params.title}}</h2>
+    <div ng-repeat="link in params.links">
+        <a ng-href="{{getUrl(link)}}" class="title-link">{{link.title}}</a>
+    </div> 
+</section>
+<section ng-show="noNavigationLinksMessage">
+    <div class="placeholder-text">{{noNavigationLinksMessage}}</div>
+</section>
