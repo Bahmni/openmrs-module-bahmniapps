@@ -61,6 +61,7 @@ Bahmni.Common = Bahmni.Common || {};
         dhisAllTasksUrl: RESTWS_V1 + "/dhis/tasks",
         programUrl: RESTWS_V1 + "/program",
         programEnrollPatientUrl: RESTWS_V1 + "/programenrollment",
+        programEnrollmentDefaultInformation: "custom:(display,dateEnrolled,dateCompleted,outcome,uuid,program)",
         dhisTaskUrl: RESTWS_V1 + "/dhis/task/",
         dhisFireQueriesUrl: RESTWS_V1 + "/dhis/fireQueries",
         relationshipTypesUrl: RESTWS_V1 + "/relationshiptype",

@@ -3,7 +3,7 @@
 describe("Radiology Display Control", function () {
     var scope, element, $compile, encounterService, spinner, configurations, params;
     beforeEach(module('bahmni.common.displaycontrol.documents'));
-    beforeEach(module('foo'));
+    beforeEach(module('ngHtml2JsPreprocessor'));
 
     beforeEach(module(function ($provide) {
         var encounterConfig = {

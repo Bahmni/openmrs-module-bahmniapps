@@ -54,7 +54,8 @@ module.exports = function (config) {
             'app/orders/**/*.js': ['coverage'],
             'app/registration/**/*.js': ['coverage'],
             'app/common/displaycontrols/documents/views/bmDocuments.html':['ng-html2js'],
-            'app/common/displaycontrols/patientprofile/views/patientProfile.html':['ng-html2js']
+            'app/common/displaycontrols/patientprofile/views/patientProfile.html':['ng-html2js'],
+            'app/common/displaycontrols/programs/views/programs.html':['ng-html2js']
         },
         coverageReporter: {
             reporters: [
@@ -70,7 +71,7 @@ module.exports = function (config) {
         ngHtml2JsPreprocessor: {
             stripPrefix: 'app',
             prependPrefix: '..',
-            moduleName: 'foo'
+            moduleName: 'ngHtml2JsPreprocessor'
         }
     });
 };

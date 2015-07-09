@@ -22,6 +22,23 @@
   }
 }
 
+.dashboard-program-section{
+  .program-title{
+    background: #E4E4E4;
+    margin: 0;
+    padding: 7px;
+    font-family: "OpenSansBold";
+    color: #4B4B4B;
+    font-size: 14px;
+  }
+  .programs-table{
+    strong{
+      font-family: "OpenSans";
+      font-weight: 400;
+    }
+  }
+}
+
 
 .ngdialog.ngdialog-theme-default{
   &.end-program-dialog{

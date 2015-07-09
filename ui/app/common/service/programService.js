@@ -1,6 +1,6 @@
 'use strict';
-
-angular.module('bahmni.clinical')
+angular.module('bahmni.common.service', []);
+angular.module('bahmni.common.service')
     .factory('programService', ['$http', function ($http) {
 
         var getAllPrograms = function () {
@@ -27,7 +27,7 @@ angular.module('bahmni.clinical')
             var req = {
                 url: Bahmni.Common.Constants.programEnrollPatientUrl,
                 params: {
-                    v: "full",
+                    v: Bahmni.Common.Constants.programEnrollmentDefaultInformation,
                     patient: patientUuid
                 }
             };

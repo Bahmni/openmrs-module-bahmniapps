@@ -84,7 +84,7 @@ angular.module('bahmni.clinical')
                     "endEnrollmentDate" : DateUtil.parse(program.dateEnrolled),
                     "outcome" : program.program.outcomesConcept ? program.program.outcomesConcept.setMembers : ''};
 
-                $scope.dialog = ngDialog.open({ template: 'consultationcontext/views/endPatientProgramPopUp.html', className: 'test ngdialog-theme-default end-program-dialog', scope: $scope});
+                $scope.dialog = ngDialog.open({ template: '../common/uicontrols/programmanagement/views/endPatientProgramPopUp.html', className: 'test ngdialog-theme-default end-program-dialog', scope: $scope});
             };
 
             $scope.savePopUpData = function() {

@@ -3,8 +3,7 @@
 angular.module('bahmni.clinical')
     .directive('managePrograms', function(){
         return {
-            restict: 'EA',
-            templateUrl: "consultationcontext/views/programEnrollment.html",
+            templateUrl: "../common/uicontrols/programmanagement/views/programEnrollment.html",
             controller: 'ManageProgramController',
             scope:{
                 patient: "="
