@@ -18,7 +18,7 @@ Bahmni.Clinical.Order = (function () {
                     uuid: test.uuid,
                     displayName: getName(test)
                 },
-			    voided: false,
+			    voided: false
             }
         );
         return order;
@@ -33,6 +33,17 @@ Bahmni.Clinical.Order = (function () {
           commentToFulfiller: order.commentToFulfiller
       });
         return revisedOrder;
+    };
+
+    Order.discontinue = function(order){
+        var discontinuedOrder = new Order({
+            concept: order.concept,
+            action: Bahmni.Clinical.Constants.orderActions.discontinue,
+            previousOrderUuid: order.uuid,
+            voided: false,
+            commentToFulfiller: order.commentToFulfiller
+        });
+        return discontinuedOrder;
     };
 
     return Order;

@@ -1,6 +1,6 @@
 Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, consultationNoteConcept, labOrderNoteConcept) {
 
-   var filterPreviousOrderOfRevisedOrders=  function (orders) {
+    var filterPreviousOrderOfRevisedOrders = function (orders) {
         return _.filter(orders, function (drugOrder) {
             return !_.some(orders, function (otherDrugOrder) {
                 return otherDrugOrder.action === Bahmni.Clinical.Constants.orderActions.revise && otherDrugOrder.encounterUuid === drugOrder.encounterUuid && otherDrugOrder.previousOrderUuid === drugOrder.uuid
@@ -11,28 +11,29 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
     this.map = function (encounterTransaction) {
         var encounterUuid = encounterTransaction.encounterUuid;
         var specialObservationConceptUuids = [consultationNoteConcept.uuid, labOrderNoteConcept.uuid];
-        var investigations = encounterTransaction.testOrders.filter(function(testOrder) { return !testOrder.voided });
+        var investigations = encounterTransaction.testOrders.filter(function (testOrder) {
+            return !testOrder.voided
+        });
         var labResults = new Bahmni.LabResultsMapper().map(encounterTransaction);
         var nonVoidedDrugOrders = encounterTransaction.drugOrders.filter(function (order) {
             return !order.voided && order.action != Bahmni.Clinical.Constants.orderActions.discontinue;
         });
         nonVoidedDrugOrders = filterPreviousOrderOfRevisedOrders(nonVoidedDrugOrders);
 
-        var treatmentDrugs = nonVoidedDrugOrders.map(function(drugOrder){
+        var treatmentDrugs = nonVoidedDrugOrders.map(function (drugOrder) {
             return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder);
         });
         var consultationNote = mapSpecialObservation(encounterTransaction.observations, consultationNoteConcept);
 
         var labOrderNote = mapSpecialObservation(encounterTransaction.observations, labOrderNoteConcept);
 
-        var observations = encounterTransaction.observations.filter(function(observation){
+        var observations = encounterTransaction.observations.filter(function (observation) {
             return !observation.voided && specialObservationConceptUuids.indexOf(observation.concept.uuid) === -1;
         });
 
-        var testOrders = encounterTransaction.testOrders.filter(function(order){
-            return !order.voided;
+        var testOrders = encounterTransaction.testOrders.filter(function (order) {
+            return order.action != Bahmni.Clinical.Constants.orderActions.discontinue && !order.dateStopped;
         });
-        testOrders = filterPreviousOrderOfRevisedOrders(testOrders);
 
         return {
             visitUuid: encounterTransaction.visitUuid,
@@ -51,16 +52,16 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
         };
     };
 
-    var emptyObservation = function(concept) {
-        return { concept: { uuid: concept.uuid }};
+    var emptyObservation = function (concept) {
+        return {concept: {uuid: concept.uuid}};
     };
-    
-    var mapSpecialObservation = function(encounterObservations, specialConcept) {
+
+    var mapSpecialObservation = function (encounterObservations, specialConcept) {
         var observation = emptyObservation(specialConcept);
-        var obsFromEncounter = encounterObservations.filter(function(obs) {
+        var obsFromEncounter = encounterObservations.filter(function (obs) {
             return (obs.concept && obs.concept.uuid === specialConcept.uuid) && !obs.voided;
         })[0];
-        if(obsFromEncounter) {
+        if (obsFromEncounter) {
             observation.value = obsFromEncounter.value;
             observation.uuid = obsFromEncounter.uuid;
             observation.observationDateTime = obsFromEncounter.observationDateTime;

@@ -83,6 +83,7 @@ angular.module('bahmni.clinical')
                     return order.concept.uuid === selectedOrder.concept.uuid;
                 });
                 if (order.uuid) {
+                    order.isDiscontinued = !order.isDiscontinued;
                     order.voided = !order.voided;
                 }
                 else {

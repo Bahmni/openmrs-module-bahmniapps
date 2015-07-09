@@ -52,6 +52,9 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
                 if(order.hasBeenModified){
                     return Bahmni.Clinical.Order.revise(order);
                 }
+                else if(order.isDiscontinued){
+                    return Bahmni.Clinical.Order.discontinue(order);
+                }
                 return { uuid: order.uuid, concept: {name: order.concept.name, uuid: order.concept.uuid }, voided: order.voided || false,
                     commentToFulfiller: order.commentToFulfiller};
             });
