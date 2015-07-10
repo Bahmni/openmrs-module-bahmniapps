@@ -1,15 +1,16 @@
 'use strict';
 
 angular.module('bahmni.reports')
-    .service('reportService', function () {
+    .service('reportService', ['appService', function (appService) {
+        var paperSize = appService.getAppDescriptor().getConfigValue("paperSize");
         var generateReport = function (report) {
             var url = Bahmni.Common.Constants.reportsUrl;
-            url = (url + "?name={0}&startDate={1}&endDate={2}&responseType={3}").
-                    format(report.name, report.startDate, report.stopDate, report.responseType);
+            url = (url + "?name={0}&startDate={1}&endDate={2}&responseType={3}&paperSize={4}").
+                    format(report.name, report.startDate, report.stopDate, report.responseType, paperSize);
             window.open(url);
        };
 
         return {
             generateReport: generateReport
         };
-    });
+    }]);
