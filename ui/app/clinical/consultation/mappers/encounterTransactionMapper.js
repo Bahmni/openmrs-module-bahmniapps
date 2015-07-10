@@ -48,14 +48,17 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
         encounterData.testOrders = [];
         
         var addTestOrdersToEncounter = function () {
-            var tempOrders = consultation.testOrders.map(function (order) {
-                if(order.hasBeenModified){
+            var modifiedTestOrders = _.filter(consultation.testOrders, function(testOrder){
+                return testOrder.hasBeenModified || testOrder.isDiscontinued || !testOrder.uuid
+            });
+            var tempOrders = modifiedTestOrders.map(function (order) {
+                if(order.hasBeenModified && !order.isDiscontinued){
                     return Bahmni.Clinical.Order.revise(order);
                 }
                 else if(order.isDiscontinued){
                     return Bahmni.Clinical.Order.discontinue(order);
                 }
-                return { uuid: order.uuid, concept: {name: order.concept.name, uuid: order.concept.uuid }, voided: order.voided || false,
+                return { uuid: order.uuid, concept: {name: order.concept.name, uuid: order.concept.uuid },
                     commentToFulfiller: order.commentToFulfiller};
             });
             encounterData.testOrders = encounterData.testOrders.concat(tempOrders);
