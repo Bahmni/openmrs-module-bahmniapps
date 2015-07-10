@@ -36,7 +36,7 @@ angular.module('consultation')
                 url: '/patient/:patientUuid',
                 abstract: true,
                 data: {
-                    backLinks: [homeBackLink, patientSearchBackLink]
+                    backLinks: [patientSearchBackLink]
                 },
 
                 views: {
@@ -98,7 +98,7 @@ angular.module('consultation')
             .state('patient.visit', {
                 url: '/dashboard/visit/:visitUuid',
                 data: {
-                    backLinks: [homeBackLink, patientSearchBackLink]
+                    backLinks: [patientSearchBackLink]
                 },
                 views: {
                     'additional-header': {
@@ -123,7 +123,7 @@ angular.module('consultation')
                 url: '',
                 abstract: true,
                 data: {
-                    backLinks: [homeBackLink, patientSearchBackLink]
+                    backLinks: [patientSearchBackLink]
                 },
                 views: {
                     'additional-header': {

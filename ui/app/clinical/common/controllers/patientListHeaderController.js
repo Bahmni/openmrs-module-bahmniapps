@@ -50,15 +50,12 @@ angular.module('bahmni.clinical')
 
             $scope.popUpHandler = function() {
                 $scope.dialog = ngDialog.open({ template: 'consultation/views/defaultDataPopUp.html', className: 'test ngdialog-theme-default',
-                    controller: 'PatientListHeaderController',
-                    preCloseCallback: function() {
-                        $('body').removeClass('show-controller-back');
-                    }
-                });
-                $('body').addClass('show-controller-back');
+                    controller: 'PatientListHeaderController'});
+                angular.element('body').addClass('show-controller-back');
             };
 
             $scope.closePopUp = function() {
+                angular.element('body').removeClass('show-controller-back');
                 ngDialog.close();
             };
 
