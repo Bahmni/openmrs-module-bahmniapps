@@ -95,13 +95,18 @@ angular.module('bahmni.clinical')
             $scope.openNotesPopup = function(order) {
                 order.previousNote = order.commentToFulfiller;
                 $scope.orderNoteText = order.previousNote;
-                $scope.dialog = ngDialog.open({ template: 'consultation/views/orderNotes.html', className: 'selectedOrderNoteContainer-dialog ngdialog-theme-default', data: order, scope: $scope,
-                    preCloseCallback: function() {
-                        $('body').removeClass('show-controller-back');
-                    }
+                $scope.dialog = ngDialog.open({ template: 'consultation/views/orderNotes.html', className: 'selectedOrderNoteContainer-dialog ngdialog-theme-default', data: order, scope: $scope
                 });
-                $('body').addClass('show-controller-back');
             };
+
+            $scope.$on('ngDialog.opened', function (e, $dialog) {
+                $('body').addClass('show-controller-back');
+            });
+
+            $scope.$on('ngDialog.closed', function (e, $dialog) {
+                $('body').removeClass('show-controller-back');
+            });
+
 
             $scope.setEditedFlag = function(order, orderNoteText){
                if(order.previousNote != orderNoteText){

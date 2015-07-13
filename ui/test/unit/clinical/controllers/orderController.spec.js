@@ -169,7 +169,7 @@ describe("OrderController", function () {
 
             expect(scope.orderNoteText).toBe("comment");
             expect(ngDialog.open).toHaveBeenCalledWith({ template: 'consultation/views/orderNotes.html',
-                className: 'selectedOrderNoteContainer-dialog ngdialog-theme-default', data: order, scope:scope , preCloseCallback: jasmine.any(Function)
+                className: 'selectedOrderNoteContainer-dialog ngdialog-theme-default', data: order, scope:scope
             });
         });
 
