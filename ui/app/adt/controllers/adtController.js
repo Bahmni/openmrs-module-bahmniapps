@@ -181,7 +181,7 @@ angular.module('bahmni.adt')
                 encounterData.observations = $scope.adtObservations;
                 encounterData.observations = _.filter(encounterData.observations, function(observation) {
                     return !_.isEmpty(observation.value) ;
-                })
+                });
                 encounterData.locationUuid = locationUuid;
                 return encounterData;
             };
