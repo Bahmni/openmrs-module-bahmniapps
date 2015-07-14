@@ -220,3 +220,7 @@ u, .add-drug-btninput[value]:first-letter {
   overflow: hidden;
   @include clearfix();
 }
+
+.is-abnormal .select2-chosen {
+  color: red!important;
+}
