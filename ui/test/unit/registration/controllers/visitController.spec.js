@@ -89,7 +89,7 @@ describe('VisitController', function () {
         rootScope = $rootScope;
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
         stateParams = {patientUuid: '21308498-2502-4495-b604-7b704a55522d'};
-        patient = {
+        patient = { "patient" : {
             uuid: "21308498-2502-4495-b604-7b704a55522d",
             isNew: "true",
             person: {
@@ -97,7 +97,7 @@ describe('VisitController', function () {
                     "name"
                 ]
             }
-        };
+        }};
         state = $state;
         $controller = $injector.get('$controller');
         scope = {"$watch": jasmine.createSpy()};

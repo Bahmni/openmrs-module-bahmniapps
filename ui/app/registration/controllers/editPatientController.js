@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('EditPatientController', ['$scope', 'patientService', 'encounterService', '$stateParams', 'openmrsPatientMapper', '$window', '$q','spinner', 'appService', 'messagingService',
-        function ($scope, patientService, encounterService, $stateParams, patientMapper, $window, $q, spinner, appService, messagingService) {
+    .controller('EditPatientController', ['$scope', 'patientService', 'encounterService', '$stateParams', 'openmrsPatientMapper', '$window', '$q', 'spinner', 'appService', 'messagingService', '$rootScope',
+        function ($scope, patientService, encounterService, $stateParams, patientMapper, $window, $q, spinner, appService, messagingService, $rootScope) {
             var uuid = $stateParams.patientUuid;
             $scope.patient = {};
             $scope.actions = {};
@@ -21,13 +21,17 @@ angular.module('bahmni.registration')
 
             (function () {
                 var getPatientPromise = patientService.get(uuid).success(function (openmrsPatient) {
-                    $scope.openMRSPatient = openmrsPatient;
-                    $scope.patient = patientMapper.map(openmrsPatient);
+                    $scope.openMRSPatient = openmrsPatient["patient"];
+                    $scope.patient = patientMapper.map(openmrsPatient["patient"]);
+                    $scope.patient.relationships = openmrsPatient["relationships"];
+                    _.map($scope.patient.relationships, function (relationship) {
+                        relationship.endDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(relationship.endDate);
+                    });
                     setReadOnlyFields();
-                    var showOrHideAdditionalPatientInformation = function(){
+                    var showOrHideAdditionalPatientInformation = function () {
                         var additionalPatientInfoConfig = appService.getAppDescriptor().getConfigValue("additionalPatientInformation");
-                        angular.forEach(additionalPatientInfoConfig, function(attribute){
-                            if($scope.patient[attribute.name]){
+                        angular.forEach(additionalPatientInfoConfig, function (attribute) {
+                            if ($scope.patient[attribute.name]) {
                                 $scope.displayAdditionalInformation = true;
                             }
                         });
@@ -36,7 +40,7 @@ angular.module('bahmni.registration')
                 });
 
                 var isDigitized = encounterService.getDigitized(uuid);
-                isDigitized.success(function(data) {
+                isDigitized.success(function (data) {
                     var encountersWithObservations = data.results.filter(function (encounter) {
                         return encounter.obs.length > 0
                     });
@@ -47,17 +51,27 @@ angular.module('bahmni.registration')
             })();
 
             $scope.update = function () {
+                cleanupRelationships();
+
                 var patientUpdatePromise = patientService.update($scope.patient, $scope.openMRSPatient).success(function (patientProfileData) {
                     $scope.actions.followUpAction(patientProfileData);
                 });
                 spinner.forPromise(patientUpdatePromise);
             };
 
-            $scope.isReadOnly = function(field){
+            var cleanupRelationships = function () {
+                for (var relationship in $scope.patient.relationships) {
+                    delete $scope.patient.relationships[relationship].patientIdentifier;
+                    delete $scope.patient.relationships[relationship].content;
+                    delete $scope.patient.relationships[relationship].providerName;
+                }
+            }
+
+            $scope.isReadOnly = function (field) {
                 return $scope.readOnlyFields[field];
             }
 
-            $scope.afterSave = function() {
+            $scope.afterSave = function () {
                 setReadOnlyFields();
                 messagingService.showMessage("info", "Saved");
             }

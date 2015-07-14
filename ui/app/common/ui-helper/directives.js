@@ -22,13 +22,14 @@ angular.module('bahmni.common.uiHelper')
         var link = function ($scope, element, attrs, ngModel) {
             var maxDate = attrs.maxDate;
             var minDate = attrs.minDate || "-120y";
+            var format = attrs.dateFormat || 'dd-mm-yy';
             element.datepicker({
                 changeYear: true,
                 changeMonth: true,
                 maxDate: maxDate,
                 minDate: minDate,
                 yearRange: 'c-120:c+120',
-                dateFormat: 'dd-mm-yy',
+                dateFormat: format,
                 onSelect: function (dateText) {
                     $scope.$apply(function () {
                         ngModel.$setViewValue(dateText);

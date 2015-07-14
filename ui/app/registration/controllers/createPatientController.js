@@ -21,14 +21,10 @@ angular.module('bahmni.registration')
 
             $scope.create = function () {
                 setPreferences();
-                var errMsg = Bahmni.Common.Util.ValidationUtil.validate($scope.patient,$scope.patientConfiguration.personAttributeTypes);
-                if(errMsg){
+                var errMsg = Bahmni.Common.Util.ValidationUtil.validate($scope.patient, $scope.patientConfiguration.personAttributeTypes);
+                if (errMsg) {
                     messagingService.showMessage('formError', errMsg);
                     return;
-                }
-                if($rootScope.newlyAddedRelationships && $rootScope.newlyAddedRelationships.length > 1) {
-                    $rootScope.newlyAddedRelationships.shift();
-                    $scope.patient.relationships = $rootScope.newlyAddedRelationships;
                 }
 
                 if (!$scope.hasOldIdentifier) {
@@ -38,7 +34,7 @@ angular.module('bahmni.registration')
                             patientService.create($scope.patient).success(successCallback);
                         }));
                 }
-                else{
+                else {
                     patientService.create($scope.patient).success(successCallback);
                 }
             };

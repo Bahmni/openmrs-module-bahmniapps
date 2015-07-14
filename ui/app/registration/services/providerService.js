@@ -10,7 +10,18 @@ angular.module('bahmni.registration')
             });
         };
 
+        var searchByUuid = function(uuid) {
+            return $http.get("/openmrs/ws/rest/v1/provider", {
+                method: "GET",
+                params: {
+                    user: uuid
+                },
+                cache: false
+            });
+        };
+
         return{
-            search : search
+            search : search,
+            searchByUuid : searchByUuid
         };
     }]);

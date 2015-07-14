@@ -143,7 +143,7 @@
          free-text-address-fields="addressHierarchyConfigs.freeTextAddressFields"></section>
 
 <legend class="mylegend registraion_legend">
-    <span><srtong>Other Information</srtong></span>
+    <span><strong>Other Information</strong></span>
 </legend>
 
 <section class="form-field-inline" ng-repeat="attributeRow in patientConfiguration.customAttributeRows()">
@@ -167,18 +167,4 @@
         <ng-include src="'views/patientAttributeInformation.html'"></ng-include>
     </article>
 </section>
-<div ng-show="displayRelationships()" ng-controller="PatientRelationshipController">
-    <legend class="mylegend additional-attribute" toggle="displayRelationshipInformation">
-        <span>
-            <i class="fa fa-caret-right" ng-hide="displayRelationshipInformation"></i>
-            <i class="fa fa-caret-down" ng-show="displayRelationshipInformation"></i>
-            <strong><a href accesskey="l">Re<u>l</u>ationships</a></strong>
-        </span>
-    </legend>
-    <section class="form-field-inline" ng-show="displayRelationshipInformation">
-        <ng-include src="'views/patientRelationships.html'"></ng-include>
-    </section>
-</div>
-
-
-
+<div patient-relationship patient="patient" ng-if="relationshipTypes"></div>

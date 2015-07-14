@@ -15,7 +15,7 @@ angular.module('bahmni.registration')
         };
 
         var get = function (uuid) {
-            return $http.get(openmrsUrl + "/ws/rest/v1/patient/" + uuid, {
+            return $http.get(openmrsUrl + "/ws/rest/v1/patientprofile/" + uuid, {
                 method: "GET",
                 params: {v: "full"},
                 withCredentials: true

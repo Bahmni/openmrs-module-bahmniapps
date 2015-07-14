@@ -7,7 +7,7 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
 
     UpdatePatientRequestMapper.prototype.currentDate = undefined;
     
-    UpdatePatientRequestMapper.prototype.mapFromPatient = function (patientAttributeTypes, openMRSPatient, patient) {        
+    UpdatePatientRequestMapper.prototype.mapFromPatient = function (patientAttributeTypes, openMRSPatient, patient) {
         var openMRSPatientProfile = {
             patient: {
                 person: {
@@ -30,6 +30,11 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
         };
 
         this.setImage(patient, openMRSPatientProfile);
+
+        if(patient.relationships) {
+            openMRSPatientProfile.relationships = patient.relationships;
+        }
+
         return  openMRSPatientProfile;
     };
 
