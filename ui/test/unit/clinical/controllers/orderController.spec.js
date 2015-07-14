@@ -49,7 +49,7 @@ describe("OrderController", function () {
             //diselect already saved order
             scope.diSelect({"concept": {"uuid": "3b5ea063-b6e5-48cd-b39d-dce69f00f26a"}});
             scope.$digest();
-            expect(scope.consultation.testOrders[0].voided).toBe(true);
+            expect(scope.consultation.testOrders[0].isDiscontinued).toBe(true);
             expect(scope.selectedOrders.length).toBe(2);
 
             //diselect newly added order
@@ -59,7 +59,7 @@ describe("OrderController", function () {
             expect(scope.selectedOrders.length).toBe(1);
 
             //cleaning up voided
-            scope.consultation.testOrders[0].voided = false;
+            scope.consultation.testOrders[0].isDiscontinued = false;
         });
 
         it("diSelect() should unselect order and its child orders", function () {
@@ -69,10 +69,10 @@ describe("OrderController", function () {
             scope.$digest();
 
             //diselect already saved order
-            expect(scope.consultation.testOrders[0].voided).toBe(false);
+            expect(scope.consultation.testOrders[0].isDiscontinued).toBe(false);
             scope.diSelect({"concept": {"uuid": "3b5ea063-b6e5-48cd-b39d-dce69f00f26a"}});
             scope.$digest();
-            expect(scope.consultation.testOrders[0].voided).toBe(true);
+            expect(scope.consultation.testOrders[0].isDiscontinued).toBe(true);
             expect(scope.selectedOrders.length).toBe(2);
 
             //diselect newly added order

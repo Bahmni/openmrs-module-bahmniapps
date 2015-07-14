@@ -15,7 +15,7 @@ angular.module('bahmni.clinical')
 
                 var checkIfTestSelected = function(test){
                     test.isSelected = $scope.orders.some(function(order) {
-                        return !order.voided && order.concept.uuid == test.uuid;
+                        return !order.isDiscontinued && order.concept.uuid == test.uuid;
                     });
 
                     if (test.isSelected) {
@@ -29,8 +29,8 @@ angular.module('bahmni.clinical')
                         return order.concept.uuid === test.uuid;
                     });
                     if(test.isSelected) {
-                        if(order && order.voided) {
-                            order.voided = false;
+                        if(order && order.isDiscontinued) {
+                            order.isDiscontinued = false;
                         }
                         else{
                             var newOrder = Bahmni.Clinical.Order.create(test);
@@ -39,7 +39,7 @@ angular.module('bahmni.clinical')
                     }
                     else {
                         if (order.uuid) {
-                            order.voided = true;
+                            order.isDiscontinued = true;
                         }
                         else {
                             removeOrder(order);

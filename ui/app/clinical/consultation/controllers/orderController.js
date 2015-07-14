@@ -84,7 +84,6 @@ angular.module('bahmni.clinical')
                 });
                 if (order.uuid) {
                     order.isDiscontinued = !order.isDiscontinued;
-                    order.voided = !order.voided;
                 }
                 else {
                     removeOrder(order);
