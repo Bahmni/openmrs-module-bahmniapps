@@ -2,12 +2,21 @@
 
 angular.module('bahmni.common.displaycontrol.patientprofile')
     .directive('patientProfile', function () {
-        var controller = function ($scope) {
+        var controller = function ($scope, patientService, spinner) {
+
             var patient = $scope.patient;
+
+            var init = function () {
+                return patientService.getRelationships($scope.patient.uuid).success(function (data) {
+                    $scope.patient.relationships = data.results;
+                });
+            };
+
             $scope.getPatientGenderAndAge = function () {
                 var patientGenderAndAge = [patient.genderText, patient.ageText];
                 return patientGenderAndAge.join(", ");
             };
+
             $scope.getAddress = function () {
                 var address = [];
                 if ($scope.config.addressFields != undefined && $scope.config.addressFields.length != 0) {
@@ -17,11 +26,12 @@ angular.module('bahmni.common.displaycontrol.patientprofile')
                         }
                     });
                 }
-                else if(!_.contains($scope.config,"cityVillage")) {
-                        address.push(patient.address["cityVillage"]);
+                else if (!_.contains($scope.config, "cityVillage")) {
+                    address.push(patient.address["cityVillage"]);
                 }
                 return address.join(", ");
-            }
+            };
+            spinner.forPromise(init());
         };
         return {
             restrict: 'E',

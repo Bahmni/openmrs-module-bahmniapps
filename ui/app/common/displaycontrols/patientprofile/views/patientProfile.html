@@ -24,6 +24,25 @@
                 <td class="name">{{patient[attribute].label}}</td>
                 <td class="value">{{(patient[attribute].value.display || patient[attribute].value) | booleanFilter}}</td>
             </tr>
+            <tr>
+                <td>Relationships</td>
+            </tr>
+            <tr ng-repeat="relationship in patient.relationships">
+                <td class="name" ng-if="relationship.personA.uuid === patient.uuid">{{relationship.relationshipType.aIsToB}}</td>
+                <td class="value" ng-if="relationship.personA.uuid === patient.uuid">
+                    <a ng-href="../clinical/#/patient/{{relationship.personB.uuid}}/dashboard"
+                       title="Go to Clinical Dashboard">
+                        {{relationship.personB.display}}
+                    </a>
+                </td>
+                <td class="name" ng-if="relationship.personB.uuid === patient.uuid">{{relationship.relationshipType.bIsToA}}</td>
+                <td ng-if="relationship.personB.uuid === patient.uuid" class="value">
+                    <a ng-href="../clinical/#/patient/{{relationship.personA.uuid}}/dashboard"
+                       title="Go to Clinical Dashboard">
+                        {{relationship.personA.display}}
+                    </a>
+                </td>
+            </tr>
             </tbody>
         </table>
     </section>
