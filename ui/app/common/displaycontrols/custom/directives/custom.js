@@ -1,25 +1,17 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.custom', [])
-    .directive('custom', ['observationsService', '$compile', '$http', 'spinner', function (observationsService, $compile, $http, spinner) {
+    .directive('custom', ['observationsService', 'appService', function (observationsService, appService) {
 
         var controller = function ($scope) {
-
-            $scope.getValue = function (conceptName) {
-                var matchingObs = _.find($scope.birthCertificateObs, function (obs) {
-                        return obs.concept.name == conceptName;
-                    });
-                return matchingObs && matchingObs.valueAsString;
+            $scope.getObs = function (conceptNames) {
+                return observationsService.fetch($scope.patient.uuid, conceptNames, "latest", undefined, $scope.visitUuid, undefined);
             };
 
             var init = function () {
-                return observationsService.fetch($scope.patient.uuid, $scope.config.conceptNames, "latest", undefined, $scope.visitUuid, undefined).then(function (response) {
-                    $scope.birthCertificateObs = response.data;
-                    $scope.contentUrl = $scope.templateurl;
-                })
+                $scope.contentUrl = appService.configBaseUrl() + appService.getAppDescriptor().contextPath + "/" + $scope.templateUrl;
             };
-
-            spinner.forPromise(init());
+            init();
         };
 
         return {
@@ -31,7 +23,7 @@ angular.module('bahmni.common.displaycontrol.custom', [])
                 visitUuid: "@",
                 section: "=",
                 config: "=",
-                templateurl: "@"
+                templateUrl: "@"
             }
         }
     }]);
