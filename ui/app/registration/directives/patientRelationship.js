@@ -4,7 +4,7 @@ angular.module('bahmni.registration')
     .directive('patientRelationship', function () {
         return {
             restrict: 'AE',
-            templateUrl: ' views/patientRelationships.html',
+            templateUrl: 'views/patientRelationships.html',
             controller: 'PatientRelationshipController',
             scope: {
                 patient: "="
@@ -30,7 +30,7 @@ angular.module('bahmni.registration')
 
             $scope.removeRelationship = function (relationship) {
                 if (relationship.uuid) {
-                    relationship.voided = true
+                    relationship.voided = true;
                 } else {
                     var elementIndex = $scope.patient.relationships.indexOf(relationship);
                     $scope.patient.relationships.splice(elementIndex, 1);
@@ -103,12 +103,12 @@ angular.module('bahmni.registration')
             };
 
             var checkMandatoryFieldsPresent = function (relationship) {
-                return relationship.relationshipType && relationship.personB;
+                    return relationship.relationshipType && relationship.personB;
             };
 
             $scope.checkDuplicateRelationship = function (relationship) {
                 return $scope.patient.relationships.some(function (existingRelationship) {
-                    return relationship != existingRelationship && !angular.isUndefined(existingRelationship.relationshipType)
+                    return !existingRelationship.voided && relationship != existingRelationship && !angular.isUndefined(existingRelationship.relationshipType)
                         && !angular.isUndefined(relationship.relationshipType)
                         && (relationship['relationshipType']['uuid'] === existingRelationship['relationshipType']['uuid'] );
                 });
@@ -134,6 +134,7 @@ angular.module('bahmni.registration')
                     relationship.personB = {'uuid': providerData.uuid};
                 }
             };
+
 
             $scope.getProviderDataResults = function (data) {
                 return data.data.results.map(function (providerDetails) {
