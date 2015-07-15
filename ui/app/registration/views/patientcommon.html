@@ -152,7 +152,6 @@
     </article>
 </section>
 
-
 <legend class="mylegend additional-attribute" ng-show="patientConfiguration.additionalAttributes()"
         toggle="displayAdditionalInformation">
         <span>
@@ -167,4 +166,13 @@
         <ng-include src="'views/patientAttributeInformation.html'"></ng-include>
     </article>
 </section>
-<div patient-relationship patient="patient" ng-if="relationshipTypes"></div>
+
+<legend class="mylegend additional-attribute" ng-show="relationshipTypes"
+        toggle="displayRelationshipInformation">
+        <span>
+            <i class="fa fa-caret-right" ng-hide="displayRelationshipInformation"></i>
+            <i class="fa fa-caret-down" ng-show="displayRelationshipInformation"></i>
+            <strong><a href accesskey="l">Re<u>l</u>ationships</a></strong>
+        </span>
+</legend>
+<div patient-relationship patient="patient" ng-show="displayRelationshipInformation" ng-if="relationshipTypes"></div>
