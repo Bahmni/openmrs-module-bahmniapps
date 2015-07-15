@@ -15,8 +15,8 @@
                         <span style="display:block" ng-show="checkDuplicateRelationship(newRelationship)">Duplicate relationship found</span>
                     </div>
                     <div class="col col2">
-                        <input type="text" ng-show="hasNoRelationship(newRelationship) || isPatientRelationship(newRelationship)" ng-model="newRelationship.patientIdentifier" ng-blur="searchByPatientIdentifier(newRelationship)" class="ng-valid ng-touched ng-dirty ng-valid-parse">
-                        <input type="text" ng-show="isProviderRelationship(newRelationship)" bahmni-autocomplete ng-model="newRelationship.providerName" response-map="getProviderDataResults" class="ng-valid ng-touched ng-dirty ng-valid-parse"
+                        <input type="text" ng-if="hasNoRelationship(newRelationship) || isPatientRelationship(newRelationship)" ng-model="newRelationship.patientIdentifier" ng-blur="searchByPatientIdentifier(newRelationship)" class="ng-valid ng-touched ng-dirty ng-valid-parse">
+                        <input type="text" ng-if="isProviderRelationship(newRelationship)" bahmni-autocomplete ng-model="newRelationship.providerName" response-map="getProviderDataResults" class="ng-valid ng-touched ng-dirty ng-valid-parse"
                                source="getProviderList(relationship)"  on-select="providerSelected(newRelationship)">
                         <span class="asterick">*</span>
                         <span style="display:block" ng-show="showPersonNotFound(newRelationship)">Person not found</span>
