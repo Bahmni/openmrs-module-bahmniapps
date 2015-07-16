@@ -21,14 +21,13 @@ angular.module('bahmni.clinical')
                 })
             };
 
-            var setCurrentDate = function() {
+            var getCurrentDate = function() {
                 var currentDate = $bahmniCookieStore.get(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
-                $scope.programEnrollmentDate = DateUtil.parse(currentDate || DateUtil.endOfToday());
-
+                return DateUtil.parse(currentDate || DateUtil.endOfToday());
             };
 
             var init = function () {
-                setCurrentDate();
+                $scope.programEnrollmentDate = getCurrentDate();
                 programService.getAllPrograms().success(function (data) {
                     $scope.allPrograms = _.filter(data.results, function (program) {
                         return program.retired != true;
@@ -81,7 +80,7 @@ angular.module('bahmni.clinical')
                 $scope.popUpData = {"programName" : program.display,
                     "patientProgramUuid" : program.uuid,
                     "enrollmentDate" : DateUtil.parse(program.dateEnrolled),
-                    "endEnrollmentDate" : DateUtil.parse(program.dateEnrolled),
+                    "endEnrollmentDate" : getCurrentDate(),
                     "outcome" : program.program.outcomesConcept ? program.program.outcomesConcept.setMembers : ''};
 
                 $scope.dialog = ngDialog.open({ template: '../common/uicontrols/programmanagement/views/endPatientProgramPopUp.html', className: 'test ngdialog-theme-default end-program-dialog', scope: $scope});

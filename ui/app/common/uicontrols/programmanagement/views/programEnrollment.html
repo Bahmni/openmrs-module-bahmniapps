@@ -6,7 +6,7 @@
                 <select ng-model="programSelected" ng-options="program.display for program in allPrograms" ng-required="1==1">
                     <option value="">Choose program</option>
                 </select>
-                <input type="date" ng-model="programEnrollmentDate"/>
+                <label class="start-date-label"><strong>Start Date:</strong> <span class="value">{{programEnrollmentDate | bahmniDate}}</span></label>
                 <button type="submit" ng-click="enrollPatient()">Enroll</button>
             </div>
         </section>

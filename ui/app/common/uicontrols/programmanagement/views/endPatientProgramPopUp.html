@@ -17,10 +17,10 @@
     </div>
     <div class="end-program-container">
         <div class="left-container">
-            <label class="middle-align">Date of Completion</label>
+            <label>Date of Completion</label>
         </div>
         <div class="right-container">
-            <input type="date" ng-model = "popUpData.endEnrollmentDate" min="{{popUpData.enrollmentDate | date:'yyyy-MM-dd'}}"/>
+            <label>{{popUpData.endEnrollmentDate | bahmniDate}}</label>
         </div>
     </div>
     <div class="end-program-container">
