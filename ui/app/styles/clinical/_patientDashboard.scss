@@ -118,6 +118,18 @@
       display: block;
       color: $mediumGray;
     }
+    ul.navigation-link-container{
+        padding: 5px 10px;
+      li{
+          display: block;
+          padding: 5px 0;
+        a{
+          &:hover{
+            text-decoration: underline;
+          }
+        }
+      }
+    }
     .form-field-group .form-field {
       border: 0;
     }
