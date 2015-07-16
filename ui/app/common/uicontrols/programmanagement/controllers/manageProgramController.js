@@ -21,6 +21,17 @@ angular.module('bahmni.clinical')
                 })
             };
 
+            $scope.states= {
+                data: [
+                    {state: "Admitted", date: new Date(2015,1,1)},
+                    {state: "Counselling", date: new Date(2015,2,6)},
+                    {state: "Medication", date: new Date(2015,3,12)},
+                    {state: "Counselling", date: new Date(2015,4,6)},
+                    {state: "Curing", date: new Date(2015,6,6)}
+                ],
+                completed: false
+            };
+
             var getCurrentDate = function() {
                 var currentDate = $bahmniCookieStore.get(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
                 return DateUtil.parse(currentDate || DateUtil.endOfToday());
