@@ -119,9 +119,4 @@ angular.module('bahmni.clinical')
             };
 
             return init();
-
-            $rootScope.$on('ngDialog.opened', function (e, $dialog) {
-                console.log('ngDialog opened: ' + $dialog.attr('id'));
-            });
-
         }]);

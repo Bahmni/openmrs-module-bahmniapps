@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('CreatePatientController', ['$scope', '$rootScope', '$state', 'patientService', 'Preferences', 'patient', 'spinner', 'appService', 'messagingService',
-        function ($scope, $rootScope, $state, patientService, preferences, patientModel, spinner, appService, messagingService) {
+    .controller('CreatePatientController', ['$scope', '$rootScope', '$state', 'patientService', 'Preferences', 'patient', 'spinner', 'appService', 'messagingService','ngDialog',
+        function ($scope, $rootScope, $state, patientService, preferences, patientModel, spinner, appService, messagingService, ngDialog) {
             var dateUtil = Bahmni.Common.Util.DateUtil;
             $scope.actions = {};
             var configValueForEnterId = appService.getAppDescriptor().getConfigValue('showEnterID');
@@ -27,6 +27,22 @@ angular.module('bahmni.registration')
                     return;
                 }
 
+                var getConfirmationViaNgDialog = function (ngDialogData) {
+                    var ngLocalScope = $scope.$new();
+                    ngLocalScope.yes = function () {
+                        ngDialog.close();
+                        patientService.create($scope.patient).success(successCallback);
+                    };
+                    ngLocalScope.no = function () {
+                        ngDialog.close();
+                    };
+                    ngDialog.open({
+                        template: 'views/customIdentifierConfirmation.html',
+                        data: ngDialogData,
+                        scope: ngLocalScope
+                    });
+                };
+
                 if (!$scope.hasOldIdentifier) {
                     spinner.forPromise(patientService.generateIdentifier($scope.patient)
                         .then(function (response) {
@@ -35,7 +51,17 @@ angular.module('bahmni.registration')
                         }));
                 }
                 else {
-                    patientService.create($scope.patient).success(successCallback);
+                    patientService.getLatestIdentifier($scope.patient).then(function (response) {
+                        var latestIdentifier = response.data;
+                        var givenIdentifier = parseInt($scope.patient.registrationNumber);
+                        if (latestIdentifier < givenIdentifier) {
+                            var ngDialogData = {sizeOfTheJump: givenIdentifier - latestIdentifier};
+                            getConfirmationViaNgDialog(ngDialogData);
+                        } else {
+                            patientService.create($scope.patient).success(successCallback);
+                        }
+
+                    });
                 }
             };
 
