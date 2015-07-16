@@ -6,6 +6,9 @@ Bahmni.Common.PatientSearch.Search = function(searchTypes) {
     self.noResultsMessage = null;
     self.searchResults = [];
     self.activePatients = [];
+    angular.forEach(searchTypes, function(searchType){
+        searchType.patientCount = "..."
+    });
 
     self.switchSearchType = function (searchType) {
         self.noResultsMessage = null;
