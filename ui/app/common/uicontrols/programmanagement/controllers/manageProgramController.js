@@ -3,7 +3,9 @@ angular.module('bahmni.clinical')
         function ($scope, $bahmniCookieStore, $window, programService, spinner, messagingService, ngDialog) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.programSelected = {};
+            $scope.workflowStateSelected = {};
             $scope.allPrograms = [];
+            $scope.programWorkflowStates = [];
 
             var updateActiveProgramsList = function () {
                 programService.getActiveProgramsForAPatient($scope.patient.uuid).success(function (data) {
@@ -108,6 +110,15 @@ angular.module('bahmni.clinical')
 
             $scope.closePopUp = function() {
                 ngDialog.close();
+            };
+
+            $scope.getWorkflowStates = function(program){
+                $scope.programWorkflowStates = [];
+                if(program && program.allWorkflows.length && program.allWorkflows[0].states.length) {
+                    program.allWorkflows[0].states.forEach(function(state){
+                        $scope.programWorkflowStates.push(state);
+                    });
+                }
             };
 
             init();

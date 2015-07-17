@@ -3,10 +3,14 @@
         <section class="block dashboard-section">
             <h2 class="section-title ng-binding">Select Program</h2>
             <div class="select-program-option">
-                <select ng-model="programSelected" ng-options="program.display for program in allPrograms" ng-required="1==1">
+                <select ng-model="programSelected" ng-options="program.name for program in allPrograms" ng-required="1==1" data-ng-change="getWorkflowStates(programSelected)">
                     <option value="">Choose program</option>
                 </select>
                 <label class="start-date-label"><strong>Start Date:</strong> <span class="value">{{programEnrollmentDate | bahmniDate}}</span></label>
+                <select ng-model="workflowStateSelected" ng-options="state.concept.display for state in programWorkflowStates" ng-required="1==1">
+                    <option value="">Choose State</option>
+                </select>
+                <input type="date" ng-model="programEnrollmentDate"/>
                 <button type="submit" ng-click="enrollPatient()">Enroll</button>
             </div>
         </section>
