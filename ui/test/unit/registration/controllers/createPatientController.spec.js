@@ -1,16 +1,9 @@
 'use strict';
 
-describe('CreatePatientController', function () {
+var $aController, scopeMock, rootScopeMock, stateMock, patientServiceMock, preferencesMock, patientModelMock, spinnerMock,
+    appServiceMock, ngDialogMock, ngDialogMockModal;
 
-    var $aController;
-    var scopeMock = jasmine.createSpyObj('scopeMock', ['actions']);
-    var rootScopeMock = jasmine.createSpyObj('rootScopeMock', ['patientConfiguration']);
-    var stateMock = jasmine.createSpyObj('stateMock', ['go']);
-    var patientServiceMock = jasmine.createSpyObj('patientServiceMock', ['generateIdentifier']);
-    var preferencesMock = jasmine.createSpyObj('preferencesMock', ['']);
-    var patientModelMock = jasmine.createSpyObj('patientModelMock', ['']);
-    var spinnerMock = jasmine.createSpyObj('spinnerMock', ['forPromise']);
-    var appServiceMock = jasmine.createSpyObj('appServiceMock', ['getAppDescriptor']);
+describe('CreatePatientController', function () {
 
     beforeEach(module('bahmni.registration'));
 
@@ -19,78 +12,139 @@ describe('CreatePatientController', function () {
             $aController = $controller;
         })
     );
+    beforeEach(function () {
+        scopeMock = jasmine.createSpyObj('scopeMock', ['actions']);
+        rootScopeMock = jasmine.createSpyObj('rootScopeMock', ['patientConfiguration']);
+        stateMock = jasmine.createSpyObj('stateMock', ['go']);
+        patientServiceMock = jasmine.createSpyObj('patientServiceMock', ['generateIdentifier', 'getLatestIdentifier', 'create']);
+        preferencesMock = jasmine.createSpyObj('preferencesMock', ['']);
+        patientModelMock = jasmine.createSpyObj('patientModelMock', ['']);
+        spinnerMock = jasmine.createSpyObj('spinnerMock', ['forPromise']);
+        appServiceMock = jasmine.createSpyObj('appServiceMock', ['getAppDescriptor']);
+        ngDialogMock = jasmine.createSpyObj('ngDialogMock', ['open','close']);
 
-    it("should create a patient and go to edit page", function () {
-            appServiceMock.getAppDescriptor = function () {
-                return { getConfigValue: function () {} }
-            };
-            rootScopeMock.patientConfiguration = { identifierSources: [] };
-            var controller = $aController('CreatePatientController', {
-                $scope: scopeMock,
-                $rootScope: rootScopeMock,
-                $state: stateMock,
-                patientService: patientServiceMock,
-                preferences: preferencesMock,
-                patientModel: patientModelMock,
-                spinner: spinnerMock,
-                appService: appServiceMock
-            });
-            scopeMock.patientConfiguration = { identifierSources: [] };
-            scopeMock.patient = {identifierPrefix: {}};
-            scopeMock.actions = {followUpAction: function() { scopeMock.afterSave() } };
-            patientServiceMock.generateIdentifier = function() {
+        appServiceMock.getAppDescriptor = function () {
+            return {
+                getConfigValue: function () {
+                }
+            }
+        };
+        patientServiceMock.generateIdentifierMock = function (data) {
+            patientServiceMock.generateIdentifier.and.callFake(function () {
                 return {
-                    then: function (successFn) {
-                        successFn({data: "uuid"});
+                    then: function (callback) {
+                        return callback({data: data})
                     }
                 }
-            };
-            patientServiceMock.create = function() {
+            });
+        };
+        patientServiceMock.getLatestIdentifierMock = function (data) {
+            patientServiceMock.getLatestIdentifier.and.callFake(function () {
+                return {
+                    then: function (callback) {
+                        return callback({data: data})
+                    }
+                }
+            });
+        };
+        patientServiceMock.createMock = function (data) {
+            patientServiceMock.create.and.callFake(function () {
                 return {
                     success: function (successFn) {
-                        var patientProfileData = {patient: { uuid: "patientUuid", person: {names: [{display: "somename"}]}} }
-                        successFn(patientProfileData);
+                        successFn(data);
                     }
                 };
-            };
+            });
+        };
+
+        rootScopeMock.patientConfiguration = {identifierSources: []};
+
+        $aController('CreatePatientController', {
+            $scope: scopeMock,
+            $rootScope: rootScopeMock,
+            $state: stateMock,
+            patientService: patientServiceMock,
+            preferences: preferencesMock,
+            patientModel: patientModelMock,
+            spinner: spinnerMock,
+            appService: appServiceMock,
+            ngDialog: ngDialogMock
+        });
+
+        scopeMock.actions = {
+            followUpAction: function () {
+                scopeMock.afterSave()
+            }
+        };
+
+        scopeMock.patientConfiguration = {identifierSources: []};
+    });
+
+    it("should create a patient and go to edit page", function () {
+
+            scopeMock.patient = {identifierPrefix: {prefix: "GAN"}};
+
+            patientServiceMock.generateIdentifierMock("uuid");
+            patientServiceMock.createMock({patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}});
 
             scopeMock.create();
 
             expect(scopeMock.patient.identifier).toBe("uuid");
-            expect(stateMock.go).toHaveBeenCalledWith("patient.edit", { patientUuid : 'patientUuid' });
+            expect(stateMock.go).toHaveBeenCalledWith("patient.edit", {patientUuid: 'patientUuid'});
         }
     );
 
     it("should create a patient with custom id and go to edit page", function () {
-            appServiceMock.getAppDescriptor = function () {
-                return { getConfigValue: function () {} }
-            };
-            rootScopeMock.patientConfiguration = { identifierSources: [] };
-            var controller = $aController('CreatePatientController', {
-                $scope: scopeMock,
-                $rootScope: rootScopeMock,
-                $state: stateMock,
-                patientService: patientServiceMock,
-                preferences: preferencesMock,
-                patientModel: patientModelMock,
-                spinner: spinnerMock,
-                appService: appServiceMock
-            });
-            scopeMock.patient = {identifierPrefix: {}};
-            scopeMock.actions = {followUpAction: function() { scopeMock.afterSave() } };
+
+            scopeMock.patient = {identifierPrefix: {prefix: "GAN"}};
+
             scopeMock.hasOldIdentifier = true;
-            patientServiceMock.create = function() {
-                return {
-                    success: function (successFn) {
-                        var patientProfileData = {patient: { uuid: "patientUuid", person: {names: [{display: "somename"}]}} }
-                        successFn(patientProfileData);
-                    }
-                };
-            };
+            patientServiceMock.getLatestIdentifierMock("100000");
+            patientServiceMock.createMock({patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}});
 
             scopeMock.create();
 
-            expect(stateMock.go).toHaveBeenCalledWith("patient.edit", { patientUuid : 'patientUuid' });
+            expect(stateMock.go).toHaveBeenCalledWith("patient.edit", {patientUuid: 'patientUuid'});
+        }
+    );
+
+    it("should open the pop up when the custom identifier is greater then the next identifier in the sequence", function () {
+
+            scopeMock.patient = {identifierPrefix: {prefix: "GAN"}, registrationNumber: "1050"};
+
+            scopeMock.hasOldIdentifier = true;
+            scopeMock.$new = function () {
+                return scopeMock;
+            };
+            patientServiceMock.getLatestIdentifierMock("1000");
+            patientServiceMock.createMock({patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}});
+
+            scopeMock.create();
+
+            expect(ngDialogMock.open).toHaveBeenCalledWith({
+                template: 'views/customIdentifierConfirmation.html',
+                data: {sizeOfTheJump: 50},
+                scope: scopeMock
+            });
+        }
+    );
+
+    it("should not ask confirmation from user when the custom identifier is less then or equal to the next identifier in the sequence", function () {
+
+            scopeMock.patient = {identifierPrefix: {prefix: "GAN"}, registrationNumber: "1050"};
+
+            scopeMock.hasOldIdentifier = true;
+            scopeMock.$new = function () {
+                return scopeMock;
+            };
+            patientServiceMock.getLatestIdentifierMock("1055");
+            patientServiceMock.createMock({patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}});
+
+            scopeMock.create();
+
+            expect(ngDialogMock.open).not.toHaveBeenCalled();
+            expect(patientServiceMock.create).toHaveBeenCalledWith(scopeMock.patient);
+            expect(scopeMock.patient.uuid).toBe("patientUuid");
         }
     );
 

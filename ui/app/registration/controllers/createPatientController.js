@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('CreatePatientController', ['$scope', '$rootScope', '$state', 'patientService', 'Preferences', 'patient', 'spinner', 'appService', 'messagingService','ngDialog',
-        function ($scope, $rootScope, $state, patientService, preferences, patientModel, spinner, appService, messagingService, ngDialog) {
+    .controller('CreatePatientController', ['$scope', '$rootScope', '$state', 'patientService', 'Preferences', 'patient', 'spinner', 'appService', 'messagingService','ngDialog','$q',
+        function ($scope, $rootScope, $state, patientService, preferences, patientModel, spinner, appService, messagingService, ngDialog,$q) {
             var dateUtil = Bahmni.Common.Util.DateUtil;
             $scope.actions = {};
             var configValueForEnterId = appService.getAppDescriptor().getConfigValue('showEnterID');
@@ -27,11 +27,11 @@ angular.module('bahmni.registration')
                     return;
                 }
 
-                var getConfirmationViaNgDialog = function (ngDialogData) {
+                var getConfirmationViaNgDialog = function (ngDialogData,yesCallback) {
                     var ngLocalScope = $scope.$new();
                     ngLocalScope.yes = function () {
                         ngDialog.close();
-                        patientService.create($scope.patient).success(successCallback);
+                        yesCallback();
                     };
                     ngLocalScope.no = function () {
                         ngDialog.close();
@@ -44,23 +44,34 @@ angular.module('bahmni.registration')
                 };
 
                 if (!$scope.hasOldIdentifier) {
-                    spinner.forPromise(patientService.generateIdentifier($scope.patient)
-                        .then(function (response) {
+                    spinner.forPromise(
+                        patientService.generateIdentifier($scope.patient).then(function (response) {
                             $scope.patient.identifier = response.data;
-                            patientService.create($scope.patient).success(successCallback);
-                        }));
+                            patientService.create($scope.patient).success(copyPatientProfileDataToScope);
+                        })
+                    );
+
                 }
                 else {
-                    patientService.getLatestIdentifier($scope.patient).then(function (response) {
+                    patientService.getLatestIdentifier($scope.patient.identifierPrefix.prefix).then(function (response) {
+
+                        var sourceName = $scope.patient.identifierPrefix.prefix;
                         var latestIdentifier = response.data;
                         var givenIdentifier = parseInt($scope.patient.registrationNumber);
+                        var nextIdentifierToBe = parseInt($scope.patient.registrationNumber) + 1;
                         if (latestIdentifier < givenIdentifier) {
                             var ngDialogData = {sizeOfTheJump: givenIdentifier - latestIdentifier};
-                            getConfirmationViaNgDialog(ngDialogData);
-                        } else {
-                            patientService.create($scope.patient).success(successCallback);
+                            getConfirmationViaNgDialog(ngDialogData,function(){
+                                spinner.forPromise(
+                                    $q.all([
+                                    patientService.create($scope.patient).success(copyPatientProfileDataToScope),
+                                    patientService.setLatestIdentifier(sourceName, nextIdentifierToBe)
+                                    ])
+                                );
+                            });
+                        }else{
+                            spinner.forPromise(patientService.create($scope.patient).success(copyPatientProfileDataToScope));
                         }
-
                     });
                 }
             };
@@ -69,7 +80,7 @@ angular.module('bahmni.registration')
                 preferences.identifierPrefix = $scope.patient.identifierPrefix.prefix;
             };
 
-            var successCallback = function (patientProfileData) {
+            var copyPatientProfileDataToScope = function (patientProfileData) {
                 $scope.patient.uuid = patientProfileData.patient.uuid;
                 $scope.patient.name = patientProfileData.patient.person.names[0].display;
                 $scope.patient.isNew = true;
