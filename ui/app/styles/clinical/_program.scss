@@ -25,6 +25,28 @@
       padding: 10px 15px;
     }
   }
+  .active-program-container{
+    table{
+      thead th, tbody td{
+        vertical-align: middle;
+      }
+    }
+    div.legend{
+      display: table;
+      margin: 0 auto;
+      .item{
+          margin: 0;
+          border-left: 0;
+          border-right: 0;
+          font-size: 14px;
+          float: left;
+          padding: 5px 10px;
+          margin-right: 10px;
+          color: #fff;
+          border-radius: 3px;
+      }
+    }
+  }
 }
 
 .dashboard-program-section{
@@ -90,4 +112,14 @@
       }
     }
   }
+}
+
+#sample{
+  display: block;
+  margin-bottom: 10px;
+  svg{
+    .tick line{
+      stroke : #000
+    }
+  }  
 }

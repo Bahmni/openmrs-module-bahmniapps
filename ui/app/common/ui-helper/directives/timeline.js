@@ -3,7 +3,7 @@
 angular.module('bahmni.common.uiHelper')
     .directive('timeline', function () {
         var link = function ($scope, $element, $attrs) {
-            var svg = d3.select('#'+ $attrs.id).append("svg");
+            var svg = d3.select('#'+ $attrs.id).append("svg").attr('width',100+'%' ).attr('height', 110);
             var elementDimensions = $element[0].getBoundingClientRect();
             var sortedDates = _.sortBy(_.pluck($scope.config.data, 'date'));
             var uniqueStates = _.uniq(_.pluck($scope.config.data, 'state'));
@@ -18,12 +18,16 @@ angular.module('bahmni.common.uiHelper')
                 .scale(timeScale)
                 .tickFormat(d3.time.format("%_d %b%y"))
                 .tickValues(sortedDates)
-                .tickPadding(6);
+                .tickPadding(10);
 
             svg.append("g")
                 .attr("class", "xaxis")
-                .attr("transform", "translate(0,50)")
-                .call(timeAxis);
+                .attr("transform", "translate(0.50,50)")
+                .call(timeAxis)
+                .selectAll("line")
+                    .attr("y2", 14)
+                    .attr("y1", -8)
+                    .attr("x2", 0)
 
             var colors = d3.scale.category10();
 
@@ -32,9 +36,12 @@ angular.module('bahmni.common.uiHelper')
             states.attr('x', function(d) { return timeScale(d.date); })
                 .attr('y', 9)
                 .attr('height', 26)
-                .attr('width', function(d) { return xMax-timeScale(d.date)})
+                .attr('width', function(d) {return xMax-timeScale(d.date)})
                 .style('fill', function(d) {return colors(_.indexOf(uniqueStates, d.state))});
 
+
+
+            
             //Draw completed state
             if(!$scope.config.completed) {
                 svg.append("polygon")
