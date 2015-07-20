@@ -7,10 +7,11 @@ angular.module('bahmni.common.domain')
           return $http.post(url, visitDocument);
     };
     this.saveFile = function (file, patientUuid, encounterTypeName) {
-        var format = file.split(";base64")[0].split("/")[1];
+        var searchStr = ";base64";
+        var format = file.split(searchStr)[0].split("/")[1];
         var url = "/openmrs/ws/rest/v1/bahmnicore/visitDocument/uploadImage";
         return $http.post(url, {
-            image: file.replace(/data:.*\/.*;base64/, ""),
+            image: file.substring(file.indexOf(searchStr) + searchStr.length, file.length),
             format: format,
             patientUuid: patientUuid,
             encounterTypeName: encounterTypeName
