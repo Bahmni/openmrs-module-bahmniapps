@@ -19,7 +19,7 @@
                                 <div class="grid-row-element">
                                     <span ng-class="{'voided': order.isDiscontinued}">{{::order.concept.displayName || order.concept.shortName || order.concept.name}}</span>
                                             <i ng-class="{'has-notes': order.commentToFulfiller }" class="fa fa-file-text-o" ng-click="openNotesPopup(order)"></i>
-                                            <i ng-class="{'fa fa-remove': !order.isDiscontinued, 'fa fa-undo': order.isDiscontinued, noteditable:isOrderNotEditable(order) }" ng-click="handleOrderClick(order)"></i>
+                                            <i ng-class="{'fa fa-remove': !order.isDiscontinued, 'fa fa-undo': order.isDiscontinued && !isOrderNotEditable(order) }" ng-click="handleOrderClick(order)"></i>
                                 </div>
                             </li>
                         </ul>
