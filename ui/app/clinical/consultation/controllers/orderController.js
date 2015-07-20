@@ -143,16 +143,25 @@ angular.module('bahmni.clinical')
 
             var showFirstLeftCategoryByDefault = function(){
                 if(!$scope.activeTab.leftCategory) {
-                    var allCategories = $scope.getOrderTemplate($scope.activeTab.name).setMembers;
-                    if (allCategories.length > 0)
-                        $scope.showLeftCategoryTests(allCategories[0]);
+                    var allLeftCategories = $scope.getOrderTemplate($scope.activeTab.name).setMembers;
+                    if (allLeftCategories.length > 0)
+                        $scope.showLeftCategoryTests(allLeftCategories[0]);
                 }
             };
 
             var findTest = function(testUuid) {
-                return _.find($scope.activeTab.leftCategory.setMembers, function(test) {
-                    return test.uuid === testUuid;
-                })
+                var test = undefined;
+                var allLeftCategories = $scope.getOrderTemplate($scope.activeTab.name).setMembers;
+                _.each(allLeftCategories, function(leftCategory) {
+                    var foundTest = _.find(leftCategory.setMembers, function(test) {
+                        return test.uuid === testUuid;
+                    });
+                    if(foundTest) {
+                        test = foundTest;
+                        return;
+                    }
+                });
+                return test;
             };
 
             var removeOrder = function (testUuid) {
@@ -181,8 +190,10 @@ angular.module('bahmni.clinical')
             };
 
             var initTestConceptToParentsMapping = function () {
-                _.each($scope.activeTab.leftCategory.setMembers, function (member) {
-                    if (member.setMembers.length != 0) {
+                var allLeftCategories = $scope.getOrderTemplate($scope.activeTab.name).setMembers;
+                _.each(allLeftCategories, function(leftCategory) {
+                    _.each(leftCategory.setMembers, function (member) {
+                        if (member.setMembers.length != 0) {
                             _.each(member.setMembers, function (child) {
                                 if (testConceptToParentsMapping[child.uuid] === undefined) {
                                     testConceptToParentsMapping[child.uuid] = [];
@@ -191,6 +202,7 @@ angular.module('bahmni.clinical')
                                 parentArray.push(member.uuid);
                             })
                         }
+                    });
                 });
             };
 

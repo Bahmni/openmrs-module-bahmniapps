@@ -3,43 +3,21 @@
 angular.module('bahmni.clinical')
     .directive('orderSelector', [function () {
 
-        var link = function ($scope) {
-
+        var link = function ($scope, element, attr) {
             $scope.hasTests = function () {
-                return $scope.rootConcept && !(_.isUndefined($scope.rootConcept.setMembers)) && $scope.rootConcept.setMembers.length > 0;
+                var rootConcept = $scope.tab.leftCategory;
+                return rootConcept && !_.isEmpty(rootConcept.setMembers);
             };
 
             $scope.filterByConceptClass = function (test) {
-                return test.conceptClass.name == $scope.conceptClass;
+                return test.conceptClass.name == $scope.group.name;
             };
-
-            $scope.handleTestSelection = function(test) {
-              $scope.$parent.toggleOrderSelection(test);
-            };
-
-            $scope.isActiveOrderPresent = function (test) {
-                return $scope.$parent.isActiveOrderPresent(test);
-            };
-
-            $scope.isTestIndirectlyPresent = function (test) {
-                return $scope.$parent.isTestIndirectlyPresent(test);
-            };
-
-            $scope.getName = function (test) {
-                var name = _.find(test.names, {conceptNameType: "SHORT"}) || _.find(test.names, {conceptNameType: "FULLY_SPECIFIED"});
-                return name ? name.name : undefined;
-            };
-
         };
 
         return {
             restrict: 'E',
             link: link,
             templateUrl: './consultation/views/orderSelector.html',
-            scope: {
-                conceptClass: "=",
-                rootConcept: "=",
-                title: "="
-            }
+            scope: false
         };
     }]);

@@ -4,7 +4,7 @@ describe("ensure that the directive order-selector works properly", function () 
 
     var element, scope, conceptClass, title,httpBackend,rootScope,compile,q;
 
-    var html = '<order-selector orders="consultation.testOrders" root-concept="concept" concept-class="conceptClass" title="title"></order-selector>';
+    var html = '<order-selector></order-selector>';
 
     var concept = {
     	"conceptClass": "ConvSet",
@@ -68,13 +68,8 @@ describe("ensure that the directive order-selector works properly", function () 
     	title = "Tests";
 
         scope = rootScope.$new();
-        scope.concept=concept;
-        scope.consultation = consultation;
-        scope.conceptClass = conceptClass;
-        scope.title = title;
-        scope.$parent.toggleOrderSelection = function() {};
-        scope.$parent.isActiveOrderPresent = function() {};
-        scope.$parent.isTestIndirectlyPresent = function() {};
+        scope.group = concept.setMembers[1].conceptClass;
+        scope.tab = {leftCategory: concept};
 
         httpBackend.expectGET("./consultation/views/orderSelector.html").respond("<div>dummy</div>");
 
@@ -83,12 +78,12 @@ describe("ensure that the directive order-selector works properly", function () 
         scope.$digest();
         httpBackend.flush();
 
-        var compiledScope = compiledEle.isolateScope();
         scope.$digest();
 
-        expect(compiledScope).not.toBeUndefined();
-        expect(compiledScope.filterByConceptClass(concept.setMembers[1])).toBeTruthy();
-        expect(compiledScope.filterByConceptClass(concept.setMembers[0])).toBeFalsy();
+        expect(scope).not.toBeUndefined();
+        expect(scope.filterByConceptClass(concept.setMembers[1])).toBeTruthy();
+        expect(scope.filterByConceptClass(concept.setMembers[0])).toBeFalsy();
 
+        expect(scope.hasTests()).not.toBeNull();
     });
 });
