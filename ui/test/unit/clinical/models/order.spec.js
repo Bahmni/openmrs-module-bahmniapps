@@ -32,7 +32,7 @@ describe('Order', function () {
         expect(revisedOrder.concept).toBe(originalOrder.concept);
         expect(revisedOrder.action).toBe(Bahmni.Clinical.Constants.orderActions.revise);
         expect(revisedOrder.previousOrderUuid).toBe(originalOrder.uuid);
-        expect(revisedOrder.voided).toBe(false);
+        expect(revisedOrder.isDiscontinued).toBe(false);
         expect(revisedOrder.commentToFulfiller).toBe(originalOrder.commentToFulfiller);
     });
 

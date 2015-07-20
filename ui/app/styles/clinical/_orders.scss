@@ -74,6 +74,9 @@
                     cursor: pointer;
                     height: 17px;
                 }
+                i.noteditable {
+                    cursor: default;
+                }
             }
         }
     }
@@ -184,6 +187,9 @@
                 white-space: nowrap;
                 @media (max-width: 1024px) {
                     width: 191px;
+                }
+                &.noteditable {
+                    cursor: default;
                 }
             }
         }

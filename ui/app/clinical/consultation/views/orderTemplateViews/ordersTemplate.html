@@ -19,7 +19,7 @@
                                 <div class="grid-row-element">
                                     <span ng-class="{'voided': order.isDiscontinued}">{{::order.concept.displayName || order.concept.shortName || order.concept.name}}</span>
                                             <i ng-class="{'has-notes': order.commentToFulfiller }" class="fa fa-file-text-o" ng-click="openNotesPopup(order)"></i>
-                                            <i ng-class="{'fa fa-remove': !order.isDiscontinued, 'fa fa-undo': order.isDiscontinued }" ng-click="diSelect(order)"></i>
+                                            <i ng-class="{'fa fa-remove': !order.isDiscontinued, 'fa fa-undo': order.isDiscontinued, noteditable:isOrderNotEditable(order) }" ng-click="handleOrderClick(order)"></i>
                                 </div>
                             </li>
                         </ul>
@@ -30,6 +30,6 @@
 
 <section class="orders-section-right">     
      <section class="order-section-container" ng-repeat="group in tab.leftCategory.groups" ng-if="tab.leftCategory">
-        <order-selector orders="consultation.testOrders" root-concept="tab.leftCategory" child-orders="consultation.childOrders" concept-class="group.name" consultation="consultation" title="group.description"></order-selector>
-    </section>    
+        <order-selector root-concept="tab.leftCategory"  concept-class="group.name" title="group.description"></order-selector>
+    </section>
 </section>

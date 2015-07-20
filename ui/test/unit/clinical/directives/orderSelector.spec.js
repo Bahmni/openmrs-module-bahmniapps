@@ -4,10 +4,10 @@ describe("ensure that the directive order-selector works properly", function () 
 
     var element, scope, conceptClass, title,httpBackend,rootScope,compile,q;
 
-    var html = '<order-selector orders="consultation.testOrders" root-concept="concept" child-orders="childOrders" concept-class="conceptClass" consultation="consultation" title="title"></order-selector>';
+    var html = '<order-selector orders="consultation.testOrders" root-concept="concept" concept-class="conceptClass" title="title"></order-selector>';
 
     var concept = {
-    	"conceptClass": "LabSet",
+    	"conceptClass": "ConvSet",
 		"uuid": "3c5ea063-b6e5-48cd-b39d-dce69f00f26a",
 		"name": "Blood",
 		"set": true,
@@ -15,20 +15,22 @@ describe("ensure that the directive order-selector works properly", function () 
 			{
 		    	"conceptClass": {"name" : "LabSet"},
 				"uuid": "3d5ea063-b6e5-48cd-b39d-dce69f00f26a",
-				"name": "CBC"
+				"name": "CBC",
+                "setMembers": []
 	    	},
 	    	{
 		    	"conceptClass": {"name" : "LabTest"},
 				"uuid": "3a5ea063-b6e5-48cd-b39d-dce69f00f26a",
-				"name": "ESR"
-	    	}
+				"name": "ESR",
+                "setMembers": []
+	    	},
+            {
+                "conceptClass": {"name": "LabTest"},
+                "uuid": "17a67549-0ba1-46bb-92eb-dca9f81fafa1",
+                "name": "Packed Cell Volume (PCV)",
+                "setMembers": []
+            }
 		]
-    };
-
-    var childTest = {
-        "conceptClass": {"name" : "LabTest"},
-        "uuid": "3a5ea063-b6e5-48cd-b39d-dce69f00f26a",
-        "name": "ESR"
     };
 
     var consultation = {
@@ -66,11 +68,13 @@ describe("ensure that the directive order-selector works properly", function () 
     	title = "Tests";
 
         scope = rootScope.$new();
+        scope.concept=concept;
         scope.consultation = consultation;
-        scope.concept = concept;
         scope.conceptClass = conceptClass;
         scope.title = title;
-        scope.childOrders=[childTest];
+        scope.$parent.toggleOrderSelection = function() {};
+        scope.$parent.isActiveOrderPresent = function() {};
+        scope.$parent.isTestIndirectlyPresent = function() {};
 
         httpBackend.expectGET("./consultation/views/orderSelector.html").respond("<div>dummy</div>");
 
@@ -83,54 +87,8 @@ describe("ensure that the directive order-selector works properly", function () 
         scope.$digest();
 
         expect(compiledScope).not.toBeUndefined();
-        expect(compiledScope.hasOrders()).toBeTruthy();
         expect(compiledScope.filterByConceptClass(concept.setMembers[1])).toBeTruthy();
         expect(compiledScope.filterByConceptClass(concept.setMembers[0])).toBeFalsy();
-        compiledScope.onSelectionChange(concept.setMembers[0]);
-        expect(compiledScope.orders.length).toBe(2);
-        compiledScope.onSelectionChange(concept.setMembers[0]);
-        expect(compiledScope.orders.length).toBe(1);
-        compiledScope.onSelectionChange(
-            {
-                "conceptClass": "LabSet",
-                "uuid": "3b5ea063-b6e5-48cd-b39d-dce69f00f26a",
-                "name": "Biochemistry",
-                "set": true,
-                "isSelected" : true
-            }
-        );
-        expect(compiledScope.orders.length).toBe(1);
-        expect(compiledScope.orders[0].isDiscontinued).toBe(true);
-        expect(compiledScope.getName({
-            "conceptClass": "LabSet",
-            "uuid": "3b5ea063-b6e5-48cd-b39d-dce69f00f26a",
-            "names": [
-                {
-                    "name": "Biochemistry",
-                    "conceptNameType": "FULLY_SPECIFIED"
-                }
-            ],
-            "set": true,
-            "isSelected" : true
-        })).toBe("Biochemistry");
-        compiledScope.onSelectionChange(
-            {
-                "conceptClass": "LabSet",
-                "uuid": "3b5ea063-b6e5-48cd-b39d-dce69f00f26a",
-                "names": [
-                    {
-                        "name": "Biochemistry",
-                        "conceptNameType": "FULLY_SPECIFIED"
-                    }
-                ],
-                "set": true,
-                "isSelected" : false
-            }
-        );
-        expect(compiledScope.orders.length).toBe(1);
-        expect(compiledScope.orders[0].isDiscontinued).toBe(false);
 
-        expect(compiledScope.isChildTest(childTest)).toBeTruthy();
-        expect(compiledScope.isChildTest({})).toBeFalsy();
     });
 });
