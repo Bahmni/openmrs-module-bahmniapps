@@ -222,10 +222,10 @@ angular.module('bahmni.adt')
                     return bedService.getAssignedBedForPatient($scope.patient.uuid).then(function (bedDetails) {
                         if (bedDetails) {
                             return bedService.freeBed(bedDetails.bedId, $scope.patient.uuid).success(function () {
-                                forwardUrl(response, "onDischargeForwardTo");
+                                forwardUrl(response.data, "onDischargeForwardTo");
                             })
                         }
-                        forwardUrl(response, "onDischargeForwardTo");
+                        forwardUrl(response.data, "onDischargeForwardTo");
                     })
                 }));
             };
