@@ -16,6 +16,10 @@ Bahmni.Common.Obs.Observation = function () {
             return this.concept.conceptClass === "Image";
         },
 
+        hasPDFAsValue: function(){
+            return this.value.endsWith(".pdf");
+        },
+
         getDisplayValue: function () {
             var displayValue = "";
             var allValues = [];

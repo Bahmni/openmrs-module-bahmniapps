@@ -19,7 +19,7 @@ describe("DocumentController", function () {
         visit.startDatetime = startDateTime;
         visit.stopDatetime = stopDateTime;
         visit.uuid = uuid;
-        visit.images = [
+        visit.files = [
 
             {
                 "encodedValue": "/document_images/157100/157051-RADIOLOGY-5f5e8a60-eecf-40f9-b760-ed7c89f54f3e.jpeg",
@@ -335,7 +335,7 @@ describe("DocumentController", function () {
         })
     });
 
-    describe('can delete image ', function () {
+    describe('can delete file ', function () {
         beforeEach(function(){
             setUp();
         });
@@ -346,7 +346,7 @@ describe("DocumentController", function () {
                     uuid: 'provider1 uuid'
                 }
             };
-            expect(scope.canDeleteImage(obs)).toBeTruthy();
+            expect(scope.canDeleteFile(obs)).toBeTruthy();
         });
 
         it('Should return false if the provider is not same as the user', function () {
@@ -355,16 +355,16 @@ describe("DocumentController", function () {
                     uuid: 'provider2 uuid'
                 }
             };
-            scope.canDeleteImage(obs);
-            expect(scope.canDeleteImage(obs)).toBeFalsy();
+            scope.canDeleteFile(obs);
+            expect(scope.canDeleteFile(obs)).toBeFalsy();
         });
 
         it('Should return true if the obs is new', function () {
             var obs = {
                 new: true
             };
-            scope.canDeleteImage(obs);
-            expect(scope.canDeleteImage(obs)).toBeTruthy();
+            scope.canDeleteFile(obs);
+            expect(scope.canDeleteFile(obs)).toBeTruthy();
         })
     })
 });

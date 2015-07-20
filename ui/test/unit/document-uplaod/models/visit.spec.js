@@ -1,11 +1,11 @@
 'use strict';
 
 describe ("Visit ", function() {
-    describe("sortSavedImages ", function(){
+    describe("sortSavedFiles ", function(){
        it("should sort by id in ascending order", function(){
            var documentUploadVisit = new Bahmni.DocumentUpload.Visit;
 
-           var savedImages = [
+           var savedFiles = [
                {"id": 12, "concept": {"uuid": "112", "name": "Arm Xray"}, obsDatetime:"2014-06-04T13:25:00" },
                {"id": 56, "concept": {"uuid": "113", "name": "Leg Xray"}, obsDatetime:"2014-06-03T13:24:00" },
                {"id": 19, "concept": {"uuid": "111", "name": "Hand Xray"}, obsDatetime:"2014-06-04T13:24:00" },
@@ -13,21 +13,21 @@ describe ("Visit ", function() {
                {"id": 9, "concept": {"uuid": "114", "name": "Chest Xray"}, obsDatetime:"2014-06-07T13:24:00" }
                ];
 
-           var sortedImages = documentUploadVisit._sortSavedImages(savedImages);
+           var sortedFiles = documentUploadVisit._sortSavedFiles(savedFiles);
 
-           expect(sortedImages[0].id).toBe(2);
-           expect(sortedImages[1].id).toBe(9);
-           expect(sortedImages[2].id).toBe(12);
-           expect(sortedImages[3].id).toBe(19);
-           expect(sortedImages[4].id).toBe(56);
+           expect(sortedFiles[0].id).toBe(2);
+           expect(sortedFiles[1].id).toBe(9);
+           expect(sortedFiles[2].id).toBe(12);
+           expect(sortedFiles[3].id).toBe(19);
+           expect(sortedFiles[4].id).toBe(56);
        });
     });
 
     describe("has errors", function(){
-        it("should return false if the visit has newly added image and concept associated with it.", function(){
+        it("should return false if the visit has newly added file and concept associated with it.", function(){
             var documentUploadVisit = new Bahmni.DocumentUpload.Visit;
 
-            documentUploadVisit.images = [
+            documentUploadVisit.files = [
                 {
                     "concept":{
                         "uuid": 111,
@@ -40,10 +40,10 @@ describe ("Visit ", function() {
             expect(documentUploadVisit.hasErrors()).toBeFalsy();
         });
 
-        it("should return true if the visit has newly added image and no concept associated with it.", function(){
+        it("should return true if the visit has newly added file and no concept associated with it.", function(){
             var documentUploadVisit = new Bahmni.DocumentUpload.Visit;
 
-            documentUploadVisit.images = [
+            documentUploadVisit.files = [
                 {
 
                 }
@@ -52,10 +52,10 @@ describe ("Visit ", function() {
             expect(documentUploadVisit.hasErrors()).toBeTruthy();
         });
 
-        it("should return true if the visit has newly added image and editable name is undefined.", function(){
+        it("should return true if the visit has newly added file and editable name is undefined.", function(){
             var documentUploadVisit = new Bahmni.DocumentUpload.Visit;
 
-            documentUploadVisit.images = [
+            documentUploadVisit.files = [
                 {
                     "concept":{
                         "name": "Arm",
@@ -67,10 +67,10 @@ describe ("Visit ", function() {
             expect(documentUploadVisit.hasErrors()).toBeTruthy();
         });
 
-        it("should return true if the visit has newly added image and uuid is undefined.", function(){
+        it("should return true if the visit has newly added file and uuid is undefined.", function(){
             var documentUploadVisit = new Bahmni.DocumentUpload.Visit;
 
-            documentUploadVisit.images = [
+            documentUploadVisit.files = [
                 {
                     "concept":{
                         "name": "Arm Xray",
@@ -82,10 +82,10 @@ describe ("Visit ", function() {
             expect(documentUploadVisit.hasErrors()).toBeTruthy();
         });
 
-        it("should return false if the image is voided and it has errors", function(){
+        it("should return false if the file is voided and it has errors", function(){
             var documentUploadVisit = new Bahmni.DocumentUpload.Visit;
 
-            documentUploadVisit.images = [
+            documentUploadVisit.files = [
                 {
                     "concept":{
                         "name": "Arm Xray",
@@ -98,10 +98,10 @@ describe ("Visit ", function() {
             expect(documentUploadVisit.hasErrors()).toBeFalsy();
         });
 
-        it("should return false if the image is voided and it has no errors", function(){
+        it("should return false if the file is voided and it has no errors", function(){
             var documentUploadVisit = new Bahmni.DocumentUpload.Visit;
 
-            documentUploadVisit.images = [
+            documentUploadVisit.files = [
                 {
                     "concept":{
                         "name": "Arm Xray",
@@ -115,10 +115,10 @@ describe ("Visit ", function() {
             expect(documentUploadVisit.hasErrors()).toBeFalsy();
         });
 
-        it("should return true if one of the newly added image has errors.", function(){
+        it("should return true if one of the newly added file has errors.", function(){
             var documentUploadVisit = new Bahmni.DocumentUpload.Visit;
 
-            documentUploadVisit.images = [
+            documentUploadVisit.files = [
                 {
                     "concept":{
                         "uuid": 111,

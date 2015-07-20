@@ -32,7 +32,7 @@
             </label>
           </div>
           <div class="field-value">
-            <select ng-model="newVisit.visitType" ng-options="vt.display for vt in visitTypes" ng-required="newVisit.hasImages()">
+            <select ng-model="newVisit.visitType" ng-options="vt.display for vt in visitTypes" ng-required="newVisit.hasFiles()">
               <option value=""></option>
             </select>
           </div>
@@ -46,7 +46,7 @@
           <div class="field-value">
             <input name="startDate" type="date" ng-model="newVisit.startDatetime"
                    dependent-model="newVisit.stopDatetime" date-validator ng-blur="setDefaultEndDate(newVisit)"
-                   ng-required="newVisit.images.length >0" class="field-value" placeholder="yyyy-mm-dd"/>
+                   ng-required="newVisit.files.length >0" class="field-value" placeholder="yyyy-mm-dd"/>
           </div>
         </div>
         <div class="form-field">
@@ -58,26 +58,26 @@
           </div>
         </div>
         <div class="upload-inline-buttons">
-          <input id="file-browse" type="file" name="image" accept="image/*" capture="camera" file-upload visit="newVisit" on-select="onSelect">
+          <input id="file-browse" type="file" name="image" accept="application/pdf, image/*" capture="camera" file-upload visit="newVisit" on-select="onSelect">
           <label for="file-browse" class="btn btn-primary" ng-click="resetCurrentVisit(newVisit)"><i class="fa fa-camera fa fa-white"></i> SCAN</label>
-          <button type="submit" ng-disabled="!newVisit.hasImages() || newVisitForm.$invalid || newVisit.hasErrors()" class="btn btn-primary">
+          <button type="submit" ng-disabled="!newVisit.hasFiles() || newVisitForm.$invalid || newVisit.hasErrors()" class="btn btn-primary">
             <i class="fa fa-save fa fa-white"></i> SAVE
           </button>
         </div>
       </form>
         <form>
             <ul class="files">
-                <li class="clear" ng-repeat="image in newVisit.images | reverse">
+                <li class="clear" ng-repeat="file in newVisit.files | reverse">
                     <div class="file">
-                        <img bm-gallery-item index="{{$index}}" visit-uuid="'new'" visit-order="0" image="image"
-                             ng-src="{{image.thumbnail}}" width="100">
-                        <input name="{{'image'+$index}}" class="concept-name" ng-readonly="!canDeleteImage(image)"
-                               ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts"
-                               response-map="getDataResults" on-select="onConceptSelected(image)" is-invalid="conceptNameInvalid" on-edit="onEditConcept(image)" required placeholder="Enter a value" strict-select="true"
+                        <img bm-gallery-item index="{{file.imageIndex}}" visit-uuid="'new'" visit-order="0" image="file"
+                             ng-src="{{file.thumbnail}}" width="100">
+                        <input name="{{'file'+$index}}" class="concept-name" ng-readonly="!canDeleteFile(file)"
+                               ng-model="file.concept.editableName" bahmni-autocomplete source="getConcepts"
+                               response-map="getDataResults" on-select="onConceptSelected(file)" is-invalid="conceptNameInvalid" on-edit="onEditConcept(file)" required placeholder="Enter a value" strict-select="true"
                                blur-on-select="true"/>
                     </div>
                     <div>
-                        <button type="button" ng-click="newVisit.removeNewAddedImage(image)" class="row-remover"><span
+                        <button type="button" ng-click="newVisit.removeNewAddedFile(file)" class="row-remover"><span
                                 class="fa fa-remove"></span></button>
                     </div>
                 </li>
@@ -95,7 +95,7 @@
       <span>{{visit.startDatetime | bahmniDate}}</span>
       <small ng-if="visit.stopDatetime">To: </small>
       <span ng-if="visit.stopDatetime">{{visit.stopDatetime | bahmniDate}}</span>
-      <span ng-if="visit.hasImages()" class="containsImageMarker" title="Visit has images"><i class="fa fa-picture-o"></i></span>
+      <span ng-if="visit.hasFiles()" class="containsImageMarker" title="Visit has images"><i class="fa fa-picture-o"></i></span>
       <span ng-if="!visit.stopDatetime" class="currentVisitMarker" title="Current Visit"><i class="fa fa-star"></i></span>
     </h5>
     <div class="visit-content" ng-show="isCurrentVisit(visit)">
@@ -112,16 +112,24 @@
               </li>
 
               <li>
-                <input id="file-browse-{{visit.uuid}}" type="file" name="image-document-upload" accept="image/*" capture="camera" file-upload visit="visit" on-select="onSelect">
+                <input id="file-browse-{{visit.uuid}}" type="file" name="image-document-upload" accept="application/pdf,image/*" capture="camera" file-upload visit="visit" on-select="onSelect">
                 <label class="placeholder btn" for="file-browse-{{visit.uuid}}"><i class="fa fa-plus needsclick"></i></label>
               </li>
-              <li ng-repeat="image in visit.images | reverse">
+              <li ng-repeat="file in visit.files | reverse">
                 <div class="file">
-                  <img  bm-gallery-item index="{{$index}}" visit-uuid="visit.uuid" visit-order="{{$parent.$index+1}}" image="image" ng-src="{{image.thumbnail}}" width="100" ng-class="{true:'transparent', false:'opaque'}[image.voided]"/>
-                  <input name="{{'image'+$index}}" ng-readonly="!canDeleteImage(image)" class="concept-name" ng-class="{saved: visit.isSaved(image)}" ng-model="image.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults" on-select="onConceptSelected(image)" is-invalid="conceptNameInvalid" on-edit="onEditConcept(image)" required placeholder="Enter a value" strict-select="true" blur-on-select="true" ng-blur="visit.markAsUpdated()" ng-disabled="image.voided"/>
+                  <a class="pdf-link fl" ng-if="isPdf(file)" ng-href="{{file.encodedValue}}" target="_blank">
+                    <i class="fa fa-file-pdf-o"></i>
+                  </a>
+
+                    <img ng-if="!isPdf(file)" bm-gallery-item index="{{file.imageIndex}}" visit-uuid="visit.uuid" visit-order="{{$parent.$index+1}}" image="file" ng-src="{{file.thumbnail}}" width="100" ng-class="{true:'transparent', false:'opaque'}[file.voided]"/>
+                  <input name="{{'file'+$index}}" ng-readonly="!canDeleteFile(file)" class="concept-name" ng-class="{saved: visit.isSaved(file)}"
+                         ng-model="file.concept.editableName" bahmni-autocomplete source="getConcepts" response-map="getDataResults"
+                         on-select="onConceptSelected(file)" is-invalid="conceptNameInvalid" on-edit="onEditConcept(file)"
+                         required placeholder="Enter a value" strict-select="true" blur-on-select="true" ng-blur="visit.markAsUpdated()"
+                         ng-disabled="file.voided"/>
                 </div>
                 <div class="file-remove">
-                  <button type="button" id="remove-image{{$index}}" ng-click="visit.removeImage(image)" ng-if="canDeleteImage(image)" class="row-remover"><span ng-class="{'fa fa-remove': !image.voided, 'fa fa-undo': image.voided }"></span></button>
+                  <button type="button" id="remove-image{{$index}}" ng-click="visit.removeFile(file)" ng-if="canDeleteFile(file)" class="row-remover"><span ng-class="{'fa fa-remove': !file.voided, 'fa fa-undo': file.voided }"></span></button>
                 </div>
               </li>
             </ul>

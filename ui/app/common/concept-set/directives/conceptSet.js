@@ -42,6 +42,10 @@ angular.module('bahmni.common.conceptSet')
                 return $scope.showTitle;
             };
 
+            $scope.hasPDFAsValue = function(){
+              return $scope.observation.value && $scope.observation.value.endsWith(".pdf");
+            };
+
             $scope.$watch('collapseInnerSections', function(){
                 $scope.collapse = $scope.collapseInnerSections;
             });

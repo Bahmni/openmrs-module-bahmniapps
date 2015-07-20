@@ -108,7 +108,7 @@ angular.module('opd.documentupload')
                 return encounterService.getEncountersForEncounterType($rootScope.patient.uuid, encounterTypeUuid).success(function (encounters) {
                     $scope.visits.forEach(function (visit) {
                         var visitEncounters = encounters.results.filter(function(a) {return(a.visit.uuid==visit.uuid)});
-                        visit.initSavedImages(visitEncounters);
+                        visit.initSavedFiles(visitEncounters);
                     });
                 });
             };
@@ -192,34 +192,34 @@ angular.module('opd.documentupload')
                 });
             };
 
-            $scope.onSelect = function(image, visit){
+            $scope.onSelect = function(file, visit){
                 $scope.toggleGallery=false;
-                spinner.forPromise(visitDocumentService.saveImage(image, $rootScope.patient.uuid, $rootScope.appConfig.encounterType).then(function(response) {
-                    var imageUrl = Bahmni.Common.Constants.documentsPath + '/' + response.data;
-                    var savedImage = visit.addImage(imageUrl);
-                    $scope.setConceptOnImage(savedImage, $scope.defaultConcept);
+                spinner.forPromise(visitDocumentService.saveFile(file, $rootScope.patient.uuid, $rootScope.appConfig.encounterType).then(function(response) {
+                    var fileUrl = Bahmni.Common.Constants.documentsPath + '/' + response.data;
+                    var savedFile = visit.addFile(fileUrl);
+                    $scope.setConceptOnFile(savedFile, $scope.defaultConcept);
                     $scope.toggleGallery=true;
                 }));
             };
 
-            $scope.setConceptOnImage = function (image, selectedItem) {
+            $scope.setConceptOnFile = function (file, selectedItem) {
                 if (selectedItem) {
-                    image.concept = Object.create(selectedItem.concept);
-                    image.changed = true;
+                    file.concept = Object.create(selectedItem.concept);
+                    file.changed = true;
                     if (!$scope.$$phase) {
                         $scope.$apply();
                     }
                 }
             };
 
-            $scope.onEditConcept = function(image){
-                image.concept.name = undefined;
-                image.concept.uuid = undefined;
+            $scope.onEditConcept = function(file){
+                file.concept.name = undefined;
+                file.concept.uuid = undefined;
             };
 
-            $scope.onConceptSelected = function(image){
+            $scope.onConceptSelected = function(file){
                 return function(selectedItem){
-                    $scope.setConceptOnImage(image, selectedItem);
+                    $scope.setConceptOnFile(file, selectedItem);
                 }
             };
 
@@ -248,12 +248,12 @@ angular.module('opd.documentupload')
                 visitDocument.locationUuid = locationUuid;
                 visitDocument.documents = [];
 
-                visit.images.forEach(function (image) {
-                    var imageUrl = image.encodedValue.replace(Bahmni.Common.Constants.documentsPath + "/", "");
-                    if(!visit.isSaved(image)) {
-                        visitDocument.documents.push({testUuid: image.concept.uuid, image: imageUrl, obsDateTime: getEncounterStartDateTime(visit)})
-                    } else if (image.changed == true || image.voided == true) {
-                        visitDocument.documents.push({testUuid: image.concept.uuid, image: imageUrl, voided: image.voided, obsUuid: image.obsUuid});
+                visit.files.forEach(function (file) {
+                    var fileUrl = file.encodedValue.replace(Bahmni.Common.Constants.documentsPath + "/", "");
+                    if(!visit.isSaved(file)) {
+                        visitDocument.documents.push({testUuid: file.concept.uuid, image: fileUrl, obsDateTime: getEncounterStartDateTime(visit)})
+                    } else if (file.changed == true || file.voided == true) {
+                        visitDocument.documents.push({testUuid: file.concept.uuid, image: fileUrl, voided: file.voided, obsUuid: file.obsUuid});
                     }
                 });
 
@@ -278,13 +278,13 @@ angular.module('opd.documentupload')
                 return obs.provider && $rootScope.currentUser.person.uuid === obs.provider.uuid;
             };
 
-            $scope.canDeleteImage = function(obs){
+            $scope.canDeleteFile = function(obs){
                 return isObsByCurrentProvider(obs) || obs.new;
             };
 
             var updateVisit = function(visit, encounters){
                 var visitEncounters = encounters.filter(function(encounter){ return visit.uuid === encounter.visit.uuid; });
-                visit.initSavedImages(visitEncounters);
+                visit.initSavedFiles(visitEncounters);
                 visit.changed = false;
                 $scope.currentVisit = visit;
                 sortVisits();
@@ -316,6 +316,10 @@ angular.module('opd.documentupload')
                         getActiveEncounter();
                     });
                 }));
+            };
+
+            $scope.isPdf = function(file){
+                return file.encodedValue.endsWith(".pdf");
             };
 
             $anchorScroll();

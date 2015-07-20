@@ -5,26 +5,26 @@ Bahmni.DocumentUpload.Visit = function () {
     this.visitType = null;
     this.uuid = null;
     this.changed = false;
-    this.images = [];
+    this.files = [];
     var androidDateFormat = "YYYY-MM-DD hh:mm:ss";
 
-    this._sortSavedImages = function(savedImages) {
-        savedImages.sort(function(image1,image2){
-            return image1.id - image2.id;
+    this._sortSavedFiles = function(savedFiles) {
+        savedFiles.sort(function(file1,file2){
+            return file1.id - file2.id;
         });
-        return savedImages;
+        return savedFiles;
     };
 
-    this.initSavedImages = function (encounters) {
-        this.images = [];
+    this.initSavedFiles = function (encounters) {
+        this.files = [];
         var providerMapper = new Bahmni.Common.Domain.ProviderMapper();
 
-        var savedImages = this.images;
+        var savedFiles = this.files;
         encounters.forEach(function (encounter) {
             encounter.obs && encounter.obs.forEach(function (observation) {
                 observation.groupMembers && observation.groupMembers.forEach(function (member) {
                         var conceptName = observation.concept.name.name;
-                        savedImages.push(new DocumentImage({
+                        savedFiles.push(new DocumentImage({
                             id:member.id,
                             encodedValue: Bahmni.Common.Constants.documentsPath + '/' + member.value,
                             obsUuid: observation.uuid,
@@ -36,15 +36,27 @@ Bahmni.DocumentUpload.Visit = function () {
                 });
             });
         });
-        this.images = this._sortSavedImages(savedImages);
+        this.files = this._sortSavedFiles(savedFiles);
+        this.assignImageIndex();
+    };
+
+    this.assignImageIndex = function(){
+        var imageIndex = 0;
+          this.files.map(function(file){
+              if(!file.encodedValue.endsWith(".pdf")){
+                  file.imageIndex = imageIndex;
+                  imageIndex++;
+              }
+              return file;
+          })
     };
 
     this.isNew = function () {
         return this.uuid == null;
     };
 
-    this.hasImages = function () {
-        return this.images.length > 0;
+    this.hasFiles = function () {
+        return this.files.length > 0;
     };
 
     this.startDate = function () {
@@ -62,49 +74,49 @@ Bahmni.DocumentUpload.Visit = function () {
         return  moment(date, dateFormat).toDate();
     };
 
-    this.addImage = function (image) {
+    this.addFile = function (file) {
         var savedImage = null;
-        var alreadyPresent = this.images.filter(function (img) {
-            return img.encodedValue === image;
+        var alreadyPresent = this.files.filter(function (img) {
+            return img.encodedValue === file;
         });
         if (alreadyPresent.length == 0) {
-            savedImage = new DocumentImage({"encodedValue": image, "new": true});
-            this.images.push(savedImage);
+            savedImage = new DocumentImage({"encodedValue": file, "new": true});
+            this.files.push(savedImage);
         }
         this.markAsUpdated();
         return savedImage;
     };
 
     this.markAsUpdated = function () {
-        this.changed = this.images.some(function(image) { return image.changed || !image.obsUuid || image.voided; });
+        this.changed = this.files.some(function(file) { return file.changed || !file.obsUuid || file.voided; });
     };
 
-    this.isSaved = function(image){
-        return image.obsUuid ? true : false;
+    this.isSaved = function(file){
+        return file.obsUuid ? true : false;
     };
     
-    this.removeImage = function(image){
-       if(this.isSaved(image)){
-           this.toggleVoidingOfImage(image);
+    this.removeFile = function(file){
+       if(this.isSaved(file)){
+           this.toggleVoidingOfFile(file);
        }else{
-           this.removeNewAddedImage(image);
+           this.removeNewAddedFile(file);
        }
     };
 
-    this.removeNewAddedImage = function (image) {
-        var i = this.images.indexOf(image);
-        this.images.splice(i, 1);
+    this.removeNewAddedFile = function (file) {
+        var i = this.files.indexOf(file);
+        this.files.splice(i, 1);
         this.markAsUpdated();
     };
 
-    this.toggleVoidingOfImage = function (image) {
-        image.voided = !image.voided;
+    this.toggleVoidingOfFile = function (file) {
+        file.voided = !file.voided;
         this.markAsUpdated();
     };
 
     this.hasErrors = function(){
-        var imageHasError = _.find(this.images, function (image) {
-            return !image.voided && (!image.concept || !image.concept.editableName || !image.concept.uuid);
+        var imageHasError = _.find(this.files, function (file) {
+            return !file.voided && (!file.concept || !file.concept.editableName || !file.concept.uuid);
         });
 
         return imageHasError ? true : false;

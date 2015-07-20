@@ -7,7 +7,7 @@ angular.module('bahmni.common.conceptSet')
                 var reader = new FileReader();
                 reader.onload = function (event) {
                     var image = event.target.result;
-                    spinner.forPromise(visitDocumentService.saveImage(image, scope.patientUuid).then(function(response) {
+                    spinner.forPromise(visitDocumentService.saveFile(image, scope.patientUuid).then(function(response) {
                         scope.url = response.data;
                         element.val(null);
                     }));
