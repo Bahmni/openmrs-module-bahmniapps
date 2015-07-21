@@ -16,3 +16,6 @@ Bahmni.Registration.Constants = {
     nextStepConfigId: "org.bahmni.registration.patient.next"
 };
 
+Bahmni.Registration.Constants.Errors = {
+    manageIdentifierSequencePrivilege:"Please contact Admin. You don't have the privilege to create a patient with the given ID."
+};

@@ -119,6 +119,7 @@ Bahmni.Common = Bahmni.Common || {};
         reportsUrl: "/bahmnireports/report",
         diagnosisStatuses : {"RULED OUT" : "Ruled Out Diagnosis"},
         registartionConsultationPrivilege:'app:common:registration_consultation_link',
+        manageIdentifierSequencePrivilege:"Manage Identifier Sequence",
         closeVisitPrivilege:'app:common:closeVisit',
         deleteDiagnosisPrivilege:'app:clinical:deleteDiagnosis',
         grantProviderAccess: "app:clinical:grantProviderAccess",
