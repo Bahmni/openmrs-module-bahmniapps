@@ -21,9 +21,6 @@ angular.module('bahmni.registration')
                 if (!checkMandatoryFieldsPresent(relationship)) {
                     return;
                 }
-                if ($scope.checkDuplicateRelationship(relationship)) {
-                    return;
-                }
                 $scope.patient.relationships.push(relationship);
                 $scope.newRelationship = {};
             };
@@ -104,14 +101,6 @@ angular.module('bahmni.registration')
 
             var checkMandatoryFieldsPresent = function (relationship) {
                     return relationship.relationshipType && relationship.personB;
-            };
-
-            $scope.checkDuplicateRelationship = function (relationship) {
-                return $scope.patient.relationships.some(function (existingRelationship) {
-                    return !existingRelationship.voided && relationship != existingRelationship && !angular.isUndefined(existingRelationship.relationshipType)
-                        && !angular.isUndefined(relationship.relationshipType)
-                        && (relationship['relationshipType']['uuid'] === existingRelationship['relationshipType']['uuid'] );
-                });
             };
 
             $scope.openPatientDashboardInNewTab = function (relationship) {

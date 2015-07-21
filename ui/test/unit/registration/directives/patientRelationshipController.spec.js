@@ -107,36 +107,6 @@ describe('PatientRelationshipController', function () {
         });
     });
 
-    describe("Check duplicate relationship", function(){
-        it("should return true if the relationship is already exists", function () {
-            scope.patient.relationships = [{
-                patientIdentifier: "Doctor",
-                relationshipType: {"uuid": "8d919b58-c2cc-11de-8d13-0010c6dffd0f"},
-                personB: {"uuid": "uuid"}
-            }];
-            var duplicateRelationship = {
-                patientIdentifier: "Doctor1",
-                relationshipType: {"uuid": "8d919b58-c2cc-11de-8d13-0010c6dffd0f"},
-                personB: {"uuid": "uuid2"}
-            };
-            expect(scope.checkDuplicateRelationship(duplicateRelationship)).toBeTruthy();
-        });
-
-        it("should return false if the relationship is not exists", function () {
-            scope.patient.relationships = [{
-                patientIdentifier: "Doctor",
-                relationshipType: {"uuid": "8d919b58-c2cc-11de-8d13-0010c6dffd0f"},
-                personB: {"uuid": "uuid"}
-            }];
-            var duplicateRelationship = {
-                patientIdentifier: "Doctor1",
-                relationshipType: {"uuid": "5d919b58-c2cc-11de-8d13-0010c6dffd0f"},
-                personB: {"uuid": "uuid2"}
-            };
-            expect(scope.checkDuplicateRelationship(duplicateRelationship)).toBeFalsy();
-        });
-
-    });
 
     describe("isPatientRelationship", function(){
         it("should return true if the relationship type is patient", function () {

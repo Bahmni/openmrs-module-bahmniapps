@@ -12,7 +12,6 @@
                     <div class="col col1">
                         <select ng-model="newRelationship.relationshipType.uuid" ng-options="type.uuid as type.aIsToB for type in relationshipTypes" ng-change="clearRelationshipRow(newRelationship);searchByPatientIdentifier(newRelationship)" non-blank="true" pattern-validate required></select>
                         <span class="asterick">*</span>
-                        <span style="display:block" ng-show="checkDuplicateRelationship(newRelationship)">Duplicate relationship found</span>
                     </div>
                     <div class="col col2">
                         <input type="text" ng-if="hasNoRelationship(newRelationship) || isPatientRelationship(newRelationship)" ng-model="newRelationship.patientIdentifier" ng-blur="searchByPatientIdentifier(newRelationship)" class="ng-valid ng-touched ng-dirty ng-valid-parse">
@@ -37,7 +36,6 @@
                     <div class="col col1">
                         <select ng-model="relationship.relationshipType.uuid" ng-options="type.uuid as type.aIsToB for type in relationshipTypes" ng-change="clearRelationshipRow(relationship);searchByPatientIdentifier(relationship)" ></select>
                         <span class="asterick">*</span>
-                        <span style="display:block" ng-show="checkDuplicateRelationship(relationship)">Duplicate relationship found</span>
                     </div>
                     <div class="col col2">
                         <input type="text" ng-show="hasNoRelationship(relationship) || isPatientRelationship(relationship)" ng-model="relationship.patientIdentifier" ng-blur="searchByPatientIdentifier(relationship)" class="ng-valid ng-touched ng-dirty ng-valid-parse">
