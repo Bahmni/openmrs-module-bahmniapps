@@ -103,17 +103,27 @@ angular.module('bahmni.clinical')
                 $scope.dialog = ngDialog.open({ template: '../common/uicontrols/programmanagement/views/endPatientProgramPopUp.html', className: 'test ngdialog-theme-default end-program-dialog', scope: $scope});
             };
 
-            $scope.savePopUpData = function() {
-                spinner.forPromise(programService.endPatientProgram($scope.popUpData.patientProgramUuid,
-                        $scope.popUpData.endEnrollmentDate, $scope.popUpData.outcomeData ? $scope.popUpData.outcomeData.uuid : null)
+            $scope.outcomes = function(program) {
+                return program.program.outcomesConcept ? program.program.outcomesConcept.setMembers : '';
+            };
+
+            $scope.endProgram = function(program) {
+                spinner.forPromise(programService.endPatientProgram(program.uuid,
+                        getCurrentDate(), program.outcomeData ? program.outcomeData.uuid : null)
                 ).then(function(){
                         ngDialog.close();
                         updateActiveProgramsList();
                     });
             };
 
-            $scope.closePopUp = function() {
-                ngDialog.close();
+            $scope.toggleEdit = function(program) {
+                program.ending = false;
+                program.editing = !program.editing;
+            };
+
+            $scope.toggleEnd = function(program) {
+                program.editing = false;
+                program.ending = !program.ending;
             };
 
             $scope.getWorkflowStates = function(program){

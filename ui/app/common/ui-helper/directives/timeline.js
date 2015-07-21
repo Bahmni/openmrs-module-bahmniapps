@@ -21,23 +21,32 @@ angular.module('bahmni.common.uiHelper')
 
             svg.append("g")
                 .attr("class", "xaxis")
-                .attr("transform", "translate(0.50,50)")
+                .attr("transform", "translate(0.50,35)")
                 .call(timeAxis)
                 .selectAll("line")
                     .attr("y2", 14)
-                    .attr("y1", -8)
                     .attr("x2", 0)
 
             var colors = d3.scale.category10();
 
             var states = svg.selectAll('.states').data($scope.config.data);
-            states.enter().append('rect').classed('states',true);
-            states.attr('x', function(d) { return timeScale(d.date); })
+            var stateGroup = states.enter().append("g").classed('states',true);
+            stateGroup.append("rect");
+            stateGroup.append("text");
+            states.on("click", function(d) {
+                alert(d.state);
+            });
+            states.select("rect")
+                .attr('x', function(d) { return timeScale(d.date); })
                 .attr('y', 9)
                 .attr('height', 26)
-                .attr('width', function(d) {
-                    return xMax-timeScale(d.date)})
+                .attr('width', function(d) {return xMax-timeScale(d.date)})
                 .style('fill', function(d) {return colors(_.indexOf(uniqueStates, d.state))});
+            states.select("text")
+                .attr('x', function(d) { return timeScale(d.date) + 10; })
+                .attr('y', 27)
+                .style('fill', '#FFFFFF')
+                .text(function(d) { return d.state; });
 
 
 
@@ -49,12 +58,13 @@ angular.module('bahmni.common.uiHelper')
                     .attr("fill", colors(_.indexOf(uniqueStates, _.last($scope.config.data).state)));
             }
 
-            //Draw Legend
-            var legendContainer = d3.select('#'+ $attrs.id).append("div").classed("legend", true);
-            var legendItems = legendContainer.selectAll(".item").data(uniqueStates);
-            legendItems.enter().append("div").classed("item",true);
-            legendItems.style("background-color", function(d,i) { return colors(i)})
-                .text(function(d) { return d});
+
+//            //Draw Legend
+//            var legendContainer = d3.select('#'+ $attrs.id).append("div").classed("legend", true);
+//            var legendItems = legendContainer.selectAll(".item").data(uniqueStates);
+//            legendItems.enter().append("div").classed("item",true);
+//            legendItems.style("background-color", function(d,i) { return colors(i)})
+//                .text(function(d) { return d});
         };
         return {
             restrict: 'E',

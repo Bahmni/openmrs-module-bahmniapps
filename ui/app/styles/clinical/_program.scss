@@ -2,6 +2,11 @@
   .placholder-text{
     padding: 10px;
   }
+  .big-anchor {
+    text-decoration: none;
+    font-size: 16px;
+    &:hover{text-decoration: underline}
+  }
   .select-program-container{
     input,select{
       min-width: 0;
@@ -31,6 +36,18 @@
         vertical-align: middle;
       }
     }
+    .program-details{
+      float: left;
+      width: 30%;
+    }
+    .program-timeline{
+      width: 69%;
+      float: left;
+    }
+    .program-stuff {
+      overflow: hidden;
+    }
+
     div.legend{
       display: table;
       margin: 0 auto;

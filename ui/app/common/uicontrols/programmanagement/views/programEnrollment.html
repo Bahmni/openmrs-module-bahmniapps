@@ -2,6 +2,7 @@
     <div class="select-program-container form">
         <section class="block dashboard-section">
             <h2 class="section-title ng-binding">Select Program</h2>
+
             <div class="select-program-option">
                 <select ng-model="programSelected" ng-options="program.name for program in allPrograms" ng-required="1==1" data-ng-change="getWorkflowStates(programSelected)">
                     <option value="">Choose program</option>
@@ -19,33 +20,47 @@
     <div class="active-program-container" id="activePrograms">
         <section class="block dashboard-section">
             <h2 class="section-title ng-binding">Active Programs</h2>
-            <table ng-show="hasPatientEnrolledToSomePrograms()">
-                <thead>
-                <tr>
-                    <th class="slno_col"><strong>Sl.No</strong></th>
-                    <th><strong>Program</strong></th>
-                    <th><strong>Date Enrolled</strong></th>
-                    <th><strong>Action</strong></th>
-                </tr>
-                </thead>
-                <tbody ng-repeat="program in activePrograms" ng-init="updateStatesForActiveProgram(program.states)">
-                    <tr>
-                        <td>{{$index + 1}}</td>
-                        <td>
-                            <a ng-href="#/patient/{{patient.uuid}}/dashboard">{{program.display}}</a>
-                        </td>
-                        <td>{{program.dateEnrolled | bahmniDate}}</td>
-                        <td>
-                            <button ng-click="popupHandler(program)">End</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            <timeline config="states"></timeline>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+
+            <div ng-if="hasPatientEnrolledToSomePrograms()">
+                <div ng-repeat="program in activePrograms" class="program-stuff">
+                    <div class="program-details">
+                        <a ng-href="#/patient/{{patient.uuid}}/dashboard" class="big-anchor">{{program.display}}</a>
+                        <span>(Enrolled on {{program.dateEnrolled | bahmniDate}})</span>
+
+                        <div class="program-actions">
+                            <button ng-click="toggleEdit(program)">Edit</button>
+                            <button ng-click="toggleEnd(program)">End</button>
+                        </div>
+                        <div ng-if="program.ending" class="end-program-container">
+                            <label class="middle-align">Outcomes</label>
+                            <select ng-model="program.outcomeData" ng-options="outcomeSelected.display for outcomeSelected in outcomes(program)">
+                                <option value="">Choose OutCome</option>
+                            </select>
+                            <br/>
+
+                            <button class="retro-widget-button ok_btn" ng-click="endProgram(program)">OK</button>
+                        </div>
+
+                        <div ng-if="program.editing" class="end-program-container">
+                            <label class="middle-align">Remove "Unknown"</label>
+                            <input type="checkbox"/>
+                            <br/>
+
+                            <label class="middle-align">Change "Unknown" to</label>
+                            <select ng-model="workflowStateSelected" ng-options="state.concept.display for state in program.program.allWorkflows[0].states">
+                                <option value="">Choose State</option>
+                            </select>
+                            <br/>
+
+                            <button class="retro-widget-button ok_btn" ng-click="savePopUpData()">OK</button>
+                        </div>
+                    </div>
+                    <div class="program-timeline">
+                        <timeline id="sample" config="states"></timeline>
+                    </div>
+                </div>
+            </div>
+
             <div class="note-container" ng-show="!hasPatientEnrolledToSomePrograms()">
                 <div class="note warning">
                     <div class="text placholder-text">
