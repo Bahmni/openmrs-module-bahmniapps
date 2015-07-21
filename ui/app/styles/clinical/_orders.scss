@@ -171,7 +171,8 @@
                             padding: 8px 20px !important;
                             &.noteditable {
                                 cursor: default;
-                                background: repeating-linear-gradient(45deg, #E5E5E5, #E5E5E5 10px, #D7D7D7 10px, #D7D7D7 20px);
+                                background: #F2FAFF;
+                                border: 1px #C9DEEC solid;
                             }
                         }
                     }
