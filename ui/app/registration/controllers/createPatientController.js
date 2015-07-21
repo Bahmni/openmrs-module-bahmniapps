@@ -43,6 +43,14 @@ angular.module('bahmni.registration')
                     });
                 };
 
+                var createPatientAndSetIdentifier = function (sourceName, nextIdentifierToBe) {
+                    spinner.forPromise(
+                        $q.all([
+                            patientService.create($scope.patient).success(copyPatientProfileDataToScope),
+                            patientService.setLatestIdentifier(sourceName, nextIdentifierToBe)
+                        ])
+                    );
+                };
                 if (!$scope.hasOldIdentifier) {
                     spinner.forPromise(
                         patientService.generateIdentifier($scope.patient).then(function (response) {
@@ -59,17 +67,16 @@ angular.module('bahmni.registration')
                         var latestIdentifier = response.data;
                         var givenIdentifier = parseInt($scope.patient.registrationNumber);
                         var nextIdentifierToBe = parseInt($scope.patient.registrationNumber) + 1;
-                        if (latestIdentifier < givenIdentifier) {
-                            var ngDialogData = {sizeOfTheJump: givenIdentifier - latestIdentifier};
-                            getConfirmationViaNgDialog(ngDialogData,function(){
-                                spinner.forPromise(
-                                    $q.all([
-                                    patientService.create($scope.patient).success(copyPatientProfileDataToScope),
-                                    patientService.setLatestIdentifier(sourceName, nextIdentifierToBe)
-                                    ])
-                                );
+                        var sizeOfTheJump = givenIdentifier - latestIdentifier;
+                        if (sizeOfTheJump === 0) {
+                            createPatientAndSetIdentifier(sourceName, nextIdentifierToBe);
+                        }
+                        else if (sizeOfTheJump > 0) {
+                            getConfirmationViaNgDialog({sizeOfTheJump: sizeOfTheJump}, function () {
+                                createPatientAndSetIdentifier(sourceName, nextIdentifierToBe);
                             });
-                        }else{
+                        }
+                        else {
                             spinner.forPromise(patientService.create($scope.patient).success(copyPatientProfileDataToScope));
                         }
                     });

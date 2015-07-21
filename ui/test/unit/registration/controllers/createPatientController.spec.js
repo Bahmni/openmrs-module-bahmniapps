@@ -3,7 +3,7 @@
 var $aController, scopeMock, rootScopeMock, stateMock, patientServiceMock, preferencesMock, patientModelMock, spinnerMock,
     appServiceMock, ngDialogMock, ngDialogMockModal;
 
-describe('CreatePatientController', function () {
+ddescribe('CreatePatientController', function () {
 
     beforeEach(module('bahmni.registration'));
 
@@ -16,7 +16,7 @@ describe('CreatePatientController', function () {
         scopeMock = jasmine.createSpyObj('scopeMock', ['actions']);
         rootScopeMock = jasmine.createSpyObj('rootScopeMock', ['patientConfiguration']);
         stateMock = jasmine.createSpyObj('stateMock', ['go']);
-        patientServiceMock = jasmine.createSpyObj('patientServiceMock', ['generateIdentifier', 'getLatestIdentifier', 'create']);
+        patientServiceMock = jasmine.createSpyObj('patientServiceMock', ['generateIdentifier', 'getLatestIdentifier','setLatestIdentifier', 'create']);
         preferencesMock = jasmine.createSpyObj('preferencesMock', ['']);
         patientModelMock = jasmine.createSpyObj('patientModelMock', ['']);
         spinnerMock = jasmine.createSpyObj('spinnerMock', ['forPromise']);
@@ -40,6 +40,15 @@ describe('CreatePatientController', function () {
         };
         patientServiceMock.getLatestIdentifierMock = function (data) {
             patientServiceMock.getLatestIdentifier.and.callFake(function () {
+                return {
+                    then: function (callback) {
+                        return callback({data: data})
+                    }
+                }
+            });
+        };
+        patientServiceMock.setLatestIdentifierMock = function (data) {
+            patientServiceMock.setLatestIdentifier.and.callFake(function () {
                 return {
                     then: function (callback) {
                         return callback({data: data})
@@ -129,7 +138,7 @@ describe('CreatePatientController', function () {
         }
     );
 
-    it("should not ask confirmation from user when the custom identifier is less then or equal to the next identifier in the sequence", function () {
+    it("should not open the pop up when the custom identifier is less then the next identifier in the sequence", function () {
 
             scopeMock.patient = {identifierPrefix: {prefix: "GAN"}, registrationNumber: "1050"};
 
@@ -148,4 +157,24 @@ describe('CreatePatientController', function () {
         }
     );
 
+    it("should not open the pop up when the custom identifier is equal to the next identifier in the sequence", function () {
+
+            scopeMock.patient = {identifierPrefix: {prefix: "GAN"}, registrationNumber: "1050"};
+
+            scopeMock.hasOldIdentifier = true;
+            scopeMock.$new = function () {
+                return scopeMock;
+            };
+            patientServiceMock.getLatestIdentifierMock("1050");
+            patientServiceMock.setLatestIdentifierMock("1051");
+            patientServiceMock.createMock({patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}});
+
+            scopeMock.create();
+
+            expect(ngDialogMock.open).not.toHaveBeenCalled();
+            expect(patientServiceMock.create).toHaveBeenCalledWith(scopeMock.patient);
+            expect(patientServiceMock.setLatestIdentifier).toHaveBeenCalledWith("GAN", 1051);
+            expect(scopeMock.patient.uuid).toBe("patientUuid");
+        }
+    );
 });
