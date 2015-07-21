@@ -20,9 +20,11 @@ angular.module('authentication')
             };
         }];
         $httpProvider.interceptors.push(interceptor);
-    }).run(['$rootScope', '$window', function ($rootScope, $window) {
+    }).run(['$rootScope', '$window', '$timeout', function ($rootScope, $window, $timeout) {
         $rootScope.$on('event:auth-loginRequired', function () {
-            $window.location = "../home/#/login?showLoginMessage=true";
+            $timeout(function(){
+                $window.location = "../home/#/login?showLoginMessage=true";
+            });
         });
     }]).service('sessionService', ['$rootScope', '$http', '$q', '$bahmniCookieStore', 'userService', function ($rootScope, $http, $q, $bahmniCookieStore, userService) {
         var sessionResourcePath = '/openmrs/ws/rest/v1/session';
