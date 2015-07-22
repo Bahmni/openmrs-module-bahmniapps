@@ -327,8 +327,9 @@ concept-set {
         }
         .file-browse {
             position: absolute;
-            left: -9999px;
-            visibility: hidden;
+            z-index: -999;
+            min-width: 1px;
+            width: 1px;
         }
 
         .file img.has-image {
