@@ -94,6 +94,48 @@ describe('CreatePatientController', function () {
         scopeMock.patientConfiguration = {identifierSources: []};
     });
 
+    it("should set patient identifierPrefix details with the matching one",function(){
+        rootScopeMock.patientConfiguration = {identifierSources: [
+            {prefix:"GAN"},
+            {prefix:"SEM"}
+        ]};
+        preferencesMock.identifierPrefix = "GAN";
+        $aController('CreatePatientController', {
+            $scope: scopeMock,
+            $rootScope: rootScopeMock,
+            $state: stateMock,
+            patientService: patientServiceMock,
+            preferences: preferencesMock,
+            patientModel: patientModelMock,
+            spinner: spinnerMock,
+            appService: appServiceMock,
+            ngDialog: ngDialogMock
+        });
+
+        expect(scopeMock.patient.identifierPrefix.prefix).toBe("GAN");
+    });
+
+    it("should set patient identifierPrefix details with the first source details when it doesn't match",function(){
+        rootScopeMock.patientConfiguration = {identifierSources: [
+            {prefix:"SEM"},
+            {prefix:"BAN"}
+        ]};
+        preferencesMock.identifierPrefix = "GAN";
+        $aController('CreatePatientController', {
+            $scope: scopeMock,
+            $rootScope: rootScopeMock,
+            $state: stateMock,
+            patientService: patientServiceMock,
+            preferences: preferencesMock,
+            patientModel: patientModelMock,
+            spinner: spinnerMock,
+            appService: appServiceMock,
+            ngDialog: ngDialogMock
+        });
+
+        expect(scopeMock.patient.identifierPrefix.prefix).toBe("SEM");
+    });
+
     it("should create a patient and go to edit page", function () {
 
         scopeMock.patient = {identifierPrefix: {prefix: "GAN"}};
@@ -131,6 +173,7 @@ describe('CreatePatientController', function () {
 
         scopeMock.create();
 
+        expect(patientServiceMock.getLatestIdentifier).toHaveBeenCalledWith("GAN");
         expect(ngDialogMock.open).toHaveBeenCalledWith({
             template: 'views/customIdentifierConfirmation.html',
             data: {sizeOfTheJump: 50},
@@ -149,6 +192,7 @@ describe('CreatePatientController', function () {
 
         scopeMock.create();
 
+        expect(patientServiceMock.getLatestIdentifier).toHaveBeenCalledWith("GAN");
         expect(ngDialogMock.open).not.toHaveBeenCalled();
         expect(patientServiceMock.create).toHaveBeenCalledWith(scopeMock.patient);
         expect(scopeMock.patient.uuid).toBe("patientUuid");
@@ -166,6 +210,7 @@ describe('CreatePatientController', function () {
 
         scopeMock.create();
 
+        expect(patientServiceMock.getLatestIdentifier).toHaveBeenCalledWith("GAN");
         expect(ngDialogMock.open).not.toHaveBeenCalled();
         expect(patientServiceMock.create).toHaveBeenCalledWith(scopeMock.patient);
         expect(patientServiceMock.setLatestIdentifier).toHaveBeenCalledWith("GAN", 1051);
@@ -186,6 +231,7 @@ describe('CreatePatientController', function () {
 
         expect(scopeMock.create).toThrow(serverError);
 
+        expect(patientServiceMock.getLatestIdentifier).toHaveBeenCalledWith("GAN");
         expect(patientServiceMock.setLatestIdentifier).toHaveBeenCalledWith("GAN", 1051);
         expect(patientServiceMock.create).not.toHaveBeenCalled();
     });
@@ -201,6 +247,7 @@ describe('CreatePatientController', function () {
 
         scopeMock.create();
 
+        expect(patientServiceMock.getLatestIdentifier).toHaveBeenCalledWith("GAN");
         expect(ngDialogMock.open).toHaveBeenCalledWith({
             template: 'views/customIdentifierConfirmation.html',
             data: {sizeOfTheJump: 50},
@@ -222,6 +269,7 @@ describe('CreatePatientController', function () {
 
         scopeMock.create();
 
+        expect(patientServiceMock.getLatestIdentifier).toHaveBeenCalledWith("GAN");
         expect(ngDialogMock.open).toHaveBeenCalledWith({
             template: 'views/customIdentifierConfirmation.html',
             data: {sizeOfTheJump: 50},

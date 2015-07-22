@@ -12,10 +12,8 @@ angular.module('bahmni.registration')
             (function () {
                 $scope.patient = patientModel.create();
                 $scope.identifierSources = $rootScope.patientConfiguration.identifierSources;
-                var identifierPrefix = $scope.identifierSources.filter(function (identifierSource) {
-                    return identifierSource.prefix === preferences.identifierPrefix;
-                });
-                $scope.patient.identifierPrefix = identifierPrefix[0] || $scope.identifierSources[0];
+                var identifierPrefix = _.findWhere($scope.identifierSources,{prefix:preferences.identifierPrefix});
+                $scope.patient.identifierPrefix = identifierPrefix || $scope.identifierSources[0];
                 $scope.hasOldIdentifier = preferences.hasOldIdentifier;
             })();
 
