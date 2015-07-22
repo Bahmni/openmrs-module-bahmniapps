@@ -28,45 +28,36 @@ angular.module('bahmni.registration')
                 }
 
                 var getConfirmationViaNgDialog = function (ngDialogData,yesCallback) {
-                    var ngLocalScope = $scope.$new();
-                    ngLocalScope.yes = function () {
+                    var ngDialogLocalScope = $scope.$new();
+                    ngDialogLocalScope.yes = function () {
                         ngDialog.close();
                         yesCallback();
                     };
-                    ngLocalScope.no = function () {
+                    ngDialogLocalScope.no = function () {
                         ngDialog.close();
                     };
                     ngDialog.open({
                         template: 'views/customIdentifierConfirmation.html',
                         data: ngDialogData,
-                        scope: ngLocalScope
+                        scope: ngDialogLocalScope
                     });
                 };
 
                 var createPatientAndSetIdentifier = function (sourceName, nextIdentifierToBe) {
-                    spinner.forPromise(
-                        $q.all([
-                            patientService.create($scope.patient).success(copyPatientProfileDataToScope),
-                            patientService.setLatestIdentifier(sourceName, nextIdentifierToBe)
-                        ])
-                    );
-                };
-
-                var userHasThePrivilegeToUpdateTheSequence = function () {
-                    return _.findWhere($rootScope.currentUser.privileges,{name:Bahmni.Common.Constants.manageIdentifierSequencePrivilege});
-                };
-
-                var generateIdentifierAndCreatePatient = function () {
-                    spinner.forPromise(
-                        patientService.generateIdentifier($scope.patient).then(function (response) {
-                            $scope.patient.identifier = response.data;
-                            patientService.create($scope.patient).success(copyPatientProfileDataToScope);
-                        })
-                    );
-                };
+					spinner.forPromise(
+						patientService.setLatestIdentifier(sourceName, nextIdentifierToBe).then(function () {
+							patientService.create($scope.patient).success(copyPatientProfileDataToScope);
+						})
+					);
+				};
 
                 if (!$scope.hasOldIdentifier) {
-                    generateIdentifierAndCreatePatient();
+					spinner.forPromise(
+						patientService.generateIdentifier($scope.patient).then(function (response) {
+							$scope.patient.identifier = response.data;
+							patientService.create($scope.patient).success(copyPatientProfileDataToScope);
+						})
+					);
                 }
                 else {
                     patientService.getLatestIdentifier($scope.patient.identifierPrefix.prefix).then(function (response) {
@@ -77,18 +68,13 @@ angular.module('bahmni.registration')
                         var nextIdentifierToBe = parseInt($scope.patient.registrationNumber) + 1;
                         var sizeOfTheJump = givenIdentifier - latestIdentifier;
                         if (sizeOfTheJump === 0) {
-                            generateIdentifierAndCreatePatient();
+							createPatientAndSetIdentifier(sourceName, nextIdentifierToBe);
                         }
-                        else if (sizeOfTheJump > 0) {
-                            if(userHasThePrivilegeToUpdateTheSequence()){
-                                getConfirmationViaNgDialog({sizeOfTheJump: sizeOfTheJump}, function () {
-                                    createPatientAndSetIdentifier(sourceName, nextIdentifierToBe);
-                                });
-                            }
-                            else {
-                                messagingService.showMessage("error",Bahmni.Registration.Constants.Errors.manageIdentifierSequencePrivilege);
-                            }
-                        }
+						else if (sizeOfTheJump > 0) {
+							getConfirmationViaNgDialog({sizeOfTheJump: sizeOfTheJump}, function () {
+								createPatientAndSetIdentifier(sourceName, nextIdentifierToBe);
+							});
+						}
                         else {
                             spinner.forPromise(patientService.create($scope.patient).success(copyPatientProfileDataToScope));
                         }
