@@ -7,10 +7,11 @@
                     <i class="fa fa-caret-down" ng-show="order.showForm"></i>
                     <span>{{order.conceptName}}</span>
                     <span class="fr">
+                        <span class="has-notes fa fa-file-text-o" ng-if="order.commentToFulfiller"></span>
                         <span class="order-provider-nane">{{order.provider}}</span>
                         <span class="order-created-date">{{order.orderDate | bahmniDateTime}}</span>
                     </span>
-                    <span class="has-notes fa fa-file-text-o" ng-if="order.commentToFulfiller"></span>
+                    
                     <span ng-if="!order.hasObservations" class="new-order-highlight">New</span>
                 </h2>
             </div>
