@@ -10,13 +10,19 @@ angular.module('bahmni.common.service')
             return $http.get(req.url);
         };
 
-        var enrollPatientToAProgram = function (patientUuid, programUuid, dateEnrolled) {
+        var enrollPatientToAProgram = function (patientUuid, programUuid, dateEnrolled,workflowUuid) {
             var req = {
                 url: Bahmni.Common.Constants.programEnrollPatientUrl,
                 content: {
                     patient: patientUuid,
                     program: programUuid,
-                    dateEnrolled: dateEnrolled
+                    dateEnrolled: dateEnrolled,
+                    states: [
+                        {
+                            state:workflowUuid,
+                            startDate:dateEnrolled
+                        }
+                    ]
                 },
                 headers: {"Content-Type": "application/json"}
             };

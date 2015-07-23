@@ -23,16 +23,20 @@ angular.module('bahmni.clinical')
                 })
             };
 
-            $scope.states= {
-                data: [
-                    {state: "Admitted", date: new Date(2015,1,1)},
-                    {state: "Counselling", date: new Date(2015,2,6)},
-                    {state: "Medication", date: new Date(2015,3,12)},
-                    {state: "Counselling", date: new Date(2015,4,6)},
-                    {state: "Curing", date: new Date(2015,6,6)}
-                ],
-                completed: false
+            $scope.updateStatesForActiveProgram = function(states){
+                var data = [];
+                _.forEach(states, function (result) {
+                    var object = {};
+                    object.state = result.state.concept.display;
+                    object.date = new Date(result.startDate);
+                    data.push(object);
+                });
+                $scope.states= {
+                    data:data,
+                    completed: false
+                };
             };
+
 
             var getCurrentDate = function() {
                 var currentDate = $bahmniCookieStore.get(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
@@ -85,7 +89,7 @@ angular.module('bahmni.clinical')
                     return ;
                 }
                 spinner.forPromise(
-                    programService.enrollPatientToAProgram($scope.patient.uuid, $scope.programSelected.uuid, $scope.programEnrollmentDate)
+                    programService.enrollPatientToAProgram($scope.patient.uuid, $scope.programSelected.uuid, $scope.programEnrollmentDate,$scope.workflowStateSelected.uuid)
                         .then(successCallback, failureCallback)
                 );
             };

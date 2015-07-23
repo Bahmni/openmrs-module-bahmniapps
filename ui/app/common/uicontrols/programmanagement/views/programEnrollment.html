@@ -16,7 +16,7 @@
         </section>
     </div>
 
-    <div class="active-program-container">
+    <div class="active-program-container" id="activePrograms">
         <section class="block dashboard-section">
             <h2 class="section-title ng-binding">Active Programs</h2>
             <table ng-show="hasPatientEnrolledToSomePrograms()">
@@ -28,22 +28,22 @@
                     <th><strong>Action</strong></th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr ng-repeat="program in activePrograms">
-                    <td>{{$index + 1}}</td>
-                    <td>
-                        <a ng-href="#/patient/{{patient.uuid}}/dashboard">{{program.display}}</a>
-                    </td>
-                    <td>{{program.dateEnrolled | bahmniDate}}</td>
-                    <td>
-                        <button ng-click="popupHandler(program)">End</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="4">
-                        <timeline id="sample" config="states"></timeline>
-                    </td>
-                </tr>
+                <tbody ng-repeat="program in activePrograms" ng-init="updateStatesForActiveProgram(program.states)">
+                    <tr>
+                        <td>{{$index + 1}}</td>
+                        <td>
+                            <a ng-href="#/patient/{{patient.uuid}}/dashboard">{{program.display}}</a>
+                        </td>
+                        <td>{{program.dateEnrolled | bahmniDate}}</td>
+                        <td>
+                            <button ng-click="popupHandler(program)">End</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <timeline config="states"></timeline>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <div class="note-container" ng-show="!hasPatientEnrolledToSomePrograms()">

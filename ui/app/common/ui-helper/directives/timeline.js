@@ -3,11 +3,10 @@
 angular.module('bahmni.common.uiHelper')
     .directive('timeline', function () {
         var link = function ($scope, $element, $attrs) {
-            var svg = d3.select('#'+ $attrs.id).append("svg").attr('width',100+'%' ).attr('height', 110);
-            var elementDimensions = $element[0].getBoundingClientRect();
+            var svg = d3.select($element[0]).append("svg").attr('width',100+'%' ).attr('height', 110);
             var sortedDates = _.sortBy(_.pluck($scope.config.data, 'date'));
             var uniqueStates = _.uniq(_.pluck($scope.config.data, 'state'));
-            var xMin = 25, xMax = elementDimensions.width-35;
+            var xMin = 25, parentWidth = document.getElementById('activePrograms').offsetWidth,  xMax = parentWidth - 100;
 
             var timeScale = d3.time.scale()
                 .domain([sortedDates[0], new Date()])
@@ -36,7 +35,8 @@ angular.module('bahmni.common.uiHelper')
             states.attr('x', function(d) { return timeScale(d.date); })
                 .attr('y', 9)
                 .attr('height', 26)
-                .attr('width', function(d) {return xMax-timeScale(d.date)})
+                .attr('width', function(d) {
+                    return xMax-timeScale(d.date)})
                 .style('fill', function(d) {return colors(_.indexOf(uniqueStates, d.state))});
 
 
