@@ -20,13 +20,12 @@
                                ng-model="newRelationship.providerName" response-map="getProviderDataResults"
                                source="getProviderList(relationship)"  on-select="providerSelected(newRelationship)">
                         <span class="asterick">*</span>
-                        <span style="display:block" ng-show="showPersonNotFound(newRelationship)">Person not found</span>
+                        <span style="display:block" ng-show="showPersonNotFound(newRelationship)">Please enter valid person details</span>
                         <span style="display:block" ng-show="!showPersonNotFound(newRelationship)">{{newRelationship.content}}</span>
                         <input style="display:none" non-blank="!isEmpty(newRelationship)" ng-model="newRelationship.personB.uuid"/>
                     </div>
                     <div class="col col3">
-                        <input type="text" pattern="\d{4}-\d{2}-\d{2}" ng-model="newRelationship.endDate" datepicker
-                               placeholder="yyyy-mm-dd" date-format="yy-mm-dd" class="datepicker">
+                        <input type="date" ng-model="newRelationship.endDate" date-converter/>
                     </div>
             </div>
         </div>

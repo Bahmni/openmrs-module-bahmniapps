@@ -36,9 +36,6 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
             mapRelationships = function(patient, relationships){
                 patient.relationships = relationships;
                 patient.newlyAddedRelationships = [{}];
-                _.map(patient.relationships, function (relationship) {
-                    relationship.endDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(relationship.endDate);
-                });
             },
             map = function (openmrsPatient) {
                 var relationships = openmrsPatient.relationships;
