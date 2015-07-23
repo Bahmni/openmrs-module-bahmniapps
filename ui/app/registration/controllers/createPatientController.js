@@ -58,6 +58,7 @@ angular.module('bahmni.registration')
                     );
                 }
                 else {
+                    spinner.forPromise(
                     patientService.getLatestIdentifier($scope.patient.identifierPrefix.prefix).then(function (response) {
 
                         var sourceName = $scope.patient.identifierPrefix.prefix;
@@ -79,9 +80,10 @@ angular.module('bahmni.registration')
                             });
                         }
                         else {
-                            spinner.forPromise(patientService.create($scope.patient).success(copyPatientProfileDataToScope));
+                            patientService.create($scope.patient).success(copyPatientProfileDataToScope);
                         }
-                    });
+                    })
+                    );
                 }
             };
 
