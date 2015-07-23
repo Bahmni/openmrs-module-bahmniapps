@@ -33,7 +33,16 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
             mapAddress = function (preferredAddress) {
                 return preferredAddress || {};
             },
+            mapRelationships = function(patient, relationships){
+                patient.relationships = relationships;
+                patient.newlyAddedRelationships = [{}];
+                _.map(patient.relationships, function (relationship) {
+                    relationship.endDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(relationship.endDate);
+                });
+            },
             map = function (openmrsPatient) {
+                var relationships = openmrsPatient.relationships;
+                var openmrsPatient = openmrsPatient.patient;
                 var patient = patientModel.create(),
                     birthdate = parseDate(openmrsPatient.person.birthdate);
                 patient.givenName = openmrsPatient.person.preferredName.givenName;
@@ -47,6 +56,7 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 patient.image = Bahmni.Registration.Constants.patientImageURL + openmrsPatient.uuid + ".jpeg?q=" + new Date().toISOString();
                 patient.registrationDate = parseDate(openmrsPatient.person.auditInfo.dateCreated);
                 mapAttributes(patient, openmrsPatient.person.attributes);
+                mapRelationships(patient, relationships);
                 return patient;
             };
 

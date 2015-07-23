@@ -19,25 +19,25 @@ angular.module('bahmni.registration')
                 });
             };
 
-            (function () {
-                var getPatientPromise = patientService.get(uuid).success(function (openmrsPatient) {
-                    $scope.openMRSPatient = openmrsPatient["patient"];
-                    $scope.patient = patientMapper.map(openmrsPatient["patient"]);
-                    $scope.patient.relationships = openmrsPatient["relationships"];
-                    _.map($scope.patient.relationships, function (relationship) {
-                        relationship.endDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(relationship.endDate);
-                    });
-                    setReadOnlyFields();
-                    var showOrHideAdditionalPatientInformation = function () {
-                        var additionalPatientInfoConfig = appService.getAppDescriptor().getConfigValue("additionalPatientInformation");
-                        angular.forEach(additionalPatientInfoConfig, function (attribute) {
-                            if ($scope.patient[attribute.name]) {
-                                $scope.displayAdditionalInformation = true;
-                            }
-                        });
-                    };
-                    showOrHideAdditionalPatientInformation();
+            var showOrHideAdditionalPatientInformation = function () {
+                var additionalPatientInfoConfig = appService.getAppDescriptor().getConfigValue("additionalPatientInformation");
+                angular.forEach(additionalPatientInfoConfig, function (attribute) {
+                    if ($scope.patient[attribute.name]) {
+                        $scope.displayAdditionalInformation = true;
+                    }
                 });
+            };
+
+            var successCallBack = function(openmrsPatient){
+                $scope.openMRSPatient = openmrsPatient["patient"];
+                $scope.patient = patientMapper.map(openmrsPatient);
+                setReadOnlyFields();
+                showOrHideAdditionalPatientInformation();
+            };
+
+
+            (function () {
+                var getPatientPromise = patientService.get(uuid).success(successCallBack);
 
                 var isDigitized = encounterService.getDigitized(uuid);
                 isDigitized.success(function (data) {
@@ -54,6 +54,7 @@ angular.module('bahmni.registration')
                 addNewRelationships();
 
                 var patientUpdatePromise = patientService.update($scope.patient, $scope.openMRSPatient).success(function (patientProfileData) {
+                    successCallBack(patientProfileData);
                     $scope.actions.followUpAction(patientProfileData);
                 });
                 spinner.forPromise(patientUpdatePromise);
@@ -76,7 +77,6 @@ angular.module('bahmni.registration')
             };
 
             $scope.afterSave = function () {
-                setReadOnlyFields();
                 messagingService.showMessage("info", "Saved");
             }
 

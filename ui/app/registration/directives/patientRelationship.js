@@ -65,12 +65,12 @@ angular.module('bahmni.registration')
                         return;
                     }
 
-                    if (response.data.pageOfResults.length == 0) {
+                    var patients = response.data.pageOfResults;
+                    if (patients.length == 0) {
                         return;
                     }
-
-                    relationship.content = getPatientGenderAndAge(response.data['pageOfResults'][0]);
-                    var personUuid = response.data['pageOfResults'][0]['uuid'];
+                    relationship.content = getPatientGenderAndAge(patients[0]);
+                    var personUuid = patients[0]['uuid'];
 
                     relationship.personB = {'uuid': personUuid};
 
@@ -147,8 +147,6 @@ angular.module('bahmni.registration')
 
            var init = function(){
                $scope.relationshipTypes = $rootScope.relationshipTypes;
-               $scope.patient.newlyAddedRelationships = $scope.patient.newlyAddedRelationships || [];
-               $scope.addPlaceholderRelationship();
                $scope.patient.relationships = $scope.patient.relationships || [];
            };
 

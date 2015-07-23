@@ -6,7 +6,7 @@ describe('EditPatientController', function () {
     var scopeMock = jasmine.createSpyObj('scopeMock', ['actions']);
     var rootScopeMock = jasmine.createSpyObj('rootScopeMock', ['patientConfiguration']);
     var stateMock = jasmine.createSpyObj('stateMock', ['go']);
-    var patientServiceMock = jasmine.createSpyObj('patientServiceMock', ['get']);
+    var patientServiceMock = jasmine.createSpyObj('patientServiceMock', ['get', 'update']);
     var preferencesMock = jasmine.createSpyObj('preferencesMock', ['']);
     var patientModelMock = jasmine.createSpyObj('patientModelMock', ['']);
     var spinnerMock = jasmine.createSpyObj('spinnerMock', ['forPromise']);
@@ -30,6 +30,13 @@ describe('EditPatientController', function () {
             };
 
             patientServiceMock.get = function(uuid) {
+                return {
+                    success: function (successFn) {
+                        successFn({data: "uuid"});
+                    }
+                }
+            };
+            patientServiceMock.update = function(uuid) {
                 return {
                     success: function (successFn) {
                         successFn({data: "uuid"});
@@ -61,9 +68,14 @@ describe('EditPatientController', function () {
             expect(scopeMock.readOnlyFields["caste"]).toBeFalsy()
             expect(scopeMock.readOnlyFields["primaryRelative"]).toBeFalsy();
 
-            scopeMock.patient = {"caste":"someCaste"};
+            scopeMock.patient = {"caste":"someCaste", "relationships": []};
+            scopeMock.actions = {
+                followUpAction: function () {
+                   scopeMock.afterSave();
+                }
+            };
 
-            scopeMock.afterSave();
+            scopeMock.update();
 
             expect(scopeMock.readOnlyFields["caste"]).toBeTruthy()
             expect(scopeMock.readOnlyFields["primaryRelative"]).toBeFalsy();

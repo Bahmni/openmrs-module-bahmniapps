@@ -17,10 +17,9 @@ angular.module('bahmni.registration')
 
             var getPatient = function () {
                 return patientService.get(patientUuid).success(function (openMRSPatient) {
-                    openMRSPatient = openMRSPatient.patient;
                     $scope.patient = patientMapper.map(openMRSPatient);
-                    $scope.patient.name = openMRSPatient.person.names[0].display;
-                    $scope.patient.uuid = openMRSPatient.uuid;
+                    $scope.patient.name = openMRSPatient.patient.person.names[0].display;
+                    $scope.patient.uuid = openMRSPatient.patient.uuid;
                 })
             };
 

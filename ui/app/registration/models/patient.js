@@ -45,7 +45,9 @@ angular.module('bahmni.registration')
                 clearRegistrationNumber: clearRegistrationNumber,
                 image: '../images/blank-user.gif',
                 fullNameLocal: fullNameLocal,
-                getImageData: getImageData
+                getImageData: getImageData,
+                relationships: [],
+                newlyAddedRelationships: [{}]
             };
         };
 

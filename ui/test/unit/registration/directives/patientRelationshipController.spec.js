@@ -25,7 +25,7 @@ describe('PatientRelationshipController', function () {
     beforeEach(
         inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
-            scope.patient = {};
+            scope.patient = {newlyAddedRelationships: [], relationships: []};
             rootScope = $rootScope;
             rootScope.relationshipTypes = [
                 {
