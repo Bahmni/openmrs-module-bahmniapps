@@ -118,7 +118,7 @@
                 </div>
 
             <span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
-                <button type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)">
+                <button id="{{::observation.concept.name.split(' ').join('_').toLowerCase() +'_addmore_'+observation.uniqueId}}" type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)">
                     <i class="fa fa-plus-circle"></i> Add More
                 </button>
             </span>
