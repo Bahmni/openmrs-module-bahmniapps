@@ -50,11 +50,13 @@ describe('PatientRelationshipController', function () {
 
     describe("Remove relationship", function () {
         it("should remove newly added relationship", function () {
-            expect(scope.patient.relationships).toEqual([]);
+            expect(scope.patient.newlyAddedRelationships).toEqual([]);
             var relationship = {patientIdentifier: "Doctor"};
-            scope.patient.relationships.push(relationship);
+            scope.patient.newlyAddedRelationships.push(relationship);
+            scope.patient.newlyAddedRelationships.push({});
+
             scope.removeRelationship(relationship);
-            expect(scope.patient.relationships.length).toBe(0);
+            expect(scope.patient.newlyAddedRelationships.length).toBe(1);
         });
 
         it("should void the existing relationship", function () {

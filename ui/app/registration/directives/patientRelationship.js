@@ -18,12 +18,11 @@ angular.module('bahmni.registration')
               $scope.patient.newlyAddedRelationships.push({});
             };
 
-            $scope.removeRelationship = function (relationship) {
+            $scope.removeRelationship = function (relationship, index) {
                 if (relationship.uuid) {
                     relationship.voided = true;
                 } else {
-                    var elementIndex = $scope.patient.relationships.indexOf(relationship);
-                    $scope.patient.relationships.splice(elementIndex, 1);
+                    $scope.patient.newlyAddedRelationships.splice(index, 1);
                 }
             };
 
