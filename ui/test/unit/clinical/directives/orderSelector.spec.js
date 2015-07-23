@@ -34,7 +34,7 @@ describe("ensure that the directive order-selector works properly", function () 
     };
 
     var consultation = {
-    	"testOrders" : [
+    	"orders" : [
 	    	{
 				"dateCreated": "2015-04-22T19:16:13.000+0530",
 				"instructions": null,

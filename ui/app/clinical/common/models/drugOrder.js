@@ -30,7 +30,7 @@ Bahmni.Clinical.DrugOrder = (function () {
         var route = drugOrderData.route;
 
         var drugOrder = new DrugOrder({
-                careSetting: "Outpatient",
+                careSetting: "OUTPATIENT",
                 drug: drugOrderData.drug,
                 orderType: "Drug Order",
                 dosingInstructionType: Bahmni.Clinical.Constants.flexibleDosingInstructionsClass,

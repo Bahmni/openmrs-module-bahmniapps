@@ -21,21 +21,21 @@ Bahmni.Clinical.OrderObservationsMapper.prototype.map = function (observations, 
                 }
             }
         },
-        getObservationForOrderIfExist = function (observations, testOrder, obs) {
+        getObservationForOrderIfExist = function (observations, order, obs) {
             angular.forEach(observations, function (observation) {
-                if (testOrder.uuid === observation.orderUuid) {
+                if (order.uuid === observation.orderUuid) {
                     makeCommentsAsAdditionalObs(observation);
                     obs.push(observation);
                 } else if (observation.orderUuid == null && observation.groupMembers.length > 0) {
-                    getObservationForOrderIfExist(observation.groupMembers, testOrder, obs);
+                    getObservationForOrderIfExist(observation.groupMembers, order, obs);
                 }
             });
         },
-        mapTestOrderWithObs = function (observations, testOrder) {
+        mapOrderWithObs = function (observations, order) {
             var orderObservations = [];
-            getObservationForOrderIfExist(observations, testOrder, orderObservations);
-            testOrder.observations = orderObservations;
+            getObservationForOrderIfExist(observations, order, orderObservations);
+            order.observations = orderObservations;
         };
 
-    orders.forEach(function (order) { mapTestOrderWithObs(observations, order); });
+    orders.forEach(function (order) { mapOrderWithObs(observations, order); });
 };

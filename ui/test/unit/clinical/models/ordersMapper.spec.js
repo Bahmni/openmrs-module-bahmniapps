@@ -60,14 +60,14 @@ describe('OrdersMapper', function () {
                 "name": "superman"
             }
         },
-        createOrder = function (drugName, createDate, startDate) {
+        createDrugOrder = function (drugName, createDate, startDate) {
             var order = sampleOrder();
             order.dateCreated = createDate;
             order.startDate = startDate;
             order.drug = {name:drugName};
             return order;
         },
-        createTestOrder = function (testName, date, voided) {
+        createOrder = function (testName, date, voided) {
             var order = sampleTestOrder();
             order.uuid = Bahmni.Tests.genUUID();
             order.dateCreated = date;
@@ -79,9 +79,9 @@ describe('OrdersMapper', function () {
         };
 
     it('should create drugOrders from a list of encounterTransaction objects', function () {
-        var firstOrder = createOrder("aspirin", "2014-03-24T14:38:13.000+0530", "2014-03-30T14:38:13.000+0530");
-        var secondOrder = createOrder("cetrizine", "2014-03-24T14:38:13.000+0530", "2014-03-30T14:38:13.000+0530");
-        var thirdOrder = createOrder("calpol", "2014-03-25T14:38:13.000+0530", "2014-03-26T14:38:13.000+0530");
+        var firstOrder = createDrugOrder("aspirin", "2014-03-24T14:38:13.000+0530", "2014-03-30T14:38:13.000+0530");
+        var secondOrder = createDrugOrder("cetrizine", "2014-03-24T14:38:13.000+0530", "2014-03-30T14:38:13.000+0530");
+        var thirdOrder = createDrugOrder("calpol", "2014-03-25T14:38:13.000+0530", "2014-03-26T14:38:13.000+0530");
         var encounterTransactions = [
             {   providers: [], observations: [],
                 drugOrders: [thirdOrder]},
@@ -98,9 +98,9 @@ describe('OrdersMapper', function () {
     });
 
     it('should filter based on filter function', function () {
-        var firstOrder = createOrder("aspirin", "2014-03-24T14:38:13.000+0530");
-        var secondOrder = createOrder("cetrizine", "2014-03-24T14:38:13.000+0530");
-        var thirdOrder = createOrder("calpol", "2014-03-25T14:38:13.000+0530");
+        var firstOrder = createDrugOrder("aspirin", "2014-03-24T14:38:13.000+0530");
+        var secondOrder = createDrugOrder("cetrizine", "2014-03-24T14:38:13.000+0530");
+        var thirdOrder = createDrugOrder("calpol", "2014-03-25T14:38:13.000+0530");
         var encounterTransactions = [
             {   providers: [], observations: [],
                 drugOrders: [thirdOrder]},
@@ -114,9 +114,9 @@ describe('OrdersMapper', function () {
     });
 
     it('should populate provider from encounterTransaction', function () {
-        var firstOrder = createOrder("aspirin", "2014-03-24T14:38:13.000+0530", "2014-03-30T14:38:13.000+0530");
-        var secondOrder = createOrder("cetrizine", "2014-03-24T14:38:13.000+0530", "2014-03-30T14:38:13.000+0530");
-        var thirdOrder = createOrder("calpol", "2014-03-25T14:38:13.000+0530", "2014-03-30T14:38:13.000+0530");
+        var firstOrder = createDrugOrder("aspirin", "2014-03-24T14:38:13.000+0530", "2014-03-30T14:38:13.000+0530");
+        var secondOrder = createDrugOrder("cetrizine", "2014-03-24T14:38:13.000+0530", "2014-03-30T14:38:13.000+0530");
+        var thirdOrder = createDrugOrder("calpol", "2014-03-25T14:38:13.000+0530", "2014-03-30T14:38:13.000+0530");
         var encounterTransactions = [
             {providers: [sampleProvider()], drugOrders: [thirdOrder], observations: []},
             {   providers: [], observations: [],
@@ -128,17 +128,17 @@ describe('OrdersMapper', function () {
         expect(orders[0].orders[0].provider.name).toBe(sampleProvider().name);
     });
 
-    it('should populate accessionUuid for testOrders from encounterTransaction', function () {
-        var firstTestOrder = createTestOrder("culture(pus)", "2014-03-24T14:38:13.000+0530");
-        var secondTestOrder = createTestOrder("culture(tissue)", "2014-03-24T14:38:13.000+0530");
-        var thirdTestOrder = createTestOrder("platelet count", "2014-03-25T14:38:13.000+0530");
+    it('should populate accessionUuid for orders from encounterTransaction', function () {
+        var firstTestOrder = createOrder("culture(pus)", "2014-03-24T14:38:13.000+0530");
+        var secondTestOrder = createOrder("culture(tissue)", "2014-03-24T14:38:13.000+0530");
+        var thirdTestOrder = createOrder("platelet count", "2014-03-25T14:38:13.000+0530");
         var encounterUuid1 = "encounterUuid1";
         var encounterUuid2 = "encounterUuid2";
         var encounterTransactions = [
-            {providers: [sampleProvider()], testOrders: [thirdTestOrder], encounterUuid: encounterUuid1, observations: []},
-            {providers: [sampleProvider()], testOrders: [firstTestOrder, secondTestOrder], encounterUuid: encounterUuid2, observations: []}
+            {providers: [sampleProvider()], orders: [thirdTestOrder], encounterUuid: encounterUuid1, observations: []},
+            {providers: [sampleProvider()], orders: [firstTestOrder, secondTestOrder], encounterUuid: encounterUuid2, observations: []}
         ];
-        var orders = new Bahmni.Clinical.OrdersMapper().create(encounterTransactions, 'testOrders', function () {
+        var orders = new Bahmni.Clinical.OrdersMapper().create(encounterTransactions, 'orders', function () {
             return true;
         });
         expect(orders[0].orders[0].accessionUuid).toBe(encounterUuid1);
@@ -147,47 +147,47 @@ describe('OrdersMapper', function () {
 
 
     it("should sort tests", function () {
-        var firstTestOrder = createTestOrder("Test1", "2014-03-24T14:38:13.000+0530");
-        var secondTestOrder = createTestOrder("Test2", "2014-03-24T14:38:13.000+0530");
-        var thirdTestOrder = createTestOrder("Test3", "2014-03-25T14:38:13.000+0530");
+        var firstTestOrder = createOrder("Test1", "2014-03-24T14:38:13.000+0530");
+        var secondTestOrder = createOrder("Test2", "2014-03-24T14:38:13.000+0530");
+        var thirdTestOrder = createOrder("Test3", "2014-03-25T14:38:13.000+0530");
         var allTestsAndPanelsConcept = {setMembers:[{name:{name:"Test2"}}, {name:{name:"Test1"}}]};
         var encounterTransactions = [
-            {providers: [sampleProvider()], testOrders: [firstTestOrder, secondTestOrder], observations: []}
+            {providers: [sampleProvider()], orders: [firstTestOrder, secondTestOrder], observations: []}
         ];
 
-        var sortedOrders = new Bahmni.Clinical.OrdersMapper().map(encounterTransactions, 'testOrders', allTestsAndPanelsConcept);
+        var sortedOrders = new Bahmni.Clinical.OrdersMapper().map(encounterTransactions, 'orders', allTestsAndPanelsConcept);
 
         expect(sortedOrders[0].concept.name).toBe("Test2");
         expect(sortedOrders[1].concept.name).toBe("Test1");
     });
 
     it("should remove tests that are voided", function(){
-        var firstTestOrder = createTestOrder("Test1", "2014-03-24T14:38:13.000+0530");
-        var secondTestOrder = createTestOrder("Test2", "2014-03-24T14:38:13.000+0530", true);
-        var thirdTestOrder = createTestOrder("Test3", "2014-03-25T14:38:13.000+0530");
+        var firstTestOrder = createOrder("Test1", "2014-03-24T14:38:13.000+0530");
+        var secondTestOrder = createOrder("Test2", "2014-03-24T14:38:13.000+0530", true);
+        var thirdTestOrder = createOrder("Test3", "2014-03-25T14:38:13.000+0530");
 
         var allTestsAndPanelsConcept = {setMembers:[{name:{name:"Test2"}}, {name:{name:"Test3"}}, {name:{name:"Test1"}}]};
         var encounterTransactions = [
-            {providers: [sampleProvider()], testOrders: [firstTestOrder, secondTestOrder, thirdTestOrder], observations: []}
+            {providers: [sampleProvider()], orders: [firstTestOrder, secondTestOrder, thirdTestOrder], observations: []}
         ];
 
-        var sortedOrders = new Bahmni.Clinical.OrdersMapper().map(encounterTransactions, 'testOrders', allTestsAndPanelsConcept);
+        var sortedOrders = new Bahmni.Clinical.OrdersMapper().map(encounterTransactions, 'orders', allTestsAndPanelsConcept);
 
         expect(sortedOrders[0].concept.name).toBe("Test3");
         expect(sortedOrders[1].concept.name).toBe("Test1");
     })
 
     it("should sort tests under panel", function () {
-        var panelOrder = createTestOrder("Panel1", "2014-03-25T14:38:13.000+0530");
+        var panelOrder = createOrder("Panel1", "2014-03-25T14:38:13.000+0530");
         var allTestsAndPanelsConcept = {setMembers:[{name:{name:"Test2"}}, {name:{name:"Test1"}}]};
         var test1ResultObservation = {concept:{name:"Test1"}, value: 12, groupMembers: []};
         var test2ResultObservation = {concept:{name:"Test2"}, value: 17, groupMembers: []};
         var panelResultObservation = {concept:{name:"Panel1"}, groupMembers: [test1ResultObservation, test2ResultObservation], orderUuid: panelOrder.uuid};
         var encounterTransactions = [
-            {providers: [sampleProvider()], testOrders: [panelOrder], observations:[panelResultObservation]}
+            {providers: [sampleProvider()], orders: [panelOrder], observations:[panelResultObservation]}
         ];
 
-        var sortedOrders = new Bahmni.Clinical.OrdersMapper().map(encounterTransactions, 'testOrders', allTestsAndPanelsConcept);
+        var sortedOrders = new Bahmni.Clinical.OrdersMapper().map(encounterTransactions, 'orders', allTestsAndPanelsConcept);
 
         expect(sortedOrders[0].concept.name).toBe("Panel1");
         expect(sortedOrders[0].observations[0].concept.name).toBe("Panel1");

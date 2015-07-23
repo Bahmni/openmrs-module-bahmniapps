@@ -127,7 +127,7 @@ var encounterTransaction = {
     "visitTypeUuid": "9174aa52-3c7f-11e3-8f4c-005056823ee5",
     "encounterUuid": "c99a67b6-0d89-4428-8967-b9949dadbd10",
     "patientUuid": "e45a520d-31c6-4782-a4f7-e73f011d3325",
-    "testOrders": [
+    "orders": [
     {
         "instructions": null,
         "uuid": "b44fb9d9-61ea-4f44-bbbe-82f9cb8540fa",

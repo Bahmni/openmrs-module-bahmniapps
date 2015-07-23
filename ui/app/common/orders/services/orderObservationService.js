@@ -23,7 +23,7 @@ angular.module('bahmni.common.orders')
                 locationUuid: locationUuid,
                 patientUuid: patient.uuid,
                 observations: observations,
-                testOrders: [],
+                orders: [],
                 drugOrders: []
             };
 

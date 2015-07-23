@@ -12,7 +12,7 @@ describe("OrderController", function () {
         rootScope = $rootScope;
         ngDialog = jasmine.createSpyObj('ngDialog', ['open', 'close']);
 
-        scope.consultation = {testOrders: []};
+        scope.consultation = {orders: []};
 
         $controller('OrderController', {
             $scope: scope,
@@ -97,7 +97,7 @@ describe("OrderController", function () {
 
     describe("activateTab", function () {
         it("should update the selectedOrders when some other tab is activated", function () {
-            scope.consultation.testOrders.push({
+            scope.consultation.orders.push({
                     "uuid": undefined,
                     "concept": {
                         "uuid": "ab137c0f-5a23-4314-ab8d-29b8ff91fbfb",
@@ -162,7 +162,7 @@ describe("OrderController", function () {
         it("should return true if the test is directly present in the selected test orders", function () {
             var someTest = allOrderables["\'Lab Samples\'"].setMembers[0].setMembers[0];
             var someOrder = Bahmni.Clinical.Order.create(someTest);
-            scope.consultation.testOrders.push(someOrder);
+            scope.consultation.orders.push(someOrder);
 
             expect(scope.isActiveOrderPresent(someTest)).toBeTruthy();
         });
@@ -170,7 +170,7 @@ describe("OrderController", function () {
         it("should return true if the child order is present for the selected test order", function () {
             var someTest = allOrderables["\'Lab Samples\'"].setMembers[0].setMembers[1];
             var someOrder = Bahmni.Clinical.Order.create(someTest);
-            scope.consultation.testOrders.push(someOrder);
+            scope.consultation.orders.push(someOrder);
 
             var someTestsChild = someTest.setMembers[0];
             expect(scope.isActiveOrderPresent(someTestsChild)).toBeTruthy();
@@ -181,7 +181,7 @@ describe("OrderController", function () {
         it("should return false if the order is directly present", function () {
             var someTest = allOrderables["\'Lab Samples\'"].setMembers[0].setMembers[0];
             var someOrder = Bahmni.Clinical.Order.create(someTest);
-            scope.consultation.testOrders.push(someOrder);
+            scope.consultation.orders.push(someOrder);
 
             expect(scope.isTestIndirectlyPresent(someTest)).toBeFalsy();
         });
@@ -189,7 +189,7 @@ describe("OrderController", function () {
         it("should return true if the order is indirectly present so that it can be made readonly", function () {
             var someTest = allOrderables["\'Lab Samples\'"].setMembers[0].setMembers[1];
             var someOrder = Bahmni.Clinical.Order.create(someTest);
-            scope.consultation.testOrders.push(someOrder);
+            scope.consultation.orders.push(someOrder);
 
             var someTestsChild = someTest.setMembers[0];
             expect(scope.isTestIndirectlyPresent(someTestsChild)).toBeTruthy();
@@ -200,7 +200,7 @@ describe("OrderController", function () {
         it("child order should not be editable if it is parent is present", function () {
             var someParentTest = allOrderables["\'Lab Samples\'"].setMembers[0].setMembers[1];
             var parentOrder = Bahmni.Clinical.Order.create(someParentTest);
-            scope.consultation.testOrders.push(parentOrder);
+            scope.consultation.orders.push(parentOrder);
 
             var childTest = someParentTest.setMembers[0];
             var childOrder = Bahmni.Clinical.Order.create(childTest);
@@ -217,7 +217,7 @@ describe("OrderController", function () {
         it("parent order should always be editable", function () {
             var someParentTest = allOrderables["\'Lab Samples\'"].setMembers[0].setMembers[1];
             var parentOrder = Bahmni.Clinical.Order.create(someParentTest);
-            scope.consultation.testOrders.push(parentOrder);
+            scope.consultation.orders.push(parentOrder);
 
             expect(scope.isOrderNotEditable(parentOrder)).toBeFalsy();
         });
@@ -228,7 +228,7 @@ describe("OrderController", function () {
             var someTest = allOrderables["\'Lab Samples\'"].setMembers[0].setMembers[0];
             scope.toggleOrderSelection(someTest);
 
-            var addedOrder = _.find(scope.consultation.testOrders, function(testOrder){
+            var addedOrder = _.find(scope.consultation.orders, function(testOrder){
                 return testOrder.concept.uuid == someTest.uuid;
             });
             expect(addedOrder).not.toBeUndefined();
@@ -237,29 +237,29 @@ describe("OrderController", function () {
         it("should remove an order if it is present", function() {
             var someTest = allOrderables["\'Lab Samples\'"].setMembers[0].setMembers[0];
             var someOrder = Bahmni.Clinical.Order.create(someTest);
-            scope.consultation.testOrders.push(someOrder);
+            scope.consultation.orders.push(someOrder);
 
             scope.toggleOrderSelection(someTest);
 
-            expect(scope.consultation.testOrders).not.toContain(someOrder);
+            expect(scope.consultation.orders).not.toContain(someOrder);
         });
 
         it("should remove all the child orders if its parent is added", function() {
             var parentTest = allOrderables["\'Lab Samples\'"].setMembers[0].setMembers[1];
             var childTest = parentTest.setMembers[0];
             var childOrder = Bahmni.Clinical.Order.create(childTest);
-            scope.consultation.testOrders.push(childOrder);
+            scope.consultation.orders.push(childOrder);
 
             scope.toggleOrderSelection(parentTest);
 
-            expect(scope.consultation.testOrders).not.toContain(childOrder);
+            expect(scope.consultation.orders).not.toContain(childOrder);
         });
 
         it("already saved order should be marked as discontinued if removed", function() {
             var someTest = allOrderables["\'Lab Samples\'"].setMembers[0].setMembers[0];
             var someOrder = Bahmni.Clinical.Order.create(someTest);
             someOrder.uuid = "uuid1";
-            scope.consultation.testOrders.push(someOrder);
+            scope.consultation.orders.push(someOrder);
 
             scope.toggleOrderSelection(someTest);
 
@@ -271,7 +271,7 @@ describe("OrderController", function () {
             var someOrder = Bahmni.Clinical.Order.create(someTest);
             someOrder.uuid = "uuid1";
             someOrder.isDiscontinued = "true";
-            scope.consultation.testOrders.push(someOrder);
+            scope.consultation.orders.push(someOrder);
 
             scope.toggleOrderSelection(someTest);
 

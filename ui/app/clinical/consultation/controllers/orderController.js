@@ -3,7 +3,7 @@
 angular.module('bahmni.clinical')
     .controller('OrderController', ['$scope', 'allOrderables','ngDialog',
         function ($scope, allOrderables, ngDialog) {
-            $scope.consultation.testOrders = $scope.consultation.testOrders || [];
+            $scope.consultation.orders = $scope.consultation.orders || [];
             $scope.consultation.childOrders = $scope.consultation.childOrders || [];
             $scope.allOrdersTemplates = allOrderables;
 
@@ -37,7 +37,7 @@ angular.module('bahmni.clinical')
 
             $scope.updateSelectedOrdersForActiveTab = function(){
                 var activeTabTestConcepts = _.pluck(_.flatten(_.pluck($scope.getOrderTemplate($scope.activeTab.name).setMembers, 'setMembers')), 'uuid');
-                $scope.selectedOrders =  _.filter($scope.consultation.testOrders,function(testOrder){
+                $scope.selectedOrders =  _.filter($scope.consultation.orders,function(testOrder){
                     return _.indexOf(activeTabTestConcepts, testOrder.concept.uuid) != -1;
                 });
             };
@@ -65,7 +65,7 @@ angular.module('bahmni.clinical')
                 return conceptClasses;
             };
 
-            $scope.$watchCollection('consultation.testOrders', $scope.updateSelectedOrdersForActiveTab);
+            $scope.$watchCollection('consultation.orders', $scope.updateSelectedOrdersForActiveTab);
 
             $scope.handleOrderClick = function(order) {
                 var test = findTest(order.concept.uuid);
@@ -85,7 +85,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.isActiveOrderPresent = function (test) {
-                var validOrders = _.filter($scope.consultation.testOrders, function (testOrder) {
+                var validOrders = _.filter($scope.consultation.orders, function (testOrder) {
                     return !testOrder.isDiscontinued;
                 });
                 return _.find(validOrders, function (order) {
@@ -99,7 +99,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.isTestIndirectlyPresent = function (test) {
-                return _.find($scope.consultation.testOrders, function (order) {
+                return _.find($scope.consultation.orders, function (order) {
                     return _.contains(testConceptToParentsMapping[test.uuid], order.concept.uuid);
                 });
             };
@@ -165,27 +165,27 @@ angular.module('bahmni.clinical')
             };
 
             var removeOrder = function (testUuid) {
-                var order = _.find($scope.consultation.testOrders, function (order) {
+                var order = _.find($scope.consultation.orders, function (order) {
                     return order.concept.uuid == testUuid;
                 });
                 if (order) {
                     if (order.uuid) {
                         order.isDiscontinued = true;
                     } else {
-                        _.remove($scope.consultation.testOrders, order);
+                        _.remove($scope.consultation.orders, order);
                     }
                 }
             };
 
             var createOrder = function (test) {
-                var discontinuedOrder = _.find($scope.consultation.testOrders, function(order) {
+                var discontinuedOrder = _.find($scope.consultation.orders, function(order) {
                     return (test.uuid == order.concept.uuid) && order.isDiscontinued;
                 });
                 if(discontinuedOrder) {
                     discontinuedOrder.isDiscontinued = false;
                 } else {
                     var createdOrder = Bahmni.Clinical.Order.create(test);
-                    $scope.consultation.testOrders.push(createdOrder);
+                    $scope.consultation.orders.push(createdOrder);
                 }
             };
 
