@@ -60,7 +60,7 @@ angular.module('bahmni.registration')
                 if (relationship.hasOwnProperty('personB')) {
                     relationship.personB = null;
                 }
-                return spinner.forPromise(patientService.searchByIdentifier(relationship.patientIdentifier)).then(function (response) {
+                return patientService.searchByIdentifier(relationship.patientIdentifier).then(function (response) {
                     if (angular.isUndefined(response)) {
                         return;
                     }
