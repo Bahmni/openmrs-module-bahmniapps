@@ -9,7 +9,16 @@ angular.module('bahmni.registration')
             offset = offset || 0;
             return $http.get(openmrsUrl + "/ws/rest/v1/bahmnicore/patient", {
                 method: "GET",
-                params: {q: query, s: "byIdOrNameOrVillage",'address_field_name': addressFieldName , 'address_field_value': addressFieldValue, 'custom_attribute': customAttributeValue, startIndex: offset, patientAttributes: customAttributeFields}     ,
+                params: {q: query,'address_field_name': addressFieldName , 'address_field_value': addressFieldValue, 'custom_attribute': customAttributeValue, startIndex: offset, patientAttributes: customAttributeFields}     ,
+                withCredentials: true
+            });
+        };
+
+        var searchByIdentifier = function(identifier, offset){
+            offset = offset || 0;
+            return $http.get(openmrsUrl + "/ws/rest/v1/bahmnicore/patient", {
+                method: "GET",
+                params: {identifier: identifier},
                 withCredentials: true
             });
         };
@@ -62,6 +71,7 @@ angular.module('bahmni.registration')
 
         return {
             search: search,
+            searchByIdentifier: searchByIdentifier,
             create: create,
             generateIdentifier: generateIdentifier,
             update: update,

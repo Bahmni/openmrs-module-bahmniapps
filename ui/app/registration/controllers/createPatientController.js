@@ -19,8 +19,22 @@ angular.module('bahmni.registration')
                 $scope.hasOldIdentifier = preferences.hasOldIdentifier;
             })();
 
+            var addNewRelationships = function () {
+                var newRelationships = _.filter($scope.patient.newlyAddedRelationships, function (relationship) {
+                    return relationship.relationshipType && relationship.relationshipType.uuid;
+                });
+                newRelationships = _.each(newRelationships, function(relationship){
+                    delete relationship.patientIdentifier;
+                    delete relationship.content;
+                    delete re.providerName;
+                });
+                $scope.patient.relationships = $scope.patient.relationships.concat(newRelationships);
+
+            };
+
             $scope.create = function () {
                 setPreferences();
+                addNewRelationships();
                 var errMsg = Bahmni.Common.Util.ValidationUtil.validate($scope.patient, $scope.patientConfiguration.personAttributeTypes);
                 if (errMsg) {
                     messagingService.showMessage('formError', errMsg);

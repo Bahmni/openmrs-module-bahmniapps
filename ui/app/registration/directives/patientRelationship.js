@@ -13,16 +13,9 @@ angular.module('bahmni.registration')
     })
     .controller('PatientRelationshipController', ['$window', '$scope', '$rootScope', 'spinner', 'patientService', 'providerService',
         function ($window, $scope, $rootScope, spinner, patientService, providerService) {
-            $scope.newRelationship = {};
-            $scope.relationshipTypes = $rootScope.relationshipTypes;
-            $scope.patient.relationships = $scope.patient.relationships || [];
 
-            $scope.addRelationship = function (relationship) {
-                if (!checkMandatoryFieldsPresent(relationship)) {
-                    return;
-                }
-                $scope.patient.relationships.push(relationship);
-                $scope.newRelationship = {};
+            $scope.addPlaceholderRelationship  = function(){
+              $scope.patient.newlyAddedRelationships.push({});
             };
 
             $scope.removeRelationship = function (relationship) {
@@ -34,45 +27,40 @@ angular.module('bahmni.registration')
                 }
             };
 
-            $scope.hasNoRelationship = function (relationship) {
-                return angular.isUndefined(relationship['relationshipType']);
+            $scope.isValidRelationship = function (relationship) {
+                return $scope.isEmpty(relationship) || relationship.personB;
             };
 
             $scope.isPatientRelationship = function (relationship) {
                 if (angular.isUndefined(relationship['relationshipType'])) {
                     return false;
                 }
-                return getRelationshipType(relationship['relationshipType']['uuid']) == "patient";
+                var relationshipType = $scope.getRelationshipType(relationship.relationshipType.uuid);
+                return relationshipType && relationshipType.searchType == "patient";
             };
 
             $scope.isProviderRelationship = function (relationship) {
                 if (angular.isUndefined(relationship['relationshipType'])) {
                     return false;
                 }
-                return getRelationshipType(relationship['relationshipType']['uuid']) == "provider";
+                var relationshipType = $scope.getRelationshipType(relationship.relationshipType.uuid);
+                return relationshipType && relationshipType.searchType == "provider";
             };
 
-            var getRelationshipType = function (uuid) {
-                var searchType;
-                $scope.relationshipTypes.forEach(function (relationshipType) {
-                    if (relationshipType['uuid'] === uuid) {
-                        searchType = relationshipType.searchType;
-                    }
-                });
-                return searchType;
+            $scope.getRelationshipType = function (uuid) {
+                return _.findWhere($scope.relationshipTypes, {uuid: uuid});
             };
 
             $scope.searchByPatientIdentifier = function (relationship) {
-
-                if (null == relationship.patientIdentifier) {
+                if (!relationship.patientIdentifier) {
+                    relationship.personB = null;
+                    relationship.content = null;
                     return;
                 }
-
                 if (relationship.hasOwnProperty('personB')) {
                     relationship.personB = null;
                 }
-
-                return spinner.forPromise(patientService.search(relationship.patientIdentifier)).then(function (response) {
+                return spinner.forPromise(patientService.searchByIdentifier(relationship.patientIdentifier)).then(function (response) {
                     if (angular.isUndefined(response)) {
                         return;
                     }
@@ -90,17 +78,10 @@ angular.module('bahmni.registration')
             };
 
             $scope.showPersonNotFound = function (relationship) {
-                if (angular.isUndefined(relationship.patientIdentifier)) {
+                if (relationship.patientIdentifier) {
                     return false;
                 }
-
-                return (relationship.patientIdentifier != null &&
-                (angular.isUndefined(relationship.personB)
-                || relationship.personB == null));
-            };
-
-            var checkMandatoryFieldsPresent = function (relationship) {
-                    return relationship.relationshipType && relationship.personB;
+                return relationship.patientIdentifier && !relationship.personB;
             };
 
             $scope.openPatientDashboardInNewTab = function (relationship) {
@@ -135,11 +116,31 @@ angular.module('bahmni.registration')
                 });
             };
 
-            $scope.clearRelationshipRow = function (relationship) {
+            $scope.clearRelationshipRow = function (relationship, index) {
                 delete relationship.personB;
                 delete relationship.patientIdentifier;
                 delete relationship.providerName;
                 delete relationship.endDate;
+                delete relationship.content;
+                managePlaceholderRelationshipRows(index);
+            };
+
+            var managePlaceholderRelationshipRows = function(index){
+                var iter;
+                for (iter = 0; iter < $scope.patient.newlyAddedRelationships.length; iter++) {
+                    if ($scope.isEmpty($scope.patient.newlyAddedRelationships[iter]) && iter !== index) {
+                        $scope.patient.newlyAddedRelationships.splice(iter, 1)
+                    }
+                }
+
+                var emptyRows = _.filter($scope.patient.newlyAddedRelationships, $scope.isEmpty);
+                if (emptyRows.length == 0) {
+                    $scope.addPlaceholderRelationship();
+                }
+            };
+
+            $scope.isEmpty  = function(relationship){
+                return !relationship.relationshipType || !relationship.relationshipType.uuid;
             };
 
             var getPatientGenderAndAge = function (patient) {
@@ -147,5 +148,13 @@ angular.module('bahmni.registration')
                 return patientGenderAndAge.join(", ");
             };
 
+           var init = function(){
+               $scope.patient.newlyAddedRelationships = [];
+               $scope.addPlaceholderRelationship();
+               $scope.relationshipTypes = $rootScope.relationshipTypes;
+               $scope.patient.relationships = $scope.patient.relationships || [];
+           };
+
+            init();
         }
     ]);

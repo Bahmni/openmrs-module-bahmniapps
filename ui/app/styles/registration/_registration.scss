@@ -927,18 +927,22 @@ button u, u {
 }
 .relationships {
   .table {
-    .row {
+    .table-body .row {
+      background: $white;
       border-bottom: 1px solid $lightGray;
     }
     .table-header.row {
+      background: $lightestGray;
       border-bottom: 1px solid $lightGray;
     }
   }
-  .new-relationship, .current-relationship, .history-relationship {
-    margin-bottom: 25px;
-    margin-left: 5px;
-    margin-right: 5px;
+  .history-relationship {
+    margin: 0px 5px 20px 5px;
+    .table-body .row {
+      height: 42px;
+    }
   }
+
   .new-relationship {
     border: 1px solid darken($lightGray, 10%);
     margin: 0px 5px 20px 5px;
@@ -946,21 +950,9 @@ button u, u {
     @media screen and (max-width: 768px) {
       margin-top: 20px;
     }
-    .row-remover {
-      border: 1px solid $lightGray;
-      border-radius: 5px;
-      float: right;
-      padding: 5px 10px;
-      margin-bottom: 10px;
-      span {
-        font-size: 20px;
-        color: $clinicalRemoveBtn;
-        padding: 0;
-      }
-    }
   }
+
   .table-header {
-    background: $lightestGray;
     border-radius: 5px 5px 0 0;
     span {
       font-size: 14px;
@@ -968,40 +960,37 @@ button u, u {
       color: $mediumGray;
       font-family: $OpenSansBoldFont;
       font-weight: normal;
-      padding-left: 10px;
+      margin-left: 10px;
     }
   }
   .col1 {
     @include column(3);
-    input[type="text"] {
+    select, span{
       min-width: 160px;
       margin-left: 10px;
       margin-top: 0;
-      float: left;
-    }
-    input[type="checkbox"] {
-      margin-top: 8px;
     }
     label.add-new {margin-top: 10px; font-size: 12px;}
     width: 25%;
   }
   .col2 {
     @include column(3);
-    button:first-child {
+    input,span{
       margin-left: 10px;
     }
-    width: 30%;
+    width: 40%;
   }
   .col3 {
     @include column(3);
-    button:first-child {
+    input,span{
       margin-left: 10px;
     }
     width: 25%;
   }
   .col4 {
     @include column(2);
-    width: 15%;
+    width: 5%;
+    padding: 2px;
   }
 }
 .registraition-search-results-container{

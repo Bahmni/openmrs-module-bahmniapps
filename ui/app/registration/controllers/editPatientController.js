@@ -51,7 +51,7 @@ angular.module('bahmni.registration')
             })();
 
             $scope.update = function () {
-                cleanupRelationships();
+                addNewRelationships();
 
                 var patientUpdatePromise = patientService.update($scope.patient, $scope.openMRSPatient).success(function (patientProfileData) {
                     $scope.actions.followUpAction(patientProfileData);
@@ -59,17 +59,21 @@ angular.module('bahmni.registration')
                 spinner.forPromise(patientUpdatePromise);
             };
 
-            var cleanupRelationships = function () {
-                for (var relationship in $scope.patient.relationships) {
-                    delete $scope.patient.relationships[relationship].patientIdentifier;
-                    delete $scope.patient.relationships[relationship].content;
-                    delete $scope.patient.relationships[relationship].providerName;
-                }
-            }
+            var addNewRelationships = function () {
+                var newRelationships = _.filter($scope.patient.newlyAddedRelationships, function (relationship) {
+                    return relationship.relationshipType && relationship.relationshipType.uuid;
+                });
+                newRelationships = _.each(newRelationships, function(relationship){
+                    delete relationship.patientIdentifier;
+                    delete relationship.content;
+                    delete relationship.providerName;
+                });
+                $scope.patient.relationships = $scope.patient.relationships.concat(newRelationships);
+            };
 
             $scope.isReadOnly = function (field) {
                 return $scope.readOnlyFields[field];
-            }
+            };
 
             $scope.afterSave = function () {
                 setReadOnlyFields();

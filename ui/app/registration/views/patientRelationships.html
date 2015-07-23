@@ -7,41 +7,19 @@
                 <div class="col col3"><span>End Date</span></div>
             </div>
             <div class="table-body">
-                <div class="row" ng-repeat="relationship in patient.relationships" ng-hide="relationship.voided">
+                <div class="row" ng-repeat="newRelationship in patient.newlyAddedRelationships">
                     <div class="col col1">
-                        <select ng-model="relationship.relationshipType.uuid" ng-options="type.uuid as type.aIsToB for type in relationshipTypes" ng-change="clearRelationshipRow(relationship);searchByPatientIdentifier(relationship)" ></select>
+                        <select ng-model="newRelationship.relationshipType.uuid" ng-options="type.uuid as type.aIsToB for type in relationshipTypes" ng-change="clearRelationshipRow(newRelationship, $index);">
+                            <option value=""></option>
+                        </select>
                         <span class="asterick">*</span>
                     </div>
                     <div class="col col2">
-                        <input type="text" ng-show="hasNoRelationship(relationship) || isPatientRelationship(relationship)" ng-model="relationship.patientIdentifier" ng-blur="searchByPatientIdentifier(relationship)" class="ng-valid ng-touched ng-dirty ng-valid-parse">
-                        <input type="text" ng-show="isProviderRelationship(relationship)" bahmni-autocomplete ng-model="relationship.providerName" response-map="getProviderDataResults" class="ng-valid ng-touched ng-dirty ng-valid-parse"
-                               source="getProviderList(relationship)"  on-select="providerSelected(relationship)">
-                        <span class="asterick">*</span>
-                        <span ng-show="isPatientRelationship(relationship)"><a ng-click="openPatientDashboardInNewTab(relationship)"><i class="fa fa-external-link"></i></a></span>
-                        <span style="display:block" ng-show="showPersonNotFound(relationship)">Person not found</span>
-                        <span style="display:block" ng-show="!showPersonNotFound(relationship)">{{relationship.content}}</span>
-                        <span style="display:block">{{relationship.personB.display}}</span>
-                        <input type="hidden" ng-model="relationship.personB.uuid"/>
-                    </div>
-                    <div class="col col3">
-                        <input type="text" pattern="\d{4}-\d{2}-\d{2}" ng-model="relationship.endDate" datepicker
-                               placeholder="yyyy-mm-dd" date-format="yy-mm-dd" class="datepicker">
-                    </div>
-                    <div class="col col4">
-                        <button type="button" class="small-btn" ng-confirm-click="removeRelationship(relationship)" id="relationRemoveBtn-{{$index}}">
-                            <span class="fa fa-remove"></span>
-                        </button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col col1">
-                        <select ng-model="newRelationship.relationshipType.uuid" ng-options="type.uuid as type.aIsToB for type in relationshipTypes" ng-change="clearRelationshipRow(newRelationship);searchByPatientIdentifier(newRelationship)" non-blank="true" pattern-validate required></select>
-                        <span class="asterick">*</span>
-                    </div>
-                    <div class="col col2">
-                        <input type="text" ng-if="hasNoRelationship(newRelationship) || isPatientRelationship(newRelationship)" ng-model="newRelationship.patientIdentifier" ng-blur="searchByPatientIdentifier(newRelationship)" class="ng-valid ng-touched ng-dirty ng-valid-parse">
-                        <input type="text" ng-if="isProviderRelationship(newRelationship)" bahmni-autocomplete ng-model="newRelationship.providerName" response-map="getProviderDataResults" class="ng-valid ng-touched ng-dirty ng-valid-parse"
-                               source="getProviderList(relationship)"  on-select="providerSelected(newRelationship)">
+                        <input type="text" ng-if="isEmpty(newRelationship) || isPatientRelationship(newRelationship)" ng-class="{'illegalValue': !isValidRelationship(newRelationship)}"
+                               ng-model-options="{updateOn: 'blur'}" ng-model="newRelationship.patientIdentifier" non-blank="newRelationship.personB" ng-change="searchByPatientIdentifier(newRelationship)">
+                        <input type="text" ng-if="isProviderRelationship(newRelationship)" bahmni-autocomplete  ng-class="{'illegalValue': !isValidRelationship(newRelationship)}"
+                               ng-model="newRelationship.providerName" response-map="getProviderDataResults"
+                               source="getProviderList(relationship)" non-blank="newRelationship.personB"  on-select="providerSelected(newRelationship)">
                         <span class="asterick">*</span>
                         <span style="display:block" ng-show="showPersonNotFound(newRelationship)">Person not found</span>
                         <span style="display:block" ng-show="!showPersonNotFound(newRelationship)">{{newRelationship.content}}</span>
@@ -51,9 +29,31 @@
                         <input type="text" pattern="\d{4}-\d{2}-\d{2}" ng-model="newRelationship.endDate" datepicker
                                placeholder="yyyy-mm-dd" date-format="yy-mm-dd" class="datepicker">
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table history-relationship primary-section-grid">
+            <div class="row table-header">
+                <div class="col col1"><span>Type</span></div>
+                <div class="col col2"><span>Related To</span></div>
+                <div class="col col3"><span>End Date</span></div>
+            </div>
+            <div class="table-body">
+                <div class="row" ng-repeat="relationship in patient.relationships" ng-hide="relationship.voided">
+                    <div class="col col1">
+                        <span>{{getRelationshipType(relationship.relationshipType.uuid).aIsToB}}</span>
+                    </div>
+                    <div class="col col2">
+                        <span>{{relationship.personB.display}}</span>
+                        <span ng-if="isPatientRelationship(relationship)"><a ng-click="openPatientDashboardInNewTab(relationship)"><i class="fa fa-external-link"></i></a></span>
+                    </div>
+                    <div class="col col3">
+                        <span style="display:block">{{relationship.endDate | bahmniDate}}</span>
+                    </div>
                     <div class="col col4">
-                        <button type="button" class="small-btn" ng-click="addRelationship(newRelationship)" id="relationAddBtn-{{$index}}">
-                            Add
+                        <button type="button" class="small-btn row-remover" ng-confirm-click="removeRelationship(relationship)" id="relationRemoveBtn-{{$index}}">
+                            <span class="fa fa-remove"></span>
                         </button>
                     </div>
                 </div>

@@ -2,18 +2,18 @@
 
 describe('PatientRelationshipController', function () {
 
-    var patientServiceMock = jasmine.createSpyObj('patientService', ['search']);
+    var patientServiceMock = jasmine.createSpyObj('patientService', ['searchByIdentifier']);
     var providerServiceMock = jasmine.createSpyObj('providerService', ['search']);
     var rootScope;
     var scope;
 
     var patientServiceSearchPromise = specUtil.respondWith({data: {results: [{uuid: "123"}]}});
-    patientServiceMock.search.and.returnValue(patientServiceSearchPromise);
+    patientServiceMock.searchByIdentifier.and.returnValue(patientServiceSearchPromise);
 
     var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
     spinner.forPromise.and.returnValue(patientServiceSearchPromise);
 
-    patientServiceMock.search.and.callFake(function () {
+    patientServiceMock.searchByIdentifier.and.callFake(function () {
         return specUtil.respondWith({data: {pageOfResults: [{uuid: "123"}]}});
     });
 
@@ -27,15 +27,17 @@ describe('PatientRelationshipController', function () {
             scope = $rootScope.$new();
             scope.patient = {};
             rootScope = $rootScope;
-            rootScope.relationshipTypes = [{
-                aIsToB: "Doctor",
-                searchType: "provider",
-                uuid: "8d919b58-c2cc-11de-8d13-0010c6dffd0f"
-            },
+            rootScope.relationshipTypes = [
+                {
+                    aIsToB: "Doctor",
+                    searchType: "provider",
+                    uuid: "8d919b58-c2cc-11de-8d13-0010c6dffd0f"
+                },
                 {aIsToB: "Sibling", searchType: "patient", uuid: "8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},
                 {aIsToB: "Parent", searchType: "patient", uuid: "8d91a210-c2cc-11de-8d13-0010c6dffd0f"},
                 {aIsToB: "Aunt/Uncle", searchType: "patient", uuid: "8d91a3dc-c2cc-11de-8d13-0010c6dffd0f"},
-                {aIsToB: "Supervisor", searchType: "patient", uuid: "2a5f4ff4-a179-4b8a-aa4c-40f71956ebbc"}];
+                {aIsToB: "Supervisor", searchType: "patient", uuid: "2a5f4ff4-a179-4b8a-aa4c-40f71956ebbc"}
+            ];
             $controller('PatientRelationshipController', {
                 $scope: scope,
                 $rootScope: rootScope,
@@ -46,35 +48,11 @@ describe('PatientRelationshipController', function () {
         })
     );
 
-    describe("Add relationship", function () {
-        it("should add provider relationship", function () {
-            expect(scope.patient.relationships).toEqual([]);
-            scope.addRelationship({
-                providerName: "Doctor",
-                relationshipType: {"uuid": "8d919b58-c2cc-11de-8d13-0010c6dffd0f"},
-                voided: false,
-                personB: {"uuid": "uuid"}
-            });
-            expect(scope.patient.relationships.length).toBe(1);
-        });
-
-        it("should add patient relationship", function () {
-            expect(scope.patient.relationships).toEqual([]);
-            scope.addRelationship({
-                patientIdentifier: "Patient",
-                relationshipType: {"uuid": "8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},
-                voided: false,
-                personB: {"uuid": "uuid"}
-            });
-            expect(scope.patient.relationships.length).toBe(1);
-        });
-    });
-
     describe("Remove relationship", function () {
         it("should remove newly added relationship", function () {
             expect(scope.patient.relationships).toEqual([]);
             var relationship = {patientIdentifier: "Doctor"};
-            scope.addRelationship(relationship);
+            scope.patient.relationships.push(relationship);
             scope.removeRelationship(relationship);
             expect(scope.patient.relationships.length).toBe(0);
         });
@@ -102,7 +80,7 @@ describe('PatientRelationshipController', function () {
             };
             scope.patient.relationships = [relationship];
             scope.searchByPatientIdentifier(relationship);
-            expect(patientServiceMock.search).toHaveBeenCalled();
+            expect(patientServiceMock.searchByIdentifier).toHaveBeenCalled();
             done();
         });
     });
@@ -153,28 +131,100 @@ describe('PatientRelationshipController', function () {
             var patientRelationship = {
                 patientIdentifier: "Doctor",
                 relationshipType: {"uuid": "8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},
-                personB: {"uuid": "uuid"}
+                personB: {"uuid": "uuid"},
+                endDate: "2015-07-12"
             };
             expect(patientRelationship.patientIdentifier).toBeDefined();
             scope.clearRelationshipRow(patientRelationship);
             expect(patientRelationship.patientIdentifier).toBeUndefined();
+            expect(patientRelationship.content).toBeUndefined();
+            expect(patientRelationship.endDate).toBeUndefined();
+            expect(patientRelationship.personB).toBeUndefined();
+
             var providerRelationship = {
-                patientIdentifier: "Doctor",
+                providerName: "Doctor",
                 relationshipType: {"uuid": "8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},
                 personB: {"uuid": "uuid"}
             };
-            expect(providerRelationship.patientIdentifier).toBeDefined();
+            expect(providerRelationship.providerName).toBeDefined();
             scope.clearRelationshipRow(providerRelationship);
             expect(providerRelationship.providerName).toBeUndefined();
         });
-    });
 
-    describe("clearRelationshipRow", function(){
         it("should have called providerService when get provider list is called", function () {
             var searchAttrs = {'term': 'search this'};
             (scope.getProviderList())(searchAttrs);
             expect(providerServiceMock.search).toHaveBeenCalled();
         });
+
+        it("should remove placeholder relationship rows when the current row is cleared", function(){
+            var patientRelationship = {
+                patientIdentifier: "Doctor",
+                relationshipType: {"uuid": undefined},
+                personB: {"uuid": "uuid"},
+                endDate: "2015-07-12"
+            };
+            var placeHolderRelationship = {};
+            scope.patient.newlyAddedRelationships = [patientRelationship, placeHolderRelationship];
+
+            scope.clearRelationshipRow(patientRelationship, 0);
+
+            expect(scope.patient.newlyAddedRelationships.length).toBe(1);
+        });
+
+        it("should add placeholder relationship rows when the current empty row is populated", function(){
+            var patientRelationship = {
+                patientIdentifier: "Doctor",
+                relationshipType: {"uuid": "uuid1"},
+                personB: {"uuid": "uuid"},
+                endDate: "2015-07-12"
+            };
+            var currentEmptyRelationshipRow = {
+                relationshipType: {"uuid": "uuid2"}
+            };
+            scope.patient.newlyAddedRelationships = [patientRelationship, currentEmptyRelationshipRow];
+
+            scope.clearRelationshipRow(patientRelationship, 1);
+
+            expect(scope.patient.newlyAddedRelationships.length).toBe(3);
+            expect(scope.isEmpty(scope.patient.newlyAddedRelationships[0])).toBeFalsy();
+            expect(scope.isEmpty(scope.patient.newlyAddedRelationships[1])).toBeFalsy();
+            expect(scope.isEmpty(scope.patient.newlyAddedRelationships[2])).toBeTruthy();
+        })
+    });
+
+    describe('isValidRelationship', function(){
+        it("should return false if personB is null", function(){
+            var patientRelationship = {
+                patientIdentifier: "Doctor",
+                relationshipType: {"uuid": "8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},
+                personB: null
+            };
+
+            expect(scope.isValidRelationship(patientRelationship)).toBeFalsy()
+        });
+
+        it("should return false if relationship type itself is not present", function(){
+            var patientRelationship = {
+                patientIdentifier: "Doctor",
+                relationshipType: {"uuid": undefined},
+                personB: null
+            };
+
+            expect(scope.isValidRelationship(patientRelationship)).toBeTruthy()
+        })
+    });
+
+    describe('isEmpty', function(){
+       it("should return true if relationship type is not selected", function(){
+           var patientRelationship = {
+               patientIdentifier: "Doctor",
+               relationshipType: {"uuid": undefined},
+               personB: null
+           };
+
+           expect(scope.isEmpty(patientRelationship)).toBeTruthy();
+       })
     });
 
 });

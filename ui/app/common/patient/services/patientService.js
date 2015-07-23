@@ -28,11 +28,11 @@ angular.module('bahmni.common.patient')
             });
         };
 
-        this.search = function (query, offset) {
+        this.search = function (query, offset, identifier) {
             offset = offset || 0;
             return $http.get("/openmrs/ws/rest/v1/bahmnicore/patient", {
                 method: "GET",
-                params: {q: query, s: "byIdOrNameOrVillage", startIndex: offset},
+                params: {q: query, startIndex: offset, identifier: identifier},
                 withCredentials: true
             });
         };
