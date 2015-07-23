@@ -78,10 +78,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.showPersonNotFound = function (relationship) {
-                if (relationship.patientIdentifier) {
-                    return false;
-                }
-                return relationship.patientIdentifier && !relationship.personB;
+                return (relationship.patientIdentifier || relationship.providerName)  && !relationship.personB;
             };
 
             $scope.openPatientDashboardInNewTab = function (relationship) {
@@ -149,9 +146,9 @@ angular.module('bahmni.registration')
             };
 
            var init = function(){
-               $scope.patient.newlyAddedRelationships = [];
-               $scope.addPlaceholderRelationship();
                $scope.relationshipTypes = $rootScope.relationshipTypes;
+               $scope.patient.newlyAddedRelationships = $scope.patient.newlyAddedRelationships || [];
+               $scope.addPlaceholderRelationship();
                $scope.patient.relationships = $scope.patient.relationships || [];
            };
 
