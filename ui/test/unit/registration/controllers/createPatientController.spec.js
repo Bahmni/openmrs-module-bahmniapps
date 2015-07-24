@@ -43,9 +43,6 @@ describe('CreatePatientController', function () {
                 }
             });
         };
-            scopeMock.patientConfiguration = { identifierSources: [] };
-            scopeMock.patient = {identifierPrefix: {}, relationships: []};
-            scopeMock.actions = {followUpAction: function() { scopeMock.afterSave() } };
         patientServiceMock.getLatestIdentifierMock = function (data) {
             patientServiceMock.getLatestIdentifier.and.callFake(function () {
                 return {
@@ -95,6 +92,7 @@ describe('CreatePatientController', function () {
         };
 
         scopeMock.patientConfiguration = {identifierSources: []};
+        scopeMock.patient = {identifierPrefix: {}, relationships: []};
     });
 
     it("should set patient identifierPrefix details with the matching one",function(){
@@ -141,7 +139,7 @@ describe('CreatePatientController', function () {
 
     it("should create a patient and go to edit page", function () {
 
-        scopeMock.patient = {identifierPrefix: {prefix: "GAN"}};
+        scopeMock.patient.identifierPrefix.prefix = "GAN";
 
         patientServiceMock.generateIdentifierMock("uuid");
         patientServiceMock.createMock({patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}});
@@ -153,33 +151,7 @@ describe('CreatePatientController', function () {
     });
 
     it("should create a patient with custom id and go to edit page", function () {
-            appServiceMock.getAppDescriptor = function () {
-                return { getConfigValue: function () {} }
-            };
-            rootScopeMock.patientConfiguration = { identifierSources: [] };
-            var controller = $aController('CreatePatientController', {
-                $scope: scopeMock,
-                $rootScope: rootScopeMock,
-                $state: stateMock,
-                patientService: patientServiceMock,
-                preferences: preferencesMock,
-                patientModel: patientModelMock,
-                spinner: spinnerMock,
-                appService: appServiceMock
-            });
-            scopeMock.patient = {identifierPrefix: {}, relationships: []};
-            scopeMock.actions = {followUpAction: function() { scopeMock.afterSave() } };
-            scopeMock.hasOldIdentifier = true;
-            patientServiceMock.create = function() {
-                return {
-                    success: function (successFn) {
-                        var patientProfileData = {patient: { uuid: "patientUuid", person: {names: [{display: "somename"}]}} }
-                        successFn(patientProfileData);
-                    }
-                };
-            };
-
-        scopeMock.patient = {identifierPrefix: {prefix: "GAN"}};
+        scopeMock.patient.identifierPrefix.prefix = "GAN";
 
         scopeMock.hasOldIdentifier = true;
         patientServiceMock.getLatestIdentifierMock("100000");
@@ -191,8 +163,8 @@ describe('CreatePatientController', function () {
     });
 
     it("should open the pop up when the custom identifier is greater then the next identifier in the sequence", function () {
-
-        scopeMock.patient = {identifierPrefix: {prefix: "GAN"}, registrationNumber: "1050"};
+        scopeMock.patient.identifierPrefix.prefix = "GAN";
+        scopeMock.patient.registrationNumber = "1050";
 
         scopeMock.hasOldIdentifier = true;
 
@@ -210,8 +182,8 @@ describe('CreatePatientController', function () {
     });
 
     it("should not open the pop up when the custom identifier is less then the next identifier in the sequence", function () {
-
-        scopeMock.patient = {identifierPrefix: {prefix: "GAN"}, registrationNumber: "1050"};
+        scopeMock.patient.identifierPrefix.prefix = "GAN";
+        scopeMock.patient.registrationNumber = "1050";
 
         scopeMock.hasOldIdentifier = true;
 
@@ -227,8 +199,8 @@ describe('CreatePatientController', function () {
     });
 
     it("should not open the pop up when the custom identifier is equal to the next identifier in the sequence", function () {
-
-        scopeMock.patient = {identifierPrefix: {prefix: "GAN"}, registrationNumber: "1050"};
+        scopeMock.patient.identifierPrefix.prefix = "GAN";
+        scopeMock.patient.registrationNumber = "1050";
 
         scopeMock.hasOldIdentifier = true;
 
@@ -246,7 +218,8 @@ describe('CreatePatientController', function () {
     });
 
     it("should not create patient when the set Identifier throws error", function () {
-        scopeMock.patient = {identifierPrefix: {prefix: "GAN"}, registrationNumber: "1050"};
+        scopeMock.patient.identifierPrefix.prefix = "GAN";
+        scopeMock.patient.registrationNumber = "1050";
 
         scopeMock.hasOldIdentifier = true;
 
@@ -265,7 +238,8 @@ describe('CreatePatientController', function () {
     });
 
     it("should create patient when the user says yes to the pop up", function () {
-        scopeMock.patient = {identifierPrefix: {prefix: "GAN"}, registrationNumber: "1050"};
+        scopeMock.patient.identifierPrefix.prefix = "GAN";
+        scopeMock.patient.registrationNumber = "1050";
 
         scopeMock.hasOldIdentifier = true;
 
@@ -287,7 +261,8 @@ describe('CreatePatientController', function () {
     });
 
     it("should not create patient when the user says no to the pop up", function () {
-        scopeMock.patient = {identifierPrefix: {prefix: "GAN"}, registrationNumber: "1050"};
+        scopeMock.patient.identifierPrefix.prefix = "GAN";
+        scopeMock.patient.registrationNumber = "1050";
 
         scopeMock.hasOldIdentifier = true;
 
