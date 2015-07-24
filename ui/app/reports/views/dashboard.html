@@ -1,22 +1,27 @@
 <div class="reports-page">
-    <section class="section-grid">
-    <h2 class="section-title">Reports</h2>
-        <table class="alt-row" ng-if="!tasks.isEmpty()">
+    <h2 ng-if="!reportsDefined">New reports can be configured in a json file within openmrs/apps/reports/reports.json. Please
+    consult the documentation for more information on configuring canned reports</h2>
+    <section class="section-grid" ng-if="reportsRequiringDateRange.length > 0">
+        <h2 class="section-title">Reports</h2>
+        <table class="alt-row">
             <thead>
             <tr>
                 <th>Name</th>
                 <th class="reports-start-date">Start Date
-                    <input ng-model="default.startDate" date-converter class="form-field start-date" type="date"
-                           ng-change="setDefault('startDate')">
+                    <input ng-model="default.reportsRequiringDateRange.startDate" date-converter
+                           class="form-field start-date" type="date"
+                           ng-change="setDefault('startDate', 'reportsRequiringDateRange')">
                 </th>
                 <th class="reports-stop-date">Stop Date
-                    <input ng-model="default.stopDate" date-converter class="form-field start-date" type="date"
-                           ng-change="setDefault('stopDate')">
+                    <input ng-model="default.reportsRequiringDateRange.stopDate" date-converter
+                           class="form-field start-date" type="date"
+                           ng-change="setDefault('stopDate', 'reportsRequiringDateRange')">
                 </th>
                 <th class="reports-format">
                     Format
-                    <select ng-model="default.responseType" ng-change="setDefault('responseType')"
-                            ng-init="default.responseType='application/vnd.ms-excel'">
+                    <select ng-model="default.reportsRequiringDateRange.responseType"
+                            ng-change="setDefault('responseType', 'reportsRequiringDateRange')"
+                            ng-init="default.reportsRequiringDateRange.responseType='application/vnd.ms-excel'">
                         <option value="application/vnd.ms-excel" selected="selected">EXCEL</option>
                         <option value="application/pdf">PDF</option>
                         <option value="text/html">HTML</option>
@@ -27,16 +32,53 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="report in reports">
+            <tr ng-repeat="report in reportsRequiringDateRange">
                 <td>{{ report.name }}</td>
                 <td class="reports-start-date"><input date-converter class="form-field start-date" type="date"
-                           ng-model="report.startDate"></td>
+                                                      ng-model="report.startDate"></td>
                 <td class="reports-stop-date"><input date-converter class="form-field stop-date" type="date"
-                           ng-model="report.stopDate"></td>
+                                                     ng-model="report.stopDate"></td>
                 <td class="reports-format">
                     <select ng-model="report.responseType" ng-init="report.responseType='application/vnd.ms-excel'">
                         <option value="text/html" selected="selected">HTML</option>
-                        <option value="application/vnd.ms-excel" >EXCEL</option>
+                        <option value="application/vnd.ms-excel">EXCEL</option>
+                        <option value="application/pdf">PDF</option>
+                    </select>
+                </td>
+                <td class="reports-action">
+                    <button type="submit" class="run-report confirm" ng-click="runReport(report)"> Run Report</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+    <section class="section-grid" ng-if="reportsNotRequiringDateRange.length > 0">
+        <h2 class="section-title">Reports without Date Range</h2>
+        <table class="alt-row">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th class="reports-format">
+                    Format
+                    <select ng-model="default.reportsNotRequiringDateRange.responseType"
+                            ng-change="setDefault('responseType', 'reportsNotRequiringDateRange')"
+                            ng-init="default.reportsNotRequiringDateRange.responseType='application/vnd.ms-excel'">
+                        <option value="application/vnd.ms-excel" selected="selected">EXCEL</option>
+                        <option value="application/pdf">PDF</option>
+                        <option value="text/html">HTML</option>
+                    </select>
+                </th>
+                <th class="reports-action">
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="report in reportsNotRequiringDateRange">
+                <td>{{ report.name }}</td>
+                <td class="reports-format">
+                    <select ng-model="report.responseType" ng-init="report.responseType='application/vnd.ms-excel'">
+                        <option value="text/html" selected="selected">HTML</option>
+                        <option value="application/vnd.ms-excel">EXCEL</option>
                         <option value="application/pdf">PDF</option>
                     </select>
                 </td>
