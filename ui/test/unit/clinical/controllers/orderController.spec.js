@@ -186,6 +186,17 @@ describe("OrderController", function () {
             expect(scope.isTestIndirectlyPresent(someTest)).toBeFalsy();
         });
 
+        it("should return false for test if panel has been discontinued", function () {
+            var test = allOrderables["\'Lab Samples\'"].setMembers[0].setMembers[1].setMembers[0];
+            var somePanel = allOrderables["\'Lab Samples\'"].setMembers[0].setMembers[1];
+
+            var panel = Bahmni.Clinical.Order.create(somePanel);
+            panel.isDiscontinued = true;
+            scope.consultation.orders.push(panel);
+
+            expect(scope.isTestIndirectlyPresent(test)).toBeFalsy();
+        });
+
         it("should return true if the order is indirectly present so that it can be made readonly", function () {
             var someTest = allOrderables["\'Lab Samples\'"].setMembers[0].setMembers[1];
             var someOrder = Bahmni.Clinical.Order.create(someTest);

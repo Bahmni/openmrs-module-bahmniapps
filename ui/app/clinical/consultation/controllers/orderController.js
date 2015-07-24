@@ -99,7 +99,10 @@ angular.module('bahmni.clinical')
             };
 
             $scope.isTestIndirectlyPresent = function (test) {
-                return _.find($scope.consultation.orders, function (order) {
+                var validOrders = _.filter($scope.consultation.orders, function (testOrder) {
+                    return !testOrder.isDiscontinued;
+                });
+                return _.find(validOrders, function (order) {
                     return _.contains(testConceptToParentsMapping[test.uuid], order.concept.uuid);
                 });
             };
@@ -198,8 +201,7 @@ angular.module('bahmni.clinical')
                                 if (testConceptToParentsMapping[child.uuid] === undefined) {
                                     testConceptToParentsMapping[child.uuid] = [];
                                 }
-                                var parentArray = testConceptToParentsMapping[child.uuid];
-                                parentArray.push(member.uuid);
+                                testConceptToParentsMapping[child.uuid].push(member.uuid);
                             })
                         }
                     });

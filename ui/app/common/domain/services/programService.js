@@ -1,13 +1,9 @@
 'use strict';
-angular.module('bahmni.common.service', []);
-angular.module('bahmni.common.service')
+angular.module('bahmni.common.domain')
     .factory('programService', ['$http', function ($http) {
 
         var getAllPrograms = function () {
-            var req = {
-                url: Bahmni.Common.Constants.programUrl
-            };
-            return $http.get(req.url);
+            return $http.get(Bahmni.Common.Constants.programUrl);
         };
 
         var enrollPatientToAProgram = function (patientUuid, programUuid, dateEnrolled,workflowUuid) {
