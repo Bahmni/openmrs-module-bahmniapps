@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('bahmni.common.displaycontrol.programs', ['bahmni.common.service', 'bahmni.common.uiHelper']);
+angular.module('bahmni.common.displaycontrol.programs', ['bahmni.common.domain', 'bahmni.common.uiHelper']);
