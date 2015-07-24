@@ -4,15 +4,24 @@ angular.module('bahmni.reports')
     .controller('DashboardController', ['$scope', 'appService', 'reportService', function ($scope, appService, reportService) {
 
         appService.loadConfig('reports.json').then(function (response) {
-            $scope.reports = response.data;
+            $scope.reportsRequiringDateRange = response.data.filter(function(report) {
+               return !(report.config && report.config.dateRangeRequired === false);
+            });
+            $scope.reportsNotRequiringDateRange = response.data.filter(function(report) {
+                return (report.config && report.config.dateRangeRequired === false);
+            });
+            $scope.reportsDefined = response.data.length > 0;
         });
 
-        $scope.default = {};
+        $scope.default = {reportsRequiringDateRange: {}, reportsNotRequiringDateRange: {}};
 
-        $scope.setDefault = function (item) {
-            $scope.reports.forEach(function (report) {
-                report[item] = $scope.default[item];
-            })
+        $scope.reportsDefined = true;
+
+        $scope.setDefault = function (item, header) {
+            var setToChange = header === 'reportsRequiringDateRange'? $scope.reportsRequiringDateRange: $scope.reportsNotRequiringDateRange;
+            setToChange.forEach(function (report) {
+                report[item] = $scope.default[header][item];
+            });
         };
 
         $scope.runReport = function (report) {
