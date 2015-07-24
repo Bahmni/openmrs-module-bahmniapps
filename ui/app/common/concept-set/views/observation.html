@@ -118,7 +118,7 @@
                 </div>
 
             <span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
-                <button id="{{::observation.concept.name.split(' ').join('_').toLowerCase() +'_addmore_'+observation.uniqueId}}" type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)">
+                <button id="{{observation.assignAddMoreButtonID()}}" type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)">
                     <i class="fa fa-plus-circle"></i> Add More
                 </button>
             </span>
@@ -268,7 +268,7 @@
                        ng-bind="'(' + observation.concept.lowNormal + ' - ' + observation.concept.hiNormal + ')'"></small>
 
             <span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
-                <button id="{{::observation.concept.name.split(' ').join('_').toLowerCase() +'_addmore_'+observation.uniqueId}}" type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)">
+                <button id="{{observation.assignAddMoreButtonID()}}" type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)">
                     <i class="fa fa-plus-circle"></i> Add More
                 </button>
             </span>
@@ -298,7 +298,7 @@
                 <i ng-if="!(isCollapsibleSet() && collapse)" class="fa fa-caret-down"></i>
                 <strong>{{::observation.label}}</strong>
             <span ng-if="observation.canAddMore && observation.canAddMore()" class="add-more">
-                <button id="{{::observation.concept.name.split(' ').join('_').toLowerCase() +'_addmore_'+observation.uniqueId}}" type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)">
+                <button id="{{observation.assignAddMoreButtonID()}}" type="button" class="add-more-btn btn-small" ng-click="cloneNew(observation, rootObservation)">
                     <i class="fa fa-plus-circle"></i> Add More
                 </button>
             </span>

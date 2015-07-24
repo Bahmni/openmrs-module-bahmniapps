@@ -294,6 +294,9 @@ Bahmni.ConceptSet.Observation.prototype = {
 
     toggleVoidingOfImage: function() {
         this.voided = !this.voided;
-    }
+    },
 
+    assignAddMoreButtonID : function(){
+        return this.concept.name.split(' ').join('_').toLowerCase() + '_addmore_' + this.uniqueId;
+    }
 };

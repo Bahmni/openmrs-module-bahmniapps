@@ -316,5 +316,9 @@ Bahmni.ConceptSet.ObservationNode.prototype = {
 
     toggleAbnormal: function() {
         this.abnormalObs.value = !this.abnormalObs.value;
+    },
+
+    assignAddMoreButtonID : function(){
+        return this.concept.name.split(' ').join('_').toLowerCase() + '_addmore_' + this.uniqueId;
     }
 };
