@@ -23,41 +23,7 @@
 
             <div ng-if="hasPatientEnrolledToSomePrograms()">
                 <div ng-repeat="program in activePrograms" class="program-stuff">
-                    <div class="program-details">
-                        <a ng-href="#/patient/{{patient.uuid}}/dashboard" class="big-anchor">{{program.display}}</a>
-                        <span>(Enrolled on {{program.dateEnrolled | bahmniDate}})</span>
-
-                        <div class="program-actions">
-                            <button ng-click="toggleEdit(program)">Edit</button>
-                            <button ng-click="toggleEnd(program)">End</button>
-                        </div>
-                        <div ng-if="program.ending" class="end-program-container">
-                            <label class="middle-align">Outcomes</label>
-                            <select ng-model="program.outcomeData" ng-options="outcomeSelected.display for outcomeSelected in outcomes(program)">
-                                <option value="">Choose OutCome</option>
-                            </select>
-                            <br/>
-
-                            <button class="retro-widget-button ok_btn" ng-click="endProgram(program)">OK</button>
-                        </div>
-
-                        <div ng-if="program.editing" class="end-program-container">
-                            <label class="middle-align">Remove "Unknown"</label>
-                            <input type="checkbox"/>
-                            <br/>
-
-                            <label class="middle-align">Change "Unknown" to</label>
-                            <select ng-model="workflowStateSelected" ng-options="state.concept.display for state in program.program.allWorkflows[0].states">
-                                <option value="">Choose State</option>
-                            </select>
-                            <br/>
-
-                            <button class="retro-widget-button ok_btn" ng-click="savePopUpData()">OK</button>
-                        </div>
-                    </div>
-                    <div class="program-timeline">
-                        <timeline id="sample" config="states"></timeline>
-                    </div>
+                    <ng-include src="'../common/uicontrols/programmanagement/views/programRow.html'" ng-init="active=true"></ng-include>
                 </div>
             </div>
 
@@ -74,28 +40,13 @@
     <div class="inactive-program-container">
         <section class="block dashboard-section">
             <h2 class="section-title ng-binding">Past Programs</h2>
-            <table ng-show="hasPatientAnyPastPrograms()">
-                <thead>
-                <tr>
-                    <th class="slno_col"><strong>Sl.No</strong></th>
-                    <th><strong>Program</strong></th>
-                    <th><strong>Date Enrolled</strong></th>
-                    <th><strong>End Date</strong></th>
-                    <th><strong>Outcome</strong></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="program in endedPrograms">
-                    <td>{{$index + 1}}</td>
-                    <td>
-                        {{program.display}}
-                    </td>
-                    <td>{{program.dateEnrolled | bahmniDate}}</td>
-                    <td>{{program.dateCompleted | bahmniDate}}</td>
-                    <td>{{program.outcome.display}}</td>
-                </tr>
-                </tbody>
-            </table>
+
+            <div ng-if="hasPatientAnyPastPrograms()">
+                <div ng-repeat="program in endedPrograms" class="program-stuff">
+                    <ng-include src="'../common/uicontrols/programmanagement/views/programRow.html'" ng-init="active=false"></ng-include>
+                </div>
+            </div>
+
             <div class="note-container" ng-show="!hasPatientAnyPastPrograms()">
                 <div class="note warning">
                     <div class="text placeholder-text">

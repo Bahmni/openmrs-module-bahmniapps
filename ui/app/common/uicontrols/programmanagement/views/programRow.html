@@ -1,0 +1,34 @@
+<div class="program-row">
+    <div class="program-details">
+        <a ng-href="#/patient/{{patient.uuid}}/dashboard" class="big-anchor">{{program.display}}</a>
+        <span class="enrolled-info"> (Enrolled on {{program.dateEnrolled | bahmniDate}})</span>
+
+        <div class="program-actions" ng-if="active">
+            <button ng-click="toggleEdit(program)">Edit</button>
+            <button ng-click="toggleEnd(program)">End</button>
+        </div>
+
+        <div ng-if="program.ending" class="end-program-container">
+            <label class="middle-align">Outcomes</label>
+            <select ng-model="program.outcomeData" ng-options="outcomeSelected.display for outcomeSelected in outcomes(program)">
+                <option value="">Choose OutCome</option>
+            </select>
+            <br/>
+
+            <button class="retro-widget-button ok_btn" ng-click="endProgram(program)">OK</button>
+        </div>
+
+        <div ng-if="program.editing" class="end-program-container">
+            <label class="middle-align">Change to</label>
+            <select ng-model="workflowStateSelected" ng-options="state.concept.display for state in program.program.allWorkflows[0].states">
+                <option value="">Choose State</option>
+            </select>
+            <br/>
+
+            <button class="retro-widget-button ok_btn">OK</button>
+        </div>
+    </div>
+    <div class="program-timeline">
+        <timeline program="program"></timeline>
+    </div>
+</div>

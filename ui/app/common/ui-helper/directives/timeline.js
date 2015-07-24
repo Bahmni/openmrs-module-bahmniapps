@@ -2,11 +2,14 @@
 
 angular.module('bahmni.common.uiHelper')
     .directive('timeline', function () {
-        var link = function ($scope, $element, $attrs) {
-            var svg = d3.select($element[0]).append("svg").attr('width',100+'%' ).attr('height', 110);
-            var sortedDates = _.sortBy(_.pluck($scope.config.data, 'date'));
-            var uniqueStates = _.uniq(_.pluck($scope.config.data, 'state'));
-            var xMin = 25, parentWidth = document.getElementById('activePrograms').offsetWidth,  xMax = parentWidth - 100;
+        var link = function ($scope, $element) {
+            $element.addClass("timeline-view");
+            var data = getDataModel($scope.program);
+            var svg = d3.select($element[0]).append("svg").attr('width',100+'%' ).attr('height', 80);
+            var elementDimensions = $element[0].getBoundingClientRect();
+            var sortedDates = _.pluck(data.states, 'date');
+            var uniqueStates = _.uniq(_.pluck(data.states, 'state'));
+            var xMin = 25, xMax = elementDimensions.width-35;
 
             var timeScale = d3.time.scale()
                 .domain([sortedDates[0], new Date()])
@@ -21,15 +24,11 @@ angular.module('bahmni.common.uiHelper')
 
             svg.append("g")
                 .attr("class", "xaxis")
-                .attr("transform", "translate(0.50,35)")
-                .call(timeAxis)
-                .selectAll("line")
-                    .attr("y2", 14)
-                    .attr("x2", 0)
+                .attr("transform", "translate(0,35)")
+                .call(timeAxis);
 
             var colors = d3.scale.category10();
-
-            var states = svg.selectAll('.states').data($scope.config.data);
+            var states = svg.selectAll('.states').data(data.states);
             var stateGroup = states.enter().append("g").classed('states',true);
             stateGroup.append("rect");
             stateGroup.append("text");
@@ -48,29 +47,27 @@ angular.module('bahmni.common.uiHelper')
                 .style('fill', '#FFFFFF')
                 .text(function(d) { return d.state; });
 
-
-
-            
             //Draw completed state
-            if(!$scope.config.completed) {
+            if(!data.completed && !_.isEmpty(data.states)) {
                 svg.append("polygon")
                     .attr("points", (xMax + "," + 9 + " " + (xMax+13) + "," + 22 + " " + xMax + "," + 35))
-                    .attr("fill", colors(_.indexOf(uniqueStates, _.last($scope.config.data).state)));
+                    .attr("fill", colors(_.indexOf(uniqueStates, _.last(data.states).state)));
             }
-
-
-//            //Draw Legend
-//            var legendContainer = d3.select('#'+ $attrs.id).append("div").classed("legend", true);
-//            var legendItems = legendContainer.selectAll(".item").data(uniqueStates);
-//            legendItems.enter().append("div").classed("item",true);
-//            legendItems.style("background-color", function(d,i) { return colors(i)})
-//                .text(function(d) { return d});
         };
+
+        var getDataModel = function(program) {
+            var states = _.sortBy(_.map(program.states, function(stateObject) {
+                return {state: stateObject.state.concept.display, date: new Date(stateObject.startDate)}
+            }),'date');
+            var completed = !_.isEmpty(program.dateCompleted);
+            return {states: states, completed: completed};
+        };
+
         return {
             restrict: 'E',
             link: link,
             scope: {
-                config: "="
+                program: "="
             }
         };
     });

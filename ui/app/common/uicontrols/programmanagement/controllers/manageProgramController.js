@@ -23,21 +23,6 @@ angular.module('bahmni.clinical')
                 })
             };
 
-            $scope.updateStatesForActiveProgram = function(states){
-                var data = [];
-                _.forEach(states, function (result) {
-                    var object = {};
-                    object.state = result.state.concept.display;
-                    object.date = new Date(result.startDate);
-                    data.push(object);
-                });
-                $scope.states= {
-                    data:data,
-                    completed: false
-                };
-            };
-
-
             var getCurrentDate = function() {
                 var currentDate = $bahmniCookieStore.get(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
                 return DateUtil.parse(currentDate || DateUtil.endOfToday());
@@ -93,6 +78,7 @@ angular.module('bahmni.clinical')
                         .then(successCallback, failureCallback)
                 );
             };
+
             $scope.popupHandler = function(program) {
                 $scope.popUpData = {"programName" : program.display,
                     "patientProgramUuid" : program.uuid,
