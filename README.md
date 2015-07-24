@@ -1,40 +1,13 @@
-DEPRECATED. FOR MORE UPTODATE AND MAINTAINED INFORMATION PLEASE SEE HERE - https://bahmni.atlassian.net/wiki/display/BAH/Working+on+Bahmni+OpenMRS+frontend
-
-Bhamni Apps
+Bahmni Apps
 ============
+
+Medical Front-end for Bahmni. 
 
 [![Build Status](https://travis-ci.org/Bhamni/openmrs-module-bahmniapps.svg?branch=master)](https://travis-ci.org/Bhamni/openmrs-module-bahmniapps)
 
-This application contains Bahmni apps for openmrs.
-
- To set up the application, do the following in ui folder
-
-1. Install the following modules required globally (This is a one time task)
-
-  `npm install -g bower`
-  `npm install -g grunt-cli`
-  `gem install compass`
-
-2. Install node dependencies (Installed into node_modules).
-
-  `npm install`
-
-
-3. Set up UI component/dependencies (This installs all the UI dependencies into
-app/components)
-
-  `bower install`
-
-4. Build the application (into dist folder) using Grunt
-
-  `grunt`
-
-5. For creating a symlink into your vagrant /var/www:  
-
-  `./scripts/vagrant-link.sh` (links app folder)
-  
-  `./scripts/vagrant-link.sh dist` (links dist folder)
-
+Instructions
+============
+Please see https://bahmni.atlassian.net/wiki/display/BAH/Working+on+Bahmni+OpenMRS+frontend
 
 
 Project Structure
