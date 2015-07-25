@@ -992,6 +992,9 @@ button u, u {
     span{
         display: inline-block;
         margin-left: 15px;
+        &.asterick{
+          margin-left: 0;
+        }
     }
   }
 

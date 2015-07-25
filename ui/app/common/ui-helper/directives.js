@@ -124,4 +124,20 @@ angular.module('bahmni.common.uiHelper')
                 addPatternToElement();
             });
         }
+    })
+    .directive('validateOn', function(){
+        var link = function(scope, element, attrs, ngModelCtrl){
+            var setValidity = function (value) {
+                var valid = value? true: false;
+                ngModelCtrl.$setValidity('blank', valid);
+                element[0].setCustomValidity(!valid ? "Please enter a valid detail" : '');
+            };
+            scope.$watch(attrs.validateOn, setValidity, true);
+        };
+
+        return {
+            link: link,
+            require: 'ngModel'
+        }
+
     });

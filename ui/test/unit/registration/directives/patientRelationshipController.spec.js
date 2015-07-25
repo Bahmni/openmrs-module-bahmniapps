@@ -195,28 +195,6 @@ describe('PatientRelationshipController', function () {
         })
     });
 
-    describe('isValidRelationship', function(){
-        it("should return false if personB is null", function(){
-            var patientRelationship = {
-                patientIdentifier: "Doctor",
-                relationshipType: {"uuid": "8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},
-                personB: null
-            };
-
-            expect(scope.isValidRelationship(patientRelationship)).toBeFalsy()
-        });
-
-        it("should return false if relationship type itself is not present", function(){
-            var patientRelationship = {
-                patientIdentifier: "Doctor",
-                relationshipType: {"uuid": undefined},
-                personB: null
-            };
-
-            expect(scope.isValidRelationship(patientRelationship)).toBeTruthy()
-        })
-    });
-
     describe('isEmpty', function(){
        it("should return true if relationship type is not selected", function(){
            var patientRelationship = {

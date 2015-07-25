@@ -26,10 +26,6 @@ angular.module('bahmni.registration')
                 }
             };
 
-            $scope.isValidRelationship = function (relationship) {
-                return $scope.isEmpty(relationship) || relationship.personB;
-            };
-
             $scope.isPatientRelationship = function (relationship) {
                 if (angular.isUndefined(relationship['relationshipType'])) {
                     return false;
@@ -81,11 +77,11 @@ angular.module('bahmni.registration')
             };
 
             $scope.openPatientDashboardInNewTab = function (relationship) {
-                $window.open(getPatientDashboardUrl(relationship['personB']['uuid']), '_blank');
+                $window.open(getPatientRegistrationUrl(relationship['personB']['uuid']), '_blank');
             };
 
-            var getPatientDashboardUrl = function (patientUuid) {
-                return '/bahmni/clinical/#/patient/' + patientUuid + '/dashboard';
+            var getPatientRegistrationUrl = function (patientUuid) {
+                return '#/patient/' + patientUuid;
             };
 
             $scope.getProviderList = function () {
