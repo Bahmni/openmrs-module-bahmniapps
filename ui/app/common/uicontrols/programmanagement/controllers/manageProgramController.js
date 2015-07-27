@@ -8,11 +8,11 @@ angular.module('bahmni.clinical')
             $scope.programWorkflowStates = [];
 
             var updateActiveProgramsList = function () {
-                programService.getActiveProgramsForAPatient($scope.patient.uuid).success(function (data) {
+                spinner.forPromise(programService.getActiveProgramsForAPatient($scope.patient.uuid).then(function (data) {
                     $scope.activePrograms = [];
                     $scope.endedPrograms = [];
-                    if (data.results) {
-                        _.forEach(data.results, function (result) {
+                    if (data.data.results) {
+                        _.forEach(data.data.results, function (result) {
                             if (result.dateCompleted) {
                                 $scope.endedPrograms.push(result);
                             } else {
@@ -20,7 +20,7 @@ angular.module('bahmni.clinical')
                             }
                         })
                     }
-                })
+                }));
             };
 
             var getCurrentDate = function() {
@@ -30,11 +30,11 @@ angular.module('bahmni.clinical')
 
             var init = function () {
                 $scope.programEnrollmentDate = getCurrentDate();
-                programService.getAllPrograms().success(function (data) {
-                    $scope.allPrograms = _.filter(data.results, function (program) {
+                spinner.forPromise(programService.getAllPrograms().then(function (data) {
+                    $scope.allPrograms = _.filter(data.data.results, function (program) {
                         return program.retired != true;
                     });
-                });
+                }));
                 updateActiveProgramsList();
             };
 
@@ -72,6 +72,9 @@ angular.module('bahmni.clinical')
                 if (isThePatientAlreadyEnrolled()) {
                     messagingService.showMessage("formError", "Patient already enrolled to the Program");
                     return ;
+                }
+                if(_.isEmpty($scope.workflowStateSelected)){
+                    $scope.workflowStateSelected.uuid = null;
                 }
                 spinner.forPromise(
                     programService.enrollPatientToAProgram($scope.patient.uuid, $scope.programSelected.uuid, $scope.programEnrollmentDate,$scope.workflowStateSelected.uuid)

@@ -12,16 +12,18 @@ angular.module('bahmni.common.domain')
                 content: {
                     patient: patientUuid,
                     program: programUuid,
-                    dateEnrolled: dateEnrolled,
-                    states: [
-                        {
-                            state:workflowUuid,
-                            startDate:dateEnrolled
-                        }
-                    ]
+                    dateEnrolled: dateEnrolled
                 },
                 headers: {"Content-Type": "application/json"}
             };
+            if(!_.isEmpty(workflowUuid)){
+              req.content.states = [
+                  {
+                      state:workflowUuid,
+                      startDate:dateEnrolled
+                  }
+              ]
+            }
             return $http.post(req.url, req.content, req.headers);
         };
 
