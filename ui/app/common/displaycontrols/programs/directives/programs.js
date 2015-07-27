@@ -3,21 +3,22 @@ angular.module('bahmni.common.displaycontrol.programs')
         function (programService) {
             'use strict';
             var DateUtil = Bahmni.Common.Util.DateUtil;
-            var isActive = function(date){
-                if(date == null){
+            var isActive = function(patientProgram){
+                if(patientProgram.dateCompleted == null){
                     return true;
                 }
-                var dateCompletedWithoutTime = DateUtil.getDateWithoutTime(date);
+                var dateCompletedWithoutTime = DateUtil.getDateWithoutTime(patientProgram.dateCompleted);
                 var todayWithoutTime = DateUtil.getDateWithoutTime(DateUtil.now());
                 return dateCompletedWithoutTime >= todayWithoutTime;
             };
+
             var controller = function ($scope) {
                 programService.getActiveProgramsForAPatient($scope.patient.uuid).success(function (data) {
                     $scope.activePrograms = [];
                     $scope.pastPrograms = [];
                     if (data.results) {
                         _.each(data.results, function (result) {
-                            if (isActive(result.dateCompleted)){
+                            if (isActive(result)){
                                 $scope.activePrograms.push(result);
                             }
                             else {

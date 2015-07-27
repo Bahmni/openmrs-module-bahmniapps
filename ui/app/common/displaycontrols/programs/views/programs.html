@@ -3,50 +3,40 @@
         <span>Programs</span>
     </h2>
 
-    <div ng-show="hasPatientAnyActivePrograms()">
+    <div ng-if="hasPatientAnyActivePrograms()">
         <h3 class="program-title">
             <span>Active Programs</span>
         </h3>
-        <table class="programs-table">
-            <thead>
-            <tr>
-                <th><strong>Program</strong></th>
-                <th><strong>Date Enrolled</strong></th>
-                <th><strong>Date Completed</strong></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="program in activePrograms | orderBy:'-dateEnrolled'">
-                <td>{{program.display}}</td>
-                <td>{{program.dateEnrolled | bahmniDate}}</td>
-                <td>{{program.dateCompleted | bahmniDate}}</td>
-            </tr>
-            </tbody>
-        </table>
+        <div ng-repeat="program in activePrograms" class="program-stuff">
+            <div class="program-row">
+                <div class="program-details">
+                    <a ng-href="#/patient/{{patient.uuid}}/dashboard" class="big-anchor">{{program.display}}</a>
+                    <span class="enrolled-info"> (Enrolled on {{program.dateEnrolled | bahmniDate}})</span>
+                </div>
+                <div class="program-timeline">
+                    <timeline program="program"></timeline>
+                </div>
+            </div>
+        </div>
     </div>
-    <div ng-show="hasPatientAnyPastPrograms()">
+
+    <div ng-if="hasPatientAnyPastPrograms()">
         <h3 class="program-title">
             <span>Past Programs</span>
         </h3>
-        <table class="programs-table">
-            <thead>
-            <tr>
-                <th><strong>Program</strong></th>
-                <th><strong>Date Enrolled</strong></th>
-                <th><strong>End Date</strong></th>
-                <th><strong>Outcome</strong></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="program in pastPrograms | orderBy:'-dateCompleted'">
-                <td>{{program.display}}</td>
-                <td>{{program.dateEnrolled | bahmniDate}}</td>
-                <td>{{program.dateCompleted | bahmniDate}}</td>
-                <td>{{program.outcome.display}}</td>
-            </tr>
-            </tbody>
-        </table>
+        <div ng-repeat="program in pastPrograms" class="program-stuff">
+            <div class="program-row">
+                <div class="program-details">
+                    <a ng-href="#/patient/{{patient.uuid}}/dashboard" class="big-anchor">{{program.display}}</a>
+                    <span class="enrolled-info"> (Enrolled on {{program.dateEnrolled | bahmniDate}})</span>
+                </div>
+                <div class="program-timeline">
+                    <timeline program="program"></timeline>
+                </div>
+            </div>
+        </div>
     </div>
+
     <div class="note-container" ng-show="!hasPatientAnyPrograms()">
         <div class="note warning">
             <div class="text placeholder-text">
