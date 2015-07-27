@@ -10,6 +10,11 @@ angular.module('bahmni.common.uiHelper')
             var sortedDates = _.pluck(data.states, 'date');
             var uniqueStates = _.uniq(_.pluck(data.states, 'state'));
             var xMin = 25, xMax = elementDimensions.width-35;
+        var link = function ($scope, $element, $attrs) {
+            var svg = d3.select($element[0]).append("svg").attr('width',100+'%' ).attr('height', 110);
+            var sortedDates = _.sortBy(_.pluck($scope.config.data, 'date'));
+            var uniqueStates = _.isEmpty($scope.config.data.state) ? "" : _.uniq(_.pluck($scope.config.data, 'state'));
+            var xMin = 25, parentWidth = document.getElementById('activePrograms').offsetWidth,  xMax = parentWidth - 100;
 
             var timeScale = d3.time.scale()
                 .domain([sortedDates[0], new Date()])
@@ -48,7 +53,7 @@ angular.module('bahmni.common.uiHelper')
                 .text(function(d) { return d.state; });
 
             //Draw completed state
-            if(!data.completed && !_.isEmpty(data.states)) {
+            if(!$scope.config.completed && !_.isEmpty($scope.config.data.state)) {
                 svg.append("polygon")
                     .attr("points", (xMax + "," + 9 + " " + (xMax+13) + "," + 22 + " " + xMax + "," + 35))
                     .attr("fill", colors(_.indexOf(uniqueStates, _.last(data.states).state)));
@@ -70,4 +75,4 @@ angular.module('bahmni.common.uiHelper')
                 program: "="
             }
         };
-    });
+    }});
