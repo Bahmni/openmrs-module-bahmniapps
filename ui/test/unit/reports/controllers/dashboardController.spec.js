@@ -1,7 +1,7 @@
 describe("DashboardController", function () {
     'use strict';
 
-    var scope, controller, appServiceMock, appServiceLoadConfigPromise, typicalReportConfig = {
+    var scope, controller, reportServiceMock, generateReportPromise, appServiceMock, appServiceLoadConfigPromise, typicalReportConfig = {
         data: [
             {
                 "name": "Report with config that has dateRangeRequired=true",
@@ -26,21 +26,25 @@ describe("DashboardController", function () {
     beforeEach(module('bahmni.reports'));
 
     beforeEach(inject(function ($controller, $rootScope) {
-        controller = $controller;
         scope = $rootScope.$new();
 
         appServiceMock = jasmine.createSpyObj('appService', ['loadConfig']);
         appServiceLoadConfigPromise = specUtil.createServicePromise('loadConfig');
         appServiceMock.loadConfig.and.returnValue(appServiceLoadConfigPromise);
-    }));
 
-    it("initializes report sets based on whether date range required or not", function () {
+        reportServiceMock = jasmine.createSpyObj('reportService', ['generateReport']);
+        generateReportPromise = specUtil.createServicePromise('generateReport');
+        reportServiceMock.generateReport.and.returnValue(generateReportPromise);
 
+        controller = $controller;
         controller('DashboardController', {
             $scope: scope,
             appService: appServiceMock,
-            reportService: null
+            reportService: reportServiceMock
         });
+    }));
+
+    it("initializes report sets based on whether date range required or not", function () {
         appServiceLoadConfigPromise.callThenCallBack(typicalReportConfig);
 
         expect(appServiceMock.loadConfig).toHaveBeenCalled();
@@ -49,11 +53,6 @@ describe("DashboardController", function () {
     });
 
     it('setDefault sets the right defaults based on section', function () {
-        controller('DashboardController', {
-            $scope: scope,
-            appService: appServiceMock,
-            reportService: null
-        });
         appServiceLoadConfigPromise.callThenCallBack(typicalReportConfig);
 
         scope.default.reportsRequiringDateRange = {
@@ -63,5 +62,31 @@ describe("DashboardController", function () {
 
         expect(scope.reportsRequiringDateRange[0].startDate).toBe(scope.default.reportsRequiringDateRange.startDate);
         expect(scope.reportsRequiringDateRange[1].startDate).toBe(scope.default.reportsRequiringDateRange.startDate);
-    })
+    });
+
+    it("converts dates to string format before sending to reportService", function () {
+        scope.runReport({
+            someDummyObject: {},
+            startDate: new Date(2014, 1, 1),
+            stopDate: new Date(2015, 1, 1)
+        });
+
+        expect(reportServiceMock.generateReport).toHaveBeenCalledWith({
+            someDummyObject: {},
+            startDate: '2014-02-01',
+            stopDate: '2015-02-01'
+        });
+    });
+
+    it("sends null dates when not available in report object", function () {
+        scope.runReport({
+            someDummyObject: {}
+        });
+
+        expect(reportServiceMock.generateReport).toHaveBeenCalledWith({
+            someDummyObject: {},
+            startDate: null,
+            stopDate: null
+        });
+    });
 });

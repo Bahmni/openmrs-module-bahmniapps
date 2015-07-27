@@ -52,7 +52,7 @@ Bahmni.Common.Util.DateUtil = {
     },
 
     getDateWithoutTime: function(datetime){
-        return moment(datetime).format("YYYY-MM-DD");
+        return datetime?moment(datetime).format("YYYY-MM-DD"):null;
     },
 
     formatDateWithTime: function (datetime) {

@@ -299,4 +299,14 @@ describe('DateUtil', function () {
             expect(dateUtil.diffInDays(date, nextYear)).toEqual(365);
         });
     });
+
+    describe("getDateWithoutTime", function() {
+        it("should return date without time",function(){
+            expect(dateUtil.getDateWithoutTime(new Date('2014', '7', '15', '12','30','25'))).toBe('2014-08-15');
+        });
+
+        it("should return null if date provided is null", function() {
+            expect(dateUtil.getDateWithoutTime(null)).toBe(null);
+        });
+    });
 });
