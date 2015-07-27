@@ -20,11 +20,12 @@
 
         <div ng-repeat="album in albums">
             <div ng-repeat="image in album.images">
-                <!--<img class="slide"-->
-                <!--ng-if="isActive($index, album.tag) && !isPdf(image)" ng-src="{{image.src}}"/>-->
-                <div ng-if="image.src">
-                    <div ng-if="isActive($index, album.tag)">
-                        <embed class="slide" ng-src="{{image.src}}" width="1000" height="500">
+                <img class="slide" ng-if="isActive($index, album.tag) && !isPdf(image)" ng-src="{{image.src}}"/>
+                <div ng-if="image.src && isPdf(image)">
+                    <div ng-if="isActive($index, album.tag)" class="slide pdf-slide">
+                       <div class="scroll-pdf-frame">
+                            <iframe ng-src="{{image.src}}" class="pdf-frame"></iframe>
+                       </div>
                     </div>
                 </div>
             </div>

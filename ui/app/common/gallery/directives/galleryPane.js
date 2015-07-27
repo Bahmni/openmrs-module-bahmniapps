@@ -80,6 +80,9 @@ angular.module('bahmni.common.gallery')
                         $scope.imageIndex = 0;
                     }
                 };
+                $scope.isPdf = function (image) {
+                    return image.src && (image.src.indexOf(".pdf")>0);
+                };
 
                 $scope.getTotalLength = function () {
                     var totalLength = 0;
