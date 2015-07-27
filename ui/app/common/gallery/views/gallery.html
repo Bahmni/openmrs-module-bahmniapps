@@ -7,7 +7,7 @@
         <span>{{patient.name}} {{'(' + patient.identifier + ')'}}</span>
     </h5>
 
-    <button class="toggle-patient" ng-click="toggleImpression()" ng-if="accessImpression">        
+    <button class="toggle-patient" ng-click="toggleImpression()" ng-if="accessImpression">
         <i class="fa fa-bars fa-white fa-large"></i>
     </button>
 
@@ -20,8 +20,13 @@
 
         <div ng-repeat="album in albums">
             <div ng-repeat="image in album.images">
-                <img class="slide"
-                     ng-show="isActive($index, album.tag)" ng-src="{{image.src}}"/>
+                <!--<img class="slide"-->
+                <!--ng-if="isActive($index, album.tag) && !isPdf(image)" ng-src="{{image.src}}"/>-->
+                <div ng-if="image.src">
+                    <div ng-if="isActive($index, album.tag)">
+                        <embed class="slide" ng-src="{{image.src}}" width="1000" height="500">
+                    </div>
+                </div>
             </div>
             <span ng-if="album.tag == albumTag" class="arrow prev" ng-click="showPrev()"></span>
             <span ng-if="album.tag == albumTag" class="arrow next" ng-click="showNext()"></span>
@@ -41,12 +46,13 @@
             <div class="image-desc" ng-if="isActive($index, album.tag) && image.desc"><strong>Comments:</strong>
                 {{image.desc}}
             </div>
-            
+
         </div>
-    </div>    
+    </div>
 </div>
 
-<div class="image-impression-section" ng-repeat="album in albums" ng-show="showImpression" ng-class="{'shift': showImpression}">
+<div class="image-impression-section" ng-repeat="album in albums" ng-show="showImpression"
+     ng-class="{'shift': showImpression}">
     <div ng-repeat="image in album.images">
         <div class="image-actions" ng-if="isActive($index,album.tag)">
             <span class="image-title">{{image.title}}</span>
@@ -54,13 +60,15 @@
         <section ng-show="isActive($index,album.tag)">
             <ul class="impression">
                 <li ng-repeat="obs in image.sourceObs">
-                    <pre class="notes inline-notes"><strong>{{obs.providers[0].name}} ({{obs.observationDateTime | bahmniDate}}):</strong>{{obs.value}}</pre>
+                    <pre class="notes inline-notes"><strong>{{obs.providers[0].name}} ({{obs.observationDateTime |
+                        bahmniDate}}):</strong>{{obs.value}}</pre>
                 </li>
             </ul>
             <div class="impression-control">
                 <textarea placeholder="Enter impression on image" ng-model="image.newSourceObs.value">
                 </textarea>
-                <input class="confirm save-impression-btn" type="button" ng-click="saveImpression(image)" value="Add" ng-disabled="!image.newSourceObs.value">
+                <input class="confirm save-impression-btn" type="button" ng-click="saveImpression(image)" value="Add"
+                       ng-disabled="!image.newSourceObs.value">
             </div>
 
         </section>
