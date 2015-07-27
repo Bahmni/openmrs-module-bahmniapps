@@ -137,7 +137,7 @@ describe('patient mapper', function () {
     it('should map birthdate to age and birthdate', function () {
 
         angular.extend(patient, {
-            "birthdate": moment(date).format("DD-MM-YYYY")
+            "birthdate": date
         });
 
         var openmrsPatient = new Bahmni.Registration.CreatePatientRequestMapper(date).mapFromPatient(patientAttributeTypes, patient);
@@ -149,7 +149,7 @@ describe('patient mapper', function () {
     it('should not use age when birthdate is present', function () {
 
         angular.extend(patient, {
-            "birthdate": moment(date).format("DD-MM-YYYY"),
+            "birthdate": date,
             "age": {
                 "years": 1,
                 "months": 1,

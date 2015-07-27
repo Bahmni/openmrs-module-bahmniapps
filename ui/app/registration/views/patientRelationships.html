@@ -26,7 +26,7 @@
                     <input type="hidden" ng-model="newRelationship.personB.uuid"/>
                 </div>
                 <div class="col col3">
-                    <input type="date" ng-model="newRelationship.endDate" date-converter/>
+                    <input type="date" ng-model="newRelationship.endDate"/>
                 </div>
                 <div class="col col4">
                     <button type="button" class="small-btn row-remover" ng-if="!isEmpty(newRelationship)" ng-click="removeRelationship(newRelationship, $index)">

@@ -79,8 +79,8 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
 
     UpdatePatientRequestMapper.prototype.getBirthdate = function (birthdate, age) {
         var mnt;
-        if (birthdate !== undefined && birthdate !== "") {
-            mnt = moment(birthdate, 'DD-MM-YYYY');
+        if (birthdate) {
+            mnt = moment(birthdate);
         } else if (age !== undefined) {
             mnt = moment(this.currentDate).subtract('days', age.days).subtract('months', age.months).subtract('years', age.years);
         }

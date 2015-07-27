@@ -113,13 +113,13 @@ describe('patientMapper', function () {
         date1.setHours(0,0,0,0);
         openmrsPatient.patient.person.birthdate = moment(date1).format();
         var patient = mapper.map(openmrsPatient);
-        expect(patient.birthdate).toBe(moment(date1).format("DD-MM-YYYY"));
+        expect(patient.birthdate).toEqual(new Date(moment(date1).format()));
     });
 
     it("should not fail when birthdate is null", function () {
         openmrsPatient.patient.person.birthdate = null;
         var patient = mapper.map(openmrsPatient);
-        expect(patient.birthdate).toBe("");
+        expect(patient.birthdate).toBe(null);
     });
 
     it('should map registration date', function () {
@@ -141,7 +141,7 @@ describe('patientMapper', function () {
 
         var patient = mapper.map(openmrsPatient);
 
-        expect(patient.birthdate).toBe(moment(dob).format("DD-MM-YYYY"));
+        expect(patient.birthdate).toEqual(new Date(moment(dob).format()));
         expect(patient.age).toBe(age);
     });
 

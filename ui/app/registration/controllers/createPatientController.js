@@ -8,6 +8,7 @@ angular.module('bahmni.registration')
             var configValueForEnterId = appService.getAppDescriptor().getConfigValue('showEnterID');
             $scope.addressHierarchyConfigs = appService.getAppDescriptor().getConfigValue("addressHierarchy");
             $scope.showEnterID = configValueForEnterId === null ? true : configValueForEnterId;
+            $scope.today = dateUtil.getDateWithoutTime(dateUtil.now());
 
             (function () {
                 $scope.patient = patientModel.create();

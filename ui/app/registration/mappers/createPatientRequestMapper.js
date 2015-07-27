@@ -20,7 +20,7 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
                     ],
                     addresses: [_.pick(patient.address, constants.allAddressFileds) ],
                     birthdate: this.getBirthdate(patient.birthdate, patient.age),
-                    birthdateEstimated: patient.birthdate === undefined,
+                    birthdateEstimated: patient.birthdate === null || patient.birthdate === undefined,
                     gender: patient.gender,
                     personDateCreated: patient.registrationDate,
                     attributes: this.getMrsAttributes(patient, patientAttributeTypes)
@@ -73,8 +73,8 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
 
     CreatePatientRequestMapper.prototype.getBirthdate = function (birthdate, age) {
         var mnt;
-        if (birthdate !== undefined) {
-            mnt = moment(birthdate, 'DD-MM-YYYY');
+        if (birthdate) {
+            mnt = moment(birthdate);
         } else if (age !== undefined) {
             mnt = moment(this.currentDate).subtract('days', age.days).subtract('months', age.months).subtract('years', age.years);
         }

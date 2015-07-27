@@ -3,11 +3,13 @@
 angular.module('bahmni.registration')
     .controller('EditPatientController', ['$scope', 'patientService', 'encounterService', '$stateParams', 'openmrsPatientMapper', '$window', '$q', 'spinner', 'appService', 'messagingService', '$rootScope',
         function ($scope, patientService, encounterService, $stateParams, patientMapper, $window, $q, spinner, appService, messagingService, $rootScope) {
+            var dateUtil = Bahmni.Common.Util.DateUtil;
             var uuid = $stateParams.patientUuid;
             $scope.patient = {};
             $scope.actions = {};
             $scope.readOnlyFields = {};
             $scope.addressHierarchyConfigs = appService.getAppDescriptor().getConfigValue("addressHierarchy");
+            $scope.today = dateUtil.getDateWithoutTime(dateUtil.now());
 
             var setReadOnlyFields = function () {
                 var readOnlyFields = appService.getAppDescriptor().getConfigValue("readOnlyFields");
