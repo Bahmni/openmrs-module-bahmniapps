@@ -8,8 +8,8 @@ angular.module('adt', ['bahmni.common.patient', 'bahmni.common.patientSearch', '
 angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise('/home');
-    var homeBackLink = {label: "", url: "../home/", icon: "fa-home"};
-    var adtHomeBackLink = {label: "", url: "#/home", accessKey: 'p', icon: "fa-users"};
+    var homeBackLink = {label: "", url: "../home/", icon: "fa-home",id: "homeBackLink"};
+    var adtHomeBackLink = {label: "", url: "#/home", accessKey: 'p', icon: "fa-users"},id: "adtHomeBackLink";
 
     $stateProvider
         .state('home', {
