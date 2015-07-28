@@ -99,13 +99,16 @@ angular.module('bahmni.registration')
 
 
             $scope.getProviderDataResults = function (data) {
-                return data.data.results.map(function (providerDetails) {
-                    return {
-                        'value': providerDetails.display,
-                        'uuid': providerDetails.person.uuid,
-                        'identifier': providerDetails.identifier
-                    }
-                });
+                return data.data.results.filter(function (provider) {
+                    return provider.person
+                })
+                .map(function (providerDetails) {
+                        return {
+                            'value': providerDetails.display || providerDetails.person.display,
+                            'uuid': providerDetails.person.uuid,
+                            'identifier': providerDetails.identifier || providerDetails.person.display
+                        }
+                    });
             };
 
             $scope.onEditProviderName = function(relationship){

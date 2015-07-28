@@ -220,4 +220,27 @@ describe('PatientRelationshipController', function () {
        })
     });
 
+    describe('getProviderDataResults', function(){
+       it("should filter only the providers who are linked to person ", function(){
+           var providers = [
+               {
+                   person: {uuid: 'personB-uuid'},
+                   identifier: "provider1"
+
+               },
+               {
+                   person: null,
+                   identifier: "provider1"
+
+               }
+           ];
+
+           var data = {data: {results: providers}};
+
+           var providerDataResults = scope.getProviderDataResults(data);
+           expect(providerDataResults.length).toBe(1);
+       })
+    });
+
+
 });
