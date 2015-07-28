@@ -18,7 +18,7 @@
                            ng-model-options="{updateOn: 'blur'}" ng-model="newRelationship.patientIdentifier" ng-change="searchByPatientIdentifier(newRelationship)">
                     <input type="text" ng-if="isPatientRelationship(newRelationship)"
                            ng-model-options="{updateOn: 'blur'}" ng-model="newRelationship.patientIdentifier" validate-on="newRelationship.personB.uuid" ng-change="searchByPatientIdentifier(newRelationship)">
-                    <input type="text" ng-if="isProviderRelationship(newRelationship)" bahmni-autocomplete is-invalid="!newRelationship.personB.uuid"
+                    <input type="text" ng-if="isProviderRelationship(newRelationship)" bahmni-autocomplete is-invalid="!newRelationship.personB.uuid" on-edit="onEditProviderName(newRelationship)"
                            ng-model="newRelationship.providerName" response-map="getProviderDataResults" source="getProviderList(relationship)" on-select="providerSelected(newRelationship)">
                     <span class="asterick">*</span>
                     <span style="display:block" ng-show="showPersonNotFound(newRelationship)">Person not found</span>

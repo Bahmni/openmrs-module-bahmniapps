@@ -207,4 +207,17 @@ describe('PatientRelationshipController', function () {
        })
     });
 
+    describe('onEditProviderName', function(){
+       it("should delete personB on editing provider autocomplete", function(){
+           var patientRelationship = {
+               relationshipType: {"uuid": undefined},
+               personB: {uuid: 'personB-uuid'}
+           };
+
+           scope.onEditProviderName(patientRelationship);
+
+           expect(patientRelationship.personB).toBeFalsy();
+       })
+    });
+
 });

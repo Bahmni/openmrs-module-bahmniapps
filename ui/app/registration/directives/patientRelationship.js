@@ -108,6 +108,10 @@ angular.module('bahmni.registration')
                 });
             };
 
+            $scope.onEditProviderName = function(relationship){
+              delete relationship.personB;
+            };
+
             $scope.clearRelationshipRow = function (relationship, index) {
                 delete relationship.personB;
                 delete relationship.patientIdentifier;
