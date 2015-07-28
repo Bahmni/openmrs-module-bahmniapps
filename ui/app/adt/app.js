@@ -9,7 +9,7 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
 
     $urlRouterProvider.otherwise('/home');
     var homeBackLink = {label: "", url: "../home/", icon: "fa-home",id: "homeBackLink"};
-    var adtHomeBackLink = {label: "", url: "#/home", accessKey: 'p', icon: "fa-users"},id: "adtHomeBackLink";
+    var adtHomeBackLink = {label: "", url: "#/home", accessKey: 'p', icon: "fa-users",id: "adtHomeBackLink" };
 
     $stateProvider
         .state('home', {
