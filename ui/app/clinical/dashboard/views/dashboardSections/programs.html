@@ -1,3 +1,7 @@
-<div ng-controller="PatientDashboardProgramsController" class="dashboard-programs-section">
+<div ng-controller="PatientDashboardProgramsController" class="dashboard-program-section">
+    <h2 ng-click="gotoDetailsPage()" class="section-title has-link">
+        <span class="title-link"> {{section.title}} </span>
+        <i class="fa fa-external-link"></i>
+    </h2>
     <programs patient="patient"></programs>
 </div>

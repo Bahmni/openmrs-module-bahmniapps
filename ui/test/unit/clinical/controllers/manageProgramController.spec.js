@@ -51,6 +51,16 @@ describe("ManageProgramController", function () {
         expect(scope.activePrograms.length).toBe(1);
     });
 
+    it("should return true if patient has enrolled too SomePrograms", function() {
+        scope.$apply(setUp);
+        expect(scope.hasPatientEnrolledToSomePrograms()).toBeTruthy();
+    });
+
+    it("should return trus if patient had enrolled in any past programs", function() {
+        scope.$apply(setUp);
+        expect(scope.hasPatientAnyPastPrograms()).toBeTruthy();
+    });
+
     var allPrograms = [
         {
             "uuid": "1209df07-b3a5-4295-875f-2f7bae20f86e",
@@ -129,6 +139,13 @@ describe("ManageProgramController", function () {
                     }
                 ]
             }
+        },
+        {
+            "display": "program in Past",
+            "dateEnrolled": "2015-07-25T18:29:59.000+0000",
+            "dateCompleted": "2015-07-15T18:29:59.000+0000",
+            "outcome": null,
+            "uuid": "5b022462-4f79-4a24-98eb-8f143f942584",
         }
     ];
 });

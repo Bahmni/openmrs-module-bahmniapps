@@ -1,8 +1,4 @@
-<div class="dashboard-program-section">
-    <h2 class="section-title">
-        <span>Programs</span>
-    </h2>
-
+<section>
     <div ng-if="hasPatientAnyActivePrograms()">
         <h3 class="program-title">
             <span>Active Programs</span>
@@ -10,8 +6,10 @@
         <div ng-repeat="program in activePrograms" class="program-stuff">
             <div class="program-row">
                 <div class="program-details">
-                    <a ng-href="#/patient/{{patient.uuid}}/dashboard" class="big-anchor">{{program.display}}</a>
-                    <span class="enrolled-info"> (Enrolled on {{program.dateEnrolled | bahmniDate}})</span>
+                    <span>{{program.display}}</span>
+                    <span class="enrolled-info">({{program.dateEnrolled | bahmniDate}}</span>
+                    <span class="enrolled-info" ng-if="program.dateCompleted"> - {{program.dateCompleted | bahmniDate}}</span>
+                    <span class="enrolled-info">)</span>
                 </div>
                 <div class="program-timeline">
                     <timeline program="program"></timeline>
@@ -27,8 +25,10 @@
         <div ng-repeat="program in pastPrograms" class="program-stuff">
             <div class="program-row">
                 <div class="program-details">
-                    <a ng-href="#/patient/{{patient.uuid}}/dashboard" class="big-anchor">{{program.display}}</a>
-                    <span class="enrolled-info"> (Enrolled on {{program.dateEnrolled | bahmniDate}})</span>
+                    <span>{{program.display}}</span>
+                    <span class="enrolled-info">({{program.dateEnrolled | bahmniDate}}</span>
+                    <span class="enrolled-info" ng-if="program.dateCompleted"> - {{program.dateCompleted | bahmniDate}}</span>
+                    <span class="enrolled-info">)</span>
                 </div>
                 <div class="program-timeline">
                     <timeline program="program"></timeline>
@@ -44,5 +44,4 @@
             </div>
         </div>
     </div>
-
-</div>
+</section>
