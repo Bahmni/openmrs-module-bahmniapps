@@ -106,6 +106,14 @@ body.gallery-open > *:not(#gallery-pane) {
 		    border: none;
 		    vertical-align: top;
 		}
+		.pdf-link{
+			display: none;
+			@media screen and (max-width: 1024px) {
+				display: block;
+				float: right;
+				padding-top: 6px;
+    		}
+		}
 	}
 
 }

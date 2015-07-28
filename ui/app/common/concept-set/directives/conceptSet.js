@@ -43,7 +43,7 @@ angular.module('bahmni.common.conceptSet')
             };
 
             $scope.hasPDFAsValue = function(){
-              return $scope.observation.value && $scope.observation.value.endsWith(".pdf");
+              return $scope.observation.value && ($scope.observation.value.indexOf(".pdf") > 0);
             };
 
             $scope.$watch('collapseInnerSections', function(){

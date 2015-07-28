@@ -319,7 +319,7 @@ angular.module('opd.documentupload')
             };
 
             $scope.isPdf = function(file){
-                return file.encodedValue.endsWith(".pdf");
+                return (file.encodedValue.indexOf(".pdf") > 0);
             };
 
             $anchorScroll();

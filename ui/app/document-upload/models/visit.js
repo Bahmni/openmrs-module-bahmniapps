@@ -43,7 +43,7 @@ Bahmni.DocumentUpload.Visit = function () {
     this.assignImageIndex = function(){
         var imageIndex = 0;
           this.files.map(function(file){
-              if(!file.encodedValue.endsWith(".pdf")){
+              if(!(file.encodedValue.indexOf(".pdf") > 0)){
                   file.imageIndex = imageIndex;
                   imageIndex++;
               }

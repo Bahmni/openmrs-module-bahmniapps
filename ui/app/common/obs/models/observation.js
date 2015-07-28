@@ -17,7 +17,8 @@ Bahmni.Common.Obs.Observation = function () {
         },
 
         hasPDFAsValue: function(){
-            return this.value.endsWith(".pdf");
+            
+            return (this.value.indexOf(".pdf") > 0);
         },
 
         getDisplayValue: function () {
