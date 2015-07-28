@@ -97,6 +97,11 @@ angular.module('bahmni.registration')
                 }
             };
 
+            $scope.clearProvider = function(relationship){
+                if(!relationship.providerName){
+                    delete relationship.personB;
+                }
+            };
 
             $scope.getProviderDataResults = function (data) {
                 return data.data.results.filter(function (provider) {

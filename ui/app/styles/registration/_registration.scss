@@ -983,19 +983,25 @@ button u, u {
   }
 
   .new-relationship {
-    margin: 0px 5px 20px 5px;
+    margin: 18px 5px 20px 5px;
     background: $white;
     overflow: hidden;
     .row{
       margin-bottom: 7px;
     }
-    span{
-        display: inline-block;
-        margin-left: 15px;
-        &.asterick{
-          margin-left: 0;
-        }
+    span {
+      display: inline-block;
+      margin-left: 15px;
+      &.asterick {
+        margin-left: 0;
+      }
+      &.no-person {
+        display: block;
+        color: red;
+      }
+
     }
+
   }
 
   .table-header {
