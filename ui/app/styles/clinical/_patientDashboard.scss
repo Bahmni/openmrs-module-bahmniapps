@@ -119,10 +119,10 @@
       color: $mediumGray;
     }
     ul.navigation-link-container{
+        margin: 5px 0 0 5px;
         padding: 5px 10px;
       li{
           display: block;
-          padding: 5px 0;
         a{
           &:hover{
             text-decoration: underline;
