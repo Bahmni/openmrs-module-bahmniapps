@@ -30,7 +30,7 @@ angular.module('bahmni.common.patient')
 
         this.search = function (query, offset, identifier) {
             offset = offset || 0;
-            return $http.get("/openmrs/ws/rest/v1/bahmnicore/patient", {
+            return $http.get(Bahmni.Common.Constants.bahmniSearchUrl + "/patient", {
                 method: "GET",
                 params: {q: query, startIndex: offset, identifier: identifier},
                 withCredentials: true

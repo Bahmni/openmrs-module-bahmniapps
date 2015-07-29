@@ -31,7 +31,7 @@ angular.module('bahmni.clinical')
         };
 
         var getConfig = function () {
-            return $http.get(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/config", {
+            return $http.get(Bahmni.Common.Constants.drugOrderConfigurationUrl, {
                 withCredentials: true
             });
         };

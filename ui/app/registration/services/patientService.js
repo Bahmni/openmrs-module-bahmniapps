@@ -6,7 +6,7 @@ angular.module('bahmni.registration')
         var baseOpenMRSRESTURL = Bahmni.Registration.Constants.baseOpenMRSRESTURL;
 
         var search = function (query, addressFieldName, addressFieldValue, customAttributeValue, offset, customAttributeFields) {
-            var url = openmrsUrl + "/ws/rest/v1/bahmnicore/patient";
+            var url = Bahmni.Common.Constants.bahmniSearchUrl + "/patient";
             var config = {
                 params: {
                     q: query,
@@ -23,7 +23,7 @@ angular.module('bahmni.registration')
         };
 
         var searchByIdentifier = function(identifier){
-            return $http.get(openmrsUrl + "/ws/rest/v1/bahmnicore/patient", {
+            return $http.get(Bahmni.Common.Constants.bahmniSearchUrl + "/patient", {
                 method: "GET",
                 params: {identifier: identifier},
                 withCredentials: true

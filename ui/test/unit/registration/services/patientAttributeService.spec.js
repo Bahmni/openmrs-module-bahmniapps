@@ -14,8 +14,6 @@ describe('patientAttributeService', function () {
     }));
 
     describe("search", function () {
-        var openmrsUrl = 'http://blah.com';
-        Bahmni.Registration.Constants.openmrsUrl = openmrsUrl;
 
         it('Should get unique list of family names', inject(['patientAttributeService', function (patientAttributeService) {
             var key = "familyName";
@@ -24,7 +22,7 @@ describe('patientAttributeService', function () {
             var results = patientAttributeService.search(key, query, 'personName');
 
             expect(mockHttp.get).toHaveBeenCalled();
-            expect(mockHttp.get.calls.mostRecent().args[0]).toBe(openmrsUrl + '/ws/rest/v1/bahmnicore/unique/personname');
+            expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.bahmniSearchUrl + "/personname");
             expect(mockHttp.get.calls.mostRecent().args[1].params.q).toBe(query);
             expect(mockHttp.get.calls.mostRecent().args[1].params.key).toBe(key);
             expect(results).toBe(resultList);
@@ -37,7 +35,7 @@ describe('patientAttributeService', function () {
             var results = patientAttributeService.search(key, query, 'personAttribute');
 
             expect(mockHttp.get).toHaveBeenCalled();
-            expect(mockHttp.get.calls.mostRecent().args[0]).toBe(openmrsUrl + "/ws/rest/v1/bahmnicore/unique/personattribute");
+            expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.bahmniSearchUrl + "/personattribute");
             expect(mockHttp.get.calls.mostRecent().args[1].params.q).toBe(query);
             expect(mockHttp.get.calls.mostRecent().args[1].params.key).toBe(key);
             expect(results).toBe(resultList);
@@ -50,7 +48,7 @@ describe('patientAttributeService', function () {
             var results = patientAttributeService.search(key, query, 'personAttribute');
 
             expect(mockHttp.get).toHaveBeenCalled();
-            expect(mockHttp.get.calls.mostRecent().args[0]).toBe(openmrsUrl + "/ws/rest/v1/bahmnicore/unique/personattribute");
+            expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.bahmniSearchUrl + "/personattribute");
             expect(mockHttp.get.calls.mostRecent().args[1].params.q).toBe(query.trimLeft());
             expect(mockHttp.get.calls.mostRecent().args[1].params.key).toBe(key);
             expect(results).toBe(resultList);

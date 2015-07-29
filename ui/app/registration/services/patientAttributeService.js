@@ -7,14 +7,14 @@ angular.module('bahmni.registration')
 
     var init = function(){
         urlMap = {
-            "personName" : "/ws/rest/v1/bahmnicore/unique/personname",
-            "personAttribute" : "/ws/rest/v1/bahmnicore/unique/personattribute"
+            "personName" : Bahmni.Common.Constants.bahmniSearchUrl + "/personname",
+            "personAttribute" : Bahmni.Common.Constants.bahmniSearchUrl + "/personattribute"
         }
     };
     init();
 
     var search = function(fieldName, query, type){
-        var url = Bahmni.Registration.Constants.openmrsUrl + urlMap[type];
+        var url = urlMap[type];
         var queryWithoutTrailingSpaces = query.trimLeft();
 
         return $http.get(url, {
