@@ -127,10 +127,12 @@ angular.module('bahmni.common.uiHelper')
     })
     .directive('validateOn', function(){
         var link = function(scope, element, attrs, ngModelCtrl){
+            var validationMessage = attrs.validationMessage || 'Please enter a valid detail';
+
             var setValidity = function (value) {
                 var valid = value? true: false;
                 ngModelCtrl.$setValidity('blank', valid);
-                element[0].setCustomValidity(!valid ? "Please enter a valid detail" : '');
+                element[0].setCustomValidity(!valid ?  validationMessage: '');
             };
             scope.$watch(attrs.validateOn, setValidity, true);
         };

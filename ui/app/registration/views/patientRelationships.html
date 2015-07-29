@@ -41,15 +41,17 @@
                     <span class="asterick">*</span>
                 </div>
                 <div class="col col2">
-                    <input type="text" ng-if="isEmpty(newRelationship)"
-                           ng-model-options="{updateOn: 'blur'}" ng-model="newRelationship.patientIdentifier" ng-change="searchByPatientIdentifier(newRelationship)" ng-disabled="!newRelationship.relationshipType.uuid">
-                    <input type="text" ng-if="isPatientRelationship(newRelationship)"
-                           ng-model-options="{updateOn: 'blur'}" ng-model="newRelationship.patientIdentifier" validate-on="newRelationship.personB.uuid" ng-change="searchByPatientIdentifier(newRelationship)">
-                    <input type="text" ng-if="isProviderRelationship(newRelationship)" bahmni-autocomplete is-invalid="!newRelationship.personB.uuid" validation-message="Please select provider from the autocomplete list" on-edit="onEditProviderName(newRelationship)"
+                    <input type="text" ng-if="isEmpty(newRelationship)" ng-model-options="{updateOn: 'blur'}" ng-model="newRelationship.patientIdentifier"
+                           ng-change="searchByPatientIdentifier(newRelationship)" ng-disabled="!newRelationship.relationshipType.uuid">
+
+                    <input type="text" ng-if="isPatientRelationship(newRelationship)"ng-model-options="{updateOn: 'blur'}" ng-model="newRelationship.patientIdentifier"
+                           validate-on="newRelationship.personB.uuid" validation-message="Please enter a valid patient identifier" ng-change="searchByPatientIdentifier(newRelationship)">
+
+                    <input type="text" ng-if="isProviderRelationship(newRelationship)" bahmni-autocomplete is-invalid="!newRelationship.personB.uuid" validation-message="Please select a provider from the autocomplete list" on-edit="onEditProviderName(newRelationship)"
                            ng-model="newRelationship.providerName" response-map="getProviderDataResults" source="getProviderList(relationship)" ng-change="clearProvider(newRelationship)" on-select="providerSelected(newRelationship)">
                     <span class="asterick">*</span>
                     <span class="no-person" ng-show="showPersonNotFound(newRelationship)">Person not found</span>
-                    <span style="display:block" ng-show="!showPersonNotFound(newRelationship)">{{newRelationship.content}}</span>
+                    <span ng-show="!showPersonNotFound(newRelationship)">{{newRelationship.content}}</span>
                     <input type="hidden" ng-model="newRelationship.personB.uuid"/>
                 </div>
                 <div class="col col3">

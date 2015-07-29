@@ -934,27 +934,20 @@ button u, u {
     select, input{
       min-width: 180px;
     }
+    .col{
+      margin: 0 10px;
+    }
     .col1 {
-      select, span{
-        margin-left: 10px;
-        margin-top: 0;
-      }
+      margin-top: 0;
       label.add-new {margin-top: 10px; font-size: 12px;}
       width: 25%;
       float: left;
     }
     .col2 {
-      input,span{
-        margin-left: 10px;
-
-      }
       width: 35%;
       float: left;
     }
     .col3 {
-      input,span{
-        margin-left: 10px;
-      }
       width: 25%;
       float: left;
     }
@@ -983,20 +976,19 @@ button u, u {
   }
 
   .new-relationship {
-    margin: 18px 5px 20px 5px;
+    margin: 20px 15px 20px 15px;
     background: $white;
     overflow: hidden;
     .row{
       margin-bottom: 7px;
     }
     span {
-      display: inline-block;
-      margin-left: 15px;
+      display: block;
       &.asterick {
         margin-left: 0;
+        display: inline-block;
       }
       &.no-person {
-        display: block;
         color: red;
       }
 
@@ -1012,7 +1004,6 @@ button u, u {
       color: $mediumGray;
       font-family: $OpenSansBoldFont;
       font-weight: normal;
-      margin-left: 10px;
     }
   }
 }
