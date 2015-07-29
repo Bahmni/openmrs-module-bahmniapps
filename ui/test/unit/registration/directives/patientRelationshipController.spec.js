@@ -220,6 +220,28 @@ describe('PatientRelationshipController', function () {
        })
     });
 
+    describe('showPersonNotFound', function(){
+       it("should show 'person not found' message when user enters invalid patient identifier", function(){
+           var patientRelationship = {
+               relationshipType: {"uuid": undefined},
+               patientIdentifier: "SIV115438",
+               personB: null
+           };
+
+           expect(scope.showPersonNotFound(patientRelationship)).toBeTruthy();
+       })
+
+       it("should show not show 'person not found' message when the user has not searched for any patient", function(){
+           var patientRelationship = {
+               relationshipType: {"uuid": undefined},
+               patientIdentifier: "",
+               personB: null
+           };
+
+           expect(scope.showPersonNotFound(patientRelationship)).toBeFalsy();
+       })
+    });
+
     describe('getProviderDataResults', function(){
        it("should filter only the providers who are linked to person ", function(){
            var providers = [

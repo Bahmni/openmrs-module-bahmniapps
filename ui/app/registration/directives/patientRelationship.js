@@ -73,7 +73,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.showPersonNotFound = function (relationship) {
-                return (relationship.patientIdentifier || relationship.providerName)  && !relationship.personB;
+                return relationship.patientIdentifier  && !relationship.personB;
             };
 
             $scope.openPatientDashboardInNewTab = function (relationship) {
@@ -117,7 +117,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.onEditProviderName = function(relationship){
-              delete relationship.personB;
+                delete relationship.personB;
             };
 
             $scope.clearRelationshipRow = function (relationship, index) {
