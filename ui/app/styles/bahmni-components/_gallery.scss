@@ -93,6 +93,22 @@ body.gallery-open > *:not(#gallery-pane) {
 			width: 640px;
     	}
     }
+    .pdf-link{
+		display: none;
+		@media screen and (max-width: 1024px) {
+			display: block;
+			float: right;
+		    margin: 0px 0 10px;
+		    font-family:openSansSemiBold;
+			&:hover{
+				text-decoration: underline;
+			}
+			.fa-file-pdf-o{
+				font-size: 16px;
+				margin: 0;
+			}
+		}
+	}
     .scroll-pdf-frame{
 		overflow: auto;
 	    overflow-x: hidden;
@@ -106,14 +122,7 @@ body.gallery-open > *:not(#gallery-pane) {
 		    border: none;
 		    vertical-align: top;
 		}
-		.pdf-link{
-			display: none;
-			@media screen and (max-width: 1024px) {
-				display: block;
-				float: right;
-				padding-top: 6px;
-    		}
-		}
+		
 	}
 
 }
