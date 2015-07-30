@@ -3,13 +3,9 @@ angular.module('bahmni.common.displaycontrol.programs')
         function (programService) {
             'use strict';
             var DateUtil = Bahmni.Common.Util.DateUtil;
+
             var isActive = function(patientProgram){
-                if(patientProgram.dateCompleted == null){
-                    return true;
-                }
-                var dateCompletedWithoutTime = DateUtil.getDateWithoutTime(patientProgram.dateCompleted);
-                var todayWithoutTime = DateUtil.getDateWithoutTime(DateUtil.now());
-                return dateCompletedWithoutTime >= todayWithoutTime;
+                return patientProgram.dateCompleted == null;
             };
 
             var controller = function ($scope) {

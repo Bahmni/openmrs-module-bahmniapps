@@ -75,9 +75,8 @@ describe("Program display control", function () {
 
         var elementIsolatedScope = element.isolateScope();
 
-        expect(elementIsolatedScope.activePrograms.length).toBe(3);
-        expect(elementIsolatedScope.activePrograms[0].display).toBe("HIV Program");
-        expect(elementIsolatedScope.activePrograms[1].display).toBe("End TB Program");
+        expect(elementIsolatedScope.activePrograms.length).toBe(1);
+        expect(elementIsolatedScope.activePrograms[0].display).toBe("End Fever Program");
     });
 
     it("Shows past programs when dateCompleted is not given", function () {
@@ -92,27 +91,7 @@ describe("Program display control", function () {
 
         var elementIsolatedScope = element.isolateScope();
 
-        expect(elementIsolatedScope.pastPrograms.length).toBe(1);
+        expect(elementIsolatedScope.pastPrograms.length).toBe(3);
         expect(elementIsolatedScope.pastPrograms[0].display).toBe("Tuberculosis Program");
-    });
-
-    it("Shows past programs when dateCompleted is today or future", function () {
-        rootScope.patient = {
-            uuid: "uuid"
-        };
-
-        mockedAllProgramsForPatient(data);
-        var element = angular.element('<programs patient="patient"></programs>');
-        compile(element)(rootScope);
-        rootScope.$digest();
-
-        var elementIsolatedScope = element.isolateScope();
-
-        expect(elementIsolatedScope.activePrograms.length).toBe(3);
-        expect(elementIsolatedScope.pastPrograms.length).toBe(1);
-        expect(elementIsolatedScope.pastPrograms[0].display).toBe("Tuberculosis Program");
-        expect(elementIsolatedScope.activePrograms[0].display).toBe("HIV Program");
-        expect(elementIsolatedScope.activePrograms[1].display).toBe("End TB Program");
-        expect(elementIsolatedScope.activePrograms[2].display).toBe("End Fever Program");
     });
 });
