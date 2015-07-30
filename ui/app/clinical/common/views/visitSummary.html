@@ -84,8 +84,8 @@
             </div>
             <div data-ng-switch-when="custom">
                 <div ng-if="section.config">
-                    <custom patient="patient" visit-uuid="{{visitUuid}}"
-                            config="section.config" template-url="{{section.templateUrl}}"></custom>
+                    <custom-display-control patient="patient" visit-uuid="visitUuid"
+                            config="section.config"></custom-display-control>
                 </div>
             </div>
         </div>
