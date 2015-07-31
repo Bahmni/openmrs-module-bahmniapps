@@ -18,10 +18,11 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
                             "preferred": false
                         }
                     ],
-                    addresses: [_.pick(patient.address, constants.allAddressFileds) ],
+                    addresses: [_.pick(patient.address, constants.allAddressFileds)],
                     birthdate: this.getBirthdate(patient.birthdate, patient.age),
                     birthdateEstimated: patient.birthdate === null || patient.birthdate === undefined,
                     gender: patient.gender,
+                    birthtime: patient.birthtime === null ? undefined : patient.birthtime,
                     personDateCreated: patient.registrationDate,
                     attributes: this.getMrsAttributes(patient, patientAttributeTypes)
                 },
@@ -29,7 +30,7 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
                     {
                         identifier: patient.identifier,
                         "identifierType": {
-                           "name": constants.patientIdentifierTypeName
+                            "name": constants.patientIdentifierTypeName
                         },
                         "preferred": true,
                         "voided": false
@@ -40,7 +41,7 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
 
         this.setImage(patient, openMRSPatient);
         openMRSPatient.relationships = patient.relationships;
-        return  openMRSPatient;
+        return openMRSPatient;
     };
 
     CreatePatientRequestMapper.prototype.setImage = function (patient, openMRSPatient) {
@@ -52,19 +53,19 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
     CreatePatientRequestMapper.prototype.getMrsAttributes = function (patient, patientAttributeTypes) {
         return patientAttributeTypes.map(function (result) {
             var attribute = {
-                attributeType: { 
+                attributeType: {
                     uuid: result.uuid
                 }
             };
             setAttributeValue(result, attribute, patient[result.name]);
-            return  attribute
+            return attribute
         })
     };
 
     var setAttributeValue = function (attributeType, attr, value) {
         if (attributeType.format === "org.openmrs.Concept") {
             attr.hydratedObject = value;
-        } else if(value === "" || value === null || value === undefined) {
+        } else if (value === "" || value === null || value === undefined) {
             attr.voided = true;
         } else {
             attr.value = value.toString();

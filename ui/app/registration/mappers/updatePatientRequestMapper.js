@@ -23,6 +23,7 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
                     addresses: [_.pick(patient.address, Bahmni.Registration.Constants.allAddressFileds)],
                     birthdate: this.getBirthdate(patient.birthdate, patient.age),
                     birthdateEstimated: patient.birthdate === undefined || patient.birthdate === "",
+                    birthtime: patient.birthtime,
                     gender: patient.gender,
                     attributes: this.getMrsAttributes(openMRSPatient, patient, patientAttributeTypes)
                 }

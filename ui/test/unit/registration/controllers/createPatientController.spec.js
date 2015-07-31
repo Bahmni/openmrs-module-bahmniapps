@@ -31,6 +31,9 @@ describe('CreatePatientController', function () {
         appServiceMock.getAppDescriptor = function () {
             return {
                 getConfigValue: function () {
+                },
+                getExtensions: function () {
+                    return [{"showBirthTime": true}];
                 }
             }
         };
@@ -95,11 +98,13 @@ describe('CreatePatientController', function () {
         scopeMock.patient = {identifierPrefix: {}, relationships: []};
     });
 
-    it("should set patient identifierPrefix details with the matching one",function(){
-        rootScopeMock.patientConfiguration = {identifierSources: [
-            {prefix:"GAN"},
-            {prefix:"SEM"}
-        ]};
+    it("should set patient identifierPrefix details with the matching one", function () {
+        rootScopeMock.patientConfiguration = {
+            identifierSources: [
+                {prefix: "GAN"},
+                {prefix: "SEM"}
+            ]
+        };
         preferencesMock.identifierPrefix = "GAN";
         $aController('CreatePatientController', {
             $scope: scopeMock,
@@ -116,11 +121,13 @@ describe('CreatePatientController', function () {
         expect(scopeMock.patient.identifierPrefix.prefix).toBe("GAN");
     });
 
-    it("should set patient identifierPrefix details with the first source details when it doesn't match",function(){
-        rootScopeMock.patientConfiguration = {identifierSources: [
-            {prefix:"SEM"},
-            {prefix:"BAN"}
-        ]};
+    it("should set patient identifierPrefix details with the first source details when it doesn't match", function () {
+        rootScopeMock.patientConfiguration = {
+            identifierSources: [
+                {prefix: "SEM"},
+                {prefix: "BAN"}
+            ]
+        };
         preferencesMock.identifierPrefix = "GAN";
         $aController('CreatePatientController', {
             $scope: scopeMock,
