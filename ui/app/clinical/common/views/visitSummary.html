@@ -88,6 +88,16 @@
                             config="section.config"></custom-display-control>
                 </div>
             </div>
+            <div data-ng-switch-when="pacsOrders">
+                <div ng-if="section.config">
+                    <pacs-orders patient="patient"
+                                 order-type="section.config.orderType"
+                                 visit-uuid="visitUuid"
+                                 section="section"
+                                 config="section.config">
+                    </pacs-orders>
+                </div>
+            </div>
         </div>
     </div>
 </div>

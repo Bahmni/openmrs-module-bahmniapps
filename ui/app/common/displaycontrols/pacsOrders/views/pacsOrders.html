@@ -1,0 +1,21 @@
+<section class="dashboard-section ng-scope">
+    <h2 class="section-title">{{section.title}}</h2>
+    <section>
+        <ul class="navigation-link-container">
+            <li ng-repeat="bahmniOrder in ::bahmniOrders">
+                <span class="tree-list-item" ng-click="toggle(bahmniOrder)">
+                    <!-- Iframe to embed Oviyam pacs image should come here-->
+                    <a ng-href="">{{bahmniOrder.conceptName}}</a>
+                    <span class="fr order-sub-heading-container">
+                        <span class="order-sub-heading">
+                              {{bahmniOrder.provider}} {{ bahmniOrder.orderDate | bahmniDateTime }}
+                          </span>
+                    </span>
+                </span>
+            </li>
+        </ul>
+    </section>
+    <div ng-show="noOrdersMessage">
+        <div class="placeholder-text">{{noOrdersMessage}}</div>
+    </div>
+</section>
