@@ -11,8 +11,17 @@ angular.module('bahmni.common.displaycontrol.orders')
 
                 var includeAllObs = true;
                 var getOrders = function () {
-                    return orderService.getOrders($scope.patient.uuid, $scope.orderTypeUuid, $scope.config.conceptNames, includeAllObs, $scope.config.numberOfVisits,
-                        $scope.config.obsIgnoreList, $scope.visitUuid, $scope.orderUuid).then(function (response) {
+                    var params = {
+                        patientUuid:$scope.patient.uuid,
+                        orderTypeUuid:$scope.orderTypeUuid,
+                        conceptNames:$scope.config.conceptNames,
+                        includeObs:includeAllObs,
+                        numberOfVisits:$scope.config.numberOfVisits,
+                        obsIgnoreList:$scope.config.obsIgnoreList,
+                        visitUuid:$scope.visitUuid,
+                        orderUuid:$scope.orderUuid
+                    };
+                    return orderService.getOrders(params).then(function (response) {
                             $scope.bahmniOrders = response.data;
                         });
                 };
@@ -52,7 +61,7 @@ angular.module('bahmni.common.displaycontrol.orders')
 
                 $scope.getSectionTitle = function(){
                     return $scope.sectionTitle ? $scope.sectionTitle : $scope.section.title
-                }
+                };
 
                 spinner.forPromise(init());
             };

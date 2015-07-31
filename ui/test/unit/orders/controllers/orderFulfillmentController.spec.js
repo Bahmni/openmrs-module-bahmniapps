@@ -81,11 +81,10 @@ describe("OrderFulfillmentController", function () {
         expect(mockOrderService.getOrders).toHaveBeenCalled();
         expect(mockOrderTypeService.getOrderTypeUuid).toHaveBeenCalled();
         expect(mockOrderTypeService.getOrderTypeUuid.calls.mostRecent().args[0]).toEqual("someOrderType");
-
-        expect(mockOrderService.getOrders.calls.mostRecent().args[0]).toEqual("somePatientUuid");
-        expect(mockOrderService.getOrders.calls.mostRecent().args[1]).toEqual("someOrderTypeUuid");
-        expect(mockOrderService.getOrders.calls.mostRecent().args[2]).toEqual(["Blood Pressure"]);
-        expect(mockOrderService.getOrders.calls.mostRecent().args[3]).toEqual(false);
+        expect(mockOrderService.getOrders.calls.mostRecent().args[0].patientUuid).toEqual("somePatientUuid");
+        expect(mockOrderService.getOrders.calls.mostRecent().args[0].orderTypeUuid).toEqual("someOrderTypeUuid");
+        expect(mockOrderService.getOrders.calls.mostRecent().args[0].conceptNames).toEqual(["Blood Pressure"]);
+        expect(mockOrderService.getOrders.calls.mostRecent().args[0].includeObs).toEqual(false);
         done();
     });
 
