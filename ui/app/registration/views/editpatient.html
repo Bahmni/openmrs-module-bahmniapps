@@ -24,8 +24,9 @@
                     <span class="uneditable-input text-only">{{patient.registrationDate | bahmniDate}}</span>
                </div>
         </article>
-        <patient-common></patient-common>
+        <ng-include src="'views/patientcommon.html'"></ng-include>
         <patient-action></patient-action>
+
     </form>
     <br>
 </div>

@@ -1,7 +1,7 @@
 <legend class="mylegend registraion_legend registraion_Basic_info">
     <span><strong>Basic Information</strong></span>
 </legend>
-<section>
+<section ng-controller="PatientCommonController">
     <article class="form-field" ng-if="patientConfiguration.local()['showNameField']">
         <div class="field-attribute">
             <label for="patientName">{{patientConfiguration.local()['labelForNameField']}}</label>
@@ -79,7 +79,7 @@
         </div>
     </article>
 </section>
-<section class="form-field-inline form-field-gender">
+<section class="form-field-inline form-field-gender" ng-controller="PatientCommonController">
     <article class="form-field">
         <div class="field-attribute">
             <label for="gender">Gender <span class="asterick">*</span></label>
@@ -123,8 +123,8 @@
             <label for="birthdate">Date of Birth</label>
         </div>
         <div class="field-value">
-            <input id="birthdate" type="date" ng-model="patient.birthdate" max="{{today}}"
-                   ng-change="patient.calculateAge()">
+            <input id="birthdate" type="date" ng-model="patient.birthdate"  max="{{today}}"
+                    ng-change="patient.calculateAge()">
         </div>
     </article>
 </section>
