@@ -24,35 +24,30 @@ describe('EditPatientController', function () {
 
     it("should set read only fields after save", function () {
             appServiceMock.getAppDescriptor = function () {
-                return {
-                    getConfigValue: function () {
-                        return ["caste", "primaryRelative"];
-                    },
-                    getExtensions: function () {
-                        return [{"showBirthTime": true}];
-                    }
-                }
+                return { getConfigValue: function () {
+                    return ["caste", "primaryRelative"];
+                } }
             };
 
-            patientServiceMock.get = function (uuid) {
+            patientServiceMock.get = function(uuid) {
                 return {
                     success: function (successFn) {
                         successFn({data: "uuid"});
                     }
                 }
             };
-            patientServiceMock.update = function (uuid) {
+            patientServiceMock.update = function(uuid) {
                 return {
                     success: function (successFn) {
                         successFn({data: "uuid"});
                     }
                 }
             };
-            openmrsPatientMapperMock.map = function (openmrsPatient) {
+            openmrsPatientMapperMock.map = function(openmrsPatient) {
                 return scopeMock.patient;
             };
 
-            encounterServiceMock.getDigitized = function (uuid) {
+            encounterServiceMock.getDigitized = function(uuid) {
                 return {
                     success: function (successFn) {
                         return ({data: true});
@@ -73,10 +68,10 @@ describe('EditPatientController', function () {
             expect(scopeMock.readOnlyFields["caste"]).toBeFalsy()
             expect(scopeMock.readOnlyFields["primaryRelative"]).toBeFalsy();
 
-            scopeMock.patient = {"caste": "someCaste", "relationships": []};
+            scopeMock.patient = {"caste":"someCaste", "relationships": []};
             scopeMock.actions = {
                 followUpAction: function () {
-                    scopeMock.afterSave();
+                   scopeMock.afterSave();
                 }
             };
 
