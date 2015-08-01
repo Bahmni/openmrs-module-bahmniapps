@@ -1,16 +1,20 @@
-<div class="submit-btn-container" ng-controller="PatientActionController">
+<div class="submit-btn-container">
     <div>
-                <span ng-switch="forwardActionKey()">
+                <span ng-switch="forwardActionKey">
                     <span data-ng-switch-when="enterVisitDetails">
-                        <button type="submit" class="right confirm" ng-click="setSubmitSource('enterVisitDetails')" accesskey="v">Enter <u>V</u>isit Details</button>
+                        <button type="submit" class="right confirm" ng-click="setSubmitSource('enterVisitDetails')"
+                                accesskey="v">Enter <u>V</u>isit Details
+                        </button>
                     </span>
                     <span data-ng-switch-when="startVisit">
                         <div split-button options="visitControl.visitTypes"
                              primary-option="visitControl.defaultVisitType"
-                             option-text="visitControl.startButtonText" option-click="visitControl.startVisit" class="right"></div>
+                             option-text="visitControl.startButtonText" option-click="visitControl.startVisit"
+                             class="right"></div>
                     </span>
                     <span data-ng-switch-when="configAction">
-                        <button type="submit" class="right confirm" ng-click="setSubmitSource('configAction')" accesskey="{{actionConfig.extensionParams.shortcutKey}}"
+                        <button type="submit" class="right confirm" ng-click="setSubmitSource('configAction')"
+                                accesskey="{{actionConfig.extensionParams.shortcutKey}}"
                                 ng-bind-html="actionConfig.extensionParams.display">
                         </button>
                     </span>
