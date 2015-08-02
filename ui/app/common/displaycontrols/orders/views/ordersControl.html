@@ -1,5 +1,5 @@
 <section class="dashboard-section ng-scope">
-    <h2 ng-if="!isClickable() && getSectionTitle()" class="section-title">{{getSectionTitle()}}</h2>
+    <h2 ng-if="hasTitleToBeShown()" class="section-title">{{getSectionTitle()}}</h2>
 
     <div ng-if="isClickable()" class="dashboard-observations-section">
         <h2 ng-dialog="../common/displaycontrols/orders/views/allOrdersDetails.html"

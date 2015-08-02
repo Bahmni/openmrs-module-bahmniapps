@@ -33,7 +33,7 @@ angular.module('bahmni.common.displaycontrol.orders')
                             }
                         });
                         if (_.isEmpty($scope.bahmniOrders)) {
-                            $scope.noOrdersMessage = "No "+$scope.orderType+" for this patient";
+                            $scope.noOrdersMessage = "No "+$scope.orderType+" for this patient.";
                         }
                         else{
                             $scope.bahmniOrders[0].isOpen = true;
@@ -57,10 +57,14 @@ angular.module('bahmni.common.displaycontrol.orders')
                     return $scope.isOnDashboard && $scope.section.allOrdersDetails;
                 };
 
+                $scope.hasTitleToBeShown = function() {
+                    return !$scope.isClickable() && $scope.getSectionTitle();
+                };
+
                 $scope.message = Bahmni.Common.Constants.messageForNoFulfillment;
 
                 $scope.getSectionTitle = function(){
-                    return $scope.sectionTitle ? $scope.sectionTitle : $scope.section.title
+                    return $scope.section.title
                 };
 
                 spinner.forPromise(init());
@@ -76,8 +80,7 @@ angular.module('bahmni.common.displaycontrol.orders')
                     orderUuid:"=",
                     config:"=",
                     isOnDashboard:"=",
-                    visitUuid:"=",
-                    sectionTitle:"="
+                    visitUuid:"="
                 }
             }
         }]);

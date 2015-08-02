@@ -16,7 +16,9 @@ describe('CreatePatientController', function () {
         scopeMock = jasmine.createSpyObj('scopeMock', ['actions']);
         rootScopeMock = jasmine.createSpyObj('rootScopeMock', ['patientConfiguration']);
         stateMock = jasmine.createSpyObj('stateMock', ['go']);
-        patientServiceMock = jasmine.createSpyObj('patientServiceMock', ['generateIdentifier', 'getLatestIdentifier', 'setLatestIdentifier', 'create']);
+        patientServiceMock = jasmine.createSpyObj('patientServiceMock',
+            ['generateIdentifier', 'getLatestIdentifier', 'setLatestIdentifier', 'create']
+        );
         preferencesMock = jasmine.createSpyObj('preferencesMock', ['']);
         patientModelMock = jasmine.createSpyObj('patientModelMock', ['']);
         spinnerMock = jasmine.createSpyObj('spinnerMock', ['forPromise']);
@@ -33,42 +35,6 @@ describe('CreatePatientController', function () {
                 getConfigValue: function () {
                 }
             }
-        };
-        patientServiceMock.generateIdentifierMock = function (data) {
-            patientServiceMock.generateIdentifier.and.callFake(function () {
-                return {
-                    then: function (callback) {
-                        return callback({data: data})
-                    }
-                }
-            });
-        };
-        patientServiceMock.getLatestIdentifierMock = function (data) {
-            patientServiceMock.getLatestIdentifier.and.callFake(function () {
-                return {
-                    then: function (callback) {
-                        return callback({data: data})
-                    }
-                }
-            });
-        };
-        patientServiceMock.setLatestIdentifierMock = function (data) {
-            patientServiceMock.setLatestIdentifier.and.callFake(function () {
-                return {
-                    then: function (callback) {
-                        return callback({data: data})
-                    }
-                }
-            });
-        };
-        patientServiceMock.createMock = function (data) {
-            patientServiceMock.create.and.callFake(function () {
-                return {
-                    success: function (successFn) {
-                        successFn(data);
-                    }
-                };
-            });
         };
 
         rootScopeMock.patientConfiguration = {identifierSources: []};
@@ -141,8 +107,10 @@ describe('CreatePatientController', function () {
 
         scopeMock.patient.identifierPrefix.prefix = "GAN";
 
-        patientServiceMock.generateIdentifierMock("uuid");
-        patientServiceMock.createMock({patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}});
+        patientServiceMock.generateIdentifier.and.returnValue(specUtil.createFakePromise("uuid"));
+        patientServiceMock.create.and.returnValue(specUtil.createFakePromise({
+            patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}
+        }));
 
         scopeMock.create();
 
@@ -154,8 +122,11 @@ describe('CreatePatientController', function () {
         scopeMock.patient.identifierPrefix.prefix = "GAN";
 
         scopeMock.hasOldIdentifier = true;
-        patientServiceMock.getLatestIdentifierMock("100000");
-        patientServiceMock.createMock({patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}});
+        patientServiceMock.getLatestIdentifier.and.stub();
+        patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.createFakePromise("100000"));
+        patientServiceMock.create.and.returnValue(specUtil.createFakePromise({
+            patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}
+        }));
 
         scopeMock.create();
 
@@ -168,8 +139,10 @@ describe('CreatePatientController', function () {
 
         scopeMock.hasOldIdentifier = true;
 
-        patientServiceMock.getLatestIdentifierMock("1000");
-        patientServiceMock.createMock({patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}});
+        patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.createFakePromise("1000"));
+        patientServiceMock.create.and.returnValue(specUtil.createFakePromise({
+            patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}
+        }));
 
         scopeMock.create();
 
@@ -187,8 +160,10 @@ describe('CreatePatientController', function () {
 
         scopeMock.hasOldIdentifier = true;
 
-        patientServiceMock.getLatestIdentifierMock("1055");
-        patientServiceMock.createMock({patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}});
+        patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.createFakePromise("1055"));
+        patientServiceMock.create.and.returnValue(specUtil.createFakePromise({
+            patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}
+        }));
 
         scopeMock.create();
 
@@ -204,9 +179,11 @@ describe('CreatePatientController', function () {
 
         scopeMock.hasOldIdentifier = true;
 
-        patientServiceMock.getLatestIdentifierMock("1050");
-        patientServiceMock.setLatestIdentifierMock("1051");
-        patientServiceMock.createMock({patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}});
+        patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.createFakePromise("1050"));
+        patientServiceMock.setLatestIdentifier.and.returnValue(specUtil.createFakePromise("1051"));
+        patientServiceMock.create.and.returnValue(specUtil.createFakePromise({
+            patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}
+        }));
 
         scopeMock.create();
 
@@ -218,17 +195,14 @@ describe('CreatePatientController', function () {
     });
 
     it("should not create patient when the set Identifier throws error", function () {
+        var serverError = new Error("Server Error : User is logged in but doesn't have the relevant privilege");
         scopeMock.patient.identifierPrefix.prefix = "GAN";
         scopeMock.patient.registrationNumber = "1050";
 
         scopeMock.hasOldIdentifier = true;
 
-        patientServiceMock.getLatestIdentifierMock("1050");
-
-        var serverError = new Error("Server Error : User is logged in but doesn't have the relevant privilege");
-        patientServiceMock.setLatestIdentifier.and.callFake(function () {
-            throw serverError;
-        });
+        patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.createFakePromise("1050"));
+        patientServiceMock.setLatestIdentifier.and.throwError(serverError);
 
         expect(scopeMock.create).toThrow(serverError);
 
@@ -243,9 +217,11 @@ describe('CreatePatientController', function () {
 
         scopeMock.hasOldIdentifier = true;
 
-        patientServiceMock.getLatestIdentifierMock("1000");
-        patientServiceMock.setLatestIdentifierMock("1051");
-        patientServiceMock.createMock({patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}});
+        patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.createFakePromise("1000"));
+        patientServiceMock.setLatestIdentifier.and.returnValue(specUtil.createFakePromise("1051"));
+        patientServiceMock.create.and.returnValue(specUtil.createFakePromise({
+            patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}
+        }));
 
         scopeMock.create();
 
@@ -266,9 +242,11 @@ describe('CreatePatientController', function () {
 
         scopeMock.hasOldIdentifier = true;
 
-        patientServiceMock.getLatestIdentifierMock("1000");
-        patientServiceMock.setLatestIdentifierMock("1051");
-        patientServiceMock.createMock({patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}});
+        patientServiceMock.getLatestIdentifier.and.returnValue(specUtil.createFakePromise("1000"));
+        patientServiceMock.setLatestIdentifier.and.returnValue(specUtil.createFakePromise("1051"));
+        patientServiceMock.create.and.returnValue(specUtil.createFakePromise({
+            patient: {uuid: "patientUuid", person: {names: [{display: "somename"}]}}
+        }));
 
         scopeMock.create();
 

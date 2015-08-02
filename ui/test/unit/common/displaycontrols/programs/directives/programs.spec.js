@@ -1,21 +1,23 @@
+'use strict';
 describe("Program display control", function () {
-    'use strict';
 
     var compile, rootScope, programService;
     var DateUtil = Bahmni.Common.Util.DateUtil;
+    var element;
 
-    beforeEach(module('bahmni.common.displaycontrol.programs'));
-    beforeEach(module('ngHtml2JsPreprocessor'));
+    beforeEach(function() {
+        module('bahmni.common.displaycontrol.programs');
+        module('ngHtml2JsPreprocessor');
 
-    beforeEach(module(function ($provide) {
-        programService = jasmine.createSpyObj('programService', ['getActiveProgramsForAPatient']);
-        $provide.value('programService', programService);
-    }));
-
-    beforeEach(inject(function ($compile, $rootScope) {
-        compile = $compile;
-        rootScope = $rootScope;
-    }));
+        module(function ($provide) {
+            programService = jasmine.createSpyObj('programService', ['getActiveProgramsForAPatient']);
+            $provide.value('programService', programService);
+        });
+        inject(function ($compile, $rootScope) {
+            compile = $compile;
+            rootScope = $rootScope;
+        });
+    });
 
     var today = DateUtil.endOfToday();
     var yesterday = DateUtil.addDays(today, -1);
@@ -51,15 +53,10 @@ describe("Program display control", function () {
         ]
     };
 
-
-    var mockedAllProgramsForPatient = function (data) {
-        programService.getActiveProgramsForAPatient.and.callFake(function () {
-            return {
-                success: function (callback) {
-                    return callback(data);
-                }
-            };
-        });
+    var compileAndDigest = function () {
+        element = angular.element('<programs patient="patient"></programs>');
+        compile(element)(rootScope);
+        rootScope.$digest();
     };
 
     it("Shows active programs", function () {
@@ -67,11 +64,8 @@ describe("Program display control", function () {
             uuid: "uuid"
         };
 
-        mockedAllProgramsForPatient(data);
-
-        var element = angular.element('<programs patient="patient"></programs>');
-        compile(element)(rootScope);
-        rootScope.$digest();
+        programService.getActiveProgramsForAPatient.and.returnValue(specUtil.createFakePromise(data));
+        compileAndDigest();
 
         var elementIsolatedScope = element.isolateScope();
 
@@ -84,10 +78,8 @@ describe("Program display control", function () {
             uuid: "uuid"
         };
 
-        mockedAllProgramsForPatient(data);
-        var element = angular.element('<programs patient="patient"></programs>');
-        compile(element)(rootScope);
-        rootScope.$digest();
+        programService.getActiveProgramsForAPatient.and.returnValue(specUtil.createFakePromise(data));
+        compileAndDigest();
 
         var elementIsolatedScope = element.isolateScope();
 

@@ -20,7 +20,7 @@ describe("Radiology Display Control", function () {
             return params[myParam]
         });
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
-        encounterService = {getEncountersForEncounterType: {}};
+        encounterService = jasmine.createSpyObj('encounterService',['getEncountersForEncounterType']);
 
         $provide.value('configurations', configurations);
         $provide.value('spinner', spinner);
@@ -38,13 +38,11 @@ describe("Radiology Display Control", function () {
         };
     }));
 
-    beforeEach(function(){
+    var compileAndDigest = function(){
         element = angular.element('<bm-documents patient="patient" config="config" encounter-type="\'RADIOLOGY\'"></bm-documents>');
         $compile(element)(scope);
-        spyOn(encounterService, 'getEncountersForEncounterType').and.callFake(function(param1, param2){
-            return params[param2];
-        });
-    });
+        scope.$digest();
+    };
 
     it("should show active visit star if visit stop date is not present", function () {
         var records_group1 = [{
@@ -62,7 +60,10 @@ describe("Radiology Display Control", function () {
         var radiologyRecords = [records_group1, records_group2]
 
         scope.config = {};
-        scope.$digest();
+        encounterService.getEncountersForEncounterType.and.callFake(function(param1, param2){
+            return params[param2];
+        });
+        compileAndDigest();
 
         var isoScope = element.isolateScope();
 
@@ -74,7 +75,10 @@ describe("Radiology Display Control", function () {
         scope.config = {
             visitUuids: ["uuid1"]
         };
-        scope.$digest();
+        encounterService.getEncountersForEncounterType.and.callFake(function(param1, param2){
+            return params[param2];
+        });
+        compileAndDigest();
 
         var isoScope = element.isolateScope();
         expect(isoScope.shouldShowActiveVisitStar()).toBe(false);

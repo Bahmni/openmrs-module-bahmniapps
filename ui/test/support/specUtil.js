@@ -27,3 +27,18 @@ var specUtil = {
         return deferred.promise;
     }
 };
+specUtil.createFakePromise = function (data) {
+    var self = {
+        then: function (callback) {
+            callback({data: data});
+            return self;
+        },
+        success: function (resolve) {
+            resolve(data);
+        },
+        error: function (reject) {
+            reject(data);
+        }
+    };
+    return self;
+};
