@@ -72,7 +72,8 @@ describe("Patient Profile display control", function () {
 
         var isoScope = element.isolateScope();
 
-        expect(isoScope.getPatientGenderAndAge()).toBe("Female, 21 years");
+        var patientGenderAndAge = isoScope.getPatientGenderAndAge();
+        expect(patientGenderAndAge.$$unwrapTrustedValue()).toBe("Female, 21 years");
     });
 
     it("should get patient address in the order of config specified", function () {

@@ -2,7 +2,7 @@
 
 angular.module('bahmni.common.displaycontrol.patientprofile')
     .directive('patientProfile', function () {
-        var controller = function ($scope, patientService, spinner) {
+        var controller = function ($scope, patientService, spinner, $sce) {
 
             var patient = $scope.patient;
 
@@ -14,7 +14,7 @@ angular.module('bahmni.common.displaycontrol.patientprofile')
 
             $scope.getPatientGenderAndAge = function () {
                 var patientGenderAndAge = [patient.genderText, patient.ageText];
-                return patientGenderAndAge.join(", ");
+                return $sce.trustAsHtml(patientGenderAndAge.join(", "));
             };
 
             $scope.getAddress = function () {
