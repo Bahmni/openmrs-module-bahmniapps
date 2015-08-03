@@ -5,27 +5,25 @@
 
         <div class="program-actions" ng-if="active">
             <button ng-click="toggleEdit(program)">Edit</button>
-            <button ng-click="toggleEnd(program)">End</button>
-        </div>
+            <div ng-if="program.editing" class="end-program-container">
+                <label class="middle-align">Change to</label>
+                <select ng-options="state.concept.display for state in getWorkflowStatesWithoutCurrent(program) track by state.uuid" ng-model="programEdited.selectedState">
+                    <option value="">Choose State</option>
+                </select>
+                <br/>
+                End: <input type="checkbox" ng-model="program.ending" />
 
-        <div ng-if="program.ending" class="end-program-container">
-            <label class="middle-align">Outcomes</label>
-            <select ng-model="program.outcomeData" ng-options="outcomeSelected.display for outcomeSelected in outcomes(program)">
-                <option value="">Choose OutCome</option>
-            </select>
-            <br/>
+                <div ng-show="program.ending" class="end-program-container">
+                    <label class="middle-align">Outcomes</label>
+                    <select ng-model="program.outcomeData" ng-options="outcomeSelected.display for outcomeSelected in getOutcomes(program)">
+                        <option value="">Choose OutCome</option>
+                    </select>
+                    <br/>
+                </div>
 
-            <button class="retro-widget-button ok_btn" ng-click="endProgram(program)">OK</button>
-        </div>
+                <button class="retro-widget-button ok_btn" ng-click="savePatientProgram(program)">OK</button>
+            </div>
 
-        <div ng-if="program.editing" class="end-program-container">
-            <label class="middle-align">Change to</label>
-            <select ng-model="workflowStateSelected" ng-options="state.concept.display for state in program.program.allWorkflows[0].states">
-                <option value="">Choose State</option>
-            </select>
-            <br/>
-
-            <button class="retro-widget-button ok_btn">OK</button>
         </div>
     </div>
     <div class="program-timeline">
