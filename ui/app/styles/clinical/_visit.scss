@@ -571,6 +571,10 @@ a.visit:before {
         .patient-gender-age {
           font-size: 12px;
           color: $darkGray;
+          font-family: openSansBold;
+          span{
+            font-family: openSans;
+          }
         }
         .patient-address {
           display: block;
