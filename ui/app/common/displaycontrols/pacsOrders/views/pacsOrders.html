@@ -1,6 +1,6 @@
 <section class="dashboard-section ng-scope">
     <h2 class="section-title">{{section.title}}</h2>
-    <section>
+    <section ng-hide="noOrdersMessage">
         <ul class="navigation-link-container">
             <li ng-repeat="bahmniOrder in ::bahmniOrders">
                 <span class="tree-list-item" ng-click="toggle(bahmniOrder)">
