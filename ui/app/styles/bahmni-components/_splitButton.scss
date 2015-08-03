@@ -2,7 +2,9 @@
     overflow:hidden;
     margin: 2px;
     border-radius: 3px;
+    position: relative;
     ul {
+        width: 300px;
         border-radius: 3px 0 0 3px;
         border-right:none;
         float:left;
@@ -24,6 +26,9 @@
                     position:relative;
                     z-index:99;
                     border-radius: 3px 0 0 3px;
+                    text-align: left;
+                    border: 0;
+                    width: 99%;
                     &:hover {
                         background: $lightestGray;
                     }
@@ -49,38 +54,43 @@
         border-radius:0px 3px 3px 0;
         border-left:none;
         padding: 5.5px 10px;
+        position: absolute;
+        z-index: 1;
+        right: 38px;
         &:focus{
             outline: 2px solid $clinicalFormFocus;
         }
     }
 }
 
-
-
-.reg-search-wrapper .split-button li{
-    width:auto;
-}
-
-
 .split-button {
     .primaryOption button, .toggle-button {
         @extend .confirm;
     }
 }
-.split-button {
-    position: relative;
-    ul {
-        width: 300px;
-        li button {
-            text-align: left;
-            border: 0;
-            width: 99%;
+
+
+.reg-search-wrapper .split-button li{
+    width:auto;
+}
+.reg-body-wrapper .split-button{
+    ul{
+        width: 250px;
+        li{
+            &.primaryOption{
+                .buttonClass{
+                    text-align: left;
+                }
+            }
+            &.secondaryOption {
+                width: 248px;
+            }
         }
+        
     }
     .toggle-button {
-        position: absolute;
-        z-index: 1;
-        right: 38px;
+        right: 1px;
+        margin-right: 0 !important;
     }
 }
 

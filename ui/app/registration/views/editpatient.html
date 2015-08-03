@@ -1,32 +1,33 @@
 <div class="reg-body-wrapper">
 <div class="edit-patient simple-form-ui">
     <form name="myForm"  ng-submit="update()">
-        <legend class="mylegend">
-            <span><strong>{{patient.identifier}}</strong></span>
-            <span ng-show= "isDigitized" class="right"><strong>Scanned</strong></span>
-            <span ng-show= "!isDigitized" class="right"><strong>Paper</strong></span>
-        </legend>
-        <div>
-            <span class="photo-container-wrapper">
-                <span class="photo-container">
-                        <img id="patient-image" ng-src="{{patient.image}}"
-                             onerror="this.onerror=null;this.src='../images/blank-user.gif';"/>
-                        <div ng-model="patient.image" capture-photo class="capture-photo-btn"></div>
-                 </span>
-            </span>
-        </div>
-        <article class="form-field">
-                <div class="field-attribute">
-                <label class="control-label">Registration Date</label>
-                </div>
+        <div class="box-container box-container-default">
+            <legend class="mylegend">
+                <span><strong>{{patient.identifier}}</strong></span>
+                <span ng-show= "isDigitized" class="right"><strong>Scanned</strong></span>
+                <span ng-show= "!isDigitized" class="right"><strong>Paper</strong></span>
+            </legend>
+            <div>
+                <span class="photo-container-wrapper">
+                    <span class="photo-container">
+                            <img id="patient-image" ng-src="{{patient.image}}"
+                                 onerror="this.onerror=null;this.src='../images/blank-user.gif';"/>
+                            <div ng-model="patient.image" capture-photo class="capture-photo-btn"></div>
+                     </span>
+                </span>
+            </div>
+            <article class="form-field">
+                    <div class="field-attribute">
+                    <label class="control-label">Registration Date</label>
+                    </div>
 
-                <div class="field-value">
-                    <span class="uneditable-input text-only">{{patient.registrationDate | bahmniDate}}</span>
-               </div>
-        </article>
+                    <div class="field-value">
+                        <span class="uneditable-input text-only">{{patient.registrationDate | bahmniDate}}</span>
+                   </div>
+            </article>
+        </div>
         <ng-include src="'views/patientcommon.html'"></ng-include>
         <patient-action></patient-action>
-
     </form>
     <br>
 </div>
