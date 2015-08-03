@@ -34,7 +34,7 @@ angular.module('bahmni.common.uiHelper')
             stateGroup.append("rect");
             stateGroup.append("text");
             states.on("click", function(d) {
-                alert(d.state);
+                //alert(d.state);
             });
             states.select("rect")
                 .attr('x', function(d) { return timeScale(d.date); })

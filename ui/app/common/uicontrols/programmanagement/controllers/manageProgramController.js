@@ -1,11 +1,12 @@
 angular.module('bahmni.clinical')
-    .controller('ManageProgramController', ['$scope', '$bahmniCookieStore', '$window', 'programService', 'spinner', 'messagingService', 'ngDialog',
-        function ($scope, $bahmniCookieStore, $window, programService, spinner, messagingService, ngDialog) {
+    .controller('ManageProgramController', ['$scope', '$bahmniCookieStore', '$window', 'programService', 'spinner', 'messagingService',
+        function ($scope, $bahmniCookieStore, $window, programService, spinner, messagingService) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.programSelected = {};
             $scope.workflowStateSelected = {};
             $scope.allPrograms = [];
             $scope.programWorkflowStates = [];
+            $scope.programEdited = {selectedState: ""};
 
             var updateActiveProgramsList = function () {
                 spinner.forPromise(programService.getActiveProgramsForAPatient($scope.patient.uuid).then(function (data) {
@@ -20,7 +21,7 @@ angular.module('bahmni.clinical')
                             }
                         })
                     }
-                }));
+                }))
             };
 
             var getCurrentDate = function() {
@@ -44,7 +45,30 @@ angular.module('bahmni.clinical')
             };
 
             var failureCallback = function (error) {
-                messagingService.showMessage("error", "Failed to Save");
+                var fieldErrorMsg = findFieldErrorIfAny(error);
+                var errorMsg  = _.isUndefined(fieldErrorMsg) ? "Failed to Save" : fieldErrorMsg;
+                messagingService.showMessage("error", errorMsg);
+            };
+
+            var findFieldErrorIfAny = function(error) {
+                var stateFieldError = objectDeepFind(error, "data.error.fieldErrors.states");
+                var errorField = stateFieldError && stateFieldError[0];
+                return errorField && errorField.message;
+            };
+
+            var objectDeepFind = function(obj, path) {
+                var paths = path.split('.')
+                    , current = obj
+                    , i;
+
+                for (i = 0; i < paths.length; ++i) {
+                    if (current[paths[i]] == undefined) {
+                        return undefined;
+                    } else {
+                        current = current[paths[i]];
+                    }
+                }
+                return current;
             };
 
             var isThePatientAlreadyEnrolled = function() {
@@ -82,36 +106,71 @@ angular.module('bahmni.clinical')
                 );
             };
 
-            $scope.popupHandler = function(program) {
-                $scope.popUpData = {"programName" : program.display,
-                    "patientProgramUuid" : program.uuid,
-                    "enrollmentDate" : DateUtil.parse(program.dateEnrolled),
-                    "endEnrollmentDate" : getCurrentDate(),
-                    "outcome" : program.program.outcomesConcept ? program.program.outcomesConcept.setMembers : ''};
-
-                $scope.dialog = ngDialog.open({ template: '../common/uicontrols/programmanagement/views/endPatientProgramPopUp.html', className: 'test ngdialog-theme-default end-program-dialog', scope: $scope});
+            var isProgramStateSelected = function(){
+                return objectDeepFind($scope, "programEdited.selectedState.uuid");
             };
 
-            $scope.outcomes = function(program) {
-                return program.program.outcomesConcept ? program.program.outcomesConcept.setMembers : '';
+            var isOutcomeSelected = function(patientProgram){
+              return !_.isEmpty(objectDeepFind(patientProgram, 'outcomeData.uuid'));
             };
 
-            $scope.endProgram = function(program) {
+            var getCurrentState = function(patientProgram){
+                return _.find(patientProgram.states, {endDate: null});
+            };
+
+            $scope.getWorkflowStatesWithoutCurrent = function(patientProgram){
+                var currState = getCurrentState(patientProgram);
+                return _.reject(patientProgram.program.allWorkflows[0].states, function(d){ return d.uuid == currState.state.uuid; });
+            };
+
+            $scope.savePatientProgram = function(patientProgram){
+                var startDate = getCurrentDate();
+                var currentStateDate = DateUtil.parse(getCurrentState(patientProgram).startDate);
+
+                if(DateUtil.isBeforeDate(startDate, currentStateDate)){
+                    var formattedCurrentStateDate = DateUtil.formatDateWithoutTime(currentStateDate);
+                    messagingService.showMessage("formError", "State cannot be started earlier than current state ("+ formattedCurrentStateDate+")");
+                    return ;
+                }
+
+
+                if(patientProgram.ending){
+                    if(!isOutcomeSelected(patientProgram)){
+                        messagingService.showMessage("formError", "Please select an outcome.");
+                        return;
+                    }
+                    endProgram(patientProgram);
+                }else {
+                    if(!isProgramStateSelected()){
+                        messagingService.showMessage("formError", "Please select a state to change.");
+                        return ;
+                    }
+                    spinner.forPromise(
+                        programService.savePatientProgram(patientProgram.uuid, $scope.programEdited.selectedState.uuid, startDate)
+                            .then(successCallback, failureCallback)
+                    );
+                }
+            };
+
+            $scope.getOutcomes = function(program) {
+                var currentProgram = _.findWhere($scope.allPrograms, {uuid: program.program.uuid});
+                return currentProgram.outcomesConcept ? currentProgram.outcomesConcept.setMembers : '';
+            };
+
+            var endProgram = function(program) {
                 spinner.forPromise(programService.endPatientProgram(program.uuid,
-                        getCurrentDate(), program.outcomeData ? program.outcomeData.uuid : null)
+                        getCurrentDate(), objectDeepFind($scope, 'programEdited.selectedState.uuid'),
+                        program.outcomeData ? program.outcomeData.uuid : null)
                 ).then(function(){
-                        ngDialog.close();
                         updateActiveProgramsList();
                     });
             };
 
             $scope.toggleEdit = function(program) {
-                program.ending = false;
                 program.editing = !program.editing;
             };
 
             $scope.toggleEnd = function(program) {
-                program.editing = false;
                 program.ending = !program.ending;
             };
 

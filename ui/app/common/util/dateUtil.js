@@ -113,6 +113,9 @@ Bahmni.Common.Util.DateUtil = {
         return dateOne.getTime() == dateTwo.getTime();
     },
 
+    isBeforeDate: function(date1, date2){
+      return moment(date1).isBefore(moment(date2));
+    },
     isSameDate: function(date1, date2) {
         if(date1 == null || date2 == null) {
             return false;
