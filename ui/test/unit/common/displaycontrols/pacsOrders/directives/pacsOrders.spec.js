@@ -102,6 +102,12 @@ describe("PacsOrdersDisplayControl", function () {
                 title: "testTitle"
             };
             scope.orderType = "testOrder";
+            orders = [{
+                "conceptName": "Absconding",
+                "orderDate": "2014-12-16T16:06:49.000+0530",
+                "provider": "someProvider",
+                "bahmniObservations": []
+            }];
         });
 
         it('should show the noOrdersMessage when there is no order', function () {
@@ -128,6 +134,77 @@ describe("PacsOrdersDisplayControl", function () {
 
             expect(section.children()[2].localName).toBe('div');
             expect($(section.children()[2]).text()).not.toContain("No testOrder for this patient.");
+        });
+    });
+    describe("Pacs Image Link",function(){
+        beforeEach(function(){
+            scope.config = {};
+            scope.patient = {uuid:"patientUuid"};
+            scope.section = {title: "PACS Orders Summary"};
+            scope.orderType = "pacsOrder";
+            orders = [{
+                "conceptName": "Absconding",
+                "orderDate": "2014-12-16T16:06:49.000+0530",
+                "provider": "someProvider",
+                "bahmniObservations": []
+            }];
+        });
+        it('should set the pacs image link to given url template when it does not have any placeholder',function(){
+            scope.config.pacsImageUrl="http://10.0.0.30:8080/";
+
+            orderService.getOrders.and.returnValue(specUtil.createFakePromise(orders));
+            var element = generateElement();
+
+            expect(element.children()[0].localName).toBe('section');
+
+            var pacsOrders = $(element.children()[0]);
+            var ordersNavigationSection = $(pacsOrders.children()[1]);
+            var allLinks = ordersNavigationSection.find('a');
+
+            expect($(allLinks[0]).attr('href')).toBe('http://10.0.0.30:8080/');
+
+            scope.config.pacsImageUrl="http://10.0.0.30:2020/";
+            scope.$digest();
+            expect($(allLinks[0]).attr('href')).toBe('http://10.0.0.30:2020/');
+        });
+        it('should set the pacs image link with patientID param when it\'s placeholder exists in the template', function(){
+
+            orders[0].orderNumber="ORD-2003";
+            orderService.getOrders.and.returnValue(specUtil.createFakePromise(orders));
+            var element = generateElement();
+
+            expect(element.children()[0].localName).toBe('section');
+
+            var pacsOrders = $(element.children()[0]);
+            var ordersNavigationSection = $(pacsOrders.children()[1]);
+            var allLinks = ordersNavigationSection.find('a');
+
+            expect($(allLinks[0]).attr('href')).toBeUndefined();
+
+            scope.config.pacsImageUrl="http://10.0.0.30:8080/oviyam2/viewer.html?patientID={{patientID}}";
+            scope.patient.identifier="GAN200024";
+            scope.$digest();
+            expect($(allLinks[0]).attr('href')).toBe('http://10.0.0.30:8080/oviyam2/viewer.html?patientID=GAN200024');
+
+            scope.patient.identifier="GAN200025";
+            scope.$digest();
+            expect($(allLinks[0]).attr('href')).toBe('http://10.0.0.30:8080/oviyam2/viewer.html?patientID=GAN200025');
+
+            scope.config.pacsImageUrl="http://10.0.0.30:.../?patientID={{patientID}}&accessionNumber={{orderNumber}}";
+            scope.$digest();
+            expect($(allLinks[0]).attr('href')).toBe('http://10.0.0.30:.../?patientID=GAN200025&accessionNumber=ORD-2003');
+        });
+        it('should open the pacs image in new tab',function(){
+            orderService.getOrders.and.returnValue(specUtil.createFakePromise(orders));
+            var element = generateElement();
+
+            expect(element.children()[0].localName).toBe('section');
+
+            var pacsOrders = $(element.children()[0]);
+            var ordersNavigationSection = $(pacsOrders.children()[1]);
+            var allLinks = ordersNavigationSection.find('a');
+
+            expect($(allLinks[0]).attr('target')).toBe("_blank");
         });
     });
 });

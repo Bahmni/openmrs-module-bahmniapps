@@ -30,6 +30,13 @@ angular.module('bahmni.common.displaycontrol.pacsOrders')
                     });
                 };
 
+                $scope.getUrl = function(orderNumber){
+                    var pacsImageTemplate = $scope.config.pacsImageUrl||"";
+                    return pacsImageTemplate
+                        .replace('{{patientID}}',$scope.patient.identifier)
+                        .replace('{{orderNumber}}',orderNumber);
+                };
+
                 spinner.forPromise(init());
             };
 

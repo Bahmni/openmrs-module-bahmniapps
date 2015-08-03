@@ -5,7 +5,9 @@
             <li ng-repeat="bahmniOrder in ::bahmniOrders">
                 <span class="tree-list-item" ng-click="toggle(bahmniOrder)">
                     <!-- Iframe to embed Oviyam pacs image should come here-->
-                    <a ng-href="">{{bahmniOrder.conceptName}}</a>
+                    <a ng-href="{{getUrl(bahmniOrder.orderNumber)}}" target="_blank">
+                        {{bahmniOrder.conceptName}}
+                    </a>
                     <span class="order-sub-heading-container">
                         <span class="fr order-sub-heading">
                             {{bahmniOrder.provider}} {{ bahmniOrder.orderDate | bahmniDateTime }}
