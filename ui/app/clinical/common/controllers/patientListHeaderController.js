@@ -5,7 +5,7 @@ angular.module('bahmni.clinical')
         function ($scope, $rootScope, $bahmniCookieStore, providerService, spinner, locationService, $window, ngDialog) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var selectedProvider = {};
-            $scope.today = DateUtil.endOfToday();
+            $scope.today = DateUtil.endOfToday().toISOString().split("T")[0];
             $scope.retrospectivePrivilege = Bahmni.Common.Constants.retrospectivePrivilege;
             $scope.grantProviderAccess = Bahmni.Common.Constants.grantProviderAccess;
             $scope.selectedLocationUuid = {};
@@ -67,7 +67,7 @@ angular.module('bahmni.clinical')
                 var title = [];
                 if(getCurrentCookieLocation()) title.push(getCurrentCookieLocation().name);
                 if(getCurrentProvider() && getCurrentProvider().value) title.push(getCurrentProvider().value);
-                if(getCurrentDate()) title.push(DateUtil.formatDateWithoutTime(getCurrentDate()));
+                if(!DateUtil.isSameDateTime(getCurrentDate(), DateUtil.today())) title.push(DateUtil.formatDateWithoutTime(getCurrentDate()));
                 return title.join(',');
             };
 
