@@ -12,7 +12,7 @@
         </h2>
     </div>
 
-    <section class="block hierarchy"  ng-if="config.showHeader">
+    <section class="block hierarchy"  ng-if="config.showHeader" ng-hide="noOrdersMessage">
         <ul class="form-field">
             <li ng-repeat="bahmniOrder in ::bahmniOrders">
                 <span class="tree-list-item row-click" ng-click="toggle(bahmniOrder)">
@@ -34,7 +34,7 @@
             </li>
         </ul>
     </section>
-    <section class="block hierarchy"  ng-if="!config.showHeader">
+    <section class="block hierarchy"  ng-if="!config.showHeader" ng-hide="noOrdersMessage">
         <ul class="form-field">
             <li ng-repeat="bahmniOrder in ::bahmniOrders">
                 <ul ng-if="!bahmniOrder.hideIfEmpty">

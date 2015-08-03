@@ -64,7 +64,7 @@ angular.module('bahmni.common.displaycontrol.orders')
                 $scope.message = Bahmni.Common.Constants.messageForNoFulfillment;
 
                 $scope.getSectionTitle = function(){
-                    return $scope.section.title
+                    return $scope.sectionTitle?$scope.sectionTitle:$scope.section.title;
                 };
 
                 spinner.forPromise(init());
@@ -80,7 +80,8 @@ angular.module('bahmni.common.displaycontrol.orders')
                     orderUuid:"=",
                     config:"=",
                     isOnDashboard:"=",
-                    visitUuid:"="
+                    visitUuid:"=",
+                    sectionTitle:"="
                 }
             }
         }]);
