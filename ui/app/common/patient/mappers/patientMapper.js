@@ -62,9 +62,9 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope) {
         var DateUtil = Bahmni.Common.Util.DateUtil;
         var age = DateUtil.diffInYearsMonthsDays(birthDate, DateUtil.now());
         var ageInString = "";
-        if(age.years) ageInString += age.years + " Years ";
-        if(age.months) ageInString += age.months + " Months ";
-        if(age.days) ageInString += age.days + " Days";
+        if(age.years) ageInString += age.years + " <span> years </span>";
+        if(age.months) ageInString += age.months + "<span> months </span>";
+        if(age.days) ageInString += age.days + "<span> days </span>";
         return ageInString;
     };
 
@@ -89,7 +89,7 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope) {
         if (genderChar == null) {
             return null;
         }
-        return $rootScope.genderMap[angular.uppercase(genderChar)];
+        return "<span>"+ $rootScope.genderMap[angular.uppercase(genderChar)]+ "</span>";
     };
 
 };
