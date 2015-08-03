@@ -67,7 +67,7 @@ angular.module('bahmni.clinical')
                 var title = [];
                 if(getCurrentCookieLocation()) title.push(getCurrentCookieLocation().name);
                 if(getCurrentProvider() && getCurrentProvider().value) title.push(getCurrentProvider().value);
-                if(!DateUtil.isSameDateTime(getCurrentDate(), DateUtil.today())) title.push(DateUtil.formatDateWithoutTime(getCurrentDate()));
+                if(getCurrentDate() && !DateUtil.isSameDateTime(getCurrentDate(), DateUtil.today())) title.push(DateUtil.formatDateWithoutTime(getCurrentDate()));
                 return title.join(',');
             };
 
