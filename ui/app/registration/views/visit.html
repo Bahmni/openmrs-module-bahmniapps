@@ -1,9 +1,9 @@
 <div class="reg-body-wrapper">
-
-<div class="non-printable" xmlns="http://www.w3.org/1999/html">
-    <div>
-        <form name="myForm" ng-init="disableFormSubmitOnEnter()" class="visit-patient" ng-submit="submit()">
-                <div class="mylegend"><span><strong>Summary</strong></span></div>
+    <div class="non-printable" xmlns="http://www.w3.org/1999/html">
+        <div>
+            <form name="myForm" ng-init="disableFormSubmitOnEnter()" class="visit-patient" ng-submit="submit()">
+                <div class="box-container">
+                    <div class="mylegend"><span><strong>Summary</strong></span></div>
                     <div class="photo-container-wrapper">
                         <span class="pull-right photo-container">
                                 <img id="patient-image" ng-src="{{patient.image}}"
@@ -11,62 +11,53 @@
                                 <div ng-model="patient.image" capture-photo="updatePatientImage" class="capture-photo-btn"></div>
                          </span>
                     </div>
-
-                <section>
-                <div class="form-field">
-                        <div class="field-attribute">
-                            <label  for="patientId">Patient Identifier</label>
-                        </div>
-
-                        <div class="field-value">
+                    <section>
+                        <div class="form-field">
+                            <div class="field-attribute">
+                                <label for="patientId">Patient Identifier</label>
+                            </div>
+                            <div class="field-value">
                                 <input id="patientId" ng-model="patient.identifier" readonly type="text">
+                            </div>
                         </div>
+                        <div class="form-field photocontainer-spacing">
+                            <div class="field-attribute">
+                                <label class="control-label" for="patientName">Patient Name</label>
+                            </div>
+                            <div class="field-value">
+                                <input id="patientName" ng-model="patient.name" readonly type="text">
+                            </div>
+                        </div>
+                    </section>
+                    <!-- TODO: need to find a better way to render the directive again on context change or after all the calls are made.-->
+                    <section class="observation-section" ng-if="context">
+                        <div ng-repeat="conceptSet in availableConceptSets" class="concept-set-group">
+                            <div class="registraion_legend">
+                                <span class="mylegend">{{conceptSet.options.conceptName}}</span>
+                            </div>
+                            <div ng-if="conceptSet.options.showLatest" class="clearfix">
+                                <div class="obs-section right" style="width: 45%">
+                                    <bahmni-observation patient="patient" config="{conceptNames: conceptSet.options.conceptNames, scope: 'latest'}" section-title="'Latest'"></bahmni-observation>
+                                </div>
+                                <div class="left" style="width: 50%">
+                                    <concept-set concept-set-name="conceptSet.options.conceptName" required="conceptSet.options.required" patient="patient" observations="observations" obs-scope="conceptSet.options.scope" show-title="false" concept-set-focused="$index === 0"></concept-set>
+                                </div>
+                            </div>
+                            <div ng-if="!conceptSet.options.showLatest">
+                                <concept-set concept-set-name="conceptSet.options.conceptName" required="conceptSet.options.required" patient="patient" observations="observations" obs-scope="conceptSet.options.scope" show-title="false" concept-set-focused="$index === 0"></concept-set>
+                            </div>
+                        </div>
+                    </section>
                 </div>
-                <div class="form-field photocontainer-spacing">
-                        <div class="field-attribute">
-                            <label class="control-label" for="patientName">Patient Name</label>
-                        </div>
-
-                        <div class="field-value">
-                             <input id="patientName" ng-model="patient.name" readonly type="text">
-                        </div>
-                </div>
-                </section>
-
-            <!-- TODO: need to find a better way to render the directive again on context change or after all the calls are made.-->
-            <section class="observation-section" ng-if="context">
-                <div ng-repeat="conceptSet in availableConceptSets" class="concept-set-group">
-                    <div class="mylegend">
-                        <span><strong>{{conceptSet.options.conceptName}}</strong></span>
+                <div class="submit-btn-container">
+                    <button type="button" class="cancel" tabindex="-1" ng-show="canCloseVisit" ng-click="closeVisitIfDischarged()">Close Visit</button>
+                    <div class="right">
+                        <button type="button" ng-click="back()" accesskey="b"><u>B</u>ack</button>
+                        <button type="submit" class="confirm" accesskey="s"><u>S</u>ave</button>
                     </div>
-                    <div ng-if="conceptSet.options.showLatest" class="clearfix">
-                        <div class="obs-section right" style="width: 45%">
-                            <bahmni-observation patient="patient" config="{conceptNames: conceptSet.options.conceptNames, scope: 'latest'}" section-title="'Latest'"></bahmni-observation>
-                        </div>
-                        <div class="left" style="width: 50%">
-                            <concept-set concept-set-name="conceptSet.options.conceptName" required="conceptSet.options.required" patient="patient"
-                            observations="observations" obs-scope="conceptSet.options.scope" show-title="false" concept-set-focused="$index === 0" ></concept-set>
-                        </div>
-                    </div>
-
-                    <div ng-if="!conceptSet.options.showLatest" >
-                        <concept-set concept-set-name="conceptSet.options.conceptName" required="conceptSet.options.required" patient="patient"
-                        observations="observations" obs-scope="conceptSet.options.scope" show-title="false" concept-set-focused="$index === 0"></concept-set>
-                    </div>
-
                 </div>
-            </section>
-
-
-            <div class="submit-btn-container">
-                <button type="button" class="cancel" tabindex="-1" ng-show="canCloseVisit" ng-click="closeVisitIfDischarged()">Close Visit</button>
-                <div class="right">
-                    <button type="button" ng-click="back()" accesskey="b"><u>B</u>ack</button>
-                    <button type="submit" class="confirm" accesskey="s"><u>S</u>ave</button>
-                </div>
-            </div>
-        </form>
-        <br>
+            </form>
+            <br>
+        </div>
     </div>
-</div>
 </div>
