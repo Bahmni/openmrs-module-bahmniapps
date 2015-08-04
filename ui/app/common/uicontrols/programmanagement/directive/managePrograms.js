@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.clinical')
+angular.module('bahmni.common.uicontrols.programmanagment')
     .directive('managePrograms', function(){
         return {
             templateUrl: "../common/uicontrols/programmanagement/views/programEnrollment.html",

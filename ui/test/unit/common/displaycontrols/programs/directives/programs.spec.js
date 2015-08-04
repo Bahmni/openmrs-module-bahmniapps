@@ -4,11 +4,12 @@ describe("Program display control", function () {
     var compile, rootScope, programService;
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
-    beforeEach(module('bahmni.common.displaycontrol.programs'));
-    beforeEach(module('ngHtml2JsPreprocessor'));
-
+    beforeEach(function() {
+        module('bahmni.common.displaycontrol.programs');
+        module('ngHtml2JsPreprocessor');
+    });
     beforeEach(module(function ($provide) {
-        programService = jasmine.createSpyObj('programService', ['getActiveProgramsForAPatient']);
+        programService = jasmine.createSpyObj('programService', ['getPatientPrograms']);
         $provide.value('programService', programService);
     }));
 
