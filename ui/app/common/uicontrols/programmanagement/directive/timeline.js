@@ -1,9 +1,10 @@
 'use strict';
 
-angular.module('bahmni.common.uiHelper')
+angular.module('bahmni.common.uicontrols.programmanagment')
     .directive('timeline', function () {
         var link = function ($scope, $element) {
             $element.addClass("timeline-view");
+            var dateUtil = Bahmni.Common.Util.DateUtil;
             var data = getDataModel($scope.program);
             var svg = d3.select($element[0]).append("svg").attr('width',100+'%' ).attr('height', 80);
             var elementDimensions = $element[0].getBoundingClientRect();
@@ -11,16 +12,18 @@ angular.module('bahmni.common.uiHelper')
             var uniqueStates = _.uniq(_.pluck(data.states, 'state'));
             var xMin = 25;
             var xMax = elementDimensions.width-35;
+            var date = $scope.program.dateCompleted ? dateUtil.parse($scope.program.dateCompleted) : new Date();
 
             var timeScale = d3.time.scale()
-                .domain([sortedDates[0], new Date()])
+                .domain([sortedDates[0], date])
                 .range([xMin,xMax]);
 
+            var tickValueDates = isProgramCompleted($scope.program) ? sortedDates.concat(date) : sortedDates;
             var timeAxis = d3.svg.axis()
                 .orient("bottom")
                 .scale(timeScale)
                 .tickFormat(d3.time.format("%_d %b%y"))
-                .tickValues(sortedDates)
+                .tickValues(tickValueDates)
                 .tickPadding(10);
 
             svg.append("g")
@@ -34,7 +37,7 @@ angular.module('bahmni.common.uiHelper')
             stateGroup.append("rect");
             stateGroup.append("text");
             states.on("click", function(d) {
-                //alert(d.state);
+                alert(d.state);
             });
             states.select("rect")
                 .attr('x', function(d) { return timeScale(d.date); })
@@ -60,8 +63,12 @@ angular.module('bahmni.common.uiHelper')
             var states = _.sortBy(_.map(program.states, function(stateObject) {
                 return {state: stateObject.state.concept.display, date: new Date(stateObject.startDate)}
             }),'date');
-            var completed = !_.isEmpty(program.dateCompleted);
+            var completed = isProgramCompleted(program);
             return {states: states, completed: completed};
+        };
+
+        var isProgramCompleted = function(program){
+            return !_.isEmpty(program.dateCompleted);
         };
 
         return {
