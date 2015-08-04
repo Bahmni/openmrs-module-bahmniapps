@@ -23,7 +23,8 @@ describe('Order Service', function () {
             patientUuid:"somePatientUuid",
             orderTypeUuid:"someOrderTypeUuid",
             includeObs:true,
-            numberOfVisits:10
+            numberOfVisits:10,
+            conceptNames : "someConceptName"
         };
 
         orderService.getOrders(params).then(function(response) {
@@ -32,7 +33,13 @@ describe('Order Service', function () {
         });
         expect(mockHttp.get).toHaveBeenCalled();
         expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.bahmniOrderUrl);
-        expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual(params);
+        expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual({
+            patientUuid:"somePatientUuid",
+            orderTypeUuid:"someOrderTypeUuid",
+            includeObs:true,
+            numberOfVisits:10,
+            concept : "someConceptName"
+        });
     });
 
     it('getOrders should return orders and observations based on orderUuid if specified', function (done) {
@@ -41,7 +48,8 @@ describe('Order Service', function () {
             includeObs:true,
             numberOfVisits:1,
             obsIgnoreList:10,
-            orderUuid:"someOrderUuid"
+            orderUuid:"someOrderUuid",
+            conceptNames : "someConceptName"
         };
 
         orderService.getOrders(params).then(function(response) {
@@ -50,7 +58,14 @@ describe('Order Service', function () {
         });
         expect(mockHttp.get).toHaveBeenCalled();
         expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.bahmniOrderUrl);
-        expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual(params);
+        expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual({
+            patientUuid:"somePatientUuid",
+            includeObs:true,
+            numberOfVisits:1,
+            obsIgnoreList:10,
+            orderUuid:"someOrderUuid",
+            concept : "someConceptName"
+        });
     });
 
     it('getOrders should return orders and observations based on visitUuid if specified', function (done) {
@@ -60,7 +75,8 @@ describe('Order Service', function () {
             numberOfVisits:1,
             obsIgnoreList:10,
             visitUuid:"someVisitUuid",
-            orderUuid:"someOrderUuid"
+            orderUuid:"someOrderUuid",
+            conceptNames : "someConceptName"
         };
 
         orderService.getOrders(params).then(function(response) {
@@ -69,6 +85,36 @@ describe('Order Service', function () {
         });
         expect(mockHttp.get).toHaveBeenCalled();
         expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.bahmniOrderUrl);
-        expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual(params);
+        expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual({
+            patientUuid:"somePatientUuid",
+            includeObs:true,
+            numberOfVisits:1,
+            obsIgnoreList:10,
+            visitUuid:"someVisitUuid",
+            orderUuid:"someOrderUuid",
+            concept: "someConceptName"
+        });
+    });
+
+    it("getOrders should make http get request with params which are truthy",function (done) {
+        var params = {
+            patientUuid:"somePatientUuid",
+            includeObs:true,
+            numberOfVisits:1,
+            obsIgnoreList:undefined,
+            visitUuid:undefined,
+            orderUuid:undefined,
+            orderTypeUuid:undefined,
+            conceptNames:"someConceptName"
+        };
+        orderService.getOrders(params).then(function() {
+            done();
+        });
+        expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual({
+            patientUuid:"somePatientUuid",
+            includeObs:true,
+            numberOfVisits:1,
+            concept:"someConceptName"
+        });
     });
 });
