@@ -67,7 +67,7 @@ angular.module('bahmni.clinical')
                 var title = [];
                 if(getCurrentCookieLocation()) title.push(getCurrentCookieLocation().name);
                 if(getCurrentProvider() && getCurrentProvider().value) title.push(getCurrentProvider().value);
-                if(getCurrentDate() && !DateUtil.isSameDateTime(getCurrentDate(), DateUtil.today())) title.push(DateUtil.formatDateWithoutTime(getCurrentDate()));
+                if(getCurrentDate() && !DateUtil.isSameDate(getCurrentDate(), DateUtil.today())) title.push(DateUtil.formatDateWithoutTime(getCurrentDate()));
                 return title.join(',');
             };
 
@@ -92,7 +92,11 @@ angular.module('bahmni.clinical')
             var changeCookieData = function() {
                 $rootScope.retrospectiveEntry = $scope.date ? Bahmni.Common.Domain.RetrospectiveEntry.createFrom(DateUtil.getDate($scope.date)) : Bahmni.Common.Domain.RetrospectiveEntry.createFrom(DateUtil.getDate(DateUtil.today()));
                 $bahmniCookieStore.remove(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
-                $bahmniCookieStore.put(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName,  $scope.date, {path: '/', expires: 1});
+                if($scope.date){
+                    $bahmniCookieStore.put(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName,  $scope.date, {path: '/', expires: 1});
+                }else{
+                    $bahmniCookieStore.put(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName,  DateUtil.now(), {path: '/', expires: 1});
+                }
 
                 $bahmniCookieStore.remove(Bahmni.Common.Constants.grantProviderAccessDataCookieName);
                 $bahmniCookieStore.put(Bahmni.Common.Constants.grantProviderAccessDataCookieName, selectedProvider, {path: '/', expires: 1});
