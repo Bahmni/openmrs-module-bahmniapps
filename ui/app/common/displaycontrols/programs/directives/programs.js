@@ -9,7 +9,7 @@ angular.module('bahmni.common.displaycontrol.programs')
             };
 
             var controller = function ($scope) {
-                programService.getActiveProgramsForAPatient($scope.patient.uuid).success(function (data) {
+                programService.getPatientPrograms($scope.patient.uuid).success(function (data) {
                     $scope.activePrograms = [];
                     $scope.pastPrograms = [];
                     if (data.results) {

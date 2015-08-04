@@ -8,16 +8,16 @@ describe("Program display control", function () {
     beforeEach(function() {
         module('bahmni.common.displaycontrol.programs');
         module('ngHtml2JsPreprocessor');
-
-        module(function ($provide) {
-            programService = jasmine.createSpyObj('programService', ['getActiveProgramsForAPatient']);
-            $provide.value('programService', programService);
-        });
-        inject(function ($compile, $rootScope) {
-            compile = $compile;
-            rootScope = $rootScope;
-        });
     });
+    beforeEach(module(function ($provide) {
+        programService = jasmine.createSpyObj('programService', ['getPatientPrograms']);
+        $provide.value('programService', programService);
+    }));
+
+    beforeEach(inject(function ($compile, $rootScope) {
+        compile = $compile;
+        rootScope = $rootScope;
+    }));
 
     var today = DateUtil.endOfToday();
     var yesterday = DateUtil.addDays(today, -1);

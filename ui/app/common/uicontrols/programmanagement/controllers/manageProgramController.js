@@ -1,4 +1,4 @@
-angular.module('bahmni.clinical')
+angular.module('bahmni.common.uicontrols.programmanagment')
     .controller('ManageProgramController', ['$scope', '$bahmniCookieStore', '$window', 'programService', 'spinner', 'messagingService',
         function ($scope, $bahmniCookieStore, $window, programService, spinner, messagingService) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
@@ -9,7 +9,7 @@ angular.module('bahmni.clinical')
             $scope.programEdited = {selectedState: ""};
 
             var updateActiveProgramsList = function () {
-                spinner.forPromise(programService.getActiveProgramsForAPatient($scope.patient.uuid).then(function (data) {
+                spinner.forPromise(programService.getPatientPrograms($scope.patient.uuid).then(function (data) {
                     $scope.activePrograms = [];
                     $scope.endedPrograms = [];
                     if (data.data.results) {
@@ -123,54 +123,61 @@ angular.module('bahmni.clinical')
                 return _.reject(patientProgram.program.allWorkflows[0].states, function(d){ return d.uuid == currState.state.uuid; });
             };
 
-            $scope.savePatientProgram = function(patientProgram){
+            $scope.savePatientProgram = function (patientProgram) {
                 var startDate = getCurrentDate();
                 var currentStateDate = DateUtil.parse(getCurrentState(patientProgram).startDate);
 
-                if(DateUtil.isBeforeDate(startDate, currentStateDate)){
+                if (DateUtil.isBeforeDate(startDate, currentStateDate)) {
                     var formattedCurrentStateDate = DateUtil.formatDateWithoutTime(currentStateDate);
-                    messagingService.showMessage("formError", "State cannot be started earlier than current state ("+ formattedCurrentStateDate+")");
-                    return ;
+                    messagingService.showMessage("formError", "State cannot be started earlier than current state (" + formattedCurrentStateDate + ")");
+                    return;
                 }
 
-
-                if(patientProgram.ending){
-                    if(!isOutcomeSelected(patientProgram)){
-                        messagingService.showMessage("formError", "Please select an outcome.");
-                        return;
-                    }
-                    endProgram(patientProgram);
-                }else {
-                    if(!isProgramStateSelected()){
-                        messagingService.showMessage("formError", "Please select a state to change.");
-                        return ;
-                    }
-                    spinner.forPromise(
-                        programService.savePatientProgram(patientProgram.uuid, $scope.programEdited.selectedState.uuid, startDate)
-                            .then(successCallback, failureCallback)
-                    );
+                if (!isProgramStateSelected()) {
+                    messagingService.showMessage("formError", "Please select a state to change.");
+                    return;
                 }
+                spinner.forPromise(
+                    programService.savePatientProgram(patientProgram.uuid, $scope.programEdited.selectedState.uuid, startDate)
+                        .then(successCallback, failureCallback)
+                );
             };
 
             $scope.getOutcomes = function(program) {
-                var currentProgram = _.findWhere($scope.allPrograms, {uuid: program.program.uuid});
+                var currentProgram = _.findWhere($scope.allPrograms, {uuid: program.uuid});
                 return currentProgram.outcomesConcept ? currentProgram.outcomesConcept.setMembers : '';
             };
 
-            var endProgram = function(program) {
-                spinner.forPromise(programService.endPatientProgram(program.uuid,
-                        getCurrentDate(), objectDeepFind($scope, 'programEdited.selectedState.uuid'),
-                        program.outcomeData ? program.outcomeData.uuid : null)
-                ).then(function(){
+            $scope.endPatientProgram = function(patientProgram) {
+                var dateCompleted = getCurrentDate();
+                var currentStateDate = DateUtil.parse(getCurrentState(patientProgram).startDate);
+
+                if (DateUtil.isBeforeDate(dateCompleted, currentStateDate)) {
+                    var formattedCurrentStateDate = DateUtil.formatDateWithoutTime(currentStateDate);
+                    messagingService.showMessage("formError", "Program cannot be ended earlier than current state (" + formattedCurrentStateDate + ")");
+                    return;
+                }
+
+                if(!isOutcomeSelected(patientProgram)){
+                    messagingService.showMessage("formError", "Please select an outcome.");
+                    return;
+                }
+
+                var outcomeConceptUuid = patientProgram.outcomeData ? patientProgram.outcomeData.uuid : null;
+                spinner.forPromise(programService.endPatientProgram(patientProgram.uuid, dateCompleted, outcomeConceptUuid)
+                    .then(function () {
+                        messagingService.showMessage("info", "Program ended successfully");
                         updateActiveProgramsList();
-                    });
+                    }));
             };
 
             $scope.toggleEdit = function(program) {
+                program.ending = false;
                 program.editing = !program.editing;
             };
 
             $scope.toggleEnd = function(program) {
+                program.editing = false;
                 program.ending = !program.ending;
             };
 

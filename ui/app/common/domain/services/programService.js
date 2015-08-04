@@ -27,7 +27,7 @@ angular.module('bahmni.common.domain')
             return $http.post(req.url, req.content, req.headers);
         };
 
-        var getActiveProgramsForAPatient = function (patientUuid) {
+        var getPatientPrograms = function (patientUuid) {
             var req = {
                 url: Bahmni.Common.Constants.programEnrollPatientUrl,
                 params: {
@@ -63,13 +63,12 @@ angular.module('bahmni.common.domain')
             return $http.post(req.url, req.content, req.headers);
         };
 
-        var endPatientProgram = function (patientProgramUuid, asOfDate, stateUuid, outcomeUuid){
+        var endPatientProgram = function (patientProgramUuid, asOfDate, outcomeUuid){
             var req = {
                 url: Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid,
                 content: {
                     dateCompleted: asOfDate,
-                    outcome: outcomeUuid,
-                    states: constructStatesPayload(stateUuid, asOfDate)
+                    outcome: outcomeUuid
                 },
                 headers: {"Content-Type": "application/json"}
             };
@@ -79,7 +78,7 @@ angular.module('bahmni.common.domain')
         return {
             getAllPrograms: getAllPrograms,
             enrollPatientToAProgram: enrollPatientToAProgram,
-            getActiveProgramsForAPatient: getActiveProgramsForAPatient,
+            getPatientPrograms: getPatientPrograms,
             endPatientProgram: endPatientProgram,
             savePatientProgram: savePatientProgram
         };
