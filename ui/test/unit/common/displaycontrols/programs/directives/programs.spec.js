@@ -54,7 +54,7 @@ describe("Program display control", function () {
 
 
     var mockedAllProgramsForPatient = function (data) {
-        programService.getActiveProgramsForAPatient.and.callFake(function () {
+        programService.getPatientPrograms.and.callFake(function () {
             return {
                 success: function (callback) {
                     return callback(data);
@@ -68,8 +68,8 @@ describe("Program display control", function () {
             uuid: "uuid"
         };
 
-        mockedAllProgramsForPatient(data);
 
+        mockedAllProgramsForPatient(data);
         var element = angular.element('<programs patient="patient"></programs>');
         compile(element)(rootScope);
         rootScope.$digest();
@@ -86,6 +86,7 @@ describe("Program display control", function () {
         };
 
         mockedAllProgramsForPatient(data);
+
         var element = angular.element('<programs patient="patient"></programs>');
         compile(element)(rootScope);
         rootScope.$digest();
