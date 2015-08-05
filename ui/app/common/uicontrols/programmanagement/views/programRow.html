@@ -3,7 +3,7 @@
         <a ng-href="#/patient/{{patient.uuid}}/dashboard" class="big-anchor">{{program.display}}</a>
         <span class="enrolled-info"> (Enrolled on {{program.dateEnrolled | bahmniDate}})</span>
 
-        <div class="program-actions" ng-if="active">
+        <div class="program-actions">
             <button ng-click="toggleEdit(program)" ng-if="hasStates(program.program)">Change State</button>
             <button ng-click="toggleEnd(program)">End Program</button>
         </div>
@@ -35,7 +35,7 @@
 
 
     </div>
-    <div class="program-timeline">
+    <div class="program-timeline" ng-if="program.states.length!=0">
         <timeline program="program"></timeline>
     </div>
 </div>

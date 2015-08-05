@@ -1,0 +1,12 @@
+<div class="program-row">
+    <div class="program-details">
+        <a ng-href="#/patient/{{patient.uuid}}/dashboard" class="big-anchor">{{program.display}}</a>
+        <span class="enrolled-info"> (Enrolled on {{program.dateEnrolled | bahmniDate}})</span>
+        <span>Date Completed: {{program.dateCompleted | bahmniDate}}</span>
+        <span>Outcome: {{program.outcome.display}}</span>
+    </div>
+    <div class="program-timeline" ng-if="program.states.length!=0">
+        <timeline program="program"></timeline>
+    </div>
+
+</div>
