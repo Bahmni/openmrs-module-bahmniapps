@@ -64,7 +64,7 @@ describe("Program display control", function () {
             uuid: "uuid"
         };
 
-        programService.getActiveProgramsForAPatient.and.returnValue(specUtil.createFakePromise(data));
+        programService.getPatientPrograms.and.returnValue(specUtil.createFakePromise(data));
         compileAndDigest();
 
         var elementIsolatedScope = element.isolateScope();
@@ -78,7 +78,7 @@ describe("Program display control", function () {
             uuid: "uuid"
         };
 
-        programService.getActiveProgramsForAPatient.and.returnValue(specUtil.createFakePromise(data));
+        programService.getPatientPrograms.and.returnValue(specUtil.createFakePromise(data));
         compileAndDigest();
 
         var elementIsolatedScope = element.isolateScope();
