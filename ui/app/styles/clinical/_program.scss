@@ -46,82 +46,84 @@
     }
   }
 
-  .program-row {
-    padding: 5px 15px;
-    border-bottom: 1px solid #669999;
-  }
+}
 
-  .program-timeline {
-    width: 69%;
+.program-row {
+  padding: 5px 15px;
+  border-bottom: 1px solid #669999;
+}
+
+.program-timeline {
+  width: 69%;
+  display: inline-block;
+}
+
+.program-details {
+  width: 30%;
+  display: inline-block;
+  vertical-align: top;
+
+  a {
+    line-height: 30px;
+  }
+  span{
+    display: block;
+    padding: 5px;
+  }
+  .program-actions{
+    padding: 5px;
+  }
+  .enrolled-info {
     display: inline-block;
+    font-size: 12px;
+    color: #666666;
   }
+}
 
-  .program-details {
-    width: 30%;
+.program-stuff {
+  overflow: hidden;
+}
+
+.program-timeline {
+  .tool-tip {
+    position: relative;
     display: inline-block;
-    vertical-align: top;
-    
-    a {
-      line-height: 30px;
-    }
-    span{
-      display: block;
-      padding: 5px;
-    }
-    .program-actions{
-      padding: 5px;
-    }
-    .enrolled-info {
-      display: inline-block;
-      font-size: 12px;
-      color: #666666;
-    }
+    visibility: hidden;
+    padding: 2px 4px;
+    background: #e8edf3;
+    border-radius: 5px;
+    font-size: 12px;
   }
 
-  .program-stuff {
-    overflow: hidden;
-  }
+  .timeline-view {
+    svg {
+      width: 100%;
+      height: 65px;
 
-  .program-timeline {
-    .tool-tip {
-      position: relative;
-      display: inline-block;
-      visibility: hidden;
-      padding: 2px 4px;
-      background: #e8edf3;
-      border-radius: 5px;
-      font-size: 12px;
-    }
-
-    .timeline-view {
-      svg {
-        width: 100%;
-        height: 65px;
-
-        .xaxis {
-          text {
-            font-size: 12px;
-          }
-          line {
-            fill: none;
-            stroke: black;
-          }
-          path {
-            display: none;
-          }
+      .xaxis {
+        text {
+          font-size: 12px;
         }
+        line {
+          fill: none;
+          stroke: black;
+        }
+        path {
+          display: none;
+        }
+      }
 
 
-        .states {
-          text {
-            font-size: 12px;
-            pointer-events: none;
-          }
+      .states {
+        text {
+          font-size: 12px;
+          pointer-events: none;
         }
       }
     }
   }
 }
+
 
 .dashboard-program-section {
   .program-title {
