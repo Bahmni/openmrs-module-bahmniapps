@@ -3,10 +3,10 @@
 angular.module('bahmni.common.uicontrols.programmanagment')
     .directive('timeline', function () {
         var link = function ($scope, $element) {
-            $element.addClass("timeline-view");
             var dateUtil = Bahmni.Common.Util.DateUtil;
             var data = getDataModel($scope.program);
-            var svg = d3.select($element[0]).append("svg").attr('width',100+'%' ).attr('height', 80);
+            var svg = d3.select($element[0]).select('.timeline-view')
+                .append("svg").attr('width',100+'%' ).attr('height', 80);
             var elementDimensions = $element[0].getBoundingClientRect();
             var sortedDates = _.pluck(data.states, 'date');
             var uniqueStates = _.uniq(_.pluck(data.states, 'state'));
@@ -34,11 +34,26 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             var colors = d3.scale.category10();
             var states = svg.selectAll('.states').data(data.states);
             var stateGroup = states.enter().append("g").classed('states',true);
+            var tooltipEl = d3.select($element[0]).select('.tool-tip');
+            var showTooltip = function(d){
+                var eventEl = this;
+                tooltipEl
+                    .style("left", function(){
+                        return (eventEl.getBBox().x) + "px";
+                    })
+                    .html(function () {
+                        return d.state;
+                    })
+                    .style("visibility", "visible");
+            };
             stateGroup.append("rect");
             stateGroup.append("text");
-            states.on("click", function(d) {
-                alert(d.state);
+            states.on("mouseenter", showTooltip);
+            states.on("click", showTooltip);
+            states.on("mouseout", function(){
+                tooltipEl.style("visibility", "hidden");
             });
+
             states.select("rect")
                 .attr('x', function(d) { return timeScale(d.date); })
                 .attr('y', 9)
@@ -73,6 +88,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
         return {
             restrict: 'E',
+            templateUrl: "../common/uicontrols/programmanagement/views/timeline.html",
             link: link,
             scope: {
                 program: "="

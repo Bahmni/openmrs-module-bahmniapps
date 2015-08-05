@@ -202,6 +202,26 @@ describe("ManageProgramController", function () {
         })
     });
 
+    describe('getWorkflowStatesWithoutCurrent', function(){
+        it('should fetch states of the program excluding current patient state', function(){
+            scope.$apply(setUp);
+            var patientProgram = patientPrograms[0];
+
+            var workflowStates = scope.getWorkflowStatesWithoutCurrent(patientProgram);
+
+            expect(workflowStates.length).toBe(1);
+        });
+        it('should fetch all states of the program if patient is currently stateless', function(){
+            scope.$apply(setUp);
+            var patientProgram = patientPrograms[0];
+            patientProgram.states =[];
+
+            var workflowStates = scope.getWorkflowStatesWithoutCurrent(patientProgram);
+
+            expect(workflowStates.length).toBe(2);
+        })
+    });
+
     var allPrograms = [
         {
             "uuid": "1209df07-b3a5-4295-875f-2f7bae20f86e",
@@ -306,7 +326,14 @@ describe("ManageProgramController", function () {
                         },
                         "description": null,
                         "retired": false,
-                        "states": [],
+                        "states": [
+                            {
+                                uuid: '1911a3ef-cfab-43c5-8810-7f594bfa8995'
+                            },
+                            {
+                                 uuid: '1317ab09-52b4-4573-aefa-7f6e7bdf6d61'
+                            }
+                        ],
                         "resourceVersion": "1.8"
                     }
                 ]

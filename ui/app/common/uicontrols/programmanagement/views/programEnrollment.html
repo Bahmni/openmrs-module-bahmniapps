@@ -8,7 +8,7 @@
                     <option value="">Choose program</option>
                 </select>
                 <label class="start-date-label"><strong>Start Date:</strong> <span class="value">{{programEnrollmentDate | bahmniDate}}</span></label>
-                <select ng-model="workflowStateSelected" ng-options="state.concept.display for state in programWorkflowStates" ng-required="1==1">
+                <select ng-if="hasStates(programSelected)" ng-model="$parent.workflowStateSelected" ng-options="state.concept.display for state in programWorkflowStates" ng-required="1==1">
                     <option value="">Choose State</option>
                 </select>
                 <button type="submit" ng-click="enrollPatient()">Enroll</button>
