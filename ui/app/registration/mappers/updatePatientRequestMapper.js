@@ -24,7 +24,10 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
                     birthdate: this.getBirthdate(patient.birthdate, patient.age),
                     birthdateEstimated: patient.birthdate === undefined || patient.birthdate === "",
                     gender: patient.gender,
-                    attributes: this.getMrsAttributes(openMRSPatient, patient, patientAttributeTypes)
+                    attributes: this.getMrsAttributes(openMRSPatient, patient, patientAttributeTypes),
+                    dead:patient.dead,
+                    deathDate: patient.deathDate,
+                    causeOfDeath: patient.causeOfDeath
                 }
             }
         };

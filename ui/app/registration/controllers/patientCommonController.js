@@ -9,6 +9,19 @@ angular.module('bahmni.registration')
             $scope.showMiddleName = appService.getAppDescriptor().getConfigValue("showMiddleName");
             $scope.genderCodes = Object.keys($rootScope.genderMap);
 
+            $scope.getConcepts =function(searchTerm){
+                return $http.get(Bahmni.Common.Constants.conceptUrl, { params: {q: searchTerm.term, v: "custom:(uuid,name)"}}).then(function(result) {
+                    return result.data.results;
+                });
+            };
+
+            $scope.mapConcepts = function(results){
+                return results.map(function (concept) {
+                    return {'concept': {uuid: concept.uuid, name: concept.name.name, editableName: concept.name.name}, 'value': concept.name.name}
+                });
+            };
+
+
             $scope.isAutoComplete = function (fieldName) {
                 return autoCompleteFields.indexOf(fieldName) > -1;
             };
@@ -32,6 +45,11 @@ angular.module('bahmni.registration')
                 return  data.resultList.results;
             };
 
+            $scope.clearDeathDetails = function() {
+                $scope.patient.deathDate = null;
+                $scope.patient.causeOfDeath = null;
+            };
+
             $scope.$watch('patient.familyName', function () {
                 if ($scope.patient.sameAsLastName) {
                     $scope.patient.caste = $scope.patient.familyName;
@@ -43,5 +61,6 @@ angular.module('bahmni.registration')
                     $scope.patient.sameAsLastName = false;
                 }
             });
+
         }]);
 

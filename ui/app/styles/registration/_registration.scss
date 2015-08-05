@@ -1080,3 +1080,34 @@ button u, u {
 .placeholder-text{
    padding: 5px;
 }
+.death {
+  overflow: hidden;
+  margin: 20px 20px 10px;
+  .row {
+    float: left;
+    width: 100%;
+    .col1 {
+      margin-top: 0;
+      label.add-new {
+        margin-top: 10px;
+        font-size: 12px;
+      }
+      width: 20%;
+      float: left;
+    }
+    .col2 {
+      width: 40%;
+      float: left;
+      text-align: center;
+    }
+    .col3 {
+      width: 40%;
+      float: left;
+      text-align: right;
+      .till-text {
+        display: inline-block;
+        padding-right: 20px;
+      }
+    }
+   }
+  }

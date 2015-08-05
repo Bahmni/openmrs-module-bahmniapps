@@ -175,3 +175,15 @@
   </legend>
   <div patient-relationship patient="patient" ng-show="displayRelationshipInformation" ng-if="relationshipTypes"></div>
 </div>
+<div class="box-container" ng-controller="PatientCommonController">
+    <legend class="additional-attribute" toggle="displayDeathInformation">
+          <span>
+              <i class="fa fa-caret-right" ng-hide="displayDeathInformation"></i>
+              <i class="fa fa-caret-down" ng-show="displayDeathInformation"></i>
+              <strong>Death information</strong>
+          </span>
+    </legend>
+    <section class="form-field-inline section-padding" ng-show="displayDeathInformation">
+        <ng-include src="'views/patientDeathInformation.html'"></ng-include>
+    </section>
+</div>

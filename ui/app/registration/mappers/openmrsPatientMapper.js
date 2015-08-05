@@ -49,6 +49,9 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 patient.identifier = openmrsPatient.identifiers[0].identifier;
                 patient.image = Bahmni.Registration.Constants.patientImageURL + openmrsPatient.uuid + ".jpeg?q=" + new Date().toISOString();
                 patient.registrationDate = parseDate(openmrsPatient.person.auditInfo.dateCreated);
+                patient.dead = openmrsPatient.person.dead;
+                patient.deathDate = parseDate(openmrsPatient.person.deathDate);
+                patient.causeOfDeath = openmrsPatient.person.causeOfDeath!=null ? openmrsPatient.person.causeOfDeath.display:"";
                 mapAttributes(patient, openmrsPatient.person.attributes);
                 mapRelationships(patient, relationships);
                 return patient;
