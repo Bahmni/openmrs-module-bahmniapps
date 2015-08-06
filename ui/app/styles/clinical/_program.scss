@@ -89,10 +89,6 @@
       padding: 5px;
     }
   }
-  label{
-    padding: 2px 5px 2px 0;
-    font-family: openSansSemiBold;
-  }
   .program-actions{
     padding: 0 5px;
     button{
@@ -115,7 +111,12 @@
     }
   }
 }
-
+.inactive-program-container{
+  label{
+    padding: 2px 5px 2px 0;
+    font-family: openSansSemiBold;
+  }
+}
 .program-stuff {
   overflow: hidden;
 }
