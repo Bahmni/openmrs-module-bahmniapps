@@ -42,7 +42,7 @@ describe("Age", function(){
             birthDate = dateUtil.subtractMonths(birthDate, age.months);
             birthDate = dateUtil.subtractDays(birthDate, age.days);
 
-            expect(ageFactory.calculateBirthDate(age)).toEqual(birthDate);
+            expect(dateUtil.formatDateWithoutTime(ageFactory.calculateBirthDate(age))).toEqual(dateUtil.formatDateWithoutTime(birthDate));
         });
     });
 
