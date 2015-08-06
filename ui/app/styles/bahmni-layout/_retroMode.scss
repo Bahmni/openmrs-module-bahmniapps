@@ -19,6 +19,9 @@ $retroModeColor:  #0E74AF;
 	a.back-btn, button.back-btn{
 		margin: 4px 6px 0px 0px;
 	}
+    a.back-btn.patient-switch{
+      margin: 0px 6px 0px 0px;
+    }
 	button.toggle-patient {
 	  background-color: darken($retroModeColor, 10%);
 	  border-color: darken($retroModeColor, 15%);
@@ -37,6 +40,9 @@ $retroModeColor:  #0E74AF;
 		background: darken($retroModeColor, 6%);
 	  }
 	}
+      .retro-date-widget-wrapper{
+        margin-top: 4px !important;
+      }
   }
   .retro-date-widget {
 	color: #0a5580;

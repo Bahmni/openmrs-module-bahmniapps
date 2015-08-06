@@ -13,6 +13,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             var xMin = 25;
             var xMax = elementDimensions.width-35;
             var date = $scope.program.dateCompleted ? dateUtil.parse($scope.program.dateCompleted) : new Date();
+            var dateFormatter = d3.time.format("%_d %b%y");
 
             var timeScale = d3.time.scale()
                 .domain([sortedDates[0], date])
@@ -22,7 +23,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             var timeAxis = d3.svg.axis()
                 .orient("bottom")
                 .scale(timeScale)
-                .tickFormat(d3.time.format("%_d %b%y"))
+                .tickFormat(dateFormatter)
                 .tickValues(tickValueDates)
                 .tickPadding(10);
 
@@ -42,7 +43,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                         return (eventEl.getBBox().x) + "px";
                     })
                     .html(function () {
-                        return d.state;
+                        return dateFormatter(d.date) + " : " +  d.state;
                     })
                     .style("visibility", "visible");
             };
