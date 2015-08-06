@@ -10,15 +10,29 @@
     }
   }
   .program-action-container{
-    div{
-      padding: 5px 0;
-      display: block;
-    }
-    select {
+    width: 79%;
+    background-color: #F3F2F2;
+    padding: 5px 10px 10px;
+    margin-left: 5px;
+    box-shadow: 3px 3px 10px #E4E0E0;
+    border: 1px #d0d0d0 solid;
+    border-radius: 0 0 3px 3px;
+    margin-bottom: 10px;
+    margin-top: -1px;
+    select{
       height: 33px;
+      float: left;
+      max-width: 200px;
     }
-    button{
-      padding: 5px 15px;
+    label{
+      float: left;
+      padding-right: 9px;
+    }
+    .btn-grp{
+      margin-top: 10px;
+      button{
+        padding: 6px 15px;
+      }
     }
   }
 
@@ -71,7 +85,25 @@
     padding: 5px;
   }
   .program-actions{
-    padding: 5px;
+    padding: 0 5px;
+    button{
+      padding: 6px 15px !important;
+      &.tab-selected{
+        padding-bottom: 11px !important;
+        border-radius: 3px 3px 0 0;
+        background: #F3F2F2;
+        border-bottom: 1px #F3F2F2 solid;
+        font-family: openSansBOld;
+        &:hover{
+          border-bottom: 1px #F3F2F2 solid;
+        }
+        &:focus{
+          outline: none;
+          border-color: #d0d0d0;
+          border-bottom:none;
+        }
+      }
+    }
   }
   .enrolled-info {
     display: inline-block;
