@@ -222,6 +222,14 @@ describe("ManageProgramController", function () {
         })
     });
 
+    describe('Should get states',function(){
+        it('Of un retired workflow',function(){
+            scope.$apply(setUp);
+            scope.getWorkflowStates(allPrograms[0]);
+
+            expect(scope.programWorkflowStates.length).toBe(2);
+        })
+    });
     var allPrograms = [
         {
             "uuid": "1209df07-b3a5-4295-875f-2f7bae20f86e",
@@ -256,7 +264,16 @@ describe("ManageProgramController", function () {
                         ]
                     },
                     "retired": false,
-                    "states": [],
+                    "states": [{
+                        "uuid": "8227f47f-3f10-11e4-adec-0800271c1b75",
+                        "display": "All_Tests_and_Panels",
+                        "retired":false
+                    },{
+                        "uuid": "8227f47f-3f10-11e4-adec-0800271c1590",
+                        "display": "VAT_Tests_and_Panels",
+                        "retired":false
+
+                    }],
                     "links": [
                         {
                             "uri": "NEED-TO-CONFIGURE/ws/rest/v1/workflow/6a6c990f-01e2-464b-9452-2a97f0c05c7c",

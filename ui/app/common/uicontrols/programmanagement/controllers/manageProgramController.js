@@ -191,9 +191,13 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
             $scope.getWorkflowStates = function(program){
                 $scope.programWorkflowStates = [];
-                if(program && program.allWorkflows.length && program.allWorkflows[0].states.length) {
-                    program.allWorkflows[0].states.forEach(function(state){
-                        $scope.programWorkflowStates.push(state);
+                if(program && program.allWorkflows.length ) {
+                    program.allWorkflows.forEach(function(workflow){
+                        if(!workflow.retired && workflow.states.length)
+                            workflow.states.forEach(function(state){
+                                if(!state.retired)
+                                    $scope.programWorkflowStates.push(state);
+                            });
                     });
                 }
             };
