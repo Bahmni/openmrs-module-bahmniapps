@@ -81,8 +81,17 @@
     line-height: 30px;
   }
   span{
-    display: block;
-    padding: 5px;
+    display: inline-block;
+    &.enrolled-info {
+      display: inline-block;
+      font-size: 12px;
+      color: #666666;
+      padding: 5px;
+    }
+  }
+  label{
+    padding: 2px 5px 2px 0;
+    font-family: openSansSemiBold;
   }
   .program-actions{
     padding: 0 5px;
@@ -104,11 +113,6 @@
         }
       }
     }
-  }
-  .enrolled-info {
-    display: inline-block;
-    font-size: 12px;
-    color: #666666;
   }
 }
 
