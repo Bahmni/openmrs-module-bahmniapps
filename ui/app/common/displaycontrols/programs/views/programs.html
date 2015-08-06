@@ -1,4 +1,4 @@
-<section>
+<section class="program-dashboard">
     <div ng-if="hasPatientAnyActivePrograms()">
         <h3 class="program-title">
             <span>Active Programs</span>
@@ -7,9 +7,9 @@
             <div class="program-row">
                 <div class="program-details">
                     <span>{{program.display}}</span>
-                    <span class="enrolled-info">({{program.dateEnrolled | bahmniDate}}</span>
-                    <span class="enrolled-info" ng-if="program.dateCompleted"> - {{program.dateCompleted | bahmniDate}}</span>
-                    <span class="enrolled-info">)</span>
+                    <span class="enrolled-info enrolled-info-dash-board">({{program.dateEnrolled | bahmniDate}}</span>
+                    <span class="enrolled-info enrolled-info-dash-board" ng-if="program.dateCompleted"> - {{program.dateCompleted | bahmniDate}}</span>
+                    <span class="enrolled-info enrolled-info-dash-board">)</span>
                 </div>
                 <div class="program-timeline">
                     <timeline program="program"></timeline>
@@ -26,9 +26,9 @@
             <div class="program-row">
                 <div class="program-details">
                     <span>{{program.display}}</span>
-                    <span class="enrolled-info">({{program.dateEnrolled | bahmniDate}}</span>
-                    <span class="enrolled-info" ng-if="program.dateCompleted"> - {{program.dateCompleted | bahmniDate}}</span>
-                    <span class="enrolled-info">)</span>
+                    <span class="enrolled-info enrolled-info-dash-board">({{program.dateEnrolled | bahmniDate}}</span>
+                    <span class="enrolled-info enrolled-info-dash-board" ng-if="program.dateCompleted"> - {{program.dateCompleted | bahmniDate}}</span>
+                    <span class="enrolled-info enrolled-info-dash-board">)</span>
                 </div>
                 <div class="program-timeline">
                     <timeline program="program"></timeline>
