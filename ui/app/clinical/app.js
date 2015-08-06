@@ -7,7 +7,7 @@ angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.c
     'httpErrorInterceptor', 'pasvaz.bindonce', 'infinite-scroll', 'bahmni.common.util', 'ngAnimate', 'ngDialog',
     'bahmni.common.displaycontrol.patientprofile', 'bahmni.common.displaycontrol.diagnosis', 'RecursionHelper', 'ngSanitize',
     'bahmni.common.orders', 'bahmni.common.displaycontrol.orders', 'bahmni.common.displaycontrol.prescription', 'bahmni.common.displaycontrol.navigationlinks', 'bahmni.common.displaycontrol.programs',
-    'bahmni.common.displaycontrol.pacsOrders', 'bahmni.common.uicontrols.programmanagment']);
+    'bahmni.common.uicontrols.programmanagment']);
 angular.module('consultation')
     .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/patient/search');
