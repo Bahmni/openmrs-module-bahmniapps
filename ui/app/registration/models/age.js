@@ -6,14 +6,14 @@ angular.module('bahmni.registration')
 
         var fromBirthDate = function (birthDate) {
             var today = dateUtil.now();
-            var period = dateUtil.diffInYearsMonthsDays(birthDate, today)
+            var period = dateUtil.diffInYearsMonthsDays(birthDate, today);
             return create(period.years, period.months, period.days);
-        }
+        };
 
         var create = function (years, months, days) {
             var isEmpty = function () {
                 return !(this.years || this.months || this.days);
-            }
+            };
 
             return {
                 years: years,
@@ -21,11 +21,20 @@ angular.module('bahmni.registration')
                 days: days,
                 isEmpty: isEmpty
             };
-        }
+        };
+
+        var calculateBirthDate = function (age) {
+            var birthDate = dateUtil.now();
+            birthDate = dateUtil.subtractYears(birthDate, age.years);
+            birthDate = dateUtil.subtractMonths(birthDate, age.months);
+            birthDate = dateUtil.subtractDays(birthDate, age.days);
+            return birthDate;
+        };
 
         return {
             fromBirthDate: fromBirthDate,
-            create: create
+            create: create,
+            calculateBirthDate: calculateBirthDate
         }
     }]
 );

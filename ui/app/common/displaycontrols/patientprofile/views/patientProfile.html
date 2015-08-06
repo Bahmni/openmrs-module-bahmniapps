@@ -9,8 +9,8 @@
                     </span>
                     <div class="patient-value">
                          <span class="patient-name">
-                            {{patient.name | titleCase}} ({{patient.identifier}})</span> - 
-                         <span class="patient-gender-age" ng-bind-html="getPatientGenderAndAge()"></span>
+                            {{patient.name | titleCase}} ({{patient.identifier}})</span> -
+                         <span class="patient-gender-age" ng-bind-html="getPatientGenderAndAge()"></span> {{patient.birthdateEstimated}}
                          <span class="patient-address">
                              {{getAddress()}}
                          </span>

@@ -37,22 +37,24 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
             map = function (openmrsPatient) {
                 var relationships = openmrsPatient.relationships;
                 var openmrsPatient = openmrsPatient.patient;
-                var patient = patientModel.create(),
-                    birthdate = parseDate(openmrsPatient.person.birthdate);
-                patient.givenName = openmrsPatient.person.preferredName.givenName;
-                patient.middleName = openmrsPatient.person.preferredName.middleName;
-                patient.familyName = openmrsPatient.person.preferredName.familyName;
-                patient.birthdate = openmrsPatient.person.birthdateEstimated || !birthdate ? null : birthdate;
-                patient.age = birthdate ? age.fromBirthDate(openmrsPatient.person.birthdate) : null;
-                patient.gender = openmrsPatient.person.gender;
-                patient.address = mapAddress(openmrsPatient.person.preferredAddress);
+                var openmrsPerson = openmrsPatient.person;
+                var patient = patientModel.create();
+                var birthdate = parseDate(openmrsPerson.birthdate);
+                patient.givenName = openmrsPerson.preferredName.givenName;
+                patient.middleName = openmrsPerson.preferredName.middleName;
+                patient.familyName = openmrsPerson.preferredName.familyName;
+                patient.birthdate = !birthdate ? null : birthdate;
+                patient.age = birthdate ? age.fromBirthDate(openmrsPerson.birthdate) : null;
+                patient.gender = openmrsPerson.gender;
+                patient.address = mapAddress(openmrsPerson.preferredAddress);
                 patient.identifier = openmrsPatient.identifiers[0].identifier;
                 patient.image = Bahmni.Registration.Constants.patientImageURL + openmrsPatient.uuid + ".jpeg?q=" + new Date().toISOString();
-                patient.registrationDate = parseDate(openmrsPatient.person.auditInfo.dateCreated);
-                patient.dead = openmrsPatient.person.dead;
-                patient.deathDate = parseDate(openmrsPatient.person.deathDate);
-                patient.causeOfDeath = openmrsPatient.person.causeOfDeath!=null ? openmrsPatient.person.causeOfDeath.display:"";
-                mapAttributes(patient, openmrsPatient.person.attributes);
+                patient.registrationDate = parseDate(openmrsPerson.auditInfo.dateCreated);
+                patient.dead = openmrsPerson.dead;
+                patient.deathDate = parseDate(openmrsPerson.deathDate);
+                patient.causeOfDeath = openmrsPerson.causeOfDeath!=null ? openmrsPerson.causeOfDeath.display:"";
+                patient.birthdateEstimated = openmrsPerson.birthdateEstimated;
+                mapAttributes(patient, openmrsPerson.attributes);
                 mapRelationships(patient, relationships);
                 return patient;
             };

@@ -145,22 +145,6 @@ describe('patientMapper', function () {
         expect(patient.age).toBe(age);
     });
 
-    it("should populate age and empty birthdate if birthdate is estimated", function () {
-        var dob = date;
-        dob.setFullYear(dob.getFullYear()-2);
-        dob.setMonth(dob.getMonth()-3);
-        dob.setDate(dob.getDate()-25);
-        openmrsPatient.patient.person.birthdate = moment(dob).format();
-        openmrsPatient.patient.person.birthdateEstimated = true;
-        var age = {years: 2, months: 3, days: 25};
-        spyOn(ageModule, 'fromBirthDate').and.returnValue(age);
-
-        var patient = mapper.map(openmrsPatient);
-
-        expect(patient.birthdate).toBeFalsy();
-        expect(patient.age).toBe(age);
-    });
-
     it("should not fail if preferred address is null", function () {
         openmrsPatient.patient.person.preferredAddress = null;
         mapper.map(openmrsPatient);

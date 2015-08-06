@@ -131,7 +131,6 @@ describe('patient mapper', function () {
         dob.setMonth(dob.getMonth()-1);
         dob.setFullYear(dob.getFullYear()-1);
         expect(openmrsPatient.patient.person.birthdate).toBe(moment(dob).format("YYYY-MM-DD"));
-        expect(openmrsPatient.patient.person.birthdateEstimated).toBeTruthy();
     });
 
     it('should map birthdate to age and birthdate', function () {
@@ -143,7 +142,6 @@ describe('patient mapper', function () {
         var openmrsPatient = new Bahmni.Registration.CreatePatientRequestMapper(date).mapFromPatient(patientAttributeTypes, patient);
 
         expect(openmrsPatient.patient.person.birthdate).toBe(moment(date).format("YYYY-MM-DD"));
-        expect(openmrsPatient.patient.person.birthdateEstimated).toBeFalsy();
     });
 
     it('should not use age when birthdate is present', function () {

@@ -21,6 +21,7 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope) {
         patient.gender = openmrsPatient.person.gender;
         patient.genderText = mapGenderText(patient.gender);
         patient.address = mapAddress(openmrsPatient.person.preferredAddress);
+        patient.birthdateEstimated = openmrsPatient.person.birthdateEstimated;
         
         if(openmrsPatient.identifiers) {
             patient.identifier = openmrsPatient.identifiers[0].identifier;

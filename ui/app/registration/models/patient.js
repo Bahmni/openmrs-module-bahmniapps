@@ -12,6 +12,10 @@ angular.module('bahmni.registration')
                 }
             };
 
+            var calculateBirthDate = function () {
+                this.birthdate = age.calculateBirthDate(this.age);
+            };
+
             var generateIdentifier = function () {
                 if (this.registrationNumber && this.registrationNumber.length > 0) {
                     this.identifier = this.identifierPrefix.name + this.registrationNumber;
@@ -36,18 +40,19 @@ angular.module('bahmni.registration')
             };
 
             return {
-                address: {},
-                age: age.create(),
-                birthdate: null,
-                calculateAge: calculateAge,
-                identifierPrefix: {},
-                generateIdentifier: generateIdentifier,
-                clearRegistrationNumber: clearRegistrationNumber,
-                image: '../images/blank-user.gif',
-                fullNameLocal: fullNameLocal,
-                getImageData: getImageData,
-                relationships: [],
-                newlyAddedRelationships: [{}]
+                address: {}
+                ,age: age.create()
+                ,birthdate: null
+                ,calculateAge: calculateAge
+                ,identifierPrefix: {}
+                ,generateIdentifier: generateIdentifier
+                ,clearRegistrationNumber: clearRegistrationNumber
+                ,image: '../images/blank-user.gif'
+                ,fullNameLocal: fullNameLocal
+                ,getImageData: getImageData
+                ,relationships: []
+                ,newlyAddedRelationships: [{}]
+                ,calculateBirthDate: calculateBirthDate
             };
         };
 

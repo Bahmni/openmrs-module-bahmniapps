@@ -22,7 +22,7 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
                     ],
                     addresses: [_.pick(patient.address, Bahmni.Registration.Constants.allAddressFileds)],
                     birthdate: this.getBirthdate(patient.birthdate, patient.age),
-                    birthdateEstimated: patient.birthdate === undefined || patient.birthdate === "",
+                    birthdateEstimated: patient.birthdateEstimated,
                     gender: patient.gender,
                     attributes: this.getMrsAttributes(openMRSPatient, patient, patientAttributeTypes),
                     dead:patient.dead,

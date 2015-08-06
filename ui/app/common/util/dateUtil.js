@@ -20,20 +20,31 @@ Bahmni.Common.Util.DateUtil = {
         to.setHours(0,0,0,0);
         return Math.floor((to - from) / (60 * 1000 * 60 * 24));
     },
-    addDays: function (date, days) {
-        return moment(date).add(days, 'day').toDate();
-    },
 
     addSeconds: function (date, seconds) {
         return moment(date).add(seconds, 'seconds').toDate();
+    },
+    addDays: function (date, days) {
+        return moment(date).add(days, 'day').toDate();
+    },
+    addMonths: function (date, months) {
+        return moment(date).add(months, 'month').toDate();
+    },
+    addYears: function (date, years) {
+        return moment(date).add(years, 'year').toDate();
     },
 
     subtractSeconds: function (date, seconds) {
         return moment(date).subtract(seconds, 'seconds').toDate();
     },
-
     subtractDays: function (date, days) {
         return this.addDays(date, -1 * days)
+    },
+    subtractMonths: function (date, months) {
+        return this.addMonths(date, -1 * months)
+    },
+    subtractYears: function (date, years) {
+        return this.addYears(date, -1 * years)
     },
 
     createDays: function (startDate, endDate) {

@@ -23,6 +23,18 @@ describe("Patient", function(){
             expect(patient.age).toBe(age);
             expect(ageFactory.fromBirthDate).toHaveBeenCalledWith(new Date("06/25/1980"));
         });
+
+        it("should update age as difference between dateofBirth and today in years, months and days", function(){
+            var birthdate = new Date("06/25/1980");
+            patient.age = ageFactory.create(12,5,29);
+
+            spyOn(ageFactory, 'calculateBirthDate').and.returnValue(birthdate);
+
+            patient.calculateBirthDate();
+
+            expect(patient.birthdate).toBe(birthdate);
+            expect(ageFactory.calculateBirthDate).toHaveBeenCalledWith(patient.age);
+        });
     });
 
     describe("clearRegistrationNumber", function(){

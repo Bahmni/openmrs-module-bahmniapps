@@ -101,17 +101,20 @@
               <div class="input-prepend">
                   <span class="add-on">Years</span>
                   <input type="number" id="ageYears" name="ageYear" max="120" ng-model="patient.age.years" min="0"
-                         ng-required="patient.age.isEmpty()" title="Enter a numeric value for Years.">
+                         ng-required="patient.age.isEmpty()" title="Enter a numeric value for Years."
+                         ng-change="patient.calculateBirthDate()">
               </div>
               <div class="input-prepend">
                   <span class="add-on">Months</span>
                   <input type="number" id="ageMonths" name="ageMonths" max="12" ng-model="patient.age.months" min="0"
-                         title="Enter a numeric value between 0 to 12">
+                         title="Enter a numeric value between 0 to 12"
+                         ng-change="patient.calculateBirthDate()">
               </div>
               <div class="input-prepend">
                   <span class="add-on">Days</span>
                   <input type="number" id="ageDays" name="ageDays" max="31" ng-model="patient.age.days" min="0"
-                         title="Enter a numeric value between 0 to 31">
+                         title="Enter a numeric value between 0 to 31"
+                         ng-change="patient.calculateBirthDate()">
               </div>
 
           </div>
@@ -125,6 +128,15 @@
                       ng-change="patient.calculateAge()">
           </div>
       </article>
+      <article class="form-field right-form-field right-form-field-ipad">
+          <div class="field-value">
+              <input type="checkbox" ng-model="patient.birthdateEstimated">
+          </div>
+          <div class="field-attribute">
+              <label for="birthdate">Estimated</label>
+          </div>
+      </article>
+
   </section>
 
   <legend class="registraion_legend">
