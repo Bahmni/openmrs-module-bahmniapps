@@ -116,21 +116,18 @@ describe('patient mapper', function () {
     });
 
     it('should map age to birthdate', function () {
-
         angular.extend(patient, {
             "age": {
                 "years": 1,
                 "months": 1,
-                "days": 17
+                "days": 7
             }
         });
 
         var openmrsPatient = new Bahmni.Registration.CreatePatientRequestMapper(date).mapFromPatient(patientAttributeTypes, patient);
-        var dob = date;
-        dob.setDate(dob.getDate()-17);
-        dob.setMonth(dob.getMonth()-1);
-        dob.setFullYear(dob.getFullYear()-1);
-        expect(openmrsPatient.patient.person.birthdate).toBe(moment(dob).format("YYYY-MM-DD"));
+        var dob = moment();
+        dob = dob.subtract(1, 'years').subtract(1, 'months').subtract(7, 'days');
+        expect(openmrsPatient.patient.person.birthdate).toBe(dob.format("YYYY-MM-DD"));
     });
 
     it('should map birthdate to age and birthdate', function () {
