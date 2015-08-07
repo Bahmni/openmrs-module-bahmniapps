@@ -31,7 +31,7 @@ describe("Age", function(){
             var age = ageFactory.create(0, 0, 0);
             var birthDate = dateUtil.now();
 
-            expect(ageFactory.calculateBirthDate(age)).toEqual(birthDate);
+            expect(moment(ageFactory.calculateBirthDate(age)).format("DD MMM YY").toString()).toEqual(moment(birthDate).format("DD MMM YY").toString());
         });
 
         it("should return date of birth", function(){
