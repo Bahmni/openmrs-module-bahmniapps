@@ -36,6 +36,13 @@ html,body{
         text-align:right;
         margin:8px 0.8em 8px 0px;
         opacity: 0.5;
+      &.estimated-label{
+        width: 5em;
+        margin: 10px 0 0 !important;
+      }
+      &.dob-label{
+        width: 9em;
+      }
     }
   }
   &.right-form-field{
@@ -66,6 +73,10 @@ html,body{
     span.text-only{
        display:inline-block;
        margin:8px 5px 8px 5px;
+    }
+    .estimate-check{
+      margin-top: 10px;
+      margin-left: 7px;
     }
   }
 }
@@ -186,7 +197,7 @@ body{
   width:100%;
   max-width:100%;
   margin:0px auto;
-	background: $lightestGray;
+  background: $lightestGray;
   font-size:14px;
   font-family: "OpenSans",Arial,sans-serif;
 }
@@ -194,7 +205,7 @@ body{
   background: $bahmniSecondaryColor;
 }
 .reg-header{
-	height:52px;
+  height:52px;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -855,11 +866,6 @@ form .vitals .form-field .field-value {
         opacity: .5;
       }
     }
-    // &.hasLegend {
-    //   label {
-    //     margin-left: 10px;
-    //   }
-    // }
     .field-value {
       width: 16em;
     }
