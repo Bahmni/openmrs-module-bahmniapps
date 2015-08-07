@@ -32,12 +32,15 @@ angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$ur
                     backLinks: [homeBackLink,patientSearchBackLink]
                 },
                 views: {
+                    'header':{
+                        templateUrl:'views/patientHeader.html'
+                    },
                     'content': {
                         templateUrl: 'views/documentUpload.html',
                         controller: 'DocumentController'
                     },
-                    'additional-header': { 
-                        templateUrl: 'views/patientHeader.html' 
+                    'additional-header': {
+                        template: '<patient-summary patient="patient"/>' 
                     }
                 },
                 resolve: {
