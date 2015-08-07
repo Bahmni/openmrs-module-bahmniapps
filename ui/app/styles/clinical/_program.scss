@@ -167,6 +167,18 @@
           font-size: 12px;
           pointer-events: none;
         }
+        .label {
+          fill: #FFFFFF;
+        }
+        .date {
+          fill: #000000;
+        }
+        .date-line {
+          stroke: #000000;
+        }
+        .date-bg {
+          fill: #FFFFFF;
+        }
       }
     }
   }
