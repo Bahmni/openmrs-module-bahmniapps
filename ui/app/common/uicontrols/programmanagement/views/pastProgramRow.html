@@ -1,10 +1,7 @@
 <div class="program-row">
     <div class="program-details">
         <a ng-href="#/patient/{{patient.uuid}}/dashboard" class="big-anchor">{{program.display}}</a>
-        <span class="enrolled-info"> (Enrolled on {{program.dateEnrolled | bahmniDate}})</span>
-        <div>
-            <label>Date Completed:</label> <span>{{program.dateCompleted | bahmniDate}}</span>
-        </div>
+        <span class="enrolled-info"> ({{program.dateEnrolled | bahmniDate}} - {{program.dateCompleted | bahmniDate}})</span>
         <div>
             <label>Outcome:</label><span> {{program.outcome.display}}</span>
         </div>
