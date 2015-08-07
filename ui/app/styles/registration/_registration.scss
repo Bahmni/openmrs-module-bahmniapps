@@ -35,7 +35,7 @@ html,body{
         float:left;
         text-align:right;
         margin:8px 0.8em 8px 0px;
-        opacity: 0.5;
+        //opacity: 0.5;
       &.estimated-label{
         width: 5em;
         margin: 10px 0 0 !important;
@@ -794,7 +794,7 @@ video{
       .form-group {
         label span {
           text-transform: capitalize;
-          opacity: 0.5;
+          //opacity: 0.5;
         }
       }
       legend + .form-group {
@@ -863,7 +863,7 @@ form .vitals .form-field .field-value {
       margin-right: 15px;
       text-align: right;
       span{
-        opacity: .5;
+        //opacity: .5;
       }
     }
     .field-value {
