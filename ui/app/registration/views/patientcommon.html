@@ -91,7 +91,7 @@
           </div>
       </article>
   </section>
-  <section class="">
+  <section class="form-field-inline">
       <article class="form-field form-field-ipad">
           <div class="field-attribute">
               <label for="ageYears">Age<span class="asterick">*</span></label>
@@ -118,22 +118,25 @@
               </div>
 
           </div>
-
+      </article>
+      <article class="form-field right-form-field right-form-field-ipad">
           <div class="field-attribute">
-              <label for="birthdate" class="dob-label">Date of Birth</label>
+              <label for="birthdate">Date of Birth</label>
           </div>
           <div class="field-value">
               <input id="birthdate" type="date" ng-model="patient.birthdate"  max="{{today}}"
-                     ng-change="patient.calculateAge()">
+                      ng-change="patient.calculateAge()">
           </div>
+      </article>
+      <article class="form-field right-form-field right-form-field-ipad">
           <div class="field-value">
-              <input type="checkbox" ng-model="patient.birthdateEstimated" class="estimate-check">
+              <input type="checkbox" ng-model="patient.birthdateEstimated">
           </div>
           <div class="field-attribute">
-              <label for="birthdate" class="estimated-label">Estimated</label>
+              <label for="birthdate">Estimated</label>
           </div>
-
       </article>
+
   </section>
 
   <legend class="registraion_legend">
