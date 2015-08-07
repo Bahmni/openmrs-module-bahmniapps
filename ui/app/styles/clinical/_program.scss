@@ -137,10 +137,23 @@
     position: relative;
     display: inline-block;
     visibility: hidden;
-    padding: 2px 4px;
-    background: #e8edf3;
-    border-radius: 5px;
-    font-size: 12px;
+    padding: 2px 6px;
+    background: #E4E4E4;
+    border-radius: 5px 5px 5px 0px;
+    font-size: 11px;
+    font-family: openSansSemiBold;
+    &:after{
+    content: '';
+    width: 0; 
+    height: 0; 
+    border-left: 0px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #E4E4E4;
+    position: absolute;
+    top:21px;
+    left: 0;
+
+    }
   }
 
   .timeline-view {
