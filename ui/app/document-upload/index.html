@@ -19,6 +19,7 @@
     </head>
     <body ng-app="documentupload">
         <div class="document-upload">
+            <div ui-view="header"></div>
             <div ui-view="additional-header"></div>
             <div ng-include src="'../common/ui-helper/messages.html'"></div>
             <div class="opd-wrapper">
@@ -40,7 +41,7 @@
         <script src="../components/purl/purl.js"></script>
         <script src="../components/fastclick/lib/fastclick.js"></script>
         <script src="../components/ngDialog/js/ngDialog.min.js"></script>
-        <script src="../components/keyboardjs/keyboard.js"></script>
+        <script src="../components/keyboardjs/dist/keyboard.js"></script>
         <script src="../components/stacktrace-js/stacktrace.js"></script>
         <script src="../components/ng-clip/src/ngClip.js"></script>
         <script src="../components/zeroclipboard/dist/ZeroClipboard.js"></script>

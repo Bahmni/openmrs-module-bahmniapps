@@ -352,3 +352,15 @@ button.mfp-close:hover {
     }
   }
 }
+.document-upload {
+  .patient-details {
+    position: relative;
+    z-index: 1111;
+    top: 17px;
+    left: 50%;
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    color: $lightestGray;
+    font-size:16px;
+  }
+}
