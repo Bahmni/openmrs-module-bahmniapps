@@ -203,7 +203,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             };
 
             $scope.hasStates = function(program){
-                return program && !_.isEmpty(program.allWorkflows) && !_.isEmpty(program.allWorkflows[0].states)
+                return program && !_.isEmpty(program.allWorkflows) && !_.isEmpty($scope.programWorkflowStates)
             };
 
             init();
