@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.registration')
+angular.module('bahmni.common.domain')
     .factory('providerService', ['$http', function ($http) {
         var search = function(fieldValue){
             return $http.get("/openmrs/ws/rest/v1/provider", {
