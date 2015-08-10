@@ -302,12 +302,16 @@ button.mfp-close:hover {
   margin-bottom: 0;}
 
 .document-upload {
-    .patient-details {
-        top: -14px;
-        right: 0;
-        color: $lightestGray;
-        position: relative;
-    }
+  .patient-details {
+    position: relative;
+    z-index: 1111;
+    top: 17px;
+    left: 50%;
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    color: $lightestGray;
+    font-size:16px;
+  }
 }
 
 @media screen and (max-width: 1024px) {
@@ -322,17 +326,7 @@ button.mfp-close:hover {
 	    .doc-upload-accordion {
 		    padding-top: 20px;
 	    }
-	    .patient-details {
-		    top: 3px;
-		    color: $mediumGray;
-		    background: $white;
-		    padding: 5px;
-		    width: 100%;
-		    text-align: left;
-        left: 0;
-        border-bottom: 1px solid $lightGray;
-        font-size: 12px;
-	    }
+
 	    .messages {
 		    .error-message, .info-message {
 			    top: 70px;
@@ -342,25 +336,28 @@ button.mfp-close:hover {
 }
 
 @media screen and (max-width: 760px) {
-  .document-upload .main .visit-content .files > li {
-    .life {
+  .document-upload {
+    .patient-details {
+      top: 53px;
+      color: $mediumGray;
+      background: $white;
+      padding: 5px;
       width: 100%;
+      text-align: left;
+      left: 50%;
+      border-bottom: 1px solid $lightGray;
+      font-size: 16px;
+      padding-left: 40px;
+      width: 87%;
     }
-    .concept-name.saved {
-      width: 170px;
-      min-width: 100px;
+    .main .visit-content .files > li {
+      .life {
+        width: 100%;
+      }
+      .concept-name.saved {
+        width: 170px;
+        min-width: 100px;
+      }
     }
-  }
-}
-.document-upload {
-  .patient-details {
-    position: relative;
-    z-index: 1111;
-    top: 17px;
-    left: 50%;
-    transform: translateX(-50%);
-    -webkit-transform: translateX(-50%);
-    color: $lightestGray;
-    font-size:16px;
   }
 }
