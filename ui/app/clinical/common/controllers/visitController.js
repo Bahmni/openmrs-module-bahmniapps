@@ -1,12 +1,14 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitController', ['$scope', '$state', 'encounterService', 'clinicalAppConfigService', 'configurations', 'visitSummary','$timeout', 'printer','visitConfig', 'visitHistory', '$stateParams',
-        function ($scope, $state, encounterService, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams) {
+    .controller('VisitController', ['$scope', '$state', 'encounterService', 'clinicalAppConfigService', 'configurations', 'visitSummary','$timeout', 'printer','visitConfig', 'visitHistory', '$stateParams', '$location',
+        function ($scope, $state, encounterService, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams, $location) {
             var encounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
             $scope.documentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
                 return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
             });
+
+
 
             $scope.currentVisitUrl = $state.current.views.content.templateUrl;
             $scope.visitHistory = visitHistory; // required as this visit needs to be overridden when viewing past visits
@@ -63,10 +65,25 @@ angular.module('bahmni.clinical')
             $scope.loadVisit = function (visitUuid) {
                 $state.go('patient.visit', {visitUuid: visitUuid});
             };
+
+            var getTab = function() {
+                var openTab = $location.search().openTab;
+                if(openTab) {
+                    for(var tabIndex in $scope.visitTabConfig.tabs) {
+                        if($scope.visitTabConfig.tabs[tabIndex].title == openTab) {
+                            return $scope.visitTabConfig.tabs[tabIndex];
+                        }
+                    }
+                }
+                return $scope.visitTabConfig.getFirstTab();
+            };
             
             var init = function(){
                 $scope.visitTabConfig.setVisitUuidsAndPatientUuidToTheSections([$scope.visitUuid], $scope.patientUuid);
-                $scope.visitTabConfig.switchTab($scope.visitTabConfig.getFirstTab());
+                var tabToOpen = getTab();
+                $scope.visitTabConfig.switchTab(tabToOpen);
             };
             init();
+
+
         }]);

@@ -1,25 +1,23 @@
 "use strict";
 
 angular.module('bahmni.common.displaycontrol.navigationlinks')
-    .directive('navigationLinks', ['$state', '$urlMatcherFactory', function ($state, $urlMatcherFactory) {
+    .directive('navigationLinks', ['$state', 'appService', function ($state, appService) {
         var controller = function ($scope) {
             if (_.isEmpty($scope.params.links)) {
                 $scope.noNavigationLinksMessage = Bahmni.Common.Constants.noNavigationLinksMessage;
             }
-            ;
 
             $scope.getUrl = function (link) {
-                return $urlMatcherFactory.compile(link.url).format($scope.linkParams);
+                var url = getFormattedURL(link);
+                window.open(url, link.title);
             };
 
             $scope.showUrl = function (link) {
-                var params = $urlMatcherFactory.compile(link.url).params, isPropertyNotPresentInLinkParams;
+                var params = getParamsToBeReplaced(link.url), isPropertyNotPresentInLinkParams;
 
-                for (var property in params) {
-                    if(!params.hasOwnProperty(property)) {
-                        continue;
-                    }
-                    isPropertyNotPresentInLinkParams = isEmpty($scope.linkParams[property]) || !$scope.linkParams.hasOwnProperty(property);
+                for (var i in params) {
+                    var property = params[i];
+                    isPropertyNotPresentInLinkParams = _.isEmpty($scope.linkParams[property]);
                     if (isPropertyNotPresentInLinkParams) {
                         return false;
                     }
@@ -27,9 +25,22 @@ angular.module('bahmni.common.displaycontrol.navigationlinks')
                 return true;
             };
 
-            var isEmpty = function(property) {
-                return (!property || property.length === 0);
+            var getFormattedURL = function (link) {
+                return appService.getAppDescriptor().formatUrl(link.url, $scope.linkParams);
             };
+
+            var getParamsToBeReplaced = function (link) {
+                var pattern = /{{([^}]*)}}/g,
+                    matches = link.match(pattern), params = [];
+                if (matches) {
+                    matches.forEach(function (el) {
+                        var key = el.replace("{{", '').replace("}}", '');
+                        params.push(key);
+                    });
+                }
+                return params;
+            };
+
         };
 
         return {
