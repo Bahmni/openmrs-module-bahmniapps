@@ -25,11 +25,15 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             var showTooltip = function(d){
                 var eventEl = this;
                 tooltipEl
-                    .style("left", function(){
-                        return (eventEl.getBBox().x) + "px";
-                    })
                     .html(function () {
                         return dateFormatter(d.date) + " | " +  d.state;
+                    })
+                    .style("left", function(){
+                        var tooltipWidth = $(this).width();
+                        var availableWidth = $element.find("svg").width();
+                        var eventX = eventEl.getBBox().x;
+                        var posX = (eventX + tooltipWidth > availableWidth) ? (availableWidth - tooltipWidth) : eventX;
+                        return posX + "px";
                     })
                     .style("visibility", "visible");
             };
