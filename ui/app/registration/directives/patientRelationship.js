@@ -46,6 +46,22 @@ angular.module('bahmni.registration')
                 return _.findWhere($scope.relationshipTypes, {uuid: uuid});
             };
 
+            $scope.getRelationshipTypeForDisplay = function(relationship){
+                var personUuid = $scope.patient.uuid;
+                var relationshipType = $scope.getRelationshipType(relationship.relationshipType.uuid);
+                if(!relationship.personA) return "";
+                if(relationship.personA.uuid == personUuid){
+                    return relationshipType.aIsToB;
+                }else{
+                    return relationshipType.bIsToA;
+                }
+            };
+
+            $scope.getRelatedToPersonForDisplay = function(relationship){
+                var personRelatedTo = getPersonRelatedTo(relationship);
+                return personRelatedTo?personRelatedTo.display: "";
+            };
+
             $scope.searchByPatientIdentifier = function (relationship) {
                 if (!relationship.patientIdentifier) {
                     relationship.personB = null;
@@ -76,8 +92,13 @@ angular.module('bahmni.registration')
                 return relationship.patientIdentifier  && !relationship.personB;
             };
 
+            var getPersonRelatedTo = function(relationship){
+               return relationship.personA && relationship.personA.uuid == $scope.patient.uuid ? relationship.personB : relationship.personA
+            };
+
             $scope.openPatientDashboardInNewTab = function (relationship) {
-                $window.open(getPatientRegistrationUrl(relationship['personB']['uuid']), '_blank');
+                var personRelatedTo = getPersonRelatedTo(relationship);
+                $window.open(getPatientRegistrationUrl(personRelatedTo.uuid), '_blank');
             };
 
             var getPatientRegistrationUrl = function (patientUuid) {

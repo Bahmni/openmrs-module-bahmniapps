@@ -3,10 +3,10 @@
         <div class="history-relationship" ng-show="patient.relationships.length > 0">
             <div class="row" ng-repeat="relationship in patient.relationships" ng-hide="relationship.voided">
                 <div class="col col1">
-                    <span>{{getRelationshipType(relationship.relationshipType.uuid).aIsToB}}</span>
+                    <span>{{::getRelationshipTypeForDisplay(relationship)}}</span>
                 </div>
                 <div class="col col2">
-                    <span>{{relationship.personB.display}}</span>
+                    <span>{{::getRelatedToPersonForDisplay(relationship)}}</span>
                     <span ng-if="isPatientRelationship(relationship)"><a ng-click="openPatientDashboardInNewTab(relationship)"><i class="fa fa-external-link"></i></a></span>
                 </div>
                 <div class="col col3">

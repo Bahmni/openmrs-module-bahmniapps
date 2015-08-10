@@ -24,7 +24,7 @@
                 <td class="name">{{patient[attribute].label}}</td>
                 <td class="value">{{(patient[attribute].value.display || patient[attribute].value) | booleanFilter}}</td>
             </tr>
-            <tr>
+            <tr ng-if="patient.relationships && patient.relationships.length > 0">
                 <td>Relationships</td>
             </tr>
             <tr ng-repeat="relationship in patient.relationships">

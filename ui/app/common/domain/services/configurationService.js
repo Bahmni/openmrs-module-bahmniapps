@@ -118,7 +118,7 @@ angular.module('bahmni.common.domain')
         configurationFunctions.relationshipTypeConfig = function() {
             return $http.get(Bahmni.Common.Constants.relationshipTypesUrl, {
                 withCredentials: true,
-                params: {v: "custom:(aIsToB,uuid)"}
+                params: {v: "custom:(aIsToB,bIsToA,uuid)"}
             });
         };
 
