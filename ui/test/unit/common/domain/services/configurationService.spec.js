@@ -103,7 +103,7 @@ describe('configurationService', function () {
     it('should fetch relationshipTypes from backend', function () {
         configurationservice.getConfigurations(['relationshipTypeConfig'])
         expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.relationshipTypesUrl);
-        expect(_$http.get.calls.mostRecent().args[1].params.v).toEqual("custom:(aIsToB,uuid)");
+        expect(_$http.get.calls.mostRecent().args[1].params.v).toEqual("custom:(aIsToB,bIsToA,uuid)");
     });
 
     it('should fetch genderMap from backend', function () {

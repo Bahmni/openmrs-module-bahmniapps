@@ -39,6 +39,7 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 var openmrsPatient = openmrsPatient.patient;
                 var patient = patientModel.create(),
                     birthdate = parseDate(openmrsPatient.person.birthdate);
+                patient.uuid = openmrsPatient.person.uuid;
                 patient.givenName = openmrsPatient.person.preferredName.givenName;
                 patient.middleName = openmrsPatient.person.preferredName.middleName;
                 patient.familyName = openmrsPatient.person.preferredName.familyName;

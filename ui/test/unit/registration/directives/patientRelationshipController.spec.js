@@ -33,10 +33,10 @@ describe('PatientRelationshipController', function () {
                     searchType: "provider",
                     uuid: "8d919b58-c2cc-11de-8d13-0010c6dffd0f"
                 },
-                {aIsToB: "Sibling", searchType: "patient", uuid: "8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},
-                {aIsToB: "Parent", searchType: "patient", uuid: "8d91a210-c2cc-11de-8d13-0010c6dffd0f"},
-                {aIsToB: "Aunt/Uncle", searchType: "patient", uuid: "8d91a3dc-c2cc-11de-8d13-0010c6dffd0f"},
-                {aIsToB: "Supervisor", searchType: "patient", uuid: "2a5f4ff4-a179-4b8a-aa4c-40f71956ebbc"}
+                {aIsToB: "Sibling", bIsToA: "Sibling", searchType: "patient", uuid: "8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},
+                {aIsToB: "Parent", bIsToA: "Child", searchType: "patient", uuid: "8d91a210-c2cc-11de-8d13-0010c6dffd0f"},
+                {aIsToB: "Aunt/Uncle",bIsToA: "Niece/nephew", searchType: "patient", uuid: "8d91a3dc-c2cc-11de-8d13-0010c6dffd0f"},
+                {aIsToB: "Doctor", bIsToA: "Patient",searchType: "patient", uuid: "2a5f4ff4-a179-4b8a-aa4c-40f71956ebbc"}
             ];
             $controller('PatientRelationshipController', {
                 $scope: scope,
@@ -264,5 +264,45 @@ describe('PatientRelationshipController', function () {
        })
     });
 
+    describe("getRelationshipTypeForDisplay", function(){
+        it("should return B is to A relationship name if the patient is Person B", function(){
+            var patientRelationship = {
+                relationshipType: {"uuid": "8d91a210-c2cc-11de-8d13-0010c6dffd0f"},
+                patientIdentifier: "SIV115438",
+                personB: {"uuid": "personb-uuid"},
+                personA: {"uuid": "persona-uuid"}
+            };
+            scope.patient.uuid ="personb-uuid";
+
+            expect(scope.getRelationshipTypeForDisplay(patientRelationship)).toBe("Child");
+        });
+
+        it("should return A is to B relationship name if the patient is Person A", function(){
+            var patientRelationship = {
+                relationshipType: {"uuid": "8d91a210-c2cc-11de-8d13-0010c6dffd0f"},
+                patientIdentifier: "SIV115438",
+                personB: {"uuid": "personb-uuid"},
+                personA: {"uuid": "persona-uuid"}
+            };
+            scope.patient.uuid ="persona-uuid";
+
+            expect(scope.getRelationshipTypeForDisplay(patientRelationship)).toBe("Parent");
+        });
+    });
+
+    describe("getRelatedToPersonForDisplay", function(){
+       it("should get the name of the person whom the patient is related to", function(){
+           var patientRelationship = {
+               relationshipType: {"uuid": "8d91a210-c2cc-11de-8d13-0010c6dffd0f"},
+               patientIdentifier: "SIV115438",
+               personB: {"uuid": "personb-uuid", display: "Son"},
+               personA: {"uuid": "persona-uuid", display: "Dad"}
+           };
+           scope.patient.uuid ="persona-uuid";
+
+           expect(scope.getRelatedToPersonForDisplay(patientRelationship)).toBe("Son");
+       });
+
+    });
 
 });
