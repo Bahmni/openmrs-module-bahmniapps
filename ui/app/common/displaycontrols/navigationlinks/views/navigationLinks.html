@@ -2,7 +2,7 @@
     <h2 class="section-title">{{params.title}}</h2>
     <ul class="navigation-link-container">
     	<li ng-repeat="link in params.links">
-    		<a ng-href="{{getUrl(link)}}" target="_blank" ng-if="showUrl(link)" class="title-link">{{link.title}}</a>
+    		<a ng-click="getUrl(link)" target="_blank" ng-if="showUrl(link)" class="title-link">{{link.title}}</a>
     	</li>
     </ul>
 </section>
