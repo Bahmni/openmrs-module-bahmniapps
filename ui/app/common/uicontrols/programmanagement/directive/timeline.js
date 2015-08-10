@@ -6,11 +6,11 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             var dateUtil = Bahmni.Common.Util.DateUtil;
             var data = getDataModel($scope.program);
             var svg = d3.select($element[0]).select('.timeline-view').append("svg");
-            var elementDimensions = $element[0].getBoundingClientRect();
+            var elementDimension = $element[0].getBoundingClientRect();
             var sortedDates = _.pluck(data.states, 'date');
             var uniqueStates = _.uniq(_.pluck(data.states, 'state'));
             var xMin = 25;
-            var xMax = elementDimensions.width-50;
+            var xMax = elementDimension.width-50;
             var endDate = $scope.program.dateCompleted ? dateUtil.parse($scope.program.dateCompleted) : new Date();
             var dateFormatter = d3.time.format("%_d %b%y");
 
@@ -30,9 +30,8 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                     })
                     .style("left", function(){
                         var tooltipWidth = $(this).width();
-                        var availableWidth = $element.find("svg").width();
                         var eventX = eventEl.getBBox().x;
-                        var posX = (eventX + tooltipWidth > availableWidth) ? (availableWidth - tooltipWidth) : eventX;
+                        var posX = (eventX + tooltipWidth > elementDimension.width) ? (elementDimension.width - tooltipWidth) : eventX;
                         return posX + "px";
                     })
                     .style("visibility", "visible");
@@ -89,7 +88,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
         var getDataModel = function(program) {
             var states = _.sortBy(_.map(program.states, function(stateObject) {
-                return {state: stateObject.state.concept.display, date: new Date(stateObject.startDate)}
+                return {state: stateObject.state.concept.display, date: moment(stateObject.startDate).toDate()}
             }),'date');
             var completed = isProgramCompleted(program);
             return {states: states, completed: completed};
