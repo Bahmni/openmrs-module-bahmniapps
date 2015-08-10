@@ -157,8 +157,8 @@
       </article>
   </section>
 </div>
-<div class="box-container">
-    <legend class="additional-attribute" ng-show="patientConfiguration.additionalAttributes()"
+<div class="box-container" ng-if="patientConfiguration.additionalAttributes().length">
+    <legend class="additional-attribute"
           toggle="displayAdditionalInformation">
           <span>
               <i class="fa fa-caret-right" ng-hide="displayAdditionalInformation"></i>
