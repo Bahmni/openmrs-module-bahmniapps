@@ -3,7 +3,7 @@
         <header>
             <bm-back-links></bm-back-links>
 
-            <div class="retro-date-widget-wrapper">
+            <div class="retro-date-widget-wrapper" ng-if="getTitle()">
                 <div class="retro-date-widget-header">
                     <button ng-click="popUpHandler()">{{ getTitle() }}</button>
                 </div>
