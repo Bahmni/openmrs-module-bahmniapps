@@ -8,8 +8,6 @@ angular.module('bahmni.clinical')
                 return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
             });
 
-
-
             $scope.currentVisitUrl = $state.current.views.content.templateUrl;
             $scope.visitHistory = visitHistory; // required as this visit needs to be overridden when viewing past visits
             $scope.visitSummary = visitSummary;
@@ -17,6 +15,7 @@ angular.module('bahmni.clinical')
             $scope.showTrends = true;
             $scope.patientUuid = $stateParams.patientUuid;
             $scope.visitUuid = $stateParams.visitUuid;
+            var tab = $stateParams.tab;
 
             $scope.isNumeric = function (value) {
                 return $.isNumeric(value);
@@ -67,10 +66,9 @@ angular.module('bahmni.clinical')
             };
 
             var getTab = function() {
-                var openTab = $location.search().openTab;
-                if(openTab) {
+                if(tab) {
                     for(var tabIndex in $scope.visitTabConfig.tabs) {
-                        if($scope.visitTabConfig.tabs[tabIndex].title == openTab) {
+                        if($scope.visitTabConfig.tabs[tabIndex].title === tab) {
                             return $scope.visitTabConfig.tabs[tabIndex];
                         }
                     }

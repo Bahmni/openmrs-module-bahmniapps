@@ -97,7 +97,7 @@ angular.module('consultation')
                 }
             })
             .state('patient.visit', {
-                url: '/dashboard/visit/:visitUuid',
+                url: '/dashboard/visit/:visitUuid/:tab',
                 data: {
                     backLinks: [patientSearchBackLink]
                 },
@@ -114,6 +114,30 @@ angular.module('consultation')
                 resolve: {
                     visitSummary: function (visitSummaryInitialization, $stateParams) {
                         return visitSummaryInitialization($stateParams.visitUuid);
+                    },
+                    visitConfig: function (initialization, visitTabConfig) {
+                        return visitTabConfig.load();
+                    }
+                }
+            })
+            .state('patient.visit.tab', {
+                url: '/:tab',
+                data: {
+                    backLinks: [patientSearchBackLink]
+                },
+                views: {
+                    'additional-header': {
+                        templateUrl: 'common/views/visitHeader.html',
+                        controller: 'VisitHeaderController'
+                    },
+                    'content': {
+                        templateUrl: 'common/views/visit.html',
+                        controller: 'VisitController'
+                    }
+                },
+                resolve: {
+                    visitSummary: function (visitSummaryInitialization, $stateParams) {
+                        return visitSummaryInitialization($stateParams.visitUuid, $stateParams.tab);
                     },
                     visitConfig: function (initialization, visitTabConfig) {
                         return visitTabConfig.load();
