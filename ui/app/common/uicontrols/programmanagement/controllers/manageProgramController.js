@@ -122,10 +122,11 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
             $scope.getWorkflowStatesWithoutCurrent = function(patientProgram){
                 var currState = getCurrentState(patientProgram);
+                var states = getStates(patientProgram.program);
                 if(currState){
-                    return _.reject(patientProgram.program.allWorkflows[0].states, function(d){ return d.uuid == currState.state.uuid; });
+                    return _.reject(states, function(d){ return d.uuid == currState.state.uuid; });
                 }
-                return patientProgram.program.allWorkflows[0].states;
+                return states;
             };
 
             $scope.savePatientProgram = function (patientProgram) {
@@ -190,16 +191,21 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             };
 
             $scope.getWorkflowStates = function(program){
-                $scope.programWorkflowStates = [];
+                $scope.programWorkflowStates = getStates(program);
+            };
+
+            var getStates = function(program){
+                var states = [];
                 if(program && program.allWorkflows.length ) {
                     program.allWorkflows.forEach(function(workflow){
                         if(!workflow.retired && workflow.states.length)
                             workflow.states.forEach(function(state){
                                 if(!state.retired)
-                                    $scope.programWorkflowStates.push(state);
+                                    states.push(state);
                             });
                     });
                 }
+                return states;
             };
 
             $scope.hasStates = function(program){
