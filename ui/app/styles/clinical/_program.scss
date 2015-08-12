@@ -162,11 +162,13 @@
         }
       }
 
-
       .states {
         text {
           font-size: 12px;
           pointer-events: none;
+        }
+        .label-bg {
+          fill: #ABA8A8;
         }
         .label {
           fill: #FFFFFF;
@@ -175,11 +177,16 @@
           fill: #000000;
         }
         .date-line {
+          stroke-width: 2px;
           stroke: #000000;
         }
         .date-bg {
           fill: #FFFFFF;
         }
+      }
+
+      polygon {
+        fill: #ABA8A8;
       }
     }
   }
