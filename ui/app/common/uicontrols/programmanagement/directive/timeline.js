@@ -18,7 +18,6 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 .domain([sortedDates[0], endDate])
                 .range([xMin,xMax]);
 
-            var colors = d3.scale.category10();
             var states = svg.selectAll('.states').data(data.states);
             var stateGroup = states.enter().append("g").classed('states',true);
             var tooltipEl = d3.select($element[0]).select('.tool-tip');
@@ -43,18 +42,17 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             stateGroup.append("text").classed("date", true);
 
 
-            var stateBar = {y: 5, height: 25, textPaddingX: 6};
+            var stateBar = {y: 5, height: 23, textPaddingX: 6};
             var dateBar = {y: 30, height: 30, xPadding: -4, textPaddingY: 53};
-            var dateTick = {y: 32, height: 6};
+            var dateTick = {y: 0, height: 40};
             states.select(".label-bg")
                 .attr('x', function(d) { return timeScale(d.date); })
                 .attr('y', stateBar.y)
                 .attr('height', stateBar.height)
-                .attr('width', function(d) {return xMax-timeScale(d.date)})
-                .style('fill', function(d) {return colors(_.indexOf(uniqueStates, d.state))});
+                .attr('width', function(d) {return xMax-timeScale(d.date)});
             states.select(".label")
                 .attr('x', function(d) { return timeScale(d.date) + stateBar.textPaddingX; })
-                .attr('y', stateBar.y + (stateBar.height * 0.65))
+                .attr('y', stateBar.y + (stateBar.height * 0.7))
                 .text(function(d) { return d.state; });
             states.select(".date-bg")
                 .attr('x', function(d) { return timeScale(d.date) + dateBar.xPadding; })
@@ -80,9 +78,8 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             //Draw completed state
             if(!data.completed && !_.isEmpty(data.states)) {
                 svg.append("polygon")
-                    .attr("points", (xMax + "," + stateBar.y + " " + (xMax+13) + "," +
-                        (stateBar.y + stateBar.height/2) + " " + xMax + "," + (stateBar.y + stateBar.height)))
-                    .attr("fill", colors(_.indexOf(uniqueStates, _.last(data.states).state)));
+                    .attr("points", (xMax + "," + stateBar.y + " " + (xMax+12) + "," +
+                        (stateBar.y + stateBar.height/2) + " " + (xMax-1) + "," + (stateBar.y + stateBar.height)));
             }
         };
 
