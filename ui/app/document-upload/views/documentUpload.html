@@ -144,7 +144,7 @@
                                            target="_blank">
                                             <i class="fa fa-file-pdf-o"></i>
                                         </a>
-                                        <img ng-if="!isPdf(file)" bm-gallery-item index="{{$index}}"
+                                        <img ng-if="!isPdf(file)" bm-gallery-item index="{{file.imageIndex}}"
                                              visit-uuid="visit.uuid" visit-order="{{$parent.$index+1}}" image="file"
                                              ng-src="{{file.thumbnail}}" width="100"
                                              ng-class="{true:'transparent', false:'opaque'}[file.voided]"/>
