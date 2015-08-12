@@ -41,14 +41,21 @@ Bahmni.DocumentUpload.Visit = function () {
     };
 
     this.assignImageIndex = function(){
-        var imageIndex = 0;
+        var imageIndex = this.getNoOfImages() -1;
           this.files.map(function(file){
               if(!(file.encodedValue.indexOf(".pdf") > 0)){
                   file.imageIndex = imageIndex;
-                  imageIndex++;
+                  imageIndex--;
               }
               return file;
           })
+    };
+
+    this.getNoOfImages = function(){
+        var imageFiles = _.filter(this.files, function (file) {
+            return !(file.encodedValue.indexOf(".pdf") > 0);
+        });
+        return imageFiles.length;
     };
 
     this.isNew = function () {
@@ -83,6 +90,7 @@ Bahmni.DocumentUpload.Visit = function () {
             savedImage = new DocumentImage({"encodedValue": file, "new": true});
             this.files.push(savedImage);
         }
+        this.assignImageIndex();
         this.markAsUpdated();
         return savedImage;
     };
@@ -106,6 +114,7 @@ Bahmni.DocumentUpload.Visit = function () {
     this.removeNewAddedFile = function (file) {
         var i = this.files.indexOf(file);
         this.files.splice(i, 1);
+        this.assignImageIndex();
         this.markAsUpdated();
     };
 
