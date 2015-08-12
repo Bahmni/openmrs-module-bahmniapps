@@ -57,6 +57,7 @@ Bahmni.Common = Bahmni.Common || {};
         drugImportUrl: BAHMNI_CORE + "/admin/upload/drug",
         labResultsImportUrl: BAHMNI_CORE + "/admin/upload/labResults",
         referenceTermsImportUrl: BAHMNI_CORE + "/admin/upload/referenceterms",
+        relationshipImportUrl: BAHMNI_CORE + "/admin/upload/relationship",
         conceptSetExportUrl: BAHMNI_CORE + "/admin/export/conceptset?conceptName=:conceptName",
         patientImportUrl: BAHMNI_CORE + "/admin/upload/patient",
         adminImportStatusUrl: BAHMNI_CORE + "/admin/upload/status",
