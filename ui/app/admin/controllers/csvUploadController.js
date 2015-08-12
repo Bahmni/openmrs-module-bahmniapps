@@ -13,7 +13,8 @@ angular.module('bahmni.admin')
                 "patient": Bahmni.Common.Constants.patientImportUrl,
                 "drug": Bahmni.Common.Constants.drugImportUrl,
                 "labResults": Bahmni.Common.Constants.labResultsImportUrl,
-                "referenceterms": Bahmni.Common.Constants.referenceTermsImportUrl
+                "referenceterms": Bahmni.Common.Constants.referenceTermsImportUrl,
+                "relationship": Bahmni.Common.Constants.relationshipImportUrl
             };
             var fileUploaderOptions = {
                 removeAfterUpload: true,
