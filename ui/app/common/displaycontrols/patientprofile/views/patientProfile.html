@@ -10,7 +10,7 @@
                     <div class="patient-value">
                          <span class="patient-name">
                             {{patient.name | titleCase}} ({{patient.identifier}})</span> -
-                         <span class="patient-gender-age" ng-bind-html="getPatientGenderAndAge()"></span> 
+                         <span class="patient-gender-age" ng-bind-html="getPatientGenderAndAge()"></span>
                          <span class="patient-estimated-text" ng-if="patient.birthdateEstimated"> (est.)</span>
                          <span class="patient-address">
                              {{getAddress()}}
@@ -31,9 +31,10 @@
                 <td class="name" ng-if="relationship.personA.uuid === patient.uuid">{{relationship.relationshipType.aIsToB}}</td>
                 <td class="value" ng-if="relationship.personA.uuid === patient.uuid">
                     <a ng-href="../clinical/#/patient/{{relationship.personB.uuid}}/dashboard"
-                       title="Go to Clinical Dashboard">
+                       title="Go to Clinical Dashboard" ng-if="!isProviderRelationship(relationship)">
                         {{relationship.personB.display}}
                     </a>
+                    <span ng-if="isProviderRelationship(relationship)">{{relationship.personB.display}}</span>
                 </td>
                 <td class="name" ng-if="relationship.personB.uuid === patient.uuid">{{relationship.relationshipType.bIsToA}}</td>
                 <td ng-if="relationship.personB.uuid === patient.uuid" class="value">

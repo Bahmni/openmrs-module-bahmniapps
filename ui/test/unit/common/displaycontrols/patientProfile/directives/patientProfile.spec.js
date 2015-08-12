@@ -47,48 +47,55 @@ describe("Patient Profile display control", function () {
 
 
     it("should get patient address with cityVillage when addressField is not specified in config", function () {
-
-        scope.config = {
+         var config = {
             "title": "Patient Information",
             "name": "patientInformation",
             "patientAttributes": ["caste", "class", "education", "occupation"]
         };
-
-        element = angular.element('<patient-profile patient="patient" config="config"></patient-profile>');
-        $compile(element)(scope);
-        scope.$digest();
-
-        var isoScope = element.isolateScope();
-
+        var isoScope = createIsoScope(config);
         expect(isoScope.getAddress()).toBe("Some village");
     });
 
     it("should get patient Name, age, gender, identifier and address even though config is empty", function () {
-        scope.config = {};
-
-        element = angular.element('<patient-profile patient="patient" config="config"></patient-profile>');
-        $compile(element)(scope);
-        scope.$digest();
-
-        var isoScope = element.isolateScope();
-
+        var isoScope = createIsoScope({});
         var patientGenderAndAge = isoScope.getPatientGenderAndAge();
         expect(patientGenderAndAge.$$unwrapTrustedValue()).toBe("Female, 21 years");
     });
 
     it("should get patient address in the order of config specified", function () {
-        scope.config = {
+        var config = {
             "title": "Patient Information",
             "name": "patientInformation",
             "addressFields": ["address1", "cityVillage", "state", "zip"]
         };
+        var isoScope = createIsoScope(config);
+        expect(isoScope.getAddress()).toBe("Address, Some village, State");
+    });
+
+    it("should return false if the relationshipTypeMap.provider object is empty", function () {
+        scope.relationshipTypeMap = {};
+        var isoScope = createIsoScope({});
+        expect(isoScope.isProviderRelationship({relationshipType : {aIsToB : "Parent"}})).toBeFalsy();
+    });
+
+    it("should return true if the relationship is provider", function () {
+        scope.relationshipTypeMap = { "provider" : ["Doctor"]};
+        var isoScope = createIsoScope({});
+        expect(isoScope.isProviderRelationship({relationshipType : {aIsToB : "Doctor"}})).toBeTruthy();
+    });
+
+    it("should return false if the relationship is patient", function () {
+        scope.relationshipTypeMap = { "provider" : ["Doctor"]};
+        var isoScope = createIsoScope({});
+        expect(isoScope.isProviderRelationship({relationshipType : {aIsToB : "Patient"}})).toBeFalsy();
+    });
+
+    var createIsoScope = function(config)  {
+        scope.config = config;
         element = angular.element('<patient-profile patient="patient" config="config"></patient-profile>');
         $compile(element)(scope);
         scope.$digest();
-
-        var isoScope = element.isolateScope();
-
-        expect(isoScope.getAddress()).toBe("Address, Some village, State");
-    });
+        return element.isolateScope();
+    };
 
 });

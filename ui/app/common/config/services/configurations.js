@@ -63,4 +63,8 @@ angular.module('bahmni.common.config')
         this.relationshipTypes = function() {
             return this.configs.relationshipTypeConfig.results || [];
         };
+
+        this.relationshipTypeMap = function() {
+            return this.configs.relationshipTypeMap || {};
+        }
     }]);
