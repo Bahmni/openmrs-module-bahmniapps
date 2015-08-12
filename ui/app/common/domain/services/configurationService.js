@@ -115,6 +115,16 @@ angular.module('bahmni.common.domain')
             });
         };
 
+        configurationFunctions.relationshipTypeMap = function() {
+            return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
+                method: "GET",
+                params: {
+                    property: 'bahmni.relationshipTypeMap'
+                },
+                withCredentials: true
+            });
+        };
+
         configurationFunctions.relationshipTypeConfig = function() {
             return $http.get(Bahmni.Common.Constants.relationshipTypesUrl, {
                 withCredentials: true,
