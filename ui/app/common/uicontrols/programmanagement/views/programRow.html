@@ -9,6 +9,13 @@
         </div>
 
         <div ng-if="program.editing" class="program-action-container form">
+            <div class="remove-state-container">
+                <label class="middle-align">Current State : </label>
+                <label class="middle-align current-state-name"><span>{{getCurrentStateDisplayName(program)}}</span></label>
+                <button class="small-btn row-remover" ng-confirm-click="removePatientState(program)" confirm-message="Do you want to remove '{{getCurrentStateDisplayName(program)}}'" ng-if="canRemovePatientState(program)" >
+                    <span class="fa fa-remove"></span>
+                </button>
+            </div>
             <label class="middle-align">Change to</label>
             <select ng-model="programEdited.selectedState"
                     ng-options="state.concept.display for state in getWorkflowStatesWithoutCurrent(program) track by state.uuid">

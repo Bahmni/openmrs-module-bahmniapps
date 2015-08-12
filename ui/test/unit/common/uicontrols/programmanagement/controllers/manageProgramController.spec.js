@@ -9,7 +9,8 @@ describe("ManageProgramController", function () {
     beforeEach(module(function ($provide) {
         _provide = $provide;
 
-        programService = jasmine.createSpyObj('programService', ['getPatientPrograms', 'getAllPrograms', 'savePatientProgram', 'endPatientProgram']);
+        programService = jasmine.createSpyObj('programService', ['getPatientPrograms', 'getAllPrograms',
+            'savePatientProgram', 'endPatientProgram', 'deletePatientState']);
         programService.getPatientPrograms.and.callFake(function () {
             deferred = q.defer();
             deferred.resolve({data: {results: patientPrograms}});
@@ -29,6 +30,12 @@ describe("ManageProgramController", function () {
         });
 
         programService.endPatientProgram.and.callFake(function () {
+            deferred = q.defer();
+            deferred.resolve({data: {results: patientPrograms}});
+            return deferred.promise;
+        });
+
+        programService.deletePatientState.and.callFake(function () {
             deferred = q.defer();
             deferred.resolve({data: {results: patientPrograms}});
             return deferred.promise;
@@ -74,13 +81,35 @@ describe("ManageProgramController", function () {
         expect(scope.hasPatientEnrolledToSomePrograms()).toBeTruthy();
     });
 
-    it("should return trus if patient had enrolled in any past programs", function() {
+    it("should return true if patient had enrolled in any past programs", function() {
         scope.$apply(setUp);
         expect(scope.hasPatientAnyPastPrograms()).toBeTruthy();
     });
 
-    describe("savePatientProgram", function(){
-        it("should validate if state to be transited is starting after the current running state", function(){
+    it("should get current state display name", function () {
+        scope.$apply(setUp);
+        expect(scope.getCurrentStateDisplayName(patientPrograms[0])).toBe("Current State");
+    });
+
+    describe("Remove program states", function () {
+
+        it("should remove latest program state", function () {
+            scope.$apply(setUp);
+            scope.removePatientState(patientPrograms[0]);
+            expect(programService.deletePatientState).toHaveBeenCalledWith(patientPrograms[0].uuid,
+                patientPrograms[0].states[1].uuid);
+
+        });
+
+        it("should be able to remove program states when there are at lease 1 active state", function () {
+            scope.$apply(setUp);
+            expect(scope.canRemovePatientState(patientPrograms[0])).toBeTruthy();
+        });
+    });
+
+
+    describe("savePatientProgram", function () {
+        it("should validate if state to be transited is starting after the current running state", function () {
             scope.$apply(setUp);
             var programToBeUpdated = patientPrograms[0];
             $bahmniCookieStore.get.and.callFake(function(cookieName){
@@ -297,19 +326,25 @@ describe("ManageProgramController", function () {
             "dateEnrolled": "2015-07-25T18:29:59.000+0000",
             "dateCompleted": null,
             "outcome": null,
-            "patient":{"uuid":"ad95e200-6196-4438-a078-16ad0506a473"},
-             "states": [
-                 {
-                     state:{ uuid: '1911a3ef-cfab-43c5-8810-7f594bfa8995'},
-                     startDate: "2015-07-01",
-                     endDate: "2015-07-15"
-                 },
-                 {
-                     state:{ uuid: '1317ab09-52b4-4573-aefa-7f6e7bdf6d61'},
-                     startDate: "2015-07-15",
-                     endDate: null
-                 }
-             ],
+            "patient": {"uuid": "ad95e200-6196-4438-a078-16ad0506a473"},
+            "states": [
+                {
+                    state: {uuid: '1911a3ef-cfab-43c5-8810-7f594bfa8995'},
+                    startDate: "2015-07-01",
+                    endDate: "2015-07-15"
+                },
+                {
+                    uuid: '2417ab09-52b4-4573-aefa-7f6e7bdf6d81',
+                    state: {
+                        uuid: '1317ab09-52b4-4573-aefa-7f6e7bdf6d61',
+                        concept: {
+                            display: "Current State"
+                        }
+                    },
+                    startDate: "2015-07-15",
+                    endDate: null
+                }
+            ],
 
 
             "uuid": "5b022462-4f79-4a24-98eb-8f143f942583",
