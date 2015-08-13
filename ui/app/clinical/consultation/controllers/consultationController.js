@@ -76,13 +76,8 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             var buttonClickAction = function (board) {
                 if ($scope.currentBoard === board) return;
+                if(!isFormValid()) return;
 
-                var contextChangeResponse = contextChange();
-                if (!contextChangeResponse["allow"]) {
-                    var errorMessage = contextChangeResponse["errorMessage"] ? contextChangeResponse["errorMessage"] : "Please correct errors in the form. Information not saved";
-                    messagingService.showMessage('formError', errorMessage);
-                    return;
-                }
                 contextChangeHandler.reset();
                 $scope.currentBoard = board;
                 return getUrl(board);
@@ -105,18 +100,16 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             };
             var isFormValid = function(){
                 var contxChange = contextChange();
-                var allowContextChange = contxChange["allow"];
-                if (!allowContextChange) {
+                var isThereAnError = contxChange["allow"];
+                if (!isThereAnError) {
                     var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "Please correct errors in the form. Information not saved";
                     messagingService.showMessage('formError', errorMessage);
-                    return false;
                 }
-                return true;
+                return isThereAnError;
             };
             $scope.save = function () {
-                if(!isFormValid()){
-                    return ;
-                }
+                if(!isFormValid()) return;
+
                 spinner.forPromise(preSavePromise().then(function (encounterData) {
                     return encounterService.create(encounterData).then(function () {
                         return $state.transitionTo($state.current, $state.params, {
