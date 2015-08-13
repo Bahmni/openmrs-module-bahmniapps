@@ -14,14 +14,24 @@
                         <div class="row">
                             <div class="col col1">
                                 <input ng-model="diagnosis.codedAnswer.name" type="text" name="name" id="name-{{$index}}"
-                                       diagnosis-auto-complete source="getDiagnosis" response-map="cleanOutDiagnosisList" on-select="addNewDiagnosis" index="$index"
+                                       diagnosis-auto-complete source="getDiagnosis"
+                                       response-map="cleanOutDiagnosisList" on-select="addNewDiagnosis" index="$index"
+                                       ng-class="{
+                                            illegalValue: diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid &&
+                                                !diagnosis.isNonCodedAnswer && !allowNonCodedDiagnosis,
+                                            active: diagnosis.isNonCodedAnswer
+                                       }"
                                        ng-change="clearEmptyRows($index); diagnosis.clearCodedAnswerUuid();">
 
-                                <span>
-                                    <button type="button" ng-model="diagnosis.isNonCodedAnswer" class="small-btn accept-btn" id="accept-button-{{$index}}"
-                                           ng-click="diagnosis.setAsNonCodedAnswer() && clearEmptyRows($index)"
-                                           ng-class="{'illegalValue': diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid && !diagnosis.isNonCodedAnswer, active: diagnosis.isNonCodedAnswer}"
-                                           ng-disabled="diagnosis.codedAnswer.uuid"><span></span>Accept</button>
+                                <span ng-if="allowNonCodedDiagnosis">
+                                    <button type="button" ng-model="diagnosis.isNonCodedAnswer"
+                                            class="small-btn accept-btn" id="accept-button-{{$index}}"
+                                            ng-click="diagnosis.setAsNonCodedAnswer() && clearEmptyRows($index)"
+                                            ng-class="{
+                                                illegalValue: diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid && !diagnosis.isNonCodedAnswer,
+                                                active: diagnosis.isNonCodedAnswer
+                                            }"
+                                            ng-disabled="diagnosis.codedAnswer.uuid"><span></span>Accept</button>
                                 </span>
 
                             </div>

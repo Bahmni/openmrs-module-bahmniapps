@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DiagnosisController', ['$scope', '$rootScope', 'diagnosisService', 'contextChangeHandler', 'spinner',
-        function ($scope, $rootScope, diagnosisService, contextChangeHandler, spinner) {
+    .controller('DiagnosisController', ['$scope', '$rootScope', 'diagnosisService', 'contextChangeHandler', 'spinner', 'appService',
+        function ($scope, $rootScope, diagnosisService, contextChangeHandler, spinner, appService) {
 
             $scope.placeholder = "Add Diagnosis";
             $scope.hasAnswers = false;
@@ -48,6 +48,7 @@ angular.module('bahmni.clinical')
             var init = function () {
                 $scope.newlyAddedDiagnoses = $scope.consultation.newlyAddedDiagnoses;
                 $scope.canDeleteDiagnosis = findPrivilege(Bahmni.Common.Constants.deleteDiagnosisPrivilege);
+                $scope.allowNonCodedDiagnosis=appService.getAppDescriptor().getConfig("allowNonCodedDiagnosis").value;
                 addPlaceHolderDiagnosis();
             };
 
@@ -176,7 +177,6 @@ angular.module('bahmni.clinical')
                     }
                 );
             };
-
             $scope.clearEmptyRows = function (index) {
                 var iter;
                 for (iter = 0; iter < $scope.newlyAddedDiagnoses.length; iter++) {
