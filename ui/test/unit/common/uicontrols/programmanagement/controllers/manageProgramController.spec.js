@@ -191,7 +191,7 @@ describe("ManageProgramController", function () {
     });
 
 
-    describe('getOutcomes', function(){
+    describe('setOutcomes', function(){
         it('should fetch outcomes of the program', function(){
             scope.$apply(setUp);
             var program = patientPrograms[0].program;
@@ -207,25 +207,25 @@ describe("ManageProgramController", function () {
             scope.$apply(setUp);
             var patientProgram = patientPrograms[0];
 
-            var workflowStates = scope.getWorkflowStatesWithoutCurrent(patientProgram);
+            var states = scope.getWorkflowStatesWithoutCurrent(patientProgram);
 
-            expect(workflowStates.length).toBe(1);
+            expect(states.length).toBe(1);
         });
         it('should fetch all states of the program if patient is currently stateless', function(){
             scope.$apply(setUp);
             var patientProgram = patientPrograms[0];
             patientProgram.states =[];
 
-            var workflowStates = scope.getWorkflowStatesWithoutCurrent(patientProgram);
+            var states = scope.getWorkflowStatesWithoutCurrent(patientProgram);
 
-            expect(workflowStates.length).toBe(2);
+            expect(states.length).toBe(2);
         })
     });
 
     describe('Should get states',function(){
         it('Of un retired workflow',function(){
             scope.$apply(setUp);
-            scope.getWorkflowStates(allPrograms[0]);
+            scope.setWorkflowStates(allPrograms[0]);
 
             expect(scope.programWorkflowStates.length).toBe(2);
         })
@@ -345,10 +345,12 @@ describe("ManageProgramController", function () {
                         "retired": false,
                         "states": [
                             {
-                                uuid: '1911a3ef-cfab-43c5-8810-7f594bfa8995'
+                                uuid: '1911a3ef-cfab-43c5-8810-7f594bfa8995',
+                                display: 'Statea'
                             },
                             {
-                                 uuid: '1317ab09-52b4-4573-aefa-7f6e7bdf6d61'
+                                 uuid: '1317ab09-52b4-4573-aefa-7f6e7bdf6d61',
+                                display: 'Stateb'
                             }
                         ],
                         "resourceVersion": "1.8"
@@ -361,7 +363,49 @@ describe("ManageProgramController", function () {
             "dateEnrolled": "2015-07-25T18:29:59.000+0000",
             "dateCompleted": "2015-07-15T18:29:59.000+0000",
             "outcome": null,
-            "uuid": "5b022462-4f79-4a24-98eb-8f143f942584"
+            "uuid": "5b022462-4f79-4a24-98eb-8f143f942584",
+            "program": {
+                "name": "program",
+                "uuid": "1209df07-b3a5-4295-875f-2f7bae20f86e",
+                "retired": false,
+                "description": "program",
+                "concept": {
+                    "uuid": "c460f0d5-3f10-11e4-adec-0800271c1b75",
+                    "display": "VIA Test",
+                    "links": [
+                        {
+                            "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c460f0d5-3f10-11e4-adec-0800271c1b75",
+                            "rel": "self"
+                        }
+                    ]
+                },
+                "allWorkflows": [
+                    {
+                        "uuid": "6a6c990f-01e2-464b-9452-2a97f0c05c7c",
+                        "concept": {
+                            "uuid": "8227f47f-3f10-11e4-adec-0800271c1b75",
+                            "display": "All_Tests_and_Panels",
+                            "links": [
+                                {
+                                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/8227f47f-3f10-11e4-adec-0800271c1b75",
+                                    "rel": "self"
+                                }
+                            ]
+                        },
+                        "description": null,
+                        "retired": false,
+                        "states": [
+                            {
+                                uuid: '1911a3ef-cfab-43c5-8810-7f594bfa8995'
+                            },
+                            {
+                                uuid: '1317ab09-52b4-4573-aefa-7f6e7bdf6d61'
+                            }
+                        ],
+                        "resourceVersion": "1.8"
+                    }
+                ]
+            }
         }
     ];
 });
