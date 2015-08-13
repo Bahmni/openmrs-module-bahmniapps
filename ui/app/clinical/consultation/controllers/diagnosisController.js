@@ -11,8 +11,8 @@ angular.module('bahmni.clinical')
             $scope.certaintyOptions = ['CONFIRMED', 'PRESUMED'];
             $scope.diagnosisStatuses = ['RULED OUT'];
 
-            $scope.getDiagnosis = function (searchTerm) {
-                return diagnosisService.getAllFor(searchTerm);
+            $scope.getDiagnosis = function (params) {
+                return diagnosisService.getAllFor(params.term);
             };
 
             var _canAdd = function (diagnosis) {
@@ -25,13 +25,16 @@ angular.module('bahmni.clinical')
                 return canAdd;
             };
 
-            $scope.addNewDiagnosis = function (index, concept) {
-                var diagnosisBeingEdited = $scope.newlyAddedDiagnoses[index];
-                var diagnosis = new Bahmni.Common.Domain.Diagnosis(concept, diagnosisBeingEdited.order,
-                    diagnosisBeingEdited.certainty, diagnosisBeingEdited.existingObs);
-                if (_canAdd(diagnosis)) {
-                    $scope.newlyAddedDiagnoses.splice(index, 1, diagnosis);
-                }
+            $scope.getAddNewDiagnosisMethod = function(index){
+                return function(item){
+                    var concept = item.lookup;
+                    var diagnosisBeingEdited = $scope.newlyAddedDiagnoses[index];
+                    var diagnosis = new Bahmni.Common.Domain.Diagnosis(concept, diagnosisBeingEdited.order,
+                        diagnosisBeingEdited.certainty, diagnosisBeingEdited.existingObs);
+                    if (_canAdd(diagnosis)) {
+                        $scope.newlyAddedDiagnoses.splice(index, 1, diagnosis);
+                    }
+                };
             };
 
             var addPlaceHolderDiagnosis = function () {
@@ -66,7 +69,8 @@ angular.module('bahmni.clinical')
             };
             contextChangeHandler.add(contextChange);
 
-            $scope.cleanOutDiagnosisList = function (data) {
+            $scope.cleanOutDiagnosisList = function (result) {
+                var data = result.data;
                 var mappedResponse = data.map(
                     function (concept) {
                         if (concept.conceptName === concept.matchedName) {
