@@ -32,6 +32,9 @@ angular.module('bahmni.clinical')
                     var diagnosis = new Bahmni.Common.Domain.Diagnosis(concept, diagnosisBeingEdited.order,
                         diagnosisBeingEdited.certainty, diagnosisBeingEdited.existingObs);
                     if (_canAdd(diagnosis)) {
+                        /*TODO:
+                            change to say array[index]=newObj instead array.splice(index,1,newObj);
+                        */
                         $scope.newlyAddedDiagnoses.splice(index, 1, diagnosis);
                     }
                 };
@@ -51,7 +54,8 @@ angular.module('bahmni.clinical')
             var init = function () {
                 $scope.newlyAddedDiagnoses = $scope.consultation.newlyAddedDiagnoses;
                 $scope.canDeleteDiagnosis = findPrivilege(Bahmni.Common.Constants.deleteDiagnosisPrivilege);
-                $scope.allowNonCodedDiagnosis=appService.getAppDescriptor().getConfig("allowNonCodedDiagnosis").value;
+                $scope.allowOnlyCodedDiagnosis=appService.getAppDescriptor().getConfig("allowOnlyCodedDiagnosis") &&
+                    appService.getAppDescriptor().getConfig("allowOnlyCodedDiagnosis").value;
                 addPlaceHolderDiagnosis();
             };
 
