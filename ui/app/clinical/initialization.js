@@ -14,9 +14,11 @@ angular.module('bahmni.clinical').factory('initialization',
                     'allTestsAndPanelsConcept',
                     'dosageFrequencyConfig',
                     'dosageInstructionConfig',
-                    'genderMap'
+                    'genderMap',
+                    'relationshipTypeMap'
                 ]).then(function () {
                     $rootScope.genderMap = configurations.genderMap();
+                    $rootScope.relationshipTypeMap = configurations.relationshipTypeMap();
                 });
             };
 
