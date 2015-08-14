@@ -6,7 +6,7 @@ describe("clinicalAppConfigService", function () {
     beforeEach(module('bahmni.clinical'));
     beforeEach(module('bahmni.common.appFramework'));
 
-    var appJson = {"data": [
+    var appJson = {"data":
         {
             "id": "bahmni.clinical",
             "config": {
@@ -62,7 +62,7 @@ describe("clinicalAppConfigService", function () {
             }
 
         }
-    ]};
+    };
 
     var extensionJson = {"data": [
         {

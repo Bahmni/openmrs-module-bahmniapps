@@ -15,9 +15,9 @@ angular.module('bahmni.clinical')
         this.load = function () {
             return $q.all([mandatoryConfigPromise(), configPromise()]).then(function(results) {
                 var mandatoryConfig = results[0].data;
-                var tabs = results[1].data;
+                var tabs = _.values(results[1].data);
                 var firstTabWithDefaultSection = _.find(tabs, function(tab) {return tab.defaultSections});
-                firstTabWithDefaultSection.sections = _.union(mandatoryConfig.sections, firstTabWithDefaultSection.sections);
+                firstTabWithDefaultSection.sections = _.union(_.values(mandatoryConfig.sections), _.values(firstTabWithDefaultSection.sections));
                 return new Bahmni.Clinical.VisitTabConfig(tabs);
             });
         }

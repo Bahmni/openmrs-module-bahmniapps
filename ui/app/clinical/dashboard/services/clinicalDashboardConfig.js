@@ -6,7 +6,7 @@ angular.module('bahmni.clinical')
 
         this.load = function() {
             return appService.loadConfig('dashboard.json').then(function (response) {
-                angular.extend(self, new Bahmni.Clinical.ClinicalDashboardConfig(response.data));
+                angular.extend(self, new Bahmni.Clinical.ClinicalDashboardConfig(_.values(response.data)));
             });
         }
 
