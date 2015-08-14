@@ -6,11 +6,12 @@ angular.module('bahmni.orders')
 
         var getConfigs = function () {
             var config = $q.defer();
-            var configNames = ['encounterConfig', 'patientConfig', 'genderMap'];
+            var configNames = ['encounterConfig', 'patientConfig', 'genderMap', 'relationshipTypeMap'];
             configurations.load(configNames).then(function () {
                 $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig());
                 $rootScope.patientConfig = configurations.patientConfig();
                 $rootScope.genderMap = configurations.genderMap();
+                $rootScope.relationshipTypeMap = configurations.relationshipTypeMap();
                 config.resolve();
             });
             return config.promise;
