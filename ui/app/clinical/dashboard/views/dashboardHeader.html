@@ -52,7 +52,7 @@
             </div>
             <span class="grouped-buttons">
                 <a class=" btn--left btn--success "
-                   ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective"
+                   ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective || allowConsultation()"
                    ng-click="collapseControlPanel()" href="#{{consultationBoardLink}}">Consultation</a>
                 <a class="btn--right btn--success " title="Open in new window"
                    ng-if="visitHistory.activeVisit || retrospectiveEntry.isRetrospective"

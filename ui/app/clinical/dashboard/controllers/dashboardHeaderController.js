@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DashboardHeaderController', ['$window', '$scope', 'clinicalAppConfigService', 'patientContext', 'visitHistory', 'clinicalDashboardConfig',
-        function ($window, $scope, clinicalAppConfigService, patientContext, visitHistory, clinicalDashboardConfig) {
+    .controller('DashboardHeaderController', ['$window', '$scope', 'clinicalAppConfigService', 'patientContext', 'visitHistory', 'clinicalDashboardConfig','appService',
+        function ($window, $scope, clinicalAppConfigService, patientContext, visitHistory, clinicalDashboardConfig, appService) {
 
             $scope.patient = patientContext.patient;
             $scope.visitHistory = visitHistory;
@@ -23,6 +23,10 @@ angular.module('bahmni.clinical')
 
             $scope.printDashboard = function () {
                 $scope.$parent.$parent.$broadcast("event:printDashboard", clinicalDashboardConfig.currentTab.printing);
+            };
+
+            $scope.allowConsultation = function(){
+                return appService.getAppDescriptor().getConfigValue('allowConsultationWhenNoOpenVisit');
             };
 
             $scope.closeDashboard = function (dashboard) {

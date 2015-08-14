@@ -60,6 +60,10 @@ angular.module('bahmni.clinical')
             return urlHelper.getConsultationUrl();
         };
 
+        this.getDefaultVisitType = function (){
+            return appService.getAppDescriptor().getConfigValue("defaultVisitType");
+        }
+        
         this.getVisitTypeForRetrospectiveEntries = function (){
             return appService.getAppDescriptor().getConfigValue("visitTypeForRetrospectiveEntries");
         }
