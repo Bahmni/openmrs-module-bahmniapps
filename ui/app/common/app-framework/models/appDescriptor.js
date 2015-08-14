@@ -34,7 +34,7 @@ Bahmni.Common.AppFramework.AppDescriptor = function (context, inheritContext, re
         self.description = self.description || template.description;
         self.contextModel = self.contextModel || template.contextModel;
         if (template.configOptions) {
-            template.configOptions.forEach(function(opt) {
+            _.values(template.configOptions).forEach(function(opt) {
                 var existing = self.configs.filter(function(cfg) {
                     return cfg.name == opt.name;
                 });

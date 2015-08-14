@@ -1,6 +1,6 @@
 {
-    "sections": [
-        {
+    "sections": {
+        "Patient Information": {
             "type": "patientInformation",
             "title": "Patient Information",
             "config": {
@@ -13,7 +13,7 @@
                 ]
             }
         },
-        {
+        "Diagnosis": {
             "type": "diagnosis",
             "title": "Diagnosis",
             "config": {
@@ -23,7 +23,7 @@
                 "showDetailsButton": true
             }
         },
-        {
+        "Observations": {
             "type": "observation",
             "title": "Observations",
             "config": {
@@ -39,7 +39,7 @@
                 "showDetailsButton": true
             }
         },
-        {
+        "Disposition": {
             "type": "disposition",
             "title": "Disposition",
             "config": {
@@ -47,14 +47,14 @@
                 "showDetailsButton": true
             }
         },
-        {
+        "Admission Details": {
             "type": "admissionDetails",
             "title": "Admission Details",
             "config": {
                 "showDetailsButton": true
             }
         },
-        {
+        "Investigation Result": {
             "type": "investigationResult",
             "title": "Investigation Result",
             "config": {
@@ -67,7 +67,7 @@
                 "numberOfVisits": 10
             }
         },
-        {
+        "Treatments": {
             "type": "treatment",
             "title": "Treatments",
             "config": {
@@ -80,17 +80,17 @@
                 "showDrugForm": true
             }
         },
-        {
+        "Radiology": {
             "type": "radiology",
             "config": {
                 "title": "Radiology"
             }
         },
-        {
+        "Patient Files": {
             "type": "patientFiles",
             "config": {
                 "title": "Patient Files"
             }
         }
-    ]
+    }
 }

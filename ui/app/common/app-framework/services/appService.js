@@ -15,8 +15,8 @@ angular.module('bahmni.common.appFramework')
             var deferrable = $q.defer();
             loadConfig(baseUrl + appDescriptor.contextPath + "/appTemplate.json").then(
                 function (result) {
-                    if (result.data.length > 0) {
-                        appDescriptor.setTemplate(result.data[0]);
+                    if (_.keys(result.data).length > 0) {
+                        appDescriptor.setTemplate(result.data);
                     }
                     deferrable.resolve(appDescriptor);
                 },
@@ -35,8 +35,8 @@ angular.module('bahmni.common.appFramework')
             var deferrable = $q.defer();
             loadConfig(baseUrl + appDescriptor.contextPath + "/app.json").then(
                 function (result) {
-                    if (result.data.length > 0) {
-                        appDescriptor.setDefinition(result.data[0]);
+                    if (_.keys(result.data).length > 0) {
+                        appDescriptor.setDefinition(result.data);
                     }
                     deferrable.resolve(appDescriptor);
                 },
@@ -55,7 +55,7 @@ angular.module('bahmni.common.appFramework')
             var deferrable = $q.defer();
             loadConfig(baseUrl + appDescriptor.extensionPath + extensionFileName).then(
                 function (result) {
-                    appDescriptor.setExtensions(result.data);
+                    appDescriptor.setExtensions(_.values(result.data));
                     deferrable.resolve(appDescriptor);
                 },
                 function (error) {
@@ -73,8 +73,8 @@ angular.module('bahmni.common.appFramework')
             var deferrable = $q.defer();
             loadConfig(baseUrl + appDescriptor.contextPath + "/"+pageName+".json").then(
                 function (result) {
-                    if (result.data.length > 0) {
-                        appDescriptor.addConfigForPage(pageName,result.data);
+                    if (_.keys(result.data).length > 0) {
+                        appDescriptor.addConfigForPage(pageName, _.values(result.data));
                     }
                     deferrable.resolve(appDescriptor);
                 },

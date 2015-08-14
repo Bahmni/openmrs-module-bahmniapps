@@ -7,7 +7,7 @@ Bahmni.Clinical.ClinicalDashboardConfig = function (config) {
     angular.extend(self, new Bahmni.Clinical.TabConfig(config, "dashboardName"));
 
     this.getDiseaseTemplateSections = function () {
-        return _.rest(this.currentTab.sections, function (section) {
+        return _.rest(_.values(this.currentTab.sections), function (section) {
             return section.name !== "diseaseTemplate";
         });
     };
