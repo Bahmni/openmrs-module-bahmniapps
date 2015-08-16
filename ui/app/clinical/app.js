@@ -96,6 +96,35 @@ angular.module('consultation')
                     }
                 }
             })
+            .state('patient.dashboard.tab', {
+                url: '/:tab',
+                views: {
+                    'additional-header': {
+                        templateUrl: 'dashboard/views/dashboardHeader.html',
+                        controller: 'DashboardHeaderController'
+                    },
+                    'content': {
+                        templateUrl: 'dashboard/views/dashboard.html',
+                        controller: 'PatientDashboardController'
+                    }
+                },
+                resolve: {
+                    dashboardInitialization: function ($rootScope, initialization, patientContext, clinicalDashboardConfig, userService, $stateParams) {
+                        return clinicalDashboardConfig.load().then(function (data) {
+                            var tab = clinicalDashboardConfig.getTab($stateParams.tab);
+                            if(tab) {
+                                clinicalDashboardConfig.switchTab(tab);
+                            } else {
+                                $rootScope.currentUser.addToRecentlyViewed(patientContext.patient, clinicalDashboardConfig.getMaxRecentlyViewedPatients());
+                                return userService.savePreferences();
+                            }
+                        });
+                    },
+                    visitSummary: function (visitSummaryInitialization, initialization, visitHistory) {
+                        return visitHistory.activeVisit ? visitSummaryInitialization(visitHistory.activeVisit.uuid) : null;
+                    }
+                }
+            })
             .state('patient.visit', {
                 url: '/dashboard/visit/:visitUuid/:tab',
                 data: {
