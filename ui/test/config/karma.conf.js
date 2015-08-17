@@ -11,6 +11,7 @@ module.exports = function (config) {
             'app/components/angular-route/angular-route.js',
             'app/components/angular-sanitize/angular-sanitize.js',
             'app/components/jquery/jquery.js',
+            'app/components/jasmine-jquery/lib/jasmine-jquery.js',
             'app/components/angular-mocks/angular-mocks.js',
             'app/components/ngInfiniteScroll/build/ng-infinite-scroll.js',
             'app/components/d3/d3.min.js',

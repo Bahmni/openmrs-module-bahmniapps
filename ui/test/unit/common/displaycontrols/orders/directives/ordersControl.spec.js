@@ -133,7 +133,7 @@ describe("OrdersDisplayControl", function () {
         orderService.getOrders.and.returnValue(specUtil.createFakePromise(orders));
         var element = generateElement();
 
-        expect(element.children()[0].localName).toBe('section');
+        expect(element.children()[0]).toEqual('section');
     });
 
     it('1 section child should have children 1 section and 1 div', function () {
@@ -141,12 +141,12 @@ describe("OrdersDisplayControl", function () {
         orderService.getOrders.and.returnValue(specUtil.createFakePromise(orders));
         var element = generateElement();
 
-        expect(element.children()[0].localName).toBe('section');
+        expect(element.children()[0]).toEqual('section');
 
         var section = $(element.children()[0]);
 
-        expect(section.children()[0].localName).toBe('section');
-        expect(section.children()[1].localName).toBe('div');
+        expect(section.children()[0]).toEqual('section');
+        expect(section.children()[1]).toEqual('div');
     });
 
     it('1 section child should have children 1 h2, 1 section and 1 div', function () {
@@ -155,18 +155,18 @@ describe("OrdersDisplayControl", function () {
         orderService.getOrders.and.returnValue(specUtil.createFakePromise(orders));
         var element = generateElement();
 
-        expect(element.children()[0].localName).toBe('section');
+        expect(element.children()[0]).toEqual('section');
         var section = $(element.children()[0]);
 
-        expect(section.children()[0].localName).toBe('h2');
-        expect(section.children()[0].innerText).toContain('testTitle');
-        expect(section.children()[1].localName).toBe('section');
-        expect(section.children()[2].localName).toBe('div');
+        expect(section.children()[0]).toEqual('h2');
+        expect(section.children()[0]).toContainText('testTitle');
+        expect(section.children()[1]).toEqual('section');
+        expect(section.children()[2]).toEqual('div');
     });
 
     it('should open the first and close the rest', function () {
         scope.config.showHeader = true;
-        scope.config.numberOfVisits = 1
+        scope.config.numberOfVisits = 1;
         scope.config.title = "testTitle";
         scope.orderUuid = "someOrderUuid";
 
@@ -188,6 +188,8 @@ describe("OrdersDisplayControl", function () {
         orderService.getOrders.and.returnValue(specUtil.createFakePromise(orders));
         var element = generateElement();
 
+        expect(element.children()[0]).toEqual('section');
+
         var section = $(element.find('section')[0]).find('section')[0];
 
         var bahmniObservations = $($(section).find('ul')[0]).children();
@@ -198,21 +200,19 @@ describe("OrdersDisplayControl", function () {
         var secondOrderITags = $(bahmniObservations[1]).find('i');
         var secondOrderFulfillments = $(bahmniObservations[1]).find('ul')[0];
 
-        expect(element.children()[0].localName).toBe('section');
-
         //firstOrder isOPen
-        expect(firstOrderITags[0].className).toContain('fa-caret-right');
-        expect(firstOrderITags[0].className).toContain('ng-hide');
-        expect(firstOrderITags[1].className).toContain('fa-caret-down');
-        expect(firstOrderITags[1].className).not.toContain('ng-hide');
-        expect(firstOrderFulfillments.className).not.toContain('ng-hide');
+        expect(firstOrderITags[0]).toHaveClass('fa-caret-right');
+        expect(firstOrderITags[0]).toHaveClass('ng-hide');
+        expect(firstOrderITags[1]).toHaveClass('fa-caret-down');
+        expect(firstOrderITags[1]).not.toHaveClass('ng-hide');
+        expect(firstOrderFulfillments).not.toHaveClass('ng-hide');
 
         //secondOrder isOPen
-        expect(secondOrderITags[0].className).toContain('fa-caret-right');
-        expect(secondOrderITags[0].className).not.toContain('ng-hide');
-        expect(secondOrderITags[1].className).toContain('fa-caret-down');
-        expect(secondOrderITags[1].className).toContain('ng-hide');
-        expect(secondOrderFulfillments.className).toContain('ng-hide');
+        expect(secondOrderITags[0]).toHaveClass('fa-caret-right');
+        expect(secondOrderITags[0]).not.toHaveClass('ng-hide');
+        expect(secondOrderITags[1]).toHaveClass('fa-caret-down');
+        expect(secondOrderITags[1]).toHaveClass('ng-hide');
+        expect(secondOrderFulfillments).toHaveClass('ng-hide');
     });
 
     describe("noOrdersMessage", function () {
@@ -231,12 +231,12 @@ describe("OrdersDisplayControl", function () {
             orderService.getOrders.and.returnValue(specUtil.createFakePromise([]));
             var element = generateElement();
 
-            expect(element.children()[0].localName).toBe('section');
+            expect(element.children()[0]).toEqual('section');
 
             var section = $(element.children()[0]);
 
-            expect(section.children()[2].localName).toBe('div');
-            expect($(section.children()[2]).text()).toContain("No testOrder for this patient.");
+            expect(section.children()[2]).toEqual('div');
+            expect(section.children()[2]).toContainText('No testOrder for this patient.');
         });
 
         it('should not show the noOrdersMessage when there are orders', function () {
@@ -244,11 +244,11 @@ describe("OrdersDisplayControl", function () {
             orderService.getOrders.and.returnValue(specUtil.createFakePromise(orders));
             var element = generateElement();
 
-            expect(element.children()[0].localName).toBe('section');
+            expect(element.children()[0]).toEqual('section');
 
             var section = $(element.children()[0]);
 
-            expect($(section.children()[2]).text()).not.toContain("No testOrder for this patient.");
+            expect(section.children()[2]).not.toContainText('No testOrder for this patient.');
         });
     });
 });
