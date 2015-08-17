@@ -24,6 +24,10 @@ angular.module('bahmni.clinical')
                 }, $scope.params);
 
             $scope.noVisitsMessage = "No Visits for this patient.";
+
+            $scope.toggle = function(visit) {
+                visit.isOpen = !visit.isOpen;
+            };
         };
         return {
             restrict: 'E',
