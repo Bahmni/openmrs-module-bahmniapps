@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DiagnosisController', ['$scope', '$rootScope', 'diagnosisService', 'contextChangeHandler', 'spinner',
-        function ($scope, $rootScope, diagnosisService, contextChangeHandler, spinner) {
+    .controller('DiagnosisController', ['$scope', '$rootScope', 'diagnosisService', 'contextChangeHandler', 'spinner', 'appService',
+        function ($scope, $rootScope, diagnosisService, contextChangeHandler, spinner, appService) {
 
             $scope.placeholder = "Add Diagnosis";
             $scope.hasAnswers = false;
@@ -11,8 +11,8 @@ angular.module('bahmni.clinical')
             $scope.certaintyOptions = ['CONFIRMED', 'PRESUMED'];
             $scope.diagnosisStatuses = ['RULED OUT'];
 
-            $scope.getDiagnosis = function (searchTerm) {
-                return diagnosisService.getAllFor(searchTerm);
+            $scope.getDiagnosis = function (params) {
+                return diagnosisService.getAllFor(params.term);
             };
 
             var _canAdd = function (diagnosis) {
@@ -25,13 +25,19 @@ angular.module('bahmni.clinical')
                 return canAdd;
             };
 
-            $scope.addNewDiagnosis = function (index, concept) {
-                var diagnosisBeingEdited = $scope.newlyAddedDiagnoses[index];
-                var diagnosis = new Bahmni.Common.Domain.Diagnosis(concept, diagnosisBeingEdited.order,
-                    diagnosisBeingEdited.certainty, diagnosisBeingEdited.existingObs);
-                if (_canAdd(diagnosis)) {
-                    $scope.newlyAddedDiagnoses.splice(index, 1, diagnosis);
-                }
+            $scope.getAddNewDiagnosisMethod = function(index){
+                return function(item){
+                    var concept = item.lookup;
+                    var diagnosisBeingEdited = $scope.newlyAddedDiagnoses[index];
+                    var diagnosis = new Bahmni.Common.Domain.Diagnosis(concept, diagnosisBeingEdited.order,
+                        diagnosisBeingEdited.certainty, diagnosisBeingEdited.existingObs);
+                    if (_canAdd(diagnosis)) {
+                        /*TODO:
+                            change to say array[index]=newObj instead array.splice(index,1,newObj);
+                        */
+                        $scope.newlyAddedDiagnoses.splice(index, 1, diagnosis);
+                    }
+                };
             };
 
             var addPlaceHolderDiagnosis = function () {
@@ -48,6 +54,8 @@ angular.module('bahmni.clinical')
             var init = function () {
                 $scope.newlyAddedDiagnoses = $scope.consultation.newlyAddedDiagnoses;
                 $scope.canDeleteDiagnosis = findPrivilege(Bahmni.Common.Constants.deleteDiagnosisPrivilege);
+                $scope.allowOnlyCodedDiagnosis=appService.getAppDescriptor().getConfig("allowOnlyCodedDiagnosis") &&
+                    appService.getAppDescriptor().getConfig("allowOnlyCodedDiagnosis").value;
                 addPlaceHolderDiagnosis();
             };
 
@@ -65,7 +73,8 @@ angular.module('bahmni.clinical')
             };
             contextChangeHandler.add(contextChange);
 
-            $scope.cleanOutDiagnosisList = function (data) {
+            $scope.cleanOutDiagnosisList = function (result) {
+                var data = result.data;
                 var mappedResponse = data.map(
                     function (concept) {
                         if (concept.conceptName === concept.matchedName) {
@@ -176,7 +185,6 @@ angular.module('bahmni.clinical')
                     }
                 );
             };
-
             $scope.clearEmptyRows = function (index) {
                 var iter;
                 for (iter = 0; iter < $scope.newlyAddedDiagnoses.length; iter++) {

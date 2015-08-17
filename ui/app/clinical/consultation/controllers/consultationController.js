@@ -76,13 +76,8 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             var buttonClickAction = function (board) {
                 if ($scope.currentBoard === board) return;
+                if(!isFormValid()) return;
 
-                var contextChangeResponse = contextChange();
-                if (!contextChangeResponse["allow"]) {
-                    var errorMessage = contextChangeResponse["errorMessage"] ? contextChangeResponse["errorMessage"] : "Please correct errors in the form. Information not saved";
-                    messagingService.showMessage('formError', errorMessage);
-                    return;
-                }
                 contextChangeHandler.reset();
                 $scope.currentBoard = board;
                 return getUrl(board);
@@ -90,13 +85,6 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             var preSavePromise = function () {
                 var deferred = $q.defer();
-                var contxChange = contextChange();
-                var allowContextChange = contxChange["allow"];
-                if (!allowContextChange) {
-                    var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "Please correct errors in the form. Information not saved";
-                    messagingService.showMessage('formError', errorMessage);
-                    return;
-                }
 
                 var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
                 $scope.consultation.saveHandler.fire();
@@ -112,8 +100,18 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 deferred.resolve(encounterData);
                 return deferred.promise;
             };
-
+            var isFormValid = function(){
+                var contxChange = contextChange();
+                var isThereAnError = contxChange["allow"];
+                if (!isThereAnError) {
+                    var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "Please correct errors in the form. Information not saved";
+                    messagingService.showMessage('formError', errorMessage);
+                }
+                return isThereAnError;
+            };
             $scope.save = function () {
+                if(!isFormValid()) return;
+
                 spinner.forPromise(preSavePromise().then(function (encounterData) {
                     return encounterService.create(encounterData).then(function () {
                         return $state.transitionTo($state.current, $state.params, {
