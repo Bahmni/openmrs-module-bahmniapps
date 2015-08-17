@@ -23,7 +23,9 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                             } else {
                                 $scope.activePrograms.push(program);
                             }
-                        })
+                        });
+                        $scope.activePrograms =  _.sortBy($scope.activePrograms, function(program){ return program.dateEnrolled }).reverse();
+                        $scope.endedPrograms = _.sortBy($scope.endedPrograms, function(program){ return program.dateCompleted }).reverse();
                     }
                 }))
             };

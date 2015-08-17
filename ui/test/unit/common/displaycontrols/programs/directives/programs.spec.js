@@ -73,7 +73,7 @@ describe("Program display control", function () {
         expect(elementIsolatedScope.activePrograms[0].display).toBe("End Fever Program");
     });
 
-    it("Shows past programs when dateCompleted is not given", function () {
+    it("Shows past programs and sort by descending order of program end date when dateCompleted is not given", function () {
         rootScope.patient = {
             uuid: "uuid"
         };
@@ -84,6 +84,6 @@ describe("Program display control", function () {
         var elementIsolatedScope = element.isolateScope();
 
         expect(elementIsolatedScope.pastPrograms.length).toBe(3);
-        expect(elementIsolatedScope.pastPrograms[0].display).toBe("Tuberculosis Program");
+        expect(elementIsolatedScope.pastPrograms[0].display).toBe("End TB Program");
     });
 });
