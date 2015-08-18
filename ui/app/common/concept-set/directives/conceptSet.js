@@ -2,24 +2,24 @@
 
 angular.module('bahmni.common.conceptSet')
     .directive('concept', ['RecursionHelper','spinner', 'conceptSetService', '$filter', '$location', 'scrollToService',function (RecursionHelper,spinner, conceptSetService, $filter, $location, scrollToService) {
-        var link = function ($scope, $element,$attr) {
+        var link = function (scope, element, attributes) {
             var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
-            $scope.showTitle = $scope.showTitle === undefined ? true : $scope.showTitle;
+            scope.showTitle = scope.showTitle === undefined ? true : scope.showTitle;
 
-            $scope.cloneNew = function(observation, parentObservation) {
+            scope.cloneNew = function(observation, parentObservation) {
                 var newObs = observation.cloneNew();
                 var index = parentObservation.groupMembers.indexOf(observation);
                 parentObservation.groupMembers.splice(index+1, 0, newObs);
-                var elementToScroll = event.currentTarget.parentNode.parentNode.parentNode.parentNode;
-                scrollToService.scrollTo(elementToScroll);
+                //var elementToScroll = event.currentTarget.parentNode.parentNode.parentNode.parentNode;
+                //scrollToService.scrollTo(elementToScroll);
             };
 
-            $scope.getStringValue = function(observations) {
+            scope.getStringValue = function(observations) {
                 return observations.map(function(observation) {
                     return observation.value + ' (' + $filter('bahmniDate')(observation.date) + ")";
                 }).join(", ");
             };
-            $scope.selectOptions = function (codedConcept) {
+            scope.selectOptions = function (codedConcept) {
                 var answers = _.sortBy(_.uniq(codedConcept.answers, _.property('uuid')).map(conceptMapper.map), 'name');
                 return  {
                     data: answers,
@@ -34,20 +34,20 @@ angular.module('bahmni.common.conceptSet')
                 };
             };
 
-            $scope.toggleSection = function () {
-                $scope.collapse = !$scope.collapse;
+            scope.toggleSection = function () {
+                scope.collapse = !scope.collapse;
             };
 
-            $scope.isCollapsibleSet = function(){
-                return $scope.showTitle;
+            scope.isCollapsibleSet = function(){
+                return scope.showTitle;
             };
 
-            $scope.hasPDFAsValue = function(){
-              return $scope.observation.value && ($scope.observation.value.indexOf(".pdf") > 0);
+            scope.hasPDFAsValue = function(){
+              return scope.observation.value && (scope.observation.value.indexOf(".pdf") > 0);
             };
 
-            $scope.$watch('collapseInnerSections', function(){
-                $scope.collapse = $scope.collapseInnerSections;
+            scope.$watch('collapseInnerSections', function(){
+                scope.collapse = scope.collapseInnerSections;
             });
 
         };
