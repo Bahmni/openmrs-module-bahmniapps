@@ -62,6 +62,26 @@
 	}
 }
 .visit {
+  .hierarchy ul li{ overflow: hidden;}
+  .visit-dashboard{
+    span.visitType {
+      display: inline-block;
+      margin-right: 10%;
+      float: right;
+    }
+    &.hierarchy ul li ul li{
+      span{
+        padding: 3px 10px !important;
+        display: inline-block;
+      }
+      ul li{
+        span{
+          padding: 3px 20px !important;
+          display: inline-block;
+        } 
+      }
+    }
+  }
   table tr th {
     background: $lightestGray;
     background-image: none;
