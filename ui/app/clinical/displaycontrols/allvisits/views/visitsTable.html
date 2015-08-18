@@ -1,6 +1,6 @@
 <section class="block hierarchy">
-    <ul class="form-field" class="ng-isolate-scope">
-        <li ng-repeat="visit in ::visits | limitTo: params.maximumNoOfVisits" class="ng-scope">
+    <ul class="form-field" class="ng-isolate-scope" id="visitDisplayTable">
+        <li ng-repeat="visit in ::visits | limitTo: params.maximumNoOfVisits" class="ng-scope eachVisit">
             <span class="tree-list-item row-click" style="float:left; width:48%;">
                 <i class="fa fa-caret-right" ng-hide="visit.isOpen" ng-click="toggle(visit)"></i>
                 <i class="fa fa-caret-down" ng-show="visit.isOpen" ng-click="toggle(visit)"></i>
@@ -11,7 +11,7 @@
                        title="Current Visit"></i>
                 </a>
             </span>
-            <span style="float:left; width:48%;">{{::visit.visitType.name}}</span>
+            <span style="float:left; width:48%;" class="visitType">{{::visit.visitType.name}}</span>
             <ul ng-show="visit.isOpen" class="ng-isolate-scope">
                 <li ng-repeat="encounter in visit.encounters" class="ng-scope"><span>{{encounter.encounterDatetime | bahmniDateTime}}</span>
                     <br/><span ng-repeat="order in encounter.orders">{{order.type}}{{$last ? '' : ', '}}</span>
