@@ -22,6 +22,14 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                 };
             };
 
+            $scope.filterFullPageSections = function (section){
+                return section['displayType'] && section['displayType'] === 'Full-Page';
+            };
+
+            $scope.filterHalfPageSections = function (section){
+                return !$scope.filterFullPageSections(section);
+            };
+
             var unbindWatch = $scope.$watch('config', init);
             $scope.$on("$stateChangeStart", unbindWatch);
         };
