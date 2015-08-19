@@ -32,7 +32,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
             var getCurrentDate = function() {
                 var currentDate = $bahmniCookieStore.get(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName);
-                return DateUtil.parse(currentDate || DateUtil.endOfToday());
+                return DateUtil.parse(currentDate || DateUtil.now());
             };
 
             var filterRetiredPrograms = function (programs) {

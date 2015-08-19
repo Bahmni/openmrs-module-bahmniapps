@@ -42,7 +42,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.getDataResults = function (data) {
-                return  data.resultList.results;
+                return  data.results;
             };
 
             $scope.clearDeathDetails = function() {
