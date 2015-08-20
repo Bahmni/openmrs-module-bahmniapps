@@ -117,6 +117,7 @@ angular.module('bahmni.common.appFramework')
         this.loadCsvFileFromConfig = function(name){
             return loadConfig(baseUrl + appDescriptor.contextPath + "/" + name);
         };
+
         this.loadConfig = function (name, shouldMerge) {
             return loadConfig(baseUrl + appDescriptor.contextPath + "/" + name).then(
                 function (baseResponse) {
