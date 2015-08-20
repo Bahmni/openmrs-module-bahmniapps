@@ -23,7 +23,8 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope) {
         patient.address = mapAddress(openmrsPatient.person.preferredAddress);
         patient.birthdateEstimated = openmrsPatient.person.birthdateEstimated;
         patient.birthtime = getBirthtime(openmrsPatient.person);
-        
+        patient.bloodGroupText = getPatientBloodGroupText(openmrsPatient);
+
         if(openmrsPatient.identifiers) {
             patient.identifier = openmrsPatient.identifiers[0].identifier;
         }
@@ -99,4 +100,20 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope) {
         return "<span>"+ $rootScope.genderMap[angular.uppercase(genderChar)]+ "</span>";
     };
 
+    var getPatientBloodGroupText = function (openmrsPatient) {
+        if (openmrsPatient.person.bloodGroup) {
+            return "<span>" + openmrsPatient.person.bloodGroup + "</span>";
+        }
+        if (openmrsPatient.person.attributes && openmrsPatient.person.attributes.length > 0) {
+            var bloodGroup;
+             _.forEach(openmrsPatient.person.attributes, function(attribute) {
+                    if(attribute.attributeType.display == "bloodGroup") {
+                       bloodGroup = attribute.display;
+                    }
+            });
+            if (bloodGroup) {
+                return "<span>" + bloodGroup + "</span>";
+            }
+        }
+    };
 };

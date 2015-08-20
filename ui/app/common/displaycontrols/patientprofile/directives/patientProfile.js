@@ -5,16 +5,18 @@ angular.module('bahmni.common.displaycontrol.patientprofile')
         var controller = function ($scope, patientService, spinner, $sce, $rootScope) {
 
             var patient = $scope.patient;
-
             var init = function () {
                 return patientService.getRelationships($scope.patient.uuid).success(function (data) {
                     $scope.patient.relationships = data.results;
                 });
             };
 
-            $scope.getPatientGenderAndAge = function () {
-                var patientGenderAndAge = [patient.genderText, patient.ageText];
-                return $sce.trustAsHtml(patientGenderAndAge.join(", "));
+            $scope.getPatientAttributeTypes = function () {
+                var patientAttributeTypes = [patient.genderText, patient.ageText];
+                if (patient.bloodGroupText) {
+                    patientAttributeTypes.push(patient.bloodGroupText);
+                }
+                return $sce.trustAsHtml(patientAttributeTypes.join(", "));
             };
 
             $scope.isProviderRelationship = function(relationship) {
