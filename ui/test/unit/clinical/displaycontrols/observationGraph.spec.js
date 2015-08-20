@@ -9,7 +9,7 @@ describe("Observation Graph", function () {
         observationsService = jasmine.createSpyObj('observationsService', ['fetch']);
         patientService = jasmine.createSpyObj('patientService', ['getPatient']);
         conceptSetService = jasmine.createSpyObj('conceptSetService', ['getConceptSetMembers']);
-        appService = jasmine.createSpyObj('appService', ['loadConfig']);
+        appService = jasmine.createSpyObj('appService', ['loadCsvFileFromConfig']);
         $provide.value('observationsService', observationsService);
         $provide.value('patientService', patientService);
         $provide.value('conceptSetService', conceptSetService);
@@ -64,7 +64,7 @@ describe("Observation Graph", function () {
     };
 
     var mockAppServiceLoadConfigToReturn = function (data) {
-        appService.loadConfig.and.returnValue(data);
+        appService.loadCsvFileFromConfig.and.returnValue(data);
     };
 
     beforeEach(function () {
@@ -193,11 +193,11 @@ describe("Observation Graph", function () {
             concept: {name: "Weight", units: "Kg"}
         }]);
         mockConceptSetService({results: [{name: "Weight", units: "Kg",datatype:{name:"Numeric"}}]});
-        appService.loadConfig.and.callFake(function () {
+        appService.loadCsvFileFromConfig.and.callFake(function () {
             return {
                 then: function (callback) {
                     callback({
-                        data: 'Gender,Age,3rd,10th,50th,75th,97th\nM,0,2.3,2.7,3.5,3.8,4.4'
+                       data: 'Gender,Age,3rd,10th,50th,75th,97th\nM,0,2.3,2.7,3.5,3.8,4.4'
                     });
                 }
             }
@@ -211,7 +211,7 @@ describe("Observation Graph", function () {
         httpBackend.flush();
 
         expect(c3ChartSpy.render).toHaveBeenCalledWith(null, 0, jasmine.any(Object), mockObservationGraphModel);
-        expect(appService.loadConfig).toHaveBeenCalledWith("growthChartReference.csv");
+        expect(appService.loadCsvFileFromConfig).toHaveBeenCalledWith("growthChartReference.csv");
     });
 
     it("should call c3 render for observations with xaxis as another concept", function () {

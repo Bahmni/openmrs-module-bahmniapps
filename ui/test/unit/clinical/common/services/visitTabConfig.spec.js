@@ -29,7 +29,7 @@ describe("VisitTabConfigService", function () {
     }]));
 
     it("should concat mandatory sections if defaultSections flag is present", function (done) {
-        appService.loadConfig.and.returnValue(specUtil.respondWith({data: config}));
+        appService.loadConfig.and.returnValue(specUtil.respondWith(config));
         var load = visitTabConfigService.load();
         load.then(function(response) {
             expect(response.tabs).toEqual([{a: "apple", defaultSections: true, sections: [section2, section3, section1]}, {b: "ball"}]);
@@ -39,7 +39,7 @@ describe("VisitTabConfigService", function () {
 
     it("should concat mandatory sections even if there are no other sections defined", function (done) {
         delete config[0].sections;
-        appService.loadConfig.and.returnValue(specUtil.respondWith({data: config}));
+        appService.loadConfig.and.returnValue(specUtil.respondWith(config));
         var load = visitTabConfigService.load();
         load.then(function(response) {
             expect(response.tabs).toEqual([{a: "apple", defaultSections: true, sections: [section2, section3]}, {b: "ball"}]);

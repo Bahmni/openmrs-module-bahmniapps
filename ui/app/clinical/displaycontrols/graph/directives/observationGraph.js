@@ -38,7 +38,7 @@ angular.module('bahmni.clinical').directive('observationGraph', ['appService', '
             }
 
             if (config.shouldDrawReferenceLines()) {
-                promises.push(appService.loadConfig(config.getReferenceDataFileName()));
+                promises.push(appService.loadCsvFileFromConfig(config.getReferenceDataFileName()));
             }
 
             var checkWhetherYAxisIsNumericDataType = function (yAxisConceptDetails) {

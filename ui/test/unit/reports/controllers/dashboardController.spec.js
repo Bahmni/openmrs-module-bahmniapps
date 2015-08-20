@@ -2,7 +2,7 @@ describe("DashboardController", function () {
     'use strict';
 
     var scope, controller, reportServiceMock, generateReportPromise, appServiceMock, appServiceLoadConfigPromise, typicalReportConfig = {
-        data: [
+        "1":
             {
                 "name": "Report with config that has dateRangeRequired=true",
                 "type": "Dummy",
@@ -10,18 +10,18 @@ describe("DashboardController", function () {
                     dateRangeRequired: true
                 }
             },
-            {
+           "2": {
                 "name": "Report with dateRangeRequired not specified",
                 "type": "Dummy",
                 "config": {}
             },
-            {
-                "name": "Report with dateChangeRequired false",
-                "type": "Dummy",
-                "config": {
-                    "dateRangeRequired": false
-                }
-            }]
+           "3": {
+               "name": "Report with dateChangeRequired false",
+               "type": "Dummy",
+               "config": {
+                   "dateRangeRequired": false
+               }
+           }
     };
     beforeEach(module('bahmni.reports'));
 

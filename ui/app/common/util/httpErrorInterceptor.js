@@ -56,7 +56,9 @@ angular.module('httpErrorInterceptor',[])
                             $rootScope.$broadcast('event:auth-loginRequired');
                     }
                 } else if (response.status === 404) {
-                    showError("The requested information does not exist");
+                    if(!_.contains(response.config.url, "implementation_config")) {
+                        showError("The requested information does not exist");
+                    }
                 }
                 return $q.reject(response);
             }
