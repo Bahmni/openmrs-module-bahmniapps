@@ -56,10 +56,30 @@ describe("Patient Profile display control", function () {
         expect(isoScope.getAddress()).toBe("Some village");
     });
 
-    it("should get patient Name, age, gender, identifier and address even though config is empty", function () {
+    it("should get patient name, age, gender, identifier and address even though config is empty", function () {
         var isoScope = createIsoScope({});
-        var patientGenderAndAge = isoScope.getPatientGenderAndAge();
-        expect(patientGenderAndAge.$$unwrapTrustedValue()).toBe("Female, 21 years");
+        var patientAttributeTypes = isoScope.getPatientAttributeTypes();
+        expect(patientAttributeTypes.$$unwrapTrustedValue()).toBe("Female, 21 years");
+    });
+
+    it("should also get patient blood group attribute if it is directly specified", function () {
+        scope.patient = {
+            "name": "Patient name",
+            "genderText": "Female",
+            "identifier": "Some identifier",
+            "ageText": "21 years",
+            "bloodGroupText": "AB+",
+            "address": {
+                address1: 'Address',
+                address2: null,
+                cityVillage: 'Some village',
+                state: "State",
+                zip: ''
+            }
+        };
+        var isoScope = createIsoScope({});
+        var patientAttributeTypes = isoScope.getPatientAttributeTypes();
+        expect(patientAttributeTypes.$$unwrapTrustedValue()).toBe("Female, 21 years, AB+");
     });
 
     it("should get patient address in the order of config specified", function () {

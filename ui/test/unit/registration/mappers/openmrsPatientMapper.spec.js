@@ -34,6 +34,7 @@ describe('patientMapper', function () {
             ],
             "person": {
                 "gender": "F",
+                "bloodGroup": "AB+",
                 "age": 0,
                 "birthdate": moment(date).format(),
                 "birthdateEstimated": false,
@@ -90,6 +91,7 @@ describe('patientMapper', function () {
         expect(patient.givenName).toBe(openmrsPatient.patient.person.preferredName.givenName);
         expect(patient.familyName).toBe(openmrsPatient.patient.person.preferredName.familyName);
         expect(patient.gender).toBe(openmrsPatient.patient.person.gender);
+        expect(patient.bloodGroup).toBe(openmrsPatient.patient.person.bloodGroup);
         expect(patient.age).toBe(age);
         expect(patient.identifier).toBe(openmrsPatient.patient.identifiers[0].identifier);
         expect(patient.address.address1).toBe(openmrsPatient.patient.person.preferredAddress.address1);
