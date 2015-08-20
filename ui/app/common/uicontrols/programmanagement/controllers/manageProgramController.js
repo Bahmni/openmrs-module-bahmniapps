@@ -248,6 +248,10 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 return program.outcomesConcept &&!_.isEmpty(program.outcomesConcept.setMembers);
             };
 
+            $scope.removePatientState = function(patientState){
+                patientState.voided = true;
+            };
+
             init();
         }
     ]);

@@ -1,40 +1,49 @@
 <div class="program-row">
     <div class="program-details">
-        <a ng-href="#/patient/{{patient.uuid}}/dashboard" class="big-anchor">{{patientProgram.display}}</a>
+        <span class="program-title">{{patientProgram.display}}</span>
         <span class="enrolled-info"> (Enrolled on {{patientProgram.dateEnrolled | bahmniDate}})</span>
+        <button ng-click="toggleEdit(patientProgram)" ng-class="{'tab-selected': patientProgram.editing}" ng-if="hasProgramWorkflowStates(patientProgram)">Edit</button>
+        <a class="back-btn" ng-href="#/patient/{{patient.uuid}}/dashboard?programName={{patientProgram.display}}" class="big-anchor">Consultation</a>
 
+        </div>
+    <div class="program-timeline" ng-if="patientProgram.states.length!=0">
+        <timeline program="patientProgram"></timeline>
+    </div>
+    <div class="program-state-list"  ng-if="patientProgram.editing">
+        <table class="state-list">
+            <tbody>
+                <tr ng-repeat="state in patientProgram.states">
+                    <td>{{state.state.concept.display}}</td>
+                    <td ng-if="state.endDate">{{state.startDate | bahmniDate}} to {{state.endDate | bahmniDate}}</td>
+                    <td ng-if="!state.endDate">Started on {{state.startDate | bahmniDate}}</td>
+                    <td>By {{state.auditInfo.creator.display}} on {{state.auditInfo.dateCreated | bahmniDate}}
+                        <i ng-class="{'fa fa-remove': !state.endDate, 'fa fa-undo': state.endDate}" ng-click="removePatientState(state)" class="fa fa-remove"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <div class="program-actions">
-            <button ng-click="toggleEdit(patientProgram)" ng-class="{'tab-selected': patientProgram.editing}" ng-if="hasProgramWorkflowStates(patientProgram)">Change State</button>
-            <button ng-click="toggleEnd(patientProgram)" ng-class="{'tab-selected': patientProgram.ending}">End Program</button>
-        </div>
-
-        <div ng-if="patientProgram.editing" class="program-action-container form" ng-init="workflowStatesWithoutCurrentState = getWorkflowStatesWithoutCurrent(patientProgram)">
-            <label class="middle-align">Change to</label>
-            <select ng-model="programEdited.selectedState"
-                    ng-options="state.concept.display for state in workflowStatesWithoutCurrentState track by state.uuid">
-                <option value="">Choose State</option>
-            </select>
-            <div class="btn-grp fr">
-                <button class="retro-widget-button ok_btn" ng-click="savePatientProgram(patientProgram)">Save</button>
-                <button class="retro-widget-button" ng-click="toggleEdit(patientProgram)">Cancel</button>
+            <div class="program-action-container form" ng-if="hasProgramWorkflowStates(patientProgram)" ng-init="workflowStatesWithoutCurrentState = getWorkflowStatesWithoutCurrent(patientProgram)">
+                <label class="middle-align">Change to</label>
+                <select ng-model="programEdited.selectedState"
+                        ng-options="state.concept.display for state in workflowStatesWithoutCurrentState track by state.uuid">
+                    <option value="">Choose State</option>
+                </select>
+                <div class="btn-grp fr">
+                    <button class="retro-widget-button ok_btn" ng-click="savePatientProgram(patientProgram)">Save</button>
+                </div>
             </div>
-        </div>
-        <div ng-if="patientProgram.ending" class="program-action-container form" ng-init="outComesForProgram = getOutcomes(patientProgram.program)">
+            <div class="program-action-container form" ng-init="outComesForProgram = getOutcomes(patientProgram.program)">
                 <label class="middle-align">Outcomes</label>
                 <select ng-model="patientProgram.outcomeData"
                         ng-options="outcomeSelected.display for outcomeSelected in outComesForProgram">
                     <option value="">Choose OutCome</option>
                 </select>
 
-            <div class="btn-grp fr">
-                <button class="retro-widget-button ok_btn" ng-click="endPatientProgram(patientProgram)">Save</button>
-                <button class="retro-widget-button ok_btn" ng-click="toggleEnd(patientProgram)">Cancel</button>
+                <div class="btn-grp fr">
+                    <button class="retro-widget-button ok_btn" ng-click="endPatientProgram(patientProgram)">End</button>
+                </div>
             </div>
         </div>
-
-
-    </div>
-    <div class="program-timeline" ng-if="patientProgram.states.length!=0">
-        <timeline program="patientProgram"></timeline>
     </div>
 </div>

@@ -2,23 +2,20 @@
   .placholder-text {
     padding: 10px;
   }
-  .big-anchor {
+  .program-title {
     text-decoration: none;
     font-size: 16px;
-    &:hover {
-      text-decoration: underline
-    }
+    color: #2b95ff;
   }
   .program-action-container{
-    width: 79%;
+    width: 47%;
     background-color: #F3F2F2;
     padding: 5px 10px 10px;
-    margin-left: 5px;
     box-shadow: 3px 3px 10px #E4E0E0;
     border: 1px #d0d0d0 solid;
     border-radius: 0 0 3px 3px;
     margin-bottom: 10px;
-    margin-top: -1px;
+    display: inline-block;
     select{
       height: 33px;
       float: left;
@@ -68,17 +65,18 @@
 }
 
 .program-timeline {
-  width: 69%;
-  display: inline-block;
+  width: 100%;
+  padding: 0px 0px 15px;
 }
 
 .program-details {
-  width: 30%;
   display: inline-block;
   vertical-align: top;
 
   a {
-    line-height: 30px;
+    line-height: 25px;
+    float: none;
+    font-size: 14px;
   }
   span{
     display: inline-block;
@@ -92,8 +90,16 @@
       }
     }
   }
+}
+
+.program-state-list {
+  width: 100%;
+  padding: 0px 20px;
+  table{
+    width: 98%;
+  }
   .program-actions{
-    padding: 5px 5px 0;
+    padding: 15px 0px 0px 0px;
     button{
       padding: 6px 15px !important;
       &.tab-selected{
