@@ -230,7 +230,7 @@ body pre {
   .pg-container {
     max-width: $max-page-width;
     margin: 0px auto;
-    @include box-shadow-for-section();
+
   }
 
   .inline-element,select,input,button{
@@ -329,7 +329,8 @@ body pre {
     margin-top:5px;
     border:1px solid $lightestGray;
     background: $white;
-    border-radius: 3px;  
+    border-radius: 3px;
+    @include box-shadow-for-section();
     .reg-search{
         margin-bottom:10px;
         @include clearfix;
