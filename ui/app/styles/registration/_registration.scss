@@ -123,35 +123,6 @@ input[required],select[required]{
   }
 }
 
-.box-container{
-    overflow: hidden;
-    background-color: $white;
-    padding: 15px;
-    margin-bottom: 10px;
-    box-shadow: #DCDBDB 0px 6px 10px;
-    &.box-container-patient-info{
-      padding-top: 0;
-    }
-    &.box-container-default{
-      box-shadow: none;
-      margin-bottom: 0;
-      padding: 15px;
-      padding-bottom: 0;
-    }
-    section.section-padding{
-      padding-top: 14px;
-    }
-    legend{
-      width: 100%;
-      a{
-        color: $black;
-        display: inline-block;
-        width: 98%;
-      }
-    }
-    
-}
-
 
 /********************** overridding the common ui ***********************/
 .simple-form-ui{
@@ -449,7 +420,7 @@ table{
  }
 .photo-container-wrapper{
     position:absolute;
-    top:70px;
+    top:50px;
     right:10px;
     border:7px solid $lightestGray;
   }

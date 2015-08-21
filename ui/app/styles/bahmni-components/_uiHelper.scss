@@ -209,3 +209,31 @@ table {
 	    left: 0;
 	}
 }
+
+.box-container{
+    overflow: hidden;
+    background-color: $white;
+    padding: 15px;
+    margin-bottom: 10px;
+  	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+  	&.box-container-patient-info{
+      padding-top: 0;
+	  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+    }
+    &.box-container-default{
+      margin-bottom: 0;
+      padding: 15px;
+      padding-bottom: 0;
+    }
+    section.section-padding{
+      padding-top: 14px;
+    }
+    legend{
+      width: 100%;
+      a{
+        color: $black;
+        display: inline-block;
+        width: 98%;
+      }
+    }
+}
