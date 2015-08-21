@@ -230,6 +230,7 @@ body pre {
   .pg-container {
     max-width: $max-page-width;
     margin: 0px auto;
+    @include box-shadow-for-section();
   }
 
   .inline-element,select,input,button{
