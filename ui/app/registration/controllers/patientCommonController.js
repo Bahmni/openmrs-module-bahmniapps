@@ -56,6 +56,8 @@ angular.module('bahmni.registration')
                 }
             };
 
+
+
             $scope.getAutoCompleteList = function (attributeName, query, type) {
                 return patientAttributeService.search(attributeName, query, type);
             };
@@ -76,6 +78,16 @@ angular.module('bahmni.registration')
                     $scope.patient.sameAsLastName = false;
                 }
             });
+
+            $scope.selectIsDead = function(){
+                if(!_.isEmpty($scope.patient.causeOfDeath) || !_.isEmpty($scope.patient.deathDate)){
+                    $scope.patient.dead = true;
+                }
+            };
+
+            $scope.disableIsDead = function(){
+                return ($scope.patient.causeOfDeath != null || $scope.patient.deathDate != null) && $scope.patient.dead;
+            }
 
         }]);
 
