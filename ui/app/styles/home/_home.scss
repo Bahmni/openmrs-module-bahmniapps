@@ -464,6 +464,7 @@ body{
       li {
         a {
           width: 130px;
+          @include box-shadow-for-section();
           i {
             margin-bottom: 5px;
           }
