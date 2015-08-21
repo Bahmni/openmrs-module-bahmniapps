@@ -2,6 +2,7 @@
 
 Bahmni.Common.DisplayControl.Dashboard.Section = function (section) {
     angular.extend(this, section);
+    this.displayOrder = section.displayOrder;
     this.data = section.data || {};
     this.isObservation = section.isObservation || false;
     this.patientAttributes = section.patientAttributes || [];

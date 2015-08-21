@@ -2,7 +2,7 @@
 
 Bahmni.Common.DisplayControl.Dashboard = function (config) {
 
-    this._sections = _.map(config.sections, Bahmni.Common.DisplayControl.Dashboard.Section.create);
+    this._sections = _.sortBy(_.map(config.sections, Bahmni.Common.DisplayControl.Dashboard.Section.create),function(section) { return section.displayOrder; });
 
     this.getSectionByName = function (name) {
         return _.find(this._sections, function (section) {

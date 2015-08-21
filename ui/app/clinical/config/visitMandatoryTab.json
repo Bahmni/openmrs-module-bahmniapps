@@ -3,6 +3,7 @@
         "Patient Information": {
             "type": "patientInformation",
             "title": "Patient Information",
+            "displayOrder": 0,
             "config": {
                 "title": "PatientInformation",
                 "patientAttributes": [
@@ -16,6 +17,7 @@
         "Diagnosis": {
             "type": "diagnosis",
             "title": "Diagnosis",
+            "displayOrder": 1,
             "config": {
                 "title": "Diagnoses",
                 "showCertainty": true,
@@ -26,6 +28,7 @@
         "Observations": {
             "type": "observation",
             "title": "Observations",
+            "displayOrder": 2,
             "config": {
                 "numberOfVisits": 1,
                 "obsIgnoreList": [
@@ -42,6 +45,7 @@
         "Disposition": {
             "type": "disposition",
             "title": "Disposition",
+            "displayOrder": 3,
             "config": {
                 "numberOfVisits": 1,
                 "showDetailsButton": true
@@ -50,6 +54,7 @@
         "Admission Details": {
             "type": "admissionDetails",
             "title": "Admission Details",
+            "displayOrder": 4,
             "config": {
                 "showDetailsButton": true
             }
@@ -57,6 +62,7 @@
         "Investigation Result": {
             "type": "investigationResult",
             "title": "Investigation Result",
+            "displayOrder": 5,
             "config": {
                 "title": "Lab Investigations",
                 "showChart": true,
@@ -70,6 +76,7 @@
         "Treatments": {
             "type": "treatment",
             "title": "Treatments",
+            "displayOrder": 6,
             "config": {
                 "title": "Treatments",
                 "showFlowSheet": true,
@@ -82,12 +89,14 @@
         },
         "Radiology": {
             "type": "radiology",
+            "displayOrder": 7,
             "config": {
                 "title": "Radiology"
             }
         },
         "Patient Files": {
             "type": "patientFiles",
+            "displayOrder": 8,
             "config": {
                 "title": "Patient Files"
             }
