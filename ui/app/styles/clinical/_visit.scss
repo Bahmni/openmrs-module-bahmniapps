@@ -61,20 +61,21 @@
 		
 	}
 }
-.visit {
-  .hierarchy ul li{ overflow: hidden;}
-  .visit-dashboard{
+.visit-dashboard{
     span.visitType {
       display: inline-block;
-      margin-right: 10%;
+      margin-right: 10px;
       float: right;
+      font-family: openSansSemiBold;
     }
     &.hierarchy ul li ul li{
+      background: #EFF8FF;
       span{
         padding: 3px 10px !important;
         display: inline-block;
       }
       ul li{
+        background: #fff;
         span{
           padding: 3px 20px !important;
           display: inline-block;
@@ -82,6 +83,9 @@
       }
     }
   }
+.visit {
+  .hierarchy ul li{ overflow: hidden;}
+
   table tr th {
     background: $lightestGray;
     background-image: none;
