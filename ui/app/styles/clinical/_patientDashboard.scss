@@ -64,6 +64,7 @@
   margin-bottom: 15px;
   font-size: 14px;
   position: relative;
+  @include box-shadow-for-section();
   @extend %section-grid;
   .dashboard-section {
     border:none;
