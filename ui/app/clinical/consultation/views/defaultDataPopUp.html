@@ -8,7 +8,7 @@
         </select>
     </div>
     <div style="display:block !important" class="input-container">
-        <div show-if-privilege="{{grantProviderAccess}}">
+        <div>
         <label class="retro-date-label">Enter on behalf</label>
         <input type="text" class="retro-date-widget" ng-model="encounterProvider.value"
                bahmni-autocomplete source="getProviderList()" response-map="getProviderDataResults" on-select="providerSelected()" ng-change="clearProvider(encounterProvider.value)"/>

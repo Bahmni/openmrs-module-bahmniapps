@@ -7,7 +7,6 @@ angular.module('bahmni.clinical')
             var selectedProvider = {};
             $scope.today = DateUtil.endOfToday().toISOString().split("T")[0];
             $scope.retrospectivePrivilege = Bahmni.Common.Constants.retrospectivePrivilege;
-            $scope.grantProviderAccess = Bahmni.Common.Constants.grantProviderAccess;
             $scope.selectedLocationUuid = {};
 
 
