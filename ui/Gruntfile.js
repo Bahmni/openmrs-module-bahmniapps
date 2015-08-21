@@ -263,9 +263,19 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('build', [
+        'bower-install',
         'test',
         'dist'
     ]);
 
     grunt.registerTask('default', ['build']);
+
+    grunt.registerTask('bower-install', 'install dependencies using bower', function() {
+        var exec = require('child_process').exec;
+        var cb = this.async();
+        exec('bower install', function(err, stdout, stderr) {
+            console.log(stdout);
+            cb();
+        });
+    });
 };
