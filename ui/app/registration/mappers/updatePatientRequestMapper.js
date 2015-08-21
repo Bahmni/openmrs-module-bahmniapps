@@ -27,7 +27,7 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
                     attributes: this.getMrsAttributes(openMRSPatient, patient, patientAttributeTypes),
                     dead:patient.dead,
                     deathDate: patient.deathDate,
-                    causeOfDeath: patient.causeOfDeath
+                    causeOfDeath: patient.causeOfDeath != null ? patient.causeOfDeath.display : ''
                 }
             }
         };

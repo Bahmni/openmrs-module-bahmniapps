@@ -53,7 +53,7 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 patient.registrationDate = parseDate(openmrsPerson.auditInfo.dateCreated);
                 patient.dead = openmrsPerson.dead;
                 patient.deathDate = parseDate(openmrsPerson.deathDate);
-                patient.causeOfDeath = openmrsPerson.causeOfDeath!=null ? openmrsPerson.causeOfDeath.display:"";
+                patient.causeOfDeath = openmrsPerson.causeOfDeath;
                 patient.birthdateEstimated = openmrsPerson.birthdateEstimated;
                 mapAttributes(patient, openmrsPerson.attributes);
                 mapRelationships(patient, relationships);

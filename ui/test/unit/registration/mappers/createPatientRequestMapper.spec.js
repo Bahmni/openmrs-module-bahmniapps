@@ -60,7 +60,8 @@ describe('patient mapper', function () {
             "familyNameLocal": "lhindi",
             "secondaryIdentifier": "sec id",
             "isNew": "true",
-            "isUrban":false
+            "isUrban":false,
+            "dead": true
         });
 
         var openmrsPatient = new Bahmni.Registration.CreatePatientRequestMapper(new Date()).mapFromPatient(patientAttributeTypes, patient);
@@ -86,6 +87,12 @@ describe('patient mapper', function () {
         ]);
 
         expect(openmrsPatient.patient.person.gender).toBe("M");
+
+        expect(openmrsPatient.patient.person.dead).toBe(true);
+
+        expect(openmrsPatient.patient.person.deathDate).toBe(undefined);
+
+        expect(openmrsPatient.patient.person.causeOfDeath).toBe('');
 
         expect(openmrsPatient.patient.identifiers).toEqual([
             {

@@ -23,7 +23,10 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
                     birthdateEstimated: patient.birthdateEstimated ,
                     gender: patient.gender,
                     personDateCreated: patient.registrationDate,
-                    attributes: this.getMrsAttributes(patient, patientAttributeTypes)
+                    attributes: this.getMrsAttributes(patient, patientAttributeTypes),
+                    dead:patient.dead,
+                    deathDate: patient.deathDate,
+                    causeOfDeath: patient.causeOfDeath != null ? patient.causeOfDeath.display : ''
                 },
                 identifiers: [
                     {

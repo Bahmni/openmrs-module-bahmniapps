@@ -9,21 +9,40 @@ angular.module('bahmni.registration')
             $scope.showMiddleName = appService.getAppDescriptor().getConfigValue("showMiddleName");
             $scope.genderCodes = Object.keys($rootScope.genderMap);
 
-            $scope.getConcepts =function(searchTerm){
-                return $http.get(Bahmni.Common.Constants.conceptUrl, { params: {q: searchTerm.term, v: "custom:(uuid,name)"}}).then(function(result) {
-                    return result.data.results;
+            $scope.getDeathConcepts = function () {
+                var deathConcept;
+                $http({
+                    url: Bahmni.Common.Constants.globalPropertyUrl,
+                    method: 'GET',
+                    params: {
+                        property: 'concept.reasonForDeath'
+                    },
+                    withCredentials: true,
+                    transformResponse: [function(data){
+                        deathConcept = data;
+                        $http.get(Bahmni.Common.Constants.conceptUrl, {
+                            params: {
+                                q: deathConcept,
+                                v: "custom:(uuid,name,set,setMembers:(uuid,display,name:(uuid,name),retired))"
+                            },
+                            withCredentials: true
+                        }).then(function (results) {
+                            $scope.deathConcepts = results.data.results[0]!=null ? results.data.results[0].setMembers:[];
+                            $scope.deathConcepts = filterRetireDeathConcepts($scope.deathConcepts);
+                        })
+                    }]
                 });
+
             };
 
-            $scope.mapConcepts = function(results){
-                return results.map(function (concept) {
-                    return {'concept': {uuid: concept.uuid, name: concept.name.name, editableName: concept.name.name}, 'value': concept.name.name}
-                });
+            var filterRetireDeathConcepts = function(deathConcepts){
+                return _.filter(deathConcepts,function(concept){
+                    return !concept.retired;
+                })
             };
-
 
             $scope.isAutoComplete = function (fieldName) {
-                return autoCompleteFields.indexOf(fieldName) > -1;
+                return !_.isEmpty(autoCompleteFields) ? autoCompleteFields.indexOf(fieldName) > -1 : false;
             };
 
             $scope.showCasteSameAsLastName = function() {
@@ -45,10 +64,6 @@ angular.module('bahmni.registration')
                 return  data.results;
             };
 
-            $scope.clearDeathDetails = function() {
-                $scope.patient.deathDate = null;
-                $scope.patient.causeOfDeath = null;
-            };
 
             $scope.$watch('patient.familyName', function () {
                 if ($scope.patient.sameAsLastName) {

@@ -1,19 +1,18 @@
 <div class="death">
     <div class="row">
         <div class="col col1">
-            <input type="checkbox" id="isDead" ng-model="patient.dead" ng-change="clearDeathDetails()"/>
-            <label for="isDead"><strong>Is Dead</strong></label>
+            <strong class="till-text" >Date of death</strong>
+            <input type="date" ng-model="patient.deathDate" ng-change="patient.dead = true" max="{{today}}"/>
         </div>
-        <div class="col col2">
-            <strong class="till-text">Date of death</strong>
-            <input type="date" ng-disabled="!patient.dead" ng-model="patient.deathDate" required="patient.dead" max="{{today}}"/>
-            <span class="asterick" ng-if="patient.dead">*</span>
+        <div class="col col2" ng-init="getDeathConcepts()" >
+            <strong class="till-text">Reason of death</strong>
+            <select   ng-model="patient.causeOfDeath" ng-options="concept.display for concept in deathConcepts track by concept.display" ng-change="patient.dead = true">
+                <option value="">Choose value</option>
+            </select>
         </div>
         <div class="col col3">
-            <strong class="till-text">Reason of death</strong>
-            <input ng-model="patient.causeOfDeath" type="text" name="name" id="name-{{$index}}"
-                   bahmni-autocomplete source="getConcepts" response-map="mapConcepts" index="$index"  ng-disabled="!patient.dead" required="patient.dead">
-            <span class="asterick" ng-if="patient.dead">*</span>
+            <input type="checkbox" id="isDead" ng-model="patient.dead" ng-disabled="patient.causeOfDeath != null || patient.deathDate != null"/>
+            <label for="isDead"><strong>Is Dead</strong></label>
         </div>
     </div>
 </div>

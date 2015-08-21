@@ -230,6 +230,14 @@ describe("ManageProgramController", function () {
             expect(scope.programWorkflowStates.length).toBe(2);
         })
     });
+
+    describe('get workflows',function(){
+        it('should get unretired workflows for patient program',function(){
+            scope.$apply(setUp);
+
+            expect(scope.activePrograms[0].program.allWorkflows.length).toBe(1);
+        })
+    });
     var allPrograms = [
         {
             "uuid": "1209df07-b3a5-4295-875f-2f7bae20f86e",
