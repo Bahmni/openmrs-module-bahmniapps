@@ -80,7 +80,7 @@ angular.module('bahmni.registration')
             });
 
             $scope.selectIsDead = function(){
-                if(!_.isEmpty($scope.patient.causeOfDeath) || !_.isEmpty($scope.patient.deathDate)){
+                if($scope.patient.causeOfDeath != null ||$scope.patient.deathDate != null){
                     $scope.patient.dead = true;
                 }
             };
