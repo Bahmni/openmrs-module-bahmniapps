@@ -47,7 +47,7 @@ describe('ValidationUtil', function () {
     it("should return nothing when the custom validator is present", function () {
         customValidator = undefined;
         var msg = ValidationUtil.validate(complexObject, objectConfiguration);
-        expect(msg).toEqual(undefined);
+        expect(msg).toEqual('');
     });
 
 });

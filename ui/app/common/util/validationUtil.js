@@ -32,11 +32,11 @@ Bahmni.Common.Util.ValidationUtil = (function () {
     var validate = function (complexObject, objectConfiguration) {
         var allCustomValidators;
         var dataArray = flattenObject(complexObject);
-        var errorMessage = '';
+        var errorMessages = [];
         try{
             allCustomValidators = eval("customValidator");
         } catch (e){}
-        if(!allCustomValidators) return errorMessage;
+        if(!allCustomValidators) return errorMessages.join(', ');
         _.every(dataArray,function(value,field){
             var isValid=true;
             var fieldSpecificValidator = allCustomValidators[field];
@@ -45,14 +45,13 @@ Bahmni.Common.Util.ValidationUtil = (function () {
                 var personAttributeTypeConfig = _.find(objectConfiguration,{name:field});
                 isValid = fieldSpecificValidator.method(field, value, personAttributeTypeConfig);
                 if (!isValid){
-                    errorMessage += fieldSpecificValidator.errorMessage + ", ";
+                    errorMessages.push(fieldSpecificValidator.errorMessage);
                     isValid = true;
                 }
             }
             return isValid;
         });
-        errorMessage = errorMessage.substr(0, errorMessage.length-2);
-        return errorMessage;
+        return errorMessages.join(', ');
     };
     return {
         validate: validate
