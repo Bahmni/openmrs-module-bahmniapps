@@ -31,7 +31,7 @@ angular.module('bahmni.common.domain')
             var req = {
                 url: Bahmni.Common.Constants.programEnrollPatientUrl,
                 params: {
-                    v: Bahmni.Common.Constants.programEnrollmentDefaultInformation,
+                    v: Bahmni.Common.Constants.programEnrollmentFullInformation,
                     patient: patientUuid
                 }
             };

@@ -12,12 +12,12 @@
     <div class="program-state-list"  ng-if="patientProgram.editing">
         <table class="state-list">
             <tbody>
-                <tr ng-repeat="state in patientProgram.states">
+                <tr ng-repeat="state in patientProgram.states" ng-if="state.voided != true">
                     <td>{{state.state.concept.display}}</td>
                     <td ng-if="state.endDate">{{state.startDate | bahmniDate}} to {{state.endDate | bahmniDate}}</td>
                     <td ng-if="!state.endDate">Started on {{state.startDate | bahmniDate}}</td>
                     <td>By {{state.auditInfo.creator.display}} on {{state.auditInfo.dateCreated | bahmniDate}}
-                        <i ng-class="{'fa fa-remove': !state.endDate, 'fa fa-undo': state.endDate}" ng-click="removePatientState(state)" class="fa fa-remove"></i>
+                        <i ng-class="{'fa fa-remove': !state.endDate}" ng-click="removePatientState(state)" class="fa fa-remove"></i>
                     </td>
                 </tr>
             </tbody>
