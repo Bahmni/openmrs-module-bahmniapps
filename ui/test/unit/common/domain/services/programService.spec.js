@@ -42,7 +42,7 @@ describe('programService', function () {
         programService.getPatientPrograms(patientUuid);
 
         expect(mockHttp.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.programEnrollPatientUrl);
-        expect(mockHttp.get.calls.mostRecent().args[1].params.v).toEqual("default");
+        expect(mockHttp.get.calls.mostRecent().args[1].params.v).toEqual("full");
         expect(mockHttp.get.calls.mostRecent().args[1].params.patient).toEqual(patientUuid);
     })
 
