@@ -54,6 +54,11 @@ angular.module('bahmni.registration')
 
             $scope.update = function () {
                 addNewRelationships();
+                var errMsg = Bahmni.Common.Util.ValidationUtil.validate($scope.patient, $scope.patientConfiguration.personAttributeTypes);
+                if (errMsg) {
+                    messagingService.showMessage('formError', errMsg);
+                    return;
+                }
 
                 var patientUpdatePromise = patientService.update($scope.patient, $scope.openMRSPatient).success(function (patientProfileData) {
                     successCallBack(patientProfileData);

@@ -49,11 +49,6 @@ angular.module('bahmni.registration')
                 };
 
                 $scope.actions.followUpAction = function (patientProfileData) {
-                    var errMsg = Bahmni.Common.Util.ValidationUtil.validate($scope.patient, $scope.patientConfiguration.personAttributeTypes);
-                    if (errMsg) {
-                        messagingService.showMessage('formError', errMsg);
-                        return;
-                    }
                     switch ($scope.actions.submitSource) {
                         case 'startVisit':
                             return createVisit(patientProfileData);

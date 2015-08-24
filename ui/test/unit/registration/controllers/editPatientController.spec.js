@@ -54,7 +54,7 @@ describe('EditPatientController', function () {
                     }
                 }
             };
-
+            scopeMock.patientConfiguration = {identifierSources: []};
 
             var controller = $aController('EditPatientController', {
                 $scope: scopeMock,
