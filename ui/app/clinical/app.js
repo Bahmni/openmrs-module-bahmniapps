@@ -44,9 +44,10 @@ angular.module('consultation')
                     'additional-header': {template: '<div ui-view="additional-header"></div>'},
                     'content': {
                         template: '<div ui-view="content"></div><patient-control-panel patient="patient" visit-history="visitHistory" visit="visit" show="showControlPanel"/>',
-                        controller: function ($scope, patientContext, visitHistory) {
+                        controller: function ($scope, patientContext, visitHistory, consultationContext) {
                             $scope.patient = patientContext.patient;
                             $scope.visitHistory = visitHistory;
+                                $scope.consultation = consultationContext;
                         }
                     }
                 },
@@ -57,6 +58,9 @@ angular.module('consultation')
                     },
                     visitHistory: function (visitHistoryInitialization, $stateParams) {
                         return visitHistoryInitialization($stateParams.patientUuid);
+                    },
+                    consultationContext: function (consultationInitialization, initialization, $stateParams) {
+                        return consultationInitialization($stateParams.patientUuid);
                     }
                 }
             })
@@ -185,16 +189,10 @@ angular.module('consultation')
                         controller: 'ConsultationController'
                     },
                     'content': {
-                        template: '<ui-view/>',
-                        controller: function ($scope, consultationContext) {
-                            $scope.consultation = consultationContext;
-                        }
+                        template: '<ui-view/>'
                     }
                 },
                 resolve: {
-                    consultationContext: function (consultationInitialization, initialization, $stateParams) {
-                        return consultationInitialization($stateParams.patientUuid);
-                    }
                 }
             })
             .state('patient.consultation.visit', {
