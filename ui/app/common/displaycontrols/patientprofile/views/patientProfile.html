@@ -12,6 +12,8 @@
                             {{patient.name | titleCase}} ({{patient.identifier}})</span> -
                          <span class="patient-gender-age" ng-bind-html="getPatientGenderAndAge()"></span>
                          <span class="patient-estimated-text" ng-if="patient.birthdateEstimated"> (est.)</span>
+                         <span class="patient-estimated-text" ng-if="patient.birthdateEstimated"> (est.)</span>
+                         <span class="patient-estimated-text" ng-bind-html="patient.birthtime"></span>
                          <span class="patient-address">
                              {{getAddress()}}
                          </span>
