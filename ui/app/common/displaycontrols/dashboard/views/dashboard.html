@@ -1,25 +1,13 @@
 <article class="patient-dashboard visit">
     <div class="pgContainer">
         <article>
-            <div>
-                <section id="{{section.title.toValidId()}}"
-                         ng-repeat="section in dashboard.getSections(diseaseTemplates) | filter:filterFullPageSections"
-                         class="dashboard-section" ng-include="section.viewName">
-                </section>
-            </div>
             <div class="dashboard-section-wrapper">
-                <div class="dashboard-sections dashboard-sections-left">
-                    <section id="{{section.title.toValidId()}}"
-                             ng-repeat="section in dashboard.getSections(diseaseTemplates) | filter:filterHalfPageSections | filter:filterOdd(0)"
-                             class="dashboard-section" ng-include="section.viewName">
-                    </section>
-                </div>
-
-                <div class="dashboard-sections dashboard-sections-right">
-                    <section id="{{section.title.toValidId()}}"
-                             ng-repeat="section in dashboard.getSections(diseaseTemplates) | filter:filterHalfPageSections | filter:filterEven(0)"
-                             class="dashboard-section" ng-include="section.viewName">
-                    </section>
+                <div ng-repeat="section in dashboard.getSections(diseaseTemplates)">
+                    <div ng-class="getSectionLayout(section)">
+                        <section id="{{section.title.toValidId()}}"
+                                 class="dashboard-section" ng-include="section.viewName">
+                        </section>
+                    </div>
                 </div>
             </div>
         </article>
