@@ -119,7 +119,9 @@
 
           </div>
 
-          <div class="field-attribute">
+      </article>
+      <article class="form-field right-form-field">
+       <div class="field-attribute">
               <label for="birthdate" class="dob-label">Date of Birth</label>
           </div>
           <div class="field-value">
@@ -129,16 +131,13 @@
           <div class="field-value">
               <input type="checkbox" ng-model="patient.birthdateEstimated" class="estimate-check">
           </div>
-          <div class="field-attribute">
-              <label for="birthdate" class="estimated-label">Estimated</label>
+          <div class="field-attribute estimated-label">
+              <label for="birthdate">Estimated</label>
           </div>
-
-      </article>
-      <article class="form-field right-form-field right-form-field-ipad" ng-show="showBirthTime">
-          <div class="field-attribute">
+          <div class="field-attribute" ng-show="showBirthTime">
               <label for="birthtime">Birth Time</label>
           </div>
-          <div class="field-value">
+          <div class="field-value"  ng-show="showBirthTime">
               <input id="birthtime" type="time" ng-model="patient.birthtime">
           </div>
       </article>

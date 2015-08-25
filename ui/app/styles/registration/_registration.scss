@@ -36,12 +36,14 @@ html,body{
         text-align:right;
         margin:8px 0.8em 8px 0px;
         //opacity: 0.5;
-      &.estimated-label{
-        width: 5em;
-        margin: 10px 0 0 !important;
-      }
       &.dob-label{
         width: 9em;
+      }
+    }
+    &.estimated-label{
+      margin: 5px 0 0 !important;
+      label{
+        width: auto !important;
       }
     }
   }
@@ -412,7 +414,7 @@ table{
 
  /****edit page css start ***/
  .reg-body-wrapper{
-    padding:10px;
+    padding:10px 0;
  }
  .edit-patient,.new-patient,.visit-patient{
   position:relative;
