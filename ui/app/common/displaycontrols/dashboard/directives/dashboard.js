@@ -11,18 +11,15 @@ angular.module('bahmni.common.displaycontrol.dashboard')
 
             };
 
-            var shouldCurrentSectionBeLeft = true;
+            $scope.getSectionLayout = function (section, index) {
 
-            $scope.getSectionLayout = function (section) {
                 if (section['displayType'] && section['displayType'] === 'Full-Page') {
-                    shouldCurrentSectionBeLeft = true;
                     return "dashboard-section-fullpage";
                 }
-                if (shouldCurrentSectionBeLeft === true) {
-                    shouldCurrentSectionBeLeft = false;
+
+                if (index % 2 == 0) {
                     return "dashboard-sections dashboard-sections-left";
                 } else {
-                    shouldCurrentSectionBeLeft = true;
                     return "dashboard-sections dashboard-sections-right";
                 }
             };

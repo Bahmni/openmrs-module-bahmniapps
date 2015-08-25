@@ -3,7 +3,7 @@
         <article>
             <div class="dashboard-section-wrapper">
                 <div ng-repeat="section in dashboard.getSections(diseaseTemplates)">
-                    <div ng-class="getSectionLayout(section)">
+                    <div ng-class="getSectionLayout(section, $index)">
                         <section id="{{section.title.toValidId()}}"
                                  class="dashboard-section" ng-include="section.viewName">
                         </section>
