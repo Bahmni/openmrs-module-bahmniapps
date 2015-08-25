@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('VisitController', ['$window', '$scope', '$rootScope', '$state', 'patientService', 'encounterService', '$stateParams', 'spinner', '$timeout', '$q', 'appService', 'openmrsPatientMapper', 'contextChangeHandler', 'messagingService', 'sessionService', 'visitService', '$location',
-        function ($window, $scope, $rootScope, $state, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, patientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location) {
+    .controller('VisitController', ['$window', '$scope', '$rootScope', '$state', '$bahmniCookieStore', 'patientService', 'encounterService', '$stateParams', 'spinner', '$timeout', '$q', 'appService', 'openmrsPatientMapper', 'contextChangeHandler', 'messagingService', 'sessionService', 'visitService', '$location',
+        function ($window, $scope, $rootScope, $state, $bahmniCookieStore, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, patientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location) {
             var self = this;
             var patientUuid = $stateParams.patientUuid;
             var extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.conceptSetGroup.observations", "config");
             var locationUuid = sessionService.getLoginLocationUuid();
+            var selectedProvider = $rootScope.currentProvider.uuid;
             $scope.conceptSets = extensions.map(function (extension) {
                 return new Bahmni.ConceptSet.ConceptSetSection(extension, $rootScope.currentUser, {}, [], {});
             });
@@ -54,6 +55,8 @@ angular.module('bahmni.registration')
                     locationUuid: locationUuid,
                     encounterTypeUuid: regEncounterTypeUuid
                 };
+
+                $bahmniCookieStore.put(Bahmni.Common.Constants.grantProviderAccessDataCookieName, selectedProvider, {path: '/', expires: 1});
 
                 $scope.encounter.observations = $scope.observations;
                 $scope.encounter.observations = new Bahmni.Common.Domain.ObservationFilter().filter($scope.encounter.observations);

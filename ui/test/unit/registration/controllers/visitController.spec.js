@@ -25,6 +25,8 @@ describe('VisitController', function () {
     var visitController;
     var location;
     var window;
+    var bahmniCookieStore;
+
     var stubAllPromise = function () {
         return {
             then: function () {
@@ -112,6 +114,7 @@ describe('VisitController', function () {
         $timeout = timeout;
         success = jasmine.createSpy();
         $rootScope.regEncounterConfiguration = new Bahmni.Registration.RegistrationEncounterConfig({visitTypes: {}}, {encounterTypes: {"REG": "someUUID"}});
+        $rootScope.currentProvider = {"uuid": "someUUID"};
         scope.regEncounterConfiguration = angular.extend(new Bahmni.Registration.RegistrationEncounterConfig(), sampleConfig);
         scope.encounterConfig = angular.extend(new EncounterConfig(), sampleConfig);
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
@@ -120,7 +123,8 @@ describe('VisitController', function () {
         });
         sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
         encounterService = jasmine.createSpyObj('encounterService', ['create', 'activeEncounter']);
-        window = jasmine.createSpyObj('window', ['confirm'])
+        window = jasmine.createSpyObj('window', ['confirm']);
+        bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore',['put']);
         getEncounterPromise = specUtil.createServicePromise('activeEncounter');
         getPatientPromise = specUtil.createServicePromise('get');
         encounterService.activeEncounter.and.returnValue(getEncounterPromise);
@@ -137,6 +141,7 @@ describe('VisitController', function () {
         visitController = $controller('VisitController', {
             $window: window,
             $scope: scope,
+            $bahmniCookieStore: bahmniCookieStore,
             $q: Q,
             encounterService: encounterService,
             patientService: patientService,
@@ -183,6 +188,15 @@ describe('VisitController', function () {
                 done();
             });
         });
+
+        it("should set the cookie with the current provider", function(done){
+            state.expectTransitionTo(state.current);
+            var submit = scope.submit();
+            submit.then(function(response){
+                expect(bahmniCookieStore.put).toHaveBeenCalled();
+                done();
+            })
+        })
     });
 
     describe("close active visit", function () {
