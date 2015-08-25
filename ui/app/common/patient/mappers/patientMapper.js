@@ -22,6 +22,7 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope) {
         patient.genderText = mapGenderText(patient.gender);
         patient.address = mapAddress(openmrsPatient.person.preferredAddress);
         patient.birthdateEstimated = openmrsPatient.person.birthdateEstimated;
+        patient.birthtime = getBirthtime(openmrsPatient.person);
         
         if(openmrsPatient.identifiers) {
             patient.identifier = openmrsPatient.identifiers[0].identifier;
@@ -39,6 +40,11 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope) {
         return patient;
     };
 
+    var getBirthtime = function(person){
+        if(person.birthtime != null)
+          return new Date(person.birthtime).toLocaleTimeString();
+        return '';
+    };
 
     this.getPatientConfigByUuid = function (patientConfig, attributeUuid) {
         if (this.patientConfig.personAttributeTypes) {
